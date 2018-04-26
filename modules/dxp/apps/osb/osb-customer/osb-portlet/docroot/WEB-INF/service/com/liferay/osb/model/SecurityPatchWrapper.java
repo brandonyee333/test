@@ -63,7 +63,6 @@ public class SecurityPatchWrapper implements SecurityPatch,
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("accountEntryId", getAccountEntryId());
-		attributes.put("ticketAttachmentId", getTicketAttachmentId());
 		attributes.put("portletId", getPortletId());
 		attributes.put("envLFR", getEnvLFR());
 		attributes.put("name", getName());
@@ -102,12 +101,6 @@ public class SecurityPatchWrapper implements SecurityPatch,
 
 		if (accountEntryId != null) {
 			setAccountEntryId(accountEntryId);
-		}
-
-		Long ticketAttachmentId = (Long)attributes.get("ticketAttachmentId");
-
-		if (ticketAttachmentId != null) {
-			setTicketAttachmentId(ticketAttachmentId);
 		}
 
 		String portletId = (String)attributes.get("portletId");
@@ -301,16 +294,6 @@ public class SecurityPatchWrapper implements SecurityPatch,
 	}
 
 	/**
-	* Returns the ticket attachment ID of this security patch.
-	*
-	* @return the ticket attachment ID of this security patch
-	*/
-	@Override
-	public long getTicketAttachmentId() {
-		return _securityPatch.getTicketAttachmentId();
-	}
-
-	/**
 	* Returns the user ID of this security patch.
 	*
 	* @return the user ID of this security patch
@@ -434,16 +417,6 @@ public class SecurityPatchWrapper implements SecurityPatch,
 	@Override
 	public void setSecurityPatchId(long securityPatchId) {
 		_securityPatch.setSecurityPatchId(securityPatchId);
-	}
-
-	/**
-	* Sets the ticket attachment ID of this security patch.
-	*
-	* @param ticketAttachmentId the ticket attachment ID of this security patch
-	*/
-	@Override
-	public void setTicketAttachmentId(long ticketAttachmentId) {
-		_securityPatch.setTicketAttachmentId(ticketAttachmentId);
 	}
 
 	/**

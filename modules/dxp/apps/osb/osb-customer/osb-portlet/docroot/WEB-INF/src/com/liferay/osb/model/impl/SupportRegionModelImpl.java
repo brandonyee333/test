@@ -189,20 +189,6 @@ public class SupportRegionModelImpl extends BaseModelImpl<SupportRegion>
 		GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
 				"value.object.finder.cache.enabled.OSB_PartnerEntries_SupportRegions"),
 			true);
-	public static final String MAPPING_TABLE_OSB_SUPPORTTEAMS_SUPPORTREGIONS_NAME =
-		"OSB_SupportTeams_SupportRegions";
-	public static final Object[][] MAPPING_TABLE_OSB_SUPPORTTEAMS_SUPPORTREGIONS_COLUMNS =
-		{
-			{ "companyId", Types.BIGINT },
-			{ "supportRegionId", Types.BIGINT },
-			{ "supportTeamId", Types.BIGINT }
-		};
-	public static final String MAPPING_TABLE_OSB_SUPPORTTEAMS_SUPPORTREGIONS_SQL_CREATE =
-		"create table OSB_SupportTeams_SupportRegions (companyId LONG not null,supportRegionId LONG not null,supportTeamId LONG not null,primary key (supportRegionId, supportTeamId))";
-	public static final boolean FINDER_CACHE_ENABLED_OSB_SUPPORTTEAMS_SUPPORTREGIONS =
-		GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
-				"value.object.finder.cache.enabled.OSB_SupportTeams_SupportRegions"),
-			true);
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
 				"lock.expiration.time.com.liferay.osb.model.SupportRegion"));
 

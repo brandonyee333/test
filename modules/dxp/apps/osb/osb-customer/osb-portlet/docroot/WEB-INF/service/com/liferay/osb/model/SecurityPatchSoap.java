@@ -39,7 +39,6 @@ public class SecurityPatchSoap implements Serializable {
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setAccountEntryId(model.getAccountEntryId());
-		soapModel.setTicketAttachmentId(model.getTicketAttachmentId());
 		soapModel.setPortletId(model.getPortletId());
 		soapModel.setEnvLFR(model.getEnvLFR());
 		soapModel.setName(model.getName());
@@ -136,14 +135,6 @@ public class SecurityPatchSoap implements Serializable {
 		_accountEntryId = accountEntryId;
 	}
 
-	public long getTicketAttachmentId() {
-		return _ticketAttachmentId;
-	}
-
-	public void setTicketAttachmentId(long ticketAttachmentId) {
-		_ticketAttachmentId = ticketAttachmentId;
-	}
-
 	public String getPortletId() {
 		return _portletId;
 	}
@@ -181,7 +172,6 @@ public class SecurityPatchSoap implements Serializable {
 	private String _userName;
 	private Date _createDate;
 	private long _accountEntryId;
-	private long _ticketAttachmentId;
 	private String _portletId;
 	private int _envLFR;
 	private String _name;

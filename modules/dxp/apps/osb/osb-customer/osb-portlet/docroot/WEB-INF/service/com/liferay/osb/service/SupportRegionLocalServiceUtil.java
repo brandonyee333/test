@@ -61,16 +61,6 @@ public class SupportRegionLocalServiceUtil {
 		return getService().hasPartnerEntrySupportRegions(partnerEntryId);
 	}
 
-	public static boolean hasSupportTeamSupportRegion(long supportTeamId,
-		long supportRegionId) {
-		return getService()
-				   .hasSupportTeamSupportRegion(supportTeamId, supportRegionId);
-	}
-
-	public static boolean hasSupportTeamSupportRegions(long supportTeamId) {
-		return getService().hasSupportTeamSupportRegions(supportTeamId);
-	}
-
 	/**
 	* Adds the support region to the database. Also notifies the appropriate model listeners.
 	*
@@ -161,12 +151,11 @@ public class SupportRegionLocalServiceUtil {
 
 	public static com.liferay.osb.model.SupportRegion updateSupportRegion(
 		long supportRegionId, java.lang.String name,
-		java.lang.String description, java.lang.String timeZoneId,
-		long[] supportTeamIds)
+		java.lang.String description, java.lang.String timeZoneId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateSupportRegion(supportRegionId, name, description,
-			timeZoneId, supportTeamIds);
+			timeZoneId);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
@@ -211,10 +200,6 @@ public class SupportRegionLocalServiceUtil {
 	*/
 	public static int getSupportRegionsCount() {
 		return getService().getSupportRegionsCount();
-	}
-
-	public static int getSupportTeamSupportRegionsCount(long supportTeamId) {
-		return getService().getSupportTeamSupportRegionsCount(supportTeamId);
 	}
 
 	public static java.lang.Object invokeMethod(java.lang.String name,
@@ -336,25 +321,6 @@ public class SupportRegionLocalServiceUtil {
 		return getService().getSupportRegions(start, end);
 	}
 
-	public static java.util.List<com.liferay.osb.model.SupportRegion> getSupportTeamSupportRegions(
-		long supportTeamId) {
-		return getService().getSupportTeamSupportRegions(supportTeamId);
-	}
-
-	public static java.util.List<com.liferay.osb.model.SupportRegion> getSupportTeamSupportRegions(
-		long supportTeamId, int start, int end) {
-		return getService()
-				   .getSupportTeamSupportRegions(supportTeamId, start, end);
-	}
-
-	public static java.util.List<com.liferay.osb.model.SupportRegion> getSupportTeamSupportRegions(
-		long supportTeamId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.osb.model.SupportRegion> orderByComparator) {
-		return getService()
-				   .getSupportTeamSupportRegions(supportTeamId, start, end,
-			orderByComparator);
-	}
-
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -397,16 +363,6 @@ public class SupportRegionLocalServiceUtil {
 	*/
 	public static long[] getPartnerEntryPrimaryKeys(long supportRegionId) {
 		return getService().getPartnerEntryPrimaryKeys(supportRegionId);
-	}
-
-	/**
-	* Returns the supportTeamIds of the support teams associated with the support region.
-	*
-	* @param supportRegionId the supportRegionId of the support region
-	* @return long[] the supportTeamIds of support teams associated with the support region
-	*/
-	public static long[] getSupportTeamPrimaryKeys(long supportRegionId) {
-		return getService().getSupportTeamPrimaryKeys(supportRegionId);
 	}
 
 	public static void addAccountEntrySupportRegion(long accountEntryId,
@@ -455,37 +411,12 @@ public class SupportRegionLocalServiceUtil {
 			.addPartnerEntrySupportRegions(partnerEntryId, supportRegionIds);
 	}
 
-	public static void addSupportTeamSupportRegion(long supportTeamId,
-		com.liferay.osb.model.SupportRegion supportRegion) {
-		getService().addSupportTeamSupportRegion(supportTeamId, supportRegion);
-	}
-
-	public static void addSupportTeamSupportRegion(long supportTeamId,
-		long supportRegionId) {
-		getService().addSupportTeamSupportRegion(supportTeamId, supportRegionId);
-	}
-
-	public static void addSupportTeamSupportRegions(long supportTeamId,
-		java.util.List<com.liferay.osb.model.SupportRegion> supportRegions) {
-		getService().addSupportTeamSupportRegions(supportTeamId, supportRegions);
-	}
-
-	public static void addSupportTeamSupportRegions(long supportTeamId,
-		long[] supportRegionIds) {
-		getService()
-			.addSupportTeamSupportRegions(supportTeamId, supportRegionIds);
-	}
-
 	public static void clearAccountEntrySupportRegions(long accountEntryId) {
 		getService().clearAccountEntrySupportRegions(accountEntryId);
 	}
 
 	public static void clearPartnerEntrySupportRegions(long partnerEntryId) {
 		getService().clearPartnerEntrySupportRegions(partnerEntryId);
-	}
-
-	public static void clearSupportTeamSupportRegions(long supportTeamId) {
-		getService().clearSupportTeamSupportRegions(supportTeamId);
 	}
 
 	public static void deleteAccountEntrySupportRegion(long accountEntryId,
@@ -536,29 +467,6 @@ public class SupportRegionLocalServiceUtil {
 			.deletePartnerEntrySupportRegions(partnerEntryId, supportRegionIds);
 	}
 
-	public static void deleteSupportTeamSupportRegion(long supportTeamId,
-		com.liferay.osb.model.SupportRegion supportRegion) {
-		getService().deleteSupportTeamSupportRegion(supportTeamId, supportRegion);
-	}
-
-	public static void deleteSupportTeamSupportRegion(long supportTeamId,
-		long supportRegionId) {
-		getService()
-			.deleteSupportTeamSupportRegion(supportTeamId, supportRegionId);
-	}
-
-	public static void deleteSupportTeamSupportRegions(long supportTeamId,
-		java.util.List<com.liferay.osb.model.SupportRegion> supportRegions) {
-		getService()
-			.deleteSupportTeamSupportRegions(supportTeamId, supportRegions);
-	}
-
-	public static void deleteSupportTeamSupportRegions(long supportTeamId,
-		long[] supportRegionIds) {
-		getService()
-			.deleteSupportTeamSupportRegions(supportTeamId, supportRegionIds);
-	}
-
 	public static void setAccountEntrySupportRegions(long accountEntryId,
 		long[] supportRegionIds) {
 		getService()
@@ -569,12 +477,6 @@ public class SupportRegionLocalServiceUtil {
 		long[] supportRegionIds) {
 		getService()
 			.setPartnerEntrySupportRegions(partnerEntryId, supportRegionIds);
-	}
-
-	public static void setSupportTeamSupportRegions(long supportTeamId,
-		long[] supportRegionIds) {
-		getService()
-			.setSupportTeamSupportRegions(supportTeamId, supportRegionIds);
 	}
 
 	public static void clearService() {

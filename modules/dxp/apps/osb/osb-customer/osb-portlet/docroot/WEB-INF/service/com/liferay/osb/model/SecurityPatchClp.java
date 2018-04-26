@@ -86,7 +86,6 @@ public class SecurityPatchClp extends BaseModelImpl<SecurityPatch>
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("accountEntryId", getAccountEntryId());
-		attributes.put("ticketAttachmentId", getTicketAttachmentId());
 		attributes.put("portletId", getPortletId());
 		attributes.put("envLFR", getEnvLFR());
 		attributes.put("name", getName());
@@ -128,12 +127,6 @@ public class SecurityPatchClp extends BaseModelImpl<SecurityPatch>
 
 		if (accountEntryId != null) {
 			setAccountEntryId(accountEntryId);
-		}
-
-		Long ticketAttachmentId = (Long)attributes.get("ticketAttachmentId");
-
-		if (ticketAttachmentId != null) {
-			setTicketAttachmentId(ticketAttachmentId);
 		}
 
 		String portletId = (String)attributes.get("portletId");
@@ -288,30 +281,6 @@ public class SecurityPatchClp extends BaseModelImpl<SecurityPatch>
 				Method method = clazz.getMethod("setAccountEntryId", long.class);
 
 				method.invoke(_securityPatchRemoteModel, accountEntryId);
-			}
-			catch (Exception e) {
-				throw new UnsupportedOperationException(e);
-			}
-		}
-	}
-
-	@Override
-	public long getTicketAttachmentId() {
-		return _ticketAttachmentId;
-	}
-
-	@Override
-	public void setTicketAttachmentId(long ticketAttachmentId) {
-		_ticketAttachmentId = ticketAttachmentId;
-
-		if (_securityPatchRemoteModel != null) {
-			try {
-				Class<?> clazz = _securityPatchRemoteModel.getClass();
-
-				Method method = clazz.getMethod("setTicketAttachmentId",
-						long.class);
-
-				method.invoke(_securityPatchRemoteModel, ticketAttachmentId);
 			}
 			catch (Exception e) {
 				throw new UnsupportedOperationException(e);
@@ -486,7 +455,6 @@ public class SecurityPatchClp extends BaseModelImpl<SecurityPatch>
 		clone.setUserName(getUserName());
 		clone.setCreateDate(getCreateDate());
 		clone.setAccountEntryId(getAccountEntryId());
-		clone.setTicketAttachmentId(getTicketAttachmentId());
 		clone.setPortletId(getPortletId());
 		clone.setEnvLFR(getEnvLFR());
 		clone.setName(getName());
@@ -553,7 +521,7 @@ public class SecurityPatchClp extends BaseModelImpl<SecurityPatch>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(21);
+		StringBundler sb = new StringBundler(19);
 
 		sb.append("{securityPatchId=");
 		sb.append(getSecurityPatchId());
@@ -565,8 +533,6 @@ public class SecurityPatchClp extends BaseModelImpl<SecurityPatch>
 		sb.append(getCreateDate());
 		sb.append(", accountEntryId=");
 		sb.append(getAccountEntryId());
-		sb.append(", ticketAttachmentId=");
-		sb.append(getTicketAttachmentId());
 		sb.append(", portletId=");
 		sb.append(getPortletId());
 		sb.append(", envLFR=");
@@ -582,7 +548,7 @@ public class SecurityPatchClp extends BaseModelImpl<SecurityPatch>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(34);
+		StringBundler sb = new StringBundler(31);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.SecurityPatch");
@@ -607,10 +573,6 @@ public class SecurityPatchClp extends BaseModelImpl<SecurityPatch>
 		sb.append(
 			"<column><column-name>accountEntryId</column-name><column-value><![CDATA[");
 		sb.append(getAccountEntryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>ticketAttachmentId</column-name><column-value><![CDATA[");
-		sb.append(getTicketAttachmentId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>portletId</column-name><column-value><![CDATA[");
@@ -639,7 +601,6 @@ public class SecurityPatchClp extends BaseModelImpl<SecurityPatch>
 	private String _userName;
 	private Date _createDate;
 	private long _accountEntryId;
-	private long _ticketAttachmentId;
 	private String _portletId;
 	private int _envLFR;
 	private String _name;

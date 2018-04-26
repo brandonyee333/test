@@ -446,25 +446,6 @@ public class SupportRegionClp extends BaseModelImpl<SupportRegion>
 	}
 
 	@Override
-	public java.util.List<SupportTeam> getSupportTeams() {
-		try {
-			String methodName = "getSupportTeams";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			java.util.List<SupportTeam> returnObj = (java.util.List<SupportTeam>)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
 	public java.util.TimeZone getTimeZone() {
 		try {
 			String methodName = "getTimeZone";

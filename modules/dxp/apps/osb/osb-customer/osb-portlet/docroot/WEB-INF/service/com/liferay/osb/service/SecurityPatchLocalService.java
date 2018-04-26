@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.model.SecurityPatch;
-import com.liferay.osb.model.TicketAttachment;
 
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -72,14 +71,13 @@ public interface SecurityPatchLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public SecurityPatch addSecurityPatch(SecurityPatch securityPatch);
 
-	public SecurityPatch addSecurityPatch(long userId, long accountEntryId,
-		long ticketAttachmentId, java.lang.String portletId, int envLFR,
-		java.lang.String name, java.lang.String fileName)
-		throws PortalException;
-
-	public SecurityPatch addSecurityPatch(long userId, long ticketAttachmentId,
+	public SecurityPatch addSecurityPatch(long userId,
 		java.lang.String portletId, int envLFR, java.lang.String fileName)
 		throws PortalException;
+
+	public SecurityPatch addSecurityPatch(long userId, long accountEntryId,
+		java.lang.String portletId, int envLFR, java.lang.String name,
+		java.lang.String fileName) throws PortalException;
 
 	/**
 	* Creates a new security patch with the primary key. Does not add the security patch to the database.
@@ -176,8 +174,7 @@ public interface SecurityPatchLocalService extends BaseLocalService,
 	public java.lang.String getOSGiServiceIdentifier();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.lang.String getSecurityPatchName(int envLFR,
-		TicketAttachment ticketAttachment);
+	public java.lang.String getSecurityPatchName(int envLFR);
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.

@@ -244,20 +244,6 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
 				"value.object.finder.cache.enabled.OSB_AccountEntries_SupportRegions"),
 			true);
-	public static final String MAPPING_TABLE_OSB_ACCOUNTENTRIES_SUPPORTTEAMS_NAME =
-		"OSB_AccountEntries_SupportTeams";
-	public static final Object[][] MAPPING_TABLE_OSB_ACCOUNTENTRIES_SUPPORTTEAMS_COLUMNS =
-		{
-			{ "companyId", Types.BIGINT },
-			{ "accountEntryId", Types.BIGINT },
-			{ "supportTeamId", Types.BIGINT }
-		};
-	public static final String MAPPING_TABLE_OSB_ACCOUNTENTRIES_SUPPORTTEAMS_SQL_CREATE =
-		"create table OSB_AccountEntries_SupportTeams (companyId LONG not null,accountEntryId LONG not null,supportTeamId LONG not null,primary key (accountEntryId, supportTeamId))";
-	public static final boolean FINDER_CACHE_ENABLED_OSB_ACCOUNTENTRIES_SUPPORTTEAMS =
-		GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
-				"value.object.finder.cache.enabled.OSB_AccountEntries_SupportTeams"),
-			true);
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
 				"lock.expiration.time.com.liferay.osb.model.AccountEntry"));
 

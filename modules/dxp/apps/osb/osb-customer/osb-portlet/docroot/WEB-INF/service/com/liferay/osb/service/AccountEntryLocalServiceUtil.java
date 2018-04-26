@@ -51,16 +51,6 @@ public class AccountEntryLocalServiceUtil {
 				   .hasSupportRegionAccountEntry(supportRegionId, accountEntryId);
 	}
 
-	public static boolean hasSupportTeamAccountEntries(long supportTeamId) {
-		return getService().hasSupportTeamAccountEntries(supportTeamId);
-	}
-
-	public static boolean hasSupportTeamAccountEntry(long supportTeamId,
-		long accountEntryId) {
-		return getService()
-				   .hasSupportTeamAccountEntry(supportTeamId, accountEntryId);
-	}
-
 	public static boolean hasValidLicenseAccountEntry(long userId) {
 		return getService().hasValidLicenseAccountEntry(userId);
 	}
@@ -297,10 +287,6 @@ public class AccountEntryLocalServiceUtil {
 		return getService().getSupportRegionAccountEntriesCount(supportRegionId);
 	}
 
-	public static int getSupportTeamAccountEntriesCount(long supportTeamId) {
-		return getService().getSupportTeamAccountEntriesCount(supportTeamId);
-	}
-
 	public static int getUserAccountEntriesCount(long userId) {
 		return getService().getUserAccountEntriesCount(userId);
 	}
@@ -466,25 +452,6 @@ public class AccountEntryLocalServiceUtil {
 			orderByComparator);
 	}
 
-	public static java.util.List<com.liferay.osb.model.AccountEntry> getSupportTeamAccountEntries(
-		long supportTeamId) {
-		return getService().getSupportTeamAccountEntries(supportTeamId);
-	}
-
-	public static java.util.List<com.liferay.osb.model.AccountEntry> getSupportTeamAccountEntries(
-		long supportTeamId, int start, int end) {
-		return getService()
-				   .getSupportTeamAccountEntries(supportTeamId, start, end);
-	}
-
-	public static java.util.List<com.liferay.osb.model.AccountEntry> getSupportTeamAccountEntries(
-		long supportTeamId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.osb.model.AccountEntry> orderByComparator) {
-		return getService()
-				   .getSupportTeamAccountEntries(supportTeamId, start, end,
-			orderByComparator);
-	}
-
 	public static java.util.List<com.liferay.osb.model.AccountEntry> getUserAccountEntries(
 		long userId, int start, int end) {
 		return getService().getUserAccountEntries(userId, start, end);
@@ -578,16 +545,6 @@ public class AccountEntryLocalServiceUtil {
 		return getService().getSupportRegionPrimaryKeys(accountEntryId);
 	}
 
-	/**
-	* Returns the supportTeamIds of the support teams associated with the account entry.
-	*
-	* @param accountEntryId the accountEntryId of the account entry
-	* @return long[] the supportTeamIds of support teams associated with the account entry
-	*/
-	public static long[] getSupportTeamPrimaryKeys(long accountEntryId) {
-		return getService().getSupportTeamPrimaryKeys(accountEntryId);
-	}
-
 	public static void addSupportRegionAccountEntries(long supportRegionId,
 		java.util.List<com.liferay.osb.model.AccountEntry> accountEntries) {
 		getService()
@@ -611,26 +568,6 @@ public class AccountEntryLocalServiceUtil {
 			.addSupportRegionAccountEntry(supportRegionId, accountEntryId);
 	}
 
-	public static void addSupportTeamAccountEntries(long supportTeamId,
-		java.util.List<com.liferay.osb.model.AccountEntry> accountEntries) {
-		getService().addSupportTeamAccountEntries(supportTeamId, accountEntries);
-	}
-
-	public static void addSupportTeamAccountEntries(long supportTeamId,
-		long[] accountEntryIds) {
-		getService().addSupportTeamAccountEntries(supportTeamId, accountEntryIds);
-	}
-
-	public static void addSupportTeamAccountEntry(long supportTeamId,
-		com.liferay.osb.model.AccountEntry accountEntry) {
-		getService().addSupportTeamAccountEntry(supportTeamId, accountEntry);
-	}
-
-	public static void addSupportTeamAccountEntry(long supportTeamId,
-		long accountEntryId) {
-		getService().addSupportTeamAccountEntry(supportTeamId, accountEntryId);
-	}
-
 	public static void addTrialAccountEntry(long userId)
 		throws java.lang.Exception {
 		getService().addTrialAccountEntry(userId);
@@ -648,10 +585,6 @@ public class AccountEntryLocalServiceUtil {
 
 	public static void clearSupportRegionAccountEntries(long supportRegionId) {
 		getService().clearSupportRegionAccountEntries(supportRegionId);
-	}
-
-	public static void clearSupportTeamAccountEntries(long supportTeamId) {
-		getService().clearSupportTeamAccountEntries(supportTeamId);
 	}
 
 	public static void deleteSupportRegionAccountEntries(long supportRegionId,
@@ -678,47 +611,15 @@ public class AccountEntryLocalServiceUtil {
 			.deleteSupportRegionAccountEntry(supportRegionId, accountEntryId);
 	}
 
-	public static void deleteSupportTeamAccountEntries(long supportTeamId,
-		java.util.List<com.liferay.osb.model.AccountEntry> accountEntries) {
-		getService()
-			.deleteSupportTeamAccountEntries(supportTeamId, accountEntries);
-	}
-
-	public static void deleteSupportTeamAccountEntries(long supportTeamId,
-		long[] accountEntryIds) {
-		getService()
-			.deleteSupportTeamAccountEntries(supportTeamId, accountEntryIds);
-	}
-
-	public static void deleteSupportTeamAccountEntry(long supportTeamId,
-		com.liferay.osb.model.AccountEntry accountEntry) {
-		getService().deleteSupportTeamAccountEntry(supportTeamId, accountEntry);
-	}
-
-	public static void deleteSupportTeamAccountEntry(long supportTeamId,
-		long accountEntryId) {
-		getService().deleteSupportTeamAccountEntry(supportTeamId, accountEntryId);
-	}
-
 	public static void recalculateHighestSupportResponse(long accountEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().recalculateHighestSupportResponse(accountEntryId);
-	}
-
-	public static void reindexAccountEntry(long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().reindexAccountEntry(accountEntryId);
 	}
 
 	public static void setSupportRegionAccountEntries(long supportRegionId,
 		long[] accountEntryIds) {
 		getService()
 			.setSupportRegionAccountEntries(supportRegionId, accountEntryIds);
-	}
-
-	public static void setSupportTeamAccountEntries(long supportTeamId,
-		long[] accountEntryIds) {
-		getService().setSupportTeamAccountEntries(supportTeamId, accountEntryIds);
 	}
 
 	public static void updateAccountEntryWithWorkflow(

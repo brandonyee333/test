@@ -18,8 +18,6 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.service.AccountAttachmentLocalServiceUtil;
 import com.liferay.osb.service.AccountAttachmentServiceUtil;
-import com.liferay.osb.service.AccountCallLocalServiceUtil;
-import com.liferay.osb.service.AccountCallServiceUtil;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.osb.service.AccountCustomerServiceUtil;
 import com.liferay.osb.service.AccountEntryLanguageLocalServiceUtil;
@@ -32,14 +30,10 @@ import com.liferay.osb.service.AccountEnvironmentLocalServiceUtil;
 import com.liferay.osb.service.AccountEnvironmentServiceUtil;
 import com.liferay.osb.service.AccountInformationLocalServiceUtil;
 import com.liferay.osb.service.AccountInformationServiceUtil;
-import com.liferay.osb.service.AccountLinkLocalServiceUtil;
-import com.liferay.osb.service.AccountLinkServiceUtil;
 import com.liferay.osb.service.AccountProjectLocalServiceUtil;
 import com.liferay.osb.service.AccountProjectServiceUtil;
 import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
 import com.liferay.osb.service.AccountWorkerServiceUtil;
-import com.liferay.osb.service.AuditActionLocalServiceUtil;
-import com.liferay.osb.service.AuditActionServiceUtil;
 import com.liferay.osb.service.AuditEntryLocalServiceUtil;
 import com.liferay.osb.service.AuditEntryServiceUtil;
 import com.liferay.osb.service.ClpSerializer;
@@ -50,12 +44,6 @@ import com.liferay.osb.service.CorpProjectServiceUtil;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.osb.service.FeedbackEntryLocalServiceUtil;
 import com.liferay.osb.service.FeedbackEntryServiceUtil;
-import com.liferay.osb.service.HolidayCalendarLocalServiceUtil;
-import com.liferay.osb.service.HolidayCalendarRelLocalServiceUtil;
-import com.liferay.osb.service.HolidayCalendarRelServiceUtil;
-import com.liferay.osb.service.HolidayCalendarServiceUtil;
-import com.liferay.osb.service.HolidayEntryLocalServiceUtil;
-import com.liferay.osb.service.HolidayEntryServiceUtil;
 import com.liferay.osb.service.LCSSubscriptionEntryLocalServiceUtil;
 import com.liferay.osb.service.LicenseEntryLocalServiceUtil;
 import com.liferay.osb.service.LicenseEntryServiceUtil;
@@ -80,48 +68,12 @@ import com.liferay.osb.service.ProductEntryServiceUtil;
 import com.liferay.osb.service.RemoteCorpProjectLocalServiceUtil;
 import com.liferay.osb.service.RemoteCorpProjectMessageLocalServiceUtil;
 import com.liferay.osb.service.RemoteUserLocalServiceUtil;
-import com.liferay.osb.service.SearchFilterLocalServiceUtil;
-import com.liferay.osb.service.SearchFilterServiceUtil;
 import com.liferay.osb.service.SecurityPatchLocalServiceUtil;
 import com.liferay.osb.service.SecurityPatchServiceUtil;
-import com.liferay.osb.service.SupportLaborLocalServiceUtil;
-import com.liferay.osb.service.SupportLaborServiceUtil;
 import com.liferay.osb.service.SupportRegionLocalServiceUtil;
 import com.liferay.osb.service.SupportRegionServiceUtil;
 import com.liferay.osb.service.SupportResponseLocalServiceUtil;
 import com.liferay.osb.service.SupportResponseServiceUtil;
-import com.liferay.osb.service.SupportTeamLanguageLocalServiceUtil;
-import com.liferay.osb.service.SupportTeamLanguageServiceUtil;
-import com.liferay.osb.service.SupportTeamLocalServiceUtil;
-import com.liferay.osb.service.SupportTeamServiceUtil;
-import com.liferay.osb.service.SupportWorkerAccountTierLocalServiceUtil;
-import com.liferay.osb.service.SupportWorkerAccountTierServiceUtil;
-import com.liferay.osb.service.SupportWorkerComponentLocalServiceUtil;
-import com.liferay.osb.service.SupportWorkerComponentServiceUtil;
-import com.liferay.osb.service.SupportWorkerLocalServiceUtil;
-import com.liferay.osb.service.SupportWorkerServiceUtil;
-import com.liferay.osb.service.SupportWorkerSeverityLocalServiceUtil;
-import com.liferay.osb.service.SupportWorkerSeverityServiceUtil;
-import com.liferay.osb.service.TicketAttachmentLocalServiceUtil;
-import com.liferay.osb.service.TicketAttachmentServiceUtil;
-import com.liferay.osb.service.TicketCallLocalServiceUtil;
-import com.liferay.osb.service.TicketCallServiceUtil;
-import com.liferay.osb.service.TicketCommentLocalServiceUtil;
-import com.liferay.osb.service.TicketCommentServiceUtil;
-import com.liferay.osb.service.TicketEntryLocalServiceUtil;
-import com.liferay.osb.service.TicketEntryServiceUtil;
-import com.liferay.osb.service.TicketFeedbackLocalServiceUtil;
-import com.liferay.osb.service.TicketFeedbackServiceUtil;
-import com.liferay.osb.service.TicketFlagLocalServiceUtil;
-import com.liferay.osb.service.TicketFlagServiceUtil;
-import com.liferay.osb.service.TicketInformationLocalServiceUtil;
-import com.liferay.osb.service.TicketInformationServiceUtil;
-import com.liferay.osb.service.TicketLinkLocalServiceUtil;
-import com.liferay.osb.service.TicketLinkServiceUtil;
-import com.liferay.osb.service.TicketSolutionLocalServiceUtil;
-import com.liferay.osb.service.TicketSolutionServiceUtil;
-import com.liferay.osb.service.TicketWorkerLocalServiceUtil;
-import com.liferay.osb.service.TicketWorkerServiceUtil;
 
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
@@ -145,9 +97,6 @@ public class ClpMessageListener extends BaseMessageListener {
 			AccountAttachmentLocalServiceUtil.clearService();
 
 			AccountAttachmentServiceUtil.clearService();
-			AccountCallLocalServiceUtil.clearService();
-
-			AccountCallServiceUtil.clearService();
 			AccountCustomerLocalServiceUtil.clearService();
 
 			AccountCustomerServiceUtil.clearService();
@@ -166,18 +115,12 @@ public class ClpMessageListener extends BaseMessageListener {
 			AccountInformationLocalServiceUtil.clearService();
 
 			AccountInformationServiceUtil.clearService();
-			AccountLinkLocalServiceUtil.clearService();
-
-			AccountLinkServiceUtil.clearService();
 			AccountProjectLocalServiceUtil.clearService();
 
 			AccountProjectServiceUtil.clearService();
 			AccountWorkerLocalServiceUtil.clearService();
 
 			AccountWorkerServiceUtil.clearService();
-			AuditActionLocalServiceUtil.clearService();
-
-			AuditActionServiceUtil.clearService();
 			AuditEntryLocalServiceUtil.clearService();
 
 			AuditEntryServiceUtil.clearService();
@@ -192,15 +135,6 @@ public class ClpMessageListener extends BaseMessageListener {
 			FeedbackEntryLocalServiceUtil.clearService();
 
 			FeedbackEntryServiceUtil.clearService();
-			HolidayCalendarLocalServiceUtil.clearService();
-
-			HolidayCalendarServiceUtil.clearService();
-			HolidayCalendarRelLocalServiceUtil.clearService();
-
-			HolidayCalendarRelServiceUtil.clearService();
-			HolidayEntryLocalServiceUtil.clearService();
-
-			HolidayEntryServiceUtil.clearService();
 			LCSSubscriptionEntryLocalServiceUtil.clearService();
 
 			LicenseEntryLocalServiceUtil.clearService();
@@ -239,69 +173,15 @@ public class ClpMessageListener extends BaseMessageListener {
 
 			RemoteUserLocalServiceUtil.clearService();
 
-			SearchFilterLocalServiceUtil.clearService();
-
-			SearchFilterServiceUtil.clearService();
 			SecurityPatchLocalServiceUtil.clearService();
 
 			SecurityPatchServiceUtil.clearService();
-			SupportLaborLocalServiceUtil.clearService();
-
-			SupportLaborServiceUtil.clearService();
 			SupportRegionLocalServiceUtil.clearService();
 
 			SupportRegionServiceUtil.clearService();
 			SupportResponseLocalServiceUtil.clearService();
 
 			SupportResponseServiceUtil.clearService();
-			SupportTeamLocalServiceUtil.clearService();
-
-			SupportTeamServiceUtil.clearService();
-			SupportTeamLanguageLocalServiceUtil.clearService();
-
-			SupportTeamLanguageServiceUtil.clearService();
-			SupportWorkerLocalServiceUtil.clearService();
-
-			SupportWorkerServiceUtil.clearService();
-			SupportWorkerAccountTierLocalServiceUtil.clearService();
-
-			SupportWorkerAccountTierServiceUtil.clearService();
-			SupportWorkerComponentLocalServiceUtil.clearService();
-
-			SupportWorkerComponentServiceUtil.clearService();
-			SupportWorkerSeverityLocalServiceUtil.clearService();
-
-			SupportWorkerSeverityServiceUtil.clearService();
-			TicketAttachmentLocalServiceUtil.clearService();
-
-			TicketAttachmentServiceUtil.clearService();
-			TicketCallLocalServiceUtil.clearService();
-
-			TicketCallServiceUtil.clearService();
-			TicketCommentLocalServiceUtil.clearService();
-
-			TicketCommentServiceUtil.clearService();
-			TicketEntryLocalServiceUtil.clearService();
-
-			TicketEntryServiceUtil.clearService();
-			TicketFeedbackLocalServiceUtil.clearService();
-
-			TicketFeedbackServiceUtil.clearService();
-			TicketFlagLocalServiceUtil.clearService();
-
-			TicketFlagServiceUtil.clearService();
-			TicketInformationLocalServiceUtil.clearService();
-
-			TicketInformationServiceUtil.clearService();
-			TicketLinkLocalServiceUtil.clearService();
-
-			TicketLinkServiceUtil.clearService();
-			TicketSolutionLocalServiceUtil.clearService();
-
-			TicketSolutionServiceUtil.clearService();
-			TicketWorkerLocalServiceUtil.clearService();
-
-			TicketWorkerServiceUtil.clearService();
 		}
 	}
 }

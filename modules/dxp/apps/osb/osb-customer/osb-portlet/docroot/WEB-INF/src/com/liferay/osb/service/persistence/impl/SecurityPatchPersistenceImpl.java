@@ -1531,7 +1531,6 @@ public class SecurityPatchPersistenceImpl extends BasePersistenceImpl<SecurityPa
 		securityPatchImpl.setUserName(securityPatch.getUserName());
 		securityPatchImpl.setCreateDate(securityPatch.getCreateDate());
 		securityPatchImpl.setAccountEntryId(securityPatch.getAccountEntryId());
-		securityPatchImpl.setTicketAttachmentId(securityPatch.getTicketAttachmentId());
 		securityPatchImpl.setPortletId(securityPatch.getPortletId());
 		securityPatchImpl.setEnvLFR(securityPatch.getEnvLFR());
 		securityPatchImpl.setName(securityPatch.getName());

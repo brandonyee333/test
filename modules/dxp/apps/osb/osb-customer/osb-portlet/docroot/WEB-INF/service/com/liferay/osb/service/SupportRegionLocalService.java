@@ -75,13 +75,6 @@ public interface SupportRegionLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public boolean hasPartnerEntrySupportRegions(long partnerEntryId);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasSupportTeamSupportRegion(long supportTeamId,
-		long supportRegionId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasSupportTeamSupportRegions(long supportTeamId);
-
 	/**
 	* Adds the support region to the database. Also notifies the appropriate model listeners.
 	*
@@ -151,8 +144,7 @@ public interface SupportRegionLocalService extends BaseLocalService,
 
 	public SupportRegion updateSupportRegion(long supportRegionId,
 		java.lang.String name, java.lang.String description,
-		java.lang.String timeZoneId, long[] supportTeamIds)
-		throws PortalException;
+		java.lang.String timeZoneId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -187,9 +179,6 @@ public interface SupportRegionLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getSupportRegionsCount();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getSupportTeamSupportRegionsCount(long supportTeamId);
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -282,18 +271,6 @@ public interface SupportRegionLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SupportRegion> getSupportRegions(int start, int end);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<SupportRegion> getSupportTeamSupportRegions(long supportTeamId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<SupportRegion> getSupportTeamSupportRegions(
-		long supportTeamId, int start, int end);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<SupportRegion> getSupportTeamSupportRegions(
-		long supportTeamId, int start, int end,
-		OrderByComparator<SupportRegion> orderByComparator);
-
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -330,15 +307,6 @@ public interface SupportRegionLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public long[] getPartnerEntryPrimaryKeys(long supportRegionId);
 
-	/**
-	* Returns the supportTeamIds of the support teams associated with the support region.
-	*
-	* @param supportRegionId the supportRegionId of the support region
-	* @return long[] the supportTeamIds of support teams associated with the support region
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long[] getSupportTeamPrimaryKeys(long supportRegionId);
-
 	public void addAccountEntrySupportRegion(long accountEntryId,
 		SupportRegion supportRegion);
 
@@ -361,26 +329,12 @@ public interface SupportRegionLocalService extends BaseLocalService,
 		List<SupportRegion> supportRegions);
 
 	public void addPartnerEntrySupportRegions(long partnerEntryId,
-		long[] supportRegionIds);
-
-	public void addSupportTeamSupportRegion(long supportTeamId,
-		SupportRegion supportRegion);
-
-	public void addSupportTeamSupportRegion(long supportTeamId,
-		long supportRegionId);
-
-	public void addSupportTeamSupportRegions(long supportTeamId,
-		List<SupportRegion> supportRegions);
-
-	public void addSupportTeamSupportRegions(long supportTeamId,
 		long[] supportRegionIds);
 
 	public void clearAccountEntrySupportRegions(long accountEntryId);
 
 	public void clearPartnerEntrySupportRegions(long partnerEntryId);
 
-	public void clearSupportTeamSupportRegions(long supportTeamId);
-
 	public void deleteAccountEntrySupportRegion(long accountEntryId,
 		SupportRegion supportRegion);
 
@@ -403,26 +357,11 @@ public interface SupportRegionLocalService extends BaseLocalService,
 		List<SupportRegion> supportRegions);
 
 	public void deletePartnerEntrySupportRegions(long partnerEntryId,
-		long[] supportRegionIds);
-
-	public void deleteSupportTeamSupportRegion(long supportTeamId,
-		SupportRegion supportRegion);
-
-	public void deleteSupportTeamSupportRegion(long supportTeamId,
-		long supportRegionId);
-
-	public void deleteSupportTeamSupportRegions(long supportTeamId,
-		List<SupportRegion> supportRegions);
-
-	public void deleteSupportTeamSupportRegions(long supportTeamId,
 		long[] supportRegionIds);
 
 	public void setAccountEntrySupportRegions(long accountEntryId,
 		long[] supportRegionIds);
 
 	public void setPartnerEntrySupportRegions(long partnerEntryId,
-		long[] supportRegionIds);
-
-	public void setSupportTeamSupportRegions(long supportTeamId,
 		long[] supportRegionIds);
 }

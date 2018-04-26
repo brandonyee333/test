@@ -286,11 +286,6 @@ public class SupportRegionWrapper implements SupportRegion,
 	}
 
 	@Override
-	public java.util.List<SupportTeam> getSupportTeams() {
-		return _supportRegion.getSupportTeams();
-	}
-
-	@Override
 	public java.util.TimeZone getTimeZone() {
 		return _supportRegion.getTimeZone();
 	}

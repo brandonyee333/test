@@ -78,13 +78,6 @@ public interface AccountEntryLocalService extends BaseLocalService,
 		long accountEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasSupportTeamAccountEntries(long supportTeamId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasSupportTeamAccountEntry(long supportTeamId,
-		long accountEntryId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public boolean hasValidLicenseAccountEntry(long userId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -244,9 +237,6 @@ public interface AccountEntryLocalService extends BaseLocalService,
 	public int getSupportRegionAccountEntriesCount(long supportRegionId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getSupportTeamAccountEntriesCount(long supportTeamId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getUserAccountEntriesCount(long userId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -370,17 +360,6 @@ public interface AccountEntryLocalService extends BaseLocalService,
 		OrderByComparator<AccountEntry> orderByComparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AccountEntry> getSupportTeamAccountEntries(long supportTeamId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AccountEntry> getSupportTeamAccountEntries(long supportTeamId,
-		int start, int end);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AccountEntry> getSupportTeamAccountEntries(long supportTeamId,
-		int start, int end, OrderByComparator<AccountEntry> orderByComparator);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountEntry> getUserAccountEntries(long userId, int start,
 		int end);
 
@@ -448,15 +427,6 @@ public interface AccountEntryLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public long[] getSupportRegionPrimaryKeys(long accountEntryId);
 
-	/**
-	* Returns the supportTeamIds of the support teams associated with the account entry.
-	*
-	* @param accountEntryId the accountEntryId of the account entry
-	* @return long[] the supportTeamIds of support teams associated with the account entry
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long[] getSupportTeamPrimaryKeys(long accountEntryId);
-
 	public void addSupportRegionAccountEntries(long supportRegionId,
 		List<AccountEntry> accountEntries);
 
@@ -467,18 +437,6 @@ public interface AccountEntryLocalService extends BaseLocalService,
 		AccountEntry accountEntry);
 
 	public void addSupportRegionAccountEntry(long supportRegionId,
-		long accountEntryId);
-
-	public void addSupportTeamAccountEntries(long supportTeamId,
-		List<AccountEntry> accountEntries);
-
-	public void addSupportTeamAccountEntries(long supportTeamId,
-		long[] accountEntryIds);
-
-	public void addSupportTeamAccountEntry(long supportTeamId,
-		AccountEntry accountEntry);
-
-	public void addSupportTeamAccountEntry(long supportTeamId,
 		long accountEntryId);
 
 	public void addTrialAccountEntry(long userId) throws java.lang.Exception;
@@ -490,8 +448,6 @@ public interface AccountEntryLocalService extends BaseLocalService,
 
 	public void clearSupportRegionAccountEntries(long supportRegionId);
 
-	public void clearSupportTeamAccountEntries(long supportTeamId);
-
 	public void deleteSupportRegionAccountEntries(long supportRegionId,
 		List<AccountEntry> accountEntries);
 
@@ -502,31 +458,12 @@ public interface AccountEntryLocalService extends BaseLocalService,
 		AccountEntry accountEntry);
 
 	public void deleteSupportRegionAccountEntry(long supportRegionId,
-		long accountEntryId);
-
-	public void deleteSupportTeamAccountEntries(long supportTeamId,
-		List<AccountEntry> accountEntries);
-
-	public void deleteSupportTeamAccountEntries(long supportTeamId,
-		long[] accountEntryIds);
-
-	public void deleteSupportTeamAccountEntry(long supportTeamId,
-		AccountEntry accountEntry);
-
-	public void deleteSupportTeamAccountEntry(long supportTeamId,
 		long accountEntryId);
 
 	public void recalculateHighestSupportResponse(long accountEntryId)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public void reindexAccountEntry(long accountEntryId)
-		throws PortalException;
-
 	public void setSupportRegionAccountEntries(long supportRegionId,
-		long[] accountEntryIds);
-
-	public void setSupportTeamAccountEntries(long supportTeamId,
 		long[] accountEntryIds);
 
 	public void updateAccountEntryWithWorkflow(

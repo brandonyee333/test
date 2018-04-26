@@ -123,27 +123,27 @@ public class LicenseKeySetLocalServiceClpInvoker {
 				"com.liferay.osb.model.LicenseKeySet"
 			};
 
-		_methodName278 = "getOSGiServiceIdentifier";
+		_methodName170 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes278 = new String[] {  };
+		_methodParameterTypes170 = new String[] {  };
 
-		_methodName283 = "addLicenseKeySet";
+		_methodName175 = "addLicenseKeySet";
 
-		_methodParameterTypes283 = new String[] {
+		_methodParameterTypes175 = new String[] {
 				"long", "long", "java.lang.String"
 			};
 
-		_methodName284 = "getAccountEntryLicenseKeySets";
+		_methodName176 = "getAccountEntryLicenseKeySets";
 
-		_methodParameterTypes284 = new String[] { "long", "int", "int" };
+		_methodParameterTypes176 = new String[] { "long", "int", "int" };
 
-		_methodName285 = "getAccountEntryLicenseKeySetsCount";
+		_methodName177 = "getAccountEntryLicenseKeySetsCount";
 
-		_methodParameterTypes285 = new String[] { "long" };
+		_methodParameterTypes177 = new String[] { "long" };
 
-		_methodName286 = "updateLicenseKeySet";
+		_methodName178 = "updateLicenseKeySet";
 
-		_methodParameterTypes286 = new String[] { "long", "java.lang.String" };
+		_methodParameterTypes178 = new String[] { "long", "java.lang.String" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -250,31 +250,31 @@ public class LicenseKeySetLocalServiceClpInvoker {
 			return LicenseKeySetLocalServiceUtil.updateLicenseKeySet((com.liferay.osb.model.LicenseKeySet)arguments[0]);
 		}
 
-		if (_methodName278.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes278, parameterTypes)) {
+		if (_methodName170.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes170, parameterTypes)) {
 			return LicenseKeySetLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName283.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes283, parameterTypes)) {
+		if (_methodName175.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes175, parameterTypes)) {
 			return LicenseKeySetLocalServiceUtil.addLicenseKeySet(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(), (java.lang.String)arguments[2]);
 		}
 
-		if (_methodName284.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes284, parameterTypes)) {
+		if (_methodName176.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes176, parameterTypes)) {
 			return LicenseKeySetLocalServiceUtil.getAccountEntryLicenseKeySets(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue());
 		}
 
-		if (_methodName285.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes285, parameterTypes)) {
+		if (_methodName177.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes177, parameterTypes)) {
 			return LicenseKeySetLocalServiceUtil.getAccountEntryLicenseKeySetsCount(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName286.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
+		if (_methodName178.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes178, parameterTypes)) {
 			return LicenseKeySetLocalServiceUtil.updateLicenseKeySet(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1]);
 		}
@@ -320,14 +320,14 @@ public class LicenseKeySetLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName278;
-	private String[] _methodParameterTypes278;
-	private String _methodName283;
-	private String[] _methodParameterTypes283;
-	private String _methodName284;
-	private String[] _methodParameterTypes284;
-	private String _methodName285;
-	private String[] _methodParameterTypes285;
-	private String _methodName286;
-	private String[] _methodParameterTypes286;
+	private String _methodName170;
+	private String[] _methodParameterTypes170;
+	private String _methodName175;
+	private String[] _methodParameterTypes175;
+	private String _methodName176;
+	private String[] _methodParameterTypes176;
+	private String _methodName177;
+	private String[] _methodParameterTypes177;
+	private String _methodName178;
+	private String[] _methodParameterTypes178;
 }

@@ -96,8 +96,5 @@ public interface OfferingEntry extends OfferingEntryModel, PersistedModel {
 	public SupportResponse getSupportResponse()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	@com.liferay.portal.kernel.json.JSON()
-	public int getTicketEntriesCount();
-
 	public java.lang.String getTypeLabel();
 }

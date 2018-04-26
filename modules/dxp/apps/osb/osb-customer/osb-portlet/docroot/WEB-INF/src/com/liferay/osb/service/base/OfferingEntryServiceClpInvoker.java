@@ -27,50 +27,50 @@ import java.util.Arrays;
 @ProviderType
 public class OfferingEntryServiceClpInvoker {
 	public OfferingEntryServiceClpInvoker() {
-		_methodName366 = "getOSGiServiceIdentifier";
+		_methodName210 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes366 = new String[] {  };
+		_methodParameterTypes210 = new String[] {  };
 
-		_methodName371 = "getAccountEntryOfferingEntries";
+		_methodName215 = "getAccountEntryOfferingEntries";
 
-		_methodParameterTypes371 = new String[] { "long" };
+		_methodParameterTypes215 = new String[] { "long" };
 
-		_methodName372 = "getOrderEntryOfferingEntries";
+		_methodName216 = "getOrderEntryOfferingEntries";
 
-		_methodParameterTypes372 = new String[] { "long" };
+		_methodParameterTypes216 = new String[] { "long" };
 
-		_methodName373 = "updateOfferingEntry";
+		_methodName217 = "updateOfferingEntry";
 
-		_methodParameterTypes373 = new String[] {
+		_methodParameterTypes217 = new String[] {
 				"long", "long", "long", "long", "long", "java.lang.String",
 				"int", "int", "boolean", "long", "long", "long", "boolean",
 				"long", "int", "int"
 			};
 
-		_methodName374 = "updateStatus";
+		_methodName218 = "updateStatus";
 
-		_methodParameterTypes374 = new String[] { "long", "int" };
+		_methodParameterTypes218 = new String[] { "long", "int" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName366.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes366, parameterTypes)) {
+		if (_methodName210.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes210, parameterTypes)) {
 			return OfferingEntryServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName371.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes371, parameterTypes)) {
+		if (_methodName215.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes215, parameterTypes)) {
 			return OfferingEntryServiceUtil.getAccountEntryOfferingEntries(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName372.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes372, parameterTypes)) {
+		if (_methodName216.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes216, parameterTypes)) {
 			return OfferingEntryServiceUtil.getOrderEntryOfferingEntries(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName373.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes373, parameterTypes)) {
+		if (_methodName217.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes217, parameterTypes)) {
 			return OfferingEntryServiceUtil.updateOfferingEntry(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -89,8 +89,8 @@ public class OfferingEntryServiceClpInvoker {
 				((Integer)arguments[15]).intValue());
 		}
 
-		if (_methodName374.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes374, parameterTypes)) {
+		if (_methodName218.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes218, parameterTypes)) {
 			return OfferingEntryServiceUtil.updateStatus(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue());
 		}
@@ -98,14 +98,14 @@ public class OfferingEntryServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName366;
-	private String[] _methodParameterTypes366;
-	private String _methodName371;
-	private String[] _methodParameterTypes371;
-	private String _methodName372;
-	private String[] _methodParameterTypes372;
-	private String _methodName373;
-	private String[] _methodParameterTypes373;
-	private String _methodName374;
-	private String[] _methodParameterTypes374;
+	private String _methodName210;
+	private String[] _methodParameterTypes210;
+	private String _methodName215;
+	private String[] _methodParameterTypes215;
+	private String _methodName216;
+	private String[] _methodParameterTypes216;
+	private String _methodName217;
+	private String[] _methodParameterTypes217;
+	private String _methodName218;
+	private String[] _methodParameterTypes218;
 }

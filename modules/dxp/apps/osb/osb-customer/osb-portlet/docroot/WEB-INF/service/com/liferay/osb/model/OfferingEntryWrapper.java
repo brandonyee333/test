@@ -384,11 +384,6 @@ public class OfferingEntryWrapper implements OfferingEntry,
 		return _offeringEntry.getStatus();
 	}
 
-	@Override
-	public int getTicketEntriesCount() {
-		return _offeringEntry.getTicketEntriesCount();
-	}
-
 	/**
 	* Returns the type of this offering entry.
 	*

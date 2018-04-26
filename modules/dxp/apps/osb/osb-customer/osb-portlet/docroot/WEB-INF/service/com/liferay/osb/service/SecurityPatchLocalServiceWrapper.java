@@ -48,22 +48,19 @@ public class SecurityPatchLocalServiceWrapper
 
 	@Override
 	public com.liferay.osb.model.SecurityPatch addSecurityPatch(long userId,
-		long accountEntryId, long ticketAttachmentId,
-		java.lang.String portletId, int envLFR, java.lang.String name,
-		java.lang.String fileName)
+		java.lang.String portletId, int envLFR, java.lang.String fileName)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _securityPatchLocalService.addSecurityPatch(userId,
-			accountEntryId, ticketAttachmentId, portletId, envLFR, name,
-			fileName);
+		return _securityPatchLocalService.addSecurityPatch(userId, portletId,
+			envLFR, fileName);
 	}
 
 	@Override
 	public com.liferay.osb.model.SecurityPatch addSecurityPatch(long userId,
-		long ticketAttachmentId, java.lang.String portletId, int envLFR,
-		java.lang.String fileName)
+		long accountEntryId, java.lang.String portletId, int envLFR,
+		java.lang.String name, java.lang.String fileName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _securityPatchLocalService.addSecurityPatch(userId,
-			ticketAttachmentId, portletId, envLFR, fileName);
+			accountEntryId, portletId, envLFR, name, fileName);
 	}
 
 	/**
@@ -205,10 +202,8 @@ public class SecurityPatchLocalServiceWrapper
 	}
 
 	@Override
-	public java.lang.String getSecurityPatchName(int envLFR,
-		com.liferay.osb.model.TicketAttachment ticketAttachment) {
-		return _securityPatchLocalService.getSecurityPatchName(envLFR,
-			ticketAttachment);
+	public java.lang.String getSecurityPatchName(int envLFR) {
+		return _securityPatchLocalService.getSecurityPatchName(envLFR);
 	}
 
 	/**

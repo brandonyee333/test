@@ -148,20 +148,6 @@ public interface SecurityPatchModel extends BaseModel<SecurityPatch> {
 	public void setAccountEntryId(long accountEntryId);
 
 	/**
-	 * Returns the ticket attachment ID of this security patch.
-	 *
-	 * @return the ticket attachment ID of this security patch
-	 */
-	public long getTicketAttachmentId();
-
-	/**
-	 * Sets the ticket attachment ID of this security patch.
-	 *
-	 * @param ticketAttachmentId the ticket attachment ID of this security patch
-	 */
-	public void setTicketAttachmentId(long ticketAttachmentId);
-
-	/**
 	 * Returns the portlet ID of this security patch.
 	 *
 	 * @return the portlet ID of this security patch

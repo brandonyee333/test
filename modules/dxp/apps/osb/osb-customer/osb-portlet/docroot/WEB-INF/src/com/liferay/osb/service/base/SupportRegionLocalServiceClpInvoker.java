@@ -273,109 +273,34 @@ public class SupportRegionLocalServiceClpInvoker {
 
 		_methodParameterTypes53 = new String[] { "long", "long[][]" };
 
-		_methodName54 = "addSupportTeamSupportRegion";
+		_methodName200 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes54 = new String[] { "long", "long" };
+		_methodParameterTypes200 = new String[] {  };
 
-		_methodName55 = "addSupportTeamSupportRegion";
+		_methodName205 = "addSupportRegion";
 
-		_methodParameterTypes55 = new String[] {
-				"long", "com.liferay.osb.model.SupportRegion"
-			};
-
-		_methodName56 = "addSupportTeamSupportRegions";
-
-		_methodParameterTypes56 = new String[] { "long", "long[][]" };
-
-		_methodName57 = "addSupportTeamSupportRegions";
-
-		_methodParameterTypes57 = new String[] { "long", "java.util.List" };
-
-		_methodName58 = "clearSupportTeamSupportRegions";
-
-		_methodParameterTypes58 = new String[] { "long" };
-
-		_methodName59 = "deleteSupportTeamSupportRegion";
-
-		_methodParameterTypes59 = new String[] { "long", "long" };
-
-		_methodName60 = "deleteSupportTeamSupportRegion";
-
-		_methodParameterTypes60 = new String[] {
-				"long", "com.liferay.osb.model.SupportRegion"
-			};
-
-		_methodName61 = "deleteSupportTeamSupportRegions";
-
-		_methodParameterTypes61 = new String[] { "long", "long[][]" };
-
-		_methodName62 = "deleteSupportTeamSupportRegions";
-
-		_methodParameterTypes62 = new String[] { "long", "java.util.List" };
-
-		_methodName63 = "getSupportTeamPrimaryKeys";
-
-		_methodParameterTypes63 = new String[] { "long" };
-
-		_methodName64 = "getSupportTeamSupportRegions";
-
-		_methodParameterTypes64 = new String[] { "long" };
-
-		_methodName65 = "getSupportTeamSupportRegions";
-
-		_methodParameterTypes65 = new String[] { "long", "int", "int" };
-
-		_methodName66 = "getSupportTeamSupportRegions";
-
-		_methodParameterTypes66 = new String[] {
-				"long", "int", "int",
-				"com.liferay.portal.kernel.util.OrderByComparator"
-			};
-
-		_methodName67 = "getSupportTeamSupportRegionsCount";
-
-		_methodParameterTypes67 = new String[] { "long" };
-
-		_methodName68 = "hasSupportTeamSupportRegion";
-
-		_methodParameterTypes68 = new String[] { "long", "long" };
-
-		_methodName69 = "hasSupportTeamSupportRegions";
-
-		_methodParameterTypes69 = new String[] { "long" };
-
-		_methodName70 = "setSupportTeamSupportRegions";
-
-		_methodParameterTypes70 = new String[] { "long", "long[][]" };
-
-		_methodName325 = "getOSGiServiceIdentifier";
-
-		_methodParameterTypes325 = new String[] {  };
-
-		_methodName330 = "addSupportRegion";
-
-		_methodParameterTypes330 = new String[] {
+		_methodParameterTypes205 = new String[] {
 				"long", "java.lang.String", "java.lang.String",
 				"java.lang.String"
 			};
 
-		_methodName331 = "deleteSupportRegion";
+		_methodName206 = "deleteSupportRegion";
 
-		_methodParameterTypes331 = new String[] { "long" };
+		_methodParameterTypes206 = new String[] { "long" };
 
-		_methodName332 = "fetchSupportRegionByName";
+		_methodName207 = "fetchSupportRegionByName";
 
-		_methodParameterTypes332 = new String[] { "java.lang.String" };
+		_methodParameterTypes207 = new String[] { "java.lang.String" };
 
-		_methodName333 = "getAccountEntrySupportRegions";
+		_methodName208 = "getAccountEntrySupportRegions";
 
-		_methodParameterTypes333 = new String[] { "long" };
+		_methodParameterTypes208 = new String[] { "long" };
 
-		_methodName334 = "updateSupportRegion";
+		_methodName209 = "updateSupportRegion";
 
-		_methodParameterTypes334 = new String[] {
+		_methodParameterTypes209 = new String[] {
 				"long", "java.lang.String", "java.lang.String",
-				"java.lang.String", "long[][]"
+				"java.lang.String"
 			};
 	}
 
@@ -723,158 +648,38 @@ public class SupportRegionLocalServiceClpInvoker {
 			return null;
 		}
 
-		if (_methodName54.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes54, parameterTypes)) {
-			SupportRegionLocalServiceUtil.addSupportTeamSupportRegion(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue());
-
-			return null;
-		}
-
-		if (_methodName55.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes55, parameterTypes)) {
-			SupportRegionLocalServiceUtil.addSupportTeamSupportRegion(((Long)arguments[0]).longValue(),
-				(com.liferay.osb.model.SupportRegion)arguments[1]);
-
-			return null;
-		}
-
-		if (_methodName56.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes56, parameterTypes)) {
-			SupportRegionLocalServiceUtil.addSupportTeamSupportRegions(((Long)arguments[0]).longValue(),
-				(long[])arguments[1]);
-
-			return null;
-		}
-
-		if (_methodName57.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes57, parameterTypes)) {
-			SupportRegionLocalServiceUtil.addSupportTeamSupportRegions(((Long)arguments[0]).longValue(),
-				(java.util.List<com.liferay.osb.model.SupportRegion>)arguments[1]);
-
-			return null;
-		}
-
-		if (_methodName58.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes58, parameterTypes)) {
-			SupportRegionLocalServiceUtil.clearSupportTeamSupportRegions(((Long)arguments[0]).longValue());
-
-			return null;
-		}
-
-		if (_methodName59.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes59, parameterTypes)) {
-			SupportRegionLocalServiceUtil.deleteSupportTeamSupportRegion(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue());
-
-			return null;
-		}
-
-		if (_methodName60.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes60, parameterTypes)) {
-			SupportRegionLocalServiceUtil.deleteSupportTeamSupportRegion(((Long)arguments[0]).longValue(),
-				(com.liferay.osb.model.SupportRegion)arguments[1]);
-
-			return null;
-		}
-
-		if (_methodName61.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes61, parameterTypes)) {
-			SupportRegionLocalServiceUtil.deleteSupportTeamSupportRegions(((Long)arguments[0]).longValue(),
-				(long[])arguments[1]);
-
-			return null;
-		}
-
-		if (_methodName62.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes62, parameterTypes)) {
-			SupportRegionLocalServiceUtil.deleteSupportTeamSupportRegions(((Long)arguments[0]).longValue(),
-				(java.util.List<com.liferay.osb.model.SupportRegion>)arguments[1]);
-
-			return null;
-		}
-
-		if (_methodName63.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes63, parameterTypes)) {
-			return SupportRegionLocalServiceUtil.getSupportTeamPrimaryKeys(((Long)arguments[0]).longValue());
-		}
-
-		if (_methodName64.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes64, parameterTypes)) {
-			return SupportRegionLocalServiceUtil.getSupportTeamSupportRegions(((Long)arguments[0]).longValue());
-		}
-
-		if (_methodName65.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes65, parameterTypes)) {
-			return SupportRegionLocalServiceUtil.getSupportTeamSupportRegions(((Long)arguments[0]).longValue(),
-				((Integer)arguments[1]).intValue(),
-				((Integer)arguments[2]).intValue());
-		}
-
-		if (_methodName66.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes66, parameterTypes)) {
-			return SupportRegionLocalServiceUtil.getSupportTeamSupportRegions(((Long)arguments[0]).longValue(),
-				((Integer)arguments[1]).intValue(),
-				((Integer)arguments[2]).intValue(),
-				(com.liferay.portal.kernel.util.OrderByComparator<com.liferay.osb.model.SupportRegion>)arguments[3]);
-		}
-
-		if (_methodName67.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes67, parameterTypes)) {
-			return SupportRegionLocalServiceUtil.getSupportTeamSupportRegionsCount(((Long)arguments[0]).longValue());
-		}
-
-		if (_methodName68.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes68, parameterTypes)) {
-			return SupportRegionLocalServiceUtil.hasSupportTeamSupportRegion(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue());
-		}
-
-		if (_methodName69.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes69, parameterTypes)) {
-			return SupportRegionLocalServiceUtil.hasSupportTeamSupportRegions(((Long)arguments[0]).longValue());
-		}
-
-		if (_methodName70.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes70, parameterTypes)) {
-			SupportRegionLocalServiceUtil.setSupportTeamSupportRegions(((Long)arguments[0]).longValue(),
-				(long[])arguments[1]);
-
-			return null;
-		}
-
-		if (_methodName325.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes325, parameterTypes)) {
+		if (_methodName200.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes200, parameterTypes)) {
 			return SupportRegionLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName330.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes330, parameterTypes)) {
+		if (_methodName205.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes205, parameterTypes)) {
 			return SupportRegionLocalServiceUtil.addSupportRegion(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
 				(java.lang.String)arguments[3]);
 		}
 
-		if (_methodName331.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes331, parameterTypes)) {
+		if (_methodName206.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes206, parameterTypes)) {
 			return SupportRegionLocalServiceUtil.deleteSupportRegion(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName332.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes332, parameterTypes)) {
+		if (_methodName207.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes207, parameterTypes)) {
 			return SupportRegionLocalServiceUtil.fetchSupportRegionByName((java.lang.String)arguments[0]);
 		}
 
-		if (_methodName333.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes333, parameterTypes)) {
+		if (_methodName208.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes208, parameterTypes)) {
 			return SupportRegionLocalServiceUtil.getAccountEntrySupportRegions(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName334.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes334, parameterTypes)) {
+		if (_methodName209.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes209, parameterTypes)) {
 			return SupportRegionLocalServiceUtil.updateSupportRegion(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
-				(java.lang.String)arguments[3], (long[])arguments[4]);
+				(java.lang.String)arguments[3]);
 		}
 
 		throw new UnsupportedOperationException();
@@ -986,50 +791,16 @@ public class SupportRegionLocalServiceClpInvoker {
 	private String[] _methodParameterTypes52;
 	private String _methodName53;
 	private String[] _methodParameterTypes53;
-	private String _methodName54;
-	private String[] _methodParameterTypes54;
-	private String _methodName55;
-	private String[] _methodParameterTypes55;
-	private String _methodName56;
-	private String[] _methodParameterTypes56;
-	private String _methodName57;
-	private String[] _methodParameterTypes57;
-	private String _methodName58;
-	private String[] _methodParameterTypes58;
-	private String _methodName59;
-	private String[] _methodParameterTypes59;
-	private String _methodName60;
-	private String[] _methodParameterTypes60;
-	private String _methodName61;
-	private String[] _methodParameterTypes61;
-	private String _methodName62;
-	private String[] _methodParameterTypes62;
-	private String _methodName63;
-	private String[] _methodParameterTypes63;
-	private String _methodName64;
-	private String[] _methodParameterTypes64;
-	private String _methodName65;
-	private String[] _methodParameterTypes65;
-	private String _methodName66;
-	private String[] _methodParameterTypes66;
-	private String _methodName67;
-	private String[] _methodParameterTypes67;
-	private String _methodName68;
-	private String[] _methodParameterTypes68;
-	private String _methodName69;
-	private String[] _methodParameterTypes69;
-	private String _methodName70;
-	private String[] _methodParameterTypes70;
-	private String _methodName325;
-	private String[] _methodParameterTypes325;
-	private String _methodName330;
-	private String[] _methodParameterTypes330;
-	private String _methodName331;
-	private String[] _methodParameterTypes331;
-	private String _methodName332;
-	private String[] _methodParameterTypes332;
-	private String _methodName333;
-	private String[] _methodParameterTypes333;
-	private String _methodName334;
-	private String[] _methodParameterTypes334;
+	private String _methodName200;
+	private String[] _methodParameterTypes200;
+	private String _methodName205;
+	private String[] _methodParameterTypes205;
+	private String _methodName206;
+	private String[] _methodParameterTypes206;
+	private String _methodName207;
+	private String[] _methodParameterTypes207;
+	private String _methodName208;
+	private String[] _methodParameterTypes208;
+	private String _methodName209;
+	private String[] _methodParameterTypes209;
 }

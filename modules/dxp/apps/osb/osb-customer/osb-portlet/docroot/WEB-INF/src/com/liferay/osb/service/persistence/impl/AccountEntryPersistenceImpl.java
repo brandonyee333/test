@@ -22,7 +22,6 @@ import com.liferay.osb.model.impl.AccountEntryImpl;
 import com.liferay.osb.model.impl.AccountEntryModelImpl;
 import com.liferay.osb.service.persistence.AccountEntryPersistence;
 import com.liferay.osb.service.persistence.SupportRegionPersistence;
-import com.liferay.osb.service.persistence.SupportTeamPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
@@ -5601,8 +5600,6 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 
 		accountEntryToSupportRegionTableMapper.deleteLeftPrimaryKeyTableMappings(accountEntry.getPrimaryKey());
 
-		accountEntryToSupportTeamTableMapper.deleteLeftPrimaryKeyTableMappings(accountEntry.getPrimaryKey());
-
 		Session session = null;
 
 		try {
@@ -6576,311 +6573,6 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 		}
 	}
 
-	/**
-	 * Returns the primaryKeys of support teams associated with the account entry.
-	 *
-	 * @param pk the primary key of the account entry
-	 * @return long[] of the primaryKeys of support teams associated with the account entry
-	 */
-	@Override
-	public long[] getSupportTeamPrimaryKeys(long pk) {
-		long[] pks = accountEntryToSupportTeamTableMapper.getRightPrimaryKeys(pk);
-
-		return pks.clone();
-	}
-
-	/**
-	 * Returns all the support teams associated with the account entry.
-	 *
-	 * @param pk the primary key of the account entry
-	 * @return the support teams associated with the account entry
-	 */
-	@Override
-	public List<com.liferay.osb.model.SupportTeam> getSupportTeams(long pk) {
-		return getSupportTeams(pk, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-	}
-
-	/**
-	 * Returns a range of all the support teams associated with the account entry.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	 * </p>
-	 *
-	 * @param pk the primary key of the account entry
-	 * @param start the lower bound of the range of account entries
-	 * @param end the upper bound of the range of account entries (not inclusive)
-	 * @return the range of support teams associated with the account entry
-	 */
-	@Override
-	public List<com.liferay.osb.model.SupportTeam> getSupportTeams(long pk,
-		int start, int end) {
-		return getSupportTeams(pk, start, end, null);
-	}
-
-	/**
-	 * Returns an ordered range of all the support teams associated with the account entry.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	 * </p>
-	 *
-	 * @param pk the primary key of the account entry
-	 * @param start the lower bound of the range of account entries
-	 * @param end the upper bound of the range of account entries (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of support teams associated with the account entry
-	 */
-	@Override
-	public List<com.liferay.osb.model.SupportTeam> getSupportTeams(long pk,
-		int start, int end,
-		OrderByComparator<com.liferay.osb.model.SupportTeam> orderByComparator) {
-		return accountEntryToSupportTeamTableMapper.getRightBaseModels(pk,
-			start, end, orderByComparator);
-	}
-
-	/**
-	 * Returns the number of support teams associated with the account entry.
-	 *
-	 * @param pk the primary key of the account entry
-	 * @return the number of support teams associated with the account entry
-	 */
-	@Override
-	public int getSupportTeamsSize(long pk) {
-		long[] pks = accountEntryToSupportTeamTableMapper.getRightPrimaryKeys(pk);
-
-		return pks.length;
-	}
-
-	/**
-	 * Returns <code>true</code> if the support team is associated with the account entry.
-	 *
-	 * @param pk the primary key of the account entry
-	 * @param supportTeamPK the primary key of the support team
-	 * @return <code>true</code> if the support team is associated with the account entry; <code>false</code> otherwise
-	 */
-	@Override
-	public boolean containsSupportTeam(long pk, long supportTeamPK) {
-		return accountEntryToSupportTeamTableMapper.containsTableMapping(pk,
-			supportTeamPK);
-	}
-
-	/**
-	 * Returns <code>true</code> if the account entry has any support teams associated with it.
-	 *
-	 * @param pk the primary key of the account entry to check for associations with support teams
-	 * @return <code>true</code> if the account entry has any support teams associated with it; <code>false</code> otherwise
-	 */
-	@Override
-	public boolean containsSupportTeams(long pk) {
-		if (getSupportTeamsSize(pk) > 0) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-	/**
-	 * Adds an association between the account entry and the support team. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the account entry
-	 * @param supportTeamPK the primary key of the support team
-	 */
-	@Override
-	public void addSupportTeam(long pk, long supportTeamPK) {
-		AccountEntry accountEntry = fetchByPrimaryKey(pk);
-
-		if (accountEntry == null) {
-			accountEntryToSupportTeamTableMapper.addTableMapping(companyProvider.getCompanyId(),
-				pk, supportTeamPK);
-		}
-		else {
-			accountEntryToSupportTeamTableMapper.addTableMapping(accountEntry.getCompanyId(),
-				pk, supportTeamPK);
-		}
-	}
-
-	/**
-	 * Adds an association between the account entry and the support team. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the account entry
-	 * @param supportTeam the support team
-	 */
-	@Override
-	public void addSupportTeam(long pk,
-		com.liferay.osb.model.SupportTeam supportTeam) {
-		AccountEntry accountEntry = fetchByPrimaryKey(pk);
-
-		if (accountEntry == null) {
-			accountEntryToSupportTeamTableMapper.addTableMapping(companyProvider.getCompanyId(),
-				pk, supportTeam.getPrimaryKey());
-		}
-		else {
-			accountEntryToSupportTeamTableMapper.addTableMapping(accountEntry.getCompanyId(),
-				pk, supportTeam.getPrimaryKey());
-		}
-	}
-
-	/**
-	 * Adds an association between the account entry and the support teams. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the account entry
-	 * @param supportTeamPKs the primary keys of the support teams
-	 */
-	@Override
-	public void addSupportTeams(long pk, long[] supportTeamPKs) {
-		long companyId = 0;
-
-		AccountEntry accountEntry = fetchByPrimaryKey(pk);
-
-		if (accountEntry == null) {
-			companyId = companyProvider.getCompanyId();
-		}
-		else {
-			companyId = accountEntry.getCompanyId();
-		}
-
-		accountEntryToSupportTeamTableMapper.addTableMappings(companyId, pk,
-			supportTeamPKs);
-	}
-
-	/**
-	 * Adds an association between the account entry and the support teams. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the account entry
-	 * @param supportTeams the support teams
-	 */
-	@Override
-	public void addSupportTeams(long pk,
-		List<com.liferay.osb.model.SupportTeam> supportTeams) {
-		addSupportTeams(pk,
-			ListUtil.toLongArray(supportTeams,
-				com.liferay.osb.model.SupportTeam.SUPPORT_TEAM_ID_ACCESSOR));
-	}
-
-	/**
-	 * Clears all associations between the account entry and its support teams. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the account entry to clear the associated support teams from
-	 */
-	@Override
-	public void clearSupportTeams(long pk) {
-		accountEntryToSupportTeamTableMapper.deleteLeftPrimaryKeyTableMappings(pk);
-	}
-
-	/**
-	 * Removes the association between the account entry and the support team. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the account entry
-	 * @param supportTeamPK the primary key of the support team
-	 */
-	@Override
-	public void removeSupportTeam(long pk, long supportTeamPK) {
-		accountEntryToSupportTeamTableMapper.deleteTableMapping(pk,
-			supportTeamPK);
-	}
-
-	/**
-	 * Removes the association between the account entry and the support team. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the account entry
-	 * @param supportTeam the support team
-	 */
-	@Override
-	public void removeSupportTeam(long pk,
-		com.liferay.osb.model.SupportTeam supportTeam) {
-		accountEntryToSupportTeamTableMapper.deleteTableMapping(pk,
-			supportTeam.getPrimaryKey());
-	}
-
-	/**
-	 * Removes the association between the account entry and the support teams. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the account entry
-	 * @param supportTeamPKs the primary keys of the support teams
-	 */
-	@Override
-	public void removeSupportTeams(long pk, long[] supportTeamPKs) {
-		accountEntryToSupportTeamTableMapper.deleteTableMappings(pk,
-			supportTeamPKs);
-	}
-
-	/**
-	 * Removes the association between the account entry and the support teams. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the account entry
-	 * @param supportTeams the support teams
-	 */
-	@Override
-	public void removeSupportTeams(long pk,
-		List<com.liferay.osb.model.SupportTeam> supportTeams) {
-		removeSupportTeams(pk,
-			ListUtil.toLongArray(supportTeams,
-				com.liferay.osb.model.SupportTeam.SUPPORT_TEAM_ID_ACCESSOR));
-	}
-
-	/**
-	 * Sets the support teams associated with the account entry, removing and adding associations as necessary. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the account entry
-	 * @param supportTeamPKs the primary keys of the support teams to be associated with the account entry
-	 */
-	@Override
-	public void setSupportTeams(long pk, long[] supportTeamPKs) {
-		Set<Long> newSupportTeamPKsSet = SetUtil.fromArray(supportTeamPKs);
-		Set<Long> oldSupportTeamPKsSet = SetUtil.fromArray(accountEntryToSupportTeamTableMapper.getRightPrimaryKeys(
-					pk));
-
-		Set<Long> removeSupportTeamPKsSet = new HashSet<Long>(oldSupportTeamPKsSet);
-
-		removeSupportTeamPKsSet.removeAll(newSupportTeamPKsSet);
-
-		accountEntryToSupportTeamTableMapper.deleteTableMappings(pk,
-			ArrayUtil.toLongArray(removeSupportTeamPKsSet));
-
-		newSupportTeamPKsSet.removeAll(oldSupportTeamPKsSet);
-
-		long companyId = 0;
-
-		AccountEntry accountEntry = fetchByPrimaryKey(pk);
-
-		if (accountEntry == null) {
-			companyId = companyProvider.getCompanyId();
-		}
-		else {
-			companyId = accountEntry.getCompanyId();
-		}
-
-		accountEntryToSupportTeamTableMapper.addTableMappings(companyId, pk,
-			ArrayUtil.toLongArray(newSupportTeamPKsSet));
-	}
-
-	/**
-	 * Sets the support teams associated with the account entry, removing and adding associations as necessary. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the account entry
-	 * @param supportTeams the support teams to be associated with the account entry
-	 */
-	@Override
-	public void setSupportTeams(long pk,
-		List<com.liferay.osb.model.SupportTeam> supportTeams) {
-		try {
-			long[] supportTeamPKs = new long[supportTeams.size()];
-
-			for (int i = 0; i < supportTeams.size(); i++) {
-				com.liferay.osb.model.SupportTeam supportTeam = supportTeams.get(i);
-
-				supportTeamPKs[i] = supportTeam.getPrimaryKey();
-			}
-
-			setSupportTeams(pk, supportTeamPKs);
-		}
-		catch (Exception e) {
-			throw processException(e);
-		}
-	}
-
 	@Override
 	public Set<String> getBadColumnNames() {
 		return _badColumnNames;
@@ -6898,10 +6590,6 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 		accountEntryToSupportRegionTableMapper = TableMapperFactory.getTableMapper("OSB_AccountEntries_SupportRegions",
 				"companyId", "accountEntryId", "supportRegionId", this,
 				supportRegionPersistence);
-
-		accountEntryToSupportTeamTableMapper = TableMapperFactory.getTableMapper("OSB_AccountEntries_SupportTeams",
-				"companyId", "accountEntryId", "supportTeamId", this,
-				supportTeamPersistence);
 	}
 
 	public void destroy() {
@@ -6912,7 +6600,6 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 
 		TableMapperFactory.removeTableMapper(
 			"OSB_AccountEntries_SupportRegions");
-		TableMapperFactory.removeTableMapper("OSB_AccountEntries_SupportTeams");
 	}
 
 	@BeanReference(type = CompanyProviderWrapper.class)
@@ -6922,9 +6609,6 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 	@BeanReference(type = SupportRegionPersistence.class)
 	protected SupportRegionPersistence supportRegionPersistence;
 	protected TableMapper<AccountEntry, com.liferay.osb.model.SupportRegion> accountEntryToSupportRegionTableMapper;
-	@BeanReference(type = SupportTeamPersistence.class)
-	protected SupportTeamPersistence supportTeamPersistence;
-	protected TableMapper<AccountEntry, com.liferay.osb.model.SupportTeam> accountEntryToSupportTeamTableMapper;
 	private static final String _SQL_SELECT_ACCOUNTENTRY = "SELECT accountEntry FROM AccountEntry accountEntry";
 	private static final String _SQL_SELECT_ACCOUNTENTRY_WHERE_PKS_IN = "SELECT accountEntry FROM AccountEntry accountEntry WHERE accountEntryId IN (";
 	private static final String _SQL_SELECT_ACCOUNTENTRY_WHERE = "SELECT accountEntry FROM AccountEntry accountEntry WHERE ";

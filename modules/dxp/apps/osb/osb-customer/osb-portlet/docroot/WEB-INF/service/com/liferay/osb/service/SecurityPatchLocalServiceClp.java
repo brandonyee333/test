@@ -37,14 +37,14 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 		_methodName1 = "addSecurityPatch";
 
 		_methodParameterTypes1 = new String[] {
-				"long", "long", "long", "java.lang.String", "int",
-				"java.lang.String", "java.lang.String"
+				"long", "java.lang.String", "int", "java.lang.String"
 			};
 
 		_methodName2 = "addSecurityPatch";
 
 		_methodParameterTypes2 = new String[] {
-				"long", "long", "java.lang.String", "int", "java.lang.String"
+				"long", "long", "java.lang.String", "int", "java.lang.String",
+				"java.lang.String"
 			};
 
 		_methodName3 = "createSecurityPatch";
@@ -111,9 +111,7 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 
 		_methodName18 = "getSecurityPatchName";
 
-		_methodParameterTypes18 = new String[] {
-				"int", "com.liferay.osb.model.TicketAttachment"
-			};
+		_methodParameterTypes18 = new String[] { "int" };
 
 		_methodName19 = "dynamicQuery";
 
@@ -187,9 +185,7 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 
 	@Override
 	public com.liferay.osb.model.SecurityPatch addSecurityPatch(long userId,
-		long accountEntryId, long ticketAttachmentId,
-		java.lang.String portletId, int envLFR, java.lang.String name,
-		java.lang.String fileName)
+		java.lang.String portletId, int envLFR, java.lang.String fileName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
@@ -199,15 +195,9 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 					new Object[] {
 						userId,
 						
-					accountEntryId,
-						
-					ticketAttachmentId,
-						
 					ClpSerializer.translateInput(portletId),
 						
 					envLFR,
-						
-					ClpSerializer.translateInput(name),
 						
 					ClpSerializer.translateInput(fileName)
 					});
@@ -233,8 +223,8 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 
 	@Override
 	public com.liferay.osb.model.SecurityPatch addSecurityPatch(long userId,
-		long ticketAttachmentId, java.lang.String portletId, int envLFR,
-		java.lang.String fileName)
+		long accountEntryId, java.lang.String portletId, int envLFR,
+		java.lang.String name, java.lang.String fileName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
@@ -244,11 +234,13 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 					new Object[] {
 						userId,
 						
-					ticketAttachmentId,
+					accountEntryId,
 						
 					ClpSerializer.translateInput(portletId),
 						
 					envLFR,
+						
+					ClpSerializer.translateInput(name),
 						
 					ClpSerializer.translateInput(fileName)
 					});
@@ -645,18 +637,12 @@ public class SecurityPatchLocalServiceClp implements SecurityPatchLocalService {
 	}
 
 	@Override
-	public java.lang.String getSecurityPatchName(int envLFR,
-		com.liferay.osb.model.TicketAttachment ticketAttachment) {
+	public java.lang.String getSecurityPatchName(int envLFR) {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName18,
-					_methodParameterTypes18,
-					new Object[] {
-						envLFR,
-						
-					ClpSerializer.translateInput(ticketAttachment)
-					});
+					_methodParameterTypes18, new Object[] { envLFR });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);

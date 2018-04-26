@@ -123,25 +123,25 @@ public class AccountProjectLocalServiceClpInvoker {
 				"com.liferay.osb.model.AccountProject"
 			};
 
-		_methodName274 = "getOSGiServiceIdentifier";
+		_methodName166 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes274 = new String[] {  };
+		_methodParameterTypes166 = new String[] {  };
 
-		_methodName279 = "deleteAccountProject";
+		_methodName171 = "deleteAccountProject";
 
-		_methodParameterTypes279 = new String[] { "long" };
+		_methodParameterTypes171 = new String[] { "long" };
 
-		_methodName280 = "getAccountProject";
+		_methodName172 = "getAccountProject";
 
-		_methodParameterTypes280 = new String[] { "long" };
+		_methodParameterTypes172 = new String[] { "long" };
 
-		_methodName281 = "getAccountProjects";
+		_methodName173 = "getAccountProjects";
 
-		_methodParameterTypes281 = new String[] { "long" };
+		_methodParameterTypes173 = new String[] { "long" };
 
-		_methodName282 = "updateAccountProject";
+		_methodName174 = "updateAccountProject";
 
-		_methodParameterTypes282 = new String[] {
+		_methodParameterTypes174 = new String[] {
 				"long", "long", "long", "java.lang.String", "java.util.Map"
 			};
 	}
@@ -250,28 +250,28 @@ public class AccountProjectLocalServiceClpInvoker {
 			return AccountProjectLocalServiceUtil.updateAccountProject((com.liferay.osb.model.AccountProject)arguments[0]);
 		}
 
-		if (_methodName274.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes274, parameterTypes)) {
+		if (_methodName166.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes166, parameterTypes)) {
 			return AccountProjectLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName279.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes279, parameterTypes)) {
+		if (_methodName171.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes171, parameterTypes)) {
 			return AccountProjectLocalServiceUtil.deleteAccountProject(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName280.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes280, parameterTypes)) {
+		if (_methodName172.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes172, parameterTypes)) {
 			return AccountProjectLocalServiceUtil.getAccountProject(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName281.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes281, parameterTypes)) {
+		if (_methodName173.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes173, parameterTypes)) {
 			return AccountProjectLocalServiceUtil.getAccountProjects(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName282.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes282, parameterTypes)) {
+		if (_methodName174.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes174, parameterTypes)) {
 			return AccountProjectLocalServiceUtil.updateAccountProject(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -320,14 +320,14 @@ public class AccountProjectLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName274;
-	private String[] _methodParameterTypes274;
-	private String _methodName279;
-	private String[] _methodParameterTypes279;
-	private String _methodName280;
-	private String[] _methodParameterTypes280;
-	private String _methodName281;
-	private String[] _methodParameterTypes281;
-	private String _methodName282;
-	private String[] _methodParameterTypes282;
+	private String _methodName166;
+	private String[] _methodParameterTypes166;
+	private String _methodName171;
+	private String[] _methodParameterTypes171;
+	private String _methodName172;
+	private String[] _methodParameterTypes172;
+	private String _methodName173;
+	private String[] _methodParameterTypes173;
+	private String _methodName174;
+	private String[] _methodParameterTypes174;
 }

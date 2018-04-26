@@ -17,25 +17,19 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.model.AccountAttachmentClp;
-import com.liferay.osb.model.AccountCallClp;
 import com.liferay.osb.model.AccountCustomerClp;
 import com.liferay.osb.model.AccountEntryClp;
 import com.liferay.osb.model.AccountEntryLanguageClp;
 import com.liferay.osb.model.AccountEnvironmentAttachmentClp;
 import com.liferay.osb.model.AccountEnvironmentClp;
 import com.liferay.osb.model.AccountInformationClp;
-import com.liferay.osb.model.AccountLinkClp;
 import com.liferay.osb.model.AccountProjectClp;
 import com.liferay.osb.model.AccountWorkerClp;
-import com.liferay.osb.model.AuditActionClp;
 import com.liferay.osb.model.AuditEntryClp;
 import com.liferay.osb.model.CorpProjectClp;
 import com.liferay.osb.model.CorpProjectMessageClp;
 import com.liferay.osb.model.ExternalIdMapperClp;
 import com.liferay.osb.model.FeedbackEntryClp;
-import com.liferay.osb.model.HolidayCalendarClp;
-import com.liferay.osb.model.HolidayCalendarRelClp;
-import com.liferay.osb.model.HolidayEntryClp;
 import com.liferay.osb.model.LCSSubscriptionEntryClp;
 import com.liferay.osb.model.LicenseEntryClp;
 import com.liferay.osb.model.LicenseKeyClp;
@@ -47,27 +41,9 @@ import com.liferay.osb.model.OrderEntryClp;
 import com.liferay.osb.model.PartnerEntryClp;
 import com.liferay.osb.model.PartnerWorkerClp;
 import com.liferay.osb.model.ProductEntryClp;
-import com.liferay.osb.model.SearchFilterClp;
 import com.liferay.osb.model.SecurityPatchClp;
-import com.liferay.osb.model.SupportLaborClp;
 import com.liferay.osb.model.SupportRegionClp;
 import com.liferay.osb.model.SupportResponseClp;
-import com.liferay.osb.model.SupportTeamClp;
-import com.liferay.osb.model.SupportTeamLanguageClp;
-import com.liferay.osb.model.SupportWorkerAccountTierClp;
-import com.liferay.osb.model.SupportWorkerClp;
-import com.liferay.osb.model.SupportWorkerComponentClp;
-import com.liferay.osb.model.SupportWorkerSeverityClp;
-import com.liferay.osb.model.TicketAttachmentClp;
-import com.liferay.osb.model.TicketCallClp;
-import com.liferay.osb.model.TicketCommentClp;
-import com.liferay.osb.model.TicketEntryClp;
-import com.liferay.osb.model.TicketFeedbackClp;
-import com.liferay.osb.model.TicketFlagClp;
-import com.liferay.osb.model.TicketInformationClp;
-import com.liferay.osb.model.TicketLinkClp;
-import com.liferay.osb.model.TicketSolutionClp;
-import com.liferay.osb.model.TicketWorkerClp;
 
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
@@ -158,10 +134,6 @@ public class ClpSerializer {
 			return translateInputAccountAttachment(oldModel);
 		}
 
-		if (oldModelClassName.equals(AccountCallClp.class.getName())) {
-			return translateInputAccountCall(oldModel);
-		}
-
 		if (oldModelClassName.equals(AccountCustomerClp.class.getName())) {
 			return translateInputAccountCustomer(oldModel);
 		}
@@ -187,20 +159,12 @@ public class ClpSerializer {
 			return translateInputAccountInformation(oldModel);
 		}
 
-		if (oldModelClassName.equals(AccountLinkClp.class.getName())) {
-			return translateInputAccountLink(oldModel);
-		}
-
 		if (oldModelClassName.equals(AccountProjectClp.class.getName())) {
 			return translateInputAccountProject(oldModel);
 		}
 
 		if (oldModelClassName.equals(AccountWorkerClp.class.getName())) {
 			return translateInputAccountWorker(oldModel);
-		}
-
-		if (oldModelClassName.equals(AuditActionClp.class.getName())) {
-			return translateInputAuditAction(oldModel);
 		}
 
 		if (oldModelClassName.equals(AuditEntryClp.class.getName())) {
@@ -221,18 +185,6 @@ public class ClpSerializer {
 
 		if (oldModelClassName.equals(FeedbackEntryClp.class.getName())) {
 			return translateInputFeedbackEntry(oldModel);
-		}
-
-		if (oldModelClassName.equals(HolidayCalendarClp.class.getName())) {
-			return translateInputHolidayCalendar(oldModel);
-		}
-
-		if (oldModelClassName.equals(HolidayCalendarRelClp.class.getName())) {
-			return translateInputHolidayCalendarRel(oldModel);
-		}
-
-		if (oldModelClassName.equals(HolidayEntryClp.class.getName())) {
-			return translateInputHolidayEntry(oldModel);
 		}
 
 		if (oldModelClassName.equals(LCSSubscriptionEntryClp.class.getName())) {
@@ -279,16 +231,8 @@ public class ClpSerializer {
 			return translateInputProductEntry(oldModel);
 		}
 
-		if (oldModelClassName.equals(SearchFilterClp.class.getName())) {
-			return translateInputSearchFilter(oldModel);
-		}
-
 		if (oldModelClassName.equals(SecurityPatchClp.class.getName())) {
 			return translateInputSecurityPatch(oldModel);
-		}
-
-		if (oldModelClassName.equals(SupportLaborClp.class.getName())) {
-			return translateInputSupportLabor(oldModel);
 		}
 
 		if (oldModelClassName.equals(SupportRegionClp.class.getName())) {
@@ -297,71 +241,6 @@ public class ClpSerializer {
 
 		if (oldModelClassName.equals(SupportResponseClp.class.getName())) {
 			return translateInputSupportResponse(oldModel);
-		}
-
-		if (oldModelClassName.equals(SupportTeamClp.class.getName())) {
-			return translateInputSupportTeam(oldModel);
-		}
-
-		if (oldModelClassName.equals(SupportTeamLanguageClp.class.getName())) {
-			return translateInputSupportTeamLanguage(oldModel);
-		}
-
-		if (oldModelClassName.equals(SupportWorkerClp.class.getName())) {
-			return translateInputSupportWorker(oldModel);
-		}
-
-		if (oldModelClassName.equals(
-					SupportWorkerAccountTierClp.class.getName())) {
-			return translateInputSupportWorkerAccountTier(oldModel);
-		}
-
-		if (oldModelClassName.equals(SupportWorkerComponentClp.class.getName())) {
-			return translateInputSupportWorkerComponent(oldModel);
-		}
-
-		if (oldModelClassName.equals(SupportWorkerSeverityClp.class.getName())) {
-			return translateInputSupportWorkerSeverity(oldModel);
-		}
-
-		if (oldModelClassName.equals(TicketAttachmentClp.class.getName())) {
-			return translateInputTicketAttachment(oldModel);
-		}
-
-		if (oldModelClassName.equals(TicketCallClp.class.getName())) {
-			return translateInputTicketCall(oldModel);
-		}
-
-		if (oldModelClassName.equals(TicketCommentClp.class.getName())) {
-			return translateInputTicketComment(oldModel);
-		}
-
-		if (oldModelClassName.equals(TicketEntryClp.class.getName())) {
-			return translateInputTicketEntry(oldModel);
-		}
-
-		if (oldModelClassName.equals(TicketFeedbackClp.class.getName())) {
-			return translateInputTicketFeedback(oldModel);
-		}
-
-		if (oldModelClassName.equals(TicketFlagClp.class.getName())) {
-			return translateInputTicketFlag(oldModel);
-		}
-
-		if (oldModelClassName.equals(TicketInformationClp.class.getName())) {
-			return translateInputTicketInformation(oldModel);
-		}
-
-		if (oldModelClassName.equals(TicketLinkClp.class.getName())) {
-			return translateInputTicketLink(oldModel);
-		}
-
-		if (oldModelClassName.equals(TicketSolutionClp.class.getName())) {
-			return translateInputTicketSolution(oldModel);
-		}
-
-		if (oldModelClassName.equals(TicketWorkerClp.class.getName())) {
-			return translateInputTicketWorker(oldModel);
 		}
 
 		return oldModel;
@@ -383,16 +262,6 @@ public class ClpSerializer {
 		AccountAttachmentClp oldClpModel = (AccountAttachmentClp)oldModel;
 
 		BaseModel<?> newModel = oldClpModel.getAccountAttachmentRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
-	}
-
-	public static Object translateInputAccountCall(BaseModel<?> oldModel) {
-		AccountCallClp oldClpModel = (AccountCallClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getAccountCallRemoteModel();
 
 		newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
@@ -461,16 +330,6 @@ public class ClpSerializer {
 		return newModel;
 	}
 
-	public static Object translateInputAccountLink(BaseModel<?> oldModel) {
-		AccountLinkClp oldClpModel = (AccountLinkClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getAccountLinkRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
-	}
-
 	public static Object translateInputAccountProject(BaseModel<?> oldModel) {
 		AccountProjectClp oldClpModel = (AccountProjectClp)oldModel;
 
@@ -485,16 +344,6 @@ public class ClpSerializer {
 		AccountWorkerClp oldClpModel = (AccountWorkerClp)oldModel;
 
 		BaseModel<?> newModel = oldClpModel.getAccountWorkerRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
-	}
-
-	public static Object translateInputAuditAction(BaseModel<?> oldModel) {
-		AuditActionClp oldClpModel = (AuditActionClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getAuditActionRemoteModel();
 
 		newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
@@ -545,36 +394,6 @@ public class ClpSerializer {
 		FeedbackEntryClp oldClpModel = (FeedbackEntryClp)oldModel;
 
 		BaseModel<?> newModel = oldClpModel.getFeedbackEntryRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
-	}
-
-	public static Object translateInputHolidayCalendar(BaseModel<?> oldModel) {
-		HolidayCalendarClp oldClpModel = (HolidayCalendarClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getHolidayCalendarRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
-	}
-
-	public static Object translateInputHolidayCalendarRel(BaseModel<?> oldModel) {
-		HolidayCalendarRelClp oldClpModel = (HolidayCalendarRelClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getHolidayCalendarRelRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
-	}
-
-	public static Object translateInputHolidayEntry(BaseModel<?> oldModel) {
-		HolidayEntryClp oldClpModel = (HolidayEntryClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getHolidayEntryRemoteModel();
 
 		newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
@@ -692,30 +511,10 @@ public class ClpSerializer {
 		return newModel;
 	}
 
-	public static Object translateInputSearchFilter(BaseModel<?> oldModel) {
-		SearchFilterClp oldClpModel = (SearchFilterClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getSearchFilterRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
-	}
-
 	public static Object translateInputSecurityPatch(BaseModel<?> oldModel) {
 		SecurityPatchClp oldClpModel = (SecurityPatchClp)oldModel;
 
 		BaseModel<?> newModel = oldClpModel.getSecurityPatchRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
-	}
-
-	public static Object translateInputSupportLabor(BaseModel<?> oldModel) {
-		SupportLaborClp oldClpModel = (SupportLaborClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getSupportLaborRemoteModel();
 
 		newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
@@ -742,170 +541,6 @@ public class ClpSerializer {
 		return newModel;
 	}
 
-	public static Object translateInputSupportTeam(BaseModel<?> oldModel) {
-		SupportTeamClp oldClpModel = (SupportTeamClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getSupportTeamRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
-	}
-
-	public static Object translateInputSupportTeamLanguage(
-		BaseModel<?> oldModel) {
-		SupportTeamLanguageClp oldClpModel = (SupportTeamLanguageClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getSupportTeamLanguageRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
-	}
-
-	public static Object translateInputSupportWorker(BaseModel<?> oldModel) {
-		SupportWorkerClp oldClpModel = (SupportWorkerClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getSupportWorkerRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
-	}
-
-	public static Object translateInputSupportWorkerAccountTier(
-		BaseModel<?> oldModel) {
-		SupportWorkerAccountTierClp oldClpModel = (SupportWorkerAccountTierClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getSupportWorkerAccountTierRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
-	}
-
-	public static Object translateInputSupportWorkerComponent(
-		BaseModel<?> oldModel) {
-		SupportWorkerComponentClp oldClpModel = (SupportWorkerComponentClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getSupportWorkerComponentRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
-	}
-
-	public static Object translateInputSupportWorkerSeverity(
-		BaseModel<?> oldModel) {
-		SupportWorkerSeverityClp oldClpModel = (SupportWorkerSeverityClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getSupportWorkerSeverityRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
-	}
-
-	public static Object translateInputTicketAttachment(BaseModel<?> oldModel) {
-		TicketAttachmentClp oldClpModel = (TicketAttachmentClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getTicketAttachmentRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
-	}
-
-	public static Object translateInputTicketCall(BaseModel<?> oldModel) {
-		TicketCallClp oldClpModel = (TicketCallClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getTicketCallRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
-	}
-
-	public static Object translateInputTicketComment(BaseModel<?> oldModel) {
-		TicketCommentClp oldClpModel = (TicketCommentClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getTicketCommentRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
-	}
-
-	public static Object translateInputTicketEntry(BaseModel<?> oldModel) {
-		TicketEntryClp oldClpModel = (TicketEntryClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getTicketEntryRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
-	}
-
-	public static Object translateInputTicketFeedback(BaseModel<?> oldModel) {
-		TicketFeedbackClp oldClpModel = (TicketFeedbackClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getTicketFeedbackRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
-	}
-
-	public static Object translateInputTicketFlag(BaseModel<?> oldModel) {
-		TicketFlagClp oldClpModel = (TicketFlagClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getTicketFlagRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
-	}
-
-	public static Object translateInputTicketInformation(BaseModel<?> oldModel) {
-		TicketInformationClp oldClpModel = (TicketInformationClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getTicketInformationRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
-	}
-
-	public static Object translateInputTicketLink(BaseModel<?> oldModel) {
-		TicketLinkClp oldClpModel = (TicketLinkClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getTicketLinkRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
-	}
-
-	public static Object translateInputTicketSolution(BaseModel<?> oldModel) {
-		TicketSolutionClp oldClpModel = (TicketSolutionClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getTicketSolutionRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
-	}
-
-	public static Object translateInputTicketWorker(BaseModel<?> oldModel) {
-		TicketWorkerClp oldClpModel = (TicketWorkerClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getTicketWorkerRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
-	}
-
 	public static Object translateInput(Object obj) {
 		if (obj instanceof BaseModel<?>) {
 			return translateInput((BaseModel<?>)obj);
@@ -926,43 +561,6 @@ public class ClpSerializer {
 		if (oldModelClassName.equals(
 					"com.liferay.osb.model.impl.AccountAttachmentImpl")) {
 			return translateOutputAccountAttachment(oldModel);
-		}
-		else if (oldModelClassName.endsWith("Clp")) {
-			try {
-				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
-
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
-
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
-
-				Class<?> oldModelModelClass = oldModel.getModelClass();
-
-				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
-
-				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
-
-				return newModel;
-			}
-			catch (Throwable t) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Unable to translate " + oldModelClassName, t);
-				}
-			}
-		}
-
-		if (oldModelClassName.equals(
-					"com.liferay.osb.model.impl.AccountCallImpl")) {
-			return translateOutputAccountCall(oldModel);
 		}
 		else if (oldModelClassName.endsWith("Clp")) {
 			try {
@@ -1220,43 +818,6 @@ public class ClpSerializer {
 		}
 
 		if (oldModelClassName.equals(
-					"com.liferay.osb.model.impl.AccountLinkImpl")) {
-			return translateOutputAccountLink(oldModel);
-		}
-		else if (oldModelClassName.endsWith("Clp")) {
-			try {
-				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
-
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
-
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
-
-				Class<?> oldModelModelClass = oldModel.getModelClass();
-
-				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
-
-				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
-
-				return newModel;
-			}
-			catch (Throwable t) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Unable to translate " + oldModelClassName, t);
-				}
-			}
-		}
-
-		if (oldModelClassName.equals(
 					"com.liferay.osb.model.impl.AccountProjectImpl")) {
 			return translateOutputAccountProject(oldModel);
 		}
@@ -1296,43 +857,6 @@ public class ClpSerializer {
 		if (oldModelClassName.equals(
 					"com.liferay.osb.model.impl.AccountWorkerImpl")) {
 			return translateOutputAccountWorker(oldModel);
-		}
-		else if (oldModelClassName.endsWith("Clp")) {
-			try {
-				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
-
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
-
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
-
-				Class<?> oldModelModelClass = oldModel.getModelClass();
-
-				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
-
-				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
-
-				return newModel;
-			}
-			catch (Throwable t) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Unable to translate " + oldModelClassName, t);
-				}
-			}
-		}
-
-		if (oldModelClassName.equals(
-					"com.liferay.osb.model.impl.AuditActionImpl")) {
-			return translateOutputAuditAction(oldModel);
 		}
 		else if (oldModelClassName.endsWith("Clp")) {
 			try {
@@ -1518,117 +1042,6 @@ public class ClpSerializer {
 		if (oldModelClassName.equals(
 					"com.liferay.osb.model.impl.FeedbackEntryImpl")) {
 			return translateOutputFeedbackEntry(oldModel);
-		}
-		else if (oldModelClassName.endsWith("Clp")) {
-			try {
-				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
-
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
-
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
-
-				Class<?> oldModelModelClass = oldModel.getModelClass();
-
-				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
-
-				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
-
-				return newModel;
-			}
-			catch (Throwable t) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Unable to translate " + oldModelClassName, t);
-				}
-			}
-		}
-
-		if (oldModelClassName.equals(
-					"com.liferay.osb.model.impl.HolidayCalendarImpl")) {
-			return translateOutputHolidayCalendar(oldModel);
-		}
-		else if (oldModelClassName.endsWith("Clp")) {
-			try {
-				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
-
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
-
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
-
-				Class<?> oldModelModelClass = oldModel.getModelClass();
-
-				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
-
-				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
-
-				return newModel;
-			}
-			catch (Throwable t) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Unable to translate " + oldModelClassName, t);
-				}
-			}
-		}
-
-		if (oldModelClassName.equals(
-					"com.liferay.osb.model.impl.HolidayCalendarRelImpl")) {
-			return translateOutputHolidayCalendarRel(oldModel);
-		}
-		else if (oldModelClassName.endsWith("Clp")) {
-			try {
-				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
-
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
-
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
-
-				Class<?> oldModelModelClass = oldModel.getModelClass();
-
-				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
-
-				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
-
-				return newModel;
-			}
-			catch (Throwable t) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Unable to translate " + oldModelClassName, t);
-				}
-			}
-		}
-
-		if (oldModelClassName.equals(
-					"com.liferay.osb.model.impl.HolidayEntryImpl")) {
-			return translateOutputHolidayEntry(oldModel);
 		}
 		else if (oldModelClassName.endsWith("Clp")) {
 			try {
@@ -2071,82 +1484,8 @@ public class ClpSerializer {
 		}
 
 		if (oldModelClassName.equals(
-					"com.liferay.osb.model.impl.SearchFilterImpl")) {
-			return translateOutputSearchFilter(oldModel);
-		}
-		else if (oldModelClassName.endsWith("Clp")) {
-			try {
-				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
-
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
-
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
-
-				Class<?> oldModelModelClass = oldModel.getModelClass();
-
-				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
-
-				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
-
-				return newModel;
-			}
-			catch (Throwable t) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Unable to translate " + oldModelClassName, t);
-				}
-			}
-		}
-
-		if (oldModelClassName.equals(
 					"com.liferay.osb.model.impl.SecurityPatchImpl")) {
 			return translateOutputSecurityPatch(oldModel);
-		}
-		else if (oldModelClassName.endsWith("Clp")) {
-			try {
-				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
-
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
-
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
-
-				Class<?> oldModelModelClass = oldModel.getModelClass();
-
-				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
-
-				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
-
-				return newModel;
-			}
-			catch (Throwable t) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Unable to translate " + oldModelClassName, t);
-				}
-			}
-		}
-
-		if (oldModelClassName.equals(
-					"com.liferay.osb.model.impl.SupportLaborImpl")) {
-			return translateOutputSupportLabor(oldModel);
 		}
 		else if (oldModelClassName.endsWith("Clp")) {
 			try {
@@ -2221,598 +1560,6 @@ public class ClpSerializer {
 		if (oldModelClassName.equals(
 					"com.liferay.osb.model.impl.SupportResponseImpl")) {
 			return translateOutputSupportResponse(oldModel);
-		}
-		else if (oldModelClassName.endsWith("Clp")) {
-			try {
-				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
-
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
-
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
-
-				Class<?> oldModelModelClass = oldModel.getModelClass();
-
-				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
-
-				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
-
-				return newModel;
-			}
-			catch (Throwable t) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Unable to translate " + oldModelClassName, t);
-				}
-			}
-		}
-
-		if (oldModelClassName.equals(
-					"com.liferay.osb.model.impl.SupportTeamImpl")) {
-			return translateOutputSupportTeam(oldModel);
-		}
-		else if (oldModelClassName.endsWith("Clp")) {
-			try {
-				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
-
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
-
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
-
-				Class<?> oldModelModelClass = oldModel.getModelClass();
-
-				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
-
-				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
-
-				return newModel;
-			}
-			catch (Throwable t) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Unable to translate " + oldModelClassName, t);
-				}
-			}
-		}
-
-		if (oldModelClassName.equals(
-					"com.liferay.osb.model.impl.SupportTeamLanguageImpl")) {
-			return translateOutputSupportTeamLanguage(oldModel);
-		}
-		else if (oldModelClassName.endsWith("Clp")) {
-			try {
-				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
-
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
-
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
-
-				Class<?> oldModelModelClass = oldModel.getModelClass();
-
-				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
-
-				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
-
-				return newModel;
-			}
-			catch (Throwable t) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Unable to translate " + oldModelClassName, t);
-				}
-			}
-		}
-
-		if (oldModelClassName.equals(
-					"com.liferay.osb.model.impl.SupportWorkerImpl")) {
-			return translateOutputSupportWorker(oldModel);
-		}
-		else if (oldModelClassName.endsWith("Clp")) {
-			try {
-				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
-
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
-
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
-
-				Class<?> oldModelModelClass = oldModel.getModelClass();
-
-				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
-
-				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
-
-				return newModel;
-			}
-			catch (Throwable t) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Unable to translate " + oldModelClassName, t);
-				}
-			}
-		}
-
-		if (oldModelClassName.equals(
-					"com.liferay.osb.model.impl.SupportWorkerAccountTierImpl")) {
-			return translateOutputSupportWorkerAccountTier(oldModel);
-		}
-		else if (oldModelClassName.endsWith("Clp")) {
-			try {
-				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
-
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
-
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
-
-				Class<?> oldModelModelClass = oldModel.getModelClass();
-
-				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
-
-				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
-
-				return newModel;
-			}
-			catch (Throwable t) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Unable to translate " + oldModelClassName, t);
-				}
-			}
-		}
-
-		if (oldModelClassName.equals(
-					"com.liferay.osb.model.impl.SupportWorkerComponentImpl")) {
-			return translateOutputSupportWorkerComponent(oldModel);
-		}
-		else if (oldModelClassName.endsWith("Clp")) {
-			try {
-				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
-
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
-
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
-
-				Class<?> oldModelModelClass = oldModel.getModelClass();
-
-				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
-
-				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
-
-				return newModel;
-			}
-			catch (Throwable t) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Unable to translate " + oldModelClassName, t);
-				}
-			}
-		}
-
-		if (oldModelClassName.equals(
-					"com.liferay.osb.model.impl.SupportWorkerSeverityImpl")) {
-			return translateOutputSupportWorkerSeverity(oldModel);
-		}
-		else if (oldModelClassName.endsWith("Clp")) {
-			try {
-				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
-
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
-
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
-
-				Class<?> oldModelModelClass = oldModel.getModelClass();
-
-				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
-
-				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
-
-				return newModel;
-			}
-			catch (Throwable t) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Unable to translate " + oldModelClassName, t);
-				}
-			}
-		}
-
-		if (oldModelClassName.equals(
-					"com.liferay.osb.model.impl.TicketAttachmentImpl")) {
-			return translateOutputTicketAttachment(oldModel);
-		}
-		else if (oldModelClassName.endsWith("Clp")) {
-			try {
-				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
-
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
-
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
-
-				Class<?> oldModelModelClass = oldModel.getModelClass();
-
-				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
-
-				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
-
-				return newModel;
-			}
-			catch (Throwable t) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Unable to translate " + oldModelClassName, t);
-				}
-			}
-		}
-
-		if (oldModelClassName.equals(
-					"com.liferay.osb.model.impl.TicketCallImpl")) {
-			return translateOutputTicketCall(oldModel);
-		}
-		else if (oldModelClassName.endsWith("Clp")) {
-			try {
-				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
-
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
-
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
-
-				Class<?> oldModelModelClass = oldModel.getModelClass();
-
-				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
-
-				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
-
-				return newModel;
-			}
-			catch (Throwable t) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Unable to translate " + oldModelClassName, t);
-				}
-			}
-		}
-
-		if (oldModelClassName.equals(
-					"com.liferay.osb.model.impl.TicketCommentImpl")) {
-			return translateOutputTicketComment(oldModel);
-		}
-		else if (oldModelClassName.endsWith("Clp")) {
-			try {
-				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
-
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
-
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
-
-				Class<?> oldModelModelClass = oldModel.getModelClass();
-
-				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
-
-				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
-
-				return newModel;
-			}
-			catch (Throwable t) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Unable to translate " + oldModelClassName, t);
-				}
-			}
-		}
-
-		if (oldModelClassName.equals(
-					"com.liferay.osb.model.impl.TicketEntryImpl")) {
-			return translateOutputTicketEntry(oldModel);
-		}
-		else if (oldModelClassName.endsWith("Clp")) {
-			try {
-				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
-
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
-
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
-
-				Class<?> oldModelModelClass = oldModel.getModelClass();
-
-				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
-
-				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
-
-				return newModel;
-			}
-			catch (Throwable t) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Unable to translate " + oldModelClassName, t);
-				}
-			}
-		}
-
-		if (oldModelClassName.equals(
-					"com.liferay.osb.model.impl.TicketFeedbackImpl")) {
-			return translateOutputTicketFeedback(oldModel);
-		}
-		else if (oldModelClassName.endsWith("Clp")) {
-			try {
-				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
-
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
-
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
-
-				Class<?> oldModelModelClass = oldModel.getModelClass();
-
-				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
-
-				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
-
-				return newModel;
-			}
-			catch (Throwable t) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Unable to translate " + oldModelClassName, t);
-				}
-			}
-		}
-
-		if (oldModelClassName.equals(
-					"com.liferay.osb.model.impl.TicketFlagImpl")) {
-			return translateOutputTicketFlag(oldModel);
-		}
-		else if (oldModelClassName.endsWith("Clp")) {
-			try {
-				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
-
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
-
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
-
-				Class<?> oldModelModelClass = oldModel.getModelClass();
-
-				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
-
-				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
-
-				return newModel;
-			}
-			catch (Throwable t) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Unable to translate " + oldModelClassName, t);
-				}
-			}
-		}
-
-		if (oldModelClassName.equals(
-					"com.liferay.osb.model.impl.TicketInformationImpl")) {
-			return translateOutputTicketInformation(oldModel);
-		}
-		else if (oldModelClassName.endsWith("Clp")) {
-			try {
-				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
-
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
-
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
-
-				Class<?> oldModelModelClass = oldModel.getModelClass();
-
-				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
-
-				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
-
-				return newModel;
-			}
-			catch (Throwable t) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Unable to translate " + oldModelClassName, t);
-				}
-			}
-		}
-
-		if (oldModelClassName.equals(
-					"com.liferay.osb.model.impl.TicketLinkImpl")) {
-			return translateOutputTicketLink(oldModel);
-		}
-		else if (oldModelClassName.endsWith("Clp")) {
-			try {
-				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
-
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
-
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
-
-				Class<?> oldModelModelClass = oldModel.getModelClass();
-
-				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
-
-				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
-
-				return newModel;
-			}
-			catch (Throwable t) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Unable to translate " + oldModelClassName, t);
-				}
-			}
-		}
-
-		if (oldModelClassName.equals(
-					"com.liferay.osb.model.impl.TicketSolutionImpl")) {
-			return translateOutputTicketSolution(oldModel);
-		}
-		else if (oldModelClassName.endsWith("Clp")) {
-			try {
-				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
-
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
-
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
-
-				Class<?> oldModelModelClass = oldModel.getModelClass();
-
-				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
-
-				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
-
-				return newModel;
-			}
-			catch (Throwable t) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Unable to translate " + oldModelClassName, t);
-				}
-			}
-		}
-
-		if (oldModelClassName.equals(
-					"com.liferay.osb.model.impl.TicketWorkerImpl")) {
-			return translateOutputTicketWorker(oldModel);
 		}
 		else if (oldModelClassName.endsWith("Clp")) {
 			try {
@@ -2956,30 +1703,6 @@ public class ClpSerializer {
 		}
 
 		if (className.equals(
-					"com.liferay.osb.exception.AccountCallDateException")) {
-			return new com.liferay.osb.exception.AccountCallDateException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.AccountCallLengthException")) {
-			return new com.liferay.osb.exception.AccountCallLengthException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.AccountCallSummaryException")) {
-			return new com.liferay.osb.exception.AccountCallSummaryException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.AccountCallTypeException")) {
-			return new com.liferay.osb.exception.AccountCallTypeException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
 					"com.liferay.osb.exception.AccountEntryCodeException")) {
 			return new com.liferay.osb.exception.AccountEntryCodeException(throwable.getMessage(),
 				throwable.getCause());
@@ -3070,26 +1793,8 @@ public class ClpSerializer {
 		}
 
 		if (className.equals(
-					"com.liferay.osb.exception.AccountLinkURLException")) {
-			return new com.liferay.osb.exception.AccountLinkURLException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
 					"com.liferay.osb.exception.AccountProjectNameException")) {
 			return new com.liferay.osb.exception.AccountProjectNameException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.AwayMessageDateException")) {
-			return new com.liferay.osb.exception.AwayMessageDateException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.AwayMessageMessageException")) {
-			return new com.liferay.osb.exception.AwayMessageMessageException(throwable.getMessage(),
 				throwable.getCause());
 		}
 
@@ -3120,12 +1825,6 @@ public class ClpSerializer {
 		if (className.equals(
 					"com.liferay.osb.exception.DuplicateAccountEnvironmentAttachmentException")) {
 			return new com.liferay.osb.exception.DuplicateAccountEnvironmentAttachmentException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.DuplicateHolidayEntryException")) {
-			return new com.liferay.osb.exception.DuplicateHolidayEntryException(throwable.getMessage(),
 				throwable.getCause());
 		}
 
@@ -3190,44 +1889,8 @@ public class ClpSerializer {
 		}
 
 		if (className.equals(
-					"com.liferay.osb.exception.DuplicateSupportTeamException")) {
-			return new com.liferay.osb.exception.DuplicateSupportTeamException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.DuplicateTicketAttachmentException")) {
-			return new com.liferay.osb.exception.DuplicateTicketAttachmentException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.DuplicateTicketFeedbackException")) {
-			return new com.liferay.osb.exception.DuplicateTicketFeedbackException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
 					"com.liferay.osb.exception.FileRepositoryNotAvailableException")) {
 			return new com.liferay.osb.exception.FileRepositoryNotAvailableException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.HolidayCalendarNameException")) {
-			return new com.liferay.osb.exception.HolidayCalendarNameException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.HolidayEntryDateException")) {
-			return new com.liferay.osb.exception.HolidayEntryDateException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.HolidayEntryStartDateLaterThanEndDateException")) {
-			return new com.liferay.osb.exception.HolidayEntryStartDateLaterThanEndDateException(throwable.getMessage(),
 				throwable.getCause());
 		}
 
@@ -3334,25 +1997,8 @@ public class ClpSerializer {
 		}
 
 		if (className.equals(
-					"com.liferay.osb.exception.MaximumDraftTicketCommentException")) {
-			return new com.liferay.osb.exception.MaximumDraftTicketCommentException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
 					"com.liferay.osb.exception.MaximumLicenseKeyException")) {
 			return new com.liferay.osb.exception.MaximumLicenseKeyException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.MaximumTicketEntryException")) {
-			return new com.liferay.osb.exception.MaximumTicketEntryException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals("com.liferay.osb.exception.OSBPrincipalException")) {
-			return new com.liferay.osb.exception.OSBPrincipalException(throwable.getMessage(),
 				throwable.getCause());
 		}
 
@@ -3470,36 +2116,6 @@ public class ClpSerializer {
 		}
 
 		if (className.equals(
-					"com.liferay.osb.exception.RequiredSupportTeamException")) {
-			return new com.liferay.osb.exception.RequiredSupportTeamException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.RequiredTicketWorkerException")) {
-			return new com.liferay.osb.exception.RequiredTicketWorkerException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.SearchFilterNameException")) {
-			return new com.liferay.osb.exception.SearchFilterNameException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.SupportLaborHourException")) {
-			return new com.liferay.osb.exception.SupportLaborHourException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.SupportLaborNameException")) {
-			return new com.liferay.osb.exception.SupportLaborNameException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
 					"com.liferay.osb.exception.SupportRegionNameException")) {
 			return new com.liferay.osb.exception.SupportRegionNameException(throwable.getMessage(),
 				throwable.getCause());
@@ -3518,259 +2134,8 @@ public class ClpSerializer {
 		}
 
 		if (className.equals(
-					"com.liferay.osb.exception.SupportTeamLocationException")) {
-			return new com.liferay.osb.exception.SupportTeamLocationException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.SupportTeamNameException")) {
-			return new com.liferay.osb.exception.SupportTeamNameException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.SupportTeamSupportLaborException")) {
-			return new com.liferay.osb.exception.SupportTeamSupportLaborException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.SupportWorkerMaxWorkException")) {
-			return new com.liferay.osb.exception.SupportWorkerMaxWorkException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketAttachmentAvailableFileRepositoryIdsException")) {
-			return new com.liferay.osb.exception.TicketAttachmentAvailableFileRepositoryIdsException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketAttachmentVisibilityException")) {
-			return new com.liferay.osb.exception.TicketAttachmentVisibilityException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketCallCustomerNameException")) {
-			return new com.liferay.osb.exception.TicketCallCustomerNameException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketCallDateException")) {
-			return new com.liferay.osb.exception.TicketCallDateException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketCallLengthException")) {
-			return new com.liferay.osb.exception.TicketCallLengthException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketCallTypeException")) {
-			return new com.liferay.osb.exception.TicketCallTypeException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketCommentBodyException")) {
-			return new com.liferay.osb.exception.TicketCommentBodyException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketCommentPendingTypeException")) {
-			return new com.liferay.osb.exception.TicketCommentPendingTypeException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketCommentVisibilityException")) {
-			return new com.liferay.osb.exception.TicketCommentVisibilityException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketEntryAssigneeException")) {
-			return new com.liferay.osb.exception.TicketEntryAssigneeException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketEntryAttachmentSizeException")) {
-			return new com.liferay.osb.exception.TicketEntryAttachmentSizeException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketEntryClosedException")) {
-			return new com.liferay.osb.exception.TicketEntryClosedException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketEntryComponentException")) {
-			return new com.liferay.osb.exception.TicketEntryComponentException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketEntryDescriptionException")) {
-			return new com.liferay.osb.exception.TicketEntryDescriptionException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketEntryDueDateException")) {
-			return new com.liferay.osb.exception.TicketEntryDueDateException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketEntryForwardingException")) {
-			return new com.liferay.osb.exception.TicketEntryForwardingException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketEntryForwardingFieldException")) {
-			return new com.liferay.osb.exception.TicketEntryForwardingFieldException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketEntryLanguageIdException")) {
-			return new com.liferay.osb.exception.TicketEntryLanguageIdException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketEntryResolutionException")) {
-			return new com.liferay.osb.exception.TicketEntryResolutionException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketEntrySeverityException")) {
-			return new com.liferay.osb.exception.TicketEntrySeverityException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketEntryStatusException")) {
-			return new com.liferay.osb.exception.TicketEntryStatusException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketEntrySubcomponentException")) {
-			return new com.liferay.osb.exception.TicketEntrySubcomponentException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketEntrySubjectException")) {
-			return new com.liferay.osb.exception.TicketEntrySubjectException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketEntrySystemStatusException")) {
-			return new com.liferay.osb.exception.TicketEntrySystemStatusException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketEntryWeightException")) {
-			return new com.liferay.osb.exception.TicketEntryWeightException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketFeedbackAnswerException")) {
-			return new com.liferay.osb.exception.TicketFeedbackAnswerException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketFeedbackRatingException")) {
-			return new com.liferay.osb.exception.TicketFeedbackRatingException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketFeedbackSatisfiedException")) {
-			return new com.liferay.osb.exception.TicketFeedbackSatisfiedException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketFlagTypeException")) {
-			return new com.liferay.osb.exception.TicketFlagTypeException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketInformationException")) {
-			return new com.liferay.osb.exception.TicketInformationException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketLinkTypeException")) {
-			return new com.liferay.osb.exception.TicketLinkTypeException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals("com.liferay.osb.exception.TicketLinkURLException")) {
-			return new com.liferay.osb.exception.TicketLinkURLException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketLinkVisibilityException")) {
-			return new com.liferay.osb.exception.TicketLinkVisibilityException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketSolutionBodyException")) {
-			return new com.liferay.osb.exception.TicketSolutionBodyException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketSolutionStatusException")) {
-			return new com.liferay.osb.exception.TicketSolutionStatusException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketSolutionStatusMessageException")) {
-			return new com.liferay.osb.exception.TicketSolutionStatusMessageException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.TicketSolutionSummaryException")) {
-			return new com.liferay.osb.exception.TicketSolutionSummaryException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
 					"com.liferay.osb.exception.NoSuchAccountAttachmentException")) {
 			return new com.liferay.osb.exception.NoSuchAccountAttachmentException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.NoSuchAccountCallException")) {
-			return new com.liferay.osb.exception.NoSuchAccountCallException(throwable.getMessage(),
 				throwable.getCause());
 		}
 
@@ -3811,12 +2176,6 @@ public class ClpSerializer {
 		}
 
 		if (className.equals(
-					"com.liferay.osb.exception.NoSuchAccountLinkException")) {
-			return new com.liferay.osb.exception.NoSuchAccountLinkException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
 					"com.liferay.osb.exception.NoSuchAccountProjectException")) {
 			return new com.liferay.osb.exception.NoSuchAccountProjectException(throwable.getMessage(),
 				throwable.getCause());
@@ -3825,12 +2184,6 @@ public class ClpSerializer {
 		if (className.equals(
 					"com.liferay.osb.exception.NoSuchAccountWorkerException")) {
 			return new com.liferay.osb.exception.NoSuchAccountWorkerException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.NoSuchAuditActionException")) {
-			return new com.liferay.osb.exception.NoSuchAuditActionException(throwable.getMessage(),
 				throwable.getCause());
 		}
 
@@ -3861,24 +2214,6 @@ public class ClpSerializer {
 		if (className.equals(
 					"com.liferay.osb.exception.NoSuchFeedbackEntryException")) {
 			return new com.liferay.osb.exception.NoSuchFeedbackEntryException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.NoSuchHolidayCalendarException")) {
-			return new com.liferay.osb.exception.NoSuchHolidayCalendarException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.NoSuchHolidayCalendarRelException")) {
-			return new com.liferay.osb.exception.NoSuchHolidayCalendarRelException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.NoSuchHolidayEntryException")) {
-			return new com.liferay.osb.exception.NoSuchHolidayEntryException(throwable.getMessage(),
 				throwable.getCause());
 		}
 
@@ -3949,20 +2284,8 @@ public class ClpSerializer {
 		}
 
 		if (className.equals(
-					"com.liferay.osb.exception.NoSuchSearchFilterException")) {
-			return new com.liferay.osb.exception.NoSuchSearchFilterException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
 					"com.liferay.osb.exception.NoSuchSecurityPatchException")) {
 			return new com.liferay.osb.exception.NoSuchSecurityPatchException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.NoSuchSupportLaborException")) {
-			return new com.liferay.osb.exception.NoSuchSupportLaborException(throwable.getMessage(),
 				throwable.getCause());
 		}
 
@@ -3978,102 +2301,6 @@ public class ClpSerializer {
 				throwable.getCause());
 		}
 
-		if (className.equals(
-					"com.liferay.osb.exception.NoSuchSupportTeamException")) {
-			return new com.liferay.osb.exception.NoSuchSupportTeamException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.NoSuchSupportTeamLanguageException")) {
-			return new com.liferay.osb.exception.NoSuchSupportTeamLanguageException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.NoSuchSupportWorkerException")) {
-			return new com.liferay.osb.exception.NoSuchSupportWorkerException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.NoSuchSupportWorkerAccountTierException")) {
-			return new com.liferay.osb.exception.NoSuchSupportWorkerAccountTierException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.NoSuchSupportWorkerComponentException")) {
-			return new com.liferay.osb.exception.NoSuchSupportWorkerComponentException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.NoSuchSupportWorkerSeverityException")) {
-			return new com.liferay.osb.exception.NoSuchSupportWorkerSeverityException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.NoSuchTicketAttachmentException")) {
-			return new com.liferay.osb.exception.NoSuchTicketAttachmentException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.NoSuchTicketCallException")) {
-			return new com.liferay.osb.exception.NoSuchTicketCallException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.NoSuchTicketCommentException")) {
-			return new com.liferay.osb.exception.NoSuchTicketCommentException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.NoSuchTicketEntryException")) {
-			return new com.liferay.osb.exception.NoSuchTicketEntryException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.NoSuchTicketFeedbackException")) {
-			return new com.liferay.osb.exception.NoSuchTicketFeedbackException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.NoSuchTicketFlagException")) {
-			return new com.liferay.osb.exception.NoSuchTicketFlagException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.NoSuchTicketInformationException")) {
-			return new com.liferay.osb.exception.NoSuchTicketInformationException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.NoSuchTicketLinkException")) {
-			return new com.liferay.osb.exception.NoSuchTicketLinkException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.NoSuchTicketSolutionException")) {
-			return new com.liferay.osb.exception.NoSuchTicketSolutionException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.NoSuchTicketWorkerException")) {
-			return new com.liferay.osb.exception.NoSuchTicketWorkerException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
 		return throwable;
 	}
 
@@ -4083,16 +2310,6 @@ public class ClpSerializer {
 		newModel.setModelAttributes(oldModel.getModelAttributes());
 
 		newModel.setAccountAttachmentRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputAccountCall(BaseModel<?> oldModel) {
-		AccountCallClp newModel = new AccountCallClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setAccountCallRemoteModel(oldModel);
 
 		return newModel;
 	}
@@ -4161,16 +2378,6 @@ public class ClpSerializer {
 		return newModel;
 	}
 
-	public static Object translateOutputAccountLink(BaseModel<?> oldModel) {
-		AccountLinkClp newModel = new AccountLinkClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setAccountLinkRemoteModel(oldModel);
-
-		return newModel;
-	}
-
 	public static Object translateOutputAccountProject(BaseModel<?> oldModel) {
 		AccountProjectClp newModel = new AccountProjectClp();
 
@@ -4187,16 +2394,6 @@ public class ClpSerializer {
 		newModel.setModelAttributes(oldModel.getModelAttributes());
 
 		newModel.setAccountWorkerRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputAuditAction(BaseModel<?> oldModel) {
-		AuditActionClp newModel = new AuditActionClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setAuditActionRemoteModel(oldModel);
 
 		return newModel;
 	}
@@ -4248,37 +2445,6 @@ public class ClpSerializer {
 		newModel.setModelAttributes(oldModel.getModelAttributes());
 
 		newModel.setFeedbackEntryRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputHolidayCalendar(BaseModel<?> oldModel) {
-		HolidayCalendarClp newModel = new HolidayCalendarClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setHolidayCalendarRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputHolidayCalendarRel(
-		BaseModel<?> oldModel) {
-		HolidayCalendarRelClp newModel = new HolidayCalendarRelClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setHolidayCalendarRelRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputHolidayEntry(BaseModel<?> oldModel) {
-		HolidayEntryClp newModel = new HolidayEntryClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setHolidayEntryRemoteModel(oldModel);
 
 		return newModel;
 	}
@@ -4395,32 +2561,12 @@ public class ClpSerializer {
 		return newModel;
 	}
 
-	public static Object translateOutputSearchFilter(BaseModel<?> oldModel) {
-		SearchFilterClp newModel = new SearchFilterClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setSearchFilterRemoteModel(oldModel);
-
-		return newModel;
-	}
-
 	public static Object translateOutputSecurityPatch(BaseModel<?> oldModel) {
 		SecurityPatchClp newModel = new SecurityPatchClp();
 
 		newModel.setModelAttributes(oldModel.getModelAttributes());
 
 		newModel.setSecurityPatchRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputSupportLabor(BaseModel<?> oldModel) {
-		SupportLaborClp newModel = new SupportLaborClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setSupportLaborRemoteModel(oldModel);
 
 		return newModel;
 	}
@@ -4441,170 +2587,6 @@ public class ClpSerializer {
 		newModel.setModelAttributes(oldModel.getModelAttributes());
 
 		newModel.setSupportResponseRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputSupportTeam(BaseModel<?> oldModel) {
-		SupportTeamClp newModel = new SupportTeamClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setSupportTeamRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputSupportTeamLanguage(
-		BaseModel<?> oldModel) {
-		SupportTeamLanguageClp newModel = new SupportTeamLanguageClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setSupportTeamLanguageRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputSupportWorker(BaseModel<?> oldModel) {
-		SupportWorkerClp newModel = new SupportWorkerClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setSupportWorkerRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputSupportWorkerAccountTier(
-		BaseModel<?> oldModel) {
-		SupportWorkerAccountTierClp newModel = new SupportWorkerAccountTierClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setSupportWorkerAccountTierRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputSupportWorkerComponent(
-		BaseModel<?> oldModel) {
-		SupportWorkerComponentClp newModel = new SupportWorkerComponentClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setSupportWorkerComponentRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputSupportWorkerSeverity(
-		BaseModel<?> oldModel) {
-		SupportWorkerSeverityClp newModel = new SupportWorkerSeverityClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setSupportWorkerSeverityRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputTicketAttachment(BaseModel<?> oldModel) {
-		TicketAttachmentClp newModel = new TicketAttachmentClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setTicketAttachmentRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputTicketCall(BaseModel<?> oldModel) {
-		TicketCallClp newModel = new TicketCallClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setTicketCallRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputTicketComment(BaseModel<?> oldModel) {
-		TicketCommentClp newModel = new TicketCommentClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setTicketCommentRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputTicketEntry(BaseModel<?> oldModel) {
-		TicketEntryClp newModel = new TicketEntryClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setTicketEntryRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputTicketFeedback(BaseModel<?> oldModel) {
-		TicketFeedbackClp newModel = new TicketFeedbackClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setTicketFeedbackRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputTicketFlag(BaseModel<?> oldModel) {
-		TicketFlagClp newModel = new TicketFlagClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setTicketFlagRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputTicketInformation(BaseModel<?> oldModel) {
-		TicketInformationClp newModel = new TicketInformationClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setTicketInformationRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputTicketLink(BaseModel<?> oldModel) {
-		TicketLinkClp newModel = new TicketLinkClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setTicketLinkRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputTicketSolution(BaseModel<?> oldModel) {
-		TicketSolutionClp newModel = new TicketSolutionClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setTicketSolutionRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputTicketWorker(BaseModel<?> oldModel) {
-		TicketWorkerClp newModel = new TicketWorkerClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setTicketWorkerRemoteModel(oldModel);
 
 		return newModel;
 	}

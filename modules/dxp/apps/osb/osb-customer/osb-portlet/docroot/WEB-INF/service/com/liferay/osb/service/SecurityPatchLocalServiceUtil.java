@@ -54,22 +54,19 @@ public class SecurityPatchLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.model.SecurityPatch addSecurityPatch(
-		long userId, long accountEntryId, long ticketAttachmentId,
-		java.lang.String portletId, int envLFR, java.lang.String name,
+		long userId, java.lang.String portletId, int envLFR,
 		java.lang.String fileName)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .addSecurityPatch(userId, accountEntryId,
-			ticketAttachmentId, portletId, envLFR, name, fileName);
+		return getService().addSecurityPatch(userId, portletId, envLFR, fileName);
 	}
 
 	public static com.liferay.osb.model.SecurityPatch addSecurityPatch(
-		long userId, long ticketAttachmentId, java.lang.String portletId,
-		int envLFR, java.lang.String fileName)
+		long userId, long accountEntryId, java.lang.String portletId,
+		int envLFR, java.lang.String name, java.lang.String fileName)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
-				   .addSecurityPatch(userId, ticketAttachmentId, portletId,
-			envLFR, fileName);
+				   .addSecurityPatch(userId, accountEntryId, portletId, envLFR,
+			name, fileName);
 	}
 
 	/**
@@ -193,9 +190,8 @@ public class SecurityPatchLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static java.lang.String getSecurityPatchName(int envLFR,
-		com.liferay.osb.model.TicketAttachment ticketAttachment) {
-		return getService().getSecurityPatchName(envLFR, ticketAttachment);
+	public static java.lang.String getSecurityPatchName(int envLFR) {
+		return getService().getSecurityPatchName(envLFR);
 	}
 
 	/**

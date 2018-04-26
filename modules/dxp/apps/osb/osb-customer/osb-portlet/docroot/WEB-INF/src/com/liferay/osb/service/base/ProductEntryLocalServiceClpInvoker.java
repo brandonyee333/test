@@ -123,48 +123,48 @@ public class ProductEntryLocalServiceClpInvoker {
 				"com.liferay.osb.model.ProductEntry"
 			};
 
-		_methodName274 = "getOSGiServiceIdentifier";
+		_methodName166 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes274 = new String[] {  };
+		_methodParameterTypes166 = new String[] {  };
 
-		_methodName279 = "addProductEntry";
+		_methodName171 = "addProductEntry";
 
-		_methodParameterTypes279 = new String[] {
+		_methodParameterTypes171 = new String[] {
 				"long", "java.lang.String", "int", "int", "java.lang.String",
 				"java.lang.String[][]"
 			};
 
-		_methodName280 = "deleteProductEntry";
+		_methodName172 = "deleteProductEntry";
 
-		_methodParameterTypes280 = new String[] { "long" };
+		_methodParameterTypes172 = new String[] { "long" };
 
-		_methodName281 = "fetchProductEntryByName";
+		_methodName173 = "fetchProductEntryByName";
 
-		_methodParameterTypes281 = new String[] { "java.lang.String" };
+		_methodParameterTypes173 = new String[] { "java.lang.String" };
 
-		_methodName282 = "getProductEntries";
+		_methodName174 = "getProductEntries";
 
-		_methodParameterTypes282 = new String[] { "long" };
+		_methodParameterTypes174 = new String[] { "long" };
 
-		_methodName283 = "getProductEntryByName";
+		_methodName175 = "getProductEntryByName";
 
-		_methodParameterTypes283 = new String[] { "java.lang.String" };
+		_methodParameterTypes175 = new String[] { "java.lang.String" };
 
-		_methodName284 = "search";
+		_methodName176 = "search";
 
-		_methodParameterTypes284 = new String[] {
+		_methodParameterTypes176 = new String[] {
 				"java.lang.String", "java.util.LinkedHashMap", "int", "int"
 			};
 
-		_methodName285 = "searchCount";
+		_methodName177 = "searchCount";
 
-		_methodParameterTypes285 = new String[] {
+		_methodParameterTypes177 = new String[] {
 				"java.lang.String", "java.util.LinkedHashMap"
 			};
 
-		_methodName286 = "updateProductEntry";
+		_methodName178 = "updateProductEntry";
 
-		_methodParameterTypes286 = new String[] {
+		_methodParameterTypes178 = new String[] {
 				"long", "java.lang.String", "int", "int", "java.lang.String",
 				"java.lang.String[][]"
 			};
@@ -274,13 +274,13 @@ public class ProductEntryLocalServiceClpInvoker {
 			return ProductEntryLocalServiceUtil.updateProductEntry((com.liferay.osb.model.ProductEntry)arguments[0]);
 		}
 
-		if (_methodName274.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes274, parameterTypes)) {
+		if (_methodName166.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes166, parameterTypes)) {
 			return ProductEntryLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName279.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes279, parameterTypes)) {
+		if (_methodName171.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes171, parameterTypes)) {
 			return ProductEntryLocalServiceUtil.addProductEntry(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1],
 				((Integer)arguments[2]).intValue(),
@@ -288,42 +288,42 @@ public class ProductEntryLocalServiceClpInvoker {
 				(java.lang.String)arguments[4], (java.lang.String[])arguments[5]);
 		}
 
-		if (_methodName280.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes280, parameterTypes)) {
+		if (_methodName172.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes172, parameterTypes)) {
 			return ProductEntryLocalServiceUtil.deleteProductEntry(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName281.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes281, parameterTypes)) {
+		if (_methodName173.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes173, parameterTypes)) {
 			return ProductEntryLocalServiceUtil.fetchProductEntryByName((java.lang.String)arguments[0]);
 		}
 
-		if (_methodName282.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes282, parameterTypes)) {
+		if (_methodName174.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes174, parameterTypes)) {
 			return ProductEntryLocalServiceUtil.getProductEntries(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName283.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes283, parameterTypes)) {
+		if (_methodName175.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes175, parameterTypes)) {
 			return ProductEntryLocalServiceUtil.getProductEntryByName((java.lang.String)arguments[0]);
 		}
 
-		if (_methodName284.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes284, parameterTypes)) {
+		if (_methodName176.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes176, parameterTypes)) {
 			return ProductEntryLocalServiceUtil.search((java.lang.String)arguments[0],
 				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[1],
 				((Integer)arguments[2]).intValue(),
 				((Integer)arguments[3]).intValue());
 		}
 
-		if (_methodName285.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes285, parameterTypes)) {
+		if (_methodName177.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes177, parameterTypes)) {
 			return ProductEntryLocalServiceUtil.searchCount((java.lang.String)arguments[0],
 				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[1]);
 		}
 
-		if (_methodName286.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
+		if (_methodName178.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes178, parameterTypes)) {
 			return ProductEntryLocalServiceUtil.updateProductEntry(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1],
 				((Integer)arguments[2]).intValue(),
@@ -372,22 +372,22 @@ public class ProductEntryLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName274;
-	private String[] _methodParameterTypes274;
-	private String _methodName279;
-	private String[] _methodParameterTypes279;
-	private String _methodName280;
-	private String[] _methodParameterTypes280;
-	private String _methodName281;
-	private String[] _methodParameterTypes281;
-	private String _methodName282;
-	private String[] _methodParameterTypes282;
-	private String _methodName283;
-	private String[] _methodParameterTypes283;
-	private String _methodName284;
-	private String[] _methodParameterTypes284;
-	private String _methodName285;
-	private String[] _methodParameterTypes285;
-	private String _methodName286;
-	private String[] _methodParameterTypes286;
+	private String _methodName166;
+	private String[] _methodParameterTypes166;
+	private String _methodName171;
+	private String[] _methodParameterTypes171;
+	private String _methodName172;
+	private String[] _methodParameterTypes172;
+	private String _methodName173;
+	private String[] _methodParameterTypes173;
+	private String _methodName174;
+	private String[] _methodParameterTypes174;
+	private String _methodName175;
+	private String[] _methodParameterTypes175;
+	private String _methodName176;
+	private String[] _methodParameterTypes176;
+	private String _methodName177;
+	private String[] _methodParameterTypes177;
+	private String _methodName178;
+	private String[] _methodParameterTypes178;
 }

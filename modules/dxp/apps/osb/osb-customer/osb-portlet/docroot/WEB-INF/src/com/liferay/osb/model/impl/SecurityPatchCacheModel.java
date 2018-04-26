@@ -66,7 +66,7 @@ public class SecurityPatchCacheModel implements CacheModel<SecurityPatch>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(21);
+		StringBundler sb = new StringBundler(19);
 
 		sb.append("{securityPatchId=");
 		sb.append(securityPatchId);
@@ -78,8 +78,6 @@ public class SecurityPatchCacheModel implements CacheModel<SecurityPatch>,
 		sb.append(createDate);
 		sb.append(", accountEntryId=");
 		sb.append(accountEntryId);
-		sb.append(", ticketAttachmentId=");
-		sb.append(ticketAttachmentId);
 		sb.append(", portletId=");
 		sb.append(portletId);
 		sb.append(", envLFR=");
@@ -115,7 +113,6 @@ public class SecurityPatchCacheModel implements CacheModel<SecurityPatch>,
 		}
 
 		securityPatchImpl.setAccountEntryId(accountEntryId);
-		securityPatchImpl.setTicketAttachmentId(ticketAttachmentId);
 
 		if (portletId == null) {
 			securityPatchImpl.setPortletId(StringPool.BLANK);
@@ -154,8 +151,6 @@ public class SecurityPatchCacheModel implements CacheModel<SecurityPatch>,
 		createDate = objectInput.readLong();
 
 		accountEntryId = objectInput.readLong();
-
-		ticketAttachmentId = objectInput.readLong();
 		portletId = objectInput.readUTF();
 
 		envLFR = objectInput.readInt();
@@ -180,8 +175,6 @@ public class SecurityPatchCacheModel implements CacheModel<SecurityPatch>,
 		objectOutput.writeLong(createDate);
 
 		objectOutput.writeLong(accountEntryId);
-
-		objectOutput.writeLong(ticketAttachmentId);
 
 		if (portletId == null) {
 			objectOutput.writeUTF(StringPool.BLANK);
@@ -212,7 +205,6 @@ public class SecurityPatchCacheModel implements CacheModel<SecurityPatch>,
 	public String userName;
 	public long createDate;
 	public long accountEntryId;
-	public long ticketAttachmentId;
 	public String portletId;
 	public int envLFR;
 	public String name;

@@ -46,18 +46,6 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	}
 
 	@Override
-	public boolean hasSupportTeamAccountEntries(long supportTeamId) {
-		return _accountEntryLocalService.hasSupportTeamAccountEntries(supportTeamId);
-	}
-
-	@Override
-	public boolean hasSupportTeamAccountEntry(long supportTeamId,
-		long accountEntryId) {
-		return _accountEntryLocalService.hasSupportTeamAccountEntry(supportTeamId,
-			accountEntryId);
-	}
-
-	@Override
 	public boolean hasValidLicenseAccountEntry(long userId) {
 		return _accountEntryLocalService.hasValidLicenseAccountEntry(userId);
 	}
@@ -320,11 +308,6 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	}
 
 	@Override
-	public int getSupportTeamAccountEntriesCount(long supportTeamId) {
-		return _accountEntryLocalService.getSupportTeamAccountEntriesCount(supportTeamId);
-	}
-
-	@Override
 	public int getUserAccountEntriesCount(long userId) {
 		return _accountEntryLocalService.getUserAccountEntriesCount(userId);
 	}
@@ -509,27 +492,6 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.model.AccountEntry> getSupportTeamAccountEntries(
-		long supportTeamId) {
-		return _accountEntryLocalService.getSupportTeamAccountEntries(supportTeamId);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.AccountEntry> getSupportTeamAccountEntries(
-		long supportTeamId, int start, int end) {
-		return _accountEntryLocalService.getSupportTeamAccountEntries(supportTeamId,
-			start, end);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.AccountEntry> getSupportTeamAccountEntries(
-		long supportTeamId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.osb.model.AccountEntry> orderByComparator) {
-		return _accountEntryLocalService.getSupportTeamAccountEntries(supportTeamId,
-			start, end, orderByComparator);
-	}
-
-	@Override
 	public java.util.List<com.liferay.osb.model.AccountEntry> getUserAccountEntries(
 		long userId, int start, int end) {
 		return _accountEntryLocalService.getUserAccountEntries(userId, start,
@@ -636,17 +598,6 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 		return _accountEntryLocalService.getSupportRegionPrimaryKeys(accountEntryId);
 	}
 
-	/**
-	* Returns the supportTeamIds of the support teams associated with the account entry.
-	*
-	* @param accountEntryId the accountEntryId of the account entry
-	* @return long[] the supportTeamIds of support teams associated with the account entry
-	*/
-	@Override
-	public long[] getSupportTeamPrimaryKeys(long accountEntryId) {
-		return _accountEntryLocalService.getSupportTeamPrimaryKeys(accountEntryId);
-	}
-
 	@Override
 	public void addSupportRegionAccountEntries(long supportRegionId,
 		java.util.List<com.liferay.osb.model.AccountEntry> accountEntries) {
@@ -672,34 +623,6 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	public void addSupportRegionAccountEntry(long supportRegionId,
 		long accountEntryId) {
 		_accountEntryLocalService.addSupportRegionAccountEntry(supportRegionId,
-			accountEntryId);
-	}
-
-	@Override
-	public void addSupportTeamAccountEntries(long supportTeamId,
-		java.util.List<com.liferay.osb.model.AccountEntry> accountEntries) {
-		_accountEntryLocalService.addSupportTeamAccountEntries(supportTeamId,
-			accountEntries);
-	}
-
-	@Override
-	public void addSupportTeamAccountEntries(long supportTeamId,
-		long[] accountEntryIds) {
-		_accountEntryLocalService.addSupportTeamAccountEntries(supportTeamId,
-			accountEntryIds);
-	}
-
-	@Override
-	public void addSupportTeamAccountEntry(long supportTeamId,
-		com.liferay.osb.model.AccountEntry accountEntry) {
-		_accountEntryLocalService.addSupportTeamAccountEntry(supportTeamId,
-			accountEntry);
-	}
-
-	@Override
-	public void addSupportTeamAccountEntry(long supportTeamId,
-		long accountEntryId) {
-		_accountEntryLocalService.addSupportTeamAccountEntry(supportTeamId,
 			accountEntryId);
 	}
 
@@ -726,11 +649,6 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	}
 
 	@Override
-	public void clearSupportTeamAccountEntries(long supportTeamId) {
-		_accountEntryLocalService.clearSupportTeamAccountEntries(supportTeamId);
-	}
-
-	@Override
 	public void deleteSupportRegionAccountEntries(long supportRegionId,
 		java.util.List<com.liferay.osb.model.AccountEntry> accountEntries) {
 		_accountEntryLocalService.deleteSupportRegionAccountEntries(supportRegionId,
@@ -755,34 +673,6 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	public void deleteSupportRegionAccountEntry(long supportRegionId,
 		long accountEntryId) {
 		_accountEntryLocalService.deleteSupportRegionAccountEntry(supportRegionId,
-			accountEntryId);
-	}
-
-	@Override
-	public void deleteSupportTeamAccountEntries(long supportTeamId,
-		java.util.List<com.liferay.osb.model.AccountEntry> accountEntries) {
-		_accountEntryLocalService.deleteSupportTeamAccountEntries(supportTeamId,
-			accountEntries);
-	}
-
-	@Override
-	public void deleteSupportTeamAccountEntries(long supportTeamId,
-		long[] accountEntryIds) {
-		_accountEntryLocalService.deleteSupportTeamAccountEntries(supportTeamId,
-			accountEntryIds);
-	}
-
-	@Override
-	public void deleteSupportTeamAccountEntry(long supportTeamId,
-		com.liferay.osb.model.AccountEntry accountEntry) {
-		_accountEntryLocalService.deleteSupportTeamAccountEntry(supportTeamId,
-			accountEntry);
-	}
-
-	@Override
-	public void deleteSupportTeamAccountEntry(long supportTeamId,
-		long accountEntryId) {
-		_accountEntryLocalService.deleteSupportTeamAccountEntry(supportTeamId,
 			accountEntryId);
 	}
 
@@ -793,22 +683,9 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	}
 
 	@Override
-	public void reindexAccountEntry(long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_accountEntryLocalService.reindexAccountEntry(accountEntryId);
-	}
-
-	@Override
 	public void setSupportRegionAccountEntries(long supportRegionId,
 		long[] accountEntryIds) {
 		_accountEntryLocalService.setSupportRegionAccountEntries(supportRegionId,
-			accountEntryIds);
-	}
-
-	@Override
-	public void setSupportTeamAccountEntries(long supportTeamId,
-		long[] accountEntryIds) {
-		_accountEntryLocalService.setSupportTeamAccountEntries(supportTeamId,
 			accountEntryIds);
 	}
 

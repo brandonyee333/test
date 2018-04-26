@@ -1093,25 +1093,6 @@ public class OfferingEntryClp extends BaseModelImpl<OfferingEntry>
 	}
 
 	@Override
-	public int getTicketEntriesCount() {
-		try {
-			String methodName = "getTicketEntriesCount";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			Integer returnObj = (Integer)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
 	public java.lang.String getTypeLabel() {
 		try {
 			String methodName = "getTypeLabel";

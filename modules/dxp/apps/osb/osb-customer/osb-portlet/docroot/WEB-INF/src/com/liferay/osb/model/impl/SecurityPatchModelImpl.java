@@ -75,7 +75,6 @@ public class SecurityPatchModelImpl extends BaseModelImpl<SecurityPatch>
 			{ "userName", Types.VARCHAR },
 			{ "createDate", Types.TIMESTAMP },
 			{ "accountEntryId", Types.BIGINT },
-			{ "ticketAttachmentId", Types.BIGINT },
 			{ "portletId", Types.VARCHAR },
 			{ "envLFR", Types.INTEGER },
 			{ "name", Types.VARCHAR },
@@ -89,14 +88,13 @@ public class SecurityPatchModelImpl extends BaseModelImpl<SecurityPatch>
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("accountEntryId", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("ticketAttachmentId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("portletId", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("envLFR", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("fileName", Types.VARCHAR);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSB_SecurityPatch (securityPatchId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,accountEntryId LONG,ticketAttachmentId LONG,portletId VARCHAR(75) null,envLFR INTEGER,name VARCHAR(75) null,fileName VARCHAR(75) null)";
+	public static final String TABLE_SQL_CREATE = "create table OSB_SecurityPatch (securityPatchId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,accountEntryId LONG,portletId VARCHAR(75) null,envLFR INTEGER,name VARCHAR(75) null,fileName VARCHAR(75) null)";
 	public static final String TABLE_SQL_DROP = "drop table OSB_SecurityPatch";
 	public static final String ORDER_BY_JPQL = " ORDER BY securityPatch.securityPatchId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY OSB_SecurityPatch.securityPatchId ASC";
@@ -134,7 +132,6 @@ public class SecurityPatchModelImpl extends BaseModelImpl<SecurityPatch>
 		model.setUserName(soapModel.getUserName());
 		model.setCreateDate(soapModel.getCreateDate());
 		model.setAccountEntryId(soapModel.getAccountEntryId());
-		model.setTicketAttachmentId(soapModel.getTicketAttachmentId());
 		model.setPortletId(soapModel.getPortletId());
 		model.setEnvLFR(soapModel.getEnvLFR());
 		model.setName(soapModel.getName());
@@ -208,7 +205,6 @@ public class SecurityPatchModelImpl extends BaseModelImpl<SecurityPatch>
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("accountEntryId", getAccountEntryId());
-		attributes.put("ticketAttachmentId", getTicketAttachmentId());
 		attributes.put("portletId", getPortletId());
 		attributes.put("envLFR", getEnvLFR());
 		attributes.put("name", getName());
@@ -250,12 +246,6 @@ public class SecurityPatchModelImpl extends BaseModelImpl<SecurityPatch>
 
 		if (accountEntryId != null) {
 			setAccountEntryId(accountEntryId);
-		}
-
-		Long ticketAttachmentId = (Long)attributes.get("ticketAttachmentId");
-
-		if (ticketAttachmentId != null) {
-			setTicketAttachmentId(ticketAttachmentId);
 		}
 
 		String portletId = (String)attributes.get("portletId");
@@ -373,17 +363,6 @@ public class SecurityPatchModelImpl extends BaseModelImpl<SecurityPatch>
 
 	@JSON
 	@Override
-	public long getTicketAttachmentId() {
-		return _ticketAttachmentId;
-	}
-
-	@Override
-	public void setTicketAttachmentId(long ticketAttachmentId) {
-		_ticketAttachmentId = ticketAttachmentId;
-	}
-
-	@JSON
-	@Override
 	public String getPortletId() {
 		if (_portletId == null) {
 			return StringPool.BLANK;
@@ -487,7 +466,6 @@ public class SecurityPatchModelImpl extends BaseModelImpl<SecurityPatch>
 		securityPatchImpl.setUserName(getUserName());
 		securityPatchImpl.setCreateDate(getCreateDate());
 		securityPatchImpl.setAccountEntryId(getAccountEntryId());
-		securityPatchImpl.setTicketAttachmentId(getTicketAttachmentId());
 		securityPatchImpl.setPortletId(getPortletId());
 		securityPatchImpl.setEnvLFR(getEnvLFR());
 		securityPatchImpl.setName(getName());
@@ -590,8 +568,6 @@ public class SecurityPatchModelImpl extends BaseModelImpl<SecurityPatch>
 
 		securityPatchCacheModel.accountEntryId = getAccountEntryId();
 
-		securityPatchCacheModel.ticketAttachmentId = getTicketAttachmentId();
-
 		securityPatchCacheModel.portletId = getPortletId();
 
 		String portletId = securityPatchCacheModel.portletId;
@@ -623,7 +599,7 @@ public class SecurityPatchModelImpl extends BaseModelImpl<SecurityPatch>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(21);
+		StringBundler sb = new StringBundler(19);
 
 		sb.append("{securityPatchId=");
 		sb.append(getSecurityPatchId());
@@ -635,8 +611,6 @@ public class SecurityPatchModelImpl extends BaseModelImpl<SecurityPatch>
 		sb.append(getCreateDate());
 		sb.append(", accountEntryId=");
 		sb.append(getAccountEntryId());
-		sb.append(", ticketAttachmentId=");
-		sb.append(getTicketAttachmentId());
 		sb.append(", portletId=");
 		sb.append(getPortletId());
 		sb.append(", envLFR=");
@@ -652,7 +626,7 @@ public class SecurityPatchModelImpl extends BaseModelImpl<SecurityPatch>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(34);
+		StringBundler sb = new StringBundler(31);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.SecurityPatch");
@@ -677,10 +651,6 @@ public class SecurityPatchModelImpl extends BaseModelImpl<SecurityPatch>
 		sb.append(
 			"<column><column-name>accountEntryId</column-name><column-value><![CDATA[");
 		sb.append(getAccountEntryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>ticketAttachmentId</column-name><column-value><![CDATA[");
-		sb.append(getTicketAttachmentId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>portletId</column-name><column-value><![CDATA[");
@@ -715,7 +685,6 @@ public class SecurityPatchModelImpl extends BaseModelImpl<SecurityPatch>
 	private long _accountEntryId;
 	private long _originalAccountEntryId;
 	private boolean _setOriginalAccountEntryId;
-	private long _ticketAttachmentId;
 	private String _portletId;
 	private String _originalPortletId;
 	private int _envLFR;

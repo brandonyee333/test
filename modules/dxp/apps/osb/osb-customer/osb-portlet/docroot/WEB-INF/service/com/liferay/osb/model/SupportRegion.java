@@ -57,7 +57,5 @@ public interface SupportRegion extends SupportRegionModel, PersistedModel {
 
 	public com.liferay.portal.kernel.model.User getManagerUser();
 
-	public java.util.List<SupportTeam> getSupportTeams();
-
 	public java.util.TimeZone getTimeZone();
 }
