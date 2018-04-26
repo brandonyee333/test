@@ -424,7 +424,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		boolean forceIssueNewToken = ParamUtil.getBoolean(request, "force");
 
 		if (forceIssueNewToken || !WatsonTokenAuthEntryLocalServiceUtil.hasPendingToken(user)) {
-			WatsonUtil.sendTwoFactorAuthEmail(user, latestLoginIP);
+			WatsonUtil.sendTwoFactorAuthEmail(user, request.getRemoteAddr());
 		}
 
 		respondWith(WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_LABEL_PENDING);
