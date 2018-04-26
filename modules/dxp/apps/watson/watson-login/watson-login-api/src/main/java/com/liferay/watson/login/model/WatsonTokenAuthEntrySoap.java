@@ -40,7 +40,7 @@ public class WatsonTokenAuthEntrySoap implements Serializable {
 		soapModel.setUserId(model.getUserId());
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
-		soapModel.setActive(model.getActive());
+		soapModel.setActive(model.isActive());
 		soapModel.setLoginIP(model.getLoginIP());
 		soapModel.setToken(model.getToken());
 		soapModel.setExpirationDate(model.getExpirationDate());

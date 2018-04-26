@@ -134,7 +134,7 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 		model.setUserId(soapModel.getUserId());
 		model.setUserName(soapModel.getUserName());
 		model.setCreateDate(soapModel.getCreateDate());
-		model.setActive(soapModel.getActive());
+		model.setActive(soapModel.isActive());
 		model.setLoginIP(soapModel.getLoginIP());
 		model.setToken(soapModel.getToken());
 		model.setExpirationDate(soapModel.getExpirationDate());
@@ -209,7 +209,7 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
-		attributes.put("active", getActive());
+		attributes.put("active", isActive());
 		attributes.put("loginIP", getLoginIP());
 		attributes.put("token", getToken());
 		attributes.put("expirationDate", getExpirationDate());
@@ -492,7 +492,7 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 		watsonTokenAuthEntryImpl.setUserId(getUserId());
 		watsonTokenAuthEntryImpl.setUserName(getUserName());
 		watsonTokenAuthEntryImpl.setCreateDate(getCreateDate());
-		watsonTokenAuthEntryImpl.setActive(getActive());
+		watsonTokenAuthEntryImpl.setActive(isActive());
 		watsonTokenAuthEntryImpl.setLoginIP(getLoginIP());
 		watsonTokenAuthEntryImpl.setToken(getToken());
 		watsonTokenAuthEntryImpl.setExpirationDate(getExpirationDate());
@@ -597,7 +597,7 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 			watsonTokenAuthEntryCacheModel.createDate = Long.MIN_VALUE;
 		}
 
-		watsonTokenAuthEntryCacheModel.active = getActive();
+		watsonTokenAuthEntryCacheModel.active = isActive();
 
 		watsonTokenAuthEntryCacheModel.loginIP = getLoginIP();
 
@@ -651,7 +651,7 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 		sb.append(", createDate=");
 		sb.append(getCreateDate());
 		sb.append(", active=");
-		sb.append(getActive());
+		sb.append(isActive());
 		sb.append(", loginIP=");
 		sb.append(getLoginIP());
 		sb.append(", token=");
@@ -695,7 +695,7 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>active</column-name><column-value><![CDATA[");
-		sb.append(getActive());
+		sb.append(isActive());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>loginIP</column-name><column-value><![CDATA[");
