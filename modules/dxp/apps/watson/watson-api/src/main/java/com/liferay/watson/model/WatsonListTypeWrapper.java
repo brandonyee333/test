@@ -144,7 +144,7 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	}
 
 	@Override
-	public Object clone() {
+	public java.lang.Object clone() {
 		return new WatsonListTypeWrapper((WatsonListType)_watsonListType.clone());
 	}
 
@@ -154,7 +154,7 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	}
 
 	@Override
-	public String[] getAvailableLanguageIds() {
+	public java.lang.String[] getAvailableLanguageIds() {
 		return _watsonListType.getAvailableLanguageIds();
 	}
 
@@ -179,7 +179,7 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	}
 
 	@Override
-	public String getDefaultLanguageId() {
+	public java.lang.String getDefaultLanguageId() {
 		return _watsonListType.getDefaultLanguageId();
 	}
 
@@ -214,7 +214,7 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	* @return the name of this watson list type
 	*/
 	@Override
-	public String getName() {
+	public java.lang.String getName() {
 		return _watsonListType.getName();
 	}
 
@@ -225,7 +225,7 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	* @return the localized name of this watson list type
 	*/
 	@Override
-	public String getName(java.util.Locale locale) {
+	public java.lang.String getName(java.util.Locale locale) {
 		return _watsonListType.getName(locale);
 	}
 
@@ -237,7 +237,7 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	* @return the localized name of this watson list type. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 	*/
 	@Override
-	public String getName(java.util.Locale locale, boolean useDefault) {
+	public java.lang.String getName(java.util.Locale locale, boolean useDefault) {
 		return _watsonListType.getName(locale, useDefault);
 	}
 
@@ -248,7 +248,7 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	* @return the localized name of this watson list type
 	*/
 	@Override
-	public String getName(String languageId) {
+	public java.lang.String getName(java.lang.String languageId) {
 		return _watsonListType.getName(languageId);
 	}
 
@@ -260,17 +260,18 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	* @return the localized name of this watson list type
 	*/
 	@Override
-	public String getName(String languageId, boolean useDefault) {
+	public java.lang.String getName(java.lang.String languageId,
+		boolean useDefault) {
 		return _watsonListType.getName(languageId, useDefault);
 	}
 
 	@Override
-	public String getNameCurrentLanguageId() {
+	public java.lang.String getNameCurrentLanguageId() {
 		return _watsonListType.getNameCurrentLanguageId();
 	}
 
 	@Override
-	public String getNameCurrentValue() {
+	public java.lang.String getNameCurrentValue() {
 		return _watsonListType.getNameCurrentValue();
 	}
 
@@ -280,7 +281,7 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	* @return the locales and localized names of this watson list type
 	*/
 	@Override
-	public Map<java.util.Locale, String> getNameMap() {
+	public Map<java.util.Locale, java.lang.String> getNameMap() {
 		return _watsonListType.getNameMap();
 	}
 
@@ -325,7 +326,7 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	* @return the type of this watson list type
 	*/
 	@Override
-	public String getType() {
+	public java.lang.String getType() {
 		return _watsonListType.getType();
 	}
 
@@ -345,7 +346,7 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	* @return the user name of this watson list type
 	*/
 	@Override
-	public String getUserName() {
+	public java.lang.String getUserName() {
 		return _watsonListType.getUserName();
 	}
 
@@ -355,7 +356,7 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	* @return the user uuid of this watson list type
 	*/
 	@Override
-	public String getUserUuid() {
+	public java.lang.String getUserUuid() {
 		return _watsonListType.getUserUuid();
 	}
 
@@ -474,7 +475,7 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	* @param name the name of this watson list type
 	*/
 	@Override
-	public void setName(String name) {
+	public void setName(java.lang.String name) {
 		_watsonListType.setName(name);
 	}
 
@@ -485,7 +486,7 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	* @param locale the locale of the language
 	*/
 	@Override
-	public void setName(String name, java.util.Locale locale) {
+	public void setName(java.lang.String name, java.util.Locale locale) {
 		_watsonListType.setName(name, locale);
 	}
 
@@ -497,13 +498,13 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setName(String name, java.util.Locale locale,
+	public void setName(java.lang.String name, java.util.Locale locale,
 		java.util.Locale defaultLocale) {
 		_watsonListType.setName(name, locale, defaultLocale);
 	}
 
 	@Override
-	public void setNameCurrentLanguageId(String languageId) {
+	public void setNameCurrentLanguageId(java.lang.String languageId) {
 		_watsonListType.setNameCurrentLanguageId(languageId);
 	}
 
@@ -513,7 +514,7 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	* @param nameMap the locales and localized names of this watson list type
 	*/
 	@Override
-	public void setNameMap(Map<java.util.Locale, String> nameMap) {
+	public void setNameMap(Map<java.util.Locale, java.lang.String> nameMap) {
 		_watsonListType.setNameMap(nameMap);
 	}
 
@@ -524,7 +525,7 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setNameMap(Map<java.util.Locale, String> nameMap,
+	public void setNameMap(Map<java.util.Locale, java.lang.String> nameMap,
 		java.util.Locale defaultLocale) {
 		_watsonListType.setNameMap(nameMap, defaultLocale);
 	}
@@ -575,7 +576,7 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	* @param type the type of this watson list type
 	*/
 	@Override
-	public void setType(String type) {
+	public void setType(java.lang.String type) {
 		_watsonListType.setType(type);
 	}
 
@@ -595,7 +596,7 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	* @param userName the user name of this watson list type
 	*/
 	@Override
-	public void setUserName(String userName) {
+	public void setUserName(java.lang.String userName) {
 		_watsonListType.setUserName(userName);
 	}
 
@@ -605,7 +606,7 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	* @param userUuid the user uuid of this watson list type
 	*/
 	@Override
-	public void setUserUuid(String userUuid) {
+	public void setUserUuid(java.lang.String userUuid) {
 		_watsonListType.setUserUuid(userUuid);
 	}
 
@@ -630,7 +631,7 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	}
 
 	@Override
-	public String toString() {
+	public java.lang.String toString() {
 		return _watsonListType.toString();
 	}
 
@@ -640,7 +641,7 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	}
 
 	@Override
-	public String toXmlString() {
+	public java.lang.String toXmlString() {
 		return _watsonListType.toXmlString();
 	}
 

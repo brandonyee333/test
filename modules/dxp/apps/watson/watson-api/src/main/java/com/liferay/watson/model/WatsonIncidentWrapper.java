@@ -238,7 +238,7 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	}
 
 	@Override
-	public Object clone() {
+	public java.lang.Object clone() {
 		return new WatsonIncidentWrapper((WatsonIncident)_watsonIncident.clone());
 	}
 
@@ -268,7 +268,7 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	}
 
 	@Override
-	public String[] getAvailableLanguageIds() {
+	public java.lang.String[] getAvailableLanguageIds() {
 		return _watsonIncident.getAvailableLanguageIds();
 	}
 
@@ -293,7 +293,7 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	}
 
 	@Override
-	public String getDefaultLanguageId() {
+	public java.lang.String getDefaultLanguageId() {
 		return _watsonIncident.getDefaultLanguageId();
 	}
 
@@ -303,7 +303,7 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	* @return the description of this watson incident
 	*/
 	@Override
-	public String getDescription() {
+	public java.lang.String getDescription() {
 		return _watsonIncident.getDescription();
 	}
 
@@ -314,7 +314,7 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	* @return the localized description of this watson incident
 	*/
 	@Override
-	public String getDescription(java.util.Locale locale) {
+	public java.lang.String getDescription(java.util.Locale locale) {
 		return _watsonIncident.getDescription(locale);
 	}
 
@@ -326,7 +326,8 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	* @return the localized description of this watson incident. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 	*/
 	@Override
-	public String getDescription(java.util.Locale locale, boolean useDefault) {
+	public java.lang.String getDescription(java.util.Locale locale,
+		boolean useDefault) {
 		return _watsonIncident.getDescription(locale, useDefault);
 	}
 
@@ -337,7 +338,7 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	* @return the localized description of this watson incident
 	*/
 	@Override
-	public String getDescription(String languageId) {
+	public java.lang.String getDescription(java.lang.String languageId) {
 		return _watsonIncident.getDescription(languageId);
 	}
 
@@ -349,17 +350,18 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	* @return the localized description of this watson incident
 	*/
 	@Override
-	public String getDescription(String languageId, boolean useDefault) {
+	public java.lang.String getDescription(java.lang.String languageId,
+		boolean useDefault) {
 		return _watsonIncident.getDescription(languageId, useDefault);
 	}
 
 	@Override
-	public String getDescriptionCurrentLanguageId() {
+	public java.lang.String getDescriptionCurrentLanguageId() {
 		return _watsonIncident.getDescriptionCurrentLanguageId();
 	}
 
 	@Override
-	public String getDescriptionCurrentValue() {
+	public java.lang.String getDescriptionCurrentValue() {
 		return _watsonIncident.getDescriptionCurrentValue();
 	}
 
@@ -369,7 +371,7 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	* @return the locales and localized descriptions of this watson incident
 	*/
 	@Override
-	public Map<java.util.Locale, String> getDescriptionMap() {
+	public Map<java.util.Locale, java.lang.String> getDescriptionMap() {
 		return _watsonIncident.getDescriptionMap();
 	}
 
@@ -404,7 +406,7 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	* @return the external case ID of this watson incident
 	*/
 	@Override
-	public String getExternalCaseId() {
+	public java.lang.String getExternalCaseId() {
 		return _watsonIncident.getExternalCaseId();
 	}
 
@@ -454,7 +456,7 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	* @return the name of this watson incident
 	*/
 	@Override
-	public String getName() {
+	public java.lang.String getName() {
 		return _watsonIncident.getName();
 	}
 
@@ -549,7 +551,7 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	* @return the user name of this watson incident
 	*/
 	@Override
-	public String getUserName() {
+	public java.lang.String getUserName() {
 		return _watsonIncident.getUserName();
 	}
 
@@ -559,7 +561,7 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	* @return the user uuid of this watson incident
 	*/
 	@Override
-	public String getUserUuid() {
+	public java.lang.String getUserUuid() {
 		return _watsonIncident.getUserUuid();
 	}
 
@@ -682,7 +684,7 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	* @param description the description of this watson incident
 	*/
 	@Override
-	public void setDescription(String description) {
+	public void setDescription(java.lang.String description) {
 		_watsonIncident.setDescription(description);
 	}
 
@@ -693,7 +695,8 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	* @param locale the locale of the language
 	*/
 	@Override
-	public void setDescription(String description, java.util.Locale locale) {
+	public void setDescription(java.lang.String description,
+		java.util.Locale locale) {
 		_watsonIncident.setDescription(description, locale);
 	}
 
@@ -705,13 +708,13 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setDescription(String description, java.util.Locale locale,
-		java.util.Locale defaultLocale) {
+	public void setDescription(java.lang.String description,
+		java.util.Locale locale, java.util.Locale defaultLocale) {
 		_watsonIncident.setDescription(description, locale, defaultLocale);
 	}
 
 	@Override
-	public void setDescriptionCurrentLanguageId(String languageId) {
+	public void setDescriptionCurrentLanguageId(java.lang.String languageId) {
 		_watsonIncident.setDescriptionCurrentLanguageId(languageId);
 	}
 
@@ -721,7 +724,8 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	* @param descriptionMap the locales and localized descriptions of this watson incident
 	*/
 	@Override
-	public void setDescriptionMap(Map<java.util.Locale, String> descriptionMap) {
+	public void setDescriptionMap(
+		Map<java.util.Locale, java.lang.String> descriptionMap) {
 		_watsonIncident.setDescriptionMap(descriptionMap);
 	}
 
@@ -733,7 +737,7 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	*/
 	@Override
 	public void setDescriptionMap(
-		Map<java.util.Locale, String> descriptionMap,
+		Map<java.util.Locale, java.lang.String> descriptionMap,
 		java.util.Locale defaultLocale) {
 		_watsonIncident.setDescriptionMap(descriptionMap, defaultLocale);
 	}
@@ -780,7 +784,7 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	* @param externalCaseId the external case ID of this watson incident
 	*/
 	@Override
-	public void setExternalCaseId(String externalCaseId) {
+	public void setExternalCaseId(java.lang.String externalCaseId) {
 		_watsonIncident.setExternalCaseId(externalCaseId);
 	}
 
@@ -831,7 +835,7 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	* @param name the name of this watson incident
 	*/
 	@Override
-	public void setName(String name) {
+	public void setName(java.lang.String name) {
 		_watsonIncident.setName(name);
 	}
 
@@ -931,7 +935,7 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	* @param userName the user name of this watson incident
 	*/
 	@Override
-	public void setUserName(String userName) {
+	public void setUserName(java.lang.String userName) {
 		_watsonIncident.setUserName(userName);
 	}
 
@@ -941,7 +945,7 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	* @param userUuid the user uuid of this watson incident
 	*/
 	@Override
-	public void setUserUuid(String userUuid) {
+	public void setUserUuid(java.lang.String userUuid) {
 		_watsonIncident.setUserUuid(userUuid);
 	}
 
@@ -986,7 +990,7 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	}
 
 	@Override
-	public String toString() {
+	public java.lang.String toString() {
 		return _watsonIncident.toString();
 	}
 
@@ -996,7 +1000,7 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	}
 
 	@Override
-	public String toXmlString() {
+	public java.lang.String toXmlString() {
 		return _watsonIncident.toXmlString();
 	}
 

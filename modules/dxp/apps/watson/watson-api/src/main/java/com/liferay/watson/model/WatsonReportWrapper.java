@@ -200,7 +200,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	}
 
 	@Override
-	public Object clone() {
+	public java.lang.Object clone() {
 		return new WatsonReportWrapper((WatsonReport)_watsonReport.clone());
 	}
 
@@ -210,7 +210,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	}
 
 	@Override
-	public String[] getAvailableLanguageIds() {
+	public java.lang.String[] getAvailableLanguageIds() {
 		return _watsonReport.getAvailableLanguageIds();
 	}
 
@@ -235,7 +235,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	}
 
 	@Override
-	public String getDefaultLanguageId() {
+	public java.lang.String getDefaultLanguageId() {
 		return _watsonReport.getDefaultLanguageId();
 	}
 
@@ -245,7 +245,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @return the description of this watson report
 	*/
 	@Override
-	public String getDescription() {
+	public java.lang.String getDescription() {
 		return _watsonReport.getDescription();
 	}
 
@@ -256,7 +256,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @return the localized description of this watson report
 	*/
 	@Override
-	public String getDescription(java.util.Locale locale) {
+	public java.lang.String getDescription(java.util.Locale locale) {
 		return _watsonReport.getDescription(locale);
 	}
 
@@ -268,7 +268,8 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @return the localized description of this watson report. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 	*/
 	@Override
-	public String getDescription(java.util.Locale locale, boolean useDefault) {
+	public java.lang.String getDescription(java.util.Locale locale,
+		boolean useDefault) {
 		return _watsonReport.getDescription(locale, useDefault);
 	}
 
@@ -279,7 +280,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @return the localized description of this watson report
 	*/
 	@Override
-	public String getDescription(String languageId) {
+	public java.lang.String getDescription(java.lang.String languageId) {
 		return _watsonReport.getDescription(languageId);
 	}
 
@@ -291,17 +292,18 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @return the localized description of this watson report
 	*/
 	@Override
-	public String getDescription(String languageId, boolean useDefault) {
+	public java.lang.String getDescription(java.lang.String languageId,
+		boolean useDefault) {
 		return _watsonReport.getDescription(languageId, useDefault);
 	}
 
 	@Override
-	public String getDescriptionCurrentLanguageId() {
+	public java.lang.String getDescriptionCurrentLanguageId() {
 		return _watsonReport.getDescriptionCurrentLanguageId();
 	}
 
 	@Override
-	public String getDescriptionCurrentValue() {
+	public java.lang.String getDescriptionCurrentValue() {
 		return _watsonReport.getDescriptionCurrentValue();
 	}
 
@@ -311,7 +313,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @return the locales and localized descriptions of this watson report
 	*/
 	@Override
-	public Map<java.util.Locale, String> getDescriptionMap() {
+	public Map<java.util.Locale, java.lang.String> getDescriptionMap() {
 		return _watsonReport.getDescriptionMap();
 	}
 
@@ -326,7 +328,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @return the full report of this watson report
 	*/
 	@Override
-	public String getFullReport() {
+	public java.lang.String getFullReport() {
 		return _watsonReport.getFullReport();
 	}
 
@@ -337,7 +339,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @return the localized full report of this watson report
 	*/
 	@Override
-	public String getFullReport(java.util.Locale locale) {
+	public java.lang.String getFullReport(java.util.Locale locale) {
 		return _watsonReport.getFullReport(locale);
 	}
 
@@ -349,7 +351,8 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @return the localized full report of this watson report. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 	*/
 	@Override
-	public String getFullReport(java.util.Locale locale, boolean useDefault) {
+	public java.lang.String getFullReport(java.util.Locale locale,
+		boolean useDefault) {
 		return _watsonReport.getFullReport(locale, useDefault);
 	}
 
@@ -360,7 +363,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @return the localized full report of this watson report
 	*/
 	@Override
-	public String getFullReport(String languageId) {
+	public java.lang.String getFullReport(java.lang.String languageId) {
 		return _watsonReport.getFullReport(languageId);
 	}
 
@@ -372,17 +375,18 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @return the localized full report of this watson report
 	*/
 	@Override
-	public String getFullReport(String languageId, boolean useDefault) {
+	public java.lang.String getFullReport(java.lang.String languageId,
+		boolean useDefault) {
 		return _watsonReport.getFullReport(languageId, useDefault);
 	}
 
 	@Override
-	public String getFullReportCurrentLanguageId() {
+	public java.lang.String getFullReportCurrentLanguageId() {
 		return _watsonReport.getFullReportCurrentLanguageId();
 	}
 
 	@Override
-	public String getFullReportCurrentValue() {
+	public java.lang.String getFullReportCurrentValue() {
 		return _watsonReport.getFullReportCurrentValue();
 	}
 
@@ -392,7 +396,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @return the locales and localized full reports of this watson report
 	*/
 	@Override
-	public Map<java.util.Locale, String> getFullReportMap() {
+	public Map<java.util.Locale, java.lang.String> getFullReportMap() {
 		return _watsonReport.getFullReportMap();
 	}
 
@@ -412,7 +416,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @return the image payload of this watson report
 	*/
 	@Override
-	public String getImagePayload() {
+	public java.lang.String getImagePayload() {
 		return _watsonReport.getImagePayload();
 	}
 
@@ -442,7 +446,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @return the name of this watson report
 	*/
 	@Override
-	public String getName() {
+	public java.lang.String getName() {
 		return _watsonReport.getName();
 	}
 
@@ -453,7 +457,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @return the localized name of this watson report
 	*/
 	@Override
-	public String getName(java.util.Locale locale) {
+	public java.lang.String getName(java.util.Locale locale) {
 		return _watsonReport.getName(locale);
 	}
 
@@ -465,7 +469,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @return the localized name of this watson report. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 	*/
 	@Override
-	public String getName(java.util.Locale locale, boolean useDefault) {
+	public java.lang.String getName(java.util.Locale locale, boolean useDefault) {
 		return _watsonReport.getName(locale, useDefault);
 	}
 
@@ -476,7 +480,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @return the localized name of this watson report
 	*/
 	@Override
-	public String getName(String languageId) {
+	public java.lang.String getName(java.lang.String languageId) {
 		return _watsonReport.getName(languageId);
 	}
 
@@ -488,17 +492,18 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @return the localized name of this watson report
 	*/
 	@Override
-	public String getName(String languageId, boolean useDefault) {
+	public java.lang.String getName(java.lang.String languageId,
+		boolean useDefault) {
 		return _watsonReport.getName(languageId, useDefault);
 	}
 
 	@Override
-	public String getNameCurrentLanguageId() {
+	public java.lang.String getNameCurrentLanguageId() {
 		return _watsonReport.getNameCurrentLanguageId();
 	}
 
 	@Override
-	public String getNameCurrentValue() {
+	public java.lang.String getNameCurrentValue() {
 		return _watsonReport.getNameCurrentValue();
 	}
 
@@ -508,7 +513,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @return the locales and localized names of this watson report
 	*/
 	@Override
-	public Map<java.util.Locale, String> getNameMap() {
+	public Map<java.util.Locale, java.lang.String> getNameMap() {
 		return _watsonReport.getNameMap();
 	}
 
@@ -553,7 +558,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @return the reported user of this watson report
 	*/
 	@Override
-	public String getReportedUser() {
+	public java.lang.String getReportedUser() {
 		return _watsonReport.getReportedUser();
 	}
 
@@ -564,7 +569,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @return the localized reported user of this watson report
 	*/
 	@Override
-	public String getReportedUser(java.util.Locale locale) {
+	public java.lang.String getReportedUser(java.util.Locale locale) {
 		return _watsonReport.getReportedUser(locale);
 	}
 
@@ -576,7 +581,8 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @return the localized reported user of this watson report. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 	*/
 	@Override
-	public String getReportedUser(java.util.Locale locale, boolean useDefault) {
+	public java.lang.String getReportedUser(java.util.Locale locale,
+		boolean useDefault) {
 		return _watsonReport.getReportedUser(locale, useDefault);
 	}
 
@@ -587,7 +593,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @return the localized reported user of this watson report
 	*/
 	@Override
-	public String getReportedUser(String languageId) {
+	public java.lang.String getReportedUser(java.lang.String languageId) {
 		return _watsonReport.getReportedUser(languageId);
 	}
 
@@ -599,17 +605,18 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @return the localized reported user of this watson report
 	*/
 	@Override
-	public String getReportedUser(String languageId, boolean useDefault) {
+	public java.lang.String getReportedUser(java.lang.String languageId,
+		boolean useDefault) {
 		return _watsonReport.getReportedUser(languageId, useDefault);
 	}
 
 	@Override
-	public String getReportedUserCurrentLanguageId() {
+	public java.lang.String getReportedUserCurrentLanguageId() {
 		return _watsonReport.getReportedUserCurrentLanguageId();
 	}
 
 	@Override
-	public String getReportedUserCurrentValue() {
+	public java.lang.String getReportedUserCurrentValue() {
 		return _watsonReport.getReportedUserCurrentValue();
 	}
 
@@ -619,7 +626,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @return the locales and localized reported users of this watson report
 	*/
 	@Override
-	public Map<java.util.Locale, String> getReportedUserMap() {
+	public Map<java.util.Locale, java.lang.String> getReportedUserMap() {
 		return _watsonReport.getReportedUserMap();
 	}
 
@@ -639,7 +646,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @return the time spent of this watson report
 	*/
 	@Override
-	public String getTimeSpent() {
+	public java.lang.String getTimeSpent() {
 		return _watsonReport.getTimeSpent();
 	}
 
@@ -669,7 +676,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @return the user name of this watson report
 	*/
 	@Override
-	public String getUserName() {
+	public java.lang.String getUserName() {
 		return _watsonReport.getUserName();
 	}
 
@@ -679,7 +686,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @return the user uuid of this watson report
 	*/
 	@Override
-	public String getUserUuid() {
+	public java.lang.String getUserUuid() {
 		return _watsonReport.getUserUuid();
 	}
 
@@ -772,7 +779,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @param description the description of this watson report
 	*/
 	@Override
-	public void setDescription(String description) {
+	public void setDescription(java.lang.String description) {
 		_watsonReport.setDescription(description);
 	}
 
@@ -783,7 +790,8 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @param locale the locale of the language
 	*/
 	@Override
-	public void setDescription(String description, java.util.Locale locale) {
+	public void setDescription(java.lang.String description,
+		java.util.Locale locale) {
 		_watsonReport.setDescription(description, locale);
 	}
 
@@ -795,13 +803,13 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setDescription(String description, java.util.Locale locale,
-		java.util.Locale defaultLocale) {
+	public void setDescription(java.lang.String description,
+		java.util.Locale locale, java.util.Locale defaultLocale) {
 		_watsonReport.setDescription(description, locale, defaultLocale);
 	}
 
 	@Override
-	public void setDescriptionCurrentLanguageId(String languageId) {
+	public void setDescriptionCurrentLanguageId(java.lang.String languageId) {
 		_watsonReport.setDescriptionCurrentLanguageId(languageId);
 	}
 
@@ -811,7 +819,8 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @param descriptionMap the locales and localized descriptions of this watson report
 	*/
 	@Override
-	public void setDescriptionMap(Map<java.util.Locale, String> descriptionMap) {
+	public void setDescriptionMap(
+		Map<java.util.Locale, java.lang.String> descriptionMap) {
 		_watsonReport.setDescriptionMap(descriptionMap);
 	}
 
@@ -823,7 +832,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	*/
 	@Override
 	public void setDescriptionMap(
-		Map<java.util.Locale, String> descriptionMap,
+		Map<java.util.Locale, java.lang.String> descriptionMap,
 		java.util.Locale defaultLocale) {
 		_watsonReport.setDescriptionMap(descriptionMap, defaultLocale);
 	}
@@ -850,7 +859,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @param fullReport the full report of this watson report
 	*/
 	@Override
-	public void setFullReport(String fullReport) {
+	public void setFullReport(java.lang.String fullReport) {
 		_watsonReport.setFullReport(fullReport);
 	}
 
@@ -861,7 +870,8 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @param locale the locale of the language
 	*/
 	@Override
-	public void setFullReport(String fullReport, java.util.Locale locale) {
+	public void setFullReport(java.lang.String fullReport,
+		java.util.Locale locale) {
 		_watsonReport.setFullReport(fullReport, locale);
 	}
 
@@ -873,13 +883,13 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setFullReport(String fullReport, java.util.Locale locale,
-		java.util.Locale defaultLocale) {
+	public void setFullReport(java.lang.String fullReport,
+		java.util.Locale locale, java.util.Locale defaultLocale) {
 		_watsonReport.setFullReport(fullReport, locale, defaultLocale);
 	}
 
 	@Override
-	public void setFullReportCurrentLanguageId(String languageId) {
+	public void setFullReportCurrentLanguageId(java.lang.String languageId) {
 		_watsonReport.setFullReportCurrentLanguageId(languageId);
 	}
 
@@ -889,7 +899,8 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @param fullReportMap the locales and localized full reports of this watson report
 	*/
 	@Override
-	public void setFullReportMap(Map<java.util.Locale, String> fullReportMap) {
+	public void setFullReportMap(
+		Map<java.util.Locale, java.lang.String> fullReportMap) {
 		_watsonReport.setFullReportMap(fullReportMap);
 	}
 
@@ -900,7 +911,8 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setFullReportMap(Map<java.util.Locale, String> fullReportMap,
+	public void setFullReportMap(
+		Map<java.util.Locale, java.lang.String> fullReportMap,
 		java.util.Locale defaultLocale) {
 		_watsonReport.setFullReportMap(fullReportMap, defaultLocale);
 	}
@@ -921,7 +933,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @param imagePayload the image payload of this watson report
 	*/
 	@Override
-	public void setImagePayload(String imagePayload) {
+	public void setImagePayload(java.lang.String imagePayload) {
 		_watsonReport.setImagePayload(imagePayload);
 	}
 
@@ -951,7 +963,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @param name the name of this watson report
 	*/
 	@Override
-	public void setName(String name) {
+	public void setName(java.lang.String name) {
 		_watsonReport.setName(name);
 	}
 
@@ -962,7 +974,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @param locale the locale of the language
 	*/
 	@Override
-	public void setName(String name, java.util.Locale locale) {
+	public void setName(java.lang.String name, java.util.Locale locale) {
 		_watsonReport.setName(name, locale);
 	}
 
@@ -974,13 +986,13 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setName(String name, java.util.Locale locale,
+	public void setName(java.lang.String name, java.util.Locale locale,
 		java.util.Locale defaultLocale) {
 		_watsonReport.setName(name, locale, defaultLocale);
 	}
 
 	@Override
-	public void setNameCurrentLanguageId(String languageId) {
+	public void setNameCurrentLanguageId(java.lang.String languageId) {
 		_watsonReport.setNameCurrentLanguageId(languageId);
 	}
 
@@ -990,7 +1002,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @param nameMap the locales and localized names of this watson report
 	*/
 	@Override
-	public void setNameMap(Map<java.util.Locale, String> nameMap) {
+	public void setNameMap(Map<java.util.Locale, java.lang.String> nameMap) {
 		_watsonReport.setNameMap(nameMap);
 	}
 
@@ -1001,7 +1013,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setNameMap(Map<java.util.Locale, String> nameMap,
+	public void setNameMap(Map<java.util.Locale, java.lang.String> nameMap,
 		java.util.Locale defaultLocale) {
 		_watsonReport.setNameMap(nameMap, defaultLocale);
 	}
@@ -1052,7 +1064,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @param reportedUser the reported user of this watson report
 	*/
 	@Override
-	public void setReportedUser(String reportedUser) {
+	public void setReportedUser(java.lang.String reportedUser) {
 		_watsonReport.setReportedUser(reportedUser);
 	}
 
@@ -1063,7 +1075,8 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @param locale the locale of the language
 	*/
 	@Override
-	public void setReportedUser(String reportedUser, java.util.Locale locale) {
+	public void setReportedUser(java.lang.String reportedUser,
+		java.util.Locale locale) {
 		_watsonReport.setReportedUser(reportedUser, locale);
 	}
 
@@ -1075,13 +1088,13 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setReportedUser(String reportedUser, java.util.Locale locale,
-		java.util.Locale defaultLocale) {
+	public void setReportedUser(java.lang.String reportedUser,
+		java.util.Locale locale, java.util.Locale defaultLocale) {
 		_watsonReport.setReportedUser(reportedUser, locale, defaultLocale);
 	}
 
 	@Override
-	public void setReportedUserCurrentLanguageId(String languageId) {
+	public void setReportedUserCurrentLanguageId(java.lang.String languageId) {
 		_watsonReport.setReportedUserCurrentLanguageId(languageId);
 	}
 
@@ -1092,7 +1105,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	*/
 	@Override
 	public void setReportedUserMap(
-		Map<java.util.Locale, String> reportedUserMap) {
+		Map<java.util.Locale, java.lang.String> reportedUserMap) {
 		_watsonReport.setReportedUserMap(reportedUserMap);
 	}
 
@@ -1104,7 +1117,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	*/
 	@Override
 	public void setReportedUserMap(
-		Map<java.util.Locale, String> reportedUserMap,
+		Map<java.util.Locale, java.lang.String> reportedUserMap,
 		java.util.Locale defaultLocale) {
 		_watsonReport.setReportedUserMap(reportedUserMap, defaultLocale);
 	}
@@ -1125,7 +1138,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @param timeSpent the time spent of this watson report
 	*/
 	@Override
-	public void setTimeSpent(String timeSpent) {
+	public void setTimeSpent(java.lang.String timeSpent) {
 		_watsonReport.setTimeSpent(timeSpent);
 	}
 
@@ -1155,7 +1168,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @param userName the user name of this watson report
 	*/
 	@Override
-	public void setUserName(String userName) {
+	public void setUserName(java.lang.String userName) {
 		_watsonReport.setUserName(userName);
 	}
 
@@ -1165,7 +1178,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	* @param userUuid the user uuid of this watson report
 	*/
 	@Override
-	public void setUserUuid(String userUuid) {
+	public void setUserUuid(java.lang.String userUuid) {
 		_watsonReport.setUserUuid(userUuid);
 	}
 
@@ -1200,7 +1213,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	}
 
 	@Override
-	public String toString() {
+	public java.lang.String toString() {
 		return _watsonReport.toString();
 	}
 
@@ -1210,7 +1223,7 @@ public class WatsonReportWrapper implements WatsonReport,
 	}
 
 	@Override
-	public String toXmlString() {
+	public java.lang.String toXmlString() {
 		return _watsonReport.toXmlString();
 	}
 

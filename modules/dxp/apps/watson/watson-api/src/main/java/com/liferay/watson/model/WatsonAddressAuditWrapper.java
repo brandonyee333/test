@@ -281,7 +281,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	}
 
 	@Override
-	public Object clone() {
+	public java.lang.Object clone() {
 		return new WatsonAddressAuditWrapper((WatsonAddressAudit)_watsonAddressAudit.clone());
 	}
 
@@ -291,7 +291,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	}
 
 	@Override
-	public String[] getAvailableLanguageIds() {
+	public java.lang.String[] getAvailableLanguageIds() {
 		return _watsonAddressAudit.getAvailableLanguageIds();
 	}
 
@@ -301,7 +301,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @return the building of this watson address audit
 	*/
 	@Override
-	public String getBuilding() {
+	public java.lang.String getBuilding() {
 		return _watsonAddressAudit.getBuilding();
 	}
 
@@ -312,7 +312,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @return the localized building of this watson address audit
 	*/
 	@Override
-	public String getBuilding(java.util.Locale locale) {
+	public java.lang.String getBuilding(java.util.Locale locale) {
 		return _watsonAddressAudit.getBuilding(locale);
 	}
 
@@ -324,7 +324,8 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @return the localized building of this watson address audit. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 	*/
 	@Override
-	public String getBuilding(java.util.Locale locale, boolean useDefault) {
+	public java.lang.String getBuilding(java.util.Locale locale,
+		boolean useDefault) {
 		return _watsonAddressAudit.getBuilding(locale, useDefault);
 	}
 
@@ -335,7 +336,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @return the localized building of this watson address audit
 	*/
 	@Override
-	public String getBuilding(String languageId) {
+	public java.lang.String getBuilding(java.lang.String languageId) {
 		return _watsonAddressAudit.getBuilding(languageId);
 	}
 
@@ -347,17 +348,18 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @return the localized building of this watson address audit
 	*/
 	@Override
-	public String getBuilding(String languageId, boolean useDefault) {
+	public java.lang.String getBuilding(java.lang.String languageId,
+		boolean useDefault) {
 		return _watsonAddressAudit.getBuilding(languageId, useDefault);
 	}
 
 	@Override
-	public String getBuildingCurrentLanguageId() {
+	public java.lang.String getBuildingCurrentLanguageId() {
 		return _watsonAddressAudit.getBuildingCurrentLanguageId();
 	}
 
 	@Override
-	public String getBuildingCurrentValue() {
+	public java.lang.String getBuildingCurrentValue() {
 		return _watsonAddressAudit.getBuildingCurrentValue();
 	}
 
@@ -367,7 +369,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @return the locales and localized buildings of this watson address audit
 	*/
 	@Override
-	public Map<java.util.Locale, String> getBuildingMap() {
+	public Map<java.util.Locale, java.lang.String> getBuildingMap() {
 		return _watsonAddressAudit.getBuildingMap();
 	}
 
@@ -402,7 +404,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	}
 
 	@Override
-	public String getDefaultLanguageId() {
+	public java.lang.String getDefaultLanguageId() {
 		return _watsonAddressAudit.getDefaultLanguageId();
 	}
 
@@ -412,7 +414,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @return the description of this watson address audit
 	*/
 	@Override
-	public String getDescription() {
+	public java.lang.String getDescription() {
 		return _watsonAddressAudit.getDescription();
 	}
 
@@ -423,7 +425,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @return the localized description of this watson address audit
 	*/
 	@Override
-	public String getDescription(java.util.Locale locale) {
+	public java.lang.String getDescription(java.util.Locale locale) {
 		return _watsonAddressAudit.getDescription(locale);
 	}
 
@@ -435,7 +437,8 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @return the localized description of this watson address audit. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 	*/
 	@Override
-	public String getDescription(java.util.Locale locale, boolean useDefault) {
+	public java.lang.String getDescription(java.util.Locale locale,
+		boolean useDefault) {
 		return _watsonAddressAudit.getDescription(locale, useDefault);
 	}
 
@@ -446,7 +449,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @return the localized description of this watson address audit
 	*/
 	@Override
-	public String getDescription(String languageId) {
+	public java.lang.String getDescription(java.lang.String languageId) {
 		return _watsonAddressAudit.getDescription(languageId);
 	}
 
@@ -458,17 +461,18 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @return the localized description of this watson address audit
 	*/
 	@Override
-	public String getDescription(String languageId, boolean useDefault) {
+	public java.lang.String getDescription(java.lang.String languageId,
+		boolean useDefault) {
 		return _watsonAddressAudit.getDescription(languageId, useDefault);
 	}
 
 	@Override
-	public String getDescriptionCurrentLanguageId() {
+	public java.lang.String getDescriptionCurrentLanguageId() {
 		return _watsonAddressAudit.getDescriptionCurrentLanguageId();
 	}
 
 	@Override
-	public String getDescriptionCurrentValue() {
+	public java.lang.String getDescriptionCurrentValue() {
 		return _watsonAddressAudit.getDescriptionCurrentValue();
 	}
 
@@ -478,7 +482,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @return the locales and localized descriptions of this watson address audit
 	*/
 	@Override
-	public Map<java.util.Locale, String> getDescriptionMap() {
+	public Map<java.util.Locale, java.lang.String> getDescriptionMap() {
 		return _watsonAddressAudit.getDescriptionMap();
 	}
 
@@ -503,7 +507,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @return the floor of this watson address audit
 	*/
 	@Override
-	public String getFloor() {
+	public java.lang.String getFloor() {
 		return _watsonAddressAudit.getFloor();
 	}
 
@@ -523,7 +527,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @return the image payload of this watson address audit
 	*/
 	@Override
-	public String getImagePayload() {
+	public java.lang.String getImagePayload() {
 		return _watsonAddressAudit.getImagePayload();
 	}
 
@@ -573,7 +577,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @return the name of this watson address audit
 	*/
 	@Override
-	public String getName() {
+	public java.lang.String getName() {
 		return _watsonAddressAudit.getName();
 	}
 
@@ -584,7 +588,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @return the localized name of this watson address audit
 	*/
 	@Override
-	public String getName(java.util.Locale locale) {
+	public java.lang.String getName(java.util.Locale locale) {
 		return _watsonAddressAudit.getName(locale);
 	}
 
@@ -596,7 +600,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @return the localized name of this watson address audit. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 	*/
 	@Override
-	public String getName(java.util.Locale locale, boolean useDefault) {
+	public java.lang.String getName(java.util.Locale locale, boolean useDefault) {
 		return _watsonAddressAudit.getName(locale, useDefault);
 	}
 
@@ -607,7 +611,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @return the localized name of this watson address audit
 	*/
 	@Override
-	public String getName(String languageId) {
+	public java.lang.String getName(java.lang.String languageId) {
 		return _watsonAddressAudit.getName(languageId);
 	}
 
@@ -619,17 +623,18 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @return the localized name of this watson address audit
 	*/
 	@Override
-	public String getName(String languageId, boolean useDefault) {
+	public java.lang.String getName(java.lang.String languageId,
+		boolean useDefault) {
 		return _watsonAddressAudit.getName(languageId, useDefault);
 	}
 
 	@Override
-	public String getNameCurrentLanguageId() {
+	public java.lang.String getNameCurrentLanguageId() {
 		return _watsonAddressAudit.getNameCurrentLanguageId();
 	}
 
 	@Override
-	public String getNameCurrentValue() {
+	public java.lang.String getNameCurrentValue() {
 		return _watsonAddressAudit.getNameCurrentValue();
 	}
 
@@ -639,7 +644,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @return the locales and localized names of this watson address audit
 	*/
 	@Override
-	public Map<java.util.Locale, String> getNameMap() {
+	public Map<java.util.Locale, java.lang.String> getNameMap() {
 		return _watsonAddressAudit.getNameMap();
 	}
 
@@ -649,7 +654,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @return the number of this watson address audit
 	*/
 	@Override
-	public String getNumber() {
+	public java.lang.String getNumber() {
 		return _watsonAddressAudit.getNumber();
 	}
 
@@ -669,7 +674,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @return the other type of this watson address audit
 	*/
 	@Override
-	public String getOtherType() {
+	public java.lang.String getOtherType() {
 		return _watsonAddressAudit.getOtherType();
 	}
 
@@ -679,7 +684,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @return the postal code of this watson address audit
 	*/
 	@Override
-	public String getPostalCode() {
+	public java.lang.String getPostalCode() {
 		return _watsonAddressAudit.getPostalCode();
 	}
 
@@ -714,7 +719,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @return the region of this watson address audit
 	*/
 	@Override
-	public String getRegion() {
+	public java.lang.String getRegion() {
 		return _watsonAddressAudit.getRegion();
 	}
 
@@ -724,7 +729,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @return the room of this watson address audit
 	*/
 	@Override
-	public String getRoom() {
+	public java.lang.String getRoom() {
 		return _watsonAddressAudit.getRoom();
 	}
 
@@ -744,7 +749,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @return the street of this watson address audit
 	*/
 	@Override
-	public String getStreet() {
+	public java.lang.String getStreet() {
 		return _watsonAddressAudit.getStreet();
 	}
 
@@ -784,7 +789,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @return the user name of this watson address audit
 	*/
 	@Override
-	public String getUserName() {
+	public java.lang.String getUserName() {
 		return _watsonAddressAudit.getUserName();
 	}
 
@@ -794,7 +799,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @return the user uuid of this watson address audit
 	*/
 	@Override
-	public String getUserUuid() {
+	public java.lang.String getUserUuid() {
 		return _watsonAddressAudit.getUserUuid();
 	}
 
@@ -872,7 +877,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @param building the building of this watson address audit
 	*/
 	@Override
-	public void setBuilding(String building) {
+	public void setBuilding(java.lang.String building) {
 		_watsonAddressAudit.setBuilding(building);
 	}
 
@@ -883,7 +888,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @param locale the locale of the language
 	*/
 	@Override
-	public void setBuilding(String building, java.util.Locale locale) {
+	public void setBuilding(java.lang.String building, java.util.Locale locale) {
 		_watsonAddressAudit.setBuilding(building, locale);
 	}
 
@@ -895,13 +900,13 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setBuilding(String building, java.util.Locale locale,
+	public void setBuilding(java.lang.String building, java.util.Locale locale,
 		java.util.Locale defaultLocale) {
 		_watsonAddressAudit.setBuilding(building, locale, defaultLocale);
 	}
 
 	@Override
-	public void setBuildingCurrentLanguageId(String languageId) {
+	public void setBuildingCurrentLanguageId(java.lang.String languageId) {
 		_watsonAddressAudit.setBuildingCurrentLanguageId(languageId);
 	}
 
@@ -911,7 +916,8 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @param buildingMap the locales and localized buildings of this watson address audit
 	*/
 	@Override
-	public void setBuildingMap(Map<java.util.Locale, String> buildingMap) {
+	public void setBuildingMap(
+		Map<java.util.Locale, java.lang.String> buildingMap) {
 		_watsonAddressAudit.setBuildingMap(buildingMap);
 	}
 
@@ -922,7 +928,8 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setBuildingMap(Map<java.util.Locale, String> buildingMap,
+	public void setBuildingMap(
+		Map<java.util.Locale, java.lang.String> buildingMap,
 		java.util.Locale defaultLocale) {
 		_watsonAddressAudit.setBuildingMap(buildingMap, defaultLocale);
 	}
@@ -968,7 +975,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @param description the description of this watson address audit
 	*/
 	@Override
-	public void setDescription(String description) {
+	public void setDescription(java.lang.String description) {
 		_watsonAddressAudit.setDescription(description);
 	}
 
@@ -979,7 +986,8 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @param locale the locale of the language
 	*/
 	@Override
-	public void setDescription(String description, java.util.Locale locale) {
+	public void setDescription(java.lang.String description,
+		java.util.Locale locale) {
 		_watsonAddressAudit.setDescription(description, locale);
 	}
 
@@ -991,13 +999,13 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setDescription(String description, java.util.Locale locale,
-		java.util.Locale defaultLocale) {
+	public void setDescription(java.lang.String description,
+		java.util.Locale locale, java.util.Locale defaultLocale) {
 		_watsonAddressAudit.setDescription(description, locale, defaultLocale);
 	}
 
 	@Override
-	public void setDescriptionCurrentLanguageId(String languageId) {
+	public void setDescriptionCurrentLanguageId(java.lang.String languageId) {
 		_watsonAddressAudit.setDescriptionCurrentLanguageId(languageId);
 	}
 
@@ -1007,7 +1015,8 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @param descriptionMap the locales and localized descriptions of this watson address audit
 	*/
 	@Override
-	public void setDescriptionMap(Map<java.util.Locale, String> descriptionMap) {
+	public void setDescriptionMap(
+		Map<java.util.Locale, java.lang.String> descriptionMap) {
 		_watsonAddressAudit.setDescriptionMap(descriptionMap);
 	}
 
@@ -1019,7 +1028,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	*/
 	@Override
 	public void setDescriptionMap(
-		Map<java.util.Locale, String> descriptionMap,
+		Map<java.util.Locale, java.lang.String> descriptionMap,
 		java.util.Locale defaultLocale) {
 		_watsonAddressAudit.setDescriptionMap(descriptionMap, defaultLocale);
 	}
@@ -1056,7 +1065,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @param floor the floor of this watson address audit
 	*/
 	@Override
-	public void setFloor(String floor) {
+	public void setFloor(java.lang.String floor) {
 		_watsonAddressAudit.setFloor(floor);
 	}
 
@@ -1076,7 +1085,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @param imagePayload the image payload of this watson address audit
 	*/
 	@Override
-	public void setImagePayload(String imagePayload) {
+	public void setImagePayload(java.lang.String imagePayload) {
 		_watsonAddressAudit.setImagePayload(imagePayload);
 	}
 
@@ -1126,7 +1135,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @param name the name of this watson address audit
 	*/
 	@Override
-	public void setName(String name) {
+	public void setName(java.lang.String name) {
 		_watsonAddressAudit.setName(name);
 	}
 
@@ -1137,7 +1146,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @param locale the locale of the language
 	*/
 	@Override
-	public void setName(String name, java.util.Locale locale) {
+	public void setName(java.lang.String name, java.util.Locale locale) {
 		_watsonAddressAudit.setName(name, locale);
 	}
 
@@ -1149,13 +1158,13 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setName(String name, java.util.Locale locale,
+	public void setName(java.lang.String name, java.util.Locale locale,
 		java.util.Locale defaultLocale) {
 		_watsonAddressAudit.setName(name, locale, defaultLocale);
 	}
 
 	@Override
-	public void setNameCurrentLanguageId(String languageId) {
+	public void setNameCurrentLanguageId(java.lang.String languageId) {
 		_watsonAddressAudit.setNameCurrentLanguageId(languageId);
 	}
 
@@ -1165,7 +1174,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @param nameMap the locales and localized names of this watson address audit
 	*/
 	@Override
-	public void setNameMap(Map<java.util.Locale, String> nameMap) {
+	public void setNameMap(Map<java.util.Locale, java.lang.String> nameMap) {
 		_watsonAddressAudit.setNameMap(nameMap);
 	}
 
@@ -1176,7 +1185,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setNameMap(Map<java.util.Locale, String> nameMap,
+	public void setNameMap(Map<java.util.Locale, java.lang.String> nameMap,
 		java.util.Locale defaultLocale) {
 		_watsonAddressAudit.setNameMap(nameMap, defaultLocale);
 	}
@@ -1192,7 +1201,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @param number the number of this watson address audit
 	*/
 	@Override
-	public void setNumber(String number) {
+	public void setNumber(java.lang.String number) {
 		_watsonAddressAudit.setNumber(number);
 	}
 
@@ -1212,7 +1221,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @param otherType the other type of this watson address audit
 	*/
 	@Override
-	public void setOtherType(String otherType) {
+	public void setOtherType(java.lang.String otherType) {
 		_watsonAddressAudit.setOtherType(otherType);
 	}
 
@@ -1222,7 +1231,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @param postalCode the postal code of this watson address audit
 	*/
 	@Override
-	public void setPostalCode(String postalCode) {
+	public void setPostalCode(java.lang.String postalCode) {
 		_watsonAddressAudit.setPostalCode(postalCode);
 	}
 
@@ -1257,7 +1266,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @param region the region of this watson address audit
 	*/
 	@Override
-	public void setRegion(String region) {
+	public void setRegion(java.lang.String region) {
 		_watsonAddressAudit.setRegion(region);
 	}
 
@@ -1267,7 +1276,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @param room the room of this watson address audit
 	*/
 	@Override
-	public void setRoom(String room) {
+	public void setRoom(java.lang.String room) {
 		_watsonAddressAudit.setRoom(room);
 	}
 
@@ -1287,7 +1296,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @param street the street of this watson address audit
 	*/
 	@Override
-	public void setStreet(String street) {
+	public void setStreet(java.lang.String street) {
 		_watsonAddressAudit.setStreet(street);
 	}
 
@@ -1327,7 +1336,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @param userName the user name of this watson address audit
 	*/
 	@Override
-	public void setUserName(String userName) {
+	public void setUserName(java.lang.String userName) {
 		_watsonAddressAudit.setUserName(userName);
 	}
 
@@ -1337,7 +1346,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	* @param userUuid the user uuid of this watson address audit
 	*/
 	@Override
-	public void setUserUuid(String userUuid) {
+	public void setUserUuid(java.lang.String userUuid) {
 		_watsonAddressAudit.setUserUuid(userUuid);
 	}
 
@@ -1382,7 +1391,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	}
 
 	@Override
-	public String toString() {
+	public java.lang.String toString() {
 		return _watsonAddressAudit.toString();
 	}
 
@@ -1392,7 +1401,7 @@ public class WatsonAddressAuditWrapper implements WatsonAddressAudit,
 	}
 
 	@Override
-	public String toXmlString() {
+	public java.lang.String toXmlString() {
 		return _watsonAddressAudit.toXmlString();
 	}
 

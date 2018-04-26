@@ -202,7 +202,7 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	}
 
 	@Override
-	public Object clone() {
+	public java.lang.Object clone() {
 		return new WatsonVehicleWrapper((WatsonVehicle)_watsonVehicle.clone());
 	}
 
@@ -212,7 +212,7 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	}
 
 	@Override
-	public String[] getAvailableLanguageIds() {
+	public java.lang.String[] getAvailableLanguageIds() {
 		return _watsonVehicle.getAvailableLanguageIds();
 	}
 
@@ -247,7 +247,7 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	}
 
 	@Override
-	public String getDefaultLanguageId() {
+	public java.lang.String getDefaultLanguageId() {
 		return _watsonVehicle.getDefaultLanguageId();
 	}
 
@@ -257,7 +257,7 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	* @return the description of this watson vehicle
 	*/
 	@Override
-	public String getDescription() {
+	public java.lang.String getDescription() {
 		return _watsonVehicle.getDescription();
 	}
 
@@ -268,7 +268,7 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	* @return the localized description of this watson vehicle
 	*/
 	@Override
-	public String getDescription(java.util.Locale locale) {
+	public java.lang.String getDescription(java.util.Locale locale) {
 		return _watsonVehicle.getDescription(locale);
 	}
 
@@ -280,7 +280,8 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	* @return the localized description of this watson vehicle. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 	*/
 	@Override
-	public String getDescription(java.util.Locale locale, boolean useDefault) {
+	public java.lang.String getDescription(java.util.Locale locale,
+		boolean useDefault) {
 		return _watsonVehicle.getDescription(locale, useDefault);
 	}
 
@@ -291,7 +292,7 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	* @return the localized description of this watson vehicle
 	*/
 	@Override
-	public String getDescription(String languageId) {
+	public java.lang.String getDescription(java.lang.String languageId) {
 		return _watsonVehicle.getDescription(languageId);
 	}
 
@@ -303,17 +304,18 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	* @return the localized description of this watson vehicle
 	*/
 	@Override
-	public String getDescription(String languageId, boolean useDefault) {
+	public java.lang.String getDescription(java.lang.String languageId,
+		boolean useDefault) {
 		return _watsonVehicle.getDescription(languageId, useDefault);
 	}
 
 	@Override
-	public String getDescriptionCurrentLanguageId() {
+	public java.lang.String getDescriptionCurrentLanguageId() {
 		return _watsonVehicle.getDescriptionCurrentLanguageId();
 	}
 
 	@Override
-	public String getDescriptionCurrentValue() {
+	public java.lang.String getDescriptionCurrentValue() {
 		return _watsonVehicle.getDescriptionCurrentValue();
 	}
 
@@ -323,7 +325,7 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	* @return the locales and localized descriptions of this watson vehicle
 	*/
 	@Override
-	public Map<java.util.Locale, String> getDescriptionMap() {
+	public Map<java.util.Locale, java.lang.String> getDescriptionMap() {
 		return _watsonVehicle.getDescriptionMap();
 	}
 
@@ -348,7 +350,7 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	* @return the image payload of this watson vehicle
 	*/
 	@Override
-	public String getImagePayload() {
+	public java.lang.String getImagePayload() {
 		return _watsonVehicle.getImagePayload();
 	}
 
@@ -358,7 +360,7 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	* @return the license plate of this watson vehicle
 	*/
 	@Override
-	public String getLicensePlate() {
+	public java.lang.String getLicensePlate() {
 		return _watsonVehicle.getLicensePlate();
 	}
 
@@ -453,7 +455,7 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	* @return the user name of this watson vehicle
 	*/
 	@Override
-	public String getUserName() {
+	public java.lang.String getUserName() {
 		return _watsonVehicle.getUserName();
 	}
 
@@ -463,7 +465,7 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	* @return the user uuid of this watson vehicle
 	*/
 	@Override
-	public String getUserUuid() {
+	public java.lang.String getUserUuid() {
 		return _watsonVehicle.getUserUuid();
 	}
 
@@ -586,7 +588,7 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	* @param description the description of this watson vehicle
 	*/
 	@Override
-	public void setDescription(String description) {
+	public void setDescription(java.lang.String description) {
 		_watsonVehicle.setDescription(description);
 	}
 
@@ -597,7 +599,8 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	* @param locale the locale of the language
 	*/
 	@Override
-	public void setDescription(String description, java.util.Locale locale) {
+	public void setDescription(java.lang.String description,
+		java.util.Locale locale) {
 		_watsonVehicle.setDescription(description, locale);
 	}
 
@@ -609,13 +612,13 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setDescription(String description, java.util.Locale locale,
-		java.util.Locale defaultLocale) {
+	public void setDescription(java.lang.String description,
+		java.util.Locale locale, java.util.Locale defaultLocale) {
 		_watsonVehicle.setDescription(description, locale, defaultLocale);
 	}
 
 	@Override
-	public void setDescriptionCurrentLanguageId(String languageId) {
+	public void setDescriptionCurrentLanguageId(java.lang.String languageId) {
 		_watsonVehicle.setDescriptionCurrentLanguageId(languageId);
 	}
 
@@ -625,7 +628,8 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	* @param descriptionMap the locales and localized descriptions of this watson vehicle
 	*/
 	@Override
-	public void setDescriptionMap(Map<java.util.Locale, String> descriptionMap) {
+	public void setDescriptionMap(
+		Map<java.util.Locale, java.lang.String> descriptionMap) {
 		_watsonVehicle.setDescriptionMap(descriptionMap);
 	}
 
@@ -637,7 +641,7 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	*/
 	@Override
 	public void setDescriptionMap(
-		Map<java.util.Locale, String> descriptionMap,
+		Map<java.util.Locale, java.lang.String> descriptionMap,
 		java.util.Locale defaultLocale) {
 		_watsonVehicle.setDescriptionMap(descriptionMap, defaultLocale);
 	}
@@ -674,7 +678,7 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	* @param imagePayload the image payload of this watson vehicle
 	*/
 	@Override
-	public void setImagePayload(String imagePayload) {
+	public void setImagePayload(java.lang.String imagePayload) {
 		_watsonVehicle.setImagePayload(imagePayload);
 	}
 
@@ -684,7 +688,7 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	* @param licensePlate the license plate of this watson vehicle
 	*/
 	@Override
-	public void setLicensePlate(String licensePlate) {
+	public void setLicensePlate(java.lang.String licensePlate) {
 		_watsonVehicle.setLicensePlate(licensePlate);
 	}
 
@@ -784,7 +788,7 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	* @param userName the user name of this watson vehicle
 	*/
 	@Override
-	public void setUserName(String userName) {
+	public void setUserName(java.lang.String userName) {
 		_watsonVehicle.setUserName(userName);
 	}
 
@@ -794,7 +798,7 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	* @param userUuid the user uuid of this watson vehicle
 	*/
 	@Override
-	public void setUserUuid(String userUuid) {
+	public void setUserUuid(java.lang.String userUuid) {
 		_watsonVehicle.setUserUuid(userUuid);
 	}
 
@@ -849,7 +853,7 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	}
 
 	@Override
-	public String toString() {
+	public java.lang.String toString() {
 		return _watsonVehicle.toString();
 	}
 
@@ -859,7 +863,7 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	}
 
 	@Override
-	public String toXmlString() {
+	public java.lang.String toXmlString() {
 		return _watsonVehicle.toXmlString();
 	}
 

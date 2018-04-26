@@ -164,5 +164,5 @@ public interface WatsonListTypeAuditPersistence extends BasePersistence<WatsonLi
 	public int countAll();
 
 	@Override
-	public java.util.Set<String> getBadColumnNames();
+	public java.util.Set<java.lang.String> getBadColumnNames();
 }

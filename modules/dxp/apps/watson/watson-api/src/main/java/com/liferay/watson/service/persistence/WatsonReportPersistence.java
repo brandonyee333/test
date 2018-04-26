@@ -162,5 +162,5 @@ public interface WatsonReportPersistence extends BasePersistence<WatsonReport> {
 	public int countAll();
 
 	@Override
-	public java.util.Set<String> getBadColumnNames();
+	public java.util.Set<java.lang.String> getBadColumnNames();
 }

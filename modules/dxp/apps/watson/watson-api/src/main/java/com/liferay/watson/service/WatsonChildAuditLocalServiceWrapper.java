@@ -202,7 +202,7 @@ public class WatsonChildAuditLocalServiceWrapper
 	* @return the OSGi service identifier
 	*/
 	@Override
-	public String getOSGiServiceIdentifier() {
+	public java.lang.String getOSGiServiceIdentifier() {
 		return _watsonChildAuditLocalService.getOSGiServiceIdentifier();
 	}
 

@@ -201,7 +201,7 @@ public class WatsonDocumentLocalServiceWrapper
 	* @return the OSGi service identifier
 	*/
 	@Override
-	public String getOSGiServiceIdentifier() {
+	public java.lang.String getOSGiServiceIdentifier() {
 		return _watsonDocumentLocalService.getOSGiServiceIdentifier();
 	}
 

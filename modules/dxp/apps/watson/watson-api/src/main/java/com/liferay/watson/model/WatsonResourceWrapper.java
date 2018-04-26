@@ -165,7 +165,7 @@ public class WatsonResourceWrapper implements WatsonResource,
 	}
 
 	@Override
-	public Object clone() {
+	public java.lang.Object clone() {
 		return new WatsonResourceWrapper((WatsonResource)_watsonResource.clone());
 	}
 
@@ -175,7 +175,7 @@ public class WatsonResourceWrapper implements WatsonResource,
 	}
 
 	@Override
-	public String[] getAvailableLanguageIds() {
+	public java.lang.String[] getAvailableLanguageIds() {
 		return _watsonResource.getAvailableLanguageIds();
 	}
 
@@ -200,7 +200,7 @@ public class WatsonResourceWrapper implements WatsonResource,
 	}
 
 	@Override
-	public String getDefaultLanguageId() {
+	public java.lang.String getDefaultLanguageId() {
 		return _watsonResource.getDefaultLanguageId();
 	}
 
@@ -210,7 +210,7 @@ public class WatsonResourceWrapper implements WatsonResource,
 	* @return the description of this watson resource
 	*/
 	@Override
-	public String getDescription() {
+	public java.lang.String getDescription() {
 		return _watsonResource.getDescription();
 	}
 
@@ -221,7 +221,7 @@ public class WatsonResourceWrapper implements WatsonResource,
 	* @return the localized description of this watson resource
 	*/
 	@Override
-	public String getDescription(java.util.Locale locale) {
+	public java.lang.String getDescription(java.util.Locale locale) {
 		return _watsonResource.getDescription(locale);
 	}
 
@@ -233,7 +233,8 @@ public class WatsonResourceWrapper implements WatsonResource,
 	* @return the localized description of this watson resource. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 	*/
 	@Override
-	public String getDescription(java.util.Locale locale, boolean useDefault) {
+	public java.lang.String getDescription(java.util.Locale locale,
+		boolean useDefault) {
 		return _watsonResource.getDescription(locale, useDefault);
 	}
 
@@ -244,7 +245,7 @@ public class WatsonResourceWrapper implements WatsonResource,
 	* @return the localized description of this watson resource
 	*/
 	@Override
-	public String getDescription(String languageId) {
+	public java.lang.String getDescription(java.lang.String languageId) {
 		return _watsonResource.getDescription(languageId);
 	}
 
@@ -256,17 +257,18 @@ public class WatsonResourceWrapper implements WatsonResource,
 	* @return the localized description of this watson resource
 	*/
 	@Override
-	public String getDescription(String languageId, boolean useDefault) {
+	public java.lang.String getDescription(java.lang.String languageId,
+		boolean useDefault) {
 		return _watsonResource.getDescription(languageId, useDefault);
 	}
 
 	@Override
-	public String getDescriptionCurrentLanguageId() {
+	public java.lang.String getDescriptionCurrentLanguageId() {
 		return _watsonResource.getDescriptionCurrentLanguageId();
 	}
 
 	@Override
-	public String getDescriptionCurrentValue() {
+	public java.lang.String getDescriptionCurrentValue() {
 		return _watsonResource.getDescriptionCurrentValue();
 	}
 
@@ -276,7 +278,7 @@ public class WatsonResourceWrapper implements WatsonResource,
 	* @return the locales and localized descriptions of this watson resource
 	*/
 	@Override
-	public Map<java.util.Locale, String> getDescriptionMap() {
+	public Map<java.util.Locale, java.lang.String> getDescriptionMap() {
 		return _watsonResource.getDescriptionMap();
 	}
 
@@ -301,7 +303,7 @@ public class WatsonResourceWrapper implements WatsonResource,
 	* @return the image payload of this watson resource
 	*/
 	@Override
-	public String getImagePayload() {
+	public java.lang.String getImagePayload() {
 		return _watsonResource.getImagePayload();
 	}
 
@@ -321,7 +323,7 @@ public class WatsonResourceWrapper implements WatsonResource,
 	* @return the name of this watson resource
 	*/
 	@Override
-	public String getName() {
+	public java.lang.String getName() {
 		return _watsonResource.getName();
 	}
 
@@ -332,7 +334,7 @@ public class WatsonResourceWrapper implements WatsonResource,
 	* @return the localized name of this watson resource
 	*/
 	@Override
-	public String getName(java.util.Locale locale) {
+	public java.lang.String getName(java.util.Locale locale) {
 		return _watsonResource.getName(locale);
 	}
 
@@ -344,7 +346,7 @@ public class WatsonResourceWrapper implements WatsonResource,
 	* @return the localized name of this watson resource. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 	*/
 	@Override
-	public String getName(java.util.Locale locale, boolean useDefault) {
+	public java.lang.String getName(java.util.Locale locale, boolean useDefault) {
 		return _watsonResource.getName(locale, useDefault);
 	}
 
@@ -355,7 +357,7 @@ public class WatsonResourceWrapper implements WatsonResource,
 	* @return the localized name of this watson resource
 	*/
 	@Override
-	public String getName(String languageId) {
+	public java.lang.String getName(java.lang.String languageId) {
 		return _watsonResource.getName(languageId);
 	}
 
@@ -367,17 +369,18 @@ public class WatsonResourceWrapper implements WatsonResource,
 	* @return the localized name of this watson resource
 	*/
 	@Override
-	public String getName(String languageId, boolean useDefault) {
+	public java.lang.String getName(java.lang.String languageId,
+		boolean useDefault) {
 		return _watsonResource.getName(languageId, useDefault);
 	}
 
 	@Override
-	public String getNameCurrentLanguageId() {
+	public java.lang.String getNameCurrentLanguageId() {
 		return _watsonResource.getNameCurrentLanguageId();
 	}
 
 	@Override
-	public String getNameCurrentValue() {
+	public java.lang.String getNameCurrentValue() {
 		return _watsonResource.getNameCurrentValue();
 	}
 
@@ -387,7 +390,7 @@ public class WatsonResourceWrapper implements WatsonResource,
 	* @return the locales and localized names of this watson resource
 	*/
 	@Override
-	public Map<java.util.Locale, String> getNameMap() {
+	public Map<java.util.Locale, java.lang.String> getNameMap() {
 		return _watsonResource.getNameMap();
 	}
 
@@ -452,7 +455,7 @@ public class WatsonResourceWrapper implements WatsonResource,
 	* @return the user name of this watson resource
 	*/
 	@Override
-	public String getUserName() {
+	public java.lang.String getUserName() {
 		return _watsonResource.getUserName();
 	}
 
@@ -462,7 +465,7 @@ public class WatsonResourceWrapper implements WatsonResource,
 	* @return the user uuid of this watson resource
 	*/
 	@Override
-	public String getUserUuid() {
+	public java.lang.String getUserUuid() {
 		return _watsonResource.getUserUuid();
 	}
 
@@ -555,7 +558,7 @@ public class WatsonResourceWrapper implements WatsonResource,
 	* @param description the description of this watson resource
 	*/
 	@Override
-	public void setDescription(String description) {
+	public void setDescription(java.lang.String description) {
 		_watsonResource.setDescription(description);
 	}
 
@@ -566,7 +569,8 @@ public class WatsonResourceWrapper implements WatsonResource,
 	* @param locale the locale of the language
 	*/
 	@Override
-	public void setDescription(String description, java.util.Locale locale) {
+	public void setDescription(java.lang.String description,
+		java.util.Locale locale) {
 		_watsonResource.setDescription(description, locale);
 	}
 
@@ -578,13 +582,13 @@ public class WatsonResourceWrapper implements WatsonResource,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setDescription(String description, java.util.Locale locale,
-		java.util.Locale defaultLocale) {
+	public void setDescription(java.lang.String description,
+		java.util.Locale locale, java.util.Locale defaultLocale) {
 		_watsonResource.setDescription(description, locale, defaultLocale);
 	}
 
 	@Override
-	public void setDescriptionCurrentLanguageId(String languageId) {
+	public void setDescriptionCurrentLanguageId(java.lang.String languageId) {
 		_watsonResource.setDescriptionCurrentLanguageId(languageId);
 	}
 
@@ -594,7 +598,8 @@ public class WatsonResourceWrapper implements WatsonResource,
 	* @param descriptionMap the locales and localized descriptions of this watson resource
 	*/
 	@Override
-	public void setDescriptionMap(Map<java.util.Locale, String> descriptionMap) {
+	public void setDescriptionMap(
+		Map<java.util.Locale, java.lang.String> descriptionMap) {
 		_watsonResource.setDescriptionMap(descriptionMap);
 	}
 
@@ -606,7 +611,7 @@ public class WatsonResourceWrapper implements WatsonResource,
 	*/
 	@Override
 	public void setDescriptionMap(
-		Map<java.util.Locale, String> descriptionMap,
+		Map<java.util.Locale, java.lang.String> descriptionMap,
 		java.util.Locale defaultLocale) {
 		_watsonResource.setDescriptionMap(descriptionMap, defaultLocale);
 	}
@@ -643,7 +648,7 @@ public class WatsonResourceWrapper implements WatsonResource,
 	* @param imagePayload the image payload of this watson resource
 	*/
 	@Override
-	public void setImagePayload(String imagePayload) {
+	public void setImagePayload(java.lang.String imagePayload) {
 		_watsonResource.setImagePayload(imagePayload);
 	}
 
@@ -663,7 +668,7 @@ public class WatsonResourceWrapper implements WatsonResource,
 	* @param name the name of this watson resource
 	*/
 	@Override
-	public void setName(String name) {
+	public void setName(java.lang.String name) {
 		_watsonResource.setName(name);
 	}
 
@@ -674,7 +679,7 @@ public class WatsonResourceWrapper implements WatsonResource,
 	* @param locale the locale of the language
 	*/
 	@Override
-	public void setName(String name, java.util.Locale locale) {
+	public void setName(java.lang.String name, java.util.Locale locale) {
 		_watsonResource.setName(name, locale);
 	}
 
@@ -686,13 +691,13 @@ public class WatsonResourceWrapper implements WatsonResource,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setName(String name, java.util.Locale locale,
+	public void setName(java.lang.String name, java.util.Locale locale,
 		java.util.Locale defaultLocale) {
 		_watsonResource.setName(name, locale, defaultLocale);
 	}
 
 	@Override
-	public void setNameCurrentLanguageId(String languageId) {
+	public void setNameCurrentLanguageId(java.lang.String languageId) {
 		_watsonResource.setNameCurrentLanguageId(languageId);
 	}
 
@@ -702,7 +707,7 @@ public class WatsonResourceWrapper implements WatsonResource,
 	* @param nameMap the locales and localized names of this watson resource
 	*/
 	@Override
-	public void setNameMap(Map<java.util.Locale, String> nameMap) {
+	public void setNameMap(Map<java.util.Locale, java.lang.String> nameMap) {
 		_watsonResource.setNameMap(nameMap);
 	}
 
@@ -713,7 +718,7 @@ public class WatsonResourceWrapper implements WatsonResource,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setNameMap(Map<java.util.Locale, String> nameMap,
+	public void setNameMap(Map<java.util.Locale, java.lang.String> nameMap,
 		java.util.Locale defaultLocale) {
 		_watsonResource.setNameMap(nameMap, defaultLocale);
 	}
@@ -784,7 +789,7 @@ public class WatsonResourceWrapper implements WatsonResource,
 	* @param userName the user name of this watson resource
 	*/
 	@Override
-	public void setUserName(String userName) {
+	public void setUserName(java.lang.String userName) {
 		_watsonResource.setUserName(userName);
 	}
 
@@ -794,7 +799,7 @@ public class WatsonResourceWrapper implements WatsonResource,
 	* @param userUuid the user uuid of this watson resource
 	*/
 	@Override
-	public void setUserUuid(String userUuid) {
+	public void setUserUuid(java.lang.String userUuid) {
 		_watsonResource.setUserUuid(userUuid);
 	}
 
@@ -829,7 +834,7 @@ public class WatsonResourceWrapper implements WatsonResource,
 	}
 
 	@Override
-	public String toString() {
+	public java.lang.String toString() {
 		return _watsonResource.toString();
 	}
 
@@ -839,7 +844,7 @@ public class WatsonResourceWrapper implements WatsonResource,
 	}
 
 	@Override
-	public String toXmlString() {
+	public java.lang.String toXmlString() {
 		return _watsonResource.toXmlString();
 	}
 

@@ -171,7 +171,7 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 	}
 
 	@Override
-	public Object clone() {
+	public java.lang.Object clone() {
 		return new WatsonRelationshipWrapper((WatsonRelationship)_watsonRelationship.clone());
 	}
 
@@ -246,7 +246,7 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 	* @return the description of this watson relationship
 	*/
 	@Override
-	public String getDescription() {
+	public java.lang.String getDescription() {
 		return _watsonRelationship.getDescription();
 	}
 
@@ -326,7 +326,7 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 	* @return the user name of this watson relationship
 	*/
 	@Override
-	public String getUserName() {
+	public java.lang.String getUserName() {
 		return _watsonRelationship.getUserName();
 	}
 
@@ -336,7 +336,7 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 	* @return the user uuid of this watson relationship
 	*/
 	@Override
-	public String getUserUuid() {
+	public java.lang.String getUserUuid() {
 		return _watsonRelationship.getUserUuid();
 	}
 
@@ -456,7 +456,7 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 	* @param description the description of this watson relationship
 	*/
 	@Override
-	public void setDescription(String description) {
+	public void setDescription(java.lang.String description) {
 		_watsonRelationship.setDescription(description);
 	}
 
@@ -552,7 +552,7 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 	* @param userName the user name of this watson relationship
 	*/
 	@Override
-	public void setUserName(String userName) {
+	public void setUserName(java.lang.String userName) {
 		_watsonRelationship.setUserName(userName);
 	}
 
@@ -562,7 +562,7 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 	* @param userUuid the user uuid of this watson relationship
 	*/
 	@Override
-	public void setUserUuid(String userUuid) {
+	public void setUserUuid(java.lang.String userUuid) {
 		_watsonRelationship.setUserUuid(userUuid);
 	}
 
@@ -597,7 +597,7 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 	}
 
 	@Override
-	public String toString() {
+	public java.lang.String toString() {
 		return _watsonRelationship.toString();
 	}
 
@@ -607,7 +607,7 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 	}
 
 	@Override
-	public String toXmlString() {
+	public java.lang.String toXmlString() {
 		return _watsonRelationship.toXmlString();
 	}
 
