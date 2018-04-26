@@ -96,7 +96,6 @@ page import="com.liferay.osb.exception.LicenseKeySingleUseException" %><%@
 page import="com.liferay.osb.exception.MaximumLicenseKeyException" %><%@
 page import="com.liferay.osb.exception.NoSuchAccountEntryException" %><%@
 page import="com.liferay.osb.exception.NoSuchLicenseEntryException" %><%@
-page import="com.liferay.osb.exception.NoSuchLicenseKeyException" %><%@
 page import="com.liferay.osb.exception.NoSuchLicenseKeySetException" %><%@
 page import="com.liferay.osb.exception.NoSuchOfferingEntryException" %><%@
 page import="com.liferay.osb.exception.NoSuchPartnerEntryException" %><%@
