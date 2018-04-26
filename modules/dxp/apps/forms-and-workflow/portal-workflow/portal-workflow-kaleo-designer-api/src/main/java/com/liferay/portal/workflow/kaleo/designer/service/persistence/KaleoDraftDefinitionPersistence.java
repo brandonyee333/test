@@ -181,7 +181,7 @@ public interface KaleoDraftDefinitionPersistence extends BasePersistence<KaleoDr
 	* @return the matching kaleo draft definitions
 	*/
 	public java.util.List<KaleoDraftDefinition> findByC_N_V(long companyId,
-		java.lang.String name, int version);
+		String name, int version);
 
 	/**
 	* Returns a range of all the kaleo draft definitions where companyId = &#63; and name = &#63; and version = &#63;.
@@ -198,7 +198,7 @@ public interface KaleoDraftDefinitionPersistence extends BasePersistence<KaleoDr
 	* @return the range of matching kaleo draft definitions
 	*/
 	public java.util.List<KaleoDraftDefinition> findByC_N_V(long companyId,
-		java.lang.String name, int version, int start, int end);
+		String name, int version, int start, int end);
 
 	/**
 	* Returns an ordered range of all the kaleo draft definitions where companyId = &#63; and name = &#63; and version = &#63;.
@@ -216,7 +216,7 @@ public interface KaleoDraftDefinitionPersistence extends BasePersistence<KaleoDr
 	* @return the ordered range of matching kaleo draft definitions
 	*/
 	public java.util.List<KaleoDraftDefinition> findByC_N_V(long companyId,
-		java.lang.String name, int version, int start, int end,
+		String name, int version, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<KaleoDraftDefinition> orderByComparator);
 
 	/**
@@ -236,7 +236,7 @@ public interface KaleoDraftDefinitionPersistence extends BasePersistence<KaleoDr
 	* @return the ordered range of matching kaleo draft definitions
 	*/
 	public java.util.List<KaleoDraftDefinition> findByC_N_V(long companyId,
-		java.lang.String name, int version, int start, int end,
+		String name, int version, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<KaleoDraftDefinition> orderByComparator,
 		boolean retrieveFromCache);
 
@@ -250,8 +250,8 @@ public interface KaleoDraftDefinitionPersistence extends BasePersistence<KaleoDr
 	* @return the first matching kaleo draft definition
 	* @throws NoSuchKaleoDraftDefinitionException if a matching kaleo draft definition could not be found
 	*/
-	public KaleoDraftDefinition findByC_N_V_First(long companyId,
-		java.lang.String name, int version,
+	public KaleoDraftDefinition findByC_N_V_First(long companyId, String name,
+		int version,
 		com.liferay.portal.kernel.util.OrderByComparator<KaleoDraftDefinition> orderByComparator)
 		throws NoSuchKaleoDraftDefinitionException;
 
@@ -264,8 +264,8 @@ public interface KaleoDraftDefinitionPersistence extends BasePersistence<KaleoDr
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching kaleo draft definition, or <code>null</code> if a matching kaleo draft definition could not be found
 	*/
-	public KaleoDraftDefinition fetchByC_N_V_First(long companyId,
-		java.lang.String name, int version,
+	public KaleoDraftDefinition fetchByC_N_V_First(long companyId, String name,
+		int version,
 		com.liferay.portal.kernel.util.OrderByComparator<KaleoDraftDefinition> orderByComparator);
 
 	/**
@@ -278,8 +278,8 @@ public interface KaleoDraftDefinitionPersistence extends BasePersistence<KaleoDr
 	* @return the last matching kaleo draft definition
 	* @throws NoSuchKaleoDraftDefinitionException if a matching kaleo draft definition could not be found
 	*/
-	public KaleoDraftDefinition findByC_N_V_Last(long companyId,
-		java.lang.String name, int version,
+	public KaleoDraftDefinition findByC_N_V_Last(long companyId, String name,
+		int version,
 		com.liferay.portal.kernel.util.OrderByComparator<KaleoDraftDefinition> orderByComparator)
 		throws NoSuchKaleoDraftDefinitionException;
 
@@ -292,8 +292,8 @@ public interface KaleoDraftDefinitionPersistence extends BasePersistence<KaleoDr
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching kaleo draft definition, or <code>null</code> if a matching kaleo draft definition could not be found
 	*/
-	public KaleoDraftDefinition fetchByC_N_V_Last(long companyId,
-		java.lang.String name, int version,
+	public KaleoDraftDefinition fetchByC_N_V_Last(long companyId, String name,
+		int version,
 		com.liferay.portal.kernel.util.OrderByComparator<KaleoDraftDefinition> orderByComparator);
 
 	/**
@@ -308,8 +308,7 @@ public interface KaleoDraftDefinitionPersistence extends BasePersistence<KaleoDr
 	* @throws NoSuchKaleoDraftDefinitionException if a kaleo draft definition with the primary key could not be found
 	*/
 	public KaleoDraftDefinition[] findByC_N_V_PrevAndNext(
-		long kaleoDraftDefinitionId, long companyId, java.lang.String name,
-		int version,
+		long kaleoDraftDefinitionId, long companyId, String name, int version,
 		com.liferay.portal.kernel.util.OrderByComparator<KaleoDraftDefinition> orderByComparator)
 		throws NoSuchKaleoDraftDefinitionException;
 
@@ -320,7 +319,7 @@ public interface KaleoDraftDefinitionPersistence extends BasePersistence<KaleoDr
 	* @param name the name
 	* @param version the version
 	*/
-	public void removeByC_N_V(long companyId, java.lang.String name, int version);
+	public void removeByC_N_V(long companyId, String name, int version);
 
 	/**
 	* Returns the number of kaleo draft definitions where companyId = &#63; and name = &#63; and version = &#63;.
@@ -330,7 +329,7 @@ public interface KaleoDraftDefinitionPersistence extends BasePersistence<KaleoDr
 	* @param version the version
 	* @return the number of matching kaleo draft definitions
 	*/
-	public int countByC_N_V(long companyId, java.lang.String name, int version);
+	public int countByC_N_V(long companyId, String name, int version);
 
 	/**
 	* Returns the kaleo draft definition where companyId = &#63; and name = &#63; and version = &#63; and draftVersion = &#63; or throws a {@link NoSuchKaleoDraftDefinitionException} if it could not be found.
@@ -342,8 +341,8 @@ public interface KaleoDraftDefinitionPersistence extends BasePersistence<KaleoDr
 	* @return the matching kaleo draft definition
 	* @throws NoSuchKaleoDraftDefinitionException if a matching kaleo draft definition could not be found
 	*/
-	public KaleoDraftDefinition findByC_N_V_D(long companyId,
-		java.lang.String name, int version, int draftVersion)
+	public KaleoDraftDefinition findByC_N_V_D(long companyId, String name,
+		int version, int draftVersion)
 		throws NoSuchKaleoDraftDefinitionException;
 
 	/**
@@ -355,8 +354,8 @@ public interface KaleoDraftDefinitionPersistence extends BasePersistence<KaleoDr
 	* @param draftVersion the draft version
 	* @return the matching kaleo draft definition, or <code>null</code> if a matching kaleo draft definition could not be found
 	*/
-	public KaleoDraftDefinition fetchByC_N_V_D(long companyId,
-		java.lang.String name, int version, int draftVersion);
+	public KaleoDraftDefinition fetchByC_N_V_D(long companyId, String name,
+		int version, int draftVersion);
 
 	/**
 	* Returns the kaleo draft definition where companyId = &#63; and name = &#63; and version = &#63; and draftVersion = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
@@ -368,9 +367,8 @@ public interface KaleoDraftDefinitionPersistence extends BasePersistence<KaleoDr
 	* @param retrieveFromCache whether to retrieve from the finder cache
 	* @return the matching kaleo draft definition, or <code>null</code> if a matching kaleo draft definition could not be found
 	*/
-	public KaleoDraftDefinition fetchByC_N_V_D(long companyId,
-		java.lang.String name, int version, int draftVersion,
-		boolean retrieveFromCache);
+	public KaleoDraftDefinition fetchByC_N_V_D(long companyId, String name,
+		int version, int draftVersion, boolean retrieveFromCache);
 
 	/**
 	* Removes the kaleo draft definition where companyId = &#63; and name = &#63; and version = &#63; and draftVersion = &#63; from the database.
@@ -381,8 +379,8 @@ public interface KaleoDraftDefinitionPersistence extends BasePersistence<KaleoDr
 	* @param draftVersion the draft version
 	* @return the kaleo draft definition that was removed
 	*/
-	public KaleoDraftDefinition removeByC_N_V_D(long companyId,
-		java.lang.String name, int version, int draftVersion)
+	public KaleoDraftDefinition removeByC_N_V_D(long companyId, String name,
+		int version, int draftVersion)
 		throws NoSuchKaleoDraftDefinitionException;
 
 	/**
@@ -394,8 +392,8 @@ public interface KaleoDraftDefinitionPersistence extends BasePersistence<KaleoDr
 	* @param draftVersion the draft version
 	* @return the number of matching kaleo draft definitions
 	*/
-	public int countByC_N_V_D(long companyId, java.lang.String name,
-		int version, int draftVersion);
+	public int countByC_N_V_D(long companyId, String name, int version,
+		int draftVersion);
 
 	/**
 	* Caches the kaleo draft definition in the entity cache if it is enabled.

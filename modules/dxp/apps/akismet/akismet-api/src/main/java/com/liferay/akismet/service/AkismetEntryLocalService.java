@@ -102,7 +102,7 @@ public interface AkismetEntryLocalService extends BaseLocalService,
 	public AkismetEntry deleteAkismetEntry(long akismetEntryId)
 		throws PortalException;
 
-	public void deleteAkismetEntry(java.lang.String className, long classPK)
+	public void deleteAkismetEntry(String className, long classPK)
 		throws PortalException;
 
 	/**
@@ -175,8 +175,7 @@ public interface AkismetEntryLocalService extends BaseLocalService,
 	public AkismetEntry fetchAkismetEntry(long akismetEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AkismetEntry fetchAkismetEntry(java.lang.String className,
-		long classPK);
+	public AkismetEntry fetchAkismetEntry(String className, long classPK);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -222,7 +221,7 @@ public interface AkismetEntryLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -238,8 +237,7 @@ public interface AkismetEntryLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public AkismetEntry updateAkismetEntry(AkismetEntry akismetEntry);
 
-	public AkismetEntry updateAkismetEntry(java.lang.String className,
-		long classPK, java.lang.String type, java.lang.String permalink,
-		java.lang.String referrer, java.lang.String userAgent,
-		java.lang.String userIP, java.lang.String userURL);
+	public AkismetEntry updateAkismetEntry(String className, long classPK,
+		String type, String permalink, String referrer, String userAgent,
+		String userIP, String userURL);
 }

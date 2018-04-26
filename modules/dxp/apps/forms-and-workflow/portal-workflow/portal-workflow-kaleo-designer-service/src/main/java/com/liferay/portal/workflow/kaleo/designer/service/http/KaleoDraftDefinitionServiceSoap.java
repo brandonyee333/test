@@ -89,10 +89,8 @@ public class KaleoDraftDefinitionServiceSoap {
 	occurred
 	*/
 	public static com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinitionSoap addKaleoDraftDefinition(
-		long userId, long groupId, java.lang.String name,
-		java.lang.String[] titleMapLanguageIds,
-		java.lang.String[] titleMapValues, java.lang.String content,
-		int version, int draftVersion,
+		long userId, long groupId, String name, String[] titleMapLanguageIds,
+		String[] titleMapValues, String content, int version, int draftVersion,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
 		try {
@@ -125,8 +123,7 @@ public class KaleoDraftDefinitionServiceSoap {
 	to delete the Kaleo draft definition or if a portal exception
 	occurred
 	*/
-	public static void deleteKaleoDraftDefinitions(java.lang.String name,
-		int version,
+	public static void deleteKaleoDraftDefinitions(String name, int version,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
 		try {
@@ -156,7 +153,7 @@ public class KaleoDraftDefinitionServiceSoap {
 	occurred
 	*/
 	public static com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinitionSoap getKaleoDraftDefinition(
-		java.lang.String name, int version, int draftVersion,
+		String name, int version, int draftVersion,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
 		try {
@@ -208,7 +205,7 @@ public class KaleoDraftDefinitionServiceSoap {
 	access the Kaleo draft definition
 	*/
 	public static com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinitionSoap getLatestKaleoDraftDefinition(
-		java.lang.String name, int version,
+		String name, int version,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
 		try {
@@ -277,8 +274,7 @@ public class KaleoDraftDefinitionServiceSoap {
 	* @throws PortalException if a portal exception occurred
 	*/
 	public static com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinitionSoap[] getLatestKaleoDraftDefinitions(
-		long companyId, java.lang.String keywords, int version, int start,
-		int end,
+		long companyId, String keywords, int version, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
 		throws RemoteException {
 		try {
@@ -314,9 +310,8 @@ public class KaleoDraftDefinitionServiceSoap {
 	occurred
 	*/
 	public static com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinitionSoap publishKaleoDraftDefinition(
-		long userId, long groupId, java.lang.String name,
-		java.lang.String[] titleMapLanguageIds,
-		java.lang.String[] titleMapValues, java.lang.String content,
+		long userId, long groupId, String name, String[] titleMapLanguageIds,
+		String[] titleMapValues, String content,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
 		try {
@@ -356,10 +351,8 @@ public class KaleoDraftDefinitionServiceSoap {
 	occurred
 	*/
 	public static com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinitionSoap updateKaleoDraftDefinition(
-		long userId, java.lang.String name,
-		java.lang.String[] titleMapLanguageIds,
-		java.lang.String[] titleMapValues, java.lang.String content,
-		int version,
+		long userId, String name, String[] titleMapLanguageIds,
+		String[] titleMapValues, String content, int version,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
 		try {

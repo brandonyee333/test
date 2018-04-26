@@ -79,10 +79,9 @@ public interface KaleoDraftDefinitionService extends BaseService {
 	occurred
 	*/
 	public KaleoDraftDefinition addKaleoDraftDefinition(long userId,
-		long groupId, java.lang.String name,
-		Map<Locale, java.lang.String> titleMap, java.lang.String content,
-		int version, int draftVersion, ServiceContext serviceContext)
-		throws PortalException;
+		long groupId, String name, Map<Locale, String> titleMap,
+		String content, int version, int draftVersion,
+		ServiceContext serviceContext) throws PortalException;
 
 	/**
 	* Deletes the Kaleo draft definition and its resources.
@@ -96,7 +95,7 @@ public interface KaleoDraftDefinitionService extends BaseService {
 	to delete the Kaleo draft definition or if a portal exception
 	occurred
 	*/
-	public void deleteKaleoDraftDefinitions(java.lang.String name, int version,
+	public void deleteKaleoDraftDefinitions(String name, int version,
 		ServiceContext serviceContext) throws PortalException;
 
 	/**
@@ -115,7 +114,7 @@ public interface KaleoDraftDefinitionService extends BaseService {
 	occurred
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public KaleoDraftDefinition getKaleoDraftDefinition(java.lang.String name,
+	public KaleoDraftDefinition getKaleoDraftDefinition(String name,
 		int version, int draftVersion, ServiceContext serviceContext)
 		throws PortalException;
 
@@ -143,9 +142,8 @@ public interface KaleoDraftDefinitionService extends BaseService {
 	access the Kaleo draft definition
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public KaleoDraftDefinition getLatestKaleoDraftDefinition(
-		java.lang.String name, int version, ServiceContext serviceContext)
-		throws PortalException;
+	public KaleoDraftDefinition getLatestKaleoDraftDefinition(String name,
+		int version, ServiceContext serviceContext) throws PortalException;
 
 	/**
 	* Returns an ordered range of the latest Kaleo draft definitions matching
@@ -187,15 +185,15 @@ public interface KaleoDraftDefinitionService extends BaseService {
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<KaleoDraftDefinition> getLatestKaleoDraftDefinitions(
-		long companyId, java.lang.String keywords, int version, int start,
-		int end, OrderByComparator orderByComparator) throws PortalException;
+		long companyId, String keywords, int version, int start, int end,
+		OrderByComparator orderByComparator) throws PortalException;
 
 	/**
 	* Returns the OSGi service identifier.
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	/**
 	* Publishes the Kaleo draft definition.
@@ -216,9 +214,9 @@ public interface KaleoDraftDefinitionService extends BaseService {
 	occurred
 	*/
 	public KaleoDraftDefinition publishKaleoDraftDefinition(long userId,
-		long groupId, java.lang.String name,
-		Map<Locale, java.lang.String> titleMap, java.lang.String content,
-		ServiceContext serviceContext) throws PortalException;
+		long groupId, String name, Map<Locale, String> titleMap,
+		String content, ServiceContext serviceContext)
+		throws PortalException;
 
 	/**
 	* Updates the Kaleo draft definition by replacing its content and title and
@@ -240,7 +238,6 @@ public interface KaleoDraftDefinitionService extends BaseService {
 	occurred
 	*/
 	public KaleoDraftDefinition updateKaleoDraftDefinition(long userId,
-		java.lang.String name, Map<Locale, java.lang.String> titleMap,
-		java.lang.String content, int version, ServiceContext serviceContext)
-		throws PortalException;
+		String name, Map<Locale, String> titleMap, String content, int version,
+		ServiceContext serviceContext) throws PortalException;
 }

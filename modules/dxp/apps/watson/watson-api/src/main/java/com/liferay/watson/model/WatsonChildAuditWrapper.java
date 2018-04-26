@@ -238,7 +238,7 @@ public class WatsonChildAuditWrapper implements WatsonChildAudit,
 	}
 
 	@Override
-	public java.lang.Object clone() {
+	public Object clone() {
 		return new WatsonChildAuditWrapper((WatsonChildAudit)_watsonChildAudit.clone());
 	}
 
@@ -413,7 +413,7 @@ public class WatsonChildAuditWrapper implements WatsonChildAudit,
 	* @return the source of this watson child audit
 	*/
 	@Override
-	public java.lang.String getSource() {
+	public String getSource() {
 		return _watsonChildAudit.getSource();
 	}
 
@@ -473,7 +473,7 @@ public class WatsonChildAuditWrapper implements WatsonChildAudit,
 	* @return the user name of this watson child audit
 	*/
 	@Override
-	public java.lang.String getUserName() {
+	public String getUserName() {
 		return _watsonChildAudit.getUserName();
 	}
 
@@ -483,7 +483,7 @@ public class WatsonChildAuditWrapper implements WatsonChildAudit,
 	* @return the user uuid of this watson child audit
 	*/
 	@Override
-	public java.lang.String getUserUuid() {
+	public String getUserUuid() {
 		return _watsonChildAudit.getUserUuid();
 	}
 
@@ -719,7 +719,7 @@ public class WatsonChildAuditWrapper implements WatsonChildAudit,
 	* @param source the source of this watson child audit
 	*/
 	@Override
-	public void setSource(java.lang.String source) {
+	public void setSource(String source) {
 		_watsonChildAudit.setSource(source);
 	}
 
@@ -780,7 +780,7 @@ public class WatsonChildAuditWrapper implements WatsonChildAudit,
 	* @param userName the user name of this watson child audit
 	*/
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_watsonChildAudit.setUserName(userName);
 	}
 
@@ -790,7 +790,7 @@ public class WatsonChildAuditWrapper implements WatsonChildAudit,
 	* @param userUuid the user uuid of this watson child audit
 	*/
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_watsonChildAudit.setUserUuid(userUuid);
 	}
 
@@ -825,7 +825,7 @@ public class WatsonChildAuditWrapper implements WatsonChildAudit,
 	}
 
 	@Override
-	public java.lang.String toString() {
+	public String toString() {
 		return _watsonChildAudit.toString();
 	}
 
@@ -835,7 +835,7 @@ public class WatsonChildAuditWrapper implements WatsonChildAudit,
 	}
 
 	@Override
-	public java.lang.String toXmlString() {
+	public String toXmlString() {
 		return _watsonChildAudit.toXmlString();
 	}
 

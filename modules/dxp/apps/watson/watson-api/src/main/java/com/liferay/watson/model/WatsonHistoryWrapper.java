@@ -150,7 +150,7 @@ public class WatsonHistoryWrapper implements WatsonHistory,
 	}
 
 	@Override
-	public java.lang.Object clone() {
+	public Object clone() {
 		return new WatsonHistoryWrapper((WatsonHistory)_watsonHistory.clone());
 	}
 
@@ -165,7 +165,7 @@ public class WatsonHistoryWrapper implements WatsonHistory,
 	* @return the fully qualified class name of this watson history
 	*/
 	@Override
-	public java.lang.String getClassName() {
+	public String getClassName() {
 		return _watsonHistory.getClassName();
 	}
 
@@ -285,7 +285,7 @@ public class WatsonHistoryWrapper implements WatsonHistory,
 	* @return the user name of this watson history
 	*/
 	@Override
-	public java.lang.String getUserName() {
+	public String getUserName() {
 		return _watsonHistory.getUserName();
 	}
 
@@ -295,7 +295,7 @@ public class WatsonHistoryWrapper implements WatsonHistory,
 	* @return the user uuid of this watson history
 	*/
 	@Override
-	public java.lang.String getUserUuid() {
+	public String getUserUuid() {
 		return _watsonHistory.getUserUuid();
 	}
 
@@ -350,7 +350,7 @@ public class WatsonHistoryWrapper implements WatsonHistory,
 	}
 
 	@Override
-	public void setClassName(java.lang.String className) {
+	public void setClassName(String className) {
 		_watsonHistory.setClassName(className);
 	}
 
@@ -486,7 +486,7 @@ public class WatsonHistoryWrapper implements WatsonHistory,
 	* @param userName the user name of this watson history
 	*/
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_watsonHistory.setUserName(userName);
 	}
 
@@ -496,7 +496,7 @@ public class WatsonHistoryWrapper implements WatsonHistory,
 	* @param userUuid the user uuid of this watson history
 	*/
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_watsonHistory.setUserUuid(userUuid);
 	}
 
@@ -531,7 +531,7 @@ public class WatsonHistoryWrapper implements WatsonHistory,
 	}
 
 	@Override
-	public java.lang.String toString() {
+	public String toString() {
 		return _watsonHistory.toString();
 	}
 
@@ -541,7 +541,7 @@ public class WatsonHistoryWrapper implements WatsonHistory,
 	}
 
 	@Override
-	public java.lang.String toXmlString() {
+	public String toXmlString() {
 		return _watsonHistory.toXmlString();
 	}
 

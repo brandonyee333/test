@@ -282,7 +282,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	}
 
 	@Override
-	public java.lang.Object clone() {
+	public Object clone() {
 		return new WatsonPersonWrapper((WatsonPerson)_watsonPerson.clone());
 	}
 
@@ -302,7 +302,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	}
 
 	@Override
-	public java.lang.String[] getAvailableLanguageIds() {
+	public String[] getAvailableLanguageIds() {
 		return _watsonPerson.getAvailableLanguageIds();
 	}
 
@@ -387,7 +387,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	}
 
 	@Override
-	public java.lang.String getDefaultLanguageId() {
+	public String getDefaultLanguageId() {
 		return _watsonPerson.getDefaultLanguageId();
 	}
 
@@ -397,7 +397,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @return the description of this watson person
 	*/
 	@Override
-	public java.lang.String getDescription() {
+	public String getDescription() {
 		return _watsonPerson.getDescription();
 	}
 
@@ -408,7 +408,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @return the localized description of this watson person
 	*/
 	@Override
-	public java.lang.String getDescription(java.util.Locale locale) {
+	public String getDescription(java.util.Locale locale) {
 		return _watsonPerson.getDescription(locale);
 	}
 
@@ -420,8 +420,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @return the localized description of this watson person. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 	*/
 	@Override
-	public java.lang.String getDescription(java.util.Locale locale,
-		boolean useDefault) {
+	public String getDescription(java.util.Locale locale, boolean useDefault) {
 		return _watsonPerson.getDescription(locale, useDefault);
 	}
 
@@ -432,7 +431,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @return the localized description of this watson person
 	*/
 	@Override
-	public java.lang.String getDescription(java.lang.String languageId) {
+	public String getDescription(String languageId) {
 		return _watsonPerson.getDescription(languageId);
 	}
 
@@ -444,18 +443,17 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @return the localized description of this watson person
 	*/
 	@Override
-	public java.lang.String getDescription(java.lang.String languageId,
-		boolean useDefault) {
+	public String getDescription(String languageId, boolean useDefault) {
 		return _watsonPerson.getDescription(languageId, useDefault);
 	}
 
 	@Override
-	public java.lang.String getDescriptionCurrentLanguageId() {
+	public String getDescriptionCurrentLanguageId() {
 		return _watsonPerson.getDescriptionCurrentLanguageId();
 	}
 
 	@Override
-	public java.lang.String getDescriptionCurrentValue() {
+	public String getDescriptionCurrentValue() {
 		return _watsonPerson.getDescriptionCurrentValue();
 	}
 
@@ -465,7 +463,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @return the locales and localized descriptions of this watson person
 	*/
 	@Override
-	public Map<java.util.Locale, java.lang.String> getDescriptionMap() {
+	public Map<java.util.Locale, String> getDescriptionMap() {
 		return _watsonPerson.getDescriptionMap();
 	}
 
@@ -475,7 +473,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @return the end age of this watson person
 	*/
 	@Override
-	public java.lang.String getEndAge() {
+	public String getEndAge() {
 		return _watsonPerson.getEndAge();
 	}
 
@@ -530,7 +528,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @return the height of this watson person
 	*/
 	@Override
-	public java.lang.String getHeight() {
+	public String getHeight() {
 		return _watsonPerson.getHeight();
 	}
 
@@ -540,7 +538,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @return the image payload of this watson person
 	*/
 	@Override
-	public java.lang.String getImagePayload() {
+	public String getImagePayload() {
 		return _watsonPerson.getImagePayload();
 	}
 
@@ -560,7 +558,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @return the occupation of this watson person
 	*/
 	@Override
-	public java.lang.String getOccupation() {
+	public String getOccupation() {
 		return _watsonPerson.getOccupation();
 	}
 
@@ -571,7 +569,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @return the localized occupation of this watson person
 	*/
 	@Override
-	public java.lang.String getOccupation(java.util.Locale locale) {
+	public String getOccupation(java.util.Locale locale) {
 		return _watsonPerson.getOccupation(locale);
 	}
 
@@ -583,8 +581,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @return the localized occupation of this watson person. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 	*/
 	@Override
-	public java.lang.String getOccupation(java.util.Locale locale,
-		boolean useDefault) {
+	public String getOccupation(java.util.Locale locale, boolean useDefault) {
 		return _watsonPerson.getOccupation(locale, useDefault);
 	}
 
@@ -595,7 +592,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @return the localized occupation of this watson person
 	*/
 	@Override
-	public java.lang.String getOccupation(java.lang.String languageId) {
+	public String getOccupation(String languageId) {
 		return _watsonPerson.getOccupation(languageId);
 	}
 
@@ -607,18 +604,17 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @return the localized occupation of this watson person
 	*/
 	@Override
-	public java.lang.String getOccupation(java.lang.String languageId,
-		boolean useDefault) {
+	public String getOccupation(String languageId, boolean useDefault) {
 		return _watsonPerson.getOccupation(languageId, useDefault);
 	}
 
 	@Override
-	public java.lang.String getOccupationCurrentLanguageId() {
+	public String getOccupationCurrentLanguageId() {
 		return _watsonPerson.getOccupationCurrentLanguageId();
 	}
 
 	@Override
-	public java.lang.String getOccupationCurrentValue() {
+	public String getOccupationCurrentValue() {
 		return _watsonPerson.getOccupationCurrentValue();
 	}
 
@@ -628,7 +624,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @return the locales and localized occupations of this watson person
 	*/
 	@Override
-	public Map<java.util.Locale, java.lang.String> getOccupationMap() {
+	public Map<java.util.Locale, String> getOccupationMap() {
 		return _watsonPerson.getOccupationMap();
 	}
 
@@ -683,7 +679,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @return the start age of this watson person
 	*/
 	@Override
-	public java.lang.String getStartAge() {
+	public String getStartAge() {
 		return _watsonPerson.getStartAge();
 	}
 
@@ -723,7 +719,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @return the user name of this watson person
 	*/
 	@Override
-	public java.lang.String getUserName() {
+	public String getUserName() {
 		return _watsonPerson.getUserName();
 	}
 
@@ -733,7 +729,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @return the user uuid of this watson person
 	*/
 	@Override
-	public java.lang.String getUserUuid() {
+	public String getUserUuid() {
 		return _watsonPerson.getUserUuid();
 	}
 
@@ -763,7 +759,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @return the weight of this watson person
 	*/
 	@Override
-	public java.lang.String getWeight() {
+	public String getWeight() {
 		return _watsonPerson.getWeight();
 	}
 
@@ -926,7 +922,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @param description the description of this watson person
 	*/
 	@Override
-	public void setDescription(java.lang.String description) {
+	public void setDescription(String description) {
 		_watsonPerson.setDescription(description);
 	}
 
@@ -937,8 +933,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @param locale the locale of the language
 	*/
 	@Override
-	public void setDescription(java.lang.String description,
-		java.util.Locale locale) {
+	public void setDescription(String description, java.util.Locale locale) {
 		_watsonPerson.setDescription(description, locale);
 	}
 
@@ -950,13 +945,13 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setDescription(java.lang.String description,
-		java.util.Locale locale, java.util.Locale defaultLocale) {
+	public void setDescription(String description, java.util.Locale locale,
+		java.util.Locale defaultLocale) {
 		_watsonPerson.setDescription(description, locale, defaultLocale);
 	}
 
 	@Override
-	public void setDescriptionCurrentLanguageId(java.lang.String languageId) {
+	public void setDescriptionCurrentLanguageId(String languageId) {
 		_watsonPerson.setDescriptionCurrentLanguageId(languageId);
 	}
 
@@ -966,8 +961,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @param descriptionMap the locales and localized descriptions of this watson person
 	*/
 	@Override
-	public void setDescriptionMap(
-		Map<java.util.Locale, java.lang.String> descriptionMap) {
+	public void setDescriptionMap(Map<java.util.Locale, String> descriptionMap) {
 		_watsonPerson.setDescriptionMap(descriptionMap);
 	}
 
@@ -979,7 +973,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	*/
 	@Override
 	public void setDescriptionMap(
-		Map<java.util.Locale, java.lang.String> descriptionMap,
+		Map<java.util.Locale, String> descriptionMap,
 		java.util.Locale defaultLocale) {
 		_watsonPerson.setDescriptionMap(descriptionMap, defaultLocale);
 	}
@@ -990,7 +984,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @param endAge the end age of this watson person
 	*/
 	@Override
-	public void setEndAge(java.lang.String endAge) {
+	public void setEndAge(String endAge) {
 		_watsonPerson.setEndAge(endAge);
 	}
 
@@ -1056,7 +1050,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @param height the height of this watson person
 	*/
 	@Override
-	public void setHeight(java.lang.String height) {
+	public void setHeight(String height) {
 		_watsonPerson.setHeight(height);
 	}
 
@@ -1066,7 +1060,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @param imagePayload the image payload of this watson person
 	*/
 	@Override
-	public void setImagePayload(java.lang.String imagePayload) {
+	public void setImagePayload(String imagePayload) {
 		_watsonPerson.setImagePayload(imagePayload);
 	}
 
@@ -1091,7 +1085,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @param occupation the occupation of this watson person
 	*/
 	@Override
-	public void setOccupation(java.lang.String occupation) {
+	public void setOccupation(String occupation) {
 		_watsonPerson.setOccupation(occupation);
 	}
 
@@ -1102,8 +1096,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @param locale the locale of the language
 	*/
 	@Override
-	public void setOccupation(java.lang.String occupation,
-		java.util.Locale locale) {
+	public void setOccupation(String occupation, java.util.Locale locale) {
 		_watsonPerson.setOccupation(occupation, locale);
 	}
 
@@ -1115,13 +1108,13 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setOccupation(java.lang.String occupation,
-		java.util.Locale locale, java.util.Locale defaultLocale) {
+	public void setOccupation(String occupation, java.util.Locale locale,
+		java.util.Locale defaultLocale) {
 		_watsonPerson.setOccupation(occupation, locale, defaultLocale);
 	}
 
 	@Override
-	public void setOccupationCurrentLanguageId(java.lang.String languageId) {
+	public void setOccupationCurrentLanguageId(String languageId) {
 		_watsonPerson.setOccupationCurrentLanguageId(languageId);
 	}
 
@@ -1131,8 +1124,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @param occupationMap the locales and localized occupations of this watson person
 	*/
 	@Override
-	public void setOccupationMap(
-		Map<java.util.Locale, java.lang.String> occupationMap) {
+	public void setOccupationMap(Map<java.util.Locale, String> occupationMap) {
 		_watsonPerson.setOccupationMap(occupationMap);
 	}
 
@@ -1143,8 +1135,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setOccupationMap(
-		Map<java.util.Locale, java.lang.String> occupationMap,
+	public void setOccupationMap(Map<java.util.Locale, String> occupationMap,
 		java.util.Locale defaultLocale) {
 		_watsonPerson.setOccupationMap(occupationMap, defaultLocale);
 	}
@@ -1200,7 +1191,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @param startAge the start age of this watson person
 	*/
 	@Override
-	public void setStartAge(java.lang.String startAge) {
+	public void setStartAge(String startAge) {
 		_watsonPerson.setStartAge(startAge);
 	}
 
@@ -1240,7 +1231,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @param userName the user name of this watson person
 	*/
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_watsonPerson.setUserName(userName);
 	}
 
@@ -1250,7 +1241,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @param userUuid the user uuid of this watson person
 	*/
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_watsonPerson.setUserUuid(userUuid);
 	}
 
@@ -1280,7 +1271,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	* @param weight the weight of this watson person
 	*/
 	@Override
-	public void setWeight(java.lang.String weight) {
+	public void setWeight(String weight) {
 		_watsonPerson.setWeight(weight);
 	}
 
@@ -1295,7 +1286,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	}
 
 	@Override
-	public java.lang.String toString() {
+	public String toString() {
 		return _watsonPerson.toString();
 	}
 
@@ -1305,7 +1296,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	}
 
 	@Override
-	public java.lang.String toXmlString() {
+	public String toXmlString() {
 		return _watsonPerson.toXmlString();
 	}
 

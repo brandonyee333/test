@@ -289,7 +289,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	}
 
 	@Override
-	public java.lang.Object clone() {
+	public Object clone() {
 		return new WatsonPersonAuditWrapper((WatsonPersonAudit)_watsonPersonAudit.clone());
 	}
 
@@ -309,7 +309,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	}
 
 	@Override
-	public java.lang.String[] getAvailableLanguageIds() {
+	public String[] getAvailableLanguageIds() {
 		return _watsonPersonAudit.getAvailableLanguageIds();
 	}
 
@@ -394,7 +394,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	}
 
 	@Override
-	public java.lang.String getDefaultLanguageId() {
+	public String getDefaultLanguageId() {
 		return _watsonPersonAudit.getDefaultLanguageId();
 	}
 
@@ -404,7 +404,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @return the description of this watson person audit
 	*/
 	@Override
-	public java.lang.String getDescription() {
+	public String getDescription() {
 		return _watsonPersonAudit.getDescription();
 	}
 
@@ -415,7 +415,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @return the localized description of this watson person audit
 	*/
 	@Override
-	public java.lang.String getDescription(java.util.Locale locale) {
+	public String getDescription(java.util.Locale locale) {
 		return _watsonPersonAudit.getDescription(locale);
 	}
 
@@ -427,8 +427,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @return the localized description of this watson person audit. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 	*/
 	@Override
-	public java.lang.String getDescription(java.util.Locale locale,
-		boolean useDefault) {
+	public String getDescription(java.util.Locale locale, boolean useDefault) {
 		return _watsonPersonAudit.getDescription(locale, useDefault);
 	}
 
@@ -439,7 +438,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @return the localized description of this watson person audit
 	*/
 	@Override
-	public java.lang.String getDescription(java.lang.String languageId) {
+	public String getDescription(String languageId) {
 		return _watsonPersonAudit.getDescription(languageId);
 	}
 
@@ -451,18 +450,17 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @return the localized description of this watson person audit
 	*/
 	@Override
-	public java.lang.String getDescription(java.lang.String languageId,
-		boolean useDefault) {
+	public String getDescription(String languageId, boolean useDefault) {
 		return _watsonPersonAudit.getDescription(languageId, useDefault);
 	}
 
 	@Override
-	public java.lang.String getDescriptionCurrentLanguageId() {
+	public String getDescriptionCurrentLanguageId() {
 		return _watsonPersonAudit.getDescriptionCurrentLanguageId();
 	}
 
 	@Override
-	public java.lang.String getDescriptionCurrentValue() {
+	public String getDescriptionCurrentValue() {
 		return _watsonPersonAudit.getDescriptionCurrentValue();
 	}
 
@@ -472,7 +470,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @return the locales and localized descriptions of this watson person audit
 	*/
 	@Override
-	public Map<java.util.Locale, java.lang.String> getDescriptionMap() {
+	public Map<java.util.Locale, String> getDescriptionMap() {
 		return _watsonPersonAudit.getDescriptionMap();
 	}
 
@@ -482,7 +480,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @return the end age of this watson person audit
 	*/
 	@Override
-	public java.lang.String getEndAge() {
+	public String getEndAge() {
 		return _watsonPersonAudit.getEndAge();
 	}
 
@@ -537,7 +535,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @return the height of this watson person audit
 	*/
 	@Override
-	public java.lang.String getHeight() {
+	public String getHeight() {
 		return _watsonPersonAudit.getHeight();
 	}
 
@@ -547,7 +545,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @return the image payload of this watson person audit
 	*/
 	@Override
-	public java.lang.String getImagePayload() {
+	public String getImagePayload() {
 		return _watsonPersonAudit.getImagePayload();
 	}
 
@@ -567,7 +565,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @return the occupation of this watson person audit
 	*/
 	@Override
-	public java.lang.String getOccupation() {
+	public String getOccupation() {
 		return _watsonPersonAudit.getOccupation();
 	}
 
@@ -578,7 +576,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @return the localized occupation of this watson person audit
 	*/
 	@Override
-	public java.lang.String getOccupation(java.util.Locale locale) {
+	public String getOccupation(java.util.Locale locale) {
 		return _watsonPersonAudit.getOccupation(locale);
 	}
 
@@ -590,8 +588,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @return the localized occupation of this watson person audit. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 	*/
 	@Override
-	public java.lang.String getOccupation(java.util.Locale locale,
-		boolean useDefault) {
+	public String getOccupation(java.util.Locale locale, boolean useDefault) {
 		return _watsonPersonAudit.getOccupation(locale, useDefault);
 	}
 
@@ -602,7 +599,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @return the localized occupation of this watson person audit
 	*/
 	@Override
-	public java.lang.String getOccupation(java.lang.String languageId) {
+	public String getOccupation(String languageId) {
 		return _watsonPersonAudit.getOccupation(languageId);
 	}
 
@@ -614,18 +611,17 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @return the localized occupation of this watson person audit
 	*/
 	@Override
-	public java.lang.String getOccupation(java.lang.String languageId,
-		boolean useDefault) {
+	public String getOccupation(String languageId, boolean useDefault) {
 		return _watsonPersonAudit.getOccupation(languageId, useDefault);
 	}
 
 	@Override
-	public java.lang.String getOccupationCurrentLanguageId() {
+	public String getOccupationCurrentLanguageId() {
 		return _watsonPersonAudit.getOccupationCurrentLanguageId();
 	}
 
 	@Override
-	public java.lang.String getOccupationCurrentValue() {
+	public String getOccupationCurrentValue() {
 		return _watsonPersonAudit.getOccupationCurrentValue();
 	}
 
@@ -635,7 +631,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @return the locales and localized occupations of this watson person audit
 	*/
 	@Override
-	public Map<java.util.Locale, java.lang.String> getOccupationMap() {
+	public Map<java.util.Locale, String> getOccupationMap() {
 		return _watsonPersonAudit.getOccupationMap();
 	}
 
@@ -690,7 +686,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @return the start age of this watson person audit
 	*/
 	@Override
-	public java.lang.String getStartAge() {
+	public String getStartAge() {
 		return _watsonPersonAudit.getStartAge();
 	}
 
@@ -730,7 +726,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @return the user name of this watson person audit
 	*/
 	@Override
-	public java.lang.String getUserName() {
+	public String getUserName() {
 		return _watsonPersonAudit.getUserName();
 	}
 
@@ -740,7 +736,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @return the user uuid of this watson person audit
 	*/
 	@Override
-	public java.lang.String getUserUuid() {
+	public String getUserUuid() {
 		return _watsonPersonAudit.getUserUuid();
 	}
 
@@ -780,7 +776,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @return the weight of this watson person audit
 	*/
 	@Override
-	public java.lang.String getWeight() {
+	public String getWeight() {
 		return _watsonPersonAudit.getWeight();
 	}
 
@@ -943,7 +939,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @param description the description of this watson person audit
 	*/
 	@Override
-	public void setDescription(java.lang.String description) {
+	public void setDescription(String description) {
 		_watsonPersonAudit.setDescription(description);
 	}
 
@@ -954,8 +950,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @param locale the locale of the language
 	*/
 	@Override
-	public void setDescription(java.lang.String description,
-		java.util.Locale locale) {
+	public void setDescription(String description, java.util.Locale locale) {
 		_watsonPersonAudit.setDescription(description, locale);
 	}
 
@@ -967,13 +962,13 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setDescription(java.lang.String description,
-		java.util.Locale locale, java.util.Locale defaultLocale) {
+	public void setDescription(String description, java.util.Locale locale,
+		java.util.Locale defaultLocale) {
 		_watsonPersonAudit.setDescription(description, locale, defaultLocale);
 	}
 
 	@Override
-	public void setDescriptionCurrentLanguageId(java.lang.String languageId) {
+	public void setDescriptionCurrentLanguageId(String languageId) {
 		_watsonPersonAudit.setDescriptionCurrentLanguageId(languageId);
 	}
 
@@ -983,8 +978,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @param descriptionMap the locales and localized descriptions of this watson person audit
 	*/
 	@Override
-	public void setDescriptionMap(
-		Map<java.util.Locale, java.lang.String> descriptionMap) {
+	public void setDescriptionMap(Map<java.util.Locale, String> descriptionMap) {
 		_watsonPersonAudit.setDescriptionMap(descriptionMap);
 	}
 
@@ -996,7 +990,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	*/
 	@Override
 	public void setDescriptionMap(
-		Map<java.util.Locale, java.lang.String> descriptionMap,
+		Map<java.util.Locale, String> descriptionMap,
 		java.util.Locale defaultLocale) {
 		_watsonPersonAudit.setDescriptionMap(descriptionMap, defaultLocale);
 	}
@@ -1007,7 +1001,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @param endAge the end age of this watson person audit
 	*/
 	@Override
-	public void setEndAge(java.lang.String endAge) {
+	public void setEndAge(String endAge) {
 		_watsonPersonAudit.setEndAge(endAge);
 	}
 
@@ -1073,7 +1067,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @param height the height of this watson person audit
 	*/
 	@Override
-	public void setHeight(java.lang.String height) {
+	public void setHeight(String height) {
 		_watsonPersonAudit.setHeight(height);
 	}
 
@@ -1083,7 +1077,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @param imagePayload the image payload of this watson person audit
 	*/
 	@Override
-	public void setImagePayload(java.lang.String imagePayload) {
+	public void setImagePayload(String imagePayload) {
 		_watsonPersonAudit.setImagePayload(imagePayload);
 	}
 
@@ -1108,7 +1102,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @param occupation the occupation of this watson person audit
 	*/
 	@Override
-	public void setOccupation(java.lang.String occupation) {
+	public void setOccupation(String occupation) {
 		_watsonPersonAudit.setOccupation(occupation);
 	}
 
@@ -1119,8 +1113,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @param locale the locale of the language
 	*/
 	@Override
-	public void setOccupation(java.lang.String occupation,
-		java.util.Locale locale) {
+	public void setOccupation(String occupation, java.util.Locale locale) {
 		_watsonPersonAudit.setOccupation(occupation, locale);
 	}
 
@@ -1132,13 +1125,13 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setOccupation(java.lang.String occupation,
-		java.util.Locale locale, java.util.Locale defaultLocale) {
+	public void setOccupation(String occupation, java.util.Locale locale,
+		java.util.Locale defaultLocale) {
 		_watsonPersonAudit.setOccupation(occupation, locale, defaultLocale);
 	}
 
 	@Override
-	public void setOccupationCurrentLanguageId(java.lang.String languageId) {
+	public void setOccupationCurrentLanguageId(String languageId) {
 		_watsonPersonAudit.setOccupationCurrentLanguageId(languageId);
 	}
 
@@ -1148,8 +1141,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @param occupationMap the locales and localized occupations of this watson person audit
 	*/
 	@Override
-	public void setOccupationMap(
-		Map<java.util.Locale, java.lang.String> occupationMap) {
+	public void setOccupationMap(Map<java.util.Locale, String> occupationMap) {
 		_watsonPersonAudit.setOccupationMap(occupationMap);
 	}
 
@@ -1160,8 +1152,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setOccupationMap(
-		Map<java.util.Locale, java.lang.String> occupationMap,
+	public void setOccupationMap(Map<java.util.Locale, String> occupationMap,
 		java.util.Locale defaultLocale) {
 		_watsonPersonAudit.setOccupationMap(occupationMap, defaultLocale);
 	}
@@ -1217,7 +1208,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @param startAge the start age of this watson person audit
 	*/
 	@Override
-	public void setStartAge(java.lang.String startAge) {
+	public void setStartAge(String startAge) {
 		_watsonPersonAudit.setStartAge(startAge);
 	}
 
@@ -1257,7 +1248,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @param userName the user name of this watson person audit
 	*/
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_watsonPersonAudit.setUserName(userName);
 	}
 
@@ -1267,7 +1258,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @param userUuid the user uuid of this watson person audit
 	*/
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_watsonPersonAudit.setUserUuid(userUuid);
 	}
 
@@ -1307,7 +1298,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	* @param weight the weight of this watson person audit
 	*/
 	@Override
-	public void setWeight(java.lang.String weight) {
+	public void setWeight(String weight) {
 		_watsonPersonAudit.setWeight(weight);
 	}
 
@@ -1322,7 +1313,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	}
 
 	@Override
-	public java.lang.String toString() {
+	public String toString() {
 		return _watsonPersonAudit.toString();
 	}
 
@@ -1332,7 +1323,7 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	}
 
 	@Override
-	public java.lang.String toXmlString() {
+	public String toXmlString() {
 		return _watsonPersonAudit.toXmlString();
 	}
 

@@ -136,7 +136,7 @@ public class AkismetEntryWrapper implements AkismetEntry,
 	}
 
 	@Override
-	public java.lang.Object clone() {
+	public Object clone() {
 		return new AkismetEntryWrapper((AkismetEntry)_akismetEntry.clone());
 	}
 
@@ -161,7 +161,7 @@ public class AkismetEntryWrapper implements AkismetEntry,
 	* @return the fully qualified class name of this akismet entry
 	*/
 	@Override
-	public java.lang.String getClassName() {
+	public String getClassName() {
 		return _akismetEntry.getClassName();
 	}
 
@@ -206,7 +206,7 @@ public class AkismetEntryWrapper implements AkismetEntry,
 	* @return the permalink of this akismet entry
 	*/
 	@Override
-	public java.lang.String getPermalink() {
+	public String getPermalink() {
 		return _akismetEntry.getPermalink();
 	}
 
@@ -231,7 +231,7 @@ public class AkismetEntryWrapper implements AkismetEntry,
 	* @return the referrer of this akismet entry
 	*/
 	@Override
-	public java.lang.String getReferrer() {
+	public String getReferrer() {
 		return _akismetEntry.getReferrer();
 	}
 
@@ -241,7 +241,7 @@ public class AkismetEntryWrapper implements AkismetEntry,
 	* @return the type of this akismet entry
 	*/
 	@Override
-	public java.lang.String getType() {
+	public String getType() {
 		return _akismetEntry.getType();
 	}
 
@@ -251,7 +251,7 @@ public class AkismetEntryWrapper implements AkismetEntry,
 	* @return the user agent of this akismet entry
 	*/
 	@Override
-	public java.lang.String getUserAgent() {
+	public String getUserAgent() {
 		return _akismetEntry.getUserAgent();
 	}
 
@@ -261,7 +261,7 @@ public class AkismetEntryWrapper implements AkismetEntry,
 	* @return the user ip of this akismet entry
 	*/
 	@Override
-	public java.lang.String getUserIP() {
+	public String getUserIP() {
 		return _akismetEntry.getUserIP();
 	}
 
@@ -271,7 +271,7 @@ public class AkismetEntryWrapper implements AkismetEntry,
 	* @return the user url of this akismet entry
 	*/
 	@Override
-	public java.lang.String getUserURL() {
+	public String getUserURL() {
 		return _akismetEntry.getUserURL();
 	}
 
@@ -316,7 +316,7 @@ public class AkismetEntryWrapper implements AkismetEntry,
 	}
 
 	@Override
-	public void setClassName(java.lang.String className) {
+	public void setClassName(String className) {
 		_akismetEntry.setClassName(className);
 	}
 
@@ -377,7 +377,7 @@ public class AkismetEntryWrapper implements AkismetEntry,
 	* @param permalink the permalink of this akismet entry
 	*/
 	@Override
-	public void setPermalink(java.lang.String permalink) {
+	public void setPermalink(String permalink) {
 		_akismetEntry.setPermalink(permalink);
 	}
 
@@ -402,7 +402,7 @@ public class AkismetEntryWrapper implements AkismetEntry,
 	* @param referrer the referrer of this akismet entry
 	*/
 	@Override
-	public void setReferrer(java.lang.String referrer) {
+	public void setReferrer(String referrer) {
 		_akismetEntry.setReferrer(referrer);
 	}
 
@@ -412,7 +412,7 @@ public class AkismetEntryWrapper implements AkismetEntry,
 	* @param type the type of this akismet entry
 	*/
 	@Override
-	public void setType(java.lang.String type) {
+	public void setType(String type) {
 		_akismetEntry.setType(type);
 	}
 
@@ -422,7 +422,7 @@ public class AkismetEntryWrapper implements AkismetEntry,
 	* @param userAgent the user agent of this akismet entry
 	*/
 	@Override
-	public void setUserAgent(java.lang.String userAgent) {
+	public void setUserAgent(String userAgent) {
 		_akismetEntry.setUserAgent(userAgent);
 	}
 
@@ -432,7 +432,7 @@ public class AkismetEntryWrapper implements AkismetEntry,
 	* @param userIP the user ip of this akismet entry
 	*/
 	@Override
-	public void setUserIP(java.lang.String userIP) {
+	public void setUserIP(String userIP) {
 		_akismetEntry.setUserIP(userIP);
 	}
 
@@ -442,7 +442,7 @@ public class AkismetEntryWrapper implements AkismetEntry,
 	* @param userURL the user url of this akismet entry
 	*/
 	@Override
-	public void setUserURL(java.lang.String userURL) {
+	public void setUserURL(String userURL) {
 		_akismetEntry.setUserURL(userURL);
 	}
 
@@ -457,7 +457,7 @@ public class AkismetEntryWrapper implements AkismetEntry,
 	}
 
 	@Override
-	public java.lang.String toString() {
+	public String toString() {
 		return _akismetEntry.toString();
 	}
 
@@ -467,7 +467,7 @@ public class AkismetEntryWrapper implements AkismetEntry,
 	}
 
 	@Override
-	public java.lang.String toXmlString() {
+	public String toXmlString() {
 		return _akismetEntry.toXmlString();
 	}
 

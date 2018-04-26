@@ -152,7 +152,7 @@ public class WatsonIncidentRelAuditWrapper implements WatsonIncidentRelAudit,
 	}
 
 	@Override
-	public java.lang.Object clone() {
+	public Object clone() {
 		return new WatsonIncidentRelAuditWrapper((WatsonIncidentRelAudit)_watsonIncidentRelAudit.clone());
 	}
 
@@ -237,7 +237,7 @@ public class WatsonIncidentRelAuditWrapper implements WatsonIncidentRelAudit,
 	* @return the type of this watson incident rel audit
 	*/
 	@Override
-	public java.lang.String getType() {
+	public String getType() {
 		return _watsonIncidentRelAudit.getType();
 	}
 
@@ -257,7 +257,7 @@ public class WatsonIncidentRelAuditWrapper implements WatsonIncidentRelAudit,
 	* @return the user name of this watson incident rel audit
 	*/
 	@Override
-	public java.lang.String getUserName() {
+	public String getUserName() {
 		return _watsonIncidentRelAudit.getUserName();
 	}
 
@@ -267,7 +267,7 @@ public class WatsonIncidentRelAuditWrapper implements WatsonIncidentRelAudit,
 	* @return the user uuid of this watson incident rel audit
 	*/
 	@Override
-	public java.lang.String getUserUuid() {
+	public String getUserUuid() {
 		return _watsonIncidentRelAudit.getUserUuid();
 	}
 
@@ -433,7 +433,7 @@ public class WatsonIncidentRelAuditWrapper implements WatsonIncidentRelAudit,
 	* @param type the type of this watson incident rel audit
 	*/
 	@Override
-	public void setType(java.lang.String type) {
+	public void setType(String type) {
 		_watsonIncidentRelAudit.setType(type);
 	}
 
@@ -453,7 +453,7 @@ public class WatsonIncidentRelAuditWrapper implements WatsonIncidentRelAudit,
 	* @param userName the user name of this watson incident rel audit
 	*/
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_watsonIncidentRelAudit.setUserName(userName);
 	}
 
@@ -463,7 +463,7 @@ public class WatsonIncidentRelAuditWrapper implements WatsonIncidentRelAudit,
 	* @param userUuid the user uuid of this watson incident rel audit
 	*/
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_watsonIncidentRelAudit.setUserUuid(userUuid);
 	}
 
@@ -518,7 +518,7 @@ public class WatsonIncidentRelAuditWrapper implements WatsonIncidentRelAudit,
 	}
 
 	@Override
-	public java.lang.String toString() {
+	public String toString() {
 		return _watsonIncidentRelAudit.toString();
 	}
 
@@ -528,7 +528,7 @@ public class WatsonIncidentRelAuditWrapper implements WatsonIncidentRelAudit,
 	}
 
 	@Override
-	public java.lang.String toXmlString() {
+	public String toXmlString() {
 		return _watsonIncidentRelAudit.toXmlString();
 	}
 

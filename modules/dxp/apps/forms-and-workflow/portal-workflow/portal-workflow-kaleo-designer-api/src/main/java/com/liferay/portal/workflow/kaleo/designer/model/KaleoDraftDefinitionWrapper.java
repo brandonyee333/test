@@ -152,7 +152,7 @@ public class KaleoDraftDefinitionWrapper implements KaleoDraftDefinition,
 	}
 
 	@Override
-	public java.lang.Object clone() {
+	public Object clone() {
 		return new KaleoDraftDefinitionWrapper((KaleoDraftDefinition)_kaleoDraftDefinition.clone());
 	}
 
@@ -162,7 +162,7 @@ public class KaleoDraftDefinitionWrapper implements KaleoDraftDefinition,
 	}
 
 	@Override
-	public java.lang.String[] getAvailableLanguageIds() {
+	public String[] getAvailableLanguageIds() {
 		return _kaleoDraftDefinition.getAvailableLanguageIds();
 	}
 
@@ -182,7 +182,7 @@ public class KaleoDraftDefinitionWrapper implements KaleoDraftDefinition,
 	* @return the content of this kaleo draft definition
 	*/
 	@Override
-	public java.lang.String getContent() {
+	public String getContent() {
 		return _kaleoDraftDefinition.getContent();
 	}
 
@@ -197,7 +197,7 @@ public class KaleoDraftDefinitionWrapper implements KaleoDraftDefinition,
 	}
 
 	@Override
-	public java.lang.String getDefaultLanguageId() {
+	public String getDefaultLanguageId() {
 		return _kaleoDraftDefinition.getDefaultLanguageId();
 	}
 
@@ -252,7 +252,7 @@ public class KaleoDraftDefinitionWrapper implements KaleoDraftDefinition,
 	* @return the name of this kaleo draft definition
 	*/
 	@Override
-	public java.lang.String getName() {
+	public String getName() {
 		return _kaleoDraftDefinition.getName();
 	}
 
@@ -277,7 +277,7 @@ public class KaleoDraftDefinitionWrapper implements KaleoDraftDefinition,
 	* @return the title of this kaleo draft definition
 	*/
 	@Override
-	public java.lang.String getTitle() {
+	public String getTitle() {
 		return _kaleoDraftDefinition.getTitle();
 	}
 
@@ -288,7 +288,7 @@ public class KaleoDraftDefinitionWrapper implements KaleoDraftDefinition,
 	* @return the localized title of this kaleo draft definition
 	*/
 	@Override
-	public java.lang.String getTitle(java.util.Locale locale) {
+	public String getTitle(java.util.Locale locale) {
 		return _kaleoDraftDefinition.getTitle(locale);
 	}
 
@@ -300,7 +300,7 @@ public class KaleoDraftDefinitionWrapper implements KaleoDraftDefinition,
 	* @return the localized title of this kaleo draft definition. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 	*/
 	@Override
-	public java.lang.String getTitle(java.util.Locale locale, boolean useDefault) {
+	public String getTitle(java.util.Locale locale, boolean useDefault) {
 		return _kaleoDraftDefinition.getTitle(locale, useDefault);
 	}
 
@@ -311,7 +311,7 @@ public class KaleoDraftDefinitionWrapper implements KaleoDraftDefinition,
 	* @return the localized title of this kaleo draft definition
 	*/
 	@Override
-	public java.lang.String getTitle(java.lang.String languageId) {
+	public String getTitle(String languageId) {
 		return _kaleoDraftDefinition.getTitle(languageId);
 	}
 
@@ -323,18 +323,17 @@ public class KaleoDraftDefinitionWrapper implements KaleoDraftDefinition,
 	* @return the localized title of this kaleo draft definition
 	*/
 	@Override
-	public java.lang.String getTitle(java.lang.String languageId,
-		boolean useDefault) {
+	public String getTitle(String languageId, boolean useDefault) {
 		return _kaleoDraftDefinition.getTitle(languageId, useDefault);
 	}
 
 	@Override
-	public java.lang.String getTitleCurrentLanguageId() {
+	public String getTitleCurrentLanguageId() {
 		return _kaleoDraftDefinition.getTitleCurrentLanguageId();
 	}
 
 	@Override
-	public java.lang.String getTitleCurrentValue() {
+	public String getTitleCurrentValue() {
 		return _kaleoDraftDefinition.getTitleCurrentValue();
 	}
 
@@ -344,7 +343,7 @@ public class KaleoDraftDefinitionWrapper implements KaleoDraftDefinition,
 	* @return the locales and localized titles of this kaleo draft definition
 	*/
 	@Override
-	public Map<java.util.Locale, java.lang.String> getTitleMap() {
+	public Map<java.util.Locale, String> getTitleMap() {
 		return _kaleoDraftDefinition.getTitleMap();
 	}
 
@@ -364,7 +363,7 @@ public class KaleoDraftDefinitionWrapper implements KaleoDraftDefinition,
 	* @return the user name of this kaleo draft definition
 	*/
 	@Override
-	public java.lang.String getUserName() {
+	public String getUserName() {
 		return _kaleoDraftDefinition.getUserName();
 	}
 
@@ -374,7 +373,7 @@ public class KaleoDraftDefinitionWrapper implements KaleoDraftDefinition,
 	* @return the user uuid of this kaleo draft definition
 	*/
 	@Override
-	public java.lang.String getUserUuid() {
+	public String getUserUuid() {
 		return _kaleoDraftDefinition.getUserUuid();
 	}
 
@@ -447,7 +446,7 @@ public class KaleoDraftDefinitionWrapper implements KaleoDraftDefinition,
 	* @param content the content of this kaleo draft definition
 	*/
 	@Override
-	public void setContent(java.lang.String content) {
+	public void setContent(String content) {
 		_kaleoDraftDefinition.setContent(content);
 	}
 
@@ -523,7 +522,7 @@ public class KaleoDraftDefinitionWrapper implements KaleoDraftDefinition,
 	* @param name the name of this kaleo draft definition
 	*/
 	@Override
-	public void setName(java.lang.String name) {
+	public void setName(String name) {
 		_kaleoDraftDefinition.setName(name);
 	}
 
@@ -553,7 +552,7 @@ public class KaleoDraftDefinitionWrapper implements KaleoDraftDefinition,
 	* @param title the title of this kaleo draft definition
 	*/
 	@Override
-	public void setTitle(java.lang.String title) {
+	public void setTitle(String title) {
 		_kaleoDraftDefinition.setTitle(title);
 	}
 
@@ -564,7 +563,7 @@ public class KaleoDraftDefinitionWrapper implements KaleoDraftDefinition,
 	* @param locale the locale of the language
 	*/
 	@Override
-	public void setTitle(java.lang.String title, java.util.Locale locale) {
+	public void setTitle(String title, java.util.Locale locale) {
 		_kaleoDraftDefinition.setTitle(title, locale);
 	}
 
@@ -576,13 +575,13 @@ public class KaleoDraftDefinitionWrapper implements KaleoDraftDefinition,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setTitle(java.lang.String title, java.util.Locale locale,
+	public void setTitle(String title, java.util.Locale locale,
 		java.util.Locale defaultLocale) {
 		_kaleoDraftDefinition.setTitle(title, locale, defaultLocale);
 	}
 
 	@Override
-	public void setTitleCurrentLanguageId(java.lang.String languageId) {
+	public void setTitleCurrentLanguageId(String languageId) {
 		_kaleoDraftDefinition.setTitleCurrentLanguageId(languageId);
 	}
 
@@ -592,7 +591,7 @@ public class KaleoDraftDefinitionWrapper implements KaleoDraftDefinition,
 	* @param titleMap the locales and localized titles of this kaleo draft definition
 	*/
 	@Override
-	public void setTitleMap(Map<java.util.Locale, java.lang.String> titleMap) {
+	public void setTitleMap(Map<java.util.Locale, String> titleMap) {
 		_kaleoDraftDefinition.setTitleMap(titleMap);
 	}
 
@@ -603,7 +602,7 @@ public class KaleoDraftDefinitionWrapper implements KaleoDraftDefinition,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setTitleMap(Map<java.util.Locale, java.lang.String> titleMap,
+	public void setTitleMap(Map<java.util.Locale, String> titleMap,
 		java.util.Locale defaultLocale) {
 		_kaleoDraftDefinition.setTitleMap(titleMap, defaultLocale);
 	}
@@ -624,7 +623,7 @@ public class KaleoDraftDefinitionWrapper implements KaleoDraftDefinition,
 	* @param userName the user name of this kaleo draft definition
 	*/
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_kaleoDraftDefinition.setUserName(userName);
 	}
 
@@ -634,7 +633,7 @@ public class KaleoDraftDefinitionWrapper implements KaleoDraftDefinition,
 	* @param userUuid the user uuid of this kaleo draft definition
 	*/
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_kaleoDraftDefinition.setUserUuid(userUuid);
 	}
 
@@ -659,7 +658,7 @@ public class KaleoDraftDefinitionWrapper implements KaleoDraftDefinition,
 	}
 
 	@Override
-	public java.lang.String toString() {
+	public String toString() {
 		return _kaleoDraftDefinition.toString();
 	}
 
@@ -669,7 +668,7 @@ public class KaleoDraftDefinitionWrapper implements KaleoDraftDefinition,
 	}
 
 	@Override
-	public java.lang.String toXmlString() {
+	public String toXmlString() {
 		return _kaleoDraftDefinition.toXmlString();
 	}
 

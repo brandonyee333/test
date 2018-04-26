@@ -200,7 +200,7 @@ public class WatsonPersonLocalServiceWrapper implements WatsonPersonLocalService
 	* @return the OSGi service identifier
 	*/
 	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
+	public String getOSGiServiceIdentifier() {
 		return _watsonPersonLocalService.getOSGiServiceIdentifier();
 	}
 

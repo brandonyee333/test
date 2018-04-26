@@ -346,5 +346,5 @@ public interface AkismetEntryPersistence extends BasePersistence<AkismetEntry> {
 	public int countAll();
 
 	@Override
-	public java.util.Set<java.lang.String> getBadColumnNames();
+	public java.util.Set<String> getBadColumnNames();
 }

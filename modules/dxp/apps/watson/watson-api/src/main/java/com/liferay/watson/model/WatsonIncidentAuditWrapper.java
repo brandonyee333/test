@@ -246,7 +246,7 @@ public class WatsonIncidentAuditWrapper implements WatsonIncidentAudit,
 	}
 
 	@Override
-	public java.lang.Object clone() {
+	public Object clone() {
 		return new WatsonIncidentAuditWrapper((WatsonIncidentAudit)_watsonIncidentAudit.clone());
 	}
 
@@ -276,7 +276,7 @@ public class WatsonIncidentAuditWrapper implements WatsonIncidentAudit,
 	}
 
 	@Override
-	public java.lang.String[] getAvailableLanguageIds() {
+	public String[] getAvailableLanguageIds() {
 		return _watsonIncidentAudit.getAvailableLanguageIds();
 	}
 
@@ -301,7 +301,7 @@ public class WatsonIncidentAuditWrapper implements WatsonIncidentAudit,
 	}
 
 	@Override
-	public java.lang.String getDefaultLanguageId() {
+	public String getDefaultLanguageId() {
 		return _watsonIncidentAudit.getDefaultLanguageId();
 	}
 
@@ -311,7 +311,7 @@ public class WatsonIncidentAuditWrapper implements WatsonIncidentAudit,
 	* @return the description of this watson incident audit
 	*/
 	@Override
-	public java.lang.String getDescription() {
+	public String getDescription() {
 		return _watsonIncidentAudit.getDescription();
 	}
 
@@ -322,7 +322,7 @@ public class WatsonIncidentAuditWrapper implements WatsonIncidentAudit,
 	* @return the localized description of this watson incident audit
 	*/
 	@Override
-	public java.lang.String getDescription(java.util.Locale locale) {
+	public String getDescription(java.util.Locale locale) {
 		return _watsonIncidentAudit.getDescription(locale);
 	}
 
@@ -334,8 +334,7 @@ public class WatsonIncidentAuditWrapper implements WatsonIncidentAudit,
 	* @return the localized description of this watson incident audit. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 	*/
 	@Override
-	public java.lang.String getDescription(java.util.Locale locale,
-		boolean useDefault) {
+	public String getDescription(java.util.Locale locale, boolean useDefault) {
 		return _watsonIncidentAudit.getDescription(locale, useDefault);
 	}
 
@@ -346,7 +345,7 @@ public class WatsonIncidentAuditWrapper implements WatsonIncidentAudit,
 	* @return the localized description of this watson incident audit
 	*/
 	@Override
-	public java.lang.String getDescription(java.lang.String languageId) {
+	public String getDescription(String languageId) {
 		return _watsonIncidentAudit.getDescription(languageId);
 	}
 
@@ -358,18 +357,17 @@ public class WatsonIncidentAuditWrapper implements WatsonIncidentAudit,
 	* @return the localized description of this watson incident audit
 	*/
 	@Override
-	public java.lang.String getDescription(java.lang.String languageId,
-		boolean useDefault) {
+	public String getDescription(String languageId, boolean useDefault) {
 		return _watsonIncidentAudit.getDescription(languageId, useDefault);
 	}
 
 	@Override
-	public java.lang.String getDescriptionCurrentLanguageId() {
+	public String getDescriptionCurrentLanguageId() {
 		return _watsonIncidentAudit.getDescriptionCurrentLanguageId();
 	}
 
 	@Override
-	public java.lang.String getDescriptionCurrentValue() {
+	public String getDescriptionCurrentValue() {
 		return _watsonIncidentAudit.getDescriptionCurrentValue();
 	}
 
@@ -379,7 +377,7 @@ public class WatsonIncidentAuditWrapper implements WatsonIncidentAudit,
 	* @return the locales and localized descriptions of this watson incident audit
 	*/
 	@Override
-	public Map<java.util.Locale, java.lang.String> getDescriptionMap() {
+	public Map<java.util.Locale, String> getDescriptionMap() {
 		return _watsonIncidentAudit.getDescriptionMap();
 	}
 
@@ -414,7 +412,7 @@ public class WatsonIncidentAuditWrapper implements WatsonIncidentAudit,
 	* @return the external case ID of this watson incident audit
 	*/
 	@Override
-	public java.lang.String getExternalCaseId() {
+	public String getExternalCaseId() {
 		return _watsonIncidentAudit.getExternalCaseId();
 	}
 
@@ -464,7 +462,7 @@ public class WatsonIncidentAuditWrapper implements WatsonIncidentAudit,
 	* @return the name of this watson incident audit
 	*/
 	@Override
-	public java.lang.String getName() {
+	public String getName() {
 		return _watsonIncidentAudit.getName();
 	}
 
@@ -559,7 +557,7 @@ public class WatsonIncidentAuditWrapper implements WatsonIncidentAudit,
 	* @return the user name of this watson incident audit
 	*/
 	@Override
-	public java.lang.String getUserName() {
+	public String getUserName() {
 		return _watsonIncidentAudit.getUserName();
 	}
 
@@ -569,7 +567,7 @@ public class WatsonIncidentAuditWrapper implements WatsonIncidentAudit,
 	* @return the user uuid of this watson incident audit
 	*/
 	@Override
-	public java.lang.String getUserUuid() {
+	public String getUserUuid() {
 		return _watsonIncidentAudit.getUserUuid();
 	}
 
@@ -702,7 +700,7 @@ public class WatsonIncidentAuditWrapper implements WatsonIncidentAudit,
 	* @param description the description of this watson incident audit
 	*/
 	@Override
-	public void setDescription(java.lang.String description) {
+	public void setDescription(String description) {
 		_watsonIncidentAudit.setDescription(description);
 	}
 
@@ -713,8 +711,7 @@ public class WatsonIncidentAuditWrapper implements WatsonIncidentAudit,
 	* @param locale the locale of the language
 	*/
 	@Override
-	public void setDescription(java.lang.String description,
-		java.util.Locale locale) {
+	public void setDescription(String description, java.util.Locale locale) {
 		_watsonIncidentAudit.setDescription(description, locale);
 	}
 
@@ -726,13 +723,13 @@ public class WatsonIncidentAuditWrapper implements WatsonIncidentAudit,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setDescription(java.lang.String description,
-		java.util.Locale locale, java.util.Locale defaultLocale) {
+	public void setDescription(String description, java.util.Locale locale,
+		java.util.Locale defaultLocale) {
 		_watsonIncidentAudit.setDescription(description, locale, defaultLocale);
 	}
 
 	@Override
-	public void setDescriptionCurrentLanguageId(java.lang.String languageId) {
+	public void setDescriptionCurrentLanguageId(String languageId) {
 		_watsonIncidentAudit.setDescriptionCurrentLanguageId(languageId);
 	}
 
@@ -742,8 +739,7 @@ public class WatsonIncidentAuditWrapper implements WatsonIncidentAudit,
 	* @param descriptionMap the locales and localized descriptions of this watson incident audit
 	*/
 	@Override
-	public void setDescriptionMap(
-		Map<java.util.Locale, java.lang.String> descriptionMap) {
+	public void setDescriptionMap(Map<java.util.Locale, String> descriptionMap) {
 		_watsonIncidentAudit.setDescriptionMap(descriptionMap);
 	}
 
@@ -755,7 +751,7 @@ public class WatsonIncidentAuditWrapper implements WatsonIncidentAudit,
 	*/
 	@Override
 	public void setDescriptionMap(
-		Map<java.util.Locale, java.lang.String> descriptionMap,
+		Map<java.util.Locale, String> descriptionMap,
 		java.util.Locale defaultLocale) {
 		_watsonIncidentAudit.setDescriptionMap(descriptionMap, defaultLocale);
 	}
@@ -802,7 +798,7 @@ public class WatsonIncidentAuditWrapper implements WatsonIncidentAudit,
 	* @param externalCaseId the external case ID of this watson incident audit
 	*/
 	@Override
-	public void setExternalCaseId(java.lang.String externalCaseId) {
+	public void setExternalCaseId(String externalCaseId) {
 		_watsonIncidentAudit.setExternalCaseId(externalCaseId);
 	}
 
@@ -853,7 +849,7 @@ public class WatsonIncidentAuditWrapper implements WatsonIncidentAudit,
 	* @param name the name of this watson incident audit
 	*/
 	@Override
-	public void setName(java.lang.String name) {
+	public void setName(String name) {
 		_watsonIncidentAudit.setName(name);
 	}
 
@@ -953,7 +949,7 @@ public class WatsonIncidentAuditWrapper implements WatsonIncidentAudit,
 	* @param userName the user name of this watson incident audit
 	*/
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_watsonIncidentAudit.setUserName(userName);
 	}
 
@@ -963,7 +959,7 @@ public class WatsonIncidentAuditWrapper implements WatsonIncidentAudit,
 	* @param userUuid the user uuid of this watson incident audit
 	*/
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_watsonIncidentAudit.setUserUuid(userUuid);
 	}
 
@@ -1018,7 +1014,7 @@ public class WatsonIncidentAuditWrapper implements WatsonIncidentAudit,
 	}
 
 	@Override
-	public java.lang.String toString() {
+	public String toString() {
 		return _watsonIncidentAudit.toString();
 	}
 
@@ -1028,7 +1024,7 @@ public class WatsonIncidentAuditWrapper implements WatsonIncidentAudit,
 	}
 
 	@Override
-	public java.lang.String toXmlString() {
+	public String toXmlString() {
 		return _watsonIncidentAudit.toXmlString();
 	}
 

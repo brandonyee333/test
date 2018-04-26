@@ -173,7 +173,7 @@ public class WatsonListTypeRelAuditWrapper implements WatsonListTypeRelAudit,
 	}
 
 	@Override
-	public java.lang.Object clone() {
+	public Object clone() {
 		return new WatsonListTypeRelAuditWrapper((WatsonListTypeRelAudit)_watsonListTypeRelAudit.clone());
 	}
 
@@ -183,7 +183,7 @@ public class WatsonListTypeRelAuditWrapper implements WatsonListTypeRelAudit,
 	}
 
 	@Override
-	public java.lang.String[] getAvailableLanguageIds() {
+	public String[] getAvailableLanguageIds() {
 		return _watsonListTypeRelAudit.getAvailableLanguageIds();
 	}
 
@@ -193,7 +193,7 @@ public class WatsonListTypeRelAuditWrapper implements WatsonListTypeRelAudit,
 	* @return the fully qualified class name of this watson list type rel audit
 	*/
 	@Override
-	public java.lang.String getClassName() {
+	public String getClassName() {
 		return _watsonListTypeRelAudit.getClassName();
 	}
 
@@ -238,7 +238,7 @@ public class WatsonListTypeRelAuditWrapper implements WatsonListTypeRelAudit,
 	}
 
 	@Override
-	public java.lang.String getDefaultLanguageId() {
+	public String getDefaultLanguageId() {
 		return _watsonListTypeRelAudit.getDefaultLanguageId();
 	}
 
@@ -308,7 +308,7 @@ public class WatsonListTypeRelAuditWrapper implements WatsonListTypeRelAudit,
 	* @return the type of this watson list type rel audit
 	*/
 	@Override
-	public java.lang.String getType() {
+	public String getType() {
 		return _watsonListTypeRelAudit.getType();
 	}
 
@@ -328,7 +328,7 @@ public class WatsonListTypeRelAuditWrapper implements WatsonListTypeRelAudit,
 	* @return the user name of this watson list type rel audit
 	*/
 	@Override
-	public java.lang.String getUserName() {
+	public String getUserName() {
 		return _watsonListTypeRelAudit.getUserName();
 	}
 
@@ -338,7 +338,7 @@ public class WatsonListTypeRelAuditWrapper implements WatsonListTypeRelAudit,
 	* @return the user uuid of this watson list type rel audit
 	*/
 	@Override
-	public java.lang.String getUserUuid() {
+	public String getUserUuid() {
 		return _watsonListTypeRelAudit.getUserUuid();
 	}
 
@@ -348,7 +348,7 @@ public class WatsonListTypeRelAuditWrapper implements WatsonListTypeRelAudit,
 	* @return the value of this watson list type rel audit
 	*/
 	@Override
-	public java.lang.String getValue() {
+	public String getValue() {
 		return _watsonListTypeRelAudit.getValue();
 	}
 
@@ -359,7 +359,7 @@ public class WatsonListTypeRelAuditWrapper implements WatsonListTypeRelAudit,
 	* @return the localized value of this watson list type rel audit
 	*/
 	@Override
-	public java.lang.String getValue(java.util.Locale locale) {
+	public String getValue(java.util.Locale locale) {
 		return _watsonListTypeRelAudit.getValue(locale);
 	}
 
@@ -371,7 +371,7 @@ public class WatsonListTypeRelAuditWrapper implements WatsonListTypeRelAudit,
 	* @return the localized value of this watson list type rel audit. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 	*/
 	@Override
-	public java.lang.String getValue(java.util.Locale locale, boolean useDefault) {
+	public String getValue(java.util.Locale locale, boolean useDefault) {
 		return _watsonListTypeRelAudit.getValue(locale, useDefault);
 	}
 
@@ -382,7 +382,7 @@ public class WatsonListTypeRelAuditWrapper implements WatsonListTypeRelAudit,
 	* @return the localized value of this watson list type rel audit
 	*/
 	@Override
-	public java.lang.String getValue(java.lang.String languageId) {
+	public String getValue(String languageId) {
 		return _watsonListTypeRelAudit.getValue(languageId);
 	}
 
@@ -394,18 +394,17 @@ public class WatsonListTypeRelAuditWrapper implements WatsonListTypeRelAudit,
 	* @return the localized value of this watson list type rel audit
 	*/
 	@Override
-	public java.lang.String getValue(java.lang.String languageId,
-		boolean useDefault) {
+	public String getValue(String languageId, boolean useDefault) {
 		return _watsonListTypeRelAudit.getValue(languageId, useDefault);
 	}
 
 	@Override
-	public java.lang.String getValueCurrentLanguageId() {
+	public String getValueCurrentLanguageId() {
 		return _watsonListTypeRelAudit.getValueCurrentLanguageId();
 	}
 
 	@Override
-	public java.lang.String getValueCurrentValue() {
+	public String getValueCurrentValue() {
 		return _watsonListTypeRelAudit.getValueCurrentValue();
 	}
 
@@ -415,7 +414,7 @@ public class WatsonListTypeRelAuditWrapper implements WatsonListTypeRelAudit,
 	* @return the locales and localized values of this watson list type rel audit
 	*/
 	@Override
-	public Map<java.util.Locale, java.lang.String> getValueMap() {
+	public Map<java.util.Locale, String> getValueMap() {
 		return _watsonListTypeRelAudit.getValueMap();
 	}
 
@@ -503,7 +502,7 @@ public class WatsonListTypeRelAuditWrapper implements WatsonListTypeRelAudit,
 	}
 
 	@Override
-	public void setClassName(java.lang.String className) {
+	public void setClassName(String className) {
 		_watsonListTypeRelAudit.setClassName(className);
 	}
 
@@ -629,7 +628,7 @@ public class WatsonListTypeRelAuditWrapper implements WatsonListTypeRelAudit,
 	* @param type the type of this watson list type rel audit
 	*/
 	@Override
-	public void setType(java.lang.String type) {
+	public void setType(String type) {
 		_watsonListTypeRelAudit.setType(type);
 	}
 
@@ -649,7 +648,7 @@ public class WatsonListTypeRelAuditWrapper implements WatsonListTypeRelAudit,
 	* @param userName the user name of this watson list type rel audit
 	*/
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_watsonListTypeRelAudit.setUserName(userName);
 	}
 
@@ -659,7 +658,7 @@ public class WatsonListTypeRelAuditWrapper implements WatsonListTypeRelAudit,
 	* @param userUuid the user uuid of this watson list type rel audit
 	*/
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_watsonListTypeRelAudit.setUserUuid(userUuid);
 	}
 
@@ -669,7 +668,7 @@ public class WatsonListTypeRelAuditWrapper implements WatsonListTypeRelAudit,
 	* @param value the value of this watson list type rel audit
 	*/
 	@Override
-	public void setValue(java.lang.String value) {
+	public void setValue(String value) {
 		_watsonListTypeRelAudit.setValue(value);
 	}
 
@@ -680,7 +679,7 @@ public class WatsonListTypeRelAuditWrapper implements WatsonListTypeRelAudit,
 	* @param locale the locale of the language
 	*/
 	@Override
-	public void setValue(java.lang.String value, java.util.Locale locale) {
+	public void setValue(String value, java.util.Locale locale) {
 		_watsonListTypeRelAudit.setValue(value, locale);
 	}
 
@@ -692,13 +691,13 @@ public class WatsonListTypeRelAuditWrapper implements WatsonListTypeRelAudit,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setValue(java.lang.String value, java.util.Locale locale,
+	public void setValue(String value, java.util.Locale locale,
 		java.util.Locale defaultLocale) {
 		_watsonListTypeRelAudit.setValue(value, locale, defaultLocale);
 	}
 
 	@Override
-	public void setValueCurrentLanguageId(java.lang.String languageId) {
+	public void setValueCurrentLanguageId(String languageId) {
 		_watsonListTypeRelAudit.setValueCurrentLanguageId(languageId);
 	}
 
@@ -708,7 +707,7 @@ public class WatsonListTypeRelAuditWrapper implements WatsonListTypeRelAudit,
 	* @param valueMap the locales and localized values of this watson list type rel audit
 	*/
 	@Override
-	public void setValueMap(Map<java.util.Locale, java.lang.String> valueMap) {
+	public void setValueMap(Map<java.util.Locale, String> valueMap) {
 		_watsonListTypeRelAudit.setValueMap(valueMap);
 	}
 
@@ -719,7 +718,7 @@ public class WatsonListTypeRelAuditWrapper implements WatsonListTypeRelAudit,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setValueMap(Map<java.util.Locale, java.lang.String> valueMap,
+	public void setValueMap(Map<java.util.Locale, String> valueMap,
 		java.util.Locale defaultLocale) {
 		_watsonListTypeRelAudit.setValueMap(valueMap, defaultLocale);
 	}
@@ -765,7 +764,7 @@ public class WatsonListTypeRelAuditWrapper implements WatsonListTypeRelAudit,
 	}
 
 	@Override
-	public java.lang.String toString() {
+	public String toString() {
 		return _watsonListTypeRelAudit.toString();
 	}
 
@@ -775,7 +774,7 @@ public class WatsonListTypeRelAuditWrapper implements WatsonListTypeRelAudit,
 	}
 
 	@Override
-	public java.lang.String toXmlString() {
+	public String toXmlString() {
 		return _watsonListTypeRelAudit.toXmlString();
 	}
 

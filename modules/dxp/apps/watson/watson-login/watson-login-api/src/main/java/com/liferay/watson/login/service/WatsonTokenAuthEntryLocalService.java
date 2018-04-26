@@ -62,7 +62,7 @@ public interface WatsonTokenAuthEntryLocalService extends BaseLocalService,
 	 * Never modify or reference this interface directly. Always use {@link WatsonTokenAuthEntryLocalServiceUtil} to access the watson token auth entry local service. Add custom service methods to {@link com.liferay.watson.login.service.impl.WatsonTokenAuthEntryLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public WatsonTokenAuthEntry addWatsonTokenAuthEntry(User user,
-		java.lang.String authToken, java.lang.String latestLoginIP);
+		String authToken, String latestLoginIP);
 
 	/**
 	* Adds the watson token auth entry to the database. Also notifies the appropriate model listeners.
@@ -191,7 +191,7 @@ public interface WatsonTokenAuthEntryLocalService extends BaseLocalService,
 	*
 	* @return the OSGi service identifier
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public String getOSGiServiceIdentifier();
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -233,8 +233,7 @@ public interface WatsonTokenAuthEntryLocalService extends BaseLocalService,
 		long watsonTokenAuthEntryId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasAuthenticatedSession(User user,
-		java.lang.String latestLoginIP);
+	public boolean hasAuthenticatedSession(User user, String latestLoginIP);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public boolean hasPendingToken(User user);
@@ -249,6 +248,6 @@ public interface WatsonTokenAuthEntryLocalService extends BaseLocalService,
 	public WatsonTokenAuthEntry updateWatsonTokenAuthEntry(
 		WatsonTokenAuthEntry watsonTokenAuthEntry);
 
-	public java.lang.String verifyWatsonTokenAuthEntry(User user,
-		java.lang.String authToken, java.lang.String latestLoginIP);
+	public String verifyWatsonTokenAuthEntry(User user, String authToken,
+		String latestLoginIP);
 }

@@ -143,7 +143,7 @@ public class WatsonIncidentRelWrapper implements WatsonIncidentRel,
 	}
 
 	@Override
-	public java.lang.Object clone() {
+	public Object clone() {
 		return new WatsonIncidentRelWrapper((WatsonIncidentRel)_watsonIncidentRel.clone());
 	}
 
@@ -228,7 +228,7 @@ public class WatsonIncidentRelWrapper implements WatsonIncidentRel,
 	* @return the type of this watson incident rel
 	*/
 	@Override
-	public java.lang.String getType() {
+	public String getType() {
 		return _watsonIncidentRel.getType();
 	}
 
@@ -248,7 +248,7 @@ public class WatsonIncidentRelWrapper implements WatsonIncidentRel,
 	* @return the user name of this watson incident rel
 	*/
 	@Override
-	public java.lang.String getUserName() {
+	public String getUserName() {
 		return _watsonIncidentRel.getUserName();
 	}
 
@@ -258,7 +258,7 @@ public class WatsonIncidentRelWrapper implements WatsonIncidentRel,
 	* @return the user uuid of this watson incident rel
 	*/
 	@Override
-	public java.lang.String getUserUuid() {
+	public String getUserUuid() {
 		return _watsonIncidentRel.getUserUuid();
 	}
 
@@ -414,7 +414,7 @@ public class WatsonIncidentRelWrapper implements WatsonIncidentRel,
 	* @param type the type of this watson incident rel
 	*/
 	@Override
-	public void setType(java.lang.String type) {
+	public void setType(String type) {
 		_watsonIncidentRel.setType(type);
 	}
 
@@ -434,7 +434,7 @@ public class WatsonIncidentRelWrapper implements WatsonIncidentRel,
 	* @param userName the user name of this watson incident rel
 	*/
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_watsonIncidentRel.setUserName(userName);
 	}
 
@@ -444,7 +444,7 @@ public class WatsonIncidentRelWrapper implements WatsonIncidentRel,
 	* @param userUuid the user uuid of this watson incident rel
 	*/
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_watsonIncidentRel.setUserUuid(userUuid);
 	}
 
@@ -489,7 +489,7 @@ public class WatsonIncidentRelWrapper implements WatsonIncidentRel,
 	}
 
 	@Override
-	public java.lang.String toString() {
+	public String toString() {
 		return _watsonIncidentRel.toString();
 	}
 
@@ -499,7 +499,7 @@ public class WatsonIncidentRelWrapper implements WatsonIncidentRel,
 	}
 
 	@Override
-	public java.lang.String toXmlString() {
+	public String toXmlString() {
 		return _watsonIncidentRel.toXmlString();
 	}
 

@@ -55,10 +55,9 @@ import com.liferay.portal.workflow.kaleo.designer.service.KaleoDraftDefinitionSe
 @ProviderType
 public class KaleoDraftDefinitionServiceHttp {
 	public static com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition addKaleoDraftDefinition(
-		HttpPrincipal httpPrincipal, long userId, long groupId,
-		java.lang.String name,
-		java.util.Map<java.util.Locale, java.lang.String> titleMap,
-		java.lang.String content, int version, int draftVersion,
+		HttpPrincipal httpPrincipal, long userId, long groupId, String name,
+		java.util.Map<java.util.Locale, String> titleMap, String content,
+		int version, int draftVersion,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -93,7 +92,7 @@ public class KaleoDraftDefinitionServiceHttp {
 	}
 
 	public static void deleteKaleoDraftDefinitions(
-		HttpPrincipal httpPrincipal, java.lang.String name, int version,
+		HttpPrincipal httpPrincipal, String name, int version,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -123,7 +122,7 @@ public class KaleoDraftDefinitionServiceHttp {
 	}
 
 	public static com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition getKaleoDraftDefinition(
-		HttpPrincipal httpPrincipal, java.lang.String name, int version,
+		HttpPrincipal httpPrincipal, String name, int version,
 		int draftVersion,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -190,7 +189,7 @@ public class KaleoDraftDefinitionServiceHttp {
 	}
 
 	public static com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition getLatestKaleoDraftDefinition(
-		HttpPrincipal httpPrincipal, java.lang.String name, int version,
+		HttpPrincipal httpPrincipal, String name, int version,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -259,7 +258,7 @@ public class KaleoDraftDefinitionServiceHttp {
 	}
 
 	public static java.util.List<com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition> getLatestKaleoDraftDefinitions(
-		HttpPrincipal httpPrincipal, long companyId, java.lang.String keywords,
+		HttpPrincipal httpPrincipal, long companyId, String keywords,
 		int version, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -294,10 +293,8 @@ public class KaleoDraftDefinitionServiceHttp {
 	}
 
 	public static com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition publishKaleoDraftDefinition(
-		HttpPrincipal httpPrincipal, long userId, long groupId,
-		java.lang.String name,
-		java.util.Map<java.util.Locale, java.lang.String> titleMap,
-		java.lang.String content,
+		HttpPrincipal httpPrincipal, long userId, long groupId, String name,
+		java.util.Map<java.util.Locale, String> titleMap, String content,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -331,9 +328,9 @@ public class KaleoDraftDefinitionServiceHttp {
 	}
 
 	public static com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition updateKaleoDraftDefinition(
-		HttpPrincipal httpPrincipal, long userId, java.lang.String name,
-		java.util.Map<java.util.Locale, java.lang.String> titleMap,
-		java.lang.String content, int version,
+		HttpPrincipal httpPrincipal, long userId, String name,
+		java.util.Map<java.util.Locale, String> titleMap, String content,
+		int version,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -368,16 +365,16 @@ public class KaleoDraftDefinitionServiceHttp {
 
 	private static Log _log = LogFactoryUtil.getLog(KaleoDraftDefinitionServiceHttp.class);
 	private static final Class<?>[] _addKaleoDraftDefinitionParameterTypes0 = new Class[] {
-			long.class, long.class, java.lang.String.class, java.util.Map.class,
-			java.lang.String.class, int.class, int.class,
+			long.class, long.class, String.class, java.util.Map.class,
+			String.class, int.class, int.class,
 			com.liferay.portal.kernel.service.ServiceContext.class
 		};
 	private static final Class<?>[] _deleteKaleoDraftDefinitionsParameterTypes1 = new Class[] {
-			java.lang.String.class, int.class,
+			String.class, int.class,
 			com.liferay.portal.kernel.service.ServiceContext.class
 		};
 	private static final Class<?>[] _getKaleoDraftDefinitionParameterTypes2 = new Class[] {
-			java.lang.String.class, int.class, int.class,
+			String.class, int.class, int.class,
 			com.liferay.portal.kernel.service.ServiceContext.class
 		};
 	private static final Class<?>[] _getKaleoDraftDefinitionsParameterTypes3 = new Class[] {
@@ -385,7 +382,7 @@ public class KaleoDraftDefinitionServiceHttp {
 		};
 	private static final Class<?>[] _getLatestKaleoDraftDefinitionParameterTypes4 =
 		new Class[] {
-			java.lang.String.class, int.class,
+			String.class, int.class,
 			com.liferay.portal.kernel.service.ServiceContext.class
 		};
 	private static final Class<?>[] _getLatestKaleoDraftDefinitionsParameterTypes5 =
@@ -395,17 +392,15 @@ public class KaleoDraftDefinitionServiceHttp {
 		};
 	private static final Class<?>[] _getLatestKaleoDraftDefinitionsParameterTypes6 =
 		new Class[] {
-			long.class, java.lang.String.class, int.class, int.class, int.class,
+			long.class, String.class, int.class, int.class, int.class,
 			com.liferay.portal.kernel.util.OrderByComparator.class
 		};
 	private static final Class<?>[] _publishKaleoDraftDefinitionParameterTypes7 = new Class[] {
-			long.class, long.class, java.lang.String.class, java.util.Map.class,
-			java.lang.String.class,
-			com.liferay.portal.kernel.service.ServiceContext.class
+			long.class, long.class, String.class, java.util.Map.class,
+			String.class, com.liferay.portal.kernel.service.ServiceContext.class
 		};
 	private static final Class<?>[] _updateKaleoDraftDefinitionParameterTypes8 = new Class[] {
-			long.class, java.lang.String.class, java.util.Map.class,
-			java.lang.String.class, int.class,
-			com.liferay.portal.kernel.service.ServiceContext.class
+			long.class, String.class, java.util.Map.class, String.class,
+			int.class, com.liferay.portal.kernel.service.ServiceContext.class
 		};
 }

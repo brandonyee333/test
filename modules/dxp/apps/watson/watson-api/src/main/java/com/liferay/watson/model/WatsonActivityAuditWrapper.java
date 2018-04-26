@@ -173,7 +173,7 @@ public class WatsonActivityAuditWrapper implements WatsonActivityAudit,
 	}
 
 	@Override
-	public java.lang.Object clone() {
+	public Object clone() {
 		return new WatsonActivityAuditWrapper((WatsonActivityAudit)_watsonActivityAudit.clone());
 	}
 
@@ -183,7 +183,7 @@ public class WatsonActivityAuditWrapper implements WatsonActivityAudit,
 	}
 
 	@Override
-	public java.lang.String[] getAvailableLanguageIds() {
+	public String[] getAvailableLanguageIds() {
 		return _watsonActivityAudit.getAvailableLanguageIds();
 	}
 
@@ -208,7 +208,7 @@ public class WatsonActivityAuditWrapper implements WatsonActivityAudit,
 	}
 
 	@Override
-	public java.lang.String getDefaultLanguageId() {
+	public String getDefaultLanguageId() {
 		return _watsonActivityAudit.getDefaultLanguageId();
 	}
 
@@ -243,7 +243,7 @@ public class WatsonActivityAuditWrapper implements WatsonActivityAudit,
 	* @return the narrative of this watson activity audit
 	*/
 	@Override
-	public java.lang.String getNarrative() {
+	public String getNarrative() {
 		return _watsonActivityAudit.getNarrative();
 	}
 
@@ -254,7 +254,7 @@ public class WatsonActivityAuditWrapper implements WatsonActivityAudit,
 	* @return the localized narrative of this watson activity audit
 	*/
 	@Override
-	public java.lang.String getNarrative(java.util.Locale locale) {
+	public String getNarrative(java.util.Locale locale) {
 		return _watsonActivityAudit.getNarrative(locale);
 	}
 
@@ -266,8 +266,7 @@ public class WatsonActivityAuditWrapper implements WatsonActivityAudit,
 	* @return the localized narrative of this watson activity audit. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 	*/
 	@Override
-	public java.lang.String getNarrative(java.util.Locale locale,
-		boolean useDefault) {
+	public String getNarrative(java.util.Locale locale, boolean useDefault) {
 		return _watsonActivityAudit.getNarrative(locale, useDefault);
 	}
 
@@ -278,7 +277,7 @@ public class WatsonActivityAuditWrapper implements WatsonActivityAudit,
 	* @return the localized narrative of this watson activity audit
 	*/
 	@Override
-	public java.lang.String getNarrative(java.lang.String languageId) {
+	public String getNarrative(String languageId) {
 		return _watsonActivityAudit.getNarrative(languageId);
 	}
 
@@ -290,18 +289,17 @@ public class WatsonActivityAuditWrapper implements WatsonActivityAudit,
 	* @return the localized narrative of this watson activity audit
 	*/
 	@Override
-	public java.lang.String getNarrative(java.lang.String languageId,
-		boolean useDefault) {
+	public String getNarrative(String languageId, boolean useDefault) {
 		return _watsonActivityAudit.getNarrative(languageId, useDefault);
 	}
 
 	@Override
-	public java.lang.String getNarrativeCurrentLanguageId() {
+	public String getNarrativeCurrentLanguageId() {
 		return _watsonActivityAudit.getNarrativeCurrentLanguageId();
 	}
 
 	@Override
-	public java.lang.String getNarrativeCurrentValue() {
+	public String getNarrativeCurrentValue() {
 		return _watsonActivityAudit.getNarrativeCurrentValue();
 	}
 
@@ -311,7 +309,7 @@ public class WatsonActivityAuditWrapper implements WatsonActivityAudit,
 	* @return the locales and localized narratives of this watson activity audit
 	*/
 	@Override
-	public Map<java.util.Locale, java.lang.String> getNarrativeMap() {
+	public Map<java.util.Locale, String> getNarrativeMap() {
 		return _watsonActivityAudit.getNarrativeMap();
 	}
 
@@ -396,7 +394,7 @@ public class WatsonActivityAuditWrapper implements WatsonActivityAudit,
 	* @return the user name of this watson activity audit
 	*/
 	@Override
-	public java.lang.String getUserName() {
+	public String getUserName() {
 		return _watsonActivityAudit.getUserName();
 	}
 
@@ -406,7 +404,7 @@ public class WatsonActivityAuditWrapper implements WatsonActivityAudit,
 	* @return the user uuid of this watson activity audit
 	*/
 	@Override
-	public java.lang.String getUserUuid() {
+	public String getUserUuid() {
 		return _watsonActivityAudit.getUserUuid();
 	}
 
@@ -545,7 +543,7 @@ public class WatsonActivityAuditWrapper implements WatsonActivityAudit,
 	* @param narrative the narrative of this watson activity audit
 	*/
 	@Override
-	public void setNarrative(java.lang.String narrative) {
+	public void setNarrative(String narrative) {
 		_watsonActivityAudit.setNarrative(narrative);
 	}
 
@@ -556,7 +554,7 @@ public class WatsonActivityAuditWrapper implements WatsonActivityAudit,
 	* @param locale the locale of the language
 	*/
 	@Override
-	public void setNarrative(java.lang.String narrative, java.util.Locale locale) {
+	public void setNarrative(String narrative, java.util.Locale locale) {
 		_watsonActivityAudit.setNarrative(narrative, locale);
 	}
 
@@ -568,13 +566,13 @@ public class WatsonActivityAuditWrapper implements WatsonActivityAudit,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setNarrative(java.lang.String narrative,
-		java.util.Locale locale, java.util.Locale defaultLocale) {
+	public void setNarrative(String narrative, java.util.Locale locale,
+		java.util.Locale defaultLocale) {
 		_watsonActivityAudit.setNarrative(narrative, locale, defaultLocale);
 	}
 
 	@Override
-	public void setNarrativeCurrentLanguageId(java.lang.String languageId) {
+	public void setNarrativeCurrentLanguageId(String languageId) {
 		_watsonActivityAudit.setNarrativeCurrentLanguageId(languageId);
 	}
 
@@ -584,8 +582,7 @@ public class WatsonActivityAuditWrapper implements WatsonActivityAudit,
 	* @param narrativeMap the locales and localized narratives of this watson activity audit
 	*/
 	@Override
-	public void setNarrativeMap(
-		Map<java.util.Locale, java.lang.String> narrativeMap) {
+	public void setNarrativeMap(Map<java.util.Locale, String> narrativeMap) {
 		_watsonActivityAudit.setNarrativeMap(narrativeMap);
 	}
 
@@ -596,8 +593,7 @@ public class WatsonActivityAuditWrapper implements WatsonActivityAudit,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setNarrativeMap(
-		Map<java.util.Locale, java.lang.String> narrativeMap,
+	public void setNarrativeMap(Map<java.util.Locale, String> narrativeMap,
 		java.util.Locale defaultLocale) {
 		_watsonActivityAudit.setNarrativeMap(narrativeMap, defaultLocale);
 	}
@@ -688,7 +684,7 @@ public class WatsonActivityAuditWrapper implements WatsonActivityAudit,
 	* @param userName the user name of this watson activity audit
 	*/
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_watsonActivityAudit.setUserName(userName);
 	}
 
@@ -698,7 +694,7 @@ public class WatsonActivityAuditWrapper implements WatsonActivityAudit,
 	* @param userUuid the user uuid of this watson activity audit
 	*/
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_watsonActivityAudit.setUserUuid(userUuid);
 	}
 
@@ -743,7 +739,7 @@ public class WatsonActivityAuditWrapper implements WatsonActivityAudit,
 	}
 
 	@Override
-	public java.lang.String toString() {
+	public String toString() {
 		return _watsonActivityAudit.toString();
 	}
 
@@ -753,7 +749,7 @@ public class WatsonActivityAuditWrapper implements WatsonActivityAudit,
 	}
 
 	@Override
-	public java.lang.String toXmlString() {
+	public String toXmlString() {
 		return _watsonActivityAudit.toXmlString();
 	}
 

@@ -231,7 +231,7 @@ public class WatsonChildWrapper implements WatsonChild,
 	}
 
 	@Override
-	public java.lang.Object clone() {
+	public Object clone() {
 		return new WatsonChildWrapper((WatsonChild)_watsonChild.clone());
 	}
 
@@ -406,7 +406,7 @@ public class WatsonChildWrapper implements WatsonChild,
 	* @return the source of this watson child
 	*/
 	@Override
-	public java.lang.String getSource() {
+	public String getSource() {
 		return _watsonChild.getSource();
 	}
 
@@ -466,7 +466,7 @@ public class WatsonChildWrapper implements WatsonChild,
 	* @return the user name of this watson child
 	*/
 	@Override
-	public java.lang.String getUserName() {
+	public String getUserName() {
 		return _watsonChild.getUserName();
 	}
 
@@ -476,7 +476,7 @@ public class WatsonChildWrapper implements WatsonChild,
 	* @return the user uuid of this watson child
 	*/
 	@Override
-	public java.lang.String getUserUuid() {
+	public String getUserUuid() {
 		return _watsonChild.getUserUuid();
 	}
 
@@ -702,7 +702,7 @@ public class WatsonChildWrapper implements WatsonChild,
 	* @param source the source of this watson child
 	*/
 	@Override
-	public void setSource(java.lang.String source) {
+	public void setSource(String source) {
 		_watsonChild.setSource(source);
 	}
 
@@ -763,7 +763,7 @@ public class WatsonChildWrapper implements WatsonChild,
 	* @param userName the user name of this watson child
 	*/
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_watsonChild.setUserName(userName);
 	}
 
@@ -773,7 +773,7 @@ public class WatsonChildWrapper implements WatsonChild,
 	* @param userUuid the user uuid of this watson child
 	*/
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_watsonChild.setUserUuid(userUuid);
 	}
 
@@ -798,7 +798,7 @@ public class WatsonChildWrapper implements WatsonChild,
 	}
 
 	@Override
-	public java.lang.String toString() {
+	public String toString() {
 		return _watsonChild.toString();
 	}
 
@@ -808,7 +808,7 @@ public class WatsonChildWrapper implements WatsonChild,
 	}
 
 	@Override
-	public java.lang.String toXmlString() {
+	public String toXmlString() {
 		return _watsonChild.toXmlString();
 	}
 

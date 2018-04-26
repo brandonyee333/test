@@ -163,5 +163,5 @@ public interface WatsonAddressAuditPersistence extends BasePersistence<WatsonAdd
 	public int countAll();
 
 	@Override
-	public java.util.Set<java.lang.String> getBadColumnNames();
+	public java.util.Set<String> getBadColumnNames();
 }

@@ -152,7 +152,7 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	}
 
 	@Override
-	public java.lang.Object clone() {
+	public Object clone() {
 		return new WatsonListTypeAuditWrapper((WatsonListTypeAudit)_watsonListTypeAudit.clone());
 	}
 
@@ -162,7 +162,7 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	}
 
 	@Override
-	public java.lang.String[] getAvailableLanguageIds() {
+	public String[] getAvailableLanguageIds() {
 		return _watsonListTypeAudit.getAvailableLanguageIds();
 	}
 
@@ -187,7 +187,7 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	}
 
 	@Override
-	public java.lang.String getDefaultLanguageId() {
+	public String getDefaultLanguageId() {
 		return _watsonListTypeAudit.getDefaultLanguageId();
 	}
 
@@ -222,7 +222,7 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	* @return the name of this watson list type audit
 	*/
 	@Override
-	public java.lang.String getName() {
+	public String getName() {
 		return _watsonListTypeAudit.getName();
 	}
 
@@ -233,7 +233,7 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	* @return the localized name of this watson list type audit
 	*/
 	@Override
-	public java.lang.String getName(java.util.Locale locale) {
+	public String getName(java.util.Locale locale) {
 		return _watsonListTypeAudit.getName(locale);
 	}
 
@@ -245,7 +245,7 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	* @return the localized name of this watson list type audit. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 	*/
 	@Override
-	public java.lang.String getName(java.util.Locale locale, boolean useDefault) {
+	public String getName(java.util.Locale locale, boolean useDefault) {
 		return _watsonListTypeAudit.getName(locale, useDefault);
 	}
 
@@ -256,7 +256,7 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	* @return the localized name of this watson list type audit
 	*/
 	@Override
-	public java.lang.String getName(java.lang.String languageId) {
+	public String getName(String languageId) {
 		return _watsonListTypeAudit.getName(languageId);
 	}
 
@@ -268,18 +268,17 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	* @return the localized name of this watson list type audit
 	*/
 	@Override
-	public java.lang.String getName(java.lang.String languageId,
-		boolean useDefault) {
+	public String getName(String languageId, boolean useDefault) {
 		return _watsonListTypeAudit.getName(languageId, useDefault);
 	}
 
 	@Override
-	public java.lang.String getNameCurrentLanguageId() {
+	public String getNameCurrentLanguageId() {
 		return _watsonListTypeAudit.getNameCurrentLanguageId();
 	}
 
 	@Override
-	public java.lang.String getNameCurrentValue() {
+	public String getNameCurrentValue() {
 		return _watsonListTypeAudit.getNameCurrentValue();
 	}
 
@@ -289,7 +288,7 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	* @return the locales and localized names of this watson list type audit
 	*/
 	@Override
-	public Map<java.util.Locale, java.lang.String> getNameMap() {
+	public Map<java.util.Locale, String> getNameMap() {
 		return _watsonListTypeAudit.getNameMap();
 	}
 
@@ -334,7 +333,7 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	* @return the type of this watson list type audit
 	*/
 	@Override
-	public java.lang.String getType() {
+	public String getType() {
 		return _watsonListTypeAudit.getType();
 	}
 
@@ -354,7 +353,7 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	* @return the user name of this watson list type audit
 	*/
 	@Override
-	public java.lang.String getUserName() {
+	public String getUserName() {
 		return _watsonListTypeAudit.getUserName();
 	}
 
@@ -364,7 +363,7 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	* @return the user uuid of this watson list type audit
 	*/
 	@Override
-	public java.lang.String getUserUuid() {
+	public String getUserUuid() {
 		return _watsonListTypeAudit.getUserUuid();
 	}
 
@@ -493,7 +492,7 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	* @param name the name of this watson list type audit
 	*/
 	@Override
-	public void setName(java.lang.String name) {
+	public void setName(String name) {
 		_watsonListTypeAudit.setName(name);
 	}
 
@@ -504,7 +503,7 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	* @param locale the locale of the language
 	*/
 	@Override
-	public void setName(java.lang.String name, java.util.Locale locale) {
+	public void setName(String name, java.util.Locale locale) {
 		_watsonListTypeAudit.setName(name, locale);
 	}
 
@@ -516,13 +515,13 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setName(java.lang.String name, java.util.Locale locale,
+	public void setName(String name, java.util.Locale locale,
 		java.util.Locale defaultLocale) {
 		_watsonListTypeAudit.setName(name, locale, defaultLocale);
 	}
 
 	@Override
-	public void setNameCurrentLanguageId(java.lang.String languageId) {
+	public void setNameCurrentLanguageId(String languageId) {
 		_watsonListTypeAudit.setNameCurrentLanguageId(languageId);
 	}
 
@@ -532,7 +531,7 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	* @param nameMap the locales and localized names of this watson list type audit
 	*/
 	@Override
-	public void setNameMap(Map<java.util.Locale, java.lang.String> nameMap) {
+	public void setNameMap(Map<java.util.Locale, String> nameMap) {
 		_watsonListTypeAudit.setNameMap(nameMap);
 	}
 
@@ -543,7 +542,7 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setNameMap(Map<java.util.Locale, java.lang.String> nameMap,
+	public void setNameMap(Map<java.util.Locale, String> nameMap,
 		java.util.Locale defaultLocale) {
 		_watsonListTypeAudit.setNameMap(nameMap, defaultLocale);
 	}
@@ -594,7 +593,7 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	* @param type the type of this watson list type audit
 	*/
 	@Override
-	public void setType(java.lang.String type) {
+	public void setType(String type) {
 		_watsonListTypeAudit.setType(type);
 	}
 
@@ -614,7 +613,7 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	* @param userName the user name of this watson list type audit
 	*/
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_watsonListTypeAudit.setUserName(userName);
 	}
 
@@ -624,7 +623,7 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	* @param userUuid the user uuid of this watson list type audit
 	*/
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_watsonListTypeAudit.setUserUuid(userUuid);
 	}
 
@@ -659,7 +658,7 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	}
 
 	@Override
-	public java.lang.String toString() {
+	public String toString() {
 		return _watsonListTypeAudit.toString();
 	}
 
@@ -669,7 +668,7 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	}
 
 	@Override
-	public java.lang.String toXmlString() {
+	public String toXmlString() {
 		return _watsonListTypeAudit.toXmlString();
 	}
 

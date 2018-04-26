@@ -174,7 +174,7 @@ public class WatsonDocumentWrapper implements WatsonDocument,
 	}
 
 	@Override
-	public java.lang.Object clone() {
+	public Object clone() {
 		return new WatsonDocumentWrapper((WatsonDocument)_watsonDocument.clone());
 	}
 
@@ -224,7 +224,7 @@ public class WatsonDocumentWrapper implements WatsonDocument,
 	* @return the image payload of this watson document
 	*/
 	@Override
-	public java.lang.String getImagePayload() {
+	public String getImagePayload() {
 		return _watsonDocument.getImagePayload();
 	}
 
@@ -329,7 +329,7 @@ public class WatsonDocumentWrapper implements WatsonDocument,
 	* @return the user name of this watson document
 	*/
 	@Override
-	public java.lang.String getUserName() {
+	public String getUserName() {
 		return _watsonDocument.getUserName();
 	}
 
@@ -339,7 +339,7 @@ public class WatsonDocumentWrapper implements WatsonDocument,
 	* @return the user uuid of this watson document
 	*/
 	@Override
-	public java.lang.String getUserUuid() {
+	public String getUserUuid() {
 		return _watsonDocument.getUserUuid();
 	}
 
@@ -455,7 +455,7 @@ public class WatsonDocumentWrapper implements WatsonDocument,
 	* @param imagePayload the image payload of this watson document
 	*/
 	@Override
-	public void setImagePayload(java.lang.String imagePayload) {
+	public void setImagePayload(String imagePayload) {
 		_watsonDocument.setImagePayload(imagePayload);
 	}
 
@@ -565,7 +565,7 @@ public class WatsonDocumentWrapper implements WatsonDocument,
 	* @param userName the user name of this watson document
 	*/
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_watsonDocument.setUserName(userName);
 	}
 
@@ -575,7 +575,7 @@ public class WatsonDocumentWrapper implements WatsonDocument,
 	* @param userUuid the user uuid of this watson document
 	*/
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_watsonDocument.setUserUuid(userUuid);
 	}
 
@@ -610,7 +610,7 @@ public class WatsonDocumentWrapper implements WatsonDocument,
 	}
 
 	@Override
-	public java.lang.String toString() {
+	public String toString() {
 		return _watsonDocument.toString();
 	}
 
@@ -620,7 +620,7 @@ public class WatsonDocumentWrapper implements WatsonDocument,
 	}
 
 	@Override
-	public java.lang.String toXmlString() {
+	public String toXmlString() {
 		return _watsonDocument.toXmlString();
 	}
 

@@ -182,7 +182,7 @@ public class WatsonDocumentAuditWrapper implements WatsonDocumentAudit,
 	}
 
 	@Override
-	public java.lang.Object clone() {
+	public Object clone() {
 		return new WatsonDocumentAuditWrapper((WatsonDocumentAudit)_watsonDocumentAudit.clone());
 	}
 
@@ -232,7 +232,7 @@ public class WatsonDocumentAuditWrapper implements WatsonDocumentAudit,
 	* @return the image payload of this watson document audit
 	*/
 	@Override
-	public java.lang.String getImagePayload() {
+	public String getImagePayload() {
 		return _watsonDocumentAudit.getImagePayload();
 	}
 
@@ -337,7 +337,7 @@ public class WatsonDocumentAuditWrapper implements WatsonDocumentAudit,
 	* @return the user name of this watson document audit
 	*/
 	@Override
-	public java.lang.String getUserName() {
+	public String getUserName() {
 		return _watsonDocumentAudit.getUserName();
 	}
 
@@ -347,7 +347,7 @@ public class WatsonDocumentAuditWrapper implements WatsonDocumentAudit,
 	* @return the user uuid of this watson document audit
 	*/
 	@Override
-	public java.lang.String getUserUuid() {
+	public String getUserUuid() {
 		return _watsonDocumentAudit.getUserUuid();
 	}
 
@@ -473,7 +473,7 @@ public class WatsonDocumentAuditWrapper implements WatsonDocumentAudit,
 	* @param imagePayload the image payload of this watson document audit
 	*/
 	@Override
-	public void setImagePayload(java.lang.String imagePayload) {
+	public void setImagePayload(String imagePayload) {
 		_watsonDocumentAudit.setImagePayload(imagePayload);
 	}
 
@@ -583,7 +583,7 @@ public class WatsonDocumentAuditWrapper implements WatsonDocumentAudit,
 	* @param userName the user name of this watson document audit
 	*/
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_watsonDocumentAudit.setUserName(userName);
 	}
 
@@ -593,7 +593,7 @@ public class WatsonDocumentAuditWrapper implements WatsonDocumentAudit,
 	* @param userUuid the user uuid of this watson document audit
 	*/
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_watsonDocumentAudit.setUserUuid(userUuid);
 	}
 
@@ -638,7 +638,7 @@ public class WatsonDocumentAuditWrapper implements WatsonDocumentAudit,
 	}
 
 	@Override
-	public java.lang.String toString() {
+	public String toString() {
 		return _watsonDocumentAudit.toString();
 	}
 
@@ -648,7 +648,7 @@ public class WatsonDocumentAuditWrapper implements WatsonDocumentAudit,
 	}
 
 	@Override
-	public java.lang.String toXmlString() {
+	public String toXmlString() {
 		return _watsonDocumentAudit.toXmlString();
 	}
 

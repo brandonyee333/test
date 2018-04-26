@@ -89,7 +89,7 @@ public class AkismetEntryLocalServiceWrapper implements AkismetEntryLocalService
 	}
 
 	@Override
-	public void deleteAkismetEntry(java.lang.String className, long classPK)
+	public void deleteAkismetEntry(String className, long classPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_akismetEntryLocalService.deleteAkismetEntry(className, classPK);
 	}
@@ -197,7 +197,7 @@ public class AkismetEntryLocalServiceWrapper implements AkismetEntryLocalService
 
 	@Override
 	public com.liferay.akismet.model.AkismetEntry fetchAkismetEntry(
-		java.lang.String className, long classPK) {
+		String className, long classPK) {
 		return _akismetEntryLocalService.fetchAkismetEntry(className, classPK);
 	}
 
@@ -258,7 +258,7 @@ public class AkismetEntryLocalServiceWrapper implements AkismetEntryLocalService
 	* @return the OSGi service identifier
 	*/
 	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
+	public String getOSGiServiceIdentifier() {
 		return _akismetEntryLocalService.getOSGiServiceIdentifier();
 	}
 
@@ -283,10 +283,8 @@ public class AkismetEntryLocalServiceWrapper implements AkismetEntryLocalService
 
 	@Override
 	public com.liferay.akismet.model.AkismetEntry updateAkismetEntry(
-		java.lang.String className, long classPK, java.lang.String type,
-		java.lang.String permalink, java.lang.String referrer,
-		java.lang.String userAgent, java.lang.String userIP,
-		java.lang.String userURL) {
+		String className, long classPK, String type, String permalink,
+		String referrer, String userAgent, String userIP, String userURL) {
 		return _akismetEntryLocalService.updateAkismetEntry(className, classPK,
 			type, permalink, referrer, userAgent, userIP, userURL);
 	}

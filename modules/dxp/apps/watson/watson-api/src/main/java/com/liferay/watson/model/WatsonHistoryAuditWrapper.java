@@ -157,7 +157,7 @@ public class WatsonHistoryAuditWrapper implements WatsonHistoryAudit,
 	}
 
 	@Override
-	public java.lang.Object clone() {
+	public Object clone() {
 		return new WatsonHistoryAuditWrapper((WatsonHistoryAudit)_watsonHistoryAudit.clone());
 	}
 
@@ -172,7 +172,7 @@ public class WatsonHistoryAuditWrapper implements WatsonHistoryAudit,
 	* @return the fully qualified class name of this watson history audit
 	*/
 	@Override
-	public java.lang.String getClassName() {
+	public String getClassName() {
 		return _watsonHistoryAudit.getClassName();
 	}
 
@@ -292,7 +292,7 @@ public class WatsonHistoryAuditWrapper implements WatsonHistoryAudit,
 	* @return the user name of this watson history audit
 	*/
 	@Override
-	public java.lang.String getUserName() {
+	public String getUserName() {
 		return _watsonHistoryAudit.getUserName();
 	}
 
@@ -302,7 +302,7 @@ public class WatsonHistoryAuditWrapper implements WatsonHistoryAudit,
 	* @return the user uuid of this watson history audit
 	*/
 	@Override
-	public java.lang.String getUserUuid() {
+	public String getUserUuid() {
 		return _watsonHistoryAudit.getUserUuid();
 	}
 
@@ -367,7 +367,7 @@ public class WatsonHistoryAuditWrapper implements WatsonHistoryAudit,
 	}
 
 	@Override
-	public void setClassName(java.lang.String className) {
+	public void setClassName(String className) {
 		_watsonHistoryAudit.setClassName(className);
 	}
 
@@ -503,7 +503,7 @@ public class WatsonHistoryAuditWrapper implements WatsonHistoryAudit,
 	* @param userName the user name of this watson history audit
 	*/
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_watsonHistoryAudit.setUserName(userName);
 	}
 
@@ -513,7 +513,7 @@ public class WatsonHistoryAuditWrapper implements WatsonHistoryAudit,
 	* @param userUuid the user uuid of this watson history audit
 	*/
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_watsonHistoryAudit.setUserUuid(userUuid);
 	}
 
@@ -558,7 +558,7 @@ public class WatsonHistoryAuditWrapper implements WatsonHistoryAudit,
 	}
 
 	@Override
-	public java.lang.String toString() {
+	public String toString() {
 		return _watsonHistoryAudit.toString();
 	}
 
@@ -568,7 +568,7 @@ public class WatsonHistoryAuditWrapper implements WatsonHistoryAudit,
 	}
 
 	@Override
-	public java.lang.String toXmlString() {
+	public String toXmlString() {
 		return _watsonHistoryAudit.toXmlString();
 	}
 
