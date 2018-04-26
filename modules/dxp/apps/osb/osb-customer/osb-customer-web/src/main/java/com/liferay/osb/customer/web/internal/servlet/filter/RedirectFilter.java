@@ -229,7 +229,7 @@ public class RedirectFilter implements Filter {
 
 			if (layoutId > 0) {
 				layout = _layoutLocalService.getLayout(
-					layout.getGroupId(), layout.getPrivateLayout(), layoutId);
+					layout.getGroupId(), layout.isPrivateLayout(), layoutId);
 			}
 		}
 
