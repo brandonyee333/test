@@ -168,33 +168,71 @@ Date lastEnabledDate = calendar.getTime();
 
 			<%
 			List<LicenseEntry> licenseEntries = LicenseEntryLocalServiceUtil.getLicenseEntries(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+			for (int i = 0; i < licenseEntries.size(); i++) {
+				if((i == 0) || (i % 4 == 0)) {
 			%>
 
-			<liferay-util:include page="/common/multiple_select_checkboxes.jsp" servletContext="<%= application %>">
-				<liferay-util:param name="curValues" value="<%= StringUtil.merge(displayTerms.getLicenseEntryIds()) %>" />
-				<liferay-util:param name="itemsPerColumn" value="7" />
-				<liferay-util:param name="labels" value='<%= ListUtil.toString(licenseEntries, "name") %>' />
-				<liferay-util:param name="name" value="<%= displayTerms.LICENSE_ENTRY_IDS %>" />
-				<liferay-util:param name="values" value='<%= ListUtil.toString(licenseEntries, "licenseEntryId") %>' />
-			</liferay-util:include>
-		</aui:col>
+			<div class="row">
 
+			<%
+				}
+
+				LicenseEntry licenseEntry = licenseEntries.get(i);
+			%>
+
+				<aui:input checked="<%= ArrayUtil.contains(displayTerms.getLicenseEntryIds(), licenseEntry.getLicenseEntryId()) %>" label="<%= HtmlUtil.escapeAttribute(licenseEntry.getName()) %>" name="<%= licenseEntry.getName() %>" type="checkbox" value="<%= licenseEntry.getLicenseEntryId() %>" wrapperCssClass="col-sm-3" />
+
+			<%
+				if((i == licenseEntries.size() - 1)|| ((i + 1) % 4 == 0)) {
+			%>
+
+			</div>
+
+			<%
+				}
+			}
+			%>
+
+		</aui:col>
+	</aui:row>
+
+	<aui:row>
 		<aui:col md="12">
 			<h2 class="license-input-heading"><liferay-ui:message key="product" /></h2>
 
 			<%
 			List<ProductEntry> productEntries = ProductEntryLocalServiceUtil.getProductEntries(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+			for (int i = 0; i < productEntries.size(); i++) {
+				if((i == 0) || (i % 4 == 0)) {
 			%>
 
-			<liferay-util:include page="/common/multiple_select_checkboxes.jsp" servletContext="<%= application %>">
-				<liferay-util:param name="curValues" value="<%= StringUtil.merge(displayTerms.getProductEntryIds()) %>" />
-				<liferay-util:param name="itemsPerColumn" value="7" />
-				<liferay-util:param name="labels" value='<%= ListUtil.toString(productEntries, "name") %>' />
-				<liferay-util:param name="name" value="<%= displayTerms.PRODUCT_ENTRY_IDS %>" />
-				<liferay-util:param name="values" value='<%= ListUtil.toString(productEntries, "productEntryId") %>' />
-			</liferay-util:include>
-		</aui:col>
+			<div class="row">
 
+			<%
+				}
+
+				ProductEntry productEntry = productEntries.get(i);
+			%>
+
+				<aui:input checked="<%= ArrayUtil.contains(displayTerms.getProductEntryIds(), productEntry.getProductEntryId()) %>" label="<%= HtmlUtil.escapeAttribute(productEntry.getName()) %>" name="<%= productEntry.getName() %>" type="checkbox" value="<%= productEntry.getProductEntryId() %>" wrapperCssClass="col-sm-3" />
+
+			<%
+				if((i == productEntries.size() - 1) || ((i + 1) % 4 == 0)) {
+			%>
+
+			</div>
+
+			<%
+				}
+			}
+			%>
+
+		</aui:col>
+	</aui:row>
+
+	<aui:row>
 		<aui:col md="12">
 			<h2 class="license-input-heading"><liferay-ui:message key="product-version" /></h2>
 
@@ -202,15 +240,34 @@ Date lastEnabledDate = calendar.getTime();
 			List<ListType> productVersionTypes = ListUtil.copy(ListTypeServiceUtil.getListTypes(ProductEntryConstants.LIST_TYPE_PORTAL_ALL_VERSIONS));
 
 			productVersionTypes.addAll(ListTypeServiceUtil.getListTypes(ProductEntryConstants.LIST_TYPE_DIGITAL_ENTERPRISE_ALL_VERSIONS));
+
+			Long[] productVersions = ArrayUtil.toLongArray(displayTerms.getProductVersions());
+
+			for (int i = 0; i < productVersionTypes.size(); i++) {
+				if((i == 0) || (i % 4 == 0)) {
 			%>
 
-			<liferay-util:include page="/common/multiple_select_checkboxes.jsp" servletContext="<%= application %>">
-				<liferay-util:param name="curValues" value="<%= StringUtil.merge(displayTerms.getProductVersions()) %>" />
-				<liferay-util:param name="itemsPerColumn" value="6" />
-				<liferay-util:param name="labels" value='<%= ListUtil.toString(productVersionTypes, "name") %>' />
-				<liferay-util:param name="name" value="<%= displayTerms.PRODUCT_VERSIONS %>" />
-				<liferay-util:param name="values" value='<%= ListUtil.toString(productVersionTypes, "listTypeId") %>' />
-			</liferay-util:include>
+			<div class="row">
+
+			<%
+				}
+
+				ListType productVersionType = productVersionTypes.get(i);
+			%>
+
+				<aui:input checked="<%= ArrayUtil.contains(productVersions, productVersionType.getListTypeId()) %>" label="<%= HtmlUtil.escapeAttribute(productVersionType.getName()) %>" name="<%= productVersionType.getName() %>" type="checkbox" value="<%= productVersionType.getListTypeId() %>" wrapperCssClass="col-sm-3" />
+
+			<%
+				if((i == productVersionTypes.size() - 1) || ((i + 1) % 4 == 0)) {
+			%>
+
+			</div>
+
+			<%
+				}
+			}
+			%>
+
 		</aui:col>
 	</aui:row>
 
