@@ -725,9 +725,6 @@ for (SupportRegion supportRegion : supportRegions) {
 													<c:when test="<%= curAuditEntry.getI18n() %>">
 														<liferay-ui:message key="<%= HtmlUtil.escape(oldLabel) %>" />
 													</c:when>
-													<c:when test="<%= (curAuditEntry.getField() == AuditEntryConstants.FIELD_INSTRUCTIONS) || (curAuditEntry.getField() == AuditEntryConstants.FIELD_NOTES) %>">
-														<pre><%= SupportUtil.getHTML(oldLabel) %></pre>
-													</c:when>
 													<c:otherwise>
 														<%= HtmlUtil.escape(oldLabel) %>
 													</c:otherwise>
@@ -743,9 +740,6 @@ for (SupportRegion supportRegion : supportRegions) {
 													</c:when>
 													<c:when test="<%= curAuditEntry.getI18n() %>">
 														<liferay-ui:message key="<%= HtmlUtil.escape(newLabel) %>" />
-													</c:when>
-													<c:when test="<%= (curAuditEntry.getField() == AuditEntryConstants.FIELD_INSTRUCTIONS) || (curAuditEntry.getField() == AuditEntryConstants.FIELD_NOTES) %>">
-														<pre><%= SupportUtil.getHTML(newLabel) %></pre>
 													</c:when>
 													<c:otherwise>
 														<%= HtmlUtil.escape(newLabel) %>

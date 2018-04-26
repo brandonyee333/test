@@ -202,6 +202,7 @@ page import="com.liferay.osb.util.OSBPortletKeys" %><%@
 page import="com.liferay.osb.util.OSBWebKeys" %><%@
 page import="com.liferay.osb.util.PortletPropsValues" %><%@
 page import="com.liferay.osb.util.SalesforceConstants" %><%@
+page import="com.liferay.osb.util.VisibilityConstants" %><%@
 page import="com.liferay.osb.util.WorkflowConstants" %><%@
 page import="com.liferay.osb.util.comparator.AccountEntryNameComparator" %><%@
 page import="com.liferay.osb.util.comparator.LicenseKeyExpirationDateComparator" %><%@
