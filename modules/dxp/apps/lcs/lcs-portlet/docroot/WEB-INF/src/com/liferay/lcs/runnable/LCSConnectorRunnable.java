@@ -180,7 +180,8 @@ public class LCSConnectorRunnable implements Runnable {
 		_checkDefaultPortletPreferences();
 
 		LCSClusterEntryToken lcsClusterEntryToken =
-			_lcsClusterEntryTokenAdvisor.processLCSClusterEntryToken();
+			_lcsClusterEntryTokenAdvisor.processLCSClusterEntryToken(
+				LCSUtil.getLCSPortletBuildNumber());
 
 		LCSUtil.setUpJSONWebServiceClientCredentials();
 

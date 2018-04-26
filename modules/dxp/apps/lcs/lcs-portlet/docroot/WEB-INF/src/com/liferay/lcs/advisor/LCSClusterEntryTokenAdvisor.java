@@ -164,14 +164,15 @@ public class LCSClusterEntryTokenAdvisor {
 		return _lcsAlertAdvisor.getLCSAlerts();
 	}
 
-	public LCSClusterEntryToken processLCSClusterEntryToken()
+	public LCSClusterEntryToken processLCSClusterEntryToken(
+			int lcsPortletBuildNumber)
 		throws IOException, LCSClusterEntryTokenDecryptException,
 			   MissingLCSClusterEntryTokenException,
 			   MultipleLCSClusterEntryTokenException,
 			   NoSuchPortletPreferencesException, ReadOnlyException {
 
 		LCSClusterEntryToken lcsClusterEntryToken =
-			processLCSCLusterEntryTokenFile();
+			processLCSCLusterEntryTokenFile(lcsPortletBuildNumber);
 
 		LCSClusterEntryTokenContentAdvisor lcsClusterEntryTokenContentAdvisor =
 			new LCSClusterEntryTokenContentAdvisor(
@@ -188,7 +189,8 @@ public class LCSClusterEntryTokenAdvisor {
 		return lcsClusterEntryToken;
 	}
 
-	public LCSClusterEntryToken processLCSCLusterEntryTokenFile()
+	protected LCSClusterEntryToken processLCSCLusterEntryTokenFile(
+			int lcsPortletBuildNumber)
 		throws IOException, LCSClusterEntryTokenDecryptException,
 			   MissingLCSClusterEntryTokenException,
 			   MultipleLCSClusterEntryTokenException {
@@ -208,7 +210,7 @@ public class LCSClusterEntryTokenAdvisor {
 		String lcsClusterEntryTokenJSON = null;
 
 		try {
-			lcsClusterEntryTokenJSON = decrypt(bytes);
+			lcsClusterEntryTokenJSON = decrypt(bytes, lcsPortletBuildNumber);
 		}
 		catch (Exception e) {
 			deleteLCSCLusterEntryTokenFile();
@@ -245,7 +247,9 @@ public class LCSClusterEntryTokenAdvisor {
 		_lcsClusterEntryTokenClient = lcsClusterEntryTokenClient;
 	}
 
-	protected String decrypt(byte[] bytes) throws Exception {
+	protected String decrypt(byte[] bytes, int lcsPortletBuildNumber)
+		throws Exception {
+
 		KeyStore keyStore = KeyStoreFactory.getInstance(
 			PortletPropsValues.DIGITAL_SIGNATURE_KEY_STORE_PATH,
 			PortletPropsValues.DIGITAL_SIGNATURE_KEY_STORE_TYPE,
@@ -273,7 +277,7 @@ public class LCSClusterEntryTokenAdvisor {
 			KeyStoreAdvisor keyStoreAdvisor = new KeyStoreAdvisor();
 
 			keyName = keyStoreAdvisor.getKeyAlias(
-				LCSUtil.getLCSPortletBuildNumber(),
+				lcsPortletBuildNumber,
 				PortletPropsValues.DIGITAL_SIGNATURE_KEY_NAME, keyStore);
 
 			if (_log.isDebugEnabled()) {
