@@ -84,6 +84,7 @@ page import="com.liferay.portal.kernel.search.Sort" %><%@
 page import="com.liferay.portal.kernel.search.Summary" %><%@
 page import="com.liferay.portal.kernel.search.TermRangeQuery" %><%@
 page import="com.liferay.portal.kernel.search.WildcardQuery" %><%@
+page import="com.liferay.portal.kernel.search.filter.BooleanFilter" %><%@
 page import="com.liferay.portal.kernel.search.generic.BooleanQueryImpl" %><%@
 page import="com.liferay.portal.kernel.search.generic.MatchQuery" %><%@
 page import="com.liferay.portal.kernel.search.generic.TermRangeQueryImpl" %><%@

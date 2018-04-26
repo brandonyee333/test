@@ -22,6 +22,15 @@ public static class WatsonVehicleIndexer extends BaseAlloyIndexer {
 	}
 
 	@Override
+	public void postProcessSearchQuery(BooleanQuery searchQuery, BooleanFilter fullQueryBooleanFilter, SearchContext searchContext) throws Exception {
+		addSearchTerm(searchQuery, searchContext, Field.DESCRIPTION, true);
+		addSearchTerm(searchQuery, searchContext, Field.NAME, true);
+		addSearchTerm(searchQuery, searchContext, Field.STATUS, false);
+		addSearchTerm(searchQuery, searchContext, Field.TITLE, true);
+		addSearchTerm(searchQuery, searchContext, Field.USER_NAME, true);
+	}
+
+	@Override
 	protected Document doGetDocument(BaseModel<?> object) throws Exception {
 		WatsonVehicle watsonVehicle = new WatsonVehicle((com.liferay.watson.model.WatsonVehicle)object);
 
