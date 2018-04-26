@@ -66,7 +66,7 @@ public class UserUpdateMessageProcessor extends BaseMessageProcessor {
 			emailAddress, user.getFacebookId(), user.getOpenId(), false, null,
 			languageId, timeZoneId, user.getGreeting(), user.getComments(),
 			firstName, middleName, lastName, contact.getPrefixId(),
-			contact.getSuffixId(), contact.getMale(),
+			contact.getSuffixId(), contact.isMale(),
 			calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE),
 			calendar.get(Calendar.YEAR), contact.getSmsSn(),
 			contact.getFacebookSn(), contact.getJabberSn(),
