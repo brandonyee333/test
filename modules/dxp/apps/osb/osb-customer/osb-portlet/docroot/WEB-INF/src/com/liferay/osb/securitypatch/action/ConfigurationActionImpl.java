@@ -15,7 +15,6 @@
 package com.liferay.osb.securitypatch.action;
 
 import com.liferay.osb.service.SecurityPatchLocalServiceUtil;
-import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.portlet.LiferayPortletConfig;
 import com.liferay.portal.kernel.servlet.SessionErrors;
@@ -30,8 +29,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -98,14 +95,13 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 
 		SecurityPatchLocalServiceUtil.deleteSecurityPatches(portletId);
 
+		/* Needs refactor
 		FileInputStream fileInputStream = new FileInputStream(file);
 
 		UnsyncBufferedReader bufferedReader = new UnsyncBufferedReader(
 			new InputStreamReader(fileInputStream));
 
-		/* Needs refactor
-		 *
-		 * try {
+		try {
 			String line = null;
 
 			while (Validator.isNotNull(line = bufferedReader.readLine())) {

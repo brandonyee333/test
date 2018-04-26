@@ -452,7 +452,7 @@ public class LicenseServlet extends HttpServlet {
 		String productId = jsonObject.getString("productId");
 		int productVersion = jsonObject.getInt("productVersion");
 		String randomUuid = jsonObject.getString("randomUuid");
-		long userCount = jsonObject.getLong("userCount");
+		//long userCount = jsonObject.getLong("userCount");
 		int version = jsonObject.getInt("version");
 
 		if (Validator.isNull(productId) ||

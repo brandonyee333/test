@@ -54,9 +54,9 @@ public class Upgrade_20160725150104145_OfferingEntry
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
-				long offeringEntryId = rs.getLong("offeringEntryId");
+				/*long offeringEntryId = rs.getLong("offeringEntryId");
 
-				/*runSQL(
+				runSQL(
 					"update OSB_OfferingEntry set version = '" +
 						ProductEntryConstants.PORTAL_VERSION_ANY + "' where " +
 							"offeringEntryId = " + offeringEntryId);*/

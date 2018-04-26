@@ -38,7 +38,6 @@ import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
-import com.liferay.portal.kernel.security.auth.AuthTokenUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
@@ -121,11 +120,11 @@ public class AdminServletContextListener
 
 		// Auth token
 
+		/* TODO fix authToken implementation
 		AuthTokenUtil authTokenUtil =
 			(AuthTokenUtil)PortalBeanLocatorUtil.locate(
 				AuthTokenUtil.class.getName());
 
-		/* TODO fix authToken implementation
 		OSBAuthToken osbAuthToken = (OSBAuthToken)AuthTokenUtil.getAuthToken();
 
 		authTokenUtil.setAuthToken(osbAuthToken.getAuthToken());
@@ -225,11 +224,12 @@ public class AdminServletContextListener
 
 		// Auth token
 
+		/* TODO fix authToken implementation
+
 		AuthTokenUtil authTokenUtil =
 			(AuthTokenUtil)PortalBeanLocatorUtil.locate(
 				AuthTokenUtil.class.getName());
 
-		/* TODO fix authToken implementation
 		AuthToken originalAuthToken = AuthTokenUtil.getAuthToken();
 
 		AuthToken osbAuthToken = new OSBAuthToken(originalAuthToken);

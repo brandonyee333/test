@@ -57,7 +57,7 @@ public class UpgradeAccountEntry extends UpgradeProcess {
 			}
 
 			for (Address address : addresses) {
-				if (address.getPrimary()) {
+				if (address.isPrimary()) {
 					accountEntry.setCountryId(address.getCountryId());
 				}
 

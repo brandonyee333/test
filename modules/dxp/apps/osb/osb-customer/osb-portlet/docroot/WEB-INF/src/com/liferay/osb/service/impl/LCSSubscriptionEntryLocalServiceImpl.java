@@ -29,7 +29,6 @@ import com.liferay.osb.model.impl.LCSSubscriptionEntryImpl;
 import com.liferay.osb.service.base.LCSSubscriptionEntryLocalServiceBaseImpl;
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -94,13 +93,13 @@ public class LCSSubscriptionEntryLocalServiceImpl
 			return;
 		}
 
+		/* TODO
 		List<LCSSubscriptionEntry> lcsSubscriptionEntries =
 			getLCSSubscriptionEntries(accountEntryId);
 
 		String lcsSubscriptionEntriesJSON = JSONFactoryUtil.looseSerialize(
 			lcsSubscriptionEntries);
 
-		/* TODO
 		LCSJSONWebServiceUtil.sendLCSSubscriptionEntries(
 			corpProjectId, lcsSubscriptionEntriesJSON);
 		*/

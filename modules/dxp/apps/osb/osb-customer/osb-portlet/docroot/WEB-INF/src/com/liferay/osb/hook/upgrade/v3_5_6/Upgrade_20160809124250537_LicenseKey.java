@@ -55,9 +55,9 @@ public class Upgrade_20160809124250537_LicenseKey extends BaseUpgradeProcess {
 	}
 
 	protected void updateLicenseKeys() throws Exception {
-		long trialAccountEntryId = 8264303;
+		/*long trialAccountEntryId = 8264303;
 
-		/*List<LicenseKey> licenseKeys =
+		List<LicenseKey> licenseKeys =
 			LicenseKeyLocalServiceUtil.getAccountEntryLicenseKeys(
 				trialAccountEntryId, OSBConstants.OFFERING_DEFINITION_TRIAL_ID,
 				ProductEntryConstants.PORTAL_VERSION_7_0_10);

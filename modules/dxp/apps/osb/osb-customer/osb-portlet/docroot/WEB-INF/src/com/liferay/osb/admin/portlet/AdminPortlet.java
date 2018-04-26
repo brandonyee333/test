@@ -1152,9 +1152,6 @@ public class AdminPortlet extends MVCPortlet {
 
 		String redirect = null;
 
-		String actionName = ParamUtil.getString(
-			actionRequest, ActionRequest.ACTION_NAME);
-
 		if (Validator.isNull(redirect)) {
 			redirect = ParamUtil.getString(
 				actionRequest, "assignmentsRedirect");

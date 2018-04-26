@@ -975,12 +975,6 @@ public class AccountEntryLocalServiceImpl
 			accountEntryId, corpProjectUuid, name, code, type, industry,
 			partnerEntryId, maxCustomers, languageIds, supportRegionIds);
 
-		String oldName = accountEntry.getName();
-		String oldCode = accountEntry.getCode();
-		long oldPartnerEntryId = accountEntry.getPartnerEntryId();
-		int oldTier = accountEntry.getTier();
-		String oldInstructions = accountEntry.getInstructions();
-
 		accountEntry.setModifiedUserId(user.getUserId());
 		accountEntry.setModifiedUserName(user.getFullName());
 		accountEntry.setModifiedDate(new Date());
