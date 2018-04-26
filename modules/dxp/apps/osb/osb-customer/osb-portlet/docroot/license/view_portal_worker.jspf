@@ -37,9 +37,7 @@ pageContext.setAttribute("searchURL", searchURL);
 		<portlet:param name="redirect" value="<%= currentURL %>" />
 	</portlet:renderURL>
 
-	<a href="<%= addLicenseKeyURL %>">
-		<liferay-ui:message key="generate-new-license" />+
-	</a>
+	<aui:button onClick="<%= addLicenseKeyURL %>" value="generate-new-license" />
 
 	<div class="license-worker">
 		<liferay-ui:search-container
