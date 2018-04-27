@@ -136,9 +136,12 @@ public class LCSConnectorRunnable implements Runnable {
 				}
 			}
 			catch (Throwable throwable) {
-				_log.error(throwable.getMessage(), throwable);
+				_log.error(
+					"Current thread will be terminated because unable to " +
+						"recover from error. Please report error to support",
+					throwable);
 
-				throw throwable;
+				stop();
 			}
 		}
 
