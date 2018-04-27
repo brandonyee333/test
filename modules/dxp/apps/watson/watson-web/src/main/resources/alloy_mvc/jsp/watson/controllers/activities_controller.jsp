@@ -72,6 +72,26 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		respondWith(translate("activity-saved-successfully"), WatsonActivity.getAsJSONObject(watsonActivity));
 	}
 
+	public void autoComplete() throws Exception {
+		if (!isRespondingTo("json")) {
+			return;
+		}
+
+		if (!WatsonPermission.check(user, RoleConstants.INCIDENT_STAFF)) {
+			respondWith(HttpServletResponse.SC_FORBIDDEN, LanguageUtil.get(request, "you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+
+			return;
+		}
+
+		SearchContext searchContext = getSearchContext(WatsonActivity.baseModelClass, false);
+
+		String keywords = ParamUtil.getString(request, "keywordQueryString");
+
+		searchContext.setKeywords(keywords);
+
+		respondWith(WatsonActivity.getAsJSONDataArray(_doSearch(searchContext), getTotalHits(searchContext)));
+	}
+
 	public void autoCreate() throws Exception {
 		if (!isRespondingTo("json")) {
 			return;

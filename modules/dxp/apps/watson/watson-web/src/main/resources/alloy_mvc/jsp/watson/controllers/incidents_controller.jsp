@@ -92,6 +92,48 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		respondWith(translate("incident-saved-successfully"), WatsonIncident.getAsJSONObject(watsonIncident));
 	}
 
+	public void autoComplete() throws Exception {
+		if (!isRespondingTo("json")) {
+			return;
+		}
+
+		if (!WatsonPermission.check(user, RoleConstants.INCIDENT_STAFF)) {
+			respondWith(HttpServletResponse.SC_FORBIDDEN, LanguageUtil.get(request, "you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+
+			return;
+		}
+
+		SearchContext searchContext = getSearchContext(WatsonIncident.baseModelClass, false);
+
+		String keywords = ParamUtil.getString(request, "keywordQueryString");
+
+		searchContext.setKeywords(keywords);
+
+		respondWith(WatsonIncident.getAsJSONDataArray(_doSearch(searchContext), getTotalHits(searchContext)));
+	}
+
+	public void checkUserAuthorizationStatus() throws Exception {
+		if (!isRespondingTo("json")) {
+			return;
+		}
+
+		HttpServletRequest request = PortalUtil.getHttpServletRequest(portletRequest);
+
+		if (WatsonTokenAuthEntryLocalServiceUtil.hasAuthenticatedSession(user, request.getRemoteAddr())) {
+			respondWith(WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_LABEL_APPROVED);
+
+			return;
+		}
+
+		boolean forceIssueNewToken = ParamUtil.getBoolean(request, "force");
+
+		if (forceIssueNewToken || !WatsonTokenAuthEntryLocalServiceUtil.hasPendingToken(user)) {
+			WatsonUtil.sendTwoFactorAuthEmail(user, request.getRemoteAddr());
+		}
+
+		respondWith(WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_LABEL_PENDING);
+	}
+
 	public void create() throws Exception {
 		if (isRespondingTo("json")) {
 			return;
@@ -400,34 +442,20 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
+		String actionType = ParamUtil.getString(request, "actionType");
+
+		if (Validator.isNotNull(actionType) && actionType.equals("search")) {
+			this.autoComplete();
+
+			return;
+		}
+
 		String[] fields = ParamUtil.getStringValues(request, "fields");
 		String[] keywords = ParamUtil.getStringValues(request, "keywords");
 
 		SearchContext searchContext = getPopulatedSearchContext(WatsonIncident.baseModelClass, fields, keywords, false);
 
 		respondWith(WatsonIncident.getAsJSONDataArray(_doSearch(searchContext), getTotalHits(searchContext)));
-	}
-
-	public void checkUserAuthorizationStatus() throws Exception {
-		if (!isRespondingTo("json")) {
-			return;
-		}
-
-		HttpServletRequest request = PortalUtil.getHttpServletRequest(portletRequest);
-
-		if (WatsonTokenAuthEntryLocalServiceUtil.hasAuthenticatedSession(user, request.getRemoteAddr())) {
-			respondWith(WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_LABEL_APPROVED);
-
-			return;
-		}
-
-		boolean forceIssueNewToken = ParamUtil.getBoolean(request, "force");
-
-		if (forceIssueNewToken || !WatsonTokenAuthEntryLocalServiceUtil.hasPendingToken(user)) {
-			WatsonUtil.sendTwoFactorAuthEmail(user, request.getRemoteAddr());
-		}
-
-		respondWith(WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_LABEL_PENDING);
 	}
 
 	public void submitAuthenticationToken() throws Exception {
