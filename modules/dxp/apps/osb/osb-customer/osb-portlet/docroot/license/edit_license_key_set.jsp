@@ -161,13 +161,16 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 			<c:if test="<%= !inactiveLicenseKeys.isEmpty() %>">
 				<liferay-ui:panel
 					collapsible="<%= true %>"
+					cssClass="row"
 					extended="<%= inactiveLicenseKeys.size() <= 3 %>"
 					id="inactiveLicenses"
 					markupView="lexicon"
 					persistState="<%= false %>"
 					title="deactivated-licenses"
 				>
-					<%@ include file="/license/view_license_key_set.jspf" %>
+					<aui:col md="12">
+						<%@ include file="/license/view_license_key_set.jspf" %>
+					</aui:col>
 				</liferay-ui:panel>
 			</c:if>
 

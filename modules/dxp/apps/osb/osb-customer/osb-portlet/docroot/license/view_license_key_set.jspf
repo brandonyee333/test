@@ -25,10 +25,10 @@ while (!displayLicenseKeys.isEmpty()) {
 		canRenewAggregate = false;
 	}
 
-	String cssClass = "row";
+	String cssClass = StringPool.BLANK;
 
 	if ((licenseKey.getOfferingEntryId() == offeringEntryId) && (licenseKey.getClusterId() == clusterId)) {
-		cssClass += " highlight-cluster";
+		cssClass = "highlight-cluster";
 	}
 %>
 
@@ -37,7 +37,7 @@ while (!displayLicenseKeys.isEmpty()) {
 			<%@ include file="/license/edit_license_key_set_version_3_4.jspf" %>
 		</c:when>
 		<c:otherwise>
-			<div class="<%= cssClass %>" id="<portlet:namespace /><%= licenseKey.getOfferingEntryId() %>-<%= licenseKey.getClusterId() %>">
+			<aui:row cssClass='<%= "cluster " + cssClass %>' id='<%= licenseKey.getOfferingEntryId() + "-" + licenseKey.getClusterId() %>'>
 				<c:if test="<%= OSBLicenseKeyPermission.contains(permissionChecker, licenseKey.getLicenseKeyId(), OSBActionKeys.UPDATE_ADMIN) %>">
 					<aui:col md="4">
 						<span class="bold uppercase"><liferay-ui:message key="created-by" />:</span>
@@ -315,7 +315,7 @@ while (!displayLicenseKeys.isEmpty()) {
 						/>
 					</c:if>
 				</div>
-			</div>
+			</aui:row>
 		</c:otherwise>
 	</c:choose>
 
