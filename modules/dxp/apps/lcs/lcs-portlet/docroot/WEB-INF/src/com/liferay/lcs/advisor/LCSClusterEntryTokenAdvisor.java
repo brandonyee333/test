@@ -43,7 +43,6 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.util.Encryptor;
 import com.liferay.util.EncryptorException;
@@ -260,10 +259,11 @@ public class LCSClusterEntryTokenAdvisor {
 		throws MissingLCSClusterEntryTokenException,
 			   MultipleLCSClusterEntryTokenException {
 
-		StringBundler sb = new StringBundler(4);
+		StringBundler sb = new StringBundler(5);
 
-		sb.append(PropsUtil.get("liferay.home"));
-		sb.append("/data");
+		sb.append(_getLiferayHome());
+		sb.append(File.separatorChar);
+		sb.append("data");
 
 		File liferayDataDir = new File(sb.toString());
 
@@ -313,7 +313,7 @@ public class LCSClusterEntryTokenAdvisor {
 				"Only one LCS activation token file is allowed");
 		}
 
-		sb.append(StringPool.SLASH);
+		sb.append(File.separatorChar);
 		sb.append(lcsClusterEntryTokenFileNames[0]);
 
 		return sb.toString();
@@ -447,6 +447,16 @@ public class LCSClusterEntryTokenAdvisor {
 			throw new LCSKeystoreException(
 				"Unable to instantiate LCS keystore", e);
 		}
+	}
+
+	private String _getLiferayHome() {
+		String liferayHome = PropsUtil.get("liferay.home");
+
+		if (liferayHome.endsWith(File.separator)) {
+			return liferayHome.substring(0, liferayHome.length() - 1);
+		}
+
+		return liferayHome;
 	}
 
 	private void _verifyLCSServiceConfiguration(
