@@ -34,7 +34,9 @@ class Input extends JSXComponent {
 	_handleOnChange(value) {
 		const {inputId, onChange} = this.props;
 
-		onChange(value, inputId);
+		if (onChange) {
+			onChange(value, inputId);
+		}
 	}
 
 	_handleOnChangeValue(event) {
@@ -88,6 +90,7 @@ class Input extends JSXComponent {
 		else {
 			retVal = (
 				<input
+					{...this.otherProps()}
 					autoFocus={autoFocus}
 					class="watson-input"
 					data-onblur={this._handleOnBlur}
@@ -108,6 +111,8 @@ Input.PROPS = {
 	autoFocus: Config.bool(),
 	disabled: Config.bool(),
 	htmlType: Config.string().value('input'),
+	onBlur: Config.func(),
+	onChange: Config.func(),
 	placeholder: Config.string(),
 	tooltipLabel: Config.string(),
 	value: Config.any()

@@ -1,11 +1,12 @@
 import {bindAll, isEmpty} from 'lodash';
 import {connect} from 'metal-redux';
 import JSXComponent, {Config} from 'metal-jsx';
-import {Map, OrderedMap} from 'immutable';
+import {fromJS, Map, OrderedMap} from 'immutable';
 import Router from 'metal-router';
 import scrollIntoView from 'scroll-into-view';
 import sub from 'string-sub';
 
+import AutocompleteInput from '../components/AutocompleteInput';
 import ContentHeader from '../components/ContentHeader';
 import DynamicSelectInput from '../components/DynamicInputGenerator';
 import IndexList from '../components/IndexList';
@@ -29,12 +30,23 @@ import {indexProgressReports, searchProgressReports} from '../actions/progress-r
 import {indexResources, searchResources} from '../actions/resources';
 import {indexVehicles, searchVehicles} from '../actions/vehicles';
 
+import sendRequest from '../lib/request';
 import {formatModelName, getPluralMessage} from '../lib/util';
 
 class Index extends JSXComponent {
+	attached() {
+		const {query} = this.props;
+
+		if (query) {
+			this._handleAutoCompleteSelect({query: decodeURIComponent(query)});
+		}
+	}
+
 	created() {
 		bindAll(
 			this,
+			'_handleAutoCompleteSearch',
+			'_handleAutoCompleteSelect',
 			'_handleLoadMore',
 			'_handleIndexRequest',
 			'_handleItemClick',
@@ -62,15 +74,13 @@ class Index extends JSXComponent {
 		this.props.updateHideLoadingOverlay(false);
 	}
 
-	formatHeaderString(data) {
-		const {props: {filter, model, modelCount, modelLoading}} = this;
-
+	formatHeaderString(data, filter, model, modelCount, modelLoading, querySearch) {
 		let headerStringLeft = `${Liferay.Language.get('loading')}`;
 
-		if (data.size || !modelLoading) {
+		if (!modelLoading || data && data.size) {
 			const modelLabel = getPluralMessage(WatsonConstants.inputConfig[model].singularLabel, WatsonConstants.inputConfig[model].pluralLabel, modelCount);
 
-			if (filter && filter.size > 0) {
+			if ((filter && filter.size > 0) || querySearch) {
 				headerStringLeft = sub(Liferay.Language.get('x-loaded-of-x-matched-x'), data.size, modelCount, modelLabel);
 			}
 			else {
@@ -79,6 +89,73 @@ class Index extends JSXComponent {
 		}
 
 		return headerStringLeft;
+	}
+
+	_handleAutoCompleteSelect(item = {}) {
+		const {model} = this.props;
+
+		if (item.query) {
+			Router.router().navigate(`${WatsonConstants.urls.baseURL}/${model}/search?query=${encodeURIComponent(item.query)}`);
+
+			this.setState(
+				{
+					autoCompleteData: new Map(),
+					autoCompleteLoading: true
+				}
+			);
+
+			const data = {};
+
+			this._handleAutoCompleteSearch(decodeURIComponent(item.query), 0, 30).then(
+				results => {
+					results.forEach(
+						entry => {
+							const {id} = entry;
+
+							data[id] = entry;
+						}
+					);
+
+					const autoCompleteData = new Map(fromJS(data));
+
+					this.setState(
+						{
+							autoCompleteCount: autoCompleteData.size,
+							autoCompleteData,
+							autoCompleteLoading: false
+						}
+					);
+				}
+			);
+		}
+		else if (model !== 'incidents') {
+			Router.router().navigate(`${WatsonConstants.urls.baseURL}/incidents/${item.watsonIncidentId}/edit/${model}/${item.id}/edit`);
+		}
+		else {
+			Router.router().navigate(`${WatsonConstants.urls.baseURL}/incidents/${item.watsonIncidentId}/edit`);
+		}
+	}
+
+	_handleAutoCompleteSearch(query, start = 0, end = 5) {
+		const {model} = this.props;
+
+		return sendRequest(
+			{
+				controller: model,
+				controllerMethod: 'autoComplete.json',
+				data: {
+					end,
+					keywordQueryString: query,
+					start
+				}
+			}
+		).then(
+			response => {
+				const {data: {items}} = response;
+
+				return items;
+			}
+		);
 	}
 
 	_handleIndexRequest(end = 0) {
@@ -243,22 +320,30 @@ class Index extends JSXComponent {
 
 	render() {
 		const {
+			action,
 			filter,
-			incidentsData,
-			incidentsLoading,
 			model,
 			modelCount,
 			modelData,
 			modelLoading,
+			query,
 			sortBy
 		} = this.props;
 
-		let data = incidentsData;
-		let loading = incidentsLoading;
+		const {
+			autoCompleteCount,
+			autoCompleteData,
+			autoCompleteLoading
+		} = this.state;
 
-		if (model !== 'incidents') {
-			data = modelData;
-			loading = modelLoading;
+		let count = modelCount;
+		let data = modelData;
+		let loading = modelLoading;
+
+		if (action === 'search') {
+			count = autoCompleteCount;
+			data = autoCompleteData;
+			loading = autoCompleteLoading;
 		}
 
 		const {childrensHomeManagerRole, incidentManagerRole, watsonAdministratorRole} = WatsonConstants.currentUser;
@@ -296,6 +381,18 @@ class Index extends JSXComponent {
 						options={WatsonConstants.inputConfig.children.viewByOptions}
 						value={model}
 					/>
+
+					<div className="filter-header">
+						{Liferay.Language.get('filter-by')}
+					</div>
+
+					<DynamicSelectInput
+						elementClasses="filter-input"
+						filter={filter}
+						inputConfig={WatsonConstants.inputConfig[model].inputs}
+						label={Liferay.Language.get('add-filter')}
+						onChange={this._handleUpdateFilter}
+					/>
 				</span>
 			);
 		}
@@ -322,6 +419,37 @@ class Index extends JSXComponent {
 						options={WatsonConstants.inputConfig.incidents.viewByOptions}
 						value={model}
 					/>
+
+					{action &&
+						<LinkButton
+							className="primary"
+							href={`${WatsonConstants.urls.baseURL}/${model}/`}
+							label={Liferay.Language.get('clear-search')}
+						/>
+					}
+
+					<AutocompleteInput
+						dataSource={this._handleAutoCompleteSearch}
+						disabled={false}
+						onSelect={this._handleAutoCompleteSelect}
+						placeholder={Liferay.Language.get('search')}
+						query={query}
+					/>
+
+					{!action &&
+						<div className="filter-header">
+							{Liferay.Language.get('filter-by')}
+						</div> &&
+
+						<DynamicSelectInput
+							elementClasses="filter-input"
+							filter={filter}
+							inputConfig={WatsonConstants.inputConfig[model].inputs}
+							label={Liferay.Language.get('add-filter')}
+							onChange={this._handleUpdateFilter}
+						/>
+					}
+
 				</span>
 			);
 		}
@@ -329,25 +457,12 @@ class Index extends JSXComponent {
 		return (
 			<div class="incidents-index page-container hidden-print">
 				<div class="navigation-sidebar">
-
 					{retVal}
-
-					<div class="filter-header">
-						{Liferay.Language.get('filter-by')}
-					</div>
-
-					<DynamicSelectInput
-						elementClasses="filter-input"
-						filter={filter}
-						inputConfig={WatsonConstants.inputConfig[model].inputs}
-						label={Liferay.Language.get('add-filter')}
-						onChange={this._handleUpdateFilter}
-					/>
 				</div>
 
 				<div class="content-container">
 					<div class="content-header">
-						<ContentHeader headerStringLeft={this.formatHeaderString(data, model)} headerStringRight={Liferay.Language.get('sort-by')} />
+						<ContentHeader headerStringLeft={this.formatHeaderString(data, filter, model, count, loading, !!autoCompleteCount)} headerStringRight={Liferay.Language.get('sort-by')} />
 
 						<SelectInput omitBlankOption={true} onChange={this._handleUpdateSortBy} options={WatsonConstants.inputConfig[model].sortByOptions} value={sortBy} />
 					</div>
@@ -356,9 +471,7 @@ class Index extends JSXComponent {
 						<div class="content">
 							<IndexList
 								data={data}
-								filterActive={this.state.filterActive}
-								hasMoreResults={data.size < modelCount}
-								incidentsData={incidentsData}
+								hasMoreResults={data.size < count}
 								loading={loading}
 								loadMoreMethod={this._handleLoadMore}
 								model={model}
@@ -474,9 +587,8 @@ class Index extends JSXComponent {
 }
 
 Index.PROPS = {
+	action: Config.string(''),
 	filter: Config.value(new Map()),
-	incidentsData: Config.value(new Map()),
-	incidentsLoading: Config.bool().value(false),
 	lastFocus: Config.string().value(''),
 	lastLoadedItemData: Config.object().value({}),
 	loading: Config.bool(),
@@ -484,13 +596,17 @@ Index.PROPS = {
 	modelCount: Config.string().value('0'),
 	modelData: Config.value(new Map()),
 	modelLoading: Config.bool().value(false),
+	query: Config.string(),
 	sortBy: Config.string().value('watsonIncidentId')
 };
 
 Index.STATE = {
+	autoCompleteCount: Config.number().value(0),
+	autoCompleteData: Config.value(new Map()),
+	autoCompleteInputValue: Config.string(),
+	autoCompleteLoading: Config.bool(),
 	batchCount: Config.number().value(30),
 	filterActive: Config.bool(),
-	hasMoreResults: Config.bool().value(false),
 	itemsLoaded: Config.number().value(0),
 	lastClicked: Config.string().value(''),
 	modelDisplayed: Config.string(),
@@ -712,10 +828,8 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state, props) {
-	const {model = 'incidents'} = props.router.params;
+	const {params: {action, model = 'incidents'}, query: {query}} = props.router;
 
-	const incidentsData = state.getIn(['incidents', 'data']) || new OrderedMap();
-	const incidentsLoading = state.getIn(['incidents', 'loading']);
 	const modelCount = state.getIn([model, 'count']) || '0';
 	const modelData = state.getIn([model, 'data']) || new OrderedMap();
 	const modelLoading = state.getIn([model, 'loading']);
@@ -727,11 +841,10 @@ function mapStateToProps(state, props) {
 	const sortBy = state.getIn(['display', 'sortBy', 0, model]) || WatsonConstants.inputConfig[model].sortByDefault;
 
 	return {
+		action,
 		displayBy: state.getIn(['display', 'displayBy']),
 		filter: state.getIn(['display', 'filter', 0, model]),
 		hideLoadingOverlay: state.getIn(['display', 'hideLoadingOverlay']),
-		incidentsData,
-		incidentsLoading,
 		lastFocus: state.getIn(
 			[
 				'display',
@@ -744,6 +857,7 @@ function mapStateToProps(state, props) {
 		modelCount,
 		modelData,
 		modelLoading,
+		query,
 		sortBy
 	};
 }

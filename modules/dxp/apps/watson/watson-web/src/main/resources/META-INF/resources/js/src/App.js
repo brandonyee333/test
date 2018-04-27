@@ -171,6 +171,11 @@ class Watson extends JSXComponent {
 
 				<Router
 					component={Index}
+					path={`${WatsonConstants.urls.basePath}/:model([a-z_A-Z]+)/:action([a-z_A-Z]+)`}
+				/>
+
+				<Router
+					component={Index}
 					path={`${WatsonConstants.urls.basePath}/:model([a-z_A-Z]+)`}
 				/>
 
