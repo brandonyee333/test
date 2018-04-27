@@ -4,8 +4,8 @@
 [subrepo]
 	autopull = false
 	cmdver = liferay
-	commit = d0d26b4910c250519bf6640e73301c2eaf23f69f
+	commit = f73948280f70847143c01bbd60d26040c0b28360
 	mergebuttonmergecommits = false
 	mode = push
-	parent = fd9fc189d50e4387fe097b9746f2ab89fb4f1fb8
+	parent = 68201dc5714c69f8a7efce7db75b281ca8d22435
 	remote = git@github.com:liferay/com-liferay-portal-search-elasticsearch-marvel-private.git
