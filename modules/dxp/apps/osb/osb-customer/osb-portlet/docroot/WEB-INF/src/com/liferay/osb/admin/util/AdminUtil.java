@@ -104,40 +104,6 @@ public class AdminUtil {
 		return sb.toString();
 	}
 
-	public static String getCommentPreferenceKey(
-		String tab, String languageId) {
-
-		String key = StringPool.BLANK;
-
-		if (tab.equals("game-plan")) {
-			key = "GamePlan";
-		}
-		else if (tab.equals("inactive-ticket")) {
-			key = "TicketEntryInactive";
-		}
-		else {
-			key = "TicketEntryClosed";
-		}
-
-		return getPreferenceKey("comment", key, languageId);
-	}
-
-	public static String getComponentPreferenceKey(
-		String prefix, String productDisplayName, String key,
-		String languageId) {
-
-		StringBundler sb = new StringBundler(6);
-
-		sb.append(prefix);
-		sb.append(productDisplayName);
-		sb.append(StringPool.UNDERLINE);
-		sb.append(key);
-		sb.append(StringPool.UNDERLINE);
-		sb.append(languageId);
-
-		return sb.toString();
-	}
-
 	public static Map<Locale, String> getEmailProvisioningCreateAccountBodyMap(
 		PortletPreferences preferences) {
 
@@ -233,19 +199,6 @@ public class AdminUtil {
 		return PortletPreferencesLocalServiceUtil.getPreferences(
 			OSBConstants.COMPANY_ID, ownerId, ownerType, plid, portletId,
 			defaultPreferences);
-	}
-
-	public static String getPreferenceKey(
-		String prefix, String key, String param) {
-
-		StringBundler sb = new StringBundler(4);
-
-		sb.append(prefix);
-		sb.append(key);
-		sb.append(StringPool.UNDERLINE);
-		sb.append(param);
-
-		return sb.toString();
 	}
 
 }

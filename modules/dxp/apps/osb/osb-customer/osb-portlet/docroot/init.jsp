@@ -291,8 +291,7 @@ page import="com.liferay.util.dao.orm.CustomSQLUtil" %>
 <%@ page import="java.io.Serializable" %>
 
 <%@ page import="java.text.DateFormat" %><%@
-page import="java.text.Format" %><%@
-page import="java.text.NumberFormat" %>
+page import="java.text.Format" %>
 
 <%@ page import="java.util.ArrayList" %><%@
 page import="java.util.Arrays" %><%@
@@ -335,6 +334,4 @@ Format longDateFormatTime = FastDateFormatFactoryUtil.getTime(DateFormat.LONG, l
 Format shortDateFormatDate = FastDateFormatFactoryUtil.getDate(DateFormat.SHORT, locale, timeZone);
 
 Format shortDateFormatTime = FastDateFormatFactoryUtil.getTime(DateFormat.SHORT, locale, timeZone);
-
-NumberFormat numberFormat = NumberFormat.getNumberInstance(locale);
 %>
