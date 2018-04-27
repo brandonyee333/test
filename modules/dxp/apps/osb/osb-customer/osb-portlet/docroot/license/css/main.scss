@@ -11,8 +11,14 @@
 		}
 	}
 
-	.highlight-cluster {
-		border: 1px solid #000;
+	.cluster {
+		border: 1px solid #D0D1D3;
+		margin-bottom: 1em;
+		padding: 1em 0.5em;
+
+		&.highlight-cluster {
+			border-color: #000;
+		}
 	}
 
 	.info {
