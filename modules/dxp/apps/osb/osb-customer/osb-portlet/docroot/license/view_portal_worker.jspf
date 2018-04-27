@@ -102,7 +102,7 @@ pageContext.setAttribute("searchURL", searchURL);
 					}
 					%>
 
-					<div class="<%= cssClass %>">
+					<div class="bold <%= cssClass %>">
 						<%= accountEntry.getName() %>
 					</div>
 				</liferay-ui:search-container-column-text>
