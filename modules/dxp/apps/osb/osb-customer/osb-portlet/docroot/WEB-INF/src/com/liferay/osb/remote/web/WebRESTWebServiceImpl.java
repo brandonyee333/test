@@ -97,6 +97,7 @@ public class WebRESTWebServiceImpl
 		parameters.put("corpProjectUUID", corpProjectUUID);
 		parameters.put("displayCP", String.valueOf(displayCP));
 		parameters.put("displayLCS", String.valueOf(displayLCS));
+		parameters.put("displayLESA", String.valueOf(Boolean.FALSE));
 		parameters.put("severityLevel", String.valueOf(severityLevel));
 		parameters.put("title", title);
 		parameters.put("type", String.valueOf(type));
