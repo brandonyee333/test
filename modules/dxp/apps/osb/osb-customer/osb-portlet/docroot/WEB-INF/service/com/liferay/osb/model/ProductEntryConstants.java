@@ -31,47 +31,6 @@ public class ProductEntryConstants {
 
 	public static final int DIGITAL_ENTERPRISE_VERSION_7_0_20 = 41019;
 
-	public static final String DISPLAY_NAME_DEVELOPER_TOOLS = "developer-tools";
-
-	public static final String DISPLAY_NAME_DIGITAL_ENTERPRISE =
-		"digital-enterprise";
-
-	public static final String DISPLAY_NAME_ENTERPRISE_SEARCH_PREMIUM =
-		"enterprise-search-premium";
-
-	public static final String DISPLAY_NAME_ENTERPRISE_SEARCH_STANDARD =
-		"enterprise-search-standard";
-
-	public static final String DISPLAY_NAME_MANAGEMENT_TOOLS =
-		"management-tools-lcs";
-
-	public static final String DISPLAY_NAME_MOBILE_DEVICE_DETECTION =
-		"mobile-device-detection";
-
-	public static final String DISPLAY_NAME_MOBILE_EXPERIENCE =
-		"mobile-experience";
-
-	public static final String DISPLAY_NAME_PORTAL = "portal";
-
-	public static final String DISPLAY_NAME_PRODUCTIVITY_TOOLS =
-		"productivity-tools-sync";
-
-	public static final String DISPLAY_NAME_SOCIAL_OFFICE = "social-office";
-
-	public static final String[] DISPLAY_NAMES = {
-		DISPLAY_NAME_DEVELOPER_TOOLS, DISPLAY_NAME_MOBILE_DEVICE_DETECTION,
-		DISPLAY_NAME_DIGITAL_ENTERPRISE, DISPLAY_NAME_ENTERPRISE_SEARCH_PREMIUM,
-		DISPLAY_NAME_ENTERPRISE_SEARCH_STANDARD, DISPLAY_NAME_MANAGEMENT_TOOLS,
-		DISPLAY_NAME_MOBILE_EXPERIENCE, DISPLAY_NAME_PORTAL,
-		DISPLAY_NAME_PRODUCTIVITY_TOOLS, DISPLAY_NAME_SOCIAL_OFFICE
-	};
-
-	public static final String[] DISPLAY_NAMES_DXP = {
-		DISPLAY_NAME_DEVELOPER_TOOLS, DISPLAY_NAME_MOBILE_DEVICE_DETECTION,
-		DISPLAY_NAME_DIGITAL_ENTERPRISE, DISPLAY_NAME_MANAGEMENT_TOOLS,
-		DISPLAY_NAME_MOBILE_EXPERIENCE, DISPLAY_NAME_PRODUCTIVITY_TOOLS
-	};
-
 	public static final int ENVIRONMENT_ANY = 1;
 
 	public static final int ENVIRONMENT_BACKUP = 2;
@@ -122,17 +81,6 @@ public class ProductEntryConstants {
 
 	public static final String LIST_TYPE_SOCIAL_OFFICE_MINOR_VERSIONS =
 		ProductEntry.class.getName() + ".socialOfficeMinorVersions";
-
-	public static final int[] LIST_TYPES_DEPRECATED = {
-		ProductEntryConstants.PORTAL_VERSION_4_4_0,
-		ProductEntryConstants.PORTAL_VERSION_5_1_3,
-		ProductEntryConstants.PORTAL_VERSION_5_1_4,
-		ProductEntryConstants.PORTAL_VERSION_5_1_5,
-		ProductEntryConstants.PORTAL_VERSION_5_1_6,
-		ProductEntryConstants.PORTAL_VERSION_5_1_7,
-		ProductEntryConstants.PORTAL_VERSION_5_1_8,
-		ProductEntryConstants.PORTAL_VERSION_5_1_9
-	};
 
 	public static final int PORTAL_VERSION_4_4_0 = 20000;
 

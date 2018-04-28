@@ -221,17 +221,6 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		}
 	}
 
-	public boolean isTicketComponentRequired() {
-		if (isDeviceDetection() || isEnterpriseSearchPremium() ||
-			isEnterpriseSearchStandard() || isSocialOffice()) {
-
-			return false;
-		}
-		else {
-			return true;
-		}
-	}
-
 	public boolean isUnlimitedEnterpriseWide() {
 		String name = getName();
 

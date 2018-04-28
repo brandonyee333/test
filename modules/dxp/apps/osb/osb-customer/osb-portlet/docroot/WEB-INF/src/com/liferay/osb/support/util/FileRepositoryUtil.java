@@ -14,17 +14,8 @@
 
 package com.liferay.osb.support.util;
 
-import com.liferay.osb.exception.FileRepositoryNotAvailableException;
-import com.liferay.osb.model.FileRepository;
-import com.liferay.osb.util.OSBConstants;
-import com.liferay.osb.util.WorkflowConstants;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.HttpUtil;
-import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 /**
  * @author Alan Zhang
@@ -39,9 +30,9 @@ public class FileRepositoryUtil {
 
 	public static final String PATH_UPLOAD = "/upload";
 
-	/*	Refactor for zendesk
-	 * 
-	 * public static String cleanTempFiles(
+	/*
+	Refactor for zendesk
+	public static String cleanTempFiles(
 			FileRepository fileRepository, long ticketEntryId)
 		throws PortalException {
 

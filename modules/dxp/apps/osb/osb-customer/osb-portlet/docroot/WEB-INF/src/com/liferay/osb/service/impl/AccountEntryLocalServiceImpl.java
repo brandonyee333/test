@@ -1748,7 +1748,7 @@ public class AccountEntryLocalServiceImpl
 	protected void sendEmail(AccountEntry accountEntry, int oldTier)
 		throws PortalException {
 
-		PortletPreferences preferences = SupportUtil.getPortletPreferences();
+		PortletPreferences preferences = AdminUtil.getPortletPreferences();
 
 		String fromName = PrefsPropsUtil.getString(
 			OSBConstants.COMPANY_ID, PropsKeys.ADMIN_EMAIL_FROM_NAME);

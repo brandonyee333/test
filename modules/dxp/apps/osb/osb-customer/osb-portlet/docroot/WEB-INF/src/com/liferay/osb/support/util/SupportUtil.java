@@ -14,130 +14,46 @@
 
 package com.liferay.osb.support.util;
 
-import com.liferay.osb.model.AccountCustomer;
-import com.liferay.osb.model.AccountCustomerConstants;
-import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEnvironmentConstants;
-import com.liferay.osb.model.AccountWorker;
 import com.liferay.osb.model.FileRepository;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryGroup;
 import com.liferay.osb.model.OfferingEntryGroupFactoryUtil;
 import com.liferay.osb.model.OrderEntry;
-import com.liferay.osb.model.PartnerEntry;
-import com.liferay.osb.model.PartnerWorker;
-import com.liferay.osb.model.PartnerWorkerConstants;
-import com.liferay.osb.model.ProductEntryConstants;
-import com.liferay.osb.model.SupportRegion;
-import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
-import com.liferay.osb.service.AccountEntryLocalServiceUtil;
-import com.liferay.osb.service.AccountEntryServiceUtil;
-import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
 import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
-import com.liferay.osb.service.PartnerEntryLocalServiceUtil;
-import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
-import com.liferay.osb.util.OSBConstants;
-import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.osb.util.PortletPropsKeys;
 import com.liferay.osb.util.PortletPropsValues;
-import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.osb.util.comparator.OfferingEntryPKComparator;
 import com.liferay.petra.content.ContentUtil;
 import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.ListType;
-import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.service.ListTypeServiceUtil;
-import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.servlet.HttpHeaders;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
-import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.PortletKeys;
-import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.util.portlet.PortletProps;
 
-import java.net.URL;
-
-import java.text.Format;
-
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.portlet.PortletPreferences;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletURL;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Amos Fong
  * @author Mate Thurzo
  */
 public class SupportUtil {
-
-	public static String[] getAccountWorkerKeys(long accountEntryId) {
-		List<AccountWorker> accountWorkers =
-			AccountWorkerLocalServiceUtil.getAccountWorkers(accountEntryId);
-
-		String[] accountWorkerKeys = new String[accountWorkers.size()];
-
-		for (int i = 0; i < accountWorkers.size(); i++) {
-			AccountWorker accountWorker = accountWorkers.get(i);
-
-			accountWorkerKeys[i] = accountWorker.getKey();
-		}
-
-		return accountWorkerKeys;
-	}
-
-	public static String getAccountWorkers(long accountEntryId, int role)
-		throws PortalException {
-
-		List<User> users = getUsers(accountEntryId, role);
-
-		StringBuilder sb = new StringBuilder();
-
-		for (User user : users) {
-			if (sb.length() > 0) {
-				sb.append(StringPool.COMMA_AND_SPACE);
-			}
-
-			sb.append(HtmlUtil.escape(user.getFullName()));
-		}
-
-		return sb.toString();
-	}
 
 	public static List<OfferingEntryGroup> getAvailableOfferingEntryGroups(
 			long userId, long accountEntryId, int[] types, int[] statuses,
@@ -212,6 +128,8 @@ public class SupportUtil {
 		return map;
 	}
 
+	/* Refactor for zendesk
+	 *
 	public static List<FileRepository> getFileRepositories() {
 		List<FileRepository> fileRepositoryList = new ArrayList<>();
 
@@ -273,9 +191,7 @@ public class SupportUtil {
 		}
 	}
 
-	/* Refactor for zendesk
-	 * 
-	 * public static FileRepository getFileRepository(TicketEntry ticketEntry) {
+	public static FileRepository getFileRepository(TicketEntry ticketEntry) {
 		FileRepository defaultFileRepository = null;
 
 		for (FileRepository fileRepository : getFileRepositories()) {
@@ -293,7 +209,7 @@ public class SupportUtil {
 		}
 
 		return defaultFileRepository;
-	}*/
+	}
 
 	public static FileRepository getFirstActiveFileRepository(
 		Set<String> fileRepositoryIdsSet) {
@@ -311,7 +227,7 @@ public class SupportUtil {
 		}
 
 		return null;
-	}
+	}*/
 
 	public static int getListTypeIdFromName(
 		String type, String name, boolean translate) {
@@ -372,24 +288,6 @@ public class SupportUtil {
 		return new ArrayList<>(offeringEntryGroupMap.values());
 	}
 
-	public static long[] getPartnerEntryIds(long partnerEntryId) {
-		List<PartnerEntry> childPartnerEntries =
-			PartnerEntryLocalServiceUtil.getChildPartnerEntries(
-				partnerEntryId, true);
-
-		long[] partnerEntryIds = new long[childPartnerEntries.size() + 1];
-
-		partnerEntryIds[0] = partnerEntryId;
-
-		for (int i = 0; i < childPartnerEntries.size(); i++) {
-			PartnerEntry childPartnerEntry = childPartnerEntries.get(i);
-
-			partnerEntryIds[i + 1] = childPartnerEntry.getPartnerEntryId();
-		}
-
-		return partnerEntryIds;
-	}
-
 	public static List<ListType> getPortalEnvListTypes(
 		int envLFR, String envListType) {
 
@@ -414,87 +312,6 @@ public class SupportUtil {
 		}
 
 		return listTypes;
-	}
-
-	public static PortletPreferences getPortletPreferences() {
-		long ownerId = OSBConstants.COMPANY_ID;
-		int ownerType = PortletKeys.PREFS_OWNER_TYPE_COMPANY;
-		long plid = PortletKeys.PREFS_PLID_SHARED;
-		String portletId = OSBPortletKeys.OSB_ADMIN;
-		String defaultPreferences = null;
-
-		return PortletPreferencesLocalServiceUtil.getPreferences(
-			OSBConstants.COMPANY_ID, ownerId, ownerType, plid, portletId,
-			defaultPreferences);
-	}
-
-	public static String getPreferenceValue(Locale locale, String key) {
-		return getPreferenceValue(getPortletPreferences(), locale, key);
-	}
-
-	public static String getPreferenceValue(
-		PortletPreferences portletPreferences, Locale locale, String key) {
-
-		if (portletPreferences == null) {
-			portletPreferences = getPortletPreferences();
-		}
-
-		Map<Locale, String> valueMap = LocalizationUtil.getLocalizationMap(
-			portletPreferences, key);
-
-		String value = valueMap.get(locale);
-
-		if (Validator.isNull(value)) {
-			Locale defaultLocale = LocaleUtil.getDefault();
-
-			value = valueMap.get(defaultLocale);
-		}
-
-		return value;
-	}
-
-	public static String getPreferenceValue(String key) {
-		PortletPreferences portletPreferences = getPortletPreferences();
-
-		return portletPreferences.getValue(key, StringPool.BLANK);
-	}
-
-	public static PortletPreferences getUserPreferences(long userId) {
-		int ownerType = PortletKeys.PREFS_OWNER_TYPE_USER;
-		long plid = PortletKeys.PREFS_PLID_SHARED;
-		String portletId = OSBPortletKeys.OSB_SUPPORT;
-		String defaultPreferences = null;
-
-		return PortletPreferencesLocalServiceUtil.getPreferences(
-			OSBConstants.COMPANY_ID, userId, ownerType, plid, portletId,
-			defaultPreferences);
-	}
-
-	public static boolean getUserPreferenceValue(long userId, String key) {
-		PortletPreferences portletPreferences = getUserPreferences(userId);
-
-		return GetterUtil.getBoolean(portletPreferences.getValue(key, null));
-	}
-
-	public static List<User> getUsers(long accountEntryId, int role)
-		throws PortalException {
-
-		List<AccountWorker> accountWorkers =
-			AccountWorkerLocalServiceUtil.getAccountWorkers(
-				accountEntryId, role);
-
-		List<User> users = new ArrayList<>();
-
-		for (AccountWorker accountWorker : accountWorkers) {
-			try {
-				users.add(
-					UserLocalServiceUtil.getUser(accountWorker.getUserId()));
-			}
-			catch (NoSuchUserException nsue) {
-			}
-		}
-
-		return users;
 	}
 
 	public static String serialize(List<OrderEntry> orderEntries) {
@@ -566,34 +383,6 @@ public class SupportUtil {
 		orderEntryAttributes.put("offeringEntries", offeringEntriesList);
 
 		return orderEntryAttributes;
-	}
-
-	protected static String getUserAgent(HttpServletRequest request) {
-		String userAgent = StringPool.BLANK;
-
-		if (request == null) {
-			return userAgent;
-		}
-
-		userAgent = String.valueOf(
-			request.getAttribute(HttpHeaders.USER_AGENT));
-
-		if (Validator.isNotNull(userAgent)) {
-			return userAgent;
-		}
-
-		userAgent = request.getHeader(HttpHeaders.USER_AGENT);
-
-		if (userAgent != null) {
-			userAgent = StringUtil.toLowerCase(userAgent);
-		}
-		else {
-			userAgent = StringPool.BLANK;
-		}
-
-		request.setAttribute(HttpHeaders.USER_AGENT, userAgent);
-
-		return userAgent;
 	}
 
 }

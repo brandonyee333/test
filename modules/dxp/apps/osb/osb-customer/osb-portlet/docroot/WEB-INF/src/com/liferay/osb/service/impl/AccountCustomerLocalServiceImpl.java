@@ -24,7 +24,6 @@ import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.AuditEntryConstants;
 import com.liferay.osb.service.base.AccountCustomerLocalServiceBaseImpl;
-import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
@@ -35,8 +34,6 @@ import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.Date;
 import java.util.List;
-
-import javax.portlet.PortletPreferences;
 
 /**
  * @author Brian Wing Shun Chan
@@ -70,20 +67,6 @@ public class AccountCustomerLocalServiceImpl
 		accountCustomer.setNotifications(notifications);
 
 		accountCustomerPersistence.update(accountCustomer);
-
-		try {
-			if (accountEntry.getType() != AccountEntryConstants.TYPE_TRIAL) {
-				PortletPreferences portletPreferences =
-					SupportUtil.getUserPreferences(customerUserId);
-
-				portletPreferences.setValue(
-					"version2Enabled", Boolean.TRUE.toString());
-
-				portletPreferences.store();
-			}
-		}
-		catch (Exception e) {
-		}
 
 		long auditSetId = auditEntryLocalService.getNextAuditSetId(
 			AccountEntry.class.getName(), accountEntryId);

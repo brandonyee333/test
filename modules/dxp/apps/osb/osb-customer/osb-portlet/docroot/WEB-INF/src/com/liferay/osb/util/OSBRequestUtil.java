@@ -15,40 +15,22 @@
 package com.liferay.osb.util;
 
 import com.liferay.osb.model.AccountEnvironmentConstants;
-import com.liferay.osb.model.OfferingEntry;
-import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.ProductEntryConstants;
-import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
 import com.liferay.osb.support.util.SupportUtil;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ListType;
-import com.liferay.portal.kernel.service.ListTypeServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
-import java.io.IOException;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Douglas Wong
@@ -129,91 +111,6 @@ public class OSBRequestUtil {
 		return jsonObject;
 	}
 
-	public static JSONArray getEarlierEnvLFRTypes(
-		ResourceRequest resourceRequest, ResourceResponse resourceResponse) {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		int envLFR = ParamUtil.getInteger(resourceRequest, "envLFR");
-
-		List<ListType> envLFRTypes = new ArrayList<>();
-
-		envLFRTypes.addAll(
-			ListTypeServiceUtil.getListTypes(
-				ProductEntryConstants.LIST_TYPE_PORTAL_ALL_VERSIONS));
-		envLFRTypes.addAll(
-			ListTypeServiceUtil.getListTypes(
-				ProductEntryConstants.
-					LIST_TYPE_DIGITAL_ENTERPRISE_ALL_VERSIONS));
-
-		Iterator<ListType> itr = envLFRTypes.iterator();
-
-		Long[] listTypesDeprecated = ArrayUtil.toLongArray(
-			ProductEntryConstants.LIST_TYPES_DEPRECATED);
-
-		while (itr.hasNext()) {
-			ListType listType = itr.next();
-
-			if (ArrayUtil.contains(
-					listTypesDeprecated, listType.getListTypeId()) ||
-				(listType.getListTypeId() >= envLFR)) {
-
-				itr.remove();
-			}
-		}
-
-		return getJSONArray(envLFRTypes, themeDisplay.getLocale());
-	}
-
-	public static JSONArray getLaterEnvLFRTypes(
-			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
-		throws PortalException {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		int envLFR = ParamUtil.getInteger(resourceRequest, "envLFR");
-		int offeringEntryId = ParamUtil.getInteger(
-			resourceRequest, "offeringEntryId");
-
-		List<ListType> envLFRTypes = new ArrayList<>();
-
-		if (offeringEntryId > 0) {
-			OfferingEntry offeringEntry =
-				OfferingEntryLocalServiceUtil.getOfferingEntry(offeringEntryId);
-
-			ProductEntry productEntry = offeringEntry.getProductEntry();
-
-			envLFRTypes = ListUtil.copy(productEntry.getAllVersionsListTypes());
-
-			Iterator<ListType> itr = envLFRTypes.iterator();
-
-			while (itr.hasNext()) {
-				ListType listType = itr.next();
-
-				if (listType.getListTypeId() <= envLFR) {
-					itr.remove();
-				}
-			}
-		}
-
-		return getJSONArray(envLFRTypes, themeDisplay.getLocale());
-	}
-
-	public static void sendError(
-			int status, Exception exception, ResourceRequest resourceRequest,
-			ResourceResponse resourceResponse)
-		throws IOException, ServletException {
-
-		HttpServletRequest request = PortalUtil.getHttpServletRequest(
-			resourceRequest);
-		HttpServletResponse response = PortalUtil.getHttpServletResponse(
-			resourceResponse);
-
-		PortalUtil.sendError(status, exception, request, response);
-	}
-
 	protected static JSONArray getJSONArray(
 		List<ListType> listTypes, Locale locale) {
 
@@ -231,7 +128,5 @@ public class OSBRequestUtil {
 
 		return jsonArray;
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(OSBRequestUtil.class);
 
 }
