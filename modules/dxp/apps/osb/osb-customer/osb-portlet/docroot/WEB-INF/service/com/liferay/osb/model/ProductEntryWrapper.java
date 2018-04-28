@@ -204,11 +204,6 @@ public class ProductEntryWrapper implements ProductEntry,
 	}
 
 	@Override
-	public boolean isTicketComponentRequired() {
-		return _productEntry.isTicketComponentRequired();
-	}
-
-	@Override
 	public boolean isUnlimitedEnterpriseWide() {
 		return _productEntry.isUnlimitedEnterpriseWide();
 	}

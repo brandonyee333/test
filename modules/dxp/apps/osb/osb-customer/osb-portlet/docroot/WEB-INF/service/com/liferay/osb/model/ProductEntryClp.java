@@ -686,25 +686,6 @@ public class ProductEntryClp extends BaseModelImpl<ProductEntry>
 	}
 
 	@Override
-	public boolean isTicketComponentRequired() {
-		try {
-			String methodName = "isTicketComponentRequired";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			Boolean returnObj = (Boolean)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
 	public boolean isUnlimitedEnterpriseWide() {
 		try {
 			String methodName = "isUnlimitedEnterpriseWide";

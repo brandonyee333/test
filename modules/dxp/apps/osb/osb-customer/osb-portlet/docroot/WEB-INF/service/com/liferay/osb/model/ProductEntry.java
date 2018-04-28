@@ -87,7 +87,5 @@ public interface ProductEntry extends ProductEntryModel, PersistedModel {
 
 	public boolean isSocialOffice();
 
-	public boolean isTicketComponentRequired();
-
 	public boolean isUnlimitedEnterpriseWide();
 }
