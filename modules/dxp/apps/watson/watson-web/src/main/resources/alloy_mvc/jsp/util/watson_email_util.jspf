@@ -16,6 +16,7 @@
 
 <%!
 public static class WatsonEmailUtil {
+
 	public static void sendAddressEmail(User fromUser, WatsonAddress watsonAddress, boolean sendFullAddress, boolean sendCoordinates, String description, String toEmailAddress) throws Exception {
 		Locale locale = LocaleUtil.getMostRelevantLocale();
 
@@ -109,7 +110,7 @@ public static class WatsonEmailUtil {
 		sendEmail(fromUser, subject, emailSB.toString(), toEmailAddress);
 	}
 
-	protected static void sendAuthenticationEmail(User user, WatsonTokenAuthEntry watsonTokenAuthEntry) throws Exception {
+	public static void sendAuthenticationEmail(User user, WatsonTokenAuthEntry watsonTokenAuthEntry) throws Exception {
 		String subject = LanguageUtil.format(user.getLocale(), "authorization-code", new Object[0]);
 
 		String emailAuthenticationTemplate = ContentUtil.get(_CLASS_LOADER, "com/liferay/watson/web/internal/email/authentication_en_US.tmpl");
