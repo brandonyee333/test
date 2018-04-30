@@ -181,7 +181,7 @@ public class WatsonRelationshipAuditWrapper implements WatsonRelationshipAudit,
 	}
 
 	@Override
-	public java.lang.Object clone() {
+	public Object clone() {
 		return new WatsonRelationshipAuditWrapper((WatsonRelationshipAudit)_watsonRelationshipAudit.clone());
 	}
 
@@ -256,7 +256,7 @@ public class WatsonRelationshipAuditWrapper implements WatsonRelationshipAudit,
 	* @return the description of this watson relationship audit
 	*/
 	@Override
-	public java.lang.String getDescription() {
+	public String getDescription() {
 		return _watsonRelationshipAudit.getDescription();
 	}
 
@@ -336,7 +336,7 @@ public class WatsonRelationshipAuditWrapper implements WatsonRelationshipAudit,
 	* @return the user name of this watson relationship audit
 	*/
 	@Override
-	public java.lang.String getUserName() {
+	public String getUserName() {
 		return _watsonRelationshipAudit.getUserName();
 	}
 
@@ -346,7 +346,7 @@ public class WatsonRelationshipAuditWrapper implements WatsonRelationshipAudit,
 	* @return the user uuid of this watson relationship audit
 	*/
 	@Override
-	public java.lang.String getUserUuid() {
+	public String getUserUuid() {
 		return _watsonRelationshipAudit.getUserUuid();
 	}
 
@@ -476,7 +476,7 @@ public class WatsonRelationshipAuditWrapper implements WatsonRelationshipAudit,
 	* @param description the description of this watson relationship audit
 	*/
 	@Override
-	public void setDescription(java.lang.String description) {
+	public void setDescription(String description) {
 		_watsonRelationshipAudit.setDescription(description);
 	}
 
@@ -572,7 +572,7 @@ public class WatsonRelationshipAuditWrapper implements WatsonRelationshipAudit,
 	* @param userName the user name of this watson relationship audit
 	*/
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_watsonRelationshipAudit.setUserName(userName);
 	}
 
@@ -582,7 +582,7 @@ public class WatsonRelationshipAuditWrapper implements WatsonRelationshipAudit,
 	* @param userUuid the user uuid of this watson relationship audit
 	*/
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_watsonRelationshipAudit.setUserUuid(userUuid);
 	}
 
@@ -627,7 +627,7 @@ public class WatsonRelationshipAuditWrapper implements WatsonRelationshipAudit,
 	}
 
 	@Override
-	public java.lang.String toString() {
+	public String toString() {
 		return _watsonRelationshipAudit.toString();
 	}
 
@@ -637,7 +637,7 @@ public class WatsonRelationshipAuditWrapper implements WatsonRelationshipAudit,
 	}
 
 	@Override
-	public java.lang.String toXmlString() {
+	public String toXmlString() {
 		return _watsonRelationshipAudit.toXmlString();
 	}
 

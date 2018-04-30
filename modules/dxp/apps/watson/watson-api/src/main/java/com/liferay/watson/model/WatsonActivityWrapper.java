@@ -165,7 +165,7 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	}
 
 	@Override
-	public java.lang.Object clone() {
+	public Object clone() {
 		return new WatsonActivityWrapper((WatsonActivity)_watsonActivity.clone());
 	}
 
@@ -175,7 +175,7 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	}
 
 	@Override
-	public java.lang.String[] getAvailableLanguageIds() {
+	public String[] getAvailableLanguageIds() {
 		return _watsonActivity.getAvailableLanguageIds();
 	}
 
@@ -200,7 +200,7 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	}
 
 	@Override
-	public java.lang.String getDefaultLanguageId() {
+	public String getDefaultLanguageId() {
 		return _watsonActivity.getDefaultLanguageId();
 	}
 
@@ -235,7 +235,7 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	* @return the narrative of this watson activity
 	*/
 	@Override
-	public java.lang.String getNarrative() {
+	public String getNarrative() {
 		return _watsonActivity.getNarrative();
 	}
 
@@ -246,7 +246,7 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	* @return the localized narrative of this watson activity
 	*/
 	@Override
-	public java.lang.String getNarrative(java.util.Locale locale) {
+	public String getNarrative(java.util.Locale locale) {
 		return _watsonActivity.getNarrative(locale);
 	}
 
@@ -258,8 +258,7 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	* @return the localized narrative of this watson activity. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 	*/
 	@Override
-	public java.lang.String getNarrative(java.util.Locale locale,
-		boolean useDefault) {
+	public String getNarrative(java.util.Locale locale, boolean useDefault) {
 		return _watsonActivity.getNarrative(locale, useDefault);
 	}
 
@@ -270,7 +269,7 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	* @return the localized narrative of this watson activity
 	*/
 	@Override
-	public java.lang.String getNarrative(java.lang.String languageId) {
+	public String getNarrative(String languageId) {
 		return _watsonActivity.getNarrative(languageId);
 	}
 
@@ -282,18 +281,17 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	* @return the localized narrative of this watson activity
 	*/
 	@Override
-	public java.lang.String getNarrative(java.lang.String languageId,
-		boolean useDefault) {
+	public String getNarrative(String languageId, boolean useDefault) {
 		return _watsonActivity.getNarrative(languageId, useDefault);
 	}
 
 	@Override
-	public java.lang.String getNarrativeCurrentLanguageId() {
+	public String getNarrativeCurrentLanguageId() {
 		return _watsonActivity.getNarrativeCurrentLanguageId();
 	}
 
 	@Override
-	public java.lang.String getNarrativeCurrentValue() {
+	public String getNarrativeCurrentValue() {
 		return _watsonActivity.getNarrativeCurrentValue();
 	}
 
@@ -303,7 +301,7 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	* @return the locales and localized narratives of this watson activity
 	*/
 	@Override
-	public Map<java.util.Locale, java.lang.String> getNarrativeMap() {
+	public Map<java.util.Locale, String> getNarrativeMap() {
 		return _watsonActivity.getNarrativeMap();
 	}
 
@@ -388,7 +386,7 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	* @return the user name of this watson activity
 	*/
 	@Override
-	public java.lang.String getUserName() {
+	public String getUserName() {
 		return _watsonActivity.getUserName();
 	}
 
@@ -398,7 +396,7 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	* @return the user uuid of this watson activity
 	*/
 	@Override
-	public java.lang.String getUserUuid() {
+	public String getUserUuid() {
 		return _watsonActivity.getUserUuid();
 	}
 
@@ -527,7 +525,7 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	* @param narrative the narrative of this watson activity
 	*/
 	@Override
-	public void setNarrative(java.lang.String narrative) {
+	public void setNarrative(String narrative) {
 		_watsonActivity.setNarrative(narrative);
 	}
 
@@ -538,7 +536,7 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	* @param locale the locale of the language
 	*/
 	@Override
-	public void setNarrative(java.lang.String narrative, java.util.Locale locale) {
+	public void setNarrative(String narrative, java.util.Locale locale) {
 		_watsonActivity.setNarrative(narrative, locale);
 	}
 
@@ -550,13 +548,13 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setNarrative(java.lang.String narrative,
-		java.util.Locale locale, java.util.Locale defaultLocale) {
+	public void setNarrative(String narrative, java.util.Locale locale,
+		java.util.Locale defaultLocale) {
 		_watsonActivity.setNarrative(narrative, locale, defaultLocale);
 	}
 
 	@Override
-	public void setNarrativeCurrentLanguageId(java.lang.String languageId) {
+	public void setNarrativeCurrentLanguageId(String languageId) {
 		_watsonActivity.setNarrativeCurrentLanguageId(languageId);
 	}
 
@@ -566,8 +564,7 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	* @param narrativeMap the locales and localized narratives of this watson activity
 	*/
 	@Override
-	public void setNarrativeMap(
-		Map<java.util.Locale, java.lang.String> narrativeMap) {
+	public void setNarrativeMap(Map<java.util.Locale, String> narrativeMap) {
 		_watsonActivity.setNarrativeMap(narrativeMap);
 	}
 
@@ -578,8 +575,7 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setNarrativeMap(
-		Map<java.util.Locale, java.lang.String> narrativeMap,
+	public void setNarrativeMap(Map<java.util.Locale, String> narrativeMap,
 		java.util.Locale defaultLocale) {
 		_watsonActivity.setNarrativeMap(narrativeMap, defaultLocale);
 	}
@@ -670,7 +666,7 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	* @param userName the user name of this watson activity
 	*/
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_watsonActivity.setUserName(userName);
 	}
 
@@ -680,7 +676,7 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	* @param userUuid the user uuid of this watson activity
 	*/
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_watsonActivity.setUserUuid(userUuid);
 	}
 
@@ -715,7 +711,7 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	}
 
 	@Override
-	public java.lang.String toString() {
+	public String toString() {
 		return _watsonActivity.toString();
 	}
 
@@ -725,7 +721,7 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	}
 
 	@Override
-	public java.lang.String toXmlString() {
+	public String toXmlString() {
 		return _watsonActivity.toXmlString();
 	}
 

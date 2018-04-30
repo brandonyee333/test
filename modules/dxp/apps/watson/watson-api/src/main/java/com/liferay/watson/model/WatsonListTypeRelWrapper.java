@@ -164,7 +164,7 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	}
 
 	@Override
-	public java.lang.Object clone() {
+	public Object clone() {
 		return new WatsonListTypeRelWrapper((WatsonListTypeRel)_watsonListTypeRel.clone());
 	}
 
@@ -174,7 +174,7 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	}
 
 	@Override
-	public java.lang.String[] getAvailableLanguageIds() {
+	public String[] getAvailableLanguageIds() {
 		return _watsonListTypeRel.getAvailableLanguageIds();
 	}
 
@@ -184,7 +184,7 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	* @return the fully qualified class name of this watson list type rel
 	*/
 	@Override
-	public java.lang.String getClassName() {
+	public String getClassName() {
 		return _watsonListTypeRel.getClassName();
 	}
 
@@ -229,7 +229,7 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	}
 
 	@Override
-	public java.lang.String getDefaultLanguageId() {
+	public String getDefaultLanguageId() {
 		return _watsonListTypeRel.getDefaultLanguageId();
 	}
 
@@ -299,7 +299,7 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	* @return the type of this watson list type rel
 	*/
 	@Override
-	public java.lang.String getType() {
+	public String getType() {
 		return _watsonListTypeRel.getType();
 	}
 
@@ -319,7 +319,7 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	* @return the user name of this watson list type rel
 	*/
 	@Override
-	public java.lang.String getUserName() {
+	public String getUserName() {
 		return _watsonListTypeRel.getUserName();
 	}
 
@@ -329,7 +329,7 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	* @return the user uuid of this watson list type rel
 	*/
 	@Override
-	public java.lang.String getUserUuid() {
+	public String getUserUuid() {
 		return _watsonListTypeRel.getUserUuid();
 	}
 
@@ -339,7 +339,7 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	* @return the value of this watson list type rel
 	*/
 	@Override
-	public java.lang.String getValue() {
+	public String getValue() {
 		return _watsonListTypeRel.getValue();
 	}
 
@@ -350,7 +350,7 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	* @return the localized value of this watson list type rel
 	*/
 	@Override
-	public java.lang.String getValue(java.util.Locale locale) {
+	public String getValue(java.util.Locale locale) {
 		return _watsonListTypeRel.getValue(locale);
 	}
 
@@ -362,7 +362,7 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	* @return the localized value of this watson list type rel. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 	*/
 	@Override
-	public java.lang.String getValue(java.util.Locale locale, boolean useDefault) {
+	public String getValue(java.util.Locale locale, boolean useDefault) {
 		return _watsonListTypeRel.getValue(locale, useDefault);
 	}
 
@@ -373,7 +373,7 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	* @return the localized value of this watson list type rel
 	*/
 	@Override
-	public java.lang.String getValue(java.lang.String languageId) {
+	public String getValue(String languageId) {
 		return _watsonListTypeRel.getValue(languageId);
 	}
 
@@ -385,18 +385,17 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	* @return the localized value of this watson list type rel
 	*/
 	@Override
-	public java.lang.String getValue(java.lang.String languageId,
-		boolean useDefault) {
+	public String getValue(String languageId, boolean useDefault) {
 		return _watsonListTypeRel.getValue(languageId, useDefault);
 	}
 
 	@Override
-	public java.lang.String getValueCurrentLanguageId() {
+	public String getValueCurrentLanguageId() {
 		return _watsonListTypeRel.getValueCurrentLanguageId();
 	}
 
 	@Override
-	public java.lang.String getValueCurrentValue() {
+	public String getValueCurrentValue() {
 		return _watsonListTypeRel.getValueCurrentValue();
 	}
 
@@ -406,7 +405,7 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	* @return the locales and localized values of this watson list type rel
 	*/
 	@Override
-	public Map<java.util.Locale, java.lang.String> getValueMap() {
+	public Map<java.util.Locale, String> getValueMap() {
 		return _watsonListTypeRel.getValueMap();
 	}
 
@@ -484,7 +483,7 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	}
 
 	@Override
-	public void setClassName(java.lang.String className) {
+	public void setClassName(String className) {
 		_watsonListTypeRel.setClassName(className);
 	}
 
@@ -610,7 +609,7 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	* @param type the type of this watson list type rel
 	*/
 	@Override
-	public void setType(java.lang.String type) {
+	public void setType(String type) {
 		_watsonListTypeRel.setType(type);
 	}
 
@@ -630,7 +629,7 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	* @param userName the user name of this watson list type rel
 	*/
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_watsonListTypeRel.setUserName(userName);
 	}
 
@@ -640,7 +639,7 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	* @param userUuid the user uuid of this watson list type rel
 	*/
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_watsonListTypeRel.setUserUuid(userUuid);
 	}
 
@@ -650,7 +649,7 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	* @param value the value of this watson list type rel
 	*/
 	@Override
-	public void setValue(java.lang.String value) {
+	public void setValue(String value) {
 		_watsonListTypeRel.setValue(value);
 	}
 
@@ -661,7 +660,7 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	* @param locale the locale of the language
 	*/
 	@Override
-	public void setValue(java.lang.String value, java.util.Locale locale) {
+	public void setValue(String value, java.util.Locale locale) {
 		_watsonListTypeRel.setValue(value, locale);
 	}
 
@@ -673,13 +672,13 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setValue(java.lang.String value, java.util.Locale locale,
+	public void setValue(String value, java.util.Locale locale,
 		java.util.Locale defaultLocale) {
 		_watsonListTypeRel.setValue(value, locale, defaultLocale);
 	}
 
 	@Override
-	public void setValueCurrentLanguageId(java.lang.String languageId) {
+	public void setValueCurrentLanguageId(String languageId) {
 		_watsonListTypeRel.setValueCurrentLanguageId(languageId);
 	}
 
@@ -689,7 +688,7 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	* @param valueMap the locales and localized values of this watson list type rel
 	*/
 	@Override
-	public void setValueMap(Map<java.util.Locale, java.lang.String> valueMap) {
+	public void setValueMap(Map<java.util.Locale, String> valueMap) {
 		_watsonListTypeRel.setValueMap(valueMap);
 	}
 
@@ -700,7 +699,7 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setValueMap(Map<java.util.Locale, java.lang.String> valueMap,
+	public void setValueMap(Map<java.util.Locale, String> valueMap,
 		java.util.Locale defaultLocale) {
 		_watsonListTypeRel.setValueMap(valueMap, defaultLocale);
 	}
@@ -736,7 +735,7 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	}
 
 	@Override
-	public java.lang.String toString() {
+	public String toString() {
 		return _watsonListTypeRel.toString();
 	}
 
@@ -746,7 +745,7 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	}
 
 	@Override
-	public java.lang.String toXmlString() {
+	public String toXmlString() {
 		return _watsonListTypeRel.toXmlString();
 	}
 

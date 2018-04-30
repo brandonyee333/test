@@ -200,7 +200,7 @@ public class WatsonReportLocalServiceWrapper implements WatsonReportLocalService
 	* @return the OSGi service identifier
 	*/
 	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
+	public String getOSGiServiceIdentifier() {
 		return _watsonReportLocalService.getOSGiServiceIdentifier();
 	}
 

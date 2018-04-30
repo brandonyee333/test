@@ -209,7 +209,7 @@ public class WatsonVehicleAuditWrapper implements WatsonVehicleAudit,
 	}
 
 	@Override
-	public java.lang.Object clone() {
+	public Object clone() {
 		return new WatsonVehicleAuditWrapper((WatsonVehicleAudit)_watsonVehicleAudit.clone());
 	}
 
@@ -219,7 +219,7 @@ public class WatsonVehicleAuditWrapper implements WatsonVehicleAudit,
 	}
 
 	@Override
-	public java.lang.String[] getAvailableLanguageIds() {
+	public String[] getAvailableLanguageIds() {
 		return _watsonVehicleAudit.getAvailableLanguageIds();
 	}
 
@@ -254,7 +254,7 @@ public class WatsonVehicleAuditWrapper implements WatsonVehicleAudit,
 	}
 
 	@Override
-	public java.lang.String getDefaultLanguageId() {
+	public String getDefaultLanguageId() {
 		return _watsonVehicleAudit.getDefaultLanguageId();
 	}
 
@@ -264,7 +264,7 @@ public class WatsonVehicleAuditWrapper implements WatsonVehicleAudit,
 	* @return the description of this watson vehicle audit
 	*/
 	@Override
-	public java.lang.String getDescription() {
+	public String getDescription() {
 		return _watsonVehicleAudit.getDescription();
 	}
 
@@ -275,7 +275,7 @@ public class WatsonVehicleAuditWrapper implements WatsonVehicleAudit,
 	* @return the localized description of this watson vehicle audit
 	*/
 	@Override
-	public java.lang.String getDescription(java.util.Locale locale) {
+	public String getDescription(java.util.Locale locale) {
 		return _watsonVehicleAudit.getDescription(locale);
 	}
 
@@ -287,8 +287,7 @@ public class WatsonVehicleAuditWrapper implements WatsonVehicleAudit,
 	* @return the localized description of this watson vehicle audit. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 	*/
 	@Override
-	public java.lang.String getDescription(java.util.Locale locale,
-		boolean useDefault) {
+	public String getDescription(java.util.Locale locale, boolean useDefault) {
 		return _watsonVehicleAudit.getDescription(locale, useDefault);
 	}
 
@@ -299,7 +298,7 @@ public class WatsonVehicleAuditWrapper implements WatsonVehicleAudit,
 	* @return the localized description of this watson vehicle audit
 	*/
 	@Override
-	public java.lang.String getDescription(java.lang.String languageId) {
+	public String getDescription(String languageId) {
 		return _watsonVehicleAudit.getDescription(languageId);
 	}
 
@@ -311,18 +310,17 @@ public class WatsonVehicleAuditWrapper implements WatsonVehicleAudit,
 	* @return the localized description of this watson vehicle audit
 	*/
 	@Override
-	public java.lang.String getDescription(java.lang.String languageId,
-		boolean useDefault) {
+	public String getDescription(String languageId, boolean useDefault) {
 		return _watsonVehicleAudit.getDescription(languageId, useDefault);
 	}
 
 	@Override
-	public java.lang.String getDescriptionCurrentLanguageId() {
+	public String getDescriptionCurrentLanguageId() {
 		return _watsonVehicleAudit.getDescriptionCurrentLanguageId();
 	}
 
 	@Override
-	public java.lang.String getDescriptionCurrentValue() {
+	public String getDescriptionCurrentValue() {
 		return _watsonVehicleAudit.getDescriptionCurrentValue();
 	}
 
@@ -332,7 +330,7 @@ public class WatsonVehicleAuditWrapper implements WatsonVehicleAudit,
 	* @return the locales and localized descriptions of this watson vehicle audit
 	*/
 	@Override
-	public Map<java.util.Locale, java.lang.String> getDescriptionMap() {
+	public Map<java.util.Locale, String> getDescriptionMap() {
 		return _watsonVehicleAudit.getDescriptionMap();
 	}
 
@@ -357,7 +355,7 @@ public class WatsonVehicleAuditWrapper implements WatsonVehicleAudit,
 	* @return the image payload of this watson vehicle audit
 	*/
 	@Override
-	public java.lang.String getImagePayload() {
+	public String getImagePayload() {
 		return _watsonVehicleAudit.getImagePayload();
 	}
 
@@ -367,7 +365,7 @@ public class WatsonVehicleAuditWrapper implements WatsonVehicleAudit,
 	* @return the license plate of this watson vehicle audit
 	*/
 	@Override
-	public java.lang.String getLicensePlate() {
+	public String getLicensePlate() {
 		return _watsonVehicleAudit.getLicensePlate();
 	}
 
@@ -462,7 +460,7 @@ public class WatsonVehicleAuditWrapper implements WatsonVehicleAudit,
 	* @return the user name of this watson vehicle audit
 	*/
 	@Override
-	public java.lang.String getUserName() {
+	public String getUserName() {
 		return _watsonVehicleAudit.getUserName();
 	}
 
@@ -472,7 +470,7 @@ public class WatsonVehicleAuditWrapper implements WatsonVehicleAudit,
 	* @return the user uuid of this watson vehicle audit
 	*/
 	@Override
-	public java.lang.String getUserUuid() {
+	public String getUserUuid() {
 		return _watsonVehicleAudit.getUserUuid();
 	}
 
@@ -605,7 +603,7 @@ public class WatsonVehicleAuditWrapper implements WatsonVehicleAudit,
 	* @param description the description of this watson vehicle audit
 	*/
 	@Override
-	public void setDescription(java.lang.String description) {
+	public void setDescription(String description) {
 		_watsonVehicleAudit.setDescription(description);
 	}
 
@@ -616,8 +614,7 @@ public class WatsonVehicleAuditWrapper implements WatsonVehicleAudit,
 	* @param locale the locale of the language
 	*/
 	@Override
-	public void setDescription(java.lang.String description,
-		java.util.Locale locale) {
+	public void setDescription(String description, java.util.Locale locale) {
 		_watsonVehicleAudit.setDescription(description, locale);
 	}
 
@@ -629,13 +626,13 @@ public class WatsonVehicleAuditWrapper implements WatsonVehicleAudit,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setDescription(java.lang.String description,
-		java.util.Locale locale, java.util.Locale defaultLocale) {
+	public void setDescription(String description, java.util.Locale locale,
+		java.util.Locale defaultLocale) {
 		_watsonVehicleAudit.setDescription(description, locale, defaultLocale);
 	}
 
 	@Override
-	public void setDescriptionCurrentLanguageId(java.lang.String languageId) {
+	public void setDescriptionCurrentLanguageId(String languageId) {
 		_watsonVehicleAudit.setDescriptionCurrentLanguageId(languageId);
 	}
 
@@ -645,8 +642,7 @@ public class WatsonVehicleAuditWrapper implements WatsonVehicleAudit,
 	* @param descriptionMap the locales and localized descriptions of this watson vehicle audit
 	*/
 	@Override
-	public void setDescriptionMap(
-		Map<java.util.Locale, java.lang.String> descriptionMap) {
+	public void setDescriptionMap(Map<java.util.Locale, String> descriptionMap) {
 		_watsonVehicleAudit.setDescriptionMap(descriptionMap);
 	}
 
@@ -658,7 +654,7 @@ public class WatsonVehicleAuditWrapper implements WatsonVehicleAudit,
 	*/
 	@Override
 	public void setDescriptionMap(
-		Map<java.util.Locale, java.lang.String> descriptionMap,
+		Map<java.util.Locale, String> descriptionMap,
 		java.util.Locale defaultLocale) {
 		_watsonVehicleAudit.setDescriptionMap(descriptionMap, defaultLocale);
 	}
@@ -695,7 +691,7 @@ public class WatsonVehicleAuditWrapper implements WatsonVehicleAudit,
 	* @param imagePayload the image payload of this watson vehicle audit
 	*/
 	@Override
-	public void setImagePayload(java.lang.String imagePayload) {
+	public void setImagePayload(String imagePayload) {
 		_watsonVehicleAudit.setImagePayload(imagePayload);
 	}
 
@@ -705,7 +701,7 @@ public class WatsonVehicleAuditWrapper implements WatsonVehicleAudit,
 	* @param licensePlate the license plate of this watson vehicle audit
 	*/
 	@Override
-	public void setLicensePlate(java.lang.String licensePlate) {
+	public void setLicensePlate(String licensePlate) {
 		_watsonVehicleAudit.setLicensePlate(licensePlate);
 	}
 
@@ -805,7 +801,7 @@ public class WatsonVehicleAuditWrapper implements WatsonVehicleAudit,
 	* @param userName the user name of this watson vehicle audit
 	*/
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_watsonVehicleAudit.setUserName(userName);
 	}
 
@@ -815,7 +811,7 @@ public class WatsonVehicleAuditWrapper implements WatsonVehicleAudit,
 	* @param userUuid the user uuid of this watson vehicle audit
 	*/
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_watsonVehicleAudit.setUserUuid(userUuid);
 	}
 
@@ -880,7 +876,7 @@ public class WatsonVehicleAuditWrapper implements WatsonVehicleAudit,
 	}
 
 	@Override
-	public java.lang.String toString() {
+	public String toString() {
 		return _watsonVehicleAudit.toString();
 	}
 
@@ -890,7 +886,7 @@ public class WatsonVehicleAuditWrapper implements WatsonVehicleAudit,
 	}
 
 	@Override
-	public java.lang.String toXmlString() {
+	public String toXmlString() {
 		return _watsonVehicleAudit.toXmlString();
 	}
 

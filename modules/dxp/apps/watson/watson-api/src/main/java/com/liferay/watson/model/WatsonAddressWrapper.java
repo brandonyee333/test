@@ -274,7 +274,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	}
 
 	@Override
-	public java.lang.Object clone() {
+	public Object clone() {
 		return new WatsonAddressWrapper((WatsonAddress)_watsonAddress.clone());
 	}
 
@@ -284,7 +284,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	}
 
 	@Override
-	public java.lang.String[] getAvailableLanguageIds() {
+	public String[] getAvailableLanguageIds() {
 		return _watsonAddress.getAvailableLanguageIds();
 	}
 
@@ -294,7 +294,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @return the building of this watson address
 	*/
 	@Override
-	public java.lang.String getBuilding() {
+	public String getBuilding() {
 		return _watsonAddress.getBuilding();
 	}
 
@@ -305,7 +305,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @return the localized building of this watson address
 	*/
 	@Override
-	public java.lang.String getBuilding(java.util.Locale locale) {
+	public String getBuilding(java.util.Locale locale) {
 		return _watsonAddress.getBuilding(locale);
 	}
 
@@ -317,8 +317,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @return the localized building of this watson address. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 	*/
 	@Override
-	public java.lang.String getBuilding(java.util.Locale locale,
-		boolean useDefault) {
+	public String getBuilding(java.util.Locale locale, boolean useDefault) {
 		return _watsonAddress.getBuilding(locale, useDefault);
 	}
 
@@ -329,7 +328,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @return the localized building of this watson address
 	*/
 	@Override
-	public java.lang.String getBuilding(java.lang.String languageId) {
+	public String getBuilding(String languageId) {
 		return _watsonAddress.getBuilding(languageId);
 	}
 
@@ -341,18 +340,17 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @return the localized building of this watson address
 	*/
 	@Override
-	public java.lang.String getBuilding(java.lang.String languageId,
-		boolean useDefault) {
+	public String getBuilding(String languageId, boolean useDefault) {
 		return _watsonAddress.getBuilding(languageId, useDefault);
 	}
 
 	@Override
-	public java.lang.String getBuildingCurrentLanguageId() {
+	public String getBuildingCurrentLanguageId() {
 		return _watsonAddress.getBuildingCurrentLanguageId();
 	}
 
 	@Override
-	public java.lang.String getBuildingCurrentValue() {
+	public String getBuildingCurrentValue() {
 		return _watsonAddress.getBuildingCurrentValue();
 	}
 
@@ -362,7 +360,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @return the locales and localized buildings of this watson address
 	*/
 	@Override
-	public Map<java.util.Locale, java.lang.String> getBuildingMap() {
+	public Map<java.util.Locale, String> getBuildingMap() {
 		return _watsonAddress.getBuildingMap();
 	}
 
@@ -397,7 +395,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	}
 
 	@Override
-	public java.lang.String getDefaultLanguageId() {
+	public String getDefaultLanguageId() {
 		return _watsonAddress.getDefaultLanguageId();
 	}
 
@@ -407,7 +405,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @return the description of this watson address
 	*/
 	@Override
-	public java.lang.String getDescription() {
+	public String getDescription() {
 		return _watsonAddress.getDescription();
 	}
 
@@ -418,7 +416,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @return the localized description of this watson address
 	*/
 	@Override
-	public java.lang.String getDescription(java.util.Locale locale) {
+	public String getDescription(java.util.Locale locale) {
 		return _watsonAddress.getDescription(locale);
 	}
 
@@ -430,8 +428,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @return the localized description of this watson address. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 	*/
 	@Override
-	public java.lang.String getDescription(java.util.Locale locale,
-		boolean useDefault) {
+	public String getDescription(java.util.Locale locale, boolean useDefault) {
 		return _watsonAddress.getDescription(locale, useDefault);
 	}
 
@@ -442,7 +439,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @return the localized description of this watson address
 	*/
 	@Override
-	public java.lang.String getDescription(java.lang.String languageId) {
+	public String getDescription(String languageId) {
 		return _watsonAddress.getDescription(languageId);
 	}
 
@@ -454,18 +451,17 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @return the localized description of this watson address
 	*/
 	@Override
-	public java.lang.String getDescription(java.lang.String languageId,
-		boolean useDefault) {
+	public String getDescription(String languageId, boolean useDefault) {
 		return _watsonAddress.getDescription(languageId, useDefault);
 	}
 
 	@Override
-	public java.lang.String getDescriptionCurrentLanguageId() {
+	public String getDescriptionCurrentLanguageId() {
 		return _watsonAddress.getDescriptionCurrentLanguageId();
 	}
 
 	@Override
-	public java.lang.String getDescriptionCurrentValue() {
+	public String getDescriptionCurrentValue() {
 		return _watsonAddress.getDescriptionCurrentValue();
 	}
 
@@ -475,7 +471,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @return the locales and localized descriptions of this watson address
 	*/
 	@Override
-	public Map<java.util.Locale, java.lang.String> getDescriptionMap() {
+	public Map<java.util.Locale, String> getDescriptionMap() {
 		return _watsonAddress.getDescriptionMap();
 	}
 
@@ -500,7 +496,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @return the floor of this watson address
 	*/
 	@Override
-	public java.lang.String getFloor() {
+	public String getFloor() {
 		return _watsonAddress.getFloor();
 	}
 
@@ -520,7 +516,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @return the image payload of this watson address
 	*/
 	@Override
-	public java.lang.String getImagePayload() {
+	public String getImagePayload() {
 		return _watsonAddress.getImagePayload();
 	}
 
@@ -570,7 +566,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @return the name of this watson address
 	*/
 	@Override
-	public java.lang.String getName() {
+	public String getName() {
 		return _watsonAddress.getName();
 	}
 
@@ -581,7 +577,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @return the localized name of this watson address
 	*/
 	@Override
-	public java.lang.String getName(java.util.Locale locale) {
+	public String getName(java.util.Locale locale) {
 		return _watsonAddress.getName(locale);
 	}
 
@@ -593,7 +589,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @return the localized name of this watson address. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
 	*/
 	@Override
-	public java.lang.String getName(java.util.Locale locale, boolean useDefault) {
+	public String getName(java.util.Locale locale, boolean useDefault) {
 		return _watsonAddress.getName(locale, useDefault);
 	}
 
@@ -604,7 +600,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @return the localized name of this watson address
 	*/
 	@Override
-	public java.lang.String getName(java.lang.String languageId) {
+	public String getName(String languageId) {
 		return _watsonAddress.getName(languageId);
 	}
 
@@ -616,18 +612,17 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @return the localized name of this watson address
 	*/
 	@Override
-	public java.lang.String getName(java.lang.String languageId,
-		boolean useDefault) {
+	public String getName(String languageId, boolean useDefault) {
 		return _watsonAddress.getName(languageId, useDefault);
 	}
 
 	@Override
-	public java.lang.String getNameCurrentLanguageId() {
+	public String getNameCurrentLanguageId() {
 		return _watsonAddress.getNameCurrentLanguageId();
 	}
 
 	@Override
-	public java.lang.String getNameCurrentValue() {
+	public String getNameCurrentValue() {
 		return _watsonAddress.getNameCurrentValue();
 	}
 
@@ -637,7 +632,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @return the locales and localized names of this watson address
 	*/
 	@Override
-	public Map<java.util.Locale, java.lang.String> getNameMap() {
+	public Map<java.util.Locale, String> getNameMap() {
 		return _watsonAddress.getNameMap();
 	}
 
@@ -647,7 +642,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @return the number of this watson address
 	*/
 	@Override
-	public java.lang.String getNumber() {
+	public String getNumber() {
 		return _watsonAddress.getNumber();
 	}
 
@@ -667,7 +662,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @return the other type of this watson address
 	*/
 	@Override
-	public java.lang.String getOtherType() {
+	public String getOtherType() {
 		return _watsonAddress.getOtherType();
 	}
 
@@ -677,7 +672,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @return the postal code of this watson address
 	*/
 	@Override
-	public java.lang.String getPostalCode() {
+	public String getPostalCode() {
 		return _watsonAddress.getPostalCode();
 	}
 
@@ -712,7 +707,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @return the region of this watson address
 	*/
 	@Override
-	public java.lang.String getRegion() {
+	public String getRegion() {
 		return _watsonAddress.getRegion();
 	}
 
@@ -722,7 +717,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @return the room of this watson address
 	*/
 	@Override
-	public java.lang.String getRoom() {
+	public String getRoom() {
 		return _watsonAddress.getRoom();
 	}
 
@@ -742,7 +737,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @return the street of this watson address
 	*/
 	@Override
-	public java.lang.String getStreet() {
+	public String getStreet() {
 		return _watsonAddress.getStreet();
 	}
 
@@ -782,7 +777,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @return the user name of this watson address
 	*/
 	@Override
-	public java.lang.String getUserName() {
+	public String getUserName() {
 		return _watsonAddress.getUserName();
 	}
 
@@ -792,7 +787,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @return the user uuid of this watson address
 	*/
 	@Override
-	public java.lang.String getUserUuid() {
+	public String getUserUuid() {
 		return _watsonAddress.getUserUuid();
 	}
 
@@ -860,7 +855,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @param building the building of this watson address
 	*/
 	@Override
-	public void setBuilding(java.lang.String building) {
+	public void setBuilding(String building) {
 		_watsonAddress.setBuilding(building);
 	}
 
@@ -871,7 +866,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @param locale the locale of the language
 	*/
 	@Override
-	public void setBuilding(java.lang.String building, java.util.Locale locale) {
+	public void setBuilding(String building, java.util.Locale locale) {
 		_watsonAddress.setBuilding(building, locale);
 	}
 
@@ -883,13 +878,13 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setBuilding(java.lang.String building, java.util.Locale locale,
+	public void setBuilding(String building, java.util.Locale locale,
 		java.util.Locale defaultLocale) {
 		_watsonAddress.setBuilding(building, locale, defaultLocale);
 	}
 
 	@Override
-	public void setBuildingCurrentLanguageId(java.lang.String languageId) {
+	public void setBuildingCurrentLanguageId(String languageId) {
 		_watsonAddress.setBuildingCurrentLanguageId(languageId);
 	}
 
@@ -899,8 +894,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @param buildingMap the locales and localized buildings of this watson address
 	*/
 	@Override
-	public void setBuildingMap(
-		Map<java.util.Locale, java.lang.String> buildingMap) {
+	public void setBuildingMap(Map<java.util.Locale, String> buildingMap) {
 		_watsonAddress.setBuildingMap(buildingMap);
 	}
 
@@ -911,8 +905,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setBuildingMap(
-		Map<java.util.Locale, java.lang.String> buildingMap,
+	public void setBuildingMap(Map<java.util.Locale, String> buildingMap,
 		java.util.Locale defaultLocale) {
 		_watsonAddress.setBuildingMap(buildingMap, defaultLocale);
 	}
@@ -958,7 +951,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @param description the description of this watson address
 	*/
 	@Override
-	public void setDescription(java.lang.String description) {
+	public void setDescription(String description) {
 		_watsonAddress.setDescription(description);
 	}
 
@@ -969,8 +962,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @param locale the locale of the language
 	*/
 	@Override
-	public void setDescription(java.lang.String description,
-		java.util.Locale locale) {
+	public void setDescription(String description, java.util.Locale locale) {
 		_watsonAddress.setDescription(description, locale);
 	}
 
@@ -982,13 +974,13 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setDescription(java.lang.String description,
-		java.util.Locale locale, java.util.Locale defaultLocale) {
+	public void setDescription(String description, java.util.Locale locale,
+		java.util.Locale defaultLocale) {
 		_watsonAddress.setDescription(description, locale, defaultLocale);
 	}
 
 	@Override
-	public void setDescriptionCurrentLanguageId(java.lang.String languageId) {
+	public void setDescriptionCurrentLanguageId(String languageId) {
 		_watsonAddress.setDescriptionCurrentLanguageId(languageId);
 	}
 
@@ -998,8 +990,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @param descriptionMap the locales and localized descriptions of this watson address
 	*/
 	@Override
-	public void setDescriptionMap(
-		Map<java.util.Locale, java.lang.String> descriptionMap) {
+	public void setDescriptionMap(Map<java.util.Locale, String> descriptionMap) {
 		_watsonAddress.setDescriptionMap(descriptionMap);
 	}
 
@@ -1011,7 +1002,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	*/
 	@Override
 	public void setDescriptionMap(
-		Map<java.util.Locale, java.lang.String> descriptionMap,
+		Map<java.util.Locale, String> descriptionMap,
 		java.util.Locale defaultLocale) {
 		_watsonAddress.setDescriptionMap(descriptionMap, defaultLocale);
 	}
@@ -1048,7 +1039,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @param floor the floor of this watson address
 	*/
 	@Override
-	public void setFloor(java.lang.String floor) {
+	public void setFloor(String floor) {
 		_watsonAddress.setFloor(floor);
 	}
 
@@ -1068,7 +1059,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @param imagePayload the image payload of this watson address
 	*/
 	@Override
-	public void setImagePayload(java.lang.String imagePayload) {
+	public void setImagePayload(String imagePayload) {
 		_watsonAddress.setImagePayload(imagePayload);
 	}
 
@@ -1118,7 +1109,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @param name the name of this watson address
 	*/
 	@Override
-	public void setName(java.lang.String name) {
+	public void setName(String name) {
 		_watsonAddress.setName(name);
 	}
 
@@ -1129,7 +1120,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @param locale the locale of the language
 	*/
 	@Override
-	public void setName(java.lang.String name, java.util.Locale locale) {
+	public void setName(String name, java.util.Locale locale) {
 		_watsonAddress.setName(name, locale);
 	}
 
@@ -1141,13 +1132,13 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setName(java.lang.String name, java.util.Locale locale,
+	public void setName(String name, java.util.Locale locale,
 		java.util.Locale defaultLocale) {
 		_watsonAddress.setName(name, locale, defaultLocale);
 	}
 
 	@Override
-	public void setNameCurrentLanguageId(java.lang.String languageId) {
+	public void setNameCurrentLanguageId(String languageId) {
 		_watsonAddress.setNameCurrentLanguageId(languageId);
 	}
 
@@ -1157,7 +1148,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @param nameMap the locales and localized names of this watson address
 	*/
 	@Override
-	public void setNameMap(Map<java.util.Locale, java.lang.String> nameMap) {
+	public void setNameMap(Map<java.util.Locale, String> nameMap) {
 		_watsonAddress.setNameMap(nameMap);
 	}
 
@@ -1168,7 +1159,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @param defaultLocale the default locale
 	*/
 	@Override
-	public void setNameMap(Map<java.util.Locale, java.lang.String> nameMap,
+	public void setNameMap(Map<java.util.Locale, String> nameMap,
 		java.util.Locale defaultLocale) {
 		_watsonAddress.setNameMap(nameMap, defaultLocale);
 	}
@@ -1184,7 +1175,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @param number the number of this watson address
 	*/
 	@Override
-	public void setNumber(java.lang.String number) {
+	public void setNumber(String number) {
 		_watsonAddress.setNumber(number);
 	}
 
@@ -1204,7 +1195,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @param otherType the other type of this watson address
 	*/
 	@Override
-	public void setOtherType(java.lang.String otherType) {
+	public void setOtherType(String otherType) {
 		_watsonAddress.setOtherType(otherType);
 	}
 
@@ -1214,7 +1205,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @param postalCode the postal code of this watson address
 	*/
 	@Override
-	public void setPostalCode(java.lang.String postalCode) {
+	public void setPostalCode(String postalCode) {
 		_watsonAddress.setPostalCode(postalCode);
 	}
 
@@ -1249,7 +1240,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @param region the region of this watson address
 	*/
 	@Override
-	public void setRegion(java.lang.String region) {
+	public void setRegion(String region) {
 		_watsonAddress.setRegion(region);
 	}
 
@@ -1259,7 +1250,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @param room the room of this watson address
 	*/
 	@Override
-	public void setRoom(java.lang.String room) {
+	public void setRoom(String room) {
 		_watsonAddress.setRoom(room);
 	}
 
@@ -1279,7 +1270,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @param street the street of this watson address
 	*/
 	@Override
-	public void setStreet(java.lang.String street) {
+	public void setStreet(String street) {
 		_watsonAddress.setStreet(street);
 	}
 
@@ -1319,7 +1310,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @param userName the user name of this watson address
 	*/
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_watsonAddress.setUserName(userName);
 	}
 
@@ -1329,7 +1320,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	* @param userUuid the user uuid of this watson address
 	*/
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_watsonAddress.setUserUuid(userUuid);
 	}
 
@@ -1364,7 +1355,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	}
 
 	@Override
-	public java.lang.String toString() {
+	public String toString() {
 		return _watsonAddress.toString();
 	}
 
@@ -1374,7 +1365,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	}
 
 	@Override
-	public java.lang.String toXmlString() {
+	public String toXmlString() {
 		return _watsonAddress.toXmlString();
 	}
 
