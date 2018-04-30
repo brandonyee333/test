@@ -73,6 +73,10 @@ public class LicenseKeyExpirationDateComparator extends OrderByComparator {
 		return _ascending;
 	}
 
+	public void setAscending(boolean ascending) {
+		_ascending = ascending;
+	}
+
 	private boolean _ascending;
 
 }

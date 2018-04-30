@@ -45,12 +45,12 @@ import java.util.Map;
  * @author Brian Wing Shun Chan
  * @author Amos Fong
  */
+@JSON(strict = true)
 public class OfferingEntryImpl extends OfferingEntryBaseImpl {
 
 	public OfferingEntryImpl() {
 	}
 
-	@JSON
 	public AccountEntry getAccountEntry() throws PortalException {
 		return AccountEntryLocalServiceUtil.getAccountEntry(
 			getAccountEntryId());
@@ -67,7 +67,6 @@ public class OfferingEntryImpl extends OfferingEntryBaseImpl {
 		return getQuantity() - getLicenseKeysCount();
 	}
 
-	@JSON
 	public String getKey() throws PortalException {
 		StringBundler sb = new StringBundler(18);
 
@@ -103,13 +102,11 @@ public class OfferingEntryImpl extends OfferingEntryBaseImpl {
 		return sb.toString();
 	}
 
-	@JSON
 	public List<LicenseKey> getLicenseKeys() {
 		return LicenseKeyLocalServiceUtil.getOfferingEntryLicenseKeys(
 			getOfferingEntryId());
 	}
 
-	@JSON
 	public int getLicenseKeysCount() {
 		return LicenseKeyLocalServiceUtil.getOfferingEntryLicenseKeysCount(
 			getOfferingEntryId(), false, true);
@@ -146,6 +143,7 @@ public class OfferingEntryImpl extends OfferingEntryBaseImpl {
 		return OrderEntryLocalServiceUtil.getOrderEntry(getOrderEntryId());
 	}
 
+	@JSON
 	public ProductEntry getProductEntry() throws PortalException {
 		return ProductEntryLocalServiceUtil.getProductEntry(
 			getProductEntryId());
@@ -155,7 +153,6 @@ public class OfferingEntryImpl extends OfferingEntryBaseImpl {
 		return OfferingEntryConstants.getSizingLabel(getSizing());
 	}
 
-	@JSON
 	public Date getStartDate() throws PortalException {
 		OrderEntry orderEntry = getOrderEntry();
 

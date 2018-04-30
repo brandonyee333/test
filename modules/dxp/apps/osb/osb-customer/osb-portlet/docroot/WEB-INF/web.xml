@@ -36,15 +36,6 @@
 	<listener>
 		<listener-class>com.liferay.osb.admin.servlet.AdminServletContextListener</listener-class>
 	</listener>
-	<servlet>
-		<servlet-name>License Servlet</servlet-name>
-		<servlet-class>com.liferay.osb.servlet.LicenseServlet</servlet-class>
-		<load-on-startup>2</load-on-startup>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>License Servlet</servlet-name>
-		<url-pattern>/license</url-pattern>
-	</servlet-mapping>
 	<jsp-config>
 		<taglib>
 			<taglib-uri>http://java.sun.com/jsp/jstl/core</taglib-uri>

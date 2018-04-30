@@ -14,6 +14,9 @@
 
 package com.liferay.osb.service.impl;
 
+import com.liferay.osb.exception.MaximumLicenseKeyException;
+import com.liferay.osb.exception.OfferingEntryStatusException;
+import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.AccountWorkerConstants;
 import com.liferay.osb.model.LicenseEntry;
@@ -21,6 +24,11 @@ import com.liferay.osb.model.LicenseEntryConstants;
 import com.liferay.osb.model.LicenseKey;
 import com.liferay.osb.model.LicenseKeyConstants;
 import com.liferay.osb.model.OfferingEntry;
+import com.liferay.osb.model.OfferingEntryGroup;
+import com.liferay.osb.model.OfferingEntryGroupFactoryUtil;
+import com.liferay.osb.model.OrderEntry;
+import com.liferay.osb.model.ProductEntry;
+import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.service.base.LicenseKeyServiceBaseImpl;
 import com.liferay.osb.service.permission.OSBAccountEntryPermission;
 import com.liferay.osb.service.permission.OSBAssetReceiptPermission;
@@ -37,6 +45,8 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -182,6 +192,40 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		return filterLicenseKeys(licenseKeys);
 	}
 
+	@JSONWebService
+	public List<LicenseKey> getLicenseKeys(String productId, String serverId)
+		throws PortalException {
+
+		validateJSONWebServicePermissions();
+
+		return licenseKeyLocalService.getLicenseKeys(productId, serverId);
+	}
+
+	@JSONWebService
+	public List<LicenseKey> getLicenseKeys(
+			String assetReceiptLicenseUuid, String productId, String serverId,
+			boolean active, int start, int end, OrderByComparator obc)
+		throws PortalException {
+
+		validateJSONWebServicePermissions();
+
+		return licenseKeyLocalService.getLicenseKeys(
+			assetReceiptLicenseUuid, productId, serverId, active, start, end,
+			obc);
+	}
+
+	@JSONWebService
+	public List<LicenseKey> getLicenseKeysByName(
+			String productEntryName, String serverId, boolean active, int start,
+			int end, OrderByComparator obc)
+		throws PortalException {
+
+		validateJSONWebServicePermissions();
+
+		return licenseKeyLocalService.getLicenseKeysByName(
+			productEntryName, serverId, active, start, end, obc);
+	}
+
 	public List<LicenseKey> getLicenseKeySetLicenseKeys(long licenseKeySetId)
 		throws PortalException {
 
@@ -220,6 +264,115 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 		return licenseKeyLocalService.getOfferingEntryGroupLicenseKeysCount(
 			offeringEntryIds, complimentary, active);
+	}
+
+	@JSONWebService
+	public int getOfferingEntryLicenseKeysCount(
+			long offeringEntryId, boolean complimentary, boolean active)
+		throws PortalException {
+
+		validateJSONWebServicePermissions();
+
+		return licenseKeyLocalService.getOfferingEntryLicenseKeysCount(
+			offeringEntryId, complimentary, active);
+	}
+
+	@JSONWebService
+	public boolean isActive(String serverId, String productId, String key)
+		throws PortalException {
+
+		validateJSONWebServicePermissions();
+
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
+
+		params.put("active", true);
+
+		int activeLicensesCount = licenseKeyLocalService.searchCount(
+			null, 0, 0, 0, 0, 0, 0, null, 0, 0, 0, 0, 0, 0, null, null, 0, 0, 0,
+			0, 0, 0, new long[0], new long[0], null, productId, new int[0],
+			null, null, null, null, null, serverId, key, 0, 0, 0, 0, 0, 0,
+			params, true);
+
+		if (activeLicensesCount > 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@JSONWebService
+	public LicenseKey registerLicenseKey(
+			String orderEntryUuid, String productEntryName, int liferayVersion,
+			int maxServers, String hostName, String ipAddresses,
+			String macAddresses, String serverId)
+		throws PortalException {
+
+		validateJSONWebServicePermissions();
+
+		OrderEntry orderEntry = orderEntryLocalService.getOrderEntry(
+			orderEntryUuid);
+
+		List<OfferingEntry> availableOfferingEntries = new ArrayList<>();
+
+		List<OfferingEntry> offeringEntries = orderEntry.getOfferingEntries();
+
+		for (OfferingEntry offeringEntry : offeringEntries) {
+			ProductEntry productEntry = offeringEntry.getProductEntry();
+
+			int environment = productEntry.getEnvironment();
+
+			if ((environment ==
+					ProductEntryConstants.ENVIRONMENT_DEVELOPMENT) ||
+				(environment == ProductEntryConstants.ENVIRONMENT_NONE)) {
+
+				continue;
+			}
+
+			String curProductEntryName = productEntry.getName();
+
+			if (!curProductEntryName.equals(productEntryName)) {
+				continue;
+			}
+
+			availableOfferingEntries.add(offeringEntry);
+		}
+
+		OfferingEntryGroup offeringEntryGroup =
+			OfferingEntryGroupFactoryUtil.createOfferingEntryGroup(
+				availableOfferingEntries);
+
+		OfferingEntry offeringEntry =
+			offeringEntryGroup.getAvailableLicenseOfferingEntry();
+
+		ProductEntry productEntry = offeringEntry.getProductEntry();
+
+		AccountEntry accountEntry = offeringEntry.getAccountEntry();
+
+		long licenseEntryId = getLicenseEntryId(productEntry);
+
+		int productVersion = getProductVersion(liferayVersion);
+
+		Calendar cal = Calendar.getInstance();
+
+		cal.setTime(orderEntry.getStartDate());
+
+		try {
+			return licenseKeyLocalService.addLicenseKey(
+				offeringEntry.getUserId(), 0, accountEntry.getName(),
+				offeringEntry.getOfferingEntryId(), licenseEntryId, 0,
+				productVersion, 0, accountEntry.getName(), maxServers, 0,
+				accountEntry.getName(), new String[] {hostName},
+				new String[] {ipAddresses}, new String[] {macAddresses},
+				new String[] {serverId}, cal.get(Calendar.MONTH),
+				cal.get(Calendar.DATE), cal.get(Calendar.YEAR), false, true);
+		}
+		catch (MaximumLicenseKeyException mlke) {
+		}
+		catch (OfferingEntryStatusException oese) {
+		}
+
+		return null;
 	}
 
 	public LicenseKey renewLicenseKey(
@@ -469,6 +622,37 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		}
 
 		return filteredLicenseKeys;
+	}
+
+	protected long getLicenseEntryId(ProductEntry productEntry) {
+		List<LicenseEntry> licenseEntries = productEntry.getLicenseEntries();
+
+		for (LicenseEntry licenseEntry : licenseEntries) {
+			String type = licenseEntry.getType();
+
+			if (type.equals(LicenseEntryConstants.TYPE_LIMITED) ||
+				type.equals(LicenseEntryConstants.TYPE_PER_USER) ||
+				type.equals(LicenseEntryConstants.TYPE_PRODUCTION)) {
+
+				return licenseEntry.getLicenseEntryId();
+			}
+		}
+
+		return 0;
+	}
+
+	protected int getProductVersion(int liferayVersion) {
+		if (liferayVersion == 6120) {
+			return ProductEntryConstants.PORTAL_VERSION_6_1_20;
+		}
+		else if (liferayVersion == 6130) {
+			return ProductEntryConstants.PORTAL_VERSION_6_1_30;
+		}
+		else if (liferayVersion == 6210) {
+			return ProductEntryConstants.PORTAL_VERSION_6_2_10;
+		}
+
+		return ProductEntryConstants.PORTAL_VERSION_6_1_10;
 	}
 
 	protected boolean isAccountAdmin(long userId) {

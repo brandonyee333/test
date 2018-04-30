@@ -26,6 +26,7 @@ import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringPool;
 
@@ -35,6 +36,7 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @author Amos Fong
  */
+@JSON(strict = true)
 public class OrderEntryImpl extends OrderEntryBaseImpl {
 
 	public OrderEntryImpl() {
@@ -45,8 +47,7 @@ public class OrderEntryImpl extends OrderEntryBaseImpl {
 			getAccountEntryId());
 	}
 
-	// @JsonDeserialize(contentAs = OfferingEntryJSONModel.class)
-
+	@JSON
 	public List<OfferingEntry> getOfferingEntries() {
 		if (_offeringEntries == null) {
 			_offeringEntries =

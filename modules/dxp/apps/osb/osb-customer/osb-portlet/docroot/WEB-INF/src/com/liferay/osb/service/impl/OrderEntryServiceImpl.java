@@ -33,17 +33,27 @@ public class OrderEntryServiceImpl extends OrderEntryServiceBaseImpl {
 	public List<OrderEntry> getOrderEntries(long corpProjectId)
 		throws PortalException {
 
-		if (!roleLocalService.hasUserRole(
-				getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
-
-			throw new PrincipalException();
-		}
+		validateJSONWebServicePermissions();
 
 		AccountEntry accountEntry = accountEntryPersistence.findByCorpProjectId(
 			corpProjectId);
 
 		return orderEntryPersistence.findByAccountEntryId(
 			accountEntry.getAccountEntryId());
+	}
+
+	public OrderEntry getOrderEntry(String uuid) throws PortalException {
+		validateJSONWebServicePermissions();
+
+		return orderEntryLocalService.getOrderEntry(uuid);
+	}
+
+	protected void validateJSONWebServicePermissions() throws PortalException {
+		if (!roleLocalService.hasUserRole(
+				getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
+
+			throw new PrincipalException();
+		}
 	}
 
 }
