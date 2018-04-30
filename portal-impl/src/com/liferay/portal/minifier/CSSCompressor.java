@@ -146,17 +146,17 @@ public class CSSCompressor {
 	}
 
 	private String _collapseCharsetDirectives(String css) {
-		Matcher m = _collapseCharsetDirectivesPattern.matcher(css);
+		Matcher matcher = _collapseCharsetDirectivesPattern.matcher(css);
 
 		StringBuffer sb = new StringBuffer();
 
-		while (m.find()) {
-			m.appendReplacement(
+		while (matcher.find()) {
+			matcher.appendReplacement(
 				sb,
-				m.group(2) + StringUtil.toLowerCase(m.group(3)) + m.group(4));
+				matcher.group(2) + StringUtil.toLowerCase(matcher.group(3)) + matcher.group(4));
 		}
 
-		m.appendTail(sb);
+		matcher.appendTail(sb);
 
 		return sb.toString();
 	}
@@ -209,16 +209,16 @@ public class CSSCompressor {
 	}
 
 	private String _lowercaseFunctions(String css) {
-		Matcher m = _lowercaseFunctionsPattern.matcher(css);
+		Matcher matcher = _lowercaseFunctionsPattern.matcher(css);
 
 		StringBuffer sb = new StringBuffer();
 
-		while (m.find()) {
-			m.appendReplacement(
-				sb, ':' + StringUtil.toLowerCase(m.group(1)) + '(');
+		while (matcher.find()) {
+			matcher.appendReplacement(
+				sb, ':' + StringUtil.toLowerCase(matcher.group(1)) + '(');
 		}
 
-		m.appendTail(sb);
+		matcher.appendTail(sb);
 
 		return sb.toString();
 	}
@@ -239,15 +239,15 @@ public class CSSCompressor {
 	}
 
 	private String _lowercasePseudoElements(String css) {
-		Matcher m = _lowercasePseudoElementsPattern.matcher(css);
+		Matcher matcher = _lowercasePseudoElementsPattern.matcher(css);
 
 		StringBuffer sb = new StringBuffer();
 
-		while (m.find()) {
-			m.appendReplacement(sb, ':' + StringUtil.toLowerCase(m.group(1)));
+		while (matcher.find()) {
+			matcher.appendReplacement(sb, ':' + StringUtil.toLowerCase(matcher.group(1)));
 		}
 
-		m.appendTail(sb);
+		matcher.appendTail(sb);
 
 		return sb.toString();
 	}
@@ -587,7 +587,7 @@ public class CSSCompressor {
 		do {
 			oldCss = css;
 
-			Matcher m = _replace0UnitWith0Pattern1.matcher(css);
+			Matcher matcher = _replace0UnitWith0Pattern1.matcher(css);
 
 			css = matcher.replaceAll("$1$20");
 		}
