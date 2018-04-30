@@ -221,10 +221,6 @@ insert into ListType (listTypeId, name, type_) values (34028, 'environment-name'
 insert into ListType (listTypeId, name, type_) values (34029, 'primary-browser', 'com.liferay.osb.model.AuditEntry.field');
 insert into ListType (listTypeId, name, type_) values (34035, 'primary', 'com.liferay.osb.model.AuditEntry.field');
 insert into ListType (listTypeId, name, type_) values (34037, 'replicate', 'com.liferay.osb.model.AuditEntry.field');
-insert into ListType (listTypeId, name, type_) values (34042, 'host-names', 'com.liferay.osb.model.AuditEntry.field');
-insert into ListType (listTypeId, name, type_) values (34043, 'ip-addresses', 'com.liferay.osb.model.AuditEntry.field');
-insert into ListType (listTypeId, name, type_) values (34044, 'license-purpose', 'com.liferay.osb.model.AuditEntry.field');
-insert into ListType (listTypeId, name, type_) values (34045, 'license-type', 'com.liferay.osb.model.AuditEntry.field');
 insert into ListType (listTypeId, name, type_) values (34051, 'support-region', 'com.liferay.osb.model.AuditEntry.field');
 insert into ListType (listTypeId, name, type_) values (34054, 'tier', 'com.liferay.osb.model.AuditEntry.field');
 insert into ListType (listTypeId, name, type_) values (34055, 'partner', 'com.liferay.osb.model.AuditEntry.field');

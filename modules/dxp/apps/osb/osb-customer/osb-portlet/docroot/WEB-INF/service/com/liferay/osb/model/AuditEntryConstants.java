@@ -66,19 +66,11 @@ public class AuditEntryConstants {
 
 	public static final int FIELD_FILE = 34009;
 
-	public static final int FIELD_HOST_NAMES = 34042;
-
 	public static final int FIELD_INDUSTRY = 34063;
 
 	public static final int FIELD_INSTRUCTIONS = 34065;
 
-	public static final int FIELD_IP_ADDRESSES = 34043;
-
 	public static final int FIELD_LANGUAGES = 34070;
-
-	public static final int FIELD_LICENSE_PURPOSE = 34044;
-
-	public static final int FIELD_LICENSE_TYPE = 34045;
 
 	public static final int FIELD_NAME = 34060;
 
@@ -120,7 +112,6 @@ public class AuditEntryConstants {
 
 	public static final int[] FIELDS_I18N = {
 		FIELD_ENV_AS, FIELD_ENV_DB, FIELD_ENV_JVM, FIELD_INDUSTRY,
-		FIELD_LICENSE_PURPOSE, FIELD_LICENSE_TYPE,
 		FIELD_PARTNER_MANAGED_SUPPORT, FIELD_ROLE, FIELD_STATUS, FIELD_TIER,
 		FIELD_TYPE
 	};
