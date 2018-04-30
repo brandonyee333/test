@@ -42,11 +42,11 @@ public class CSSCompressor {
 
 	public void compress(Writer writer, int lineBreakPosition) throws IOException {
 		String css = _sb.toString();
-		List comments = new ArrayList();
+		List<String> comments = new ArrayList<String>();
 
 		css = _preserveCandidateCommments(css, comments);
 
-		List preservedTokens = new ArrayList();
+		List<String> preservedTokens = new ArrayList<String>();
 
 		css = _preserveParensToken(css, "url", preservedTokens);
 
