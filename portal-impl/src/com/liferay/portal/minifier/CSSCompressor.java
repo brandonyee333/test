@@ -124,8 +124,9 @@ public class CSSCompressor {
 
 	private String _applyLineBreak(String css, int lineBreakPosition) {
 		if (lineBreakPosition >= 0) {
-			int i = 0;
 			StringBuffer sb = new StringBuffer(css);
+
+			int i = 0;
 			int lineStartPosition = 0;
 
 			while (i < sb.length()) {
@@ -146,9 +147,9 @@ public class CSSCompressor {
 	}
 
 	private String _collapseCharsetDirectives(String css) {
-		Matcher matcher = _collapseCharsetDirectivesPattern.matcher(css);
-
 		StringBuffer sb = new StringBuffer();
+
+		Matcher matcher = _collapseCharsetDirectivesPattern.matcher(css);
 
 		while (matcher.find()) {
 			matcher.appendReplacement(
@@ -174,9 +175,9 @@ public class CSSCompressor {
 	}
 
 	private String _hoistCharsetDirectives(String css) {
-		Matcher matcher = _hoistCharsetDirectivesPattern.matcher(css);
-
 		StringBuffer sb = new StringBuffer();
+
+		Matcher matcher = _hoistCharsetDirectivesPattern.matcher(css);
 
 		while (matcher.find()) {
 			String s = matcher.group(1);
@@ -195,9 +196,9 @@ public class CSSCompressor {
 	}
 
 	private String _lowercaseDirectives(String css) {
-		Matcher matcher = _lowercaseDirectivesPattern.matcher(css);
-
 		StringBuffer sb = new StringBuffer();
+
+		Matcher matcher = _lowercaseDirectivesPattern.matcher(css);
 
 		while (matcher.find()) {
 			matcher.appendReplacement(sb, '@' + StringUtil.toLowerCase(matcher.group(1)));
@@ -209,9 +210,9 @@ public class CSSCompressor {
 	}
 
 	private String _lowercaseFunctions(String css) {
-		Matcher matcher = _lowercaseFunctionsPattern.matcher(css);
-
 		StringBuffer sb = new StringBuffer();
+
+		Matcher matcher = _lowercaseFunctionsPattern.matcher(css);
 
 		while (matcher.find()) {
 			matcher.appendReplacement(
@@ -224,9 +225,9 @@ public class CSSCompressor {
 	}
 
 	private String _lowercaseFunctionsThatCanBeValues(String css) {
-		Matcher matcher = _lowercaseFunctionsThatCanBeValuesPattern.matcher(css);
-
 		StringBuffer sb = new StringBuffer();
+
+		Matcher matcher = _lowercaseFunctionsThatCanBeValuesPattern.matcher(css);
 
 		while (matcher.find()) {
 			matcher.appendReplacement(
@@ -239,9 +240,9 @@ public class CSSCompressor {
 	}
 
 	private String _lowercasePseudoElements(String css) {
-		Matcher matcher = _lowercasePseudoElementsPattern.matcher(css);
-
 		StringBuffer sb = new StringBuffer();
+
+		Matcher matcher = _lowercasePseudoElementsPattern.matcher(css);
 
 		while (matcher.find()) {
 			matcher.appendReplacement(sb, ':' + StringUtil.toLowerCase(matcher.group(1)));
@@ -255,8 +256,9 @@ public class CSSCompressor {
 	private String _preserveCandidateCommments(
 		String css, List<String> comments) {
 
-		int cssLength = css.length();
 		StringBuffer sb = new StringBuffer(css);
+
+		int cssLength = css.length();
 		int startIndex = 0;
 
 		while ((startIndex = sb.indexOf("/*", startIndex)) >= 0) {
@@ -295,15 +297,15 @@ public class CSSCompressor {
 	private String _preserveParensToken(
 		String css, String preservedToken, List<String> preservedTokens) {
 
-		int fromIndex = 0;
 		StringBuffer sb = new StringBuffer();
+
+		int fromIndex = 0;
 		int startIndex;
 
 		while ((startIndex = css.indexOf(preservedToken + "(", fromIndex)) !=
 					-1) {
 
 			int index = startIndex + preservedToken.length() + 1;
-
 			int nestingLevel = 1;
 
 			while (nestingLevel > 0) {
@@ -382,13 +384,15 @@ public class CSSCompressor {
 		String css, String preservedToken, String tokenRegex,
 		boolean removeWhiteSpace, List<String> preservedTokens) {
 
+		StringBuffer sb = new StringBuffer();
+
+		int appendIndex = 0;
+
 		Pattern pattern = Pattern.compile(tokenRegex);
 
 		Matcher matcher = pattern.matcher(css);
 
-		int appendIndex = 0;
 		int maxIndex = css.length() - 1;
-		StringBuffer sb = new StringBuffer();
 
 		while (matcher.find()) {
 			int startIndex = matcher.start() + (preservedToken.length() + 1);
