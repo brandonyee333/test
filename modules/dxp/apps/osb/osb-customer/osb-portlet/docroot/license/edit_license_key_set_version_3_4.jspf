@@ -14,7 +14,7 @@
  */
 --%>
 
-<div class="container-fluid-1280 <%= cssClass %>" id="<portlet:namespace /><%= licenseKey.getOfferingEntryId() %>-<%= licenseKey.getClusterId() %>">
+<div class="<%= cssClass %>" id="<portlet:namespace /><%= licenseKey.getOfferingEntryId() %>-<%= licenseKey.getClusterId() %>">
 	<c:if test="<%= OSBLicenseKeyPermission.contains(permissionChecker, licenseKey.getLicenseKeyId(), OSBActionKeys.UPDATE_ADMIN) %>">
 		<aui:col md="4">
 			<span class="bold uppercase"><liferay-ui:message key="created-by" />:</span>

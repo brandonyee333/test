@@ -29,7 +29,7 @@ searchURL.setParameter("tabs1", tabs1);
 pageContext.setAttribute("searchURL", searchURL);
 %>
 
-<aui:form action="<%= searchURL.toString() %>" cssClass="container-fluid-1280" method="post" onSubmit="submitForm(this); return false;">
+<aui:form action="<%= searchURL.toString() %>" cssClass="col-md-12" method="post" onSubmit="submitForm(this); return false;">
 	<liferay-portlet:renderURLParams varImpl="searchURL" />
 
 	<portlet:renderURL var="addLicenseKeyURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">

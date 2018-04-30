@@ -33,15 +33,21 @@ portletURL.setParameter("tabs1", tabs1);
 pageContext.setAttribute("portletURL", portletURL);
 %>
 
-<h1 class="section-heading">
-	<liferay-ui:message key="license-management" />
-</h1>
+<div class="container-fluid-1280">
+	<div class="row">
+		<h1 class="col-md-12 section-heading">
+			<liferay-ui:message key="license-management" />
+		</h1>
+	</div>
 
-<c:choose>
-	<c:when test="<%= liferayIncOrg %>">
-		<%@ include file="/license/view_portal_worker.jspf" %>
-	</c:when>
-	<c:otherwise>
-		<%@ include file="/license/view_portal_customer.jspf" %>
-	</c:otherwise>
-</c:choose>
+	<div class="row">
+		<c:choose>
+			<c:when test="<%= liferayIncOrg %>">
+				<%@ include file="/license/view_portal_worker.jspf" %>
+			</c:when>
+			<c:otherwise>
+				<%@ include file="/license/view_portal_customer.jspf" %>
+			</c:otherwise>
+		</c:choose>
+	</div>
+</div>
