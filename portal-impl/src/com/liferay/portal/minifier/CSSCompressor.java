@@ -32,15 +32,15 @@ import java.util.regex.Pattern;
  */
 public class CSSCompressor {
 
-	public CSSCompressor(Reader in) throws IOException {
-		int c;
+	public CSSCompressor(Reader reader) throws IOException {
+		int c = 0;
 
-		while ((c = in.read()) != -1) {
+		while ((c = reader.read()) != -1) {
 			_sb.append((char)c);
 		}
 	}
 
-	public void compress(Writer out, int lineBreakPosition) throws IOException {
+	public void compress(Writer writer, int lineBreakPosition) throws IOException {
 		String css = _sb.toString();
 		List comments = new ArrayList();
 
@@ -119,7 +119,7 @@ public class CSSCompressor {
 
 		css = css.trim();
 
-		out.write(css);
+		writer.write(css);
 	}
 
 	private String _applyLineBreak(String css, int lineBreakPosition) {
