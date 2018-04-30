@@ -12,7 +12,6 @@
 
 	<dependencies defaultconf="default">
 		<dependency name="ant" org="org.apache.ant" rev="1.8.2" />
-		<dependency name="com.liferay.journal.api" org="com.liferay" rev="2.5.0" />
 		<dependency name="com.liferay.petra.content" org="com.liferay" rev="1.0.0" />
 		<dependency name="com.liferay.portal.dao.orm.custom.sql" org="com.liferay" rev="1.0.0" />
 		<dependency name="com.liferay.portal.security.audit.api" org="com.liferay" rev="2.0.1" />
