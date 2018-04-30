@@ -716,9 +716,9 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 		List<OfferingEntry> offeringEntries =
 			offeringEntryPersistence.findByOrderEntryId(orderEntryId);
 
-		for (OfferingEntry offeringEntrry : offeringEntries) {
+		for (OfferingEntry offeringEntry : offeringEntries) {
 			offeringEntryLocalService.updateStatus(
-				userId, offeringEntrry.getOfferingEntryId(),
+				userId, offeringEntry.getOfferingEntryId(),
 				offeringEntryStatus);
 		}
 
