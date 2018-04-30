@@ -5,6 +5,8 @@ import JSXComponent, {Config} from 'metal-jsx';
 
 const MetalDateRangeInput = bridge(DateRangePicker);
 
+const outsideRangeBypass = () => false;
+
 class DateRangeInput extends JSXComponent {
 	created() {
 		bindAll(
@@ -37,8 +39,6 @@ class DateRangeInput extends JSXComponent {
 			focusedInput,
 			startDate
 		} = this.state;
-
-		const outsideRangeBypass = () => false;
 
 		return (
 			<div class="date-range-wrapper">
