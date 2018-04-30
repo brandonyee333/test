@@ -542,10 +542,10 @@ public class CSSCompressor {
 	private String _removeUnneededLeadingSpaces(String css) {
 		StringBuffer sb = new StringBuffer();
 
-		Matcher m = _removeUnneededLeadingSpacesPattern.matcher(css);
+		Matcher matcher = _removeUnneededLeadingSpacesPattern.matcher(css);
 
-		while (m.find()) {
-			String group = m.group();
+		while (matcher.find()) {
+			String group = matcher.group();
 
 			group = group.replaceAll(":", "___YUICSSMIN_PSEUDOCLASSCOLON___");
 
@@ -553,10 +553,10 @@ public class CSSCompressor {
 
 			group = group.replaceAll("\\$", "\\\\\\$");
 
-			m.appendReplacement(sb, group);
+			matcher.appendReplacement(sb, group);
 		}
 
-		m.appendTail(sb);
+		matcher.appendTail(sb);
 
 		css = sb.toString();
 
@@ -596,7 +596,7 @@ public class CSSCompressor {
 		do {
 			oldCss = css;
 
-			Matcher m = _replace0UnitWith0Pattern2.matcher(css);
+			Matcher matcher = _replace0UnitWith0Pattern2.matcher(css);
 
 			css = matcher.replaceAll("($10");
 		}
@@ -606,16 +606,16 @@ public class CSSCompressor {
 	}
 
 	private String _replaceBorderNone(String css) {
-		Matcher m = _replaceBorderNonePattern.matcher(css);
+		Matcher matcher = _replaceBorderNonePattern.matcher(css);
 
 		StringBuffer sb = new StringBuffer();
 
-		while (m.find()) {
-			m.appendReplacement(
-				sb, StringUtil.toLowerCase(m.group(1)) + ":0" + m.group(2));
+		while (matcher.find()) {
+			matcher.appendReplacement(
+				sb, StringUtil.toLowerCase(matcher.group(1)) + ":0" + matcher.group(2));
 		}
 
-		m.appendTail(sb);
+		matcher.appendTail(sb);
 
 		return sb.toString();
 	}
@@ -634,34 +634,34 @@ public class CSSCompressor {
 	}
 
 	private String _restoreSomeMultipleZeroes(String css) {
-		Matcher m = _restoreSomeMultipleZeroesPattern.matcher(css);
+		Matcher matcher = _restoreSomeMultipleZeroesPattern.matcher(css);
 
 		StringBuffer sb = new StringBuffer();
 
-		while (m.find()) {
-			m.appendReplacement(
-				sb, StringUtil.toLowerCase(m.group(1)) + ":0 0" + m.group(2));
+		while (matcher.find()) {
+			matcher.appendReplacement(
+				sb, StringUtil.toLowerCase(matcher.group(1)) + ":0 0" + matcher.group(2));
 		}
 
-		m.appendTail(sb);
+		matcher.appendTail(sb);
 
 		return sb.toString();
 	}
 
 	private String _retainSpaceForSpecialIE6Cases(String css) {
-		Matcher m = _retainSpaceForSpecialIE6CasesPattern.matcher(css);
+		Matcher matcher = _retainSpaceForSpecialIE6CasesPattern.matcher(css);
 
 		StringBuffer sb = new StringBuffer();
 
-		while (m.find()) {
-			m.appendReplacement(
+		while (matcher.find()) {
+			matcher.appendReplacement(
 				sb,
 				StringBundler.concat(
-					":first-", StringUtil.toLowerCase(m.group(1)), " ",
-					m.group(2)));
+					":first-", StringUtil.toLowerCase(matcher.group(1)), " ",
+					matcher.group(2)));
 		}
 
-		m.appendTail(sb);
+		matcher.appendTail(sb);
 
 		return sb.toString();
 	}
@@ -673,12 +673,12 @@ public class CSSCompressor {
 	}
 
 	private String _shortenRGBColors(String css) {
-		Matcher m = _shortenRGBColorsPattern.matcher(css);
+		Matcher matcher = _shortenRGBColorsPattern.matcher(css);
 
 		StringBuffer sb = new StringBuffer();
 
-		while (m.find()) {
-			String group = m.group(1);
+		while (matcher.find()) {
+			String group = matcher.group(1);
 
 			String[] rgbColors = group.split(",");
 
@@ -698,10 +698,10 @@ public class CSSCompressor {
 				hexColor.append(Integer.toHexString(val));
 			}
 
-			m.appendReplacement(sb, hexColor.toString());
+			matcher.appendReplacement(sb, hexColor.toString());
 		}
 
-		m.appendTail(sb);
+		matcher.appendTail(sb);
 
 		return sb.toString();
 	}
@@ -729,69 +729,69 @@ public class CSSCompressor {
 	}
 
 	private String _shortenTwinComponentDigitsColors(String css) {
-		Matcher m = _shortenTwinComponentDigitsColorsPattern.matcher(css);
+		Matcher matcher = _shortenTwinComponentDigitsColorsPattern.matcher(css);
 
 		int index = 0;
 
 		StringBuffer sb = new StringBuffer();
 
-		while (m.find(index)) {
-			sb.append(css.substring(index, m.start()));
+		while (matcher.find(index)) {
+			sb.append(css.substring(index, matcher.start()));
 
 			boolean filter = false;
 
-			if ((m.group(1) != null) && !"".equals(m.group(1))) {
+			if ((matcher.group(1) != null) && !"".equals(matcher.group(1))) {
 				filter = true;
 			}
 
 			if (filter) {
-				sb.append(m.group(1));
+				sb.append(matcher.group(1));
 
 				sb.append("#");
 
-				sb.append(m.group(2));
+				sb.append(matcher.group(2));
 
-				sb.append(m.group(3));
+				sb.append(matcher.group(3));
 
-				sb.append(m.group(4));
+				sb.append(matcher.group(4));
 
-				sb.append(m.group(5));
+				sb.append(matcher.group(5));
 
-				sb.append(m.group(6));
+				sb.append(matcher.group(6));
 
-				sb.append(m.group(7));
+				sb.append(matcher.group(7));
 			}
 			else {
-				if (StringUtil.equalsIgnoreCase(m.group(2), m.group(3)) &&
-					StringUtil.equalsIgnoreCase(m.group(4), m.group(5)) &&
-					StringUtil.equalsIgnoreCase(m.group(6), m.group(7))) {
+				if (StringUtil.equalsIgnoreCase(matcher.group(2), matcher.group(3)) &&
+					StringUtil.equalsIgnoreCase(matcher.group(4), matcher.group(5)) &&
+					StringUtil.equalsIgnoreCase(matcher.group(6), matcher.group(7))) {
 
 					sb.append("#");
 
-					sb.append(StringUtil.toLowerCase(m.group(3)));
+					sb.append(StringUtil.toLowerCase(matcher.group(3)));
 
-					sb.append(StringUtil.toLowerCase(m.group(5)));
+					sb.append(StringUtil.toLowerCase(matcher.group(5)));
 
-					sb.append(StringUtil.toLowerCase(m.group(7)));
+					sb.append(StringUtil.toLowerCase(matcher.group(7)));
 				}
 				else {
 					sb.append("#");
 
-					sb.append(StringUtil.toLowerCase(m.group(2)));
+					sb.append(StringUtil.toLowerCase(matcher.group(2)));
 
-					sb.append(StringUtil.toLowerCase(m.group(3)));
+					sb.append(StringUtil.toLowerCase(matcher.group(3)));
 
-					sb.append(StringUtil.toLowerCase(m.group(4)));
+					sb.append(StringUtil.toLowerCase(matcher.group(4)));
 
-					sb.append(StringUtil.toLowerCase(m.group(5)));
+					sb.append(StringUtil.toLowerCase(matcher.group(5)));
 
-					sb.append(StringUtil.toLowerCase(m.group(6)));
+					sb.append(StringUtil.toLowerCase(matcher.group(6)));
 
-					sb.append(StringUtil.toLowerCase(m.group(7)));
+					sb.append(StringUtil.toLowerCase(matcher.group(7)));
 				}
 			}
 
-			index = m.end(7);
+			index = matcher.end(7);
 		}
 
 		sb.append(css.substring(index));
