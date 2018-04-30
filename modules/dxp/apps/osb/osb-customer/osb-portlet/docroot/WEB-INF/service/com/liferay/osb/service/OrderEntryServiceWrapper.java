@@ -33,6 +33,12 @@ public class OrderEntryServiceWrapper implements OrderEntryService,
 	}
 
 	@Override
+	public com.liferay.osb.model.OrderEntry getOrderEntry(java.lang.String uuid)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _orderEntryService.getOrderEntry(uuid);
+	}
+
+	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {

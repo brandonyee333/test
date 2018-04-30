@@ -41,6 +41,12 @@ public class LicenseKeyServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.LicenseKeyServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static boolean isActive(java.lang.String serverId,
+		java.lang.String productId, java.lang.String key)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().isActive(serverId, productId, key);
+	}
+
 	public static com.liferay.osb.model.LicenseKey addLicenseKey(
 		java.lang.String userUuid, java.lang.String assetReceiptLicenseUuid,
 		java.lang.String licenseEntryType, java.lang.String productEntryName,
@@ -87,6 +93,18 @@ public class LicenseKeyServiceUtil {
 		return getService().getLicenseKey(licenseKeyId);
 	}
 
+	public static com.liferay.osb.model.LicenseKey registerLicenseKey(
+		java.lang.String orderEntryUuid, java.lang.String productEntryName,
+		int liferayVersion, int maxServers, java.lang.String hostName,
+		java.lang.String ipAddresses, java.lang.String macAddresses,
+		java.lang.String serverId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .registerLicenseKey(orderEntryUuid, productEntryName,
+			liferayVersion, maxServers, hostName, ipAddresses, macAddresses,
+			serverId);
+	}
+
 	public static com.liferay.osb.model.LicenseKey renewLicenseKey(
 		java.lang.String uuid, java.util.Date startDate,
 		java.util.Date expirationDate)
@@ -114,6 +132,14 @@ public class LicenseKeyServiceUtil {
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .getOfferingEntryGroupLicenseKeysCount(offeringEntryIds,
+			complimentary, active);
+	}
+
+	public static int getOfferingEntryLicenseKeysCount(long offeringEntryId,
+		boolean complimentary, boolean active)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .getOfferingEntryLicenseKeysCount(offeringEntryId,
 			complimentary, active);
 	}
 
@@ -191,9 +217,35 @@ public class LicenseKeyServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.osb.model.LicenseKey> getLicenseKeys(
+		java.lang.String assetReceiptLicenseUuid, java.lang.String productId,
+		java.lang.String serverId, boolean active, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .getLicenseKeys(assetReceiptLicenseUuid, productId,
+			serverId, active, start, end, obc);
+	}
+
+	public static java.util.List<com.liferay.osb.model.LicenseKey> getLicenseKeys(
+		java.lang.String productId, java.lang.String serverId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getLicenseKeys(productId, serverId);
+	}
+
+	public static java.util.List<com.liferay.osb.model.LicenseKey> getLicenseKeys(
 		long userId, java.lang.String productId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getLicenseKeys(userId, productId);
+	}
+
+	public static java.util.List<com.liferay.osb.model.LicenseKey> getLicenseKeysByName(
+		java.lang.String productEntryName, java.lang.String serverId,
+		boolean active, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .getLicenseKeysByName(productEntryName, serverId, active,
+			start, end, obc);
 	}
 
 	public static java.util.List<com.liferay.osb.model.LicenseKey> getOfferingEntryGroupLicenseKeys(

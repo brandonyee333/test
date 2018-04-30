@@ -33,6 +33,13 @@ public class LicenseKeyServiceWrapper implements LicenseKeyService,
 	}
 
 	@Override
+	public boolean isActive(java.lang.String serverId,
+		java.lang.String productId, java.lang.String key)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKeyService.isActive(serverId, productId, key);
+	}
+
+	@Override
 	public com.liferay.osb.model.LicenseKey addLicenseKey(
 		java.lang.String userUuid, java.lang.String assetReceiptLicenseUuid,
 		java.lang.String licenseEntryType, java.lang.String productEntryName,
@@ -79,6 +86,18 @@ public class LicenseKeyServiceWrapper implements LicenseKeyService,
 	}
 
 	@Override
+	public com.liferay.osb.model.LicenseKey registerLicenseKey(
+		java.lang.String orderEntryUuid, java.lang.String productEntryName,
+		int liferayVersion, int maxServers, java.lang.String hostName,
+		java.lang.String ipAddresses, java.lang.String macAddresses,
+		java.lang.String serverId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKeyService.registerLicenseKey(orderEntryUuid,
+			productEntryName, liferayVersion, maxServers, hostName,
+			ipAddresses, macAddresses, serverId);
+	}
+
+	@Override
 	public com.liferay.osb.model.LicenseKey renewLicenseKey(
 		java.lang.String uuid, java.util.Date startDate,
 		java.util.Date expirationDate)
@@ -108,6 +127,14 @@ public class LicenseKeyServiceWrapper implements LicenseKeyService,
 		boolean complimentary, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _licenseKeyService.getOfferingEntryGroupLicenseKeysCount(offeringEntryIds,
+			complimentary, active);
+	}
+
+	@Override
+	public int getOfferingEntryLicenseKeysCount(long offeringEntryId,
+		boolean complimentary, boolean active)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKeyService.getOfferingEntryLicenseKeysCount(offeringEntryId,
 			complimentary, active);
 	}
 
@@ -190,9 +217,36 @@ public class LicenseKeyServiceWrapper implements LicenseKeyService,
 
 	@Override
 	public java.util.List<com.liferay.osb.model.LicenseKey> getLicenseKeys(
+		java.lang.String assetReceiptLicenseUuid, java.lang.String productId,
+		java.lang.String serverId, boolean active, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKeyService.getLicenseKeys(assetReceiptLicenseUuid,
+			productId, serverId, active, start, end, obc);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.LicenseKey> getLicenseKeys(
+		java.lang.String productId, java.lang.String serverId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKeyService.getLicenseKeys(productId, serverId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.LicenseKey> getLicenseKeys(
 		long userId, java.lang.String productId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _licenseKeyService.getLicenseKeys(userId, productId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.LicenseKey> getLicenseKeysByName(
+		java.lang.String productEntryName, java.lang.String serverId,
+		boolean active, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKeyService.getLicenseKeysByName(productEntryName,
+			serverId, active, start, end, obc);
 	}
 
 	@Override

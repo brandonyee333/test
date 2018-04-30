@@ -34,6 +34,10 @@ public class OrderEntryServiceClpInvoker {
 		_methodName213 = "getOrderEntries";
 
 		_methodParameterTypes213 = new String[] { "long" };
+
+		_methodName214 = "getOrderEntry";
+
+		_methodParameterTypes214 = new String[] { "java.lang.String" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -48,6 +52,11 @@ public class OrderEntryServiceClpInvoker {
 			return OrderEntryServiceUtil.getOrderEntries(((Long)arguments[0]).longValue());
 		}
 
+		if (_methodName214.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes214, parameterTypes)) {
+			return OrderEntryServiceUtil.getOrderEntry((java.lang.String)arguments[0]);
+		}
+
 		throw new UnsupportedOperationException();
 	}
 
@@ -55,4 +64,6 @@ public class OrderEntryServiceClpInvoker {
 	private String[] _methodParameterTypes208;
 	private String _methodName213;
 	private String[] _methodParameterTypes213;
+	private String _methodName214;
+	private String[] _methodParameterTypes214;
 }

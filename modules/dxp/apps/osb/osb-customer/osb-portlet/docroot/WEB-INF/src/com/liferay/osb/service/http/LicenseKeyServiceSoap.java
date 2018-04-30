@@ -190,6 +190,58 @@ public class LicenseKeyServiceSoap {
 		}
 	}
 
+	public static com.liferay.osb.model.LicenseKeySoap[] getLicenseKeys(
+		java.lang.String productId, java.lang.String serverId)
+		throws RemoteException {
+		try {
+			java.util.List<com.liferay.osb.model.LicenseKey> returnValue = LicenseKeyServiceUtil.getLicenseKeys(productId,
+					serverId);
+
+			return com.liferay.osb.model.LicenseKeySoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.LicenseKeySoap[] getLicenseKeys(
+		java.lang.String assetReceiptLicenseUuid, java.lang.String productId,
+		java.lang.String serverId, boolean active, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws RemoteException {
+		try {
+			java.util.List<com.liferay.osb.model.LicenseKey> returnValue = LicenseKeyServiceUtil.getLicenseKeys(assetReceiptLicenseUuid,
+					productId, serverId, active, start, end, obc);
+
+			return com.liferay.osb.model.LicenseKeySoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.LicenseKeySoap[] getLicenseKeysByName(
+		java.lang.String productEntryName, java.lang.String serverId,
+		boolean active, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws RemoteException {
+		try {
+			java.util.List<com.liferay.osb.model.LicenseKey> returnValue = LicenseKeyServiceUtil.getLicenseKeysByName(productEntryName,
+					serverId, active, start, end, obc);
+
+			return com.liferay.osb.model.LicenseKeySoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
 	public static com.liferay.osb.model.LicenseKeySoap[] getLicenseKeySetLicenseKeys(
 		long licenseKeySetId) throws RemoteException {
 		try {
@@ -229,6 +281,56 @@ public class LicenseKeyServiceSoap {
 					complimentary, active);
 
 			return returnValue;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static int getOfferingEntryLicenseKeysCount(long offeringEntryId,
+		boolean complimentary, boolean active) throws RemoteException {
+		try {
+			int returnValue = LicenseKeyServiceUtil.getOfferingEntryLicenseKeysCount(offeringEntryId,
+					complimentary, active);
+
+			return returnValue;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static boolean isActive(java.lang.String serverId,
+		java.lang.String productId, java.lang.String key)
+		throws RemoteException {
+		try {
+			boolean returnValue = LicenseKeyServiceUtil.isActive(serverId,
+					productId, key);
+
+			return returnValue;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.LicenseKeySoap registerLicenseKey(
+		java.lang.String orderEntryUuid, java.lang.String productEntryName,
+		int liferayVersion, int maxServers, java.lang.String hostName,
+		java.lang.String ipAddresses, java.lang.String macAddresses,
+		java.lang.String serverId) throws RemoteException {
+		try {
+			com.liferay.osb.model.LicenseKey returnValue = LicenseKeyServiceUtil.registerLicenseKey(orderEntryUuid,
+					productEntryName, liferayVersion, maxServers, hostName,
+					ipAddresses, macAddresses, serverId);
+
+			return com.liferay.osb.model.LicenseKeySoap.toSoapModel(returnValue);
 		}
 		catch (Exception e) {
 			_log.error(e, e);

@@ -27,13 +27,46 @@ public class OrderEntryServiceClp implements OrderEntryService {
 	public OrderEntryServiceClp(InvokableService invokableService) {
 		_invokableService = invokableService;
 
-		_methodName1 = "getOSGiServiceIdentifier";
+		_methodName0 = "getOrderEntry";
 
-		_methodParameterTypes1 = new String[] {  };
+		_methodParameterTypes0 = new String[] { "java.lang.String" };
 
-		_methodName2 = "getOrderEntries";
+		_methodName2 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes2 = new String[] { "long" };
+		_methodParameterTypes2 = new String[] {  };
+
+		_methodName3 = "getOrderEntries";
+
+		_methodParameterTypes3 = new String[] { "long" };
+	}
+
+	@Override
+	public com.liferay.osb.model.OrderEntry getOrderEntry(java.lang.String uuid)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName0,
+					_methodParameterTypes0,
+					new Object[] { ClpSerializer.translateInput(uuid) });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.OrderEntry)ClpSerializer.translateOutput(returnObj);
 	}
 
 	@Override
@@ -48,8 +81,8 @@ public class OrderEntryServiceClp implements OrderEntryService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName1,
-					_methodParameterTypes1, new Object[] {  });
+			returnObj = _invokableService.invokeMethod(_methodName2,
+					_methodParameterTypes2, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -73,8 +106,8 @@ public class OrderEntryServiceClp implements OrderEntryService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName2,
-					_methodParameterTypes2, new Object[] { corpProjectId });
+			returnObj = _invokableService.invokeMethod(_methodName3,
+					_methodParameterTypes3, new Object[] { corpProjectId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -96,8 +129,10 @@ public class OrderEntryServiceClp implements OrderEntryService {
 	}
 
 	private InvokableService _invokableService;
-	private String _methodName1;
-	private String[] _methodParameterTypes1;
+	private String _methodName0;
+	private String[] _methodParameterTypes0;
 	private String _methodName2;
 	private String[] _methodParameterTypes2;
+	private String _methodName3;
+	private String[] _methodParameterTypes3;
 }

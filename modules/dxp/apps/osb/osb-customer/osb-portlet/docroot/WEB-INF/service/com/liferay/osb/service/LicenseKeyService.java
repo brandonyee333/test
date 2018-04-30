@@ -56,6 +56,12 @@ public interface LicenseKeyService extends BaseService, InvokableService {
 	 * Never modify or reference this interface directly. Always use {@link LicenseKeyServiceUtil} to access the license key remote service. Add custom service methods to {@link com.liferay.osb.service.impl.LicenseKeyServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	@JSONWebService
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean isActive(java.lang.String serverId,
+		java.lang.String productId, java.lang.String key)
+		throws PortalException;
+
+	@JSONWebService
 	public LicenseKey addLicenseKey(java.lang.String userUuid,
 		java.lang.String assetReceiptLicenseUuid,
 		java.lang.String licenseEntryType, java.lang.String productEntryName,
@@ -85,6 +91,13 @@ public interface LicenseKeyService extends BaseService, InvokableService {
 		throws PortalException;
 
 	@JSONWebService
+	public LicenseKey registerLicenseKey(java.lang.String orderEntryUuid,
+		java.lang.String productEntryName, int liferayVersion, int maxServers,
+		java.lang.String hostName, java.lang.String ipAddresses,
+		java.lang.String macAddresses, java.lang.String serverId)
+		throws PortalException;
+
+	@JSONWebService
 	public LicenseKey renewLicenseKey(java.lang.String uuid, Date startDate,
 		Date expirationDate) throws PortalException;
 
@@ -99,6 +112,11 @@ public interface LicenseKeyService extends BaseService, InvokableService {
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getOfferingEntryGroupLicenseKeysCount(long[] offeringEntryIds,
+		boolean complimentary, boolean active) throws PortalException;
+
+	@JSONWebService
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getOfferingEntryLicenseKeysCount(long offeringEntryId,
 		boolean complimentary, boolean active) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -150,9 +168,28 @@ public interface LicenseKeyService extends BaseService, InvokableService {
 	public List<LicenseKey> getLicenseKeySetLicenseKeys(long licenseKeySetId)
 		throws PortalException;
 
+	@JSONWebService
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<LicenseKey> getLicenseKeys(
+		java.lang.String assetReceiptLicenseUuid, java.lang.String productId,
+		java.lang.String serverId, boolean active, int start, int end,
+		OrderByComparator obc) throws PortalException;
+
+	@JSONWebService
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<LicenseKey> getLicenseKeys(java.lang.String productId,
+		java.lang.String serverId) throws PortalException;
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getLicenseKeys(long userId,
 		java.lang.String productId) throws PortalException;
+
+	@JSONWebService
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<LicenseKey> getLicenseKeysByName(
+		java.lang.String productEntryName, java.lang.String serverId,
+		boolean active, int start, int end, OrderByComparator obc)
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getOfferingEntryGroupLicenseKeys(

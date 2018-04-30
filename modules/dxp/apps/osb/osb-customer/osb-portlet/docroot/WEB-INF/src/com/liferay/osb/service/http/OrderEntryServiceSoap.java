@@ -79,5 +79,19 @@ public class OrderEntryServiceSoap {
 		}
 	}
 
+	public static com.liferay.osb.model.OrderEntrySoap getOrderEntry(
+		java.lang.String uuid) throws RemoteException {
+		try {
+			com.liferay.osb.model.OrderEntry returnValue = OrderEntryServiceUtil.getOrderEntry(uuid);
+
+			return com.liferay.osb.model.OrderEntrySoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
 	private static Log _log = LogFactoryUtil.getLog(OrderEntryServiceSoap.class);
 }
