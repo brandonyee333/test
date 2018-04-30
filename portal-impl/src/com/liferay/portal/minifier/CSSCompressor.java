@@ -40,13 +40,15 @@ public class CSSCompressor {
 		}
 	}
 
-	public void compress(Writer writer, int lineBreakPosition) throws IOException {
+	public void compress(Writer writer, int lineBreakPosition)
+		throws IOException {
+
 		String css = _sb.toString();
-		List<String> comments = new ArrayList<String>();
+		List<String> comments = new ArrayList<>();
 
 		css = _preserveCandidateCommments(css, comments);
 
-		List<String> preservedTokens = new ArrayList<String>();
+		List<String> preservedTokens = new ArrayList<>();
 
 		css = _preserveParensToken(css, "url", preservedTokens);
 
@@ -154,7 +156,9 @@ public class CSSCompressor {
 		while (matcher.find()) {
 			matcher.appendReplacement(
 				sb,
-				matcher.group(2) + StringUtil.toLowerCase(matcher.group(3)) + matcher.group(4));
+				matcher.group(2) +
+					StringUtil.toLowerCase(matcher.group(3)) +
+						matcher.group(4));
 		}
 
 		matcher.appendTail(sb);
@@ -187,7 +191,9 @@ public class CSSCompressor {
 			s = s.replaceAll("\\$", "\\\\\\$");
 
 			matcher.appendReplacement(
-				sb, StringUtil.toLowerCase(matcher.group(2)) + matcher.group(3) + s);
+				sb,
+				StringUtil.toLowerCase(matcher.group(2)) + matcher.group(3) +
+					s);
 		}
 
 		matcher.appendTail(sb);
@@ -201,7 +207,8 @@ public class CSSCompressor {
 		Matcher matcher = _lowercaseDirectivesPattern.matcher(css);
 
 		while (matcher.find()) {
-			matcher.appendReplacement(sb, '@' + StringUtil.toLowerCase(matcher.group(1)));
+			matcher.appendReplacement(
+				sb, '@' + StringUtil.toLowerCase(matcher.group(1)));
 		}
 
 		matcher.appendTail(sb);
@@ -227,11 +234,13 @@ public class CSSCompressor {
 	private String _lowercaseFunctionsThatCanBeValues(String css) {
 		StringBuffer sb = new StringBuffer();
 
-		Matcher matcher = _lowercaseFunctionsThatCanBeValuesPattern.matcher(css);
+		Matcher matcher = _lowercaseFunctionsThatCanBeValuesPattern.matcher(
+			css);
 
 		while (matcher.find()) {
 			matcher.appendReplacement(
-				sb, matcher.group(1) + StringUtil.toLowerCase(matcher.group(2)));
+				sb,
+				matcher.group(1) + StringUtil.toLowerCase(matcher.group(2)));
 		}
 
 		matcher.appendTail(sb);
@@ -245,7 +254,8 @@ public class CSSCompressor {
 		Matcher matcher = _lowercasePseudoElementsPattern.matcher(css);
 
 		while (matcher.find()) {
-			matcher.appendReplacement(sb, ':' + StringUtil.toLowerCase(matcher.group(1)));
+			matcher.appendReplacement(
+				sb, ':' + StringUtil.toLowerCase(matcher.group(1)));
 		}
 
 		matcher.appendTail(sb);
@@ -369,7 +379,7 @@ public class CSSCompressor {
 
 			String preserver = StringBundler.concat(
 				Character.toString(quote), "___YUICSSMIN_PRESERVED_TOKEN_",
-				Integer.toString(preservedTokens.size() - 1), "___",
+				String.valueOf(preservedTokens.size() - 1), "___",
 				Character.toString(quote));
 
 			matcher.appendReplacement(sb, preserver);
@@ -439,7 +449,7 @@ public class CSSCompressor {
 
 				String preserver = StringBundler.concat(
 					preservedToken, "(___YUICSSMIN_PRESERVED_TOKEN_",
-					Integer.toString(preservedTokens.size() - 1), "___)");
+					String.valueOf(preservedTokens.size() - 1), "___)");
 
 				sb.append(preserver);
 
@@ -616,7 +626,9 @@ public class CSSCompressor {
 
 		while (matcher.find()) {
 			matcher.appendReplacement(
-				sb, StringUtil.toLowerCase(matcher.group(1)) + ":0" + matcher.group(2));
+				sb,
+				StringUtil.toLowerCase(matcher.group(1)) + ":0" +
+					matcher.group(2));
 		}
 
 		matcher.appendTail(sb);
@@ -644,7 +656,9 @@ public class CSSCompressor {
 
 		while (matcher.find()) {
 			matcher.appendReplacement(
-				sb, StringUtil.toLowerCase(matcher.group(1)) + ":0 0" + matcher.group(2));
+				sb,
+				StringUtil.toLowerCase(matcher.group(1)) + ":0 0" +
+					matcher.group(2));
 		}
 
 		matcher.appendTail(sb);
@@ -765,9 +779,12 @@ public class CSSCompressor {
 				sb.append(matcher.group(7));
 			}
 			else {
-				if (StringUtil.equalsIgnoreCase(matcher.group(2), matcher.group(3)) &&
-					StringUtil.equalsIgnoreCase(matcher.group(4), matcher.group(5)) &&
-					StringUtil.equalsIgnoreCase(matcher.group(6), matcher.group(7))) {
+				if (StringUtil.equalsIgnoreCase(
+						matcher.group(2), matcher.group(3)) &&
+					StringUtil.equalsIgnoreCase(
+						matcher.group(4), matcher.group(5)) &&
+					StringUtil.equalsIgnoreCase(
+						matcher.group(6), matcher.group(7))) {
 
 					sb.append("#");
 
