@@ -156,9 +156,9 @@ public class CSSCompressor {
 		while (matcher.find()) {
 			matcher.appendReplacement(
 				sb,
-				matcher.group(2) +
-					StringUtil.toLowerCase(matcher.group(3)) +
-						matcher.group(4));
+				StringBundler.concat(
+					matcher.group(2), StringUtil.toLowerCase(matcher.group(3)),
+					matcher.group(4)));
 		}
 
 		matcher.appendTail(sb);
