@@ -174,36 +174,36 @@ public class CSSCompressor {
 	}
 
 	private String _hoistCharsetDirectives(String css) {
-		Matcher m = _hoistCharsetDirectivesPattern.matcher(css);
+		Matcher matcher = _hoistCharsetDirectivesPattern.matcher(css);
 
 		StringBuffer sb = new StringBuffer();
 
-		while (m.find()) {
-			String s = m.group(1);
+		while (matcher.find()) {
+			String s = matcher.group(1);
 
 			s = s.replaceAll("\\\\", "\\\\\\\\");
 
 			s = s.replaceAll("\\$", "\\\\\\$");
 
-			m.appendReplacement(
-				sb, StringUtil.toLowerCase(m.group(2)) + m.group(3) + s);
+			matcher.appendReplacement(
+				sb, StringUtil.toLowerCase(matcher.group(2)) + matcher.group(3) + s);
 		}
 
-		m.appendTail(sb);
+		matcher.appendTail(sb);
 
 		return sb.toString();
 	}
 
 	private String _lowercaseDirectives(String css) {
-		Matcher m = _lowercaseDirectivesPattern.matcher(css);
+		Matcher matcher = _lowercaseDirectivesPattern.matcher(css);
 
 		StringBuffer sb = new StringBuffer();
 
-		while (m.find()) {
-			m.appendReplacement(sb, '@' + StringUtil.toLowerCase(m.group(1)));
+		while (matcher.find()) {
+			matcher.appendReplacement(sb, '@' + StringUtil.toLowerCase(matcher.group(1)));
 		}
 
-		m.appendTail(sb);
+		matcher.appendTail(sb);
 
 		return sb.toString();
 	}
@@ -224,16 +224,16 @@ public class CSSCompressor {
 	}
 
 	private String _lowercaseFunctionsThatCanBeValues(String css) {
-		Matcher m = _lowercaseFunctionsThatCanBeValuesPattern.matcher(css);
+		Matcher matcher = _lowercaseFunctionsThatCanBeValuesPattern.matcher(css);
 
 		StringBuffer sb = new StringBuffer();
 
-		while (m.find()) {
-			m.appendReplacement(
-				sb, m.group(1) + StringUtil.toLowerCase(m.group(2)));
+		while (matcher.find()) {
+			matcher.appendReplacement(
+				sb, matcher.group(1) + StringUtil.toLowerCase(matcher.group(2)));
 		}
 
-		m.appendTail(sb);
+		matcher.appendTail(sb);
 
 		return sb.toString();
 	}
@@ -255,9 +255,9 @@ public class CSSCompressor {
 	private String _preserveCandidateCommments(
 		String css, List<String> comments) {
 
-		int startIndex = 0;
-		StringBuffer sb = new StringBuffer(css);
 		int cssLength = css.length();
+		StringBuffer sb = new StringBuffer(css);
+		int startIndex = 0;
 
 		while ((startIndex = sb.indexOf("/*", startIndex)) >= 0) {
 			int endIndex = sb.indexOf("*/", startIndex + 2);
@@ -295,12 +295,12 @@ public class CSSCompressor {
 	private String _preserveParensToken(
 		String css, String preservedToken, List<String> preservedTokens) {
 
-		int startIndex;
 		int fromIndex = 0;
 		StringBuffer sb = new StringBuffer();
+		int startIndex;
 
-		while ((startIndex =
-					css.indexOf(preservedToken + "(", fromIndex)) != -1) {
+		while ((startIndex = css.indexOf(preservedToken + "(", fromIndex)) !=
+					-1) {
 
 			int index = startIndex + preservedToken.length() + 1;
 
@@ -340,10 +340,10 @@ public class CSSCompressor {
 
 		StringBuffer sb = new StringBuffer();
 
-		Matcher m = _preserveStringsPattern.matcher(css);
+		Matcher matcher = _preserveStringsPattern.matcher(css);
 
-		while (m.find()) {
-			String token = m.group();
+		while (matcher.find()) {
+			String token = matcher.group();
 
 			char quote = token.charAt(0);
 
@@ -370,10 +370,10 @@ public class CSSCompressor {
 				Integer.toString(preservedTokens.size() - 1), "___",
 				Character.toString(quote));
 
-			m.appendReplacement(sb, preserver);
+			matcher.appendReplacement(sb, preserver);
 		}
 
-		m.appendTail(sb);
+		matcher.appendTail(sb);
 
 		return sb.toString();
 	}
@@ -382,22 +382,22 @@ public class CSSCompressor {
 		String css, String preservedToken, String tokenRegex,
 		boolean removeWhiteSpace, List<String> preservedTokens) {
 
-		Pattern p = Pattern.compile(tokenRegex);
+		Pattern pattern = Pattern.compile(tokenRegex);
 
-		Matcher m = p.matcher(css);
+		Matcher matcher = pattern.matcher(css);
 
 		int appendIndex = 0;
 		int maxIndex = css.length() - 1;
 		StringBuffer sb = new StringBuffer();
 
-		while (m.find()) {
-			int startIndex = m.start() + (preservedToken.length() + 1);
+		while (matcher.find()) {
+			int startIndex = matcher.start() + (preservedToken.length() + 1);
 
-			if (m.start() < appendIndex) {
+			if (matcher.start() < appendIndex) {
 				continue;
 			}
 
-			String terminator = m.group(1);
+			String terminator = matcher.group(1);
 
 			if (terminator.length() == 0) {
 				terminator = ")";
@@ -405,7 +405,7 @@ public class CSSCompressor {
 
 			boolean foundTerminator = false;
 
-			int endIndex = m.end() - 1;
+			int endIndex = matcher.end() - 1;
 
 			while (!foundTerminator && ((endIndex + 1) <= maxIndex)) {
 				endIndex = css.indexOf(terminator, endIndex + 1);
@@ -422,7 +422,7 @@ public class CSSCompressor {
 				}
 			}
 
-			sb.append(css.substring(appendIndex, m.start()));
+			sb.append(css.substring(appendIndex, matcher.start()));
 
 			if (foundTerminator) {
 				String token = css.substring(startIndex, endIndex);
@@ -442,8 +442,8 @@ public class CSSCompressor {
 				appendIndex = endIndex + 1;
 			}
 			else {
-				sb.append(css.substring(m.start(), m.end()));
-				appendIndex = m.end();
+				sb.append(css.substring(matcher.start(), matcher.end()));
+				appendIndex = matcher.end();
 			}
 		}
 
@@ -589,16 +589,18 @@ public class CSSCompressor {
 
 			Matcher m = _replace0UnitWith0Pattern1.matcher(css);
 
-			css = m.replaceAll("$1$20");
-		} while (!(css.equals(oldCss)));
+			css = matcher.replaceAll("$1$20");
+		}
+		while (!css.equals(oldCss));
 
 		do {
 			oldCss = css;
 
 			Matcher m = _replace0UnitWith0Pattern2.matcher(css);
 
-			css = m.replaceAll("($10");
-		} while (!(css.equals(oldCss)));
+			css = matcher.replaceAll("($10");
+		}
+		while (!css.equals(oldCss));
 
 		return css;
 	}
