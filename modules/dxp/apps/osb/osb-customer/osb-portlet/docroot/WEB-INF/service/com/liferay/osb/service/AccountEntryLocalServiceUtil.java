@@ -216,13 +216,6 @@ public class AccountEntryLocalServiceUtil {
 			street3, city, zip, regionId, countryId, ewsaDossieraProjectKey);
 	}
 
-	public static com.liferay.osb.model.AccountEntry updateInstructions(
-		long userId, long accountEntryId, java.lang.String instructions)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updateInstructions(userId, accountEntryId, instructions);
-	}
-
 	public static com.liferay.osb.model.AccountEntry updateStatus(long userId,
 		long accountEntryId, int status,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
@@ -239,12 +232,6 @@ public class AccountEntryLocalServiceUtil {
 		return getService()
 				   .updateStatus(userId, accountEntryId,
 			salesforceOpportunityKey, status, serviceContext);
-	}
-
-	public static com.liferay.osb.model.AccountEntry updateTier(long userId,
-		long accountEntryId, int tier)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().updateTier(userId, accountEntryId, tier);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {

@@ -248,15 +248,7 @@ public interface AccountCustomerLocalService extends BaseLocalService,
 	public List<AccountCustomer> getAccountCustomers(long accountEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AccountCustomer> getAccountCustomers(long accountEntryId,
-		int role);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountCustomer> getUserAccountCustomers(long userId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AccountCustomer> getUserAccountCustomers(long userId,
-		int[] roles);
 
 	/**
 	* Returns the number of rows matching the dynamic query.
@@ -279,8 +271,5 @@ public interface AccountCustomerLocalService extends BaseLocalService,
 	public void deleteAccountCustomers(long userId) throws PortalException;
 
 	public void deleteAccountEntryAccountCustomers(long accountEntryId)
-		throws PortalException;
-
-	public void toggleNotifications(long accountCustomerId)
 		throws PortalException;
 }

@@ -65,57 +65,6 @@ import java.rmi.RemoteException;
  */
 @ProviderType
 public class OfferingEntryServiceSoap {
-	public static com.liferay.osb.model.OfferingEntrySoap[] getAccountEntryOfferingEntries(
-		long accountEntryId) throws RemoteException {
-		try {
-			java.util.List<com.liferay.osb.model.OfferingEntry> returnValue = OfferingEntryServiceUtil.getAccountEntryOfferingEntries(accountEntryId);
-
-			return com.liferay.osb.model.OfferingEntrySoap.toSoapModels(returnValue);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new RemoteException(e.getMessage());
-		}
-	}
-
-	public static com.liferay.osb.model.OfferingEntrySoap[] getOrderEntryOfferingEntries(
-		long orderEntryId) throws RemoteException {
-		try {
-			java.util.List<com.liferay.osb.model.OfferingEntry> returnValue = OfferingEntryServiceUtil.getOrderEntryOfferingEntries(orderEntryId);
-
-			return com.liferay.osb.model.OfferingEntrySoap.toSoapModels(returnValue);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new RemoteException(e.getMessage());
-		}
-	}
-
-	public static com.liferay.osb.model.OfferingEntrySoap updateOfferingEntry(
-		long offeringEntryId, long accountEntryId, long orderEntryId,
-		long productEntryId, long supportResponseId,
-		java.lang.String productDescription, int type, int version,
-		boolean licenses, long licenseLifetime, long maxConcurrentUsers,
-		long maxUsers, boolean supportTickets, long supportLifetime,
-		int sizing, int quantity) throws RemoteException {
-		try {
-			com.liferay.osb.model.OfferingEntry returnValue = OfferingEntryServiceUtil.updateOfferingEntry(offeringEntryId,
-					accountEntryId, orderEntryId, productEntryId,
-					supportResponseId, productDescription, type, version,
-					licenses, licenseLifetime, maxConcurrentUsers, maxUsers,
-					supportTickets, supportLifetime, sizing, quantity);
-
-			return com.liferay.osb.model.OfferingEntrySoap.toSoapModel(returnValue);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new RemoteException(e.getMessage());
-		}
-	}
-
 	public static com.liferay.osb.model.OfferingEntrySoap updateStatus(
 		long offeringEntryId, int status) throws RemoteException {
 		try {

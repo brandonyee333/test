@@ -79,17 +79,5 @@ public class AccountCustomerServiceSoap {
 		}
 	}
 
-	public static void toggleNotifications(long accountCustomerId)
-		throws RemoteException {
-		try {
-			AccountCustomerServiceUtil.toggleNotifications(accountCustomerId);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new RemoteException(e.getMessage());
-		}
-	}
-
 	private static Log _log = LogFactoryUtil.getLog(AccountCustomerServiceSoap.class);
 }

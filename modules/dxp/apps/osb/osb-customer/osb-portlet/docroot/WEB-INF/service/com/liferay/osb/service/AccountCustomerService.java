@@ -66,7 +66,4 @@ public interface AccountCustomerService extends BaseService, InvokableService {
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<java.lang.String> getCorpProjectAccountCustomerUUIDs(
 		long corpProjectId) throws PortalException;
-
-	public void toggleNotifications(long accountCustomerId)
-		throws PortalException;
 }

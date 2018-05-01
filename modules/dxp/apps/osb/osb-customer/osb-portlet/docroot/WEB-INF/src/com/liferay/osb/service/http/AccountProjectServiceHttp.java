@@ -16,21 +16,12 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osb.service.AccountProjectServiceUtil;
-
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.security.auth.HttpPrincipal;
-import com.liferay.portal.kernel.service.http.TunnelUtil;
-import com.liferay.portal.kernel.util.MethodHandler;
-import com.liferay.portal.kernel.util.MethodKey;
-
 /**
  * Provides the HTTP utility for the
- * {@link AccountProjectServiceUtil} service utility. The
+ * {@link com.liferay.osb.service.AccountProjectServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it requires an additional
- * {@link HttpPrincipal} parameter.
+ * {@link com.liferay.portal.kernel.security.auth.HttpPrincipal} parameter.
  *
  * <p>
  * The benefits of using the HTTP utility is that it is fast and allows for
@@ -49,83 +40,10 @@ import com.liferay.portal.kernel.util.MethodKey;
  *
  * @author Brian Wing Shun Chan
  * @see AccountProjectServiceSoap
- * @see HttpPrincipal
- * @see AccountProjectServiceUtil
+ * @see com.liferay.portal.kernel.security.auth.HttpPrincipal
+ * @see com.liferay.osb.service.AccountProjectServiceUtil
  * @generated
  */
 @ProviderType
 public class AccountProjectServiceHttp {
-	public static com.liferay.osb.model.AccountProject deleteAccountProject(
-		HttpPrincipal httpPrincipal, long accountProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(AccountProjectServiceUtil.class,
-					"deleteAccountProject", _deleteAccountProjectParameterTypes0);
-
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					accountProjectId);
-
-			Object returnObj = null;
-
-			try {
-				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
-			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
-			}
-
-			return (com.liferay.osb.model.AccountProject)returnObj;
-		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
-
-			throw se;
-		}
-	}
-
-	public static com.liferay.osb.model.AccountProject updateAccountProject(
-		HttpPrincipal httpPrincipal, long accountProjectId,
-		long accountEntryId, java.lang.String name,
-		java.util.Map<java.lang.Integer, java.lang.String> data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(AccountProjectServiceUtil.class,
-					"updateAccountProject", _updateAccountProjectParameterTypes1);
-
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					accountProjectId, accountEntryId, name, data);
-
-			Object returnObj = null;
-
-			try {
-				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
-			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
-			}
-
-			return (com.liferay.osb.model.AccountProject)returnObj;
-		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
-
-			throw se;
-		}
-	}
-
-	private static Log _log = LogFactoryUtil.getLog(AccountProjectServiceHttp.class);
-	private static final Class<?>[] _deleteAccountProjectParameterTypes0 = new Class[] {
-			long.class
-		};
-	private static final Class<?>[] _updateAccountProjectParameterTypes1 = new Class[] {
-			long.class, long.class, java.lang.String.class, java.util.Map.class
-		};
 }

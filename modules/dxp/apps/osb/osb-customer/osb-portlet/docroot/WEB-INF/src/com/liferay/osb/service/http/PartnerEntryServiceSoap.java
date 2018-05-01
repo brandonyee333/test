@@ -16,16 +16,9 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osb.service.PartnerEntryServiceUtil;
-
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-
-import java.rmi.RemoteException;
-
 /**
  * Provides the SOAP utility for the
- * {@link PartnerEntryServiceUtil} service utility. The
+ * {@link com.liferay.osb.service.PartnerEntryServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -60,38 +53,9 @@ import java.rmi.RemoteException;
  * @author Brian Wing Shun Chan
  * @see PartnerEntryServiceHttp
  * @see com.liferay.osb.model.PartnerEntrySoap
- * @see PartnerEntryServiceUtil
+ * @see com.liferay.osb.service.PartnerEntryServiceUtil
  * @generated
  */
 @ProviderType
 public class PartnerEntryServiceSoap {
-	public static com.liferay.osb.model.PartnerEntrySoap getPartnerEntry(
-		long partnerEntryId) throws RemoteException {
-		try {
-			com.liferay.osb.model.PartnerEntry returnValue = PartnerEntryServiceUtil.getPartnerEntry(partnerEntryId);
-
-			return com.liferay.osb.model.PartnerEntrySoap.toSoapModel(returnValue);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new RemoteException(e.getMessage());
-		}
-	}
-
-	public static int searchCount(java.lang.String keywords)
-		throws RemoteException {
-		try {
-			int returnValue = PartnerEntryServiceUtil.searchCount(keywords);
-
-			return returnValue;
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new RemoteException(e.getMessage());
-		}
-	}
-
-	private static Log _log = LogFactoryUtil.getLog(PartnerEntryServiceSoap.class);
 }

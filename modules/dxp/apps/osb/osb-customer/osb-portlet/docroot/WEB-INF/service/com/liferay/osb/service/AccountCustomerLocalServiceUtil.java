@@ -291,19 +291,9 @@ public class AccountCustomerLocalServiceUtil {
 		return getService().getAccountCustomers(accountEntryId);
 	}
 
-	public static java.util.List<com.liferay.osb.model.AccountCustomer> getAccountCustomers(
-		long accountEntryId, int role) {
-		return getService().getAccountCustomers(accountEntryId, role);
-	}
-
 	public static java.util.List<com.liferay.osb.model.AccountCustomer> getUserAccountCustomers(
 		long userId) {
 		return getService().getUserAccountCustomers(userId);
-	}
-
-	public static java.util.List<com.liferay.osb.model.AccountCustomer> getUserAccountCustomers(
-		long userId, int[] roles) {
-		return getService().getUserAccountCustomers(userId, roles);
 	}
 
 	/**
@@ -338,11 +328,6 @@ public class AccountCustomerLocalServiceUtil {
 	public static void deleteAccountEntryAccountCustomers(long accountEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deleteAccountEntryAccountCustomers(accountEntryId);
-	}
-
-	public static void toggleNotifications(long accountCustomerId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().toggleNotifications(accountCustomerId);
 	}
 
 	public static void clearService() {

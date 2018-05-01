@@ -41,21 +41,6 @@ public class AccountProjectServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.AccountProjectServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.model.AccountProject deleteAccountProject(
-		long accountProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().deleteAccountProject(accountProjectId);
-	}
-
-	public static com.liferay.osb.model.AccountProject updateAccountProject(
-		long accountProjectId, long accountEntryId, java.lang.String name,
-		java.util.Map<java.lang.Integer, java.lang.String> data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updateAccountProject(accountProjectId, accountEntryId,
-			name, data);
-	}
-
 	public static java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {

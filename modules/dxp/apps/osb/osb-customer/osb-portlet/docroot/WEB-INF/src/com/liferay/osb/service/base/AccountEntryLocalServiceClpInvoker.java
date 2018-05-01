@@ -389,43 +389,33 @@ public class AccountEntryLocalServiceClpInvoker {
 				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 
-		_methodName239 = "updateInstructions";
+		_methodName239 = "updateLastAuditDate";
 
 		_methodParameterTypes239 = new String[] {
-				"long", "long", "java.lang.String"
-			};
-
-		_methodName240 = "updateLastAuditDate";
-
-		_methodParameterTypes240 = new String[] {
 				"long", "long", "java.lang.String", "java.lang.String"
 			};
 
+		_methodName240 = "updateStatus";
+
+		_methodParameterTypes240 = new String[] { "long" };
+
 		_methodName241 = "updateStatus";
 
-		_methodParameterTypes241 = new String[] { "long" };
-
-		_methodName242 = "updateStatus";
-
-		_methodParameterTypes242 = new String[] {
+		_methodParameterTypes241 = new String[] {
 				"long", "long", "int",
 				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 
-		_methodName243 = "updateStatus";
+		_methodName242 = "updateStatus";
 
-		_methodParameterTypes243 = new String[] {
+		_methodParameterTypes242 = new String[] {
 				"long", "long", "java.lang.String", "int",
 				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 
-		_methodName244 = "updateTier";
+		_methodName243 = "validate";
 
-		_methodParameterTypes244 = new String[] { "long", "long", "int" };
-
-		_methodName245 = "validate";
-
-		_methodParameterTypes245 = new String[] {
+		_methodParameterTypes243 = new String[] {
 				"com.liferay.osb.model.AccountEntry"
 			};
 	}
@@ -959,12 +949,6 @@ public class AccountEntryLocalServiceClpInvoker {
 
 		if (_methodName239.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes239, parameterTypes)) {
-			return AccountEntryLocalServiceUtil.updateInstructions(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue(), (java.lang.String)arguments[2]);
-		}
-
-		if (_methodName240.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes240, parameterTypes)) {
 			AccountEntryLocalServiceUtil.updateLastAuditDate(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(java.lang.String)arguments[2], (java.lang.String)arguments[3]);
@@ -972,23 +956,23 @@ public class AccountEntryLocalServiceClpInvoker {
 			return null;
 		}
 
-		if (_methodName241.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes241, parameterTypes)) {
+		if (_methodName240.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes240, parameterTypes)) {
 			AccountEntryLocalServiceUtil.updateStatus(((Long)arguments[0]).longValue());
 
 			return null;
 		}
 
-		if (_methodName242.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes242, parameterTypes)) {
+		if (_methodName241.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes241, parameterTypes)) {
 			return AccountEntryLocalServiceUtil.updateStatus(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Integer)arguments[2]).intValue(),
 				(com.liferay.portal.kernel.service.ServiceContext)arguments[3]);
 		}
 
-		if (_methodName243.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes243, parameterTypes)) {
+		if (_methodName242.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes242, parameterTypes)) {
 			return AccountEntryLocalServiceUtil.updateStatus(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(java.lang.String)arguments[2],
@@ -996,15 +980,8 @@ public class AccountEntryLocalServiceClpInvoker {
 				(com.liferay.portal.kernel.service.ServiceContext)arguments[4]);
 		}
 
-		if (_methodName244.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes244, parameterTypes)) {
-			return AccountEntryLocalServiceUtil.updateTier(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue(),
-				((Integer)arguments[2]).intValue());
-		}
-
-		if (_methodName245.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes245, parameterTypes)) {
+		if (_methodName243.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes243, parameterTypes)) {
 			AccountEntryLocalServiceUtil.validate((com.liferay.osb.model.AccountEntry)arguments[0]);
 
 			return null;
@@ -1163,8 +1140,4 @@ public class AccountEntryLocalServiceClpInvoker {
 	private String[] _methodParameterTypes242;
 	private String _methodName243;
 	private String[] _methodParameterTypes243;
-	private String _methodName244;
-	private String[] _methodParameterTypes244;
-	private String _methodName245;
-	private String[] _methodParameterTypes245;
 }

@@ -16,16 +16,9 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osb.service.AccountAttachmentServiceUtil;
-
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-
-import java.rmi.RemoteException;
-
 /**
  * Provides the SOAP utility for the
- * {@link AccountAttachmentServiceUtil} service utility. The
+ * {@link com.liferay.osb.service.AccountAttachmentServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -60,71 +53,9 @@ import java.rmi.RemoteException;
  * @author Brian Wing Shun Chan
  * @see AccountAttachmentServiceHttp
  * @see com.liferay.osb.model.AccountAttachmentSoap
- * @see AccountAttachmentServiceUtil
+ * @see com.liferay.osb.service.AccountAttachmentServiceUtil
  * @generated
  */
 @ProviderType
 public class AccountAttachmentServiceSoap {
-	public static com.liferay.osb.model.AccountAttachmentSoap[] addAccountAttachments(
-		long accountEntryId, long accountProjectId,
-		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
-		java.util.List<java.lang.Integer> types) throws RemoteException {
-		try {
-			java.util.List<com.liferay.osb.model.AccountAttachment> returnValue = AccountAttachmentServiceUtil.addAccountAttachments(accountEntryId,
-					accountProjectId, files, types);
-
-			return com.liferay.osb.model.AccountAttachmentSoap.toSoapModels(returnValue);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new RemoteException(e.getMessage());
-		}
-	}
-
-	public static com.liferay.osb.model.AccountAttachmentSoap deleteAccountAttachment(
-		long accountAttachmentId) throws RemoteException {
-		try {
-			com.liferay.osb.model.AccountAttachment returnValue = AccountAttachmentServiceUtil.deleteAccountAttachment(accountAttachmentId);
-
-			return com.liferay.osb.model.AccountAttachmentSoap.toSoapModel(returnValue);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new RemoteException(e.getMessage());
-		}
-	}
-
-	public static com.liferay.osb.model.AccountAttachmentSoap getAccountAttachment(
-		long accountAttachmentId) throws RemoteException {
-		try {
-			com.liferay.osb.model.AccountAttachment returnValue = AccountAttachmentServiceUtil.getAccountAttachment(accountAttachmentId);
-
-			return com.liferay.osb.model.AccountAttachmentSoap.toSoapModel(returnValue);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new RemoteException(e.getMessage());
-		}
-	}
-
-	public static com.liferay.osb.model.AccountAttachmentSoap[] getAccountAttachments(
-		long accountEntryId, long accountProjectId, int type)
-		throws RemoteException {
-		try {
-			java.util.List<com.liferay.osb.model.AccountAttachment> returnValue = AccountAttachmentServiceUtil.getAccountAttachments(accountEntryId,
-					accountProjectId, type);
-
-			return com.liferay.osb.model.AccountAttachmentSoap.toSoapModels(returnValue);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new RemoteException(e.getMessage());
-		}
-	}
-
-	private static Log _log = LogFactoryUtil.getLog(AccountAttachmentServiceSoap.class);
 }

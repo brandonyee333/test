@@ -62,11 +62,6 @@ public class AccountCustomerServiceUtil {
 		return getService().getCorpProjectAccountCustomerUUIDs(corpProjectId);
 	}
 
-	public static void toggleNotifications(long accountCustomerId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().toggleNotifications(accountCustomerId);
-	}
-
 	public static void clearService() {
 		_service = null;
 	}

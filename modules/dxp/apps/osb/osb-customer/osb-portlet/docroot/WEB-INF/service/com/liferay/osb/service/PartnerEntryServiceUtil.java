@@ -41,30 +41,6 @@ public class PartnerEntryServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.PartnerEntryServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.model.PartnerEntry getPartnerEntry(
-		long partnerEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPartnerEntry(partnerEntryId);
-	}
-
-	public static int searchCount(java.lang.String code, int[] statuses,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().searchCount(code, statuses, params, andOperator);
-	}
-
-	public static int searchCount(java.lang.String keywords)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().searchCount(keywords);
-	}
-
-	public static int searchCount(java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().searchCount(keywords, params);
-	}
-
 	public static java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
@@ -78,23 +54,6 @@ public class PartnerEntryServiceUtil {
 	*/
 	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
-	}
-
-	public static java.util.List<com.liferay.osb.model.PartnerEntry> search(
-		java.lang.String code, int[] statuses,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator, int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .search(code, statuses, params, andOperator, start, end);
-	}
-
-	public static java.util.List<com.liferay.osb.model.PartnerEntry> search(
-		java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().search(keywords, params, start, end);
 	}
 
 	public static void clearService() {

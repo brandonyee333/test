@@ -30,16 +30,6 @@ public class AccountProjectServiceClpInvoker {
 		_methodName202 = "getOSGiServiceIdentifier";
 
 		_methodParameterTypes202 = new String[] {  };
-
-		_methodName207 = "deleteAccountProject";
-
-		_methodParameterTypes207 = new String[] { "long" };
-
-		_methodName208 = "updateAccountProject";
-
-		_methodParameterTypes208 = new String[] {
-				"long", "long", "java.lang.String", "java.util.Map"
-			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -49,26 +39,9 @@ public class AccountProjectServiceClpInvoker {
 			return AccountProjectServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName207.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes207, parameterTypes)) {
-			return AccountProjectServiceUtil.deleteAccountProject(((Long)arguments[0]).longValue());
-		}
-
-		if (_methodName208.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes208, parameterTypes)) {
-			return AccountProjectServiceUtil.updateAccountProject(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue(),
-				(java.lang.String)arguments[2],
-				(java.util.Map<java.lang.Integer, java.lang.String>)arguments[3]);
-		}
-
 		throw new UnsupportedOperationException();
 	}
 
 	private String _methodName202;
 	private String[] _methodParameterTypes202;
-	private String _methodName207;
-	private String[] _methodParameterTypes207;
-	private String _methodName208;
-	private String[] _methodParameterTypes208;
 }

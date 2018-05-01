@@ -55,119 +55,12 @@ import com.liferay.portal.kernel.util.MethodKey;
  */
 @ProviderType
 public class OfferingEntryServiceHttp {
-	public static java.util.List<com.liferay.osb.model.OfferingEntry> getAccountEntryOfferingEntries(
-		HttpPrincipal httpPrincipal, long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(OfferingEntryServiceUtil.class,
-					"getAccountEntryOfferingEntries",
-					_getAccountEntryOfferingEntriesParameterTypes0);
-
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					accountEntryId);
-
-			Object returnObj = null;
-
-			try {
-				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
-			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
-			}
-
-			return (java.util.List<com.liferay.osb.model.OfferingEntry>)returnObj;
-		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
-
-			throw se;
-		}
-	}
-
-	public static java.util.List<com.liferay.osb.model.OfferingEntry> getOrderEntryOfferingEntries(
-		HttpPrincipal httpPrincipal, long orderEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(OfferingEntryServiceUtil.class,
-					"getOrderEntryOfferingEntries",
-					_getOrderEntryOfferingEntriesParameterTypes1);
-
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					orderEntryId);
-
-			Object returnObj = null;
-
-			try {
-				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
-			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
-			}
-
-			return (java.util.List<com.liferay.osb.model.OfferingEntry>)returnObj;
-		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
-
-			throw se;
-		}
-	}
-
-	public static com.liferay.osb.model.OfferingEntry updateOfferingEntry(
-		HttpPrincipal httpPrincipal, long offeringEntryId, long accountEntryId,
-		long orderEntryId, long productEntryId, long supportResponseId,
-		java.lang.String productDescription, int type, int version,
-		boolean licenses, long licenseLifetime, long maxConcurrentUsers,
-		long maxUsers, boolean supportTickets, long supportLifetime,
-		int sizing, int quantity)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(OfferingEntryServiceUtil.class,
-					"updateOfferingEntry", _updateOfferingEntryParameterTypes2);
-
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					offeringEntryId, accountEntryId, orderEntryId,
-					productEntryId, supportResponseId, productDescription,
-					type, version, licenses, licenseLifetime,
-					maxConcurrentUsers, maxUsers, supportTickets,
-					supportLifetime, sizing, quantity);
-
-			Object returnObj = null;
-
-			try {
-				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
-			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
-			}
-
-			return (com.liferay.osb.model.OfferingEntry)returnObj;
-		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
-
-			throw se;
-		}
-	}
-
 	public static com.liferay.osb.model.OfferingEntry updateStatus(
 		HttpPrincipal httpPrincipal, long offeringEntryId, int status)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(OfferingEntryServiceUtil.class,
-					"updateStatus", _updateStatusParameterTypes3);
+					"updateStatus", _updateStatusParameterTypes0);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					offeringEntryId, status);
@@ -195,17 +88,7 @@ public class OfferingEntryServiceHttp {
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(OfferingEntryServiceHttp.class);
-	private static final Class<?>[] _getAccountEntryOfferingEntriesParameterTypes0 =
-		new Class[] { long.class };
-	private static final Class<?>[] _getOrderEntryOfferingEntriesParameterTypes1 =
-		new Class[] { long.class };
-	private static final Class<?>[] _updateOfferingEntryParameterTypes2 = new Class[] {
-			long.class, long.class, long.class, long.class, long.class,
-			java.lang.String.class, int.class, int.class, boolean.class,
-			long.class, long.class, long.class, boolean.class, long.class,
-			int.class, int.class
-		};
-	private static final Class<?>[] _updateStatusParameterTypes3 = new Class[] {
+	private static final Class<?>[] _updateStatusParameterTypes0 = new Class[] {
 			long.class, int.class
 		};
 }

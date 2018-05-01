@@ -27,72 +27,21 @@ import java.util.Arrays;
 @ProviderType
 public class AccountAttachmentServiceClpInvoker {
 	public AccountAttachmentServiceClpInvoker() {
-		_methodName208 = "getOSGiServiceIdentifier";
+		_methodName202 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes208 = new String[] {  };
-
-		_methodName213 = "addAccountAttachments";
-
-		_methodParameterTypes213 = new String[] {
-				"long", "long", "java.util.List", "java.util.List"
-			};
-
-		_methodName214 = "deleteAccountAttachment";
-
-		_methodParameterTypes214 = new String[] { "long" };
-
-		_methodName215 = "getAccountAttachment";
-
-		_methodParameterTypes215 = new String[] { "long" };
-
-		_methodName216 = "getAccountAttachments";
-
-		_methodParameterTypes216 = new String[] { "long", "long", "int" };
+		_methodParameterTypes202 = new String[] {  };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName208.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes208, parameterTypes)) {
+		if (_methodName202.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes202, parameterTypes)) {
 			return AccountAttachmentServiceUtil.getOSGiServiceIdentifier();
-		}
-
-		if (_methodName213.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes213, parameterTypes)) {
-			return AccountAttachmentServiceUtil.addAccountAttachments(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue(),
-				(java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>>)arguments[2],
-				(java.util.List<java.lang.Integer>)arguments[3]);
-		}
-
-		if (_methodName214.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes214, parameterTypes)) {
-			return AccountAttachmentServiceUtil.deleteAccountAttachment(((Long)arguments[0]).longValue());
-		}
-
-		if (_methodName215.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes215, parameterTypes)) {
-			return AccountAttachmentServiceUtil.getAccountAttachment(((Long)arguments[0]).longValue());
-		}
-
-		if (_methodName216.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes216, parameterTypes)) {
-			return AccountAttachmentServiceUtil.getAccountAttachments(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue(),
-				((Integer)arguments[2]).intValue());
 		}
 
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName208;
-	private String[] _methodParameterTypes208;
-	private String _methodName213;
-	private String[] _methodParameterTypes213;
-	private String _methodName214;
-	private String[] _methodParameterTypes214;
-	private String _methodName215;
-	private String[] _methodParameterTypes215;
-	private String _methodName216;
-	private String[] _methodParameterTypes216;
+	private String _methodName202;
+	private String[] _methodParameterTypes202;
 }

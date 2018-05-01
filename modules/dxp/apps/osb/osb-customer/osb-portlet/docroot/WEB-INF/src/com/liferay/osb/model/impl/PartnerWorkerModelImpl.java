@@ -101,11 +101,10 @@ public class PartnerWorkerModelImpl extends BaseModelImpl<PartnerWorker>
 	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
 				"value.object.column.bitmask.enabled.com.liferay.osb.model.PartnerWorker"),
 			true);
-	public static final long NOTIFICATIONS_COLUMN_BITMASK = 1L;
-	public static final long PARTNERENTRYID_COLUMN_BITMASK = 2L;
-	public static final long ROLE_COLUMN_BITMASK = 4L;
-	public static final long USERID_COLUMN_BITMASK = 8L;
-	public static final long PARTNERWORKERID_COLUMN_BITMASK = 16L;
+	public static final long PARTNERENTRYID_COLUMN_BITMASK = 1L;
+	public static final long ROLE_COLUMN_BITMASK = 2L;
+	public static final long USERID_COLUMN_BITMASK = 4L;
+	public static final long PARTNERWORKERID_COLUMN_BITMASK = 8L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -338,19 +337,7 @@ public class PartnerWorkerModelImpl extends BaseModelImpl<PartnerWorker>
 
 	@Override
 	public void setNotifications(int notifications) {
-		_columnBitmask |= NOTIFICATIONS_COLUMN_BITMASK;
-
-		if (!_setOriginalNotifications) {
-			_setOriginalNotifications = true;
-
-			_originalNotifications = _notifications;
-		}
-
 		_notifications = notifications;
-	}
-
-	public int getOriginalNotifications() {
-		return _originalNotifications;
 	}
 
 	public long getColumnBitmask() {
@@ -463,10 +450,6 @@ public class PartnerWorkerModelImpl extends BaseModelImpl<PartnerWorker>
 
 		partnerWorkerModelImpl._setOriginalRole = false;
 
-		partnerWorkerModelImpl._originalNotifications = partnerWorkerModelImpl._notifications;
-
-		partnerWorkerModelImpl._setOriginalNotifications = false;
-
 		partnerWorkerModelImpl._columnBitmask = 0;
 	}
 
@@ -555,8 +538,6 @@ public class PartnerWorkerModelImpl extends BaseModelImpl<PartnerWorker>
 	private int _originalRole;
 	private boolean _setOriginalRole;
 	private int _notifications;
-	private int _originalNotifications;
-	private boolean _setOriginalNotifications;
 	private long _columnBitmask;
 	private PartnerWorker _escapedModel;
 }

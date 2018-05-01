@@ -34,10 +34,6 @@ public class AccountCustomerServiceClpInvoker {
 		_methodName219 = "getCorpProjectAccountCustomerUUIDs";
 
 		_methodParameterTypes219 = new String[] { "long" };
-
-		_methodName220 = "toggleNotifications";
-
-		_methodParameterTypes220 = new String[] { "long" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -52,13 +48,6 @@ public class AccountCustomerServiceClpInvoker {
 			return AccountCustomerServiceUtil.getCorpProjectAccountCustomerUUIDs(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName220.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes220, parameterTypes)) {
-			AccountCustomerServiceUtil.toggleNotifications(((Long)arguments[0]).longValue());
-
-			return null;
-		}
-
 		throw new UnsupportedOperationException();
 	}
 
@@ -66,6 +55,4 @@ public class AccountCustomerServiceClpInvoker {
 	private String[] _methodParameterTypes214;
 	private String _methodName219;
 	private String[] _methodParameterTypes219;
-	private String _methodName220;
-	private String[] _methodParameterTypes220;
 }

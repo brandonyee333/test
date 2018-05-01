@@ -56,15 +56,6 @@ public class AccountInformationServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static java.util.List<com.liferay.osb.model.AccountInformation> updateAccountInformation(
-		long accountEntryId, long accountProjectId,
-		java.util.Map<java.lang.Integer, java.lang.String> data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updateAccountInformation(accountEntryId, accountProjectId,
-			data);
-	}
-
 	public static void clearService() {
 		_service = null;
 	}

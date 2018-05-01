@@ -16,16 +16,9 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osb.service.AccountProjectServiceUtil;
-
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-
-import java.rmi.RemoteException;
-
 /**
  * Provides the SOAP utility for the
- * {@link AccountProjectServiceUtil} service utility. The
+ * {@link com.liferay.osb.service.AccountProjectServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -60,24 +53,9 @@ import java.rmi.RemoteException;
  * @author Brian Wing Shun Chan
  * @see AccountProjectServiceHttp
  * @see com.liferay.osb.model.AccountProjectSoap
- * @see AccountProjectServiceUtil
+ * @see com.liferay.osb.service.AccountProjectServiceUtil
  * @generated
  */
 @ProviderType
 public class AccountProjectServiceSoap {
-	public static com.liferay.osb.model.AccountProjectSoap deleteAccountProject(
-		long accountProjectId) throws RemoteException {
-		try {
-			com.liferay.osb.model.AccountProject returnValue = AccountProjectServiceUtil.deleteAccountProject(accountProjectId);
-
-			return com.liferay.osb.model.AccountProjectSoap.toSoapModel(returnValue);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new RemoteException(e.getMessage());
-		}
-	}
-
-	private static Log _log = LogFactoryUtil.getLog(AccountProjectServiceSoap.class);
 }

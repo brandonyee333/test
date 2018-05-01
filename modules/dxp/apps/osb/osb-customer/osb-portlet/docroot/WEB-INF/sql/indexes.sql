@@ -1,9 +1,8 @@
 create index IX_1B961F96 on OSB_AccountAttachment (accountEntryId, accountProjectId, fileName[$COLUMN_LENGTH:75$], type_);
 create index IX_D44EEA51 on OSB_AccountAttachment (accountEntryId, accountProjectId, type_);
 
-create index IX_B590328E on OSB_AccountCustomer (accountEntryId, role);
+create index IX_5D6036A4 on OSB_AccountCustomer (accountEntryId);
 create index IX_F9BEADE on OSB_AccountCustomer (userId, accountEntryId);
-create index IX_A47A5E94 on OSB_AccountCustomer (userId, role);
 
 create index IX_E9054065 on OSB_AccountEntries_SupportRegions (accountEntryId);
 create index IX_66F378D7 on OSB_AccountEntries_SupportRegions (companyId);
@@ -29,7 +28,6 @@ create unique index IX_9644DED0 on OSB_AccountInformation (accountEntryId, accou
 
 create index IX_E16E8A07 on OSB_AccountProject (accountEntryId);
 
-create index IX_640DDD4 on OSB_AccountWorker (accountEntryId, notifications);
 create index IX_9D0A292E on OSB_AccountWorker (accountEntryId, role);
 create index IX_72B97E on OSB_AccountWorker (userId, accountEntryId);
 create index IX_1224F534 on OSB_AccountWorker (userId, role);
@@ -95,7 +93,6 @@ create unique index IX_2D2C67B1 on OSB_PartnerEntry (code_[$COLUMN_LENGTH:255$])
 create index IX_E567A9ED on OSB_PartnerEntry (dossieraAccountKey[$COLUMN_LENGTH:75$]);
 create index IX_5665A174 on OSB_PartnerEntry (parentPartnerEntryId);
 
-create index IX_6F521474 on OSB_PartnerWorker (partnerEntryId, notifications);
 create index IX_15A2FE8E on OSB_PartnerWorker (partnerEntryId, role);
 create index IX_8D1D4BDE on OSB_PartnerWorker (userId, partnerEntryId);
 create index IX_F36C918F on OSB_PartnerWorker (userId, role);

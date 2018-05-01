@@ -27,85 +27,9 @@ public class AccountAttachmentServiceClp implements AccountAttachmentService {
 	public AccountAttachmentServiceClp(InvokableService invokableService) {
 		_invokableService = invokableService;
 
-		_methodName0 = "deleteAccountAttachment";
+		_methodName1 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes0 = new String[] { "long" };
-
-		_methodName1 = "getAccountAttachment";
-
-		_methodParameterTypes1 = new String[] { "long" };
-
-		_methodName3 = "getOSGiServiceIdentifier";
-
-		_methodParameterTypes3 = new String[] {  };
-
-		_methodName4 = "addAccountAttachments";
-
-		_methodParameterTypes4 = new String[] {
-				"long", "long", "java.util.List", "java.util.List"
-			};
-
-		_methodName5 = "getAccountAttachments";
-
-		_methodParameterTypes5 = new String[] { "long", "long", "int" };
-	}
-
-	@Override
-	public com.liferay.osb.model.AccountAttachment deleteAccountAttachment(
-		long accountAttachmentId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName0,
-					_methodParameterTypes0, new Object[] { accountAttachmentId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (com.liferay.osb.model.AccountAttachment)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public com.liferay.osb.model.AccountAttachment getAccountAttachment(
-		long accountAttachmentId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName1,
-					_methodParameterTypes1, new Object[] { accountAttachmentId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (com.liferay.osb.model.AccountAttachment)ClpSerializer.translateOutput(returnObj);
+		_methodParameterTypes1 = new String[] {  };
 	}
 
 	@Override
@@ -120,8 +44,8 @@ public class AccountAttachmentServiceClp implements AccountAttachmentService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName3,
-					_methodParameterTypes3, new Object[] {  });
+			returnObj = _invokableService.invokeMethod(_methodName1,
+					_methodParameterTypes1, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -138,85 +62,7 @@ public class AccountAttachmentServiceClp implements AccountAttachmentService {
 		return (java.lang.String)ClpSerializer.translateOutput(returnObj);
 	}
 
-	@Override
-	public java.util.List<com.liferay.osb.model.AccountAttachment> addAccountAttachments(
-		long accountEntryId, long accountProjectId,
-		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
-		java.util.List<java.lang.Integer> types)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName4,
-					_methodParameterTypes4,
-					new Object[] {
-						accountEntryId,
-						
-					accountProjectId,
-						
-					ClpSerializer.translateInput(files),
-						
-					ClpSerializer.translateInput(types)
-					});
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (java.util.List<com.liferay.osb.model.AccountAttachment>)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.AccountAttachment> getAccountAttachments(
-		long accountEntryId, long accountProjectId, int type)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName5,
-					_methodParameterTypes5,
-					new Object[] { accountEntryId, accountProjectId, type });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (java.util.List<com.liferay.osb.model.AccountAttachment>)ClpSerializer.translateOutput(returnObj);
-	}
-
 	private InvokableService _invokableService;
-	private String _methodName0;
-	private String[] _methodParameterTypes0;
 	private String _methodName1;
 	private String[] _methodParameterTypes1;
-	private String _methodName3;
-	private String[] _methodParameterTypes3;
-	private String _methodName4;
-	private String[] _methodParameterTypes4;
-	private String _methodName5;
-	private String[] _methodParameterTypes5;
 }

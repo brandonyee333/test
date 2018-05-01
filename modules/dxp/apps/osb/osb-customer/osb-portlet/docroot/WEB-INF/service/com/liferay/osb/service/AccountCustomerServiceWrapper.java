@@ -59,12 +59,6 @@ public class AccountCustomerServiceWrapper implements AccountCustomerService,
 	}
 
 	@Override
-	public void toggleNotifications(long accountCustomerId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_accountCustomerService.toggleNotifications(accountCustomerId);
-	}
-
-	@Override
 	public AccountCustomerService getWrappedService() {
 		return _accountCustomerService;
 	}

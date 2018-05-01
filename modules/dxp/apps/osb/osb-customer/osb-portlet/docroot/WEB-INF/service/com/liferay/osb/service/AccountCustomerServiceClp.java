@@ -34,10 +34,6 @@ public class AccountCustomerServiceClp implements AccountCustomerService {
 		_methodName2 = "getCorpProjectAccountCustomerUUIDs";
 
 		_methodParameterTypes2 = new String[] { "long" };
-
-		_methodName3 = "toggleNotifications";
-
-		_methodParameterTypes3 = new String[] { "long" };
 	}
 
 	@Override
@@ -99,35 +95,9 @@ public class AccountCustomerServiceClp implements AccountCustomerService {
 		return (java.util.List<java.lang.String>)ClpSerializer.translateOutput(returnObj);
 	}
 
-	@Override
-	public void toggleNotifications(long accountCustomerId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			_invokableService.invokeMethod(_methodName3,
-				_methodParameterTypes3, new Object[] { accountCustomerId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-	}
-
 	private InvokableService _invokableService;
 	private String _methodName1;
 	private String[] _methodParameterTypes1;
 	private String _methodName2;
 	private String[] _methodParameterTypes2;
-	private String _methodName3;
-	private String[] _methodParameterTypes3;
 }
