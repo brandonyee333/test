@@ -225,22 +225,8 @@ public class AccountCustomerLocalServiceImpl
 	}
 
 	@Override
-	public List<AccountCustomer> getAccountCustomers(
-		long accountEntryId, int role) {
-
-		return accountCustomerPersistence.findByAEI_NotR(accountEntryId, role);
-	}
-
-	@Override
 	public List<AccountCustomer> getUserAccountCustomers(long userId) {
 		return accountCustomerPersistence.findByUserId(userId);
-	}
-
-	@Override
-	public List<AccountCustomer> getUserAccountCustomers(
-		long userId, int[] roles) {
-
-		return accountCustomerPersistence.findByU_R(userId, roles);
 	}
 
 	@Override
@@ -254,27 +240,6 @@ public class AccountCustomerLocalServiceImpl
 		else {
 			return true;
 		}
-	}
-
-	@Override
-	public void toggleNotifications(long accountCustomerId)
-		throws PortalException {
-
-		AccountCustomer accountCustomer =
-			accountCustomerPersistence.findByPrimaryKey(accountCustomerId);
-
-		if (accountCustomer.getNotifications() ==
-				AccountCustomerConstants.NOTIFICATIONS_NONE) {
-
-			accountCustomer.setNotifications(
-				AccountCustomerConstants.NOTIFICATIONS_ALL);
-		}
-		else {
-			accountCustomer.setNotifications(
-				AccountCustomerConstants.NOTIFICATIONS_NONE);
-		}
-
-		accountCustomerPersistence.update(accountCustomer);
 	}
 
 	@Override

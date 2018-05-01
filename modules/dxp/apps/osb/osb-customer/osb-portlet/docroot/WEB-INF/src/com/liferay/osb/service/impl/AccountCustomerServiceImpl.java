@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.security.auth.PrincipalException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -63,19 +62,6 @@ public class AccountCustomerServiceImpl extends AccountCustomerServiceBaseImpl {
 		}
 
 		return uuids;
-	}
-
-	public void toggleNotifications(long accountCustomerId)
-		throws PortalException {
-
-		AccountCustomer accountCustomer =
-			accountCustomerLocalService.getAccountCustomer(accountCustomerId);
-
-		if (accountCustomer.getUserId() != getUserId()) {
-			throw new PrincipalException();
-		}
-
-		accountCustomerLocalService.toggleNotifications(accountCustomerId);
 	}
 
 }

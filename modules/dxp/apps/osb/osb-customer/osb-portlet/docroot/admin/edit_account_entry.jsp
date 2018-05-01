@@ -530,7 +530,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 			<td>
 
 				<%
-				List<AccountAttachment> accountAttachments = AccountAttachmentServiceUtil.getAccountAttachments(accountEntryId, AccountProjectConstants.DEFAULT_ACCOUNT_PROJECT_ID, AccountAttachmentConstants.TYPE_OEM_INSTRUCTIONS);
+				List<AccountAttachment> accountAttachments = AccountAttachmentLocalServiceUtil.getAccountAttachments(accountEntryId, AccountProjectConstants.DEFAULT_ACCOUNT_PROJECT_ID, AccountAttachmentConstants.TYPE_OEM_INSTRUCTIONS);
 
 				AccountAttachment accountAttachment = null;
 

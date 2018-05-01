@@ -14,16 +14,9 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.osb.model.AccountInformation;
 import com.liferay.osb.service.base.AccountInformationServiceBaseImpl;
-import com.liferay.osb.service.permission.OSBAccountEntryPermission;
-import com.liferay.osb.util.OSBActionKeys;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Alan Zhang
@@ -31,18 +24,4 @@ import java.util.Map;
 @JSONWebService(mode = JSONWebServiceMode.MANUAL)
 public class AccountInformationServiceImpl
 	extends AccountInformationServiceBaseImpl {
-
-	public List<AccountInformation> updateAccountInformation(
-			long accountEntryId, long accountProjectId,
-			Map<Integer, String> data)
-		throws PortalException {
-
-		OSBAccountEntryPermission.check(
-			getPermissionChecker(), accountEntryId,
-			OSBActionKeys.UPDATE_ACCOUNT_INFO);
-
-		return accountInformationLocalService.updateAccountInformation(
-			getUserId(), accountEntryId, accountProjectId, data);
-	}
-
 }

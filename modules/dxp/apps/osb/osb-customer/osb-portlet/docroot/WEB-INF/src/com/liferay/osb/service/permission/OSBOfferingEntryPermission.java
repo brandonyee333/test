@@ -14,11 +14,9 @@
 
 package com.liferay.osb.service.permission;
 
-import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountWorker;
 import com.liferay.osb.model.AccountWorkerConstants;
 import com.liferay.osb.model.OfferingEntry;
-import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
 import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
 import com.liferay.osb.util.OSBActionKeys;
@@ -105,21 +103,6 @@ public class OSBOfferingEntryPermission {
 		}
 
 		if (accountWorker != null) {
-			return true;
-		}
-
-		AccountCustomer accountCustomer = null;
-
-		try {
-			accountCustomer =
-				AccountCustomerLocalServiceUtil.getAccountCustomer(
-					permissionChecker.getUserId(),
-					offeringEntry.getAccountEntryId());
-		}
-		catch (Exception e) {
-		}
-
-		if (accountCustomer != null) {
 			return true;
 		}
 

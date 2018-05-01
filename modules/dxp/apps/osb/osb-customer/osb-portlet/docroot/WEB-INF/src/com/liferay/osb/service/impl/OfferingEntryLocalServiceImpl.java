@@ -146,9 +146,7 @@ public class OfferingEntryLocalServiceImpl
 		OfferingEntry offeringEntry = offeringEntryPersistence.findByPrimaryKey(
 			offeringEntryId);
 
-		offeringEntry = deleteOfferingEntry(offeringEntry);
-
-		return offeringEntry;
+		return deleteOfferingEntry(offeringEntry);
 	}
 
 	@Override

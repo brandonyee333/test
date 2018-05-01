@@ -33,10 +33,6 @@ public class OSBConstants {
 
 	public static long COMPANY_ID = 10157;
 
-	public static final long EXPANDO_OSB_COMPANY_COLUMN_ID = 29224276;
-
-	public static final long EXPANDO_OSB_COUNTRY_COLUMN_ID = 29224278;
-
 	public static long GROUP_CUSTOMER_ID = 2700986;
 
 	public static long GROUP_GLOBAL_ID = 10197;
@@ -86,8 +82,6 @@ public class OSBConstants {
 	public static long SUPPORT_REGION_US_ID = 42356488;
 
 	public static final String TEMP_DIR = "osb/temp/";
-
-	public static long TEXTAREA_MAX_LENGTH = 12000;
 
 	public static long USER_AMOS_FONG_USER_ID = 23463;
 

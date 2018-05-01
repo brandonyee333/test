@@ -76,36 +76,6 @@ public class OSBAccountEntryPermission {
 		catch (Exception e) {
 		}
 
-		if (actionId.equals(OSBActionKeys.ASSIGN_WORKERS)) {
-			if (RoleLocalServiceUtil.hasUserRole(
-					permissionChecker.getUserId(),
-					OSBConstants.ROLE_OSB_ACCOUNT_ADMIN_ID)) {
-
-				return true;
-			}
-
-			return false;
-		}
-
-		if (actionId.equals(OSBActionKeys.UPDATE_ACCOUNT_INFO)) {
-			if (RoleLocalServiceUtil.hasUserRole(
-					permissionChecker.getUserId(),
-					OSBConstants.ROLE_OSB_ACCOUNT_ADMIN_ID)) {
-
-				return true;
-			}
-
-			return false;
-		}
-
-		if (actionId.equals(OSBActionKeys.UPDATE_ACCOUNT_INSTRUCTIONS)) {
-			return false;
-		}
-
-		if (actionId.equals(OSBActionKeys.UPDATE_ACCOUNT_TIER)) {
-			return false;
-		}
-
 		AccountCustomer accountCustomer = null;
 
 		try {

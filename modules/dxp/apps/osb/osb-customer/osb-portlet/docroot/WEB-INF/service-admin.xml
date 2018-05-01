@@ -48,10 +48,6 @@
 			<finder-column name="fileName" />
 			<finder-column name="type" />
 		</finder>
-
-		<!-- References -->
-
-		<reference entity="Organization" package-path="com.liferay.portal" />
 	</entity>
 	<entity local-service="true" name="AccountCustomer" remote-service="true">
 
@@ -80,14 +76,6 @@
 		<finder name="U_AEI" return-type="AccountCustomer">
 			<finder-column name="userId" />
 			<finder-column name="accountEntryId" />
-		</finder>
-		<finder name="U_R" return-type="Collection">
-			<finder-column name="userId" />
-			<finder-column arrayable-operator="OR" name="role" />
-		</finder>
-		<finder name="AEI_NotR" return-type="Collection">
-			<finder-column name="accountEntryId" />
-			<finder-column comparator="!=" name="role" />
 		</finder>
 
 		<!-- References -->
@@ -388,10 +376,6 @@
 			<finder-column name="accountEntryId" />
 			<finder-column name="role" />
 		</finder>
-		<finder name="AEI_NotN" return-type="Collection">
-			<finder-column name="accountEntryId" />
-			<finder-column comparator="!=" name="notifications" />
-		</finder>
 	</entity>
 	<entity local-service="true" name="AuditEntry" remote-service="true">
 
@@ -631,11 +615,6 @@
 			<finder-column name="orderEntryId" />
 			<finder-column name="type" />
 		</finder>
-
-		<!-- References -->
-
-		<reference entity="Mail" package-path="com.liferay.mail" />
-		<reference entity="Company" package-path="com.liferay.portal" />
 	</entity>
 	<entity local-service="true" name="OrderEntry" remote-service="true" uuid="true">
 
@@ -721,11 +700,6 @@
 		<finder name="Code" return-type="PartnerEntry" unique="true">
 			<finder-column name="code" />
 		</finder>
-
-		<!-- References -->
-
-		<reference entity="Address" package-path="com.liferay.portal" />
-		<reference entity="Organization" package-path="com.liferay.portal" />
 	</entity>
 	<entity local-service="true" name="PartnerWorker" remote-service="true">
 
@@ -762,10 +736,6 @@
 		<finder name="PEI_R" return-type="Collection">
 			<finder-column name="partnerEntryId" />
 			<finder-column name="role" />
-		</finder>
-		<finder name="PEI_NotN" return-type="Collection">
-			<finder-column name="partnerEntryId" />
-			<finder-column comparator="!=" name="notifications" />
 		</finder>
 
 		<!-- References -->

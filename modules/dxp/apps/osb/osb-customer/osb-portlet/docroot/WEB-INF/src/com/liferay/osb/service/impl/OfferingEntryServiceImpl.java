@@ -21,56 +21,12 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
-import com.liferay.portal.kernel.util.ListUtil;
-
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * @author Amos Fong
  */
 @JSONWebService(mode = JSONWebServiceMode.MANUAL)
 public class OfferingEntryServiceImpl extends OfferingEntryServiceBaseImpl {
-
-	public List<OfferingEntry> getAccountEntryOfferingEntries(
-			long accountEntryId)
-		throws PortalException {
-
-		List<OfferingEntry> offeringEntries =
-			offeringEntryLocalService.getAccountEntryOfferingEntries(
-				accountEntryId);
-
-		return filterOfferingEntries(offeringEntries);
-	}
-
-	public List<OfferingEntry> getOrderEntryOfferingEntries(long orderEntryId)
-		throws PortalException {
-
-		List<OfferingEntry> offeringEntries =
-			offeringEntryLocalService.getOrderEntryOfferingEntries(
-				orderEntryId);
-
-		return filterOfferingEntries(offeringEntries);
-	}
-
-	public OfferingEntry updateOfferingEntry(
-			long offeringEntryId, long accountEntryId, long orderEntryId,
-			long productEntryId, long supportResponseId,
-			String productDescription, int type, int version, boolean licenses,
-			long licenseLifetime, long maxConcurrentUsers, long maxUsers,
-			boolean supportTickets, long supportLifetime, int sizing,
-			int quantity)
-		throws PortalException {
-
-		OSBOfferingEntryPermission.check(
-			getPermissionChecker(), offeringEntryId, ActionKeys.UPDATE);
-
-		return offeringEntryLocalService.updateOfferingEntry(
-			getUserId(), offeringEntryId, accountEntryId, orderEntryId,
-			productEntryId, supportResponseId, productDescription, type,
-			version, licenses, licenseLifetime, maxConcurrentUsers, maxUsers,
-			supportTickets, supportLifetime, sizing, quantity);
-	}
 
 	public OfferingEntry updateStatus(long offeringEntryId, int status)
 		throws PortalException {
@@ -80,28 +36,6 @@ public class OfferingEntryServiceImpl extends OfferingEntryServiceBaseImpl {
 
 		return offeringEntryLocalService.updateStatus(
 			getUserId(), offeringEntryId, status);
-	}
-
-	protected List<OfferingEntry> filterOfferingEntries(
-			List<OfferingEntry> offeringEntries)
-		throws PortalException {
-
-		List<OfferingEntry> filteredOfferingEntries = ListUtil.copy(
-			offeringEntries);
-
-		Iterator<OfferingEntry> itr = filteredOfferingEntries.iterator();
-
-		while (itr.hasNext()) {
-			OfferingEntry offeringEntry = itr.next();
-
-			if (!OSBOfferingEntryPermission.contains(
-					getPermissionChecker(), offeringEntry, ActionKeys.VIEW)) {
-
-				itr.remove();
-			}
-		}
-
-		return filteredOfferingEntries;
 	}
 
 }
