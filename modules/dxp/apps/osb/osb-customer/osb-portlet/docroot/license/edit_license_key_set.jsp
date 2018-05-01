@@ -156,15 +156,17 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 	displayLicenseKeys = inactiveLicenseKeys;
 	%>
 
-	<liferay-ui:panel
-		collapsible="<%= true %>"
-		defaultState='<%= (inactiveLicenseKeys.size() > 3) ? "closed" : "open" %>'
-		id="inactiveLicenses"
-		persistState="<%= false %>"
-		title="deactivated-licenses"
-	>
-		<%@ include file="/license/view_license_key_set.jspf" %>
-	</liferay-ui:panel>
+	<c:if test="<%= !inactiveLicenseKeys.isEmpty() %>">
+		<liferay-ui:panel
+			collapsible="<%= true %>"
+			defaultState='<%= (inactiveLicenseKeys.size() > 3) ? "closed" : "open" %>'
+			id="inactiveLicenses"
+			persistState="<%= false %>"
+			title="deactivated-licenses"
+		>
+			<%@ include file="/license/view_license_key_set.jspf" %>
+		</liferay-ui:panel>
+	</c:if>
 
 	<c:if test="<%= LicenseUtil.isAggregate(licenseKeySetId) %>">
 		<portlet:resourceURL id="licenseKeySet" var="downloadAggregateLicenseFileURL">
