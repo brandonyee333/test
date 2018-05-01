@@ -519,7 +519,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 								<strong><%= HtmlUtil.escape(licenseKeySet.getName()) %></strong>
 							</c:when>
 							<c:otherwise>
-								<aui:input bean="<%= licenseKeySet %>" model="<%= LicenseKeySet.class %>" name="name" value="<%= accountEntry.getName() %>" />
+								<aui:input bean="<%= licenseKeySet %>" label="" model="<%= LicenseKeySet.class %>" name="name" value="<%= accountEntry.getName() %>" />
 							</c:otherwise>
 						</c:choose>
 					</aui:col>
@@ -529,7 +529,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 							<liferay-ui:message key="owner" />
 						</h2>
 
-						<aui:input model="<%= LicenseKey.class %>" name="owner" value="<%= accountEntry.getName() %>" />
+						<aui:input label="" model="<%= LicenseKey.class %>" name="owner" value="<%= accountEntry.getName() %>" />
 					</aui:col>
 
 					<aui:col md="6">
@@ -537,7 +537,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 							<liferay-ui:message key="description" />
 						</h2>
 
-						<aui:input model="<%= LicenseKey.class %>" name="description" value="<%= accountEntry.getName() %>" />
+						<aui:input label="" model="<%= LicenseKey.class %>" name="description" value="<%= accountEntry.getName() %>" />
 					</aui:col>
 
 					<aui:col md="12">
@@ -616,7 +616,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 									<c:choose>
 										<c:when test="<%= RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_ACCOUNT_ADMIN_ID) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID) %>">
-											<aui:select name="maxHttpSessions">
+											<aui:select label="" name="maxHttpSessions">
 												<aui:option value="5">5</aui:option>
 												<aui:option value="6">6</aui:option>
 												<aui:option value="7">7</aui:option>
