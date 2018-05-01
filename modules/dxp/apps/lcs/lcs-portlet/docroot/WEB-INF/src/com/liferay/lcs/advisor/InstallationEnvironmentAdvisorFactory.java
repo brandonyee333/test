@@ -22,19 +22,21 @@ import com.liferay.portal.kernel.util.OSDetector;
 public class InstallationEnvironmentAdvisorFactory {
 
 	public static InstallationEnvironmentAdvisor getInstance() {
-		if (_installationEnvironmentAdvisor == null) {
-			if (OSDetector.isAIX()) {
-				_installationEnvironmentAdvisor =
-					new AIXInstallationEnvironmentAdvisor();
-			}
-			else if (OSDetector.isLinux()) {
-				_installationEnvironmentAdvisor =
-					new LinuxInstallationEnvironmentAdvisor();
-			}
-			else {
-				_installationEnvironmentAdvisor =
-					new DefaultInstallationEnvironmentAdvisor();
-			}
+		if (_installationEnvironmentAdvisor != null) {
+			return _installationEnvironmentAdvisor;
+		}
+
+		if (OSDetector.isAIX()) {
+			_installationEnvironmentAdvisor =
+				new AIXInstallationEnvironmentAdvisor();
+		}
+		else if (OSDetector.isLinux()) {
+			_installationEnvironmentAdvisor =
+				new LinuxInstallationEnvironmentAdvisor();
+		}
+		else {
+			_installationEnvironmentAdvisor =
+				new DefaultInstallationEnvironmentAdvisor();
 		}
 
 		return _installationEnvironmentAdvisor;

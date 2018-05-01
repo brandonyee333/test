@@ -51,7 +51,7 @@ public class DefaultInstallationEnvironmentAdvisor
 	public Map<String, String> getHardwareMetadata() {
 		Map<String, String> hardwareMetadata = new HashMap<>();
 
-		hardwareMetadata.putAll(getFilesystemMetadata());
+		hardwareMetadata.putAll(getFileSystemMetadata());
 		hardwareMetadata.putAll(getMemoryMetadata());
 		hardwareMetadata.putAll(getProcessorMetadata());
 
@@ -101,7 +101,7 @@ public class DefaultInstallationEnvironmentAdvisor
 		return softwareMetadata;
 	}
 
-	protected Map<String, String> getFilesystemMetadata() {
+	protected Map<String, String> getFileSystemMetadata() {
 		Map<String, String> map = new HashMap<>();
 
 		File[] roots = File.listRoots();
