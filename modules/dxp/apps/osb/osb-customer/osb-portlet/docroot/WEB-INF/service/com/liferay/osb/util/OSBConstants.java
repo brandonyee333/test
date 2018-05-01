@@ -45,8 +45,6 @@ public class OSBConstants {
 
 	public static long GROUP_LICENSE_ID = 2701000;
 
-	public static long OFFERING_DEFINITION_TRIAL_ID = 5638713;
-
 	public static long ORGANIZATION_CUSTOMER_DXP_ID = 2844828;
 
 	public static long ORGANIZATION_CUSTOMER_ID = 1747330;

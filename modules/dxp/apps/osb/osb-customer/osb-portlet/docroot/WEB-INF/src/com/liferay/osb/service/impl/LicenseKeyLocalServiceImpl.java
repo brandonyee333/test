@@ -29,7 +29,6 @@ import com.liferay.osb.exception.LicenseKeyProductVersionException;
 import com.liferay.osb.exception.LicenseKeyRenewException;
 import com.liferay.osb.exception.LicenseKeyServerIdException;
 import com.liferay.osb.exception.LicenseKeyServerInfoException;
-import com.liferay.osb.exception.LicenseKeySingleUseException;
 import com.liferay.osb.exception.MaximumLicenseKeyException;
 import com.liferay.osb.exception.NoSuchLicenseKeyException;
 import com.liferay.osb.exception.OfferingEntryStatusException;
@@ -41,7 +40,6 @@ import com.liferay.osb.model.LicenseEntryConstants;
 import com.liferay.osb.model.LicenseKey;
 import com.liferay.osb.model.LicenseKeyConstants;
 import com.liferay.osb.model.LicenseKeySet;
-import com.liferay.osb.model.OfferingDefinition;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.OfferingEntryGroup;
@@ -257,42 +255,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		licenseKey.setActive(true);
 
 		return licenseKeyPersistence.update(licenseKey);
-	}
-
-	public LicenseKey addSingleUseLicenseKey(
-			String orderUuid, int productVersion, String emailAddress,
-			String fullName, String additionalInfo)
-		throws Exception {
-
-		OrderEntry orderEntry = orderEntryLocalService.getOrderEntry(orderUuid);
-
-		validateSingleUse(orderEntry.getOrderEntryId(), emailAddress);
-
-		OfferingEntry offeringEntry = getSingleUseOfferingEntry(
-			orderEntry.getAccountEntryId(), orderEntry.getOrderEntryId(),
-			productVersion);
-
-		LicenseEntry licenseEntry = licenseEntryLocalService.getLicenseEntry(
-			offeringEntry.getProductEntryId(),
-			LicenseEntryConstants.TYPE_DEVELOPER);
-
-		LicenseKeySet licenseKeySet = getSingleUseLicenseKeySet(
-			orderEntry.getAccountEntryId());
-
-		Calendar cal = Calendar.getInstance();
-
-		LicenseKey licenseKey = addLicenseKey(
-			OSBConstants.USER_DEFAULT_USER_ID, licenseKeySet, null,
-			offeringEntry, licenseEntry, null, productVersion, 0, emailAddress,
-			1, 5, "30-Day Trial License", new String[0], new String[0],
-			new String[0],
-			new String[] {LicenseKeyConstants.SERVER_ID_DEVELOPER},
-			cal.get(Calendar.MONTH), cal.get(Calendar.DATE),
-			cal.get(Calendar.YEAR), additionalInfo, false, true);
-
-		sendRegisteredEmail(emailAddress, fullName, licenseKey);
-
-		return licenseKey;
 	}
 
 	public void buyLicenseKey(long companyId, long userId)
@@ -1339,59 +1301,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		return startDate;
 	}
 
-	protected LicenseKeySet getSingleUseLicenseKeySet(long accountEntryId)
-		throws PortalException {
-
-		List<LicenseKeySet> licenseKeySets =
-			licenseKeySetPersistence.findByU_AEI_N(
-				OSBConstants.USER_DEFAULT_USER_ID, accountEntryId,
-				"Trial Licenses", 0, 1);
-
-		if (!licenseKeySets.isEmpty()) {
-			return licenseKeySets.get(0);
-		}
-		else {
-			return licenseKeySetLocalService.addLicenseKeySet(
-				OSBConstants.USER_DEFAULT_USER_ID, accountEntryId,
-				"Trial Licenses");
-		}
-	}
-
-	protected OfferingEntry getSingleUseOfferingEntry(
-			long accountEntryId, long orderEntryId, int productVersion)
-		throws PortalException {
-
-		List<OfferingEntry> offeringEntries =
-			offeringEntryPersistence.findByU_AEI_OEI_T(
-				OSBConstants.USER_DEFAULT_USER_ID, accountEntryId, orderEntryId,
-				OfferingEntryConstants.TYPE_TRIAL, 0, 1);
-
-		if (!offeringEntries.isEmpty()) {
-			return offeringEntries.get(0);
-		}
-		else {
-			OfferingDefinition offeringDefinition =
-				offeringDefinitionPersistence.findByPrimaryKey(
-					OSBConstants.OFFERING_DEFINITION_TRIAL_ID);
-
-			int majorProductVersion = ProductEntryConstants.getMajorVersion(
-				productVersion);
-
-			return offeringEntryLocalService.addOfferingEntry(
-				OSBConstants.USER_DEFAULT_USER_ID, accountEntryId, orderEntryId,
-				offeringDefinition.getProductEntryId(),
-				offeringDefinition.getSupportResponseId(), "Trial",
-				OfferingEntryConstants.TYPE_TRIAL, majorProductVersion,
-				offeringDefinition.isLicenses(), 2592000000L,
-				offeringDefinition.getMaxConcurrentUsers(),
-				offeringDefinition.getMaxUsers(),
-				offeringDefinition.isSupportTickets(), 60000,
-				OfferingEntryConstants.SIZING_1,
-				offeringDefinition.getQuantity(),
-				OfferingEntryConstants.STATUS_ACTIVE);
-		}
-	}
-
 	protected void sendRegisteredEmail(
 			String emailAddress, String fullName, LicenseKey licenseKey)
 		throws Exception {
@@ -1645,17 +1554,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			else if (!Validator.isDigit(c) && !Validator.isChar(c)) {
 				throw new LicenseKeyServerIdException();
 			}
-		}
-	}
-
-	protected void validateSingleUse(long orderEntryId, String emailAddress)
-		throws PortalException {
-
-		int count = licenseKeyPersistence.countByOEI_O(
-			orderEntryId, emailAddress);
-
-		if (count > 0) {
-			throw new LicenseKeySingleUseException();
 		}
 	}
 

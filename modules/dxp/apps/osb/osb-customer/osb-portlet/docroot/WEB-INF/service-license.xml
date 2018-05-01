@@ -132,10 +132,6 @@
 			<finder-column name="offeringEntryId" />
 			<finder-column name="clusterId" />
 		</finder>
-		<finder name="OEI_O" return-type="Collection">
-			<finder-column name="orderEntryId" />
-			<finder-column name="owner" />
-		</finder>
 		<finder name="PI_SI" return-type="Collection">
 			<finder-column name="productId" />
 			<finder-column name="serverId" />
@@ -183,9 +179,7 @@
 
 		<reference entity="Country" package-path="com.liferay.portal" />
 		<reference entity="ListType" package-path="com.liferay.portal" />
-		<reference entity="Phone" package-path="com.liferay.portal" />
 		<reference entity="Role" package-path="com.liferay.portal" />
-		<reference entity="AssetEntry" package-path="com.liferay.portlet.asset" />
 		<reference entity="ExpandoValue" package-path="com.liferay.portlet.expando" />
 	</entity>
 	<entity local-service="true" name="LicenseKeySet" remote-service="true">
@@ -247,7 +241,6 @@
 		<exception>LicenseKeyServerId</exception>
 		<exception>LicenseKeyServerInfo</exception>
 		<exception>LicenseKeySetName</exception>
-		<exception>LicenseKeySingleUse</exception>
 		<exception>MaximumLicenseKey</exception>
 		<exception>RequiredOfferingDefinition</exception>
 		<exception>RequiredOfferingEntry</exception>

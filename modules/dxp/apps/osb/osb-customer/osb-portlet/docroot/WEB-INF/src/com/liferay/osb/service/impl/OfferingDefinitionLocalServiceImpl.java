@@ -18,7 +18,6 @@ import com.liferay.osb.exception.DuplicateOfferingDefinitionException;
 import com.liferay.osb.exception.RequiredOfferingDefinitionException;
 import com.liferay.osb.model.OfferingDefinition;
 import com.liferay.osb.service.base.OfferingDefinitionLocalServiceBaseImpl;
-import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 
@@ -71,10 +70,6 @@ public class OfferingDefinitionLocalServiceImpl
 	public OfferingDefinition deleteOfferingDefinition(
 			long offeringDefinitionId)
 		throws PortalException {
-
-		if (offeringDefinitionId == OSBConstants.OFFERING_DEFINITION_TRIAL_ID) {
-			throw new RequiredOfferingDefinitionException();
-		}
 
 		if (offeringDefinitionPersistence.containsOfferingBundles(
 				offeringDefinitionId)) {
@@ -149,10 +144,6 @@ public class OfferingDefinitionLocalServiceImpl
 			long supportResponseId, String productDescription, boolean licenses,
 			boolean unlimitedLicenses, boolean supportTickets)
 		throws PortalException {
-
-		if (offeringDefinitionId == OSBConstants.OFFERING_DEFINITION_TRIAL_ID) {
-			throw new RequiredOfferingDefinitionException();
-		}
 
 		productEntryPersistence.findByPrimaryKey(productEntryId);
 

@@ -62,7 +62,6 @@ create index IX_3B9F5AEA on OSB_LicenseKey (licenseKeySetId);
 create index IX_AEC46A56 on OSB_LicenseKey (offeringEntryId, clusterId, active_);
 create index IX_34C23F6D on OSB_LicenseKey (offeringEntryId, complimentary, active_);
 create index IX_8472FBAC on OSB_LicenseKey (offeringEntryId, licenseEntryType[$COLUMN_LENGTH:75$], complimentary, active_);
-create index IX_4C3397AB on OSB_LicenseKey (orderEntryId, owner[$COLUMN_LENGTH:75$]);
 create index IX_DE309610 on OSB_LicenseKey (productEntryName[$COLUMN_LENGTH:75$], serverId[$COLUMN_LENGTH:4000$], active_);
 create index IX_AFB6E8E7 on OSB_LicenseKey (productId[$COLUMN_LENGTH:75$], serverId[$COLUMN_LENGTH:4000$]);
 create index IX_A7B2FB73 on OSB_LicenseKey (userId, accountEntryId);
