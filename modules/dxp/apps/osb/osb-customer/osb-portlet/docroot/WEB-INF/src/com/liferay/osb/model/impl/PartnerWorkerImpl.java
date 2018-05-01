@@ -17,10 +17,7 @@ package com.liferay.osb.model.impl;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.PartnerWorkerConstants;
 import com.liferay.osb.service.PartnerEntryLocalServiceUtil;
-import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 
 /**
  * @author Amos Fong
@@ -41,20 +38,6 @@ public class PartnerWorkerImpl extends PartnerWorkerBaseImpl {
 
 	public String getRoleLabel() {
 		return PartnerWorkerConstants.getRoleLabel(getRole());
-	}
-
-	public boolean isActive() throws PortalException {
-		try {
-			User user = UserLocalServiceUtil.getUser(getUserId());
-
-			if (user.isActive()) {
-				return true;
-			}
-		}
-		catch (NoSuchUserException nsue) {
-		}
-
-		return false;
 	}
 
 }

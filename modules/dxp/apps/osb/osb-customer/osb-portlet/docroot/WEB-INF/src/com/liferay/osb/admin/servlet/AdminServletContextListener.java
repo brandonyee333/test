@@ -16,18 +16,14 @@ package com.liferay.osb.admin.servlet;
 
 import com.liferay.osb.service.permission.OSBCommonPermission;
 import com.liferay.osb.util.OSBConstants;
-import com.liferay.osb.util.OSBCustomerQAInfrastructureUtil;
-import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
-import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
@@ -111,12 +107,6 @@ public class AdminServletContextListener
 		_moduleServiceLifecycleServiceRegistration.unregister();
 
 		/* TODO deploy error,
-		need to fix when we figure out how to set up trial licenses
-			_registerTrialLicenseDestination.unregister(
-			_registerTrialLicenseMessageListener);
-
-		MessageBusUtil.removeDestination(
-			_registerTrialLicenseDestination.getName());*/
 
 		// Auth token
 
@@ -172,26 +162,7 @@ public class AdminServletContextListener
 			ModuleServiceLifecycle.class, new ModuleServiceLifecycle() {},
 			properties);
 
-		// Messaging
-
 		/* TODO deploy error,
-		need to fix when we figure out how to set up trial licenses
-
-		SerialDestination serialDestination = new SerialDestination();
-
-		serialDestination.setName("liferay/osb_portlet_license");
-
-		serialDestination.open();
-
-		_registerTrialLicenseDestination = serialDestination;
-
-		MessageBusUtil.addDestination(_registerTrialLicenseDestination);
-
-		_registerTrialLicenseMessageListener =
-			new RegisterTrialLicenseMessageListener();
-
-		_registerTrialLicenseDestination.register(
-			_registerTrialLicenseMessageListener);*/
 
 		// Developer mode
 
@@ -492,8 +463,6 @@ public class AdminServletContextListener
 	private ServiceRegistration<ModuleServiceLifecycle>
 		_moduleServiceLifecycleServiceRegistration;
 	private String _rabbitMQConsumerKey;
-	private Destination _registerTrialLicenseDestination;
-	private MessageListener _registerTrialLicenseMessageListener;
 	private ServletContext _servletContext;
 
 }

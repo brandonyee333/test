@@ -30,8 +30,6 @@ public class RequiredPartnerEntryException extends PortalException {
 
 	public static final int REFERENCED_PARTNER_WORKER = 3;
 
-	public static final int REFERENCED_TICKET_ENTRY = 4;
-
 	public RequiredPartnerEntryException() {
 	}
 

@@ -84,17 +84,6 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 	<liferay-ui:error exception="<%= PartnerEntryCodeException.class %>" message="please-enter-a-valid-code" />
 	<liferay-ui:error exception="<%= PartnerEntryParentPartnerEntryException.class %>" message="please-enter-a-valid-parent-partner-entry" />
 
-	<liferay-ui:error exception="<%= RequiredPartnerEntryException.class %>">
-
-		<%
-		RequiredPartnerEntryException rpee = (RequiredPartnerEntryException)errorException;
-		%>
-
-		<c:if test="<%= rpee.getType() == RequiredPartnerEntryException.REFERENCED_TICKET_ENTRY %>">
-			<liferay-ui:message key="you-cannot-close-a-partner-that-has-active-tickets-assigned-to-it" />
-		</c:if>
-	</liferay-ui:error>
-
 	<aui:model-context bean="<%= partnerEntry %>" model="<%= PartnerEntry.class %>" />
 
 	<table class="lfr-table">

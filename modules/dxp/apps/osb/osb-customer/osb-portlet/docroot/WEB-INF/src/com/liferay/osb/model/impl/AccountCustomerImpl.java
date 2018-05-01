@@ -42,12 +42,4 @@ public class AccountCustomerImpl extends AccountCustomerBaseImpl {
 		return AccountCustomerConstants.getRoleLabel(getRole());
 	}
 
-	public boolean hasNotificationsOn() {
-		if (getNotifications() == AccountCustomerConstants.NOTIFICATIONS_NONE) {
-			return false;
-		}
-
-		return true;
-	}
-
 }
