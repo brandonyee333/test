@@ -33,7 +33,6 @@ Date lastEnabledDate = calendar.getTime();
 	displayTerms="<%= displayTerms %>"
 	id="toggle_id_license_key_search"
 >
-
 	<aui:row>
 		<aui:col md="4">
 			<h2>
@@ -195,28 +194,29 @@ Date lastEnabledDate = calendar.getTime();
 			<%
 			List<LicenseEntry> licenseEntries = LicenseEntryLocalServiceUtil.getLicenseEntries(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
-			for (int i = 0; i < licenseEntries.size(); i++) {
-				if ((i == 0) || (i % 4 == 0)) {
+			for (int i = 0; i < (licenseEntries.size() / 4) + 1; i++) {
 			%>
 
-					<div class="row">
+				<aui:row>
+
+					<%
+					for (int j = (i * 4); j < ((i * 4) + 4); j++) {
+						if (j >= licenseEntries.size()) {
+							break;
+						}
+
+						LicenseEntry licenseEntry = licenseEntries.get(j);
+					%>
+
+						<aui:input checked="<%= ArrayUtil.contains(displayTerms.getLicenseEntryIds(), licenseEntry.getLicenseEntryId()) %>" label="<%= HtmlUtil.escapeAttribute(licenseEntry.getName()) %>" name="<%= licenseEntry.getName() %>" type="checkbox" value="<%= licenseEntry.getLicenseEntryId() %>" wrapperCssClass="col-sm-3" />
+
+					<%
+					}
+					%>
+
+				</aui:row>
 
 			<%
-				}
-
-				LicenseEntry licenseEntry = licenseEntries.get(i);
-			%>
-
-					<aui:input checked="<%= ArrayUtil.contains(displayTerms.getLicenseEntryIds(), licenseEntry.getLicenseEntryId()) %>" label="<%= HtmlUtil.escapeAttribute(licenseEntry.getName()) %>" name="<%= licenseEntry.getName() %>" type="checkbox" value="<%= licenseEntry.getLicenseEntryId() %>" wrapperCssClass="col-sm-3" />
-
-			<%
-				if ((i == licenseEntries.size() - 1)|| ((i + 1) % 4 == 0)) {
-			%>
-
-					</div>
-
-			<%
-				}
 			}
 			%>
 
@@ -232,28 +232,29 @@ Date lastEnabledDate = calendar.getTime();
 			<%
 			List<ProductEntry> productEntries = ProductEntryLocalServiceUtil.getProductEntries(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
-			for (int i = 0; i < productEntries.size(); i++) {
-				if ((i == 0) || (i % 4 == 0)) {
+			for (int i = 0; i < (productEntries.size() / 4) + 1; i++) {
 			%>
 
-					<div class="row">
+				<aui:row>
+
+					<%
+					for (int j = (i * 4); j < ((i * 4) + 4); j++) {
+						if (j >= productEntries.size()) {
+							break;
+						}
+
+						ProductEntry productEntry = productEntries.get(j);
+					%>
+
+						<aui:input checked="<%= ArrayUtil.contains(displayTerms.getProductEntryIds(), productEntry.getProductEntryId()) %>" label="<%= HtmlUtil.escapeAttribute(productEntry.getName()) %>" name="<%= productEntry.getName() %>" type="checkbox" value="<%= productEntry.getProductEntryId() %>" wrapperCssClass="col-sm-3" />
+
+					<%
+					}
+					%>
+
+				</aui:row>
 
 			<%
-				}
-
-				ProductEntry productEntry = productEntries.get(i);
-			%>
-
-					<aui:input checked="<%= ArrayUtil.contains(displayTerms.getProductEntryIds(), productEntry.getProductEntryId()) %>" label="<%= HtmlUtil.escapeAttribute(productEntry.getName()) %>" name="<%= productEntry.getName() %>" type="checkbox" value="<%= productEntry.getProductEntryId() %>" wrapperCssClass="col-sm-3" />
-
-			<%
-				if ((i == productEntries.size() - 1) || ((i + 1) % 4 == 0)) {
-			%>
-
-					</div>
-
-			<%
-				}
 			}
 			%>
 
@@ -273,28 +274,29 @@ Date lastEnabledDate = calendar.getTime();
 
 			Long[] productVersions = ArrayUtil.toLongArray(displayTerms.getProductVersions());
 
-			for (int i = 0; i < productVersionTypes.size(); i++) {
-				if ((i == 0) || (i % 4 == 0)) {
+			for (int i = 0; i < (productVersionTypes.size() / 4) + 1; i++) {
 			%>
 
-					<div class="row">
+				<aui:row>
 
-			<%
-				}
+					<%
+					for (int j = (i * 4); j < ((i * 4) + 4); j++) {
+						if (j >= productVersionTypes.size()) {
+							break;
+						}
 
-				ListType productVersionType = productVersionTypes.get(i);
-			%>
+						ListType productVersionType = productVersionTypes.get(i);
+					%>
 
 						<aui:input checked="<%= ArrayUtil.contains(productVersions, productVersionType.getListTypeId()) %>" label="<%= HtmlUtil.escapeAttribute(productVersionType.getName()) %>" name="<%= productVersionType.getName() %>" type="checkbox" value="<%= productVersionType.getListTypeId() %>" wrapperCssClass="col-sm-3" />
 
-			<%
-				if ((i == productVersionTypes.size() - 1) || ((i + 1) % 4 == 0)) {
-			%>
+					<%
+					}
+					%>
 
-					</div>
+				</aui:row>
 
 			<%
-				}
 			}
 			%>
 
