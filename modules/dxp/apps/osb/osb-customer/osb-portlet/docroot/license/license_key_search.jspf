@@ -36,19 +36,25 @@ Date lastEnabledDate = calendar.getTime();
 
 	<aui:row>
 		<aui:col md="4">
-			<h2><liferay-ui:message key="project" /></h2>
+			<h2>
+				<liferay-ui:message key="project" />
+			</h2>
 
 			<aui:input label="" name="<%= displayTerms.ACCOUNT_ENTRY_NAME %>" size="20" type="text" value="<%= displayTerms.getAccountEntryName() %>" />
 		</aui:col>
 
 		<aui:col md="4">
-			<h2><liferay-ui:message key="name" /></h2>
+			<h2>
+				<liferay-ui:message key="name" />
+			</h2>
 
 			<aui:input label="" name="<%= displayTerms.LICENSE_KEY_SET_NAME %>" size="20" type="text" value="<%= displayTerms.getLicenseKeySetName() %>" />
 		</aui:col>
 
 		<aui:col md="4">
-			<h2><liferay-ui:message key="owner" /></h2>
+			<h2>
+				<liferay-ui:message key="owner" />
+			</h2>
 
 			<aui:input label="" name="<%= displayTerms.OWNER %>" size="20" type="text" value="<%= displayTerms.getOwner() %>" />
 		</aui:col>
@@ -56,19 +62,25 @@ Date lastEnabledDate = calendar.getTime();
 
 	<aui:row>
 		<aui:col md="4">
-			<h2><liferay-ui:message key="description" /></h2>
+			<h2>
+				<liferay-ui:message key="description" />
+			</h2>
 
 			<aui:input label="" name="<%= displayTerms.DESCRIPTION %>" size="20" type="text" value="<%= displayTerms.getDescription() %>" />
 		</aui:col>
 
 		<aui:col md="4">
-			<h2><liferay-ui:message key="host-name" /></h2>
+			<h2>
+				<liferay-ui:message key="host-name" />
+			</h2>
 
 			<aui:input label="" name="<%= displayTerms.HOST_NAME %>" size="20" type="text" value="<%= displayTerms.getHostName() %>" />
 		</aui:col>
 
 		<aui:col md="4">
-			<h2><liferay-ui:message key="ip-address" /></h2>
+			<h2>
+				<liferay-ui:message key="ip-address" />
+			</h2>
 
 			<aui:input label="" name="<%= displayTerms.IP_ADDRESS %>" size="20" type="text" value="<%= displayTerms.getIpAddress() %>" />
 		</aui:col>
@@ -76,19 +88,25 @@ Date lastEnabledDate = calendar.getTime();
 
 	<aui:row>
 		<aui:col md="4">
-			<h2><liferay-ui:message key="mac-address" /></h2>
+			<h2>
+				<liferay-ui:message key="mac-address" />
+			</h2>
 
 			<aui:input label="" name="<%= displayTerms.MAC_ADDRESS %>" size="20" type="text" value="<%= displayTerms.getMacAddress() %>" />
 		</aui:col>
 
 		<aui:col md="4">
-			<h2><liferay-ui:message key="server-id" /></h2>
+			<h2>
+				<liferay-ui:message key="server-id" />
+			</h2>
 
 			<aui:input label="" name="<%= displayTerms.SERVER_ID %>" size="20" type="text" value="<%= displayTerms.getServerId() %>" />
 		</aui:col>
 
 		<aui:col md="4">
-			<h2><liferay-ui:message key="key" /></h2>
+			<h2>
+				<liferay-ui:message key="key" />
+			</h2>
 
 			<aui:input label="" name="<%= displayTerms.KEY %>" size="20" type="text" value="<%= displayTerms.getKey() %>" />
 		</aui:col>
@@ -96,7 +114,9 @@ Date lastEnabledDate = calendar.getTime();
 
 	<aui:row>
 		<aui:col md="4">
-			<h2><liferay-ui:message key="created-by" /></h2>
+			<h2>
+				<liferay-ui:message key="created-by" />
+			</h2>
 
 			<aui:select label="" name="<%= displayTerms.CREATE_USER_ID %>">
 				<aui:option value="" />
@@ -123,7 +143,9 @@ Date lastEnabledDate = calendar.getTime();
 		</aui:col>
 
 		<aui:col md="4">
-			<h2><liferay-ui:message key="last-edited-by" /></h2>
+			<h2>
+				<liferay-ui:message key="last-edited-by" />
+			</h2>
 
 			<aui:select label="" name="<%= displayTerms.MODIFIED_USER_ID %>">
 				<aui:option value="" />
@@ -151,7 +173,9 @@ Date lastEnabledDate = calendar.getTime();
 
 		<c:if test="<%= licenseAdmin %>">
 			<aui:col md="4">
-				<h2><liferay-ui:message key="active" /></h2>
+				<h2>
+					<liferay-ui:message key="active" />
+				</h2>
 
 				<aui:select label="" name="<%= displayTerms.ACTIVE %>">
 					<aui:option />
@@ -164,16 +188,18 @@ Date lastEnabledDate = calendar.getTime();
 
 	<aui:row>
 		<aui:col md="12">
-			<h2 class="license-input-heading"><liferay-ui:message key="license-type" /></h2>
+			<h2 class="license-input-heading">
+				<liferay-ui:message key="license-type" />
+			</h2>
 
 			<%
 			List<LicenseEntry> licenseEntries = LicenseEntryLocalServiceUtil.getLicenseEntries(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
 			for (int i = 0; i < licenseEntries.size(); i++) {
-				if((i == 0) || (i % 4 == 0)) {
+				if ((i == 0) || (i % 4 == 0)) {
 			%>
 
-			<div class="row">
+					<aui:row>
 
 			<%
 				}
@@ -181,13 +207,13 @@ Date lastEnabledDate = calendar.getTime();
 				LicenseEntry licenseEntry = licenseEntries.get(i);
 			%>
 
-				<aui:input checked="<%= ArrayUtil.contains(displayTerms.getLicenseEntryIds(), licenseEntry.getLicenseEntryId()) %>" label="<%= HtmlUtil.escapeAttribute(licenseEntry.getName()) %>" name="<%= licenseEntry.getName() %>" type="checkbox" value="<%= licenseEntry.getLicenseEntryId() %>" wrapperCssClass="col-sm-3" />
+					<aui:input checked="<%= ArrayUtil.contains(displayTerms.getLicenseEntryIds(), licenseEntry.getLicenseEntryId()) %>" label="<%= HtmlUtil.escapeAttribute(licenseEntry.getName()) %>" name="<%= licenseEntry.getName() %>" type="checkbox" value="<%= licenseEntry.getLicenseEntryId() %>" wrapperCssClass="col-sm-3" />
 
 			<%
-				if((i == licenseEntries.size() - 1)|| ((i + 1) % 4 == 0)) {
+				if ((i == licenseEntries.size() - 1)|| ((i + 1) % 4 == 0)) {
 			%>
 
-			</div>
+					</aui:row>
 
 			<%
 				}
@@ -199,16 +225,18 @@ Date lastEnabledDate = calendar.getTime();
 
 	<aui:row>
 		<aui:col md="12">
-			<h2 class="license-input-heading"><liferay-ui:message key="product" /></h2>
+			<h2 class="license-input-heading">
+				<liferay-ui:message key="product" />
+			</h2>
 
 			<%
 			List<ProductEntry> productEntries = ProductEntryLocalServiceUtil.getProductEntries(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
 			for (int i = 0; i < productEntries.size(); i++) {
-				if((i == 0) || (i % 4 == 0)) {
+				if ((i == 0) || (i % 4 == 0)) {
 			%>
 
-			<div class="row">
+					<aui:row>
 
 			<%
 				}
@@ -216,13 +244,13 @@ Date lastEnabledDate = calendar.getTime();
 				ProductEntry productEntry = productEntries.get(i);
 			%>
 
-				<aui:input checked="<%= ArrayUtil.contains(displayTerms.getProductEntryIds(), productEntry.getProductEntryId()) %>" label="<%= HtmlUtil.escapeAttribute(productEntry.getName()) %>" name="<%= productEntry.getName() %>" type="checkbox" value="<%= productEntry.getProductEntryId() %>" wrapperCssClass="col-sm-3" />
+					<aui:input checked="<%= ArrayUtil.contains(displayTerms.getProductEntryIds(), productEntry.getProductEntryId()) %>" label="<%= HtmlUtil.escapeAttribute(productEntry.getName()) %>" name="<%= productEntry.getName() %>" type="checkbox" value="<%= productEntry.getProductEntryId() %>" wrapperCssClass="col-sm-3" />
 
 			<%
-				if((i == productEntries.size() - 1) || ((i + 1) % 4 == 0)) {
+				if ((i == productEntries.size() - 1) || ((i + 1) % 4 == 0)) {
 			%>
 
-			</div>
+					</aui:row>
 
 			<%
 				}
@@ -234,7 +262,9 @@ Date lastEnabledDate = calendar.getTime();
 
 	<aui:row>
 		<aui:col md="12">
-			<h2 class="license-input-heading"><liferay-ui:message key="product-version" /></h2>
+			<h2 class="license-input-heading">
+				<liferay-ui:message key="product-version" />
+			</h2>
 
 			<%
 			List<ListType> productVersionTypes = ListUtil.copy(ListTypeServiceUtil.getListTypes(ProductEntryConstants.LIST_TYPE_PORTAL_ALL_VERSIONS));
@@ -244,10 +274,10 @@ Date lastEnabledDate = calendar.getTime();
 			Long[] productVersions = ArrayUtil.toLongArray(displayTerms.getProductVersions());
 
 			for (int i = 0; i < productVersionTypes.size(); i++) {
-				if((i == 0) || (i % 4 == 0)) {
+				if ((i == 0) || (i % 4 == 0)) {
 			%>
 
-			<div class="row">
+					<aui:row>
 
 			<%
 				}
@@ -255,13 +285,13 @@ Date lastEnabledDate = calendar.getTime();
 				ListType productVersionType = productVersionTypes.get(i);
 			%>
 
-				<aui:input checked="<%= ArrayUtil.contains(productVersions, productVersionType.getListTypeId()) %>" label="<%= HtmlUtil.escapeAttribute(productVersionType.getName()) %>" name="<%= productVersionType.getName() %>" type="checkbox" value="<%= productVersionType.getListTypeId() %>" wrapperCssClass="col-sm-3" />
+						<aui:input checked="<%= ArrayUtil.contains(productVersions, productVersionType.getListTypeId()) %>" label="<%= HtmlUtil.escapeAttribute(productVersionType.getName()) %>" name="<%= productVersionType.getName() %>" type="checkbox" value="<%= productVersionType.getListTypeId() %>" wrapperCssClass="col-sm-3" />
 
 			<%
-				if((i == productVersionTypes.size() - 1) || ((i + 1) % 4 == 0)) {
+				if ((i == productVersionTypes.size() - 1) || ((i + 1) % 4 == 0)) {
 			%>
 
-			</div>
+					</aui:row>
 
 			<%
 				}
@@ -273,7 +303,9 @@ Date lastEnabledDate = calendar.getTime();
 
 	<aui:row>
 		<aui:col md="6">
-			<h2 class="license-input-heading"><liferay-ui:message key="created-between" /></h2>
+			<h2 class="license-input-heading">
+				<liferay-ui:message key="created-between" />
+			</h2>
 
 			<liferay-ui:message key="begin-date" />
 
@@ -309,7 +341,9 @@ Date lastEnabledDate = calendar.getTime();
 		</aui:col>
 
 		<aui:col md="6">
-			<h2 class="license-input-heading"><liferay-ui:message key="modified-between" /></h2>
+			<h2 class="license-input-heading">
+				<liferay-ui:message key="modified-between" />
+			</h2>
 
 			<liferay-ui:message key="begin-date" />
 
@@ -347,7 +381,9 @@ Date lastEnabledDate = calendar.getTime();
 
 	<aui:row>
 		<aui:col md="6">
-			<h2 class="license-input-heading"><liferay-ui:message key="started-between" /></h2>
+			<h2 class="license-input-heading">
+				<liferay-ui:message key="started-between" />
+			</h2>
 
 			<liferay-ui:message key="begin-date" />
 
@@ -383,7 +419,9 @@ Date lastEnabledDate = calendar.getTime();
 		</aui:col>
 
 		<aui:col md="6">
-			<h2 class="license-input-heading"><liferay-ui:message key="expires-between" /></h2>
+			<h2 class="license-input-heading">
+				<liferay-ui:message key="expires-between" />
+			</h2>
 
 			<liferay-ui:message key="begin-date" />
 

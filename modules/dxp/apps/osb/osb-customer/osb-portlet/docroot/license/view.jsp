@@ -34,13 +34,13 @@ pageContext.setAttribute("portletURL", portletURL);
 %>
 
 <div class="container-fluid-1280">
-	<div class="row">
+	<aui:row>
 		<h1 class="col-md-12 section-heading">
 			<liferay-ui:message key="license-management" />
 		</h1>
-	</div>
+	</aui:row>
 
-	<div class="row">
+	<aui:row>
 		<c:choose>
 			<c:when test="<%= liferayIncOrg %>">
 				<%@ include file="/license/view_portal_worker.jspf" %>
@@ -49,5 +49,5 @@ pageContext.setAttribute("portletURL", portletURL);
 				<%@ include file="/license/view_portal_customer.jspf" %>
 			</c:otherwise>
 		</c:choose>
-	</div>
+	</aui:row>
 </div>

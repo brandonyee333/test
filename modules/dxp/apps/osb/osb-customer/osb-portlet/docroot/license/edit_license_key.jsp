@@ -157,7 +157,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 </portlet:actionURL>
 
 <div class="container-fluid-1280">
-	<div class="row">
+	<aui:row>
 		<aui:form action="<%= updateLicenseKeyURL %>" cssClass="col-md-12" method="post" onSubmit='<%= "submitForm(document." + renderResponse.getNamespace() + "fm);" %>'>
 			<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 			<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
@@ -825,7 +825,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 				</c:otherwise>
 			</c:choose>
 		</aui:form>
-	</div>
+	</aui:row>
 </div>
 
 <aui:script>

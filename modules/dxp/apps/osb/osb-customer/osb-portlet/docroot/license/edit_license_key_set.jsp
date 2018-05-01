@@ -78,7 +78,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 </portlet:actionURL>
 
 <div class="container-fluid-1280">
-	<div class="row">
+	<aui:row>
 		<aui:form action="<%= updateLicenseKeySetURL %>" cssClass="col-md-12" method="post" onSubmit="submitForm(this); return false;">
 			<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 			<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
@@ -241,7 +241,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 				<aui:button onClick="<%= backURL %>" value="cancel" />
 			</div>
 		</aui:form>
-	</div>
+	</aui:row>
 </div>
 
 <aui:script>

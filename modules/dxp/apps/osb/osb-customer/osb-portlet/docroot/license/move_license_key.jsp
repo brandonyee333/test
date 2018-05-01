@@ -47,7 +47,7 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 </portlet:actionURL>
 
 <div class="container-fluid-1280">
-	<div class="row">
+	<aui:row>
 		<aui:form action="<%= updateLicenseKeyURL %>" cssClass="col-md-12" method="post">
 			<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 			<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
@@ -162,5 +162,5 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 				/>
 			</liferay-ui:search-container>
 		</aui:form>
-	</div>
+	</aui:row>
 </div>

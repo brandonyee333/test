@@ -36,7 +36,7 @@ String productEntryName = licenseKey.getProductEntryName();
 </portlet:actionURL>
 
 <div class="container-fluid-1280">
-	<div class="row">
+	<aui:row>
 		<aui:form action="<%= updateLicenseKeyURL %>" cssClass="col-md-12" method="post">
 			<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 			<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
@@ -238,5 +238,5 @@ String productEntryName = licenseKey.getProductEntryName();
 
 			<aui:button href="<%= backURL %>" value="cancel" />
 		</aui:form>
-	</div>
+	</aui:row>
 </div>
