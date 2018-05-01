@@ -61,7 +61,4 @@ public interface PartnerWorker extends PartnerWorkerModel, PersistedModel {
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public java.lang.String getRoleLabel();
-
-	public boolean isActive()
-		throws com.liferay.portal.kernel.exception.PortalException;
 }

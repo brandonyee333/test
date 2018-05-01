@@ -61,6 +61,4 @@ public interface AccountCustomer extends AccountCustomerModel, PersistedModel {
 	public java.lang.String getNotificationsLabel();
 
 	public java.lang.String getRoleLabel();
-
-	public boolean hasNotificationsOn();
 }

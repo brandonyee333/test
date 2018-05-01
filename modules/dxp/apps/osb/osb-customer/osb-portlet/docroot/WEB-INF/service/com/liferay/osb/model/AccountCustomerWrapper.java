@@ -116,11 +116,6 @@ public class AccountCustomerWrapper implements AccountCustomer,
 	}
 
 	@Override
-	public boolean hasNotificationsOn() {
-		return _accountCustomer.hasNotificationsOn();
-	}
-
-	@Override
 	public boolean isCachedModel() {
 		return _accountCustomer.isCachedModel();
 	}

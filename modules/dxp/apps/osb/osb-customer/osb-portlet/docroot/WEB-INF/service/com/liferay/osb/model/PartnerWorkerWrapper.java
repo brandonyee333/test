@@ -116,12 +116,6 @@ public class PartnerWorkerWrapper implements PartnerWorker,
 	}
 
 	@Override
-	public boolean isActive()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _partnerWorker.isActive();
-	}
-
-	@Override
 	public boolean isCachedModel() {
 		return _partnerWorker.isCachedModel();
 	}

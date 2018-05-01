@@ -316,25 +316,6 @@ public class PartnerWorkerClp extends BaseModelImpl<PartnerWorker>
 		}
 	}
 
-	@Override
-	public boolean isActive() {
-		try {
-			String methodName = "isActive";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			Boolean returnObj = (Boolean)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
 	public BaseModel<?> getPartnerWorkerRemoteModel() {
 		return _partnerWorkerRemoteModel;
 	}

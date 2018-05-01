@@ -100,15 +100,6 @@ public class LicenseKeyLocalServiceWrapper implements LicenseKeyLocalService,
 			startDateMonth, startDateDay, startDateYear, complimentary, active);
 	}
 
-	@Override
-	public com.liferay.osb.model.LicenseKey addSingleUseLicenseKey(
-		java.lang.String orderUuid, int productVersion,
-		java.lang.String emailAddress, java.lang.String fullName,
-		java.lang.String additionalInfo) throws java.lang.Exception {
-		return _licenseKeyLocalService.addSingleUseLicenseKey(orderUuid,
-			productVersion, emailAddress, fullName, additionalInfo);
-	}
-
 	/**
 	* Creates a new license key with the primary key. Does not add the license key to the database.
 	*

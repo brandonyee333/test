@@ -108,11 +108,6 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 		int startDateYear, boolean complimentary, boolean active)
 		throws PortalException;
 
-	public LicenseKey addSingleUseLicenseKey(java.lang.String orderUuid,
-		int productVersion, java.lang.String emailAddress,
-		java.lang.String fullName, java.lang.String additionalInfo)
-		throws java.lang.Exception;
-
 	/**
 	* Creates a new license key with the primary key. Does not add the license key to the database.
 	*

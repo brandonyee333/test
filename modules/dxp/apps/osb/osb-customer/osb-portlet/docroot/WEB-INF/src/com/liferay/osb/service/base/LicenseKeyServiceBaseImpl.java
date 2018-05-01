@@ -14,8 +14,6 @@
 
 package com.liferay.osb.service.base;
 
-import com.liferay.asset.kernel.service.persistence.AssetEntryPersistence;
-
 import com.liferay.expando.kernel.service.persistence.ExpandoValuePersistence;
 
 import com.liferay.osb.model.LicenseKey;
@@ -67,7 +65,6 @@ import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.CountryPersistence;
 import com.liferay.portal.kernel.service.persistence.ListTypePersistence;
-import com.liferay.portal.kernel.service.persistence.PhonePersistence;
 import com.liferay.portal.kernel.service.persistence.RolePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -2005,62 +2002,6 @@ public abstract class LicenseKeyServiceBaseImpl extends BaseServiceImpl
 	}
 
 	/**
-	 * Returns the phone local service.
-	 *
-	 * @return the phone local service
-	 */
-	public com.liferay.portal.kernel.service.PhoneLocalService getPhoneLocalService() {
-		return phoneLocalService;
-	}
-
-	/**
-	 * Sets the phone local service.
-	 *
-	 * @param phoneLocalService the phone local service
-	 */
-	public void setPhoneLocalService(
-		com.liferay.portal.kernel.service.PhoneLocalService phoneLocalService) {
-		this.phoneLocalService = phoneLocalService;
-	}
-
-	/**
-	 * Returns the phone remote service.
-	 *
-	 * @return the phone remote service
-	 */
-	public com.liferay.portal.kernel.service.PhoneService getPhoneService() {
-		return phoneService;
-	}
-
-	/**
-	 * Sets the phone remote service.
-	 *
-	 * @param phoneService the phone remote service
-	 */
-	public void setPhoneService(
-		com.liferay.portal.kernel.service.PhoneService phoneService) {
-		this.phoneService = phoneService;
-	}
-
-	/**
-	 * Returns the phone persistence.
-	 *
-	 * @return the phone persistence
-	 */
-	public PhonePersistence getPhonePersistence() {
-		return phonePersistence;
-	}
-
-	/**
-	 * Sets the phone persistence.
-	 *
-	 * @param phonePersistence the phone persistence
-	 */
-	public void setPhonePersistence(PhonePersistence phonePersistence) {
-		this.phonePersistence = phonePersistence;
-	}
-
-	/**
 	 * Returns the resource local service.
 	 *
 	 * @return the resource local service
@@ -2189,63 +2130,6 @@ public abstract class LicenseKeyServiceBaseImpl extends BaseServiceImpl
 	 */
 	public void setUserPersistence(UserPersistence userPersistence) {
 		this.userPersistence = userPersistence;
-	}
-
-	/**
-	 * Returns the asset entry local service.
-	 *
-	 * @return the asset entry local service
-	 */
-	public com.liferay.asset.kernel.service.AssetEntryLocalService getAssetEntryLocalService() {
-		return assetEntryLocalService;
-	}
-
-	/**
-	 * Sets the asset entry local service.
-	 *
-	 * @param assetEntryLocalService the asset entry local service
-	 */
-	public void setAssetEntryLocalService(
-		com.liferay.asset.kernel.service.AssetEntryLocalService assetEntryLocalService) {
-		this.assetEntryLocalService = assetEntryLocalService;
-	}
-
-	/**
-	 * Returns the asset entry remote service.
-	 *
-	 * @return the asset entry remote service
-	 */
-	public com.liferay.asset.kernel.service.AssetEntryService getAssetEntryService() {
-		return assetEntryService;
-	}
-
-	/**
-	 * Sets the asset entry remote service.
-	 *
-	 * @param assetEntryService the asset entry remote service
-	 */
-	public void setAssetEntryService(
-		com.liferay.asset.kernel.service.AssetEntryService assetEntryService) {
-		this.assetEntryService = assetEntryService;
-	}
-
-	/**
-	 * Returns the asset entry persistence.
-	 *
-	 * @return the asset entry persistence
-	 */
-	public AssetEntryPersistence getAssetEntryPersistence() {
-		return assetEntryPersistence;
-	}
-
-	/**
-	 * Sets the asset entry persistence.
-	 *
-	 * @param assetEntryPersistence the asset entry persistence
-	 */
-	public void setAssetEntryPersistence(
-		AssetEntryPersistence assetEntryPersistence) {
-		this.assetEntryPersistence = assetEntryPersistence;
 	}
 
 	/**
@@ -2579,12 +2463,6 @@ public abstract class LicenseKeyServiceBaseImpl extends BaseServiceImpl
 	protected com.liferay.portal.kernel.service.ListTypeService listTypeService;
 	@BeanReference(type = ListTypePersistence.class)
 	protected ListTypePersistence listTypePersistence;
-	@BeanReference(type = com.liferay.portal.kernel.service.PhoneLocalService.class)
-	protected com.liferay.portal.kernel.service.PhoneLocalService phoneLocalService;
-	@BeanReference(type = com.liferay.portal.kernel.service.PhoneService.class)
-	protected com.liferay.portal.kernel.service.PhoneService phoneService;
-	@BeanReference(type = PhonePersistence.class)
-	protected PhonePersistence phonePersistence;
 	@BeanReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
 	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
 	@BeanReference(type = com.liferay.portal.kernel.service.RoleLocalService.class)
@@ -2599,12 +2477,6 @@ public abstract class LicenseKeyServiceBaseImpl extends BaseServiceImpl
 	protected com.liferay.portal.kernel.service.UserService userService;
 	@BeanReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
-	@BeanReference(type = com.liferay.asset.kernel.service.AssetEntryLocalService.class)
-	protected com.liferay.asset.kernel.service.AssetEntryLocalService assetEntryLocalService;
-	@BeanReference(type = com.liferay.asset.kernel.service.AssetEntryService.class)
-	protected com.liferay.asset.kernel.service.AssetEntryService assetEntryService;
-	@BeanReference(type = AssetEntryPersistence.class)
-	protected AssetEntryPersistence assetEntryPersistence;
 	@BeanReference(type = com.liferay.expando.kernel.service.ExpandoValueLocalService.class)
 	protected com.liferay.expando.kernel.service.ExpandoValueLocalService expandoValueLocalService;
 	@BeanReference(type = com.liferay.expando.kernel.service.ExpandoValueService.class)

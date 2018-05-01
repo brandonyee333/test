@@ -317,25 +317,6 @@ public class AccountCustomerClp extends BaseModelImpl<AccountCustomer>
 		}
 	}
 
-	@Override
-	public boolean hasNotificationsOn() {
-		try {
-			String methodName = "hasNotificationsOn";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			Boolean returnObj = (Boolean)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
 	public BaseModel<?> getAccountCustomerRemoteModel() {
 		return _accountCustomerRemoteModel;
 	}

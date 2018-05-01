@@ -182,14 +182,12 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 	public static final long LICENSEENTRYTYPE_COLUMN_BITMASK = 32L;
 	public static final long LICENSEKEYSETID_COLUMN_BITMASK = 64L;
 	public static final long OFFERINGENTRYID_COLUMN_BITMASK = 128L;
-	public static final long ORDERENTRYID_COLUMN_BITMASK = 256L;
-	public static final long OWNER_COLUMN_BITMASK = 512L;
-	public static final long PRODUCTENTRYNAME_COLUMN_BITMASK = 1024L;
-	public static final long PRODUCTID_COLUMN_BITMASK = 2048L;
-	public static final long SERVERID_COLUMN_BITMASK = 4096L;
-	public static final long USERID_COLUMN_BITMASK = 8192L;
-	public static final long UUID_COLUMN_BITMASK = 16384L;
-	public static final long LICENSEKEYID_COLUMN_BITMASK = 32768L;
+	public static final long PRODUCTENTRYNAME_COLUMN_BITMASK = 256L;
+	public static final long PRODUCTID_COLUMN_BITMASK = 512L;
+	public static final long SERVERID_COLUMN_BITMASK = 1024L;
+	public static final long USERID_COLUMN_BITMASK = 2048L;
+	public static final long UUID_COLUMN_BITMASK = 4096L;
+	public static final long LICENSEKEYID_COLUMN_BITMASK = 8192L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -851,19 +849,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 
 	@Override
 	public void setOrderEntryId(long orderEntryId) {
-		_columnBitmask |= ORDERENTRYID_COLUMN_BITMASK;
-
-		if (!_setOriginalOrderEntryId) {
-			_setOriginalOrderEntryId = true;
-
-			_originalOrderEntryId = _orderEntryId;
-		}
-
 		_orderEntryId = orderEntryId;
-	}
-
-	public long getOriginalOrderEntryId() {
-		return _originalOrderEntryId;
 	}
 
 	@JSON
@@ -1106,17 +1092,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 
 	@Override
 	public void setOwner(String owner) {
-		_columnBitmask |= OWNER_COLUMN_BITMASK;
-
-		if (_originalOwner == null) {
-			_originalOwner = _owner;
-		}
-
 		_owner = owner;
-	}
-
-	public String getOriginalOwner() {
-		return GetterUtil.getString(_originalOwner);
 	}
 
 	@JSON
@@ -1531,10 +1507,6 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 
 		licenseKeyModelImpl._setOriginalAccountEntryId = false;
 
-		licenseKeyModelImpl._originalOrderEntryId = licenseKeyModelImpl._orderEntryId;
-
-		licenseKeyModelImpl._setOriginalOrderEntryId = false;
-
 		licenseKeyModelImpl._originalOfferingEntryId = licenseKeyModelImpl._offeringEntryId;
 
 		licenseKeyModelImpl._setOriginalOfferingEntryId = false;
@@ -1548,8 +1520,6 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 		licenseKeyModelImpl._originalClusterId = licenseKeyModelImpl._clusterId;
 
 		licenseKeyModelImpl._setOriginalClusterId = false;
-
-		licenseKeyModelImpl._originalOwner = licenseKeyModelImpl._owner;
 
 		licenseKeyModelImpl._originalServerId = licenseKeyModelImpl._serverId;
 
@@ -2085,8 +2055,6 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 	private long _originalAccountEntryId;
 	private boolean _setOriginalAccountEntryId;
 	private long _orderEntryId;
-	private long _originalOrderEntryId;
-	private boolean _setOriginalOrderEntryId;
 	private long _offeringEntryId;
 	private long _originalOfferingEntryId;
 	private boolean _setOriginalOfferingEntryId;
@@ -2108,7 +2076,6 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 	private long _originalClusterId;
 	private boolean _setOriginalClusterId;
 	private String _owner;
-	private String _originalOwner;
 	private int _maxServers;
 	private long _maxConcurrentUsers;
 	private long _maxUsers;

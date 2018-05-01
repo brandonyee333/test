@@ -1991,12 +1991,6 @@ public class ClpSerializer {
 		}
 
 		if (className.equals(
-					"com.liferay.osb.exception.LicenseKeySingleUseException")) {
-			return new com.liferay.osb.exception.LicenseKeySingleUseException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
 					"com.liferay.osb.exception.MaximumLicenseKeyException")) {
 			return new com.liferay.osb.exception.MaximumLicenseKeyException(throwable.getMessage(),
 				throwable.getCause());

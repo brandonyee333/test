@@ -108,15 +108,6 @@ public class LicenseKeyLocalServiceUtil {
 			startDateDay, startDateYear, complimentary, active);
 	}
 
-	public static com.liferay.osb.model.LicenseKey addSingleUseLicenseKey(
-		java.lang.String orderUuid, int productVersion,
-		java.lang.String emailAddress, java.lang.String fullName,
-		java.lang.String additionalInfo) throws java.lang.Exception {
-		return getService()
-				   .addSingleUseLicenseKey(orderUuid, productVersion,
-			emailAddress, fullName, additionalInfo);
-	}
-
 	/**
 	* Creates a new license key with the primary key. Does not add the license key to the database.
 	*
