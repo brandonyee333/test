@@ -790,25 +790,6 @@ public class AccountEntryLocalServiceImpl
 		return accountEntryIds;
 	}
 
-	public List<String> getUserAccountEntryNames(long userId)
-		throws PortalException {
-
-		LinkedHashMap params = new LinkedHashMap();
-
-		params.put("accountCustomer", userId);
-
-		List<AccountEntry> accountEntries = accountEntryFinder.findByKeywords(
-			null, params, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
-
-		List<String> accountEntryNames = new ArrayList<>(accountEntries.size());
-
-		for (AccountEntry accountEntry : accountEntries) {
-			accountEntryNames.add(accountEntry.getName());
-		}
-
-		return accountEntryNames;
-	}
-
 	public List<AccountEntry> getUserActiveAccountEntries(
 		long userId, int start, int end) {
 
