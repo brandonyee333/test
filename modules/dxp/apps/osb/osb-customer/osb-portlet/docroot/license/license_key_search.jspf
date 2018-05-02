@@ -194,7 +194,7 @@ Date lastEnabledDate = calendar.getTime();
 			<%
 			List<LicenseEntry> licenseEntries = LicenseEntryLocalServiceUtil.getLicenseEntries(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
-			for (int i = 0; i < (licenseEntries.size() / 4) + 1; i++) {
+			for (int i = 0; i <= (licenseEntries.size() / 4); i++) {
 			%>
 
 				<aui:row>
@@ -232,7 +232,7 @@ Date lastEnabledDate = calendar.getTime();
 			<%
 			List<ProductEntry> productEntries = ProductEntryLocalServiceUtil.getProductEntries(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
-			for (int i = 0; i < (productEntries.size() / 4) + 1; i++) {
+			for (int i = 0; i <= (productEntries.size() / 4); i++) {
 			%>
 
 				<aui:row>
@@ -274,7 +274,7 @@ Date lastEnabledDate = calendar.getTime();
 
 			Long[] productVersions = ArrayUtil.toLongArray(displayTerms.getProductVersions());
 
-			for (int i = 0; i < (productVersionTypes.size() / 4) + 1; i++) {
+			for (int i = 0; i <= (productVersionTypes.size() / 4); i++) {
 			%>
 
 				<aui:row>
