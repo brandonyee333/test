@@ -32,11 +32,9 @@ class IncidentModelSubIndex extends JSXComponent {
 
 		const {entryId, fetchIncidentAffiliations, model} = props;
 
-		const singularLabel = WatsonConstants.inputConfig[model].singularLabel;
+		const editModelMethod = props[`edit${formatModelName(model, true)}`];
 
-		const editModelMethod = props[`edit${formatModelName(singularLabel, true)}`];
-
-		if (entryId) {
+		if (entryId && editModelMethod) {
 			editModelMethod(entryId);
 			fetchIncidentAffiliations({id: entryId, model});
 		}
