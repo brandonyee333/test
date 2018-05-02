@@ -2287,7 +2287,7 @@
 						controlledInputs: [
 							'dateAccepted'
 						],
-						dependentKey: '${WatsonListTypeConstants.PERSON_TYPE_VICTIM}',
+						dependentKey: '${WatsonListTypeConstants.PERSON_TYPE_VICTIM} ${WatsonListTypeConstants.PERSON_TYPE_ORPHAN}',
 						filterable: ${false},
 						htmlType: 'checkbox',
 						invertHidden: ${true},

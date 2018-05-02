@@ -40514,4 +40514,8 @@
 		<name locale="en_US">Other</name>
 		<name locale="th">อื่นๆ</name>
 	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonPerson.type" watsonListTypeId="10586">
+		<name locale="en_US">Orphan</name>
+		<name locale="th">กำพร้า</name>
+	</watsonListType>
 </table>
