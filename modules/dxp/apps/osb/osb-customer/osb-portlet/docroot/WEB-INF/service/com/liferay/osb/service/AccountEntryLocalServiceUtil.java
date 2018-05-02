@@ -449,11 +449,6 @@ public class AccountEntryLocalServiceUtil {
 		return getService().getUserAccountEntryIds(userId, start, end);
 	}
 
-	public static java.util.List<java.lang.String> getUserAccountEntryNames(
-		long userId) throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getUserAccountEntryNames(userId);
-	}
-
 	public static java.util.List<com.liferay.osb.model.AccountEntry> getUserActiveAccountEntries(
 		long userId, int start, int end) {
 		return getService().getUserActiveAccountEntries(userId, start, end);

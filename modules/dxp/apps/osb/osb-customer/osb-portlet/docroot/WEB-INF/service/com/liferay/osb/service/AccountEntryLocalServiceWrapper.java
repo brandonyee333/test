@@ -491,12 +491,6 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	}
 
 	@Override
-	public java.util.List<java.lang.String> getUserAccountEntryNames(
-		long userId) throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountEntryLocalService.getUserAccountEntryNames(userId);
-	}
-
-	@Override
 	public java.util.List<com.liferay.osb.model.AccountEntry> getUserActiveAccountEntries(
 		long userId, int start, int end) {
 		return _accountEntryLocalService.getUserActiveAccountEntries(userId,

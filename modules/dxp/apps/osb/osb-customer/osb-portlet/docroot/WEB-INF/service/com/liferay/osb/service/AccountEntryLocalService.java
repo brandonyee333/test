@@ -362,10 +362,6 @@ public interface AccountEntryLocalService extends BaseLocalService,
 		int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<java.lang.String> getUserAccountEntryNames(long userId)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountEntry> getUserActiveAccountEntries(long userId,
 		int start, int end);
 
