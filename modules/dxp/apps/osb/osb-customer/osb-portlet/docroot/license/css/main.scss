@@ -2,34 +2,13 @@
 
 .osb-portlet-license {
 	#toggle_id_license_key_searchadvanced {
-		padding-top: 10px;
+		padding-bottom: 1em;
 	}
 
-	#toggle_id_license_key_searchbasic input {
-		border-radius: 2px;
-		font: 20px/1.33 Arial;
-		height: 32px;
-		padding: 1px;
-
-		&.aui-button-input-submit {
-			height: 34px;
-			width: 160px;
+	#toggle_id_license_key_searchsimple {
+		input {
+			border-radius: 2px;
 		}
-
-		&.aui-field-input {
-			border: 1px solid #BBB;
-			margin: 0 20px 0 0;
-			width: 488px;
-		}
-	}
-
-	.checkboxes-input-column {
-		display: table-cell;
-		width: 178px;
-	}
-
-	.content-column-content {
-		word-wrap: break-word;
 	}
 
 	.highlight-cluster {
@@ -47,6 +26,7 @@
 	}
 
 	.large-btn {
+		margin-top: 1em;
 		padding: 5px 15px;
 		text-decoration: none;
 	}
@@ -60,22 +40,12 @@
 	}
 
 	.license-customer {
-		.results-grid {
-			margin: 50px 50px 0;
-		}
+		.table {
+			margin-top: 1em;
 
-		.results-header {
-			background-color: #D1D6DC;
-		}
-
-		.taglib-search-iterator {
-			border-collapse: separate;
-			margin: 0 0 18px;
-
-			td, th {
-				border-bottom-width: 0;
-				border-top: 1px solid #BABEC2;
-				padding: 8px 10px 9px;
+			th {
+				background-color: #D1D6DC;
+				border-bottom: 1px solid #BABEC2;
 			}
 		}
 	}
@@ -93,11 +63,24 @@
 
 	.license-input-heading {
 		border-bottom: 1px solid #CCC;
-		padding-bottom: 10px;
+		margin-top: 0.5em;
+		padding-bottom: 0.25em;
 	}
 
-	.license-worker .taglib-search-iterator a {
-		color: #474A4B;
+	.license-worker {
+		margin-top: 1em;
+
+		.table {
+			margin-top: 1em;
+
+			a {
+				color: #474A4B;
+			}
+
+			th {
+				border-bottom: 1px solid #BABEC1;
+			}
+		}
 	}
 
 	.merge-license {
@@ -110,10 +93,6 @@
 
 	.panel-heading {
 		position: relative;
-	}
-
-	.results-header {
-		background: transparent;
 	}
 
 	.section-heading {
@@ -134,29 +113,6 @@
 
 		&.first {
 			vertical-align: middle;
-		}
-	}
-
-	.taglib-search-iterator {
-		background: none;
-		border-width: 0;
-
-		a {
-			text-decoration: none;
-		}
-
-		td {
-			border-bottom: 1px solid #BABEC2;
-			padding: 10px;
-		}
-
-		th {
-			border-bottom: 1px solid #BABEC1;
-			font-weight: bold;
-		}
-
-		.greyout {
-			color: #C7C8C8;
 		}
 	}
 
@@ -188,13 +144,5 @@
 			text-align: center;
 			width: 50vw;
 		}
-	}
-}
-
-@media all and (max-width: 720px) {
-	.osb-portlet-license .checkboxes-input-column {
-		display: block;
-		float: left;
-		width: 100%;
 	}
 }
