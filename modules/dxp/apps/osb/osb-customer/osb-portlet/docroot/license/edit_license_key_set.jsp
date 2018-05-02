@@ -163,6 +163,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 					collapsible="<%= true %>"
 					defaultState='<%= (inactiveLicenseKeys.size() > 3) ? "closed" : "open" %>'
 					id="inactiveLicenses"
+					markupView="lexicon"
 					persistState="<%= false %>"
 					title="deactivated-licenses"
 				>
