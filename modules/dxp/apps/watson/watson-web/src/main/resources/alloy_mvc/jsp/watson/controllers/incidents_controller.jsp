@@ -442,14 +442,6 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		String actionType = ParamUtil.getString(request, "actionType");
-
-		if (Validator.isNotNull(actionType) && actionType.equals("search")) {
-			this.autoComplete();
-
-			return;
-		}
-
 		String[] fields = ParamUtil.getStringValues(request, "fields");
 		String[] keywords = ParamUtil.getStringValues(request, "keywords");
 

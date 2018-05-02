@@ -195,35 +195,40 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		String[] fields = new String[0];
-		String[] keywords = new String[0];
-
-		long watsonIncidentId = ParamUtil.getLong(request, "id");
-
-		if (watsonIncidentId > 0) {
-			fields = new String[] {"watsonIncidentId"};
-			keywords = new String[] {String.valueOf(watsonIncidentId)};
-		}
-
-		boolean includeInactive = ParamUtil.getBoolean(request, "includeInactive", false);
-
-		SearchContext searchContext = getPopulatedSearchContext(WatsonAddress.baseModelClass, fields, keywords, includeInactive);
-
-		List<WatsonAddress> searchResultWatsonAddresses = _doSearch(searchContext);
+		List<WatsonAddress> returnWatsonAddresses = null;
+		long watsonAddressCount = 0;
 
 		String actionType = ParamUtil.getString(request, "actionType");
+		long watsonIncidentId = ParamUtil.getLong(request, "id");
 
 		if (actionType.equals("import")) {
-			List<WatsonAddress> unrelatedWatsonAddresses = WatsonAddress.getUnrelatedWatsonAddresses(watsonIncidentId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+			int start = ParamUtil.getInteger(request, "start");
+			int end = ParamUtil.getInteger(request, "end");
 
-			for (WatsonAddress watsonAddress : searchResultWatsonAddresses) {
-				if (!unrelatedWatsonAddresses.contains(watsonAddress)) {
-					searchResultWatsonAddresses.remove(watsonAddress);
-				}
+			returnWatsonAddresses = WatsonAddress.getUnrelatedWatsonAddresses(watsonIncidentId, start, end);
+
+			List<WatsonAddress> watsonAddressesCountList = WatsonAddress.getUnrelatedWatsonAddresses(watsonIncidentId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+			watsonAddressCount = watsonAddressesCountList.size();
+		}
+		else {
+			String[] fields = new String[0];
+			String[] keywords = new String[0];
+
+			if (watsonIncidentId > 0) {
+				fields = new String[] {"watsonIncidentId"};
+				keywords = new String[] {String.valueOf(watsonIncidentId)};
 			}
+
+			boolean includeInactive = ParamUtil.getBoolean(request, "includeInactive", false);
+
+			SearchContext searchContext = getPopulatedSearchContext(WatsonAddress.baseModelClass, fields, keywords, includeInactive);
+
+			returnWatsonAddresses = _doSearch(searchContext);
+			watsonAddressCount = getTotalHits(searchContext);
 		}
 
-		respondWith(WatsonAddress.getAsJSONDataArray(searchResultWatsonAddresses, getTotalHits(searchContext)));
+		respondWith(WatsonAddress.getAsJSONDataArray(returnWatsonAddresses, watsonAddressCount));
 	}
 
 	public void requestTranslation() throws Exception {
@@ -267,11 +272,15 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 			List<WatsonAddress> unrelatedWatsonAddresses = WatsonAddress.getUnrelatedWatsonAddresses(watsonIncidentId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
-			for (WatsonAddress watsonAddress : searchResultWatsonAddresses) {
-				if (!unrelatedWatsonAddresses.contains(watsonAddress)) {
-					searchResultWatsonAddresses.remove(watsonAddress);
+			List<WatsonAddress> importableWatsonAddresses = ListUtil.copy(searchResultWatsonAddresses);
+
+			for (WatsonAddress searchResultAddress : searchResultWatsonAddresses) {
+				if (!unrelatedWatsonAddresses.contains(searchResultAddress)) {
+					importableWatsonAddresses.remove(searchResultAddress);
 				}
 			}
+
+			searchResultWatsonAddresses = importableWatsonAddresses;
 		}
 
 		respondWith(WatsonAddress.getAsJSONDataArray(searchResultWatsonAddresses, getTotalHits(searchContext)));

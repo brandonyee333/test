@@ -231,35 +231,40 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		String[] fields = new String[0];
-		String[] keywords = new String[0];
-
-		long watsonIncidentId = ParamUtil.getLong(request, "id");
-
-		if (watsonIncidentId > 0) {
-			fields = new String[] {"watsonIncidentId"};
-			keywords = new String[] {String.valueOf(watsonIncidentId)};
-		}
-
-		boolean includeInactive = ParamUtil.getBoolean(request, "includeInactive", false);
-
-		SearchContext searchContext = getPopulatedSearchContext(WatsonPerson.baseModelClass, fields, keywords, includeInactive);
-
-		List<WatsonPerson> searchResultWatsonPeople = _doSearch(searchContext);
+		List<WatsonPerson> returnWatsonPeople = null;
+		long watsonPersonCount = 0;
 
 		String actionType = ParamUtil.getString(request, "actionType");
+		long watsonIncidentId = ParamUtil.getLong(request, "id");
 
 		if (actionType.equals("import")) {
-			List<WatsonPerson> unrelatedWatsonPeople = WatsonPerson.getUnrelatedWatsonPeople(watsonIncidentId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+			int start = ParamUtil.getInteger(request, "start");
+			int end = ParamUtil.getInteger(request, "end");
 
-			for (WatsonPerson watsonPerson : searchResultWatsonPeople) {
-				if (!unrelatedWatsonPeople.contains(watsonPerson)) {
-					searchResultWatsonPeople.remove(watsonPerson);
-				}
+			returnWatsonPeople = WatsonPerson.getUnrelatedWatsonPeople(watsonIncidentId, start, end);
+
+			List<WatsonPerson> watsonPeopleCountList = WatsonPerson.getUnrelatedWatsonPeople(watsonIncidentId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+			watsonPersonCount = watsonPeopleCountList.size();
+		}
+		else {
+			String[] fields = new String[0];
+			String[] keywords = new String[0];
+
+			if (watsonIncidentId > 0) {
+				fields = new String[] {"watsonIncidentId"};
+				keywords = new String[] {String.valueOf(watsonIncidentId)};
 			}
+
+			boolean includeInactive = ParamUtil.getBoolean(request, "includeInactive", false);
+
+			SearchContext searchContext = getPopulatedSearchContext(WatsonPerson.baseModelClass, fields, keywords, includeInactive);
+
+			returnWatsonPeople = _doSearch(searchContext);
+			watsonPersonCount = getTotalHits(searchContext);
 		}
 
-		respondWith(WatsonPerson.getAsJSONDataArray(searchResultWatsonPeople, getTotalHits(searchContext)));
+		respondWith(WatsonPerson.getAsJSONDataArray(returnWatsonPeople, watsonPersonCount));
 	}
 
 	public void requestTranslation() throws Exception {
@@ -303,11 +308,15 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 			List<WatsonPerson> unrelatedWatsonPeople = WatsonPerson.getUnrelatedWatsonPeople(watsonIncidentId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
-			for (WatsonPerson watsonPerson : searchResultWatsonPeople) {
-				if (!unrelatedWatsonPeople.contains(watsonPerson)) {
-					searchResultWatsonPeople.remove(watsonPerson);
+			List<WatsonPerson> importableWatsonPeople = ListUtil.copy(searchResultWatsonPeople);
+
+			for (WatsonPerson searchResultPerson : searchResultWatsonPeople) {
+				if (!unrelatedWatsonPeople.contains(searchResultPerson)) {
+					importableWatsonPeople.remove(searchResultPerson);
 				}
 			}
+
+			searchResultWatsonPeople = importableWatsonPeople;
 		}
 
 		respondWith(WatsonPerson.getAsJSONDataArray(searchResultWatsonPeople, getTotalHits(searchContext)));
