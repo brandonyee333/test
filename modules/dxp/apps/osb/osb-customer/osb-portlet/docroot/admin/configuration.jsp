@@ -19,7 +19,7 @@
 <%
 String cmd = ParamUtil.getString(request, Constants.CMD, Constants.UPDATE);
 
-String tabs1 = ParamUtil.getString(request, "tabs1", "captcha");
+String tabs1 = ParamUtil.getString(request, "tabs1", "email-notifications");
 String tabs2 = ParamUtil.getString(request, "tabs2", "general");
 String tabs3 = ParamUtil.getString(request, "tabs3");
 
@@ -130,50 +130,35 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 						}
 						%>
 
-						<span class="aui-field-row">
-							<label class="aui-field-inline aui-field-label-inline-label w15">
-								<liferay-ui:message key="file-repository-id" />
-							</label>
-
+						<div>
 							<c:choose>
 								<c:when test="<%= fileRepositoryId.equals(StringPool.BLANK) %>">
-									<aui:input inlineField="<%= true %>" inlineLabel="left" label="" name="fileRepositoryId" type="text" />
+									<aui:input inlineField="<%= true %>" inlineLabel="left" label="file-repository-id" name="fileRepositoryId" type="text" />
 								</c:when>
 								<c:otherwise>
 									<aui:input name="fileRepositoryId" type="hidden" value="<%= fileRepositoryId %>" />
 
-									<aui:input disabled="<%= true %>" inlineField="<%= true %>" inlineLabel="left" label="" name="fileRepositoryIdLabel" type="text" value="<%= fileRepositoryId %>" />
+									<aui:input disabled="<%= true %>" inlineField="<%= true %>" inlineLabel="left" label="file-repository-id" name="fileRepositoryIdLabel" type="text" value="<%= fileRepositoryId %>" />
 								</c:otherwise>
 							</c:choose>
-						</span>
-						<span class="aui-field-row">
-							<label class="aui-field-inline aui-field-label-inline-label w15">
-								<liferay-ui:message key="server-name" />
-							</label>
+						</div>
 
-							<aui:input inlineField="<%= true %>" inlineLabel="left" label="" name="name" value="<%= name %>" />
-						</span>
-						<span class="aui-field-row">
-							<label class="aui-field-inline aui-field-label-inline-label w15">
-								<liferay-ui:message key="host" />
-							</label>
+						<div>
+							<aui:input inlineField="<%= true %>" inlineLabel="left" label="server-name" name="name" value="<%= name %>" />
+						</div>
 
-							<aui:input inlineField="<%= true %>" inlineLabel="left" label="" name="host" value="<%= fileRepository.getHost() %>" />
-						</span>
-						<span class="aui-field-row">
-							<label class="aui-field-inline aui-field-label-inline-label w15">
-								<liferay-ui:message key="status" />
-							</label>
+						<div>
+							<aui:input inlineField="<%= true %>" inlineLabel="left" label="host" name="host" value="<%= fileRepository.getHost() %>" />
+						</div>
 
-							<aui:select inlineField="<%= true %>" inlineLabel="left" label="" name="status">
+						<div>
+							<aui:select inlineField="<%= true %>" inlineLabel="left" label="status" name="status">
 								<aui:option label="active" selected="<%= status == WorkflowConstants.STATUS_APPROVED %>" value="<%= WorkflowConstants.STATUS_APPROVED %>" />
 								<aui:option label="inactive" selected="<%= status == WorkflowConstants.STATUS_INACTIVE %>" value="<%= WorkflowConstants.STATUS_INACTIVE %>" />
 							</aui:select>
-						</span>
-						<span class="aui-field-row">
-							<label class="aui-field-inline aui-field-label-inline-label w15">
-								<liferay-ui:message key="support-regions" />
-							</label>
+						</div>
+
+						<aui:field-wrapper label="support-regions">
 
 							<%
 							List<SupportRegion> supportRegions = SupportRegionLocalServiceUtil.getSupportRegions(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
@@ -181,15 +166,13 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 							for (SupportRegion supportRegion : supportRegions) {
 							%>
 
-								<%= supportRegion.getName() %>
-
-								<aui:input checked="<%= ArrayUtil.contains(supportRegionIds, supportRegion.getSupportRegionId()) %>" name="supportRegions" type="checkbox" value="<%= supportRegion.getSupportRegionId() %>" />
+								<aui:input checked="<%= ArrayUtil.contains(supportRegionIds, supportRegion.getSupportRegionId()) %>" id="<%= String.valueOf(supportRegion.getSupportRegionId()) %>" label="<%= supportRegion.getName() %>" name="supportRegions" type="checkbox" value="<%= supportRegion.getSupportRegionId() %>" />
 
 							<%
 							}
 							%>
 
-						</span>
+						</aui:field-wrapper>
 					</aui:fieldset>
 				</c:when>
 				<c:otherwise>
