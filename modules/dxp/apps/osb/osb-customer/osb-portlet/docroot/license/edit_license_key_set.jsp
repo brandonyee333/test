@@ -161,7 +161,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 			<c:if test="<%= !inactiveLicenseKeys.isEmpty() %>">
 				<liferay-ui:panel
 					collapsible="<%= true %>"
-					defaultState='<%= (inactiveLicenseKeys.size() > 3) ? "closed" : "open" %>'
+					extended="<%= inactiveLicenseKeys.size() <= 3 %>"
 					id="inactiveLicenses"
 					markupView="lexicon"
 					persistState="<%= false %>"
