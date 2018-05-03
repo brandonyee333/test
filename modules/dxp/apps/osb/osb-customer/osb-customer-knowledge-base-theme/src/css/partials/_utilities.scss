@@ -10,12 +10,12 @@
 	display: none;
 }
 
-.vertical-align-top {
-	vertical-align: top;
-}
-
 .uppercase {
 	text-transform: uppercase;
+}
+
+.vertical-align-top {
+	vertical-align: top;
 }
 
 @include media-query(null, $screen-xs-max) {
