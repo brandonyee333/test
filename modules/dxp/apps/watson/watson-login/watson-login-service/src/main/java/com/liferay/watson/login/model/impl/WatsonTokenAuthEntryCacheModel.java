@@ -65,7 +65,7 @@ public class WatsonTokenAuthEntryCacheModel implements CacheModel<WatsonTokenAut
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(21);
+		StringBundler sb = new StringBundler(23);
 
 		sb.append("{watsonTokenAuthEntryId=");
 		sb.append(watsonTokenAuthEntryId);
@@ -87,6 +87,8 @@ public class WatsonTokenAuthEntryCacheModel implements CacheModel<WatsonTokenAut
 		sb.append(expirationDate);
 		sb.append(", loginDate=");
 		sb.append(loginDate);
+		sb.append(", status=");
+		sb.append(status);
 		sb.append("}");
 
 		return sb.toString();
@@ -144,6 +146,8 @@ public class WatsonTokenAuthEntryCacheModel implements CacheModel<WatsonTokenAut
 			watsonTokenAuthEntryImpl.setLoginDate(new Date(loginDate));
 		}
 
+		watsonTokenAuthEntryImpl.setStatus(status);
+
 		watsonTokenAuthEntryImpl.resetOriginalValues();
 
 		return watsonTokenAuthEntryImpl;
@@ -164,6 +168,8 @@ public class WatsonTokenAuthEntryCacheModel implements CacheModel<WatsonTokenAut
 		token = objectInput.readUTF();
 		expirationDate = objectInput.readLong();
 		loginDate = objectInput.readLong();
+
+		status = objectInput.readInt();
 	}
 
 	@Override
@@ -202,6 +208,8 @@ public class WatsonTokenAuthEntryCacheModel implements CacheModel<WatsonTokenAut
 
 		objectOutput.writeLong(expirationDate);
 		objectOutput.writeLong(loginDate);
+
+		objectOutput.writeInt(status);
 	}
 
 	public long watsonTokenAuthEntryId;
@@ -214,4 +222,5 @@ public class WatsonTokenAuthEntryCacheModel implements CacheModel<WatsonTokenAut
 	public String token;
 	public long expirationDate;
 	public long loginDate;
+	public int status;
 }

@@ -190,8 +190,10 @@ public class WatsonTokenAuthEntryLocalServiceWrapper
 
 	@Override
 	public void extendWatsonTokenAuthEntry(
-		com.liferay.portal.kernel.model.User user) {
-		_watsonTokenAuthEntryLocalService.extendWatsonTokenAuthEntry(user);
+		com.liferay.portal.kernel.model.User user,
+		java.lang.String lastRequestIP) {
+		_watsonTokenAuthEntryLocalService.extendWatsonTokenAuthEntry(user,
+			lastRequestIP);
 	}
 
 	@Override
@@ -276,22 +278,23 @@ public class WatsonTokenAuthEntryLocalServiceWrapper
 	}
 
 	@Override
+	public java.lang.String getWatsonTokenAuthEntryStatus(
+		com.liferay.portal.kernel.model.User user,
+		java.lang.String latestLoginIP) {
+		return _watsonTokenAuthEntryLocalService.getWatsonTokenAuthEntryStatus(user,
+			latestLoginIP);
+	}
+
+	@Override
 	public boolean hasAuthenticatedSession(
 		com.liferay.portal.kernel.model.User user) {
 		return _watsonTokenAuthEntryLocalService.hasAuthenticatedSession(user);
 	}
 
 	@Override
-	public boolean hasAuthenticatedSession(
-		com.liferay.portal.kernel.model.User user,
-		java.lang.String latestLoginIP) {
-		return _watsonTokenAuthEntryLocalService.hasAuthenticatedSession(user,
-			latestLoginIP);
-	}
-
-	@Override
-	public boolean hasPendingToken(com.liferay.portal.kernel.model.User user) {
-		return _watsonTokenAuthEntryLocalService.hasPendingToken(user);
+	public void invalidateWatsonAuthToken(
+		com.liferay.portal.kernel.model.User user) {
+		_watsonTokenAuthEntryLocalService.invalidateWatsonAuthToken(user);
 	}
 
 	/**
@@ -307,7 +310,7 @@ public class WatsonTokenAuthEntryLocalServiceWrapper
 	}
 
 	@Override
-	public java.lang.String verifyWatsonTokenAuthEntry(
+	public int verifyWatsonTokenAuthEntry(
 		com.liferay.portal.kernel.model.User user, java.lang.String authToken,
 		java.lang.String latestLoginIP) {
 		return _watsonTokenAuthEntryLocalService.verifyWatsonTokenAuthEntry(user,

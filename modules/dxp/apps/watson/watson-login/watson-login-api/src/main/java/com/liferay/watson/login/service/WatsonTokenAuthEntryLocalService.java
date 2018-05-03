@@ -171,7 +171,8 @@ public interface WatsonTokenAuthEntryLocalService extends BaseLocalService,
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
 
-	public void extendWatsonTokenAuthEntry(User user);
+	public void extendWatsonTokenAuthEntry(User user,
+		java.lang.String lastRequestIP);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public WatsonTokenAuthEntry fetchWatsonTokenAuthEntry(
@@ -233,14 +234,13 @@ public interface WatsonTokenAuthEntryLocalService extends BaseLocalService,
 		long watsonTokenAuthEntryId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasAuthenticatedSession(User user);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasAuthenticatedSession(User user,
+	public java.lang.String getWatsonTokenAuthEntryStatus(User user,
 		java.lang.String latestLoginIP);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasPendingToken(User user);
+	public boolean hasAuthenticatedSession(User user);
+
+	public void invalidateWatsonAuthToken(User user);
 
 	/**
 	* Updates the watson token auth entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
@@ -252,6 +252,6 @@ public interface WatsonTokenAuthEntryLocalService extends BaseLocalService,
 	public WatsonTokenAuthEntry updateWatsonTokenAuthEntry(
 		WatsonTokenAuthEntry watsonTokenAuthEntry);
 
-	public java.lang.String verifyWatsonTokenAuthEntry(User user,
+	public int verifyWatsonTokenAuthEntry(User user,
 		java.lang.String authToken, java.lang.String latestLoginIP);
 }

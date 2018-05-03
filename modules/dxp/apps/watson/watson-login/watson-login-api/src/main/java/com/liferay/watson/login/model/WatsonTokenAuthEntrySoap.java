@@ -45,6 +45,7 @@ public class WatsonTokenAuthEntrySoap implements Serializable {
 		soapModel.setToken(model.getToken());
 		soapModel.setExpirationDate(model.getExpirationDate());
 		soapModel.setLoginDate(model.getLoginDate());
+		soapModel.setStatus(model.getStatus());
 
 		return soapModel;
 	}
@@ -184,6 +185,14 @@ public class WatsonTokenAuthEntrySoap implements Serializable {
 		_loginDate = loginDate;
 	}
 
+	public int getStatus() {
+		return _status;
+	}
+
+	public void setStatus(int status) {
+		_status = status;
+	}
+
 	private long _watsonTokenAuthEntryId;
 	private long _companyId;
 	private long _userId;
@@ -194,4 +203,5 @@ public class WatsonTokenAuthEntrySoap implements Serializable {
 	private String _token;
 	private Date _expirationDate;
 	private Date _loginDate;
+	private int _status;
 }

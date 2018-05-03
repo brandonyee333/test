@@ -183,8 +183,9 @@ public class WatsonTokenAuthEntryLocalServiceUtil {
 	}
 
 	public static void extendWatsonTokenAuthEntry(
-		com.liferay.portal.kernel.model.User user) {
-		getService().extendWatsonTokenAuthEntry(user);
+		com.liferay.portal.kernel.model.User user,
+		java.lang.String lastRequestIP) {
+		getService().extendWatsonTokenAuthEntry(user, lastRequestIP);
 	}
 
 	public static com.liferay.watson.login.model.WatsonTokenAuthEntry fetchWatsonTokenAuthEntry(
@@ -258,20 +259,20 @@ public class WatsonTokenAuthEntryLocalServiceUtil {
 		return getService().getWatsonTokenAuthEntry(watsonTokenAuthEntryId);
 	}
 
+	public static java.lang.String getWatsonTokenAuthEntryStatus(
+		com.liferay.portal.kernel.model.User user,
+		java.lang.String latestLoginIP) {
+		return getService().getWatsonTokenAuthEntryStatus(user, latestLoginIP);
+	}
+
 	public static boolean hasAuthenticatedSession(
 		com.liferay.portal.kernel.model.User user) {
 		return getService().hasAuthenticatedSession(user);
 	}
 
-	public static boolean hasAuthenticatedSession(
-		com.liferay.portal.kernel.model.User user,
-		java.lang.String latestLoginIP) {
-		return getService().hasAuthenticatedSession(user, latestLoginIP);
-	}
-
-	public static boolean hasPendingToken(
+	public static void invalidateWatsonAuthToken(
 		com.liferay.portal.kernel.model.User user) {
-		return getService().hasPendingToken(user);
+		getService().invalidateWatsonAuthToken(user);
 	}
 
 	/**
@@ -285,7 +286,7 @@ public class WatsonTokenAuthEntryLocalServiceUtil {
 		return getService().updateWatsonTokenAuthEntry(watsonTokenAuthEntry);
 	}
 
-	public static java.lang.String verifyWatsonTokenAuthEntry(
+	public static int verifyWatsonTokenAuthEntry(
 		com.liferay.portal.kernel.model.User user, java.lang.String authToken,
 		java.lang.String latestLoginIP) {
 		return getService()

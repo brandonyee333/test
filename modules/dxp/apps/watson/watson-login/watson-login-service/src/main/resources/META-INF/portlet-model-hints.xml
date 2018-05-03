@@ -12,5 +12,6 @@
 		<field name="token" type="String" />
 		<field name="expirationDate" type="Date" />
 		<field name="loginDate" type="Date" />
+		<field name="status" type="int" />
 	</model>
 </model-hints>

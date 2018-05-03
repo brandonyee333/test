@@ -69,6 +69,7 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 		attributes.put("token", getToken());
 		attributes.put("expirationDate", getExpirationDate());
 		attributes.put("loginDate", getLoginDate());
+		attributes.put("status", getStatus());
 
 		return attributes;
 	}
@@ -134,6 +135,12 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 
 		if (loginDate != null) {
 			setLoginDate(loginDate);
+		}
+
+		Integer status = (Integer)attributes.get("status");
+
+		if (status != null) {
+			setStatus(status);
 		}
 	}
 
@@ -225,6 +232,16 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 	@Override
 	public Serializable getPrimaryKeyObj() {
 		return _watsonTokenAuthEntry.getPrimaryKeyObj();
+	}
+
+	/**
+	* Returns the status of this watson token auth entry.
+	*
+	* @return the status of this watson token auth entry
+	*/
+	@Override
+	public int getStatus() {
+		return _watsonTokenAuthEntry.getStatus();
 	}
 
 	/**
@@ -416,6 +433,16 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 	@Override
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
 		_watsonTokenAuthEntry.setPrimaryKeyObj(primaryKeyObj);
+	}
+
+	/**
+	* Sets the status of this watson token auth entry.
+	*
+	* @param status the status of this watson token auth entry
+	*/
+	@Override
+	public void setStatus(int status) {
+		_watsonTokenAuthEntry.setStatus(status);
 	}
 
 	/**

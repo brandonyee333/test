@@ -230,6 +230,20 @@ public interface WatsonTokenAuthEntryModel extends BaseModel<WatsonTokenAuthEntr
 	 */
 	public void setLoginDate(Date loginDate);
 
+	/**
+	 * Returns the status of this watson token auth entry.
+	 *
+	 * @return the status of this watson token auth entry
+	 */
+	public int getStatus();
+
+	/**
+	 * Sets the status of this watson token auth entry.
+	 *
+	 * @param status the status of this watson token auth entry
+	 */
+	public void setStatus(int status);
+
 	@Override
 	public boolean isNew();
 

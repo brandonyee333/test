@@ -8,5 +8,6 @@ create table WatsonTokenAuthEntry (
 	loginIP VARCHAR(75) null,
 	token VARCHAR(75) null,
 	expirationDate DATE null,
-	loginDate DATE null
+	loginDate DATE null,
+	status INTEGER
 );

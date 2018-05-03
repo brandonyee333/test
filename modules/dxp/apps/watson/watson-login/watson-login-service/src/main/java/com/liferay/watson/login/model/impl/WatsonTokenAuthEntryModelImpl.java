@@ -78,7 +78,8 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 			{ "loginIP", Types.VARCHAR },
 			{ "token", Types.VARCHAR },
 			{ "expirationDate", Types.TIMESTAMP },
-			{ "loginDate", Types.TIMESTAMP }
+			{ "loginDate", Types.TIMESTAMP },
+			{ "status", Types.INTEGER }
 		};
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
 
@@ -93,9 +94,10 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 		TABLE_COLUMNS_MAP.put("token", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("expirationDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("loginDate", Types.TIMESTAMP);
+		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonTokenAuthEntry (watsonTokenAuthEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,active_ BOOLEAN,loginIP VARCHAR(75) null,token VARCHAR(75) null,expirationDate DATE null,loginDate DATE null)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonTokenAuthEntry (watsonTokenAuthEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,active_ BOOLEAN,loginIP VARCHAR(75) null,token VARCHAR(75) null,expirationDate DATE null,loginDate DATE null,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonTokenAuthEntry";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonTokenAuthEntry.watsonTokenAuthEntryId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonTokenAuthEntry.watsonTokenAuthEntryId ASC";
@@ -139,6 +141,7 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 		model.setToken(soapModel.getToken());
 		model.setExpirationDate(soapModel.getExpirationDate());
 		model.setLoginDate(soapModel.getLoginDate());
+		model.setStatus(soapModel.getStatus());
 
 		return model;
 	}
@@ -214,6 +217,7 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 		attributes.put("token", getToken());
 		attributes.put("expirationDate", getExpirationDate());
 		attributes.put("loginDate", getLoginDate());
+		attributes.put("status", getStatus());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -282,6 +286,12 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 
 		if (loginDate != null) {
 			setLoginDate(loginDate);
+		}
+
+		Integer status = (Integer)attributes.get("status");
+
+		if (status != null) {
+			setStatus(status);
 		}
 	}
 
@@ -456,6 +466,17 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 		_loginDate = loginDate;
 	}
 
+	@JSON
+	@Override
+	public int getStatus() {
+		return _status;
+	}
+
+	@Override
+	public void setStatus(int status) {
+		_status = status;
+	}
+
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -497,6 +518,7 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 		watsonTokenAuthEntryImpl.setToken(getToken());
 		watsonTokenAuthEntryImpl.setExpirationDate(getExpirationDate());
 		watsonTokenAuthEntryImpl.setLoginDate(getLoginDate());
+		watsonTokenAuthEntryImpl.setStatus(getStatus());
 
 		watsonTokenAuthEntryImpl.resetOriginalValues();
 
@@ -633,12 +655,14 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 			watsonTokenAuthEntryCacheModel.loginDate = Long.MIN_VALUE;
 		}
 
+		watsonTokenAuthEntryCacheModel.status = getStatus();
+
 		return watsonTokenAuthEntryCacheModel;
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(21);
+		StringBundler sb = new StringBundler(23);
 
 		sb.append("{watsonTokenAuthEntryId=");
 		sb.append(getWatsonTokenAuthEntryId());
@@ -660,6 +684,8 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 		sb.append(getExpirationDate());
 		sb.append(", loginDate=");
 		sb.append(getLoginDate());
+		sb.append(", status=");
+		sb.append(getStatus());
 		sb.append("}");
 
 		return sb.toString();
@@ -667,7 +693,7 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(34);
+		StringBundler sb = new StringBundler(37);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.watson.login.model.WatsonTokenAuthEntry");
@@ -713,6 +739,10 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 			"<column><column-name>loginDate</column-name><column-value><![CDATA[");
 		sb.append(getLoginDate());
 		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>status</column-name><column-value><![CDATA[");
+		sb.append(getStatus());
+		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -737,6 +767,7 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 	private String _token;
 	private Date _expirationDate;
 	private Date _loginDate;
+	private int _status;
 	private long _columnBitmask;
 	private WatsonTokenAuthEntry _escapedModel;
 }
