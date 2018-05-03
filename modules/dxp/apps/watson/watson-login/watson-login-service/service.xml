@@ -24,6 +24,7 @@
 		<column name="token" type="String" />
 		<column name="expirationDate" type="Date" />
 		<column name="loginDate" type="Date" />
+		<column name="status" type="int" />
 
 		<!-- Finder methods -->
 
