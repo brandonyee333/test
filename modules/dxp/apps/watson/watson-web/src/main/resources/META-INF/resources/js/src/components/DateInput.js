@@ -6,6 +6,8 @@ import {SingleDatePicker} from 'react-dates';
 
 const MetalDateInput = bridge(SingleDatePicker);
 
+const outsideRangeBypass = () => false;
+
 class DateInput extends JSXComponent {
 	created() {
 		bindAll(
@@ -41,8 +43,6 @@ class DateInput extends JSXComponent {
 		if (!dateState && value) {
 			dateState = isNumber(value) ? value : Date.parse(value);
 		}
-
-		const outsideRangeBypass = () => false;
 
 		return (
 			<div class="date-wrapper">

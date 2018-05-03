@@ -34,8 +34,11 @@ class AutocompleteInput extends JSXComponent {
 	}
 
 	attached() {
-		if (!this.state.inputValue_) {
-			this.state.inputValue_ = this.props.query;
+		const {inputValue_} = this.state;
+		const {query} = this.props;
+
+		if (!inputValue_ && query) {
+			this.state.inputValue_ = query;
 		}
 	}
 
