@@ -46,6 +46,7 @@
 	<servlet-filter-mapping>
 		<servlet-filter-name>OSB Secure WEB JSON Filter</servlet-filter-name>
 		<url-pattern>/api/jsonws/osb-portlet.licensekey/*</url-pattern>
+		<url-pattern>/api/jsonws/osb-portlet.orderentry/*</url-pattern>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>REQUEST</dispatcher>
 	</servlet-filter-mapping>
