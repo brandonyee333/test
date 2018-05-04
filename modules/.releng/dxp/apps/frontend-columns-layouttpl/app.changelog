@@ -1,0 +1,10 @@
+#
+# Liferay App Version 1.0.0
+#
+
+app.artifacts-1.0.0=\
+	frontend-columns-layouttpl-7.0.0.3.war
+
+app.change.log-1.0.0=LPS-75190
+
+app.git.id-1.0.0=cd402ea25f1e982e92dcb4d1a40ac6c1d3177c5f
