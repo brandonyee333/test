@@ -27,6 +27,8 @@ public class WatsonTokenAuthEntryConstants {
 
 	public static final int AUTHORIZATION_STATUS_INVALID_IP = 4;
 
+	public static final int AUTHORIZATION_STATUS_INVALID_IP_WARNING = 5;
+
 	public static final String AUTHORIZATION_STATUS_LABEL_APPROVED = "approved";
 
 	public static final String AUTHORIZATION_STATUS_LABEL_EXPIRED = "expired";
@@ -36,8 +38,32 @@ public class WatsonTokenAuthEntryConstants {
 	public static final String AUTHORIZATION_STATUS_LABEL_INVALID_IP =
 		"invalid-ip";
 
+	public static final String AUTHORIZATION_STATUS_LABEL_INVALID_IP_WARNING =
+		"invalid-ip-warning";
+
 	public static final String AUTHORIZATION_STATUS_LABEL_PENDING = "pending";
 
 	public static final int AUTHORIZATION_STATUS_PENDING = 1;
+
+	public static String getWatsonTokenAuthEntryStatusLabel(int status) {
+		if (status == AUTHORIZATION_STATUS_APPROVED) {
+			return AUTHORIZATION_STATUS_LABEL_APPROVED;
+		}
+		else if (status == AUTHORIZATION_STATUS_PENDING) {
+			return AUTHORIZATION_STATUS_LABEL_PENDING;
+		}
+		else if (status == AUTHORIZATION_STATUS_EXPIRED) {
+			return AUTHORIZATION_STATUS_LABEL_EXPIRED;
+		}
+		else if (status == AUTHORIZATION_STATUS_INVALID_IP) {
+			return AUTHORIZATION_STATUS_LABEL_INVALID_IP;
+		}
+		else if (status == AUTHORIZATION_STATUS_INVALID_IP_WARNING) {
+			return AUTHORIZATION_STATUS_LABEL_INVALID_IP_WARNING;
+		}
+		else {
+			return AUTHORIZATION_STATUS_LABEL_INVALID;
+		}
+	}
 
 }
