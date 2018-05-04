@@ -182,7 +182,7 @@ public static class WatsonAlloyControllerImpl extends BaseAlloyControllerImpl {
 
 					keywordsBooleanClause = BooleanClauseFactoryUtil.create(wildcardQuery, BooleanClauseOccur.MUST.getName());
 				}
-				else if (fieldName.equals("watsonIncidentId") || fieldName.contains("ListTypeId") || fieldName.equals("watsonChildId")) {
+				else if (fieldName.equals("watsonIncidentId") || fieldName.contains("ListTypeId") || fieldName.equals("watsonChildId") || fieldName.equals("key")) {
 					BooleanQuery keywordQuery = new BooleanQueryImpl();
 
 					keywordQuery.addTerm(fieldName, keyword);
