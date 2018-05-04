@@ -133,7 +133,6 @@ public class BaseWebService {
 			_log.debug(
 				"Sending DELETE request to " + httpHost.toString() + url);
 			_log.debug("HTTP parameters: " + MapUtil.toString(parameters));
-			_log.debug("HTTP headers: " + MapUtil.toString(headers));
 		}
 
 		return execute(httpHost, httpDelete);
@@ -174,7 +173,6 @@ public class BaseWebService {
 		if (_log.isDebugEnabled()) {
 			_log.debug("Sending GET request to " + httpHost.toString() + url);
 			_log.debug("HTTP parameters: " + MapUtil.toString(parameters));
-			_log.debug("HTTP headers: " + MapUtil.toString(headers));
 		}
 
 		return execute(httpHost, httpGet);
@@ -207,7 +205,6 @@ public class BaseWebService {
 		if (_log.isDebugEnabled()) {
 			_log.debug("Sending POST request to " + httpHost.toString() + url);
 			_log.debug("HTTP parameters: " + MapUtil.toString(parameters));
-			_log.debug("HTTP headers: " + MapUtil.toString(headers));
 		}
 
 		return execute(httpHost, httpPost);
@@ -240,7 +237,6 @@ public class BaseWebService {
 		if (_log.isDebugEnabled()) {
 			_log.debug("Sending PUT request to " + httpHost.toString() + url);
 			_log.debug("HTTP parameters: " + MapUtil.toString(parameters));
-			_log.debug("HTTP headers: " + MapUtil.toString(headers));
 		}
 
 		return execute(httpHost, httpPut);
