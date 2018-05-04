@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.service.impl;
 
+import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.knowledge.base.constants.KBArticleConstants;
 import com.liferay.knowledge.base.model.KBArticle;
 import com.liferay.knowledge.base.service.KBArticleLocalService;
@@ -156,6 +157,10 @@ public class OSBCustomerKnowledgeBaseLocalServiceImpl
 					kbArticleInfo.getAssetTagNames(),
 					kbArticleInfo.getAssetLinkEntryIds());
 
+				_assetEntryLocalService.updateVisible(
+					KBArticle.class.getName(), kbArticle.getResourcePrimKey(),
+					true);
+
 				if (_log.isInfoEnabled()) {
 					_log.info(
 						"Successfully updated: " + kbArticle.getUrlTitle());
@@ -255,6 +260,9 @@ public class OSBCustomerKnowledgeBaseLocalServiceImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		OSBCustomerKnowledgeBaseLocalServiceImpl.class);
+
+	@ServiceReference(type = AssetEntryLocalService.class)
+	private AssetEntryLocalService _assetEntryLocalService;
 
 	@ServiceReference(type = KBArticleLocalService.class)
 	private KBArticleLocalService _kbArticleLocalService;
