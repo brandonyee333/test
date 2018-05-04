@@ -1,0 +1,13 @@
+#
+# Liferay App Version 3.0.0
+#
+
+app.artifacts-3.0.0=\
+	com.liferay.wsrp.api-1.1.4.jar,\
+	com.liferay.wsrp.service-2.0.6-wsdd.jar,\
+	com.liferay.wsrp.service-2.0.6.jar,\
+	com.liferay.wsrp.web-1.0.16.jar
+
+app.change.log-3.0.0=LPS-75049 LPS-79679 LPS-80184
+
+app.git.id-3.0.0=cd402ea25f1e982e92dcb4d1a40ac6c1d3177c5f
