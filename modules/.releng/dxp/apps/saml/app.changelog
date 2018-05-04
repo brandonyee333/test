@@ -32,15 +32,15 @@ app.git.id-3.1.0=389e423a1bb743cf51cadc0ab26bc63ca64c2c1a
 #
 
 app.artifacts-3.1.1=\
-	com.liferay.saml.addon.keep.alive.web-1.0.9.jar,\
-	com.liferay.saml.api-1.1.8.jar,\
+	com.liferay.saml.addon.keep.alive.web-1.0.10.jar,\
+	com.liferay.saml.api-1.1.10.jar,\
 	com.liferay.saml.impl-1.0.5.jar,\
 	com.liferay.saml.opensaml.integration-1.1.8.jar,\
 	com.liferay.saml.persistence.api-1.0.6.jar,\
 	com.liferay.saml.persistence.service-1.0.8.jar,\
 	com.liferay.saml.web-1.0.13.jar,\
-	saml-hook-7.0.10.8.war
+	saml-hook-7.0.10.9.war
 
-app.change.log-3.1.1=LPS-74544 LPS-74897 LPS-75049 LPS-75534 LPS-75737 LPS-75859 LPS-76221 LPS-76226 LPS-77025 LPS-77287 LPS-77699 LPS-78772 LPS-78781 LPS-78901 LPS-78943 LPS-79679 LPS-79799 LPS-79919 LPS-80020 LPS-80184
+app.change.log-3.1.1=LPS-74544 LPS-74897 LPS-75049 LPS-75534 LPS-75737 LPS-75859 LPS-76221 LPS-76226 LPS-77025 LPS-77287 LPS-77699 LPS-78772 LPS-78781 LPS-78901 LPS-78943 LPS-79679 LPS-79799 LPS-79919 LPS-80020 LPS-80184 LPS-80459
 
-app.git.id-3.1.1=a0dcf9d4363aab3108951d70f82ff828d80de9e3
+app.git.id-3.1.1=edb6fa427ab6101620d25485821ef3851a05fc8b
