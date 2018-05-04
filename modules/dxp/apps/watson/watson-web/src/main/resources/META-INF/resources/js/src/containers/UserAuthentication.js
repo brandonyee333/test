@@ -1,5 +1,5 @@
 import Alert from 'marble-alert';
-import {bindAll} from 'lodash';
+import {bindAll, isEmpty} from 'lodash';
 import {connect} from 'metal-redux';
 import JSXComponent, {Config} from 'metal-jsx';
 import moment from 'moment';
@@ -12,17 +12,22 @@ import LoadingIndicator from '../components/LoadingIndicator';
 
 import {checkUserAuthorizationStatus, submitAuthenticationToken} from '../actions/authentication';
 
+import sendRequest from '../lib/request';
+
 const authStates = {
 	approved: Liferay.Language.get('authorization-token-approved'),
 	expired: Liferay.Language.get('authorization-token-expired'),
 	invalid: Liferay.Language.get('authorization-token-invalid'),
 	'invalid-ip': Liferay.Language.get('authorization-token-invalid-ip'),
+	'invalid-ip-warning': Liferay.Language.get('authorization-token-invalid-ip-warning'),
 	pending: Liferay.Language.get('authorization-token-pending')
 };
 
 class UserAuthentication extends JSXComponent {
 	attached() {
-		this.props.checkUserAuthorizationStatus();
+		this.props.checkUserAuthorizationStatus(false);
+
+		Liferay.Watson.invalidateAuthToken = this._handleAuthTokenInvalidation;
 	}
 
 	created() {
@@ -34,10 +39,31 @@ class UserAuthentication extends JSXComponent {
 		);
 	}
 
-	_handleNewTokenRequest() {
-		this.props.checkUserAuthorizationStatus(true);
+	_handleAuthTokenInvalidation() {
+		return sendRequest(
+			{
+				controller: 'incidents',
+				controllerMethod: 'invalidateUserAuthToken.json'
+			}
+		);
+	}
 
-		this.setState({emailSentTime: Date.now()});
+	_handleInvalidIPAttempt() {
+		Liferay.Watson.invalidateAuthToken();
+
+		window.location.href = `${themeDisplay.getPortalURL()}${themeDisplay.getPathMain()}/portal/logout`;
+	}
+
+	_handleNewTokenRequest() {
+		const {checkUserAuthorizationStatus} = this.props;
+
+		const {disableTokenRequest} = this.state;
+
+		if (!disableTokenRequest) {
+			checkUserAuthorizationStatus(true);
+
+			this.setState({emailSentTime: Date.now()});
+		}
 	}
 
 	_handleSubmit() {
@@ -45,7 +71,7 @@ class UserAuthentication extends JSXComponent {
 
 		const {submitAuthenticationToken} = props;
 
-		if (submitAuthenticationToken) {
+		if (submitAuthenticationToken && state.value) {
 			const postData = {};
 
 			postData.token = state.value;
@@ -61,7 +87,7 @@ class UserAuthentication extends JSXComponent {
 	render() {
 		const {authenticationStatus} = this.props;
 
-		const {approved, emailSentTime, value} = this.state;
+		const {disableTokenRequest, emailSentTime, value} = this.state;
 
 		const sentMoment = moment(parseInt(emailSentTime, 10));
 
@@ -83,15 +109,9 @@ class UserAuthentication extends JSXComponent {
 			}
 		);
 
-		const errorMessage = authenticationStatus !== 'pending' ? authStates[authenticationStatus] : '';
+		const errorMessage = (authenticationStatus !== 'pending') ? authStates[authenticationStatus] : '';
 
 		const cssClass = errorMessage ? 'error' : '';
-
-		if (authenticationStatus === 'approved' && !approved) {
-			this.props.onStateChange();
-
-			this.setState({approved: true});
-		}
 
 		return (
 			<div class="page-container landing-page">
@@ -123,19 +143,36 @@ class UserAuthentication extends JSXComponent {
 					<span class="login-label">{Liferay.Language.get('to-complete-the-login-process-we-have-sent-an-authorization-code')}</span>
 
 					<span class="input-container">
-						<Input class={`watson-input ${cssClass}`} onChange={this._handleOnChange} value={value} />
+						<Input class={`watson-input ${cssClass}`} onChange={this._handleOnChange} required={true} value={value} />
 
-						<Button label={Liferay.Language.get('submit')} onclick={this._handleSubmit} />
+						<Button disabled={isEmpty(value) || disableTokenRequest} label={Liferay.Language.get('submit')} onclick={this._handleSubmit} />
 					</span>
 
 					<span class="small-label-container">
 						<span class="login-small-label">{Liferay.Language.get('this-code-will-expire-in-30-minutes')}</span>
 
-						<ButtonModal action={this._handleNewTokenRequest} buttons={sendNewEmailButtons} elementClasses="auth-modal" modalData={modal} />
+						<ButtonModal action={this._handleNewTokenRequest} buttons={sendNewEmailButtons} disabled={disableTokenRequest} elementClasses="auth-modal" modalData={modal} />
 					</span>
 				</div>
 			</div>
 		);
+	}
+
+	rendered() {
+		const {authenticationStatus} = this.props;
+
+		if (authenticationStatus) {
+			if (authenticationStatus.includes('invalid-ip')) {
+				this.state.disableTokenRequest = true;
+
+				window.setTimeout(this._handleInvalidIPAttempt, 10000);
+			}
+			else if (authenticationStatus === 'approved' && !this.state.approved) {
+				this.props.onStateChange();
+
+				this.setState({approved: true});
+			}
+		}
 	}
 }
 
@@ -147,6 +184,7 @@ UserAuthentication.PROPS = {
 
 UserAuthentication.STATE = {
 	approved: Config.bool(),
+	disableTokenRequest: Config.bool().value(false),
 	emailSentTime: Config.number(),
 	value: Config.any()
 };

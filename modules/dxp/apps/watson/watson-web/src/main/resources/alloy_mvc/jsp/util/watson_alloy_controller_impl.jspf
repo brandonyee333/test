@@ -148,11 +148,13 @@ public static class WatsonAlloyControllerImpl extends BaseAlloyControllerImpl {
 
 		clazz = clazz.getSuperclass();
 
+		HttpServletRequest request = PortalUtil.getHttpServletRequest(portletRequest);
+
+		WatsonTokenAuthEntryLocalServiceUtil.extendWatsonTokenAuthEntry(user, request.getRemoteAddr());
+
 		super.executeResource(method);
 
 		clazz = tempClass;
-
-		WatsonTokenAuthEntryLocalServiceUtil.extendWatsonTokenAuthEntry(user);
 	}
 
 	protected Document[] getDocuments(SearchContext searchContext) throws Exception {

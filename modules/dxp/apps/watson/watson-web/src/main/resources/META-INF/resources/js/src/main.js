@@ -68,8 +68,18 @@ Liferay.Watson = {
 			new Main();
 
 			this.initialized = true;
+
+			Liferay.on(
+				'sessionExpired',
+				() => {
+					Liferay.Watson.invalidateAuthToken();
+
+					window.location = WatsonConstants.urls.sessionExpired;
+				}
+			);
 		}
 	},
 	debouncedSessionExtend: noop,
+	invalidateAuthToken: noop,
 	mapComponent: {}
 };

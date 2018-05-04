@@ -119,19 +119,19 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		HttpServletRequest request = PortalUtil.getHttpServletRequest(portletRequest);
 
-		if (WatsonTokenAuthEntryLocalServiceUtil.hasAuthenticatedSession(user, request.getRemoteAddr())) {
-			respondWith(WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_LABEL_APPROVED);
+		String requestIP = request.getRemoteAddr();
 
-			return;
-		}
+		String statusLabel = WatsonTokenAuthEntryLocalServiceUtil.getWatsonTokenAuthEntryStatus(user, requestIP);
 
 		boolean forceIssueNewToken = ParamUtil.getBoolean(request, "force");
 
-		if (forceIssueNewToken || !WatsonTokenAuthEntryLocalServiceUtil.hasPendingToken(user)) {
-			WatsonUtil.sendTwoFactorAuthEmail(user, request.getRemoteAddr());
+		if (forceIssueNewToken || (statusLabel == null) || statusLabel.equals(WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_LABEL_EXPIRED)) {
+			WatsonUtil.sendTwoFactorAuthEmail(user, requestIP);
+
+			statusLabel = WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_LABEL_PENDING;
 		}
 
-		respondWith(WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_LABEL_PENDING);
+		respondWith(statusLabel);
 	}
 
 	public void create() throws Exception {
@@ -374,6 +374,16 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		respondWith(WatsonIncident.getAsJSONDataArray(watsonIncidents, getTotalHits(searchContext)));
 	}
 
+	public void invalidateUserAuthToken() throws Exception {
+		if (!isRespondingTo("json")) {
+			return;
+		}
+
+		WatsonTokenAuthEntryLocalServiceUtil.invalidateWatsonAuthToken(user);
+
+		respondWith(StringPool.BLANK);
+	}
+
 	public void refreshSubModel() throws Exception {
 		if (!isRespondingTo("json")) {
 			return;
@@ -458,13 +468,15 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		String authToken = ParamUtil.getString(request, "token");
 		HttpServletRequest request = PortalUtil.getHttpServletRequest(portletRequest);
 
-		String authTokenResult = WatsonTokenAuthEntryLocalServiceUtil.verifyWatsonTokenAuthEntry(user, authToken, request.getRemoteAddr());
+		int authTokenStatus = WatsonTokenAuthEntryLocalServiceUtil.verifyWatsonTokenAuthEntry(user, authToken, request.getRemoteAddr());
 
-		if (authTokenResult.equals(WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_LABEL_APPROVED)) {
-			respondWith(authTokenResult);
+		String authTokenResultLabel = WatsonTokenAuthEntryConstants.getWatsonTokenAuthEntryStatusLabel(authTokenStatus);
+
+		if (authTokenStatus == WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_APPROVED) {
+			respondWith(authTokenResultLabel);
 		}
 		else {
-			respondWith(HttpServletResponse.SC_FORBIDDEN, authTokenResult, null);
+			respondWith(HttpServletResponse.SC_FORBIDDEN, authTokenResultLabel, null);
 		}
 	}
 

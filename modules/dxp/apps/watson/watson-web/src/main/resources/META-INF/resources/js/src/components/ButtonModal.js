@@ -15,7 +15,7 @@ class ButtonModal extends JSXComponent {
 	}
 
 	render() {
-		const {buttons, cancelLabel, confirmLabel, modalData: {body, footer, header}} = this.props;
+		const {buttons, cancelLabel, confirmLabel, disabled, modalData: {body, footer, header}} = this.props;
 
 		let modalWindow;
 
@@ -26,7 +26,7 @@ class ButtonModal extends JSXComponent {
 
 			renderedButtons.push(<Button className={className} key="btn-primary" label={label} onClick={this._handleClick} />);
 
-			if (this.state.showModal) {
+			if (this.state.showModal && !disabled) {
 				const modalFooter = [
 					<Button className={className} key="btn-action" label={confirmLabel} onClick={this._handleConfirm} />,
 					<Button className={className} key="btn-cancel" label={cancelLabel} onclick={this._handleClose} />
@@ -72,6 +72,7 @@ ButtonModal.PROPS = {
 	buttons: Config.array(),
 	cancelLabel: Config.string().value(Liferay.Language.get('no')),
 	confirmLabel: Config.string().value(Liferay.Language.get('yes')),
+	disabled: Config.bool(),
 	modalData: Config.object().value({}),
 	remoteCloseModal: Config.bool().value(false)
 };

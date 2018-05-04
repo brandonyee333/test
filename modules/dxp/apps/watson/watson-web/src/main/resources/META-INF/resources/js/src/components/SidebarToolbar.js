@@ -14,6 +14,12 @@ class SidebarToolbar extends JSXComponent {
 		);
 	}
 
+	_handleLogout() {
+		Liferay.Watson.invalidateAuthToken();
+
+		window.location.href = `${themeDisplay.getPortalURL()}${themeDisplay.getPathMain()}/portal/logout`;
+	}
+
 	_handleOnClick(event) {
 		const {target} = event;
 
@@ -80,7 +86,7 @@ class SidebarToolbar extends JSXComponent {
 						<a href={`${WatsonConstants.urls.baseURL}/incidents/admin`} id="admin" onClick={this._handleOnClick} title={Liferay.Language.get('administrator-console')} />
 					}
 
-					<a href={`${themeDisplay.getPortalURL()}${themeDisplay.getPathMain()}/portal/logout`} id="logout" title={Liferay.Language.get('logout')} />
+					<a id="logout" onClick={this._handleLogout} title={Liferay.Language.get('logout')} />
 				</span>
 
 				<LoadingIndicator />
