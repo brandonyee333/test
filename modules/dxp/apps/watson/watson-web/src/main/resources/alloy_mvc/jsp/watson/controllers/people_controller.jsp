@@ -234,8 +234,9 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		List<WatsonPerson> returnWatsonPeople = null;
 		long watsonPersonCount = 0;
 
-		String actionType = ParamUtil.getString(request, "actionType");
 		long watsonIncidentId = ParamUtil.getLong(request, "id");
+
+		String actionType = ParamUtil.getString(request, "actionType");
 
 		if (actionType.equals("import")) {
 			int start = ParamUtil.getInteger(request, "start");

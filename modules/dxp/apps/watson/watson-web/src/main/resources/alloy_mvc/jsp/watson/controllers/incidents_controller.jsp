@@ -119,11 +119,11 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		HttpServletRequest request = PortalUtil.getHttpServletRequest(portletRequest);
 
+		boolean forceIssueNewToken = ParamUtil.getBoolean(request, "force");
+
 		String requestIP = request.getRemoteAddr();
 
 		String statusLabel = WatsonTokenAuthEntryLocalServiceUtil.getWatsonTokenAuthEntryStatus(user, requestIP);
-
-		boolean forceIssueNewToken = ParamUtil.getBoolean(request, "force");
 
 		if (forceIssueNewToken || (statusLabel == null) || statusLabel.equals(WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_LABEL_EXPIRED)) {
 			WatsonUtil.sendTwoFactorAuthEmail(user, requestIP);
