@@ -49,9 +49,6 @@ public class WatsonTokenAuthEntryConstants {
 		if (status == AUTHORIZATION_STATUS_APPROVED) {
 			return AUTHORIZATION_STATUS_LABEL_APPROVED;
 		}
-		else if (status == AUTHORIZATION_STATUS_PENDING) {
-			return AUTHORIZATION_STATUS_LABEL_PENDING;
-		}
 		else if (status == AUTHORIZATION_STATUS_EXPIRED) {
 			return AUTHORIZATION_STATUS_LABEL_EXPIRED;
 		}
@@ -60,6 +57,9 @@ public class WatsonTokenAuthEntryConstants {
 		}
 		else if (status == AUTHORIZATION_STATUS_INVALID_IP_WARNING) {
 			return AUTHORIZATION_STATUS_LABEL_INVALID_IP_WARNING;
+		}
+		else if (status == AUTHORIZATION_STATUS_PENDING) {
+			return AUTHORIZATION_STATUS_LABEL_PENDING;
 		}
 		else {
 			return AUTHORIZATION_STATUS_LABEL_INVALID;
