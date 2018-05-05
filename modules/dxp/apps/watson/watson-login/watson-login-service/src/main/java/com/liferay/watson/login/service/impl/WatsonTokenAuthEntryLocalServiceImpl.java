@@ -45,11 +45,11 @@ public class WatsonTokenAuthEntryLocalServiceImpl
 		watsonTokenAuthEntry.setCreateDate(new Date());
 		watsonTokenAuthEntry.setActive(false);
 		watsonTokenAuthEntry.setLoginIP(latestLoginIP);
-		watsonTokenAuthEntry.setStatus(
-			WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_PENDING);
 		watsonTokenAuthEntry.setToken(authToken);
 		watsonTokenAuthEntry.setExpirationDate(getNewExpirationDate());
 		watsonTokenAuthEntry.setLoginDate(watsonTokenAuthEntry.getCreateDate());
+		watsonTokenAuthEntry.setStatus(
+			WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_PENDING);
 
 		return watsonTokenAuthEntryPersistence.update(watsonTokenAuthEntry);
 	}
