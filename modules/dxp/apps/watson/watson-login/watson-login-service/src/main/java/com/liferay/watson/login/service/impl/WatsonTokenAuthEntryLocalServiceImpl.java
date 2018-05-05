@@ -31,7 +31,7 @@ public class WatsonTokenAuthEntryLocalServiceImpl
 	extends WatsonTokenAuthEntryLocalServiceBaseImpl {
 
 	public WatsonTokenAuthEntry addWatsonTokenAuthEntry(
-		User user, String authToken, String latestLoginIP) {
+		User user, String token, String loginIP) {
 
 		removeWatsonTokenAuthEntry(user);
 
@@ -44,8 +44,8 @@ public class WatsonTokenAuthEntryLocalServiceImpl
 		watsonTokenAuthEntry.setUserName(user.getFullName());
 		watsonTokenAuthEntry.setCreateDate(new Date());
 		watsonTokenAuthEntry.setActive(false);
-		watsonTokenAuthEntry.setLoginIP(latestLoginIP);
-		watsonTokenAuthEntry.setToken(authToken);
+		watsonTokenAuthEntry.setLoginIP(loginIP);
+		watsonTokenAuthEntry.setToken(token);
 		watsonTokenAuthEntry.setExpirationDate(getNewExpirationDate());
 		watsonTokenAuthEntry.setLoginDate(watsonTokenAuthEntry.getCreateDate());
 		watsonTokenAuthEntry.setStatus(
@@ -54,14 +54,14 @@ public class WatsonTokenAuthEntryLocalServiceImpl
 		return watsonTokenAuthEntryPersistence.update(watsonTokenAuthEntry);
 	}
 
-	public void extendWatsonTokenAuthEntry(User user, String lastRequestIP) {
+	public void extendWatsonTokenAuthEntry(User user, String loginIP) {
 		WatsonTokenAuthEntry watsonTokenAuthEntry = fetchWatsonTokenAuthEntry(
 			user);
 
 		if (Validator.isNotNull(watsonTokenAuthEntry) &&
 			watsonTokenAuthEntry.isActive() &&
 			!watsonTokenAuthEntry.isExpired() &&
-			lastRequestIP.equals(watsonTokenAuthEntry.getLoginIP())) {
+			loginIP.equals(watsonTokenAuthEntry.getLoginIP())) {
 
 			watsonTokenAuthEntry.setExpirationDate(getNewExpirationDate());
 
@@ -78,52 +78,6 @@ public class WatsonTokenAuthEntryLocalServiceImpl
 		}
 
 		return watsonTokenAuthEntry;
-	}
-
-	public String getWatsonTokenAuthEntryStatus(
-		User user, String latestLoginIP) {
-
-		WatsonTokenAuthEntry watsonTokenAuthEntry = fetchWatsonTokenAuthEntry(
-			user);
-
-		if (watsonTokenAuthEntry != null) {
-			if (watsonTokenAuthEntry.isExpired()) {
-				watsonTokenAuthEntry.setStatus(
-					WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_EXPIRED);
-
-				watsonTokenAuthEntryPersistence.update(watsonTokenAuthEntry);
-			}
-			else if (latestLoginIP.equals(watsonTokenAuthEntry.getLoginIP()) &&
-					 (watsonTokenAuthEntry.getStatus() ==
-						 WatsonTokenAuthEntryConstants.
-							 AUTHORIZATION_STATUS_INVALID_IP)) {
-
-				watsonTokenAuthEntry.setActive(false);
-				watsonTokenAuthEntry.setStatus(
-					WatsonTokenAuthEntryConstants.
-						AUTHORIZATION_STATUS_INVALID_IP_WARNING);
-
-				watsonTokenAuthEntryPersistence.update(watsonTokenAuthEntry);
-			}
-			else if (!latestLoginIP.equals(watsonTokenAuthEntry.getLoginIP()) ||
-					 (watsonTokenAuthEntry.getStatus() ==
-						 WatsonTokenAuthEntryConstants.
-							 AUTHORIZATION_STATUS_INVALID_IP)) {
-
-				watsonTokenAuthEntry.setActive(false);
-				watsonTokenAuthEntry.setStatus(
-					WatsonTokenAuthEntryConstants.
-						AUTHORIZATION_STATUS_INVALID_IP);
-
-				watsonTokenAuthEntryPersistence.update(watsonTokenAuthEntry);
-			}
-
-			return WatsonTokenAuthEntryConstants.
-				getWatsonTokenAuthEntryStatusLabel(watsonTokenAuthEntry.
-					getStatus());
-		}
-
-		return null;
 	}
 
 	public boolean hasAuthenticatedSession(User user) {
@@ -146,57 +100,100 @@ public class WatsonTokenAuthEntryLocalServiceImpl
 		removeWatsonTokenAuthEntry(user);
 	}
 
-	public int verifyWatsonTokenAuthEntry(
-		User user, String authToken, String latestLoginIP) {
+	public int updateWatsonTokenAuthEntryStatus(User user, String loginIP) {
+		WatsonTokenAuthEntry watsonTokenAuthEntry = fetchWatsonTokenAuthEntry(
+			user);
+
+		if (watsonTokenAuthEntry == null) {
+			return WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_ERROR;
+		}
+		else if (watsonTokenAuthEntry.isExpired()) {
+			watsonTokenAuthEntry.setStatus(
+				WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_EXPIRED);
+
+			watsonTokenAuthEntry = watsonTokenAuthEntryPersistence.update(
+				watsonTokenAuthEntry);
+		}
+		else if (loginIP.equals(watsonTokenAuthEntry.getLoginIP()) &&
+				 (watsonTokenAuthEntry.getStatus() ==
+					 WatsonTokenAuthEntryConstants.
+						 AUTHORIZATION_STATUS_INVALID_IP)) {
+
+			watsonTokenAuthEntry.setActive(false);
+			watsonTokenAuthEntry.setStatus(
+				WatsonTokenAuthEntryConstants.
+					AUTHORIZATION_STATUS_INVALID_IP_WARNING);
+
+			watsonTokenAuthEntry = watsonTokenAuthEntryPersistence.update(
+				watsonTokenAuthEntry);
+		}
+		else if (!loginIP.equals(watsonTokenAuthEntry.getLoginIP()) ||
+				 (watsonTokenAuthEntry.getStatus() ==
+					 WatsonTokenAuthEntryConstants.
+						 AUTHORIZATION_STATUS_INVALID_IP)) {
+
+			watsonTokenAuthEntry.setActive(false);
+			watsonTokenAuthEntry.setStatus(
+				WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_INVALID_IP);
+
+			watsonTokenAuthEntry = watsonTokenAuthEntryPersistence.update(
+				watsonTokenAuthEntry);
+		}
+
+		return watsonTokenAuthEntry.getStatus();
+	}
+
+	public int updateWatsonTokenAuthEntryStatus(
+		User user, String token, String loginIP) {
 
 		WatsonTokenAuthEntry watsonTokenAuthEntry = fetchWatsonTokenAuthEntry(
 			user);
 
-		if (Validator.isNotNull(authToken) && (watsonTokenAuthEntry != null)) {
-			if (watsonTokenAuthEntry.isExpired()) {
-				watsonTokenAuthEntry.setStatus(
-					WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_EXPIRED);
+		if (Validator.isNull(token) || (watsonTokenAuthEntry == null)) {
+			return WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_ERROR;
+		}
+		else if (watsonTokenAuthEntry.isExpired()) {
+			watsonTokenAuthEntry.setStatus(
+				WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_EXPIRED);
 
-				watsonTokenAuthEntryPersistence.update(watsonTokenAuthEntry);
-			}
-			else if (latestLoginIP.equals(watsonTokenAuthEntry.getLoginIP()) &&
-					 (watsonTokenAuthEntry.getStatus() ==
-						 WatsonTokenAuthEntryConstants.
-							 AUTHORIZATION_STATUS_INVALID_IP)) {
+			watsonTokenAuthEntry = watsonTokenAuthEntryPersistence.update(
+				watsonTokenAuthEntry);
+		}
+		else if (loginIP.equals(watsonTokenAuthEntry.getLoginIP()) &&
+				 (watsonTokenAuthEntry.getStatus() ==
+					 WatsonTokenAuthEntryConstants.
+						 AUTHORIZATION_STATUS_INVALID_IP)) {
 
-				watsonTokenAuthEntry.setActive(false);
-				watsonTokenAuthEntry.setStatus(
-					WatsonTokenAuthEntryConstants.
-						AUTHORIZATION_STATUS_INVALID_IP_WARNING);
+			watsonTokenAuthEntry.setActive(false);
+			watsonTokenAuthEntry.setStatus(
+				WatsonTokenAuthEntryConstants.
+					AUTHORIZATION_STATUS_INVALID_IP_WARNING);
 
-				watsonTokenAuthEntryPersistence.update(watsonTokenAuthEntry);
-			}
-			else if (!latestLoginIP.equals(watsonTokenAuthEntry.getLoginIP()) ||
-					 (watsonTokenAuthEntry.getStatus() ==
-						 WatsonTokenAuthEntryConstants.
-							 AUTHORIZATION_STATUS_INVALID_IP)) {
+			watsonTokenAuthEntry = watsonTokenAuthEntryPersistence.update(
+				watsonTokenAuthEntry);
+		}
+		else if (!loginIP.equals(watsonTokenAuthEntry.getLoginIP()) ||
+				 (watsonTokenAuthEntry.getStatus() ==
+					 WatsonTokenAuthEntryConstants.
+						 AUTHORIZATION_STATUS_INVALID_IP)) {
 
-				watsonTokenAuthEntry.setActive(false);
-				watsonTokenAuthEntry.setStatus(
-					WatsonTokenAuthEntryConstants.
-						AUTHORIZATION_STATUS_INVALID_IP);
+			watsonTokenAuthEntry.setActive(false);
+			watsonTokenAuthEntry.setStatus(
+				WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_INVALID_IP);
 
-				watsonTokenAuthEntryPersistence.update(watsonTokenAuthEntry);
-			}
-			else if (authToken.equals(watsonTokenAuthEntry.getToken())) {
-				watsonTokenAuthEntry.setActive(true);
+			watsonTokenAuthEntry = watsonTokenAuthEntryPersistence.update(
+				watsonTokenAuthEntry);
+		}
+		else if (token.equals(watsonTokenAuthEntry.getToken())) {
+			watsonTokenAuthEntry.setActive(true);
+			watsonTokenAuthEntry.setStatus(
+				WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_APPROVED);
 
-				watsonTokenAuthEntry.setStatus(
-					WatsonTokenAuthEntryConstants.
-						AUTHORIZATION_STATUS_APPROVED);
-
-				watsonTokenAuthEntryPersistence.update(watsonTokenAuthEntry);
-			}
-
-			return watsonTokenAuthEntry.getStatus();
+			watsonTokenAuthEntry = watsonTokenAuthEntryPersistence.update(
+				watsonTokenAuthEntry);
 		}
 
-		return WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_INVALID;
+		return watsonTokenAuthEntry.getStatus();
 	}
 
 	protected Date getNewExpirationDate() {

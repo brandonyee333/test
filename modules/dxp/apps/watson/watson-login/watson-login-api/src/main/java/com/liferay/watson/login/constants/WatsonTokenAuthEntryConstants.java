@@ -21,6 +21,8 @@ public class WatsonTokenAuthEntryConstants {
 
 	public static final int AUTHORIZATION_STATUS_APPROVED = 0;
 
+	public static final int AUTHORIZATION_STATUS_ERROR = -1;
+
 	public static final int AUTHORIZATION_STATUS_EXPIRED = 2;
 
 	public static final int AUTHORIZATION_STATUS_INVALID = 3;
