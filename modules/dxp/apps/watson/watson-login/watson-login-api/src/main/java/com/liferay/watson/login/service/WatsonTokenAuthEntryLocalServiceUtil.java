@@ -43,10 +43,8 @@ public class WatsonTokenAuthEntryLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.watson.login.service.impl.WatsonTokenAuthEntryLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.watson.login.model.WatsonTokenAuthEntry addWatsonTokenAuthEntry(
-		com.liferay.portal.kernel.model.User user, java.lang.String authToken,
-		java.lang.String latestLoginIP) {
-		return getService()
-				   .addWatsonTokenAuthEntry(user, authToken, latestLoginIP);
+		com.liferay.portal.kernel.model.User user, String token, String loginIP) {
+		return getService().addWatsonTokenAuthEntry(user, token, loginIP);
 	}
 
 	/**
@@ -183,9 +181,8 @@ public class WatsonTokenAuthEntryLocalServiceUtil {
 	}
 
 	public static void extendWatsonTokenAuthEntry(
-		com.liferay.portal.kernel.model.User user,
-		java.lang.String lastRequestIP) {
-		getService().extendWatsonTokenAuthEntry(user, lastRequestIP);
+		com.liferay.portal.kernel.model.User user, String loginIP) {
+		getService().extendWatsonTokenAuthEntry(user, loginIP);
 	}
 
 	public static com.liferay.watson.login.model.WatsonTokenAuthEntry fetchWatsonTokenAuthEntry(
@@ -211,7 +208,7 @@ public class WatsonTokenAuthEntryLocalServiceUtil {
 	*
 	* @return the OSGi service identifier
 	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
+	public static String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
@@ -259,12 +256,6 @@ public class WatsonTokenAuthEntryLocalServiceUtil {
 		return getService().getWatsonTokenAuthEntry(watsonTokenAuthEntryId);
 	}
 
-	public static java.lang.String getWatsonTokenAuthEntryStatus(
-		com.liferay.portal.kernel.model.User user,
-		java.lang.String latestLoginIP) {
-		return getService().getWatsonTokenAuthEntryStatus(user, latestLoginIP);
-	}
-
 	public static boolean hasAuthenticatedSession(
 		com.liferay.portal.kernel.model.User user) {
 		return getService().hasAuthenticatedSession(user);
@@ -286,11 +277,15 @@ public class WatsonTokenAuthEntryLocalServiceUtil {
 		return getService().updateWatsonTokenAuthEntry(watsonTokenAuthEntry);
 	}
 
-	public static int verifyWatsonTokenAuthEntry(
-		com.liferay.portal.kernel.model.User user, java.lang.String authToken,
-		java.lang.String latestLoginIP) {
+	public static int updateWatsonTokenAuthEntryStatus(
+		com.liferay.portal.kernel.model.User user, String loginIP) {
+		return getService().updateWatsonTokenAuthEntryStatus(user, loginIP);
+	}
+
+	public static int updateWatsonTokenAuthEntryStatus(
+		com.liferay.portal.kernel.model.User user, String token, String loginIP) {
 		return getService()
-				   .verifyWatsonTokenAuthEntry(user, authToken, latestLoginIP);
+				   .updateWatsonTokenAuthEntryStatus(user, token, loginIP);
 	}
 
 	public static WatsonTokenAuthEntryLocalService getService() {

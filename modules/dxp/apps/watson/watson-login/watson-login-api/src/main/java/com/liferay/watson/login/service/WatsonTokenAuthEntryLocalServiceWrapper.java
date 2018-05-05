@@ -36,10 +36,9 @@ public class WatsonTokenAuthEntryLocalServiceWrapper
 
 	@Override
 	public com.liferay.watson.login.model.WatsonTokenAuthEntry addWatsonTokenAuthEntry(
-		com.liferay.portal.kernel.model.User user, java.lang.String authToken,
-		java.lang.String latestLoginIP) {
+		com.liferay.portal.kernel.model.User user, String token, String loginIP) {
 		return _watsonTokenAuthEntryLocalService.addWatsonTokenAuthEntry(user,
-			authToken, latestLoginIP);
+			token, loginIP);
 	}
 
 	/**
@@ -190,10 +189,9 @@ public class WatsonTokenAuthEntryLocalServiceWrapper
 
 	@Override
 	public void extendWatsonTokenAuthEntry(
-		com.liferay.portal.kernel.model.User user,
-		java.lang.String lastRequestIP) {
+		com.liferay.portal.kernel.model.User user, String loginIP) {
 		_watsonTokenAuthEntryLocalService.extendWatsonTokenAuthEntry(user,
-			lastRequestIP);
+			loginIP);
 	}
 
 	@Override
@@ -224,7 +222,7 @@ public class WatsonTokenAuthEntryLocalServiceWrapper
 	* @return the OSGi service identifier
 	*/
 	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
+	public String getOSGiServiceIdentifier() {
 		return _watsonTokenAuthEntryLocalService.getOSGiServiceIdentifier();
 	}
 
@@ -278,14 +276,6 @@ public class WatsonTokenAuthEntryLocalServiceWrapper
 	}
 
 	@Override
-	public java.lang.String getWatsonTokenAuthEntryStatus(
-		com.liferay.portal.kernel.model.User user,
-		java.lang.String latestLoginIP) {
-		return _watsonTokenAuthEntryLocalService.getWatsonTokenAuthEntryStatus(user,
-			latestLoginIP);
-	}
-
-	@Override
 	public boolean hasAuthenticatedSession(
 		com.liferay.portal.kernel.model.User user) {
 		return _watsonTokenAuthEntryLocalService.hasAuthenticatedSession(user);
@@ -310,11 +300,17 @@ public class WatsonTokenAuthEntryLocalServiceWrapper
 	}
 
 	@Override
-	public int verifyWatsonTokenAuthEntry(
-		com.liferay.portal.kernel.model.User user, java.lang.String authToken,
-		java.lang.String latestLoginIP) {
-		return _watsonTokenAuthEntryLocalService.verifyWatsonTokenAuthEntry(user,
-			authToken, latestLoginIP);
+	public int updateWatsonTokenAuthEntryStatus(
+		com.liferay.portal.kernel.model.User user, String loginIP) {
+		return _watsonTokenAuthEntryLocalService.updateWatsonTokenAuthEntryStatus(user,
+			loginIP);
+	}
+
+	@Override
+	public int updateWatsonTokenAuthEntryStatus(
+		com.liferay.portal.kernel.model.User user, String token, String loginIP) {
+		return _watsonTokenAuthEntryLocalService.updateWatsonTokenAuthEntryStatus(user,
+			token, loginIP);
 	}
 
 	@Override

@@ -145,7 +145,7 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 	}
 
 	@Override
-	public java.lang.Object clone() {
+	public Object clone() {
 		return new WatsonTokenAuthEntryWrapper((WatsonTokenAuthEntry)_watsonTokenAuthEntry.clone());
 	}
 
@@ -215,7 +215,7 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 	* @return the login ip of this watson token auth entry
 	*/
 	@Override
-	public java.lang.String getLoginIP() {
+	public String getLoginIP() {
 		return _watsonTokenAuthEntry.getLoginIP();
 	}
 
@@ -250,7 +250,7 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 	* @return the token of this watson token auth entry
 	*/
 	@Override
-	public java.lang.String getToken() {
+	public String getToken() {
 		return _watsonTokenAuthEntry.getToken();
 	}
 
@@ -270,7 +270,7 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 	* @return the user name of this watson token auth entry
 	*/
 	@Override
-	public java.lang.String getUserName() {
+	public String getUserName() {
 		return _watsonTokenAuthEntry.getUserName();
 	}
 
@@ -280,7 +280,7 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 	* @return the user uuid of this watson token auth entry
 	*/
 	@Override
-	public java.lang.String getUserUuid() {
+	public String getUserUuid() {
 		return _watsonTokenAuthEntry.getUserUuid();
 	}
 
@@ -411,7 +411,7 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 	* @param loginIP the login ip of this watson token auth entry
 	*/
 	@Override
-	public void setLoginIP(java.lang.String loginIP) {
+	public void setLoginIP(String loginIP) {
 		_watsonTokenAuthEntry.setLoginIP(loginIP);
 	}
 
@@ -451,7 +451,7 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 	* @param token the token of this watson token auth entry
 	*/
 	@Override
-	public void setToken(java.lang.String token) {
+	public void setToken(String token) {
 		_watsonTokenAuthEntry.setToken(token);
 	}
 
@@ -471,7 +471,7 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 	* @param userName the user name of this watson token auth entry
 	*/
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_watsonTokenAuthEntry.setUserName(userName);
 	}
 
@@ -481,7 +481,7 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 	* @param userUuid the user uuid of this watson token auth entry
 	*/
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_watsonTokenAuthEntry.setUserUuid(userUuid);
 	}
 
@@ -506,7 +506,7 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 	}
 
 	@Override
-	public java.lang.String toString() {
+	public String toString() {
 		return _watsonTokenAuthEntry.toString();
 	}
 
@@ -516,7 +516,7 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 	}
 
 	@Override
-	public java.lang.String toXmlString() {
+	public String toXmlString() {
 		return _watsonTokenAuthEntry.toXmlString();
 	}
 
