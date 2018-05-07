@@ -133,7 +133,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 						<div>
 							<c:choose>
 								<c:when test="<%= fileRepositoryId.equals(StringPool.BLANK) %>">
-									<aui:input inlineField="<%= true %>" inlineLabel="left" label="file-repository-id" name="fileRepositoryId" type="text" />
+									<aui:input inlineField="<%= true %>" inlineLabel="left" name="fileRepositoryId" type="text" />
 								</c:when>
 								<c:otherwise>
 									<aui:input name="fileRepositoryId" type="hidden" value="<%= fileRepositoryId %>" />
@@ -148,11 +148,11 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 						</div>
 
 						<div>
-							<aui:input inlineField="<%= true %>" inlineLabel="left" label="host" name="host" value="<%= fileRepository.getHost() %>" />
+							<aui:input inlineField="<%= true %>" inlineLabel="left" name="host" value="<%= fileRepository.getHost() %>" />
 						</div>
 
 						<div>
-							<aui:select inlineField="<%= true %>" inlineLabel="left" label="status" name="status">
+							<aui:select inlineField="<%= true %>" inlineLabel="left" name="status">
 								<aui:option label="active" selected="<%= status == WorkflowConstants.STATUS_APPROVED %>" value="<%= WorkflowConstants.STATUS_APPROVED %>" />
 								<aui:option label="inactive" selected="<%= status == WorkflowConstants.STATUS_INACTIVE %>" value="<%= WorkflowConstants.STATUS_INACTIVE %>" />
 							</aui:select>
