@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.rabbitmq.processors;
 
+import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.service.CorpProjectLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -47,12 +48,18 @@ public class CorpProjectAddMessageProcessor extends BaseMessageProcessor {
 
 		serviceContext.setUuid(jsonObject.getString("uuid"));
 
-		return organizationLocalService.addOrganization(
+		Organization organization = organizationLocalService.addOrganization(
 			userId, OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID,
 			jsonObject.getString("name"),
 			OrganizationConstants.TYPE_ORGANIZATION, 0, 0,
 			ListTypeConstants.ORGANIZATION_STATUS_DEFAULT, StringPool.BLANK,
 			false, serviceContext);
+
+		ExpandoBridge expandoBridge = organization.getExpandoBridge();
+
+		expandoBridge.setAttribute("remote", true, false);
+
+		return organization;
 	}
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {

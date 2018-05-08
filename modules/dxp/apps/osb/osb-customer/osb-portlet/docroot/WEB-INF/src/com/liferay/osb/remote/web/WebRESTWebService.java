@@ -35,6 +35,8 @@ public interface WebRESTWebService {
 	public void deleteRolesUser(String roleUUID, String userUUID)
 		throws RemoteServiceException;
 
+	public JSONObject getUsers(String uuid) throws RemoteServiceException;
+
 	public JSONObject getUsersEmailAddress(String emailAddress)
 		throws RemoteServiceException;
 

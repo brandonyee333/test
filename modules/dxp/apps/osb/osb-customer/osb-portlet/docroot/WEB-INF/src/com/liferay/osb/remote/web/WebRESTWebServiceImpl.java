@@ -73,6 +73,11 @@ public class WebRESTWebServiceImpl
 	}
 
 	@Override
+	public JSONObject getUsers(String uuid) throws RemoteServiceException {
+		return doGetToJSONObject(_URL_API_REST_USERS + uuid, new HashMap<>());
+	}
+
+	@Override
 	public JSONObject getUsersEmailAddress(String emailAddress)
 		throws RemoteServiceException {
 
