@@ -47,15 +47,23 @@ public class RemoteUserLocalServiceClpInvoker {
 
 		_methodParameterTypes164 = new String[] { "java.lang.String" };
 
-		_methodName165 = "translate";
+		_methodName165 = "getUserByUuid";
 
-		_methodParameterTypes165 = new String[] {
+		_methodParameterTypes165 = new String[] { "java.lang.String" };
+
+		_methodName166 = "synchronize";
+
+		_methodParameterTypes166 = new String[] { "long" };
+
+		_methodName167 = "translate";
+
+		_methodParameterTypes167 = new String[] {
 				"com.liferay.portal.kernel.json.JSONObject"
 			};
 
-		_methodName166 = "unsetOrganizationUsers";
+		_methodName168 = "unsetOrganizationUsers";
 
-		_methodParameterTypes166 = new String[] { "long", "long[][]" };
+		_methodParameterTypes168 = new String[] { "long", "long[][]" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -96,11 +104,23 @@ public class RemoteUserLocalServiceClpInvoker {
 
 		if (_methodName165.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes165, parameterTypes)) {
-			return RemoteUserLocalServiceUtil.translate((com.liferay.portal.kernel.json.JSONObject)arguments[0]);
+			return RemoteUserLocalServiceUtil.getUserByUuid((java.lang.String)arguments[0]);
 		}
 
 		if (_methodName166.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes166, parameterTypes)) {
+			RemoteUserLocalServiceUtil.synchronize(((Long)arguments[0]).longValue());
+
+			return null;
+		}
+
+		if (_methodName167.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes167, parameterTypes)) {
+			return RemoteUserLocalServiceUtil.translate((com.liferay.portal.kernel.json.JSONObject)arguments[0]);
+		}
+
+		if (_methodName168.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes168, parameterTypes)) {
 			RemoteUserLocalServiceUtil.unsetOrganizationUsers(((Long)arguments[0]).longValue(),
 				(long[])arguments[1]);
 
@@ -124,4 +144,8 @@ public class RemoteUserLocalServiceClpInvoker {
 	private String[] _methodParameterTypes165;
 	private String _methodName166;
 	private String[] _methodParameterTypes166;
+	private String _methodName167;
+	private String[] _methodParameterTypes167;
+	private String _methodName168;
+	private String[] _methodParameterTypes168;
 }

@@ -41,6 +41,13 @@ public class RemoteUserLocalServiceWrapper implements RemoteUserLocalService,
 	}
 
 	@Override
+	public com.liferay.portal.kernel.model.User getUserByUuid(
+		java.lang.String uuid)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _remoteUserLocalService.getUserByUuid(uuid);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.model.User translate(
 		com.liferay.portal.kernel.json.JSONObject jsonObject) {
 		return _remoteUserLocalService.translate(jsonObject);
@@ -80,6 +87,12 @@ public class RemoteUserLocalServiceWrapper implements RemoteUserLocalService,
 	public void deleteRoleUser(long roleId, long userId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_remoteUserLocalService.deleteRoleUser(roleId, userId);
+	}
+
+	@Override
+	public void synchronize(long userId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_remoteUserLocalService.synchronize(userId);
 	}
 
 	@Override

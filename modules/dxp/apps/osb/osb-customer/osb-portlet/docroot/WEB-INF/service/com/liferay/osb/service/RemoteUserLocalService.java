@@ -52,6 +52,9 @@ public interface RemoteUserLocalService extends BaseLocalService,
 	public User fetchUserByEmailAddress(java.lang.String emailAddress)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public User getUserByUuid(java.lang.String uuid) throws PortalException;
+
 	public User translate(JSONObject jsonObject);
 
 	@Override
@@ -74,6 +77,8 @@ public interface RemoteUserLocalService extends BaseLocalService,
 
 	public void deleteRoleUser(long roleId, long userId)
 		throws PortalException;
+
+	public void synchronize(long userId) throws PortalException;
 
 	public void unsetOrganizationUsers(long organizationId, long[] userIds)
 		throws PortalException;

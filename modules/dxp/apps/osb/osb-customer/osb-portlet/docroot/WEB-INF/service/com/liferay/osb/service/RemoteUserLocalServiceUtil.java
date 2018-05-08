@@ -47,6 +47,12 @@ public class RemoteUserLocalServiceUtil {
 		return getService().fetchUserByEmailAddress(emailAddress);
 	}
 
+	public static com.liferay.portal.kernel.model.User getUserByUuid(
+		java.lang.String uuid)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getUserByUuid(uuid);
+	}
+
 	public static com.liferay.portal.kernel.model.User translate(
 		com.liferay.portal.kernel.json.JSONObject jsonObject) {
 		return getService().translate(jsonObject);
@@ -80,6 +86,11 @@ public class RemoteUserLocalServiceUtil {
 	public static void deleteRoleUser(long roleId, long userId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deleteRoleUser(roleId, userId);
+	}
+
+	public static void synchronize(long userId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().synchronize(userId);
 	}
 
 	public static void unsetOrganizationUsers(long organizationId,
