@@ -138,10 +138,10 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		int key = ParamUtil.getInteger(request, "key");
+		String key = ParamUtil.getString(request, "key");
 
 		String[] fields = {"key"};
-		String[] keywords = {String.valueOf(key)};
+		String[] keywords = {key};
 
 		long watsonChildId = ParamUtil.getLong(request, "id");
 
@@ -189,6 +189,11 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		String[] fields = ParamUtil.getStringValues(request, "fields");
 		String[] keywords = ParamUtil.getStringValues(request, "keywords");
 
+		String key = ParamUtil.getString(request, "key");
+
+		fields = ArrayUtil.append(fields, "key");
+		keywords = ArrayUtil.append(keywords, key);
+
 		SearchContext searchContext = getPopulatedSearchContext(WatsonReport.baseModelClass, fields, keywords, false);
 
 		List<WatsonReport> searchResultWatsonReports = _doSearch(searchContext);
@@ -218,8 +223,6 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		}
 
 		watsonReport.setFields(request);
-
-		long watsonChildId = watsonReport.getWatsonChildId();
 
 		if (!watsonReport.isValid()) {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
