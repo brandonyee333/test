@@ -135,14 +135,12 @@
 
 					#set ($relatedAssetEntry = $assetEntryLocalService.getEntry($assetLink.getEntryId2()))
 
-					#set ($assetType = $relatedAssetEntry.getClassNameId())
-
-					#if ($assetType == $journalArticleClassNameId)
+					#if ($relatedAssetEntry.getClassNameId() == $journalArticleClassNameId)
 						#set ($relatedJournalArticle = $journalArticleLocalService.getLatestArticle($relatedAssetEntry.getClassPK(), 0))
 
 						#set ($articleURL = $osbTemplateUtil.getJournalArticleURL($groupId, $relatedJournalArticle))
 						#set ($articleTitle = $relatedJournalArticle.getTitle($locale))
-					#elseif ($assetType == $kbArticleClassNameId)
+					#elseif ($relatedAssetEntry.getClassNameId() == $kbArticleClassNameId)
 						#set ($relatedKBArticle = $kBArticleLocalService.getLatestKBArticle($relatedAssetEntry.getClassPK(), 0))
 
 						#set ($articleURL = $kbArticleUtil.getKBArticleURL($relatedKBArticle))
