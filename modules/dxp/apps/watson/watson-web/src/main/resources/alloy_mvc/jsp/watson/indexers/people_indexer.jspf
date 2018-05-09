@@ -37,6 +37,7 @@ public static class WatsonPeopleIndexer extends BaseAlloyIndexer {
 		Document document = getBaseModelDocument(WatsonPortletKeys.WATSON, watsonPerson);
 
 		document.addLocalizedText(Field.DESCRIPTION, watsonPerson.getDescriptionMap());
+		document.addKeyword(Field.NAME, watsonPerson.getNamesString());
 		document.addKeyword(Field.STATUS, watsonPerson.getStatus());
 		document.addKeyword("accepted", watsonPerson.getAccepted());
 		document.addDate("acceptedDate", watsonPerson.getDateAccepted());

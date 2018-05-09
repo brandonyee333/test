@@ -28,6 +28,7 @@ public static class WatsonIncidentIndexer extends BaseAlloyIndexer {
 		addSearchTerm(searchQuery, searchContext, Field.STATUS, false);
 		addSearchTerm(searchQuery, searchContext, Field.TITLE, true);
 		addSearchTerm(searchQuery, searchContext, Field.USER_NAME, true);
+		addSearchTerm(searchQuery, searchContext, "incidentName", true);
 	}
 
 	@Override
@@ -44,6 +45,7 @@ public static class WatsonIncidentIndexer extends BaseAlloyIndexer {
 		document.addKeyword("externalCaseId", watsonIncident.getExternalCaseId());
 		document.addKeyword("externalCaseWatsonListTypeId", watsonIncident.getExternalCaseWatsonListTypeId());
 		document.addKeyword("id", watsonIncident.getPrimaryKey());
+		document.addKeyword("incidentName", watsonIncident.getName());
 		document.addKeyword("incidentStatus", String.valueOf(watsonIncident.getIncidentStatus()));
 		document.addKeyword("natureWatsonListType", watsonIncident.getIncidentNatures());
 		document.addDate("reportDate", watsonIncident.getReportDate());
