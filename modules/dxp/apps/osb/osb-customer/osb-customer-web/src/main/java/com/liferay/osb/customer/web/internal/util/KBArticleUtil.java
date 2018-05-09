@@ -37,6 +37,8 @@ import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.service.LayoutLocalService;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -196,6 +198,13 @@ public class KBArticleUtil {
 		}
 
 		return portletURL.toString();
+	}
+
+	public static String getKBArticleURL(KBArticle kbArticle) throws Exception {
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
+
+		return getKBArticleURL(serviceContext.getRequest(), kbArticle);
 	}
 
 	public static void importAssetCategories(

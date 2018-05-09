@@ -1,11 +1,18 @@
 #set ($assetEntryLocalService = $serviceLocator.findService("com.liferay.asset.kernel.service.AssetEntryLocalService"))
 #set ($assetLinkLocalService = $serviceLocator.findService("com.liferay.asset.kernel.service.AssetLinkLocalService"))
+#set ($classNameLocalService = $serviceLocator.findService("com.liferay.portal.kernel.service.ClassNameLocalService"))
 #set ($journalArticleLocalService = $serviceLocator.findService("com.liferay.journal.service.JournalArticleLocalService"))
+#set ($kBArticleLocalService = $serviceLocator.findService("com.liferay.knowledge.base.service.KBArticleLocalService"))
 #set ($subscriptionLocalService = $serviceLocator.findService("com.liferay.portal.kernel.service.SubscriptionLocalService"))
 
+#set ($kbArticleUtil = $serviceLocator.findService("com.liferay.osb.customer.web.internal.util.KBArticleUtil"))
 #set ($osbTemplateUtil = $serviceLocator.findService("com.liferay.osb.customer.web.internal.util.OSBTemplateUtil"))
 
 #set ($journalArticleClassName = "com.liferay.journal.model.JournalArticle")
+#set ($kbArticleClassName = "com.liferay.knowledge.base.model.KBArticle")
+
+#set ($journalArticleClassNameId = $classNameLocalService.getClassNameId($journalArticleClassName))
+#set ($kbArticleClassNameId = $classNameLocalService.getClassNameId($kbArticleClassName))
 
 #set ($journalArticle = $journalArticleLocalService.getArticle($groupId, $reserved-article-id.getData()))
 #set ($oldestArticle = $journalArticleLocalService.getArticle($groupId, $reserved-article-id.getData(), 1.0))
@@ -123,12 +130,30 @@
 				<h3>$languageUtil.format($locale, "related-articles")</h3>
 
 				#foreach ($assetLink in $assetLinks)
-					#set ($relatedAssetEntry = $assetEntryLocalService.getEntry($assetLink.getEntryId2()))
-					#set ($relatedJournalArticle = $journalArticleLocalService.fetchLatestIndexableArticle($relatedAssetEntry.getClassPK()))
+					#set ($articleURL = "")
+					#set ($articleTitle = "")
 
-					<a href="$relatedJournalArticle.getArticleId()">
-						$stringUtil.shorten($relatedJournalArticle.getTitle($locale), 83, "...")
-					</a>
+					#set ($relatedAssetEntry = $assetEntryLocalService.getEntry($assetLink.getEntryId2()))
+
+					#set ($assetType = $relatedAssetEntry.getClassNameId())
+
+					#if ($assetType == $journalArticleClassNameId)
+						#set ($relatedJournalArticle = $journalArticleLocalService.getLatestArticle($relatedAssetEntry.getClassPK(), 0))
+
+						#set ($articleURL = $osbTemplateUtil.getJournalArticleURL($groupId, $relatedJournalArticle))
+						#set ($articleTitle = $relatedJournalArticle.getTitle($locale))
+					#elseif ($assetType == $kbArticleClassNameId)
+						#set ($relatedKBArticle = $kBArticleLocalService.getLatestKBArticle($relatedAssetEntry.getClassPK(), 0))
+
+						#set ($articleURL = $kbArticleUtil.getKBArticleURL($relatedKBArticle))
+						#set ($articleTitle = $relatedKBArticle.getTitle())
+					#end
+
+					#if ($validator.isNotNull($articleURL))
+						<a href="${articleURL}">
+							$stringUtil.shorten($articleTitle, 83, "...")
+						</a>
+					#end
 				#end
 			</div>
 		#end

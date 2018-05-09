@@ -16,17 +16,27 @@ package com.liferay.osb.customer.web.internal.util;
 
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.service.AssetCategoryService;
+import com.liferay.journal.model.JournalArticle;
 import com.liferay.osb.customer.asset.model.AssetCategoryDisplay;
+import com.liferay.osb.customer.constants.OSBCustomerPortletKeys;
 import com.liferay.osb.customer.web.internal.permission.OSBCustomerArticlePermission;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserConstants;
+import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.List;
 import java.util.Locale;
+
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletURL;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -36,6 +46,27 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true, service = OSBTemplateUtil.class)
 public class OSBTemplateUtil {
+
+	public String getJournalArticleURL(
+			long groupId, JournalArticle journalArticle)
+		throws Exception {
+
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
+
+		long plid = _portal.getPlidFromPortletId(
+			groupId, OSBCustomerPortletKeys.DISPLAY);
+
+		PortletURL portletURL = PortletURLFactoryUtil.create(
+			serviceContext.getRequest(), OSBCustomerPortletKeys.DISPLAY, plid,
+			PortletRequest.RENDER_PHASE);
+
+		portletURL.setParameter("mvcPath", "/display/view.jsp");
+		portletURL.setParameter("articleId", journalArticle.getArticleId());
+		portletURL.setWindowState(LiferayWindowState.NORMAL);
+
+		return portletURL.toString();
+	}
 
 	public String getPortraitURL(String imagePath, long userId) {
 		try {
@@ -87,6 +118,10 @@ public class OSBTemplateUtil {
 	}
 
 	private AssetCategoryService _assetCategoryService;
+
+	@Reference
+	private Portal _portal;
+
 	private UserLocalService _userLocalService;
 
 }
