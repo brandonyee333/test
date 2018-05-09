@@ -3,7 +3,8 @@ import JSXComponent, {Config} from 'metal-jsx';
 import {Map} from 'immutable';
 import {Provider} from 'metal-redux';
 
-import configureStore from './store/configure-store.js';
+import configureStore from './store/configure-store';
+import configureTemporaryStore from './store/store-prod';
 
 import UserAuthentication from './containers/UserAuthentication';
 import Watson from './App';
@@ -25,8 +26,6 @@ class Main extends JSXComponent {
 
 		let retVal = null;
 
-		const store = configureStore(new Map());
-
 		const {pathname} = window.location;
 
 		const {currentLanguageId} = WatsonConstants;
@@ -36,20 +35,15 @@ class Main extends JSXComponent {
 		}
 		else if (authenticated) {
 			retVal = (
-				<Provider store={store}>
+				<Provider store={configureStore(new Map())}>
 					<Watson key="watson-main" />
 				</Provider>
 			);
 		}
 		else {
 			retVal = (
-				<Provider store={store}>
-					<div class="watson-app">
-
-						<div class="print-helper-message" id="print-helper-message">{Liferay.Language.get('this-page-is-not-printable')} </div>
-
-						<UserAuthentication key="user-auth" onStateChange={this._handleUpdateState} />
-					</div>
+				<Provider store={configureTemporaryStore(new Map())}>
+					<UserAuthentication key="user-auth" onStateChange={this._handleUpdateState} />
 				</Provider>
 			);
 		}

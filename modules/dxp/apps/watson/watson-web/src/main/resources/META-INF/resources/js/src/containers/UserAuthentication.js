@@ -67,14 +67,12 @@ class UserAuthentication extends JSXComponent {
 	}
 
 	_handleSubmit() {
-		const {props, state} = this;
+		const {props: {submitAuthenticationToken}, state: {disableTokenRequest, value}} = this;
 
-		const {submitAuthenticationToken} = props;
-
-		if (submitAuthenticationToken && state.value) {
+		if (!disableTokenRequest && submitAuthenticationToken && value) {
 			const postData = {};
 
-			postData.token = state.value;
+			postData.token = value;
 
 			submitAuthenticationToken(postData);
 		}
@@ -114,45 +112,49 @@ class UserAuthentication extends JSXComponent {
 		const cssClass = errorMessage ? 'error' : '';
 
 		return (
-			<div class="page-container landing-page">
-				<div class="welcome-landing-text">
-					{sub(Liferay.Language.get('welcome-to-watson-x'), Liferay.ThemeDisplay.getUserName())}
-				</div>
+			<div class="watson-app">
+				<div class="print-helper-message" id="print-helper-message">{Liferay.Language.get('this-page-is-not-printable')} </div>
 
-				<LoadingIndicator />
+				<div class="page-container landing-page">
+					<div class="welcome-landing-text">
+						{sub(Liferay.Language.get('welcome-to-watson-x'), Liferay.ThemeDisplay.getUserName())}
+					</div>
 
-				<div class="authentication-content">
-					<Alert
-						body={alertContent}
-						dismissible={false}
-						elementClasses="alert-success"
-						key="alert-success"
-						visible={!!alertContent}
-					/>
+					<LoadingIndicator />
 
-					<span className="alert-container">
+					<div class="authentication-content">
 						<Alert
-							body={errorMessage}
+							body={alertContent}
 							dismissible={false}
-							elementClasses="alert-danger"
-							key="alert-error"
-							visible={!!errorMessage}
+							elementClasses="alert-success"
+							key="alert-success"
+							visible={!!alertContent}
 						/>
-					</span>
 
-					<span class="login-label">{Liferay.Language.get('to-complete-the-login-process-we-have-sent-an-authorization-code')}</span>
+						<span class="alert-container">
+							<Alert
+								body={errorMessage}
+								dismissible={false}
+								elementClasses="alert-danger"
+								key="alert-error"
+								visible={!!errorMessage}
+							/>
+						</span>
 
-					<span class="input-container">
-						<Input class={`watson-input ${cssClass}`} onChange={this._handleOnChange} required={true} value={value} />
+						<span class="login-label">{Liferay.Language.get('to-complete-the-login-process-we-have-sent-an-authorization-code')}</span>
 
-						<Button disabled={isEmpty(value) || disableTokenRequest} label={Liferay.Language.get('submit')} onclick={this._handleSubmit} />
-					</span>
+						<span class="input-container">
+							<Input class={`watson-input ${cssClass}`} onChange={this._handleOnChange} required={true} value={value} />
 
-					<span class="small-label-container">
-						<span class="login-small-label">{Liferay.Language.get('this-code-will-expire-in-30-minutes')}</span>
+							<Button disabled={isEmpty(value) || disableTokenRequest} label={Liferay.Language.get('submit')} onclick={this._handleSubmit} />
+						</span>
 
-						<ButtonModal action={this._handleNewTokenRequest} buttons={sendNewEmailButtons} disabled={disableTokenRequest} elementClasses="auth-modal" modalData={modal} />
-					</span>
+						<span class="small-label-container">
+							<span class="login-small-label">{Liferay.Language.get('this-code-will-expire-in-30-minutes')}</span>
+
+							<ButtonModal action={this._handleNewTokenRequest} buttons={sendNewEmailButtons} disabled={disableTokenRequest} elementClasses="auth-modal" modalData={modal} />
+						</span>
+					</div>
 				</div>
 			</div>
 		);

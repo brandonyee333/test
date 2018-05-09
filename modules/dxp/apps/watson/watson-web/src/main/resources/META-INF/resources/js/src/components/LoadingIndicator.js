@@ -69,7 +69,9 @@ LoadingIndicator.PROPS = {
 	requestForbidden: Config.bool().value(false)
 };
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
+	const {loading: forwardedLoading} = props;
+
 	const activitiesLoading = state.getIn(['activities', 'loading']);
 	const addressesLoading = state.getIn(['addresses', 'loading']);
 	const authenticationLoading = state.getIn(['authentication', 'loading']);
@@ -88,7 +90,7 @@ function mapStateToProps(state) {
 	const resourcesLoading = state.getIn(['resources', 'loading']);
 	const vehiclesLoading = state.getIn(['vehicles', 'loading']);
 
-	const loading = activitiesLoading || addressesLoading || authenticationLoading || caseworkActivitiesLoading || childrenLoading || counselingReportsLoading || documentsLoading || historiesLoading || illnessesLoading || incidentsLoading || legalsLoading || peopleLoading || physicalExamsLoading || progressReportsLoading || relationshipsLoading || resourcesLoading || vehiclesLoading;
+	const loading = activitiesLoading || addressesLoading || authenticationLoading || caseworkActivitiesLoading || childrenLoading || counselingReportsLoading || documentsLoading || forwardedLoading || historiesLoading || illnessesLoading || incidentsLoading || legalsLoading || peopleLoading || physicalExamsLoading || progressReportsLoading || relationshipsLoading || resourcesLoading || vehiclesLoading;
 
 	const activitiesRequestFailure = state.getIn(['activities', 'response', 'failure']);
 	const addressesRequestFailure = state.getIn(['addresses', 'response', 'failure']);

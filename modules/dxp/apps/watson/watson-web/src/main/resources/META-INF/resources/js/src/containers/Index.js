@@ -358,14 +358,14 @@ class Index extends JSXComponent {
 					/>
 
 					<LinkButton
-						className="primary"
+						class="primary"
 						href={`${WatsonConstants.urls.baseURL}/children/create/`}
 						label={Liferay.Language.get('create-child')}
 					/>
 
 					{(watsonAdministratorRole === true || (childrensHomeManagerRole === true && incidentManagerRole === true)) &&
 						<LinkButton
-							className="primary"
+							class="primary"
 							href={`${WatsonConstants.urls.baseURL}/children/link/`}
 							label={Liferay.Language.get('link-to-zcr-person')}
 						/>
@@ -382,7 +382,7 @@ class Index extends JSXComponent {
 						value={model}
 					/>
 
-					<div className="filter-header">
+					<div class="filter-header">
 						{Liferay.Language.get('filter-by')}
 					</div>
 
@@ -404,7 +404,7 @@ class Index extends JSXComponent {
 					/>
 
 					<LinkButton
-						className="primary"
+						class="primary"
 						href={`${WatsonConstants.urls.baseURL}/incidents/create/`}
 						label={Liferay.Language.get('create-incident')}
 					/>
@@ -422,7 +422,7 @@ class Index extends JSXComponent {
 
 					{action &&
 						<LinkButton
-							className="primary"
+							class="primary"
 							href={`${WatsonConstants.urls.baseURL}/${model}/`}
 							label={Liferay.Language.get('clear-search')}
 						/>
@@ -437,7 +437,7 @@ class Index extends JSXComponent {
 					/>
 
 					{!action &&
-						<div className="filter-header">
+						<div class="filter-header">
 							{Liferay.Language.get('filter-by')}
 						</div> &&
 
