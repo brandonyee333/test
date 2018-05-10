@@ -403,7 +403,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 		</c:otherwise>
 	</c:choose>
 
-	<c:if test='<%= !tabs2.equals("file-repositories") || cmd.equals(Constants.ADD) %>'>
+	<c:if test='<%= !tabs1.equals("support") || cmd.equals(Constants.ADD) %>'>
 		<aui:button type="submit" value="save" />
 	</c:if>
 </aui:form>
