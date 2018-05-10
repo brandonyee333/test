@@ -192,6 +192,13 @@ public class WatsonTokenAuthEntryLocalServiceImpl
 			watsonTokenAuthEntry = watsonTokenAuthEntryPersistence.update(
 				watsonTokenAuthEntry);
 		}
+		else if (!token.equals(watsonTokenAuthEntry.getToken())) {
+			watsonTokenAuthEntry.setStatus(
+				WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_INVALID);
+
+			watsonTokenAuthEntry = watsonTokenAuthEntryPersistence.update(
+				watsonTokenAuthEntry);
+		}
 
 		return watsonTokenAuthEntry.getStatus();
 	}
