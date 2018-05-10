@@ -37049,14 +37049,6 @@
 		<name locale="en_US">Victim</name>
 		<name locale="th">เหยื่อ</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonPerson.type" watsonListTypeId="9501">
-		<name locale="en_US">Reporting party</name>
-		<name locale="th">ประชุมการเขียนรายงานสรุป</name>
-	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonPerson.type" watsonListTypeId="9502">
-		<name locale="en_US">Other</name>
-		<name locale="th">อื่นๆ</name>
-	</watsonListType>
 	<watsonListType type="com.liferay.watson.model.WatsonRelationship.activityIncidentRelationshipTypes" watsonListTypeId="9503">
 		<name locale="en_US">Related Incident</name>
 		<name locale="th">เหตุการณ์ที่เกี่ยวข้อง</name>
@@ -40078,10 +40070,6 @@
 		<name locale="en_US">Mentioned</name>
 		<name locale="th">บุคคลอ้างอิง</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonPerson.type" watsonListTypeId="10475">
-		<name locale="en_US">Mentioned</name>
-		<name locale="th">กล่าวถึง</name>
-	</watsonListType>
 	<watsonListType type="com.liferay.watson.model.WatsonPerson.ethnicityRegion" watsonListTypeId="10476">
 		<name locale="en_US">Other</name>
 		<name locale="th">อื่นๆ</name>
@@ -40517,5 +40505,17 @@
 	<watsonListType type="com.liferay.watson.model.WatsonPerson.type" watsonListTypeId="10586">
 		<name locale="en_US">Orphan</name>
 		<name locale="th">กำพร้า</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonPerson.type" watsonListTypeId="10587">
+		<name locale="en_US">Reporting party</name>
+		<name locale="th">ประชุมการเขียนรายงานสรุป</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonPerson.type" watsonListTypeId="10588">
+		<name locale="en_US">Mentioned</name>
+		<name locale="th">กล่าวถึง</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonPerson.type" watsonListTypeId="10589">
+		<name locale="en_US">Other</name>
+		<name locale="th">อื่นๆ</name>
 	</watsonListType>
 </table>
