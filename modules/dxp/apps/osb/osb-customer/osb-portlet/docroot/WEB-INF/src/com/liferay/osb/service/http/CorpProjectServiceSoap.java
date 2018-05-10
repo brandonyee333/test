@@ -16,9 +16,16 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.service.CorpProjectServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.rmi.RemoteException;
+
 /**
  * Provides the SOAP utility for the
- * {@link com.liferay.osb.service.CorpProjectServiceUtil} service utility. The
+ * {@link CorpProjectServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -53,9 +60,43 @@ import aQute.bnd.annotation.ProviderType;
  * @author Brian Wing Shun Chan
  * @see CorpProjectServiceHttp
  * @see com.liferay.osb.model.CorpProjectSoap
- * @see com.liferay.osb.service.CorpProjectServiceUtil
+ * @see CorpProjectServiceUtil
  * @generated
  */
 @ProviderType
 public class CorpProjectServiceSoap {
+	public static com.liferay.osb.model.CorpProjectSoap addCorpProject(
+		java.lang.String userUuid, java.lang.String dossieraProjectKey,
+		java.lang.String salesforceProjectKey, java.lang.String name,
+		long organizationId,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws RemoteException {
+		try {
+			com.liferay.osb.model.CorpProject returnValue = CorpProjectServiceUtil.addCorpProject(userUuid,
+					dossieraProjectKey, salesforceProjectKey, name,
+					organizationId, serviceContext);
+
+			return com.liferay.osb.model.CorpProjectSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static void addUserCorpProjectRoles(long organizationId,
+		long userId, long roleId) throws RemoteException {
+		try {
+			CorpProjectServiceUtil.addUserCorpProjectRoles(organizationId,
+				userId, roleId);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(CorpProjectServiceSoap.class);
 }

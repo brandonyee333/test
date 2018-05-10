@@ -16,9 +16,16 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.service.CorpProjectMessageServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.rmi.RemoteException;
+
 /**
  * Provides the SOAP utility for the
- * {@link com.liferay.osb.service.CorpProjectMessageServiceUtil} service utility. The
+ * {@link CorpProjectMessageServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -53,9 +60,30 @@ import aQute.bnd.annotation.ProviderType;
  * @author Brian Wing Shun Chan
  * @see CorpProjectMessageServiceHttp
  * @see com.liferay.osb.model.CorpProjectMessageSoap
- * @see com.liferay.osb.service.CorpProjectMessageServiceUtil
+ * @see CorpProjectMessageServiceUtil
  * @generated
  */
 @ProviderType
 public class CorpProjectMessageServiceSoap {
+	public static com.liferay.osb.model.CorpProjectMessageSoap addCorpProjectMessage(
+		java.lang.String userUuid, long corpProjectId, int type,
+		int severityLevel, java.lang.String title, java.lang.String content,
+		boolean displayCP, boolean displayLCS,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws RemoteException {
+		try {
+			com.liferay.osb.model.CorpProjectMessage returnValue = CorpProjectMessageServiceUtil.addCorpProjectMessage(userUuid,
+					corpProjectId, type, severityLevel, title, content,
+					displayCP, displayLCS, serviceContext);
+
+			return com.liferay.osb.model.CorpProjectMessageSoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(CorpProjectMessageServiceSoap.class);
 }

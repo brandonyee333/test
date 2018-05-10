@@ -33,6 +33,17 @@ public class CorpProjectServiceWrapper implements CorpProjectService,
 	}
 
 	@Override
+	public com.liferay.osb.model.CorpProject addCorpProject(
+		java.lang.String userUuid, java.lang.String dossieraProjectKey,
+		java.lang.String salesforceProjectKey, java.lang.String name,
+		long organizationId,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _corpProjectService.addCorpProject(userUuid, dossieraProjectKey,
+			salesforceProjectKey, name, organizationId, serviceContext);
+	}
+
+	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
@@ -47,6 +58,13 @@ public class CorpProjectServiceWrapper implements CorpProjectService,
 	@Override
 	public java.lang.String getOSGiServiceIdentifier() {
 		return _corpProjectService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public void addUserCorpProjectRoles(long organizationId, long userId,
+		long roleId) throws com.liferay.portal.kernel.exception.PortalException {
+		_corpProjectService.addUserCorpProjectRoles(organizationId, userId,
+			roleId);
 	}
 
 	@Override

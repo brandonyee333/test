@@ -16,12 +16,21 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.service.CorpProjectMessageServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.security.auth.HttpPrincipal;
+import com.liferay.portal.kernel.service.http.TunnelUtil;
+import com.liferay.portal.kernel.util.MethodHandler;
+import com.liferay.portal.kernel.util.MethodKey;
+
 /**
  * Provides the HTTP utility for the
- * {@link com.liferay.osb.service.CorpProjectMessageServiceUtil} service utility. The
+ * {@link CorpProjectMessageServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it requires an additional
- * {@link com.liferay.portal.kernel.security.auth.HttpPrincipal} parameter.
+ * {@link HttpPrincipal} parameter.
  *
  * <p>
  * The benefits of using the HTTP utility is that it is fast and allows for
@@ -40,10 +49,55 @@ import aQute.bnd.annotation.ProviderType;
  *
  * @author Brian Wing Shun Chan
  * @see CorpProjectMessageServiceSoap
- * @see com.liferay.portal.kernel.security.auth.HttpPrincipal
- * @see com.liferay.osb.service.CorpProjectMessageServiceUtil
+ * @see HttpPrincipal
+ * @see CorpProjectMessageServiceUtil
  * @generated
  */
 @ProviderType
 public class CorpProjectMessageServiceHttp {
+	public static com.liferay.osb.model.CorpProjectMessage addCorpProjectMessage(
+		HttpPrincipal httpPrincipal, java.lang.String userUuid,
+		long corpProjectId, int type, int severityLevel,
+		java.lang.String title, java.lang.String content, boolean displayCP,
+		boolean displayLCS,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		try {
+			MethodKey methodKey = new MethodKey(CorpProjectMessageServiceUtil.class,
+					"addCorpProjectMessage",
+					_addCorpProjectMessageParameterTypes0);
+
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					userUuid, corpProjectId, type, severityLevel, title,
+					content, displayCP, displayLCS, serviceContext);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			}
+
+			return (com.liferay.osb.model.CorpProjectMessage)returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
+
+			throw se;
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(CorpProjectMessageServiceHttp.class);
+	private static final Class<?>[] _addCorpProjectMessageParameterTypes0 = new Class[] {
+			java.lang.String.class, long.class, int.class, int.class,
+			java.lang.String.class, java.lang.String.class, boolean.class,
+			boolean.class,
+			com.liferay.portal.kernel.service.ServiceContext.class
+		};
 }

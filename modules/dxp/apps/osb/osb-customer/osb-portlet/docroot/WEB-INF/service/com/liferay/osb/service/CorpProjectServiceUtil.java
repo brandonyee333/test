@@ -41,6 +41,17 @@ public class CorpProjectServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.CorpProjectServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static com.liferay.osb.model.CorpProject addCorpProject(
+		java.lang.String userUuid, java.lang.String dossieraProjectKey,
+		java.lang.String salesforceProjectKey, java.lang.String name,
+		long organizationId,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .addCorpProject(userUuid, dossieraProjectKey,
+			salesforceProjectKey, name, organizationId, serviceContext);
+	}
+
 	public static java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
@@ -54,6 +65,12 @@ public class CorpProjectServiceUtil {
 	*/
 	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static void addUserCorpProjectRoles(long organizationId,
+		long userId, long roleId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().addUserCorpProjectRoles(organizationId, userId, roleId);
 	}
 
 	public static void clearService() {

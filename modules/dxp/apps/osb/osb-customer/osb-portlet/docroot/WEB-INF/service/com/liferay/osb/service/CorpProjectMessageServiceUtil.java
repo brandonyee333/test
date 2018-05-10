@@ -41,6 +41,17 @@ public class CorpProjectMessageServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.CorpProjectMessageServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static com.liferay.osb.model.CorpProjectMessage addCorpProjectMessage(
+		java.lang.String userUuid, long corpProjectId, int type,
+		int severityLevel, java.lang.String title, java.lang.String content,
+		boolean displayCP, boolean displayLCS,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .addCorpProjectMessage(userUuid, corpProjectId, type,
+			severityLevel, title, content, displayCP, displayLCS, serviceContext);
+	}
+
 	public static java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {

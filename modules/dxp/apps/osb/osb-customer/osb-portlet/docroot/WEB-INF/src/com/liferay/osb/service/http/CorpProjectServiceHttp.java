@@ -16,12 +16,21 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.service.CorpProjectServiceUtil;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.security.auth.HttpPrincipal;
+import com.liferay.portal.kernel.service.http.TunnelUtil;
+import com.liferay.portal.kernel.util.MethodHandler;
+import com.liferay.portal.kernel.util.MethodKey;
+
 /**
  * Provides the HTTP utility for the
- * {@link com.liferay.osb.service.CorpProjectServiceUtil} service utility. The
+ * {@link CorpProjectServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it requires an additional
- * {@link com.liferay.portal.kernel.security.auth.HttpPrincipal} parameter.
+ * {@link HttpPrincipal} parameter.
  *
  * <p>
  * The benefits of using the HTTP utility is that it is fast and allows for
@@ -40,10 +49,85 @@ import aQute.bnd.annotation.ProviderType;
  *
  * @author Brian Wing Shun Chan
  * @see CorpProjectServiceSoap
- * @see com.liferay.portal.kernel.security.auth.HttpPrincipal
- * @see com.liferay.osb.service.CorpProjectServiceUtil
+ * @see HttpPrincipal
+ * @see CorpProjectServiceUtil
  * @generated
  */
 @ProviderType
 public class CorpProjectServiceHttp {
+	public static com.liferay.osb.model.CorpProject addCorpProject(
+		HttpPrincipal httpPrincipal, java.lang.String userUuid,
+		java.lang.String dossieraProjectKey,
+		java.lang.String salesforceProjectKey, java.lang.String name,
+		long organizationId,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		try {
+			MethodKey methodKey = new MethodKey(CorpProjectServiceUtil.class,
+					"addCorpProject", _addCorpProjectParameterTypes0);
+
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					userUuid, dossieraProjectKey, salesforceProjectKey, name,
+					organizationId, serviceContext);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			}
+
+			return (com.liferay.osb.model.CorpProject)returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
+
+			throw se;
+		}
+	}
+
+	public static void addUserCorpProjectRoles(HttpPrincipal httpPrincipal,
+		long organizationId, long userId, long roleId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		try {
+			MethodKey methodKey = new MethodKey(CorpProjectServiceUtil.class,
+					"addUserCorpProjectRoles",
+					_addUserCorpProjectRolesParameterTypes1);
+
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					organizationId, userId, roleId);
+
+			try {
+				TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			}
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
+
+			throw se;
+		}
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(CorpProjectServiceHttp.class);
+	private static final Class<?>[] _addCorpProjectParameterTypes0 = new Class[] {
+			java.lang.String.class, java.lang.String.class,
+			java.lang.String.class, java.lang.String.class, long.class,
+			com.liferay.portal.kernel.service.ServiceContext.class
+		};
+	private static final Class<?>[] _addUserCorpProjectRolesParameterTypes1 = new Class[] {
+			long.class, long.class, long.class
+		};
 }

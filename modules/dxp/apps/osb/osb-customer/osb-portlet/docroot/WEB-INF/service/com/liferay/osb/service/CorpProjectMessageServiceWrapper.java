@@ -35,6 +35,18 @@ public class CorpProjectMessageServiceWrapper
 	}
 
 	@Override
+	public com.liferay.osb.model.CorpProjectMessage addCorpProjectMessage(
+		java.lang.String userUuid, long corpProjectId, int type,
+		int severityLevel, java.lang.String title, java.lang.String content,
+		boolean displayCP, boolean displayLCS,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _corpProjectMessageService.addCorpProjectMessage(userUuid,
+			corpProjectId, type, severityLevel, title, content, displayCP,
+			displayLCS, serviceContext);
+	}
+
+	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {

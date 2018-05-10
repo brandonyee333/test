@@ -16,12 +16,15 @@ package com.liferay.osb.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.model.CorpProjectMessage;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.service.BaseService;
 import com.liferay.portal.kernel.service.InvokableService;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Transactional;
 
@@ -47,6 +50,12 @@ public interface CorpProjectMessageService extends BaseService, InvokableService
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CorpProjectMessageServiceUtil} to access the corp project message remote service. Add custom service methods to {@link com.liferay.osb.service.impl.CorpProjectMessageServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	public CorpProjectMessage addCorpProjectMessage(java.lang.String userUuid,
+		long corpProjectId, int type, int severityLevel,
+		java.lang.String title, java.lang.String content, boolean displayCP,
+		boolean displayLCS, ServiceContext serviceContext)
+		throws PortalException;
+
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)

@@ -27,9 +27,68 @@ public class CorpProjectMessageServiceClp implements CorpProjectMessageService {
 	public CorpProjectMessageServiceClp(InvokableService invokableService) {
 		_invokableService = invokableService;
 
-		_methodName1 = "getOSGiServiceIdentifier";
+		_methodName0 = "addCorpProjectMessage";
 
-		_methodParameterTypes1 = new String[] {  };
+		_methodParameterTypes0 = new String[] {
+				"java.lang.String", "long", "int", "int", "java.lang.String",
+				"java.lang.String", "boolean", "boolean",
+				"com.liferay.portal.kernel.service.ServiceContext"
+			};
+
+		_methodName2 = "getOSGiServiceIdentifier";
+
+		_methodParameterTypes2 = new String[] {  };
+	}
+
+	@Override
+	public com.liferay.osb.model.CorpProjectMessage addCorpProjectMessage(
+		java.lang.String userUuid, long corpProjectId, int type,
+		int severityLevel, java.lang.String title, java.lang.String content,
+		boolean displayCP, boolean displayLCS,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName0,
+					_methodParameterTypes0,
+					new Object[] {
+						ClpSerializer.translateInput(userUuid),
+						
+					corpProjectId,
+						
+					type,
+						
+					severityLevel,
+						
+					ClpSerializer.translateInput(title),
+						
+					ClpSerializer.translateInput(content),
+						
+					displayCP,
+						
+					displayLCS,
+						
+					ClpSerializer.translateInput(serviceContext)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.CorpProjectMessage)ClpSerializer.translateOutput(returnObj);
 	}
 
 	@Override
@@ -44,8 +103,8 @@ public class CorpProjectMessageServiceClp implements CorpProjectMessageService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName1,
-					_methodParameterTypes1, new Object[] {  });
+			returnObj = _invokableService.invokeMethod(_methodName2,
+					_methodParameterTypes2, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -63,6 +122,8 @@ public class CorpProjectMessageServiceClp implements CorpProjectMessageService {
 	}
 
 	private InvokableService _invokableService;
-	private String _methodName1;
-	private String[] _methodParameterTypes1;
+	private String _methodName0;
+	private String[] _methodParameterTypes0;
+	private String _methodName2;
+	private String[] _methodParameterTypes2;
 }

@@ -16,12 +16,15 @@ package com.liferay.osb.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.model.CorpProject;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.service.BaseService;
 import com.liferay.portal.kernel.service.InvokableService;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Transactional;
 
@@ -47,6 +50,12 @@ public interface CorpProjectService extends BaseService, InvokableService {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CorpProjectServiceUtil} to access the corp project remote service. Add custom service methods to {@link com.liferay.osb.service.impl.CorpProjectServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	public CorpProject addCorpProject(java.lang.String userUuid,
+		java.lang.String dossieraProjectKey,
+		java.lang.String salesforceProjectKey, java.lang.String name,
+		long organizationId, ServiceContext serviceContext)
+		throws PortalException;
+
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
@@ -58,4 +67,7 @@ public interface CorpProjectService extends BaseService, InvokableService {
 	* @return the OSGi service identifier
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
+
+	public void addUserCorpProjectRoles(long organizationId, long userId,
+		long roleId) throws PortalException;
 }
