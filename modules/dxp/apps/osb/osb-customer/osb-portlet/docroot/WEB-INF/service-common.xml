@@ -75,6 +75,10 @@
 			<finder-column name="corpProjectId" />
 			<finder-column name="type" />
 		</finder>
+
+		<!-- References -->
+
+		<reference entity="Role" package-path="com.liferay.portal" />
 	</entity>
 	<entity local-service="true" name="FeedbackEntry" remote-service="true">
 
