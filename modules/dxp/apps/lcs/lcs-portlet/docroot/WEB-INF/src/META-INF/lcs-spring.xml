@@ -192,6 +192,12 @@
 		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
 		<property name="LCSPortletStateAdvisor" ref="com.liferay.lcs.advisor.LCSPortletStateAdvisor" />
 	</bean>
+	<bean class="com.liferay.lcs.task.OrganizationNamesTask" id="com.liferay.lcs.task.OrganizationNamesTask">
+		<property name="keyGenerator" ref="com.liferay.lcs.util.KeyGenerator" />
+		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
+		<property name="pageSize" value="#{T(com.liferay.lcs.util.PortletPropsValues).SCHEDULED_TASK_PAGE_SIZE}" />
+		<property name="pauseInterval" value="#{T(com.liferay.lcs.util.PortletPropsValues).SCHEDULED_TASK_PAUSE_INTERVAL}" />
+	</bean>
 	<bean class="com.liferay.lcs.task.PortalMetricsTask" id="com.liferay.lcs.task.PortalMetricsTask">
 		<property name="keyGenerator" ref="com.liferay.lcs.util.KeyGenerator" />
 		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
@@ -209,6 +215,12 @@
 		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
 	</bean>
 	<bean class="com.liferay.lcs.task.SiteNamesTask" id="com.liferay.lcs.task.SiteNamesTask">
+		<property name="keyGenerator" ref="com.liferay.lcs.util.KeyGenerator" />
+		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
+		<property name="pageSize" value="#{T(com.liferay.lcs.util.PortletPropsValues).SCHEDULED_TASK_PAGE_SIZE}" />
+		<property name="pauseInterval" value="#{T(com.liferay.lcs.util.PortletPropsValues).SCHEDULED_TASK_PAUSE_INTERVAL}" />
+	</bean>
+	<bean class="com.liferay.lcs.task.UserGroupNamesTask" id="com.liferay.lcs.task.UserGroupNamesTask">
 		<property name="keyGenerator" ref="com.liferay.lcs.util.KeyGenerator" />
 		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
 		<property name="pageSize" value="#{T(com.liferay.lcs.util.PortletPropsValues).SCHEDULED_TASK_PAGE_SIZE}" />
