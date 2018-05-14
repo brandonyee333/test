@@ -22,6 +22,7 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -751,7 +752,7 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 
 	private static final ClassLoader _classLoader = WatsonDocument.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			WatsonDocument.class
+			WatsonDocument.class, ModelWrapper.class
 		};
 	private long _watsonDocumentId;
 	private long _groupId;

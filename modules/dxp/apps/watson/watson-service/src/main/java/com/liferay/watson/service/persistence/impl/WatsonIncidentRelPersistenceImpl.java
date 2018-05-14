@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -43,6 +44,7 @@ import com.liferay.watson.service.persistence.WatsonIncidentRelPersistence;
 import java.io.Serializable;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -262,8 +264,6 @@ public class WatsonIncidentRelPersistenceImpl extends BasePersistenceImpl<Watson
 
 	@Override
 	protected WatsonIncidentRel removeImpl(WatsonIncidentRel watsonIncidentRel) {
-		watsonIncidentRel = toUnwrappedModel(watsonIncidentRel);
-
 		Session session = null;
 
 		try {
@@ -294,9 +294,23 @@ public class WatsonIncidentRelPersistenceImpl extends BasePersistenceImpl<Watson
 
 	@Override
 	public WatsonIncidentRel updateImpl(WatsonIncidentRel watsonIncidentRel) {
-		watsonIncidentRel = toUnwrappedModel(watsonIncidentRel);
-
 		boolean isNew = watsonIncidentRel.isNew();
+
+		if (!(watsonIncidentRel instanceof WatsonIncidentRelModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(watsonIncidentRel.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(watsonIncidentRel);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in watsonIncidentRel proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom WatsonIncidentRel implementation " +
+				watsonIncidentRel.getClass());
+		}
 
 		WatsonIncidentRelModelImpl watsonIncidentRelModelImpl = (WatsonIncidentRelModelImpl)watsonIncidentRel;
 
@@ -360,32 +374,6 @@ public class WatsonIncidentRelPersistenceImpl extends BasePersistenceImpl<Watson
 		watsonIncidentRel.resetOriginalValues();
 
 		return watsonIncidentRel;
-	}
-
-	protected WatsonIncidentRel toUnwrappedModel(
-		WatsonIncidentRel watsonIncidentRel) {
-		if (watsonIncidentRel instanceof WatsonIncidentRelImpl) {
-			return watsonIncidentRel;
-		}
-
-		WatsonIncidentRelImpl watsonIncidentRelImpl = new WatsonIncidentRelImpl();
-
-		watsonIncidentRelImpl.setNew(watsonIncidentRel.isNew());
-		watsonIncidentRelImpl.setPrimaryKey(watsonIncidentRel.getPrimaryKey());
-
-		watsonIncidentRelImpl.setWatsonIncidentRelId(watsonIncidentRel.getWatsonIncidentRelId());
-		watsonIncidentRelImpl.setGroupId(watsonIncidentRel.getGroupId());
-		watsonIncidentRelImpl.setCompanyId(watsonIncidentRel.getCompanyId());
-		watsonIncidentRelImpl.setUserId(watsonIncidentRel.getUserId());
-		watsonIncidentRelImpl.setUserName(watsonIncidentRel.getUserName());
-		watsonIncidentRelImpl.setCreateDate(watsonIncidentRel.getCreateDate());
-		watsonIncidentRelImpl.setModifiedDate(watsonIncidentRel.getModifiedDate());
-		watsonIncidentRelImpl.setWatsonIncidentId1(watsonIncidentRel.getWatsonIncidentId1());
-		watsonIncidentRelImpl.setWatsonIncidentId2(watsonIncidentRel.getWatsonIncidentId2());
-		watsonIncidentRelImpl.setType(watsonIncidentRel.getType());
-		watsonIncidentRelImpl.setStatus(watsonIncidentRel.getStatus());
-
-		return watsonIncidentRelImpl;
 	}
 
 	/**

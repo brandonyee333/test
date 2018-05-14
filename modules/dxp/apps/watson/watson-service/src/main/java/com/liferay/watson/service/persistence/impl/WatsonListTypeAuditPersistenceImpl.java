@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -43,6 +44,7 @@ import com.liferay.watson.service.persistence.WatsonListTypeAuditPersistence;
 import java.io.Serializable;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -264,8 +266,6 @@ public class WatsonListTypeAuditPersistenceImpl extends BasePersistenceImpl<Wats
 	@Override
 	protected WatsonListTypeAudit removeImpl(
 		WatsonListTypeAudit watsonListTypeAudit) {
-		watsonListTypeAudit = toUnwrappedModel(watsonListTypeAudit);
-
 		Session session = null;
 
 		try {
@@ -297,9 +297,23 @@ public class WatsonListTypeAuditPersistenceImpl extends BasePersistenceImpl<Wats
 	@Override
 	public WatsonListTypeAudit updateImpl(
 		WatsonListTypeAudit watsonListTypeAudit) {
-		watsonListTypeAudit = toUnwrappedModel(watsonListTypeAudit);
-
 		boolean isNew = watsonListTypeAudit.isNew();
+
+		if (!(watsonListTypeAudit instanceof WatsonListTypeAuditModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(watsonListTypeAudit.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(watsonListTypeAudit);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in watsonListTypeAudit proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom WatsonListTypeAudit implementation " +
+				watsonListTypeAudit.getClass());
+		}
 
 		WatsonListTypeAuditModelImpl watsonListTypeAuditModelImpl = (WatsonListTypeAuditModelImpl)watsonListTypeAudit;
 
@@ -363,33 +377,6 @@ public class WatsonListTypeAuditPersistenceImpl extends BasePersistenceImpl<Wats
 		watsonListTypeAudit.resetOriginalValues();
 
 		return watsonListTypeAudit;
-	}
-
-	protected WatsonListTypeAudit toUnwrappedModel(
-		WatsonListTypeAudit watsonListTypeAudit) {
-		if (watsonListTypeAudit instanceof WatsonListTypeAuditImpl) {
-			return watsonListTypeAudit;
-		}
-
-		WatsonListTypeAuditImpl watsonListTypeAuditImpl = new WatsonListTypeAuditImpl();
-
-		watsonListTypeAuditImpl.setNew(watsonListTypeAudit.isNew());
-		watsonListTypeAuditImpl.setPrimaryKey(watsonListTypeAudit.getPrimaryKey());
-
-		watsonListTypeAuditImpl.setWatsonListTypeAuditId(watsonListTypeAudit.getWatsonListTypeAuditId());
-		watsonListTypeAuditImpl.setGroupId(watsonListTypeAudit.getGroupId());
-		watsonListTypeAuditImpl.setCompanyId(watsonListTypeAudit.getCompanyId());
-		watsonListTypeAuditImpl.setUserId(watsonListTypeAudit.getUserId());
-		watsonListTypeAuditImpl.setUserName(watsonListTypeAudit.getUserName());
-		watsonListTypeAuditImpl.setCreateDate(watsonListTypeAudit.getCreateDate());
-		watsonListTypeAuditImpl.setModifiedDate(watsonListTypeAudit.getModifiedDate());
-		watsonListTypeAuditImpl.setParentWatsonListTypeId(watsonListTypeAudit.getParentWatsonListTypeId());
-		watsonListTypeAuditImpl.setWatsonListTypeId(watsonListTypeAudit.getWatsonListTypeId());
-		watsonListTypeAuditImpl.setName(watsonListTypeAudit.getName());
-		watsonListTypeAuditImpl.setType(watsonListTypeAudit.getType());
-		watsonListTypeAuditImpl.setStatus(watsonListTypeAudit.getStatus());
-
-		return watsonListTypeAuditImpl;
 	}
 
 	/**

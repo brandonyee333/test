@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
@@ -40,6 +41,8 @@ import com.liferay.watson.model.impl.WatsonActivityModelImpl;
 import com.liferay.watson.service.persistence.WatsonActivityPersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -240,8 +243,6 @@ public class WatsonActivityPersistenceImpl extends BasePersistenceImpl<WatsonAct
 
 	@Override
 	protected WatsonActivity removeImpl(WatsonActivity watsonActivity) {
-		watsonActivity = toUnwrappedModel(watsonActivity);
-
 		Session session = null;
 
 		try {
@@ -272,9 +273,23 @@ public class WatsonActivityPersistenceImpl extends BasePersistenceImpl<WatsonAct
 
 	@Override
 	public WatsonActivity updateImpl(WatsonActivity watsonActivity) {
-		watsonActivity = toUnwrappedModel(watsonActivity);
-
 		boolean isNew = watsonActivity.isNew();
+
+		if (!(watsonActivity instanceof WatsonActivityModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(watsonActivity.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(watsonActivity);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in watsonActivity proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom WatsonActivity implementation " +
+				watsonActivity.getClass());
+		}
 
 		WatsonActivityModelImpl watsonActivityModelImpl = (WatsonActivityModelImpl)watsonActivity;
 
@@ -337,34 +352,6 @@ public class WatsonActivityPersistenceImpl extends BasePersistenceImpl<WatsonAct
 		watsonActivity.resetOriginalValues();
 
 		return watsonActivity;
-	}
-
-	protected WatsonActivity toUnwrappedModel(WatsonActivity watsonActivity) {
-		if (watsonActivity instanceof WatsonActivityImpl) {
-			return watsonActivity;
-		}
-
-		WatsonActivityImpl watsonActivityImpl = new WatsonActivityImpl();
-
-		watsonActivityImpl.setNew(watsonActivity.isNew());
-		watsonActivityImpl.setPrimaryKey(watsonActivity.getPrimaryKey());
-
-		watsonActivityImpl.setWatsonActivityId(watsonActivity.getWatsonActivityId());
-		watsonActivityImpl.setGroupId(watsonActivity.getGroupId());
-		watsonActivityImpl.setCompanyId(watsonActivity.getCompanyId());
-		watsonActivityImpl.setUserId(watsonActivity.getUserId());
-		watsonActivityImpl.setUserName(watsonActivity.getUserName());
-		watsonActivityImpl.setCreateDate(watsonActivity.getCreateDate());
-		watsonActivityImpl.setModifiedDate(watsonActivity.getModifiedDate());
-		watsonActivityImpl.setTypeWatsonListTypeId(watsonActivity.getTypeWatsonListTypeId());
-		watsonActivityImpl.setSubtypeWatsonListTypeId(watsonActivity.getSubtypeWatsonListTypeId());
-		watsonActivityImpl.setWatsonIncidentId(watsonActivity.getWatsonIncidentId());
-		watsonActivityImpl.setNarrative(watsonActivity.getNarrative());
-		watsonActivityImpl.setReportDate(watsonActivity.getReportDate());
-		watsonActivityImpl.setStartDate(watsonActivity.getStartDate());
-		watsonActivityImpl.setStatus(watsonActivity.getStatus());
-
-		return watsonActivityImpl;
 	}
 
 	/**

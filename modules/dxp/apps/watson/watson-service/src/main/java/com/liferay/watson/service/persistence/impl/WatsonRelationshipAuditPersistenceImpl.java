@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
@@ -40,6 +41,8 @@ import com.liferay.watson.model.impl.WatsonRelationshipAuditModelImpl;
 import com.liferay.watson.service.persistence.WatsonRelationshipAuditPersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -246,8 +249,6 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 	@Override
 	protected WatsonRelationshipAudit removeImpl(
 		WatsonRelationshipAudit watsonRelationshipAudit) {
-		watsonRelationshipAudit = toUnwrappedModel(watsonRelationshipAudit);
-
 		Session session = null;
 
 		try {
@@ -279,9 +280,23 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 	@Override
 	public WatsonRelationshipAudit updateImpl(
 		WatsonRelationshipAudit watsonRelationshipAudit) {
-		watsonRelationshipAudit = toUnwrappedModel(watsonRelationshipAudit);
-
 		boolean isNew = watsonRelationshipAudit.isNew();
+
+		if (!(watsonRelationshipAudit instanceof WatsonRelationshipAuditModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(watsonRelationshipAudit.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(watsonRelationshipAudit);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in watsonRelationshipAudit proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom WatsonRelationshipAudit implementation " +
+				watsonRelationshipAudit.getClass());
+		}
 
 		WatsonRelationshipAuditModelImpl watsonRelationshipAuditModelImpl = (WatsonRelationshipAuditModelImpl)watsonRelationshipAudit;
 
@@ -346,37 +361,6 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 		watsonRelationshipAudit.resetOriginalValues();
 
 		return watsonRelationshipAudit;
-	}
-
-	protected WatsonRelationshipAudit toUnwrappedModel(
-		WatsonRelationshipAudit watsonRelationshipAudit) {
-		if (watsonRelationshipAudit instanceof WatsonRelationshipAuditImpl) {
-			return watsonRelationshipAudit;
-		}
-
-		WatsonRelationshipAuditImpl watsonRelationshipAuditImpl = new WatsonRelationshipAuditImpl();
-
-		watsonRelationshipAuditImpl.setNew(watsonRelationshipAudit.isNew());
-		watsonRelationshipAuditImpl.setPrimaryKey(watsonRelationshipAudit.getPrimaryKey());
-
-		watsonRelationshipAuditImpl.setWatsonRelationshipAuditId(watsonRelationshipAudit.getWatsonRelationshipAuditId());
-		watsonRelationshipAuditImpl.setGroupId(watsonRelationshipAudit.getGroupId());
-		watsonRelationshipAuditImpl.setCompanyId(watsonRelationshipAudit.getCompanyId());
-		watsonRelationshipAuditImpl.setUserId(watsonRelationshipAudit.getUserId());
-		watsonRelationshipAuditImpl.setUserName(watsonRelationshipAudit.getUserName());
-		watsonRelationshipAuditImpl.setCreateDate(watsonRelationshipAudit.getCreateDate());
-		watsonRelationshipAuditImpl.setModifiedDate(watsonRelationshipAudit.getModifiedDate());
-		watsonRelationshipAuditImpl.setWatsonIncidentId(watsonRelationshipAudit.getWatsonIncidentId());
-		watsonRelationshipAuditImpl.setWatsonRelationshipId(watsonRelationshipAudit.getWatsonRelationshipId());
-		watsonRelationshipAuditImpl.setTypeWatsonListTypeId(watsonRelationshipAudit.getTypeWatsonListTypeId());
-		watsonRelationshipAuditImpl.setClassNameId1(watsonRelationshipAudit.getClassNameId1());
-		watsonRelationshipAuditImpl.setClassPK1(watsonRelationshipAudit.getClassPK1());
-		watsonRelationshipAuditImpl.setClassNameId2(watsonRelationshipAudit.getClassNameId2());
-		watsonRelationshipAuditImpl.setClassPK2(watsonRelationshipAudit.getClassPK2());
-		watsonRelationshipAuditImpl.setDescription(watsonRelationshipAudit.getDescription());
-		watsonRelationshipAuditImpl.setStatus(watsonRelationshipAudit.getStatus());
-
-		return watsonRelationshipAuditImpl;
 	}
 
 	/**

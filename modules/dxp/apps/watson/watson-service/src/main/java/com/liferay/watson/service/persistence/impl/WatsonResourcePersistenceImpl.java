@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
@@ -40,6 +41,8 @@ import com.liferay.watson.model.impl.WatsonResourceModelImpl;
 import com.liferay.watson.service.persistence.WatsonResourcePersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -240,8 +243,6 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 
 	@Override
 	protected WatsonResource removeImpl(WatsonResource watsonResource) {
-		watsonResource = toUnwrappedModel(watsonResource);
-
 		Session session = null;
 
 		try {
@@ -272,9 +273,23 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 
 	@Override
 	public WatsonResource updateImpl(WatsonResource watsonResource) {
-		watsonResource = toUnwrappedModel(watsonResource);
-
 		boolean isNew = watsonResource.isNew();
+
+		if (!(watsonResource instanceof WatsonResourceModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(watsonResource.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(watsonResource);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in watsonResource proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom WatsonResource implementation " +
+				watsonResource.getClass());
+		}
 
 		WatsonResourceModelImpl watsonResourceModelImpl = (WatsonResourceModelImpl)watsonResource;
 
@@ -337,34 +352,6 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 		watsonResource.resetOriginalValues();
 
 		return watsonResource;
-	}
-
-	protected WatsonResource toUnwrappedModel(WatsonResource watsonResource) {
-		if (watsonResource instanceof WatsonResourceImpl) {
-			return watsonResource;
-		}
-
-		WatsonResourceImpl watsonResourceImpl = new WatsonResourceImpl();
-
-		watsonResourceImpl.setNew(watsonResource.isNew());
-		watsonResourceImpl.setPrimaryKey(watsonResource.getPrimaryKey());
-
-		watsonResourceImpl.setWatsonResourceId(watsonResource.getWatsonResourceId());
-		watsonResourceImpl.setGroupId(watsonResource.getGroupId());
-		watsonResourceImpl.setCompanyId(watsonResource.getCompanyId());
-		watsonResourceImpl.setUserId(watsonResource.getUserId());
-		watsonResourceImpl.setUserName(watsonResource.getUserName());
-		watsonResourceImpl.setCreateDate(watsonResource.getCreateDate());
-		watsonResourceImpl.setModifiedDate(watsonResource.getModifiedDate());
-		watsonResourceImpl.setOriginalWatsonResourceId(watsonResource.getOriginalWatsonResourceId());
-		watsonResourceImpl.setTypeWatsonListTypeId(watsonResource.getTypeWatsonListTypeId());
-		watsonResourceImpl.setWatsonIncidentId(watsonResource.getWatsonIncidentId());
-		watsonResourceImpl.setName(watsonResource.getName());
-		watsonResourceImpl.setDescription(watsonResource.getDescription());
-		watsonResourceImpl.setImagePayload(watsonResource.getImagePayload());
-		watsonResourceImpl.setStatus(watsonResource.getStatus());
-
-		return watsonResourceImpl;
 	}
 
 	/**

@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -879,7 +880,7 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 
 	private static final ClassLoader _classLoader = WatsonActivity.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			WatsonActivity.class
+			WatsonActivity.class, ModelWrapper.class
 		};
 	private long _watsonActivityId;
 	private long _groupId;

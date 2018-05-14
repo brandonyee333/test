@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -43,6 +44,7 @@ import com.liferay.watson.service.persistence.WatsonReportPersistence;
 import java.io.Serializable;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -258,8 +260,6 @@ public class WatsonReportPersistenceImpl extends BasePersistenceImpl<WatsonRepor
 
 	@Override
 	protected WatsonReport removeImpl(WatsonReport watsonReport) {
-		watsonReport = toUnwrappedModel(watsonReport);
-
 		Session session = null;
 
 		try {
@@ -290,9 +290,23 @@ public class WatsonReportPersistenceImpl extends BasePersistenceImpl<WatsonRepor
 
 	@Override
 	public WatsonReport updateImpl(WatsonReport watsonReport) {
-		watsonReport = toUnwrappedModel(watsonReport);
-
 		boolean isNew = watsonReport.isNew();
+
+		if (!(watsonReport instanceof WatsonReportModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(watsonReport.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(watsonReport);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in watsonReport proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom WatsonReport implementation " +
+				watsonReport.getClass());
+		}
 
 		WatsonReportModelImpl watsonReportModelImpl = (WatsonReportModelImpl)watsonReport;
 
@@ -354,39 +368,6 @@ public class WatsonReportPersistenceImpl extends BasePersistenceImpl<WatsonRepor
 		watsonReport.resetOriginalValues();
 
 		return watsonReport;
-	}
-
-	protected WatsonReport toUnwrappedModel(WatsonReport watsonReport) {
-		if (watsonReport instanceof WatsonReportImpl) {
-			return watsonReport;
-		}
-
-		WatsonReportImpl watsonReportImpl = new WatsonReportImpl();
-
-		watsonReportImpl.setNew(watsonReport.isNew());
-		watsonReportImpl.setPrimaryKey(watsonReport.getPrimaryKey());
-
-		watsonReportImpl.setWatsonReportId(watsonReport.getWatsonReportId());
-		watsonReportImpl.setGroupId(watsonReport.getGroupId());
-		watsonReportImpl.setCompanyId(watsonReport.getCompanyId());
-		watsonReportImpl.setUserId(watsonReport.getUserId());
-		watsonReportImpl.setUserName(watsonReport.getUserName());
-		watsonReportImpl.setCreateDate(watsonReport.getCreateDate());
-		watsonReportImpl.setModifiedDate(watsonReport.getModifiedDate());
-		watsonReportImpl.setOriginalWatsonReportId(watsonReport.getOriginalWatsonReportId());
-		watsonReportImpl.setTypeWatsonListTypeId(watsonReport.getTypeWatsonListTypeId());
-		watsonReportImpl.setWatsonChildId(watsonReport.getWatsonChildId());
-		watsonReportImpl.setName(watsonReport.getName());
-		watsonReportImpl.setDescription(watsonReport.getDescription());
-		watsonReportImpl.setFullReport(watsonReport.getFullReport());
-		watsonReportImpl.setImagePayload(watsonReport.getImagePayload());
-		watsonReportImpl.setTimeSpent(watsonReport.getTimeSpent());
-		watsonReportImpl.setReportedUser(watsonReport.getReportedUser());
-		watsonReportImpl.setReportDate(watsonReport.getReportDate());
-		watsonReportImpl.setKey(watsonReport.getKey());
-		watsonReportImpl.setStatus(watsonReport.getStatus());
-
-		return watsonReportImpl;
 	}
 
 	/**

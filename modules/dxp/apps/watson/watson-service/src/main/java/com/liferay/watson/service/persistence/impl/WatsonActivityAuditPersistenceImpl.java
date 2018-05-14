@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
@@ -40,6 +41,8 @@ import com.liferay.watson.model.impl.WatsonActivityAuditModelImpl;
 import com.liferay.watson.service.persistence.WatsonActivityAuditPersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -243,8 +246,6 @@ public class WatsonActivityAuditPersistenceImpl extends BasePersistenceImpl<Wats
 	@Override
 	protected WatsonActivityAudit removeImpl(
 		WatsonActivityAudit watsonActivityAudit) {
-		watsonActivityAudit = toUnwrappedModel(watsonActivityAudit);
-
 		Session session = null;
 
 		try {
@@ -276,9 +277,23 @@ public class WatsonActivityAuditPersistenceImpl extends BasePersistenceImpl<Wats
 	@Override
 	public WatsonActivityAudit updateImpl(
 		WatsonActivityAudit watsonActivityAudit) {
-		watsonActivityAudit = toUnwrappedModel(watsonActivityAudit);
-
 		boolean isNew = watsonActivityAudit.isNew();
+
+		if (!(watsonActivityAudit instanceof WatsonActivityAuditModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(watsonActivityAudit.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(watsonActivityAudit);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in watsonActivityAudit proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom WatsonActivityAudit implementation " +
+				watsonActivityAudit.getClass());
+		}
 
 		WatsonActivityAuditModelImpl watsonActivityAuditModelImpl = (WatsonActivityAuditModelImpl)watsonActivityAudit;
 
@@ -342,36 +357,6 @@ public class WatsonActivityAuditPersistenceImpl extends BasePersistenceImpl<Wats
 		watsonActivityAudit.resetOriginalValues();
 
 		return watsonActivityAudit;
-	}
-
-	protected WatsonActivityAudit toUnwrappedModel(
-		WatsonActivityAudit watsonActivityAudit) {
-		if (watsonActivityAudit instanceof WatsonActivityAuditImpl) {
-			return watsonActivityAudit;
-		}
-
-		WatsonActivityAuditImpl watsonActivityAuditImpl = new WatsonActivityAuditImpl();
-
-		watsonActivityAuditImpl.setNew(watsonActivityAudit.isNew());
-		watsonActivityAuditImpl.setPrimaryKey(watsonActivityAudit.getPrimaryKey());
-
-		watsonActivityAuditImpl.setWatsonActivityAuditId(watsonActivityAudit.getWatsonActivityAuditId());
-		watsonActivityAuditImpl.setGroupId(watsonActivityAudit.getGroupId());
-		watsonActivityAuditImpl.setCompanyId(watsonActivityAudit.getCompanyId());
-		watsonActivityAuditImpl.setUserId(watsonActivityAudit.getUserId());
-		watsonActivityAuditImpl.setUserName(watsonActivityAudit.getUserName());
-		watsonActivityAuditImpl.setCreateDate(watsonActivityAudit.getCreateDate());
-		watsonActivityAuditImpl.setModifiedDate(watsonActivityAudit.getModifiedDate());
-		watsonActivityAuditImpl.setWatsonActivityId(watsonActivityAudit.getWatsonActivityId());
-		watsonActivityAuditImpl.setTypeWatsonListTypeId(watsonActivityAudit.getTypeWatsonListTypeId());
-		watsonActivityAuditImpl.setSubtypeWatsonListTypeId(watsonActivityAudit.getSubtypeWatsonListTypeId());
-		watsonActivityAuditImpl.setWatsonIncidentId(watsonActivityAudit.getWatsonIncidentId());
-		watsonActivityAuditImpl.setNarrative(watsonActivityAudit.getNarrative());
-		watsonActivityAuditImpl.setReportDate(watsonActivityAudit.getReportDate());
-		watsonActivityAuditImpl.setStartDate(watsonActivityAudit.getStartDate());
-		watsonActivityAuditImpl.setStatus(watsonActivityAudit.getStatus());
-
-		return watsonActivityAuditImpl;
 	}
 
 	/**

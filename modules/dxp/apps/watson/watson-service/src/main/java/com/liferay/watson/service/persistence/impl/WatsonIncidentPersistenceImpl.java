@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
@@ -40,6 +41,8 @@ import com.liferay.watson.model.impl.WatsonIncidentModelImpl;
 import com.liferay.watson.service.persistence.WatsonIncidentPersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -240,8 +243,6 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 
 	@Override
 	protected WatsonIncident removeImpl(WatsonIncident watsonIncident) {
-		watsonIncident = toUnwrappedModel(watsonIncident);
-
 		Session session = null;
 
 		try {
@@ -272,9 +273,23 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 
 	@Override
 	public WatsonIncident updateImpl(WatsonIncident watsonIncident) {
-		watsonIncident = toUnwrappedModel(watsonIncident);
-
 		boolean isNew = watsonIncident.isNew();
+
+		if (!(watsonIncident instanceof WatsonIncidentModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(watsonIncident.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(watsonIncident);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in watsonIncident proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom WatsonIncident implementation " +
+				watsonIncident.getClass());
+		}
 
 		WatsonIncidentModelImpl watsonIncidentModelImpl = (WatsonIncidentModelImpl)watsonIncident;
 
@@ -337,44 +352,6 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 		watsonIncident.resetOriginalValues();
 
 		return watsonIncident;
-	}
-
-	protected WatsonIncident toUnwrappedModel(WatsonIncident watsonIncident) {
-		if (watsonIncident instanceof WatsonIncidentImpl) {
-			return watsonIncident;
-		}
-
-		WatsonIncidentImpl watsonIncidentImpl = new WatsonIncidentImpl();
-
-		watsonIncidentImpl.setNew(watsonIncident.isNew());
-		watsonIncidentImpl.setPrimaryKey(watsonIncident.getPrimaryKey());
-
-		watsonIncidentImpl.setWatsonIncidentId(watsonIncident.getWatsonIncidentId());
-		watsonIncidentImpl.setGroupId(watsonIncident.getGroupId());
-		watsonIncidentImpl.setCompanyId(watsonIncident.getCompanyId());
-		watsonIncidentImpl.setUserId(watsonIncident.getUserId());
-		watsonIncidentImpl.setUserName(watsonIncident.getUserName());
-		watsonIncidentImpl.setCreateDate(watsonIncident.getCreateDate());
-		watsonIncidentImpl.setModifiedDate(watsonIncident.getModifiedDate());
-		watsonIncidentImpl.setExternalCaseWatsonListTypeId(watsonIncident.getExternalCaseWatsonListTypeId());
-		watsonIncidentImpl.setSourceWatsonListTypeId(watsonIncident.getSourceWatsonListTypeId());
-		watsonIncidentImpl.setTypeWatsonListTypeId(watsonIncident.getTypeWatsonListTypeId());
-		watsonIncidentImpl.setSubtypeWatsonListTypeId(watsonIncident.getSubtypeWatsonListTypeId());
-		watsonIncidentImpl.setAudienceAdultCount(watsonIncident.getAudienceAdultCount());
-		watsonIncidentImpl.setAudienceChildCount(watsonIncident.getAudienceChildCount());
-		watsonIncidentImpl.setVictimAdultCount(watsonIncident.getVictimAdultCount());
-		watsonIncidentImpl.setVictimChildCount(watsonIncident.getVictimChildCount());
-		watsonIncidentImpl.setName(watsonIncident.getName());
-		watsonIncidentImpl.setDescription(watsonIncident.getDescription());
-		watsonIncidentImpl.setExternalCaseId(watsonIncident.getExternalCaseId());
-		watsonIncidentImpl.setReportDate(watsonIncident.getReportDate());
-		watsonIncidentImpl.setStartDate(watsonIncident.getStartDate());
-		watsonIncidentImpl.setEndDate(watsonIncident.getEndDate());
-		watsonIncidentImpl.setExpenses(watsonIncident.getExpenses());
-		watsonIncidentImpl.setIncidentStatus(watsonIncident.getIncidentStatus());
-		watsonIncidentImpl.setStatus(watsonIncident.getStatus());
-
-		return watsonIncidentImpl;
 	}
 
 	/**

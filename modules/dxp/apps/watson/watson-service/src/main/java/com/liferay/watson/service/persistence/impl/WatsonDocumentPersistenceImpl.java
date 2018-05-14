@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
@@ -40,6 +41,8 @@ import com.liferay.watson.model.impl.WatsonDocumentModelImpl;
 import com.liferay.watson.service.persistence.WatsonDocumentPersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -240,8 +243,6 @@ public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDoc
 
 	@Override
 	protected WatsonDocument removeImpl(WatsonDocument watsonDocument) {
-		watsonDocument = toUnwrappedModel(watsonDocument);
-
 		Session session = null;
 
 		try {
@@ -272,9 +273,23 @@ public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDoc
 
 	@Override
 	public WatsonDocument updateImpl(WatsonDocument watsonDocument) {
-		watsonDocument = toUnwrappedModel(watsonDocument);
-
 		boolean isNew = watsonDocument.isNew();
+
+		if (!(watsonDocument instanceof WatsonDocumentModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(watsonDocument.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(watsonDocument);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in watsonDocument proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom WatsonDocument implementation " +
+				watsonDocument.getClass());
+		}
 
 		WatsonDocumentModelImpl watsonDocumentModelImpl = (WatsonDocumentModelImpl)watsonDocument;
 
@@ -337,35 +352,6 @@ public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDoc
 		watsonDocument.resetOriginalValues();
 
 		return watsonDocument;
-	}
-
-	protected WatsonDocument toUnwrappedModel(WatsonDocument watsonDocument) {
-		if (watsonDocument instanceof WatsonDocumentImpl) {
-			return watsonDocument;
-		}
-
-		WatsonDocumentImpl watsonDocumentImpl = new WatsonDocumentImpl();
-
-		watsonDocumentImpl.setNew(watsonDocument.isNew());
-		watsonDocumentImpl.setPrimaryKey(watsonDocument.getPrimaryKey());
-
-		watsonDocumentImpl.setWatsonDocumentId(watsonDocument.getWatsonDocumentId());
-		watsonDocumentImpl.setGroupId(watsonDocument.getGroupId());
-		watsonDocumentImpl.setCompanyId(watsonDocument.getCompanyId());
-		watsonDocumentImpl.setUserId(watsonDocument.getUserId());
-		watsonDocumentImpl.setUserName(watsonDocument.getUserName());
-		watsonDocumentImpl.setCreateDate(watsonDocument.getCreateDate());
-		watsonDocumentImpl.setModifiedDate(watsonDocument.getModifiedDate());
-		watsonDocumentImpl.setParentTypeWatsonListTypeId(watsonDocument.getParentTypeWatsonListTypeId());
-		watsonDocumentImpl.setSubtypeWatsonListTypeId(watsonDocument.getSubtypeWatsonListTypeId());
-		watsonDocumentImpl.setTypeWatsonListTypeId(watsonDocument.getTypeWatsonListTypeId());
-		watsonDocumentImpl.setWatsonChildId(watsonDocument.getWatsonChildId());
-		watsonDocumentImpl.setOriginalDocument(watsonDocument.isOriginalDocument());
-		watsonDocumentImpl.setReceivedDate(watsonDocument.getReceivedDate());
-		watsonDocumentImpl.setImagePayload(watsonDocument.getImagePayload());
-		watsonDocumentImpl.setStatus(watsonDocument.getStatus());
-
-		return watsonDocumentImpl;
 	}
 
 	/**

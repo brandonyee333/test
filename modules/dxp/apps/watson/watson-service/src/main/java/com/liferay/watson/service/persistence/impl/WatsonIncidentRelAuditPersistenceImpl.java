@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -43,6 +44,7 @@ import com.liferay.watson.service.persistence.WatsonIncidentRelAuditPersistence;
 import java.io.Serializable;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -266,8 +268,6 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 	@Override
 	protected WatsonIncidentRelAudit removeImpl(
 		WatsonIncidentRelAudit watsonIncidentRelAudit) {
-		watsonIncidentRelAudit = toUnwrappedModel(watsonIncidentRelAudit);
-
 		Session session = null;
 
 		try {
@@ -299,9 +299,23 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 	@Override
 	public WatsonIncidentRelAudit updateImpl(
 		WatsonIncidentRelAudit watsonIncidentRelAudit) {
-		watsonIncidentRelAudit = toUnwrappedModel(watsonIncidentRelAudit);
-
 		boolean isNew = watsonIncidentRelAudit.isNew();
+
+		if (!(watsonIncidentRelAudit instanceof WatsonIncidentRelAuditModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(watsonIncidentRelAudit.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(watsonIncidentRelAudit);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in watsonIncidentRelAudit proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom WatsonIncidentRelAudit implementation " +
+				watsonIncidentRelAudit.getClass());
+		}
 
 		WatsonIncidentRelAuditModelImpl watsonIncidentRelAuditModelImpl = (WatsonIncidentRelAuditModelImpl)watsonIncidentRelAudit;
 
@@ -366,33 +380,6 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 		watsonIncidentRelAudit.resetOriginalValues();
 
 		return watsonIncidentRelAudit;
-	}
-
-	protected WatsonIncidentRelAudit toUnwrappedModel(
-		WatsonIncidentRelAudit watsonIncidentRelAudit) {
-		if (watsonIncidentRelAudit instanceof WatsonIncidentRelAuditImpl) {
-			return watsonIncidentRelAudit;
-		}
-
-		WatsonIncidentRelAuditImpl watsonIncidentRelAuditImpl = new WatsonIncidentRelAuditImpl();
-
-		watsonIncidentRelAuditImpl.setNew(watsonIncidentRelAudit.isNew());
-		watsonIncidentRelAuditImpl.setPrimaryKey(watsonIncidentRelAudit.getPrimaryKey());
-
-		watsonIncidentRelAuditImpl.setWatsonIncidentRelAuditId(watsonIncidentRelAudit.getWatsonIncidentRelAuditId());
-		watsonIncidentRelAuditImpl.setGroupId(watsonIncidentRelAudit.getGroupId());
-		watsonIncidentRelAuditImpl.setCompanyId(watsonIncidentRelAudit.getCompanyId());
-		watsonIncidentRelAuditImpl.setUserId(watsonIncidentRelAudit.getUserId());
-		watsonIncidentRelAuditImpl.setUserName(watsonIncidentRelAudit.getUserName());
-		watsonIncidentRelAuditImpl.setCreateDate(watsonIncidentRelAudit.getCreateDate());
-		watsonIncidentRelAuditImpl.setModifiedDate(watsonIncidentRelAudit.getModifiedDate());
-		watsonIncidentRelAuditImpl.setWatsonIncidentId1(watsonIncidentRelAudit.getWatsonIncidentId1());
-		watsonIncidentRelAuditImpl.setWatsonIncidentId2(watsonIncidentRelAudit.getWatsonIncidentId2());
-		watsonIncidentRelAuditImpl.setWatsonIncidentRelId(watsonIncidentRelAudit.getWatsonIncidentRelId());
-		watsonIncidentRelAuditImpl.setType(watsonIncidentRelAudit.getType());
-		watsonIncidentRelAuditImpl.setStatus(watsonIncidentRelAudit.getStatus());
-
-		return watsonIncidentRelAuditImpl;
 	}
 
 	/**

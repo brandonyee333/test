@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
@@ -40,6 +41,8 @@ import com.liferay.watson.model.impl.WatsonDocumentAuditModelImpl;
 import com.liferay.watson.service.persistence.WatsonDocumentAuditPersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -243,8 +246,6 @@ public class WatsonDocumentAuditPersistenceImpl extends BasePersistenceImpl<Wats
 	@Override
 	protected WatsonDocumentAudit removeImpl(
 		WatsonDocumentAudit watsonDocumentAudit) {
-		watsonDocumentAudit = toUnwrappedModel(watsonDocumentAudit);
-
 		Session session = null;
 
 		try {
@@ -276,9 +277,23 @@ public class WatsonDocumentAuditPersistenceImpl extends BasePersistenceImpl<Wats
 	@Override
 	public WatsonDocumentAudit updateImpl(
 		WatsonDocumentAudit watsonDocumentAudit) {
-		watsonDocumentAudit = toUnwrappedModel(watsonDocumentAudit);
-
 		boolean isNew = watsonDocumentAudit.isNew();
+
+		if (!(watsonDocumentAudit instanceof WatsonDocumentAuditModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(watsonDocumentAudit.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(watsonDocumentAudit);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in watsonDocumentAudit proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom WatsonDocumentAudit implementation " +
+				watsonDocumentAudit.getClass());
+		}
 
 		WatsonDocumentAuditModelImpl watsonDocumentAuditModelImpl = (WatsonDocumentAuditModelImpl)watsonDocumentAudit;
 
@@ -342,37 +357,6 @@ public class WatsonDocumentAuditPersistenceImpl extends BasePersistenceImpl<Wats
 		watsonDocumentAudit.resetOriginalValues();
 
 		return watsonDocumentAudit;
-	}
-
-	protected WatsonDocumentAudit toUnwrappedModel(
-		WatsonDocumentAudit watsonDocumentAudit) {
-		if (watsonDocumentAudit instanceof WatsonDocumentAuditImpl) {
-			return watsonDocumentAudit;
-		}
-
-		WatsonDocumentAuditImpl watsonDocumentAuditImpl = new WatsonDocumentAuditImpl();
-
-		watsonDocumentAuditImpl.setNew(watsonDocumentAudit.isNew());
-		watsonDocumentAuditImpl.setPrimaryKey(watsonDocumentAudit.getPrimaryKey());
-
-		watsonDocumentAuditImpl.setWatsonDocumentAuditId(watsonDocumentAudit.getWatsonDocumentAuditId());
-		watsonDocumentAuditImpl.setGroupId(watsonDocumentAudit.getGroupId());
-		watsonDocumentAuditImpl.setCompanyId(watsonDocumentAudit.getCompanyId());
-		watsonDocumentAuditImpl.setUserId(watsonDocumentAudit.getUserId());
-		watsonDocumentAuditImpl.setUserName(watsonDocumentAudit.getUserName());
-		watsonDocumentAuditImpl.setCreateDate(watsonDocumentAudit.getCreateDate());
-		watsonDocumentAuditImpl.setModifiedDate(watsonDocumentAudit.getModifiedDate());
-		watsonDocumentAuditImpl.setParentTypeWatsonListTypeId(watsonDocumentAudit.getParentTypeWatsonListTypeId());
-		watsonDocumentAuditImpl.setSubtypeWatsonListTypeId(watsonDocumentAudit.getSubtypeWatsonListTypeId());
-		watsonDocumentAuditImpl.setTypeWatsonListTypeId(watsonDocumentAudit.getTypeWatsonListTypeId());
-		watsonDocumentAuditImpl.setWatsonChildId(watsonDocumentAudit.getWatsonChildId());
-		watsonDocumentAuditImpl.setWatsonDocumentId(watsonDocumentAudit.getWatsonDocumentId());
-		watsonDocumentAuditImpl.setOriginalDocument(watsonDocumentAudit.isOriginalDocument());
-		watsonDocumentAuditImpl.setReceivedDate(watsonDocumentAudit.getReceivedDate());
-		watsonDocumentAuditImpl.setImagePayload(watsonDocumentAudit.getImagePayload());
-		watsonDocumentAuditImpl.setStatus(watsonDocumentAudit.getStatus());
-
-		return watsonDocumentAuditImpl;
 	}
 
 	/**

@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -43,6 +44,7 @@ import com.liferay.watson.service.persistence.WatsonAddressAuditPersistence;
 import java.io.Serializable;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -263,8 +265,6 @@ public class WatsonAddressAuditPersistenceImpl extends BasePersistenceImpl<Watso
 	@Override
 	protected WatsonAddressAudit removeImpl(
 		WatsonAddressAudit watsonAddressAudit) {
-		watsonAddressAudit = toUnwrappedModel(watsonAddressAudit);
-
 		Session session = null;
 
 		try {
@@ -295,9 +295,23 @@ public class WatsonAddressAuditPersistenceImpl extends BasePersistenceImpl<Watso
 
 	@Override
 	public WatsonAddressAudit updateImpl(WatsonAddressAudit watsonAddressAudit) {
-		watsonAddressAudit = toUnwrappedModel(watsonAddressAudit);
-
 		boolean isNew = watsonAddressAudit.isNew();
+
+		if (!(watsonAddressAudit instanceof WatsonAddressAuditModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(watsonAddressAudit.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(watsonAddressAudit);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in watsonAddressAudit proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom WatsonAddressAudit implementation " +
+				watsonAddressAudit.getClass());
+		}
 
 		WatsonAddressAuditModelImpl watsonAddressAuditModelImpl = (WatsonAddressAuditModelImpl)watsonAddressAudit;
 
@@ -361,51 +375,6 @@ public class WatsonAddressAuditPersistenceImpl extends BasePersistenceImpl<Watso
 		watsonAddressAudit.resetOriginalValues();
 
 		return watsonAddressAudit;
-	}
-
-	protected WatsonAddressAudit toUnwrappedModel(
-		WatsonAddressAudit watsonAddressAudit) {
-		if (watsonAddressAudit instanceof WatsonAddressAuditImpl) {
-			return watsonAddressAudit;
-		}
-
-		WatsonAddressAuditImpl watsonAddressAuditImpl = new WatsonAddressAuditImpl();
-
-		watsonAddressAuditImpl.setNew(watsonAddressAudit.isNew());
-		watsonAddressAuditImpl.setPrimaryKey(watsonAddressAudit.getPrimaryKey());
-
-		watsonAddressAuditImpl.setWatsonAddressAuditId(watsonAddressAudit.getWatsonAddressAuditId());
-		watsonAddressAuditImpl.setGroupId(watsonAddressAudit.getGroupId());
-		watsonAddressAuditImpl.setCompanyId(watsonAddressAudit.getCompanyId());
-		watsonAddressAuditImpl.setUserId(watsonAddressAudit.getUserId());
-		watsonAddressAuditImpl.setUserName(watsonAddressAudit.getUserName());
-		watsonAddressAuditImpl.setCreateDate(watsonAddressAudit.getCreateDate());
-		watsonAddressAuditImpl.setModifiedDate(watsonAddressAudit.getModifiedDate());
-		watsonAddressAuditImpl.setCountryId(watsonAddressAudit.getCountryId());
-		watsonAddressAuditImpl.setDistrictWatsonListTypeId(watsonAddressAudit.getDistrictWatsonListTypeId());
-		watsonAddressAuditImpl.setOriginalWatsonAddressId(watsonAddressAudit.getOriginalWatsonAddressId());
-		watsonAddressAuditImpl.setProvinceWatsonListTypeId(watsonAddressAudit.getProvinceWatsonListTypeId());
-		watsonAddressAuditImpl.setSubDistrictWatsonListTypeId(watsonAddressAudit.getSubDistrictWatsonListTypeId());
-		watsonAddressAuditImpl.setTypeWatsonListTypeId(watsonAddressAudit.getTypeWatsonListTypeId());
-		watsonAddressAuditImpl.setWatsonAddressId(watsonAddressAudit.getWatsonAddressId());
-		watsonAddressAuditImpl.setWatsonIncidentId(watsonAddressAudit.getWatsonIncidentId());
-		watsonAddressAuditImpl.setName(watsonAddressAudit.getName());
-		watsonAddressAuditImpl.setPostalCode(watsonAddressAudit.getPostalCode());
-		watsonAddressAuditImpl.setRegion(watsonAddressAudit.getRegion());
-		watsonAddressAuditImpl.setStreet(watsonAddressAudit.getStreet());
-		watsonAddressAuditImpl.setNumber(watsonAddressAudit.getNumber());
-		watsonAddressAuditImpl.setBuilding(watsonAddressAudit.getBuilding());
-		watsonAddressAuditImpl.setFloor(watsonAddressAudit.getFloor());
-		watsonAddressAuditImpl.setRoom(watsonAddressAudit.getRoom());
-		watsonAddressAuditImpl.setDescription(watsonAddressAudit.getDescription());
-		watsonAddressAuditImpl.setImagePayload(watsonAddressAudit.getImagePayload());
-		watsonAddressAuditImpl.setOtherType(watsonAddressAudit.getOtherType());
-		watsonAddressAuditImpl.setLastSeenDate(watsonAddressAudit.getLastSeenDate());
-		watsonAddressAuditImpl.setLatitude(watsonAddressAudit.getLatitude());
-		watsonAddressAuditImpl.setLongitude(watsonAddressAudit.getLongitude());
-		watsonAddressAuditImpl.setStatus(watsonAddressAudit.getStatus());
-
-		return watsonAddressAuditImpl;
 	}
 
 	/**

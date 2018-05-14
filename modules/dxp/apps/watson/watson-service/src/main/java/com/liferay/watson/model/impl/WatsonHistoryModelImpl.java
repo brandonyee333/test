@@ -22,6 +22,7 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -663,7 +664,7 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 
 	private static final ClassLoader _classLoader = WatsonHistory.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			WatsonHistory.class
+			WatsonHistory.class, ModelWrapper.class
 		};
 	private long _watsonHistoryId;
 	private long _groupId;

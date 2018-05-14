@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
@@ -40,6 +41,8 @@ import com.liferay.watson.model.impl.WatsonPersonModelImpl;
 import com.liferay.watson.service.persistence.WatsonPersonPersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -237,8 +240,6 @@ public class WatsonPersonPersistenceImpl extends BasePersistenceImpl<WatsonPerso
 
 	@Override
 	protected WatsonPerson removeImpl(WatsonPerson watsonPerson) {
-		watsonPerson = toUnwrappedModel(watsonPerson);
-
 		Session session = null;
 
 		try {
@@ -269,9 +270,23 @@ public class WatsonPersonPersistenceImpl extends BasePersistenceImpl<WatsonPerso
 
 	@Override
 	public WatsonPerson updateImpl(WatsonPerson watsonPerson) {
-		watsonPerson = toUnwrappedModel(watsonPerson);
-
 		boolean isNew = watsonPerson.isNew();
+
+		if (!(watsonPerson instanceof WatsonPersonModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(watsonPerson.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(watsonPerson);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in watsonPerson proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom WatsonPerson implementation " +
+				watsonPerson.getClass());
+		}
 
 		WatsonPersonModelImpl watsonPersonModelImpl = (WatsonPersonModelImpl)watsonPerson;
 
@@ -333,50 +348,6 @@ public class WatsonPersonPersistenceImpl extends BasePersistenceImpl<WatsonPerso
 		watsonPerson.resetOriginalValues();
 
 		return watsonPerson;
-	}
-
-	protected WatsonPerson toUnwrappedModel(WatsonPerson watsonPerson) {
-		if (watsonPerson instanceof WatsonPersonImpl) {
-			return watsonPerson;
-		}
-
-		WatsonPersonImpl watsonPersonImpl = new WatsonPersonImpl();
-
-		watsonPersonImpl.setNew(watsonPerson.isNew());
-		watsonPersonImpl.setPrimaryKey(watsonPerson.getPrimaryKey());
-
-		watsonPersonImpl.setWatsonPersonId(watsonPerson.getWatsonPersonId());
-		watsonPersonImpl.setGroupId(watsonPerson.getGroupId());
-		watsonPersonImpl.setCompanyId(watsonPerson.getCompanyId());
-		watsonPersonImpl.setUserId(watsonPerson.getUserId());
-		watsonPersonImpl.setUserName(watsonPerson.getUserName());
-		watsonPersonImpl.setCreateDate(watsonPerson.getCreateDate());
-		watsonPersonImpl.setModifiedDate(watsonPerson.getModifiedDate());
-		watsonPersonImpl.setBirthCountryId(watsonPerson.getBirthCountryId());
-		watsonPersonImpl.setCitizenshipWatsonListTypeId(watsonPerson.getCitizenshipWatsonListTypeId());
-		watsonPersonImpl.setCountryWatsonListTypeId(watsonPerson.getCountryWatsonListTypeId());
-		watsonPersonImpl.setEthnicityWatsonListTypeId(watsonPerson.getEthnicityWatsonListTypeId());
-		watsonPersonImpl.setEyesWatsonListTypeId(watsonPerson.getEyesWatsonListTypeId());
-		watsonPersonImpl.setHairWatsonListTypeId(watsonPerson.getHairWatsonListTypeId());
-		watsonPersonImpl.setOriginalWatsonPersonId(watsonPerson.getOriginalWatsonPersonId());
-		watsonPersonImpl.setSexWatsonListTypeId(watsonPerson.getSexWatsonListTypeId());
-		watsonPersonImpl.setTypeWatsonListTypeId(watsonPerson.getTypeWatsonListTypeId());
-		watsonPersonImpl.setWatsonIncidentId(watsonPerson.getWatsonIncidentId());
-		watsonPersonImpl.setDescription(watsonPerson.getDescription());
-		watsonPersonImpl.setImagePayload(watsonPerson.getImagePayload());
-		watsonPersonImpl.setBirthDate(watsonPerson.getBirthDate());
-		watsonPersonImpl.setDateAccepted(watsonPerson.getDateAccepted());
-		watsonPersonImpl.setDateRescued(watsonPerson.getDateRescued());
-		watsonPersonImpl.setStartAge(watsonPerson.getStartAge());
-		watsonPersonImpl.setEndAge(watsonPerson.getEndAge());
-		watsonPersonImpl.setOccupation(watsonPerson.getOccupation());
-		watsonPersonImpl.setHeight(watsonPerson.getHeight());
-		watsonPersonImpl.setWeight(watsonPerson.getWeight());
-		watsonPersonImpl.setAccepted(watsonPerson.isAccepted());
-		watsonPersonImpl.setRescued(watsonPerson.isRescued());
-		watsonPersonImpl.setStatus(watsonPerson.getStatus());
-
-		return watsonPersonImpl;
 	}
 
 	/**

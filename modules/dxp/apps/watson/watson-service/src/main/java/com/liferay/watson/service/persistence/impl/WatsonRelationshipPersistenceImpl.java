@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
@@ -40,6 +41,8 @@ import com.liferay.watson.model.impl.WatsonRelationshipModelImpl;
 import com.liferay.watson.service.persistence.WatsonRelationshipPersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -242,8 +245,6 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 	@Override
 	protected WatsonRelationship removeImpl(
 		WatsonRelationship watsonRelationship) {
-		watsonRelationship = toUnwrappedModel(watsonRelationship);
-
 		Session session = null;
 
 		try {
@@ -274,9 +275,23 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 
 	@Override
 	public WatsonRelationship updateImpl(WatsonRelationship watsonRelationship) {
-		watsonRelationship = toUnwrappedModel(watsonRelationship);
-
 		boolean isNew = watsonRelationship.isNew();
+
+		if (!(watsonRelationship instanceof WatsonRelationshipModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(watsonRelationship.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(watsonRelationship);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in watsonRelationship proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom WatsonRelationship implementation " +
+				watsonRelationship.getClass());
+		}
 
 		WatsonRelationshipModelImpl watsonRelationshipModelImpl = (WatsonRelationshipModelImpl)watsonRelationship;
 
@@ -340,36 +355,6 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 		watsonRelationship.resetOriginalValues();
 
 		return watsonRelationship;
-	}
-
-	protected WatsonRelationship toUnwrappedModel(
-		WatsonRelationship watsonRelationship) {
-		if (watsonRelationship instanceof WatsonRelationshipImpl) {
-			return watsonRelationship;
-		}
-
-		WatsonRelationshipImpl watsonRelationshipImpl = new WatsonRelationshipImpl();
-
-		watsonRelationshipImpl.setNew(watsonRelationship.isNew());
-		watsonRelationshipImpl.setPrimaryKey(watsonRelationship.getPrimaryKey());
-
-		watsonRelationshipImpl.setWatsonRelationshipId(watsonRelationship.getWatsonRelationshipId());
-		watsonRelationshipImpl.setGroupId(watsonRelationship.getGroupId());
-		watsonRelationshipImpl.setCompanyId(watsonRelationship.getCompanyId());
-		watsonRelationshipImpl.setUserId(watsonRelationship.getUserId());
-		watsonRelationshipImpl.setUserName(watsonRelationship.getUserName());
-		watsonRelationshipImpl.setCreateDate(watsonRelationship.getCreateDate());
-		watsonRelationshipImpl.setModifiedDate(watsonRelationship.getModifiedDate());
-		watsonRelationshipImpl.setWatsonIncidentId(watsonRelationship.getWatsonIncidentId());
-		watsonRelationshipImpl.setTypeWatsonListTypeId(watsonRelationship.getTypeWatsonListTypeId());
-		watsonRelationshipImpl.setClassNameId1(watsonRelationship.getClassNameId1());
-		watsonRelationshipImpl.setClassPK1(watsonRelationship.getClassPK1());
-		watsonRelationshipImpl.setClassNameId2(watsonRelationship.getClassNameId2());
-		watsonRelationshipImpl.setClassPK2(watsonRelationship.getClassPK2());
-		watsonRelationshipImpl.setDescription(watsonRelationship.getDescription());
-		watsonRelationshipImpl.setStatus(watsonRelationship.getStatus());
-
-		return watsonRelationshipImpl;
 	}
 
 	/**

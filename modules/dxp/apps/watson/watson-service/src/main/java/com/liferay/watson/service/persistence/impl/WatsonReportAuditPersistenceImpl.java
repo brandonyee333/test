@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -43,6 +44,7 @@ import com.liferay.watson.service.persistence.WatsonReportAuditPersistence;
 import java.io.Serializable;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -262,8 +264,6 @@ public class WatsonReportAuditPersistenceImpl extends BasePersistenceImpl<Watson
 
 	@Override
 	protected WatsonReportAudit removeImpl(WatsonReportAudit watsonReportAudit) {
-		watsonReportAudit = toUnwrappedModel(watsonReportAudit);
-
 		Session session = null;
 
 		try {
@@ -294,9 +294,23 @@ public class WatsonReportAuditPersistenceImpl extends BasePersistenceImpl<Watson
 
 	@Override
 	public WatsonReportAudit updateImpl(WatsonReportAudit watsonReportAudit) {
-		watsonReportAudit = toUnwrappedModel(watsonReportAudit);
-
 		boolean isNew = watsonReportAudit.isNew();
+
+		if (!(watsonReportAudit instanceof WatsonReportAuditModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(watsonReportAudit.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(watsonReportAudit);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in watsonReportAudit proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom WatsonReportAudit implementation " +
+				watsonReportAudit.getClass());
+		}
 
 		WatsonReportAuditModelImpl watsonReportAuditModelImpl = (WatsonReportAuditModelImpl)watsonReportAudit;
 
@@ -360,41 +374,6 @@ public class WatsonReportAuditPersistenceImpl extends BasePersistenceImpl<Watson
 		watsonReportAudit.resetOriginalValues();
 
 		return watsonReportAudit;
-	}
-
-	protected WatsonReportAudit toUnwrappedModel(
-		WatsonReportAudit watsonReportAudit) {
-		if (watsonReportAudit instanceof WatsonReportAuditImpl) {
-			return watsonReportAudit;
-		}
-
-		WatsonReportAuditImpl watsonReportAuditImpl = new WatsonReportAuditImpl();
-
-		watsonReportAuditImpl.setNew(watsonReportAudit.isNew());
-		watsonReportAuditImpl.setPrimaryKey(watsonReportAudit.getPrimaryKey());
-
-		watsonReportAuditImpl.setWatsonReportAuditId(watsonReportAudit.getWatsonReportAuditId());
-		watsonReportAuditImpl.setGroupId(watsonReportAudit.getGroupId());
-		watsonReportAuditImpl.setCompanyId(watsonReportAudit.getCompanyId());
-		watsonReportAuditImpl.setUserId(watsonReportAudit.getUserId());
-		watsonReportAuditImpl.setUserName(watsonReportAudit.getUserName());
-		watsonReportAuditImpl.setCreateDate(watsonReportAudit.getCreateDate());
-		watsonReportAuditImpl.setModifiedDate(watsonReportAudit.getModifiedDate());
-		watsonReportAuditImpl.setOriginalWatsonReportId(watsonReportAudit.getOriginalWatsonReportId());
-		watsonReportAuditImpl.setTypeWatsonListTypeId(watsonReportAudit.getTypeWatsonListTypeId());
-		watsonReportAuditImpl.setWatsonChildId(watsonReportAudit.getWatsonChildId());
-		watsonReportAuditImpl.setWatsonReportId(watsonReportAudit.getWatsonReportId());
-		watsonReportAuditImpl.setName(watsonReportAudit.getName());
-		watsonReportAuditImpl.setDescription(watsonReportAudit.getDescription());
-		watsonReportAuditImpl.setFullReport(watsonReportAudit.getFullReport());
-		watsonReportAuditImpl.setImagePayload(watsonReportAudit.getImagePayload());
-		watsonReportAuditImpl.setTimeSpent(watsonReportAudit.getTimeSpent());
-		watsonReportAuditImpl.setReportedUser(watsonReportAudit.getReportedUser());
-		watsonReportAuditImpl.setReportDate(watsonReportAudit.getReportDate());
-		watsonReportAuditImpl.setKey(watsonReportAudit.getKey());
-		watsonReportAuditImpl.setStatus(watsonReportAudit.getStatus());
-
-		return watsonReportAuditImpl;
 	}
 
 	/**

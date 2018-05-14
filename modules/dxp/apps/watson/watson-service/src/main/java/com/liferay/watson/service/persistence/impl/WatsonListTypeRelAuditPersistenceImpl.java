@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -43,6 +44,7 @@ import com.liferay.watson.service.persistence.WatsonListTypeRelAuditPersistence;
 import java.io.Serializable;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -267,8 +269,6 @@ public class WatsonListTypeRelAuditPersistenceImpl extends BasePersistenceImpl<W
 	@Override
 	protected WatsonListTypeRelAudit removeImpl(
 		WatsonListTypeRelAudit watsonListTypeRelAudit) {
-		watsonListTypeRelAudit = toUnwrappedModel(watsonListTypeRelAudit);
-
 		Session session = null;
 
 		try {
@@ -300,9 +300,23 @@ public class WatsonListTypeRelAuditPersistenceImpl extends BasePersistenceImpl<W
 	@Override
 	public WatsonListTypeRelAudit updateImpl(
 		WatsonListTypeRelAudit watsonListTypeRelAudit) {
-		watsonListTypeRelAudit = toUnwrappedModel(watsonListTypeRelAudit);
-
 		boolean isNew = watsonListTypeRelAudit.isNew();
+
+		if (!(watsonListTypeRelAudit instanceof WatsonListTypeRelAuditModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(watsonListTypeRelAudit.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(watsonListTypeRelAudit);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in watsonListTypeRelAudit proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom WatsonListTypeRelAudit implementation " +
+				watsonListTypeRelAudit.getClass());
+		}
 
 		WatsonListTypeRelAuditModelImpl watsonListTypeRelAuditModelImpl = (WatsonListTypeRelAuditModelImpl)watsonListTypeRelAudit;
 
@@ -367,36 +381,6 @@ public class WatsonListTypeRelAuditPersistenceImpl extends BasePersistenceImpl<W
 		watsonListTypeRelAudit.resetOriginalValues();
 
 		return watsonListTypeRelAudit;
-	}
-
-	protected WatsonListTypeRelAudit toUnwrappedModel(
-		WatsonListTypeRelAudit watsonListTypeRelAudit) {
-		if (watsonListTypeRelAudit instanceof WatsonListTypeRelAuditImpl) {
-			return watsonListTypeRelAudit;
-		}
-
-		WatsonListTypeRelAuditImpl watsonListTypeRelAuditImpl = new WatsonListTypeRelAuditImpl();
-
-		watsonListTypeRelAuditImpl.setNew(watsonListTypeRelAudit.isNew());
-		watsonListTypeRelAuditImpl.setPrimaryKey(watsonListTypeRelAudit.getPrimaryKey());
-
-		watsonListTypeRelAuditImpl.setWatsonListTypeRelAuditId(watsonListTypeRelAudit.getWatsonListTypeRelAuditId());
-		watsonListTypeRelAuditImpl.setGroupId(watsonListTypeRelAudit.getGroupId());
-		watsonListTypeRelAuditImpl.setCompanyId(watsonListTypeRelAudit.getCompanyId());
-		watsonListTypeRelAuditImpl.setUserId(watsonListTypeRelAudit.getUserId());
-		watsonListTypeRelAuditImpl.setUserName(watsonListTypeRelAudit.getUserName());
-		watsonListTypeRelAuditImpl.setCreateDate(watsonListTypeRelAudit.getCreateDate());
-		watsonListTypeRelAuditImpl.setModifiedDate(watsonListTypeRelAudit.getModifiedDate());
-		watsonListTypeRelAuditImpl.setWatsonListTypeId(watsonListTypeRelAudit.getWatsonListTypeId());
-		watsonListTypeRelAuditImpl.setWatsonListTypeRelId(watsonListTypeRelAudit.getWatsonListTypeRelId());
-		watsonListTypeRelAuditImpl.setClassNameId(watsonListTypeRelAudit.getClassNameId());
-		watsonListTypeRelAuditImpl.setClassPK(watsonListTypeRelAudit.getClassPK());
-		watsonListTypeRelAuditImpl.setPrimary(watsonListTypeRelAudit.isPrimary());
-		watsonListTypeRelAuditImpl.setValue(watsonListTypeRelAudit.getValue());
-		watsonListTypeRelAuditImpl.setType(watsonListTypeRelAudit.getType());
-		watsonListTypeRelAuditImpl.setStatus(watsonListTypeRelAudit.getStatus());
-
-		return watsonListTypeRelAuditImpl;
 	}
 
 	/**

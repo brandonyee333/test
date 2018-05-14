@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -43,6 +44,7 @@ import com.liferay.watson.service.persistence.WatsonHistoryAuditPersistence;
 import java.io.Serializable;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -263,8 +265,6 @@ public class WatsonHistoryAuditPersistenceImpl extends BasePersistenceImpl<Watso
 	@Override
 	protected WatsonHistoryAudit removeImpl(
 		WatsonHistoryAudit watsonHistoryAudit) {
-		watsonHistoryAudit = toUnwrappedModel(watsonHistoryAudit);
-
 		Session session = null;
 
 		try {
@@ -295,9 +295,23 @@ public class WatsonHistoryAuditPersistenceImpl extends BasePersistenceImpl<Watso
 
 	@Override
 	public WatsonHistoryAudit updateImpl(WatsonHistoryAudit watsonHistoryAudit) {
-		watsonHistoryAudit = toUnwrappedModel(watsonHistoryAudit);
-
 		boolean isNew = watsonHistoryAudit.isNew();
+
+		if (!(watsonHistoryAudit instanceof WatsonHistoryAuditModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(watsonHistoryAudit.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(watsonHistoryAudit);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in watsonHistoryAudit proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom WatsonHistoryAudit implementation " +
+				watsonHistoryAudit.getClass());
+		}
 
 		WatsonHistoryAuditModelImpl watsonHistoryAuditModelImpl = (WatsonHistoryAuditModelImpl)watsonHistoryAudit;
 
@@ -361,34 +375,6 @@ public class WatsonHistoryAuditPersistenceImpl extends BasePersistenceImpl<Watso
 		watsonHistoryAudit.resetOriginalValues();
 
 		return watsonHistoryAudit;
-	}
-
-	protected WatsonHistoryAudit toUnwrappedModel(
-		WatsonHistoryAudit watsonHistoryAudit) {
-		if (watsonHistoryAudit instanceof WatsonHistoryAuditImpl) {
-			return watsonHistoryAudit;
-		}
-
-		WatsonHistoryAuditImpl watsonHistoryAuditImpl = new WatsonHistoryAuditImpl();
-
-		watsonHistoryAuditImpl.setNew(watsonHistoryAudit.isNew());
-		watsonHistoryAuditImpl.setPrimaryKey(watsonHistoryAudit.getPrimaryKey());
-
-		watsonHistoryAuditImpl.setWatsonHistoryAuditId(watsonHistoryAudit.getWatsonHistoryAuditId());
-		watsonHistoryAuditImpl.setGroupId(watsonHistoryAudit.getGroupId());
-		watsonHistoryAuditImpl.setCompanyId(watsonHistoryAudit.getCompanyId());
-		watsonHistoryAuditImpl.setUserId(watsonHistoryAudit.getUserId());
-		watsonHistoryAuditImpl.setUserName(watsonHistoryAudit.getUserName());
-		watsonHistoryAuditImpl.setCreateDate(watsonHistoryAudit.getCreateDate());
-		watsonHistoryAuditImpl.setModifiedDate(watsonHistoryAudit.getModifiedDate());
-		watsonHistoryAuditImpl.setWatsonHistoryId(watsonHistoryAudit.getWatsonHistoryId());
-		watsonHistoryAuditImpl.setWatsonParentId(watsonHistoryAudit.getWatsonParentId());
-		watsonHistoryAuditImpl.setClassNameId(watsonHistoryAudit.getClassNameId());
-		watsonHistoryAuditImpl.setClassPK(watsonHistoryAudit.getClassPK());
-		watsonHistoryAuditImpl.setType(watsonHistoryAudit.getType());
-		watsonHistoryAuditImpl.setStatus(watsonHistoryAudit.getStatus());
-
-		return watsonHistoryAuditImpl;
 	}
 
 	/**

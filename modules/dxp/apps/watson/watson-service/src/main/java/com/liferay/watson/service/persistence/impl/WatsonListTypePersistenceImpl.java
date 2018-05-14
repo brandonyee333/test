@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -43,6 +44,7 @@ import com.liferay.watson.service.persistence.WatsonListTypePersistence;
 import java.io.Serializable;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -261,8 +263,6 @@ public class WatsonListTypePersistenceImpl extends BasePersistenceImpl<WatsonLis
 
 	@Override
 	protected WatsonListType removeImpl(WatsonListType watsonListType) {
-		watsonListType = toUnwrappedModel(watsonListType);
-
 		Session session = null;
 
 		try {
@@ -293,9 +293,23 @@ public class WatsonListTypePersistenceImpl extends BasePersistenceImpl<WatsonLis
 
 	@Override
 	public WatsonListType updateImpl(WatsonListType watsonListType) {
-		watsonListType = toUnwrappedModel(watsonListType);
-
 		boolean isNew = watsonListType.isNew();
+
+		if (!(watsonListType instanceof WatsonListTypeModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(watsonListType.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(watsonListType);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in watsonListType proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom WatsonListType implementation " +
+				watsonListType.getClass());
+		}
 
 		WatsonListTypeModelImpl watsonListTypeModelImpl = (WatsonListTypeModelImpl)watsonListType;
 
@@ -358,31 +372,6 @@ public class WatsonListTypePersistenceImpl extends BasePersistenceImpl<WatsonLis
 		watsonListType.resetOriginalValues();
 
 		return watsonListType;
-	}
-
-	protected WatsonListType toUnwrappedModel(WatsonListType watsonListType) {
-		if (watsonListType instanceof WatsonListTypeImpl) {
-			return watsonListType;
-		}
-
-		WatsonListTypeImpl watsonListTypeImpl = new WatsonListTypeImpl();
-
-		watsonListTypeImpl.setNew(watsonListType.isNew());
-		watsonListTypeImpl.setPrimaryKey(watsonListType.getPrimaryKey());
-
-		watsonListTypeImpl.setWatsonListTypeId(watsonListType.getWatsonListTypeId());
-		watsonListTypeImpl.setGroupId(watsonListType.getGroupId());
-		watsonListTypeImpl.setCompanyId(watsonListType.getCompanyId());
-		watsonListTypeImpl.setUserId(watsonListType.getUserId());
-		watsonListTypeImpl.setUserName(watsonListType.getUserName());
-		watsonListTypeImpl.setCreateDate(watsonListType.getCreateDate());
-		watsonListTypeImpl.setModifiedDate(watsonListType.getModifiedDate());
-		watsonListTypeImpl.setParentWatsonListTypeId(watsonListType.getParentWatsonListTypeId());
-		watsonListTypeImpl.setName(watsonListType.getName());
-		watsonListTypeImpl.setType(watsonListType.getType());
-		watsonListTypeImpl.setStatus(watsonListType.getStatus());
-
-		return watsonListTypeImpl;
 	}
 
 	/**

@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
@@ -40,6 +41,8 @@ import com.liferay.watson.model.impl.WatsonVehicleModelImpl;
 import com.liferay.watson.service.persistence.WatsonVehiclePersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -240,8 +243,6 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 
 	@Override
 	protected WatsonVehicle removeImpl(WatsonVehicle watsonVehicle) {
-		watsonVehicle = toUnwrappedModel(watsonVehicle);
-
 		Session session = null;
 
 		try {
@@ -272,9 +273,23 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 
 	@Override
 	public WatsonVehicle updateImpl(WatsonVehicle watsonVehicle) {
-		watsonVehicle = toUnwrappedModel(watsonVehicle);
-
 		boolean isNew = watsonVehicle.isNew();
+
+		if (!(watsonVehicle instanceof WatsonVehicleModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(watsonVehicle.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(watsonVehicle);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in watsonVehicle proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom WatsonVehicle implementation " +
+				watsonVehicle.getClass());
+		}
 
 		WatsonVehicleModelImpl watsonVehicleModelImpl = (WatsonVehicleModelImpl)watsonVehicle;
 
@@ -337,39 +352,6 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 		watsonVehicle.resetOriginalValues();
 
 		return watsonVehicle;
-	}
-
-	protected WatsonVehicle toUnwrappedModel(WatsonVehicle watsonVehicle) {
-		if (watsonVehicle instanceof WatsonVehicleImpl) {
-			return watsonVehicle;
-		}
-
-		WatsonVehicleImpl watsonVehicleImpl = new WatsonVehicleImpl();
-
-		watsonVehicleImpl.setNew(watsonVehicle.isNew());
-		watsonVehicleImpl.setPrimaryKey(watsonVehicle.getPrimaryKey());
-
-		watsonVehicleImpl.setWatsonVehicleId(watsonVehicle.getWatsonVehicleId());
-		watsonVehicleImpl.setGroupId(watsonVehicle.getGroupId());
-		watsonVehicleImpl.setCompanyId(watsonVehicle.getCompanyId());
-		watsonVehicleImpl.setUserId(watsonVehicle.getUserId());
-		watsonVehicleImpl.setUserName(watsonVehicle.getUserName());
-		watsonVehicleImpl.setCreateDate(watsonVehicle.getCreateDate());
-		watsonVehicleImpl.setModifiedDate(watsonVehicle.getModifiedDate());
-		watsonVehicleImpl.setColorWatsonListTypeId(watsonVehicle.getColorWatsonListTypeId());
-		watsonVehicleImpl.setMakeWatsonListTypeId(watsonVehicle.getMakeWatsonListTypeId());
-		watsonVehicleImpl.setModelWatsonListTypeId(watsonVehicle.getModelWatsonListTypeId());
-		watsonVehicleImpl.setOriginalWatsonVehicleId(watsonVehicle.getOriginalWatsonVehicleId());
-		watsonVehicleImpl.setTypeWatsonListTypeId(watsonVehicle.getTypeWatsonListTypeId());
-		watsonVehicleImpl.setYearWatsonListTypeId(watsonVehicle.getYearWatsonListTypeId());
-		watsonVehicleImpl.setWatsonIncidentId(watsonVehicle.getWatsonIncidentId());
-		watsonVehicleImpl.setYear(watsonVehicle.getYear());
-		watsonVehicleImpl.setDescription(watsonVehicle.getDescription());
-		watsonVehicleImpl.setImagePayload(watsonVehicle.getImagePayload());
-		watsonVehicleImpl.setLicensePlate(watsonVehicle.getLicensePlate());
-		watsonVehicleImpl.setStatus(watsonVehicle.getStatus());
-
-		return watsonVehicleImpl;
 	}
 
 	/**

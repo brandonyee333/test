@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
@@ -40,6 +41,8 @@ import com.liferay.watson.model.impl.WatsonVehicleAuditModelImpl;
 import com.liferay.watson.service.persistence.WatsonVehicleAuditPersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -242,8 +245,6 @@ public class WatsonVehicleAuditPersistenceImpl extends BasePersistenceImpl<Watso
 	@Override
 	protected WatsonVehicleAudit removeImpl(
 		WatsonVehicleAudit watsonVehicleAudit) {
-		watsonVehicleAudit = toUnwrappedModel(watsonVehicleAudit);
-
 		Session session = null;
 
 		try {
@@ -274,9 +275,23 @@ public class WatsonVehicleAuditPersistenceImpl extends BasePersistenceImpl<Watso
 
 	@Override
 	public WatsonVehicleAudit updateImpl(WatsonVehicleAudit watsonVehicleAudit) {
-		watsonVehicleAudit = toUnwrappedModel(watsonVehicleAudit);
-
 		boolean isNew = watsonVehicleAudit.isNew();
+
+		if (!(watsonVehicleAudit instanceof WatsonVehicleAuditModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(watsonVehicleAudit.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(watsonVehicleAudit);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in watsonVehicleAudit proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom WatsonVehicleAudit implementation " +
+				watsonVehicleAudit.getClass());
+		}
 
 		WatsonVehicleAuditModelImpl watsonVehicleAuditModelImpl = (WatsonVehicleAuditModelImpl)watsonVehicleAudit;
 
@@ -340,41 +355,6 @@ public class WatsonVehicleAuditPersistenceImpl extends BasePersistenceImpl<Watso
 		watsonVehicleAudit.resetOriginalValues();
 
 		return watsonVehicleAudit;
-	}
-
-	protected WatsonVehicleAudit toUnwrappedModel(
-		WatsonVehicleAudit watsonVehicleAudit) {
-		if (watsonVehicleAudit instanceof WatsonVehicleAuditImpl) {
-			return watsonVehicleAudit;
-		}
-
-		WatsonVehicleAuditImpl watsonVehicleAuditImpl = new WatsonVehicleAuditImpl();
-
-		watsonVehicleAuditImpl.setNew(watsonVehicleAudit.isNew());
-		watsonVehicleAuditImpl.setPrimaryKey(watsonVehicleAudit.getPrimaryKey());
-
-		watsonVehicleAuditImpl.setWatsonVehicleAuditId(watsonVehicleAudit.getWatsonVehicleAuditId());
-		watsonVehicleAuditImpl.setGroupId(watsonVehicleAudit.getGroupId());
-		watsonVehicleAuditImpl.setCompanyId(watsonVehicleAudit.getCompanyId());
-		watsonVehicleAuditImpl.setUserId(watsonVehicleAudit.getUserId());
-		watsonVehicleAuditImpl.setUserName(watsonVehicleAudit.getUserName());
-		watsonVehicleAuditImpl.setCreateDate(watsonVehicleAudit.getCreateDate());
-		watsonVehicleAuditImpl.setModifiedDate(watsonVehicleAudit.getModifiedDate());
-		watsonVehicleAuditImpl.setColorWatsonListTypeId(watsonVehicleAudit.getColorWatsonListTypeId());
-		watsonVehicleAuditImpl.setMakeWatsonListTypeId(watsonVehicleAudit.getMakeWatsonListTypeId());
-		watsonVehicleAuditImpl.setModelWatsonListTypeId(watsonVehicleAudit.getModelWatsonListTypeId());
-		watsonVehicleAuditImpl.setOriginalWatsonVehicleId(watsonVehicleAudit.getOriginalWatsonVehicleId());
-		watsonVehicleAuditImpl.setTypeWatsonListTypeId(watsonVehicleAudit.getTypeWatsonListTypeId());
-		watsonVehicleAuditImpl.setYearWatsonListTypeId(watsonVehicleAudit.getYearWatsonListTypeId());
-		watsonVehicleAuditImpl.setWatsonIncidentId(watsonVehicleAudit.getWatsonIncidentId());
-		watsonVehicleAuditImpl.setWatsonVehicleId(watsonVehicleAudit.getWatsonVehicleId());
-		watsonVehicleAuditImpl.setYear(watsonVehicleAudit.getYear());
-		watsonVehicleAuditImpl.setDescription(watsonVehicleAudit.getDescription());
-		watsonVehicleAuditImpl.setImagePayload(watsonVehicleAudit.getImagePayload());
-		watsonVehicleAuditImpl.setLicensePlate(watsonVehicleAudit.getLicensePlate());
-		watsonVehicleAuditImpl.setStatus(watsonVehicleAudit.getStatus());
-
-		return watsonVehicleAuditImpl;
 	}
 
 	/**

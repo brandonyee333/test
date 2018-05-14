@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
@@ -40,6 +41,8 @@ import com.liferay.watson.model.impl.WatsonResourceAuditModelImpl;
 import com.liferay.watson.service.persistence.WatsonResourceAuditPersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -243,8 +246,6 @@ public class WatsonResourceAuditPersistenceImpl extends BasePersistenceImpl<Wats
 	@Override
 	protected WatsonResourceAudit removeImpl(
 		WatsonResourceAudit watsonResourceAudit) {
-		watsonResourceAudit = toUnwrappedModel(watsonResourceAudit);
-
 		Session session = null;
 
 		try {
@@ -276,9 +277,23 @@ public class WatsonResourceAuditPersistenceImpl extends BasePersistenceImpl<Wats
 	@Override
 	public WatsonResourceAudit updateImpl(
 		WatsonResourceAudit watsonResourceAudit) {
-		watsonResourceAudit = toUnwrappedModel(watsonResourceAudit);
-
 		boolean isNew = watsonResourceAudit.isNew();
+
+		if (!(watsonResourceAudit instanceof WatsonResourceAuditModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(watsonResourceAudit.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(watsonResourceAudit);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in watsonResourceAudit proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom WatsonResourceAudit implementation " +
+				watsonResourceAudit.getClass());
+		}
 
 		WatsonResourceAuditModelImpl watsonResourceAuditModelImpl = (WatsonResourceAuditModelImpl)watsonResourceAudit;
 
@@ -342,36 +357,6 @@ public class WatsonResourceAuditPersistenceImpl extends BasePersistenceImpl<Wats
 		watsonResourceAudit.resetOriginalValues();
 
 		return watsonResourceAudit;
-	}
-
-	protected WatsonResourceAudit toUnwrappedModel(
-		WatsonResourceAudit watsonResourceAudit) {
-		if (watsonResourceAudit instanceof WatsonResourceAuditImpl) {
-			return watsonResourceAudit;
-		}
-
-		WatsonResourceAuditImpl watsonResourceAuditImpl = new WatsonResourceAuditImpl();
-
-		watsonResourceAuditImpl.setNew(watsonResourceAudit.isNew());
-		watsonResourceAuditImpl.setPrimaryKey(watsonResourceAudit.getPrimaryKey());
-
-		watsonResourceAuditImpl.setWatsonResourceAuditId(watsonResourceAudit.getWatsonResourceAuditId());
-		watsonResourceAuditImpl.setGroupId(watsonResourceAudit.getGroupId());
-		watsonResourceAuditImpl.setCompanyId(watsonResourceAudit.getCompanyId());
-		watsonResourceAuditImpl.setUserId(watsonResourceAudit.getUserId());
-		watsonResourceAuditImpl.setUserName(watsonResourceAudit.getUserName());
-		watsonResourceAuditImpl.setCreateDate(watsonResourceAudit.getCreateDate());
-		watsonResourceAuditImpl.setModifiedDate(watsonResourceAudit.getModifiedDate());
-		watsonResourceAuditImpl.setOriginalWatsonResourceId(watsonResourceAudit.getOriginalWatsonResourceId());
-		watsonResourceAuditImpl.setTypeWatsonListTypeId(watsonResourceAudit.getTypeWatsonListTypeId());
-		watsonResourceAuditImpl.setWatsonIncidentId(watsonResourceAudit.getWatsonIncidentId());
-		watsonResourceAuditImpl.setWatsonResourceId(watsonResourceAudit.getWatsonResourceId());
-		watsonResourceAuditImpl.setName(watsonResourceAudit.getName());
-		watsonResourceAuditImpl.setDescription(watsonResourceAudit.getDescription());
-		watsonResourceAuditImpl.setImagePayload(watsonResourceAudit.getImagePayload());
-		watsonResourceAuditImpl.setStatus(watsonResourceAudit.getStatus());
-
-		return watsonResourceAuditImpl;
 	}
 
 	/**

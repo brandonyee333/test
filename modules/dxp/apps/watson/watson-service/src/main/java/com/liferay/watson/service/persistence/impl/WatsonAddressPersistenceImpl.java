@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -43,6 +44,7 @@ import com.liferay.watson.service.persistence.WatsonAddressPersistence;
 import java.io.Serializable;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -261,8 +263,6 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 
 	@Override
 	protected WatsonAddress removeImpl(WatsonAddress watsonAddress) {
-		watsonAddress = toUnwrappedModel(watsonAddress);
-
 		Session session = null;
 
 		try {
@@ -293,9 +293,23 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 
 	@Override
 	public WatsonAddress updateImpl(WatsonAddress watsonAddress) {
-		watsonAddress = toUnwrappedModel(watsonAddress);
-
 		boolean isNew = watsonAddress.isNew();
+
+		if (!(watsonAddress instanceof WatsonAddressModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(watsonAddress.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(watsonAddress);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in watsonAddress proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom WatsonAddress implementation " +
+				watsonAddress.getClass());
+		}
 
 		WatsonAddressModelImpl watsonAddressModelImpl = (WatsonAddressModelImpl)watsonAddress;
 
@@ -358,49 +372,6 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 		watsonAddress.resetOriginalValues();
 
 		return watsonAddress;
-	}
-
-	protected WatsonAddress toUnwrappedModel(WatsonAddress watsonAddress) {
-		if (watsonAddress instanceof WatsonAddressImpl) {
-			return watsonAddress;
-		}
-
-		WatsonAddressImpl watsonAddressImpl = new WatsonAddressImpl();
-
-		watsonAddressImpl.setNew(watsonAddress.isNew());
-		watsonAddressImpl.setPrimaryKey(watsonAddress.getPrimaryKey());
-
-		watsonAddressImpl.setWatsonAddressId(watsonAddress.getWatsonAddressId());
-		watsonAddressImpl.setGroupId(watsonAddress.getGroupId());
-		watsonAddressImpl.setCompanyId(watsonAddress.getCompanyId());
-		watsonAddressImpl.setUserId(watsonAddress.getUserId());
-		watsonAddressImpl.setUserName(watsonAddress.getUserName());
-		watsonAddressImpl.setCreateDate(watsonAddress.getCreateDate());
-		watsonAddressImpl.setModifiedDate(watsonAddress.getModifiedDate());
-		watsonAddressImpl.setCountryId(watsonAddress.getCountryId());
-		watsonAddressImpl.setDistrictWatsonListTypeId(watsonAddress.getDistrictWatsonListTypeId());
-		watsonAddressImpl.setOriginalWatsonAddressId(watsonAddress.getOriginalWatsonAddressId());
-		watsonAddressImpl.setProvinceWatsonListTypeId(watsonAddress.getProvinceWatsonListTypeId());
-		watsonAddressImpl.setSubDistrictWatsonListTypeId(watsonAddress.getSubDistrictWatsonListTypeId());
-		watsonAddressImpl.setTypeWatsonListTypeId(watsonAddress.getTypeWatsonListTypeId());
-		watsonAddressImpl.setWatsonIncidentId(watsonAddress.getWatsonIncidentId());
-		watsonAddressImpl.setName(watsonAddress.getName());
-		watsonAddressImpl.setPostalCode(watsonAddress.getPostalCode());
-		watsonAddressImpl.setRegion(watsonAddress.getRegion());
-		watsonAddressImpl.setStreet(watsonAddress.getStreet());
-		watsonAddressImpl.setNumber(watsonAddress.getNumber());
-		watsonAddressImpl.setBuilding(watsonAddress.getBuilding());
-		watsonAddressImpl.setFloor(watsonAddress.getFloor());
-		watsonAddressImpl.setRoom(watsonAddress.getRoom());
-		watsonAddressImpl.setDescription(watsonAddress.getDescription());
-		watsonAddressImpl.setImagePayload(watsonAddress.getImagePayload());
-		watsonAddressImpl.setOtherType(watsonAddress.getOtherType());
-		watsonAddressImpl.setLastSeenDate(watsonAddress.getLastSeenDate());
-		watsonAddressImpl.setLatitude(watsonAddress.getLatitude());
-		watsonAddressImpl.setLongitude(watsonAddress.getLongitude());
-		watsonAddressImpl.setStatus(watsonAddress.getStatus());
-
-		return watsonAddressImpl;
 	}
 
 	/**

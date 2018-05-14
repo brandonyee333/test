@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -43,6 +44,7 @@ import com.liferay.watson.login.service.persistence.WatsonTokenAuthEntryPersiste
 import java.io.Serializable;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -1066,8 +1068,6 @@ public class WatsonTokenAuthEntryPersistenceImpl extends BasePersistenceImpl<Wat
 	@Override
 	protected WatsonTokenAuthEntry removeImpl(
 		WatsonTokenAuthEntry watsonTokenAuthEntry) {
-		watsonTokenAuthEntry = toUnwrappedModel(watsonTokenAuthEntry);
-
 		Session session = null;
 
 		try {
@@ -1099,9 +1099,23 @@ public class WatsonTokenAuthEntryPersistenceImpl extends BasePersistenceImpl<Wat
 	@Override
 	public WatsonTokenAuthEntry updateImpl(
 		WatsonTokenAuthEntry watsonTokenAuthEntry) {
-		watsonTokenAuthEntry = toUnwrappedModel(watsonTokenAuthEntry);
-
 		boolean isNew = watsonTokenAuthEntry.isNew();
+
+		if (!(watsonTokenAuthEntry instanceof WatsonTokenAuthEntryModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(watsonTokenAuthEntry.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(watsonTokenAuthEntry);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in watsonTokenAuthEntry proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom WatsonTokenAuthEntry implementation " +
+				watsonTokenAuthEntry.getClass());
+		}
 
 		WatsonTokenAuthEntryModelImpl watsonTokenAuthEntryModelImpl = (WatsonTokenAuthEntryModelImpl)watsonTokenAuthEntry;
 
@@ -1180,32 +1194,6 @@ public class WatsonTokenAuthEntryPersistenceImpl extends BasePersistenceImpl<Wat
 		watsonTokenAuthEntry.resetOriginalValues();
 
 		return watsonTokenAuthEntry;
-	}
-
-	protected WatsonTokenAuthEntry toUnwrappedModel(
-		WatsonTokenAuthEntry watsonTokenAuthEntry) {
-		if (watsonTokenAuthEntry instanceof WatsonTokenAuthEntryImpl) {
-			return watsonTokenAuthEntry;
-		}
-
-		WatsonTokenAuthEntryImpl watsonTokenAuthEntryImpl = new WatsonTokenAuthEntryImpl();
-
-		watsonTokenAuthEntryImpl.setNew(watsonTokenAuthEntry.isNew());
-		watsonTokenAuthEntryImpl.setPrimaryKey(watsonTokenAuthEntry.getPrimaryKey());
-
-		watsonTokenAuthEntryImpl.setWatsonTokenAuthEntryId(watsonTokenAuthEntry.getWatsonTokenAuthEntryId());
-		watsonTokenAuthEntryImpl.setCompanyId(watsonTokenAuthEntry.getCompanyId());
-		watsonTokenAuthEntryImpl.setUserId(watsonTokenAuthEntry.getUserId());
-		watsonTokenAuthEntryImpl.setUserName(watsonTokenAuthEntry.getUserName());
-		watsonTokenAuthEntryImpl.setCreateDate(watsonTokenAuthEntry.getCreateDate());
-		watsonTokenAuthEntryImpl.setActive(watsonTokenAuthEntry.isActive());
-		watsonTokenAuthEntryImpl.setLoginIP(watsonTokenAuthEntry.getLoginIP());
-		watsonTokenAuthEntryImpl.setToken(watsonTokenAuthEntry.getToken());
-		watsonTokenAuthEntryImpl.setExpirationDate(watsonTokenAuthEntry.getExpirationDate());
-		watsonTokenAuthEntryImpl.setLoginDate(watsonTokenAuthEntry.getLoginDate());
-		watsonTokenAuthEntryImpl.setStatus(watsonTokenAuthEntry.getStatus());
-
-		return watsonTokenAuthEntryImpl;
 	}
 
 	/**

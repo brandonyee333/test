@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -1387,7 +1388,7 @@ public class WatsonReportModelImpl extends BaseModelImpl<WatsonReport>
 
 	private static final ClassLoader _classLoader = WatsonReport.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			WatsonReport.class
+			WatsonReport.class, ModelWrapper.class
 		};
 	private long _watsonReportId;
 	private long _groupId;

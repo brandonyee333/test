@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
@@ -40,6 +41,8 @@ import com.liferay.watson.model.impl.WatsonChildAuditModelImpl;
 import com.liferay.watson.service.persistence.WatsonChildAuditPersistence;
 
 import java.io.Serializable;
+
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -241,8 +244,6 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 
 	@Override
 	protected WatsonChildAudit removeImpl(WatsonChildAudit watsonChildAudit) {
-		watsonChildAudit = toUnwrappedModel(watsonChildAudit);
-
 		Session session = null;
 
 		try {
@@ -273,9 +274,23 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 
 	@Override
 	public WatsonChildAudit updateImpl(WatsonChildAudit watsonChildAudit) {
-		watsonChildAudit = toUnwrappedModel(watsonChildAudit);
-
 		boolean isNew = watsonChildAudit.isNew();
+
+		if (!(watsonChildAudit instanceof WatsonChildAuditModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(watsonChildAudit.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(watsonChildAudit);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in watsonChildAudit proxy " +
+					invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom WatsonChildAudit implementation " +
+				watsonChildAudit.getClass());
+		}
 
 		WatsonChildAuditModelImpl watsonChildAuditModelImpl = (WatsonChildAuditModelImpl)watsonChildAudit;
 
@@ -338,44 +353,6 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 		watsonChildAudit.resetOriginalValues();
 
 		return watsonChildAudit;
-	}
-
-	protected WatsonChildAudit toUnwrappedModel(
-		WatsonChildAudit watsonChildAudit) {
-		if (watsonChildAudit instanceof WatsonChildAuditImpl) {
-			return watsonChildAudit;
-		}
-
-		WatsonChildAuditImpl watsonChildAuditImpl = new WatsonChildAuditImpl();
-
-		watsonChildAuditImpl.setNew(watsonChildAudit.isNew());
-		watsonChildAuditImpl.setPrimaryKey(watsonChildAudit.getPrimaryKey());
-
-		watsonChildAuditImpl.setWatsonChildAuditId(watsonChildAudit.getWatsonChildAuditId());
-		watsonChildAuditImpl.setGroupId(watsonChildAudit.getGroupId());
-		watsonChildAuditImpl.setCompanyId(watsonChildAudit.getCompanyId());
-		watsonChildAuditImpl.setUserId(watsonChildAudit.getUserId());
-		watsonChildAuditImpl.setUserName(watsonChildAudit.getUserName());
-		watsonChildAuditImpl.setCreateDate(watsonChildAudit.getCreateDate());
-		watsonChildAuditImpl.setModifiedDate(watsonChildAudit.getModifiedDate());
-		watsonChildAuditImpl.setBirthCountryId(watsonChildAudit.getBirthCountryId());
-		watsonChildAuditImpl.setCitizenshipWatsonListTypeId(watsonChildAudit.getCitizenshipWatsonListTypeId());
-		watsonChildAuditImpl.setCountryWatsonListTypeId(watsonChildAudit.getCountryWatsonListTypeId());
-		watsonChildAuditImpl.setDischargeWatsonListTypeId(watsonChildAudit.getDischargeWatsonListTypeId());
-		watsonChildAuditImpl.setEthnicityWatsonListTypeId(watsonChildAudit.getEthnicityWatsonListTypeId());
-		watsonChildAuditImpl.setOriginalWatsonPersonId(watsonChildAudit.getOriginalWatsonPersonId());
-		watsonChildAuditImpl.setSexWatsonListTypeId(watsonChildAudit.getSexWatsonListTypeId());
-		watsonChildAuditImpl.setSourceSubtypeWatsonListTypeId(watsonChildAudit.getSourceSubtypeWatsonListTypeId());
-		watsonChildAuditImpl.setSourceWatsonListTypeId(watsonChildAudit.getSourceWatsonListTypeId());
-		watsonChildAuditImpl.setTypeWatsonListTypeId(watsonChildAudit.getTypeWatsonListTypeId());
-		watsonChildAuditImpl.setWatsonChildId(watsonChildAudit.getWatsonChildId());
-		watsonChildAuditImpl.setDateAccepted(watsonChildAudit.getDateAccepted());
-		watsonChildAuditImpl.setDateDischarged(watsonChildAudit.getDateDischarged());
-		watsonChildAuditImpl.setDateFollowUp(watsonChildAudit.getDateFollowUp());
-		watsonChildAuditImpl.setSource(watsonChildAudit.getSource());
-		watsonChildAuditImpl.setStatus(watsonChildAudit.getStatus());
-
-		return watsonChildAuditImpl;
 	}
 
 	/**
