@@ -52,7 +52,7 @@
 			</a>
 		</#if>
 
-		<div class="autofit-row autofit-float">
+		<div class="autofit-float autofit-row">
 			<div class="autofit-col autofit-col-expand">
 				<#if portlet_display.getPortletDecoratorId() != "barebone">
 					<h2 class="portlet-title-text">${portlet_title}</h2>
