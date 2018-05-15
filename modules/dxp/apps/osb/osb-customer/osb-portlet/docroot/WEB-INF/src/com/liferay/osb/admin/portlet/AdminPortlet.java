@@ -75,7 +75,8 @@ import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.impl.OfferingEntryImpl;
-import com.liferay.osb.rabbitmq.ProvisioningCreateRabbitMQConsumer;
+import com.liferay.osb.rabbitmq.RabbitMQConsumer;
+import com.liferay.osb.rabbitmq.RabbitMQConsumerRouter;
 import com.liferay.osb.service.AccountAttachmentLocalServiceUtil;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
@@ -142,28 +143,18 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.users.admin.kernel.util.UsersAdminUtil;
 import com.liferay.util.bridges.mvc.MVCPortlet;
-/* TODO update rabbitMQ integration
-import com.liferay.osb.rabbitmq.RabbitMQConsumerRouter;
-import com.liferay.rabbitmq.consumer.RabbitMQConsumer;
-*/
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 
 import java.text.DateFormat;
-import java.text.Format;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
@@ -171,11 +162,8 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
 import javax.portlet.PortletRequest;
-import javax.portlet.PortletURL;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Brian Wing Shun Chan
@@ -299,8 +287,7 @@ public class AdminPortlet extends MVCPortlet {
 
 		Map<String, Object> propertiesMap = MapUtil.toLinkedHashMap(properties);
 
-		ProvisioningCreateRabbitMQConsumer rabbitMQConsumer =
-			new ProvisioningCreateRabbitMQConsumer();
+		RabbitMQConsumer rabbitMQConsumer = new RabbitMQConsumerRouter();
 
 		rabbitMQConsumer.parse(routingKey, message, propertiesMap);
 	}

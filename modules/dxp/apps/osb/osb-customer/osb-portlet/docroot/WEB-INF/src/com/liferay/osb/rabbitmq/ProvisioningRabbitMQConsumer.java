@@ -78,10 +78,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SubscriptionSender;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
-
-/* TODO update rabbitMQ integration
-import com.liferay.rabbitmq.consumer.RabbitMQConsumer;
-*/
 import com.liferay.util.portlet.PortletProps;
 
 import java.text.Format;
@@ -98,9 +94,7 @@ import java.util.TreeMap;
 /**
  * @author Amos Fong
  */
-public abstract class ProvisioningRabbitMQConsumer {
-
-	// implements RabbitMQConsumer {
+public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 
 	public int parse(
 		String routingKey, String message, Map<String, Object> properties) {
@@ -114,18 +108,12 @@ public abstract class ProvisioningRabbitMQConsumer {
 
 			doParse(jsonObject);
 
-			return 0;
-
-			// return RESPONSE_ACK;
-
+			return RESPONSE_ACK;
 		}
 		catch (Exception e) {
 			sendErrorNotification(routingKey, message, jsonObject, e);
 
-			return 0;
-
-			// return RESPONSE_ACK;
-
+			return RESPONSE_REJECT;
 		}
 	}
 
