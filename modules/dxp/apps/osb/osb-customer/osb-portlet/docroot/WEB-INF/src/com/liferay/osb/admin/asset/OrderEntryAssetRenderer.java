@@ -19,12 +19,11 @@ import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Amos Fong
@@ -39,8 +38,21 @@ public class OrderEntryAssetRenderer extends AccountEntryAssetRenderer {
 		_orderEntry = orderEntry;
 	}
 
+	@Override
 	public long getClassPK() {
 		return _orderEntry.getOrderEntryId();
+	}
+
+	@Override
+	public String getJspPath(HttpServletRequest request, String template) {
+		if (template.equals(TEMPLATE_ABSTRACT) ||
+			template.equals(TEMPLATE_FULL_CONTENT)) {
+
+			return "/admin/asset/order_entry/" + template + ".jsp";
+		}
+		else {
+			return null;
+		}
 	}
 
 	@Override
@@ -61,25 +73,14 @@ public class OrderEntryAssetRenderer extends AccountEntryAssetRenderer {
 		return portletURL.toString();
 	}
 
+	@Override
 	public long getUserId() {
 		return _orderEntry.getUserId();
 	}
 
+	@Override
 	public String getUserName() {
 		return _orderEntry.getUserName();
-	}
-
-	@Override
-	public String render(
-		RenderRequest renderRequest, RenderResponse renderResponse,
-		String template) {
-
-		return "/admin/asset/order_entry/" + template + ".jsp";
-	}
-
-	@Override
-	protected String getIconPath(ThemeDisplay themeDisplay) {
-		return themeDisplay.getPathThemeImages() + "/shopping/cart.png";
 	}
 
 	private final OrderEntry _orderEntry;

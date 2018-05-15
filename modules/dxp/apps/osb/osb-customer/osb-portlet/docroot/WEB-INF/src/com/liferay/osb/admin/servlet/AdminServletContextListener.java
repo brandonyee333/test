@@ -14,6 +14,9 @@
 
 package com.liferay.osb.admin.servlet;
 
+import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.osb.admin.asset.AccountEntryAssetRendererFactory;
+import com.liferay.osb.admin.asset.OrderEntryAssetRendererFactory;
 import com.liferay.osb.service.permission.OSBCommonPermission;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
@@ -106,6 +109,16 @@ public class AdminServletContextListener
 	protected void doPortalDestroy() {
 		_moduleServiceLifecycleServiceRegistration.unregister();
 
+		if (_accountEntryAssetRendererFactory != null) {
+			AssetRendererFactoryRegistryUtil.unregister(
+				_accountEntryAssetRendererFactory);
+		}
+
+		if (_orderEntryAssetRendererFactory != null) {
+			AssetRendererFactoryRegistryUtil.unregister(
+				_orderEntryAssetRendererFactory);
+		}
+
 		/* TODO deploy error,
 
 		// Auth token
@@ -149,6 +162,19 @@ public class AdminServletContextListener
 	@Override
 	@SuppressWarnings("unused")
 	protected void doPortalInit() throws Exception {
+
+		// Asset renderers
+
+		_accountEntryAssetRendererFactory =
+			new AccountEntryAssetRendererFactory();
+
+		AssetRendererFactoryRegistryUtil.register(
+			_accountEntryAssetRendererFactory);
+
+		_orderEntryAssetRendererFactory = new OrderEntryAssetRendererFactory();
+
+		AssetRendererFactoryRegistryUtil.register(
+			_orderEntryAssetRendererFactory);
 
 		// OSGi
 
@@ -460,8 +486,10 @@ public class AdminServletContextListener
 	private static final Log _log = LogFactoryUtil.getLog(
 		AdminServletContextListener.class);
 
+	private AccountEntryAssetRendererFactory _accountEntryAssetRendererFactory;
 	private ServiceRegistration<ModuleServiceLifecycle>
 		_moduleServiceLifecycleServiceRegistration;
+	private OrderEntryAssetRendererFactory _orderEntryAssetRendererFactory;
 	private String _rabbitMQConsumerKey;
 	private ServletContext _servletContext;
 

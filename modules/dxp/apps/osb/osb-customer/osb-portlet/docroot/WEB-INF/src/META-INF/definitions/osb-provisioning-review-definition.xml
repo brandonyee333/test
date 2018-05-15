@@ -22,8 +22,7 @@
 						import com.liferay.portal.kernel.workflow.WorkflowConstants;
 						import com.liferay.portal.kernel.workflow.WorkflowStatusManagerUtil;
 						import com.liferay.portal.kernel.model.User;
-
-						KaleoLogLocalServiceUtil = com.liferay.portal.kernel.bean.PortletBeanLocatorUtil.locate("kaleo-web", "com.liferay.portal.workflow.kaleo.service.KaleoLogLocalService");
+						import com.liferay.portal.workflow.kaleo.service.KaleoLogLocalServiceUtil;
 
 						WorkflowStatusManagerUtil.updateStatus(WorkflowConstants.STATUS_APPROVED, workflowContext);
 
@@ -53,8 +52,7 @@
 					<![CDATA[
 						import com.liferay.portal.kernel.model.User;
 						import com.liferay.portal.kernel.util.GetterUtil;
-
-						KaleoLogLocalServiceUtil = com.liferay.portal.kernel.bean.PortletBeanLocatorUtil.locate("kaleo-web", "com.liferay.portal.workflow.kaleo.service.KaleoLogLocalService");
+						import com.liferay.portal.workflow.kaleo.service.KaleoLogLocalServiceUtil;
 
 						kaleoLog = KaleoLogLocalServiceUtil.addNodeExitKaleoLog(kaleoInstanceToken, kaleoInstanceToken.getCurrentKaleoNode(), serviceContext);
 
@@ -97,8 +95,7 @@
 						import com.liferay.portal.kernel.util.GetterUtil;
 						import com.liferay.portal.kernel.workflow.WorkflowStatusManagerUtil;
 						import com.liferay.portal.kernel.model.User;
-
-						KaleoLogLocalServiceUtil = com.liferay.portal.kernel.bean.PortletBeanLocatorUtil.locate("kaleo-web", "com.liferay.portal.workflow.kaleo.service.KaleoLogLocalService");
+						import com.liferay.portal.workflow.kaleo.service.KaleoLogLocalServiceUtil;
 
 						WorkflowStatusManagerUtil.updateStatus(500, workflowContext);
 
@@ -151,7 +148,7 @@
 
 						<#assign company = companyLocalServiceUtil.getCompany(getterUtil.getLong(companyId)) />
 
-						<#assign workflowTaskURL = portalUtil.getPortalURL(company.getVirtualHostname(), portalUtil.getPortalPort(true), true) + "/group/control_panel/manage?p_p_id=153&p_p_lifecycle=0&p_p_state=maximized&p_p_mode=view&_153_struts_action=%2Fmy_workflow_tasks%2Fedit_workflow_task&_153_workflowTaskId=" + kaleoTaskInstanceToken.getKaleoTaskInstanceTokenId()?c />
+						<#assign workflowTaskURL = portalUtil.getPortalURL(company.getVirtualHostname(), portalUtil.getPortalPort(true), true) + "/group/control_panel/manage/-/my_workflow_tasks/view/" + kaleoTaskInstanceToken.getKaleoTaskInstanceTokenId()?c + "?_com_liferay_portal_workflow_task_web_portlet_MyWorkflowTaskPortlet_mvcPath=%2Fedit_workflow_task.jsp" />
 						<#assign salesforceOpportunityURL = "https://na5.salesforce.com/" + osbSalesforceOpportunityKey />
 
 						Hi Reviewer,<br /><br />

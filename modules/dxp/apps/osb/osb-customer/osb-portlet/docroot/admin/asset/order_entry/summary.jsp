@@ -45,8 +45,8 @@ Date startDate = new Date(jsonObject.getLong("startDate"));
 
 <br /><br />
 
-<table class="results-grid taglib-search-iterator">
-	<tr class="results-header">
+<table class="table">
+	<tr>
 		<th>
 			<liferay-ui:message key="product" />
 		</th>
@@ -89,7 +89,7 @@ Date startDate = new Date(jsonObject.getLong("startDate"));
 		SupportResponse supportResponse = SupportResponseLocalServiceUtil.getSupportResponse(offeringEntryJSONObject.getLong("supportResponseId"));
 	%>
 
-		<tr class="results-row">
+		<tr>
 			<td>
 				<%= HtmlUtil.escape(productEntry.getName()) %>
 

@@ -18,7 +18,6 @@ import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.service.OrderEntryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
 
 /**
  * @author Amos Fong
@@ -30,6 +29,7 @@ public class OrderEntryAssetRendererFactory
 
 	public static final String TYPE = "order";
 
+	@Override
 	public AssetRenderer getAssetRenderer(long classPK, int type)
 		throws PortalException {
 
@@ -39,17 +39,14 @@ public class OrderEntryAssetRendererFactory
 		return new OrderEntryAssetRenderer(orderEntry);
 	}
 
+	@Override
 	public String getClassName() {
 		return CLASS_NAME;
 	}
 
+	@Override
 	public String getType() {
 		return TYPE;
-	}
-
-	@Override
-	protected String getIconPath(ThemeDisplay themeDisplay) {
-		return themeDisplay.getPathThemeImages() + "/shopping/cart.png";
 	}
 
 }

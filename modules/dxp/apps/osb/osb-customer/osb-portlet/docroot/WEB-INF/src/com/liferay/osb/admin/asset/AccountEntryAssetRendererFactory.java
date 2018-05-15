@@ -25,7 +25,6 @@ import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
 
 /**
  * @author Amos Fong
@@ -46,6 +45,7 @@ public class AccountEntryAssetRendererFactory extends BaseAssetRendererFactory {
 		return AssetEntryLocalServiceUtil.createAssetEntry(0);
 	}
 
+	@Override
 	public AssetRenderer getAssetRenderer(long classPK, int type)
 		throws PortalException {
 
@@ -55,6 +55,7 @@ public class AccountEntryAssetRendererFactory extends BaseAssetRendererFactory {
 		return new AccountEntryAssetRenderer(accountEntry);
 	}
 
+	@Override
 	public String getClassName() {
 		return CLASS_NAME;
 	}
@@ -64,6 +65,7 @@ public class AccountEntryAssetRendererFactory extends BaseAssetRendererFactory {
 		return OSBPortletKeys.OSB_ADMIN;
 	}
 
+	@Override
 	public String getType() {
 		return TYPE;
 	}
@@ -88,10 +90,6 @@ public class AccountEntryAssetRendererFactory extends BaseAssetRendererFactory {
 		}
 
 		return false;
-	}
-
-	protected String getIconPath(ThemeDisplay themeDisplay) {
-		return themeDisplay.getPathThemeImages() + "/trees/page.png";
 	}
 
 }

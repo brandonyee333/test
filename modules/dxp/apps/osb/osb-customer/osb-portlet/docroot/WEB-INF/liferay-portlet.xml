@@ -62,8 +62,6 @@
 		</scheduler-entry>
 		<control-panel-entry-category>portal</control-panel-entry-category>
 		<control-panel-entry-class>com.liferay.osb.admin.portlet.OSBAdminControlPanelEntry</control-panel-entry-class>
-		<asset-renderer-factory>com.liferay.osb.admin.asset.AccountEntryAssetRendererFactory</asset-renderer-factory>
-		<asset-renderer-factory>com.liferay.osb.admin.asset.OrderEntryAssetRendererFactory</asset-renderer-factory>
 		<workflow-handler>com.liferay.osb.admin.workflow.AccountEntryWorkflowHandler</workflow-handler>
 		<workflow-handler>com.liferay.osb.admin.workflow.OrderEntryWorkflowHandler</workflow-handler>
 		<preferences-company-wide>true</preferences-company-wide>

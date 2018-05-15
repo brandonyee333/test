@@ -26,8 +26,8 @@ Map<String, String> oldAccountEntryAttributes = (TreeMap<String, String>)request
 		<liferay-ui:message key="project-differences" />
 	</h3>
 
-	<table class="results-grid taglib-search-iterator">
-		<tr class="results-header">
+	<table class="table">
+		<tr>
 			<th>
 				<liferay-ui:message key="field" />
 			</th>
@@ -43,7 +43,7 @@ Map<String, String> oldAccountEntryAttributes = (TreeMap<String, String>)request
 		for (String field : oldAccountEntryAttributes.keySet()) {
 		%>
 
-			<tr class="results-row">
+			<tr>
 				<td>
 					<%= _getFieldLabel(request, field) %>
 				</td>

@@ -93,7 +93,7 @@ Integer salesforceOpportunityType = (Integer)request.getAttribute("header.jsp-sa
 		for (WorkflowTask workflowTask : updateWorkflowTasks) {
 			PortletURL workflowTaskURL = PortletURLFactoryUtil.create(request, PortletKeys.MY_WORKFLOW_TASK, themeDisplay.getPlid(), PortletRequest.RENDER_PHASE);
 
-			workflowTaskURL.setParameter("struts_action", "/my_workflow_tasks/edit_workflow_task");
+			workflowTaskURL.setParameter("mvcPath", "/edit_workflow_task.jsp");
 			workflowTaskURL.setParameter("redirect", currentURL);
 			workflowTaskURL.setParameter("workflowTaskId", String.valueOf(workflowTask.getWorkflowTaskId()));
 
@@ -126,10 +126,10 @@ Integer salesforceOpportunityType = (Integer)request.getAttribute("header.jsp-sa
 
 	<c:choose>
 		<c:when test="<%= salesforceOpportunityStageName.equals(SalesforceConstants.OPPORTUNITY_STAGE_CLOSED_WON) %>">
-			<img class="icon opportunity-stage-icon" src="/html/themes/control_panel/images/messages/success.png" />
+			<img class="icon opportunity-stage-icon" src="<%= themeDisplay.getPathThemeImages() %>/messages/success.png" />
 		</c:when>
 		<c:otherwise>
-			<img class="icon opportunity-stage-icon" src="/html/themes/control_panel/images/messages/alert.png" />
+			<img class="icon opportunity-stage-icon" src="<%= themeDisplay.getPathThemeImages() %>/messages/alert.png" />
 		</c:otherwise>
 	</c:choose>
 </div>

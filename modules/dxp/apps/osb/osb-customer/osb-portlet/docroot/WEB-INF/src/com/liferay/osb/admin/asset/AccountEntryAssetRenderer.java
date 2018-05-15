@@ -14,7 +14,7 @@
 
 package com.liferay.osb.admin.asset;
 
-import com.liferay.asset.kernel.model.BaseAssetRenderer;
+import com.liferay.asset.kernel.model.BaseJSPAssetRenderer;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
@@ -22,7 +22,6 @@ import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.Locale;
@@ -30,62 +29,59 @@ import java.util.Locale;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.portlet.PortletURL;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Amos Fong
  */
-public class AccountEntryAssetRenderer extends BaseAssetRenderer {
+public class AccountEntryAssetRenderer
+	extends BaseJSPAssetRenderer<AccountEntry> {
 
 	public AccountEntryAssetRenderer(AccountEntry accountEntry) {
 		_accountEntry = accountEntry;
 	}
 
-	public AccountEntry getAccountEntry() {
+	@Override
+	public AccountEntry getAssetObject() {
 		return _accountEntry;
 	}
 
 	@Override
-	public Object getAssetObject() {
-
-		// TODO Auto-generated method stub
-
-		return null;
+	public String getClassName() {
+		return AccountEntry.class.getName();
 	}
 
 	@Override
-	public String getClassName() {
-
-		// TODO Auto-generated method stub
-
-		return null;
-	}
-
 	public long getClassPK() {
 		return _accountEntry.getAccountEntryId();
 	}
 
+	@Override
 	public long getGroupId() {
 		return 0;
 	}
 
-	public String getSummary(Locale locale) {
-		return StringPool.BLANK;
+	@Override
+	public String getJspPath(HttpServletRequest request, String template) {
+		if (template.equals(TEMPLATE_ABSTRACT) ||
+			template.equals(TEMPLATE_FULL_CONTENT)) {
+
+			return "/admin/asset/account_entry/" + template + ".jsp";
+		}
+		else {
+			return null;
+		}
 	}
 
 	@Override
 	public String getSummary(
 		PortletRequest portletRequest, PortletResponse portletResponse) {
 
-		// TODO Auto-generated method stub
-
 		return null;
 	}
 
+	@Override
 	public String getTitle(Locale locale) {
 		return _accountEntry.getName();
 	}
@@ -109,14 +105,17 @@ public class AccountEntryAssetRenderer extends BaseAssetRenderer {
 		return portletURL.toString();
 	}
 
+	@Override
 	public long getUserId() {
 		return _accountEntry.getUserId();
 	}
 
+	@Override
 	public String getUserName() {
 		return _accountEntry.getUserName();
 	}
 
+	@Override
 	public String getUuid() {
 		return StringPool.BLANK;
 	}
@@ -146,35 +145,8 @@ public class AccountEntryAssetRenderer extends BaseAssetRenderer {
 	}
 
 	@Override
-	public boolean include(
-			HttpServletRequest request, HttpServletResponse response,
-			String template)
-		throws Exception {
-
-		// TODO Auto-generated method stub
-
-		return false;
-	}
-
-	@Override
 	public boolean isPreviewInContext() {
 		return true;
-	}
-
-	@Override
-	public boolean isPrintable() {
-		return true;
-	}
-
-	public String render(
-		RenderRequest renderRequest, RenderResponse renderResponse,
-		String template) {
-
-		return "/admin/asset/account_entry/" + template + ".jsp";
-	}
-
-	protected String getIconPath(ThemeDisplay themeDisplay) {
-		return themeDisplay.getPathThemeImages() + "/trees/page.png";
 	}
 
 	private final AccountEntry _accountEntry;

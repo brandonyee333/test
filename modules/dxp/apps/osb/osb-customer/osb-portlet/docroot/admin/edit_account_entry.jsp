@@ -193,7 +193,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 						<%
 						PortletURL workflowTaskURL = PortletURLFactoryUtil.create(request, PortletKeys.MY_WORKFLOW_TASK, themeDisplay.getPlid(), PortletRequest.RENDER_PHASE);
 
-						workflowTaskURL.setParameter("struts_action", "/my_workflow_tasks/edit_workflow_task");
+						workflowTaskURL.setParameter("mvcPath", "/edit_workflow_task.jsp");
 						workflowTaskURL.setParameter("redirect", currentURL);
 						workflowTaskURL.setParameter("workflowTaskId", String.valueOf(workflowTask.getWorkflowTaskId()));
 						%>

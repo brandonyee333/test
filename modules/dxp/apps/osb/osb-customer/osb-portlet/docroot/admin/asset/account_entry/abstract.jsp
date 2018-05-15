@@ -27,7 +27,7 @@ if (workflowInstance == null) {
 
 Map<String, Serializable> workflowContext = workflowInstance.getWorkflowContext();
 
-request.setAttribute("header.jsp-accountEntry", accountEntryAssetRenderer.getAccountEntry());
+request.setAttribute("header.jsp-accountEntry", accountEntryAssetRenderer.getAssetObject());
 request.setAttribute("header.jsp-entryClassName", workflowContext.get(WorkflowConstants.CONTEXT_ENTRY_CLASS_NAME));
 request.setAttribute("header.jsp-salesforceOpportunityAction", workflowContext.get(WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_ACTION));
 request.setAttribute("header.jsp-salesforceOpportunityStageName", workflowContext.get(WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_STAGE_NAME));
@@ -37,7 +37,7 @@ request.setAttribute("header.jsp-salesforceOpportunityType", workflowContext.get
 <liferay-util:include page="/admin/asset/header.jsp" servletContext="<%= application %>" />
 
 <%
-request.setAttribute("summary.jsp-accountEntry", accountEntryAssetRenderer.getAccountEntry());
+request.setAttribute("summary.jsp-accountEntry", accountEntryAssetRenderer.getAssetObject());
 %>
 
 <liferay-util:include page="/admin/asset/account_entry/summary.jsp" servletContext="<%= application %>" />

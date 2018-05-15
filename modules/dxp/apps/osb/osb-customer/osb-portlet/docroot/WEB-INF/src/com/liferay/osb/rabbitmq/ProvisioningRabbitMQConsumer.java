@@ -728,10 +728,10 @@ public abstract class ProvisioningRabbitMQConsumer {
 
 		AccountEntry accountEntry = null;
 
-		if (corpProject.getCorpProjectId() > 0) {
+		if (Validator.isNotNull(corpProject.getUuid())) {
 			accountEntry =
 				AccountEntryLocalServiceUtil.fetchCorpProjectAccountEntry(
-					corpProject.getCorpProjectId());
+					corpProject.getUuid());
 		}
 
 		if (accountEntry == null) {

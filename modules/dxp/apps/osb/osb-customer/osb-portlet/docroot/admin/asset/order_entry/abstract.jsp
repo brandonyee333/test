@@ -27,7 +27,7 @@ if (workflowInstance == null) {
 
 Map<String, Serializable> workflowContext = workflowInstance.getWorkflowContext();
 
-AccountEntry accountEntry = accountEntryAssetRenderer.getAccountEntry();
+AccountEntry accountEntry = accountEntryAssetRenderer.getAssetObject();
 
 request.setAttribute("header.jsp-accountEntry", accountEntry);
 request.setAttribute("header.jsp-entryClassName", workflowContext.get(WorkflowConstants.CONTEXT_ENTRY_CLASS_NAME));
