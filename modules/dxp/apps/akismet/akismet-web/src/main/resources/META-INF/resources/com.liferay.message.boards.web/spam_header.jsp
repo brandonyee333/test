@@ -14,15 +14,14 @@
  */
 --%>
 
-<%@ include file="/dynamic_include/init.jsp" %>
+<%@ include file="/com.liferay.message.boards.web/init.jsp" %>
 
-<% 
+<%
 MBMessageDisplay messageDisplay = (MBMessageDisplay)request.getAttribute(WebKeys.MESSAGE_BOARDS_MESSAGE_DISPLAY);
-MBCategory category = messageDisplay.getCategory(); 
+MBCategory category = messageDisplay.getCategory();
 %>
 
 <c:if test="<%= MBPermission.contains(permissionChecker, scopeGroupId, ActionKeys.BAN_USER) %>">
-
 	<div class="spam" style="margin: 10px;">
 		<c:choose>
 			<c:when test="<%= spam %>">
@@ -42,17 +41,17 @@ MBCategory category = messageDisplay.getCategory();
 			</c:when>
 			<c:otherwise>
 				<portlet:renderURL var="parentCategoryURL">
-						<c:choose>
-							<c:when test="<%= (category == null) || (category.getCategoryId() == MBCategoryConstants.DEFAULT_PARENT_CATEGORY_ID) %>">
-								<portlet:param name="mvcRenderCommandName" value="/message_boards/view" />
-							</c:when>
-							<c:otherwise>
-								<portlet:param name="mvcRenderCommandName" value="/message_boards/view_category" />
-								<portlet:param name="mbCategoryId" value="<%= String.valueOf(category.getCategoryId()) %>" />
-							</c:otherwise>
-						</c:choose>
+					<c:choose>
+						<c:when test="<%= (category == null) || (category.getCategoryId() == MBCategoryConstants.DEFAULT_PARENT_CATEGORY_ID) %>">
+							<portlet:param name="mvcRenderCommandName" value="/message_boards/view" />
+						</c:when>
+						<c:otherwise>
+							<portlet:param name="mvcRenderCommandName" value="/message_boards/view_category" />
+							<portlet:param name="mbCategoryId" value="<%= String.valueOf(category.getCategoryId()) %>" />
+						</c:otherwise>
+					</c:choose>
 				</portlet:renderURL>
-				
+
 				<portlet:actionURL name="/message_boards/edit_message" var="markAsSpamURL">
 					<portlet:param name="<%= Constants.CMD %>" value="updateStatus" />
 					<portlet:param name="redirect" value="<%= parentCategoryURL %>" />
