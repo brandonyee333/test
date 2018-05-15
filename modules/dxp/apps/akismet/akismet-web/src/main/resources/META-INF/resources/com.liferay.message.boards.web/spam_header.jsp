@@ -18,6 +18,7 @@
 
 <%
 MBMessageDisplay messageDisplay = (MBMessageDisplay)request.getAttribute(WebKeys.MESSAGE_BOARDS_MESSAGE_DISPLAY);
+
 MBCategory category = messageDisplay.getCategory();
 %>
 
@@ -75,7 +76,9 @@ MBCategory category = messageDisplay.getCategory();
 		<div class="alert alert-danger" role="alert">
 			<strong class="lead"><liferay-ui:message key="status" />: <aui:workflow-status markupView="lexicon" showIcon="<%= true %>" showLabel="<%= false %>" status="<%= message.getStatus() %>" /></strong>
 
-			<p><liferay-ui:message key="your-message-has-been-flagged-as-spam" /></p>
+			<p>
+				<liferay-ui:message key="your-message-has-been-flagged-as-spam" />
+			</p>
 		</div>
 	</span>
 </c:if>
