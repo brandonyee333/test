@@ -14,9 +14,9 @@
 
 package com.liferay.forms.apio.internal.resource;
 
-import com.liferay.apio.architect.functional.Try;
 import com.liferay.apio.architect.pagination.PageItems;
 import com.liferay.apio.architect.pagination.Pagination;
+import com.liferay.apio.architect.representor.NestedRepresentor;
 import com.liferay.apio.architect.representor.Representor;
 import com.liferay.apio.architect.resource.NestedCollectionResource;
 import com.liferay.apio.architect.routes.ItemRoutes;
@@ -34,7 +34,8 @@ import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.forms.apio.architect.identifier.FormInstanceIdentifier;
 import com.liferay.forms.apio.architect.identifier.StructureIdentifier;
 import com.liferay.forms.apio.internal.form.FormContextForm;
-import com.liferay.forms.apio.internal.helper.FormInstanceRecordResourceHelper;
+import com.liferay.forms.apio.internal.util.FormInstanceRepresentorUtil;
+import com.liferay.forms.apio.internal.util.FormValuesUtil;
 import com.liferay.person.apio.identifier.PersonIdentifier;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactory;
@@ -46,12 +47,9 @@ import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.site.apio.identifier.WebSiteIdentifier;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -117,37 +115,10 @@ public class FormInstanceNestedCollectionResource
 			"structure", StructureIdentifier.class,
 			DDMFormInstance::getStructureId
 		).addNested(
-			"settings", this::_getSettings,
-			nestedBuilder -> nestedBuilder.types(
-				"FormInstanceSettings"
-			).addString(
-				"emailFromAddress", DDMFormInstanceSettings::emailFromAddress
-			).addString(
-				"emailFromName", DDMFormInstanceSettings::emailFromName
-			).addString(
-				"emailSubject", DDMFormInstanceSettings::emailSubject
-			).addString(
-				"emailToAddress", DDMFormInstanceSettings::emailToAddress
-			).addBoolean(
-				"published", DDMFormInstanceSettings::published
-			).addString(
-				"redirectURL", DDMFormInstanceSettings::redirectURL
-			).addBoolean(
-				"requireAuthentication",
-				DDMFormInstanceSettings::requireAuthentication
-			).addBoolean(
-				"requireCaptcha", DDMFormInstanceSettings::requireCaptcha
-			).addBoolean(
-				"sendEmailNotification",
-				DDMFormInstanceSettings::sendEmailNotification
-			).addString(
-				"storageType", DDMFormInstanceSettings::storageType
-			).addString(
-				"workflowDefinition",
-				DDMFormInstanceSettings::workflowDefinition
-			).build()
+			"settings", FormInstanceRepresentorUtil::getSettings,
+			FormInstanceNestedCollectionResource::_buildSettings
 		).addNested(
-			"version", this::_getVersion,
+			"version", FormInstanceRepresentorUtil::getVersion,
 			nestedBuilder -> nestedBuilder.types(
 				"FormInstanceVersion"
 			).addLinkedModel(
@@ -163,7 +134,54 @@ public class FormInstanceNestedCollectionResource
 		).addString(
 			"defaultLanguage", DDMFormInstance::getDefaultLanguageId
 		).addStringList(
-			"availableLanguages", this::_getAvailableLanguages
+			"availableLanguages",
+			FormInstanceRepresentorUtil::getAvailableLanguages
+		).build();
+	}
+
+	private static NestedRepresentor<DDMFormInstanceSettings> _buildSettings(
+		NestedRepresentor.Builder<DDMFormInstanceSettings> builder) {
+
+		return builder.types(
+			"FormInstanceSettings"
+		).addBoolean(
+			"isPublished", DDMFormInstanceSettings::published
+		).addBoolean(
+			"isRequireAuthentication",
+			DDMFormInstanceSettings::requireAuthentication
+		).addBoolean(
+			"isRequireCaptcha", DDMFormInstanceSettings::requireCaptcha
+		).addNested(
+			"emailNotification", settings -> settings,
+			emailSettingsBuilder -> emailSettingsBuilder.types(
+				"EmailMessage"
+			).addBoolean(
+				"isEnabled", DDMFormInstanceSettings::sendEmailNotification
+			).addNested(
+				"sender", settings -> settings,
+				senderBuilder -> senderBuilder.types(
+					"ContactPoint"
+				).addString(
+					"email", DDMFormInstanceSettings::emailFromAddress
+				).addString(
+					"name", DDMFormInstanceSettings::emailFromName
+				).build()
+			).addNested(
+				"toRecipient", settings -> settings,
+				toRecipientBuilder -> toRecipientBuilder.types(
+					"ContactPoint"
+				).addString(
+					"email", DDMFormInstanceSettings::emailToAddress
+				).build()
+			).addString(
+				"about", DDMFormInstanceSettings::emailSubject
+			).build()
+		).addString(
+			"redirectURL", DDMFormInstanceSettings::redirectURL
+		).addString(
+			"storageType", DDMFormInstanceSettings::storageType
+		).addString(
+			"workflowDefinition", DDMFormInstanceSettings::workflowDefinition
 		).build();
 	}
 
@@ -188,9 +206,8 @@ public class FormInstanceNestedCollectionResource
 			DDMForm ddmForm = ddmStructure.getDDMForm();
 			DDMFormLayout ddmFormLayout = ddmStructure.getDDMFormLayout();
 
-			DDMFormValues ddmFormValues =
-				FormInstanceRecordResourceHelper.getDDMFormValues(
-					formContextForm.getFieldValues(), ddmForm, locale);
+			DDMFormValues ddmFormValues = FormValuesUtil.getDDMFormValues(
+				formContextForm.getFieldValues(), ddmForm, locale);
 
 			ddmFormRenderingContext.setDDMFormValues(ddmFormValues);
 
@@ -208,15 +225,6 @@ public class FormInstanceNestedCollectionResource
 		return ddmFormInstance;
 	}
 
-	private List<String> _getAvailableLanguages(
-		DDMFormInstance ddmFormInstance) {
-
-		Stream<String> availableLanguagesStream = Arrays.stream(
-			ddmFormInstance.getAvailableLanguageIds());
-
-		return availableLanguagesStream.collect(Collectors.toList());
-	}
-
 	private PageItems<DDMFormInstance> _getPageItems(
 		Pagination pagination, Long groupId, Company company) {
 
@@ -229,28 +237,6 @@ public class FormInstanceNestedCollectionResource
 			company.getCompanyId(), groupId);
 
 		return new PageItems<>(ddmFormInstances, count);
-	}
-
-	private DDMFormInstanceSettings _getSettings(
-		DDMFormInstance ddmFormInstance) {
-
-		return Try.fromFallible(
-			ddmFormInstance::getSettingsModel
-		).orElse(
-			null
-		);
-	}
-
-	private DDMFormInstanceVersion _getVersion(
-		DDMFormInstance ddmFormInstance) {
-
-		return Try.fromFallible(
-			ddmFormInstance::getVersion
-		).map(
-			ddmFormInstance::getFormInstanceVersion
-		).orElse(
-			null
-		);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

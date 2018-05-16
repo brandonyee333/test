@@ -14,6 +14,10 @@
 
 package com.liferay.forms.apio.internal.resource;
 
+import static com.liferay.forms.apio.internal.util.FormInstanceRecordResourceUtil.setServiceContextAttributes;
+import static com.liferay.forms.apio.internal.util.FormValuesUtil.getDDMFormValues;
+import static com.liferay.forms.apio.internal.util.LocalizedValueUtil.getLocalizedString;
+
 import com.liferay.apio.architect.functional.Try;
 import com.liferay.apio.architect.language.Language;
 import com.liferay.apio.architect.pagination.PageItems;
@@ -29,12 +33,13 @@ import com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecordVersionModel;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceRecordService;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceService;
+import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.forms.apio.architect.identifier.FormInstanceIdentifier;
 import com.liferay.forms.apio.architect.identifier.FormInstanceRecordIdentifier;
 import com.liferay.forms.apio.internal.FormInstanceRecordServiceContext;
 import com.liferay.forms.apio.internal.form.FormInstanceRecordForm;
-import com.liferay.forms.apio.internal.helper.FormInstanceRecordResourceHelper;
+import com.liferay.forms.apio.internal.util.FormInstanceRecordResourceUtil;
 import com.liferay.person.apio.identifier.PersonIdentifier;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -107,10 +112,8 @@ public class FormInstanceRecordNestedCollectionResource
 			"datePublished", DDMFormInstanceRecord::getLastPublishDate
 		).addLinkedModel(
 			"author", PersonIdentifier.class, DDMFormInstanceRecord::getUserId
-		).addLocalizedStringByLocale(
-			"fieldValues", FormInstanceRecordResourceHelper::getFieldValuesJSON
 		).addNested(
-			"version", this::_getVersion,
+			"version", FormInstanceRecordResourceUtil::getVersion,
 			nestedBuilder -> nestedBuilder.types(
 				"FormInstanceRecordVersion"
 			).addLinkedModel(
@@ -118,6 +121,17 @@ public class FormInstanceRecordNestedCollectionResource
 				DDMFormInstanceRecordVersion::getUserId
 			).addString(
 				"name", DDMFormInstanceRecordVersionModel::getVersion
+			).build()
+		).addNestedList(
+			"fieldValues", this::_getFieldValues,
+			fieldValuesBuilder -> fieldValuesBuilder.types(
+				"FormFieldValue"
+			).addLocalizedStringByLocale(
+				"value", getLocalizedString(DDMFormFieldValue::getValue)
+			).addString(
+				"identifier", DDMFormFieldValue::getInstanceId
+			).addString(
+				"name", DDMFormFieldValue::getName
 			).build()
 		).build();
 	}
@@ -133,64 +147,59 @@ public class FormInstanceRecordNestedCollectionResource
 
 		DDMStructure ddmStructure = ddmFormInstance.getStructure();
 
-		DDMFormValues ddmFormValues =
-			FormInstanceRecordResourceHelper.getDDMFormValues(
-				formInstanceRecordForm.getFieldValues(),
-				ddmStructure.getDDMForm(), language.getPreferredLocale());
+		DDMFormValues ddmFormValues = getDDMFormValues(
+			formInstanceRecordForm.getFieldValues(), ddmStructure.getDDMForm(),
+			language.getPreferredLocale());
 
+		setServiceContextAttributes(
+			formInstanceRecordServiceContext, formInstanceRecordForm.isDraft());
+
+		long groupId = ddmFormInstance.getGroupId();
+		long formInstanceId = ddmFormInstance.getFormInstanceId();
 		ServiceContext serviceContext =
 			formInstanceRecordServiceContext.getServiceContext();
 
-		_setServiceContextAttributes(
-			serviceContext, formInstanceRecordForm.isDraft());
-
 		return _ddmFormInstanceRecordService.addFormInstanceRecord(
-			ddmFormInstance.getGroupId(), ddmFormInstance.getFormInstanceId(),
-			ddmFormValues,
-			formInstanceRecordServiceContext.getServiceContext());
+			groupId, formInstanceId, ddmFormValues, serviceContext);
 	}
 
-	private PageItems<DDMFormInstanceRecord> _getPageItems(
-			Pagination pagination, Long formInstanceId)
-		throws PortalException {
-
-		List<DDMFormInstanceRecord> ddmFormInstances =
-			_ddmFormInstanceRecordService.getFormInstanceRecords(
-				formInstanceId, WorkflowConstants.STATUS_ANY,
-				pagination.getStartPosition(), pagination.getEndPosition(),
-				null);
-
-		int count = _ddmFormInstanceRecordService.getFormInstanceRecordsCount(
-			formInstanceId);
-
-		return new PageItems<>(ddmFormInstances, count);
-	}
-
-	private DDMFormInstanceRecordVersion _getVersion(
+	private List<DDMFormFieldValue> _getFieldValues(
 		DDMFormInstanceRecord ddmFormInstanceRecord) {
 
 		return Try.fromFallible(
-			ddmFormInstanceRecord::getVersion
+			ddmFormInstanceRecord::getDDMFormValues
 		).map(
-			ddmFormInstanceRecord::getFormInstanceRecordVersion
+			DDMFormValues::getDDMFormFieldValues
 		).orElse(
 			null
 		);
 	}
 
-	private void _setServiceContextAttributes(
-		ServiceContext serviceContext, boolean draft) {
+	private PageItems<DDMFormInstanceRecord> _getPageItems(
+		Pagination pagination, Long formInstanceId) {
 
-		if (draft) {
-			serviceContext.setAttribute(
-				"status", WorkflowConstants.STATUS_DRAFT);
-			serviceContext.setAttribute("validateDDMFormValues", Boolean.FALSE);
-			serviceContext.setWorkflowAction(
-				WorkflowConstants.ACTION_SAVE_DRAFT);
+		Integer count = Try.fromFallible(
+			() -> _ddmFormInstanceRecordService.getFormInstanceRecordsCount(
+				formInstanceId)
+		).orElse(
+			null
+		);
+
+		if (count == null) {
+			return null;
 		}
-		else {
-			serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);
-		}
+
+		return Try.fromFallible(
+			() -> _ddmFormInstanceRecordService.getFormInstanceRecords(
+				formInstanceId, WorkflowConstants.STATUS_ANY,
+				pagination.getStartPosition(), pagination.getEndPosition(),
+				null)
+		).map(
+			ddmFormInstanceRecords ->
+				new PageItems<>(ddmFormInstanceRecords, count)
+		).orElse(
+			null
+		);
 	}
 
 	private DDMFormInstanceRecord _updateFormInstanceRecord(
@@ -208,16 +217,15 @@ public class FormInstanceRecordNestedCollectionResource
 
 		DDMStructure ddmStructure = ddmFormInstance.getStructure();
 
-		DDMFormValues ddmFormValues =
-			FormInstanceRecordResourceHelper.getDDMFormValues(
-				formInstanceRecordForm.getFieldValues(),
-				ddmStructure.getDDMForm(), language.getPreferredLocale());
+		DDMFormValues ddmFormValues = getDDMFormValues(
+			formInstanceRecordForm.getFieldValues(), ddmStructure.getDDMForm(),
+			language.getPreferredLocale());
 
 		ServiceContext serviceContext =
 			formInstanceRecordServiceContext.getServiceContext();
 
-		_setServiceContextAttributes(
-			serviceContext, formInstanceRecordForm.isDraft());
+		setServiceContextAttributes(
+			formInstanceRecordServiceContext, formInstanceRecordForm.isDraft());
 
 		return _ddmFormInstanceRecordService.updateFormInstanceRecord(
 			formInstanceRecordId, false, ddmFormValues, serviceContext);
