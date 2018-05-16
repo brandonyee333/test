@@ -178,7 +178,11 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 		Object[] finderArgs = null;
 
 		finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_LTMODIFIEDDATE;
-		finderArgs = new Object[] { modifiedDate, start, end, orderByComparator };
+		finderArgs = new Object[] {
+				_getTime(modifiedDate),
+				
+				start, end, orderByComparator
+			};
 
 		List<AkismetEntry> list = null;
 
@@ -565,7 +569,7 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 	public int countByLtModifiedDate(Date modifiedDate) {
 		FinderPath finderPath = FINDER_PATH_WITH_PAGINATION_COUNT_BY_LTMODIFIEDDATE;
 
-		Object[] finderArgs = new Object[] { modifiedDate };
+		Object[] finderArgs = new Object[] { _getTime(modifiedDate) };
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
@@ -1571,6 +1575,15 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 	protected EntityCache entityCache;
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
+
+	private Long _getTime(Date date) {
+		if (date == null) {
+			return null;
+		}
+
+		return date.getTime();
+	}
+
 	private static final String _SQL_SELECT_AKISMETENTRY = "SELECT akismetEntry FROM AkismetEntry akismetEntry";
 	private static final String _SQL_SELECT_AKISMETENTRY_WHERE_PKS_IN = "SELECT akismetEntry FROM AkismetEntry akismetEntry WHERE akismetEntryId IN (";
 	private static final String _SQL_SELECT_AKISMETENTRY_WHERE = "SELECT akismetEntry FROM AkismetEntry akismetEntry WHERE ";
