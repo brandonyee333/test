@@ -472,7 +472,7 @@ public class AdminPortlet extends MVCPortlet {
 
 			for (AccountEntry accountEntry : accountEntries) {
 				LCSSubscriptionEntryLocalServiceUtil.syncToLCS(
-					accountEntry.getCorpProjectId());
+					accountEntry.getAccountEntryId());
 			}
 		}
 		catch (Exception e) {
@@ -1348,7 +1348,7 @@ public class AdminPortlet extends MVCPortlet {
 			AccountEntry accountEntry = orderEntry.getAccountEntry();
 
 			LCSSubscriptionEntryLocalServiceUtil.syncToLCS(
-				accountEntry.getCorpProjectId());
+				accountEntry.getAccountEntryId());
 		}
 		catch (Exception e) {
 			_log.error(e, e);

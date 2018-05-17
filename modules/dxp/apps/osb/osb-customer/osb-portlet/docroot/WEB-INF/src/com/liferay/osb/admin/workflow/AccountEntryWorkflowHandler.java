@@ -175,7 +175,7 @@ public class AccountEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 	protected void syncToLCS(AccountEntry accountEntry) {
 		try {
 			LCSSubscriptionEntryLocalServiceUtil.syncToLCS(
-				accountEntry.getCorpProjectId());
+				accountEntry.getAccountEntryId());
 		}
 		catch (Exception e) {
 			_log.error(e, e);

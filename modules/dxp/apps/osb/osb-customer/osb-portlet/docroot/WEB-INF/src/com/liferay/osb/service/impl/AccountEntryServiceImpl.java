@@ -22,6 +22,7 @@ import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 
 import java.util.LinkedHashMap;
@@ -34,21 +35,12 @@ import java.util.List;
 public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 
 	@JSONWebService
-	public AccountEntry fetchCorpProjectAccountEntry(long corpProjectId)
+	public AccountEntry fetchCorpProjectAccountEntry(String corpProjectUuid)
 		throws PortalException {
 
-		AccountEntry accountEntry =
-			accountEntryPersistence.fetchByCorpProjectId(corpProjectId);
+		validateJSONWebServicePermissions();
 
-		if (accountEntry == null) {
-			return null;
-		}
-
-		OSBAccountEntryPermission.check(
-			getPermissionChecker(), accountEntry.getAccountEntryId(),
-			ActionKeys.VIEW);
-
-		return accountEntry;
+		return accountEntryPersistence.fetchByCorpProjectUuid(corpProjectUuid);
 	}
 
 	public AccountEntry getAccountEntry(long accountEntryId)
@@ -94,6 +86,14 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 
 			params.put("accountEntryMembership", Long.valueOf(getUserId()));
 			params.put("status", AccountEntryConstants.STATUSES_ACTIVE);
+		}
+	}
+
+	protected void validateJSONWebServicePermissions() throws PortalException {
+		if (!roleLocalService.hasUserRole(
+				getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
+
+			throw new PrincipalException();
 		}
 	}
 

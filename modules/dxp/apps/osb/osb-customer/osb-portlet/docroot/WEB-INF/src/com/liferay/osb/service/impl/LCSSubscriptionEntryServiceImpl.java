@@ -14,55 +14,34 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.service.base.AccountCustomerServiceBaseImpl;
+import com.liferay.osb.model.LCSSubscriptionEntry;
+import com.liferay.osb.service.base.LCSSubscriptionEntryServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
-import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
-import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
  * @author Amos Fong
  */
-@JSONWebService(mode = JSONWebServiceMode.MANUAL)
-public class AccountCustomerServiceImpl extends AccountCustomerServiceBaseImpl {
+public class LCSSubscriptionEntryServiceImpl
+	extends LCSSubscriptionEntryServiceBaseImpl {
 
 	@JSONWebService
-	public List<String> getCorpProjectAccountCustomerUUIDs(
+	public List<LCSSubscriptionEntry> getLCSSubscriptionEntries(
 			String corpProjectUuid)
 		throws PortalException {
 
 		validateJSONWebServicePermissions();
 
 		AccountEntry accountEntry =
-			accountEntryPersistence.fetchByCorpProjectUuid(corpProjectUuid);
+			accountEntryPersistence.findByCorpProjectUuid(corpProjectUuid);
 
-		if (accountEntry == null) {
-			return Collections.emptyList();
-		}
-
-		List<AccountCustomer> accountCustomers =
-			accountCustomerPersistence.findByAccountEntryId(
-				accountEntry.getAccountEntryId());
-
-		List<String> uuids = new ArrayList<>(accountCustomers.size());
-
-		for (AccountCustomer accountCustomer : accountCustomers) {
-			User user = userLocalService.fetchUser(accountCustomer.getUserId());
-
-			if (user != null) {
-				uuids.add(user.getUuid());
-			}
-		}
-
-		return uuids;
+		return lcsSubscriptionEntryLocalService.getLCSSubscriptionEntries(
+			accountEntry.getAccountEntryId());
 	}
 
 	protected void validateJSONWebServicePermissions() throws PortalException {

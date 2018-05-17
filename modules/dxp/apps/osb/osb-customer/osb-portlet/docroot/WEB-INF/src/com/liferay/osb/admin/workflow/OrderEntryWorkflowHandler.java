@@ -131,7 +131,7 @@ public class OrderEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 			AccountEntry accountEntry = orderEntry.getAccountEntry();
 
 			LCSSubscriptionEntryLocalServiceUtil.syncToLCS(
-				accountEntry.getCorpProjectId());
+				accountEntry.getAccountEntryId());
 		}
 		catch (Exception e) {
 			_log.error(e, e);

@@ -179,6 +179,7 @@
 		<reference entity="Country" package-path="com.liferay.portal" />
 		<reference entity="ListType" package-path="com.liferay.portal" />
 		<reference entity="Organization" package-path="com.liferay.portal" />
+		<reference entity="Role" package-path="com.liferay.portal" />
 		<reference entity="WorkflowInstanceLink" package-path="com.liferay.portal" />
 	</entity>
 	<entity local-service="true" name="AccountEntryLanguage" remote-service="true">
