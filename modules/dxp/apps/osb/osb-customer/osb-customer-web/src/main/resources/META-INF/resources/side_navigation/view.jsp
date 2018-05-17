@@ -45,19 +45,31 @@ boolean viewjournalArticle = OSBCustomerArticlePermission.contains(permissionChe
 				<aui:select label="" name="version" onChange='<%= renderResponse.getNamespace() + "updateNavigation(this.value);" %>'>
 
 					<%
-					List<Layout> rootLayouts = LayoutLocalServiceUtil.getLayouts(themeDisplay.getScopeGroupId(), false, LayoutConstants.DEFAULT_PARENT_LAYOUT_ID);
+					Map<String, List<Layout>> kbArticleLayouts = KBArticleUtil.getKBArticleLayouts(themeDisplay.getScopeGroupId());
 
-					for (Layout curRootLayout : rootLayouts) {
-						if (curRootLayout.isHidden()) {
-							continue;
-						}
-
-						if ((rootLayout == null) || ancestorLayouts.contains(curRootLayout)) {
-							rootLayout = curRootLayout;
-						}
+					for (Map.Entry<String, List<Layout>> entry : kbArticleLayouts.entrySet()) {
 					%>
 
-						<aui:option label="<%= curRootLayout.getName() %>" selected="<%= rootLayout.equals(curRootLayout) %>" value="<%= curRootLayout.getPlid() %>" />
+						<optgroup label="<%= entry.getKey() %>">
+
+							<%
+							for (Layout curRootLayout : entry.getValue()) {
+								if (curRootLayout.isHidden()) {
+									continue;
+								}
+
+								if ((rootLayout == null) || ancestorLayouts.contains(curRootLayout)) {
+									rootLayout = curRootLayout;
+								}
+							%>
+
+								<aui:option label="<%= curRootLayout.getName() %>" selected="<%= rootLayout.equals(curRootLayout) %>" value="<%= curRootLayout.getPlid() %>" />
+
+							<%
+							}
+							%>
+
+						</optgroup>
 
 					<%
 					}

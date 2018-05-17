@@ -14,7 +14,9 @@
 
 package com.liferay.osb.customer.web.internal.util;
 
+import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetVocabulary;
+import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
 import com.liferay.knowledge.base.constants.KBFolderConstants;
 import com.liferay.knowledge.base.constants.KBPortletKeys;
@@ -51,9 +53,11 @@ import com.liferay.portal.kernel.util.WebKeys;
 
 import java.io.InputStream;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
@@ -116,6 +120,44 @@ public class KBArticleUtil {
 		}
 
 		return kbArticle;
+	}
+
+	public static Map<String, List<Layout>> getKBArticleLayouts(long groupId) {
+		Map<String, List<Layout>> kbArticleLayouts = new TreeMap<>();
+
+		List<Layout> layouts = _layoutLocalService.getLayouts(
+			groupId, false, LayoutConstants.DEFAULT_PARENT_LAYOUT_ID);
+
+		for (Layout layout : layouts) {
+			if (layout.isHidden()) {
+				continue;
+			}
+
+			List<AssetCategory> assetCategories =
+				_assetCategoryLocalService.getCategories(
+					Layout.class.getName(), layout.getPlid());
+
+			for (AssetCategory assetCategory : assetCategories) {
+				if (assetCategory.getVocabularyId() !=
+						OSBCustomerConstants.
+							ASSET_VOCABULARY_LIFERAY_PRODUCT_ID) {
+
+					continue;
+				}
+
+				List<Layout> curLayouts = new ArrayList<>();
+
+				if (kbArticleLayouts.containsKey(assetCategory.getName())) {
+					curLayouts = kbArticleLayouts.get(assetCategory.getName());
+				}
+
+				curLayouts.add(layout);
+
+				kbArticleLayouts.put(assetCategory.getName(), curLayouts);
+			}
+		}
+
+		return kbArticleLayouts;
 	}
 
 	public static String getKBArticleURL(
@@ -277,6 +319,13 @@ public class KBArticleUtil {
 	}
 
 	@Reference(unbind = "-")
+	protected void setAssetCategoryLocalService(
+		AssetCategoryLocalService assetCategoryLocalService) {
+
+		_assetCategoryLocalService = assetCategoryLocalService;
+	}
+
+	@Reference(unbind = "-")
 	protected void setAssetVocabularyLocalService(
 		AssetVocabularyLocalService assetVocabularyLocalService) {
 
@@ -337,6 +386,7 @@ public class KBArticleUtil {
 
 	private static final Log _log = LogFactoryUtil.getLog(KBArticleUtil.class);
 
+	private static AssetCategoryLocalService _assetCategoryLocalService;
 	private static AssetVocabularyLocalService _assetVocabularyLocalService;
 	private static KBArticleLocalService _kbArticleLocalService;
 	private static KBFolderLocalService _kbFolderLocalService;
