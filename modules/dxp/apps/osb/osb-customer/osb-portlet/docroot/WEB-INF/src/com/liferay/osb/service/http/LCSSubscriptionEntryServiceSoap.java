@@ -16,7 +16,7 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osb.service.AccountCustomerServiceUtil;
+import com.liferay.osb.service.LCSSubscriptionEntryServiceUtil;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -25,7 +25,7 @@ import java.rmi.RemoteException;
 
 /**
  * Provides the SOAP utility for the
- * {@link AccountCustomerServiceUtil} service utility. The
+ * {@link LCSSubscriptionEntryServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -33,10 +33,10 @@ import java.rmi.RemoteException;
  * <p>
  * ServiceBuilder follows certain rules in translating the methods. For example,
  * if the method in the service utility returns a {@link java.util.List}, that
- * is translated to an array of {@link com.liferay.osb.model.AccountCustomerSoap}.
+ * is translated to an array of {@link com.liferay.osb.model.LCSSubscriptionEntrySoap}.
  * If the method in the service utility returns a
- * {@link com.liferay.osb.model.AccountCustomer}, that is translated to a
- * {@link com.liferay.osb.model.AccountCustomerSoap}. Methods that SOAP cannot
+ * {@link com.liferay.osb.model.LCSSubscriptionEntry}, that is translated to a
+ * {@link com.liferay.osb.model.LCSSubscriptionEntrySoap}. Methods that SOAP cannot
  * safely wire are skipped.
  * </p>
  *
@@ -58,19 +58,20 @@ import java.rmi.RemoteException;
  * </p>
  *
  * @author Brian Wing Shun Chan
- * @see AccountCustomerServiceHttp
- * @see com.liferay.osb.model.AccountCustomerSoap
- * @see AccountCustomerServiceUtil
+ * @see LCSSubscriptionEntryServiceHttp
+ * @see com.liferay.osb.model.LCSSubscriptionEntrySoap
+ * @see LCSSubscriptionEntryServiceUtil
  * @generated
  */
 @ProviderType
-public class AccountCustomerServiceSoap {
-	public static java.lang.String[] getCorpProjectAccountCustomerUUIDs(
+public class LCSSubscriptionEntryServiceSoap {
+	public static com.liferay.osb.model.LCSSubscriptionEntrySoap[] getLCSSubscriptionEntries(
 		java.lang.String corpProjectUuid) throws RemoteException {
 		try {
-			java.util.List<java.lang.String> returnValue = AccountCustomerServiceUtil.getCorpProjectAccountCustomerUUIDs(corpProjectUuid);
+			java.util.List<com.liferay.osb.model.LCSSubscriptionEntry> returnValue =
+				LCSSubscriptionEntryServiceUtil.getLCSSubscriptionEntries(corpProjectUuid);
 
-			return returnValue.toArray(new java.lang.String[returnValue.size()]);
+			return com.liferay.osb.model.LCSSubscriptionEntrySoap.toSoapModels(returnValue);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -79,5 +80,5 @@ public class AccountCustomerServiceSoap {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(AccountCustomerServiceSoap.class);
+	private static Log _log = LogFactoryUtil.getLog(LCSSubscriptionEntryServiceSoap.class);
 }

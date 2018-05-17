@@ -16,7 +16,7 @@ package com.liferay.osb.service.base;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osb.service.ProductEntryServiceUtil;
+import com.liferay.osb.service.LCSSubscriptionEntryServiceUtil;
 
 import java.util.Arrays;
 
@@ -25,23 +25,34 @@ import java.util.Arrays;
  * @generated
  */
 @ProviderType
-public class ProductEntryServiceClpInvoker {
-	public ProductEntryServiceClpInvoker() {
-		_methodName204 = "getOSGiServiceIdentifier";
+public class LCSSubscriptionEntryServiceClpInvoker {
+	public LCSSubscriptionEntryServiceClpInvoker() {
+		_methodName210 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes204 = new String[] {  };
+		_methodParameterTypes210 = new String[] {  };
+
+		_methodName215 = "getLCSSubscriptionEntries";
+
+		_methodParameterTypes215 = new String[] { "java.lang.String" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName204.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes204, parameterTypes)) {
-			return ProductEntryServiceUtil.getOSGiServiceIdentifier();
+		if (_methodName210.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes210, parameterTypes)) {
+			return LCSSubscriptionEntryServiceUtil.getOSGiServiceIdentifier();
+		}
+
+		if (_methodName215.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes215, parameterTypes)) {
+			return LCSSubscriptionEntryServiceUtil.getLCSSubscriptionEntries((java.lang.String)arguments[0]);
 		}
 
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName204;
-	private String[] _methodParameterTypes204;
+	private String _methodName210;
+	private String[] _methodParameterTypes210;
+	private String _methodName215;
+	private String[] _methodParameterTypes215;
 }

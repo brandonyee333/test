@@ -57,9 +57,9 @@ public class AccountCustomerServiceUtil {
 	}
 
 	public static java.util.List<java.lang.String> getCorpProjectAccountCustomerUUIDs(
-		long corpProjectId)
+		java.lang.String corpProjectUuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getCorpProjectAccountCustomerUUIDs(corpProjectId);
+		return getService().getCorpProjectAccountCustomerUUIDs(corpProjectUuid);
 	}
 
 	public static void clearService() {

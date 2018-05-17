@@ -16,7 +16,7 @@ package com.liferay.osb.service;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osb.model.AccountEntry;
+import com.liferay.osb.model.LCSSubscriptionEntry;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -31,14 +31,14 @@ import com.liferay.portal.kernel.transaction.Transactional;
 import java.util.List;
 
 /**
- * Provides the remote service interface for AccountEntry. Methods of this
+ * Provides the remote service interface for LCSSubscriptionEntry. Methods of this
  * service are expected to have security checks based on the propagated JAAS
  * credentials because this service can be accessed remotely.
  *
  * @author Brian Wing Shun Chan
- * @see AccountEntryServiceUtil
- * @see com.liferay.osb.service.base.AccountEntryServiceBaseImpl
- * @see com.liferay.osb.service.impl.AccountEntryServiceImpl
+ * @see LCSSubscriptionEntryServiceUtil
+ * @see com.liferay.osb.service.base.LCSSubscriptionEntryServiceBaseImpl
+ * @see com.liferay.osb.service.impl.LCSSubscriptionEntryServiceImpl
  * @generated
  */
 @AccessControlled
@@ -46,26 +46,13 @@ import java.util.List;
 @ProviderType
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
-public interface AccountEntryService extends BaseService, InvokableService {
+public interface LCSSubscriptionEntryService extends BaseService,
+	InvokableService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link AccountEntryServiceUtil} to access the account entry remote service. Add custom service methods to {@link com.liferay.osb.service.impl.AccountEntryServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify or reference this interface directly. Always use {@link LCSSubscriptionEntryServiceUtil} to access the lcs subscription entry remote service. Add custom service methods to {@link com.liferay.osb.service.impl.LCSSubscriptionEntryServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	@JSONWebService
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AccountEntry fetchCorpProjectAccountEntry(
-		java.lang.String corpProjectUuid) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AccountEntry getAccountEntry(long accountEntryId)
-		throws PortalException;
-
-	@JSONWebService
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AccountEntry getAccountEntryByCode(java.lang.String code)
-		throws PortalException;
-
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
@@ -78,7 +65,8 @@ public interface AccountEntryService extends BaseService, InvokableService {
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
 
+	@JSONWebService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AccountEntry> getSecurityPatchAccountEntries(
-		java.lang.String portletId) throws PortalException;
+	public List<LCSSubscriptionEntry> getLCSSubscriptionEntries(
+		java.lang.String corpProjectUuid) throws PortalException;
 }

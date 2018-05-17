@@ -66,9 +66,9 @@ import java.rmi.RemoteException;
 @ProviderType
 public class AccountEntryServiceSoap {
 	public static com.liferay.osb.model.AccountEntrySoap fetchCorpProjectAccountEntry(
-		long corpProjectId) throws RemoteException {
+		java.lang.String corpProjectUuid) throws RemoteException {
 		try {
-			com.liferay.osb.model.AccountEntry returnValue = AccountEntryServiceUtil.fetchCorpProjectAccountEntry(corpProjectId);
+			com.liferay.osb.model.AccountEntry returnValue = AccountEntryServiceUtil.fetchCorpProjectAccountEntry(corpProjectUuid);
 
 			return com.liferay.osb.model.AccountEntrySoap.toSoapModel(returnValue);
 		}

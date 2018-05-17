@@ -21,8 +21,10 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.osb.model.LCSSubscriptionEntry;
 import com.liferay.osb.model.LCSSubscriptionEntryModel;
+import com.liferay.osb.model.LCSSubscriptionEntrySoap;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -35,8 +37,10 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -52,6 +56,7 @@ import java.util.Map;
  * @see LCSSubscriptionEntryModel
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscriptionEntry>
 	implements LCSSubscriptionEntryModel {
@@ -116,6 +121,63 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 				"value.object.finder.cache.enabled.com.liferay.osb.model.LCSSubscriptionEntry"),
 			true);
 	public static final boolean COLUMN_BITMASK_ENABLED = false;
+
+	/**
+	 * Converts the soap model instance into a normal model instance.
+	 *
+	 * @param soapModel the soap model instance to convert
+	 * @return the normal model instance
+	 */
+	public static LCSSubscriptionEntry toModel(
+		LCSSubscriptionEntrySoap soapModel) {
+		if (soapModel == null) {
+			return null;
+		}
+
+		LCSSubscriptionEntry model = new LCSSubscriptionEntryImpl();
+
+		model.setLcsSubscriptionEntryId(soapModel.getLcsSubscriptionEntryId());
+		model.setLcsProjectId(soapModel.getLcsProjectId());
+		model.setProduct(soapModel.getProduct());
+		model.setProductVersion(soapModel.getProductVersion());
+		model.setType(soapModel.getType());
+		model.setPlatform(soapModel.getPlatform());
+		model.setPlatformVersion(soapModel.getPlatformVersion());
+		model.setServersAllowed(soapModel.getServersAllowed());
+		model.setServersUsed(soapModel.getServersUsed());
+		model.setInstanceSize(soapModel.getInstanceSize());
+		model.setStartDate(soapModel.getStartDate());
+		model.setEndDate(soapModel.getEndDate());
+		model.setSupportStartDate(soapModel.getSupportStartDate());
+		model.setSupportEndDate(soapModel.getSupportEndDate());
+		model.setActualPrice(soapModel.getActualPrice());
+		model.setCurrencyCode(soapModel.getCurrencyCode());
+		model.setActive(soapModel.getActive());
+
+		return model;
+	}
+
+	/**
+	 * Converts the soap model instances into normal model instances.
+	 *
+	 * @param soapModels the soap model instances to convert
+	 * @return the normal model instances
+	 */
+	public static List<LCSSubscriptionEntry> toModels(
+		LCSSubscriptionEntrySoap[] soapModels) {
+		if (soapModels == null) {
+			return null;
+		}
+
+		List<LCSSubscriptionEntry> models = new ArrayList<LCSSubscriptionEntry>(soapModels.length);
+
+		for (LCSSubscriptionEntrySoap soapModel : soapModels) {
+			models.add(toModel(soapModel));
+		}
+
+		return models;
+	}
+
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
 				"lock.expiration.time.com.liferay.osb.model.LCSSubscriptionEntry"));
 
@@ -286,6 +348,7 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 		}
 	}
 
+	@JSON
 	@Override
 	public long getLcsSubscriptionEntryId() {
 		return _lcsSubscriptionEntryId;
@@ -296,6 +359,7 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 		_lcsSubscriptionEntryId = lcsSubscriptionEntryId;
 	}
 
+	@JSON
 	@Override
 	public long getLcsProjectId() {
 		return _lcsProjectId;
@@ -306,6 +370,7 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 		_lcsProjectId = lcsProjectId;
 	}
 
+	@JSON
 	@Override
 	public String getProduct() {
 		if (_product == null) {
@@ -321,6 +386,7 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 		_product = product;
 	}
 
+	@JSON
 	@Override
 	public int getProductVersion() {
 		return _productVersion;
@@ -331,6 +397,7 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 		_productVersion = productVersion;
 	}
 
+	@JSON
 	@Override
 	public String getType() {
 		if (_type == null) {
@@ -346,6 +413,7 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 		_type = type;
 	}
 
+	@JSON
 	@Override
 	public String getPlatform() {
 		if (_platform == null) {
@@ -361,6 +429,7 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 		_platform = platform;
 	}
 
+	@JSON
 	@Override
 	public String getPlatformVersion() {
 		if (_platformVersion == null) {
@@ -376,6 +445,7 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 		_platformVersion = platformVersion;
 	}
 
+	@JSON
 	@Override
 	public int getServersAllowed() {
 		return _serversAllowed;
@@ -386,6 +456,7 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 		_serversAllowed = serversAllowed;
 	}
 
+	@JSON
 	@Override
 	public int getServersUsed() {
 		return _serversUsed;
@@ -396,6 +467,7 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 		_serversUsed = serversUsed;
 	}
 
+	@JSON
 	@Override
 	public int getInstanceSize() {
 		return _instanceSize;
@@ -406,6 +478,7 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 		_instanceSize = instanceSize;
 	}
 
+	@JSON
 	@Override
 	public Date getStartDate() {
 		return _startDate;
@@ -416,6 +489,7 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 		_startDate = startDate;
 	}
 
+	@JSON
 	@Override
 	public Date getEndDate() {
 		return _endDate;
@@ -426,6 +500,7 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 		_endDate = endDate;
 	}
 
+	@JSON
 	@Override
 	public Date getSupportStartDate() {
 		return _supportStartDate;
@@ -436,6 +511,7 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 		_supportStartDate = supportStartDate;
 	}
 
+	@JSON
 	@Override
 	public Date getSupportEndDate() {
 		return _supportEndDate;
@@ -446,6 +522,7 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 		_supportEndDate = supportEndDate;
 	}
 
+	@JSON
 	@Override
 	public double getActualPrice() {
 		return _actualPrice;
@@ -456,6 +533,7 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 		_actualPrice = actualPrice;
 	}
 
+	@JSON
 	@Override
 	public String getCurrencyCode() {
 		if (_currencyCode == null) {
@@ -471,11 +549,13 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 		_currencyCode = currencyCode;
 	}
 
+	@JSON
 	@Override
 	public boolean getActive() {
 		return _active;
 	}
 
+	@JSON
 	@Override
 	public boolean isActive() {
 		return _active;

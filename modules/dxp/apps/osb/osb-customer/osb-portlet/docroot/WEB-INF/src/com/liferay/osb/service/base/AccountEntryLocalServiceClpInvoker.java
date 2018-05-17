@@ -198,13 +198,13 @@ public class AccountEntryLocalServiceClpInvoker {
 
 		_methodParameterTypes36 = new String[] { "long", "long[][]" };
 
-		_methodName201 = "getOSGiServiceIdentifier";
+		_methodName205 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes201 = new String[] {  };
+		_methodParameterTypes205 = new String[] {  };
 
-		_methodName206 = "addAccountEntry";
+		_methodName210 = "addAccountEntry";
 
-		_methodParameterTypes206 = new String[] {
+		_methodParameterTypes210 = new String[] {
 				"long", "java.lang.String", "java.lang.String",
 				"java.lang.String", "java.lang.String", "int", "int", "long",
 				"boolean", "int", "int", "java.lang.String", "java.lang.String",
@@ -213,9 +213,9 @@ public class AccountEntryLocalServiceClpInvoker {
 				"java.lang.String", "long", "long", "java.lang.String"
 			};
 
-		_methodName207 = "addAccountEntryWithWorkflow";
+		_methodName211 = "addAccountEntryWithWorkflow";
 
-		_methodParameterTypes207 = new String[] {
+		_methodParameterTypes211 = new String[] {
 				"java.lang.String", "com.liferay.osb.model.AccountEntry",
 				"com.liferay.osb.model.CorpProject",
 				"com.liferay.osb.model.PartnerEntry",
@@ -225,105 +225,105 @@ public class AccountEntryLocalServiceClpInvoker {
 				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 
-		_methodName208 = "addTrialAccountEntry";
-
-		_methodParameterTypes208 = new String[] { "long" };
-
-		_methodName209 = "auditAccountEntries";
-
-		_methodParameterTypes209 = new String[] {  };
-
-		_methodName210 = "auditAccountEntry";
-
-		_methodParameterTypes210 = new String[] { "long", "long" };
-
-		_methodName211 = "deleteAccountEntry";
-
-		_methodParameterTypes211 = new String[] { "long" };
-
-		_methodName212 = "fetchCorpProjectAccountEntry";
+		_methodName212 = "addTrialAccountEntry";
 
 		_methodParameterTypes212 = new String[] { "long" };
 
-		_methodName213 = "fetchCorpProjectAccountEntry";
+		_methodName213 = "auditAccountEntries";
 
-		_methodParameterTypes213 = new String[] { "java.lang.String" };
+		_methodParameterTypes213 = new String[] {  };
 
-		_methodName214 = "fetchUserTrialAccountEntry";
+		_methodName214 = "auditAccountEntry";
 
-		_methodParameterTypes214 = new String[] { "long" };
+		_methodParameterTypes214 = new String[] { "long", "long" };
 
-		_methodName215 = "getAccountEntries";
+		_methodName215 = "deleteAccountEntry";
 
-		_methodParameterTypes215 = new String[] { "int[][]", "int", "int" };
+		_methodParameterTypes215 = new String[] { "long" };
 
-		_methodName216 = "getAccountEntries";
+		_methodName216 = "fetchCorpProjectAccountEntry";
 
-		_methodParameterTypes216 = new String[] {
+		_methodParameterTypes216 = new String[] { "long" };
+
+		_methodName217 = "fetchCorpProjectAccountEntry";
+
+		_methodParameterTypes217 = new String[] { "java.lang.String" };
+
+		_methodName218 = "fetchUserTrialAccountEntry";
+
+		_methodParameterTypes218 = new String[] { "long" };
+
+		_methodName219 = "getAccountEntries";
+
+		_methodParameterTypes219 = new String[] { "int[][]", "int", "int" };
+
+		_methodName220 = "getAccountEntries";
+
+		_methodParameterTypes220 = new String[] {
 				"int[][]", "int[][]", "int", "int"
 			};
 
-		_methodName217 = "getAccountEntry";
-
-		_methodParameterTypes217 = new String[] { "long" };
-
-		_methodName218 = "getAccountEntryByCode";
-
-		_methodParameterTypes218 = new String[] { "java.lang.String" };
-
-		_methodName219 = "getAccountEntryByName";
-
-		_methodParameterTypes219 = new String[] { "java.lang.String" };
-
-		_methodName220 = "getActiveAccountEntries";
-
-		_methodParameterTypes220 = new String[] { "int", "int" };
-
-		_methodName221 = "getPartnerAccountEntries";
+		_methodName221 = "getAccountEntry";
 
 		_methodParameterTypes221 = new String[] { "long" };
 
-		_methodName222 = "getRedirectAccountEntries";
+		_methodName222 = "getAccountEntryByCode";
 
-		_methodParameterTypes222 = new String[] { "long" };
+		_methodParameterTypes222 = new String[] { "java.lang.String" };
 
-		_methodName223 = "getSecurityPatchAccountEntries";
+		_methodName223 = "getAccountEntryByName";
 
-		_methodParameterTypes223 = new String[] {
-				"java.lang.String", "java.util.LinkedHashMap"
-			};
+		_methodParameterTypes223 = new String[] { "java.lang.String" };
 
-		_methodName224 = "getUserAccountEntries";
+		_methodName224 = "getActiveAccountEntries";
 
-		_methodParameterTypes224 = new String[] { "long", "int", "int" };
+		_methodParameterTypes224 = new String[] { "int", "int" };
 
-		_methodName225 = "getUserAccountEntriesCount";
+		_methodName225 = "getPartnerAccountEntries";
 
 		_methodParameterTypes225 = new String[] { "long" };
 
-		_methodName226 = "getUserAccountEntryIds";
+		_methodName226 = "getRedirectAccountEntries";
 
-		_methodParameterTypes226 = new String[] { "long", "int", "int" };
+		_methodParameterTypes226 = new String[] { "long" };
 
-		_methodName227 = "getUserActiveAccountEntries";
+		_methodName227 = "getSecurityPatchAccountEntries";
 
-		_methodParameterTypes227 = new String[] { "long", "int", "int" };
+		_methodParameterTypes227 = new String[] {
+				"java.lang.String", "java.util.LinkedHashMap"
+			};
 
-		_methodName228 = "hasValidLicenseAccountEntry";
+		_methodName228 = "getUserAccountEntries";
 
-		_methodParameterTypes228 = new String[] { "long" };
+		_methodParameterTypes228 = new String[] { "long", "int", "int" };
 
-		_methodName229 = "hasValidSupportAccountEntry";
+		_methodName229 = "getUserAccountEntriesCount";
 
 		_methodParameterTypes229 = new String[] { "long" };
 
-		_methodName230 = "recalculateHighestSupportResponse";
+		_methodName230 = "getUserAccountEntryIds";
 
-		_methodParameterTypes230 = new String[] { "long" };
+		_methodParameterTypes230 = new String[] { "long", "int", "int" };
 
-		_methodName231 = "search";
+		_methodName231 = "getUserActiveAccountEntries";
 
-		_methodParameterTypes231 = new String[] {
+		_methodParameterTypes231 = new String[] { "long", "int", "int" };
+
+		_methodName232 = "hasValidLicenseAccountEntry";
+
+		_methodParameterTypes232 = new String[] { "long" };
+
+		_methodName233 = "hasValidSupportAccountEntry";
+
+		_methodParameterTypes233 = new String[] { "long" };
+
+		_methodName234 = "recalculateHighestSupportResponse";
+
+		_methodParameterTypes234 = new String[] { "long" };
+
+		_methodName235 = "search";
+
+		_methodParameterTypes235 = new String[] {
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.String", "java.lang.String", "int[][]",
@@ -334,22 +334,22 @@ public class AccountEntryLocalServiceClpInvoker {
 				"int", "com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName232 = "search";
+		_methodName236 = "search";
 
-		_methodParameterTypes232 = new String[] {
+		_methodParameterTypes236 = new String[] {
 				"java.lang.String", "java.util.LinkedHashMap", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName233 = "search";
+		_methodName237 = "search";
 
-		_methodParameterTypes233 = new String[] {
+		_methodParameterTypes237 = new String[] {
 				"java.lang.String", "java.lang.String"
 			};
 
-		_methodName234 = "searchCount";
+		_methodName238 = "searchCount";
 
-		_methodParameterTypes234 = new String[] {
+		_methodParameterTypes238 = new String[] {
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.String", "java.lang.String", "int[][]",
@@ -359,15 +359,15 @@ public class AccountEntryLocalServiceClpInvoker {
 				"java.lang.String", "java.util.LinkedHashMap", "boolean"
 			};
 
-		_methodName235 = "searchCount";
+		_methodName239 = "searchCount";
 
-		_methodParameterTypes235 = new String[] {
+		_methodParameterTypes239 = new String[] {
 				"java.lang.String", "java.util.LinkedHashMap"
 			};
 
-		_methodName236 = "updateAccountEntry";
+		_methodName240 = "updateAccountEntry";
 
-		_methodParameterTypes236 = new String[] {
+		_methodParameterTypes240 = new String[] {
 				"long", "long", "java.lang.String", "java.lang.String",
 				"java.lang.String", "java.lang.String", "int", "int", "long",
 				"boolean", "int", "int", "java.lang.String", "java.lang.String",
@@ -376,42 +376,42 @@ public class AccountEntryLocalServiceClpInvoker {
 				"java.lang.String", "long", "long", "java.lang.String"
 			};
 
-		_methodName237 = "updateAccountEntryWithWorkflow";
+		_methodName241 = "updateAccountEntryWithWorkflow";
 
-		_methodParameterTypes237 = new String[] {
+		_methodParameterTypes241 = new String[] {
 				"java.lang.String", "com.liferay.osb.model.AccountEntry",
 				"com.liferay.osb.model.PartnerEntry",
 				"com.liferay.portal.kernel.model.Address", "java.util.List",
 				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 
-		_methodName238 = "updateLastAuditDate";
+		_methodName242 = "updateLastAuditDate";
 
-		_methodParameterTypes238 = new String[] {
+		_methodParameterTypes242 = new String[] {
 				"long", "long", "java.lang.String", "java.lang.String"
 			};
 
-		_methodName239 = "updateStatus";
+		_methodName243 = "updateStatus";
 
-		_methodParameterTypes239 = new String[] { "long" };
+		_methodParameterTypes243 = new String[] { "long" };
 
-		_methodName240 = "updateStatus";
+		_methodName244 = "updateStatus";
 
-		_methodParameterTypes240 = new String[] {
+		_methodParameterTypes244 = new String[] {
 				"long", "long", "int",
 				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 
-		_methodName241 = "updateStatus";
+		_methodName245 = "updateStatus";
 
-		_methodParameterTypes241 = new String[] {
+		_methodParameterTypes245 = new String[] {
 				"long", "long", "java.lang.String", "int",
 				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 
-		_methodName242 = "validate";
+		_methodName246 = "validate";
 
-		_methodParameterTypes242 = new String[] {
+		_methodParameterTypes246 = new String[] {
 				"com.liferay.osb.model.AccountEntry"
 			};
 	}
@@ -640,13 +640,13 @@ public class AccountEntryLocalServiceClpInvoker {
 			return null;
 		}
 
-		if (_methodName201.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes201, parameterTypes)) {
+		if (_methodName205.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes205, parameterTypes)) {
 			return AccountEntryLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName206.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes206, parameterTypes)) {
+		if (_methodName210.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes210, parameterTypes)) {
 			return AccountEntryLocalServiceUtil.addAccountEntry(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
 				(java.lang.String)arguments[3], (java.lang.String)arguments[4],
@@ -669,8 +669,8 @@ public class AccountEntryLocalServiceClpInvoker {
 				(java.lang.String)arguments[22]);
 		}
 
-		if (_methodName207.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes207, parameterTypes)) {
+		if (_methodName211.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes211, parameterTypes)) {
 			return AccountEntryLocalServiceUtil.addAccountEntryWithWorkflow((java.lang.String)arguments[0],
 				(com.liferay.osb.model.AccountEntry)arguments[1],
 				(com.liferay.osb.model.CorpProject)arguments[2],
@@ -682,144 +682,144 @@ public class AccountEntryLocalServiceClpInvoker {
 				(com.liferay.portal.kernel.service.ServiceContext)arguments[8]);
 		}
 
-		if (_methodName208.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes208, parameterTypes)) {
+		if (_methodName212.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes212, parameterTypes)) {
 			AccountEntryLocalServiceUtil.addTrialAccountEntry(((Long)arguments[0]).longValue());
 
 			return null;
 		}
 
-		if (_methodName209.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes209, parameterTypes)) {
+		if (_methodName213.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes213, parameterTypes)) {
 			AccountEntryLocalServiceUtil.auditAccountEntries();
 
 			return null;
 		}
 
-		if (_methodName210.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes210, parameterTypes)) {
+		if (_methodName214.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes214, parameterTypes)) {
 			AccountEntryLocalServiceUtil.auditAccountEntry(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue());
 
 			return null;
 		}
 
-		if (_methodName211.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes211, parameterTypes)) {
+		if (_methodName215.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes215, parameterTypes)) {
 			return AccountEntryLocalServiceUtil.deleteAccountEntry(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName212.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes212, parameterTypes)) {
+		if (_methodName216.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes216, parameterTypes)) {
 			return AccountEntryLocalServiceUtil.fetchCorpProjectAccountEntry(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName213.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes213, parameterTypes)) {
+		if (_methodName217.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes217, parameterTypes)) {
 			return AccountEntryLocalServiceUtil.fetchCorpProjectAccountEntry((java.lang.String)arguments[0]);
 		}
 
-		if (_methodName214.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes214, parameterTypes)) {
+		if (_methodName218.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes218, parameterTypes)) {
 			return AccountEntryLocalServiceUtil.fetchUserTrialAccountEntry(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName215.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes215, parameterTypes)) {
+		if (_methodName219.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes219, parameterTypes)) {
 			return AccountEntryLocalServiceUtil.getAccountEntries((int[])arguments[0],
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue());
 		}
 
-		if (_methodName216.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes216, parameterTypes)) {
+		if (_methodName220.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes220, parameterTypes)) {
 			return AccountEntryLocalServiceUtil.getAccountEntries((int[])arguments[0],
 				(int[])arguments[1], ((Integer)arguments[2]).intValue(),
 				((Integer)arguments[3]).intValue());
 		}
 
-		if (_methodName217.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes217, parameterTypes)) {
-			return AccountEntryLocalServiceUtil.getAccountEntry(((Long)arguments[0]).longValue());
-		}
-
-		if (_methodName218.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes218, parameterTypes)) {
-			return AccountEntryLocalServiceUtil.getAccountEntryByCode((java.lang.String)arguments[0]);
-		}
-
-		if (_methodName219.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes219, parameterTypes)) {
-			return AccountEntryLocalServiceUtil.getAccountEntryByName((java.lang.String)arguments[0]);
-		}
-
-		if (_methodName220.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes220, parameterTypes)) {
-			return AccountEntryLocalServiceUtil.getActiveAccountEntries(((Integer)arguments[0]).intValue(),
-				((Integer)arguments[1]).intValue());
-		}
-
 		if (_methodName221.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes221, parameterTypes)) {
-			return AccountEntryLocalServiceUtil.getPartnerAccountEntries(((Long)arguments[0]).longValue());
+			return AccountEntryLocalServiceUtil.getAccountEntry(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName222.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes222, parameterTypes)) {
-			return AccountEntryLocalServiceUtil.getRedirectAccountEntries(((Long)arguments[0]).longValue());
+			return AccountEntryLocalServiceUtil.getAccountEntryByCode((java.lang.String)arguments[0]);
 		}
 
 		if (_methodName223.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes223, parameterTypes)) {
-			return AccountEntryLocalServiceUtil.getSecurityPatchAccountEntries((java.lang.String)arguments[0],
-				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[1]);
+			return AccountEntryLocalServiceUtil.getAccountEntryByName((java.lang.String)arguments[0]);
 		}
 
 		if (_methodName224.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes224, parameterTypes)) {
+			return AccountEntryLocalServiceUtil.getActiveAccountEntries(((Integer)arguments[0]).intValue(),
+				((Integer)arguments[1]).intValue());
+		}
+
+		if (_methodName225.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes225, parameterTypes)) {
+			return AccountEntryLocalServiceUtil.getPartnerAccountEntries(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName226.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes226, parameterTypes)) {
+			return AccountEntryLocalServiceUtil.getRedirectAccountEntries(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName227.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes227, parameterTypes)) {
+			return AccountEntryLocalServiceUtil.getSecurityPatchAccountEntries((java.lang.String)arguments[0],
+				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[1]);
+		}
+
+		if (_methodName228.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes228, parameterTypes)) {
 			return AccountEntryLocalServiceUtil.getUserAccountEntries(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue());
 		}
 
-		if (_methodName225.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes225, parameterTypes)) {
+		if (_methodName229.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes229, parameterTypes)) {
 			return AccountEntryLocalServiceUtil.getUserAccountEntriesCount(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName226.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes226, parameterTypes)) {
+		if (_methodName230.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes230, parameterTypes)) {
 			return AccountEntryLocalServiceUtil.getUserAccountEntryIds(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue());
 		}
 
-		if (_methodName227.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes227, parameterTypes)) {
+		if (_methodName231.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes231, parameterTypes)) {
 			return AccountEntryLocalServiceUtil.getUserActiveAccountEntries(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue());
 		}
 
-		if (_methodName228.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes228, parameterTypes)) {
+		if (_methodName232.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes232, parameterTypes)) {
 			return AccountEntryLocalServiceUtil.hasValidLicenseAccountEntry(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName229.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes229, parameterTypes)) {
+		if (_methodName233.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes233, parameterTypes)) {
 			return AccountEntryLocalServiceUtil.hasValidSupportAccountEntry(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName230.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes230, parameterTypes)) {
+		if (_methodName234.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes234, parameterTypes)) {
 			AccountEntryLocalServiceUtil.recalculateHighestSupportResponse(((Long)arguments[0]).longValue());
 
 			return null;
 		}
 
-		if (_methodName231.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes231, parameterTypes)) {
+		if (_methodName235.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes235, parameterTypes)) {
 			return AccountEntryLocalServiceUtil.search((java.lang.Long)arguments[0],
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue(),
@@ -850,8 +850,8 @@ public class AccountEntryLocalServiceClpInvoker {
 				(com.liferay.portal.kernel.util.OrderByComparator)arguments[32]);
 		}
 
-		if (_methodName232.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes232, parameterTypes)) {
+		if (_methodName236.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes236, parameterTypes)) {
 			return AccountEntryLocalServiceUtil.search((java.lang.String)arguments[0],
 				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[1],
 				((Integer)arguments[2]).intValue(),
@@ -859,14 +859,14 @@ public class AccountEntryLocalServiceClpInvoker {
 				(com.liferay.portal.kernel.util.OrderByComparator)arguments[4]);
 		}
 
-		if (_methodName233.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes233, parameterTypes)) {
+		if (_methodName237.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes237, parameterTypes)) {
 			return AccountEntryLocalServiceUtil.search((java.lang.String)arguments[0],
 				(java.lang.String)arguments[1]);
 		}
 
-		if (_methodName234.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes234, parameterTypes)) {
+		if (_methodName238.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes238, parameterTypes)) {
 			return AccountEntryLocalServiceUtil.searchCount((java.lang.Long)arguments[0],
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue(),
@@ -894,14 +894,14 @@ public class AccountEntryLocalServiceClpInvoker {
 				((Boolean)arguments[29]).booleanValue());
 		}
 
-		if (_methodName235.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes235, parameterTypes)) {
+		if (_methodName239.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes239, parameterTypes)) {
 			return AccountEntryLocalServiceUtil.searchCount((java.lang.String)arguments[0],
 				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[1]);
 		}
 
-		if (_methodName236.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes236, parameterTypes)) {
+		if (_methodName240.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes240, parameterTypes)) {
 			return AccountEntryLocalServiceUtil.updateAccountEntry(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(java.lang.String)arguments[2], (java.lang.String)arguments[3],
@@ -926,8 +926,8 @@ public class AccountEntryLocalServiceClpInvoker {
 				(java.lang.String)arguments[24]);
 		}
 
-		if (_methodName237.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes237, parameterTypes)) {
+		if (_methodName241.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes241, parameterTypes)) {
 			AccountEntryLocalServiceUtil.updateAccountEntryWithWorkflow((java.lang.String)arguments[0],
 				(com.liferay.osb.model.AccountEntry)arguments[1],
 				(com.liferay.osb.model.PartnerEntry)arguments[2],
@@ -938,8 +938,8 @@ public class AccountEntryLocalServiceClpInvoker {
 			return null;
 		}
 
-		if (_methodName238.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes238, parameterTypes)) {
+		if (_methodName242.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes242, parameterTypes)) {
 			AccountEntryLocalServiceUtil.updateLastAuditDate(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(java.lang.String)arguments[2], (java.lang.String)arguments[3]);
@@ -947,23 +947,23 @@ public class AccountEntryLocalServiceClpInvoker {
 			return null;
 		}
 
-		if (_methodName239.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes239, parameterTypes)) {
+		if (_methodName243.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes243, parameterTypes)) {
 			AccountEntryLocalServiceUtil.updateStatus(((Long)arguments[0]).longValue());
 
 			return null;
 		}
 
-		if (_methodName240.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes240, parameterTypes)) {
+		if (_methodName244.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes244, parameterTypes)) {
 			return AccountEntryLocalServiceUtil.updateStatus(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Integer)arguments[2]).intValue(),
 				(com.liferay.portal.kernel.service.ServiceContext)arguments[3]);
 		}
 
-		if (_methodName241.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes241, parameterTypes)) {
+		if (_methodName245.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes245, parameterTypes)) {
 			return AccountEntryLocalServiceUtil.updateStatus(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(java.lang.String)arguments[2],
@@ -971,8 +971,8 @@ public class AccountEntryLocalServiceClpInvoker {
 				(com.liferay.portal.kernel.service.ServiceContext)arguments[4]);
 		}
 
-		if (_methodName242.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes242, parameterTypes)) {
+		if (_methodName246.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes246, parameterTypes)) {
 			AccountEntryLocalServiceUtil.validate((com.liferay.osb.model.AccountEntry)arguments[0]);
 
 			return null;
@@ -1053,16 +1053,8 @@ public class AccountEntryLocalServiceClpInvoker {
 	private String[] _methodParameterTypes35;
 	private String _methodName36;
 	private String[] _methodParameterTypes36;
-	private String _methodName201;
-	private String[] _methodParameterTypes201;
-	private String _methodName206;
-	private String[] _methodParameterTypes206;
-	private String _methodName207;
-	private String[] _methodParameterTypes207;
-	private String _methodName208;
-	private String[] _methodParameterTypes208;
-	private String _methodName209;
-	private String[] _methodParameterTypes209;
+	private String _methodName205;
+	private String[] _methodParameterTypes205;
 	private String _methodName210;
 	private String[] _methodParameterTypes210;
 	private String _methodName211;
@@ -1129,4 +1121,12 @@ public class AccountEntryLocalServiceClpInvoker {
 	private String[] _methodParameterTypes241;
 	private String _methodName242;
 	private String[] _methodParameterTypes242;
+	private String _methodName243;
+	private String[] _methodParameterTypes243;
+	private String _methodName244;
+	private String[] _methodParameterTypes244;
+	private String _methodName245;
+	private String[] _methodParameterTypes245;
+	private String _methodName246;
+	private String[] _methodParameterTypes246;
 }

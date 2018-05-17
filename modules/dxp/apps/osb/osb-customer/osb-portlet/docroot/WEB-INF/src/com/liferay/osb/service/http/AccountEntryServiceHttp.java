@@ -56,7 +56,7 @@ import com.liferay.portal.kernel.util.MethodKey;
 @ProviderType
 public class AccountEntryServiceHttp {
 	public static com.liferay.osb.model.AccountEntry fetchCorpProjectAccountEntry(
-		HttpPrincipal httpPrincipal, long corpProjectId)
+		HttpPrincipal httpPrincipal, java.lang.String corpProjectUuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountEntryServiceUtil.class,
@@ -64,7 +64,7 @@ public class AccountEntryServiceHttp {
 					_fetchCorpProjectAccountEntryParameterTypes0);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
-					corpProjectId);
+					corpProjectUuid);
 
 			Object returnObj = null;
 
@@ -186,7 +186,7 @@ public class AccountEntryServiceHttp {
 
 	private static Log _log = LogFactoryUtil.getLog(AccountEntryServiceHttp.class);
 	private static final Class<?>[] _fetchCorpProjectAccountEntryParameterTypes0 =
-		new Class[] { long.class };
+		new Class[] { java.lang.String.class };
 	private static final Class<?>[] _getAccountEntryParameterTypes1 = new Class[] {
 			long.class
 		};

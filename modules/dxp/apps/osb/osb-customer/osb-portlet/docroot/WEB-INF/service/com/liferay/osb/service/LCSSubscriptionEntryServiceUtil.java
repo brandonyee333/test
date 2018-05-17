@@ -21,44 +21,26 @@ import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
- * Provides the remote service utility for AccountEntry. This utility wraps
- * {@link com.liferay.osb.service.impl.AccountEntryServiceImpl} and is the
+ * Provides the remote service utility for LCSSubscriptionEntry. This utility wraps
+ * {@link com.liferay.osb.service.impl.LCSSubscriptionEntryServiceImpl} and is the
  * primary access point for service operations in application layer code running
  * on a remote server. Methods of this service are expected to have security
  * checks based on the propagated JAAS credentials because this service can be
  * accessed remotely.
  *
  * @author Brian Wing Shun Chan
- * @see AccountEntryService
- * @see com.liferay.osb.service.base.AccountEntryServiceBaseImpl
- * @see com.liferay.osb.service.impl.AccountEntryServiceImpl
+ * @see LCSSubscriptionEntryService
+ * @see com.liferay.osb.service.base.LCSSubscriptionEntryServiceBaseImpl
+ * @see com.liferay.osb.service.impl.LCSSubscriptionEntryServiceImpl
  * @generated
  */
 @ProviderType
-public class AccountEntryServiceUtil {
+public class LCSSubscriptionEntryServiceUtil {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.AccountEntryServiceImpl} and rerun ServiceBuilder to regenerate this class.
+	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.LCSSubscriptionEntryServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.model.AccountEntry fetchCorpProjectAccountEntry(
-		java.lang.String corpProjectUuid)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().fetchCorpProjectAccountEntry(corpProjectUuid);
-	}
-
-	public static com.liferay.osb.model.AccountEntry getAccountEntry(
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getAccountEntry(accountEntryId);
-	}
-
-	public static com.liferay.osb.model.AccountEntry getAccountEntryByCode(
-		java.lang.String code)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getAccountEntryByCode(code);
-	}
-
 	public static java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
@@ -74,34 +56,34 @@ public class AccountEntryServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static java.util.List<com.liferay.osb.model.AccountEntry> getSecurityPatchAccountEntries(
-		java.lang.String portletId)
+	public static java.util.List<com.liferay.osb.model.LCSSubscriptionEntry> getLCSSubscriptionEntries(
+		java.lang.String corpProjectUuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getSecurityPatchAccountEntries(portletId);
+		return getService().getLCSSubscriptionEntries(corpProjectUuid);
 	}
 
 	public static void clearService() {
 		_service = null;
 	}
 
-	public static AccountEntryService getService() {
+	public static LCSSubscriptionEntryService getService() {
 		if (_service == null) {
 			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
-					AccountEntryService.class.getName());
+					LCSSubscriptionEntryService.class.getName());
 
-			if (invokableService instanceof AccountEntryService) {
-				_service = (AccountEntryService)invokableService;
+			if (invokableService instanceof LCSSubscriptionEntryService) {
+				_service = (LCSSubscriptionEntryService)invokableService;
 			}
 			else {
-				_service = new AccountEntryServiceClp(invokableService);
+				_service = new LCSSubscriptionEntryServiceClp(invokableService);
 			}
 
-			ReferenceRegistry.registerReference(AccountEntryServiceUtil.class,
+			ReferenceRegistry.registerReference(LCSSubscriptionEntryServiceUtil.class,
 				"_service");
 		}
 
 		return _service;
 	}
 
-	private static AccountEntryService _service;
+	private static LCSSubscriptionEntryService _service;
 }

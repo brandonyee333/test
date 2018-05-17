@@ -23,15 +23,16 @@ import com.liferay.portal.kernel.service.InvokableService;
  * @generated
  */
 @ProviderType
-public class AccountCustomerServiceClp implements AccountCustomerService {
-	public AccountCustomerServiceClp(InvokableService invokableService) {
+public class LCSSubscriptionEntryServiceClp
+	implements LCSSubscriptionEntryService {
+	public LCSSubscriptionEntryServiceClp(InvokableService invokableService) {
 		_invokableService = invokableService;
 
 		_methodName1 = "getOSGiServiceIdentifier";
 
 		_methodParameterTypes1 = new String[] {  };
 
-		_methodName2 = "getCorpProjectAccountCustomerUUIDs";
+		_methodName2 = "getLCSSubscriptionEntries";
 
 		_methodParameterTypes2 = new String[] { "java.lang.String" };
 	}
@@ -67,7 +68,7 @@ public class AccountCustomerServiceClp implements AccountCustomerService {
 	}
 
 	@Override
-	public java.util.List<java.lang.String> getCorpProjectAccountCustomerUUIDs(
+	public java.util.List<com.liferay.osb.model.LCSSubscriptionEntry> getLCSSubscriptionEntries(
 		java.lang.String corpProjectUuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
@@ -93,7 +94,7 @@ public class AccountCustomerServiceClp implements AccountCustomerService {
 			}
 		}
 
-		return (java.util.List<java.lang.String>)ClpSerializer.translateOutput(returnObj);
+		return (java.util.List<com.liferay.osb.model.LCSSubscriptionEntry>)ClpSerializer.translateOutput(returnObj);
 	}
 
 	private InvokableService _invokableService;

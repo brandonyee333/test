@@ -19,25 +19,26 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
- * Provides a wrapper for {@link AccountCustomerService}.
+ * Provides a wrapper for {@link LCSSubscriptionEntryService}.
  *
  * @author Brian Wing Shun Chan
- * @see AccountCustomerService
+ * @see LCSSubscriptionEntryService
  * @generated
  */
 @ProviderType
-public class AccountCustomerServiceWrapper implements AccountCustomerService,
-	ServiceWrapper<AccountCustomerService> {
-	public AccountCustomerServiceWrapper(
-		AccountCustomerService accountCustomerService) {
-		_accountCustomerService = accountCustomerService;
+public class LCSSubscriptionEntryServiceWrapper
+	implements LCSSubscriptionEntryService,
+		ServiceWrapper<LCSSubscriptionEntryService> {
+	public LCSSubscriptionEntryServiceWrapper(
+		LCSSubscriptionEntryService lcsSubscriptionEntryService) {
+		_lcsSubscriptionEntryService = lcsSubscriptionEntryService;
 	}
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
-		return _accountCustomerService.invokeMethod(name, parameterTypes,
+		return _lcsSubscriptionEntryService.invokeMethod(name, parameterTypes,
 			arguments);
 	}
 
@@ -48,25 +49,26 @@ public class AccountCustomerServiceWrapper implements AccountCustomerService,
 	*/
 	@Override
 	public java.lang.String getOSGiServiceIdentifier() {
-		return _accountCustomerService.getOSGiServiceIdentifier();
+		return _lcsSubscriptionEntryService.getOSGiServiceIdentifier();
 	}
 
 	@Override
-	public java.util.List<java.lang.String> getCorpProjectAccountCustomerUUIDs(
+	public java.util.List<com.liferay.osb.model.LCSSubscriptionEntry> getLCSSubscriptionEntries(
 		java.lang.String corpProjectUuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountCustomerService.getCorpProjectAccountCustomerUUIDs(corpProjectUuid);
+		return _lcsSubscriptionEntryService.getLCSSubscriptionEntries(corpProjectUuid);
 	}
 
 	@Override
-	public AccountCustomerService getWrappedService() {
-		return _accountCustomerService;
+	public LCSSubscriptionEntryService getWrappedService() {
+		return _lcsSubscriptionEntryService;
 	}
 
 	@Override
-	public void setWrappedService(AccountCustomerService accountCustomerService) {
-		_accountCustomerService = accountCustomerService;
+	public void setWrappedService(
+		LCSSubscriptionEntryService lcsSubscriptionEntryService) {
+		_lcsSubscriptionEntryService = lcsSubscriptionEntryService;
 	}
 
-	private AccountCustomerService _accountCustomerService;
+	private LCSSubscriptionEntryService _lcsSubscriptionEntryService;
 }

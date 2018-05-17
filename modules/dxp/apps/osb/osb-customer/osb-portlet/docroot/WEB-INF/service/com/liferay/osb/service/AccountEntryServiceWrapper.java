@@ -34,9 +34,9 @@ public class AccountEntryServiceWrapper implements AccountEntryService,
 
 	@Override
 	public com.liferay.osb.model.AccountEntry fetchCorpProjectAccountEntry(
-		long corpProjectId)
+		java.lang.String corpProjectUuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountEntryService.fetchCorpProjectAccountEntry(corpProjectId);
+		return _accountEntryService.fetchCorpProjectAccountEntry(corpProjectUuid);
 	}
 
 	@Override

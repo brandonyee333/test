@@ -27,54 +27,54 @@ import java.util.Arrays;
 @ProviderType
 public class LicenseKeySetServiceClpInvoker {
 	public LicenseKeySetServiceClpInvoker() {
-		_methodName208 = "getOSGiServiceIdentifier";
+		_methodName210 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes208 = new String[] {  };
+		_methodParameterTypes210 = new String[] {  };
 
-		_methodName213 = "addLicenseKeySet";
+		_methodName215 = "addLicenseKeySet";
 
-		_methodParameterTypes213 = new String[] {
+		_methodParameterTypes215 = new String[] {
 				"long", "long", "java.lang.String"
 			};
 
-		_methodName214 = "deleteLicenseKeySet";
+		_methodName216 = "deleteLicenseKeySet";
 
-		_methodParameterTypes214 = new String[] { "long" };
+		_methodParameterTypes216 = new String[] { "long" };
 
-		_methodName215 = "getLicenseKeySet";
+		_methodName217 = "getLicenseKeySet";
 
-		_methodParameterTypes215 = new String[] { "long" };
+		_methodParameterTypes217 = new String[] { "long" };
 
-		_methodName216 = "updateLicenseKeySet";
+		_methodName218 = "updateLicenseKeySet";
 
-		_methodParameterTypes216 = new String[] { "long", "java.lang.String" };
+		_methodParameterTypes218 = new String[] { "long", "java.lang.String" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName208.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes208, parameterTypes)) {
+		if (_methodName210.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes210, parameterTypes)) {
 			return LicenseKeySetServiceUtil.getOSGiServiceIdentifier();
-		}
-
-		if (_methodName213.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes213, parameterTypes)) {
-			return LicenseKeySetServiceUtil.addLicenseKeySet(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue(), (java.lang.String)arguments[2]);
-		}
-
-		if (_methodName214.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes214, parameterTypes)) {
-			return LicenseKeySetServiceUtil.deleteLicenseKeySet(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName215.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes215, parameterTypes)) {
-			return LicenseKeySetServiceUtil.getLicenseKeySet(((Long)arguments[0]).longValue());
+			return LicenseKeySetServiceUtil.addLicenseKeySet(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(), (java.lang.String)arguments[2]);
 		}
 
 		if (_methodName216.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes216, parameterTypes)) {
+			return LicenseKeySetServiceUtil.deleteLicenseKeySet(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName217.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes217, parameterTypes)) {
+			return LicenseKeySetServiceUtil.getLicenseKeySet(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName218.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes218, parameterTypes)) {
 			return LicenseKeySetServiceUtil.updateLicenseKeySet(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1]);
 		}
@@ -82,14 +82,14 @@ public class LicenseKeySetServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName208;
-	private String[] _methodParameterTypes208;
-	private String _methodName213;
-	private String[] _methodParameterTypes213;
-	private String _methodName214;
-	private String[] _methodParameterTypes214;
+	private String _methodName210;
+	private String[] _methodParameterTypes210;
 	private String _methodName215;
 	private String[] _methodParameterTypes215;
 	private String _methodName216;
 	private String[] _methodParameterTypes216;
+	private String _methodName217;
+	private String[] _methodParameterTypes217;
+	private String _methodName218;
+	private String[] _methodParameterTypes218;
 }

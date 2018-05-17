@@ -29,7 +29,7 @@ public class AccountEntryServiceClp implements AccountEntryService {
 
 		_methodName0 = "fetchCorpProjectAccountEntry";
 
-		_methodParameterTypes0 = new String[] { "long" };
+		_methodParameterTypes0 = new String[] { "java.lang.String" };
 
 		_methodName1 = "getAccountEntry";
 
@@ -50,13 +50,14 @@ public class AccountEntryServiceClp implements AccountEntryService {
 
 	@Override
 	public com.liferay.osb.model.AccountEntry fetchCorpProjectAccountEntry(
-		long corpProjectId)
+		java.lang.String corpProjectUuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableService.invokeMethod(_methodName0,
-					_methodParameterTypes0, new Object[] { corpProjectId });
+					_methodParameterTypes0,
+					new Object[] { ClpSerializer.translateInput(corpProjectUuid) });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);

@@ -16,7 +16,7 @@ package com.liferay.osb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osb.service.AccountCustomerServiceUtil;
+import com.liferay.osb.service.LCSSubscriptionEntryServiceUtil;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -27,7 +27,7 @@ import com.liferay.portal.kernel.util.MethodKey;
 
 /**
  * Provides the HTTP utility for the
- * {@link AccountCustomerServiceUtil} service utility. The
+ * {@link LCSSubscriptionEntryServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it requires an additional
  * {@link HttpPrincipal} parameter.
@@ -48,20 +48,20 @@ import com.liferay.portal.kernel.util.MethodKey;
  * </p>
  *
  * @author Brian Wing Shun Chan
- * @see AccountCustomerServiceSoap
+ * @see LCSSubscriptionEntryServiceSoap
  * @see HttpPrincipal
- * @see AccountCustomerServiceUtil
+ * @see LCSSubscriptionEntryServiceUtil
  * @generated
  */
 @ProviderType
-public class AccountCustomerServiceHttp {
-	public static java.util.List<java.lang.String> getCorpProjectAccountCustomerUUIDs(
+public class LCSSubscriptionEntryServiceHttp {
+	public static java.util.List<com.liferay.osb.model.LCSSubscriptionEntry> getLCSSubscriptionEntries(
 		HttpPrincipal httpPrincipal, java.lang.String corpProjectUuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			MethodKey methodKey = new MethodKey(AccountCustomerServiceUtil.class,
-					"getCorpProjectAccountCustomerUUIDs",
-					_getCorpProjectAccountCustomerUUIDsParameterTypes0);
+			MethodKey methodKey = new MethodKey(LCSSubscriptionEntryServiceUtil.class,
+					"getLCSSubscriptionEntries",
+					_getLCSSubscriptionEntriesParameterTypes0);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					corpProjectUuid);
@@ -79,7 +79,7 @@ public class AccountCustomerServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<java.lang.String>)returnObj;
+			return (java.util.List<com.liferay.osb.model.LCSSubscriptionEntry>)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -88,7 +88,8 @@ public class AccountCustomerServiceHttp {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(AccountCustomerServiceHttp.class);
-	private static final Class<?>[] _getCorpProjectAccountCustomerUUIDsParameterTypes0 =
-		new Class[] { java.lang.String.class };
+	private static Log _log = LogFactoryUtil.getLog(LCSSubscriptionEntryServiceHttp.class);
+	private static final Class<?>[] _getLCSSubscriptionEntriesParameterTypes0 = new Class[] {
+			java.lang.String.class
+		};
 }

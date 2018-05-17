@@ -65,6 +65,7 @@ import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.CountryPersistence;
 import com.liferay.portal.kernel.service.persistence.ListTypePersistence;
 import com.liferay.portal.kernel.service.persistence.OrganizationPersistence;
+import com.liferay.portal.kernel.service.persistence.RolePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.service.persistence.WorkflowInstanceLinkPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -904,6 +905,25 @@ public abstract class AccountEntryServiceBaseImpl extends BaseServiceImpl
 	public void setLCSSubscriptionEntryLocalService(
 		com.liferay.osb.service.LCSSubscriptionEntryLocalService lcsSubscriptionEntryLocalService) {
 		this.lcsSubscriptionEntryLocalService = lcsSubscriptionEntryLocalService;
+	}
+
+	/**
+	 * Returns the lcs subscription entry remote service.
+	 *
+	 * @return the lcs subscription entry remote service
+	 */
+	public com.liferay.osb.service.LCSSubscriptionEntryService getLCSSubscriptionEntryService() {
+		return lcsSubscriptionEntryService;
+	}
+
+	/**
+	 * Sets the lcs subscription entry remote service.
+	 *
+	 * @param lcsSubscriptionEntryService the lcs subscription entry remote service
+	 */
+	public void setLCSSubscriptionEntryService(
+		com.liferay.osb.service.LCSSubscriptionEntryService lcsSubscriptionEntryService) {
+		this.lcsSubscriptionEntryService = lcsSubscriptionEntryService;
 	}
 
 	/**
@@ -2134,6 +2154,62 @@ public abstract class AccountEntryServiceBaseImpl extends BaseServiceImpl
 	}
 
 	/**
+	 * Returns the role local service.
+	 *
+	 * @return the role local service
+	 */
+	public com.liferay.portal.kernel.service.RoleLocalService getRoleLocalService() {
+		return roleLocalService;
+	}
+
+	/**
+	 * Sets the role local service.
+	 *
+	 * @param roleLocalService the role local service
+	 */
+	public void setRoleLocalService(
+		com.liferay.portal.kernel.service.RoleLocalService roleLocalService) {
+		this.roleLocalService = roleLocalService;
+	}
+
+	/**
+	 * Returns the role remote service.
+	 *
+	 * @return the role remote service
+	 */
+	public com.liferay.portal.kernel.service.RoleService getRoleService() {
+		return roleService;
+	}
+
+	/**
+	 * Sets the role remote service.
+	 *
+	 * @param roleService the role remote service
+	 */
+	public void setRoleService(
+		com.liferay.portal.kernel.service.RoleService roleService) {
+		this.roleService = roleService;
+	}
+
+	/**
+	 * Returns the role persistence.
+	 *
+	 * @return the role persistence
+	 */
+	public RolePersistence getRolePersistence() {
+		return rolePersistence;
+	}
+
+	/**
+	 * Sets the role persistence.
+	 *
+	 * @param rolePersistence the role persistence
+	 */
+	public void setRolePersistence(RolePersistence rolePersistence) {
+		this.rolePersistence = rolePersistence;
+	}
+
+	/**
 	 * Returns the user local service.
 	 *
 	 * @return the user local service
@@ -2385,6 +2461,8 @@ public abstract class AccountEntryServiceBaseImpl extends BaseServiceImpl
 	protected FeedbackEntryPersistence feedbackEntryPersistence;
 	@BeanReference(type = com.liferay.osb.service.LCSSubscriptionEntryLocalService.class)
 	protected com.liferay.osb.service.LCSSubscriptionEntryLocalService lcsSubscriptionEntryLocalService;
+	@BeanReference(type = com.liferay.osb.service.LCSSubscriptionEntryService.class)
+	protected com.liferay.osb.service.LCSSubscriptionEntryService lcsSubscriptionEntryService;
 	@BeanReference(type = LCSSubscriptionEntryPersistence.class)
 	protected LCSSubscriptionEntryPersistence lcsSubscriptionEntryPersistence;
 	@BeanReference(type = com.liferay.osb.service.LicenseEntryLocalService.class)
@@ -2515,6 +2593,12 @@ public abstract class AccountEntryServiceBaseImpl extends BaseServiceImpl
 	protected OrganizationPersistence organizationPersistence;
 	@BeanReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
 	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
+	@BeanReference(type = com.liferay.portal.kernel.service.RoleLocalService.class)
+	protected com.liferay.portal.kernel.service.RoleLocalService roleLocalService;
+	@BeanReference(type = com.liferay.portal.kernel.service.RoleService.class)
+	protected com.liferay.portal.kernel.service.RoleService roleService;
+	@BeanReference(type = RolePersistence.class)
+	protected RolePersistence rolePersistence;
 	@BeanReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
 	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
 	@BeanReference(type = com.liferay.portal.kernel.service.UserService.class)
