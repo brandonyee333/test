@@ -8,6 +8,7 @@
 		<suppress checks="JavaLongLinesCheck" files="docroot/WEB-INF/src/com/liferay/osb/hook/upgrade/v3_4_7/Upgrade_20160419113858448_OfferingBundle\.java" />
 		<suppress checks="JavaModuleIllegalImportsCheck" files="docroot/WEB-INF/src/com/liferay/osb/admin/servlet/AdminServletContextListener\.java" />
 		<suppress checks="JavaServiceUtilCheck" files="docroot/WEB-INF/src/com/liferay/osb/hook/service/impl/OSBUserServiceImpl\.java" />
+		<suppress checks="JavaServiceUtilCheck" files="docroot/WEB-INF/src/com/liferay/osb/remote/web/WebRESTWebServiceImpl\.java" />
 		<suppress checks="SQLLongNamesCheck" files="docroot/WEB-INF/sql/tables\.sql" />
 		<suppress checks="XMLCustomSQLStylingCheck" files="docroot/WEB-INF/src/custom-sql/default\.xml" />
 	</source-check>

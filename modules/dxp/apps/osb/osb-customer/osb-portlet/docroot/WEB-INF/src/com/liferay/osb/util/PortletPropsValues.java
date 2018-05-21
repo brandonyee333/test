@@ -85,6 +85,12 @@ public class PortletPropsValues {
 			PortletProps.get(
 				PortletPropsKeys.REMOTE_REST_SERVICE_API_WEB_ENABLED));
 
+	public static final String REMOTE_REST_SERVICE_API_WEB_ERROR_EMAIL_ADDRESS =
+		GetterUtil.getString(
+			PortletProps.get(
+				PortletPropsKeys.
+					REMOVE_REST_SERVICE_API_WEB_ERROR_EMAIL_ADDRESS));
+
 	public static final String REMOTE_REST_SERVICE_API_WEB_TOKEN =
 		GetterUtil.getString(
 			PortletProps.get(
