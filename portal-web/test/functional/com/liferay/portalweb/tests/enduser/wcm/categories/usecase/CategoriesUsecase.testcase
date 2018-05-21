@@ -206,6 +206,7 @@
 	</command>
 
 	<command name="AddCategorywithSiteRole" priority="4">
+		<property name="portal.acceptance" value="fiona" />
 		<property name="testray.component.names" value="Categories,Permissions,Roles" />
 
 		<execute macro="ProductMenu#gotoPortlet">
