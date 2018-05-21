@@ -52,7 +52,7 @@ public class ProvisioningCreateRabbitMQConsumer
 		if (!salesforceOpportunityStageName.equals(
 				SalesforceConstants.OPPORTUNITY_STAGE_CLOSED_WON)) {
 
-			throw new WorkflowException("Opportunity is not closed won.");
+			throw new WorkflowException("Opportunity is not closed won");
 		}
 
 		String salesforceOpportunityKey = jsonObject.getString(
