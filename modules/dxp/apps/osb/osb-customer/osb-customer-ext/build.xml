@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<!DOCTYPE project>
+
+<project basedir="." default="deploy" name="osb-customer-ext">
+	<property file="build.${user.name}.properties" />
+	<property file="build.properties" />
+
+	<import file="${portal.base.dir}/tools/sdk/ext/build-common-ext.xml" />
+</project>
