@@ -1554,7 +1554,7 @@ public class AccountEntryLocalServiceImpl
 			code = code.substring(0, 12);
 		}
 
-		return code;
+		return StringUtil.toUpperCase(code);
 	}
 
 	protected String getCode(String corpEntryName, String name, String code) {
@@ -1562,7 +1562,7 @@ public class AccountEntryLocalServiceImpl
 			code = getCode(corpEntryName, name);
 
 			if (!isDuplicateCode(code)) {
-				return StringUtil.toUpperCase(code);
+				return code;
 			}
 
 			int max = (int)Math.pow(10, 15 - code.length());
@@ -1571,7 +1571,7 @@ public class AccountEntryLocalServiceImpl
 				String tempCode = code + i;
 
 				if (!isDuplicateCode(tempCode)) {
-					return StringUtil.toUpperCase(tempCode);
+					return tempCode;
 				}
 			}
 
