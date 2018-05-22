@@ -119,22 +119,6 @@ public class WorkflowHandlerRegistryUtil {
 			return model;
 		}
 
-		boolean hasWorkflowInstanceInProgress =
-			_instance._hasWorkflowInstanceInProgress(
-				companyId, groupId, className, classPK);
-
-		if (hasWorkflowInstanceInProgress) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					StringBundler.concat(
-						"Workflow already started for class ", className,
-						" with primary key ", String.valueOf(classPK),
-						" in group ", String.valueOf(groupId)));
-			}
-
-			return model;
-		}
-
 		WorkflowDefinitionLink workflowDefinitionLink = null;
 
 		if (WorkflowThreadLocal.isEnabled() &&
@@ -182,15 +166,9 @@ public class WorkflowHandlerRegistryUtil {
 
 					@Override
 					public Void call() throws Exception {
-						boolean hasWorkflowInstanceInProgress =
-							_instance._hasWorkflowInstanceInProgress(
-								companyId, groupId, className, classPK);
-
-						if (!hasWorkflowInstanceInProgress) {
-							workflowHandler.startWorkflowInstance(
-								companyId, groupId, userId, classPK, model,
-								tempWorkflowContext);
-						}
+						workflowHandler.startWorkflowInstance(
+							companyId, groupId, userId, classPK, model,
+							tempWorkflowContext);
 
 						return null;
 					}
