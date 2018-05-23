@@ -41,7 +41,7 @@ public class SendPatchesCommand implements Command {
 	public void execute(CommandMessage commandMessage) throws PortalException {
 		if (!LCSPatcherUtil.isConfigured()) {
 			if (_log.isWarnEnabled()) {
-				_log.warn("Patcher is not configured. Unable to send patches");
+				_log.warn("Patcher is not configured. Unable to send patches.");
 			}
 
 			return;

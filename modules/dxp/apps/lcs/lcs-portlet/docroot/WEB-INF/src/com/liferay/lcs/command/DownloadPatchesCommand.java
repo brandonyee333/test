@@ -119,7 +119,7 @@ public class DownloadPatchesCommand implements Command {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					"Unable to execute command. Patcher util is not " +
-						"configured");
+						"configured.");
 			}
 
 			return;
@@ -142,7 +142,7 @@ public class DownloadPatchesCommand implements Command {
 
 				sb.append(". Unable to send download status feedback to LCS ");
 				sb.append("gateway. Please check download status at LCS ");
-				sb.append("dashboard and repeat procedure if necessary");
+				sb.append("dashboard and repeat procedure if necessary.");
 			}
 
 			_log.error(sb.toString(), e);
