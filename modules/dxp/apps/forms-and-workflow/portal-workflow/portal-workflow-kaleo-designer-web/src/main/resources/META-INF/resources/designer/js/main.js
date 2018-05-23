@@ -630,7 +630,7 @@ AUI.add(
 									}
 
 									var recipientsAttrs = {};
-									
+
 									if (recipients[index].receptionType && recipients[index].receptionType.length > 0) {
 										recipientsAttrs['receptionType'] = recipients[index].receptionType;
 									}
