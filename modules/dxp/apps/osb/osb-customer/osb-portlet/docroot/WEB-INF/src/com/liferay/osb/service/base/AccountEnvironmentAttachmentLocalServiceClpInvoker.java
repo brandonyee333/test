@@ -123,59 +123,59 @@ public class AccountEnvironmentAttachmentLocalServiceClpInvoker {
 				"com.liferay.osb.model.AccountEnvironmentAttachment"
 			};
 
-		_methodName166 = "getOSGiServiceIdentifier";
+		_methodName168 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes166 = new String[] {  };
+		_methodParameterTypes168 = new String[] {  };
 
-		_methodName171 = "addAccountEnvironmentAttachment";
+		_methodName173 = "addAccountEnvironmentAttachment";
 
-		_methodParameterTypes171 = new String[] {
+		_methodParameterTypes173 = new String[] {
 				"long", "long", "com.liferay.portal.kernel.util.ObjectValuePair",
 				"int"
 			};
 
-		_methodName172 = "addAccountEnvironmentAttachments";
+		_methodName174 = "addAccountEnvironmentAttachments";
 
-		_methodParameterTypes172 = new String[] {
+		_methodParameterTypes174 = new String[] {
 				"long", "long", "java.util.List", "java.util.List"
 			};
 
-		_methodName173 = "deleteAccountEnvironmentAttachment";
+		_methodName175 = "deleteAccountEnvironmentAttachment";
 
-		_methodParameterTypes173 = new String[] {
+		_methodParameterTypes175 = new String[] {
 				"com.liferay.osb.model.AccountEnvironmentAttachment"
 			};
 
-		_methodName174 = "fetchAccountEnvironmentAttachment";
+		_methodName176 = "fetchAccountEnvironmentAttachment";
 
-		_methodParameterTypes174 = new String[] { "long", "int" };
+		_methodParameterTypes176 = new String[] { "long", "int" };
 
-		_methodName175 = "getAccountEnvironmentAttachments";
+		_methodName177 = "getAccountEnvironmentAttachments";
 
-		_methodParameterTypes175 = new String[] { "long" };
+		_methodParameterTypes177 = new String[] { "long" };
 
-		_methodName176 = "getFile";
-
-		_methodParameterTypes176 = new String[] {
-				"com.liferay.osb.model.AccountEnvironmentAttachment"
-			};
-
-		_methodName177 = "getFileAsStream";
-
-		_methodParameterTypes177 = new String[] {
-				"com.liferay.osb.model.AccountEnvironmentAttachment"
-			};
-
-		_methodName178 = "updateAccountEnvironmentAttachment";
+		_methodName178 = "getFile";
 
 		_methodParameterTypes178 = new String[] {
+				"com.liferay.osb.model.AccountEnvironmentAttachment"
+			};
+
+		_methodName179 = "getFileAsStream";
+
+		_methodParameterTypes179 = new String[] {
+				"com.liferay.osb.model.AccountEnvironmentAttachment"
+			};
+
+		_methodName180 = "updateAccountEnvironmentAttachment";
+
+		_methodParameterTypes180 = new String[] {
 				"long", "long", "com.liferay.portal.kernel.util.ObjectValuePair",
 				"int"
 			};
 
-		_methodName179 = "updateAccountEnvironmentAttachments";
+		_methodName181 = "updateAccountEnvironmentAttachments";
 
-		_methodParameterTypes179 = new String[] {
+		_methodParameterTypes181 = new String[] {
 				"long", "long", "java.util.List", "java.util.List"
 			};
 	}
@@ -284,21 +284,21 @@ public class AccountEnvironmentAttachmentLocalServiceClpInvoker {
 			return AccountEnvironmentAttachmentLocalServiceUtil.updateAccountEnvironmentAttachment((com.liferay.osb.model.AccountEnvironmentAttachment)arguments[0]);
 		}
 
-		if (_methodName166.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes166, parameterTypes)) {
+		if (_methodName168.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes168, parameterTypes)) {
 			return AccountEnvironmentAttachmentLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName171.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes171, parameterTypes)) {
+		if (_methodName173.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes173, parameterTypes)) {
 			return AccountEnvironmentAttachmentLocalServiceUtil.addAccountEnvironmentAttachment(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>)arguments[2],
 				((Integer)arguments[3]).intValue());
 		}
 
-		if (_methodName172.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes172, parameterTypes)) {
+		if (_methodName174.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes174, parameterTypes)) {
 			AccountEnvironmentAttachmentLocalServiceUtil.addAccountEnvironmentAttachments(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>>)arguments[2],
@@ -307,42 +307,42 @@ public class AccountEnvironmentAttachmentLocalServiceClpInvoker {
 			return null;
 		}
 
-		if (_methodName173.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes173, parameterTypes)) {
-			return AccountEnvironmentAttachmentLocalServiceUtil.deleteAccountEnvironmentAttachment((com.liferay.osb.model.AccountEnvironmentAttachment)arguments[0]);
-		}
-
-		if (_methodName174.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes174, parameterTypes)) {
-			return AccountEnvironmentAttachmentLocalServiceUtil.fetchAccountEnvironmentAttachment(((Long)arguments[0]).longValue(),
-				((Integer)arguments[1]).intValue());
-		}
-
 		if (_methodName175.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes175, parameterTypes)) {
-			return AccountEnvironmentAttachmentLocalServiceUtil.getAccountEnvironmentAttachments(((Long)arguments[0]).longValue());
+			return AccountEnvironmentAttachmentLocalServiceUtil.deleteAccountEnvironmentAttachment((com.liferay.osb.model.AccountEnvironmentAttachment)arguments[0]);
 		}
 
 		if (_methodName176.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes176, parameterTypes)) {
-			return AccountEnvironmentAttachmentLocalServiceUtil.getFile((com.liferay.osb.model.AccountEnvironmentAttachment)arguments[0]);
+			return AccountEnvironmentAttachmentLocalServiceUtil.fetchAccountEnvironmentAttachment(((Long)arguments[0]).longValue(),
+				((Integer)arguments[1]).intValue());
 		}
 
 		if (_methodName177.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes177, parameterTypes)) {
-			return AccountEnvironmentAttachmentLocalServiceUtil.getFileAsStream((com.liferay.osb.model.AccountEnvironmentAttachment)arguments[0]);
+			return AccountEnvironmentAttachmentLocalServiceUtil.getAccountEnvironmentAttachments(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName178.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes178, parameterTypes)) {
+			return AccountEnvironmentAttachmentLocalServiceUtil.getFile((com.liferay.osb.model.AccountEnvironmentAttachment)arguments[0]);
+		}
+
+		if (_methodName179.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes179, parameterTypes)) {
+			return AccountEnvironmentAttachmentLocalServiceUtil.getFileAsStream((com.liferay.osb.model.AccountEnvironmentAttachment)arguments[0]);
+		}
+
+		if (_methodName180.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes180, parameterTypes)) {
 			return AccountEnvironmentAttachmentLocalServiceUtil.updateAccountEnvironmentAttachment(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>)arguments[2],
 				((Integer)arguments[3]).intValue());
 		}
 
-		if (_methodName179.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes179, parameterTypes)) {
+		if (_methodName181.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes181, parameterTypes)) {
 			AccountEnvironmentAttachmentLocalServiceUtil.updateAccountEnvironmentAttachments(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>>)arguments[2],
@@ -392,12 +392,8 @@ public class AccountEnvironmentAttachmentLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName166;
-	private String[] _methodParameterTypes166;
-	private String _methodName171;
-	private String[] _methodParameterTypes171;
-	private String _methodName172;
-	private String[] _methodParameterTypes172;
+	private String _methodName168;
+	private String[] _methodParameterTypes168;
 	private String _methodName173;
 	private String[] _methodParameterTypes173;
 	private String _methodName174;
@@ -412,4 +408,8 @@ public class AccountEnvironmentAttachmentLocalServiceClpInvoker {
 	private String[] _methodParameterTypes178;
 	private String _methodName179;
 	private String[] _methodParameterTypes179;
+	private String _methodName180;
+	private String[] _methodParameterTypes180;
+	private String _methodName181;
+	private String[] _methodParameterTypes181;
 }

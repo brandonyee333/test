@@ -1411,6 +1411,25 @@ public abstract class CorpProjectLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the rabbit mq message processor local service.
+	 *
+	 * @return the rabbit mq message processor local service
+	 */
+	public com.liferay.osb.service.RabbitMQMessageProcessorLocalService getRabbitMQMessageProcessorLocalService() {
+		return rabbitMQMessageProcessorLocalService;
+	}
+
+	/**
+	 * Sets the rabbit mq message processor local service.
+	 *
+	 * @param rabbitMQMessageProcessorLocalService the rabbit mq message processor local service
+	 */
+	public void setRabbitMQMessageProcessorLocalService(
+		com.liferay.osb.service.RabbitMQMessageProcessorLocalService rabbitMQMessageProcessorLocalService) {
+		this.rabbitMQMessageProcessorLocalService = rabbitMQMessageProcessorLocalService;
+	}
+
+	/**
 	 * Returns the remote corp project local service.
 	 *
 	 * @return the remote corp project local service
@@ -2015,6 +2034,8 @@ public abstract class CorpProjectLocalServiceBaseImpl
 	protected ProductEntryPersistence productEntryPersistence;
 	@BeanReference(type = ProductEntryFinder.class)
 	protected ProductEntryFinder productEntryFinder;
+	@BeanReference(type = com.liferay.osb.service.RabbitMQMessageProcessorLocalService.class)
+	protected com.liferay.osb.service.RabbitMQMessageProcessorLocalService rabbitMQMessageProcessorLocalService;
 	@BeanReference(type = com.liferay.osb.service.RemoteCorpProjectLocalService.class)
 	protected com.liferay.osb.service.RemoteCorpProjectLocalService remoteCorpProjectLocalService;
 	@BeanReference(type = com.liferay.osb.service.RemoteCorpProjectMessageLocalService.class)

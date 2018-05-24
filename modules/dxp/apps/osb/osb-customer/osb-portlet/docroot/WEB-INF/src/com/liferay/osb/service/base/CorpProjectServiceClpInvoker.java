@@ -27,32 +27,32 @@ import java.util.Arrays;
 @ProviderType
 public class CorpProjectServiceClpInvoker {
 	public CorpProjectServiceClpInvoker() {
-		_methodName222 = "getOSGiServiceIdentifier";
+		_methodName224 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes222 = new String[] {  };
+		_methodParameterTypes224 = new String[] {  };
 
-		_methodName227 = "addCorpProject";
+		_methodName229 = "addCorpProject";
 
-		_methodParameterTypes227 = new String[] {
+		_methodParameterTypes229 = new String[] {
 				"java.lang.String", "java.lang.String", "java.lang.String",
 				"java.lang.String", "long",
 				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 
-		_methodName228 = "addUserCorpProjectRoles";
+		_methodName230 = "addUserCorpProjectRoles";
 
-		_methodParameterTypes228 = new String[] { "long", "long", "long" };
+		_methodParameterTypes230 = new String[] { "long", "long", "long" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName222.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes222, parameterTypes)) {
+		if (_methodName224.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes224, parameterTypes)) {
 			return CorpProjectServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName227.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes227, parameterTypes)) {
+		if (_methodName229.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes229, parameterTypes)) {
 			return CorpProjectServiceUtil.addCorpProject((java.lang.String)arguments[0],
 				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
 				(java.lang.String)arguments[3],
@@ -60,8 +60,8 @@ public class CorpProjectServiceClpInvoker {
 				(com.liferay.portal.kernel.service.ServiceContext)arguments[5]);
 		}
 
-		if (_methodName228.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes228, parameterTypes)) {
+		if (_methodName230.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes230, parameterTypes)) {
 			CorpProjectServiceUtil.addUserCorpProjectRoles(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue());
@@ -72,10 +72,10 @@ public class CorpProjectServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName222;
-	private String[] _methodParameterTypes222;
-	private String _methodName227;
-	private String[] _methodParameterTypes227;
-	private String _methodName228;
-	private String[] _methodParameterTypes228;
+	private String _methodName224;
+	private String[] _methodParameterTypes224;
+	private String _methodName229;
+	private String[] _methodParameterTypes229;
+	private String _methodName230;
+	private String[] _methodParameterTypes230;
 }

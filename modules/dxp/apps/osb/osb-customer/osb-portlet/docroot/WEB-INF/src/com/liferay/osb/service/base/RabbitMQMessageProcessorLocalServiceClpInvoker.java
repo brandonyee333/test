@@ -16,7 +16,7 @@ package com.liferay.osb.service.base;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osb.service.RemoteCorpProjectMessageLocalServiceUtil;
+import com.liferay.osb.service.RabbitMQMessageProcessorLocalServiceUtil;
 
 import java.util.Arrays;
 
@@ -25,45 +25,42 @@ import java.util.Arrays;
  * @generated
  */
 @ProviderType
-public class RemoteCorpProjectMessageLocalServiceClpInvoker {
-	public RemoteCorpProjectMessageLocalServiceClpInvoker() {
+public class RabbitMQMessageProcessorLocalServiceClpInvoker {
+	public RabbitMQMessageProcessorLocalServiceClpInvoker() {
 		_methodName148 = "getOSGiServiceIdentifier";
 
 		_methodParameterTypes148 = new String[] {  };
 
-		_methodName151 = "addCorpProjectMessage";
+		_methodName151 = "processCreateMessage";
 
 		_methodParameterTypes151 = new String[] {
-				"long", "long", "int", "int", "java.lang.String",
-				"java.lang.String", "boolean", "boolean"
+				"com.liferay.portal.kernel.json.JSONObject"
 			};
 
-		_methodName152 = "deleteCorpProjectMessage";
+		_methodName152 = "processUpdateMessage";
 
-		_methodParameterTypes152 = new String[] { "long" };
+		_methodParameterTypes152 = new String[] {
+				"com.liferay.portal.kernel.json.JSONObject"
+			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
 		if (_methodName148.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes148, parameterTypes)) {
-			return RemoteCorpProjectMessageLocalServiceUtil.getOSGiServiceIdentifier();
+			return RabbitMQMessageProcessorLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
 		if (_methodName151.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes151, parameterTypes)) {
-			return RemoteCorpProjectMessageLocalServiceUtil.addCorpProjectMessage(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue(),
-				((Integer)arguments[2]).intValue(),
-				((Integer)arguments[3]).intValue(),
-				(java.lang.String)arguments[4], (java.lang.String)arguments[5],
-				((Boolean)arguments[6]).booleanValue(),
-				((Boolean)arguments[7]).booleanValue());
+			RabbitMQMessageProcessorLocalServiceUtil.processCreateMessage((com.liferay.portal.kernel.json.JSONObject)arguments[0]);
+
+			return null;
 		}
 
 		if (_methodName152.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes152, parameterTypes)) {
-			RemoteCorpProjectMessageLocalServiceUtil.deleteCorpProjectMessage(((Long)arguments[0]).longValue());
+			RabbitMQMessageProcessorLocalServiceUtil.processUpdateMessage((com.liferay.portal.kernel.json.JSONObject)arguments[0]);
 
 			return null;
 		}

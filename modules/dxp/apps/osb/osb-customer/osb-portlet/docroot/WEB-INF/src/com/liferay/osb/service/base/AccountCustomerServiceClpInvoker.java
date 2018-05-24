@@ -27,32 +27,32 @@ import java.util.Arrays;
 @ProviderType
 public class AccountCustomerServiceClpInvoker {
 	public AccountCustomerServiceClpInvoker() {
-		_methodName216 = "getOSGiServiceIdentifier";
+		_methodName218 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes216 = new String[] {  };
+		_methodParameterTypes218 = new String[] {  };
 
-		_methodName221 = "getCorpProjectAccountCustomerUUIDs";
+		_methodName223 = "getCorpProjectAccountCustomerUUIDs";
 
-		_methodParameterTypes221 = new String[] { "java.lang.String" };
+		_methodParameterTypes223 = new String[] { "java.lang.String" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName216.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes216, parameterTypes)) {
+		if (_methodName218.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes218, parameterTypes)) {
 			return AccountCustomerServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName221.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes221, parameterTypes)) {
+		if (_methodName223.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes223, parameterTypes)) {
 			return AccountCustomerServiceUtil.getCorpProjectAccountCustomerUUIDs((java.lang.String)arguments[0]);
 		}
 
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName216;
-	private String[] _methodParameterTypes216;
-	private String _methodName221;
-	private String[] _methodParameterTypes221;
+	private String _methodName218;
+	private String[] _methodParameterTypes218;
+	private String _methodName223;
+	private String[] _methodParameterTypes223;
 }

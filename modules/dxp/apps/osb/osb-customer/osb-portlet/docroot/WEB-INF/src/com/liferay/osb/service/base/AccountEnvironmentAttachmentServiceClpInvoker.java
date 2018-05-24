@@ -27,32 +27,32 @@ import java.util.Arrays;
 @ProviderType
 public class AccountEnvironmentAttachmentServiceClpInvoker {
 	public AccountEnvironmentAttachmentServiceClpInvoker() {
-		_methodName204 = "getOSGiServiceIdentifier";
+		_methodName206 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes204 = new String[] {  };
+		_methodParameterTypes206 = new String[] {  };
 
-		_methodName209 = "getAccountEnvironmentAttachment";
+		_methodName211 = "getAccountEnvironmentAttachment";
 
-		_methodParameterTypes209 = new String[] { "long" };
+		_methodParameterTypes211 = new String[] { "long" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName204.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes204, parameterTypes)) {
+		if (_methodName206.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes206, parameterTypes)) {
 			return AccountEnvironmentAttachmentServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName209.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes209, parameterTypes)) {
+		if (_methodName211.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes211, parameterTypes)) {
 			return AccountEnvironmentAttachmentServiceUtil.getAccountEnvironmentAttachment(((Long)arguments[0]).longValue());
 		}
 
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName204;
-	private String[] _methodParameterTypes204;
-	private String _methodName209;
-	private String[] _methodParameterTypes209;
+	private String _methodName206;
+	private String[] _methodParameterTypes206;
+	private String _methodName211;
+	private String[] _methodParameterTypes211;
 }

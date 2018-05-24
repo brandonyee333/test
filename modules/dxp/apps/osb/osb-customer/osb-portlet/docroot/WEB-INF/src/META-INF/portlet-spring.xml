@@ -86,6 +86,7 @@
 	<bean class="com.liferay.osb.service.impl.ProductEntryServiceImpl" id="com.liferay.osb.service.ProductEntryService" />
 	<bean class="com.liferay.osb.service.persistence.impl.ProductEntryPersistenceImpl" id="com.liferay.osb.service.persistence.ProductEntryPersistence" parent="basePersistence" />
 	<bean class="com.liferay.osb.service.persistence.impl.ProductEntryFinderImpl" id="com.liferay.osb.service.persistence.ProductEntryFinder" parent="basePersistence" />
+	<bean class="com.liferay.osb.service.impl.RabbitMQMessageProcessorLocalServiceImpl" id="com.liferay.osb.service.RabbitMQMessageProcessorLocalService" />
 	<bean class="com.liferay.osb.service.impl.RemoteCorpProjectLocalServiceImpl" id="com.liferay.osb.service.RemoteCorpProjectLocalService" />
 	<bean class="com.liferay.osb.service.impl.RemoteCorpProjectMessageLocalServiceImpl" id="com.liferay.osb.service.RemoteCorpProjectMessageLocalService" />
 	<bean class="com.liferay.osb.service.impl.RemoteUserLocalServiceImpl" id="com.liferay.osb.service.RemoteUserLocalService" />
