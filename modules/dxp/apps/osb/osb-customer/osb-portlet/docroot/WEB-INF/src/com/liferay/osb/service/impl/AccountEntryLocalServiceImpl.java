@@ -50,6 +50,7 @@ import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.model.SupportResponse;
+import com.liferay.osb.rabbitmq.ProvisioningAuditRabbitMQConsumer;
 import com.liferay.osb.remote.dossiera.DossieraRESTWebServiceUtil;
 import com.liferay.osb.service.base.AccountEntryLocalServiceBaseImpl;
 import com.liferay.osb.support.util.SupportUtil;
@@ -114,10 +115,7 @@ import java.util.TreeMap;
 
 import javax.portlet.PortletPreferences;
 
-/* TODO update rabbitMQ integration
-import com.liferay.osb.rabbitmq.ProvisioningAuditRabbitMQConsumer;
-
-TODO update OSBUtil integration
+/*TODO update OSBUtil integration
 import com.liferay.osb.shared.util.OSBUtil;
 */
 
@@ -588,14 +586,12 @@ public class AccountEntryLocalServiceImpl
 			jsonObject.put("opportunities", jsonArray);
 			jsonObject.put("userId", userId);
 
-			/* TODO update rabbitMQ integration
 			ProvisioningAuditRabbitMQConsumer
 				provisioningAuditRabbitMQConsumer =
 					new ProvisioningAuditRabbitMQConsumer();
 
 			provisioningAuditRabbitMQConsumer.parse(
 				StringPool.BLANK, jsonObject.toString(), null);
-			 */
 		}
 		catch (Exception e) {
 			_log.error(

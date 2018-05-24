@@ -29,7 +29,9 @@ import com.liferay.osb.customer.rabbitmq.processors.CorpProjectUpdateMessageProc
 import com.liferay.osb.customer.rabbitmq.processors.OrganizationAssignmentMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.OrganizationUnassignmentMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.OrganizationUpdateMessageProcessor;
+import com.liferay.osb.customer.rabbitmq.processors.ProvisioningCreateMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.ProvisioningTrialCreateMessageProcessor;
+import com.liferay.osb.customer.rabbitmq.processors.ProvisioningUpdateMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.RoleAssignmentMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.RoleUnassignmentMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.RoleUpdateMessageProcessor;
@@ -165,12 +167,28 @@ public class CustomerMessageRouter extends BaseMessageRouter {
 	}
 
 	@Reference(unbind = "-")
+	protected void setProvisioningCreateMessageProcessor(
+		ProvisioningCreateMessageProcessor provisioningCreateMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(provisioningCreateMessageProcessor, properties);
+	}
+
+	@Reference(unbind = "-")
 	protected void setProvisioningTrialCreateMessageProcessor(
 		ProvisioningTrialCreateMessageProcessor
 			provisioningTrialCreateMessageProcessor,
 		Map<String, Object> properties) {
 
 		addRoute(provisioningTrialCreateMessageProcessor, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setProvisioningUpdateMessageProcessor(
+		ProvisioningUpdateMessageProcessor provisioningUpdateMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(provisioningUpdateMessageProcessor, properties);
 	}
 
 	@Reference(unbind = "-")
