@@ -1410,15 +1410,6 @@ public class KaleoDraftDefinitionPersistenceImpl extends BasePersistenceImpl<Kal
 					result = kaleoDraftDefinition;
 
 					cacheResult(kaleoDraftDefinition);
-
-					if ((kaleoDraftDefinition.getCompanyId() != companyId) ||
-							(kaleoDraftDefinition.getName() == null) ||
-							!kaleoDraftDefinition.getName().equals(name) ||
-							(kaleoDraftDefinition.getVersion() != version) ||
-							(kaleoDraftDefinition.getDraftVersion() != draftVersion)) {
-						finderCache.putResult(FINDER_PATH_FETCH_BY_C_N_V_D,
-							finderArgs, kaleoDraftDefinition);
-					}
 				}
 			}
 			catch (Exception e) {

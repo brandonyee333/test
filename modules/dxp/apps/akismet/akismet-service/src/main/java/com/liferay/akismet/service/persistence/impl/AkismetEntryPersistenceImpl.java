@@ -758,12 +758,6 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 					result = akismetEntry;
 
 					cacheResult(akismetEntry);
-
-					if ((akismetEntry.getClassNameId() != classNameId) ||
-							(akismetEntry.getClassPK() != classPK)) {
-						finderCache.putResult(FINDER_PATH_FETCH_BY_C_C,
-							finderArgs, akismetEntry);
-					}
 				}
 			}
 			catch (Exception e) {

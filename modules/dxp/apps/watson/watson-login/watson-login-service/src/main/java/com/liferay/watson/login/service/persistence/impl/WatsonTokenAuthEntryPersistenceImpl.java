@@ -213,11 +213,6 @@ public class WatsonTokenAuthEntryPersistenceImpl extends BasePersistenceImpl<Wat
 					result = watsonTokenAuthEntry;
 
 					cacheResult(watsonTokenAuthEntry);
-
-					if ((watsonTokenAuthEntry.getUserId() != userId)) {
-						finderCache.putResult(FINDER_PATH_FETCH_BY_USERID,
-							finderArgs, watsonTokenAuthEntry);
-					}
 				}
 			}
 			catch (Exception e) {
