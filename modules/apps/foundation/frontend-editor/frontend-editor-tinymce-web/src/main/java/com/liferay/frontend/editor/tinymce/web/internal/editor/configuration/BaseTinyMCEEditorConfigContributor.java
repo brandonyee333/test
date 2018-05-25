@@ -163,6 +163,7 @@ public abstract class BaseTinyMCEEditorConfigContributor
 		_tinyMCELanguages.put("bg_BG", "bg_BG");
 		_tinyMCELanguages.put("ca_ES", "ca");
 		_tinyMCELanguages.put("cs_CZ", "cs");
+		_tinyMCELanguages.put("cy_GB", "cy");
 		_tinyMCELanguages.put("de_DE", "de");
 		_tinyMCELanguages.put("el_GR", "el");
 		_tinyMCELanguages.put("en_AU", "en_GB");
@@ -173,6 +174,7 @@ public abstract class BaseTinyMCEEditorConfigContributor
 		_tinyMCELanguages.put("eu_ES", "eu");
 		_tinyMCELanguages.put("fa_IR", "fa");
 		_tinyMCELanguages.put("fi_FI", "fi");
+		_tinyMCELanguages.put("fo_FO", "fo");
 		_tinyMCELanguages.put("fr_FR", "fr_FR");
 		_tinyMCELanguages.put("gl_ES", "gl");
 		_tinyMCELanguages.put("hr_HR", "hr");
@@ -181,6 +183,7 @@ public abstract class BaseTinyMCEEditorConfigContributor
 		_tinyMCELanguages.put("it_IT", "it");
 		_tinyMCELanguages.put("iw_IL", "he_IL");
 		_tinyMCELanguages.put("ja_JP", "ja");
+		_tinyMCELanguages.put("kl_GL", "kl");
 		_tinyMCELanguages.put("ko_KR", "ko_KR");
 		_tinyMCELanguages.put("lt_LT", "lt");
 		_tinyMCELanguages.put("nb_NO", "nb_NO");
@@ -189,7 +192,9 @@ public abstract class BaseTinyMCEEditorConfigContributor
 		_tinyMCELanguages.put("pt_BR", "pt_BR");
 		_tinyMCELanguages.put("pt_PT", "pt_PT");
 		_tinyMCELanguages.put("ro_RO", "ro");
+		_tinyMCELanguages.put("ru_FI", "ru");
 		_tinyMCELanguages.put("ru_RU", "ru");
+		_tinyMCELanguages.put("se_FI", "se");
 		_tinyMCELanguages.put("sk_SK", "sk");
 		_tinyMCELanguages.put("sl_SI", "sl_SI");
 		_tinyMCELanguages.put("sr_RS", "sr");
