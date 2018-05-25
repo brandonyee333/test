@@ -4,8 +4,8 @@
 [subrepo]
 	autopull = false
 	cmdver = liferay
-	commit = bdf72b53f23a1e32bd2d037a850c130e0a87d8a2
+	commit = dc209b4f1454fe742582a7315784ef9724549f59
 	mergebuttonmergecommits = false
 	mode = push
-	parent = eebfa76408626c8371f75311ea4ce799e856c3d8
+	parent = 89058052229e906b7dfbb41676413d7c973c875e
 	remote = git@github.com:liferay/com-liferay-portal-search-elasticsearch-shield-private.git
