@@ -96,7 +96,7 @@ import java.util.TreeMap;
  */
 public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 
-	public int parse(
+	public void parse(
 		String routingKey, String message, Map<String, Object> properties) {
 
 		_warningMessagesThreadLocal.set(new ArrayList<String>());
@@ -107,13 +107,9 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 			jsonObject = JSONFactoryUtil.createJSONObject(message);
 
 			doParse(jsonObject);
-
-			return RESPONSE_ACK;
 		}
 		catch (Exception e) {
 			sendErrorNotification(routingKey, message, jsonObject, e);
-
-			return RESPONSE_REJECT;
 		}
 	}
 

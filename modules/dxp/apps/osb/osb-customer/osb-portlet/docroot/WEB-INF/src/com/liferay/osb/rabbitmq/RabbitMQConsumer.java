@@ -21,16 +21,7 @@ import java.util.Map;
  */
 public interface RabbitMQConsumer {
 
-	public static final int RESPONSE_ACK = 1;
-
-	public static final int RESPONSE_REJECT = 2;
-
-	public static final int RESPONSE_REPUBLISH = 3;
-
-	public static final int[] RESPONSES =
-		{RESPONSE_ACK, RESPONSE_REJECT, RESPONSE_REPUBLISH};
-
-	public int parse(
+	public void parse(
 		String routingKey, String message, Map<String, Object> properties);
 
 }

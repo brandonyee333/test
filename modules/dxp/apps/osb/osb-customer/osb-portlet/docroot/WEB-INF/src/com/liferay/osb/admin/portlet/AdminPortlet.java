@@ -75,8 +75,9 @@ import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.impl.OfferingEntryImpl;
+import com.liferay.osb.rabbitmq.ProvisioningCreateRabbitMQConsumer;
+import com.liferay.osb.rabbitmq.ProvisioningUpdateRabbitMQConsumer;
 import com.liferay.osb.rabbitmq.RabbitMQConsumer;
-import com.liferay.osb.rabbitmq.RabbitMQConsumerRouter;
 import com.liferay.osb.service.AccountAttachmentLocalServiceUtil;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
@@ -287,9 +288,18 @@ public class AdminPortlet extends MVCPortlet {
 
 		Map<String, Object> propertiesMap = MapUtil.toLinkedHashMap(properties);
 
-		RabbitMQConsumer rabbitMQConsumer = new RabbitMQConsumerRouter();
+		RabbitMQConsumer rabbitMQConsumer = null;
 
-		rabbitMQConsumer.parse(routingKey, message, propertiesMap);
+		if (routingKey.equals("dossiera.provisioning.create")) {
+			rabbitMQConsumer = new ProvisioningCreateRabbitMQConsumer();
+		}
+		else if (routingKey.equals("dossiera.provisioning.update")) {
+			rabbitMQConsumer = new ProvisioningUpdateRabbitMQConsumer();
+		}
+
+		if (rabbitMQConsumer != null) {
+			rabbitMQConsumer.parse(routingKey, message, propertiesMap);
+		}
 	}
 
 	public void deleteAccountCustomer(

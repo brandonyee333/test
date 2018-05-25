@@ -50,19 +50,12 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-/* TODO update rabbitMQ integration
-import com.liferay.osb.rabbitmq.RabbitMQConsumerRouter;
-import com.liferay.rabbitmq.consumer.RabbitMQConsumer;
-import com.liferay.rabbitmq.service.ConsumerManagerLocalServiceUtil;
-*/
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
 import com.liferay.registry.ServiceRegistration;
 
-import com.liferay.registry.RegistryUtil;
-import java.util.List;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -146,17 +139,6 @@ public class AdminServletContextListener
 
 		commonPermissionUtil.setCommonPermission(
 			osbCommonPermission.getCommonPermission());*/
-
-		// RabbitMQ
-
-		/* TODO update rabbitMQ integration
-
-		if (Validator.isNotNull(_rabbitMQConsumerKey)) {
-			ConsumerManagerLocalServiceUtil.unregisterConsumer(
-				_rabbitMQConsumerKey);
-		}
-
-		*/
 	}
 
 	@Override
@@ -247,29 +229,6 @@ public class AdminServletContextListener
 			originalCommonPermission);
 
 		commonPermissionUtil.setCommonPermission(osbCommonPermission);
-
-		// RabbitMQ
-
-		/* TODO update rabbitMQ integration
-
-		if (Validator.isNotNull(
-				PortletPropsValues.RABBITMQ_MESSAGE_QUEUE_NAME)) {
-
-			try {
-				RabbitMQConsumer rabbitMQConsumer =
-					new RabbitMQConsumerRouter();
-
-				_rabbitMQConsumerKey =
-					ConsumerManagerLocalServiceUtil.registerConsumer(
-						PortletPropsValues.RABBITMQ_MESSAGE_QUEUE_NAME, 1,
-						rabbitMQConsumer);
-			}
-			catch (Exception e) {
-				_log.error("Unable to register consumer", e);
-			}
-		}
-
-		*/
 
 		Message message = new Message();
 
