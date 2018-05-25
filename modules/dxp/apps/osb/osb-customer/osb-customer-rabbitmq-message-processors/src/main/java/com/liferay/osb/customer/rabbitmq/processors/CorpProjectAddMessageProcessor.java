@@ -91,6 +91,8 @@ public class CorpProjectAddMessageProcessor extends BaseMessageProcessor {
 
 		ServiceContext serviceContext = new ServiceContext();
 
+		serviceContext.setAttribute(
+			"corpProjectId", jsonObject.getLong("corpProjectId"));
 		serviceContext.setCreateDate(
 			new Date(jsonObject.getLong("createDate")));
 		serviceContext.setModifiedDate(

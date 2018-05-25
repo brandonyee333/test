@@ -44,7 +44,7 @@ public class CorpProjectLocalServiceImpl
 		Date createDate = serviceContext.getCreateDate(new Date());
 		Date modifiedDate = serviceContext.getModifiedDate(new Date());
 
-		long corpProjectId = counterLocalService.increment();
+		Long corpProjectId = (Long)serviceContext.getAttribute("corpProjectId");
 
 		CorpProject corpProject = corpProjectPersistence.create(corpProjectId);
 
