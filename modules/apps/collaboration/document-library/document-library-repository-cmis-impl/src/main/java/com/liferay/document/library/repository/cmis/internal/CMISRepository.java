@@ -1881,7 +1881,15 @@ public class CMISRepository extends BaseCmisRepository {
 		try {
 			String versionSeriesId = toFileEntryId(fileEntryId);
 
-			return (Document)session.getObject(versionSeriesId);
+			CmisObject object = session.getObject(versionSeriesId);
+
+			if (!(object instanceof Document)) {
+				throw new NoSuchFileEntryException(
+					"No CMIS file entry with {fileEntryId=" + fileEntryId +
+						"}");
+			}
+
+			return (Document)object;
 		}
 		catch (CmisObjectNotFoundException confe) {
 			throw new NoSuchFileEntryException(
@@ -1988,7 +1996,14 @@ public class CMISRepository extends BaseCmisRepository {
 
 				CmisObject cmisObject = session.getObject(objectId);
 
-				folder = (Folder)toFolderOrFileEntry(cmisObject);
+				Object object = toFolderOrFileEntry(cmisObject);
+
+				if (!(object instanceof Folder)) {
+					throw new NoSuchFolderException(
+						"No CMIS folder with {folderId=" + folderId + "}");
+				}
+
+				folder = (Folder)object;
 
 				_cmisModelCache.putFolder(folder);
 			}
