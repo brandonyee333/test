@@ -859,15 +859,6 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		}
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void setJsonFactory(JSONFactory jsonFactory) {
-		_jsonFactory = jsonFactory;
-	}
-
 	@Reference(unbind = "-")
 	protected void setMessageBus(MessageBus messageBus) {
 		_messageBus = messageBus;
@@ -892,17 +883,6 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		unbind = "-"
 	)
 	protected void setRelease(Release release) {
-	}
-
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void setSchedulerEngineHelper(
-		SchedulerEngineHelper schedulerEngineHelper) {
-
-		_schedulerEngineHelper = schedulerEngineHelper;
 	}
 
 	protected void unschedule(Scheduler scheduler, JobKey jobKey)
@@ -947,16 +927,6 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 		scheduler.unscheduleJob(triggerKey);
 
 		scheduler.addJob(jobDetail, true);
-	}
-
-	protected void unsetJsonFactory(JSONFactory jsonFactory) {
-		_jsonFactory = null;
-	}
-
-	protected void unsetSchedulerEngineHelper(
-		SchedulerEngineHelper schedulerEngineHelper) {
-
-		_schedulerEngineHelper = null;
 	}
 
 	protected void update(
@@ -1030,12 +1000,25 @@ public class QuartzSchedulerEngine implements SchedulerEngine {
 	private int _descriptionMaxLength;
 	private int _groupNameMaxLength;
 	private int _jobNameMaxLength;
-	private JSONFactory _jsonFactory;
+
+	@Reference(
+		cardinality = ReferenceCardinality.OPTIONAL,
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY
+	)
+	private volatile JSONFactory _jsonFactory;
+
 	private Scheduler _memoryScheduler;
 	private MessageBus _messageBus;
 	private Scheduler _persistedScheduler;
 	private Props _props;
 	private volatile boolean _schedulerEngineEnabled;
-	private SchedulerEngineHelper _schedulerEngineHelper;
+
+	@Reference(
+		cardinality = ReferenceCardinality.OPTIONAL,
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY
+	)
+	private volatile SchedulerEngineHelper _schedulerEngineHelper;
 
 }
