@@ -53,13 +53,13 @@ public interface JCRStoreConfiguration {
 	public String jackrabbitRepositoryRoot();
 
 	@Meta.AD(
-		deflt = "repository.xml", name = "jackrabbit-config-file-path",
+		deflt = "data/jackrabbit/repository.xml", name = "jackrabbit-config-file-path",
 		required = true
 	)
 	public String jackrabbitConfigFilePath();
 
 	@Meta.AD(
-		deflt = "home", name = "jackrabbit-repository-home", required = true
+		deflt = "data/jackrabbit/home", name = "jackrabbit-repository-home", required = true
 	)
 	public String jackrabbitRepositoryHome();
 
