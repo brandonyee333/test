@@ -1,8 +1,29 @@
 Bundle-Name: Liferay Portal Store JCR
 Bundle-SymbolicName: com.liferay.portal.store.jcr
-Bundle-Version: 2.0.19
+Bundle-Version: 2.0.19.1
 Import-Package:\
-	!org.apache.commons.dbcp,\
+    !org.apache.commons.dbcp,\
+    !javax.resource,\
+    !javax.resource.spi,\
+    !javax.resource.spi.endpoint,\
+    !javax.resource.spi.security,\
+    !com.sun.security.jgss,\
+    !sun.security.util,\
+    !com.sun.security.auth.module,\
+    !sun.security.krb5,\
+    !sun.security.krb5.internal,\
+    !com.oracle.common.base,\
+    !com.oracle.common.internal.net.ipclw.mql,\
+    !com.oracle.common.io,\
+    !com.oracle.common.net,\
+    !oracle.i18n.text,\
+    !oracle.i18n.text.converter,\
+    !oracle.ons,\
+    !oracle.security.pki,\
+    !oracle.simplefan,\
+    !oracle.xdb,\
+    !oracle.xml.util,\
+    !oracle.xml.parser.v2,\
 	!org.apache.jackrabbit.test,\
 	!org.apache.lucene.*,\
 	!org.apache.pdfbox.*,\

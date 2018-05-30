@@ -48,9 +48,9 @@ public class JCRFactoryImpl implements JCRFactory {
 		_jcrStoreConfiguration = jcrStoreConfiguration;
 
 		try {
+			// Arena
 			_transientRepository = new TransientRepository(
-				_jcrStoreConfiguration.jackrabbitConfigFilePath(),
-				_jcrStoreConfiguration.jackrabbitRepositoryHome());
+				getAbsolutePath(_jcrStoreConfiguration.jackrabbitConfigFilePath()), getAbsolutePath(_jcrStoreConfiguration.jackrabbitRepositoryHome()));
 		}
 		catch (Exception e) {
 			_log.error("Problem initializing Jackrabbit JCR.", e);
@@ -117,8 +117,9 @@ public class JCRFactoryImpl implements JCRFactory {
 	@Override
 	public void prepare() throws RepositoryException {
 		try {
+			// Arena
 			File jackrabbitConfigFile = new File(
-				_jcrStoreConfiguration.jackrabbitConfigFilePath());
+				getAbsolutePath(_jcrStoreConfiguration.jackrabbitConfigFilePath()));
 
 			if (jackrabbitConfigFile.exists() &&
 				jackrabbitConfigFile.isFile()) {
@@ -126,21 +127,12 @@ public class JCRFactoryImpl implements JCRFactory {
 				return;
 			}
 
-			String path = _jcrStoreConfiguration.jackrabbitRepositoryRoot();
-
-			File repositoryRoot = new File(path);
-
-			if (!repositoryRoot.isAbsolute()) {
-				path =
-					PropsUtil.get(PropsKeys.LIFERAY_HOME) + StringPool.SLASH +
-						path;
-			}
-
+			// Arena
+			String path = getAbsolutePath(_jcrStoreConfiguration.jackrabbitRepositoryRoot());
 			FileUtil.mkdirs(path);
 
-			File tempFile = new File(
-				SystemProperties.get(SystemProperties.TMP_DIR) +
-					File.separator + Time.getTimestamp());
+			// Arena
+			File tempFile = File.createTempFile("repository-", null);
 
 			String repositoryXmlPath =
 				"com/liferay/portal/store/jcr/jackrabbit/dependencies" +
@@ -168,6 +160,12 @@ public class JCRFactoryImpl implements JCRFactory {
 
 			throw new RepositoryException(ioe);
 		}
+	}
+
+	// Arena
+	private String getAbsolutePath(String path) {
+		File file = new File(path);
+		return file.isAbsolute() ? path : PropsUtil.get(PropsKeys.LIFERAY_HOME) + StringPool.SLASH + path;
 	}
 
 	@Override
