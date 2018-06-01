@@ -30,6 +30,7 @@ public class LCSThreadFactory implements ThreadFactory {
 		Thread thread = _threadFactory.newThread(runnable);
 
 		thread.setName(_getThreadName(runnable));
+		thread.setUncaughtExceptionHandler(_lcsUncaughtExceptionHandler);
 
 		return thread;
 	}
@@ -52,6 +53,8 @@ public class LCSThreadFactory implements ThreadFactory {
 	}
 
 	private long _counter;
+	private final LCSUncaughtExceptionHandler _lcsUncaughtExceptionHandler =
+		new LCSUncaughtExceptionHandler();
 	private final ThreadFactory _threadFactory =
 		Executors.defaultThreadFactory();
 
