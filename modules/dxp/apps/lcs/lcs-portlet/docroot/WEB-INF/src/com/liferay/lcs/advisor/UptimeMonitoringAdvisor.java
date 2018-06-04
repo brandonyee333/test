@@ -258,7 +258,13 @@ public class UptimeMonitoringAdvisor {
 			return;
 		}
 
-		LCSPortletPreferencesUtil.store("uptimes-" + key, jsonArray.toString());
+		try {
+			LCSPortletPreferencesUtil.store(
+				"uptimes-" + key, jsonArray.toString());
+		}
+		catch (Exception e) {
+			_log.error("Unable to store portal uptimes for key " + key, e);
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
