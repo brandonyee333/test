@@ -58,10 +58,7 @@ public class LCSConnectorRunnable implements Runnable {
 	public void run() {
 		_delayRun();
 
-		LCSUtil.processLCSPortletState(
-			LCSPortletState.valueOf(
-				LCSPortletPreferencesUtil.getValue(
-					"lcsPortletState", LCSPortletState.NOT_REGISTERED.name())));
+		LCSUtil.processLCSPortletState(LCSPortletState.NOT_REGISTERED);
 
 		_lcsAlertAdvisor.clear();
 

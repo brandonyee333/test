@@ -270,21 +270,20 @@ public class LCSUtil {
 	}
 
 	public static void processLCSPortletState(LCSPortletState lcsPortletState) {
-		if (lcsPortletState != LCSPortletState.PLUGIN_ABSENT) {
-			try {
-				LCSPortletPreferencesUtil.store(
-					"lcsPortletState", lcsPortletState.name());
+		Message message = LicenseManagerMessageType.LCS_AVAILABLE.createMessage(
+			lcsPortletState);
 
-				if (_log.isDebugEnabled()) {
-					_log.debug("LCS portlet state saved");
-				}
-			}
-			catch (Exception e) {
-				_log.error("LCS portlet state is not saved");
-			}
+		MessageBusUtil.sendMessage(message.getDestinationName(), message);
+
+		if (_log.isDebugEnabled()) {
+			StringBundler sb = new StringBundler(3);
+
+			sb.append("Service availability message published for LCS ");
+			sb.append("portlet state ");
+			sb.append(lcsPortletState.name());
+
+			_log.debug(sb.toString());
 		}
-
-		_sendServiceAvailabilityNotification(lcsPortletState);
 	}
 
 	public static void setUpJSONWebServiceClientCredentials()
@@ -372,25 +371,6 @@ public class LCSUtil {
 		sb.append(parameterName);
 
 		return sb.toString();
-	}
-
-	private static void _sendServiceAvailabilityNotification(
-		LCSPortletState lcsPortletState) {
-
-		Message message = LicenseManagerMessageType.LCS_AVAILABLE.createMessage(
-			lcsPortletState);
-
-		MessageBusUtil.sendMessage(message.getDestinationName(), message);
-
-		if (_log.isDebugEnabled()) {
-			StringBundler sb = new StringBundler(3);
-
-			sb.append("Service availability message published for LCS ");
-			sb.append("portlet state ");
-			sb.append(lcsPortletState.name());
-
-			_log.debug(sb.toString());
-		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(LCSUtil.class);

@@ -18,7 +18,6 @@ import com.liferay.lcs.rest.client.LCSSubscriptionEntry;
 import com.liferay.lcs.rest.client.LCSSubscriptionEntryClient;
 import com.liferay.lcs.util.KeyGenerator;
 import com.liferay.lcs.util.LCSConnectionManager;
-import com.liferay.lcs.util.LCSPortletPreferencesUtil;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
@@ -39,12 +38,8 @@ public class LCSPortletStateAdvisor {
 			return LCSPortletState.NO_CONNECTION;
 		}
 
-		LCSPortletState lcsPortletState = LCSPortletState.valueOf(
-			LCSPortletPreferencesUtil.getValue(
-				"lcsPortletState", LCSPortletState.NOT_REGISTERED.name()));
-
 		if (!checkSubscription) {
-			return lcsPortletState;
+			return _lastLCSPortletState;
 		}
 
 		try {
@@ -53,10 +48,13 @@ public class LCSPortletStateAdvisor {
 					_keyGenerator.getKey());
 
 			if (lcsSubscriptionEntry == null) {
-				return LCSPortletState.NO_SUBSCRIPTION;
+				_lastLCSPortletState = LCSPortletState.NO_SUBSCRIPTION;
+			}
+			else {
+				_lastLCSPortletState = LCSPortletState.GOOD;
 			}
 
-			return LCSPortletState.GOOD;
+			return _lastLCSPortletState;
 		}
 		catch (JSONWebServiceInvocationException jsonwsie) {
 			if (jsonwsie.getStatus() == HttpServletResponse.SC_UNAUTHORIZED) {
@@ -122,7 +120,7 @@ public class LCSPortletStateAdvisor {
 			}
 		}
 
-		return lcsPortletState;
+		return _lastLCSPortletState;
 	}
 
 	public void setKeyGenerator(KeyGenerator keyGenerator) {
@@ -145,6 +143,8 @@ public class LCSPortletStateAdvisor {
 		LCSPortletStateAdvisor.class);
 
 	private KeyGenerator _keyGenerator;
+	private LCSPortletState _lastLCSPortletState =
+		LCSPortletState.NO_SUBSCRIPTION;
 	private LCSConnectionManager _lcsConnectionManager;
 	private LCSSubscriptionEntryClient _lcsSubscriptionEntryClient;
 
