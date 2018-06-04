@@ -179,8 +179,12 @@ public class LCSPortletPreferencesUtil {
 			return jxPortletPreferences.getValue(key, defaultValue);
 		}
 		catch (SystemException se) {
-			throw new RuntimeException(se);
+			_log.error(
+				"Unable to read portlet preferences. Default value " +
+					defaultValue + " is returned.", se);
 		}
+
+		return defaultValue;
 	}
 
 	public static boolean isCredentialsSet() {
