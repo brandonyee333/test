@@ -16,7 +16,6 @@ package com.liferay.lcs.portlet;
 
 import com.liferay.lcs.util.LCSConnectionManagerUtil;
 import com.liferay.lcs.util.LCSConstants;
-import com.liferay.lcs.util.LCSPortletPreferencesUtil;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -77,29 +76,6 @@ public class ConnectedServicesPortlet extends MVCPortlet {
 		jsonObject.put("ready", LCSConnectionManagerUtil.isReady());
 
 		writeJSON(resourceRequest, resourceResponse, jsonObject);
-	}
-
-	protected void storeLCSServices(
-			boolean metricsServiceEnabled, boolean patchesServiceEnabled,
-			boolean portalPropertiesServiceEnabled,
-			String portalPropertiesBlacklist)
-		throws Exception {
-
-		LCSPortletPreferencesUtil.store(
-			LCSConstants.METRICS_LCS_SERVICE_ENABLED,
-			String.valueOf(metricsServiceEnabled));
-
-		LCSPortletPreferencesUtil.store(
-			LCSConstants.PATCHES_LCS_SERVICE_ENABLED,
-			String.valueOf(patchesServiceEnabled));
-
-		LCSPortletPreferencesUtil.store(
-			LCSConstants.PORTAL_PROPERTIES_LCS_SERVICE_ENABLED,
-			String.valueOf(portalPropertiesServiceEnabled));
-
-		LCSPortletPreferencesUtil.store(
-			LCSConstants.PORTAL_PROPERTIES_BLACKLIST,
-			portalPropertiesBlacklist);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
