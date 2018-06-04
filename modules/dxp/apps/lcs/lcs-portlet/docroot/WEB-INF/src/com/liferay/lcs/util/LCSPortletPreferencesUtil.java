@@ -157,6 +157,15 @@ public class LCSPortletPreferencesUtil {
 		return preferences;
 	}
 
+	/**
+	 * @param      key
+	 * @param      defaultValue
+	 * @return
+	 * @deprecated Classes of LCS Client should newer interact with portlet
+	 *             preferences in this way because it introduces issues in
+	 *             clusters
+	 */
+	@Deprecated
 	public static String getValue(String key, String defaultValue) {
 		PortletPreferences portletPreferences = _fetchPortletPreferences(null);
 
@@ -181,7 +190,8 @@ public class LCSPortletPreferencesUtil {
 		catch (SystemException se) {
 			_log.error(
 				"Unable to read portlet preferences. Default value " +
-					defaultValue + " is returned.", se);
+					defaultValue + " is returned.",
+				se);
 		}
 
 		return defaultValue;
