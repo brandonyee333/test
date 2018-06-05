@@ -68,15 +68,13 @@ public class OSBCustomerKnowledgeBaseAutoDeployer implements AutoDeployer {
 				continue;
 			}
 
-			if (urlTitles.isEmpty()) {
-				urlTitles.add(
-					StringUtil.replace(
-						fileParts[i], CharPool.PERIOD, CharPool.DASH));
-			}
-			else {
-				urlTitles.add(
-					StringUtil.replace(fileParts[i], ".zip", StringPool.BLANK));
-			}
+			String urlTitle = StringUtil.replace(
+				fileParts[i], ".zip", StringPool.BLANK);
+
+			urlTitle = StringUtil.replace(
+				urlTitle, CharPool.PERIOD, CharPool.DASH);
+
+			urlTitles.add(urlTitle);
 		}
 
 		long kbFolderId = 0;
