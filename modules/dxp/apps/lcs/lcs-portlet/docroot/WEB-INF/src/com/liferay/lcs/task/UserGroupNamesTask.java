@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.service.UserGroupLocalServiceUtil;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -95,8 +96,12 @@ public class UserGroupNamesTask extends BaseScheduledTask {
 	protected Map<String, Object> getUserGroupMap(UserGroup userGroup) {
 		Map<String, Object> userGroupMap = new HashMap<>();
 
+		int userGroupUsersCount = UserLocalServiceUtil.getUserGroupUsersCount(
+			userGroup.getUserGroupId());
+
 		userGroupMap.put("companyId", userGroup.getCompanyId());
 		userGroupMap.put("name", userGroup.getName());
+		userGroupMap.put("userCount", userGroupUsersCount);
 		userGroupMap.put("userGroupId", userGroup.getUserGroupId());
 		userGroupMap.put("uuid", userGroup.getUuid());
 

@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -88,11 +89,16 @@ public class OrganizationNamesTask extends BaseScheduledTask {
 
 		Map<String, Object> organizationMap = new HashMap<>();
 
+		int organizationUsersCount =
+			UserLocalServiceUtil.getOrganizationUsersCount(
+				organization.getOrganizationId());
+
 		organizationMap.put("companyId", organization.getCompanyId());
 		organizationMap.put("name", organization.getName());
 		organizationMap.put("organizationId", organization.getOrganizationId());
 		organizationMap.put(
 			"parentOrganizationId", organization.getParentOrganizationId());
+		organizationMap.put("userCount", organizationUsersCount);
 		organizationMap.put("uuid", organization.getUuid());
 
 		return organizationMap;
