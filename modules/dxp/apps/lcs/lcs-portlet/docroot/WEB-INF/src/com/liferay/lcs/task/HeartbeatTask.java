@@ -15,7 +15,6 @@
 package com.liferay.lcs.task;
 
 import com.liferay.lcs.messaging.HeartbeatMessage;
-import com.liferay.lcs.util.KeyGenerator;
 import com.liferay.lcs.util.LCSConnectionManager;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -25,7 +24,12 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
  */
 public class HeartbeatTask implements Task {
 
-	public HeartbeatTask() {
+	public HeartbeatTask(
+		String key, LCSConnectionManager lcsConnectionManager) {
+
+		_key = key;
+		_lcsConnectionManager = lcsConnectionManager;
+
 		if (_log.isTraceEnabled()) {
 			_log.trace("Initialized " + this);
 		}
@@ -39,16 +43,6 @@ public class HeartbeatTask implements Task {
 		catch (Exception e) {
 			_log.error(e, e);
 		}
-	}
-
-	public void setKeyGenerator(KeyGenerator keyGenerator) {
-		_keyGenerator = keyGenerator;
-	}
-
-	public void setLCSConnectionManager(
-		LCSConnectionManager lcsConnectionManager) {
-
-		_lcsConnectionManager = lcsConnectionManager;
 	}
 
 	protected void doRun() throws Exception {
@@ -67,7 +61,7 @@ public class HeartbeatTask implements Task {
 		HeartbeatMessage heartbeatMessage = new HeartbeatMessage();
 
 		heartbeatMessage.setCreateTime(System.currentTimeMillis());
-		heartbeatMessage.setKey(_keyGenerator.getKey());
+		heartbeatMessage.setKey(_key);
 
 		_lcsConnectionManager.sendMessage(heartbeatMessage);
 	}
@@ -83,7 +77,7 @@ public class HeartbeatTask implements Task {
 
 	private static final Log _log = LogFactoryUtil.getLog(HeartbeatTask.class);
 
-	private KeyGenerator _keyGenerator;
-	private LCSConnectionManager _lcsConnectionManager;
+	private final String _key;
+	private final LCSConnectionManager _lcsConnectionManager;
 
 }

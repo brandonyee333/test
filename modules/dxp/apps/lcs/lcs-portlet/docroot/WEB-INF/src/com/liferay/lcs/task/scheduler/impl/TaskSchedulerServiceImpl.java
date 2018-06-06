@@ -41,12 +41,24 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 /**
  * @author Riccardo Ferrari
  */
 public class TaskSchedulerServiceImpl implements TaskSchedulerService {
+
+	public TaskSchedulerServiceImpl(
+		int defaultInterval, int scheduleDelayMax,
+		ThreadFactory threadFactory) {
+
+		_defaultInterval = defaultInterval;
+		_scheduleDelayMax = scheduleDelayMax;
+
+		_scheduledExecutorService = Executors.newScheduledThreadPool(
+			10, threadFactory);
+	}
 
 	public void destroy() {
 		_scheduledExecutorService.shutdown();
@@ -92,14 +104,6 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		catch (Exception e) {
 			_log.error("Unable to create new scheduled task", e);
 		}
-	}
-
-	public void setDefaultInterval(int defaultInterval) {
-		_defaultInterval = defaultInterval;
-	}
-
-	public void setScheduleDelayMax(int scheduleDelayMax) {
-		_scheduleDelayMax = scheduleDelayMax;
 	}
 
 	@Override
@@ -302,11 +306,9 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 	private static final Log _log = LogFactoryUtil.getLog(
 		TaskSchedulerServiceImpl.class);
 
-	private static final ScheduledExecutorService _scheduledExecutorService =
-		Executors.newScheduledThreadPool(10);
-
-	private int _defaultInterval;
-	private int _scheduleDelayMax;
+	private final int _defaultInterval;
+	private final int _scheduleDelayMax;
+	private final ScheduledExecutorService _scheduledExecutorService;
 	private final Map<String, ScheduledFuture<?>> _scheduledFuturesMap =
 		new HashMap<>();
 

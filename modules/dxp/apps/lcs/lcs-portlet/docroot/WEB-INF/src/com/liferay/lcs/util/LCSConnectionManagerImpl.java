@@ -16,12 +16,12 @@ package com.liferay.lcs.util;
 
 import com.liferay.lcs.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
+import com.liferay.lcs.advisor.LCSPortletStateAdvisor;
 import com.liferay.lcs.advisor.UptimeMonitoringAdvisor;
 import com.liferay.lcs.exception.CompressionException;
 import com.liferay.lcs.messaging.Message;
 import com.liferay.lcs.messaging.scheduler.MessageListenerSchedulerService;
 import com.liferay.lcs.runnable.LCSConnectorRunnable;
-import com.liferay.lcs.runnable.LCSThreadFactory;
 import com.liferay.lcs.service.LCSGatewayService;
 import com.liferay.lcs.task.CommandMessageTask;
 import com.liferay.lcs.task.HandshakeTask;
@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 
 import java.lang.ref.WeakReference;
 
@@ -48,6 +49,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletResponse;
@@ -57,6 +59,40 @@ import javax.servlet.http.HttpServletResponse;
  * @author Ivica Cardic
  */
 public class LCSConnectionManagerImpl implements LCSConnectionManager {
+
+	public LCSConnectionManagerImpl(
+		KeyGenerator keyGenerator, LCSAlertAdvisor lcsAlertAdvisor,
+		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor,
+		LCSGatewayService lcsGatewayService,
+		LCSPortletStateAdvisor lcsPortletStateAdvisor,
+		MessageListenerSchedulerService messageListenerSchedulerService,
+		TaskSchedulerService taskSchedulerService, ThreadFactory threadFactory,
+		UptimeMonitoringAdvisor uptimeMonitoringAdvisor) {
+
+		_heartbeatInterval = GetterUtil.getLong(
+			PortletPropsValues.COMMUNICATION_HEARTBEAT_INTERVAL);
+
+		_keyGenerator = keyGenerator;
+
+		_lcsConnectionMetadata.put(
+			"handshakeWaitTime",
+			PortletPropsValues.COMMUNICATION_HANDSHAKE_WAIT_TIME);
+		_lcsConnectionMetadata.put(
+			"heartbeatInterval",
+			PortletPropsValues.COMMUNICATION_HEARTBEAT_INTERVAL);
+
+		_lcsAlertAdvisor = lcsAlertAdvisor;
+		_lcsClusterEntryTokenAdvisor = lcsClusterEntryTokenAdvisor;
+		_lcsGatewayService = lcsGatewayService;
+		_lcsPortletStateAdvisor = lcsPortletStateAdvisor;
+		_messageListenerSchedulerService = messageListenerSchedulerService;
+
+		_scheduledExecutorService = Executors.newScheduledThreadPool(
+			10, threadFactory);
+
+		_taskSchedulerService = taskSchedulerService;
+		_uptimeMonitoringAdvisor = uptimeMonitoringAdvisor;
+	}
 
 	@Override
 	public void deleteMessages(String key) throws JSONWebServiceException {
@@ -187,7 +223,7 @@ public class LCSConnectionManagerImpl implements LCSConnectionManager {
 
 		_scheduledFutures.add(
 			_scheduledExecutorService.scheduleAtFixedRate(
-				_commandMessageTask,
+				new CommandMessageTask(_keyGenerator.getKey(), this),
 				LCSConstants.COMMAND_MESSAGE_TASK_SCHEDULE_PERIOD,
 				LCSConstants.COMMAND_MESSAGE_TASK_SCHEDULE_PERIOD,
 				TimeUnit.SECONDS));
@@ -198,8 +234,8 @@ public class LCSConnectionManagerImpl implements LCSConnectionManager {
 
 		_scheduledFutures.add(
 			_scheduledExecutorService.scheduleAtFixedRate(
-				_heartbeatTask, 10000L, _heartbeatInterval,
-				TimeUnit.MILLISECONDS));
+				new HeartbeatTask(_keyGenerator.getKey(), this), 10000L,
+				_heartbeatInterval, TimeUnit.MILLISECONDS));
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Scheduling license manager task");
@@ -207,7 +243,8 @@ public class LCSConnectionManagerImpl implements LCSConnectionManager {
 
 		_scheduledFutures.add(
 			_scheduledExecutorService.scheduleAtFixedRate(
-				_licenseManagerTask, 0L, 2L, TimeUnit.MINUTES));
+				new LicenseManagerTask(this, _lcsPortletStateAdvisor), 0L, 2L,
+				TimeUnit.MINUTES));
 
 		_lcsAlertAdvisor.clear();
 
@@ -248,57 +285,9 @@ public class LCSConnectionManagerImpl implements LCSConnectionManager {
 		}
 	}
 
-	public void setCommandMessageTask(CommandMessageTask commandMessageTask) {
-		_commandMessageTask = commandMessageTask;
-	}
-
-	public void setHandshakeTask(HandshakeTask handshakeTask) {
-		_handshakeTask = handshakeTask;
-	}
-
-	public void setHandshakeWaitTime(long handshakeWaitTime) {
-		_lcsConnectionMetadata.put(
-			"handshakeWaitTime", String.valueOf(handshakeWaitTime));
-	}
-
-	public void setHeartbeatInterval(long heartbeatInterval) {
-		_heartbeatInterval = heartbeatInterval;
-
-		_lcsConnectionMetadata.put(
-			"heartbeatInterval", String.valueOf(heartbeatInterval));
-	}
-
-	public void setHeartbeatTask(HeartbeatTask heartbeatTask) {
-		_heartbeatTask = heartbeatTask;
-	}
-
-	public void setLCSAlertAdvisor(LCSAlertAdvisor lcsAlertAdvisor) {
-		_lcsAlertAdvisor = lcsAlertAdvisor;
-	}
-
-	public void setLCSClusterEntryTokenAdvisor(
-		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor) {
-
-		_lcsClusterEntryTokenAdvisor = lcsClusterEntryTokenAdvisor;
-	}
-
 	@Override
 	public void setLCSGatewayAvailable(boolean lcsGatewayAvailable) {
 		_lcsGatewayAvailable = lcsGatewayAvailable;
-	}
-
-	public void setLCSGatewayService(LCSGatewayService lcsGatewayService) {
-		_lcsGatewayService = lcsGatewayService;
-	}
-
-	public void setLicenseManagerTask(LicenseManagerTask licenseManagerTask) {
-		_licenseManagerTask = licenseManagerTask;
-	}
-
-	public void setMessageListenerSchedulerService(
-		MessageListenerSchedulerService messageListenerSchedulerService) {
-
-		_messageListenerSchedulerService = messageListenerSchedulerService;
 	}
 
 	@Override
@@ -311,29 +300,16 @@ public class LCSConnectionManagerImpl implements LCSConnectionManager {
 		_shutdownRequested = shutdownRequested;
 	}
 
-	public void setSignOffTask(SignOffTask signOffTask) {
-		_signOffTask = signOffTask;
-	}
-
-	public void setTaskSchedulerService(
-		TaskSchedulerService taskSchedulerService) {
-
-		_taskSchedulerService = taskSchedulerService;
-	}
-
-	public void setUptimeMonitoringAdvisor(
-		UptimeMonitoringAdvisor uptimeMonitoringAdvisor) {
-
-		_uptimeMonitoringAdvisor = uptimeMonitoringAdvisor;
-	}
-
 	@Override
 	public Future<?> start() {
 		if (isReady()) {
 			return null;
 		}
 
-		return _scheduledExecutorService.submit(_handshakeTask);
+		return _scheduledExecutorService.submit(
+			new HandshakeTask(
+				_keyGenerator.getKey(), _lcsAlertAdvisor, this,
+				_uptimeMonitoringAdvisor));
 	}
 
 	@Override
@@ -349,9 +325,11 @@ public class LCSConnectionManagerImpl implements LCSConnectionManager {
 
 		_cancelSchedulers();
 
-		_signOffTask.setServerManuallyShutdown(serverManuallyShutdown);
+		SignOffTask signOffTask = new SignOffTask(_keyGenerator.getKey(), this);
 
-		Future<?> future = _scheduledExecutorService.submit(_signOffTask);
+		signOffTask.setServerManuallyShutdown(serverManuallyShutdown);
+
+		Future<?> future = _scheduledExecutorService.submit(signOffTask);
 
 		LCSUtil.processLCSPortletState(LCSPortletState.NO_CONNECTION);
 
@@ -475,28 +453,24 @@ public class LCSConnectionManagerImpl implements LCSConnectionManager {
 	private static final Log _log = LogFactoryUtil.getLog(
 		LCSConnectionManagerImpl.class);
 
-	private static final ScheduledExecutorService _scheduledExecutorService =
-		Executors.newScheduledThreadPool(10, new LCSThreadFactory());
-
-	private CommandMessageTask _commandMessageTask;
-	private HandshakeTask _handshakeTask;
-	private long _heartbeatInterval;
-	private HeartbeatTask _heartbeatTask;
-	private LCSAlertAdvisor _lcsAlertAdvisor;
-	private LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
+	private final long _heartbeatInterval;
+	private final KeyGenerator _keyGenerator;
+	private final LCSAlertAdvisor _lcsAlertAdvisor;
+	private final LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
 	private final Map<String, String> _lcsConnectionMetadata = new HashMap<>();
 	private WeakReference<LCSConnectorRunnable>
 		_lcsConnectorRunnableWeakReference;
 	private volatile boolean _lcsGatewayAvailable;
-	private LCSGatewayService _lcsGatewayService;
-	private LicenseManagerTask _licenseManagerTask;
-	private MessageListenerSchedulerService _messageListenerSchedulerService;
+	private final LCSGatewayService _lcsGatewayService;
+	private final LCSPortletStateAdvisor _lcsPortletStateAdvisor;
+	private final MessageListenerSchedulerService
+		_messageListenerSchedulerService;
 	private volatile boolean _ready;
+	private final ScheduledExecutorService _scheduledExecutorService;
 	private final List<ScheduledFuture<?>> _scheduledFutures =
 		new ArrayList<>();
 	private volatile boolean _shutdownRequested;
-	private SignOffTask _signOffTask;
-	private TaskSchedulerService _taskSchedulerService;
-	private UptimeMonitoringAdvisor _uptimeMonitoringAdvisor;
+	private final TaskSchedulerService _taskSchedulerService;
+	private final UptimeMonitoringAdvisor _uptimeMonitoringAdvisor;
 
 }

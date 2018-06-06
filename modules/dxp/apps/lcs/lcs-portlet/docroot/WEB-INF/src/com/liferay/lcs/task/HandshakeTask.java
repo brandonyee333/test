@@ -21,13 +21,13 @@ import com.liferay.lcs.messaging.CommandMessage;
 import com.liferay.lcs.messaging.HandshakeMessage;
 import com.liferay.lcs.messaging.Message;
 import com.liferay.lcs.messaging.ResponseMessage;
-import com.liferay.lcs.util.KeyGenerator;
 import com.liferay.lcs.util.LCSAlert;
 import com.liferay.lcs.util.LCSConnectionManager;
 import com.liferay.lcs.util.LCSConstants;
 import com.liferay.lcs.util.LCSPatcherUtil;
 import com.liferay.lcs.util.LCSPortletPreferencesUtil;
 import com.liferay.lcs.util.LCSUtil;
+import com.liferay.lcs.util.PortletPropsValues;
 import com.liferay.lcs.util.comparator.MessagePriorityComparator;
 import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -62,7 +62,25 @@ import org.osgi.framework.ServiceReference;
  */
 public class HandshakeTask implements Task {
 
-	public HandshakeTask() {
+	public HandshakeTask(
+		String key, LCSAlertAdvisor lcsAlertAdvisor,
+		LCSConnectionManager lcsConnectionManager,
+		UptimeMonitoringAdvisor uptimeMonitoringAdvisor) {
+
+		_handshakeReplyReads = GetterUtil.getInteger(
+			PortletPropsValues.COMMUNICATION_HANDSHAKE_REPLY_READS, 5);
+
+		_handshakeWaitTime = GetterUtil.getLong(
+			PortletPropsValues.COMMUNICATION_HANDSHAKE_WAIT_TIME, 60000L);
+
+		_heartbeatInterval = GetterUtil.getLong(
+			PortletPropsValues.COMMUNICATION_HEARTBEAT_INTERVAL, 60000L);
+
+		_key = key;
+		_lcsAlertAdvisor = lcsAlertAdvisor;
+		_lcsConnectionManager = lcsConnectionManager;
+		_uptimeMonitoringAdvisor = uptimeMonitoringAdvisor;
+
 		if (_log.isTraceEnabled()) {
 			_log.trace("Initialized " + this);
 		}
@@ -80,38 +98,6 @@ public class HandshakeTask implements Task {
 		}
 	}
 
-	public void setHandshakeReplyReads(int handshakeReplyReads) {
-		_handshakeReplyReads = handshakeReplyReads;
-	}
-
-	public void setHandshakeWaitTime(long handshakeWaitTime) {
-		_handshakeWaitTime = handshakeWaitTime;
-	}
-
-	public void setHeartbeatInterval(long heartbeatInterval) {
-		_heartbeatInterval = heartbeatInterval;
-	}
-
-	public void setKeyGenerator(KeyGenerator keyGenerator) {
-		_keyGenerator = keyGenerator;
-	}
-
-	public void setLCSAlertAdvisor(LCSAlertAdvisor lcsAlertAdvisor) {
-		_lcsAlertAdvisor = lcsAlertAdvisor;
-	}
-
-	public void setLCSConnectionManager(
-		LCSConnectionManager lcsConnectionManager) {
-
-		_lcsConnectionManager = lcsConnectionManager;
-	}
-
-	public void setUptimeMonitoringAdvisor(
-		UptimeMonitoringAdvisor uptimeMonitoringAdvisor) {
-
-		_uptimeMonitoringAdvisor = uptimeMonitoringAdvisor;
-	}
-
 	protected void doRun() throws Exception {
 		if (_log.isInfoEnabled()) {
 			_log.info("Initiate handshake");
@@ -119,9 +105,7 @@ public class HandshakeTask implements Task {
 
 		_lcsConnectionManager.setLCSGatewayAvailable(true);
 
-		String key = _keyGenerator.getKey();
-
-		_lcsConnectionManager.deleteMessages(key);
+		_lcsConnectionManager.deleteMessages(_key);
 
 		if (!_lcsConnectionManager.isLCSGatewayAvailable()) {
 			throw new LCSHandshakeException("LCS Gateway unavailable");
@@ -145,7 +129,7 @@ public class HandshakeTask implements Task {
 
 		handshakeMessage.put(Message.KEY_COMPANY_IDS_WEB_IDS, companyIdsWebIds);
 
-		handshakeMessage.put(Message.KEY_HASH_CODE, key.hashCode());
+		handshakeMessage.put(Message.KEY_HASH_CODE, _key.hashCode());
 		handshakeMessage.put(
 			Message.KEY_HEARTBEAT_INTERVAL, String.valueOf(_heartbeatInterval));
 
@@ -214,7 +198,7 @@ public class HandshakeTask implements Task {
 		handshakeMessage.put(
 			Message.KEY_PORTAL_EDITION, LCSUtil.getPortalEdition());
 
-		handshakeMessage.setKey(key);
+		handshakeMessage.setKey(_key);
 
 		boolean portalPropertiesLCSServiceEnabled = GetterUtil.getBoolean(
 			jxPortletPreferences.getValue(
@@ -251,7 +235,7 @@ public class HandshakeTask implements Task {
 						_handshakeReplyReads + " handshakes");
 			}
 
-			receivedMessages = _lcsConnectionManager.getMessages(key);
+			receivedMessages = _lcsConnectionManager.getMessages(_key);
 
 			if (receivedMessages.isEmpty()) {
 				try {
@@ -407,12 +391,12 @@ public class HandshakeTask implements Task {
 
 	private static final Log _log = LogFactoryUtil.getLog(HandshakeTask.class);
 
-	private int _handshakeReplyReads;
-	private long _handshakeWaitTime;
-	private long _heartbeatInterval;
-	private KeyGenerator _keyGenerator;
-	private LCSAlertAdvisor _lcsAlertAdvisor;
-	private LCSConnectionManager _lcsConnectionManager;
-	private UptimeMonitoringAdvisor _uptimeMonitoringAdvisor;
+	private final int _handshakeReplyReads;
+	private final long _handshakeWaitTime;
+	private final long _heartbeatInterval;
+	private final String _key;
+	private final LCSAlertAdvisor _lcsAlertAdvisor;
+	private final LCSConnectionManager _lcsConnectionManager;
+	private final UptimeMonitoringAdvisor _uptimeMonitoringAdvisor;
 
 }

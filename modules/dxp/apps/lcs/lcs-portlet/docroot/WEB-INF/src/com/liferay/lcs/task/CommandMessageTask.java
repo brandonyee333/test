@@ -16,7 +16,6 @@ package com.liferay.lcs.task;
 
 import com.liferay.lcs.messaging.CommandMessage;
 import com.liferay.lcs.messaging.Message;
-import com.liferay.lcs.util.KeyGenerator;
 import com.liferay.lcs.util.LCSConnectionManager;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -30,6 +29,17 @@ import java.util.List;
  */
 public class CommandMessageTask implements Task {
 
+	public CommandMessageTask(
+		String key, LCSConnectionManager lcsConnectionManager) {
+
+		_key = key;
+		_lcsConnectionManager = lcsConnectionManager;
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Initialized " + this);
+		}
+	}
+
 	@Override
 	public void run() {
 		try {
@@ -38,16 +48,6 @@ public class CommandMessageTask implements Task {
 		catch (Exception e) {
 			_log.error(e, e);
 		}
-	}
-
-	public void setKeyGenerator(KeyGenerator keyGenerator) {
-		_keyGenerator = keyGenerator;
-	}
-
-	public void setLCSConnectionManager(
-		LCSConnectionManager lcsConnectionManager) {
-
-		_lcsConnectionManager = lcsConnectionManager;
 	}
 
 	protected void doRun() throws Exception {
@@ -64,11 +64,10 @@ public class CommandMessageTask implements Task {
 		}
 
 		if (_log.isTraceEnabled()) {
-			_log.trace("Checking messages for " + _keyGenerator.getKey());
+			_log.trace("Checking messages for " + _key);
 		}
 
-		List<Message> messages = _lcsConnectionManager.getMessages(
-			_keyGenerator.getKey());
+		List<Message> messages = _lcsConnectionManager.getMessages(_key);
 
 		for (Message message : messages) {
 			if (_log.isTraceEnabled()) {
@@ -88,10 +87,19 @@ public class CommandMessageTask implements Task {
 		}
 	}
 
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Finalized " + this);
+		}
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		CommandMessageTask.class);
 
-	private KeyGenerator _keyGenerator;
-	private LCSConnectionManager _lcsConnectionManager;
+	private final String _key;
+	private final LCSConnectionManager _lcsConnectionManager;
 
 }

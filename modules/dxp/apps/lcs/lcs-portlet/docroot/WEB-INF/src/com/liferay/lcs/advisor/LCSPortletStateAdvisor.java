@@ -17,7 +17,6 @@ package com.liferay.lcs.advisor;
 import com.liferay.lcs.rest.client.LCSSubscriptionEntry;
 import com.liferay.lcs.rest.client.LCSSubscriptionEntryClient;
 import com.liferay.lcs.util.KeyGenerator;
-import com.liferay.lcs.util.LCSConnectionManager;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
@@ -34,10 +33,6 @@ import javax.servlet.http.HttpServletResponse;
 public class LCSPortletStateAdvisor {
 
 	public LCSPortletState getLCSPortletState(boolean checkSubscription) {
-		if (!_lcsConnectionManager.isLCSGatewayAvailable()) {
-			return LCSPortletState.NO_CONNECTION;
-		}
-
 		if (!checkSubscription) {
 			return _lastLCSPortletState;
 		}
@@ -117,6 +112,8 @@ public class LCSPortletStateAdvisor {
 				else {
 					_log.error("Remote service unavailable");
 				}
+
+				_lastLCSPortletState = LCSPortletState.NO_CONNECTION;
 			}
 		}
 
@@ -125,12 +122,6 @@ public class LCSPortletStateAdvisor {
 
 	public void setKeyGenerator(KeyGenerator keyGenerator) {
 		_keyGenerator = keyGenerator;
-	}
-
-	public void setLCSConnectionManager(
-		LCSConnectionManager lcsConnectionManager) {
-
-		_lcsConnectionManager = lcsConnectionManager;
 	}
 
 	public void setLCSSubscriptionEntryClient(
@@ -145,7 +136,6 @@ public class LCSPortletStateAdvisor {
 	private KeyGenerator _keyGenerator;
 	private LCSPortletState _lastLCSPortletState =
 		LCSPortletState.NO_SUBSCRIPTION;
-	private LCSConnectionManager _lcsConnectionManager;
 	private LCSSubscriptionEntryClient _lcsSubscriptionEntryClient;
 
 }

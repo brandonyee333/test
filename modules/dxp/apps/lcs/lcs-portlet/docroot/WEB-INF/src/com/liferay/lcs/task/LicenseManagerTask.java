@@ -29,7 +29,13 @@ import java.util.Map;
  */
 public class LicenseManagerTask implements Task {
 
-	public LicenseManagerTask() {
+	public LicenseManagerTask(
+		LCSConnectionManager lcsConnectionManager,
+		LCSPortletStateAdvisor lcsPortletStateAdvisor) {
+
+		_lcsConnectionManager = lcsConnectionManager;
+		_lcsPortletStateAdvisor = lcsPortletStateAdvisor;
+
 		if (_log.isTraceEnabled()) {
 			_log.trace("Initialized " + this);
 		}
@@ -73,18 +79,6 @@ public class LicenseManagerTask implements Task {
 			"licenseCheckTime", String.valueOf(currentTimeMills));
 	}
 
-	public void setLCSConnectionManager(
-		LCSConnectionManager lcsConnectionManager) {
-
-		_lcsConnectionManager = lcsConnectionManager;
-	}
-
-	public void setLCSPortletStateAdvisor(
-		LCSPortletStateAdvisor lcsPortletStateAdvisor) {
-
-		_lcsPortletStateAdvisor = lcsPortletStateAdvisor;
-	}
-
 	@Override
 	protected void finalize() throws Throwable {
 		super.finalize();
@@ -99,7 +93,7 @@ public class LicenseManagerTask implements Task {
 	private static final Log _log = LogFactoryUtil.getLog(
 		LicenseManagerTask.class);
 
-	private LCSConnectionManager _lcsConnectionManager;
-	private LCSPortletStateAdvisor _lcsPortletStateAdvisor;
+	private final LCSConnectionManager _lcsConnectionManager;
+	private final LCSPortletStateAdvisor _lcsPortletStateAdvisor;
 
 }
