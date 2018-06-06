@@ -51,11 +51,7 @@ public class OAuthJSONWebServiceClientImpl extends JSONWebServiceClientImpl {
 		throws JSONWebServiceInvocationException,
 			   JSONWebServiceTransportException {
 
-		Map<String, String> parameters = new HashMap<>();
-
-		parameters.put("clazz", "com.liferay.portal.model.User");
-
-		String json = doGet(_URL_CLASSNAME_FETCH_CLASS_NAME_ID, parameters);
+		String json = doGet(_URL_OSB_LCS_REST_TEST);
 
 		if (Validator.isNull(json)) {
 			throw new JSONWebServiceInvocationException(
@@ -102,10 +98,7 @@ public class OAuthJSONWebServiceClientImpl extends JSONWebServiceClientImpl {
 		return super.execute(httpRequestBase);
 	}
 
-	private static final String _URL_CLASSNAME = "/api/jsonws/classname/";
-
-	private static final String _URL_CLASSNAME_FETCH_CLASS_NAME_ID =
-		_URL_CLASSNAME + "fetch-class-name-id";
+	private static final String _URL_OSB_LCS_REST_TEST = "/o/osb-lcs-rest/";
 
 	private String _accessSecret;
 	private String _accessToken;
