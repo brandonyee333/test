@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.portlet.PortletQName;
 import com.liferay.portal.kernel.service.ReleaseLocalServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -48,6 +47,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.concurrent.atomic.AtomicLong;
 
 import javax.portlet.PortletPreferences;
 
@@ -225,11 +225,8 @@ public class LCSUtil {
 			return false;
 		}
 
-		String lcsAccessTokenNextValidityCheck = jxPortletPreferences.getValue(
-			"lcsAccessTokenNextValidityCheck", null);
-
 		if (System.currentTimeMillis() <
-				GetterUtil.getLong(lcsAccessTokenNextValidityCheck)) {
+				_lcsAccessTokenNextValidityCheckMillis.get()) {
 
 			return true;
 		}
@@ -252,19 +249,8 @@ public class LCSUtil {
 			return false;
 		}
 
-		long lcsAccessTokenNextValidityCheckMillis =
-			System.currentTimeMillis() + 300000;
-
-		try {
-			LCSPortletPreferencesUtil.store(
-				"lcsAccessTokenNextValidityCheck",
-				String.valueOf(lcsAccessTokenNextValidityCheckMillis));
-		}
-		catch (Exception e) {
-			if (_log.isWarnEnabled()) {
-				_log.warn("Unable to store portlet preferences", e);
-			}
-		}
+		_lcsAccessTokenNextValidityCheckMillis.set(
+			System.currentTimeMillis() + 300000);
 
 		return true;
 	}
@@ -377,6 +363,8 @@ public class LCSUtil {
 
 	private static JSONWebServiceClient _jsonWebServiceClient;
 	private static KeyGenerator _keyGenerator;
+	private static final AtomicLong _lcsAccessTokenNextValidityCheckMillis =
+		new AtomicLong(0);
 	private static LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
 	private static LCSClusterNodeClient _lcsClusterNodeClient;
 
