@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author Igor Beslic
@@ -45,14 +46,12 @@ public class LCSThreadFactory implements ThreadFactory {
 		sb.append(clazz.getSimpleName());
 
 		sb.append(StringPool.SPACE);
-		sb.append(_counter);
-
-		_counter++;
+		sb.append(_counter.incrementAndGet());
 
 		return sb.toString();
 	}
 
-	private long _counter;
+	private final AtomicLong _counter = new AtomicLong(0);
 	private final LCSUncaughtExceptionHandler _lcsUncaughtExceptionHandler =
 		new LCSUncaughtExceptionHandler();
 	private final ThreadFactory _threadFactory =

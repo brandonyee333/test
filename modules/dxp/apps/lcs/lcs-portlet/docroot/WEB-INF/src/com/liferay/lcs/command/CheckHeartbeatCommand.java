@@ -16,28 +16,24 @@ package com.liferay.lcs.command;
 
 import com.liferay.lcs.messaging.CommandMessage;
 import com.liferay.lcs.task.HeartbeatTask;
+import com.liferay.lcs.util.KeyGenerator;
+import com.liferay.lcs.util.LCSConnectionManager;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author Ivica Cardic
  */
 public class CheckHeartbeatCommand implements Command {
 
-	public void destroy() {
-		_executorService.shutdown();
+	public CheckHeartbeatCommand(
+		KeyGenerator keyGenerator, LCSConnectionManager lcsConnectionManager) {
 
-		try {
-			if (!_executorService.awaitTermination(5, TimeUnit.SECONDS)) {
-				_executorService.shutdownNow();
-			}
-		}
-		catch (InterruptedException ie) {
-			_executorService.shutdownNow();
+		_keyGenerator = keyGenerator;
+		_lcsConnectionManager = lcsConnectionManager;
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Initialized " + this);
 		}
 	}
 
@@ -47,18 +43,25 @@ public class CheckHeartbeatCommand implements Command {
 			_log.trace("Executing check heartbeat command");
 		}
 
-		_executorService.execute(_heartbeatTask);
+		HeartbeatTask heartbeatTask = new HeartbeatTask(
+			_keyGenerator.getKey(), _lcsConnectionManager);
+
+		heartbeatTask.run();
 	}
 
-	public void setHeartbeatTask(HeartbeatTask heartbeatTask) {
-		_heartbeatTask = heartbeatTask;
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Finalized " + this);
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CheckHeartbeatCommand.class);
 
-	private final ExecutorService _executorService =
-		Executors.newCachedThreadPool();
-	private HeartbeatTask _heartbeatTask;
+	private final KeyGenerator _keyGenerator;
+	private final LCSConnectionManager _lcsConnectionManager;
 
 }
