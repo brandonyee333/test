@@ -168,6 +168,7 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 					Thread.sleep(RandomUtil.nextInt(1000));
 				}
 				catch (InterruptedException ie) {
+					_log.error(ie, ie);
 				}
 
 				boolean otherClusterNodesConnected = false;
@@ -245,6 +246,7 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 			Thread.sleep(RandomUtil.nextInt(_scheduleDelayMax));
 		}
 		catch (Exception e) {
+			_log.error(e, e);
 		}
 
 		String jobName = getJobName(schedulerContext);

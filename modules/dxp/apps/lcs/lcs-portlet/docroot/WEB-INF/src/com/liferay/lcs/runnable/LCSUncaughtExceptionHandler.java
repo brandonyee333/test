@@ -26,7 +26,7 @@ public class LCSUncaughtExceptionHandler
 	@Override
 	public void uncaughtException(Thread thread, Throwable throwable) {
 		_log.error(
-			"Uncaught exception is detected in  " + thread.getName() +
+			"Uncaught exception is detected in " + thread.getName() +
 				" thread");
 
 		_log.error(throwable.getMessage(), throwable);
