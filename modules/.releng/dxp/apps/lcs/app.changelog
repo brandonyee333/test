@@ -173,3 +173,14 @@ app.artifacts-4.1.4=\
 app.change.log-4.1.4=CLDSVCS-3093 CLDSVCS-3149 LPS-78033
 
 app.git.id-4.1.4=6085ad14ff22158b760fd1bea103ab91a9c1968d
+
+#
+# Liferay App Version 4.2.0
+#
+
+app.artifacts-4.2.0=\
+	lcs-portlet-7.0.10.72.war
+
+app.change.log-4.2.0=CLDSVCS-3459 CLDSVCS-3465 CLDSVCS-3466 CLDSVCS-3480
+
+app.git.id-4.2.0=4f98f35bed3e39ca568eea5504d5481bd352743f
