@@ -85,9 +85,8 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 		int maxServers, int maxHttpSessions, java.lang.String description,
 		java.lang.String[] hostNames, java.lang.String[] ipAddresses,
 		java.lang.String[] macAddresses, java.lang.String[] serverIds,
-		int startDateMonth, int startDateDay, int startDateYear,
-		java.lang.String additionalInfo, boolean complimentary, boolean active)
-		throws PortalException;
+		Date startDate, Date expirationDate, java.lang.String additionalInfo,
+		boolean complimentary, boolean active) throws PortalException;
 
 	public LicenseKey addLicenseKey(long userId,
 		java.lang.String assetReceiptLicenseUuid,
@@ -104,9 +103,8 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 		java.lang.String owner, int maxServers, int maxHttpSessions,
 		java.lang.String description, java.lang.String[] hostNames,
 		java.lang.String[] ipAddresses, java.lang.String[] macAddresses,
-		java.lang.String[] serverIds, int startDateMonth, int startDateDay,
-		int startDateYear, boolean complimentary, boolean active)
-		throws PortalException;
+		java.lang.String[] serverIds, Date startDate, boolean complimentary,
+		boolean active) throws PortalException;
 
 	/**
 	* Creates a new license key with the primary key. Does not add the license key to the database.

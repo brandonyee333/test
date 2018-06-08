@@ -70,15 +70,14 @@ public class LicenseKeyServiceUtil {
 		int maxHttpSessions, java.lang.String description,
 		java.lang.String[] hostNames, java.lang.String[] ipAddresses,
 		java.lang.String[] macAddresses, java.lang.String[] serverIds,
-		int startDateMonth, int startDateDay, int startDateYear,
-		boolean complimentary, boolean active)
+		java.util.Date startDate, boolean complimentary, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addLicenseKey(userId, licenseKeySetId, name,
 			offeringEntryId, licenseEntryId, productEntryId, productVersion,
 			clusterId, owner, maxServers, maxHttpSessions, description,
-			hostNames, ipAddresses, macAddresses, serverIds, startDateMonth,
-			startDateDay, startDateYear, complimentary, active);
+			hostNames, ipAddresses, macAddresses, serverIds, startDate,
+			complimentary, active);
 	}
 
 	public static com.liferay.osb.model.LicenseKey getLicenseKey(
@@ -190,6 +189,13 @@ public class LicenseKeyServiceUtil {
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
 		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	public static java.lang.String generateWeDeployLicenseKey(
+		java.lang.String owner, java.util.Date startDate, long licenseLifetime)
+		throws java.lang.Exception {
+		return getService()
+				   .generateWeDeployLicenseKey(owner, startDate, licenseLifetime);
 	}
 
 	/**

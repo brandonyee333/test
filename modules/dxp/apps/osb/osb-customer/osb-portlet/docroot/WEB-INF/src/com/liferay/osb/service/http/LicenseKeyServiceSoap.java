@@ -72,15 +72,15 @@ public class LicenseKeyServiceSoap {
 		int maxServers, int maxHttpSessions, java.lang.String description,
 		java.lang.String[] hostNames, java.lang.String[] ipAddresses,
 		java.lang.String[] macAddresses, java.lang.String[] serverIds,
-		int startDateMonth, int startDateDay, int startDateYear,
-		boolean complimentary, boolean active) throws RemoteException {
+		java.util.Date startDate, boolean complimentary, boolean active)
+		throws RemoteException {
 		try {
 			com.liferay.osb.model.LicenseKey returnValue = LicenseKeyServiceUtil.addLicenseKey(userId,
 					licenseKeySetId, name, offeringEntryId, licenseEntryId,
 					productEntryId, productVersion, clusterId, owner,
 					maxServers, maxHttpSessions, description, hostNames,
-					ipAddresses, macAddresses, serverIds, startDateMonth,
-					startDateDay, startDateYear, complimentary, active);
+					ipAddresses, macAddresses, serverIds, startDate,
+					complimentary, active);
 
 			return com.liferay.osb.model.LicenseKeySoap.toSoapModel(returnValue);
 		}
@@ -107,6 +107,22 @@ public class LicenseKeyServiceSoap {
 					serverId, startDate, expirationDate);
 
 			return com.liferay.osb.model.LicenseKeySoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static java.lang.String generateWeDeployLicenseKey(
+		java.lang.String owner, java.util.Date startDate, long licenseLifetime)
+		throws RemoteException {
+		try {
+			java.lang.String returnValue = LicenseKeyServiceUtil.generateWeDeployLicenseKey(owner,
+					startDate, licenseLifetime);
+
+			return returnValue;
 		}
 		catch (Exception e) {
 			_log.error(e, e);

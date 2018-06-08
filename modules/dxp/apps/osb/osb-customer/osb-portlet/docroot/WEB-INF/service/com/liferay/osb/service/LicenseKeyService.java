@@ -77,9 +77,8 @@ public interface LicenseKeyService extends BaseService, InvokableService {
 		java.lang.String owner, int maxServers, int maxHttpSessions,
 		java.lang.String description, java.lang.String[] hostNames,
 		java.lang.String[] ipAddresses, java.lang.String[] macAddresses,
-		java.lang.String[] serverIds, int startDateMonth, int startDateDay,
-		int startDateYear, boolean complimentary, boolean active)
-		throws PortalException;
+		java.lang.String[] serverIds, Date startDate, boolean complimentary,
+		boolean active) throws PortalException;
 
 	@JSONWebService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -150,6 +149,10 @@ public interface LicenseKeyService extends BaseService, InvokableService {
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable;
+
+	@JSONWebService
+	public java.lang.String generateWeDeployLicenseKey(java.lang.String owner,
+		Date startDate, long licenseLifetime) throws java.lang.Exception;
 
 	/**
 	* Returns the OSGi service identifier.

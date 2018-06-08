@@ -132,8 +132,8 @@ public class LicenseKeyLocalServiceClpInvoker {
 				"com.liferay.osb.model.ProductEntry", "int", "long",
 				"java.lang.String", "int", "int", "java.lang.String",
 				"java.lang.String[][]", "java.lang.String[][]",
-				"java.lang.String[][]", "java.lang.String[][]", "int", "int",
-				"int", "java.lang.String", "boolean", "boolean"
+				"java.lang.String[][]", "java.lang.String[][]", "java.util.Date",
+				"java.util.Date", "java.lang.String", "boolean", "boolean"
 			};
 
 		_methodName188 = "addLicenseKey";
@@ -143,8 +143,7 @@ public class LicenseKeyLocalServiceClpInvoker {
 				"int", "long", "java.lang.String", "int", "int",
 				"java.lang.String", "java.lang.String[][]",
 				"java.lang.String[][]", "java.lang.String[][]",
-				"java.lang.String[][]", "int", "int", "int", "boolean",
-				"boolean"
+				"java.lang.String[][]", "java.util.Date", "boolean", "boolean"
 			};
 
 		_methodName189 = "addLicenseKey";
@@ -482,12 +481,10 @@ public class LicenseKeyLocalServiceClpInvoker {
 				(java.lang.String[])arguments[13],
 				(java.lang.String[])arguments[14],
 				(java.lang.String[])arguments[15],
-				((Integer)arguments[16]).intValue(),
-				((Integer)arguments[17]).intValue(),
-				((Integer)arguments[18]).intValue(),
-				(java.lang.String)arguments[19],
-				((Boolean)arguments[20]).booleanValue(),
-				((Boolean)arguments[21]).booleanValue());
+				(java.util.Date)arguments[16], (java.util.Date)arguments[17],
+				(java.lang.String)arguments[18],
+				((Boolean)arguments[19]).booleanValue(),
+				((Boolean)arguments[20]).booleanValue());
 		}
 
 		if (_methodName188.equals(name) &&
@@ -508,11 +505,9 @@ public class LicenseKeyLocalServiceClpInvoker {
 				(java.lang.String[])arguments[13],
 				(java.lang.String[])arguments[14],
 				(java.lang.String[])arguments[15],
-				((Integer)arguments[16]).intValue(),
-				((Integer)arguments[17]).intValue(),
-				((Integer)arguments[18]).intValue(),
-				((Boolean)arguments[19]).booleanValue(),
-				((Boolean)arguments[20]).booleanValue());
+				(java.util.Date)arguments[16],
+				((Boolean)arguments[17]).booleanValue(),
+				((Boolean)arguments[18]).booleanValue());
 		}
 
 		if (_methodName189.equals(name) &&

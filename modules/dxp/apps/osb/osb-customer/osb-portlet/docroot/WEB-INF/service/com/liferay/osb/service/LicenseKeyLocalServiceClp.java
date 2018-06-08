@@ -41,8 +41,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 				"com.liferay.osb.model.ProductEntry", "int", "long",
 				"java.lang.String", "int", "int", "java.lang.String",
 				"java.lang.String[][]", "java.lang.String[][]",
-				"java.lang.String[][]", "java.lang.String[][]", "int", "int",
-				"int", "java.lang.String", "boolean", "boolean"
+				"java.lang.String[][]", "java.lang.String[][]", "java.util.Date",
+				"java.util.Date", "java.lang.String", "boolean", "boolean"
 			};
 
 		_methodName2 = "addLicenseKey";
@@ -62,8 +62,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 				"int", "long", "java.lang.String", "int", "int",
 				"java.lang.String", "java.lang.String[][]",
 				"java.lang.String[][]", "java.lang.String[][]",
-				"java.lang.String[][]", "int", "int", "int", "boolean",
-				"boolean"
+				"java.lang.String[][]", "java.util.Date", "boolean", "boolean"
 			};
 
 		_methodName4 = "createLicenseKey";
@@ -392,7 +391,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		int maxHttpSessions, java.lang.String description,
 		java.lang.String[] hostNames, java.lang.String[] ipAddresses,
 		java.lang.String[] macAddresses, java.lang.String[] serverIds,
-		int startDateMonth, int startDateDay, int startDateYear,
+		java.util.Date startDate, java.util.Date expirationDate,
 		java.lang.String additionalInfo, boolean complimentary, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
@@ -433,11 +432,9 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 						
 					ClpSerializer.translateInput(serverIds),
 						
-					startDateMonth,
+					ClpSerializer.translateInput(startDate),
 						
-					startDateDay,
-						
-					startDateYear,
+					ClpSerializer.translateInput(expirationDate),
 						
 					ClpSerializer.translateInput(additionalInfo),
 						
@@ -539,8 +536,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		int maxHttpSessions, java.lang.String description,
 		java.lang.String[] hostNames, java.lang.String[] ipAddresses,
 		java.lang.String[] macAddresses, java.lang.String[] serverIds,
-		int startDateMonth, int startDateDay, int startDateYear,
-		boolean complimentary, boolean active)
+		java.util.Date startDate, boolean complimentary, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
@@ -580,11 +576,7 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 						
 					ClpSerializer.translateInput(serverIds),
 						
-					startDateMonth,
-						
-					startDateDay,
-						
-					startDateYear,
+					ClpSerializer.translateInput(startDate),
 						
 					complimentary,
 						

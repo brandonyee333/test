@@ -56,14 +56,14 @@ public class LicenseKeyLocalServiceWrapper implements LicenseKeyLocalService,
 		int maxHttpSessions, java.lang.String description,
 		java.lang.String[] hostNames, java.lang.String[] ipAddresses,
 		java.lang.String[] macAddresses, java.lang.String[] serverIds,
-		int startDateMonth, int startDateDay, int startDateYear,
+		java.util.Date startDate, java.util.Date expirationDate,
 		java.lang.String additionalInfo, boolean complimentary, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _licenseKeyLocalService.addLicenseKey(userId, licenseKeySet,
 			name, offeringEntry, licenseEntry, productEntry, productVersion,
 			clusterId, owner, maxServers, maxHttpSessions, description,
-			hostNames, ipAddresses, macAddresses, serverIds, startDateMonth,
-			startDateDay, startDateYear, additionalInfo, complimentary, active);
+			hostNames, ipAddresses, macAddresses, serverIds, startDate,
+			expirationDate, additionalInfo, complimentary, active);
 	}
 
 	@Override
@@ -90,14 +90,13 @@ public class LicenseKeyLocalServiceWrapper implements LicenseKeyLocalService,
 		int maxHttpSessions, java.lang.String description,
 		java.lang.String[] hostNames, java.lang.String[] ipAddresses,
 		java.lang.String[] macAddresses, java.lang.String[] serverIds,
-		int startDateMonth, int startDateDay, int startDateYear,
-		boolean complimentary, boolean active)
+		java.util.Date startDate, boolean complimentary, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _licenseKeyLocalService.addLicenseKey(userId, licenseKeySetId,
 			name, offeringEntryId, licenseEntryId, productEntryId,
 			productVersion, clusterId, owner, maxServers, maxHttpSessions,
 			description, hostNames, ipAddresses, macAddresses, serverIds,
-			startDateMonth, startDateDay, startDateYear, complimentary, active);
+			startDate, complimentary, active);
 	}
 
 	/**
