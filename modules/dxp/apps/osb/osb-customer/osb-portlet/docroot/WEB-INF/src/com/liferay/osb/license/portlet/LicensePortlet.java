@@ -42,6 +42,7 @@ import com.liferay.osb.service.LicenseKeySetServiceUtil;
 import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -67,6 +68,7 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -331,6 +333,10 @@ public class LicensePortlet extends MVCPortlet {
 			actionRequest, "startDateYear");
 		boolean active = ParamUtil.getBoolean(actionRequest, "active");
 
+		Date startDate = PortalUtil.getDate(
+			startDateMonth, startDateDay, startDateYear,
+			themeDisplay.getTimeZone(), (Class<? extends PortalException>)null);
+
 		List<String> hostNames = new ArrayList<>();
 		List<String> ipAddresses = new ArrayList<>();
 		List<String> macAddresses = new ArrayList<>();
@@ -372,8 +378,7 @@ public class LicensePortlet extends MVCPortlet {
 				hostNames.toArray(new String[hostNames.size()]),
 				ipAddresses.toArray(new String[ipAddresses.size()]),
 				macAddresses.toArray(new String[macAddresses.size()]),
-				serverIds, startDateMonth, startDateDay, startDateYear, false,
-				true);
+				serverIds, startDate, false, true);
 
 			actionRequest.setAttribute("clusterId", licenseKey.getClusterId());
 			actionRequest.setAttribute(

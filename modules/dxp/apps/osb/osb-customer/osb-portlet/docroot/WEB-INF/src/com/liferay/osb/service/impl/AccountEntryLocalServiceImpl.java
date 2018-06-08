@@ -511,9 +511,8 @@ public class AccountEntryLocalServiceImpl
 			userId, null, "Trial Licenses", offeringEntry, licenseEntry, null,
 			productVersion, 0, user.getFullName(), 1, 5, "30-Day Trial License",
 			new String[0], new String[0], new String[0],
-			new String[] {LicenseKeyConstants.SERVER_ID_DEVELOPER},
-			cal.get(Calendar.MONTH), cal.get(Calendar.DATE),
-			cal.get(Calendar.YEAR), StringPool.BLANK, false, true);
+			new String[] {LicenseKeyConstants.SERVER_ID_DEVELOPER}, new Date(),
+			null, StringPool.BLANK, false, true);
 
 		licenseKeyLocalService.sendRegisteredEmail(user, licenseKey);
 

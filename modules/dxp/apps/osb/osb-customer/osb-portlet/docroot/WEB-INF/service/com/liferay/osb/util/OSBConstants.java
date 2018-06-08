@@ -25,6 +25,8 @@ public class OSBConstants {
 
 	public static long ACCOUNT_ENTRY_TRIAL_ID = 8264303;
 
+	public static long ACCOUNT_ENTRY_WEDEPLOY_ID = 94686572;
+
 	public static final String ATTACHMENTS_DIR_ACCOUNT_ENTRY =
 		"osb/accountentry/";
 

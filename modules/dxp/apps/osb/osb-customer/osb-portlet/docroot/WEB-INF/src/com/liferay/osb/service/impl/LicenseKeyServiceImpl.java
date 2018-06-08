@@ -15,7 +15,9 @@
 package com.liferay.osb.service.impl;
 
 import com.liferay.osb.exception.MaximumLicenseKeyException;
+import com.liferay.osb.exception.NoSuchOfferingEntryException;
 import com.liferay.osb.exception.OfferingEntryStatusException;
+import com.liferay.osb.license.util.LicenseUtil;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.AccountWorkerConstants;
@@ -24,6 +26,7 @@ import com.liferay.osb.model.LicenseEntryConstants;
 import com.liferay.osb.model.LicenseKey;
 import com.liferay.osb.model.LicenseKeyConstants;
 import com.liferay.osb.model.OfferingEntry;
+import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.OfferingEntryGroup;
 import com.liferay.osb.model.OfferingEntryGroupFactoryUtil;
 import com.liferay.osb.model.OrderEntry;
@@ -43,10 +46,10 @@ import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -64,8 +67,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			int productVersion, long clusterId, String owner, int maxServers,
 			int maxHttpSessions, String description, String[] hostNames,
 			String[] ipAddresses, String[] macAddresses, String[] serverIds,
-			int startDateMonth, int startDateDay, int startDateYear,
-			boolean complimentary, boolean active)
+			Date startDate, boolean complimentary, boolean active)
 		throws PortalException {
 
 		OfferingEntry offeringEntry =
@@ -95,9 +97,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			}
 		}
 
-		if (Validator.isGregorianDate(
-				startDateMonth, startDateDay, startDateYear)) {
-
+		if (startDate != null) {
 			if (!roleLocalService.hasUserRole(
 					getUserId(), OSBConstants.ROLE_OSB_ACCOUNT_ADMIN_ID) &&
 				!roleLocalService.hasUserRole(
@@ -111,8 +111,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			userId, licenseKeySetId, name, offeringEntryId, licenseEntryId,
 			productEntryId, productVersion, clusterId, owner, maxServers,
 			maxHttpSessions, description, hostNames, ipAddresses, macAddresses,
-			serverIds, startDateMonth, startDateDay, startDateYear, false,
-			true);
+			serverIds, startDate, false, true);
 	}
 
 	@JSONWebService
@@ -134,6 +133,33 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			productEntryName, productId, productVersion, owner, maxUsers,
 			description, hostName, ipAddresses, macAddresses, serverId,
 			startDate, expirationDate);
+	}
+
+	@JSONWebService
+	public String generateWeDeployLicenseKey(
+			String owner, Date startDate, long licenseLifetime)
+		throws Exception {
+
+		validateJSONWebServicePermissions();
+
+		OfferingEntry offeringEntry = getWeDeployOfferingEntry();
+
+		LicenseEntry licenseEntry = licenseEntryPersistence.findByPEI_T(
+			offeringEntry.getProductEntryId(),
+			LicenseEntryConstants.TYPE_DEVELOPER);
+
+		Date expirationDate = new Date(startDate.getTime() + licenseLifetime);
+
+		LicenseKey licenseKey = licenseKeyLocalService.addLicenseKey(
+			getUserId(), null, "WeDeploy Trial Activation Key", offeringEntry,
+			licenseEntry, null,
+			ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7_0_10, 0, owner,
+			0, 5, "WeDeploy Trial Activation Key", new String[0], new String[0],
+			new String[0],
+			new String[] {LicenseKeyConstants.SERVER_ID_DEVELOPER}, startDate,
+			expirationDate, StringPool.BLANK, false, true);
+
+		return LicenseUtil.exportToXML(licenseKey);
 	}
 
 	@JSONWebService
@@ -353,10 +379,6 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 		int productVersion = getProductVersion(liferayVersion);
 
-		Calendar cal = Calendar.getInstance();
-
-		cal.setTime(orderEntry.getStartDate());
-
 		try {
 			return licenseKeyLocalService.addLicenseKey(
 				offeringEntry.getUserId(), 0, accountEntry.getName(),
@@ -364,8 +386,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 				productVersion, 0, accountEntry.getName(), maxServers, 0,
 				accountEntry.getName(), new String[] {hostName},
 				new String[] {ipAddresses}, new String[] {macAddresses},
-				new String[] {serverId}, cal.get(Calendar.MONTH),
-				cal.get(Calendar.DATE), cal.get(Calendar.YEAR), false, true);
+				new String[] {serverId}, orderEntry.getStartDate(), false,
+				true);
 		}
 		catch (MaximumLicenseKeyException mlke) {
 		}
@@ -653,6 +675,31 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		}
 
 		return ProductEntryConstants.PORTAL_VERSION_6_1_10;
+	}
+
+	protected OfferingEntry getWeDeployOfferingEntry() throws PortalException {
+		List<OrderEntry> orderEntries =
+			orderEntryLocalService.getAccountEntryOrderEntries(
+				OSBConstants.ACCOUNT_ENTRY_WEDEPLOY_ID);
+
+		for (OrderEntry orderEntry : orderEntries) {
+			List<OfferingEntry> offeringEntries =
+				offeringEntryLocalService.getOrderEntryOfferingEntries(
+					orderEntry.getOrderEntryId());
+
+			for (OfferingEntry offeringEntry : offeringEntries) {
+				if (offeringEntry.getType() ==
+						OfferingEntryConstants.TYPE_SUBSCRIPTION) {
+
+					//TODO requires LRIS-26928
+					//OfferingEntryConstants.TYPE_DEVELOPER) {
+
+					return offeringEntry;
+				}
+			}
+		}
+
+		throw new NoSuchOfferingEntryException();
 	}
 
 	protected boolean isAccountAdmin(long userId) {

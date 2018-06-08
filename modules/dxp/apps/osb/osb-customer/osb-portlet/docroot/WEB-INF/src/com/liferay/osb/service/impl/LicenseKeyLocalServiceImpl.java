@@ -79,7 +79,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.TimeZone;
 
 import org.apache.commons.lang.time.DateUtils;
 
@@ -95,9 +94,9 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			ProductEntry productEntry, int productVersion, long clusterId,
 			String owner, int maxServers, int maxHttpSessions,
 			String description, String[] hostNames, String[] ipAddresses,
-			String[] macAddresses, String[] serverIds, int startDateMonth,
-			int startDateDay, int startDateYear, String additionalInfo,
-			boolean complimentary, boolean active)
+			String[] macAddresses, String[] serverIds, Date startDate,
+			Date expirationDate, String additionalInfo, boolean complimentary,
+			boolean active)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
@@ -115,21 +114,22 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		Date now = new Date();
 
-		Date defaultStartDate = orderEntry.getStartDate();
+		if (startDate == null) {
+			if (licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER) ||
+				licenseEntryType.equals(
+					LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)) {
 
-		if (licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER) ||
-			licenseEntryType.equals(
-				LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)) {
-
-			defaultStartDate = now;
+				startDate = now;
+			}
+			else {
+				startDate = orderEntry.getStartDate();
+			}
 		}
 
-		Date startDate = getLicenseKeyStartDate(
-			startDateMonth, startDateDay, startDateYear, user.getTimeZone(),
-			defaultStartDate);
-
-		Date expirationDate = new Date(
-			startDate.getTime() + offeringEntry.getLicenseLifetime());
+		if (expirationDate == null) {
+			expirationDate = new Date(
+				startDate.getTime() + offeringEntry.getLicenseLifetime());
+		}
 
 		validate(
 			offeringEntry, licenseEntry, licenseVersion, productEntry,
@@ -166,8 +166,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			int productVersion, long clusterId, String owner, int maxServers,
 			int maxHttpSessions, String description, String[] hostNames,
 			String[] ipAddresses, String[] macAddresses, String[] serverIds,
-			int startDateMonth, int startDateDay, int startDateYear,
-			boolean complimentary, boolean active)
+			Date startDate, boolean complimentary, boolean active)
 		throws PortalException {
 
 		LicenseKeySet licenseKeySet = null;
@@ -193,8 +192,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			userId, licenseKeySet, name, offeringEntry, licenseEntry,
 			productEntry, productVersion, clusterId, owner, maxServers,
 			maxHttpSessions, description, hostNames, ipAddresses, macAddresses,
-			serverIds, startDateMonth, startDateDay, startDateYear,
-			StringPool.BLANK, complimentary, active);
+			serverIds, startDate, null, StringPool.BLANK, complimentary,
+			active);
 	}
 
 	public LicenseKey addLicenseKey(
@@ -548,8 +547,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		LicenseKeySet licenseKeySet = licenseKeySetPersistence.findByPrimaryKey(
 			lastLicenseKey.getLicenseKeySetId());
 
-		Calendar cal = Calendar.getInstance(user.getTimeZone());
-
 		OfferingEntry offeringEntry = offeringEntryPersistence.findByPrimaryKey(
 			lastLicenseKey.getOfferingEntryId());
 
@@ -562,9 +559,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			lastLicenseKey.getLicenseEntry(), null,
 			lastLicenseKey.getProductVersion(), 0, user.getFullName(), 1, 5,
 			"30-Day Trial License", new String[0], new String[0], new String[0],
-			new String[] {LicenseKeyConstants.SERVER_ID_DEVELOPER},
-			cal.get(Calendar.MONTH), cal.get(Calendar.DATE),
-			cal.get(Calendar.YEAR), StringPool.BLANK, false, true);
+			new String[] {LicenseKeyConstants.SERVER_ID_DEVELOPER}, new Date(),
+			null, StringPool.BLANK, false, true);
 
 		offeringEntry.setSupportEndDate(licenseKey.getExpirationDate());
 
@@ -1285,20 +1281,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	protected String getCounterName(long offeringEntryId) {
 		return LicenseKey.class.getName().concat(StringPool.POUND).concat(
 			String.valueOf(offeringEntryId));
-	}
-
-	protected Date getLicenseKeyStartDate(
-			int month, int day, int year, TimeZone timeZone, Date defaultDate)
-		throws PortalException {
-
-		Date startDate = PortalUtil.getDate(
-			month, day, year, timeZone, (Class<? extends PortalException>)null);
-
-		if (startDate == null) {
-			startDate = defaultDate;
-		}
-
-		return startDate;
 	}
 
 	protected void sendRegisteredEmail(
