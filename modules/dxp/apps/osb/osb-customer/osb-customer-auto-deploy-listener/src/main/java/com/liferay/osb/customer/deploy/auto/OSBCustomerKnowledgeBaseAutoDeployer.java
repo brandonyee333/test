@@ -63,13 +63,13 @@ public class OSBCustomerKnowledgeBaseAutoDeployer implements AutoDeployer {
 
 		List<String> urlTitles = new ArrayList<>();
 
-		for (int i = 0; i < fileParts.length; i++) {
-			if (fileParts[i].equals("dxp") || fileParts[i].equals("lp")) {
+		for (String filePart : fileParts) {
+			if (filePart.equals("dxp") || filePart.equals("lp")) {
 				continue;
 			}
 
 			String urlTitle = StringUtil.replace(
-				fileParts[i], ".zip", StringPool.BLANK);
+				filePart, ".zip", StringPool.BLANK);
 
 			urlTitle = StringUtil.replace(
 				urlTitle, CharPool.PERIOD, CharPool.DASH);
