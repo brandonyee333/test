@@ -42,8 +42,8 @@ long[] pooledActorsIds = WorkflowTaskManagerUtil.getPooledActorsIds(company.getC
 %>
 
 <liferay-ui:icon-menu
-	showExpanded="<%= (row == null) %>"
-	showWhenSingleIcon="<%= (row == null) %>"
+	showExpanded="<%= row == null %>"
+	showWhenSingleIcon="<%= row == null %>"
 >
 	<c:if test="<%= !workflowTask.isCompleted() && OSBCustomerWorkFlowTaskUtil.isAssignedToUser(workflowTask, user) %>">
 
