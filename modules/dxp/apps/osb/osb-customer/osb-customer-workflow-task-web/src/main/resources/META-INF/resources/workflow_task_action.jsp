@@ -14,16 +14,10 @@
  */
 --%>
 
-<%@ include file="/init.jsp" %>
-
-<liferay-util:include page="/workflow_task_action.portal.jsp" servletContext="<%= application %>" />
+<%@ include file="/workflow_task_action.portal.jsp" %>
 
 <%
-ResultRow row = (ResultRow)request.getAttribute(WebKeys.SEARCH_CONTAINER_RESULT_ROW);
-
 boolean updateTask = false;
-
-WorkflowTask workflowTask = workflowTaskDisplayContext.getWorkflowTask();
 
 if (workflowTask != null) {
 	WorkflowInstance workflowInstance = WorkflowInstanceManagerUtil.getWorkflowInstance(company.getCompanyId(), workflowTask.getWorkflowInstanceId());
@@ -49,15 +43,13 @@ if (workflowTask != null) {
 		}
 	</c:if>
 
-	<c:if test="<%= row == null %>">
-		var closeButtonElement = A.one('#<portlet:namespace />closetaskChangeStatusLink');
+	var closeButtonElement = A.one('#<portlet:namespace /><%= randomId %>closetaskChangeStatusLink');
 
-		if (closeButtonElement) {
-			var parentElement = closeButtonElement.ancestor('li');
+	if (closeButtonElement) {
+		var parentElement = closeButtonElement.ancestor('li');
 
-			if (parentElement) {
-				parentElement.hide();
-			}
+		if (parentElement) {
+			parentElement.hide();
 		}
-	</c:if>
+	}
 </aui:script>
