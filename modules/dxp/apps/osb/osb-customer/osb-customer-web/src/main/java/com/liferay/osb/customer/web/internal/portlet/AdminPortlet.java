@@ -102,11 +102,11 @@ public class AdminPortlet extends MVCPortlet {
 			String fileName = uploadPortletRequest.getFileName("file");
 
 			if (Validator.isNull(fileName)) {
-				throw new KBArticleImportException("File name is null.");
+				throw new KBArticleImportException("File name is null");
 			}
 
 			if (!fileName.endsWith(".csv")) {
-				throw new KBArticleImportException("Please upload a csv file.");
+				throw new KBArticleImportException("Please upload a csv file");
 			}
 
 			inputStream = uploadPortletRequest.getFileAsStream("file");
