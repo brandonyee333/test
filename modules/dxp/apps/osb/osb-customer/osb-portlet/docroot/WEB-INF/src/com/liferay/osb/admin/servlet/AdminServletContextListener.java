@@ -196,11 +196,6 @@ public class AdminServletContextListener
 		AdminServletContextListenerUpgradeHelper.setup(
 			_servletContext.getServletContextName());
 
-		// Workflow
-
-		//TODO need database for userId values
-		//AdminServletContextListenerWorkflowHelper.setup();
-
 		// Auth token
 
 		/* TODO fix authToken implementation
