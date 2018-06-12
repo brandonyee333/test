@@ -63,52 +63,6 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 	/>
 
 	<c:choose>
-		<c:when test='<%= tabs1.equals("rabbitmq") %>'>
-			<liferay-ui:error key="deadLetterFilterScriptCompile">
-				<liferay-ui:message key="there-was-an-error-with-your-script" />
-
-				<br /><br />
-
-				<div class="portlet-msg">
-					<%= StackTraceUtil.getStackTrace((Exception)errorException) %>
-				</div>
-			</liferay-ui:error>
-
-			<liferay-ui:message arguments="<%= new Object[] {PortletPropsValues.RABBITMQ_MESSAGE_DEAD_LETTER_QUEUE_NAME} %>" key="this-groovy-script-will-run-daily-to-filter-dead-lettered-messages-on-the-x-queue" />
-
-			<br /><br />
-
-			<div class="definition-of-terms">
-				<h4>
-					<liferay-ui:message key="available-variables" />
-				</h4>
-
-				<dl>
-					<dt>
-						messageJSONObject
-					</dt>
-					<dd>
-						Payload of RabbitMQ message as a JSON object
-					</dd>
-					<dt>
-						routingKey
-					</dt>
-					<dd>
-						The routing key of the RabbitMQ message
-					</dd>
-					<dt>
-						properties
-					</dt>
-					<dd>
-						The properties of the RabbitMQ message
-					</dd>
-				</dl>
-			</div>
-
-			<aui:fieldset>
-				<aui:input label="script" name="deadLetterFilterScript" type="textarea" value='<%= PrefsParamUtil.getString(portletPreferences, request, "deadLetterFilterScript", StringPool.BLANK) %>' />
-			</aui:fieldset>
-		</c:when>
 		<c:when test='<%= tabs1.equals("support") %>'>
 			<c:choose>
 				<c:when test="<%= cmd.equals(Constants.ADD) %>">

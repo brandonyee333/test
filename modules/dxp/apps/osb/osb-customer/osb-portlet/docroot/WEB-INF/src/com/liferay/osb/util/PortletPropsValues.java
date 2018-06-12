@@ -38,10 +38,6 @@ public class PortletPropsValues {
 		GetterUtil.getBoolean(
 			PortletProps.get(PortletPropsKeys.QA_INFRASTRUCTURE_ENABLED));
 
-	public static final String RABBITMQ_MESSAGE_DEAD_LETTER_QUEUE_NAME =
-		PortletProps.get(
-			PortletPropsKeys.RABBITMQ_MESSAGE_DEAD_LETTER_QUEUE_NAME);
-
 	public static final boolean REMOTE_JSON_SERVICE_API_LCS_ENABLED =
 		GetterUtil.getBoolean(
 			PortletProps.get(

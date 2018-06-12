@@ -42,9 +42,6 @@ public interface PortletPropsKeys {
 	public static final String QA_INFRASTRUCTURE_ENABLED =
 		"qa.infrastructure.enabled";
 
-	public static final String RABBITMQ_MESSAGE_DEAD_LETTER_QUEUE_NAME =
-		"rabbitmq.message.dead.letter.queue.name";
-
 	public static final String REMOTE_JSON_SERVICE_API_LCS_ENABLED =
 		"remote.json.service.api.lcs.enabled";
 

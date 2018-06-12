@@ -74,9 +74,6 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 		if (tabs1.equals("email-notifications")) {
 			updateEmailNotifications(actionRequest, preferences);
 		}
-		else if (tabs1.equals("rabbitmq")) {
-			updateRabbitMQ(actionRequest, preferences);
-		}
 		else if (tabs1.equals("support")) {
 			updateSupport(actionRequest, preferences);
 		}
@@ -178,52 +175,6 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 			"fileRepositories", fileRepositoriesProperties.toString());
 
 		preferences.store();
-	}
-
-	protected void updateRabbitMQ(
-			ActionRequest actionRequest, PortletPreferences preferences)
-		throws PortalException {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		PermissionChecker permissionChecker =
-			themeDisplay.getPermissionChecker();
-
-		if (!permissionChecker.isOmniadmin()) {
-			throw new PrincipalException();
-		}
-
-		String deadLetterFilterScript = ParamUtil.getString(
-			actionRequest, "deadLetterFilterScript");
-
-		try {
-			if (Validator.isNotNull(deadLetterFilterScript)) {
-				Map<String, Object> inputObjects = new HashMap<>();
-
-				inputObjects.put(
-					"messageJSONObject", JSONFactoryUtil.createJSONObject());
-				inputObjects.put("properties", new HashMap<String, Object>());
-				inputObjects.put("routingKey", StringPool.BLANK);
-
-				Set<String> outputNames = new HashSet<>();
-
-				outputNames.add("response");
-
-				ScriptingUtil.eval(
-					null, inputObjects, outputNames, "groovy",
-					deadLetterFilterScript);
-			}
-
-			preferences.setValue(
-				"deadLetterFilterScript", deadLetterFilterScript);
-
-			preferences.store();
-		}
-		catch (Exception e) {
-			SessionErrors.add(
-				actionRequest, "deadLetterFilterScriptCompile", e);
-		}
 	}
 
 	protected void updateSupport(
