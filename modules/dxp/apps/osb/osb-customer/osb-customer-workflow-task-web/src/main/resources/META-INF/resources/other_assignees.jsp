@@ -21,6 +21,7 @@
 <%
 String tabs1 = ParamUtil.getString(request, "tabs1", "assigned-to-me");
 
+String keywords = ParamUtil.getString(request, "keywords");
 String accountEntryCode = ParamUtil.getString(request, "accountEntryCode");
 String accountEntryName = ParamUtil.getString(request, "accountEntryName");
 String assigneeClassName = ParamUtil.getString(request, "assigneeClassName");
@@ -97,7 +98,15 @@ portletURL.setParameter("tabs1", tabs1);
 		>
 
 			<%
-			WorkflowTask workflowTask = workflowTaskDisplayContext.getWorkflowTask();
+			long workflowTaskId = GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK));
+
+			WorkflowTask workflowTask = WorkflowTaskManagerUtil.getWorkflowTask(company.getCompanyId(), workflowTaskId);
+
+			WorkflowInstance workflowInstance = WorkflowInstanceManagerUtil.getWorkflowInstance(company.getCompanyId(), workflowTask.getWorkflowInstanceId());
+
+			Map<String, Serializable> workflowContext = workflowInstance.getWorkflowContext();
+
+			String className = (String)workflowContext.get(WorkflowConstants.CONTEXT_ENTRY_CLASS_NAME);
 			%>
 
 			<liferay-ui:search-container-row-parameter
@@ -167,10 +176,10 @@ portletURL.setParameter("tabs1", tabs1);
 				value="<%= workflowTaskDisplayContext.getLastActivityDate(workflowTask) %>"
 			/>
 
-			<liferay-ui:search-container-column-date
+			<liferay-ui:search-container-column-text
 				href="<%= rowURL %>"
 				name="due-date"
-				value="<%= workflowTaskDisplayContext.getDueDate(workflowTask) %>"
+				value='<%= workflowTask.isCompleted() ? LanguageUtil.get(request, "completed") : workflowTaskDisplayContext.getDueDateString(workflowTask) %>'
 			/>
 
 			<c:choose>

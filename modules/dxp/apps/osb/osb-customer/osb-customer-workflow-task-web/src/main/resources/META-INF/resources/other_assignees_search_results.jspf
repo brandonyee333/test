@@ -25,44 +25,50 @@ BooleanQuery fullQuery = BooleanQueryFactoryUtil.create(searchContext);
 
 fullQuery.addRequiredTerm(Field.ENTRY_CLASS_NAME, WorkflowTask.class.getName());
 
-if (Validator.isNotNull(accountEntryCode)) {
-	if (accountEntryCode.startsWith(StringPool.QUOTE) && accountEntryCode.endsWith(StringPool.QUOTE)) {
-		fullQuery.addRequiredTerm("projectCode", StringUtil.unquote(accountEntryCode), false);
-	}
-	else {
-		fullQuery.addRequiredTerm("projectCode", accountEntryCode, true);
-	}
+if (Validator.isNotNull(keywords)) {
+	fullQuery.addTerm("projectCode", keywords, true);
+	fullQuery.addTerm("projectName", keywords, true);
 }
-
-if (Validator.isNotNull(accountEntryName)) {
-	fullQuery.addRequiredTerm("projectName", accountEntryName, true);
-}
-
-if (Validator.isNotNull(assigneeClassName)) {
-	fullQuery.addRequiredTerm("assigneeClassName", assigneeClassName);
-
-	if (assigneeClassName.equals(Role.class.getName())) {
-		if (role != null) {
-			fullQuery.addRequiredTerm("assigneeClassPK", role.getRoleId());
+else {
+	if (Validator.isNotNull(accountEntryCode)) {
+		if (accountEntryCode.startsWith(StringPool.QUOTE) && accountEntryCode.endsWith(StringPool.QUOTE)) {
+			fullQuery.addRequiredTerm("projectCode", StringUtil.unquote(accountEntryCode), false);
+		}
+		else {
+			fullQuery.addRequiredTerm("projectCode", accountEntryCode, true);
 		}
 	}
-	else if (assigneeClassName.equals(User.class.getName())) {
-		if (searchUser != null) {
-			fullQuery.addRequiredTerm("assigneeClassPK", searchUser.getUserId());
+
+	if (Validator.isNotNull(accountEntryName)) {
+		fullQuery.addRequiredTerm("projectName", accountEntryName, true);
+	}
+
+	if (Validator.isNotNull(assigneeClassName)) {
+		fullQuery.addRequiredTerm("assigneeClassName", assigneeClassName);
+
+		if (assigneeClassName.equals(Role.class.getName())) {
+			if (role != null) {
+				fullQuery.addRequiredTerm("assigneeClassPK", role.getRoleId());
+			}
+		}
+		else if (assigneeClassName.equals(User.class.getName())) {
+			if (searchUser != null) {
+				fullQuery.addRequiredTerm("assigneeClassPK", searchUser.getUserId());
+			}
 		}
 	}
-}
 
-if (completed != null) {
-	fullQuery.addRequiredTerm("completed", completed);
-}
+	if (completed != null) {
+		fullQuery.addRequiredTerm("completed", completed);
+	}
 
-if (salesforceOpportunityType > 0) {
-	fullQuery.addRequiredTerm("salesforceOpportunityType", salesforceOpportunityType);
+	if (salesforceOpportunityType > 0) {
+		fullQuery.addRequiredTerm("salesforceOpportunityType", salesforceOpportunityType);
+	}
 }
 
 Hits hits = IndexSearcherHelperUtil.search(searchContext, fullQuery);
 
-pageContext.setAttribute("results", hits.toList());
-pageContext.setAttribute("total", hits.getLength());
+searchContainer.setResults(hits.toList());
+searchContainer.setTotal(hits.getLength());
 %>
