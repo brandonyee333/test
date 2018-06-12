@@ -110,10 +110,12 @@
 
 			#if ($permissionChecker.isSignedIn() && $validator.equals($request.window-state.toString(), "normal"))
 				<h4 class="notification">
+					#set ($quote = '"')
+
 					#if (!$isSubscribed)
-						<i class="icon-bell"></i> $languageUtil.format($locale, "notify-me-when-this-article-is-updated", "javascript:${randomNamespace}updateSubscribeURL('true');")
+						<i class="icon-bell"></i> $languageUtil.format($locale, "notify-me-when-this-article-is-updated", "<a href=${quote}javascript:${randomNamespace}updateSubscribeURL('true');${quote}>", "</a>")
 					#else
-						<i class="icon-bell"></i> $languageUtil.format($locale, "do-not-notify-me-when-this-article-is-updated", "javascript:${randomNamespace}updateSubscribeURL('false');")
+						<i class="icon-bell"></i> $languageUtil.format($locale, "do-not-notify-me-when-this-article-is-updated", "<a href=${quote}javascript:${randomNamespace}updateSubscribeURL('false');${quote}>", "</a>")
 					#end
 
 					#if ($permissionChecker.hasPermission($groupId, $journalArticleClassName, $journalArticle.getResourcePrimKey(), "UPDATE"))
