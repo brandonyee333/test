@@ -1,5 +1,5 @@
-Bundle-Name: Liferay OSB Customer Workflow Task Web
-Bundle-SymbolicName: com.liferay.osb.customer.workflow.task.web
+Bundle-Name: Liferay OSB Customer Workflow Task Web Fragment
+Bundle-SymbolicName: com.liferay.osb.customer.workflow.task.web.fragment
 Bundle-Version: 1.0.0
 Fragment-Host: com.liferay.portal.workflow.task.web
 Liferay-Releng-Module-Group-Description:
