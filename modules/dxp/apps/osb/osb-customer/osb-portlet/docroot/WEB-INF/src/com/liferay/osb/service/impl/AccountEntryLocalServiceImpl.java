@@ -115,10 +115,6 @@ import java.util.TreeMap;
 
 import javax.portlet.PortletPreferences;
 
-/*TODO update OSBUtil integration
-import com.liferay.osb.shared.util.OSBUtil;
-*/
-
 /**
  * @author Brian Wing Shun Chan
  * @author Amos Fong
