@@ -67,12 +67,4 @@
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>REQUEST</dispatcher>
 	</servlet-filter-mapping>
-	<struts-action>
-		<struts-action-path>/my_workflow_instances/edit_workflow_instance_task</struts-action-path>
-		<struts-action-impl>com.liferay.osb.hook.action.OSBEditWorkflowTaskAction</struts-action-impl>
-	</struts-action>
-	<struts-action>
-		<struts-action-path>/my_workflow_tasks/edit_workflow_task</struts-action-path>
-		<struts-action-impl>com.liferay.osb.hook.action.OSBEditWorkflowTaskAction</struts-action-impl>
-	</struts-action>
 </hook>
