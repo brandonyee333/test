@@ -34,21 +34,16 @@ import com.liferay.osb.license.util.LicenseUtil;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.LicenseKey;
 import com.liferay.osb.model.LicenseKeySet;
-import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.LicenseKeyLocalServiceUtil;
 import com.liferay.osb.service.LicenseKeyServiceUtil;
 import com.liferay.osb.service.LicenseKeySetServiceUtil;
-import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
@@ -127,35 +122,6 @@ public class LicensePortlet extends MVCPortlet {
 		}
 
 		LicenseKeySetServiceUtil.deleteLicenseKeySet(fromLicenseKeySetId);
-	}
-
-	@Override
-	public void processAction(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws PortletException {
-
-		try {
-			ThemeDisplay themeDisplay =
-				(ThemeDisplay)actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
-
-			if (themeDisplay.getScopeGroupId() ==
-					OSBConstants.GROUP_LICENSE_ID) {
-
-				String redirect = getRedirect(
-					actionRequest, actionResponse, themeDisplay);
-
-				if (Validator.isNotNull(redirect)) {
-					actionResponse.sendRedirect(redirect);
-
-					return;
-				}
-			}
-
-			super.processAction(actionRequest, actionResponse);
-		}
-		catch (Exception e) {
-			throw new PortletException(e);
-		}
 	}
 
 	public void renewLicenseKey(
@@ -459,45 +425,6 @@ public class LicensePortlet extends MVCPortlet {
 		}
 
 		return redirect;
-	}
-
-	protected String getRedirect(
-			ActionRequest actionRequest, ActionResponse actionResponse,
-			ThemeDisplay themeDisplay)
-		throws Exception {
-
-		HttpServletRequest request = PortalUtil.getHttpServletRequest(
-			actionRequest);
-
-		long offeringEntryId = ParamUtil.getLong(
-			actionRequest, "offeringEntryId");
-
-		User user = themeDisplay.getUser();
-
-		Group group = user.getGroup();
-
-		long plid = PortalUtil.getPlidFromPortletId(
-			group.getGroupId(), false, OSBPortletKeys.OSB_LICENSE);
-
-		if (plid == LayoutConstants.DEFAULT_PLID) {
-			return StringPool.BLANK;
-		}
-
-		LiferayPortletURL liferayPortletURL = PortletURLFactoryUtil.create(
-			request, OSBPortletKeys.OSB_LICENSE, plid,
-			PortletRequest.RENDER_PHASE);
-
-		liferayPortletURL.setParameter("mvcPath", "/license/view.jsp");
-
-		OfferingEntry offeringEntry =
-			OfferingEntryLocalServiceUtil.fetchOfferingEntry(offeringEntryId);
-
-		if (offeringEntry != null) {
-			liferayPortletURL.setParameter(
-				"offeringEntryIds", String.valueOf(offeringEntryId));
-		}
-
-		return liferayPortletURL.toString();
 	}
 
 	@Override

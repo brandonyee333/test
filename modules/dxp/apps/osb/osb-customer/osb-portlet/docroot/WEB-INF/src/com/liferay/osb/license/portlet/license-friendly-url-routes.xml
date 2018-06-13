@@ -3,7 +3,8 @@
 
 <routes>
 	<route>
-		<pattern>/offering/{offeringEntryId}</pattern>
-		<implicit-parameter name="p_p_lifecycle">1</implicit-parameter>
+		<pattern>/offering/{offeringEntryIds}</pattern>
+		<implicit-parameter name="mvcPath">/license/view.jsp</implicit-parameter>
+		<implicit-parameter name="p_p_lifecycle">0</implicit-parameter>
 	</route>
 </routes>
