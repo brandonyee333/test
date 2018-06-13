@@ -17,7 +17,6 @@ package com.liferay.osb.license.search;
 import com.liferay.osb.license.util.LicenseUtil;
 import com.liferay.osb.model.LicenseKey;
 import com.liferay.osb.util.OSBPortletKeys;
-import com.liferay.osb.util.OSBWebKeys;
 import com.liferay.portal.kernel.dao.search.DisplayTerms;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.log.Log;
@@ -34,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.portlet.PortletRequest;
-import javax.portlet.PortletSession;
 import javax.portlet.PortletURL;
 
 /**
@@ -67,17 +65,6 @@ public class LicenseKeySearch extends SearchContainer<LicenseKey> {
 		super(
 			portletRequest, displayTerms, searchTerms, DEFAULT_CUR_PARAM,
 			DEFAULT_DELTA, iteratorURL, headerNames, EMPTY_RESULTS_MESSAGE);
-
-		iteratorURL.setParameter("sessionSearch", Boolean.TRUE.toString());
-
-		PortletSession session = portletRequest.getPortletSession();
-
-		session.setAttribute(
-			OSBWebKeys.OSB_DISPLAY_TERMS, displayTerms,
-			PortletSession.APPLICATION_SCOPE);
-		session.setAttribute(
-			OSBWebKeys.OSB_SEARCH_TERMS, searchTerms,
-			PortletSession.APPLICATION_SCOPE);
 
 		try {
 			PortalPreferences preferences =
@@ -126,52 +113,8 @@ public class LicenseKeySearch extends SearchContainer<LicenseKey> {
 		PortletRequest portletRequest, PortletURL iteratorURL) {
 
 		this(
-			portletRequest, _getLicenseDisplayTerms(portletRequest),
-			_getLicenseSearchTerms(portletRequest), iteratorURL);
-	}
-
-	private static LicenseKeyDisplayTerms _getLicenseDisplayTerms(
-		PortletRequest portletRequest) {
-
-		boolean sessionSearch = ParamUtil.getBoolean(
-			portletRequest, "sessionSearch");
-
-		if (sessionSearch) {
-			PortletSession session = portletRequest.getPortletSession();
-
-			LicenseKeyDisplayTerms displayTerms =
-				(LicenseKeyDisplayTerms)session.getAttribute(
-					OSBWebKeys.OSB_DISPLAY_TERMS,
-					PortletSession.APPLICATION_SCOPE);
-
-			if (displayTerms != null) {
-				return displayTerms;
-			}
-		}
-
-		return new LicenseKeyDisplayTerms(portletRequest);
-	}
-
-	private static LicenseKeySearchTerms _getLicenseSearchTerms(
-		PortletRequest portletRequest) {
-
-		boolean sessionSearch = ParamUtil.getBoolean(
-			portletRequest, "sessionSearch");
-
-		if (sessionSearch) {
-			PortletSession session = portletRequest.getPortletSession();
-
-			LicenseKeySearchTerms searchTerms =
-				(LicenseKeySearchTerms)session.getAttribute(
-					OSBWebKeys.OSB_SEARCH_TERMS,
-					PortletSession.APPLICATION_SCOPE);
-
-			if (searchTerms != null) {
-				return searchTerms;
-			}
-		}
-
-		return new LicenseKeySearchTerms(portletRequest);
+			portletRequest, new LicenseKeyDisplayTerms(portletRequest),
+			new LicenseKeySearchTerms(portletRequest), iteratorURL);
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(LicenseKeySearch.class);

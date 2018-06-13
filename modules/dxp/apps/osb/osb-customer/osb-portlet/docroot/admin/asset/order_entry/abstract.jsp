@@ -18,8 +18,8 @@
 
 <%
 AccountEntryAssetRenderer accountEntryAssetRenderer = (AccountEntryAssetRenderer)request.getAttribute(WebKeys.ASSET_RENDERER);
-WorkflowInstance workflowInstance = (WorkflowInstance)request.getAttribute(OSBWebKeys.WORKFLOW_INSTANCE);
-WorkflowTask workflowTask = (WorkflowTask)request.getAttribute(OSBWebKeys.WORKFLOW_TASK);
+WorkflowInstance workflowInstance = (WorkflowInstance)request.getAttribute(WebKeys.WORKFLOW_INSTANCE);
+WorkflowTask workflowTask = (WorkflowTask)request.getAttribute(WebKeys.WORKFLOW_TASK);
 
 if (workflowInstance == null) {
 	workflowInstance = WorkflowInstanceManagerUtil.getWorkflowInstance(company.getCompanyId(), workflowTask.getWorkflowInstanceId());

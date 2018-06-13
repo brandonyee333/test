@@ -71,15 +71,11 @@ pageContext.setAttribute("searchURL", searchURL);
 				String licenseEntryType = licenseKey.getLicenseEntryType();
 				String productEntryName = licenseKey.getProductEntryName();
 
-				PortletURL redirectURL = PortletURLUtil.clone(portletURL, renderResponse);
-
-				redirectURL.setParameter("sessionSearch", Boolean.TRUE.toString());
-
 				PortletURL rowURL = renderResponse.createRenderURL();
 
 				rowURL.setParameter("scroll", renderResponse.getNamespace() + licenseKey.getOfferingEntryId() + StringPool.DASH + licenseKey.getClusterId());
 				rowURL.setParameter("mvcPath", "/license/edit_license_key_set.jsp");
-				rowURL.setParameter("redirect", redirectURL.toString());
+				rowURL.setParameter("redirect", currentURL);
 				rowURL.setParameter("licenseKeySetId", String.valueOf(licenseKey.getLicenseKeySetId()));
 				rowURL.setParameter("offeringEntryId", String.valueOf(licenseKey.getOfferingEntryId()));
 				rowURL.setParameter("clusterId", String.valueOf(licenseKey.getClusterId()));
