@@ -67,7 +67,6 @@ import com.liferay.osb.exception.SupportResponseSupportLevelException;
 import com.liferay.osb.model.AccountAttachment;
 import com.liferay.osb.model.AccountAttachmentConstants;
 import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.AccountEnvironmentAttachment;
 import com.liferay.osb.model.AccountEnvironmentAttachmentConstants;
 import com.liferay.osb.model.OfferingEntry;
@@ -100,7 +99,6 @@ import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.osb.util.OSBRequestUtil;
 import com.liferay.osb.util.WorkflowConstants;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.AddressCityException;
 import com.liferay.portal.kernel.exception.AddressStreetException;
 import com.liferay.portal.kernel.exception.AddressZipException;
@@ -366,7 +364,8 @@ public class AdminPortlet extends MVCPortlet {
 		OrderEntry orderEntry = OrderEntryLocalServiceUtil.deleteOrderEntry(
 			orderEntryId);
 
-		syncToLCS(actionRequest, actionResponse, orderEntry);
+		syncToLCS(
+			actionRequest, actionResponse, orderEntry.getAccountEntryId());
 	}
 
 	public void deletePartnerEntry(
@@ -424,7 +423,8 @@ public class AdminPortlet extends MVCPortlet {
 		OrderEntry orderEntry = OrderEntryLocalServiceUtil.renewOrderEntry(
 			themeDisplay.getUserId(), orderEntryId, renewCount);
 
-		syncToLCS(actionRequest, actionResponse, orderEntry);
+		syncToLCS(
+			actionRequest, actionResponse, orderEntry.getAccountEntryId());
 	}
 
 	@Override
@@ -461,26 +461,10 @@ public class AdminPortlet extends MVCPortlet {
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		try {
-			List<AccountEntry> accountEntries =
-				AccountEntryLocalServiceUtil.getAccountEntries(
-					AccountEntryConstants.STATUSES_ACTIVE, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS);
+		long accountEntryId = ParamUtil.getLong(
+			actionRequest, "accountEntryId");
 
-			for (AccountEntry accountEntry : accountEntries) {
-				LCSSubscriptionEntryLocalServiceUtil.syncToLCS(
-					accountEntry.getAccountEntryId());
-			}
-		}
-		catch (Exception e) {
-			_log.error("Unable to sync to LCS", e);
-
-			SessionMessages.add(actionRequest, "lcsSyncFailed");
-
-			addSuccessMessage(actionRequest, actionResponse);
-
-			sendRedirect(actionRequest, actionResponse);
-		}
+		syncToLCS(actionRequest, actionResponse, accountEntryId);
 	}
 
 	public void updateAccountCustomer(
@@ -914,7 +898,8 @@ public class AdminPortlet extends MVCPortlet {
 				actualStartDateYear, salesforceOpportunityKey, offeringEntries);
 		}
 
-		syncToLCS(actionRequest, actionResponse, orderEntry);
+		syncToLCS(
+			actionRequest, actionResponse, orderEntry.getAccountEntryId());
 	}
 
 	public void updatePartnerEntry(
@@ -1338,14 +1323,11 @@ public class AdminPortlet extends MVCPortlet {
 
 	protected void syncToLCS(
 			ActionRequest actionRequest, ActionResponse actionResponse,
-			OrderEntry orderEntry)
+			long accountEntryId)
 		throws IOException {
 
 		try {
-			AccountEntry accountEntry = orderEntry.getAccountEntry();
-
-			LCSSubscriptionEntryLocalServiceUtil.syncToLCS(
-				accountEntry.getAccountEntryId());
+			LCSSubscriptionEntryLocalServiceUtil.syncToLCS(accountEntryId);
 		}
 		catch (Exception e) {
 			_log.error(e, e);

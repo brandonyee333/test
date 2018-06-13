@@ -117,6 +117,12 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 	<liferay-ui:error exception="<%= AddressZipException.class %>" message="please-enter-a-valid-postal-code" />
 	<liferay-ui:error exception="<%= DuplicateAccountEntryException.class %>" message="please-enter-a-unique-code" />
 
+	<c:if test='<%= SessionMessages.contains(renderRequest, "lcsSyncFailed") %>'>
+		<div class="portlet-msg-alert">
+			<liferay-ui:message key="there-was-an-error-syncing-with-lcs" />
+		</div>
+	</c:if>
+
 	<aui:model-context bean="<%= accountEntry %>" model="<%= AccountEntry.class %>" />
 
 	<c:if test="<%= accountEntry != null %>">
@@ -350,7 +356,8 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 
 				<span id="<portlet:namespace />corpProjectName">
 					<c:if test="<%= corpProject != null %>">
-						<%--<liferay-portlet:renderURL portletName="<%= OSBPortletKeys.OSB_CORP_PROJECT_ADMIN %>" var="corpProjectURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+						<%-- TODO
+						<liferay-portlet:renderURL portletName="<%= OSBPortletKeys.OSB_CORP_PROJECT_ADMIN %>" var="corpProjectURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 							<portlet:param name="mvcPath" value="/corp_project_admin/view_corp_project.jsp" />
 							<portlet:param name="backURL" value="<%= currentURL %>" />
 							<portlet:param name="corpProjectId" value="<%= String.valueOf(corpProject.getCorpProjectId()) %>" />
@@ -647,6 +654,15 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 			</portlet:renderURL>
 
 			<aui:a cssClass="btn btn-default" href="<%= assignCustomersURL %>" label="assign-customers" />
+
+			<c:if test="<%= corpProject != null %>">
+				<portlet:actionURL name="syncToLCS" var="syncToLCSURL">
+					<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+					<portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntry.getAccountEntryId()) %>" />
+				</portlet:actionURL>
+
+				<aui:a cssClass="btn btn-default" href="<%= syncToLCSURL %>" label="sync-to-lcs" />
+			</c:if>
 
 			<portlet:renderURL var="viewOrdersEntriesURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 				<portlet:param name="tabs1" value="sales" />

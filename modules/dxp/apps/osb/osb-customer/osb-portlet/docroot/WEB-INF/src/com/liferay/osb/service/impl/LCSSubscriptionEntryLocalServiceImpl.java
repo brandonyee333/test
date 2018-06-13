@@ -14,6 +14,8 @@
 
 package com.liferay.osb.service.impl;
 
+import com.liferay.osb.model.AccountEntry;
+import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.model.LCSSubscriptionEntry;
 import com.liferay.osb.model.LCSSubscriptionEntryConstants;
 import com.liferay.osb.model.LicenseEntryConstants;
@@ -26,9 +28,11 @@ import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.model.SupportResponse;
 import com.liferay.osb.model.SupportResponseConstants;
 import com.liferay.osb.model.impl.LCSSubscriptionEntryImpl;
+import com.liferay.osb.remote.lcs.LCSJSONWebServiceUtil;
 import com.liferay.osb.service.base.LCSSubscriptionEntryLocalServiceBaseImpl;
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -93,16 +97,20 @@ public class LCSSubscriptionEntryLocalServiceImpl
 			return;
 		}
 
-		/* TODO
 		List<LCSSubscriptionEntry> lcsSubscriptionEntries =
 			getLCSSubscriptionEntries(accountEntryId);
 
 		String lcsSubscriptionEntriesJSON = JSONFactoryUtil.looseSerialize(
 			lcsSubscriptionEntries);
 
+		AccountEntry accountEntry = accountEntryLocalService.getAccountEntry(
+			accountEntryId);
+
+		CorpProject corpProject = corpProjectLocalService.getCorpProjectByUuid(
+			accountEntry.getCorpProjectUuid());
+
 		LCSJSONWebServiceUtil.sendLCSSubscriptionEntries(
-			corpProjectId, lcsSubscriptionEntriesJSON);
-		*/
+			corpProject.getCorpProjectId(), lcsSubscriptionEntriesJSON);
 	}
 
 	protected LCSSubscriptionEntry createLCSSubscriptionEntry(
