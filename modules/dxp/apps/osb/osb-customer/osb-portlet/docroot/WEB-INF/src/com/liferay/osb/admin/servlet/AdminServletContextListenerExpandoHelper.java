@@ -23,20 +23,9 @@ import com.liferay.expando.kernel.model.ExpandoTableConstants;
 import com.liferay.expando.kernel.service.ExpandoColumnLocalServiceUtil;
 import com.liferay.expando.kernel.service.ExpandoTableLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.Address;
-import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
-import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.util.Encryptor;
-
-import java.security.SecureRandom;
-import java.security.Security;
-
-import javax.crypto.KeyGenerator;
 
 /**
  * @author Brian Wing Shun Chan
@@ -48,37 +37,9 @@ public class AdminServletContextListenerExpandoHelper {
 	public static void setup() throws Exception {
 		long companyId = OSBConstants.COMPANY_ID;
 
-		// Expando table - CUSTOM_FIELDS - Address
+		// Expando table - CUSTOM_FIELDS - User
 
 		ExpandoTable table = null;
-
-		try {
-			table = ExpandoTableLocalServiceUtil.getTable(
-				companyId, Address.class.getName(),
-				ExpandoTableConstants.DEFAULT_TABLE_NAME);
-		}
-		catch (NoSuchTableException nste) {
-			table = ExpandoTableLocalServiceUtil.addTable(
-				companyId, Address.class.getName(),
-				ExpandoTableConstants.DEFAULT_TABLE_NAME);
-		}
-
-		try {
-			ExpandoColumnLocalServiceUtil.addColumn(
-				table.getTableId(), "osbCompanyName",
-				ExpandoColumnConstants.STRING);
-		}
-		catch (DuplicateColumnNameException dcne) {
-		}
-
-		try {
-			ExpandoColumnLocalServiceUtil.addColumn(
-				table.getTableId(), "vatNumber", ExpandoColumnConstants.STRING);
-		}
-		catch (DuplicateColumnNameException dcne) {
-		}
-
-		// Expando table - CUSTOM_FIELDS - User
 
 		try {
 			table = ExpandoTableLocalServiceUtil.getTable(
@@ -157,43 +118,6 @@ public class AdminServletContextListenerExpandoHelper {
 		}
 
 		try {
-			ExpandoColumnLocalServiceUtil.addColumn(
-				table.getTableId(), "osbDisplayProfile",
-				ExpandoColumnConstants.BOOLEAN, true);
-		}
-		catch (DuplicateColumnNameException dcne) {
-		}
-
-		try {
-			ExpandoColumnLocalServiceUtil.addColumn(
-				table.getTableId(), "osbDisplayBadges",
-				ExpandoColumnConstants.BOOLEAN, true);
-		}
-		catch (DuplicateColumnNameException dcne) {
-		}
-
-		try {
-			ExpandoColumnLocalServiceUtil.addColumn(
-				table.getTableId(), "osbDisplayCertificates",
-				ExpandoColumnConstants.BOOLEAN, true);
-		}
-		catch (DuplicateColumnNameException dcne) {
-		}
-
-		try {
-			ExpandoColumn expandoColumn =
-				ExpandoColumnLocalServiceUtil.addColumn(
-					table.getTableId(), "osbHowDidYouHearAboutLiferay",
-					ExpandoColumnConstants.STRING_ARRAY,
-					getOSBHowDidYouHearAboutLiferayData());
-
-			ExpandoColumnLocalServiceUtil.updateTypeSettings(
-				expandoColumn.getColumnId(), "display-type=selection-list");
-		}
-		catch (DuplicateColumnNameException dcne) {
-		}
-
-		try {
 			ExpandoColumn expandoColumn =
 				ExpandoColumnLocalServiceUtil.addColumn(
 					table.getTableId(), "osbIndustry",
@@ -223,22 +147,6 @@ public class AdminServletContextListenerExpandoHelper {
 
 		try {
 			ExpandoColumnLocalServiceUtil.addColumn(
-				table.getTableId(), "osbSentInactiveEmail",
-				ExpandoColumnConstants.BOOLEAN, false);
-		}
-		catch (DuplicateColumnNameException dcne) {
-		}
-
-		try {
-			ExpandoColumnLocalServiceUtil.addColumn(
-				table.getTableId(), "osbStoreCountryId",
-				ExpandoColumnConstants.LONG);
-		}
-		catch (DuplicateColumnNameException dcne) {
-		}
-
-		try {
-			ExpandoColumnLocalServiceUtil.addColumn(
 				table.getTableId(), "osbStudioEULA",
 				ExpandoColumnConstants.STRING_ARRAY);
 		}
@@ -249,19 +157,6 @@ public class AdminServletContextListenerExpandoHelper {
 			ExpandoColumnLocalServiceUtil.addColumn(
 				table.getTableId(), "osbTrialEULA",
 				ExpandoColumnConstants.STRING_ARRAY);
-		}
-		catch (DuplicateColumnNameException dcne) {
-		}
-
-		try {
-			ExpandoColumn expandoColumn =
-				ExpandoColumnLocalServiceUtil.addColumn(
-					table.getTableId(), "osbWhatSolutionAreYouCurrentlyUsing",
-					ExpandoColumnConstants.STRING_ARRAY,
-					getOSBWhatSolutionsAreYouCurrentlyUsingData());
-
-			ExpandoColumnLocalServiceUtil.updateTypeSettings(
-				expandoColumn.getColumnId(), "display-type=selection-list");
 		}
 		catch (DuplicateColumnNameException dcne) {
 		}
@@ -283,25 +178,6 @@ public class AdminServletContextListenerExpandoHelper {
 				ExpandoColumnConstants.BOOLEAN);
 		}
 		catch (DuplicateColumnNameException dcne) {
-		}
-	}
-
-	protected static String getOSBClientIdKey(long companyId)
-		throws PortalException {
-
-		try {
-			Security.addProvider(Encryptor.getProvider());
-
-			KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-
-			keyGenerator.init(128, new SecureRandom());
-
-			return Base64.objectToString(keyGenerator.generateKey());
-		}
-		catch (Exception e) {
-			Company company = CompanyLocalServiceUtil.getCompany(companyId);
-
-			return company.getKey();
 		}
 	}
 
@@ -368,13 +244,6 @@ public class AdminServletContextListenerExpandoHelper {
 		return StringUtil.split(sb.toString());
 	}
 
-	protected static String[] getOSBHowDidYouHearAboutLiferayData() {
-		String s = "analyst-firm,other,printed-publication,".concat(
-			"trade-show-conference,web-search,word-of-mouth");
-
-		return StringUtil.split(s);
-	}
-
 	protected static String[] getOSBIndustryData() {
 		StringBundler sb = new StringBundler(10);
 
@@ -388,20 +257,6 @@ public class AdminServletContextListenerExpandoHelper {
 		sb.append("professional-services-technical-web-it,");
 		sb.append("retail-consumer-products,technology,telecommunications,");
 		sb.append("transportation,utilities,other");
-
-		return StringUtil.split(sb.toString());
-	}
-
-	protected static String[] getOSBWhatSolutionsAreYouCurrentlyUsingData() {
-		StringBundler sb = new StringBundler(7);
-
-		sb.append("liferay-portal-6-1-x-ce,liferay-portal-6-1-x-ee,");
-		sb.append("liferay-portal-6-0-x-ce,liferay-portal-6-0-x-ee,");
-		sb.append("liferay-portal-5-2-x-ce,liferay-portal-5-2-x-ee,");
-		sb.append("liferay-portal-5-1-x-ce,liferay-portal-5-1-x-ee,");
-		sb.append("liferay-portal-5-0-x-ce,liferay-portal-4-4-x-ce,");
-		sb.append("liferay-portal-4-3-x-ce-or-older,websphere-portal,");
-		sb.append("oracle-portal,bea-weblogic,microsoft-sharepoint,other");
 
 		return StringUtil.split(sb.toString());
 	}

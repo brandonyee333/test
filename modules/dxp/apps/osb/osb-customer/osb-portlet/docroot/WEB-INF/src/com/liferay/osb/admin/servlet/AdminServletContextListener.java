@@ -19,14 +19,14 @@ import com.liferay.osb.admin.asset.AccountEntryAssetRendererFactory;
 import com.liferay.osb.admin.asset.OrderEntryAssetRendererFactory;
 import com.liferay.osb.service.permission.OSBCommonPermission;
 import com.liferay.osb.util.OSBConstants;
+import com.liferay.osb.util.OSBCustomerQAInfrastructureUtil;
+import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.messaging.Message;
-import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
@@ -100,7 +100,8 @@ public class AdminServletContextListener
 
 	@Override
 	protected void doPortalDestroy() {
-		_moduleServiceLifecycleServiceRegistration.unregister();
+
+		// Asset renderers
 
 		if (_accountEntryAssetRendererFactory != null) {
 			AssetRendererFactoryRegistryUtil.unregister(
@@ -112,25 +113,9 @@ public class AdminServletContextListener
 				_orderEntryAssetRendererFactory);
 		}
 
-		/* TODO deploy error,
-
-		// Auth token
-
-		/* TODO fix authToken implementation
-		AuthTokenUtil authTokenUtil =
-			(AuthTokenUtil)PortalBeanLocatorUtil.locate(
-				AuthTokenUtil.class.getName());
-
-		OSBAuthToken osbAuthToken = (OSBAuthToken)AuthTokenUtil.getAuthToken();
-
-		authTokenUtil.setAuthToken(osbAuthToken.getAuthToken());
-		*/
-
 		// Common permission
 
-		// TODO fix cast from CommonPermission to OSBCommonPermission
-
-		/*CommonPermissionUtil commonPermissionUtil =
+		CommonPermissionUtil commonPermissionUtil =
 			(CommonPermissionUtil)PortalBeanLocatorUtil.locate(
 				CommonPermissionUtil.class.getName());
 
@@ -138,7 +123,11 @@ public class AdminServletContextListener
 			(OSBCommonPermission)CommonPermissionUtil.getCommonPermission();
 
 		commonPermissionUtil.setCommonPermission(
-			osbCommonPermission.getCommonPermission());*/
+			osbCommonPermission.getCommonPermission());
+
+		// OSGi
+
+		_moduleServiceLifecycleServiceRegistration.unregister();
 	}
 
 	@Override
@@ -158,59 +147,6 @@ public class AdminServletContextListener
 		AssetRendererFactoryRegistryUtil.register(
 			_orderEntryAssetRendererFactory);
 
-		// OSGi
-
-		Registry registry = RegistryUtil.getRegistry();
-
-		Map<String, Object> properties = new HashMap<>();
-
-		properties.put("module.service.lifecycle", "osb.portlet.initialized");
-
-		_moduleServiceLifecycleServiceRegistration = registry.registerService(
-			ModuleServiceLifecycle.class, new ModuleServiceLifecycle() {},
-			properties);
-
-		/* TODO deploy error,
-
-		// Developer mode
-
-		if (PortletPropsValues.DEVELOPER_MODE_ENABLED) {
-			setupDeveloperMode();
-		}
-
-		// QA Infrastructure
-
-		if (PortletPropsValues.QA_INFRASTRUCTURE_ENABLED) {
-			OSBCustomerQAInfrastructureUtil.setupQAInfrastructure();
-		}
-
-		// TODO need database for OSBConstants.*_USER_ID calls
-
-		// Expando
-
-		// TODO need database for Role values called
-		// AdminServletContextListenerExpandoHelper.setup();
-
-		// Upgrade
-
-		AdminServletContextListenerUpgradeHelper.setup(
-			_servletContext.getServletContextName());
-
-		// Auth token
-
-		/* TODO fix authToken implementation
-
-		AuthTokenUtil authTokenUtil =
-			(AuthTokenUtil)PortalBeanLocatorUtil.locate(
-				AuthTokenUtil.class.getName());
-
-		AuthToken originalAuthToken = AuthTokenUtil.getAuthToken();
-
-		AuthToken osbAuthToken = new OSBAuthToken(originalAuthToken);
-
-		authTokenUtil.setAuthToken(osbAuthToken);
-		*/
-
 		// Common permission
 
 		CommonPermissionUtil commonPermissionUtil =
@@ -225,11 +161,38 @@ public class AdminServletContextListener
 
 		commonPermissionUtil.setCommonPermission(osbCommonPermission);
 
-		Message message = new Message();
+		// Developer mode
 
-		message.setDestinationName("liferay/osb_qa_infrastructure");
+		if (PortletPropsValues.DEVELOPER_MODE_ENABLED) {
+			setupDeveloperMode();
+		}
 
-		MessageBusUtil.sendMessage(message.getDestinationName(), message);
+		// Expando
+
+		AdminServletContextListenerExpandoHelper.setup();
+
+		// QA Infrastructure
+
+		if (PortletPropsValues.QA_INFRASTRUCTURE_ENABLED) {
+			OSBCustomerQAInfrastructureUtil.setupQAInfrastructure();
+		}
+
+		// Upgrade
+
+		AdminServletContextListenerUpgradeHelper.setup(
+			_servletContext.getServletContextName());
+
+		// OSGi
+
+		Registry registry = RegistryUtil.getRegistry();
+
+		Map<String, Object> properties = new HashMap<>();
+
+		properties.put("module.service.lifecycle", "osb.portlet.initialized");
+
+		_moduleServiceLifecycleServiceRegistration = registry.registerService(
+			ModuleServiceLifecycle.class, new ModuleServiceLifecycle() {},
+			properties);
 	}
 
 	protected void setupDeveloperMode() throws Exception {
@@ -287,20 +250,6 @@ public class AdminServletContextListener
 		}
 
 		OSBConstants.GROUP_CUSTOMER_ID = customerGroup.getGroupId();
-
-		// Global group
-
-		Group globalGroup = GroupLocalServiceUtil.getCompanyGroup(
-			OSBConstants.COMPANY_ID);
-
-		OSBConstants.GROUP_GLOBAL_ID = globalGroup.getGroupId();
-
-		// Guest group
-
-		Group guestGroup = GroupLocalServiceUtil.getGroup(
-			OSBConstants.COMPANY_ID, GroupConstants.GUEST);
-
-		OSBConstants.GROUP_GUEST_ID = guestGroup.getGroupId();
 
 		// License
 
@@ -444,7 +393,6 @@ public class AdminServletContextListener
 	private ServiceRegistration<ModuleServiceLifecycle>
 		_moduleServiceLifecycleServiceRegistration;
 	private OrderEntryAssetRendererFactory _orderEntryAssetRendererFactory;
-	private String _rabbitMQConsumerKey;
 	private ServletContext _servletContext;
 
 }

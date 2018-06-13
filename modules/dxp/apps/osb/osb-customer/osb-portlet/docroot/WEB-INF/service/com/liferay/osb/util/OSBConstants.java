@@ -37,10 +37,6 @@ public class OSBConstants {
 
 	public static long GROUP_CUSTOMER_ID = 2700986;
 
-	public static long GROUP_GLOBAL_ID = 10197;
-
-	public static long GROUP_GUEST_ID = 10184;
-
 	public static long GROUP_LICENSE_ID = 2701000;
 
 	public static long ORGANIZATION_CUSTOMER_DXP_ID = 2844828;
