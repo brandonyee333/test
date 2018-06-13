@@ -252,7 +252,6 @@ page import="com.liferay.portal.kernel.util.PortalUtil" %><%@
 page import="com.liferay.portal.kernel.util.PortletKeys" %><%@
 page import="com.liferay.portal.kernel.util.PrefsParamUtil" %><%@
 page import="com.liferay.portal.kernel.util.PropsUtil" %><%@
-page import="com.liferay.portal.kernel.util.StackTraceUtil" %><%@
 page import="com.liferay.portal.kernel.util.StringBundler" %><%@
 page import="com.liferay.portal.kernel.util.StringPool" %><%@
 page import="com.liferay.portal.kernel.util.StringUtil" %><%@
