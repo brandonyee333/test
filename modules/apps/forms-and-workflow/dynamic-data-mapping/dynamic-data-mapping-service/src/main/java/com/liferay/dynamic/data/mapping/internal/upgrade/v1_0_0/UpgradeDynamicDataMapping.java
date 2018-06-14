@@ -503,7 +503,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 		return templateModelResourceName;
 	}
 
-	protected long getTemplateResourceClassNameId(
+	protected Long getTemplateResourceClassNameId(
 		long classNameId, long classPK) {
 
 		if (classNameId != PortalUtil.getClassNameId(DDMStructure.class)) {
@@ -1327,8 +1327,14 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 
 				// Template resource class name ID
 
-				long resourceClassNameId = getTemplateResourceClassNameId(
+				Long resourceClassNameId = getTemplateResourceClassNameId(
 					classNameId, classPK);
+
+				if (resourceClassNameId == null) {
+					_log.error("Orphaned template " + templateId);
+
+					continue;
+				}
 
 				ps2.setLong(1, resourceClassNameId);
 
