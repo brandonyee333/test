@@ -20,13 +20,16 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
 import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.workflow.WorkflowException;
+import com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition;
 import com.liferay.portal.workflow.kaleo.designer.service.KaleoDraftDefinitionLocalService;
-import com.liferay.portal.workflow.kaleo.designer.util.KaleoDesignerUtil;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -49,6 +52,36 @@ public class KaleoDesignerServiceActivator {
 		}
 	}
 
+	private KaleoDraftDefinition _addMissingKaleoDraftDefinition(
+			String name, int version, String title, String content,
+			ServiceContext serviceContext)
+		throws PortalException {
+
+		int kaleoDraftDefinitionsCount =
+			_kaleoDraftDefinitionLocalService.getKaleoDraftDefinitionsCount(
+				name, version, serviceContext);
+
+		KaleoDraftDefinition kaleoDraftDefinition = null;
+
+		if (kaleoDraftDefinitionsCount == 0) {
+			Map<Locale, String> titleMap = LocalizationUtil.getLocalizationMap(
+				title);
+
+			kaleoDraftDefinition =
+				_kaleoDraftDefinitionLocalService.addKaleoDraftDefinition(
+					serviceContext.getUserId(),
+					serviceContext.getScopeGroupId(), name, titleMap, content,
+					version, 1, serviceContext);
+		}
+		else {
+			kaleoDraftDefinition =
+				_kaleoDraftDefinitionLocalService.getLatestKaleoDraftDefinition(
+					name, version, serviceContext);
+		}
+
+		return kaleoDraftDefinition;
+	}
+
 	private void _addMissingWorkflowDraftDefinitions(
 			Company company, ServiceContext serviceContext)
 		throws PortalException, WorkflowException {
@@ -59,7 +92,7 @@ public class KaleoDesignerServiceActivator {
 				null);
 
 		for (WorkflowDefinition workflowDefinition : workflowDefinitions) {
-			KaleoDesignerUtil.addMissingKaleoDraftDefinition(
+			_addMissingKaleoDraftDefinition(
 				workflowDefinition.getName(), workflowDefinition.getVersion(),
 				workflowDefinition.getTitle(), workflowDefinition.getContent(),
 				serviceContext);
