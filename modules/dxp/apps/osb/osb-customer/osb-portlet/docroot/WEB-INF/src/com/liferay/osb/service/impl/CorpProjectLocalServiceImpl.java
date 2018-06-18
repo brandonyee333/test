@@ -21,6 +21,7 @@ import com.liferay.osb.service.base.CorpProjectLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -44,7 +45,8 @@ public class CorpProjectLocalServiceImpl
 		Date createDate = serviceContext.getCreateDate(new Date());
 		Date modifiedDate = serviceContext.getModifiedDate(new Date());
 
-		Long corpProjectId = (Long)serviceContext.getAttribute("corpProjectId");
+		Long corpProjectId = GetterUtil.getLong(
+			serviceContext.getAttribute("corpProjectId"));
 
 		CorpProject corpProject = corpProjectPersistence.create(corpProjectId);
 
