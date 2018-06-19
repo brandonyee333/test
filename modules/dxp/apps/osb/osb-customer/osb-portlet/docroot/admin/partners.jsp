@@ -32,7 +32,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 		</c:if>
 
 		<c:if test="<%= rpee.getType() == RequiredPartnerEntryException.REFERENCED_PARTNER_ENTRY %>">
-			<liferay-ui:message key="you-cannot-remove-a-partner-that-has-child-partners-assigned-to-it" />
+			<liferay-ui:message key="you-cannot-remove-a-partner-that-has-partner-teams-assigned-to-it" />
 		</c:if>
 
 		<c:if test="<%= rpee.getType() == RequiredPartnerEntryException.REFERENCED_PARTNER_WORKER %>">

@@ -54,7 +54,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 	</portlet:renderURL>
 
 	<liferay-ui:icon
-		message="add-child-partner"
+		message="add-partner-team"
 		url="<%= addChildPartnerURL %>"
 	/>
 

@@ -122,7 +122,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 			<tr>
 				<td colspan="2">
 					<div class="hide portlet-msg-info" id="<portlet:namespace />statusMessageDisplay">
-						<liferay-ui:message key="there-are-child-partner-accounts-that-are-open" />
+						<liferay-ui:message key="there-are-partner-teams-that-are-open" />
 					</div>
 				</td>
 			</tr>
@@ -244,7 +244,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 				<portlet:param name="parentPartnerEntryId" value="<%= String.valueOf(partnerEntry.getPartnerEntryId()) %>" />
 			</portlet:renderURL>
 
-			<aui:a cssClass="btn btn-default" href="<%= addChildPartnerURL %>" label="add-child-partner" />
+			<aui:a cssClass="btn btn-default" href="<%= addChildPartnerURL %>" label="add-partner-team" />
 		</c:if>
 
 		<aui:a cssClass="btn btn-default" href="<%= backURL %>" label="cancel" />
@@ -299,7 +299,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 
 		<div class="child-partners">
 			<liferay-ui:tabs
-				names="child-partners"
+				names="partner-teams"
 			/>
 
 			<%

@@ -36,7 +36,7 @@ String mvcPath = ParamUtil.getString(renderRequest, "mvcPath");
 				</aui:select>
 			</td>
 			<td>
-				<aui:select label="has-child-partner-entries" name="<%= displayTerms.CHILD_PARTNER_ENTRIES %>">
+				<aui:select label="has-partner-teams" name="<%= displayTerms.CHILD_PARTNER_ENTRIES %>">
 					<aui:option label="" selected="<%= !displayTerms.hasChildPartnerEntries() %>" value="" />
 					<aui:option label="yes" selected="<%= displayTerms.hasChildPartnerEntries() && displayTerms.isChildPartnerEntries() %>" value="1" />
 					<aui:option label="no" selected="<%= displayTerms.hasChildPartnerEntries() && !displayTerms.isChildPartnerEntries() %>" value="0" />
