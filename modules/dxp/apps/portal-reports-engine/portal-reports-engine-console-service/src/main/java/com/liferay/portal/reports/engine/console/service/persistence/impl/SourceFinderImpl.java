@@ -109,10 +109,10 @@ public class SourceFinderImpl
 			}
 
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(CAST_TEXT(Reports_Source.name))", StringPool.LIKE,
+				sql, "LOWER(CAST_TEXT(Reports_Source.name))", StringPool.LIKE,
 				false, names);
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(Reports_Source.driverUrl)", StringPool.LIKE, true,
+				sql, "LOWER(Reports_Source.driverUrl)", StringPool.LIKE, true,
 				driverUrls);
 
 			sql = CustomSQLUtil.replaceAndOperator(sql, andOperator);
@@ -181,10 +181,10 @@ public class SourceFinderImpl
 			}
 
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(CAST_TEXT(Reports_Source.name))", StringPool.LIKE,
+				sql, "LOWER(CAST_TEXT(Reports_Source.name))", StringPool.LIKE,
 				false, names);
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(Reports_Source.driverUrl)", StringPool.LIKE, true,
+				sql, "LOWER(Reports_Source.driverUrl)", StringPool.LIKE, true,
 				driverUrls);
 			sql = CustomSQLUtil.replaceAndOperator(sql, andOperator);
 

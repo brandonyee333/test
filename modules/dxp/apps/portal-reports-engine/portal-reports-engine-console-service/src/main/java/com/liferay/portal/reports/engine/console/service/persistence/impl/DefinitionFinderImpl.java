@@ -128,13 +128,13 @@ public class DefinitionFinderImpl
 			}
 
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(CAST_TEXT(Reports_Definition.name))",
+				sql, "LOWER(CAST_TEXT(Reports_Definition.name))",
 				StringPool.LIKE, false, names);
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(CAST_TEXT(Reports_Definition.description))",
+				sql, "LOWER(CAST_TEXT(Reports_Definition.description))",
 				StringPool.LIKE, false, descriptions);
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(Reports_Definition.reportName)", StringPool.LIKE,
+				sql, "LOWER(Reports_Definition.reportName)", StringPool.LIKE,
 				true, reportNames);
 
 			sql = CustomSQLUtil.replaceAndOperator(sql, andOperator);
@@ -220,13 +220,13 @@ public class DefinitionFinderImpl
 			}
 
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(CAST_TEXT(Reports_Definition.name))",
+				sql, "LOWER(CAST_TEXT(Reports_Definition.name))",
 				StringPool.LIKE, false, names);
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(CAST_TEXT(Reports_Definition.description))",
+				sql, "LOWER(CAST_TEXT(Reports_Definition.description))",
 				StringPool.LIKE, false, descriptions);
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(Reports_Definition.reportName)", StringPool.LIKE,
+				sql, "LOWER(Reports_Definition.reportName)", StringPool.LIKE,
 				true, reportNames);
 
 			sql = CustomSQLUtil.replaceAndOperator(sql, andOperator);

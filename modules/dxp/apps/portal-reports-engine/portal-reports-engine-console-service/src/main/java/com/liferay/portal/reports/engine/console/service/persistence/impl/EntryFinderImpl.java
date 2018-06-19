@@ -130,10 +130,10 @@ public class EntryFinderImpl
 			}
 
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(CAST_TEXT(Reports_Definition.name))",
+				sql, "LOWER(CAST_TEXT(Reports_Definition.name))",
 				StringPool.LIKE, false, definitionNames);
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(User_.screenName)", StringPool.LIKE, true,
+				sql, "LOWER(User_.screenName)", StringPool.LIKE, true,
 				userNames);
 
 			sql = CustomSQLUtil.replaceAndOperator(sql, andOperator);
@@ -222,10 +222,10 @@ public class EntryFinderImpl
 			}
 
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(CAST_TEXT(Reports_Definition.name))",
+				sql, "LOWER(CAST_TEXT(Reports_Definition.name))",
 				StringPool.LIKE, false, definitionNames);
 			sql = CustomSQLUtil.replaceKeywords(
-				sql, "lower(User_.screenName)", StringPool.LIKE, true,
+				sql, "LOWER(User_.screenName)", StringPool.LIKE, true,
 				userNames);
 			sql = CustomSQLUtil.replaceAndOperator(sql, andOperator);
 
