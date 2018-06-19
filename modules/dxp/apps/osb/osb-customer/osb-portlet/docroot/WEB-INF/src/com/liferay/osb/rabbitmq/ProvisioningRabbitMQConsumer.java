@@ -908,6 +908,15 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 				continue;
 			}
 
+			if ((productEntry.getType() !=
+					ProductEntryConstants.TYPE_PRIMARY) &&
+				(endDate == null)) {
+
+				endDate = new Date(
+					startDate.getTime() +
+						OfferingDefinitionConstants.LIFETIME_INDEFINITE_VALUE);
+			}
+
 			String productDescription = getProductDescription(name);
 			int version = getVersion(productEntry);
 			boolean licenses = getLicenses(

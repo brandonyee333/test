@@ -83,7 +83,11 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 			>
 
 				<%
-				List<OfferingEntry> offeringEntries = OfferingEntryLocalServiceUtil.search(0, accountEntry.getAccountEntryId(), new int[0], new int[0], 0, 0, 0, 0, 0, 0, null, true, 0, 1, new OfferingEntrySupportEndDateComparator());
+				LinkedHashMap params = new LinkedHashMap();
+
+				params.put("productEntry", ProductEntryConstants.TYPE_PRIMARY);
+
+				List<OfferingEntry> offeringEntries = OfferingEntryLocalServiceUtil.search(0, accountEntry.getAccountEntryId(), new int[0], new int[] {OfferingEntryConstants.STATUS_ACTIVE}, 0, 0, 0, 0, 0, 0, params, true, 0, 1, new OfferingEntrySupportEndDateComparator());
 
 				OfferingEntry offeringEntry = null;
 

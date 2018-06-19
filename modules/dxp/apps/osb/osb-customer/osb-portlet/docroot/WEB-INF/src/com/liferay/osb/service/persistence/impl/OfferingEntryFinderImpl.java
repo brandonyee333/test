@@ -54,6 +54,9 @@ public class OfferingEntryFinderImpl
 	public static final String JOIN_BY_LICENSE_LIFETIME =
 		OfferingEntryFinder.class.getName() + ".joinByLicenseLifetime";
 
+	public static final String JOIN_BY_PRODUCT_ENTRY =
+		OfferingEntryFinder.class.getName() + ".joinByProductEntry";
+
 	public static final String JOIN_BY_USER =
 		OfferingEntryFinder.class.getName() + ".joinByUser";
 
@@ -249,6 +252,9 @@ public class OfferingEntryFinderImpl
 		if (key.equals("licenseLifetime")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_LICENSE_LIFETIME);
 		}
+		else if (key.equals("productEntry")) {
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_PRODUCT_ENTRY);
+		}
 		else if (key.equals("user")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_USER);
 		}
@@ -294,6 +300,9 @@ public class OfferingEntryFinderImpl
 
 		if (key.equals("licenseLifetime")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_LICENSE_LIFETIME);
+		}
+		else if (key.equals("productEntry")) {
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_PRODUCT_ENTRY);
 		}
 		else if (key.equals("user")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_USER);
@@ -346,6 +355,13 @@ public class OfferingEntryFinderImpl
 
 				for (int i = 0; i < valueArray.length; i++) {
 					qPos.add(valueArray[i]);
+				}
+			}
+			else if (value instanceof Integer) {
+				Integer valueInteger = (Integer)value;
+
+				if (Validator.isNotNull(valueInteger)) {
+					qPos.add(valueInteger);
 				}
 			}
 			else if (value instanceof Long) {

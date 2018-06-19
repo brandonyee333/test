@@ -1608,7 +1608,7 @@ public class AccountEntryLocalServiceImpl
 		return (int)latestProductVersionType.getListTypeId();
 	}
 
-	protected int getStatus(long accountEntryId) {
+	protected int getStatus(long accountEntryId) throws PortalException {
 		List<OfferingEntry> offeringEntries =
 			offeringEntryPersistence.findByAccountEntryId(accountEntryId);
 
@@ -1617,25 +1617,31 @@ public class AccountEntryLocalServiceImpl
 		Date now = new Date();
 
 		for (OfferingEntry offeringEntry : offeringEntries) {
-			if (offeringEntry.getStatus() ==
+			if (offeringEntry.getStatus() !=
 					OfferingEntryConstants.STATUS_ACTIVE) {
 
-				Calendar cal = Calendar.getInstance();
+				continue;
+			}
 
-				cal.setTime(offeringEntry.getSupportEndDate());
+			ProductEntry productEntry = offeringEntry.getProductEntry();
 
-				if (offeringEntry.getType() !=
-						OfferingEntryConstants.TYPE_TRIAL) {
+			if (productEntry.getType() != ProductEntryConstants.TYPE_PRIMARY) {
+				continue;
+			}
 
-					cal.add(Calendar.DAY_OF_YEAR, 30);
-				}
+			Calendar cal = Calendar.getInstance();
 
-				if (now.before(cal.getTime())) {
-					return WorkflowConstants.STATUS_APPROVED;
-				}
-				else {
-					status = WorkflowConstants.STATUS_EXPIRED;
-				}
+			cal.setTime(offeringEntry.getSupportEndDate());
+
+			if (offeringEntry.getType() != OfferingEntryConstants.TYPE_TRIAL) {
+				cal.add(Calendar.DAY_OF_YEAR, 30);
+			}
+
+			if (now.before(cal.getTime())) {
+				return WorkflowConstants.STATUS_APPROVED;
+			}
+			else {
+				status = WorkflowConstants.STATUS_EXPIRED;
 			}
 		}
 

@@ -499,6 +499,15 @@
 				(OSB_OfferingEntry.licenseLifetime = ?)
 		]]>
 	</sql>
+	<sql id="com.liferay.osb.service.persistence.OfferingEntryFinder.joinByProductEntry">
+		<![CDATA[
+			INNER JOIN
+				OSB_ProductEntry ON
+					(OSB_ProductEntry.productEntryId = OSB_OfferingEntry.productEntryId)
+			WHERE
+				(OSB_ProductEntry.type_ = ?)
+		]]>
+	</sql>
 	<sql id="com.liferay.osb.service.persistence.OfferingEntryFinder.joinByUser">
 		<![CDATA[
 			INNER JOIN
