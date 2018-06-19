@@ -369,7 +369,6 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 							LinkedHashMap params = new LinkedHashMap();
 
 							params.put("validLicense", new Long[] {productEntryId, productEntryId});
-							params.put("version", ProductEntryConstants.getMajorVersion(productVersion));
 
 							offeringEntryGroups = SupportUtil.getOfferingEntryGroups(0, accountEntryId, new int[] {OfferingEntryConstants.TYPE_REGULAR, OfferingEntryConstants.TYPE_SUBSCRIPTION}, new int[0], 0, 0, 0, 0, 0, 0, params, true);
 						}

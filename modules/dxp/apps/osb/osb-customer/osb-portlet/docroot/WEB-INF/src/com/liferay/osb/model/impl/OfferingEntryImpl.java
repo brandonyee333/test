@@ -124,7 +124,6 @@ public class OfferingEntryImpl extends OfferingEntryBaseImpl {
 		params.put(
 			"validLicense",
 			new Long[] {getProductEntryId(), getProductEntryId()});
-		params.put("version", getVersion());
 
 		List<OfferingEntry> offeringEntries =
 			OfferingEntryLocalServiceUtil.search(
