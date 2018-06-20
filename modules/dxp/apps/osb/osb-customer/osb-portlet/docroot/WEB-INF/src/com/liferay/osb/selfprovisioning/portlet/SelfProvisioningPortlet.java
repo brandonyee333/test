@@ -14,17 +14,22 @@
 
 package com.liferay.osb.selfprovisioning.portlet;
 
+import com.liferay.compat.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.compat.util.bridges.mvc.MVCPortlet;
+import com.liferay.osb.license.util.LicenseUtil;
+import com.liferay.osb.model.LicenseKey;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
+import com.liferay.osb.service.LicenseKeyLocalServiceUtil;
 import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -60,6 +65,18 @@ public class SelfProvisioningPortlet extends MVCPortlet {
 			resourceRequest, "licenseEntryType");
 
 		checkPermission(themeDisplay.getUserId(), accountEntryId);
+
+		LicenseKey licenseKey =
+			LicenseKeyLocalServiceUtil.addDeveloperLicenseKey(
+				themeDisplay.getUserId(), accountEntryId, productDisplayName,
+				licenseEntryType);
+
+		String fileName = LicenseUtil.getLicenseKeyFileName(licenseKey);
+		String licenseXML = LicenseUtil.exportToXML(licenseKey);
+
+		PortletResponseUtil.sendFile(
+			resourceRequest, resourceResponse, fileName, licenseXML.getBytes(),
+			ContentTypes.TEXT_XML);
 	}
 
 	@Override

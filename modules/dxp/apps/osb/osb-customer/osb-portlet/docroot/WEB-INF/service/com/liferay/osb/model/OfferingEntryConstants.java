@@ -39,9 +39,9 @@ public class OfferingEntryConstants {
 
 	public static final int STATUS_PENDING = 4;
 
-	public static final int TYPE_REGULAR = 1;
+	public static final int TYPE_DEVELOPER = 2;
 
-	public static final int TYPE_SUBSCRIPTION = 2;
+	public static final int TYPE_REGULAR = 1;
 
 	public static final int TYPE_TRIAL = 3;
 
@@ -81,11 +81,11 @@ public class OfferingEntryConstants {
 	}
 
 	public static String getTypeLabel(int type) {
-		if (type == TYPE_REGULAR) {
-			return "regular";
+		if (type == TYPE_DEVELOPER) {
+			return "developer";
 		}
-		else if (type == TYPE_SUBSCRIPTION) {
-			return "subscription";
+		else if (type == TYPE_REGULAR) {
+			return "regular";
 		}
 		else if (type == TYPE_TRIAL) {
 			return "trial";

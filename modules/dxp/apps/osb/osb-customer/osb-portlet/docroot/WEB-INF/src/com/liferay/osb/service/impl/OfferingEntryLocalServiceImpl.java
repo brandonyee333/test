@@ -110,14 +110,9 @@ public class OfferingEntryLocalServiceImpl
 	public void checkOfferingEntries() throws Exception {
 		Date now = new Date();
 
-		int[] types = {
-			OfferingEntryConstants.TYPE_REGULAR,
-			OfferingEntryConstants.TYPE_SUBSCRIPTION
-		};
-
 		List<OfferingEntry> offeringEntries =
 			offeringEntryFinder.findByU_AEI_PEI_T_S_SED(
-				0, 0, 0, types,
+				0, 0, 0, new int[] {OfferingEntryConstants.TYPE_REGULAR},
 				new int[] {OfferingEntryConstants.STATUS_ACTIVE}, null, now,
 				null, true, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 

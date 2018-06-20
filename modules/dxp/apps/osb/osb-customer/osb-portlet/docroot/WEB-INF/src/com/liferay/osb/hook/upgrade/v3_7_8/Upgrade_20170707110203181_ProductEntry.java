@@ -49,6 +49,8 @@ public class Upgrade_20170707110203181_ProductEntry extends BaseUpgradeProcess {
 				ProductEntryLocalServiceUtil.updateProductEntry(productEntry);
 			}
 		}
+
+		runSQL("create index IX_884EBE59 on OSB_ProductEntry (environment)");
 	}
 
 }

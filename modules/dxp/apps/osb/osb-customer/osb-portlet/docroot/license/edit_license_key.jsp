@@ -370,7 +370,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 							params.put("validLicense", new Long[] {productEntryId, productEntryId});
 
-							offeringEntryGroups = SupportUtil.getOfferingEntryGroups(0, accountEntryId, new int[] {OfferingEntryConstants.TYPE_REGULAR, OfferingEntryConstants.TYPE_SUBSCRIPTION}, new int[0], 0, 0, 0, 0, 0, 0, params, true);
+							offeringEntryGroups = SupportUtil.getOfferingEntryGroups(0, accountEntryId, new int[] {OfferingEntryConstants.TYPE_REGULAR}, new int[0], 0, 0, 0, 0, 0, 0, params, true);
 						}
 						%>
 
@@ -463,10 +463,6 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 									name="lifetime"
 								>
 									<%= (offeringEntryGroup.getLicenseLifetime() / Time.DAY) + " Days" %>
-
-									<c:if test="<%= offeringEntryGroup.getType() == OfferingEntryConstants.TYPE_SUBSCRIPTION %>">
-										- <%= LanguageUtil.get(request, OfferingEntryConstants.getTypeLabel(offeringEntryGroup.getType())) %>
-									</c:if>
 								</liferay-ui:search-container-column-text>
 
 								<liferay-ui:search-container-column-text

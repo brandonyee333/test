@@ -610,6 +610,15 @@
 		<finder name="OrderEntryId" return-type="Collection">
 			<finder-column name="orderEntryId" />
 		</finder>
+		<finder name="AEI_T" return-type="Collection">
+			<finder-column name="accountEntryId" />
+			<finder-column name="type" />
+		</finder>
+		<finder name="AEI_PEI_T" return-type="Collection">
+			<finder-column name="accountEntryId" />
+			<finder-column name="productEntryId" />
+			<finder-column name="type" />
+		</finder>
 		<finder name="U_AEI_OEI_T" return-type="Collection">
 			<finder-column name="userId" />
 			<finder-column name="accountEntryId" />
@@ -774,6 +783,9 @@
 
 		<finder name="Name" return-type="ProductEntry" unique="true">
 			<finder-column name="name" />
+		</finder>
+		<finder name="Environment" return-type="Collection">
+			<finder-column name="environment" />
 		</finder>
 	</entity>
 	<entity local-service="true" name="SecurityPatch" remote-service="true">

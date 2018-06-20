@@ -40,23 +40,28 @@ import com.liferay.osb.model.LicenseEntryConstants;
 import com.liferay.osb.model.LicenseKey;
 import com.liferay.osb.model.LicenseKeyConstants;
 import com.liferay.osb.model.LicenseKeySet;
+import com.liferay.osb.model.OfferingDefinitionConstants;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.OfferingEntryGroup;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.ProductEntryConstants;
+import com.liferay.osb.model.SupportResponse;
+import com.liferay.osb.service.SupportResponseLocalServiceUtil;
 import com.liferay.osb.service.base.LicenseKeyLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.osb.util.comparator.LicenseKeyExpirationDateComparator;
 import com.liferay.portal.kernel.bean.BeanReference;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.CountryService;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -87,6 +92,54 @@ import org.apache.commons.lang.time.DateUtils;
  * @author Amos Fong
  */
 public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
+
+	public LicenseKey addDeveloperLicenseKey(
+			long userId, long accountEntryId, String productDisplayName,
+			String licenseEntryType)
+		throws PortalException, SystemException {
+
+		User user = userPersistence.findByPrimaryKey(userId);
+		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
+			accountEntryId);
+
+		OfferingEntry primaryOfferingEntry = getPrimaryOfferingEntry(
+			accountEntryId, productDisplayName);
+
+		if (primaryOfferingEntry == null) {
+			throw new PrincipalException();
+		}
+
+		OfferingEntry offeringEntry = getDeveloperOfferingEntry(
+			accountEntryId, primaryOfferingEntry.getProductEntryId(),
+			primaryOfferingEntry.getVersion(),
+			primaryOfferingEntry.getSizing());
+
+		long licenseKeySetId = 0;
+
+		LicenseKey licenseKey = licenseKeyPersistence.fetchByOEI_C_A_First(
+			offeringEntry.getOfferingEntryId(), false, true, null);
+
+		if (licenseKey != null) {
+			licenseKeySetId = licenseKey.getLicenseKeySetId();
+		}
+
+		LicenseEntry licenseEntry = licenseEntryPersistence.findByPEI_T(
+			offeringEntry.getProductEntryId(), licenseEntryType);
+
+		Calendar startCal = Calendar.getInstance();
+
+		return addLicenseKey(
+			userId, licenseKeySetId, "Developer Activation Keys",
+			offeringEntry.getOfferingEntryId(),
+			licenseEntry.getLicenseEntryId(), offeringEntry.getProductEntryId(),
+			getLatestProductVersion(offeringEntry.getProductEntryId()), 0,
+			user.getFullName(), 0, 5,
+			accountEntry.getName() + " Developer Activation Keys",
+			new String[0], new String[0], new String[0],
+			new String[] {LicenseKeyConstants.SERVER_ID_DEVELOPER},
+			startCal.get(Calendar.MONTH), startCal.get(Calendar.DATE),
+			startCal.get(Calendar.YEAR), false, true);
+	}
 
 	public LicenseKey addLicenseKey(
 			long userId, LicenseKeySet licenseKeySet, String name,
@@ -1281,6 +1334,139 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	protected String getCounterName(long offeringEntryId) {
 		return LicenseKey.class.getName().concat(StringPool.POUND).concat(
 			String.valueOf(offeringEntryId));
+	}
+
+	protected OfferingEntry getDeveloperOfferingEntry(
+			long accountEntryId, long primaryProductEntryId, int version,
+			int sizing)
+		throws PortalException, SystemException {
+
+		ProductEntry productEntry = getDeveloperProductEntry(
+			primaryProductEntryId);
+
+		OfferingEntry offeringEntry =
+			offeringEntryPersistence.fetchByAEI_PEI_T_First(
+				accountEntryId, productEntry.getProductEntryId(),
+				OfferingEntryConstants.TYPE_DEVELOPER, null);
+
+		if (offeringEntry != null) {
+			return offeringEntry;
+		}
+
+		OrderEntry orderEntry = getDeveloperOrderEntry(accountEntryId);
+
+		SupportResponse supportResponse =
+			SupportResponseLocalServiceUtil.getSupportResponseByName("Limited");
+
+		return offeringEntryLocalService.addOfferingEntry(
+			OSBConstants.USER_DEFAULT_USER_ID, accountEntryId,
+			orderEntry.getOrderEntryId(), productEntry.getProductEntryId(),
+			supportResponse.getSupportResponseId(), StringPool.BLANK,
+			OfferingEntryConstants.TYPE_DEVELOPER, version, true,
+			OfferingDefinitionConstants.LIFETIME_INDEFINITE_VALUE, 0, 0, false,
+			Time.MINUTE, sizing, OfferingEntryConstants.QUANTITY_UNLIMITED,
+			OfferingEntryConstants.STATUS_ACTIVE);
+	}
+
+	protected OrderEntry getDeveloperOrderEntry(long accountEntryId)
+		throws PortalException, SystemException {
+
+		OfferingEntry offeringEntry =
+			offeringEntryPersistence.fetchByAEI_T_First(
+				accountEntryId, OfferingEntryConstants.TYPE_DEVELOPER, null);
+
+		if (offeringEntry != null) {
+			return offeringEntry.getOrderEntry();
+		}
+
+		Calendar startCal = Calendar.getInstance();
+
+		return orderEntryLocalService.addOrderEntry(
+			OSBConstants.USER_DEFAULT_USER_ID, accountEntryId, StringPool.BLANK,
+			startCal.get(Calendar.MONTH), startCal.get(Calendar.DATE),
+			startCal.get(Calendar.YEAR), false, 0, 0, 0,
+			WorkflowConstants.STATUS_APPROVED, StringPool.BLANK,
+			new ArrayList<OfferingEntry>());
+	}
+
+	protected ProductEntry getDeveloperProductEntry(long primaryProductEntryId)
+		throws PortalException, SystemException {
+
+		ProductEntry productEntry = productEntryPersistence.findByPrimaryKey(
+			primaryProductEntryId);
+
+		String productDisplayName = productEntry.getLESADisplayName();
+
+		List<ProductEntry> productEntries =
+			productEntryPersistence.findByEnvironment(
+				ProductEntryConstants.ENVIRONMENT_DEVELOPMENT);
+
+		for (ProductEntry curProductEntry : productEntries) {
+			if (productDisplayName.equals(
+					curProductEntry.getLESADisplayName())) {
+
+				return curProductEntry;
+			}
+		}
+
+		return null;
+	}
+
+	protected int getLatestProductVersion(long productEntryId)
+		throws PortalException, SystemException {
+
+		ProductEntry productEntry = productEntryLocalService.getProductEntry(
+			productEntryId);
+
+		String listType =
+			ProductEntry.class.getName() + StringPool.PERIOD +
+				productEntry.getVersionsListType();
+
+		List<ListType> productVersionTypes = listTypeService.getListTypes(
+			ProductEntryConstants.getAllListType(listType));
+
+		ListType latestProductVersionType = productVersionTypes.get(
+			productVersionTypes.size() - 1);
+
+		String name = latestProductVersionType.getName();
+
+		if (name.equals("other")) {
+			latestProductVersionType = productVersionTypes.get(
+				productVersionTypes.size() - 2);
+		}
+
+		return latestProductVersionType.getListTypeId();
+	}
+
+	protected OfferingEntry getPrimaryOfferingEntry(
+			long accountEntryId, String productDisplayName)
+		throws PortalException, SystemException {
+
+		LinkedHashMap params = new LinkedHashMap();
+
+		params.put("license", StringPool.BLANK);
+		params.put("productEntry", ProductEntryConstants.TYPE_PRIMARY);
+
+		List<OfferingEntry> offeringEntries = offeringEntryLocalService.search(
+			0, accountEntryId, new int[] {OfferingEntryConstants.TYPE_REGULAR},
+			new int[] {OfferingEntryConstants.STATUS_ACTIVE}, 0, 0, 0, 0, 0, 0,
+			params, true, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+
+		for (OfferingEntry offeringEntry : offeringEntries) {
+			ProductEntry productEntry = offeringEntry.getProductEntry();
+
+			if (productEntry.getEnvironment() ==
+					ProductEntryConstants.ENVIRONMENT_DEVELOPMENT) {
+
+				continue;
+			}
+
+			if (productDisplayName.equals(productEntry.getLESADisplayName())) {
+				return offeringEntry;
+			}
+		}
+
+		return null;
 	}
 
 	protected void sendRegisteredEmail(
