@@ -55,12 +55,13 @@ int[] productMinorVersions = StringUtil.split(portletPreferences.getValue("produ
 			<div class="aui-w33 content-column">
 				<div class="activation-column content-column-content">
 					<select id="<portlet:namespace />accountEntryId" name="<portlet:namespace />accountEntryId" onChange="<portlet:namespace />selectAccountEntry(this.value);">
+						<option disabled selected><liferay-ui:message key="project" /></option>
+
 						<c:choose>
 							<c:when test="<%= accountEntry != null %>">
 								<option selected value="<%= accountEntry.getAccountEntryId() %>"><%= HtmlUtil.escape(accountEntry.getName()) %></option>
 							</c:when>
 							<c:otherwise>
-								<option disabled selected><liferay-ui:message key="project" /></option>
 
 								<%
 								for (AccountEntry curAccountEntry : accountEntries) {
