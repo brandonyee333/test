@@ -59,8 +59,8 @@ public class SelfProvisioningPortlet extends MVCPortlet {
 
 		long accountEntryId = ParamUtil.getLong(
 			resourceRequest, "accountEntryId");
-		String productDisplayName = ParamUtil.getString(
-			resourceRequest, "productDisplayName");
+		String productEntryDisplayName = ParamUtil.getString(
+			resourceRequest, "productEntryDisplayName");
 		String licenseEntryType = ParamUtil.getString(
 			resourceRequest, "licenseEntryType");
 
@@ -68,8 +68,8 @@ public class SelfProvisioningPortlet extends MVCPortlet {
 
 		LicenseKey licenseKey =
 			LicenseKeyLocalServiceUtil.addDeveloperLicenseKey(
-				themeDisplay.getUserId(), accountEntryId, productDisplayName,
-				licenseEntryType);
+				themeDisplay.getUserId(), accountEntryId,
+				productEntryDisplayName, licenseEntryType);
 
 		String fileName = LicenseUtil.getLicenseKeyFileName(licenseKey);
 		String licenseXML = LicenseUtil.exportToXML(licenseKey);
@@ -90,8 +90,9 @@ public class SelfProvisioningPortlet extends MVCPortlet {
 			if (resourceID.equals("generateLicenseKey")) {
 				generateLicenseKey(resourceRequest, resourceResponse);
 			}
-			else if (resourceID.equals("productDisplayNames")) {
-				serveProductDisplayNames(resourceRequest, resourceResponse);
+			else if (resourceID.equals("productEntryDisplayNames")) {
+				serveProductEntryDisplayNames(
+					resourceRequest, resourceResponse);
 			}
 		}
 		catch (Exception e) {
@@ -109,7 +110,7 @@ public class SelfProvisioningPortlet extends MVCPortlet {
 		}
 	}
 
-	protected void serveProductDisplayNames(
+	protected void serveProductEntryDisplayNames(
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 		throws Exception {
 
@@ -121,7 +122,7 @@ public class SelfProvisioningPortlet extends MVCPortlet {
 
 		checkPermission(themeDisplay.getUserId(), accountEntryId);
 
-		TreeSet<String> productDisplayNames = new TreeSet<String>();
+		TreeSet<String> productEntryDisplayNames = new TreeSet<String>();
 
 		LinkedHashMap params = new LinkedHashMap();
 
@@ -138,14 +139,14 @@ public class SelfProvisioningPortlet extends MVCPortlet {
 		for (OfferingEntry offeringEntry : offeringEntries) {
 			ProductEntry productEntry = offeringEntry.getProductEntry();
 
-			productDisplayNames.add(productEntry.getLESADisplayName());
+			productEntryDisplayNames.add(productEntry.getDisplayName());
 		}
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		jsonObject.put(
-			"productDisplayNames",
-			JSONFactoryUtil.looseSerialize(productDisplayNames));
+			"productEntryDisplayNames",
+			JSONFactoryUtil.looseSerialize(productEntryDisplayNames));
 
 		writeJSON(resourceRequest, resourceResponse, jsonObject);
 	}

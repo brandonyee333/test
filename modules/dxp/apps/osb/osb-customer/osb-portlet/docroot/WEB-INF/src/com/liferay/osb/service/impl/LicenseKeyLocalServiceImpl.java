@@ -94,7 +94,7 @@ import org.apache.commons.lang.time.DateUtils;
 public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 	public LicenseKey addDeveloperLicenseKey(
-			long userId, long accountEntryId, String productDisplayName,
+			long userId, long accountEntryId, String productEntryDisplayName,
 			String licenseEntryType)
 		throws PortalException, SystemException {
 
@@ -103,7 +103,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			accountEntryId);
 
 		OfferingEntry primaryOfferingEntry = getPrimaryOfferingEntry(
-			accountEntryId, productDisplayName);
+			accountEntryId, productEntryDisplayName);
 
 		if (primaryOfferingEntry == null) {
 			throw new PrincipalException();
@@ -1395,15 +1395,15 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		ProductEntry productEntry = productEntryPersistence.findByPrimaryKey(
 			primaryProductEntryId);
 
-		String productDisplayName = productEntry.getLESADisplayName();
+		String productEntryDisplayName = productEntry.getDisplayName();
 
 		List<ProductEntry> productEntries =
 			productEntryPersistence.findByEnvironment(
 				ProductEntryConstants.ENVIRONMENT_DEVELOPMENT);
 
 		for (ProductEntry curProductEntry : productEntries) {
-			if (productDisplayName.equals(
-					curProductEntry.getLESADisplayName())) {
+			if (productEntryDisplayName.equals(
+					curProductEntry.getDisplayName())) {
 
 				return curProductEntry;
 			}
@@ -1439,7 +1439,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	}
 
 	protected OfferingEntry getPrimaryOfferingEntry(
-			long accountEntryId, String productDisplayName)
+			long accountEntryId, String productEntryDisplayName)
 		throws PortalException, SystemException {
 
 		LinkedHashMap params = new LinkedHashMap();
@@ -1461,7 +1461,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				continue;
 			}
 
-			if (productDisplayName.equals(productEntry.getLESADisplayName())) {
+			if (productEntryDisplayName.equals(productEntry.getDisplayName())) {
 				return offeringEntry;
 			}
 		}

@@ -62,7 +62,7 @@ if (accountEntries.size() == 1) {
 
 	<div class="aui-w25 content-column">
 		<div class="activation-column content-column-content">
-			<select id="<portlet:namespace />productDisplayName" name="<portlet:namespace />productDisplayName"></select>
+			<select id="<portlet:namespace />productEntryDisplayName" name="<portlet:namespace />productEntryDisplayName"></select>
 		</div>
 	</div>
 
@@ -85,16 +85,16 @@ if (accountEntries.size() == 1) {
 		'<portlet:namespace />generateLicenseKey',
 		function() {
 			var accountEntryId = A.one('#<portlet:namespace />accountEntryId');
-			var productDisplayName = A.one('#<portlet:namespace />productDisplayName');
+			var productEntryDisplayName = A.one('#<portlet:namespace />productEntryDisplayName');
 			var licenseEntryType = A.one('#<portlet:namespace />licenseEntryType');
 
-			if ((accountEntryId.val() <= 0) || (productDisplayName.val() == '') || (licenseEntryType.val() == '')) {
+			if ((accountEntryId.val() <= 0) || (productEntryDisplayName.val() == '') || (licenseEntryType.val() == '')) {
 				alert('<liferay-ui:message key="please-fill-out-all-required-fields" />');
 
 				return;
 			}
 
-			window.location.href = '<liferay-portlet:resourceURL id="generateLicenseKey" />&<portlet:namespace />accountEntryId=' + accountEntryId.val() + '&<portlet:namespace />productDisplayName=' + productDisplayName.val() + '&<portlet:namespace />licenseEntryType=' + licenseEntryType.val();
+			window.location.href = '<liferay-portlet:resourceURL id="generateLicenseKey" />&<portlet:namespace />accountEntryId=' + accountEntryId.val() + '&<portlet:namespace />productEntryDisplayName=' + productEntryDisplayName.val() + '&<portlet:namespace />licenseEntryType=' + licenseEntryType.val();
 		}
 	);
 
@@ -103,14 +103,14 @@ if (accountEntries.size() == 1) {
 		'<portlet:namespace />selectAccountEntry',
 		function(accountEntryId) {
 			var licenseEntryTypeSelect = A.one('#<portlet:namespace />licenseEntryType');
-			var productDisplayNameSelect = A.one('#<portlet:namespace />productDisplayName');
+			var productEntryDisplayNameSelect = A.one('#<portlet:namespace />productEntryDisplayName');
 
 			licenseEntryTypeSelect.empty();
-			productDisplayNameSelect.empty();
+			productEntryDisplayNameSelect.empty();
 
 			if (accountEntryId > 0) {
 				A.io.request(
-					'<liferay-portlet:resourceURL id="productDisplayNames" />',
+					'<liferay-portlet:resourceURL id="productEntryDisplayNames" />',
 					{
 						data: {
 							<portlet:namespace />accountEntryId: accountEntryId
@@ -121,17 +121,17 @@ if (accountEntries.size() == 1) {
 							success: function(event, id, obj) {
 								var response = this.get('responseData');
 
-								var productDisplayNameOptions = [];
+								var productEntryDisplayNameOptions = [];
 
-								var productDisplayNames = A.JSON.parse(response["productDisplayNames"]);
+								var productEntryDisplayNames = A.JSON.parse(response["productEntryDisplayNames"]);
 
-								for (var i in productDisplayNames) {
-									productDisplayNameOptions.push('<option value="' + productDisplayNames[i] + '">' + Liferay.Language.get(productDisplayNames[i]) + '</option>');
+								for (var i in productEntryDisplayNames) {
+									productEntryDisplayNameOptions.push('<option value="' + productEntryDisplayNames[i] + '">' + Liferay.Language.get(productEntryDisplayNames[i]) + '</option>');
 								}
 
-								productDisplayNameSelect.append(productDisplayNameOptions.join(''));
+								productEntryDisplayNameSelect.append(productEntryDisplayNameOptions.join(''));
 
-								productDisplayNameSelect.set('selectedIndex', 0);
+								productEntryDisplayNameSelect.set('selectedIndex', 0);
 
 								var licenseEntryTypeOptions = [];
 
