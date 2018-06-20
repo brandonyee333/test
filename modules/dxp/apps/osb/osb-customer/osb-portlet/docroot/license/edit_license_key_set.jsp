@@ -128,7 +128,6 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 			</h1>
 
 			<%
-			boolean canSplit = false;
 			boolean canRenewAggregate = true;
 
 			List<LicenseKey> activeLicenseKeys = new ArrayList<LicenseKey>();
@@ -152,7 +151,6 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 			<%@ include file="/license/view_license_key_set.jspf" %>
 
 			<%
-			canSplit = false;
 			canRenewAggregate = true;
 
 			displayLicenseKeys = inactiveLicenseKeys;
@@ -230,16 +228,6 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 					</portlet:renderURL>
 
 					<aui:button onClick="<%= addLicenseKeyURL %>" value="add-new-license-key" />
-				</c:if>
-
-				<c:if test="<%= OSBLicenseKeySetPermission.contains(permissionChecker, licenseKeySetId, OSBActionKeys.UPDATE) %>">
-					<portlet:renderURL var="mergeLicenseKeySetURL">
-						<portlet:param name="mvcPath" value="/license/merge_license_key_set.jsp" />
-						<portlet:param name="redirect" value="<%= currentURL %>" />
-						<portlet:param name="licenseKeySetId" value="<%= String.valueOf(licenseKeySetId) %>" />
-					</portlet:renderURL>
-
-					<aui:button onClick="<%= mergeLicenseKeySetURL %>" value="merge-licenses" />
 				</c:if>
 
 				<aui:button onClick="<%= backURL %>" value="cancel" />

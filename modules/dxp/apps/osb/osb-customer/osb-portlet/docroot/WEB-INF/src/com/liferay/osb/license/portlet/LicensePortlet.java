@@ -98,32 +98,6 @@ public class LicensePortlet extends MVCPortlet {
 		SessionMessages.add(actionRequest, "purchased");
 	}
 
-	public void mergeLicenseKeySet(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		long toLicenseKeySetId = ParamUtil.getLong(
-			actionRequest, "toLicenseKeySetId");
-		long fromLicenseKeySetId = ParamUtil.getLong(
-			actionRequest, "fromLicenseKeySetId");
-
-		List<LicenseKey> licenseKeys =
-			LicenseKeyLocalServiceUtil.getLicenseKeySetLicenseKeys(
-				fromLicenseKeySetId);
-
-		for (LicenseKey licenseKey : licenseKeys) {
-			LicenseKeyServiceUtil.updateLicenseKey(
-				themeDisplay.getUserId(), licenseKey.getLicenseKeyId(),
-				toLicenseKeySetId, licenseKey.getOfferingEntryId(),
-				StringPool.BLANK, licenseKey.getActive());
-		}
-
-		LicenseKeySetServiceUtil.deleteLicenseKeySet(fromLicenseKeySetId);
-	}
-
 	public void renewLicenseKey(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {

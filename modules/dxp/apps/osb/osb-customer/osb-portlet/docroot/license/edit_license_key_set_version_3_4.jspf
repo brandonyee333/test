@@ -404,21 +404,6 @@
 					/>
 				</c:if>
 
-				<c:if test="<%= canSplit && OSBLicenseKeySetPermission.contains(permissionChecker, licenseKeySetId, OSBActionKeys.UPDATE) %>">
-					<portlet:renderURL var="splitLicenseKeyURL">
-						<portlet:param name="mvcPath" value="/license/split_license_key_set.jsp" />
-						<portlet:param name="redirect" value="<%= currentURL %>" />
-						<portlet:param name="licenseKeyId" value="<%= String.valueOf(licenseKey.getLicenseKeyId()) %>" />
-					</portlet:renderURL>
-
-					<liferay-ui:icon
-						image="unlink"
-						label="<%= true %>"
-						message="split-license"
-						url="<%= splitLicenseKeyURL.toString() %>"
-					/>
-				</c:if>
-
 				<c:if test="<%= OSBLicenseKeyPermission.contains(permissionChecker, licenseKey.getLicenseKeyId(), OSBActionKeys.UPDATE_ADMIN) %>">
 					<portlet:renderURL var="moveLicenseKeyURL">
 						<portlet:param name="mvcPath" value="/license/move_license_key.jsp" />
