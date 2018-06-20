@@ -17,139 +17,155 @@
 <%@ include file="/init.jsp" %>
 
 <%
-LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
-
-params.put("accountCustomer", new Long(user.getUserId()));
-params.put("activePortalLicense", new int[] {OfferingEntryConstants.STATUS_ACTIVE, ProductEntryConstants.TYPE_PRIMARY});
-
-List<AccountEntry> accountEntries = AccountEntryLocalServiceUtil.search(null, params, QueryUtil.ALL_POS, QueryUtil.ALL_POS, new AccountEntryNameComparator(true));
-
-AccountEntry accountEntry = null;
-
-if (accountEntries.size() == 1) {
-	accountEntry = accountEntries.get(0);
-}
+String productEntryRootName = portletPreferences.getValue("productEntryRootName", StringPool.BLANK);
+int[] productMinorVersions = StringUtil.split(portletPreferences.getValue("productMinorVersions", StringPool.BLANK), 0);
 %>
 
-<span class="txt-b"><liferay-ui:message key="download-your-portal-activation-key" /></span>
+<c:choose>
+	<c:when test="<%= Validator.isNull(productEntryRootName) || ArrayUtil.isEmpty(productMinorVersions) %>">
 
-<div class="aui-helper-clearfix activation-key-container">
-	<div class="aui-w25 content-column">
-		<div class="activation-column content-column-content">
-			<select id="<portlet:namespace />accountEntryId" name="<portlet:namespace />accountEntryId" onChange="<portlet:namespace />selectAccountEntry(this.value);">
-				<c:choose>
-					<c:when test="<%= accountEntry != null %>">
-						<option selected value="<%= accountEntry.getAccountEntryId() %>"><%= HtmlUtil.escape(accountEntry.getName()) %></option>
-					</c:when>
-					<c:otherwise>
-						<option value=""></option>
+		<%
+		renderRequest.setAttribute(WebKeys.PORTLET_CONFIGURATOR_VISIBILITY, Boolean.TRUE);
+		%>
 
-						<%
-						for (AccountEntry curAccountEntry : accountEntries) {
-						%>
-
-							<option value="<%= curAccountEntry.getAccountEntryId() %>"><%= HtmlUtil.escape(curAccountEntry.getName()) %></option>
-
-						<%
-						}
-						%>
-
-					</c:otherwise>
-				</c:choose>
-			</select>
+		<div class="portlet-msg-info">
+			<liferay-ui:message key="please-configure-this-portlet-to-make-it-visible-to-all-users" />
 		</div>
-	</div>
+	</c:when>
+	<c:otherwise>
 
-	<div class="aui-w25 content-column">
-		<div class="activation-column content-column-content">
-			<select id="<portlet:namespace />productEntryDisplayName" name="<portlet:namespace />productEntryDisplayName"></select>
-		</div>
-	</div>
+		<%
+		LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
 
-	<div class="aui-w25 content-column">
-		<div class="activation-column content-column-content">
-			<select id="<portlet:namespace />licenseEntryType" name="<portlet:namespace />licenseEntryType"></select>
-		</div>
-	</div>
+		params.put("accountCustomer", new Long(user.getUserId()));
+		params.put("primaryProductEntry", new Object[] {OfferingEntryConstants.STATUS_ACTIVE, productEntryRootName, ProductEntryConstants.TYPE_PRIMARY});
 
-	<div class="aui-w25 content-column">
-		<div class="activation-column content-column-content">
-			<button id="<portlet:namespace />activationKeyDownloadButton" onClick="<portlet:namespace />generateLicenseKey();" type="button"><liferay-ui:message key="download-activation-key" /></button>
-		</div>
-	</div>
-</div>
+		List<AccountEntry> accountEntries = AccountEntryLocalServiceUtil.search(null, params, QueryUtil.ALL_POS, QueryUtil.ALL_POS, new AccountEntryNameComparator(true));
 
-<aui:script use="aui-io">
-	Liferay.provide(
-		window,
-		'<portlet:namespace />generateLicenseKey',
-		function() {
-			var accountEntryId = A.one('#<portlet:namespace />accountEntryId');
-			var productEntryDisplayName = A.one('#<portlet:namespace />productEntryDisplayName');
-			var licenseEntryType = A.one('#<portlet:namespace />licenseEntryType');
+		AccountEntry accountEntry = null;
 
-			if ((accountEntryId.val() <= 0) || (productEntryDisplayName.val() == '') || (licenseEntryType.val() == '')) {
-				alert('<liferay-ui:message key="please-fill-out-all-required-fields" />');
-
-				return;
-			}
-
-			window.location.href = '<liferay-portlet:resourceURL id="generateLicenseKey" />&<portlet:namespace />accountEntryId=' + accountEntryId.val() + '&<portlet:namespace />productEntryDisplayName=' + productEntryDisplayName.val() + '&<portlet:namespace />licenseEntryType=' + licenseEntryType.val();
+		if (accountEntries.size() == 1) {
+			accountEntry = accountEntries.get(0);
 		}
-	);
+		%>
 
-	Liferay.provide(
-		window,
-		'<portlet:namespace />selectAccountEntry',
-		function(accountEntryId) {
-			var licenseEntryTypeSelect = A.one('#<portlet:namespace />licenseEntryType');
-			var productEntryDisplayNameSelect = A.one('#<portlet:namespace />productEntryDisplayName');
+		<span class="txt-b"><liferay-ui:message arguments="<%= new Object[] {productEntryRootName} %>" key="download-your-x-activation-key" /></span>
 
-			licenseEntryTypeSelect.empty();
-			productEntryDisplayNameSelect.empty();
+		<div class="aui-helper-clearfix activation-key-container">
+			<div class="aui-w25 content-column">
+				<div class="activation-column content-column-content">
+					<select id="<portlet:namespace />accountEntryId" name="<portlet:namespace />accountEntryId" onChange="<portlet:namespace />selectAccountEntry(this.value);">
+						<c:choose>
+							<c:when test="<%= accountEntry != null %>">
+								<option selected value="<%= accountEntry.getAccountEntryId() %>"><%= HtmlUtil.escape(accountEntry.getName()) %></option>
+							</c:when>
+							<c:otherwise>
+								<option disabled selected><liferay-ui:message key="project" /></option>
 
-			if (accountEntryId > 0) {
-				A.io.request(
-					'<liferay-portlet:resourceURL id="productEntryDisplayNames" />',
-					{
-						data: {
-							<portlet:namespace />accountEntryId: accountEntryId
-						},
-						dataType: 'json',
-						method: 'post',
-						on: {
-							success: function(event, id, obj) {
-								var response = this.get('responseData');
+								<%
+								for (AccountEntry curAccountEntry : accountEntries) {
+								%>
 
-								var productEntryDisplayNameOptions = [];
+									<option value="<%= curAccountEntry.getAccountEntryId() %>"><%= HtmlUtil.escape(curAccountEntry.getName()) %></option>
 
-								var productEntryDisplayNames = A.JSON.parse(response["productEntryDisplayNames"]);
-
-								for (var i in productEntryDisplayNames) {
-									productEntryDisplayNameOptions.push('<option value="' + productEntryDisplayNames[i] + '">' + Liferay.Language.get(productEntryDisplayNames[i]) + '</option>');
+								<%
 								}
+								%>
 
-								productEntryDisplayNameSelect.append(productEntryDisplayNameOptions.join(''));
+							</c:otherwise>
+						</c:choose>
+					</select>
+				</div>
+			</div>
 
-								productEntryDisplayNameSelect.set('selectedIndex', 0);
+			<div class="aui-w25 content-column">
+				<div class="activation-column content-column-content">
+					<select id="<portlet:namespace />productMinorVersion" name="<portlet:namespace />productMinorVersion">
+						<option disabled selected><liferay-ui:message key="version" /></option>
+					</select>
+				</div>
+			</div>
 
-								var licenseEntryTypeOptions = [];
+			<div class="aui-w25 content-column">
+				<div class="activation-column content-column-content">
+					<select id="<portlet:namespace />licenseEntryType" name="<portlet:namespace />licenseEntryType">
+						<option disabled selected><liferay-ui:message key="type" /></option>
+					</select>
+				</div>
+			</div>
 
-								licenseEntryTypeOptions.push('<option value="developer"><liferay-ui:message key="developer" /></option>');
-								licenseEntryTypeOptions.push('<option value="developer-cluster"><liferay-ui:message key="developer-cluster" /></option>');
+			<div class="aui-w25 content-column">
+				<div class="activation-column content-column-content">
+					<button id="<portlet:namespace />activationKeyDownloadButton" onClick="<portlet:namespace />generateLicenseKey();" type="button"><liferay-ui:message key="download-activation-key" /></button>
+				</div>
+			</div>
+		</div>
 
-								licenseEntryTypeSelect.append(licenseEntryTypeOptions.join(''));
+		<aui:script>
+			function <portlet:namespace />generateLicenseKey() {
+				var A = AUI();
 
-								licenseEntryTypeSelect.set('selectedIndex', 0);
-							}
-						}
-					}
-				);
+				var accountEntryId = A.one('#<portlet:namespace />accountEntryId');
+				var productMinorVersion = A.one('#<portlet:namespace />productMinorVersion');
+				var licenseEntryType = A.one('#<portlet:namespace />licenseEntryType');
+
+				if ((accountEntryId.val() <= 0) || (productMinorVersion.val() == '') || (licenseEntryType.val() == '')) {
+					alert('<liferay-ui:message key="please-fill-out-all-required-fields" />');
+
+					return;
+				}
+
+				<portlet:resourceURL id="generateLicenseKey" var="generateLicenseKeyURL">
+					<portlet:param name="productEntryRootName" value="<%= productEntryRootName %>" />
+				</portlet:resourceURL>
+
+				window.location.href = '<%= generateLicenseKeyURL.toString() %>&<portlet:namespace />accountEntryId=' + accountEntryId.val() + '&<portlet:namespace />productMinorVersion=' + productMinorVersion.val() + '&<portlet:namespace />licenseEntryType=' + licenseEntryType.val();
 			}
-		}
-	);
 
-	<c:if test="<%= accountEntry != null %>">
-		<portlet:namespace />selectAccountEntry(<%= accountEntry.getAccountEntryId() %>);
-	</c:if>
-</aui:script>
+			function <portlet:namespace />selectAccountEntry(accountEntryId) {
+				var A = AUI();
+
+				var productMinorVersionSelect = A.one('#<portlet:namespace />productMinorVersion');
+
+				productMinorVersionSelect.empty();
+
+				var productMinorVersionOptions = [];
+
+				productMinorVersionOptions.push('<option disabled><liferay-ui:message key="version" /></option>');
+
+				<%
+				for (int productMinorVersion : productMinorVersions) {
+					ListType productMinorVersionType = ListTypeServiceUtil.getListType(productMinorVersion);
+				%>
+
+					productMinorVersionOptions.push('<option value="<%= productMinorVersion %>"><%= LanguageUtil.get(pageContext, productMinorVersionType.getName()) %></option>');
+
+				<%
+				}
+				%>
+
+				productMinorVersionSelect.append(productMinorVersionOptions.join(''));
+
+				productMinorVersionSelect.set('selectedIndex', 0);
+
+				var licenseEntryTypeSelect = A.one('#<portlet:namespace />licenseEntryType');
+
+				licenseEntryTypeSelect.empty();
+
+				var licenseEntryTypeOptions = [];
+
+				licenseEntryTypeOptions.push('<option disabled><liferay-ui:message key="type" /></option>');
+				licenseEntryTypeOptions.push('<option value="developer"><liferay-ui:message key="developer" /></option>');
+				licenseEntryTypeOptions.push('<option value="developer-cluster"><liferay-ui:message key="developer-cluster" /></option>');
+
+				licenseEntryTypeSelect.append(licenseEntryTypeOptions.join(''));
+
+				licenseEntryTypeSelect.set('selectedIndex', 0);
+			}
+
+			<c:if test="<%= accountEntry != null %>">
+				<portlet:namespace />selectAccountEntry(<%= accountEntry.getAccountEntryId() %>);
+			</c:if>
+		</aui:script>
+	</c:otherwise>
+</c:choose>

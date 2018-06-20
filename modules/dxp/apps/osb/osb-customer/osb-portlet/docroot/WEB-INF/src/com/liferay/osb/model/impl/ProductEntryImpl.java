@@ -136,7 +136,7 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 	public boolean isDigitalEnterprise() {
 		String name = getName();
 
-		if (name.contains("Digital Enterprise")) {
+		if (name.contains(ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE)) {
 			return true;
 		}
 		else {
@@ -191,7 +191,7 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 	public boolean isPortal() {
 		String name = getName();
 
-		if (name.contains("Portal")) {
+		if (name.contains(ProductEntryConstants.ROOT_NAME_PORTAL)) {
 			return true;
 		}
 		else {

@@ -94,8 +94,8 @@ import org.apache.commons.lang.time.DateUtils;
 public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 	public LicenseKey addDeveloperLicenseKey(
-			long userId, long accountEntryId, String productEntryDisplayName,
-			String licenseEntryType)
+			long userId, long accountEntryId, String productEntryRootName,
+			int productMinorVersion, String licenseEntryType)
 		throws PortalException, SystemException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
@@ -103,7 +103,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			accountEntryId);
 
 		OfferingEntry primaryOfferingEntry = getPrimaryOfferingEntry(
-			accountEntryId, productEntryDisplayName);
+			accountEntryId, productEntryRootName);
 
 		if (primaryOfferingEntry == null) {
 			throw new PrincipalException();
@@ -132,8 +132,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			userId, licenseKeySetId, "Developer Activation Keys",
 			offeringEntry.getOfferingEntryId(),
 			licenseEntry.getLicenseEntryId(), offeringEntry.getProductEntryId(),
-			getLatestProductVersion(offeringEntry.getProductEntryId()), 0,
-			user.getFullName(), 0, 5,
+			getProductVersion(productMinorVersion), 0, user.getFullName(), 2, 5,
 			accountEntry.getName() + " Developer Activation Keys",
 			new String[0], new String[0], new String[0],
 			new String[] {LicenseKeyConstants.SERVER_ID_DEVELOPER},
@@ -1412,34 +1411,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		return null;
 	}
 
-	protected int getLatestProductVersion(long productEntryId)
-		throws PortalException, SystemException {
-
-		ProductEntry productEntry = productEntryLocalService.getProductEntry(
-			productEntryId);
-
-		String listType =
-			ProductEntry.class.getName() + StringPool.PERIOD +
-				productEntry.getVersionsListType();
-
-		List<ListType> productVersionTypes = listTypeService.getListTypes(
-			ProductEntryConstants.getAllListType(listType));
-
-		ListType latestProductVersionType = productVersionTypes.get(
-			productVersionTypes.size() - 1);
-
-		String name = latestProductVersionType.getName();
-
-		if (name.equals("other")) {
-			latestProductVersionType = productVersionTypes.get(
-				productVersionTypes.size() - 2);
-		}
-
-		return latestProductVersionType.getListTypeId();
-	}
-
 	protected OfferingEntry getPrimaryOfferingEntry(
-			long accountEntryId, String productEntryDisplayName)
+			long accountEntryId, String productEntryRootName)
 		throws PortalException, SystemException {
 
 		LinkedHashMap params = new LinkedHashMap();
@@ -1461,12 +1434,48 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				continue;
 			}
 
-			if (productEntryDisplayName.equals(productEntry.getDisplayName())) {
+			if ((productEntryRootName.equals(
+					ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE) &&
+				 productEntry.isDigitalEnterprise()) ||
+				(productEntryRootName.equals(
+					ProductEntryConstants.ROOT_NAME_PORTAL) &&
+				 productEntry.isPortal())) {
+
 				return offeringEntry;
 			}
 		}
 
 		return null;
+	}
+
+	protected int getProductVersion(int productMinorVersion) {
+		if (productMinorVersion ==
+				ProductEntryConstants.DIGITAL_ENTERPRISE_MINOR_VERSION_7_0) {
+
+			return ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7_0_10;
+		}
+		else if (productMinorVersion ==
+					ProductEntryConstants.PORTAL_MINOR_VERSION_5_2) {
+
+			return ProductEntryConstants.PORTAL_VERSION_5_2_9;
+		}
+		else if (productMinorVersion ==
+					ProductEntryConstants.PORTAL_MINOR_VERSION_6_0) {
+
+			return ProductEntryConstants.PORTAL_VERSION_6_0_10;
+		}
+		else if (productMinorVersion ==
+					ProductEntryConstants.PORTAL_MINOR_VERSION_6_1) {
+
+			return ProductEntryConstants.PORTAL_VERSION_6_1_10;
+		}
+		else if (productMinorVersion ==
+					ProductEntryConstants.PORTAL_MINOR_VERSION_6_2) {
+
+			return ProductEntryConstants.PORTAL_VERSION_6_2_10;
+		}
+
+		return 0;
 	}
 
 	protected void sendRegisteredEmail(

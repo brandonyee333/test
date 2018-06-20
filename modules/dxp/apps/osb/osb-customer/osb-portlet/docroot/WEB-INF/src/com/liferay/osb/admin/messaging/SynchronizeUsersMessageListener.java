@@ -254,7 +254,7 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 		sb.append("') and (OSB_AccountEntry.type_ != '");
 		sb.append(AccountEntryConstants.TYPE_TRIAL);
 		sb.append("') and (OSB_OfferingEntry.version = ");
-		sb.append(ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7);
+		sb.append(ProductEntryConstants.DIGITAL_ENTERPRISE_MAJOR_VERSION_7);
 		sb.append(") and (OSB_OfferingEntry.status = ");
 		sb.append(OfferingEntryConstants.STATUS_ACTIVE);
 		sb.append(") and (OSB_AccountCustomer.userId not in (select ");
@@ -281,9 +281,9 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 		sb.append("') and (OSB_AccountEntry.type_ != '");
 		sb.append(AccountEntryConstants.TYPE_TRIAL);
 		sb.append("') and ((OSB_OfferingEntry.version = ");
-		sb.append(ProductEntryConstants.PORTAL_VERSION_6);
+		sb.append(ProductEntryConstants.PORTAL_MAJOR_VERSION_6);
 		sb.append(") or (OSB_OfferingEntry.version = ");
-		sb.append(ProductEntryConstants.PORTAL_VERSION_5);
+		sb.append(ProductEntryConstants.PORTAL_MAJOR_VERSION_5);
 		sb.append(")) and (OSB_OfferingEntry.status = ");
 		sb.append(OfferingEntryConstants.STATUS_ACTIVE);
 		sb.append(") and (OSB_AccountCustomer.userId not in (select ");

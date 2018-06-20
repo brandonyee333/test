@@ -61,6 +61,22 @@ import java.util.List;
 @JSONWebService(mode = JSONWebServiceMode.MANUAL)
 public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
+	public LicenseKey addDeveloperLicenseKey(
+			long accountEntryId, String productEntryRootName,
+			int productMinorVersion, String licenseEntryType)
+		throws PortalException, SystemException {
+
+		if (!accountCustomerLocalService.hasAccountCustomer(
+				getUserId(), accountEntryId)) {
+
+			throw new PrincipalException();
+		}
+
+		return licenseKeyLocalService.addDeveloperLicenseKey(
+			getUserId(), accountEntryId, productEntryRootName,
+			productMinorVersion, licenseEntryType);
+	}
+
 	public LicenseKey addLicenseKey(
 			long userId, long licenseKeySetId, String name,
 			long offeringEntryId, long licenseEntryId, long productEntryId,

@@ -25,7 +25,9 @@ import java.util.Date;
  */
 public class ProductEntryConstants {
 
-	public static final int DIGITAL_ENTERPRISE_VERSION_7 = 42000;
+	public static final int DIGITAL_ENTERPRISE_MAJOR_VERSION_7 = 42000;
+
+	public static final int DIGITAL_ENTERPRISE_MINOR_VERSION_7_0 = 43000;
 
 	public static final int DIGITAL_ENTERPRISE_VERSION_7_0_10 = 41000;
 
@@ -64,6 +66,9 @@ public class ProductEntryConstants {
 	public static final String LIST_TYPE_DIGITAL_ENTERPRISE_MAJOR_VERSIONS =
 		ProductEntry.class.getName() + ".digitalEnterpriseMajorVersions";
 
+	public static final String LIST_TYPE_DIGITAL_ENTERPRISE_MINOR_VERSIONS =
+		ProductEntry.class.getName() + ".digitalEnterpriseMinorVersions";
+
 	public static final String LIST_TYPE_PORTAL_ALL_VERSIONS =
 		ProductEntry.class.getName() + ".portalAllVersions";
 
@@ -82,6 +87,20 @@ public class ProductEntryConstants {
 	public static final String LIST_TYPE_SOCIAL_OFFICE_MINOR_VERSIONS =
 		ProductEntry.class.getName() + ".socialOfficeMinorVersions";
 
+	public static final int PORTAL_MAJOR_VERSION_5 = 21000;
+
+	public static final int PORTAL_MAJOR_VERSION_6 = 21001;
+
+	public static final int PORTAL_MINOR_VERSION_5_1 = 22000;
+
+	public static final int PORTAL_MINOR_VERSION_5_2 = 22001;
+
+	public static final int PORTAL_MINOR_VERSION_6_0 = 22002;
+
+	public static final int PORTAL_MINOR_VERSION_6_1 = 22003;
+
+	public static final int PORTAL_MINOR_VERSION_6_2 = 22004;
+	
 	public static final int PORTAL_VERSION_4_4_0 = 20000;
 
 	public static final int PORTAL_VERSION_5 = 21000;
@@ -102,8 +121,6 @@ public class ProductEntryConstants {
 
 	public static final int PORTAL_VERSION_5_1_9 = 20007;
 
-	public static final int PORTAL_VERSION_5_2 = 22001;
-
 	public static final int PORTAL_VERSION_5_2_4 = 20020;
 
 	public static final int PORTAL_VERSION_5_2_5 = 20021;
@@ -116,25 +133,17 @@ public class ProductEntryConstants {
 
 	public static final int PORTAL_VERSION_5_2_9 = 20025;
 
-	public static final int PORTAL_VERSION_6 = 21001;
-
-	public static final int PORTAL_VERSION_6_0 = 22002;
-
 	public static final int PORTAL_VERSION_6_0_10 = 20040;
 
 	public static final int PORTAL_VERSION_6_0_11 = 20041;
 
 	public static final int PORTAL_VERSION_6_0_12 = 20042;
 
-	public static final int PORTAL_VERSION_6_1 = 22003;
-
 	public static final int PORTAL_VERSION_6_1_10 = 20060;
 
 	public static final int PORTAL_VERSION_6_1_20 = 20061;
 
 	public static final int PORTAL_VERSION_6_1_30 = 20062;
-
-	public static final int PORTAL_VERSION_6_2 = 22004;
 
 	public static final int PORTAL_VERSION_6_2_10 = 20080;
 
@@ -143,6 +152,11 @@ public class ProductEntryConstants {
 	public static final int PORTAL_VERSION_OTHER = 20999;
 
 	public static final String PRODUCT_ID_PORTAL = "Portal";
+
+	public static final String ROOT_NAME_DIGITAL_ENTERPRISE =
+		"Digital Enterprise";
+
+	public static final String ROOT_NAME_PORTAL = "Portal";
 
 	public static final int SOCIAL_OFFICE_VERSION_1_5_0 = 23000;
 
@@ -238,18 +252,18 @@ public class ProductEntryConstants {
 
 	public static int getMajorVersion(int productVersion) {
 		if (isDigitalEnterpriseVersion7_0(productVersion)) {
-			return DIGITAL_ENTERPRISE_VERSION_7;
+			return DIGITAL_ENTERPRISE_MAJOR_VERSION_7;
 		}
 		else if (isPortalVersion6_2(productVersion) ||
 				 isPortalVersion6_1(productVersion) ||
 				 isPortalVersion6_0(productVersion)) {
 
-			return PORTAL_VERSION_6;
+			return PORTAL_MAJOR_VERSION_6;
 		}
 		else if (isPortalVersion5_2(productVersion) ||
 				 isPortalVersion5_1(productVersion)) {
 
-			return PORTAL_VERSION_5;
+			return PORTAL_MAJOR_VERSION_5;
 		}
 		else {
 			return 0;
@@ -286,7 +300,9 @@ public class ProductEntryConstants {
 	public static boolean isDigitalEnterpriseMajorVersion7(
 		int digitalEnterpriseMajorVersion) {
 
-		if (digitalEnterpriseMajorVersion == DIGITAL_ENTERPRISE_VERSION_7) {
+		if (digitalEnterpriseMajorVersion ==
+				DIGITAL_ENTERPRISE_MAJOR_VERSION_7) {
+
 			return true;
 		}
 		else {

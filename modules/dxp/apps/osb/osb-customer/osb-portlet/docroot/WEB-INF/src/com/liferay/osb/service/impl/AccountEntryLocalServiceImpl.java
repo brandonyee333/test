@@ -488,7 +488,7 @@ public class AccountEntryLocalServiceImpl
 				userId, accountEntry.getAccountEntryId(),
 				orderEntry.getOrderEntryId(), productEntryId, supportResponseId,
 				"Trial", OfferingEntryConstants.TYPE_TRIAL,
-				ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7, true,
+				ProductEntryConstants.DIGITAL_ENTERPRISE_MAJOR_VERSION_7, true,
 				licenseLifetime, 0, 0, false, supportLifetime,
 				OfferingEntryConstants.SIZING_1,
 				OfferingEntryConstants.QUANTITY_UNLIMITED,

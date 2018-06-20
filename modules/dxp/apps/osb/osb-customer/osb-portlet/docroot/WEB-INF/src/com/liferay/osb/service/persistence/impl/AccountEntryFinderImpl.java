@@ -105,9 +105,6 @@ public class AccountEntryFinderImpl
 	public static final String JOIN_BY_ACTIVE_LICENSE =
 		AccountEntryFinder.class.getName() + ".joinByActiveLicense";
 
-	public static final String JOIN_BY_ACTIVE_PORTAL_LICENSE =
-		AccountEntryFinder.class.getName() + ".joinByActivePortalLicense";
-
 	public static final String JOIN_BY_ACTIVE_SUPPORT =
 		AccountEntryFinder.class.getName() + ".joinByActiveSupport";
 
@@ -122,6 +119,9 @@ public class AccountEntryFinderImpl
 
 	public static final String JOIN_BY_PARTNER_WORKER =
 		AccountEntryFinder.class.getName() + ".joinByPartnerWorker";
+
+	public static final String JOIN_BY_PRIMARY_PRODUCT_ENTRY =
+		AccountEntryFinder.class.getName() + ".joinByPrimaryProductEntry";
 
 	public static final String JOIN_BY_PRODUCT_ENTRY =
 		AccountEntryFinder.class.getName() + ".joinByProductEntry";
@@ -630,9 +630,6 @@ public class AccountEntryFinderImpl
 		else if (key.equals("activeLicense")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACTIVE_LICENSE);
 		}
-		else if (key.equals("activePortalLicense")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACTIVE_PORTAL_LICENSE);
-		}
 		else if (key.equals("env")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_ENVIRONMENT);
 		}
@@ -641,6 +638,9 @@ public class AccountEntryFinderImpl
 		}
 		else if (key.equals("partnerWorker")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_PARTNER_WORKER);
+		}
+		else if (key.equals("primaryProductEntry")) {
+			join = CustomSQLUtil.get(JOIN_BY_PRIMARY_PRODUCT_ENTRY);
 		}
 		else if (key.equals("productEntryIds")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_PRODUCT_ENTRY);
@@ -729,9 +729,6 @@ public class AccountEntryFinderImpl
 		else if (key.equals("activeLicense")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACTIVE_LICENSE);
 		}
-		else if (key.equals("activePortalLicense")) {
-			join = CustomSQLUtil.get(JOIN_BY_ACTIVE_PORTAL_LICENSE);
-		}
 		else if (key.equals("activeSupport")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACTIVE_SUPPORT);
 
@@ -773,6 +770,9 @@ public class AccountEntryFinderImpl
 		}
 		else if (key.equals("partnerWorker")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_PARTNER_WORKER);
+		}
+		else if (key.equals("primaryProductEntry")) {
+			join = CustomSQLUtil.get(JOIN_BY_PRIMARY_PRODUCT_ENTRY);
 		}
 		else if (key.equals("productEntryIds")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_PRODUCT_ENTRY);
@@ -957,6 +957,20 @@ public class AccountEntryFinderImpl
 				}
 			}
 			else if (key.equals("noSupport")) {
+			}
+			else if (key.equals("primaryProductEntry")) {
+				Object[] valueArray = (Object[])entry.getValue();
+
+				qPos.add((Integer)valueArray[0]);
+
+				String valueString = StringUtil.toLowerCase(
+					(String)valueArray[1]);
+
+				valueString = StringUtil.quote(valueString, StringPool.PERCENT);
+
+				qPos.add(valueString);
+
+				qPos.add((Integer)valueArray[2]);
 			}
 			else if (key.equals("ticketSupport")) {
 				qPos.add(OfferingEntryConstants.STATUS_ACTIVE);

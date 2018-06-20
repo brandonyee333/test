@@ -93,6 +93,7 @@
 	</portlet>
 	<portlet>
 		<portlet-name>38</portlet-name>
+		<configuration-action-class>com.liferay.osb.selfprovisioning.action.ConfigurationActionImpl</configuration-action-class>
 		<preferences-unique-per-layout>true</preferences-unique-per-layout>
 		<header-portlet-css>/self_provisioning/css/main.css</header-portlet-css>
 		<css-class-wrapper>osb-portlet-self-provisioning</css-class-wrapper>

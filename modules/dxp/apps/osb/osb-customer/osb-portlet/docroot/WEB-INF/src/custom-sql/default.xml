@@ -201,23 +201,6 @@
 				)
 		]]>
 	</sql>
-	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByActivePortalLicense">
-		<![CDATA[
-			INNER JOIN
-				OSB_OfferingEntry ON
-					(OSB_OfferingEntry.accountEntryId = OSB_AccountEntry.accountEntryId)
-			INNER JOIN
-				OSB_ProductEntry ON
-					(OSB_ProductEntry.productEntryId = OSB_OfferingEntry.productEntryId)
-			WHERE
-				(
-					(OSB_AccountEntry.type_ != 4) AND
-					(OSB_OfferingEntry.licenses = [$TRUE$]) AND
-					(OSB_OfferingEntry.status = ?) AND
-					(OSB_ProductEntry.type_ = ?)
-				)
-		]]>
-	</sql>
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByActiveSupport">
 		<![CDATA[
 			WHERE
@@ -276,6 +259,24 @@
 					(OSB_PartnerWorker.partnerEntryId = OSB_AccountEntry.partnerEntryId)
 			WHERE
 				(OSB_PartnerWorker.userId = ?)
+		]]>
+	</sql>
+	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByPrimaryProductEntry">
+		<![CDATA[
+			INNER JOIN
+				OSB_OfferingEntry ON
+					(OSB_OfferingEntry.accountEntryId = OSB_AccountEntry.accountEntryId)
+			INNER JOIN
+				OSB_ProductEntry ON
+					(OSB_ProductEntry.productEntryId = OSB_OfferingEntry.productEntryId)
+			WHERE
+				(
+					(OSB_AccountEntry.type_ != 4) AND
+					(OSB_OfferingEntry.licenses = [$TRUE$]) AND
+					(OSB_OfferingEntry.status = ?) AND
+					(lower(OSB_ProductEntry.name) LIKE ?) AND
+					(OSB_ProductEntry.type_ = ?)
+				)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByProductEntry">

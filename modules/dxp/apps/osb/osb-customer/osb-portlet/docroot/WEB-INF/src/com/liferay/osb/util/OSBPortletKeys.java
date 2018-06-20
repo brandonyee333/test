@@ -27,6 +27,8 @@ public interface OSBPortletKeys {
 
 	public static final String OSB_LICENSE = "4_WAR_osbportlet";
 
+	public static final String OSB_SELF_PROVISIONING = "38_WAR_osbportlet";
+
 	public static final String RN_RELEASE_NOTES = "1_WAR_releasenotesportlet";
 
 }

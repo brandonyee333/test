@@ -181,14 +181,14 @@ public class LCSSubscriptionEntryLocalServiceImpl
 	}
 
 	protected int getBuildVersion(int version) {
-		if (version == ProductEntryConstants.PORTAL_VERSION_5) {
+		if (version == ProductEntryConstants.PORTAL_MAJOR_VERSION_5) {
 			return 5200;
 		}
-		else if (version == ProductEntryConstants.PORTAL_VERSION_6) {
+		else if (version == ProductEntryConstants.PORTAL_MAJOR_VERSION_6) {
 			return 6200;
 		}
 		else if (version ==
-					ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7) {
+					ProductEntryConstants.DIGITAL_ENTERPRISE_MAJOR_VERSION_7) {
 
 			return 7000;
 		}

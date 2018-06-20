@@ -129,25 +129,25 @@ public class Upgrade_20160930103105564_ProductEntry extends BaseUpgradeProcess {
 	protected void convertPortalVersion7OfferingEntries() throws Exception {
 		updateOfferingEntries(
 			_BACKUP_PRODUCT_ENTRY_IDS, _deBackupProductEntryId, 22005,
-			ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7);
+			ProductEntryConstants.DIGITAL_ENTERPRISE_MAJOR_VERSION_7);
 		updateOfferingEntries(
 			_DEVELOPMENT_PRODUCT_ENTRY_IDS, _deDevelopmentProductEntryId, 22005,
-			ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7);
+			ProductEntryConstants.DIGITAL_ENTERPRISE_MAJOR_VERSION_7);
 		updateOfferingEntries(
 			_ENTERPRISE_PRODUCT_ENTRY_IDS, _deEnterpriseProductEntryId, 22005,
-			ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7);
+			ProductEntryConstants.DIGITAL_ENTERPRISE_MAJOR_VERSION_7);
 		updateOfferingEntries(
 			_LIMITED_PRODUCT_ENTRY_IDS, _deLimitedProductEntryId, 22005,
-			ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7);
+			ProductEntryConstants.DIGITAL_ENTERPRISE_MAJOR_VERSION_7);
 		updateOfferingEntries(
 			_NON_PRODUCTION_PRODUCT_ENTRY_IDS, _deNonProductionProductEntryId,
-			22005, ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7);
+			22005, ProductEntryConstants.DIGITAL_ENTERPRISE_MAJOR_VERSION_7);
 		updateOfferingEntries(
 			_OEM_PRODUCT_ENTRY_IDS, _deOEMProductEntryId, 22005,
-			ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7);
+			ProductEntryConstants.DIGITAL_ENTERPRISE_MAJOR_VERSION_7);
 		updateOfferingEntries(
 			_PRODUCTION_PRODUCT_ENTRY_IDS, _deProductionProductEntryId, 22005,
-			ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7);
+			ProductEntryConstants.DIGITAL_ENTERPRISE_MAJOR_VERSION_7);
 	}
 
 	@Override
@@ -181,7 +181,7 @@ public class Upgrade_20160930103105564_ProductEntry extends BaseUpgradeProcess {
 		StringBundler sb = new StringBundler(5);
 
 		sb.append("update OSB_OfferingEntry set version = ");
-		sb.append(ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7);
+		sb.append(ProductEntryConstants.DIGITAL_ENTERPRISE_MAJOR_VERSION_7);
 		sb.append(", productEntryId = ");
 		sb.append(_deDevelopmentProductEntryId);
 		sb.append(" where type_ = 3");
@@ -190,25 +190,25 @@ public class Upgrade_20160930103105564_ProductEntry extends BaseUpgradeProcess {
 
 		splitPortalVersionAnyOfferingEntries(
 			_BACKUP_PRODUCT_ENTRY_IDS, _deBackupProductEntryId, 21001,
-			ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7);
+			ProductEntryConstants.DIGITAL_ENTERPRISE_MAJOR_VERSION_7);
 		splitPortalVersionAnyOfferingEntries(
 			_DEVELOPMENT_PRODUCT_ENTRY_IDS, _deDevelopmentProductEntryId, 21001,
-			ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7);
+			ProductEntryConstants.DIGITAL_ENTERPRISE_MAJOR_VERSION_7);
 		splitPortalVersionAnyOfferingEntries(
 			_ENTERPRISE_PRODUCT_ENTRY_IDS, _deEnterpriseProductEntryId, 21001,
-			ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7);
+			ProductEntryConstants.DIGITAL_ENTERPRISE_MAJOR_VERSION_7);
 		splitPortalVersionAnyOfferingEntries(
 			_LIMITED_PRODUCT_ENTRY_IDS, _deLimitedProductEntryId, 21001,
-			ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7);
+			ProductEntryConstants.DIGITAL_ENTERPRISE_MAJOR_VERSION_7);
 		splitPortalVersionAnyOfferingEntries(
 			_NON_PRODUCTION_PRODUCT_ENTRY_IDS, _deNonProductionProductEntryId,
-			21001, ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7);
+			21001, ProductEntryConstants.DIGITAL_ENTERPRISE_MAJOR_VERSION_7);
 		splitPortalVersionAnyOfferingEntries(
 			_OEM_PRODUCT_ENTRY_IDS, _deOEMProductEntryId, 21001,
-			ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7);
+			ProductEntryConstants.DIGITAL_ENTERPRISE_MAJOR_VERSION_7);
 		splitPortalVersionAnyOfferingEntries(
 			_PRODUCTION_PRODUCT_ENTRY_IDS, _deProductionProductEntryId, 21001,
-			ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7);
+			ProductEntryConstants.DIGITAL_ENTERPRISE_MAJOR_VERSION_7);
 	}
 
 	protected void splitPortalVersionAnyOfferingEntries(

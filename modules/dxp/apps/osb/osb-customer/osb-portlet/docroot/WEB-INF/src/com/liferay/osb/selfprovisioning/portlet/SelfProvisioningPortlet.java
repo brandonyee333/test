@@ -18,27 +18,9 @@ import com.liferay.compat.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.compat.util.bridges.mvc.MVCPortlet;
 import com.liferay.osb.license.util.LicenseUtil;
 import com.liferay.osb.model.LicenseKey;
-import com.liferay.osb.model.OfferingEntry;
-import com.liferay.osb.model.OfferingEntryConstants;
-import com.liferay.osb.model.ProductEntry;
-import com.liferay.osb.model.ProductEntryConstants;
-import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
-import com.liferay.osb.service.LicenseKeyLocalServiceUtil;
-import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.osb.service.LicenseKeyServiceUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.security.auth.PrincipalException;
-import com.liferay.portal.theme.ThemeDisplay;
-
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.TreeSet;
 
 import javax.portlet.PortletException;
 import javax.portlet.ResourceRequest;
@@ -54,22 +36,18 @@ public class SelfProvisioningPortlet extends MVCPortlet {
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 		throws Exception {
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
 		long accountEntryId = ParamUtil.getLong(
 			resourceRequest, "accountEntryId");
-		String productEntryDisplayName = ParamUtil.getString(
-			resourceRequest, "productEntryDisplayName");
+		String productEntryRootName = ParamUtil.getString(
+			resourceRequest, "productEntryRootName");
+		int productMinorVersion = ParamUtil.getInteger(
+			resourceRequest, "productMinorVersion");
 		String licenseEntryType = ParamUtil.getString(
 			resourceRequest, "licenseEntryType");
 
-		checkPermission(themeDisplay.getUserId(), accountEntryId);
-
-		LicenseKey licenseKey =
-			LicenseKeyLocalServiceUtil.addDeveloperLicenseKey(
-				themeDisplay.getUserId(), accountEntryId,
-				productEntryDisplayName, licenseEntryType);
+		LicenseKey licenseKey = LicenseKeyServiceUtil.addDeveloperLicenseKey(
+			accountEntryId, productEntryRootName, productMinorVersion,
+			licenseEntryType);
 
 		String fileName = LicenseUtil.getLicenseKeyFileName(licenseKey);
 		String licenseXML = LicenseUtil.exportToXML(licenseKey);
@@ -90,65 +68,10 @@ public class SelfProvisioningPortlet extends MVCPortlet {
 			if (resourceID.equals("generateLicenseKey")) {
 				generateLicenseKey(resourceRequest, resourceResponse);
 			}
-			else if (resourceID.equals("productEntryDisplayNames")) {
-				serveProductEntryDisplayNames(
-					resourceRequest, resourceResponse);
-			}
 		}
 		catch (Exception e) {
 			throw new PortletException(e);
 		}
-	}
-
-	protected void checkPermission(long userId, long accountEntryId)
-		throws PrincipalException, SystemException {
-
-		if (!AccountCustomerLocalServiceUtil.hasAccountCustomer(
-				userId, accountEntryId)) {
-
-			throw new PrincipalException();
-		}
-	}
-
-	protected void serveProductEntryDisplayNames(
-			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		long accountEntryId = ParamUtil.getLong(
-			resourceRequest, "accountEntryId");
-
-		checkPermission(themeDisplay.getUserId(), accountEntryId);
-
-		TreeSet<String> productEntryDisplayNames = new TreeSet<String>();
-
-		LinkedHashMap params = new LinkedHashMap();
-
-		params.put("license", StringPool.BLANK);
-		params.put("productEntry", ProductEntryConstants.TYPE_PRIMARY);
-
-		List<OfferingEntry> offeringEntries =
-			OfferingEntryLocalServiceUtil.search(
-				0, accountEntryId,
-				new int[] {OfferingEntryConstants.TYPE_REGULAR},
-				new int[] {OfferingEntryConstants.STATUS_ACTIVE}, 0, 0, 0, 0, 0,
-				0, params, true, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
-
-		for (OfferingEntry offeringEntry : offeringEntries) {
-			ProductEntry productEntry = offeringEntry.getProductEntry();
-
-			productEntryDisplayNames.add(productEntry.getDisplayName());
-		}
-
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-		jsonObject.put(
-			"productEntryDisplayNames",
-			JSONFactoryUtil.looseSerialize(productEntryDisplayNames));
-
-		writeJSON(resourceRequest, resourceResponse, jsonObject);
 	}
 
 }
