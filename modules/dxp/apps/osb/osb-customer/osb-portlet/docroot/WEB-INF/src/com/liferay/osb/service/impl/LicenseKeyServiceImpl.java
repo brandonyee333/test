@@ -64,7 +64,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	public LicenseKey addDeveloperLicenseKey(
 			long accountEntryId, String productEntryRootName,
 			int productMinorVersion)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (!accountCustomerLocalService.hasAccountCustomer(
 				getUserId(), accountEntryId)) {
@@ -705,10 +705,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 			for (OfferingEntry offeringEntry : offeringEntries) {
 				if (offeringEntry.getType() ==
-						OfferingEntryConstants.TYPE_SUBSCRIPTION) {
-
-					//TODO requires LRIS-26928
-					//OfferingEntryConstants.TYPE_DEVELOPER) {
+						OfferingEntryConstants.TYPE_DEVELOPER) {
 
 					return offeringEntry;
 				}

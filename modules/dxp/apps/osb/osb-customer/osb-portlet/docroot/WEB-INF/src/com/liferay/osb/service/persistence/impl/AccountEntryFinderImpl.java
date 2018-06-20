@@ -640,7 +640,7 @@ public class AccountEntryFinderImpl
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_PARTNER_WORKER);
 		}
 		else if (key.equals("primaryProductEntry")) {
-			join = CustomSQLUtil.get(JOIN_BY_PRIMARY_PRODUCT_ENTRY);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_PRIMARY_PRODUCT_ENTRY);
 		}
 		else if (key.equals("productEntryIds")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_PRODUCT_ENTRY);
@@ -772,7 +772,7 @@ public class AccountEntryFinderImpl
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_PARTNER_WORKER);
 		}
 		else if (key.equals("primaryProductEntry")) {
-			join = CustomSQLUtil.get(JOIN_BY_PRIMARY_PRODUCT_ENTRY);
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_PRIMARY_PRODUCT_ENTRY);
 		}
 		else if (key.equals("productEntryIds")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_PRODUCT_ENTRY);

@@ -94,6 +94,12 @@ public class SupportResponseLocalServiceImpl
 		return supportResponsePersistence.fetchByName(name);
 	}
 
+	public SupportResponse getSupportResponseByName(String name)
+		throws PortalException {
+
+		return supportResponsePersistence.findByName(name);
+	}
+
 	public SupportResponse updateSupportResponse(
 			long supportResponseId, String name, int supportLevel,
 			int severity1Response, int severity1Resolution,

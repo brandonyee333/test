@@ -48,7 +48,6 @@ import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.model.SupportResponse;
-import com.liferay.osb.service.SupportResponseLocalServiceUtil;
 import com.liferay.osb.service.base.LicenseKeyLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
@@ -61,7 +60,6 @@ import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.CountryService;
-import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -72,6 +70,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SubscriptionSender;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.io.File;
 
@@ -96,7 +95,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	public LicenseKey addDeveloperLicenseKey(
 			long userId, long accountEntryId, String productEntryRootName,
 			int productMinorVersion)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
@@ -127,8 +126,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			offeringEntry.getProductEntryId(),
 			LicenseEntryConstants.TYPE_DEVELOPER);
 
-		Calendar startCal = Calendar.getInstance();
-
 		return addLicenseKey(
 			userId, licenseKeySetId, "Developer Activation Keys",
 			offeringEntry.getOfferingEntryId(),
@@ -136,9 +133,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			getProductVersion(productMinorVersion), 0, user.getFullName(), 2, 5,
 			accountEntry.getName() + " Developer Activation Keys",
 			new String[0], new String[0], new String[0],
-			new String[] {LicenseKeyConstants.SERVER_ID_DEVELOPER},
-			startCal.get(Calendar.MONTH), startCal.get(Calendar.DATE),
-			startCal.get(Calendar.YEAR), false, true);
+			new String[] {LicenseKeyConstants.SERVER_ID_DEVELOPER}, new Date(),
+			false, true);
 	}
 
 	public LicenseKey addLicenseKey(
@@ -1339,7 +1335,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	protected OfferingEntry getDeveloperOfferingEntry(
 			long accountEntryId, long primaryProductEntryId, int version,
 			int sizing)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		ProductEntry productEntry = getDeveloperProductEntry(
 			primaryProductEntryId);
@@ -1356,7 +1352,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		OrderEntry orderEntry = getDeveloperOrderEntry(accountEntryId);
 
 		SupportResponse supportResponse =
-			SupportResponseLocalServiceUtil.getSupportResponseByName("Limited");
+			supportResponseLocalService.getSupportResponseByName("Limited");
 
 		return offeringEntryLocalService.addOfferingEntry(
 			OSBConstants.USER_DEFAULT_USER_ID, accountEntryId,
@@ -1369,7 +1365,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	}
 
 	protected OrderEntry getDeveloperOrderEntry(long accountEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		OfferingEntry offeringEntry =
 			offeringEntryPersistence.fetchByAEI_T_First(
@@ -1390,20 +1386,19 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	}
 
 	protected ProductEntry getDeveloperProductEntry(long primaryProductEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		ProductEntry productEntry = productEntryPersistence.findByPrimaryKey(
 			primaryProductEntryId);
-
-		String productEntryDisplayName = productEntry.getDisplayName();
 
 		List<ProductEntry> productEntries =
 			productEntryPersistence.findByEnvironment(
 				ProductEntryConstants.ENVIRONMENT_DEVELOPMENT);
 
 		for (ProductEntry curProductEntry : productEntries) {
-			if (productEntryDisplayName.equals(
-					curProductEntry.getDisplayName())) {
+			if ((curProductEntry.isDigitalEnterprise() &&
+				 productEntry.isDigitalEnterprise()) ||
+				(curProductEntry.isPortal() && productEntry.isPortal())) {
 
 				return curProductEntry;
 			}
@@ -1414,7 +1409,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 	protected OfferingEntry getPrimaryOfferingEntry(
 			long accountEntryId, String productEntryRootName)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		LinkedHashMap params = new LinkedHashMap();
 

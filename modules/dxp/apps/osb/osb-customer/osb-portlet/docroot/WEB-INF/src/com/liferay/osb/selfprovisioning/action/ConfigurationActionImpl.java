@@ -1,36 +1,41 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.selfprovisioning.action;
 
-import com.liferay.compat.portal.kernel.portlet.DefaultConfigurationAction;
-import com.liferay.compat.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletConfig;
 import javax.portlet.PortletPreferences;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Amos Fong
  */
 public class ConfigurationActionImpl extends DefaultConfigurationAction {
+
+	@Override
+	public String getJspPath(HttpServletRequest request) {
+		return "/self_provisioning/configuration.jsp";
+	}
 
 	@Override
 	public void processAction(
@@ -52,15 +57,6 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 			actionRequest,
 			portletConfig.getPortletName() +
 				SessionMessages.KEY_SUFFIX_UPDATED_CONFIGURATION);
-	}
-
-	@Override
-	public String render(
-			PortletConfig portletConfig, RenderRequest renderRequest,
-			RenderResponse renderResponse)
-		throws Exception {
-
-		return "/self_provisioning/configuration.jsp";
 	}
 
 	protected void updatePreferences(

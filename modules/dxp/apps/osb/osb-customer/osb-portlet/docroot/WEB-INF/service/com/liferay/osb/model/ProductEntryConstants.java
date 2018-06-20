@@ -100,7 +100,7 @@ public class ProductEntryConstants {
 	public static final int PORTAL_MINOR_VERSION_6_1 = 22003;
 
 	public static final int PORTAL_MINOR_VERSION_6_2 = 22004;
-	
+
 	public static final int PORTAL_VERSION_4_4_0 = 20000;
 
 	public static final int PORTAL_VERSION_5 = 21000;
