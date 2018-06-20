@@ -12,12 +12,12 @@
  * details.
  */
 
-package com.liferay.osb.activation.portlet;
+package com.liferay.osb.selfprovisioning.portlet;
 
 import com.liferay.compat.util.bridges.mvc.MVCPortlet;
 
 /**
  * @author Jeremy Fu
  */
-public class ActivationPortlet extends MVCPortlet {
+public class SelfProvisioningPortlet extends MVCPortlet {
 }

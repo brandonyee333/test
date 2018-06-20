@@ -193,19 +193,19 @@
 	</portlet>
 	<portlet>
 		<portlet-name>38</portlet-name>
-		<display-name>Activation Portlet</display-name>
-		<portlet-class>com.liferay.osb.activation.portlet.ActivationPortlet</portlet-class>
+		<display-name>Self Provisioning Portlet</display-name>
+		<portlet-class>com.liferay.osb.selfprovisioning.portlet.SelfProvisioningPortlet</portlet-class>
 		<init-param>
 			<name>copy-request-parameters</name>
 			<value>true</value>
 		</init-param>
 		<init-param>
 			<name>jsp-path</name>
-			<value>/activation/</value>
+			<value>/self_provisioning/</value>
 		</init-param>
 		<init-param>
 			<name>view-jsp</name>
-			<value>/activation/view.jsp</value>
+			<value>/self_provisioning/view.jsp</value>
 		</init-param>
 		<expiration-cache>0</expiration-cache>
 		<supports>
@@ -213,9 +213,9 @@
 		</supports>
 		<resource-bundle>content.Language</resource-bundle>
 		<portlet-info>
-			<title>Activation</title>
-			<short-title>Activation</short-title>
-			<keywords>Activation</keywords>
+			<title>Self Provisioning</title>
+			<short-title>Self Provisioning</short-title>
+			<keywords>Self Provisioning</keywords>
 		</portlet-info>
 		<security-role-ref>
 			<role-name>administrator</role-name>

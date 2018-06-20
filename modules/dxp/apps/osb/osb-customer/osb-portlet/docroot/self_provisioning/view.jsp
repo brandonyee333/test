@@ -18,7 +18,7 @@
 
 <span class="txt-b"><liferay-ui:message key="download-your-portal-license-key" /></span>
 
-<div class="osb-portlet-activation">
+<div class="osb-portlet-self-provisioning">
 	<div class="aui-helper-clearfix activation-key-container">
 		<div class="aui-w25 content-column">
 			<div class="activation-column content-column-content">

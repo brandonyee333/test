@@ -94,8 +94,8 @@
 	<portlet>
 		<portlet-name>38</portlet-name>
 		<preferences-unique-per-layout>true</preferences-unique-per-layout>
-		<header-portlet-css>/activation/css/main.css</header-portlet-css>
-		<css-class-wrapper>osb-portlet-activation</css-class-wrapper>
+		<header-portlet-css>/self_provisioning/css/main.css</header-portlet-css>
+		<css-class-wrapper>osb-portlet-self-provisioning</css-class-wrapper>
 	</portlet>
 	<role-mapper>
 		<role-name>administrator</role-name>
