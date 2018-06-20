@@ -42,12 +42,9 @@ public class SelfProvisioningPortlet extends MVCPortlet {
 			resourceRequest, "productEntryRootName");
 		int productMinorVersion = ParamUtil.getInteger(
 			resourceRequest, "productMinorVersion");
-		String licenseEntryType = ParamUtil.getString(
-			resourceRequest, "licenseEntryType");
 
 		LicenseKey licenseKey = LicenseKeyServiceUtil.addDeveloperLicenseKey(
-			accountEntryId, productEntryRootName, productMinorVersion,
-			licenseEntryType);
+			accountEntryId, productEntryRootName, productMinorVersion);
 
 		String fileName = LicenseUtil.getLicenseKeyFileName(licenseKey);
 		String licenseXML = LicenseUtil.exportToXML(licenseKey);

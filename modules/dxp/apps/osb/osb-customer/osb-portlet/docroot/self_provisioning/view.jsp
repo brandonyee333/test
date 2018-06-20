@@ -49,10 +49,10 @@ int[] productMinorVersions = StringUtil.split(portletPreferences.getValue("produ
 		}
 		%>
 
-		<span class="txt-b"><liferay-ui:message arguments="<%= new Object[] {productEntryRootName} %>" key="download-your-x-activation-key" /></span>
+		<span class="txt-b"><liferay-ui:message arguments="<%= new Object[] {productEntryRootName} %>" key="download-a-x-activation-key-for-your-developer-workstation" /></span>
 
 		<div class="aui-helper-clearfix activation-key-container">
-			<div class="aui-w25 content-column">
+			<div class="aui-w33 content-column">
 				<div class="activation-column content-column-content">
 					<select id="<portlet:namespace />accountEntryId" name="<portlet:namespace />accountEntryId" onChange="<portlet:namespace />selectAccountEntry(this.value);">
 						<c:choose>
@@ -78,7 +78,7 @@ int[] productMinorVersions = StringUtil.split(portletPreferences.getValue("produ
 				</div>
 			</div>
 
-			<div class="aui-w25 content-column">
+			<div class="aui-w33 content-column">
 				<div class="activation-column content-column-content">
 					<select id="<portlet:namespace />productMinorVersion" name="<portlet:namespace />productMinorVersion">
 						<option disabled selected><liferay-ui:message key="version" /></option>
@@ -86,15 +86,7 @@ int[] productMinorVersions = StringUtil.split(portletPreferences.getValue("produ
 				</div>
 			</div>
 
-			<div class="aui-w25 content-column">
-				<div class="activation-column content-column-content">
-					<select id="<portlet:namespace />licenseEntryType" name="<portlet:namespace />licenseEntryType">
-						<option disabled selected><liferay-ui:message key="type" /></option>
-					</select>
-				</div>
-			</div>
-
-			<div class="aui-w25 content-column">
+			<div class="aui-w33 content-column">
 				<div class="activation-column content-column-content">
 					<button id="<portlet:namespace />activationKeyDownloadButton" onClick="<portlet:namespace />generateLicenseKey();" type="button"><liferay-ui:message key="download-activation-key" /></button>
 				</div>
@@ -107,9 +99,8 @@ int[] productMinorVersions = StringUtil.split(portletPreferences.getValue("produ
 
 				var accountEntryId = A.one('#<portlet:namespace />accountEntryId');
 				var productMinorVersion = A.one('#<portlet:namespace />productMinorVersion');
-				var licenseEntryType = A.one('#<portlet:namespace />licenseEntryType');
 
-				if ((accountEntryId.val() <= 0) || (productMinorVersion.val() == '') || (licenseEntryType.val() == '')) {
+				if ((accountEntryId.get('selectedIndex') == 0) || (productMinorVersion.get('selectedIndex') == 0)) {
 					alert('<liferay-ui:message key="please-fill-out-all-required-fields" />');
 
 					return;
@@ -119,7 +110,7 @@ int[] productMinorVersions = StringUtil.split(portletPreferences.getValue("produ
 					<portlet:param name="productEntryRootName" value="<%= productEntryRootName %>" />
 				</portlet:resourceURL>
 
-				window.location.href = '<%= generateLicenseKeyURL.toString() %>&<portlet:namespace />accountEntryId=' + accountEntryId.val() + '&<portlet:namespace />productMinorVersion=' + productMinorVersion.val() + '&<portlet:namespace />licenseEntryType=' + licenseEntryType.val();
+				window.location.href = '<%= generateLicenseKeyURL.toString() %>&<portlet:namespace />accountEntryId=' + accountEntryId.val() + '&<portlet:namespace />productMinorVersion=' + productMinorVersion.val();
 			}
 
 			function <portlet:namespace />selectAccountEntry(accountEntryId) {
@@ -147,20 +138,6 @@ int[] productMinorVersions = StringUtil.split(portletPreferences.getValue("produ
 				productMinorVersionSelect.append(productMinorVersionOptions.join(''));
 
 				productMinorVersionSelect.set('selectedIndex', 0);
-
-				var licenseEntryTypeSelect = A.one('#<portlet:namespace />licenseEntryType');
-
-				licenseEntryTypeSelect.empty();
-
-				var licenseEntryTypeOptions = [];
-
-				licenseEntryTypeOptions.push('<option disabled><liferay-ui:message key="type" /></option>');
-				licenseEntryTypeOptions.push('<option value="developer"><liferay-ui:message key="developer" /></option>');
-				licenseEntryTypeOptions.push('<option value="developer-cluster"><liferay-ui:message key="developer-cluster" /></option>');
-
-				licenseEntryTypeSelect.append(licenseEntryTypeOptions.join(''));
-
-				licenseEntryTypeSelect.set('selectedIndex', 0);
 			}
 
 			<c:if test="<%= accountEntry != null %>">

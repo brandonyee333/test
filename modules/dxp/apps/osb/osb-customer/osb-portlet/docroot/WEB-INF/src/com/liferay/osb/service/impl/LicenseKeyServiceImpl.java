@@ -63,7 +63,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 	public LicenseKey addDeveloperLicenseKey(
 			long accountEntryId, String productEntryRootName,
-			int productMinorVersion, String licenseEntryType)
+			int productMinorVersion)
 		throws PortalException, SystemException {
 
 		if (!accountCustomerLocalService.hasAccountCustomer(
@@ -74,7 +74,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 		return licenseKeyLocalService.addDeveloperLicenseKey(
 			getUserId(), accountEntryId, productEntryRootName,
-			productMinorVersion, licenseEntryType);
+			productMinorVersion);
 	}
 
 	public LicenseKey addLicenseKey(

@@ -95,7 +95,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 	public LicenseKey addDeveloperLicenseKey(
 			long userId, long accountEntryId, String productEntryRootName,
-			int productMinorVersion, String licenseEntryType)
+			int productMinorVersion)
 		throws PortalException, SystemException {
 
 		User user = userPersistence.findByPrimaryKey(userId);
@@ -124,7 +124,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		}
 
 		LicenseEntry licenseEntry = licenseEntryPersistence.findByPEI_T(
-			offeringEntry.getProductEntryId(), licenseEntryType);
+			offeringEntry.getProductEntryId(),
+			LicenseEntryConstants.TYPE_DEVELOPER);
 
 		Calendar startCal = Calendar.getInstance();
 
