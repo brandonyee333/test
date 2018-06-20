@@ -201,6 +201,23 @@
 				)
 		]]>
 	</sql>
+	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByActivePortalLicense">
+		<![CDATA[
+			INNER JOIN
+				OSB_OfferingEntry ON
+					(OSB_OfferingEntry.accountEntryId = OSB_AccountEntry.accountEntryId)
+			INNER JOIN
+				OSB_ProductEntry ON
+					(OSB_ProductEntry.productEntryId = OSB_OfferingEntry.productEntryId)
+			WHERE
+				(
+					(OSB_AccountEntry.type_ != 4) AND
+					(OSB_OfferingEntry.licenses = [$TRUE$]) AND
+					(OSB_OfferingEntry.status = ?) AND
+					(OSB_ProductEntry.type_ = ?)
+				)
+		]]>
+	</sql>
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByActiveSupport">
 		<![CDATA[
 			WHERE
@@ -465,6 +482,12 @@
 				(OSB_OfferingEntry.status = ?) [$AND_OR_CONNECTOR$]
 				(OSB_OfferingEntry.supportEndDate > ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
 				(OSB_OfferingEntry.supportEndDate < ? [$AND_OR_NULL_CHECK$])
+		]]>
+	</sql>
+	<sql id="com.liferay.osb.service.persistence.OfferingEntryFinder.filterByLicense">
+		<![CDATA[
+			WHERE
+				(OSB_OfferingEntry.licenses = [$TRUE$])
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.OfferingEntryFinder.filterByVersion">

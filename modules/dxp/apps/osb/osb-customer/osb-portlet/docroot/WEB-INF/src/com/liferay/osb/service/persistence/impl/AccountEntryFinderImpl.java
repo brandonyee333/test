@@ -105,6 +105,9 @@ public class AccountEntryFinderImpl
 	public static final String JOIN_BY_ACTIVE_LICENSE =
 		AccountEntryFinder.class.getName() + ".joinByActiveLicense";
 
+	public static final String JOIN_BY_ACTIVE_PORTAL_LICENSE =
+		AccountEntryFinder.class.getName() + ".joinByActivePortalLicense";
+
 	public static final String JOIN_BY_ACTIVE_SUPPORT =
 		AccountEntryFinder.class.getName() + ".joinByActiveSupport";
 
@@ -627,6 +630,9 @@ public class AccountEntryFinderImpl
 		else if (key.equals("activeLicense")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACTIVE_LICENSE);
 		}
+		else if (key.equals("activePortalLicense")) {
+			join = CustomSQLUtil.get(JOIN_BY_ACTIVE_PORTAL_LICENSE);
+		}
 		else if (key.equals("env")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_ENVIRONMENT);
 		}
@@ -722,6 +728,9 @@ public class AccountEntryFinderImpl
 		}
 		else if (key.equals("activeLicense")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACTIVE_LICENSE);
+		}
+		else if (key.equals("activePortalLicense")) {
+			join = CustomSQLUtil.get(JOIN_BY_ACTIVE_PORTAL_LICENSE);
 		}
 		else if (key.equals("activeSupport")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACTIVE_SUPPORT);

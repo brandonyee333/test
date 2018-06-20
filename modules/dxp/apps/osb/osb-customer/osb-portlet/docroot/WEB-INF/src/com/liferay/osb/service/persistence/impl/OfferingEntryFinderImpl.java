@@ -48,6 +48,9 @@ public class OfferingEntryFinderImpl
 	public static final String COUNT_BY_U_AEI_PEI_T_S_SED =
 		OfferingEntryFinder.class.getName() + ".countByU_AEI_PEI_T_S_SED";
 
+	public static final String FILTER_BY_LICENSE =
+		OfferingEntryFinder.class.getName() + ".filterByLicense";
+
 	public static final String FIND_BY_U_AEI_PEI_T_S_SED =
 		OfferingEntryFinder.class.getName() + ".findByU_AEI_PEI_T_S_SED";
 
@@ -287,7 +290,9 @@ public class OfferingEntryFinderImpl
 			String key = entry.getKey();
 			Object value = entry.getValue();
 
-			if (Validator.isNotNull(value) || key.equals("validTicket")) {
+			if (Validator.isNotNull(value) || key.equals("license") ||
+				key.equals("validTicket")) {
+
 				sb.append(getWhere(key, value));
 			}
 		}
