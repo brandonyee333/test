@@ -432,7 +432,7 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 		sb.append(ownerJSONObject.getString("_lastName"));
 		sb.append(StringPool.NEW_LINE);
 
-		sb.append("SFDC: https://na5.salesforce.com/");
+		sb.append("SFDC: https://login.salesforce.com/");
 		sb.append(jsonObject.getString("_salesforceOpportunityKey"));
 
 		return sb.toString();
