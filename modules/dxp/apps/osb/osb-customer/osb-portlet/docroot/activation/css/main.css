@@ -1,0 +1,28 @@
+.osb-portlet-activation {
+	.activation-key-container {
+		background: #EFEFEF;
+		padding: 5px;
+
+		button {
+			background: #136398;
+			border: #136398;
+			border-radius: 7px;
+			color: #FFF;
+			min-height: 35px;
+			vertical-align: middle;
+			width: 100%;
+		}
+
+		select {
+			background: #FFF;
+			border: #FFF;
+			min-height: 35px;
+			vertical-align: middle;
+			width: 100%;
+		}
+
+		.activation-column {
+			padding: 5px 5px 5px 5px;
+		}
+	}
+}
