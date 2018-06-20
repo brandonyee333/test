@@ -24,11 +24,11 @@ int[] productMinorVersions = StringUtil.split(PrefsParamUtil.getString(portletPr
 %>
 
 <c:if test="<%= PortletPermissionUtil.contains(permissionChecker, plid, OSBPortletKeys.OSB_SELF_PROVISIONING, OSBActionKeys.CONFIGURATION) %>">
-	<liferay-portlet:renderURL portletConfiguration="true" var="portletURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+	<liferay-portlet:renderURL portletConfiguration="<%= true %>" var="portletURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 		<portlet:param name="redirect" value="<%= redirect %>" />
 	</liferay-portlet:renderURL>
 
-	<liferay-portlet:actionURL portletConfiguration="true" var="configurationURL" />
+	<liferay-portlet:actionURL portletConfiguration="<%= true %>" var="configurationURL" />
 
 	<aui:form action="<%= configurationURL %>" method="post" name="fm">
 		<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.UPDATE %>" />
@@ -66,7 +66,7 @@ int[] productMinorVersions = StringUtil.split(PrefsParamUtil.getString(portletPr
 			for (ListType digitalEnterpriseMinorVersionType : ListTypeServiceUtil.getListTypes(ProductEntryConstants.LIST_TYPE_DIGITAL_ENTERPRISE_MINOR_VERSIONS)) {
 			%>
 
-				productMinorVersionsOptions.push('<option value="<%= digitalEnterpriseMinorVersionType.getListTypeId() %>"><%= LanguageUtil.get(pageContext, digitalEnterpriseMinorVersionType.getName()) %></option>');
+				productMinorVersionsOptions.push('<option value="<%= digitalEnterpriseMinorVersionType.getListTypeId() %>"><%= LanguageUtil.get(request, digitalEnterpriseMinorVersionType.getName()) %></option>');
 
 			<%
 			}
@@ -79,7 +79,7 @@ int[] productMinorVersions = StringUtil.split(PrefsParamUtil.getString(portletPr
 			for (ListType portalMinorVersionType : ListTypeServiceUtil.getListTypes(ProductEntryConstants.LIST_TYPE_PORTAL_MINOR_VERSIONS)) {
 			%>
 
-				productMinorVersionsOptions.push('<option value="<%= portalMinorVersionType.getListTypeId() %>"><%= LanguageUtil.get(pageContext, portalMinorVersionType.getName()) %></option>');
+				productMinorVersionsOptions.push('<option value="<%= portalMinorVersionType.getListTypeId() %>"><%= LanguageUtil.get(request, portalMinorVersionType.getName()) %></option>');
 
 			<%
 			}

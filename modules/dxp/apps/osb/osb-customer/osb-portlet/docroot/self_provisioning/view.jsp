@@ -130,7 +130,7 @@ int[] productMinorVersions = StringUtil.split(portletPreferences.getValue("produ
 					ListType productMinorVersionType = ListTypeServiceUtil.getListType(productMinorVersion);
 				%>
 
-					productMinorVersionOptions.push('<option value="<%= productMinorVersion %>"><%= LanguageUtil.get(pageContext, productMinorVersionType.getName()) %></option>');
+					productMinorVersionOptions.push('<option value="<%= productMinorVersion %>"><%= LanguageUtil.get(request, productMinorVersionType.getName()) %></option>');
 
 				<%
 				}
