@@ -1114,6 +1114,1148 @@ public class OfferingEntryPersistenceImpl extends BasePersistenceImpl<OfferingEn
 	}
 
 	private static final String _FINDER_COLUMN_ORDERENTRYID_ORDERENTRYID_2 = "offeringEntry.orderEntryId = ?";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_AEI_T = new FinderPath(OfferingEntryModelImpl.ENTITY_CACHE_ENABLED,
+			OfferingEntryModelImpl.FINDER_CACHE_ENABLED,
+			OfferingEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findByAEI_T",
+			new String[] {
+				Long.class.getName(), Integer.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AEI_T = new FinderPath(OfferingEntryModelImpl.ENTITY_CACHE_ENABLED,
+			OfferingEntryModelImpl.FINDER_CACHE_ENABLED,
+			OfferingEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"findByAEI_T",
+			new String[] { Long.class.getName(), Integer.class.getName() },
+			OfferingEntryModelImpl.ACCOUNTENTRYID_COLUMN_BITMASK |
+			OfferingEntryModelImpl.TYPE_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_AEI_T = new FinderPath(OfferingEntryModelImpl.ENTITY_CACHE_ENABLED,
+			OfferingEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByAEI_T",
+			new String[] { Long.class.getName(), Integer.class.getName() });
+
+	/**
+	 * Returns all the offering entries where accountEntryId = &#63; and type = &#63;.
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param type the type
+	 * @return the matching offering entries
+	 */
+	@Override
+	public List<OfferingEntry> findByAEI_T(long accountEntryId, int type) {
+		return findByAEI_T(accountEntryId, type, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the offering entries where accountEntryId = &#63; and type = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link OfferingEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param type the type
+	 * @param start the lower bound of the range of offering entries
+	 * @param end the upper bound of the range of offering entries (not inclusive)
+	 * @return the range of matching offering entries
+	 */
+	@Override
+	public List<OfferingEntry> findByAEI_T(long accountEntryId, int type,
+		int start, int end) {
+		return findByAEI_T(accountEntryId, type, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the offering entries where accountEntryId = &#63; and type = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link OfferingEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param type the type
+	 * @param start the lower bound of the range of offering entries
+	 * @param end the upper bound of the range of offering entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching offering entries
+	 */
+	@Override
+	public List<OfferingEntry> findByAEI_T(long accountEntryId, int type,
+		int start, int end, OrderByComparator<OfferingEntry> orderByComparator) {
+		return findByAEI_T(accountEntryId, type, start, end, orderByComparator,
+			true);
+	}
+
+	/**
+	 * Returns an ordered range of all the offering entries where accountEntryId = &#63; and type = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link OfferingEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param type the type
+	 * @param start the lower bound of the range of offering entries
+	 * @param end the upper bound of the range of offering entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @return the ordered range of matching offering entries
+	 */
+	@Override
+	public List<OfferingEntry> findByAEI_T(long accountEntryId, int type,
+		int start, int end, OrderByComparator<OfferingEntry> orderByComparator,
+		boolean retrieveFromCache) {
+		boolean pagination = true;
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AEI_T;
+			finderArgs = new Object[] { accountEntryId, type };
+		}
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_AEI_T;
+			finderArgs = new Object[] {
+					accountEntryId, type,
+					
+					start, end, orderByComparator
+				};
+		}
+
+		List<OfferingEntry> list = null;
+
+		if (retrieveFromCache) {
+			list = (List<OfferingEntry>)finderCache.getResult(finderPath,
+					finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (OfferingEntry offeringEntry : list) {
+					if ((accountEntryId != offeringEntry.getAccountEntryId()) ||
+							(type != offeringEntry.getType())) {
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler query = null;
+
+			if (orderByComparator != null) {
+				query = new StringBundler(4 +
+						(orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				query = new StringBundler(4);
+			}
+
+			query.append(_SQL_SELECT_OFFERINGENTRY_WHERE);
+
+			query.append(_FINDER_COLUMN_AEI_T_ACCOUNTENTRYID_2);
+
+			query.append(_FINDER_COLUMN_AEI_T_TYPE_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
+			}
+			else
+			 if (pagination) {
+				query.append(OfferingEntryModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(accountEntryId);
+
+				qPos.add(type);
+
+				if (!pagination) {
+					list = (List<OfferingEntry>)QueryUtil.list(q, getDialect(),
+							start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<OfferingEntry>)QueryUtil.list(q, getDialect(),
+							start, end);
+				}
+
+				cacheResult(list);
+
+				finderCache.putResult(finderPath, finderArgs, list);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first offering entry in the ordered set where accountEntryId = &#63; and type = &#63;.
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param type the type
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching offering entry
+	 * @throws NoSuchOfferingEntryException if a matching offering entry could not be found
+	 */
+	@Override
+	public OfferingEntry findByAEI_T_First(long accountEntryId, int type,
+		OrderByComparator<OfferingEntry> orderByComparator)
+		throws NoSuchOfferingEntryException {
+		OfferingEntry offeringEntry = fetchByAEI_T_First(accountEntryId, type,
+				orderByComparator);
+
+		if (offeringEntry != null) {
+			return offeringEntry;
+		}
+
+		StringBundler msg = new StringBundler(6);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("accountEntryId=");
+		msg.append(accountEntryId);
+
+		msg.append(", type=");
+		msg.append(type);
+
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+		throw new NoSuchOfferingEntryException(msg.toString());
+	}
+
+	/**
+	 * Returns the first offering entry in the ordered set where accountEntryId = &#63; and type = &#63;.
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param type the type
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching offering entry, or <code>null</code> if a matching offering entry could not be found
+	 */
+	@Override
+	public OfferingEntry fetchByAEI_T_First(long accountEntryId, int type,
+		OrderByComparator<OfferingEntry> orderByComparator) {
+		List<OfferingEntry> list = findByAEI_T(accountEntryId, type, 0, 1,
+				orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last offering entry in the ordered set where accountEntryId = &#63; and type = &#63;.
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param type the type
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching offering entry
+	 * @throws NoSuchOfferingEntryException if a matching offering entry could not be found
+	 */
+	@Override
+	public OfferingEntry findByAEI_T_Last(long accountEntryId, int type,
+		OrderByComparator<OfferingEntry> orderByComparator)
+		throws NoSuchOfferingEntryException {
+		OfferingEntry offeringEntry = fetchByAEI_T_Last(accountEntryId, type,
+				orderByComparator);
+
+		if (offeringEntry != null) {
+			return offeringEntry;
+		}
+
+		StringBundler msg = new StringBundler(6);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("accountEntryId=");
+		msg.append(accountEntryId);
+
+		msg.append(", type=");
+		msg.append(type);
+
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+		throw new NoSuchOfferingEntryException(msg.toString());
+	}
+
+	/**
+	 * Returns the last offering entry in the ordered set where accountEntryId = &#63; and type = &#63;.
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param type the type
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching offering entry, or <code>null</code> if a matching offering entry could not be found
+	 */
+	@Override
+	public OfferingEntry fetchByAEI_T_Last(long accountEntryId, int type,
+		OrderByComparator<OfferingEntry> orderByComparator) {
+		int count = countByAEI_T(accountEntryId, type);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<OfferingEntry> list = findByAEI_T(accountEntryId, type, count - 1,
+				count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the offering entries before and after the current offering entry in the ordered set where accountEntryId = &#63; and type = &#63;.
+	 *
+	 * @param offeringEntryId the primary key of the current offering entry
+	 * @param accountEntryId the account entry ID
+	 * @param type the type
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next offering entry
+	 * @throws NoSuchOfferingEntryException if a offering entry with the primary key could not be found
+	 */
+	@Override
+	public OfferingEntry[] findByAEI_T_PrevAndNext(long offeringEntryId,
+		long accountEntryId, int type,
+		OrderByComparator<OfferingEntry> orderByComparator)
+		throws NoSuchOfferingEntryException {
+		OfferingEntry offeringEntry = findByPrimaryKey(offeringEntryId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			OfferingEntry[] array = new OfferingEntryImpl[3];
+
+			array[0] = getByAEI_T_PrevAndNext(session, offeringEntry,
+					accountEntryId, type, orderByComparator, true);
+
+			array[1] = offeringEntry;
+
+			array[2] = getByAEI_T_PrevAndNext(session, offeringEntry,
+					accountEntryId, type, orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception e) {
+			throw processException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected OfferingEntry getByAEI_T_PrevAndNext(Session session,
+		OfferingEntry offeringEntry, long accountEntryId, int type,
+		OrderByComparator<OfferingEntry> orderByComparator, boolean previous) {
+		StringBundler query = null;
+
+		if (orderByComparator != null) {
+			query = new StringBundler(5 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			query = new StringBundler(4);
+		}
+
+		query.append(_SQL_SELECT_OFFERINGENTRY_WHERE);
+
+		query.append(_FINDER_COLUMN_AEI_T_ACCOUNTENTRYID_2);
+
+		query.append(_FINDER_COLUMN_AEI_T_TYPE_2);
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				query.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			query.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						query.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC);
+					}
+					else {
+						query.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			query.append(OfferingEntryModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = query.toString();
+
+		Query q = session.createQuery(sql);
+
+		q.setFirstResult(0);
+		q.setMaxResults(2);
+
+		QueryPos qPos = QueryPos.getInstance(q);
+
+		qPos.add(accountEntryId);
+
+		qPos.add(type);
+
+		if (orderByComparator != null) {
+			Object[] values = orderByComparator.getOrderByConditionValues(offeringEntry);
+
+			for (Object value : values) {
+				qPos.add(value);
+			}
+		}
+
+		List<OfferingEntry> list = q.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the offering entries where accountEntryId = &#63; and type = &#63; from the database.
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param type the type
+	 */
+	@Override
+	public void removeByAEI_T(long accountEntryId, int type) {
+		for (OfferingEntry offeringEntry : findByAEI_T(accountEntryId, type,
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+			remove(offeringEntry);
+		}
+	}
+
+	/**
+	 * Returns the number of offering entries where accountEntryId = &#63; and type = &#63;.
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param type the type
+	 * @return the number of matching offering entries
+	 */
+	@Override
+	public int countByAEI_T(long accountEntryId, int type) {
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_AEI_T;
+
+		Object[] finderArgs = new Object[] { accountEntryId, type };
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler(3);
+
+			query.append(_SQL_COUNT_OFFERINGENTRY_WHERE);
+
+			query.append(_FINDER_COLUMN_AEI_T_ACCOUNTENTRYID_2);
+
+			query.append(_FINDER_COLUMN_AEI_T_TYPE_2);
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(accountEntryId);
+
+				qPos.add(type);
+
+				count = (Long)q.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_AEI_T_ACCOUNTENTRYID_2 = "offeringEntry.accountEntryId = ? AND ";
+	private static final String _FINDER_COLUMN_AEI_T_TYPE_2 = "offeringEntry.type = ?";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_AEI_PEI_T =
+		new FinderPath(OfferingEntryModelImpl.ENTITY_CACHE_ENABLED,
+			OfferingEntryModelImpl.FINDER_CACHE_ENABLED,
+			OfferingEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findByAEI_PEI_T",
+			new String[] {
+				Long.class.getName(), Long.class.getName(),
+				Integer.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AEI_PEI_T =
+		new FinderPath(OfferingEntryModelImpl.ENTITY_CACHE_ENABLED,
+			OfferingEntryModelImpl.FINDER_CACHE_ENABLED,
+			OfferingEntryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"findByAEI_PEI_T",
+			new String[] {
+				Long.class.getName(), Long.class.getName(),
+				Integer.class.getName()
+			},
+			OfferingEntryModelImpl.ACCOUNTENTRYID_COLUMN_BITMASK |
+			OfferingEntryModelImpl.PRODUCTENTRYID_COLUMN_BITMASK |
+			OfferingEntryModelImpl.TYPE_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_AEI_PEI_T = new FinderPath(OfferingEntryModelImpl.ENTITY_CACHE_ENABLED,
+			OfferingEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByAEI_PEI_T",
+			new String[] {
+				Long.class.getName(), Long.class.getName(),
+				Integer.class.getName()
+			});
+
+	/**
+	 * Returns all the offering entries where accountEntryId = &#63; and productEntryId = &#63; and type = &#63;.
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param productEntryId the product entry ID
+	 * @param type the type
+	 * @return the matching offering entries
+	 */
+	@Override
+	public List<OfferingEntry> findByAEI_PEI_T(long accountEntryId,
+		long productEntryId, int type) {
+		return findByAEI_PEI_T(accountEntryId, productEntryId, type,
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the offering entries where accountEntryId = &#63; and productEntryId = &#63; and type = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link OfferingEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param productEntryId the product entry ID
+	 * @param type the type
+	 * @param start the lower bound of the range of offering entries
+	 * @param end the upper bound of the range of offering entries (not inclusive)
+	 * @return the range of matching offering entries
+	 */
+	@Override
+	public List<OfferingEntry> findByAEI_PEI_T(long accountEntryId,
+		long productEntryId, int type, int start, int end) {
+		return findByAEI_PEI_T(accountEntryId, productEntryId, type, start,
+			end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the offering entries where accountEntryId = &#63; and productEntryId = &#63; and type = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link OfferingEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param productEntryId the product entry ID
+	 * @param type the type
+	 * @param start the lower bound of the range of offering entries
+	 * @param end the upper bound of the range of offering entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching offering entries
+	 */
+	@Override
+	public List<OfferingEntry> findByAEI_PEI_T(long accountEntryId,
+		long productEntryId, int type, int start, int end,
+		OrderByComparator<OfferingEntry> orderByComparator) {
+		return findByAEI_PEI_T(accountEntryId, productEntryId, type, start,
+			end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the offering entries where accountEntryId = &#63; and productEntryId = &#63; and type = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link OfferingEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param productEntryId the product entry ID
+	 * @param type the type
+	 * @param start the lower bound of the range of offering entries
+	 * @param end the upper bound of the range of offering entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @return the ordered range of matching offering entries
+	 */
+	@Override
+	public List<OfferingEntry> findByAEI_PEI_T(long accountEntryId,
+		long productEntryId, int type, int start, int end,
+		OrderByComparator<OfferingEntry> orderByComparator,
+		boolean retrieveFromCache) {
+		boolean pagination = true;
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AEI_PEI_T;
+			finderArgs = new Object[] { accountEntryId, productEntryId, type };
+		}
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_AEI_PEI_T;
+			finderArgs = new Object[] {
+					accountEntryId, productEntryId, type,
+					
+					start, end, orderByComparator
+				};
+		}
+
+		List<OfferingEntry> list = null;
+
+		if (retrieveFromCache) {
+			list = (List<OfferingEntry>)finderCache.getResult(finderPath,
+					finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (OfferingEntry offeringEntry : list) {
+					if ((accountEntryId != offeringEntry.getAccountEntryId()) ||
+							(productEntryId != offeringEntry.getProductEntryId()) ||
+							(type != offeringEntry.getType())) {
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler query = null;
+
+			if (orderByComparator != null) {
+				query = new StringBundler(5 +
+						(orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				query = new StringBundler(5);
+			}
+
+			query.append(_SQL_SELECT_OFFERINGENTRY_WHERE);
+
+			query.append(_FINDER_COLUMN_AEI_PEI_T_ACCOUNTENTRYID_2);
+
+			query.append(_FINDER_COLUMN_AEI_PEI_T_PRODUCTENTRYID_2);
+
+			query.append(_FINDER_COLUMN_AEI_PEI_T_TYPE_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
+			}
+			else
+			 if (pagination) {
+				query.append(OfferingEntryModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(accountEntryId);
+
+				qPos.add(productEntryId);
+
+				qPos.add(type);
+
+				if (!pagination) {
+					list = (List<OfferingEntry>)QueryUtil.list(q, getDialect(),
+							start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<OfferingEntry>)QueryUtil.list(q, getDialect(),
+							start, end);
+				}
+
+				cacheResult(list);
+
+				finderCache.putResult(finderPath, finderArgs, list);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first offering entry in the ordered set where accountEntryId = &#63; and productEntryId = &#63; and type = &#63;.
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param productEntryId the product entry ID
+	 * @param type the type
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching offering entry
+	 * @throws NoSuchOfferingEntryException if a matching offering entry could not be found
+	 */
+	@Override
+	public OfferingEntry findByAEI_PEI_T_First(long accountEntryId,
+		long productEntryId, int type,
+		OrderByComparator<OfferingEntry> orderByComparator)
+		throws NoSuchOfferingEntryException {
+		OfferingEntry offeringEntry = fetchByAEI_PEI_T_First(accountEntryId,
+				productEntryId, type, orderByComparator);
+
+		if (offeringEntry != null) {
+			return offeringEntry;
+		}
+
+		StringBundler msg = new StringBundler(8);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("accountEntryId=");
+		msg.append(accountEntryId);
+
+		msg.append(", productEntryId=");
+		msg.append(productEntryId);
+
+		msg.append(", type=");
+		msg.append(type);
+
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+		throw new NoSuchOfferingEntryException(msg.toString());
+	}
+
+	/**
+	 * Returns the first offering entry in the ordered set where accountEntryId = &#63; and productEntryId = &#63; and type = &#63;.
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param productEntryId the product entry ID
+	 * @param type the type
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching offering entry, or <code>null</code> if a matching offering entry could not be found
+	 */
+	@Override
+	public OfferingEntry fetchByAEI_PEI_T_First(long accountEntryId,
+		long productEntryId, int type,
+		OrderByComparator<OfferingEntry> orderByComparator) {
+		List<OfferingEntry> list = findByAEI_PEI_T(accountEntryId,
+				productEntryId, type, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last offering entry in the ordered set where accountEntryId = &#63; and productEntryId = &#63; and type = &#63;.
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param productEntryId the product entry ID
+	 * @param type the type
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching offering entry
+	 * @throws NoSuchOfferingEntryException if a matching offering entry could not be found
+	 */
+	@Override
+	public OfferingEntry findByAEI_PEI_T_Last(long accountEntryId,
+		long productEntryId, int type,
+		OrderByComparator<OfferingEntry> orderByComparator)
+		throws NoSuchOfferingEntryException {
+		OfferingEntry offeringEntry = fetchByAEI_PEI_T_Last(accountEntryId,
+				productEntryId, type, orderByComparator);
+
+		if (offeringEntry != null) {
+			return offeringEntry;
+		}
+
+		StringBundler msg = new StringBundler(8);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("accountEntryId=");
+		msg.append(accountEntryId);
+
+		msg.append(", productEntryId=");
+		msg.append(productEntryId);
+
+		msg.append(", type=");
+		msg.append(type);
+
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+		throw new NoSuchOfferingEntryException(msg.toString());
+	}
+
+	/**
+	 * Returns the last offering entry in the ordered set where accountEntryId = &#63; and productEntryId = &#63; and type = &#63;.
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param productEntryId the product entry ID
+	 * @param type the type
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching offering entry, or <code>null</code> if a matching offering entry could not be found
+	 */
+	@Override
+	public OfferingEntry fetchByAEI_PEI_T_Last(long accountEntryId,
+		long productEntryId, int type,
+		OrderByComparator<OfferingEntry> orderByComparator) {
+		int count = countByAEI_PEI_T(accountEntryId, productEntryId, type);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<OfferingEntry> list = findByAEI_PEI_T(accountEntryId,
+				productEntryId, type, count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the offering entries before and after the current offering entry in the ordered set where accountEntryId = &#63; and productEntryId = &#63; and type = &#63;.
+	 *
+	 * @param offeringEntryId the primary key of the current offering entry
+	 * @param accountEntryId the account entry ID
+	 * @param productEntryId the product entry ID
+	 * @param type the type
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next offering entry
+	 * @throws NoSuchOfferingEntryException if a offering entry with the primary key could not be found
+	 */
+	@Override
+	public OfferingEntry[] findByAEI_PEI_T_PrevAndNext(long offeringEntryId,
+		long accountEntryId, long productEntryId, int type,
+		OrderByComparator<OfferingEntry> orderByComparator)
+		throws NoSuchOfferingEntryException {
+		OfferingEntry offeringEntry = findByPrimaryKey(offeringEntryId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			OfferingEntry[] array = new OfferingEntryImpl[3];
+
+			array[0] = getByAEI_PEI_T_PrevAndNext(session, offeringEntry,
+					accountEntryId, productEntryId, type, orderByComparator,
+					true);
+
+			array[1] = offeringEntry;
+
+			array[2] = getByAEI_PEI_T_PrevAndNext(session, offeringEntry,
+					accountEntryId, productEntryId, type, orderByComparator,
+					false);
+
+			return array;
+		}
+		catch (Exception e) {
+			throw processException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected OfferingEntry getByAEI_PEI_T_PrevAndNext(Session session,
+		OfferingEntry offeringEntry, long accountEntryId, long productEntryId,
+		int type, OrderByComparator<OfferingEntry> orderByComparator,
+		boolean previous) {
+		StringBundler query = null;
+
+		if (orderByComparator != null) {
+			query = new StringBundler(6 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			query = new StringBundler(5);
+		}
+
+		query.append(_SQL_SELECT_OFFERINGENTRY_WHERE);
+
+		query.append(_FINDER_COLUMN_AEI_PEI_T_ACCOUNTENTRYID_2);
+
+		query.append(_FINDER_COLUMN_AEI_PEI_T_PRODUCTENTRYID_2);
+
+		query.append(_FINDER_COLUMN_AEI_PEI_T_TYPE_2);
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				query.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			query.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						query.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC);
+					}
+					else {
+						query.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			query.append(OfferingEntryModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = query.toString();
+
+		Query q = session.createQuery(sql);
+
+		q.setFirstResult(0);
+		q.setMaxResults(2);
+
+		QueryPos qPos = QueryPos.getInstance(q);
+
+		qPos.add(accountEntryId);
+
+		qPos.add(productEntryId);
+
+		qPos.add(type);
+
+		if (orderByComparator != null) {
+			Object[] values = orderByComparator.getOrderByConditionValues(offeringEntry);
+
+			for (Object value : values) {
+				qPos.add(value);
+			}
+		}
+
+		List<OfferingEntry> list = q.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the offering entries where accountEntryId = &#63; and productEntryId = &#63; and type = &#63; from the database.
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param productEntryId the product entry ID
+	 * @param type the type
+	 */
+	@Override
+	public void removeByAEI_PEI_T(long accountEntryId, long productEntryId,
+		int type) {
+		for (OfferingEntry offeringEntry : findByAEI_PEI_T(accountEntryId,
+				productEntryId, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+			remove(offeringEntry);
+		}
+	}
+
+	/**
+	 * Returns the number of offering entries where accountEntryId = &#63; and productEntryId = &#63; and type = &#63;.
+	 *
+	 * @param accountEntryId the account entry ID
+	 * @param productEntryId the product entry ID
+	 * @param type the type
+	 * @return the number of matching offering entries
+	 */
+	@Override
+	public int countByAEI_PEI_T(long accountEntryId, long productEntryId,
+		int type) {
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_AEI_PEI_T;
+
+		Object[] finderArgs = new Object[] { accountEntryId, productEntryId, type };
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler(4);
+
+			query.append(_SQL_COUNT_OFFERINGENTRY_WHERE);
+
+			query.append(_FINDER_COLUMN_AEI_PEI_T_ACCOUNTENTRYID_2);
+
+			query.append(_FINDER_COLUMN_AEI_PEI_T_PRODUCTENTRYID_2);
+
+			query.append(_FINDER_COLUMN_AEI_PEI_T_TYPE_2);
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(accountEntryId);
+
+				qPos.add(productEntryId);
+
+				qPos.add(type);
+
+				count = (Long)q.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_AEI_PEI_T_ACCOUNTENTRYID_2 = "offeringEntry.accountEntryId = ? AND ";
+	private static final String _FINDER_COLUMN_AEI_PEI_T_PRODUCTENTRYID_2 = "offeringEntry.productEntryId = ? AND ";
+	private static final String _FINDER_COLUMN_AEI_PEI_T_TYPE_2 = "offeringEntry.type = ?";
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_U_AEI_OEI_T =
 		new FinderPath(OfferingEntryModelImpl.ENTITY_CACHE_ENABLED,
 			OfferingEntryModelImpl.FINDER_CACHE_ENABLED,
@@ -2004,6 +3146,25 @@ public class OfferingEntryPersistenceImpl extends BasePersistenceImpl<OfferingEn
 				args);
 
 			args = new Object[] {
+					offeringEntryModelImpl.getAccountEntryId(),
+					offeringEntryModelImpl.getType()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_AEI_T, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AEI_T,
+				args);
+
+			args = new Object[] {
+					offeringEntryModelImpl.getAccountEntryId(),
+					offeringEntryModelImpl.getProductEntryId(),
+					offeringEntryModelImpl.getType()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_AEI_PEI_T, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AEI_PEI_T,
+				args);
+
+			args = new Object[] {
 					offeringEntryModelImpl.getUserId(),
 					offeringEntryModelImpl.getAccountEntryId(),
 					offeringEntryModelImpl.getOrderEntryId(),
@@ -2053,6 +3214,50 @@ public class OfferingEntryPersistenceImpl extends BasePersistenceImpl<OfferingEn
 
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_ORDERENTRYID, args);
 				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ORDERENTRYID,
+					args);
+			}
+
+			if ((offeringEntryModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AEI_T.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						offeringEntryModelImpl.getOriginalAccountEntryId(),
+						offeringEntryModelImpl.getOriginalType()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_AEI_T, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AEI_T,
+					args);
+
+				args = new Object[] {
+						offeringEntryModelImpl.getAccountEntryId(),
+						offeringEntryModelImpl.getType()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_AEI_T, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AEI_T,
+					args);
+			}
+
+			if ((offeringEntryModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AEI_PEI_T.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						offeringEntryModelImpl.getOriginalAccountEntryId(),
+						offeringEntryModelImpl.getOriginalProductEntryId(),
+						offeringEntryModelImpl.getOriginalType()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_AEI_PEI_T, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AEI_PEI_T,
+					args);
+
+				args = new Object[] {
+						offeringEntryModelImpl.getAccountEntryId(),
+						offeringEntryModelImpl.getProductEntryId(),
+						offeringEntryModelImpl.getType()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_AEI_PEI_T, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_AEI_PEI_T,
 					args);
 			}
 

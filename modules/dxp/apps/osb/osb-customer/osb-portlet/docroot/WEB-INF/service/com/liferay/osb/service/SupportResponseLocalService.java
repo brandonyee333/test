@@ -123,6 +123,10 @@ public interface SupportResponseLocalService extends BaseLocalService,
 	public SupportResponse getSupportResponse(long supportResponseId)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public SupportResponse getSupportResponseByName(java.lang.String name)
+		throws PortalException;
+
 	/**
 	* Updates the support response in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*

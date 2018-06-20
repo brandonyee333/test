@@ -47,6 +47,15 @@ public class LicenseKeyServiceUtil {
 		return getService().isActive(serverId, productId, key);
 	}
 
+	public static com.liferay.osb.model.LicenseKey addDeveloperLicenseKey(
+		long accountEntryId, java.lang.String productEntryRootName,
+		int productMinorVersion)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .addDeveloperLicenseKey(accountEntryId,
+			productEntryRootName, productMinorVersion);
+	}
+
 	public static com.liferay.osb.model.LicenseKey addLicenseKey(
 		java.lang.String userUuid, java.lang.String assetReceiptLicenseUuid,
 		java.lang.String licenseEntryType, java.lang.String productEntryName,

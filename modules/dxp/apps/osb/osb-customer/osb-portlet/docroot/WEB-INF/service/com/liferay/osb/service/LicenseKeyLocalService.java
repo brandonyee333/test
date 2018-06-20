@@ -68,6 +68,9 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link LicenseKeyLocalServiceUtil} to access the license key local service. Add custom service methods to {@link com.liferay.osb.service.impl.LicenseKeyLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	public LicenseKey addDeveloperLicenseKey(long userId, long accountEntryId,
+		java.lang.String productEntryRootName, int productMinorVersion)
+		throws PortalException;
 
 	/**
 	* Adds the license key to the database. Also notifies the appropriate model listeners.

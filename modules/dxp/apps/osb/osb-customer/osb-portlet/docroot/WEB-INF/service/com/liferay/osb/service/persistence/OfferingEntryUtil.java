@@ -437,6 +437,382 @@ public class OfferingEntryUtil {
 	}
 
 	/**
+	* Returns all the offering entries where accountEntryId = &#63; and type = &#63;.
+	*
+	* @param accountEntryId the account entry ID
+	* @param type the type
+	* @return the matching offering entries
+	*/
+	public static List<OfferingEntry> findByAEI_T(long accountEntryId, int type) {
+		return getPersistence().findByAEI_T(accountEntryId, type);
+	}
+
+	/**
+	* Returns a range of all the offering entries where accountEntryId = &#63; and type = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link OfferingEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param accountEntryId the account entry ID
+	* @param type the type
+	* @param start the lower bound of the range of offering entries
+	* @param end the upper bound of the range of offering entries (not inclusive)
+	* @return the range of matching offering entries
+	*/
+	public static List<OfferingEntry> findByAEI_T(long accountEntryId,
+		int type, int start, int end) {
+		return getPersistence().findByAEI_T(accountEntryId, type, start, end);
+	}
+
+	/**
+	* Returns an ordered range of all the offering entries where accountEntryId = &#63; and type = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link OfferingEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param accountEntryId the account entry ID
+	* @param type the type
+	* @param start the lower bound of the range of offering entries
+	* @param end the upper bound of the range of offering entries (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching offering entries
+	*/
+	public static List<OfferingEntry> findByAEI_T(long accountEntryId,
+		int type, int start, int end,
+		OrderByComparator<OfferingEntry> orderByComparator) {
+		return getPersistence()
+				   .findByAEI_T(accountEntryId, type, start, end,
+			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the offering entries where accountEntryId = &#63; and type = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link OfferingEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param accountEntryId the account entry ID
+	* @param type the type
+	* @param start the lower bound of the range of offering entries
+	* @param end the upper bound of the range of offering entries (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the ordered range of matching offering entries
+	*/
+	public static List<OfferingEntry> findByAEI_T(long accountEntryId,
+		int type, int start, int end,
+		OrderByComparator<OfferingEntry> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByAEI_T(accountEntryId, type, start, end,
+			orderByComparator, retrieveFromCache);
+	}
+
+	/**
+	* Returns the first offering entry in the ordered set where accountEntryId = &#63; and type = &#63;.
+	*
+	* @param accountEntryId the account entry ID
+	* @param type the type
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching offering entry
+	* @throws NoSuchOfferingEntryException if a matching offering entry could not be found
+	*/
+	public static OfferingEntry findByAEI_T_First(long accountEntryId,
+		int type, OrderByComparator<OfferingEntry> orderByComparator)
+		throws com.liferay.osb.exception.NoSuchOfferingEntryException {
+		return getPersistence()
+				   .findByAEI_T_First(accountEntryId, type, orderByComparator);
+	}
+
+	/**
+	* Returns the first offering entry in the ordered set where accountEntryId = &#63; and type = &#63;.
+	*
+	* @param accountEntryId the account entry ID
+	* @param type the type
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching offering entry, or <code>null</code> if a matching offering entry could not be found
+	*/
+	public static OfferingEntry fetchByAEI_T_First(long accountEntryId,
+		int type, OrderByComparator<OfferingEntry> orderByComparator) {
+		return getPersistence()
+				   .fetchByAEI_T_First(accountEntryId, type, orderByComparator);
+	}
+
+	/**
+	* Returns the last offering entry in the ordered set where accountEntryId = &#63; and type = &#63;.
+	*
+	* @param accountEntryId the account entry ID
+	* @param type the type
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching offering entry
+	* @throws NoSuchOfferingEntryException if a matching offering entry could not be found
+	*/
+	public static OfferingEntry findByAEI_T_Last(long accountEntryId, int type,
+		OrderByComparator<OfferingEntry> orderByComparator)
+		throws com.liferay.osb.exception.NoSuchOfferingEntryException {
+		return getPersistence()
+				   .findByAEI_T_Last(accountEntryId, type, orderByComparator);
+	}
+
+	/**
+	* Returns the last offering entry in the ordered set where accountEntryId = &#63; and type = &#63;.
+	*
+	* @param accountEntryId the account entry ID
+	* @param type the type
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching offering entry, or <code>null</code> if a matching offering entry could not be found
+	*/
+	public static OfferingEntry fetchByAEI_T_Last(long accountEntryId,
+		int type, OrderByComparator<OfferingEntry> orderByComparator) {
+		return getPersistence()
+				   .fetchByAEI_T_Last(accountEntryId, type, orderByComparator);
+	}
+
+	/**
+	* Returns the offering entries before and after the current offering entry in the ordered set where accountEntryId = &#63; and type = &#63;.
+	*
+	* @param offeringEntryId the primary key of the current offering entry
+	* @param accountEntryId the account entry ID
+	* @param type the type
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next offering entry
+	* @throws NoSuchOfferingEntryException if a offering entry with the primary key could not be found
+	*/
+	public static OfferingEntry[] findByAEI_T_PrevAndNext(
+		long offeringEntryId, long accountEntryId, int type,
+		OrderByComparator<OfferingEntry> orderByComparator)
+		throws com.liferay.osb.exception.NoSuchOfferingEntryException {
+		return getPersistence()
+				   .findByAEI_T_PrevAndNext(offeringEntryId, accountEntryId,
+			type, orderByComparator);
+	}
+
+	/**
+	* Removes all the offering entries where accountEntryId = &#63; and type = &#63; from the database.
+	*
+	* @param accountEntryId the account entry ID
+	* @param type the type
+	*/
+	public static void removeByAEI_T(long accountEntryId, int type) {
+		getPersistence().removeByAEI_T(accountEntryId, type);
+	}
+
+	/**
+	* Returns the number of offering entries where accountEntryId = &#63; and type = &#63;.
+	*
+	* @param accountEntryId the account entry ID
+	* @param type the type
+	* @return the number of matching offering entries
+	*/
+	public static int countByAEI_T(long accountEntryId, int type) {
+		return getPersistence().countByAEI_T(accountEntryId, type);
+	}
+
+	/**
+	* Returns all the offering entries where accountEntryId = &#63; and productEntryId = &#63; and type = &#63;.
+	*
+	* @param accountEntryId the account entry ID
+	* @param productEntryId the product entry ID
+	* @param type the type
+	* @return the matching offering entries
+	*/
+	public static List<OfferingEntry> findByAEI_PEI_T(long accountEntryId,
+		long productEntryId, int type) {
+		return getPersistence()
+				   .findByAEI_PEI_T(accountEntryId, productEntryId, type);
+	}
+
+	/**
+	* Returns a range of all the offering entries where accountEntryId = &#63; and productEntryId = &#63; and type = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link OfferingEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param accountEntryId the account entry ID
+	* @param productEntryId the product entry ID
+	* @param type the type
+	* @param start the lower bound of the range of offering entries
+	* @param end the upper bound of the range of offering entries (not inclusive)
+	* @return the range of matching offering entries
+	*/
+	public static List<OfferingEntry> findByAEI_PEI_T(long accountEntryId,
+		long productEntryId, int type, int start, int end) {
+		return getPersistence()
+				   .findByAEI_PEI_T(accountEntryId, productEntryId, type,
+			start, end);
+	}
+
+	/**
+	* Returns an ordered range of all the offering entries where accountEntryId = &#63; and productEntryId = &#63; and type = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link OfferingEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param accountEntryId the account entry ID
+	* @param productEntryId the product entry ID
+	* @param type the type
+	* @param start the lower bound of the range of offering entries
+	* @param end the upper bound of the range of offering entries (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching offering entries
+	*/
+	public static List<OfferingEntry> findByAEI_PEI_T(long accountEntryId,
+		long productEntryId, int type, int start, int end,
+		OrderByComparator<OfferingEntry> orderByComparator) {
+		return getPersistence()
+				   .findByAEI_PEI_T(accountEntryId, productEntryId, type,
+			start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the offering entries where accountEntryId = &#63; and productEntryId = &#63; and type = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link OfferingEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param accountEntryId the account entry ID
+	* @param productEntryId the product entry ID
+	* @param type the type
+	* @param start the lower bound of the range of offering entries
+	* @param end the upper bound of the range of offering entries (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the ordered range of matching offering entries
+	*/
+	public static List<OfferingEntry> findByAEI_PEI_T(long accountEntryId,
+		long productEntryId, int type, int start, int end,
+		OrderByComparator<OfferingEntry> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByAEI_PEI_T(accountEntryId, productEntryId, type,
+			start, end, orderByComparator, retrieveFromCache);
+	}
+
+	/**
+	* Returns the first offering entry in the ordered set where accountEntryId = &#63; and productEntryId = &#63; and type = &#63;.
+	*
+	* @param accountEntryId the account entry ID
+	* @param productEntryId the product entry ID
+	* @param type the type
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching offering entry
+	* @throws NoSuchOfferingEntryException if a matching offering entry could not be found
+	*/
+	public static OfferingEntry findByAEI_PEI_T_First(long accountEntryId,
+		long productEntryId, int type,
+		OrderByComparator<OfferingEntry> orderByComparator)
+		throws com.liferay.osb.exception.NoSuchOfferingEntryException {
+		return getPersistence()
+				   .findByAEI_PEI_T_First(accountEntryId, productEntryId, type,
+			orderByComparator);
+	}
+
+	/**
+	* Returns the first offering entry in the ordered set where accountEntryId = &#63; and productEntryId = &#63; and type = &#63;.
+	*
+	* @param accountEntryId the account entry ID
+	* @param productEntryId the product entry ID
+	* @param type the type
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching offering entry, or <code>null</code> if a matching offering entry could not be found
+	*/
+	public static OfferingEntry fetchByAEI_PEI_T_First(long accountEntryId,
+		long productEntryId, int type,
+		OrderByComparator<OfferingEntry> orderByComparator) {
+		return getPersistence()
+				   .fetchByAEI_PEI_T_First(accountEntryId, productEntryId,
+			type, orderByComparator);
+	}
+
+	/**
+	* Returns the last offering entry in the ordered set where accountEntryId = &#63; and productEntryId = &#63; and type = &#63;.
+	*
+	* @param accountEntryId the account entry ID
+	* @param productEntryId the product entry ID
+	* @param type the type
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching offering entry
+	* @throws NoSuchOfferingEntryException if a matching offering entry could not be found
+	*/
+	public static OfferingEntry findByAEI_PEI_T_Last(long accountEntryId,
+		long productEntryId, int type,
+		OrderByComparator<OfferingEntry> orderByComparator)
+		throws com.liferay.osb.exception.NoSuchOfferingEntryException {
+		return getPersistence()
+				   .findByAEI_PEI_T_Last(accountEntryId, productEntryId, type,
+			orderByComparator);
+	}
+
+	/**
+	* Returns the last offering entry in the ordered set where accountEntryId = &#63; and productEntryId = &#63; and type = &#63;.
+	*
+	* @param accountEntryId the account entry ID
+	* @param productEntryId the product entry ID
+	* @param type the type
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching offering entry, or <code>null</code> if a matching offering entry could not be found
+	*/
+	public static OfferingEntry fetchByAEI_PEI_T_Last(long accountEntryId,
+		long productEntryId, int type,
+		OrderByComparator<OfferingEntry> orderByComparator) {
+		return getPersistence()
+				   .fetchByAEI_PEI_T_Last(accountEntryId, productEntryId, type,
+			orderByComparator);
+	}
+
+	/**
+	* Returns the offering entries before and after the current offering entry in the ordered set where accountEntryId = &#63; and productEntryId = &#63; and type = &#63;.
+	*
+	* @param offeringEntryId the primary key of the current offering entry
+	* @param accountEntryId the account entry ID
+	* @param productEntryId the product entry ID
+	* @param type the type
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next offering entry
+	* @throws NoSuchOfferingEntryException if a offering entry with the primary key could not be found
+	*/
+	public static OfferingEntry[] findByAEI_PEI_T_PrevAndNext(
+		long offeringEntryId, long accountEntryId, long productEntryId,
+		int type, OrderByComparator<OfferingEntry> orderByComparator)
+		throws com.liferay.osb.exception.NoSuchOfferingEntryException {
+		return getPersistence()
+				   .findByAEI_PEI_T_PrevAndNext(offeringEntryId,
+			accountEntryId, productEntryId, type, orderByComparator);
+	}
+
+	/**
+	* Removes all the offering entries where accountEntryId = &#63; and productEntryId = &#63; and type = &#63; from the database.
+	*
+	* @param accountEntryId the account entry ID
+	* @param productEntryId the product entry ID
+	* @param type the type
+	*/
+	public static void removeByAEI_PEI_T(long accountEntryId,
+		long productEntryId, int type) {
+		getPersistence().removeByAEI_PEI_T(accountEntryId, productEntryId, type);
+	}
+
+	/**
+	* Returns the number of offering entries where accountEntryId = &#63; and productEntryId = &#63; and type = &#63;.
+	*
+	* @param accountEntryId the account entry ID
+	* @param productEntryId the product entry ID
+	* @param type the type
+	* @return the number of matching offering entries
+	*/
+	public static int countByAEI_PEI_T(long accountEntryId,
+		long productEntryId, int type) {
+		return getPersistence()
+				   .countByAEI_PEI_T(accountEntryId, productEntryId, type);
+	}
+
+	/**
 	* Returns all the offering entries where userId = &#63; and accountEntryId = &#63; and orderEntryId = &#63; and type = &#63;.
 	*
 	* @param userId the user ID

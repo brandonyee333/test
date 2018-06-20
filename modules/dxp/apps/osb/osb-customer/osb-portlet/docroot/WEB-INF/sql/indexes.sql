@@ -78,7 +78,8 @@ create index IX_5CB2DBB3 on OSB_OfferingBundles_OfferingDefinitions (offeringDef
 create index IX_CFDC51BF on OSB_OfferingDefinition (productEntryId, supportResponseId, productDescription[$COLUMN_LENGTH:75$], licenses, unlimitedLicenses, supportTickets);
 create index IX_99AA46FB on OSB_OfferingDefinition (supportResponseId);
 
-create index IX_C5126F05 on OSB_OfferingEntry (accountEntryId);
+create index IX_D879F1BE on OSB_OfferingEntry (accountEntryId, productEntryId, type_);
+create index IX_1BCFB30 on OSB_OfferingEntry (accountEntryId, type_);
 create index IX_2CFC6FC4 on OSB_OfferingEntry (orderEntryId);
 create index IX_6455D563 on OSB_OfferingEntry (userId, accountEntryId, orderEntryId, type_);
 
@@ -97,6 +98,7 @@ create index IX_15A2FE8E on OSB_PartnerWorker (partnerEntryId, role);
 create index IX_8D1D4BDE on OSB_PartnerWorker (userId, partnerEntryId);
 create index IX_F36C918F on OSB_PartnerWorker (userId, role);
 
+create index IX_884EBE59 on OSB_ProductEntry (environment);
 create unique index IX_190AFA9 on OSB_ProductEntry (name[$COLUMN_LENGTH:75$]);
 
 create index IX_18BFB3A4 on OSB_SecurityPatch (accountEntryId, portletId[$COLUMN_LENGTH:75$]);

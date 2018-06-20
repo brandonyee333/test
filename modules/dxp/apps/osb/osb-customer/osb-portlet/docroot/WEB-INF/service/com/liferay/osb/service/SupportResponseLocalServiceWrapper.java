@@ -122,6 +122,13 @@ public class SupportResponseLocalServiceWrapper
 		return _supportResponseLocalService.getSupportResponse(supportResponseId);
 	}
 
+	@Override
+	public com.liferay.osb.model.SupportResponse getSupportResponseByName(
+		java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _supportResponseLocalService.getSupportResponseByName(name);
+	}
+
 	/**
 	* Updates the support response in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*

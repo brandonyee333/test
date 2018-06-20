@@ -110,7 +110,8 @@ public class ProductEntryModelImpl extends BaseModelImpl<ProductEntry>
 	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
 				"value.object.column.bitmask.enabled.com.liferay.osb.model.ProductEntry"),
 			true);
-	public static final long NAME_COLUMN_BITMASK = 1L;
+	public static final long ENVIRONMENT_COLUMN_BITMASK = 1L;
+	public static final long NAME_COLUMN_BITMASK = 2L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -398,7 +399,19 @@ public class ProductEntryModelImpl extends BaseModelImpl<ProductEntry>
 
 	@Override
 	public void setEnvironment(int environment) {
+		_columnBitmask |= ENVIRONMENT_COLUMN_BITMASK;
+
+		if (!_setOriginalEnvironment) {
+			_setOriginalEnvironment = true;
+
+			_originalEnvironment = _environment;
+		}
+
 		_environment = environment;
+	}
+
+	public int getOriginalEnvironment() {
+		return _originalEnvironment;
 	}
 
 	@JSON
@@ -520,6 +533,10 @@ public class ProductEntryModelImpl extends BaseModelImpl<ProductEntry>
 		productEntryModelImpl._setModifiedDate = false;
 
 		productEntryModelImpl._originalName = productEntryModelImpl._name;
+
+		productEntryModelImpl._originalEnvironment = productEntryModelImpl._environment;
+
+		productEntryModelImpl._setOriginalEnvironment = false;
 
 		productEntryModelImpl._columnBitmask = 0;
 	}
@@ -672,6 +689,8 @@ public class ProductEntryModelImpl extends BaseModelImpl<ProductEntry>
 	private String _originalName;
 	private int _type;
 	private int _environment;
+	private int _originalEnvironment;
+	private boolean _setOriginalEnvironment;
 	private String _versionsListType;
 	private long _columnBitmask;
 	private ProductEntry _escapedModel;

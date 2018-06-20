@@ -142,9 +142,10 @@ public class OfferingEntryModelImpl extends BaseModelImpl<OfferingEntry>
 			true);
 	public static final long ACCOUNTENTRYID_COLUMN_BITMASK = 1L;
 	public static final long ORDERENTRYID_COLUMN_BITMASK = 2L;
-	public static final long TYPE_COLUMN_BITMASK = 4L;
-	public static final long USERID_COLUMN_BITMASK = 8L;
-	public static final long OFFERINGENTRYID_COLUMN_BITMASK = 16L;
+	public static final long PRODUCTENTRYID_COLUMN_BITMASK = 4L;
+	public static final long TYPE_COLUMN_BITMASK = 8L;
+	public static final long USERID_COLUMN_BITMASK = 16L;
+	public static final long OFFERINGENTRYID_COLUMN_BITMASK = 32L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -575,7 +576,19 @@ public class OfferingEntryModelImpl extends BaseModelImpl<OfferingEntry>
 
 	@Override
 	public void setProductEntryId(long productEntryId) {
+		_columnBitmask |= PRODUCTENTRYID_COLUMN_BITMASK;
+
+		if (!_setOriginalProductEntryId) {
+			_setOriginalProductEntryId = true;
+
+			_originalProductEntryId = _productEntryId;
+		}
+
 		_productEntryId = productEntryId;
+	}
+
+	public long getOriginalProductEntryId() {
+		return _originalProductEntryId;
 	}
 
 	@JSON
@@ -930,6 +943,10 @@ public class OfferingEntryModelImpl extends BaseModelImpl<OfferingEntry>
 
 		offeringEntryModelImpl._setOriginalOrderEntryId = false;
 
+		offeringEntryModelImpl._originalProductEntryId = offeringEntryModelImpl._productEntryId;
+
+		offeringEntryModelImpl._setOriginalProductEntryId = false;
+
 		offeringEntryModelImpl._originalType = offeringEntryModelImpl._type;
 
 		offeringEntryModelImpl._setOriginalType = false;
@@ -1223,6 +1240,8 @@ public class OfferingEntryModelImpl extends BaseModelImpl<OfferingEntry>
 	private long _originalOrderEntryId;
 	private boolean _setOriginalOrderEntryId;
 	private long _productEntryId;
+	private long _originalProductEntryId;
+	private boolean _setOriginalProductEntryId;
 	private long _supportResponseId;
 	private String _productDescription;
 	private int _type;

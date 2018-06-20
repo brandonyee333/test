@@ -142,9 +142,13 @@ public class SupportResponseLocalServiceClpInvoker {
 
 		_methodParameterTypes175 = new String[] { "java.lang.String" };
 
-		_methodName176 = "updateSupportResponse";
+		_methodName176 = "getSupportResponseByName";
 
-		_methodParameterTypes176 = new String[] {
+		_methodParameterTypes176 = new String[] { "java.lang.String" };
+
+		_methodName177 = "updateSupportResponse";
+
+		_methodParameterTypes177 = new String[] {
 				"long", "java.lang.String", "int", "int", "int", "int", "int",
 				"int", "int"
 			};
@@ -284,6 +288,11 @@ public class SupportResponseLocalServiceClpInvoker {
 
 		if (_methodName176.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes176, parameterTypes)) {
+			return SupportResponseLocalServiceUtil.getSupportResponseByName((java.lang.String)arguments[0]);
+		}
+
+		if (_methodName177.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes177, parameterTypes)) {
 			return SupportResponseLocalServiceUtil.updateSupportResponse(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1],
 				((Integer)arguments[2]).intValue(),
@@ -346,4 +355,6 @@ public class SupportResponseLocalServiceClpInvoker {
 	private String[] _methodParameterTypes175;
 	private String _methodName176;
 	private String[] _methodParameterTypes176;
+	private String _methodName177;
+	private String[] _methodParameterTypes177;
 }

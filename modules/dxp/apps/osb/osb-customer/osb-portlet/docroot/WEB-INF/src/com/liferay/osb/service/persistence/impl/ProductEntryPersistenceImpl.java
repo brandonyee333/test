@@ -320,6 +320,514 @@ public class ProductEntryPersistenceImpl extends BasePersistenceImpl<ProductEntr
 	private static final String _FINDER_COLUMN_NAME_NAME_1 = "productEntry.name IS NULL";
 	private static final String _FINDER_COLUMN_NAME_NAME_2 = "productEntry.name = ?";
 	private static final String _FINDER_COLUMN_NAME_NAME_3 = "(productEntry.name IS NULL OR productEntry.name = '')";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_ENVIRONMENT =
+		new FinderPath(ProductEntryModelImpl.ENTITY_CACHE_ENABLED,
+			ProductEntryModelImpl.FINDER_CACHE_ENABLED, ProductEntryImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByEnvironment",
+			new String[] {
+				Integer.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ENVIRONMENT =
+		new FinderPath(ProductEntryModelImpl.ENTITY_CACHE_ENABLED,
+			ProductEntryModelImpl.FINDER_CACHE_ENABLED, ProductEntryImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByEnvironment",
+			new String[] { Integer.class.getName() },
+			ProductEntryModelImpl.ENVIRONMENT_COLUMN_BITMASK |
+			ProductEntryModelImpl.NAME_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_ENVIRONMENT = new FinderPath(ProductEntryModelImpl.ENTITY_CACHE_ENABLED,
+			ProductEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByEnvironment",
+			new String[] { Integer.class.getName() });
+
+	/**
+	 * Returns all the product entries where environment = &#63;.
+	 *
+	 * @param environment the environment
+	 * @return the matching product entries
+	 */
+	@Override
+	public List<ProductEntry> findByEnvironment(int environment) {
+		return findByEnvironment(environment, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the product entries where environment = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ProductEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param environment the environment
+	 * @param start the lower bound of the range of product entries
+	 * @param end the upper bound of the range of product entries (not inclusive)
+	 * @return the range of matching product entries
+	 */
+	@Override
+	public List<ProductEntry> findByEnvironment(int environment, int start,
+		int end) {
+		return findByEnvironment(environment, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the product entries where environment = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ProductEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param environment the environment
+	 * @param start the lower bound of the range of product entries
+	 * @param end the upper bound of the range of product entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching product entries
+	 */
+	@Override
+	public List<ProductEntry> findByEnvironment(int environment, int start,
+		int end, OrderByComparator<ProductEntry> orderByComparator) {
+		return findByEnvironment(environment, start, end, orderByComparator,
+			true);
+	}
+
+	/**
+	 * Returns an ordered range of all the product entries where environment = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ProductEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param environment the environment
+	 * @param start the lower bound of the range of product entries
+	 * @param end the upper bound of the range of product entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @return the ordered range of matching product entries
+	 */
+	@Override
+	public List<ProductEntry> findByEnvironment(int environment, int start,
+		int end, OrderByComparator<ProductEntry> orderByComparator,
+		boolean retrieveFromCache) {
+		boolean pagination = true;
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ENVIRONMENT;
+			finderArgs = new Object[] { environment };
+		}
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_ENVIRONMENT;
+			finderArgs = new Object[] { environment, start, end, orderByComparator };
+		}
+
+		List<ProductEntry> list = null;
+
+		if (retrieveFromCache) {
+			list = (List<ProductEntry>)finderCache.getResult(finderPath,
+					finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (ProductEntry productEntry : list) {
+					if ((environment != productEntry.getEnvironment())) {
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler query = null;
+
+			if (orderByComparator != null) {
+				query = new StringBundler(3 +
+						(orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				query = new StringBundler(3);
+			}
+
+			query.append(_SQL_SELECT_PRODUCTENTRY_WHERE);
+
+			query.append(_FINDER_COLUMN_ENVIRONMENT_ENVIRONMENT_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
+			}
+			else
+			 if (pagination) {
+				query.append(ProductEntryModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(environment);
+
+				if (!pagination) {
+					list = (List<ProductEntry>)QueryUtil.list(q, getDialect(),
+							start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<ProductEntry>)QueryUtil.list(q, getDialect(),
+							start, end);
+				}
+
+				cacheResult(list);
+
+				finderCache.putResult(finderPath, finderArgs, list);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first product entry in the ordered set where environment = &#63;.
+	 *
+	 * @param environment the environment
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching product entry
+	 * @throws NoSuchProductEntryException if a matching product entry could not be found
+	 */
+	@Override
+	public ProductEntry findByEnvironment_First(int environment,
+		OrderByComparator<ProductEntry> orderByComparator)
+		throws NoSuchProductEntryException {
+		ProductEntry productEntry = fetchByEnvironment_First(environment,
+				orderByComparator);
+
+		if (productEntry != null) {
+			return productEntry;
+		}
+
+		StringBundler msg = new StringBundler(4);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("environment=");
+		msg.append(environment);
+
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+		throw new NoSuchProductEntryException(msg.toString());
+	}
+
+	/**
+	 * Returns the first product entry in the ordered set where environment = &#63;.
+	 *
+	 * @param environment the environment
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching product entry, or <code>null</code> if a matching product entry could not be found
+	 */
+	@Override
+	public ProductEntry fetchByEnvironment_First(int environment,
+		OrderByComparator<ProductEntry> orderByComparator) {
+		List<ProductEntry> list = findByEnvironment(environment, 0, 1,
+				orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last product entry in the ordered set where environment = &#63;.
+	 *
+	 * @param environment the environment
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching product entry
+	 * @throws NoSuchProductEntryException if a matching product entry could not be found
+	 */
+	@Override
+	public ProductEntry findByEnvironment_Last(int environment,
+		OrderByComparator<ProductEntry> orderByComparator)
+		throws NoSuchProductEntryException {
+		ProductEntry productEntry = fetchByEnvironment_Last(environment,
+				orderByComparator);
+
+		if (productEntry != null) {
+			return productEntry;
+		}
+
+		StringBundler msg = new StringBundler(4);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("environment=");
+		msg.append(environment);
+
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+		throw new NoSuchProductEntryException(msg.toString());
+	}
+
+	/**
+	 * Returns the last product entry in the ordered set where environment = &#63;.
+	 *
+	 * @param environment the environment
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching product entry, or <code>null</code> if a matching product entry could not be found
+	 */
+	@Override
+	public ProductEntry fetchByEnvironment_Last(int environment,
+		OrderByComparator<ProductEntry> orderByComparator) {
+		int count = countByEnvironment(environment);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<ProductEntry> list = findByEnvironment(environment, count - 1,
+				count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the product entries before and after the current product entry in the ordered set where environment = &#63;.
+	 *
+	 * @param productEntryId the primary key of the current product entry
+	 * @param environment the environment
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next product entry
+	 * @throws NoSuchProductEntryException if a product entry with the primary key could not be found
+	 */
+	@Override
+	public ProductEntry[] findByEnvironment_PrevAndNext(long productEntryId,
+		int environment, OrderByComparator<ProductEntry> orderByComparator)
+		throws NoSuchProductEntryException {
+		ProductEntry productEntry = findByPrimaryKey(productEntryId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			ProductEntry[] array = new ProductEntryImpl[3];
+
+			array[0] = getByEnvironment_PrevAndNext(session, productEntry,
+					environment, orderByComparator, true);
+
+			array[1] = productEntry;
+
+			array[2] = getByEnvironment_PrevAndNext(session, productEntry,
+					environment, orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception e) {
+			throw processException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected ProductEntry getByEnvironment_PrevAndNext(Session session,
+		ProductEntry productEntry, int environment,
+		OrderByComparator<ProductEntry> orderByComparator, boolean previous) {
+		StringBundler query = null;
+
+		if (orderByComparator != null) {
+			query = new StringBundler(4 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			query = new StringBundler(3);
+		}
+
+		query.append(_SQL_SELECT_PRODUCTENTRY_WHERE);
+
+		query.append(_FINDER_COLUMN_ENVIRONMENT_ENVIRONMENT_2);
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				query.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			query.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						query.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC);
+					}
+					else {
+						query.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			query.append(ProductEntryModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = query.toString();
+
+		Query q = session.createQuery(sql);
+
+		q.setFirstResult(0);
+		q.setMaxResults(2);
+
+		QueryPos qPos = QueryPos.getInstance(q);
+
+		qPos.add(environment);
+
+		if (orderByComparator != null) {
+			Object[] values = orderByComparator.getOrderByConditionValues(productEntry);
+
+			for (Object value : values) {
+				qPos.add(value);
+			}
+		}
+
+		List<ProductEntry> list = q.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the product entries where environment = &#63; from the database.
+	 *
+	 * @param environment the environment
+	 */
+	@Override
+	public void removeByEnvironment(int environment) {
+		for (ProductEntry productEntry : findByEnvironment(environment,
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+			remove(productEntry);
+		}
+	}
+
+	/**
+	 * Returns the number of product entries where environment = &#63;.
+	 *
+	 * @param environment the environment
+	 * @return the number of matching product entries
+	 */
+	@Override
+	public int countByEnvironment(int environment) {
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_ENVIRONMENT;
+
+		Object[] finderArgs = new Object[] { environment };
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler(2);
+
+			query.append(_SQL_COUNT_PRODUCTENTRY_WHERE);
+
+			query.append(_FINDER_COLUMN_ENVIRONMENT_ENVIRONMENT_2);
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(environment);
+
+				count = (Long)q.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_ENVIRONMENT_ENVIRONMENT_2 = "productEntry.environment = ?";
 
 	public ProductEntryPersistenceImpl() {
 		setModelClass(ProductEntry.class);
@@ -594,9 +1102,34 @@ public class ProductEntryPersistenceImpl extends BasePersistenceImpl<ProductEntr
 		}
 		else
 		 if (isNew) {
+			Object[] args = new Object[] { productEntryModelImpl.getEnvironment() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_ENVIRONMENT, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ENVIRONMENT,
+				args);
+
 			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
 			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
 				FINDER_ARGS_EMPTY);
+		}
+
+		else {
+			if ((productEntryModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ENVIRONMENT.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						productEntryModelImpl.getOriginalEnvironment()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_ENVIRONMENT, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ENVIRONMENT,
+					args);
+
+				args = new Object[] { productEntryModelImpl.getEnvironment() };
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_ENVIRONMENT, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ENVIRONMENT,
+					args);
+			}
 		}
 
 		entityCache.putResult(ProductEntryModelImpl.ENTITY_CACHE_ENABLED,

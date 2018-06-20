@@ -87,6 +87,138 @@ public interface ProductEntryPersistence extends BasePersistence<ProductEntry> {
 	public int countByName(java.lang.String name);
 
 	/**
+	* Returns all the product entries where environment = &#63;.
+	*
+	* @param environment the environment
+	* @return the matching product entries
+	*/
+	public java.util.List<ProductEntry> findByEnvironment(int environment);
+
+	/**
+	* Returns a range of all the product entries where environment = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ProductEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param environment the environment
+	* @param start the lower bound of the range of product entries
+	* @param end the upper bound of the range of product entries (not inclusive)
+	* @return the range of matching product entries
+	*/
+	public java.util.List<ProductEntry> findByEnvironment(int environment,
+		int start, int end);
+
+	/**
+	* Returns an ordered range of all the product entries where environment = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ProductEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param environment the environment
+	* @param start the lower bound of the range of product entries
+	* @param end the upper bound of the range of product entries (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching product entries
+	*/
+	public java.util.List<ProductEntry> findByEnvironment(int environment,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<ProductEntry> orderByComparator);
+
+	/**
+	* Returns an ordered range of all the product entries where environment = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ProductEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param environment the environment
+	* @param start the lower bound of the range of product entries
+	* @param end the upper bound of the range of product entries (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the ordered range of matching product entries
+	*/
+	public java.util.List<ProductEntry> findByEnvironment(int environment,
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<ProductEntry> orderByComparator,
+		boolean retrieveFromCache);
+
+	/**
+	* Returns the first product entry in the ordered set where environment = &#63;.
+	*
+	* @param environment the environment
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching product entry
+	* @throws NoSuchProductEntryException if a matching product entry could not be found
+	*/
+	public ProductEntry findByEnvironment_First(int environment,
+		com.liferay.portal.kernel.util.OrderByComparator<ProductEntry> orderByComparator)
+		throws NoSuchProductEntryException;
+
+	/**
+	* Returns the first product entry in the ordered set where environment = &#63;.
+	*
+	* @param environment the environment
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching product entry, or <code>null</code> if a matching product entry could not be found
+	*/
+	public ProductEntry fetchByEnvironment_First(int environment,
+		com.liferay.portal.kernel.util.OrderByComparator<ProductEntry> orderByComparator);
+
+	/**
+	* Returns the last product entry in the ordered set where environment = &#63;.
+	*
+	* @param environment the environment
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching product entry
+	* @throws NoSuchProductEntryException if a matching product entry could not be found
+	*/
+	public ProductEntry findByEnvironment_Last(int environment,
+		com.liferay.portal.kernel.util.OrderByComparator<ProductEntry> orderByComparator)
+		throws NoSuchProductEntryException;
+
+	/**
+	* Returns the last product entry in the ordered set where environment = &#63;.
+	*
+	* @param environment the environment
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching product entry, or <code>null</code> if a matching product entry could not be found
+	*/
+	public ProductEntry fetchByEnvironment_Last(int environment,
+		com.liferay.portal.kernel.util.OrderByComparator<ProductEntry> orderByComparator);
+
+	/**
+	* Returns the product entries before and after the current product entry in the ordered set where environment = &#63;.
+	*
+	* @param productEntryId the primary key of the current product entry
+	* @param environment the environment
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next product entry
+	* @throws NoSuchProductEntryException if a product entry with the primary key could not be found
+	*/
+	public ProductEntry[] findByEnvironment_PrevAndNext(long productEntryId,
+		int environment,
+		com.liferay.portal.kernel.util.OrderByComparator<ProductEntry> orderByComparator)
+		throws NoSuchProductEntryException;
+
+	/**
+	* Removes all the product entries where environment = &#63; from the database.
+	*
+	* @param environment the environment
+	*/
+	public void removeByEnvironment(int environment);
+
+	/**
+	* Returns the number of product entries where environment = &#63;.
+	*
+	* @param environment the environment
+	* @return the number of matching product entries
+	*/
+	public int countByEnvironment(int environment);
+
+	/**
 	* Caches the product entry in the entity cache if it is enabled.
 	*
 	* @param productEntry the product entry

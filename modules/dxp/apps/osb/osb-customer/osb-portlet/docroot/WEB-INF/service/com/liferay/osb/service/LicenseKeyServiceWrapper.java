@@ -40,6 +40,15 @@ public class LicenseKeyServiceWrapper implements LicenseKeyService,
 	}
 
 	@Override
+	public com.liferay.osb.model.LicenseKey addDeveloperLicenseKey(
+		long accountEntryId, java.lang.String productEntryRootName,
+		int productMinorVersion)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKeyService.addDeveloperLicenseKey(accountEntryId,
+			productEntryRootName, productMinorVersion);
+	}
+
+	@Override
 	public com.liferay.osb.model.LicenseKey addLicenseKey(
 		java.lang.String userUuid, java.lang.String assetReceiptLicenseUuid,
 		java.lang.String licenseEntryType, java.lang.String productEntryName,

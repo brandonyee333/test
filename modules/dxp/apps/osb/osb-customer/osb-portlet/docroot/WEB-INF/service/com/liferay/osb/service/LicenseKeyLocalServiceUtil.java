@@ -41,6 +41,14 @@ public class LicenseKeyLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.LicenseKeyLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static com.liferay.osb.model.LicenseKey addDeveloperLicenseKey(
+		long userId, long accountEntryId,
+		java.lang.String productEntryRootName, int productMinorVersion)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .addDeveloperLicenseKey(userId, accountEntryId,
+			productEntryRootName, productMinorVersion);
+	}
 
 	/**
 	* Adds the license key to the database. Also notifies the appropriate model listeners.

@@ -33,6 +33,15 @@ public class LicenseKeyLocalServiceWrapper implements LicenseKeyLocalService,
 		_licenseKeyLocalService = licenseKeyLocalService;
 	}
 
+	@Override
+	public com.liferay.osb.model.LicenseKey addDeveloperLicenseKey(
+		long userId, long accountEntryId,
+		java.lang.String productEntryRootName, int productMinorVersion)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKeyLocalService.addDeveloperLicenseKey(userId,
+			accountEntryId, productEntryRootName, productMinorVersion);
+	}
+
 	/**
 	* Adds the license key to the database. Also notifies the appropriate model listeners.
 	*

@@ -61,6 +61,10 @@ public interface LicenseKeyService extends BaseService, InvokableService {
 		java.lang.String productId, java.lang.String key)
 		throws PortalException;
 
+	public LicenseKey addDeveloperLicenseKey(long accountEntryId,
+		java.lang.String productEntryRootName, int productMinorVersion)
+		throws PortalException;
+
 	@JSONWebService
 	public LicenseKey addLicenseKey(java.lang.String userUuid,
 		java.lang.String assetReceiptLicenseUuid,
