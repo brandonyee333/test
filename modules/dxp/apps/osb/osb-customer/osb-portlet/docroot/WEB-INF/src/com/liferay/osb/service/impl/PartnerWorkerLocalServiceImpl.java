@@ -18,7 +18,6 @@ import com.liferay.osb.exception.NoSuchPartnerWorkerException;
 import com.liferay.osb.model.CorpEntry;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.PartnerWorker;
-import com.liferay.osb.model.PartnerWorkerConstants;
 import com.liferay.osb.service.base.PartnerWorkerLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.model.Organization;
@@ -183,25 +182,17 @@ public class PartnerWorkerLocalServiceImpl
 		}
 
 		for (int i = 0; i < userIds.length; i++) {
-			int role = roles[i];
 			long userId = userIds[i];
 
-			if ((role == PartnerWorkerConstants.ROLE_MANAGER) ||
-				(role == PartnerWorkerConstants.ROLE_MEMBER)) {
+			if (!organizationLocalService.hasUserOrganization(
+					userId, corpEntry.getOrganizationId())) {
 
-				if (!organizationLocalService.hasUserOrganization(
-						userId, corpEntry.getOrganizationId())) {
-
-					userLocalService.addOrganizationUsers(
-						corpEntry.getOrganizationId(), new long[] {userId});
-				}
+				userLocalService.addOrganizationUsers(
+					corpEntry.getOrganizationId(), new long[] {userId});
 
 				UserGroupRoleLocalServiceUtil.addUserGroupRoles(
 					new long[] {userId}, organization.getGroupId(),
 					OSBConstants.ROLE_OSB_CORP_SALES_REPRESENTATIVE_ID);
-			}
-			else {
-				unassignCorpEntryOrganizations(userId, partnerEntryId);
 			}
 		}
 	}
