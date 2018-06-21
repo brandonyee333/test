@@ -33,6 +33,20 @@ public class PartnerWorkerLocalServiceImpl
 			int[] notifications)
 		throws PortalException {
 
+		PartnerEntry partnerEntry = partnerEntryLocalService.getPartnerEntry(
+			partnerEntryId);
+
+		CorpEntry corpEntry =
+			corpEntryLocalService.fetchCorpEntry(
+				partnerEntry.getDossieraAccountKey());
+
+		Group group = null;
+
+		if (corpEntry != null) {
+			group = GroupLocalServiceUtil.getOrganizationGroup(
+					OSBConstants.COMPANY_ID, corpEntry.getOrganizationId());
+		}
+
 		for (int i = 0; i < userIds.length; i++) {
 			long userId = userIds[i];
 
@@ -48,6 +62,25 @@ public class PartnerWorkerLocalServiceImpl
 				partnerWorker.setUserId(userId);
 				partnerWorker.setPartnerEntryId(partnerEntryId);
 			}
+			else if ((roles[i] != PartnerWorkerConstants.ROLE_MANAGER) &&
+					 (roles[i] != PartnerWorkerConstants.ROLE_MEMBER) &&
+					 (corpEntry != null)) {
+
+				UserLocalServiceUtil.unsetOrganizationUsers(
+					corpEntry.getOrganizationId(), new long[] {userId});
+			}
+
+			if (((roles[i] == PartnerWorkerConstants.ROLE_MANAGER) ||
+				 (roles[i] == PartnerWorkerConstants.ROLE_MEMBER)) &&
+				(corpEntry != null)) {
+
+				UserLocalServiceUtil.addOrganizationUsers(
+					corpEntry.getOrganizationId(), new long[] {userId});
+
+				UserGroupRoleLocalServiceUtil.addUserGroupRoles(
+					new long[] {userId}, group.getGroupId(),
+					OSBConstants.ROLE_OSB_CORP_SALES_REPRESENTATIVE_ID);
+			}
 
 			partnerWorker.setRole(roles[i]);
 			partnerWorker.setNotifications(notifications[i]);
@@ -62,6 +95,22 @@ public class PartnerWorkerLocalServiceImpl
 
 	public void deletePartnerWorkers(long userId) throws PortalException {
 		try {
+			List<PartnerWorker> partnerWorkers =
+				partnerWorkerPersistence.findByUserId(userId);
+
+			for (PartnerWorker partnerWorker : partnerWorkers) {
+				PartnerEntry partnerEntry =
+					partnerEntryLocalService.getPartnerEntry(partnerEntryId);
+
+				CorpEntry corpEntry = corpEntryLocalService.fetchCorpEntry(
+					partnerEntry.getDossieraAccountKey());
+
+				if (corpEntry != null) {
+					UserLocalServiceUtil.unsetOrganizationUsers(
+						corpEntry.getOrganizationId(), new long[] {userId});
+				}
+			}
+
 			partnerWorkerPersistence.removeByUserId(userId);
 
 			unassignOrganizations(userId);
@@ -73,9 +122,21 @@ public class PartnerWorkerLocalServiceImpl
 	public void deletePartnerWorkers(long[] userIds, long partnerEntryId)
 		throws PortalException {
 
+		PartnerEntry partnerEntry = partnerEntryLocalService.getPartnerEntry(
+			partnerEntryId);
+
+		CorpEntry corpEntry =
+			corpEntryLocalService.fetchCorpEntry(
+				partnerEntry.getDossieraAccountKey());
+
 		for (long userId : userIds) {
 			try {
 				partnerWorkerPersistence.removeByU_PEI(userId, partnerEntryId);
+
+				if (corpEntry != null) {
+					UserLocalServiceUtil.unsetOrganizationUsers(
+						corpEntry.getOrganizationId(), new long[] {userId});
+				}
 
 				unassignOrganizations(userId);
 			}
