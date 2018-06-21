@@ -75,9 +75,12 @@ public class OrderEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 			(String)workflowContext.get(
 				WorkflowConstants.CONTEXT_SUPPORT_REGION_NAME));
 		sb.append(" Region - ");
-		sb.append(
-			(String)workflowContext.get(
-				WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_KEY));
+
+		OrderEntry orderEntry = (OrderEntry)model;
+
+		AccountEntry accountEntry = orderEntry.getAccountEntry();
+
+		sb.append(accountEntry.getCode());
 
 		workflowContext.put(
 			WorkflowConstants.CONTEXT_NOTIFICATION_SUBJECT, sb.toString());
