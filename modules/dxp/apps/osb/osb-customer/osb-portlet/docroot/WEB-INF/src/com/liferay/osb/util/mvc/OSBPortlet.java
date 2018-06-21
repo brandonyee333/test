@@ -14,18 +14,13 @@
 
 package com.liferay.osb.util.mvc;
 
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.LCSSubscriptionEntryLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.util.bridges.mvc.MVCPortlet;
 
 import java.io.IOException;
-
-import java.util.Set;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -35,40 +30,18 @@ import javax.portlet.ActionResponse;
  */
 public class OSBPortlet extends MVCPortlet {
 
-	protected void syncAccountEntriesToLCS(
-			ActionRequest actionRequest, ActionResponse actionResponse,
-			Set<Long> accountEntryIds)
-		throws IOException, PortalException {
-
-		for (long accountEntryId : accountEntryIds) {
-			syncAccountEntryToLCS(
-				actionRequest, actionResponse, accountEntryId);
-		}
-	}
-
-	protected void syncAccountEntryToLCS(
-			ActionRequest actionRequest, ActionResponse actionResponse,
-			long accountEntryId)
-		throws IOException, PortalException {
-
-		AccountEntry accountEntry =
-			AccountEntryLocalServiceUtil.getAccountEntry(accountEntryId);
-
-		syncToLCS(
-			actionRequest, actionResponse, accountEntry.getCorpProjectId());
-	}
-
 	protected void syncToLCS(
 			ActionRequest actionRequest, ActionResponse actionResponse,
-			long corpProjectId)
+			long accountEntryId)
 		throws IOException {
 
 		try {
-			LCSSubscriptionEntryLocalServiceUtil.syncToLCS(corpProjectId);
+			LCSSubscriptionEntryLocalServiceUtil.syncToLCS(accountEntryId);
 		}
 		catch (Exception e) {
 			_log.error(
-				"Unable to sync corp project " + corpProjectId + " to LCS", e);
+				"Unable to sync account entry " + accountEntryId + " to LCS",
+				e);
 
 			SessionMessages.add(actionRequest, "lcsSyncFailed");
 

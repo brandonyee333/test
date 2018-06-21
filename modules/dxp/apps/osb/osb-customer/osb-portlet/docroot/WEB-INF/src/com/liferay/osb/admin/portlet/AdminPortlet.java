@@ -363,7 +363,7 @@ public class AdminPortlet extends OSBPortlet {
 		OrderEntry orderEntry = OrderEntryLocalServiceUtil.deleteOrderEntry(
 			orderEntryId);
 
-		syncAccountEntryToLCS(
+		syncToLCS(
 			actionRequest, actionResponse, orderEntry.getAccountEntryId());
 	}
 
@@ -422,7 +422,7 @@ public class AdminPortlet extends OSBPortlet {
 		OrderEntry orderEntry = OrderEntryLocalServiceUtil.renewOrderEntry(
 			themeDisplay.getUserId(), orderEntryId, renewCount);
 
-		syncAccountEntryToLCS(
+		syncToLCS(
 			actionRequest, actionResponse, orderEntry.getAccountEntryId());
 	}
 
@@ -496,7 +496,7 @@ public class AdminPortlet extends OSBPortlet {
 				notifications);
 		}
 
-		syncAccountEntryToLCS(actionRequest, actionResponse, accountEntryId);
+		syncToLCS(actionRequest, actionResponse, accountEntryId);
 	}
 
 	public void updateAccountEntry(
@@ -899,7 +899,7 @@ public class AdminPortlet extends OSBPortlet {
 				actualStartDateYear, salesforceOpportunityKey, offeringEntries);
 		}
 
-		syncAccountEntryToLCS(
+		syncToLCS(
 			actionRequest, actionResponse, orderEntry.getAccountEntryId());
 	}
 

@@ -167,7 +167,7 @@ public class LicensePortlet extends OSBPortlet {
 			}
 		}
 
-		syncAccountEntryToLCS(
+		syncToLCS(
 			actionRequest, actionResponse, licenseKey.getAccountEntryId());
 	}
 
@@ -339,7 +339,7 @@ public class LicensePortlet extends OSBPortlet {
 				offeringEntryId, name, active);
 		}
 
-		syncAccountEntryToLCS(
+		syncToLCS(
 			actionRequest, actionResponse, licenseKey.getAccountEntryId());
 	}
 
