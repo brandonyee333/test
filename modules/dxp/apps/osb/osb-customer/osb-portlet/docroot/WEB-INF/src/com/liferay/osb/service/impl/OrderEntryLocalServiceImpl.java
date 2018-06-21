@@ -35,7 +35,10 @@ import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.SalesforceConstants;
 import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.osb.util.WorkflowConstants;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -57,8 +60,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeMap;
 
 /**
@@ -343,6 +348,43 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 		}
 
 		return orderEntry;
+	}
+
+	public void checkOrderEntries() throws SystemException {
+		Set<Long> accountEntryIds = new HashSet<Long>();
+
+		Date startDateLT = new Date();
+		Date startDateGT = new Date (startDateLT.getTime() - Time.DAY);
+
+		List<OrderEntry> orderEntries =
+			orderEntryFinder.findByU_CD_MU_MD_AE_PO_S_SD_P_ASD(
+				null, null, null, null, null, null, null, null,
+				new int[] {WorkflowConstants.STATUS_APPROVED}, startDateGT,
+				startDateLT, null, null, null, null, true, QueryUtil.ALL_POS,
+				QueryUtil.ALL_POS, null);
+
+		for (OrderEntry orderEntry : orderEntries) {
+			if (accountEntryIds.contains(orderEntry.getAccountEntryId())) {
+				continue;
+			}
+
+			try {
+				AccountEntry accountEntry =
+					accountEntryPersistence.findByPrimaryKey(
+						orderEntry.getAccountEntryId());
+
+				lcsSubscriptionEntryLocalService.syncToLCS(
+					accountEntry.getCorpProjectId());
+			}
+			catch (Exception e) {
+				_log.error(
+					"Unable to sync account entry " +
+						orderEntry.getAccountEntryId() + " to LCS",
+					e);
+			}
+
+			accountEntryIds.add(orderEntry.getAccountEntryId());
+		}
 	}
 
 	@Override
@@ -775,5 +817,8 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 			throw new NoSuchAccountEntryException();
 		}
 	}
+
+	private static Log _log = LogFactoryUtil.getLog(
+		OrderEntryLocalServiceImpl.class);
 
 }

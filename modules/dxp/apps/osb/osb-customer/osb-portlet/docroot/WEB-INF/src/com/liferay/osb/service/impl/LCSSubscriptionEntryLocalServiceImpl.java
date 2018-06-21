@@ -123,6 +123,12 @@ public class LCSSubscriptionEntryLocalServiceImpl
 			return null;
 		}
 
+		Date startDate = orderEntry.getStartDate();
+
+		if (startDate.getTime() > System.currentTimeMillis()) {
+			return null;
+		}
+
 		ProductEntry productEntry = offeringEntry.getProductEntry();
 		SupportResponse supportResponse = offeringEntry.getSupportResponse();
 
@@ -155,9 +161,6 @@ public class LCSSubscriptionEntryLocalServiceImpl
 		lcsSubscriptionEntry.setServersAllowed(
 			offeringEntry.getQuantity() - offeringEntry.getLicenseKeysCount());
 		lcsSubscriptionEntry.setInstanceSize(offeringEntry.getSizing());
-
-		Date startDate = orderEntry.getStartDate();
-
 		lcsSubscriptionEntry.setStartDate(startDate);
 
 		if (offeringEntry.getLicenseLifetime() ==

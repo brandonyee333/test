@@ -34,6 +34,15 @@
 			</trigger>
 		</scheduler-entry>
 		<scheduler-entry>
+			<scheduler-event-listener-class>com.liferay.osb.admin.messaging.CheckOrderEntryMessageListener</scheduler-event-listener-class>
+			<trigger>
+				<simple>
+					<simple-trigger-value>1</simple-trigger-value>
+					<time-unit>day</time-unit>
+				</simple>
+			</trigger>
+		</scheduler-entry>
+		<scheduler-entry>
 			<scheduler-event-listener-class>com.liferay.osb.admin.messaging.CheckStatusAccountEntriesMessageListener</scheduler-event-listener-class>
 			<trigger>
 				<simple>
