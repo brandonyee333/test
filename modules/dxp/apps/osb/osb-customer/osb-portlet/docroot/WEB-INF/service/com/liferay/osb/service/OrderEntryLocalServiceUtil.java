@@ -403,6 +403,10 @@ public class OrderEntryLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
+	public static void checkOrderEntries() {
+		getService().checkOrderEntries();
+	}
+
 	public static void clearService() {
 		_service = null;
 	}

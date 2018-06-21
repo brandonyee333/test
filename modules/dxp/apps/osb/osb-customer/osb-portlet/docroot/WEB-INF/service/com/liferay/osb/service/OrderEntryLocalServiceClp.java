@@ -201,6 +201,10 @@ public class OrderEntryLocalServiceClp implements OrderEntryLocalService {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery",
 				"com.liferay.portal.kernel.dao.orm.Projection"
 			};
+
+		_methodName32 = "checkOrderEntries";
+
+		_methodParameterTypes32 = new String[] {  };
 	}
 
 	@Override
@@ -1313,6 +1317,25 @@ public class OrderEntryLocalServiceClp implements OrderEntryLocalService {
 		return ((Long)returnObj).longValue();
 	}
 
+	@Override
+	public void checkOrderEntries() {
+		try {
+			_invokableLocalService.invokeMethod(_methodName32,
+				_methodParameterTypes32, new Object[] {  });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+	}
+
 	private InvokableLocalService _invokableLocalService;
 	private String _methodName0;
 	private String[] _methodParameterTypes0;
@@ -1376,4 +1399,6 @@ public class OrderEntryLocalServiceClp implements OrderEntryLocalService {
 	private String[] _methodParameterTypes30;
 	private String _methodName31;
 	private String[] _methodParameterTypes31;
+	private String _methodName32;
+	private String[] _methodParameterTypes32;
 }

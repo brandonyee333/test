@@ -421,6 +421,11 @@ public class OrderEntryLocalServiceWrapper implements OrderEntryLocalService,
 	}
 
 	@Override
+	public void checkOrderEntries() {
+		_orderEntryLocalService.checkOrderEntries();
+	}
+
+	@Override
 	public OrderEntryLocalService getWrappedService() {
 		return _orderEntryLocalService;
 	}

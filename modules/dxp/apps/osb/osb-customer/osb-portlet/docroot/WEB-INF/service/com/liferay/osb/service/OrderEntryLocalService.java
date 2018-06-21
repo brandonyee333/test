@@ -319,4 +319,6 @@ public interface OrderEntryLocalService extends BaseLocalService,
 	*/
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
+
+	public void checkOrderEntries();
 }
