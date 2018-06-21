@@ -99,6 +99,7 @@ import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.osb.util.OSBRequestUtil;
 import com.liferay.osb.util.WorkflowConstants;
+import com.liferay.osb.util.mvc.OSBPortlet;
 import com.liferay.portal.kernel.exception.AddressCityException;
 import com.liferay.portal.kernel.exception.AddressStreetException;
 import com.liferay.portal.kernel.exception.AddressZipException;
@@ -141,7 +142,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.users.admin.kernel.util.UsersAdminUtil;
-import com.liferay.util.bridges.mvc.MVCPortlet;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -169,7 +169,7 @@ import javax.portlet.ResourceResponse;
  * @author Amos Fong
  * @author Haote Chou
  */
-public class AdminPortlet extends MVCPortlet {
+public class AdminPortlet extends OSBPortlet {
 
 	public void auditAccountEntry(
 			ActionRequest actionRequest, ActionResponse actionResponse)
@@ -364,7 +364,7 @@ public class AdminPortlet extends MVCPortlet {
 		OrderEntry orderEntry = OrderEntryLocalServiceUtil.deleteOrderEntry(
 			orderEntryId);
 
-		syncToLCS(
+		syncAccountEntryToLCS(
 			actionRequest, actionResponse, orderEntry.getAccountEntryId());
 	}
 
@@ -423,7 +423,7 @@ public class AdminPortlet extends MVCPortlet {
 		OrderEntry orderEntry = OrderEntryLocalServiceUtil.renewOrderEntry(
 			themeDisplay.getUserId(), orderEntryId, renewCount);
 
-		syncToLCS(
+		syncAccountEntryToLCS(
 			actionRequest, actionResponse, orderEntry.getAccountEntryId());
 	}
 
@@ -496,6 +496,8 @@ public class AdminPortlet extends MVCPortlet {
 				themeDisplay.getUserId(), emailAddress, accountEntryId, role,
 				notifications);
 		}
+
+		syncAccountEntryToLCS(actionRequest, actionResponse, accountEntryId);
 	}
 
 	public void updateAccountEntry(
@@ -898,7 +900,7 @@ public class AdminPortlet extends MVCPortlet {
 				actualStartDateYear, salesforceOpportunityKey, offeringEntries);
 		}
 
-		syncToLCS(
+		syncAccountEntryToLCS(
 			actionRequest, actionResponse, orderEntry.getAccountEntryId());
 	}
 
@@ -1319,25 +1321,6 @@ public class AdminPortlet extends MVCPortlet {
 			MimeTypesUtil.getContentType(
 				accountEnvironmentAttachment.getFileName()),
 			HttpHeaders.CONTENT_DISPOSITION_ATTACHMENT);
-	}
-
-	protected void syncToLCS(
-			ActionRequest actionRequest, ActionResponse actionResponse,
-			long accountEntryId)
-		throws IOException {
-
-		try {
-			LCSSubscriptionEntryLocalServiceUtil.syncToLCS(accountEntryId);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			SessionMessages.add(actionRequest, "lcsSyncFailed");
-
-			addSuccessMessage(actionRequest, actionResponse);
-
-			sendRedirect(actionRequest, actionResponse);
-		}
 	}
 
 	protected void updateAccountAttachment(ActionRequest actionRequest)

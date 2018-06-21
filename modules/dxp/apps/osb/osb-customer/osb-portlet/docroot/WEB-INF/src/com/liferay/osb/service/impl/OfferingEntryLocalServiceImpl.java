@@ -30,6 +30,8 @@ import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.osb.util.comparator.OfferingEntrySupportEndDateComparator;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -37,8 +39,10 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Brian Wing Shun Chan
@@ -110,6 +114,8 @@ public class OfferingEntryLocalServiceImpl
 	public void checkOfferingEntries() throws Exception {
 		Date now = new Date();
 
+		Set<Long> accountEntryIds = new HashSet<Long>();
+
 		List<OfferingEntry> offeringEntries =
 			offeringEntryFinder.findByU_AEI_PEI_T_S_SED(
 				0, 0, 0, new int[] {OfferingEntryConstants.TYPE_REGULAR},
@@ -131,6 +137,23 @@ public class OfferingEntryLocalServiceImpl
 				OSBConstants.USER_DEFAULT_USER_ID,
 				offeringEntry.getOfferingEntryId(),
 				OfferingEntryConstants.STATUS_ON_HOLD);
+
+			accountEntryIds.add(offeringEntry.getAccountEntryId());
+		}
+
+		for (long accountEntryId : accountEntryIds) {
+			try {
+				AccountEntry accountEntry =
+					accountEntryPersistence.findByPrimaryKey(accountEntryId);
+
+				lcsSubscriptionEntryLocalService.syncToLCS(
+					accountEntry.getCorpProjectId());
+			}
+			catch (Exception e) {
+				_log.error(
+					"Unable to sync account entry to LCS: " + accountEntryId,
+					e);
+			}
 		}
 	}
 
@@ -371,5 +394,8 @@ public class OfferingEntryLocalServiceImpl
 			throw new OfferingEntryQuantityException();
 		}
 	}
+
+	private static Log _log = LogFactoryUtil.getLog(
+		OfferingEntryLocalServiceImpl.class);
 
 }

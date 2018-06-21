@@ -559,7 +559,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		licenseKeyLocalService.updateLicenseKey(userId, licenseKeyId, active);
 	}
 
-	public void updateLicenseKey(
+	public LicenseKey updateLicenseKey(
 			long userId, long licenseKeyId, long licenseKeySetId,
 			long offeringEntryId, String name, boolean active)
 		throws PortalException {
@@ -581,7 +581,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 				getPermissionChecker(), licenseKey, OSBActionKeys.UPDATE_BASIC);
 		}
 
-		licenseKeyLocalService.updateLicenseKey(
+		return licenseKeyLocalService.updateLicenseKey(
 			userId, licenseKeyId, licenseKeySetId, offeringEntryId, name,
 			active);
 	}

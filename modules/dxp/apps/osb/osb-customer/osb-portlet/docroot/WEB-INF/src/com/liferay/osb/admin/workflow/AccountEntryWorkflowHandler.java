@@ -178,7 +178,10 @@ public class AccountEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 				accountEntry.getAccountEntryId());
 		}
 		catch (Exception e) {
-			_log.error(e, e);
+			_log.error(
+				"Unable to sync account entry to LCS: " +
+					accountEntry.getAccountEntryId(),
+				e);
 		}
 	}
 

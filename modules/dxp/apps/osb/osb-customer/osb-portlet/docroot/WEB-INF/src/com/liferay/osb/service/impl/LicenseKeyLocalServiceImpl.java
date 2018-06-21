@@ -814,7 +814,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		licenseKeyPersistence.update(licenseKey);
 	}
 
-	public void updateLicenseKey(
+	public LicenseKey updateLicenseKey(
 			long licenseKeyId, long accountEntryId, long offeringEntryId,
 			long orderEntryId)
 		throws PortalException {
@@ -826,10 +826,10 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		licenseKey.setOfferingEntryId(offeringEntryId);
 		licenseKey.setOrderEntryId(orderEntryId);
 
-		licenseKeyPersistence.update(licenseKey);
+		return licenseKeyPersistence.update(licenseKey);
 	}
 
-	public void updateLicenseKey(
+	public LicenseKey updateLicenseKey(
 			long userId, long licenseKeyId, long licenseKeySetId,
 			long offeringEntryId, String name, boolean active)
 		throws PortalException {
@@ -912,6 +912,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				userId, licenseKeyId, licenseKeySetId, offeringEntryId, name,
 				active);
 		}
+
+		return licenseKey;
 	}
 
 	protected LicenseKey doAddLicenseKey(

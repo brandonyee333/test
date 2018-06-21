@@ -40,6 +40,7 @@ import com.liferay.osb.service.LicenseKeyServiceUtil;
 import com.liferay.osb.service.LicenseKeySetServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
+import com.liferay.osb.util.mvc.OSBPortlet;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -57,7 +58,6 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.util.bridges.mvc.MVCPortlet;
 
 import java.io.IOException;
 
@@ -83,7 +83,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author Brian Wing Shun Chan
  * @author Amos Fong
  */
-public class LicensePortlet extends MVCPortlet {
+public class LicensePortlet extends OSBPortlet {
 
 	public void buyLicenseKey(
 			ActionRequest actionRequest, ActionResponse actionResponse)
@@ -109,6 +109,8 @@ public class LicensePortlet extends MVCPortlet {
 
 		long licenseKeyId = ParamUtil.getLong(actionRequest, "licenseKeyId");
 
+		LicenseKey licenseKey = null;
+
 		if (licenseKeyId > 0) {
 			int renewTime = ParamUtil.getInteger(
 				actionRequest, "renewTime_" + licenseKeyId);
@@ -125,7 +127,7 @@ public class LicensePortlet extends MVCPortlet {
 
 			cal.set(startYear, startMonth, startDay);
 
-			LicenseKeyServiceUtil.renewLicenseKey(
+			licenseKey = LicenseKeyServiceUtil.renewLicenseKey(
 				licenseKeyId, cal.getTime(), renewTime);
 		}
 		else {
@@ -155,15 +157,18 @@ public class LicensePortlet extends MVCPortlet {
 				LicenseKeyLocalServiceUtil.getLicenseKeySetLicenseKeys(
 					licenseKeySetId);
 
-			for (LicenseKey licenseKey : licenseKeys) {
-				if (!licenseKey.isActive()) {
+			for (LicenseKey curLicenseKey : licenseKeys) {
+				if (!curLicenseKey.isActive()) {
 					continue;
 				}
 
-				LicenseKeyServiceUtil.renewLicenseKey(
-					licenseKey.getLicenseKeyId(), cal.getTime(), renewTime);
+				licenseKey = LicenseKeyServiceUtil.renewLicenseKey(
+					curLicenseKey.getLicenseKeyId(), cal.getTime(), renewTime);
 			}
 		}
+
+		syncAccountEntryToLCS(
+			actionRequest, actionResponse, licenseKey.getAccountEntryId());
 	}
 
 	public void renewTrialLicenseKey(
@@ -310,8 +315,10 @@ public class LicensePortlet extends MVCPortlet {
 			macAddresses.add(StringUtil.merge(curMacAddresses));
 		}
 
+		LicenseKey licenseKey = null;
+
 		if (licenseKeyId <= 0) {
-			LicenseKey licenseKey = LicenseKeyServiceUtil.addLicenseKey(
+			icenseKey = LicenseKeyServiceUtil.addLicenseKey(
 				themeDisplay.getUserId(), licenseKeySetId, name,
 				offeringEntryId, licenseEntryId, 0, productVersion, clusterId,
 				owner, maxServers, maxHttpSessions, description,
@@ -327,10 +334,13 @@ public class LicensePortlet extends MVCPortlet {
 				"offeringEntryId", licenseKey.getOfferingEntryId());
 		}
 		else {
-			LicenseKeyServiceUtil.updateLicenseKey(
+			licenseKey = LicenseKeyServiceUtil.updateLicenseKey(
 				themeDisplay.getUserId(), licenseKeyId, licenseKeySetId,
 				offeringEntryId, name, active);
 		}
+
+		syncAccountEntryToLCS(
+			actionRequest, actionResponse, licenseKey.getAccountEntryId());
 	}
 
 	public void updateLicenseKeySet(

@@ -514,8 +514,16 @@ public class AccountEntryLocalServiceImpl
 
 		// LCS
 
-		lcsSubscriptionEntryLocalService.syncToLCS(
-			accountEntry.getAccountEntryId());
+		try {
+			lcsSubscriptionEntryLocalService.syncToLCS(
+				corpProject.getCorpProjectId());
+		}
+		catch (Exception e) {
+			_log.error(
+				"Unable to sync account entry to LCS: " +
+					accountEntry.getAccountEntryId(),
+				e);
+		}
 	}
 
 	public void auditAccountEntries() throws PortalException {
