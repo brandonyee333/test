@@ -15,6 +15,7 @@
 package com.liferay.osb.rabbitmq;
 
 import com.liferay.osb.model.AccountEntry;
+import com.liferay.osb.model.AccountWorker;
 import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.model.ExternalIdMapper;
 import com.liferay.osb.model.ExternalIdMapperConstants;
@@ -49,6 +50,9 @@ public class ProvisioningUpdateRabbitMQConsumer
 		AccountEntry accountEntry = parseAccountEntry(
 			jsonObject, corpProject, orderEntries);
 
+		AccountWorker accountWorker = parseAccountWorker(
+			jsonObject, accountEntry);
+
 		PartnerEntry partnerEntry = parsePartnerEntry(jsonObject);
 		Address address = parseAddress(jsonObject);
 
@@ -70,14 +74,14 @@ public class ProvisioningUpdateRabbitMQConsumer
 
 				AccountEntryLocalServiceUtil.updateAccountEntryWithWorkflow(
 					salesforceOpportunityKey, curAccountEntry,
-					curAccountEntry.getPartnerEntry(),
+					curAccountEntry.getPartnerEntry(), accountWorker,
 					curAccountEntry.getAddress(), orderEntries, serviceContext);
 			}
 		}
 		else {
 			AccountEntryLocalServiceUtil.updateAccountEntryWithWorkflow(
-				salesforceOpportunityKey, accountEntry, partnerEntry, address,
-				orderEntries, serviceContext);
+				salesforceOpportunityKey, accountEntry, partnerEntry,
+				accountWorker, address, orderEntries, serviceContext);
 		}
 	}
 

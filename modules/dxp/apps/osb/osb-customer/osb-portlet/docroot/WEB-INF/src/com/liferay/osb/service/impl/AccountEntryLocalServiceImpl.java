@@ -14,6 +14,7 @@
 
 package com.liferay.osb.service.impl;
 
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.osb.admin.util.AdminUtil;
 import com.liferay.osb.exception.AccountEntryCodeException;
@@ -1006,8 +1007,9 @@ public class AccountEntryLocalServiceImpl
 
 	public void updateAccountEntryWithWorkflow(
 			String salesforceOpportunityKey, AccountEntry accountEntry,
-			PartnerEntry partnerEntry, Address address,
-			List<OrderEntry> orderEntries, ServiceContext serviceContext)
+			PartnerEntry partnerEntry, AccountWorker accountWorker,
+			Address address, List<OrderEntry> orderEntries,
+			ServiceContext serviceContext)
 		throws PortalException {
 
 		long classNameId = classNameLocalService.getClassNameId(
@@ -1023,58 +1025,81 @@ public class AccountEntryLocalServiceImpl
 				"No orders found with key " + salesforceOpportunityKey);
 		}
 
-		HashMap<String, Serializable> workflowContext = new HashMap<>();
-
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_ACCOUNT_ENTRY_NAME,
-			accountEntry.getName());
-
-		List<Long> existingOrderEntryIds = new ArrayList<>();
-
-		for (ExternalIdMapper externalIdMapper : externalIdMappers) {
-			OrderEntry orderEntry = orderEntryPersistence.findByPrimaryKey(
-				externalIdMapper.getClassPK());
-
-			if (orderEntry.getAccountEntryId() !=
-					accountEntry.getAccountEntryId()) {
-
-				continue;
-			}
-
-			existingOrderEntryIds.add(externalIdMapper.getClassPK());
-		}
-
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_EXISTING_ORDER_ENTRY_IDS,
-			StringUtil.merge(existingOrderEntryIds));
-
-		TreeMap<String, String> oldAccountEntryAttributes = new TreeMap<>();
-		TreeMap<String, String> newAccountEntryAttributes = new TreeMap<>();
-
 		AccountEntry oldAccountEntry = accountEntryPersistence.findByPrimaryKey(
 			accountEntry.getAccountEntryId());
 
-		String corpEntryName = oldAccountEntry.getCorpEntryName();
+		boolean updateNoWorkflow = false;
 
-		if (!corpEntryName.equals(accountEntry.getCorpEntryName())) {
-			oldAccountEntryAttributes.put("corpEntryName", corpEntryName);
-			newAccountEntryAttributes.put(
-				"corpEntryName", accountEntry.getCorpEntryName());
-		}
-
-		String name = oldAccountEntry.getName();
-
-		if (!name.equals(accountEntry.getName())) {
-			oldAccountEntryAttributes.put("name", name);
-			newAccountEntryAttributes.put("name", accountEntry.getName());
-		}
+		int updateIndustry = oldAccountEntry.getIndustry();
 
 		if (oldAccountEntry.getIndustry() != accountEntry.getIndustry()) {
-			oldAccountEntryAttributes.put(
-				"industry", String.valueOf(oldAccountEntry.getIndustry()));
-			newAccountEntryAttributes.put(
-				"industry", String.valueOf(accountEntry.getIndustry()));
+			updateIndustry = accountEntry.getIndustry();
+			updateNoWorkflow = true;
 		}
+
+		Address updateAddress = oldAccountEntry.getAddress();
+
+		String oldAddressString = AdminUtil.formatAddress(updateAddress);
+		String addressString = AdminUtil.formatAddress(address);
+
+		if (!oldAddressString.equals(addressString)) {
+			updateAddress = address;
+			updateNoWorkflow = true;
+		}
+
+		String corpEntryName = oldAccountEntry.getCorpEntryName();
+		String updateCorpEntryName = corpEntryName;
+
+		if (!corpEntryName.equals(accountEntry.getCorpEntryName())) {
+			updateCorpEntryName = accountEntry.getCorpEntryName();
+			updateNoWorkflow = true;
+		}
+
+		CorpProject corpProject = corpProjectLocalService.getCorpProject(
+			oldAccountEntry.getCorpProjectId());
+
+		if (updateNoWorkflow) {
+			updateAccountEntry(
+				oldAccountEntry.getUserId(),
+				oldAccountEntry.getAccountEntryId(),
+				oldAccountEntry.getCorpProjectId(), updateCorpEntryName,
+				oldAccountEntry.getName(), oldAccountEntry.getCode(),
+				oldAccountEntry.getType(), updateIndustry,
+				oldAccountEntry.getPartnerEntryId(),
+				oldAccountEntry.getPartnerManagedSupport(),
+				oldAccountEntry.getTier(), oldAccountEntry.getMaxCustomers(),
+				oldAccountEntry.getInstructions(), oldAccountEntry.getNotes(),
+				oldAccountEntry.getLanguageIds(),
+				oldAccountEntry.getSupportRegionIds(),
+				updateAddress.getAddressId(), updateAddress.getStreet1(),
+				updateAddress.getStreet2(), updateAddress.getStreet3(),
+				updateAddress.getCity(), updateAddress.getZip(),
+				updateAddress.getRegionId(), updateAddress.getCountryId(),
+				corpProject.getDossieraProjectKey());
+		}
+
+		if (accountWorker != null) {
+			accountWorkerLocalService.addAccountWorkers(
+				OSBConstants.USER_DEFAULT_USER_ID,
+				new long[] {accountWorker.getUserId()},
+				accountEntry.getAccountEntryId(),
+				new int[] {accountWorker.getRole()},
+				new int[] {accountWorker.getNotifications()});
+		}
+
+		HashMap<String, Serializable> workflowContext =
+			new HashMap<String, Serializable>();
+
+		String oldAccountEntryName = oldAccountEntry.getName();
+
+		if (!oldAccountEntryName.equals(accountEntry.getName())) {
+			workflowContext.put(
+				WorkflowConstants.CONTEXT_ACCOUNT_ENTRY_NAME,
+				accountEntry.getName());
+		}
+
+		TreeMap<String, String> oldAccountEntryAttributes = new TreeMap<>();
+		TreeMap<String, String> newAccountEntryAttributes = new TreeMap<>();
 
 		if (partnerEntry != null) {
 			if (oldAccountEntry.getPartnerEntryId() !=
@@ -1113,17 +1138,6 @@ public class AccountEntryLocalServiceImpl
 			newAccountEntryAttributes.put("notes", accountEntry.getNotes());
 		}
 
-		Address oldAddress = oldAccountEntry.getAddress();
-
-		String oldAddressString = AdminUtil.formatAddress(oldAddress);
-
-		String addressString = AdminUtil.formatAddress(address);
-
-		if (!oldAddressString.equals(addressString)) {
-			oldAccountEntryAttributes.put("address", oldAddressString);
-			newAccountEntryAttributes.put("address", addressString);
-		}
-
 		String[] oldLanguageIds = oldAccountEntry.getLanguageIds();
 		String[] languageIds = accountEntry.getLanguageIds();
 
@@ -1150,6 +1164,19 @@ public class AccountEntryLocalServiceImpl
 				"supportRegionIds", StringUtil.merge(supportRegionIds));
 		}
 
+		String oldEWSADossieraProjectKey =
+			oldAccountEntry.getEWSADossieraProjectKey();
+
+		if (!oldEWSADossieraProjectKey.equals(
+				accountEntry.getEWSADossieraProjectKey())) {
+
+			oldAccountEntryAttributes.put(
+				"dossieraProjectKey",
+				oldAccountEntry.getEWSADossieraProjectKey());
+			newAccountEntryAttributes.put(
+				"dossieraProjectKey", accountEntry.getEWSADossieraProjectKey());
+		}
+
 		if (!oldAccountEntryAttributes.isEmpty() &&
 			!newAccountEntryAttributes.isEmpty()) {
 
@@ -1161,38 +1188,24 @@ public class AccountEntryLocalServiceImpl
 				newAccountEntryAttributes);
 		}
 
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_ACTION,
-			Constants.UPDATE);
+		List<OrderEntry> oldOrderEntries = oldAccountEntry.getOrderEntries();
 
-		int salesforceOpportunityType = GetterUtil.getInteger(
-			serviceContext.getAttribute("salesforceOpportunityType"));
+		if (oldOrderEntries.size() == orderEntries.size()) {
+			ListUtil.sort(oldOrderEntries, new OrderEntryStartDateComparator());
+			ListUtil.sort(orderEntries, new OrderEntryStartDateComparator());
 
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_TYPE,
-			salesforceOpportunityType);
+			if (!oldOrderEntries.equals(orderEntries)) {
+				workflowContext.put(
+					WorkflowConstants.CONTEXT_ORDER_ENTRIES,
+					SupportUtil.serialize(orderEntries));
+			}
+		}
 
-		String salesforceOpportunityTaskName =
-			SalesforceConstants.getOpportunityTaskName(
-				salesforceOpportunityType, Constants.UPDATE);
-
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_TASK_NAME,
-			salesforceOpportunityTaskName);
-
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_ORDER_ENTRIES,
-			SupportUtil.serialize(orderEntries));
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_KEY,
-			salesforceOpportunityKey);
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_STAGE_NAME,
-			serviceContext.getAttribute("salesforceOpportunityStageName"));
-
+		List<SupportRegion> oldSupportRegions =
+			oldAccountEntry.getSupportRegions();
 		List<SupportRegion> supportRegions = accountEntry.getSupportRegions();
 
-		if (!supportRegions.isEmpty()) {
+		if (!oldSupportRegions.equals(supportRegions)) {
 			SupportRegion supportRegion = supportRegions.get(0);
 
 			workflowContext.put(
@@ -1200,53 +1213,106 @@ public class AccountEntryLocalServiceImpl
 				supportRegion.getName());
 		}
 
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_WARNING_MESSAGES,
-			serviceContext.getAttribute("warningMessages"));
+		if (!workflowContext.isEmpty()) {
+			List<Long> existingOrderEntryIds = new ArrayList<Long>();
 
-		List<WorkflowTask> workflowTasks = WorkflowTaskManagerUtil.search(
-			OSBConstants.COMPANY_ID, 0, null, AccountEntry.class.getName(),
-			new Long[] {accountEntry.getAccountEntryId()}, null, null, false,
-			null, true, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+			for (ExternalIdMapper externalIdMapper : externalIdMappers) {
+				OrderEntry orderEntry = orderEntryPersistence.findByPrimaryKey(
+					externalIdMapper.getClassPK());
 
-		for (WorkflowTask workflowTask : workflowTasks) {
-			Map<String, Serializable> curWorkflowContext =
-				workflowTask.getOptionalAttributes();
+				if (orderEntry.getAccountEntryId() !=
+						accountEntry.getAccountEntryId()) {
 
-			String salesforceOpportunityAction = GetterUtil.getString(
-				curWorkflowContext.get(
-					WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_ACTION));
+					continue;
+				}
 
-			if (!salesforceOpportunityAction.equals(Constants.UPDATE)) {
-				continue;
+				existingOrderEntryIds.add(externalIdMapper.getClassPK());
 			}
 
-			String curSalesforceOpportunityKey = (String)curWorkflowContext.get(
-				WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_KEY);
+			workflowContext.put(
+				WorkflowConstants.CONTEXT_EXISTING_ORDER_ENTRY_IDS,
+				StringUtil.merge(existingOrderEntryIds));
 
-			if (!salesforceOpportunityKey.equals(curSalesforceOpportunityKey)) {
-				continue;
+			workflowContext.put(
+				WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_ACTION,
+				Constants.UPDATE);
+
+			int salesforceOpportunityType = GetterUtil.getInteger(
+				serviceContext.getAttribute("salesforceOpportunityType"));
+
+			workflowContext.put(
+				WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_TYPE,
+				salesforceOpportunityType);
+
+			String salesforceOpportunityTaskName =
+				SalesforceConstants.getOpportunityTaskName(
+					salesforceOpportunityType, Constants.UPDATE);
+
+			workflowContext.put(
+				WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_TASK_NAME,
+				salesforceOpportunityTaskName);
+			workflowContext.put(
+				WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_KEY,
+				salesforceOpportunityKey);
+			workflowContext.put(
+				WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_STAGE_NAME,
+				serviceContext.getAttribute("salesforceOpportunityStageName"));
+
+			workflowContext.put(
+				WorkflowConstants.CONTEXT_WARNING_MESSAGES,
+				serviceContext.getAttribute("warningMessages"));
+
+			List<WorkflowTask> workflowTasks = WorkflowTaskManagerUtil.search(
+				OSBConstants.COMPANY_ID, 0, null, AccountEntry.class.getName(),
+				new Long[]{accountEntry.getAccountEntryId()}, null, null, false,
+				null, true, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+
+			for (WorkflowTask workflowTask : workflowTasks) {
+				Map<String, Serializable> curWorkflowContext =
+					workflowTask.getOptionalAttributes();
+
+				String salesforceOpportunityAction = GetterUtil.getString(
+					curWorkflowContext.get(
+						WorkflowConstants.
+							CONTEXT_SALESFORCE_OPPORTUNITY_ACTION));
+
+				if (!salesforceOpportunityAction.equals(Constants.UPDATE)) {
+					continue;
+				}
+
+				String curSalesforceOpportunityKey =
+					(String)curWorkflowContext.get(
+						WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_KEY);
+
+				if (!salesforceOpportunityKey.equals(
+						curSalesforceOpportunityKey)) {
+
+					continue;
+				}
+
+				WorkflowTaskManagerUtil.completeWorkflowTask(
+					OSBConstants.COMPANY_ID,
+					OSBConstants.USER_AMOS_FONG_USER_ID,
+					workflowTask.getWorkflowTaskId(), "close",
+					"This update task is out of date.", null);
+
+				Indexer indexer = IndexerRegistryUtil.getIndexer(
+					WorkflowTask.class.getName());
+
+				indexer.reindex(workflowTask);
 			}
 
-			WorkflowTaskManagerUtil.completeWorkflowTask(
-				OSBConstants.COMPANY_ID, OSBConstants.USER_AMOS_FONG_USER_ID,
-				workflowTask.getWorkflowTaskId(), "close",
-				"This update task is out of date.", null);
+			ServiceContext workflowServiceContext = new ServiceContext();
 
-			Indexer indexer = IndexerRegistryUtil.getIndexer(
-				WorkflowTask.class.getName());
+			workflowServiceContext.setAttribute(
+				"workflowContext", workflowContext);
 
-			indexer.reindex(workflowTask);
+			WorkflowHandlerRegistryUtil.startWorkflowInstance(
+				OSBConstants.COMPANY_ID, oldAccountEntry.getUserId(),
+				AccountEntry.class.getName(),
+				oldAccountEntry.getAccountEntryId(), oldAccountEntry,
+				workflowServiceContext);
 		}
-
-		ServiceContext workflowServiceContext = new ServiceContext();
-
-		workflowServiceContext.setAttribute("workflowContext", workflowContext);
-
-		WorkflowHandlerRegistryUtil.startWorkflowInstance(
-			OSBConstants.COMPANY_ID, oldAccountEntry.getUserId(),
-			AccountEntry.class.getName(), oldAccountEntry.getAccountEntryId(),
-			oldAccountEntry, workflowServiceContext);
 	}
 
 	public void updateLastAuditDate(
