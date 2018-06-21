@@ -364,8 +364,10 @@ public class DownloadsPortlet extends MVCPortlet {
 						fileNameArray[2].substring(0, 1));
 
 					if ((osbStudioMajorVersion >= 3) &&
-						fileNameArray[3].startsWith(
-							"liferay-developer-studio")) {
+						(fileNameArray[3].startsWith(
+							"LiferayDeveloperStudio") ||
+						 fileNameArray[3].startsWith(
+							"liferay-developer-studio"))) {
 
 						return false;
 					}
