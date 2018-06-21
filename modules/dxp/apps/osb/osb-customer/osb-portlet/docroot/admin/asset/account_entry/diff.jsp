@@ -66,7 +66,10 @@ Map<String, String> oldAccountEntryAttributes = (TreeMap<String, String>)request
 private String _getFieldLabel(HttpServletRequest request, String field) {
 	String label = field;
 
-	if (field.equals("languageIds")) {
+	if (field.equals("ewsaDossieraProjectKey")) {
+		label = "dossiera-project-key";
+	}
+	else if (field.equals("languageIds")) {
 		label = "languages";
 	}
 	else if (field.equals("partnerEntryId")) {
@@ -102,7 +105,7 @@ private String _getValueLabel(HttpServletRequest request, ThemeDisplay themeDisp
 
 		return StringUtil.merge(languageIds, StringPool.COMMA_AND_SPACE);
 	}
-	else if (field.equals("notes")) {
+	else if (field.equals("ewsaDossieraProjectKey") || field.equals("notes")) {
 		return "<pre>" + HtmlUtil.escape(value) + "</pre>";
 	}
 	else if (field.equals("partnerEntryId")) {
