@@ -15,6 +15,7 @@
 package com.liferay.osb.admin.util;
 
 import com.liferay.osb.model.FileRepository;
+import com.liferay.osb.tools.BaseUpgradeImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.petra.content.ContentUtil;
@@ -22,6 +23,7 @@ import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.Region;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
+import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
@@ -30,7 +32,11 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.io.File;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -102,6 +108,44 @@ public class AdminUtil {
 		sb.append(sb2);
 
 		return sb.toString();
+	}
+
+	public static List<Class<?>> getClasses(int buildNumber) throws Exception {
+		String packageName = getPackageName(buildNumber);
+
+		String packageDirName = StringUtil.replace(
+			packageName, CharPool.PERIOD, CharPool.SLASH);
+
+		ClassLoader classLoader = BaseUpgradeImpl.class.getClassLoader();
+
+		URL packageURL = classLoader.getResource(packageDirName);
+
+		if (packageURL == null) {
+			return Collections.emptyList();
+		}
+
+		List<Class<?>> classes = new ArrayList<Class<?>>();
+
+		File packageFile = new File(packageURL.getFile());
+
+		String[] fileNames = packageFile.list();
+
+		Arrays.sort(fileNames);
+
+		for (String fileName : fileNames) {
+			if (!fileName.endsWith(".class")) {
+				continue;
+			}
+
+			String className = fileName.substring(0, fileName.length() - 6);
+
+			Class<?> clazz = classLoader.loadClass(
+				packageName + StringPool.PERIOD + className);
+
+			classes.add(clazz);
+		}
+
+		return classes;
 	}
 
 	public static Map<Locale, String> getEmailProvisioningCreateAccountBodyMap(
@@ -187,6 +231,28 @@ public class AdminUtil {
 			fileRepositoriesProperties.getProperty(fileRepositoryId);
 
 		return new FileRepository(fileRepositoryProperties);
+	}
+
+	public static String getPackageName(int buildNumber) {
+		String buildNumberString = String.valueOf(buildNumber);
+
+		StringBundler sb = new StringBundler(buildNumberString.length() * 2);
+
+		sb.append("com.liferay.osb.hook.upgrade.v");
+
+		for (int i = 0; i < buildNumberString.length(); i++) {
+			char c = buildNumberString.charAt(i);
+
+			sb.append(c);
+
+			if (i < (buildNumberString.length() - 1)) {
+				sb.append(CharPool.UNDERLINE);
+			}
+		}
+
+		sb.append(".manual");
+
+		return sb.toString();
 	}
 
 	public static PortletPreferences getPortletPreferences() {

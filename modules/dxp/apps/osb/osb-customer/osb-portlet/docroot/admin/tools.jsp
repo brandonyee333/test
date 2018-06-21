@@ -17,15 +17,24 @@
 <%@ include file="/init.jsp" %>
 
 <%
-String tabs2 = ParamUtil.getString(request, "tabs2");
+String tabs2 = ParamUtil.getString(request, "tabs2", "debugging");
 
 PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 %>
 
 <liferay-ui:tabs
-	names="debugging"
+	names="debugging,upgrade"
 	param="tabs2"
 	url="<%= portletURL.toString() %>"
 />
 
-<%@ include file="/admin/debugging.jspf" %>
+<c:choose>
+	<c:when test='<%= tabs2.equals("debugging") %>'>
+		<%@ include file="/admin/debugging.jspf" %>
+	</c:when>
+	<c:otherwise>
+		<c:if test="<%= permissionChecker.isOmniadmin() %>">
+			<%@ include file="/admin/upgrade.jspf" %>
+		</c:if>
+	</c:otherwise>
+</c:choose>

@@ -265,6 +265,8 @@ page import="com.liferay.portal.kernel.workflow.WorkflowInstanceManagerUtil" %><
 page import="com.liferay.portal.kernel.workflow.WorkflowTask" %><%@
 page import="com.liferay.portal.kernel.workflow.WorkflowTaskAssignee" %><%@
 page import="com.liferay.portal.kernel.workflow.WorkflowTaskManagerUtil" %><%@
+page import="com.liferay.portal.model.Release" %><%@
+page import="com.liferay.portal.service.ReleaseLocalServiceUtil" %><%@
 page import="com.liferay.taglib.search.ResultRow" %><%@
 page import="com.liferay.util.dao.orm.CustomSQLUtil" %>
 

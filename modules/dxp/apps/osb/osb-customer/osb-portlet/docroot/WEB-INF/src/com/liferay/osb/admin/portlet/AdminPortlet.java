@@ -14,6 +14,9 @@
 
 package com.liferay.osb.admin.portlet;
 
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.osb.tools.Upgrade;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.document.library.kernel.exception.FileExtensionException;
 import com.liferay.document.library.kernel.exception.FileNameException;
 import com.liferay.osb.admin.util.KeyGenerator;
@@ -424,6 +427,24 @@ public class AdminPortlet extends OSBPortlet {
 
 		syncToLCS(
 			actionRequest, actionResponse, orderEntry.getAccountEntryId());
+	}
+
+	public void runManualUpgrade(
+			ActionRequest actionRequest, ActionResponse actionResponse)
+		throws Exception {
+
+		Release release = ReleaseLocalServiceUtil.getRelease(
+			OSBConstants.OSB_PORTLET_RELEASE_ID);
+
+		List<Class<?>> classes = AdminUtil.getClasses(release.getBuildNumber());
+
+		UpgradeProcess upgradeProcess = null;
+
+		for (Class<?> clazz : classes) {
+			upgradeProcess = (UpgradeProcess)clazz.newInstance();
+
+			upgradeProcess.upgrade();
+		}
 	}
 
 	@Override
@@ -1371,5 +1392,8 @@ public class AdminPortlet extends OSBPortlet {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(AdminPortlet.class);
+
+	@BeanReference(type = Upgrade.class)
+	private static Upgrade _upgrade;
 
 }
