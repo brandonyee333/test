@@ -15,15 +15,22 @@
 package com.liferay.osb.service.impl;
 
 import com.liferay.osb.exception.NoSuchPartnerWorkerException;
+import com.liferay.osb.model.CorpEntry;
+import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.PartnerWorker;
+import com.liferay.osb.model.PartnerWorkerConstants;
 import com.liferay.osb.service.base.PartnerWorkerLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
+import com.liferay.portal.model.Organization;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.service.UserGroupRoleLocalServiceUtil;
 
 import java.util.List;
 
 /**
  * @author Amos Fong
+ * @author Brent Krone-Schmidt
+ * @author Rachael Koestartyo
  */
 public class PartnerWorkerLocalServiceImpl
 	extends PartnerWorkerLocalServiceBaseImpl {
@@ -32,20 +39,6 @@ public class PartnerWorkerLocalServiceImpl
 			long[] userIds, long partnerEntryId, int[] roles,
 			int[] notifications)
 		throws PortalException {
-
-		PartnerEntry partnerEntry = partnerEntryLocalService.getPartnerEntry(
-			partnerEntryId);
-
-		CorpEntry corpEntry =
-			corpEntryLocalService.fetchCorpEntry(
-				partnerEntry.getDossieraAccountKey());
-
-		Group group = null;
-
-		if (corpEntry != null) {
-			group = GroupLocalServiceUtil.getOrganizationGroup(
-					OSBConstants.COMPANY_ID, corpEntry.getOrganizationId());
-		}
 
 		for (int i = 0; i < userIds.length; i++) {
 			long userId = userIds[i];
@@ -62,25 +55,6 @@ public class PartnerWorkerLocalServiceImpl
 				partnerWorker.setUserId(userId);
 				partnerWorker.setPartnerEntryId(partnerEntryId);
 			}
-			else if ((roles[i] != PartnerWorkerConstants.ROLE_MANAGER) &&
-					 (roles[i] != PartnerWorkerConstants.ROLE_MEMBER) &&
-					 (corpEntry != null)) {
-
-				UserLocalServiceUtil.unsetOrganizationUsers(
-					corpEntry.getOrganizationId(), new long[] {userId});
-			}
-
-			if (((roles[i] == PartnerWorkerConstants.ROLE_MANAGER) ||
-				 (roles[i] == PartnerWorkerConstants.ROLE_MEMBER)) &&
-				(corpEntry != null)) {
-
-				UserLocalServiceUtil.addOrganizationUsers(
-					corpEntry.getOrganizationId(), new long[] {userId});
-
-				UserGroupRoleLocalServiceUtil.addUserGroupRoles(
-					new long[] {userId}, group.getGroupId(),
-					OSBConstants.ROLE_OSB_CORP_SALES_REPRESENTATIVE_ID);
-			}
 
 			partnerWorker.setRole(roles[i]);
 			partnerWorker.setNotifications(notifications[i]);
@@ -91,6 +65,8 @@ public class PartnerWorkerLocalServiceImpl
 		for (long userId : userIds) {
 			assignOrganizations(userId);
 		}
+
+		assignCorpEntryOrganizations(userIds, partnerEntryId, roles);
 	}
 
 	public void deletePartnerWorkers(long userId) throws PortalException {
@@ -99,16 +75,8 @@ public class PartnerWorkerLocalServiceImpl
 				partnerWorkerPersistence.findByUserId(userId);
 
 			for (PartnerWorker partnerWorker : partnerWorkers) {
-				PartnerEntry partnerEntry =
-					partnerEntryLocalService.getPartnerEntry(partnerEntryId);
-
-				CorpEntry corpEntry = corpEntryLocalService.fetchCorpEntry(
-					partnerEntry.getDossieraAccountKey());
-
-				if (corpEntry != null) {
-					UserLocalServiceUtil.unsetOrganizationUsers(
-						corpEntry.getOrganizationId(), new long[] {userId});
-				}
+				unassignCorpEntryOrganizations(
+					userId, partnerWorker.getPartnerEntryId());
 			}
 
 			partnerWorkerPersistence.removeByUserId(userId);
@@ -122,21 +90,11 @@ public class PartnerWorkerLocalServiceImpl
 	public void deletePartnerWorkers(long[] userIds, long partnerEntryId)
 		throws PortalException {
 
-		PartnerEntry partnerEntry = partnerEntryLocalService.getPartnerEntry(
-			partnerEntryId);
-
-		CorpEntry corpEntry =
-			corpEntryLocalService.fetchCorpEntry(
-				partnerEntry.getDossieraAccountKey());
-
 		for (long userId : userIds) {
 			try {
-				partnerWorkerPersistence.removeByU_PEI(userId, partnerEntryId);
+				unassignCorpEntryOrganizations(userId, partnerEntryId);
 
-				if (corpEntry != null) {
-					UserLocalServiceUtil.unsetOrganizationUsers(
-						corpEntry.getOrganizationId(), new long[] {userId});
-				}
+				partnerWorkerPersistence.removeByU_PEI(userId, partnerEntryId);
 
 				unassignOrganizations(userId);
 			}
@@ -199,6 +157,55 @@ public class PartnerWorkerLocalServiceImpl
 		return false;
 	}
 
+	protected void assignCorpEntryOrganizations(
+			long[] userIds, long partnerEntryId, int[] roles)
+		throws PortalException, SystemException {
+
+		PartnerEntry partnerEntry = partnerEntryLocalService.fetchPartnerEntry(
+			partnerEntryId);
+
+		if (partnerEntry == null) {
+			return;
+		}
+
+		CorpEntry corpEntry = corpEntryLocalService.fetchCorpEntry(
+			partnerEntry.getDossieraAccountKey());
+
+		if (corpEntry == null) {
+			return;
+		}
+
+		Organization organization = organizationLocalService.fetchOrganization(
+			corpEntry.getOrganizationId());
+
+		if (organization == null) {
+			return;
+		}
+
+		for (int i = 0; i < userIds.length; i++) {
+			int role = roles[i];
+			long userId = userIds[i];
+
+			if ((role == PartnerWorkerConstants.ROLE_MANAGER) ||
+				(role == PartnerWorkerConstants.ROLE_MEMBER)) {
+
+				if (!organizationLocalService.hasUserOrganization(
+						userId, corpEntry.getOrganizationId())) {
+
+					userLocalService.addOrganizationUsers(
+						corpEntry.getOrganizationId(), new long[] {userId});
+				}
+
+				UserGroupRoleLocalServiceUtil.addUserGroupRoles(
+					new long[] {userId}, organization.getGroupId(),
+					OSBConstants.ROLE_OSB_CORP_SALES_REPRESENTATIVE_ID);
+			}
+			else {
+				unassignCorpEntryOrganizations(userId, partnerEntryId);
+			}
+		}
+	}
+
 	protected void assignOrganizations(long userId) throws PortalException {
 		if (!organizationLocalService.hasUserOrganization(
 				userId, OSBConstants.ORGANIZATION_PARTNER_ID) &&
@@ -207,6 +214,39 @@ public class PartnerWorkerLocalServiceImpl
 
 			userLocalService.addOrganizationUsers(
 				OSBConstants.ORGANIZATION_PARTNER_ID, new long[] {userId});
+		}
+	}
+
+	protected void unassignCorpEntryOrganizations(
+			long userId, long partnerEntryId)
+		throws PortalException, SystemException {
+
+		PartnerEntry partnerEntry = partnerEntryLocalService.fetchPartnerEntry(
+			partnerEntryId);
+
+		if (partnerEntry == null) {
+			return;
+		}
+
+		CorpEntry corpEntry = corpEntryLocalService.fetchCorpEntry(
+			partnerEntry.getDossieraAccountKey());
+
+		if (corpEntry == null) {
+			return;
+		}
+
+		Organization organization = organizationLocalService.fetchOrganization(
+			corpEntry.getOrganizationId());
+
+		if (organization == null) {
+			return;
+		}
+
+		if (organizationLocalService.hasUserOrganization(
+				userId, corpEntry.getOrganizationId())) {
+
+			userLocalService.unsetOrganizationUsers(
+				corpEntry.getOrganizationId(), new long[] {userId});
 		}
 	}
 
