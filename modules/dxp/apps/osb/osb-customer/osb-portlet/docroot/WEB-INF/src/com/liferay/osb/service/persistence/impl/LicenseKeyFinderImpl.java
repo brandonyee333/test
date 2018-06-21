@@ -753,9 +753,9 @@ public class LicenseKeyFinderImpl
 			else if (value instanceof Long[]) {
 				Long[] valueArray = (Long[])value;
 
-				for (int i = 0; i < valueArray.length; i++) {
-					if (Validator.isNotNull(valueArray[i])) {
-						qPos.add(valueArray[i]);
+				for (Long valueLong : valueArray) {
+					if (Validator.isNotNull(valueLong)) {
+						qPos.add(valueLong);
 					}
 				}
 			}
@@ -769,9 +769,9 @@ public class LicenseKeyFinderImpl
 			else if (value instanceof String[]) {
 				String[] valueArray = (String[])value;
 
-				for (int i = 0; i < valueArray.length; i++) {
-					if (Validator.isNotNull(valueArray[i])) {
-						qPos.add(valueArray[i]);
+				for (String valueString : valueArray) {
+					if (Validator.isNotNull(valueString)) {
+						qPos.add(valueString);
 					}
 				}
 			}

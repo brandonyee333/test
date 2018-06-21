@@ -333,8 +333,8 @@ public class KeyGenerator {
 
 		StringBuilder sb = new StringBuilder(bytes.length << 1);
 
-		for (int i = 0; i < bytes.length; i++) {
-			int byte_ = bytes[i] & 0xff;
+		for (byte curByte : bytes) {
+			int byte_ = curByte & 0xff;
 
 			sb.append(_HEX_CHARACTERS[byte_ >> 4]);
 			sb.append(_HEX_CHARACTERS[byte_ & 0xf]);

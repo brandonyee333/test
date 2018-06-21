@@ -347,9 +347,8 @@ public class OfferingEntryFinderImpl
 			if (key.equals("user")) {
 				String[] valueArray = (String[])value;
 
-				for (int i = 0; i < valueArray.length; i++) {
-					String valueString = CustomSQLUtil.keywords(
-						valueArray[i])[0];
+				for (String valueString : valueArray) {
+					valueString = CustomSQLUtil.keywords(valueString)[0];
 
 					qPos.add(valueString);
 					qPos.add(valueString);
@@ -358,8 +357,8 @@ public class OfferingEntryFinderImpl
 			else if (value instanceof int[]) {
 				int[] valueArray = (int[])value;
 
-				for (int i = 0; i < valueArray.length; i++) {
-					qPos.add(valueArray[i]);
+				for (int valueInt : valueArray) {
+					qPos.add(valueInt);
 				}
 			}
 			else if (value instanceof Integer) {
@@ -379,8 +378,8 @@ public class OfferingEntryFinderImpl
 			else if (value instanceof Long[]) {
 				Long[] valueArray = (Long[])value;
 
-				for (int i = 0; i < valueArray.length; i++) {
-					qPos.add(valueArray[i]);
+				for (Long valueLong : valueArray) {
+					qPos.add(valueLong);
 				}
 			}
 			else if (value instanceof String) {

@@ -982,9 +982,9 @@ public class AccountEntryFinderImpl
 				if (value instanceof int[]) {
 					int[] valueArray = (int[])value;
 
-					for (int i = 0; i < valueArray.length; i++) {
-						if (Validator.isNotNull(valueArray[i])) {
-							qPos.add(valueArray[i]);
+					for (int valueInt : valueArray) {
+						if (Validator.isNotNull(valueInt)) {
+							qPos.add(valueInt);
 						}
 					}
 				}
@@ -998,18 +998,18 @@ public class AccountEntryFinderImpl
 				else if (value instanceof long[]) {
 					long[] valueArray = (long[])value;
 
-					for (int i = 0; i < valueArray.length; i++) {
-						if (Validator.isNotNull(valueArray[i])) {
-							qPos.add(valueArray[i]);
+					for (long valueLong : valueArray) {
+						if (Validator.isNotNull(valueLong)) {
+							qPos.add(valueLong);
 						}
 					}
 				}
 				else if (value instanceof Long[]) {
 					Long[] valueArray = (Long[])value;
 
-					for (int i = 0; i < valueArray.length; i++) {
-						if (Validator.isNotNull(valueArray[i])) {
-							qPos.add(valueArray[i]);
+					for (Long valueLong : valueArray) {
+						if (Validator.isNotNull(valueLong)) {
+							qPos.add(valueLong);
 						}
 					}
 				}

@@ -104,7 +104,7 @@ Date lastEnabledDate = calendar.getTime();
 					<aui:option label="" value="" />
 					<aui:option label="me" selected="<%= user.getUserId() == displayTerms.getCreateUserId() %>" value="<%= user.getUserId() %>" />
 
-					<c:if test="<%= ((displayTerms.getCreateUserId() > 0) && (user.getUserId() != displayTerms.getCreateUserId())) %>">
+					<c:if test="<%= (displayTerms.getCreateUserId() > 0) && (user.getUserId() != displayTerms.getCreateUserId()) %>">
 						<aui:option label="<%= displayTerms.getCreateUserName() %>" selected="<%= true %>" value="<%= displayTerms.getCreateUserId() %>" />
 					</c:if>
 				</aui:select>
@@ -128,7 +128,7 @@ Date lastEnabledDate = calendar.getTime();
 					<aui:option label="" value="" />
 					<aui:option label="me" selected="<%= user.getUserId() == displayTerms.getModifiedUserId() %>" value="<%= user.getUserId() %>" />
 
-					<c:if test="<%= ((displayTerms.getModifiedUserId() > 0) && (user.getUserId() != displayTerms.getModifiedUserId())) %>">
+					<c:if test="<%= (displayTerms.getModifiedUserId() > 0) && (user.getUserId() != displayTerms.getModifiedUserId()) %>">
 						<aui:option label="<%= displayTerms.getModifiedUserName() %>" selected="<%= true %>" value="<%= displayTerms.getModifiedUserId() %>" />
 					</c:if>
 				</aui:select>

@@ -390,9 +390,9 @@ public class PartnerEntryFinderImpl
 				else if (value instanceof int[]) {
 					int[] valueArray = (int[])value;
 
-					for (int i = 0; i < valueArray.length; i++) {
-						if (Validator.isNotNull(valueArray[i])) {
-							qPos.add(valueArray[i]);
+					for (int valueInt : valueArray) {
+						if (Validator.isNotNull(valueInt)) {
+							qPos.add(valueInt);
 						}
 					}
 				}
@@ -406,9 +406,9 @@ public class PartnerEntryFinderImpl
 				else if (value instanceof long[]) {
 					long[] valueArray = (long[])value;
 
-					for (int i = 0; i < valueArray.length; i++) {
-						if (Validator.isNotNull(valueArray[i])) {
-							qPos.add(valueArray[i]);
+					for (long valueLong : valueArray) {
+						if (Validator.isNotNull(valueLong)) {
+							qPos.add(valueLong);
 						}
 					}
 				}
