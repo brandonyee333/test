@@ -151,7 +151,8 @@ public class OfferingEntryLocalServiceImpl
 			}
 			catch (Exception e) {
 				_log.error(
-					"Unable to sync account entry to LCS: " + accountEntryId,
+					"Unable to sync account entry " + accountEntryId +
+						" to LCS",
 					e);
 			}
 		}

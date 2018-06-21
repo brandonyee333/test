@@ -79,7 +79,7 @@ public class OSBPortlet extends MVCPortlet {
 		}
 		catch (Exception e) {
 			_log.error(
-				"Unable to sync corp project to LCS: " + corpProjectId, e);
+				"Unable to sync corp project " + corpProjectId + " to LCS", e);
 
 			SessionMessages.add(actionRequest, "lcsSyncFailed");
 
