@@ -1030,6 +1030,7 @@ public class AccountEntryLocalServiceImpl
 		Address oldAddress = oldAccountEntry.getAddress();
 
 		String oldAddressString = AdminUtil.formatAddress(oldAddress);
+
 		String addressString = AdminUtil.formatAddress(address);
 
 		String oldCorpEntryName = oldAccountEntry.getCorpEntryName();
@@ -1044,7 +1045,7 @@ public class AccountEntryLocalServiceImpl
 			updateAccountEntry(
 				oldAccountEntry.getUserId(),
 				oldAccountEntry.getAccountEntryId(),
-				oldAccountEntry.getCorpProjectId(),
+				oldAccountEntry.getCorpProjectUuid(),
 				accountEntry.getCorpEntryName(), oldAccountEntry.getName(),
 				oldAccountEntry.getCode(), oldAccountEntry.getType(),
 				accountEntry.getIndustry(), oldAccountEntry.getPartnerEntryId(),
@@ -1068,8 +1069,7 @@ public class AccountEntryLocalServiceImpl
 				new int[] {accountWorker.getNotifications()});
 		}
 
-		HashMap<String, Serializable> workflowContext =
-			new HashMap<String, Serializable>();
+		HashMap<String, Serializable> workflowContext = new HashMap<>();
 
 		String oldAccountEntryName = oldAccountEntry.getName();
 
@@ -1201,7 +1201,7 @@ public class AccountEntryLocalServiceImpl
 				newAccountEntryAttributes);
 		}
 
-		List<Long> existingOrderEntryIds = new ArrayList<Long>();
+		List<Long> existingOrderEntryIds = new ArrayList<>();
 
 		for (ExternalIdMapper externalIdMapper : externalIdMappers) {
 			OrderEntry orderEntry = orderEntryPersistence.findByPrimaryKey(
