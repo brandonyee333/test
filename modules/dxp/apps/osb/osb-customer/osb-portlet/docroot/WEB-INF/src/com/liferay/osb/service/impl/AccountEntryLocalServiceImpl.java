@@ -14,7 +14,6 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.osb.admin.util.AdminUtil;
 import com.liferay.osb.exception.AccountEntryCodeException;
@@ -1171,17 +1170,17 @@ public class AccountEntryLocalServiceImpl
 				newAccountEntryAttributes);
 		}
 
-		List<OrderEntry> oldOrderEntries = oldAccountEntry.getOrderEntries();
+		Map<String, Integer> oldOfferingEntriesMap =
+			SupportUtil.getOfferingEntriesMap(
+				oldAccountEntry.getAccountEntryId());
 
-		if (oldOrderEntries.size() == orderEntries.size()) {
-			ListUtil.sort(oldOrderEntries, new OrderEntryStartDateComparator());
-			ListUtil.sort(orderEntries, new OrderEntryStartDateComparator());
+		Map<String, Integer> offeringEntriesMap =
+			SupportUtil.getOfferingEntriesMap(orderEntries);
 
-			if (!oldOrderEntries.equals(orderEntries)) {
-				workflowContext.put(
-					WorkflowConstants.CONTEXT_ORDER_ENTRIES,
-					SupportUtil.serialize(orderEntries));
-			}
+		if (!oldOfferingEntriesMap.equals(offeringEntriesMap)) {
+			workflowContext.put(
+				WorkflowConstants.CONTEXT_ORDER_ENTRIES,
+				SupportUtil.serialize(orderEntries));
 		}
 
 		List<SupportRegion> oldSupportRegions =
