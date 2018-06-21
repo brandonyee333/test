@@ -381,6 +381,7 @@ public class AccountEntryLocalServiceClpInvoker {
 		_methodParameterTypes243 = new String[] {
 				"java.lang.String", "com.liferay.osb.model.AccountEntry",
 				"com.liferay.osb.model.PartnerEntry",
+				"com.liferay.osb.model.AccountWorker",
 				"com.liferay.portal.kernel.model.Address", "java.util.List",
 				"com.liferay.portal.kernel.service.ServiceContext"
 			};
@@ -931,9 +932,10 @@ public class AccountEntryLocalServiceClpInvoker {
 			AccountEntryLocalServiceUtil.updateAccountEntryWithWorkflow((java.lang.String)arguments[0],
 				(com.liferay.osb.model.AccountEntry)arguments[1],
 				(com.liferay.osb.model.PartnerEntry)arguments[2],
-				(com.liferay.portal.kernel.model.Address)arguments[3],
-				(java.util.List<com.liferay.osb.model.OrderEntry>)arguments[4],
-				(com.liferay.portal.kernel.service.ServiceContext)arguments[5]);
+				(com.liferay.osb.model.AccountWorker)arguments[3],
+				(com.liferay.portal.kernel.model.Address)arguments[4],
+				(java.util.List<com.liferay.osb.model.OrderEntry>)arguments[5],
+				(com.liferay.portal.kernel.service.ServiceContext)arguments[6]);
 
 			return null;
 		}
