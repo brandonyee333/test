@@ -500,14 +500,12 @@ public class LicenseKeyServiceClpInvoker {
 
 		if (_methodName258.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes258, parameterTypes)) {
-			LicenseKeyServiceUtil.updateLicenseKey(((Long)arguments[0]).longValue(),
+			return LicenseKeyServiceUtil.updateLicenseKey(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
 				((Long)arguments[3]).longValue(),
 				(java.lang.String)arguments[4],
 				((Boolean)arguments[5]).booleanValue());
-
-			return null;
 		}
 
 		if (_methodName259.equals(name) &&

@@ -177,6 +177,13 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey updateLicenseKey(LicenseKey licenseKey);
 
+	public LicenseKey updateLicenseKey(long licenseKeyId, long accountEntryId,
+		long offeringEntryId, long orderEntryId) throws PortalException;
+
+	public LicenseKey updateLicenseKey(long userId, long licenseKeyId,
+		long licenseKeySetId, long offeringEntryId, java.lang.String name,
+		boolean active) throws PortalException;
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
@@ -435,13 +442,6 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 		java.lang.String emailAddress, long accountEntryId)
 		throws java.lang.Exception;
 
-	public void updateLicenseKey(long licenseKeyId, long accountEntryId,
-		long offeringEntryId, long orderEntryId) throws PortalException;
-
 	public void updateLicenseKey(long userId, long licenseKeyId, boolean active)
 		throws PortalException;
-
-	public void updateLicenseKey(long userId, long licenseKeyId,
-		long licenseKeySetId, long offeringEntryId, java.lang.String name,
-		boolean active) throws PortalException;
 }

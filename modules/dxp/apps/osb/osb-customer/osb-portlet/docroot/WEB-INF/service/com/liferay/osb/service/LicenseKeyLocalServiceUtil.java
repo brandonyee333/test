@@ -213,6 +213,24 @@ public class LicenseKeyLocalServiceUtil {
 		return getService().updateLicenseKey(licenseKey);
 	}
 
+	public static com.liferay.osb.model.LicenseKey updateLicenseKey(
+		long licenseKeyId, long accountEntryId, long offeringEntryId,
+		long orderEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updateLicenseKey(licenseKeyId, accountEntryId,
+			offeringEntryId, orderEntryId);
+	}
+
+	public static com.liferay.osb.model.LicenseKey updateLicenseKey(
+		long userId, long licenseKeyId, long licenseKeySetId,
+		long offeringEntryId, java.lang.String name, boolean active)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updateLicenseKey(userId, licenseKeyId, licenseKeySetId,
+			offeringEntryId, name, active);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		return getService().getActionableDynamicQuery();
 	}
@@ -592,27 +610,10 @@ public class LicenseKeyLocalServiceUtil {
 			.sendTrialRenewalNotificationEmail(emailAddress, accountEntryId);
 	}
 
-	public static void updateLicenseKey(long licenseKeyId, long accountEntryId,
-		long offeringEntryId, long orderEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService()
-			.updateLicenseKey(licenseKeyId, accountEntryId, offeringEntryId,
-			orderEntryId);
-	}
-
 	public static void updateLicenseKey(long userId, long licenseKeyId,
 		boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().updateLicenseKey(userId, licenseKeyId, active);
-	}
-
-	public static void updateLicenseKey(long userId, long licenseKeyId,
-		long licenseKeySetId, long offeringEntryId, java.lang.String name,
-		boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService()
-			.updateLicenseKey(userId, licenseKeyId, licenseKeySetId,
-			offeringEntryId, name, active);
 	}
 
 	public static void clearService() {

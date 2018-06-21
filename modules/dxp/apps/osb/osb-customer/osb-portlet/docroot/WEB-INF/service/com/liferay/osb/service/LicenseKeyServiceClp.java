@@ -83,23 +83,29 @@ public class LicenseKeyServiceClp implements LicenseKeyService {
 
 		_methodParameterTypes8 = new String[] { "long", "java.util.Date", "int" };
 
-		_methodName9 = "getAssetReceiptLicenseLicenseKeysCount";
+		_methodName9 = "updateLicenseKey";
 
 		_methodParameterTypes9 = new String[] {
+				"long", "long", "long", "long", "java.lang.String", "boolean"
+			};
+
+		_methodName10 = "getAssetReceiptLicenseLicenseKeysCount";
+
+		_methodParameterTypes10 = new String[] {
 				"java.lang.String", "boolean", "boolean"
 			};
 
-		_methodName10 = "getOfferingEntryGroupLicenseKeysCount";
+		_methodName11 = "getOfferingEntryGroupLicenseKeysCount";
 
-		_methodParameterTypes10 = new String[] { "long[][]", "boolean", "boolean" };
+		_methodParameterTypes11 = new String[] { "long[][]", "boolean", "boolean" };
 
-		_methodName11 = "getOfferingEntryLicenseKeysCount";
+		_methodName12 = "getOfferingEntryLicenseKeysCount";
 
-		_methodParameterTypes11 = new String[] { "long", "boolean", "boolean" };
+		_methodParameterTypes12 = new String[] { "long", "boolean", "boolean" };
 
-		_methodName12 = "searchCount";
+		_methodName13 = "searchCount";
 
-		_methodParameterTypes12 = new String[] {
+		_methodParameterTypes13 = new String[] {
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.String", "java.lang.String", "int", "int", "int",
@@ -111,67 +117,67 @@ public class LicenseKeyServiceClp implements LicenseKeyService {
 				"java.util.LinkedHashMap", "boolean"
 			};
 
-		_methodName13 = "searchCount";
+		_methodName14 = "searchCount";
 
-		_methodParameterTypes13 = new String[] {
+		_methodParameterTypes14 = new String[] {
 				"java.lang.String", "java.util.LinkedHashMap"
 			};
 
-		_methodName15 = "generateWeDeployLicenseKey";
+		_methodName16 = "generateWeDeployLicenseKey";
 
-		_methodParameterTypes15 = new String[] {
+		_methodParameterTypes16 = new String[] {
 				"java.lang.String", "java.util.Date", "long"
 			};
 
-		_methodName16 = "getOSGiServiceIdentifier";
+		_methodName17 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes16 = new String[] {  };
+		_methodParameterTypes17 = new String[] {  };
 
-		_methodName17 = "getAssetReceiptLicenseLicenseKeys";
+		_methodName18 = "getAssetReceiptLicenseLicenseKeys";
 
-		_methodParameterTypes17 = new String[] {
+		_methodParameterTypes18 = new String[] {
 				"java.lang.String", "boolean", "boolean"
 			};
 
-		_methodName18 = "getLicenseKeySetLicenseKeys";
+		_methodName19 = "getLicenseKeySetLicenseKeys";
 
-		_methodParameterTypes18 = new String[] { "long" };
+		_methodParameterTypes19 = new String[] { "long" };
 
-		_methodName19 = "getLicenseKeys";
+		_methodName20 = "getLicenseKeys";
 
-		_methodParameterTypes19 = new String[] {
+		_methodParameterTypes20 = new String[] {
 				"java.lang.String", "java.lang.String", "java.lang.String",
 				"boolean", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName20 = "getLicenseKeys";
+		_methodName21 = "getLicenseKeys";
 
-		_methodParameterTypes20 = new String[] {
+		_methodParameterTypes21 = new String[] {
 				"java.lang.String", "java.lang.String"
 			};
 
-		_methodName21 = "getLicenseKeys";
+		_methodName22 = "getLicenseKeys";
 
-		_methodParameterTypes21 = new String[] { "long", "java.lang.String" };
+		_methodParameterTypes22 = new String[] { "long", "java.lang.String" };
 
-		_methodName22 = "getLicenseKeysByName";
+		_methodName23 = "getLicenseKeysByName";
 
-		_methodParameterTypes22 = new String[] {
+		_methodParameterTypes23 = new String[] {
 				"java.lang.String", "java.lang.String", "boolean", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName23 = "getOfferingEntryGroupLicenseKeys";
+		_methodName24 = "getOfferingEntryGroupLicenseKeys";
 
-		_methodParameterTypes23 = new String[] {
+		_methodParameterTypes24 = new String[] {
 				"long[][]", "boolean", "boolean", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName24 = "search";
+		_methodName25 = "search";
 
-		_methodParameterTypes24 = new String[] {
+		_methodParameterTypes25 = new String[] {
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.String", "java.lang.String", "int", "int", "int",
@@ -184,28 +190,22 @@ public class LicenseKeyServiceClp implements LicenseKeyService {
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName25 = "search";
+		_methodName26 = "search";
 
-		_methodParameterTypes25 = new String[] {
+		_methodParameterTypes26 = new String[] {
 				"java.lang.String", "java.util.LinkedHashMap", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName26 = "updateLicenseKey";
+		_methodName27 = "updateLicenseKey";
 
-		_methodParameterTypes26 = new String[] {
+		_methodParameterTypes27 = new String[] {
 				"java.lang.String", "java.lang.String", "boolean"
 			};
 
-		_methodName27 = "updateLicenseKey";
-
-		_methodParameterTypes27 = new String[] { "long", "long", "boolean" };
-
 		_methodName28 = "updateLicenseKey";
 
-		_methodParameterTypes28 = new String[] {
-				"long", "long", "long", "long", "java.lang.String", "boolean"
-			};
+		_methodParameterTypes28 = new String[] { "long", "long", "boolean" };
 
 		_methodName29 = "updateLicenseKeys";
 
@@ -604,6 +604,49 @@ public class LicenseKeyServiceClp implements LicenseKeyService {
 	}
 
 	@Override
+	public com.liferay.osb.model.LicenseKey updateLicenseKey(long userId,
+		long licenseKeyId, long licenseKeySetId, long offeringEntryId,
+		java.lang.String name, boolean active)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName9,
+					_methodParameterTypes9,
+					new Object[] {
+						userId,
+						
+					licenseKeyId,
+						
+					licenseKeySetId,
+						
+					offeringEntryId,
+						
+					ClpSerializer.translateInput(name),
+						
+					active
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.LicenseKey)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
 	public int getAssetReceiptLicenseLicenseKeysCount(
 		java.lang.String assetReceiptLicenseUuid, boolean complimentary,
 		boolean active)
@@ -611,8 +654,8 @@ public class LicenseKeyServiceClp implements LicenseKeyService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName9,
-					_methodParameterTypes9,
+			returnObj = _invokableService.invokeMethod(_methodName10,
+					_methodParameterTypes10,
 					new Object[] {
 						ClpSerializer.translateInput(assetReceiptLicenseUuid),
 						
@@ -647,8 +690,8 @@ public class LicenseKeyServiceClp implements LicenseKeyService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName10,
-					_methodParameterTypes10,
+			returnObj = _invokableService.invokeMethod(_methodName11,
+					_methodParameterTypes11,
 					new Object[] {
 						ClpSerializer.translateInput(offeringEntryIds),
 						
@@ -683,8 +726,8 @@ public class LicenseKeyServiceClp implements LicenseKeyService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName11,
-					_methodParameterTypes11,
+			returnObj = _invokableService.invokeMethod(_methodName12,
+					_methodParameterTypes12,
 					new Object[] { offeringEntryId, complimentary, active });
 		}
 		catch (Throwable t) {
@@ -731,8 +774,8 @@ public class LicenseKeyServiceClp implements LicenseKeyService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName12,
-					_methodParameterTypes12,
+			returnObj = _invokableService.invokeMethod(_methodName13,
+					_methodParameterTypes13,
 					new Object[] {
 						ClpSerializer.translateInput(createUserId),
 						
@@ -845,8 +888,8 @@ public class LicenseKeyServiceClp implements LicenseKeyService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName13,
-					_methodParameterTypes13,
+			returnObj = _invokableService.invokeMethod(_methodName14,
+					_methodParameterTypes14,
 					new Object[] {
 						ClpSerializer.translateInput(keywords),
 						
@@ -886,8 +929,8 @@ public class LicenseKeyServiceClp implements LicenseKeyService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName15,
-					_methodParameterTypes15,
+			returnObj = _invokableService.invokeMethod(_methodName16,
+					_methodParameterTypes16,
 					new Object[] {
 						ClpSerializer.translateInput(owner),
 						
@@ -920,8 +963,8 @@ public class LicenseKeyServiceClp implements LicenseKeyService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName16,
-					_methodParameterTypes16, new Object[] {  });
+			returnObj = _invokableService.invokeMethod(_methodName17,
+					_methodParameterTypes17, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -946,8 +989,8 @@ public class LicenseKeyServiceClp implements LicenseKeyService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName17,
-					_methodParameterTypes17,
+			returnObj = _invokableService.invokeMethod(_methodName18,
+					_methodParameterTypes18,
 					new Object[] {
 						ClpSerializer.translateInput(assetReceiptLicenseUuid),
 						
@@ -982,8 +1025,8 @@ public class LicenseKeyServiceClp implements LicenseKeyService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName18,
-					_methodParameterTypes18, new Object[] { licenseKeySetId });
+			returnObj = _invokableService.invokeMethod(_methodName19,
+					_methodParameterTypes19, new Object[] { licenseKeySetId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1013,8 +1056,8 @@ public class LicenseKeyServiceClp implements LicenseKeyService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName19,
-					_methodParameterTypes19,
+			returnObj = _invokableService.invokeMethod(_methodName20,
+					_methodParameterTypes20,
 					new Object[] {
 						ClpSerializer.translateInput(assetReceiptLicenseUuid),
 						
@@ -1057,8 +1100,8 @@ public class LicenseKeyServiceClp implements LicenseKeyService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName20,
-					_methodParameterTypes20,
+			returnObj = _invokableService.invokeMethod(_methodName21,
+					_methodParameterTypes21,
 					new Object[] {
 						ClpSerializer.translateInput(productId),
 						
@@ -1091,8 +1134,8 @@ public class LicenseKeyServiceClp implements LicenseKeyService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName21,
-					_methodParameterTypes21,
+			returnObj = _invokableService.invokeMethod(_methodName22,
+					_methodParameterTypes22,
 					new Object[] { userId, ClpSerializer.translateInput(
 							productId) });
 		}
@@ -1124,8 +1167,8 @@ public class LicenseKeyServiceClp implements LicenseKeyService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName22,
-					_methodParameterTypes22,
+			returnObj = _invokableService.invokeMethod(_methodName23,
+					_methodParameterTypes23,
 					new Object[] {
 						ClpSerializer.translateInput(productEntryName),
 						
@@ -1167,8 +1210,8 @@ public class LicenseKeyServiceClp implements LicenseKeyService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName23,
-					_methodParameterTypes23,
+			returnObj = _invokableService.invokeMethod(_methodName24,
+					_methodParameterTypes24,
 					new Object[] {
 						ClpSerializer.translateInput(offeringEntryIds),
 						
@@ -1229,8 +1272,8 @@ public class LicenseKeyServiceClp implements LicenseKeyService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName24,
-					_methodParameterTypes24,
+			returnObj = _invokableService.invokeMethod(_methodName25,
+					_methodParameterTypes25,
 					new Object[] {
 						ClpSerializer.translateInput(createUserId),
 						
@@ -1351,8 +1394,8 @@ public class LicenseKeyServiceClp implements LicenseKeyService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName25,
-					_methodParameterTypes25,
+			returnObj = _invokableService.invokeMethod(_methodName26,
+					_methodParameterTypes26,
 					new Object[] {
 						ClpSerializer.translateInput(keywords),
 						
@@ -1389,8 +1432,8 @@ public class LicenseKeyServiceClp implements LicenseKeyService {
 		java.lang.String uuid, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableService.invokeMethod(_methodName26,
-				_methodParameterTypes26,
+			_invokableService.invokeMethod(_methodName27,
+				_methodParameterTypes27,
 				new Object[] {
 					ClpSerializer.translateInput(userUuid),
 					
@@ -1420,48 +1463,9 @@ public class LicenseKeyServiceClp implements LicenseKeyService {
 	public void updateLicenseKey(long userId, long licenseKeyId, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableService.invokeMethod(_methodName27,
-				_methodParameterTypes27,
-				new Object[] { userId, licenseKeyId, active });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-	}
-
-	@Override
-	public void updateLicenseKey(long userId, long licenseKeyId,
-		long licenseKeySetId, long offeringEntryId, java.lang.String name,
-		boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
 			_invokableService.invokeMethod(_methodName28,
 				_methodParameterTypes28,
-				new Object[] {
-					userId,
-					
-				licenseKeyId,
-					
-				licenseKeySetId,
-					
-				offeringEntryId,
-					
-				ClpSerializer.translateInput(name),
-					
-				active
-				});
+				new Object[] { userId, licenseKeyId, active });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1539,8 +1543,8 @@ public class LicenseKeyServiceClp implements LicenseKeyService {
 	private String[] _methodParameterTypes12;
 	private String _methodName13;
 	private String[] _methodParameterTypes13;
-	private String _methodName15;
-	private String[] _methodParameterTypes15;
+	private String _methodName14;
+	private String[] _methodParameterTypes14;
 	private String _methodName16;
 	private String[] _methodParameterTypes16;
 	private String _methodName17;

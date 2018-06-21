@@ -122,6 +122,15 @@ public class LicenseKeyServiceWrapper implements LicenseKeyService,
 	}
 
 	@Override
+	public com.liferay.osb.model.LicenseKey updateLicenseKey(long userId,
+		long licenseKeyId, long licenseKeySetId, long offeringEntryId,
+		java.lang.String name, boolean active)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKeyService.updateLicenseKey(userId, licenseKeyId,
+			licenseKeySetId, offeringEntryId, name, active);
+	}
+
+	@Override
 	public int getAssetReceiptLicenseLicenseKeysCount(
 		java.lang.String assetReceiptLicenseUuid, boolean complimentary,
 		boolean active)
@@ -333,15 +342,6 @@ public class LicenseKeyServiceWrapper implements LicenseKeyService,
 	public void updateLicenseKey(long userId, long licenseKeyId, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_licenseKeyService.updateLicenseKey(userId, licenseKeyId, active);
-	}
-
-	@Override
-	public void updateLicenseKey(long userId, long licenseKeyId,
-		long licenseKeySetId, long offeringEntryId, java.lang.String name,
-		boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_licenseKeyService.updateLicenseKey(userId, licenseKeyId,
-			licenseKeySetId, offeringEntryId, name, active);
 	}
 
 	@Override

@@ -849,24 +849,20 @@ public class LicenseKeyLocalServiceClpInvoker {
 
 		if (_methodName225.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes225, parameterTypes)) {
-			LicenseKeyLocalServiceUtil.updateLicenseKey(((Long)arguments[0]).longValue(),
+			return LicenseKeyLocalServiceUtil.updateLicenseKey(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
 				((Long)arguments[3]).longValue());
-
-			return null;
 		}
 
 		if (_methodName226.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes226, parameterTypes)) {
-			LicenseKeyLocalServiceUtil.updateLicenseKey(((Long)arguments[0]).longValue(),
+			return LicenseKeyLocalServiceUtil.updateLicenseKey(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
 				((Long)arguments[3]).longValue(),
 				(java.lang.String)arguments[4],
 				((Boolean)arguments[5]).booleanValue());
-
-			return null;
 		}
 
 		throw new UnsupportedOperationException();

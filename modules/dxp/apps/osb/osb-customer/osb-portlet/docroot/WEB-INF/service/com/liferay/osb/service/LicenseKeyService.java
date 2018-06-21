@@ -107,6 +107,10 @@ public interface LicenseKeyService extends BaseService, InvokableService {
 	public LicenseKey renewLicenseKey(long licenseKeyId, Date startDate,
 		int renewTime) throws java.lang.Exception;
 
+	public LicenseKey updateLicenseKey(long userId, long licenseKeyId,
+		long licenseKeySetId, long offeringEntryId, java.lang.String name,
+		boolean active) throws PortalException;
+
 	@JSONWebService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getAssetReceiptLicenseLicenseKeysCount(
@@ -237,10 +241,6 @@ public interface LicenseKeyService extends BaseService, InvokableService {
 
 	public void updateLicenseKey(long userId, long licenseKeyId, boolean active)
 		throws PortalException;
-
-	public void updateLicenseKey(long userId, long licenseKeyId,
-		long licenseKeySetId, long offeringEntryId, java.lang.String name,
-		boolean active) throws PortalException;
 
 	@JSONWebService
 	public void updateLicenseKeys(java.lang.String assetReceiptLicenseUuid,

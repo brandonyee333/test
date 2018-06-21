@@ -968,9 +968,10 @@ public class LicenseKeyServiceHttp {
 		}
 	}
 
-	public static void updateLicenseKey(HttpPrincipal httpPrincipal,
-		long userId, long licenseKeyId, long licenseKeySetId,
-		long offeringEntryId, java.lang.String name, boolean active)
+	public static com.liferay.osb.model.LicenseKey updateLicenseKey(
+		HttpPrincipal httpPrincipal, long userId, long licenseKeyId,
+		long licenseKeySetId, long offeringEntryId, java.lang.String name,
+		boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
@@ -979,8 +980,10 @@ public class LicenseKeyServiceHttp {
 			MethodHandler methodHandler = new MethodHandler(methodKey, userId,
 					licenseKeyId, licenseKeySetId, offeringEntryId, name, active);
 
+			Object returnObj = null;
+
 			try {
-				TunnelUtil.invoke(httpPrincipal, methodHandler);
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
 			catch (Exception e) {
 				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
@@ -989,6 +992,8 @@ public class LicenseKeyServiceHttp {
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
+
+			return (com.liferay.osb.model.LicenseKey)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);

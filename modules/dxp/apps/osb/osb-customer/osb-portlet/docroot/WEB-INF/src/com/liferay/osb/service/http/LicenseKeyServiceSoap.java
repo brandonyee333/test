@@ -415,12 +415,15 @@ public class LicenseKeyServiceSoap {
 		}
 	}
 
-	public static void updateLicenseKey(long userId, long licenseKeyId,
-		long licenseKeySetId, long offeringEntryId, java.lang.String name,
-		boolean active) throws RemoteException {
+	public static com.liferay.osb.model.LicenseKeySoap updateLicenseKey(
+		long userId, long licenseKeyId, long licenseKeySetId,
+		long offeringEntryId, java.lang.String name, boolean active)
+		throws RemoteException {
 		try {
-			LicenseKeyServiceUtil.updateLicenseKey(userId, licenseKeyId,
-				licenseKeySetId, offeringEntryId, name, active);
+			com.liferay.osb.model.LicenseKey returnValue = LicenseKeyServiceUtil.updateLicenseKey(userId,
+					licenseKeyId, licenseKeySetId, offeringEntryId, name, active);
+
+			return com.liferay.osb.model.LicenseKeySoap.toSoapModel(returnValue);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
