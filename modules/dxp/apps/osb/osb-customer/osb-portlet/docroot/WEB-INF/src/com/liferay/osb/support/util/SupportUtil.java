@@ -21,6 +21,7 @@ import com.liferay.osb.model.OfferingEntryGroup;
 import com.liferay.osb.model.OfferingEntryGroupFactoryUtil;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
+import com.liferay.osb.service.OrderEntryLocalServiceUtil;
 import com.liferay.osb.util.PortletPropsKeys;
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.osb.util.comparator.OfferingEntryPKComparator;
@@ -249,6 +250,47 @@ public class SupportUtil {
 		return 0;
 	}
 
+	public static Map<String, Integer> getOfferingEntriesMap(
+			List<OrderEntry> orderEntries)
+		throws SystemException {
+
+		Map<String, Integer> offeringEntriesMap =
+			new HashMap<String, Integer>();
+
+		for (OrderEntry orderEntry : orderEntries) {
+			List<OfferingEntry> offeringEntries =
+				orderEntry.getOfferingEntries();
+
+			for (OfferingEntry offeringEntry : offeringEntries) {
+				String key = getKey(offeringEntry);
+
+				Integer quantity = offeringEntriesMap.get(key);
+
+				if (quantity == null) {
+					quantity = offeringEntry.getQuantity();
+				}
+				else {
+					quantity += offeringEntry.getQuantity();
+				}
+
+				offeringEntriesMap.put(key, quantity);
+			}
+		}
+
+		return offeringEntriesMap;
+	}
+
+	public static Map<String, Integer> getOfferingEntriesMap(
+			long accountEntryId)
+		throws SystemException {
+
+		List<OrderEntry> orderEntries =
+			OrderEntryLocalServiceUtil.getAccountEntryOrderEntries(
+				accountEntryId);
+
+		return getOfferingEntriesMap(orderEntries);
+	}
+
 	public static List<OfferingEntryGroup> getOfferingEntryGroups(
 			long userId, long accountEntryId, int[] types, int[] statuses,
 			int supportEndDateGTDay, int supportEndDateGTMonth,
@@ -364,6 +406,39 @@ public class SupportUtil {
 
 		return new FileRepository(
 			fileRepositoryId, name, host, supportRegionIds);
+	}
+
+	protected static String getKey(OfferingEntry offeringEntry) {
+		StringBundler sb = new StringBundler();
+
+		sb.append(offeringEntry.getProductEntryId());
+		sb.append(StringPool.POUND);
+		sb.append(offeringEntry.getSupportResponseId());
+		sb.append(StringPool.POUND);
+		sb.append(offeringEntry.getProductDescription());
+		sb.append(StringPool.POUND);
+		sb.append(offeringEntry.getType());
+		sb.append(StringPool.POUND);
+		sb.append(offeringEntry.getVersion());
+		sb.append(StringPool.POUND);
+		sb.append(offeringEntry.getLicenses());
+		sb.append(StringPool.POUND);
+		sb.append(offeringEntry.getLicenseLifetime());
+		sb.append(StringPool.POUND);
+		sb.append(offeringEntry.getSupportTickets());
+		sb.append(StringPool.POUND);
+		sb.append(offeringEntry.getSupportLifetime());
+		sb.append(StringPool.POUND);
+		sb.append(offeringEntry.getSizing());
+
+		Date supportEndDate = offeringEntry.getSupportEndDate();
+
+		sb.append(supportEndDate.getTime());
+
+		sb.append(StringPool.POUND);
+		sb.append(offeringEntry.getStatus());
+
+		return sb.toString();
 	}
 
 	protected static Map<String, Object> getOrderEntryAttributes(

@@ -18,11 +18,10 @@ import com.liferay.osb.admin.util.AdminUtil;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AuditEntryConstants;
 import com.liferay.osb.model.CorpProject;
-import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
-import com.liferay.osb.service.OrderEntryLocalServiceUtil;
+import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -30,14 +29,11 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -69,39 +65,6 @@ public class ProvisioningAuditRabbitMQConsumer
 			StringUtil.merge(outOfSyncFields));
 	}
 
-	protected String getKey(OfferingEntry offeringEntry) {
-		StringBundler sb = new StringBundler(22);
-
-		sb.append(offeringEntry.getProductEntryId());
-		sb.append(StringPool.POUND);
-		sb.append(offeringEntry.getSupportResponseId());
-		sb.append(StringPool.POUND);
-		sb.append(offeringEntry.getProductDescription());
-		sb.append(StringPool.POUND);
-		sb.append(offeringEntry.getType());
-		sb.append(StringPool.POUND);
-		sb.append(offeringEntry.getVersion());
-		sb.append(StringPool.POUND);
-		sb.append(offeringEntry.getLicenses());
-		sb.append(StringPool.POUND);
-		sb.append(offeringEntry.getLicenseLifetime());
-		sb.append(StringPool.POUND);
-		sb.append(offeringEntry.getSupportTickets());
-		sb.append(StringPool.POUND);
-		sb.append(offeringEntry.getSupportLifetime());
-		sb.append(StringPool.POUND);
-		sb.append(offeringEntry.getSizing());
-
-		Date supportEndDate = offeringEntry.getSupportEndDate();
-
-		sb.append(supportEndDate.getTime());
-
-		sb.append(StringPool.POUND);
-		sb.append(offeringEntry.getStatus());
-
-		return sb.toString();
-	}
-
 	protected Map<String, Integer> getOfferingEntriesMap(JSONArray jsonArray)
 		throws PortalException {
 
@@ -113,43 +76,7 @@ public class ProvisioningAuditRabbitMQConsumer
 			orderEntries.addAll(parseOrderEntries(jsonObject));
 		}
 
-		return getOfferingEntriesMap(orderEntries);
-	}
-
-	protected Map<String, Integer> getOfferingEntriesMap(
-		List<OrderEntry> orderEntries) {
-
-		Map<String, Integer> offeringEntriesMap = new HashMap<>();
-
-		for (OrderEntry orderEntry : orderEntries) {
-			List<OfferingEntry> offeringEntries =
-				orderEntry.getOfferingEntries();
-
-			for (OfferingEntry offeringEntry : offeringEntries) {
-				String key = getKey(offeringEntry);
-
-				Integer quantity = offeringEntriesMap.get(key);
-
-				if (quantity == null) {
-					quantity = offeringEntry.getQuantity();
-				}
-				else {
-					quantity += offeringEntry.getQuantity();
-				}
-
-				offeringEntriesMap.put(key, quantity);
-			}
-		}
-
-		return offeringEntriesMap;
-	}
-
-	protected Map<String, Integer> getOfferingEntriesMap(long accountEntryId) {
-		List<OrderEntry> orderEntries =
-			OrderEntryLocalServiceUtil.getAccountEntryOrderEntries(
-				accountEntryId);
-
-		return getOfferingEntriesMap(orderEntries);
+		return SupportUtil.getOfferingEntriesMap(orderEntries);
 	}
 
 	protected int[] getOutOfSyncFields(
@@ -160,8 +87,9 @@ public class ProvisioningAuditRabbitMQConsumer
 
 		// Offerings
 
-		Map<String, Integer> existingofferingEntriesMap = getOfferingEntriesMap(
-			existingAccountEntry.getAccountEntryId());
+		Map<String, Integer> existingofferingEntriesMap =
+			SupportUtil.getOfferingEntriesMap(
+				existingAccountEntry.getAccountEntryId());
 
 		Map<String, Integer> offeringEntriesMap = getOfferingEntriesMap(
 			jsonArray);
