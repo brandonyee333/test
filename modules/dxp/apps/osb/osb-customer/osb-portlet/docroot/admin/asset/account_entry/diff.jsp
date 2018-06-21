@@ -67,7 +67,7 @@ private String _getFieldLabel(HttpServletRequest request, String field) {
 	String label = field;
 
 	if (field.equals("ewsaDossieraProjectKey")) {
-		label = "dossiera-project-key";
+		label = "ewsa-dossiera-project-key";
 	}
 	else if (field.equals("languageIds")) {
 		label = "languages";
