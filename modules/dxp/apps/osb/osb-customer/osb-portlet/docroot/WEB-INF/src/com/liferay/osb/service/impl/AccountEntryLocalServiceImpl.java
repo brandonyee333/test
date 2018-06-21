@@ -1112,13 +1112,6 @@ public class AccountEntryLocalServiceImpl
 				String.valueOf(accountEntry.getPartnerManagedSupport()));
 		}
 
-		String notes = oldAccountEntry.getNotes();
-
-		if (!notes.equals(accountEntry.getNotes())) {
-			oldAccountEntryAttributes.put("notes", notes);
-			newAccountEntryAttributes.put("notes", accountEntry.getNotes());
-		}
-
 		String[] oldLanguageIds = oldAccountEntry.getLanguageIds();
 		String[] languageIds = accountEntry.getLanguageIds();
 
@@ -1159,17 +1152,6 @@ public class AccountEntryLocalServiceImpl
 				accountEntry.getEWSADossieraProjectKey());
 		}
 
-		if (!oldAccountEntryAttributes.isEmpty() &&
-			!newAccountEntryAttributes.isEmpty()) {
-
-			workflowContext.put(
-				WorkflowConstants.CONTEXT_OLD_ACCOUNT_ENTRY_ATTRIBUTES,
-				oldAccountEntryAttributes);
-			workflowContext.put(
-				WorkflowConstants.CONTEXT_NEW_ACCOUNT_ENTRY_ATTRIBUTES,
-				newAccountEntryAttributes);
-		}
-
 		Map<String, Integer> oldOfferingEntriesMap =
 			SupportUtil.getOfferingEntriesMap(
 				oldAccountEntry.getAccountEntryId());
@@ -1195,8 +1177,28 @@ public class AccountEntryLocalServiceImpl
 				supportRegion.getName());
 		}
 
-		if (workflowContext.isEmpty()) {
+		if (workflowContext.isEmpty() && oldAccountEntryAttributes.isEmpty() &&
+			newAccountEntryAttributes.isEmpty()) {
+
 			return;
+		}
+
+		String notes = oldAccountEntry.getNotes();
+
+		if (!notes.equals(accountEntry.getNotes())) {
+			oldAccountEntryAttributes.put("notes", notes);
+			newAccountEntryAttributes.put("notes", accountEntry.getNotes());
+		}
+
+		if (!oldAccountEntryAttributes.isEmpty() &&
+			!newAccountEntryAttributes.isEmpty()) {
+
+			workflowContext.put(
+				WorkflowConstants.CONTEXT_OLD_ACCOUNT_ENTRY_ATTRIBUTES,
+				oldAccountEntryAttributes);
+			workflowContext.put(
+				WorkflowConstants.CONTEXT_NEW_ACCOUNT_ENTRY_ATTRIBUTES,
+				newAccountEntryAttributes);
 		}
 
 		List<Long> existingOrderEntryIds = new ArrayList<Long>();
