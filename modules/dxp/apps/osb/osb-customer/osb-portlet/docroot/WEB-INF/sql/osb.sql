@@ -162,6 +162,7 @@ insert into ListType (listTypeId, name, type_) values (29004, 'ibm-jdk-7', 'com.
 insert into ListType (listTypeId, name, type_) values (29005, 'jrocket-jdk-6', 'com.liferay.osb.model.AccountEnvironment.envJVM');
 insert into ListType (listTypeId, name, type_) values (29006, 'java-8', 'com.liferay.osb.model.AccountEnvironment.envJVM');
 insert into ListType (listTypeId, name, type_) values (29007, 'ibm-jdk-8', 'com.liferay.osb.model.AccountEnvironment.envJVM');
+insert into ListType (listTypeId, name, type_) values (29008, 'openjdk-8', 'com.liferay.osb.model.TicketEntry.envJVM');
 
 insert into ListType (listTypeId, name, type_) values (30000, 'linux', 'com.liferay.osb.model.AccountEnvironment.envOS');
 insert into ListType (listTypeId, name, type_) values (30001, 'mac-os-x', 'com.liferay.osb.model.AccountEnvironment.envOS');

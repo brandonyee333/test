@@ -287,6 +287,8 @@ public class AccountEnvironmentConstants {
 
 	public static final int ENV_JVM_JROCKET_JDK_6 = 29005;
 
+	public static final int ENV_JVM_OPENJDK_8 = 29008;
+
 	public static final int ENV_OS_AIX = 30009;
 
 	public static final int ENV_OS_AIX_6_1 = 30010;
@@ -586,7 +588,7 @@ public class AccountEnvironmentConstants {
 	};
 
 	private static final int[] _ENV_JVM_DIGITAL_ENTERPRISE_VERSION_7_0 =
-		{ENV_JVM_IBM_JDK_8, ENV_JVM_JAVA_8};
+		{ENV_JVM_IBM_JDK_8, ENV_JVM_JAVA_8, ENV_JVM_OPENJDK_8};
 
 	private static final int[] _ENV_JVM_PORTAL_VERSION_6_1 =
 		{ENV_JVM_JAVA_5, ENV_JVM_JAVA_6, ENV_JVM_JAVA_7, ENV_JVM_JAVA_8};
