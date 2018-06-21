@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osb.hook.upgrade.v3_8_1;
+package com.liferay.osb.hook.upgrade.v3_8_0;
 
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
