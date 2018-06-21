@@ -409,7 +409,7 @@ public class SupportUtil {
 	}
 
 	protected static String getKey(OfferingEntry offeringEntry) {
-		StringBundler sb = new StringBundler();
+		StringBundler sb = new StringBundler(20);
 
 		sb.append(offeringEntry.getProductEntryId());
 		sb.append(StringPool.POUND);
@@ -434,9 +434,6 @@ public class SupportUtil {
 		Date supportEndDate = offeringEntry.getSupportEndDate();
 
 		sb.append(supportEndDate.getTime());
-
-		sb.append(StringPool.POUND);
-		sb.append(offeringEntry.getStatus());
 
 		return sb.toString();
 	}
