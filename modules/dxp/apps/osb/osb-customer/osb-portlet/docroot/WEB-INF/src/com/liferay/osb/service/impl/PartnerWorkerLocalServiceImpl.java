@@ -15,16 +15,16 @@
 package com.liferay.osb.service.impl;
 
 import com.liferay.osb.exception.NoSuchPartnerWorkerException;
-import com.liferay.osb.model.CorpEntry;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.PartnerWorker;
 import com.liferay.osb.service.base.PartnerWorkerLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
-import com.liferay.portal.model.Organization;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.service.UserGroupRoleLocalServiceUtil;
 
 import java.util.List;
+
+// TODO
+// import com.liferay.osb.model.CorpEntry;
 
 /**
  * @author Amos Fong
@@ -158,7 +158,7 @@ public class PartnerWorkerLocalServiceImpl
 
 	protected void assignCorpEntryOrganizations(
 			long[] userIds, long partnerEntryId, int[] roles)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		PartnerEntry partnerEntry = partnerEntryLocalService.fetchPartnerEntry(
 			partnerEntryId);
@@ -167,6 +167,7 @@ public class PartnerWorkerLocalServiceImpl
 			return;
 		}
 
+		/* TODO
 		CorpEntry corpEntry = corpEntryLocalService.fetchCorpEntry(
 			partnerEntry.getDossieraAccountKey());
 
@@ -181,9 +182,7 @@ public class PartnerWorkerLocalServiceImpl
 			return;
 		}
 
-		for (int i = 0; i < userIds.length; i++) {
-			long userId = userIds[i];
-
+		for (long userId : userIds) {
 			if (!organizationLocalService.hasUserOrganization(
 					userId, corpEntry.getOrganizationId())) {
 
@@ -195,6 +194,8 @@ public class PartnerWorkerLocalServiceImpl
 					OSBConstants.ROLE_OSB_CORP_SALES_REPRESENTATIVE_ID);
 			}
 		}
+
+		*/
 	}
 
 	protected void assignOrganizations(long userId) throws PortalException {
@@ -210,7 +211,7 @@ public class PartnerWorkerLocalServiceImpl
 
 	protected void unassignCorpEntryOrganizations(
 			long userId, long partnerEntryId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		PartnerEntry partnerEntry = partnerEntryLocalService.fetchPartnerEntry(
 			partnerEntryId);
@@ -219,6 +220,7 @@ public class PartnerWorkerLocalServiceImpl
 			return;
 		}
 
+		/* TODO
 		CorpEntry corpEntry = corpEntryLocalService.fetchCorpEntry(
 			partnerEntry.getDossieraAccountKey());
 
@@ -239,6 +241,8 @@ public class PartnerWorkerLocalServiceImpl
 			userLocalService.unsetOrganizationUsers(
 				corpEntry.getOrganizationId(), new long[] {userId});
 		}
+
+		*/
 	}
 
 	protected void unassignOrganizations(long userId) throws PortalException {
