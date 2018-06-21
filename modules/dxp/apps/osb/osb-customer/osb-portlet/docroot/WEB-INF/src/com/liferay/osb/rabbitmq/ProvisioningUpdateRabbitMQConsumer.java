@@ -50,10 +50,9 @@ public class ProvisioningUpdateRabbitMQConsumer
 		AccountEntry accountEntry = parseAccountEntry(
 			jsonObject, corpProject, orderEntries);
 
+		PartnerEntry partnerEntry = parsePartnerEntry(jsonObject);
 		AccountWorker accountWorker = parseAccountWorker(
 			jsonObject, accountEntry);
-
-		PartnerEntry partnerEntry = parsePartnerEntry(jsonObject);
 		Address address = parseAddress(jsonObject);
 
 		ServiceContext serviceContext = createServiceContext(jsonObject);
