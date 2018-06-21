@@ -84,7 +84,6 @@ import com.liferay.osb.service.AccountEnvironmentAttachmentLocalServiceUtil;
 import com.liferay.osb.service.AccountEnvironmentAttachmentServiceUtil;
 import com.liferay.osb.service.AccountEnvironmentLocalServiceUtil;
 import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
-import com.liferay.osb.service.LCSSubscriptionEntryLocalServiceUtil;
 import com.liferay.osb.service.LicenseEntryLocalServiceUtil;
 import com.liferay.osb.service.OfferingBundleLocalServiceUtil;
 import com.liferay.osb.service.OfferingDefinitionLocalServiceUtil;

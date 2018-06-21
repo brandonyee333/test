@@ -318,7 +318,7 @@ public class LicensePortlet extends OSBPortlet {
 		LicenseKey licenseKey = null;
 
 		if (licenseKeyId <= 0) {
-			icenseKey = LicenseKeyServiceUtil.addLicenseKey(
+			licenseKey = LicenseKeyServiceUtil.addLicenseKey(
 				themeDisplay.getUserId(), licenseKeySetId, name,
 				offeringEntryId, licenseEntryId, 0, productVersion, clusterId,
 				owner, maxServers, maxHttpSessions, description,

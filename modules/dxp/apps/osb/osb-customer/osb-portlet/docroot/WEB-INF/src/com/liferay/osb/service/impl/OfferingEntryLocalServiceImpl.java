@@ -114,7 +114,7 @@ public class OfferingEntryLocalServiceImpl
 	public void checkOfferingEntries() throws Exception {
 		Date now = new Date();
 
-		Set<Long> accountEntryIds = new HashSet<Long>();
+		Set<Long> accountEntryIds = new HashSet<>();
 
 		List<OfferingEntry> offeringEntries =
 			offeringEntryFinder.findByU_AEI_PEI_T_S_SED(
@@ -396,7 +396,7 @@ public class OfferingEntryLocalServiceImpl
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		OfferingEntryLocalServiceImpl.class);
 
 }
