@@ -350,11 +350,12 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 		return orderEntry;
 	}
 
-	public void checkOrderEntries() throws SystemException {
-		Set<Long> accountEntryIds = new HashSet<Long>();
+	public void checkOrderEntries() {
+		Set<Long> accountEntryIds = new HashSet<>();
 
 		Date startDateLT = new Date();
-		Date startDateGT = new Date (startDateLT.getTime() - Time.DAY);
+
+		Date startDateGT = new Date(startDateLT.getTime() - Time.DAY);
 
 		List<OrderEntry> orderEntries =
 			orderEntryFinder.findByU_CD_MU_MD_AE_PO_S_SD_P_ASD(
@@ -818,7 +819,7 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		OrderEntryLocalServiceImpl.class);
 
 }
