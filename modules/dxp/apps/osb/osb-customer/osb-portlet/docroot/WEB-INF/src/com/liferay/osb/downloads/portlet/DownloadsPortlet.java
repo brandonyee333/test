@@ -367,7 +367,7 @@ public class DownloadsPortlet extends MVCPortlet {
 						(fileNameArray[3].startsWith(
 							"LiferayDeveloperStudio") ||
 						 fileNameArray[3].startsWith(
-							"liferay-developer-studio"))) {
+							 "liferay-developer-studio"))) {
 
 						return false;
 					}
