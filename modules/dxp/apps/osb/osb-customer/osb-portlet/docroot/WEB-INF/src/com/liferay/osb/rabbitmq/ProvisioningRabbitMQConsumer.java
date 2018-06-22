@@ -257,14 +257,6 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 		return address;
 	}
 
-	protected String getCountryName(JSONObject jsonObject) {
-		Address address = parseAddress(jsonObject);
-
-		Country country = address.getCountry();
-
-		return country.getName();
-	}
-
 	protected int getIndustry(JSONObject accountJSONObject) {
 		String industry = accountJSONObject.getString("_industry");
 
@@ -285,8 +277,7 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 		}
 	}
 
-	protected String getLanguageId(JSONObject jsonObject) {
-		String countryName = getCountryName(jsonObject);
+	protected String getLanguageId(JSONObject jsonObject, String countryName) {
 		String soldBy = jsonObject.getString("_salesforceOpportunitySoldBy");
 
 		if (Validator.isNull(soldBy)) {
@@ -297,7 +288,19 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 			return AccountEntryConstants.LANGUAGE_ID_ENGLISH;
 		}
 
-		if (soldBy.equals("Liferay Australia")) {
+		if (soldBy.equals("Liferay Australia") ||
+			soldBy.equals("Liferay Canada") ||
+			soldBy.equals("Liferay France") ||
+			soldBy.equals("Liferay Germany") ||
+			soldBy.equals("Liferay Hungary") ||
+			soldBy.equals("Liferay India") ||
+			soldBy.equals("Liferay International") ||
+			soldBy.equals("Liferay Middle East") ||
+			soldBy.equals("Liferay Morocco") ||
+			soldBy.equals("Liferay Netherlands") ||
+			soldBy.equals("Liferay Singapore") || soldBy.equals("Liferay UK") ||
+			soldBy.equals("Liferay US")) {
+
 			return AccountEntryConstants.LANGUAGE_ID_ENGLISH;
 		}
 		else if (soldBy.equals("Liferay Brazil")) {
@@ -320,24 +323,13 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 				return AccountEntryConstants.LANGUAGE_ID_ENGLISH;
 			}
 		}
-		else if (soldBy.equals("Liferay France") ||
-				 soldBy.equals("Liferay Germany") ||
-				 soldBy.equals("Liferay Hungary") ||
-				 soldBy.equals("Liferay India") ||
-				 soldBy.equals("Liferay International") ||
-				 soldBy.equals("Liferay Morocco") ||
-				 soldBy.equals("Liferay Netherlands") ||
-				 soldBy.equals("Liferay Singapore") ||
-				 soldBy.equals("Liferay UK")) {
-
-			return AccountEntryConstants.LANGUAGE_ID_ENGLISH;
-		}
 		else if (soldBy.equals("Liferay Japan")) {
 			return AccountEntryConstants.LANGUAGE_ID_JAPANESE;
 		}
 		else if (soldBy.equals("Liferay Spain")) {
 			if (Validator.isNotNull(countryName) &&
-				(countryName.equals("Greece") || countryName.equals("Italy") ||
+				(countryName.equals("Cyprus") || countryName.equals("Greece") ||
+				 countryName.equals("Italy") ||
 				 countryName.equals("Portugal"))) {
 
 				return AccountEntryConstants.LANGUAGE_ID_ENGLISH;
@@ -345,9 +337,6 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 			else {
 				return AccountEntryConstants.LANGUAGE_ID_SPANISH;
 			}
-		}
-		else if (soldBy.equals("Liferay US")) {
-			return AccountEntryConstants.LANGUAGE_ID_ENGLISH;
 		}
 
 		_logWarning(
@@ -580,11 +569,12 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 		return 0;
 	}
 
-	protected long[] getSupportRegionIds(JSONObject jsonObject) {
+	protected long[] getSupportRegionIds(
+		JSONObject jsonObject, String countryName) {
+
 		String soldBy = jsonObject.getString("_salesforceOpportunitySoldBy");
 
-		String supportRegionName = getSupportRegionName(
-			soldBy, getCountryName(jsonObject));
+		String supportRegionName = getSupportRegionName(soldBy, countryName);
 
 		SupportRegion supportRegion =
 			SupportRegionLocalServiceUtil.fetchSupportRegionByName(
@@ -611,6 +601,11 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 		else if (soldBy.equals("Liferay Brazil")) {
 			return "Brazil";
 		}
+		else if (soldBy.equals("Liferay Canada") ||
+				 soldBy.equals("Liferay US")) {
+
+			return "US";
+		}
 		else if (soldBy.equals("Liferay China") ||
 				 soldBy.equals("Liferay Singapore")) {
 
@@ -620,6 +615,7 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 				 soldBy.equals("Liferay Germany") ||
 				 soldBy.equals("Liferay Hungary") ||
 				 soldBy.equals("Liferay International") ||
+				 soldBy.equals("Liferay Middle East") ||
 				 soldBy.equals("Liferay Morocco") ||
 				 soldBy.equals("Liferay Netherlands") ||
 				 soldBy.equals("Liferay UK")) {
@@ -634,16 +630,14 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 		}
 		else if (soldBy.equals("Liferay Spain")) {
 			if (Validator.isNotNull(countryName) &&
-				(countryName.equals("Greece") || countryName.equals("Italy"))) {
+				(countryName.equals("Cyprus") || countryName.equals("Greece") ||
+				 countryName.equals("Italy"))) {
 
 				return "Hungary";
 			}
 			else {
 				return "Spain";
 			}
-		}
-		else if (soldBy.equals("Liferay US")) {
-			return "US";
 		}
 
 		_logWarning(
@@ -705,7 +699,7 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 	}
 
 	protected AccountEntry parseAccountEntry(
-			JSONObject jsonObject, CorpProject corpProject,
+			JSONObject jsonObject, Address address, CorpProject corpProject,
 			List<OrderEntry> orderEntries)
 		throws PortalException {
 
@@ -717,8 +711,11 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 			"_partnerFirstLineSupport");
 		String notes = getNotes(jsonObject, orderEntries);
 
-		String languageId = getLanguageId(jsonObject);
-		long[] supportRegionIds = getSupportRegionIds(jsonObject);
+		Country country = address.getCountry();
+
+		String languageId = getLanguageId(jsonObject, country.getName());
+		long[] supportRegionIds = getSupportRegionIds(
+			jsonObject, country.getName());
 
 		AccountEntry accountEntry = null;
 

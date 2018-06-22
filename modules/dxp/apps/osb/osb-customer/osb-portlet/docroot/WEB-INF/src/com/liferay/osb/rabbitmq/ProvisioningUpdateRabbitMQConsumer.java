@@ -44,16 +44,16 @@ public class ProvisioningUpdateRabbitMQConsumer
 		String salesforceOpportunityKey = jsonObject.getString(
 			"_salesforceOpportunityKey");
 
+		Address address = parseAddress(jsonObject);
 		CorpProject corpProject = parseCorpProject(jsonObject);
 		List<OrderEntry> orderEntries = parseOrderEntries(jsonObject);
+		PartnerEntry partnerEntry = parsePartnerEntry(jsonObject);
 
 		AccountEntry accountEntry = parseAccountEntry(
-			jsonObject, corpProject, orderEntries);
+			jsonObject, address, corpProject, orderEntries);
 
-		PartnerEntry partnerEntry = parsePartnerEntry(jsonObject);
 		AccountWorker accountWorker = parseAccountWorker(
 			jsonObject, accountEntry);
-		Address address = parseAddress(jsonObject);
 
 		ServiceContext serviceContext = createServiceContext(jsonObject);
 

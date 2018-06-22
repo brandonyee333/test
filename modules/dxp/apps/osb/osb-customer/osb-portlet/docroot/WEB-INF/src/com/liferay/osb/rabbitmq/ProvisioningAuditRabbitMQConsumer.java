@@ -106,11 +106,12 @@ public class ProvisioningAuditRabbitMQConsumer
 
 		JSONObject jsonObject = jsonArray.getJSONObject(0);
 
+		Address address = parseAddress(jsonObject);
 		CorpProject corpProject = parseCorpProject(jsonObject);
 		List<OrderEntry> orderEntries = parseOrderEntries(jsonObject);
 
 		AccountEntry accountEntry = parseAccountEntry(
-			jsonObject, corpProject, orderEntries);
+			jsonObject, address, corpProject, orderEntries);
 
 		String corpEntryName = existingAccountEntry.getCorpEntryName();
 
@@ -173,9 +174,9 @@ public class ProvisioningAuditRabbitMQConsumer
 		// Address
 
 		Address oldAddress = existingAccountEntry.getAddress();
-		Address address = parseAddress(jsonObject);
 
 		String oldAddressString = AdminUtil.formatAddress(oldAddress);
+
 		String addressString = AdminUtil.formatAddress(address);
 
 		if (!oldAddressString.equals(addressString)) {
