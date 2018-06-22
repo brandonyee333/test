@@ -206,6 +206,7 @@ insert into ListType (listTypeId, name, type_) values (30038, 'oracle-linux-7', 
 insert into ListType (listTypeId, name, type_) values (30039, 'suse-enterprise-linux-12', 'com.liferay.osb.model.AccountEnvironment.envOS');
 insert into ListType (listTypeId, name, type_) values (30040, 'ubuntu-lts-14.04', 'com.liferay.osb.model.AccountEnvironment.envOS');
 insert into ListType (listTypeId, name, type_) values (30041, 'debian-7', 'com.liferay.osb.model.AccountEnvironment.envOS');
+insert into ListType (listTypeId, name, type_) values (30042, 'ubuntu-lts-16.04', 'com.liferay.osb.model.AccountEnvironment.envOS');
 
 insert into ListType (listTypeId, name, type_) values (34001, 'application-server', 'com.liferay.osb.model.AuditEntry.field');
 insert into ListType (listTypeId, name, type_) values (34004, 'database', 'com.liferay.osb.model.AuditEntry.field');

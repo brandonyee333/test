@@ -361,6 +361,8 @@ public class AccountEnvironmentConstants {
 
 	public static final int ENV_OS_UBUNTU_LTS_14_04 = 30040;
 
+	public static final int ENV_OS_UBUNTU_LTS_16_04 = 30042;
+
 	public static final int ENV_OS_WINDOWS_7 = 30002;
 
 	public static final int ENV_OS_WINDOWS_SERVER_2003 = 30004;
@@ -607,7 +609,7 @@ public class AccountEnvironmentConstants {
 		ENV_OS_RED_HAT_ENTERPRISE_6, ENV_OS_RED_HAT_ENTERPRISE_7,
 		ENV_OS_SOLARIS_10, ENV_OS_SOLARIS_11, ENV_OS_SUSE_ENTERPRISE_LINUX_11,
 		ENV_OS_SUSE_ENTERPRISE_LINUX_12, ENV_OS_UBUNTU_LTS_14_04,
-		ENV_OS_WINDOWS_SERVER_2012
+		ENV_OS_UBUNTU_LTS_16_04, ENV_OS_WINDOWS_SERVER_2012
 	};
 
 	private static final int[] _ENV_OS_PORTAL_VERSION_5_2 = {
