@@ -91,6 +91,14 @@ public class OSBLicenseKeyPermission {
 			return false;
 		}
 
+		if (actionId.equals(OSBActionKeys.UPDATE_ADVANCED)) {
+			return false;
+		}
+
+		if (actionId.equals(OSBActionKeys.UPDATE_BASIC)) {
+			return false;
+		}
+
 		AccountWorker accountWorker = null;
 
 		try {
@@ -108,20 +116,12 @@ public class OSBLicenseKeyPermission {
 		catch (Exception e) {
 		}
 
-		if (actionId.equals(OSBActionKeys.UPDATE_ADVANCED)) {
-			return false;
-		}
-
 		if (actionId.equals(OSBActionKeys.VIEW) && !licenseKey.isActive()) {
 			return false;
 		}
 
 		if (accountWorker != null) {
 			return true;
-		}
-
-		if (actionId.equals(OSBActionKeys.UPDATE_BASIC)) {
-			return false;
 		}
 
 		AccountCustomer accountCustomer = null;

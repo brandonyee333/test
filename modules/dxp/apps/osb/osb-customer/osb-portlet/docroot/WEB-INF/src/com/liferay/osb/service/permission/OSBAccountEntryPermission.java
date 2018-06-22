@@ -17,6 +17,7 @@ package com.liferay.osb.service.permission;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountCustomerConstants;
 import com.liferay.osb.model.AccountEntry;
+import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.AccountWorker;
 import com.liferay.osb.model.AccountWorkerConstants;
 import com.liferay.osb.model.PartnerWorker;
@@ -49,7 +50,7 @@ public class OSBAccountEntryPermission {
 	}
 
 	public static boolean contains(
-		PermissionChecker permissionChecker, long accountEntryId,
+		PermissionChecker permissionChecker, AccountEntry accountEntry,
 		String actionId) {
 
 		if (RoleLocalServiceUtil.hasUserRole(
@@ -59,11 +60,42 @@ public class OSBAccountEntryPermission {
 			return true;
 		}
 
+		if (actionId.equals(OSBActionKeys.ADD_LICENSE) ||
+			actionId.equals(OSBActionKeys.ADD_LICENSE_KEY_SET)) {
+
+			if (RoleLocalServiceUtil.hasUserRole(
+					permissionChecker.getUserId(),
+					OSBConstants.ROLE_OSB_ACCOUNT_ADMIN_ID)) {
+
+				return true;
+			}
+
+			if ((accountEntry.getType() == AccountEntryConstants.TYPE_TRIAL) &&
+				RoleLocalServiceUtil.hasUserRole(
+					permissionChecker.getUserId(),
+					OSBConstants.ROLE_OSB_TRIAL_LICENSE_ADMIN_ID)) {
+
+				return true;
+			}
+
+			if ((accountEntry.getAccountEntryId() ==
+					OSBConstants.ACCOUNT_ENTRY_LRDCOM_ID) &&
+				OrganizationLocalServiceUtil.hasUserOrganization(
+					permissionChecker.getUserId(),
+					OSBConstants.ORGANIZATION_LIFERAY_INC_ID)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
 		AccountWorker accountWorker = null;
 
 		try {
 			accountWorker = AccountWorkerLocalServiceUtil.getAccountWorker(
-				permissionChecker.getUserId(), accountEntryId);
+				permissionChecker.getUserId(),
+				accountEntry.getAccountEntryId());
 
 			if ((accountWorker.getRole() ==
 					AccountWorkerConstants.ROLE_ADVOCACY_SPECIALIST) ||
@@ -81,7 +113,8 @@ public class OSBAccountEntryPermission {
 		try {
 			accountCustomer =
 				AccountCustomerLocalServiceUtil.getAccountCustomer(
-					permissionChecker.getUserId(), accountEntryId);
+					permissionChecker.getUserId(),
+					accountEntry.getAccountEntryId());
 
 			if (accountCustomer.getRole() ==
 					AccountCustomerConstants.ROLE_MANAGER) {
@@ -107,22 +140,6 @@ public class OSBAccountEntryPermission {
 			return true;
 		}
 
-		if (actionId.equals(OSBActionKeys.ADD_LICENSE) ||
-			actionId.equals(OSBActionKeys.ADD_LICENSE_KEY_SET)) {
-
-			if (RoleLocalServiceUtil.hasUserRole(
-					permissionChecker.getUserId(),
-					OSBConstants.ROLE_OSB_ACCOUNT_ADMIN_ID) ||
-				RoleLocalServiceUtil.hasUserRole(
-					permissionChecker.getUserId(),
-					OSBConstants.ROLE_OSB_TRIAL_LICENSE_ADMIN_ID)) {
-
-				return true;
-			}
-
-			return false;
-		}
-
 		if ((accountCustomer != null) &&
 			(accountCustomer.getRole() ==
 				AccountCustomerConstants.ROLE_DEVELOPER)) {
@@ -140,9 +157,6 @@ public class OSBAccountEntryPermission {
 		PartnerWorker partnerWorker = null;
 
 		try {
-			AccountEntry accountEntry =
-				AccountEntryLocalServiceUtil.getAccountEntry(accountEntryId);
-
 			if (accountEntry.isPartnerManagedSupport()) {
 				partnerWorker = PartnerWorkerLocalServiceUtil.getPartnerWorker(
 					permissionChecker.getUserId(),
@@ -165,6 +179,17 @@ public class OSBAccountEntryPermission {
 		}
 
 		return false;
+	}
+
+	public static boolean contains(
+			PermissionChecker permissionChecker, long accountEntryId,
+			String actionId)
+		throws PortalException {
+
+		AccountEntry accountEntry =
+			AccountEntryLocalServiceUtil.getAccountEntry(accountEntryId);
+
+		return contains(permissionChecker, accountEntry, actionId);
 	}
 
 }
