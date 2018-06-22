@@ -1109,10 +1109,10 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 			if (user == null) {
 				user = UserLocalServiceUtil.createUser(0);
 
+				user.setScreenName("N/A");
 				user.setEmailAddress(emailAddress);
 				user.setFirstName(firstName);
 				user.setLastName(lastName);
-				user.setScreenName("N/A");
 			}
 
 			users.add(user);
