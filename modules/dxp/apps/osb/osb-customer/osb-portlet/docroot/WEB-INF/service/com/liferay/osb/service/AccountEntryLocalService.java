@@ -459,7 +459,7 @@ public interface AccountEntryLocalService extends BaseLocalService,
 	public void updateAccountEntryWithWorkflow(
 		java.lang.String salesforceOpportunityKey, AccountEntry accountEntry,
 		PartnerEntry partnerEntry, AccountWorker accountWorker,
-		Address address, List<OrderEntry> orderEntries,
+		Address address, List<OrderEntry> orderEntries, ArrayList<User> users,
 		ServiceContext serviceContext) throws PortalException;
 
 	public void updateLastAuditDate(long userId, long accountEntryId,

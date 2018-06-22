@@ -611,12 +611,13 @@ public class AccountEntryLocalServiceUtil {
 		com.liferay.osb.model.AccountWorker accountWorker,
 		com.liferay.portal.kernel.model.Address address,
 		java.util.List<com.liferay.osb.model.OrderEntry> orderEntries,
+		java.util.ArrayList<com.liferay.portal.kernel.model.User> users,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService()
 			.updateAccountEntryWithWorkflow(salesforceOpportunityKey,
 			accountEntry, partnerEntry, accountWorker, address, orderEntries,
-			serviceContext);
+			users, serviceContext);
 	}
 
 	public static void updateLastAuditDate(long userId, long accountEntryId,

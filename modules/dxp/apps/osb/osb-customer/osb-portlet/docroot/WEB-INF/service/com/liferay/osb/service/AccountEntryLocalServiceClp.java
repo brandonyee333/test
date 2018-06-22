@@ -390,6 +390,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 				"com.liferay.osb.model.PartnerEntry",
 				"com.liferay.osb.model.AccountWorker",
 				"com.liferay.portal.kernel.model.Address", "java.util.List",
+				"java.util.ArrayList",
 				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 
@@ -2506,6 +2507,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		com.liferay.osb.model.AccountWorker accountWorker,
 		com.liferay.portal.kernel.model.Address address,
 		java.util.List<com.liferay.osb.model.OrderEntry> orderEntries,
+		java.util.ArrayList<com.liferay.portal.kernel.model.User> users,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -2523,6 +2525,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 				ClpSerializer.translateInput(address),
 					
 				ClpSerializer.translateInput(orderEntries),
+					
+				ClpSerializer.translateInput(users),
 					
 				ClpSerializer.translateInput(serviceContext)
 				});
