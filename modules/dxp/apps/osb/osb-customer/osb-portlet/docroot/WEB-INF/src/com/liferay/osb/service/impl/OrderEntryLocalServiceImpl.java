@@ -21,7 +21,6 @@ import com.liferay.osb.exception.OrderEntryStartDateException;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountWorker;
 import com.liferay.osb.model.AuditEntryConstants;
-import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.model.ExternalIdMapper;
 import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.model.OfferingEntry;
@@ -74,7 +73,7 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 
 	public List<OrderEntry> addOrderEntriesWithWorkflow(
 			String salesforceOpportunityKey, AccountEntry accountEntry,
-			CorpProject corpProject, PartnerEntry partnerEntry, Address address,
+			PartnerEntry partnerEntry, Address address,
 			AccountWorker accountWorker, List<OrderEntry> orderEntries,
 			ServiceContext serviceContext)
 		throws PortalException {
@@ -108,7 +107,7 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 			OSBConstants.USER_DEFAULT_USER_ID,
 			oldAccountEntry.getAccountEntryId(),
 			oldAccountEntry.getCorpProjectUuid(),
-			accountEntry.getCorpEntryName(), accountEntry.getName(),
+			accountEntry.getCorpEntryName(), oldAccountEntry.getName(),
 			oldAccountEntry.getCode(), oldAccountEntry.getType(),
 			accountEntry.getIndustry(), oldAccountEntry.getPartnerEntryId(),
 			oldAccountEntry.getPartnerManagedSupport(),
@@ -120,13 +119,6 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 			oldAddress.getStreet3(), oldAddress.getCity(), oldAddress.getZip(),
 			oldAddress.getRegionId(), oldAddress.getCountryId(),
 			oldAccountEntry.getEWSADossieraProjectKey());
-
-		// Corp project
-
-		if (corpProject != null) {
-			remoteCorpProjectLocalService.updateCorpProject(
-				corpProject.getCorpProjectId(), corpProject.getName());
-		}
 
 		// Account worker
 
@@ -160,14 +152,15 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 
 		// Workflow
 
-		HashMap<String, Serializable> workflowContext = new HashMap<>();
-
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_ACCOUNT_ENTRY_NAME,
-			accountEntry.getName());
-
 		TreeMap<String, String> oldAccountEntryAttributes = new TreeMap<>();
 		TreeMap<String, String> newAccountEntryAttributes = new TreeMap<>();
+
+		String oldAccountEntryName = oldAccountEntry.getName();
+
+		if (!oldAccountEntryName.equals(accountEntry.getName())) {
+			oldAccountEntryAttributes.put("name", oldAccountEntryName);
+			newAccountEntryAttributes.put("name", accountEntry.getName());
+		}
 
 		if (partnerEntry != null) {
 			if (oldAccountEntry.getPartnerEntryId() !=
@@ -198,6 +191,8 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 				"partnerManagedSupport",
 				String.valueOf(accountEntry.getPartnerManagedSupport()));
 		}
+
+		HashMap<String, Serializable> workflowContext = new HashMap<>();
 
 		if (!oldAccountEntryAttributes.isEmpty() &&
 			!newAccountEntryAttributes.isEmpty()) {

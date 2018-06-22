@@ -21,9 +21,6 @@ package com.liferay.osb.util;
 public class WorkflowConstants
 	extends com.liferay.portal.kernel.workflow.WorkflowConstants {
 
-	public static final String CONTEXT_ACCOUNT_ENTRY_NAME =
-		"osbAccountEntryName";
-
 	public static final String CONTEXT_EXISTING_ORDER_ENTRY_IDS =
 		"osbExistingOrderEntryIds";
 

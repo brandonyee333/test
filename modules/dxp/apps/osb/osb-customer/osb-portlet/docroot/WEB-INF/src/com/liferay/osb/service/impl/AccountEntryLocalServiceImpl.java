@@ -311,10 +311,6 @@ public class AccountEntryLocalServiceImpl
 
 		HashMap<String, Serializable> workflowContext = new HashMap<>();
 
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_ACCOUNT_ENTRY_NAME,
-			accountEntry.getName());
-
 		if (!users.isEmpty()) {
 			workflowContext.put(WorkflowConstants.CONTEXT_MISSING_USERS, users);
 		}
@@ -1044,9 +1040,6 @@ public class AccountEntryLocalServiceImpl
 
 		String oldCorpEntryName = oldAccountEntry.getCorpEntryName();
 
-		CorpProject corpProject = corpProjectLocalService.getCorpProject(
-			oldAccountEntry.getCorpProjectId());
-
 		if ((oldAccountEntry.getIndustry() != accountEntry.getIndustry()) ||
 			!oldAddressString.equals(addressString) ||
 			!oldCorpEntryName.equals(accountEntry.getCorpEntryName())) {
@@ -1066,7 +1059,7 @@ public class AccountEntryLocalServiceImpl
 				oldAddress.getAddressId(), address.getStreet1(),
 				address.getStreet2(), address.getStreet3(), address.getCity(),
 				address.getZip(), address.getRegionId(), address.getCountryId(),
-				corpProject.getDossieraProjectKey());
+				oldAccountEntry.getEWSADossieraProjectKey());
 		}
 
 		if (accountWorker != null) {
@@ -1076,16 +1069,6 @@ public class AccountEntryLocalServiceImpl
 				accountEntry.getAccountEntryId(),
 				new int[] {accountWorker.getRole()},
 				new int[] {accountWorker.getNotifications()});
-		}
-
-		HashMap<String, Serializable> workflowContext = new HashMap<>();
-
-		String oldAccountEntryName = oldAccountEntry.getName();
-
-		if (!oldAccountEntryName.equals(accountEntry.getName())) {
-			workflowContext.put(
-				WorkflowConstants.CONTEXT_ACCOUNT_ENTRY_NAME,
-				accountEntry.getName());
 		}
 
 		ArrayList<User> newUsers = new ArrayList<>();
@@ -1110,6 +1093,8 @@ public class AccountEntryLocalServiceImpl
 			itr.remove();
 		}
 
+		HashMap<String, Serializable> workflowContext = new HashMap<>();
+
 		if (!users.isEmpty()) {
 			workflowContext.put(WorkflowConstants.CONTEXT_MISSING_USERS, users);
 		}
@@ -1120,6 +1105,13 @@ public class AccountEntryLocalServiceImpl
 
 		TreeMap<String, String> oldAccountEntryAttributes = new TreeMap<>();
 		TreeMap<String, String> newAccountEntryAttributes = new TreeMap<>();
+
+		String oldAccountEntryName = oldAccountEntry.getName();
+
+		if (!oldAccountEntryName.equals(accountEntry.getName())) {
+			oldAccountEntryAttributes.put("name", oldAccountEntryName);
+			newAccountEntryAttributes.put("name", accountEntry.getName());
+		}
 
 		if (partnerEntry != null) {
 			if (oldAccountEntry.getPartnerEntryId() !=

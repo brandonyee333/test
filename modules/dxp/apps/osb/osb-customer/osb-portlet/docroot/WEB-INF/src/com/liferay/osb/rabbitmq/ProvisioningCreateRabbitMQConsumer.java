@@ -87,7 +87,7 @@ public class ProvisioningCreateRabbitMQConsumer
 						externalIdMapper.getClassPK());
 
 				OrderEntryLocalServiceUtil.addOrderEntriesWithWorkflow(
-					salesforceOpportunityKey, curAccountEntry, null,
+					salesforceOpportunityKey, curAccountEntry,
 					curAccountEntry.getPartnerEntry(),
 					curAccountEntry.getAddress(), null, orderEntries,
 					serviceContext);
@@ -95,9 +95,8 @@ public class ProvisioningCreateRabbitMQConsumer
 		}
 		else if (accountEntry.getAccountEntryId() > 0) {
 			OrderEntryLocalServiceUtil.addOrderEntriesWithWorkflow(
-				salesforceOpportunityKey, accountEntry, corpProject,
-				partnerEntry, address, accountWorker, orderEntries,
-				serviceContext);
+				salesforceOpportunityKey, accountEntry, partnerEntry, address,
+				accountWorker, orderEntries, serviceContext);
 		}
 		else {
 			AccountEntryLocalServiceUtil.addAccountEntryWithWorkflow(
