@@ -17,11 +17,32 @@
 <%@ include file="/init.jsp" %>
 
 <%
+List<User> missingUsers = (List<User>)request.getAttribute("linked_objects.jsp-missingUsers");
 String salesforceOpportunityAction = (String)request.getAttribute("linked_objects.jsp-salesforceOpportunityAction");
 %>
 
 <c:choose>
 	<c:when test="<%= salesforceOpportunityAction.equals(Constants.UPDATE) %>">
+		<c:if test="<%= (missingUsers != null) && !missingUsers.isEmpty() %>">
+			<h3>
+				<liferay-ui:message key="missing-users" />
+			</h3>
+
+			<%= ListUtil.toString(missingUsers, "emailAddress", "<br />") %>
+		</c:if>
+
+		<%
+		List<User> newUsers = (List<User>)request.getAttribute("linked_objects.jsp-newUsers");
+		%>
+
+		<c:if test="<%= (newUsers != null) && !newUsers.isEmpty() %>">
+			<h3>
+				<liferay-ui:message key="new-users" />
+			</h3>
+
+			<%= ListUtil.toString(newUsers, "emailAddress", "<br />") %>
+		</c:if>
+
 		<h3>
 			<liferay-ui:message key="existing-orders" />
 		</h3>
@@ -76,11 +97,6 @@ String salesforceOpportunityAction = (String)request.getAttribute("linked_object
 		</c:if>
 	</c:when>
 	<c:otherwise>
-
-		<%
-		List<User> missingUsers = (List<User>)request.getAttribute("linked_objects.jsp-missingUsers");
-		%>
-
 		<c:if test="<%= (missingUsers != null) && !missingUsers.isEmpty() %>">
 			<h3>
 				<liferay-ui:message key="missing-users" />

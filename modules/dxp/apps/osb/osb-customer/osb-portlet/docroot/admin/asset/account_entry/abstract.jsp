@@ -52,6 +52,7 @@ request.setAttribute("diff.jsp-oldAccountEntryAttributes", workflowContext.get(W
 <%
 request.setAttribute("linked_objects.jsp-existingOrderEntryIds", workflowContext.get(WorkflowConstants.CONTEXT_EXISTING_ORDER_ENTRY_IDS));
 request.setAttribute("linked_objects.jsp-missingUsers", workflowContext.get(WorkflowConstants.CONTEXT_MISSING_USERS));
+request.setAttribute("linked_objects.jsp-newUsers", workflowContext.get(WorkflowConstants.CONTEXT_NEW_USERS));
 request.setAttribute("linked_objects.jsp-orderEntries", workflowContext.get(WorkflowConstants.CONTEXT_ORDER_ENTRIES));
 request.setAttribute("linked_objects.jsp-salesforceOpportunityAction", workflowContext.get(WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_ACTION));
 %>

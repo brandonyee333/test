@@ -28,6 +28,7 @@ import com.liferay.osb.exception.DuplicateAccountEntryException;
 import com.liferay.osb.exception.NoSuchOrderEntryException;
 import com.liferay.osb.exception.RequiredAccountEntryException;
 import com.liferay.osb.model.AccountAttachment;
+import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountCustomerConstants;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
@@ -1016,7 +1017,7 @@ public class AccountEntryLocalServiceImpl
 			String salesforceOpportunityKey, AccountEntry accountEntry,
 			PartnerEntry partnerEntry, AccountWorker accountWorker,
 			Address address, List<OrderEntry> orderEntries,
-			ServiceContext serviceContext)
+			ArrayList<User> users, ServiceContext serviceContext)
 		throws PortalException {
 
 		long classNameId = classNameLocalService.getClassNameId(
@@ -1085,6 +1086,36 @@ public class AccountEntryLocalServiceImpl
 			workflowContext.put(
 				WorkflowConstants.CONTEXT_ACCOUNT_ENTRY_NAME,
 				accountEntry.getName());
+		}
+
+		ArrayList<User> newUsers = new ArrayList<>();
+
+		Iterator<User> itr = users.iterator();
+
+		while (itr.hasNext()) {
+			User user = itr.next();
+
+			if (user.getUserId() <= 0) {
+				continue;
+			}
+
+			AccountCustomer accountCustomer =
+				accountCustomerLocalService.fetchAccountCustomer(
+					user.getUserId(), oldAccountEntry.getAccountEntryId());
+
+			if (accountCustomer == null) {
+				newUsers.add(user);
+			}
+
+			itr.remove();
+		}
+
+		if (!users.isEmpty()) {
+			workflowContext.put(WorkflowConstants.CONTEXT_MISSING_USERS, users);
+		}
+
+		if (!newUsers.isEmpty()) {
+			workflowContext.put(WorkflowConstants.CONTEXT_NEW_USERS, newUsers);
 		}
 
 		TreeMap<String, String> oldAccountEntryAttributes = new TreeMap<>();

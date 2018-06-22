@@ -26,9 +26,11 @@ import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.Address;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.PortalUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,6 +50,7 @@ public class ProvisioningUpdateRabbitMQConsumer
 		CorpProject corpProject = parseCorpProject(jsonObject);
 		List<OrderEntry> orderEntries = parseOrderEntries(jsonObject);
 		PartnerEntry partnerEntry = parsePartnerEntry(jsonObject);
+		ArrayList<User> users = parseUsers(jsonObject);
 
 		AccountEntry accountEntry = parseAccountEntry(
 			jsonObject, address, corpProject, orderEntries);
@@ -74,13 +77,14 @@ public class ProvisioningUpdateRabbitMQConsumer
 				AccountEntryLocalServiceUtil.updateAccountEntryWithWorkflow(
 					salesforceOpportunityKey, curAccountEntry,
 					curAccountEntry.getPartnerEntry(), accountWorker,
-					curAccountEntry.getAddress(), orderEntries, serviceContext);
+					curAccountEntry.getAddress(), orderEntries, users,
+					serviceContext);
 			}
 		}
 		else {
 			AccountEntryLocalServiceUtil.updateAccountEntryWithWorkflow(
 				salesforceOpportunityKey, accountEntry, partnerEntry,
-				accountWorker, address, orderEntries, serviceContext);
+				accountWorker, address, orderEntries, users, serviceContext);
 		}
 	}
 

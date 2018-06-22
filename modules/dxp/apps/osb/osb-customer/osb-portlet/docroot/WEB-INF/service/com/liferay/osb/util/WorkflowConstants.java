@@ -32,6 +32,8 @@ public class WorkflowConstants
 	public static final String CONTEXT_NEW_ACCOUNT_ENTRY_ATTRIBUTES =
 		"osbNewAccountEntryAttributes";
 
+	public static final String CONTEXT_NEW_USERS = "osbNewUsers";
+
 	public static final String CONTEXT_OLD_ACCOUNT_ENTRY_ATTRIBUTES =
 		"osbOldAccountEntryAttributes";
 
