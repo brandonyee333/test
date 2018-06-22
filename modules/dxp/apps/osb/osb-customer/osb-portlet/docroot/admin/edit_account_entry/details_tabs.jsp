@@ -212,6 +212,11 @@ for (SupportRegion supportRegion : supportRegions) {
 							value="<%= longDateFormatDate.format(offeringEntryGroup.getSupportEndDate()) %>"
 						/>
 
+						<liferay-ui:search-container-column-text
+							name="version"
+							value="<%= OfferingEntryConstants.getVersionLabel(offeringEntryGroup.getVersion()) %>"
+						/>
+
 						<%
 						long licensePlid = PortalUtil.getPlidFromPortletId(user.getGroupId(), OSBPortletKeys.OSB_LICENSE);
 						%>

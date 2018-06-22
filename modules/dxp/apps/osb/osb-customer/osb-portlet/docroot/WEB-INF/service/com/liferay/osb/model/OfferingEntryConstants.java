@@ -14,6 +14,8 @@
 
 package com.liferay.osb.model;
 
+import com.liferay.portal.kernel.model.ListType;
+import com.liferay.portal.kernel.service.ListTypeServiceUtil;
 import com.liferay.portal.kernel.util.StringPool;
 
 /**
@@ -92,6 +94,17 @@ public class OfferingEntryConstants {
 		}
 		else {
 			return null;
+		}
+	}
+
+	public static String getVersionLabel(int version) {
+		try {
+			ListType listType = ListTypeServiceUtil.getListType(version);
+
+			return listType.getName();
+		}
+		catch (Exception e) {
+			return StringPool.BLANK;
 		}
 	}
 

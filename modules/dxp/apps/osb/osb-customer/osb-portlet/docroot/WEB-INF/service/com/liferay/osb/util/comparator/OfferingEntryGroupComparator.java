@@ -75,6 +75,15 @@ public class OfferingEntryGroupComparator implements Comparator<String> {
 			return value;
 		}
 
+		int version = GetterUtil.getInteger(keyMap.get("version"));
+		int version2 = GetterUtil.getInteger(key2Map.get("version"));
+
+		value = compareVersion(version, version2);
+
+		if (value != 0) {
+			return value;
+		}
+
 		long productEntryId = GetterUtil.getLong(keyMap.get("productEntryId"));
 		long productEntryId2 = GetterUtil.getLong(
 			key2Map.get("productEntryId"));
@@ -141,6 +150,18 @@ public class OfferingEntryGroupComparator implements Comparator<String> {
 					return 1;
 				}
 			}
+		}
+
+		return 0;
+	}
+
+	public int compareVersion(int version, int version2) {
+		if (version > version2) {
+			return -1;
+		}
+
+		if (version2 > version) {
+			return 1;
 		}
 
 		return 0;

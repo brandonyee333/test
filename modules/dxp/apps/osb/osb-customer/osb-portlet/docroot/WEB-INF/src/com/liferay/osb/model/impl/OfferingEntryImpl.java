@@ -68,33 +68,34 @@ public class OfferingEntryImpl extends OfferingEntryBaseImpl {
 	}
 
 	public String getKey() throws PortalException {
-		StringBundler sb = new StringBundler(18);
+		StringBundler sb = new StringBundler(20);
 
-		sb.append("supportEndDate=");
+		AccountEntry accountEntry = getAccountEntry();
 
-		Date supportEndDate = getSupportEndDate();
-
-		sb.append(supportEndDate.getTime());
+		if (accountEntry.getType() == AccountEntryConstants.TYPE_INDIVIDUAL) {
+			sb.append("userId=");
+			sb.append(getUserId());
+		}
 
 		sb.append(",productEntryId=");
 		sb.append(getProductEntryId());
 		sb.append(",supportResponseId=");
 		sb.append(getSupportResponseId());
+		sb.append(",type=");
+		sb.append(getType());
+		sb.append(",version=");
+		sb.append(getVersion());
 		sb.append(",licenses=");
 		sb.append(isLicenses());
 		sb.append(",licenseLifetime=");
 		sb.append(getLicenseLifetime());
 		sb.append(",supportLifetime=");
 		sb.append(getSupportLifetime());
-		sb.append(",type=");
-		sb.append(getType());
+		sb.append(",supportEndDate=");
 
-		AccountEntry accountEntry = getAccountEntry();
+		Date supportEndDate = getSupportEndDate();
 
-		if (accountEntry.getType() == AccountEntryConstants.TYPE_INDIVIDUAL) {
-			sb.append(",userId=");
-			sb.append(getUserId());
-		}
+		sb.append(supportEndDate.getTime());
 
 		sb.append(",status=");
 		sb.append(getStatus());

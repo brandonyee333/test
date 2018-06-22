@@ -165,6 +165,10 @@ public class OfferingEntryGroup {
 		return _userName;
 	}
 
+	public int getVersion() {
+		return _version;
+	}
+
 	public boolean hasAvailableServers() {
 		if ((_availableLicenseOfferingEntry != null) &&
 			(_licenseKeysCount < _quantity)) {
@@ -204,6 +208,7 @@ public class OfferingEntryGroup {
 		_type = offeringEntry.getType();
 		_userId = offeringEntry.getUserId();
 		_userName = offeringEntry.getUserName();
+		_version = offeringEntry.getVersion();
 	}
 
 	private AccountEntry _accountEntry;
@@ -230,5 +235,6 @@ public class OfferingEntryGroup {
 	private int _type;
 	private long _userId;
 	private String _userName;
+	private int _version;
 
 }
