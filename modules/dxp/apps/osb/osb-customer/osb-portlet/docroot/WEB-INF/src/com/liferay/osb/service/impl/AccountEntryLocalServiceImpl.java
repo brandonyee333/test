@@ -1173,18 +1173,6 @@ public class AccountEntryLocalServiceImpl
 				SupportUtil.serialize(orderEntries));
 		}
 
-		List<SupportRegion> oldSupportRegions =
-			oldAccountEntry.getSupportRegions();
-		List<SupportRegion> supportRegions = accountEntry.getSupportRegions();
-
-		if (!oldSupportRegions.equals(supportRegions)) {
-			SupportRegion supportRegion = supportRegions.get(0);
-
-			workflowContext.put(
-				WorkflowConstants.CONTEXT_SUPPORT_REGION_NAME,
-				supportRegion.getName());
-		}
-
 		if (workflowContext.isEmpty() && oldAccountEntryAttributes.isEmpty() &&
 			newAccountEntryAttributes.isEmpty()) {
 
@@ -1253,6 +1241,18 @@ public class AccountEntryLocalServiceImpl
 		workflowContext.put(
 			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_STAGE_NAME,
 			serviceContext.getAttribute("salesforceOpportunityStageName"));
+
+		List<SupportRegion> supportRegions =
+			oldAccountEntry.getSupportRegions();
+
+		if (!supportRegions.isEmpty()) {
+			SupportRegion supportRegion = supportRegions.get(0);
+
+			workflowContext.put(
+				WorkflowConstants.CONTEXT_SUPPORT_REGION_NAME,
+				supportRegion.getName());
+		}
+
 		workflowContext.put(
 			WorkflowConstants.CONTEXT_WARNING_MESSAGES,
 			serviceContext.getAttribute("warningMessages"));
