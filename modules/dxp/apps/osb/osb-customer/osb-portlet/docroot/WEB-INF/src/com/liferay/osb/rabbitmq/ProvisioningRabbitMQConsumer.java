@@ -257,6 +257,14 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 		return address;
 	}
 
+	protected String getCountryName(JSONObject jsonObject) {
+		Address address = parseAddress(jsonObject);
+
+		Country country = address.getCountry();
+
+		return country.getName();
+	}
+
 	protected int getIndustry(JSONObject accountJSONObject) {
 		String industry = accountJSONObject.getString("_industry");
 
@@ -278,9 +286,8 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 	}
 
 	protected String getLanguageId(JSONObject jsonObject) {
+		String countryName = getCountryName(jsonObject);
 		String soldBy = jsonObject.getString("_salesforceOpportunitySoldBy");
-		String territory = jsonObject.getString(
-			"_salesforceOpportunityTerritory");
 
 		if (Validator.isNull(soldBy)) {
 			_logWarning(
@@ -294,7 +301,9 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 			return AccountEntryConstants.LANGUAGE_ID_ENGLISH;
 		}
 		else if (soldBy.equals("Liferay Brazil")) {
-			if (Validator.isNotNull(territory) && territory.equals("Brazil")) {
+			if (Validator.isNotNull(countryName) &&
+				countryName.equals("Brazil")) {
+
 				return AccountEntryConstants.LANGUAGE_ID_PORTUGUESE;
 			}
 			else {
@@ -302,7 +311,9 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 			}
 		}
 		else if (soldBy.equals("Liferay China")) {
-			if (Validator.isNotNull(territory) && territory.equals("China")) {
+			if (Validator.isNotNull(countryName) &&
+				countryName.equals("China")) {
+
 				return AccountEntryConstants.LANGUAGE_ID_CHINESE;
 			}
 			else {
@@ -325,9 +336,9 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 			return AccountEntryConstants.LANGUAGE_ID_JAPANESE;
 		}
 		else if (soldBy.equals("Liferay Spain")) {
-			if (Validator.isNotNull(territory) &&
-				(territory.equals("Greece") || territory.equals("Italy") ||
-				 territory.equals("Portugal"))) {
+			if (Validator.isNotNull(countryName) &&
+				(countryName.equals("Greece") || countryName.equals("Italy") ||
+				 countryName.equals("Portugal"))) {
 
 				return AccountEntryConstants.LANGUAGE_ID_ENGLISH;
 			}
@@ -341,7 +352,7 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 
 		_logWarning(
 			"Unable to find matching support language for " + soldBy + " and " +
-				territory + ". Defaulting support language to English.");
+				countryName + ". Defaulting support language to English.");
 
 		return AccountEntryConstants.LANGUAGE_ID_ENGLISH;
 	}
@@ -571,10 +582,9 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 
 	protected long[] getSupportRegionIds(JSONObject jsonObject) {
 		String soldBy = jsonObject.getString("_salesforceOpportunitySoldBy");
-		String territory = jsonObject.getString(
-			"_salesforceOpportunityTerritory");
 
-		String supportRegionName = getSupportRegionName(soldBy, territory);
+		String supportRegionName = getSupportRegionName(
+			soldBy, getCountryName(jsonObject));
 
 		SupportRegion supportRegion =
 			SupportRegionLocalServiceUtil.fetchSupportRegionByName(
@@ -587,7 +597,7 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 		return new long[0];
 	}
 
-	protected String getSupportRegionName(String soldBy, String territory) {
+	protected String getSupportRegionName(String soldBy, String countryName) {
 		if (Validator.isNull(soldBy)) {
 			_logWarning(
 				"Sold by field is empty. Defaulting support region to global.");
@@ -623,8 +633,8 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 			return "Japan";
 		}
 		else if (soldBy.equals("Liferay Spain")) {
-			if (Validator.isNotNull(territory) &&
-				(territory.equals("Greece") || territory.equals("Italy"))) {
+			if (Validator.isNotNull(countryName) &&
+				(countryName.equals("Greece") || countryName.equals("Italy"))) {
 
 				return "Hungary";
 			}
@@ -638,7 +648,7 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 
 		_logWarning(
 			"Unable to find matching support region for " + soldBy + " and " +
-				territory + ". Defaulting support region to global.");
+				countryName + ". Defaulting support region to global.");
 
 		return "Global";
 	}
