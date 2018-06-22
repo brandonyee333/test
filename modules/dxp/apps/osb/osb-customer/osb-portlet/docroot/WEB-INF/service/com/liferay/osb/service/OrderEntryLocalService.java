@@ -18,7 +18,6 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountWorker;
-import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.model.PartnerEntry;
@@ -220,7 +219,7 @@ public interface OrderEntryLocalService extends BaseLocalService,
 
 	public List<OrderEntry> addOrderEntriesWithWorkflow(
 		java.lang.String salesforceOpportunityKey, AccountEntry accountEntry,
-		CorpProject corpProject, PartnerEntry partnerEntry, Address address,
+		PartnerEntry partnerEntry, Address address,
 		AccountWorker accountWorker, List<OrderEntry> orderEntries,
 		ServiceContext serviceContext) throws PortalException;
 

@@ -137,7 +137,6 @@ public class OrderEntryLocalServiceClp implements OrderEntryLocalService {
 
 		_methodParameterTypes22 = new String[] {
 				"java.lang.String", "com.liferay.osb.model.AccountEntry",
-				"com.liferay.osb.model.CorpProject",
 				"com.liferay.osb.model.PartnerEntry",
 				"com.liferay.portal.kernel.model.Address",
 				"com.liferay.osb.model.AccountWorker", "java.util.List",
@@ -926,7 +925,6 @@ public class OrderEntryLocalServiceClp implements OrderEntryLocalService {
 	public java.util.List<com.liferay.osb.model.OrderEntry> addOrderEntriesWithWorkflow(
 		java.lang.String salesforceOpportunityKey,
 		com.liferay.osb.model.AccountEntry accountEntry,
-		com.liferay.osb.model.CorpProject corpProject,
 		com.liferay.osb.model.PartnerEntry partnerEntry,
 		com.liferay.portal.kernel.model.Address address,
 		com.liferay.osb.model.AccountWorker accountWorker,
@@ -942,8 +940,6 @@ public class OrderEntryLocalServiceClp implements OrderEntryLocalService {
 						ClpSerializer.translateInput(salesforceOpportunityKey),
 						
 					ClpSerializer.translateInput(accountEntry),
-						
-					ClpSerializer.translateInput(corpProject),
 						
 					ClpSerializer.translateInput(partnerEntry),
 						

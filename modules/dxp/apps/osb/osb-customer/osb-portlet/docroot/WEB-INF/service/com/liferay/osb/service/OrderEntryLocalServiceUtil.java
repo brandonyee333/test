@@ -257,7 +257,6 @@ public class OrderEntryLocalServiceUtil {
 	public static java.util.List<com.liferay.osb.model.OrderEntry> addOrderEntriesWithWorkflow(
 		java.lang.String salesforceOpportunityKey,
 		com.liferay.osb.model.AccountEntry accountEntry,
-		com.liferay.osb.model.CorpProject corpProject,
 		com.liferay.osb.model.PartnerEntry partnerEntry,
 		com.liferay.portal.kernel.model.Address address,
 		com.liferay.osb.model.AccountWorker accountWorker,
@@ -266,8 +265,8 @@ public class OrderEntryLocalServiceUtil {
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addOrderEntriesWithWorkflow(salesforceOpportunityKey,
-			accountEntry, corpProject, partnerEntry, address, accountWorker,
-			orderEntries, serviceContext);
+			accountEntry, partnerEntry, address, accountWorker, orderEntries,
+			serviceContext);
 	}
 
 	/**

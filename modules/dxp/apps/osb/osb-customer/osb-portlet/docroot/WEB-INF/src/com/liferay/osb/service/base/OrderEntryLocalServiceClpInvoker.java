@@ -127,7 +127,6 @@ public class OrderEntryLocalServiceClpInvoker {
 
 		_methodParameterTypes177 = new String[] {
 				"java.lang.String", "com.liferay.osb.model.AccountEntry",
-				"com.liferay.osb.model.CorpProject",
 				"com.liferay.osb.model.PartnerEntry",
 				"com.liferay.portal.kernel.model.Address",
 				"com.liferay.osb.model.AccountWorker", "java.util.List",
@@ -331,12 +330,11 @@ public class OrderEntryLocalServiceClpInvoker {
 				Arrays.deepEquals(_methodParameterTypes177, parameterTypes)) {
 			return OrderEntryLocalServiceUtil.addOrderEntriesWithWorkflow((java.lang.String)arguments[0],
 				(com.liferay.osb.model.AccountEntry)arguments[1],
-				(com.liferay.osb.model.CorpProject)arguments[2],
-				(com.liferay.osb.model.PartnerEntry)arguments[3],
-				(com.liferay.portal.kernel.model.Address)arguments[4],
-				(com.liferay.osb.model.AccountWorker)arguments[5],
-				(java.util.List<com.liferay.osb.model.OrderEntry>)arguments[6],
-				(com.liferay.portal.kernel.service.ServiceContext)arguments[7]);
+				(com.liferay.osb.model.PartnerEntry)arguments[2],
+				(com.liferay.portal.kernel.model.Address)arguments[3],
+				(com.liferay.osb.model.AccountWorker)arguments[4],
+				(java.util.List<com.liferay.osb.model.OrderEntry>)arguments[5],
+				(com.liferay.portal.kernel.service.ServiceContext)arguments[6]);
 		}
 
 		if (_methodName178.equals(name) &&
