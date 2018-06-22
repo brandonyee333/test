@@ -59,9 +59,10 @@ int[] productMinorVersions = StringUtil.split(portletPreferences.getValue("produ
 
 						<c:choose>
 							<c:when test="<%= accountEntry != null %>">
-								<option selected value="<%= accountEntry.getAccountEntryId() %>"><%= HtmlUtil.escape(accountEntry.getName()) %></option>
+								<option value="<%= accountEntry.getAccountEntryId() %>"><%= HtmlUtil.escape(accountEntry.getName()) %></option>
 							</c:when>
 							<c:otherwise>
+								<option disabled selected value=""><liferay-ui:message key="project" /></option>
 
 								<%
 								for (AccountEntry curAccountEntry : accountEntries) {
@@ -82,7 +83,7 @@ int[] productMinorVersions = StringUtil.split(portletPreferences.getValue("produ
 			<div class="aui-w33 content-column">
 				<div class="activation-column content-column-content">
 					<select id="<portlet:namespace />productMinorVersion" name="<portlet:namespace />productMinorVersion">
-						<option disabled selected><liferay-ui:message key="version" /></option>
+						<option disabled selected value=""><liferay-ui:message key="version" /></option>
 					</select>
 				</div>
 			</div>
@@ -95,51 +96,63 @@ int[] productMinorVersions = StringUtil.split(portletPreferences.getValue("produ
 		</div>
 
 		<aui:script>
-			function <portlet:namespace />generateLicenseKey() {
-				var A = AUI();
+			Liferay.provide(
+				window,
+				'<portlet:namespace />generateLicenseKey',
+				function() {
+					var A = AUI();
 
-				var accountEntryId = A.one('#<portlet:namespace />accountEntryId');
-				var productMinorVersion = A.one('#<portlet:namespace />productMinorVersion');
+					var accountEntryId = A.one('#<portlet:namespace />accountEntryId');
+					var productMinorVersion = A.one('#<portlet:namespace />productMinorVersion');
 
-				if ((accountEntryId.get('selectedIndex') == 0) || (productMinorVersion.get('selectedIndex') == 0)) {
-					alert('<liferay-ui:message key="please-fill-out-all-required-fields" />');
+					if (accountEntryId && productMinorVersion) {
+						if (!accountEntryId.get('value') || !productMinorVersion.get('value')) {
+							alert('<liferay-ui:message key="please-fill-out-all-required-fields" />');
 
-					return;
-				}
+							return;
+						}
 
-				<portlet:resourceURL id="generateLicenseKey" var="generateLicenseKeyURL">
-					<portlet:param name="productEntryRootName" value="<%= productEntryRootName %>" />
-				</portlet:resourceURL>
+						<portlet:resourceURL id="generateLicenseKey" var="generateLicenseKeyURL">
+							<portlet:param name="productEntryRootName" value="<%= productEntryRootName %>" />
+						</portlet:resourceURL>
 
-				window.location.href = '<%= generateLicenseKeyURL.toString() %>&<portlet:namespace />accountEntryId=' + accountEntryId.val() + '&<portlet:namespace />productMinorVersion=' + productMinorVersion.val();
-			}
+						window.location.href = '<%= generateLicenseKeyURL.toString() %>&<portlet:namespace />accountEntryId=' + accountEntryId.val() + '&<portlet:namespace />productMinorVersion=' + productMinorVersion.val();
+					}
+				},
+				['aui-base']
+			);
 
-			function <portlet:namespace />selectAccountEntry(accountEntryId) {
-				var A = AUI();
+			Liferay.provide(
+				window,
+				'<portlet:namespace />selectAccountEntry',
+				function(accountEntryId) {
+					var A = AUI();
 
-				var productMinorVersionSelect = A.one('#<portlet:namespace />productMinorVersion');
+					var productMinorVersionSelect = A.one('#<portlet:namespace />productMinorVersion');
 
-				productMinorVersionSelect.empty();
+					if (productMinorVersionSelect) {
+						productMinorVersionSelect.empty();
 
-				var productMinorVersionOptions = [];
+						var productMinorVersionOptions = [];
 
-				productMinorVersionOptions.push('<option disabled><liferay-ui:message key="version" /></option>');
+						productMinorVersionOptions.push('<option disabled><liferay-ui:message key="version" /></option>');
 
-				<%
-				for (int productMinorVersion : productMinorVersions) {
-					ListType productMinorVersionType = ListTypeServiceUtil.getListType(productMinorVersion);
-				%>
+						<%
+						for (int productMinorVersion : productMinorVersions) {
+							ListType productMinorVersionType = ListTypeServiceUtil.getListType(productMinorVersion);
+						%>
 
-					productMinorVersionOptions.push('<option value="<%= productMinorVersion %>"><%= LanguageUtil.get(request, productMinorVersionType.getName()) %></option>');
+							productMinorVersionOptions.push('<option value="<%= productMinorVersion %>"><%= LanguageUtil.get(request, productMinorVersionType.getName()) %></option>');
 
-				<%
-				}
-				%>
+						<%
+						}
+						%>
 
-				productMinorVersionSelect.append(productMinorVersionOptions.join(''));
-
-				productMinorVersionSelect.set('selectedIndex', 0);
-			}
+						productMinorVersionSelect.append(productMinorVersionOptions.join(''));
+					}
+				},
+				['aui-base']
+			);
 
 			<c:if test="<%= accountEntry != null %>">
 				<portlet:namespace />selectAccountEntry(<%= accountEntry.getAccountEntryId() %>);
