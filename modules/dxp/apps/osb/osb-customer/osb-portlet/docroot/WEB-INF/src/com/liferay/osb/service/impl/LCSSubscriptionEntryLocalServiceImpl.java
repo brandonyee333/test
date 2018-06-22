@@ -129,6 +129,10 @@ public class LCSSubscriptionEntryLocalServiceImpl
 			return null;
 		}
 
+		if (offeringEntry.getType() == OfferingEntryConstants.TYPE_DEVELOPER) {
+			return null;
+		}
+
 		ProductEntry productEntry = offeringEntry.getProductEntry();
 		SupportResponse supportResponse = offeringEntry.getSupportResponse();
 

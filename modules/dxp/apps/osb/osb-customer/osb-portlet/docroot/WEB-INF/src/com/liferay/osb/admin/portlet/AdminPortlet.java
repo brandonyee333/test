@@ -876,6 +876,9 @@ public class AdminPortlet extends OSBPortlet {
 				actionRequest, "supportResponseId_" + i);
 			String productDescription = ParamUtil.getString(
 				actionRequest, "productDescription_" + i);
+			int type = ParamUtil.getInteger(
+				actionRequest, "type_" + i,
+				OfferingEntryConstants.TYPE_REGULAR);
 			int version = ParamUtil.getInteger(actionRequest, "version_" + i);
 			boolean licenses = ParamUtil.getBoolean(
 				actionRequest, "licenses_" + i);
@@ -893,7 +896,7 @@ public class AdminPortlet extends OSBPortlet {
 			offeringEntry.setProductEntryId(productEntryId);
 			offeringEntry.setSupportResponseId(supportResponseId);
 			offeringEntry.setProductDescription(productDescription);
-			offeringEntry.setType(OfferingEntryConstants.TYPE_REGULAR);
+			offeringEntry.setType(type);
 			offeringEntry.setVersion(version);
 			offeringEntry.setLicenses(licenses);
 			offeringEntry.setLicenseLifetime(licenseLifetime);
