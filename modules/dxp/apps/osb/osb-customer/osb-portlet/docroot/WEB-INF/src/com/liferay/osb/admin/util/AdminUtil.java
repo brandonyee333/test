@@ -110,44 +110,6 @@ public class AdminUtil {
 		return sb.toString();
 	}
 
-	public static List<Class<?>> getClasses(int buildNumber) throws Exception {
-		String packageName = getPackageName(buildNumber);
-
-		String packageDirName = StringUtil.replace(
-			packageName, CharPool.PERIOD, CharPool.SLASH);
-
-		ClassLoader classLoader = BaseUpgradeImpl.class.getClassLoader();
-
-		URL packageURL = classLoader.getResource(packageDirName);
-
-		if (packageURL == null) {
-			return Collections.emptyList();
-		}
-
-		List<Class<?>> classes = new ArrayList<Class<?>>();
-
-		File packageFile = new File(packageURL.getFile());
-
-		String[] fileNames = packageFile.list();
-
-		Arrays.sort(fileNames);
-
-		for (String fileName : fileNames) {
-			if (!fileName.endsWith(".class")) {
-				continue;
-			}
-
-			String className = fileName.substring(0, fileName.length() - 6);
-
-			Class<?> clazz = classLoader.loadClass(
-				packageName + StringPool.PERIOD + className);
-
-			classes.add(clazz);
-		}
-
-		return classes;
-	}
-
 	public static Map<Locale, String> getEmailProvisioningCreateAccountBodyMap(
 		PortletPreferences preferences) {
 
@@ -233,7 +195,62 @@ public class AdminUtil {
 		return new FileRepository(fileRepositoryProperties);
 	}
 
-	public static String getPackageName(int buildNumber) {
+	public static List<Class<?>> getManualUpgradeProcessClasses(int buildNumber)
+		throws Exception {
+
+		String manualUpgradeProcessPackage = _getManualUpgradeProcessPackage(
+			buildNumber);
+
+		String manualUpgradeProcessDirPath = StringUtil.replace(
+			manualUpgradeProcessPackage, CharPool.PERIOD, CharPool.SLASH);
+
+		ClassLoader classLoader = BaseUpgradeImpl.class.getClassLoader();
+
+		URL manualUpgradeProcessURL = classLoader.getResource(
+			manualUpgradeProcessDirPath);
+
+		if (manualUpgradeProcessURL == null) {
+			return Collections.emptyList();
+		}
+
+		List<Class<?>> manualUpgradeProcessClasses = new ArrayList<>();
+
+		File manualUpgradeProcessDir = new File(
+			manualUpgradeProcessURL.getFile());
+
+		String[] fileNames = manualUpgradeProcessDir.list();
+
+		Arrays.sort(fileNames);
+
+		for (String fileName : fileNames) {
+			if (!fileName.endsWith(".class")) {
+				continue;
+			}
+
+			String className = fileName.substring(0, fileName.length() - 6);
+
+			Class<?> manualUpgradeProcessClass = classLoader.loadClass(
+				manualUpgradeProcessPackage + StringPool.PERIOD + className);
+
+			manualUpgradeProcessClasses.add(manualUpgradeProcessClass);
+		}
+
+		return manualUpgradeProcessClasses;
+	}
+
+	public static PortletPreferences getPortletPreferences() {
+		long ownerId = OSBConstants.COMPANY_ID;
+		int ownerType = PortletKeys.PREFS_OWNER_TYPE_COMPANY;
+		long plid = PortletKeys.PREFS_PLID_SHARED;
+		String portletId = OSBPortletKeys.OSB_ADMIN;
+		String defaultPreferences = null;
+
+		return PortletPreferencesLocalServiceUtil.getPreferences(
+			OSBConstants.COMPANY_ID, ownerId, ownerType, plid, portletId,
+			defaultPreferences);
+	}
+
+	private static String _getManualUpgradeProcessPackage(int buildNumber) {
 		String buildNumberString = String.valueOf(buildNumber);
 
 		StringBundler sb = new StringBundler(buildNumberString.length() * 2);
@@ -253,18 +270,6 @@ public class AdminUtil {
 		sb.append(".manual");
 
 		return sb.toString();
-	}
-
-	public static PortletPreferences getPortletPreferences() {
-		long ownerId = OSBConstants.COMPANY_ID;
-		int ownerType = PortletKeys.PREFS_OWNER_TYPE_COMPANY;
-		long plid = PortletKeys.PREFS_PLID_SHARED;
-		String portletId = OSBPortletKeys.OSB_ADMIN;
-		String defaultPreferences = null;
-
-		return PortletPreferencesLocalServiceUtil.getPreferences(
-			OSBConstants.COMPANY_ID, ownerId, ownerType, plid, portletId,
-			defaultPreferences);
 	}
 
 }

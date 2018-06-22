@@ -14,9 +14,6 @@
 
 package com.liferay.osb.admin.portlet;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.osb.tools.Upgrade;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.document.library.kernel.exception.FileExtensionException;
 import com.liferay.document.library.kernel.exception.FileNameException;
 import com.liferay.osb.admin.util.KeyGenerator;
@@ -97,11 +94,13 @@ import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.osb.service.SupportRegionLocalServiceUtil;
 import com.liferay.osb.service.SupportResponseLocalServiceUtil;
+import com.liferay.osb.tools.Upgrade;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.osb.util.OSBRequestUtil;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.osb.util.mvc.OSBPortlet;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.exception.AddressCityException;
 import com.liferay.portal.kernel.exception.AddressStreetException;
 import com.liferay.portal.kernel.exception.AddressZipException;
@@ -129,6 +128,7 @@ import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.CharPool;
@@ -436,12 +436,12 @@ public class AdminPortlet extends OSBPortlet {
 		Release release = ReleaseLocalServiceUtil.getRelease(
 			OSBConstants.OSB_PORTLET_RELEASE_ID);
 
-		List<Class<?>> classes = AdminUtil.getClasses(release.getBuildNumber());
+		List<Class<?>> upgradeProcessClasses =
+			AdminUtil.getManualUpgradeProcessClasses(release.getBuildNumber());
 
-		UpgradeProcess upgradeProcess = null;
-
-		for (Class<?> clazz : classes) {
-			upgradeProcess = (UpgradeProcess)clazz.newInstance();
+		for (Class<?> upgradeProcessClass : upgradeProcessClasses) {
+			UpgradeProcess upgradeProcess =
+				(UpgradeProcess)upgradeProcessClass.newInstance();
 
 			upgradeProcess.upgrade();
 		}

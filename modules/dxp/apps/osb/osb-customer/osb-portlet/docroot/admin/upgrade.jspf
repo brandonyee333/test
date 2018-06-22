@@ -17,12 +17,12 @@
 <%
 Release release = ReleaseLocalServiceUtil.getRelease(OSBConstants.OSB_PORTLET_RELEASE_ID);
 
-List<Class<?>> classes = AdminUtil.getClasses(release.getBuildNumber());
+List<Class<?>> upgradeProcessClasses = AdminUtil.getManualUpgradeProcessClasses(release.getBuildNumber());
 
-for (Class clazz : classes) {
+for (Class<?> upgradeProcessClass : upgradeProcessClasses) {
 %>
 
-	<%= HtmlUtil.escape(clazz.getName()) %>
+	<%= upgradeProcessClass.getName() %>
 
 	<br />
 
