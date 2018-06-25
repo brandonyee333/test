@@ -466,6 +466,100 @@ public class AccountEntryLocalServiceImpl
 		}
 	}
 
+	public void addWorkflowTask(
+			String salesforceOpportunityKey, AccountEntry accountEntry,
+			ServiceContext serviceContext)
+		throws PortalException, SystemException {
+
+		HashMap<String, Serializable> workflowContext =
+			new HashMap<String, Serializable>();
+
+		workflowContext.put(
+			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_ACTION,
+			Constants.VIEW);
+
+		int salesforceOpportunityType = GetterUtil.getInteger(
+			serviceContext.getAttribute("salesforceOpportunityType"));
+
+		workflowContext.put(
+			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_TYPE,
+			salesforceOpportunityType);
+
+		String salesforceOpportunityTaskName =
+			SalesforceConstants.getOpportunityTaskName(
+				salesforceOpportunityType, Constants.VIEW);
+
+		workflowContext.put(
+			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_TASK_NAME,
+			salesforceOpportunityTaskName);
+
+		workflowContext.put(
+			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_KEY,
+			salesforceOpportunityKey);
+		workflowContext.put(
+			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_STAGE_NAME,
+			serviceContext.getAttribute("salesforceOpportunityStageName"));
+
+		AccountEntry renewAccountEntry =
+			accountEntryPersistence.findByPrimaryKey(
+				accountEntry.getAccountEntryId());
+
+		List<SupportRegion> supportRegions =
+			renewAccountEntry.getSupportRegions();
+
+		if (!supportRegions.isEmpty()) {
+			SupportRegion supportRegion = supportRegions.get(0);
+
+			workflowContext.put(
+				WorkflowConstants.CONTEXT_SUPPORT_REGION_NAME,
+				supportRegion.getName());
+		}
+
+		List<WorkflowTask> workflowTasks = WorkflowTaskManagerUtil.search(
+			OSBConstants.COMPANY_ID, 0, null, AccountEntry.class.getName(),
+			new Long[] {accountEntry.getAccountEntryId()}, null, null, false,
+			null, true, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+
+		for (WorkflowTask workflowTask : workflowTasks) {
+			Map<String, Serializable> curWorkflowContext =
+				workflowTask.getOptionalAttributes();
+
+			String salesforceOpportunityAction = GetterUtil.getString(
+				curWorkflowContext.get(
+					WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_ACTION));
+
+			if (!salesforceOpportunityAction.equals(Constants.VIEW)) {
+				continue;
+			}
+
+			String curSalesforceOpportunityKey = (String)curWorkflowContext.get(
+				WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_KEY);
+
+			if (!salesforceOpportunityKey.equals(curSalesforceOpportunityKey)) {
+				continue;
+			}
+
+			WorkflowTaskManagerUtil.completeWorkflowTask(
+				OSBConstants.COMPANY_ID, OSBConstants.USER_AMOS_FONG_USER_ID,
+				workflowTask.getWorkflowTaskId(), "close",
+				"This update task is out of date.", null);
+
+			Indexer indexer = IndexerRegistryUtil.getIndexer(
+				WorkflowTask.class.getName());
+
+			indexer.reindex(workflowTask);
+		}
+
+		ServiceContext workflowServiceContext = new ServiceContext();
+
+		workflowServiceContext.setAttribute("workflowContext", workflowContext);
+
+		WorkflowHandlerRegistryUtil.startWorkflowInstance(
+			OSBConstants.COMPANY_ID, renewAccountEntry.getUserId(),
+			AccountEntry.class.getName(), renewAccountEntry.getAccountEntryId(),
+			renewAccountEntry, workflowServiceContext);
+	}
+
 	public void auditAccountEntries() throws PortalException {
 		if (!PortletPropsValues.REMOTE_REST_SERVICE_API_DOSSIERA_ENABLED) {
 			return;

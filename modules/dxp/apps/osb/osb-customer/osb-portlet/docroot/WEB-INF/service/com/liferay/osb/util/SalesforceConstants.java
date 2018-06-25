@@ -21,6 +21,8 @@ import com.liferay.portal.kernel.util.Constants;
  */
 public class SalesforceConstants {
 
+	public static final String OPPORTUNITY_STAGE_CLOSED_LOST = "Closed Lost";
+
 	public static final String OPPORTUNITY_STAGE_CLOSED_WON = "Closed Won";
 
 	public static final int OPPORTUNITY_TYPE_EXISTING_BUSINESS = 1;

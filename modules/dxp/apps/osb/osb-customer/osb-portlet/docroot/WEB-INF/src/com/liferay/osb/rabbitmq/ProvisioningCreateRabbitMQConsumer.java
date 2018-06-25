@@ -27,6 +27,8 @@ import com.liferay.osb.service.OrderEntryLocalServiceUtil;
 import com.liferay.osb.util.SalesforceConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -53,10 +55,19 @@ public class ProvisioningCreateRabbitMQConsumer
 		String salesforceOpportunityStageName = jsonObject.getString(
 			"_salesforceOpportunityStageName");
 
-		if (!salesforceOpportunityStageName.equals(
-				SalesforceConstants.OPPORTUNITY_STAGE_CLOSED_WON)) {
+		int salesforceOpportunityType = getSalesforceOpportunityType(
+			jsonObject.getString("_salesforceOpportunityType"));
 
-			throw new WorkflowException("Opportunity is not closed won");
+		if (!isValidOpportunity(
+				salesforceOpportunityStageName, salesforceOpportunityType)) {
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Opportunity is not closed won or a renewal that is " +
+						"closed lost.");
+			}
+
+			return;
 		}
 
 		String salesforceOpportunityKey = jsonObject.getString(
@@ -76,7 +87,20 @@ public class ProvisioningCreateRabbitMQConsumer
 
 		ServiceContext serviceContext = createServiceContext(jsonObject);
 
-		if (hasUnlimitedEnterpriseWide(orderEntries)) {
+		if (salesforceOpportunityStageName.equals(
+				SalesforceConstants.OPPORTUNITY_STAGE_CLOSED_LOST) &&
+			(salesforceOpportunityType ==
+				SalesforceConstants.OPPORTUNITY_TYPE_RENEWAL)) {
+
+			if (accountEntry.getAccountEntryId() <= 0) {
+				throw new WorkflowException(
+					"There is no project created for the renewal opportunity.");
+			}
+
+			AccountEntryLocalServiceUtil.addWorkflowTask(
+				salesforceOpportunityKey, accountEntry, serviceContext);
+		}
+		else if (hasUnlimitedEnterpriseWide(orderEntries)) {
 			long classNameId = PortalUtil.getClassNameId(AccountEntry.class);
 
 			List<ExternalIdMapper> externalIdMappers =
@@ -109,5 +133,24 @@ public class ProvisioningCreateRabbitMQConsumer
 				serviceContext);
 		}
 	}
+
+	private boolean isValidOpportunity(
+		String salesforceOpportunityStageName, int salesforceOpportunityType) {
+
+		if (salesforceOpportunityStageName.equals(
+				SalesforceConstants.OPPORTUNITY_STAGE_CLOSED_WON) ||
+			(salesforceOpportunityStageName.equals(
+				SalesforceConstants.OPPORTUNITY_STAGE_CLOSED_LOST) &&
+			 (salesforceOpportunityType ==
+				SalesforceConstants.OPPORTUNITY_TYPE_RENEWAL))) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(
+		ProvisioningCreateRabbitMQConsumer.class);
 
 }
