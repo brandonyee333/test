@@ -35,6 +35,13 @@ public class AccountEnvironmentAttachmentSizeException extends PortalException {
 		_type = type;
 	}
 
+	public AccountEnvironmentAttachmentSizeException(
+		int type, String fileName) {
+
+		_type = type;
+		_fileName = fileName;
+	}
+
 	public AccountEnvironmentAttachmentSizeException(String msg) {
 		super(msg);
 	}
@@ -49,10 +56,15 @@ public class AccountEnvironmentAttachmentSizeException extends PortalException {
 		super(cause);
 	}
 
+	public String getFileName() {
+		return _fileName;
+	}
+
 	public int getType() {
 		return _type;
 	}
 
+	private String _fileName;
 	private int _type;
 
 }

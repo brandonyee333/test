@@ -634,7 +634,8 @@ public class AdminPortlet extends OSBPortlet {
 
 				if (file.length() <= 0) {
 					throw new AccountEnvironmentAttachmentSizeException(
-						AccountEnvironmentAttachmentSizeException.EMPTY_FILE);
+						AccountEnvironmentAttachmentSizeException.EMPTY_FILE,
+						fileName);
 				}
 
 				ObjectValuePair<String, File> ovp = new ObjectValuePair<>(

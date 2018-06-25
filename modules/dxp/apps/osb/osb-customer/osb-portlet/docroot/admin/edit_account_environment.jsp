@@ -78,7 +78,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 
 		<c:choose>
 			<c:when test="<%= aease.getType() == AccountEnvironmentAttachmentSizeException.EMPTY_FILE %>">
-				<liferay-ui:message key="the-file-contains-no-data-and-cannot-be-uploaded" />
+				<liferay-ui:message arguments="<%= aease.getFileName() %>" key="x-contains-no-data-and-cannot-be-uploaded" />
 			</c:when>
 			<c:when test="<%= aease.getType() == AccountEnvironmentAttachmentSizeException.EXCEEDS_LIMIT %>">
 				<liferay-ui:message key="please-upload-a-file-less-than-100-mb" />
