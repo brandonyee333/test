@@ -45,10 +45,8 @@ import com.liferay.osb.service.SupportRegionLocalServiceUtil;
 import com.liferay.osb.service.SupportResponseLocalServiceUtil;
 import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.osb.util.OSBConstants;
-import com.liferay.osb.util.PortletPropsKeys;
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.osb.util.SalesforceConstants;
-import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -79,7 +77,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SubscriptionSender;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.util.portlet.PortletProps;
 
 import java.text.Format;
 
@@ -1163,41 +1160,22 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 
 		_log.error("Sending error notification: " + sb.toString());
 
-		String emailAddress = StringPool.BLANK;
-
-		if (jsonObject != null) {
-			try {
-				JSONObject projectJSONObject = jsonObject.getJSONObject(
-					"_project");
-
-				String supportRegionName = projectJSONObject.getString(
-					"_supportRegion");
-
-				emailAddress = PortletProps.get(
-					PortletPropsKeys.PROVISIONING_EMAIL_ADDRESS,
-					new Filter(supportRegionName));
-			}
-			catch (Exception e2) {
-			}
-		}
-
-		if (Validator.isNull(emailAddress)) {
-			emailAddress = PortletProps.get(
-				PortletPropsKeys.PROVISIONING_EMAIL_ADDRESS,
-				new Filter("Global"));
-		}
-
 		SubscriptionSender subscriptionSender = new SubscriptionSender();
 
 		subscriptionSender.setBody(sb.toString());
 		subscriptionSender.setCompanyId(OSBConstants.COMPANY_ID);
-		subscriptionSender.setFrom(emailAddress, "provisioning");
+		subscriptionSender.setFrom(
+			PortletPropsValues.AUTOMATIC_PROVISIONING_ERROR_EMAIL_ADDRESS,
+			"provisioning");
 		subscriptionSender.setHtmlFormat(true);
 		subscriptionSender.setMailId("provisioning");
-		subscriptionSender.setReplyToAddress(emailAddress);
+		subscriptionSender.setReplyToAddress(
+			PortletPropsValues.AUTOMATIC_PROVISIONING_ERROR_EMAIL_ADDRESS);
 		subscriptionSender.setSubject("Auto-Provisioning Error");
 
-		subscriptionSender.addRuntimeSubscribers(emailAddress, "provisioning");
+		subscriptionSender.addRuntimeSubscribers(
+			PortletPropsValues.AUTOMATIC_PROVISIONING_ERROR_EMAIL_ADDRESS,
+			"provisioning");
 
 		subscriptionSender.flushNotificationsAsync();
 	}

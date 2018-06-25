@@ -24,6 +24,10 @@ import com.liferay.util.portlet.PortletProps;
  */
 public class PortletPropsValues {
 
+	public static final String AUTOMATIC_PROVISIONING_ERROR_EMAIL_ADDRESS =
+		PortletProps.get(
+			PortletPropsKeys.AUTOMATIC_PROVISIONING_ERROR_EMAIL_ADDRESS);
+
 	public static final boolean DEVELOPER_MODE_ENABLED = GetterUtil.getBoolean(
 		PortletProps.get(PortletPropsKeys.DEVELOPER_MODE_ENABLED));
 
