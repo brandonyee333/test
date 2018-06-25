@@ -123,6 +123,13 @@ public class LCSSubscriptionEntryLocalServiceImpl
 			return null;
 		}
 
+		int serversAllowed =
+			offeringEntry.getQuantity() - offeringEntry.getLicenseKeysCount();
+
+		if (serversAllowed <= 0) {
+			return null;
+		}
+
 		Date startDate = orderEntry.getStartDate();
 
 		if (startDate.getTime() > System.currentTimeMillis()) {
@@ -140,7 +147,7 @@ public class LCSSubscriptionEntryLocalServiceImpl
 			return null;
 		}
 
-		String product = getProuct(productEntry, supportResponse);
+		String product = getProduct(productEntry, supportResponse);
 
 		if (Validator.isNull(product)) {
 			return null;
@@ -162,8 +169,7 @@ public class LCSSubscriptionEntryLocalServiceImpl
 		lcsSubscriptionEntry.setPlatform(offeringEntry.getPlatform());
 		lcsSubscriptionEntry.setPlatformVersion(
 			offeringEntry.getPlatformVersion());
-		lcsSubscriptionEntry.setServersAllowed(
-			offeringEntry.getQuantity() - offeringEntry.getLicenseKeysCount());
+		lcsSubscriptionEntry.setServersAllowed(serversAllowed);
 		lcsSubscriptionEntry.setInstanceSize(offeringEntry.getSizing());
 		lcsSubscriptionEntry.setStartDate(startDate);
 
@@ -218,7 +224,7 @@ public class LCSSubscriptionEntryLocalServiceImpl
 		return sb.toString();
 	}
 
-	protected String getProuct(
+	protected String getProduct(
 		ProductEntry productEntry, SupportResponse supportResponse) {
 
 		String product = StringPool.BLANK;
