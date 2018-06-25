@@ -431,6 +431,10 @@ public interface AccountEntryLocalService extends BaseLocalService,
 
 	public void addTrialAccountEntry(long userId) throws java.lang.Exception;
 
+	public void addWorkflowTask(java.lang.String salesforceOpportunityKey,
+		AccountEntry accountEntry, ServiceContext serviceContext)
+		throws PortalException;
+
 	public void auditAccountEntries() throws PortalException;
 
 	public void auditAccountEntry(long userId, long accountEntryId)

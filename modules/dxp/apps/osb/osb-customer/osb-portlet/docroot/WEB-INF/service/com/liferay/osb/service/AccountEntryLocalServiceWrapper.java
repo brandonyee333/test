@@ -611,6 +611,15 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	}
 
 	@Override
+	public void addWorkflowTask(java.lang.String salesforceOpportunityKey,
+		com.liferay.osb.model.AccountEntry accountEntry,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_accountEntryLocalService.addWorkflowTask(salesforceOpportunityKey,
+			accountEntry, serviceContext);
+	}
+
+	@Override
 	public void auditAccountEntries()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_accountEntryLocalService.auditAccountEntries();

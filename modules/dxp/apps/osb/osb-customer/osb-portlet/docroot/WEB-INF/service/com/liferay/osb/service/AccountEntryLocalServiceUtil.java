@@ -555,6 +555,16 @@ public class AccountEntryLocalServiceUtil {
 		getService().addTrialAccountEntry(userId);
 	}
 
+	public static void addWorkflowTask(
+		java.lang.String salesforceOpportunityKey,
+		com.liferay.osb.model.AccountEntry accountEntry,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService()
+			.addWorkflowTask(salesforceOpportunityKey, accountEntry,
+			serviceContext);
+	}
+
 	public static void auditAccountEntries()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().auditAccountEntries();
