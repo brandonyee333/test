@@ -63,7 +63,7 @@ public class ProvisioningCreateRabbitMQConsumer
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					"Opportunity is not closed won or a renewal that is " +
-						"closed lost.");
+						"closed lost");
 			}
 
 			return;
@@ -93,7 +93,7 @@ public class ProvisioningCreateRabbitMQConsumer
 
 			if (accountEntry.getAccountEntryId() <= 0) {
 				throw new WorkflowException(
-					"There is no project created for the renewal opportunity.");
+					"There is no project created for the renewal opportunity");
 			}
 
 			AccountEntryLocalServiceUtil.addWorkflowTask(
