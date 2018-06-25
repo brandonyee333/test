@@ -270,6 +270,30 @@ public class ProductEntryConstants {
 		}
 	}
 
+	public static int getMinorVersion(int productVersion) {
+		if (isDigitalEnterpriseVersion7_0(productVersion)) {
+			return DIGITAL_ENTERPRISE_MAJOR_VERSION_7;
+		}
+		else if (isPortalVersion6_2(productVersion)) {
+			return PORTAL_MINOR_VERSION_6_2;
+		}
+		else if (isPortalVersion6_1(productVersion)) {
+			return PORTAL_MINOR_VERSION_6_1;
+		}
+		else if (isPortalVersion6_0(productVersion)) {
+			return PORTAL_MINOR_VERSION_6_0;
+		}
+		else if (isPortalVersion5_2(productVersion)) {
+			return PORTAL_MINOR_VERSION_5_2;
+		}
+		else if (isPortalVersion5_1(productVersion)) {
+			return PORTAL_MINOR_VERSION_5_1;
+		}
+		else {
+			return 0;
+		}
+	}
+
 	public static String getSupportPhaseLabel(int version) {
 		Date now = new Date();
 

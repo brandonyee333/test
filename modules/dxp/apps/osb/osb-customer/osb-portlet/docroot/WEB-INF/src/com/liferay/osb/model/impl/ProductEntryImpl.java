@@ -166,6 +166,17 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		}
 	}
 
+	public boolean isExtendedPremiumSupport() {
+		String name = getName();
+
+		if (name.contains("Extended Premium Support")) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
 	public boolean isManagementTools() {
 		String name = getName();
 
