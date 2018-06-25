@@ -174,6 +174,11 @@ public class ProductEntryWrapper implements ProductEntry,
 	}
 
 	@Override
+	public boolean isExtendedPremiumSupport() {
+		return _productEntry.isExtendedPremiumSupport();
+	}
+
+	@Override
 	public boolean isManagementTools() {
 		return _productEntry.isManagementTools();
 	}
