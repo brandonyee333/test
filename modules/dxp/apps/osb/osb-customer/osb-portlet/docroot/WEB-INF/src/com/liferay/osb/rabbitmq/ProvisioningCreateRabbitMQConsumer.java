@@ -54,7 +54,6 @@ public class ProvisioningCreateRabbitMQConsumer
 
 		String salesforceOpportunityStageName = jsonObject.getString(
 			"_salesforceOpportunityStageName");
-
 		int salesforceOpportunityType = getSalesforceOpportunityType(
 			jsonObject.getString("_salesforceOpportunityType"));
 

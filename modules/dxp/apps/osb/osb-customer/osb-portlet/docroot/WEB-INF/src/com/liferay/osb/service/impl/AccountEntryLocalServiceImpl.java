@@ -500,12 +500,7 @@ public class AccountEntryLocalServiceImpl
 			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_STAGE_NAME,
 			serviceContext.getAttribute("salesforceOpportunityStageName"));
 
-		AccountEntry renewAccountEntry =
-			accountEntryPersistence.findByPrimaryKey(
-				accountEntry.getAccountEntryId());
-
-		List<SupportRegion> supportRegions =
-			renewAccountEntry.getSupportRegions();
+		List<SupportRegion> supportRegions = accountEntry.getSupportRegions();
 
 		if (!supportRegions.isEmpty()) {
 			SupportRegion supportRegion = supportRegions.get(0);
@@ -542,7 +537,7 @@ public class AccountEntryLocalServiceImpl
 			WorkflowTaskManagerUtil.completeWorkflowTask(
 				OSBConstants.COMPANY_ID, OSBConstants.USER_AMOS_FONG_USER_ID,
 				workflowTask.getWorkflowTaskId(), "close",
-				"This update task is out of date.", null);
+				"This view task is out of date.", null);
 
 			Indexer indexer = IndexerRegistryUtil.getIndexer(
 				WorkflowTask.class.getName());
@@ -555,9 +550,9 @@ public class AccountEntryLocalServiceImpl
 		workflowServiceContext.setAttribute("workflowContext", workflowContext);
 
 		WorkflowHandlerRegistryUtil.startWorkflowInstance(
-			OSBConstants.COMPANY_ID, renewAccountEntry.getUserId(),
-			AccountEntry.class.getName(), renewAccountEntry.getAccountEntryId(),
-			renewAccountEntry, workflowServiceContext);
+			OSBConstants.COMPANY_ID, accountEntry.getUserId(),
+			AccountEntry.class.getName(), accountEntry.getAccountEntryId(),
+			accountEntry, workflowServiceContext);
 	}
 
 	public void auditAccountEntries() throws PortalException {
