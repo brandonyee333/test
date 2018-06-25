@@ -133,73 +133,16 @@ public class AccountEntryLocalServiceImpl
 			long regionId, long countryId, String ewsaDossieraProjectKey)
 		throws PortalException {
 
-		// Account entry
+		validate(
+			0, corpProjectUuid, name, code, type, industry, partnerEntryId,
+			maxCustomers, languageIds, supportRegionIds);
 
-		User user = userLocalService.getUser(userId);
-		code = getCode(corpEntryName, name, code);
-		Date now = new Date();
-
-		long accountEntryId = counterLocalService.increment();
-
-		AccountEntry accountEntry = accountEntryPersistence.create(
-			accountEntryId);
-
-		accountEntry.setCompanyId(OSBConstants.COMPANY_ID);
-		accountEntry.setUserId(user.getUserId());
-		accountEntry.setUserName(user.getFullName());
-		accountEntry.setCreateDate(now);
-		accountEntry.setModifiedUserId(user.getUserId());
-		accountEntry.setModifiedUserName(user.getFullName());
-		accountEntry.setModifiedDate(now);
-
-		accountEntry.setCorpProjectUuid(corpProjectUuid);
-
-		if (Validator.isNotNull(corpProjectUuid)) {
-			CorpProject corpProject =
-				corpProjectLocalService.fetchCorpProjectByUuid(corpProjectUuid);
-
-			if (corpProject != null) {
-				accountEntry.setCorpProjectId(corpProject.getCorpProjectId());
-			}
-		}
-
-		accountEntry.setCorpEntryName(corpEntryName);
-		accountEntry.setName(name);
-		accountEntry.setCode(code);
-		accountEntry.setType(type);
-		accountEntry.setIndustry(industry);
-		accountEntry.setPartnerEntryId(partnerEntryId);
-		accountEntry.setPartnerManagedSupport(partnerManagedSupport);
-		accountEntry.setTier(tier);
-		accountEntry.setMaxCustomers(maxCustomers);
-		accountEntry.setInstructions(instructions);
-		accountEntry.setNotes(notes);
-		accountEntry.setStatus(WorkflowConstants.STATUS_CLOSED);
-
-		accountEntryPersistence.update(accountEntry);
-
-		// Address
-
-		addressLocalService.addAddress(
-			userId, AccountEntry.class.getName(),
-			accountEntry.getAccountEntryId(), street1, street2, street3, city,
-			zip, regionId, countryId, 0, false, true, new ServiceContext());
-
-		// External ids
-
-		updateEWSADosseriaProjectKey(accountEntryId, ewsaDossieraProjectKey);
-
-		// Languages
-
-		accountEntryLanguageLocalService.setAccountEntryLanguageIds(
-			accountEntryId, languageIds);
-
-		// Support regions
-
-		accountEntryPersistence.setSupportRegions(
-			accountEntryId, supportRegionIds);
-
-		return accountEntry;
+		return doAddAccountEntry(
+			userId, corpProjectUuid, corpEntryName, name, code, type, industry,
+			partnerEntryId, partnerManagedSupport, tier, maxCustomers,
+			instructions, notes, languageIds, supportRegionIds, street1,
+			street2, street3, city, zip, regionId, countryId,
+			ewsaDossieraProjectKey);
 	}
 
 	public AccountEntry addAccountEntryWithWorkflow(
@@ -231,7 +174,7 @@ public class AccountEntryLocalServiceImpl
 
 		// Account entry
 
-		accountEntry = addAccountEntry(
+		accountEntry = doAddAccountEntry(
 			accountEntry.getUserId(), corpProject.getUuid(),
 			accountEntry.getCorpEntryName(), accountEntry.getName(),
 			accountEntry.getCode(), accountEntry.getType(),
@@ -1580,6 +1523,85 @@ public class AccountEntryLocalServiceImpl
 			accountEntry.getLanguageIds(), accountEntry.getSupportRegionIds());
 	}
 
+	protected AccountEntry doAddAccountEntry(
+			long userId, String corpProjectUuid, String corpEntryName,
+			String name, String code, int type, int industry,
+			long partnerEntryId, boolean partnerManagedSupport, int tier,
+			int maxCustomers, String instructions, String notes,
+			String[] languageIds, long[] supportRegionIds, String street1,
+			String street2, String street3, String city, String zip,
+			long regionId, long countryId, String ewsaDossieraProjectKey)
+		throws PortalException {
+
+		// Account entry
+
+		User user = userLocalService.getUser(userId);
+		code = getCode(corpEntryName, name, code);
+		Date now = new Date();
+
+		long accountEntryId = counterLocalService.increment();
+
+		AccountEntry accountEntry = accountEntryPersistence.create(
+			accountEntryId);
+
+		accountEntry.setCompanyId(OSBConstants.COMPANY_ID);
+		accountEntry.setUserId(user.getUserId());
+		accountEntry.setUserName(user.getFullName());
+		accountEntry.setCreateDate(now);
+		accountEntry.setModifiedUserId(user.getUserId());
+		accountEntry.setModifiedUserName(user.getFullName());
+		accountEntry.setModifiedDate(now);
+
+		accountEntry.setCorpProjectUuid(corpProjectUuid);
+
+		if (Validator.isNotNull(corpProjectUuid)) {
+			CorpProject corpProject =
+				corpProjectLocalService.fetchCorpProjectByUuid(corpProjectUuid);
+
+			if (corpProject != null) {
+				accountEntry.setCorpProjectId(corpProject.getCorpProjectId());
+			}
+		}
+
+		accountEntry.setCorpEntryName(corpEntryName);
+		accountEntry.setName(name);
+		accountEntry.setCode(code);
+		accountEntry.setType(type);
+		accountEntry.setIndustry(industry);
+		accountEntry.setPartnerEntryId(partnerEntryId);
+		accountEntry.setPartnerManagedSupport(partnerManagedSupport);
+		accountEntry.setTier(tier);
+		accountEntry.setMaxCustomers(maxCustomers);
+		accountEntry.setInstructions(instructions);
+		accountEntry.setNotes(notes);
+		accountEntry.setStatus(WorkflowConstants.STATUS_CLOSED);
+
+		accountEntryPersistence.update(accountEntry);
+
+		// Address
+
+		addressLocalService.addAddress(
+			userId, AccountEntry.class.getName(),
+			accountEntry.getAccountEntryId(), street1, street2, street3, city,
+			zip, regionId, countryId, 0, false, true, new ServiceContext());
+
+		// External ids
+
+		updateEWSADosseriaProjectKey(accountEntryId, ewsaDossieraProjectKey);
+
+		// Languages
+
+		accountEntryLanguageLocalService.setAccountEntryLanguageIds(
+			accountEntryId, languageIds);
+
+		// Support regions
+
+		accountEntryPersistence.setSupportRegions(
+			accountEntryId, supportRegionIds);
+
+		return accountEntry;
+	}
+
 	protected String formatLanguageIds(String[] languageIds) {
 		List<String> formattedLanguageIds = new ArrayList<>(languageIds.length);
 
@@ -2321,16 +2343,13 @@ public class AccountEntryLocalServiceImpl
 			}
 		}
 
-		if ((type != AccountEntryConstants.TYPE_TRIAL) &&
-			ArrayUtil.isEmpty(supportRegionIds)) {
-
-			throw new AccountEntrySupportRegionException();
-		}
-
-		if ((type != AccountEntryConstants.TYPE_TRIAL) &&
-			ArrayUtil.isEmpty(languageIds)) {
-
-			throw new AccountEntryLanguageIdException();
+		if (type != AccountEntryConstants.TYPE_TRIAL) {
+			if (ArrayUtil.isEmpty(supportRegionIds)) {
+				throw new AccountEntrySupportRegionException();
+			}
+			else if (ArrayUtil.isEmpty(languageIds)) {
+				throw new AccountEntryLanguageIdException();
+			}
 		}
 
 		for (String languageId : languageIds) {
