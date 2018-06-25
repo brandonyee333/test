@@ -48,6 +48,10 @@
 /* ---------- Knowledge base portlet navigation ---------- */
 
 .knowledge-base-portlet-display {
+	&.lfr-configurator-visibility {
+		padding-top: 50px;
+	}
+
 	.kb-article-container {
 		width: 65.95745%;
 		*width: 65.90426%;
