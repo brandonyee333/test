@@ -116,18 +116,16 @@ public class AccountEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 			(String)workflowContext.get(
 				WorkflowConstants.CONTEXT_ENTRY_CLASS_PK));
 
-		AccountEntry accountEntry = null;
-
 		String salesforceOpportunityAction = GetterUtil.getString(
 			workflowContext.get(
 				WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_ACTION));
 
 		if (salesforceOpportunityAction.equals(Constants.VIEW)) {
-			accountEntry = AccountEntryLocalServiceUtil.getAccountEntry(
-				classPK);
-
-			return accountEntry;
+			return AccountEntryLocalServiceUtil.getAccountEntry(classPK);
 		}
+
+		long userId = GetterUtil.getLong(
+			(String)workflowContext.get(WorkflowConstants.CONTEXT_USER_ID));
 
 		ServiceContext serviceContext = (ServiceContext)workflowContext.get(
 			WorkflowConstants.CONTEXT_SERVICE_CONTEXT);
@@ -139,8 +137,7 @@ public class AccountEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 			serviceContext.setAttribute("missingUsers", missingUsers);
 		}
 
-		long userId = GetterUtil.getLong(
-			(String)workflowContext.get(WorkflowConstants.CONTEXT_USER_ID));
+		AccountEntry accountEntry = null;
 
 		if (salesforceOpportunityAction.equals(Constants.UPDATE)) {
 			String salesforceOpportunityKey = (String)workflowContext.get(
