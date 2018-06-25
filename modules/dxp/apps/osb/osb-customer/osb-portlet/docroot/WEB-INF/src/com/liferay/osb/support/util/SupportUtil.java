@@ -357,6 +357,43 @@ public class SupportUtil {
 		return listTypes;
 	}
 
+	public static boolean hasElasticsearchEnvOffering(long offeringEntryId) {
+		try {
+			OfferingEntry selectedOfferingEntry =
+				OfferingEntryLocalServiceUtil.getOfferingEntry(offeringEntryId);
+
+			ProductEntry selectedProductEntry =
+				selectedOfferingEntry.getProductEntry();
+
+			String selectedEnvironment =
+				selectedProductEntry.getEnvironmentLabel();
+
+			AccountEntry accountEntry = selectedOfferingEntry.getAccountEntry();
+
+			List<OfferingEntry> offeringEntries =
+				accountEntry.getOfferingEntries();
+
+			for (OfferingEntry offeringEntry : offeringEntries) {
+				ProductEntry productEntry = offeringEntry.getProductEntry();
+
+				String environment = productEntry.getEnvironmentLabel();
+				String name = productEntry.getName();
+
+				if (environment.equals(selectedEnvironment) &&
+					name.contains("Enterprise Search")) {
+
+					return true;
+				}
+			}
+		}
+		catch (PortalException pe) {
+		}
+		catch (SystemException se) {
+		}
+
+		return false;
+	}
+
 	public static String serialize(List<OrderEntry> orderEntries) {
 		List<Map<String, Object>> orderEntriesList = new ArrayList<>();
 

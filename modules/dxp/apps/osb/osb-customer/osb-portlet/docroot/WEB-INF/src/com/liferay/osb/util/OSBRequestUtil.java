@@ -98,13 +98,19 @@ public class OSBRequestUtil {
 		jsonObject.put("ENV_OS#key", envOSListTypes.hashCode());
 
 		if (ProductEntryConstants.isDigitalEnterpriseVersion7_0(envLFR)) {
-			List<ListType> envSearchListTypes =
-				SupportUtil.getPortalEnvListTypes(
-					envLFR, AccountEnvironmentConstants.LIST_TYPE_ENV_SEARCH);
+			long offeringEntryId = ParamUtil.getInteger(
+				resourceRequest, "offeringEntryId");
+
+			List<ListType> envSearchListTypes = new ArrayList<ListType>();
+
+			if (SupportUtil.hasElasticsearchEnvOffering(offeringEntryId)) {
+				envSearchListTypes = SupportUtil.getPortalEnvListTypes(
+					envLFR, TicketEntryConstants.LIST_TYPE_ENV_SEARCH);
+			}
 
 			jsonObject.put(
 				"ENV_Search",
-				getJSONArray(envSearchListTypes, themeDisplay.getLocale()));
+				getJsonArray(envSearchListTypes, themeDisplay.getLocale()));
 			jsonObject.put("ENV_Search#key", envSearchListTypes.hashCode());
 		}
 
