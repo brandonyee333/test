@@ -57,7 +57,7 @@ public class ProvisioningCreateRabbitMQConsumer
 		int salesforceOpportunityType = getSalesforceOpportunityType(
 			jsonObject.getString("_salesforceOpportunityType"));
 
-		if (!isValidOpportunity(
+		if (!_isValidOpportunity(
 				salesforceOpportunityStageName, salesforceOpportunityType)) {
 
 			if (_log.isDebugEnabled()) {
@@ -133,7 +133,7 @@ public class ProvisioningCreateRabbitMQConsumer
 		}
 	}
 
-	private boolean isValidOpportunity(
+	private boolean _isValidOpportunity(
 		String salesforceOpportunityStageName, int salesforceOpportunityType) {
 
 		if (salesforceOpportunityStageName.equals(
