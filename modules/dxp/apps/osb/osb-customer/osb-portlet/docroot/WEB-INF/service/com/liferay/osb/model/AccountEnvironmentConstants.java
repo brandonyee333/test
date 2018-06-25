@@ -183,6 +183,8 @@ public class AccountEnvironmentConstants {
 
 	public static final int ENV_BROWSER_SAFARI_10 = 37018;
 
+	public static final int ENV_CS_AWS_AURORA = 39006;
+
 	public static final int ENV_CS_AWS_ELASTIC_COMPUTE_CLOUD = 39000;
 
 	public static final int ENV_CS_AWS_RELATIONAL_DATABASE_SERVICE = 39001;
@@ -529,7 +531,14 @@ public class AccountEnvironmentConstants {
 		ENV_BROWSER_OTHER, ENV_BROWSER_SAFARI_5, ENV_BROWSER_SAFARI_6
 	};
 
-	private static final int[] _ENV_CS_PORTAL_VERSION_ANY = {
+	private static final int[] _ENV_CS_DIGITAL_ENTERPRISE_VERSION_7_0 = {
+		ENV_CS_AWS_AURORA, ENV_CS_AWS_ELASTIC_COMPUTE_CLOUD,
+		ENV_CS_AWS_RELATIONAL_DATABASE_SERVICE, ENV_CS_AWS_S3,
+		ENV_CS_AZURE_FILES, ENV_CS_AZURE_SQL_DATABASES,
+		ENV_CS_AZURE_VIRTUAL_MACHINES
+	};
+
+	private static final int[] _ENV_CS_PORTAL_VERSION_6_2 = {
 		ENV_CS_AWS_ELASTIC_COMPUTE_CLOUD,
 		ENV_CS_AWS_RELATIONAL_DATABASE_SERVICE, ENV_CS_AWS_S3,
 		ENV_CS_AZURE_FILES, ENV_CS_AZURE_SQL_DATABASES,
@@ -709,7 +718,7 @@ public class AccountEnvironmentConstants {
 		_envPortalVersion62.put(LIST_TYPE_ENV_AS, _ENV_AS_PORTAL_VERSION_6_2);
 		_envPortalVersion62.put(
 			LIST_TYPE_ENV_BROWSER, _ENV_BROWSER_PORTAL_VERSION_6_2);
-		_envPortalVersion62.put(LIST_TYPE_ENV_CS, _ENV_CS_PORTAL_VERSION_ANY);
+		_envPortalVersion62.put(LIST_TYPE_ENV_CS, _ENV_CS_PORTAL_VERSION_6_2);
 		_envPortalVersion62.put(LIST_TYPE_ENV_DB, _ENV_DB_PORTAL_VERSION_6_2);
 		_envPortalVersion62.put(LIST_TYPE_ENV_JVM, _ENV_JVM_PORTAL_VERSION_6_2);
 		_envPortalVersion62.put(LIST_TYPE_ENV_OS, _ENV_OS_PORTAL_VERSION_6_2);
@@ -719,7 +728,7 @@ public class AccountEnvironmentConstants {
 		_envDigitalEnterpriseVersion70.put(
 			LIST_TYPE_ENV_BROWSER, _ENV_BROWSER_DIGITAL_ENTERPRISE_VERSION_7_0);
 		_envDigitalEnterpriseVersion70.put(
-			LIST_TYPE_ENV_CS, _ENV_CS_PORTAL_VERSION_ANY);
+			LIST_TYPE_ENV_CS, _ENV_CS_DIGITAL_ENTERPRISE_VERSION_7_0);
 		_envDigitalEnterpriseVersion70.put(
 			LIST_TYPE_ENV_DB, _ENV_DB_DIGITAL_ENTERPRISE_VERSION_7_0);
 		_envDigitalEnterpriseVersion70.put(
