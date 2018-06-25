@@ -469,10 +469,9 @@ public class AccountEntryLocalServiceImpl
 	public void addWorkflowTask(
 			String salesforceOpportunityKey, AccountEntry accountEntry,
 			ServiceContext serviceContext)
-		throws PortalException, SystemException {
+		throws PortalException {
 
-		HashMap<String, Serializable> workflowContext =
-			new HashMap<String, Serializable>();
+		HashMap<String, Serializable> workflowContext = new HashMap<>();
 
 		workflowContext.put(
 			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_ACTION,

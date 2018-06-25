@@ -121,7 +121,7 @@ public class AccountEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 				WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_ACTION));
 
 		if (salesforceOpportunityAction.equals(Constants.VIEW)) {
-			return AccountEntryLocalServiceUtil.getAccountEntry(classPK);
+			return (T)AccountEntryLocalServiceUtil.getAccountEntry(classPK);
 		}
 
 		long userId = GetterUtil.getLong(

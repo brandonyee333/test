@@ -141,7 +141,7 @@ public class ProvisioningCreateRabbitMQConsumer
 			(salesforceOpportunityStageName.equals(
 				SalesforceConstants.OPPORTUNITY_STAGE_CLOSED_LOST) &&
 			 (salesforceOpportunityType ==
-				SalesforceConstants.OPPORTUNITY_TYPE_RENEWAL))) {
+				 SalesforceConstants.OPPORTUNITY_TYPE_RENEWAL))) {
 
 			return true;
 		}
