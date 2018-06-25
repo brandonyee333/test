@@ -43,6 +43,10 @@ public class ProvisioningUpdateRabbitMQConsumer
 	}
 
 	protected void doParse(JSONObject jsonObject) throws PortalException {
+		if (!hasOpportunityProductFamily(jsonObject)) {
+			return;
+		}
+
 		String salesforceOpportunityKey = jsonObject.getString(
 			"_salesforceOpportunityKey");
 

@@ -46,6 +46,10 @@ public class ProvisioningCreateRabbitMQConsumer
 	}
 
 	protected void doParse(JSONObject jsonObject) throws PortalException {
+		if (!hasOpportunityProductFamily(jsonObject)) {
+			return;
+		}
+
 		String salesforceOpportunityStageName = jsonObject.getString(
 			"_salesforceOpportunityStageName");
 

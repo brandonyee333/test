@@ -34,6 +34,10 @@ public class PortletPropsValues {
 	public static final String[] FILE_REPOSITORY_IDS = PortletProps.getArray(
 		PortletPropsKeys.FILE_REPOSITORY_IDS);
 
+	public static final String[]
+		PROVISIONING_OPPORTUNITY_PRODUCT_FAMILY_TOKENS = PortletProps.getArray(
+			PortletPropsKeys.PROVISIONING_OPPORTUNITY_PRODUCT_FAMILY_TOKENS);
+
 	public static final boolean QA_INFRASTRUCTURE_ENABLED =
 		GetterUtil.getBoolean(
 			PortletProps.get(PortletPropsKeys.QA_INFRASTRUCTURE_ENABLED));

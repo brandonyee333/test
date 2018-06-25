@@ -39,6 +39,9 @@ public interface PortletPropsKeys {
 	public static final String PROVISIONING_EMAIL_ADDRESS =
 		"provisioning.email.address";
 
+	public static final String PROVISIONING_OPPORTUNITY_PRODUCT_FAMILY_TOKENS =
+		"provisioning.opportunity.product.family.tokens";
+
 	public static final String QA_INFRASTRUCTURE_ENABLED =
 		"qa.infrastructure.enabled";
 

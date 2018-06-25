@@ -46,6 +46,7 @@ import com.liferay.osb.service.SupportResponseLocalServiceUtil;
 import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.PortletPropsKeys;
+import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.osb.util.SalesforceConstants;
 import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -677,6 +678,28 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 		ListType listType = listTypes.get(listTypes.size() - 1);
 
 		return (int)listType.getListTypeId();
+	}
+
+	protected boolean hasOpportunityProductFamily(JSONObject jsonObject) {
+		String salesforceOpportunityProductFamily = jsonObject.getString(
+			"_salesforceOpportunityProductFamily");
+
+		if (Validator.isNull(salesforceOpportunityProductFamily)) {
+			return false;
+		}
+
+		for (String productFamilyToken :
+				PortletPropsValues.
+					PROVISIONING_OPPORTUNITY_PRODUCT_FAMILY_TOKENS) {
+
+			if (salesforceOpportunityProductFamily.contains(
+					productFamilyToken)) {
+
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	protected boolean hasUnlimitedEnterpriseWide(List<OrderEntry> orderEntries)
