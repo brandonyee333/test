@@ -375,7 +375,7 @@ public class AccountEntryLocalServiceImpl
 			}
 		}
 
-		AccountEntry accountEntry = addAccountEntry(
+		AccountEntry accountEntry = doAddAccountEntry(
 			userId, corpProject.getUuid(), StringPool.BLANK, companyName, null,
 			AccountEntryConstants.TYPE_TRIAL, industry, 0L, false,
 			AccountEntryConstants.TIER_REGULAR, 1, StringPool.BLANK,
