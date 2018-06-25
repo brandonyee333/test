@@ -112,11 +112,22 @@ public class AccountEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 			int status, Map<String, Serializable> workflowContext)
 		throws PortalException {
 
-		long userId = GetterUtil.getLong(
-			(String)workflowContext.get(WorkflowConstants.CONTEXT_USER_ID));
 		long classPK = GetterUtil.getLong(
 			(String)workflowContext.get(
 				WorkflowConstants.CONTEXT_ENTRY_CLASS_PK));
+
+		AccountEntry accountEntry = null;
+
+		String salesforceOpportunityAction = GetterUtil.getString(
+			workflowContext.get(
+				WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_ACTION));
+
+		if (salesforceOpportunityAction.equals(Constants.VIEW)) {
+			accountEntry = AccountEntryLocalServiceUtil.getAccountEntry(
+				classPK);
+
+			return accountEntry;
+		}
 
 		ServiceContext serviceContext = (ServiceContext)workflowContext.get(
 			WorkflowConstants.CONTEXT_SERVICE_CONTEXT);
@@ -128,11 +139,8 @@ public class AccountEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 			serviceContext.setAttribute("missingUsers", missingUsers);
 		}
 
-		AccountEntry accountEntry = null;
-
-		String salesforceOpportunityAction = GetterUtil.getString(
-			workflowContext.get(
-				WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_ACTION));
+		long userId = GetterUtil.getLong(
+			(String)workflowContext.get(WorkflowConstants.CONTEXT_USER_ID));
 
 		if (salesforceOpportunityAction.equals(Constants.UPDATE)) {
 			String salesforceOpportunityKey = (String)workflowContext.get(
