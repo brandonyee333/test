@@ -15,6 +15,7 @@
 package com.liferay.osb.util;
 
 import com.liferay.osb.model.AccountEnvironmentConstants;
+import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.osb.support.util.SupportUtil;
@@ -27,6 +28,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -109,24 +111,26 @@ public class OSBRequestUtil {
 					ProductEntryLocalServiceUtil.getProductEntry(
 						productEntryId);
 
-				List<ListType> envSearchListTypes = new ArrayList<ListType>();
+				List<ListType> envSearchListTypes = new ArrayList<>();
 
 				if (SupportUtil.hasEnterpriseSearchOffering(
 						accountEntryId, productEntry.getEnvironment())) {
 
 					envSearchListTypes = SupportUtil.getPortalEnvListTypes(
-						envLFR, TicketEntryConstants.LIST_TYPE_ENV_SEARCH,
+						envLFR,
+						AccountEnvironmentConstants.LIST_TYPE_ENV_SEARCH,
 						"enterprise");
 				}
 				else {
 					envSearchListTypes = SupportUtil.getPortalEnvListTypes(
-						envLFR, TicketEntryConstants.LIST_TYPE_ENV_SEARCH,
+						envLFR,
+						AccountEnvironmentConstants.LIST_TYPE_ENV_SEARCH,
 						"standard");
 				}
 
 				jsonObject.put(
 					"ENV_Search",
-					getJsonArray(envSearchListTypes, themeDisplay.getLocale()));
+					getJSONArray(envSearchListTypes, themeDisplay.getLocale()));
 				jsonObject.put("ENV_Search#key", envSearchListTypes.hashCode());
 			}
 		}

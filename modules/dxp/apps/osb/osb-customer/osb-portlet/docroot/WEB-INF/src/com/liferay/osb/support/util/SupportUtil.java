@@ -20,6 +20,7 @@ import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryGroup;
 import com.liferay.osb.model.OfferingEntryGroupFactoryUtil;
 import com.liferay.osb.model.OrderEntry;
+import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
 import com.liferay.osb.service.OrderEntryLocalServiceUtil;
 import com.liferay.osb.util.PortletPropsKeys;
@@ -334,15 +335,13 @@ public class SupportUtil {
 	}
 
 	public static List<ListType> getPortalEnvListTypes(
-			int envLFR, String envListType)
-		throws SystemException {
+		long envLFR, String envListType) {
 
 		return getPortalEnvListTypes(envLFR, envListType, StringPool.BLANK);
 	}
 
 	public static List<ListType> getPortalEnvListTypes(
-			int envLFR, String envListType, String sublistType)
-		throws SystemException {
+		long envLFR, String envListType, String sublistType) {
 
 		List<ListType> listTypes = ListTypeServiceUtil.getListTypes(
 			envListType);
@@ -353,7 +352,7 @@ public class SupportUtil {
 			sublistType = StringPool.PERIOD + sublistType;
 		}
 
-		int[] listTypeIds = TicketEntryConstants.getEnvListTypeIds(
+		long[] listTypeIds = AccountEnvironmentConstants.getEnvListTypeIds(
 			envLFR, envListType + sublistType);
 
 		Iterator<ListType> itr = listTypes.iterator();
@@ -496,6 +495,6 @@ public class SupportUtil {
 		return orderEntryAttributes;
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(SupportUtil.class);
+	private static final Log _log = LogFactoryUtil.getLog(SupportUtil.class);
 
 }

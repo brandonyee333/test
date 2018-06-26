@@ -322,7 +322,7 @@ public class ProductEntryConstants {
 	}
 
 	public static boolean isDigitalEnterpriseMajorVersion7(
-		int digitalEnterpriseMajorVersion) {
+		long digitalEnterpriseMajorVersion) {
 
 		if (digitalEnterpriseMajorVersion ==
 				DIGITAL_ENTERPRISE_MAJOR_VERSION_7) {
@@ -335,7 +335,7 @@ public class ProductEntryConstants {
 	}
 
 	public static boolean isDigitalEnterpriseVersion7_0(
-		int digitalEnterpriseVersion) {
+		long digitalEnterpriseVersion) {
 
 		if ((digitalEnterpriseVersion >= DIGITAL_ENTERPRISE_VERSION_7_0_10) &&
 			(digitalEnterpriseVersion < DIGITAL_ENTERPRISE_VERSION_7_0_20)) {
@@ -347,7 +347,7 @@ public class ProductEntryConstants {
 		}
 	}
 
-	public static boolean isPortalVersion(int portalVersion) {
+	public static boolean isPortalVersion(long portalVersion) {
 		if ((portalVersion >= PORTAL_VERSION_4_4_0) &&
 			(portalVersion < PORTAL_VERSION_6_2_20)) {
 
@@ -358,7 +358,7 @@ public class ProductEntryConstants {
 		}
 	}
 
-	public static boolean isPortalVersion5_1(int portalVersion) {
+	public static boolean isPortalVersion5_1(long portalVersion) {
 		if ((portalVersion >= PORTAL_VERSION_5_1_3) &&
 			(portalVersion < PORTAL_VERSION_5_2_4)) {
 
@@ -369,7 +369,7 @@ public class ProductEntryConstants {
 		}
 	}
 
-	public static boolean isPortalVersion5_2(int portalVersion) {
+	public static boolean isPortalVersion5_2(long portalVersion) {
 		if ((portalVersion >= PORTAL_VERSION_5_2_4) &&
 			(portalVersion < PORTAL_VERSION_6_0_10)) {
 
@@ -380,7 +380,7 @@ public class ProductEntryConstants {
 		}
 	}
 
-	public static boolean isPortalVersion6_0(int portalVersion) {
+	public static boolean isPortalVersion6_0(long portalVersion) {
 		if ((portalVersion >= PORTAL_VERSION_6_0_10) &&
 			(portalVersion < PORTAL_VERSION_6_1_10)) {
 
@@ -391,7 +391,7 @@ public class ProductEntryConstants {
 		}
 	}
 
-	public static boolean isPortalVersion6_1(int portalVersion) {
+	public static boolean isPortalVersion6_1(long portalVersion) {
 		if ((portalVersion >= PORTAL_VERSION_6_1_10) &&
 			(portalVersion < PORTAL_VERSION_6_2_10)) {
 
@@ -402,7 +402,7 @@ public class ProductEntryConstants {
 		}
 	}
 
-	public static boolean isPortalVersion6_2(int portalVersion) {
+	public static boolean isPortalVersion6_2(long portalVersion) {
 		if ((portalVersion >= PORTAL_VERSION_6_2_10) &&
 			(portalVersion < PORTAL_VERSION_6_2_20)) {
 
