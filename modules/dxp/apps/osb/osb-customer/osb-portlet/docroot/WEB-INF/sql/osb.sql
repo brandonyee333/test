@@ -154,7 +154,7 @@ insert into ListType (listTypeId, name, type_) values (28036, 'mysql-5.7', 'com.
 insert into ListType (listTypeId, name, type_) values (28037, 'sql-server-2016', 'com.liferay.osb.model.AccountEnvironment.envDB');
 insert into ListType (listTypeId, name, type_) values (28038, 'db2-10.5', 'com.liferay.osb.model.AccountEnvironment.envDB');
 insert into ListType (listTypeId, name, type_) values (28039, 'postgresql-9.6', 'com.liferay.osb.model.AccountEnvironment.envDB');
-insert into ListType (listTypeId, name, type_) values (28040, 'oracle-12c-release-2', 'com.liferay.osb.model.TicketEntry.envDB');
+insert into ListType (listTypeId, name, type_) values (28040, 'oracle-12c-release-2', 'com.liferay.osb.model.AccountEnvironment.envDB');
 
 insert into ListType (listTypeId, name, type_) values (29000, 'java-5', 'com.liferay.osb.model.AccountEnvironment.envJVM');
 insert into ListType (listTypeId, name, type_) values (29001, 'java-6', 'com.liferay.osb.model.AccountEnvironment.envJVM');
@@ -209,7 +209,7 @@ insert into ListType (listTypeId, name, type_) values (30039, 'suse-enterprise-l
 insert into ListType (listTypeId, name, type_) values (30040, 'ubuntu-lts-14.04', 'com.liferay.osb.model.AccountEnvironment.envOS');
 insert into ListType (listTypeId, name, type_) values (30041, 'debian-7', 'com.liferay.osb.model.AccountEnvironment.envOS');
 insert into ListType (listTypeId, name, type_) values (30042, 'ubuntu-lts-16.04', 'com.liferay.osb.model.AccountEnvironment.envOS');
-insert into ListType (listTypeId, name, type_) values (30043, 'windows-server-2016', 'com.liferay.osb.model.TicketEntry.envOS');
+insert into ListType (listTypeId, name, type_) values (30043, 'windows-server-2016', 'com.liferay.osb.model.AccountEnvironment.envOS');
 
 insert into ListType (listTypeId, name, type_) values (34001, 'application-server', 'com.liferay.osb.model.AuditEntry.field');
 insert into ListType (listTypeId, name, type_) values (34004, 'database', 'com.liferay.osb.model.AuditEntry.field');

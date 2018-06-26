@@ -235,7 +235,7 @@ public class AccountEnvironmentConstants {
 
 	public static final long ENV_DB_ORACLE_12C_RELEASE_1 = 28030;
 
-	public static final int ENV_DB_ORACLE_12C_RELEASE_2 = 28040;
+	public static final long ENV_DB_ORACLE_12C_RELEASE_2 = 28040;
 
 	public static final long ENV_DB_OTHER = 28008;
 
@@ -379,7 +379,7 @@ public class AccountEnvironmentConstants {
 
 	public static final long ENV_OS_WINDOWS_SERVER_2012 = 30030;
 
-	public static final int ENV_OS_WINDOWS_SERVER_2016 = 30043;
+	public static final long ENV_OS_WINDOWS_SERVER_2016 = 30043;
 
 	public static final long ENV_OS_WINDOWS_XP = 30003;
 

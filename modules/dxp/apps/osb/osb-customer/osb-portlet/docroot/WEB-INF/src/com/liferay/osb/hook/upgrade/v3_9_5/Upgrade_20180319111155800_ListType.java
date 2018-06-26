@@ -42,10 +42,10 @@ public class Upgrade_20180319111155800_ListType extends BaseUpgradeProcess {
 
 		insertListType(
 			28040, "oracle-12c-release-2",
-			"com.liferay.osb.model.TicketEntry.envDB");
+			"com.liferay.osb.model.AccountEnvironment.envDB");
 		insertListType(
 			30043, "windows-server-2016",
-			"com.liferay.osb.model.TicketEntry.envOS");
+			"com.liferay.osb.model.AccountEnvironment.envOS");
 		insertListType(
 			40006, "elasticsearch-6.x",
 			"com.liferay.osb.model.AccountEnvironment.envSearch");
