@@ -304,22 +304,27 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 				return;
 			}
 
+			var accountEntryId = A.one('#<portlet:namespace />accountEntryId').val();
+			var productEntryId = A.one('#<portlet:namespace />productEntryId').val();
+
 			A.io.request(
-				'<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="accountEnvironment" />',
+				'<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="ticketEnvironment" />',
 				{
 					data: {
-						<portlet:namespace />envLFR: envLFR
+						<portlet:namespace />accountEntryId: accountEntryId,
+						<portlet:namespace />envLFR: envLFR,
+						<portlet:namespace />productEntryId: productEntryId
 					},
-					dataType: 'JSON',
-					method: 'POST',
+					dataType: 'json',
+					method: 'post',
 					on: {
-						success: function() {
+						success: function(event, id, obj) {
 							var response = this.get('responseData');
 
-							<portlet:namespace />updateEnvironmentField('<portlet:namespace />envAS', response['ENV_AS#key'], response['ENV_AS'], envAS, envASName);
-							<portlet:namespace />updateEnvironmentField('<portlet:namespace />envDB', response['ENV_DB#key'], response['ENV_DB'], envDB, envDBName);
-							<portlet:namespace />updateEnvironmentField('<portlet:namespace />envJVM', response['ENV_JVM#key'], response['ENV_JVM'], envJVM, envJVMName);
-							<portlet:namespace />updateEnvironmentField('<portlet:namespace />envOS', response['ENV_OS#key'], response['ENV_OS'], envOS, envOSName);
+							<portlet:namespace />updateEnvironmentField("<portlet:namespace />envAS", response["ENV_AS#key"], response["ENV_AS"], envAS, envASName);
+							<portlet:namespace />updateEnvironmentField("<portlet:namespace />envDB", response["ENV_DB#key"], response["ENV_DB"], envDB, envDBName);
+							<portlet:namespace />updateEnvironmentField("<portlet:namespace />envJVM", response["ENV_JVM#key"], response["ENV_JVM"], envJVM, envJVMName);
+							<portlet:namespace />updateEnvironmentField("<portlet:namespace />envOS", response["ENV_OS#key"], response["ENV_OS"], envOS, envOSName);
 						}
 					}
 				}

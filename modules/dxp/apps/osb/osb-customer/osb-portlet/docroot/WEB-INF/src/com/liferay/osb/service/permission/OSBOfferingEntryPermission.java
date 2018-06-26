@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
+import com.liferay.portal.security.permission.ActionKeys;
 
 /**
  * @author Amos Fong
@@ -63,8 +64,9 @@ public class OSBOfferingEntryPermission {
 	}
 
 	public static boolean contains(
-		PermissionChecker permissionChecker, OfferingEntry offeringEntry,
-		String actionId) {
+			PermissionChecker permissionChecker, OfferingEntry offeringEntry,
+			String actionId)
+		throws PortalException {
 
 		if (RoleLocalServiceUtil.hasUserRole(
 				permissionChecker.getUserId(),
@@ -78,6 +80,12 @@ public class OSBOfferingEntryPermission {
 				OSBConstants.ROLE_OSB_ACCOUNT_ADMIN_ID)) {
 
 			return true;
+		}
+
+		if (actionId.equals(ActionKeys.VIEW)) {
+			return OSBAccountEntryPermission.contains(
+				permissionChecker, offeringEntry.getAccountEntryId(),
+				ActionKeys.VIEW);
 		}
 
 		AccountWorker accountWorker = null;

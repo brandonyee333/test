@@ -16,7 +16,7 @@ package com.liferay.osb.util;
 
 import com.liferay.osb.model.AccountEnvironmentConstants;
 import com.liferay.osb.model.ProductEntryConstants;
-import com.liferay.osb.service.OfferingEntryServiceUtil;
+import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -99,34 +99,36 @@ public class OSBRequestUtil {
 		jsonObject.put("ENV_OS#key", envOSListTypes.hashCode());
 
 		if (ProductEntryConstants.isDigitalEnterpriseVersion7_0(envLFR)) {
-			long offeringEntryId = ParamUtil.getInteger(
-				resourceRequest, "offeringEntryId");
+			long accountEntryId = ParamUtil.getLong(
+				resourceRequest, "accountEntryId");
+			long productEntryId = ParamUtil.getLong(
+				resourceRequest, "productEntryId");
 
-			OfferingEntry offeringEntry =
-				OfferingEntryServiceUtil.getOfferingEntry(offeringEntryId);
+			if (productEntryId != 0) {
+				ProductEntry productEntry =
+					ProductEntryLocalServiceUtil.getProductEntry(
+						productEntryId);
 
-			ProductEntry productEntry = offeringEntry.getProductEntry();
+				List<ListType> envSearchListTypes = new ArrayList<ListType>();
 
-			List<ListType> envSearchListTypes = new ArrayList<ListType>();
+				if (SupportUtil.hasEnterpriseSearchOffering(
+						accountEntryId, productEntry.getEnvironment())) {
 
-			if (SupportUtil.hasEnterpriseSearchOffering(
-					offeringEntry.getAccountEntryId(),
-					productEntry.getEnvironment())) {
+					envSearchListTypes = SupportUtil.getPortalEnvListTypes(
+						envLFR, TicketEntryConstants.LIST_TYPE_ENV_SEARCH,
+						"enterprise");
+				}
+				else {
+					envSearchListTypes = SupportUtil.getPortalEnvListTypes(
+						envLFR, TicketEntryConstants.LIST_TYPE_ENV_SEARCH,
+						"standard");
+				}
 
-				envSearchListTypes = SupportUtil.getPortalEnvListTypes(
-					envLFR, TicketEntryConstants.LIST_TYPE_ENV_SEARCH,
-					"enterprise");
+				jsonObject.put(
+					"ENV_Search",
+					getJsonArray(envSearchListTypes, themeDisplay.getLocale()));
+				jsonObject.put("ENV_Search#key", envSearchListTypes.hashCode());
 			}
-			else {
-				envSearchListTypes = SupportUtil.getPortalEnvListTypes(
-					envLFR, TicketEntryConstants.LIST_TYPE_ENV_SEARCH,
-					"standard");
-			}
-
-			jsonObject.put(
-				"ENV_Search",
-				getJsonArray(envSearchListTypes, themeDisplay.getLocale()));
-			jsonObject.put("ENV_Search#key", envSearchListTypes.hashCode());
 		}
 
 		return jsonObject;

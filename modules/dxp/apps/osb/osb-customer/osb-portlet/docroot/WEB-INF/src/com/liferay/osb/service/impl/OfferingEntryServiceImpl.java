@@ -28,15 +28,6 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 @JSONWebService(mode = JSONWebServiceMode.MANUAL)
 public class OfferingEntryServiceImpl extends OfferingEntryServiceBaseImpl {
 
-	public OfferingEntry getOfferingEntry(long offeringEntryId)
-		throws PortalException, SystemException {
-
-		OSBOfferingEntryPermission.contains(
-			getPermissionChecker(), offeringEntryId, ActionKeys.VIEW);
-
-		return offeringEntryLocalService.getOfferingEntry(offeringEntryId);
-	}
-
 	public OfferingEntry updateStatus(long offeringEntryId, int status)
 		throws PortalException {
 
