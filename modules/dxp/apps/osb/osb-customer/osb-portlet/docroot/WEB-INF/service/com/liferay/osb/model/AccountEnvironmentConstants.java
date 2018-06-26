@@ -684,7 +684,8 @@ public class AccountEnvironmentConstants {
 
 	private static final int[]
 		_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_0_STANDARD = {
-			ENV_SEARCH_ELASTICSEARCH_2_X, ENV_SEARCH_SOLR, ENV_SEARCH_SOLRCLOUD
+			ENV_SEARCH_ELASTICSEARCH_2_X, ENV_SEARCH_ELASTICSEARCH_6_X,
+			ENV_SEARCH_SOLR, ENV_SEARCH_SOLRCLOUD
 		};
 
 	private static final Map<String, int[]> _envDigitalEnterpriseVersion70 =
