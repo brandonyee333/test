@@ -16,6 +16,7 @@ package com.liferay.osb.util;
 
 import com.liferay.osb.model.AccountEnvironmentConstants;
 import com.liferay.osb.model.ProductEntryConstants;
+import com.liferay.osb.service.OfferingEntryServiceUtil;
 import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -24,7 +25,6 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.List;
@@ -51,15 +51,14 @@ public class OSBRequestUtil {
 		int envLFR = ParamUtil.getInteger(resourceRequest, "envLFR");
 
 		List<ListType> envASListTypes = SupportUtil.getPortalEnvListTypes(
-			envLFR, AccountEnvironmentConstants.LIST_TYPE_ENV_AS, StringPool.BLANK);
+			envLFR, AccountEnvironmentConstants.LIST_TYPE_ENV_AS);
 
 		jsonObject.put(
 			"ENV_AS", getJSONArray(envASListTypes, themeDisplay.getLocale()));
 		jsonObject.put("ENV_AS#key", envASListTypes.hashCode());
 
 		List<ListType> envBrowserListTypes = SupportUtil.getPortalEnvListTypes(
-			envLFR, AccountEnvironmentConstants.LIST_TYPE_ENV_BROWSER,
-			StringPool.BLANK);
+			envLFR, AccountEnvironmentConstants.LIST_TYPE_ENV_BROWSER);
 
 		jsonObject.put(
 			"ENV_Browser",
@@ -70,8 +69,7 @@ public class OSBRequestUtil {
 			ProductEntryConstants.isDigitalEnterpriseVersion7_0(envLFR)) {
 
 			List<ListType> envCSListTypes = SupportUtil.getPortalEnvListTypes(
-				envLFR, AccountEnvironmentConstants.LIST_TYPE_ENV_CS,
-				StringPool.BLANK);
+				envLFR, AccountEnvironmentConstants.LIST_TYPE_ENV_CS);
 
 			jsonObject.put(
 				"ENV_CS",
@@ -80,21 +78,21 @@ public class OSBRequestUtil {
 		}
 
 		List<ListType> envDBListTypes = SupportUtil.getPortalEnvListTypes(
-			envLFR, AccountEnvironmentConstants.LIST_TYPE_ENV_DB, StringPool.BLANK);
+			envLFR, AccountEnvironmentConstants.LIST_TYPE_ENV_DB);
 
 		jsonObject.put(
 			"ENV_DB", getJSONArray(envDBListTypes, themeDisplay.getLocale()));
 		jsonObject.put("ENV_DB#key", envDBListTypes.hashCode());
 
 		List<ListType> envJVMListTypes = SupportUtil.getPortalEnvListTypes(
-			envLFR, AccountEnvironmentConstants.LIST_TYPE_ENV_JVM, StringPool.BLANK);
+			envLFR, AccountEnvironmentConstants.LIST_TYPE_ENV_JVM);
 
 		jsonObject.put(
 			"ENV_JVM", getJSONArray(envJVMListTypes, themeDisplay.getLocale()));
 		jsonObject.put("ENV_JVM#key", envJVMListTypes.hashCode());
 
 		List<ListType> envOSListTypes = SupportUtil.getPortalEnvListTypes(
-			envLFR, AccountEnvironmentConstants.LIST_TYPE_ENV_OS, StringPool.BLANK);
+			envLFR, AccountEnvironmentConstants.LIST_TYPE_ENV_OS);
 
 		jsonObject.put(
 			"ENV_OS", getJSONArray(envOSListTypes, themeDisplay.getLocale()));
@@ -104,17 +102,25 @@ public class OSBRequestUtil {
 			long offeringEntryId = ParamUtil.getInteger(
 				resourceRequest, "offeringEntryId");
 
+			OfferingEntry offeringEntry =
+				OfferingEntryServiceUtil.getOfferingEntry(offeringEntryId);
+
+			ProductEntry productEntry = offeringEntry.getProductEntry();
+
 			List<ListType> envSearchListTypes = new ArrayList<ListType>();
 
-			if (SupportUtil.hasEnterpriseSearchEnvOffering(offeringEntryId)) {
+			if (SupportUtil.hasEnterpriseSearchOffering(
+					offeringEntry.getAccountEntryId(),
+					productEntry.getEnvironment())) {
+
 				envSearchListTypes = SupportUtil.getPortalEnvListTypes(
 					envLFR, TicketEntryConstants.LIST_TYPE_ENV_SEARCH,
-					".enterprise");
+					"enterprise");
 			}
 			else {
 				envSearchListTypes = SupportUtil.getPortalEnvListTypes(
 					envLFR, TicketEntryConstants.LIST_TYPE_ENV_SEARCH,
-					".standard");
+					"standard");
 			}
 
 			jsonObject.put(

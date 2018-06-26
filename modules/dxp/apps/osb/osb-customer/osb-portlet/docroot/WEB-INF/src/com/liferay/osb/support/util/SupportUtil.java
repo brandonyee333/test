@@ -31,6 +31,8 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.service.ListTypeServiceUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -332,17 +334,23 @@ public class SupportUtil {
 	}
 
 	public static List<ListType> getPortalEnvListTypes(
-		int envLFR, String envListType, String sublist) {
+			int envLFR, String envListType)
+		throws SystemException {
+
+		return getPortalEnvListTypes(envLFR, envListType, StringPool.BLANK);
+	}
+
+	public static List<ListType> getPortalEnvListTypes(
+			int envLFR, String envListType, String sublistType)
+		throws SystemException {
 
 		List<ListType> listTypes = ListTypeServiceUtil.getListTypes(
 			envListType);
 
 		listTypes = ListUtil.copy(listTypes);
 
-		int[] envListTypeIds = AccountEnvironmentConstants.getEnvListTypeIds(
-			envLFR, envListType + sublist);
-
-		Long[] listTypeIds = ArrayUtil.toLongArray(envListTypeIds);
+		int[] listTypeIds = TicketEntryConstants.getEnvListTypeIds(
+			envLFR, envListType + StringPool.PERIOD + sublistType);
 
 		Iterator<ListType> itr = listTypes.iterator();
 
@@ -357,33 +365,27 @@ public class SupportUtil {
 		return listTypes;
 	}
 
-	public static boolean hasEnterpriseSearchEnvOffering(long offeringEntryId) {
+	public static boolean hasEnterpriseSearchOffering(
+		long accountEntryId, int productEntryEnvironment) {
+
 		try {
-			OfferingEntry offeringEntry =
-				OfferingEntryLocalServiceUtil.getOfferingEntry(offeringEntryId);
-
-			AccountEntry accountEntry = offeringEntry.getAccountEntry();
-
 			List<OfferingEntry> offeringEntries =
-				OfferingEntryServiceUtil.getAccountEntryOfferingEntries(
-					accountEntry.getAccountEntryId());
+				OfferingEntryLocalServiceUtil.getAccountEntryOfferingEntries(
+					accountEntryId);
 
-			for (OfferingEntry curOfferingEntry : offeringEntries) {
-				ProductEntry curProductEntry =
-					curOfferingEntry.getProductEntry();
+			for (OfferingEntry offeringEntry : offeringEntries) {
+				ProductEntry productEntry = offeringEntry.getProductEntry();
 
-				if (curProductEntry.isEnterpriseSearch()) {
-					ProductEntry productEntry = offeringEntry.getProductEntry();
+				if (productEntry.isEnterpriseSearch() &&
+					(productEntry.getEnvironment() ==
+						productEntryEnvironment)) {
 
-					if (curProductEntry.getEnvironment() ==
-							productEntry.getEnvironment()) {
-
-						return true;
-					}
+					return true;
 				}
 			}
 		}
 		catch (Exception e) {
+			_log.error(e, e);
 		}
 
 		return false;
@@ -489,5 +491,7 @@ public class SupportUtil {
 
 		return orderEntryAttributes;
 	}
+
+	private static Log _log = LogFactoryUtil.getLog(SupportUtil.class);
 
 }
