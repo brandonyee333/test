@@ -379,17 +379,23 @@ public class AccountEnvironmentConstants {
 
 	public static final int ENV_OS_WINDOWS_XP = 30003;
 
-	public static final int ENV_SEARCH_ELASTICSEARCH = 40000;
+	public static final int ENV_SEARCH_ELASTICSEARCH_2_X = 40000;
 
-	public static final int ENV_SEARCH_KIBANA_4_4 = 40001;
+	public static final int ENV_SEARCH_ELASTICSEARCH_6_X = 40006;
 
-	public static final int ENV_SEARCH_MARVEL_2_2 = 40002;
+	public static final int ENV_SEARCH_KIBANA_4_X = 40001;
 
-	public static final int ENV_SEARCH_SHIELD_2_2 = 40003;
+	public static final int ENV_SEARCH_KIBANA_6_X = 40007;
+
+	public static final int ENV_SEARCH_MARVEL_2_X = 40002;
+
+	public static final int ENV_SEARCH_SHIELD_2_X = 40003;
 
 	public static final int ENV_SEARCH_SOLR = 40004;
 
 	public static final int ENV_SEARCH_SOLRCLOUD = 40005;
+
+	public static final int ENV_SEARCH_X_PACK_6_X = 40008;
 
 	public static final String LIST_TYPE_ENV_AS =
 		AccountEnvironment.class.getName() + ".envAS";
@@ -669,10 +675,17 @@ public class AccountEnvironmentConstants {
 		ENV_OS_WINDOWS_SERVER_2008_R2
 	};
 
-	private static final int[] _ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_0 = {
-		ENV_SEARCH_ELASTICSEARCH, ENV_SEARCH_KIBANA_4_4, ENV_SEARCH_MARVEL_2_2,
-		ENV_SEARCH_SHIELD_2_2, ENV_SEARCH_SOLR, ENV_SEARCH_SOLRCLOUD
-	};
+	private static final int[]
+		_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_0_ENTERPRISE = {
+			ENV_SEARCH_ELASTICSEARCH_2_X, ENV_SEARCH_ELASTICSEARCH_6_X,
+			ENV_SEARCH_KIBANA_4_X, ENV_SEARCH_KIBANA_6_X, ENV_SEARCH_MARVEL_2_X,
+			ENV_SEARCH_SHIELD_2_X, ENV_SEARCH_X_PACK_6_X
+		};
+
+	private static final int[]
+		_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_0_STANDARD = {
+			ENV_SEARCH_ELASTICSEARCH_2_X, ENV_SEARCH_SOLR, ENV_SEARCH_SOLRCLOUD
+		};
 
 	private static final Map<String, int[]> _envDigitalEnterpriseVersion70 =
 		new HashMap<>();
@@ -736,7 +749,11 @@ public class AccountEnvironmentConstants {
 		_envDigitalEnterpriseVersion70.put(
 			LIST_TYPE_ENV_OS, _ENV_OS_DIGITAL_ENTERPRISE_VERSION_7_0);
 		_envDigitalEnterpriseVersion70.put(
-			LIST_TYPE_ENV_SEARCH, _ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_0);
+			LIST_TYPE_ENV_SEARCH + ".enterprise",
+			_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_0_ENTERPRISE);
+		_envDigitalEnterpriseVersion70.put(
+			LIST_TYPE_ENV_SEARCH + ".standard",
+			_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_0_STANDARD);
 
 		_envPortalVersionOther.put(
 			LIST_TYPE_ENV_AS, _ENV_AS_PORTAL_VERSION_OTHER);

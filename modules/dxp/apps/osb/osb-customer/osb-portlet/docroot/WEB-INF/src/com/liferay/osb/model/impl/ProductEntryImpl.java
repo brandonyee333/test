@@ -144,6 +144,17 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		}
 	}
 
+	public boolean isEnterpriseSearch() {
+		String name = getName();
+
+		if (name.contains("Enterprise Search")) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
 	public boolean isEnterpriseSearchPremium() {
 		String name = getName();
 

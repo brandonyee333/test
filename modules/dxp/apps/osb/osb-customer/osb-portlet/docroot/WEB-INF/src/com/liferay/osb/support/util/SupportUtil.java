@@ -332,7 +332,7 @@ public class SupportUtil {
 	}
 
 	public static List<ListType> getPortalEnvListTypes(
-		int envLFR, String envListType) {
+		int envLFR, String envListType, String sublist) {
 
 		List<ListType> listTypes = ListTypeServiceUtil.getListTypes(
 			envListType);
@@ -340,7 +340,7 @@ public class SupportUtil {
 		listTypes = ListUtil.copy(listTypes);
 
 		int[] envListTypeIds = AccountEnvironmentConstants.getEnvListTypeIds(
-			envLFR, envListType);
+			envLFR, envListType + sublist);
 
 		Long[] listTypeIds = ArrayUtil.toLongArray(envListTypeIds);
 
@@ -357,38 +357,33 @@ public class SupportUtil {
 		return listTypes;
 	}
 
-	public static boolean hasElasticsearchEnvOffering(long offeringEntryId) {
+	public static boolean hasEnterpriseSearchEnvOffering(long offeringEntryId) {
 		try {
-			OfferingEntry selectedOfferingEntry =
+			OfferingEntry offeringEntry =
 				OfferingEntryLocalServiceUtil.getOfferingEntry(offeringEntryId);
 
-			ProductEntry selectedProductEntry =
-				selectedOfferingEntry.getProductEntry();
-
-			String selectedEnvironment =
-				selectedProductEntry.getEnvironmentLabel();
-
-			AccountEntry accountEntry = selectedOfferingEntry.getAccountEntry();
+			AccountEntry accountEntry = offeringEntry.getAccountEntry();
 
 			List<OfferingEntry> offeringEntries =
-				accountEntry.getOfferingEntries();
+				OfferingEntryServiceUtil.getAccountEntryOfferingEntries(
+					accountEntry.getAccountEntryId());
 
-			for (OfferingEntry offeringEntry : offeringEntries) {
-				ProductEntry productEntry = offeringEntry.getProductEntry();
+			for (OfferingEntry curOfferingEntry : offeringEntries) {
+				ProductEntry curProductEntry =
+					curOfferingEntry.getProductEntry();
 
-				String environment = productEntry.getEnvironmentLabel();
-				String name = productEntry.getName();
+				if (curProductEntry.isEnterpriseSearch()) {
+					ProductEntry productEntry = offeringEntry.getProductEntry();
 
-				if (environment.equals(selectedEnvironment) &&
-					name.contains("Enterprise Search")) {
+					if (curProductEntry.getEnvironment() ==
+							productEntry.getEnvironment()) {
 
-					return true;
+						return true;
+					}
 				}
 			}
 		}
-		catch (PortalException pe) {
-		}
-		catch (SystemException se) {
+		catch (Exception e) {
 		}
 
 		return false;

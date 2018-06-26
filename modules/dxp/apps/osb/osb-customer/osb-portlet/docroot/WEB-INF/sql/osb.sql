@@ -307,12 +307,15 @@ insert into ListType (listTypeId, name, type_) values (39004, 'azure-sql-databas
 insert into ListType (listTypeId, name, type_) values (39005, 'azure-virtual-machines', 'com.liferay.osb.model.AccountEnvironment.envCS');
 insert into ListType (listTypeId, name, type_) values (39006, 'aws-aurora', 'com.liferay.osb.model.TicketEntry.envCS');
 
-insert into ListType (listTypeId, name, type_) values (40000, 'elasticsearch', 'com.liferay.osb.model.AccountEnvironment.envSearch');
-insert into ListType (listTypeId, name, type_) values (40001, 'kibana-4.4', 'com.liferay.osb.model.AccountEnvironment.envSearch');
-insert into ListType (listTypeId, name, type_) values (40002, 'marvel-2.2', 'com.liferay.osb.model.AccountEnvironment.envSearch');
-insert into ListType (listTypeId, name, type_) values (40003, 'shield-2.2', 'com.liferay.osb.model.AccountEnvironment.envSearch');
-insert into ListType (listTypeId, name, type_) values (40004, 'solr', 'com.liferay.osb.model.AccountEnvironment.envSearch');
-insert into ListType (listTypeId, name, type_) values (40005, 'solrcloud', 'com.liferay.osb.model.AccountEnvironment.envSearch');
+insert into ListType (listTypeId, name, type_) values (40000, 'elasticsearch-2.x', 'com.liferay.osb.model.TicketEntry.envSearch');
+insert into ListType (listTypeId, name, type_) values (40001, 'kibana-4.x', 'com.liferay.osb.model.TicketEntry.envSearch');
+insert into ListType (listTypeId, name, type_) values (40002, 'marvel-2.x', 'com.liferay.osb.model.TicketEntry.envSearch');
+insert into ListType (listTypeId, name, type_) values (40003, 'shield-2.x', 'com.liferay.osb.model.TicketEntry.envSearch');
+insert into ListType (listTypeId, name, type_) values (40004, 'solr', 'com.liferay.osb.model.TicketEntry.envSearch');
+insert into ListType (listTypeId, name, type_) values (40005, 'solrcloud', 'com.liferay.osb.model.TicketEntry.envSearch');
+insert into ListType (listTypeId, name, type_) values (40006, 'elasticsearch-6.x', 'com.liferay.osb.model.TicketEntry.envSearch');
+insert into ListType (listTypeId, name, type_) values (40007, 'kibana-6.x', 'com.liferay.osb.model.TicketEntry.envSearch');
+insert into ListType (listTypeId, name, type_) values (40008, 'x-pack-6.x', 'com.liferay.osb.model.TicketEntry.envSearch');
 
 insert into ListType (listTypeId, name, type_) values (41000, '7.0', 'com.liferay.osb.model.ProductEntry.digitalEnterpriseAllVersions');
 
