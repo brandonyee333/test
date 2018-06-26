@@ -9,5 +9,6 @@
 		<suppress checks="JavaDiamondOperatorCheck" files="/lcs-messaging/.*" />
 		<suppress checks="JavaDiamondOperatorCheck" files="/lcs-rest-client/.*" />
 		<suppress checks="JavaDiamondOperatorCheck" files="/lcs-security/.*" />
+		<suppress checks="PropertiesLiferayPluginPackageLiferayVersionsCheck" files="/lcs-portlet/docroot/WEB-INF/liferay-plugin-package\.properties" />
 	</source-check>
 </suppressions>
