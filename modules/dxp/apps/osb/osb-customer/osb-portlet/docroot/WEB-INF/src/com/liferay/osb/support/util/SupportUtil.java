@@ -349,8 +349,12 @@ public class SupportUtil {
 
 		listTypes = ListUtil.copy(listTypes);
 
+		if (Validator.isNotNull(sublistType)) {
+			sublistType = StringPool.PERIOD + sublistType;
+		}
+
 		int[] listTypeIds = TicketEntryConstants.getEnvListTypeIds(
-			envLFR, envListType + StringPool.PERIOD + sublistType);
+			envLFR, envListType + sublistType);
 
 		Iterator<ListType> itr = listTypes.iterator();
 
