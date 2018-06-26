@@ -73,6 +73,8 @@ public interface ProductEntry extends ProductEntryModel, PersistedModel {
 
 	public boolean isDigitalEnterprise();
 
+	public boolean isEnterpriseSearch();
+
 	public boolean isEnterpriseSearchPremium();
 
 	public boolean isEnterpriseSearchStandard();

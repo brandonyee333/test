@@ -159,6 +159,11 @@ public class ProductEntryWrapper implements ProductEntry,
 	}
 
 	@Override
+	public boolean isEnterpriseSearch() {
+		return _productEntry.isEnterpriseSearch();
+	}
+
+	@Override
 	public boolean isEnterpriseSearchPremium() {
 		return _productEntry.isEnterpriseSearchPremium();
 	}
