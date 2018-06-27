@@ -153,7 +153,7 @@ insert into ListType (listTypeId, name, type_) values (28035, 'sybase-ase-16', '
 insert into ListType (listTypeId, name, type_) values (28036, 'mysql-5.7', 'com.liferay.osb.model.AccountEnvironment.envDB');
 insert into ListType (listTypeId, name, type_) values (28037, 'sql-server-2016', 'com.liferay.osb.model.AccountEnvironment.envDB');
 insert into ListType (listTypeId, name, type_) values (28038, 'db2-10.5', 'com.liferay.osb.model.AccountEnvironment.envDB');
-insert into ListType (listTypeId, name, type_) values (28039, 'postgresql-9.6', 'com.liferay.osb.model.TicketEntry.envDB');
+insert into ListType (listTypeId, name, type_) values (28039, 'postgresql-9.6', 'com.liferay.osb.model.AccountEnvironment.envDB');
 
 insert into ListType (listTypeId, name, type_) values (29000, 'java-5', 'com.liferay.osb.model.AccountEnvironment.envJVM');
 insert into ListType (listTypeId, name, type_) values (29001, 'java-6', 'com.liferay.osb.model.AccountEnvironment.envJVM');

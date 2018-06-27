@@ -29,7 +29,8 @@ public class Upgrade_20180126163455001_ListType extends BaseUpgradeProcess {
 	@Override
 	protected void doUpgrade() throws Exception {
 		insertListType(
-			28039, "postgresql-9.6", "com.liferay.osb.model.TicketEntry.envDB");
+			28039, "postgresql-9.6",
+			"com.liferay.osb.model.AccountEnvironment.envDB");
 	}
 
 }
