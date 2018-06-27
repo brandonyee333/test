@@ -42,11 +42,13 @@ public class Upgrade_20180319111155800_ListType extends BaseUpgradeProcess {
 
 		insertListType(
 			40006, "elasticsearch-6.x",
-			"com.liferay.osb.model.TicketEntry.envSearch");
+			"com.liferay.osb.model.AccountEnvironment.envSearch");
 		insertListType(
-			40007, "kibana-6.x", "com.liferay.osb.model.TicketEntry.envSearch");
+			40007, "kibana-6.x",
+			"com.liferay.osb.model.AccountEnvironment.envSearch");
 		insertListType(
-			40008, "x-pack-6.x", "com.liferay.osb.model.TicketEntry.envSearch");
+			40008, "x-pack-6.x",
+			"com.liferay.osb.model.AccountEnvironment.envSearch");
 	}
 
 }
