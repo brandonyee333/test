@@ -29,7 +29,8 @@ public class Upgrade_20170809123243059_ListType extends BaseUpgradeProcess {
 	@Override
 	protected void doUpgrade() throws Exception {
 		insertListType(
-			29008, "openjdk-8", "com.liferay.osb.model.TicketEntry.envJVM");
+			29008, "openjdk-8",
+			"com.liferay.osb.model.AccountEnvironment.envJVM");
 	}
 
 }
