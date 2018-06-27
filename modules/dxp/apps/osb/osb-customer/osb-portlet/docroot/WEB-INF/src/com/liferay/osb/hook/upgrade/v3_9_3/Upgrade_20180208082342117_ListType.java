@@ -29,7 +29,8 @@ public class Upgrade_20180208082342117_ListType extends BaseUpgradeProcess {
 	@Override
 	protected void doUpgrade() throws Exception {
 		insertListType(
-			39006, "aws-aurora", "com.liferay.osb.model.TicketEntry.envCS");
+			39006, "aws-aurora",
+			"com.liferay.osb.model.AccountEnvironment.envCS");
 	}
 
 }

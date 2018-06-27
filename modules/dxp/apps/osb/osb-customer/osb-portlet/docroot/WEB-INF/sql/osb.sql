@@ -305,7 +305,7 @@ insert into ListType (listTypeId, name, type_) values (39002, 'aws-s3', 'com.lif
 insert into ListType (listTypeId, name, type_) values (39003, 'azure-files', 'com.liferay.osb.model.AccountEnvironment.envCS');
 insert into ListType (listTypeId, name, type_) values (39004, 'azure-sql-databases', 'com.liferay.osb.model.AccountEnvironment.envCS');
 insert into ListType (listTypeId, name, type_) values (39005, 'azure-virtual-machines', 'com.liferay.osb.model.AccountEnvironment.envCS');
-insert into ListType (listTypeId, name, type_) values (39006, 'aws-aurora', 'com.liferay.osb.model.TicketEntry.envCS');
+insert into ListType (listTypeId, name, type_) values (39006, 'aws-aurora', 'com.liferay.osb.model.AccountEnvironment.envCS');
 
 insert into ListType (listTypeId, name, type_) values (40000, 'elasticsearch-2.x', 'com.liferay.osb.model.TicketEntry.envSearch');
 insert into ListType (listTypeId, name, type_) values (40001, 'kibana-4.x', 'com.liferay.osb.model.TicketEntry.envSearch');
