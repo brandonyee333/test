@@ -177,7 +177,7 @@ public class PortalMetricsAggregator {
 			}
 
 			if ((value != null) && !(value instanceof Number) &&
-					!(value instanceof String)) {
+				!(value instanceof String)) {
 
 				value = String.valueOf(value);
 			}
