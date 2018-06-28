@@ -14,22 +14,25 @@
 
 package com.liferay.portal.workflow.kaleo.designer.internal.messaging;
 
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageListener;
+import com.liferay.portal.kernel.security.pacl.permission.PortalRuntimePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
 import com.liferay.portal.kernel.workflow.WorkflowDefinitionManagerUtil;
-import com.liferay.portal.workflow.kaleo.designer.service.KaleoDraftDefinitionLocalServiceUtil;
-import com.liferay.portal.workflow.kaleo.designer.util.KaleoDesignerUtil;
+import com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition;
+import com.liferay.portal.workflow.kaleo.designer.service.KaleoDraftDefinitionLocalService;
 
-import org.osgi.service.component.annotations.Component;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * @author Kenneth Chang
  */
-@Component(immediate = true, service = KaleoDefinitionMessageListener.class)
 public class KaleoDefinitionMessageListener implements MessageListener {
 
 	@Override
@@ -40,6 +43,14 @@ public class KaleoDefinitionMessageListener implements MessageListener {
 		catch (Exception e) {
 			_log.error("Unable to process message " + message, e);
 		}
+	}
+
+	public void setKaleoDraftDefinitionLocalService(
+		KaleoDraftDefinitionLocalService kaleoDraftDefinitionLocalService) {
+
+		PortalRuntimePermission.checkSetBeanProperty(getClass());
+
+		_kaleoDraftDefinitionLocalService = kaleoDraftDefinitionLocalService;
 	}
 
 	protected void doReceive(Message message) throws Exception {
@@ -64,7 +75,7 @@ public class KaleoDefinitionMessageListener implements MessageListener {
 			WorkflowDefinitionManagerUtil.getWorkflowDefinition(
 				serviceContext.getCompanyId(), name, version);
 
-		KaleoDesignerUtil.addMissingKaleoDraftDefinition(
+		_addMissingKaleoDraftDefinition(
 			workflowDefinition.getName(), workflowDefinition.getVersion(),
 			workflowDefinition.getTitle(), workflowDefinition.getContent(),
 			serviceContext);
@@ -77,11 +88,43 @@ public class KaleoDefinitionMessageListener implements MessageListener {
 		ServiceContext serviceContext = (ServiceContext)message.get(
 			"serviceContext");
 
-		KaleoDraftDefinitionLocalServiceUtil.deleteKaleoDraftDefinitions(
+		_kaleoDraftDefinitionLocalService.deleteKaleoDraftDefinitions(
 			name, version, serviceContext);
+	}
+
+	private KaleoDraftDefinition _addMissingKaleoDraftDefinition(
+			String name, int version, String title, String content,
+			ServiceContext serviceContext)
+		throws PortalException {
+
+		int kaleoDraftDefinitionsCount =
+			_kaleoDraftDefinitionLocalService.getKaleoDraftDefinitionsCount(
+				name, version, serviceContext);
+
+		KaleoDraftDefinition kaleoDraftDefinition = null;
+
+		if (kaleoDraftDefinitionsCount == 0) {
+			Map<Locale, String> titleMap = LocalizationUtil.getLocalizationMap(
+				title);
+
+			kaleoDraftDefinition =
+				_kaleoDraftDefinitionLocalService.addKaleoDraftDefinition(
+					serviceContext.getUserId(),
+					serviceContext.getScopeGroupId(), name, titleMap, content,
+					version, 1, serviceContext);
+		}
+		else {
+			kaleoDraftDefinition =
+				_kaleoDraftDefinitionLocalService.getLatestKaleoDraftDefinition(
+					name, version, serviceContext);
+		}
+
+		return kaleoDraftDefinition;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		KaleoDefinitionMessageListener.class);
+
+	private KaleoDraftDefinitionLocalService _kaleoDraftDefinitionLocalService;
 
 }

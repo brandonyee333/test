@@ -17,7 +17,9 @@
 
 	<!-- Listeners -->
 
-	<bean class="com.liferay.portal.workflow.kaleo.designer.internal.messaging.KaleoDefinitionMessageListener" id="messageListener.kaleo_definition" />
+	<bean class="com.liferay.portal.workflow.kaleo.designer.internal.messaging.KaleoDefinitionMessageListener" id="messageListener.kaleo_definition">
+		<property name="KaleoDraftDefinitionLocalService" ref="com.liferay.portal.workflow.kaleo.designer.service.KaleoDraftDefinitionLocalService" />
+	</bean>
 
 	<!-- Configurator -->
 
