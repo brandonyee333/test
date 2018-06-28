@@ -31,6 +31,8 @@ import java.util.Map;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.http.HttpMessage;
 
 /**
@@ -38,6 +40,20 @@ import org.apache.http.HttpMessage;
  */
 public class WebRESTWebServiceImpl
 	extends BaseWebService implements WebRESTWebService {
+
+	@Override
+	public void deleteCorpEntriesUser(
+			String dossieraAccountKey, String userUUID)
+		throws RemoteServiceException {
+
+		Map<String, String> parameters = new HashMap<>();
+
+		parameters.put("userUUID", userUUID);
+
+		doDelete(
+			_URL_API_REST_CORP_ENTRIES + dossieraAccountKey + "/user",
+			parameters);
+	}
 
 	@Override
 	public void deleteCorpProjectMessages(String corpProjectMessageUUID)
@@ -131,8 +147,17 @@ public class WebRESTWebServiceImpl
 
 		parameters.put("emailAddress", emailAddress);
 
-		return doGetToJSONObject(
-			_URL_API_REST_USERS + "email_address", parameters);
+		try {
+			return doGetToJSONObject(
+				_URL_API_REST_USERS + "email_address", parameters);
+		}
+		catch (RemoteServiceException rse) {
+			if (rse.getStatusCode() == HttpServletResponse.SC_NOT_FOUND) {
+				return null;
+			}
+
+			throw rse;
+		}
 	}
 
 	@Override
@@ -173,6 +198,34 @@ public class WebRESTWebServiceImpl
 		parameters.put("salesforceProjectKey", salesforceProjectKey);
 
 		return doPostToJSONObject(_URL_API_REST_CORP_PROJECTS, parameters);
+	}
+
+	@Override
+	public void putCorpEntriesUser(String dossieraAccountKey, String userUUID)
+		throws RemoteServiceException {
+
+		Map<String, String> parameters = new HashMap<>();
+
+		parameters.put("userUUID", userUUID);
+
+		doPut(
+			_URL_API_REST_CORP_ENTRIES + dossieraAccountKey + "/user",
+			parameters);
+	}
+
+	@Override
+	public void putCorpEntriesUserRole(
+			String dossieraAccountKey, String userUUID, String roleUUID)
+		throws RemoteServiceException {
+
+		Map<String, String> parameters = new HashMap<>();
+
+		parameters.put("roleUUID", roleUUID);
+		parameters.put("userUUID", userUUID);
+
+		doPut(
+			_URL_API_REST_CORP_ENTRIES + dossieraAccountKey + "/user_role",
+			parameters);
 	}
 
 	@Override
@@ -257,10 +310,6 @@ public class WebRESTWebServiceImpl
 		try {
 			String response = doGet(url, parameters);
 
-			if (response == null) {
-				return null;
-			}
-
 			return JSONFactoryUtil.createJSONObject(response);
 		}
 		catch (Exception e) {
@@ -322,6 +371,9 @@ public class WebRESTWebServiceImpl
 	}
 
 	private static final String _URL_API_REST = "/osb-entity-web";
+
+	private static final String _URL_API_REST_CORP_ENTRIES =
+		_URL_API_REST + "/corp_entries/";
 
 	private static final String _URL_API_REST_CORP_PROJECT_MESSAGES =
 		_URL_API_REST + "/corp_project_messages/";

@@ -48,6 +48,19 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 		names="users"
 	/>
 
+	<liferay-ui:error exception="<%= RemoteServiceException.class %>">
+
+		<%
+		RemoteServiceException rse = (RemoteServiceException)errorException;
+		%>
+
+		<liferay-ui:message key="unable-to-sync-to-web.liferay.com" />
+
+		<br />
+
+		<%= rse.getMessage() %>
+	</liferay-ui:error>
+
 	<aui:input name="addUserIds" type="hidden" value="" />
 	<aui:input name="removeUserIds" type="hidden" value="" />
 

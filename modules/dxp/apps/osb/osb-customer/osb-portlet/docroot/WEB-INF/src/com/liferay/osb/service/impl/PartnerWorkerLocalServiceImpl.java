@@ -17,14 +17,15 @@ package com.liferay.osb.service.impl;
 import com.liferay.osb.exception.NoSuchPartnerWorkerException;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.PartnerWorker;
+import com.liferay.osb.remote.web.WebRESTWebServiceUtil;
 import com.liferay.osb.service.base.PartnerWorkerLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.model.User;
 
+import java.util.ArrayList;
 import java.util.List;
-
-// TODO
-// import com.liferay.osb.model.CorpEntry;
 
 /**
  * @author Amos Fong
@@ -38,6 +39,8 @@ public class PartnerWorkerLocalServiceImpl
 			long[] userIds, long partnerEntryId, int[] roles,
 			int[] notifications)
 		throws PortalException {
+
+		List<Long> newUserIds = new ArrayList<>();
 
 		for (int i = 0; i < userIds.length; i++) {
 			long userId = userIds[i];
@@ -53,6 +56,8 @@ public class PartnerWorkerLocalServiceImpl
 
 				partnerWorker.setUserId(userId);
 				partnerWorker.setPartnerEntryId(partnerEntryId);
+
+				newUserIds.add(userId);
 			}
 
 			partnerWorker.setRole(roles[i]);
@@ -65,7 +70,7 @@ public class PartnerWorkerLocalServiceImpl
 			assignOrganizations(userId);
 		}
 
-		assignCorpEntryOrganizations(userIds, partnerEntryId, roles);
+		assignCorpEntryOrganizations(newUserIds, partnerEntryId);
 	}
 
 	public void deletePartnerWorkers(long userId) throws PortalException {
@@ -91,9 +96,9 @@ public class PartnerWorkerLocalServiceImpl
 
 		for (long userId : userIds) {
 			try {
-				unassignCorpEntryOrganizations(userId, partnerEntryId);
-
 				partnerWorkerPersistence.removeByU_PEI(userId, partnerEntryId);
+
+				unassignCorpEntryOrganizations(userId, partnerEntryId);
 
 				unassignOrganizations(userId);
 			}
@@ -157,7 +162,7 @@ public class PartnerWorkerLocalServiceImpl
 	}
 
 	protected void assignCorpEntryOrganizations(
-			long[] userIds, long partnerEntryId, int[] roles)
+			List<Long> userIds, long partnerEntryId)
 		throws PortalException {
 
 		PartnerEntry partnerEntry = partnerEntryLocalService.fetchPartnerEntry(
@@ -167,35 +172,19 @@ public class PartnerWorkerLocalServiceImpl
 			return;
 		}
 
-		/* TODO
-		CorpEntry corpEntry = corpEntryLocalService.fetchCorpEntry(
-			partnerEntry.getDossieraAccountKey());
-
-		if (corpEntry == null) {
-			return;
-		}
-
-		Organization organization = organizationLocalService.fetchOrganization(
-			corpEntry.getOrganizationId());
-
-		if (organization == null) {
-			return;
-		}
+		Role role = roleLocalService.getRole(
+			OSBConstants.ROLE_OSB_CORP_SALES_REPRESENTATIVE_ID);
 
 		for (long userId : userIds) {
-			if (!organizationLocalService.hasUserOrganization(
-					userId, corpEntry.getOrganizationId())) {
+			User user = userLocalService.getUser(userId);
 
-				userLocalService.addOrganizationUsers(
-					corpEntry.getOrganizationId(), new long[] {userId});
+			WebRESTWebServiceUtil.putCorpEntriesUser(
+				partnerEntry.getDossieraAccountKey(), user.getUuid());
 
-				UserGroupRoleLocalServiceUtil.addUserGroupRoles(
-					new long[] {userId}, organization.getGroupId(),
-					OSBConstants.ROLE_OSB_CORP_SALES_REPRESENTATIVE_ID);
-			}
+			WebRESTWebServiceUtil.putCorpEntriesUserRole(
+				partnerEntry.getDossieraAccountKey(), user.getUuid(),
+				role.getUuid());
 		}
-
-		*/
 	}
 
 	protected void assignOrganizations(long userId) throws PortalException {
@@ -220,29 +209,10 @@ public class PartnerWorkerLocalServiceImpl
 			return;
 		}
 
-		/* TODO
-		CorpEntry corpEntry = corpEntryLocalService.fetchCorpEntry(
-			partnerEntry.getDossieraAccountKey());
+		User user = userLocalService.getUser(userId);
 
-		if (corpEntry == null) {
-			return;
-		}
-
-		Organization organization = organizationLocalService.fetchOrganization(
-			corpEntry.getOrganizationId());
-
-		if (organization == null) {
-			return;
-		}
-
-		if (organizationLocalService.hasUserOrganization(
-				userId, corpEntry.getOrganizationId())) {
-
-			userLocalService.unsetOrganizationUsers(
-				corpEntry.getOrganizationId(), new long[] {userId});
-		}
-
-		*/
+		WebRESTWebServiceUtil.deleteCorpEntriesUser(
+			partnerEntry.getDossieraAccountKey(), user.getUuid());
 	}
 
 	protected void unassignOrganizations(long userId) throws PortalException {

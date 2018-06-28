@@ -22,6 +22,14 @@ import com.liferay.portal.kernel.json.JSONObject;
  */
 public class WebRESTWebServiceUtil {
 
+	public static void deleteCorpEntriesUser(
+			String dossieraAccountKey, String userUUID)
+		throws RemoteServiceException {
+
+		getWebRESTWebService().deleteCorpEntriesUser(
+			dossieraAccountKey, userUUID);
+	}
+
 	public static void deleteCorpProjectMessages(String corpProjectMessageUUID)
 		throws RemoteServiceException {
 
@@ -84,6 +92,21 @@ public class WebRESTWebServiceUtil {
 		return getWebRESTWebService().postCorpProjects(
 			creatorUserUUID, ownerUserUUID, dossieraProjectKey,
 			salesforceProjectKey, name);
+	}
+
+	public static void putCorpEntriesUser(
+			String dossieraAccountKey, String userUUID)
+		throws RemoteServiceException {
+
+		getWebRESTWebService().putCorpEntriesUser(dossieraAccountKey, userUUID);
+	}
+
+	public static void putCorpEntriesUserRole(
+			String dossieraAccountKey, String userUUID, String roleUUID)
+		throws RemoteServiceException {
+
+		getWebRESTWebService().putCorpEntriesUserRole(
+			dossieraAccountKey, userUUID, roleUUID);
 	}
 
 	public static JSONObject putCorpProjects(

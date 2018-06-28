@@ -276,14 +276,10 @@ public class BaseWebService {
 			StatusLine statusLine = httpResponse.getStatusLine();
 
 			if (statusLine.getStatusCode() ==
-					HttpServletResponse.SC_NOT_FOUND) {
-
-				return null;
-			}
-			else if (statusLine.getStatusCode() ==
-						HttpServletResponse.SC_UNAUTHORIZED) {
+					HttpServletResponse.SC_UNAUTHORIZED) {
 
 				throw new RemoteServiceException(
+					statusLine.getStatusCode(),
 					"Not authorized to access JSON web service");
 			}
 			else if (statusLine.getStatusCode() >= 400) {
@@ -297,7 +293,7 @@ public class BaseWebService {
 				}
 
 				throw new RemoteServiceException(
-					statusLine.getStatusCode() + ": " + message);
+					statusLine.getStatusCode(), message);
 			}
 
 			return EntityUtils.toString(

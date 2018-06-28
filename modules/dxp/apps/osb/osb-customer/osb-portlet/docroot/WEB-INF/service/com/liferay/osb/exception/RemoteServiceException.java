@@ -19,12 +19,15 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.exception.PortalException;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Amos Fong
  */
 @ProviderType
 public class RemoteServiceException extends PortalException {
 
-	public RemoteServiceException() {
+	public RemoteServiceException(int statusCode, String msg) {
+		super(msg);
+
+		_statusCode = statusCode;
 	}
 
 	public RemoteServiceException(String msg) {
@@ -38,5 +41,11 @@ public class RemoteServiceException extends PortalException {
 	public RemoteServiceException(Throwable cause) {
 		super(cause);
 	}
+
+	public int getStatusCode() {
+		return _statusCode;
+	}
+
+	private int _statusCode;
 
 }
