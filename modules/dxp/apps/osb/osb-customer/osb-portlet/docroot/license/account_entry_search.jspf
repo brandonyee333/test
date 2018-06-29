@@ -1,0 +1,444 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%
+themeDisplay.setIncludeServiceJs(true);
+
+AssetVocabulary assetVocabulary = AssetVocabularyLocalServiceUtil.getGroupVocabulary(OSBConstants.GROUP_GLOBAL_ID, "Support-Regions");
+
+Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
+%>
+
+<div class="callout-shadowed container">
+	<liferay-ui:search-toggle
+		buttonLabel="search"
+		displayTerms="<%= displayTerms %>"
+		id="toggle_id_account_entry_search"
+	>
+		<table class="lfr-table aui-w100">
+		<tr class="aui-w100">
+			<td class="aui-w50" valign="top">
+				<table class="lfr-table">
+				<tr>
+					<td>
+						<liferay-ui:message key="project-name" />
+					</td>
+					<td>
+						<liferay-ui:message key="code" />
+					</td>
+					<td>
+						<liferay-ui:message key="special-instructions" />
+					</td>
+					<td>
+						<liferay-ui:message key="notes" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div id="<portlet:namespace />nameContainer">
+							<input id="<portlet:namespace /><%= displayTerms.NAME %>" name="<portlet:namespace /><%= displayTerms.NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getName()) %>" />
+						</div>
+					</td>
+					<td>
+						<div id="<portlet:namespace />codeContainer">
+							<input id="<portlet:namespace /><%= displayTerms.CODE %>" name="<portlet:namespace /><%= displayTerms.CODE %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getCode()) %>" />
+						</div>
+					</td>
+					<td>
+						<input id="<portlet:namespace /><%= displayTerms.INSTRUCTIONS %>" name="<portlet:namespace /><%= displayTerms.INSTRUCTIONS %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getInstructions()) %>" />
+					</td>
+					<td>
+						<input id="<portlet:namespace /><%= displayTerms.NOTES %>" name="<portlet:namespace /><%= displayTerms.NOTES %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getNotes()) %>" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<liferay-ui:message key="support" />
+					</td>
+					<td>
+						<liferay-ui:message key="has-expired-support" />
+					</td>
+					<td>
+						<liferay-ui:message key="has-ticket-support" />
+					</td>
+					<td>
+						<liferay-ui:message key="has-partner-first-line-support" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<select id="<portlet:namespace /><%= displayTerms.SUPPORT %>" name="<portlet:namespace /><%= displayTerms.SUPPORT %>" onchange="<portlet:namespace />updateSupport();">
+							<option value=""></option>
+							<option <%= (displayTerms.getSupport() == 1) ? "selected" : "" %> value="1"><liferay-ui:message key="active" /></option>
+							<option <%= (displayTerms.getSupport() == 2) ? "selected" : "" %> value="2"><liferay-ui:message key="inactive" /></option>
+							<option <%= (displayTerms.getSupport() == 3) ? "selected" : "" %> value="3"><liferay-ui:message key="none" /></option>
+						</select>
+					</td>
+					<td>
+						<select <%= (displayTerms.getSupport() == 3) ? "disabled" : "" %> id="<portlet:namespace /><%= displayTerms.EXPIRED_SUPPORT %>" name="<portlet:namespace /><%= displayTerms.EXPIRED_SUPPORT %>">
+							<option <%= !displayTerms.hasExpiredSupport() ? "selected" : "" %> value=""></option>
+							<option <%= (displayTerms.hasExpiredSupport() && displayTerms.isExpiredSupport()) ? "selected" : "" %> value="1"><liferay-ui:message key="yes" /></option>
+							<option <%= (displayTerms.hasExpiredSupport() && !displayTerms.isExpiredSupport()) ? "selected" : "" %> value="0"><liferay-ui:message key="no" /></option>
+						</select>
+					</td>
+					<td>
+						<select <%= (displayTerms.getSupport() == 3) ? "disabled" : "" %> id="<portlet:namespace /><%= displayTerms.TICKET_SUPPORT %>" name="<portlet:namespace /><%= displayTerms.TICKET_SUPPORT %>">
+							<option <%= !displayTerms.hasTicketSupport() ? "selected" : "" %> value=""></option>
+							<option <%= (displayTerms.hasTicketSupport() && displayTerms.isTicketSupport()) ? "selected" : "" %> value="1"><liferay-ui:message key="yes" /></option>
+							<option <%= (displayTerms.hasTicketSupport() && !displayTerms.isTicketSupport()) ? "selected" : "" %> value="0"><liferay-ui:message key="no" /></option>
+						</select>
+					</td>
+					<td>
+						<select id="<portlet:namespace /><%= displayTerms.PARTNER_MANAGED_SUPPORT %>" name="<portlet:namespace /><%= displayTerms.PARTNER_MANAGED_SUPPORT %>">
+							<option <%= !displayTerms.hasPartnerManagedSupport() ? "selected" : "" %> value=""></option>
+							<option <%= (displayTerms.hasPartnerManagedSupport() && displayTerms.isPartnerManagedSupport()) ? "selected" : "" %> value="1"><liferay-ui:message key="yes" /></option>
+							<option <%= (displayTerms.hasPartnerManagedSupport() && !displayTerms.isPartnerManagedSupport()) ? "selected" : "" %> value="0"><liferay-ui:message key="no" /></option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<liferay-ui:message key="support-region" />
+					</td>
+					<td colspan="2">
+						<liferay-ui:message key="country" />
+					</td>
+					<td>
+						<liferay-ui:message key="state-province" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<select id="<portlet:namespace /><%= displayTerms.SUPPORT_REGION_IDS %>" name="<portlet:namespace /><%= displayTerms.SUPPORT_REGION_IDS %>">
+							<option value=""></option>
+
+							<%
+							for (SupportRegion supportRegion : SupportRegionLocalServiceUtil.getSupportRegions(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
+							%>
+
+								<option <%= ArrayUtil.contains(displayTerms.getSupportRegionIds(), supportRegion.getSupportRegionId()) ? "selected" : "" %> value="<%= supportRegion.getSupportRegionId() %>"><%= HtmlUtil.escape(supportRegion.getName()) %></option>
+
+							<%
+							}
+							%>
+
+						</select>
+					</td>
+					<td colspan="2">
+						<select id="<portlet:namespace /><%= displayTerms.COUNTRY_ID %>" name="<portlet:namespace /><%= displayTerms.COUNTRY_ID %>"></select>
+					</td>
+					<td>
+						<select id="<portlet:namespace /><%= displayTerms.REGION_ID %>" name="<portlet:namespace /><%= displayTerms.REGION_ID %>"></select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<liferay-ui:message key="city" />
+					</td>
+					<td>
+						<liferay-ui:message key="address-line" />
+					</td>
+					<td>
+						<liferay-ui:message key="postal-code" />
+					</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>
+						<input id="<portlet:namespace /><%= displayTerms.CITY %>" name="<portlet:namespace /><%= displayTerms.CITY %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getCity()) %>" />
+					</td>
+					<td>
+						<input id="<portlet:namespace /><%= displayTerms.STREET %>" name="<portlet:namespace /><%= displayTerms.STREET %>" size="30" type="text" value="<%= HtmlUtil.escape(displayTerms.getStreet()) %>" />
+					</td>
+					<td>
+						<input id="<portlet:namespace /><%= displayTerms.ZIP %>" name="<portlet:namespace /><%= displayTerms.ZIP %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getZip()) %>" />
+					</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td colspan="4">
+						<br />
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<liferay-ui:message key="industry" />
+					</td>
+					<td>
+						<liferay-ui:message key="sla" />
+					</td>
+					<td>
+						<liferay-ui:message key="tier" />
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<select class="multiple-select" id="<portlet:namespace /><%= displayTerms.INDUSTRIES %>" multiple name="<portlet:namespace /><%= displayTerms.INDUSTRIES %>">
+							<option value=""><liferay-ui:message key="any" /></option>
+
+							<%
+							List<ListType> industryTypes = ListTypeServiceUtil.getListTypes(AccountEntryConstants.LIST_TYPE_INDUSTRY);
+
+							for (ListType industryType : industryTypes) {
+							%>
+
+								<option <%= ArrayUtil.contains(displayTerms.getIndustries(), industryType.getListTypeId()) ? "selected" : "" %> value="<%= industryType.getListTypeId() %>"><%= LanguageUtil.get(pageContext, industryType.getName()) %></option>
+
+							<%
+							}
+							%>
+
+						</select>
+					</td>
+					<td>
+						<select class="multiple-select" id="<portlet:namespace /><%= displayTerms.SUPPORT_RESPONSE_IDS %>" multiple name="<portlet:namespace /><%= displayTerms.SUPPORT_RESPONSE_IDS %>">
+							<option value=""><liferay-ui:message key="any" /></option>
+
+							<%
+							List<SupportResponse> supportResponses = SupportResponseLocalServiceUtil.getSupportResponses(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+							for (SupportResponse supportResponse : supportResponses) {
+							%>
+
+								<option <%= ArrayUtil.contains(displayTerms.getSupportResponseIds(), supportResponse.getSupportResponseId()) ? "selected" : "" %> value="<%= supportResponse.getSupportResponseId() %>"><%= HtmlUtil.escape(supportResponse.getName()) %></option>
+
+							<%
+							}
+							%>
+
+						</select>
+					</td>
+					<td>
+						<select class="multiple-select" id="<portlet:namespace /><%= displayTerms.TIERS %>" multiple name="<portlet:namespace /><%= displayTerms.TIERS %>">
+							<option value=""><liferay-ui:message key="any" /></option>
+
+							<%
+							for (int tier : AccountEntryConstants.TIERS) {
+							%>
+
+								<option <%= ArrayUtil.contains(displayTerms.getTiers(), tier) ? "selected" : "" %> value="<%= tier %>"><%= LanguageUtil.get(pageContext, AccountEntryConstants.getTierLabel(tier)) %></option>
+
+							<%
+							}
+							%>
+
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4">
+						<liferay-ui:message key="status" />
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4">
+						<select class="multiple-select" id="<portlet:namespace /><%= displayTerms.STATUSES %>" multiple name="<portlet:namespace /><%= displayTerms.STATUSES %>">
+							<option value="-1"><liferay-ui:message key="any" /></option>
+
+							<%
+							for (int status : AccountEntryConstants.STATUSES) {
+							%>
+
+								<option <%= ArrayUtil.contains(displayTerms.getStatuses(), status) ? "selected" : "" %> value="<%= status %>"><%= LanguageUtil.get(pageContext, WorkflowConstants.toLabel(status)) %></option>
+
+							<%
+							}
+							%>
+
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4">
+						<br />
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<liferay-ui:message key="created-by" />
+					</td>
+					<td colspan="2">
+						<liferay-ui:message key="last-edited-by" />
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<select id="<portlet:namespace /><%= displayTerms.CREATE_USER_ID %>" name="<portlet:namespace /><%= displayTerms.CREATE_USER_ID %>">
+							<option value=""></option>
+							<option <%= (user.getUserId() == displayTerms.getCreateUserId()) ? "selected" : StringPool.BLANK %> value="<%= user.getUserId() %>"><liferay-ui:message key="me" /></option>
+
+							<c:if test="<%= (displayTerms.getCreateUserId() > 0) && (user.getUserId() != displayTerms.getCreateUserId()) %>">
+								<option selected value="<%= displayTerms.getCreateUserId() %>"><%= HtmlUtil.escape(displayTerms.getCreateUserName()) %></option>
+							</c:if>
+						</select>
+
+						<input id="<portlet:namespace /><%= displayTerms.CREATE_USER_NAME %>" name="<portlet:namespace /><%= displayTerms.CREATE_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getCreateUserName()) %>" />
+
+						<input class="aui-button-input" onClick="var createUserWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_user.jsp" /><portlet:param name="userParam" value="accountEntryCreateUsers" /><portlet:param name="callback" value="selectCreateUser" /></portlet:renderURL>', 'create_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); createUserWindow.focus();" type="button" value="<liferay-ui:message key="choose" />" />
+					</td>
+					<td colspan="2">
+						<select id="<portlet:namespace /><%= displayTerms.MODIFIED_USER_ID %>" name="<portlet:namespace /><%= displayTerms.MODIFIED_USER_ID %>">
+							<option value=""></option>
+							<option <%= (user.getUserId() == displayTerms.getModifiedUserId()) ? "selected" : StringPool.BLANK %> value="<%= user.getUserId() %>"><liferay-ui:message key="me" /></option>
+
+							<c:if test="<%= (displayTerms.getModifiedUserId() > 0) && (user.getUserId() != displayTerms.getModifiedUserId()) %>">
+								<option selected value="<%= displayTerms.getModifiedUserId() %>"><%= HtmlUtil.escape(displayTerms.getModifiedUserName()) %></option>
+							</c:if>
+						</select>
+
+						<input id="<portlet:namespace /><%= displayTerms.MODIFIED_USER_NAME %>" name="<portlet:namespace /><%= displayTerms.MODIFIED_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getModifiedUserName()) %>" />
+
+						<input class="aui-button-input" onClick="var modifiedUserWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_user.jsp" /><portlet:param name="userParam" value="accountEntryModifiedUsers" /><portlet:param name="callback" value="selectModifiedUser" /></portlet:renderURL>', 'modified_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); modifiedUserWindow.focus();" type="button" value="<liferay-ui:message key="choose" />" />
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<liferay-ui:message key="created-after" />
+					</td>
+					<td colspan="2">
+						<liferay-ui:message key="created-before" />
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<liferay-ui:input-date
+							dayNullable="<%= true %>"
+							dayParam="<%= displayTerms.CREATE_DATE_GT_DAY %>"
+							dayValue="<%= displayTerms.getCreateDateGTDay() %>"
+							monthNullable="<%= true %>"
+							monthParam="<%= displayTerms.CREATE_DATE_GT_MONTH %>"
+							monthValue="<%= displayTerms.getCreateDateGTMonth() %>"
+							yearNullable="<%= true %>"
+							yearParam="<%= displayTerms.CREATE_DATE_GT_YEAR %>"
+							yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
+							yearRangeStart="<%= 2010 %>"
+							yearValue="<%= displayTerms.getCreateDateGTYear() %>"
+						/>
+					</td>
+					<td colspan="2">
+						<liferay-ui:input-date
+							dayNullable="<%= true %>"
+							dayParam="<%= displayTerms.CREATE_DATE_LT_DAY %>"
+							dayValue="<%= displayTerms.getCreateDateLTDay() %>"
+							monthNullable="<%= true %>"
+							monthParam="<%= displayTerms.CREATE_DATE_LT_MONTH %>"
+							monthValue="<%= displayTerms.getCreateDateLTMonth() %>"
+							yearNullable="<%= true %>"
+							yearParam="<%= displayTerms.CREATE_DATE_LT_YEAR %>"
+							yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
+							yearRangeStart="<%= 2010 %>"
+							yearValue="<%= displayTerms.getCreateDateLTYear() %>"
+						/>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<liferay-ui:message key="modified-after" />
+					</td>
+					<td colspan="2">
+						<liferay-ui:message key="modified-before" />
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<liferay-ui:input-date
+							dayNullable="<%= true %>"
+							dayParam="<%= displayTerms.MODIFIED_DATE_GT_DAY %>"
+							dayValue="<%= displayTerms.getModifiedDateGTDay() %>"
+							monthNullable="<%= true %>"
+							monthParam="<%= displayTerms.MODIFIED_DATE_GT_MONTH %>"
+							monthValue="<%= displayTerms.getModifiedDateGTMonth() %>"
+							yearNullable="<%= true %>"
+							yearParam="<%= displayTerms.MODIFIED_DATE_GT_YEAR %>"
+							yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
+							yearRangeStart="<%= 2010 %>"
+							yearValue="<%= displayTerms.getModifiedDateGTYear() %>"
+						/>
+					</td>
+					<td colspan="2">
+						<liferay-ui:input-date
+							dayNullable="<%= true %>"
+							dayParam="<%= displayTerms.MODIFIED_DATE_LT_DAY %>"
+							dayValue="<%= displayTerms.getModifiedDateLTDay() %>"
+							monthNullable="<%= true %>"
+							monthParam="<%= displayTerms.MODIFIED_DATE_LT_MONTH %>"
+							monthValue="<%= displayTerms.getModifiedDateLTMonth() %>"
+							yearNullable="<%= true %>"
+							yearParam="<%= displayTerms.MODIFIED_DATE_LT_YEAR %>"
+							yearRangeEnd="<%= calendar.get(Calendar.YEAR) + 1 %>"
+							yearRangeStart="<%= 2010 %>"
+							yearValue="<%= displayTerms.getModifiedDateLTYear() %>"
+						/>
+					</td>
+				</tr>
+				</table>
+			</td>
+		</tr>
+		</table>
+	</liferay-ui:search-toggle>
+</div>
+
+<br />
+
+<aui:script>
+	function <portlet:namespace />selectCreateUser(value, name) {
+		document.<portlet:namespace />fm.<portlet:namespace /><%= displayTerms.CREATE_USER_ID %>.options[2] = new Option(name, value);
+		document.<portlet:namespace />fm.<portlet:namespace /><%= displayTerms.CREATE_USER_ID %>.selectedIndex = 2;
+		document.<portlet:namespace />fm.<portlet:namespace /><%= displayTerms.CREATE_USER_NAME %>.value = name;
+	}
+
+	function <portlet:namespace />selectModifiedUser(value, name) {
+		document.<portlet:namespace />fm.<portlet:namespace /><%= displayTerms.MODIFIED_USER_ID %>.options[2] = new Option(name, value);
+		document.<portlet:namespace />fm.<portlet:namespace /><%= displayTerms.MODIFIED_USER_ID %>.selectedIndex = 2;
+		document.<portlet:namespace />fm.<portlet:namespace /><%= displayTerms.MODIFIED_USER_NAME %>.value = name;
+	}
+
+	function <portlet:namespace />updateSupport() {
+		var support = document.getElementById('<portlet:namespace /><%= displayTerms.SUPPORT %>').value;
+
+		if (support != 3) {
+			document.getElementById('<portlet:namespace /><%= displayTerms.EXPIRED_SUPPORT %>').disabled = false;
+			document.getElementById('<portlet:namespace /><%= displayTerms.TICKET_SUPPORT %>').disabled = false;
+		}
+		else {
+			document.getElementById('<portlet:namespace /><%= displayTerms.EXPIRED_SUPPORT %>').disabled = true;
+			document.getElementById('<portlet:namespace /><%= displayTerms.EXPIRED_SUPPORT %>').value = "";
+			document.getElementById('<portlet:namespace /><%= displayTerms.TICKET_SUPPORT %>').disabled = true;
+			document.getElementById('<portlet:namespace /><%= displayTerms.TICKET_SUPPORT %>').value = "";
+		}
+	}
+</aui:script>
+
+<aui:script use="liferay-dynamic-select">
+	new Liferay.DynamicSelect(
+		[
+			{
+				select: '<portlet:namespace /><%= displayTerms.COUNTRY_ID %>',
+				selectData: Liferay.Address.getCountries,
+				selectDesc: 'name',
+				selectId: 'countryId',
+				selectVal: '<%= displayTerms.getCountryId() %>'
+			},
+			{
+				select: '<portlet:namespace /><%= displayTerms.REGION_ID %>',
+				selectData: Liferay.Address.getRegions,
+				selectDesc: 'name',
+				selectId: 'regionId',
+				selectVal: '<%= displayTerms.getRegionId() %>'
+			}
+		]
+	);
+</aui:script>

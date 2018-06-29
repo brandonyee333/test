@@ -192,62 +192,69 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 							<liferay-ui:message key="project" />
 						</h2>
 
-						<%
-						List<AccountEntry> accountEntries = new ArrayList<AccountEntry>();
-
-						if (hasUpdateAdmin) {
-							accountEntries = AccountEntryLocalServiceUtil.getAccountEntries(AccountEntryConstants.STATUSES_ACTIVE, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-						}
-						else {
-							LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
-
-							params.put("accountWorker", new Long[] {user.getUserId(), null});
-							params.put("status", AccountEntryConstants.STATUSES_ACTIVE);
-
-							accountEntries = AccountEntryLocalServiceUtil.search(null, params, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
-						}
-						%>
-
 						<c:choose>
 							<c:when test="<%= licenseKeySet != null %>">
 								<strong><%= HtmlUtil.escape(accountEntry.getName()) %></strong>
 
 								<aui:input label="" name="accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
 							</c:when>
-							<c:when test="<%= accountEntries.size() == 1 %>">
+							<c:when test="<%= hasUpdateAdmin %>">
+								<strong class="account-entry-name" id="<portlet:namespace />accountEntryName"><%= (accountEntry != null) ? HtmlUtil.escape(accountEntry.getName()) : "" %></strong>
 
-								<%
-								accountEntry = accountEntries.get(0);
+								<input class="btn" onClick="var accountEntryWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/license/select_account_entry.jsp" /><portlet:param name="callback" value="selectAccountEntry" /></portlet:renderURL>', 'account-entry', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); accountEntryWindow.focus();" type="button" value="<liferay-ui:message key="select" />" />
 
-								accountEntryId = accountEntry.getAccountEntryId();
-
-								addLicensePermission = OSBAccountEntryPermission.contains(permissionChecker, accountEntryId, OSBActionKeys.ADD_LICENSE);
-								%>
-
-								<strong><%= HtmlUtil.escape(accountEntry.getName()) %></strong>
-
-								<aui:input label="" name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
+								<aui:input name="accountEntryId" type="hidden" value="<%= (accountEntry != null) ? accountEntry.getAccountEntryId() : 0 %>" />
 							</c:when>
 							<c:otherwise>
 
 								<%
-								String taglibOnChange = renderResponse.getNamespace() + "updateLicenseKey('', '', '', 0);";
+								List<AccountEntry> accountEntries = new ArrayList<AccountEntry>();
+
+								LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
+
+								params.put("accountWorker", new Long[] {user.getUserId(), null});
+								params.put("status", AccountEntryConstants.STATUSES_ACTIVE);
+
+								List<AccountEntry> accountEntries = AccountEntryLocalServiceUtil.search(null, params, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 								%>
 
-								<aui:select label="" name="accountEntryId" onChange="<%= taglibOnChange %>">
-									<aui:option value="" />
+								<c:choose>
+									<c:when test="<%= accountEntries.size() == 1 %>">
 
-									<%
-									for (AccountEntry curAccountEntry : accountEntries) {
-									%>
+										<%
+										accountEntry = accountEntries.get(0);
 
-										<aui:option label="<%= curAccountEntry.getName() %>" selected="<%= curAccountEntry.getAccountEntryId() == accountEntryId %>" value="<%= curAccountEntry.getAccountEntryId() %>" />
+										accountEntryId = accountEntry.getAccountEntryId();
 
-									<%
-									}
-									%>
+										addLicensePermission = OSBAccountEntryPermission.contains(permissionChecker, accountEntryId, OSBActionKeys.ADD_LICENSE);
+										%>
 
-								</aui:select>
+										<strong><%= HtmlUtil.escape(accountEntry.getName()) %></strong>
+
+										<aui:input label="" name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
+									</c:when>
+									<c:otherwise>
+
+										<%
+										String taglibOnChange = renderResponse.getNamespace() + "updateLicenseKey('', '', '', 0);";
+										%>
+
+										<aui:select label="" name="accountEntryId" onChange="<%= taglibOnChange %>">
+											<aui:option value="" />
+
+											<%
+											for (AccountEntry curAccountEntry : accountEntries) {
+											%>
+
+												<aui:option label="<%= curAccountEntry.getName() %>" selected="<%= curAccountEntry.getAccountEntryId() == accountEntryId %>" value="<%= curAccountEntry.getAccountEntryId() %>" />
+
+											<%
+											}
+											%>
+
+										</aui:select>
+									</c:otherwise>
+								</c:choose>
 							</c:otherwise>
 						</c:choose>
 					</aui:col>
@@ -824,6 +831,14 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 </div>
 
 <aui:script>
+	function <portlet:namespace />selectAccountEntry(accountEntryId, accountEntryName) {
+		document.<portlet:namespace />fm.<portlet:namespace />accountEntryId.value = accountEntryId;
+
+		document.getElementById("<portlet:namespace />accountEntryName").innerHTML = accountEntryName;
+
+		<portlet:namespace />updateLicenseKey('', '', '', 0);
+	}
+
 	function <portlet:namespace />updateLicenseKey(productEntryId, productVersion, licenseEntryId, offeringEntryId) {
 		var A = AUI();
 

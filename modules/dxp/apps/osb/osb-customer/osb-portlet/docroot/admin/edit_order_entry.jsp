@@ -291,22 +291,20 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 			<td>
 				<c:choose>
 					<c:when test="<%= orderEntry == null %>">
-						<aui:select label="" name="accountEntryId">
-							<aui:option />
 
-							<%
-							List<AccountEntry> accountEntries = AccountEntryLocalServiceUtil.getAccountEntries(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+						<%
+						AccountEntry accountEntry = null;
 
-							for (AccountEntry accountEntry : accountEntries) {
-							%>
+						if (accountEntryId > 0) {
+							accountEntry = AccountEntryLocalServiceUtil.fetchAccountEntry(accountEntryId);
+						}
+						%>
 
-								<aui:option label="<%= accountEntry.getName() %>" selected="<%= accountEntryId == accountEntry.getAccountEntryId() %>" value="<%= accountEntry.getAccountEntryId() %>" />
+						<strong id="<portlet:namespace />accountEntryName"><%= (accountEntry != null) ? HtmlUtil.escape(accountEntry.getName()) : "" %></strong>
 
-							<%
-							}
-							%>
+						<input onClick="var accountEntryWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_account_entry.jsp" /><portlet:param name="callback" value="selectAccountEntry" /></portlet:renderURL>', 'account-entry', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); accountEntryWindow.focus();" type="button" value="<liferay-ui:message key="select" />" />
 
-						</aui:select>
+						<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
 					</c:when>
 					<c:otherwise>
 						<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
@@ -644,3 +642,11 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 		/>
 	</liferay-ui:search-container>
 </aui:form>
+
+<aui:script>
+	function <portlet:namespace />selectAccountEntry(accountEntryId, accountEntryName) {
+		document.<portlet:namespace />fm.<portlet:namespace />accountEntryId.value = accountEntryId;
+
+		document.getElementById("<portlet:namespace />accountEntryName").innerHTML = accountEntryName;
+	}
+</aui:script>
