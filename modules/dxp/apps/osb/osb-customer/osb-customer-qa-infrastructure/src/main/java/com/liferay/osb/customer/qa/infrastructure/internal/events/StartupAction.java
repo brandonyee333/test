@@ -65,13 +65,17 @@ public class StartupAction extends SimpleAction {
 	}
 
 	protected User checkUser(
-			long companyId, long[] roleIds, long siteId, long userGroupId,
-			String emailAddress, String screenName, String firstName,
-			String lastName, String password)
+			String uuid, long companyId, long[] roleIds, long siteId,
+			long userGroupId, String emailAddress, String screenName,
+			String firstName, String lastName, String password)
 		throws Exception {
 
 		User user = _userLocalService.fetchUserByEmailAddress(
 			companyId, emailAddress);
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setUuid(uuid);
 
 		if (user == null) {
 			try {
@@ -80,7 +84,7 @@ public class StartupAction extends SimpleAction {
 					emailAddress, 0, StringPool.BLANK, LocaleUtil.getDefault(),
 					firstName, StringPool.BLANK, lastName, 0, 0, true, 0, 1,
 					1970, StringPool.BLANK, null, null, null, null, false,
-					new ServiceContext());
+					serviceContext);
 			}
 			catch (UserScreenNameException.MustNotBeDuplicate usnemnbd) {
 				String key = PwdGenerator.getPassword(PwdGenerator.KEY3, 4);
@@ -92,7 +96,7 @@ public class StartupAction extends SimpleAction {
 					emailAddress, 0, StringPool.BLANK, LocaleUtil.getDefault(),
 					firstName, StringPool.BLANK, lastName, 0, 0, true, 0, 1,
 					1970, StringPool.BLANK, null, null, null, null, false,
-					new ServiceContext());
+					serviceContext);
 			}
 		}
 
@@ -164,9 +168,12 @@ public class StartupAction extends SimpleAction {
 			String userGroupId = OSBCustomerQAConfigurationUtil.get(
 				OSBCustomerQAConfigurationKeys.OSB_QA_USER,
 				new Filter(emailAddress, "user-group"));
+			String uuid = OSBCustomerQAConfigurationUtil.get(
+				OSBCustomerQAConfigurationKeys.OSB_QA_USER,
+				new Filter(emailAddress, "uuid"));
 
 			checkUser(
-				companyId, GetterUtil.getLongValues(roleIds),
+				uuid, companyId, GetterUtil.getLongValues(roleIds),
 				GetterUtil.getLong(siteId), GetterUtil.getLong(userGroupId),
 				emailAddress, screenName, firstName, lastName, password);
 		}
