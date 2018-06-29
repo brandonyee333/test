@@ -57,8 +57,8 @@
 				a.src=u;
 				a.onload=c;
 				m.parentNode.insertBefore(a,m)
-			})('https://analytics.liferay.com/analytics-all-min.js', function() {
-				Analytics.create({ analyticsKey: 'customer.liferay.com' });
+			})('https://analytics-js-cdn.liferay.com/analytics-all-min.js', function() {
+				Analytics.create({ analyticsKey: 'www.liferay.com' });
 				Analytics.setIdentity({ email: '${user_email_address}' });
 				Analytics.send('view', 'Layout');
 			});
