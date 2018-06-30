@@ -549,7 +549,7 @@ public class AccountEntryLocalServiceImpl
 		workflowServiceContext.setAttribute("workflowContext", workflowContext);
 
 		WorkflowHandlerRegistryUtil.startWorkflowInstance(
-			OSBConstants.COMPANY_ID, accountEntry.getUserId(),
+			OSBConstants.COMPANY_ID, OSBConstants.USER_DEFAULT_USER_ID,
 			AccountEntry.class.getName(), accountEntry.getAccountEntryId(),
 			accountEntry, workflowServiceContext);
 	}
@@ -1076,7 +1076,7 @@ public class AccountEntryLocalServiceImpl
 			!oldCorpEntryName.equals(accountEntry.getCorpEntryName())) {
 
 			updateAccountEntry(
-				oldAccountEntry.getUserId(),
+				OSBConstants.USER_DEFAULT_USER_ID,
 				oldAccountEntry.getAccountEntryId(),
 				oldAccountEntry.getCorpProjectUuid(),
 				accountEntry.getCorpEntryName(), oldAccountEntry.getName(),
@@ -1351,7 +1351,7 @@ public class AccountEntryLocalServiceImpl
 		workflowServiceContext.setAttribute("workflowContext", workflowContext);
 
 		WorkflowHandlerRegistryUtil.startWorkflowInstance(
-			OSBConstants.COMPANY_ID, oldAccountEntry.getUserId(),
+			OSBConstants.COMPANY_ID, OSBConstants.USER_DEFAULT_USER_ID,
 			AccountEntry.class.getName(), oldAccountEntry.getAccountEntryId(),
 			oldAccountEntry, workflowServiceContext);
 	}
