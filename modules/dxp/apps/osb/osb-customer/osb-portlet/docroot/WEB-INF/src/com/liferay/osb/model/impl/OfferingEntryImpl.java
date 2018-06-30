@@ -68,7 +68,7 @@ public class OfferingEntryImpl extends OfferingEntryBaseImpl {
 	}
 
 	public String getKey() throws PortalException {
-		StringBundler sb = new StringBundler(20);
+		StringBundler sb = new StringBundler(22);
 
 		AccountEntry accountEntry = getAccountEntry();
 

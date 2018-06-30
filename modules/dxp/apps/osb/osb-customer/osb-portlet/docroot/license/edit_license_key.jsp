@@ -471,10 +471,10 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 								</liferay-ui:search-container-column-text>
 
 								<liferay-ui:search-container-column-text
-										href="<%= rowHREF %>"
-										name="instance-size"
+									href="<%= rowHREF %>"
+									name="instance-size"
 								>
-									<%= LanguageUtil.get(pageContext, offeringEntryGroup.getSizingLabel()) %>
+									<%= LanguageUtil.get(request, offeringEntryGroup.getSizingLabel()) %>
 								</liferay-ui:search-container-column-text>
 
 								<liferay-ui:search-container-column-text
