@@ -1126,23 +1126,8 @@ public class AccountEntryLocalServiceImpl
 
 		HashMap<String, Serializable> workflowContext = new HashMap<>();
 
-		if (!users.isEmpty()) {
-			workflowContext.put(WorkflowConstants.CONTEXT_MISSING_USERS, users);
-		}
-
-		if (!newUsers.isEmpty()) {
-			workflowContext.put(WorkflowConstants.CONTEXT_NEW_USERS, newUsers);
-		}
-
 		TreeMap<String, String> oldAccountEntryAttributes = new TreeMap<>();
 		TreeMap<String, String> newAccountEntryAttributes = new TreeMap<>();
-
-		String oldAccountEntryName = oldAccountEntry.getName();
-
-		if (!oldAccountEntryName.equals(accountEntry.getName())) {
-			oldAccountEntryAttributes.put("name", oldAccountEntryName);
-			newAccountEntryAttributes.put("name", accountEntry.getName());
-		}
 
 		if (partnerEntry != null) {
 			if (oldAccountEntry.getPartnerEntryId() !=
@@ -1233,6 +1218,13 @@ public class AccountEntryLocalServiceImpl
 			return;
 		}
 
+		String oldAccountEntryName = oldAccountEntry.getName();
+
+		if (!oldAccountEntryName.equals(accountEntry.getName())) {
+			oldAccountEntryAttributes.put("name", oldAccountEntryName);
+			newAccountEntryAttributes.put("name", accountEntry.getName());
+		}
+
 		String notes = oldAccountEntry.getNotes();
 
 		if (!notes.equals(accountEntry.getNotes())) {
@@ -1249,6 +1241,14 @@ public class AccountEntryLocalServiceImpl
 			workflowContext.put(
 				WorkflowConstants.CONTEXT_NEW_ACCOUNT_ENTRY_ATTRIBUTES,
 				newAccountEntryAttributes);
+		}
+
+		if (!users.isEmpty()) {
+			workflowContext.put(WorkflowConstants.CONTEXT_MISSING_USERS, users);
+		}
+
+		if (!newUsers.isEmpty()) {
+			workflowContext.put(WorkflowConstants.CONTEXT_NEW_USERS, newUsers);
 		}
 
 		List<Long> existingOrderEntryIds = new ArrayList<>();
