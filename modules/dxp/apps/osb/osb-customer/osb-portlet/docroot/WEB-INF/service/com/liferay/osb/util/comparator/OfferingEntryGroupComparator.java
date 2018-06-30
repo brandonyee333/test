@@ -84,6 +84,15 @@ public class OfferingEntryGroupComparator implements Comparator<String> {
 			return value;
 		}
 
+		int sizing = GetterUtil.getInteger(keyMap.get("sizing"));
+		int sizing2 = GetterUtil.getInteger(key2Map.get("sizing"));
+
+		value = compareSizing(sizing, sizing2);
+
+		if (value != 0) {
+			return value;
+		}
+
 		long productEntryId = GetterUtil.getLong(keyMap.get("productEntryId"));
 		long productEntryId2 = GetterUtil.getLong(
 			key2Map.get("productEntryId"));
@@ -109,6 +118,18 @@ public class OfferingEntryGroupComparator implements Comparator<String> {
 		String name2 = productEntry2.getName();
 
 		return name.compareTo(name2);
+	}
+
+	public int compareSizing(int sizing, int sizing2) {
+		if (sizing > sizing2) {
+			return -1;
+		}
+
+		if (sizing2 > sizing) {
+			return 1;
+		}
+
+		return 0;
 	}
 
 	public int compareStartDate(long startDate, long startDate2) {

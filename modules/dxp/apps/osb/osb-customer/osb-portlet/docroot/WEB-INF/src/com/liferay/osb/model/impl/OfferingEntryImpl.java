@@ -89,6 +89,8 @@ public class OfferingEntryImpl extends OfferingEntryBaseImpl {
 		sb.append(isLicenses());
 		sb.append(",licenseLifetime=");
 		sb.append(getLicenseLifetime());
+		sb.append(",sizing=");
+		sb.append(getSizing());
 		sb.append(",supportLifetime=");
 		sb.append(getSupportLifetime());
 		sb.append(",supportEndDate=");

@@ -381,7 +381,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 						<liferay-ui:search-container
 							delta="<%= 10 %>"
-							headerNames="start-date,lifetime,license-keys-available"
+							headerNames="start-date,lifetime,instance-size,license-keys-available"
 							iteratorURL="<%= portletURL %>"
 							total="<%= offeringEntryGroups.size() %>"
 						>
@@ -468,6 +468,13 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 									name="lifetime"
 								>
 									<%= (offeringEntryGroup.getLicenseLifetime() / Time.DAY) + " Days" %>
+								</liferay-ui:search-container-column-text>
+
+								<liferay-ui:search-container-column-text
+										href="<%= rowHREF %>"
+										name="instance-size"
+								>
+									<%= LanguageUtil.get(pageContext, offeringEntryGroup.getSizingLabel()) %>
 								</liferay-ui:search-container-column-text>
 
 								<liferay-ui:search-container-column-text

@@ -133,6 +133,14 @@ public class OfferingEntryGroup {
 		return _quantity;
 	}
 
+	public int getSizing() {
+		return _sizing;
+	}
+
+	public String getSizingLabel() {
+		return _sizingLabel;
+	}
+
 	public Date getStartDate() {
 		return _startDate;
 	}
@@ -200,6 +208,8 @@ public class OfferingEntryGroup {
 		_key = offeringEntry.getKey();
 		_licenseLifetime = offeringEntry.getLicenseLifetime();
 		_productEntry = offeringEntry.getProductEntry();
+		_sizing = offeringEntry.getSizing();
+		_sizingLabel = offeringEntry.getSizingLabel();
 		_status = offeringEntry.getStatus();
 		_supportEndDate = offeringEntry.getSupportEndDate();
 		_supportLifetime = offeringEntry.getSupportLifetime();
@@ -226,6 +236,8 @@ public class OfferingEntryGroup {
 	private Set<Long> _offeringEntryIds = new HashSet<>();
 	private ProductEntry _productEntry;
 	private int _quantity;
+	private int _sizing;
+	private String _sizingLabel;
 	private Date _startDate;
 	private int _status;
 	private Date _supportEndDate;

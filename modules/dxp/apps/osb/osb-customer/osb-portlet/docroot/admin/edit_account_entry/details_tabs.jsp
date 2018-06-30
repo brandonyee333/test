@@ -217,6 +217,11 @@ for (SupportRegion supportRegion : supportRegions) {
 							value="<%= OfferingEntryConstants.getVersionLabel(offeringEntryGroup.getVersion()) %>"
 						/>
 
+						<liferay-ui:search-container-column-text
+							name="instance-size"
+							value="<%= LanguageUtil.get(request, offeringEntryGroup.getSizingLabel()) %>"
+						/>
+
 						<%
 						long licensePlid = PortalUtil.getPlidFromPortletId(user.getGroupId(), OSBPortletKeys.OSB_LICENSE);
 						%>
