@@ -208,8 +208,6 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 							<c:otherwise>
 
 								<%
-								List<AccountEntry> accountEntries = new ArrayList<AccountEntry>();
-
 								LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
 
 								params.put("accountWorker", new Long[] {user.getUserId(), null});
