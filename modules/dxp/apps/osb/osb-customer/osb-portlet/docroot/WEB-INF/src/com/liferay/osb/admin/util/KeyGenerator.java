@@ -16,8 +16,10 @@ package com.liferay.osb.admin.util;
 
 import com.liferay.osb.model.LicenseEntryConstants;
 import com.liferay.osb.model.LicenseKey;
+import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.service.LicenseKeyLocalServiceUtil;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Base64;
@@ -40,6 +42,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
@@ -63,15 +66,15 @@ public class KeyGenerator {
 		String licenseEntryType, int licenseVersion, String productEntryName,
 		String productId, String productVersionLabel, String owner,
 		int maxServers, int maxHttpSessions, long maxConcurrentUsers,
-		long maxUsers, String description, String hostName, String ipAddresses,
-		String macAddresses, String[] serverIds, Date startDate,
-		Date expirationDate) {
+		long maxUsers, int sizing, String description, String hostName,
+		String ipAddresses, String macAddresses, String[] serverIds,
+		Date startDate, Date expirationDate) {
 
 		Map<String, String> properties = _getProperties(
 			accountEntryName, licenseEntryName, licenseEntryType,
 			licenseVersion, productEntryName, productId, productVersionLabel,
 			owner, maxServers, maxHttpSessions, maxConcurrentUsers, maxUsers,
-			description, hostName, ipAddresses, macAddresses, serverIds,
+			sizing, description, hostName, ipAddresses, macAddresses, serverIds,
 			startDate, expirationDate);
 
 		return _instance._encrypt(properties);
@@ -104,9 +107,9 @@ public class KeyGenerator {
 			licenseKey.getProductVersionLabel(), licenseKey.getOwner(),
 			licenseKey.getMaxServers(), licenseKey.getMaxHttpSessions(),
 			licenseKey.getMaxConcurrentUsers(), licenseKey.getMaxUsers(),
-			licenseKey.getDescription(), licenseKey.getHostName(),
-			licenseKey.getIpAddresses(), licenseKey.getMacAddresses(),
-			serverIds, licenseKey.getStartDate(),
+			licenseKey.getSizing(), licenseKey.getDescription(),
+			licenseKey.getHostName(), licenseKey.getIpAddresses(),
+			licenseKey.getMacAddresses(), serverIds, licenseKey.getStartDate(),
 			licenseKey.getExpirationDate());
 
 		// See LRDCOM-2568
@@ -141,9 +144,9 @@ public class KeyGenerator {
 		String licenseEntryType, int licenseVersion, String productEntryName,
 		String productId, String productVersionLabel, String owner,
 		int maxServers, int maxHttpSessions, long maxConcurrentUsers,
-		long maxUsers, String description, String hostNames, String ipAddresses,
-		String macAddresses, String[] serverIds, Date startDate,
-		Date expirationDate) {
+		long maxUsers, int sizing, String description, String hostNames,
+		String ipAddresses, String macAddresses, String[] serverIds,
+		Date startDate, Date expirationDate) {
 
 		Arrays.sort(serverIds);
 
@@ -152,6 +155,13 @@ public class KeyGenerator {
 		Map<String, String> properties = new HashMap<>();
 
 		properties.put("version", String.valueOf(licenseVersion));
+
+		if (sizing > 0) {
+			properties.put(
+				"instanceSize",
+				LanguageUtil.get(
+					Locale.US, OfferingEntryConstants.getSizingLabel(sizing)));
+		}
 
 		if (!licenseEntryType.equals(LicenseEntryConstants.TYPE_TRIAL)) {
 			properties.put("startDate", String.valueOf(startDate.getTime()));

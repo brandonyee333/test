@@ -268,7 +268,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		String key = KeyGenerator.generate(
 			StringPool.BLANK, StringPool.BLANK, licenseEntryType,
 			licenseVersion, productEntryName, productId,
-			String.valueOf(productVersion), owner, 0, 0, 0, maxUsers,
+			String.valueOf(productVersion), owner, 0, 0, 0, maxUsers, 0,
 			description, hostName, ipAddresses, macAddresses,
 			new String[] {serverId}, startDate, expirationDate);
 
@@ -981,7 +981,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			accountEntryName, licenseEntryName, licenseEntryType,
 			licenseVersion, productEntryName,
 			ProductEntryConstants.PRODUCT_ID_PORTAL, productVersionLabel, owner,
-			maxServers, maxHttpSessions, 0, 0, description, null, null, null,
+			maxServers, maxHttpSessions, 0, 0, 0, description, null, null, null,
 			serverIds, startDate, expirationDate);
 
 		LicenseKey licenseKey = null;
@@ -1010,7 +1010,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				accountEntryName, licenseEntryName, licenseEntryType,
 				licenseVersion, productEntryName, productVersion,
 				productVersionLabel, clusterId, owner, maxServers, 0, 0,
-				maxHttpSessions, description, StringPool.BLANK,
+				maxHttpSessions, 0, description, StringPool.BLANK,
 				StringPool.BLANK, macAddresses[i], serverIds[i], key, startDate,
 				expirationDate, additionalInfo, complimentary, active);
 		}
@@ -1025,7 +1025,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		String licenseEntryType, int licenseVersion, String productEntryName,
 		int productVersion, String productVersionLabel, long clusterId,
 		String owner, int maxServers, long maxConcurrentUsers, long maxUsers,
-		int maxHttpSessions, String description, String hostName,
+		int maxHttpSessions, int sizing, String description, String hostName,
 		String ipAddresses, String macAddresses, String serverId, String key,
 		Date startDate, Date expirationDate, String additionalInfo,
 		boolean complimentary, boolean active) {
@@ -1062,6 +1062,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		licenseKey.setMaxConcurrentUsers(maxConcurrentUsers);
 		licenseKey.setMaxUsers(maxUsers);
 		licenseKey.setMaxHttpSessions(maxHttpSessions);
+		licenseKey.setSizing(sizing);
 		licenseKey.setDescription(description);
 		licenseKey.setHostName(hostName);
 		licenseKey.setIpAddresses(ipAddresses);
@@ -1188,13 +1189,22 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 					getCounterName(offeringEntry.getOfferingEntryId()));
 			}
 
+			int sizing = 0;
+
+			if ((licenseVersion >= 5) &&
+				licenseEntryType.equals(
+					LicenseEntryConstants.TYPE_PRODUCTION)) {
+
+				sizing = offeringEntry.getSizing();
+			}
+
 			String key = KeyGenerator.generate(
 				accountEntryName, licenseEntryName, licenseEntryType,
 				licenseVersion, productEntryName,
 				ProductEntryConstants.PRODUCT_ID_PORTAL, productVersionLabel,
 				owner, maxServers, maxHttpSessions,
 				offeringEntry.getMaxConcurrentUsers(),
-				offeringEntry.getMaxUsers(), description, hostName,
+				offeringEntry.getMaxUsers(), sizing, description, hostName,
 				curIpAddresses, curMacAddresses, new String[] {serverId},
 				startDate, expirationDate);
 
@@ -1204,10 +1214,10 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				licenseVersion, productEntryName, productVersion,
 				productVersionLabel, clusterId, owner, maxServers,
 				offeringEntry.getMaxConcurrentUsers(),
-				offeringEntry.getMaxUsers(), maxHttpSessions, description,
-				hostName, curIpAddresses, curMacAddresses, serverId, key,
-				startDate, expirationDate, additionalInfo, complimentary,
-				active);
+				offeringEntry.getMaxUsers(), maxHttpSessions, sizing,
+				description, hostName, curIpAddresses, curMacAddresses,
+				serverId, key, startDate, expirationDate, additionalInfo,
+				complimentary, active);
 
 			availableServers--;
 		}

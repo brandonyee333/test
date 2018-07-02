@@ -721,6 +721,12 @@ public class LicenseUtil {
 			}
 		}
 
+		String instanceSize = properties.get("instanceSize");
+
+		if (Validator.isNotNull(instanceSize)) {
+			DocUtil.add(rootElement, "instance-size", instanceSize);
+		}
+
 		if (!aggregate) {
 			if (licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) ||
 				licenseEntryType.equals(LicenseEntryConstants.TYPE_LIMITED) ||
