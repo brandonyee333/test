@@ -1169,6 +1169,15 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				}
 			}
 
+			int sizing = 0;
+
+			if ((licenseVersion >= 6) &&
+				licenseEntryType.equals(
+					LicenseEntryConstants.TYPE_PRODUCTION)) {
+
+				sizing = offeringEntry.getSizing();
+			}
+
 			String hostName = StringPool.BLANK;
 			String curIpAddresses = StringPool.BLANK;
 			String curMacAddresses = StringPool.BLANK;
@@ -1187,15 +1196,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			if (!licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER)) {
 				clusterId = counterLocalService.increment(
 					getCounterName(offeringEntry.getOfferingEntryId()));
-			}
-
-			int sizing = 0;
-
-			if ((licenseVersion >= 6) &&
-				licenseEntryType.equals(
-					LicenseEntryConstants.TYPE_PRODUCTION)) {
-
-				sizing = offeringEntry.getSizing();
 			}
 
 			String key = KeyGenerator.generate(
@@ -1462,9 +1462,9 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 			return ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7_1_10;
 		}
-
-		if (productMinorVersion ==
-				ProductEntryConstants.DIGITAL_ENTERPRISE_MINOR_VERSION_7_0) {
+		else if (productMinorVersion ==
+					ProductEntryConstants.
+						DIGITAL_ENTERPRISE_MINOR_VERSION_7_0) {
 
 			return ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7_0_10;
 		}
