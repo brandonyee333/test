@@ -320,7 +320,9 @@ insert into ListType (listTypeId, name, type_) values (40007, 'kibana-6.x', 'com
 insert into ListType (listTypeId, name, type_) values (40008, 'x-pack-6.x', 'com.liferay.osb.model.AccountEnvironment.envSearch');
 
 insert into ListType (listTypeId, name, type_) values (41000, '7.0', 'com.liferay.osb.model.ProductEntry.digitalEnterpriseAllVersions');
+insert into ListType (listTypeId, name, type_) values (41100, '7.1', 'com.liferay.osb.model.ProductEntry.digitalEnterpriseAllVersions');
 
 insert into ListType (listTypeId, name, type_) values (42000, '7', 'com.liferay.osb.model.ProductEntry.digitalEnterpriseMajorVersions');
 
 insert into ListType (listTypeId, name, type_) values (43000, '7.0', 'com.liferay.osb.model.ProductEntry.digitalEnterpriseMinorVersions');
+insert into ListType (listTypeId, name, type_) values (43001, '7.1', 'com.liferay.osb.model.ProductEntry.digitalEnterpriseMinorVersions');

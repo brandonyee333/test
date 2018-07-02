@@ -49,6 +49,12 @@ public class LicenseKeyConstants {
 
 	public static int getLicenseVersion(int productVersion) {
 		if (productVersion >=
+				ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7_1_10) {
+
+			return 6;
+		}
+
+		if (productVersion >=
 				ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7_0_10) {
 
 			return 5;

@@ -1191,7 +1191,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 			int sizing = 0;
 
-			if ((licenseVersion >= 5) &&
+			if ((licenseVersion >= 6) &&
 				licenseEntryType.equals(
 					LicenseEntryConstants.TYPE_PRODUCTION)) {
 
@@ -1457,6 +1457,12 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	}
 
 	protected int getProductVersion(int productMinorVersion) {
+		if (productMinorVersion ==
+				ProductEntryConstants.DIGITAL_ENTERPRISE_MINOR_VERSION_7_1) {
+
+			return ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7_1_10;
+		}
+
 		if (productMinorVersion ==
 				ProductEntryConstants.DIGITAL_ENTERPRISE_MINOR_VERSION_7_0) {
 
