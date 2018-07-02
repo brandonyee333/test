@@ -156,13 +156,6 @@ public class KeyGenerator {
 
 		properties.put("version", String.valueOf(licenseVersion));
 
-		if (sizing > 0) {
-			properties.put(
-				"instanceSize",
-				LanguageUtil.get(
-					Locale.US, OfferingEntryConstants.getSizingLabel(sizing)));
-		}
-
 		if (!licenseEntryType.equals(LicenseEntryConstants.TYPE_TRIAL)) {
 			properties.put("startDate", String.valueOf(startDate.getTime()));
 		}
@@ -278,6 +271,14 @@ public class KeyGenerator {
 				if (maxUsers > 0) {
 					properties.put("maxUsers", String.valueOf(maxUsers));
 				}
+			}
+
+			if ((licenseVersion >= 6) && (sizing > 0)) {
+				properties.put(
+					"instanceSize",
+					LanguageUtil.get(
+						Locale.US,
+						OfferingEntryConstants.getSizingLabel(sizing)));
 			}
 
 			if (licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) ||
