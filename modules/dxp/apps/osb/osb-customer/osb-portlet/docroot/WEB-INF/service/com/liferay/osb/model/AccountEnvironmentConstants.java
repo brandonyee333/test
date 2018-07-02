@@ -337,7 +337,7 @@ public class AccountEnvironmentConstants {
 
 	public static final long ENV_OS_DEBIAN_8 = 30037;
 
-	public static final long ENV_OS_DEBIAN_9 = 30009;
+	public static final long ENV_OS_DEBIAN_9 = 30044;
 
 	public static final long ENV_OS_HP_UX = 30015;
 

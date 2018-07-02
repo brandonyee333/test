@@ -68,7 +68,8 @@ public class OSBRequestUtil {
 		jsonObject.put("ENV_Browser#key", envBrowserListTypes.hashCode());
 
 		if (ProductEntryConstants.isPortalVersion6_2(envLFR) ||
-			ProductEntryConstants.isDigitalEnterpriseVersion7_0(envLFR)) {
+			ProductEntryConstants.isDigitalEnterpriseVersion7_0(envLFR) ||
+			ProductEntryConstants.isDigitalEnterpriseVersion7_1(envLFR)) {
 
 			List<ListType> envCSListTypes = SupportUtil.getPortalEnvListTypes(
 				envLFR, AccountEnvironmentConstants.LIST_TYPE_ENV_CS);
@@ -100,7 +101,9 @@ public class OSBRequestUtil {
 			"ENV_OS", getJSONArray(envOSListTypes, themeDisplay.getLocale()));
 		jsonObject.put("ENV_OS#key", envOSListTypes.hashCode());
 
-		if (ProductEntryConstants.isDigitalEnterpriseVersion7_0(envLFR)) {
+		if (ProductEntryConstants.isDigitalEnterpriseVersion7_0(envLFR) ||
+			ProductEntryConstants.isDigitalEnterpriseVersion7_1(envLFR)) {
+
 			long accountEntryId = ParamUtil.getLong(
 				resourceRequest, "accountEntryId");
 			long productEntryId = ParamUtil.getLong(
