@@ -277,10 +277,11 @@ public class ProductEntryConstants {
 	}
 
 	public static int getMinorVersion(int productVersion) {
-		if (isDigitalEnterpriseVersion7_0(productVersion) ||
-			isDigitalEnterpriseVersion7_1(productVersion)) {
-
-			return DIGITAL_ENTERPRISE_MAJOR_VERSION_7;
+		if (isDigitalEnterpriseVersion7_1(productVersion)) {
+			return DIGITAL_ENTERPRISE_MINOR_VERSION_7_1;
+		}
+		else if (isDigitalEnterpriseVersion7_0(productVersion)) {
+			return DIGITAL_ENTERPRISE_MINOR_VERSION_7_0;
 		}
 		else if (isPortalVersion6_2(productVersion)) {
 			return PORTAL_MINOR_VERSION_6_2;
