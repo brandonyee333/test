@@ -165,13 +165,13 @@ insert into ListType (listTypeId, name, type_) values (28042, 'db2-11.1', 'com.l
 insert into ListType (listTypeId, name, type_) values (28043, 'mariadb-10.2', 'com.liferay.osb.model.AccountEnvironment.envDB');
 insert into ListType (listTypeId, name, type_) values (28044, 'postgresql-10.3', 'com.liferay.osb.model.AccountEnvironment.envDB');
 
-insert into ListType (listTypeId, name, type_) values (29000, 'java-5', 'com.liferay.osb.model.AccountEnvironment.envJVM');
-insert into ListType (listTypeId, name, type_) values (29001, 'java-6', 'com.liferay.osb.model.AccountEnvironment.envJVM');
-insert into ListType (listTypeId, name, type_) values (29002, 'java-7', 'com.liferay.osb.model.AccountEnvironment.envJVM');
+insert into ListType (listTypeId, name, type_) values (29000, 'oracle-sun-jdk-5', 'com.liferay.osb.model.AccountEnvironment.envJVM');
+insert into ListType (listTypeId, name, type_) values (29001, 'oracle-sun-jdk-6', 'com.liferay.osb.model.AccountEnvironment.envJVM');
+insert into ListType (listTypeId, name, type_) values (29002, 'oracle-sun-jdk-7', 'com.liferay.osb.model.AccountEnvironment.envJVM');
 insert into ListType (listTypeId, name, type_) values (29003, 'ibm-jdk-6', 'com.liferay.osb.model.AccountEnvironment.envJVM');
 insert into ListType (listTypeId, name, type_) values (29004, 'ibm-jdk-7', 'com.liferay.osb.model.AccountEnvironment.envJVM');
 insert into ListType (listTypeId, name, type_) values (29005, 'jrocket-jdk-6', 'com.liferay.osb.model.AccountEnvironment.envJVM');
-insert into ListType (listTypeId, name, type_) values (29006, 'java-8', 'com.liferay.osb.model.AccountEnvironment.envJVM');
+insert into ListType (listTypeId, name, type_) values (29006, 'oracle-sun-jdk-8', 'com.liferay.osb.model.AccountEnvironment.envJVM');
 insert into ListType (listTypeId, name, type_) values (29007, 'ibm-jdk-8', 'com.liferay.osb.model.AccountEnvironment.envJVM');
 insert into ListType (listTypeId, name, type_) values (29008, 'openjdk-8', 'com.liferay.osb.model.AccountEnvironment.envJVM');
 

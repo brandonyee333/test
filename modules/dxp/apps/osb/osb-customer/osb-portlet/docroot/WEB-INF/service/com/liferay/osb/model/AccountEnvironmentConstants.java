@@ -305,17 +305,17 @@ public class AccountEnvironmentConstants {
 
 	public static final long ENV_JVM_IBM_JDK_8 = 29007;
 
-	public static final long ENV_JVM_JAVA_5 = 29000;
-
-	public static final long ENV_JVM_JAVA_6 = 29001;
-
-	public static final long ENV_JVM_JAVA_7 = 29002;
-
-	public static final long ENV_JVM_JAVA_8 = 29006;
-
 	public static final long ENV_JVM_JROCKET_JDK_6 = 29005;
 
 	public static final long ENV_JVM_OPENJDK_8 = 29008;
+
+	public static final long ENV_JVM_ORACLE_SUN_JDK_5 = 29000;
+
+	public static final long ENV_JVM_ORACLE_SUN_JDK_6 = 29001;
+
+	public static final long ENV_JVM_ORACLE_SUN_JDK_7 = 29002;
+
+	public static final long ENV_JVM_ORACLE_SUN_JDK_8 = 29006;
 
 	public static final long ENV_OS_AIX = 30044;
 
@@ -669,22 +669,27 @@ public class AccountEnvironmentConstants {
 		_ENV_DIGITAL_ENTERPRISE_VERSION_7_1 = new HashMap<String, int[]>();
 
 	private static final long[] _ENV_JVM_DIGITAL_ENTERPRISE_VERSION_7_0 =
-		{ENV_JVM_IBM_JDK_8, ENV_JVM_JAVA_8, ENV_JVM_OPENJDK_8};
+		{ENV_JVM_IBM_JDK_8, ENV_JVM_ORACLE_SUN_JDK_8, ENV_JVM_OPENJDK_8};
 
 	private static final int[] _ENV_JVM_DIGITAL_ENTERPRISE_VERSION_7_1 = {
-		ENV_JVM_IBM_JDK_8, ENV_JVM_JAVA_8, ENV_JVM_OPENJDK_8
+		ENV_JVM_IBM_JDK_8, ENV_JVM_ORACLE_SUN_JDK_8, ENV_JVM_OPENJDK_8
 	};
 
-	private static final long[] _ENV_JVM_PORTAL_VERSION_6_1 =
-		{ENV_JVM_JAVA_5, ENV_JVM_JAVA_6, ENV_JVM_JAVA_7, ENV_JVM_JAVA_8};
+	private static final long[] _ENV_JVM_PORTAL_VERSION_6_1 = {
+		ENV_JVM_ORACLE_SUN_JDK_5, ENV_JVM_ORACLE_SUN_JDK_6,
+		ENV_JVM_ORACLE_SUN_JDK_7, ENV_JVM_ORACLE_SUN_JDK_8
+	};
 
 	private static final long[] _ENV_JVM_PORTAL_VERSION_6_2 = {
-		ENV_JVM_IBM_JDK_6, ENV_JVM_IBM_JDK_7, ENV_JVM_IBM_JDK_8, ENV_JVM_JAVA_6,
-		ENV_JVM_JAVA_7, ENV_JVM_JAVA_8, ENV_JVM_JROCKET_JDK_6
+		ENV_JVM_IBM_JDK_6, ENV_JVM_IBM_JDK_7, ENV_JVM_IBM_JDK_8,
+		ENV_JVM_ORACLE_SUN_JDK_6, ENV_JVM_ORACLE_SUN_JDK_7,
+		ENV_JVM_ORACLE_SUN_JDK_8, ENV_JVM_JROCKET_JDK_6
 	};
 
-	private static final long[] _ENV_JVM_PORTAL_VERSION_OTHER =
-		{ENV_JVM_JAVA_5, ENV_JVM_JAVA_6, ENV_JVM_JAVA_7};
+	private static final long[] _ENV_JVM_PORTAL_VERSION_OTHER = {
+		ENV_JVM_ORACLE_SUN_JDK_5, ENV_JVM_ORACLE_SUN_JDK_6,
+		ENV_JVM_ORACLE_SUN_JDK_7
+	};
 
 	private static final long[] _ENV_OS_DIGITAL_ENTERPRISE_VERSION_7_0 = {
 		ENV_OS_AIX_7_1, ENV_OS_CENTOS_6, ENV_OS_CENTOS_7, ENV_OS_DEBIAN_7,
