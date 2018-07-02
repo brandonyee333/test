@@ -665,15 +665,14 @@ public class AccountEnvironmentConstants {
 		ENV_DB_SYBASE_ASE_15_5
 	};
 
-	private static final Map<String, int[]>
-		_ENV_DIGITAL_ENTERPRISE_VERSION_7_1 = new HashMap<String, int[]>();
+	private static final Map<String, long[]>
+		_ENV_DIGITAL_ENTERPRISE_VERSION_7_1 = new HashMap<>();
 
 	private static final long[] _ENV_JVM_DIGITAL_ENTERPRISE_VERSION_7_0 =
 		{ENV_JVM_IBM_JDK_8, ENV_JVM_ORACLE_SUN_JDK_8, ENV_JVM_OPENJDK_8};
 
-	private static final int[] _ENV_JVM_DIGITAL_ENTERPRISE_VERSION_7_1 = {
-		ENV_JVM_IBM_JDK_8, ENV_JVM_ORACLE_SUN_JDK_8, ENV_JVM_OPENJDK_8
-	};
+	private static final long[] _ENV_JVM_DIGITAL_ENTERPRISE_VERSION_7_1 =
+		{ENV_JVM_IBM_JDK_8, ENV_JVM_ORACLE_SUN_JDK_8, ENV_JVM_OPENJDK_8};
 
 	private static final long[] _ENV_JVM_PORTAL_VERSION_6_1 = {
 		ENV_JVM_ORACLE_SUN_JDK_5, ENV_JVM_ORACLE_SUN_JDK_6,
@@ -701,7 +700,7 @@ public class AccountEnvironmentConstants {
 		ENV_OS_WINDOWS_SERVER_2016
 	};
 
-	private static final int[] _ENV_OS_DIGITAL_ENTERPRISE_VERSION_7_1 = {
+	private static final long[] _ENV_OS_DIGITAL_ENTERPRISE_VERSION_7_1 = {
 		ENV_OS_AIX_7_1, ENV_OS_CENTOS_7, ENV_OS_DEBIAN_9, ENV_OS_ORACLE_LINUX_6,
 		ENV_OS_ORACLE_LINUX_7, ENV_OS_RED_HAT_ENTERPRISE_7, ENV_OS_SOLARIS_11,
 		ENV_OS_SUSE_ENTERPRISE_LINUX_12, ENV_OS_UBUNTU_LTS_16_04,
@@ -767,16 +766,15 @@ public class AccountEnvironmentConstants {
 			ENV_SEARCH_SOLR, ENV_SEARCH_SOLRCLOUD
 		};
 
-	private static final int[]
+	private static final long[]
 		_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_1_ENTERPRISE = {
 			ENV_SEARCH_ELASTICSEARCH_6_X, ENV_SEARCH_KIBANA_6_X,
 			ENV_SEARCH_X_PACK_6_X
 		};
 
-	private static final int[]
-		_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_1_STANDARD = {
-			ENV_SEARCH_ELASTICSEARCH_6_X, ENV_SEARCH_SOLR_5
-		};
+	private static final long[]
+		_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_1_STANDARD =
+			{ENV_SEARCH_ELASTICSEARCH_6_X, ENV_SEARCH_SOLR_5};
 
 	private static final Map<String, long[]> _envDigitalEnterpriseVersion70 =
 		new HashMap<>();

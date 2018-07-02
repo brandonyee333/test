@@ -357,7 +357,7 @@ public class ProductEntryConstants {
 	}
 
 	public static boolean isDigitalEnterpriseVersion7_1(
-		int digitalEnterpriseVersion) {
+		long digitalEnterpriseVersion) {
 
 		if (digitalEnterpriseVersion == DIGITAL_ENTERPRISE_VERSION_7_1_10) {
 			return true;
