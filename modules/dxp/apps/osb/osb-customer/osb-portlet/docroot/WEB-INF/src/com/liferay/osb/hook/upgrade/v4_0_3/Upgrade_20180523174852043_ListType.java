@@ -35,6 +35,45 @@ public class Upgrade_20180523174852043_ListType extends BaseUpgradeProcess {
 		insertListType(
 			43001, "7.1",
 			ProductEntry.class.getName() + ".digitalEnterpriseMinorVersions");
+		insertListType(
+			27061, "jboss-eap-7.1",
+			"com.liferay.osb.model.AccountEnvironment.envAS");
+		insertListType(
+			27062, "tcServer-4.0",
+			"com.liferay.osb.model.AccountEnvironment.envAS");
+		insertListType(
+			27063, "tomcat-9.0",
+			"com.liferay.osb.model.AccountEnvironment.envAS");
+		insertListType(
+			27064, "websphere-9.0",
+			"com.liferay.osb.model.AccountEnvironment.envAS");
+		insertListType(
+			27065, "wildfly-11.0",
+			"com.liferay.osb.model.AccountEnvironment.envAS");
+		insertListType(
+			37019, "firefox-esr-52",
+			"com.liferay.osb.model.AccountEnvironment.envBrowser");
+		insertListType(
+			37020, "safari-11",
+			"com.liferay.osb.model.AccountEnvironment.envBrowser");
+		insertListType(
+			28041, "amazon-aurora",
+			"com.liferay.osb.model.AccountEnvironment.envDB");
+		insertListType(
+			28042, "db2-11.1",
+			"com.liferay.osb.model.AccountEnvironment.envDB");
+		insertListType(
+			28043, "mariadb-10.2",
+			"com.liferay.osb.model.AccountEnvironment.envDB");
+		insertListType(
+			28044, "postgresql-10.3",
+			"com.liferay.osb.model.AccountEnvironment.envDB");
+		insertListType(
+			30044, "debian-9",
+			"com.liferay.osb.model.AccountEnvironment.envOS");
+		insertListType(
+			40009, "solr-5",
+			"com.liferay.osb.model.AccountEnvironment.envSearch");
 	}
 
 }
