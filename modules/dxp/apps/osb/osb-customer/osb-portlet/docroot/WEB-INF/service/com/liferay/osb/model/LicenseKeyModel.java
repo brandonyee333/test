@@ -522,6 +522,20 @@ public interface LicenseKeyModel extends BaseModel<LicenseKey> {
 	public void setMaxHttpSessions(int maxHttpSessions);
 
 	/**
+	 * Returns the sizing of this license key.
+	 *
+	 * @return the sizing of this license key
+	 */
+	public int getSizing();
+
+	/**
+	 * Sets the sizing of this license key.
+	 *
+	 * @param sizing the sizing of this license key
+	 */
+	public void setSizing(int sizing);
+
+	/**
 	 * Returns the description of this license key.
 	 *
 	 * @return the description of this license key

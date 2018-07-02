@@ -111,6 +111,7 @@ public class LicenseKeyClp extends BaseModelImpl<LicenseKey>
 		attributes.put("maxConcurrentUsers", getMaxConcurrentUsers());
 		attributes.put("maxUsers", getMaxUsers());
 		attributes.put("maxHttpSessions", getMaxHttpSessions());
+		attributes.put("sizing", getSizing());
 		attributes.put("description", getDescription());
 		attributes.put("hostName", getHostName());
 		attributes.put("ipAddresses", getIpAddresses());
@@ -311,6 +312,12 @@ public class LicenseKeyClp extends BaseModelImpl<LicenseKey>
 
 		if (maxHttpSessions != null) {
 			setMaxHttpSessions(maxHttpSessions);
+		}
+
+		Integer sizing = (Integer)attributes.get("sizing");
+
+		if (sizing != null) {
+			setSizing(sizing);
 		}
 
 		String description = (String)attributes.get("description");
@@ -1115,6 +1122,29 @@ public class LicenseKeyClp extends BaseModelImpl<LicenseKey>
 	}
 
 	@Override
+	public int getSizing() {
+		return _sizing;
+	}
+
+	@Override
+	public void setSizing(int sizing) {
+		_sizing = sizing;
+
+		if (_licenseKeyRemoteModel != null) {
+			try {
+				Class<?> clazz = _licenseKeyRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setSizing", int.class);
+
+				method.invoke(_licenseKeyRemoteModel, sizing);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
 	public String getDescription() {
 		return _description;
 	}
@@ -1630,6 +1660,7 @@ public class LicenseKeyClp extends BaseModelImpl<LicenseKey>
 		clone.setMaxConcurrentUsers(getMaxConcurrentUsers());
 		clone.setMaxUsers(getMaxUsers());
 		clone.setMaxHttpSessions(getMaxHttpSessions());
+		clone.setSizing(getSizing());
 		clone.setDescription(getDescription());
 		clone.setHostName(getHostName());
 		clone.setIpAddresses(getIpAddresses());
@@ -1725,7 +1756,7 @@ public class LicenseKeyClp extends BaseModelImpl<LicenseKey>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(83);
+		StringBundler sb = new StringBundler(85);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
@@ -1787,6 +1818,8 @@ public class LicenseKeyClp extends BaseModelImpl<LicenseKey>
 		sb.append(getMaxUsers());
 		sb.append(", maxHttpSessions=");
 		sb.append(getMaxHttpSessions());
+		sb.append(", sizing=");
+		sb.append(getSizing());
 		sb.append(", description=");
 		sb.append(getDescription());
 		sb.append(", hostName=");
@@ -1816,7 +1849,7 @@ public class LicenseKeyClp extends BaseModelImpl<LicenseKey>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(127);
+		StringBundler sb = new StringBundler(130);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.LicenseKey");
@@ -1943,6 +1976,10 @@ public class LicenseKeyClp extends BaseModelImpl<LicenseKey>
 		sb.append(getMaxHttpSessions());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>sizing</column-name><column-value><![CDATA[");
+		sb.append(getSizing());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>description</column-name><column-value><![CDATA[");
 		sb.append(getDescription());
 		sb.append("]]></column-value></column>");
@@ -2022,6 +2059,7 @@ public class LicenseKeyClp extends BaseModelImpl<LicenseKey>
 	private long _maxConcurrentUsers;
 	private long _maxUsers;
 	private int _maxHttpSessions;
+	private int _sizing;
 	private String _description;
 	private String _hostName;
 	private String _ipAddresses;

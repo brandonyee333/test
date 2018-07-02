@@ -10771,6 +10771,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		licenseKeyImpl.setMaxConcurrentUsers(licenseKey.getMaxConcurrentUsers());
 		licenseKeyImpl.setMaxUsers(licenseKey.getMaxUsers());
 		licenseKeyImpl.setMaxHttpSessions(licenseKey.getMaxHttpSessions());
+		licenseKeyImpl.setSizing(licenseKey.getSizing());
 		licenseKeyImpl.setDescription(licenseKey.getDescription());
 		licenseKeyImpl.setHostName(licenseKey.getHostName());
 		licenseKeyImpl.setIpAddresses(licenseKey.getIpAddresses());

@@ -100,6 +100,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 			{ "maxConcurrentUsers", Types.BIGINT },
 			{ "maxUsers", Types.BIGINT },
 			{ "maxHttpSessions", Types.INTEGER },
+			{ "sizing", Types.INTEGER },
 			{ "description", Types.VARCHAR },
 			{ "hostName", Types.VARCHAR },
 			{ "ipAddresses", Types.VARCHAR },
@@ -145,6 +146,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 		TABLE_COLUMNS_MAP.put("maxConcurrentUsers", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("maxUsers", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("maxHttpSessions", Types.INTEGER);
+		TABLE_COLUMNS_MAP.put("sizing", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("hostName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("ipAddresses", Types.VARCHAR);
@@ -158,7 +160,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 		TABLE_COLUMNS_MAP.put("active_", Types.BOOLEAN);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSB_LicenseKey (uuid_ VARCHAR(75) null,licenseKeyId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,licenseKeySetId LONG,assetReceiptLicenseUuid VARCHAR(75) null,accountEntryId LONG,orderEntryId LONG,offeringEntryId LONG,licenseEntryId LONG,productEntryId LONG,supportResponseId LONG,accountEntryName VARCHAR(500) null,licenseEntryName VARCHAR(75) null,licenseEntryType VARCHAR(75) null,licenseVersion INTEGER,productEntryName VARCHAR(75) null,productId VARCHAR(75) null,productVersion INTEGER,productVersionLabel VARCHAR(75) null,clusterId LONG,owner VARCHAR(75) null,maxServers INTEGER,maxConcurrentUsers LONG,maxUsers LONG,maxHttpSessions INTEGER,description VARCHAR(255) null,hostName VARCHAR(75) null,ipAddresses STRING null,macAddresses STRING null,serverId STRING null,key_ STRING null,startDate DATE null,expirationDate DATE null,additionalInfo STRING null,complimentary BOOLEAN,active_ BOOLEAN)";
+	public static final String TABLE_SQL_CREATE = "create table OSB_LicenseKey (uuid_ VARCHAR(75) null,licenseKeyId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,licenseKeySetId LONG,assetReceiptLicenseUuid VARCHAR(75) null,accountEntryId LONG,orderEntryId LONG,offeringEntryId LONG,licenseEntryId LONG,productEntryId LONG,supportResponseId LONG,accountEntryName VARCHAR(500) null,licenseEntryName VARCHAR(75) null,licenseEntryType VARCHAR(75) null,licenseVersion INTEGER,productEntryName VARCHAR(75) null,productId VARCHAR(75) null,productVersion INTEGER,productVersionLabel VARCHAR(75) null,clusterId LONG,owner VARCHAR(75) null,maxServers INTEGER,maxConcurrentUsers LONG,maxUsers LONG,maxHttpSessions INTEGER,sizing INTEGER,description VARCHAR(255) null,hostName VARCHAR(75) null,ipAddresses STRING null,macAddresses STRING null,serverId STRING null,key_ STRING null,startDate DATE null,expirationDate DATE null,additionalInfo STRING null,complimentary BOOLEAN,active_ BOOLEAN)";
 	public static final String TABLE_SQL_DROP = "drop table OSB_LicenseKey";
 	public static final String ORDER_BY_JPQL = " ORDER BY licenseKey.active DESC, licenseKey.licenseKeyId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY OSB_LicenseKey.active_ DESC, OSB_LicenseKey.licenseKeyId ASC";
@@ -232,6 +234,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 		model.setMaxConcurrentUsers(soapModel.getMaxConcurrentUsers());
 		model.setMaxUsers(soapModel.getMaxUsers());
 		model.setMaxHttpSessions(soapModel.getMaxHttpSessions());
+		model.setSizing(soapModel.getSizing());
 		model.setDescription(soapModel.getDescription());
 		model.setHostName(soapModel.getHostName());
 		model.setIpAddresses(soapModel.getIpAddresses());
@@ -337,6 +340,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 		attributes.put("maxConcurrentUsers", getMaxConcurrentUsers());
 		attributes.put("maxUsers", getMaxUsers());
 		attributes.put("maxHttpSessions", getMaxHttpSessions());
+		attributes.put("sizing", getSizing());
 		attributes.put("description", getDescription());
 		attributes.put("hostName", getHostName());
 		attributes.put("ipAddresses", getIpAddresses());
@@ -537,6 +541,12 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 
 		if (maxHttpSessions != null) {
 			setMaxHttpSessions(maxHttpSessions);
+		}
+
+		Integer sizing = (Integer)attributes.get("sizing");
+
+		if (sizing != null) {
+			setSizing(sizing);
 		}
 
 		String description = (String)attributes.get("description");
@@ -1141,6 +1151,17 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 
 	@JSON
 	@Override
+	public int getSizing() {
+		return _sizing;
+	}
+
+	@Override
+	public void setSizing(int sizing) {
+		_sizing = sizing;
+	}
+
+	@JSON
+	@Override
 	public String getDescription() {
 		if (_description == null) {
 			return StringPool.BLANK;
@@ -1402,6 +1423,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 		licenseKeyImpl.setMaxConcurrentUsers(getMaxConcurrentUsers());
 		licenseKeyImpl.setMaxUsers(getMaxUsers());
 		licenseKeyImpl.setMaxHttpSessions(getMaxHttpSessions());
+		licenseKeyImpl.setSizing(getSizing());
 		licenseKeyImpl.setDescription(getDescription());
 		licenseKeyImpl.setHostName(getHostName());
 		licenseKeyImpl.setIpAddresses(getIpAddresses());
@@ -1680,6 +1702,8 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 
 		licenseKeyCacheModel.maxHttpSessions = getMaxHttpSessions();
 
+		licenseKeyCacheModel.sizing = getSizing();
+
 		licenseKeyCacheModel.description = getDescription();
 
 		String description = licenseKeyCacheModel.description;
@@ -1763,7 +1787,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(83);
+		StringBundler sb = new StringBundler(85);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
@@ -1825,6 +1849,8 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 		sb.append(getMaxUsers());
 		sb.append(", maxHttpSessions=");
 		sb.append(getMaxHttpSessions());
+		sb.append(", sizing=");
+		sb.append(getSizing());
 		sb.append(", description=");
 		sb.append(getDescription());
 		sb.append(", hostName=");
@@ -1854,7 +1880,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(127);
+		StringBundler sb = new StringBundler(130);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.LicenseKey");
@@ -1981,6 +2007,10 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 		sb.append(getMaxHttpSessions());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>sizing</column-name><column-value><![CDATA[");
+		sb.append(getSizing());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>description</column-name><column-value><![CDATA[");
 		sb.append(getDescription());
 		sb.append("]]></column-value></column>");
@@ -2080,6 +2110,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 	private long _maxConcurrentUsers;
 	private long _maxUsers;
 	private int _maxHttpSessions;
+	private int _sizing;
 	private String _description;
 	private String _hostName;
 	private String _ipAddresses;

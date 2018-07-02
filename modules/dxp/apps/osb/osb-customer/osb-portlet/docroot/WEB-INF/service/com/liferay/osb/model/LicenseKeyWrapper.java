@@ -87,6 +87,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 		attributes.put("maxConcurrentUsers", getMaxConcurrentUsers());
 		attributes.put("maxUsers", getMaxUsers());
 		attributes.put("maxHttpSessions", getMaxHttpSessions());
+		attributes.put("sizing", getSizing());
 		attributes.put("description", getDescription());
 		attributes.put("hostName", getHostName());
 		attributes.put("ipAddresses", getIpAddresses());
@@ -284,6 +285,12 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 
 		if (maxHttpSessions != null) {
 			setMaxHttpSessions(maxHttpSessions);
+		}
+
+		Integer sizing = (Integer)attributes.get("sizing");
+
+		if (sizing != null) {
+			setSizing(sizing);
 		}
 
 		String description = (String)attributes.get("description");
@@ -518,6 +525,16 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	@Override
 	public int getProductVersion() {
 		return _licenseKey.getProductVersion();
+	}
+
+	/**
+	* Returns the sizing of this license key.
+	*
+	* @return the sizing of this license key
+	*/
+	@Override
+	public int getSizing() {
+		return _licenseKey.getSizing();
 	}
 
 	@Override
@@ -1340,6 +1357,16 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	@Override
 	public void setServerId(java.lang.String serverId) {
 		_licenseKey.setServerId(serverId);
+	}
+
+	/**
+	* Sets the sizing of this license key.
+	*
+	* @param sizing the sizing of this license key
+	*/
+	@Override
+	public void setSizing(int sizing) {
+		_licenseKey.setSizing(sizing);
 	}
 
 	/**

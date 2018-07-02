@@ -64,6 +64,7 @@ public class LicenseKeySoap implements Serializable {
 		soapModel.setMaxConcurrentUsers(model.getMaxConcurrentUsers());
 		soapModel.setMaxUsers(model.getMaxUsers());
 		soapModel.setMaxHttpSessions(model.getMaxHttpSessions());
+		soapModel.setSizing(model.getSizing());
 		soapModel.setDescription(model.getDescription());
 		soapModel.setHostName(model.getHostName());
 		soapModel.setIpAddresses(model.getIpAddresses());
@@ -367,6 +368,14 @@ public class LicenseKeySoap implements Serializable {
 		_maxHttpSessions = maxHttpSessions;
 	}
 
+	public int getSizing() {
+		return _sizing;
+	}
+
+	public void setSizing(int sizing) {
+		_sizing = sizing;
+	}
+
 	public String getDescription() {
 		return _description;
 	}
@@ -493,6 +502,7 @@ public class LicenseKeySoap implements Serializable {
 	private long _maxConcurrentUsers;
 	private long _maxUsers;
 	private int _maxHttpSessions;
+	private int _sizing;
 	private String _description;
 	private String _hostName;
 	private String _ipAddresses;

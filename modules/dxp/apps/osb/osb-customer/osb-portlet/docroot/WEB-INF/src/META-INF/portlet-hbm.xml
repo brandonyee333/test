@@ -300,6 +300,7 @@
 		<property name="maxConcurrentUsers" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="maxUsers" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="maxHttpSessions" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="sizing" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="hostName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="ipAddresses" type="com.liferay.portal.dao.orm.hibernate.StringType" />

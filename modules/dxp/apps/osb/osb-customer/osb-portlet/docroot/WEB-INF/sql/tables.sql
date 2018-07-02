@@ -257,6 +257,7 @@ create table OSB_LicenseKey (
 	maxConcurrentUsers LONG,
 	maxUsers LONG,
 	maxHttpSessions INTEGER,
+	sizing INTEGER,
 	description VARCHAR(255) null,
 	hostName VARCHAR(75) null,
 	ipAddresses STRING null,

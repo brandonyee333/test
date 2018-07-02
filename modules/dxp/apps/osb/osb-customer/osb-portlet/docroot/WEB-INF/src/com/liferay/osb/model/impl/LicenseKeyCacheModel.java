@@ -66,7 +66,7 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(83);
+		StringBundler sb = new StringBundler(85);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -128,6 +128,8 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 		sb.append(maxUsers);
 		sb.append(", maxHttpSessions=");
 		sb.append(maxHttpSessions);
+		sb.append(", sizing=");
+		sb.append(sizing);
 		sb.append(", description=");
 		sb.append(description);
 		sb.append(", hostName=");
@@ -274,6 +276,7 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 		licenseKeyImpl.setMaxConcurrentUsers(maxConcurrentUsers);
 		licenseKeyImpl.setMaxUsers(maxUsers);
 		licenseKeyImpl.setMaxHttpSessions(maxHttpSessions);
+		licenseKeyImpl.setSizing(sizing);
 
 		if (description == null) {
 			licenseKeyImpl.setDescription(StringPool.BLANK);
@@ -395,6 +398,8 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 		maxUsers = objectInput.readLong();
 
 		maxHttpSessions = objectInput.readInt();
+
+		sizing = objectInput.readInt();
 		description = objectInput.readUTF();
 		hostName = objectInput.readUTF();
 		ipAddresses = objectInput.readUTF();
@@ -528,6 +533,8 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 
 		objectOutput.writeInt(maxHttpSessions);
 
+		objectOutput.writeInt(sizing);
+
 		if (description == null) {
 			objectOutput.writeUTF(StringPool.BLANK);
 		}
@@ -615,6 +622,7 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 	public long maxConcurrentUsers;
 	public long maxUsers;
 	public int maxHttpSessions;
+	public int sizing;
 	public String description;
 	public String hostName;
 	public String ipAddresses;
