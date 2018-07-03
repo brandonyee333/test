@@ -1499,9 +1499,7 @@ public class AccountEntryLocalServiceImpl
 			(!missingAnalyticsCloudUsers.isEmpty() ||
 			 !missingUsers.isEmpty())) {
 
-			List<User> users = new ArrayList<>(missingUsers);
-
-			users.retainAll(missingAnalyticsCloudUsers);
+			List<User> users = new ArrayList<>(missingAnalyticsCloudUsers);
 
 			sendUserCreationNotification(
 				users, accountEntry,
@@ -1516,13 +1514,6 @@ public class AccountEntryLocalServiceImpl
 				users, accountEntry,
 				"Customer Portal, all of our downloads, and our support " +
 					"system");
-
-			users = new ArrayList<>(missingAnalyticsCloudUsers);
-
-			users.removeAll(missingUsers);
-
-			sendUserCreationNotification(
-				users, accountEntry, "Analytics Cloud");
 		}
 
 		return accountEntry;
@@ -1675,16 +1666,11 @@ public class AccountEntryLocalServiceImpl
 					new long[] {user.getUserId()}, roleId);
 			}
 
-			if (!ArrayUtil.contains(
-					roleIds,
-					OSBConstants.ROLE_OSB_CORP_ANALYTICS_CLOUD_OWNER_ID)) {
-
-				accountCustomerLocalService.addAccountCustomer(
-					accountEntry.getUserId(), user.getUserId(),
-					accountEntry.getAccountEntryId(),
-					AccountCustomerConstants.ROLE_WATCHER,
-					AccountCustomerConstants.NOTIFICATIONS_ALL);
-			}
+			accountCustomerLocalService.addAccountCustomer(
+				accountEntry.getUserId(), user.getUserId(),
+				accountEntry.getAccountEntryId(),
+				AccountCustomerConstants.ROLE_WATCHER,
+				AccountCustomerConstants.NOTIFICATIONS_ALL);
 
 			itr.remove();
 		}
