@@ -19,7 +19,7 @@
 <%
 MBMessageDisplay messageDisplay = (MBMessageDisplay)request.getAttribute(WebKeys.MESSAGE_BOARDS_MESSAGE_DISPLAY);
 
-MBCategory category = messageDisplay.getCategory();
+				 MBCategory category = (MBCategory)request.getAttribute("edit_message.jsp-category");
 %>
 
 <c:if test="<%= MBPermission.contains(permissionChecker, scopeGroupId, ActionKeys.BAN_USER) %>">
