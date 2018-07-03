@@ -150,7 +150,7 @@ public class AccountEntryLocalServiceImpl
 			String salesforceOpportunityKey, AccountEntry accountEntry,
 			CorpProject corpProject, PartnerEntry partnerEntry, Address address,
 			AccountWorker accountWorker, List<OrderEntry> orderEntries,
-			ArrayList<User> users, ServiceContext serviceContext)
+			List<User> users, ServiceContext serviceContext)
 		throws PortalException {
 
 		// Corp project
@@ -222,8 +222,8 @@ public class AccountEntryLocalServiceImpl
 
 		ArrayList<User> missingAnalyticsCloudUsers = new ArrayList<>();
 
-		ArrayList<User> analyticsCloudUsers =
-			(ArrayList<User>)serviceContext.getAttribute("analyticsCloudUsers");
+		List<User> analyticsCloudUsers =
+			(List<User>)serviceContext.getAttribute("analyticsCloudUsers");
 
 		if ((analyticsCloudUsers != null) && !analyticsCloudUsers.isEmpty()) {
 			missingAnalyticsCloudUsers = addCorpProjectUsers(
@@ -1041,8 +1041,8 @@ public class AccountEntryLocalServiceImpl
 	public void updateAccountEntryWithWorkflow(
 			String salesforceOpportunityKey, AccountEntry accountEntry,
 			PartnerEntry partnerEntry, AccountWorker accountWorker,
-			Address address, List<OrderEntry> orderEntries,
-			ArrayList<User> users, ServiceContext serviceContext)
+			Address address, List<OrderEntry> orderEntries, List<User> users,
+			ServiceContext serviceContext)
 		throws PortalException {
 
 		long classNameId = classNameLocalService.getClassNameId(
@@ -1104,8 +1104,8 @@ public class AccountEntryLocalServiceImpl
 
 		ArrayList<User> missingAnalyticsCloudUsers = new ArrayList<>();
 
-		ArrayList<User> analyticsCloudUsers =
-			(ArrayList<User>)serviceContext.getAttribute("analyticsCloudUsers");
+		List<User> analyticsCloudUsers =
+			(List<User>)serviceContext.getAttribute("analyticsCloudUsers");
 
 		if (analyticsCloudUsers != null) {
 			missingAnalyticsCloudUsers = getMissingUsers(analyticsCloudUsers);
@@ -1452,9 +1452,9 @@ public class AccountEntryLocalServiceImpl
 
 			if (status == WorkflowConstants.STATUS_APPROVED) {
 				missingAnalyticsCloudUsers =
-					(ArrayList<User>)serviceContext.getAttribute(
+					(List<User>)serviceContext.getAttribute(
 						"missingAnalyticsCloudUsers");
-				missingUsers = (ArrayList<User>)serviceContext.getAttribute(
+				missingUsers = (List<User>)serviceContext.getAttribute(
 					"missingUsers");
 
 				accountEntry.setStatus(getStatus(accountEntryId));
