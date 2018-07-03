@@ -1440,8 +1440,8 @@ public class AccountEntryLocalServiceImpl
 				accountEntry.getSupportRegionIds());
 		}
 
-		List<User> missingAnalyticsCloudUsers = null;
-		List<User> missingUsers = null;
+		List<User> missingAnalyticsCloudUsers = new ArrayList<>();
+		List<User> missingUsers = new ArrayList<>();
 
 		if ((accountEntry.getStatus() != WorkflowConstants.STATUS_APPROVED) &&
 			(accountEntry.getStatus() != status)) {
@@ -1454,8 +1454,17 @@ public class AccountEntryLocalServiceImpl
 				missingAnalyticsCloudUsers =
 					(List<User>)serviceContext.getAttribute(
 						"missingAnalyticsCloudUsers");
+
+				if (missingAnalyticsCloudUsers == null) {
+					missingAnalyticsCloudUsers = new ArrayList<>();
+				}
+
 				missingUsers = (List<User>)serviceContext.getAttribute(
 					"missingUsers");
+
+				if (missingUsers == null) {
+					missingUsers = new ArrayList<>();
+				}
 
 				accountEntry.setStatus(getStatus(accountEntryId));
 			}
@@ -1486,16 +1495,34 @@ public class AccountEntryLocalServiceImpl
 			}
 		}
 
-		if (status == WorkflowConstants.STATUS_APPROVED) {
+		if ((status == WorkflowConstants.STATUS_APPROVED) &&
+			(!missingUsers.isEmpty() ||
+			 !missingAnalyticsCloudUsers.isEmpty())) {
+
+			List<User> users = new ArrayList<>(missingUsers);
+
+			users.retainAll(missingAnalyticsCloudUsers);
+
 			sendUserCreationNotification(
-				missingAnalyticsCloudUsers, accountEntry,
+				users, accountEntry,
 				"Analytics Cloud, Customer Portal, all of our downloads, and " +
 					"our support system");
 
+			users = new ArrayList<>(missingUsers);
+
+			users.removeAll(missingAnalyticsCloudUsers);
+
 			sendUserCreationNotification(
-				missingUsers, accountEntry,
+				users, accountEntry,
 				"Customer Portal, all of our downloads, and our support " +
 					"system");
+
+			users = new ArrayList<>(missingAnalyticsCloudUsers);
+
+			users.removeAll(missingUsers);
+
+			sendUserCreationNotification(
+				users, accountEntry, "Analytics Cloud");
 		}
 
 		return accountEntry;
@@ -1648,11 +1675,16 @@ public class AccountEntryLocalServiceImpl
 					new long[] {user.getUserId()}, roleId);
 			}
 
-			accountCustomerLocalService.addAccountCustomer(
-				accountEntry.getUserId(), user.getUserId(),
-				accountEntry.getAccountEntryId(),
-				AccountCustomerConstants.ROLE_WATCHER,
-				AccountCustomerConstants.NOTIFICATIONS_ALL);
+			if (!ArrayUtil.contains(
+					roleIds,
+					OSBConstants.ROLE_OSB_CORP_ANALYTICS_CLOUD_OWNER_ID)) {
+
+				accountCustomerLocalService.addAccountCustomer(
+					accountEntry.getUserId(), user.getUserId(),
+					accountEntry.getAccountEntryId(),
+					AccountCustomerConstants.ROLE_WATCHER,
+					AccountCustomerConstants.NOTIFICATIONS_ALL);
+			}
 
 			itr.remove();
 		}
@@ -2035,6 +2067,8 @@ public class AccountEntryLocalServiceImpl
 		if ((users == null) || users.isEmpty()) {
 			return;
 		}
+
+		ListUtil.distinct(users);
 
 		String supportRegionName = StringPool.BLANK;
 
