@@ -1194,9 +1194,17 @@ public class AccountEntryLocalServiceImpl
 				accountEntry.getEWSADossieraProjectKey());
 		}
 
+		List<OrderEntry> externalIdMapperOrderEntries = new ArrayList<>();
+
+		for (ExternalIdMapper externalIdMapper : externalIdMappers) {
+			OrderEntry orderEntry = orderEntryLocalService.getOrderEntry(
+				externalIdMapper.getClassPK());
+
+			externalIdMapperOrderEntries.add(orderEntry);
+		}
+
 		Map<String, Integer> oldOfferingEntriesMap =
-			SupportUtil.getOfferingEntriesMap(
-				oldAccountEntry.getAccountEntryId());
+			SupportUtil.getOfferingEntriesMap(externalIdMapperOrderEntries);
 
 		Map<String, Integer> offeringEntriesMap =
 			SupportUtil.getOfferingEntriesMap(orderEntries);
