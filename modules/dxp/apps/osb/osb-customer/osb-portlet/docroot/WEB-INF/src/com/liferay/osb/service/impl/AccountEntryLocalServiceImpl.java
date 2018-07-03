@@ -228,11 +228,18 @@ public class AccountEntryLocalServiceImpl
 		if ((analyticsCloudUsers != null) && !analyticsCloudUsers.isEmpty()) {
 			missingAnalyticsCloudUsers = addCorpProjectUsers(
 				accountEntry, corpProject, analyticsCloudUsers,
-				OSBConstants.ROLE_OSB_CORP_ANALYTICS_CLOUD_OWNER_ID);
+				new long[] {
+					OSBConstants.ROLE_OSB_CORP_ANALYTICS_CLOUD_OWNER_ID
+				});
 		}
 
 		HashSet<User> missingUsers = addCorpProjectUsers(
-			accountEntry, corpProject, users, -1);
+			accountEntry, corpProject, users,
+			new long[] {
+				OSBConstants.ROLE_OSB_CORP_ADMIN_ID,
+				OSBConstants.ROLE_OSB_CORP_BUYER_ID,
+				OSBConstants.ROLE_OSB_CORP_LCS_USER_ID
+			});
 
 		// Workflow
 
@@ -1093,25 +1100,22 @@ public class AccountEntryLocalServiceImpl
 				new int[] {accountWorker.getNotifications()});
 		}
 
-		ArrayList<User> newUsers = new ArrayList<>(users);
+		ArrayList<User> newUsers = new ArrayList<>();
 
 		HashSet<User> missingAnalyticsCloudUsers = new HashSet<>();
 
 		ArrayList<User> analyticsCloudUsers =
 			(ArrayList<User>)serviceContext.getAttribute("analyticsCloudUsers");
 
-		if ((analyticsCloudUsers != null) && !analyticsCloudUsers.isEmpty()) {
-			newUsers.addAll(analyticsCloudUsers);
+		if (analyticsCloudUsers != null) {
+			missingAnalyticsCloudUsers = getMissingUsers(analyticsCloudUsers);
 
-			missingAnalyticsCloudUsers = getMissingUsers(
-				oldAccountEntry, analyticsCloudUsers);
-
-			newUsers.removeAll(missingAnalyticsCloudUsers);
+			newUsers.addAll(getNewUsers(oldAccountEntry, analyticsCloudUsers));
 		}
 
-		HashSet<User> missingUsers = getMissingUsers(oldAccountEntry, users);
+		HashSet<User> missingUsers = getMissingUsers(users);
 
-		newUsers.removeAll(missingUsers);
+		newUsers.addAll(getNewUsers(oldAccountEntry, users));
 
 		HashMap<String, Serializable> workflowContext = new HashMap<>();
 
@@ -1434,8 +1438,8 @@ public class AccountEntryLocalServiceImpl
 				accountEntry.getSupportRegionIds());
 		}
 
-		List<User> missingAnalyticsCloudUsers = new ArrayList<>();
-		List<User> missingUsers = new ArrayList<>();
+		List<User> missingAnalyticsCloudUsers = null;
+		List<User> missingUsers = null;
 
 		if ((accountEntry.getStatus() != WorkflowConstants.STATUS_APPROVED) &&
 			(accountEntry.getStatus() != status)) {
@@ -1448,17 +1452,8 @@ public class AccountEntryLocalServiceImpl
 				missingAnalyticsCloudUsers =
 					(ArrayList<User>)serviceContext.getAttribute(
 						"missingAnalyticsCloudUsers");
-
-				if (missingAnalyticsCloudUsers == null) {
-					missingAnalyticsCloudUsers = new ArrayList<>();
-				}
-
 				missingUsers = (ArrayList<User>)serviceContext.getAttribute(
 					"missingUsers");
-
-				if (missingUsers == null) {
-					missingUsers = new ArrayList<>();
-				}
 
 				accountEntry.setStatus(getStatus(accountEntryId));
 			}
@@ -1489,34 +1484,16 @@ public class AccountEntryLocalServiceImpl
 			}
 		}
 
-		if ((status == WorkflowConstants.STATUS_APPROVED) &&
-			(!missingUsers.isEmpty() ||
-			 !missingAnalyticsCloudUsers.isEmpty())) {
-
-			List<User> users = new ArrayList<>(missingUsers);
-
-			users.retainAll(missingAnalyticsCloudUsers);
-
+		if (status == WorkflowConstants.STATUS_APPROVED) {
 			sendUserCreationNotification(
-				users, accountEntry,
+				missingAnalyticsCloudUsers, accountEntry,
 				"Analytics Cloud, Customer Portal, all of our downloads, and " +
 					"our support system");
 
-			users = new ArrayList<>(missingUsers);
-
-			users.removeAll(missingAnalyticsCloudUsers);
-
 			sendUserCreationNotification(
-				users, accountEntry,
-				"Customer Portal, all of our downloads, " +
-					"and our support system");
-
-			users = new ArrayList<>(missingAnalyticsCloudUsers);
-
-			users.removeAll(missingUsers);
-
-			sendUserCreationNotification(
-				users, accountEntry, "Analytics Cloud");
+				missingUsers, accountEntry,
+				"Customer Portal, all of our downloads, and our support " +
+					"system");
 		}
 
 		return accountEntry;
@@ -1646,7 +1623,7 @@ public class AccountEntryLocalServiceImpl
 
 	protected HashSet<User> addCorpProjectUsers(
 			AccountEntry accountEntry, CorpProject corpProject,
-			List<User> users, long roleId)
+			List<User> users, long[] roleIds)
 		throws PortalException {
 
 		HashSet<User> missingUsers = new HashSet<>(users);
@@ -1663,24 +1640,10 @@ public class AccountEntryLocalServiceImpl
 			remoteCorpProjectLocalService.addCorpProjectUsers(
 				corpProject.getCorpProjectId(), new long[] {user.getUserId()});
 
-			if (roleId > 0) {
+			for (long roleId : roleIds) {
 				remoteCorpProjectLocalService.addUserCorpProjectRoles(
 					corpProject.getCorpProjectId(),
 					new long[] {user.getUserId()}, roleId);
-			}
-			else {
-				remoteCorpProjectLocalService.addUserCorpProjectRoles(
-					corpProject.getCorpProjectId(),
-					new long[] {user.getUserId()},
-					OSBConstants.ROLE_OSB_CORP_ADMIN_ID);
-				remoteCorpProjectLocalService.addUserCorpProjectRoles(
-					corpProject.getCorpProjectId(),
-					new long[] {user.getUserId()},
-					OSBConstants.ROLE_OSB_CORP_BUYER_ID);
-				remoteCorpProjectLocalService.addUserCorpProjectRoles(
-					corpProject.getCorpProjectId(),
-					new long[] {user.getUserId()},
-					OSBConstants.ROLE_OSB_CORP_LCS_USER_ID);
 			}
 
 			accountCustomerLocalService.addAccountCustomer(
@@ -1878,16 +1841,24 @@ public class AccountEntryLocalServiceImpl
 		return (int)latestProductVersionType.getListTypeId();
 	}
 
-	protected HashSet<User> getMissingUsers(
+	protected HashSet<User> getMissingUsers(List<User> users) {
+		HashSet<User> missingUsers = new HashSet<>();
+
+		for (User user : users) {
+			if (user.getUserId() <= 0) {
+				missingUsers.add(user);
+			}
+		}
+
+		return missingUsers;
+	}
+
+	protected HashSet<User> getNewUsers(
 		AccountEntry accountEntry, List<User> users) {
 
-		HashSet<User> missingUsers = new HashSet<>(users);
+		HashSet<User> newUsers = new HashSet<>();
 
-		Iterator<User> itr = missingUsers.iterator();
-
-		while (itr.hasNext()) {
-			User user = itr.next();
-
+		for (User user : users) {
 			if (user.getUserId() <= 0) {
 				continue;
 			}
@@ -1897,13 +1868,11 @@ public class AccountEntryLocalServiceImpl
 					user.getUserId(), accountEntry.getAccountEntryId());
 
 			if (accountCustomer == null) {
-				continue;
+				newUsers.add(user);
 			}
-
-			itr.remove();
 		}
 
-		return missingUsers;
+		return newUsers;
 	}
 
 	protected int getStatus(long accountEntryId) throws PortalException {
@@ -2060,6 +2029,10 @@ public class AccountEntryLocalServiceImpl
 	protected void sendUserCreationNotification(
 		List<User> users, AccountEntry accountEntry,
 		String subscriptionServices) {
+
+		if ((users == null) || users.isEmpty()) {
+			return;
+		}
 
 		String supportRegionName = StringPool.BLANK;
 
