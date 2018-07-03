@@ -2558,7 +2558,7 @@ public class StagingImpl implements Staging {
 			Group remoteGroup = GroupServiceHttp.getGroup(
 				httpPrincipal, remoteGroupId);
 
-			if (group.equals(remoteGroup) &&
+			if ((group.getGroupId() == remoteGroup.getGroupId()) &&
 				Objects.equals(group.getUuid(), remoteGroup.getUuid())) {
 
 				String validationTimestamp = String.valueOf(
