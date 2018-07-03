@@ -1660,34 +1660,34 @@ public class AccountEntryLocalServiceImpl
 				continue;
 			}
 
-			corpProjectLocalService.addCorpProjectUsers(
+			remoteCorpProjectLocalService.addCorpProjectUsers(
 				corpProject.getCorpProjectId(), new long[] {user.getUserId()});
 
 			if (roleId > 0) {
-				corpProjectLocalService.addUserCorpProjectRoles(
-					accountEntry.getUserId(), corpProject.getCorpProjectId(),
+				remoteCorpProjectLocalService.addUserCorpProjectRoles(
+					corpProject.getCorpProjectId(),
 					new long[] {user.getUserId()}, roleId);
 			}
 			else {
-				corpProjectLocalService.addUserCorpProjectRoles(
-					accountEntry.getUserId(), corpProject.getCorpProjectId(),
+				remoteCorpProjectLocalService.addUserCorpProjectRoles(
+					corpProject.getCorpProjectId(),
 					new long[] {user.getUserId()},
 					OSBConstants.ROLE_OSB_CORP_ADMIN_ID);
-				corpProjectLocalService.addUserCorpProjectRoles(
-					accountEntry.getUserId(), corpProject.getCorpProjectId(),
+				remoteCorpProjectLocalService.addUserCorpProjectRoles(
+					corpProject.getCorpProjectId(),
 					new long[] {user.getUserId()},
 					OSBConstants.ROLE_OSB_CORP_BUYER_ID);
-				corpProjectLocalService.addUserCorpProjectRoles(
-					accountEntry.getUserId(), corpProject.getCorpProjectId(),
+				remoteCorpProjectLocalService.addUserCorpProjectRoles(
+					corpProject.getCorpProjectId(),
 					new long[] {user.getUserId()},
 					OSBConstants.ROLE_OSB_CORP_LCS_USER_ID);
 			}
 
-			accountCustomerLocalService.addAccountCustomers(
-				accountEntry.getUserId(), new long[] {user.getUserId()},
+			accountCustomerLocalService.addAccountCustomer(
+				accountEntry.getUserId(), user.getUserId(),
 				accountEntry.getAccountEntryId(),
-				new int[] {AccountCustomerConstants.ROLE_WATCHER},
-				new int[] {AccountCustomerConstants.NOTIFICATIONS_ALL});
+				AccountCustomerConstants.ROLE_WATCHER,
+				AccountCustomerConstants.NOTIFICATIONS_ALL);
 
 			itr.remove();
 		}
