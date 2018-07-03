@@ -86,6 +86,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -107,7 +108,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -220,7 +220,7 @@ public class AccountEntryLocalServiceImpl
 
 		// Users
 
-		HashSet<User> missingAnalyticsCloudUsers = new HashSet<>();
+		ArrayList<User> missingAnalyticsCloudUsers = new ArrayList<>();
 
 		ArrayList<User> analyticsCloudUsers =
 			(ArrayList<User>)serviceContext.getAttribute("analyticsCloudUsers");
@@ -233,7 +233,7 @@ public class AccountEntryLocalServiceImpl
 				});
 		}
 
-		HashSet<User> missingUsers = addCorpProjectUsers(
+		ArrayList<User> missingUsers = addCorpProjectUsers(
 			accountEntry, corpProject, users,
 			new long[] {
 				OSBConstants.ROLE_OSB_CORP_ADMIN_ID,
@@ -1102,7 +1102,7 @@ public class AccountEntryLocalServiceImpl
 
 		ArrayList<User> newUsers = new ArrayList<>();
 
-		HashSet<User> missingAnalyticsCloudUsers = new HashSet<>();
+		ArrayList<User> missingAnalyticsCloudUsers = new ArrayList<>();
 
 		ArrayList<User> analyticsCloudUsers =
 			(ArrayList<User>)serviceContext.getAttribute("analyticsCloudUsers");
@@ -1113,9 +1113,11 @@ public class AccountEntryLocalServiceImpl
 			newUsers.addAll(getNewUsers(oldAccountEntry, analyticsCloudUsers));
 		}
 
-		HashSet<User> missingUsers = getMissingUsers(users);
+		ArrayList<User> missingUsers = getMissingUsers(users);
 
 		newUsers.addAll(getNewUsers(oldAccountEntry, users));
+
+		ListUtil.distinct(newUsers);
 
 		HashMap<String, Serializable> workflowContext = new HashMap<>();
 
@@ -1621,12 +1623,12 @@ public class AccountEntryLocalServiceImpl
 			accountEntry.getLanguageIds(), accountEntry.getSupportRegionIds());
 	}
 
-	protected HashSet<User> addCorpProjectUsers(
+	protected ArrayList<User> addCorpProjectUsers(
 			AccountEntry accountEntry, CorpProject corpProject,
 			List<User> users, long[] roleIds)
 		throws PortalException {
 
-		HashSet<User> missingUsers = new HashSet<>(users);
+		ArrayList<User> missingUsers = new ArrayList<>(users);
 
 		Iterator<User> itr = missingUsers.iterator();
 
@@ -1841,8 +1843,8 @@ public class AccountEntryLocalServiceImpl
 		return (int)latestProductVersionType.getListTypeId();
 	}
 
-	protected HashSet<User> getMissingUsers(List<User> users) {
-		HashSet<User> missingUsers = new HashSet<>();
+	protected ArrayList<User> getMissingUsers(List<User> users) {
+		ArrayList<User> missingUsers = new ArrayList<>();
 
 		for (User user : users) {
 			if (user.getUserId() <= 0) {
@@ -1853,10 +1855,10 @@ public class AccountEntryLocalServiceImpl
 		return missingUsers;
 	}
 
-	protected HashSet<User> getNewUsers(
+	protected ArrayList<User> getNewUsers(
 		AccountEntry accountEntry, List<User> users) {
 
-		HashSet<User> newUsers = new HashSet<>();
+		ArrayList<User> newUsers = new ArrayList<>();
 
 		for (User user : users) {
 			if (user.getUserId() <= 0) {
