@@ -2565,7 +2565,7 @@ public class StagingImpl implements Staging {
 					System.currentTimeMillis());
 
 				_setGroupTypeSetting(
-					group, "validationTimestamp", validationTimestamp);
+					groupId, "validationTimestamp", validationTimestamp);
 
 				remoteGroup = GroupServiceHttp.getGroup(
 					httpPrincipal, remoteGroupId);
@@ -3341,7 +3341,9 @@ public class StagingImpl implements Staging {
 		}
 	}
 
-	private void _setGroupTypeSetting(Group group, String key, String value) {
+	private void _setGroupTypeSetting(long groupId, String key, String value) {
+		Group group = _groupLocalService.fetchGroup(groupId);
+
 		if (group == null) {
 			return;
 		}
@@ -3360,12 +3362,6 @@ public class StagingImpl implements Staging {
 		group.setTypeSettings(typeSettingsProperties.toString());
 
 		_groupLocalService.updateGroup(group);
-	}
-
-	private void _setGroupTypeSetting(long groupId, String key, String value) {
-		Group group = _groupLocalService.fetchGroup(groupId);
-
-		_setGroupTypeSetting(group, key, value);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(StagingImpl.class);
