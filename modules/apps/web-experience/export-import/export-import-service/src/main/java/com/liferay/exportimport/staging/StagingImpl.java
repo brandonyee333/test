@@ -2565,7 +2565,7 @@ public class StagingImpl implements Staging {
 					System.currentTimeMillis());
 
 				_setGroupTypeSetting(
-					group, "remoteGroupCheck", validationTimestamp);
+					group, "validationTimestamp", validationTimestamp);
 
 				remoteGroup = GroupServiceHttp.getGroup(
 					httpPrincipal, remoteGroupId);
@@ -2573,11 +2573,11 @@ public class StagingImpl implements Staging {
 				UnicodeProperties remoteTypeSettingsProperties =
 					remoteGroup.getTypeSettingsProperties();
 
-				String remoteTimestamp = GetterUtil.getString(
+				String remoteValidationTimestamp = GetterUtil.getString(
 					remoteTypeSettingsProperties.getProperty(
-						"remoteGroupCheck"));
+						"validationTimestamp"));
 
-				if (validationTimestamp.equals(remoteTimestamp)) {
+				if (validationTimestamp.equals(remoteValidationTimestamp)) {
 					RemoteExportException ree = new RemoteExportException(
 						RemoteExportException.SAME_GROUP);
 
@@ -2645,7 +2645,7 @@ public class StagingImpl implements Staging {
 			throw ree;
 		}
 		finally {
-			_setGroupTypeSetting(groupId, "remoteGroupCheck", null);
+			_setGroupTypeSetting(groupId, "validationTimestamp", null);
 
 			currentThread.setContextClassLoader(contextClassLoader);
 		}
