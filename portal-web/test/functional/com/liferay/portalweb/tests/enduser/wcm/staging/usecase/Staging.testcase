@@ -1190,6 +1190,7 @@
 	</command>
 
 	<command name="StagingOnlyApprovedPublishToLive" priority="5">
+		<property name="portal.acceptance" value="Harry" />
 		<property name="portal.acceptance" value="false" />
 		<property name="testray.component.names" value="Training" />
 
@@ -1236,7 +1237,7 @@
 		</execute>
 
 		<execute macro="Workflow#configureWorkflowViaFolderInfo">
-			<var name="workflowDefinition" value="Single Approver (Version 1)" />
+			<var name="workflowDefinition" value="Single Approver" />
 		</execute>
 
 		<execute macro="Navigator#openSiteURL">
