@@ -1496,8 +1496,8 @@ public class AccountEntryLocalServiceImpl
 		}
 
 		if ((status == WorkflowConstants.STATUS_APPROVED) &&
-			(!missingUsers.isEmpty() ||
-			 !missingAnalyticsCloudUsers.isEmpty())) {
+			(!missingAnalyticsCloudUsers.isEmpty() ||
+			 !missingUsers.isEmpty())) {
 
 			List<User> users = new ArrayList<>(missingUsers);
 
