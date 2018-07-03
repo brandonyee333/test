@@ -478,7 +478,7 @@ public class AccountEnvironmentConstants {
 			return _envDigitalEnterpriseVersion70.get(envListType);
 		}
 		else if (ProductEntryConstants.isDigitalEnterpriseVersion7_1(envLFR)) {
-			return _ENV_DIGITAL_ENTERPRISE_VERSION_7_1.get(envListType);
+			return _envDigitalEnterpriseVersion71.get(envListType);
 		}
 		else if ((envLFR >=
 					ProductEntryConstants.SOCIAL_OFFICE_VERSION_2_0_3) &&
@@ -665,9 +665,6 @@ public class AccountEnvironmentConstants {
 		ENV_DB_SYBASE_ASE_15_5
 	};
 
-	private static final Map<String, long[]>
-		_ENV_DIGITAL_ENTERPRISE_VERSION_7_1 = new HashMap<>();
-
 	private static final long[] _ENV_JVM_DIGITAL_ENTERPRISE_VERSION_7_0 =
 		{ENV_JVM_IBM_JDK_8, ENV_JVM_ORACLE_SUN_JDK_8, ENV_JVM_OPENJDK_8};
 
@@ -778,6 +775,8 @@ public class AccountEnvironmentConstants {
 
 	private static final Map<String, long[]> _envDigitalEnterpriseVersion70 =
 		new HashMap<>();
+	private static final Map<String, long[]> _envDigitalEnterpriseVersion71 =
+		new HashMap<>();
 	private static final Map<String, long[]> _envPortalVersion52 =
 		new HashMap<>();
 	private static final Map<String, long[]> _envPortalVersion60 =
@@ -844,22 +843,22 @@ public class AccountEnvironmentConstants {
 			LIST_TYPE_ENV_SEARCH + ".standard",
 			_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_0_STANDARD);
 
-		_ENV_DIGITAL_ENTERPRISE_VERSION_7_1.put(
+		_envDigitalEnterpriseVersion71.put(
 			LIST_TYPE_ENV_AS, _ENV_AS_DIGITAL_ENTERPRISE_VERSION_7_1);
-		_ENV_DIGITAL_ENTERPRISE_VERSION_7_1.put(
+		_envDigitalEnterpriseVersion71.put(
 			LIST_TYPE_ENV_BROWSER, _ENV_BROWSER_DIGITAL_ENTERPRISE_VERSION_7_1);
-		_ENV_DIGITAL_ENTERPRISE_VERSION_7_1.put(
+		_envDigitalEnterpriseVersion71.put(
 			LIST_TYPE_ENV_CS, _ENV_CS_DIGITAL_ENTERPRISE_VERSION_7_1);
-		_ENV_DIGITAL_ENTERPRISE_VERSION_7_1.put(
+		_envDigitalEnterpriseVersion71.put(
 			LIST_TYPE_ENV_DB, _ENV_DB_DIGITAL_ENTERPRISE_VERSION_7_1);
-		_ENV_DIGITAL_ENTERPRISE_VERSION_7_1.put(
+		_envDigitalEnterpriseVersion71.put(
 			LIST_TYPE_ENV_JVM, _ENV_JVM_DIGITAL_ENTERPRISE_VERSION_7_1);
-		_ENV_DIGITAL_ENTERPRISE_VERSION_7_1.put(
+		_envDigitalEnterpriseVersion71.put(
 			LIST_TYPE_ENV_OS, _ENV_OS_DIGITAL_ENTERPRISE_VERSION_7_1);
-		_ENV_DIGITAL_ENTERPRISE_VERSION_7_1.put(
+		_envDigitalEnterpriseVersion71.put(
 			LIST_TYPE_ENV_SEARCH + ".enterprise",
 			_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_1_ENTERPRISE);
-		_ENV_DIGITAL_ENTERPRISE_VERSION_7_1.put(
+		_envDigitalEnterpriseVersion71.put(
 			LIST_TYPE_ENV_SEARCH + ".standard",
 			_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_1_STANDARD);
 
