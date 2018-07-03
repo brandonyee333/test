@@ -66,7 +66,7 @@ public class LCSSubscriptionEntryCacheModel implements CacheModel<LCSSubscriptio
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(35);
+		StringBundler sb = new StringBundler(37);
 
 		sb.append("{lcsSubscriptionEntryId=");
 		sb.append(lcsSubscriptionEntryId);
@@ -86,6 +86,8 @@ public class LCSSubscriptionEntryCacheModel implements CacheModel<LCSSubscriptio
 		sb.append(serversAllowed);
 		sb.append(", serversUsed=");
 		sb.append(serversUsed);
+		sb.append(", quantity=");
+		sb.append(quantity);
 		sb.append(", instanceSize=");
 		sb.append(instanceSize);
 		sb.append(", startDate=");
@@ -146,6 +148,7 @@ public class LCSSubscriptionEntryCacheModel implements CacheModel<LCSSubscriptio
 
 		lcsSubscriptionEntryImpl.setServersAllowed(serversAllowed);
 		lcsSubscriptionEntryImpl.setServersUsed(serversUsed);
+		lcsSubscriptionEntryImpl.setQuantity(quantity);
 		lcsSubscriptionEntryImpl.setInstanceSize(instanceSize);
 
 		if (startDate == Long.MIN_VALUE) {
@@ -209,6 +212,8 @@ public class LCSSubscriptionEntryCacheModel implements CacheModel<LCSSubscriptio
 
 		serversUsed = objectInput.readInt();
 
+		quantity = objectInput.readInt();
+
 		instanceSize = objectInput.readInt();
 		startDate = objectInput.readLong();
 		endDate = objectInput.readLong();
@@ -262,6 +267,8 @@ public class LCSSubscriptionEntryCacheModel implements CacheModel<LCSSubscriptio
 
 		objectOutput.writeInt(serversUsed);
 
+		objectOutput.writeInt(quantity);
+
 		objectOutput.writeInt(instanceSize);
 		objectOutput.writeLong(startDate);
 		objectOutput.writeLong(endDate);
@@ -289,6 +296,7 @@ public class LCSSubscriptionEntryCacheModel implements CacheModel<LCSSubscriptio
 	public String platformVersion;
 	public int serversAllowed;
 	public int serversUsed;
+	public int quantity;
 	public int instanceSize;
 	public long startDate;
 	public long endDate;

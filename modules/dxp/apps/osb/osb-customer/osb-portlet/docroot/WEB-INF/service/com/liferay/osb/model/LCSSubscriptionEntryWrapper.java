@@ -68,6 +68,7 @@ public class LCSSubscriptionEntryWrapper implements LCSSubscriptionEntry,
 		attributes.put("platformVersion", getPlatformVersion());
 		attributes.put("serversAllowed", getServersAllowed());
 		attributes.put("serversUsed", getServersUsed());
+		attributes.put("quantity", getQuantity());
 		attributes.put("instanceSize", getInstanceSize());
 		attributes.put("startDate", getStartDate());
 		attributes.put("endDate", getEndDate());
@@ -135,6 +136,12 @@ public class LCSSubscriptionEntryWrapper implements LCSSubscriptionEntry,
 
 		if (serversUsed != null) {
 			setServersUsed(serversUsed);
+		}
+
+		Integer quantity = (Integer)attributes.get("quantity");
+
+		if (quantity != null) {
+			setQuantity(quantity);
 		}
 
 		Integer instanceSize = (Integer)attributes.get("instanceSize");
@@ -274,6 +281,16 @@ public class LCSSubscriptionEntryWrapper implements LCSSubscriptionEntry,
 	@Override
 	public int getProductVersion() {
 		return _lcsSubscriptionEntry.getProductVersion();
+	}
+
+	/**
+	* Returns the quantity of this lcs subscription entry.
+	*
+	* @return the quantity of this lcs subscription entry
+	*/
+	@Override
+	public int getQuantity() {
+		return _lcsSubscriptionEntry.getQuantity();
 	}
 
 	/**
@@ -595,6 +612,16 @@ public class LCSSubscriptionEntryWrapper implements LCSSubscriptionEntry,
 	@Override
 	public void setProductVersion(int productVersion) {
 		_lcsSubscriptionEntry.setProductVersion(productVersion);
+	}
+
+	/**
+	* Sets the quantity of this lcs subscription entry.
+	*
+	* @param quantity the quantity of this lcs subscription entry
+	*/
+	@Override
+	public void setQuantity(int quantity) {
+		_lcsSubscriptionEntry.setQuantity(quantity);
 	}
 
 	/**

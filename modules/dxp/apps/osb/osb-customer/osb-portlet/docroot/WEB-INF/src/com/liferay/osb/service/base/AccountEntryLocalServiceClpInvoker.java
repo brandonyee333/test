@@ -221,7 +221,7 @@ public class AccountEntryLocalServiceClpInvoker {
 				"com.liferay.osb.model.PartnerEntry",
 				"com.liferay.portal.kernel.model.Address",
 				"com.liferay.osb.model.AccountWorker", "java.util.List",
-				"java.util.ArrayList",
+				"java.util.List",
 				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 
@@ -390,7 +390,7 @@ public class AccountEntryLocalServiceClpInvoker {
 				"com.liferay.osb.model.PartnerEntry",
 				"com.liferay.osb.model.AccountWorker",
 				"com.liferay.portal.kernel.model.Address", "java.util.List",
-				"java.util.ArrayList",
+				"java.util.List",
 				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 
@@ -687,7 +687,7 @@ public class AccountEntryLocalServiceClpInvoker {
 				(com.liferay.portal.kernel.model.Address)arguments[4],
 				(com.liferay.osb.model.AccountWorker)arguments[5],
 				(java.util.List<com.liferay.osb.model.OrderEntry>)arguments[6],
-				(java.util.ArrayList<com.liferay.portal.kernel.model.User>)arguments[7],
+				(java.util.List<com.liferay.portal.kernel.model.User>)arguments[7],
 				(com.liferay.portal.kernel.service.ServiceContext)arguments[8]);
 		}
 
@@ -952,7 +952,7 @@ public class AccountEntryLocalServiceClpInvoker {
 				(com.liferay.osb.model.AccountWorker)arguments[3],
 				(com.liferay.portal.kernel.model.Address)arguments[4],
 				(java.util.List<com.liferay.osb.model.OrderEntry>)arguments[5],
-				(java.util.ArrayList<com.liferay.portal.kernel.model.User>)arguments[6],
+				(java.util.List<com.liferay.portal.kernel.model.User>)arguments[6],
 				(com.liferay.portal.kernel.service.ServiceContext)arguments[7]);
 
 			return null;

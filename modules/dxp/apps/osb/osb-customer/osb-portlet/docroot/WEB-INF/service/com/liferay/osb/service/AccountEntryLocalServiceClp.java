@@ -69,7 +69,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 				"com.liferay.osb.model.PartnerEntry",
 				"com.liferay.portal.kernel.model.Address",
 				"com.liferay.osb.model.AccountWorker", "java.util.List",
-				"java.util.ArrayList",
+				"java.util.List",
 				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 
@@ -397,7 +397,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 				"com.liferay.osb.model.PartnerEntry",
 				"com.liferay.osb.model.AccountWorker",
 				"com.liferay.portal.kernel.model.Address", "java.util.List",
-				"java.util.ArrayList",
+				"java.util.List",
 				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 
@@ -630,7 +630,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		com.liferay.portal.kernel.model.Address address,
 		com.liferay.osb.model.AccountWorker accountWorker,
 		java.util.List<com.liferay.osb.model.OrderEntry> orderEntries,
-		java.util.ArrayList<com.liferay.portal.kernel.model.User> users,
+		java.util.List<com.liferay.portal.kernel.model.User> users,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
@@ -2547,7 +2547,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		com.liferay.osb.model.AccountWorker accountWorker,
 		com.liferay.portal.kernel.model.Address address,
 		java.util.List<com.liferay.osb.model.OrderEntry> orderEntries,
-		java.util.ArrayList<com.liferay.portal.kernel.model.User> users,
+		java.util.List<com.liferay.portal.kernel.model.User> users,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {

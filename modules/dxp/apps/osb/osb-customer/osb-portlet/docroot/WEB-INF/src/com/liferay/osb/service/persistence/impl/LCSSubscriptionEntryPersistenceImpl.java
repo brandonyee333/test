@@ -334,6 +334,7 @@ public class LCSSubscriptionEntryPersistenceImpl extends BasePersistenceImpl<LCS
 		lcsSubscriptionEntryImpl.setPlatformVersion(lcsSubscriptionEntry.getPlatformVersion());
 		lcsSubscriptionEntryImpl.setServersAllowed(lcsSubscriptionEntry.getServersAllowed());
 		lcsSubscriptionEntryImpl.setServersUsed(lcsSubscriptionEntry.getServersUsed());
+		lcsSubscriptionEntryImpl.setQuantity(lcsSubscriptionEntry.getQuantity());
 		lcsSubscriptionEntryImpl.setInstanceSize(lcsSubscriptionEntry.getInstanceSize());
 		lcsSubscriptionEntryImpl.setStartDate(lcsSubscriptionEntry.getStartDate());
 		lcsSubscriptionEntryImpl.setEndDate(lcsSubscriptionEntry.getEndDate());

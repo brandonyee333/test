@@ -44,6 +44,7 @@ public class LCSSubscriptionEntrySoap implements Serializable {
 		soapModel.setPlatformVersion(model.getPlatformVersion());
 		soapModel.setServersAllowed(model.getServersAllowed());
 		soapModel.setServersUsed(model.getServersUsed());
+		soapModel.setQuantity(model.getQuantity());
 		soapModel.setInstanceSize(model.getInstanceSize());
 		soapModel.setStartDate(model.getStartDate());
 		soapModel.setEndDate(model.getEndDate());
@@ -179,6 +180,14 @@ public class LCSSubscriptionEntrySoap implements Serializable {
 		_serversUsed = serversUsed;
 	}
 
+	public int getQuantity() {
+		return _quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		_quantity = quantity;
+	}
+
 	public int getInstanceSize() {
 		return _instanceSize;
 	}
@@ -256,6 +265,7 @@ public class LCSSubscriptionEntrySoap implements Serializable {
 	private String _platformVersion;
 	private int _serversAllowed;
 	private int _serversUsed;
+	private int _quantity;
 	private int _instanceSize;
 	private Date _startDate;
 	private Date _endDate;

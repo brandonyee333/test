@@ -193,6 +193,20 @@ public interface LCSSubscriptionEntryModel extends BaseModel<LCSSubscriptionEntr
 	public void setServersUsed(int serversUsed);
 
 	/**
+	 * Returns the quantity of this lcs subscription entry.
+	 *
+	 * @return the quantity of this lcs subscription entry
+	 */
+	public int getQuantity();
+
+	/**
+	 * Sets the quantity of this lcs subscription entry.
+	 *
+	 * @param quantity the quantity of this lcs subscription entry
+	 */
+	public void setQuantity(int quantity);
+
+	/**
 	 * Returns the instance size of this lcs subscription entry.
 	 *
 	 * @return the instance size of this lcs subscription entry

@@ -86,6 +86,7 @@ public class LCSSubscriptionEntryClp extends BaseModelImpl<LCSSubscriptionEntry>
 		attributes.put("platformVersion", getPlatformVersion());
 		attributes.put("serversAllowed", getServersAllowed());
 		attributes.put("serversUsed", getServersUsed());
+		attributes.put("quantity", getQuantity());
 		attributes.put("instanceSize", getInstanceSize());
 		attributes.put("startDate", getStartDate());
 		attributes.put("endDate", getEndDate());
@@ -156,6 +157,12 @@ public class LCSSubscriptionEntryClp extends BaseModelImpl<LCSSubscriptionEntry>
 
 		if (serversUsed != null) {
 			setServersUsed(serversUsed);
+		}
+
+		Integer quantity = (Integer)attributes.get("quantity");
+
+		if (quantity != null) {
+			setQuantity(quantity);
 		}
 
 		Integer instanceSize = (Integer)attributes.get("instanceSize");
@@ -413,6 +420,29 @@ public class LCSSubscriptionEntryClp extends BaseModelImpl<LCSSubscriptionEntry>
 				Method method = clazz.getMethod("setServersUsed", int.class);
 
 				method.invoke(_lcsSubscriptionEntryRemoteModel, serversUsed);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
+	public int getQuantity() {
+		return _quantity;
+	}
+
+	@Override
+	public void setQuantity(int quantity) {
+		_quantity = quantity;
+
+		if (_lcsSubscriptionEntryRemoteModel != null) {
+			try {
+				Class<?> clazz = _lcsSubscriptionEntryRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setQuantity", int.class);
+
+				method.invoke(_lcsSubscriptionEntryRemoteModel, quantity);
 			}
 			catch (Exception e) {
 				throw new UnsupportedOperationException(e);
@@ -690,6 +720,7 @@ public class LCSSubscriptionEntryClp extends BaseModelImpl<LCSSubscriptionEntry>
 		clone.setPlatformVersion(getPlatformVersion());
 		clone.setServersAllowed(getServersAllowed());
 		clone.setServersUsed(getServersUsed());
+		clone.setQuantity(getQuantity());
 		clone.setInstanceSize(getInstanceSize());
 		clone.setStartDate(getStartDate());
 		clone.setEndDate(getEndDate());
@@ -760,7 +791,7 @@ public class LCSSubscriptionEntryClp extends BaseModelImpl<LCSSubscriptionEntry>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(35);
+		StringBundler sb = new StringBundler(37);
 
 		sb.append("{lcsSubscriptionEntryId=");
 		sb.append(getLcsSubscriptionEntryId());
@@ -780,6 +811,8 @@ public class LCSSubscriptionEntryClp extends BaseModelImpl<LCSSubscriptionEntry>
 		sb.append(getServersAllowed());
 		sb.append(", serversUsed=");
 		sb.append(getServersUsed());
+		sb.append(", quantity=");
+		sb.append(getQuantity());
 		sb.append(", instanceSize=");
 		sb.append(getInstanceSize());
 		sb.append(", startDate=");
@@ -803,7 +836,7 @@ public class LCSSubscriptionEntryClp extends BaseModelImpl<LCSSubscriptionEntry>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(55);
+		StringBundler sb = new StringBundler(58);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.LCSSubscriptionEntry");
@@ -844,6 +877,10 @@ public class LCSSubscriptionEntryClp extends BaseModelImpl<LCSSubscriptionEntry>
 		sb.append(
 			"<column><column-name>serversUsed</column-name><column-value><![CDATA[");
 		sb.append(getServersUsed());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>quantity</column-name><column-value><![CDATA[");
+		sb.append(getQuantity());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>instanceSize</column-name><column-value><![CDATA[");
@@ -892,6 +929,7 @@ public class LCSSubscriptionEntryClp extends BaseModelImpl<LCSSubscriptionEntry>
 	private String _platformVersion;
 	private int _serversAllowed;
 	private int _serversUsed;
+	private int _quantity;
 	private int _instanceSize;
 	private Date _startDate;
 	private Date _endDate;

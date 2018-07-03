@@ -209,6 +209,7 @@
 		<field name="platformVersion" type="String" />
 		<field name="serversAllowed" type="int" />
 		<field name="serversUsed" type="int" />
+		<field name="quantity" type="int" />
 		<field name="instanceSize" type="int" />
 		<field name="startDate" type="Date" />
 		<field name="endDate" type="Date" />

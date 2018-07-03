@@ -96,7 +96,7 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 		com.liferay.portal.kernel.model.Address address,
 		com.liferay.osb.model.AccountWorker accountWorker,
 		java.util.List<com.liferay.osb.model.OrderEntry> orderEntries,
-		java.util.ArrayList<com.liferay.portal.kernel.model.User> users,
+		java.util.List<com.liferay.portal.kernel.model.User> users,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountEntryLocalService.addAccountEntryWithWorkflow(salesforceOpportunityKey,
@@ -685,7 +685,7 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 		com.liferay.osb.model.AccountWorker accountWorker,
 		com.liferay.portal.kernel.model.Address address,
 		java.util.List<com.liferay.osb.model.OrderEntry> orderEntries,
-		java.util.ArrayList<com.liferay.portal.kernel.model.User> users,
+		java.util.List<com.liferay.portal.kernel.model.User> users,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_accountEntryLocalService.updateAccountEntryWithWorkflow(salesforceOpportunityKey,

@@ -76,6 +76,7 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 			{ "platformVersion", Types.VARCHAR },
 			{ "serversAllowed", Types.INTEGER },
 			{ "serversUsed", Types.INTEGER },
+			{ "quantity", Types.INTEGER },
 			{ "instanceSize", Types.INTEGER },
 			{ "startDate", Types.TIMESTAMP },
 			{ "endDate", Types.TIMESTAMP },
@@ -97,6 +98,7 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 		TABLE_COLUMNS_MAP.put("platformVersion", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("serversAllowed", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("serversUsed", Types.INTEGER);
+		TABLE_COLUMNS_MAP.put("quantity", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("instanceSize", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("startDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("endDate", Types.TIMESTAMP);
@@ -107,7 +109,7 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 		TABLE_COLUMNS_MAP.put("active_", Types.BOOLEAN);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSB_LCSSubscriptionEntry (lcsSubscriptionEntryId LONG not null primary key,lcsProjectId LONG,product VARCHAR(75) null,productVersion INTEGER,type_ VARCHAR(75) null,platform VARCHAR(75) null,platformVersion VARCHAR(75) null,serversAllowed INTEGER,serversUsed INTEGER,instanceSize INTEGER,startDate DATE null,endDate DATE null,supportStartDate DATE null,supportEndDate DATE null,actualPrice DOUBLE,currencyCode VARCHAR(75) null,active_ BOOLEAN)";
+	public static final String TABLE_SQL_CREATE = "create table OSB_LCSSubscriptionEntry (lcsSubscriptionEntryId LONG not null primary key,lcsProjectId LONG,product VARCHAR(75) null,productVersion INTEGER,type_ VARCHAR(75) null,platform VARCHAR(75) null,platformVersion VARCHAR(75) null,serversAllowed INTEGER,serversUsed INTEGER,quantity INTEGER,instanceSize INTEGER,startDate DATE null,endDate DATE null,supportStartDate DATE null,supportEndDate DATE null,actualPrice DOUBLE,currencyCode VARCHAR(75) null,active_ BOOLEAN)";
 	public static final String TABLE_SQL_DROP = "drop table OSB_LCSSubscriptionEntry";
 	public static final String ORDER_BY_JPQL = " ORDER BY lcsSubscriptionEntry.lcsSubscriptionEntryId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY OSB_LCSSubscriptionEntry.lcsSubscriptionEntryId ASC";
@@ -145,6 +147,7 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 		model.setPlatformVersion(soapModel.getPlatformVersion());
 		model.setServersAllowed(soapModel.getServersAllowed());
 		model.setServersUsed(soapModel.getServersUsed());
+		model.setQuantity(soapModel.getQuantity());
 		model.setInstanceSize(soapModel.getInstanceSize());
 		model.setStartDate(soapModel.getStartDate());
 		model.setEndDate(soapModel.getEndDate());
@@ -227,6 +230,7 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 		attributes.put("platformVersion", getPlatformVersion());
 		attributes.put("serversAllowed", getServersAllowed());
 		attributes.put("serversUsed", getServersUsed());
+		attributes.put("quantity", getQuantity());
 		attributes.put("instanceSize", getInstanceSize());
 		attributes.put("startDate", getStartDate());
 		attributes.put("endDate", getEndDate());
@@ -297,6 +301,12 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 
 		if (serversUsed != null) {
 			setServersUsed(serversUsed);
+		}
+
+		Integer quantity = (Integer)attributes.get("quantity");
+
+		if (quantity != null) {
+			setQuantity(quantity);
 		}
 
 		Integer instanceSize = (Integer)attributes.get("instanceSize");
@@ -469,6 +479,17 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 
 	@JSON
 	@Override
+	public int getQuantity() {
+		return _quantity;
+	}
+
+	@Override
+	public void setQuantity(int quantity) {
+		_quantity = quantity;
+	}
+
+	@JSON
+	@Override
 	public int getInstanceSize() {
 		return _instanceSize;
 	}
@@ -602,6 +623,7 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 		lcsSubscriptionEntryImpl.setPlatformVersion(getPlatformVersion());
 		lcsSubscriptionEntryImpl.setServersAllowed(getServersAllowed());
 		lcsSubscriptionEntryImpl.setServersUsed(getServersUsed());
+		lcsSubscriptionEntryImpl.setQuantity(getQuantity());
 		lcsSubscriptionEntryImpl.setInstanceSize(getInstanceSize());
 		lcsSubscriptionEntryImpl.setStartDate(getStartDate());
 		lcsSubscriptionEntryImpl.setEndDate(getEndDate());
@@ -718,6 +740,8 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 
 		lcsSubscriptionEntryCacheModel.serversUsed = getServersUsed();
 
+		lcsSubscriptionEntryCacheModel.quantity = getQuantity();
+
 		lcsSubscriptionEntryCacheModel.instanceSize = getInstanceSize();
 
 		Date startDate = getStartDate();
@@ -773,7 +797,7 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(35);
+		StringBundler sb = new StringBundler(37);
 
 		sb.append("{lcsSubscriptionEntryId=");
 		sb.append(getLcsSubscriptionEntryId());
@@ -793,6 +817,8 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 		sb.append(getServersAllowed());
 		sb.append(", serversUsed=");
 		sb.append(getServersUsed());
+		sb.append(", quantity=");
+		sb.append(getQuantity());
 		sb.append(", instanceSize=");
 		sb.append(getInstanceSize());
 		sb.append(", startDate=");
@@ -816,7 +842,7 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(55);
+		StringBundler sb = new StringBundler(58);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.LCSSubscriptionEntry");
@@ -857,6 +883,10 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 		sb.append(
 			"<column><column-name>serversUsed</column-name><column-value><![CDATA[");
 		sb.append(getServersUsed());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>quantity</column-name><column-value><![CDATA[");
+		sb.append(getQuantity());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>instanceSize</column-name><column-value><![CDATA[");
@@ -909,6 +939,7 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 	private String _platformVersion;
 	private int _serversAllowed;
 	private int _serversUsed;
+	private int _quantity;
 	private int _instanceSize;
 	private Date _startDate;
 	private Date _endDate;

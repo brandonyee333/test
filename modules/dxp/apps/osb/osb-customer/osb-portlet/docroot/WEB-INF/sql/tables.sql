@@ -203,6 +203,7 @@ create table OSB_LCSSubscriptionEntry (
 	platformVersion VARCHAR(75) null,
 	serversAllowed INTEGER,
 	serversUsed INTEGER,
+	quantity INTEGER,
 	instanceSize INTEGER,
 	startDate DATE null,
 	endDate DATE null,

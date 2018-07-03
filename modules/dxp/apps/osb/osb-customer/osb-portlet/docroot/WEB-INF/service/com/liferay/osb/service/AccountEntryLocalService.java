@@ -44,7 +44,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -108,7 +107,7 @@ public interface AccountEntryLocalService extends BaseLocalService,
 		java.lang.String salesforceOpportunityKey, AccountEntry accountEntry,
 		CorpProject corpProject, PartnerEntry partnerEntry, Address address,
 		AccountWorker accountWorker, List<OrderEntry> orderEntries,
-		ArrayList<User> users, ServiceContext serviceContext)
+		List<User> users, ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -463,7 +462,7 @@ public interface AccountEntryLocalService extends BaseLocalService,
 	public void updateAccountEntryWithWorkflow(
 		java.lang.String salesforceOpportunityKey, AccountEntry accountEntry,
 		PartnerEntry partnerEntry, AccountWorker accountWorker,
-		Address address, List<OrderEntry> orderEntries, ArrayList<User> users,
+		Address address, List<OrderEntry> orderEntries, List<User> users,
 		ServiceContext serviceContext) throws PortalException;
 
 	public void updateLastAuditDate(long userId, long accountEntryId,

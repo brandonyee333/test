@@ -244,6 +244,7 @@
 		<property name="platformVersion" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="serversAllowed" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="serversUsed" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="quantity" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="instanceSize" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="startDate" type="org.hibernate.type.TimestampType" />
 		<property name="endDate" type="org.hibernate.type.TimestampType" />
