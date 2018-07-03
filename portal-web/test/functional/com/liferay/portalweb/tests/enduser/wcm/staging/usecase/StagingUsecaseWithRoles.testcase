@@ -1034,6 +1034,8 @@
 	</command>
 
 	<command name="StagingLocalLiveWorkflow" priority="4">
+		<property name="portal.acceptance" value="Harry" />
+
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Sites" />
 			<var name="panel" value="Control Panel" />
