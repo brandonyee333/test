@@ -107,6 +107,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -219,43 +220,33 @@ public class AccountEntryLocalServiceImpl
 
 		// Users
 
-		Iterator<User> itr = users.iterator();
+		HashSet<User> missingAnalyticsCloudUsers = new HashSet<>();
 
-		while (itr.hasNext()) {
-			User user = itr.next();
+		ArrayList<User> analyticsCloudUsers =
+			(ArrayList<User>)serviceContext.getAttribute("analyticsCloudUsers");
 
-			if (user.getUserId() <= 0) {
-				continue;
-			}
-
-			remoteCorpProjectLocalService.addCorpProjectUsers(
-				corpProject.getUuid(), new long[] {user.getUserId()});
-
-			remoteCorpProjectLocalService.addUserCorpProjectRoles(
-				corpProject.getUuid(), new long[] {user.getUserId()},
-				OSBConstants.ROLE_OSB_CORP_ADMIN_ID);
-			remoteCorpProjectLocalService.addUserCorpProjectRoles(
-				corpProject.getUuid(), new long[] {user.getUserId()},
-				OSBConstants.ROLE_OSB_CORP_BUYER_ID);
-			remoteCorpProjectLocalService.addUserCorpProjectRoles(
-				corpProject.getUuid(), new long[] {user.getUserId()},
-				OSBConstants.ROLE_OSB_CORP_LCS_USER_ID);
-
-			accountCustomerLocalService.addAccountCustomer(
-				accountEntry.getUserId(), user.getUserId(),
-				accountEntry.getAccountEntryId(),
-				AccountCustomerConstants.ROLE_WATCHER,
-				AccountCustomerConstants.NOTIFICATIONS_ALL);
-
-			itr.remove();
+		if ((analyticsCloudUsers != null) && !analyticsCloudUsers.isEmpty()) {
+			missingAnalyticsCloudUsers = addCorpProjectUsers(
+				accountEntry, corpProject, analyticsCloudUsers,
+				OSBConstants.ROLE_OSB_CORP_ANALYTICS_CLOUD_OWNER_ID);
 		}
+
+		HashSet<User> missingUsers = addCorpProjectUsers(
+			accountEntry, corpProject, users, -1);
 
 		// Workflow
 
 		HashMap<String, Serializable> workflowContext = new HashMap<>();
 
-		if (!users.isEmpty()) {
-			workflowContext.put(WorkflowConstants.CONTEXT_MISSING_USERS, users);
+		if (!missingAnalyticsCloudUsers.isEmpty()) {
+			workflowContext.put(
+				WorkflowConstants.CONTEXT_MISSING_ANALYTICS_CLOUD_USERS,
+				missingAnalyticsCloudUsers);
+		}
+
+		if (!missingUsers.isEmpty()) {
+			workflowContext.put(
+				WorkflowConstants.CONTEXT_MISSING_USERS, missingUsers);
 		}
 
 		workflowContext.put(
@@ -1102,27 +1093,25 @@ public class AccountEntryLocalServiceImpl
 				new int[] {accountWorker.getNotifications()});
 		}
 
-		ArrayList<User> newUsers = new ArrayList<>();
+		ArrayList<User> newUsers = new ArrayList<>(users);
 
-		Iterator<User> itr = users.iterator();
+		HashSet<User> missingAnalyticsCloudUsers = new HashSet<>();
 
-		while (itr.hasNext()) {
-			User user = itr.next();
+		ArrayList<User> analyticsCloudUsers =
+			(ArrayList<User>)serviceContext.getAttribute("analyticsCloudUsers");
 
-			if (user.getUserId() <= 0) {
-				continue;
-			}
+		if ((analyticsCloudUsers != null) && !analyticsCloudUsers.isEmpty()) {
+			newUsers.addAll(analyticsCloudUsers);
 
-			AccountCustomer accountCustomer =
-				accountCustomerLocalService.fetchAccountCustomer(
-					user.getUserId(), oldAccountEntry.getAccountEntryId());
+			missingAnalyticsCloudUsers = getMissingUsers(
+				oldAccountEntry, analyticsCloudUsers);
 
-			if (accountCustomer == null) {
-				newUsers.add(user);
-			}
-
-			itr.remove();
+			newUsers.removeAll(missingAnalyticsCloudUsers);
 		}
+
+		HashSet<User> missingUsers = getMissingUsers(oldAccountEntry, users);
+
+		newUsers.removeAll(missingUsers);
 
 		HashMap<String, Serializable> workflowContext = new HashMap<>();
 
@@ -1243,8 +1232,15 @@ public class AccountEntryLocalServiceImpl
 				newAccountEntryAttributes);
 		}
 
-		if (!users.isEmpty()) {
-			workflowContext.put(WorkflowConstants.CONTEXT_MISSING_USERS, users);
+		if (!missingAnalyticsCloudUsers.isEmpty()) {
+			workflowContext.put(
+				WorkflowConstants.CONTEXT_MISSING_ANALYTICS_CLOUD_USERS,
+				missingAnalyticsCloudUsers);
+		}
+
+		if (!missingUsers.isEmpty()) {
+			workflowContext.put(
+				WorkflowConstants.CONTEXT_MISSING_USERS, missingUsers);
 		}
 
 		if (!newUsers.isEmpty()) {
@@ -1438,7 +1434,8 @@ public class AccountEntryLocalServiceImpl
 				accountEntry.getSupportRegionIds());
 		}
 
-		List<User> missingUsers = null;
+		List<User> missingAnalyticsCloudUsers = new ArrayList<>();
+		List<User> missingUsers = new ArrayList<>();
 
 		if ((accountEntry.getStatus() != WorkflowConstants.STATUS_APPROVED) &&
 			(accountEntry.getStatus() != status)) {
@@ -1448,8 +1445,20 @@ public class AccountEntryLocalServiceImpl
 			accountEntry.setModifiedDate(serviceContext.getModifiedDate(now));
 
 			if (status == WorkflowConstants.STATUS_APPROVED) {
+				missingAnalyticsCloudUsers =
+					(ArrayList<User>)serviceContext.getAttribute(
+						"missingAnalyticsCloudUsers");
+
+				if (missingAnalyticsCloudUsers == null) {
+					missingAnalyticsCloudUsers = new ArrayList<>();
+				}
+
 				missingUsers = (ArrayList<User>)serviceContext.getAttribute(
 					"missingUsers");
+
+				if (missingUsers == null) {
+					missingUsers = new ArrayList<>();
+				}
 
 				accountEntry.setStatus(getStatus(accountEntryId));
 			}
@@ -1481,9 +1490,33 @@ public class AccountEntryLocalServiceImpl
 		}
 
 		if ((status == WorkflowConstants.STATUS_APPROVED) &&
-			(missingUsers != null) && !missingUsers.isEmpty()) {
+			(!missingUsers.isEmpty() ||
+			 !missingAnalyticsCloudUsers.isEmpty())) {
 
-			sendUserCreationNotification(missingUsers, accountEntry);
+			List<User> users = new ArrayList<>(missingUsers);
+
+			users.retainAll(missingAnalyticsCloudUsers);
+
+			sendUserCreationNotification(
+				users, accountEntry,
+				"Analytics Cloud, Customer Portal, all of our downloads, and " +
+					"our support system");
+
+			users = new ArrayList<>(missingUsers);
+
+			users.removeAll(missingAnalyticsCloudUsers);
+
+			sendUserCreationNotification(
+				users, accountEntry,
+				"Customer Portal, all of our downloads, " +
+					"and our support system");
+
+			users = new ArrayList<>(missingAnalyticsCloudUsers);
+
+			users.removeAll(missingUsers);
+
+			sendUserCreationNotification(
+				users, accountEntry, "Analytics Cloud");
 		}
 
 		return accountEntry;
@@ -1609,6 +1642,57 @@ public class AccountEntryLocalServiceImpl
 			accountEntry.getType(), accountEntry.getIndustry(),
 			accountEntry.getPartnerEntryId(), accountEntry.getMaxCustomers(),
 			accountEntry.getLanguageIds(), accountEntry.getSupportRegionIds());
+	}
+
+	protected HashSet<User> addCorpProjectUsers(
+			AccountEntry accountEntry, CorpProject corpProject,
+			List<User> users, long roleId)
+		throws PortalException {
+
+		HashSet<User> missingUsers = new HashSet<>(users);
+
+		Iterator<User> itr = missingUsers.iterator();
+
+		while (itr.hasNext()) {
+			User user = itr.next();
+
+			if (user.getUserId() <= 0) {
+				continue;
+			}
+
+			corpProjectLocalService.addCorpProjectUsers(
+				corpProject.getCorpProjectId(), new long[] {user.getUserId()});
+
+			if (roleId > 0) {
+				corpProjectLocalService.addUserCorpProjectRoles(
+					accountEntry.getUserId(), corpProject.getCorpProjectId(),
+					new long[] {user.getUserId()}, roleId);
+			}
+			else {
+				corpProjectLocalService.addUserCorpProjectRoles(
+					accountEntry.getUserId(), corpProject.getCorpProjectId(),
+					new long[] {user.getUserId()},
+					OSBConstants.ROLE_OSB_CORP_ADMIN_ID);
+				corpProjectLocalService.addUserCorpProjectRoles(
+					accountEntry.getUserId(), corpProject.getCorpProjectId(),
+					new long[] {user.getUserId()},
+					OSBConstants.ROLE_OSB_CORP_BUYER_ID);
+				corpProjectLocalService.addUserCorpProjectRoles(
+					accountEntry.getUserId(), corpProject.getCorpProjectId(),
+					new long[] {user.getUserId()},
+					OSBConstants.ROLE_OSB_CORP_LCS_USER_ID);
+			}
+
+			accountCustomerLocalService.addAccountCustomers(
+				accountEntry.getUserId(), new long[] {user.getUserId()},
+				accountEntry.getAccountEntryId(),
+				new int[] {AccountCustomerConstants.ROLE_WATCHER},
+				new int[] {AccountCustomerConstants.NOTIFICATIONS_ALL});
+
+			itr.remove();
+		}
+
+		return missingUsers;
 	}
 
 	protected AccountEntry doAddAccountEntry(
@@ -1794,6 +1878,34 @@ public class AccountEntryLocalServiceImpl
 		return (int)latestProductVersionType.getListTypeId();
 	}
 
+	protected HashSet<User> getMissingUsers(
+		AccountEntry accountEntry, List<User> users) {
+
+		HashSet<User> missingUsers = new HashSet<>(users);
+
+		Iterator<User> itr = missingUsers.iterator();
+
+		while (itr.hasNext()) {
+			User user = itr.next();
+
+			if (user.getUserId() <= 0) {
+				continue;
+			}
+
+			AccountCustomer accountCustomer =
+				accountCustomerLocalService.fetchAccountCustomer(
+					user.getUserId(), accountEntry.getAccountEntryId());
+
+			if (accountCustomer == null) {
+				continue;
+			}
+
+			itr.remove();
+		}
+
+		return missingUsers;
+	}
+
 	protected int getStatus(long accountEntryId) throws PortalException {
 		List<OfferingEntry> offeringEntries =
 			offeringEntryPersistence.findByAccountEntryId(accountEntryId);
@@ -1946,7 +2058,8 @@ public class AccountEntryLocalServiceImpl
 	}
 
 	protected void sendUserCreationNotification(
-		List<User> users, AccountEntry accountEntry) {
+		List<User> users, AccountEntry accountEntry,
+		String subscriptionServices) {
 
 		String supportRegionName = StringPool.BLANK;
 
@@ -2011,7 +2124,8 @@ public class AccountEntryLocalServiceImpl
 			subscriptionSender.setBody(body);
 			subscriptionSender.setCompanyId(OSBConstants.COMPANY_ID);
 			subscriptionSender.setContextAttributes(
-				"[$ACCOUNT_ENTRY_NAME$]", accountEntry.getName());
+				"[$ACCOUNT_ENTRY_NAME$]", accountEntry.getName(),
+				"[$SUBSCRIPTION_SERVICES$]", subscriptionServices);
 			subscriptionSender.setFrom(
 				provisioningEmailAddress, "Liferay Provisioning");
 			subscriptionSender.setHtmlFormat(true);

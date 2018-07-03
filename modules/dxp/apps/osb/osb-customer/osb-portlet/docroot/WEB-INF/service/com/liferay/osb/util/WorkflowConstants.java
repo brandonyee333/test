@@ -24,6 +24,9 @@ public class WorkflowConstants
 	public static final String CONTEXT_EXISTING_ORDER_ENTRY_IDS =
 		"osbExistingOrderEntryIds";
 
+	public static final String CONTEXT_MISSING_ANALYTICS_CLOUD_USERS =
+		"osbMissingAnalyticsCloudUsers";
+
 	public static final String CONTEXT_MISSING_USERS = "osbMissingUsers";
 
 	public static final String CONTEXT_NEW_ACCOUNT_ENTRY_ATTRIBUTES =

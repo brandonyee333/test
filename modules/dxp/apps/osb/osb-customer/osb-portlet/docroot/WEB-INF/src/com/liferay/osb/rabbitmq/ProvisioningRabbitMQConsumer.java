@@ -114,6 +114,11 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 	protected ServiceContext createServiceContext(JSONObject jsonObject) {
 		ServiceContext serviceContext = new ServiceContext();
 
+		ArrayList<User> analyticsCloudUsers = parseUsers(
+			jsonObject, "Analytics Cloud Owner", false);
+
+		serviceContext.setAttribute("analyticsCloudUsers", analyticsCloudUsers);
+
 		serviceContext.setAttribute(
 			"salesforceOpportunityStageName",
 			jsonObject.getString("_salesforceOpportunityStageName"));
@@ -1103,6 +1108,12 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 	}
 
 	protected ArrayList<User> parseUsers(JSONObject jsonObject) {
+		return parseUsers(jsonObject, "Analytics Cloud Owner", true);
+	}
+
+	protected ArrayList<User> parseUsers(
+		JSONObject jsonObject, String filterRoleName, boolean excludeFilter) {
+
 		JSONArray contactsJSONArray = jsonObject.getJSONArray("_contacts");
 
 		if (contactsJSONArray == null) {
@@ -1115,6 +1126,15 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 
 		for (int i = 0; i < contactsJSONArray.length(); i++) {
 			JSONObject contactJSONObject = contactsJSONArray.getJSONObject(i);
+
+			String role = contactJSONObject.getString("_role");
+
+			if (Validator.isNotNull(filterRoleName) &&
+				((role.equals(filterRoleName) && excludeFilter) ||
+				 (!role.equals(filterRoleName) && !excludeFilter))) {
+
+				continue;
+			}
 
 			String firstName = contactJSONObject.getString("_firstName");
 			String lastName = contactJSONObject.getString("_lastName");
