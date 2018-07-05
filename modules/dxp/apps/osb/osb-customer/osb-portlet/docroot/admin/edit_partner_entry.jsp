@@ -226,17 +226,25 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 
 	<br />
 
+	<c:if test="<%= (partnerEntry != null) && Validator.isNull(partnerEntry.getDossieraAccountKey()) %>">
+		<div class="portlet-msg-info">
+			<liferay-ui:message key="dossiera-account-key-is-required-to-assign-workers" />
+		</div>
+	</c:if>
+
 	<div>
 		<aui:button type="submit" value="save" />
 
 		<c:if test="<%= partnerEntry != null %>">
-			<portlet:renderURL var="assignWorkersURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
-				<portlet:param name="mvcPath" value="/admin/edit_partner_entry_workers.jsp" />
-				<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
-				<portlet:param name="partnerEntryId" value="<%= String.valueOf(partnerEntry.getPartnerEntryId()) %>" />
-			</portlet:renderURL>
+			<c:if test="<%= Validator.isNotNull(partnerEntry.getDossieraAccountKey()) %>">
+				<portlet:renderURL var="assignWorkersURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+					<portlet:param name="mvcPath" value="/admin/edit_partner_entry_workers.jsp" />
+					<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+					<portlet:param name="partnerEntryId" value="<%= String.valueOf(partnerEntry.getPartnerEntryId()) %>" />
+				</portlet:renderURL>
 
-			<aui:a cssClass="btn btn-default" href="<%= assignWorkersURL %>" label="assign-workers" />
+				<aui:a cssClass="btn btn-default" href="<%= assignWorkersURL %>" label="assign-workers" />
+			</c:if>
 
 			<portlet:renderURL var="addChildPartnerURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 				<portlet:param name="mvcPath" value="/admin/edit_partner_entry.jsp" />

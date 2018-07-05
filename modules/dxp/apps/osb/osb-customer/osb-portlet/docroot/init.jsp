@@ -103,6 +103,7 @@ page import="com.liferay.osb.exception.OfferingBundleNameException" %><%@
 page import="com.liferay.osb.exception.OfferingEntryStatusException" %><%@
 page import="com.liferay.osb.exception.OrderEntryActualStartDateException" %><%@
 page import="com.liferay.osb.exception.PartnerEntryCodeException" %><%@
+page import="com.liferay.osb.exception.PartnerEntryDossieraAccountKeyException" %><%@
 page import="com.liferay.osb.exception.PartnerEntryParentPartnerEntryException" %><%@
 page import="com.liferay.osb.exception.ProductEntryEnvironmentException" %><%@
 page import="com.liferay.osb.exception.ProductEntryNameException" %><%@

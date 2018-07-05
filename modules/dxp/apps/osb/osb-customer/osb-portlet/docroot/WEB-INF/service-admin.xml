@@ -936,6 +936,7 @@
 		<exception>OrderEntryActualStartDate</exception>
 		<exception>OrderEntryStartDate</exception>
 		<exception>PartnerEntryCode</exception>
+		<exception>PartnerEntryDossieraAccountKey</exception>
 		<exception>PartnerEntryParentPartnerEntry</exception>
 		<exception>ProductEntryEnvironment</exception>
 		<exception>ProductEntryName</exception>

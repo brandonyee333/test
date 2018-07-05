@@ -39,6 +39,8 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 	<aui:input name="assignmentsRedirect" type="hidden" value="" />
 	<aui:input name="partnerEntryId" type="hidden" value="<%= partnerEntryId %>" />
 
+	<liferay-ui:error exception="<%= PartnerEntryDossieraAccountKeyException.class %>" message="dossiera-account-key-is-required-to-assign-workers" />
+
 	<liferay-ui:message arguments="<%= partnerEntry.getCode() %>" key="edit-workers-for-partner-x" />
 
 	<br /><br />

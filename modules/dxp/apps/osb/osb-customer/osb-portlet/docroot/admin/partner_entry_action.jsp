@@ -36,16 +36,18 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 		url="<%= editURL %>"
 	/>
 
-	<portlet:renderURL var="assignWorkersURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
-		<portlet:param name="mvcPath" value="/admin/edit_partner_entry_workers.jsp" />
-		<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
-		<portlet:param name="partnerEntryId" value="<%= String.valueOf(partnerEntry.getPartnerEntryId()) %>" />
-	</portlet:renderURL>
+	<c:if test="<%= Validator.isNotNull(partnerEntry.getDossieraAccountKey()) %>">
+		<portlet:renderURL var="assignWorkersURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+			<portlet:param name="mvcPath" value="/admin/edit_partner_entry_workers.jsp" />
+			<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+			<portlet:param name="partnerEntryId" value="<%= String.valueOf(partnerEntry.getPartnerEntryId()) %>" />
+		</portlet:renderURL>
 
-	<liferay-ui:icon
-		message="assign-workers"
-		url="<%= assignWorkersURL %>"
-	/>
+		<liferay-ui:icon
+			message="assign-workers"
+			url="<%= assignWorkersURL %>"
+		/>
+	</c:if>
 
 	<portlet:renderURL var="addChildPartnerURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 		<portlet:param name="mvcPath" value="/admin/edit_partner_entry.jsp" />

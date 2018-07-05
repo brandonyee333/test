@@ -51,6 +51,7 @@ import com.liferay.osb.exception.NoSuchSupportResponseException;
 import com.liferay.osb.exception.OfferingBundleNameException;
 import com.liferay.osb.exception.OrderEntryActualStartDateException;
 import com.liferay.osb.exception.PartnerEntryCodeException;
+import com.liferay.osb.exception.PartnerEntryDossieraAccountKeyException;
 import com.liferay.osb.exception.PartnerEntryParentPartnerEntryException;
 import com.liferay.osb.exception.ProductEntryEnvironmentException;
 import com.liferay.osb.exception.ProductEntryNameException;
@@ -1254,6 +1255,7 @@ public class AdminPortlet extends OSBPortlet {
 			cause instanceof OfferingBundleNameException ||
 			cause instanceof OrderEntryActualStartDateException ||
 			cause instanceof PartnerEntryCodeException ||
+			cause instanceof PartnerEntryDossieraAccountKeyException ||
 			cause instanceof PartnerEntryParentPartnerEntryException ||
 			cause instanceof PrincipalException ||
 			cause instanceof ProductEntryEnvironmentException ||
