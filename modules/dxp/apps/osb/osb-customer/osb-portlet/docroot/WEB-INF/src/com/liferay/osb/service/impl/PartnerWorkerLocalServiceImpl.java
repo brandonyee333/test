@@ -168,6 +168,22 @@ public class PartnerWorkerLocalServiceImpl
 		return false;
 	}
 
+	public void syncPartnerWorkers(
+			long partnerEntryId, String oldDossieraAccountKey,
+			String newDossieraAccountKey)
+		throws PortalException {
+
+		List<PartnerWorker> partnerWorkers = getPartnerWorkers(partnerEntryId);
+
+		for (PartnerWorker partnerWorker : partnerWorkers) {
+			unassignCorpEntryOrganizations(
+				partnerWorker.getUserId(), oldDossieraAccountKey);
+
+			assignCorpEntryOrganizations(
+				new long[] {partnerWorker.getUserId()}, newDossieraAccountKey);
+		}
+	}
+
 	protected void assignCorpEntryOrganizations(
 			List<Long> userIds, long partnerEntryId)
 		throws PortalException {
@@ -178,6 +194,14 @@ public class PartnerWorkerLocalServiceImpl
 		if (partnerEntry == null) {
 			return;
 		}
+
+		assignCorpEntryOrganizations(
+			userIds, partnerEntry.getDossieraAccountKey());
+	}
+
+	protected void assignCorpEntryOrganizations(
+			long[] userIds, String dossieraAccountKey)
+		throws PortalException {
 
 		Role role = roleLocalService.getRole(
 			OSBConstants.ROLE_OSB_CORP_SALES_REPRESENTATIVE_ID);
@@ -215,6 +239,14 @@ public class PartnerWorkerLocalServiceImpl
 		if (partnerEntry == null) {
 			return;
 		}
+
+		unassignCorpEntryOrganizations(
+			userId, partnerEntry.getDossieraAccountKey());
+	}
+
+	protected void unassignCorpEntryOrganizations(
+			long userId, String dossieraAccountKey)
+		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
 

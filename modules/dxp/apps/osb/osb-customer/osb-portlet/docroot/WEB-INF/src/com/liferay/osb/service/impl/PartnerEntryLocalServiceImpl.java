@@ -192,6 +192,7 @@ public class PartnerEntryLocalServiceImpl
 		PartnerEntry partnerEntry = partnerEntryPersistence.findByPrimaryKey(
 			partnerEntryId);
 
+		String oldDossieraAccountKey = partnerEntry.getDossieraAccountKey();
 		int oldStatus = partnerEntry.getStatus();
 
 		partnerEntry.setModifiedUserId(userId);
@@ -203,6 +204,11 @@ public class PartnerEntryLocalServiceImpl
 		partnerEntry.setStatus(status);
 
 		partnerEntryPersistence.update(partnerEntry);
+
+		if (oldDossieraAccountKey != dossieraAccountKey) {
+			partnerWorkerLocalService.syncPartnerWorkers(
+				partnerEntryId, oldDossieraAccountKey, dossieraAccountKey);
+		}
 
 		if ((oldStatus != status) &&
 			(status == WorkflowConstants.STATUS_INACTIVE)) {
