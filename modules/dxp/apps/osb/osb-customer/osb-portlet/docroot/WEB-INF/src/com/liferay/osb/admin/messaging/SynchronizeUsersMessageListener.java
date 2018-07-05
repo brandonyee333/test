@@ -240,6 +240,64 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 
 		updateRoles(OSBConstants.ROLE_LIFERAY_EMPLOYEE_ID, sb.toString());
 
+		sb = new StringBundler(22);
+
+		sb.append("select distinct(OSB_AccountCustomer.userId) from ");
+		sb.append("OSB_AccountCustomer inner join Users_Roles on ");
+		sb.append("Users_Roles.userId = OSB_AccountCustomer.userId inner ");
+		sb.append("join OSB_AccountEntry on ");
+		sb.append("OSB_AccountEntry.accountEntryId = ");
+		sb.append("OSB_AccountCustomer.accountEntryId inner join ");
+		sb.append("OSB_OfferingEntry on OSB_OfferingEntry.accountEntryId = ");
+		sb.append("OSB_AccountCustomer.accountEntryId inner join ");
+		sb.append("OSB_ProductEntry on OSB_ProductEntry.productEntryId = ");
+		sb.append("OSB_OfferingEntry.productEntryId where ");
+		sb.append("(Users_Roles.roleId = '");
+		sb.append(OSBConstants.ROLE_VERIFIED_USER_ID);
+		sb.append("') and (OSB_AccountEntry.type_ != '");
+		sb.append(AccountEntryConstants.TYPE_TRIAL);
+		sb.append("') and OSB_ProductEntry.name like '%Commerce Connectors%' ");
+		sb.append("and (OSB_OfferingEntry.status = ");
+		sb.append(OfferingEntryConstants.STATUS_ACTIVE);
+		sb.append(") and (OSB_AccountCustomer.userId not in (select ");
+		sb.append("Users_Orgs.userId from Users_Orgs where ");
+		sb.append("Users_Orgs.organizationId = '");
+		sb.append(OSBConstants.ORGANIZATION_LIFERAY_INC_ID);
+		sb.append("'))");
+
+		updateOrganizationUserIds(
+			OSBConstants.ORGANIZATION_CUSTOMER_COMMERCE_CONNECTORS_ID,
+			sb.toString(), "OSB_AccountCustomer.userId");
+
+		sb = new StringBundler(22);
+
+		sb.append("select distinct(OSB_AccountCustomer.userId) from ");
+		sb.append("OSB_AccountCustomer inner join Users_Roles on ");
+		sb.append("Users_Roles.userId = OSB_AccountCustomer.userId inner ");
+		sb.append("join OSB_AccountEntry on ");
+		sb.append("OSB_AccountEntry.accountEntryId = ");
+		sb.append("OSB_AccountCustomer.accountEntryId inner join ");
+		sb.append("OSB_OfferingEntry on OSB_OfferingEntry.accountEntryId = ");
+		sb.append("OSB_AccountCustomer.accountEntryId inner join ");
+		sb.append("OSB_ProductEntry on OSB_ProductEntry.productEntryId = ");
+		sb.append("OSB_OfferingEntry.productEntryId where ");
+		sb.append("(Users_Roles.roleId = '");
+		sb.append(OSBConstants.ROLE_VERIFIED_USER_ID);
+		sb.append("') and (OSB_AccountEntry.type_ != '");
+		sb.append(AccountEntryConstants.TYPE_TRIAL);
+		sb.append("') and OSB_ProductEntry.name like '%Commerce ");
+		sb.append("Subscription%' and (OSB_OfferingEntry.status = ");
+		sb.append(OfferingEntryConstants.STATUS_ACTIVE);
+		sb.append(") and (OSB_AccountCustomer.userId not in (select ");
+		sb.append("Users_Orgs.userId from Users_Orgs where ");
+		sb.append("Users_Orgs.organizationId = '");
+		sb.append(OSBConstants.ORGANIZATION_LIFERAY_INC_ID);
+		sb.append("'))");
+
+		updateOrganizationUserIds(
+			OSBConstants.ORGANIZATION_CUSTOMER_COMMERCE_ID, sb.toString(),
+			"OSB_AccountCustomer.userId");
+
 		sb = new StringBundler(20);
 
 		sb.append("select distinct(OSB_AccountCustomer.userId) from ");
