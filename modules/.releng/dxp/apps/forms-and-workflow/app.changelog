@@ -3768,3 +3768,75 @@ app.artifacts-7.0.52=\
 app.change.log-7.0.52=LPS-61099 LPS-61756 LPS-64031 LPS-64282 LPS-64297 LPS-64383 LPS-64407 LPS-64515 LPS-64528 LPS-64582 LPS-64840 LPS-65012 LPS-65036 LPS-65135 LPS-65224 LPS-65225 LPS-65555 LPS-65623 LPS-65738 LPS-65909 LPS-66381 LPS-66416 LPS-66853 LPS-67352 LPS-72849 LPS-73216 LPS-73350 LPS-73564 LPS-74244 LPS-74544 LPS-75049 LPS-75815 LPS-76221 LPS-78152 LPS-78301 LPS-78433 LPS-80609 LPS-81898 LPS-81935 LPS-82059 LPS-82418 LPS-82828 
 
 app.git.id-7.0.52=466805e1988e739ae431193ef3f0904cd5bf84d5
+
+#
+# Liferay App Version 7.0.53
+#
+
+app.artifacts-7.0.53=\
+	com.liferay.calendar.api-2.3.9.jar,\
+	com.liferay.calendar.service-2.7.19.jar,\
+	com.liferay.calendar.web-1.0.60.jar,\
+	com.liferay.dynamic.data.lists.api-2.1.15.jar,\
+	com.liferay.dynamic.data.lists.form.web-2.0.23.jar,\
+	com.liferay.dynamic.data.lists.service-1.2.2.jar,\
+	com.liferay.dynamic.data.lists.web-2.0.15.jar,\
+	com.liferay.dynamic.data.mapping.api-3.8.10.jar,\
+	com.liferay.dynamic.data.mapping.data.provider-2.0.4.jar,\
+	com.liferay.dynamic.data.mapping.data.provider.impl-1.0.9.jar,\
+	com.liferay.dynamic.data.mapping.data.provider.web-1.0.16.jar,\
+	com.liferay.dynamic.data.mapping.expression-2.0.14.jar,\
+	com.liferay.dynamic.data.mapping.form.analytics-1.0.3.jar,\
+	com.liferay.dynamic.data.mapping.form.evaluator-2.0.10.jar,\
+	com.liferay.dynamic.data.mapping.form.field.type-2.1.2.jar,\
+	com.liferay.dynamic.data.mapping.form.renderer-2.1.19.jar,\
+	com.liferay.dynamic.data.mapping.form.values.factory-2.0.10.jar,\
+	com.liferay.dynamic.data.mapping.form.values.query-2.0.13.jar,\
+	com.liferay.dynamic.data.mapping.io-2.0.15.jar,\
+	com.liferay.dynamic.data.mapping.lang-2.0.7.jar,\
+	com.liferay.dynamic.data.mapping.service-2.5.19.jar,\
+	com.liferay.dynamic.data.mapping.taglib-2.1.11.jar,\
+	com.liferay.dynamic.data.mapping.type.captcha-2.0.9.jar,\
+	com.liferay.dynamic.data.mapping.type.checkbox-2.0.16.jar,\
+	com.liferay.dynamic.data.mapping.type.checkbox.multiple-1.0.10.jar,\
+	com.liferay.dynamic.data.mapping.type.date-2.0.12.jar,\
+	com.liferay.dynamic.data.mapping.type.editor-2.0.9.jar,\
+	com.liferay.dynamic.data.mapping.type.key.value-2.0.7.jar,\
+	com.liferay.dynamic.data.mapping.type.options-2.0.13.jar,\
+	com.liferay.dynamic.data.mapping.type.paragraph-2.0.12.jar,\
+	com.liferay.dynamic.data.mapping.type.password-1.0.4.jar,\
+	com.liferay.dynamic.data.mapping.type.radio-2.0.19.jar,\
+	com.liferay.dynamic.data.mapping.type.select-2.0.18.jar,\
+	com.liferay.dynamic.data.mapping.type.text-2.0.12.jar,\
+	com.liferay.dynamic.data.mapping.type.validation-2.0.8.jar,\
+	com.liferay.dynamic.data.mapping.validator-2.1.10.jar,\
+	com.liferay.dynamic.data.mapping.web-1.0.70.jar,\
+	com.liferay.polls.api-4.0.6.jar,\
+	com.liferay.polls.service-3.0.32.jar,\
+	com.liferay.polls.web-2.0.27.jar,\
+	com.liferay.portal.reports.engine.api-3.0.2.jar,\
+	com.liferay.portal.rules.engine.api-2.0.9.jar,\
+	com.liferay.portal.rules.engine.wiring-2.0.4.jar,\
+	com.liferay.portal.workflow.definition.link.web-1.0.12.jar,\
+	com.liferay.portal.workflow.definition.web-1.0.13.jar,\
+	com.liferay.portal.workflow.instance.web-1.0.13.jar,\
+	com.liferay.portal.workflow.kaleo.api-2.2.6.jar,\
+	com.liferay.portal.workflow.kaleo.definition.api-2.1.1.jar,\
+	com.liferay.portal.workflow.kaleo.definition.impl-2.0.13.jar,\
+	com.liferay.portal.workflow.kaleo.designer.api-1.0.10.jar,\
+	com.liferay.portal.workflow.kaleo.designer.service-1.1.14.jar,\
+	com.liferay.portal.workflow.kaleo.designer.web-1.0.30.jar,\
+	com.liferay.portal.workflow.kaleo.forms.api-1.1.8.jar,\
+	com.liferay.portal.workflow.kaleo.forms.service-1.1.23.jar,\
+	com.liferay.portal.workflow.kaleo.forms.web-1.0.33.jar,\
+	com.liferay.portal.workflow.kaleo.runtime.api-2.2.4.jar,\
+	com.liferay.portal.workflow.kaleo.runtime.impl-2.0.22.jar,\
+	com.liferay.portal.workflow.kaleo.runtime.integration.impl-1.0.18.jar,\
+	com.liferay.portal.workflow.kaleo.runtime.scripting.impl-1.0.6.jar,\
+	com.liferay.portal.workflow.kaleo.service-2.0.46.jar,\
+	com.liferay.portal.workflow.lang-2.0.7.jar,\
+	com.liferay.portal.workflow.task.web-1.0.35.jar
+
+app.change.log-7.0.53=LPS-0 LPS-61099 LPS-61756 LPS-64031 LPS-64282 LPS-64297 LPS-64383 LPS-64407 LPS-64515 LPS-64528 LPS-64582 LPS-64840 LPS-65012 LPS-65036 LPS-65135 LPS-65224 LPS-65225 LPS-65555 LPS-65623 LPS-65738 LPS-65909 LPS-66381 LPS-66416 LPS-66853 LPS-67352 LPS-72849 LPS-73216 LPS-73350 LPS-73564 LPS-74244 LPS-74544 LPS-75049 LPS-76221 LPS-78152 LPS-78433 LPS-82466 LPS-82828 
+
+app.git.id-7.0.53=b501eb264e396fe3895f2f6ff860dcfd6bef6766
