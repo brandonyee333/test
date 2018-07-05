@@ -82,6 +82,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 	<liferay-ui:error exception="<%= DuplicatePartnerEntryCodeException.class %>" message="please-enter-a-unique-code" />
 	<liferay-ui:error exception="<%= DuplicatePartnerEntryDossieraAccountKeyException.class %>" message="please-enter-a-unique-dossiera-account-key" />
 	<liferay-ui:error exception="<%= PartnerEntryCodeException.class %>" message="please-enter-a-valid-code" />
+	<liferay-ui:error exception="<%= PartnerEntryDossieraAccountKeyException.class %>" message="please-enter-a-valid-dossiera-account-key" />
 	<liferay-ui:error exception="<%= PartnerEntryParentPartnerEntryException.class %>" message="please-enter-a-valid-parent-partner-entry" />
 
 	<aui:model-context bean="<%= partnerEntry %>" model="<%= PartnerEntry.class %>" />
