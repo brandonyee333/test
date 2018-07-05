@@ -39,6 +39,10 @@ public class OSBConstants {
 
 	public static long GROUP_LICENSE_ID = 2701000;
 
+	public static long ORGANIZATION_CUSTOMER_COMMERCE_CONNECTORS_ID = 3510990;
+
+	public static long ORGANIZATION_CUSTOMER_COMMERCE_ID = 3510997;
+
 	public static long ORGANIZATION_CUSTOMER_DXP_ID = 2844828;
 
 	public static long ORGANIZATION_CUSTOMER_ID = 1747330;
