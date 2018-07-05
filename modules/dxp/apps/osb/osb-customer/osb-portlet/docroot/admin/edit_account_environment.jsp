@@ -308,7 +308,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 			var productEntryId = A.one('#<portlet:namespace />productEntryId').val();
 
 			A.io.request(
-				'<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="ticketEnvironment" />',
+				'<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="accountEnvironment" />',
 				{
 					data: {
 						<portlet:namespace />accountEntryId: accountEntryId,
