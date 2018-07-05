@@ -228,7 +228,7 @@ insert into ListType (listTypeId, name, type_) values (34010, 'java-virtual-mach
 insert into ListType (listTypeId, name, type_) values (34011, 'liferay-version', 'com.liferay.osb.model.AuditEntry.field');
 insert into ListType (listTypeId, name, type_) values (34012, 'operating-system', 'com.liferay.osb.model.AuditEntry.field');
 insert into ListType (listTypeId, name, type_) values (34015, 'role', 'com.liferay.osb.model.AuditEntry.field');
-insert into ListType (listTypeId, name, type_) values (34017, 'status', 'com.liferay.osb.model.AuditEntry.field');;
+insert into ListType (listTypeId, name, type_) values (34017, 'status', 'com.liferay.osb.model.AuditEntry.field');
 insert into ListType (listTypeId, name, type_) values (34020, 'url', 'com.liferay.osb.model.AuditEntry.field');
 insert into ListType (listTypeId, name, type_) values (34021, 'user', 'com.liferay.osb.model.AuditEntry.field');
 insert into ListType (listTypeId, name, type_) values (34025, 'renew-count', 'com.liferay.osb.model.AuditEntry.field');
