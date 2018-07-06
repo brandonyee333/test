@@ -95,12 +95,6 @@
 		<css-class-wrapper>osb-portlet-security-patch</css-class-wrapper>
 	</portlet>
 	<portlet>
-		<portlet-name>36</portlet-name>
-		<preferences-unique-per-layout>true</preferences-unique-per-layout>
-		<header-portlet-css>/page_feedback/css/main.css</header-portlet-css>
-		<css-class-wrapper>osb-portlet-page-feedback</css-class-wrapper>
-	</portlet>
-	<portlet>
 		<portlet-name>38</portlet-name>
 		<configuration-action-class>com.liferay.osb.selfprovisioning.action.ConfigurationActionImpl</configuration-action-class>
 		<preferences-unique-per-layout>true</preferences-unique-per-layout>

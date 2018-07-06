@@ -181,18 +181,6 @@ create table OSB_ExternalIdMapper (
 	externalId VARCHAR(75) null
 );
 
-create table OSB_FeedbackEntry (
-	feedbackEntryId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	classNameId LONG,
-	classPK LONG,
-	satisfied INTEGER,
-	comments VARCHAR(75) null,
-	pageURL VARCHAR(75) null
-);
-
 create table OSB_LCSSubscriptionEntry (
 	lcsSubscriptionEntryId LONG not null primary key,
 	lcsProjectId LONG,

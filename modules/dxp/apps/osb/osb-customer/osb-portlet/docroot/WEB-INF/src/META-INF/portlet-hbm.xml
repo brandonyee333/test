@@ -15,7 +15,6 @@
 	<import class="com.liferay.osb.model.CorpProject" />
 	<import class="com.liferay.osb.model.CorpProjectMessage" />
 	<import class="com.liferay.osb.model.ExternalIdMapper" />
-	<import class="com.liferay.osb.model.FeedbackEntry" />
 	<import class="com.liferay.osb.model.LCSSubscriptionEntry" />
 	<import class="com.liferay.osb.model.LicenseEntry" />
 	<import class="com.liferay.osb.model.LicenseKey" />
@@ -218,19 +217,6 @@
 		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="externalId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.FeedbackEntryImpl" table="OSB_FeedbackEntry">
-		<id name="feedbackEntryId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="satisfied" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="comments" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="pageURL" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.LCSSubscriptionEntryImpl" table="OSB_LCSSubscriptionEntry">
 		<id name="lcsSubscriptionEntryId" type="long">

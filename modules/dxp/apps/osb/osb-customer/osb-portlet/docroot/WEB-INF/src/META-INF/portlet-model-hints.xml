@@ -188,17 +188,6 @@
 		<field name="type" type="int" />
 		<field name="externalId" type="String" />
 	</model>
-	<model name="com.liferay.osb.model.FeedbackEntry">
-		<field name="feedbackEntryId" type="long" />
-		<field name="userId" type="long" />
-		<field name="userName" type="String" />
-		<field name="createDate" type="Date" />
-		<field name="classNameId" type="long" />
-		<field name="classPK" type="long" />
-		<field name="satisfied" type="int" />
-		<field name="comments" type="String" />
-		<field name="pageURL" type="String" />
-	</model>
 	<model name="com.liferay.osb.model.LCSSubscriptionEntry">
 		<field name="lcsSubscriptionEntryId" type="long" />
 		<field name="lcsProjectId" type="long" />
