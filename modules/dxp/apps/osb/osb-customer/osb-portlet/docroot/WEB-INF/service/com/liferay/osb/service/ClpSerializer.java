@@ -29,7 +29,6 @@ import com.liferay.osb.model.AuditEntryClp;
 import com.liferay.osb.model.CorpProjectClp;
 import com.liferay.osb.model.CorpProjectMessageClp;
 import com.liferay.osb.model.ExternalIdMapperClp;
-import com.liferay.osb.model.FeedbackEntryClp;
 import com.liferay.osb.model.LCSSubscriptionEntryClp;
 import com.liferay.osb.model.LicenseEntryClp;
 import com.liferay.osb.model.LicenseKeyClp;
@@ -181,10 +180,6 @@ public class ClpSerializer {
 
 		if (oldModelClassName.equals(ExternalIdMapperClp.class.getName())) {
 			return translateInputExternalIdMapper(oldModel);
-		}
-
-		if (oldModelClassName.equals(FeedbackEntryClp.class.getName())) {
-			return translateInputFeedbackEntry(oldModel);
 		}
 
 		if (oldModelClassName.equals(LCSSubscriptionEntryClp.class.getName())) {
@@ -384,16 +379,6 @@ public class ClpSerializer {
 		ExternalIdMapperClp oldClpModel = (ExternalIdMapperClp)oldModel;
 
 		BaseModel<?> newModel = oldClpModel.getExternalIdMapperRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
-	}
-
-	public static Object translateInputFeedbackEntry(BaseModel<?> oldModel) {
-		FeedbackEntryClp oldClpModel = (FeedbackEntryClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getFeedbackEntryRemoteModel();
 
 		newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
@@ -1005,43 +990,6 @@ public class ClpSerializer {
 		if (oldModelClassName.equals(
 					"com.liferay.osb.model.impl.ExternalIdMapperImpl")) {
 			return translateOutputExternalIdMapper(oldModel);
-		}
-		else if (oldModelClassName.endsWith("Clp")) {
-			try {
-				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
-
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
-
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
-
-				Class<?> oldModelModelClass = oldModel.getModelClass();
-
-				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
-
-				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
-
-				return newModel;
-			}
-			catch (Throwable t) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Unable to translate " + oldModelClassName, t);
-				}
-			}
-		}
-
-		if (oldModelClassName.equals(
-					"com.liferay.osb.model.impl.FeedbackEntryImpl")) {
-			return translateOutputFeedbackEntry(oldModel);
 		}
 		else if (oldModelClassName.endsWith("Clp")) {
 			try {
@@ -2206,12 +2154,6 @@ public class ClpSerializer {
 		}
 
 		if (className.equals(
-					"com.liferay.osb.exception.NoSuchFeedbackEntryException")) {
-			return new com.liferay.osb.exception.NoSuchFeedbackEntryException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
 					"com.liferay.osb.exception.NoSuchLCSSubscriptionEntryException")) {
 			return new com.liferay.osb.exception.NoSuchLCSSubscriptionEntryException(throwable.getMessage(),
 				throwable.getCause());
@@ -2429,16 +2371,6 @@ public class ClpSerializer {
 		newModel.setModelAttributes(oldModel.getModelAttributes());
 
 		newModel.setExternalIdMapperRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputFeedbackEntry(BaseModel<?> oldModel) {
-		FeedbackEntryClp newModel = new FeedbackEntryClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setFeedbackEntryRemoteModel(oldModel);
 
 		return newModel;
 	}

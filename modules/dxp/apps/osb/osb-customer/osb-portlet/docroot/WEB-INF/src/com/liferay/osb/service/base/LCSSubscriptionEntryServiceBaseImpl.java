@@ -30,7 +30,6 @@ import com.liferay.osb.service.persistence.AuditEntryPersistence;
 import com.liferay.osb.service.persistence.CorpProjectMessagePersistence;
 import com.liferay.osb.service.persistence.CorpProjectPersistence;
 import com.liferay.osb.service.persistence.ExternalIdMapperPersistence;
-import com.liferay.osb.service.persistence.FeedbackEntryPersistence;
 import com.liferay.osb.service.persistence.LCSSubscriptionEntryPersistence;
 import com.liferay.osb.service.persistence.LicenseEntryPersistence;
 import com.liferay.osb.service.persistence.LicenseKeyFinder;
@@ -826,63 +825,6 @@ public abstract class LCSSubscriptionEntryServiceBaseImpl
 	public void setExternalIdMapperPersistence(
 		ExternalIdMapperPersistence externalIdMapperPersistence) {
 		this.externalIdMapperPersistence = externalIdMapperPersistence;
-	}
-
-	/**
-	 * Returns the feedback entry local service.
-	 *
-	 * @return the feedback entry local service
-	 */
-	public com.liferay.osb.service.FeedbackEntryLocalService getFeedbackEntryLocalService() {
-		return feedbackEntryLocalService;
-	}
-
-	/**
-	 * Sets the feedback entry local service.
-	 *
-	 * @param feedbackEntryLocalService the feedback entry local service
-	 */
-	public void setFeedbackEntryLocalService(
-		com.liferay.osb.service.FeedbackEntryLocalService feedbackEntryLocalService) {
-		this.feedbackEntryLocalService = feedbackEntryLocalService;
-	}
-
-	/**
-	 * Returns the feedback entry remote service.
-	 *
-	 * @return the feedback entry remote service
-	 */
-	public com.liferay.osb.service.FeedbackEntryService getFeedbackEntryService() {
-		return feedbackEntryService;
-	}
-
-	/**
-	 * Sets the feedback entry remote service.
-	 *
-	 * @param feedbackEntryService the feedback entry remote service
-	 */
-	public void setFeedbackEntryService(
-		com.liferay.osb.service.FeedbackEntryService feedbackEntryService) {
-		this.feedbackEntryService = feedbackEntryService;
-	}
-
-	/**
-	 * Returns the feedback entry persistence.
-	 *
-	 * @return the feedback entry persistence
-	 */
-	public FeedbackEntryPersistence getFeedbackEntryPersistence() {
-		return feedbackEntryPersistence;
-	}
-
-	/**
-	 * Sets the feedback entry persistence.
-	 *
-	 * @param feedbackEntryPersistence the feedback entry persistence
-	 */
-	public void setFeedbackEntryPersistence(
-		FeedbackEntryPersistence feedbackEntryPersistence) {
-		this.feedbackEntryPersistence = feedbackEntryPersistence;
 	}
 
 	/**
@@ -2225,12 +2167,6 @@ public abstract class LCSSubscriptionEntryServiceBaseImpl
 	protected com.liferay.osb.service.ExternalIdMapperLocalService externalIdMapperLocalService;
 	@BeanReference(type = ExternalIdMapperPersistence.class)
 	protected ExternalIdMapperPersistence externalIdMapperPersistence;
-	@BeanReference(type = com.liferay.osb.service.FeedbackEntryLocalService.class)
-	protected com.liferay.osb.service.FeedbackEntryLocalService feedbackEntryLocalService;
-	@BeanReference(type = com.liferay.osb.service.FeedbackEntryService.class)
-	protected com.liferay.osb.service.FeedbackEntryService feedbackEntryService;
-	@BeanReference(type = FeedbackEntryPersistence.class)
-	protected FeedbackEntryPersistence feedbackEntryPersistence;
 	@BeanReference(type = com.liferay.osb.service.LCSSubscriptionEntryLocalService.class)
 	protected com.liferay.osb.service.LCSSubscriptionEntryLocalService lcsSubscriptionEntryLocalService;
 	@BeanReference(type = LCSSubscriptionEntryService.class)

@@ -27,39 +27,39 @@ import java.util.Arrays;
 @ProviderType
 public class RabbitMQMessageProcessorLocalServiceClpInvoker {
 	public RabbitMQMessageProcessorLocalServiceClpInvoker() {
-		_methodName148 = "getOSGiServiceIdentifier";
+		_methodName144 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes148 = new String[] {  };
+		_methodParameterTypes144 = new String[] {  };
 
-		_methodName151 = "processCreateMessage";
+		_methodName147 = "processCreateMessage";
 
-		_methodParameterTypes151 = new String[] {
+		_methodParameterTypes147 = new String[] {
 				"com.liferay.portal.kernel.json.JSONObject"
 			};
 
-		_methodName152 = "processUpdateMessage";
+		_methodName148 = "processUpdateMessage";
 
-		_methodParameterTypes152 = new String[] {
+		_methodParameterTypes148 = new String[] {
 				"com.liferay.portal.kernel.json.JSONObject"
 			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName148.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes148, parameterTypes)) {
+		if (_methodName144.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes144, parameterTypes)) {
 			return RabbitMQMessageProcessorLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName151.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes151, parameterTypes)) {
+		if (_methodName147.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes147, parameterTypes)) {
 			RabbitMQMessageProcessorLocalServiceUtil.processCreateMessage((com.liferay.portal.kernel.json.JSONObject)arguments[0]);
 
 			return null;
 		}
 
-		if (_methodName152.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes152, parameterTypes)) {
+		if (_methodName148.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes148, parameterTypes)) {
 			RabbitMQMessageProcessorLocalServiceUtil.processUpdateMessage((com.liferay.portal.kernel.json.JSONObject)arguments[0]);
 
 			return null;
@@ -68,10 +68,10 @@ public class RabbitMQMessageProcessorLocalServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
+	private String _methodName144;
+	private String[] _methodParameterTypes144;
+	private String _methodName147;
+	private String[] _methodParameterTypes147;
 	private String _methodName148;
 	private String[] _methodParameterTypes148;
-	private String _methodName151;
-	private String[] _methodParameterTypes151;
-	private String _methodName152;
-	private String[] _methodParameterTypes152;
 }

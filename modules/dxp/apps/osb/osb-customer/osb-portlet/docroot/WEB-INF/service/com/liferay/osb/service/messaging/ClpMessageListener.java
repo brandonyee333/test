@@ -42,8 +42,6 @@ import com.liferay.osb.service.CorpProjectMessageLocalServiceUtil;
 import com.liferay.osb.service.CorpProjectMessageServiceUtil;
 import com.liferay.osb.service.CorpProjectServiceUtil;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
-import com.liferay.osb.service.FeedbackEntryLocalServiceUtil;
-import com.liferay.osb.service.FeedbackEntryServiceUtil;
 import com.liferay.osb.service.LCSSubscriptionEntryLocalServiceUtil;
 import com.liferay.osb.service.LCSSubscriptionEntryServiceUtil;
 import com.liferay.osb.service.LicenseEntryLocalServiceUtil;
@@ -134,9 +132,6 @@ public class ClpMessageListener extends BaseMessageListener {
 			CorpProjectMessageServiceUtil.clearService();
 			ExternalIdMapperLocalServiceUtil.clearService();
 
-			FeedbackEntryLocalServiceUtil.clearService();
-
-			FeedbackEntryServiceUtil.clearService();
 			LCSSubscriptionEntryLocalServiceUtil.clearService();
 
 			LCSSubscriptionEntryServiceUtil.clearService();
