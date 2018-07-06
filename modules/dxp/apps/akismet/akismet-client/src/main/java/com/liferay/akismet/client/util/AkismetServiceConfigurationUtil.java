@@ -31,7 +31,7 @@ import org.osgi.service.component.annotations.Modified;
  * @author Jamie Sammons
  */
 @Component(
-	configurationPid = "com.liferay.akismet.client.configuration.AkismetConfiguration",
+	configurationPid = "com.liferay.akismet.client.configuration.AkismetServiceConfiguration",
 	configurationPolicy = ConfigurationPolicy.REQUIRE, immediate = true
 )
 public class AkismetServiceConfigurationUtil {
