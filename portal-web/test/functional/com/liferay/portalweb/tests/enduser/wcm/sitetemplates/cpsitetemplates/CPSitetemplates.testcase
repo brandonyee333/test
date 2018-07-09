@@ -55,6 +55,8 @@
 	</command>
 
 	<command name="AddSiteTemplateApplySiteTemplateChangesToSite" priority="4">
+		<property name="portal.acceptance" value="fiona" />
+		
 		<execute macro="ProductMenu#gotoPortlet">
 			<var name="category" value="Sites" />
 			<var name="panel" value="Control Panel" />
@@ -105,6 +107,13 @@
 		<execute macro="ProductMenu#gotoSite">
 			<var name="site" value="Site Template Site Name" />
 		</execute>
+
+        <if>
+			<condition function="IsElementNotPresent" locator1="Portlet#PORTLET_CONTENT" />
+			<then>
+					<execute function="Refresh" />
+			</then>
+		</if>
 
 		<execute macro="Portlet#viewPG">
 			<var name="portletName" value="Hello World" />
