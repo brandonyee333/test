@@ -52,6 +52,7 @@ import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ImageLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.trash.TrashHandler;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
@@ -820,29 +821,38 @@ public class JournalArticleStagedModelDataHandler
 					latest, serviceContext);
 			}
 
-			boolean exportVersionHistory =
-				portletDataContext.getBooleanParameter(
-					"journal", "version-history");
+			serviceContext.setModifiedDate(importedArticle.getModifiedDate());
 
-			if (!ExportImportThreadLocal.isStagingInProcess() ||
-				!exportVersionHistory) {
+			ServiceContextThreadLocal.pushServiceContext(serviceContext);
 
-				updateArticleVersions(importedArticle);
+			try {
+				boolean exportVersionHistory =
+					portletDataContext.getBooleanParameter(
+						"journal", "version-history");
+
+				if (!ExportImportThreadLocal.isStagingInProcess() ||
+					!exportVersionHistory) {
+
+					updateArticleVersions(importedArticle);
+				}
+
+				if (Validator.isNull(newArticleId)) {
+					articleIds.put(
+						article.getArticleId(), importedArticle.getArticleId());
+				}
+
+				Map<Long, Long> articlePrimaryKeys =
+					(Map<Long, Long>) portletDataContext.getNewPrimaryKeysMap(
+						JournalArticle.class + ".primaryKey");
+
+				articlePrimaryKeys.put(
+					article.getPrimaryKey(), importedArticle.getPrimaryKey());
+			}
+			finally {
+				ServiceContextThreadLocal.popServiceContext();
 			}
 
 			portletDataContext.importClassedModel(article, importedArticle);
-
-			if (Validator.isNull(newArticleId)) {
-				articleIds.put(
-					article.getArticleId(), importedArticle.getArticleId());
-			}
-
-			Map<Long, Long> articlePrimaryKeys =
-				(Map<Long, Long>)portletDataContext.getNewPrimaryKeysMap(
-					JournalArticle.class + ".primaryKey");
-
-			articlePrimaryKeys.put(
-				article.getPrimaryKey(), importedArticle.getPrimaryKey());
 		}
 		finally {
 			if (smallFile != null) {
