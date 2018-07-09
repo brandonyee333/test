@@ -35,8 +35,8 @@ int[] productMinorVersions = StringUtil.split(PrefsParamUtil.getString(portletPr
 
 		<aui:select label="product" name="productEntryRootName" onChange='<%= renderResponse.getNamespace() + "selectProductEntryRootName(this.value);" %>'>
 			<aui:option value=""></aui:option>
-			<option <%= productEntryRootName.equals(ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE) ? "selected" : "" %> value="<%= ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE %>"><%= ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE %></option>
-			<option <%= productEntryRootName.equals(ProductEntryConstants.ROOT_NAME_PORTAL) ? "selected" : "" %> value="<%= ProductEntryConstants.ROOT_NAME_PORTAL %>"><%= ProductEntryConstants.ROOT_NAME_PORTAL %></option>
+			<aui:option label="<%= ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE %>" selected="<%= productEntryRootName.equals(ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE) %>" value="<%= ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE %>" />
+			<aui:option label="<%= ProductEntryConstants.ROOT_NAME_PORTAL %>" selected="<%= productEntryRootName.equals(ProductEntryConstants.ROOT_NAME_PORTAL) %>" value="<%= ProductEntryConstants.ROOT_NAME_PORTAL %>" />
 		</aui:select>
 
 		<aui:select label="product-versions" multiple="<%= true %>" name="productMinorVersions">
@@ -44,65 +44,69 @@ int[] productMinorVersions = StringUtil.split(PrefsParamUtil.getString(portletPr
 
 		<br />
 
-		<input type="submit" value="<liferay-ui:message key="save" />" />
+		<aui:button type="submit" value="save" />
 
-		<input onClick="location.href = '<%= HtmlUtil.escape(PortalUtil.escapeRedirect(redirect)) %>';" type="button" value="<liferay-ui:message key="cancel" />" />
+		<aui:button onClick="location.href = '<%= HtmlUtil.escape(PortalUtil.escapeRedirect(redirect)) %>';" value="cancel" />
 	</aui:form>
 </c:if>
 
 <aui:script>
-	function <portlet:namespace />selectProductEntryRootName(productEntryRootName) {
-		var A = AUI();
+	Liferay.provide(
+		window,
+		'<portlet:namespace />selectProductEntryRootName',
+		function(productEntryRootName) {
+			var A = AUI();
 
-		var productMinorVersionsSelect = A.one('#<portlet:namespace />productMinorVersions');
+			var productMinorVersionsSelect = A.one('#<portlet:namespace />productMinorVersions');
 
-		productMinorVersionsSelect.empty();
+			productMinorVersionsSelect.empty();
 
-		var productMinorVersionsOptions = [];
+			var productMinorVersionsOptions = [];
 
-		if (productEntryRootName == '<%= ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE %>') {
+			if (productEntryRootName == '<%= ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE %>') {
 
-			<%
-			for (ListType digitalEnterpriseMinorVersionType : ListTypeServiceUtil.getListTypes(ProductEntryConstants.LIST_TYPE_DIGITAL_ENTERPRISE_MINOR_VERSIONS)) {
-			%>
+				<%
+				for (ListType digitalEnterpriseMinorVersionType : ListTypeServiceUtil.getListTypes(ProductEntryConstants.LIST_TYPE_DIGITAL_ENTERPRISE_MINOR_VERSIONS)) {
+				%>
 
-				productMinorVersionsOptions.push('<option value="<%= digitalEnterpriseMinorVersionType.getListTypeId() %>"><%= LanguageUtil.get(request, digitalEnterpriseMinorVersionType.getName()) %></option>');
+					productMinorVersionsOptions.push('<option value="<%= digitalEnterpriseMinorVersionType.getListTypeId() %>"><%= LanguageUtil.get(request, digitalEnterpriseMinorVersionType.getName()) %></option>');
 
-			<%
-			}
-			%>
-
-		}
-		else {
-
-			<%
-			for (ListType portalMinorVersionType : ListTypeServiceUtil.getListTypes(ProductEntryConstants.LIST_TYPE_PORTAL_MINOR_VERSIONS)) {
-			%>
-
-				productMinorVersionsOptions.push('<option value="<%= portalMinorVersionType.getListTypeId() %>"><%= LanguageUtil.get(request, portalMinorVersionType.getName()) %></option>');
-
-			<%
-			}
-			%>
-
-		}
-
-		productMinorVersionsSelect.append(productMinorVersionsOptions.join(''));
-
-		var productMinorVersions = [<%= StringUtil.merge(productMinorVersions) %>];
-
-		productMinorVersionsSelect.all('option').each(
-			function(item, index, collection) {
-				if (productMinorVersions.indexOf(parseInt(item.val())) < 0) {
-					item.attr("selected", false);
+				<%
 				}
-				else {
-					item.attr("selected", true);
-				}
-			}
-		);
+				%>
 
-	}
+			}
+			else {
+
+				<%
+				for (ListType portalMinorVersionType : ListTypeServiceUtil.getListTypes(ProductEntryConstants.LIST_TYPE_PORTAL_MINOR_VERSIONS)) {
+				%>
+
+					productMinorVersionsOptions.push('<option value="<%= portalMinorVersionType.getListTypeId() %>"><%= LanguageUtil.get(request, portalMinorVersionType.getName()) %></option>');
+
+				<%
+				}
+				%>
+
+			}
+
+			productMinorVersionsSelect.append(productMinorVersionsOptions.join(''));
+
+			var productMinorVersions = [<%= StringUtil.merge(productMinorVersions) %>];
+
+			productMinorVersionsSelect.all('option').each(
+				function(item, index, collection) {
+					if (productMinorVersions.indexOf(parseInt(item.val())) < 0) {
+						item.attr("selected", false);
+					}
+					else {
+						item.attr("selected", true);
+					}
+				}
+			);
+		},
+		['aui-base']
+	);
 
 	<c:if test="<%= Validator.isNotNull(productEntryRootName) %>">
 		<portlet:namespace />selectProductEntryRootName('<%= HtmlUtil.escapeJS(productEntryRootName) %>');

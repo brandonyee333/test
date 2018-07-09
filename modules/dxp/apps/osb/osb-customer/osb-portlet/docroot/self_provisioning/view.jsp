@@ -54,21 +54,20 @@ int[] productMinorVersions = StringUtil.split(portletPreferences.getValue("produ
 		<div class="activation-key-container aui-helper-clearfix">
 			<div class="aui-w33 content-column">
 				<div class="activation-column content-column-content">
-					<select id="<portlet:namespace />accountEntryId" name="<portlet:namespace />accountEntryId" onChange="<portlet:namespace />selectAccountEntry(this.value);">
-						<option disabled selected><liferay-ui:message key="project" /></option>
+					<aui:select label="" name="accountEntryId" onChange='<%= renderResponse.getNamespace() + "selectAccountEntry(this.value);" %>'>
+						<aui:option disabled="<%= true %>" label="project" selected="<%= true %>" />
 
 						<c:choose>
 							<c:when test="<%= accountEntry != null %>">
-								<option value="<%= accountEntry.getAccountEntryId() %>"><%= HtmlUtil.escape(accountEntry.getName()) %></option>
+								<aui:option label="<%= accountEntry.getName() %>" value="<%= accountEntry.getAccountEntryId() %>" />
 							</c:when>
 							<c:otherwise>
-								<option disabled selected value=""><liferay-ui:message key="project" /></option>
 
 								<%
 								for (AccountEntry curAccountEntry : accountEntries) {
 								%>
 
-									<option value="<%= curAccountEntry.getAccountEntryId() %>"><%= HtmlUtil.escape(curAccountEntry.getName()) %></option>
+									<aui:option label="<%= curAccountEntry.getName() %>" value="<%= curAccountEntry.getAccountEntryId() %>" />
 
 								<%
 								}
@@ -76,21 +75,21 @@ int[] productMinorVersions = StringUtil.split(portletPreferences.getValue("produ
 
 							</c:otherwise>
 						</c:choose>
-					</select>
+					</aui:select>
 				</div>
 			</div>
 
 			<div class="aui-w33 content-column">
 				<div class="activation-column content-column-content">
-					<select id="<portlet:namespace />productMinorVersion" name="<portlet:namespace />productMinorVersion">
-						<option disabled selected value=""><liferay-ui:message key="version" /></option>
-					</select>
+					<aui:select label="" name="productMinorVersion">
+						<aui:option disabled="<%= true %>" label="version" selected="<%= true %>" value="" />
+					</aui:select>
 				</div>
 			</div>
 
 			<div class="aui-w33 content-column">
 				<div class="activation-column content-column-content">
-					<button id="<portlet:namespace />activationKeyDownloadButton" onClick="<portlet:namespace />generateLicenseKey();" type="button"><liferay-ui:message key="download-activation-key" /></button>
+					<aui:button id="activationKeyDownloadButton" onClick='<%= renderResponse.getNamespace() + "generateLicenseKey();" %>' value="download-activation-key" />
 				</div>
 			</div>
 		</div>
@@ -106,7 +105,7 @@ int[] productMinorVersions = StringUtil.split(portletPreferences.getValue("produ
 					var productMinorVersion = A.one('#<portlet:namespace />productMinorVersion');
 
 					if (accountEntryId && productMinorVersion) {
-						if (!accountEntryId.get('value') || !productMinorVersion.get('value')) {
+						if (!accountEntryId.val() || !productMinorVersion.val()) {
 							alert('<liferay-ui:message key="please-fill-out-all-required-fields" />');
 
 							return;
