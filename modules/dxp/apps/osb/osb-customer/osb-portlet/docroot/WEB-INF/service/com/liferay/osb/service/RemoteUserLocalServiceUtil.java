@@ -54,7 +54,8 @@ public class RemoteUserLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.model.User translate(
-		com.liferay.portal.kernel.json.JSONObject jsonObject) {
+		com.liferay.portal.kernel.json.JSONObject jsonObject)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().translate(jsonObject);
 	}
 
@@ -97,6 +98,12 @@ public class RemoteUserLocalServiceUtil {
 		long[] userIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().unsetOrganizationUsers(organizationId, userIds);
+	}
+
+	public static void updateUserExpandoValue(long userId,
+		java.lang.String expandoColumnName, java.lang.Object data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().updateUserExpandoValue(userId, expandoColumnName, data);
 	}
 
 	public static void clearService() {

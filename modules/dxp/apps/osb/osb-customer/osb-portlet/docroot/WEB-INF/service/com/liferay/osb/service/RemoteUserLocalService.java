@@ -55,7 +55,7 @@ public interface RemoteUserLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public User getUserByUuid(java.lang.String uuid) throws PortalException;
 
-	public User translate(JSONObject jsonObject);
+	public User translate(JSONObject jsonObject) throws PortalException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -81,5 +81,9 @@ public interface RemoteUserLocalService extends BaseLocalService,
 	public void synchronize(long userId) throws PortalException;
 
 	public void unsetOrganizationUsers(long organizationId, long[] userIds)
+		throws PortalException;
+
+	public void updateUserExpandoValue(long userId,
+		java.lang.String expandoColumnName, java.lang.Object data)
 		throws PortalException;
 }

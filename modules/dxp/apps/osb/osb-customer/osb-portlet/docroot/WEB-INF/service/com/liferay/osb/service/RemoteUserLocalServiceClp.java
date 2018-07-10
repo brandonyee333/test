@@ -65,6 +65,12 @@ public class RemoteUserLocalServiceClp implements RemoteUserLocalService {
 		_methodName9 = "unsetOrganizationUsers";
 
 		_methodParameterTypes9 = new String[] { "long", "long[][]" };
+
+		_methodName10 = "updateUserExpandoValue";
+
+		_methodParameterTypes10 = new String[] {
+				"long", "java.lang.String", "java.lang.Object"
+			};
 	}
 
 	@Override
@@ -129,7 +135,8 @@ public class RemoteUserLocalServiceClp implements RemoteUserLocalService {
 
 	@Override
 	public com.liferay.portal.kernel.model.User translate(
-		com.liferay.portal.kernel.json.JSONObject jsonObject) {
+		com.liferay.portal.kernel.json.JSONObject jsonObject)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -139,6 +146,10 @@ public class RemoteUserLocalServiceClp implements RemoteUserLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -313,6 +324,38 @@ public class RemoteUserLocalServiceClp implements RemoteUserLocalService {
 		}
 	}
 
+	@Override
+	public void updateUserExpandoValue(long userId,
+		java.lang.String expandoColumnName, java.lang.Object data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		try {
+			_invokableLocalService.invokeMethod(_methodName10,
+				_methodParameterTypes10,
+				new Object[] {
+					userId,
+					
+				ClpSerializer.translateInput(expandoColumnName),
+					
+				ClpSerializer.translateInput(data)
+				});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+	}
+
 	private InvokableLocalService _invokableLocalService;
 	private String _methodName0;
 	private String[] _methodParameterTypes0;
@@ -332,4 +375,6 @@ public class RemoteUserLocalServiceClp implements RemoteUserLocalService {
 	private String[] _methodParameterTypes8;
 	private String _methodName9;
 	private String[] _methodParameterTypes9;
+	private String _methodName10;
+	private String[] _methodParameterTypes10;
 }

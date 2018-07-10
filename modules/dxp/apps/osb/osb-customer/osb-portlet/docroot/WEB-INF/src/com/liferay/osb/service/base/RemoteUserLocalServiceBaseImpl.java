@@ -17,6 +17,7 @@ package com.liferay.osb.service.base;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.service.persistence.ExpandoColumnPersistence;
+import com.liferay.expando.kernel.service.persistence.ExpandoValuePersistence;
 
 import com.liferay.osb.service.RemoteUserLocalService;
 import com.liferay.osb.service.persistence.AccountAttachmentPersistence;
@@ -1548,6 +1549,44 @@ public abstract class RemoteUserLocalServiceBaseImpl
 		this.expandoColumnPersistence = expandoColumnPersistence;
 	}
 
+	/**
+	 * Returns the expando value local service.
+	 *
+	 * @return the expando value local service
+	 */
+	public com.liferay.expando.kernel.service.ExpandoValueLocalService getExpandoValueLocalService() {
+		return expandoValueLocalService;
+	}
+
+	/**
+	 * Sets the expando value local service.
+	 *
+	 * @param expandoValueLocalService the expando value local service
+	 */
+	public void setExpandoValueLocalService(
+		com.liferay.expando.kernel.service.ExpandoValueLocalService expandoValueLocalService) {
+		this.expandoValueLocalService = expandoValueLocalService;
+	}
+
+	/**
+	 * Returns the expando value persistence.
+	 *
+	 * @return the expando value persistence
+	 */
+	public ExpandoValuePersistence getExpandoValuePersistence() {
+		return expandoValuePersistence;
+	}
+
+	/**
+	 * Sets the expando value persistence.
+	 *
+	 * @param expandoValuePersistence the expando value persistence
+	 */
+	public void setExpandoValuePersistence(
+		ExpandoValuePersistence expandoValuePersistence) {
+		this.expandoValuePersistence = expandoValuePersistence;
+	}
+
 	public void afterPropertiesSet() {
 		Class<?> clazz = getClass();
 
@@ -1766,6 +1805,10 @@ public abstract class RemoteUserLocalServiceBaseImpl
 	protected com.liferay.expando.kernel.service.ExpandoColumnLocalService expandoColumnLocalService;
 	@BeanReference(type = ExpandoColumnPersistence.class)
 	protected ExpandoColumnPersistence expandoColumnPersistence;
+	@BeanReference(type = com.liferay.expando.kernel.service.ExpandoValueLocalService.class)
+	protected com.liferay.expando.kernel.service.ExpandoValueLocalService expandoValueLocalService;
+	@BeanReference(type = ExpandoValuePersistence.class)
+	protected ExpandoValuePersistence expandoValuePersistence;
 	private ClassLoader _classLoader;
 	private RemoteUserLocalServiceClpInvoker _clpInvoker = new RemoteUserLocalServiceClpInvoker();
 }

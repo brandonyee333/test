@@ -49,7 +49,8 @@ public class RemoteUserLocalServiceWrapper implements RemoteUserLocalService,
 
 	@Override
 	public com.liferay.portal.kernel.model.User translate(
-		com.liferay.portal.kernel.json.JSONObject jsonObject) {
+		com.liferay.portal.kernel.json.JSONObject jsonObject)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _remoteUserLocalService.translate(jsonObject);
 	}
 
@@ -99,6 +100,14 @@ public class RemoteUserLocalServiceWrapper implements RemoteUserLocalService,
 	public void unsetOrganizationUsers(long organizationId, long[] userIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_remoteUserLocalService.unsetOrganizationUsers(organizationId, userIds);
+	}
+
+	@Override
+	public void updateUserExpandoValue(long userId,
+		java.lang.String expandoColumnName, java.lang.Object data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_remoteUserLocalService.updateUserExpandoValue(userId,
+			expandoColumnName, data);
 	}
 
 	@Override
