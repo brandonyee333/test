@@ -273,23 +273,6 @@ public class PartnerWorkerLocalServiceImpl
 		if (partnerEntry == null) {
 			throw new PartnerEntryDossieraAccountKeyException();
 		}
-
-		/** TODO: LRIS-32205
-		CorpEntry corpEntry = corpEntryLocalService.fetchCorpEntry(
-			partnerEntry.getDossieraAccountKey());
-
-		if (corpEntry == null) {
-			throw new PartnerEntryDossieraAccountKeyException();
-		}
-
-		Organization organization = organizationLocalService.fetchOrganization(
-			corpEntry.getOrganizationId());
-
-		if (organization == null) {
-			throw new PartnerEntryDossieraAccountKeyException();
-		}
-
-		*/
 	}
 
 	protected void validateDossieraAccountKeys(
