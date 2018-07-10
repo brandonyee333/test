@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -180,7 +181,8 @@ public class PartnerWorkerLocalServiceImpl
 				partnerWorker.getUserId(), oldDossieraAccountKey);
 
 			assignCorpEntryOrganizations(
-				new long[] {partnerWorker.getUserId()}, newDossieraAccountKey);
+				Arrays.asList(partnerWorker.getUserId()),
+				newDossieraAccountKey);
 		}
 	}
 
@@ -200,7 +202,7 @@ public class PartnerWorkerLocalServiceImpl
 	}
 
 	protected void assignCorpEntryOrganizations(
-			long[] userIds, String dossieraAccountKey)
+			List<Long> userIds, String dossieraAccountKey)
 		throws PortalException {
 
 		Role role = roleLocalService.getRole(
@@ -210,11 +212,10 @@ public class PartnerWorkerLocalServiceImpl
 			User user = userLocalService.getUser(userId);
 
 			WebRESTWebServiceUtil.putCorpEntriesUser(
-				partnerEntry.getDossieraAccountKey(), user.getUuid());
+				dossieraAccountKey, user.getUuid());
 
 			WebRESTWebServiceUtil.putCorpEntriesUserRole(
-				partnerEntry.getDossieraAccountKey(), user.getUuid(),
-				role.getUuid());
+				dossieraAccountKey, user.getUuid(), role.getUuid());
 		}
 	}
 
@@ -251,7 +252,7 @@ public class PartnerWorkerLocalServiceImpl
 		User user = userLocalService.getUser(userId);
 
 		WebRESTWebServiceUtil.deleteCorpEntriesUser(
-			partnerEntry.getDossieraAccountKey(), user.getUuid());
+			dossieraAccountKey, user.getUuid());
 	}
 
 	protected void unassignOrganizations(long userId) throws PortalException {
@@ -273,6 +274,7 @@ public class PartnerWorkerLocalServiceImpl
 			throw new PartnerEntryDossieraAccountKeyException();
 		}
 
+		/** TODO: LRIS-32205
 		CorpEntry corpEntry = corpEntryLocalService.fetchCorpEntry(
 			partnerEntry.getDossieraAccountKey());
 
@@ -286,6 +288,8 @@ public class PartnerWorkerLocalServiceImpl
 		if (organization == null) {
 			throw new PartnerEntryDossieraAccountKeyException();
 		}
+
+		*/
 	}
 
 	protected void validateDossieraAccountKeys(
