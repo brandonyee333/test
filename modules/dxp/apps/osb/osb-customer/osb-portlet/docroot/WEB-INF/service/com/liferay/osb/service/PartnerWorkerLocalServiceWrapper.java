@@ -343,6 +343,15 @@ public class PartnerWorkerLocalServiceWrapper
 	}
 
 	@Override
+	public void syncPartnerWorkers(long partnerEntryId,
+		java.lang.String oldDossieraAccountKey,
+		java.lang.String newDossieraAccountKey)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_partnerWorkerLocalService.syncPartnerWorkers(partnerEntryId,
+			oldDossieraAccountKey, newDossieraAccountKey);
+	}
+
+	@Override
 	public PartnerWorkerLocalService getWrappedService() {
 		return _partnerWorkerLocalService;
 	}

@@ -172,6 +172,12 @@ public class PartnerWorkerLocalServiceClpInvoker {
 		_methodName187 = "hasPartnerWorkerRole";
 
 		_methodParameterTypes187 = new String[] { "long", "int" };
+
+		_methodName188 = "syncPartnerWorkers";
+
+		_methodParameterTypes188 = new String[] {
+				"long", "java.lang.String", "java.lang.String"
+			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -352,6 +358,14 @@ public class PartnerWorkerLocalServiceClpInvoker {
 				((Integer)arguments[1]).intValue());
 		}
 
+		if (_methodName188.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes188, parameterTypes)) {
+			PartnerWorkerLocalServiceUtil.syncPartnerWorkers(((Long)arguments[0]).longValue(),
+				(java.lang.String)arguments[1], (java.lang.String)arguments[2]);
+
+			return null;
+		}
+
 		throw new UnsupportedOperationException();
 	}
 
@@ -417,4 +431,6 @@ public class PartnerWorkerLocalServiceClpInvoker {
 	private String[] _methodParameterTypes186;
 	private String _methodName187;
 	private String[] _methodParameterTypes187;
+	private String _methodName188;
+	private String[] _methodParameterTypes188;
 }

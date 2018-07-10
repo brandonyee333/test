@@ -264,4 +264,8 @@ public interface PartnerWorkerLocalService extends BaseLocalService,
 
 	public void deletePartnerWorkers(long[] userIds, long partnerEntryId)
 		throws PortalException;
+
+	public void syncPartnerWorkers(long partnerEntryId,
+		java.lang.String oldDossieraAccountKey,
+		java.lang.String newDossieraAccountKey) throws PortalException;
 }

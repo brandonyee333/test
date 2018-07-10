@@ -1993,6 +1993,12 @@ public class ClpSerializer {
 		}
 
 		if (className.equals(
+					"com.liferay.osb.exception.PartnerEntryDossieraAccountKeyException")) {
+			return new com.liferay.osb.exception.PartnerEntryDossieraAccountKeyException(throwable.getMessage(),
+				throwable.getCause());
+		}
+
+		if (className.equals(
 					"com.liferay.osb.exception.PartnerEntryParentPartnerEntryException")) {
 			return new com.liferay.osb.exception.PartnerEntryParentPartnerEntryException(throwable.getMessage(),
 				throwable.getCause());

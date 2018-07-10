@@ -312,6 +312,15 @@ public class PartnerWorkerLocalServiceUtil {
 		getService().deletePartnerWorkers(userIds, partnerEntryId);
 	}
 
+	public static void syncPartnerWorkers(long partnerEntryId,
+		java.lang.String oldDossieraAccountKey,
+		java.lang.String newDossieraAccountKey)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService()
+			.syncPartnerWorkers(partnerEntryId, oldDossieraAccountKey,
+			newDossieraAccountKey);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}
