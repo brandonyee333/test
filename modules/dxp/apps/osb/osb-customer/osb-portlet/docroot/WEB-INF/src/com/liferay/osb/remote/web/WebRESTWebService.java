@@ -78,4 +78,9 @@ public interface WebRESTWebService {
 	public void putRolesUser(String roleUUID, String userUUID)
 		throws RemoteServiceException;
 
+	public void putUsersExpandoValue(
+			String userUUID, String expandoTableName, String expandoColumnName,
+			String data)
+		throws RemoteServiceException;
+
 }

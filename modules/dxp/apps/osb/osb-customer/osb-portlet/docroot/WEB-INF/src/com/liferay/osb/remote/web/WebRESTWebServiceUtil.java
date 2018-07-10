@@ -144,6 +144,15 @@ public class WebRESTWebServiceUtil {
 		getWebRESTWebService().putRolesUser(roleUUID, userUUID);
 	}
 
+	public static void putUsersExpandoValue(
+			String userUUID, String expandoTableName, String expandoColumnName,
+			String data)
+		throws RemoteServiceException {
+
+		getWebRESTWebService().putUsersExpandoValue(
+			userUUID, expandoTableName, expandoColumnName, data);
+	}
+
 	public void setWebRESTWebService(WebRESTWebService webRESTWebService) {
 		_webRESTWebService = webRESTWebService;
 	}

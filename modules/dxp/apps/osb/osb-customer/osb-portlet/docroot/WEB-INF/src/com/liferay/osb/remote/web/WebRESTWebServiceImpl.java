@@ -293,6 +293,21 @@ public class WebRESTWebServiceImpl
 	}
 
 	@Override
+	public void putUsersExpandoValue(
+			String userUUID, String expandoTableName, String expandoColumnName,
+			String data)
+		throws RemoteServiceException {
+
+		Map<String, String> parameters = new HashMap<>();
+
+		parameters.put("data", data);
+		parameters.put("expandoColumnName", expandoColumnName);
+		parameters.put("expandoTableName", expandoTableName);
+
+		doPut(_URL_API_REST_USERS + userUUID + "/expando_Value", parameters);
+	}
+
+	@Override
 	protected void addHeaders(
 		HttpMessage httpMessage, Map<String, String> headers) {
 

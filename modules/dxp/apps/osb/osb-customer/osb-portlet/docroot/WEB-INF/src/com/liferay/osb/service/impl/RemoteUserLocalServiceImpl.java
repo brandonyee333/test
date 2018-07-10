@@ -16,7 +16,9 @@ package com.liferay.osb.service.impl;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.model.ExpandoColumn;
-import com.liferay.expando.kernel.util.ExpandoConverterUtil;
+import com.liferay.expando.kernel.model.ExpandoColumnConstants;
+import com.liferay.expando.kernel.model.ExpandoTableConstants;
+import com.liferay.expando.kernel.model.ExpandoValue;
 import com.liferay.osb.hook.model.impl.RemoteUserImpl;
 import com.liferay.osb.remote.web.WebRESTWebServiceUtil;
 import com.liferay.osb.service.base.RemoteUserLocalServiceBaseImpl;
@@ -30,13 +32,13 @@ import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.ArrayUtil;
 
-import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * @author Amos Fong
@@ -209,7 +211,7 @@ public class RemoteUserLocalServiceImpl extends RemoteUserLocalServiceBaseImpl {
 	}
 
 	@Override
-	public User translate(JSONObject jsonObject) {
+	public User translate(JSONObject jsonObject) throws PortalException {
 		User user = userLocalService.createUser(0);
 
 		RemoteUserImpl remoteUser = new RemoteUserImpl(user);
@@ -249,11 +251,14 @@ public class RemoteUserLocalServiceImpl extends RemoteUserLocalServiceBaseImpl {
 					String expandoValueData = expandoTableJSONObject.getString(
 						expandoColumnName);
 
-					Serializable serializable =
-						ExpandoConverterUtil.getAttributeFromString(
-							expandoColumn.getType(), expandoValueData);
+					ExpandoValue expandoValue =
+						expandoValueLocalService.createExpandoValue(0);
 
-					expandoBridge.setAttribute(expandoColumnName, serializable);
+					expandoValue.setColumn(expandoColumn);
+					expandoValue.setData(expandoValueData);
+
+					expandoBridge.setAttribute(
+						expandoColumnName, expandoValue.getSerializable());
 				}
 			}
 		}
@@ -325,6 +330,93 @@ public class RemoteUserLocalServiceImpl extends RemoteUserLocalServiceBaseImpl {
 			WebRESTWebServiceUtil.deleteOrganizationsUser(
 				organization.getUuid(), user.getUuid());
 		}
+	}
+
+	@Override
+	public void updateUserExpandoValue(
+			long userId, String expandoColumnName, Object data)
+		throws PortalException {
+
+		User user = userLocalService.getUser(userId);
+
+		ExpandoColumn expandoColumn = expandoColumnLocalService.getColumn(
+			user.getCompanyId(), User.class.getName(),
+			ExpandoTableConstants.DEFAULT_TABLE_NAME, expandoColumnName);
+
+		String expandoValueData = getExpandoValueData(
+			expandoColumn.getType(), data);
+
+		WebRESTWebServiceUtil.putUsersExpandoValue(
+			user.getUuid(), ExpandoTableConstants.DEFAULT_TABLE_NAME,
+			expandoColumnName, expandoValueData);
+	}
+
+	protected String getExpandoValueData(int type, Object data)
+		throws PortalException {
+
+		ExpandoValue expandoValue = expandoValueLocalService.createExpandoValue(
+			0);
+
+		if (type == ExpandoColumnConstants.BOOLEAN) {
+			expandoValue.setBoolean((Boolean)data);
+		}
+		else if (type == ExpandoColumnConstants.BOOLEAN_ARRAY) {
+			expandoValue.setBooleanArray((boolean[])data);
+		}
+		else if (type == ExpandoColumnConstants.DATE) {
+			expandoValue.setDate((Date)data);
+		}
+		else if (type == ExpandoColumnConstants.DATE_ARRAY) {
+			expandoValue.setDateArray((Date[])data);
+		}
+		else if (type == ExpandoColumnConstants.DOUBLE) {
+			expandoValue.setDouble((Double)data);
+		}
+		else if (type == ExpandoColumnConstants.DOUBLE_ARRAY) {
+			expandoValue.setDoubleArray((double[])data);
+		}
+		else if (type == ExpandoColumnConstants.FLOAT) {
+			expandoValue.setFloat((Float)data);
+		}
+		else if (type == ExpandoColumnConstants.FLOAT_ARRAY) {
+			expandoValue.setFloatArray((float[])data);
+		}
+		else if (type == ExpandoColumnConstants.INTEGER) {
+			expandoValue.setInteger((Integer)data);
+		}
+		else if (type == ExpandoColumnConstants.INTEGER_ARRAY) {
+			expandoValue.setIntegerArray((int[])data);
+		}
+		else if (type == ExpandoColumnConstants.LONG) {
+			expandoValue.setLong((Long)data);
+		}
+		else if (type == ExpandoColumnConstants.LONG_ARRAY) {
+			expandoValue.setLongArray((long[])data);
+		}
+		else if (type == ExpandoColumnConstants.NUMBER) {
+			expandoValue.setNumber((Number)data);
+		}
+		else if (type == ExpandoColumnConstants.NUMBER_ARRAY) {
+			expandoValue.setNumberArray((Number[])data);
+		}
+		else if (type == ExpandoColumnConstants.SHORT) {
+			expandoValue.setShort((Short)data);
+		}
+		else if (type == ExpandoColumnConstants.SHORT_ARRAY) {
+			expandoValue.setShortArray((short[])data);
+		}
+		else if (type == ExpandoColumnConstants.STRING_ARRAY) {
+			expandoValue.setStringArray((String[])data);
+		}
+		else if (type == ExpandoColumnConstants.STRING_LOCALIZED) {
+			expandoValue.setStringMap(
+				(Map<Locale, String>)data, Locale.getDefault());
+		}
+		else {
+			expandoValue.setString((String)data);
+		}
+
+		return expandoValue.getData();
 	}
 
 }
