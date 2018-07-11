@@ -240,14 +240,13 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 
 		updateRoles(OSBConstants.ROLE_LIFERAY_EMPLOYEE_ID, sb.toString());
 
-		sb = new StringBundler(22);
+		sb = new StringBundler(21);
 
 		sb.append("select distinct(OSB_AccountCustomer.userId) from ");
 		sb.append("OSB_AccountCustomer inner join Users_Roles on ");
 		sb.append("Users_Roles.userId = OSB_AccountCustomer.userId inner ");
-		sb.append("join OSB_AccountEntry on ");
-		sb.append("OSB_AccountEntry.accountEntryId = ");
-		sb.append("OSB_AccountCustomer.accountEntryId inner join ");
+		sb.append("join OSB_AccountEntry on OSB_AccountEntry.accountEntryId ");
+		sb.append("= OSB_AccountCustomer.accountEntryId inner join ");
 		sb.append("OSB_OfferingEntry on OSB_OfferingEntry.accountEntryId = ");
 		sb.append("OSB_AccountCustomer.accountEntryId inner join ");
 		sb.append("OSB_ProductEntry on OSB_ProductEntry.productEntryId = ");
@@ -269,14 +268,13 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 			OSBConstants.ORGANIZATION_CUSTOMER_COMMERCE_CONNECTORS_ID,
 			sb.toString(), "OSB_AccountCustomer.userId");
 
-		sb = new StringBundler(22);
+		sb = new StringBundler(21);
 
 		sb.append("select distinct(OSB_AccountCustomer.userId) from ");
 		sb.append("OSB_AccountCustomer inner join Users_Roles on ");
 		sb.append("Users_Roles.userId = OSB_AccountCustomer.userId inner ");
-		sb.append("join OSB_AccountEntry on ");
-		sb.append("OSB_AccountEntry.accountEntryId = ");
-		sb.append("OSB_AccountCustomer.accountEntryId inner join ");
+		sb.append("join OSB_AccountEntry on OSB_AccountEntry.accountEntryId ");
+		sb.append("= OSB_AccountCustomer.accountEntryId inner join ");
 		sb.append("OSB_OfferingEntry on OSB_OfferingEntry.accountEntryId = ");
 		sb.append("OSB_AccountCustomer.accountEntryId inner join ");
 		sb.append("OSB_ProductEntry on OSB_ProductEntry.productEntryId = ");
