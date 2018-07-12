@@ -225,7 +225,7 @@
 	</javadoc>
 	<javadoc>
 		<name>DeregisterCommand</name>
-		<type>com.liferay.lcs.command.DeregisterCommand</type>
+		<type>com.liferay.lcs.command.SignOffCommand</type>
 		<author><![CDATA[Igor Beslic]]></author>
 		<method>
 			<name>execute</name>
@@ -244,7 +244,7 @@
 	</javadoc>
 	<javadoc>
 		<name>DownloadPatchesCommand</name>
-		<type>com.liferay.lcs.command.DownloadPatchesCommand</type>
+		<type>com.liferay.lcs.command.DownloadPatchCommand</type>
 		<author><![CDATA[Ivica Cardic]]></author>
 		<author><![CDATA[Igor Beslic]]></author>
 		<method>
@@ -3847,48 +3847,6 @@
 		</field>
 	</javadoc>
 	<javadoc>
-		<name>ResponseMessageUtil</name>
-		<type>com.liferay.lcs.util.ResponseMessageUtil</type>
-		<author><![CDATA[Ivica Cardic]]></author>
-		<method>
-			<name>createResponseMessage</name>
-			<param>
-				<name>commandMessage</name>
-				<type>com.liferay.lcs.messaging.CommandMessage</type>
-				<comment><![CDATA[]]></comment>
-			</param>
-			<param>
-				<name>payload</name>
-				<type>java.lang.Object</type>
-				<comment><![CDATA[]]></comment>
-			</param>
-			<return>
-				<comment><![CDATA[]]></comment>
-			</return>
-		</method>
-		<method>
-			<name>createResponseMessage</name>
-			<param>
-				<name>commandMessage</name>
-				<type>com.liferay.lcs.messaging.CommandMessage</type>
-				<comment><![CDATA[]]></comment>
-			</param>
-			<param>
-				<name>payload</name>
-				<type>java.lang.Object</type>
-				<comment><![CDATA[]]></comment>
-			</param>
-			<param>
-				<name>error</name>
-				<type>java.lang.String</type>
-				<comment><![CDATA[]]></comment>
-			</param>
-			<return>
-				<comment><![CDATA[]]></comment>
-			</return>
-		</method>
-	</javadoc>
-	<javadoc>
 		<name>MessagePriorityComparator</name>
 		<type>com.liferay.lcs.util.comparator.MessagePriorityComparator</type>
 		<author><![CDATA[Igor Beslic]]></author>
@@ -5159,7 +5117,7 @@ This method compares object references. If the references match it returns <code
 	</javadoc>
 	<javadoc>
 		<name>LCSProjectServiceUtil</name>
-		<type>com.liferay.lcs.rest.LCSProjectServiceUtil</type>
+		<type>com.liferay.lcs.rest.client.LCSProjectClientUtil</type>
 		<author><![CDATA[Igor Beslic]]></author>
 		<method>
 			<name>getCorpProjectService</name>
@@ -5211,7 +5169,7 @@ This method compares object references. If the references match it returns <code
 	</javadoc>
 	<javadoc>
 		<name>LCSClusterEntryServiceUtil</name>
-		<type>com.liferay.lcs.rest.LCSClusterEntryServiceUtil</type>
+		<type>com.liferay.lcs.rest.client.LCSClusterEntryClientUtil</type>
 		<author><![CDATA[Ivica Cardic]]></author>
 		<author><![CDATA[Igor Beslic]]></author>
 		<method>
@@ -5317,7 +5275,7 @@ This method compares object references. If the references match it returns <code
 	</javadoc>
 	<javadoc>
 		<name>LCSClusterNodeServiceUtil</name>
-		<type>com.liferay.lcs.rest.LCSClusterNodeServiceUtil</type>
+		<type>com.liferay.lcs.rest.client.LCSClusterNodeClientUtil</type>
 		<author><![CDATA[Ivica Cardic]]></author>
 		<author><![CDATA[Igor Beslic]]></author>
 		<method>
