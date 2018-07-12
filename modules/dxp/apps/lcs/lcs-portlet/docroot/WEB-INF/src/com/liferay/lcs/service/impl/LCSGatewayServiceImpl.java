@@ -66,7 +66,7 @@ public class LCSGatewayServiceImpl implements LCSGatewayService {
 		headers.put(
 			"LCS_PORTLET_BUILD_NUMBER",
 			String.valueOf(LCSUtil.getLCSPortletBuildNumber()));
-		headers.put("PROTOCOL_VERSION", "1.7");
+		headers.put("PROTOCOL_VERSION", Message.PROTOCOL_VERSION_CURRENT);
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Getting messages from gateway");
@@ -123,7 +123,7 @@ public class LCSGatewayServiceImpl implements LCSGatewayService {
 			"LCS_PORTLET_BUILD_NUMBER",
 			String.valueOf(LCSUtil.getLCSPortletBuildNumber()));
 		headers.put("MESSAGE_TYPE_CODE", _getMessageNameHashCode(message));
-		headers.put("PROTOCOL_VERSION", "1.7");
+		headers.put("PROTOCOL_VERSION", Message.PROTOCOL_VERSION_CURRENT);
 
 		_jsonWebServiceClient.doPost(
 			_URL_LCS_GATEWAY_SEND_MESSAGE, parameters, headers);
@@ -158,8 +158,7 @@ public class LCSGatewayServiceImpl implements LCSGatewayService {
 		return String.valueOf(name.hashCode());
 	}
 
-	private static final String _URL_LCS_GATEWAY =
-		"/osb-lcs-gateway-web/api/jsonws/lcsgateway";
+	private static final String _URL_LCS_GATEWAY = "/api/lcsgateway";
 
 	private static final String _URL_LCS_GATEWAY_DELETE_MESSAGES =
 		LCSGatewayServiceImpl._URL_LCS_GATEWAY + "/delete-messages";
@@ -167,8 +166,7 @@ public class LCSGatewayServiceImpl implements LCSGatewayService {
 	private static final String _URL_LCS_GATEWAY_GET_MESSAGES =
 		LCSGatewayServiceImpl._URL_LCS_GATEWAY + "/v12/get-messages";
 
-	private static final String _URL_LCS_GATEWAY_HEALTH =
-		"/osb-lcs-gateway-web/api/jsonws/health";
+	private static final String _URL_LCS_GATEWAY_HEALTH = "/management/health";
 
 	private static final String _URL_LCS_GATEWAY_SEND_MESSAGE =
 		LCSGatewayServiceImpl._URL_LCS_GATEWAY + "/send-message";
