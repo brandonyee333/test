@@ -19,6 +19,7 @@ import com.liferay.lcs.advisor.UptimeMonitoringAdvisor;
 import com.liferay.lcs.exception.LCSHandshakeException;
 import com.liferay.lcs.messaging.CommandMessage;
 import com.liferay.lcs.messaging.HandshakeMessage;
+import com.liferay.lcs.messaging.HandshakeResponseMessage;
 import com.liferay.lcs.messaging.Message;
 import com.liferay.lcs.messaging.ResponseMessage;
 import com.liferay.lcs.util.LCSAlert;
@@ -113,46 +114,34 @@ public class HandshakeTask implements Task {
 
 		HandshakeMessage handshakeMessage = new HandshakeMessage();
 
-		handshakeMessage.put(
-			Message.KEY_BUILD_NUMBER, ReleaseInfo.getBuildNumber());
-		handshakeMessage.put(
-			Message.KEY_CLUSTER_EXECUTOR_ENABLED,
+		handshakeMessage.setPortalBuildNumber(ReleaseInfo.getBuildNumber());
+		handshakeMessage.setClusterExecutorEnabled(
 			ClusterExecutorUtil.isEnabled());
 
-		Map<Long, String> companyIdsWebIds = new HashMap<>();
+		Map<Integer, String> companyIdsWebIds = new HashMap<>();
 
 		List<Company> companies = CompanyLocalServiceUtil.getCompanies();
 
 		for (Company company : companies) {
-			companyIdsWebIds.put(company.getCompanyId(), company.getWebId());
+			companyIdsWebIds.put(
+				(int)company.getCompanyId(), company.getWebId());
 		}
 
-		handshakeMessage.put(Message.KEY_COMPANY_IDS_WEB_IDS, companyIdsWebIds);
+		handshakeMessage.setCompanyIdsWebIds(companyIdsWebIds);
 
-		handshakeMessage.put(Message.KEY_HASH_CODE, _key.hashCode());
-		handshakeMessage.put(
-			Message.KEY_HEARTBEAT_INTERVAL, String.valueOf(_heartbeatInterval));
+		handshakeMessage.setHashCode(_key.hashCode());
+		handshakeMessage.setHeartbeatInterval(_heartbeatInterval);
 
 		if (LCSPatcherUtil.isConfigured()) {
-			handshakeMessage.put(
-				Message.KEY_PATCHING_TOOL_STATUS,
-				LCSConstants.PATCHING_TOOL_AVAILABLE);
-		}
-		else {
-			handshakeMessage.put(
-				Message.KEY_PATCHING_TOOL_STATUS,
-				LCSConstants.PATCHING_TOOL_UNAVAILABLE);
+			handshakeMessage.setPatchingToolEnabled(true);
 		}
 
-		handshakeMessage.put(
-			Message.KEY_PATCHING_TOOL_VERSION,
+		handshakeMessage.setPatchingToolVersion(
 			LCSPatcherUtil.getPatchingToolVersion());
-		handshakeMessage.put(
-			Message.KEY_LCS_PORTLET_BUILD_NUMBER,
+		handshakeMessage.setLCSPortletBuildNumber(
 			LCSUtil.getLCSPortletBuildNumber());
 
-		handshakeMessage.put(
-			Message.KEY_MONITORING_STATUS, _getMonitoringStatus());
+		handshakeMessage.setMonitoringEnabled(_isMonitoringEnabled());
 
 		PortletPreferences jxPortletPreferences =
 			LCSPortletPreferencesUtil.fetchReadOnlyJxPortletPreferences();
@@ -163,20 +152,7 @@ public class HandshakeTask implements Task {
 				Boolean.FALSE.toString()));
 
 		if (metricsLCSServiceEnabled) {
-			handshakeMessage.put(
-				Message.KEY_METRICS_LCS_SERVICE_STATUS,
-				LCSConstants.METRICS_LCS_SERVICE_AVAILABLE);
-			handshakeMessage.put(
-				Message.KEY_SITE_NAMES_LCS_SERVICE_STATUS,
-				LCSConstants.SITE_NAMES_LCS_SERVICE_AVAILABLE);
-		}
-		else {
-			handshakeMessage.put(
-				Message.KEY_METRICS_LCS_SERVICE_STATUS,
-				LCSConstants.METRICS_LCS_SERVICE_UNAVAILABLE);
-			handshakeMessage.put(
-				Message.KEY_SITE_NAMES_LCS_SERVICE_STATUS,
-				LCSConstants.SITE_NAMES_LCS_SERVICE_UNAVAILABLE);
+			handshakeMessage.setMetricsLCSServiceEnabled(true);
 		}
 
 		boolean patchesLCSServiceEnabled = GetterUtil.getBoolean(
@@ -185,18 +161,10 @@ public class HandshakeTask implements Task {
 				Boolean.FALSE.toString()));
 
 		if (patchesLCSServiceEnabled) {
-			handshakeMessage.put(
-				Message.KEY_PATCHES_LCS_SERVICE_STATUS,
-				LCSConstants.PATCHES_LCS_SERVICE_AVAILABLE);
-		}
-		else {
-			handshakeMessage.put(
-				Message.KEY_PATCHES_LCS_SERVICE_STATUS,
-				LCSConstants.PATCHES_LCS_SERVICE_UNAVAILABLE);
+			handshakeMessage.setPatchesLCSServiceEnabled(true);
 		}
 
-		handshakeMessage.put(
-			Message.KEY_PORTAL_EDITION, LCSUtil.getPortalEdition());
+		handshakeMessage.setPortalEdition(LCSUtil.getPortalEdition());
 
 		handshakeMessage.setKey(_key);
 
@@ -206,21 +174,14 @@ public class HandshakeTask implements Task {
 				Boolean.FALSE.toString()));
 
 		if (portalPropertiesLCSServiceEnabled) {
-			handshakeMessage.put(
-				Message.KEY_PORTAL_PROPERTIES_LCS_SERVICE_STATUS,
-				LCSConstants.PORTAL_PROPERTIES_LCS_SERVICE_AVAILABLE);
-		}
-		else {
-			handshakeMessage.put(
-				Message.KEY_PORTAL_PROPERTIES_LCS_SERVICE_STATUS,
-				LCSConstants.PORTAL_PROPERTIES_LCS_SERVICE_UNAVAILABLE);
+			handshakeMessage.setPortalPropertiesLCSServiceEnabled(true);
 		}
 
 		List<Map<String, Long>> uptimes = _uptimeMonitoringAdvisor.getUptimes();
 
 		_uptimeMonitoringAdvisor.resetCurrentUptimeEndTime(uptimes);
 
-		handshakeMessage.put(Message.KEY_UPTIMES, uptimes);
+		handshakeMessage.setUptimes(uptimes);
 
 		_lcsConnectionManager.sendMessage(handshakeMessage);
 
@@ -298,9 +259,8 @@ public class HandshakeTask implements Task {
 		}
 	}
 
-	protected boolean isNewLCSPortletBuildNumber(Message receivedMessage) {
-		int latestLCSPortletBuildNumber = GetterUtil.getInteger(
-			receivedMessage.get(Message.KEY_LATEST_LCS_PORTLET_BUILD_NUMBER));
+	protected boolean isNewLCSPortletBuildNumber(
+		int latestLCSPortletBuildNumber) {
 
 		if (latestLCSPortletBuildNumber > LCSUtil.getLCSPortletBuildNumber()) {
 			return true;
@@ -328,18 +288,19 @@ public class HandshakeTask implements Task {
 
 			ResponseMessage responseMessage = (ResponseMessage)receivedMessage;
 
-			if (!CommandMessage.COMMAND_TYPE_INITIATE_HANDSHAKE.equals(
-					responseMessage.getCommandType())) {
-
+			if (!(responseMessage instanceof HandshakeResponseMessage)) {
 				continue;
 			}
 
 			if (responseMessage.contains(Message.KEY_ERROR)) {
+			HandshakeResponseMessage handshakeResponseMessage =
+				(HandshakeResponseMessage)responseMessage;
+
 				throw new LCSHandshakeException(
 					(String)responseMessage.get(Message.KEY_ERROR));
 			}
 
-			if (responseMessage.contains(Message.KEY_HANDSHAKE_EXPIRED_ERROR)) {
+			if (handshakeResponseMessage.isHandshakeExpiredError()) {
 				_lcsAlertAdvisor.add(LCSAlert.WARNING_HANDSHAKE_EXPIRED);
 
 				throw new LCSHandshakeException(
@@ -353,21 +314,18 @@ public class HandshakeTask implements Task {
 
 			receivedHandshakeResponse = true;
 
-			if (Validator.isNotNull(
-					receivedMessage.get(
-						Message.KEY_LATEST_LCS_PORTLET_BUILD_NUMBER))) {
-
-				_lcsConnectionManager.putLCSConnectionMetadata(
-					"newLCSPortletBuildNumber",
-					String.valueOf(
-						isNewLCSPortletBuildNumber(receivedMessage)));
-			}
+			_lcsConnectionManager.putLCSConnectionMetadata(
+				"newLCSPortletBuildNumber",
+				String.valueOf(
+					isNewLCSPortletBuildNumber(
+						handshakeResponseMessage.
+							getLatestLCSPortletBuildNumber())));
 		}
 
 		return receivedHandshakeResponse;
 	}
 
-	private int _getMonitoringStatus() {
+	private boolean _isMonitoringEnabled() {
 		Bundle bundle = FrameworkUtil.getBundle(getClass());
 
 		BundleContext bundleContext = bundle.getBundleContext();
@@ -376,17 +334,17 @@ public class HandshakeTask implements Task {
 			bundleContext.getServiceReference(PortalMonitoringControl.class);
 
 		if (serviceReference == null) {
-			return LCSConstants.MONITORING_UNAVAILABLE;
+			return false;
 		}
 
 		LiferayFilter liferayFilter = (LiferayFilter)bundleContext.getService(
 			serviceReference);
 
 		if (liferayFilter.isFilterEnabled()) {
-			return LCSConstants.MONITORING_AVAILABLE;
+			return true;
 		}
 
-		return LCSConstants.MONITORING_UNAVAILABLE;
+		return false;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(HandshakeTask.class);

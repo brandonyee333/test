@@ -15,7 +15,7 @@
 package com.liferay.lcs.task;
 
 import com.liferay.lcs.management.MBeanServerService;
-import com.liferay.lcs.messaging.MetricsMessage;
+import com.liferay.lcs.messaging.ServerMetricsMessage;
 import com.liferay.lcs.util.KeyGenerator;
 import com.liferay.lcs.util.LCSConnectionManager;
 import com.liferay.portal.kernel.dao.jdbc.pool.metrics.ConnectionPoolMetrics;
@@ -215,14 +215,16 @@ public abstract class BaseServerMetricsTask implements ServerMetricsTask {
 			return;
 		}
 
-		MetricsMessage metricsMessage = new MetricsMessage();
+		ServerMetricsMessage serverMetricsMessage = new ServerMetricsMessage();
 
-		metricsMessage.setCreateTime(System.currentTimeMillis());
-		metricsMessage.setKey(keyGenerator.getKey());
-		metricsMessage.setMetricsType(MetricsMessage.METRICS_TYPE_SERVER);
-		metricsMessage.setPayload(getPayload());
+		serverMetricsMessage.setCreateTime(System.currentTimeMillis());
+		serverMetricsMessage.setCurrentThreadsMetrics(
+			getCurrentThreadsMetrics());
+		serverMetricsMessage.setJDBCConnectionPoolsMetrics(
+			getJDBCConnectionPoolsMetrics());
+		serverMetricsMessage.setKey(keyGenerator.getKey());
 
-		lcsConnectionManager.sendMessage(metricsMessage);
+		lcsConnectionManager.sendMessage(serverMetricsMessage);
 	}
 
 	protected abstract Map<String, Map<String, Object>>

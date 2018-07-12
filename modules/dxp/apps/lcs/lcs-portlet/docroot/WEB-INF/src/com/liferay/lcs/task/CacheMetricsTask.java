@@ -16,7 +16,7 @@ package com.liferay.lcs.task;
 
 import com.liferay.lcs.management.MBeanServerService;
 import com.liferay.lcs.management.ObjectNameKeyPropertyMapKeyStrategy;
-import com.liferay.lcs.messaging.MetricsMessage;
+import com.liferay.lcs.messaging.CacheMetricsMessage;
 import com.liferay.lcs.util.PortletPropsValues;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -52,14 +52,17 @@ public class CacheMetricsTask extends BaseScheduledTask {
 			_log.trace("Running cache metrics task");
 		}
 
-		MetricsMessage metricsMessage = new MetricsMessage();
+		CacheMetricsMessage cacheMetricsMessage = new CacheMetricsMessage();
 
-		metricsMessage.setCreateTime(System.currentTimeMillis());
-		metricsMessage.setKey(getKey());
-		metricsMessage.setMetricsType(MetricsMessage.METRICS_TYPE_CACHE);
-		metricsMessage.setPayload(getPayload());
+		cacheMetricsMessage.setCreateTime(System.currentTimeMillis());
+		cacheMetricsMessage.setHibernateMetrics(getHibernateMetrics());
+		cacheMetricsMessage.setLiferayMultiVMMetrics(
+			getLiferayMultiVMMetrics());
+		cacheMetricsMessage.setLiferaySingleVMMetrics(
+			getLiferaySingleVMMetrics());
+		cacheMetricsMessage.setKey(getKey());
 
-		sendMessage(metricsMessage);
+		sendMessage(cacheMetricsMessage);
 	}
 
 	protected Map<String, Object> getHibernateMetrics() throws Exception {
