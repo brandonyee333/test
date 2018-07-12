@@ -50,7 +50,7 @@ public class MessageBusMessage extends Message {
 		return _values;
 	}
 
-	public void put(String key, String value) {
+	public void put(String key, Object value) {
 		_values.put(key, value);
 	}
 
