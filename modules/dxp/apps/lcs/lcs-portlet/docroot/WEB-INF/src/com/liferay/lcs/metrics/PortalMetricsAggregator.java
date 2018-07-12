@@ -14,7 +14,6 @@
 
 package com.liferay.lcs.metrics;
 
-import com.liferay.lcs.messaging.MetricsMessage;
 import com.liferay.lcs.monitoring.statistics.AverageStatistics;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -44,8 +43,12 @@ public class PortalMetricsAggregator {
 		return _performanceMetricsMap.isEmpty();
 	}
 
-	public synchronized List<Map<String, Object>> pop() {
-		List<Map<String, Object>> performanceMetricsList = new ArrayList<>();
+	@SuppressWarnings("unchecked")
+	public synchronized List<Map<String, Object>>[] pop() {
+		List<Map<String, Object>> layoutPerformanceMetricsList =
+			new ArrayList<>();
+		List<Map<String, Object>> portletPerformanceMetricsList =
+			new ArrayList<>();
 
 		Set<String> keys = _performanceMetricsMap.keySet();
 
@@ -61,13 +64,23 @@ public class PortalMetricsAggregator {
 				"duration", averageStatistics.getAverageTime());
 			performanceMetrics.put("frequency", averageStatistics.getCount());
 
-			performanceMetricsList.add(performanceMetrics);
+			if (key.startsWith(_METRICS_TYPE_LAYOUT)) {
+				layoutPerformanceMetricsList.add(performanceMetrics);
+			}
+			else if (key.startsWith(_METRICS_TYPE_PORTLET)) {
+				portletPerformanceMetricsList.add(performanceMetrics);
+			}
 		}
 
 		_averageStatisticsMap.clear();
 		_performanceMetricsMap.clear();
 
-		return performanceMetricsList;
+		List<Map<String, Object>>[] performanceMetrics = new List[2];
+
+		performanceMetrics[0] = layoutPerformanceMetricsList;
+		performanceMetrics[1] = portletPerformanceMetricsList;
+
+		return performanceMetrics;
 	}
 
 	public synchronized void push(DataSample dataSample) {
@@ -95,10 +108,10 @@ public class PortalMetricsAggregator {
 		for (Map<String, Object> performanceMetrics : performanceMetricsList) {
 			String metricsType = (String)performanceMetrics.get("metricsType");
 
-			if (metricsType.equals(MetricsMessage.METRICS_TYPE_LAYOUT)) {
+			if (metricsType.equals(_METRICS_TYPE_LAYOUT)) {
 				layoutNames.add((String)performanceMetrics.get("name"));
 			}
-			else if (metricsType.equals(MetricsMessage.METRICS_TYPE_PORTLET)) {
+			else if (metricsType.equals(_METRICS_TYPE_PORTLET)) {
 				String requestType = (String)performanceMetrics.get(
 					"requestType");
 
@@ -111,13 +124,11 @@ public class PortalMetricsAggregator {
 		for (Map<String, Object> performanceMetrics : performanceMetricsList) {
 			String metricsType = (String)performanceMetrics.get("metricsType");
 
-			if (metricsType.equals(MetricsMessage.METRICS_TYPE_LAYOUT) &&
-				requestTypeRender) {
-
+			if (metricsType.equals(_METRICS_TYPE_LAYOUT) && requestTypeRender) {
 				updatePerformanceMetricsMap(
 					performanceMetrics, metricsType, StringPool.BLANK);
 			}
-			else if (metricsType.equals(MetricsMessage.METRICS_TYPE_PORTLET)) {
+			else if (metricsType.equals(_METRICS_TYPE_PORTLET)) {
 				updatePerformanceMetricsMap(
 					performanceMetrics, metricsType, StringPool.BLANK);
 
@@ -133,13 +144,13 @@ public class PortalMetricsAggregator {
 		String namespace = dataSample.getNamespace();
 
 		if (namespace.contains("Portal")) {
-			return MetricsMessage.METRICS_TYPE_LAYOUT;
+			return _METRICS_TYPE_LAYOUT;
 		}
 		else if (namespace.contains("Portlet")) {
-			return MetricsMessage.METRICS_TYPE_PORTLET;
+			return _METRICS_TYPE_PORTLET;
 		}
 		else {
-			return MetricsMessage.METRICS_TYPE_SERVICE;
+			return _METRICS_TYPE_SERVICE;
 		}
 	}
 
@@ -206,7 +217,7 @@ public class PortalMetricsAggregator {
 		String averageStatisticsName = null;
 		String key = null;
 
-		if (metricsType.equals(MetricsMessage.METRICS_TYPE_LAYOUT)) {
+		if (metricsType.equals(_METRICS_TYPE_LAYOUT)) {
 			String name = (String)performanceMetrics.get("name");
 
 			try {
@@ -239,7 +250,7 @@ public class PortalMetricsAggregator {
 			averageStatisticsName = name;
 			key = metricsType.concat(name);
 		}
-		else if (metricsType.equals(MetricsMessage.METRICS_TYPE_PORTLET)) {
+		else if (metricsType.equals(_METRICS_TYPE_PORTLET)) {
 			performanceMetrics.put("layoutName", layoutName);
 
 			String portletId = (String)performanceMetrics.get("portletId");
@@ -270,6 +281,12 @@ public class PortalMetricsAggregator {
 
 		averageStatistics.addDuration(duration);
 	}
+
+	private static final String _METRICS_TYPE_LAYOUT = "LAYOUT";
+
+	private static final String _METRICS_TYPE_PORTLET = "PORTLET";
+
+	private static final String _METRICS_TYPE_SERVICE = "SERVICE";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortalMetricsAggregator.class);
