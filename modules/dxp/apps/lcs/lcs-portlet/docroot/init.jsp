@@ -56,8 +56,6 @@ page import="java.util.Map" %><%@
 page import="java.util.Set" %><%@
 page import="java.util.TimeZone" %>
 
-<%@ page import="javax.portlet.PortletURL" %>
-
 <liferay-theme:defineObjects />
 
 <portlet:defineObjects />
