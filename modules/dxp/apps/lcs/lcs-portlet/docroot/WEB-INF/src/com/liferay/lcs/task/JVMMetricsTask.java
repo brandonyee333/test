@@ -14,7 +14,7 @@
 
 package com.liferay.lcs.task;
 
-import com.liferay.lcs.messaging.MetricsMessage;
+import com.liferay.lcs.messaging.JVMMetricsMessage;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -44,18 +44,45 @@ public class JVMMetricsTask extends BaseScheduledTask {
 			_log.trace("Running JVM metrics task");
 		}
 
-		MetricsMessage metricsMessage = new MetricsMessage();
+		JVMMetricsMessage jvmMetricsMessage = new JVMMetricsMessage();
 
-		metricsMessage.setCreateTime(System.currentTimeMillis());
-		metricsMessage.setKey(getKey());
-		metricsMessage.setMetricsType(MetricsMessage.METRICS_TYPE_JVM);
-		metricsMessage.setPayload(getPayload());
+		jvmMetricsMessage.setBufferPoolMetrics(getBufferPoolMetrics());
+		jvmMetricsMessage.setCreateTime(System.currentTimeMillis());
+		jvmMetricsMessage.setDaemonThreadCount(
+			_virtualMachineMetrics.daemonThreadCount());
+		jvmMetricsMessage.setDeadlockedThreads(
+			new HashSet<>(_virtualMachineMetrics.deadlockedThreads()));
+		jvmMetricsMessage.setFileDescriptorUsage(getFileDescriptorUsage());
+		jvmMetricsMessage.setGarbageCollectorMetrics(
+			getGarbageCollectorMetrics());
+		jvmMetricsMessage.setHeapCommitted(
+			_virtualMachineMetrics.heapCommitted());
+		jvmMetricsMessage.setHeapInit(_virtualMachineMetrics.heapInit());
+		jvmMetricsMessage.setHeapMax(_virtualMachineMetrics.heapMax());
+		jvmMetricsMessage.setHeapUsage(_virtualMachineMetrics.heapUsage());
+		jvmMetricsMessage.setHeapUsed(_virtualMachineMetrics.heapUsed());
+		jvmMetricsMessage.setKey(getKey());
+		jvmMetricsMessage.setMemoryPoolUsage(
+			new HashMap<>(_virtualMachineMetrics.memoryPoolUsage()));
+		jvmMetricsMessage.setName(_virtualMachineMetrics.name());
+		jvmMetricsMessage.setNonHeapUsage(
+			_virtualMachineMetrics.nonHeapUsage());
+		jvmMetricsMessage.setThreadCount(_virtualMachineMetrics.threadCount());
+		jvmMetricsMessage.setThreadStatePercentages(
+			getThreadStatePercentages());
+		jvmMetricsMessage.setTotalCommitted(
+			_virtualMachineMetrics.totalCommitted());
+		jvmMetricsMessage.setTotalInit(_virtualMachineMetrics.totalInit());
+		jvmMetricsMessage.setTotalMax(_virtualMachineMetrics.totalMax());
+		jvmMetricsMessage.setTotalUsed(_virtualMachineMetrics.totalUsed());
+		jvmMetricsMessage.setUptime((int)_virtualMachineMetrics.uptime());
+		jvmMetricsMessage.setVersion(_virtualMachineMetrics.version());
 
-		sendMessage(metricsMessage);
+		sendMessage(jvmMetricsMessage);
 	}
 
-	protected Map<String, Object> getBufferPoolMetrics() {
-		Map<String, Object> bufferPoolMetrics = new HashMap<>();
+	protected Map<String, Map<String, Long>> getBufferPoolMetrics() {
+		Map<String, Map<String, Long>> bufferPoolMetrics = new HashMap<>();
 
 		Map<String, BufferPoolStats> bufferPoolStatsMap =
 			_virtualMachineMetrics.getBufferPoolStats();
@@ -65,7 +92,7 @@ public class JVMMetricsTask extends BaseScheduledTask {
 
 			BufferPoolStats bufferPoolStats = entry.getValue();
 
-			Map<String, Object> value = new HashMap<>();
+			Map<String, Long> value = new HashMap<>();
 
 			value.put("count", bufferPoolStats.getCount());
 			value.put("memoryUsed", bufferPoolStats.getMemoryUsed());
@@ -88,8 +115,9 @@ public class JVMMetricsTask extends BaseScheduledTask {
 		return fileDescriptorUsage;
 	}
 
-	protected Map<String, Object> getGarbageCollectorMetrics() {
-		Map<String, Object> garbageCollectorMetrics = new HashMap<>();
+	protected Map<String, Map<String, Long>> getGarbageCollectorMetrics() {
+		Map<String, Map<String, Long>> garbageCollectorMetrics =
+			new HashMap<>();
 
 		Map<String, GarbageCollectorStats> garbageCollectorStatsMap =
 			_virtualMachineMetrics.garbageCollectors();
@@ -99,7 +127,7 @@ public class JVMMetricsTask extends BaseScheduledTask {
 
 			GarbageCollectorStats garbageCollectorStats = entry.getValue();
 
-			Map<String, Object> value = new HashMap<>();
+			Map<String, Long> value = new HashMap<>();
 
 			value.put("runs", garbageCollectorStats.getRuns());
 			value.put(
@@ -111,41 +139,21 @@ public class JVMMetricsTask extends BaseScheduledTask {
 		return garbageCollectorMetrics;
 	}
 
-	protected Map<String, Object> getPayload() {
-		Map<String, Object> payload = new HashMap<>();
+	protected Map<String, Double> getThreadStatePercentages() {
+		Map<String, Double> threadStatePercentages = new HashMap<>();
 
-		payload.put("bufferPoolMetrics", getBufferPoolMetrics());
-		payload.put(
-			"daemonThreadCount", _virtualMachineMetrics.daemonThreadCount());
-		payload.put(
-			"deadlockedThreads",
-			new HashSet<String>(_virtualMachineMetrics.deadlockedThreads()));
-		payload.put("fileDescriptorUsage", getFileDescriptorUsage());
-		payload.put("garbageCollectorMetrics", getGarbageCollectorMetrics());
-		payload.put("heapCommitted", _virtualMachineMetrics.heapCommitted());
-		payload.put("heapInit", _virtualMachineMetrics.heapInit());
-		payload.put("heapMax", _virtualMachineMetrics.heapMax());
-		payload.put("heapUsage", _virtualMachineMetrics.heapUsage());
-		payload.put("heapUsed", _virtualMachineMetrics.heapUsed());
-		payload.put(
-			"memoryPoolUsage",
-			new HashMap<String, Double>(
-				_virtualMachineMetrics.memoryPoolUsage()));
-		payload.put("name", _virtualMachineMetrics.name());
-		payload.put("nonHeapUsage", _virtualMachineMetrics.nonHeapUsage());
-		payload.put("threadCount", _virtualMachineMetrics.threadCount());
-		payload.put(
-			"threadStatePercentages",
-			new HashMap<Thread.State, Double>(
-				_virtualMachineMetrics.threadStatePercentages()));
-		payload.put("totalCommitted", _virtualMachineMetrics.totalCommitted());
-		payload.put("totalInit", _virtualMachineMetrics.totalInit());
-		payload.put("totalMax", _virtualMachineMetrics.totalMax());
-		payload.put("totalUsed", _virtualMachineMetrics.totalUsed());
-		payload.put("uptime", _virtualMachineMetrics.uptime());
-		payload.put("version", _virtualMachineMetrics.version());
+		Map<Thread.State, Double> currentThreadStatePercentages =
+			_virtualMachineMetrics.threadStatePercentages();
 
-		return payload;
+		for (Map.Entry<Thread.State, Double> entry :
+				currentThreadStatePercentages.entrySet()) {
+
+			Thread.State state = entry.getKey();
+
+			threadStatePercentages.put(state.toString(), entry.getValue());
+		}
+
+		return threadStatePercentages;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(JVMMetricsTask.class);
