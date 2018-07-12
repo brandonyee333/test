@@ -36,19 +36,19 @@
 	<bean class="com.liferay.lcs.messaging.CommandMessageListener" id="messageListener.lcs_commands">
 		<property name="commands">
 			<map>
-				<entry key="#{T(com.liferay.lcs.messaging.CommandMessage).COMMAND_TYPE_CHECK_HEARTBEAT}" value-ref="com.liferay.lcs.command.CheckHeartbeatCommand" />
-				<entry key="#{T(com.liferay.lcs.messaging.CommandMessage).COMMAND_TYPE_DEREGISTER}" value-ref="com.liferay.lcs.command.DeregisterCommand" />
-				<entry key="#{T(com.liferay.lcs.messaging.CommandMessage).COMMAND_TYPE_DOWNLOAD_PATCHES}" value-ref="com.liferay.lcs.command.DownloadPatchesCommand" />
-				<entry key="#{T(com.liferay.lcs.messaging.CommandMessage).COMMAND_TYPE_EXECUTE_SCRIPT}" value-ref="com.liferay.lcs.command.ExecuteScriptCommand" />
-				<entry key="#{T(com.liferay.lcs.messaging.CommandMessage).COMMAND_TYPE_MESSAGE_BUS}" value-ref="com.liferay.lcs.command.MessageBusCommand" />
-				<entry key="#{T(com.liferay.lcs.messaging.CommandMessage).COMMAND_TYPE_SCHEDULE_MESSAGE_LISTENERS}" value-ref="com.liferay.lcs.command.ScheduleMessageListenersCommand" />
-				<entry key="#{T(com.liferay.lcs.messaging.CommandMessage).COMMAND_TYPE_SCHEDULE_TASKS}" value-ref="com.liferay.lcs.command.ScheduleTasksCommand" />
-				<entry key="#{T(com.liferay.lcs.messaging.CommandMessage).COMMAND_TYPE_SEND_INSTALLATION_ENVIRONMENT}" value-ref="com.liferay.lcs.command.SendInstallationEnvironmentCommand" />
-				<entry key="#{T(com.liferay.lcs.messaging.CommandMessage).COMMAND_TYPE_SEND_PATCHES}" value-ref="com.liferay.lcs.command.SendPatchesCommand" />
-				<entry key="#{T(com.liferay.lcs.messaging.CommandMessage).COMMAND_TYPE_SEND_PORTAL_PROPERTIES}" value-ref="com.liferay.lcs.command.SendPortalPropertiesCommand" />
+				<entry key="com.liferay.lcs.messaging.CheckHeartbeatCommandMessage" value-ref="com.liferay.lcs.command.CheckHeartbeatCommand" />
+				<entry key="com.liferay.lcs.messaging.DownloadPatchCommandMessage" value-ref="com.liferay.lcs.command.DownloadPatchCommand" />
+				<entry key="com.liferay.lcs.messaging.ExecuteScriptCommandMessage" value-ref="com.liferay.lcs.command.ExecuteScriptCommand" />
+				<entry key="com.liferay.lcs.messaging.MessageBusCommandMessage" value-ref="com.liferay.lcs.command.MessageBusCommand" />
+				<entry key="com.liferay.lcs.messaging.ScheduleMessageListenersCommandMessage" value-ref="com.liferay.lcs.command.ScheduleMessageListenersCommand" />
+				<entry key="com.liferay.lcs.messaging.ScheduleTasksCommandMessage" value-ref="com.liferay.lcs.command.ScheduleTasksCommand" />
+				<entry key="com.liferay.lcs.messaging.SendInstallationEnvironmentCommandMessage" value-ref="com.liferay.lcs.command.SendInstallationEnvironmentCommand" />
+				<entry key="com.liferay.lcs.messaging.SendPatchesCommandMessage" value-ref="com.liferay.lcs.command.SendPatchesCommand" />
+				<entry key="com.liferay.lcs.messaging.SendPortalPropertiesCommandMessage" value-ref="com.liferay.lcs.command.SendPortalPropertiesCommand" />
+				<entry key="com.liferay.lcs.messaging.SignOffCommandMessage" value-ref="com.liferay.lcs.command.SignOffCommand" />
 			</map>
 		</property>
-		<property name="digitalSignature" ref="com.liferay.lcs.security.DigitalSignature" />
+		<property name="digitalSignature" ref="com.liferay.lcs.messaging.security.DigitalSignature" />
 		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
 	</bean>
 	<bean class="com.liferay.lcs.messaging.LCSHotDeployMessageListener" id="messageListener.lcs_hot_deploy">

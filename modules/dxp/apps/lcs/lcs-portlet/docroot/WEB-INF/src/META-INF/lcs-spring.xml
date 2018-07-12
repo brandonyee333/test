@@ -30,12 +30,7 @@
 		<constructor-arg name="keyGenerator" ref="com.liferay.lcs.util.KeyGenerator" />
 		<constructor-arg name="lcsConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
 	</bean>
-	<bean class="com.liferay.lcs.command.DeregisterCommand" id="com.liferay.lcs.command.DeregisterCommand">
-		<property name="keyGenerator" ref="com.liferay.lcs.util.KeyGenerator" />
-		<property name="LCSClusterEntryTokenAdvisor" ref="com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor" />
-		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
-	</bean>
-	<bean class="com.liferay.lcs.command.DownloadPatchesCommand" id="com.liferay.lcs.command.DownloadPatchesCommand">
+	<bean class="com.liferay.lcs.command.DownloadPatchCommand" id="com.liferay.lcs.command.DownloadPatchCommand">
 		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
 	</bean>
 	<bean class="com.liferay.lcs.command.ExecuteScriptCommand" id="com.liferay.lcs.command.ExecuteScriptCommand">
@@ -55,6 +50,11 @@
 		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
 	</bean>
 	<bean class="com.liferay.lcs.command.SendPortalPropertiesCommand" id="com.liferay.lcs.command.SendPortalPropertiesCommand">
+		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
+	</bean>
+	<bean class="com.liferay.lcs.command.SignOffCommand" id="com.liferay.lcs.command.SignOffCommand">
+		<property name="keyGenerator" ref="com.liferay.lcs.util.KeyGenerator" />
+		<property name="LCSClusterEntryTokenAdvisor" ref="com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor" />
 		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
 	</bean>
 
@@ -146,7 +146,7 @@
 
 	<!-- Security -->
 
-	<bean class="com.liferay.lcs.security.impl.DigitalSignatureImpl" name="com.liferay.lcs.security.DigitalSignature">
+	<bean class="com.liferay.lcs.messaging.internal.security.DigitalSignatureImpl" name="com.liferay.lcs.messaging.security.DigitalSignature">
 		<property name="keyName" value="#{T(com.liferay.lcs.util.PortletPropsValues).DIGITAL_SIGNATURE_KEY_NAME}" />
 		<property name="keyStorePath" value="#{T(com.liferay.lcs.util.PortletPropsValues).DIGITAL_SIGNATURE_KEY_STORE_PATH}" />
 		<property name="keyStoreType" value="#{T(com.liferay.lcs.util.PortletPropsValues).DIGITAL_SIGNATURE_KEY_STORE_TYPE}" />
@@ -174,7 +174,7 @@
 		<property name="keyGenerator" ref="com.liferay.lcs.util.KeyGenerator" />
 		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
 	</bean>
-	<bean class="com.liferay.lcs.task.OrganizationNamesTask" id="com.liferay.lcs.task.OrganizationNamesTask">
+	<bean class="com.liferay.lcs.task.OrganizationsTask" id="com.liferay.lcs.task.OrganizationsTask">
 		<property name="keyGenerator" ref="com.liferay.lcs.util.KeyGenerator" />
 		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
 		<property name="pageSize" value="#{T(com.liferay.lcs.util.PortletPropsValues).SCHEDULED_TASK_PAGE_SIZE}" />
@@ -191,13 +191,13 @@
 		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
 		<property name="mBeanServerService" ref="com.liferay.lcs.management.MBeanServerService" />
 	</bean>
-	<bean class="com.liferay.lcs.task.SiteNamesTask" id="com.liferay.lcs.task.SiteNamesTask">
+	<bean class="com.liferay.lcs.task.SitesTask" id="com.liferay.lcs.task.SitesTask">
 		<property name="keyGenerator" ref="com.liferay.lcs.util.KeyGenerator" />
 		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
 		<property name="pageSize" value="#{T(com.liferay.lcs.util.PortletPropsValues).SCHEDULED_TASK_PAGE_SIZE}" />
 		<property name="pauseInterval" value="#{T(com.liferay.lcs.util.PortletPropsValues).SCHEDULED_TASK_PAUSE_INTERVAL}" />
 	</bean>
-	<bean class="com.liferay.lcs.task.UserGroupNamesTask" id="com.liferay.lcs.task.UserGroupNamesTask">
+	<bean class="com.liferay.lcs.task.UserGroupsTask" id="com.liferay.lcs.task.UserGroupsTask">
 		<property name="keyGenerator" ref="com.liferay.lcs.util.KeyGenerator" />
 		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
 		<property name="pageSize" value="#{T(com.liferay.lcs.util.PortletPropsValues).SCHEDULED_TASK_PAGE_SIZE}" />
