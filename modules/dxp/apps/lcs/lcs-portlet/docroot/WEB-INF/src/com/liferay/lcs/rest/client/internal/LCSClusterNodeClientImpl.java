@@ -39,9 +39,8 @@ public class LCSClusterNodeClientImpl implements LCSClusterNodeClient {
 
 	@Override
 	public LCSClusterNode addLCSClusterNode(
-			long lcsClusterEntryId, String name, String description,
-			int buildNumber, String key, String location,
-			int processorCoresTotal)
+			long lcsClusterEntryId, String name, String description, String key,
+			String location, int portalBuildNumber, int processorCoresTotal)
 		throws DuplicateLCSClusterNodeNameException,
 			   JSONWebServiceInvocationException,
 			   JSONWebServiceSerializeException,
@@ -61,12 +60,11 @@ public class LCSClusterNodeClientImpl implements LCSClusterNodeClient {
 
 		try {
 			return _jsonWebServiceClient.doPostToObject(
-				LCSClusterNode.class, _URL_LCS_CLUSTER_NODE, "buildNumber",
-				String.valueOf(buildNumber), "name", name, "description",
-				description, "lcsClusterEntryId",
+				LCSClusterNode.class, _URL_LCS_CLUSTER_NODE, "name", name,
+				"description", description, "lcsClusterEntryId",
 				String.valueOf(lcsClusterEntryId), "location", location, "key",
-				key, "processorCoresTotal",
-				String.valueOf(processorCoresTotal));
+				key, "portalBuildNumber", String.valueOf(portalBuildNumber),
+				"processorCoresTotal", String.valueOf(processorCoresTotal));
 		}
 		catch (JSONWebServiceInvocationException jsonwsie) {
 			if (LCSClientError.getRESTError(jsonwsie) ==
@@ -87,7 +85,7 @@ public class LCSClusterNodeClientImpl implements LCSClusterNodeClient {
 
 		try {
 			return _jsonWebServiceClient.doGetToObject(
-				LCSClusterNode.class, _URL_LCS_CLUSTER_NODE, "key", key);
+				LCSClusterNode.class, _URL_LCS_CLUSTER_NODE + "/" + key);
 		}
 		catch (JSONWebServiceInvocationException jsonwsie) {
 			if (jsonwsie.getStatus() == HttpServletResponse.SC_NOT_FOUND) {
@@ -116,7 +114,7 @@ public class LCSClusterNodeClientImpl implements LCSClusterNodeClient {
 		sb.append(-1);
 
 		remoteLCSClusterNodes = _jsonWebServiceClient.doGetToList(
-			LCSClusterNode.class, _URL_LCS_CLUSTER_NODE, "lcsClusterEntryId",
+			LCSClusterNode.class, sb.toString(), "lcsClusterEntryId",
 			String.valueOf(lcsClusterEntryId));
 
 		List<LCSClusterNode> lcsClusterNodes = new ArrayList<>();
@@ -158,7 +156,7 @@ public class LCSClusterNodeClientImpl implements LCSClusterNodeClient {
 	}
 
 	private static final String _URL_LCS_CLUSTER_NODE =
-		"/osb-lcs-portlet/lcs/jsonws/v1_4/LCSClusterNode";
+		"/o/osb-lcs-rest/LCSClusterNode";
 
 	private JSONWebServiceClient _jsonWebServiceClient;
 

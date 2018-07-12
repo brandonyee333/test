@@ -30,9 +30,8 @@ import java.util.List;
 public interface LCSClusterNodeClient {
 
 	public LCSClusterNode addLCSClusterNode(
-			long lcsClusterEntryId, String name, String description,
-			int buildNumber, String key, String location,
-			int processorCoresTotal)
+			long lcsClusterEntryId, String name, String description, String key,
+			String location, int portalBuildNumber, int processorCoresTotal)
 		throws DuplicateLCSClusterNodeNameException,
 			   JSONWebServiceInvocationException,
 			   JSONWebServiceSerializeException,

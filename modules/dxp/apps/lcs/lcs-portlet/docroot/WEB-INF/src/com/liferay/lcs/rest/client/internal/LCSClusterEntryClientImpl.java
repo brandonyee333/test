@@ -34,8 +34,8 @@ public class LCSClusterEntryClientImpl implements LCSClusterEntryClient {
 			   JSONWebServiceTransportException {
 
 		return _jsonWebServiceClient.doGetToObject(
-			LCSClusterEntry.class, _URL_LCS_CLUSTER_ENTRY, "lcsClusterEntryId",
-			String.valueOf(lcsClusterEntryId));
+			LCSClusterEntry.class,
+			_URL_LCS_CLUSTER_ENTRY + "/" + lcsClusterEntryId);
 	}
 
 	public void setJSONWebServiceClient(
@@ -45,7 +45,7 @@ public class LCSClusterEntryClientImpl implements LCSClusterEntryClient {
 	}
 
 	private static final String _URL_LCS_CLUSTER_ENTRY =
-		"/osb-lcs-portlet/lcs/jsonws/v1_4/LCSClusterEntry";
+		"/o/osb-lcs-rest/LCSClusterEntry";
 
 	private JSONWebServiceClient _jsonWebServiceClient;
 

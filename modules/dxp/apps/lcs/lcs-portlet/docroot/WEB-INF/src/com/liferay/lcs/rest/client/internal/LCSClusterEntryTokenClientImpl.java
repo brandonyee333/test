@@ -39,9 +39,9 @@ public class LCSClusterEntryTokenClientImpl
 		try {
 			LCSClusterEntryToken lcsClusterEntryToken =
 				_jsonWebServiceClient.doGetToObject(
-					LCSClusterEntryToken.class, _URL_LCS_CLUSTER_ENTRY_TOKEN,
-					"lcsClusterEntryTokenId",
-					String.valueOf(lcsClusterEntryTokenId));
+					LCSClusterEntryToken.class,
+					_URL_LCS_CLUSTER_ENTRY_TOKEN + "/" +
+						lcsClusterEntryTokenId);
 
 			return lcsClusterEntryToken;
 		}
@@ -61,7 +61,7 @@ public class LCSClusterEntryTokenClientImpl
 	}
 
 	private static final String _URL_LCS_CLUSTER_ENTRY_TOKEN =
-		"/osb-lcs-portlet/lcs/jsonws/v1_4/LCSClusterEntryToken";
+		"/o/osb-lcs-rest/LCSClusterEntryToken";
 
 	private JSONWebServiceClient _jsonWebServiceClient;
 

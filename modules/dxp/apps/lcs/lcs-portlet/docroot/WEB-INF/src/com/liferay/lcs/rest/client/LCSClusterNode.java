@@ -26,10 +26,6 @@ public class LCSClusterNode {
 		return _archived;
 	}
 
-	public int getBuildNumber() {
-		return _buildNumber;
-	}
-
 	public Date getConfigurationModifiedDate() {
 		return _configurationModifiedDate;
 	}
@@ -74,6 +70,10 @@ public class LCSClusterNode {
 		return _patchingToolVersion;
 	}
 
+	public int getPortalBuildNumber() {
+		return _portalBuildNumber;
+	}
+
 	public String getPortalEdition() {
 		return _portalEdition;
 	}
@@ -92,10 +92,6 @@ public class LCSClusterNode {
 
 	public void setArchived(boolean archived) {
 		_archived = archived;
-	}
-
-	public void setBuildNumber(int buildNumber) {
-		_buildNumber = buildNumber;
 	}
 
 	public void setConfigurationModifiedDate(Date configurationModifiedDate) {
@@ -142,6 +138,10 @@ public class LCSClusterNode {
 		_patchingToolVersion = patchingToolVersion;
 	}
 
+	public void setPortalBuildNumber(int portalBuildNumber) {
+		_portalBuildNumber = portalBuildNumber;
+	}
+
 	public void setPortalEdition(String portalEdition) {
 		_portalEdition = portalEdition;
 	}
@@ -155,7 +155,6 @@ public class LCSClusterNode {
 	}
 
 	private boolean _archived;
-	private int _buildNumber;
 	private Date _configurationModifiedDate;
 	private String _description;
 	private long _heartbeatInterval;
@@ -167,6 +166,7 @@ public class LCSClusterNode {
 	private String _location;
 	private String _name;
 	private int _patchingToolVersion;
+	private int _portalBuildNumber;
 	private String _portalEdition;
 	private String _protocolVersion;
 	private int _status;

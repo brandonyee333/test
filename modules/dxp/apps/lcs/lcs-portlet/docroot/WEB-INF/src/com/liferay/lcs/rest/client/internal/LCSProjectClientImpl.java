@@ -38,7 +38,7 @@ public class LCSProjectClientImpl implements LCSProjectClient {
 		List<LCSProject> remoteLCSProjects = null;
 
 		remoteLCSProjects = _jsonWebServiceClient.doGetToList(
-			LCSProject.class, _URL_LCS_PROJECT, "manage", "true");
+			LCSProject.class, _URL_LCS_PROJECT + "/find", "manage", "true");
 
 		List<LCSProject> lcsProjects = new ArrayList<>();
 
@@ -55,8 +55,7 @@ public class LCSProjectClientImpl implements LCSProjectClient {
 		_jsonWebServiceClient = jsonWebServiceClient;
 	}
 
-	private static final String _URL_LCS_PROJECT =
-		"/osb-lcs-portlet/lcs/jsonws/v1_4/LCSProject";
+	private static final String _URL_LCS_PROJECT = "/o/osb-lcs-rest/LCSProject";
 
 	private JSONWebServiceClient _jsonWebServiceClient;
 

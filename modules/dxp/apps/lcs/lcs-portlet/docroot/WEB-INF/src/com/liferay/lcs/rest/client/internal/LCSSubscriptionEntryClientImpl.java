@@ -37,8 +37,8 @@ public class LCSSubscriptionEntryClientImpl
 
 		try {
 			return _jsonWebServiceClient.doGetToObject(
-				LCSSubscriptionEntry.class, _URL_LCS_SUBSCRIPTION_ENTRY, "key",
-				key);
+				LCSSubscriptionEntry.class,
+				_URL_LCS_SUBSCRIPTION_ENTRY + "/find/" + key);
 		}
 		catch (JSONWebServiceInvocationException jsonwsie) {
 			if (jsonwsie.getStatus() == HttpServletResponse.SC_NOT_FOUND) {
@@ -56,7 +56,7 @@ public class LCSSubscriptionEntryClientImpl
 	}
 
 	private static final String _URL_LCS_SUBSCRIPTION_ENTRY =
-		"/osb-lcs-portlet/lcs/jsonws/v1_4/LCSSubscriptionEntry";
+		"/o/osb-lcs-rest/LCSSubscriptionEntry";
 
 	private JSONWebServiceClient _jsonWebServiceClient;
 

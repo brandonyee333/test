@@ -32,7 +32,7 @@ public class LCSClusterNodeClientUtil {
 
 	public static LCSClusterNode addLCSClusterNode(
 			long lcsClusterEntryId, String name, String description,
-			int buildNumber, String location, int processorCoresTotal)
+			String location, int portalBuildNumber, int processorCoresTotal)
 		throws DuplicateLCSClusterNodeNameException,
 			   JSONWebServiceInvocationException,
 			   JSONWebServiceSerializeException,
@@ -41,8 +41,8 @@ public class LCSClusterNodeClientUtil {
 			   RequiredLCSClusterNodeNameException {
 
 		return _lcsClusterNodeClient.addLCSClusterNode(
-			lcsClusterEntryId, name, description, buildNumber,
-			_keyGenerator.getKey(), location, processorCoresTotal);
+			lcsClusterEntryId, name, description, _keyGenerator.getKey(),
+			location, portalBuildNumber, processorCoresTotal);
 	}
 
 	public static LCSClusterNode fetchLCSClusterNode()
