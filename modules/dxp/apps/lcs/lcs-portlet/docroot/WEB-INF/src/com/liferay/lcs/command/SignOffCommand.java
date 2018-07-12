@@ -15,7 +15,7 @@
 package com.liferay.lcs.command;
 
 import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
-import com.liferay.lcs.messaging.CommandMessage;
+import com.liferay.lcs.messaging.SignOffCommandMessage;
 import com.liferay.lcs.util.KeyGenerator;
 import com.liferay.lcs.util.LCSConnectionManager;
 import com.liferay.lcs.util.LCSPortletPreferencesUtil;
@@ -26,33 +26,30 @@ import com.liferay.portal.kernel.util.StringBundler;
 /**
  * @author Igor Beslic
  */
-public class DeregisterCommand implements Command {
+public class SignOffCommand implements Command<SignOffCommandMessage> {
 
 	@Override
-	public void execute(CommandMessage commandMessage) {
-		boolean deregister = Boolean.valueOf(
-			(String)commandMessage.get("deregister"));
-		boolean invalidateToken = Boolean.valueOf(
-			(String)commandMessage.get("invalidateToken"));
-
+	public void execute(SignOffCommandMessage signOffCommandMessage) {
 		if (_log.isDebugEnabled()) {
 			StringBundler sb = new StringBundler(5);
 
 			sb.append("Command message: {deregister=");
-			sb.append(deregister);
+			sb.append(signOffCommandMessage.isDeregister());
 			sb.append(", invalidateToken=");
-			sb.append(invalidateToken);
+			sb.append(signOffCommandMessage.isInvalidateToken());
 			sb.append("}");
 
 			_log.debug(sb.toString());
 		}
 
-		if (deregister || invalidateToken) {
+		if (signOffCommandMessage.isDeregister() ||
+			signOffCommandMessage.isInvalidateToken()) {
+
 			LCSPortletPreferencesUtil.removeCredentials();
 
 			_lcsClusterEntryTokenAdvisor.deleteLCSCLusterEntryTokenFile();
 
-			if (deregister) {
+			if (signOffCommandMessage.isDeregister()) {
 				_keyGenerator.clearCache();
 			}
 		}
@@ -80,8 +77,7 @@ public class DeregisterCommand implements Command {
 		_lcsConnectionManager = lcsConnectionManager;
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		DeregisterCommand.class);
+	private static final Log _log = LogFactoryUtil.getLog(SignOffCommand.class);
 
 	private KeyGenerator _keyGenerator;
 	private LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;

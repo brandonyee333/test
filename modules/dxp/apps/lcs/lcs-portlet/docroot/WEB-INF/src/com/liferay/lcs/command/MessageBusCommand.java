@@ -14,9 +14,7 @@
 
 package com.liferay.lcs.command;
 
-import com.liferay.lcs.messaging.CommandMessage;
 import com.liferay.lcs.messaging.MessageBusCommandMessage;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Message;
@@ -25,16 +23,13 @@ import com.liferay.portal.kernel.messaging.MessageBusUtil;
 /**
  * @author Riccardo Ferrari
  */
-public class MessageBusCommand implements Command {
+public class MessageBusCommand implements Command<MessageBusCommandMessage> {
 
 	@Override
-	public void execute(CommandMessage commandMessage) throws PortalException {
+	public void execute(MessageBusCommandMessage messageBusCommandMessage) {
 		if (_log.isTraceEnabled()) {
 			_log.trace("Executing message bus command");
 		}
-
-		MessageBusCommandMessage messageBusCommandMessage =
-			(MessageBusCommandMessage)commandMessage;
 
 		String destinationName = messageBusCommandMessage.getDestinationName();
 

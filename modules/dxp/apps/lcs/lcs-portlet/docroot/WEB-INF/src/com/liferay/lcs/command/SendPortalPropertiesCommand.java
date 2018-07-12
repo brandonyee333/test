@@ -14,13 +14,11 @@
 
 package com.liferay.lcs.command;
 
-import com.liferay.lcs.messaging.CommandMessage;
-import com.liferay.lcs.messaging.ResponseMessage;
+import com.liferay.lcs.messaging.SendPortalPropertiesCommandMessage;
+import com.liferay.lcs.messaging.SendPortalPropertiesResponseMessage;
 import com.liferay.lcs.util.LCSConnectionManager;
 import com.liferay.lcs.util.LCSConstants;
 import com.liferay.lcs.util.LCSUtil;
-import com.liferay.lcs.util.ResponseMessageUtil;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Digester;
@@ -30,7 +28,6 @@ import com.liferay.portal.kernel.util.SortedProperties;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
@@ -40,10 +37,14 @@ import java.util.TreeMap;
 /**
  * @author Ivica Cardic
  */
-public class SendPortalPropertiesCommand implements Command {
+public class SendPortalPropertiesCommand
+	implements Command<SendPortalPropertiesCommandMessage> {
 
 	@Override
-	public void execute(CommandMessage commandMessage) throws PortalException {
+	@SuppressWarnings("unchecked")
+	public void execute(
+		SendPortalPropertiesCommandMessage sendPortalPropertiesCommandMessage) {
+
 		if (_log.isTraceEnabled()) {
 			_log.trace("Executing send portal properties command");
 		}
@@ -61,29 +62,23 @@ public class SendPortalPropertiesCommand implements Command {
 		String installedHashCode = DigesterUtil.digestHex(
 			Digester.MD5, sb.toString());
 
-		String hashCode = null;
+		if (installedHashCode.equals(
+				sendPortalPropertiesCommandMessage.getHashCode())) {
 
-		if (commandMessage.getPayload() != null) {
-			hashCode = (String)commandMessage.getPayload();
-		}
-
-		if (installedHashCode.equals(hashCode)) {
 			return;
 		}
 
-		Map<Object, Object> portalPropertiesMap = new TreeMap<>(
-			portalProperties);
+		Map<String, String> portalPropertiesMap = new TreeMap(portalProperties);
 
-		Map<String, Object> payload = new HashMap<>();
-
-		payload.put("hashCode", installedHashCode);
-		payload.put("portalProperties", portalPropertiesMap);
-
-		ResponseMessage responseMessage =
-			ResponseMessageUtil.createResponseMessage(commandMessage, payload);
+		SendPortalPropertiesResponseMessage
+			sendPortalPropertiesResponseMessage =
+				_getSendPortalPropertiesResponseMessage(
+					sendPortalPropertiesCommandMessage, installedHashCode,
+					portalPropertiesMap);
 
 		try {
-			_lcsConnectionManager.sendMessage(responseMessage);
+			_lcsConnectionManager.sendMessage(
+				sendPortalPropertiesResponseMessage);
 		}
 		catch (Exception e) {
 			_log.error("Unable to send portal properties", e);
@@ -154,6 +149,27 @@ public class SendPortalPropertiesCommand implements Command {
 		}
 
 		return false;
+	}
+
+	private SendPortalPropertiesResponseMessage
+		_getSendPortalPropertiesResponseMessage(
+			SendPortalPropertiesCommandMessage
+				sendPortalPropertiesCommandMessage, String hashCode,
+			Map<String, String> portalProperties) {
+
+		SendPortalPropertiesResponseMessage
+			sendPortalPropertiesResponseMessage =
+				new SendPortalPropertiesResponseMessage();
+
+		sendPortalPropertiesResponseMessage.setCreateTime(
+			System.currentTimeMillis());
+		sendPortalPropertiesResponseMessage.setHashCode(hashCode);
+		sendPortalPropertiesResponseMessage.setKey(
+			sendPortalPropertiesCommandMessage.getKey());
+		sendPortalPropertiesResponseMessage.setPortalProperties(
+			portalProperties);
+
+		return sendPortalPropertiesResponseMessage;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

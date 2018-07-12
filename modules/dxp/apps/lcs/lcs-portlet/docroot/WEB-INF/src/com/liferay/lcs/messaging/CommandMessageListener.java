@@ -15,10 +15,9 @@
 package com.liferay.lcs.messaging;
 
 import com.liferay.lcs.command.Command;
-import com.liferay.lcs.security.DigitalSignature;
+import com.liferay.lcs.messaging.security.DigitalSignature;
 import com.liferay.lcs.util.LCSConnectionManager;
 import com.liferay.lcs.util.LCSUtil;
-import com.liferay.lcs.util.ResponseMessageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Message;
@@ -40,7 +39,7 @@ public class CommandMessageListener implements MessageListener {
 
 		CommandMessage commandMessage = (CommandMessage)message.getPayload();
 
-		String error = null;
+		String errorMessage = null;
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Verifying digital signature");
@@ -55,13 +54,15 @@ public class CommandMessageListener implements MessageListener {
 				}
 
 				try {
-					Command command = _commands.get(
-						commandMessage.getCommandType());
+					Class<?> commandMessageClass = commandMessage.getClass();
+
+					Command<CommandMessage> command = _commands.get(
+						commandMessageClass.getName());
 
 					if (_log.isDebugEnabled()) {
 						_log.debug(
 							"Executing command: " +
-								commandMessage.getCommandType());
+								commandMessageClass.getName());
 					}
 
 					command.execute(commandMessage);
@@ -69,13 +70,13 @@ public class CommandMessageListener implements MessageListener {
 				catch (Exception e) {
 					_log.error(e, e);
 
-					error = e.getMessage();
+					errorMessage = e.getMessage();
 				}
 			}
 			else {
-				error = "Unable to verify digital signature";
+				errorMessage = "Unable to verify digital signature";
 
-				_log.error(error + ": " + commandMessage);
+				_log.error(errorMessage + ": " + commandMessage);
 			}
 		}
 		catch (Exception e) {
@@ -84,17 +85,16 @@ public class CommandMessageListener implements MessageListener {
 			throw e;
 		}
 
-		if (error != null) {
-			ResponseMessage responseMessage =
-				ResponseMessageUtil.createResponseMessage(
-					commandMessage, null, error);
+		if (errorMessage != null) {
+			ErrorResponseMessage errorResponseMessage = getErrorResponseMessage(
+				commandMessage, errorMessage);
 
 			try {
 				if (_log.isTraceEnabled()) {
 					_log.trace("Sending response message");
 				}
 
-				_lcsConnectionManager.sendMessage(responseMessage);
+				_lcsConnectionManager.sendMessage(errorResponseMessage);
 			}
 			catch (Exception e) {
 				_log.error(e, e);
@@ -102,7 +102,7 @@ public class CommandMessageListener implements MessageListener {
 		}
 	}
 
-	public void setCommands(Map<String, Command> commands) {
+	public void setCommands(Map<String, Command<CommandMessage>> commands) {
 		_commands = commands;
 	}
 
@@ -116,10 +116,24 @@ public class CommandMessageListener implements MessageListener {
 		_lcsConnectionManager = lcsConnectionManager;
 	}
 
+	protected ErrorResponseMessage getErrorResponseMessage(
+		CommandMessage commandMessage, String errorMessage) {
+
+		ErrorResponseMessage errorResponseMessage = new ErrorResponseMessage();
+
+		errorResponseMessage.setCorrelationId(
+			commandMessage.getCorrelationId());
+		errorResponseMessage.setCreateTime(System.currentTimeMillis());
+		errorResponseMessage.setErrorMessage(errorMessage);
+		errorResponseMessage.setKey(commandMessage.getKey());
+
+		return errorResponseMessage;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		CommandMessageListener.class);
 
-	private Map<String, Command> _commands;
+	private Map<String, Command<CommandMessage>> _commands;
 	private DigitalSignature _digitalSignature;
 	private LCSConnectionManager _lcsConnectionManager;
 

@@ -15,12 +15,10 @@
 package com.liferay.lcs.command;
 
 import com.liferay.lcs.exception.CompressionException;
-import com.liferay.lcs.messaging.CommandMessage;
-import com.liferay.lcs.messaging.ResponseMessage;
+import com.liferay.lcs.messaging.ExecuteScriptCommandMessage;
+import com.liferay.lcs.messaging.ExecuteScriptResponseMessage;
 import com.liferay.lcs.util.LCSConnectionManager;
-import com.liferay.lcs.util.ResponseMessageUtil;
 import com.liferay.petra.json.web.service.client.JSONWebServiceException;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncPrintWriter;
 import com.liferay.portal.kernel.log.Log;
@@ -36,16 +34,19 @@ import java.util.Set;
 /**
  * @author Ivica Cardic
  */
-public class ExecuteScriptCommand implements Command {
+public class ExecuteScriptCommand
+	implements Command<ExecuteScriptCommandMessage> {
 
 	@Override
-	public void execute(CommandMessage commandMessage) throws PortalException {
+	public void execute(
+		ExecuteScriptCommandMessage executeScriptCommandMessage) {
+
 		if (_log.isTraceEnabled()) {
 			_log.trace("Executing execute script command");
 		}
 
 		try {
-			executeScript(commandMessage);
+			executeScript(executeScriptCommandMessage);
 		}
 		catch (Exception e) {
 			StringBuilder sb = new StringBuilder(4);
@@ -65,7 +66,9 @@ public class ExecuteScriptCommand implements Command {
 		}
 	}
 
-	public void executeScript(CommandMessage commandMessage)
+	public void executeScript(
+			ExecuteScriptCommandMessage executeScriptCommandMessage)
+
 		throws CompressionException, JSONWebServiceException {
 
 		Map<String, Object> inputObjects = new HashMap<>();
@@ -78,15 +81,15 @@ public class ExecuteScriptCommand implements Command {
 
 		inputObjects.put("out", unsyncPrintWriter);
 
-		String script = (String)commandMessage.getPayload();
+		String script = executeScriptCommandMessage.getScript();
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Executing script " + script);
 		}
 
-		String payload = null;
+		String result = null;
 
-		String error = null;
+		String errorMessage = null;
 
 		try {
 			ScriptingUtil.exec(
@@ -95,23 +98,39 @@ public class ExecuteScriptCommand implements Command {
 
 			unsyncPrintWriter.flush();
 
-			payload = unsyncByteArrayOutputStream.toString();
+			result = unsyncByteArrayOutputStream.toString();
 		}
 		catch (ScriptingException se) {
-			error = se.getMessage();
+			errorMessage = se.getMessage();
 		}
 
-		ResponseMessage responseMessage =
-			ResponseMessageUtil.createResponseMessage(
-				commandMessage, payload, error);
-
-		_lcsConnectionManager.sendMessage(responseMessage);
+		_lcsConnectionManager.sendMessage(
+			_getExecuteScriptResponseMessage(
+				executeScriptCommandMessage, result, errorMessage));
 	}
 
 	public void setLCSConnectionManager(
 		LCSConnectionManager lcsConnectionManager) {
 
 		_lcsConnectionManager = lcsConnectionManager;
+	}
+
+	private ExecuteScriptResponseMessage _getExecuteScriptResponseMessage(
+		ExecuteScriptCommandMessage executeScriptCommandMessage, String result,
+		String errorMessage) {
+
+		ExecuteScriptResponseMessage executeScriptResponseMessage =
+			new ExecuteScriptResponseMessage();
+
+		executeScriptResponseMessage.setCorrelationId(
+			executeScriptCommandMessage.getCorrelationId());
+		executeScriptResponseMessage.setCreateTime(System.currentTimeMillis());
+		executeScriptResponseMessage.setErrorMessage(errorMessage);
+		executeScriptResponseMessage.setKey(
+			executeScriptCommandMessage.getKey());
+		executeScriptResponseMessage.setResult(result);
+
+		return executeScriptResponseMessage;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

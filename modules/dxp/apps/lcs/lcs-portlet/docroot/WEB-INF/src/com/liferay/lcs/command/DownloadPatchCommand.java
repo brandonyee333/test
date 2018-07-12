@@ -16,14 +16,13 @@ package com.liferay.lcs.command;
 
 import com.liferay.lcs.exception.CompressionException;
 import com.liferay.lcs.messaging.CommandMessage;
-import com.liferay.lcs.messaging.ResponseMessage;
+import com.liferay.lcs.messaging.DownloadPatchCommandMessage;
+import com.liferay.lcs.messaging.DownloadPatchResponseMessage;
 import com.liferay.lcs.util.LCSConnectionManager;
 import com.liferay.lcs.util.LCSConstants;
 import com.liferay.lcs.util.LCSPatcherUtil;
 import com.liferay.lcs.util.PatchUtil;
-import com.liferay.lcs.util.ResponseMessageUtil;
 import com.liferay.petra.json.web.service.client.JSONWebServiceException;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
@@ -41,8 +40,6 @@ import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
@@ -52,67 +49,62 @@ import java.util.zip.ZipInputStream;
  * @author Ivica Cardic
  * @author Igor Beslic
  */
-public class DownloadPatchesCommand implements Command {
+public class DownloadPatchCommand
+	implements Command<DownloadPatchCommandMessage> {
 
-	public void downloadPatches(CommandMessage commandMessage)
+	public void downloadPatch(
+			DownloadPatchCommandMessage downloadPatchCommandMessage)
 		throws CompressionException, JSONWebServiceException {
 
-		Map<String, String> payload =
-			(Map<String, String>)commandMessage.getPayload();
+		String patchFileName = downloadPatchCommandMessage.getPatchFileName();
 
-		for (Map.Entry<String, String> entry : payload.entrySet()) {
-			String fileName = entry.getKey();
+		_lcsConnectionManager.sendMessage(
+			_getDownloadPatchResponseMessage(
+				downloadPatchCommandMessage, patchFileName,
+				LCSConstants.PATCHES_DOWNLOADING));
 
-			if (fileName.endsWith(LCSConstants.PATCHES_MD5SUM_SUFFIX)) {
-				continue;
-			}
+		File localFile = new File(
+			LCSPatcherUtil.getPatchDirectory(), patchFileName);
 
-			_lcsConnectionManager.sendMessage(
-				_getResponseMessage(
-					commandMessage, fileName,
-					LCSConstants.PATCHES_DOWNLOADING));
+		String patchURL = downloadPatchCommandMessage.getPatchURL();
 
-			File localFile = new File(
-				LCSPatcherUtil.getPatchDirectory(), fileName);
+		if (_log.isInfoEnabled()) {
+			_log.info("Downloading remote file URL " + patchURL);
+		}
 
-			String remoteFileURL = entry.getValue();
+		try {
+			while (!_transferBytes(patchURL, localFile));
 
-			if (_log.isInfoEnabled()) {
-				_log.info("Downloading remote file URL " + remoteFileURL);
-			}
+			_checkMD5Sum(
+				patchFileName, downloadPatchCommandMessage.getMd5Sum());
 
-			try {
-				while (!_transferBytes(remoteFileURL, localFile));
-
-				String md5Sum = payload.get(
-					fileName + LCSConstants.PATCHES_MD5SUM_SUFFIX);
-
-				_checkMD5Sum(fileName, md5Sum);
-
-				_checkZipFile(localFile);
-			}
-			catch (IOException ioe) {
-				_log.error(ioe, ioe);
-
-				_lcsConnectionManager.sendMessage(
-					_getResponseMessage(
-						commandMessage, fileName, LCSConstants.PATCHES_ERROR));
-
-				return;
-			}
+			_checkZipFile(localFile);
+		}
+		catch (IOException ioe) {
+			_log.error(ioe, ioe);
 
 			_lcsConnectionManager.sendMessage(
-				_getResponseMessage(
-					commandMessage, fileName, LCSConstants.PATCHES_DOWNLOADED));
+				_getDownloadPatchResponseMessage(
+					downloadPatchCommandMessage, patchFileName,
+					LCSConstants.PATCHES_ERROR));
 
-			if (_log.isInfoEnabled()) {
-				_log.info("Downloaded patch " + fileName);
-			}
+			return;
+		}
+
+		_lcsConnectionManager.sendMessage(
+			_getDownloadPatchResponseMessage(
+				downloadPatchCommandMessage, patchFileName,
+				LCSConstants.PATCHES_DOWNLOADED));
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Downloaded patch " + patchFileName);
 		}
 	}
 
 	@Override
-	public void execute(CommandMessage commandMessage) throws PortalException {
+	public void execute(
+		DownloadPatchCommandMessage downloadPatchCommandMessage) {
+
 		if (!LCSPatcherUtil.isConfigured() ||
 			(LCSPatcherUtil.getPatchDirectory() == null)) {
 
@@ -130,7 +122,7 @@ public class DownloadPatchesCommand implements Command {
 		}
 
 		try {
-			downloadPatches(commandMessage);
+			downloadPatch(downloadPatchCommandMessage);
 		}
 		catch (Exception e) {
 			StringBuilder sb = new StringBuilder(4);
@@ -224,15 +216,18 @@ public class DownloadPatchesCommand implements Command {
 		}
 	}
 
-	private ResponseMessage _getResponseMessage(
-		CommandMessage commandMessage, String fileName, int downloadStatus) {
+	private DownloadPatchResponseMessage _getDownloadPatchResponseMessage(
+		CommandMessage commandMessage, String patchFileName, int status) {
 
-		Map<String, Integer> responsePayload = new HashMap<>();
+		DownloadPatchResponseMessage downloadPatchResponseMessage =
+			new DownloadPatchResponseMessage();
 
-		responsePayload.put(fileName, downloadStatus);
+		downloadPatchResponseMessage.setCreateTime(System.currentTimeMillis());
+		downloadPatchResponseMessage.setKey(commandMessage.getKey());
+		downloadPatchResponseMessage.setPatchFileName(patchFileName);
+		downloadPatchResponseMessage.setStatus(status);
 
-		return ResponseMessageUtil.createResponseMessage(
-			commandMessage, responsePayload);
+		return downloadPatchResponseMessage;
 	}
 
 	private boolean _transferBytes(String remoteFileURL, File localFile)
@@ -314,7 +309,7 @@ public class DownloadPatchesCommand implements Command {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		DownloadPatchesCommand.class);
+		DownloadPatchCommand.class);
 
 	private LCSConnectionManager _lcsConnectionManager;
 

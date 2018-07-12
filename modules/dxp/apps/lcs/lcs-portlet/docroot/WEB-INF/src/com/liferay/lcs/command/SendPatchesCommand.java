@@ -14,13 +14,11 @@
 
 package com.liferay.lcs.command;
 
-import com.liferay.lcs.messaging.CommandMessage;
-import com.liferay.lcs.messaging.ResponseMessage;
+import com.liferay.lcs.messaging.SendPatchesCommandMessage;
+import com.liferay.lcs.messaging.SendPatchesResponseMessage;
 import com.liferay.lcs.util.LCSConnectionManager;
 import com.liferay.lcs.util.LCSConstants;
 import com.liferay.lcs.util.LCSPatcherUtil;
-import com.liferay.lcs.util.ResponseMessageUtil;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Digester;
@@ -35,10 +33,10 @@ import java.util.Map;
 /**
  * @author Ivica Cardic
  */
-public class SendPatchesCommand implements Command {
+public class SendPatchesCommand implements Command<SendPatchesCommandMessage> {
 
 	@Override
-	public void execute(CommandMessage commandMessage) throws PortalException {
+	public void execute(SendPatchesCommandMessage sendPatchesCommandMessage) {
 		if (!LCSPatcherUtil.isConfigured()) {
 			if (_log.isWarnEnabled()) {
 				_log.warn("Patcher is not configured. Unable to send patches.");
@@ -51,17 +49,7 @@ public class SendPatchesCommand implements Command {
 			_log.trace("Executing send patches command");
 		}
 
-		String[] fixedIssues = LCSPatcherUtil.getFixedIssues();
-
-		String hashCode = null;
-
-		if (commandMessage.getPayload() != null) {
-			hashCode = (String)commandMessage.getPayload();
-		}
-
 		String[] installedPatches = LCSPatcherUtil.getInstalledPatches();
-
-		Map<String, Object> payload = new HashMap<>();
 
 		StringBundler sb = new StringBundler(installedPatches.length + 1);
 
@@ -84,7 +72,7 @@ public class SendPatchesCommand implements Command {
 		String installedHashCode = DigesterUtil.digestHex(
 			Digester.MD5, sb.toString());
 
-		if (installedHashCode.equals(hashCode)) {
+		if (installedHashCode.equals(sendPatchesCommandMessage.getHashCode())) {
 			if (_log.isTraceEnabled()) {
 				_log.trace("Installed patches match available patches");
 			}
@@ -92,22 +80,18 @@ public class SendPatchesCommand implements Command {
 			return;
 		}
 
-		payload.put("fixedIssues", ListUtil.fromArray(fixedIssues));
-		payload.put("hashCode", installedHashCode);
-
 		Map<String, Integer> patchIdsStatuses = new HashMap<>();
 
 		for (String patch : installedPatches) {
 			patchIdsStatuses.put(patch, LCSConstants.PATCHES_INSTALLED);
 		}
 
-		payload.put("patchIdsStatuses", patchIdsStatuses);
-
-		ResponseMessage responseMessage =
-			ResponseMessageUtil.createResponseMessage(commandMessage, payload);
+		SendPatchesResponseMessage sendPatchesResponseMessage =
+			_getSendPatchesResponseMessage(
+				sendPatchesCommandMessage, installedHashCode, patchIdsStatuses);
 
 		try {
-			_lcsConnectionManager.sendMessage(responseMessage);
+			_lcsConnectionManager.sendMessage(sendPatchesResponseMessage);
 		}
 		catch (Exception e) {
 			_log.error("Unable to send installed patches statuses", e);
@@ -118,6 +102,23 @@ public class SendPatchesCommand implements Command {
 		LCSConnectionManager lcsConnectionManager) {
 
 		_lcsConnectionManager = lcsConnectionManager;
+	}
+
+	private SendPatchesResponseMessage _getSendPatchesResponseMessage(
+		SendPatchesCommandMessage sendPatchesCommandMessage, String hashCode,
+		Map<String, Integer> patchIdsStatuses) {
+
+		SendPatchesResponseMessage sendPatchesResponseMessage =
+			new SendPatchesResponseMessage();
+
+		sendPatchesResponseMessage.setCreateTime(System.currentTimeMillis());
+		sendPatchesResponseMessage.setFixedIssues(
+			ListUtil.fromArray(LCSPatcherUtil.getFixedIssues()));
+		sendPatchesResponseMessage.setHashCode(hashCode);
+		sendPatchesResponseMessage.setKey(sendPatchesCommandMessage.getKey());
+		sendPatchesResponseMessage.setPatchIdsStatuses(patchIdsStatuses);
+
+		return sendPatchesResponseMessage;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

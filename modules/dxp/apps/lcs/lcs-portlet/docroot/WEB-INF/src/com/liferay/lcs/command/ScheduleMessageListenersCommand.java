@@ -14,9 +14,8 @@
 
 package com.liferay.lcs.command;
 
-import com.liferay.lcs.messaging.CommandMessage;
+import com.liferay.lcs.messaging.ScheduleMessageListenersCommandMessage;
 import com.liferay.lcs.messaging.scheduler.MessageListenerSchedulerService;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -27,16 +26,20 @@ import java.util.Map;
 /**
  * @author Ivica Cardic
  */
-public class ScheduleMessageListenersCommand implements Command {
+public class ScheduleMessageListenersCommand
+	implements Command<ScheduleMessageListenersCommandMessage> {
 
 	@Override
-	public void execute(CommandMessage commandMessage) throws PortalException {
+	public void execute(
+		ScheduleMessageListenersCommandMessage
+			scheduleMessageListenersCommandMessage) {
+
 		if (_log.isTraceEnabled()) {
 			_log.trace("Executing schedule message listeners command");
 		}
 
 		List<Map<String, String>> schedulerContexts =
-			(List<Map<String, String>>)commandMessage.getPayload();
+			scheduleMessageListenersCommandMessage.getSchedulerContexts();
 
 		Collections.shuffle(schedulerContexts);
 

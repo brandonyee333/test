@@ -16,45 +16,35 @@ package com.liferay.lcs.command;
 
 import com.liferay.lcs.advisor.InstallationEnvironmentAdvisor;
 import com.liferay.lcs.advisor.InstallationEnvironmentAdvisorFactory;
-import com.liferay.lcs.messaging.CommandMessage;
-import com.liferay.lcs.messaging.ResponseMessage;
+import com.liferay.lcs.messaging.SendInstallationEnvironmentCommandMessage;
+import com.liferay.lcs.messaging.SendInstallationEnvironmentResponseMessage;
 import com.liferay.lcs.util.LCSConnectionManager;
-import com.liferay.lcs.util.ResponseMessageUtil;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Igor Beslic
  */
-public class SendInstallationEnvironmentCommand implements Command {
+public class SendInstallationEnvironmentCommand
+	implements Command<SendInstallationEnvironmentCommandMessage> {
 
 	@Override
-	public void execute(CommandMessage commandMessage) throws PortalException {
+	public void execute(
+		SendInstallationEnvironmentCommandMessage
+			sendInstallationEnvironmentCommandMessage) {
+
 		if (_log.isTraceEnabled()) {
 			_log.trace("Executing send installation environment command");
 		}
 
-		Map<String, Object> payload = new HashMap<>();
-
-		InstallationEnvironmentAdvisor installationEnvironmentAdvisor =
-			InstallationEnvironmentAdvisorFactory.getInstance();
-
-		payload.put(
-			"hardwareMetadata",
-			installationEnvironmentAdvisor.getHardwareMetadata());
-		payload.put(
-			"softwareMetadata",
-			installationEnvironmentAdvisor.getSoftwareMetadata());
-
-		ResponseMessage responseMessage =
-			ResponseMessageUtil.createResponseMessage(commandMessage, payload);
+		SendInstallationEnvironmentResponseMessage
+			sendInstallationEnvironmentResponseMessage =
+				_getSendInstallationEnvironmentResponseMessage(
+					sendInstallationEnvironmentCommandMessage);
 
 		try {
-			_lcsConnectionManager.sendMessage(responseMessage);
+			_lcsConnectionManager.sendMessage(
+				sendInstallationEnvironmentResponseMessage);
 		}
 		catch (Exception e) {
 			_log.error("Unable to send installation environment", e);
@@ -65,6 +55,32 @@ public class SendInstallationEnvironmentCommand implements Command {
 		LCSConnectionManager lcsConnectionManager) {
 
 		_lcsConnectionManager = lcsConnectionManager;
+	}
+
+	private SendInstallationEnvironmentResponseMessage
+		_getSendInstallationEnvironmentResponseMessage(
+			SendInstallationEnvironmentCommandMessage
+				sendInstallationEnvironmentCommandMessage) {
+
+		SendInstallationEnvironmentResponseMessage
+			sendInstallationEnvironmentResponseMessage =
+				new SendInstallationEnvironmentResponseMessage();
+
+		sendInstallationEnvironmentResponseMessage.setCreateTime(
+			System.currentTimeMillis());
+
+		InstallationEnvironmentAdvisor installationEnvironmentAdvisor =
+			InstallationEnvironmentAdvisorFactory.getInstance();
+
+		sendInstallationEnvironmentResponseMessage.setHardwareMetadata(
+			installationEnvironmentAdvisor.getHardwareMetadata());
+
+		sendInstallationEnvironmentResponseMessage.setKey(
+			sendInstallationEnvironmentCommandMessage.getKey());
+		sendInstallationEnvironmentResponseMessage.setSoftwareMetadata(
+			installationEnvironmentAdvisor.getSoftwareMetadata());
+
+		return sendInstallationEnvironmentResponseMessage;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
