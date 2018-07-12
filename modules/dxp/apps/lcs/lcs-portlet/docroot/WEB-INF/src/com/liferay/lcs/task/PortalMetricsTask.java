@@ -14,10 +14,13 @@
 
 package com.liferay.lcs.task;
 
-import com.liferay.lcs.messaging.MetricsMessage;
+import com.liferay.lcs.messaging.PortalMetricsMessage;
 import com.liferay.lcs.metrics.PortalMetricsAggregator;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Igor Beslic
@@ -49,15 +52,20 @@ public class PortalMetricsTask extends BaseScheduledTask {
 			return;
 		}
 
-		MetricsMessage metricsMessage = new MetricsMessage();
+		PortalMetricsMessage portalMetricsMessage = new PortalMetricsMessage();
 
-		metricsMessage.setCreateTime(System.currentTimeMillis());
-		metricsMessage.setKey(getKey());
-		metricsMessage.setMetricsType(MetricsMessage.METRICS_TYPE_PORTAL);
+		portalMetricsMessage.setCreateTime(System.currentTimeMillis());
+		portalMetricsMessage.setKey(getKey());
 
-		metricsMessage.setPayload(_portalMetricsAggregator.pop());
+		List<Map<String, Object>>[] performanceMetrics =
+			_portalMetricsAggregator.pop();
 
-		sendMessage(metricsMessage);
+		portalMetricsMessage.setLayoutPerformanceMetricsList(
+			performanceMetrics[0]);
+		portalMetricsMessage.setPortletPerformanceMetricsList(
+			performanceMetrics[1]);
+
+		sendMessage(portalMetricsMessage);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

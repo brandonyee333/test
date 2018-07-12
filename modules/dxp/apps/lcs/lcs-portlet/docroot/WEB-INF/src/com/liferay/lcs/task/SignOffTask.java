@@ -15,13 +15,10 @@
 package com.liferay.lcs.task;
 
 import com.liferay.lcs.messaging.HandshakeMessage;
-import com.liferay.lcs.messaging.Message;
 import com.liferay.lcs.util.LCSConnectionManager;
-import com.liferay.lcs.util.PortletPropsValues;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 
 /**
  * @author Ivica Cardic
@@ -32,9 +29,6 @@ public class SignOffTask implements Task {
 	public SignOffTask(String key, LCSConnectionManager lcsConnectionManager) {
 		_key = key;
 		_lcsConnectionManager = lcsConnectionManager;
-
-		_heartbeatInterval = GetterUtil.getLong(
-			PortletPropsValues.COMMUNICATION_HEARTBEAT_INTERVAL, 60000L);
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Initialized " + this);
@@ -62,10 +56,8 @@ public class SignOffTask implements Task {
 
 		HandshakeMessage handshakeMessage = new HandshakeMessage();
 
-		handshakeMessage.put(
-			Message.KEY_SERVER_MANUALLY_SHUTDOWN, _serverManuallyShutdown);
-		handshakeMessage.put(
-			Message.KEY_SIGN_OFF, String.valueOf(_heartbeatInterval));
+		handshakeMessage.setServerManuallyShutdown(_serverManuallyShutdown);
+		handshakeMessage.setSignOff(true);
 		handshakeMessage.setKey(_key);
 
 		try {
@@ -91,7 +83,6 @@ public class SignOffTask implements Task {
 
 	private static final Log _log = LogFactoryUtil.getLog(SignOffTask.class);
 
-	private final long _heartbeatInterval;
 	private final String _key;
 	private final LCSConnectionManager _lcsConnectionManager;
 	private boolean _serverManuallyShutdown;
