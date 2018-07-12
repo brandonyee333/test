@@ -26,6 +26,12 @@ public class LCSHandshakeException extends RuntimeException {
 		super(msg);
 	}
 
+	public LCSHandshakeException(String msg, int status) {
+		super(msg);
+
+		_status = status;
+	}
+
 	public LCSHandshakeException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
@@ -33,5 +39,21 @@ public class LCSHandshakeException extends RuntimeException {
 	public LCSHandshakeException(Throwable cause) {
 		super(cause);
 	}
+
+	@Override
+	public String getMessage() {
+		if (_status != -1) {
+			return super.getMessage() + ", status is " + _status;
+		}
+		else {
+			return super.getMessage();
+		}
+	}
+
+	public int getStatus() {
+		return _status;
+	}
+
+	private int _status = -1;
 
 }
