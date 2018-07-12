@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 /**
  * @author Ivica Cardic
  */
-public interface Command {
+public interface Command<T extends CommandMessage> {
 
-	public void execute(CommandMessage commandMessage) throws PortalException;
+	public void execute(T commandMessage) throws PortalException;
 
 }
