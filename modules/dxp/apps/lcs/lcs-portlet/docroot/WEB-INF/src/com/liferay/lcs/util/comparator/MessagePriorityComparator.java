@@ -16,6 +16,8 @@ package com.liferay.lcs.util.comparator;
 
 import com.liferay.lcs.messaging.CommandMessage;
 import com.liferay.lcs.messaging.Message;
+import com.liferay.lcs.messaging.SendPatchesCommandMessage;
+import com.liferay.lcs.messaging.SendPortalPropertiesCommandMessage;
 
 import java.util.Comparator;
 
@@ -29,11 +31,8 @@ public class MessagePriorityComparator implements Comparator<Message> {
 		if (message1 instanceof CommandMessage) {
 			CommandMessage commandMessage = (CommandMessage)message1;
 
-			String commandType = commandMessage.getCommandType();
-
-			if (commandType.equals(CommandMessage.COMMAND_TYPE_SEND_PATCHES) ||
-				commandType.equals(
-					CommandMessage.COMMAND_TYPE_SEND_PORTAL_PROPERTIES)) {
+			if (commandMessage instanceof SendPatchesCommandMessage ||
+				commandMessage instanceof SendPortalPropertiesCommandMessage) {
 
 				return 1;
 			}
