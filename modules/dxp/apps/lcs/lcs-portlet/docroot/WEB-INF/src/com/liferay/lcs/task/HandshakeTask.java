@@ -292,12 +292,16 @@ public class HandshakeTask implements Task {
 				continue;
 			}
 
-			if (responseMessage.contains(Message.KEY_ERROR)) {
 			HandshakeResponseMessage handshakeResponseMessage =
 				(HandshakeResponseMessage)responseMessage;
 
+			if (Validator.isNotNull(
+					handshakeResponseMessage.getErrorMessage()) ||
+				(handshakeResponseMessage.getErrorStatus() != 0)) {
+
 				throw new LCSHandshakeException(
-					(String)responseMessage.get(Message.KEY_ERROR));
+					handshakeResponseMessage.getErrorMessage(),
+					handshakeResponseMessage.getErrorStatus());
 			}
 
 			if (handshakeResponseMessage.isHandshakeExpiredError()) {
