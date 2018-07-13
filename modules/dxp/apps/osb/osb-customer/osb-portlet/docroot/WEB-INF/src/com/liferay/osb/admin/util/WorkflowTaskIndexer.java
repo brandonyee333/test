@@ -100,6 +100,7 @@ public class WorkflowTaskIndexer extends BaseIndexer<WorkflowTask> {
 			PORTLET_ID, CLASS_NAME,
 			String.valueOf(workflowTask.getWorkflowTaskId()));
 
+		document.addKeyword(Field.COMPANY_ID, OSBConstants.COMPANY_ID);
 		document.addDate(Field.CREATE_DATE, workflowTask.getCreateDate());
 		document.addKeyword(
 			Field.ENTRY_CLASS_NAME, WorkflowTask.class.getName());
