@@ -2122,6 +2122,8 @@ public class AccountEntryLocalServiceImpl
 				continue;
 			}
 
+			user.setLanguageId(LocaleUtil.toLanguageId(locale));
+
 			SubscriptionSender subscriptionSender = new SubscriptionSender();
 
 			subscriptionSender.setBody(body);
