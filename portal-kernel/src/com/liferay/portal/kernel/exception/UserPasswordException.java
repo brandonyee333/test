@@ -152,86 +152,61 @@ public class UserPasswordException extends PortalException {
 
 	public static class MustHaveMoreAlphanumeric extends UserPasswordException {
 
-		public MustHaveMoreAlphanumeric(long userId) {
+		public MustHaveMoreAlphanumeric(long userId, long minAlphanumeric) {
 			super(
 				String.format(
-					"Password for user %s does not have sufficient " +
-						"alphanumeric characters",
-					userId),
-				_PASSWORDS_MUST_HAVE_MORE_ALPHANUMERIC);
-
-			this.userId = userId;
+					"Password for user %s must have at least %s alphanumeric " +
+						"characters",
+					userId, minAlphanumeric));
 		}
-
-		public long userId;
 
 	}
 
 	public static class MustHaveMoreLowercase extends UserPasswordException {
 
-		public MustHaveMoreLowercase(long userId) {
+		public MustHaveMoreLowercase(long userId, long minLowercase) {
 			super(
 				String.format(
-					"Password for user %s does not have sufficient lowercase " +
+					"Password for user %s must have at least %s lowercase " +
 						"characters",
-					userId),
-				_PASSWORDS_MUST_HAVE_MORE_LOWERCASE);
-
-			this.userId = userId;
+					userId, minLowercase));
 		}
-
-		public long userId;
 
 	}
 
 	public static class MustHaveMoreNumbers extends UserPasswordException {
 
-		public MustHaveMoreNumbers(long userId) {
+		public MustHaveMoreNumbers(long userId, long minNumbers) {
 			super(
 				String.format(
-					"Password for user %s does not have sufficient number " +
+					"Password for user %s must have at least %s number " +
 						"characters",
-					userId),
-				_PASSWORDS_MUST_HAVE_MORE_NUMBERS);
-
-			this.userId = userId;
+					userId, minNumbers));
 		}
-
-		public long userId;
 
 	}
 
 	public static class MustHaveMoreSymbols extends UserPasswordException {
 
-		public MustHaveMoreSymbols(long userId) {
+		public MustHaveMoreSymbols(long userId, long minSymbols) {
 			super(
 				String.format(
-					"Password for user %s does not have sufficient symbol " +
+					"Password for user %s must have at least %s symbol " +
 						"characters",
-					userId),
-				_PASSWORDS_MUST_HAVE_MORE_SYMBOLS);
-
-			this.userId = userId;
+					userId, minSymbols));
 		}
-
-		public long userId;
 
 	}
 
 	public static class MustHaveMoreUppercase extends UserPasswordException {
 
-		public MustHaveMoreUppercase(long userId) {
+		public MustHaveMoreUppercase(long userId, long minUppercase) {
 			super(
 				String.format(
-					"Password for user %s does not have sufficient uppercase " +
+					"Password for user %s must have at least %s uppercase " +
 						"characters",
-					userId),
-				_PASSWORDS_MUST_HAVE_MORE_UPPERCASE);
-
-			this.userId = userId;
+					userId, minUppercase));
 		}
-
-		public long userId;
 
 	}
 
@@ -396,21 +371,15 @@ public class UserPasswordException extends PortalException {
 			StringPool.TRIPLE_PERIOD;
 	}
 
+	private UserPasswordException(String message) {
+		super(message);
+	}
+
 	private UserPasswordException(String message, int type) {
 		super(message);
 
 		_type = type;
 	}
-
-	private static final int _PASSWORDS_MUST_HAVE_MORE_ALPHANUMERIC = 11;
-
-	private static final int _PASSWORDS_MUST_HAVE_MORE_LOWERCASE = 12;
-
-	private static final int _PASSWORDS_MUST_HAVE_MORE_NUMBERS = 13;
-
-	private static final int _PASSWORDS_MUST_HAVE_MORE_SYMBOLS = 14;
-
-	private static final int _PASSWORDS_MUST_HAVE_MORE_UPPERCASE = 15;
 
 	private final int _type;
 
