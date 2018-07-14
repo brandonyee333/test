@@ -182,6 +182,11 @@ portletURL.setParameter("tabs1", tabs1);
 				value='<%= workflowTask.isCompleted() ? LanguageUtil.get(request, "completed") : workflowTaskDisplayContext.getDueDateString(workflowTask) %>'
 			/>
 
+			<liferay-ui:search-container-column-jsp
+				name="project-differences"
+				path="/workflow_task_project_differences.jsp"
+			/>
+
 			<c:choose>
 				<c:when test="<%= !workflowTask.isCompleted() %>">
 					<liferay-ui:search-container-column-jsp

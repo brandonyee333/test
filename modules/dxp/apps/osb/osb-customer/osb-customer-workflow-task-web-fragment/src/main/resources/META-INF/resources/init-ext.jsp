@@ -18,10 +18,10 @@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.model.Role" %><%@
 page import="com.liferay.portal.kernel.model.User" %><%@
-page import="com.liferay.portal.kernel.search.Document" %><%@
-page import="com.liferay.portal.kernel.search.Field" %><%@
 page import="com.liferay.portal.kernel.search.BooleanQuery" %><%@
 page import="com.liferay.portal.kernel.search.BooleanQueryFactoryUtil" %><%@
+page import="com.liferay.portal.kernel.search.Document" %><%@
+page import="com.liferay.portal.kernel.search.Field" %><%@
 page import="com.liferay.portal.kernel.search.Hits" %><%@
 page import="com.liferay.portal.kernel.search.IndexSearcherHelperUtil" %><%@
 page import="com.liferay.portal.kernel.search.SearchContext" %><%@
@@ -44,4 +44,7 @@ page import="com.liferay.portal.kernel.workflow.WorkflowTaskManagerUtil" %>
 <%@ page import="java.lang.String" %>
 
 <%@ page import="java.util.HashMap" %><%@
-page import="java.util.Map" %>
+page import="java.util.Iterator" %><%@
+page import="java.util.Map" %><%@
+page import="java.util.Set" %><%@
+page import="java.util.TreeMap" %>
