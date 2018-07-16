@@ -1,5 +1,0 @@
-# Elastic Beanstalk Files
-/aws/eb/.elasticbeanstalk/docker-compose.yml
-/aws/eb/.elasticbeanstalk/logs/
-/aws/eb/Dockerrun.aws.json
-/aws/eb/Dockerrun.aws.json-e

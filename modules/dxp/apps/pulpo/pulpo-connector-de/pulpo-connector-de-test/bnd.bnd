@@ -1,6 +1,0 @@
-Bundle-Name: Liferay Pulpo Connector DE Test
-Bundle-SymbolicName: com.liferay.pulpo.connector.de.test
-Bundle-Version: 1.0.0
-Include-Resource: test-classes/integration
-Liferay-Releng-Module-Group-Description:
-Liferay-Releng-Module-Group-Title: Pulpo Connector
