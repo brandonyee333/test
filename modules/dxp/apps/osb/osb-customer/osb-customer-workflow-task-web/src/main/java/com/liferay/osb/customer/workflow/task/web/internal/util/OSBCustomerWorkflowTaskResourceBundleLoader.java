@@ -14,7 +14,6 @@
 
 package com.liferay.osb.customer.workflow.task.web.internal.util;
 
-import com.liferay.portal.kernel.util.AggregateResourceBundleLoader;
 import com.liferay.portal.kernel.util.CacheResourceBundleLoader;
 import com.liferay.portal.kernel.util.ClassResourceBundleLoader;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -24,7 +23,6 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
@@ -50,21 +48,11 @@ public class OSBCustomerWorkflowTaskResourceBundleLoader
 		return loadResourceBundle(LocaleUtil.fromLanguageId(languageId));
 	}
 
-	@Reference(
-		target = "(bundle.symbolic.name=com.liferay.portal.workflow.task.web)"
-	)
-	public void setResourceBundleLoader(
-		ResourceBundleLoader resourceBundleLoader) {
-
-		_resourceBundleLoader = new AggregateResourceBundleLoader(
-			new CacheResourceBundleLoader(
-				new ClassResourceBundleLoader(
-					"content.Language",
-					OSBCustomerWorkflowTaskResourceBundleLoader.
-						class.getClassLoader())),
-			resourceBundleLoader);
-	}
-
-	private AggregateResourceBundleLoader _resourceBundleLoader;
+	private final ResourceBundleLoader _resourceBundleLoader =
+		new CacheResourceBundleLoader(
+			new ClassResourceBundleLoader(
+				"content.Language",
+				OSBCustomerWorkflowTaskResourceBundleLoader.class.
+					getClassLoader()));
 
 }
