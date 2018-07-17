@@ -14,7 +14,6 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.service.base.OrderEntryServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
@@ -22,25 +21,11 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 
-import java.util.List;
-
 /**
  * @author Amos Fong
  */
 @JSONWebService
 public class OrderEntryServiceImpl extends OrderEntryServiceBaseImpl {
-
-	public List<OrderEntry> getOrderEntries(long corpProjectId)
-		throws PortalException {
-
-		validateJSONWebServicePermissions();
-
-		AccountEntry accountEntry = accountEntryPersistence.findByCorpProjectId(
-			corpProjectId);
-
-		return orderEntryPersistence.findByAccountEntryId(
-			accountEntry.getAccountEntryId());
-	}
 
 	public OrderEntry getOrderEntry(String uuid) throws PortalException {
 		validateJSONWebServicePermissions();

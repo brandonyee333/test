@@ -52,7 +52,6 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 		return accountEntryLocalService.getAccountEntry(accountEntryId);
 	}
 
-	@JSONWebService
 	public AccountEntry getAccountEntryByCode(String code)
 		throws PortalException {
 

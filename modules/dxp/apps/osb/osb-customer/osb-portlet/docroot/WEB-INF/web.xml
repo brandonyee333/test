@@ -6,14 +6,6 @@
 		<param-value>/WEB-INF/classes/META-INF/osb-spring.xml</param-value>
 	</context-param>
 	<filter>
-		<filter-name>OSB Secure GS JSON Filter</filter-name>
-		<filter-class>com.liferay.osb.servlet.filters.OSBSecureJSONFilter</filter-class>
-		<init-param>
-			<param-name>token_property</param-name>
-			<param-value>json.service.api.gs.token</param-value>
-		</init-param>
-	</filter>
-	<filter>
 		<filter-name>OSB Secure LCS JSON Filter</filter-name>
 		<filter-class>com.liferay.osb.servlet.filters.OSBSecureJSONFilter</filter-class>
 		<init-param>
@@ -21,14 +13,6 @@
 			<param-value>json.service.api.lcs.token</param-value>
 		</init-param>
 	</filter>
-	<filter-mapping>
-		<filter-name>OSB Secure GS JSON Filter</filter-name>
-		<url-pattern>/api/jsonws/accountentry/get-account-entry-by-code/*</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>OSB Secure GS JSON Filter</filter-name>
-		<url-pattern>/api/secure/jsonws/accountentry/get-account-entry-by-code/*</url-pattern>
-	</filter-mapping>
 	<filter-mapping>
 		<filter-name>OSB Secure LCS JSON Filter</filter-name>
 		<url-pattern>/api/*</url-pattern>
