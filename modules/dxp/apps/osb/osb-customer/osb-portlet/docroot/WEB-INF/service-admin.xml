@@ -944,6 +944,5 @@
 		<exception>RequiredSupportRegion</exception>
 		<exception>SupportRegionName</exception>
 		<exception>SupportResponseName</exception>
-		<exception>SupportResponseSupportLevel</exception>
 	</exceptions>
 </service-builder>

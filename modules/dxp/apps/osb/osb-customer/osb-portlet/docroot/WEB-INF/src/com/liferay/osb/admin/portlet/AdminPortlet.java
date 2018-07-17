@@ -65,7 +65,6 @@ import com.liferay.osb.exception.RequiredSupportRegionException;
 import com.liferay.osb.exception.RequiredSupportResponseException;
 import com.liferay.osb.exception.SupportRegionNameException;
 import com.liferay.osb.exception.SupportResponseNameException;
-import com.liferay.osb.exception.SupportResponseSupportLevelException;
 import com.liferay.osb.model.AccountAttachment;
 import com.liferay.osb.model.AccountAttachmentConstants;
 import com.liferay.osb.model.AccountEntry;
@@ -1270,7 +1269,6 @@ public class AdminPortlet extends OSBPortlet {
 			cause instanceof ReservedUserEmailAddressException ||
 			cause instanceof SupportRegionNameException ||
 			cause instanceof SupportResponseNameException ||
-			cause instanceof SupportResponseSupportLevelException ||
 			cause instanceof UserEmailAddressException) {
 
 			return true;

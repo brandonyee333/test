@@ -23,13 +23,7 @@ String backURL = ParamUtil.getString(request, "backURL", redirect);
 
 long supportResponseId = ParamUtil.getLong(request, "supportResponseId");
 
-SupportResponse supportResponse = null;
-
-try {
-	supportResponse = SupportResponseLocalServiceUtil.getSupportResponse(supportResponseId);
-}
-catch (NoSuchSupportResponseException nssre) {
-}
+SupportResponse supportResponse = SupportResponseLocalServiceUtil.fetchSupportResponse(supportResponseId);
 
 int supportLevel = BeanParamUtil.getInteger(supportResponse, request, "supportLevel");
 int severity1Response = BeanParamUtil.getInteger(supportResponse, request, "severity1Response");
@@ -57,7 +51,6 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 
 	<liferay-ui:error exception="<%= DuplicateSupportResponseException.class %>" message="please-enter-a-unique-name" />
 	<liferay-ui:error exception="<%= SupportResponseNameException.class %>" message="please-enter-a-valid-name" />
-	<liferay-ui:error exception="<%= SupportResponseSupportLevelException.class %>" message="please-enter-a-valid-service-level-agreement" />
 
 	<table class="lfr-table">
 		<tr>

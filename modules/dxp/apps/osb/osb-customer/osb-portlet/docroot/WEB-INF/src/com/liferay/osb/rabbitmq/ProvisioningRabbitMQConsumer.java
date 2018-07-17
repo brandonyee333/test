@@ -655,15 +655,17 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 			return false;
 		}
 
-		if ((supportResponse.getSupportLevel() !=
-				SupportResponseConstants.SUPPORT_LEVEL_GOLD) &&
-			(supportResponse.getSupportLevel() !=
+		if ((supportResponse.getSupportLevel() ==
+				SupportResponseConstants.SUPPORT_LEVEL_FLOATING) ||
+			(supportResponse.getSupportLevel() ==
+				SupportResponseConstants.SUPPORT_LEVEL_GOLD) ||
+			(supportResponse.getSupportLevel() ==
 				SupportResponseConstants.SUPPORT_LEVEL_PLATINUM)) {
 
-			return false;
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	protected int getVersion(ProductEntry productEntry) {
@@ -953,7 +955,6 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 			int version = getVersion(productEntry);
 			boolean licenses = getLicenses(
 				productEntry, salesforceOpportunityType);
-			boolean supportTickets = getSupportTickets(supportResponse);
 			long supportLifetime = endDate.getTime() - startDate.getTime();
 			int sizingValue = getSizing(productEntry, sizing);
 
@@ -965,29 +966,33 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 
 			offeringEntry.setProductEntryId(productEntry.getProductEntryId());
 
+			SupportResponse curSupportResponse = null;
+
 			if (supportResponse != null) {
-				offeringEntry.setSupportResponseId(
-					supportResponse.getSupportResponseId());
+				curSupportResponse = supportResponse;
 			}
 			else if (productEntry.getType() ==
 						ProductEntryConstants.TYPE_ADD_ON) {
 
-				SupportResponse curSupportResponse =
+				curSupportResponse =
 					SupportResponseLocalServiceUtil.fetchSupportResponseByName(
 						"Floating");
-
-				offeringEntry.setSupportResponseId(
-					curSupportResponse.getSupportResponseId());
 			}
-			else {
-				SupportResponse curSupportResponse =
+			else if (productEntry.getType() ==
+						ProductEntryConstants.TYPE_PRIMARY) {
+
+				curSupportResponse =
 					SupportResponseLocalServiceUtil.fetchSupportResponseByName(
 						"Limited");
-
-				offeringEntry.setSupportResponseId(
-					curSupportResponse.getSupportResponseId());
+			}
+			else {
+				curSupportResponse =
+					SupportResponseLocalServiceUtil.fetchSupportResponseByName(
+						"Not Applicable");
 			}
 
+			offeringEntry.setSupportResponseId(
+				curSupportResponse.getSupportResponseId());
 			offeringEntry.setProductDescription(productDescription);
 			offeringEntry.setType(OfferingEntryConstants.TYPE_REGULAR);
 			offeringEntry.setVersion(version);
@@ -1001,7 +1006,8 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 					OfferingDefinitionConstants.LIFETIME_INDEFINITE_VALUE);
 			}
 
-			offeringEntry.setSupportTickets(supportTickets);
+			offeringEntry.setSupportTickets(
+				getSupportTickets(curSupportResponse));
 			offeringEntry.setSupportLifetime(supportLifetime);
 			offeringEntry.setSupportEndDate(endDate);
 			offeringEntry.setSizing(sizingValue);

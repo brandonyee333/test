@@ -17,7 +17,6 @@ package com.liferay.osb.service.impl;
 import com.liferay.osb.exception.DuplicateSupportResponseException;
 import com.liferay.osb.exception.RequiredSupportResponseException;
 import com.liferay.osb.exception.SupportResponseNameException;
-import com.liferay.osb.exception.SupportResponseSupportLevelException;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.SupportResponse;
 import com.liferay.osb.service.base.SupportResponseLocalServiceBaseImpl;
@@ -45,7 +44,7 @@ public class SupportResponseLocalServiceImpl
 		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 
-		validate(0, name, supportLevel);
+		validate(0, name);
 
 		long supportResponseId = counterLocalService.increment();
 
@@ -107,7 +106,7 @@ public class SupportResponseLocalServiceImpl
 			int severity3Response, int severity3Resolution)
 		throws PortalException {
 
-		validate(supportResponseId, name, supportLevel);
+		validate(supportResponseId, name);
 
 		SupportResponse supportResponse =
 			supportResponsePersistence.findByPrimaryKey(supportResponseId);
@@ -141,16 +140,11 @@ public class SupportResponseLocalServiceImpl
 		}
 	}
 
-	protected void validate(
-			long supportResponseId, String name, int supportLevel)
+	protected void validate(long supportResponseId, String name)
 		throws PortalException {
 
 		if (Validator.isNull(name)) {
 			throw new SupportResponseNameException();
-		}
-
-		if (supportLevel <= 0) {
-			throw new SupportResponseSupportLevelException();
 		}
 
 		SupportResponse supportResponse =
