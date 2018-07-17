@@ -2076,12 +2076,6 @@ public class ClpSerializer {
 		}
 
 		if (className.equals(
-					"com.liferay.osb.exception.SupportResponseSupportLevelException")) {
-			return new com.liferay.osb.exception.SupportResponseSupportLevelException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
 					"com.liferay.osb.exception.NoSuchAccountAttachmentException")) {
 			return new com.liferay.osb.exception.NoSuchAccountAttachmentException(throwable.getMessage(),
 				throwable.getCause());
