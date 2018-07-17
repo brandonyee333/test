@@ -31,13 +31,9 @@ public class OrderEntryServiceClpInvoker {
 
 		_methodParameterTypes206 = new String[] {  };
 
-		_methodName211 = "getOrderEntries";
+		_methodName211 = "getOrderEntry";
 
-		_methodParameterTypes211 = new String[] { "long" };
-
-		_methodName212 = "getOrderEntry";
-
-		_methodParameterTypes212 = new String[] { "java.lang.String" };
+		_methodParameterTypes211 = new String[] { "java.lang.String" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -49,11 +45,6 @@ public class OrderEntryServiceClpInvoker {
 
 		if (_methodName211.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes211, parameterTypes)) {
-			return OrderEntryServiceUtil.getOrderEntries(((Long)arguments[0]).longValue());
-		}
-
-		if (_methodName212.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes212, parameterTypes)) {
 			return OrderEntryServiceUtil.getOrderEntry((java.lang.String)arguments[0]);
 		}
 
@@ -64,6 +55,4 @@ public class OrderEntryServiceClpInvoker {
 	private String[] _methodParameterTypes206;
 	private String _methodName211;
 	private String[] _methodParameterTypes211;
-	private String _methodName212;
-	private String[] _methodParameterTypes212;
 }

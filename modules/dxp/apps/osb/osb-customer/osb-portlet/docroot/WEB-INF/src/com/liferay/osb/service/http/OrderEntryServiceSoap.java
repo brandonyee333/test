@@ -65,20 +65,6 @@ import java.rmi.RemoteException;
  */
 @ProviderType
 public class OrderEntryServiceSoap {
-	public static com.liferay.osb.model.OrderEntrySoap[] getOrderEntries(
-		long corpProjectId) throws RemoteException {
-		try {
-			java.util.List<com.liferay.osb.model.OrderEntry> returnValue = OrderEntryServiceUtil.getOrderEntries(corpProjectId);
-
-			return com.liferay.osb.model.OrderEntrySoap.toSoapModels(returnValue);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new RemoteException(e.getMessage());
-		}
-	}
-
 	public static com.liferay.osb.model.OrderEntrySoap getOrderEntry(
 		java.lang.String uuid) throws RemoteException {
 		try {

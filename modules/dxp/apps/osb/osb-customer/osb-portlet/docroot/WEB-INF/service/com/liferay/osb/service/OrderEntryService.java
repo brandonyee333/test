@@ -28,8 +28,6 @@ import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 
-import java.util.List;
-
 /**
  * Provides the remote service interface for OrderEntry. Methods of this
  * service are expected to have security checks based on the propagated JAAS
@@ -67,8 +65,4 @@ public interface OrderEntryService extends BaseService, InvokableService {
 	* @return the OSGi service identifier
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<OrderEntry> getOrderEntries(long corpProjectId)
-		throws PortalException;
 }

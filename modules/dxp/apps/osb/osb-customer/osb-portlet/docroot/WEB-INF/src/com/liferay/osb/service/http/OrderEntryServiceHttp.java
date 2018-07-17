@@ -55,44 +55,12 @@ import com.liferay.portal.kernel.util.MethodKey;
  */
 @ProviderType
 public class OrderEntryServiceHttp {
-	public static java.util.List<com.liferay.osb.model.OrderEntry> getOrderEntries(
-		HttpPrincipal httpPrincipal, long corpProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(OrderEntryServiceUtil.class,
-					"getOrderEntries", _getOrderEntriesParameterTypes0);
-
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					corpProjectId);
-
-			Object returnObj = null;
-
-			try {
-				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
-			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
-			}
-
-			return (java.util.List<com.liferay.osb.model.OrderEntry>)returnObj;
-		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
-
-			throw se;
-		}
-	}
-
 	public static com.liferay.osb.model.OrderEntry getOrderEntry(
 		HttpPrincipal httpPrincipal, java.lang.String uuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(OrderEntryServiceUtil.class,
-					"getOrderEntry", _getOrderEntryParameterTypes1);
+					"getOrderEntry", _getOrderEntryParameterTypes0);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, uuid);
 
@@ -119,10 +87,7 @@ public class OrderEntryServiceHttp {
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(OrderEntryServiceHttp.class);
-	private static final Class<?>[] _getOrderEntriesParameterTypes0 = new Class[] {
-			long.class
-		};
-	private static final Class<?>[] _getOrderEntryParameterTypes1 = new Class[] {
+	private static final Class<?>[] _getOrderEntryParameterTypes0 = new Class[] {
 			java.lang.String.class
 		};
 }

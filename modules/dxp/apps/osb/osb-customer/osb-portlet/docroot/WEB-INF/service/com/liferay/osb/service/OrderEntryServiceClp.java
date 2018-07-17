@@ -34,10 +34,6 @@ public class OrderEntryServiceClp implements OrderEntryService {
 		_methodName2 = "getOSGiServiceIdentifier";
 
 		_methodParameterTypes2 = new String[] {  };
-
-		_methodName3 = "getOrderEntries";
-
-		_methodParameterTypes3 = new String[] { "long" };
 	}
 
 	@Override
@@ -99,40 +95,9 @@ public class OrderEntryServiceClp implements OrderEntryService {
 		return (java.lang.String)ClpSerializer.translateOutput(returnObj);
 	}
 
-	@Override
-	public java.util.List<com.liferay.osb.model.OrderEntry> getOrderEntries(
-		long corpProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName3,
-					_methodParameterTypes3, new Object[] { corpProjectId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (java.util.List<com.liferay.osb.model.OrderEntry>)ClpSerializer.translateOutput(returnObj);
-	}
-
 	private InvokableService _invokableService;
 	private String _methodName0;
 	private String[] _methodParameterTypes0;
 	private String _methodName2;
 	private String[] _methodParameterTypes2;
-	private String _methodName3;
-	private String[] _methodParameterTypes3;
 }
