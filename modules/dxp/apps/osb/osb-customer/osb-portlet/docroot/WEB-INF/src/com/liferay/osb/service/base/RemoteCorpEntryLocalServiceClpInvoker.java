@@ -16,7 +16,7 @@ package com.liferay.osb.service.base;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osb.service.OfferingDefinitionServiceUtil;
+import com.liferay.osb.service.RemoteCorpEntryLocalServiceUtil;
 
 import java.util.Arrays;
 
@@ -25,23 +25,34 @@ import java.util.Arrays;
  * @generated
  */
 @ProviderType
-public class OfferingDefinitionServiceClpInvoker {
-	public OfferingDefinitionServiceClpInvoker() {
-		_methodName202 = "getOSGiServiceIdentifier";
+public class RemoteCorpEntryLocalServiceClpInvoker {
+	public RemoteCorpEntryLocalServiceClpInvoker() {
+		_methodName146 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes202 = new String[] {  };
+		_methodParameterTypes146 = new String[] {  };
+
+		_methodName149 = "hasCorpEntry";
+
+		_methodParameterTypes149 = new String[] { "java.lang.String" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName202.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes202, parameterTypes)) {
-			return OfferingDefinitionServiceUtil.getOSGiServiceIdentifier();
+		if (_methodName146.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes146, parameterTypes)) {
+			return RemoteCorpEntryLocalServiceUtil.getOSGiServiceIdentifier();
+		}
+
+		if (_methodName149.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes149, parameterTypes)) {
+			return RemoteCorpEntryLocalServiceUtil.hasCorpEntry((java.lang.String)arguments[0]);
 		}
 
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName202;
-	private String[] _methodParameterTypes202;
+	private String _methodName146;
+	private String[] _methodParameterTypes146;
+	private String _methodName149;
+	private String[] _methodParameterTypes149;
 }

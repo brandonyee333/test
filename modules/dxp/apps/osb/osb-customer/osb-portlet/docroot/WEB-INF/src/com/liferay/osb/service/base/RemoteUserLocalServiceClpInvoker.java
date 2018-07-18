@@ -27,114 +27,114 @@ import java.util.Arrays;
 @ProviderType
 public class RemoteUserLocalServiceClpInvoker {
 	public RemoteUserLocalServiceClpInvoker() {
-		_methodName160 = "getOSGiServiceIdentifier";
+		_methodName162 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes160 = new String[] {  };
+		_methodParameterTypes162 = new String[] {  };
 
-		_methodName163 = "addOrganizationUsers";
+		_methodName165 = "addOrganizationUsers";
 
-		_methodParameterTypes163 = new String[] { "long", "long[][]" };
+		_methodParameterTypes165 = new String[] { "long", "long[][]" };
 
-		_methodName164 = "addRoleUsers";
+		_methodName166 = "addRoleUsers";
 
-		_methodParameterTypes164 = new String[] { "long", "long[][]" };
+		_methodParameterTypes166 = new String[] { "long", "long[][]" };
 
-		_methodName165 = "deleteRoleUser";
+		_methodName167 = "deleteRoleUser";
 
-		_methodParameterTypes165 = new String[] { "long", "long" };
+		_methodParameterTypes167 = new String[] { "long", "long" };
 
-		_methodName166 = "fetchUserByEmailAddress";
+		_methodName168 = "fetchUserByEmailAddress";
 
-		_methodParameterTypes166 = new String[] { "java.lang.String" };
+		_methodParameterTypes168 = new String[] { "java.lang.String" };
 
-		_methodName167 = "getUserByUuid";
+		_methodName169 = "getUserByUuid";
 
-		_methodParameterTypes167 = new String[] { "java.lang.String" };
+		_methodParameterTypes169 = new String[] { "java.lang.String" };
 
-		_methodName168 = "synchronize";
+		_methodName170 = "synchronize";
 
-		_methodParameterTypes168 = new String[] { "long" };
+		_methodParameterTypes170 = new String[] { "long" };
 
-		_methodName169 = "translate";
+		_methodName171 = "translate";
 
-		_methodParameterTypes169 = new String[] {
+		_methodParameterTypes171 = new String[] {
 				"com.liferay.portal.kernel.json.JSONObject"
 			};
 
-		_methodName170 = "unsetOrganizationUsers";
+		_methodName172 = "unsetOrganizationUsers";
 
-		_methodParameterTypes170 = new String[] { "long", "long[][]" };
+		_methodParameterTypes172 = new String[] { "long", "long[][]" };
 
-		_methodName171 = "updateUserExpandoValue";
+		_methodName173 = "updateUserExpandoValue";
 
-		_methodParameterTypes171 = new String[] {
+		_methodParameterTypes173 = new String[] {
 				"long", "java.lang.String", "java.lang.Object"
 			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName160.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes160, parameterTypes)) {
+		if (_methodName162.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes162, parameterTypes)) {
 			return RemoteUserLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName163.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes163, parameterTypes)) {
+		if (_methodName165.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes165, parameterTypes)) {
 			RemoteUserLocalServiceUtil.addOrganizationUsers(((Long)arguments[0]).longValue(),
 				(long[])arguments[1]);
 
 			return null;
 		}
 
-		if (_methodName164.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes164, parameterTypes)) {
+		if (_methodName166.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes166, parameterTypes)) {
 			RemoteUserLocalServiceUtil.addRoleUsers(((Long)arguments[0]).longValue(),
 				(long[])arguments[1]);
 
 			return null;
 		}
 
-		if (_methodName165.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes165, parameterTypes)) {
+		if (_methodName167.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes167, parameterTypes)) {
 			RemoteUserLocalServiceUtil.deleteRoleUser(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue());
 
 			return null;
 		}
 
-		if (_methodName166.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes166, parameterTypes)) {
-			return RemoteUserLocalServiceUtil.fetchUserByEmailAddress((java.lang.String)arguments[0]);
-		}
-
-		if (_methodName167.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes167, parameterTypes)) {
-			return RemoteUserLocalServiceUtil.getUserByUuid((java.lang.String)arguments[0]);
-		}
-
 		if (_methodName168.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes168, parameterTypes)) {
-			RemoteUserLocalServiceUtil.synchronize(((Long)arguments[0]).longValue());
-
-			return null;
+			return RemoteUserLocalServiceUtil.fetchUserByEmailAddress((java.lang.String)arguments[0]);
 		}
 
 		if (_methodName169.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes169, parameterTypes)) {
-			return RemoteUserLocalServiceUtil.translate((com.liferay.portal.kernel.json.JSONObject)arguments[0]);
+			return RemoteUserLocalServiceUtil.getUserByUuid((java.lang.String)arguments[0]);
 		}
 
 		if (_methodName170.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes170, parameterTypes)) {
-			RemoteUserLocalServiceUtil.unsetOrganizationUsers(((Long)arguments[0]).longValue(),
-				(long[])arguments[1]);
+			RemoteUserLocalServiceUtil.synchronize(((Long)arguments[0]).longValue());
 
 			return null;
 		}
 
 		if (_methodName171.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes171, parameterTypes)) {
+			return RemoteUserLocalServiceUtil.translate((com.liferay.portal.kernel.json.JSONObject)arguments[0]);
+		}
+
+		if (_methodName172.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes172, parameterTypes)) {
+			RemoteUserLocalServiceUtil.unsetOrganizationUsers(((Long)arguments[0]).longValue(),
+				(long[])arguments[1]);
+
+			return null;
+		}
+
+		if (_methodName173.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes173, parameterTypes)) {
 			RemoteUserLocalServiceUtil.updateUserExpandoValue(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1], (java.lang.Object)arguments[2]);
 
@@ -144,12 +144,8 @@ public class RemoteUserLocalServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName160;
-	private String[] _methodParameterTypes160;
-	private String _methodName163;
-	private String[] _methodParameterTypes163;
-	private String _methodName164;
-	private String[] _methodParameterTypes164;
+	private String _methodName162;
+	private String[] _methodParameterTypes162;
 	private String _methodName165;
 	private String[] _methodParameterTypes165;
 	private String _methodName166;
@@ -164,4 +160,8 @@ public class RemoteUserLocalServiceClpInvoker {
 	private String[] _methodParameterTypes170;
 	private String _methodName171;
 	private String[] _methodParameterTypes171;
+	private String _methodName172;
+	private String[] _methodParameterTypes172;
+	private String _methodName173;
+	private String[] _methodParameterTypes173;
 }

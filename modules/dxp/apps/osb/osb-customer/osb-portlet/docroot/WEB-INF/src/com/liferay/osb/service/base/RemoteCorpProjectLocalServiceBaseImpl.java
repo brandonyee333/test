@@ -1131,6 +1131,25 @@ public abstract class RemoteCorpProjectLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the remote corp entry local service.
+	 *
+	 * @return the remote corp entry local service
+	 */
+	public com.liferay.osb.service.RemoteCorpEntryLocalService getRemoteCorpEntryLocalService() {
+		return remoteCorpEntryLocalService;
+	}
+
+	/**
+	 * Sets the remote corp entry local service.
+	 *
+	 * @param remoteCorpEntryLocalService the remote corp entry local service
+	 */
+	public void setRemoteCorpEntryLocalService(
+		com.liferay.osb.service.RemoteCorpEntryLocalService remoteCorpEntryLocalService) {
+		this.remoteCorpEntryLocalService = remoteCorpEntryLocalService;
+	}
+
+	/**
 	 * Returns the remote corp project local service.
 	 *
 	 * @return the remote corp project local service
@@ -1682,6 +1701,8 @@ public abstract class RemoteCorpProjectLocalServiceBaseImpl
 	protected ProductEntryFinder productEntryFinder;
 	@BeanReference(type = com.liferay.osb.service.RabbitMQMessageProcessorLocalService.class)
 	protected com.liferay.osb.service.RabbitMQMessageProcessorLocalService rabbitMQMessageProcessorLocalService;
+	@BeanReference(type = com.liferay.osb.service.RemoteCorpEntryLocalService.class)
+	protected com.liferay.osb.service.RemoteCorpEntryLocalService remoteCorpEntryLocalService;
 	@BeanReference(type = RemoteCorpProjectLocalService.class)
 	protected RemoteCorpProjectLocalService remoteCorpProjectLocalService;
 	@BeanReference(type = com.liferay.osb.service.RemoteCorpProjectMessageLocalService.class)

@@ -65,6 +65,7 @@ import com.liferay.osb.service.PartnerWorkerServiceUtil;
 import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.osb.service.ProductEntryServiceUtil;
 import com.liferay.osb.service.RabbitMQMessageProcessorLocalServiceUtil;
+import com.liferay.osb.service.RemoteCorpEntryLocalServiceUtil;
 import com.liferay.osb.service.RemoteCorpProjectLocalServiceUtil;
 import com.liferay.osb.service.RemoteCorpProjectMessageLocalServiceUtil;
 import com.liferay.osb.service.RemoteUserLocalServiceUtil;
@@ -166,6 +167,8 @@ public class ClpMessageListener extends BaseMessageListener {
 
 			ProductEntryServiceUtil.clearService();
 			RabbitMQMessageProcessorLocalServiceUtil.clearService();
+
+			RemoteCorpEntryLocalServiceUtil.clearService();
 
 			RemoteCorpProjectLocalServiceUtil.clearService();
 
