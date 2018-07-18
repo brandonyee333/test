@@ -30,7 +30,9 @@ import com.liferay.lcs.util.LCSPortletPreferencesUtil;
 import com.liferay.lcs.util.LCSUtil;
 import com.liferay.lcs.util.PortletPropsValues;
 import com.liferay.lcs.util.comparator.MessagePriorityComparator;
+import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
@@ -112,134 +114,11 @@ public class HandshakeTask implements Task {
 			throw new LCSHandshakeException("LCS Gateway unavailable");
 		}
 
-		HandshakeMessage handshakeMessage = new HandshakeMessage();
-
-		handshakeMessage.setPortalBuildNumber(ReleaseInfo.getBuildNumber());
-		handshakeMessage.setClusterExecutorEnabled(
-			ClusterExecutorUtil.isEnabled());
-
-		Map<Integer, String> companyIdsWebIds = new HashMap<>();
-
-		List<Company> companies = CompanyLocalServiceUtil.getCompanies();
-
-		for (Company company : companies) {
-			companyIdsWebIds.put(
-				(int)company.getCompanyId(), company.getWebId());
-		}
-
-		handshakeMessage.setCompanyIdsWebIds(companyIdsWebIds);
-
-		handshakeMessage.setHashCode(_key.hashCode());
-		handshakeMessage.setHeartbeatInterval(_heartbeatInterval);
-
-		if (LCSPatcherUtil.isConfigured()) {
-			handshakeMessage.setPatchingToolEnabled(true);
-		}
-
-		handshakeMessage.setPatchingToolVersion(
-			LCSPatcherUtil.getPatchingToolVersion());
-		handshakeMessage.setLCSPortletBuildNumber(
-			LCSUtil.getLCSPortletBuildNumber());
-
-		handshakeMessage.setMonitoringEnabled(_isMonitoringEnabled());
-
-		PortletPreferences jxPortletPreferences =
-			LCSPortletPreferencesUtil.fetchReadOnlyJxPortletPreferences();
-
-		boolean metricsLCSServiceEnabled = GetterUtil.getBoolean(
-			jxPortletPreferences.getValue(
-				LCSConstants.METRICS_LCS_SERVICE_ENABLED,
-				Boolean.FALSE.toString()));
-
-		if (metricsLCSServiceEnabled) {
-			handshakeMessage.setMetricsLCSServiceEnabled(true);
-		}
-
-		boolean patchesLCSServiceEnabled = GetterUtil.getBoolean(
-			jxPortletPreferences.getValue(
-				LCSConstants.PATCHES_LCS_SERVICE_ENABLED,
-				Boolean.FALSE.toString()));
-
-		if (patchesLCSServiceEnabled) {
-			handshakeMessage.setPatchesLCSServiceEnabled(true);
-		}
-
-		handshakeMessage.setPortalEdition(LCSUtil.getPortalEdition());
-
-		handshakeMessage.setKey(_key);
-
-		boolean portalPropertiesLCSServiceEnabled = GetterUtil.getBoolean(
-			jxPortletPreferences.getValue(
-				LCSConstants.PORTAL_PROPERTIES_LCS_SERVICE_ENABLED,
-				Boolean.FALSE.toString()));
-
-		if (portalPropertiesLCSServiceEnabled) {
-			handshakeMessage.setPortalPropertiesLCSServiceEnabled(true);
-		}
-
-		List<Map<String, Long>> uptimes = _uptimeMonitoringAdvisor.getUptimes();
-
-		_uptimeMonitoringAdvisor.resetCurrentUptimeEndTime(uptimes);
-
-		handshakeMessage.setUptimes(uptimes);
+		HandshakeMessage handshakeMessage = _createHandshakeMessage();
 
 		_lcsConnectionManager.sendMessage(handshakeMessage);
 
-		int attempt = 0;
-		List<Message> delayedMessages = new ArrayList<>();
-		List<Message> receivedMessages = null;
-
-		while (true) {
-			if (attempt++ > _handshakeReplyReads) {
-				throw new LCSHandshakeException(
-					"Unable to establish a connection after " +
-						_handshakeReplyReads + " handshakes");
-			}
-
-			receivedMessages = _lcsConnectionManager.getMessages(_key);
-
-			if (receivedMessages.isEmpty()) {
-				try {
-					TimeUnit.MILLISECONDS.sleep(
-						_handshakeWaitTime / _handshakeReplyReads);
-				}
-				catch (InterruptedException ie) {
-				}
-
-				continue;
-			}
-
-			if (_log.isDebugEnabled()) {
-				_log.debug("Sending messages for processing");
-			}
-
-			if (_log.isTraceEnabled()) {
-				_log.trace("Received messages: " + receivedMessages);
-				_log.trace("Delayed messages: " + delayedMessages);
-			}
-
-			if (processResponse(receivedMessages, delayedMessages)) {
-				break;
-			}
-		}
-
-		Collections.sort(delayedMessages, new MessagePriorityComparator());
-
-		for (Message delayedMessage : delayedMessages) {
-			if (delayedMessage instanceof CommandMessage) {
-				if (_log.isTraceEnabled()) {
-					_log.trace(
-						"Sending command to message bus: " + delayedMessage);
-				}
-
-				MessageBusUtil.sendMessage(
-					"liferay/lcs_commands", delayedMessage);
-			}
-			else {
-				_log.error(
-					"There are no handlers for message: " + delayedMessage);
-			}
-		}
+		_waitForHandshakeResponse();
 
 		_uptimeMonitoringAdvisor.resetUptimes();
 
@@ -329,6 +208,100 @@ public class HandshakeTask implements Task {
 		return receivedHandshakeResponse;
 	}
 
+	private HandshakeMessage _createHandshakeMessage() {
+		HandshakeMessage handshakeMessage = new HandshakeMessage();
+
+		handshakeMessage.setClusterExecutorEnabled(
+			ClusterExecutorUtil.isEnabled());
+		handshakeMessage.setCompanyIdsWebIds(_getCompanyIdsWebIds());
+		handshakeMessage.setHashCode(_key.hashCode());
+		handshakeMessage.setHeartbeatInterval(_heartbeatInterval);
+		handshakeMessage.setKey(_key);
+		handshakeMessage.setMetricsLCSServiceEnabled(
+			_getMetricsLCSServiceEnabled());
+		handshakeMessage.setMonitoringEnabled(_isMonitoringEnabled());
+		handshakeMessage.setLCSPortletBuildNumber(
+			LCSUtil.getLCSPortletBuildNumber());
+		handshakeMessage.setPatchesLCSServiceEnabled(
+			_getPatchesLCSServiceEnabled());
+
+		if (LCSPatcherUtil.isConfigured()) {
+			handshakeMessage.setPatchingToolEnabled(true);
+		}
+
+		handshakeMessage.setPatchingToolVersion(
+			LCSPatcherUtil.getPatchingToolVersion());
+		handshakeMessage.setPortalBuildNumber(ReleaseInfo.getBuildNumber());
+		handshakeMessage.setPortalEdition(LCSUtil.getPortalEdition());
+		handshakeMessage.setPortalPropertiesLCSServiceEnabled(
+			_getPortalPropertiesLCSServiceEnabled());
+		handshakeMessage.setUptimes(_getPortalUptimeEntries());
+
+		return handshakeMessage;
+	}
+
+	private Map<Integer, String> _getCompanyIdsWebIds() {
+		Map<Integer, String> companyIdsWebIds = new HashMap<>();
+
+		List<Company> companies = CompanyLocalServiceUtil.getCompanies();
+
+		for (Company company : companies) {
+			companyIdsWebIds.put(
+				(int)company.getCompanyId(), company.getWebId());
+		}
+
+		return companyIdsWebIds;
+	}
+
+	private boolean _getMetricsLCSServiceEnabled() {
+		PortletPreferences jxPortletPreferences =
+			LCSPortletPreferencesUtil.fetchReadOnlyJxPortletPreferences();
+
+		return GetterUtil.getBoolean(
+			jxPortletPreferences.getValue(
+				LCSConstants.METRICS_LCS_SERVICE_ENABLED,
+				Boolean.FALSE.toString()));
+	}
+
+	private boolean _getPatchesLCSServiceEnabled() {
+		PortletPreferences jxPortletPreferences =
+			LCSPortletPreferencesUtil.fetchReadOnlyJxPortletPreferences();
+
+		return GetterUtil.getBoolean(
+			jxPortletPreferences.getValue(
+				LCSConstants.PATCHES_LCS_SERVICE_ENABLED,
+				Boolean.FALSE.toString()));
+	}
+
+	private boolean _getPortalPropertiesLCSServiceEnabled() {
+		PortletPreferences jxPortletPreferences =
+			LCSPortletPreferencesUtil.fetchReadOnlyJxPortletPreferences();
+
+		return GetterUtil.getBoolean(
+			jxPortletPreferences.getValue(
+				LCSConstants.PORTAL_PROPERTIES_LCS_SERVICE_ENABLED,
+				Boolean.FALSE.toString()));
+	}
+
+	private List<Map<String, Long>> _getPortalUptimeEntries() {
+		try {
+			List<Map<String, Long>> uptimeEntries =
+				_uptimeMonitoringAdvisor.getUptimes();
+
+			_uptimeMonitoringAdvisor.resetCurrentUptimeEndTime(uptimeEntries);
+
+			return uptimeEntries;
+		}
+		catch (PortalException pe) {
+			_log.error(
+				"Unable to collect portal uptime entries required for " +
+					"handshake message");
+
+			throw new LCSHandshakeException(
+				"Portal uptime entries are required", pe);
+		}
+	}
+
 	private boolean _isMonitoringEnabled() {
 		Bundle bundle = FrameworkUtil.getBundle(getClass());
 
@@ -349,6 +322,64 @@ public class HandshakeTask implements Task {
 		}
 
 		return false;
+	}
+
+	private void _waitForHandshakeResponse() throws JSONWebServiceException {
+		int attempt = 0;
+		List<Message> delayedMessages = new ArrayList<>();
+		List<Message> receivedMessages = null;
+
+		while (true) {
+			if (attempt++ > _handshakeReplyReads) {
+				throw new LCSHandshakeException(
+					"Unable to establish a connection after " +
+						_handshakeReplyReads + " handshakes");
+			}
+
+			receivedMessages = _lcsConnectionManager.getMessages(_key);
+
+			if (receivedMessages.isEmpty()) {
+				try {
+					TimeUnit.MILLISECONDS.sleep(
+						_handshakeWaitTime / _handshakeReplyReads);
+				}
+				catch (InterruptedException ie) {
+				}
+
+				continue;
+			}
+
+			if (_log.isDebugEnabled()) {
+				_log.debug("Sending messages for processing");
+			}
+
+			if (_log.isTraceEnabled()) {
+				_log.trace("Received messages: " + receivedMessages);
+				_log.trace("Delayed messages: " + delayedMessages);
+			}
+
+			if (processResponse(receivedMessages, delayedMessages)) {
+				break;
+			}
+		}
+
+		Collections.sort(delayedMessages, new MessagePriorityComparator());
+
+		for (Message delayedMessage : delayedMessages) {
+			if (delayedMessage instanceof CommandMessage) {
+				if (_log.isTraceEnabled()) {
+					_log.trace(
+						"Sending command to message bus: " + delayedMessage);
+				}
+
+				MessageBusUtil.sendMessage(
+					"liferay/lcs_commands", delayedMessage);
+			}
+			else {
+				_log.error(
+					"There are no handlers for message: " + delayedMessage);
+			}
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(HandshakeTask.class);
