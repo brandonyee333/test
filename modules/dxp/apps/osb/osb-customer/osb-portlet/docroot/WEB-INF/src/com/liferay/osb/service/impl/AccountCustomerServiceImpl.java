@@ -35,6 +35,34 @@ import java.util.List;
 public class AccountCustomerServiceImpl extends AccountCustomerServiceBaseImpl {
 
 	@JSONWebService
+	public List<User> getCorpProjectAccountCustomerUsers(String corpProjectUuid)
+		throws PortalException {
+
+		validateJSONWebServicePermissions();
+
+		AccountEntry accountEntry =
+			accountEntryPersistence.fetchByCorpProjectUuid(corpProjectUuid);
+
+		if (accountEntry == null) {
+			return Collections.emptyList();
+		}
+
+		List<AccountCustomer> accountCustomers =
+			accountCustomerPersistence.findByAccountEntryId(
+				accountEntry.getAccountEntryId());
+
+		List<User> users = new ArrayList<>(accountCustomers.size());
+
+		for (AccountCustomer accountCustomer : accountCustomers) {
+			User user = userLocalService.getUser(accountCustomer.getUserId());
+
+			users.add(user);
+		}
+
+		return users;
+	}
+
+	@JSONWebService
 	public List<String> getCorpProjectAccountCustomerUUIDs(
 			String corpProjectUuid)
 		throws PortalException {
