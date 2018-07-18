@@ -95,9 +95,11 @@ public class HandshakeTask implements Task {
 			doRun();
 		}
 		catch (Exception e) {
-			_lcsConnectionManager.setReady(false);
+			if (e instanceof LCSHandshakeException) {
+				throw (LCSHandshakeException)e;
+			}
 
-			throw new RuntimeException(e);
+			throw new LCSHandshakeException(e);
 		}
 	}
 
@@ -106,13 +108,7 @@ public class HandshakeTask implements Task {
 			_log.info("Initiate handshake");
 		}
 
-		_lcsConnectionManager.setLCSGatewayAvailable(true);
-
 		_lcsConnectionManager.deleteMessages(_key);
-
-		if (!_lcsConnectionManager.isLCSGatewayAvailable()) {
-			throw new LCSHandshakeException("LCS Gateway unavailable");
-		}
 
 		HandshakeMessage handshakeMessage = _createHandshakeMessage();
 

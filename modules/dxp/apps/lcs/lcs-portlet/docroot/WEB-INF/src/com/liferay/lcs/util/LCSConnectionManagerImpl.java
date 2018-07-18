@@ -206,6 +206,7 @@ public class LCSConnectionManagerImpl implements LCSConnectionManager {
 			_log.trace("Handshake success");
 		}
 
+		setLCSGatewayAvailable(true);
 		setReady(true);
 
 		LCSUtil.processLCSPortletState(LCSPortletState.NO_SUBSCRIPTION);
