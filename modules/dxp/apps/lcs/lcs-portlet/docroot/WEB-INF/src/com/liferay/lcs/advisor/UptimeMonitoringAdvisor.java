@@ -17,6 +17,7 @@ package com.liferay.lcs.advisor;
 import com.liferay.lcs.util.KeyGenerator;
 import com.liferay.lcs.util.LCSPortletPreferencesUtil;
 import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -34,10 +35,11 @@ import javax.portlet.PortletPreferences;
 
 /**
  * @author Ivica Cardic
+ * @author Igor Beslic
  */
 public class UptimeMonitoringAdvisor {
 
-	public List<Map<String, Long>> getUptimes() throws Exception {
+	public List<Map<String, Long>> getUptimes() throws JSONException {
 		if (!_initalized) {
 			throw new UnsupportedOperationException("Bean is not initialized");
 		}
@@ -45,7 +47,7 @@ public class UptimeMonitoringAdvisor {
 		return _getUptimes();
 	}
 
-	public void init() throws Exception {
+	public void init() throws JSONException {
 		if (_initalized) {
 			return;
 		}
@@ -61,9 +63,7 @@ public class UptimeMonitoringAdvisor {
 		}
 	}
 
-	public void resetCurrentUptimeEndTime(List<Map<String, Long>> uptimes)
-		throws Exception {
-
+	public void resetCurrentUptimeEndTime(List<Map<String, Long>> uptimes) {
 		long startTime = _runtimeMXBean.getStartTime();
 
 		for (Map<String, Long> uptime : uptimes) {
@@ -75,7 +75,7 @@ public class UptimeMonitoringAdvisor {
 		}
 	}
 
-	public synchronized void resetUptimes() throws Exception {
+	public synchronized void resetUptimes() throws JSONException {
 		if (!_initalized) {
 			throw new UnsupportedOperationException("Bean is not initialized");
 		}
@@ -115,7 +115,7 @@ public class UptimeMonitoringAdvisor {
 		_keyGenerator = keyGenerator;
 	}
 
-	public synchronized void updateCurrentUptime() throws Exception {
+	public synchronized void updateCurrentUptime() throws JSONException {
 		if (!_initalized) {
 			throw new UnsupportedOperationException("Bean is not initialized");
 		}
@@ -149,7 +149,7 @@ public class UptimeMonitoringAdvisor {
 		}
 	}
 
-	private void _checkUptime(JSONArray jsonArray) throws Exception {
+	private void _checkUptime(JSONArray jsonArray) {
 		long startTime = _runtimeMXBean.getStartTime();
 
 		for (int i = 0; i < jsonArray.length(); i++) {
@@ -174,7 +174,7 @@ public class UptimeMonitoringAdvisor {
 		}
 	}
 
-	private List<Map<String, Long>> _getUptimes() throws Exception {
+	private List<Map<String, Long>> _getUptimes() throws JSONException {
 		List<Map<String, Long>> uptimes = new ArrayList<>();
 
 		JSONArray jsonArray = _getUptimesJSONArray();
@@ -193,7 +193,7 @@ public class UptimeMonitoringAdvisor {
 		return uptimes;
 	}
 
-	private JSONArray _getUptimesJSONArray() throws Exception {
+	private JSONArray _getUptimesJSONArray() throws JSONException {
 		JSONArray jsonArray = null;
 
 		String key = _keyGenerator.getKey(false);
@@ -221,7 +221,9 @@ public class UptimeMonitoringAdvisor {
 		return jsonArray;
 	}
 
-	private void _mergeUptimesJSONArrays(JSONArray jsonArray) throws Exception {
+	private void _mergeUptimesJSONArrays(JSONArray jsonArray)
+		throws JSONException {
+
 		for (String json : _uptimes) {
 			JSONArray uptimeJSONArray = JSONFactoryUtil.createJSONArray(json);
 
@@ -251,7 +253,7 @@ public class UptimeMonitoringAdvisor {
 		}
 	}
 
-	private void _storeUptimesJSONArray(JSONArray jsonArray) throws Exception {
+	private void _storeUptimesJSONArray(JSONArray jsonArray) {
 		String key = _keyGenerator.getKey(false);
 
 		if (key == null) {
