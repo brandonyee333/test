@@ -86,35 +86,23 @@
 
 	<div class="container-fluid" id="wrapper">
 		<header class="banner" id="banner" role="banner">
-			<div class="banner-content">
-				<#if getterUtil.getBoolean(theme_settings["custom-site-nav-logo"]) && (theme_settings["custom-site-url"] != "")>
-					<div class="${logo_css_class} custom-site-nav">
-						<a class="home" href="${theme_settings["liferay-home-url"]}">
-							<#include "${full_templates_path}/svg.ftl" />
+			<#if getterUtil.getBoolean(theme_settings["custom-site-nav-logo"]) && (theme_settings["custom-site-url"] != "")>
+				<div class="${logo_css_class} custom-site-nav">
+					<#if theme_settings["custom-site-lang-key"] != "">
+						<a class="custom-site-url" href="${theme_settings["custom-site-url"]}">
+							<img alt="Liferay" height="36" src="${images_folder}/custom/liferay_customer_portal_logo.svg" />
 						</a>
+					</#if>
+				</div>
+			<#else>
+				<a class="${logo_css_class}" href="${theme_settings["liferay-home-url"]}">
+					<img alt="Liferay" src="${images_folder}/custom/heading.png" />
+				</a>
+			</#if>
 
-						<#if theme_settings["custom-site-lang-key"] != "">
-							<a class="custom-site-url" href="${theme_settings["custom-site-url"]}">
-								<svg class="nav-separator" preserveAspectRatio="none" viewBox="0 0 2 4">
-									<path class="nav-arrow" d="M0 0 L2 2 L0 4" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
-								</svg>
-
-								<span class="custom-site-text">
-									<@liferay.language key=theme_settings["custom-site-lang-key"] />
-								</span>
-							</a>
-						</#if>
-					</div>
-				<#else>
-					<a class="${logo_css_class}" href="${theme_settings["liferay-home-url"]}">
-						<img alt="Liferay" src="${images_folder}/custom/heading.png" />
-					</a>
-				</#if>
-
-				<#if has_navigation>
-					<#include "${full_templates_path}/navigation.ftl" />
-				</#if>
-			</div>
+			<#if has_navigation>
+				<#include "${full_templates_path}/navigation.ftl" />
+			</#if>
 		</header>
 
 		<div class="documentation-search">
