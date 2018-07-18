@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
 import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.workflow.WorkflowException;
-import com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition;
 import com.liferay.portal.workflow.kaleo.designer.service.KaleoDraftDefinitionLocalService;
 
 import java.util.List;
@@ -52,7 +51,7 @@ public class KaleoDesignerServiceActivator {
 		}
 	}
 
-	private KaleoDraftDefinition _addMissingKaleoDraftDefinition(
+	private void _addMissingKaleoDraftDefinition(
 			String name, int version, String title, String content,
 			ServiceContext serviceContext)
 		throws PortalException {
@@ -61,25 +60,14 @@ public class KaleoDesignerServiceActivator {
 			_kaleoDraftDefinitionLocalService.getKaleoDraftDefinitionsCount(
 				name, version, serviceContext);
 
-		KaleoDraftDefinition kaleoDraftDefinition = null;
-
 		if (kaleoDraftDefinitionsCount == 0) {
 			Map<Locale, String> titleMap = LocalizationUtil.getLocalizationMap(
 				title);
 
-			kaleoDraftDefinition =
-				_kaleoDraftDefinitionLocalService.addKaleoDraftDefinition(
-					serviceContext.getUserId(),
-					serviceContext.getScopeGroupId(), name, titleMap, content,
-					version, 1, serviceContext);
+			_kaleoDraftDefinitionLocalService.addKaleoDraftDefinition(
+				serviceContext.getUserId(), serviceContext.getScopeGroupId(),
+				name, titleMap, content, version, 1, serviceContext);
 		}
-		else {
-			kaleoDraftDefinition =
-				_kaleoDraftDefinitionLocalService.getLatestKaleoDraftDefinition(
-					name, version, serviceContext);
-		}
-
-		return kaleoDraftDefinition;
 	}
 
 	private void _addMissingWorkflowDraftDefinitions(
