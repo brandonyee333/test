@@ -135,6 +135,14 @@ public class WebRESTWebServiceImpl
 	}
 
 	@Override
+	public JSONObject getCorpEntry(String dossieraAccountKey)
+		throws RemoteServiceException {
+
+		return doGetToJSONObject(
+			_URL_API_REST_CORP_ENTRIES + dossieraAccountKey, new HashMap<>());
+	}
+
+	@Override
 	public JSONObject getUsers(String uuid) throws RemoteServiceException {
 		return doGetToJSONObject(_URL_API_REST_USERS + uuid, new HashMap<>());
 	}

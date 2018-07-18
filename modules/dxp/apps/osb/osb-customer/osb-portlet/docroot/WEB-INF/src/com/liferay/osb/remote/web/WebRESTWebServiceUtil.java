@@ -57,6 +57,12 @@ public class WebRESTWebServiceUtil {
 		getWebRESTWebService().deleteRolesUser(roleUUID, userUUID);
 	}
 
+	public static JSONObject getCorpEntry(String dossieraAccountKey)
+		throws RemoteServiceException {
+
+		return getWebRESTWebService().getCorpEntry(dossieraAccountKey);
+	}
+
 	public static JSONObject getUsers(String uuid)
 		throws RemoteServiceException {
 

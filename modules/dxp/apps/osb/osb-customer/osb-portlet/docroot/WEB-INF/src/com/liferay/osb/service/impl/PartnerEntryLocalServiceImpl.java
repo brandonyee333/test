@@ -17,6 +17,7 @@ package com.liferay.osb.service.impl;
 import com.liferay.osb.exception.DuplicatePartnerEntryCodeException;
 import com.liferay.osb.exception.DuplicatePartnerEntryDossieraAccountKeyException;
 import com.liferay.osb.exception.PartnerEntryCodeException;
+import com.liferay.osb.exception.PartnerEntryDossieraAccountKeyException;
 import com.liferay.osb.exception.PartnerEntryParentPartnerEntryException;
 import com.liferay.osb.exception.RequiredPartnerEntryException;
 import com.liferay.osb.model.AccountEntry;
@@ -286,15 +287,9 @@ public class PartnerEntryLocalServiceImpl
 			}
 		}
 
-		/** TODO: LRIS-32205
-		CorpEntry corpEntry = corpEntryLocalService.fetchCorpEntry(
-			dossieraAccountKey);
-
-		if (corpEntry == null) {
+		if (!remoteCorpEntryLocalService.hasCorpEntry(dossieraAccountKey)) {
 			throw new PartnerEntryDossieraAccountKeyException();
 		}
-
-		*/
 
 		if (Validator.isNull(code)) {
 			throw new PartnerEntryCodeException();

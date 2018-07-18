@@ -114,6 +114,7 @@
 		<reference entity="Role" package-path="com.liferay.portal" />
 	</entity>
 	<entity local-service="true" name="RabbitMQMessageProcessor" remote-service="false" />
+	<entity local-service="true" name="RemoteCorpEntry" remote-service="false" />
 	<entity local-service="true" name="RemoteCorpProject" remote-service="false">
 
 		<!-- References -->
