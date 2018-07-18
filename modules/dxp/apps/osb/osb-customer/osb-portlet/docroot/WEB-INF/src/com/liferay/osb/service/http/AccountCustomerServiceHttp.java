@@ -55,13 +55,46 @@ import com.liferay.portal.kernel.util.MethodKey;
  */
 @ProviderType
 public class AccountCustomerServiceHttp {
+	public static java.util.List<com.liferay.portal.kernel.model.User> getCorpProjectAccountCustomerUsers(
+		HttpPrincipal httpPrincipal, java.lang.String corpProjectUuid)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		try {
+			MethodKey methodKey = new MethodKey(AccountCustomerServiceUtil.class,
+					"getCorpProjectAccountCustomerUsers",
+					_getCorpProjectAccountCustomerUsersParameterTypes0);
+
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					corpProjectUuid);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			}
+
+			return (java.util.List<com.liferay.portal.kernel.model.User>)returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
+
+			throw se;
+		}
+	}
+
 	public static java.util.List<java.lang.String> getCorpProjectAccountCustomerUUIDs(
 		HttpPrincipal httpPrincipal, java.lang.String corpProjectUuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountCustomerServiceUtil.class,
 					"getCorpProjectAccountCustomerUUIDs",
-					_getCorpProjectAccountCustomerUUIDsParameterTypes0);
+					_getCorpProjectAccountCustomerUUIDsParameterTypes1);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					corpProjectUuid);
@@ -89,6 +122,8 @@ public class AccountCustomerServiceHttp {
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(AccountCustomerServiceHttp.class);
-	private static final Class<?>[] _getCorpProjectAccountCustomerUUIDsParameterTypes0 =
+	private static final Class<?>[] _getCorpProjectAccountCustomerUsersParameterTypes0 =
+		new Class[] { java.lang.String.class };
+	private static final Class<?>[] _getCorpProjectAccountCustomerUUIDsParameterTypes1 =
 		new Class[] { java.lang.String.class };
 }

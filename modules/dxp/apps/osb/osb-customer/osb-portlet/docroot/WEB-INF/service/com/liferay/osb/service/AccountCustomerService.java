@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.service.BaseService;
 import com.liferay.portal.kernel.service.InvokableService;
@@ -65,5 +66,10 @@ public interface AccountCustomerService extends BaseService, InvokableService {
 	@JSONWebService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<java.lang.String> getCorpProjectAccountCustomerUUIDs(
+		java.lang.String corpProjectUuid) throws PortalException;
+
+	@JSONWebService
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<User> getCorpProjectAccountCustomerUsers(
 		java.lang.String corpProjectUuid) throws PortalException;
 }

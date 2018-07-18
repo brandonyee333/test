@@ -65,6 +65,20 @@ import java.rmi.RemoteException;
  */
 @ProviderType
 public class AccountCustomerServiceSoap {
+	public static com.liferay.portal.kernel.model.UserSoap[] getCorpProjectAccountCustomerUsers(
+		java.lang.String corpProjectUuid) throws RemoteException {
+		try {
+			java.util.List<com.liferay.portal.kernel.model.User> returnValue = AccountCustomerServiceUtil.getCorpProjectAccountCustomerUsers(corpProjectUuid);
+
+			return com.liferay.portal.kernel.model.UserSoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
 	public static java.lang.String[] getCorpProjectAccountCustomerUUIDs(
 		java.lang.String corpProjectUuid) throws RemoteException {
 		try {

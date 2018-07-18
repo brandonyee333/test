@@ -31,9 +31,13 @@ public class AccountCustomerServiceClpInvoker {
 
 		_methodParameterTypes212 = new String[] {  };
 
-		_methodName217 = "getCorpProjectAccountCustomerUUIDs";
+		_methodName217 = "getCorpProjectAccountCustomerUsers";
 
 		_methodParameterTypes217 = new String[] { "java.lang.String" };
+
+		_methodName218 = "getCorpProjectAccountCustomerUUIDs";
+
+		_methodParameterTypes218 = new String[] { "java.lang.String" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -45,6 +49,11 @@ public class AccountCustomerServiceClpInvoker {
 
 		if (_methodName217.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes217, parameterTypes)) {
+			return AccountCustomerServiceUtil.getCorpProjectAccountCustomerUsers((java.lang.String)arguments[0]);
+		}
+
+		if (_methodName218.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes218, parameterTypes)) {
 			return AccountCustomerServiceUtil.getCorpProjectAccountCustomerUUIDs((java.lang.String)arguments[0]);
 		}
 
@@ -55,4 +64,6 @@ public class AccountCustomerServiceClpInvoker {
 	private String[] _methodParameterTypes212;
 	private String _methodName217;
 	private String[] _methodParameterTypes217;
+	private String _methodName218;
+	private String[] _methodParameterTypes218;
 }

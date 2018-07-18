@@ -34,6 +34,10 @@ public class AccountCustomerServiceClp implements AccountCustomerService {
 		_methodName2 = "getCorpProjectAccountCustomerUUIDs";
 
 		_methodParameterTypes2 = new String[] { "java.lang.String" };
+
+		_methodName3 = "getCorpProjectAccountCustomerUsers";
+
+		_methodParameterTypes3 = new String[] { "java.lang.String" };
 	}
 
 	@Override
@@ -96,9 +100,41 @@ public class AccountCustomerServiceClp implements AccountCustomerService {
 		return (java.util.List<java.lang.String>)ClpSerializer.translateOutput(returnObj);
 	}
 
+	@Override
+	public java.util.List<com.liferay.portal.kernel.model.User> getCorpProjectAccountCustomerUsers(
+		java.lang.String corpProjectUuid)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName3,
+					_methodParameterTypes3,
+					new Object[] { ClpSerializer.translateInput(corpProjectUuid) });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<com.liferay.portal.kernel.model.User>)ClpSerializer.translateOutput(returnObj);
+	}
+
 	private InvokableService _invokableService;
 	private String _methodName1;
 	private String[] _methodParameterTypes1;
 	private String _methodName2;
 	private String[] _methodParameterTypes2;
+	private String _methodName3;
+	private String[] _methodParameterTypes3;
 }
