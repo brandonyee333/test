@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<suppressions>
+	<source-check>
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/support/project/details/web/internal/portlet/action/ViewMVCRenderCommand.java" />
+	</source-check>
+</suppressions>
