@@ -53,7 +53,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 
 <liferay-portlet:actionURL portletConfiguration="<%= true %>" var="configurationURL" />
 
-<aui:form action="<%= configurationURL %>" method="post" name="fm">
+<aui:form action="<%= configurationURL %>" method="post">
 	<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.UPDATE %>" />
 	<aui:input name="tabs1" type="hidden" value="<%= tabs1 %>" />
 	<aui:input name="tabs2" type="hidden" value="<%= tabs2 %>" />
@@ -162,7 +162,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 							<liferay-ui:message key="language" />
 						</td>
 						<td>
-							<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateLanguage(this);">
+							<aui:select label="" name="languageId" onChange='<%= renderResponse.getNamespace() + "updateLanguage(this);" %>'>
 
 								<%
 								for (int i = 0; i < locales.length; i++) {
@@ -179,7 +179,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 								}
 								%>
 
-							</select>
+							</aui:select>
 						</td>
 					</tr>
 					<tr>
@@ -199,14 +199,16 @@ String redirect = ParamUtil.getString(request, "redirect");
 							<%
 							PortletURL selectFileEntryURL = PortletURLFactoryUtil.create(request, PortletKeys.DOCUMENT_LIBRARY, themeDisplay.getPlid(), PortletRequest.RENDER_PHASE);
 
-							selectFileEntryURL.setParameter("struts_action", "/document_library/select_file_entry");
+							selectFileEntryURL.setParameter("mvcRenderCommandName", "/document_library/select_file_entry");
 							selectFileEntryURL.setParameter("groupId", String.valueOf(scopeGroupId));
 							selectFileEntryURL.setWindowState(LiferayWindowState.POP_UP);
+
+							String taglibSelectFileEntry = "var fileEntryWindow = window.open('" + selectFileEntryURL.toString() + "', 'fileEntry', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); fileEntryWindow.focus();";
 							%>
 
-							<input id="<portlet:namespace />selectFileEntryButton" onClick="var fileEntryWindow = window.open('<%= selectFileEntryURL.toString() %>', 'fileEntry', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); fileEntryWindow.focus();" type="button" value="<liferay-ui:message key="select" />">
+							<aui:button onClick="<%= taglibSelectFileEntry %>" value="select" />
 
-							<input id="<portlet:namespace />removeFileEntryButton" onClick="<portlet:namespace />removeFileEntry();" type="button" value="<liferay-ui:message key="remove" />" />
+							<aui:button onClick='<%= renderResponse.getNamespace() + "removeFileEntry();" %>' value="remove" />
 						</td>
 					</tr>
 					<tr>
@@ -223,7 +225,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 							}
 							%>
 
-							<select name="<portlet:namespace />studioEulaVersion_<%= currentLanguageId %>">
+							<aui:select label="" name='<%= "studioEulaVersion_" + currentLanguageId %>'>
 								<option value="0"></option>
 
 								<%
@@ -236,7 +238,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 								}
 								%>
 
-							</select>
+							</aui:select>
 						</td>
 					</tr>
 					<tr>
@@ -253,7 +255,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 							}
 							%>
 
-							<select name="<portlet:namespace />studioEulaVersionRequired_<%= currentLanguageId %>">
+							<aui:select label="" name='<%= "studioEulaVersionRequired_" + currentLanguageId %>'>
 								<option value="0"></option>
 
 								<%
@@ -266,7 +268,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 								}
 								%>
 
-							</select>
+							</aui:select>
 						</td>
 					</tr>
 					</table>
@@ -282,5 +284,5 @@ String redirect = ParamUtil.getString(request, "redirect");
 		</c:otherwise>
 	</c:choose>
 
-	<input type="submit" value="<liferay-ui:message key="save" />" />
+	<aui:button type="submit" value="save" />
 </aui:form>
