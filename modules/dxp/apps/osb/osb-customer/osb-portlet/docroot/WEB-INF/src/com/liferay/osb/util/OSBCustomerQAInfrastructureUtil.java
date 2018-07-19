@@ -463,8 +463,15 @@ public class OSBCustomerQAInfrastructureUtil {
 			PartnerEntryLocalServiceUtil.getPartnerEntryByCode(code);
 		}
 		catch (Exception e) {
+			String partnerEntryCodeFilter = code.replaceAll(
+				"\\s+", StringPool.BLANK);
+
+			String dossieraAccountKey = OSBCustomerQAConfigurationUtil.get(
+				OSBCustomerQAConfigurationKeys.OSB_QA_PARTNER_ENTRY,
+				new Filter(partnerEntryCodeFilter, "dossiera-account-key"));
+
 			PartnerEntryLocalServiceUtil.addPartnerEntry(
-				OSBConstants.USER_DEFAULT_USER_ID, 0, StringPool.BLANK, code,
+				OSBConstants.USER_DEFAULT_USER_ID, 0, dossieraAccountKey, code,
 				StringPool.BLANK, supportRegionIds);
 		}
 
