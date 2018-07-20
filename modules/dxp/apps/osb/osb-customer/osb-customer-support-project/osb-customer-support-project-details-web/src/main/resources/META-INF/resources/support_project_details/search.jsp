@@ -16,4 +16,71 @@
 
 <%@ include file="/init.jsp" %>
 
-<liferay-ui:message key="select-a-project" />
+<%
+String keywords = ParamUtil.getString(request, "keywords");
+
+PortletURL portletURL = renderResponse.createRenderURL();
+%>
+
+<h1>
+	<liferay-ui:message key="select-a-project" />
+</h1>
+
+<aui:form action="<%= portletURL.toString() %>" method="post" name="searchFm">
+	<liferay-ui:input-search
+		placeholder='<%= LanguageUtil.get(request, "search-projects") %>'
+	/>
+</aui:form>
+
+<liferay-ui:search-container
+	emptyResultsMessage="no-projects-were-found"
+	headerNames="name,status"
+	iteratorURL="<%= portletURL %>"
+>
+	<liferay-ui:search-container-results>
+
+		<%
+		boolean andOperator = false;
+
+		if (Validator.isNull(keywords)) {
+			andOperator = true;
+		}
+
+		total = AccountEntryServiceUtil.searchCount(null, 0, 0, 0, 0, 0, 0, null, 0, 0, 0, 0, 0, 0, keywords, keywords, new int[0], null, new int[0], new int[0], null, null, null, null, null, null, null, null, null, andOperator);
+
+		searchContainer.setTotal(total);
+
+		results = AccountEntryServiceUtil.search(null, 0, 0, 0, 0, 0, 0, null, 0, 0, 0, 0, 0, 0, keywords, keywords, new int[0], null, new int[0], new int[0], null, null, null, null, null, null, null, null, null, andOperator, searchContainer.getStart(), searchContainer.getEnd(), new AccountEntryNameComparator(true));
+
+		searchContainer.setResults(results);
+		%>
+
+	</liferay-ui:search-container-results>
+
+	<liferay-ui:search-container-row
+		className="com.liferay.osb.model.AccountEntry"
+		keyProperty="accountEntryId"
+		modelVar="accountEntry"
+	>
+		<liferay-portlet:renderURL varImpl="rowURL">
+			<portlet:param name="mvcRenderCommandName" value="/support_project_details/view" />
+			<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+			<portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntry.getAccountEntryId()) %>" />
+		</liferay-portlet:renderURL>
+
+		<liferay-ui:search-container-column-text
+			href="<%= rowURL %>"
+			property="name"
+		/>
+
+		<liferay-ui:search-container-column-text
+			href="<%= rowURL %>"
+			name="status"
+			property="statusLabel"
+		/>
+	</liferay-ui:search-container-row>
+
+	<liferay-ui:search-iterator
+		markupView="lexicon"
+	/>
+</liferay-ui:search-container>

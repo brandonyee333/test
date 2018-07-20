@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -74,6 +75,67 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 
 		return accountEntryLocalService.getSecurityPatchAccountEntries(
 			portletId, params);
+	}
+
+	public List<AccountEntry> search(
+			Long createUserId, int createDateGTDay, int createDateGTMonth,
+			int createDateGTYear, int createDateLTDay, int createDateLTMonth,
+			int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
+			int modifiedDateGTMonth, int modifiedDateGTYear,
+			int modifiedDateLTDay, int modifiedDateLTMonth,
+			int modifiedDateLTYear, String name, String code, int[] industries,
+			Boolean partnerManagedSupport, int[] tiers, int[] statuses,
+			String instructions, String notes, String partnerEntryCode,
+			String street, Long countryId, Long regionId, String city,
+			String zip, LinkedHashMap<String, Object> params,
+			boolean andOperator, int start, int end, OrderByComparator obc)
+		throws PortalException {
+
+		if (params == null) {
+			params = new LinkedHashMap<>();
+		}
+
+		addAccountMembershipParams(params);
+
+		return accountEntryLocalService.search(
+			createUserId, createDateGTDay, createDateGTMonth, createDateGTYear,
+			createDateLTDay, createDateLTMonth, createDateLTYear,
+			modifiedUserId, modifiedDateGTDay, modifiedDateGTMonth,
+			modifiedDateGTYear, modifiedDateLTDay, modifiedDateLTMonth,
+			modifiedDateLTYear, name, code, industries, partnerManagedSupport,
+			tiers, statuses, instructions, notes, partnerEntryCode, street,
+			countryId, regionId, city, zip, params, andOperator, start, end,
+			obc);
+	}
+
+	public int searchCount(
+			Long createUserId, int createDateGTDay, int createDateGTMonth,
+			int createDateGTYear, int createDateLTDay, int createDateLTMonth,
+			int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
+			int modifiedDateGTMonth, int modifiedDateGTYear,
+			int modifiedDateLTDay, int modifiedDateLTMonth,
+			int modifiedDateLTYear, String name, String code, int[] industries,
+			Boolean partnerManagedSupport, int[] tiers, int[] statuses,
+			String instructions, String notes, String partnerEntryCode,
+			String street, Long countryId, Long regionId, String city,
+			String zip, LinkedHashMap<String, Object> params,
+			boolean andOperator)
+		throws PortalException {
+
+		if (params == null) {
+			params = new LinkedHashMap<>();
+		}
+
+		addAccountMembershipParams(params);
+
+		return accountEntryLocalService.searchCount(
+			createUserId, createDateGTDay, createDateGTMonth, createDateGTYear,
+			createDateLTDay, createDateLTMonth, createDateLTYear,
+			modifiedUserId, modifiedDateGTDay, modifiedDateGTMonth,
+			modifiedDateGTYear, modifiedDateLTDay, modifiedDateLTMonth,
+			modifiedDateLTYear, name, code, industries, partnerManagedSupport,
+			tiers, statuses, instructions, notes, partnerEntryCode, street,
+			countryId, regionId, city, zip, params, andOperator);
 	}
 
 	protected void addAccountMembershipParams(
