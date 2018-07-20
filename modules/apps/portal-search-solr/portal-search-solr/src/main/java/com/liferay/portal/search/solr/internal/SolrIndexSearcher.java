@@ -64,6 +64,7 @@ import com.liferay.portal.search.solr.stats.StatsTranslator;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -605,6 +606,8 @@ public class SolrIndexSearcher extends BaseIndexSearcher {
 		Query query, Hits hits, List<Document> documents, List<Float> scores) {
 
 		if (solrDocumentList == null) {
+			Collections.addAll(documents, hits.getDocs());
+
 			return;
 		}
 
@@ -715,6 +718,11 @@ public class SolrIndexSearcher extends BaseIndexSearcher {
 					queryResponse, group.getResult(), query, groupedHits);
 
 				hits.addGroupedHits(group.getGroupValue(), groupedHits);
+
+				Document[] docs = groupedHits.getDocs();
+
+				hits.setDocs(docs);
+				hits.setLength(docs.length);
 			}
 		}
 	}
