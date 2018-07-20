@@ -46,6 +46,31 @@ public class AccountEntryServiceClpInvoker {
 		_methodName242 = "getSecurityPatchAccountEntries";
 
 		_methodParameterTypes242 = new String[] { "java.lang.String" };
+
+		_methodName243 = "search";
+
+		_methodParameterTypes243 = new String[] {
+				"java.lang.Long", "int", "int", "int", "int", "int", "int",
+				"java.lang.Long", "int", "int", "int", "int", "int", "int",
+				"java.lang.String", "java.lang.String", "int[][]",
+				"java.lang.Boolean", "int[][]", "int[][]", "java.lang.String",
+				"java.lang.String", "java.lang.String", "java.lang.String",
+				"java.lang.Long", "java.lang.Long", "java.lang.String",
+				"java.lang.String", "java.util.LinkedHashMap", "boolean", "int",
+				"int", "com.liferay.portal.kernel.util.OrderByComparator"
+			};
+
+		_methodName244 = "searchCount";
+
+		_methodParameterTypes244 = new String[] {
+				"java.lang.Long", "int", "int", "int", "int", "int", "int",
+				"java.lang.Long", "int", "int", "int", "int", "int", "int",
+				"java.lang.String", "java.lang.String", "int[][]",
+				"java.lang.Boolean", "int[][]", "int[][]", "java.lang.String",
+				"java.lang.String", "java.lang.String", "java.lang.String",
+				"java.lang.Long", "java.lang.Long", "java.lang.String",
+				"java.lang.String", "java.util.LinkedHashMap", "boolean"
+			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -75,6 +100,67 @@ public class AccountEntryServiceClpInvoker {
 			return AccountEntryServiceUtil.getSecurityPatchAccountEntries((java.lang.String)arguments[0]);
 		}
 
+		if (_methodName243.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes243, parameterTypes)) {
+			return AccountEntryServiceUtil.search((java.lang.Long)arguments[0],
+				((Integer)arguments[1]).intValue(),
+				((Integer)arguments[2]).intValue(),
+				((Integer)arguments[3]).intValue(),
+				((Integer)arguments[4]).intValue(),
+				((Integer)arguments[5]).intValue(),
+				((Integer)arguments[6]).intValue(),
+				(java.lang.Long)arguments[7],
+				((Integer)arguments[8]).intValue(),
+				((Integer)arguments[9]).intValue(),
+				((Integer)arguments[10]).intValue(),
+				((Integer)arguments[11]).intValue(),
+				((Integer)arguments[12]).intValue(),
+				((Integer)arguments[13]).intValue(),
+				(java.lang.String)arguments[14],
+				(java.lang.String)arguments[15], (int[])arguments[16],
+				(java.lang.Boolean)arguments[17], (int[])arguments[18],
+				(int[])arguments[19], (java.lang.String)arguments[20],
+				(java.lang.String)arguments[21],
+				(java.lang.String)arguments[22],
+				(java.lang.String)arguments[23], (java.lang.Long)arguments[24],
+				(java.lang.Long)arguments[25], (java.lang.String)arguments[26],
+				(java.lang.String)arguments[27],
+				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[28],
+				((Boolean)arguments[29]).booleanValue(),
+				((Integer)arguments[30]).intValue(),
+				((Integer)arguments[31]).intValue(),
+				(com.liferay.portal.kernel.util.OrderByComparator)arguments[32]);
+		}
+
+		if (_methodName244.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes244, parameterTypes)) {
+			return AccountEntryServiceUtil.searchCount((java.lang.Long)arguments[0],
+				((Integer)arguments[1]).intValue(),
+				((Integer)arguments[2]).intValue(),
+				((Integer)arguments[3]).intValue(),
+				((Integer)arguments[4]).intValue(),
+				((Integer)arguments[5]).intValue(),
+				((Integer)arguments[6]).intValue(),
+				(java.lang.Long)arguments[7],
+				((Integer)arguments[8]).intValue(),
+				((Integer)arguments[9]).intValue(),
+				((Integer)arguments[10]).intValue(),
+				((Integer)arguments[11]).intValue(),
+				((Integer)arguments[12]).intValue(),
+				((Integer)arguments[13]).intValue(),
+				(java.lang.String)arguments[14],
+				(java.lang.String)arguments[15], (int[])arguments[16],
+				(java.lang.Boolean)arguments[17], (int[])arguments[18],
+				(int[])arguments[19], (java.lang.String)arguments[20],
+				(java.lang.String)arguments[21],
+				(java.lang.String)arguments[22],
+				(java.lang.String)arguments[23], (java.lang.Long)arguments[24],
+				(java.lang.Long)arguments[25], (java.lang.String)arguments[26],
+				(java.lang.String)arguments[27],
+				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[28],
+				((Boolean)arguments[29]).booleanValue());
+		}
+
 		throw new UnsupportedOperationException();
 	}
 
@@ -88,4 +174,8 @@ public class AccountEntryServiceClpInvoker {
 	private String[] _methodParameterTypes241;
 	private String _methodName242;
 	private String[] _methodParameterTypes242;
+	private String _methodName243;
+	private String[] _methodParameterTypes243;
+	private String _methodName244;
+	private String[] _methodParameterTypes244;
 }

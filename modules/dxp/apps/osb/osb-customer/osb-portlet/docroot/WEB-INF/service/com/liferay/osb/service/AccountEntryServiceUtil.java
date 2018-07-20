@@ -59,6 +59,32 @@ public class AccountEntryServiceUtil {
 		return getService().getAccountEntryByCode(code);
 	}
 
+	public static int searchCount(java.lang.Long createUserId,
+		int createDateGTDay, int createDateGTMonth, int createDateGTYear,
+		int createDateLTDay, int createDateLTMonth, int createDateLTYear,
+		java.lang.Long modifiedUserId, int modifiedDateGTDay,
+		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
+		int modifiedDateLTMonth, int modifiedDateLTYear, java.lang.String name,
+		java.lang.String code, int[] industries,
+		java.lang.Boolean partnerManagedSupport, int[] tiers, int[] statuses,
+		java.lang.String instructions, java.lang.String notes,
+		java.lang.String partnerEntryCode, java.lang.String street,
+		java.lang.Long countryId, java.lang.Long regionId,
+		java.lang.String city, java.lang.String zip,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andOperator)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .searchCount(createUserId, createDateGTDay,
+			createDateGTMonth, createDateGTYear, createDateLTDay,
+			createDateLTMonth, createDateLTYear, modifiedUserId,
+			modifiedDateGTDay, modifiedDateGTMonth, modifiedDateGTYear,
+			modifiedDateLTDay, modifiedDateLTMonth, modifiedDateLTYear, name,
+			code, industries, partnerManagedSupport, tiers, statuses,
+			instructions, notes, partnerEntryCode, street, countryId, regionId,
+			city, zip, params, andOperator);
+	}
+
 	public static java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
@@ -78,6 +104,34 @@ public class AccountEntryServiceUtil {
 		java.lang.String portletId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getSecurityPatchAccountEntries(portletId);
+	}
+
+	public static java.util.List<com.liferay.osb.model.AccountEntry> search(
+		java.lang.Long createUserId, int createDateGTDay,
+		int createDateGTMonth, int createDateGTYear, int createDateLTDay,
+		int createDateLTMonth, int createDateLTYear,
+		java.lang.Long modifiedUserId, int modifiedDateGTDay,
+		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
+		int modifiedDateLTMonth, int modifiedDateLTYear, java.lang.String name,
+		java.lang.String code, int[] industries,
+		java.lang.Boolean partnerManagedSupport, int[] tiers, int[] statuses,
+		java.lang.String instructions, java.lang.String notes,
+		java.lang.String partnerEntryCode, java.lang.String street,
+		java.lang.Long countryId, java.lang.Long regionId,
+		java.lang.String city, java.lang.String zip,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andOperator, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .search(createUserId, createDateGTDay, createDateGTMonth,
+			createDateGTYear, createDateLTDay, createDateLTMonth,
+			createDateLTYear, modifiedUserId, modifiedDateGTDay,
+			modifiedDateGTMonth, modifiedDateGTYear, modifiedDateLTDay,
+			modifiedDateLTMonth, modifiedDateLTYear, name, code, industries,
+			partnerManagedSupport, tiers, statuses, instructions, notes,
+			partnerEntryCode, street, countryId, regionId, city, zip, params,
+			andOperator, start, end, obc);
 	}
 
 	public static void clearService() {

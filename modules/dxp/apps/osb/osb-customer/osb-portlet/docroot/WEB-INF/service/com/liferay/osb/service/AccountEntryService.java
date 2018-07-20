@@ -27,7 +27,9 @@ import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
+import com.liferay.portal.kernel.util.OrderByComparator;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -65,6 +67,22 @@ public interface AccountEntryService extends BaseService, InvokableService {
 	public AccountEntry getAccountEntryByCode(java.lang.String code)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int searchCount(java.lang.Long createUserId, int createDateGTDay,
+		int createDateGTMonth, int createDateGTYear, int createDateLTDay,
+		int createDateLTMonth, int createDateLTYear,
+		java.lang.Long modifiedUserId, int modifiedDateGTDay,
+		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
+		int modifiedDateLTMonth, int modifiedDateLTYear, java.lang.String name,
+		java.lang.String code, int[] industries,
+		java.lang.Boolean partnerManagedSupport, int[] tiers, int[] statuses,
+		java.lang.String instructions, java.lang.String notes,
+		java.lang.String partnerEntryCode, java.lang.String street,
+		java.lang.Long countryId, java.lang.Long regionId,
+		java.lang.String city, java.lang.String zip,
+		LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andOperator) throws PortalException;
+
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
@@ -80,4 +98,21 @@ public interface AccountEntryService extends BaseService, InvokableService {
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountEntry> getSecurityPatchAccountEntries(
 		java.lang.String portletId) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountEntry> search(java.lang.Long createUserId,
+		int createDateGTDay, int createDateGTMonth, int createDateGTYear,
+		int createDateLTDay, int createDateLTMonth, int createDateLTYear,
+		java.lang.Long modifiedUserId, int modifiedDateGTDay,
+		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
+		int modifiedDateLTMonth, int modifiedDateLTYear, java.lang.String name,
+		java.lang.String code, int[] industries,
+		java.lang.Boolean partnerManagedSupport, int[] tiers, int[] statuses,
+		java.lang.String instructions, java.lang.String notes,
+		java.lang.String partnerEntryCode, java.lang.String street,
+		java.lang.Long countryId, java.lang.Long regionId,
+		java.lang.String city, java.lang.String zip,
+		LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andOperator, int start, int end, OrderByComparator obc)
+		throws PortalException;
 }
