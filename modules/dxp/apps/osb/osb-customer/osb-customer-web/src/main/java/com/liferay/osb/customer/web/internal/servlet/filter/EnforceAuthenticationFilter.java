@@ -19,10 +19,13 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.servlet.BaseFilter;
+import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.URLCodec;
+
+import java.util.Enumeration;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -91,13 +94,31 @@ public class EnforceAuthenticationFilter extends BaseFilter {
 			FilterChain filterChain)
 		throws Exception {
 
+		String currentURL = _portal.getCurrentURL(request);
+
+		Enumeration<String> enu = request.getParameterNames();
+
+		while (enu.hasMoreElements()) {
+			String param = enu.nextElement();
+
+			if (param.contains("_redirect") ||
+				param.contains("_returnToFullPageURL") ||
+				param.startsWith("redirect")) {
+
+				currentURL = _http.removeParameter(currentURL, param);
+			}
+		}
+
 		response.sendRedirect(
 			_portal.getPathMain() + "/portal/login?redirect=" +
-				URLCodec.encodeURL(request.getRequestURI()));
+				URLCodec.encodeURL(currentURL));
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		EnforceAuthenticationFilter.class);
+
+	@Reference
+	private Http _http;
 
 	@Reference
 	private Portal _portal;
