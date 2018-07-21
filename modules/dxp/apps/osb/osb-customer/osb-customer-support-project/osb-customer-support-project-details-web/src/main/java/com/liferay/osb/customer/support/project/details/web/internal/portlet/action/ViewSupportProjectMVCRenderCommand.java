@@ -17,16 +17,12 @@ package com.liferay.osb.customer.support.project.details.web.internal.portlet.ac
 import com.liferay.osb.customer.support.project.details.web.internal.constants.SupportProjectDetailsPortletKeys;
 import com.liferay.osb.customer.support.project.details.web.internal.constants.SupportProjectDetailsWebKeys;
 import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.service.AccountEntryLocalServiceUtil;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.osb.service.AccountEntryServiceUtil;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
-import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-
-import java.util.List;
 
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -40,53 +36,35 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	property = {
 		"javax.portlet.name=" + SupportProjectDetailsPortletKeys.SUPPORT_PROJECT_DETAILS,
-		"mvc.command.name=/", "mvc.command.name=/view"
+		"mvc.command.name=/view_support_project"
 	},
 	service = MVCRenderCommand.class
 )
-public class ViewMVCRenderCommand extends BaseMVCRenderCommand {
+public class ViewSupportProjectMVCRenderCommand extends BaseMVCRenderCommand {
 
 	@Override
 	protected String doRender(
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws Exception {
 
-		AccountEntry accountEntry = getAccountEntry(renderRequest);
-
-		if (accountEntry != null) {
-			renderRequest.setAttribute(
-				SupportProjectDetailsWebKeys.ACCOUNT_ENTRY, accountEntry);
-
-			return "/support_project_details/customer/view_support_project.jsp";
-		}
-		else {
-			return "/support_project_details/search.jsp";
-		}
-	}
-
-	protected AccountEntry getAccountEntry(RenderRequest renderRequest)
-		throws PortalException {
-
 		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
+		long accountEntryId = ParamUtil.getLong(
+			renderRequest, "accountEntryId");
+
+		AccountEntry accountEntry = AccountEntryServiceUtil.getAccountEntry(
+			accountEntryId);
+
+		renderRequest.setAttribute(
+			SupportProjectDetailsWebKeys.ACCOUNT_ENTRY, accountEntry);
+
 		if (isLiferayIncOrg(themeDisplay.getUserId())) {
-			return null;
+			return "/support_project_details/worker/view_support_project.jsp";
 		}
-
-		List<AccountEntry> accountEntries =
-			AccountEntryLocalServiceUtil.getUserActiveAccountEntries(
-				themeDisplay.getUserId(), QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-
-		if (accountEntries.isEmpty()) {
-			throw new PrincipalException();
+		else {
+			return "/support_project_details/customer/view_support_project.jsp";
 		}
-
-		if (accountEntries.size() == 1) {
-			return accountEntries.get(0);
-		}
-
-		return null;
 	}
 
 	@Reference(

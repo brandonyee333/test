@@ -63,7 +63,7 @@ PortletURL portletURL = renderResponse.createRenderURL();
 		modelVar="accountEntry"
 	>
 		<liferay-portlet:renderURL varImpl="rowURL">
-			<portlet:param name="mvcRenderCommandName" value="/support_project_details/view" />
+			<portlet:param name="mvcRenderCommandName" value="/view_support_project" />
 			<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
 			<portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntry.getAccountEntryId()) %>" />
 		</liferay-portlet:renderURL>
