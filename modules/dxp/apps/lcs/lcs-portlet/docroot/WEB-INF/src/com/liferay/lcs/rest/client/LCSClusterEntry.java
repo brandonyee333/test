@@ -40,10 +40,6 @@ public class LCSClusterEntry {
 		return _lcsProjectId;
 	}
 
-	public String getLocation() {
-		return _location;
-	}
-
 	public String getName() {
 		return _name;
 	}
@@ -84,10 +80,6 @@ public class LCSClusterEntry {
 		_lcsProjectId = lcsProjectId;
 	}
 
-	public void setLocation(String location) {
-		_location = location;
-	}
-
 	public void setName(String name) {
 		_name = name;
 	}
@@ -105,7 +97,6 @@ public class LCSClusterEntry {
 	private boolean _elastic;
 	private long _lcsClusterEntryId;
 	private long _lcsProjectId;
-	private String _location;
 	private String _name;
 	private String _subscriptionType;
 	private int _type;

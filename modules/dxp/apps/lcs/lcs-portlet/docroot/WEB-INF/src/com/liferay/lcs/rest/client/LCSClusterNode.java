@@ -58,10 +58,6 @@ public class LCSClusterNode {
 		return _lcsClusterNodeId;
 	}
 
-	public String getLocation() {
-		return _location;
-	}
-
 	public String getName() {
 		return _name;
 	}
@@ -126,10 +122,6 @@ public class LCSClusterNode {
 		_lcsClusterNodeId = lcsClusterNodeId;
 	}
 
-	public void setLocation(String location) {
-		_location = location;
-	}
-
 	public void setName(String name) {
 		_name = name;
 	}
@@ -163,7 +155,6 @@ public class LCSClusterNode {
 	private long _lastHeartbeat;
 	private long _lcsClusterEntryId;
 	private long _lcsClusterNodeId;
-	private String _location;
 	private String _name;
 	private int _patchingToolVersion;
 	private int _portalBuildNumber;

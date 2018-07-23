@@ -174,8 +174,7 @@ public class ClusterNodeUtil {
 		LCSClusterNode lcsClusterNode =
 			LCSClusterNodeClientUtil.addLCSClusterNode(
 				lcsClusterEntryId, _generateLCSClusterNodeName(),
-				StringPool.BLANK, StringPool.BLANK,
-				ReleaseInfo.getBuildNumber(),
+				StringPool.BLANK, ReleaseInfo.getBuildNumber(),
 				installationEnvironmentAdvisor.getProcessorCoresTotal());
 
 		return lcsClusterNode.getKey();

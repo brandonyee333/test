@@ -31,7 +31,7 @@ public interface LCSClusterNodeClient {
 
 	public LCSClusterNode addLCSClusterNode(
 			long lcsClusterEntryId, String name, String description, String key,
-			String location, int portalBuildNumber, int processorCoresTotal)
+			int portalBuildNumber, int processorCoresTotal)
 		throws DuplicateLCSClusterNodeNameException,
 			   JSONWebServiceInvocationException,
 			   JSONWebServiceSerializeException,

@@ -40,7 +40,7 @@ public class LCSClusterNodeClientImpl implements LCSClusterNodeClient {
 	@Override
 	public LCSClusterNode addLCSClusterNode(
 			long lcsClusterEntryId, String name, String description, String key,
-			String location, int portalBuildNumber, int processorCoresTotal)
+			int portalBuildNumber, int processorCoresTotal)
 		throws DuplicateLCSClusterNodeNameException,
 			   JSONWebServiceInvocationException,
 			   JSONWebServiceSerializeException,
@@ -54,16 +54,12 @@ public class LCSClusterNodeClientImpl implements LCSClusterNodeClient {
 			description = null;
 		}
 
-		if ((location != null) && location.equals("")) {
-			location = null;
-		}
-
 		try {
 			return _jsonWebServiceClient.doPostToObject(
 				LCSClusterNode.class, _URL_LCS_CLUSTER_NODE, "name", name,
 				"description", description, "lcsClusterEntryId",
-				String.valueOf(lcsClusterEntryId), "location", location, "key",
-				key, "portalBuildNumber", String.valueOf(portalBuildNumber),
+				String.valueOf(lcsClusterEntryId), "key", key,
+				"portalBuildNumber", String.valueOf(portalBuildNumber),
 				"processorCoresTotal", String.valueOf(processorCoresTotal));
 		}
 		catch (JSONWebServiceInvocationException jsonwsie) {
