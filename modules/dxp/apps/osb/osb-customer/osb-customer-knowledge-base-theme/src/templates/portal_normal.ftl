@@ -18,7 +18,7 @@
 
 	<@liferay_util["include"] page=top_head_include />
 
-	<script type="text/javascript" src="${javascript_folder}/ldn_faq_toggler.js"></script>
+	<script src="${javascript_folder}/ldn_faq_toggler.js" type="text/javascript"></script>
 
 	<#if theme_settings["google-analytics-id"] != "">
 		<script>
