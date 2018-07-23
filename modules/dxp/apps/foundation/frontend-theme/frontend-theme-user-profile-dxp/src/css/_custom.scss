@@ -114,3 +114,11 @@ body {
 	height: 20px;
 	top: 22px;
 }
+
+.autofit-row {
+	display: flex;
+}
+
+.autofit-col-expand {
+	flex-grow: 1;
+ }
