@@ -1739,8 +1739,6 @@ public class AccountEntryLocalServiceImpl
 		accountEntry.setNotes(notes);
 		accountEntry.setStatus(WorkflowConstants.STATUS_CLOSED);
 
-		accountEntryPersistence.update(accountEntry);
-
 		// Address
 
 		addressLocalService.addAddress(
@@ -1761,6 +1759,8 @@ public class AccountEntryLocalServiceImpl
 
 		accountEntryPersistence.setSupportRegions(
 			accountEntryId, supportRegionIds);
+
+		accountEntryPersistence.update(accountEntry);
 
 		return accountEntry;
 	}
