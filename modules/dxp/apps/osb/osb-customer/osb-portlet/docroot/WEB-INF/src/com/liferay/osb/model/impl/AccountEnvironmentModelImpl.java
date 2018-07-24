@@ -106,8 +106,8 @@ public class AccountEnvironmentModelImpl extends BaseModelImpl<AccountEnvironmen
 
 	public static final String TABLE_SQL_CREATE = "create table OSB_AccountEnvironment (accountEnvironmentId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,accountEntryId LONG,productEntryId LONG,name VARCHAR(75) null,envOS INTEGER,envOSCustom VARCHAR(150) null,envDB INTEGER,envJVM INTEGER,envAS INTEGER,envLFR INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table OSB_AccountEnvironment";
-	public static final String ORDER_BY_JPQL = " ORDER BY accountEnvironment.accountEnvironmentId ASC";
-	public static final String ORDER_BY_SQL = " ORDER BY OSB_AccountEnvironment.accountEnvironmentId ASC";
+	public static final String ORDER_BY_JPQL = " ORDER BY accountEnvironment.name ASC";
+	public static final String ORDER_BY_SQL = " ORDER BY OSB_AccountEnvironment.name ASC";
 	public static final String DATA_SOURCE = "liferayDataSource";
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
 	public static final String TX_MANAGER = "liferayTransactionManager";
@@ -123,7 +123,6 @@ public class AccountEnvironmentModelImpl extends BaseModelImpl<AccountEnvironmen
 	public static final long ACCOUNTENTRYID_COLUMN_BITMASK = 1L;
 	public static final long NAME_COLUMN_BITMASK = 2L;
 	public static final long PRODUCTENTRYID_COLUMN_BITMASK = 4L;
-	public static final long ACCOUNTENVIRONMENTID_COLUMN_BITMASK = 8L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -466,7 +465,7 @@ public class AccountEnvironmentModelImpl extends BaseModelImpl<AccountEnvironmen
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask |= NAME_COLUMN_BITMASK;
+		_columnBitmask = -1L;
 
 		if (_originalName == null) {
 			_originalName = _name;
@@ -603,17 +602,15 @@ public class AccountEnvironmentModelImpl extends BaseModelImpl<AccountEnvironmen
 
 	@Override
 	public int compareTo(AccountEnvironment accountEnvironment) {
-		long primaryKey = accountEnvironment.getPrimaryKey();
+		int value = 0;
 
-		if (getPrimaryKey() < primaryKey) {
-			return -1;
+		value = getName().compareTo(accountEnvironment.getName());
+
+		if (value != 0) {
+			return value;
 		}
-		else if (getPrimaryKey() > primaryKey) {
-			return 1;
-		}
-		else {
-			return 0;
-		}
+
+		return 0;
 	}
 
 	@Override

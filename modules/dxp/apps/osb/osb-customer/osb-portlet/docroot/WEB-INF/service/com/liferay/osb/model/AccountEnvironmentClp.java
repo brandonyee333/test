@@ -737,17 +737,15 @@ public class AccountEnvironmentClp extends BaseModelImpl<AccountEnvironment>
 
 	@Override
 	public int compareTo(AccountEnvironment accountEnvironment) {
-		long primaryKey = accountEnvironment.getPrimaryKey();
+		int value = 0;
 
-		if (getPrimaryKey() < primaryKey) {
-			return -1;
+		value = getName().compareTo(accountEnvironment.getName());
+
+		if (value != 0) {
+			return value;
 		}
-		else if (getPrimaryKey() > primaryKey) {
-			return 1;
-		}
-		else {
-			return 0;
-		}
+
+		return 0;
 	}
 
 	@Override

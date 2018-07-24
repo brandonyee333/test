@@ -106,7 +106,8 @@ public class AccountEnvironmentPersistenceImpl extends BasePersistenceImpl<Accou
 			AccountEnvironmentImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByAccountEntryId",
 			new String[] { Long.class.getName() },
-			AccountEnvironmentModelImpl.ACCOUNTENTRYID_COLUMN_BITMASK);
+			AccountEnvironmentModelImpl.ACCOUNTENTRYID_COLUMN_BITMASK |
+			AccountEnvironmentModelImpl.NAME_COLUMN_BITMASK);
 	public static final FinderPath FINDER_PATH_COUNT_BY_ACCOUNTENTRYID = new FinderPath(AccountEnvironmentModelImpl.ENTITY_CACHE_ENABLED,
 			AccountEnvironmentModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByAccountEntryId",
@@ -624,7 +625,8 @@ public class AccountEnvironmentPersistenceImpl extends BasePersistenceImpl<Accou
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByAEI_PEI",
 			new String[] { Long.class.getName(), Long.class.getName() },
 			AccountEnvironmentModelImpl.ACCOUNTENTRYID_COLUMN_BITMASK |
-			AccountEnvironmentModelImpl.PRODUCTENTRYID_COLUMN_BITMASK);
+			AccountEnvironmentModelImpl.PRODUCTENTRYID_COLUMN_BITMASK |
+			AccountEnvironmentModelImpl.NAME_COLUMN_BITMASK);
 	public static final FinderPath FINDER_PATH_COUNT_BY_AEI_PEI = new FinderPath(AccountEnvironmentModelImpl.ENTITY_CACHE_ENABLED,
 			AccountEnvironmentModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByAEI_PEI",

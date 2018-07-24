@@ -401,6 +401,25 @@ public class ProductEntryClp extends BaseModelImpl<ProductEntry>
 	}
 
 	@Override
+	public java.lang.String getDisplayName() {
+		try {
+			String methodName = "getDisplayName";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
 	public java.lang.String[] getDossieraIdMappings() {
 		try {
 			String methodName = "getDossieraIdMappings";
