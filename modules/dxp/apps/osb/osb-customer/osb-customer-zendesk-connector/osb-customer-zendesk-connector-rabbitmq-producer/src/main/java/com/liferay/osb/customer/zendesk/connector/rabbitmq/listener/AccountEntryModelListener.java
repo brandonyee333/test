@@ -1,0 +1,86 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.customer.zendesk.connector.rabbitmq.listener;
+
+import com.liferay.osb.customer.rabbitmq.connector.publisher.MessagePublisher;
+import com.liferay.osb.customer.zendesk.connector.rabbitmq.configuration.ZendeskConnectorConfigurationValues;
+import com.liferay.osb.customer.zendesk.connector.rabbitmq.model.ZendeskOrganization;
+import com.liferay.osb.model.AccountEntry;
+import com.liferay.osb.model.AccountEntryConstants;
+import com.liferay.osb.model.PartnerEntry;
+import com.liferay.osb.model.SupportRegion;
+import com.liferay.osb.service.SupportRegionLocalService;
+import com.liferay.portal.kernel.exception.ModelListenerException;
+import com.liferay.portal.kernel.model.BaseModelListener;
+import com.liferay.portal.kernel.model.ModelListener;
+import com.liferay.portal.kernel.util.StringPool;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
+/**
+ * @author Kyle Bischof
+ */
+@Component(immediate = true, service = ModelListener.class)
+public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
+
+	@Override
+	public void onAfterCreate(AccountEntry accountEntry)
+		throws ModelListenerException {
+
+		try {
+			String[] languageIds = accountEntry.getLanguageIds();
+
+			String partnerEntryCode = StringPool.BLANK;
+
+			PartnerEntry partnerEntry = accountEntry.getPartnerEntry();
+
+			if (partnerEntry != null) {
+				partnerEntryCode = partnerEntry.getCode();
+			}
+
+			long[] supportRegionIds = accountEntry.getSupportRegionIds();
+
+			SupportRegion supportRegion =
+				_supportRegionLocalService.getSupportRegion(
+					supportRegionIds[0]);
+
+			ZendeskOrganization zendeskOrganization = new ZendeskOrganization(
+				accountEntry.getName(),
+				String.valueOf(accountEntry.getAccountEntryId()),
+				String.valueOf(accountEntry.getPartnerManagedSupport()),
+				partnerEntryCode, "true", "true", StringPool.BLANK,
+				accountEntry.getStatusLabel(),
+				AccountEntryConstants.getLanguageLabel(languageIds[0]),
+				supportRegion.getName(),
+				AccountEntryConstants.getTierLabel(accountEntry.getTier()));
+
+			_messagePublisher.sendMessage(
+				ZendeskConnectorConfigurationValues.
+					RABBITMQ_MESSAGE_EXCHANGE_NAME,
+				"zendesk.organization.add", zendeskOrganization.toJSONObject());
+		}
+		catch (Exception e) {
+			throw new ModelListenerException(e);
+		}
+	}
+
+	@Reference
+	private MessagePublisher _messagePublisher;
+
+	@Reference
+	private SupportRegionLocalService _supportRegionLocalService;
+
+}

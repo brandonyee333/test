@@ -1,0 +1,3 @@
+Bundle-Name: Liferay OSB Customer Zendesk Connector RabbitMQ Producer
+Bundle-SymbolicName: com.liferay.osb.customer.zendesk.connector.rabbitmq.producer
+Bundle-Version: 1.0.0
