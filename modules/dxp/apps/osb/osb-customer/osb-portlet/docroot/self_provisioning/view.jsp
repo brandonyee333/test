@@ -47,15 +47,9 @@ int[] productMinorVersions = StringUtil.split(portletPreferences.getValue("produ
 		if (accountEntries.size() == 1) {
 			accountEntry = accountEntries.get(0);
 		}
-
-		String productEntryDisplayName = productEntryRootName;
-
-		if (productEntryRootName.equals(ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE)) {
-			productEntryDisplayName = "Liferay DXP";
-		}
 		%>
 
-		<span class="txt-b"><liferay-ui:message arguments="<%= new Object[] {productEntryDisplayName} %>" key="download-a-x-activation-key-for-your-developer-workstation" /></span>
+		<span class="txt-b"><liferay-ui:message arguments="<%= new Object[] {ProductEntryConstants.getDisplayName(productEntryRootName)} %>" key="download-a-x-activation-key-for-your-developer-workstation" /></span>
 
 		<div class="activation-key-container aui-helper-clearfix">
 			<div class="aui-w33 content-column">

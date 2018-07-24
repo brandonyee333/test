@@ -16,6 +16,7 @@ package com.liferay.osb.model;
 
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -205,6 +206,11 @@ public class ProductEntryConstants {
 		}
 
 		return StringPool.BLANK;
+	}
+
+	public static String getDisplayName(String productEntryName) {
+		return StringUtil.replace(
+			productEntryName, ROOT_NAME_DIGITAL_ENTERPRISE, "Liferay DXP");
 	}
 
 	public static String getEnvironmentLabel(int environment) {

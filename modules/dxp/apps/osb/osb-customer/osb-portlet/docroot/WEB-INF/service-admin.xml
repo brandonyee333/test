@@ -230,6 +230,12 @@
 		<column name="envAS" type="int" />
 		<column name="envLFR" type="int" />
 
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="name" />
+		</order>
+
 		<!-- Finder -->
 
 		<finder name="AccountEntryId" return-type="Collection">

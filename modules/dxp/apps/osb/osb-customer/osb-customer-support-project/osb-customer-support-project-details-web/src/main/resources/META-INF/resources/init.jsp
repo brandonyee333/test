@@ -28,10 +28,17 @@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 <%@ page import="com.liferay.osb.customer.support.project.details.web.internal.constants.SupportProjectDetailsWebKeys" %><%@
 page import="com.liferay.osb.model.AccountEntry" %><%@
 page import="com.liferay.osb.model.AccountEntryConstants" %><%@
+page import="com.liferay.osb.model.AccountEnvironment" %><%@
+page import="com.liferay.osb.model.AccountEnvironmentAttachment" %><%@
+page import="com.liferay.osb.model.AccountEnvironmentAttachmentConstants" %><%@
 page import="com.liferay.osb.model.PartnerEntry" %><%@
+page import="com.liferay.osb.model.ProductEntry" %><%@
 page import="com.liferay.osb.model.SupportRegion" %><%@
 page import="com.liferay.osb.model.SupportResponse" %><%@
 page import="com.liferay.osb.service.AccountEntryServiceUtil" %><%@
+page import="com.liferay.osb.service.AccountEnvironmentAttachmentLocalServiceUtil" %><%@
+page import="com.liferay.osb.service.AccountEnvironmentLocalServiceUtil" %><%@
+page import="com.liferay.osb.service.ProductEntryLocalServiceUtil" %><%@
 page import="com.liferay.osb.service.SupportResponseLocalServiceUtil" %><%@
 page import="com.liferay.osb.util.comparator.AccountEntryNameComparator" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@

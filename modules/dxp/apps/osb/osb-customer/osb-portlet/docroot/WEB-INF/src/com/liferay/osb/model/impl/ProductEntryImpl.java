@@ -69,6 +69,10 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 			ProductEntryConstants.LIST_TYPE_PORTAL_ALL_VERSIONS);
 	}
 
+	public String getDisplayName() {
+		return ProductEntryConstants.getDisplayName(getName());
+	}
+
 	public String[] getDossieraIdMappings() {
 		long classNameId = PortalUtil.getClassNameId(
 			ProductEntry.class.getName());

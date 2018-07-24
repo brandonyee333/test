@@ -126,7 +126,7 @@ AccountEntry accountEntry = (AccountEntry)renderRequest.getAttribute(SupportProj
 	</aui:col>
 
 	<aui:col width="<%= 40 %>">
-		test2
+		<liferay-util:include page="/support_project_details/environment_configurations.jsp" servletContext="<%= application %>" />
 	</aui:col>
 
 	<aui:col width="<%= 33 %>">
