@@ -25,6 +25,7 @@ import com.liferay.osb.service.SupportRegionLocalService;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
+import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.util.StringPool;
 
 import org.osgi.service.component.annotations.Component;
@@ -88,6 +89,14 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		catch (Exception e) {
 			throw new ModelListenerException(e);
 		}
+	}
+
+	@Reference(
+		target = "(module.service.lifecycle=osb.portlet.initialized)",
+		unbind = "-"
+	)
+	protected void setModuleServiceLifecycle(
+		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
 	@Reference
