@@ -29,6 +29,8 @@ import org.osgi.service.component.annotations.Component;
 	property = {
 		"com.liferay.portlet.css-class-wrapper=osb-account-entry-details-portlet",
 		"com.liferay.portlet.display-category=category.osb",
+		"com.liferay.portlet.footer-portlet-javascript=/dist/main.js",
+		"com.liferay.portlet.header-portlet-css=/dist/main.css",
 		"javax.portlet.display-name=OSB Support Project Details",
 		"javax.portlet.expiration-cache=0",
 		"javax.portlet.init-param.mvc-command-names-default-views=/view",
