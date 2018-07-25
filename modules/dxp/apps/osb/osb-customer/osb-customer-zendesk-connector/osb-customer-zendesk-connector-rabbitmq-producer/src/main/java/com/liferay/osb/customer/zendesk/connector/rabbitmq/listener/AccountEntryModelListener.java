@@ -41,7 +41,14 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		throws ModelListenerException {
 
 		try {
-			String[] languageIds = accountEntry.getLanguageIds();
+			ZendeskOrganization zendeskOrganization = new ZendeskOrganization();
+
+			zendeskOrganization.setExternalId(
+				String.valueOf(accountEntry.getAccountEntryId()));
+
+			zendeskOrganization.setName(accountEntry.getName());
+			zendeskOrganization.setPartnerFirstLineSupport(
+				String.valueOf(accountEntry.getPartnerManagedSupport()));
 
 			String partnerEntryCode = StringPool.BLANK;
 
@@ -51,20 +58,26 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 				partnerEntryCode = partnerEntry.getCode();
 			}
 
+			zendeskOrganization.setPartnerOrganization(partnerEntryCode);
+			zendeskOrganization.setSharedComments(Boolean.TRUE.toString());
+			zendeskOrganization.setSharedTickets(Boolean.TRUE.toString());
+			zendeskOrganization.setSLA(StringPool.BLANK);
+			zendeskOrganization.setStatus(accountEntry.getStatusLabel());
+
+			String[] languageIds = accountEntry.getLanguageIds();
+
+			zendeskOrganization.setSupportLanguage(
+				AccountEntryConstants.getLanguageLabel(languageIds[0]));
+
 			long[] supportRegionIds = accountEntry.getSupportRegionIds();
 
 			SupportRegion supportRegion =
 				_supportRegionLocalService.getSupportRegion(
 					supportRegionIds[0]);
 
-			ZendeskOrganization zendeskOrganization = new ZendeskOrganization(
-				accountEntry.getName(),
-				String.valueOf(accountEntry.getAccountEntryId()),
-				String.valueOf(accountEntry.getPartnerManagedSupport()),
-				partnerEntryCode, "true", "true", StringPool.BLANK,
-				accountEntry.getStatusLabel(),
-				AccountEntryConstants.getLanguageLabel(languageIds[0]),
-				supportRegion.getName(),
+			zendeskOrganization.setSupportRegion(supportRegion.getName());
+
+			zendeskOrganization.setTier(
 				AccountEntryConstants.getTierLabel(accountEntry.getTier()));
 
 			_messagePublisher.sendMessage(

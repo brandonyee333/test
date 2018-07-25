@@ -1760,9 +1760,7 @@ public class AccountEntryLocalServiceImpl
 		accountEntryPersistence.setSupportRegions(
 			accountEntryId, supportRegionIds);
 
-		accountEntryPersistence.update(accountEntry);
-
-		return accountEntry;
+		return accountEntryPersistence.update(accountEntry);
 	}
 
 	protected String formatLanguageIds(String[] languageIds) {

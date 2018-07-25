@@ -24,9 +24,10 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(
 	immediate = true, property = "routing.key=zendesk.organization.add",
-	service = OrganizationAddMessageProcessor.class
+	service = ZendeskOrganizationAddMessageProcessor.class
 )
-public class OrganizationAddMessageProcessor extends BaseMessageProcessor {
+public class ZendeskOrganizationAddMessageProcessor
+	extends BaseMessageProcessor {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
 		JSONObject responseJSONObject = ZendeskHttpUtil.post(

@@ -27,25 +27,6 @@ public class ZendeskOrganization {
 	public ZendeskOrganization() {
 	}
 
-	public ZendeskOrganization(
-		String name, String externalId, String partnerFirstLineSupport,
-		String partnerOrganization, String sharedTickets, String sharedComments,
-		String sla, String status, String supportLanguage, String supportRegion,
-		String tier) {
-
-		_name = name;
-		_externalId = externalId;
-		_partnerFirstLineSupport = partnerFirstLineSupport;
-		_partnerOrganization = partnerOrganization;
-		_sharedTickets = sharedTickets;
-		_sharedComments = sharedComments;
-		_sla = sla;
-		_status = status;
-		_supportLanguage = supportLanguage;
-		_supportRegion = supportRegion;
-		_tier = tier;
-	}
-
 	public String getExternalId() {
 		return _externalId;
 	}
