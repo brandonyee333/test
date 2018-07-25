@@ -206,6 +206,24 @@ public class OfferingEntryLocalServiceImpl
 		return offeringEntryPersistence.findByOrderEntryId(orderEntryId);
 	}
 
+	public boolean hasActiveSupportOfferingEntry(long accountEntryId) {
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
+
+		params.put("validTicket", StringPool.BLANK);
+
+		int count = offeringEntryFinder.countByU_AEI_PEI_T_S_SED(
+			0, accountEntryId, 0,
+			new int[] {OfferingEntryConstants.TYPE_REGULAR},
+			new int[] {OfferingEntryConstants.STATUS_ACTIVE}, null, null,
+			params, true);
+
+		if (count > 0) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public boolean hasActiveTrialOfferingEntry(long userId) {
 		AccountEntry accountEntry =
 			accountEntryLocalService.fetchUserTrialAccountEntry(userId);

@@ -208,6 +208,11 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 		return AccountEntryConstants.getTypeLabel(getType());
 	}
 
+	public boolean hasActiveSupportOffering() {
+		return OfferingEntryLocalServiceUtil.hasActiveSupportOfferingEntry(
+			getAccountEntryId());
+	}
+
 	public void setAddress(Address address) {
 		_address = address;
 	}

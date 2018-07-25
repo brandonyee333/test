@@ -22,6 +22,7 @@ import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.service.SupportRegionLocalServiceUtil;
+import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
@@ -42,6 +43,13 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		throws ModelListenerException {
 
 		try {
+			if ((accountEntry.getStatus() !=
+					WorkflowConstants.STATUS_APPROVED) ||
+				!accountEntry.hasActiveSupportOffering()) {
+
+				return;
+			}
+
 			ZendeskOrganization zendeskOrganization = new ZendeskOrganization();
 
 			zendeskOrganization.setExternalId(
