@@ -52,6 +52,7 @@
 		<aui:form action="<%= updateAccountEnvironmentURL %>" enctype="multipart/form-data" method="post">
 			<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
 			<aui:input name="accountEnvironmentId" type="hidden" value="<%= accountEnvironmentId %>" />
+			<aui:input name="productEntryId" type="hidden" value="<%= productEntryId %>" />
 
 			<liferay-ui:error exception="<%= AccountEnvironmentEnvASException.class %>" message="please-select-a-valid-application-server" />
 			<liferay-ui:error exception="<%= AccountEnvironmentEnvDBException.class %>" message="please-select-a-valid-database" />

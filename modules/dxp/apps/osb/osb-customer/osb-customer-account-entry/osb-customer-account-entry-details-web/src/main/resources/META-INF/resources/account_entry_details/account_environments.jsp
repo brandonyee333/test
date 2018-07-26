@@ -134,6 +134,13 @@ for (AccountEnvironment accountEnvironment : accountEnvironments) {
 
 			<aui:row>
 				<aui:col width="<%= 100 %>">
+					<liferay-portlet:renderURL var="editAccountEnvironmentURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+						<portlet:param name="mvcRenderCommandName" value="/edit_account_environment" />
+						<portlet:param name="accountEnvironmentId" value="<%= String.valueOf(accountEnvironment.getAccountEnvironmentId()) %>" />
+					</liferay-portlet:renderURL>
+
+					<aui:button onClick='<%= renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "update-environment-configuration") + "', '" + editAccountEnvironmentURL.toString() + "', '" + renderResponse.getNamespace() + "editAccountEnvironment')" %>' value="edit" />
+
 					<portlet:actionURL name="deleteAccountEnvironment" var="deleteAccountEnvironmentURL">
 						<portlet:param name="redirect" value="<%= currentURL %>" />
 						<portlet:param name="accountEnvironmentId" value="<%= String.valueOf(accountEnvironment.getAccountEnvironmentId()) %>" />
