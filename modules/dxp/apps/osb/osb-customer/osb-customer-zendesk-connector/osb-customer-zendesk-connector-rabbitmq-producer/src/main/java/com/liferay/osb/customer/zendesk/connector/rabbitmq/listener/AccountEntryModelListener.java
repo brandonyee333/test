@@ -21,7 +21,7 @@ import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.SupportRegion;
-import com.liferay.osb.service.SupportRegionLocalService;
+import com.liferay.osb.service.SupportRegionLocalServiceUtil;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
@@ -73,7 +73,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			long[] supportRegionIds = accountEntry.getSupportRegionIds();
 
 			SupportRegion supportRegion =
-				_supportRegionLocalService.getSupportRegion(
+				SupportRegionLocalServiceUtil.getSupportRegion(
 					supportRegionIds[0]);
 
 			zendeskOrganization.setSupportRegion(supportRegion.getName());
@@ -101,8 +101,5 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 
 	@Reference
 	private MessagePublisher _messagePublisher;
-
-	@Reference
-	private SupportRegionLocalService _supportRegionLocalService;
 
 }
