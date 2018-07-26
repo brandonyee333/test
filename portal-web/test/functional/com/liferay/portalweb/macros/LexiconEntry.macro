@@ -1,8 +1,10 @@
 <definition>
 	<command name="changeDisplayStyle">
-		<execute function="Click#pauseClickAtNoMouseOver" locator1="Icon#CURRENT_DISPLAY_STYLE" />
+		<execute function="Click#clickNoMouseOver" locator1="Icon#CURRENT_DISPLAY_STYLE" />
 
-		<execute function="Click#pauseClickAtNoMouseOver" locator1="MenuItem#ANY_MENU_ITEM">
+		<execute function="Pause" locator1="3000" />
+
+		<execute function="Click#clickNoMouseOver" locator1="MenuItem#ANY_MENU_ITEM">
 			<var method="StringUtil#upperCaseFirstLetter('${displayStyle}')" name="key_menuItem" />
 		</execute>
 	</command>
