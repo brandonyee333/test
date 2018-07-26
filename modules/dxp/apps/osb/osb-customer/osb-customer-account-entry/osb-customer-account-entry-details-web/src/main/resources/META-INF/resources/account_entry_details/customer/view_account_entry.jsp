@@ -17,7 +17,7 @@
 <%@ include file="/init.jsp" %>
 
 <%
-AccountEntry accountEntry = (AccountEntry)renderRequest.getAttribute(SupportProjectDetailsWebKeys.ACCOUNT_ENTRY);
+AccountEntry accountEntry = (AccountEntry)renderRequest.getAttribute(AccountEntryDetailsWebKeys.ACCOUNT_ENTRY);
 %>
 
 <%= HtmlUtil.escape(accountEntry.getName()) %>
