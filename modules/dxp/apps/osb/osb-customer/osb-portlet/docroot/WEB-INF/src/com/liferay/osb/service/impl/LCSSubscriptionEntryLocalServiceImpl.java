@@ -166,10 +166,6 @@ public class LCSSubscriptionEntryLocalServiceImpl
 					offeringEntry.getLicenseKeysCount();
 		}
 
-		if ((serversAllowed <= 0) && (quantity <= 0)) {
-			return null;
-		}
-
 		LCSSubscriptionEntry lcsSubscriptionEntry =
 			new LCSSubscriptionEntryImpl();
 
