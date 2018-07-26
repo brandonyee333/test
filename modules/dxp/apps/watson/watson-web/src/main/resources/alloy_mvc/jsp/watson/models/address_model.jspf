@@ -37,24 +37,22 @@ public static class WatsonAddress extends WatsonAddressBaseModel {
 
 	public static final int MAX_FIELD_LENGTH_TEXTAREA = 4000;
 
-	public static WatsonAddress create(String jsonDataString, HttpServletRequest request, boolean removeEmpty) throws Exception {
-		if (removeEmpty) {
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(jsonDataString);
+	public static WatsonAddress create(String jsonDataString, HttpServletRequest request) throws Exception {
+		WatsonAddress watsonAddress = create(0, request);
 
-			Iterator<?> keys = jsonObject.keys();
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(jsonDataString);
 
-			while (keys.hasNext()) {
-				String key = (String)keys.next();
+		Iterator<?> keys = jsonObject.keys();
 
-				if (Validator.isNull(jsonObject.get(key))) {
-					keys.remove();
-				}
+		while (keys.hasNext()) {
+			String key = (String)keys.next();
+
+			if (Validator.isNotNull(jsonObject.get(key))) {
+				BeanPropertiesUtil.setPropertySilent(watsonAddress, key, jsonObject.get(key));
 			}
-
-			jsonDataString = jsonObject.toJSONString();
 		}
 
-		return create(jsonDataString, request);
+		return watsonAddress;
 	}
 
 	public static JSONObject getAsJSONDataArray(List<WatsonAddress> watsonAddresses, long count) throws Exception {

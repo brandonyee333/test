@@ -2,15 +2,15 @@ ${"<%--"}
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 ${"--%>"}
 
@@ -146,6 +146,10 @@ public static class ${baseclassname} extends ${classname}Wrapper {
 	}
 
 	public static ${classname} create(long ${instancename}Id) throws Exception {
+		if (${instancename}Id <= 0) {
+			${instancename}Id = CounterLocalServiceUtil.increment();
+		}
+
 		return new ${classname}((${modelpath}.${classname})baseModelAlloyServiceInvoker.createModel(${instancename}Id));
 	}
 
@@ -159,21 +163,7 @@ public static class ${baseclassname} extends ${classname}Wrapper {
 		return ${instancename};
 	}
 
-	public static ${classname} create(String jsonDataString, HttpServletRequest request) throws Exception {
-		${classname} ${instancename} = JSONFactoryUtil.looseDeserialize(jsonDataString, ${classname}.class);
-
-		${instancename}.setNew(true);
-
-		BaseAlloyControllerImpl.setAuditedModel(${instancename}, request);
-
-		WatsonAlloyControllerImpl.setGroupedModel(${instancename}, request);
-
-		${instancename}.set${classname}Id(CounterLocalServiceUtil.increment());
-
-		return new ${classname}(${instancename});
-	}
-
-	public static void createAudited${classname}(${classname} ${instancename}, HttpServletRequest request) throws Exception {
+	public static void createAudited${classname}(${classname} ${instancename}) {
 		${classname}Audit ${instancename}Audit = ${classname}AuditLocalServiceUtil.create${classname}Audit(CounterLocalServiceUtil.increment());
 
 		BeanPropertiesUtil.copyProperties(${instancename}, ${instancename}Audit, new String[] {"new", "primaryKey", "primaryKeyObj"});
@@ -233,11 +223,11 @@ public static class ${baseclassname} extends ${classname}Wrapper {
 		return alloy${pluralclassname};
 	}
 
-	public static Class<?> getBaseModelClass() throws Exception {
+	public static Class<?> getBaseModelClass() {
 		return baseModelClass;
 	}
 
-	public String[] getLocalizedProperties() throws Exception {
+	public String[] getLocalizedProperties() {
 		if (localizedProperties.length < 1) {
 			List<String> localizedPropertiesList = new ArrayList<>();
 
@@ -342,7 +332,7 @@ public static class ${baseclassname} extends ${classname}Wrapper {
 
 		validateUpdate(${instancename});
 
-		createAudited${classname}(${instancename}, request);
+		createAudited${classname}(${instancename});
 
 		return new ${classname}((${modelpath}.${classname})baseModelAlloyServiceInvoker.updateModel(${instancename}));
 	}
