@@ -131,6 +131,17 @@ for (AccountEnvironment accountEnvironment : accountEnvironments) {
 					</c:if>
 				</aui:col>
 			</aui:row>
+
+			<aui:row>
+				<aui:col width="<%= 100 %>">
+					<portlet:actionURL name="deleteAccountEnvironment" var="deleteAccountEnvironmentURL">
+						<portlet:param name="redirect" value="<%= currentURL %>" />
+						<portlet:param name="accountEnvironmentId" value="<%= String.valueOf(accountEnvironment.getAccountEnvironmentId()) %>" />
+					</portlet:actionURL>
+
+					<aui:button href="<%= deleteAccountEnvironmentURL.toString() %>" value="delete" />
+				</aui:col>
+			</aui:row>
 		</div>
 	</div>
 
