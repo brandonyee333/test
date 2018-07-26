@@ -146,6 +146,10 @@ public static class WatsonListTypeBaseModel extends WatsonListTypeWrapper {
 	}
 
 	public static WatsonListType create(long watsonListTypeId) throws Exception {
+		if (watsonListTypeId <= 0) {
+			watsonListTypeId = CounterLocalServiceUtil.increment();
+		}
+
 		return new WatsonListType((com.liferay.watson.model.WatsonListType)baseModelAlloyServiceInvoker.createModel(watsonListTypeId));
 	}
 
@@ -159,21 +163,7 @@ public static class WatsonListTypeBaseModel extends WatsonListTypeWrapper {
 		return watsonListType;
 	}
 
-	public static WatsonListType create(String jsonDataString, HttpServletRequest request) throws Exception {
-		WatsonListType watsonListType = JSONFactoryUtil.looseDeserialize(jsonDataString, WatsonListType.class);
-
-		watsonListType.setNew(true);
-
-		BaseAlloyControllerImpl.setAuditedModel(watsonListType, request);
-
-		WatsonAlloyControllerImpl.setGroupedModel(watsonListType, request);
-
-		watsonListType.setWatsonListTypeId(CounterLocalServiceUtil.increment());
-
-		return new WatsonListType(watsonListType);
-	}
-
-	public static void createAuditedWatsonListType(WatsonListType watsonListType, HttpServletRequest request) throws Exception {
+	public static void createAuditedWatsonListType(WatsonListType watsonListType) {
 		WatsonListTypeAudit watsonListTypeAudit = WatsonListTypeAuditLocalServiceUtil.createWatsonListTypeAudit(CounterLocalServiceUtil.increment());
 
 		BeanPropertiesUtil.copyProperties(watsonListType, watsonListTypeAudit, new String[] {"new", "primaryKey", "primaryKeyObj"});
@@ -233,11 +223,11 @@ public static class WatsonListTypeBaseModel extends WatsonListTypeWrapper {
 		return alloyWatsonListTypes;
 	}
 
-	public static Class<?> getBaseModelClass() throws Exception {
+	public static Class<?> getBaseModelClass() {
 		return baseModelClass;
 	}
 
-	public String[] getLocalizedProperties() throws Exception {
+	public String[] getLocalizedProperties() {
 		if (localizedProperties.length < 1) {
 			List<String> localizedPropertiesList = new ArrayList<>();
 
@@ -342,7 +332,7 @@ public static class WatsonListTypeBaseModel extends WatsonListTypeWrapper {
 
 		validateUpdate(watsonListType);
 
-		createAuditedWatsonListType(watsonListType, request);
+		createAuditedWatsonListType(watsonListType);
 
 		return new WatsonListType((com.liferay.watson.model.WatsonListType)baseModelAlloyServiceInvoker.updateModel(watsonListType));
 	}

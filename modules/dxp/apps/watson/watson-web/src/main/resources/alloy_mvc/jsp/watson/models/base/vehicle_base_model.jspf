@@ -146,6 +146,10 @@ public static class WatsonVehicleBaseModel extends WatsonVehicleWrapper {
 	}
 
 	public static WatsonVehicle create(long watsonVehicleId) throws Exception {
+		if (watsonVehicleId <= 0) {
+			watsonVehicleId = CounterLocalServiceUtil.increment();
+		}
+
 		return new WatsonVehicle((com.liferay.watson.model.WatsonVehicle)baseModelAlloyServiceInvoker.createModel(watsonVehicleId));
 	}
 
@@ -159,21 +163,7 @@ public static class WatsonVehicleBaseModel extends WatsonVehicleWrapper {
 		return watsonVehicle;
 	}
 
-	public static WatsonVehicle create(String jsonDataString, HttpServletRequest request) throws Exception {
-		WatsonVehicle watsonVehicle = JSONFactoryUtil.looseDeserialize(jsonDataString, WatsonVehicle.class);
-
-		watsonVehicle.setNew(true);
-
-		BaseAlloyControllerImpl.setAuditedModel(watsonVehicle, request);
-
-		WatsonAlloyControllerImpl.setGroupedModel(watsonVehicle, request);
-
-		watsonVehicle.setWatsonVehicleId(CounterLocalServiceUtil.increment());
-
-		return new WatsonVehicle(watsonVehicle);
-	}
-
-	public static void createAuditedWatsonVehicle(WatsonVehicle watsonVehicle, HttpServletRequest request) throws Exception {
+	public static void createAuditedWatsonVehicle(WatsonVehicle watsonVehicle) {
 		WatsonVehicleAudit watsonVehicleAudit = WatsonVehicleAuditLocalServiceUtil.createWatsonVehicleAudit(CounterLocalServiceUtil.increment());
 
 		BeanPropertiesUtil.copyProperties(watsonVehicle, watsonVehicleAudit, new String[] {"new", "primaryKey", "primaryKeyObj"});
@@ -233,11 +223,11 @@ public static class WatsonVehicleBaseModel extends WatsonVehicleWrapper {
 		return alloyWatsonVehicles;
 	}
 
-	public static Class<?> getBaseModelClass() throws Exception {
+	public static Class<?> getBaseModelClass() {
 		return baseModelClass;
 	}
 
-	public String[] getLocalizedProperties() throws Exception {
+	public String[] getLocalizedProperties() {
 		if (localizedProperties.length < 1) {
 			List<String> localizedPropertiesList = new ArrayList<>();
 
@@ -342,7 +332,7 @@ public static class WatsonVehicleBaseModel extends WatsonVehicleWrapper {
 
 		validateUpdate(watsonVehicle);
 
-		createAuditedWatsonVehicle(watsonVehicle, request);
+		createAuditedWatsonVehicle(watsonVehicle);
 
 		return new WatsonVehicle((com.liferay.watson.model.WatsonVehicle)baseModelAlloyServiceInvoker.updateModel(watsonVehicle));
 	}

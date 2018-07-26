@@ -146,6 +146,10 @@ public static class WatsonIncidentBaseModel extends WatsonIncidentWrapper {
 	}
 
 	public static WatsonIncident create(long watsonIncidentId) throws Exception {
+		if (watsonIncidentId <= 0) {
+			watsonIncidentId = CounterLocalServiceUtil.increment();
+		}
+
 		return new WatsonIncident((com.liferay.watson.model.WatsonIncident)baseModelAlloyServiceInvoker.createModel(watsonIncidentId));
 	}
 
@@ -159,21 +163,7 @@ public static class WatsonIncidentBaseModel extends WatsonIncidentWrapper {
 		return watsonIncident;
 	}
 
-	public static WatsonIncident create(String jsonDataString, HttpServletRequest request) throws Exception {
-		WatsonIncident watsonIncident = JSONFactoryUtil.looseDeserialize(jsonDataString, WatsonIncident.class);
-
-		watsonIncident.setNew(true);
-
-		BaseAlloyControllerImpl.setAuditedModel(watsonIncident, request);
-
-		WatsonAlloyControllerImpl.setGroupedModel(watsonIncident, request);
-
-		watsonIncident.setWatsonIncidentId(CounterLocalServiceUtil.increment());
-
-		return new WatsonIncident(watsonIncident);
-	}
-
-	public static void createAuditedWatsonIncident(WatsonIncident watsonIncident, HttpServletRequest request) throws Exception {
+	public static void createAuditedWatsonIncident(WatsonIncident watsonIncident) {
 		WatsonIncidentAudit watsonIncidentAudit = WatsonIncidentAuditLocalServiceUtil.createWatsonIncidentAudit(CounterLocalServiceUtil.increment());
 
 		BeanPropertiesUtil.copyProperties(watsonIncident, watsonIncidentAudit, new String[] {"new", "primaryKey", "primaryKeyObj"});
@@ -233,11 +223,11 @@ public static class WatsonIncidentBaseModel extends WatsonIncidentWrapper {
 		return alloyWatsonIncidents;
 	}
 
-	public static Class<?> getBaseModelClass() throws Exception {
+	public static Class<?> getBaseModelClass() {
 		return baseModelClass;
 	}
 
-	public String[] getLocalizedProperties() throws Exception {
+	public String[] getLocalizedProperties() {
 		if (localizedProperties.length < 1) {
 			List<String> localizedPropertiesList = new ArrayList<>();
 
@@ -342,7 +332,7 @@ public static class WatsonIncidentBaseModel extends WatsonIncidentWrapper {
 
 		validateUpdate(watsonIncident);
 
-		createAuditedWatsonIncident(watsonIncident, request);
+		createAuditedWatsonIncident(watsonIncident);
 
 		return new WatsonIncident((com.liferay.watson.model.WatsonIncident)baseModelAlloyServiceInvoker.updateModel(watsonIncident));
 	}

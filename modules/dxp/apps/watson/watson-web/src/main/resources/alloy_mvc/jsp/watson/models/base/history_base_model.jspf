@@ -146,6 +146,10 @@ public static class WatsonHistoryBaseModel extends WatsonHistoryWrapper {
 	}
 
 	public static WatsonHistory create(long watsonHistoryId) throws Exception {
+		if (watsonHistoryId <= 0) {
+			watsonHistoryId = CounterLocalServiceUtil.increment();
+		}
+
 		return new WatsonHistory((com.liferay.watson.model.WatsonHistory)baseModelAlloyServiceInvoker.createModel(watsonHistoryId));
 	}
 
@@ -159,21 +163,7 @@ public static class WatsonHistoryBaseModel extends WatsonHistoryWrapper {
 		return watsonHistory;
 	}
 
-	public static WatsonHistory create(String jsonDataString, HttpServletRequest request) throws Exception {
-		WatsonHistory watsonHistory = JSONFactoryUtil.looseDeserialize(jsonDataString, WatsonHistory.class);
-
-		watsonHistory.setNew(true);
-
-		BaseAlloyControllerImpl.setAuditedModel(watsonHistory, request);
-
-		WatsonAlloyControllerImpl.setGroupedModel(watsonHistory, request);
-
-		watsonHistory.setWatsonHistoryId(CounterLocalServiceUtil.increment());
-
-		return new WatsonHistory(watsonHistory);
-	}
-
-	public static void createAuditedWatsonHistory(WatsonHistory watsonHistory, HttpServletRequest request) throws Exception {
+	public static void createAuditedWatsonHistory(WatsonHistory watsonHistory) {
 		WatsonHistoryAudit watsonHistoryAudit = WatsonHistoryAuditLocalServiceUtil.createWatsonHistoryAudit(CounterLocalServiceUtil.increment());
 
 		BeanPropertiesUtil.copyProperties(watsonHistory, watsonHistoryAudit, new String[] {"new", "primaryKey", "primaryKeyObj"});
@@ -233,11 +223,11 @@ public static class WatsonHistoryBaseModel extends WatsonHistoryWrapper {
 		return alloyWatsonHistories;
 	}
 
-	public static Class<?> getBaseModelClass() throws Exception {
+	public static Class<?> getBaseModelClass() {
 		return baseModelClass;
 	}
 
-	public String[] getLocalizedProperties() throws Exception {
+	public String[] getLocalizedProperties() {
 		if (localizedProperties.length < 1) {
 			List<String> localizedPropertiesList = new ArrayList<>();
 
@@ -342,7 +332,7 @@ public static class WatsonHistoryBaseModel extends WatsonHistoryWrapper {
 
 		validateUpdate(watsonHistory);
 
-		createAuditedWatsonHistory(watsonHistory, request);
+		createAuditedWatsonHistory(watsonHistory);
 
 		return new WatsonHistory((com.liferay.watson.model.WatsonHistory)baseModelAlloyServiceInvoker.updateModel(watsonHistory));
 	}

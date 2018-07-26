@@ -146,6 +146,10 @@ public static class WatsonChildBaseModel extends WatsonChildWrapper {
 	}
 
 	public static WatsonChild create(long watsonChildId) throws Exception {
+		if (watsonChildId <= 0) {
+			watsonChildId = CounterLocalServiceUtil.increment();
+		}
+
 		return new WatsonChild((com.liferay.watson.model.WatsonChild)baseModelAlloyServiceInvoker.createModel(watsonChildId));
 	}
 
@@ -159,21 +163,7 @@ public static class WatsonChildBaseModel extends WatsonChildWrapper {
 		return watsonChild;
 	}
 
-	public static WatsonChild create(String jsonDataString, HttpServletRequest request) throws Exception {
-		WatsonChild watsonChild = JSONFactoryUtil.looseDeserialize(jsonDataString, WatsonChild.class);
-
-		watsonChild.setNew(true);
-
-		BaseAlloyControllerImpl.setAuditedModel(watsonChild, request);
-
-		WatsonAlloyControllerImpl.setGroupedModel(watsonChild, request);
-
-		watsonChild.setWatsonChildId(CounterLocalServiceUtil.increment());
-
-		return new WatsonChild(watsonChild);
-	}
-
-	public static void createAuditedWatsonChild(WatsonChild watsonChild, HttpServletRequest request) throws Exception {
+	public static void createAuditedWatsonChild(WatsonChild watsonChild) {
 		WatsonChildAudit watsonChildAudit = WatsonChildAuditLocalServiceUtil.createWatsonChildAudit(CounterLocalServiceUtil.increment());
 
 		BeanPropertiesUtil.copyProperties(watsonChild, watsonChildAudit, new String[] {"new", "primaryKey", "primaryKeyObj"});
@@ -233,11 +223,11 @@ public static class WatsonChildBaseModel extends WatsonChildWrapper {
 		return alloyWatsonChildren;
 	}
 
-	public static Class<?> getBaseModelClass() throws Exception {
+	public static Class<?> getBaseModelClass() {
 		return baseModelClass;
 	}
 
-	public String[] getLocalizedProperties() throws Exception {
+	public String[] getLocalizedProperties() {
 		if (localizedProperties.length < 1) {
 			List<String> localizedPropertiesList = new ArrayList<>();
 
@@ -342,7 +332,7 @@ public static class WatsonChildBaseModel extends WatsonChildWrapper {
 
 		validateUpdate(watsonChild);
 
-		createAuditedWatsonChild(watsonChild, request);
+		createAuditedWatsonChild(watsonChild);
 
 		return new WatsonChild((com.liferay.watson.model.WatsonChild)baseModelAlloyServiceInvoker.updateModel(watsonChild));
 	}

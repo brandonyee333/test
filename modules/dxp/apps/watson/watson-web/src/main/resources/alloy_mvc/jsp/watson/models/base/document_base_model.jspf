@@ -146,6 +146,10 @@ public static class WatsonDocumentBaseModel extends WatsonDocumentWrapper {
 	}
 
 	public static WatsonDocument create(long watsonDocumentId) throws Exception {
+		if (watsonDocumentId <= 0) {
+			watsonDocumentId = CounterLocalServiceUtil.increment();
+		}
+
 		return new WatsonDocument((com.liferay.watson.model.WatsonDocument)baseModelAlloyServiceInvoker.createModel(watsonDocumentId));
 	}
 
@@ -159,21 +163,7 @@ public static class WatsonDocumentBaseModel extends WatsonDocumentWrapper {
 		return watsonDocument;
 	}
 
-	public static WatsonDocument create(String jsonDataString, HttpServletRequest request) throws Exception {
-		WatsonDocument watsonDocument = JSONFactoryUtil.looseDeserialize(jsonDataString, WatsonDocument.class);
-
-		watsonDocument.setNew(true);
-
-		BaseAlloyControllerImpl.setAuditedModel(watsonDocument, request);
-
-		WatsonAlloyControllerImpl.setGroupedModel(watsonDocument, request);
-
-		watsonDocument.setWatsonDocumentId(CounterLocalServiceUtil.increment());
-
-		return new WatsonDocument(watsonDocument);
-	}
-
-	public static void createAuditedWatsonDocument(WatsonDocument watsonDocument, HttpServletRequest request) throws Exception {
+	public static void createAuditedWatsonDocument(WatsonDocument watsonDocument) {
 		WatsonDocumentAudit watsonDocumentAudit = WatsonDocumentAuditLocalServiceUtil.createWatsonDocumentAudit(CounterLocalServiceUtil.increment());
 
 		BeanPropertiesUtil.copyProperties(watsonDocument, watsonDocumentAudit, new String[] {"new", "primaryKey", "primaryKeyObj"});
@@ -233,11 +223,11 @@ public static class WatsonDocumentBaseModel extends WatsonDocumentWrapper {
 		return alloyWatsonDocuments;
 	}
 
-	public static Class<?> getBaseModelClass() throws Exception {
+	public static Class<?> getBaseModelClass() {
 		return baseModelClass;
 	}
 
-	public String[] getLocalizedProperties() throws Exception {
+	public String[] getLocalizedProperties() {
 		if (localizedProperties.length < 1) {
 			List<String> localizedPropertiesList = new ArrayList<>();
 
@@ -342,7 +332,7 @@ public static class WatsonDocumentBaseModel extends WatsonDocumentWrapper {
 
 		validateUpdate(watsonDocument);
 
-		createAuditedWatsonDocument(watsonDocument, request);
+		createAuditedWatsonDocument(watsonDocument);
 
 		return new WatsonDocument((com.liferay.watson.model.WatsonDocument)baseModelAlloyServiceInvoker.updateModel(watsonDocument));
 	}

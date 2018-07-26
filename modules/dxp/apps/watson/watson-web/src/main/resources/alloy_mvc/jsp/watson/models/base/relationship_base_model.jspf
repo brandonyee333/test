@@ -146,6 +146,10 @@ public static class WatsonRelationshipBaseModel extends WatsonRelationshipWrappe
 	}
 
 	public static WatsonRelationship create(long watsonRelationshipId) throws Exception {
+		if (watsonRelationshipId <= 0) {
+			watsonRelationshipId = CounterLocalServiceUtil.increment();
+		}
+
 		return new WatsonRelationship((com.liferay.watson.model.WatsonRelationship)baseModelAlloyServiceInvoker.createModel(watsonRelationshipId));
 	}
 
@@ -159,21 +163,7 @@ public static class WatsonRelationshipBaseModel extends WatsonRelationshipWrappe
 		return watsonRelationship;
 	}
 
-	public static WatsonRelationship create(String jsonDataString, HttpServletRequest request) throws Exception {
-		WatsonRelationship watsonRelationship = JSONFactoryUtil.looseDeserialize(jsonDataString, WatsonRelationship.class);
-
-		watsonRelationship.setNew(true);
-
-		BaseAlloyControllerImpl.setAuditedModel(watsonRelationship, request);
-
-		WatsonAlloyControllerImpl.setGroupedModel(watsonRelationship, request);
-
-		watsonRelationship.setWatsonRelationshipId(CounterLocalServiceUtil.increment());
-
-		return new WatsonRelationship(watsonRelationship);
-	}
-
-	public static void createAuditedWatsonRelationship(WatsonRelationship watsonRelationship, HttpServletRequest request) throws Exception {
+	public static void createAuditedWatsonRelationship(WatsonRelationship watsonRelationship) {
 		WatsonRelationshipAudit watsonRelationshipAudit = WatsonRelationshipAuditLocalServiceUtil.createWatsonRelationshipAudit(CounterLocalServiceUtil.increment());
 
 		BeanPropertiesUtil.copyProperties(watsonRelationship, watsonRelationshipAudit, new String[] {"new", "primaryKey", "primaryKeyObj"});
@@ -233,11 +223,11 @@ public static class WatsonRelationshipBaseModel extends WatsonRelationshipWrappe
 		return alloyWatsonRelationships;
 	}
 
-	public static Class<?> getBaseModelClass() throws Exception {
+	public static Class<?> getBaseModelClass() {
 		return baseModelClass;
 	}
 
-	public String[] getLocalizedProperties() throws Exception {
+	public String[] getLocalizedProperties() {
 		if (localizedProperties.length < 1) {
 			List<String> localizedPropertiesList = new ArrayList<>();
 
@@ -342,7 +332,7 @@ public static class WatsonRelationshipBaseModel extends WatsonRelationshipWrappe
 
 		validateUpdate(watsonRelationship);
 
-		createAuditedWatsonRelationship(watsonRelationship, request);
+		createAuditedWatsonRelationship(watsonRelationship);
 
 		return new WatsonRelationship((com.liferay.watson.model.WatsonRelationship)baseModelAlloyServiceInvoker.updateModel(watsonRelationship));
 	}
