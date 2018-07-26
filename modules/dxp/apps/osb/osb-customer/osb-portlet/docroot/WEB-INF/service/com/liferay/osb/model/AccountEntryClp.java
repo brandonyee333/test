@@ -1325,6 +1325,25 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 	}
 
 	@Override
+	public boolean hasActiveSupportOffering() {
+		try {
+			String methodName = "hasActiveSupportOffering";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			Boolean returnObj = (Boolean)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
 	public void setAddress(com.liferay.portal.kernel.model.Address address) {
 		try {
 			String methodName = "setAddress";

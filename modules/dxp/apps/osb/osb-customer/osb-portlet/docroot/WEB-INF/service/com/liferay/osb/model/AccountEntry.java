@@ -84,6 +84,8 @@ public interface AccountEntry extends AccountEntryModel, PersistedModel {
 
 	public java.lang.String getTypeLabel();
 
+	public boolean hasActiveSupportOffering();
+
 	public void setAddress(com.liferay.portal.kernel.model.Address address);
 
 	public void setLanguageIds(java.lang.String[] languageIds);

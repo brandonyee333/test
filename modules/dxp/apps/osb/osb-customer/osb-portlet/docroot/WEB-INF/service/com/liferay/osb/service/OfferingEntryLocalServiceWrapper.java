@@ -35,6 +35,11 @@ public class OfferingEntryLocalServiceWrapper
 	}
 
 	@Override
+	public boolean hasActiveSupportOfferingEntry(long accountEntryId) {
+		return _offeringEntryLocalService.hasActiveSupportOfferingEntry(accountEntryId);
+	}
+
+	@Override
 	public boolean hasActiveTrialOfferingEntry(long userId) {
 		return _offeringEntryLocalService.hasActiveTrialOfferingEntry(userId);
 	}

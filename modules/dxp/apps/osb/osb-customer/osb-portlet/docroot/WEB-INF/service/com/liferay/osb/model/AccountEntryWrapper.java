@@ -304,6 +304,11 @@ public class AccountEntryWrapper implements AccountEntry,
 		return _accountEntry.getPartnerManagedSupport();
 	}
 
+	@Override
+	public boolean hasActiveSupportOffering() {
+		return _accountEntry.hasActiveSupportOffering();
+	}
+
 	/**
 	* Returns <code>true</code> if this account entry is approved.
 	*

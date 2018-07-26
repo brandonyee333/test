@@ -161,36 +161,40 @@ public class OfferingEntryLocalServiceClpInvoker {
 
 		_methodParameterTypes177 = new String[] { "long" };
 
-		_methodName178 = "hasActiveTrialOfferingEntry";
+		_methodName178 = "hasActiveSupportOfferingEntry";
 
 		_methodParameterTypes178 = new String[] { "long" };
 
-		_methodName179 = "search";
+		_methodName179 = "hasActiveTrialOfferingEntry";
 
-		_methodParameterTypes179 = new String[] {
+		_methodParameterTypes179 = new String[] { "long" };
+
+		_methodName180 = "search";
+
+		_methodParameterTypes180 = new String[] {
 				"long", "long", "int[][]", "int[][]", "int", "int", "int", "int",
 				"int", "int", "java.util.LinkedHashMap", "boolean", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName180 = "searchCount";
+		_methodName181 = "searchCount";
 
-		_methodParameterTypes180 = new String[] {
+		_methodParameterTypes181 = new String[] {
 				"long", "long", "int[][]", "int[][]", "int", "int", "int", "int",
 				"int", "int", "java.util.LinkedHashMap", "boolean"
 			};
 
-		_methodName181 = "updateOfferingEntry";
+		_methodName182 = "updateOfferingEntry";
 
-		_methodParameterTypes181 = new String[] {
+		_methodParameterTypes182 = new String[] {
 				"long", "long", "long", "long", "long", "long",
 				"java.lang.String", "int", "int", "boolean", "long", "long",
 				"long", "boolean", "long", "int", "int"
 			};
 
-		_methodName182 = "updateStatus";
+		_methodName183 = "updateStatus";
 
-		_methodParameterTypes182 = new String[] { "long", "long", "int" };
+		_methodParameterTypes183 = new String[] { "long", "long", "int" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -357,11 +361,16 @@ public class OfferingEntryLocalServiceClpInvoker {
 
 		if (_methodName178.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes178, parameterTypes)) {
-			return OfferingEntryLocalServiceUtil.hasActiveTrialOfferingEntry(((Long)arguments[0]).longValue());
+			return OfferingEntryLocalServiceUtil.hasActiveSupportOfferingEntry(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName179.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes179, parameterTypes)) {
+			return OfferingEntryLocalServiceUtil.hasActiveTrialOfferingEntry(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName180.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes180, parameterTypes)) {
 			return OfferingEntryLocalServiceUtil.search(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(), (int[])arguments[2],
 				(int[])arguments[3], ((Integer)arguments[4]).intValue(),
@@ -377,8 +386,8 @@ public class OfferingEntryLocalServiceClpInvoker {
 				(com.liferay.portal.kernel.util.OrderByComparator)arguments[14]);
 		}
 
-		if (_methodName180.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes180, parameterTypes)) {
+		if (_methodName181.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes181, parameterTypes)) {
 			return OfferingEntryLocalServiceUtil.searchCount(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(), (int[])arguments[2],
 				(int[])arguments[3], ((Integer)arguments[4]).intValue(),
@@ -391,8 +400,8 @@ public class OfferingEntryLocalServiceClpInvoker {
 				((Boolean)arguments[11]).booleanValue());
 		}
 
-		if (_methodName181.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes181, parameterTypes)) {
+		if (_methodName182.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes182, parameterTypes)) {
 			return OfferingEntryLocalServiceUtil.updateOfferingEntry(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -412,8 +421,8 @@ public class OfferingEntryLocalServiceClpInvoker {
 				((Integer)arguments[16]).intValue());
 		}
 
-		if (_methodName182.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes182, parameterTypes)) {
+		if (_methodName183.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes183, parameterTypes)) {
 			return OfferingEntryLocalServiceUtil.updateStatus(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Integer)arguments[2]).intValue());
@@ -486,4 +495,6 @@ public class OfferingEntryLocalServiceClpInvoker {
 	private String[] _methodParameterTypes181;
 	private String _methodName182;
 	private String[] _methodParameterTypes182;
+	private String _methodName183;
+	private String[] _methodParameterTypes183;
 }
