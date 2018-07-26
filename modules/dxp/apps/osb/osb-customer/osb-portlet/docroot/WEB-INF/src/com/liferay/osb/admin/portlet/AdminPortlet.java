@@ -469,8 +469,9 @@ public class AdminPortlet extends OSBPortlet {
 					resourceRequest, resourceResponse);
 			}
 			else if (resourceID.equals("accountEnvironment")) {
-				JSONObject jsonObject = OSBRequestUtil.getAccountEnvironment(
-					resourceRequest, resourceResponse);
+				JSONObject jsonObject =
+					OSBRequestUtil.getAccountEnvironmentListTypes(
+						resourceRequest);
 
 				writeJSON(resourceRequest, resourceResponse, jsonObject);
 			}

@@ -14,7 +14,9 @@
 
 package com.liferay.osb.model;
 
+import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
 import com.liferay.osb.util.comparator.OfferingEntryGroupComparator;
+import com.liferay.osb.util.comparator.OfferingEntryPKComparator;
 import com.liferay.portal.kernel.exception.PortalException;
 
 import java.util.ArrayList;
@@ -66,6 +68,29 @@ public class OfferingEntryGroupFactoryUtil {
 		}
 
 		return new ArrayList<>(offeringEntryGroupsMap.values());
+	}
+
+	public static List<OfferingEntryGroup> createOfferingEntryGroups(
+			long userId, long accountEntryId, int[] types, int[] statuses,
+			int supportEndDateGTDay, int supportEndDateGTMonth,
+			int supportEndDateGTYear, int supportEndDateLTDay,
+			int supportEndDateLTMonth, int supportEndDateLTYear,
+			LinkedHashMap<String, Object> params, boolean andSearch, int start,
+			int end)
+		throws PortalException {
+
+		List<OfferingEntry> offeringEntries =
+			OfferingEntryLocalServiceUtil.search(
+				userId, accountEntryId, types, statuses, supportEndDateGTDay,
+				supportEndDateGTMonth, supportEndDateGTYear,
+				supportEndDateLTDay, supportEndDateLTMonth,
+				supportEndDateLTYear, params, andSearch, start, end,
+				new OfferingEntryPKComparator(true));
+
+		Map<String, OfferingEntryGroup> offeringEntryGroupMap =
+			createOfferingEntryGroupMap(offeringEntries);
+
+		return new ArrayList<>(offeringEntryGroupMap.values());
 	}
 
 	protected static void processOfferingEntries(

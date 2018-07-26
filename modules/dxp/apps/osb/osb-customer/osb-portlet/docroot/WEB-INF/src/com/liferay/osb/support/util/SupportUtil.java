@@ -14,31 +14,21 @@
 
 package com.liferay.osb.support.util;
 
-import com.liferay.osb.model.AccountEnvironmentConstants;
 import com.liferay.osb.model.FileRepository;
 import com.liferay.osb.model.OfferingEntry;
-import com.liferay.osb.model.OfferingEntryGroup;
-import com.liferay.osb.model.OfferingEntryGroupFactoryUtil;
 import com.liferay.osb.model.OrderEntry;
-import com.liferay.osb.model.ProductEntry;
-import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
 import com.liferay.osb.service.OrderEntryLocalServiceUtil;
 import com.liferay.osb.util.PortletPropsKeys;
 import com.liferay.osb.util.PortletPropsValues;
-import com.liferay.osb.util.comparator.OfferingEntryPKComparator;
 import com.liferay.petra.content.ContentUtil;
 import com.liferay.portal.kernel.configuration.Filter;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.service.ListTypeServiceUtil;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -49,8 +39,6 @@ import com.liferay.util.portlet.PortletProps;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -62,31 +50,6 @@ import javax.portlet.PortletPreferences;
  * @author Mate Thurzo
  */
 public class SupportUtil {
-
-	public static List<OfferingEntryGroup> getAvailableOfferingEntryGroups(
-			long userId, long accountEntryId, int[] types, int[] statuses,
-			int supportEndDateGTDay, int supportEndDateGTMonth,
-			int supportEndDateGTYear, int supportEndDateLTDay,
-			int supportEndDateLTMonth, int supportEndDateLTYear,
-			LinkedHashMap<String, Object> params, boolean andSearch)
-		throws PortalException {
-
-		List<OfferingEntryGroup> availableOfferingEntryGroups =
-			new ArrayList<>();
-
-		List<OfferingEntryGroup> offeringEntryGroups = getOfferingEntryGroups(
-			userId, accountEntryId, types, statuses, supportEndDateGTDay,
-			supportEndDateGTMonth, supportEndDateGTYear, supportEndDateLTDay,
-			supportEndDateLTMonth, supportEndDateLTYear, params, andSearch);
-
-		for (OfferingEntryGroup offeringEntryGroup : offeringEntryGroups) {
-			if (offeringEntryGroup.hasAvailableSupportTickets()) {
-				availableOfferingEntryGroups.add(offeringEntryGroup);
-			}
-		}
-
-		return availableOfferingEntryGroups;
-	}
 
 	public static Map<Locale, String> getEmailAccountEntryTierBodyMap(
 		PortletPreferences portletPreferences) {
@@ -293,105 +256,6 @@ public class SupportUtil {
 				accountEntryId);
 
 		return getOfferingEntriesMap(orderEntries);
-	}
-
-	public static List<OfferingEntryGroup> getOfferingEntryGroups(
-			long userId, long accountEntryId, int[] types, int[] statuses,
-			int supportEndDateGTDay, int supportEndDateGTMonth,
-			int supportEndDateGTYear, int supportEndDateLTDay,
-			int supportEndDateLTMonth, int supportEndDateLTYear,
-			LinkedHashMap<String, Object> params, boolean andSearch)
-		throws PortalException {
-
-		return getOfferingEntryGroups(
-			userId, accountEntryId, types, statuses, supportEndDateGTDay,
-			supportEndDateGTMonth, supportEndDateGTYear, supportEndDateLTDay,
-			supportEndDateLTMonth, supportEndDateLTYear, params, andSearch,
-			QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-	}
-
-	public static List<OfferingEntryGroup> getOfferingEntryGroups(
-			long userId, long accountEntryId, int[] types, int[] statuses,
-			int supportEndDateGTDay, int supportEndDateGTMonth,
-			int supportEndDateGTYear, int supportEndDateLTDay,
-			int supportEndDateLTMonth, int supportEndDateLTYear,
-			LinkedHashMap<String, Object> params, boolean andSearch, int start,
-			int end)
-		throws PortalException {
-
-		List<OfferingEntry> offeringEntries =
-			OfferingEntryLocalServiceUtil.search(
-				userId, accountEntryId, types, statuses, supportEndDateGTDay,
-				supportEndDateGTMonth, supportEndDateGTYear,
-				supportEndDateLTDay, supportEndDateLTMonth,
-				supportEndDateLTYear, params, andSearch, start, end,
-				new OfferingEntryPKComparator(true));
-
-		Map<String, OfferingEntryGroup> offeringEntryGroupMap =
-			OfferingEntryGroupFactoryUtil.createOfferingEntryGroupMap(
-				offeringEntries);
-
-		return new ArrayList<>(offeringEntryGroupMap.values());
-	}
-
-	public static List<ListType> getPortalEnvListTypes(
-		long envLFR, String envListType) {
-
-		return getPortalEnvListTypes(envLFR, envListType, StringPool.BLANK);
-	}
-
-	public static List<ListType> getPortalEnvListTypes(
-		long envLFR, String envListType, String sublistType) {
-
-		List<ListType> listTypes = ListTypeServiceUtil.getListTypes(
-			envListType);
-
-		listTypes = ListUtil.copy(listTypes);
-
-		if (Validator.isNotNull(sublistType)) {
-			sublistType = StringPool.PERIOD + sublistType;
-		}
-
-		long[] listTypeIds = AccountEnvironmentConstants.getEnvListTypeIds(
-			envLFR, envListType + sublistType);
-
-		Iterator<ListType> itr = listTypes.iterator();
-
-		while (itr.hasNext()) {
-			ListType listType = itr.next();
-
-			if (!ArrayUtil.contains(listTypeIds, listType.getListTypeId())) {
-				itr.remove();
-			}
-		}
-
-		return listTypes;
-	}
-
-	public static boolean hasEnterpriseSearchOffering(
-		long accountEntryId, int productEntryEnvironment) {
-
-		try {
-			List<OfferingEntry> offeringEntries =
-				OfferingEntryLocalServiceUtil.getAccountEntryOfferingEntries(
-					accountEntryId);
-
-			for (OfferingEntry offeringEntry : offeringEntries) {
-				ProductEntry productEntry = offeringEntry.getProductEntry();
-
-				if (productEntry.isEnterpriseSearch() &&
-					(productEntry.getEnvironment() ==
-						productEntryEnvironment)) {
-
-					return true;
-				}
-			}
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
-
-		return false;
 	}
 
 	public static String serialize(List<OrderEntry> orderEntries) {

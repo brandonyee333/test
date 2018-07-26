@@ -117,11 +117,11 @@ for (SupportRegion supportRegion : supportRegions) {
 						if (accountEntry.getType() == AccountEntryConstants.TYPE_INDIVIDUAL) {
 							params.put("user", new String[] {displayTerms.getFirstName(), displayTerms.getMiddleName(), displayTerms.getLastName(), displayTerms.getScreenName(), displayTerms.getEmailAddress()});
 
-							results = SupportUtil.getOfferingEntryGroups(0, accountEntry.getAccountEntryId(), new int[0], new int[0], 0, 0, 0, 0, 0, 0, params, true, searchContainer.getStart(), searchContainer.getEnd());
+							results = OfferingEntryGroupFactoryUtil.createOfferingEntryGroups(0, accountEntry.getAccountEntryId(), new int[0], new int[0], 0, 0, 0, 0, 0, 0, params, true, searchContainer.getStart(), searchContainer.getEnd());
 							total = OfferingEntryLocalServiceUtil.searchCount(0, accountEntry.getAccountEntryId(), new int[0], new int[0], 0, 0, 0, 0, 0, 0, params, true);
 						}
 						else {
-							List<OfferingEntryGroup> offeringEntryGroups = SupportUtil.getOfferingEntryGroups(0, accountEntry.getAccountEntryId(), new int[0], new int[0], 0, 0, 0, 0, 0, 0, params, true);
+							List<OfferingEntryGroup> offeringEntryGroups = OfferingEntryGroupFactoryUtil.createOfferingEntryGroups(0, accountEntry.getAccountEntryId(), new int[0], new int[0], 0, 0, 0, 0, 0, 0, params, true, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
 							results = ListUtil.subList(offeringEntryGroups, searchContainer.getStart(), searchContainer.getEnd());
 							total = offeringEntryGroups.size();

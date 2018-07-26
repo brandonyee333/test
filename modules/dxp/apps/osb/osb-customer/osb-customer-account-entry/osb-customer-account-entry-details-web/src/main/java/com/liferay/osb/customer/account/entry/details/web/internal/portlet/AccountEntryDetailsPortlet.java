@@ -31,7 +31,7 @@ import org.osgi.service.component.annotations.Component;
 		"com.liferay.portlet.display-category=category.osb",
 		"javax.portlet.display-name=OSB Support Project Details",
 		"javax.portlet.expiration-cache=0",
-		"javax.portlet.init-param.mvc-command-names-default-views=/account_entry_details/view",
+		"javax.portlet.init-param.mvc-command-names-default-views=/view",
 		"javax.portlet.init-param.template-path=/",
 		"javax.portlet.name=" + AccountEntryDetailsPortletKeys.ACCOUNT_ENTRY_DETAILS,
 		"javax.portlet.resource-bundle=content.Language",

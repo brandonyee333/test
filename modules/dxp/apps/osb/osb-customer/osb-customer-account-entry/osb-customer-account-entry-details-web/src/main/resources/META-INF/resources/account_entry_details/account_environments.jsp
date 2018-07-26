@@ -24,6 +24,13 @@ AccountEntry accountEntry = (AccountEntry)renderRequest.getAttribute(AccountEntr
 	<liferay-ui:message key="environment-configurations" />
 </h2>
 
+<liferay-portlet:renderURL var="addAccountEnvironmentURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+	<portlet:param name="mvcRenderCommandName" value="/edit_account_environment" />
+	<portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntry.getAccountEntryId()) %>" />
+</liferay-portlet:renderURL>
+
+<aui:button onClick='<%= renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "new-environment-configuration") + "', '" + addAccountEnvironmentURL.toString() + "', '" + renderResponse.getNamespace() + "editAccountEnvironment')" %>' value="add" />
+
 <%
 List<AccountEnvironment> accountEnvironments = AccountEnvironmentLocalServiceUtil.getAccountEnvironments(accountEntry.getAccountEntryId());
 

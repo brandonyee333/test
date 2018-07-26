@@ -25,14 +25,28 @@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %><%@
 taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
-<%@ page import="com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsWebKeys" %><%@
+<%@ page import="com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys" %><%@
+page import="com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsWebKeys" %><%@
+page import="com.liferay.osb.exception.AccountEnvironmentAttachmentSizeException" %><%@
+page import="com.liferay.osb.exception.AccountEnvironmentEnvASException" %><%@
+page import="com.liferay.osb.exception.AccountEnvironmentEnvDBException" %><%@
+page import="com.liferay.osb.exception.AccountEnvironmentEnvLFRException" %><%@
+page import="com.liferay.osb.exception.AccountEnvironmentEnvOSException" %><%@
+page import="com.liferay.osb.exception.AccountEnvironmentNameException" %><%@
+page import="com.liferay.osb.exception.DuplicateAccountEnvironmentException" %><%@
 page import="com.liferay.osb.model.AccountEntry" %><%@
 page import="com.liferay.osb.model.AccountEntryConstants" %><%@
 page import="com.liferay.osb.model.AccountEnvironment" %><%@
 page import="com.liferay.osb.model.AccountEnvironmentAttachment" %><%@
 page import="com.liferay.osb.model.AccountEnvironmentAttachmentConstants" %><%@
+page import="com.liferay.osb.model.AccountEnvironmentConstants" %><%@
+page import="com.liferay.osb.model.OfferingEntry" %><%@
+page import="com.liferay.osb.model.OfferingEntryConstants" %><%@
+page import="com.liferay.osb.model.OfferingEntryGroup" %><%@
+page import="com.liferay.osb.model.OfferingEntryGroupFactoryUtil" %><%@
 page import="com.liferay.osb.model.PartnerEntry" %><%@
 page import="com.liferay.osb.model.ProductEntry" %><%@
+page import="com.liferay.osb.model.ProductEntryConstants" %><%@
 page import="com.liferay.osb.model.SupportRegion" %><%@
 page import="com.liferay.osb.model.SupportResponse" %><%@
 page import="com.liferay.osb.service.AccountEntryServiceUtil" %><%@
@@ -41,17 +55,24 @@ page import="com.liferay.osb.service.AccountEnvironmentLocalServiceUtil" %><%@
 page import="com.liferay.osb.service.ProductEntryLocalServiceUtil" %><%@
 page import="com.liferay.osb.service.SupportResponseLocalServiceUtil" %><%@
 page import="com.liferay.osb.util.comparator.AccountEntryNameComparator" %><%@
+page import="com.liferay.portal.kernel.bean.BeanParamUtil" %><%@
+page import="com.liferay.portal.kernel.dao.orm.QueryUtil" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
+page import="com.liferay.portal.kernel.model.ListType" %><%@
+page import="com.liferay.portal.kernel.portlet.LiferayWindowState" %><%@
+page import="com.liferay.portal.kernel.servlet.SessionMessages" %><%@
 page import="com.liferay.portal.kernel.util.FastDateFormatFactoryUtil" %><%@
 page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
 page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
 page import="com.liferay.portal.kernel.util.PortalUtil" %><%@
+page import="com.liferay.portal.kernel.util.StringPool" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %>
 
 <%@ page import="java.text.DateFormat" %><%@
 page import="java.text.Format" %>
 
-<%@ page import="java.util.List" %>
+<%@ page import="java.util.LinkedHashMap" %><%@
+page import="java.util.List" %>
 
 <%@ page import="javax.portlet.PortletURL" %>
 

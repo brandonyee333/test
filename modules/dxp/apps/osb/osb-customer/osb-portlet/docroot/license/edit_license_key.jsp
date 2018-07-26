@@ -375,7 +375,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 							params.put("validLicense", new Long[] {productEntryId, productEntryId});
 
-							offeringEntryGroups = SupportUtil.getOfferingEntryGroups(0, accountEntryId, new int[] {OfferingEntryConstants.TYPE_REGULAR}, new int[0], 0, 0, 0, 0, 0, 0, params, true);
+							offeringEntryGroups = OfferingEntryGroupFactoryUtil.createOfferingEntryGroups(0, accountEntryId, new int[] {OfferingEntryConstants.TYPE_REGULAR}, new int[0], 0, 0, 0, 0, 0, 0, params, true, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 						}
 						%>
 

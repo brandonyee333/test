@@ -73,7 +73,7 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 
 			params.put("validLicense", new Long[] {0L, 0L});
 
-			List<OfferingEntryGroup> offeringEntryGroups = SupportUtil.getOfferingEntryGroups(0, licenseKey.getAccountEntryId(), new int[0], new int[0], 0, 0, 0, 0, 0, 0, params, true);
+			List<OfferingEntryGroup> offeringEntryGroups = OfferingEntryGroupFactoryUtil.createOfferingEntryGroups(0, licenseKey.getAccountEntryId(), new int[0], new int[0], 0, 0, 0, 0, 0, 0, params, true, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 			%>
 
 			<liferay-ui:search-container
