@@ -18,6 +18,55 @@
 
 <%
 AccountEntry accountEntry = (AccountEntry)renderRequest.getAttribute(AccountEntryDetailsWebKeys.ACCOUNT_ENTRY);
+
+String tabs1 = ParamUtil.getString(request, "tabs1");
+
+PortletURL portletURL = renderResponse.createRenderURL();
+
+portletURL.setParameter("mvcRenderCommandName", "/view_account_entry");
+portletURL.setParameter("tabs1", tabs1);
+portletURL.setParameter("accountEntryId", String.valueOf(accountEntry.getAccountEntryId()));
 %>
 
-<%= HtmlUtil.escape(accountEntry.getName()) %>
+<h1>
+	<%= HtmlUtil.escape(accountEntry.getName()) %>
+</h1>
+
+<liferay-ui:tabs
+	names="overview,people"
+	url="<%= portletURL.toString() %>"
+/>
+
+<div class="container-fluid-1280">
+	<c:choose>
+		<c:when test='<%= tabs1.equals("people") %>'>
+		</c:when>
+		<c:otherwise>
+			<liferay-util:include page="/account_entry_details/customer/overview.jsp" servletContext="<%= application %>" />
+		</c:otherwise>
+	</c:choose>
+</div>
+
+<aui:script>
+	Liferay.provide(
+		window,
+		'<portlet:namespace />openDialog',
+		function(title, url, popupId) {
+			Liferay.Util.openWindow(
+				{
+					cache: false,
+					dialog: {
+						align: Liferay.Util.Window.ALIGN_CENTER,
+						centered: true,
+						height: 800,
+						width: 870
+					},
+					id: popupId,
+					title: title,
+					uri: url
+				}
+			);
+		},
+		['aui-dialog', 'aui-overlay-manager', 'liferay-util-window']
+	);
+</aui:script>

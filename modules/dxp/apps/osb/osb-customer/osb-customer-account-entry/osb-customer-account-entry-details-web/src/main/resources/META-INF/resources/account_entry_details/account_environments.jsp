@@ -24,12 +24,14 @@ AccountEntry accountEntry = (AccountEntry)renderRequest.getAttribute(AccountEntr
 	<liferay-ui:message key="environment-configurations" />
 </h2>
 
-<liferay-portlet:renderURL var="addAccountEnvironmentURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
-	<portlet:param name="mvcRenderCommandName" value="/edit_account_environment" />
-	<portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntry.getAccountEntryId()) %>" />
-</liferay-portlet:renderURL>
+<c:if test="<%= OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.ADD_ACCOUNT_ENVIRONMENT) %>">
+	<liferay-portlet:renderURL var="addAccountEnvironmentURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+		<portlet:param name="mvcRenderCommandName" value="/edit_account_environment" />
+		<portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntry.getAccountEntryId()) %>" />
+	</liferay-portlet:renderURL>
 
-<aui:button onClick='<%= renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "new-environment-configuration") + "', '" + addAccountEnvironmentURL.toString() + "', '" + renderResponse.getNamespace() + "editAccountEnvironment')" %>' value="add" />
+	<aui:button onClick='<%= renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "new-environment-configuration") + "', '" + addAccountEnvironmentURL.toString() + "', '" + renderResponse.getNamespace() + "editAccountEnvironment')" %>' value="add" />
+</c:if>
 
 <%
 List<AccountEnvironment> accountEnvironments = AccountEnvironmentLocalServiceUtil.getAccountEnvironments(accountEntry.getAccountEntryId());
@@ -134,19 +136,23 @@ for (AccountEnvironment accountEnvironment : accountEnvironments) {
 
 			<aui:row>
 				<aui:col width="<%= 100 %>">
+					<c:if test="<%= OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.DELETE) %>">
 					<liferay-portlet:renderURL var="editAccountEnvironmentURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
-						<portlet:param name="mvcRenderCommandName" value="/edit_account_environment" />
-						<portlet:param name="accountEnvironmentId" value="<%= String.valueOf(accountEnvironment.getAccountEnvironmentId()) %>" />
-					</liferay-portlet:renderURL>
+							<portlet:param name="mvcRenderCommandName" value="/edit_account_environment" />
+							<portlet:param name="accountEnvironmentId" value="<%= String.valueOf(accountEnvironment.getAccountEnvironmentId()) %>" />
+						</liferay-portlet:renderURL>
 
-					<aui:button onClick='<%= renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "update-environment-configuration") + "', '" + editAccountEnvironmentURL.toString() + "', '" + renderResponse.getNamespace() + "editAccountEnvironment')" %>' value="edit" />
+						<aui:button onClick='<%= renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "update-environment-configuration") + "', '" + editAccountEnvironmentURL.toString() + "', '" + renderResponse.getNamespace() + "editAccountEnvironment')" %>' value="edit" />
+					</c:if>
 
-					<portlet:actionURL name="deleteAccountEnvironment" var="deleteAccountEnvironmentURL">
-						<portlet:param name="redirect" value="<%= currentURL %>" />
-						<portlet:param name="accountEnvironmentId" value="<%= String.valueOf(accountEnvironment.getAccountEnvironmentId()) %>" />
-					</portlet:actionURL>
+					<c:if test="<%= OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.UPDATE) %>">
+						<portlet:actionURL name="deleteAccountEnvironment" var="deleteAccountEnvironmentURL">
+							<portlet:param name="redirect" value="<%= currentURL %>" />
+							<portlet:param name="accountEnvironmentId" value="<%= String.valueOf(accountEnvironment.getAccountEnvironmentId()) %>" />
+						</portlet:actionURL>
 
-					<aui:button href="<%= deleteAccountEnvironmentURL.toString() %>" value="delete" />
+						<aui:button href="<%= deleteAccountEnvironmentURL.toString() %>" value="delete" />
+					</c:if>
 				</aui:col>
 			</aui:row>
 		</div>
