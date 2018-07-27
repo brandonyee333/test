@@ -26,7 +26,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Kyle Bischof
  */
 @Component(
-	immediate = true, property = "routing.key=zendesk.organization.add",
+	immediate = true, property = "routing.key=zendesk.service.organization.add",
 	service = ZendeskOrganizationAddMessageProcessor.class
 )
 public class ZendeskOrganizationAddMessageProcessor

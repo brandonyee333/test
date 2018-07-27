@@ -92,7 +92,8 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			_messagePublisher.sendMessage(
 				ZendeskConnectorConfigurationValues.
 					RABBITMQ_MESSAGE_EXCHANGE_NAME,
-				"zendesk.organization.add", zendeskOrganization.toJSONObject());
+				"zendesk.service.organization.add",
+				zendeskOrganization.toJSONObject());
 		}
 		catch (Exception e) {
 			throw new ModelListenerException(e);
