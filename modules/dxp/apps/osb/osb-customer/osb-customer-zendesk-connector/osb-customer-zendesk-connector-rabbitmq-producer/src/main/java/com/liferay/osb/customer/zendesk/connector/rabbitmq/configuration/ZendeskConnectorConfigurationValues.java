@@ -21,21 +21,9 @@ import com.liferay.portal.kernel.util.GetterUtil;
  */
 public class ZendeskConnectorConfigurationValues {
 
-	public static final String RABBITMQ_LOGIN_PASSWORD = GetterUtil.getString(
-		ZendeskConnectorConfigurationUtil.get("rabbitmq.login.password"));
-
-	public static final String RABBITMQ_LOGIN_USERNAME = GetterUtil.getString(
-		ZendeskConnectorConfigurationUtil.get("rabbitmq.login.username"));
-
 	public static final String RABBITMQ_MESSAGE_EXCHANGE_NAME =
 		GetterUtil.getString(
 			ZendeskConnectorConfigurationUtil.get(
 				"rabbitmq.message.exchange.name"));
-
-	public static final String RABBITMQ_SERVER_HOST = GetterUtil.getString(
-		ZendeskConnectorConfigurationUtil.get("rabbitmq.server.host"));
-
-	public static final String RABBITMQ_SERVER_PORT = GetterUtil.getString(
-		ZendeskConnectorConfigurationUtil.get("rabbitmq.server.port"));
 
 }
