@@ -39,7 +39,8 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntry.getAccount
 
 <div class="container-fluid-1280">
 	<c:choose>
-		<c:when test='<%= tabs1.equals("people") %>'>
+		<c:when test='<%= tabs1.equals("history") %>'>
+			<liferay-util:include page="/account_entry_details/worker/history.jsp" servletContext="<%= application %>" />
 		</c:when>
 		<c:otherwise>
 			<liferay-util:include page="/account_entry_details/worker/overview.jsp" servletContext="<%= application %>" />

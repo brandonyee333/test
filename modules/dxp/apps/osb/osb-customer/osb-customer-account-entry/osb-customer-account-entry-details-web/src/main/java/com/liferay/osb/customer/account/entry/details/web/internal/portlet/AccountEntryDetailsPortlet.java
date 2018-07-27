@@ -32,7 +32,7 @@ import org.osgi.service.component.annotations.Component;
 		"javax.portlet.display-name=OSB Support Project Details",
 		"javax.portlet.expiration-cache=0",
 		"javax.portlet.init-param.mvc-command-names-default-views=/view",
-		"javax.portlet.init-param.template-path=/",
+		"javax.portlet.init-param.template-path=/META-INF/resources/",
 		"javax.portlet.name=" + AccountEntryDetailsPortletKeys.ACCOUNT_ENTRY_DETAILS,
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=administrator,guest,power-user,user"

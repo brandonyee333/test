@@ -40,6 +40,8 @@ page import="com.liferay.osb.model.AccountEnvironment" %><%@
 page import="com.liferay.osb.model.AccountEnvironmentAttachment" %><%@
 page import="com.liferay.osb.model.AccountEnvironmentAttachmentConstants" %><%@
 page import="com.liferay.osb.model.AccountEnvironmentConstants" %><%@
+page import="com.liferay.osb.model.AuditEntry" %><%@
+page import="com.liferay.osb.model.AuditEntryConstants" %><%@
 page import="com.liferay.osb.model.OfferingEntry" %><%@
 page import="com.liferay.osb.model.OfferingEntryConstants" %><%@
 page import="com.liferay.osb.model.OfferingEntryGroup" %><%@
@@ -52,22 +54,29 @@ page import="com.liferay.osb.model.SupportResponse" %><%@
 page import="com.liferay.osb.service.AccountEntryServiceUtil" %><%@
 page import="com.liferay.osb.service.AccountEnvironmentAttachmentLocalServiceUtil" %><%@
 page import="com.liferay.osb.service.AccountEnvironmentLocalServiceUtil" %><%@
+page import="com.liferay.osb.service.AuditEntryLocalServiceUtil" %><%@
 page import="com.liferay.osb.service.ProductEntryLocalServiceUtil" %><%@
 page import="com.liferay.osb.service.SupportResponseLocalServiceUtil" %><%@
 page import="com.liferay.osb.service.permission.OSBAccountEnvironmentPermission" %><%@
 page import="com.liferay.osb.util.OSBActionKeys" %><%@
+page import="com.liferay.osb.util.OSBConstants" %><%@
+page import="com.liferay.osb.util.VisibilityConstants" %><%@
 page import="com.liferay.osb.util.comparator.AccountEntryNameComparator" %><%@
 page import="com.liferay.portal.kernel.bean.BeanParamUtil" %><%@
 page import="com.liferay.portal.kernel.dao.orm.QueryUtil" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.model.ListType" %><%@
+page import="com.liferay.portal.kernel.model.User" %><%@
 page import="com.liferay.portal.kernel.portlet.LiferayWindowState" %><%@
+page import="com.liferay.portal.kernel.service.UserLocalServiceUtil" %><%@
 page import="com.liferay.portal.kernel.servlet.SessionMessages" %><%@
+page import="com.liferay.portal.kernel.util.ArrayUtil" %><%@
 page import="com.liferay.portal.kernel.util.FastDateFormatFactoryUtil" %><%@
 page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
 page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
 page import="com.liferay.portal.kernel.util.PortalUtil" %><%@
 page import="com.liferay.portal.kernel.util.StringPool" %><%@
+page import="com.liferay.portal.kernel.util.StringUtil" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %>
 
 <%@ page import="java.text.DateFormat" %><%@
@@ -85,5 +94,9 @@ page import="java.util.List" %>
 <portlet:defineObjects />
 
 <%
+Format fullDateFormatDateTime = FastDateFormatFactoryUtil.getDateTime(DateFormat.FULL, DateFormat.FULL, locale, timeZone);
+
 Format shortDateFormatDate = FastDateFormatFactoryUtil.getDate(DateFormat.SHORT, locale, timeZone);
+
+Format shortDateFormatTime = FastDateFormatFactoryUtil.getTime(DateFormat.SHORT, locale, timeZone);
 %>
