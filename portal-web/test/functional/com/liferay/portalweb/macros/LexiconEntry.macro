@@ -7,7 +7,7 @@
 				<var method="StringUtil#upperCaseFirstLetter('${displayStyle}')" name="key_menuItem" />
 			</condition>
 			<then>
-				<execute function="Click" locator1="MenuItem#ANY_MENU_ITEM">
+				<execute function="Click#clickNoMouseOverNoWaitForVisible" locator1="MenuItem#ANY_MENU_ITEM">
 					<var method="StringUtil#upperCaseFirstLetter('${displayStyle}')" name="key_menuItem" />
 				</execute>
 			</then>
