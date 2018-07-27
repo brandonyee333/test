@@ -38,7 +38,7 @@ import org.osgi.service.component.annotations.Component;
 		"javax.portlet.info.keywords=LCS Messaging Echo Sample2",
 		"javax.portlet.info.short-title=LCS Messaging Echo Sample2",
 		"javax.portlet.info.title=LCS Messaging Echo Sample2",
-		"javax.portlet.init-param.template-path=/",
+		"javax.portlet.init-param.template-path=/META-INF/resources/",
 		"javax.portlet.init-param.view-template=/view.jsp",
 		"javax.portlet.mime-type=text/html",
 		"javax.portlet.name=com_liferay_lcs_messaging_echo_sample2_portlet_EchoPortlet",
