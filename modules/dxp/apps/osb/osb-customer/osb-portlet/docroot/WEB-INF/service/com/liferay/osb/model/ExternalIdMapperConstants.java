@@ -28,4 +28,6 @@ public class ExternalIdMapperConstants {
 
 	public static final int TYPE_SALESFORCE = 1;
 
+	public static final int TYPE_ZENDESK = 7;
+
 }

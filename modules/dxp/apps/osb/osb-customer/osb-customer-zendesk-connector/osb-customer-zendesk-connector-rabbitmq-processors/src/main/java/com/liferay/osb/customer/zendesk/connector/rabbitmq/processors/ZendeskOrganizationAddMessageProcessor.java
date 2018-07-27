@@ -14,10 +14,13 @@
 
 package com.liferay.osb.customer.zendesk.connector.rabbitmq.processors;
 
+import com.liferay.osb.customer.rabbitmq.connector.publisher.MessagePublisher;
+import com.liferay.osb.customer.zendesk.connector.configuration.ZendeskConnectorConfigurationValues;
 import com.liferay.osb.customer.zendesk.connector.util.ZendeskHttpUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Kyle Bischof
@@ -34,8 +37,15 @@ public class ZendeskOrganizationAddMessageProcessor
 			_ENDPOINT, jsonObject);
 
 		handleResponseErrors(responseJSONObject);
+
+		_messagePublisher.sendMessage(
+			ZendeskConnectorConfigurationValues.RABBITMQ_MESSAGE_EXCHANGE_NAME,
+			"zendesk.organization.add", responseJSONObject);
 	}
 
 	private static final String _ENDPOINT = "organizations.json";
+
+	@Reference
+	private MessagePublisher _messagePublisher;
 
 }

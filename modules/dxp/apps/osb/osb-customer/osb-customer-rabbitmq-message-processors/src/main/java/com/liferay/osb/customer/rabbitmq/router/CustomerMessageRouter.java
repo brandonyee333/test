@@ -37,6 +37,7 @@ import com.liferay.osb.customer.rabbitmq.processors.RoleUnassignmentMessageProce
 import com.liferay.osb.customer.rabbitmq.processors.RoleUpdateMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.UserDeleteMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.UserUpdateMessageProcessor;
+import com.liferay.osb.customer.rabbitmq.processors.ZendeskExternalIdAddMessageProcessor;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -229,6 +230,15 @@ public class CustomerMessageRouter extends BaseMessageRouter {
 		Map<String, Object> properties) {
 
 		addRoute(userUpdateMessageProcessor, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setZendeskExternalIdAddMessageProcessor(
+		ZendeskExternalIdAddMessageProcessor
+			zendeskExternalIdAddMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(zendeskExternalIdAddMessageProcessor, properties);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
