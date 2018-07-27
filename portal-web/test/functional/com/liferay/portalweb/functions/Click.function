@@ -57,6 +57,16 @@
 		<execute selenium="assertLiferayErrors" />
 	</command>
 
+	<command name="clickNoMouseOverNoWaitForVisible">
+		<execute function="WaitForSPARefresh" />
+
+		<execute selenium="click" />
+
+		<execute selenium="assertJavaScriptErrors" />
+
+		<execute selenium="assertLiferayErrors" />
+	</command>
+
 	<command name="clickNoSPARefresh">
 		<execute selenium="waitForVisible" />
 
@@ -149,6 +159,18 @@
 		<execute argument1="1000" selenium="pause" />
 
 		<execute selenium="mouseOver" />
+
+		<execute function="Click#clickAt" />
+
+		<execute selenium="assertJavaScriptErrors" />
+
+		<execute selenium="assertLiferayErrors" />
+	</command>
+
+	<command name="pauseClickAtNoMouseOver">
+		<execute function="WaitForSPARefresh" />
+
+		<execute argument1="1000" selenium="pause" />
 
 		<execute function="Click#clickAt" />
 

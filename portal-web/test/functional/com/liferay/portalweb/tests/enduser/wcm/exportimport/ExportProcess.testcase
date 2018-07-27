@@ -58,11 +58,15 @@
 	</command>
 
 	<command name="ViewExportProcess" priority="3">
+		<property name="portal.acceptance" value="fiona" />
+
 		<execute macro="Navigator#openURL" />
 
 		<execute macro="LAR#exportSiteCP">
 			<var name="larFileName" value="CustomExport" />
 		</execute>
+
+		<execute function="Refresh" />
 
 		<execute macro="LAR#viewProcessesInListView" />
 

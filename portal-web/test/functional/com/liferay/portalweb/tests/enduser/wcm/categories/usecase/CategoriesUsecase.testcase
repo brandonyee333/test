@@ -1293,6 +1293,7 @@
 	</command>
 
 	<command name="ExportImportWCWithCategoryViaAP" priority="5">
+		<property name="portal.acceptance" value="fiona" />
 		<property name="testray.component.names" value="Training" />
 
 		<execute macro="ProductMenu#gotoPortlet">
@@ -1456,6 +1457,8 @@
 		<execute macro="LexiconEntry#gotoAdd" />
 
 		<execute macro="LAR#exportSuccess" />
+
+		<execute function="Refresh" />
 
 		<execute macro="LexiconEntry#changeDisplayStyle">
 			<var name="displayStyle" value="table" />
