@@ -167,7 +167,7 @@ function formatChildRowContent(watsonChild) {
 
 	const unknownLabel = Liferay.Language.get('unknown');
 
-	childDetails.push(sub(Liferay.Language.get('country-of-ethnicity-x'), watsonChild.get('country') || unknownLabel));
+	childDetails.push(sub(Liferay.Language.get('country-of-origin-x'), watsonChild.get('country') || unknownLabel));
 	childDetails.push(sub(Liferay.Language.get('date-of-entry-x'), getFormattedDate(watsonChild.get('dateAccepted')) || unknownLabel));
 
 	return childDetails;
@@ -481,7 +481,7 @@ function formatSimpleChildData(watsonChildren, keysToOmit, onClick, selectedIds)
 			const unknownLabel = Liferay.Language.get('unknown');
 
 			const birthDate = sub(Liferay.Language.get('birth-date-x'), getFormattedDate(watsonChild.get('birthDate')) || unknownLabel);
-			const ethnicity = sub(Liferay.Language.get('country-of-ethnicity-x'), watsonChild.get('ethnicity') || unknownLabel);
+			const ethnicity = sub(Liferay.Language.get('country-of-origin-x'), watsonChild.get('ethnicity') || unknownLabel);
 
 			return {
 				disabled: disabled ? 'disabled' : '',
