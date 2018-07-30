@@ -2,6 +2,6 @@
 
 <suppressions>
 	<source-check>
-		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/qa/infrastructure/internal/messaging/OSBCustomerQAStartupMessageListener.java"/>
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/qa/infrastructure/internal/messaging/OSBCustomerQAStartupMessageListener.java" />
 	</source-check>
 </suppressions>
