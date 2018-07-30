@@ -1,4 +1,4 @@
-import {bindAll, isEmpty} from 'lodash';
+import {bindAll, debounce, isEmpty} from 'lodash';
 import {connect} from 'metal-redux';
 import JSXComponent, {Config} from 'metal-jsx';
 import {fromJS, Map, OrderedMap} from 'immutable';
@@ -60,6 +60,8 @@ class Index extends JSXComponent {
 			'refreshData',
 			'scrollToPosition'
 		);
+
+		this._refreshData = debounce(this.refreshData, 250);
 
 		const {model, updatePageTitle} = this.props;
 
@@ -215,17 +217,19 @@ class Index extends JSXComponent {
 		const fieldsArray = [];
 		const keywordsArray = [];
 
-		filter.forEach(
-			data => {
-				const key = data[0];
-				const value = data[1];
+		if (!isEmpty(filter)) {
+			filter.forEach(
+				data => {
+					const key = data[0];
+					const value = data[1];
 
-				if (key && value) {
-					fieldsArray.push(key);
-					keywordsArray.push(value);
+					if (key && value) {
+						fieldsArray.push(key);
+						keywordsArray.push(value);
+					}
 				}
-			}
-		);
+			);
+		}
 
 		if (searchModelMethod && !isEmpty(fieldsArray) && !isEmpty(keywordsArray)) {
 			end = (end < 1) ? itemsLoaded + batchCount : end;
@@ -494,8 +498,6 @@ class Index extends JSXComponent {
 	}
 
 	rendered(firstRender) {
-		this.refreshData(false);
-
 		const {hideLoadingOverlay, lastFocus, lastLoadedItemData, loading, updateHideLoadingOverlay, updateLastFocus} = this.props;
 
 		this._handleUpdateDisplayBy();
@@ -563,7 +565,7 @@ class Index extends JSXComponent {
 					}
 				);
 
-				this.refreshData(true);
+				this._refreshData(true);
 			}
 		}
 	}
@@ -581,7 +583,7 @@ class Index extends JSXComponent {
 		if (newState && newState !== oldState) {
 			this.state.itemsLoaded = 0;
 
-			this.refreshData(true);
+			this._refreshData(true);
 		}
 	}
 }
