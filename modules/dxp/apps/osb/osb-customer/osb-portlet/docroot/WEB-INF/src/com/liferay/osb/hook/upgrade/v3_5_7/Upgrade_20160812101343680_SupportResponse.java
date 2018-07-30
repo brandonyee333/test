@@ -57,13 +57,13 @@ public class Upgrade_20160812101343680_SupportResponse
 					supportResponseId, _SUPPORT_RESPONSE_GOLD_ID);
 			}
 			else if (supportResponse.getSupportLevel() ==
-						SupportResponseConstants.SUPPORT_LEVEL_PLATINUM) {
+						 SupportResponseConstants.SUPPORT_LEVEL_PLATINUM) {
 
 				_updateSupportResponse(
 					supportResponseId, _SUPPORT_RESPONSE_PLATINUM_ID);
 			}
 			else if (supportResponse.getSupportLevel() ==
-						SupportResponseConstants.SUPPORT_LEVEL_SILVER) {
+						 SupportResponseConstants.SUPPORT_LEVEL_SILVER) {
 
 				_updateSupportResponse(
 					supportResponseId, _SUPPORT_RESPONSE_SILVER_ID);

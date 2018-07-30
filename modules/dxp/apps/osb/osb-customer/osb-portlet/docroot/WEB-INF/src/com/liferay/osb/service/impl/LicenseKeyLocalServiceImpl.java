@@ -1463,28 +1463,28 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			return ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7_1_10;
 		}
 		else if (productMinorVersion ==
-					ProductEntryConstants.
-						DIGITAL_ENTERPRISE_MINOR_VERSION_7_0) {
+					 ProductEntryConstants.
+						 DIGITAL_ENTERPRISE_MINOR_VERSION_7_0) {
 
 			return ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7_0_10;
 		}
 		else if (productMinorVersion ==
-					ProductEntryConstants.PORTAL_MINOR_VERSION_5_2) {
+					 ProductEntryConstants.PORTAL_MINOR_VERSION_5_2) {
 
 			return ProductEntryConstants.PORTAL_VERSION_5_2_9;
 		}
 		else if (productMinorVersion ==
-					ProductEntryConstants.PORTAL_MINOR_VERSION_6_0) {
+					 ProductEntryConstants.PORTAL_MINOR_VERSION_6_0) {
 
 			return ProductEntryConstants.PORTAL_VERSION_6_0_10;
 		}
 		else if (productMinorVersion ==
-					ProductEntryConstants.PORTAL_MINOR_VERSION_6_1) {
+					 ProductEntryConstants.PORTAL_MINOR_VERSION_6_1) {
 
 			return ProductEntryConstants.PORTAL_VERSION_6_1_10;
 		}
 		else if (productMinorVersion ==
-					ProductEntryConstants.PORTAL_MINOR_VERSION_6_2) {
+					 ProductEntryConstants.PORTAL_MINOR_VERSION_6_2) {
 
 			return ProductEntryConstants.PORTAL_VERSION_6_2_10;
 		}

@@ -97,7 +97,7 @@ public class LicenseKeyConstants {
 			return SERVER_ID_CLUSTER;
 		}
 		else if (licenseEntryType.equals(
-					LicenseEntryConstants.TYPE_DEVELOPER)) {
+					 LicenseEntryConstants.TYPE_DEVELOPER)) {
 
 			return SERVER_ID_DEVELOPER;
 		}
@@ -105,7 +105,7 @@ public class LicenseKeyConstants {
 			return SERVER_ID_ELASTIC;
 		}
 		else if (licenseEntryType.equals(
-					LicenseEntryConstants.TYPE_ENTERPRISE)) {
+					 LicenseEntryConstants.TYPE_ENTERPRISE)) {
 
 			return SERVER_ID_ENTERPRISE;
 		}

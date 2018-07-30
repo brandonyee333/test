@@ -95,12 +95,12 @@ public class Upgrade_20160811141901211_AccountEntry extends BaseUpgradeProcess {
 			return OSBConstants.SUPPORT_REGION_CHINA_ID;
 		}
 		else if (languageId.equals(
-					AccountEntryConstants.LANGUAGE_ID_JAPANESE)) {
+					 AccountEntryConstants.LANGUAGE_ID_JAPANESE)) {
 
 			return 45637701;
 		}
 		else if (languageId.equals(
-					AccountEntryConstants.LANGUAGE_ID_PORTUGUESE)) {
+					 AccountEntryConstants.LANGUAGE_ID_PORTUGUESE)) {
 
 			return 42356516;
 		}

@@ -53,7 +53,7 @@ public class SalesforceConstants {
 			return "new-business";
 		}
 		else if (opportunityType ==
-					OPPORTUNITY_TYPE_NEW_PROJECT_EXISTING_BUSINESS) {
+					 OPPORTUNITY_TYPE_NEW_PROJECT_EXISTING_BUSINESS) {
 
 			return "new-project-existing-business";
 		}

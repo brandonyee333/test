@@ -524,18 +524,18 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 			return SalesforceConstants.OPPORTUNITY_TYPE_EXISTING_BUSINESS;
 		}
 		else if (StringUtil.equalsIgnoreCase(
-					salesforceOpportunityTypeName, "New Business")) {
+					 salesforceOpportunityTypeName, "New Business")) {
 
 			return SalesforceConstants.OPPORTUNITY_TYPE_NEW_BUSINESS;
 		}
 		else if (StringUtil.equalsIgnoreCase(
-					salesforceOpportunityTypeName, "Renewal")) {
+					 salesforceOpportunityTypeName, "Renewal")) {
 
 			return SalesforceConstants.OPPORTUNITY_TYPE_RENEWAL;
 		}
 		else if (StringUtil.equalsIgnoreCase(
-					salesforceOpportunityTypeName,
-					"New Project Existing Business")) {
+					 salesforceOpportunityTypeName,
+					 "New Project Existing Business")) {
 
 			return SalesforceConstants.
 				OPPORTUNITY_TYPE_NEW_PROJECT_EXISTING_BUSINESS;
@@ -972,14 +972,14 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 				curSupportResponse = supportResponse;
 			}
 			else if (productEntry.getType() ==
-						ProductEntryConstants.TYPE_ADD_ON) {
+						 ProductEntryConstants.TYPE_ADD_ON) {
 
 				curSupportResponse =
 					SupportResponseLocalServiceUtil.fetchSupportResponseByName(
 						"Floating");
 			}
 			else if (productEntry.getType() ==
-						ProductEntryConstants.TYPE_PRIMARY) {
+						 ProductEntryConstants.TYPE_PRIMARY) {
 
 				curSupportResponse =
 					SupportResponseLocalServiceUtil.fetchSupportResponseByName(
