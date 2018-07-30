@@ -147,9 +147,13 @@ public class ExternalIdMapperLocalServiceClpInvoker {
 
 		_methodParameterTypes174 = new String[] { "long", "long", "int" };
 
-		_methodName175 = "updateExternalIdMapper";
+		_methodName175 = "hasExternalIdMappers";
 
-		_methodParameterTypes175 = new String[] {
+		_methodParameterTypes175 = new String[] { "long", "long", "int" };
+
+		_methodName176 = "updateExternalIdMapper";
+
+		_methodParameterTypes176 = new String[] {
 				"long", "long", "long", "int", "java.lang.String"
 			};
 	}
@@ -296,6 +300,13 @@ public class ExternalIdMapperLocalServiceClpInvoker {
 
 		if (_methodName175.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes175, parameterTypes)) {
+			return ExternalIdMapperLocalServiceUtil.hasExternalIdMappers(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				((Integer)arguments[2]).intValue());
+		}
+
+		if (_methodName176.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes176, parameterTypes)) {
 			return ExternalIdMapperLocalServiceUtil.updateExternalIdMapper(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -356,4 +367,6 @@ public class ExternalIdMapperLocalServiceClpInvoker {
 	private String[] _methodParameterTypes174;
 	private String _methodName175;
 	private String[] _methodParameterTypes175;
+	private String _methodName176;
+	private String[] _methodParameterTypes176;
 }

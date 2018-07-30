@@ -61,6 +61,8 @@ public interface ExternalIdMapperLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ExternalIdMapperLocalServiceUtil} to access the external ID mapper local service. Add custom service methods to {@link com.liferay.osb.service.impl.ExternalIdMapperLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasExternalIdMappers(long classNameId, long classPK, int type);
 
 	/**
 	* Adds the external ID mapper to the database. Also notifies the appropriate model listeners.

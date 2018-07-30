@@ -41,6 +41,10 @@ public class ExternalIdMapperLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.ExternalIdMapperLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static boolean hasExternalIdMappers(long classNameId, long classPK,
+		int type) {
+		return getService().hasExternalIdMappers(classNameId, classPK, type);
+	}
 
 	/**
 	* Adds the external ID mapper to the database. Also notifies the appropriate model listeners.

@@ -34,6 +34,12 @@ public class ExternalIdMapperLocalServiceWrapper
 		_externalIdMapperLocalService = externalIdMapperLocalService;
 	}
 
+	@Override
+	public boolean hasExternalIdMappers(long classNameId, long classPK, int type) {
+		return _externalIdMapperLocalService.hasExternalIdMappers(classNameId,
+			classPK, type);
+	}
+
 	/**
 	* Adds the external ID mapper to the database. Also notifies the appropriate model listeners.
 	*
