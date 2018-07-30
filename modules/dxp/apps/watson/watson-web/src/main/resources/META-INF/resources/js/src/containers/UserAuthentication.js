@@ -83,7 +83,7 @@ class UserAuthentication extends JSXComponent {
 	}
 
 	render() {
-		const {authenticationStatus} = this.props;
+		const {authenticationLoading, authenticationStatus} = this.props;
 
 		const {disableTokenRequest, emailSentTime, value} = this.state;
 
@@ -120,7 +120,7 @@ class UserAuthentication extends JSXComponent {
 						{sub(Liferay.Language.get('welcome-to-watson-x'), Liferay.ThemeDisplay.getUserName())}
 					</div>
 
-					<LoadingIndicator />
+					<LoadingIndicator loading={(authenticationLoading === undefined)} />
 
 					<div class="authentication-content">
 						<Alert
@@ -207,7 +207,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-	const authenticationLoading = state.getIn(['authentication', 'loading']) || false;
+	const authenticationLoading = state.getIn(['authentication', 'loading']);
 	const authenticationStatus = state.getIn(['authentication', 'status']);
 
 	return {
