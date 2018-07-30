@@ -45,6 +45,7 @@ class DateRangeInput extends JSXComponent {
 				<MetalDateRangeInput
 					className="watson-input"
 					disabled={disabled}
+					displayFormat="DD-MM-YYYY"
 					endDate={endDate}
 					endDateId="endDatePicker"
 					endDatePlaceholderText={Liferay.Language.get('end-date')}

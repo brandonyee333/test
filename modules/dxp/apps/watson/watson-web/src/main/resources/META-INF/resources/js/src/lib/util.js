@@ -113,7 +113,7 @@ export function getFormattedDate(date) {
 	if (date) {
 		const dateTimeMoment = moment(date);
 
-		retVal = dateTimeMoment.format('YYYY-MM-DD');
+		retVal = dateTimeMoment.format('DD-MM-YYYY');
 	}
 
 	return retVal;

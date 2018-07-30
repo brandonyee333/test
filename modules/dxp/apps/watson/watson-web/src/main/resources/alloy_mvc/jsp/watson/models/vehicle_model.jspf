@@ -138,7 +138,7 @@ public static class WatsonVehicle extends WatsonVehicleBaseModel {
 
 	public static String getFormattedDate(Date date, Locale locale) {
 		if (date != null) {
-			return DateUtil.getDate(date, "yyyy-MM-dd", locale);
+			return DateUtil.getDate(date, "dd-MM-yyyy", locale);
 		}
 		else {
 			return StringPool.BLANK;

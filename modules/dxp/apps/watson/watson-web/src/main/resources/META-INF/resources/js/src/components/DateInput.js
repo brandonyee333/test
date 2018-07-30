@@ -49,6 +49,7 @@ class DateInput extends JSXComponent {
 				<MetalDateInput
 					date={dateState ? moment(dateState) : null}
 					disabled={disabled}
+					displayFormat="DD-MM-YYYY"
 					elementClasses="watson-input"
 					focused={focused}
 					isOutsideRange={outsideRangeBypass}
