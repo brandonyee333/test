@@ -1,4 +1,5 @@
 import '../css/main.scss';
 
-import React from 'react';
-import ReactDOM from 'react-dom';
+export {default as render} from './helpers/react-renderer';
+
+export {default as AccountEnvironments} from './components/account-environments';
