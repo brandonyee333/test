@@ -1,4 +1,4 @@
-import {capitalize, isEqual} from 'lodash';
+import {capitalize, isEqual, toNumber} from 'lodash';
 import {List, Map} from 'immutable';
 import moment from 'moment';
 import sub from 'string-sub';
@@ -171,7 +171,7 @@ export function getOptionsLabelFromWatsonConstants(model, key, watsonListTypeId)
 }
 
 export function getPluralMessage(singular, plural, count = 0) {
-	return count === 1 ? singular : plural;
+	return toNumber(count) === 1 ? singular : plural;
 }
 
 export function getURLForLanguageId(languageId) {
