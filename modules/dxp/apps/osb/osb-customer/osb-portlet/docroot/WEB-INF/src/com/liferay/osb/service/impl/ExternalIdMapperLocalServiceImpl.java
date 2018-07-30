@@ -67,6 +67,19 @@ public class ExternalIdMapperLocalServiceImpl
 			classNameId, classPK, type);
 	}
 
+	public boolean hasExternalIdMappers(
+		long classNameId, long classPK, int type) {
+
+		int count = externalIdMapperPersistence.countByC_C_T(
+			classNameId, classPK, type);
+
+		if (count > 0) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public ExternalIdMapper updateExternalIdMapper(
 			long externalIdMapperId, long classNameId, long classPK, int type,
 			String externalId)

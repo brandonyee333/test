@@ -19,14 +19,20 @@ import com.liferay.osb.customer.zendesk.connector.rabbitmq.configuration.Zendesk
 import com.liferay.osb.customer.zendesk.connector.rabbitmq.model.ZendeskOrganization;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
+import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.SupportRegion;
+import com.liferay.osb.model.SupportResponse;
+import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.osb.service.SupportRegionLocalServiceUtil;
+import com.liferay.osb.service.SupportResponseLocalServiceUtil;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.ModelListenerException;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.util.StringPool;
 
 import org.osgi.service.component.annotations.Component;
@@ -43,56 +49,50 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		throws ModelListenerException {
 
 		try {
-			if ((accountEntry.getStatus() !=
-					WorkflowConstants.STATUS_APPROVED) ||
-				!accountEntry.hasActiveSupportOffering()) {
-
+			if (!sync(accountEntry)) {
 				return;
 			}
 
-			ZendeskOrganization zendeskOrganization = new ZendeskOrganization();
-
-			zendeskOrganization.setExternalId(
-				String.valueOf(accountEntry.getAccountEntryId()));
-
-			zendeskOrganization.setName(accountEntry.getName());
-			zendeskOrganization.setPartnerFirstLineSupport(
-				String.valueOf(accountEntry.getPartnerManagedSupport()));
-
-			String partnerEntryCode = StringPool.BLANK;
-
-			PartnerEntry partnerEntry = accountEntry.getPartnerEntry();
-
-			if (partnerEntry != null) {
-				partnerEntryCode = partnerEntry.getCode();
-			}
-
-			zendeskOrganization.setPartnerOrganization(partnerEntryCode);
-			zendeskOrganization.setSharedComments(Boolean.TRUE.toString());
-			zendeskOrganization.setSharedTickets(Boolean.TRUE.toString());
-			zendeskOrganization.setSLA(StringPool.BLANK);
-			zendeskOrganization.setStatus(accountEntry.getStatusLabel());
-
-			String[] languageIds = accountEntry.getLanguageIds();
-
-			zendeskOrganization.setSupportLanguage(
-				AccountEntryConstants.getLanguageLabel(languageIds[0]));
-
-			long[] supportRegionIds = accountEntry.getSupportRegionIds();
-
-			SupportRegion supportRegion =
-				SupportRegionLocalServiceUtil.getSupportRegion(
-					supportRegionIds[0]);
-
-			zendeskOrganization.setSupportRegion(supportRegion.getName());
-
-			zendeskOrganization.setTier(
-				AccountEntryConstants.getTierLabel(accountEntry.getTier()));
+			ZendeskOrganization zendeskOrganization = setupZendeskOrganization(
+				accountEntry);
 
 			_messagePublisher.sendMessage(
 				ZendeskConnectorConfigurationValues.
 					RABBITMQ_MESSAGE_EXCHANGE_NAME,
-				"zendesk.service.organization.add",
+				"zendesk.service.organization.create",
+				zendeskOrganization.toJSONObject());
+		}
+		catch (Exception e) {
+			throw new ModelListenerException(e);
+		}
+	}
+
+	@Override
+	public void onAfterUpdate(AccountEntry accountEntry)
+		throws ModelListenerException {
+
+		try {
+			ZendeskOrganization zendeskOrganization = setupZendeskOrganization(
+				accountEntry);
+
+			long classNameId = ClassNameLocalServiceUtil.getClassNameId(
+				AccountEntry.class);
+
+			boolean externalIdMappers =
+				ExternalIdMapperLocalServiceUtil.hasExternalIdMappers(
+					classNameId, accountEntry.getAccountEntryId(),
+					ExternalIdMapperConstants.TYPE_ZENDESK);
+
+			if (!externalIdMappers) {
+				if (!sync(accountEntry)) {
+					return;
+				}
+			}
+
+			_messagePublisher.sendMessage(
+				ZendeskConnectorConfigurationValues.
+					RABBITMQ_MESSAGE_EXCHANGE_NAME,
+				"zendesk.service.organization.create.or.update",
 				zendeskOrganization.toJSONObject());
 		}
 		catch (Exception e) {
@@ -106,6 +106,73 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 	)
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
+	}
+
+	protected ZendeskOrganization setupZendeskOrganization(
+			AccountEntry accountEntry)
+		throws PortalException {
+
+		ZendeskOrganization zendeskOrganization = new ZendeskOrganization();
+
+		zendeskOrganization.setExternalId(
+			String.valueOf(accountEntry.getAccountEntryId()));
+
+		zendeskOrganization.setName(accountEntry.getName());
+		zendeskOrganization.setPartnerFirstLineSupport(
+			String.valueOf(accountEntry.getPartnerManagedSupport()));
+
+		String partnerEntryCode = StringPool.BLANK;
+
+		PartnerEntry partnerEntry = accountEntry.getPartnerEntry();
+
+		if (partnerEntry != null) {
+			partnerEntryCode = partnerEntry.getCode();
+		}
+
+		zendeskOrganization.setPartnerOrganization(partnerEntryCode);
+		zendeskOrganization.setSharedComments(Boolean.TRUE.toString());
+		zendeskOrganization.setSharedTickets(Boolean.TRUE.toString());
+
+		String supportLevelLabel = StringPool.BLANK;
+
+		SupportResponse supportResponse =
+			SupportResponseLocalServiceUtil.fetchSupportResponse(
+				accountEntry.getHighestSupportResponseId());
+
+		if (supportResponse != null) {
+			supportLevelLabel = supportResponse.getSupportLevelLabel();
+		}
+
+		zendeskOrganization.setSLA(supportLevelLabel);
+		zendeskOrganization.setStatus(accountEntry.getStatusLabel());
+
+		String[] languageIds = accountEntry.getLanguageIds();
+
+		zendeskOrganization.setSupportLanguage(
+			AccountEntryConstants.getLanguageLabel(languageIds[0]));
+
+		long[] supportRegionIds = accountEntry.getSupportRegionIds();
+
+		SupportRegion supportRegion =
+			SupportRegionLocalServiceUtil.getSupportRegion(supportRegionIds[0]);
+
+		zendeskOrganization.setSupportRegion(supportRegion.getName());
+
+		zendeskOrganization.setTier(
+			AccountEntryConstants.getTierLabel(accountEntry.getTier()));
+
+		return zendeskOrganization;
+	}
+
+	protected boolean sync(AccountEntry accountEntry) {
+		if ((accountEntry.getStatus() ==
+				WorkflowConstants.STATUS_APPROVED) &&
+			accountEntry.hasActiveSupportOffering()) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	@Reference

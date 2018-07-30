@@ -26,10 +26,11 @@ import org.osgi.service.component.annotations.Reference;
  * @author Kyle Bischof
  */
 @Component(
-	immediate = true, property = "routing.key=zendesk.service.organization.add",
-	service = ZendeskOrganizationAddMessageProcessor.class
+	immediate = true,
+	property = "routing.key=zendesk.service.organization.create",
+	service = ZendeskOrganizationCreateMessageProcessor.class
 )
-public class ZendeskOrganizationAddMessageProcessor
+public class ZendeskOrganizationCreateMessageProcessor
 	extends BaseMessageProcessor {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
@@ -40,7 +41,7 @@ public class ZendeskOrganizationAddMessageProcessor
 
 		_messagePublisher.sendMessage(
 			ZendeskConnectorConfigurationValues.RABBITMQ_MESSAGE_EXCHANGE_NAME,
-			"zendesk.organization.add", responseJSONObject);
+			"zendesk.organization.create", responseJSONObject);
 	}
 
 	private static final String _ENDPOINT = "organizations.json";

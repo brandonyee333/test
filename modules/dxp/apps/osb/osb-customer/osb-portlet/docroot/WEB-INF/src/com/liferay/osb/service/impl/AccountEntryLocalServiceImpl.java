@@ -1021,8 +1021,6 @@ public class AccountEntryLocalServiceImpl
 				countryId, 0, false, true);
 		}
 
-		accountEntryPersistence.update(accountEntry);
-
 		updateEWSADosseriaProjectKey(accountEntryId, ewsaDossieraProjectKey);
 
 		accountEntryLanguageLocalService.setAccountEntryLanguageIds(
@@ -1035,7 +1033,7 @@ public class AccountEntryLocalServiceImpl
 			user.getUserId(), user.getFullName(), oldAccountEntry,
 			accountEntry);
 
-		return accountEntry;
+		return accountEntryPersistence.update(accountEntry);
 	}
 
 	public void updateAccountEntryWithWorkflow(

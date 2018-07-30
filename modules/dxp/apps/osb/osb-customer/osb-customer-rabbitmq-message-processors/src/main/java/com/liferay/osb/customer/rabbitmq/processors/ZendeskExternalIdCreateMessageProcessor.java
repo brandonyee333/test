@@ -28,10 +28,11 @@ import org.osgi.service.component.annotations.Reference;
  * @author Kyle Bischof
  */
 @Component(
-	immediate = true, property = "routing.key=zendesk.organization.add",
-	service = ZendeskExternalIdAddMessageProcessor.class
+	immediate = true, property = "routing.key=zendesk.organization.create",
+	service = ZendeskExternalIdCreateMessageProcessor.class
 )
-public class ZendeskExternalIdAddMessageProcessor extends BaseMessageProcessor {
+public class ZendeskExternalIdCreateMessageProcessor
+	extends BaseMessageProcessor {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
 		JSONObject organizationJSONObject = jsonObject.getJSONObject(
@@ -43,9 +44,16 @@ public class ZendeskExternalIdAddMessageProcessor extends BaseMessageProcessor {
 		long classNameId = ClassNameLocalServiceUtil.getClassNameId(
 			AccountEntry.class);
 
-		ExternalIdMapperLocalServiceUtil.addExternalIdMapper(
-			classNameId, accountEntryId, ExternalIdMapperConstants.TYPE_ZENDESK,
-			zendeskOrganizationId);
+		boolean externalIdMappers =
+			ExternalIdMapperLocalServiceUtil.hasExternalIdMappers(
+				classNameId, accountEntryId,
+				ExternalIdMapperConstants.TYPE_ZENDESK);
+
+		if (!externalIdMappers) {
+			ExternalIdMapperLocalServiceUtil.addExternalIdMapper(
+				classNameId, accountEntryId,
+				ExternalIdMapperConstants.TYPE_ZENDESK, zendeskOrganizationId);
+		}
 	}
 
 	@Reference(
