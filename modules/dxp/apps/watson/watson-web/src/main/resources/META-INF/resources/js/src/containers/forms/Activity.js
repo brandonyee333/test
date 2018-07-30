@@ -201,6 +201,10 @@ class ActivityForm extends JSXComponent {
 	}
 
 	_handleBeforeLeave(data) {
+		if (this.isDisposed()) {
+			return false;
+		}
+
 		const {
 			action,
 			formData = {},

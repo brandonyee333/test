@@ -91,6 +91,10 @@ class IncidentForm extends JSXComponent {
 	}
 
 	_handleBeforeLeave(data) {
+		if (this.isDisposed()) {
+			return false;
+		}
+
 		const {
 			formData = {},
 			storeData,
