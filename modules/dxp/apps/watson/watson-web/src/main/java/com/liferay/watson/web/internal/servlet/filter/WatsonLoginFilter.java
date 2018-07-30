@@ -17,8 +17,6 @@ package com.liferay.watson.web.internal.servlet.filter;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.portlet.LiferayWindowState;
-import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.servlet.BaseFilter;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.Portal;
@@ -63,11 +61,9 @@ public class WatsonLoginFilter extends BaseFilter {
 		}
 
 		String ppid = request.getParameter("p_p_id");
-		String state = request.getParameter("p_p_state");
 
-		if ((Objects.equals(ppid, PortletKeys.FAST_LOGIN) ||
-			 Objects.equals(ppid, PortletKeys.LOGIN)) &&
-			Objects.equals(state, LiferayWindowState.MAXIMIZED.toString())) {
+		if (Objects.equals(ppid, PortletKeys.FAST_LOGIN) ||
+			Objects.equals(ppid, PortletKeys.LOGIN)) {
 
 			return false;
 		}
@@ -108,8 +104,5 @@ public class WatsonLoginFilter extends BaseFilter {
 
 	@Reference
 	private Portal _portal;
-
-	@Reference
-	private UserLocalService _userLocalService;
 
 }
