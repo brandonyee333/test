@@ -74,6 +74,7 @@
 		<configuration-action-class>com.liferay.osb.downloads.action.ConfigurationActionImpl</configuration-action-class>
 		<preferences-company-wide>true</preferences-company-wide>
 		<preferences-unique-per-layout>false</preferences-unique-per-layout>
+		<header-portlet-css>/downloads/css/main.css</header-portlet-css>
 		<css-class-wrapper>osb-portlet-downloads</css-class-wrapper>
 		<add-default-resource>true</add-default-resource>
 	</portlet>
