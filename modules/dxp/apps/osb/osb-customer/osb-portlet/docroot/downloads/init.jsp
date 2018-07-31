@@ -27,6 +27,22 @@ String customerAccessPattern = PrefsParamUtil.getString(portletPreferences, requ
 String guestAccessPattern = PrefsParamUtil.getString(portletPreferences, request, "guestAccessPattern", StringPool.BLANK);
 String trialPattern = PrefsParamUtil.getString(portletPreferences, request, "trialPattern", StringPool.BLANK);
 
+long evaluationEulaFileEntryId = PrefsParamUtil.getLong(portletPreferences, request, "evaluationEulaFileEntryId_" + currentLanguageId, 0L);
+String evaluationEulaVersion = PrefsParamUtil.getString(portletPreferences, request, "evaluationEulaVersion_" + currentLanguageId, StringPool.BLANK);
+String evaluationEulaVersionRequired = PrefsParamUtil.getString(portletPreferences, request, "evaluationEulaVersionRequired_" + currentLanguageId, StringPool.BLANK);
+
+String evaluationEulaFileTitle = StringPool.BLANK;
+
+if (evaluationEulaFileEntryId > 0) {
+	try {
+		DLFileEntry fileEntry = DLFileEntryLocalServiceUtil.getFileEntry(evaluationEulaFileEntryId);
+
+		evaluationEulaFileTitle = fileEntry.getTitle();
+	}
+	catch (NoSuchFileEntryException nsfee) {
+	}
+}
+
 String fileDirectory = PrefsParamUtil.getString(portletPreferences, request, "fileDirectory", StringPool.BLANK);
 String downloadPage = PrefsParamUtil.getString(portletPreferences, request, "downloadPage", StringPool.BLANK);
 

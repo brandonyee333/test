@@ -86,6 +86,14 @@ public class AdminServletContextListenerExpandoHelper {
 
 		try {
 			ExpandoColumnLocalServiceUtil.addColumn(
+				table.getTableId(), "osbEvaluationEULA",
+				ExpandoColumnConstants.STRING_ARRAY);
+		}
+		catch (DuplicateColumnNameException dcne) {
+		}
+
+		try {
+			ExpandoColumnLocalServiceUtil.addColumn(
 				table.getTableId(), "osbCompany",
 				ExpandoColumnConstants.STRING);
 		}

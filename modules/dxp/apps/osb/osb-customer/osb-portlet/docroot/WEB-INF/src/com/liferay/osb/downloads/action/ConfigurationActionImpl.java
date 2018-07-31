@@ -57,6 +57,9 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 		if (tabs1.equals("customer-access")) {
 			updateCustomerAccess(actionRequest, preferences);
 		}
+		else if (tabs1.equals("evaluation-eula")) {
+			updateEvaluationEULA(actionRequest, preferences);
+		}
 		else if (tabs1.equals("guest-access")) {
 			updateGuestAccess(actionRequest, preferences);
 		}
@@ -85,6 +88,35 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 			actionRequest, "customerAccessPattern");
 
 		preferences.setValue("customerAccessPattern", customerAccessPattern);
+	}
+
+	protected void updateEvaluationEULA(
+			ActionRequest actionRequest, PortletPreferences preferences)
+		throws Exception {
+
+		String languageId = LanguageUtil.getLanguageId(actionRequest);
+
+		long evaluationEulaFileEntryId = ParamUtil.getLong(
+			actionRequest, "evaluationEulaFileEntryId_" + languageId);
+		double evaluationEulaVersion = ParamUtil.getDouble(
+			actionRequest, "evaluationEulaVersion_" + languageId);
+		double evaluationEulaVersionRequired = ParamUtil.getDouble(
+			actionRequest, "evaluationEulaVersionRequired_" + languageId);
+
+		if (evaluationEulaVersion < evaluationEulaVersionRequired) {
+			SessionErrors.add(actionRequest, "evaluationEulaVersion");
+		}
+		else {
+			preferences.setValue(
+				"evaluationEulaFileEntryId_" + languageId,
+				String.valueOf(evaluationEulaFileEntryId));
+			preferences.setValue(
+				"evaluationEulaVersion_" + languageId,
+				String.valueOf(evaluationEulaVersion));
+			preferences.setValue(
+				"evaluationEulaVersionRequired_" + languageId,
+				String.valueOf(evaluationEulaVersionRequired));
+		}
 	}
 
 	protected void updateGeneral(

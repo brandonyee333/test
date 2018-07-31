@@ -1,0 +1,170 @@
+#set ($fileEntryLocalService = $serviceLocator.findService("com.liferay.document.library.kernel.service.DLFileEntryLocalService"))
+#set ($portletPreferencesLocalService = $serviceLocator.findService("com.liferay.portal.kernel.service.PortletPreferencesLocalService"))
+#set ($userLocalService = $serviceLocator.findService("com.liferay.portal.kernel.service.UserLocalService"))
+#set ($accountCustomerLocalService = $serviceLocator.findService("osb-portlet", "com.liferay.osb.service.AccountCustomerLocalService"))
+#set ($partnerWorkerLocalService = $serviceLocator.findService("osb-portlet", "com.liferay.osb.service.PartnerWorkerLocalService"))
+
+#set ($currentURL = $request.get("attributes").get("CURRENT_URL"))
+
+#set ($acceptEULA = $httpUtil.getParameter($currentURL, "acceptEULA", false))
+
+#set ($eulaLanguageId = $httpUtil.getParameter($currentURL, "eulaLanguageId", false))
+
+#if ($validator.isNull($eulaLanguageId))
+	#set ($eulaLanguageId = "en_US")
+#end
+
+#set ($preferences = $portletPreferencesLocalService.getPreferences($company.getCompanyId(), $company.getCompanyId(), 1, 0, "3_WAR_osbportlet" , null))
+
+#set ($eulaFileEntryId = $getterUtil.getLong($preferences.getValue("evaluationEulaFileEntryId_$eulaLanguageId", "")))
+#set ($eulaVersion = $getterUtil.getDouble($preferences.getValue("evaluationEulaVersion_$eulaLanguageId", "")))
+
+#set ($user = $userLocalService.getUser($permissionChecker.getUserId()))
+
+#set ($expandoBridge = $user.getExpandoBridge())
+
+#if ($acceptEULA == 'true')
+	#set ($now = $dateUtil.newDate())
+
+	#set ($companies = "")
+
+	#set ($accountCustomers = $accountCustomerLocalService.getUserAccountCustomers($permissionChecker.getUserId()))
+
+	#foreach ($accountCustomer in $accountCustomers)
+		#set ($accountEntry = $accountCustomer.getAccountEntry())
+
+		#if ($validator.isNotNull($companies))
+			#set ($companies = "$companies/")
+		#end
+
+		#set ($companies = "$companies$accountEntry.getName()")
+	#end
+
+	#if ($validator.isNull($companies))
+		#set ($partnerWorker = $partnerWorkerLocalService.getUserPartnerWorker($permissionChecker.getUserId()))
+
+		#set ($partnerEntry = $partnerWorker.getPartnerEntry())
+
+		#set ($companies = $partnerEntry.getCode())
+	#end
+
+	#set ($eula = [$now.getTime(), $stringUtil.replace($companies, ",", ""), $eulaLanguageId, $eulaVersion])
+
+	#set ($doNotShowReturnValue = $expandoBridge.setAttribute("osbEvaluationEULA", $arrayUtil.toStringArray($eula.toArray())))
+#end
+
+#set ($requiresEULA = "true")
+
+#set ($eula = $expandoBridge.getAttribute("osbEvaluationEULA"))
+
+#if ($validator.isNotNull($eula) && ($arrayUtil.getLength($eula) >= 4))
+	#set ($eulaLanguage = $eula.get(2))
+
+	#set ($eulaVersionAccepted = $getterUtil.getDouble($eula.get(3)))
+	#set ($eulaVersionRequired = $getterUtil.getDouble($preferences.getValue("evaluationEulaVersionRequired_$eulaLanguage", "")))
+
+	#if ($eulaVersionAccepted >= $eulaVersionRequired)
+		#set ($requiresEULA = "false")
+	#end
+#end
+
+#if ($requiresEULA == "false")
+	$acceptedEulaPage.getData()
+#else
+	#set ($languageIds = ["en_US"])
+
+	<script type="text/javascript">
+		function submitEULA() {
+			if (document.eulafm.acceptEULA.checked) {
+				document.eulafm.submit();
+			}
+			else {
+				alert('$unicodeLanguageUtil.get($locale, "you-must-agree-with-the-end-user-license-agreement-to-continue")');
+			}
+		}
+
+		function updateLanguage() {
+			document.eulafm.acceptEULA.checked = false;
+			document.eulafm.submit();
+		}
+
+		AUI().ready(
+			'aui-base',
+			function(A) {
+				var terms = A.one('#terms');
+				var termsContainer = A.one('#terms-container');
+				var acceptEula = A.one('#acceptEULA');
+
+				var checkScroll = function() {
+					var termsContainerScrollTop = termsContainer.get('scrollTop');
+					var termsHeight = terms.get('offsetHeight');
+					var termsContainerHeight = termsContainer.get('offsetHeight');
+
+					var disableCheckbox = termsContainerScrollTop + 10 < (termsHeight - termsContainerHeight);
+
+					acceptEula.attr('disabled', disableCheckbox);
+
+					if (handle && !disableCheckbox) {
+						handle.detach();
+					}
+				};
+
+				checkScroll();
+
+				var handle = termsContainer.on('scroll', checkScroll);
+			}
+		);
+	</script>
+
+	<form action="$currentURL" name="eulafm">
+
+	<h1 class="section-heading">
+		$languageUtil.get($locale, "end-user-license-agreement")
+	</h1>
+
+	#if ($languageIds.size() > 1)
+		<div>
+			$languageUtil.get($locale, "language"):
+
+			<select name="eulaLanguageId" onChange="updateLanguage();">
+				#foreach ($languageId in $languageIds)
+					#if ($validator.isNotNull($preferences.getValue("evaluationEulaFileEntryId_$languageId", "")))
+						#set ($selected = "")
+
+						#if ($eulaLanguageId.equals($languageId))
+							#set ($selected = "selected")
+						#end
+
+						<option $selected value="$languageId">$localeUtil.fromLanguageId($languageId).getDisplayName()</option>
+					#end
+				#end
+			</select>
+		</div>
+
+		<br />
+	#end
+
+	<br />
+
+	<div id="terms-container" style="background: white; border: 1px solid gray; height: 200px; overflow: auto; padding-left: 5px;">
+		<div id="terms">
+			#set ($fileEntry = $fileEntryLocalService.getFileEntry($eulaFileEntryId))
+
+			$stringUtil.read($fileEntry.getContentStream($getterUtil.getString($eulaVersion)))
+		</div>
+	</div>
+
+	<br />
+
+	<div>
+		You <span style="font-weight:bold;">MUST</span> scroll through the entire agreement below in order to click "I Accept".
+	</div>
+
+	<input id="acceptEULA" name="acceptEULA" type="checkbox" value="true" /> $languageUtil.get($locale, "i-accept")
+
+	<br /><br />
+
+	<input type="button" value="$languageUtil.get($locale, "submit")" onClick="submitEULA();" />
+
+	</form>
+#end
