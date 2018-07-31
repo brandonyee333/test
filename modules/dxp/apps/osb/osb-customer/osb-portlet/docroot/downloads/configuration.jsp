@@ -23,29 +23,6 @@ String tabs2 = ParamUtil.getString(request, "tabs2", "general");
 String redirect = ParamUtil.getString(request, "redirect");
 %>
 
-<script type="text/javascript">
-	function <portlet:namespace />removeFileEntry() {
-		document.<portlet:namespace />fm.<portlet:namespace />studioEulaFileEntryId_<%= currentLanguageId %>.value = 0;
-
-		var titleEl = document.getElementById('<portlet:namespace />studioEulaFileTitle');
-
-		titleEl.innerHTML = '';
-	}
-
-	function <%= PortalUtil.getPortletNamespace(PortletKeys.DOCUMENT_LIBRARY) %>selectFileEntry(fileEntryId, title) {
-		document.<portlet:namespace />fm.<portlet:namespace />studioEulaFileEntryId_<%= currentLanguageId %>.value = fileEntryId;
-
-		var titleEl = document.getElementById('<portlet:namespace />studioEulaFileTitle');
-
-		titleEl.innerHTML = title;
-	}
-
-	function <portlet:namespace />updateLanguage() {
-		document.<portlet:namespace />fm.<portlet:namespace /><%= Constants.CMD %>.value = '';
-		submitForm(document.<portlet:namespace />fm);
-	}
-</script>
-
 <liferay-portlet:renderURL portletConfiguration="<%= true %>" var="portletURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 	<portlet:param name="tabs1" value="<%= tabs1 %>" />
 	<portlet:param name="redirect" value="<%= redirect %>" />
@@ -58,7 +35,6 @@ String redirect = ParamUtil.getString(request, "redirect");
 	<aui:input name="tabs1" type="hidden" value="<%= tabs1 %>" />
 	<aui:input name="tabs2" type="hidden" value="<%= tabs2 %>" />
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
-	<aui:input name='<%= "studioEulaFileEntryId_" + currentLanguageId %>' type="hidden" value="<%= studioEulaFileEntryId %>" />
 
 	<liferay-ui:tabs
 		names="customer-access,guest-access,evaluation-eula,studio-eula,trial"
@@ -189,26 +165,20 @@ String redirect = ParamUtil.getString(request, "redirect");
 					</tr>
 					<tr>
 						<td>
+							<liferay-ui:message key="studio-eula-file-entry-id" />
+						</td>
+						<td>
+							<aui:input label="" name='<%= "studioEulaFileEntryId_" + currentLanguageId %>' value="<%= studioEulaFileEntryId %>" />
+						</td>
+					</tr>
+					<tr>
+						<td>
 							<liferay-ui:message key="eula-file" />
 						</td>
 						<td>
 							<span id="<portlet:namespace />studioEulaFileTitle">
 								<%= HtmlUtil.escape(studioEulaFileTitle) %>
 							</span>
-
-							<%
-							PortletURL selectFileEntryURL = PortletURLFactoryUtil.create(request, PortletKeys.DOCUMENT_LIBRARY, themeDisplay.getPlid(), PortletRequest.RENDER_PHASE);
-
-							selectFileEntryURL.setParameter("mvcRenderCommandName", "/document_library/select_file_entry");
-							selectFileEntryURL.setParameter("groupId", String.valueOf(scopeGroupId));
-							selectFileEntryURL.setWindowState(LiferayWindowState.POP_UP);
-
-							String taglibSelectFileEntry = "var fileEntryWindow = window.open('" + selectFileEntryURL.toString() + "', 'fileEntry', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); fileEntryWindow.focus();";
-							%>
-
-							<aui:button onClick="<%= taglibSelectFileEntry %>" value="select" />
-
-							<aui:button onClick='<%= renderResponse.getNamespace() + "removeFileEntry();" %>' value="remove" />
 						</td>
 					</tr>
 					<tr>
@@ -216,29 +186,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 							<liferay-ui:message key="eula-version-displayed" />
 						</td>
 						<td>
-
-							<%
-							List<DLFileVersion> fileVersions = new ArrayList<DLFileVersion>();
-
-							if (fileEntry != null) {
-								fileVersions = fileEntry.getFileVersions(WorkflowConstants.STATUS_ANY);
-							}
-							%>
-
-							<aui:select label="" name='<%= "studioEulaVersion_" + currentLanguageId %>'>
-								<option value="0"></option>
-
-								<%
-								for (DLFileVersion fileVersion : fileVersions) {
-								%>
-
-									<option <%= studioEulaVersion.equals(fileVersion.getVersion()) ? "selected" : "" %> value="<%= fileVersion.getVersion() %>"><%= fileVersion.getVersion() %></option>
-
-								<%
-								}
-								%>
-
-							</aui:select>
+							<aui:input label="" name='<%= "studioEulaVersion_" + currentLanguageId %>' value="<%= studioEulaVersion %>" />
 						</td>
 					</tr>
 					<tr>
@@ -246,29 +194,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 							<liferay-ui:message key="eula-version-required-to-accept" />
 						</td>
 						<td>
-
-							<%
-							fileVersions = new ArrayList<DLFileVersion>();
-
-							if (fileEntry != null) {
-								fileVersions = fileEntry.getFileVersions(WorkflowConstants.STATUS_ANY);
-							}
-							%>
-
-							<aui:select label="" name='<%= "studioEulaVersionRequired_" + currentLanguageId %>'>
-								<option value="0"></option>
-
-								<%
-								for (DLFileVersion fileVersion : fileVersions) {
-								%>
-
-									<option <%= studioEulaVersionRequired.equals(fileVersion.getVersion()) ? "selected" : "" %> value="<%= fileVersion.getVersion() %>"><%= fileVersion.getVersion() %></option>
-
-								<%
-								}
-								%>
-
-							</aui:select>
+							<aui:input label="" name='<%= "studioEulaVersionRequired_" + currentLanguageId %>' value="<%= studioEulaVersionRequired %>" />
 						</td>
 					</tr>
 					</table>
