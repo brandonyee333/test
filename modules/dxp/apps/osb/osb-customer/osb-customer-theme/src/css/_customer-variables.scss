@@ -1,0 +1,138 @@
+/* ---------- Color variables ---------- */
+
+$color-active: #F3F7FF !default;
+$color-default: #09101D !default;
+$color-default-disabled: #A3A9BA !default;
+$color-disabled: #B3CDFF !default;
+$color-body: #2A303E !default;
+$color-border: #CED3DE !default;
+$color-divider: #E9EBF0 !default;
+$color-error: #DA1414 !default;
+$color-error-background: #FEEFEF !default;
+$color-error-border: #F48989 !default;
+$color-focus: #EBF0FA !default;
+$color-hover: #F0F5FF !default;
+$color-info: #2E5AAC !default;
+$color-info-background: #EEF2FA !default;
+$color-info-border: #89A7E0 !default;
+$color-primary: #0B5FFF !default;
+$color-primary-focus: #004AD7 !default;
+$color-primary-focus-border: #71A2FF !default;
+$color-primary-hover: #0053F0 !default;
+$color-success: #287D3C !default;
+$color-warning: #B95000 !default;
+
+$color-grey: #F7F8F9 !default;
+$color-white: #FFF !default;
+
+$code-text-background-color: #FDEFF6 !default;
+$pre-text-color: #F8FAFF !default;
+$secondary-text-color: #5B6170 !default;
+
+/* ---------- Variable overrides ---------- */
+
+$grid-breakpoints: (
+	xs: 0,
+	sm: 576px,
+	md: 768px,
+	lg: 992px,
+	xl: 1280px
+) !default;
+
+$border-radius: 4px !default;
+
+$font-size-sm: 14px !default;
+
+$input-line-height: 1.5 !default;
+
+$line-height-base: 1.5 !default;
+
+$font-family-base: "Source Sans Pro", "Source Serif Pro", -apple-system,
+	blinkmacsystemfont, "Segoe UI", roboto, "Helvetica Neue", arial, sans-serif,
+	"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
+
+$font-weight-light: 200 !default;
+$font-weight-normal: 400 !default;
+$font-weight-semi-bold: 600 !default;
+
+$normal-font-size: 16px !default;
+$small-font-size: 12px !default;
+
+$h1-font-size: $font-size-h1; // 32px
+$h2-font-size: $font-size-h2; // 24px
+$h3-font-size: $font-size-h3; // 16px
+$h4-font-size: $font-size-h4; // 16px
+$h5-font-size: $font-size-h5; // 14px
+$h6-font-size: $font-size-h6; // 12px
+
+$line-height-sm: 1.333 !default; // 18px
+
+$autofit-padded-col-padding-x: 16px !default;
+$autofit-padded-col-padding-y: 24px !default;
+
+$breadcrumb-active-color: null !default;
+$breadcrumb-divider-color: null !default;
+$breadcrumb-margin-bottom: 48px !default;
+
+$body-color: $color-default !default;
+
+$btn-padding-x: 16px !default;
+$btn-padding-y: 8px !default;
+$btn-padding-x-sm: 12px !default;
+$btn-padding-y-sm: 6px !default;
+
+$container-max-widths: (
+	sm: 540px,
+	md: 720px,
+	lg: 960px,
+	xl: 1248px
+) !default;
+
+$form-group-autofit-margin-bottom: 32px !default;
+$form-group-item-label-spacer: 30px !default;
+
+$input-border-color: $color-border !default;
+$input-disabled-bg: $color-divider !default;
+$input-height: 40px !default;
+$input-height-lg: 64px !default;
+$input-label-font-size: 14px !default;
+$input-padding-x: 16px !default;
+$input-padding-y: 8px !default;
+
+$lexicon-icon-width: 16px !default;
+
+$link-color: $color-primary !default;
+
+$primary: $color-primary !default;
+
+$table-cell-padding: 20px !default;
+$table-list-border-radius: 0 !default;
+$table-list-border-x-width: 0 !default;
+$table-responsive-margin-bottom: 48px !default;
+
+$navbar-height: 64px !default;
+$navbar-padding-x: 0 !default;
+
+/* ---------- Custom variables ---------- */
+
+$h1-display-font-size: 48px !default;
+
+$h6-line-height: 16px !default;
+
+$label-sm: (
+	font-size: 10px,
+	height: 16px,
+	padding-x: 6px,
+	padding-y: 3.2px
+) !default;
+
+$secondary-text-line-height: 1.429 !default;
+
+$margin-default: 24px !default;
+$padding-default: 24px !default;
+
+$avatar-spacer-right: 16px !default;
+
+$breadcrumb-divider-svg-icon: clay-icon(angle-right, $breadcrumb-divider-color) !default;
+$breadcrumb-divider-svg-icon-height: 0.75em !default;
+$breadcrumb-divider-svg-icon-width: $breadcrumb-divider-svg-icon-height !default;

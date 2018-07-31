@@ -1,0 +1,14 @@
+.control-menu.control-menu-level-1 {
+	bottom: 0;
+	right: auto;
+	top: auto;
+
+	> .container-fluid-1280 {
+		padding: 0;
+	}
+}
+
+.open-admin-panel .control-menu.control-menu-level-1 {
+	padding: 0;
+	right: auto;
+}
