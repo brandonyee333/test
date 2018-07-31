@@ -39,7 +39,7 @@
 
 						<br />
 
-						<input <%= ArrayUtil.contains(vocabularyNames, assetVocabulary.getName()) ? "checked=''" : "" %> type="checkbox" onClick="<portlet:namespace />updateVocabularyNames('<%= assetVocabulary.getName() %>', this.checked);" /><%= HtmlUtil.escape(assetVocabulary.getName()) %>
+						<input <%= ArrayUtil.contains(vocabularyNames, assetVocabulary.getName()) ? "checked=''" : "" %> onClick="<portlet:namespace />updateVocabularyNames('<%= assetVocabulary.getName() %>', this.checked);" type="checkbox" /><%= HtmlUtil.escape(assetVocabulary.getName()) %>
 
 					<%
 					}

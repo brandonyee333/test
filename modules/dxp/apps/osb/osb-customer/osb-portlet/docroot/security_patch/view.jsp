@@ -154,11 +154,11 @@ String footerText = GetterUtil.getString(portletPreferences.getValue("footerText
 						success: function() {
 							var response = this.get('responseData');
 
-							if (securityPatch.getData('key') == response["SecurityPatches#key"]) {
+							if (securityPatch.getData('key') == response['SecurityPatches#key']) {
 								return;
 							}
 
-							securityPatch.setData('key', response["SecurityPatches#key"]);
+							securityPatch.setData('key', response['SecurityPatches#key']);
 
 							var selectOptions = [];
 

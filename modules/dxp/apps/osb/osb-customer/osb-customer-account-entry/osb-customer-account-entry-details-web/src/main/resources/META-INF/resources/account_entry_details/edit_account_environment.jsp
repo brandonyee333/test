@@ -329,10 +329,10 @@
 								success: function(event, id, obj) {
 									var response = this.get('responseData');
 
-									<portlet:namespace />updateEnvironmentField("<portlet:namespace />envAS", response["ENV_AS#key"], response["ENV_AS"], envAS, envASName);
-									<portlet:namespace />updateEnvironmentField("<portlet:namespace />envDB", response["ENV_DB#key"], response["ENV_DB"], envDB, envDBName);
-									<portlet:namespace />updateEnvironmentField("<portlet:namespace />envJVM", response["ENV_JVM#key"], response["ENV_JVM"], envJVM, envJVMName);
-									<portlet:namespace />updateEnvironmentField("<portlet:namespace />envOS", response["ENV_OS#key"], response["ENV_OS"], envOS, envOSName);
+									<portlet:namespace />updateEnvironmentField('<portlet:namespace />envAS', response['ENV_AS#key'], response['ENV_AS'], envAS, envASName);
+									<portlet:namespace />updateEnvironmentField('<portlet:namespace />envDB', response['ENV_DB#key'], response['ENV_DB'], envDB, envDBName);
+									<portlet:namespace />updateEnvironmentField('<portlet:namespace />envJVM', response['ENV_JVM#key'], response['ENV_JVM'], envJVM, envJVMName);
+									<portlet:namespace />updateEnvironmentField('<portlet:namespace />envOS', response['ENV_OS#key'], response['ENV_OS'], envOS, envOSName);
 								}
 							}
 						}
@@ -348,9 +348,9 @@
 					var A = AUI();
 
 					if (productEntryId <= 0) {
-						A.one("#<portlet:namespace />envLFR").empty();
+						A.one('#<portlet:namespace />envLFR').empty();
 
-						A.one("#<portlet:namespace />envLFR").setData('key', '');
+						A.one('#<portlet:namespace />envLFR').setData('key', '');
 
 						return;
 					}
@@ -367,7 +367,7 @@
 								success: function(event, id, obj) {
 									var response = this.get('responseData');
 
-									<portlet:namespace />updateEnvLFR(response["ENV_LFR#key"], response["ENV_LFR"]);
+									<portlet:namespace />updateEnvLFR(response['ENV_LFR#key'], response['ENV_LFR']);
 								}
 							}
 						}
@@ -377,7 +377,7 @@
 			);
 
 			function <portlet:namespace />updateEnvLFR(envLFRKey, envLFRData) {
-				var envLFR = AUI().one("#<portlet:namespace />envLFR");
+				var envLFR = AUI().one('#<portlet:namespace />envLFR');
 
 				if (envLFR.getData('key') == envLFRKey) {
 					return;
@@ -393,8 +393,8 @@
 					var previousNamePrefix = '';
 
 					for (var i = 0; i < envLFRData.length; i++) {
-						var value = envLFRData[i].value;
 						var name = envLFRData[i].name;
+						var value = envLFRData[i].value;
 
 						var namePrefix = name.substring(0, 3);
 

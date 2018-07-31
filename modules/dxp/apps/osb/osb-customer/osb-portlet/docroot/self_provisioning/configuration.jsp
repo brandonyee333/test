@@ -97,10 +97,10 @@ int[] productMinorVersions = StringUtil.split(PrefsParamUtil.getString(portletPr
 			productMinorVersionsSelect.all('option').each(
 				function(item, index, collection) {
 					if (productMinorVersions.indexOf(parseInt(item.val())) < 0) {
-						item.attr("selected", false);
+						item.attr('selected', false);
 					}
 					else {
-						item.attr("selected", true);
+						item.attr('selected', true);
 					}
 				}
 			);

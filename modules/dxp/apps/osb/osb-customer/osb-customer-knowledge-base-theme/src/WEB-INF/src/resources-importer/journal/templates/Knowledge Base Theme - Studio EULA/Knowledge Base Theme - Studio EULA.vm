@@ -91,14 +91,15 @@
 		AUI().ready(
 			'aui-base',
 			function(A) {
+				var acceptEula = A.one('#acceptEULA');
 				var terms = A.one('#terms');
 				var termsContainer = A.one('#terms-container');
-				var acceptEula = A.one('#acceptEULA');
 
 				var checkScroll = function() {
-					var termsContainerScrollTop = termsContainer.get('scrollTop');
-					var termsHeight = terms.get('offsetHeight');
 					var termsContainerHeight = termsContainer.get('offsetHeight');
+					var termsContainerScrollTop = termsContainer.get('scrollTop');
+
+					var termsHeight = terms.get('offsetHeight');
 
 					var disableCheckbox = termsContainerScrollTop + 10 < (termsHeight - termsContainerHeight);
 
@@ -164,7 +165,7 @@
 
 	<br /><br />
 
-	<input type="button" value="$languageUtil.get($locale, "submit")" onClick="submitEULA();" />
+	<input onClick="submitEULA();" type="button" value="$languageUtil.get($locale, "submit")" />
 
 	</form>
 #end

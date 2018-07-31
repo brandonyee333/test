@@ -27,7 +27,7 @@
 	}
 
 	optgroup {
-		color: #CCCCCC;
+		color: #CCC;
 	}
 
 	option {
@@ -47,7 +47,7 @@
 	}
 
 	.required:after {
-		color: red;
+		color: #FF0000;
 		content: "*";
 	}
 
@@ -73,7 +73,7 @@
 		}
 
 		.col-item:nth-child(even) input {
-			width: 100%%;
+			width: 100%;
 		}
 
 		.col-item:nth-child(even) select {
@@ -92,12 +92,12 @@
 				'aui-io-plugin',
 				'aui-io-request',
 				function(A) {
-					var company = A.one('#${namespace}company').val();
 					var comments = A.one('#${namespace}comments').val();
+					var company = A.one('#${namespace}company').val();
 					var emailAddress = A.one('#${namespace}email').val();
-					var keyType = A.one('#${namespace}keytype').val();
 					var hostnames = A.one('#${namespace}hostnames').val();
 					var ipaddresses = A.one('#${namespace}ipaddresses').val();
+					var keyType = A.one('#${namespace}keytype').val();
 					var name = A.one('#${namespace}name').val();
 					var portalVersion = A.one('#${namespace}version').val();
 					var purpose = A.one('#${namespace}purpose').val();
@@ -109,8 +109,8 @@
 						'${request.resource-url}',
 						{
 							data: {
-								${namespace}company: company,
 								${namespace}comments: comments,
+								${namespace}company: company,
 								${namespace}emailAddress: emailAddress,
 								${namespace}hostnames: hostnames,
 								${namespace}ipaddresses: ipaddresses,
@@ -124,22 +124,22 @@
 							},
 							dataType: 'json',
 							on: {
-								success: function(event, id, obj) {
-									var form = A.one('#${namespace}licenseFM');
-
-									form.empty().append('<div class="portlet-msg-success">Your request completed successfully.</div>');
-								},
 								failure: function(event, id, obj) {
 									var form = A.one('#${namespace}licenseFM');
 
 									form.empty().append('<div class="portlet-msg-error">Your request failed to complete.</div>');
+								},
+								success: function(event, id, obj) {
+									var form = A.one('#${namespace}licenseFM');
+
+									form.empty().append('<div class="portlet-msg-success">Your request completed successfully.</div>');
 								}
 							}
 						}
 					);
 				}
 			);
-		};
+		}
 	</script>
 
 	<h1>

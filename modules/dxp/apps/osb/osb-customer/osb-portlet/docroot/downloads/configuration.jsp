@@ -27,15 +27,15 @@ String redirect = ParamUtil.getString(request, "redirect");
 	function <portlet:namespace />removeFileEntry() {
 		document.<portlet:namespace />fm.<portlet:namespace />studioEulaFileEntryId_<%= currentLanguageId %>.value = 0;
 
-		var titleEl = document.getElementById("<portlet:namespace />studioEulaFileTitle");
+		var titleEl = document.getElementById('<portlet:namespace />studioEulaFileTitle');
 
-		titleEl.innerHTML = "";
+		titleEl.innerHTML = '';
 	}
 
 	function <%= PortalUtil.getPortletNamespace(PortletKeys.DOCUMENT_LIBRARY) %>selectFileEntry(fileEntryId, title) {
 		document.<portlet:namespace />fm.<portlet:namespace />studioEulaFileEntryId_<%= currentLanguageId %>.value = fileEntryId;
 
-		var titleEl = document.getElementById("<portlet:namespace />studioEulaFileTitle");
+		var titleEl = document.getElementById('<portlet:namespace />studioEulaFileTitle');
 
 		titleEl.innerHTML = title;
 	}

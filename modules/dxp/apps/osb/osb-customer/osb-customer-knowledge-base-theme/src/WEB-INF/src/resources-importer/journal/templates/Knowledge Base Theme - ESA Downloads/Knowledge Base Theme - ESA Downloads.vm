@@ -141,7 +141,7 @@
 					#end
 				#end
 
-				<div class="clearfix button-group $selectCssClass">
+				<div class="button-group clearfix $selectCssClass">
 					#if (!$releaseNotes.isEmpty())
 						#set ($hide = "")
 
@@ -318,7 +318,7 @@
 
 						document.esafm_${articleId}.acceptESA${articleId}.disabled = true;
 					}
-					else if (!requiresESA || $articleHeader.contains("Developer Studio 3")) {
+					else if (!requiresESA || $articleHeader.contains('Developer Studio 3')) {
 						startDownload();
 					}
 					else {
@@ -344,7 +344,7 @@
 									success: getESAData
 								}
 							}
-						)
+						);
 					}
 				}
 

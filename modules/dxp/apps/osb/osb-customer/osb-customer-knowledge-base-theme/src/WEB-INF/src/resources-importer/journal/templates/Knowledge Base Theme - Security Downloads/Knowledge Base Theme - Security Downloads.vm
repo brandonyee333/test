@@ -5,7 +5,7 @@
 <div class="callout-a callout-download clearfix">
 	<div class="sub-grid">
 		<div class="u-img unit">
-			<img src="$image.data" style="width: 200px; height: 139px;" />
+			<img src="$image.data" style="height: 139px; width: 200px;" />
 		</div>
 
 		<div class="u-nfo unit">

@@ -810,7 +810,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 
 			row.className = 'results-row';
 
-			for (i = 0; i < columnValues.length; i++) {
+			for (var i = 0; i < columnValues.length; i++) {
 				<portlet:namespace />addColumn(row, columnValues[i]);
 			}
 

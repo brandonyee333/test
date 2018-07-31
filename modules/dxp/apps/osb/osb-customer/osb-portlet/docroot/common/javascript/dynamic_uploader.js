@@ -1,10 +1,13 @@
 AUI.add(
 	'liferay-dynamic-uploader',
 	function(A) {
-		var MSG_TYPE_ERROR = "error";
-		var MSG_TYPE_PROGRESS = "progress";
-		var MSG_TYPE_SUCCESS = "success";
-		var MSG_TYPE_WARN = "warn";
+		var MSG_TYPE_ERROR = 'error';
+
+		var MSG_TYPE_PROGRESS = 'progress';
+
+		var MSG_TYPE_SUCCESS = 'success';
+
+		var MSG_TYPE_WARN = 'warn';
 
 		var TPL_SWITCH_BUTTON = [
 			'<a href="javascript:;" id="{namespace}classicUploaderButton">{classicUploaderText}</a>',
@@ -52,7 +55,7 @@ AUI.add(
 
 			instance.renderUI();
 			instance.bindUI();
-		}
+		};
 
 		DynamicUploader.prototype = {
 			renderUI: function() {
@@ -60,8 +63,8 @@ AUI.add(
 
 				if (instance.isSupportBrowser) {
 					var templateConfig = {
-						namespace: instance.namespace,
 						classicUploaderText: instance.useClassicUploaderText,
+						namespace: instance.namespace,
 						regularUploaderText: instance.useNewUploaderText
 					};
 
@@ -140,7 +143,7 @@ AUI.add(
 							if (event._event.dataTransfer) {
 								var items = event._event.dataTransfer.items;
 
-								var item = items[i]
+								var item = items[i];
 
 								if (item.kind != 'file') {
 									continue;
@@ -169,18 +172,18 @@ AUI.add(
 					}
 
 					if (file.size > (100 * 1024 * 1024)) {
-						if (instance.resumableUploader.opts.target == "") {
+						if (instance.resumableUploader.opts.target == '') {
 							instance.updateMessage(instance.invalidServersText, MSG_TYPE_ERROR);
 
 							return;
 						}
 
-						instance.uploaderType.set("value", "resumableUploader");
+						instance.uploaderType.set('value', 'resumableUploader');
 
 						instance.resumableUploader.addFile(file, event);
 					}
 					else if ((file.size > 0) && (file.size < (100 * 1024 * 1024))) {
-						instance.uploaderType.set("value", "regularUploader");
+						instance.uploaderType.set('value', 'regularUploader');
 
 						instance.regularUploader.addFile(file, event);
 					}
@@ -190,9 +193,9 @@ AUI.add(
 			renderClassicUploaderUI: function() {
 				var instance = this;
 
-				instance.fallbackContainer.removeClass("hide");
+				instance.fallbackContainer.removeClass('hide');
 
-				instance.uploaderType.set("value", "classicUploader");
+				instance.uploaderType.set('value', 'classicUploader');
 
 				instance.updateMessage(instance.classicUploderMaxFileText, MSG_TYPE_WARN);
 			},
@@ -207,7 +210,7 @@ AUI.add(
 				instance._classicUploaderButton = instance.uploaderSwitch.oneNS(instance.namespace, '#classicUploaderButton');
 				instance._regularUploaderButton = instance.uploaderSwitch.oneNS(instance.namespace, '#regularUploaderButton');
 
-				if (instance.resumableUploader.opts.target != "") {
+				if (instance.resumableUploader.opts.target != '') {
 					instance.updateMessage(instance.newUploderMaxFileText, MSG_TYPE_WARN);
 				}
 				else {
@@ -225,16 +228,16 @@ AUI.add(
 				instance._classicUploaderButton.on(
 					'click',
 					function(event) {
-						instance._handleSwitchUploader("classicUploader");
+						instance._handleSwitchUploader('classicUploader');
 					}
-				)
+				);
 
 				instance._regularUploaderButton.on(
 					'click',
 					function(event) {
-						instance._handleSwitchUploader("regularUploader");
+						instance._handleSwitchUploader('regularUploader');
 					}
-				)
+				);
 
 				instance._selectButton.on(
 					'click',
@@ -243,14 +246,14 @@ AUI.add(
 
 						fileDomNode.click();
 					}
-				)
+				);
 
 				instance._uploadArea.on('dragenter', instance._handleDragEnter, instance);
 				instance._uploadArea.on('dragleave', instance._handleDragLeave, instance);
 				instance._uploadArea.on('dragover', instance._handleDragOver, instance);
 				instance._uploadArea.on('drop', instance._handleDrop, instance);
 
-				instance._fileInputField.on("change", instance._handleSelectFiles, instance);
+				instance._fileInputField.on('change', instance._handleSelectFiles, instance);
 			},
 
 			updateMessage: function(msg, type) {
@@ -282,7 +285,7 @@ AUI.add(
 			_handleDragLeave: function(event) {
 				var instance = this;
 
-				instance._uploadArea.removeClass("dragging");
+				instance._uploadArea.removeClass('dragging');
 			},
 
 			_handleDragOver: function(event) {
@@ -292,7 +295,7 @@ AUI.add(
 
 				var instance = this;
 
-				instance._uploadArea.addClass("dragging");
+				instance._uploadArea.addClass('dragging');
 			},
 
 			_handleDrop: function(event) {
@@ -302,7 +305,7 @@ AUI.add(
 
 				var instance = this;
 
-				instance._uploadArea.removeClass("dragging");
+				instance._uploadArea.removeClass('dragging');
 
 				instance.setupUploader(event._event.dataTransfer.files, event);
 			},
@@ -318,9 +321,9 @@ AUI.add(
 			_handleSwitchUploader: function(uploaderType) {
 				var instance = this;
 
-				instance.uploaderType.set("value", uploaderType);
+				instance.uploaderType.set('value', uploaderType);
 
-				if (uploaderType == "classicUploader") {
+				if (uploaderType == 'classicUploader') {
 					instance.fallbackContainer.show();
 					instance.uploadContainer.hide();
 
@@ -339,7 +342,7 @@ AUI.add(
 					instance.updateMessage(instance.newUploderMaxFileText, MSG_TYPE_WARN);
 				}
 			}
-		}
+		};
 
 		Liferay.DynamicUploader = DynamicUploader;
 	},

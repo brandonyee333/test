@@ -154,7 +154,7 @@
 				#end
 
 				#if (!$downloadTickets.isEmpty())
-					<div class="article-${articleId} gray-box download-info tickets">
+					<div class="article-${articleId} download-info gray-box tickets">
 						<h4>
 							Security Fixes Included:
 						</h4>

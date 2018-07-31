@@ -647,6 +647,6 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 	function <portlet:namespace />selectAccountEntry(accountEntryId, accountEntryName) {
 		document.<portlet:namespace />fm.<portlet:namespace />accountEntryId.value = accountEntryId;
 
-		document.getElementById("<portlet:namespace />accountEntryName").innerHTML = accountEntryName;
+		document.getElementById('<portlet:namespace />accountEntryName').innerHTML = accountEntryName;
 	}
 </aui:script>

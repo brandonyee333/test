@@ -839,7 +839,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 	function <portlet:namespace />selectAccountEntry(accountEntryId, accountEntryName) {
 		document.<portlet:namespace />fm.<portlet:namespace />accountEntryId.value = accountEntryId;
 
-		document.getElementById("<portlet:namespace />accountEntryName").innerHTML = accountEntryName;
+		document.getElementById('<portlet:namespace />accountEntryName').innerHTML = accountEntryName;
 
 		<portlet:namespace />updateLicenseKey('', '', '', 0);
 	}
