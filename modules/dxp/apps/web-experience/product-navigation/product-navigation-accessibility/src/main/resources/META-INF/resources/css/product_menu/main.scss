@@ -1,0 +1,227 @@
+@import "bourbon";
+@import "variables";
+
+.product-menu {
+	.lfr-icon-menu .btn-default {
+		&:active {
+			color: $product-menu-nav-link-color;
+		}
+	}
+}
+
+.product-menu {
+	.nav a {
+		color: $product-menu-nav-link-color;
+	}
+
+	.nav-equal-height {
+		.nav > .active, > .active {
+			border-left-color: $product-menu-nav-link-active-color;
+		}
+
+		> .active > a, .nav > .active > a {
+			&, &:focus, &:hover {
+				color: $product-menu-nav-link-active-color;
+			}
+		}
+
+		> .active, .nav > .active {
+			border-left-color: $product-menu-nav-link-active-color;
+		}
+	}
+
+	.nav-equal-height-heading {
+		.collapse-icon {
+			&:after, &.collapsed:after {
+				background-color: $product-menu-collapse-icon-bg;
+			}
+
+			&:before {
+				color: $product-menu-nav-link-color;
+			}
+		}
+	}
+
+	.nav-nested-margins > li .nav > li {
+		border-left-color: $product-menu-nav-link-color;
+
+		.nav > li {
+			border-left-color: $product-menu-nav-link-color;
+
+			&.active {
+				border-left-color: $product-menu-nav-link-active-color;
+
+				> a {
+					color: $product-menu-nav-link-active-color;
+				}
+			}
+		}
+	}
+}
+
+.product-menu {
+	.sidebar-header {
+		background-color: $product-menu-header-bg;
+		border-bottom-color: $product-menu-header-border;
+	}
+}
+
+.product-menu {
+	a.list-group-heading, button.list-group-heading, .list-group-heading[data-toggle="collapse"] {
+		color: $product-menu-list-group-heading-color;
+	}
+
+	.list-group-heading.goto-link {
+		color: $product-menu-nav-link-color;
+	}
+}
+
+.product-menu {
+	.panel {
+		border-bottom: 1px solid $product-menu-header-border;
+		color: $product-menu-nav-link-color;
+	}
+
+	.panel-body {
+		background-color: $product-menu-panel-body-bg;
+	}
+
+	.panel-group {
+		.panel-heading + .panel-collapse {
+			&.in, &.collapsing {
+				border-bottom-color: $product-menu-panel-title-active-border;
+			}
+		}
+	}
+
+	.panel-heading {
+		.panel-title > .panel-toggler {
+			&:not(.collapsed) {
+				background-color: $product-menu-panel-title-active-bg;
+			}
+
+			.category-name, .user-name, .site-name {
+				color: $product-menu-panel-title-color;
+			}
+		}
+	}
+}
+
+.product-menu {
+	.sticker-default {
+		background-color: $product-menu-panel-sticker-bg;
+		color: $product-menu-panel-sticker-color;
+	}
+
+	.icon-sites {
+		a {
+			color: $product-menu-panel-title-color;
+		}
+	}
+}
+
+.product-menu {
+	.scope-selector {
+		span {
+			color: $product-menu-nav-link-active-color;
+		}
+
+		border-bottom: $product-menu-nav-link-active-color;
+	}
+}
+
+.product-menu {
+	.staging-links {
+		a, .links-separator {
+			color: $product-menu-nav-link-color;
+		}
+
+		.active {
+			color: $product-menu-nav-link-active-color;
+		}
+	}
+}
+
+.product-menu {
+	.layout-set-tabs {
+		.selected-layout-set {
+			.layout-set-link, .icon-monospaced {
+				color: $product-menu-nav-link-active-color;
+			}
+		}
+	}
+
+	.tree-container {
+		border-left-color: $product-menu-tree-border;
+
+		.tree-container {
+			border-left-color: $product-menu-tree-child-border;
+
+			.tree-node-content {
+				&:not(.tree-node-selected) {
+					.tree-node-hidden-hitarea {
+						&:before {
+							color: $product-menu-tree-child-border;
+						}
+					}
+				}
+			}
+		}
+
+		.tree-node-selected.tree-collapsed {
+			box-shadow: -$product-menu-tree-border-width 0 0 0 $product-menu-tree-active-border;
+			color: $product-menu-tree-active-color;
+		}
+	}
+
+	.tree-hitarea {
+		background-color: $product-menu-tree-hitarea-bg;
+	}
+
+	.tree-node-content {
+		color: $product-menu-tree-color;
+	}
+
+	.tree-node-selected .tree-hitarea {
+		background-color: $product-menu-tree-active-hitarea-bg;
+	}
+
+	.tree-pages .tree-node-selected .tree-label {
+		.layout-tree, .icon-monospaced {
+			color: $product-menu-tree-active-color;
+		}
+	}
+}
+
+.product-menu {
+	.sidebar-body {
+		border-right-color: $product-menu-panel-title-active-bg;
+	}
+
+	.lfr-icon-menu .btn-default {
+		&:active {
+			color: $product-menu-nav-link-color;
+		}
+	}
+}
+
+.sidenav-menu-slider .product-menu {
+	.search-bar {
+		.form-control {
+			background-color: $product-menu-panel-title-active-bg;
+			color: #29353D;
+
+			@include placeholder {
+				color: #546D7D;
+			}
+
+			&:focus {
+				color: #29353D;
+
+				@include placeholder {
+					color: #29353D;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,66 @@
+@import "bourbon";
+@import "mixins";
+
+@import "variables";
+
+.control-menu-level-1 {
+	background-color: $control-menu-level-1-bg;
+}
+
+.control-menu-level-2 {
+	background-color: $control-menu-level-2-bg;
+
+	.control-menu-label {
+		@include sm() {
+			color: $control-menu-level-2-label-color;
+		}
+	}
+}
+
+.control-menu-link {
+	&.active {
+		&:after {
+			background-color: $control-menu-level-1-active-border;
+		}
+	}
+}
+
+.control-menu-level-1 {
+	@include linear-gradient(to right, $control-menu-level-1-bg, $control-menu-level-2-bg, $fallback: $control-menu-level-1-bg);
+}
+
+.lfr-add-panel {
+	.add-content-menu {
+		.add-portlet-message {
+			background-color: $product-menu-panel-title-active-bg;
+		}
+	}
+}
+
+.lfr-admin-panel {
+	.sidebar-body {
+		border-left-color: $product-menu-panel-title-active-bg;
+	}
+}
+
+.lfr-simulation-panel {
+	.lfr-device-item.selected {
+		color: $control-menu-level-2-bg;
+
+		.icon {
+			background-color: $control-menu-level-2-bg;
+		}
+	}
+}
+
+.lfr-add-panel, .lfr-simulation-panel {
+	.product-menu .sidebar-header {
+		background-color: $control-menu-level-2-bg;
+	}
+
+	.sidebar-inverse {
+		.nav > li > a:hover {
+			color: $control-menu-level-1-bg;
+		}
+	}
+}
