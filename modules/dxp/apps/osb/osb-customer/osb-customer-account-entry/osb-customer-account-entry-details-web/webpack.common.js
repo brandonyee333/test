@@ -1,8 +1,7 @@
 const clayCss = require('clay-css');
-
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-
 const path = require('path');
+const PUBLIC_PATH = '/o/osb-customer-account-entry-details-web/dist/';
 
 module.exports = {
 	entry: './src/main/js/main.js',
@@ -43,7 +42,8 @@ module.exports = {
 		filename: 'main.js',
 		library: 'HelpCenter',
 		libraryTarget: 'window',
-		path: path.resolve('src/main/resources/META-INF/resources/dist')
+		path: path.resolve('src/main/resources/META-INF/resources/dist'),
+		publicPath: PUBLIC_PATH
 	},
 	plugins: [
 		new MiniCssExtractPlugin(
