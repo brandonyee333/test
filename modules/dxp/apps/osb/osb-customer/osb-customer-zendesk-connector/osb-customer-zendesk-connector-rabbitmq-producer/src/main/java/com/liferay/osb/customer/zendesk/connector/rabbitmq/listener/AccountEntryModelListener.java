@@ -49,11 +49,11 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		throws ModelListenerException {
 
 		try {
-			if (!sync(accountEntry)) {
+			if (!hasActiveSupportOffering(accountEntry)) {
 				return;
 			}
 
-			ZendeskOrganization zendeskOrganization = setupZendeskOrganization(
+			ZendeskOrganization zendeskOrganization = getZendeskOrganization(
 				accountEntry);
 
 			_messagePublisher.sendMessage(
@@ -72,9 +72,6 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		throws ModelListenerException {
 
 		try {
-			ZendeskOrganization zendeskOrganization = setupZendeskOrganization(
-				accountEntry);
-
 			long classNameId = ClassNameLocalServiceUtil.getClassNameId(
 				AccountEntry.class);
 
@@ -84,10 +81,13 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 					ExternalIdMapperConstants.TYPE_ZENDESK);
 
 			if (!externalIdMappers) {
-				if (!sync(accountEntry)) {
+				if (!hasActiveSupportOffering(accountEntry)) {
 					return;
 				}
 			}
+
+			ZendeskOrganization zendeskOrganization = getZendeskOrganization(
+				accountEntry);
 
 			_messagePublisher.sendMessage(
 				ZendeskConnectorConfigurationValues.
@@ -100,15 +100,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		}
 	}
 
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
-	}
-
-	protected ZendeskOrganization setupZendeskOrganization(
+	protected ZendeskOrganization getZendeskOrganization(
 			AccountEntry accountEntry)
 		throws PortalException {
 
@@ -164,7 +156,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		return zendeskOrganization;
 	}
 
-	protected boolean sync(AccountEntry accountEntry) {
+	protected boolean hasActiveSupportOffering(AccountEntry accountEntry) {
 		if ((accountEntry.getStatus() ==
 				WorkflowConstants.STATUS_APPROVED) &&
 			accountEntry.hasActiveSupportOffering()) {
@@ -173,6 +165,14 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		}
 
 		return false;
+	}
+
+	@Reference(
+		target = "(module.service.lifecycle=osb.portlet.initialized)",
+		unbind = "-"
+	)
+	protected void setModuleServiceLifecycle(
+		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
 	@Reference
