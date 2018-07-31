@@ -842,6 +842,7 @@
 	</command>
 
 	<command name="AddExistingPageAsDisplayPageInSiteCP" priority="5">
+		<property name="portal.acceptance" value="fiona" />
 		<property name="testray.component.names" value="Training,Web Content Administration" />
 
 		<execute macro="ProductMenu#gotoPortlet">
@@ -921,6 +922,8 @@
 			<var name="pageName" value="Site Page Name" />
 			<var name="webContentTitle" value="Web Content Title" />
 		</execute>
+
+		<execute macro="Alert#viewSuccessMessage" />
 
 		<execute macro="Navigator#openSiteURL">
 			<var name="siteName" value="Blank Site Name" />
