@@ -22,6 +22,29 @@ import {indexResources} from '../actions/resources';
 import {indexVehicles} from '../actions/vehicles';
 
 class HistoryView extends JSXComponent {
+	attached() {
+		const {props} = this;
+
+		const {watsonParentId, watsonParentModel} = props;
+
+		if (watsonParentModel === 'incidents') {
+			props.indexActivities(watsonParentId);
+			props.indexAddresses(watsonParentId);
+			props.indexPeople(watsonParentId);
+			props.indexResources(watsonParentId);
+			props.indexVehicles(watsonParentId);
+		}
+		else if (watsonParentModel === 'children') {
+			props.indexCaseworkActivities(watsonParentId);
+			props.indexCounselingReports(watsonParentId);
+			props.indexDocuments(watsonParentId);
+			props.indexIllnesses(watsonParentId);
+			props.indexLegals(watsonParentId);
+			props.indexPhysicalExams(watsonParentId);
+			props.indexProgressReports(watsonParentId);
+		}
+	}
+
 	created() {
 		bindAll(
 			this,
@@ -31,8 +54,6 @@ class HistoryView extends JSXComponent {
 
 	fetchModelData(classPK, model) {
 		const {props} = this;
-
-		const {classPKArray} = this.state;
 
 		let watsonModelObject = null;
 
@@ -44,20 +65,6 @@ class HistoryView extends JSXComponent {
 
 				if (modelData) {
 					watsonModelObject = modelData.get(classPK);
-
-					if (!watsonModelObject && !classPKArray.includes(classPK)) {
-						const modelName = `index${formatModelName(model, true)}`;
-
-						const indexModel = props[modelName];
-
-						if (indexModel) {
-							indexModel(props.watsonParentId);
-						}
-
-						classPKArray.push(classPK);
-
-						this.setState({classPKArray});
-					}
 				}
 			}
 		}
@@ -195,12 +202,10 @@ HistoryView.PROPS = {
 	vehiclesData: Config.value(new Map()),
 	vehiclesLoading: Config.bool(),
 	watsonParentId: Config.string(),
-	watsonParentModel: Config.string()
+	watsonParentModel: Config.string().value('')
 };
 
-HistoryView.STATE = {
-	classPKArray: Config.array().value([])
-};
+HistoryView.STATE = {};
 
 function mapStateToProps(state) {
 	const activitiesData = state.getIn(['activities', 'data']) || new Map();
