@@ -131,8 +131,13 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 			while (rs.next()) {
 				long userId = rs.getLong("userId");
 
-				RemoteUserLocalServiceUtil.addOrganizationUsers(
-					organizationId, new long[] {userId});
+				try {
+					RemoteUserLocalServiceUtil.addOrganizationUsers(
+						organizationId, new long[] {userId});
+				}
+				catch (Exception e) {
+					_log.error(e, e);
+				}
 			}
 		}
 		finally {
@@ -167,8 +172,13 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 			while (rs.next()) {
 				long userId = rs.getLong("userId");
 
-				RemoteUserLocalServiceUtil.addRoleUsers(
-					roleId, new long[] {userId});
+				try {
+					RemoteUserLocalServiceUtil.addRoleUsers(
+						roleId, new long[] {userId});
+				}
+				catch (Exception e) {
+					_log.error(e, e);
+				}
 			}
 		}
 		finally {
@@ -507,8 +517,13 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 			while (rs.next()) {
 				long userId = rs.getLong(1);
 
-				RemoteUserLocalServiceUtil.unsetOrganizationUsers(
-					organizationId, new long[] {userId});
+				try {
+					RemoteUserLocalServiceUtil.unsetOrganizationUsers(
+						organizationId, new long[] {userId});
+				}
+				catch (Exception e) {
+					_log.error(e, e);
+				}
 			}
 		}
 		finally {
@@ -546,7 +561,12 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 			while (rs.next()) {
 				long userId = rs.getLong("userId");
 
-				RemoteUserLocalServiceUtil.deleteRoleUser(roleId, userId);
+				try {
+					RemoteUserLocalServiceUtil.deleteRoleUser(roleId, userId);
+				}
+				catch (Exception e) {
+					_log.error(e, e);
+				}
 			}
 		}
 		finally {
