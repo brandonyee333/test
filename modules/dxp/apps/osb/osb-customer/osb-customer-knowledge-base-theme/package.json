@@ -1,4 +1,8 @@
 {
+	"dependencies": {
+		"liferay-frontend-theme-styled": "^2.1.8",
+		"liferay-frontend-theme-unstyled": "^2.2.11"
+	},
 	"devDependencies": {
 		"gulp": "^3.8.10",
 		"liferay-theme-deps-7.0": "*",
