@@ -48,13 +48,11 @@ long studioEulaFileEntryId = PrefsParamUtil.getLong(portletPreferences, request,
 String studioEulaVersion = PrefsParamUtil.getString(portletPreferences, request, "studioEulaVersion_" + currentLanguageId, StringPool.BLANK);
 String studioEulaVersionRequired = PrefsParamUtil.getString(portletPreferences, request, "studioEulaVersionRequired_" + currentLanguageId, StringPool.BLANK);
 
-DLFileEntry fileEntry = null;
-
 String studioEulaFileTitle = StringPool.BLANK;
 
 if (studioEulaFileEntryId > 0) {
 	try {
-		fileEntry = DLFileEntryLocalServiceUtil.getFileEntry(studioEulaFileEntryId);
+		DLFileEntry fileEntry = DLFileEntryLocalServiceUtil.getFileEntry(studioEulaFileEntryId);
 
 		studioEulaFileTitle = fileEntry.getTitle();
 	}

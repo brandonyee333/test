@@ -53,29 +53,37 @@ String redirect = ParamUtil.getString(request, "redirect");
 					<liferay-ui:message key="language" />
 				</td>
 				<td>
-					<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateLanguage(this);">
+					<aui:select label="" name="languageId" onChange='<%= renderResponse.getNamespace() + "updateLanguage(this);" %>'>
 
 						<%
 						for (int i = 0; i < locales.length; i++) {
 							String optionStyle = StringPool.BLANK;
 
 							if (Validator.isNotNull(portletPreferences.getValue("evaluationEulaFileEntryId_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK))) {
-								optionStyle = "style=\"font-weight: bold;\"";
+								optionStyle = "font-weight: bold;";
 							}
 						%>
 
-							<option <%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) ? "selected" : "" %> <%= optionStyle %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
+							<aui:option label="<%= locales[i].getDisplayName(locale) %>" selected="<%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) %>" style="<%= optionStyle %>" value="<%= LocaleUtil.toLanguageId(locales[i]) %>" />
 
 						<%
 						}
 						%>
 
-					</select>
+					</aui:select>
 				</td>
 			</tr>
 			<tr>
 				<td colspan="2">
 					<br />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<liferay-ui:message key="evaluation-eula-file-entry-id" />
+				</td>
+				<td>
+					<aui:input label="" name='<%= "evaluationEulaFileEntryId_" + currentLanguageId %>' type="text" value="<%= evaluationEulaFileEntryId %>" />
 				</td>
 			</tr>
 			<tr>
@@ -86,8 +94,6 @@ String redirect = ParamUtil.getString(request, "redirect");
 					<span id="<portlet:namespace />evaluationEulaFileTitle">
 						<%= HtmlUtil.escape(evaluationEulaFileTitle) %>
 					</span>
-
-					<aui:input label="" name='<%= "evaluationEulaFileEntryId_" + currentLanguageId %>' type="text" value="<%= evaluationEulaFileEntryId %>" />
 				</td>
 			</tr>
 			<tr>
@@ -145,11 +151,11 @@ String redirect = ParamUtil.getString(request, "redirect");
 									String optionStyle = StringPool.BLANK;
 
 									if (Validator.isNotNull(portletPreferences.getValue("studioEulaFileEntryId_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK))) {
-										optionStyle = "style=\"font-weight: bold;\"";
+										optionStyle = "font-weight: bold;";
 									}
 								%>
 
-									<option <%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) ? "selected" : "" %> <%= optionStyle %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
+									<aui:option label="<%= locales[i].getDisplayName(locale) %>" selected="<%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) %>" style="<%= optionStyle %>" value="<%= LocaleUtil.toLanguageId(locales[i]) %>" />
 
 								<%
 								}
