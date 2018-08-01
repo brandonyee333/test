@@ -57,13 +57,13 @@ catch (Exception e) {
 	<c:when test="<%= (lcsClusterNode == null) || (lcsClusterEntry == null) %>">
 		<c:choose>
 			<c:when test='<%= SessionErrors.contains(liferayPortletRequest, "generalPluginAccess") %>'>
-				<div class="alert alert-warning lcs-alert">
+				<div class="alert alert-danger">
 					<liferay-ui:message key="an-error-occurred-while-accessing-liferay-connected-services" />
 				</div>
 			</c:when>
 			<c:otherwise>
-				<div class="alert alert-warning lcs-alert">
-					<liferay-ui:message arguments="<%= PortletPropsValues.LRDCOM_LCS_CLIENT_DOWNLOAD_URL %>" key="please-download-and-install-the-latest-version-of-liferay-connected-services-client" />
+				<div class="alert alert-danger">
+					<liferay-ui:message key="this-server-is-no-longer-registered-in-liferay-connected-services" />
 				</div>
 			</c:otherwise>
 		</c:choose>

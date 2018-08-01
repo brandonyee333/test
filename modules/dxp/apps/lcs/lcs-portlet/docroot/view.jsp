@@ -60,22 +60,24 @@ Set<LCSAlert> lcsClusterEntryTokenAlerts = LCSUtil.getLCSClusterEntryTokenAlerts
 	</c:choose>
 
 	<c:if test="<%= !lcsClusterEntryTokenAlerts.isEmpty() %>">
+		<div class="container-fluid-1280">
 
-		<%
-		for (LCSAlert lcsAlert : lcsClusterEntryTokenAlerts) {
-			if ("success".equals(lcsAlert.getType())) {
-				continue;
+			<%
+			for (LCSAlert lcsAlert : lcsClusterEntryTokenAlerts) {
+				if ("success".equals(lcsAlert.getType())) {
+					continue;
+				}
+			%>
+
+				<div class="<%= lcsAlert.getCSSClass() %>">
+					<liferay-ui:message key="<%= lcsAlert.getLabel() %>" />
+				</div>
+
+			<%
 			}
-		%>
+			%>
 
-			<div class="<%= lcsAlert.getCSSClass() %>">
-				<liferay-ui:message key="<%= lcsAlert.getLabel() %>" />
-			</div>
-
-		<%
-		}
-		%>
-
+		</div>
 	</c:if>
 </section>
 
