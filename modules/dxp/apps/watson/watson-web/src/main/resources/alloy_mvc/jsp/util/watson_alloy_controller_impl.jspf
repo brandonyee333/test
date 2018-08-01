@@ -230,13 +230,13 @@ public static class WatsonAlloyControllerImpl extends BaseAlloyControllerImpl {
 	protected SearchContext getSearchContext(Class modelClass, boolean includeInactive) {
 		SearchContext searchContext = new SearchContext();
 
-		int workflowStatus = WorkflowConstants.STATUS_APPROVED;
+		String booleanClauseOccur = BooleanClauseOccur.MUST.getName();
 
 		if (includeInactive) {
-			workflowStatus = WorkflowConstants.STATUS_ANY;
+			booleanClauseOccur = BooleanClauseOccur.SHOULD.getName();
 		}
 
-		BooleanClause<Query> statusApprovedClause = BooleanClauseFactoryUtil.create("status", String.valueOf(workflowStatus), BooleanClauseOccur.MUST.getName());
+		BooleanClause<Query> statusApprovedClause = BooleanClauseFactoryUtil.create("status", String.valueOf(WorkflowConstants.STATUS_APPROVED), booleanClauseOccur);
 		BooleanClause<Query> watsonClassNameClause = BooleanClauseFactoryUtil.create("entryClassName", modelClass.getName(), BooleanClauseOccur.MUST.getName());
 
 		BooleanClause<Query>[] booleanClauseArray = new BooleanClause[] {statusApprovedClause, watsonClassNameClause};
