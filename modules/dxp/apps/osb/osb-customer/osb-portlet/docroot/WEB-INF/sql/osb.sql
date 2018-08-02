@@ -163,7 +163,7 @@ insert into ListType (listTypeId, name, type_) values (28040, 'oracle-12c-releas
 insert into ListType (listTypeId, name, type_) values (28041, 'amazon-aurora', 'com.liferay.osb.model.AccountEnvironment.envDB');
 insert into ListType (listTypeId, name, type_) values (28042, 'db2-11.1', 'com.liferay.osb.model.AccountEnvironment.envDB');
 insert into ListType (listTypeId, name, type_) values (28043, 'mariadb-10.2', 'com.liferay.osb.model.AccountEnvironment.envDB');
-insert into ListType (listTypeId, name, type_) values (28044, 'postgresql-10.3', 'com.liferay.osb.model.AccountEnvironment.envDB');
+insert into ListType (listTypeId, name, type_) values (28044, 'postgresql-10', 'com.liferay.osb.model.AccountEnvironment.envDB');
 
 insert into ListType (listTypeId, name, type_) values (29000, 'oracle-sun-jdk-5', 'com.liferay.osb.model.AccountEnvironment.envJVM');
 insert into ListType (listTypeId, name, type_) values (29001, 'oracle-sun-jdk-6', 'com.liferay.osb.model.AccountEnvironment.envJVM');

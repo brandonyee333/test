@@ -275,7 +275,7 @@ public class AccountEnvironmentConstants {
 
 	public static final long ENV_DB_POSTGRESQL_9_6 = 28039;
 
-	public static final long ENV_DB_POSTGRESQL_10_3 = 28044;
+	public static final long ENV_DB_POSTGRESQL_10 = 28044;
 
 	public static final long ENV_DB_SQL_SERVER_2000 = 28010;
 
@@ -481,14 +481,14 @@ public class AccountEnvironmentConstants {
 			return _envDigitalEnterpriseVersion71.get(envListType);
 		}
 		else if ((envLFR >=
-					 ProductEntryConstants.SOCIAL_OFFICE_VERSION_2_0_3) &&
+					ProductEntryConstants.SOCIAL_OFFICE_VERSION_2_0_3) &&
 				 (envLFR <=
 					 ProductEntryConstants.SOCIAL_OFFICE_VERSION_2_1_0)) {
 
 			return _envSocialOfficeVersion2.get(envListType);
 		}
 		else if ((envLFR >=
-					 ProductEntryConstants.SOCIAL_OFFICE_VERSION_3_0_0) &&
+					ProductEntryConstants.SOCIAL_OFFICE_VERSION_3_0_0) &&
 				 (envLFR <=
 					 ProductEntryConstants.SOCIAL_OFFICE_VERSION_3_1_1)) {
 
@@ -608,16 +608,15 @@ public class AccountEnvironmentConstants {
 		ENV_DB_MYSQL_5_6, ENV_DB_MYSQL_5_7, ENV_DB_ORACLE_11G_RELEASE_2,
 		ENV_DB_ORACLE_12C_RELEASE_1, ENV_DB_ORACLE_12C_RELEASE_2,
 		ENV_DB_POSTGRESQL_9_3, ENV_DB_POSTGRESQL_9_4, ENV_DB_POSTGRESQL_9_6,
-		ENV_DB_POSTGRESQL_10_3, ENV_DB_SQL_SERVER_2008,
-		ENV_DB_SQL_SERVER_2008_R2, ENV_DB_SQL_SERVER_2012,
-		ENV_DB_SQL_SERVER_2014, ENV_DB_SQL_SERVER_2016, ENV_DB_SYBASE_ASE_15_7,
-		ENV_DB_SYBASE_ASE_16
+		ENV_DB_POSTGRESQL_10, ENV_DB_SQL_SERVER_2008, ENV_DB_SQL_SERVER_2008_R2,
+		ENV_DB_SQL_SERVER_2012, ENV_DB_SQL_SERVER_2014, ENV_DB_SQL_SERVER_2016,
+		ENV_DB_SYBASE_ASE_15_7, ENV_DB_SYBASE_ASE_16
 	};
 
 	private static final long[] _ENV_DB_DIGITAL_ENTERPRISE_VERSION_7_1 = {
 		ENV_DB_AMAZON_AURORA, ENV_DB_DB2_10_5, ENV_DB_DB2_11_1,
 		ENV_DB_MARIADB_10_2, ENV_DB_MYSQL_5_7, ENV_DB_ORACLE_12C_RELEASE_2,
-		ENV_DB_POSTGRESQL_9_6, ENV_DB_POSTGRESQL_10_3, ENV_DB_SQL_SERVER_2016,
+		ENV_DB_POSTGRESQL_9_6, ENV_DB_POSTGRESQL_10, ENV_DB_SQL_SERVER_2016,
 		ENV_DB_SYBASE_ASE_16
 	};
 
