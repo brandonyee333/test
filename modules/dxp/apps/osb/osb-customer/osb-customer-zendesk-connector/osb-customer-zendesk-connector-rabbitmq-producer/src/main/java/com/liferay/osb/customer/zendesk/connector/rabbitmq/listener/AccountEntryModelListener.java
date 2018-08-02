@@ -17,10 +17,14 @@ package com.liferay.osb.customer.zendesk.connector.rabbitmq.listener;
 import com.liferay.osb.customer.rabbitmq.connector.publisher.MessagePublisher;
 import com.liferay.osb.customer.zendesk.connector.rabbitmq.configuration.ZendeskConnectorConfigurationValues;
 import com.liferay.osb.customer.zendesk.connector.rabbitmq.model.ZendeskOrganization;
+import com.liferay.osb.customer.zendesk.connector.rabbitmq.util.ZendeskUtil;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.ExternalIdMapperConstants;
+import com.liferay.osb.model.OfferingEntry;
+import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.PartnerEntry;
+import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.model.SupportResponse;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
@@ -34,6 +38,10 @@ import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.util.StringPool;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -54,7 +62,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			}
 
 			ZendeskOrganization zendeskOrganization = getZendeskOrganization(
-				accountEntry);
+				accountEntry, null);
 
 			_messagePublisher.sendMessage(
 				ZendeskConnectorConfigurationValues.
@@ -86,8 +94,10 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 				}
 			}
 
+			Set<String> tags = getTags(accountEntry);
+
 			ZendeskOrganization zendeskOrganization = getZendeskOrganization(
-				accountEntry);
+				accountEntry, tags);
 
 			_messagePublisher.sendMessage(
 				ZendeskConnectorConfigurationValues.
@@ -100,8 +110,33 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		}
 	}
 
+	protected Set<String> getTags(AccountEntry accountEntry)
+		throws PortalException {
+
+		Set<String> tags = new HashSet<>();
+
+		List<OfferingEntry> offeringEntries = accountEntry.getOfferingEntries();
+
+		for (OfferingEntry offeringEntry : offeringEntries) {
+			if (offeringEntry.getStatus() !=
+					OfferingEntryConstants.STATUS_ACTIVE) {
+
+				continue;
+			}
+
+			ProductEntry productEntry = offeringEntry.getProductEntry();
+
+			String zendeskTag = ZendeskUtil.convertToTag(
+				productEntry.getName());
+
+			tags.add(zendeskTag);
+		}
+
+		return tags;
+	}
+
 	protected ZendeskOrganization getZendeskOrganization(
-			AccountEntry accountEntry)
+			AccountEntry accountEntry, Set<String> tags)
 		throws PortalException {
 
 		ZendeskOrganization zendeskOrganization = new ZendeskOrganization();
@@ -149,6 +184,8 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			SupportRegionLocalServiceUtil.getSupportRegion(supportRegionIds[0]);
 
 		zendeskOrganization.setSupportRegion(supportRegion.getName());
+
+		zendeskOrganization.setTags(tags);
 
 		zendeskOrganization.setTier(
 			AccountEntryConstants.getTierLabel(accountEntry.getTier()));

@@ -14,10 +14,14 @@
 
 package com.liferay.osb.customer.zendesk.connector.rabbitmq.model;
 
+import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Kyle Bischof
@@ -67,6 +71,10 @@ public class ZendeskOrganization {
 		return _supportRegion;
 	}
 
+	public Set<String> getTags() {
+		return _tags;
+	}
+
 	public String getTier() {
 		return _tier;
 	}
@@ -109,6 +117,10 @@ public class ZendeskOrganization {
 
 	public void setSupportRegion(String supportRegion) {
 		_supportRegion = supportRegion;
+	}
+
+	public void setTags(Set<String> tags) {
+		_tags = tags;
 	}
 
 	public void setTier(String tier) {
@@ -168,6 +180,16 @@ public class ZendeskOrganization {
 			organizationFieldsJSONObject.put("tier", _tier);
 		}
 
+		JSONArray tagsJSONArray = JSONFactoryUtil.createJSONArray();
+
+		if (Validator.isNotNull(_tags)) {
+			for (String tag : _tags) {
+				tagsJSONArray.put(tag);
+			}
+
+			fieldsJSONObject.put("tags", tagsJSONArray);
+		}
+
 		fieldsJSONObject.put(
 			"organization_fields", organizationFieldsJSONObject);
 
@@ -186,6 +208,7 @@ public class ZendeskOrganization {
 	private String _status = StringPool.BLANK;
 	private String _supportLanguage = StringPool.BLANK;
 	private String _supportRegion = StringPool.BLANK;
+	private Set<String> _tags = new HashSet<>();
 	private String _tier = StringPool.BLANK;
 
 }
