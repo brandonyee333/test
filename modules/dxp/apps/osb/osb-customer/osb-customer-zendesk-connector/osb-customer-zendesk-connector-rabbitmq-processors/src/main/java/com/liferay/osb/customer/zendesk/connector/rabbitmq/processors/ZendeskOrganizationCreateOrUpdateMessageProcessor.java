@@ -15,6 +15,7 @@
 package com.liferay.osb.customer.zendesk.connector.rabbitmq.processors;
 
 import com.liferay.osb.customer.rabbitmq.connector.publisher.MessagePublisher;
+import com.liferay.osb.customer.zendesk.connector.configuration.ZendeskConnectorConfigurationValues;
 import com.liferay.osb.customer.zendesk.connector.util.ZendeskHttpUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 
