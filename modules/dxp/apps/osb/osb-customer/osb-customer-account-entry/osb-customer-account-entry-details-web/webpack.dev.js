@@ -15,6 +15,14 @@ module.exports = merge(
 		},
 		devtool: 'inline-source-map',
 		mode: 'development',
+		module: {
+			rules: [
+				{
+					loader: 'liferay-lang-key-dev-loader',
+					test: /\.js$/
+				}
+			]
+		},
 		plugins: [
 			new webpack.HotModuleReplacementPlugin()
 		]
