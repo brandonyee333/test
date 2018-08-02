@@ -182,7 +182,7 @@ public class ZendeskOrganization {
 
 		JSONArray tagsJSONArray = JSONFactoryUtil.createJSONArray();
 
-		if (Validator.isNotNull(_tags)) {
+		if (_tags != null) {
 			for (String tag : _tags) {
 				tagsJSONArray.put(tag);
 			}

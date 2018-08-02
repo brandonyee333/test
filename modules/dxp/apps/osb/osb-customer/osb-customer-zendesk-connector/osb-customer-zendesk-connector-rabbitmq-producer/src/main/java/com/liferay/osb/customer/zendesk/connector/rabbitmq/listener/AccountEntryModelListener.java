@@ -118,8 +118,9 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		List<OfferingEntry> offeringEntries = accountEntry.getOfferingEntries();
 
 		for (OfferingEntry offeringEntry : offeringEntries) {
-			if (offeringEntry.getStatus() !=
-					OfferingEntryConstants.STATUS_ACTIVE) {
+			if ((offeringEntry.getStatus() !=
+					OfferingEntryConstants.STATUS_ACTIVE) ||
+				offeringEntry.isSupportTickets()) {
 
 				continue;
 			}
