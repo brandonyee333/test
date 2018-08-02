@@ -27,6 +27,7 @@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
 <%@ page import="com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys" %><%@
 page import="com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsWebKeys" %><%@
+page import="com.liferay.osb.customer.account.entry.details.web.internal.display.context.AccountEntryViewDisplayContext" %><%@
 page import="com.liferay.osb.exception.AccountEnvironmentAttachmentSizeException" %><%@
 page import="com.liferay.osb.exception.AccountEnvironmentEnvASException" %><%@
 page import="com.liferay.osb.exception.AccountEnvironmentEnvDBException" %><%@
@@ -53,7 +54,6 @@ page import="com.liferay.osb.model.SupportRegion" %><%@
 page import="com.liferay.osb.model.SupportResponse" %><%@
 page import="com.liferay.osb.service.AccountEntryServiceUtil" %><%@
 page import="com.liferay.osb.service.AccountEnvironmentAttachmentLocalServiceUtil" %><%@
-page import="com.liferay.osb.service.AccountEnvironmentLocalServiceUtil" %><%@
 page import="com.liferay.osb.service.AuditEntryLocalServiceUtil" %><%@
 page import="com.liferay.osb.service.ProductEntryLocalServiceUtil" %><%@
 page import="com.liferay.osb.service.SupportResponseLocalServiceUtil" %><%@
@@ -64,6 +64,8 @@ page import="com.liferay.osb.util.VisibilityConstants" %><%@
 page import="com.liferay.osb.util.comparator.AccountEntryNameComparator" %><%@
 page import="com.liferay.portal.kernel.bean.BeanParamUtil" %><%@
 page import="com.liferay.portal.kernel.dao.orm.QueryUtil" %><%@
+page import="com.liferay.portal.kernel.json.JSONArray" %><%@
+page import="com.liferay.portal.kernel.json.JSONObject" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.model.ListType" %><%@
 page import="com.liferay.portal.kernel.model.User" %><%@

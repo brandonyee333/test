@@ -14,10 +14,10 @@
  */
 --%>
 
-<%@ include file="/init.jsp" %>
+<%@ include file="/account_entry_details/init.jsp" %>
 
 <%
-AccountEntry accountEntry = (AccountEntry)renderRequest.getAttribute(AccountEntryDetailsWebKeys.ACCOUNT_ENTRY);
+AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 %>
 
 <h2>
@@ -34,20 +34,20 @@ AccountEntry accountEntry = (AccountEntry)renderRequest.getAttribute(AccountEntr
 </c:if>
 
 <%
-List<AccountEnvironment> accountEnvironments = AccountEnvironmentLocalServiceUtil.getAccountEnvironments(accountEntry.getAccountEntryId());
+JSONArray jsonArray = accountEntryViewDisplayContext.getAccountEnvironmentsJSONArray();
 
-for (AccountEnvironment accountEnvironment : accountEnvironments) {
-	ProductEntry productEntry = ProductEntryLocalServiceUtil.getProductEntry(accountEnvironment.getProductEntryId());
+for (int i = 0; i < jsonArray.length(); i++) {
+	JSONObject jsonObject = jsonArray.getJSONObject(i);
 %>
 
 	<div>
-		<h4><%= HtmlUtil.escape(accountEnvironment.getName()) %></h4>
+		<h4><%= jsonObject.getString("name") %></h4>
 
-		<strong><liferay-ui:message key="product" />:</strong> <%= HtmlUtil.escape(productEntry.getDisplayName()) %>
+		<strong><liferay-ui:message key="product" />:</strong> <%= jsonObject.getString("productEntryDisplayName") %>
 
 		<span class="spacer"></span>
 
-		<strong>LR:</strong> <%= LanguageUtil.get(request, accountEnvironment.getEnvLFRLabel()) %>
+		<strong>LR:</strong> <%= jsonObject.getString("envLFRLabel") %>
 
 		<hr />
 
@@ -58,11 +58,7 @@ for (AccountEnvironment accountEnvironment : accountEnvironments) {
 
 					<br />
 
-					<%= LanguageUtil.get(request, accountEnvironment.getEnvOSLabel()) %>
-
-					<c:if test="<%= Validator.isNotNull(accountEnvironment.getEnvOSCustom()) %>">
-						- <%= HtmlUtil.escape(accountEnvironment.getEnvOSCustom()) %>
-					</c:if>
+					<%= jsonObject.getString("envOSLabel") %>
 				</aui:col>
 
 				<aui:col width="<%= 50 %>">
@@ -70,7 +66,7 @@ for (AccountEnvironment accountEnvironment : accountEnvironments) {
 
 					<br />
 
-					<%= LanguageUtil.get(request, accountEnvironment.getEnvJVMLabel()) %>
+					<%= jsonObject.getString("envJVMLabel") %>
 				</aui:col>
 			</aui:row>
 
@@ -82,7 +78,7 @@ for (AccountEnvironment accountEnvironment : accountEnvironments) {
 
 					<br />
 
-					<%= LanguageUtil.get(request, accountEnvironment.getEnvASLabel()) %>
+					<%= jsonObject.getString("envASLabel") %>
 				</aui:col>
 
 				<aui:col width="<%= 50 %>">
@@ -90,7 +86,7 @@ for (AccountEnvironment accountEnvironment : accountEnvironments) {
 
 					<br />
 
-					<%= LanguageUtil.get(request, accountEnvironment.getEnvDBLabel()) %>
+					<%= jsonObject.getString("envDBLabel") %>
 				</aui:col>
 			</aui:row>
 
@@ -102,16 +98,8 @@ for (AccountEnvironment accountEnvironment : accountEnvironments) {
 
 					<br />
 
-					<%
-					AccountEnvironmentAttachment portalExtAccountEnvironmentAttachment = AccountEnvironmentAttachmentLocalServiceUtil.fetchAccountEnvironmentAttachment(accountEnvironment.getAccountEnvironmentId(), AccountEnvironmentAttachmentConstants.TYPE_PORTAL_EXT);
-					%>
-
-					<c:if test="<%= portalExtAccountEnvironmentAttachment != null %>">
-						<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/account_environment_attachment" var="accountEnvironmentAttachmentURL">
-							<portlet:param name="accountEnvironmentAttachmentId" value="<%= String.valueOf(portalExtAccountEnvironmentAttachment.getAccountEnvironmentAttachmentId()) %>" />
-						</liferay-portlet:resourceURL>
-
-						<aui:a href="<%= accountEnvironmentAttachmentURL.toString() %>" label="<%= portalExtAccountEnvironmentAttachment.getFileName() %>" target="_blank" />
+					<c:if test='<%= jsonObject.has("patchLevelAccountEnvironmentAttachmentFileName") %>'>
+						<aui:a href='<%= jsonObject.getString("patchLevelAccountEnvironmentAttachmentURL") %>' label='<%= jsonObject.getString("patchLevelAccountEnvironmentAttachmentFileName") %>' target="_blank" />
 					</c:if>
 				</aui:col>
 
@@ -120,38 +108,20 @@ for (AccountEnvironment accountEnvironment : accountEnvironments) {
 
 					<br />
 
-					<%
-					AccountEnvironmentAttachment patchLevelAccountEnvironmentAttachment = AccountEnvironmentAttachmentLocalServiceUtil.fetchAccountEnvironmentAttachment(accountEnvironment.getAccountEnvironmentId(), AccountEnvironmentAttachmentConstants.TYPE_PATCH_LEVEL);
-					%>
-
-					<c:if test="<%= patchLevelAccountEnvironmentAttachment != null %>">
-						<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/account_environment_attachment" var="accountEnvironmentAttachmentURL">
-							<portlet:param name="accountEnvironmentAttachmentId" value="<%= String.valueOf(patchLevelAccountEnvironmentAttachment.getAccountEnvironmentAttachmentId()) %>" />
-						</liferay-portlet:resourceURL>
-
-						<aui:a href="<%= accountEnvironmentAttachmentURL.toString() %>" label="<%= patchLevelAccountEnvironmentAttachment.getFileName() %>" target="_blank" />
+					<c:if test='<%= jsonObject.has("portalExtAccountEnvironmentAttachmentFileName") %>'>
+						<aui:a href='<%= jsonObject.getString("portalExtAccountEnvironmentAttachmentURL") %>' label='<%= jsonObject.getString("portalExtAccountEnvironmentAttachmentFileName") %>' target="_blank" />
 					</c:if>
 				</aui:col>
 			</aui:row>
 
 			<aui:row>
 				<aui:col width="<%= 100 %>">
-					<c:if test="<%= OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.DELETE) %>">
-					<liferay-portlet:renderURL var="editAccountEnvironmentURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
-							<portlet:param name="mvcRenderCommandName" value="/edit_account_environment" />
-							<portlet:param name="accountEnvironmentId" value="<%= String.valueOf(accountEnvironment.getAccountEnvironmentId()) %>" />
-						</liferay-portlet:renderURL>
-
-						<aui:button onClick='<%= renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "update-environment-configuration") + "', '" + editAccountEnvironmentURL.toString() + "', '" + renderResponse.getNamespace() + "editAccountEnvironment')" %>' value="edit" />
+					<c:if test='<%= jsonObject.has("editAccountEnvironmentURL") %>'>
+						<aui:button onClick='<%= renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "update-environment-configuration") + "', '" + jsonObject.getString("editAccountEnvironmentURL") + "', '" + renderResponse.getNamespace() + "editAccountEnvironment')" %>' value="edit" />
 					</c:if>
 
-					<c:if test="<%= OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.UPDATE) %>">
-						<portlet:actionURL name="deleteAccountEnvironment" var="deleteAccountEnvironmentURL">
-							<portlet:param name="redirect" value="<%= currentURL %>" />
-							<portlet:param name="accountEnvironmentId" value="<%= String.valueOf(accountEnvironment.getAccountEnvironmentId()) %>" />
-						</portlet:actionURL>
-
-						<aui:button href="<%= deleteAccountEnvironmentURL.toString() %>" value="delete" />
+					<c:if test='<%= jsonObject.has("deleteAccountEnvironmentURL") %>'>
+						<aui:button href='<%= jsonObject.getString("deleteAccountEnvironmentURL") %>' value="delete" />
 					</c:if>
 				</aui:col>
 			</aui:row>
