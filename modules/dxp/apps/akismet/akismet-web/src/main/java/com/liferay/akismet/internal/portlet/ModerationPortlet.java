@@ -52,7 +52,7 @@ import org.osgi.service.component.annotations.Reference;
 		"com.liferay.portlet.instanceable=false",
 		"com.liferay.portlet.preferences-owned-by-group=true",
 		"javax.portlet.display-name=Spam Moderation",
-		"javax.portlet.init-param.template-path=/META-INF/resources/",
+		"javax.portlet.init-param.template-path=/",
 		"javax.portlet.init-param.view-template=/view.jsp",
 		"javax.portlet.name=" + ModerationPortletKeys.MODERATION,
 		"javax.portlet.resource-bundle=content.Language",
