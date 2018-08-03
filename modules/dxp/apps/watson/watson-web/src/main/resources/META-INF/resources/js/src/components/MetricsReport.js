@@ -9,10 +9,6 @@ import ContentHeader from './ContentHeader';
 const Datatable = bridge(BootstrapTable);
 
 class MetricsReport extends JSXComponent {
-	detached() {
-		this.props.onChange('');
-	}
-
 	_handleRowClasses = row => {
 		let classes = null;
 

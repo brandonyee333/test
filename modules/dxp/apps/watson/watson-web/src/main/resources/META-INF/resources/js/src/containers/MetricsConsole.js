@@ -39,6 +39,8 @@ class MetricsConsole extends JSXComponent {
 		this.clearHeatmap();
 
 		this.props.updateIncidentsDataManually();
+
+		this.props.updateFilter(new Map(), 'incidents', 1);
 	}
 
 	getCurrentView(action, data, loading, viewBy) {
@@ -86,7 +88,7 @@ class MetricsConsole extends JSXComponent {
 	_handleUpdateFilter(filterData) {
 		const {updateFilter} = this.props;
 
-		updateFilter(filterData, 1, 'incidents');
+		updateFilter(filterData, 'incidents', 1);
 
 		this.state.resendRequest = true;
 	}
@@ -234,11 +236,11 @@ function mapDispatchToProps(dispatch) {
 				fetchIncidentMetrics(data)
 			);
 		},
-		updateFilter: (filterData, watsonIncidentId, model) => {
+		updateFilter: (filterData, model, watsonIncidentId) => {
 			const action = {
 				filterData,
 				model,
-				watsonIncidentId
+				watsonParentPrimaryKey: watsonIncidentId
 			};
 
 			dispatch(

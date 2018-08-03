@@ -12,7 +12,7 @@ class LandingPage extends JSXComponent {
 				<div class="arrow-container">
 					<div class="arrow bounce" />
 
-					<span class="landing-text">{Liferay.Language.get('please-select-a-method-on-the-left')}</span>
+					<span class="landing-text">{Liferay.Language.get('please-choose-an-application-on-the-left')}</span>
 				</div>
 			</div>
 		);

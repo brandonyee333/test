@@ -67,7 +67,7 @@ class HeatMap extends JSXComponent {
 		const image = {
 			anchor: new google.maps.Point(0, 0),
 			origin: new google.maps.Point(0, 0),
-			size: new google.maps.Size(5, 5),
+			size: new google.maps.Size(7, 7),
 			url: `${Liferay.ThemeDisplay.getPathThemeImages()}/transparent.png`
 		};
 
