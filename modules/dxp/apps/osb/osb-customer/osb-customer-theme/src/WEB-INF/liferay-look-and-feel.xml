@@ -17,5 +17,18 @@
 		<portlet-decorator id="decorate" name="Decorate">
 			<portlet-decorator-css-class>portlet-decorate</portlet-decorator-css-class>
 		</portlet-decorator>
+		<settings>
+			<setting configurable="true" key="footer-logo" options="true,false" type="select" value="true" />
+			<setting configurable="true" key="footer-social-links" options="true,false" type="select" value="true" />
+			<setting configurable="true" key="site-logo-url" value="/home" />
+			<setting configurable="true" key="site-name" value="Help Center" />
+			<setting configurable="true" key="site-name-url" value="/home" />
+			<setting configurable="true" key="social-link-one-name" value="facebook" />
+			<setting configurable="true" key="social-link-one-url" value="https://www.facebook.com/liferay" />
+			<setting configurable="true" key="social-link-three-name" value="linkedin" />
+			<setting configurable="true" key="social-link-three-url" value="https://www.linkedin.com/company/liferay-inc-" />
+			<setting configurable="true" key="social-link-two-name" value="twitter" />
+			<setting configurable="true" key="social-link-two-url" value="https://twitter.com/liferay" />
+		</settings>
 	</theme>
 </look-and-feel>

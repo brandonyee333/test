@@ -1,15 +1,14 @@
 <div class="container-fluid container-fluid-max-xl">
 	<div class="header-inner row">
-
 		<div class="col-md-3 header-content">
-			<a class="header-link" href="/home" title="Home">
+			<a class="header-link" href="${site_logo_url}" title="Home">
 				<svg alt="Liferay" class="header-logo">
-					<use xlink:href="${images_folder}/custom/help_center_icons.svg#liferayWaffle" />
+					<use xlink:href="${images_folder}/custom/help_center_icons.svg#liferay-waffle" />
 				</svg>
 			</a>
 
-			<a href="/home" title="Home">
-				<h4 class="site-name">Help Center</h4>
+			<a href="${site_name_url}" title="${site_name}">
+				<h4 class="site-name">${site_name}</h4>
 			</a>
 		</div>
 

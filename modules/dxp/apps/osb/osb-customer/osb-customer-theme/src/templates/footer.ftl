@@ -2,9 +2,11 @@
 
 <div class="row">
 	<div class="col-sm-3">
-		<svg alt="Liferay" class="liferay-logo">
-			<use xlink:href="${images_folder}/custom/help_center_icons.svg#liferayLogo" />
-		</svg>
+		<#if getterUtil.getBoolean(theme_settings["footer-logo"])>
+			<svg alt="Liferay" class="liferay-logo">
+				<use xlink:href="${images_folder}/custom/help_center_icons.svg#liferay-logo" />
+			</svg>
+		</#if>
 	</div>
 
 	<#if footer_navigation_layout?has_content>
@@ -26,31 +28,33 @@
 	</#if>
 
 	<div class="col-sm-3">
-		<div class="social-links">
-			<div class="social-icon">
-				<a href="https://www.facebook.com/liferay">
-					<svg class="lexicon-icon lexicon-icon-social-facebook">
-						<use xlink:href="${images_folder}/custom/help_center_icons.svg#social-facebook" />
-					</svg>
-				</a>
-			</div>
+		<#if getterUtil.getBoolean(theme_settings["footer-social-links"])>
+			<div class="social-links">
+				<div class="social-icon">
+					<a href="${social_link_one_url}">
+						<svg class="lexicon-icon lexicon-icon-social-${social_link_one_name}">
+							<use xlink:href="${images_folder}/custom/help_center_icons.svg#social-${social_link_one_name}" />
+						</svg>
+					</a>
+				</div>
 
-			<div class="social-icon">
-				<a href="https://twitter.com/liferay">
-					<svg class="lexicon-icon lexicon-icon-twitter">
-						<use xlink:href="${images_folder}/custom/help_center_icons.svg#social-twitter" />
-					</svg>
-				</a>
-			</div>
+				<div class="social-icon">
+					<a href="${social_link_two_url}">
+						<svg class="lexicon-icon lexicon-icon-${social_link_two_name}">
+							<use xlink:href="${images_folder}/custom/help_center_icons.svg#social-${social_link_two_name}" />
+						</svg>
+					</a>
+				</div>
 
-			<div class="social-icon">
-				<a href="https://www.linkedin.com/company/liferay-inc-">
-					<svg class="lexicon-icon lexicon-icon-linkedin">
-						<use xlink:href="${images_folder}/custom/help_center_icons.svg#social-linkedin" />
-					</svg>
-				</a>
+				<div class="social-icon">
+					<a href="${social_link_three_url}">
+						<svg class="lexicon-icon lexicon-icon-${social_link_three_name}">
+							<use xlink:href="${images_folder}/custom/help_center_icons.svg#social-${social_link_three_name}" />
+						</svg>
+					</a>
+				</div>
 			</div>
-		</div>
+		</#if>
 	</div>
 </div>
 
