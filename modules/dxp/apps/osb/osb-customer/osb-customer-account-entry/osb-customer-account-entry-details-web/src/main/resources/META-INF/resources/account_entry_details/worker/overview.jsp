@@ -22,22 +22,24 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 
 <aui:row>
 	<aui:col width="<%= 25 %>">
-		<div>
-			<h2>
+		<div class="card">
+			<h3 class="card-header">
 				<liferay-ui:message key="details" />
-			</h2>
+			</h3>
 
-			<table>
+			<table class="details-table">
 				<tr>
-					<td>
+					<td class="secondary-text-color">
 						<liferay-ui:message key="status" />
 					</td>
 					<td>
-						<%= accountEntry.getStatusLabel() %>
+						<span class="label label-<%= accountEntry.getStatusLabel() %>">
+							<%= accountEntry.getStatusLabel() %>
+						</span>
 					</td>
 				</tr>
 				<tr>
-					<td>
+					<td class="secondary-text-color">
 						<liferay-ui:message key="level" />
 					</td>
 					<td>
@@ -50,7 +52,7 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 					</td>
 				</tr>
 				<tr>
-					<td>
+					<td class="secondary-text-color">
 						<liferay-ui:message key="support-region" />
 					</td>
 					<td>
@@ -65,7 +67,7 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 					</td>
 				</tr>
 				<tr>
-					<td>
+					<td class="secondary-text-color">
 						<liferay-ui:message key="partner" />
 					</td>
 					<td>
@@ -80,7 +82,7 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 					</td>
 				</tr>
 				<tr>
-					<td>
+					<td class="secondary-text-color">
 						<liferay-ui:message key="partner-support" />
 					</td>
 					<td>
@@ -90,7 +92,7 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 					</td>
 				</tr>
 				<tr>
-					<td>
+					<td class="secondary-text-color">
 						<liferay-ui:message key="tier" />
 					</td>
 					<td>
@@ -98,7 +100,7 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 					</td>
 				</tr>
 				<tr>
-					<td>
+					<td class="secondary-text-color">
 						<liferay-ui:message key="industry" />
 					</td>
 					<td>
@@ -106,7 +108,7 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 					</td>
 				</tr>
 				<tr>
-					<td>
+					<td class="secondary-text-color">
 						<liferay-ui:message key="last-modified" />
 					</td>
 					<td>
@@ -114,7 +116,7 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 					</td>
 				</tr>
 				<tr>
-					<td>
+					<td class="secondary-text-color">
 						<liferay-ui:message key="modified-by" />
 					</td>
 					<td>

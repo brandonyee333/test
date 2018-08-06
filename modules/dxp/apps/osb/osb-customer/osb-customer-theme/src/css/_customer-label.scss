@@ -1,0 +1,38 @@
+.label {
+	border-radius: 2px;
+	font-size: $small-font-size;
+	font-weight: $font-weight-semi-bold;
+	line-height: 16px;
+	padding: 4px 8px 2px;
+	text-transform: uppercase;
+
+	&.label-small {
+		font-size: 10px;
+		padding: 2px 4px 1px;
+	}
+
+	&.label-approved {
+		border: 1px solid $label-success-border;
+		color: $label-success-color;
+	}
+
+	&.label-closed {
+		border: 1px solid $label-default-border;
+		color: $label-default-color;
+	}
+
+	&.label-expired {
+		border: 1px solid $label-danger-border;
+		color: $color-body;
+	}
+
+	&.label-pending {
+		border: 1px solid $label-warning-border;
+		color: $label-warning-color;
+	}
+
+	&.label-rejected {
+		border: 1px solid $label-danger-border;
+		color: $label-danger-color;
+	}
+}

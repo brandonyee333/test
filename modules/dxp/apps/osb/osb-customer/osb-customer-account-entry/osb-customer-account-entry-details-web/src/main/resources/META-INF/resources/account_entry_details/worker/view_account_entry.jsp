@@ -28,7 +28,7 @@ portletURL.setParameter("tabs1", tabs1);
 portletURL.setParameter("accountEntryId", String.valueOf(accountEntry.getAccountEntryId()));
 %>
 
-<h1>
+<h1 class="project-name">
 	<%= HtmlUtil.escape(accountEntry.getName()) %>
 </h1>
 
@@ -37,7 +37,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntry.getAccount
 	url="<%= portletURL.toString() %>"
 />
 
-<div class="container-fluid-1280">
+<div class="container-fluid-max-xl">
 	<c:choose>
 		<c:when test='<%= tabs1.equals("history") %>'>
 			<liferay-util:include page="/account_entry_details/worker/history.jsp" servletContext="<%= application %>" />

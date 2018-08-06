@@ -1,0 +1,30 @@
+.lfr-nav.nav.nav-tabs {
+	margin-bottom: 48px;
+
+	> li {
+		> a {
+			padding: 10px 24px;
+		}
+
+		&.active {
+			a,
+			a:active,
+			a:focus,
+			a:hover {
+				border-bottom-color: $nav-tabs-border-color;
+				border-width: 0;
+
+				&:after {
+					background-color: $color-primary;
+					bottom: -1px;
+					content: "";
+					display: block;
+					height: 1.2px;
+					left: 24px;
+					position: absolute;
+					right: 24px;
+				}
+			}
+		}
+	}
+}

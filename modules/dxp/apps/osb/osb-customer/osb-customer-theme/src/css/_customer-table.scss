@@ -1,0 +1,11 @@
+.details-table {
+	> tbody {
+		display: block;
+		padding: 12px 24px;
+
+		> tr > td {
+			padding: 12px 0;
+			width: 50%;
+		}
+	}
+}
