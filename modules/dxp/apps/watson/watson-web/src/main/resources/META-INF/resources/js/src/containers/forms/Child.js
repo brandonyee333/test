@@ -100,57 +100,55 @@ class ChildForm extends JSXComponent {
 	};
 
 	_handleBeforeLeave(data) {
-		if (this.isDisposed()) {
-			return false;
-		}
-
-		const {
-			formData = {},
-			storeData,
-			watsonChildId
-		} = this.props;
-
-		const {unlockNavigate} = this.state;
-
 		let retVal = false;
 
-		if (watsonChildId > 0) {
-			if (!isEmpty(formData) && !isEmpty(storeData)) {
-				const originalData = convertMapToObject(storeData);
+		if (!this.isDisposed()) {
+			const {
+				formData = {},
+				storeData,
+				watsonChildId
+			} = this.props;
 
-				formData.casework_activities = {};
-				formData.counseling_reports = {};
-				formData.documents = {};
-				formData.legals = {};
-				formData.illnesses = {};
-				formData.physical_exams = {};
-				formData.progress_reports = {};
+			const {unlockNavigate} = this.state;
 
-				originalData.casework_activities = {};
-				originalData.counseling_reports = {};
-				originalData.documents = {};
-				originalData.legals = {};
-				originalData.illnesses = {};
-				originalData.physical_exams = {};
-				originalData.progress_reports = {};
+			if (watsonChildId > 0) {
+				if (!isEmpty(formData) && !isEmpty(storeData)) {
+					const originalData = convertMapToObject(storeData);
 
-				if (!unlockNavigate && !deepCompareIsEqual(formData, originalData)) {
-					if (data) {
-						this.setState(
-							{
-								navigateAwayPath: data.path,
-								showLeaveModal: true
+					formData.casework_activities = {};
+					formData.counseling_reports = {};
+					formData.documents = {};
+					formData.legals = {};
+					formData.illnesses = {};
+					formData.physical_exams = {};
+					formData.progress_reports = {};
+
+					originalData.casework_activities = {};
+					originalData.counseling_reports = {};
+					originalData.documents = {};
+					originalData.legals = {};
+					originalData.illnesses = {};
+					originalData.physical_exams = {};
+					originalData.progress_reports = {};
+
+					if (!unlockNavigate && !deepCompareIsEqual(formData, originalData)) {
+						if (data) {
+							this.setState(
+								{
+									navigateAwayPath: data.path,
+									showLeaveModal: true
+								}
+							);
+
+							if (data.event) {
+								data.event.preventDefault();
 							}
-						);
 
-						if (data.event) {
-							data.event.preventDefault();
+							throw new Error();
 						}
-
-						throw new Error();
-					}
-					else {
-						retVal = true;
+						else {
+							retVal = true;
+						}
 					}
 				}
 			}

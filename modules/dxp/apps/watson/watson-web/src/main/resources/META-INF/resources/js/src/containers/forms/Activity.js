@@ -201,53 +201,51 @@ class ActivityForm extends JSXComponent {
 	}
 
 	_handleBeforeLeave(data) {
-		if (this.isDisposed()) {
-			return false;
-		}
-
-		const {
-			action,
-			formData = {},
-			storeData,
-			watsonIncidentId
-		} = this.props;
-
-		const {
-			autoSaved,
-			autoSaveResponse,
-			dataSent,
-			unlockNavigate
-		} = this.state;
-
 		let retVal = false;
 
-		if (watsonIncidentId > 0 && !isEmpty(formData) && (!isEmpty(storeData) || action === 'create' && !dataSent)) {
-			const originalData = convertMapToObject(storeData);
+		if (!this.isDisposed()) {
+			const {
+				action,
+				formData = {},
+				storeData,
+				watsonIncidentId
+			} = this.props;
 
-			if (autoSaved) {
-				autoSaveResponse.modifiedDateTimeStamp = 0;
-				autoSaveResponse.modifiedDate = 0;
-				formData.modifiedDate = 0;
-				formData.modifiedDateTimeStamp = 0;
-			}
+			const {
+				autoSaved,
+				autoSaveResponse,
+				dataSent,
+				unlockNavigate
+			} = this.state;
 
-			if (!unlockNavigate && ((autoSaved && !isEqual(formData, autoSaveResponse)) || (!deepCompareIsEqual(formData, originalData) && autoSaved < 1))) {
-				if (data) {
-					this.setState(
-						{
-							navigateAwayPath: data.path,
-							showLeaveModal: true
-						}
-					);
+			if (watsonIncidentId > 0 && !isEmpty(formData) && (!isEmpty(storeData) || action === 'create' && !dataSent)) {
+				const originalData = convertMapToObject(storeData);
 
-					if (data.event) {
-						data.event.preventDefault();
-					}
-
-					throw new Error();
+				if (autoSaved) {
+					autoSaveResponse.modifiedDateTimeStamp = 0;
+					autoSaveResponse.modifiedDate = 0;
+					formData.modifiedDate = 0;
+					formData.modifiedDateTimeStamp = 0;
 				}
-				else {
-					retVal = true;
+
+				if (!unlockNavigate && ((autoSaved && !isEqual(formData, autoSaveResponse)) || (!deepCompareIsEqual(formData, originalData) && autoSaved < 1))) {
+					if (data) {
+						this.setState(
+							{
+								navigateAwayPath: data.path,
+								showLeaveModal: true
+							}
+						);
+
+						if (data.event) {
+							data.event.preventDefault();
+						}
+
+						throw new Error();
+					}
+					else {
+						retVal = true;
+					}
 				}
 			}
 		}

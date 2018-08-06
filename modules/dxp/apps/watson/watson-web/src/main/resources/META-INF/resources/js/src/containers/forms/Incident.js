@@ -91,49 +91,47 @@ class IncidentForm extends JSXComponent {
 	}
 
 	_handleBeforeLeave(data) {
-		if (this.isDisposed()) {
-			return false;
-		}
-
-		const {
-			formData = {},
-			storeData,
-			watsonIncidentId
-		} = this.props;
-
-		const {unlockNavigate} = this.state;
-
 		let retVal = false;
 
-		if (watsonIncidentId > 0) {
-			let pathMatches;
+		if (!this.isDisposed()) {
+			const {
+				formData = {},
+				storeData,
+				watsonIncidentId
+			} = this.props;
 
-			if (data && data.path) {
-				pathMatches = data.path.match(/\/web\/guest\/home\/-\/watson\/incidents\/([0-9]+)\/[a-zA-Z]+\/?$/);
-			}
+			const {unlockNavigate} = this.state;
 
-			const pathChanged = !pathMatches || pathMatches[1] != watsonIncidentId;
+			if (watsonIncidentId > 0) {
+				let pathMatches;
 
-			if (pathChanged && !isEmpty(formData) && !isEmpty(storeData)) {
-				const originalData = convertMapToObject(storeData);
+				if (data && data.path) {
+					pathMatches = data.path.match(/\/web\/guest\/home\/-\/watson\/incidents\/([0-9]+)\/[a-zA-Z]+\/?$/);
+				}
 
-				if (!unlockNavigate && !deepCompareIsEqual(formData, originalData)) {
-					if (data) {
-						this.setState(
-							{
-								navigateAwayPath: data.path,
-								showLeaveModal: true
+				const pathChanged = !pathMatches || pathMatches[1] != watsonIncidentId;
+
+				if (pathChanged && !isEmpty(formData) && !isEmpty(storeData)) {
+					const originalData = convertMapToObject(storeData);
+
+					if (!unlockNavigate && !deepCompareIsEqual(formData, originalData)) {
+						if (data) {
+							this.setState(
+								{
+									navigateAwayPath: data.path,
+									showLeaveModal: true
+								}
+							);
+
+							if (data.event) {
+								data.event.preventDefault();
 							}
-						);
 
-						if (data.event) {
-							data.event.preventDefault();
+							throw new Error();
 						}
-
-						throw new Error();
-					}
-					else {
-						retVal = true;
+						else {
+							retVal = true;
+						}
 					}
 				}
 			}

@@ -121,44 +121,42 @@ class AddressForm extends JSXComponent {
 	};
 
 	_handleBeforeLeave(data) {
-		if (this.isDisposed()) {
-			return false;
-		}
-
-		const {
-			action,
-			formData = {},
-			storeData,
-			watsonIncidentId = 0
-		} = this.props;
-
-		const {
-			dataSent,
-			unlockNavigate
-		} = this.state;
-
 		let retVal = false;
 
-		if (watsonIncidentId > 0 && !isEmpty(formData) && (!isEmpty(storeData) || action === 'create' && !dataSent)) {
-			const originalData = convertMapToObject(storeData);
+		if (!this.isDisposed()) {
+			const {
+				action,
+				formData = {},
+				storeData,
+				watsonIncidentId = 0
+			} = this.props;
 
-			if (!unlockNavigate && !deepCompareIsEqual(formData, originalData)) {
-				if (data) {
-					this.setState(
-						{
-							navigateAwayPath: data.path,
-							showLeaveModal: true
+			const {
+				dataSent,
+				unlockNavigate
+			} = this.state;
+
+			if (watsonIncidentId > 0 && !isEmpty(formData) && (!isEmpty(storeData) || action === 'create' && !dataSent)) {
+				const originalData = convertMapToObject(storeData);
+
+				if (!unlockNavigate && !deepCompareIsEqual(formData, originalData)) {
+					if (data) {
+						this.setState(
+							{
+								navigateAwayPath: data.path,
+								showLeaveModal: true
+							}
+						);
+
+						if (data.event) {
+							data.event.preventDefault();
 						}
-					);
 
-					if (data.event) {
-						data.event.preventDefault();
+						throw new Error();
 					}
-
-					throw new Error();
-				}
-				else {
-					retVal = true;
+					else {
+						retVal = true;
+					}
 				}
 			}
 		}
