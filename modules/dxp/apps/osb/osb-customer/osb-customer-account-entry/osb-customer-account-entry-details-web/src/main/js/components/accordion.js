@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const Accordion = props => (
 	<div aria-orientation="vertical" className="panel-group" role="tablist">
 		{props.items.map(item => (
-			<AccordionItem body={item.body} title={item.title} key={item.key} />
+			<AccordionItem key={item.key} body={item.body} title={item.title} />
 		))}
 	</div>
 );
@@ -25,12 +25,12 @@ class AccordionItem extends React.Component {
 	};
 
 	handleClick = () => {
-		this.setState({ expanded: !this.state.expanded });
+		this.setState({expanded: !this.state.expanded});
 	};
 
 	render() {
-		const { body, key, title } = this.props;
-		const { expanded } = this.state;
+		const {body, key, title} = this.props;
+		const {expanded} = this.state;
 
 		return (
 			<div className="panel" id={key}>

@@ -11,7 +11,7 @@ class AccountEnvironments extends React.Component {
 	};
 
 	render() {
-		const { environments, permitAdd } = this.props;
+		const {environments, permitAdd} = this.props;
 
 		const accordionItems = environments.map(environment => ({
 			body: (

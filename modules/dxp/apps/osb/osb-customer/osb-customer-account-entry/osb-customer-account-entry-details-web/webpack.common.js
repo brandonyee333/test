@@ -1,6 +1,7 @@
+const path = require('path');
 const clayCss = require('clay-css');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const path = require('path');
+
 const PUBLIC_PATH = '/o/osb-customer-account-entry-details-web/dist/';
 
 module.exports = {
@@ -45,9 +46,5 @@ module.exports = {
 		path: path.resolve('src/main/resources/META-INF/resources/dist'),
 		publicPath: PUBLIC_PATH
 	},
-	plugins: [
-		new MiniCssExtractPlugin(
-			{filename: 'main.css'}
-		)
-	]
+	plugins: [new MiniCssExtractPlugin({filename: 'main.css'})]
 };
