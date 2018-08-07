@@ -1,5 +1,10 @@
 <#assign
 	layout_local_service = serviceLocator.findService("com.liferay.portal.kernel.service.LayoutLocalService")
+	portal_permission = serviceLocator.findService("com.liferay.portal.kernel.service.permission.PortalPermission")
+
+	theme_display_permission_checker = theme_display.getPermissionChecker()
+
+	has_view_control_panel = is_signed_in && portal_permission.contains(theme_display_permission_checker, "VIEW_CONTROL_PANEL")
 
 	site_logo_url = themeDisplay.getThemeSetting("site-logo-url")
 	site_name = themeDisplay.getThemeSetting("site-name")

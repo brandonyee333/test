@@ -19,7 +19,7 @@
 <@liferay.control_menu />
 
 <div id="wrapper">
-	<header class="header" id="banner">
+	<header class="header ${has_view_control_panel?string('has-control-panel', '')}" id="banner">
 		<#include "${full_templates_path}/navigation.ftl" />
 	</header>
 
