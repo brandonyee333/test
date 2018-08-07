@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Accordion from './accordion';
 import Button from './button';
 
-class AccountEnvironments extends React.Component {
+export default class AccountEnvironments extends React.Component {
 	static propTypes = {
 		environments: PropTypes.array.isRequired,
 		permitAdd: PropTypes.bool.isRequired
@@ -116,5 +116,3 @@ EnvironmentDetail.propTypes = {
 	label: PropTypes.string.isRequired,
 	value: PropTypes.string
 };
-
-export default AccountEnvironments;
