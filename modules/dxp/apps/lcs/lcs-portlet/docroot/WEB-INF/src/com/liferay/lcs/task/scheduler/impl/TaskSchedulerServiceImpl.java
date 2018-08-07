@@ -18,6 +18,7 @@ import com.liferay.lcs.task.ScheduledTask;
 import com.liferay.lcs.task.Type;
 import com.liferay.lcs.task.scheduler.TaskSchedulerService;
 import com.liferay.lcs.util.ClusterNodeUtil;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.bean.BeanLocator;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
@@ -31,6 +32,7 @@ import com.liferay.portal.kernel.scheduler.TriggerFactoryUtil;
 import com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse;
 import com.liferay.portal.kernel.security.RandomUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.ArrayList;
@@ -102,7 +104,20 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 			}
 		}
 		catch (Exception e) {
-			_log.error("Unable to create new scheduled task", e);
+			if (_log.isWarnEnabled()) {
+				String serverId = ServerDetector.getServerId();
+
+				StringBundler sb = new StringBundler(6);
+
+				sb.append("Unable to create ");
+				sb.append(taskName);
+				sb.append(". This is likely because Liferay Connected ");
+				sb.append("Services does not support such task for ");
+				sb.append(serverId);
+				sb.append(" server.");
+
+				_log.warn(sb.toString());
+			}
 		}
 	}
 
