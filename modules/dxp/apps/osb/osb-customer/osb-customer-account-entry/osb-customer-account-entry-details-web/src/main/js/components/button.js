@@ -1,26 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Button = props =>
-	props.href ? (
-		<a className="btn btn-default" href={props.href}>
-			{props.children}
-		</a>
-	) : (
-		<button
-			className="btn btn-default"
-			onClick={props.onClick}
-			value={props.value}
-		>
-			{props.children}
-		</button>
-	);
+import getCN from 'classnames';
 
-Button.propTypes = {
-	children: PropTypes.node.isRequired,
-	href: PropTypes.string,
-	onClick: PropTypes.func,
-	value: PropTypes.string
-};
+export default class Button extends React.Component {
+	static defaultProps = {
+		display: 'primary',
+		type: 'button'
+	};
 
-export default Button;
+	static propTypes = {
+		children: PropTypes.node.isRequired,
+		display: PropTypes.oneOf(['disabled', 'link', 'primary']),
+		href: PropTypes.string,
+		onClick: PropTypes.func,
+		type: PropTypes.oneOf(['button', 'reset', 'submit']),
+		value: PropTypes.string
+	};
+
+	render() {
+		const {children, display, href, onClick, type, value} = this.props;
+
+		const className = getCN('btn', `${!href ? `btn-${display}` : ''}`, {
+			'btn-link': href
+		});
+
+		return href ? (
+			<a className={className} href={href}>
+				{children}
+			</a>
+		) : (
+			<button className={className} onClick={onClick} type={type} value={value}>
+				{children}
+			</button>
+		);
+	}
+}

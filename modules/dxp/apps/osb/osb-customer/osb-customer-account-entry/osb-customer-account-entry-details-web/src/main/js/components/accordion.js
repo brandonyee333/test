@@ -34,14 +34,14 @@ class AccordionItem extends React.Component {
 
 		return (
 			<div className="panel" id={key}>
-				<a
-					className="panel-header panel-header-link"
-					href="javascript:;"
+				<button
+					className="btn btn-link panel-header panel-header-link"
 					onClick={this.handleClick}
 					role="tab"
+					type="button"
 				>
 					<div className="panel-title">{title}</div>
-				</a>
+				</button>
 
 				{expanded && (
 					<div role="tabpanel">

@@ -54,15 +54,18 @@ class AccountEnvironments extends React.Component {
 
 					<div className="col-md-12">
 						<Button
-							children={Liferay.Language.get('edit')}
 							href={environment.editAccountEnvironmentURL}
 							value="edit"
-						/>
+						>
+							{Liferay.Language.get('edit')}
+						</Button>
+
 						<Button
-							children={Liferay.Language.get('delete')}
 							href={environment.deleteAccountEnvironmentURL}
 							value="delete"
-						/>
+						>
+							{Liferay.Language.get('delete')}
+						</Button>
 					</div>
 				</React.Fragment>
 			),
@@ -85,7 +88,7 @@ class AccountEnvironments extends React.Component {
 				<h3>
 					{Liferay.Language.get('environment-configurations')}
 
-					{permitAdd && <Button children="+" value="add" />}
+					{permitAdd && <Button value="add">+</Button>}
 				</h3>
 
 				<Accordion items={accordionItems} />
