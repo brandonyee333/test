@@ -13,7 +13,7 @@ export default class Button extends React.Component {
 		children: PropTypes.node.isRequired,
 		display: PropTypes.oneOf(['disabled', 'link', 'primary']),
 		href: PropTypes.string,
-		onClick: PropTypes.func,
+		onClick: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
 		type: PropTypes.oneOf(['button', 'reset', 'submit']),
 		value: PropTypes.string
 	};

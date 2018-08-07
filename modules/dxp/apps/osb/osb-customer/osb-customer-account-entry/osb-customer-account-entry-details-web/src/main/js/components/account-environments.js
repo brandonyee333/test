@@ -16,7 +16,7 @@ export default class AccountEnvironments extends React.Component {
 		const accordionItems = environments.map((environment, index) => ({
 			body: (
 				<React.Fragment key={index}>
-					<div className="col-md-6">
+					<div className="col-sm-6">
 						<EnvironmentDetail
 							label={Liferay.Language.get('operating-system')}
 							value={environment.envOSLabel}
@@ -34,7 +34,7 @@ export default class AccountEnvironments extends React.Component {
 						/>
 					</div>
 
-					<div className="col-md-6">
+					<div className="col-sm-6">
 						<EnvironmentDetail
 							label={Liferay.Language.get('java-version')}
 							value={environment.envJVMLabel}
@@ -87,7 +87,11 @@ export default class AccountEnvironments extends React.Component {
 					{permitAdd && <Button value="add">+</Button>}
 				</h3>
 
-				<Accordion items={accordionItems} />
+				{!accordionItems.length ? (
+					<div>{Liferay.Language.get('no-environment-details')}</div>
+				) : (
+					<Accordion items={accordionItems} />
+				)}
 			</React.Fragment>
 		);
 	}
