@@ -16,8 +16,6 @@ package com.liferay.lcs.messaging.osgi.internal;
 
 import com.liferay.lcs.messaging.bus.LCSMessageListener;
 import com.liferay.lcs.messaging.bus.LCSMessageListenerException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.messaging.MessageListenerException;
@@ -61,9 +59,6 @@ public class LCSMessageListenerWrapperMessageListener
 			throw new MessageListenerException(lcsmle);
 		}
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		LCSMessageListenerWrapperMessageListener.class);
 
 	private final LCSMessageListener _lcsMessageListener;
 

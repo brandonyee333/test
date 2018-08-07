@@ -16,8 +16,6 @@ package com.liferay.lcs.messaging;
 
 import com.liferay.lcs.util.KeyGenerator;
 import com.liferay.lcs.util.LCSConnectionManager;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
 
@@ -79,9 +77,6 @@ public class LCSMessageBusMessageListener extends BaseMessageListener {
 
 		return false;
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		LCSMessageBusMessageListener.class);
 
 	private KeyGenerator _keyGenerator;
 	private LCSConnectionManager _lcsConnectionManager;

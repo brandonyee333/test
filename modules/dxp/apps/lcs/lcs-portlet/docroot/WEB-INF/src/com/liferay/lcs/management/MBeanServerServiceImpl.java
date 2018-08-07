@@ -14,8 +14,6 @@
 
 package com.liferay.lcs.management;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -170,9 +168,6 @@ public class MBeanServerServiceImpl implements MBeanServerService {
 
 		return objectNames;
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		MBeanServerServiceImpl.class);
 
 	private MBeanServer _mBeanServer;
 

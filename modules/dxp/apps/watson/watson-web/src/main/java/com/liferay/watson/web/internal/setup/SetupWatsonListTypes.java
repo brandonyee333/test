@@ -14,8 +14,6 @@
 
 package com.liferay.watson.web.internal.setup;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.FileUtil;
@@ -139,9 +137,6 @@ public class SetupWatsonListTypes {
 			addWatsonListType(watsonListTypeElement, companyId, 0);
 		}
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		SetupWatsonListTypes.class);
 
 	private Bundle _bundle;
 
