@@ -13,7 +13,7 @@
 	</appender>
 
 	<category name="com.liferay.lcs.task.scheduler">
-		<priority value="ERROR" />
+		<priority value="WARN" />
 	</category>
 
 	<logger additivity="false" name="com.liferay.lcs">
