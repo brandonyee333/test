@@ -13,9 +13,9 @@ export default class AccountEnvironments extends React.Component {
 	render() {
 		const {environments, permitAdd} = this.props;
 
-		const accordionItems = environments.map(environment => ({
+		const accordionItems = environments.map((environment, index) => ({
 			body: (
-				<React.Fragment key={environment.accountEnvironmentId}>
+				<React.Fragment key={index}>
 					<div className="col-md-6">
 						<EnvironmentDetail
 							label={Liferay.Language.get('operating-system')}
@@ -53,10 +53,7 @@ export default class AccountEnvironments extends React.Component {
 					</div>
 
 					<div className="col-md-12">
-						<Button
-							href={environment.editAccountEnvironmentURL}
-							value="edit"
-						>
+						<Button href={environment.editAccountEnvironmentURL} value="edit">
 							{Liferay.Language.get('edit')}
 						</Button>
 
@@ -69,9 +66,8 @@ export default class AccountEnvironments extends React.Component {
 					</div>
 				</React.Fragment>
 			),
-			key: environment.accountEnvironmentId,
 			title: (
-				<React.Fragment key={environment.accountEnvironmentId}>
+				<React.Fragment key={index}>
 					<h4>{environment.name}</h4>
 
 					<div className="panel-subtitle">

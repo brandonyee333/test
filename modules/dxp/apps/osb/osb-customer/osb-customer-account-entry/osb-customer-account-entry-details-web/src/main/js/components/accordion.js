@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 const Accordion = props => (
 	<div aria-orientation="vertical" className="panel-group" role="tablist">
-		{props.items.map(item => (
-			<AccordionItem key={item.key} body={item.body} title={item.title} />
+		{props.items.map((item, index) => (
+			<AccordionItem key={index} body={item.body} title={item.title} />
 		))}
 	</div>
 );
@@ -20,7 +20,6 @@ class AccordionItem extends React.Component {
 
 	static propTypes = {
 		body: PropTypes.node.isRequired,
-		key: PropTypes.number,
 		title: PropTypes.node.isRequired
 	};
 
@@ -29,11 +28,11 @@ class AccordionItem extends React.Component {
 	};
 
 	render() {
-		const {body, key, title} = this.props;
+		const {body, title} = this.props;
 		const {expanded} = this.state;
 
 		return (
-			<div className="panel" id={key}>
+			<div className="panel">
 				<button
 					className="btn btn-link panel-header panel-header-link"
 					onClick={this.handleClick}
