@@ -6,11 +6,6 @@
 	padding: 4px 8px 2px;
 	text-transform: uppercase;
 
-	&.label-small {
-		font-size: 10px;
-		padding: 2px 4px 1px;
-	}
-
 	&.label-approved {
 		border: 1px solid $label-success-border;
 		color: $label-success-color;
@@ -34,5 +29,10 @@
 	&.label-rejected {
 		border: 1px solid $label-danger-border;
 		color: $label-danger-color;
+	}
+
+	&.label-small {
+		font-size: 10px;
+		padding: 2px 4px 1px;
 	}
 }

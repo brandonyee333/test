@@ -33,9 +33,7 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 						<liferay-ui:message key="status" />
 					</td>
 					<td>
-						<span class="label label-<%= accountEntry.getStatusLabel() %>">
-							<%= accountEntry.getStatusLabel() %>
-						</span>
+						<span class="label label-<%= accountEntry.getStatusLabel() %>"><%= accountEntry.getStatusLabel() %></span>
 					</td>
 				</tr>
 				<tr>
