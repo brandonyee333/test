@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.connector.configuration;
+package com.liferay.osb.customer.zendesk.connector.rabbitmq.configuration;
 
 import com.liferay.portal.kernel.util.GetterUtil;
 
@@ -25,14 +25,5 @@ public class ZendeskConnectorConfigurationValues {
 		GetterUtil.getString(
 			ZendeskConnectorConfigurationUtil.get(
 				"rabbitmq.message.exchange.name"));
-
-	public static final String ZENDESK_API_TOKEN = GetterUtil.getString(
-		ZendeskConnectorConfigurationUtil.get("zendesk.api.token"));
-
-	public static final String ZENDESK_DOMAIN_NAME = GetterUtil.getString(
-		ZendeskConnectorConfigurationUtil.get("zendesk.domain.name"));
-
-	public static final String ZENDESK_EMAIL_ADDRESS = GetterUtil.getString(
-		ZendeskConnectorConfigurationUtil.get("zendesk.email.address"));
 
 }

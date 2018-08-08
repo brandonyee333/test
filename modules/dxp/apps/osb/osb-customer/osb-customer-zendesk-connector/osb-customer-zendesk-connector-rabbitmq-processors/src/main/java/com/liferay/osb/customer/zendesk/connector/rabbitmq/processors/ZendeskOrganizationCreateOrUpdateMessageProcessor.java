@@ -15,8 +15,9 @@
 package com.liferay.osb.customer.zendesk.connector.rabbitmq.processors;
 
 import com.liferay.osb.customer.rabbitmq.connector.publisher.MessagePublisher;
-import com.liferay.osb.customer.zendesk.connector.configuration.ZendeskConnectorConfigurationValues;
-import com.liferay.osb.customer.zendesk.connector.util.ZendeskHttpUtil;
+import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints;
+import com.liferay.osb.customer.zendesk.connector.rabbitmq.configuration.ZendeskConnectorConfigurationValues;
+import com.liferay.osb.customer.zendesk.connector.util.ZendeskHttp;
 import com.liferay.portal.kernel.json.JSONObject;
 
 import org.osgi.service.component.annotations.Component;
@@ -34,8 +35,8 @@ public class ZendeskOrganizationCreateOrUpdateMessageProcessor
 	extends BaseMessageProcessor {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
-		JSONObject responseJSONObject = ZendeskHttpUtil.post(
-			_ENDPOINT, jsonObject);
+		JSONObject responseJSONObject = _zendeskHttp.post(
+			ZendeskRESTEndpoints.ORGANIZATIONS_CREATE_OR_UPDATE, jsonObject);
 
 		handleResponseErrors(responseJSONObject);
 
@@ -44,10 +45,10 @@ public class ZendeskOrganizationCreateOrUpdateMessageProcessor
 			"zendesk.organization.create", responseJSONObject);
 	}
 
-	private static final String _ENDPOINT =
-		"organizations/create_or_update.json";
-
 	@Reference
 	private MessagePublisher _messagePublisher;
+
+	@Reference
+	private ZendeskHttp _zendeskHttp;
 
 }

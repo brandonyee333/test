@@ -12,27 +12,30 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.connector.util;
+package com.liferay.osb.customer.zendesk.connector.internal.util;
 
 import com.liferay.osb.customer.zendesk.connector.configuration.ZendeskConnectorConfigurationValues;
+import com.liferay.osb.customer.zendesk.connector.util.ZendeskHttp;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Kyle Bischof
  */
-public class ZendeskHttpUtil {
+@Component(immediate = true)
+public class ZendeskHttpImpl implements ZendeskHttp {
 
-	public static JSONObject delete(String endpoint, JSONObject dataJSONObject)
+	@Override
+	public JSONObject delete(String endpoint, JSONObject dataJSONObject)
 		throws PortalException {
 
 		Http.Options options = new Http.Options();
@@ -43,7 +46,8 @@ public class ZendeskHttpUtil {
 		return _send(dataJSONObject.toString(), options);
 	}
 
-	public static JSONObject get(String endpoint, JSONObject dataJSONObject)
+	@Override
+	public JSONObject get(String endpoint, JSONObject dataJSONObject)
 		throws PortalException {
 
 		Http.Options options = new Http.Options();
@@ -53,7 +57,8 @@ public class ZendeskHttpUtil {
 		return _send(dataJSONObject.toString(), options);
 	}
 
-	public static JSONObject post(String endpoint, JSONObject dataJSONObject)
+	@Override
+	public JSONObject post(String endpoint, JSONObject dataJSONObject)
 		throws PortalException {
 
 		Http.Options options = new Http.Options();
@@ -64,7 +69,7 @@ public class ZendeskHttpUtil {
 		return _send(dataJSONObject.toString(), options);
 	}
 
-	public static JSONObject put(String endpoint, JSONObject dataJSONObject)
+	public JSONObject put(String endpoint, JSONObject dataJSONObject)
 		throws PortalException {
 
 		Http.Options options = new Http.Options();
@@ -84,7 +89,7 @@ public class ZendeskHttpUtil {
 		return "Basic " + Base64.encode(zendeskCredentials.getBytes());
 	}
 
-	private static JSONObject _send(String body, Http.Options options)
+	private JSONObject _send(String body, Http.Options options)
 		throws PortalException {
 
 		options.addHeader("Authorization", _CREDENTIALS);
@@ -98,7 +103,7 @@ public class ZendeskHttpUtil {
 		String response = StringPool.BLANK;
 
 		try {
-			byte[] bytes = HttpUtil.URLtoByteArray(options);
+			byte[] bytes = _http.URLtoByteArray(options);
 
 			if (bytes != null) {
 				response = new String(bytes);
@@ -109,14 +114,14 @@ public class ZendeskHttpUtil {
 		}
 
 		if (Validator.isNotNull(response)) {
-			return JSONFactoryUtil.createJSONObject(response);
+			return _jsonFactory.createJSONObject(response);
 		}
 		else {
-			return JSONFactoryUtil.createJSONObject();
+			return _jsonFactory.createJSONObject();
 		}
 	}
 
-	private static String _toURI(String endpoint) {
+	private String _toURI(String endpoint) {
 		StringBundler sb = new StringBundler(4);
 
 		sb.append(Http.HTTPS_WITH_SLASH);
@@ -129,7 +134,10 @@ public class ZendeskHttpUtil {
 
 	private static final String _CREDENTIALS = _getCredentials();
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		ZendeskHttpUtil.class);
+	@Reference
+	private Http _http;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 }

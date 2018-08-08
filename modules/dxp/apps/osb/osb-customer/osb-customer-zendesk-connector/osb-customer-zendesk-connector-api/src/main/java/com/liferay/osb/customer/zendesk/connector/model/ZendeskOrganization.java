@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.connector.rabbitmq.model;
+package com.liferay.osb.customer.zendesk.connector.model;
 
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
