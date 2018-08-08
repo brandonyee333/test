@@ -26,7 +26,7 @@ export default class Button extends React.Component {
 		});
 
 		return href ? (
-			<a className={className} href={href}>
+			<a className={className} href={href} onClick={onClick}>
 				{children}
 			</a>
 		) : (

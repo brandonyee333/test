@@ -10,6 +10,11 @@ export default class AccountEnvironments extends React.Component {
 		permitAdd: PropTypes.bool.isRequired
 	};
 
+	handleDeleteEnvironment = () =>
+		window.confirm(
+			Liferay.Language.get('are-you-sure-you-want-to-delete-this')
+		);
+
 	render() {
 		const {environments, permitAdd} = this.props;
 
@@ -59,6 +64,7 @@ export default class AccountEnvironments extends React.Component {
 
 						<Button
 							href={environment.deleteAccountEnvironmentURL}
+							onClick={this.handleDeleteEnvironment}
 							value="delete"
 						>
 							{Liferay.Language.get('delete')}
