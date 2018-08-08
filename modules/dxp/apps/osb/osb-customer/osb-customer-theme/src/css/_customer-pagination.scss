@@ -1,0 +1,21 @@
+.taglib-search-iterator-page-iterator-bottom {
+	.dropdown.pagination-items-per-page,
+	.pagination-results {
+		display: none;
+	}
+
+	.pagination {
+		font-size: $font-size-sm;
+		font-weight: $font-weight-semi-bold;
+
+		> li > a:hover {
+			background-color: $alert-info-bg;
+			color: $label-primary-hover-color;
+		}
+
+		> .active > a {
+			background-color: $alert-info-bg;
+			color: $color-primary;
+		}
+	}
+}

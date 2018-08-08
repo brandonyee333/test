@@ -9,3 +9,37 @@
 		}
 	}
 }
+
+.table {
+	table-layout: fixed;
+
+	> thead > tr > th {
+		color: $secondary-text-color;
+		font-weight: $font-weight-normal;
+
+		&:first-child {
+			padding-left: 0;
+		}
+
+		&.lfr-name-column {
+			width: 8%;
+		}
+	}
+
+	> tbody > tr > td {
+		&:first-child {
+			padding-left: 0;
+		}
+
+		> a {
+			color: $link-color;
+			font-size: $normal-font-size;
+
+			&:active,
+			&:focus,
+			&:hover {
+				color: $link-hover-color;
+			}
+		}
+	}
+}

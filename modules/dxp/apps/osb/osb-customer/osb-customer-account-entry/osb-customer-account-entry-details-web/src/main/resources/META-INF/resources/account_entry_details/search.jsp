@@ -28,6 +28,7 @@ PortletURL portletURL = renderResponse.createRenderURL();
 
 <aui:form action="<%= portletURL.toString() %>" method="post" name="searchFm">
 	<liferay-ui:input-search
+		markupView="lexicon"
 		placeholder='<%= LanguageUtil.get(request, "search-projects") %>'
 	/>
 </aui:form>
@@ -74,10 +75,10 @@ PortletURL portletURL = renderResponse.createRenderURL();
 		/>
 
 		<liferay-ui:search-container-column-text
-			href="<%= rowURL %>"
 			name="status"
-			property="statusLabel"
-		/>
+		>
+			<span class="label label-<%= accountEntry.getStatusLabel() %> label-small"><%= accountEntry.getStatusLabel() %></span>
+		</liferay-ui:search-container-column-text>
 	</liferay-ui:search-container-row>
 
 	<liferay-ui:search-iterator
