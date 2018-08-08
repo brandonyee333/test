@@ -10,9 +10,9 @@
 		color: $color-primary;
 		padding: 7px 16px;
 
-		&:active,
 		&:focus,
-		&:hover {
+		&:hover,
+		&:active {
 			background-color: $color-white;
 			color: $btn-primary-hover-bg;
 		}
