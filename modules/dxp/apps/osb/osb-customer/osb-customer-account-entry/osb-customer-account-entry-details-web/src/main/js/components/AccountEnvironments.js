@@ -91,6 +91,9 @@ export default class AccountEnvironments extends React.Component {
 							<div className="panel-subtitle">
 								<span>{Liferay.Language.get('product')}</span>:
 								{environment.productEntryDisplayName}
+							</div>
+
+							<div className="panel-subtitle">
 								<span>LR</span>: {environment.envLFRLabel}
 							</div>
 						</React.Fragment>
@@ -101,7 +104,7 @@ export default class AccountEnvironments extends React.Component {
 
 		return (
 			<React.Fragment>
-				<h3>
+				<h3 className="card-header">
 					{Liferay.Language.get('environment-configurations')}
 
 					{permitAdd && (
@@ -131,7 +134,7 @@ export default class AccountEnvironments extends React.Component {
 }
 
 const EnvironmentDetail = props => (
-	<React.Fragment>
+	<div className="environment-detail">
 		<div className="environment-label">{props.label}</div>
 
 		{props.value && props.href ? (
@@ -141,7 +144,7 @@ const EnvironmentDetail = props => (
 		) : (
 			<div>{props.value}</div>
 		)}
-	</React.Fragment>
+	</div>
 );
 
 EnvironmentDetail.propTypes = {

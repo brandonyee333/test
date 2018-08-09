@@ -1,3 +1,4 @@
+@import "custom-variables";
 @import "base-variables";
 
 @import "bootstrap/_modal";
@@ -7,5 +8,7 @@
 @import "components/panels";
 
 .osb-account-entry-details-portlet {
+	@import "_account-environments";
+	@import "_accordion";
 	@import "_modal";
 }

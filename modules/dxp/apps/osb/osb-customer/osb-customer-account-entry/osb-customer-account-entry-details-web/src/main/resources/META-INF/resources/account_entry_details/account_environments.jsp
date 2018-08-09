@@ -22,7 +22,7 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 JSONArray jsonArray = accountEntryViewDisplayContext.getAccountEnvironmentsJSONArray();
 %>
 
-<div id="accountEnvironments"></div>
+<div class="account-environments card" id="accountEnvironments"></div>
 
 <aui:script>
 	HelpCenter.render(

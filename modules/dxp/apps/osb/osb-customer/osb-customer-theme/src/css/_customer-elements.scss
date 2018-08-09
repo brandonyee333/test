@@ -168,8 +168,16 @@ textarea {
 	margin-top: $navbar-height;
 }
 
+.no-results {
+	background-color: $color-grey;
+	border-radius: $border-radius;
+	margin: $margin-default;
+	padding: 56px $padding-default;
+	text-align: center;
+}
+
 .project-name {
-	padding-left: 24px;
+	padding-left: $padding-default;
 }
 
 .portlet-content .portlet-title-text {

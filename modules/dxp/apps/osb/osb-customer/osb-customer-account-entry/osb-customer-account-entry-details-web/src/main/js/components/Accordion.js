@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import getCN from 'classnames';
+
 const Accordion = props => (
 	<div aria-orientation="vertical" className="panel-group" role="tablist">
 		{props.items.map(
@@ -33,15 +35,26 @@ class AccordionItem extends React.Component {
 		const {body, title} = this.props;
 		const {expanded} = this.state;
 
+		const className = getCN(
+			'btn-link panel-header panel-header-link',
+			{
+				'expanded': expanded
+			}
+		);
+
 		return (
 			<div className="panel">
 				<button
-					className="btn btn-link panel-header panel-header-link"
+					className={className}
 					onClick={this.handleClick}
 					role="tab"
 					type="button"
 				>
 					<div className="panel-title">{title}</div>
+
+					<svg className="lexicon-icon lexicon-icon-angle-down">
+						<use xlinkHref="#angle-down" />
+					</svg>
 				</button>
 
 				{expanded && (

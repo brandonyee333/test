@@ -1,0 +1,46 @@
+.account-environments {
+	h4 {
+		margin-bottom: 0;
+	}
+
+	.card-header, .panel-header {
+		align-items: center;
+		display: flex;
+		justify-content: space-between;
+		text-align: left;
+	}
+
+	.environment-detail {
+		padding-bottom: $padding-default;
+	}
+
+	.environment-label {
+		color: $secondary-text-color;
+	}
+
+	.panel-body {
+		a {
+			color: $color-primary;
+			font-weight: $font-weight-semi-bold;
+		}
+	}
+
+	.panel-title {
+		color: $color-body;
+	}
+
+	.panel-subtitle {
+		color: $secondary-text-color;
+		display: inline;
+		font-size: 14px;
+
+		&:not(:last-child)::after {
+			content: "\00B7";
+			margin: 4px;
+		}
+
+		span {
+			font-weight: $font-weight-semi-bold;
+		}
+	}
+}
