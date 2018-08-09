@@ -15,24 +15,20 @@
 package com.liferay.osb.customer.zendesk.connector.constants;
 
 /**
- * @author Amos Fong
+ * @author Kyle Bischof
  */
-public interface ZendeskLocales {
+public class ZendeskConstants {
 
-	public static final String CHINA = "zh-CN";
+	public static final String PREFIX_OSB = "osb_";
 
-	public static final String FRANCE = "fr";
+	public static final String TAG_CUSTOMER = "osb_customer";
 
-	public static final String GERMANY = "de";
+	public static final String TAG_KNOWLEDGE_BASE = "osb_kb";
 
-	public static final String ITALY = "it";
+	public static final String TAG_WATCHER = "_watcher";
 
-	public static final String JAPAN = "ja";
-
-	public static final String PORTUGAL = "pt";
-
-	public static final String SPAIN = "es";
-
-	public static final String US = "en-us";
+	public static String getWatcherTag(String externalId) {
+		return PREFIX_OSB + externalId + TAG_WATCHER;
+	}
 
 }

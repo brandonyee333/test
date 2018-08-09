@@ -18,6 +18,10 @@ import com.liferay.osb.customer.rabbitmq.connector.router.BaseMessageRouter;
 import com.liferay.osb.customer.rabbitmq.connector.router.MessageRouter;
 import com.liferay.osb.customer.zendesk.connector.rabbitmq.processors.ZendeskOrganizationCreateMessageProcessor;
 import com.liferay.osb.customer.zendesk.connector.rabbitmq.processors.ZendeskOrganizationCreateOrUpdateMessageProcessor;
+import com.liferay.osb.customer.zendesk.connector.rabbitmq.processors.ZendeskOrganizationMembershipDeleteMessageProcessor;
+import com.liferay.osb.customer.zendesk.connector.rabbitmq.processors.ZendeskTagAddMessageProcessor;
+import com.liferay.osb.customer.zendesk.connector.rabbitmq.processors.ZendeskTagDeleteMessageProcessor;
+import com.liferay.osb.customer.zendesk.connector.rabbitmq.processors.ZendeskUserCreateOrUpdateMessageProcessor;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -51,6 +55,41 @@ public class ZendeskMessageRouter extends BaseMessageRouter {
 		Map<String, Object> properties) {
 
 		addRoute(zendeskOrganizationCreateOrUpdateMessageProcessor, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setZendeskOrganizationMembershipDeleteMessageProcessor(
+		ZendeskOrganizationMembershipDeleteMessageProcessor
+			zendeskOrganizationMembershipDeleteMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(
+			zendeskOrganizationMembershipDeleteMessageProcessor, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setZendeskTagAddMessageProcessor(
+		ZendeskTagAddMessageProcessor zendeskTagAddMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(zendeskTagAddMessageProcessor, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setZendeskTagDeleteMessageProcessor(
+		ZendeskTagDeleteMessageProcessor zendeskTagDeleteMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(zendeskTagDeleteMessageProcessor, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setZendeskUserCreateOrUpdateMessageProcessor(
+		ZendeskUserCreateOrUpdateMessageProcessor
+			zendeskUserCreateOrUpdateMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(zendeskUserCreateOrUpdateMessageProcessor, properties);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

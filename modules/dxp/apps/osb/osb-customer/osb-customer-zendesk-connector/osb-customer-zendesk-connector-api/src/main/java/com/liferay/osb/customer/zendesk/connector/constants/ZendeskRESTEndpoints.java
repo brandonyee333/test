@@ -24,4 +24,7 @@ public interface ZendeskRESTEndpoints {
 	public static final String ORGANIZATIONS_CREATE_OR_UPDATE =
 		"organizations/create_or_update.json";
 
+	public static final String USERS_CREATE_OR_UPDATE =
+		"users/create_or_update.json";
+
 }

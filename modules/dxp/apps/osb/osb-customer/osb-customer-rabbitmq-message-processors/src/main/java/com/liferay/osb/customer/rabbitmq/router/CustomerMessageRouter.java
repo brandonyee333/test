@@ -37,7 +37,8 @@ import com.liferay.osb.customer.rabbitmq.processors.RoleUnassignmentMessageProce
 import com.liferay.osb.customer.rabbitmq.processors.RoleUpdateMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.UserDeleteMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.UserUpdateMessageProcessor;
-import com.liferay.osb.customer.rabbitmq.processors.ZendeskExternalIdCreateMessageProcessor;
+import com.liferay.osb.customer.rabbitmq.processors.ZendeskOrganizationExternalIdCreateMessageProcessor;
+import com.liferay.osb.customer.rabbitmq.processors.ZendeskUserExternalIdCreateMessageProcessor;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -233,12 +234,22 @@ public class CustomerMessageRouter extends BaseMessageRouter {
 	}
 
 	@Reference(unbind = "-")
-	protected void setZendeskExternalIdCreateMessageProcessor(
-		ZendeskExternalIdCreateMessageProcessor
-			zendeskExternalIdCreateMessageProcessor,
+	protected void setZendeskOrganizationExternalIdCreateMessageProcessor(
+		ZendeskOrganizationExternalIdCreateMessageProcessor
+			zendeskOrganizationExternalIdCreateMessageProcessor,
 		Map<String, Object> properties) {
 
-		addRoute(zendeskExternalIdCreateMessageProcessor, properties);
+		addRoute(
+			zendeskOrganizationExternalIdCreateMessageProcessor, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setZendeskUserExternalIdCreateMessageProcessor(
+		ZendeskUserExternalIdCreateMessageProcessor
+			zendeskUserExternalIdCreateMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(zendeskUserExternalIdCreateMessageProcessor, properties);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

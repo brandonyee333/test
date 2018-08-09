@@ -29,9 +29,9 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	immediate = true, property = "routing.key=zendesk.organization.create",
-	service = ZendeskExternalIdCreateMessageProcessor.class
+	service = ZendeskOrganizationExternalIdCreateMessageProcessor.class
 )
-public class ZendeskExternalIdCreateMessageProcessor
+public class ZendeskOrganizationExternalIdCreateMessageProcessor
 	extends BaseMessageProcessor {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {

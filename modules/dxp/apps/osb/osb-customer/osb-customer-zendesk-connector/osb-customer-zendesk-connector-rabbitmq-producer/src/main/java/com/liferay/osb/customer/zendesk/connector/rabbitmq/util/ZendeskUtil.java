@@ -14,13 +14,33 @@
 
 package com.liferay.osb.customer.zendesk.connector.rabbitmq.util;
 
+import com.liferay.osb.customer.zendesk.connector.constants.ZendeskLocales;
+import com.liferay.osb.model.AccountCustomer;
+import com.liferay.osb.model.AccountEntry;
+import com.liferay.osb.model.ExternalIdMapper;
+import com.liferay.osb.model.ExternalIdMapperConstants;
+import com.liferay.osb.service.AccountEntryLocalServiceUtil;
+import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
+import com.liferay.osb.util.WorkflowConstants;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
+import java.util.List;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Kyle Bischof
  */
+@Component(immediate = true)
 public class ZendeskUtil {
 
 	public static String convertToTag(String s) {
@@ -31,6 +51,103 @@ public class ZendeskUtil {
 		s = StringUtil.replace(s, CharPool.CLOSE_PARENTHESIS, StringPool.BLANK);
 
 		return s;
+	}
+
+	public static String convertToZendeskLocale(String locale) {
+		if (locale.equals("zh_CN")) {
+			return ZendeskLocales.CHINA;
+		}
+		else if (locale.equals("en_US")) {
+			return ZendeskLocales.US;
+		}
+		else if (locale.equals("fr_FR")) {
+			return ZendeskLocales.FRANCE;
+		}
+		else if (locale.equals("de_DE")) {
+			return ZendeskLocales.GERMANY;
+		}
+		else if (locale.equals("it_IT")) {
+			return ZendeskLocales.ITALY;
+		}
+		else if (locale.equals("ja_JP")) {
+			return ZendeskLocales.JAPAN;
+		}
+		else if (locale.equals("es_ES")) {
+			return ZendeskLocales.SPAIN;
+		}
+		else {
+			return StringPool.BLANK;
+		}
+	}
+
+	public static String getExternalId(Class<?> clazz, long classPK) {
+		long classNameId = ClassNameLocalServiceUtil.getClassNameId(clazz);
+
+		List<ExternalIdMapper> externalIdMappers =
+			ExternalIdMapperLocalServiceUtil.getExternalIdMappers(
+				classNameId, classPK, ExternalIdMapperConstants.TYPE_ZENDESK);
+
+		if (!externalIdMappers.isEmpty()) {
+			ExternalIdMapper externalIdMapper = externalIdMappers.get(0);
+
+			return externalIdMapper.getExternalId();
+		}
+		else {
+			return null;
+		}
+	}
+
+	public static JSONObject getTagsJSONObject(
+		JSONArray tagsJSONArray, String resource, long id) {
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("id", id);
+		jsonObject.put("resource", resource);
+
+		JSONObject tagsJSONObject = JSONFactoryUtil.createJSONObject();
+
+		tagsJSONObject.put("tags", tagsJSONArray);
+
+		jsonObject.put("tagsArray", tagsJSONObject);
+
+		return jsonObject;
+	}
+
+	public static boolean hasActiveSupportOffering(
+		AccountCustomer accountCustomer) {
+
+		List<AccountEntry> accountEntries =
+			AccountEntryLocalServiceUtil.getUserAccountEntries(
+				accountCustomer.getUserId(), QueryUtil.ALL_POS,
+				QueryUtil.ALL_POS);
+
+		for (AccountEntry accountEntry : accountEntries) {
+			if (accountEntry.hasActiveSupportOffering()) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public static boolean hasActiveSupportOffering(AccountEntry accountEntry) {
+		if ((accountEntry.getStatus() ==
+				WorkflowConstants.STATUS_APPROVED) &&
+			accountEntry.hasActiveSupportOffering()) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	@Reference(
+		target = "(module.service.lifecycle=osb.portlet.initialized)",
+		unbind = "-"
+	)
+	protected void setModuleServiceLifecycle(
+		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
 }

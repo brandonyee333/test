@@ -30,7 +30,6 @@ import com.liferay.osb.model.SupportResponse;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.osb.service.SupportRegionLocalServiceUtil;
 import com.liferay.osb.service.SupportResponseLocalServiceUtil;
-import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.BaseModelListener;
@@ -57,7 +56,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		throws ModelListenerException {
 
 		try {
-			if (!hasActiveSupportOffering(accountEntry)) {
+			if (!ZendeskUtil.hasActiveSupportOffering(accountEntry)) {
 				return;
 			}
 
@@ -89,7 +88,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 					ExternalIdMapperConstants.TYPE_ZENDESK);
 
 			if (!externalIdMappers) {
-				if (!hasActiveSupportOffering(accountEntry)) {
+				if (!ZendeskUtil.hasActiveSupportOffering(accountEntry)) {
 					return;
 				}
 			}
@@ -192,17 +191,6 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			AccountEntryConstants.getTierLabel(accountEntry.getTier()));
 
 		return zendeskOrganization;
-	}
-
-	protected boolean hasActiveSupportOffering(AccountEntry accountEntry) {
-		if ((accountEntry.getStatus() ==
-				WorkflowConstants.STATUS_APPROVED) &&
-			accountEntry.hasActiveSupportOffering()) {
-
-			return true;
-		}
-
-		return false;
 	}
 
 	@Reference(
