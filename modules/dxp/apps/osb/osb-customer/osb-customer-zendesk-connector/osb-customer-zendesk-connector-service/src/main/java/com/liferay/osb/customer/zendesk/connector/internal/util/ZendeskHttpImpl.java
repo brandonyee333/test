@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.Base64;
+import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -93,12 +94,8 @@ public class ZendeskHttpImpl implements ZendeskHttp {
 		throws PortalException {
 
 		options.addHeader("Authorization", _CREDENTIALS);
-
-		String contentType = "application" + StringPool.SLASH + "json";
-
-		options.addHeader("Content-Type", contentType);
-
-		options.setBody(body, contentType, StringPool.UTF8);
+		options.addHeader("Content-Type", ContentTypes.APPLICATION_JSON);
+		options.setBody(body, ContentTypes.APPLICATION_JSON, StringPool.UTF8);
 
 		String response = StringPool.BLANK;
 
