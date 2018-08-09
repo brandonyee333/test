@@ -19,12 +19,13 @@ import com.liferay.osb.customer.zendesk.connector.util.ZendeskHttp;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Validator;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -110,11 +111,13 @@ public class ZendeskHttpImpl implements ZendeskHttp {
 			throw new PortalException(e);
 		}
 
-		if (Validator.isNotNull(response)) {
+		try {
 			return _jsonFactory.createJSONObject(response);
 		}
-		else {
-			return _jsonFactory.createJSONObject();
+		catch (Exception e) {
+			_log.error("Error parsing response: " + response);
+
+			throw new PortalException(e);
 		}
 	}
 
@@ -130,6 +133,9 @@ public class ZendeskHttpImpl implements ZendeskHttp {
 	}
 
 	private static final String _CREDENTIALS = _getCredentials();
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		ZendeskHttpImpl.class);
 
 	@Reference
 	private Http _http;
