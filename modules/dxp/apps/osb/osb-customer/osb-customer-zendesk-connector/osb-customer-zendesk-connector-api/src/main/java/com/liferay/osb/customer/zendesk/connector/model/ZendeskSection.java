@@ -77,29 +77,49 @@ public class ZendeskSection {
 	public JSONObject toJSONObject(boolean isNew) {
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		JSONObject fieldsJSONObject = JSONFactoryUtil.createJSONObject();
+		JSONObject sectionJSONObject = JSONFactoryUtil.createJSONObject();
 
 		if (isNew) {
-			fieldsJSONObject.put("category_id", _categoryId);
+			sectionJSONObject.put("category_id", _categoryId);
 		}
 
 		if (isNew && Validator.isNotNull(_description)) {
-			fieldsJSONObject.put("description", _description);
+			sectionJSONObject.put("description", _description);
 		}
 
 		if (isNew) {
-			fieldsJSONObject.put("locale", _locale);
+			sectionJSONObject.put("locale", _locale);
 		}
 
 		if (isNew) {
-			fieldsJSONObject.put("name", _name);
+			sectionJSONObject.put("name", _name);
 		}
 
 		if (_position > 0) {
-			fieldsJSONObject.put("position", _position);
+			sectionJSONObject.put("position", _position);
 		}
 
-		jsonObject.put("section", fieldsJSONObject);
+		jsonObject.put("section", sectionJSONObject);
+
+		return jsonObject;
+	}
+
+	public JSONObject toTranslationJSONObject() {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		JSONObject translationJSONObject = JSONFactoryUtil.createJSONObject();
+
+		if (Validator.isNotNull(_description)) {
+			translationJSONObject.put("body", _description);
+		}
+
+		translationJSONObject.put("locale", _locale);
+
+		if (Validator.isNotNull(_name)) {
+			translationJSONObject.put("title", _name);
+		}
+
+		jsonObject.put("translation", translationJSONObject);
 
 		return jsonObject;
 	}

@@ -30,6 +30,16 @@ import org.osgi.service.component.annotations.Reference;
 public class ZendeskRESTWebServiceImpl implements ZendeskRESTWebService {
 
 	@Override
+	public JSONObject addTranslation(ZendeskSection zendeskSection)
+		throws PortalException {
+
+		return _zendeskHttp.post(
+			"help_center/sections/" + zendeskSection.getId() +
+				"/translations.json",
+			zendeskSection.toTranslationJSONObject());
+	}
+
+	@Override
 	public JSONObject addZendeskSection(ZendeskSection zendeskSection)
 		throws PortalException {
 
@@ -37,6 +47,16 @@ public class ZendeskRESTWebServiceImpl implements ZendeskRESTWebService {
 			"help_center/categories/" + zendeskSection.getCategoryId() +
 				"/sections.json",
 			zendeskSection.toJSONObject(true));
+	}
+
+	@Override
+	public JSONObject updateTranslation(ZendeskSection zendeskSection)
+		throws PortalException {
+
+		return _zendeskHttp.put(
+			"help_center/sections/" + zendeskSection.getId() +
+				"/translations/" + zendeskSection.getLocale() + ".json",
+			zendeskSection.toTranslationJSONObject());
 	}
 
 	@Override
