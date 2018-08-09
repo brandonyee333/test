@@ -17,10 +17,8 @@ package com.liferay.osb.customer.zendesk.connector.model;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -130,20 +128,20 @@ public class ZendeskOrganization {
 	public JSONObject toJSONObject() {
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		JSONObject fieldsJSONObject = JSONFactoryUtil.createJSONObject();
+		JSONObject organizationJSONObject = JSONFactoryUtil.createJSONObject();
 
-		fieldsJSONObject.put("name", _name);
+		organizationJSONObject.put("name", _name);
 
 		if (Validator.isNotNull(_externalId)) {
-			fieldsJSONObject.put("external_id", _externalId);
+			organizationJSONObject.put("external_id", _externalId);
 		}
 
 		if (Validator.isNotNull(_sharedTickets)) {
-			fieldsJSONObject.put("shared_tickets", _sharedTickets);
+			organizationJSONObject.put("shared_tickets", _sharedTickets);
 		}
 
 		if (Validator.isNotNull(_sharedComments)) {
-			fieldsJSONObject.put("shared_comments", _sharedComments);
+			organizationJSONObject.put("shared_comments", _sharedComments);
 		}
 
 		JSONObject organizationFieldsJSONObject =
@@ -173,12 +171,16 @@ public class ZendeskOrganization {
 		}
 
 		if (Validator.isNotNull(_supportRegion)) {
-			organizationFieldsJSONObject.put("support_region", _supportRegion);
+			organizationFieldsJSONObject.put(
+				"support_region", _supportRegion);
 		}
 
 		if (Validator.isNotNull(_tier)) {
 			organizationFieldsJSONObject.put("tier", _tier);
 		}
+
+		organizationJSONObject.put(
+			"organization_fields", organizationFieldsJSONObject);
 
 		JSONArray tagsJSONArray = JSONFactoryUtil.createJSONArray();
 
@@ -187,28 +189,25 @@ public class ZendeskOrganization {
 				tagsJSONArray.put(tag);
 			}
 
-			fieldsJSONObject.put("tags", tagsJSONArray);
+			organizationJSONObject.put("tags", tagsJSONArray);
 		}
 
-		fieldsJSONObject.put(
-			"organization_fields", organizationFieldsJSONObject);
-
-		jsonObject.put("organization", fieldsJSONObject);
+		jsonObject.put("organization", organizationJSONObject);
 
 		return jsonObject;
 	}
 
-	private String _externalId = StringPool.BLANK;
-	private String _name = StringPool.BLANK;
-	private String _partnerFirstLineSupport = StringPool.BLANK;
-	private String _partnerOrganization = StringPool.BLANK;
-	private String _sharedComments = StringPool.BLANK;
-	private String _sharedTickets = StringPool.BLANK;
-	private String _sla = StringPool.BLANK;
-	private String _status = StringPool.BLANK;
-	private String _supportLanguage = StringPool.BLANK;
-	private String _supportRegion = StringPool.BLANK;
-	private Set<String> _tags = new HashSet<>();
-	private String _tier = StringPool.BLANK;
+	private String _externalId;
+	private String _name;
+	private String _partnerFirstLineSupport;
+	private String _partnerOrganization;
+	private String _sharedComments;
+	private String _sharedTickets;
+	private String _sla;
+	private String _status;
+	private String _supportLanguage;
+	private String _supportRegion;
+	private Set<String> _tags;
+	private String _tier;
 
 }
