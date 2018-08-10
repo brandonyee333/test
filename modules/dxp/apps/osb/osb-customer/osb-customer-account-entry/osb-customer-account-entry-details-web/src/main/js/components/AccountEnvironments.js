@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Accordion from './accordion';
-import Button from './button';
+import Accordion from './Accordion';
+import Button from './Button';
 
 export default class AccountEnvironments extends React.Component {
 	static propTypes = {
