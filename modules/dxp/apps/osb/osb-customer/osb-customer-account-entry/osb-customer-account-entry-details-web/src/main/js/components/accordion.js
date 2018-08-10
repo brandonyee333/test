@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 
 const Accordion = props => (
 	<div aria-orientation="vertical" className="panel-group" role="tablist">
-		{props.items.map((item, index) => (
-			<AccordionItem key={index} body={item.body} title={item.title} />
-		))}
+		{props.items.map(
+			(item, index) => (
+				<AccordionItem key={index} body={item.body} title={item.title} />
+			)
+		)}
 	</div>
 );
 

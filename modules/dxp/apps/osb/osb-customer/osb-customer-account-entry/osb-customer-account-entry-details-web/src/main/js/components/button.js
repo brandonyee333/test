@@ -21,9 +21,13 @@ export default class Button extends React.Component {
 	render() {
 		const {children, display, href, onClick, type, value} = this.props;
 
-		const className = getCN('btn', `${!href ? `btn-${display}` : ''}`, {
-			'btn-link': href
-		});
+		const className = getCN(
+			'btn',
+			`${!href ? `btn-${display}` : ''}`,
+			{
+				'btn-link': href
+			}
+		);
 
 		return href ? (
 			<a className={className} href={href} onClick={onClick}>
