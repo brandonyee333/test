@@ -171,8 +171,7 @@ public class ZendeskOrganization {
 		}
 
 		if (Validator.isNotNull(_supportRegion)) {
-			organizationFieldsJSONObject.put(
-				"support_region", _supportRegion);
+			organizationFieldsJSONObject.put("support_region", _supportRegion);
 		}
 
 		if (Validator.isNotNull(_tier)) {
