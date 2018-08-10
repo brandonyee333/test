@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.zendesk.connector.internal.util;
 
+import com.liferay.osb.customer.zendesk.connector.model.ZendeskArticle;
 import com.liferay.osb.customer.zendesk.connector.model.ZendeskSection;
 import com.liferay.osb.customer.zendesk.connector.util.ZendeskHttp;
 import com.liferay.osb.customer.zendesk.connector.util.ZendeskRESTWebService;
@@ -40,6 +41,16 @@ public class ZendeskRESTWebServiceImpl implements ZendeskRESTWebService {
 	}
 
 	@Override
+	public JSONObject addZendeskArticle(ZendeskArticle zendeskArticle)
+		throws PortalException {
+
+		return _zendeskHttp.post(
+			"help_center/sections/" + zendeskArticle.getSectionId() +
+				"/articles.json",
+			zendeskArticle.toJSONObject(true));
+	}
+
+	@Override
 	public JSONObject addZendeskSection(ZendeskSection zendeskSection)
 		throws PortalException {
 
@@ -57,6 +68,22 @@ public class ZendeskRESTWebServiceImpl implements ZendeskRESTWebService {
 			"help_center/sections/" + zendeskSection.getId() +
 				"/translations/" + zendeskSection.getLocale() + ".json",
 			zendeskSection.toTranslationJSONObject());
+	}
+
+	@Override
+	public void updateZendeskArticle(ZendeskArticle zendeskArticle)
+		throws PortalException {
+
+		_zendeskHttp.put(
+			"help_center/articles/" + zendeskArticle.getId() + ".json",
+			zendeskArticle.toJSONObject(false));
+
+		for (String locale : zendeskArticle.getLocales()) {
+			_zendeskHttp.put(
+				"help_center/articles/" + zendeskArticle.getId() +
+					"/translations/" + locale + ".json",
+				zendeskArticle.toTranslationJSONObject(locale));
+		}
 	}
 
 	@Override
