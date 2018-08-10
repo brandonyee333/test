@@ -93,8 +93,14 @@ PortletURL portletURL = renderResponse.createRenderURL();
 
 		<liferay-ui:search-container-column-text
 			name="status"
-			value="<%= LanguageUtil.get(request, OfferingEntryConstants.getStatusLabel(offeringEntryGroup.getStatus())) %>"
-		/>
+		>
+
+			<%
+			String offeringStatus = OfferingEntryConstants.getStatusLabel(offeringEntryGroup.getStatus());
+			%>
+
+			<span class="label label-small label-<%= offeringStatus %>"><%= offeringStatus %></span>
+		</liferay-ui:search-container-column-text>
 	</liferay-ui:search-container-row>
 
 	<liferay-ui:search-iterator

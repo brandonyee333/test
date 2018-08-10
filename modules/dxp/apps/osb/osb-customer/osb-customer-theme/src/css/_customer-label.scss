@@ -6,6 +6,11 @@
 	padding: 4px 8px 2px;
 	text-transform: uppercase;
 
+	&.label-active {
+		border: 1px solid $label-info-border;
+		color: $label-info-color;
+	}
+
 	&.label-approved {
 		border: 1px solid $label-success-border;
 		color: $label-success-color;
@@ -19,6 +24,11 @@
 	&.label-expired {
 		border: 1px solid $label-danger-border;
 		color: $color-body;
+	}
+
+	&.label-on-hold {
+		border: 1px solid $label-warning-border;
+		color: $label-warning-color;
 	}
 
 	&.label-pending {

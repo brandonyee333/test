@@ -24,16 +24,24 @@
 		&.lfr-name-column {
 			width: 8%;
 		}
+
+		&.lfr-product-column {
+			width: 2%;
+		}
 	}
 
 	> tbody > tr > td {
+		font-size: $font-size-sm;
+
 		&:first-child {
+			font-weight: $font-weight-semi-bold;
 			padding-left: 0;
 		}
 
 		> a {
 			color: $link-color;
 			font-size: $normal-font-size;
+			font-weight: $font-weight-normal;
 
 			&:active,
 			&:focus,
