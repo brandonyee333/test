@@ -1,4 +1,11 @@
 @import "base-variables";
 
+@import "bootstrap/_modal";
+
 @import "components/alerts";
+@import "components/modals";
 @import "components/panels";
+
+.osb-account-entry-details-portlet {
+	@import "_modal";
+}

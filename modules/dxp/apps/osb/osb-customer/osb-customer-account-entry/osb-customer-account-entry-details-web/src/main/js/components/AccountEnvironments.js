@@ -3,20 +3,30 @@ import PropTypes from 'prop-types';
 
 import Accordion from './Accordion';
 import Button from './Button';
+import Modal from './Modal';
 
 export default class AccountEnvironments extends React.Component {
+	state = {
+		modalTriggered: false
+	};
+
 	static propTypes = {
 		environments: PropTypes.array.isRequired,
 		permitAdd: PropTypes.bool.isRequired
 	};
+
+	closeAddEnvironmentModal = () => this.setState({modalTriggered: false});
 
 	handleDeleteEnvironment = () =>
 		window.confirm(
 			Liferay.Language.get('are-you-sure-you-want-to-delete-this')
 		);
 
+	triggerAddEnvironmentModal = () => this.setState({modalTriggered: true});
+
 	render() {
 		const {environments, permitAdd} = this.props;
+		const {modalTriggered} = this.state;
 
 		const accordionItems = environments.map(
 			(environment, index) => (
@@ -94,11 +104,24 @@ export default class AccountEnvironments extends React.Component {
 				<h3>
 					{Liferay.Language.get('environment-configurations')}
 
-					{permitAdd && <Button value="add">+</Button>}
+					{permitAdd && (
+						<Button onClick={this.triggerAddEnvironmentModal} value="add">
+							+
+						</Button>
+					)}
+
+					{modalTriggered && (
+						<Modal
+							body=""
+							closeModal={this.closeAddEnvironmentModal}
+							header={Liferay.Language.get('new-environment-configuration')}
+							showModal={modalTriggered}
+						/>
+					)}
 				</h3>
 
 				{!accordionItems.length ? (
-					<div>{Liferay.Language.get('no-environment-details')}</div>
+					<div className="no-results">{Liferay.Language.get('no-environment-details')}</div>
 				) : (
 					<Accordion items={accordionItems} />
 				)}
