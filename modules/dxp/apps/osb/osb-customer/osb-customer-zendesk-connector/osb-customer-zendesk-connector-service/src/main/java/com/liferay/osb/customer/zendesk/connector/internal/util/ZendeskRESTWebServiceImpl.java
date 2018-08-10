@@ -31,16 +31,6 @@ import org.osgi.service.component.annotations.Reference;
 public class ZendeskRESTWebServiceImpl implements ZendeskRESTWebService {
 
 	@Override
-	public JSONObject addTranslation(ZendeskSection zendeskSection)
-		throws PortalException {
-
-		return _zendeskHttp.post(
-			"help_center/sections/" + zendeskSection.getId() +
-				"/translations.json",
-			zendeskSection.toTranslationJSONObject());
-	}
-
-	@Override
 	public JSONObject addZendeskArticle(ZendeskArticle zendeskArticle)
 		throws PortalException {
 
@@ -61,16 +51,6 @@ public class ZendeskRESTWebServiceImpl implements ZendeskRESTWebService {
 	}
 
 	@Override
-	public JSONObject updateTranslation(ZendeskSection zendeskSection)
-		throws PortalException {
-
-		return _zendeskHttp.put(
-			"help_center/sections/" + zendeskSection.getId() +
-				"/translations/" + zendeskSection.getLocale() + ".json",
-			zendeskSection.toTranslationJSONObject());
-	}
-
-	@Override
 	public void updateZendeskArticle(ZendeskArticle zendeskArticle)
 		throws PortalException {
 
@@ -87,12 +67,19 @@ public class ZendeskRESTWebServiceImpl implements ZendeskRESTWebService {
 	}
 
 	@Override
-	public JSONObject updateZendeskSection(ZendeskSection zendeskSection)
+	public void updateZendeskSection(ZendeskSection zendeskSection)
 		throws PortalException {
 
-		return _zendeskHttp.put(
+		_zendeskHttp.put(
 			"help_center/sections/" + zendeskSection.getId() + ".json",
 			zendeskSection.toJSONObject(false));
+
+		for (String locale : zendeskSection.getLocales()) {
+			_zendeskHttp.put(
+				"help_center/sections/" + zendeskSection.getId() +
+					"/translations/" + locale + ".json",
+				zendeskSection.toTranslationJSONObject(locale));
+		}
 	}
 
 	@Reference

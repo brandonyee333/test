@@ -24,22 +24,16 @@ import com.liferay.portal.kernel.json.JSONObject;
  */
 public interface ZendeskRESTWebService {
 
-	public JSONObject addTranslation(ZendeskSection zendeskSection)
-		throws PortalException;
-
 	public JSONObject addZendeskArticle(ZendeskArticle zendeskArticle)
 		throws PortalException;
 
 	public JSONObject addZendeskSection(ZendeskSection zendeskSection)
 		throws PortalException;
 
-	public JSONObject updateTranslation(ZendeskSection zendeskSection)
-		throws PortalException;
-
 	public void updateZendeskArticle(ZendeskArticle zendeskArticle)
 		throws PortalException;
 
-	public JSONObject updateZendeskSection(ZendeskSection zendeskSection)
+	public void updateZendeskSection(ZendeskSection zendeskSection)
 		throws PortalException;
 
 }
