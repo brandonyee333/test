@@ -1,0 +1,13 @@
+.card {
+	background-color: $color-white;
+	border: 1px solid $color-divider;
+	border-radius: 4px;
+	box-shadow: 0 6px 15px -7px rgba(39, 40, 51, 0.05);
+	font-size: $font-size-sm;
+
+	.card-header {
+		border-bottom: 1px solid $color-divider;
+		margin: 0;
+		padding: 20px 24px;
+	}
+}

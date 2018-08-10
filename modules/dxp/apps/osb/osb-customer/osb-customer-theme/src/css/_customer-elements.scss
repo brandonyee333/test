@@ -106,14 +106,6 @@ textarea {
 	height: auto;
 }
 
-.alert {
-	padding: 16px 24px;
-
-	.close {
-		top: -6px;
-	}
-}
-
 .article-content {
 	code,
 	pre {
@@ -142,20 +134,6 @@ textarea {
 	}
 }
 
-.card {
-	background-color: $color-white;
-	border: 1px solid $color-divider;
-	border-radius: 4px;
-	box-shadow: 0 6px 15px -7px rgba(39, 40, 51, 0.05);
-	font-size: $font-size-sm;
-
-	.card-header {
-		border-bottom: 1px solid $color-divider;
-		margin: 0;
-		padding: 20px 24px;
-	}
-}
-
 .form-field {
 	margin-bottom: $form-group-margin-bottom;
 }
@@ -174,14 +152,6 @@ textarea {
 	margin: $margin-default;
 	padding: 56px $padding-default;
 	text-align: center;
-}
-
-.project-name {
-	padding-left: $padding-default;
-}
-
-.portlet-content .portlet-title-text {
-	display: none;
 }
 
 .search-lg,

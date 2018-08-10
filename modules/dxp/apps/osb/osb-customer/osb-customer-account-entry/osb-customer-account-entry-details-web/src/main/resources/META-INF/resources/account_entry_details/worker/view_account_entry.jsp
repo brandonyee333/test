@@ -28,7 +28,7 @@ portletURL.setParameter("tabs1", tabs1);
 portletURL.setParameter("accountEntryId", String.valueOf(accountEntry.getAccountEntryId()));
 %>
 
-<h1 class="project-name">
+<h1>
 	<%= HtmlUtil.escape(accountEntry.getName()) %>
 </h1>
 

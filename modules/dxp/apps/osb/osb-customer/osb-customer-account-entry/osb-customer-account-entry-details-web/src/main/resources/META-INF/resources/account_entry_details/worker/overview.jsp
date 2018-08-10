@@ -41,12 +41,19 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 						<liferay-ui:message key="level" />
 					</td>
 					<td>
+						<c:choose>
+							<c:when test="<%= accountEntry.getHighestSupportResponseId() != 0 %>">
 
-						<%
-						SupportResponse supportResponse = SupportResponseLocalServiceUtil.getSupportResponse(accountEntry.getHighestSupportResponseId());
-						%>
+								<%
+									SupportResponse supportResponse = SupportResponseLocalServiceUtil.getSupportResponse(accountEntry.getHighestSupportResponseId());
+								%>
 
-						<%= supportResponse.getName() %>
+								<%= supportResponse.getName() %>
+							</c:when>
+							<c:otherwise>
+								<liferay-ui:message key="not-applicable" />
+							</c:otherwise>
+						</c:choose>
 					</td>
 				</tr>
 				<tr>
