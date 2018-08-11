@@ -63,9 +63,7 @@ input[type="search"] {
 
 input:not([type="submit"]),
 select,
-textarea,
-.nesty-input,
-.upload-dropzone {
+textarea {
 	background-clip: border-box;
 	background-color: $input-bg;
 	border: $input-border-width solid $input-border-color;
@@ -86,8 +84,7 @@ textarea,
 input:not([type="submit"]),
 select,
 select.form-control,
-textarea,
-.nesty-input {
+textarea {
 	color: $input-color;
 
 	&:focus {
@@ -97,8 +94,7 @@ textarea,
 }
 
 input:not([type="submit"]),
-select,
-.nesty-input {
+select {
 	height: $input-height;
 }
 
@@ -106,8 +102,7 @@ main {
 	border-bottom: 1px solid $color-divider;
 }
 
-textarea,
-.upload-dropzone {
+textarea {
 	height: auto;
 }
 
