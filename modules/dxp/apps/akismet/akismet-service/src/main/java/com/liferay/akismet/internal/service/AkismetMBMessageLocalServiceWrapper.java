@@ -20,23 +20,20 @@ import com.liferay.akismet.client.util.AkismetServiceConfigurationUtil;
 import com.liferay.akismet.model.AkismetEntry;
 import com.liferay.akismet.service.AkismetEntryLocalService;
 import com.liferay.message.boards.kernel.model.MBMessage;
+import com.liferay.message.boards.kernel.service.MBMessageLocalService;
 import com.liferay.message.boards.kernel.service.MBMessageLocalServiceWrapper;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
-import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
-import java.io.InputStream;
 import java.io.Serializable;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
@@ -54,130 +51,42 @@ public class AkismetMBMessageLocalServiceWrapper
 	}
 
 	@Override
-	public MBMessage addMessage(
-			long userId, String userName, long groupId, long categoryId,
-			long threadId, long parentMessageId, String subject, String body,
-			String format,
-			List<ObjectValuePair<String, InputStream>> inputStreamOVPs,
-			boolean anonymous, double priority, boolean allowPingbacks,
-			ServiceContext serviceContext)
+	public MBMessage updateStatus(
+			long userId, long messageId, int status,
+			ServiceContext serviceContext,
+			Map<String, Serializable> workflowContext)
 		throws PortalException {
 
-		boolean enabled = isMessageBoardsEnabled(
-			userId, groupId, serviceContext);
-
-		if (enabled) {
-			serviceContext.setWorkflowAction(
-				WorkflowConstants.ACTION_SAVE_DRAFT);
-		}
-
-		MBMessage message = super.addMessage(
-			userId, userName, groupId, categoryId, threadId, parentMessageId,
-			subject, body, format, inputStreamOVPs, anonymous, priority,
-			allowPingbacks, serviceContext);
-
-		AkismetEntry akismetEntry = updateAkismetEntry(message, serviceContext);
-
-		if (!enabled) {
-			return message;
-		}
-
-		String content = subject + "\n\n" + body;
-
-		int status = WorkflowConstants.STATUS_APPROVED;
-
-		if (_akismetClient.isSpam(userId, content, akismetEntry)) {
-			status = WorkflowConstants.STATUS_DENIED;
-		}
+		status = _checkSpam(messageId, serviceContext);
 
 		return super.updateStatus(
-			userId, message.getMessageId(), status, serviceContext,
-			new HashMap<String, Serializable>());
+			userId, messageId, status, serviceContext, workflowContext);
 	}
 
-	@Override
-	public MBMessage addMessage(
-			long userId, String userName, long groupId, long categoryId,
-			String subject, String body, String format,
-			List<ObjectValuePair<String, InputStream>> inputStreamOVPs,
-			boolean anonymous, double priority, boolean allowPingbacks,
-			ServiceContext serviceContext)
+	private int _checkSpam(long messageId, ServiceContext serviceContext)
 		throws PortalException {
 
-		boolean enabled = isMessageBoardsEnabled(
-			userId, groupId, serviceContext);
+		MBMessage message = _mbMessageLocalService.getMBMessage(messageId);
 
-		if (enabled) {
-			serviceContext.setWorkflowAction(
-				WorkflowConstants.ACTION_SAVE_DRAFT);
+		if (_isMessageBoardsEnabled(
+				message.getUserId(), message.getGroupId(), serviceContext)) {
+
+			AkismetEntry akismetEntry = _updateAkismetEntry(
+				message, serviceContext);
+
+			String content = message.getSubject() + "\n\n" + message.getBody();
+
+			if (_akismetClient.isSpam(
+					message.getUserId(), content, akismetEntry)) {
+
+				return WorkflowConstants.STATUS_DENIED;
+			}
 		}
 
-		MBMessage message = super.addMessage(
-			userId, userName, groupId, categoryId, subject, body, format,
-			inputStreamOVPs, anonymous, priority, allowPingbacks,
-			serviceContext);
-
-		AkismetEntry akismetEntry = updateAkismetEntry(message, serviceContext);
-
-		if (!enabled) {
-			return message;
-		}
-
-		String content = subject + "\n\n" + body;
-
-		int status = WorkflowConstants.STATUS_APPROVED;
-
-		if (_akismetClient.isSpam(userId, content, akismetEntry)) {
-			status = WorkflowConstants.STATUS_DENIED;
-		}
-
-		return super.updateStatus(
-			userId, message.getMessageId(), status, serviceContext,
-			new HashMap<String, Serializable>());
+		return WorkflowConstants.STATUS_APPROVED;
 	}
 
-	@Override
-	public MBMessage updateMessage(
-			long userId, long messageId, String subject, String body,
-			List<ObjectValuePair<String, InputStream>> inputStreamOVPs,
-			List<String> existingFiles, double priority, boolean allowPingbacks,
-			ServiceContext serviceContext)
-		throws PortalException {
-
-		MBMessage message = super.getMBMessage(messageId);
-
-		boolean enabled = isMessageBoardsEnabled(
-			userId, message.getGroupId(), serviceContext);
-
-		if (enabled) {
-			serviceContext.setWorkflowAction(
-				WorkflowConstants.ACTION_SAVE_DRAFT);
-		}
-
-		message = super.updateMessage(
-			userId, messageId, subject, body, inputStreamOVPs, existingFiles,
-			priority, allowPingbacks, serviceContext);
-
-		AkismetEntry akismetEntry = updateAkismetEntry(message, serviceContext);
-
-		if (!enabled) {
-			return message;
-		}
-
-		String content = subject + "\n\n" + body;
-
-		int status = WorkflowConstants.STATUS_APPROVED;
-
-		if (_akismetClient.isSpam(userId, content, akismetEntry)) {
-			status = WorkflowConstants.STATUS_DENIED;
-		}
-
-		return super.updateStatus(
-			userId, message.getMessageId(), status, serviceContext,
-			new HashMap<String, Serializable>());
-	}
-
-	protected String getPermalink(
+	private String _getPermalink(
 		MBMessage message, ServiceContext serviceContext) {
 
 		String contentURL = (String)serviceContext.getAttribute("contentURL");
@@ -196,15 +105,9 @@ public class AkismetMBMessageLocalServiceWrapper
 		return sb.toString();
 	}
 
-	protected boolean isMessageBoardsEnabled(
+	private boolean _isMessageBoardsEnabled(
 			long userId, long groupId, ServiceContext serviceContext)
 		throws PortalException {
-
-		if (serviceContext.getWorkflowAction() !=
-				WorkflowConstants.ACTION_PUBLISH) {
-
-			return false;
-		}
 
 		if (!_akismetClient.hasRequiredInfo(
 				serviceContext.getRemoteAddr(), serviceContext.getHeaders())) {
@@ -231,7 +134,7 @@ public class AkismetMBMessageLocalServiceWrapper
 		return true;
 	}
 
-	protected AkismetEntry updateAkismetEntry(
+	private AkismetEntry _updateAkismetEntry(
 		MBMessage message, ServiceContext serviceContext) {
 
 		if (!_akismetClient.hasRequiredInfo(
@@ -240,7 +143,7 @@ public class AkismetMBMessageLocalServiceWrapper
 			return null;
 		}
 
-		String permalink = getPermalink(message, serviceContext);
+		String permalink = _getPermalink(message, serviceContext);
 
 		Map<String, String> headers = serviceContext.getHeaders();
 
@@ -261,5 +164,8 @@ public class AkismetMBMessageLocalServiceWrapper
 
 	@Reference
 	private AkismetEntryLocalService _akismetEntryLocalService;
+
+	@Reference
+	private MBMessageLocalService _mbMessageLocalService;
 
 }
