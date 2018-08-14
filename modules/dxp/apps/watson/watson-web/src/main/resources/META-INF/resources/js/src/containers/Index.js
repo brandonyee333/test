@@ -61,7 +61,7 @@ class Index extends JSXComponent {
 			'scrollToPosition'
 		);
 
-		this._refreshData = debounce(this.refreshData, 250);
+		this._refreshData = debounce(this.refreshData, 100);
 
 		const {model, updatePageTitle} = this.props;
 

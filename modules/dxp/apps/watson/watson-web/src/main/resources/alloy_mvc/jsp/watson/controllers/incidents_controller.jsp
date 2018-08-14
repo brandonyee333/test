@@ -268,7 +268,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 				String[] fields = ParamUtil.getStringValues(request, "fields");
 				String[] keywords = ParamUtil.getStringValues(request, "keywords");
-				long typeWatsonListTypeId = ParamUtil.getLong(request, "type");
+				long addressTypeWatsonListTypeId = ParamUtil.getLong(request, "type");
 
 				if ((fields.length > 0) && (keywords.length > 0)) {
 					SearchContext searchContext = getPopulatedSearchContext(WatsonIncident.baseModelClass, fields, keywords, false);
@@ -276,7 +276,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 					List<Long> watsonIncidentIds = _doSearchForClassPKs(searchContext);
 
 					if (!watsonIncidentIds.isEmpty()) {
-						List<WatsonAddress> typeWatsonAddresses = WatsonAddress.query("typeWatsonListTypeId", typeWatsonListTypeId);
+						List<WatsonAddress> typeWatsonAddresses = WatsonAddress.query("typeWatsonListTypeId", addressTypeWatsonListTypeId);
 
 						for (WatsonAddress watsonAddress : typeWatsonAddresses) {
 							if (watsonIncidentIds.contains(watsonAddress.getWatsonIncidentId())) {
@@ -286,7 +286,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 					}
 				}
 				else {
-					watsonAddresses = WatsonAddress.query("typeWatsonListTypeId", typeWatsonListTypeId);
+					watsonAddresses = WatsonAddress.query("typeWatsonListTypeId", addressTypeWatsonListTypeId);
 				}
 
 				respondWith(WatsonMetricsUtil.getAddressMetricsArray(watsonAddresses));

@@ -98,7 +98,7 @@ public static class WatsonActivity extends WatsonActivityBaseModel {
 
 	public static String getFormattedDate(Date date, Locale locale) {
 		if (date != null) {
-			return DateUtil.getDate(date, "dd-MM-yyyy", locale);
+			return DateUtil.getDate(date, "yyyy-MM-dd", locale);
 		}
 		else {
 			return StringPool.BLANK;
@@ -282,10 +282,10 @@ public static class WatsonActivity extends WatsonActivityBaseModel {
 		Date reportDate = getReportDate();
 
 		if (reportDate != null) {
-			activityNameSB.append(getFormattedDate(reportDate, locale));
+			activityNameSB.append(DateUtil.getDate(reportDate, "dd-MM-yyyy", locale));
 		}
 		else {
-			activityNameSB.append(getFormattedDate(getCreateDate(), locale));
+			activityNameSB.append(DateUtil.getDate(getCreateDate(), "dd-MM-yyyy", locale));
 		}
 
 		return activityNameSB.toString();

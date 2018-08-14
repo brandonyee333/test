@@ -1,7 +1,7 @@
 import {bindAll, isNumber} from 'lodash';
 import bridge from 'metal-react';
 import JSXComponent, {Config} from 'metal-jsx';
-import moment from 'moment';
+import Moment from 'moment';
 import {SingleDatePicker} from 'react-dates';
 
 const MetalDateInput = bridge(SingleDatePicker);
@@ -44,10 +44,12 @@ class DateInput extends JSXComponent {
 			dateState = isNumber(value) ? value : Date.parse(value);
 		}
 
+		dateState = dateState ? Moment(dateState) : null;
+
 		return (
 			<div class="date-wrapper">
 				<MetalDateInput
-					date={dateState ? moment(dateState) : null}
+					date={dateState}
 					disabled={disabled}
 					displayFormat="DD-MM-YYYY"
 					elementClasses="watson-input"

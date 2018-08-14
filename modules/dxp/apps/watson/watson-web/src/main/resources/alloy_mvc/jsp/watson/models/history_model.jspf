@@ -117,7 +117,7 @@ public static class WatsonHistory extends WatsonHistoryBaseModel {
 
 	public static String getFormattedDate(Date date, Locale locale) {
 		if (date != null) {
-			return DateUtil.getDate(date, "dd-MM-yyyy", locale);
+			return DateUtil.getDate(date, "yyyy-MM-dd", locale);
 		}
 		else {
 			return StringPool.BLANK;

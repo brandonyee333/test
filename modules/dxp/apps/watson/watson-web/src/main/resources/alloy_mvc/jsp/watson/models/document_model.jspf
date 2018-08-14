@@ -121,7 +121,7 @@ public static class WatsonDocument extends WatsonDocumentBaseModel {
 
 	public static String getFormattedDate(Date date, Locale locale) {
 		if (date != null) {
-			return DateUtil.getDate(date, "dd-MM-yyyy", locale);
+			return DateUtil.getDate(date, "yyyy-MM-dd", locale);
 		}
 
 		return StringPool.BLANK;
@@ -165,10 +165,10 @@ public static class WatsonDocument extends WatsonDocumentBaseModel {
 		Date recievedDate = getReceivedDate();
 
 		if (recievedDate != null) {
-			documentNameSB.append(getFormattedDate(recievedDate, locale));
+			documentNameSB.append(DateUtil.getDate(recievedDate, "dd-MM-yyyy", locale));
 		}
 		else {
-			documentNameSB.append(getFormattedDate(getCreateDate(), locale));
+			documentNameSB.append(DateUtil.getDate(getCreateDate(), "dd-MM-yyyy", locale));
 		}
 
 		return documentNameSB.toString();
