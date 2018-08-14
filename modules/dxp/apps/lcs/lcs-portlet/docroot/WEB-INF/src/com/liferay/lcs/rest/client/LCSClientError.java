@@ -19,9 +19,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 /**
  * @author Mladen Cikara
@@ -111,8 +110,7 @@ public enum LCSClientError {
 		_errorCode = errorCode;
 	}
 
-	private static final Logger _log = LoggerFactory.getLogger(
-		LCSClientError.class);
+	private static final Log _log = LogFactoryUtil.getLog(LCSClientError.class);
 
 	private final int _errorCode;
 
