@@ -1,0 +1,25 @@
+select.form-control {
+	border: 1px solid $input-border-color;
+
+	&,
+	&:active,
+	&:focus {
+		background-color: $color-white;
+	}
+}
+
+.borderless.form-control {
+	border-color: transparent;
+
+	&:active,
+	&:focus {
+		border: 1px solid $input-border-focus;
+	}
+}
+
+.form-control {
+	&:disabled {
+		background-color: $color-divider;
+		color: $color-default-disabled;
+	}
+}

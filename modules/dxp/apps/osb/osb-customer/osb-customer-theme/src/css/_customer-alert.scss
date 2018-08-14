@@ -1,7 +1,12 @@
-.alert {
-	padding: 16px 24px;
+.lfr-alert-container,
+.lfr-notification-container {
+	.alert {
+		padding: 16px 24px;
+	}
 
-	.close {
-		top: -6px;
+	&.lfr-alert-container {
+		.alert .close {
+			top: -6px;
+		}
 	}
 }

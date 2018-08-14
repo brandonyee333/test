@@ -4,11 +4,19 @@
 	max-width: 100%;
 	padding: 0;
 
+	.form-control.search-query {
+		border-radius: 4px;
+
+		&:focus {
+			border: 1px solid $input-border-focus;
+		}
+	}
+
 	.input-group-btn .btn-default {
-		border: 1px solid $color-divider;
-		border-left-width: 0;
+		border-width: 0;
 		color: $color-primary;
-		padding: 7px 16px;
+		margin-top: 1px;
+		padding: 6px 16px;
 
 		&:focus,
 		&:hover,
@@ -16,6 +24,12 @@
 			background-color: $color-white;
 			color: $btn-primary-hover-bg;
 		}
+	}
+
+	.input-group-input {
+		position: absolute;
+		width: 100%;
+		z-index: 1;
 	}
 
 	.search-query {
