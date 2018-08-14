@@ -42,6 +42,43 @@ input[type="submit"] {
 	border-color: transparent;
 }
 
+.btn-link {
+	font-weight: $font-weight-semi-bold;
+
+	&:focus,
+	&:not([href]):not([tabindex]):focus {
+		color: $color-primary-focus;
+	}
+
+	&:hover,
+	&:not([href]):not([tabindex]):hover {
+		color: $color-primary-hover;
+	}
+}
+
+.btn-outline {
+	border-color: $btn-default-border;
+	color: $secondary-text-color;
+	font-weight: $font-weight-semi-bold;
+
+	&[role="button"],
+	&[type="button"] {
+		background-color: transparent;
+	}
+
+	&:focus,
+	&:not([href]):not([tabindex]):focus {
+		background-color: $color-focus;
+		color: $color-default;
+	}
+
+	&:hover,
+	&:not([href]):not([tabindex]):hover {
+		background-color: $color-active;
+		color: $color-default;
+	}
+}
+
 .btn-outline-primary {
 	&,
 	&:focus,
@@ -60,7 +97,8 @@ input[type="submit"] {
 		color: $color-default-disabled;
 	}
 
-	&[role="button"] {
+	&[role="button"],
+	&[type="button"] {
 		background-color: transparent;
 	}
 
