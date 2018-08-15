@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="com.liferay.osb.customer.zendesk.documentation.model.ZendeskArticle">
+		<field name="zendeskArticleId" type="long" />
+		<field name="modifiedDate" type="Date" />
+		<field name="zendeskSectionId" type="long" />
+		<field name="documentationKey" type="String">
+			<hint name="max-length">150</hint>
+		</field>
+		<field name="remoteId" type="long" />
+		<field name="remoteHtmlURL" type="String">
+			<hint-collection name="URL" />
+		</field>
+	</model>
+	<model name="com.liferay.osb.customer.zendesk.documentation.model.ZendeskArticleAttachment">
+		<field name="zendeskArticleAttachmentId" type="long" />
+		<field name="zendeskArticleId" type="long" />
+		<field name="filePath" type="String">
+			<hint name="max-length">150</hint>
+		</field>
+		<field name="checksum" type="String" />
+		<field name="remoteId" type="long" />
+		<field name="remoteContentURL" type="String">
+			<hint-collection name="URL" />
+		</field>
+	</model>
+	<model name="com.liferay.osb.customer.zendesk.documentation.model.ZendeskCategory">
+		<field name="zendeskCategoryId" type="long" />
+		<field name="documentationKey" type="String" />
+		<field name="remoteId" type="long" />
+	</model>
+	<model name="com.liferay.osb.customer.zendesk.documentation.model.ZendeskSection">
+		<field name="zendeskSectionId" type="long" />
+		<field name="modifiedDate" type="Date" />
+		<field name="zendeskCategoryId" type="long" />
+		<field name="documentationKey" type="String">
+			<hint name="max-length">150</hint>
+		</field>
+		<field name="remoteId" type="long" />
+		<field name="remoteHtmlURL" type="String" />
+	</model>
+</model-hints>

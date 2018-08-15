@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<suppressions>
+	<checkstyle>
+		<suppress checks="MapIterationCheck" files="osb-customer-zendesk-documentation-sync-service/src/main/java/com/liferay/osb/customer/zendesk/documentation/service/impl/ZendeskArticleLocalServiceImpl\.java" />
+		<suppress checks="MapIterationCheck" files="osb-customer-zendesk-documentation-sync-service/src/main/java/com/liferay/osb/customer/zendesk/documentation/service/impl/ZendeskSectionLocalServiceImpl\.java" />
+	</checkstyle>
+	<source-check>
+		<suppress checks="SQLLongNamesCheck" files="osb-customer-zendesk-documentation-sync-service/src/main/resources/META-INF/sql/tables\.sql" />
+	</source-check>
+</suppressions>

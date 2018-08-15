@@ -27,6 +27,19 @@ import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 
+import java.io.File;
+
+import java.util.Map;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -69,6 +82,42 @@ public class ZendeskHttpImpl implements ZendeskHttp {
 		options.setPost(true);
 
 		return _send(dataJSONObject.toString(), options);
+	}
+
+	@Override
+	public JSONObject post(
+			String endpoint, Map<String, String> params, File file)
+		throws Exception {
+
+		HttpPost httpPost = new HttpPost(_toURI(endpoint));
+
+		httpPost.addHeader("Authorization", _CREDENTIALS);
+
+		MultipartEntity multipartEntity = new MultipartEntity();
+
+		for (Map.Entry<String, String> entry : params.entrySet()) {
+			multipartEntity.addPart(
+				entry.getKey(), new StringBody(entry.getValue()));
+		}
+
+		multipartEntity.addPart("file", new FileBody(file));
+
+		httpPost.setEntity(multipartEntity);
+
+		HttpClient httpClient = new DefaultHttpClient();
+
+		HttpResponse httpResponse = httpClient.execute(httpPost);
+
+		String response = EntityUtils.toString(httpResponse.getEntity());
+
+		try {
+			return _jsonFactory.createJSONObject(response);
+		}
+		catch (Exception e) {
+			_log.error("Error parsing response: " + response);
+
+			throw e;
+		}
 	}
 
 	public JSONObject put(String endpoint, JSONObject dataJSONObject)
