@@ -3,7 +3,7 @@
 		<div class="col-md-3 header-content">
 			<a class="header-link" href="${site_logo_url}" title="Home">
 				<svg alt="Liferay" class="header-logo">
-					<use xlink:href="${images_folder}/custom/help_center_icons.svg#liferay-waffle" />
+					<use xlink:href="#liferay-waffle" />
 				</svg>
 			</a>
 

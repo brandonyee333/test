@@ -4,7 +4,7 @@
 	<div class="col-sm-3">
 		<#if getterUtil.getBoolean(theme_settings["footer-logo"])>
 			<svg alt="Liferay" class="liferay-logo">
-				<use xlink:href="${images_folder}/custom/help_center_icons.svg#liferay-logo" />
+				<use xlink:href="#liferay-logo" />
 			</svg>
 		</#if>
 	</div>
@@ -34,7 +34,7 @@
 					<div class="social-icon">
 						<a href="${social_link_one_url}">
 							<svg class="lexicon-icon lexicon-icon-social-${social_link_one_name}">
-								<use xlink:href="${images_folder}/custom/help_center_icons.svg#social-${social_link_one_name}" />
+								<use xlink:href="#social-${social_link_one_name}" />
 							</svg>
 						</a>
 					</div>
@@ -44,7 +44,7 @@
 					<div class="social-icon">
 						<a href="${social_link_two_url}">
 							<svg class="lexicon-icon lexicon-icon-${social_link_two_name}">
-								<use xlink:href="${images_folder}/custom/help_center_icons.svg#social-${social_link_two_name}" />
+								<use xlink:href="#social-${social_link_two_name}" />
 							</svg>
 						</a>
 					</div>
@@ -54,7 +54,7 @@
 					<div class="social-icon">
 						<a href="${social_link_three_url}">
 							<svg class="lexicon-icon lexicon-icon-${social_link_three_name}">
-								<use xlink:href="${images_folder}/custom/help_center_icons.svg#social-${social_link_three_name}" />
+								<use xlink:href="#social-${social_link_three_name}" />
 							</svg>
 						</a>
 					</div>
