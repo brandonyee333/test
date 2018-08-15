@@ -15,14 +15,22 @@ export default class AccountEnvironments extends React.Component {
 		permitAdd: PropTypes.bool.isRequired
 	};
 
-	closeAddEnvironmentModal = () => this.setState({modalTriggered: false});
+	closeAddEnvironmentModal = () => this.setState(
+		{
+			modalTriggered: false
+		}
+	);
 
 	handleDeleteEnvironment = () =>
 		window.confirm(
 			Liferay.Language.get('are-you-sure-you-want-to-delete-this')
 		);
 
-	triggerAddEnvironmentModal = () => this.setState({modalTriggered: true});
+	triggerAddEnvironmentModal = () => this.setState(
+		{
+			modalTriggered: true
+		}
+	);
 
 	render() {
 		const {environments, permitAdd} = this.props;
