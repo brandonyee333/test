@@ -68,7 +68,7 @@ public class AkismetMBMessageLocalServiceWrapper
 
 		MBMessage message = _mbMessageLocalService.getMBMessage(messageId);
 
-		if (_isMessageBoardsEnabled(
+		if (_isCheckSpamEnabled(
 				message.getUserId(), message.getGroupId(), serviceContext)) {
 
 			AkismetEntry akismetEntry = _updateAkismetEntry(
@@ -105,17 +105,17 @@ public class AkismetMBMessageLocalServiceWrapper
 		return sb.toString();
 	}
 
-	private boolean _isMessageBoardsEnabled(
+	private boolean _isCheckSpamEnabled(
 			long userId, long groupId, ServiceContext serviceContext)
 		throws PortalException {
+
+		if (!AkismetServiceConfigurationUtil.isMessageBoardsEnabled()) {
+			return false;
+		}
 
 		if (!_akismetClient.hasRequiredInfo(
 				serviceContext.getRemoteAddr(), serviceContext.getHeaders())) {
 
-			return false;
-		}
-
-		if (!AkismetServiceConfigurationUtil.isMessageBoardsEnabled()) {
 			return false;
 		}
 
@@ -136,12 +136,6 @@ public class AkismetMBMessageLocalServiceWrapper
 
 	private AkismetEntry _updateAkismetEntry(
 		MBMessage message, ServiceContext serviceContext) {
-
-		if (!_akismetClient.hasRequiredInfo(
-				serviceContext.getRemoteAddr(), serviceContext.getHeaders())) {
-
-			return null;
-		}
 
 		String permalink = _getPermalink(message, serviceContext);
 
