@@ -21,10 +21,15 @@ export default class AccountEnvironments extends React.Component {
 		}
 	);
 
-	handleDeleteEnvironment = () =>
-		window.confirm(
-			Liferay.Language.get('are-you-sure-you-want-to-delete-this')
-		);
+	handleDeleteEnvironment = event => {
+		if (
+			!confirm(
+				Liferay.Language.get('are-you-sure-you-want-to-delete-this')
+			)
+		) {
+			event.preventDefault();
+		}
+	};
 
 	triggerAddEnvironmentModal = () => this.setState(
 		{
@@ -84,7 +89,7 @@ export default class AccountEnvironments extends React.Component {
 
 								<Button
 									href={environment.deleteAccountEnvironmentURL}
-									onClick={this.handleDeleteEnvironment}
+									onClick={event => this.handleDeleteEnvironment(event)}
 									value="delete"
 								>
 									{Liferay.Language.get('delete')}
