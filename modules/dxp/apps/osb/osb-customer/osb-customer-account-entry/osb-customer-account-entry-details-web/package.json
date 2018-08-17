@@ -16,8 +16,10 @@
 	"dependencies": {
 		"classnames": "^2.2.6",
 		"clay-css": "^2.2.0",
+		"formik": "^1.0.3",
 		"react": "^16.4.2",
-		"react-dom": "^16.4.2"
+		"react-dom": "^16.4.2",
+		"yup": "^0.26.2"
 	},
 	"devDependencies": {
 		"autoprefixer": "^9.0.1",

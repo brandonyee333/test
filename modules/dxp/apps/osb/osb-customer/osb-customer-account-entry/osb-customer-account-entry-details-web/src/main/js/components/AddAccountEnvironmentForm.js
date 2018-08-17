@@ -1,0 +1,286 @@
+import React from 'react';
+
+import {withFormik} from 'formik';
+import * as yup from 'yup';
+
+import Button from './Button';
+
+const FormFields = ({
+	dirty,
+	errors,
+	handleChange,
+	handleBlur,
+	handleReset,
+	handleSubmit,
+	isSubmitting,
+	touched,
+	values
+}) => (
+	<form onSubmit={handleSubmit}>
+		<div className="container-fluid-1280">
+			<div className="row">
+				<div className="col-md-12">
+					<div className="form-group">
+						<label className="control-label" htmlFor="accountEnvironmentName">
+							{Liferay.Language.get('name')}
+						</label>
+
+						<input
+							className="form-control"
+							id="accountEnvironmentName"
+							name="name"
+							onChange={handleChange}
+							onBlur={handleBlur}
+							type="text"
+							value={values.name}
+						/>
+					</div>
+
+					{touched.name && errors.name && (
+						<div className="alert alert-danger" role="alert">
+							{errors.name}
+						</div>
+					)}
+				</div>
+
+				<div className="col-md-9">
+					<div className="form-group">
+						<label
+							className="control-label"
+							htmlFor="accountEnvironmentProduct"
+						>
+							{Liferay.Language.get('product')}
+						</label>
+
+						<select
+							className="form-control"
+							id="accountEnvironmentProduct"
+							name="product"
+							onChange={handleChange}
+							onBlur={handleBlur}
+						>
+							<option value="" />
+						</select>
+					</div>
+
+					{touched.product && errors.product && (
+						<div className="alert alert-danger" role="alert">
+							{errors.product}
+						</div>
+					)}
+				</div>
+
+				<div className="col-md-3">
+					<div className="form-group">
+						<label className="control-label" htmlFor="envLFR">
+							{Liferay.Language.get('liferay-version')}
+						</label>
+
+						<select
+							className="form-control"
+							id="envLFR"
+							name="envLFR"
+							onChange={handleChange}
+							onBlur={handleBlur}
+						>
+							<option value="" />
+						</select>
+					</div>
+
+					{touched.envLFR && errors.envLFR && (
+						<div className="alert alert-danger" role="alert">
+							{errors.envLFR}
+						</div>
+					)}
+				</div>
+
+				<div className="col-md-6">
+					<div className="form-group">
+						<label className="control-label" htmlFor="envOS">
+							{Liferay.Language.get('operating-system')}
+						</label>
+
+						<select
+							className="form-control"
+							id="envOS"
+							name="envOS"
+							onChange={handleChange}
+							onBlur={handleBlur}
+						>
+							<option value="" />
+						</select>
+					</div>
+
+					{touched.envOS && errors.envOS && (
+						<div className="alert alert-danger" role="alert">
+							{errors.envOS}
+						</div>
+					)}
+				</div>
+
+				<div className="col-md-6">
+					<div className="form-group">
+						<label className="control-label" htmlFor="envJVM">
+							{Liferay.Language.get('java-version')}
+						</label>
+
+						<select
+							className="form-control"
+							id="envJVM"
+							name="envJVM"
+							onChange={handleChange}
+							onBlur={handleBlur}
+						>
+							<option value="" />
+						</select>
+					</div>
+
+					{touched.envJVM && errors.envJVM && (
+						<div className="alert alert-danger" role="alert">
+							{errors.envJVM}
+						</div>
+					)}
+				</div>
+
+				<div className="col-md-6">
+					<div className="form-group">
+						<label className="control-label" htmlFor="envAS">
+							{Liferay.Language.get('application-server')}
+						</label>
+
+						<select
+							className="form-control"
+							id="envAS"
+							name="envAS"
+							onChange={handleChange}
+							onBlur={handleBlur}
+						>
+							<option value="" />
+						</select>
+					</div>
+
+					{touched.envAS && errors.envAS && (
+						<div className="alert alert-danger" role="alert">
+							{errors.envAS}
+						</div>
+					)}
+				</div>
+
+				<div className="col-md-6">
+					<div className="form-group">
+						<label className="control-label" htmlFor="envDB">
+							{Liferay.Language.get('database')}
+						</label>
+
+						<select
+							className="form-control"
+							id="envDB"
+							name="envDB"
+							onChange={handleChange}
+							onBlur={handleBlur}
+						>
+							<option value="" />
+						</select>
+					</div>
+
+					{touched.envDB && errors.envDB && (
+						<div className="alert alert-danger" role="alert">
+							{errors.envDB}
+						</div>
+					)}
+				</div>
+
+				<div className="col-md-12">
+					<div className="form-group">
+						<label className="control-label" htmlFor="portalExt">
+							{Liferay.Language.get('portal-ext')}
+						</label>
+
+						<input
+							className="form-control"
+							id="portalExt"
+							multiple="true"
+							name="portalExt"
+							onChange={handleChange}
+							onBlur={handleBlur}
+							type="file"
+						/>
+					</div>
+
+					{touched.portalExt && errors.portalExt && (
+						<div className="alert alert-danger" role="alert">
+							{errors.portalExt}
+						</div>
+					)}
+				</div>
+
+				<div className="col-md-12">
+					<div className="form-group">
+						<label className="control-label" htmlFor="patchLevel">
+							{Liferay.Language.get('patch-info')}
+						</label>
+
+						<input
+							className="form-control"
+							id="patchLevel"
+							multiple="true"
+							name="patchLevel"
+							onChange={handleChange}
+							onBlur={handleBlur}
+							type="file"
+						/>
+					</div>
+
+					{touched.patchLevel && errors.patchLevel && (
+						<div className="alert alert-danger" role="alert">
+							{errors.patchLevel}
+						</div>
+					)}
+				</div>
+			</div>
+		</div>
+
+		<Button display="outline" onClick={handleReset} type="button">
+			{Liferay.Language.get('cancel')}
+		</Button>
+
+		<Button disabled={isSubmitting} type="submit">
+			{Liferay.Language.get('submit')}
+		</Button>
+	</form>
+);
+
+const requiredSchema = yup.string().required(Liferay.Language.get('this-field-is-required'));
+
+export const AddAccountEnvironmentForm = withFormik(
+	{
+		displayName: 'addAccountEnvironment',
+		handleSubmit: '',
+		mapPropsToValues: () => (
+			{
+				envAS: '',
+				envDB: '',
+				envJVM: '',
+				envLFR: '',
+				envOS: '',
+				name: '',
+				patchLevel: '',
+				portalExt: '',
+				product: ''
+			}
+		),
+		validationSchema: yup.object().shape(
+			{
+				envAS: requiredSchema,
+				envDB: requiredSchema,
+				envJVM: requiredSchema,
+				envLFR: requiredSchema,
+				envOS: requiredSchema,
+				name: requiredSchema,
+				patchLevel: requiredSchema,
+				portalExt: requiredSchema,
+				product: requiredSchema
+			}
+		)
+	}
+)(FormFields);

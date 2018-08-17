@@ -11,7 +11,7 @@ export default class Button extends React.Component {
 
 	static propTypes = {
 		children: PropTypes.node.isRequired,
-		display: PropTypes.oneOf(['disabled', 'link', 'primary']),
+		display: PropTypes.oneOf(['disabled', 'link', 'outline', 'primary']),
 		href: PropTypes.string,
 		onClick: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
 		type: PropTypes.oneOf(['button', 'reset', 'submit']),

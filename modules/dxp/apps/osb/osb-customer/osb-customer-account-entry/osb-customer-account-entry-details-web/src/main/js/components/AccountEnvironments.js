@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Accordion from './Accordion';
+import {AddAccountEnvironmentForm} from './AddAccountEnvironmentForm';
 import Button from './Button';
 import Modal from './Modal';
 
@@ -118,6 +119,8 @@ export default class AccountEnvironments extends React.Component {
 			)
 		);
 
+		const addAccountEnvironmentForm = <AddAccountEnvironmentForm />;
+
 		return (
 			<React.Fragment>
 				<h3 className="card-header">
@@ -131,7 +134,7 @@ export default class AccountEnvironments extends React.Component {
 
 					{modalTriggered && (
 						<Modal
-							body=""
+							body={addAccountEnvironmentForm}
 							closeModal={this.closeAddEnvironmentModal}
 							header={Liferay.Language.get('new-environment-configuration')}
 							showModal={modalTriggered}
