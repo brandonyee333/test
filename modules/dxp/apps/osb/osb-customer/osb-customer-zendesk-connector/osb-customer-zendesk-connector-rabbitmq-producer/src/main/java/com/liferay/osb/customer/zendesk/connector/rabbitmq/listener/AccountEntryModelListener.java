@@ -120,7 +120,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		for (OfferingEntry offeringEntry : offeringEntries) {
 			if ((offeringEntry.getStatus() !=
 					OfferingEntryConstants.STATUS_ACTIVE) ||
-				offeringEntry.isSupportTickets()) {
+				!offeringEntry.isSupportTickets()) {
 
 				continue;
 			}
