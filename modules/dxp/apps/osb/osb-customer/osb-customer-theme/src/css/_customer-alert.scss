@@ -1,7 +1,11 @@
 .lfr-alert-container,
 .lfr-notification-container {
 	.alert {
-		padding: 16px 24px;
+		padding: 14px 16px;
+
+		.close {
+			right: 8px;
+		}
 	}
 
 	&.lfr-alert-container {
