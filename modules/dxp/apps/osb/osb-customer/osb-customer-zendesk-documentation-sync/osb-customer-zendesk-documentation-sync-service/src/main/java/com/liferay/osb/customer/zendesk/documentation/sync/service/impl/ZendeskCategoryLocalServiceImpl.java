@@ -19,14 +19,11 @@ import com.liferay.osb.customer.zendesk.documentation.sync.exception.RequiredZen
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.base.ZendeskCategoryLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.zip.ZipReader;
 import com.liferay.portal.kernel.zip.ZipReaderFactoryUtil;
 
 import java.io.InputStream;
-
-import java.util.List;
 
 /**
  * @author Amos Fong
