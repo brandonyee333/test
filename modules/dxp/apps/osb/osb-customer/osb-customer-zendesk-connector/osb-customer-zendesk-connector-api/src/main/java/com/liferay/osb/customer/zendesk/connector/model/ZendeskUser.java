@@ -17,7 +17,6 @@ package com.liferay.osb.customer.zendesk.connector.model;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
 /**
@@ -110,11 +109,11 @@ public class ZendeskUser {
 		return jsonObject;
 	}
 
-	private String _emailAddress = StringPool.BLANK;
-	private String _externalId = StringPool.BLANK;
-	private String _locale = StringPool.BLANK;
-	private String _name = StringPool.BLANK;
-	private String _organizationName = StringPool.BLANK;
+	private String _emailAddress;
+	private String _externalId;
+	private String _locale;
+	private String _name;
+	private String _organizationName;
 	private JSONArray _tags = JSONFactoryUtil.createJSONArray();
 
 }

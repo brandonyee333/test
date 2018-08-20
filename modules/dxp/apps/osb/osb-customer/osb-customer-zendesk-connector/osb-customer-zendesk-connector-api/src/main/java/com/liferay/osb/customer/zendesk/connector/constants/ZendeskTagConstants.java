@@ -17,18 +17,18 @@ package com.liferay.osb.customer.zendesk.connector.constants;
 /**
  * @author Kyle Bischof
  */
-public class ZendeskConstants {
+public class ZendeskTagConstants {
+
+	public static final String OSB_CUSTOMER = "osb_customer";
+
+	public static final String OSB_KNOWLEDGE_BASE = "osb_kb";
 
 	public static final String PREFIX_OSB = "osb_";
 
-	public static final String TAG_CUSTOMER = "osb_customer";
-
-	public static final String TAG_KNOWLEDGE_BASE = "osb_kb";
-
-	public static final String TAG_WATCHER = "_watcher";
+	public static final String WATCHER = "_watcher";
 
 	public static String getWatcherTag(String externalId) {
-		return PREFIX_OSB + externalId + TAG_WATCHER;
+		return PREFIX_OSB + externalId + WATCHER;
 	}
 
 }

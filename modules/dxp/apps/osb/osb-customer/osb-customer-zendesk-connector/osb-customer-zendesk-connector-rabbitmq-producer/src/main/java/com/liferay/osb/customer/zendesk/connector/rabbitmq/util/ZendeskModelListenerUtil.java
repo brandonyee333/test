@@ -41,7 +41,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Kyle Bischof
  */
 @Component(immediate = true)
-public class ZendeskUtil {
+public class ZendeskModelListenerUtil {
 
 	public static String convertToTag(String s) {
 		s = StringUtil.toLowerCase(s);
@@ -54,26 +54,17 @@ public class ZendeskUtil {
 	}
 
 	public static String convertToZendeskLocale(String locale) {
-		if (locale.equals("zh_CN")) {
-			return ZendeskLocales.CHINA;
-		}
-		else if (locale.equals("en_US")) {
+		if (locale.equals("en_US")) {
 			return ZendeskLocales.US;
 		}
-		else if (locale.equals("fr_FR")) {
-			return ZendeskLocales.FRANCE;
-		}
-		else if (locale.equals("de_DE")) {
-			return ZendeskLocales.GERMANY;
-		}
-		else if (locale.equals("it_IT")) {
-			return ZendeskLocales.ITALY;
+		else if (locale.equals("es_ES")) {
+			return ZendeskLocales.SPAIN;
 		}
 		else if (locale.equals("ja_JP")) {
 			return ZendeskLocales.JAPAN;
 		}
-		else if (locale.equals("es_ES")) {
-			return ZendeskLocales.SPAIN;
+		else if (locale.equals("pt_BR")) {
+			return ZendeskLocales.PORTUGAL;
 		}
 		else {
 			return StringPool.BLANK;

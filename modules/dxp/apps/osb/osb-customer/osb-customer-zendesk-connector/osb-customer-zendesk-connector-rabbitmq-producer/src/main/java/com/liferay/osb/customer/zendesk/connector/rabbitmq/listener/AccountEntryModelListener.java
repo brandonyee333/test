@@ -17,7 +17,7 @@ package com.liferay.osb.customer.zendesk.connector.rabbitmq.listener;
 import com.liferay.osb.customer.rabbitmq.connector.publisher.MessagePublisher;
 import com.liferay.osb.customer.zendesk.connector.model.ZendeskOrganization;
 import com.liferay.osb.customer.zendesk.connector.rabbitmq.configuration.ZendeskConnectorConfigurationValues;
-import com.liferay.osb.customer.zendesk.connector.rabbitmq.util.ZendeskUtil;
+import com.liferay.osb.customer.zendesk.connector.rabbitmq.util.ZendeskModelListenerUtil;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.ExternalIdMapperConstants;
@@ -56,7 +56,9 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		throws ModelListenerException {
 
 		try {
-			if (!ZendeskUtil.hasActiveSupportOffering(accountEntry)) {
+			if (!ZendeskModelListenerUtil.hasActiveSupportOffering(
+					accountEntry)) {
+
 				return;
 			}
 
@@ -88,7 +90,9 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 					ExternalIdMapperConstants.TYPE_ZENDESK);
 
 			if (!externalIdMappers) {
-				if (!ZendeskUtil.hasActiveSupportOffering(accountEntry)) {
+				if (!ZendeskModelListenerUtil.hasActiveSupportOffering(
+						accountEntry)) {
+
 					return;
 				}
 			}
@@ -126,7 +130,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 
 			ProductEntry productEntry = offeringEntry.getProductEntry();
 
-			String zendeskTag = ZendeskUtil.convertToTag(
+			String zendeskTag = ZendeskModelListenerUtil.convertToTag(
 				productEntry.getName());
 
 			tags.add(zendeskTag);

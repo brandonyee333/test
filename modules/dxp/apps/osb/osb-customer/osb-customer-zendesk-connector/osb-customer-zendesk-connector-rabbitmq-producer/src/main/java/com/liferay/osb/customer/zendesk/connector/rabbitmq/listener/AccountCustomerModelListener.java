@@ -15,10 +15,10 @@
 package com.liferay.osb.customer.zendesk.connector.rabbitmq.listener;
 
 import com.liferay.osb.customer.rabbitmq.connector.publisher.MessagePublisher;
-import com.liferay.osb.customer.zendesk.connector.constants.ZendeskConstants;
+import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.connector.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.connector.rabbitmq.configuration.ZendeskConnectorConfigurationValues;
-import com.liferay.osb.customer.zendesk.connector.rabbitmq.util.ZendeskUtil;
+import com.liferay.osb.customer.zendesk.connector.rabbitmq.util.ZendeskModelListenerUtil;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountCustomerConstants;
 import com.liferay.osb.model.AccountEntry;
@@ -56,7 +56,7 @@ public class AccountCustomerModelListener
 			User user = UserLocalServiceUtil.getUser(
 				accountCustomer.getUserId());
 
-			String zendeskUserId = ZendeskUtil.getExternalId(
+			String zendeskUserId = ZendeskModelListenerUtil.getExternalId(
 				User.class, accountCustomer.getUserId());
 
 			ZendeskUser zendeskUser = null;
@@ -79,8 +79,9 @@ public class AccountCustomerModelListener
 				zendeskUser.toJSONObject());
 
 			if (Validator.isNotNull(zendeskUserId)) {
-				JSONObject jsonObject = ZendeskUtil.getTagsJSONObject(
-					tagsJSONArray, "users", Long.valueOf(zendeskUserId));
+				JSONObject jsonObject =
+					ZendeskModelListenerUtil.getTagsJSONObject(
+						tagsJSONArray, "users", Long.valueOf(zendeskUserId));
 
 				_messagePublisher.sendMessage(
 					ZendeskConnectorConfigurationValues.
@@ -100,9 +101,10 @@ public class AccountCustomerModelListener
 		try {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-			String zendeskOrganizationId = ZendeskUtil.getExternalId(
-				AccountEntry.class, accountCustomer.getAccountEntryId());
-			String zendeskUserId = ZendeskUtil.getExternalId(
+			String zendeskOrganizationId =
+				ZendeskModelListenerUtil.getExternalId(
+					AccountEntry.class, accountCustomer.getAccountEntryId());
+			String zendeskUserId = ZendeskModelListenerUtil.getExternalId(
 				User.class, accountCustomer.getUserId());
 
 			jsonObject.put(
@@ -116,7 +118,7 @@ public class AccountCustomerModelListener
 			JSONArray jsonArray = getDeleteAccountCustomerTags(
 				accountCustomer, zendeskOrganizationId);
 
-			jsonObject = ZendeskUtil.getTagsJSONObject(
+			jsonObject = ZendeskModelListenerUtil.getTagsJSONObject(
 				jsonArray, "users", Long.valueOf(zendeskUserId));
 
 			_messagePublisher.sendMessage(
@@ -134,9 +136,10 @@ public class AccountCustomerModelListener
 		throws ModelListenerException {
 
 		try {
-			String zendeskOrganizationId = ZendeskUtil.getExternalId(
-				AccountEntry.class, accountCustomer.getAccountEntryId());
-			String zendeskUserId = ZendeskUtil.getExternalId(
+			String zendeskOrganizationId =
+				ZendeskModelListenerUtil.getExternalId(
+					AccountEntry.class, accountCustomer.getAccountEntryId());
+			String zendeskUserId = ZendeskModelListenerUtil.getExternalId(
 				User.class, accountCustomer.getUserId());
 
 			JSONArray addTagsJSONArray = JSONFactoryUtil.createJSONArray();
@@ -146,39 +149,42 @@ public class AccountCustomerModelListener
 					AccountCustomerConstants.ROLE_WATCHER) {
 
 				addTagsJSONArray.put(
-					ZendeskConstants.getWatcherTag(zendeskOrganizationId));
+					ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
 
 				int accountEntryCount =
 					AccountEntryLocalServiceUtil.getUserAccountEntriesCount(
 						accountCustomer.getUserId());
 
 				if ((accountEntryCount == 1) ||
-					!ZendeskUtil.hasActiveSupportOffering(accountCustomer)) {
+					!ZendeskModelListenerUtil.hasActiveSupportOffering(
+						accountCustomer)) {
 
-					removeTagsJSONArray.put(ZendeskConstants.TAG_CUSTOMER);
+					removeTagsJSONArray.put(ZendeskTagConstants.OSB_CUSTOMER);
 				}
 			}
 			else {
-				if (ZendeskUtil.hasActiveSupportOffering(
+				if (ZendeskModelListenerUtil.hasActiveSupportOffering(
 						accountCustomer.getAccountEntry())) {
 
-					addTagsJSONArray.put(ZendeskConstants.TAG_CUSTOMER);
+					addTagsJSONArray.put(ZendeskTagConstants.OSB_CUSTOMER);
 				}
 
 				removeTagsJSONArray.put(
-					ZendeskConstants.getWatcherTag(zendeskOrganizationId));
+					ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
 			}
 
-			JSONObject addTagsJSONObject = ZendeskUtil.getTagsJSONObject(
-				addTagsJSONArray, "users", Long.valueOf(zendeskUserId));
+			JSONObject addTagsJSONObject =
+				ZendeskModelListenerUtil.getTagsJSONObject(
+					addTagsJSONArray, "users", Long.valueOf(zendeskUserId));
 
 			_messagePublisher.sendMessage(
 				ZendeskConnectorConfigurationValues.
 					RABBITMQ_MESSAGE_EXCHANGE_NAME,
 				"zendesk.service.tag.add", addTagsJSONObject);
 
-			JSONObject removeTagsJSONObject = ZendeskUtil.getTagsJSONObject(
-				removeTagsJSONArray, "users", Long.valueOf(zendeskUserId));
+			JSONObject removeTagsJSONObject =
+				ZendeskModelListenerUtil.getTagsJSONObject(
+					removeTagsJSONArray, "users", Long.valueOf(zendeskUserId));
 
 			_messagePublisher.sendMessage(
 				ZendeskConnectorConfigurationValues.
@@ -198,19 +204,22 @@ public class AccountCustomerModelListener
 		if (accountCustomer.getRole() ==
 				AccountCustomerConstants.ROLE_WATCHER) {
 
-			String zendeskOrganizationId = ZendeskUtil.getExternalId(
-				AccountEntry.class, accountCustomer.getAccountEntryId());
+			String zendeskOrganizationId =
+				ZendeskModelListenerUtil.getExternalId(
+					AccountEntry.class, accountCustomer.getAccountEntryId());
 
 			jsonArray.put(
-				ZendeskConstants.getWatcherTag(zendeskOrganizationId));
+				ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
 		}
 		else {
-			if (ZendeskUtil.hasActiveSupportOffering(accountCustomer)) {
-				jsonArray.put(ZendeskConstants.TAG_CUSTOMER);
+			if (ZendeskModelListenerUtil.hasActiveSupportOffering(
+					accountCustomer)) {
+
+				jsonArray.put(ZendeskTagConstants.OSB_CUSTOMER);
 			}
 		}
 
-		jsonArray.put(ZendeskConstants.TAG_KNOWLEDGE_BASE);
+		jsonArray.put(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
 
 		return jsonArray;
 	}
@@ -226,17 +235,17 @@ public class AccountCustomerModelListener
 				QueryUtil.ALL_POS);
 
 		if (accountEntries.isEmpty()) {
-			jsonArray.put(ZendeskConstants.TAG_CUSTOMER);
-			jsonArray.put(ZendeskConstants.TAG_KNOWLEDGE_BASE);
+			jsonArray.put(ZendeskTagConstants.OSB_CUSTOMER);
+			jsonArray.put(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
 			jsonArray.put(
-				ZendeskConstants.getWatcherTag(zendeskOrganizationId));
+				ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
 		}
 		else {
 			if (accountCustomer.getRole() ==
 					AccountCustomerConstants.ROLE_WATCHER) {
 
 				jsonArray.put(
-					ZendeskConstants.getWatcherTag(zendeskOrganizationId));
+					ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
 			}
 			else {
 				for (int i = 0; i < accountEntries.size(); i++) {
@@ -247,7 +256,7 @@ public class AccountCustomerModelListener
 					}
 
 					if (i == (accountEntries.size() - 1)) {
-						jsonArray.put(ZendeskConstants.TAG_CUSTOMER);
+						jsonArray.put(ZendeskTagConstants.OSB_CUSTOMER);
 					}
 				}
 			}
@@ -265,7 +274,7 @@ public class AccountCustomerModelListener
 		zendeskUser.setEmailAddress(user.getEmailAddress());
 		zendeskUser.setExternalId(user.getUuid());
 
-		String locale = ZendeskUtil.convertToZendeskLocale(
+		String locale = ZendeskModelListenerUtil.convertToZendeskLocale(
 			user.getLanguageId());
 
 		zendeskUser.setLocale(locale);

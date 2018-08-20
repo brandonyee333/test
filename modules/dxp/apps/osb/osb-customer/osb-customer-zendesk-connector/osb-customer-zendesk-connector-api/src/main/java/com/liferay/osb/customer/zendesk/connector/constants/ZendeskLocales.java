@@ -19,14 +19,6 @@ package com.liferay.osb.customer.zendesk.connector.constants;
  */
 public interface ZendeskLocales {
 
-	public static final String CHINA = "zh-CN";
-
-	public static final String FRANCE = "fr";
-
-	public static final String GERMANY = "de";
-
-	public static final String ITALY = "it";
-
 	public static final String JAPAN = "ja";
 
 	public static final String PORTUGAL = "pt";
