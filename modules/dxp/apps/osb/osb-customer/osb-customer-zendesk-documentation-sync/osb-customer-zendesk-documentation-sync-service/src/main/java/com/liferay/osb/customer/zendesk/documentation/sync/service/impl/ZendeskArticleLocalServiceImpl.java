@@ -14,7 +14,8 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.service.impl;
 
-import com.liferay.osb.customer.zendesk.connector.util.ZendeskHttp;
+import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints;
+import com.liferay.osb.customer.zendesk.connector.util.ZendeskBaseWebService;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection;
@@ -186,9 +187,10 @@ public class ZendeskArticleLocalServiceImpl
 
 		jsonObject.put("article", articleJSONObject);
 
-		return _zendeskHttp.post(
-			"help_center/sections/" + remoteSectionId + "/articles.json",
-			jsonObject);
+		return _zendeskBaseWebService.post(
+			ZendeskRESTEndpoints.URL_API_V2 + "help_center/sections/" +
+				remoteSectionId + "/articles.json",
+			jsonObject.toString());
 	}
 
 	protected void transformAttachmentLinks(
@@ -222,8 +224,10 @@ public class ZendeskArticleLocalServiceImpl
 
 		jsonObject.put("article", articleJSONObject);
 
-		return _zendeskHttp.put(
-			"help_center/articles/" + remoteId + ".json", jsonObject);
+		return _zendeskBaseWebService.put(
+			ZendeskRESTEndpoints.URL_API_V2 + "help_center/articles/" +
+				remoteId + ".json",
+			jsonObject.toString());
 	}
 
 	protected void updateRemoteZendeskTranslations(
@@ -242,17 +246,17 @@ public class ZendeskArticleLocalServiceImpl
 
 			jsonObject.put("translation", translationJSONObject);
 
-			_zendeskHttp.put(
-				"help_center/articles/" + remoteId + "/translations/" + locale +
-					".json",
-				jsonObject);
+			_zendeskBaseWebService.put(
+				ZendeskRESTEndpoints.URL_API_V2 + "help_center/articles/" +
+					remoteId + "/translations/" + locale + ".json",
+				jsonObject.toString());
 		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ZendeskArticleLocalServiceImpl.class);
 
-	@ServiceReference(type = ZendeskHttp.class)
-	private ZendeskHttp _zendeskHttp;
+	@ServiceReference(type = ZendeskBaseWebService.class)
+	private ZendeskBaseWebService _zendeskBaseWebService;
 
 }

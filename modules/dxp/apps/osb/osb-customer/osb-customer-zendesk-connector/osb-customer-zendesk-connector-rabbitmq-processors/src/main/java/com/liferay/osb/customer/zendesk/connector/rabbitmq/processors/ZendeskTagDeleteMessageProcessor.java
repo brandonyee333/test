@@ -15,7 +15,8 @@
 package com.liferay.osb.customer.zendesk.connector.rabbitmq.processors;
 
 import com.liferay.osb.customer.rabbitmq.connector.publisher.MessagePublisher;
-import com.liferay.osb.customer.zendesk.connector.util.ZendeskHttp;
+import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints;
+import com.liferay.osb.customer.zendesk.connector.util.ZendeskBaseWebService;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.StringPool;
 
@@ -36,12 +37,13 @@ public class ZendeskTagDeleteMessageProcessor extends BaseMessageProcessor {
 		String resource = jsonObject.getString("resource");
 
 		String endpoint =
-			resource + StringPool.SLASH + id + StringPool.SLASH + "tags.json";
+			ZendeskRESTEndpoints.URL_API_V2 + resource + StringPool.SLASH + id +
+				StringPool.SLASH + "tags.json";
 
 		JSONObject tagsJSONObject = jsonObject.getJSONObject("tagsArray");
 
-		JSONObject responseJSONObject = _zendeskHttp.delete(
-			endpoint, tagsJSONObject);
+		JSONObject responseJSONObject = _zendeskBaseWebService.delete(
+			endpoint, tagsJSONObject.toString());
 
 		handleResponseErrors(responseJSONObject);
 	}
@@ -50,6 +52,6 @@ public class ZendeskTagDeleteMessageProcessor extends BaseMessageProcessor {
 	private MessagePublisher _messagePublisher;
 
 	@Reference
-	private ZendeskHttp _zendeskHttp;
+	private ZendeskBaseWebService _zendeskBaseWebService;
 
 }

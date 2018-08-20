@@ -14,7 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.connector.util;
 
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 
 import java.io.File;
@@ -24,22 +23,18 @@ import java.util.Map;
 /**
  * @author Kyle Bischof
  */
-public interface ZendeskHttp {
+public interface ZendeskBaseWebService {
 
-	public JSONObject delete(String endpoint, JSONObject dataJSONObject)
-		throws PortalException;
+	public JSONObject delete(String endpoint, String json) throws Exception;
 
-	public JSONObject get(String endpoint, JSONObject dataJSONObject)
-		throws PortalException;
-
-	public JSONObject post(String endpoint, JSONObject dataJSONObject)
-		throws PortalException;
+	public JSONObject get(String endpoint, String json) throws Exception;
 
 	public JSONObject post(
 			String endpoint, Map<String, String> params, File file)
 		throws Exception;
 
-	public JSONObject put(String endpoint, JSONObject dataJSONObject)
-		throws PortalException;
+	public JSONObject post(String endpoint, String json) throws Exception;
+
+	public JSONObject put(String endpoint, String json) throws Exception;
 
 }

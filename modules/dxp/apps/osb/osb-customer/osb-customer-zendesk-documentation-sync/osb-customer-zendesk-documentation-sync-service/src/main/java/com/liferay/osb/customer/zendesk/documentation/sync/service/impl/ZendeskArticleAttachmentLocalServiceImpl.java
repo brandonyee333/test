@@ -14,12 +14,12 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.service.impl;
 
-import com.liferay.osb.customer.zendesk.connector.util.ZendeskHttp;
+import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints;
+import com.liferay.osb.customer.zendesk.connector.util.ZendeskBaseWebService;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.base.ZendeskArticleAttachmentLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -85,10 +85,11 @@ public class ZendeskArticleAttachmentLocalServiceImpl
 			ZendeskArticleAttachment zendeskArticleAttachment)
 		throws PortalException {
 
-		_zendeskHttp.delete(
-			"help_center/articles/attachments/" +
-				zendeskArticleAttachment.getRemoteId() + ".json",
-			JSONFactoryUtil.createJSONObject());
+		_zendeskBaseWebService.delete(
+			ZendeskRESTEndpoints.URL_API_V2 +
+				"help_center/articles/attachments/" +
+					zendeskArticleAttachment.getRemoteId() + ".json",
+			StringPool.BLANK);
 
 		zendeskArticleAttachmentPersistence.remove(zendeskArticleAttachment);
 
@@ -145,8 +146,9 @@ public class ZendeskArticleAttachmentLocalServiceImpl
 
 		params.put("inline", Boolean.TRUE.toString());
 
-		return _zendeskHttp.post(
-			"help_center/articles/" + remoteArticleId + "/attachments.json",
+		return _zendeskBaseWebService.post(
+			ZendeskRESTEndpoints.URL_API_V2 + "help_center/articles/" +
+				remoteArticleId + "/attachments.json",
 			params, file);
 	}
 
@@ -174,7 +176,7 @@ public class ZendeskArticleAttachmentLocalServiceImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		ZendeskArticleAttachmentLocalServiceImpl.class);
 
-	@ServiceReference(type = ZendeskHttp.class)
-	private ZendeskHttp _zendeskHttp;
+	@ServiceReference(type = ZendeskBaseWebService.class)
+	private ZendeskBaseWebService _zendeskBaseWebService;
 
 }

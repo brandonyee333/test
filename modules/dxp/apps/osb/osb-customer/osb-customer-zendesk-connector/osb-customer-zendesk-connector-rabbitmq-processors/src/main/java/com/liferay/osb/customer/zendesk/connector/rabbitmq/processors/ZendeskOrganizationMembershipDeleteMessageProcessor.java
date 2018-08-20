@@ -15,10 +15,11 @@
 package com.liferay.osb.customer.zendesk.connector.rabbitmq.processors;
 
 import com.liferay.osb.customer.rabbitmq.connector.publisher.MessagePublisher;
-import com.liferay.osb.customer.zendesk.connector.util.ZendeskHttp;
+import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints;
+import com.liferay.osb.customer.zendesk.connector.util.ZendeskBaseWebService;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.util.StringPool;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -38,11 +39,11 @@ public class ZendeskOrganizationMembershipDeleteMessageProcessor
 		long organizationId = jsonObject.getLong("organization_id");
 
 		String getEndpoint =
-			"organizations/" + organizationId +
-				"/organization_memberships.json";
+			ZendeskRESTEndpoints.URL_API_V2 + "organizations/" +
+				organizationId + "/organization_memberships.json";
 
-		JSONObject getResponseJSONObject = _zendeskHttp.get(
-			getEndpoint, JSONFactoryUtil.createJSONObject());
+		JSONObject getResponseJSONObject = _zendeskBaseWebService.get(
+			getEndpoint, StringPool.BLANK);
 
 		handleResponseErrors(getResponseJSONObject);
 
@@ -63,10 +64,12 @@ public class ZendeskOrganizationMembershipDeleteMessageProcessor
 			}
 		}
 
-		String deleteEndpoint = "organization_memberships/" + id + ".json";
+		String deleteEndpoint =
+			ZendeskRESTEndpoints.URL_API_V2 + "organization_memberships/" + id +
+				".json";
 
-		JSONObject deleteResponseJSONObject = _zendeskHttp.delete(
-			deleteEndpoint, JSONFactoryUtil.createJSONObject());
+		JSONObject deleteResponseJSONObject = _zendeskBaseWebService.delete(
+			deleteEndpoint, StringPool.BLANK);
 
 		handleResponseErrors(deleteResponseJSONObject);
 	}
@@ -75,6 +78,6 @@ public class ZendeskOrganizationMembershipDeleteMessageProcessor
 	private MessagePublisher _messagePublisher;
 
 	@Reference
-	private ZendeskHttp _zendeskHttp;
+	private ZendeskBaseWebService _zendeskBaseWebService;
 
 }

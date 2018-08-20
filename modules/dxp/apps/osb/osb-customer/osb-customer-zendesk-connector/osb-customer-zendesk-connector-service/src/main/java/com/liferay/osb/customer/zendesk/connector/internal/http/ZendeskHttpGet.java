@@ -12,21 +12,32 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.connector.constants;
+package com.liferay.osb.customer.zendesk.connector.internal.http;
+
+import java.net.URI;
+
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 
 /**
- * @author Amos Fong
+ * @author Kyle Bischof
  */
-public interface ZendeskRESTEndpoints {
+public class ZendeskHttpGet extends HttpEntityEnclosingRequestBase {
 
-	public static final String ORGANIZATIONS = "organizations.json";
+	public static final String METHOD_NAME = "GET";
 
-	public static final String ORGANIZATIONS_CREATE_OR_UPDATE =
-		"organizations/create_or_update.json";
+	public ZendeskHttpGet() {
+	}
 
-	public static final String URL_API_V2 = "/api/v2/";
+	public ZendeskHttpGet(final String uri) {
+		setURI(URI.create(uri));
+	}
 
-	public static final String USERS_CREATE_OR_UPDATE =
-		"users/create_or_update.json";
+	public ZendeskHttpGet(final URI uri) {
+		setURI(uri);
+	}
+
+	public String getMethod() {
+		return METHOD_NAME;
+	}
 
 }
