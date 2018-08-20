@@ -12,17 +12,14 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.documentation.model.impl;
-
-import aQute.bnd.annotation.ProviderType;
+package com.liferay.osb.customer.zendesk.documentation.sync.web.internal.constants;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Amos Fong
  */
-@ProviderType
-public class ZendeskArticleImpl extends ZendeskArticleBaseImpl {
+public class ZendeskDocumentationSyncPortletKeys {
 
-	public ZendeskArticleImpl() {
-	}
+	public static final String ADMIN =
+		"com_liferay_osb_customer_zendesk_documentation_sync_AdminPortlet";
 
 }

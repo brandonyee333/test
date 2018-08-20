@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.documentation.model.impl;
+package com.liferay.osb.customer.zendesk.documentation.sync.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 

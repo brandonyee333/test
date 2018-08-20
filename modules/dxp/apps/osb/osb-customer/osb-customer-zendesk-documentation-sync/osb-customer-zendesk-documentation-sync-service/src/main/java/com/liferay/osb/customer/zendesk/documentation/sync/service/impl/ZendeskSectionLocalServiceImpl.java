@@ -12,12 +12,12 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.documentation.service.impl;
+package com.liferay.osb.customer.zendesk.documentation.sync.service.impl;
 
 import com.liferay.osb.customer.zendesk.connector.util.ZendeskHttp;
-import com.liferay.osb.customer.zendesk.documentation.model.ZendeskCategory;
-import com.liferay.osb.customer.zendesk.documentation.model.ZendeskSection;
-import com.liferay.osb.customer.zendesk.documentation.service.base.ZendeskSectionLocalServiceBaseImpl;
+import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory;
+import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection;
+import com.liferay.osb.customer.zendesk.documentation.sync.service.base.ZendeskSectionLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -66,6 +67,16 @@ public class ZendeskSectionLocalServiceImpl
 			sectionJSONObject.getString("html_url"));
 
 		return zendeskSectionPersistence.update(zendeskSection);
+	}
+
+	public List<ZendeskSection> getZendeskSections(long zendeskCategoryId) {
+		return zendeskSectionPersistence.findByZendeskCategoryId(
+			zendeskCategoryId);
+	}
+
+	public int getZendeskSectionsCount(long zendeskCategoryId) {
+		return zendeskSectionPersistence.countByZendeskCategoryId(
+			zendeskCategoryId);
 	}
 
 	public ZendeskSection updateZendeskSection(

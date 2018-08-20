@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.documentation.model.impl;
+package com.liferay.osb.customer.zendesk.documentation.sync.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
@@ -20,9 +20,9 @@ import aQute.bnd.annotation.ProviderType;
  * @author Brian Wing Shun Chan
  */
 @ProviderType
-public class ZendeskSectionImpl extends ZendeskSectionBaseImpl {
+public class ZendeskArticleImpl extends ZendeskArticleBaseImpl {
 
-	public ZendeskSectionImpl() {
+	public ZendeskArticleImpl() {
 	}
 
 }

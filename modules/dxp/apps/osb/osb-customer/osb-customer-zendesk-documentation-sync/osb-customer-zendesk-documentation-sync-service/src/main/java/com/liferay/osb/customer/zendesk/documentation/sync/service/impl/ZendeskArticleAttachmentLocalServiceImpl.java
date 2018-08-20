@@ -12,12 +12,12 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.documentation.service.impl;
+package com.liferay.osb.customer.zendesk.documentation.sync.service.impl;
 
 import com.liferay.osb.customer.zendesk.connector.util.ZendeskHttp;
-import com.liferay.osb.customer.zendesk.documentation.model.ZendeskArticle;
-import com.liferay.osb.customer.zendesk.documentation.model.ZendeskArticleAttachment;
-import com.liferay.osb.customer.zendesk.documentation.service.base.ZendeskArticleAttachmentLocalServiceBaseImpl;
+import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle;
+import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment;
+import com.liferay.osb.customer.zendesk.documentation.sync.service.base.ZendeskArticleAttachmentLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;

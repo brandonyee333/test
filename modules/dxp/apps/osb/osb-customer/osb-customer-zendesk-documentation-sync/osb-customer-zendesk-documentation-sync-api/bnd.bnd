@@ -2,7 +2,7 @@ Bundle-Name: Liferay OSB Customer Zendesk Documentation Sync API
 Bundle-SymbolicName: com.liferay.osb.customer.zendesk.documentation.sync.api
 Bundle-Version: 1.0.0
 Export-Package:\
-	com.liferay.osb.customer.zendesk.documentation.exception,\
-	com.liferay.osb.customer.zendesk.documentation.model,\
-	com.liferay.osb.customer.zendesk.documentation.service,\
-	com.liferay.osb.customer.zendesk.documentation.service.persistence
+	com.liferay.osb.customer.zendesk.documentation.sync.exception,\
+	com.liferay.osb.customer.zendesk.documentation.sync.model,\
+	com.liferay.osb.customer.zendesk.documentation.sync.service,\
+	com.liferay.osb.customer.zendesk.documentation.sync.service.persistence
