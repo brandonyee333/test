@@ -2,11 +2,11 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping auto-import="false" default-lazy="false">
-	<import class="com.liferay.osb.customer.zendesk.documentation.model.ZendeskArticle" />
-	<import class="com.liferay.osb.customer.zendesk.documentation.model.ZendeskArticleAttachment" />
-	<import class="com.liferay.osb.customer.zendesk.documentation.model.ZendeskCategory" />
-	<import class="com.liferay.osb.customer.zendesk.documentation.model.ZendeskSection" />
-	<class name="com.liferay.osb.customer.zendesk.documentation.model.impl.ZendeskArticleImpl" table="OSBCustomer_ZendeskArticle">
+	<import class="com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle" />
+	<import class="com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment" />
+	<import class="com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory" />
+	<import class="com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection" />
+	<class name="com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleImpl" table="OSBCustomer_ZendeskArticle">
 		<id name="zendeskArticleId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -16,7 +16,7 @@
 		<property name="remoteId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="remoteHtmlURL" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
-	<class name="com.liferay.osb.customer.zendesk.documentation.model.impl.ZendeskArticleAttachmentImpl" table="OSBCustomer_ZendeskArticleAttachment">
+	<class name="com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleAttachmentImpl" table="OSBCustomer_ZendeskArticleAttachment">
 		<id name="zendeskArticleAttachmentId" type="long">
 			<generator class="assigned" />
 		</id>
@@ -26,14 +26,14 @@
 		<property name="remoteId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="remoteContentURL" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
-	<class name="com.liferay.osb.customer.zendesk.documentation.model.impl.ZendeskCategoryImpl" table="OSBCustomer_ZendeskCategory">
+	<class name="com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskCategoryImpl" table="OSBCustomer_ZendeskCategory">
 		<id name="zendeskCategoryId" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="documentationKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="remoteId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
-	<class name="com.liferay.osb.customer.zendesk.documentation.model.impl.ZendeskSectionImpl" table="OSBCustomer_ZendeskSection">
+	<class name="com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskSectionImpl" table="OSBCustomer_ZendeskSection">
 		<id name="zendeskSectionId" type="long">
 			<generator class="assigned" />
 		</id>

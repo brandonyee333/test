@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <model-hints>
-	<model name="com.liferay.osb.customer.zendesk.documentation.model.ZendeskArticle">
+	<model name="com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle">
 		<field name="zendeskArticleId" type="long" />
 		<field name="modifiedDate" type="Date" />
 		<field name="zendeskSectionId" type="long" />
@@ -13,7 +13,7 @@
 			<hint-collection name="URL" />
 		</field>
 	</model>
-	<model name="com.liferay.osb.customer.zendesk.documentation.model.ZendeskArticleAttachment">
+	<model name="com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment">
 		<field name="zendeskArticleAttachmentId" type="long" />
 		<field name="zendeskArticleId" type="long" />
 		<field name="filePath" type="String">
@@ -25,12 +25,12 @@
 			<hint-collection name="URL" />
 		</field>
 	</model>
-	<model name="com.liferay.osb.customer.zendesk.documentation.model.ZendeskCategory">
+	<model name="com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory">
 		<field name="zendeskCategoryId" type="long" />
 		<field name="documentationKey" type="String" />
 		<field name="remoteId" type="long" />
 	</model>
-	<model name="com.liferay.osb.customer.zendesk.documentation.model.ZendeskSection">
+	<model name="com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection">
 		<field name="zendeskSectionId" type="long" />
 		<field name="modifiedDate" type="Date" />
 		<field name="zendeskCategoryId" type="long" />

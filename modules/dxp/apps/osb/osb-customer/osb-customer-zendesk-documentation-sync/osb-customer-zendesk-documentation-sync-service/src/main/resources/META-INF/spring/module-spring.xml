@@ -7,12 +7,12 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
 >
-	<bean class="com.liferay.osb.customer.zendesk.documentation.service.impl.ZendeskArticleLocalServiceImpl" id="com.liferay.osb.customer.zendesk.documentation.service.ZendeskArticleLocalService" />
-	<bean class="com.liferay.osb.customer.zendesk.documentation.service.persistence.impl.ZendeskArticlePersistenceImpl" id="com.liferay.osb.customer.zendesk.documentation.service.persistence.ZendeskArticlePersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.customer.zendesk.documentation.service.impl.ZendeskArticleAttachmentLocalServiceImpl" id="com.liferay.osb.customer.zendesk.documentation.service.ZendeskArticleAttachmentLocalService" />
-	<bean class="com.liferay.osb.customer.zendesk.documentation.service.persistence.impl.ZendeskArticleAttachmentPersistenceImpl" id="com.liferay.osb.customer.zendesk.documentation.service.persistence.ZendeskArticleAttachmentPersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.customer.zendesk.documentation.service.impl.ZendeskCategoryLocalServiceImpl" id="com.liferay.osb.customer.zendesk.documentation.service.ZendeskCategoryLocalService" />
-	<bean class="com.liferay.osb.customer.zendesk.documentation.service.persistence.impl.ZendeskCategoryPersistenceImpl" id="com.liferay.osb.customer.zendesk.documentation.service.persistence.ZendeskCategoryPersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.customer.zendesk.documentation.service.impl.ZendeskSectionLocalServiceImpl" id="com.liferay.osb.customer.zendesk.documentation.service.ZendeskSectionLocalService" />
-	<bean class="com.liferay.osb.customer.zendesk.documentation.service.persistence.impl.ZendeskSectionPersistenceImpl" id="com.liferay.osb.customer.zendesk.documentation.service.persistence.ZendeskSectionPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.customer.zendesk.documentation.sync.service.impl.ZendeskArticleLocalServiceImpl" id="com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskArticleLocalService" />
+	<bean class="com.liferay.osb.customer.zendesk.documentation.sync.service.persistence.impl.ZendeskArticlePersistenceImpl" id="com.liferay.osb.customer.zendesk.documentation.sync.service.persistence.ZendeskArticlePersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.customer.zendesk.documentation.sync.service.impl.ZendeskArticleAttachmentLocalServiceImpl" id="com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskArticleAttachmentLocalService" />
+	<bean class="com.liferay.osb.customer.zendesk.documentation.sync.service.persistence.impl.ZendeskArticleAttachmentPersistenceImpl" id="com.liferay.osb.customer.zendesk.documentation.sync.service.persistence.ZendeskArticleAttachmentPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.customer.zendesk.documentation.sync.service.impl.ZendeskCategoryLocalServiceImpl" id="com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskCategoryLocalService" />
+	<bean class="com.liferay.osb.customer.zendesk.documentation.sync.service.persistence.impl.ZendeskCategoryPersistenceImpl" id="com.liferay.osb.customer.zendesk.documentation.sync.service.persistence.ZendeskCategoryPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.customer.zendesk.documentation.sync.service.impl.ZendeskSectionLocalServiceImpl" id="com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskSectionLocalService" />
+	<bean class="com.liferay.osb.customer.zendesk.documentation.sync.service.persistence.impl.ZendeskSectionPersistenceImpl" id="com.liferay.osb.customer.zendesk.documentation.sync.service.persistence.ZendeskSectionPersistence" parent="basePersistence" />
 </beans>
