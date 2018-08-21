@@ -318,10 +318,10 @@ public static class WatsonReport extends WatsonReportBaseModel {
 			Date reportDate = getReportDate();
 
 			if (reportDate != null) {
-				reportNameSB.append(getFormattedDate(reportDate, locale));
+				reportNameSB.append(DateUtil.getDate(reportDate, "dd-MM-yyyy", locale));
 			}
 			else {
-				reportNameSB.append(getFormattedDate(getCreateDate(), locale));
+				reportNameSB.append(DateUtil.getDate(getCreateDate(), "dd-MM-yyyy", locale));
 			}
 
 			return reportNameSB.toString();
@@ -337,10 +337,10 @@ public static class WatsonReport extends WatsonReportBaseModel {
 			Date reportDate = getReportDate();
 
 			if (reportDate != null) {
-				reportNameSB.append(getFormattedDate(reportDate, locale));
+				reportNameSB.append(DateUtil.getDate(reportDate, "dd-MM-yyyy", locale));
 			}
 			else {
-				reportNameSB.append(getFormattedDate(getCreateDate(), locale));
+				reportNameSB.append(DateUtil.getDate(getCreateDate(), "dd-MM-yyyy", locale));
 			}
 
 			return reportNameSB.toString();
