@@ -596,12 +596,12 @@ public class KaleoFormsAdminPortlet extends MVCPortlet {
 	}
 
 	protected DDMFormFieldValue getDDMFormFieldValueByNameAndInstanceId(
-			List<DDMFormFieldValue> ddmFormFieldValues, String name,
-			String instanceId) {
+		List<DDMFormFieldValue> ddmFormFieldValues, String name,
+		String instanceId) {
 
 		for (DDMFormFieldValue ddmFormFieldValue : ddmFormFieldValues) {
 			if (name.equals(ddmFormFieldValue.getName()) &&
-					instanceId.equals(ddmFormFieldValue.getInstanceId())) {
+				instanceId.equals(ddmFormFieldValue.getInstanceId())) {
 
 				return ddmFormFieldValue;
 			}
@@ -611,37 +611,44 @@ public class KaleoFormsAdminPortlet extends MVCPortlet {
 	}
 
 	protected List<DDMFormFieldValue> getDDMFormFieldValuesRemovedByReviewer(
-			List<DDMFormFieldValue> reviewedDDMFormFieldValues,
-			List<DDMFormFieldValue> ddmFormFieldValuesBeforeReview) {
+		List<DDMFormFieldValue> reviewedDDMFormFieldValues,
+		List<DDMFormFieldValue> ddmFormFieldValuesBeforeReview) {
 
 		List<DDMFormFieldValue> ddmFormFieldValuesRemovedByReviewer =
-				new ArrayList<>();
-
+			new ArrayList<>();
 
 		for (DDMFormFieldValue ddmFormFieldValueBeforeReview :
 				ddmFormFieldValuesBeforeReview) {
 
 			DDMFormFieldValue actualDDMFormFieldValue =
-					getDDMFormFieldValueByNameAndInstanceId(
-							reviewedDDMFormFieldValues,
-							ddmFormFieldValueBeforeReview.getName(),
-							ddmFormFieldValueBeforeReview.getInstanceId());
+				getDDMFormFieldValueByNameAndInstanceId(
+					reviewedDDMFormFieldValues,
+					ddmFormFieldValueBeforeReview.getName(),
+					ddmFormFieldValueBeforeReview.getInstanceId());
 
 			if (actualDDMFormFieldValue == null) {
 				ddmFormFieldValuesRemovedByReviewer.add(
-						ddmFormFieldValueBeforeReview);
+					ddmFormFieldValueBeforeReview);
 			}
-
 			else {
-				List<DDMFormFieldValue> nestedDDMFormFieldValuesRemovedByReviewer =
-						getDDMFormFieldValuesRemovedByReviewer(actualDDMFormFieldValue.getNestedDDMFormFieldValues(), ddmFormFieldValueBeforeReview.getNestedDDMFormFieldValues());
+				List<DDMFormFieldValue>
+					nestedDDMFormFieldValuesRemovedByReviewer =
+						getDDMFormFieldValuesRemovedByReviewer(
+							actualDDMFormFieldValue.
+								getNestedDDMFormFieldValues(),
+							ddmFormFieldValueBeforeReview.
+								getNestedDDMFormFieldValues());
 
 				if (!nestedDDMFormFieldValuesRemovedByReviewer.isEmpty()) {
-					ddmFormFieldValueBeforeReview.setNestedDDMFormFields(nestedDDMFormFieldValuesRemovedByReviewer);
-					ddmFormFieldValuesRemovedByReviewer.add(ddmFormFieldValueBeforeReview);
+					ddmFormFieldValueBeforeReview.setNestedDDMFormFields(
+						nestedDDMFormFieldValuesRemovedByReviewer);
+
+					ddmFormFieldValuesRemovedByReviewer.add(
+						ddmFormFieldValueBeforeReview);
 				}
 			}
 		}
+
 		return ddmFormFieldValuesRemovedByReviewer;
 	}
 
@@ -710,39 +717,40 @@ public class KaleoFormsAdminPortlet extends MVCPortlet {
 	}
 
 	protected void removeDDMFormFieldValuesRemovedByReviewer(
-			List<DDMFormFieldValue> updatedDDMFormFieldValues,
-			List<DDMFormFieldValue> ddmFormFieldValuesRemovedByReviewer) {
-
+		List<DDMFormFieldValue> currentDDMFormFieldValues,
+		List<DDMFormFieldValue> ddmFormFieldValuesRemovedByReviewer) {
 
 		List<DDMFormFieldValue> pendingRemovalDDMFormFieldValues =
-				new ArrayList<>();
+			new ArrayList<>();
 
-		for (DDMFormFieldValue ddmFormFieldValue : updatedDDMFormFieldValues) {
+		for (DDMFormFieldValue currentDDMFormFieldValue :
+				currentDDMFormFieldValues) {
+
 			DDMFormFieldValue actualDDMFormFieldValue =
-					getDDMFormFieldValueByNameAndInstanceId(
-							ddmFormFieldValuesRemovedByReviewer,
-							ddmFormFieldValue.getName(),
-							ddmFormFieldValue.getInstanceId());
+				getDDMFormFieldValueByNameAndInstanceId(
+					ddmFormFieldValuesRemovedByReviewer,
+					currentDDMFormFieldValue.getName(),
+					currentDDMFormFieldValue.getInstanceId());
 
 			if (actualDDMFormFieldValue != null) {
-				if (actualDDMFormFieldValue.equals(
-						ddmFormFieldValue)) {
-
-					pendingRemovalDDMFormFieldValues.add(ddmFormFieldValue);
+				if (actualDDMFormFieldValue.equals(currentDDMFormFieldValue)) {
+					pendingRemovalDDMFormFieldValues.add(
+						currentDDMFormFieldValue);
 				}
 				else {
 					removeDDMFormFieldValuesRemovedByReviewer(
-							ddmFormFieldValue.getNestedDDMFormFieldValues(),
-							actualDDMFormFieldValue.getNestedDDMFormFieldValues()
-					);
+						currentDDMFormFieldValue.getNestedDDMFormFieldValues(),
+						actualDDMFormFieldValue.getNestedDDMFormFieldValues());
 				}
 			}
 		}
 
 		if (!pendingRemovalDDMFormFieldValues.isEmpty()) {
-			updatedDDMFormFieldValues.removeAll(pendingRemovalDDMFormFieldValues);
+			currentDDMFormFieldValues.removeAll(
+				pendingRemovalDDMFormFieldValues);
 		}
 	}
+
 	/**
 	 * Stores the Kaleo process, workflow instance, and workflow task as
 	 * attributes in the request if the Kaleo process ID, workflow instance ID,
@@ -1014,7 +1022,7 @@ public class KaleoFormsAdminPortlet extends MVCPortlet {
 
 	@Reference(unbind = "-")
 	protected void setFieldsToDDMFormValuesConverter(
-			FieldsToDDMFormValuesConverter fieldsToDDMFormValuesConverter) {
+		FieldsToDDMFormValuesConverter fieldsToDDMFormValuesConverter) {
 
 		_fieldsToDDMFormValuesConverter = fieldsToDDMFormValuesConverter;
 	}
@@ -1137,28 +1145,28 @@ public class KaleoFormsAdminPortlet extends MVCPortlet {
 
 			long ddmTemplateId = ParamUtil.getLong(request, "ddmTemplateId");
 
-			DDMStructure ddmStructure =
-					ddlRecordSet.getDDMStructure(ddmTemplateId);
+			DDMStructure ddmStructure = ddlRecordSet.getDDMStructure(
+				ddmTemplateId);
 
 			long ddmStructureId = ddmStructure.getPrimaryKey();
 
 			DDMFormValues ddlRecordDDMFormValues = ddlRecord.getDDMFormValues();
 
 			Fields reviewFormFields = _ddm.getFields(
-					ddmStructureId, ddlRecordDDMFormValues);
+				ddmStructureId, ddlRecordDDMFormValues);
 
 			DDMFormValues reviewFormDDMFormValues =
-					_fieldsToDDMFormValuesConverter.convert(
-							ddmStructure, reviewFormFields);
+				_fieldsToDDMFormValuesConverter.convert(
+					ddmStructure, reviewFormFields);
 
 			List<DDMFormFieldValue> ddmFormFieldValuesRemovedByReviewer =
-					getDDMFormFieldValuesRemovedByReviewer(
-							ddmFormValues.getDDMFormFieldValues(),
-							reviewFormDDMFormValues.getDDMFormFieldValues());
+				getDDMFormFieldValuesRemovedByReviewer(
+					ddmFormValues.getDDMFormFieldValues(),
+					reviewFormDDMFormValues.getDDMFormFieldValues());
 
 			removeDDMFormFieldValuesRemovedByReviewer(
-					ddlRecordDDMFormValues.getDDMFormFieldValues(),
-					ddmFormFieldValuesRemovedByReviewer);
+				ddlRecordDDMFormValues.getDDMFormFieldValues(),
+				ddmFormFieldValuesRemovedByReviewer);
 
 			ddmFormValues = _ddmFormValuesMerger.merge(
 				ddmFormValues, ddlRecordDDMFormValues);
