@@ -271,7 +271,7 @@ public class AccountCustomerModelListener
 
 		ZendeskUser zendeskUser = new ZendeskUser();
 
-		zendeskUser.setEmailAddress(user.getEmailAddress());
+		zendeskUser.setEmail(user.getEmailAddress());
 		zendeskUser.setExternalId(user.getUuid());
 
 		String locale = ZendeskModelListenerUtil.convertToZendeskLocale(

@@ -27,8 +27,8 @@ public class ZendeskUser {
 	public ZendeskUser() {
 	}
 
-	public String getEmailAddress() {
-		return _emailAddress;
+	public String getEmail() {
+		return _email;
 	}
 
 	public String getExternalId() {
@@ -51,8 +51,8 @@ public class ZendeskUser {
 		return _tags;
 	}
 
-	public void setEmailAddress(String emailAddress) {
-		_emailAddress = emailAddress;
+	public void setEmail(String email) {
+		_email = email;
 	}
 
 	public void setExternalId(String externalId) {
@@ -82,8 +82,8 @@ public class ZendeskUser {
 
 		fieldsJSONObject.put("name", _name);
 
-		if (Validator.isNotNull(_emailAddress)) {
-			fieldsJSONObject.put("emailAddress", _emailAddress);
+		if (Validator.isNotNull(_email)) {
+			fieldsJSONObject.put("email", _email);
 		}
 
 		if (Validator.isNotNull(_externalId)) {
@@ -109,7 +109,7 @@ public class ZendeskUser {
 		return jsonObject;
 	}
 
-	private String _emailAddress;
+	private String _email;
 	private String _externalId;
 	private String _locale;
 	private String _name;
