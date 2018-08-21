@@ -541,21 +541,6 @@ public class KaleoFormsAdminPortlet extends MVCPortlet {
 		}
 	}
 
-	protected DDMFormFieldValue getByNameAndInstanceIdDDMFormFieldValue(
-		List<DDMFormFieldValue> ddmFormFieldValues, String name,
-		String instanceId) {
-
-		for (DDMFormFieldValue ddmFormFieldValue : ddmFormFieldValues) {
-			if (name.equals(ddmFormFieldValue.getName()) &&
-				instanceId.equals(ddmFormFieldValue.getInstanceId())) {
-
-				return ddmFormFieldValue;
-			}
-		}
-
-		return null;
-	}
-
 	/**
 	 * Returns an array of the DDL record IDs obtained from the action request.
 	 *
@@ -655,6 +640,21 @@ public class KaleoFormsAdminPortlet extends MVCPortlet {
 		}
 	}
 
+	protected DDMFormFieldValue getNameAndInstanceIdDDMFormFieldValue(
+		List<DDMFormFieldValue> ddmFormFieldValues, String name,
+		String instanceId) {
+
+		for (DDMFormFieldValue ddmFormFieldValue : ddmFormFieldValues) {
+			if (name.equals(ddmFormFieldValue.getName()) &&
+				instanceId.equals(ddmFormFieldValue.getInstanceId())) {
+
+				return ddmFormFieldValue;
+			}
+		}
+
+		return null;
+	}
+
 	protected List<DDMFormFieldValue> getRemovedByReviewerDDMFormFieldValues(
 		List<DDMFormFieldValue> reviewedDDMFormFieldValues,
 		List<DDMFormFieldValue> beforeReviewDDMFormFieldValues) {
@@ -666,7 +666,7 @@ public class KaleoFormsAdminPortlet extends MVCPortlet {
 				beforeReviewDDMFormFieldValues) {
 
 			DDMFormFieldValue actualDDMFormFieldValue =
-				getByNameAndInstanceIdDDMFormFieldValue(
+				getNameAndInstanceIdDDMFormFieldValue(
 					reviewedDDMFormFieldValues,
 					beforeReviewDDMFormFieldValue.getName(),
 					beforeReviewDDMFormFieldValue.getInstanceId());
@@ -727,7 +727,7 @@ public class KaleoFormsAdminPortlet extends MVCPortlet {
 				currentDDMFormFieldValues) {
 
 			DDMFormFieldValue actualDDMFormFieldValue =
-				getByNameAndInstanceIdDDMFormFieldValue(
+				getNameAndInstanceIdDDMFormFieldValue(
 					removedByReviewerDDMFormFieldValues,
 					currentDDMFormFieldValue.getName(),
 					currentDDMFormFieldValue.getInstanceId());
