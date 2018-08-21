@@ -1,10 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Modal = ({body, closeModal, footer, header, showModal}) =>
-	showModal && (
+import getCN from 'classnames';
+
+const Modal = ({body, closeModal, footer, header, showModal, size}) => {
+	const className = getCN(
+		'modal-dialog',
+		`${size ? `modal-${size}` : ''}`
+	);
+
+	return showModal && (
 		<div className="modal show" role="dialog" tabIndex="-1">
-			<div className="modal-dialog">
+			<div className={className}>
 				<div className="modal-content">
 					{header && (
 						<div className="modal-header">
@@ -30,13 +37,15 @@ const Modal = ({body, closeModal, footer, header, showModal}) =>
 			</div>
 		</div>
 	);
+};
 
 Modal.propTypes = {
 	body: PropTypes.node.isRequired,
 	closeModal: PropTypes.func.isRequired,
 	footer: PropTypes.node,
 	header: PropTypes.node,
-	showModal: PropTypes.bool.isRequired
+	showModal: PropTypes.bool.isRequired,
+	size: PropTypes.oneOf(['full-screen', 'lg', 'sm'])
 };
 
 export default Modal;

@@ -132,6 +132,7 @@ export default class AccountEnvironments extends React.Component {
 							closeModal={this.closeAddEnvironmentModal}
 							header={Liferay.Language.get('new-environment-configuration')}
 							showModal={modalTriggered}
+							size='lg'
 						/>
 					)}
 				</h3>
