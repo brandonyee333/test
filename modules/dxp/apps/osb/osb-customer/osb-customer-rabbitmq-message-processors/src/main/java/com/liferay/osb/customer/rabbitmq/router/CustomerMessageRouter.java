@@ -39,8 +39,6 @@ import com.liferay.osb.customer.rabbitmq.processors.UserDeleteMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.UserUpdateMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.ZendeskOrganizationExternalIdCreateMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.ZendeskUserExternalIdCreateMessageProcessor;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.util.Map;
 
@@ -251,8 +249,5 @@ public class CustomerMessageRouter extends BaseMessageRouter {
 
 		addRoute(zendeskUserExternalIdCreateMessageProcessor, properties);
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		CustomerMessageRouter.class);
 
 }

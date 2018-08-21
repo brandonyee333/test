@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.service.UserLocalService;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -44,7 +44,7 @@ public class ZendeskUserExternalIdCreateMessageProcessor
 
 		long classNameId = ClassNameLocalServiceUtil.getClassNameId(User.class);
 
-		User user = UserLocalServiceUtil.getUserByUuidAndCompanyId(
+		User user = _userLocalService.getUserByUuidAndCompanyId(
 			uuid, OSBConstants.COMPANY_ID);
 
 		boolean externalIdMappers =
@@ -66,5 +66,8 @@ public class ZendeskUserExternalIdCreateMessageProcessor
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
+
+	@Reference
+	private UserLocalService _userLocalService;
 
 }
