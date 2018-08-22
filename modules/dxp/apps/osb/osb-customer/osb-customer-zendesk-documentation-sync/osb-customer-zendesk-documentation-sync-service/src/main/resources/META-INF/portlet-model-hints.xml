@@ -28,6 +28,9 @@
 	<model name="com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory">
 		<field name="zendeskCategoryId" type="long" />
 		<field name="documentationKey" type="String" />
+		<field name="articleLabels" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
 		<field name="remoteId" type="long" />
 	</model>
 	<model name="com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection">

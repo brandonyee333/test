@@ -15,7 +15,10 @@
 package com.liferay.osb.customer.zendesk.documentation.sync.web.internal.portlet;
 
 import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskCategoryLocalService;
+import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskSectionLocalService;
 import com.liferay.osb.customer.zendesk.documentation.sync.web.internal.constants.ZendeskDocumentationSyncPortletKeys;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -51,18 +54,6 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class AdminPortlet extends MVCPortlet {
 
-	public void addZendeskCategory(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		String documentationKey = ParamUtil.getString(
-			actionRequest, "documentationKey");
-		long remoteId = ParamUtil.getLong(actionRequest, "remoteId");
-
-		_zendeskCategoryLocalService.addZendeskCategory(
-			documentationKey, remoteId);
-	}
-
 	public void deleteZendeskCategory(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
@@ -73,7 +64,7 @@ public class AdminPortlet extends MVCPortlet {
 		_zendeskCategoryLocalService.deleteZendeskCategory(zendeskCategoryId);
 	}
 
-	public void importDocumentationFile(
+	public void importDocumentationArchive(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
@@ -90,18 +81,51 @@ public class AdminPortlet extends MVCPortlet {
 
 			inputStream = uploadPortletRequest.getFileAsStream("file");
 
-			_zendeskCategoryLocalService.importDocumentationFile(
+			_zendeskCategoryLocalService.importDocumentationArchive(
 				zendeskCategoryId, fileName, inputStream);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw e;
 		}
 		finally {
 			StreamUtil.cleanUp(inputStream);
 		}
 	}
 
+	public void updateZendeskCategory(
+			ActionRequest actionRequest, ActionResponse actionResponse)
+		throws Exception {
+
+		long zendeskCategoryId = ParamUtil.getLong(
+			actionRequest, "zendeskCategoryId");
+
+		String documentationKey = ParamUtil.getString(
+			actionRequest, "documentationKey");
+		String articleLabels = ParamUtil.getString(
+			actionRequest, "articleLabels");
+		long remoteId = ParamUtil.getLong(actionRequest, "remoteId");
+
+		if (zendeskCategoryId > 0) {
+			_zendeskCategoryLocalService.updateZendeskCategory(
+				zendeskCategoryId, articleLabels);
+		}
+		else {
+			_zendeskCategoryLocalService.addZendeskCategory(
+				documentationKey, articleLabels, remoteId);
+		}
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(AdminPortlet.class);
+
 	@Reference
 	private Portal _portal;
 
 	@Reference
 	private ZendeskCategoryLocalService _zendeskCategoryLocalService;
+
+	@Reference
+	private ZendeskSectionLocalService _zendeskSectionLocalService;
 
 }

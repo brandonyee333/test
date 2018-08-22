@@ -63,6 +63,7 @@
 		<!-- Other fields -->
 
 		<column name="documentationKey" type="String" />
+		<column name="articleLabels" type="String" />
 		<column name="remoteId" type="long" />
 
 		<!-- Finder methods -->

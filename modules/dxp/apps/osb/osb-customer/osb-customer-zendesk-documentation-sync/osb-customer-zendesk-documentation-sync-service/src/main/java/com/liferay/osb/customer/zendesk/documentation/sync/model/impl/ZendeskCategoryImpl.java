@@ -16,13 +16,20 @@ package com.liferay.osb.customer.zendesk.documentation.sync.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+
 /**
- * @author Brian Wing Shun Chan
+ * @author Amos Fong
  */
 @ProviderType
 public class ZendeskCategoryImpl extends ZendeskCategoryBaseImpl {
 
 	public ZendeskCategoryImpl() {
+	}
+
+	public String[] getRemoteLabelNames() {
+		return StringUtil.split(getArticleLabels(), StringPool.NEW_LINE);
 	}
 
 }

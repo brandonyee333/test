@@ -58,6 +58,13 @@ PortletURL portletURL = renderResponse.createRenderURL();
 
 			<liferay-ui:search-container-column-text
 				href="<%= rowURL %>"
+				name="article-labels"
+			>
+				<%= StringUtil.replace(zendeskCategory.getArticleLabels(), StringPool.NEW_LINE, "<br />") %>
+			</liferay-ui:search-container-column-text>
+
+			<liferay-ui:search-container-column-text
+				href="<%= rowURL %>"
 				name="zendesk-id"
 				property="remoteId"
 			/>

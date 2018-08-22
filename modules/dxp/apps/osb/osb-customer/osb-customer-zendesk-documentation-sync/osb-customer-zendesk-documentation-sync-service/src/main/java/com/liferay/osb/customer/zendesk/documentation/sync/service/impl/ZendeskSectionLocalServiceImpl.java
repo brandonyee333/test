@@ -19,7 +19,6 @@ import com.liferay.osb.customer.zendesk.connector.util.ZendeskBaseWebService;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.base.ZendeskSectionLocalServiceBaseImpl;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -41,7 +40,7 @@ public class ZendeskSectionLocalServiceImpl
 			long zendeskCategoryId, String documentationKey,
 			Map<String, String> nameMap, Map<String, String> descriptionMap,
 			int position)
-		throws PortalException {
+		throws Exception {
 
 		if (_log.isInfoEnabled()) {
 			_log.info("Adding section " + documentationKey);
@@ -70,6 +69,13 @@ public class ZendeskSectionLocalServiceImpl
 		return zendeskSectionPersistence.update(zendeskSection);
 	}
 
+	public ZendeskSection fetchZendeskSection(
+		long zendeskCategoryId, String documentationKey) {
+
+		return zendeskSectionPersistence.fetchByZCI_DK(
+			zendeskCategoryId, documentationKey);
+	}
+
 	public List<ZendeskSection> getZendeskSections(long zendeskCategoryId) {
 		return zendeskSectionPersistence.findByZendeskCategoryId(
 			zendeskCategoryId);
@@ -84,7 +90,7 @@ public class ZendeskSectionLocalServiceImpl
 			long zendeskSectionId, long zendeskCategoryId,
 			String documentationKey, Map<String, String> nameMap,
 			Map<String, String> descriptionMap, int position)
-		throws PortalException {
+		throws Exception {
 
 		if (_log.isInfoEnabled()) {
 			_log.info("Updating section " + documentationKey);
@@ -112,7 +118,7 @@ public class ZendeskSectionLocalServiceImpl
 	protected JSONObject addRemoteZendeskSection(
 			long remoteCategoryId, Map<String, String> nameMap,
 			Map<String, String> descriptionMap, int position)
-		throws PortalException {
+		throws Exception {
 
 		JSONObject sectionJSONObject = JSONFactoryUtil.createJSONObject();
 
@@ -146,7 +152,7 @@ public class ZendeskSectionLocalServiceImpl
 
 	protected JSONObject updateRemoteZendeskSection(
 			long remoteId, long remoteCategoryId, int position)
-		throws PortalException {
+		throws Exception {
 
 		JSONObject sectionJSONObject = JSONFactoryUtil.createJSONObject();
 
@@ -166,7 +172,7 @@ public class ZendeskSectionLocalServiceImpl
 	protected void updateRemoteZendeskTranslations(
 			long remoteId, Map<String, String> nameMap,
 			Map<String, String> descriptionMap)
-		throws PortalException {
+		throws Exception {
 
 		for (String locale : nameMap.keySet()) {
 			JSONObject translationJSONObject =

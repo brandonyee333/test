@@ -16,6 +16,7 @@ package com.liferay.osb.customer.zendesk.documentation.sync.service.impl;
 
 import com.liferay.osb.customer.zendesk.documentation.sync.exception.DocumentationImportException;
 import com.liferay.osb.customer.zendesk.documentation.sync.exception.RequiredZendeskCategoryException;
+import com.liferay.osb.customer.zendesk.documentation.sync.internal.importer.DocumentationArchiveImporter;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.base.ZendeskCategoryLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -32,7 +33,7 @@ public class ZendeskCategoryLocalServiceImpl
 	extends ZendeskCategoryLocalServiceBaseImpl {
 
 	public ZendeskCategory addZendeskCategory(
-			String documentationKey, long remoteId)
+			String documentationKey, String articleLabels, long remoteId)
 		throws PortalException {
 
 		long zendeskCategoryId = counterLocalService.increment();
@@ -41,6 +42,7 @@ public class ZendeskCategoryLocalServiceImpl
 			zendeskCategoryId);
 
 		zendeskCategory.setDocumentationKey(documentationKey);
+		zendeskCategory.setArticleLabels(articleLabels);
 		zendeskCategory.setRemoteId(remoteId);
 
 		return zendeskCategoryPersistence.update(zendeskCategory);
@@ -58,7 +60,7 @@ public class ZendeskCategoryLocalServiceImpl
 		return zendeskCategoryPersistence.remove(zendeskCategoryId);
 	}
 
-	public void importDocumentationFile(
+	public void importDocumentationArchive(
 			long zendeskCategoryId, String fileName, InputStream inputStream)
 		throws Exception {
 
@@ -66,16 +68,36 @@ public class ZendeskCategoryLocalServiceImpl
 			throw new DocumentationImportException();
 		}
 
+		ZendeskCategory zendeskCategory =
+			zendeskCategoryPersistence.findByPrimaryKey(zendeskCategoryId);
+
 		ZipReader zipReader = null;
 
 		try {
 			zipReader = ZipReaderFactoryUtil.getZipReader(inputStream);
+
+			DocumentationArchiveImporter documentationArchiveImporter =
+				new DocumentationArchiveImporter(zipReader, zendeskCategory);
+
+			documentationArchiveImporter.importArchive();
 		}
 		finally {
 			if (zipReader == null) {
 				zipReader.close();
 			}
 		}
+	}
+
+	public ZendeskCategory updateZendeskCategory(
+			long zendeskCategoryId, String articleLabels)
+		throws PortalException {
+
+		ZendeskCategory zendeskCategory =
+			zendeskCategoryPersistence.findByPrimaryKey(zendeskCategoryId);
+
+		zendeskCategory.setArticleLabels(articleLabels);
+
+		return zendeskCategoryPersistence.update(zendeskCategory);
 	}
 
 }

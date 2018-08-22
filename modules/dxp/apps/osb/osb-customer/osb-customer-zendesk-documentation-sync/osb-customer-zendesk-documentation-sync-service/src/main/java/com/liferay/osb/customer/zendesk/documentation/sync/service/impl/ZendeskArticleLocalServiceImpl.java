@@ -20,7 +20,6 @@ import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.base.ZendeskArticleLocalServiceBaseImpl;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -29,8 +28,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
-
-import java.io.File;
 
 import java.util.Date;
 import java.util.List;
@@ -45,7 +42,7 @@ public class ZendeskArticleLocalServiceImpl
 	public ZendeskArticle addZendeskArticle(
 			long zendeskSectionId, String documentationKey,
 			Map<String, String> titleMap, Map<String, String> bodyMap,
-			int position, String[] labelNames, Map<String, File> attachments)
+			int position, String[] labelNames, Map<String, byte[]> attachments)
 		throws Exception {
 
 		// Zendesk article
@@ -79,7 +76,7 @@ public class ZendeskArticleLocalServiceImpl
 
 		// Zendesk article attachments
 
-		for (Map.Entry<String, File> entry : attachments.entrySet()) {
+		for (Map.Entry<String, byte[]> entry : attachments.entrySet()) {
 			ZendeskArticleAttachment zendeskArticleAttachment =
 				zendeskArticleAttachmentLocalService.
 					addZendeskArticleAttachment(
@@ -96,11 +93,23 @@ public class ZendeskArticleLocalServiceImpl
 		return zendeskArticle;
 	}
 
+	public ZendeskArticle fetchZendeskArticle(
+		long zendeskSectionId, String documentationKey) {
+
+		return zendeskArticlePersistence.fetchByZSI_DK(
+			zendeskSectionId, documentationKey);
+	}
+
+	public int getZendeskArticleCount(long zendeskSectionId) {
+		return zendeskArticlePersistence.countByZendeskSectionId(
+			zendeskSectionId);
+	}
+
 	public ZendeskArticle updateZendeskArticle(
 			long zendeskArticleId, long zendeskSectionId,
 			String documentationKey, Map<String, String> titleMap,
 			Map<String, String> bodyMap, int position, String[] labelNames,
-			Map<String, File> attachments)
+			Map<String, byte[]> attachments)
 		throws Exception {
 
 		// Zendesk article
@@ -136,7 +145,7 @@ public class ZendeskArticleLocalServiceImpl
 			}
 		}
 
-		for (Map.Entry<String, File> entry : attachments.entrySet()) {
+		for (Map.Entry<String, byte[]> entry : attachments.entrySet()) {
 			ZendeskArticleAttachment zendeskArticleAttachment =
 				zendeskArticleAttachmentLocalService.
 					updateZendeskArticleAttachment(
@@ -158,12 +167,18 @@ public class ZendeskArticleLocalServiceImpl
 	protected JSONObject addRemoteZendeskArticle(
 			long remoteSectionId, Map<String, String> titleMap,
 			Map<String, String> bodyMap, int position, String[] labelNames)
-		throws PortalException {
+		throws Exception {
 
 		JSONObject articleJSONObject = JSONFactoryUtil.createJSONObject();
 
 		if (!ArrayUtil.isEmpty(labelNames)) {
-			articleJSONObject.put("label_names", StringUtil.merge(labelNames));
+			JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+			for (String labelName : labelNames) {
+				jsonArray.put(labelName);
+			}
+
+			articleJSONObject.put("label_names", jsonArray);
 		}
 
 		articleJSONObject.put("position", position);
@@ -209,12 +224,18 @@ public class ZendeskArticleLocalServiceImpl
 	protected JSONObject updateRemoteZendeskArticle(
 			long remoteId, long remoteSectionId, int position,
 			String[] labelNames)
-		throws PortalException {
+		throws Exception {
 
 		JSONObject articleJSONObject = JSONFactoryUtil.createJSONObject();
 
 		if (!ArrayUtil.isEmpty(labelNames)) {
-			articleJSONObject.put("label_names", StringUtil.merge(labelNames));
+			JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+			for (String labelName : labelNames) {
+				jsonArray.put(labelName);
+			}
+
+			articleJSONObject.put("label_names", jsonArray);
 		}
 
 		articleJSONObject.put("position", position);
@@ -233,7 +254,7 @@ public class ZendeskArticleLocalServiceImpl
 	protected void updateRemoteZendeskTranslations(
 			long remoteId, Map<String, String> titleMap,
 			Map<String, String> bodyMap)
-		throws PortalException {
+		throws Exception {
 
 		for (String locale : titleMap.keySet()) {
 			JSONObject translationJSONObject =

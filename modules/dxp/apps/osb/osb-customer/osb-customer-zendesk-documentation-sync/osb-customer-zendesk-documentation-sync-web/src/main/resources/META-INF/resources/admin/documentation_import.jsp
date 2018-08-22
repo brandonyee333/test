@@ -31,11 +31,11 @@ portletDisplay.setURLBack(redirect);
 	<%= HtmlUtil.escape(zendeskCategory.getDocumentationKey()) %>
 </liferay-frontend:info-bar>
 
-<portlet:actionURL name="importDocumentationFile" var="importDocumentationFileURL">
+<portlet:actionURL name="importDocumentationArchive" var="importDocumentationArchiveURL">
 	<portlet:param name="mvcPath" value="/admin/documentation_import.jsp" />
 </portlet:actionURL>
 
-<aui:form action="<%= importDocumentationFileURL %>" class="lfr-dynamic-form" cssClass="container-fluid-1280" enctype="multipart/form-data" method="post">
+<aui:form action="<%= importDocumentationArchiveURL %>" class="lfr-dynamic-form" cssClass="container-fluid-1280" enctype="multipart/form-data" method="post">
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 	<aui:input name="zendeskCategoryId" type="hidden" value="<%= String.valueOf(zendeskCategoryId) %>" />
 

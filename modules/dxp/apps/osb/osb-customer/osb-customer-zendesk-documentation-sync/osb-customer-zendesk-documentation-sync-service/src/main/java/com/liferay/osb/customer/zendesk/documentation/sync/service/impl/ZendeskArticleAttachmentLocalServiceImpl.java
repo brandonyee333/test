@@ -20,15 +20,18 @@ import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.base.ZendeskArticleAttachmentLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.Digester;
+import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
-import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,14 +44,14 @@ public class ZendeskArticleAttachmentLocalServiceImpl
 	extends ZendeskArticleAttachmentLocalServiceBaseImpl {
 
 	public ZendeskArticleAttachment addZendeskArticleAttachment(
-			long zendeskArticleId, String filePath, File file)
+			long zendeskArticleId, String filePath, byte[] bytes)
 		throws Exception {
 
 		ZendeskArticle zendeskArticle =
 			zendeskArticlePersistence.findByPrimaryKey(zendeskArticleId);
 
 		JSONObject jsonObject = addRemoteZendeskArticleAttachment(
-			zendeskArticle.getRemoteId(), file);
+			zendeskArticle.getRemoteId(), filePath, bytes);
 
 		JSONObject articleAttachmentJSONObject = jsonObject.getJSONObject(
 			"article_attachment");
@@ -62,7 +65,8 @@ public class ZendeskArticleAttachmentLocalServiceImpl
 		zendeskArticleAttachment.setZendeskArticleId(zendeskArticleId);
 		zendeskArticleAttachment.setFilePath(filePath);
 
-		String checksum = FileUtil.getMD5Checksum(file);
+		String checksum = DigesterUtil.digestHex(
+			Digester.MD5, new UnsyncByteArrayInputStream(bytes));
 
 		zendeskArticleAttachment.setChecksum(checksum);
 
@@ -85,11 +89,16 @@ public class ZendeskArticleAttachmentLocalServiceImpl
 			ZendeskArticleAttachment zendeskArticleAttachment)
 		throws PortalException {
 
-		_zendeskBaseWebService.delete(
-			ZendeskRESTEndpoints.URL_API_V2 +
-				"help_center/articles/attachments/" +
-					zendeskArticleAttachment.getRemoteId() + ".json",
-			StringPool.BLANK);
+		try {
+			_zendeskBaseWebService.delete(
+				ZendeskRESTEndpoints.URL_API_V2 +
+					"help_center/articles/attachments/" +
+						zendeskArticleAttachment.getRemoteId() + ".json",
+				StringPool.BLANK);
+		}
+		catch (Exception e) {
+			throw new PortalException(e);
+		}
 
 		zendeskArticleAttachmentPersistence.remove(zendeskArticleAttachment);
 
@@ -109,7 +118,7 @@ public class ZendeskArticleAttachmentLocalServiceImpl
 	}
 
 	public ZendeskArticleAttachment updateZendeskArticleAttachment(
-			long zendeskArticleId, String filePath, File file)
+			long zendeskArticleId, String filePath, byte[] bytes)
 		throws Exception {
 
 		ZendeskArticleAttachment zendeskArticleAttachment =
@@ -118,10 +127,11 @@ public class ZendeskArticleAttachmentLocalServiceImpl
 
 		if (zendeskArticleAttachment == null) {
 			return addZendeskArticleAttachment(
-				zendeskArticleId, filePath, file);
+				zendeskArticleId, filePath, bytes);
 		}
 
-		String checksum = FileUtil.getMD5Checksum(file);
+		String checksum = DigesterUtil.digestHex(
+			Digester.MD5, new UnsyncByteArrayInputStream(bytes));
 
 		if (checksum.equals(zendeskArticleAttachment.getChecksum())) {
 			if (_log.isDebugEnabled()) {
@@ -135,21 +145,25 @@ public class ZendeskArticleAttachmentLocalServiceImpl
 
 		deleteZendeskArticleAttachment(zendeskArticleAttachment);
 
-		return addZendeskArticleAttachment(zendeskArticleId, filePath, file);
+		return addZendeskArticleAttachment(zendeskArticleId, filePath, bytes);
 	}
 
 	protected JSONObject addRemoteZendeskArticleAttachment(
-			long remoteArticleId, File file)
+			long remoteArticleId, String filePath, byte[] bytes)
 		throws Exception {
 
 		Map<String, String> params = new HashMap<>();
 
 		params.put("inline", Boolean.TRUE.toString());
 
+		Path path = Paths.get(filePath);
+
+		Path fileNamePath = path.getFileName();
+
 		return _zendeskBaseWebService.post(
 			ZendeskRESTEndpoints.URL_API_V2 + "help_center/articles/" +
 				remoteArticleId + "/attachments.json",
-			params, file);
+			params, fileNamePath.toString(), bytes);
 	}
 
 	protected String buildMessage(
