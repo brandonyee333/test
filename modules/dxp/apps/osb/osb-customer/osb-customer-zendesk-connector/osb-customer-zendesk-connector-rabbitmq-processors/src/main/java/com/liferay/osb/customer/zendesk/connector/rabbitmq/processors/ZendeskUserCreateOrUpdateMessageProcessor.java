@@ -44,7 +44,7 @@ public class ZendeskUserCreateOrUpdateMessageProcessor
 
 		_messagePublisher.sendMessage(
 			ZendeskConnectorConfigurationValues.RABBITMQ_MESSAGE_EXCHANGE_NAME,
-			ZendeskRESTEndpoints.USERS_CREATE_OR_UPDATE, responseJSONObject);
+			"zendesk.user.create.or.update", responseJSONObject);
 	}
 
 	@Reference
