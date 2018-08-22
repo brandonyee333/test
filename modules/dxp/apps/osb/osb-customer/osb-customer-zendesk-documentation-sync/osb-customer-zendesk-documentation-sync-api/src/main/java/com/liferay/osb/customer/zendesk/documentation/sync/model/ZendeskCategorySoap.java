@@ -34,6 +34,7 @@ public class ZendeskCategorySoap implements Serializable {
 
 		soapModel.setZendeskCategoryId(model.getZendeskCategoryId());
 		soapModel.setDocumentationKey(model.getDocumentationKey());
+		soapModel.setArticleLabels(model.getArticleLabels());
 		soapModel.setRemoteId(model.getRemoteId());
 
 		return soapModel;
@@ -105,6 +106,14 @@ public class ZendeskCategorySoap implements Serializable {
 		_documentationKey = documentationKey;
 	}
 
+	public String getArticleLabels() {
+		return _articleLabels;
+	}
+
+	public void setArticleLabels(String articleLabels) {
+		_articleLabels = articleLabels;
+	}
+
 	public long getRemoteId() {
 		return _remoteId;
 	}
@@ -115,5 +124,6 @@ public class ZendeskCategorySoap implements Serializable {
 
 	private long _zendeskCategoryId;
 	private String _documentationKey;
+	private String _articleLabels;
 	private long _remoteId;
 }

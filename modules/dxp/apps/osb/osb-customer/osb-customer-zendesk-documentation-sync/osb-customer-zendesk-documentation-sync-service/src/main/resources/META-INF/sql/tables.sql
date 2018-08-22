@@ -19,6 +19,7 @@ create table OSBCustomer_ZendeskArticleAttachment (
 create table OSBCustomer_ZendeskCategory (
 	zendeskCategoryId LONG not null primary key,
 	documentationKey VARCHAR(75) null,
+	articleLabels STRING null,
 	remoteId LONG
 );
 

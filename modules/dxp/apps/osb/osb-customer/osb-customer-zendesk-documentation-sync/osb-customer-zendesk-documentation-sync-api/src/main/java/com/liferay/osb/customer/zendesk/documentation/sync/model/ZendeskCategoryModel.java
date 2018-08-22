@@ -90,6 +90,21 @@ public interface ZendeskCategoryModel extends BaseModel<ZendeskCategory> {
 	public void setDocumentationKey(String documentationKey);
 
 	/**
+	 * Returns the article labels of this zendesk category.
+	 *
+	 * @return the article labels of this zendesk category
+	 */
+	@AutoEscape
+	public String getArticleLabels();
+
+	/**
+	 * Sets the article labels of this zendesk category.
+	 *
+	 * @param articleLabels the article labels of this zendesk category
+	 */
+	public void setArticleLabels(String articleLabels);
+
+	/**
 	 * Returns the remote ID of this zendesk category.
 	 *
 	 * @return the remote ID of this zendesk category

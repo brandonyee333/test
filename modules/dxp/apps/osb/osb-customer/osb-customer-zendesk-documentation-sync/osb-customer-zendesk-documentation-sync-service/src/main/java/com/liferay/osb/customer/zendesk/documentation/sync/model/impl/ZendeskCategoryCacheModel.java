@@ -63,12 +63,14 @@ public class ZendeskCategoryCacheModel implements CacheModel<ZendeskCategory>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(7);
+		StringBundler sb = new StringBundler(9);
 
 		sb.append("{zendeskCategoryId=");
 		sb.append(zendeskCategoryId);
 		sb.append(", documentationKey=");
 		sb.append(documentationKey);
+		sb.append(", articleLabels=");
+		sb.append(articleLabels);
 		sb.append(", remoteId=");
 		sb.append(remoteId);
 		sb.append("}");
@@ -89,6 +91,13 @@ public class ZendeskCategoryCacheModel implements CacheModel<ZendeskCategory>,
 			zendeskCategoryImpl.setDocumentationKey(documentationKey);
 		}
 
+		if (articleLabels == null) {
+			zendeskCategoryImpl.setArticleLabels("");
+		}
+		else {
+			zendeskCategoryImpl.setArticleLabels(articleLabels);
+		}
+
 		zendeskCategoryImpl.setRemoteId(remoteId);
 
 		zendeskCategoryImpl.resetOriginalValues();
@@ -100,6 +109,7 @@ public class ZendeskCategoryCacheModel implements CacheModel<ZendeskCategory>,
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		zendeskCategoryId = objectInput.readLong();
 		documentationKey = objectInput.readUTF();
+		articleLabels = objectInput.readUTF();
 
 		remoteId = objectInput.readLong();
 	}
@@ -116,10 +126,18 @@ public class ZendeskCategoryCacheModel implements CacheModel<ZendeskCategory>,
 			objectOutput.writeUTF(documentationKey);
 		}
 
+		if (articleLabels == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(articleLabels);
+		}
+
 		objectOutput.writeLong(remoteId);
 	}
 
 	public long zendeskCategoryId;
 	public String documentationKey;
+	public String articleLabels;
 	public long remoteId;
 }

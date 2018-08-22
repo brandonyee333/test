@@ -54,4 +54,6 @@ public interface ZendeskCategory extends ZendeskCategoryModel, PersistedModel {
 				return ZendeskCategory.class;
 			}
 		};
+
+	public String[] getRemoteLabelNames();
 }

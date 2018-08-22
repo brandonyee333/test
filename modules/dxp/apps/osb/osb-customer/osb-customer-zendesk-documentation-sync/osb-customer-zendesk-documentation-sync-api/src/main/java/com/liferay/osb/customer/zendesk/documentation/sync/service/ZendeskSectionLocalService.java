@@ -64,7 +64,7 @@ public interface ZendeskSectionLocalService extends BaseLocalService,
 	public ZendeskSection addZendeskSection(long zendeskCategoryId,
 		String documentationKey, Map<String, String> nameMap,
 		Map<String, String> descriptionMap, int position)
-		throws PortalException;
+		throws Exception;
 
 	/**
 	* Adds the zendesk section to the database. Also notifies the appropriate model listeners.
@@ -174,6 +174,10 @@ public interface ZendeskSectionLocalService extends BaseLocalService,
 	public ZendeskSection fetchZendeskSection(long zendeskSectionId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ZendeskSection fetchZendeskSection(long zendeskCategoryId,
+		String documentationKey);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -233,7 +237,7 @@ public interface ZendeskSectionLocalService extends BaseLocalService,
 	public ZendeskSection updateZendeskSection(long zendeskSectionId,
 		long zendeskCategoryId, String documentationKey,
 		Map<String, String> nameMap, Map<String, String> descriptionMap,
-		int position) throws PortalException;
+		int position) throws Exception;
 
 	/**
 	* Updates the zendesk section in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

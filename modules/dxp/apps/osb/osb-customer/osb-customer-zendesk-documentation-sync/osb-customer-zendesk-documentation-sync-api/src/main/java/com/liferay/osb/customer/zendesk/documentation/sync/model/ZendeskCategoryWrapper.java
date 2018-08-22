@@ -59,6 +59,7 @@ public class ZendeskCategoryWrapper implements ZendeskCategory,
 
 		attributes.put("zendeskCategoryId", getZendeskCategoryId());
 		attributes.put("documentationKey", getDocumentationKey());
+		attributes.put("articleLabels", getArticleLabels());
 		attributes.put("remoteId", getRemoteId());
 
 		return attributes;
@@ -78,6 +79,12 @@ public class ZendeskCategoryWrapper implements ZendeskCategory,
 			setDocumentationKey(documentationKey);
 		}
 
+		String articleLabels = (String)attributes.get("articleLabels");
+
+		if (articleLabels != null) {
+			setArticleLabels(articleLabels);
+		}
+
 		Long remoteId = (Long)attributes.get("remoteId");
 
 		if (remoteId != null) {
@@ -93,6 +100,16 @@ public class ZendeskCategoryWrapper implements ZendeskCategory,
 	@Override
 	public int compareTo(ZendeskCategory zendeskCategory) {
 		return _zendeskCategory.compareTo(zendeskCategory);
+	}
+
+	/**
+	* Returns the article labels of this zendesk category.
+	*
+	* @return the article labels of this zendesk category
+	*/
+	@Override
+	public String getArticleLabels() {
+		return _zendeskCategory.getArticleLabels();
 	}
 
 	/**
@@ -135,6 +152,11 @@ public class ZendeskCategoryWrapper implements ZendeskCategory,
 		return _zendeskCategory.getRemoteId();
 	}
 
+	@Override
+	public String[] getRemoteLabelNames() {
+		return _zendeskCategory.getRemoteLabelNames();
+	}
+
 	/**
 	* Returns the zendesk category ID of this zendesk category.
 	*
@@ -168,6 +190,16 @@ public class ZendeskCategoryWrapper implements ZendeskCategory,
 	@Override
 	public void persist() {
 		_zendeskCategory.persist();
+	}
+
+	/**
+	* Sets the article labels of this zendesk category.
+	*
+	* @param articleLabels the article labels of this zendesk category
+	*/
+	@Override
+	public void setArticleLabels(String articleLabels) {
+		_zendeskCategory.setArticleLabels(articleLabels);
 	}
 
 	@Override

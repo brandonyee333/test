@@ -63,6 +63,7 @@ public class ZendeskCategoryModelImpl extends BaseModelImpl<ZendeskCategory>
 	public static final Object[][] TABLE_COLUMNS = {
 			{ "zendeskCategoryId", Types.BIGINT },
 			{ "documentationKey", Types.VARCHAR },
+			{ "articleLabels", Types.VARCHAR },
 			{ "remoteId", Types.BIGINT }
 		};
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
@@ -70,10 +71,11 @@ public class ZendeskCategoryModelImpl extends BaseModelImpl<ZendeskCategory>
 	static {
 		TABLE_COLUMNS_MAP.put("zendeskCategoryId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("documentationKey", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("articleLabels", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("remoteId", Types.BIGINT);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSBCustomer_ZendeskCategory (zendeskCategoryId LONG not null primary key,documentationKey VARCHAR(75) null,remoteId LONG)";
+	public static final String TABLE_SQL_CREATE = "create table OSBCustomer_ZendeskCategory (zendeskCategoryId LONG not null primary key,documentationKey VARCHAR(75) null,articleLabels STRING null,remoteId LONG)";
 	public static final String TABLE_SQL_DROP = "drop table OSBCustomer_ZendeskCategory";
 	public static final String ORDER_BY_JPQL = " ORDER BY zendeskCategory.zendeskCategoryId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY OSBCustomer_ZendeskCategory.zendeskCategoryId ASC";
@@ -133,6 +135,7 @@ public class ZendeskCategoryModelImpl extends BaseModelImpl<ZendeskCategory>
 
 		attributes.put("zendeskCategoryId", getZendeskCategoryId());
 		attributes.put("documentationKey", getDocumentationKey());
+		attributes.put("articleLabels", getArticleLabels());
 		attributes.put("remoteId", getRemoteId());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
@@ -153,6 +156,12 @@ public class ZendeskCategoryModelImpl extends BaseModelImpl<ZendeskCategory>
 
 		if (documentationKey != null) {
 			setDocumentationKey(documentationKey);
+		}
+
+		String articleLabels = (String)attributes.get("articleLabels");
+
+		if (articleLabels != null) {
+			setArticleLabels(articleLabels);
 		}
 
 		Long remoteId = (Long)attributes.get("remoteId");
@@ -198,6 +207,21 @@ public class ZendeskCategoryModelImpl extends BaseModelImpl<ZendeskCategory>
 	}
 
 	@Override
+	public String getArticleLabels() {
+		if (_articleLabels == null) {
+			return "";
+		}
+		else {
+			return _articleLabels;
+		}
+	}
+
+	@Override
+	public void setArticleLabels(String articleLabels) {
+		_articleLabels = articleLabels;
+	}
+
+	@Override
 	public long getRemoteId() {
 		return _remoteId;
 	}
@@ -240,6 +264,7 @@ public class ZendeskCategoryModelImpl extends BaseModelImpl<ZendeskCategory>
 
 		zendeskCategoryImpl.setZendeskCategoryId(getZendeskCategoryId());
 		zendeskCategoryImpl.setDocumentationKey(getDocumentationKey());
+		zendeskCategoryImpl.setArticleLabels(getArticleLabels());
 		zendeskCategoryImpl.setRemoteId(getRemoteId());
 
 		zendeskCategoryImpl.resetOriginalValues();
@@ -322,6 +347,14 @@ public class ZendeskCategoryModelImpl extends BaseModelImpl<ZendeskCategory>
 			zendeskCategoryCacheModel.documentationKey = null;
 		}
 
+		zendeskCategoryCacheModel.articleLabels = getArticleLabels();
+
+		String articleLabels = zendeskCategoryCacheModel.articleLabels;
+
+		if ((articleLabels != null) && (articleLabels.length() == 0)) {
+			zendeskCategoryCacheModel.articleLabels = null;
+		}
+
 		zendeskCategoryCacheModel.remoteId = getRemoteId();
 
 		return zendeskCategoryCacheModel;
@@ -329,12 +362,14 @@ public class ZendeskCategoryModelImpl extends BaseModelImpl<ZendeskCategory>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(7);
+		StringBundler sb = new StringBundler(9);
 
 		sb.append("{zendeskCategoryId=");
 		sb.append(getZendeskCategoryId());
 		sb.append(", documentationKey=");
 		sb.append(getDocumentationKey());
+		sb.append(", articleLabels=");
+		sb.append(getArticleLabels());
 		sb.append(", remoteId=");
 		sb.append(getRemoteId());
 		sb.append("}");
@@ -344,7 +379,7 @@ public class ZendeskCategoryModelImpl extends BaseModelImpl<ZendeskCategory>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(13);
+		StringBundler sb = new StringBundler(16);
 
 		sb.append("<model><model-name>");
 		sb.append(
@@ -358,6 +393,10 @@ public class ZendeskCategoryModelImpl extends BaseModelImpl<ZendeskCategory>
 		sb.append(
 			"<column><column-name>documentationKey</column-name><column-value><![CDATA[");
 		sb.append(getDocumentationKey());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>articleLabels</column-name><column-value><![CDATA[");
+		sb.append(getArticleLabels());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>remoteId</column-name><column-value><![CDATA[");
@@ -376,6 +415,7 @@ public class ZendeskCategoryModelImpl extends BaseModelImpl<ZendeskCategory>
 	private long _zendeskCategoryId;
 	private String _documentationKey;
 	private String _originalDocumentationKey;
+	private String _articleLabels;
 	private long _remoteId;
 	private long _columnBitmask;
 	private ZendeskCategory _escapedModel;

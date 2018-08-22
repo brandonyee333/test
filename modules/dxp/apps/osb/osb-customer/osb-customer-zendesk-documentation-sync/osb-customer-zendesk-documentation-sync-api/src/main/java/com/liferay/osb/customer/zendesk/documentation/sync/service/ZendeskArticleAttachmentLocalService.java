@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
-import java.io.File;
 import java.io.Serializable;
 
 import java.util.List;
@@ -62,7 +61,7 @@ public interface ZendeskArticleAttachmentLocalService extends BaseLocalService,
 	 * Never modify or reference this interface directly. Always use {@link ZendeskArticleAttachmentLocalServiceUtil} to access the zendesk article attachment local service. Add custom service methods to {@link com.liferay.osb.customer.zendesk.documentation.sync.service.impl.ZendeskArticleAttachmentLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public ZendeskArticleAttachment addZendeskArticleAttachment(
-		long zendeskArticleId, String filePath, File file)
+		long zendeskArticleId, String filePath, byte[] bytes)
 		throws Exception;
 
 	/**
@@ -235,7 +234,7 @@ public interface ZendeskArticleAttachmentLocalService extends BaseLocalService,
 	public int getZendeskArticleAttachmentsCount();
 
 	public ZendeskArticleAttachment updateZendeskArticleAttachment(
-		long zendeskArticleId, String filePath, File file)
+		long zendeskArticleId, String filePath, byte[] bytes)
 		throws Exception;
 
 	/**

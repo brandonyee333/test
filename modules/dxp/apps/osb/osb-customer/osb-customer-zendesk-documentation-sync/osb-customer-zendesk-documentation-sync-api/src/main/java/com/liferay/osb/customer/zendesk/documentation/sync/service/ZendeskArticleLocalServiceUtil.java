@@ -46,7 +46,7 @@ public class ZendeskArticleLocalServiceUtil {
 		long zendeskSectionId, String documentationKey,
 		java.util.Map<String, String> titleMap,
 		java.util.Map<String, String> bodyMap, int position,
-		String[] labelNames, java.util.Map<String, java.io.File> attachments)
+		String[] labelNames, java.util.Map<String, byte[]> attachments)
 		throws Exception {
 		return getService()
 				   .addZendeskArticle(zendeskSectionId, documentationKey,
@@ -191,6 +191,12 @@ public class ZendeskArticleLocalServiceUtil {
 		return getService().fetchZendeskArticle(zendeskArticleId);
 	}
 
+	public static com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle fetchZendeskArticle(
+		long zendeskSectionId, String documentationKey) {
+		return getService()
+				   .fetchZendeskArticle(zendeskSectionId, documentationKey);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		return getService().getActionableDynamicQuery();
 	}
@@ -227,6 +233,10 @@ public class ZendeskArticleLocalServiceUtil {
 		return getService().getZendeskArticle(zendeskArticleId);
 	}
 
+	public static int getZendeskArticleCount(long zendeskSectionId) {
+		return getService().getZendeskArticleCount(zendeskSectionId);
+	}
+
 	/**
 	* Returns a range of all the zendesk articles.
 	*
@@ -256,7 +266,7 @@ public class ZendeskArticleLocalServiceUtil {
 		long zendeskArticleId, long zendeskSectionId, String documentationKey,
 		java.util.Map<String, String> titleMap,
 		java.util.Map<String, String> bodyMap, int position,
-		String[] labelNames, java.util.Map<String, java.io.File> attachments)
+		String[] labelNames, java.util.Map<String, byte[]> attachments)
 		throws Exception {
 		return getService()
 				   .updateZendeskArticle(zendeskArticleId, zendeskSectionId,

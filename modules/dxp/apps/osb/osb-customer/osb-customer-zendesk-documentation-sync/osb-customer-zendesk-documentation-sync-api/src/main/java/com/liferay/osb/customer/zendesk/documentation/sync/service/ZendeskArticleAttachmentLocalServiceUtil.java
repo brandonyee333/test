@@ -43,10 +43,11 @@ public class ZendeskArticleAttachmentLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.customer.zendesk.documentation.sync.service.impl.ZendeskArticleAttachmentLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment addZendeskArticleAttachment(
-		long zendeskArticleId, String filePath, java.io.File file)
+		long zendeskArticleId, String filePath, byte[] bytes)
 		throws Exception {
 		return getService()
-				   .addZendeskArticleAttachment(zendeskArticleId, filePath, file);
+				   .addZendeskArticleAttachment(zendeskArticleId, filePath,
+			bytes);
 	}
 
 	/**
@@ -261,11 +262,11 @@ public class ZendeskArticleAttachmentLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment updateZendeskArticleAttachment(
-		long zendeskArticleId, String filePath, java.io.File file)
+		long zendeskArticleId, String filePath, byte[] bytes)
 		throws Exception {
 		return getService()
 				   .updateZendeskArticleAttachment(zendeskArticleId, filePath,
-			file);
+			bytes);
 	}
 
 	/**

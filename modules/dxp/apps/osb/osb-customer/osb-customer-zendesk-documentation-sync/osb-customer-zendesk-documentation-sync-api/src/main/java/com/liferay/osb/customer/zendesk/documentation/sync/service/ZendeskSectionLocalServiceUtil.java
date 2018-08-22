@@ -46,7 +46,7 @@ public class ZendeskSectionLocalServiceUtil {
 		long zendeskCategoryId, String documentationKey,
 		java.util.Map<String, String> nameMap,
 		java.util.Map<String, String> descriptionMap, int position)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 		return getService()
 				   .addZendeskSection(zendeskCategoryId, documentationKey,
 			nameMap, descriptionMap, position);
@@ -190,6 +190,12 @@ public class ZendeskSectionLocalServiceUtil {
 		return getService().fetchZendeskSection(zendeskSectionId);
 	}
 
+	public static com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection fetchZendeskSection(
+		long zendeskCategoryId, String documentationKey) {
+		return getService()
+				   .fetchZendeskSection(zendeskCategoryId, documentationKey);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		return getService().getActionableDynamicQuery();
 	}
@@ -264,7 +270,7 @@ public class ZendeskSectionLocalServiceUtil {
 		long zendeskSectionId, long zendeskCategoryId, String documentationKey,
 		java.util.Map<String, String> nameMap,
 		java.util.Map<String, String> descriptionMap, int position)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 		return getService()
 				   .updateZendeskSection(zendeskSectionId, zendeskCategoryId,
 			documentationKey, nameMap, descriptionMap, position);

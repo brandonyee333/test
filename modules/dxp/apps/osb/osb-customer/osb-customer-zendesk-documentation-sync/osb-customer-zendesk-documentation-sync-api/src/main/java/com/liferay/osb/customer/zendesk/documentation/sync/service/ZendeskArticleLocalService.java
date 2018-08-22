@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
-import java.io.File;
 import java.io.Serializable;
 
 import java.util.List;
@@ -65,7 +64,7 @@ public interface ZendeskArticleLocalService extends BaseLocalService,
 	public ZendeskArticle addZendeskArticle(long zendeskSectionId,
 		String documentationKey, Map<String, String> titleMap,
 		Map<String, String> bodyMap, int position, String[] labelNames,
-		Map<String, File> attachments) throws Exception;
+		Map<String, byte[]> attachments) throws Exception;
 
 	/**
 	* Adds the zendesk article to the database. Also notifies the appropriate model listeners.
@@ -175,6 +174,10 @@ public interface ZendeskArticleLocalService extends BaseLocalService,
 	public ZendeskArticle fetchZendeskArticle(long zendeskArticleId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ZendeskArticle fetchZendeskArticle(long zendeskSectionId,
+		String documentationKey);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -203,6 +206,9 @@ public interface ZendeskArticleLocalService extends BaseLocalService,
 	public ZendeskArticle getZendeskArticle(long zendeskArticleId)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getZendeskArticleCount(long zendeskSectionId);
+
 	/**
 	* Returns a range of all the zendesk articles.
 	*
@@ -228,7 +234,7 @@ public interface ZendeskArticleLocalService extends BaseLocalService,
 	public ZendeskArticle updateZendeskArticle(long zendeskArticleId,
 		long zendeskSectionId, String documentationKey,
 		Map<String, String> titleMap, Map<String, String> bodyMap,
-		int position, String[] labelNames, Map<String, File> attachments)
+		int position, String[] labelNames, Map<String, byte[]> attachments)
 		throws Exception;
 
 	/**
