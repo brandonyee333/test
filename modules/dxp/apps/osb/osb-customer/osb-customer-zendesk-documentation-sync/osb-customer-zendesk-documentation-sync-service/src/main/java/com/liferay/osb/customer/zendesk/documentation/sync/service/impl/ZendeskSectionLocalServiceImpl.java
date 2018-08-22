@@ -19,11 +19,13 @@ import com.liferay.osb.customer.zendesk.connector.util.ZendeskBaseWebService;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.base.ZendeskSectionLocalServiceBaseImpl;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.util.Date;
@@ -40,7 +42,7 @@ public class ZendeskSectionLocalServiceImpl
 			long zendeskCategoryId, String documentationKey,
 			Map<String, String> nameMap, Map<String, String> descriptionMap,
 			int position)
-		throws Exception {
+		throws PortalException {
 
 		if (_log.isInfoEnabled()) {
 			_log.info("Adding section " + documentationKey);
@@ -69,6 +71,22 @@ public class ZendeskSectionLocalServiceImpl
 		return zendeskSectionPersistence.update(zendeskSection);
 	}
 
+	public ZendeskSection deleteZendeskSection(ZendeskSection zendeskSection)
+		throws PortalException {
+
+		if (_log.isInfoEnabled()) {
+			_log.info(
+				"Deleting section " + zendeskSection.getDocumentationKey());
+		}
+
+		_zendeskBaseWebService.delete(
+			ZendeskRESTEndpoints.URL_API_V2 + "help_center/sections/" +
+				zendeskSection.getRemoteId() + ".json",
+			StringPool.BLANK);
+
+		return zendeskSectionPersistence.remove(zendeskSection);
+	}
+
 	public ZendeskSection fetchZendeskSection(
 		long zendeskCategoryId, String documentationKey) {
 
@@ -90,7 +108,7 @@ public class ZendeskSectionLocalServiceImpl
 			long zendeskSectionId, long zendeskCategoryId,
 			String documentationKey, Map<String, String> nameMap,
 			Map<String, String> descriptionMap, int position)
-		throws Exception {
+		throws PortalException {
 
 		if (_log.isInfoEnabled()) {
 			_log.info("Updating section " + documentationKey);
@@ -118,7 +136,7 @@ public class ZendeskSectionLocalServiceImpl
 	protected JSONObject addRemoteZendeskSection(
 			long remoteCategoryId, Map<String, String> nameMap,
 			Map<String, String> descriptionMap, int position)
-		throws Exception {
+		throws PortalException {
 
 		JSONObject sectionJSONObject = JSONFactoryUtil.createJSONObject();
 
@@ -152,7 +170,7 @@ public class ZendeskSectionLocalServiceImpl
 
 	protected JSONObject updateRemoteZendeskSection(
 			long remoteId, long remoteCategoryId, int position)
-		throws Exception {
+		throws PortalException {
 
 		JSONObject sectionJSONObject = JSONFactoryUtil.createJSONObject();
 
@@ -172,7 +190,7 @@ public class ZendeskSectionLocalServiceImpl
 	protected void updateRemoteZendeskTranslations(
 			long remoteId, Map<String, String> nameMap,
 			Map<String, String> descriptionMap)
-		throws Exception {
+		throws PortalException {
 
 		for (String locale : nameMap.keySet()) {
 			JSONObject translationJSONObject =

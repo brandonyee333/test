@@ -69,12 +69,14 @@ public class ZendeskCategoryLocalServiceImpl
 			long zendeskCategoryId, String fileName, InputStream inputStream)
 		throws Exception {
 
-		if (Validator.isNull(fileName) || (inputStream == null)) {
-			throw new DocumentationImportException();
-		}
-
 		ZendeskCategory zendeskCategory =
 			zendeskCategoryPersistence.findByPrimaryKey(zendeskCategoryId);
+
+		if (Validator.isNull(fileName) || (inputStream == null) ||
+			!fileName.equals(zendeskCategory.getDocumentationKey())) {
+
+			throw new DocumentationImportException();
+		}
 
 		ZipReader zipReader = null;
 

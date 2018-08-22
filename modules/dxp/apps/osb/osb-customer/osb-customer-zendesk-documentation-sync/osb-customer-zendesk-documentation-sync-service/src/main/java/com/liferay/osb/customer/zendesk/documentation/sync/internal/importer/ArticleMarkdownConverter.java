@@ -232,10 +232,17 @@ public class ArticleMarkdownConverter {
 				}
 			}
 			else {
-				byte[] bytes = zipReader.getEntryAsByteArray(
-					parentPath.toString() + StringPool.SLASH + imageSrc);
+				String imagePath =
+					parentPath.toString() + StringPool.SLASH + imageSrc;
 
-				_attachments.put(imageSrc, bytes);
+				byte[] bytes = zipReader.getEntryAsByteArray(imagePath);
+
+				if (bytes == null) {
+					_log.error("Unable to read image " + imagePath);
+				}
+				else {
+					_attachments.put(imageSrc, bytes);
+				}
 			}
 
 			x += 4;

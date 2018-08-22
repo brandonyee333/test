@@ -20,12 +20,14 @@ import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.base.ZendeskArticleLocalServiceBaseImpl;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
@@ -43,7 +45,7 @@ public class ZendeskArticleLocalServiceImpl
 			long zendeskSectionId, String documentationKey,
 			Map<String, String> titleMap, Map<String, String> bodyMap,
 			int position, String[] labelNames, Map<String, byte[]> attachments)
-		throws Exception {
+		throws PortalException {
 
 		// Zendesk article
 
@@ -66,6 +68,8 @@ public class ZendeskArticleLocalServiceImpl
 			zendeskArticleId);
 
 		zendeskArticle.setModifiedDate(new Date());
+		zendeskArticle.setZendeskCategoryId(
+			zendeskSection.getZendeskCategoryId());
 		zendeskArticle.setZendeskSectionId(zendeskSectionId);
 		zendeskArticle.setDocumentationKey(documentationKey);
 		zendeskArticle.setRemoteId(articleJSONObject.getLong("id"));
@@ -93,11 +97,27 @@ public class ZendeskArticleLocalServiceImpl
 		return zendeskArticle;
 	}
 
-	public ZendeskArticle fetchZendeskArticle(
-		long zendeskSectionId, String documentationKey) {
+	public ZendeskArticle deleteZendeskArticle(ZendeskArticle zendeskArticle)
+		throws PortalException {
 
-		return zendeskArticlePersistence.fetchByZSI_DK(
-			zendeskSectionId, documentationKey);
+		if (_log.isInfoEnabled()) {
+			_log.info(
+				"Deleting article " + zendeskArticle.getDocumentationKey());
+		}
+
+		_zendeskBaseWebService.delete(
+			ZendeskRESTEndpoints.URL_API_V2 + "help_center/articles/" +
+				zendeskArticle.getRemoteId() + ".json",
+			StringPool.BLANK);
+
+		return zendeskArticlePersistence.remove(zendeskArticle);
+	}
+
+	public ZendeskArticle fetchZendeskArticle(
+		long zendeskCategoryId, String documentationKey) {
+
+		return zendeskArticlePersistence.fetchByZCI_DK(
+			zendeskCategoryId, documentationKey);
 	}
 
 	public int getZendeskArticleCount(long zendeskSectionId) {
@@ -105,12 +125,19 @@ public class ZendeskArticleLocalServiceImpl
 			zendeskSectionId);
 	}
 
+	public List<ZendeskArticle> getZendeskCategoryArticles(
+		long zendeskCategoryId) {
+
+		return zendeskArticlePersistence.findByZendeskCategoryId(
+			zendeskCategoryId);
+	}
+
 	public ZendeskArticle updateZendeskArticle(
 			long zendeskArticleId, long zendeskSectionId,
 			String documentationKey, Map<String, String> titleMap,
 			Map<String, String> bodyMap, int position, String[] labelNames,
 			Map<String, byte[]> attachments)
-		throws Exception {
+		throws PortalException {
 
 		// Zendesk article
 
@@ -160,6 +187,7 @@ public class ZendeskArticleLocalServiceImpl
 			zendeskArticle.getRemoteId(), titleMap, bodyMap);
 
 		zendeskArticle.setModifiedDate(new Date());
+		zendeskArticle.setZendeskSectionId(zendeskSectionId);
 
 		return zendeskArticlePersistence.update(zendeskArticle);
 	}
@@ -167,7 +195,7 @@ public class ZendeskArticleLocalServiceImpl
 	protected JSONObject addRemoteZendeskArticle(
 			long remoteSectionId, Map<String, String> titleMap,
 			Map<String, String> bodyMap, int position, String[] labelNames)
-		throws Exception {
+		throws PortalException {
 
 		JSONObject articleJSONObject = JSONFactoryUtil.createJSONObject();
 
@@ -224,7 +252,7 @@ public class ZendeskArticleLocalServiceImpl
 	protected JSONObject updateRemoteZendeskArticle(
 			long remoteId, long remoteSectionId, int position,
 			String[] labelNames)
-		throws Exception {
+		throws PortalException {
 
 		JSONObject articleJSONObject = JSONFactoryUtil.createJSONObject();
 
@@ -254,7 +282,7 @@ public class ZendeskArticleLocalServiceImpl
 	protected void updateRemoteZendeskTranslations(
 			long remoteId, Map<String, String> titleMap,
 			Map<String, String> bodyMap)
-		throws Exception {
+		throws PortalException {
 
 		for (String locale : titleMap.keySet()) {
 			JSONObject translationJSONObject =

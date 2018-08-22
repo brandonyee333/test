@@ -45,10 +45,16 @@ public class ZendeskArticleAttachmentLocalServiceImpl
 
 	public ZendeskArticleAttachment addZendeskArticleAttachment(
 			long zendeskArticleId, String filePath, byte[] bytes)
-		throws Exception {
+		throws PortalException {
 
 		ZendeskArticle zendeskArticle =
 			zendeskArticlePersistence.findByPrimaryKey(zendeskArticleId);
+
+		if (_log.isInfoEnabled()) {
+			_log.info(
+				"Adding attachment " + zendeskArticle.getDocumentationKey() +
+					StringPool.POUND + filePath);
+		}
 
 		JSONObject jsonObject = addRemoteZendeskArticleAttachment(
 			zendeskArticle.getRemoteId(), filePath, bytes);
@@ -75,37 +81,26 @@ public class ZendeskArticleAttachmentLocalServiceImpl
 		zendeskArticleAttachment.setRemoteContentURL(
 			articleAttachmentJSONObject.getString("content_url"));
 
-		zendeskArticleAttachmentPersistence.update(zendeskArticleAttachment);
-
-		if (_log.isInfoEnabled()) {
-			_log.info(
-				buildMessage("Added attachment", zendeskArticleAttachment));
-		}
-
-		return zendeskArticleAttachment;
+		return zendeskArticleAttachmentPersistence.update(
+			zendeskArticleAttachment);
 	}
 
 	public ZendeskArticleAttachment deleteZendeskArticleAttachment(
 			ZendeskArticleAttachment zendeskArticleAttachment)
 		throws PortalException {
 
-		try {
-			_zendeskBaseWebService.delete(
-				ZendeskRESTEndpoints.URL_API_V2 +
-					"help_center/articles/attachments/" +
-						zendeskArticleAttachment.getRemoteId() + ".json",
-				StringPool.BLANK);
-		}
-		catch (Exception e) {
-			throw new PortalException(e);
-		}
-
-		zendeskArticleAttachmentPersistence.remove(zendeskArticleAttachment);
-
 		if (_log.isInfoEnabled()) {
 			_log.info(
-				buildMessage("Deleted attachment", zendeskArticleAttachment));
+				buildMessage("Deleting attachment", zendeskArticleAttachment));
 		}
+
+		_zendeskBaseWebService.delete(
+			ZendeskRESTEndpoints.URL_API_V2 +
+				"help_center/articles/attachments/" +
+					zendeskArticleAttachment.getRemoteId() + ".json",
+			StringPool.BLANK);
+
+		zendeskArticleAttachmentPersistence.remove(zendeskArticleAttachment);
 
 		return zendeskArticleAttachment;
 	}
@@ -119,7 +114,7 @@ public class ZendeskArticleAttachmentLocalServiceImpl
 
 	public ZendeskArticleAttachment updateZendeskArticleAttachment(
 			long zendeskArticleId, String filePath, byte[] bytes)
-		throws Exception {
+		throws PortalException {
 
 		ZendeskArticleAttachment zendeskArticleAttachment =
 			zendeskArticleAttachmentPersistence.fetchByZAI_FP(
@@ -150,7 +145,7 @@ public class ZendeskArticleAttachmentLocalServiceImpl
 
 	protected JSONObject addRemoteZendeskArticleAttachment(
 			long remoteArticleId, String filePath, byte[] bytes)
-		throws Exception {
+		throws PortalException {
 
 		Map<String, String> params = new HashMap<>();
 

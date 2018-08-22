@@ -15,6 +15,7 @@
 
 		<!-- Other fields -->
 
+		<column name="zendeskCategoryId" type="long" />
 		<column name="zendeskSectionId" type="long" />
 		<column name="documentationKey" type="String" />
 		<column name="remoteId" type="long" />
@@ -22,11 +23,14 @@
 
 		<!-- Finder methods -->
 
+		<finder name="ZendeskCategoryId" return-type="Collection">
+			<finder-column name="zendeskCategoryId" />
+		</finder>
 		<finder name="ZendeskSectionId" return-type="Collection">
 			<finder-column name="zendeskSectionId" />
 		</finder>
-		<finder name="ZSI_DK" return-type="ZendeskArticle">
-			<finder-column name="zendeskSectionId" />
+		<finder name="ZCI_DK" return-type="ZendeskArticle">
+			<finder-column name="zendeskCategoryId" />
 			<finder-column name="documentationKey" />
 		</finder>
 	</entity>

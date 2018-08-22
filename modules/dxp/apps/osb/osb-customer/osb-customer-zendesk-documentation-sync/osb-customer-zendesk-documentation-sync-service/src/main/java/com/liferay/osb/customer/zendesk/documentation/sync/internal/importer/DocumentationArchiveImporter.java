@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.zip.ZipReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -104,6 +105,40 @@ public class DocumentationArchiveImporter {
 					articleMarkdownConverter.getAttachments());
 			}
 		}
+
+		deleteRemovedArticles();
+
+		deleteRemovedSections();
+	}
+
+	protected void deleteRemovedArticles() throws Exception {
+		List<ZendeskArticle> zendeskArticles =
+			ZendeskArticleLocalServiceUtil.getZendeskCategoryArticles(
+				_zendeskCategory.getZendeskCategoryId());
+
+		for (ZendeskArticle zendeskArticle : zendeskArticles) {
+			if (!_zendeskArticleKeys.contains(
+					zendeskArticle.getDocumentationKey())) {
+
+				ZendeskArticleLocalServiceUtil.deleteZendeskArticle(
+					zendeskArticle);
+			}
+		}
+	}
+
+	protected void deleteRemovedSections() throws Exception {
+		List<ZendeskSection> zendeskSections =
+			ZendeskSectionLocalServiceUtil.getZendeskSections(
+				_zendeskCategory.getZendeskCategoryId());
+
+		for (ZendeskSection zendeskSection : zendeskSections) {
+			if (!_zendeskSectionKeys.contains(
+					zendeskSection.getDocumentationKey())) {
+
+				ZendeskSectionLocalServiceUtil.deleteZendeskSection(
+					zendeskSection);
+			}
+		}
 	}
 
 	protected boolean isZendeskSection(Path path) {
@@ -145,10 +180,10 @@ public class DocumentationArchiveImporter {
 
 		ZendeskArticle zendeskArticle =
 			ZendeskArticleLocalServiceUtil.fetchZendeskArticle(
-				_currentZendeskSection.getZendeskSectionId(), documentationKey);
+				_zendeskCategory.getZendeskCategoryId(), documentationKey);
 
 		if (zendeskArticle == null) {
-			ZendeskArticleLocalServiceUtil.addZendeskArticle(
+			zendeskArticle = ZendeskArticleLocalServiceUtil.addZendeskArticle(
 				_currentZendeskSection.getZendeskSectionId(), documentationKey,
 				titleMap, bodyMap, _zendeskArticlePosition,
 				_zendeskCategory.getRemoteLabelNames(), attachments);
@@ -160,6 +195,8 @@ public class DocumentationArchiveImporter {
 				titleMap, bodyMap, _zendeskArticlePosition,
 				_zendeskCategory.getRemoteLabelNames(), attachments);
 		}
+
+		_zendeskArticleKeys.add(documentationKey);
 
 		_zendeskArticlePosition++;
 	}
@@ -192,15 +229,19 @@ public class DocumentationArchiveImporter {
 
 		_currentZendeskSection = zendeskSection;
 
+		_zendeskSectionKeys.add(documentationKey);
+
 		_zendeskArticlePosition = 0;
 		_zendeskSectionPosition++;
 	}
 
 	private ZendeskSection _currentZendeskSection;
+	private List<String> _zendeskArticleKeys = new ArrayList<>();
 	private int _zendeskArticlePosition;
 	private final ZendeskCategory _zendeskCategory;
 	private volatile ZendeskDocumentationSyncConfiguration
 		_zendeskDocumentationSyncConfiguration;
+	private List<String> _zendeskSectionKeys = new ArrayList<>();
 	private int _zendeskSectionPosition;
 	private final ZipReader _zipReader;
 
