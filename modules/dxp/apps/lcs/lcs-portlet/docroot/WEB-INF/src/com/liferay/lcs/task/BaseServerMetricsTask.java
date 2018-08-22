@@ -220,9 +220,9 @@ public abstract class BaseServerMetricsTask implements ServerMetricsTask {
 		serverMetricsMessage.setCreateTime(System.currentTimeMillis());
 		serverMetricsMessage.setCurrentThreadsMetrics(
 			getCurrentThreadsMetrics());
+		serverMetricsMessage.setKey(keyGenerator.getKey());
 		serverMetricsMessage.setJDBCConnectionPoolsMetrics(
 			getJDBCConnectionPoolsMetrics());
-		serverMetricsMessage.setKey(keyGenerator.getKey());
 
 		lcsConnectionManager.sendMessage(serverMetricsMessage);
 	}
