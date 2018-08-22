@@ -56,11 +56,11 @@ public class CacheMetricsTask extends BaseScheduledTask {
 
 		cacheMetricsMessage.setCreateTime(System.currentTimeMillis());
 		cacheMetricsMessage.setHibernateMetrics(getHibernateMetrics());
+		cacheMetricsMessage.setKey(getKey());
 		cacheMetricsMessage.setLiferayMultiVMMetrics(
 			getLiferayMultiVMMetrics());
 		cacheMetricsMessage.setLiferaySingleVMMetrics(
 			getLiferaySingleVMMetrics());
-		cacheMetricsMessage.setKey(getKey());
 
 		sendMessage(cacheMetricsMessage);
 	}
