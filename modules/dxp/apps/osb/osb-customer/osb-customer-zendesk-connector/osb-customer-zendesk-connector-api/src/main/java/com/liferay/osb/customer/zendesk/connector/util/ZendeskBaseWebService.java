@@ -16,8 +16,6 @@ package com.liferay.osb.customer.zendesk.connector.util;
 
 import com.liferay.portal.kernel.json.JSONObject;
 
-import java.io.File;
-
 import java.util.Map;
 
 /**
@@ -30,7 +28,8 @@ public interface ZendeskBaseWebService {
 	public JSONObject get(String endpoint, String json) throws Exception;
 
 	public JSONObject post(
-			String endpoint, Map<String, String> params, File file)
+			String endpoint, Map<String, String> params, String fileName,
+			byte[] bytes)
 		throws Exception;
 
 	public JSONObject post(String endpoint, String json) throws Exception;

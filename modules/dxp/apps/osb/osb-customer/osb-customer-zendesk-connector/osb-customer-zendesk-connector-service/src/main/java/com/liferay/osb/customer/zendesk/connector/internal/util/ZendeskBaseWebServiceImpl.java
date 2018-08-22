@@ -27,22 +27,25 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.StringPool;
-
-import java.io.File;
 
 import java.nio.charset.StandardCharsets;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -96,12 +99,16 @@ public class ZendeskBaseWebServiceImpl
 	}
 
 	public JSONObject post(
-			String endpoint, Map<String, String> params, File file)
+			String endpoint, Map<String, String> params, String fileName,
+			byte[] bytes)
 		throws Exception {
 
-		HttpPost httpPost = new HttpPost(endpoint);
+		HttpPost httpPost = new HttpPost(
+			Http.HTTPS_WITH_SLASH +
+				ZendeskConnectorConfigurationValues.ZENDESK_DOMAIN_NAME +
+					endpoint);
 
-		addHeaders(httpPost, _headers);
+		httpPost.addHeader("Authorization", _CREDENTIALS);
 
 		MultipartEntity multipartEntity = new MultipartEntity();
 
@@ -110,11 +117,18 @@ public class ZendeskBaseWebServiceImpl
 				entry.getKey(), new StringBody(entry.getValue()));
 		}
 
-		multipartEntity.addPart("file", new FileBody(file));
+		ByteArrayBody byteArrayBody = new ByteArrayBody(
+			bytes, MimeTypesUtil.getContentType(fileName), fileName);
+
+		multipartEntity.addPart("file", byteArrayBody);
 
 		httpPost.setEntity(multipartEntity);
 
-		String response = execute(httpPost);
+		HttpClient httpClient = new DefaultHttpClient();
+
+		HttpResponse httpResponse = httpClient.execute(httpPost);
+
+		String response = EntityUtils.toString(httpResponse.getEntity());
 
 		try {
 			return JSONFactoryUtil.createJSONObject(response);
