@@ -19,8 +19,7 @@ import com.liferay.osb.customer.zendesk.connector.internal.http.ZendeskHttpDelet
 import com.liferay.osb.customer.zendesk.connector.internal.http.ZendeskHttpGet;
 import com.liferay.osb.customer.zendesk.connector.util.ZendeskBaseWebService;
 import com.liferay.petra.json.web.service.client.BaseJSONWebServiceClientImpl;
-import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -56,7 +55,9 @@ import org.osgi.service.component.annotations.Component;
 public class ZendeskBaseWebServiceImpl
 	extends BaseJSONWebServiceClientImpl implements ZendeskBaseWebService {
 
-	public JSONObject delete(String endpoint, String json) throws Exception {
+	public JSONObject delete(String endpoint, String json)
+		throws PortalException {
+
 		ZendeskHttpDelete httpDelete = new ZendeskHttpDelete(endpoint);
 
 		addHeaders(httpDelete, _headers);
@@ -65,7 +66,7 @@ public class ZendeskBaseWebServiceImpl
 
 		httpDelete.setEntity(stringEntity);
 
-		String response = execute(httpDelete);
+		String response = doExecute(httpDelete);
 
 		try {
 			return JSONFactoryUtil.createJSONObject(response);
@@ -73,11 +74,11 @@ public class ZendeskBaseWebServiceImpl
 		catch (Exception e) {
 			_log.error("Error parsing response: " + response);
 
-			throw e;
+			throw new PortalException(e);
 		}
 	}
 
-	public JSONObject get(String endpoint, String json) throws Exception {
+	public JSONObject get(String endpoint, String json) throws PortalException {
 		ZendeskHttpGet httpGet = new ZendeskHttpGet(endpoint);
 
 		addHeaders(httpGet, _headers);
@@ -86,7 +87,7 @@ public class ZendeskBaseWebServiceImpl
 
 		httpGet.setEntity(stringEntity);
 
-		String response = execute(httpGet);
+		String response = doExecute(httpGet);
 
 		try {
 			return JSONFactoryUtil.createJSONObject(response);
@@ -94,53 +95,59 @@ public class ZendeskBaseWebServiceImpl
 		catch (Exception e) {
 			_log.error("Error parsing response: " + response);
 
-			throw e;
+			throw new PortalException(e);
 		}
 	}
 
 	public JSONObject post(
 			String endpoint, Map<String, String> params, String fileName,
 			byte[] bytes)
-		throws Exception {
+		throws PortalException {
 
-		HttpPost httpPost = new HttpPost(
-			Http.HTTPS_WITH_SLASH +
-				ZendeskConnectorConfigurationValues.ZENDESK_DOMAIN_NAME +
-					endpoint);
-
-		httpPost.addHeader("Authorization", _CREDENTIALS);
-
-		MultipartEntity multipartEntity = new MultipartEntity();
-
-		for (Map.Entry<String, String> entry : params.entrySet()) {
-			multipartEntity.addPart(
-				entry.getKey(), new StringBody(entry.getValue()));
-		}
-
-		ByteArrayBody byteArrayBody = new ByteArrayBody(
-			bytes, MimeTypesUtil.getContentType(fileName), fileName);
-
-		multipartEntity.addPart("file", byteArrayBody);
-
-		httpPost.setEntity(multipartEntity);
-
-		HttpClient httpClient = new DefaultHttpClient();
-
-		HttpResponse httpResponse = httpClient.execute(httpPost);
-
-		String response = EntityUtils.toString(httpResponse.getEntity());
+		String response = null;
 
 		try {
+			HttpPost httpPost = new HttpPost(
+				Http.HTTPS_WITH_SLASH +
+					ZendeskConnectorConfigurationValues.ZENDESK_DOMAIN_NAME +
+						endpoint);
+
+			httpPost.addHeader("Authorization", _CREDENTIALS);
+
+			MultipartEntity multipartEntity = new MultipartEntity();
+
+			for (Map.Entry<String, String> entry : params.entrySet()) {
+				multipartEntity.addPart(
+					entry.getKey(), new StringBody(entry.getValue()));
+			}
+
+			ByteArrayBody byteArrayBody = new ByteArrayBody(
+				bytes, MimeTypesUtil.getContentType(fileName), fileName);
+
+			multipartEntity.addPart("file", byteArrayBody);
+
+			httpPost.setEntity(multipartEntity);
+
+			HttpClient httpClient = new DefaultHttpClient();
+
+			HttpResponse httpResponse = httpClient.execute(httpPost);
+
+			response = EntityUtils.toString(httpResponse.getEntity());
+
 			return JSONFactoryUtil.createJSONObject(response);
 		}
 		catch (Exception e) {
-			_log.error("Error parsing response: " + response);
+			if (response != null) {
+				_log.error("Error parsing response: " + response);
+			}
 
-			throw e;
+			throw new PortalException(e);
 		}
 	}
 
-	public JSONObject post(String endpoint, String json) throws Exception {
+	public JSONObject post(String endpoint, String json)
+		throws PortalException {
+
 		HttpPost httpPost = new HttpPost(endpoint);
 
 		addHeaders(httpPost, _headers);
@@ -149,7 +156,7 @@ public class ZendeskBaseWebServiceImpl
 
 		httpPost.setEntity(stringEntity);
 
-		String response = execute(httpPost);
+		String response = doExecute(httpPost);
 
 		try {
 			return JSONFactoryUtil.createJSONObject(response);
@@ -157,11 +164,11 @@ public class ZendeskBaseWebServiceImpl
 		catch (Exception e) {
 			_log.error("Error parsing response: " + response);
 
-			throw e;
+			throw new PortalException(e);
 		}
 	}
 
-	public JSONObject put(String endpoint, String json) throws Exception {
+	public JSONObject put(String endpoint, String json) throws PortalException {
 		HttpPut httpPut = new HttpPut(endpoint);
 
 		addHeaders(httpPut, _headers);
@@ -170,7 +177,7 @@ public class ZendeskBaseWebServiceImpl
 
 		httpPut.setEntity(stringEntity);
 
-		String response = execute(httpPut);
+		String response = doExecute(httpPut);
 
 		try {
 			return JSONFactoryUtil.createJSONObject(response);
@@ -178,20 +185,23 @@ public class ZendeskBaseWebServiceImpl
 		catch (Exception e) {
 			_log.error("Error parsing response: " + response);
 
-			throw e;
+			throw new PortalException(e);
 		}
 	}
 
-	@Override
-	protected String execute(HttpRequestBase httpRequestBase)
-		throws JSONWebServiceInvocationException,
-			   JSONWebServiceTransportException {
+	protected String doExecute(HttpRequestBase httpRequestBase)
+		throws PortalException {
 
 		setHostName(ZendeskConnectorConfigurationValues.ZENDESK_DOMAIN_NAME);
 		setHostPort(Http.HTTPS_PORT);
 		setProtocol(Http.HTTPS);
 
-		return super.execute(httpRequestBase);
+		try {
+			return super.execute(httpRequestBase);
+		}
+		catch (Exception e) {
+			throw new PortalException(e);
+		}
 	}
 
 	protected StringEntity getStringEntity(String endpoint, String json) {
