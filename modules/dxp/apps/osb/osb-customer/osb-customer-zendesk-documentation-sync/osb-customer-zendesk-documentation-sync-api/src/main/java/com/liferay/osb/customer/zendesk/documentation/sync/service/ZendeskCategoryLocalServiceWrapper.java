@@ -195,6 +195,12 @@ public class ZendeskCategoryLocalServiceWrapper
 	}
 
 	@Override
+	public com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory fetchZendeskCategory(
+		String documentationKey) {
+		return _zendeskCategoryLocalService.fetchZendeskCategory(documentationKey);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		return _zendeskCategoryLocalService.getActionableDynamicQuery();
 	}

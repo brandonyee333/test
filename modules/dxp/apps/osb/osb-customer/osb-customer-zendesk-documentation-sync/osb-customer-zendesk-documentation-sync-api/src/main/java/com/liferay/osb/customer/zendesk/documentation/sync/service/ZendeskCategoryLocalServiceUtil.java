@@ -187,6 +187,11 @@ public class ZendeskCategoryLocalServiceUtil {
 		return getService().fetchZendeskCategory(zendeskCategoryId);
 	}
 
+	public static com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory fetchZendeskCategory(
+		String documentationKey) {
+		return getService().fetchZendeskCategory(documentationKey);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		return getService().getActionableDynamicQuery();
 	}

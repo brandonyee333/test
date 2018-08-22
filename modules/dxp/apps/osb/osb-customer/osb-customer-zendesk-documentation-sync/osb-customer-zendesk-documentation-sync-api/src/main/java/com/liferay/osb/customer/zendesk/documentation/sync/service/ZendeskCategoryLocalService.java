@@ -173,6 +173,9 @@ public interface ZendeskCategoryLocalService extends BaseLocalService,
 	public ZendeskCategory fetchZendeskCategory(long zendeskCategoryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ZendeskCategory fetchZendeskCategory(String documentationKey);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
