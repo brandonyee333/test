@@ -113,6 +113,180 @@ public class ZendeskArticleUtil {
 	}
 
 	/**
+	* Returns all the zendesk articles where zendeskCategoryId = &#63;.
+	*
+	* @param zendeskCategoryId the zendesk category ID
+	* @return the matching zendesk articles
+	*/
+	public static List<ZendeskArticle> findByZendeskCategoryId(
+		long zendeskCategoryId) {
+		return getPersistence().findByZendeskCategoryId(zendeskCategoryId);
+	}
+
+	/**
+	* Returns a range of all the zendesk articles where zendeskCategoryId = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ZendeskArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param zendeskCategoryId the zendesk category ID
+	* @param start the lower bound of the range of zendesk articles
+	* @param end the upper bound of the range of zendesk articles (not inclusive)
+	* @return the range of matching zendesk articles
+	*/
+	public static List<ZendeskArticle> findByZendeskCategoryId(
+		long zendeskCategoryId, int start, int end) {
+		return getPersistence()
+				   .findByZendeskCategoryId(zendeskCategoryId, start, end);
+	}
+
+	/**
+	* Returns an ordered range of all the zendesk articles where zendeskCategoryId = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ZendeskArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param zendeskCategoryId the zendesk category ID
+	* @param start the lower bound of the range of zendesk articles
+	* @param end the upper bound of the range of zendesk articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching zendesk articles
+	*/
+	public static List<ZendeskArticle> findByZendeskCategoryId(
+		long zendeskCategoryId, int start, int end,
+		OrderByComparator<ZendeskArticle> orderByComparator) {
+		return getPersistence()
+				   .findByZendeskCategoryId(zendeskCategoryId, start, end,
+			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the zendesk articles where zendeskCategoryId = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ZendeskArticleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param zendeskCategoryId the zendesk category ID
+	* @param start the lower bound of the range of zendesk articles
+	* @param end the upper bound of the range of zendesk articles (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the ordered range of matching zendesk articles
+	*/
+	public static List<ZendeskArticle> findByZendeskCategoryId(
+		long zendeskCategoryId, int start, int end,
+		OrderByComparator<ZendeskArticle> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByZendeskCategoryId(zendeskCategoryId, start, end,
+			orderByComparator, retrieveFromCache);
+	}
+
+	/**
+	* Returns the first zendesk article in the ordered set where zendeskCategoryId = &#63;.
+	*
+	* @param zendeskCategoryId the zendesk category ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching zendesk article
+	* @throws NoSuchZendeskArticleException if a matching zendesk article could not be found
+	*/
+	public static ZendeskArticle findByZendeskCategoryId_First(
+		long zendeskCategoryId,
+		OrderByComparator<ZendeskArticle> orderByComparator)
+		throws com.liferay.osb.customer.zendesk.documentation.sync.exception.NoSuchZendeskArticleException {
+		return getPersistence()
+				   .findByZendeskCategoryId_First(zendeskCategoryId,
+			orderByComparator);
+	}
+
+	/**
+	* Returns the first zendesk article in the ordered set where zendeskCategoryId = &#63;.
+	*
+	* @param zendeskCategoryId the zendesk category ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching zendesk article, or <code>null</code> if a matching zendesk article could not be found
+	*/
+	public static ZendeskArticle fetchByZendeskCategoryId_First(
+		long zendeskCategoryId,
+		OrderByComparator<ZendeskArticle> orderByComparator) {
+		return getPersistence()
+				   .fetchByZendeskCategoryId_First(zendeskCategoryId,
+			orderByComparator);
+	}
+
+	/**
+	* Returns the last zendesk article in the ordered set where zendeskCategoryId = &#63;.
+	*
+	* @param zendeskCategoryId the zendesk category ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching zendesk article
+	* @throws NoSuchZendeskArticleException if a matching zendesk article could not be found
+	*/
+	public static ZendeskArticle findByZendeskCategoryId_Last(
+		long zendeskCategoryId,
+		OrderByComparator<ZendeskArticle> orderByComparator)
+		throws com.liferay.osb.customer.zendesk.documentation.sync.exception.NoSuchZendeskArticleException {
+		return getPersistence()
+				   .findByZendeskCategoryId_Last(zendeskCategoryId,
+			orderByComparator);
+	}
+
+	/**
+	* Returns the last zendesk article in the ordered set where zendeskCategoryId = &#63;.
+	*
+	* @param zendeskCategoryId the zendesk category ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching zendesk article, or <code>null</code> if a matching zendesk article could not be found
+	*/
+	public static ZendeskArticle fetchByZendeskCategoryId_Last(
+		long zendeskCategoryId,
+		OrderByComparator<ZendeskArticle> orderByComparator) {
+		return getPersistence()
+				   .fetchByZendeskCategoryId_Last(zendeskCategoryId,
+			orderByComparator);
+	}
+
+	/**
+	* Returns the zendesk articles before and after the current zendesk article in the ordered set where zendeskCategoryId = &#63;.
+	*
+	* @param zendeskArticleId the primary key of the current zendesk article
+	* @param zendeskCategoryId the zendesk category ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next zendesk article
+	* @throws NoSuchZendeskArticleException if a zendesk article with the primary key could not be found
+	*/
+	public static ZendeskArticle[] findByZendeskCategoryId_PrevAndNext(
+		long zendeskArticleId, long zendeskCategoryId,
+		OrderByComparator<ZendeskArticle> orderByComparator)
+		throws com.liferay.osb.customer.zendesk.documentation.sync.exception.NoSuchZendeskArticleException {
+		return getPersistence()
+				   .findByZendeskCategoryId_PrevAndNext(zendeskArticleId,
+			zendeskCategoryId, orderByComparator);
+	}
+
+	/**
+	* Removes all the zendesk articles where zendeskCategoryId = &#63; from the database.
+	*
+	* @param zendeskCategoryId the zendesk category ID
+	*/
+	public static void removeByZendeskCategoryId(long zendeskCategoryId) {
+		getPersistence().removeByZendeskCategoryId(zendeskCategoryId);
+	}
+
+	/**
+	* Returns the number of zendesk articles where zendeskCategoryId = &#63;.
+	*
+	* @param zendeskCategoryId the zendesk category ID
+	* @return the number of matching zendesk articles
+	*/
+	public static int countByZendeskCategoryId(long zendeskCategoryId) {
+		return getPersistence().countByZendeskCategoryId(zendeskCategoryId);
+	}
+
+	/**
 	* Returns all the zendesk articles where zendeskSectionId = &#63;.
 	*
 	* @param zendeskSectionId the zendesk section ID
@@ -287,70 +461,72 @@ public class ZendeskArticleUtil {
 	}
 
 	/**
-	* Returns the zendesk article where zendeskSectionId = &#63; and documentationKey = &#63; or throws a {@link NoSuchZendeskArticleException} if it could not be found.
+	* Returns the zendesk article where zendeskCategoryId = &#63; and documentationKey = &#63; or throws a {@link NoSuchZendeskArticleException} if it could not be found.
 	*
-	* @param zendeskSectionId the zendesk section ID
+	* @param zendeskCategoryId the zendesk category ID
 	* @param documentationKey the documentation key
 	* @return the matching zendesk article
 	* @throws NoSuchZendeskArticleException if a matching zendesk article could not be found
 	*/
-	public static ZendeskArticle findByZSI_DK(long zendeskSectionId,
+	public static ZendeskArticle findByZCI_DK(long zendeskCategoryId,
 		String documentationKey)
 		throws com.liferay.osb.customer.zendesk.documentation.sync.exception.NoSuchZendeskArticleException {
-		return getPersistence().findByZSI_DK(zendeskSectionId, documentationKey);
+		return getPersistence().findByZCI_DK(zendeskCategoryId, documentationKey);
 	}
 
 	/**
-	* Returns the zendesk article where zendeskSectionId = &#63; and documentationKey = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	* Returns the zendesk article where zendeskCategoryId = &#63; and documentationKey = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
 	*
-	* @param zendeskSectionId the zendesk section ID
+	* @param zendeskCategoryId the zendesk category ID
 	* @param documentationKey the documentation key
 	* @return the matching zendesk article, or <code>null</code> if a matching zendesk article could not be found
 	*/
-	public static ZendeskArticle fetchByZSI_DK(long zendeskSectionId,
+	public static ZendeskArticle fetchByZCI_DK(long zendeskCategoryId,
 		String documentationKey) {
-		return getPersistence().fetchByZSI_DK(zendeskSectionId, documentationKey);
+		return getPersistence()
+				   .fetchByZCI_DK(zendeskCategoryId, documentationKey);
 	}
 
 	/**
-	* Returns the zendesk article where zendeskSectionId = &#63; and documentationKey = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	* Returns the zendesk article where zendeskCategoryId = &#63; and documentationKey = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	*
-	* @param zendeskSectionId the zendesk section ID
+	* @param zendeskCategoryId the zendesk category ID
 	* @param documentationKey the documentation key
 	* @param retrieveFromCache whether to retrieve from the finder cache
 	* @return the matching zendesk article, or <code>null</code> if a matching zendesk article could not be found
 	*/
-	public static ZendeskArticle fetchByZSI_DK(long zendeskSectionId,
+	public static ZendeskArticle fetchByZCI_DK(long zendeskCategoryId,
 		String documentationKey, boolean retrieveFromCache) {
 		return getPersistence()
-				   .fetchByZSI_DK(zendeskSectionId, documentationKey,
+				   .fetchByZCI_DK(zendeskCategoryId, documentationKey,
 			retrieveFromCache);
 	}
 
 	/**
-	* Removes the zendesk article where zendeskSectionId = &#63; and documentationKey = &#63; from the database.
+	* Removes the zendesk article where zendeskCategoryId = &#63; and documentationKey = &#63; from the database.
 	*
-	* @param zendeskSectionId the zendesk section ID
+	* @param zendeskCategoryId the zendesk category ID
 	* @param documentationKey the documentation key
 	* @return the zendesk article that was removed
 	*/
-	public static ZendeskArticle removeByZSI_DK(long zendeskSectionId,
+	public static ZendeskArticle removeByZCI_DK(long zendeskCategoryId,
 		String documentationKey)
 		throws com.liferay.osb.customer.zendesk.documentation.sync.exception.NoSuchZendeskArticleException {
 		return getPersistence()
-				   .removeByZSI_DK(zendeskSectionId, documentationKey);
+				   .removeByZCI_DK(zendeskCategoryId, documentationKey);
 	}
 
 	/**
-	* Returns the number of zendesk articles where zendeskSectionId = &#63; and documentationKey = &#63;.
+	* Returns the number of zendesk articles where zendeskCategoryId = &#63; and documentationKey = &#63;.
 	*
-	* @param zendeskSectionId the zendesk section ID
+	* @param zendeskCategoryId the zendesk category ID
 	* @param documentationKey the documentation key
 	* @return the number of matching zendesk articles
 	*/
-	public static int countByZSI_DK(long zendeskSectionId,
+	public static int countByZCI_DK(long zendeskCategoryId,
 		String documentationKey) {
-		return getPersistence().countByZSI_DK(zendeskSectionId, documentationKey);
+		return getPersistence()
+				   .countByZCI_DK(zendeskCategoryId, documentationKey);
 	}
 
 	/**

@@ -39,7 +39,7 @@ public class ZendeskSectionLocalServiceWrapper
 		long zendeskCategoryId, String documentationKey,
 		java.util.Map<String, String> nameMap,
 		java.util.Map<String, String> descriptionMap, int position)
-		throws Exception {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _zendeskSectionLocalService.addZendeskSection(zendeskCategoryId,
 			documentationKey, nameMap, descriptionMap, position);
 	}
@@ -97,10 +97,12 @@ public class ZendeskSectionLocalServiceWrapper
 	*
 	* @param zendeskSection the zendesk section
 	* @return the zendesk section that was removed
+	* @throws PortalException
 	*/
 	@Override
 	public com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection deleteZendeskSection(
-		com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection zendeskSection) {
+		com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection zendeskSection)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _zendeskSectionLocalService.deleteZendeskSection(zendeskSection);
 	}
 
@@ -286,7 +288,7 @@ public class ZendeskSectionLocalServiceWrapper
 		long zendeskSectionId, long zendeskCategoryId, String documentationKey,
 		java.util.Map<String, String> nameMap,
 		java.util.Map<String, String> descriptionMap, int position)
-		throws Exception {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _zendeskSectionLocalService.updateZendeskSection(zendeskSectionId,
 			zendeskCategoryId, documentationKey, nameMap, descriptionMap,
 			position);

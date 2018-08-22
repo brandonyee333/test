@@ -44,7 +44,7 @@ public class ZendeskArticleAttachmentLocalServiceUtil {
 	 */
 	public static com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment addZendeskArticleAttachment(
 		long zendeskArticleId, String filePath, byte[] bytes)
-		throws Exception {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addZendeskArticleAttachment(zendeskArticleId, filePath,
 			bytes);
@@ -263,7 +263,7 @@ public class ZendeskArticleAttachmentLocalServiceUtil {
 
 	public static com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment updateZendeskArticleAttachment(
 		long zendeskArticleId, String filePath, byte[] bytes)
-		throws Exception {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateZendeskArticleAttachment(zendeskArticleId, filePath,
 			bytes);

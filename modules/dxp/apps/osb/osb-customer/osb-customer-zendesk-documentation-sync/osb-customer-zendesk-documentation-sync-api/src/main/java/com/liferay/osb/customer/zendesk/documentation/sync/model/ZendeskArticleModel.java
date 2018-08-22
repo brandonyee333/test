@@ -91,6 +91,20 @@ public interface ZendeskArticleModel extends BaseModel<ZendeskArticle> {
 	public void setModifiedDate(Date modifiedDate);
 
 	/**
+	 * Returns the zendesk category ID of this zendesk article.
+	 *
+	 * @return the zendesk category ID of this zendesk article
+	 */
+	public long getZendeskCategoryId();
+
+	/**
+	 * Sets the zendesk category ID of this zendesk article.
+	 *
+	 * @param zendeskCategoryId the zendesk category ID of this zendesk article
+	 */
+	public void setZendeskCategoryId(long zendeskCategoryId);
+
+	/**
 	 * Returns the zendesk section ID of this zendesk article.
 	 *
 	 * @return the zendesk section ID of this zendesk article

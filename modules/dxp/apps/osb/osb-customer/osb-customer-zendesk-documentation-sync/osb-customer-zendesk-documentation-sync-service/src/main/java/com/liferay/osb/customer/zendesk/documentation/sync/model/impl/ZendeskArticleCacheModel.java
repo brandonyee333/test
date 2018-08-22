@@ -65,12 +65,14 @@ public class ZendeskArticleCacheModel implements CacheModel<ZendeskArticle>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(13);
+		StringBundler sb = new StringBundler(15);
 
 		sb.append("{zendeskArticleId=");
 		sb.append(zendeskArticleId);
 		sb.append(", modifiedDate=");
 		sb.append(modifiedDate);
+		sb.append(", zendeskCategoryId=");
+		sb.append(zendeskCategoryId);
 		sb.append(", zendeskSectionId=");
 		sb.append(zendeskSectionId);
 		sb.append(", documentationKey=");
@@ -97,6 +99,7 @@ public class ZendeskArticleCacheModel implements CacheModel<ZendeskArticle>,
 			zendeskArticleImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
+		zendeskArticleImpl.setZendeskCategoryId(zendeskCategoryId);
 		zendeskArticleImpl.setZendeskSectionId(zendeskSectionId);
 
 		if (documentationKey == null) {
@@ -125,6 +128,8 @@ public class ZendeskArticleCacheModel implements CacheModel<ZendeskArticle>,
 		zendeskArticleId = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
 
+		zendeskCategoryId = objectInput.readLong();
+
 		zendeskSectionId = objectInput.readLong();
 		documentationKey = objectInput.readUTF();
 
@@ -137,6 +142,8 @@ public class ZendeskArticleCacheModel implements CacheModel<ZendeskArticle>,
 		throws IOException {
 		objectOutput.writeLong(zendeskArticleId);
 		objectOutput.writeLong(modifiedDate);
+
+		objectOutput.writeLong(zendeskCategoryId);
 
 		objectOutput.writeLong(zendeskSectionId);
 
@@ -159,6 +166,7 @@ public class ZendeskArticleCacheModel implements CacheModel<ZendeskArticle>,
 
 	public long zendeskArticleId;
 	public long modifiedDate;
+	public long zendeskCategoryId;
 	public long zendeskSectionId;
 	public String documentationKey;
 	public long remoteId;

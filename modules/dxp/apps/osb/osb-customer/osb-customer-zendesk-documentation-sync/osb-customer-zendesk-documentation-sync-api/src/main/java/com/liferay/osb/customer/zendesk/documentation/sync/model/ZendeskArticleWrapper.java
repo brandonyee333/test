@@ -60,6 +60,7 @@ public class ZendeskArticleWrapper implements ZendeskArticle,
 
 		attributes.put("zendeskArticleId", getZendeskArticleId());
 		attributes.put("modifiedDate", getModifiedDate());
+		attributes.put("zendeskCategoryId", getZendeskCategoryId());
 		attributes.put("zendeskSectionId", getZendeskSectionId());
 		attributes.put("documentationKey", getDocumentationKey());
 		attributes.put("remoteId", getRemoteId());
@@ -80,6 +81,12 @@ public class ZendeskArticleWrapper implements ZendeskArticle,
 
 		if (modifiedDate != null) {
 			setModifiedDate(modifiedDate);
+		}
+
+		Long zendeskCategoryId = (Long)attributes.get("zendeskCategoryId");
+
+		if (zendeskCategoryId != null) {
+			setZendeskCategoryId(zendeskCategoryId);
 		}
 
 		Long zendeskSectionId = (Long)attributes.get("zendeskSectionId");
@@ -185,6 +192,16 @@ public class ZendeskArticleWrapper implements ZendeskArticle,
 	@Override
 	public long getZendeskArticleId() {
 		return _zendeskArticle.getZendeskArticleId();
+	}
+
+	/**
+	* Returns the zendesk category ID of this zendesk article.
+	*
+	* @return the zendesk category ID of this zendesk article
+	*/
+	@Override
+	public long getZendeskCategoryId() {
+		return _zendeskArticle.getZendeskCategoryId();
 	}
 
 	/**
@@ -311,6 +328,16 @@ public class ZendeskArticleWrapper implements ZendeskArticle,
 	@Override
 	public void setZendeskArticleId(long zendeskArticleId) {
 		_zendeskArticle.setZendeskArticleId(zendeskArticleId);
+	}
+
+	/**
+	* Sets the zendesk category ID of this zendesk article.
+	*
+	* @param zendeskCategoryId the zendesk category ID of this zendesk article
+	*/
+	@Override
+	public void setZendeskCategoryId(long zendeskCategoryId) {
+		_zendeskArticle.setZendeskCategoryId(zendeskCategoryId);
 	}
 
 	/**

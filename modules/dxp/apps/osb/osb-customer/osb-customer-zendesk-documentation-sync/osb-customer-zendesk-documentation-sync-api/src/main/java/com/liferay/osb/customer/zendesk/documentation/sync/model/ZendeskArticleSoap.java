@@ -35,6 +35,7 @@ public class ZendeskArticleSoap implements Serializable {
 
 		soapModel.setZendeskArticleId(model.getZendeskArticleId());
 		soapModel.setModifiedDate(model.getModifiedDate());
+		soapModel.setZendeskCategoryId(model.getZendeskCategoryId());
 		soapModel.setZendeskSectionId(model.getZendeskSectionId());
 		soapModel.setDocumentationKey(model.getDocumentationKey());
 		soapModel.setRemoteId(model.getRemoteId());
@@ -107,6 +108,14 @@ public class ZendeskArticleSoap implements Serializable {
 		_modifiedDate = modifiedDate;
 	}
 
+	public long getZendeskCategoryId() {
+		return _zendeskCategoryId;
+	}
+
+	public void setZendeskCategoryId(long zendeskCategoryId) {
+		_zendeskCategoryId = zendeskCategoryId;
+	}
+
 	public long getZendeskSectionId() {
 		return _zendeskSectionId;
 	}
@@ -141,6 +150,7 @@ public class ZendeskArticleSoap implements Serializable {
 
 	private long _zendeskArticleId;
 	private Date _modifiedDate;
+	private long _zendeskCategoryId;
 	private long _zendeskSectionId;
 	private String _documentationKey;
 	private long _remoteId;

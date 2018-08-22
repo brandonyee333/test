@@ -37,7 +37,7 @@ public class ZendeskArticleAttachmentLocalServiceWrapper
 	@Override
 	public com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment addZendeskArticleAttachment(
 		long zendeskArticleId, String filePath, byte[] bytes)
-		throws Exception {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _zendeskArticleAttachmentLocalService.addZendeskArticleAttachment(zendeskArticleId,
 			filePath, bytes);
 	}
@@ -274,7 +274,7 @@ public class ZendeskArticleAttachmentLocalServiceWrapper
 	@Override
 	public com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment updateZendeskArticleAttachment(
 		long zendeskArticleId, String filePath, byte[] bytes)
-		throws Exception {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _zendeskArticleAttachmentLocalService.updateZendeskArticleAttachment(zendeskArticleId,
 			filePath, bytes);
 	}

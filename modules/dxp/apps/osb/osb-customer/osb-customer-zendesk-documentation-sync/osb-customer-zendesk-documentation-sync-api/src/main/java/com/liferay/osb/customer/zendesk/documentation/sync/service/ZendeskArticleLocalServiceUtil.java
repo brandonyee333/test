@@ -47,7 +47,7 @@ public class ZendeskArticleLocalServiceUtil {
 		java.util.Map<String, String> titleMap,
 		java.util.Map<String, String> bodyMap, int position,
 		String[] labelNames, java.util.Map<String, byte[]> attachments)
-		throws Exception {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addZendeskArticle(zendeskSectionId, documentationKey,
 			titleMap, bodyMap, position, labelNames, attachments);
@@ -102,9 +102,11 @@ public class ZendeskArticleLocalServiceUtil {
 	*
 	* @param zendeskArticle the zendesk article
 	* @return the zendesk article that was removed
+	* @throws PortalException
 	*/
 	public static com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle deleteZendeskArticle(
-		com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle zendeskArticle) {
+		com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle zendeskArticle)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteZendeskArticle(zendeskArticle);
 	}
 
@@ -192,9 +194,9 @@ public class ZendeskArticleLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle fetchZendeskArticle(
-		long zendeskSectionId, String documentationKey) {
+		long zendeskCategoryId, String documentationKey) {
 		return getService()
-				   .fetchZendeskArticle(zendeskSectionId, documentationKey);
+				   .fetchZendeskArticle(zendeskCategoryId, documentationKey);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
@@ -262,12 +264,17 @@ public class ZendeskArticleLocalServiceUtil {
 		return getService().getZendeskArticlesCount();
 	}
 
+	public static java.util.List<com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle> getZendeskCategoryArticles(
+		long zendeskCategoryId) {
+		return getService().getZendeskCategoryArticles(zendeskCategoryId);
+	}
+
 	public static com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle updateZendeskArticle(
 		long zendeskArticleId, long zendeskSectionId, String documentationKey,
 		java.util.Map<String, String> titleMap,
 		java.util.Map<String, String> bodyMap, int position,
 		String[] labelNames, java.util.Map<String, byte[]> attachments)
-		throws Exception {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateZendeskArticle(zendeskArticleId, zendeskSectionId,
 			documentationKey, titleMap, bodyMap, position, labelNames,

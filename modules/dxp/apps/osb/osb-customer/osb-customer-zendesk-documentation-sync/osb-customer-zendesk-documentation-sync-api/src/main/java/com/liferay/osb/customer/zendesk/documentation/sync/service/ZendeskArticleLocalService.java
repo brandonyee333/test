@@ -64,7 +64,7 @@ public interface ZendeskArticleLocalService extends BaseLocalService,
 	public ZendeskArticle addZendeskArticle(long zendeskSectionId,
 		String documentationKey, Map<String, String> titleMap,
 		Map<String, String> bodyMap, int position, String[] labelNames,
-		Map<String, byte[]> attachments) throws Exception;
+		Map<String, byte[]> attachments) throws PortalException;
 
 	/**
 	* Adds the zendesk article to the database. Also notifies the appropriate model listeners.
@@ -107,9 +107,11 @@ public interface ZendeskArticleLocalService extends BaseLocalService,
 	*
 	* @param zendeskArticle the zendesk article
 	* @return the zendesk article that was removed
+	* @throws PortalException
 	*/
 	@Indexable(type = IndexableType.DELETE)
-	public ZendeskArticle deleteZendeskArticle(ZendeskArticle zendeskArticle);
+	public ZendeskArticle deleteZendeskArticle(ZendeskArticle zendeskArticle)
+		throws PortalException;
 
 	public DynamicQuery dynamicQuery();
 
@@ -174,7 +176,7 @@ public interface ZendeskArticleLocalService extends BaseLocalService,
 	public ZendeskArticle fetchZendeskArticle(long zendeskArticleId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ZendeskArticle fetchZendeskArticle(long zendeskSectionId,
+	public ZendeskArticle fetchZendeskArticle(long zendeskCategoryId,
 		String documentationKey);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -231,11 +233,15 @@ public interface ZendeskArticleLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getZendeskArticlesCount();
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ZendeskArticle> getZendeskCategoryArticles(
+		long zendeskCategoryId);
+
 	public ZendeskArticle updateZendeskArticle(long zendeskArticleId,
 		long zendeskSectionId, String documentationKey,
 		Map<String, String> titleMap, Map<String, String> bodyMap,
 		int position, String[] labelNames, Map<String, byte[]> attachments)
-		throws Exception;
+		throws PortalException;
 
 	/**
 	* Updates the zendesk article in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

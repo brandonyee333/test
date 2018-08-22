@@ -62,7 +62,7 @@ public interface ZendeskArticleAttachmentLocalService extends BaseLocalService,
 	 */
 	public ZendeskArticleAttachment addZendeskArticleAttachment(
 		long zendeskArticleId, String filePath, byte[] bytes)
-		throws Exception;
+		throws PortalException;
 
 	/**
 	* Adds the zendesk article attachment to the database. Also notifies the appropriate model listeners.
@@ -235,7 +235,7 @@ public interface ZendeskArticleAttachmentLocalService extends BaseLocalService,
 
 	public ZendeskArticleAttachment updateZendeskArticleAttachment(
 		long zendeskArticleId, String filePath, byte[] bytes)
-		throws Exception;
+		throws PortalException;
 
 	/**
 	* Updates the zendesk article attachment in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

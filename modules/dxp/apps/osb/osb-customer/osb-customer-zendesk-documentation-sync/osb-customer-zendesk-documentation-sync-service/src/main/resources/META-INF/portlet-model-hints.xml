@@ -4,6 +4,7 @@
 	<model name="com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle">
 		<field name="zendeskArticleId" type="long" />
 		<field name="modifiedDate" type="Date" />
+		<field name="zendeskCategoryId" type="long" />
 		<field name="zendeskSectionId" type="long" />
 		<field name="documentationKey" type="String">
 			<hint name="max-length">150</hint>

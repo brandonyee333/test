@@ -1,6 +1,7 @@
 create table OSBCustomer_ZendeskArticle (
 	zendeskArticleId LONG not null primary key,
 	modifiedDate DATE null,
+	zendeskCategoryId LONG,
 	zendeskSectionId LONG,
 	documentationKey VARCHAR(150) null,
 	remoteId LONG,

@@ -122,10 +122,12 @@ public abstract class ZendeskArticleLocalServiceBaseImpl
 	 *
 	 * @param zendeskArticle the zendesk article
 	 * @return the zendesk article that was removed
+	 * @throws PortalException
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	public ZendeskArticle deleteZendeskArticle(ZendeskArticle zendeskArticle) {
+	public ZendeskArticle deleteZendeskArticle(ZendeskArticle zendeskArticle)
+		throws PortalException {
 		return zendeskArticlePersistence.remove(zendeskArticle);
 	}
 

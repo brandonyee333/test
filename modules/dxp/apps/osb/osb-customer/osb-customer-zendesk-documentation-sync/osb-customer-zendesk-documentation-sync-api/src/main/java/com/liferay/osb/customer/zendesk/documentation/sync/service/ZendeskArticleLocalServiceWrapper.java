@@ -40,7 +40,7 @@ public class ZendeskArticleLocalServiceWrapper
 		java.util.Map<String, String> titleMap,
 		java.util.Map<String, String> bodyMap, int position,
 		String[] labelNames, java.util.Map<String, byte[]> attachments)
-		throws Exception {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _zendeskArticleLocalService.addZendeskArticle(zendeskSectionId,
 			documentationKey, titleMap, bodyMap, position, labelNames,
 			attachments);
@@ -99,10 +99,12 @@ public class ZendeskArticleLocalServiceWrapper
 	*
 	* @param zendeskArticle the zendesk article
 	* @return the zendesk article that was removed
+	* @throws PortalException
 	*/
 	@Override
 	public com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle deleteZendeskArticle(
-		com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle zendeskArticle) {
+		com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle zendeskArticle)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _zendeskArticleLocalService.deleteZendeskArticle(zendeskArticle);
 	}
 
@@ -199,8 +201,8 @@ public class ZendeskArticleLocalServiceWrapper
 
 	@Override
 	public com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle fetchZendeskArticle(
-		long zendeskSectionId, String documentationKey) {
-		return _zendeskArticleLocalService.fetchZendeskArticle(zendeskSectionId,
+		long zendeskCategoryId, String documentationKey) {
+		return _zendeskArticleLocalService.fetchZendeskArticle(zendeskCategoryId,
 			documentationKey);
 	}
 
@@ -278,12 +280,18 @@ public class ZendeskArticleLocalServiceWrapper
 	}
 
 	@Override
+	public java.util.List<com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle> getZendeskCategoryArticles(
+		long zendeskCategoryId) {
+		return _zendeskArticleLocalService.getZendeskCategoryArticles(zendeskCategoryId);
+	}
+
+	@Override
 	public com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle updateZendeskArticle(
 		long zendeskArticleId, long zendeskSectionId, String documentationKey,
 		java.util.Map<String, String> titleMap,
 		java.util.Map<String, String> bodyMap, int position,
 		String[] labelNames, java.util.Map<String, byte[]> attachments)
-		throws Exception {
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _zendeskArticleLocalService.updateZendeskArticle(zendeskArticleId,
 			zendeskSectionId, documentationKey, titleMap, bodyMap, position,
 			labelNames, attachments);

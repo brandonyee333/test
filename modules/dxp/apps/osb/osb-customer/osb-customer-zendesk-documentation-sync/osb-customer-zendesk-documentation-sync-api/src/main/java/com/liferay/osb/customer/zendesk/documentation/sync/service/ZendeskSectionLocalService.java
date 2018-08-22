@@ -64,7 +64,7 @@ public interface ZendeskSectionLocalService extends BaseLocalService,
 	public ZendeskSection addZendeskSection(long zendeskCategoryId,
 		String documentationKey, Map<String, String> nameMap,
 		Map<String, String> descriptionMap, int position)
-		throws Exception;
+		throws PortalException;
 
 	/**
 	* Adds the zendesk section to the database. Also notifies the appropriate model listeners.
@@ -107,9 +107,11 @@ public interface ZendeskSectionLocalService extends BaseLocalService,
 	*
 	* @param zendeskSection the zendesk section
 	* @return the zendesk section that was removed
+	* @throws PortalException
 	*/
 	@Indexable(type = IndexableType.DELETE)
-	public ZendeskSection deleteZendeskSection(ZendeskSection zendeskSection);
+	public ZendeskSection deleteZendeskSection(ZendeskSection zendeskSection)
+		throws PortalException;
 
 	public DynamicQuery dynamicQuery();
 
@@ -237,7 +239,7 @@ public interface ZendeskSectionLocalService extends BaseLocalService,
 	public ZendeskSection updateZendeskSection(long zendeskSectionId,
 		long zendeskCategoryId, String documentationKey,
 		Map<String, String> nameMap, Map<String, String> descriptionMap,
-		int position) throws Exception;
+		int position) throws PortalException;
 
 	/**
 	* Updates the zendesk section in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

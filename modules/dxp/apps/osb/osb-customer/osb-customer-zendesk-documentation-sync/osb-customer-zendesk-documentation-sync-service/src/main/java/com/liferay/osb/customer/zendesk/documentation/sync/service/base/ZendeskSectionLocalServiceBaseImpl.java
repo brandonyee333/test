@@ -122,10 +122,12 @@ public abstract class ZendeskSectionLocalServiceBaseImpl
 	 *
 	 * @param zendeskSection the zendesk section
 	 * @return the zendesk section that was removed
+	 * @throws PortalException
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	public ZendeskSection deleteZendeskSection(ZendeskSection zendeskSection) {
+	public ZendeskSection deleteZendeskSection(ZendeskSection zendeskSection)
+		throws PortalException {
 		return zendeskSectionPersistence.remove(zendeskSection);
 	}
 

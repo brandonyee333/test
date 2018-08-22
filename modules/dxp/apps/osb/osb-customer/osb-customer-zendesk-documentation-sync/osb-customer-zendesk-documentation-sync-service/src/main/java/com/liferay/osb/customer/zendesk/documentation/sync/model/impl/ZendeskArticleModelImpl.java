@@ -64,6 +64,7 @@ public class ZendeskArticleModelImpl extends BaseModelImpl<ZendeskArticle>
 	public static final Object[][] TABLE_COLUMNS = {
 			{ "zendeskArticleId", Types.BIGINT },
 			{ "modifiedDate", Types.TIMESTAMP },
+			{ "zendeskCategoryId", Types.BIGINT },
 			{ "zendeskSectionId", Types.BIGINT },
 			{ "documentationKey", Types.VARCHAR },
 			{ "remoteId", Types.BIGINT },
@@ -74,13 +75,14 @@ public class ZendeskArticleModelImpl extends BaseModelImpl<ZendeskArticle>
 	static {
 		TABLE_COLUMNS_MAP.put("zendeskArticleId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
+		TABLE_COLUMNS_MAP.put("zendeskCategoryId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("zendeskSectionId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("documentationKey", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("remoteId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("remoteHtmlURL", Types.VARCHAR);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSBCustomer_ZendeskArticle (zendeskArticleId LONG not null primary key,modifiedDate DATE null,zendeskSectionId LONG,documentationKey VARCHAR(150) null,remoteId LONG,remoteHtmlURL STRING null)";
+	public static final String TABLE_SQL_CREATE = "create table OSBCustomer_ZendeskArticle (zendeskArticleId LONG not null primary key,modifiedDate DATE null,zendeskCategoryId LONG,zendeskSectionId LONG,documentationKey VARCHAR(150) null,remoteId LONG,remoteHtmlURL STRING null)";
 	public static final String TABLE_SQL_DROP = "drop table OSBCustomer_ZendeskArticle";
 	public static final String ORDER_BY_JPQL = " ORDER BY zendeskArticle.zendeskArticleId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY OSBCustomer_ZendeskArticle.zendeskArticleId ASC";
@@ -97,8 +99,9 @@ public class ZendeskArticleModelImpl extends BaseModelImpl<ZendeskArticle>
 				"value.object.column.bitmask.enabled.com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle"),
 			true);
 	public static final long DOCUMENTATIONKEY_COLUMN_BITMASK = 1L;
-	public static final long ZENDESKSECTIONID_COLUMN_BITMASK = 2L;
-	public static final long ZENDESKARTICLEID_COLUMN_BITMASK = 4L;
+	public static final long ZENDESKCATEGORYID_COLUMN_BITMASK = 2L;
+	public static final long ZENDESKSECTIONID_COLUMN_BITMASK = 4L;
+	public static final long ZENDESKARTICLEID_COLUMN_BITMASK = 8L;
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.osb.customer.zendesk.documentation.sync.service.util.ServiceProps.get(
 				"lock.expiration.time.com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle"));
 
@@ -141,6 +144,7 @@ public class ZendeskArticleModelImpl extends BaseModelImpl<ZendeskArticle>
 
 		attributes.put("zendeskArticleId", getZendeskArticleId());
 		attributes.put("modifiedDate", getModifiedDate());
+		attributes.put("zendeskCategoryId", getZendeskCategoryId());
 		attributes.put("zendeskSectionId", getZendeskSectionId());
 		attributes.put("documentationKey", getDocumentationKey());
 		attributes.put("remoteId", getRemoteId());
@@ -164,6 +168,12 @@ public class ZendeskArticleModelImpl extends BaseModelImpl<ZendeskArticle>
 
 		if (modifiedDate != null) {
 			setModifiedDate(modifiedDate);
+		}
+
+		Long zendeskCategoryId = (Long)attributes.get("zendeskCategoryId");
+
+		if (zendeskCategoryId != null) {
+			setZendeskCategoryId(zendeskCategoryId);
 		}
 
 		Long zendeskSectionId = (Long)attributes.get("zendeskSectionId");
@@ -209,6 +219,28 @@ public class ZendeskArticleModelImpl extends BaseModelImpl<ZendeskArticle>
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_modifiedDate = modifiedDate;
+	}
+
+	@Override
+	public long getZendeskCategoryId() {
+		return _zendeskCategoryId;
+	}
+
+	@Override
+	public void setZendeskCategoryId(long zendeskCategoryId) {
+		_columnBitmask |= ZENDESKCATEGORYID_COLUMN_BITMASK;
+
+		if (!_setOriginalZendeskCategoryId) {
+			_setOriginalZendeskCategoryId = true;
+
+			_originalZendeskCategoryId = _zendeskCategoryId;
+		}
+
+		_zendeskCategoryId = zendeskCategoryId;
+	}
+
+	public long getOriginalZendeskCategoryId() {
+		return _originalZendeskCategoryId;
 	}
 
 	@Override
@@ -316,6 +348,7 @@ public class ZendeskArticleModelImpl extends BaseModelImpl<ZendeskArticle>
 
 		zendeskArticleImpl.setZendeskArticleId(getZendeskArticleId());
 		zendeskArticleImpl.setModifiedDate(getModifiedDate());
+		zendeskArticleImpl.setZendeskCategoryId(getZendeskCategoryId());
 		zendeskArticleImpl.setZendeskSectionId(getZendeskSectionId());
 		zendeskArticleImpl.setDocumentationKey(getDocumentationKey());
 		zendeskArticleImpl.setRemoteId(getRemoteId());
@@ -382,6 +415,10 @@ public class ZendeskArticleModelImpl extends BaseModelImpl<ZendeskArticle>
 	public void resetOriginalValues() {
 		ZendeskArticleModelImpl zendeskArticleModelImpl = this;
 
+		zendeskArticleModelImpl._originalZendeskCategoryId = zendeskArticleModelImpl._zendeskCategoryId;
+
+		zendeskArticleModelImpl._setOriginalZendeskCategoryId = false;
+
 		zendeskArticleModelImpl._originalZendeskSectionId = zendeskArticleModelImpl._zendeskSectionId;
 
 		zendeskArticleModelImpl._setOriginalZendeskSectionId = false;
@@ -405,6 +442,8 @@ public class ZendeskArticleModelImpl extends BaseModelImpl<ZendeskArticle>
 		else {
 			zendeskArticleCacheModel.modifiedDate = Long.MIN_VALUE;
 		}
+
+		zendeskArticleCacheModel.zendeskCategoryId = getZendeskCategoryId();
 
 		zendeskArticleCacheModel.zendeskSectionId = getZendeskSectionId();
 
@@ -431,12 +470,14 @@ public class ZendeskArticleModelImpl extends BaseModelImpl<ZendeskArticle>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(13);
+		StringBundler sb = new StringBundler(15);
 
 		sb.append("{zendeskArticleId=");
 		sb.append(getZendeskArticleId());
 		sb.append(", modifiedDate=");
 		sb.append(getModifiedDate());
+		sb.append(", zendeskCategoryId=");
+		sb.append(getZendeskCategoryId());
 		sb.append(", zendeskSectionId=");
 		sb.append(getZendeskSectionId());
 		sb.append(", documentationKey=");
@@ -452,7 +493,7 @@ public class ZendeskArticleModelImpl extends BaseModelImpl<ZendeskArticle>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(22);
+		StringBundler sb = new StringBundler(25);
 
 		sb.append("<model><model-name>");
 		sb.append(
@@ -466,6 +507,10 @@ public class ZendeskArticleModelImpl extends BaseModelImpl<ZendeskArticle>
 		sb.append(
 			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
 		sb.append(getModifiedDate());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>zendeskCategoryId</column-name><column-value><![CDATA[");
+		sb.append(getZendeskCategoryId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>zendeskSectionId</column-name><column-value><![CDATA[");
@@ -495,6 +540,9 @@ public class ZendeskArticleModelImpl extends BaseModelImpl<ZendeskArticle>
 		};
 	private long _zendeskArticleId;
 	private Date _modifiedDate;
+	private long _zendeskCategoryId;
+	private long _originalZendeskCategoryId;
+	private boolean _setOriginalZendeskCategoryId;
 	private long _zendeskSectionId;
 	private long _originalZendeskSectionId;
 	private boolean _setOriginalZendeskSectionId;

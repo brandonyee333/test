@@ -1,4 +1,5 @@
-create index IX_EFCFFFF4 on OSBCustomer_ZendeskArticle (zendeskSectionId, documentationKey[$COLUMN_LENGTH:150$]);
+create index IX_AE645B9B on OSBCustomer_ZendeskArticle (zendeskCategoryId, documentationKey[$COLUMN_LENGTH:150$]);
+create index IX_E374CBBB on OSBCustomer_ZendeskArticle (zendeskSectionId);
 
 create index IX_CFA4AE84 on OSBCustomer_ZendeskArticleAttachment (zendeskArticleId, filePath[$COLUMN_LENGTH:150$]);
 
