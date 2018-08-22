@@ -60,6 +60,11 @@ public class ZendeskCategoryLocalServiceImpl
 		return zendeskCategoryPersistence.remove(zendeskCategoryId);
 	}
 
+	public ZendeskCategory fetchZendeskCategory(String documentationKey) {
+		return zendeskCategoryPersistence.fetchByDocumentationKey(
+			documentationKey);
+	}
+
 	public void importDocumentationArchive(
 			long zendeskCategoryId, String fileName, InputStream inputStream)
 		throws Exception {
