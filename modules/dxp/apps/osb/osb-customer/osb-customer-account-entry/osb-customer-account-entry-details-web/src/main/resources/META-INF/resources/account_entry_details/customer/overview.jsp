@@ -14,7 +14,27 @@
  */
 --%>
 
-<%@ include file="/init.jsp" %>
+<%@ include file="/account_entry_details/init.jsp" %>
+
+<%
+AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
+
+JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+List<CorpProjectMessage> corpProjectMessages = CorpProjectMessageLocalServiceUtil.getCorpProjectMessages(accountEntry.getCorpProjectId());
+
+if (!corpProjectMessage.isEmpty()) {
+	for (CorpProjectMessage corpProjectMessage: corpProjectMessages) {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("content", corpProjectMessage.getContent());
+		jsonObject.put("severity", CorpProjectMessageConstants.getSeverityLevelLabel(corpProjectMessage.getSeverityLevel()));
+		jsonObject.put("title", corpProjectMessage.getTitle());
+
+		jsonArray.put(jsonObject);
+	}
+}
+%>
 
 <aui:row>
 	<aui:col width="<%= 100 %>">
