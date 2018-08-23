@@ -1,16 +1,28 @@
-.lfr-alert-container,
-.lfr-notification-container {
-	.alert {
-		padding: 14px 16px;
+.alert,
+.portlet-msg-alert,
+.portlet-msg-error,
+.portlet-msg-help,
+.portlet-msg-info,
+.portlet-msg-progress,
+.portlet-msg-success {
+	padding: 16px;
 
-		.close {
-			right: 8px;
-		}
+	.close {
+		right: 8px;
 	}
+}
 
-	&.lfr-alert-container {
-		.alert .close {
-			top: -6px;
-		}
+.alert-dismissible {
+    padding-right: 2.5rem;
+}
+
+.alert-fluid {
+	border-radius: 0;
+	border-width: $alert-fluid-border-width;
+	padding: 0;
+
+	.container,
+	.container-fluid {
+		padding: 16px;
 	}
 }

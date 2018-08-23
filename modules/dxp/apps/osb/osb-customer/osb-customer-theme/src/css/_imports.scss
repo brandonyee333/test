@@ -3,8 +3,8 @@
 
 /* ---------- Custom variables ---------- */
 
-@import "_aui-variables.scss";
-@import "_customer-variables.scss";
+@import "_aui-variables";
+@import "_customer-variables";
 
 /* ---------- Lexicon base ---------- */
 
@@ -16,23 +16,23 @@
 
 /* ---------- Custom mixins ---------- */
 
-@import "_breakpoints.scss";
-@import "_customer-mixins.scss";
+@import "_breakpoints";
+@import "_customer-mixins";
 
 /* ---------- Custom components ---------- */
 
-@import "_customer-alert.scss";
-@import "_customer-button.scss";
-@import "_customer-card.scss";
-@import "_customer-elements.scss";
-@import "_customer-fonts.scss";
-@import "_customer-footer.scss";
-@import "_customer-form.scss";
-@import "_customer-grid.scss";
-@import "_customer-header.scss";
-@import "_customer-label.scss";
-@import "_customer-nav-tabs.scss";
-@import "_customer-pagination.scss";
-@import "_customer-portlet.scss";
-@import "_customer-search.scss";
-@import "_customer-table.scss";
+@import "_customer-alert";
+@import "_customer-button";
+@import "_customer-card";
+@import "_customer-elements";
+@import "_customer-fonts";
+@import "_customer-footer";
+@import "_customer-form";
+@import "_customer-grid";
+@import "_customer-header";
+@import "_customer-label";
+@import "_customer-nav-tabs";
+@import "_customer-pagination";
+@import "_customer-portlet";
+@import "_customer-search";
+@import "_customer-table";
