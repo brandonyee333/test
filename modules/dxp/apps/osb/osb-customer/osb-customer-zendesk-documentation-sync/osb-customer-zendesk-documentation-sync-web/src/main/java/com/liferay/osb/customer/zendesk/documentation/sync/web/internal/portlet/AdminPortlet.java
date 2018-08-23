@@ -81,6 +81,10 @@ public class AdminPortlet extends MVCPortlet {
 
 			inputStream = uploadPortletRequest.getFileAsStream("file");
 
+			if (_log.isInfoEnabled()) {
+				_log.info("Importing articles for " + fileName);
+			}
+
 			_zendeskCategoryLocalService.importDocumentationArchive(
 				zendeskCategoryId, fileName, inputStream);
 		}

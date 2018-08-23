@@ -25,6 +25,7 @@ import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskSectio
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.zip.ZipReader;
 
 import java.nio.file.Path;
@@ -64,46 +65,16 @@ public class DocumentationArchiveImporter {
 
 		Collections.sort(entries);
 
+		_iterationCount = 0;
+
 		for (String entry : entries) {
-			String[] articleExtensions =
-				_zendeskDocumentationSyncConfiguration.
-					markdownImporterArticleExtensions();
+			processEntry(entry);
+		}
 
-			if (!ArrayUtil.exists(articleExtensions, entry::endsWith)) {
-				continue;
-			}
+		_iterationCount++;
 
-			String markdown = _zipReader.getEntryAsString(entry);
-
-			ArticleMarkdownConverter articleMarkdownConverter =
-				new ArticleMarkdownConverter(_zipReader, entry, markdown);
-
-			Path path = Paths.get(entry);
-
-			if (isZendeskSection(path)) {
-				String title = articleMarkdownConverter.getTitle();
-
-				processZendeskSection(articleMarkdownConverter.getId(), title);
-
-				if (!title.startsWith("Intro") &&
-					(ZendeskArticleLocalServiceUtil.getZendeskArticleCount(
-						_currentZendeskSection.getZendeskSectionId()) != 1)) {
-
-					title = "Introduction to " + title;
-				}
-
-				processZendeskArticle(
-					articleMarkdownConverter.getId(), title,
-					articleMarkdownConverter.getHtml(),
-					articleMarkdownConverter.getAttachments());
-			}
-			else {
-				processZendeskArticle(
-					articleMarkdownConverter.getId(),
-					articleMarkdownConverter.getTitle(),
-					articleMarkdownConverter.getHtml(),
-					articleMarkdownConverter.getAttachments());
-			}
+		for (String entry : entries) {
+			processEntry(entry);
 		}
 
 		deleteRemovedArticles();
@@ -117,9 +88,7 @@ public class DocumentationArchiveImporter {
 				_zendeskCategory.getZendeskCategoryId());
 
 		for (ZendeskArticle zendeskArticle : zendeskArticles) {
-			if (!_zendeskArticleKeys.contains(
-					zendeskArticle.getDocumentationKey())) {
-
+			if (!_zendeskArticles.contains(zendeskArticle)) {
 				ZendeskArticleLocalServiceUtil.deleteZendeskArticle(
 					zendeskArticle);
 			}
@@ -132,16 +101,45 @@ public class DocumentationArchiveImporter {
 				_zendeskCategory.getZendeskCategoryId());
 
 		for (ZendeskSection zendeskSection : zendeskSections) {
-			if (!_zendeskSectionKeys.contains(
-					zendeskSection.getDocumentationKey())) {
-
+			if (!_zendeskSections.contains(zendeskSection)) {
 				ZendeskSectionLocalServiceUtil.deleteZendeskSection(
 					zendeskSection);
 			}
 		}
 	}
 
-	protected boolean isZendeskSection(Path path) {
+	protected String getBottomNavigationHtml(
+		ZendeskArticle previousZendeskArticle,
+		ZendeskArticle nextZendeskArticle) {
+
+		StringBundler sb = new StringBundler(12);
+
+		sb.append("<div class=\"article-siblings\">");
+
+		if (previousZendeskArticle != null) {
+			sb.append("<span class=\"previous\"><a href=\"");
+			sb.append(previousZendeskArticle.getRemoteHtmlURL());
+			sb.append("\">&#171; ");
+			sb.append(previousZendeskArticle.getRemoteTitle());
+			sb.append("</a></span>");
+		}
+
+		if (nextZendeskArticle != null) {
+			sb.append("<span class=\"next\"><a href=\"");
+			sb.append(nextZendeskArticle.getRemoteHtmlURL());
+			sb.append("\">");
+			sb.append(nextZendeskArticle.getRemoteTitle());
+			sb.append(" &#187;</a></span>");
+		}
+
+		sb.append("</div>");
+
+		return sb.toString();
+	}
+
+	protected boolean isZendeskSection(String entry) {
+		Path path = Paths.get(entry);
+
 		if (path.getNameCount() != 3) {
 			return false;
 		}
@@ -160,6 +158,39 @@ public class DocumentationArchiveImporter {
 		return false;
 	}
 
+	protected void processEntry(String entry) throws Exception {
+		String[] articleExtensions =
+			_zendeskDocumentationSyncConfiguration.
+				markdownImporterArticleExtensions();
+
+		if (!ArrayUtil.exists(articleExtensions, entry::endsWith)) {
+			return;
+		}
+
+		String markdown = _zipReader.getEntryAsString(entry);
+
+		ArticleMarkdownConverter articleMarkdownConverter =
+			new ArticleMarkdownConverter(_zipReader, entry, markdown);
+
+		String title = articleMarkdownConverter.getTitle();
+
+		if (isZendeskSection(entry)) {
+			processZendeskSection(articleMarkdownConverter.getId(), title);
+
+			if (!title.startsWith("Intro") &&
+				(ZendeskArticleLocalServiceUtil.getZendeskArticleCount(
+					_currentZendeskSection.getZendeskSectionId()) != 1)) {
+
+				title = "Introduction to " + title;
+			}
+		}
+
+		processZendeskArticle(
+			articleMarkdownConverter.getId(), title,
+			articleMarkdownConverter.getHtml(),
+			articleMarkdownConverter.getAttachments());
+	}
+
 	protected void processZendeskArticle(
 			String documentationKey, String title, String body,
 			Map<String, byte[]> attachments)
@@ -170,6 +201,28 @@ public class DocumentationArchiveImporter {
 				"Article " + documentationKey + " is not in a section.");
 		}
 
+		ZendeskArticle zendeskArticle =
+			ZendeskArticleLocalServiceUtil.fetchZendeskArticle(
+				_zendeskCategory.getZendeskCategoryId(), documentationKey);
+
+		if (_iterationCount > 0) {
+			int index = _zendeskArticles.indexOf(zendeskArticle);
+
+			ZendeskArticle previousZendeskArticle = null;
+			ZendeskArticle nextZendeskArticle = null;
+
+			if (index >= 1) {
+				previousZendeskArticle = _zendeskArticles.get(index - 1);
+			}
+
+			if (index < (_zendeskArticles.size() - 1)) {
+				nextZendeskArticle = _zendeskArticles.get(index + 1);
+			}
+
+			body += getBottomNavigationHtml(
+				previousZendeskArticle, nextZendeskArticle);
+		}
+
 		Map<String, String> titleMap = new HashMap<>();
 		Map<String, String> bodyMap = new HashMap<>();
 
@@ -178,10 +231,6 @@ public class DocumentationArchiveImporter {
 			bodyMap.put(locale, body);
 		}
 
-		ZendeskArticle zendeskArticle =
-			ZendeskArticleLocalServiceUtil.fetchZendeskArticle(
-				_zendeskCategory.getZendeskCategoryId(), documentationKey);
-
 		if (zendeskArticle == null) {
 			zendeskArticle = ZendeskArticleLocalServiceUtil.addZendeskArticle(
 				_currentZendeskSection.getZendeskSectionId(), documentationKey,
@@ -189,14 +238,20 @@ public class DocumentationArchiveImporter {
 				_zendeskCategory.getRemoteLabelNames(), attachments);
 		}
 		else {
-			ZendeskArticleLocalServiceUtil.updateZendeskArticle(
-				zendeskArticle.getZendeskArticleId(),
-				_currentZendeskSection.getZendeskSectionId(), documentationKey,
-				titleMap, bodyMap, _zendeskArticlePosition,
-				_zendeskCategory.getRemoteLabelNames(), attachments);
+			zendeskArticle =
+				ZendeskArticleLocalServiceUtil.updateZendeskArticle(
+					zendeskArticle.getZendeskArticleId(),
+					_currentZendeskSection.getZendeskSectionId(),
+					documentationKey, titleMap, bodyMap,
+					_zendeskArticlePosition,
+					_zendeskCategory.getRemoteLabelNames(), attachments);
 		}
 
-		_zendeskArticleKeys.add(documentationKey);
+		if (_iterationCount == 0) {
+			zendeskArticle.setRemoteTitle(title);
+
+			_zendeskArticles.add(zendeskArticle);
+		}
 
 		_zendeskArticlePosition++;
 	}
@@ -204,45 +259,51 @@ public class DocumentationArchiveImporter {
 	protected void processZendeskSection(String documentationKey, String name)
 		throws Exception {
 
-		Map<String, String> nameMap = new HashMap<>();
-
-		for (String locale : ZendeskLocales.LOCALES_ENABLED) {
-			nameMap.put(locale, name);
-		}
-
 		ZendeskSection zendeskSection =
 			ZendeskSectionLocalServiceUtil.fetchZendeskSection(
 				_zendeskCategory.getZendeskCategoryId(), documentationKey);
 
-		if (zendeskSection == null) {
-			zendeskSection = ZendeskSectionLocalServiceUtil.addZendeskSection(
-				_zendeskCategory.getZendeskCategoryId(), documentationKey,
-				nameMap, Collections.emptyMap(), _zendeskSectionPosition);
-		}
-		else {
-			zendeskSection =
-				ZendeskSectionLocalServiceUtil.updateZendeskSection(
-					zendeskSection.getZendeskSectionId(),
-					_zendeskCategory.getZendeskCategoryId(), documentationKey,
-					nameMap, Collections.emptyMap(), _zendeskSectionPosition);
+		if (_iterationCount == 0) {
+			Map<String, String> nameMap = new HashMap<>();
+
+			for (String locale : ZendeskLocales.LOCALES_ENABLED) {
+				nameMap.put(locale, name);
+			}
+
+			if (zendeskSection == null) {
+				zendeskSection =
+					ZendeskSectionLocalServiceUtil.addZendeskSection(
+						_zendeskCategory.getZendeskCategoryId(),
+						documentationKey, nameMap, Collections.emptyMap(),
+						_zendeskSectionPosition);
+			}
+			else {
+				zendeskSection =
+					ZendeskSectionLocalServiceUtil.updateZendeskSection(
+						zendeskSection.getZendeskSectionId(),
+						_zendeskCategory.getZendeskCategoryId(),
+						documentationKey, nameMap, Collections.emptyMap(),
+						_zendeskSectionPosition);
+			}
+
+			_zendeskSections.add(zendeskSection);
 		}
 
 		_currentZendeskSection = zendeskSection;
-
-		_zendeskSectionKeys.add(documentationKey);
 
 		_zendeskArticlePosition = 0;
 		_zendeskSectionPosition++;
 	}
 
 	private ZendeskSection _currentZendeskSection;
-	private List<String> _zendeskArticleKeys = new ArrayList<>();
+	private int _iterationCount;
 	private int _zendeskArticlePosition;
+	private List<ZendeskArticle> _zendeskArticles = new ArrayList<>();
 	private final ZendeskCategory _zendeskCategory;
 	private volatile ZendeskDocumentationSyncConfiguration
 		_zendeskDocumentationSyncConfiguration;
-	private List<String> _zendeskSectionKeys = new ArrayList<>();
 	private int _zendeskSectionPosition;
+	private List<ZendeskSection> _zendeskSections = new ArrayList<>();
 	private final ZipReader _zipReader;
 
 }

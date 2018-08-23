@@ -17,12 +17,22 @@ package com.liferay.osb.customer.zendesk.documentation.sync.model.impl;
 import aQute.bnd.annotation.ProviderType;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Amos Fong
  */
 @ProviderType
 public class ZendeskArticleImpl extends ZendeskArticleBaseImpl {
 
 	public ZendeskArticleImpl() {
 	}
+
+	public String getRemoteTitle() {
+		return _remoteTitle;
+	}
+
+	public void setRemoteTitle(String remoteTitle) {
+		_remoteTitle = remoteTitle;
+	}
+
+	private String _remoteTitle;
 
 }
