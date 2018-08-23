@@ -91,6 +91,7 @@ public class LCSConnectionManagerImpl implements LCSConnectionManager {
 			10, threadFactory);
 
 		_taskSchedulerService = taskSchedulerService;
+		_threadFactory = threadFactory;
 		_uptimeMonitoringAdvisor = uptimeMonitoringAdvisor;
 	}
 
@@ -309,7 +310,7 @@ public class LCSConnectionManagerImpl implements LCSConnectionManager {
 
 		return _scheduledExecutorService.submit(
 			new HandshakeTask(
-				_keyGenerator.getKey(), _lcsAlertAdvisor, this,
+				_keyGenerator.getKey(), _lcsAlertAdvisor, this, _threadFactory,
 				_uptimeMonitoringAdvisor));
 	}
 
@@ -472,6 +473,7 @@ public class LCSConnectionManagerImpl implements LCSConnectionManager {
 		new ArrayList<>();
 	private volatile boolean _shutdownRequested;
 	private final TaskSchedulerService _taskSchedulerService;
+	private final ThreadFactory _threadFactory;
 	private final UptimeMonitoringAdvisor _uptimeMonitoringAdvisor;
 
 }

@@ -22,6 +22,7 @@ import com.liferay.lcs.messaging.HandshakeMessage;
 import com.liferay.lcs.messaging.HandshakeResponseMessage;
 import com.liferay.lcs.messaging.Message;
 import com.liferay.lcs.messaging.ResponseMessage;
+import com.liferay.lcs.runnable.LCSPortletBuildNumberCheckRunnable;
 import com.liferay.lcs.util.LCSAlert;
 import com.liferay.lcs.util.LCSConnectionManager;
 import com.liferay.lcs.util.LCSConstants;
@@ -49,6 +50,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 import javax.portlet.PortletPreferences;
@@ -67,7 +69,7 @@ public class HandshakeTask implements Task {
 
 	public HandshakeTask(
 		String key, LCSAlertAdvisor lcsAlertAdvisor,
-		LCSConnectionManager lcsConnectionManager,
+		LCSConnectionManager lcsConnectionManager, ThreadFactory threadFactory,
 		UptimeMonitoringAdvisor uptimeMonitoringAdvisor) {
 
 		_handshakeReplyReads = GetterUtil.getInteger(
@@ -82,6 +84,7 @@ public class HandshakeTask implements Task {
 		_key = key;
 		_lcsAlertAdvisor = lcsAlertAdvisor;
 		_lcsConnectionManager = lcsConnectionManager;
+		_threadFactory = threadFactory;
 		_uptimeMonitoringAdvisor = uptimeMonitoringAdvisor;
 
 		if (_log.isTraceEnabled()) {
@@ -193,12 +196,8 @@ public class HandshakeTask implements Task {
 
 			receivedHandshakeResponse = true;
 
-			_lcsConnectionManager.putLCSConnectionMetadata(
-				"newLCSPortletBuildNumber",
-				String.valueOf(
-					isNewLCSPortletBuildNumber(
-						handshakeResponseMessage.
-							getLatestLCSPortletBuildNumber())));
+			_submitLCSPortletBuildNumberCheck(
+				handshakeResponseMessage.getLatestLCSPortletBuildNumber());
 		}
 
 		return receivedHandshakeResponse;
@@ -320,6 +319,17 @@ public class HandshakeTask implements Task {
 		return false;
 	}
 
+	private void _submitLCSPortletBuildNumberCheck(
+		int latestLCSPortletBuildNumber) {
+
+		Runnable runnable = new LCSPortletBuildNumberCheckRunnable(
+			latestLCSPortletBuildNumber, _lcsAlertAdvisor);
+
+		Thread thread = _threadFactory.newThread(runnable);
+
+		thread.start();
+	}
+
 	private void _waitForHandshakeResponse() throws JSONWebServiceException {
 		int attempt = 0;
 		List<Message> delayedMessages = new ArrayList<>();
@@ -386,6 +396,7 @@ public class HandshakeTask implements Task {
 	private final String _key;
 	private final LCSAlertAdvisor _lcsAlertAdvisor;
 	private final LCSConnectionManager _lcsConnectionManager;
+	private final ThreadFactory _threadFactory;
 	private final UptimeMonitoringAdvisor _uptimeMonitoringAdvisor;
 
 }
