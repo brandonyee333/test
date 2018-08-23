@@ -1,12 +1,13 @@
 .history {
 	margin-bottom: 64px;
 
-	td, th {
+	td,
+	th {
 		padding: 12px;
 		vertical-align: top;
 	}
 
-	table td {
+	td {
 		line-height: 1.5em;
 		padding-bottom: 24px;
 	}
@@ -22,8 +23,14 @@
 		margin: 0 48px;
 
 		tr {
-			td:first-of-type, th:first-of-type {
+			td:first-of-type,
+			th:first-of-type {
 				padding-left: 48px;
+			}
+
+			td:last-of-type,
+			th:last-of-type {
+				padding-right: 48px;
 			}
 		}
 
@@ -32,10 +39,6 @@
 			letter-spacing: 1px;
 			text-transform: uppercase;
 		}
-	}
-
-	.content-row .history-label {
-		vertical-align: top;
 	}
 
 	.entry-header {
@@ -75,6 +78,7 @@
 
 	.txt-code {
 		font-family: "Source Code Pro", "Source Sans Pro";
+		white-space: pre-wrap;
 	}
 
 	.txt-sb {
