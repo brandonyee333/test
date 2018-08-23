@@ -36,7 +36,11 @@ public enum LCSAlert {
 	SUCCESS_VALID_TOKEN(
 		"success", "the-automatic-activation-token-file-is-valid"),
 	WARNING_HANDSHAKE_EXPIRED(
-		"warning", "the-connection-to-liferay-connected-services-has-expired");
+		"warning", "the-connection-to-liferay-connected-services-has-expired"),
+	WARNING_LCS_PORTLET_NEW_VERSION_AVAILABLE(
+		"warning",
+		"please-download-and-install-the-latest-version-of-liferay-connected-" +
+			"services-client");
 
 	public String getCSSClass() {
 		return "alert alert-" + getType();
