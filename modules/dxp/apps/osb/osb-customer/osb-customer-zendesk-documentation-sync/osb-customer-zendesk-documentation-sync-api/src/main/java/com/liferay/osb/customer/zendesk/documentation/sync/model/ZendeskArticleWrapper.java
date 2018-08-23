@@ -184,6 +184,11 @@ public class ZendeskArticleWrapper implements ZendeskArticle,
 		return _zendeskArticle.getRemoteId();
 	}
 
+	@Override
+	public String getRemoteTitle() {
+		return _zendeskArticle.getRemoteTitle();
+	}
+
 	/**
 	* Returns the zendesk article ID of this zendesk article.
 	*
@@ -318,6 +323,11 @@ public class ZendeskArticleWrapper implements ZendeskArticle,
 	@Override
 	public void setRemoteId(long remoteId) {
 		_zendeskArticle.setRemoteId(remoteId);
+	}
+
+	@Override
+	public void setRemoteTitle(String remoteTitle) {
+		_zendeskArticle.setRemoteTitle(remoteTitle);
 	}
 
 	/**

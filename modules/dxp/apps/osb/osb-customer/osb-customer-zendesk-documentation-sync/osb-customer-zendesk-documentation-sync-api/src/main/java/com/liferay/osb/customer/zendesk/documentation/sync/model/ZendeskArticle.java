@@ -54,4 +54,8 @@ public interface ZendeskArticle extends ZendeskArticleModel, PersistedModel {
 				return ZendeskArticle.class;
 			}
 		};
+
+	public String getRemoteTitle();
+
+	public void setRemoteTitle(String remoteTitle);
 }
