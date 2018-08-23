@@ -92,6 +92,17 @@ public class ProductEntryConstants {
 	public static final String LIST_TYPE_SOCIAL_OFFICE_MINOR_VERSIONS =
 		ProductEntry.class.getName() + ".socialOfficeMinorVersions";
 
+	public static final int[] LIST_TYPES_DEPRECATED = {
+		ProductEntryConstants.PORTAL_VERSION_4_4_0,
+		ProductEntryConstants.PORTAL_VERSION_5_1_3,
+		ProductEntryConstants.PORTAL_VERSION_5_1_4,
+		ProductEntryConstants.PORTAL_VERSION_5_1_5,
+		ProductEntryConstants.PORTAL_VERSION_5_1_6,
+		ProductEntryConstants.PORTAL_VERSION_5_1_7,
+		ProductEntryConstants.PORTAL_VERSION_5_1_8,
+		ProductEntryConstants.PORTAL_VERSION_5_1_9
+	};
+
 	public static final int PORTAL_MAJOR_VERSION_5 = 21000;
 
 	public static final int PORTAL_MAJOR_VERSION_6 = 21001;

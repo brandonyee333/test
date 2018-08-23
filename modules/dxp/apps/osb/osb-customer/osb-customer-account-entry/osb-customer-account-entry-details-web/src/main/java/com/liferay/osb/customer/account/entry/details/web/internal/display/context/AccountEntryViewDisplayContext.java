@@ -20,20 +20,37 @@ import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEnvironment;
 import com.liferay.osb.model.AccountEnvironmentAttachment;
 import com.liferay.osb.model.AccountEnvironmentAttachmentConstants;
+import com.liferay.osb.model.AccountEnvironmentConstants;
+import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.ProductEntry;
+import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.service.AccountEnvironmentAttachmentLocalServiceUtil;
 import com.liferay.osb.service.AccountEnvironmentLocalServiceUtil;
+import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
 import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.osb.service.permission.OSBAccountEnvironmentPermission;
 import com.liferay.osb.util.OSBActionKeys;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.service.ListTypeServiceUtil;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.IntStream;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.PortletException;
@@ -46,6 +63,61 @@ import javax.portlet.ResourceURL;
  * @author Amos Fong
  */
 public class AccountEntryViewDisplayContext {
+
+	public static List<ListType> getPortalEnvListTypes(
+		long envLFR, String envListType) {
+
+		return getPortalEnvListTypes(envLFR, envListType, StringPool.BLANK);
+	}
+
+	public static List<ListType> getPortalEnvListTypes(
+		long envLFR, String envListType, String sublistType) {
+
+		List<ListType> listTypes = ListTypeServiceUtil.getListTypes(
+			envListType);
+
+		listTypes = ListUtil.copy(listTypes);
+
+		if (Validator.isNotNull(sublistType)) {
+			sublistType = StringPool.PERIOD + sublistType;
+		}
+
+		long[] listTypeIds = AccountEnvironmentConstants.getEnvListTypeIds(
+			envLFR, envListType + sublistType);
+
+		Iterator<ListType> itr = listTypes.iterator();
+
+		while (itr.hasNext()) {
+			ListType listType = itr.next();
+
+			if (!ArrayUtil.contains(listTypeIds, listType.getListTypeId())) {
+				itr.remove();
+			}
+		}
+
+		return listTypes;
+	}
+
+	public static boolean hasEnterpriseSearchOffering(
+			long accountEntryId, int productEntryEnvironment)
+		throws PortalException {
+
+		List<OfferingEntry> offeringEntries =
+			OfferingEntryLocalServiceUtil.getAccountEntryOfferingEntries(
+				accountEntryId);
+
+		for (OfferingEntry offeringEntry : offeringEntries) {
+			ProductEntry productEntry = offeringEntry.getProductEntry();
+
+			if (productEntry.isEnterpriseSearch() &&
+				(productEntry.getEnvironment() == productEntryEnvironment)) {
+
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 	public AccountEntryViewDisplayContext(
 		RenderRequest renderRequest, RenderResponse renderResponse) {
@@ -68,7 +140,36 @@ public class AccountEntryViewDisplayContext {
 		return _accountEntry;
 	}
 
-	public JSONArray getAccountEnvironmentsJSONArray() throws Exception {
+	public JSONArray getAddAccountEnvironmentsJSONArray() throws Exception {
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+		AccountEntry accountEntry = getAccountEntry();
+
+		List<OfferingEntry> offeringEntries =
+			OfferingEntryLocalServiceUtil.getAccountEntryOfferingEntries(
+				accountEntry.getAccountEntryId());
+
+		List<String> productEntryDisplayNames = new ArrayList<>();
+
+		for (OfferingEntry offeringEntry : offeringEntries) {
+			ProductEntry productEntry = offeringEntry.getProductEntry();
+
+			if (!productEntryDisplayNames.contains(
+					productEntry.getDisplayName())) {
+
+				productEntryDisplayNames.add(productEntry.getDisplayName());
+
+				JSONObject jsonObject = getDisplayJSONObject(
+					accountEntry, productEntry);
+
+				jsonArray.put(jsonObject);
+			}
+		}
+
+		return jsonArray;
+	}
+
+	public JSONArray getEditAccountEnvironmentsJSONArray() throws Exception {
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
 		AccountEntry accountEntry = getAccountEntry();
@@ -85,6 +186,76 @@ public class AccountEntryViewDisplayContext {
 		}
 
 		return jsonArray;
+	}
+
+	public JSONArray getProductVersions(
+			long accountEntryId, ProductEntry productEntry)
+		throws Exception {
+
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+		List<ListType> envLFRTypes = ListUtil.copy(
+			productEntry.getAllVersionsListTypes());
+
+		Iterator<ListType> itr = envLFRTypes.iterator();
+
+		IntStream intStream = Arrays.stream(
+			ProductEntryConstants.LIST_TYPES_DEPRECATED);
+
+		long[] deprecatedTypes = intStream.asLongStream().toArray();
+
+		while (itr.hasNext()) {
+			ListType envLFRType = itr.next();
+
+			if (ArrayUtil.contains(
+					deprecatedTypes, envLFRType.getListTypeId()) ||
+				(envLFRType.getListTypeId() ==
+					(long)ProductEntryConstants.PORTAL_VERSION_OTHER)) {
+
+				itr.remove();
+			}
+		}
+
+		ThemeDisplay themeDisplay = getThemeDisplay();
+
+		for (ListType listType : envLFRTypes) {
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+			jsonObject.put(
+				"environmentDetails",
+				getEnvironmentDetails(
+					accountEntryId, productEntry, listType,
+					themeDisplay.getLocale()));
+
+			jsonArray.put(jsonObject);
+		}
+
+		return jsonArray;
+	}
+
+	public ThemeDisplay getThemeDisplay() {
+		if (_themeDisplay != null) {
+			return _themeDisplay;
+		}
+
+		_themeDisplay = (ThemeDisplay)_renderRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		return _themeDisplay;
+	}
+
+	protected String getAccountEnvironmentAddURL(AccountEntry accountEntry)
+		throws PortletException {
+
+		PortletURL portletURL = _renderResponse.createRenderURL();
+
+		portletURL.setParameter(
+			"mvcRenderCommandName", "/edit_account_environment");
+		portletURL.setParameter(
+			"accountEntryId", String.valueOf(accountEntry.getAccountEntryId()));
+		portletURL.setWindowState(LiferayWindowState.POP_UP);
+
+		return portletURL.toString();
 	}
 
 	protected String getAccountEnvironmentAttachmentURL(
@@ -233,8 +404,137 @@ public class AccountEntryViewDisplayContext {
 
 		jsonObject.put(
 			"productEntryDisplayName", productEntry.getDisplayName());
+		jsonObject.put("productEntryId", productEntry.getProductEntryId());
 
 		return jsonObject;
+	}
+
+	protected JSONObject getDisplayJSONObject(
+			AccountEntry accountEntry, ProductEntry productEntry)
+		throws Exception {
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		if (OSBAccountEnvironmentPermission.contains(
+				_accountEntryDetailsRequestHelper.getPermissionChecker(),
+				accountEntry.getAccountEntryId(),
+				OSBActionKeys.ADD_ACCOUNT_ENVIRONMENT)) {
+
+			jsonObject.put(
+				"addAccountEnvironmentURL",
+				getAccountEnvironmentAddURL(accountEntry));
+		}
+
+		jsonObject.put(
+			"productEntryId", String.valueOf(productEntry.getProductEntryId()));
+
+		jsonObject.put("productName", productEntry.getDisplayName());
+
+		jsonObject.put(
+			"accountEntryId", String.valueOf(accountEntry.getAccountEntryId()));
+
+		jsonObject.put(
+			"productVersions",
+			getProductVersions(accountEntry.getAccountEntryId(), productEntry));
+
+		return jsonObject;
+	}
+
+	protected JSONArray getEnvironmentArray(
+		List<ListType> listTypes, Locale locale) {
+
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+		for (ListType listType : listTypes) {
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+			jsonObject.put(
+				"name", LanguageUtil.get(locale, listType.getName()));
+			jsonObject.put("value", String.valueOf(listType.getListTypeId()));
+
+			jsonArray.put(jsonObject);
+		}
+
+		return jsonArray;
+	}
+
+	protected JSONArray getEnvironmentDetails(
+			long accountEntryId, ProductEntry productEntry, ListType listType,
+			Locale locale)
+		throws Exception {
+
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("envLFR", LanguageUtil.get(locale, listType.getName()));
+
+		long listTypeId = listType.getListTypeId();
+
+		List<ListType> envASListTypes = getPortalEnvListTypes(
+			listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_AS);
+
+		jsonObject.put("envAS", getEnvironmentArray(envASListTypes, locale));
+
+		List<ListType> envBrowserListTypes = getPortalEnvListTypes(
+			listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_BROWSER);
+
+		jsonObject.put(
+			"envBR", getEnvironmentArray(envBrowserListTypes, locale));
+
+		if (ProductEntryConstants.isPortalVersion6_2(listTypeId) ||
+			ProductEntryConstants.isDigitalEnterpriseVersion7_0(listTypeId) ||
+			ProductEntryConstants.isDigitalEnterpriseVersion7_1(listTypeId)) {
+
+			List<ListType> envCSListTypes = getPortalEnvListTypes(
+				listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_CS);
+
+			jsonObject.put(
+				"envCS", getEnvironmentArray(envCSListTypes, locale));
+		}
+
+		List<ListType> envDBListTypes = getPortalEnvListTypes(
+			listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_DB);
+
+		jsonObject.put("envDB", getEnvironmentArray(envDBListTypes, locale));
+
+		List<ListType> envJVMListTypes = getPortalEnvListTypes(
+			listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_JVM);
+
+		jsonObject.put("envJVM", getEnvironmentArray(envJVMListTypes, locale));
+
+		List<ListType> envOSListTypes = getPortalEnvListTypes(
+			listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_OS);
+
+		jsonObject.put("envOS", getEnvironmentArray(envOSListTypes, locale));
+
+		if (ProductEntryConstants.isDigitalEnterpriseVersion7_0(listTypeId) ||
+			ProductEntryConstants.isDigitalEnterpriseVersion7_1(listTypeId)) {
+
+			List<ListType> envSearchListTypes = new ArrayList<>();
+
+			if (hasEnterpriseSearchOffering(
+					accountEntryId, productEntry.getEnvironment())) {
+
+				envSearchListTypes = getPortalEnvListTypes(
+					listTypeId,
+					AccountEnvironmentConstants.LIST_TYPE_ENV_SEARCH,
+					"enterprise");
+			}
+			else {
+				envSearchListTypes = getPortalEnvListTypes(
+					listTypeId,
+					AccountEnvironmentConstants.LIST_TYPE_ENV_SEARCH,
+					"standard");
+			}
+
+			jsonObject.put(
+				"envSearch", getEnvironmentArray(envSearchListTypes, locale));
+		}
+
+		jsonArray.put(jsonObject);
+
+		return jsonArray;
 	}
 
 	private AccountEntry _accountEntry;
@@ -242,5 +542,6 @@ public class AccountEntryViewDisplayContext {
 		_accountEntryDetailsRequestHelper;
 	private final RenderRequest _renderRequest;
 	private final RenderResponse _renderResponse;
+	private ThemeDisplay _themeDisplay;
 
 }
