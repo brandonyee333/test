@@ -69,14 +69,9 @@ catch (Exception e) {
 		</c:choose>
 	</c:when>
 	<c:otherwise>
-
-		<%
-		Map<String, String> lcsConnectionMetadata = LCSConnectionManagerUtil.getLCSConnectionMetadata();
-		%>
-
-		<c:if test='<%= GetterUtil.getBoolean(lcsConnectionMetadata.get("newLCSPortletBuildNumber")) %>'>
+		<c:if test="<%= lcsClusterEntryTokenAlerts.contains(LCSAlert.WARNING_LCS_PORTLET_NEW_VERSION_AVAILABLE) %>">
 			<div class="alert alert-warning lcs-alert">
-				<liferay-ui:message arguments="<%= PortletPropsValues.LRDCOM_LCS_CLIENT_DOWNLOAD_URL %>" key="please-download-and-install-the-latest-version-of-liferay-connected-services-client" />
+				<liferay-ui:message arguments="<%= PortletPropsValues.LRDCOM_LCS_CLIENT_DOWNLOAD_URL %>" key="<%= LCSAlert.WARNING_LCS_PORTLET_NEW_VERSION_AVAILABLE.getLabel() %>" />
 			</div>
 		</c:if>
 
@@ -90,6 +85,8 @@ catch (Exception e) {
 			connectionStatusCSSClass = "alert-danger";
 			connectionStatusLabel = "disconnected";
 		}
+
+		Map<String, String> lcsConnectionMetadata = LCSConnectionManagerUtil.getLCSConnectionMetadata();
 
 		String handshakeTime = lcsConnectionMetadata.get("handshakeTime");
 		%>

@@ -70,7 +70,14 @@ Set<LCSAlert> lcsClusterEntryTokenAlerts = LCSUtil.getLCSClusterEntryTokenAlerts
 			%>
 
 				<div class="<%= lcsAlert.getCSSClass() %>">
-					<liferay-ui:message key="<%= lcsAlert.getLabel() %>" />
+					<c:choose>
+						<c:when test="<%= lcsAlert == LCSAlert.WARNING_LCS_PORTLET_NEW_VERSION_AVAILABLE %>">
+							<liferay-ui:message arguments="<%= PortletPropsValues.LRDCOM_LCS_CLIENT_DOWNLOAD_URL %>" key="<%= lcsAlert.getLabel() %>" />
+						</c:when>
+						<c:otherwise>
+							<liferay-ui:message key="<%= lcsAlert.getLabel() %>" />
+						</c:otherwise>
+					</c:choose>
 				</div>
 
 			<%
