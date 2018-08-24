@@ -33,7 +33,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntry.getAccount
 </h1>
 
 <liferay-ui:tabs
-	names="overview,people,offerings,history"
+	names="overview,team-members,liferay-contacts,offerings,history"
 	url="<%= portletURL.toString() %>"
 />
 
@@ -44,6 +44,12 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntry.getAccount
 		</c:when>
 		<c:when test='<%= tabs1.equals("offerings") %>'>
 			<liferay-util:include page="/account_entry_details/worker/offerings.jsp" servletContext="<%= application %>" />
+		</c:when>
+		<c:when test='<%= tabs1.equals("team-members") %>'>
+			<liferay-util:include page="/account_entry_details/worker/team_members.jsp" servletContext="<%= application %>" />
+		</c:when>
+		<c:when test='<%= tabs1.equals("liferay-contacts") %>'>
+			<liferay-util:include page="/account_entry_details/worker/liferay_contacts.jsp" servletContext="<%= application %>" />
 		</c:when>
 		<c:otherwise>
 			<liferay-util:include page="/account_entry_details/worker/overview.jsp" servletContext="<%= application %>" />
