@@ -102,12 +102,15 @@ export default class AccountEnvironments extends React.Component {
 							<h4>{environment.name}</h4>
 
 							<div className="panel-subtitle">
-								<span>{Liferay.Language.get('product')}</span>: 
+								<span>{Liferay.Language.get('product')}</span>:
+								{' '}
 								{environment.productEntryDisplayName}
 							</div>
 
 							<div className="panel-subtitle">
-								<span>LR</span>: {environment.envLFRLabel}
+								<span>LR</span>:
+								{' '}
+								{environment.envLFRLabel}
 							</div>
 						</React.Fragment>
 					)
