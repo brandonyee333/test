@@ -23,11 +23,12 @@ JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
 List<CorpProjectMessage> corpProjectMessages = CorpProjectMessageLocalServiceUtil.getCorpProjectMessages(accountEntry.getCorpProjectId());
 
-if (!corpProjectMessage.isEmpty()) {
+if (!corpProjectMessages.isEmpty()) {
 	for (CorpProjectMessage corpProjectMessage: corpProjectMessages) {
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		jsonObject.put("content", corpProjectMessage.getContent());
+		jsonObject.put("id", corpProjectMessage.getCorpProjectMessageId());
 		jsonObject.put("severity", CorpProjectMessageConstants.getSeverityLevelLabel(corpProjectMessage.getSeverityLevel()));
 		jsonObject.put("title", corpProjectMessage.getTitle());
 
@@ -35,6 +36,20 @@ if (!corpProjectMessage.isEmpty()) {
 	}
 }
 %>
+
+<c:if test="<%= !corpProjectMessages.isEmpty() %>">
+	<div id="subscriptionMessages"></div>
+
+	<aui:script>
+		HelpCenter.render(
+			HelpCenter.SubscriptionMessages,
+			{
+				messages: <%= jsonArray %>
+			},
+			document.getElementById('subscriptionMessages')
+		);
+	</aui:script>
+</c:if>
 
 <aui:row>
 	<aui:col width="<%= 100 %>">
