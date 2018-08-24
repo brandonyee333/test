@@ -44,13 +44,15 @@ public class ZendeskArticleLocalServiceUtil {
 	 */
 	public static com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle addZendeskArticle(
 		long zendeskSectionId, String documentationKey,
+		String documentationOriginalURL,
 		java.util.Map<String, String> titleMap,
 		java.util.Map<String, String> bodyMap, int position,
 		String[] labelNames, java.util.Map<String, byte[]> attachments)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addZendeskArticle(zendeskSectionId, documentationKey,
-			titleMap, bodyMap, position, labelNames, attachments);
+			documentationOriginalURL, titleMap, bodyMap, position, labelNames,
+			attachments);
 	}
 
 	/**
@@ -197,6 +199,11 @@ public class ZendeskArticleLocalServiceUtil {
 		long zendeskCategoryId, String documentationKey) {
 		return getService()
 				   .fetchZendeskArticle(zendeskCategoryId, documentationKey);
+	}
+
+	public static com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle fetchZendeskArticle(
+		String documentationOriginalURL) {
+		return getService().fetchZendeskArticle(documentationOriginalURL);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {

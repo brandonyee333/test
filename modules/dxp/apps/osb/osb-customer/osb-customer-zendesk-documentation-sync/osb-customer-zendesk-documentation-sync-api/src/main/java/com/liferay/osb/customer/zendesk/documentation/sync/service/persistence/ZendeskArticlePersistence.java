@@ -311,6 +311,52 @@ public interface ZendeskArticlePersistence extends BasePersistence<ZendeskArticl
 	public int countByZendeskSectionId(long zendeskSectionId);
 
 	/**
+	* Returns the zendesk article where documentationOriginalURL = &#63; or throws a {@link NoSuchZendeskArticleException} if it could not be found.
+	*
+	* @param documentationOriginalURL the documentation original url
+	* @return the matching zendesk article
+	* @throws NoSuchZendeskArticleException if a matching zendesk article could not be found
+	*/
+	public ZendeskArticle findByDocumentationOriginalURL(
+		String documentationOriginalURL) throws NoSuchZendeskArticleException;
+
+	/**
+	* Returns the zendesk article where documentationOriginalURL = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	*
+	* @param documentationOriginalURL the documentation original url
+	* @return the matching zendesk article, or <code>null</code> if a matching zendesk article could not be found
+	*/
+	public ZendeskArticle fetchByDocumentationOriginalURL(
+		String documentationOriginalURL);
+
+	/**
+	* Returns the zendesk article where documentationOriginalURL = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	*
+	* @param documentationOriginalURL the documentation original url
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the matching zendesk article, or <code>null</code> if a matching zendesk article could not be found
+	*/
+	public ZendeskArticle fetchByDocumentationOriginalURL(
+		String documentationOriginalURL, boolean retrieveFromCache);
+
+	/**
+	* Removes the zendesk article where documentationOriginalURL = &#63; from the database.
+	*
+	* @param documentationOriginalURL the documentation original url
+	* @return the zendesk article that was removed
+	*/
+	public ZendeskArticle removeByDocumentationOriginalURL(
+		String documentationOriginalURL) throws NoSuchZendeskArticleException;
+
+	/**
+	* Returns the number of zendesk articles where documentationOriginalURL = &#63;.
+	*
+	* @param documentationOriginalURL the documentation original url
+	* @return the number of matching zendesk articles
+	*/
+	public int countByDocumentationOriginalURL(String documentationOriginalURL);
+
+	/**
 	* Returns the zendesk article where zendeskCategoryId = &#63; and documentationKey = &#63; or throws a {@link NoSuchZendeskArticleException} if it could not be found.
 	*
 	* @param zendeskCategoryId the zendesk category ID

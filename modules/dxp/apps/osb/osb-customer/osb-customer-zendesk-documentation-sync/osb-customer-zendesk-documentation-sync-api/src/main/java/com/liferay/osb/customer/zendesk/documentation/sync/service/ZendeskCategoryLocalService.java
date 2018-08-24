@@ -62,7 +62,8 @@ public interface ZendeskCategoryLocalService extends BaseLocalService,
 	 * Never modify or reference this interface directly. Always use {@link ZendeskCategoryLocalServiceUtil} to access the zendesk category local service. Add custom service methods to {@link com.liferay.osb.customer.zendesk.documentation.sync.service.impl.ZendeskCategoryLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public ZendeskCategory addZendeskCategory(String documentationKey,
-		String articleLabels, long remoteId) throws PortalException;
+		String documentationOriginalURL, String articleLabels, long remoteId)
+		throws PortalException;
 
 	/**
 	* Adds the zendesk category to the database. Also notifies the appropriate model listeners.
@@ -230,7 +231,8 @@ public interface ZendeskCategoryLocalService extends BaseLocalService,
 		String fileName, InputStream inputStream) throws Exception;
 
 	public ZendeskCategory updateZendeskCategory(long zendeskCategoryId,
-		String articleLabels) throws PortalException;
+		String documentationOriginalURL, String articleLabels)
+		throws PortalException;
 
 	/**
 	* Updates the zendesk category in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

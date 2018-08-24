@@ -67,6 +67,7 @@ public class ZendeskArticleModelImpl extends BaseModelImpl<ZendeskArticle>
 			{ "zendeskCategoryId", Types.BIGINT },
 			{ "zendeskSectionId", Types.BIGINT },
 			{ "documentationKey", Types.VARCHAR },
+			{ "documentationOriginalURL", Types.VARCHAR },
 			{ "remoteId", Types.BIGINT },
 			{ "remoteHtmlURL", Types.VARCHAR }
 		};
@@ -78,11 +79,12 @@ public class ZendeskArticleModelImpl extends BaseModelImpl<ZendeskArticle>
 		TABLE_COLUMNS_MAP.put("zendeskCategoryId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("zendeskSectionId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("documentationKey", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("documentationOriginalURL", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("remoteId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("remoteHtmlURL", Types.VARCHAR);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSBCustomer_ZendeskArticle (zendeskArticleId LONG not null primary key,modifiedDate DATE null,zendeskCategoryId LONG,zendeskSectionId LONG,documentationKey VARCHAR(150) null,remoteId LONG,remoteHtmlURL STRING null)";
+	public static final String TABLE_SQL_CREATE = "create table OSBCustomer_ZendeskArticle (zendeskArticleId LONG not null primary key,modifiedDate DATE null,zendeskCategoryId LONG,zendeskSectionId LONG,documentationKey VARCHAR(150) null,documentationOriginalURL VARCHAR(255) null,remoteId LONG,remoteHtmlURL STRING null)";
 	public static final String TABLE_SQL_DROP = "drop table OSBCustomer_ZendeskArticle";
 	public static final String ORDER_BY_JPQL = " ORDER BY zendeskArticle.zendeskArticleId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY OSBCustomer_ZendeskArticle.zendeskArticleId ASC";
@@ -99,9 +101,10 @@ public class ZendeskArticleModelImpl extends BaseModelImpl<ZendeskArticle>
 				"value.object.column.bitmask.enabled.com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle"),
 			true);
 	public static final long DOCUMENTATIONKEY_COLUMN_BITMASK = 1L;
-	public static final long ZENDESKCATEGORYID_COLUMN_BITMASK = 2L;
-	public static final long ZENDESKSECTIONID_COLUMN_BITMASK = 4L;
-	public static final long ZENDESKARTICLEID_COLUMN_BITMASK = 8L;
+	public static final long DOCUMENTATIONORIGINALURL_COLUMN_BITMASK = 2L;
+	public static final long ZENDESKCATEGORYID_COLUMN_BITMASK = 4L;
+	public static final long ZENDESKSECTIONID_COLUMN_BITMASK = 8L;
+	public static final long ZENDESKARTICLEID_COLUMN_BITMASK = 16L;
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.osb.customer.zendesk.documentation.sync.service.util.ServiceProps.get(
 				"lock.expiration.time.com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle"));
 
@@ -147,6 +150,7 @@ public class ZendeskArticleModelImpl extends BaseModelImpl<ZendeskArticle>
 		attributes.put("zendeskCategoryId", getZendeskCategoryId());
 		attributes.put("zendeskSectionId", getZendeskSectionId());
 		attributes.put("documentationKey", getDocumentationKey());
+		attributes.put("documentationOriginalURL", getDocumentationOriginalURL());
 		attributes.put("remoteId", getRemoteId());
 		attributes.put("remoteHtmlURL", getRemoteHtmlURL());
 
@@ -186,6 +190,13 @@ public class ZendeskArticleModelImpl extends BaseModelImpl<ZendeskArticle>
 
 		if (documentationKey != null) {
 			setDocumentationKey(documentationKey);
+		}
+
+		String documentationOriginalURL = (String)attributes.get(
+				"documentationOriginalURL");
+
+		if (documentationOriginalURL != null) {
+			setDocumentationOriginalURL(documentationOriginalURL);
 		}
 
 		Long remoteId = (Long)attributes.get("remoteId");
@@ -291,6 +302,31 @@ public class ZendeskArticleModelImpl extends BaseModelImpl<ZendeskArticle>
 	}
 
 	@Override
+	public String getDocumentationOriginalURL() {
+		if (_documentationOriginalURL == null) {
+			return "";
+		}
+		else {
+			return _documentationOriginalURL;
+		}
+	}
+
+	@Override
+	public void setDocumentationOriginalURL(String documentationOriginalURL) {
+		_columnBitmask |= DOCUMENTATIONORIGINALURL_COLUMN_BITMASK;
+
+		if (_originalDocumentationOriginalURL == null) {
+			_originalDocumentationOriginalURL = _documentationOriginalURL;
+		}
+
+		_documentationOriginalURL = documentationOriginalURL;
+	}
+
+	public String getOriginalDocumentationOriginalURL() {
+		return GetterUtil.getString(_originalDocumentationOriginalURL);
+	}
+
+	@Override
 	public long getRemoteId() {
 		return _remoteId;
 	}
@@ -351,6 +387,7 @@ public class ZendeskArticleModelImpl extends BaseModelImpl<ZendeskArticle>
 		zendeskArticleImpl.setZendeskCategoryId(getZendeskCategoryId());
 		zendeskArticleImpl.setZendeskSectionId(getZendeskSectionId());
 		zendeskArticleImpl.setDocumentationKey(getDocumentationKey());
+		zendeskArticleImpl.setDocumentationOriginalURL(getDocumentationOriginalURL());
 		zendeskArticleImpl.setRemoteId(getRemoteId());
 		zendeskArticleImpl.setRemoteHtmlURL(getRemoteHtmlURL());
 
@@ -425,6 +462,8 @@ public class ZendeskArticleModelImpl extends BaseModelImpl<ZendeskArticle>
 
 		zendeskArticleModelImpl._originalDocumentationKey = zendeskArticleModelImpl._documentationKey;
 
+		zendeskArticleModelImpl._originalDocumentationOriginalURL = zendeskArticleModelImpl._documentationOriginalURL;
+
 		zendeskArticleModelImpl._columnBitmask = 0;
 	}
 
@@ -455,6 +494,15 @@ public class ZendeskArticleModelImpl extends BaseModelImpl<ZendeskArticle>
 			zendeskArticleCacheModel.documentationKey = null;
 		}
 
+		zendeskArticleCacheModel.documentationOriginalURL = getDocumentationOriginalURL();
+
+		String documentationOriginalURL = zendeskArticleCacheModel.documentationOriginalURL;
+
+		if ((documentationOriginalURL != null) &&
+				(documentationOriginalURL.length() == 0)) {
+			zendeskArticleCacheModel.documentationOriginalURL = null;
+		}
+
 		zendeskArticleCacheModel.remoteId = getRemoteId();
 
 		zendeskArticleCacheModel.remoteHtmlURL = getRemoteHtmlURL();
@@ -470,7 +518,7 @@ public class ZendeskArticleModelImpl extends BaseModelImpl<ZendeskArticle>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(15);
+		StringBundler sb = new StringBundler(17);
 
 		sb.append("{zendeskArticleId=");
 		sb.append(getZendeskArticleId());
@@ -482,6 +530,8 @@ public class ZendeskArticleModelImpl extends BaseModelImpl<ZendeskArticle>
 		sb.append(getZendeskSectionId());
 		sb.append(", documentationKey=");
 		sb.append(getDocumentationKey());
+		sb.append(", documentationOriginalURL=");
+		sb.append(getDocumentationOriginalURL());
 		sb.append(", remoteId=");
 		sb.append(getRemoteId());
 		sb.append(", remoteHtmlURL=");
@@ -493,7 +543,7 @@ public class ZendeskArticleModelImpl extends BaseModelImpl<ZendeskArticle>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(25);
+		StringBundler sb = new StringBundler(28);
 
 		sb.append("<model><model-name>");
 		sb.append(
@@ -519,6 +569,10 @@ public class ZendeskArticleModelImpl extends BaseModelImpl<ZendeskArticle>
 		sb.append(
 			"<column><column-name>documentationKey</column-name><column-value><![CDATA[");
 		sb.append(getDocumentationKey());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>documentationOriginalURL</column-name><column-value><![CDATA[");
+		sb.append(getDocumentationOriginalURL());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>remoteId</column-name><column-value><![CDATA[");
@@ -548,6 +602,8 @@ public class ZendeskArticleModelImpl extends BaseModelImpl<ZendeskArticle>
 	private boolean _setOriginalZendeskSectionId;
 	private String _documentationKey;
 	private String _originalDocumentationKey;
+	private String _documentationOriginalURL;
+	private String _originalDocumentationOriginalURL;
 	private long _remoteId;
 	private String _remoteHtmlURL;
 	private long _columnBitmask;

@@ -65,7 +65,7 @@ public class ZendeskArticleCacheModel implements CacheModel<ZendeskArticle>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(15);
+		StringBundler sb = new StringBundler(17);
 
 		sb.append("{zendeskArticleId=");
 		sb.append(zendeskArticleId);
@@ -77,6 +77,8 @@ public class ZendeskArticleCacheModel implements CacheModel<ZendeskArticle>,
 		sb.append(zendeskSectionId);
 		sb.append(", documentationKey=");
 		sb.append(documentationKey);
+		sb.append(", documentationOriginalURL=");
+		sb.append(documentationOriginalURL);
 		sb.append(", remoteId=");
 		sb.append(remoteId);
 		sb.append(", remoteHtmlURL=");
@@ -109,6 +111,13 @@ public class ZendeskArticleCacheModel implements CacheModel<ZendeskArticle>,
 			zendeskArticleImpl.setDocumentationKey(documentationKey);
 		}
 
+		if (documentationOriginalURL == null) {
+			zendeskArticleImpl.setDocumentationOriginalURL("");
+		}
+		else {
+			zendeskArticleImpl.setDocumentationOriginalURL(documentationOriginalURL);
+		}
+
 		zendeskArticleImpl.setRemoteId(remoteId);
 
 		if (remoteHtmlURL == null) {
@@ -132,6 +141,7 @@ public class ZendeskArticleCacheModel implements CacheModel<ZendeskArticle>,
 
 		zendeskSectionId = objectInput.readLong();
 		documentationKey = objectInput.readUTF();
+		documentationOriginalURL = objectInput.readUTF();
 
 		remoteId = objectInput.readLong();
 		remoteHtmlURL = objectInput.readUTF();
@@ -154,6 +164,13 @@ public class ZendeskArticleCacheModel implements CacheModel<ZendeskArticle>,
 			objectOutput.writeUTF(documentationKey);
 		}
 
+		if (documentationOriginalURL == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(documentationOriginalURL);
+		}
+
 		objectOutput.writeLong(remoteId);
 
 		if (remoteHtmlURL == null) {
@@ -169,6 +186,7 @@ public class ZendeskArticleCacheModel implements CacheModel<ZendeskArticle>,
 	public long zendeskCategoryId;
 	public long zendeskSectionId;
 	public String documentationKey;
+	public String documentationOriginalURL;
 	public long remoteId;
 	public String remoteHtmlURL;
 }

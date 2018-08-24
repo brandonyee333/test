@@ -63,6 +63,7 @@ public class ZendeskArticleWrapper implements ZendeskArticle,
 		attributes.put("zendeskCategoryId", getZendeskCategoryId());
 		attributes.put("zendeskSectionId", getZendeskSectionId());
 		attributes.put("documentationKey", getDocumentationKey());
+		attributes.put("documentationOriginalURL", getDocumentationOriginalURL());
 		attributes.put("remoteId", getRemoteId());
 		attributes.put("remoteHtmlURL", getRemoteHtmlURL());
 
@@ -101,6 +102,13 @@ public class ZendeskArticleWrapper implements ZendeskArticle,
 			setDocumentationKey(documentationKey);
 		}
 
+		String documentationOriginalURL = (String)attributes.get(
+				"documentationOriginalURL");
+
+		if (documentationOriginalURL != null) {
+			setDocumentationOriginalURL(documentationOriginalURL);
+		}
+
 		Long remoteId = (Long)attributes.get("remoteId");
 
 		if (remoteId != null) {
@@ -132,6 +140,16 @@ public class ZendeskArticleWrapper implements ZendeskArticle,
 	@Override
 	public String getDocumentationKey() {
 		return _zendeskArticle.getDocumentationKey();
+	}
+
+	/**
+	* Returns the documentation original url of this zendesk article.
+	*
+	* @return the documentation original url of this zendesk article
+	*/
+	@Override
+	public String getDocumentationOriginalURL() {
+		return _zendeskArticle.getDocumentationOriginalURL();
 	}
 
 	@Override
@@ -257,6 +275,16 @@ public class ZendeskArticleWrapper implements ZendeskArticle,
 	@Override
 	public void setDocumentationKey(String documentationKey) {
 		_zendeskArticle.setDocumentationKey(documentationKey);
+	}
+
+	/**
+	* Sets the documentation original url of this zendesk article.
+	*
+	* @param documentationOriginalURL the documentation original url of this zendesk article
+	*/
+	@Override
+	public void setDocumentationOriginalURL(String documentationOriginalURL) {
+		_zendeskArticle.setDocumentationOriginalURL(documentationOriginalURL);
 	}
 
 	@Override

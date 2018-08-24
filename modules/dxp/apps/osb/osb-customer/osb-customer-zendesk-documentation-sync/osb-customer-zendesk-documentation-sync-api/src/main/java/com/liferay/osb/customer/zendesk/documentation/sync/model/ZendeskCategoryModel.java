@@ -90,6 +90,21 @@ public interface ZendeskCategoryModel extends BaseModel<ZendeskCategory> {
 	public void setDocumentationKey(String documentationKey);
 
 	/**
+	 * Returns the documentation original url of this zendesk category.
+	 *
+	 * @return the documentation original url of this zendesk category
+	 */
+	@AutoEscape
+	public String getDocumentationOriginalURL();
+
+	/**
+	 * Sets the documentation original url of this zendesk category.
+	 *
+	 * @param documentationOriginalURL the documentation original url of this zendesk category
+	 */
+	public void setDocumentationOriginalURL(String documentationOriginalURL);
+
+	/**
 	 * Returns the article labels of this zendesk category.
 	 *
 	 * @return the article labels of this zendesk category

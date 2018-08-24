@@ -36,10 +36,11 @@ public class ZendeskCategoryLocalServiceWrapper
 
 	@Override
 	public com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory addZendeskCategory(
-		String documentationKey, String articleLabels, long remoteId)
+		String documentationKey, String documentationOriginalURL,
+		String articleLabels, long remoteId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _zendeskCategoryLocalService.addZendeskCategory(documentationKey,
-			articleLabels, remoteId);
+			documentationOriginalURL, articleLabels, remoteId);
 	}
 
 	/**
@@ -278,10 +279,11 @@ public class ZendeskCategoryLocalServiceWrapper
 
 	@Override
 	public com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory updateZendeskCategory(
-		long zendeskCategoryId, String articleLabels)
+		long zendeskCategoryId, String documentationOriginalURL,
+		String articleLabels)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _zendeskCategoryLocalService.updateZendeskCategory(zendeskCategoryId,
-			articleLabels);
+			documentationOriginalURL, articleLabels);
 	}
 
 	/**

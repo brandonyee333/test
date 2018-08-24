@@ -134,6 +134,21 @@ public interface ZendeskArticleModel extends BaseModel<ZendeskArticle> {
 	public void setDocumentationKey(String documentationKey);
 
 	/**
+	 * Returns the documentation original url of this zendesk article.
+	 *
+	 * @return the documentation original url of this zendesk article
+	 */
+	@AutoEscape
+	public String getDocumentationOriginalURL();
+
+	/**
+	 * Sets the documentation original url of this zendesk article.
+	 *
+	 * @param documentationOriginalURL the documentation original url of this zendesk article
+	 */
+	public void setDocumentationOriginalURL(String documentationOriginalURL);
+
+	/**
 	 * Returns the remote ID of this zendesk article.
 	 *
 	 * @return the remote ID of this zendesk article

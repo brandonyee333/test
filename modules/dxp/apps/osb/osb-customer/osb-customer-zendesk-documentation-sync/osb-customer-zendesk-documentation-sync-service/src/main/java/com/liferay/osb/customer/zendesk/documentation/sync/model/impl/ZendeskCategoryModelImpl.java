@@ -63,6 +63,7 @@ public class ZendeskCategoryModelImpl extends BaseModelImpl<ZendeskCategory>
 	public static final Object[][] TABLE_COLUMNS = {
 			{ "zendeskCategoryId", Types.BIGINT },
 			{ "documentationKey", Types.VARCHAR },
+			{ "documentationOriginalURL", Types.VARCHAR },
 			{ "articleLabels", Types.VARCHAR },
 			{ "remoteId", Types.BIGINT }
 		};
@@ -71,11 +72,12 @@ public class ZendeskCategoryModelImpl extends BaseModelImpl<ZendeskCategory>
 	static {
 		TABLE_COLUMNS_MAP.put("zendeskCategoryId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("documentationKey", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("documentationOriginalURL", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("articleLabels", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("remoteId", Types.BIGINT);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSBCustomer_ZendeskCategory (zendeskCategoryId LONG not null primary key,documentationKey VARCHAR(75) null,articleLabels STRING null,remoteId LONG)";
+	public static final String TABLE_SQL_CREATE = "create table OSBCustomer_ZendeskCategory (zendeskCategoryId LONG not null primary key,documentationKey VARCHAR(75) null,documentationOriginalURL VARCHAR(255) null,articleLabels STRING null,remoteId LONG)";
 	public static final String TABLE_SQL_DROP = "drop table OSBCustomer_ZendeskCategory";
 	public static final String ORDER_BY_JPQL = " ORDER BY zendeskCategory.zendeskCategoryId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY OSBCustomer_ZendeskCategory.zendeskCategoryId ASC";
@@ -135,6 +137,7 @@ public class ZendeskCategoryModelImpl extends BaseModelImpl<ZendeskCategory>
 
 		attributes.put("zendeskCategoryId", getZendeskCategoryId());
 		attributes.put("documentationKey", getDocumentationKey());
+		attributes.put("documentationOriginalURL", getDocumentationOriginalURL());
 		attributes.put("articleLabels", getArticleLabels());
 		attributes.put("remoteId", getRemoteId());
 
@@ -156,6 +159,13 @@ public class ZendeskCategoryModelImpl extends BaseModelImpl<ZendeskCategory>
 
 		if (documentationKey != null) {
 			setDocumentationKey(documentationKey);
+		}
+
+		String documentationOriginalURL = (String)attributes.get(
+				"documentationOriginalURL");
+
+		if (documentationOriginalURL != null) {
+			setDocumentationOriginalURL(documentationOriginalURL);
 		}
 
 		String articleLabels = (String)attributes.get("articleLabels");
@@ -204,6 +214,21 @@ public class ZendeskCategoryModelImpl extends BaseModelImpl<ZendeskCategory>
 
 	public String getOriginalDocumentationKey() {
 		return GetterUtil.getString(_originalDocumentationKey);
+	}
+
+	@Override
+	public String getDocumentationOriginalURL() {
+		if (_documentationOriginalURL == null) {
+			return "";
+		}
+		else {
+			return _documentationOriginalURL;
+		}
+	}
+
+	@Override
+	public void setDocumentationOriginalURL(String documentationOriginalURL) {
+		_documentationOriginalURL = documentationOriginalURL;
 	}
 
 	@Override
@@ -264,6 +289,7 @@ public class ZendeskCategoryModelImpl extends BaseModelImpl<ZendeskCategory>
 
 		zendeskCategoryImpl.setZendeskCategoryId(getZendeskCategoryId());
 		zendeskCategoryImpl.setDocumentationKey(getDocumentationKey());
+		zendeskCategoryImpl.setDocumentationOriginalURL(getDocumentationOriginalURL());
 		zendeskCategoryImpl.setArticleLabels(getArticleLabels());
 		zendeskCategoryImpl.setRemoteId(getRemoteId());
 
@@ -347,6 +373,15 @@ public class ZendeskCategoryModelImpl extends BaseModelImpl<ZendeskCategory>
 			zendeskCategoryCacheModel.documentationKey = null;
 		}
 
+		zendeskCategoryCacheModel.documentationOriginalURL = getDocumentationOriginalURL();
+
+		String documentationOriginalURL = zendeskCategoryCacheModel.documentationOriginalURL;
+
+		if ((documentationOriginalURL != null) &&
+				(documentationOriginalURL.length() == 0)) {
+			zendeskCategoryCacheModel.documentationOriginalURL = null;
+		}
+
 		zendeskCategoryCacheModel.articleLabels = getArticleLabels();
 
 		String articleLabels = zendeskCategoryCacheModel.articleLabels;
@@ -362,12 +397,14 @@ public class ZendeskCategoryModelImpl extends BaseModelImpl<ZendeskCategory>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(9);
+		StringBundler sb = new StringBundler(11);
 
 		sb.append("{zendeskCategoryId=");
 		sb.append(getZendeskCategoryId());
 		sb.append(", documentationKey=");
 		sb.append(getDocumentationKey());
+		sb.append(", documentationOriginalURL=");
+		sb.append(getDocumentationOriginalURL());
 		sb.append(", articleLabels=");
 		sb.append(getArticleLabels());
 		sb.append(", remoteId=");
@@ -379,7 +416,7 @@ public class ZendeskCategoryModelImpl extends BaseModelImpl<ZendeskCategory>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(16);
+		StringBundler sb = new StringBundler(19);
 
 		sb.append("<model><model-name>");
 		sb.append(
@@ -393,6 +430,10 @@ public class ZendeskCategoryModelImpl extends BaseModelImpl<ZendeskCategory>
 		sb.append(
 			"<column><column-name>documentationKey</column-name><column-value><![CDATA[");
 		sb.append(getDocumentationKey());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>documentationOriginalURL</column-name><column-value><![CDATA[");
+		sb.append(getDocumentationOriginalURL());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>articleLabels</column-name><column-value><![CDATA[");
@@ -415,6 +456,7 @@ public class ZendeskCategoryModelImpl extends BaseModelImpl<ZendeskCategory>
 	private long _zendeskCategoryId;
 	private String _documentationKey;
 	private String _originalDocumentationKey;
+	private String _documentationOriginalURL;
 	private String _articleLabels;
 	private long _remoteId;
 	private long _columnBitmask;

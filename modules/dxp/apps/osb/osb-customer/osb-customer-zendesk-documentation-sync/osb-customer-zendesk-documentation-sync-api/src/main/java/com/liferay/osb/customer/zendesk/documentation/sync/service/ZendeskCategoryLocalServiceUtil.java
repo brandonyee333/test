@@ -43,10 +43,12 @@ public class ZendeskCategoryLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.customer.zendesk.documentation.sync.service.impl.ZendeskCategoryLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory addZendeskCategory(
-		String documentationKey, String articleLabels, long remoteId)
+		String documentationKey, String documentationOriginalURL,
+		String articleLabels, long remoteId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
-				   .addZendeskCategory(documentationKey, articleLabels, remoteId);
+				   .addZendeskCategory(documentationKey,
+			documentationOriginalURL, articleLabels, remoteId);
 	}
 
 	/**
@@ -261,10 +263,12 @@ public class ZendeskCategoryLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory updateZendeskCategory(
-		long zendeskCategoryId, String articleLabels)
+		long zendeskCategoryId, String documentationOriginalURL,
+		String articleLabels)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
-				   .updateZendeskCategory(zendeskCategoryId, articleLabels);
+				   .updateZendeskCategory(zendeskCategoryId,
+			documentationOriginalURL, articleLabels);
 	}
 
 	/**

@@ -1,3 +1,4 @@
+create index IX_E5D58AFB on OSBCustomer_ZendeskArticle (documentationOriginalURL[$COLUMN_LENGTH:255$]);
 create index IX_AE645B9B on OSBCustomer_ZendeskArticle (zendeskCategoryId, documentationKey[$COLUMN_LENGTH:150$]);
 create index IX_E374CBBB on OSBCustomer_ZendeskArticle (zendeskSectionId);
 

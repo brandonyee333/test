@@ -59,6 +59,7 @@ public class ZendeskCategoryWrapper implements ZendeskCategory,
 
 		attributes.put("zendeskCategoryId", getZendeskCategoryId());
 		attributes.put("documentationKey", getDocumentationKey());
+		attributes.put("documentationOriginalURL", getDocumentationOriginalURL());
 		attributes.put("articleLabels", getArticleLabels());
 		attributes.put("remoteId", getRemoteId());
 
@@ -77,6 +78,13 @@ public class ZendeskCategoryWrapper implements ZendeskCategory,
 
 		if (documentationKey != null) {
 			setDocumentationKey(documentationKey);
+		}
+
+		String documentationOriginalURL = (String)attributes.get(
+				"documentationOriginalURL");
+
+		if (documentationOriginalURL != null) {
+			setDocumentationOriginalURL(documentationOriginalURL);
 		}
 
 		String articleLabels = (String)attributes.get("articleLabels");
@@ -120,6 +128,16 @@ public class ZendeskCategoryWrapper implements ZendeskCategory,
 	@Override
 	public String getDocumentationKey() {
 		return _zendeskCategory.getDocumentationKey();
+	}
+
+	/**
+	* Returns the documentation original url of this zendesk category.
+	*
+	* @return the documentation original url of this zendesk category
+	*/
+	@Override
+	public String getDocumentationOriginalURL() {
+		return _zendeskCategory.getDocumentationOriginalURL();
 	}
 
 	@Override
@@ -215,6 +233,16 @@ public class ZendeskCategoryWrapper implements ZendeskCategory,
 	@Override
 	public void setDocumentationKey(String documentationKey) {
 		_zendeskCategory.setDocumentationKey(documentationKey);
+	}
+
+	/**
+	* Sets the documentation original url of this zendesk category.
+	*
+	* @param documentationOriginalURL the documentation original url of this zendesk category
+	*/
+	@Override
+	public void setDocumentationOriginalURL(String documentationOriginalURL) {
+		_zendeskCategory.setDocumentationOriginalURL(documentationOriginalURL);
 	}
 
 	@Override

@@ -62,9 +62,10 @@ public interface ZendeskArticleLocalService extends BaseLocalService,
 	 * Never modify or reference this interface directly. Always use {@link ZendeskArticleLocalServiceUtil} to access the zendesk article local service. Add custom service methods to {@link com.liferay.osb.customer.zendesk.documentation.sync.service.impl.ZendeskArticleLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public ZendeskArticle addZendeskArticle(long zendeskSectionId,
-		String documentationKey, Map<String, String> titleMap,
-		Map<String, String> bodyMap, int position, String[] labelNames,
-		Map<String, byte[]> attachments) throws PortalException;
+		String documentationKey, String documentationOriginalURL,
+		Map<String, String> titleMap, Map<String, String> bodyMap,
+		int position, String[] labelNames, Map<String, byte[]> attachments)
+		throws PortalException;
 
 	/**
 	* Adds the zendesk article to the database. Also notifies the appropriate model listeners.
@@ -178,6 +179,9 @@ public interface ZendeskArticleLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ZendeskArticle fetchZendeskArticle(long zendeskCategoryId,
 		String documentationKey);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ZendeskArticle fetchZendeskArticle(String documentationOriginalURL);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();

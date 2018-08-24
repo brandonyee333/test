@@ -38,6 +38,7 @@ public class ZendeskArticleSoap implements Serializable {
 		soapModel.setZendeskCategoryId(model.getZendeskCategoryId());
 		soapModel.setZendeskSectionId(model.getZendeskSectionId());
 		soapModel.setDocumentationKey(model.getDocumentationKey());
+		soapModel.setDocumentationOriginalURL(model.getDocumentationOriginalURL());
 		soapModel.setRemoteId(model.getRemoteId());
 		soapModel.setRemoteHtmlURL(model.getRemoteHtmlURL());
 
@@ -132,6 +133,14 @@ public class ZendeskArticleSoap implements Serializable {
 		_documentationKey = documentationKey;
 	}
 
+	public String getDocumentationOriginalURL() {
+		return _documentationOriginalURL;
+	}
+
+	public void setDocumentationOriginalURL(String documentationOriginalURL) {
+		_documentationOriginalURL = documentationOriginalURL;
+	}
+
 	public long getRemoteId() {
 		return _remoteId;
 	}
@@ -153,6 +162,7 @@ public class ZendeskArticleSoap implements Serializable {
 	private long _zendeskCategoryId;
 	private long _zendeskSectionId;
 	private String _documentationKey;
+	private String _documentationOriginalURL;
 	private long _remoteId;
 	private String _remoteHtmlURL;
 }

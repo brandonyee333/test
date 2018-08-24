@@ -14,6 +14,7 @@
 		<property name="zendeskCategoryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="zendeskSectionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="documentationKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="documentationOriginalURL" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="remoteId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="remoteHtmlURL" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
@@ -32,6 +33,7 @@
 			<generator class="assigned" />
 		</id>
 		<property name="documentationKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="documentationOriginalURL" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="articleLabels" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="remoteId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>

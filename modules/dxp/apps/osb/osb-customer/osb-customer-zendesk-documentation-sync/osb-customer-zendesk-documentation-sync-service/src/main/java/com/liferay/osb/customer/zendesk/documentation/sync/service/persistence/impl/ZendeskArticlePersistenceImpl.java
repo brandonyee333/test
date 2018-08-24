@@ -1123,6 +1123,255 @@ public class ZendeskArticlePersistenceImpl extends BasePersistenceImpl<ZendeskAr
 
 	private static final String _FINDER_COLUMN_ZENDESKSECTIONID_ZENDESKSECTIONID_2 =
 		"zendeskArticle.zendeskSectionId = ?";
+	public static final FinderPath FINDER_PATH_FETCH_BY_DOCUMENTATIONORIGINALURL =
+		new FinderPath(ZendeskArticleModelImpl.ENTITY_CACHE_ENABLED,
+			ZendeskArticleModelImpl.FINDER_CACHE_ENABLED,
+			ZendeskArticleImpl.class, FINDER_CLASS_NAME_ENTITY,
+			"fetchByDocumentationOriginalURL",
+			new String[] { String.class.getName() },
+			ZendeskArticleModelImpl.DOCUMENTATIONORIGINALURL_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_DOCUMENTATIONORIGINALURL =
+		new FinderPath(ZendeskArticleModelImpl.ENTITY_CACHE_ENABLED,
+			ZendeskArticleModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"countByDocumentationOriginalURL",
+			new String[] { String.class.getName() });
+
+	/**
+	 * Returns the zendesk article where documentationOriginalURL = &#63; or throws a {@link NoSuchZendeskArticleException} if it could not be found.
+	 *
+	 * @param documentationOriginalURL the documentation original url
+	 * @return the matching zendesk article
+	 * @throws NoSuchZendeskArticleException if a matching zendesk article could not be found
+	 */
+	@Override
+	public ZendeskArticle findByDocumentationOriginalURL(
+		String documentationOriginalURL) throws NoSuchZendeskArticleException {
+		ZendeskArticle zendeskArticle = fetchByDocumentationOriginalURL(documentationOriginalURL);
+
+		if (zendeskArticle == null) {
+			StringBundler msg = new StringBundler(4);
+
+			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+			msg.append("documentationOriginalURL=");
+			msg.append(documentationOriginalURL);
+
+			msg.append("}");
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(msg.toString());
+			}
+
+			throw new NoSuchZendeskArticleException(msg.toString());
+		}
+
+		return zendeskArticle;
+	}
+
+	/**
+	 * Returns the zendesk article where documentationOriginalURL = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param documentationOriginalURL the documentation original url
+	 * @return the matching zendesk article, or <code>null</code> if a matching zendesk article could not be found
+	 */
+	@Override
+	public ZendeskArticle fetchByDocumentationOriginalURL(
+		String documentationOriginalURL) {
+		return fetchByDocumentationOriginalURL(documentationOriginalURL, true);
+	}
+
+	/**
+	 * Returns the zendesk article where documentationOriginalURL = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param documentationOriginalURL the documentation original url
+	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @return the matching zendesk article, or <code>null</code> if a matching zendesk article could not be found
+	 */
+	@Override
+	public ZendeskArticle fetchByDocumentationOriginalURL(
+		String documentationOriginalURL, boolean retrieveFromCache) {
+		Object[] finderArgs = new Object[] { documentationOriginalURL };
+
+		Object result = null;
+
+		if (retrieveFromCache) {
+			result = finderCache.getResult(FINDER_PATH_FETCH_BY_DOCUMENTATIONORIGINALURL,
+					finderArgs, this);
+		}
+
+		if (result instanceof ZendeskArticle) {
+			ZendeskArticle zendeskArticle = (ZendeskArticle)result;
+
+			if (!Objects.equals(documentationOriginalURL,
+						zendeskArticle.getDocumentationOriginalURL())) {
+				result = null;
+			}
+		}
+
+		if (result == null) {
+			StringBundler query = new StringBundler(3);
+
+			query.append(_SQL_SELECT_ZENDESKARTICLE_WHERE);
+
+			boolean bindDocumentationOriginalURL = false;
+
+			if (documentationOriginalURL == null) {
+				query.append(_FINDER_COLUMN_DOCUMENTATIONORIGINALURL_DOCUMENTATIONORIGINALURL_1);
+			}
+			else if (documentationOriginalURL.equals("")) {
+				query.append(_FINDER_COLUMN_DOCUMENTATIONORIGINALURL_DOCUMENTATIONORIGINALURL_3);
+			}
+			else {
+				bindDocumentationOriginalURL = true;
+
+				query.append(_FINDER_COLUMN_DOCUMENTATIONORIGINALURL_DOCUMENTATIONORIGINALURL_2);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				if (bindDocumentationOriginalURL) {
+					qPos.add(documentationOriginalURL);
+				}
+
+				List<ZendeskArticle> list = q.list();
+
+				if (list.isEmpty()) {
+					finderCache.putResult(FINDER_PATH_FETCH_BY_DOCUMENTATIONORIGINALURL,
+						finderArgs, list);
+				}
+				else {
+					if (list.size() > 1) {
+						Collections.sort(list, Collections.reverseOrder());
+
+						if (_log.isWarnEnabled()) {
+							_log.warn(
+								"ZendeskArticlePersistenceImpl.fetchByDocumentationOriginalURL(String, boolean) with parameters (" +
+								StringUtil.merge(finderArgs) +
+								") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+						}
+					}
+
+					ZendeskArticle zendeskArticle = list.get(0);
+
+					result = zendeskArticle;
+
+					cacheResult(zendeskArticle);
+				}
+			}
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_FETCH_BY_DOCUMENTATIONORIGINALURL,
+					finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		if (result instanceof List<?>) {
+			return null;
+		}
+		else {
+			return (ZendeskArticle)result;
+		}
+	}
+
+	/**
+	 * Removes the zendesk article where documentationOriginalURL = &#63; from the database.
+	 *
+	 * @param documentationOriginalURL the documentation original url
+	 * @return the zendesk article that was removed
+	 */
+	@Override
+	public ZendeskArticle removeByDocumentationOriginalURL(
+		String documentationOriginalURL) throws NoSuchZendeskArticleException {
+		ZendeskArticle zendeskArticle = findByDocumentationOriginalURL(documentationOriginalURL);
+
+		return remove(zendeskArticle);
+	}
+
+	/**
+	 * Returns the number of zendesk articles where documentationOriginalURL = &#63;.
+	 *
+	 * @param documentationOriginalURL the documentation original url
+	 * @return the number of matching zendesk articles
+	 */
+	@Override
+	public int countByDocumentationOriginalURL(String documentationOriginalURL) {
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_DOCUMENTATIONORIGINALURL;
+
+		Object[] finderArgs = new Object[] { documentationOriginalURL };
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler(2);
+
+			query.append(_SQL_COUNT_ZENDESKARTICLE_WHERE);
+
+			boolean bindDocumentationOriginalURL = false;
+
+			if (documentationOriginalURL == null) {
+				query.append(_FINDER_COLUMN_DOCUMENTATIONORIGINALURL_DOCUMENTATIONORIGINALURL_1);
+			}
+			else if (documentationOriginalURL.equals("")) {
+				query.append(_FINDER_COLUMN_DOCUMENTATIONORIGINALURL_DOCUMENTATIONORIGINALURL_3);
+			}
+			else {
+				bindDocumentationOriginalURL = true;
+
+				query.append(_FINDER_COLUMN_DOCUMENTATIONORIGINALURL_DOCUMENTATIONORIGINALURL_2);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				if (bindDocumentationOriginalURL) {
+					qPos.add(documentationOriginalURL);
+				}
+
+				count = (Long)q.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_DOCUMENTATIONORIGINALURL_DOCUMENTATIONORIGINALURL_1 =
+		"zendeskArticle.documentationOriginalURL IS NULL";
+	private static final String _FINDER_COLUMN_DOCUMENTATIONORIGINALURL_DOCUMENTATIONORIGINALURL_2 =
+		"zendeskArticle.documentationOriginalURL = ?";
+	private static final String _FINDER_COLUMN_DOCUMENTATIONORIGINALURL_DOCUMENTATIONORIGINALURL_3 =
+		"(zendeskArticle.documentationOriginalURL IS NULL OR zendeskArticle.documentationOriginalURL = '')";
 	public static final FinderPath FINDER_PATH_FETCH_BY_ZCI_DK = new FinderPath(ZendeskArticleModelImpl.ENTITY_CACHE_ENABLED,
 			ZendeskArticleModelImpl.FINDER_CACHE_ENABLED,
 			ZendeskArticleImpl.class, FINDER_CLASS_NAME_ENTITY,
@@ -1402,6 +1651,10 @@ public class ZendeskArticlePersistenceImpl extends BasePersistenceImpl<ZendeskAr
 			ZendeskArticleImpl.class, zendeskArticle.getPrimaryKey(),
 			zendeskArticle);
 
+		finderCache.putResult(FINDER_PATH_FETCH_BY_DOCUMENTATIONORIGINALURL,
+			new Object[] { zendeskArticle.getDocumentationOriginalURL() },
+			zendeskArticle);
+
 		finderCache.putResult(FINDER_PATH_FETCH_BY_ZCI_DK,
 			new Object[] {
 				zendeskArticle.getZendeskCategoryId(),
@@ -1481,6 +1734,15 @@ public class ZendeskArticlePersistenceImpl extends BasePersistenceImpl<ZendeskAr
 	protected void cacheUniqueFindersCache(
 		ZendeskArticleModelImpl zendeskArticleModelImpl) {
 		Object[] args = new Object[] {
+				zendeskArticleModelImpl.getDocumentationOriginalURL()
+			};
+
+		finderCache.putResult(FINDER_PATH_COUNT_BY_DOCUMENTATIONORIGINALURL,
+			args, Long.valueOf(1), false);
+		finderCache.putResult(FINDER_PATH_FETCH_BY_DOCUMENTATIONORIGINALURL,
+			args, zendeskArticleModelImpl, false);
+
+		args = new Object[] {
 				zendeskArticleModelImpl.getZendeskCategoryId(),
 				zendeskArticleModelImpl.getDocumentationKey()
 			};
@@ -1493,6 +1755,29 @@ public class ZendeskArticlePersistenceImpl extends BasePersistenceImpl<ZendeskAr
 
 	protected void clearUniqueFindersCache(
 		ZendeskArticleModelImpl zendeskArticleModelImpl, boolean clearCurrent) {
+		if (clearCurrent) {
+			Object[] args = new Object[] {
+					zendeskArticleModelImpl.getDocumentationOriginalURL()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_DOCUMENTATIONORIGINALURL,
+				args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_DOCUMENTATIONORIGINALURL,
+				args);
+		}
+
+		if ((zendeskArticleModelImpl.getColumnBitmask() &
+				FINDER_PATH_FETCH_BY_DOCUMENTATIONORIGINALURL.getColumnBitmask()) != 0) {
+			Object[] args = new Object[] {
+					zendeskArticleModelImpl.getOriginalDocumentationOriginalURL()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_DOCUMENTATIONORIGINALURL,
+				args);
+			finderCache.removeResult(FINDER_PATH_FETCH_BY_DOCUMENTATIONORIGINALURL,
+				args);
+		}
+
 		if (clearCurrent) {
 			Object[] args = new Object[] {
 					zendeskArticleModelImpl.getZendeskCategoryId(),
