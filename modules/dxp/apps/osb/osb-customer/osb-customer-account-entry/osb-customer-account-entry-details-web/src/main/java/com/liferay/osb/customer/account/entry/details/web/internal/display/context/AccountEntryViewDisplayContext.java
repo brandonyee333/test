@@ -24,11 +24,13 @@ import com.liferay.osb.model.AccountEnvironmentConstants;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.ProductEntryConstants;
+import com.liferay.osb.service.AccountEntryServiceUtil;
 import com.liferay.osb.service.AccountEnvironmentAttachmentLocalServiceUtil;
 import com.liferay.osb.service.AccountEnvironmentLocalServiceUtil;
 import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.osb.service.permission.OSBAccountEnvironmentPermission;
 import com.liferay.osb.util.OSBActionKeys;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -37,6 +39,7 @@ import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
@@ -45,10 +48,10 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 import javax.portlet.ActionRequest;
+import javax.portlet.MimeResponse;
 import javax.portlet.PortletException;
+import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
 import javax.portlet.ResourceURL;
 
 import javax.servlet.http.HttpServletRequest;
@@ -59,15 +62,27 @@ import javax.servlet.http.HttpServletRequest;
 public class AccountEntryViewDisplayContext {
 
 	public AccountEntryViewDisplayContext(
-		RenderRequest renderRequest, RenderResponse renderResponse) {
+			PortletRequest portletRequest, MimeResponse mimeResponse)
+		throws PortalException {
 
-		_renderRequest = renderRequest;
-		_renderResponse = renderResponse;
+		_portletRequest = portletRequest;
+		_mimeResponse = mimeResponse;
 
-		_accountEntry = (AccountEntry)_renderRequest.getAttribute(
+		AccountEntry accountEntry = (AccountEntry)_portletRequest.getAttribute(
 			AccountEntryDetailsWebKeys.ACCOUNT_ENTRY);
+
+		if (accountEntry == null) {
+			long accountEntryId = ParamUtil.getLong(
+				portletRequest, "accountEntryId");
+
+			accountEntry = AccountEntryServiceUtil.getAccountEntry(
+				accountEntryId);
+		}
+
+		_accountEntry = accountEntry;
+
 		_accountEntryDetailsRequestHelper =
-			new AccountEntryDetailsRequestHelper(renderRequest);
+			new AccountEntryDetailsRequestHelper(portletRequest);
 
 		_request = _accountEntryDetailsRequestHelper.getRequest();
 		_themeDisplay = _accountEntryDetailsRequestHelper.getThemeDisplay();
@@ -80,7 +95,7 @@ public class AccountEntryViewDisplayContext {
 	public String getAccountEnvironmentAddURL(AccountEntry accountEntry)
 		throws PortletException {
 
-		PortletURL portletURL = _renderResponse.createRenderURL();
+		PortletURL portletURL = _mimeResponse.createRenderURL();
 
 		portletURL.setParameter(
 			"mvcRenderCommandName", "/edit_account_environment");
@@ -135,7 +150,7 @@ public class AccountEntryViewDisplayContext {
 	protected String getAccountEnvironmentAttachmentURL(
 		AccountEnvironmentAttachment accountEnvironmentAttachment) {
 
-		ResourceURL resourceURL = _renderResponse.createResourceURL();
+		ResourceURL resourceURL = _mimeResponse.createResourceURL();
 
 		resourceURL.setParameter(
 			"accountEnvironmentAttachmentId",
@@ -150,7 +165,7 @@ public class AccountEntryViewDisplayContext {
 	protected String getAccountEnvironmentDeleteURL(
 		AccountEnvironment accountEnvironment) {
 
-		PortletURL portletURL = _renderResponse.createActionURL();
+		PortletURL portletURL = _mimeResponse.createActionURL();
 
 		portletURL.setParameter(
 			ActionRequest.ACTION_NAME, "deleteAccountEnvironment");
@@ -167,7 +182,7 @@ public class AccountEntryViewDisplayContext {
 			AccountEnvironment accountEnvironment)
 		throws PortletException {
 
-		PortletURL portletURL = _renderResponse.createRenderURL();
+		PortletURL portletURL = _mimeResponse.createRenderURL();
 
 		portletURL.setParameter(
 			"mvcRenderCommandName", "/edit_account_environment");
@@ -414,8 +429,8 @@ public class AccountEntryViewDisplayContext {
 	private final AccountEntry _accountEntry;
 	private final AccountEntryDetailsRequestHelper
 		_accountEntryDetailsRequestHelper;
-	private final RenderRequest _renderRequest;
-	private final RenderResponse _renderResponse;
+	private final MimeResponse _mimeResponse;
+	private final PortletRequest _portletRequest;
 	private final HttpServletRequest _request;
 	private final ThemeDisplay _themeDisplay;
 

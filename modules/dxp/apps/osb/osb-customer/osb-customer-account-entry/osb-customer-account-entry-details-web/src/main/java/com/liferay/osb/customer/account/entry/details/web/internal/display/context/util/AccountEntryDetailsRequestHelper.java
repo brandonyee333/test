@@ -17,15 +17,15 @@ package com.liferay.osb.customer.account.entry.details.web.internal.display.cont
 import com.liferay.portal.kernel.display.context.util.BaseRequestHelper;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import javax.portlet.RenderRequest;
+import javax.portlet.PortletRequest;
 
 /**
  * @author Amos Fong
  */
 public class AccountEntryDetailsRequestHelper extends BaseRequestHelper {
 
-	public AccountEntryDetailsRequestHelper(RenderRequest renderRequest) {
-		super(PortalUtil.getHttpServletRequest(renderRequest));
+	public AccountEntryDetailsRequestHelper(PortletRequest portletRequest) {
+		super(PortalUtil.getHttpServletRequest(portletRequest));
 	}
 
 }

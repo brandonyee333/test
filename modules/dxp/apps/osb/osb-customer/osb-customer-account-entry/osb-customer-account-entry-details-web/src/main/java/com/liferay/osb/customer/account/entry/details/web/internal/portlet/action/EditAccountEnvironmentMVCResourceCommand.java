@@ -15,8 +15,8 @@
 package com.liferay.osb.customer.account.entry.details.web.internal.portlet.action;
 
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys;
-import com.liferay.osb.util.OSBRequestUtil;
-import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.osb.customer.account.entry.details.web.internal.display.context.AccountEntryViewDisplayContext;
+import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
@@ -34,22 +34,26 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	property = {
 		"javax.portlet.name=" + AccountEntryDetailsPortletKeys.ACCOUNT_ENTRY_DETAILS,
-		"mvc.command.name=/product_entry_version_list_types"
+		"mvc.command.name=/edit_account_environment"
 	},
 	service = MVCResourceCommand.class
 )
-public class ProductEntryVersionListTypesMVCResourceCommand
+public class EditAccountEnvironmentMVCResourceCommand
 	extends BaseMVCResourceCommand {
 
 	protected void doServeResource(
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 		throws Exception {
 
-		JSONObject jsonObject = OSBRequestUtil.getProductEntryVersionListTypes(
-			resourceRequest);
+		AccountEntryViewDisplayContext accountEntryViewDisplayContext =
+			new AccountEntryViewDisplayContext(
+				resourceRequest, resourceResponse);
+
+		JSONArray jsonArray =
+			accountEntryViewDisplayContext.getProductEntriesJSONArray();
 
 		JSONPortletResponseUtil.writeJSON(
-			resourceRequest, resourceResponse, jsonObject);
+			resourceRequest, resourceResponse, jsonArray);
 	}
 
 	@Reference(
