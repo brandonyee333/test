@@ -79,5 +79,7 @@ public class UserModelIndexWriterContributor
 	protected DynamicQueryBatchIndexingActionableFactory
 		dynamicQueryBatchIndexingActionableFactory;
 
-	@Reference protected UserLocalService userLocalService;
+	@Reference
+	protected UserLocalService userLocalService;
+
 }
