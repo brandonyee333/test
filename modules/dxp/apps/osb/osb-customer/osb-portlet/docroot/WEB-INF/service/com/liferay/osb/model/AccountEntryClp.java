@@ -1344,6 +1344,25 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 	}
 
 	@Override
+	public boolean hasEnterpriseSearchOffering(int productEntryEnvironment) {
+		try {
+			String methodName = "hasEnterpriseSearchOffering";
+
+			Class<?>[] parameterTypes = new Class<?>[] { int.class };
+
+			Object[] parameterValues = new Object[] { productEntryEnvironment };
+
+			Boolean returnObj = (Boolean)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
 	public void setAddress(com.liferay.portal.kernel.model.Address address) {
 		try {
 			String methodName = "setAddress";

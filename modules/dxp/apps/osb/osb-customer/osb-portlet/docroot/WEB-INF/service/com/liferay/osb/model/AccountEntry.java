@@ -86,6 +86,9 @@ public interface AccountEntry extends AccountEntryModel, PersistedModel {
 
 	public boolean hasActiveSupportOffering();
 
+	public boolean hasEnterpriseSearchOffering(int productEntryEnvironment)
+		throws com.liferay.portal.kernel.exception.PortalException;
+
 	public void setAddress(com.liferay.portal.kernel.model.Address address);
 
 	public void setLanguageIds(java.lang.String[] languageIds);

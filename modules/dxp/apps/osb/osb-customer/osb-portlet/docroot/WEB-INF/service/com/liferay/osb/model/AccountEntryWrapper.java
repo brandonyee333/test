@@ -309,6 +309,12 @@ public class AccountEntryWrapper implements AccountEntry,
 		return _accountEntry.hasActiveSupportOffering();
 	}
 
+	@Override
+	public boolean hasEnterpriseSearchOffering(int productEntryEnvironment)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountEntry.hasEnterpriseSearchOffering(productEntryEnvironment);
+	}
+
 	/**
 	* Returns <code>true</code> if this account entry is approved.
 	*
