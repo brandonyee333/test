@@ -1,0 +1,83 @@
+.history {
+	margin-bottom: 64px;
+
+	td, th {
+		padding: 12px;
+		vertical-align: top;
+	}
+
+	table td {
+		line-height: 1.5em;
+		padding-bottom: 24px;
+	}
+
+	.audit-entry-set {
+		border-bottom: solid 1px $color-divider-border;
+		overflow: hidden;
+		width: 100%;
+	}
+
+	.content {
+		font-size: $font-size-md;
+		margin: 0 48px;
+
+		tr {
+			td:first-of-type, th:first-of-type {
+				padding-left: 48px;
+			}
+		}
+
+		.content-header {
+			color: $secondary-text-color;
+			letter-spacing: 1px;
+			text-transform: uppercase;
+		}
+	}
+
+	.content-row .history-label {
+		vertical-align: top;
+	}
+
+	.entry-header {
+		border-bottom: solid 1px $color-divider-border;
+		display: table-caption;
+		margin-bottom: 24px;
+		padding: 16px 0;
+
+		th {
+			font-weight: $font-weight-normal;
+			padding: 0;
+		}
+
+		tr {
+			align-items: center;
+			display: inline-flex;
+			height: 52px;
+			width: 100%;
+		}
+
+		.create-date {
+			margin-left: auto;
+			margin-right: 0;
+		}
+
+		.user-display {
+			display: inline-flex;
+			font-weight: $font-weight-semi-bold;
+			margin-right: 16px;
+		}
+
+		.summary {
+			font-style: italic;
+			margin-left: 16px;
+		}
+	}
+
+	.txt-code {
+		font-family: "Source Code Pro", "Source Sans Pro";
+	}
+
+	.txt-sb {
+		font-weight: $font-weight-semi-bold;
+	}
+}
