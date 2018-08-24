@@ -10,6 +10,10 @@
 	.close {
 		right: 8px;
 	}
+
+	.lead {
+		margin-right: $alert-lead-spacer-x;
+	}
 }
 
 .alert-dismissible {
@@ -24,5 +28,15 @@
 	.container,
 	.container-fluid {
 		padding: 16px;
+	}
+}
+
+.alert-indicator {
+	+ .lead {
+		margin-left: $alert-lead-spacer-x;
+	}
+
+	.lexicon-icon {
+		margin-top: -3px;
 	}
 }
