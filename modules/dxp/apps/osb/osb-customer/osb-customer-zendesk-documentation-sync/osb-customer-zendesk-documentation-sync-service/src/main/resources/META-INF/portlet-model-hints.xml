@@ -9,6 +9,9 @@
 		<field name="documentationKey" type="String">
 			<hint name="max-length">150</hint>
 		</field>
+		<field name="documentationOriginalURL" type="String">
+			<hint name="max-length">255</hint>
+		</field>
 		<field name="remoteId" type="long" />
 		<field name="remoteHtmlURL" type="String">
 			<hint-collection name="URL" />
@@ -29,6 +32,9 @@
 	<model name="com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory">
 		<field name="zendeskCategoryId" type="long" />
 		<field name="documentationKey" type="String" />
+		<field name="documentationOriginalURL" type="String">
+			<hint name="max-length">255</hint>
+		</field>
 		<field name="articleLabels" type="String">
 			<hint-collection name="TEXTAREA" />
 		</field>

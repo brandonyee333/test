@@ -107,17 +107,20 @@ public class AdminPortlet extends MVCPortlet {
 
 		String documentationKey = ParamUtil.getString(
 			actionRequest, "documentationKey");
+		String documentationOriginalURL = ParamUtil.getString(
+			actionRequest, "documentationOriginalURL");
 		String articleLabels = ParamUtil.getString(
 			actionRequest, "articleLabels");
 		long remoteId = ParamUtil.getLong(actionRequest, "remoteId");
 
 		if (zendeskCategoryId > 0) {
 			_zendeskCategoryLocalService.updateZendeskCategory(
-				zendeskCategoryId, articleLabels);
+				zendeskCategoryId, documentationOriginalURL, articleLabels);
 		}
 		else {
 			_zendeskCategoryLocalService.addZendeskCategory(
-				documentationKey, articleLabels, remoteId);
+				documentationKey, documentationOriginalURL, articleLabels,
+				remoteId);
 		}
 	}
 

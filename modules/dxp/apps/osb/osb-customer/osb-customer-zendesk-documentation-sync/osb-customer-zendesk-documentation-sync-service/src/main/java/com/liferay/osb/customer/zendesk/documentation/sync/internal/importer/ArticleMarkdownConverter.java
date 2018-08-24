@@ -16,11 +16,13 @@ package com.liferay.osb.customer.zendesk.documentation.sync.internal.importer;
 
 import com.liferay.knowledge.base.markdown.converter.MarkdownConverter;
 import com.liferay.knowledge.base.markdown.converter.factory.MarkdownConverterFactoryUtil;
+import com.liferay.knowledge.base.model.KBArticle;
 import com.liferay.osb.customer.zendesk.documentation.sync.exception.DocumentationImportException;
 import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.ModelHintsUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.StreamUtil;
@@ -79,6 +81,8 @@ public class ArticleMarkdownConverter {
 				"Missing title heading ID in file: " + zipReaderEntry);
 		}
 
+		_urlTitle = getUrlTitle(heading);
+
 		String title = HtmlUtil.unescape(heading);
 
 		int x = title.indexOf("[](id=");
@@ -116,6 +120,10 @@ public class ArticleMarkdownConverter {
 
 	public String getTitle() {
 		return _title;
+	}
+
+	public String getUrlTitle() {
+		return _urlTitle;
 	}
 
 	protected String buildSourceURL(ZipReader zipReader, String fileEntryName)
@@ -187,6 +195,53 @@ public class ArticleMarkdownConverter {
 		}
 
 		return id;
+	}
+
+	protected String getUrlTitle(String heading) {
+		String urlTitle = null;
+
+		int x = heading.indexOf("[](id=");
+
+		if (x == -1) {
+			return null;
+		}
+
+		int y = heading.indexOf(StringPool.CLOSE_PARENTHESIS, x);
+
+		if (y > (x + 1)) {
+			int equalsSign = heading.indexOf(StringPool.EQUAL, x);
+
+			urlTitle = heading.substring(equalsSign + 1, y);
+
+			urlTitle = StringUtil.replace(
+				urlTitle, CharPool.SPACE, CharPool.DASH);
+
+			urlTitle = StringUtil.toLowerCase(urlTitle);
+		}
+
+		if (urlTitle == null) {
+			return null;
+		}
+
+		if (!urlTitle.startsWith(StringPool.SLASH)) {
+			urlTitle = StringPool.SLASH + urlTitle;
+		}
+
+		int urlTitleMaxLength = ModelHintsUtil.getMaxLength(
+			KBArticle.class.getName(), "urlTitle");
+
+		while (urlTitle.length() > urlTitleMaxLength) {
+			int pos = urlTitle.lastIndexOf(StringPool.DASH);
+
+			if (pos == -1) {
+				urlTitle = urlTitle.substring(0, urlTitleMaxLength);
+			}
+			else {
+				urlTitle = urlTitle.substring(0, pos);
+			}
+		}
+
+		return urlTitle;
 	}
 
 	protected void processAttachments(
@@ -364,5 +419,6 @@ public class ArticleMarkdownConverter {
 	private final String _id;
 	private final String _sourceURL;
 	private final String _title;
+	private final String _urlTitle;
 
 }

@@ -24,8 +24,12 @@ import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskArticl
 import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskSectionLocalServiceUtil;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.zip.ZipReader;
 
 import java.nio.file.Path;
@@ -36,6 +40,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Amos Fong
@@ -187,12 +193,13 @@ public class DocumentationArchiveImporter {
 
 		processZendeskArticle(
 			articleMarkdownConverter.getId(), title,
+			articleMarkdownConverter.getUrlTitle(),
 			articleMarkdownConverter.getHtml(),
 			articleMarkdownConverter.getAttachments());
 	}
 
 	protected void processZendeskArticle(
-			String documentationKey, String title, String body,
+			String documentationKey, String title, String urlTitle, String body,
 			Map<String, byte[]> attachments)
 		throws Exception {
 
@@ -223,6 +230,8 @@ public class DocumentationArchiveImporter {
 				previousZendeskArticle, nextZendeskArticle);
 		}
 
+		body = replaceDocumentationOriginalURLs(body);
+
 		Map<String, String> titleMap = new HashMap<>();
 		Map<String, String> bodyMap = new HashMap<>();
 
@@ -232,10 +241,21 @@ public class DocumentationArchiveImporter {
 		}
 
 		if (zendeskArticle == null) {
+			String documentationOriginalURL =
+				_zendeskCategory.getDocumentationOriginalURL();
+
+			if (documentationOriginalURL.endsWith(StringPool.SLASH)) {
+				documentationOriginalURL = documentationOriginalURL.substring(
+					0, documentationOriginalURL.length() - 1);
+			}
+
+			documentationOriginalURL += urlTitle;
+
 			zendeskArticle = ZendeskArticleLocalServiceUtil.addZendeskArticle(
 				_currentZendeskSection.getZendeskSectionId(), documentationKey,
-				titleMap, bodyMap, _zendeskArticlePosition,
-				_zendeskCategory.getRemoteLabelNames(), attachments);
+				documentationOriginalURL, titleMap, bodyMap,
+				_zendeskArticlePosition, _zendeskCategory.getRemoteLabelNames(),
+				attachments);
 		}
 		else {
 			zendeskArticle =
@@ -294,6 +314,40 @@ public class DocumentationArchiveImporter {
 		_zendeskArticlePosition = 0;
 		_zendeskSectionPosition++;
 	}
+
+	protected String replaceDocumentationOriginalURLs(String body) {
+		Matcher matcher = _originalURLPattern.matcher(body);
+
+		while (matcher.find()) {
+			String originalURL = matcher.group(1);
+
+			ZendeskArticle zendeskArticle =
+				ZendeskArticleLocalServiceUtil.fetchZendeskArticle(originalURL);
+
+			if (zendeskArticle != null) {
+				String href = matcher.group();
+
+				String zendeskArticleHref =
+					"href=\"" + zendeskArticle.getRemoteHtmlURL() +
+						href.substring(href.length() - 1);
+
+				body = StringUtil.replace(body, href, zendeskArticleHref);
+			}
+			else if (_iterationCount > 0) {
+				if (_log.isWarnEnabled()) {
+					_log.warn("Unable to find linked article " + originalURL);
+				}
+			}
+		}
+
+		return body;
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		DocumentationArchiveImporter.class);
+
+	private static final Pattern _originalURLPattern = Pattern.compile(
+		"href=\"([^\"]+/-/knowledge_base/[^\"#]+)[\"#]");
 
 	private ZendeskSection _currentZendeskSection;
 	private int _iterationCount;

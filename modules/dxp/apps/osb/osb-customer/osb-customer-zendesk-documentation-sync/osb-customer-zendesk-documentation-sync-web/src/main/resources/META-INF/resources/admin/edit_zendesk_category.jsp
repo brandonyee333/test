@@ -45,6 +45,8 @@ portletDisplay.setURLBack(redirect);
 		<aui:fieldset>
 			<aui:input disabled="<%= zendeskCategory != null %>" label="documentation-guide-zip-file" name="documentationKey" />
 
+			<aui:input name="documentationOriginalURL" />
+
 			<aui:input name="articleLabels" />
 
 			<aui:input disabled="<%= zendeskCategory != null %>" label="zendesk-id" name="remoteId" />

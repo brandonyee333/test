@@ -43,8 +43,9 @@ public class ZendeskArticleLocalServiceImpl
 
 	public ZendeskArticle addZendeskArticle(
 			long zendeskSectionId, String documentationKey,
-			Map<String, String> titleMap, Map<String, String> bodyMap,
-			int position, String[] labelNames, Map<String, byte[]> attachments)
+			String documentationOriginalURL, Map<String, String> titleMap,
+			Map<String, String> bodyMap, int position, String[] labelNames,
+			Map<String, byte[]> attachments)
 		throws PortalException {
 
 		// Zendesk article
@@ -72,6 +73,7 @@ public class ZendeskArticleLocalServiceImpl
 			zendeskSection.getZendeskCategoryId());
 		zendeskArticle.setZendeskSectionId(zendeskSectionId);
 		zendeskArticle.setDocumentationKey(documentationKey);
+		zendeskArticle.setDocumentationOriginalURL(documentationOriginalURL);
 		zendeskArticle.setRemoteId(articleJSONObject.getLong("id"));
 		zendeskArticle.setRemoteHtmlURL(
 			articleJSONObject.getString("html_url"));
@@ -118,6 +120,11 @@ public class ZendeskArticleLocalServiceImpl
 
 		return zendeskArticlePersistence.fetchByZCI_DK(
 			zendeskCategoryId, documentationKey);
+	}
+
+	public ZendeskArticle fetchZendeskArticle(String documentationOriginalURL) {
+		return zendeskArticlePersistence.fetchByDocumentationOriginalURL(
+			documentationOriginalURL);
 	}
 
 	public int getZendeskArticleCount(long zendeskSectionId) {

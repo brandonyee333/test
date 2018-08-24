@@ -18,6 +18,7 @@
 		<column name="zendeskCategoryId" type="long" />
 		<column name="zendeskSectionId" type="long" />
 		<column name="documentationKey" type="String" />
+		<column name="documentationOriginalURL" type="String" />
 		<column name="remoteId" type="long" />
 		<column name="remoteHtmlURL" type="String" />
 
@@ -28,6 +29,9 @@
 		</finder>
 		<finder name="ZendeskSectionId" return-type="Collection">
 			<finder-column name="zendeskSectionId" />
+		</finder>
+		<finder name="DocumentationOriginalURL" return-type="ZendeskArticle">
+			<finder-column name="documentationOriginalURL" />
 		</finder>
 		<finder name="ZCI_DK" return-type="ZendeskArticle">
 			<finder-column name="zendeskCategoryId" />
@@ -67,6 +71,7 @@
 		<!-- Other fields -->
 
 		<column name="documentationKey" type="String" />
+		<column name="documentationOriginalURL" type="String" />
 		<column name="articleLabels" type="String" />
 		<column name="remoteId" type="long" />
 
