@@ -19,7 +19,7 @@
 <%
 AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 
-JSONArray jsonArray = accountEntryViewDisplayContext.getEditAccountEnvironmentsJSONArray();
+JSONArray jsonArray = accountEntryViewDisplayContext.getAccountEnvironmentsJSONArray();
 %>
 
 <div class="account-environments card" id="accountEnvironments"></div>

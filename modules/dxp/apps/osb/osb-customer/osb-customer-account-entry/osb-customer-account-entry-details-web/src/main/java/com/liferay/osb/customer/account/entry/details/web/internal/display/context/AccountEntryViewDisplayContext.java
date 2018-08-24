@@ -26,30 +26,22 @@ import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.service.AccountEnvironmentAttachmentLocalServiceUtil;
 import com.liferay.osb.service.AccountEnvironmentLocalServiceUtil;
-import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
 import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.osb.service.permission.OSBAccountEnvironmentPermission;
 import com.liferay.osb.util.OSBActionKeys;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
-import com.liferay.portal.kernel.service.ListTypeServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.IntStream;
 
 import javax.portlet.ActionRequest;
@@ -59,65 +51,12 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.ResourceURL;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author Amos Fong
  */
 public class AccountEntryViewDisplayContext {
-
-	public static List<ListType> getPortalEnvListTypes(
-		long envLFR, String envListType) {
-
-		return getPortalEnvListTypes(envLFR, envListType, StringPool.BLANK);
-	}
-
-	public static List<ListType> getPortalEnvListTypes(
-		long envLFR, String envListType, String sublistType) {
-
-		List<ListType> listTypes = ListTypeServiceUtil.getListTypes(
-			envListType);
-
-		listTypes = ListUtil.copy(listTypes);
-
-		if (Validator.isNotNull(sublistType)) {
-			sublistType = StringPool.PERIOD + sublistType;
-		}
-
-		long[] listTypeIds = AccountEnvironmentConstants.getEnvListTypeIds(
-			envLFR, envListType + sublistType);
-
-		Iterator<ListType> itr = listTypes.iterator();
-
-		while (itr.hasNext()) {
-			ListType listType = itr.next();
-
-			if (!ArrayUtil.contains(listTypeIds, listType.getListTypeId())) {
-				itr.remove();
-			}
-		}
-
-		return listTypes;
-	}
-
-	public static boolean hasEnterpriseSearchOffering(
-			long accountEntryId, int productEntryEnvironment)
-		throws PortalException {
-
-		List<OfferingEntry> offeringEntries =
-			OfferingEntryLocalServiceUtil.getAccountEntryOfferingEntries(
-				accountEntryId);
-
-		for (OfferingEntry offeringEntry : offeringEntries) {
-			ProductEntry productEntry = offeringEntry.getProductEntry();
-
-			if (productEntry.isEnterpriseSearch() &&
-				(productEntry.getEnvironment() == productEntryEnvironment)) {
-
-				return true;
-			}
-		}
-
-		return false;
-	}
 
 	public AccountEntryViewDisplayContext(
 		RenderRequest renderRequest, RenderResponse renderResponse) {
@@ -125,29 +64,24 @@ public class AccountEntryViewDisplayContext {
 		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
 
+		_accountEntry = (AccountEntry)_renderRequest.getAttribute(
+			AccountEntryDetailsWebKeys.ACCOUNT_ENTRY);
 		_accountEntryDetailsRequestHelper =
 			new AccountEntryDetailsRequestHelper(renderRequest);
+
+		_request = _accountEntryDetailsRequestHelper.getRequest();
+		_themeDisplay = _accountEntryDetailsRequestHelper.getThemeDisplay();
 	}
 
 	public AccountEntry getAccountEntry() {
-		if (_accountEntry != null) {
-			return _accountEntry;
-		}
-
-		_accountEntry = (AccountEntry)_renderRequest.getAttribute(
-			AccountEntryDetailsWebKeys.ACCOUNT_ENTRY);
-
 		return _accountEntry;
 	}
 
-	public JSONArray getAddAccountEnvironmentsJSONArray() throws Exception {
+	public JSONArray getProductEntriesJSONArray() throws Exception {
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-		AccountEntry accountEntry = getAccountEntry();
-
 		List<OfferingEntry> offeringEntries =
-			OfferingEntryLocalServiceUtil.getAccountEntryOfferingEntries(
-				accountEntry.getAccountEntryId());
+			_accountEntry.getOfferingEntries();
 
 		List<String> productEntryDisplayNames = new ArrayList<>();
 
@@ -159,8 +93,7 @@ public class AccountEntryViewDisplayContext {
 
 				productEntryDisplayNames.add(productEntry.getDisplayName());
 
-				JSONObject jsonObject = getDisplayJSONObject(
-					accountEntry, productEntry);
+				JSONObject jsonObject = getDisplayJSONObject(productEntry);
 
 				jsonArray.put(jsonObject);
 			}
@@ -169,18 +102,15 @@ public class AccountEntryViewDisplayContext {
 		return jsonArray;
 	}
 
-	public JSONArray getEditAccountEnvironmentsJSONArray() throws Exception {
+	public JSONArray getAccountEnvironmentsJSONArray() throws Exception {
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
-
-		AccountEntry accountEntry = getAccountEntry();
 
 		List<AccountEnvironment> accountEnvironments =
 			AccountEnvironmentLocalServiceUtil.getAccountEnvironments(
-				accountEntry.getAccountEntryId());
+				_accountEntry.getAccountEntryId());
 
 		for (AccountEnvironment accountEnvironment : accountEnvironments) {
-			JSONObject jsonObject = getDisplayJSONObject(
-				accountEntry, accountEnvironment);
+			JSONObject jsonObject = getDisplayJSONObject(accountEnvironment);
 
 			jsonArray.put(jsonObject);
 		}
@@ -188,44 +118,27 @@ public class AccountEntryViewDisplayContext {
 		return jsonArray;
 	}
 
-	public JSONArray getProductVersions(
-			long accountEntryId, ProductEntry productEntry)
+	protected JSONArray getEnvListTypes(ProductEntry productEntry)
 		throws Exception {
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-		List<ListType> envLFRTypes = ListUtil.copy(
-			productEntry.getAllVersionsListTypes());
-
-		Iterator<ListType> itr = envLFRTypes.iterator();
+		List<ListType> envLFRTypes = productEntry.getAllVersionsListTypes();
 
 		IntStream intStream = Arrays.stream(
 			ProductEntryConstants.LIST_TYPES_DEPRECATED);
 
 		long[] deprecatedTypes = intStream.asLongStream().toArray();
 
-		while (itr.hasNext()) {
-			ListType envLFRType = itr.next();
-
-			if (ArrayUtil.contains(
-					deprecatedTypes, envLFRType.getListTypeId()) ||
-				(envLFRType.getListTypeId() ==
+		for (ListType listType : envLFRTypes) {
+			if (ArrayUtil.contains(deprecatedTypes, listType.getListTypeId()) ||
+				(listType.getListTypeId() ==
 					(long)ProductEntryConstants.PORTAL_VERSION_OTHER)) {
 
-				itr.remove();
+				continue;
 			}
-		}
 
-		ThemeDisplay themeDisplay = getThemeDisplay();
-
-		for (ListType listType : envLFRTypes) {
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-			jsonObject.put(
-				"environmentDetails",
-				getEnvironmentDetails(
-					accountEntryId, productEntry, listType,
-					themeDisplay.getLocale()));
+			JSONObject jsonObject = getEnvLFRJSONObject(productEntry, listType);
 
 			jsonArray.put(jsonObject);
 		}
@@ -233,18 +146,7 @@ public class AccountEntryViewDisplayContext {
 		return jsonArray;
 	}
 
-	public ThemeDisplay getThemeDisplay() {
-		if (_themeDisplay != null) {
-			return _themeDisplay;
-		}
-
-		_themeDisplay = (ThemeDisplay)_renderRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		return _themeDisplay;
-	}
-
-	protected String getAccountEnvironmentAddURL(AccountEntry accountEntry)
+	public String getAccountEnvironmentAddURL(AccountEntry accountEntry)
 		throws PortletException {
 
 		PortletURL portletURL = _renderResponse.createRenderURL();
@@ -306,7 +208,7 @@ public class AccountEntryViewDisplayContext {
 	}
 
 	protected JSONObject getDisplayJSONObject(
-			AccountEntry accountEntry, AccountEnvironment accountEnvironment)
+			AccountEnvironment accountEnvironment)
 		throws Exception {
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
@@ -317,7 +219,7 @@ public class AccountEntryViewDisplayContext {
 
 		if (OSBAccountEnvironmentPermission.contains(
 				_accountEntryDetailsRequestHelper.getPermissionChecker(),
-				accountEntry.getAccountEntryId(), OSBActionKeys.DELETE)) {
+				_accountEntry.getAccountEntryId(), OSBActionKeys.DELETE)) {
 
 			jsonObject.put(
 				"deleteAccountEnvironmentURL",
@@ -326,7 +228,7 @@ public class AccountEntryViewDisplayContext {
 
 		if (OSBAccountEnvironmentPermission.contains(
 				_accountEntryDetailsRequestHelper.getPermissionChecker(),
-				accountEntry.getAccountEntryId(), OSBActionKeys.UPDATE)) {
+				_accountEntry.getAccountEntryId(), OSBActionKeys.UPDATE)) {
 
 			jsonObject.put(
 				"editAccountEnvironmentURL",
@@ -335,28 +237,19 @@ public class AccountEntryViewDisplayContext {
 
 		jsonObject.put(
 			"envASLabel",
-			LanguageUtil.get(
-				_accountEntryDetailsRequestHelper.getRequest(),
-				accountEnvironment.getEnvASLabel()));
+			LanguageUtil.get(_request, accountEnvironment.getEnvASLabel()));
 		jsonObject.put(
 			"envDBLabel",
-			LanguageUtil.get(
-				_accountEntryDetailsRequestHelper.getRequest(),
-				accountEnvironment.getEnvDBLabel()));
+			LanguageUtil.get(_request, accountEnvironment.getEnvDBLabel()));
 		jsonObject.put(
 			"envJVMLabel",
-			LanguageUtil.get(
-				_accountEntryDetailsRequestHelper.getRequest(),
-				accountEnvironment.getEnvJVMLabel()));
+			LanguageUtil.get(_request, accountEnvironment.getEnvJVMLabel()));
 		jsonObject.put(
 			"envLFRLabel",
-			LanguageUtil.get(
-				_accountEntryDetailsRequestHelper.getRequest(),
-				accountEnvironment.getEnvLFRLabel()));
+			LanguageUtil.get(_request, accountEnvironment.getEnvLFRLabel()));
 
 		String envOSLabel = LanguageUtil.get(
-			_accountEntryDetailsRequestHelper.getRequest(),
-			accountEnvironment.getEnvOSLabel());
+			_request, accountEnvironment.getEnvOSLabel());
 
 		if (Validator.isNotNull(accountEnvironment.getEnvOSCustom())) {
 			envOSLabel += " - " + accountEnvironment.getEnvOSCustom();
@@ -409,47 +302,27 @@ public class AccountEntryViewDisplayContext {
 		return jsonObject;
 	}
 
-	protected JSONObject getDisplayJSONObject(
-			AccountEntry accountEntry, ProductEntry productEntry)
+	protected JSONObject getDisplayJSONObject(ProductEntry productEntry)
 		throws Exception {
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		if (OSBAccountEnvironmentPermission.contains(
-				_accountEntryDetailsRequestHelper.getPermissionChecker(),
-				accountEntry.getAccountEntryId(),
-				OSBActionKeys.ADD_ACCOUNT_ENVIRONMENT)) {
-
-			jsonObject.put(
-				"addAccountEnvironmentURL",
-				getAccountEnvironmentAddURL(accountEntry));
-		}
-
+		jsonObject.put("displayName", productEntry.getDisplayName());
+		jsonObject.put("envListTypes", getEnvListTypes(productEntry));
 		jsonObject.put(
 			"productEntryId", String.valueOf(productEntry.getProductEntryId()));
-
-		jsonObject.put("productName", productEntry.getDisplayName());
-
-		jsonObject.put(
-			"accountEntryId", String.valueOf(accountEntry.getAccountEntryId()));
-
-		jsonObject.put(
-			"productVersions",
-			getProductVersions(accountEntry.getAccountEntryId(), productEntry));
 
 		return jsonObject;
 	}
 
-	protected JSONArray getEnvironmentArray(
-		List<ListType> listTypes, Locale locale) {
-
+	protected JSONArray toJSONArray(List<ListType> listTypes) {
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
 		for (ListType listType : listTypes) {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 			jsonObject.put(
-				"name", LanguageUtil.get(locale, listType.getName()));
+				"name", LanguageUtil.get(_request, listType.getName()));
 			jsonObject.put("value", String.valueOf(listType.getListTypeId()));
 
 			jsonArray.put(jsonObject);
@@ -458,90 +331,92 @@ public class AccountEntryViewDisplayContext {
 		return jsonArray;
 	}
 
-	protected JSONArray getEnvironmentDetails(
-			long accountEntryId, ProductEntry productEntry, ListType listType,
-			Locale locale)
+	protected JSONObject getEnvLFRJSONObject(
+			ProductEntry productEntry, ListType listType)
 		throws Exception {
-
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		jsonObject.put("envLFR", LanguageUtil.get(locale, listType.getName()));
+		jsonObject.put(
+			"envLFR", LanguageUtil.get(_request, listType.getName()));
 
 		long listTypeId = listType.getListTypeId();
 
-		List<ListType> envASListTypes = getPortalEnvListTypes(
-			listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_AS);
+		List<ListType> envASListTypes =
+			AccountEnvironmentConstants.getPortalEnvListTypes(
+				listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_AS);
 
-		jsonObject.put("envAS", getEnvironmentArray(envASListTypes, locale));
+		jsonObject.put("envAS", toJSONArray(envASListTypes));
 
-		List<ListType> envBrowserListTypes = getPortalEnvListTypes(
-			listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_BROWSER);
+		List<ListType> envBrowserListTypes =
+			AccountEnvironmentConstants.getPortalEnvListTypes(
+				listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_BROWSER);
 
-		jsonObject.put(
-			"envBR", getEnvironmentArray(envBrowserListTypes, locale));
+		jsonObject.put("envBR", toJSONArray(envBrowserListTypes));
 
 		if (ProductEntryConstants.isPortalVersion6_2(listTypeId) ||
 			ProductEntryConstants.isDigitalEnterpriseVersion7_0(listTypeId) ||
 			ProductEntryConstants.isDigitalEnterpriseVersion7_1(listTypeId)) {
 
-			List<ListType> envCSListTypes = getPortalEnvListTypes(
-				listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_CS);
+			List<ListType> envCSListTypes =
+				AccountEnvironmentConstants.getPortalEnvListTypes(
+					listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_CS);
 
-			jsonObject.put(
-				"envCS", getEnvironmentArray(envCSListTypes, locale));
+			jsonObject.put("envCS", toJSONArray(envCSListTypes));
 		}
 
-		List<ListType> envDBListTypes = getPortalEnvListTypes(
-			listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_DB);
+		List<ListType> envDBListTypes =
+			AccountEnvironmentConstants.getPortalEnvListTypes(
+				listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_DB);
 
-		jsonObject.put("envDB", getEnvironmentArray(envDBListTypes, locale));
+		jsonObject.put("envDB", toJSONArray(envDBListTypes));
 
-		List<ListType> envJVMListTypes = getPortalEnvListTypes(
-			listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_JVM);
+		List<ListType> envJVMListTypes =
+			AccountEnvironmentConstants.getPortalEnvListTypes(
+				listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_JVM);
 
-		jsonObject.put("envJVM", getEnvironmentArray(envJVMListTypes, locale));
+		jsonObject.put("envJVM", toJSONArray(envJVMListTypes));
 
-		List<ListType> envOSListTypes = getPortalEnvListTypes(
-			listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_OS);
+		List<ListType> envOSListTypes =
+			AccountEnvironmentConstants.getPortalEnvListTypes(
+				listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_OS);
 
-		jsonObject.put("envOS", getEnvironmentArray(envOSListTypes, locale));
+		jsonObject.put("envOS", toJSONArray(envOSListTypes));
 
 		if (ProductEntryConstants.isDigitalEnterpriseVersion7_0(listTypeId) ||
 			ProductEntryConstants.isDigitalEnterpriseVersion7_1(listTypeId)) {
 
 			List<ListType> envSearchListTypes = new ArrayList<>();
 
-			if (hasEnterpriseSearchOffering(
-					accountEntryId, productEntry.getEnvironment())) {
+			if (_accountEntry.hasEnterpriseSearchOffering(
+					productEntry.getEnvironment())) {
 
-				envSearchListTypes = getPortalEnvListTypes(
-					listTypeId,
-					AccountEnvironmentConstants.LIST_TYPE_ENV_SEARCH,
-					"enterprise");
+				envSearchListTypes =
+					AccountEnvironmentConstants.getPortalEnvListTypes(
+						listTypeId,
+						AccountEnvironmentConstants.LIST_TYPE_ENV_SEARCH,
+						"enterprise");
 			}
 			else {
-				envSearchListTypes = getPortalEnvListTypes(
-					listTypeId,
-					AccountEnvironmentConstants.LIST_TYPE_ENV_SEARCH,
-					"standard");
+				envSearchListTypes =
+					AccountEnvironmentConstants.getPortalEnvListTypes(
+						listTypeId,
+						AccountEnvironmentConstants.LIST_TYPE_ENV_SEARCH,
+						"standard");
 			}
 
-			jsonObject.put(
-				"envSearch", getEnvironmentArray(envSearchListTypes, locale));
+			jsonObject.put("envSearch", toJSONArray(envSearchListTypes));
 		}
 
-		jsonArray.put(jsonObject);
-
-		return jsonArray;
+		return jsonObject;
 	}
 
-	private AccountEntry _accountEntry;
+	private final AccountEntry _accountEntry;
 	private final AccountEntryDetailsRequestHelper
 		_accountEntryDetailsRequestHelper;
 	private final RenderRequest _renderRequest;
 	private final RenderResponse _renderResponse;
-	private ThemeDisplay _themeDisplay;
+	private final HttpServletRequest _request;
+	private final ThemeDisplay _themeDisplay;
 
 }

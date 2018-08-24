@@ -25,6 +25,7 @@ import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.model.PartnerEntry;
+import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.service.AccountAttachmentLocalServiceUtil;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
@@ -211,6 +212,24 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 	public boolean hasActiveSupportOffering() {
 		return OfferingEntryLocalServiceUtil.hasActiveSupportOfferingEntry(
 			getAccountEntryId());
+	}
+
+	public boolean hasEnterpriseSearchOffering(int productEntryEnvironment)
+		throws PortalException {
+
+		List<OfferingEntry> offeringEntries = getOfferingEntries();
+
+		for (OfferingEntry offeringEntry : offeringEntries) {
+			ProductEntry productEntry = offeringEntry.getProductEntry();
+
+			if (productEntry.isEnterpriseSearch() &&
+				(productEntry.getEnvironment() == productEntryEnvironment)) {
+
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public void setAddress(Address address) {

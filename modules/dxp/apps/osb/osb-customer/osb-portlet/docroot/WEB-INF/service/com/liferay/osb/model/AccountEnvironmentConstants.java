@@ -16,8 +16,14 @@ package com.liferay.osb.model;
 
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.service.ListTypeServiceUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -497,6 +503,40 @@ public class AccountEnvironmentConstants {
 		else {
 			return _envPortalVersionOther.get(envListType);
 		}
+	}
+
+	public static List<ListType> getPortalEnvListTypes(
+		long envLFR, String envListType) {
+
+		return getPortalEnvListTypes(envLFR, envListType, StringPool.BLANK);
+	}
+
+	public static List<ListType> getPortalEnvListTypes(
+		long envLFR, String envListType, String sublistType) {
+
+		List<ListType> listTypes = ListTypeServiceUtil.getListTypes(
+			envListType);
+
+		listTypes = ListUtil.copy(listTypes);
+
+		if (Validator.isNotNull(sublistType)) {
+			sublistType = StringPool.PERIOD + sublistType;
+		}
+
+		long[] listTypeIds = getEnvListTypeIds(
+			envLFR, envListType + sublistType);
+
+		Iterator<ListType> itr = listTypes.iterator();
+
+		while (itr.hasNext()) {
+			ListType listType = itr.next();
+
+			if (!ArrayUtil.contains(listTypeIds, listType.getListTypeId())) {
+				itr.remove();
+			}
+		}
+
+		return listTypes;
 	}
 
 	private static final long[] _ENV_AS_DIGITAL_ENTERPRISE_VERSION_7_0 = {

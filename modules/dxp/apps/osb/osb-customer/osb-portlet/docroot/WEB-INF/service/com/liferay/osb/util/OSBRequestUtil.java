@@ -14,30 +14,22 @@
 
 package com.liferay.osb.util;
 
+import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEnvironmentConstants;
-import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.ProductEntryConstants;
-import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
+import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ListType;
-import com.liferay.portal.kernel.service.ListTypeServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -60,15 +52,17 @@ public class OSBRequestUtil {
 
 		int envLFR = ParamUtil.getInteger(resourceRequest, "envLFR");
 
-		List<ListType> envASListTypes = getPortalEnvListTypes(
-			envLFR, AccountEnvironmentConstants.LIST_TYPE_ENV_AS);
+		List<ListType> envASListTypes =
+			AccountEnvironmentConstants.getPortalEnvListTypes(
+				envLFR, AccountEnvironmentConstants.LIST_TYPE_ENV_AS);
 
 		jsonObject.put(
 			"ENV_AS", getJSONArray(envASListTypes, themeDisplay.getLocale()));
 		jsonObject.put("ENV_AS#key", envASListTypes.hashCode());
 
-		List<ListType> envBrowserListTypes = getPortalEnvListTypes(
-			envLFR, AccountEnvironmentConstants.LIST_TYPE_ENV_BROWSER);
+		List<ListType> envBrowserListTypes =
+			AccountEnvironmentConstants.getPortalEnvListTypes(
+				envLFR, AccountEnvironmentConstants.LIST_TYPE_ENV_BROWSER);
 
 		jsonObject.put(
 			"ENV_Browser",
@@ -79,8 +73,9 @@ public class OSBRequestUtil {
 			ProductEntryConstants.isDigitalEnterpriseVersion7_0(envLFR) ||
 			ProductEntryConstants.isDigitalEnterpriseVersion7_1(envLFR)) {
 
-			List<ListType> envCSListTypes = getPortalEnvListTypes(
-				envLFR, AccountEnvironmentConstants.LIST_TYPE_ENV_CS);
+			List<ListType> envCSListTypes =
+				AccountEnvironmentConstants.getPortalEnvListTypes(
+					envLFR, AccountEnvironmentConstants.LIST_TYPE_ENV_CS);
 
 			jsonObject.put(
 				"ENV_CS",
@@ -88,22 +83,25 @@ public class OSBRequestUtil {
 			jsonObject.put("ENV_CS#key", envCSListTypes.hashCode());
 		}
 
-		List<ListType> envDBListTypes = getPortalEnvListTypes(
-			envLFR, AccountEnvironmentConstants.LIST_TYPE_ENV_DB);
+		List<ListType> envDBListTypes =
+			AccountEnvironmentConstants.getPortalEnvListTypes(
+				envLFR, AccountEnvironmentConstants.LIST_TYPE_ENV_DB);
 
 		jsonObject.put(
 			"ENV_DB", getJSONArray(envDBListTypes, themeDisplay.getLocale()));
 		jsonObject.put("ENV_DB#key", envDBListTypes.hashCode());
 
-		List<ListType> envJVMListTypes = getPortalEnvListTypes(
-			envLFR, AccountEnvironmentConstants.LIST_TYPE_ENV_JVM);
+		List<ListType> envJVMListTypes =
+			AccountEnvironmentConstants.getPortalEnvListTypes(
+				envLFR, AccountEnvironmentConstants.LIST_TYPE_ENV_JVM);
 
 		jsonObject.put(
 			"ENV_JVM", getJSONArray(envJVMListTypes, themeDisplay.getLocale()));
 		jsonObject.put("ENV_JVM#key", envJVMListTypes.hashCode());
 
-		List<ListType> envOSListTypes = getPortalEnvListTypes(
-			envLFR, AccountEnvironmentConstants.LIST_TYPE_ENV_OS);
+		List<ListType> envOSListTypes =
+			AccountEnvironmentConstants.getPortalEnvListTypes(
+				envLFR, AccountEnvironmentConstants.LIST_TYPE_ENV_OS);
 
 		jsonObject.put(
 			"ENV_OS", getJSONArray(envOSListTypes, themeDisplay.getLocale()));
@@ -124,19 +122,25 @@ public class OSBRequestUtil {
 
 				List<ListType> envSearchListTypes = new ArrayList<>();
 
-				if (hasEnterpriseSearchOffering(
-						accountEntryId, productEntry.getEnvironment())) {
+				AccountEntry accountEntry =
+					AccountEntryLocalServiceUtil.getAccountEntry(
+						accountEntryId);
 
-					envSearchListTypes = getPortalEnvListTypes(
-						envLFR,
-						AccountEnvironmentConstants.LIST_TYPE_ENV_SEARCH,
-						"enterprise");
+				if (accountEntry.hasEnterpriseSearchOffering(
+						productEntry.getEnvironment())) {
+
+					envSearchListTypes =
+						AccountEnvironmentConstants.getPortalEnvListTypes(
+							envLFR,
+							AccountEnvironmentConstants.LIST_TYPE_ENV_SEARCH,
+							"enterprise");
 				}
 				else {
-					envSearchListTypes = getPortalEnvListTypes(
-						envLFR,
-						AccountEnvironmentConstants.LIST_TYPE_ENV_SEARCH,
-						"standard");
+					envSearchListTypes =
+						AccountEnvironmentConstants.getPortalEnvListTypes(
+							envLFR,
+							AccountEnvironmentConstants.LIST_TYPE_ENV_SEARCH,
+							"standard");
 				}
 
 				jsonObject.put(
@@ -195,67 +199,5 @@ public class OSBRequestUtil {
 
 		return jsonArray;
 	}
-
-	protected static List<ListType> getPortalEnvListTypes(
-		long envLFR, String envListType) {
-
-		return getPortalEnvListTypes(envLFR, envListType, StringPool.BLANK);
-	}
-
-	protected static List<ListType> getPortalEnvListTypes(
-		long envLFR, String envListType, String sublistType) {
-
-		List<ListType> listTypes = ListTypeServiceUtil.getListTypes(
-			envListType);
-
-		listTypes = ListUtil.copy(listTypes);
-
-		if (Validator.isNotNull(sublistType)) {
-			sublistType = StringPool.PERIOD + sublistType;
-		}
-
-		long[] listTypeIds = AccountEnvironmentConstants.getEnvListTypeIds(
-			envLFR, envListType + sublistType);
-
-		Iterator<ListType> itr = listTypes.iterator();
-
-		while (itr.hasNext()) {
-			ListType listType = itr.next();
-
-			if (!ArrayUtil.contains(listTypeIds, listType.getListTypeId())) {
-				itr.remove();
-			}
-		}
-
-		return listTypes;
-	}
-
-	protected static boolean hasEnterpriseSearchOffering(
-		long accountEntryId, int productEntryEnvironment) {
-
-		try {
-			List<OfferingEntry> offeringEntries =
-				OfferingEntryLocalServiceUtil.getAccountEntryOfferingEntries(
-					accountEntryId);
-
-			for (OfferingEntry offeringEntry : offeringEntries) {
-				ProductEntry productEntry = offeringEntry.getProductEntry();
-
-				if (productEntry.isEnterpriseSearch() &&
-					(productEntry.getEnvironment() ==
-						productEntryEnvironment)) {
-
-					return true;
-				}
-			}
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
-
-		return false;
-	}
-
-	private static final Log _log = LogFactoryUtil.getLog(OSBRequestUtil.class);
 
 }
