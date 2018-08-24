@@ -21,7 +21,7 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 /**
  * @author Chema Balsas
  */
-@ExtendedObjectClassDefinition(category = "foundation")
+@ExtendedObjectClassDefinition(category = "web-experience")
 @Meta.OCD(
 	id = "com.liferay.product.navigation.accessibility.internal.configuration.ProductNavigationAccessibilityConfiguration",
 	localization = "content/Language", name = "details-configuration-name"
