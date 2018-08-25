@@ -5,17 +5,19 @@ import * as yup from 'yup';
 
 import Button from './Button';
 
-const FormFields = ({
-	dirty,
-	errors,
-	handleChange,
-	handleBlur,
-	handleReset,
-	handleSubmit,
-	isSubmitting,
-	touched,
-	values
-}) => (
+const FormFields = (
+	{
+		dirty,
+		errors,
+		handleChange,
+		handleBlur,
+		handleReset,
+		handleSubmit,
+		isSubmitting,
+		touched,
+		values
+	}
+) => (
 	<form onSubmit={handleSubmit}>
 		<div className="container-fluid-1280">
 			<div className="row">
