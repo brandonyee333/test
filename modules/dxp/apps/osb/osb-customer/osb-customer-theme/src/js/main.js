@@ -1,37 +1,34 @@
-function debounce(func, wait, immediate) {
-	var timeout;
+Liferay.Loader.require(
+	'metal-debounce/src/debounce',
+	'metal-dom/src/dom',
+	function(metalDebounceSrcDebounce, metalDomSrcDom) {
+		(
+			function() {
+				let debounce = metalDebounceSrcDebounce.default;
+				let dom = metalDomSrcDom.default;
 
-	return function() {
-		var args = arguments;
-		var instance = this;
+				window.addEventListener(
+					'scroll',
+					debounce(
+						function() {
+							var header = document.querySelector('header');
 
-		var later = function() {
-			timeout = null;
-
-			if (!immediate) {
-				func.apply(instance, args);
+							if (header) {
+								if (window.scrollY >= 64) {
+									dom.addClasses(header, 'has-scroll');
+								}
+								else {
+									dom.removeClasses(header, 'has-scroll');
+								}
+							}
+						},
+						250
+					)
+				);
 			}
-		}
-
-		clearTimeout(timeout);
-
-		timeout = setTimeout(later, wait);
-
-		if (immediate && !timeout) {
-			func.apply(instance, args);
-		}
+		)();
+	},
+	function(error) {
+		console.error(error);
 	}
-}
-
-var onNavScroll = debounce(function() {
-	var header = document.getElementsByClassName('header')[0];
-
-	if (window.scrollY >= 64) {
-		header.classList.add('has-scroll');
-	}
-	else {
-		header.classList.remove('has-scroll');
-	}
-}, 250);
-
-window.addEventListener('scroll', onNavScroll);
+);
