@@ -56,6 +56,21 @@ public class WebRESTWebServiceImpl
 	}
 
 	@Override
+	public void deleteCorpEntriesUserRole(
+			String dossieraAccountKey, String userUUID, String roleUUID)
+		throws RemoteServiceException {
+
+		Map<String, String> parameters = new HashMap<>();
+
+		parameters.put("roleUUID", roleUUID);
+		parameters.put("userUUID", userUUID);
+
+		doDelete(
+			_URL_API_REST_CORP_ENTRIES + dossieraAccountKey + "/user_role",
+			parameters);
+	}
+
+	@Override
 	public void deleteCorpProjectMessages(String corpProjectMessageUUID)
 		throws RemoteServiceException {
 

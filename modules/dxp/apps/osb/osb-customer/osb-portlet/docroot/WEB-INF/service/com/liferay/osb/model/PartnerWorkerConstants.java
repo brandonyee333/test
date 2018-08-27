@@ -14,6 +14,8 @@
 
 package com.liferay.osb.model;
 
+import com.liferay.osb.util.OSBConstants;
+
 /**
  * @author Kyle Bischof
  */
@@ -23,11 +25,32 @@ public class PartnerWorkerConstants {
 
 	public static final int NOTIFICATIONS_NONE = 2;
 
+	public static final long[] OSB_CORP_ENTRY_ROLE_IDS = {
+		OSBConstants.ROLE_OSB_CORP_PARTNER_MANAGER_ID,
+		OSBConstants.ROLE_OSB_CORP_PARTNER_MEMBER_ID,
+		OSBConstants.ROLE_OSB_CORP_PARTNER_WATCHER_ID
+	};
+
 	public static final int ROLE_MANAGER = 1;
 
 	public static final int ROLE_MEMBER = 2;
 
 	public static final int ROLE_WATCHER = 3;
+
+	public static long getCorpEntryRoleId(int role) {
+		if (role == ROLE_MANAGER) {
+			return OSBConstants.ROLE_OSB_CORP_PARTNER_MANAGER_ID;
+		}
+		else if (role == ROLE_MEMBER) {
+			return OSBConstants.ROLE_OSB_CORP_PARTNER_MEMBER_ID;
+		}
+		else if (role == ROLE_WATCHER) {
+			return OSBConstants.ROLE_OSB_CORP_PARTNER_WATCHER_ID;
+		}
+		else {
+			return 0;
+		}
+	}
 
 	public static String getNotificationsLabel(int notifications) {
 		if (notifications == NOTIFICATIONS_ALL) {

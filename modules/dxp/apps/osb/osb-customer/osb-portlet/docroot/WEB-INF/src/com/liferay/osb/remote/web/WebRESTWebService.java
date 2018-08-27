@@ -26,6 +26,10 @@ public interface WebRESTWebService {
 			String dossieraAccountKey, String userUUID)
 		throws RemoteServiceException;
 
+	public void deleteCorpEntriesUserRole(
+			String dossieraAccountKey, String userUUID, String roleUUID)
+		throws RemoteServiceException;
+
 	public void deleteCorpProjectMessages(String corpProjectMessageUUID)
 		throws RemoteServiceException;
 

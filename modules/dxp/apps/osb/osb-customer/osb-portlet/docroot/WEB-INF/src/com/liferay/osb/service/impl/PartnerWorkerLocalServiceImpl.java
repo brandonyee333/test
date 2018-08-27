@@ -18,6 +18,7 @@ import com.liferay.osb.exception.NoSuchPartnerWorkerException;
 import com.liferay.osb.exception.PartnerEntryDossieraAccountKeyException;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.PartnerWorker;
+import com.liferay.osb.model.PartnerWorkerConstants;
 import com.liferay.osb.remote.web.WebRESTWebServiceUtil;
 import com.liferay.osb.service.base.PartnerWorkerLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
@@ -52,6 +53,12 @@ public class PartnerWorkerLocalServiceImpl
 			PartnerWorker partnerWorker = partnerWorkerPersistence.fetchByU_PEI(
 				userId, partnerEntryId);
 
+			if ((partnerWorker == null) ||
+				(partnerWorker.getRole() != roles[i])) {
+
+				newUserIds.add(userId);
+			}
+
 			if (partnerWorker == null) {
 				long partnerWorkerId = counterLocalService.increment();
 
@@ -60,8 +67,6 @@ public class PartnerWorkerLocalServiceImpl
 
 				partnerWorker.setUserId(userId);
 				partnerWorker.setPartnerEntryId(partnerEntryId);
-
-				newUserIds.add(userId);
 			}
 
 			partnerWorker.setRole(roles[i]);
@@ -181,7 +186,7 @@ public class PartnerWorkerLocalServiceImpl
 				partnerWorker.getUserId(), oldDossieraAccountKey);
 
 			assignCorpEntryOrganizations(
-				Arrays.asList(partnerWorker.getUserId()),
+				Arrays.asList(partnerWorker.getUserId()), partnerEntryId,
 				newDossieraAccountKey);
 		}
 	}
@@ -198,14 +203,14 @@ public class PartnerWorkerLocalServiceImpl
 		}
 
 		assignCorpEntryOrganizations(
-			userIds, partnerEntry.getDossieraAccountKey());
+			userIds, partnerEntryId, partnerEntry.getDossieraAccountKey());
 	}
 
 	protected void assignCorpEntryOrganizations(
-			List<Long> userIds, String dossieraAccountKey)
+			List<Long> userIds, long partnerEntryId, String dossieraAccountKey)
 		throws PortalException {
 
-		Role role = roleLocalService.getRole(
+		Role osbCorpSalesRole = roleLocalService.getRole(
 			OSBConstants.ROLE_OSB_CORP_SALES_REPRESENTATIVE_ID);
 
 		for (long userId : userIds) {
@@ -215,7 +220,30 @@ public class PartnerWorkerLocalServiceImpl
 				dossieraAccountKey, user.getUuid());
 
 			WebRESTWebServiceUtil.putCorpEntriesUserRole(
-				dossieraAccountKey, user.getUuid(), role.getUuid());
+				dossieraAccountKey, user.getUuid(), osbCorpSalesRole.getUuid());
+
+			PartnerWorker partnerWorker = getPartnerWorker(
+				userId, partnerEntryId);
+
+			long roleId = PartnerWorkerConstants.getCorpEntryRoleId(
+				partnerWorker.getRole());
+
+			if (roleId == 0) {
+				for (long curRoleId :
+						PartnerWorkerConstants.OSB_CORP_ENTRY_ROLE_IDS) {
+
+					Role role = roleLocalService.getRole(curRoleId);
+
+					WebRESTWebServiceUtil.deleteCorpEntriesUserRole(
+						dossieraAccountKey, user.getUuid(), role.getUuid());
+				}
+			}
+			else {
+				Role role = roleLocalService.getRole(roleId);
+
+				WebRESTWebServiceUtil.putCorpEntriesUserRole(
+					dossieraAccountKey, user.getUuid(), role.getUuid());
+			}
 		}
 	}
 

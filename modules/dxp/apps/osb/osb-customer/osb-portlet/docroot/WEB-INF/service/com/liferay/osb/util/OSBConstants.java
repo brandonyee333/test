@@ -75,6 +75,12 @@ public class OSBConstants {
 
 	public static long ROLE_OSB_CORP_LCS_USER_ID = 2895378;
 
+	public static long ROLE_OSB_CORP_PARTNER_MANAGER_ID = 4119745;
+
+	public static long ROLE_OSB_CORP_PARTNER_MEMBER_ID = 4119752;
+
+	public static long ROLE_OSB_CORP_PARTNER_WATCHER_ID = 4119756;
+
 	public static long ROLE_OSB_CORP_SALES_REPRESENTATIVE_ID = 3518157;
 
 	public static long ROLE_OSB_SUPPORT_ADMIN_ID = 1546564;
