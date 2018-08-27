@@ -37,6 +37,10 @@ public class HandshakeMessage extends Message {
 		return _companyIdsWebIds;
 	}
 
+	public long getCSClusterEntryId() {
+		return _lcsClusterEntryId;
+	}
+
 	public int getHashCode() {
 		return _hashCode;
 	}
@@ -121,8 +125,8 @@ public class HandshakeMessage extends Message {
 		_heartbeatInterval = heartbeatInterval;
 	}
 
-	public void setLcsPortletBuildNumber(int lcsPortletBuildNumber) {
-		_lcsPortletBuildNumber = lcsPortletBuildNumber;
+	public void setLCSClusterEntryId(long lcsClusterEntryId) {
+		_lcsClusterEntryId = lcsClusterEntryId;
 	}
 
 	public void setLCSPortletBuildNumber(int lcsPortletBuildNumber) {
@@ -181,6 +185,7 @@ public class HandshakeMessage extends Message {
 	private boolean _deregister;
 	private int _hashCode;
 	private long _heartbeatInterval;
+	private long _lcsClusterEntryId;
 	private int _lcsPortletBuildNumber;
 	private boolean _metricsLCSServiceEnabled;
 	private boolean _monitoringEnabled;
