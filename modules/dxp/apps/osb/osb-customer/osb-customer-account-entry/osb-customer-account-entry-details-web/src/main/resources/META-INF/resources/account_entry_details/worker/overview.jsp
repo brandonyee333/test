@@ -45,7 +45,7 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 							<c:when test="<%= accountEntry.getHighestSupportResponseId() != 0 %>">
 
 								<%
-									SupportResponse supportResponse = SupportResponseLocalServiceUtil.getSupportResponse(accountEntry.getHighestSupportResponseId());
+								SupportResponse supportResponse = SupportResponseLocalServiceUtil.getSupportResponse(accountEntry.getHighestSupportResponseId());
 								%>
 
 								<%= supportResponse.getName() %>
