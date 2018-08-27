@@ -108,7 +108,7 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 			sb.append("Unable to create ");
 			sb.append(taskName);
 			sb.append(". This is likely because Liferay Connected Services ");
-			sb.append("does not support such task for this app server type.");
+			sb.append("does not support such task for this app server.");
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(sb.toString(), e);
