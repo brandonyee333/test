@@ -75,6 +75,7 @@ import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistryUtil;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.OrganizationPersistence;
 import com.liferay.portal.kernel.service.persistence.RolePersistence;
+import com.liferay.portal.kernel.service.persistence.UserGroupRolePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -1784,6 +1785,44 @@ public abstract class PartnerWorkerLocalServiceBaseImpl
 		this.userPersistence = userPersistence;
 	}
 
+	/**
+	 * Returns the user group role local service.
+	 *
+	 * @return the user group role local service
+	 */
+	public com.liferay.portal.kernel.service.UserGroupRoleLocalService getUserGroupRoleLocalService() {
+		return userGroupRoleLocalService;
+	}
+
+	/**
+	 * Sets the user group role local service.
+	 *
+	 * @param userGroupRoleLocalService the user group role local service
+	 */
+	public void setUserGroupRoleLocalService(
+		com.liferay.portal.kernel.service.UserGroupRoleLocalService userGroupRoleLocalService) {
+		this.userGroupRoleLocalService = userGroupRoleLocalService;
+	}
+
+	/**
+	 * Returns the user group role persistence.
+	 *
+	 * @return the user group role persistence
+	 */
+	public UserGroupRolePersistence getUserGroupRolePersistence() {
+		return userGroupRolePersistence;
+	}
+
+	/**
+	 * Sets the user group role persistence.
+	 *
+	 * @param userGroupRolePersistence the user group role persistence
+	 */
+	public void setUserGroupRolePersistence(
+		UserGroupRolePersistence userGroupRolePersistence) {
+		this.userGroupRolePersistence = userGroupRolePersistence;
+	}
+
 	public void afterPropertiesSet() {
 		Class<?> clazz = getClass();
 
@@ -2013,6 +2052,10 @@ public abstract class PartnerWorkerLocalServiceBaseImpl
 	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
 	@BeanReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
+	@BeanReference(type = com.liferay.portal.kernel.service.UserGroupRoleLocalService.class)
+	protected com.liferay.portal.kernel.service.UserGroupRoleLocalService userGroupRoleLocalService;
+	@BeanReference(type = UserGroupRolePersistence.class)
+	protected UserGroupRolePersistence userGroupRolePersistence;
 	private ClassLoader _classLoader;
 	private PartnerWorkerLocalServiceClpInvoker _clpInvoker = new PartnerWorkerLocalServiceClpInvoker();
 }
