@@ -32,7 +32,6 @@ import com.liferay.portal.kernel.scheduler.TriggerFactoryUtil;
 import com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse;
 import com.liferay.portal.kernel.security.RandomUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.ArrayList;
@@ -104,18 +103,17 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 			}
 		}
 		catch (Exception e) {
-			if (_log.isWarnEnabled()) {
-				String serverId = ServerDetector.getServerId();
+			StringBundler sb = new StringBundler(4);
 
-				StringBundler sb = new StringBundler(6);
+			sb.append("Unable to create ");
+			sb.append(taskName);
+			sb.append(". This is likely because Liferay Connected Services ");
+			sb.append("does not support such task for this app server type.");
 
-				sb.append("Unable to create ");
-				sb.append(taskName);
-				sb.append(". This is likely because Liferay Connected ");
-				sb.append("Services does not support such task for ");
-				sb.append(serverId);
-				sb.append(" server.");
-
+			if (_log.isDebugEnabled()) {
+				_log.debug(sb.toString(), e);
+			}
+			else if (_log.isWarnEnabled()) {
 				_log.warn(sb.toString());
 			}
 		}
