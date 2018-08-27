@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 
 import getCN from 'classnames';
 
-const Modal = ({body, closeModal, footer, header, showModal, size}) => {
+const Modal = ({body, footer, header, onClose, show, size}) => {
 	const className = getCN(
 		'modal-dialog',
 		`${size ? `modal-${size}` : ''}`
 	);
 
-	return showModal && (
+	return show && (
 		<div className="modal show" role="dialog" tabIndex="-1">
 			<div className={className}>
 				<div className="modal-content">
@@ -20,7 +20,7 @@ const Modal = ({body, closeModal, footer, header, showModal, size}) => {
 							<button
 								aria-label="Close"
 								className="close"
-								onClick={closeModal}
+								onClick={onClose}
 								type="button"
 							>
 								<svg className="lexicon-icon lexicon-icon-times">
@@ -41,10 +41,10 @@ const Modal = ({body, closeModal, footer, header, showModal, size}) => {
 
 Modal.propTypes = {
 	body: PropTypes.node.isRequired,
-	closeModal: PropTypes.func.isRequired,
 	footer: PropTypes.node,
 	header: PropTypes.node,
-	showModal: PropTypes.bool.isRequired,
+	onClose: PropTypes.func.isRequired,
+	show: PropTypes.bool.isRequired,
 	size: PropTypes.oneOf(['full-screen', 'lg', 'sm'])
 };
 

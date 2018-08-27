@@ -8,7 +8,7 @@ import Modal from './Modal';
 
 export default class AccountEnvironments extends React.Component {
 	state = {
-		modalTriggered: false
+		showModal: false
 	};
 
 	static propTypes = {
@@ -16,9 +16,9 @@ export default class AccountEnvironments extends React.Component {
 		permitAdd: PropTypes.bool.isRequired
 	};
 
-	closeAddEnvironmentModal = () => this.setState(
+	handleCloseModal = () => this.setState(
 		{
-			modalTriggered: false
+			showModal: false
 		}
 	);
 
@@ -32,15 +32,15 @@ export default class AccountEnvironments extends React.Component {
 		}
 	};
 
-	triggerAddEnvironmentModal = () => this.setState(
+	handleDisplayModal = () => this.setState(
 		{
-			modalTriggered: true
+			showModal: true
 		}
 	);
 
 	render() {
 		const {environments, permitAdd} = this.props;
-		const {modalTriggered} = this.state;
+		const {showModal} = this.state;
 
 		const accordionItems = environments.map(
 			(environment, index) => (
@@ -127,20 +127,18 @@ export default class AccountEnvironments extends React.Component {
 					{Liferay.Language.get('environment-configurations')}
 
 					{permitAdd && (
-						<Button onClick={this.triggerAddEnvironmentModal} value="add">
+						<Button onClick={this.handleDisplayModal} value="add">
 							+
 						</Button>
 					)}
 
-					{modalTriggered && (
-						<Modal
-							body={addAccountEnvironmentForm}
-							closeModal={this.closeAddEnvironmentModal}
-							header={Liferay.Language.get('new-environment-configuration')}
-							showModal={modalTriggered}
-							size='lg'
-						/>
-					)}
+					<Modal
+						body={addAccountEnvironmentForm}
+						header={Liferay.Language.get('new-environment-configuration')}
+						onClose={this.handleCloseModal}
+						show={showModal}
+						size='lg'
+					/>
 				</h3>
 
 				{!accordionItems.length ? (
