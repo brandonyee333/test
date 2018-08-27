@@ -9,8 +9,8 @@ const FormFields = (
 	{
 		dirty,
 		errors,
-		handleChange,
 		handleBlur,
+		handleChange,
 		handleReset,
 		handleSubmit,
 		isSubmitting,
@@ -31,8 +31,8 @@ const FormFields = (
 							className="form-control"
 							id="accountEnvironmentName"
 							name="name"
-							onChange={handleChange}
 							onBlur={handleBlur}
+							onChange={handleChange}
 							type="text"
 							value={values.name}
 						/>
@@ -58,8 +58,8 @@ const FormFields = (
 							className="form-control"
 							id="accountEnvironmentProduct"
 							name="product"
-							onChange={handleChange}
 							onBlur={handleBlur}
+							onChange={handleChange}
 						>
 							<option value="" />
 						</select>
@@ -82,8 +82,8 @@ const FormFields = (
 							className="form-control"
 							id="envLFR"
 							name="envLFR"
-							onChange={handleChange}
 							onBlur={handleBlur}
+							onChange={handleChange}
 						>
 							<option value="" />
 						</select>
@@ -106,8 +106,8 @@ const FormFields = (
 							className="form-control"
 							id="envOS"
 							name="envOS"
-							onChange={handleChange}
 							onBlur={handleBlur}
+							onChange={handleChange}
 						>
 							<option value="" />
 						</select>
@@ -130,8 +130,8 @@ const FormFields = (
 							className="form-control"
 							id="envJVM"
 							name="envJVM"
-							onChange={handleChange}
 							onBlur={handleBlur}
+							onChange={handleChange}
 						>
 							<option value="" />
 						</select>
@@ -154,8 +154,8 @@ const FormFields = (
 							className="form-control"
 							id="envAS"
 							name="envAS"
-							onChange={handleChange}
 							onBlur={handleBlur}
+							onChange={handleChange}
 						>
 							<option value="" />
 						</select>
@@ -178,8 +178,8 @@ const FormFields = (
 							className="form-control"
 							id="envDB"
 							name="envDB"
-							onChange={handleChange}
 							onBlur={handleBlur}
+							onChange={handleChange}
 						>
 							<option value="" />
 						</select>
@@ -203,8 +203,8 @@ const FormFields = (
 							id="portalExt"
 							multiple="true"
 							name="portalExt"
-							onChange={handleChange}
 							onBlur={handleBlur}
+							onChange={handleChange}
 							type="file"
 						/>
 					</div>
@@ -227,8 +227,8 @@ const FormFields = (
 							id="patchLevel"
 							multiple="true"
 							name="patchLevel"
-							onChange={handleChange}
 							onBlur={handleBlur}
+							onChange={handleChange}
 							type="file"
 						/>
 					</div>
