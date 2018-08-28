@@ -24,7 +24,7 @@ JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 List<CorpProjectMessage> corpProjectMessages = CorpProjectMessageLocalServiceUtil.getCorpProjectMessages(accountEntry.getCorpProjectId());
 
 if (!corpProjectMessages.isEmpty()) {
-	for (CorpProjectMessage corpProjectMessage: corpProjectMessages) {
+	for (CorpProjectMessage corpProjectMessage : corpProjectMessages) {
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		jsonObject.put("content", corpProjectMessage.getContent());
