@@ -14,17 +14,10 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.service.impl;
 
-import com.liferay.osb.customer.zendesk.documentation.sync.exception.DocumentationImportException;
 import com.liferay.osb.customer.zendesk.documentation.sync.exception.RequiredZendeskCategoryException;
-import com.liferay.osb.customer.zendesk.documentation.sync.internal.importer.DocumentationArchiveImporter;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.base.ZendeskCategoryLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.zip.ZipReader;
-import com.liferay.portal.kernel.zip.ZipReaderFactoryUtil;
-
-import java.io.InputStream;
 
 /**
  * @author Amos Fong
@@ -65,36 +58,6 @@ public class ZendeskCategoryLocalServiceImpl
 	public ZendeskCategory fetchZendeskCategory(String documentationKey) {
 		return zendeskCategoryPersistence.fetchByDocumentationKey(
 			documentationKey);
-	}
-
-	public void importDocumentationArchive(
-			long zendeskCategoryId, String fileName, InputStream inputStream)
-		throws Exception {
-
-		ZendeskCategory zendeskCategory =
-			zendeskCategoryPersistence.findByPrimaryKey(zendeskCategoryId);
-
-		if (Validator.isNull(fileName) || (inputStream == null) ||
-			!fileName.equals(zendeskCategory.getDocumentationKey())) {
-
-			throw new DocumentationImportException();
-		}
-
-		ZipReader zipReader = null;
-
-		try {
-			zipReader = ZipReaderFactoryUtil.getZipReader(inputStream);
-
-			DocumentationArchiveImporter documentationArchiveImporter =
-				new DocumentationArchiveImporter(zipReader, zendeskCategory);
-
-			documentationArchiveImporter.importArchive();
-		}
-		finally {
-			if (zipReader == null) {
-				zipReader.close();
-			}
-		}
 	}
 
 	public ZendeskCategory updateZendeskCategory(

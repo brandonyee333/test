@@ -14,6 +14,10 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.web.internal.portlet;
 
+import com.liferay.osb.customer.zendesk.documentation.sync.exception.DocumentationImportException;
+import com.liferay.osb.customer.zendesk.documentation.sync.importer.DocumentationImporter;
+import com.liferay.osb.customer.zendesk.documentation.sync.importer.DocumentationImporterFactory;
+import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskCategoryLocalService;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskSectionLocalService;
 import com.liferay.osb.customer.zendesk.documentation.sync.web.internal.constants.ZendeskDocumentationSyncPortletKeys;
@@ -24,6 +28,9 @@ import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StreamUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.zip.ZipReader;
+import com.liferay.portal.kernel.zip.ZipReaderFactoryUtil;
 
 import java.io.InputStream;
 
@@ -69,6 +76,7 @@ public class AdminPortlet extends MVCPortlet {
 		throws Exception {
 
 		InputStream inputStream = null;
+		ZipReader zipReader = null;
 
 		try {
 			UploadPortletRequest uploadPortletRequest =
@@ -81,12 +89,27 @@ public class AdminPortlet extends MVCPortlet {
 
 			inputStream = uploadPortletRequest.getFileAsStream("file");
 
+			ZendeskCategory zendeskCategory =
+				_zendeskCategoryLocalService.getZendeskCategory(
+					zendeskCategoryId);
+
+			if (Validator.isNull(fileName) || (inputStream == null) ||
+				!fileName.equals(zendeskCategory.getDocumentationKey())) {
+
+				throw new DocumentationImportException();
+			}
+
+			zipReader = ZipReaderFactoryUtil.getZipReader(inputStream);
+
 			if (_log.isInfoEnabled()) {
 				_log.info("Importing articles for " + fileName);
 			}
 
-			_zendeskCategoryLocalService.importDocumentationArchive(
-				zendeskCategoryId, fileName, inputStream);
+			DocumentationImporter documentationImporter =
+				_documentationImporterFactory.createDocumentationImporter(
+					zipReader, zendeskCategory);
+
+			documentationImporter.importArticles();
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -94,6 +117,10 @@ public class AdminPortlet extends MVCPortlet {
 			throw e;
 		}
 		finally {
+			if (zipReader == null) {
+				zipReader.close();
+			}
+
 			StreamUtil.cleanUp(inputStream);
 		}
 	}
@@ -125,6 +152,9 @@ public class AdminPortlet extends MVCPortlet {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(AdminPortlet.class);
+
+	@Reference
+	private DocumentationImporterFactory _documentationImporterFactory;
 
 	@Reference
 	private Portal _portal;

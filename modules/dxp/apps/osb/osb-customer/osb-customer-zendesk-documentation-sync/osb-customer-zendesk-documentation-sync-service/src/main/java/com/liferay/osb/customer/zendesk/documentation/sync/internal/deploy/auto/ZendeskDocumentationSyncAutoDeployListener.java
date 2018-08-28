@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.internal.deploy.auto;
 
+import com.liferay.osb.customer.zendesk.documentation.sync.importer.DocumentationImporterFactory;
 import com.liferay.portal.deploy.auto.ThreadSafeAutoDeployer;
 import com.liferay.portal.kernel.deploy.auto.AutoDeployListener;
 import com.liferay.portal.kernel.deploy.auto.AutoDeployer;
@@ -22,6 +23,7 @@ import com.liferay.portal.kernel.deploy.auto.BaseAutoDeployListener;
 import java.io.File;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
@@ -33,7 +35,8 @@ public class ZendeskDocumentationSyncAutoDeployListener
 	@Override
 	protected AutoDeployer buildAutoDeployer() {
 		return new ThreadSafeAutoDeployer(
-			new ZendeskDocumentationSyncAutoDeployer());
+			new ZendeskDocumentationSyncAutoDeployer(
+				_documentationImporterFactory));
 	}
 
 	@Override
@@ -56,5 +59,8 @@ public class ZendeskDocumentationSyncAutoDeployListener
 
 		return false;
 	}
+
+	@Reference
+	private DocumentationImporterFactory _documentationImporterFactory;
 
 }

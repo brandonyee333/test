@@ -15,14 +15,13 @@
 package com.liferay.osb.customer.zendesk.documentation.sync.internal.importer;
 
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskLocales;
-import com.liferay.osb.customer.zendesk.documentation.sync.configuration.ZendeskDocumentationSyncConfiguration;
 import com.liferay.osb.customer.zendesk.documentation.sync.exception.DocumentationImportException;
+import com.liferay.osb.customer.zendesk.documentation.sync.importer.DocumentationImporter;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskArticleLocalServiceUtil;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskSectionLocalServiceUtil;
-import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -46,22 +45,22 @@ import java.util.regex.Pattern;
 /**
  * @author Amos Fong
  */
-public class DocumentationArchiveImporter {
+public class DocumentationArchiveImporter implements DocumentationImporter {
 
 	public DocumentationArchiveImporter(
-			ZipReader zipReader, ZendeskCategory zendeskCategory)
+			ZipReader zipReader, ZendeskCategory zendeskCategory,
+			String[] markdownImporterArticleExtensions,
+			String markdownImporterArticleIntro)
 		throws PortalException {
 
 		_zipReader = zipReader;
 		_zendeskCategory = zendeskCategory;
-
-		_zendeskDocumentationSyncConfiguration =
-			ConfigurableUtil.createConfigurable(
-				ZendeskDocumentationSyncConfiguration.class,
-				Collections.emptyMap());
+		_markdownImporterArticleExtensions = markdownImporterArticleExtensions;
+		_markdownImporterArticleIntro = markdownImporterArticleIntro;
 	}
 
-	public void importArchive() throws Exception {
+	@Override
+	public void importArticles() throws Exception {
 		List<String> entries = _zipReader.getEntries();
 
 		if (entries == null) {
@@ -154,10 +153,7 @@ public class DocumentationArchiveImporter {
 
 		String fileName = pathFileName.toString();
 
-		if (fileName.endsWith(
-				_zendeskDocumentationSyncConfiguration.
-					markdownImporterArticleIntro())) {
-
+		if (fileName.endsWith(_markdownImporterArticleIntro)) {
 			return true;
 		}
 
@@ -165,11 +161,9 @@ public class DocumentationArchiveImporter {
 	}
 
 	protected void processEntry(String entry) throws Exception {
-		String[] articleExtensions =
-			_zendeskDocumentationSyncConfiguration.
-				markdownImporterArticleExtensions();
+		if (!ArrayUtil.exists(
+				_markdownImporterArticleExtensions, entry::endsWith)) {
 
-		if (!ArrayUtil.exists(articleExtensions, entry::endsWith)) {
 			return;
 		}
 
@@ -351,11 +345,11 @@ public class DocumentationArchiveImporter {
 
 	private ZendeskSection _currentZendeskSection;
 	private int _iterationCount;
+	private final String[] _markdownImporterArticleExtensions;
+	private final String _markdownImporterArticleIntro;
 	private int _zendeskArticlePosition;
 	private List<ZendeskArticle> _zendeskArticles = new ArrayList<>();
 	private final ZendeskCategory _zendeskCategory;
-	private volatile ZendeskDocumentationSyncConfiguration
-		_zendeskDocumentationSyncConfiguration;
 	private int _zendeskSectionPosition;
 	private List<ZendeskSection> _zendeskSections = new ArrayList<>();
 	private final ZipReader _zipReader;
