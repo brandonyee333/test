@@ -270,14 +270,6 @@ public class ZendeskCategoryLocalServiceWrapper
 	}
 
 	@Override
-	public void importDocumentationArchive(long zendeskCategoryId,
-		String fileName, java.io.InputStream inputStream)
-		throws Exception {
-		_zendeskCategoryLocalService.importDocumentationArchive(zendeskCategoryId,
-			fileName, inputStream);
-	}
-
-	@Override
 	public com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory updateZendeskCategory(
 		long zendeskCategoryId, String documentationOriginalURL,
 		String articleLabels)

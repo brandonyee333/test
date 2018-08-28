@@ -255,13 +255,6 @@ public class ZendeskCategoryLocalServiceUtil {
 		return getService().getZendeskCategory(zendeskCategoryId);
 	}
 
-	public static void importDocumentationArchive(long zendeskCategoryId,
-		String fileName, java.io.InputStream inputStream)
-		throws Exception {
-		getService()
-			.importDocumentationArchive(zendeskCategoryId, fileName, inputStream);
-	}
-
 	public static com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory updateZendeskCategory(
 		long zendeskCategoryId, String documentationOriginalURL,
 		String articleLabels)

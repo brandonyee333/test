@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
-import java.io.InputStream;
 import java.io.Serializable;
 
 import java.util.List;
@@ -226,9 +225,6 @@ public interface ZendeskCategoryLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ZendeskCategory getZendeskCategory(long zendeskCategoryId)
 		throws PortalException;
-
-	public void importDocumentationArchive(long zendeskCategoryId,
-		String fileName, InputStream inputStream) throws Exception;
 
 	public ZendeskCategory updateZendeskCategory(long zendeskCategoryId,
 		String documentationOriginalURL, String articleLabels)
