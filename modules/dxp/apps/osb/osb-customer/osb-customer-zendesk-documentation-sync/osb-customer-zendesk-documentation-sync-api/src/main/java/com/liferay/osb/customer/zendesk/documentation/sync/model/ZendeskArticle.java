@@ -55,7 +55,9 @@ public interface ZendeskArticle extends ZendeskArticleModel, PersistedModel {
 			}
 		};
 
-	public String getRemoteTitle();
+	public String getRemoteHtmlURL(String locale);
 
-	public void setRemoteTitle(String remoteTitle);
+	public String getRemoteTitle(String locale);
+
+	public void setRemoteTitle(String locale, String remoteTitle);
 }

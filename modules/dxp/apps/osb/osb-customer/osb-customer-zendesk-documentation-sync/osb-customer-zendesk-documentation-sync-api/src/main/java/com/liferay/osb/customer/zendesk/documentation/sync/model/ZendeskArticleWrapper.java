@@ -192,6 +192,11 @@ public class ZendeskArticleWrapper implements ZendeskArticle,
 		return _zendeskArticle.getRemoteHtmlURL();
 	}
 
+	@Override
+	public String getRemoteHtmlURL(String locale) {
+		return _zendeskArticle.getRemoteHtmlURL(locale);
+	}
+
 	/**
 	* Returns the remote ID of this zendesk article.
 	*
@@ -203,8 +208,8 @@ public class ZendeskArticleWrapper implements ZendeskArticle,
 	}
 
 	@Override
-	public String getRemoteTitle() {
-		return _zendeskArticle.getRemoteTitle();
+	public String getRemoteTitle(String locale) {
+		return _zendeskArticle.getRemoteTitle(locale);
 	}
 
 	/**
@@ -354,8 +359,8 @@ public class ZendeskArticleWrapper implements ZendeskArticle,
 	}
 
 	@Override
-	public void setRemoteTitle(String remoteTitle) {
-		_zendeskArticle.setRemoteTitle(remoteTitle);
+	public void setRemoteTitle(String locale, String remoteTitle) {
+		_zendeskArticle.setRemoteTitle(locale, remoteTitle);
 	}
 
 	/**
