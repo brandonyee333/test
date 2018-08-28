@@ -114,7 +114,7 @@ public class DocumentationArchiveImporter implements DocumentationImporter {
 	}
 
 	protected String getBottomNavigationHtml(
-		ZendeskArticle previousZendeskArticle,
+		String locale, ZendeskArticle previousZendeskArticle,
 		ZendeskArticle nextZendeskArticle) {
 
 		StringBundler sb = new StringBundler(12);
@@ -123,17 +123,17 @@ public class DocumentationArchiveImporter implements DocumentationImporter {
 
 		if (previousZendeskArticle != null) {
 			sb.append("<span class=\"previous\"><a href=\"");
-			sb.append(previousZendeskArticle.getRemoteHtmlURL());
+			sb.append(previousZendeskArticle.getRemoteHtmlURL(locale));
 			sb.append("\">&#171; ");
-			sb.append(previousZendeskArticle.getRemoteTitle());
+			sb.append(previousZendeskArticle.getRemoteTitle(locale));
 			sb.append("</a></span>");
 		}
 
 		if (nextZendeskArticle != null) {
 			sb.append("<span class=\"next\"><a href=\"");
-			sb.append(nextZendeskArticle.getRemoteHtmlURL());
+			sb.append(nextZendeskArticle.getRemoteHtmlURL(locale));
 			sb.append("\">");
-			sb.append(nextZendeskArticle.getRemoteTitle());
+			sb.append(nextZendeskArticle.getRemoteTitle(locale));
 			sb.append(" &#187;</a></span>");
 		}
 
@@ -206,11 +206,11 @@ public class DocumentationArchiveImporter implements DocumentationImporter {
 			ZendeskArticleLocalServiceUtil.fetchZendeskArticle(
 				_zendeskCategory.getZendeskCategoryId(), documentationKey);
 
+		ZendeskArticle previousZendeskArticle = null;
+		ZendeskArticle nextZendeskArticle = null;
+
 		if (_iterationCount > 0) {
 			int index = _zendeskArticles.indexOf(zendeskArticle);
-
-			ZendeskArticle previousZendeskArticle = null;
-			ZendeskArticle nextZendeskArticle = null;
 
 			if (index >= 1) {
 				previousZendeskArticle = _zendeskArticles.get(index - 1);
@@ -219,19 +219,22 @@ public class DocumentationArchiveImporter implements DocumentationImporter {
 			if (index < (_zendeskArticles.size() - 1)) {
 				nextZendeskArticle = _zendeskArticles.get(index + 1);
 			}
-
-			body += getBottomNavigationHtml(
-				previousZendeskArticle, nextZendeskArticle);
 		}
-
-		body = replaceDocumentationOriginalURLs(body);
 
 		Map<String, String> titleMap = new HashMap<>();
 		Map<String, String> bodyMap = new HashMap<>();
 
 		for (String locale : ZendeskLocales.LOCALES_ENABLED) {
 			titleMap.put(locale, title);
-			bodyMap.put(locale, body);
+
+			String curBody =
+				body +
+					getBottomNavigationHtml(
+						locale, previousZendeskArticle, nextZendeskArticle);
+
+			curBody = replaceDocumentationOriginalURLs(locale, curBody);
+
+			bodyMap.put(locale, curBody);
 		}
 
 		if (zendeskArticle == null) {
@@ -262,7 +265,7 @@ public class DocumentationArchiveImporter implements DocumentationImporter {
 		}
 
 		if (_iterationCount == 0) {
-			zendeskArticle.setRemoteTitle(title);
+			zendeskArticle.setRemoteTitle(ZendeskLocales.US, title);
 
 			_zendeskArticles.add(zendeskArticle);
 		}
@@ -309,7 +312,9 @@ public class DocumentationArchiveImporter implements DocumentationImporter {
 		_zendeskSectionPosition++;
 	}
 
-	protected String replaceDocumentationOriginalURLs(String body) {
+	protected String replaceDocumentationOriginalURLs(
+		String locale, String body) {
+
 		Matcher matcher = _originalURLPattern.matcher(body);
 
 		while (matcher.find()) {
@@ -322,7 +327,7 @@ public class DocumentationArchiveImporter implements DocumentationImporter {
 				String href = matcher.group();
 
 				String zendeskArticleHref =
-					"href=\"" + zendeskArticle.getRemoteHtmlURL() +
+					"href=\"" + zendeskArticle.getRemoteHtmlURL(locale) +
 						href.substring(href.length() - 1);
 
 				body = StringUtil.replace(body, href, zendeskArticleHref);
