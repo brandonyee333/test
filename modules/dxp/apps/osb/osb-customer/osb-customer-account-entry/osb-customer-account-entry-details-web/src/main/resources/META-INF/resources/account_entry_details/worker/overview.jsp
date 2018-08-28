@@ -21,7 +21,7 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 %>
 
 <aui:row>
-	<aui:col width="<%= 30 %>">
+	<aui:col width="<%= 25 %>">
 		<div class="card">
 			<h3 class="card-header">
 				<liferay-ui:message key="details" />
@@ -132,10 +132,11 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 		</div>
 	</aui:col>
 
-	<aui:col width="<%= 50 %>">
+	<aui:col width="<%= 40 %>">
 		<liferay-util:include page="/account_entry_details/account_environments.jsp" servletContext="<%= application %>" />
 	</aui:col>
 
-	<aui:col width="<%= 40 %>">
+	<aui:col width="<%= 35 %>">
+		<liferay-util:include page="/account_entry_details/support_instructions.jsp" servletContext="<%= application %>" />
 	</aui:col>
 </aui:row>
