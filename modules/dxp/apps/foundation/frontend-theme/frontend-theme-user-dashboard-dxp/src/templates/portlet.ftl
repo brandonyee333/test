@@ -43,15 +43,15 @@
 	</#if>
 
 	<div class="${portlet_content_css_class}">
-		<div class="autofit-row autofit-float">
-			<div class="autofit-col autofit-col-expand">
+		<div class="autofit-row">
+			<div class="autofit-col-expand">
 				<#if portlet_display.getPortletDecoratorId() != "barebone">
 					<h2 class="portlet-title-text">${portlet_title}</h2>
 				</#if>
 			</div>
 
-			<div class="autofit-col autofit-col-end">
-				<div class="autofit-section">
+			<div>
+				<div>
 					<@liferay_util["dynamic-include"] key="portlet_header_${portlet_display_root_portlet_id}" />
 				</div>
 			</div>
