@@ -70,6 +70,7 @@ PortletURL portletURL = renderResponse.createRenderURL();
 		</liferay-portlet:renderURL>
 
 		<liferay-ui:search-container-column-text
+			cssClass="project-name"
 			href="<%= rowURL %>"
 			property="name"
 		/>
