@@ -145,6 +145,10 @@ public class DocumentationArchiveImporter implements DocumentationImporter {
 	protected boolean isZendeskSection(String entry) {
 		Path path = Paths.get(entry);
 
+		if (path.getNameCount() == 2) {
+			return true;
+		}
+
 		if (path.getNameCount() != 3) {
 			return false;
 		}
