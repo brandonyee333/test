@@ -37,16 +37,16 @@ public class HandshakeMessage extends Message {
 		return _companyIdsWebIds;
 	}
 
-	public long getLCSClusterEntryId() {
-		return _lcsClusterEntryId;
-	}
-
 	public int getHashCode() {
 		return _hashCode;
 	}
 
 	public long getHeartbeatInterval() {
 		return _heartbeatInterval;
+	}
+
+	public long getLCSClusterEntryId() {
+		return _lcsClusterEntryId;
 	}
 
 	public int getLCSPortletBuildNumber() {
