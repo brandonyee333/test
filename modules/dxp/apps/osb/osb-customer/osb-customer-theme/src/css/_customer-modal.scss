@@ -8,6 +8,10 @@
 		max-height: 85vh;
 	}
 
+	.modal-footer {
+		text-align: right;
+	}
+
 	.modal-header {
 		line-height: 10px;
 		padding: 18px 24px;
@@ -22,5 +26,14 @@
 
 	.modal-title {
 		display: inline-block;
+		font-size: 20px;
+		font-weight: $font-weight-semi-bold;
+		line-height: 28px;
+		text-align: left;
+		text-transform: initial;
+	}
+
+	.lexicon-icon {
+		height: 12px;
 	}
 }
