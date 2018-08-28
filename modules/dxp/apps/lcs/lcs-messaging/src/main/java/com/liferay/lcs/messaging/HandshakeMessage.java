@@ -37,7 +37,7 @@ public class HandshakeMessage extends Message {
 		return _companyIdsWebIds;
 	}
 
-	public long getCSClusterEntryId() {
+	public long getLCSClusterEntryId() {
 		return _lcsClusterEntryId;
 	}
 
