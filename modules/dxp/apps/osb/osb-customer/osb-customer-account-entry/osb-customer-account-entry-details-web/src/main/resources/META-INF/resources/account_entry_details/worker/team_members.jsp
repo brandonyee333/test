@@ -47,7 +47,6 @@ PortletURL portletURL = renderResponse.createRenderURL();
 
 		<%
 		User curUser = UserLocalServiceUtil.getUser(accountCustomer.getUserId());
-
 		%>
 
 		<liferay-ui:search-container-column-text
@@ -57,7 +56,7 @@ PortletURL portletURL = renderResponse.createRenderURL();
 
 		<liferay-ui:search-container-column-text
 			name="role"
-			value="<%= accountCustomer.getRoleLabel() %>"
+			value="<%= StringUtil.upperCaseFirstLetter(accountCustomer.getRoleLabel()) %>"
 		/>
 
 		<liferay-ui:search-container-column-text
@@ -68,13 +67,6 @@ PortletURL portletURL = renderResponse.createRenderURL();
 		<liferay-ui:search-container-column-text
 			name="contact-number"
 		/>
-
-		<liferay-ui:search-container-column-text
-			name=""
-		>
-			<%-- <%= edit %> --%>
-		</liferay-ui:search-container-column-text>
-
 	</liferay-ui:search-container-row>
 
 	<liferay-ui:search-iterator
