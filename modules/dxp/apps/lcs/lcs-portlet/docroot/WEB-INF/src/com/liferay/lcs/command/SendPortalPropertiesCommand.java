@@ -154,8 +154,8 @@ public class SendPortalPropertiesCommand
 	private SendPortalPropertiesResponseMessage
 		_getSendPortalPropertiesResponseMessage(
 			SendPortalPropertiesCommandMessage
-				sendPortalPropertiesCommandMessage, String hashCode,
-			Map<String, String> portalProperties) {
+				sendPortalPropertiesCommandMessage,
+			String hashCode, Map<String, String> portalProperties) {
 
 		SendPortalPropertiesResponseMessage
 			sendPortalPropertiesResponseMessage =
