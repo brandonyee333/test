@@ -15,6 +15,12 @@ class SubscriptionAlert extends React.Component {
 		showModal: false
 	}
 
+	handleCloseAlert = () => {
+		const {id, onClose} = this.props;
+
+		onClose(id);
+	};
+
 	handleCloseModal = () =>
 		this.setState(
 			{
@@ -30,14 +36,14 @@ class SubscriptionAlert extends React.Component {
 		);
 
 	render() {
-		const {id, message, onClose} = this.props;
+		const {id, message} = this.props;
 		const {showModal} = this.state;
 
 		return (
 			<div id={id}>
 				<Alert
 					type={message.severity === 'urgent' ? 'danger' : message.severity}
-					onClose={onClose}
+					onClose={this.handleCloseAlert}
 				>
 					<span className="lead">
 						{`${Liferay.Language.get('subscription-message')}:`}
@@ -101,7 +107,7 @@ export default class SubscriptionMessages extends React.Component {
 							key={index}
 							id={message.id}
 							message={message}
-							onClose={() => this.handleCloseAlert(message.id)}
+							onClose={this.handleCloseAlert}
 						/>
 					)
 				)}
