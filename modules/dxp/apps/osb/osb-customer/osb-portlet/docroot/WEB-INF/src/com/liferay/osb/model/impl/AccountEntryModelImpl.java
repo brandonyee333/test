@@ -158,10 +158,11 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 	public static final long CORPPROJECTUUID_COLUMN_BITMASK = 4L;
 	public static final long NAME_COLUMN_BITMASK = 8L;
 	public static final long PARTNERENTRYID_COLUMN_BITMASK = 16L;
-	public static final long REDIRECTACCOUNTENTRYID_COLUMN_BITMASK = 32L;
-	public static final long STATUS_COLUMN_BITMASK = 64L;
-	public static final long TYPE_COLUMN_BITMASK = 128L;
-	public static final long USERID_COLUMN_BITMASK = 256L;
+	public static final long PARTNERMANAGEDSUPPORT_COLUMN_BITMASK = 32L;
+	public static final long REDIRECTACCOUNTENTRYID_COLUMN_BITMASK = 64L;
+	public static final long STATUS_COLUMN_BITMASK = 128L;
+	public static final long TYPE_COLUMN_BITMASK = 256L;
+	public static final long USERID_COLUMN_BITMASK = 512L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -877,7 +878,19 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 	@Override
 	public void setPartnerManagedSupport(boolean partnerManagedSupport) {
+		_columnBitmask |= PARTNERMANAGEDSUPPORT_COLUMN_BITMASK;
+
+		if (!_setOriginalPartnerManagedSupport) {
+			_setOriginalPartnerManagedSupport = true;
+
+			_originalPartnerManagedSupport = _partnerManagedSupport;
+		}
+
 		_partnerManagedSupport = partnerManagedSupport;
+	}
+
+	public boolean getOriginalPartnerManagedSupport() {
+		return _originalPartnerManagedSupport;
 	}
 
 	@JSON
@@ -1277,6 +1290,10 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		accountEntryModelImpl._originalPartnerEntryId = accountEntryModelImpl._partnerEntryId;
 
 		accountEntryModelImpl._setOriginalPartnerEntryId = false;
+
+		accountEntryModelImpl._originalPartnerManagedSupport = accountEntryModelImpl._partnerManagedSupport;
+
+		accountEntryModelImpl._setOriginalPartnerManagedSupport = false;
 
 		accountEntryModelImpl._originalStatus = accountEntryModelImpl._status;
 
@@ -1680,6 +1697,8 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 	private long _originalPartnerEntryId;
 	private boolean _setOriginalPartnerEntryId;
 	private boolean _partnerManagedSupport;
+	private boolean _originalPartnerManagedSupport;
+	private boolean _setOriginalPartnerManagedSupport;
 	private int _tier;
 	private int _maxCustomers;
 	private String _instructions;

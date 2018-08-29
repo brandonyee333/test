@@ -12,7 +12,7 @@ create unique index IX_32214056 on OSB_AccountEntry (code_[$COLUMN_LENGTH:75$]);
 create index IX_6AA361CE on OSB_AccountEntry (corpProjectId);
 create index IX_64D9942E on OSB_AccountEntry (corpProjectUuid[$COLUMN_LENGTH:75$]);
 create index IX_2FB47967 on OSB_AccountEntry (name[$COLUMN_LENGTH:500$], code_[$COLUMN_LENGTH:75$], redirectAccountEntryId);
-create index IX_1DCDCBE5 on OSB_AccountEntry (partnerEntryId);
+create index IX_31810943 on OSB_AccountEntry (partnerEntryId, partnerManagedSupport);
 create index IX_5F5D3902 on OSB_AccountEntry (redirectAccountEntryId, status);
 create index IX_E57EB21F on OSB_AccountEntry (redirectAccountEntryId, type_, status);
 create index IX_31DB3E6F on OSB_AccountEntry (userId, type_);

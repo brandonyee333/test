@@ -2382,6 +2382,563 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 	}
 
 	private static final String _FINDER_COLUMN_PARTNERENTRYID_PARTNERENTRYID_2 = "accountEntry.partnerEntryId = ?";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_PEI_PMS = new FinderPath(AccountEntryModelImpl.ENTITY_CACHE_ENABLED,
+			AccountEntryModelImpl.FINDER_CACHE_ENABLED, AccountEntryImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByPEI_PMS",
+			new String[] {
+				Long.class.getName(), Boolean.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PEI_PMS =
+		new FinderPath(AccountEntryModelImpl.ENTITY_CACHE_ENABLED,
+			AccountEntryModelImpl.FINDER_CACHE_ENABLED, AccountEntryImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByPEI_PMS",
+			new String[] { Long.class.getName(), Boolean.class.getName() },
+			AccountEntryModelImpl.PARTNERENTRYID_COLUMN_BITMASK |
+			AccountEntryModelImpl.PARTNERMANAGEDSUPPORT_COLUMN_BITMASK |
+			AccountEntryModelImpl.NAME_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_PEI_PMS = new FinderPath(AccountEntryModelImpl.ENTITY_CACHE_ENABLED,
+			AccountEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByPEI_PMS",
+			new String[] { Long.class.getName(), Boolean.class.getName() });
+
+	/**
+	 * Returns all the account entries where partnerEntryId = &#63; and partnerManagedSupport = &#63;.
+	 *
+	 * @param partnerEntryId the partner entry ID
+	 * @param partnerManagedSupport the partner managed support
+	 * @return the matching account entries
+	 */
+	@Override
+	public List<AccountEntry> findByPEI_PMS(long partnerEntryId,
+		boolean partnerManagedSupport) {
+		return findByPEI_PMS(partnerEntryId, partnerManagedSupport,
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the account entries where partnerEntryId = &#63; and partnerManagedSupport = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param partnerEntryId the partner entry ID
+	 * @param partnerManagedSupport the partner managed support
+	 * @param start the lower bound of the range of account entries
+	 * @param end the upper bound of the range of account entries (not inclusive)
+	 * @return the range of matching account entries
+	 */
+	@Override
+	public List<AccountEntry> findByPEI_PMS(long partnerEntryId,
+		boolean partnerManagedSupport, int start, int end) {
+		return findByPEI_PMS(partnerEntryId, partnerManagedSupport, start, end,
+			null);
+	}
+
+	/**
+	 * Returns an ordered range of all the account entries where partnerEntryId = &#63; and partnerManagedSupport = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param partnerEntryId the partner entry ID
+	 * @param partnerManagedSupport the partner managed support
+	 * @param start the lower bound of the range of account entries
+	 * @param end the upper bound of the range of account entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching account entries
+	 */
+	@Override
+	public List<AccountEntry> findByPEI_PMS(long partnerEntryId,
+		boolean partnerManagedSupport, int start, int end,
+		OrderByComparator<AccountEntry> orderByComparator) {
+		return findByPEI_PMS(partnerEntryId, partnerManagedSupport, start, end,
+			orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the account entries where partnerEntryId = &#63; and partnerManagedSupport = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param partnerEntryId the partner entry ID
+	 * @param partnerManagedSupport the partner managed support
+	 * @param start the lower bound of the range of account entries
+	 * @param end the upper bound of the range of account entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @return the ordered range of matching account entries
+	 */
+	@Override
+	public List<AccountEntry> findByPEI_PMS(long partnerEntryId,
+		boolean partnerManagedSupport, int start, int end,
+		OrderByComparator<AccountEntry> orderByComparator,
+		boolean retrieveFromCache) {
+		boolean pagination = true;
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PEI_PMS;
+			finderArgs = new Object[] { partnerEntryId, partnerManagedSupport };
+		}
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_PEI_PMS;
+			finderArgs = new Object[] {
+					partnerEntryId, partnerManagedSupport,
+					
+					start, end, orderByComparator
+				};
+		}
+
+		List<AccountEntry> list = null;
+
+		if (retrieveFromCache) {
+			list = (List<AccountEntry>)finderCache.getResult(finderPath,
+					finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (AccountEntry accountEntry : list) {
+					if ((partnerEntryId != accountEntry.getPartnerEntryId()) ||
+							(partnerManagedSupport != accountEntry.getPartnerManagedSupport())) {
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler query = null;
+
+			if (orderByComparator != null) {
+				query = new StringBundler(4 +
+						(orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				query = new StringBundler(4);
+			}
+
+			query.append(_SQL_SELECT_ACCOUNTENTRY_WHERE);
+
+			query.append(_FINDER_COLUMN_PEI_PMS_PARTNERENTRYID_2);
+
+			query.append(_FINDER_COLUMN_PEI_PMS_PARTNERMANAGEDSUPPORT_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
+			}
+			else
+			 if (pagination) {
+				query.append(AccountEntryModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(partnerEntryId);
+
+				qPos.add(partnerManagedSupport);
+
+				if (!pagination) {
+					list = (List<AccountEntry>)QueryUtil.list(q, getDialect(),
+							start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<AccountEntry>)QueryUtil.list(q, getDialect(),
+							start, end);
+				}
+
+				cacheResult(list);
+
+				finderCache.putResult(finderPath, finderArgs, list);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first account entry in the ordered set where partnerEntryId = &#63; and partnerManagedSupport = &#63;.
+	 *
+	 * @param partnerEntryId the partner entry ID
+	 * @param partnerManagedSupport the partner managed support
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching account entry
+	 * @throws NoSuchAccountEntryException if a matching account entry could not be found
+	 */
+	@Override
+	public AccountEntry findByPEI_PMS_First(long partnerEntryId,
+		boolean partnerManagedSupport,
+		OrderByComparator<AccountEntry> orderByComparator)
+		throws NoSuchAccountEntryException {
+		AccountEntry accountEntry = fetchByPEI_PMS_First(partnerEntryId,
+				partnerManagedSupport, orderByComparator);
+
+		if (accountEntry != null) {
+			return accountEntry;
+		}
+
+		StringBundler msg = new StringBundler(6);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("partnerEntryId=");
+		msg.append(partnerEntryId);
+
+		msg.append(", partnerManagedSupport=");
+		msg.append(partnerManagedSupport);
+
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+		throw new NoSuchAccountEntryException(msg.toString());
+	}
+
+	/**
+	 * Returns the first account entry in the ordered set where partnerEntryId = &#63; and partnerManagedSupport = &#63;.
+	 *
+	 * @param partnerEntryId the partner entry ID
+	 * @param partnerManagedSupport the partner managed support
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching account entry, or <code>null</code> if a matching account entry could not be found
+	 */
+	@Override
+	public AccountEntry fetchByPEI_PMS_First(long partnerEntryId,
+		boolean partnerManagedSupport,
+		OrderByComparator<AccountEntry> orderByComparator) {
+		List<AccountEntry> list = findByPEI_PMS(partnerEntryId,
+				partnerManagedSupport, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last account entry in the ordered set where partnerEntryId = &#63; and partnerManagedSupport = &#63;.
+	 *
+	 * @param partnerEntryId the partner entry ID
+	 * @param partnerManagedSupport the partner managed support
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching account entry
+	 * @throws NoSuchAccountEntryException if a matching account entry could not be found
+	 */
+	@Override
+	public AccountEntry findByPEI_PMS_Last(long partnerEntryId,
+		boolean partnerManagedSupport,
+		OrderByComparator<AccountEntry> orderByComparator)
+		throws NoSuchAccountEntryException {
+		AccountEntry accountEntry = fetchByPEI_PMS_Last(partnerEntryId,
+				partnerManagedSupport, orderByComparator);
+
+		if (accountEntry != null) {
+			return accountEntry;
+		}
+
+		StringBundler msg = new StringBundler(6);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("partnerEntryId=");
+		msg.append(partnerEntryId);
+
+		msg.append(", partnerManagedSupport=");
+		msg.append(partnerManagedSupport);
+
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+		throw new NoSuchAccountEntryException(msg.toString());
+	}
+
+	/**
+	 * Returns the last account entry in the ordered set where partnerEntryId = &#63; and partnerManagedSupport = &#63;.
+	 *
+	 * @param partnerEntryId the partner entry ID
+	 * @param partnerManagedSupport the partner managed support
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching account entry, or <code>null</code> if a matching account entry could not be found
+	 */
+	@Override
+	public AccountEntry fetchByPEI_PMS_Last(long partnerEntryId,
+		boolean partnerManagedSupport,
+		OrderByComparator<AccountEntry> orderByComparator) {
+		int count = countByPEI_PMS(partnerEntryId, partnerManagedSupport);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<AccountEntry> list = findByPEI_PMS(partnerEntryId,
+				partnerManagedSupport, count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the account entries before and after the current account entry in the ordered set where partnerEntryId = &#63; and partnerManagedSupport = &#63;.
+	 *
+	 * @param accountEntryId the primary key of the current account entry
+	 * @param partnerEntryId the partner entry ID
+	 * @param partnerManagedSupport the partner managed support
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next account entry
+	 * @throws NoSuchAccountEntryException if a account entry with the primary key could not be found
+	 */
+	@Override
+	public AccountEntry[] findByPEI_PMS_PrevAndNext(long accountEntryId,
+		long partnerEntryId, boolean partnerManagedSupport,
+		OrderByComparator<AccountEntry> orderByComparator)
+		throws NoSuchAccountEntryException {
+		AccountEntry accountEntry = findByPrimaryKey(accountEntryId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			AccountEntry[] array = new AccountEntryImpl[3];
+
+			array[0] = getByPEI_PMS_PrevAndNext(session, accountEntry,
+					partnerEntryId, partnerManagedSupport, orderByComparator,
+					true);
+
+			array[1] = accountEntry;
+
+			array[2] = getByPEI_PMS_PrevAndNext(session, accountEntry,
+					partnerEntryId, partnerManagedSupport, orderByComparator,
+					false);
+
+			return array;
+		}
+		catch (Exception e) {
+			throw processException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected AccountEntry getByPEI_PMS_PrevAndNext(Session session,
+		AccountEntry accountEntry, long partnerEntryId,
+		boolean partnerManagedSupport,
+		OrderByComparator<AccountEntry> orderByComparator, boolean previous) {
+		StringBundler query = null;
+
+		if (orderByComparator != null) {
+			query = new StringBundler(5 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			query = new StringBundler(4);
+		}
+
+		query.append(_SQL_SELECT_ACCOUNTENTRY_WHERE);
+
+		query.append(_FINDER_COLUMN_PEI_PMS_PARTNERENTRYID_2);
+
+		query.append(_FINDER_COLUMN_PEI_PMS_PARTNERMANAGEDSUPPORT_2);
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				query.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			query.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						query.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC);
+					}
+					else {
+						query.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			query.append(AccountEntryModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = query.toString();
+
+		Query q = session.createQuery(sql);
+
+		q.setFirstResult(0);
+		q.setMaxResults(2);
+
+		QueryPos qPos = QueryPos.getInstance(q);
+
+		qPos.add(partnerEntryId);
+
+		qPos.add(partnerManagedSupport);
+
+		if (orderByComparator != null) {
+			Object[] values = orderByComparator.getOrderByConditionValues(accountEntry);
+
+			for (Object value : values) {
+				qPos.add(value);
+			}
+		}
+
+		List<AccountEntry> list = q.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the account entries where partnerEntryId = &#63; and partnerManagedSupport = &#63; from the database.
+	 *
+	 * @param partnerEntryId the partner entry ID
+	 * @param partnerManagedSupport the partner managed support
+	 */
+	@Override
+	public void removeByPEI_PMS(long partnerEntryId,
+		boolean partnerManagedSupport) {
+		for (AccountEntry accountEntry : findByPEI_PMS(partnerEntryId,
+				partnerManagedSupport, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+				null)) {
+			remove(accountEntry);
+		}
+	}
+
+	/**
+	 * Returns the number of account entries where partnerEntryId = &#63; and partnerManagedSupport = &#63;.
+	 *
+	 * @param partnerEntryId the partner entry ID
+	 * @param partnerManagedSupport the partner managed support
+	 * @return the number of matching account entries
+	 */
+	@Override
+	public int countByPEI_PMS(long partnerEntryId, boolean partnerManagedSupport) {
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_PEI_PMS;
+
+		Object[] finderArgs = new Object[] { partnerEntryId, partnerManagedSupport };
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler(3);
+
+			query.append(_SQL_COUNT_ACCOUNTENTRY_WHERE);
+
+			query.append(_FINDER_COLUMN_PEI_PMS_PARTNERENTRYID_2);
+
+			query.append(_FINDER_COLUMN_PEI_PMS_PARTNERMANAGEDSUPPORT_2);
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(partnerEntryId);
+
+				qPos.add(partnerManagedSupport);
+
+				count = (Long)q.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_PEI_PMS_PARTNERENTRYID_2 = "accountEntry.partnerEntryId = ? AND ";
+	private static final String _FINDER_COLUMN_PEI_PMS_PARTNERMANAGEDSUPPORT_2 = "accountEntry.partnerManagedSupport = ?";
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_U_T = new FinderPath(AccountEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AccountEntryModelImpl.FINDER_CACHE_ENABLED, AccountEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByU_T",
@@ -5708,6 +6265,15 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 				args);
 
 			args = new Object[] {
+					accountEntryModelImpl.getPartnerEntryId(),
+					accountEntryModelImpl.getPartnerManagedSupport()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_PEI_PMS, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PEI_PMS,
+				args);
+
+			args = new Object[] {
 					accountEntryModelImpl.getUserId(),
 					accountEntryModelImpl.getType()
 				};
@@ -5785,6 +6351,27 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_PARTNERENTRYID,
 					args);
 				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PARTNERENTRYID,
+					args);
+			}
+
+			if ((accountEntryModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PEI_PMS.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						accountEntryModelImpl.getOriginalPartnerEntryId(),
+						accountEntryModelImpl.getOriginalPartnerManagedSupport()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_PEI_PMS, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PEI_PMS,
+					args);
+
+				args = new Object[] {
+						accountEntryModelImpl.getPartnerEntryId(),
+						accountEntryModelImpl.getPartnerManagedSupport()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_PEI_PMS, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_PEI_PMS,
 					args);
 			}
 
