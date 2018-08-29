@@ -32,10 +32,10 @@ PortletURL portletURL = renderResponse.createRenderURL();
 	<liferay-ui:search-container-results>
 
 		<%
-			results = AccountWorkerLocalServiceUtil.getAccountWorkers(accountEntryId);
+		results = AccountWorkerLocalServiceUtil.getAccountWorkers(accountEntryId);
 
-			searchContainer.setTotal(results.size());
-			searchContainer.setResults(results);
+		searchContainer.setTotal(results.size());
+		searchContainer.setResults(results);
 		%>
 
 	</liferay-ui:search-container-results>
@@ -51,7 +51,7 @@ PortletURL portletURL = renderResponse.createRenderURL();
 		List<Phone> phones = UsersAdminUtil.getPhones(request);
 
 		String contactNumber = StringPool.BLANK;
-		
+
 		for (Phone phone : phones) {
 			if (phone.isPrimary()) {
 				contactNumber = phone.getNumber();
