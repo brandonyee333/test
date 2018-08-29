@@ -37,9 +37,6 @@ public class LCSConstants {
 
 	public static final String CORP_PROJECT_DEFAULT_NAME = "My LCS Project";
 
-	public static final String HARDWARE_SETTINGS_LCS_SERVICE_ENABLED =
-		"hardware-settings-lcs-service-enabled";
-
 	public static final String JVM_SETTINGS_LCS_SERVICE_ENABLED =
 		"jvm-settings-lcs-service-enabled";
 
@@ -88,13 +85,6 @@ public class LCSConstants {
 
 	public static final int LCS_CLUSTER_NODE_CLUSTER_LINK_HEALTHY = 1;
 
-	public static final int METRICS_LCS_SERVICE_AVAILABLE = 1;
-
-	public static final String METRICS_LCS_SERVICE_ENABLED =
-		"metrics-lcs-service-enabled";
-
-	public static final int METRICS_LCS_SERVICE_UNAVAILABLE = 0;
-
 	public static final int MONITORING_AVAILABLE = 1;
 
 	public static final int MONITORING_UNAVAILABLE = 0;
@@ -111,13 +101,6 @@ public class LCSConstants {
 
 	public static final int PATCHES_INSTALLED = 5;
 
-	public static final int PATCHES_LCS_SERVICE_AVAILABLE = 1;
-
-	public static final String PATCHES_LCS_SERVICE_ENABLED =
-		"patches-lcs-service-enabled";
-
-	public static final int PATCHES_LCS_SERVICE_UNAVAILABLE = 0;
-
 	public static final String PATCHES_MD5SUM_SUFFIX = "-md5sum";
 
 	public static final int PATCHES_UNKNOWN = 0;
@@ -132,13 +115,6 @@ public class LCSConstants {
 
 	public static final String PORTAL_PROPERTIES_BLACKLIST =
 		"portal-properties-blacklist";
-
-	public static final int PORTAL_PROPERTIES_LCS_SERVICE_AVAILABLE = 1;
-
-	public static final String PORTAL_PROPERTIES_LCS_SERVICE_ENABLED =
-		"portal-properties-lcs-service-enabled";
-
-	public static final int PORTAL_PROPERTIES_LCS_SERVICE_UNAVAILABLE = 0;
 
 	public static final String[] PORTAL_PROPERTIES_SECURITY_INSENSITIVE = {
 		"login.create.account.allow.custom.password",
@@ -172,9 +148,6 @@ public class LCSConstants {
 	public static final String SOURCE_SYSTEM_NAME_LRDCOM = "LRDCOM";
 
 	public static final String SOURCE_SYSTEM_NAME_OSB = "OSB";
-
-	public static final String SYSTEM_SETTINGS_LCS_SERVICE_ENABLED =
-		"system-settings-lcs-service-enabled";
 
 	/**
 	 * Returns <code>true</code> if the application server has obtainable
