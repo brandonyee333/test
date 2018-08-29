@@ -41,15 +41,21 @@ public class LCSClusterEntryTokenContentAdvisor {
 		String[] array = content.split("--");
 
 		if (array.length == 1) {
+			_contentStructureVersion = 3;
+
 			processContent(content);
 		}
 		else if (array.length == 2) {
 			_accessSecret = array[1];
 			_accessToken = array[0];
+
+			_contentStructureVersion = 1;
 		}
 		else if (array.length == 3) {
 			_accessSecret = array[1];
 			_accessToken = array[0];
+
+			_contentStructureVersion = 2;
 
 			processContent(array[2]);
 		}
@@ -75,6 +81,8 @@ public class LCSClusterEntryTokenContentAdvisor {
 		_portalPropertiesBlacklist = portalPropertiesBlacklist;
 
 		_lcsServicesConfiguration.putAll(lcsServicesConfiguration);
+
+		_contentStructureVersion = 3;
 	}
 
 	public LCSClusterEntryTokenContentAdvisor(
@@ -116,39 +124,7 @@ public class LCSClusterEntryTokenContentAdvisor {
 		return _consumerSecret;
 	}
 
-	public String getContent() {
-		StringBuilder sb = new StringBuilder();
-
-		sb.append(_accessToken);
-		sb.append("--");
-		sb.append(_accessSecret);
-		sb.append("--");
-		sb.append(getContentJSONString());
-
-		return sb.toString();
-	}
-
-	public String getDataCenterHostName() {
-		return _dataCenterHostName;
-	}
-
-	public String getDataCenterHostPort() {
-		return _dataCenterHostPort;
-	}
-
-	public String getDataCenterProtocol() {
-		return _dataCenterProtocol;
-	}
-
-	public Map<String, String> getLCSServicesConfiguration() {
-		return _lcsServicesConfiguration;
-	}
-
-	public String getPortalPropertiesBlacklist() {
-		return _portalPropertiesBlacklist;
-	}
-
-	protected String getContentJSONString() {
+	public String getContentJSONString() {
 		ObjectMapper objectMapper = new ObjectMapper();
 
 		ObjectNode rootNode = objectMapper.createObjectNode();
@@ -163,6 +139,14 @@ public class LCSClusterEntryTokenContentAdvisor {
 		if (_consumerSecret != null) {
 			rootNode.put("consumerSecret", _consumerSecret);
 		}
+
+		if (_contentStructureVersion < 3) {
+			throw new UnsupportedOperationException(
+				"Unsupported content structure version " +
+					_contentStructureVersion);
+		}
+
+		rootNode.put("contentStructureVersion", _contentStructureVersion);
 
 		if (_dataCenterHostName != null) {
 			rootNode.put("dataCenterHostName", _dataCenterHostName);
@@ -192,6 +176,30 @@ public class LCSClusterEntryTokenContentAdvisor {
 		}
 
 		return rootNode.toString();
+	}
+
+	public int getContentStructureVersion() {
+		return _contentStructureVersion;
+	}
+
+	public String getDataCenterHostName() {
+		return _dataCenterHostName;
+	}
+
+	public String getDataCenterHostPort() {
+		return _dataCenterHostPort;
+	}
+
+	public String getDataCenterProtocol() {
+		return _dataCenterProtocol;
+	}
+
+	public Map<String, String> getLCSServicesConfiguration() {
+		return _lcsServicesConfiguration;
+	}
+
+	public String getPortalPropertiesBlacklist() {
+		return _portalPropertiesBlacklist;
 	}
 
 	protected boolean isNotValid(String value) {
@@ -231,6 +239,12 @@ public class LCSClusterEntryTokenContentAdvisor {
 
 		if (jsonNode != null) {
 			_consumerSecret = jsonNode.asText();
+		}
+
+		jsonNode = jsonTreeNode.get("contentStructureVersion");
+
+		if (jsonNode != null) {
+			_contentStructureVersion = jsonNode.asInt();
 		}
 
 		jsonNode = jsonTreeNode.get("dataCenterHostName");
@@ -274,6 +288,7 @@ public class LCSClusterEntryTokenContentAdvisor {
 	private String _accessToken;
 	private String _consumerKey;
 	private String _consumerSecret;
+	private int _contentStructureVersion;
 	private String _dataCenterHostName;
 	private String _dataCenterHostPort;
 	private String _dataCenterProtocol;
