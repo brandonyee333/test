@@ -7770,3 +7770,136 @@ app.artifacts-7.0.59=\
 app.change.log-7.0.59=LPS-52675 LPS-61099 LPS-61420 LPS-64031 LPS-64277 LPS-64383 LPS-64809 LPS-65012 LPS-65135 LPS-65225 LPS-65240 LPS-65362 LPS-65486 LPS-65534 LPS-65660 LPS-65810 LPS-66853 LPS-66974 LPS-67352 LPS-67430 LPS-67455 LPS-68062 LPS-69604 LPS-69661 LPS-70739 LPS-72081 LPS-72095 LPS-72287 LPS-72726 LPS-72839 LPS-73178 LPS-73518 LPS-73586 LPS-74158 LPS-74544 LPS-74862 LPS-74897 LPS-75049 LPS-76706 LPS-77143 LPS-78429 LPS-78772 LPS-80517 LPS-82757 LPS-82828 LPS-83081 LPS-83599 LPS-83603 LPS-83705 LPS-83849 
 
 app.git.id-7.0.59=16900c0633dde5d751de5c2bfd1685c95b1b6edf
+
+#
+# Liferay App Version 7.0.60
+#
+
+app.artifacts-7.0.60=\
+	com.liferay.application.list.api-2.2.6.jar,\
+	com.liferay.application.list.my.account.permissions-1.0.2.jar,\
+	com.liferay.application.list.taglib-2.0.14.jar,\
+	com.liferay.application.list.user.personal.site.permissions-2.0.7.jar,\
+	com.liferay.asset.browser.web-1.0.30.jar,\
+	com.liferay.asset.categories.admin.web-1.1.21.jar,\
+	com.liferay.asset.categories.navigation.api-1.0.1.jar,\
+	com.liferay.asset.categories.navigation.web-2.0.11.jar,\
+	com.liferay.asset.categories.service-1.0.14.jar,\
+	com.liferay.asset.display.web-1.0.11.jar,\
+	com.liferay.asset.entry.query.processor.custom.user.attributes-2.0.9.jar,\
+	com.liferay.asset.publisher.layout.prototype-1.0.15.jar,\
+	com.liferay.asset.publisher.web-1.8.23.jar,\
+	com.liferay.asset.service-1.1.6.jar,\
+	com.liferay.asset.taglib-2.0.12.jar,\
+	com.liferay.asset.tags.admin.web-1.0.17.jar,\
+	com.liferay.asset.tags.api-1.0.3.jar,\
+	com.liferay.asset.tags.compiler.web-2.0.8.jar,\
+	com.liferay.asset.tags.navigation.api-1.0.1.jar,\
+	com.liferay.asset.tags.navigation.web-3.0.13.jar,\
+	com.liferay.asset.tags.service-2.0.7.jar,\
+	com.liferay.asset.web-2.0.6.jar,\
+	com.liferay.exportimport.api-2.2.2.jar,\
+	com.liferay.exportimport.resources.importer-2.0.5.jar,\
+	com.liferay.exportimport.service-4.2.1.jar,\
+	com.liferay.exportimport.web-1.0.49.jar,\
+	com.liferay.iframe.web-1.0.20.jar,\
+	com.liferay.journal.api-2.13.3.jar,\
+	com.liferay.journal.content.asset.addon.entry.comments-1.0.10.jar,\
+	com.liferay.journal.content.asset.addon.entry.common-2.0.5.jar,\
+	com.liferay.journal.content.asset.addon.entry.conversions-2.0.9.jar,\
+	com.liferay.journal.content.asset.addon.entry.locales-1.0.8.jar,\
+	com.liferay.journal.content.asset.addon.entry.print-2.0.5.jar,\
+	com.liferay.journal.content.asset.addon.entry.ratings-2.0.5.jar,\
+	com.liferay.journal.content.asset.addon.entry.related.assets-2.0.5.jar,\
+	com.liferay.journal.content.search.web-1.0.22.jar,\
+	com.liferay.journal.content.web-2.0.23.jar,\
+	com.liferay.journal.editor.configuration-1.0.3.jar,\
+	com.liferay.journal.item.selector.api-1.0.3.jar,\
+	com.liferay.journal.item.selector.web-1.0.6.jar,\
+	com.liferay.journal.lang-2.0.19.jar,\
+	com.liferay.journal.ratings.definition-2.0.3.jar,\
+	com.liferay.journal.service-3.28.1.jar,\
+	com.liferay.journal.taglib-1.0.9.jar,\
+	com.liferay.journal.terms.of.use-2.0.27.jar,\
+	com.liferay.journal.web-1.10.33.jar,\
+	com.liferay.layout.admin.web-1.0.77.jar,\
+	com.liferay.layout.impl-2.0.7.jar,\
+	com.liferay.layout.item.selector.api-1.0.4.jar,\
+	com.liferay.layout.item.selector.web-1.1.13.jar,\
+	com.liferay.layout.prototype.api-1.0.1.jar,\
+	com.liferay.layout.prototype.impl-1.0.6.jar,\
+	com.liferay.layout.prototype.web-1.0.17.jar,\
+	com.liferay.layout.set.prototype.api-1.0.2.jar,\
+	com.liferay.layout.set.prototype.impl-2.0.2.jar,\
+	com.liferay.layout.set.prototype.web-1.0.18.jar,\
+	com.liferay.layout.taglib-2.2.2.jar,\
+	com.liferay.layout.type.controller.control.panel-2.0.5.jar,\
+	com.liferay.layout.type.controller.full.page.application-2.0.11.jar,\
+	com.liferay.layout.type.controller.node-2.0.7.jar,\
+	com.liferay.layout.type.controller.shared.portlet-2.0.8.jar,\
+	com.liferay.nested.portlets.web-2.0.20.jar,\
+	com.liferay.portlet.configuration.css.web-2.0.23.jar,\
+	com.liferay.portlet.configuration.icon.close-2.0.3.jar,\
+	com.liferay.portlet.configuration.icon.edit-2.0.3.jar,\
+	com.liferay.portlet.configuration.icon.edit.defaults-2.0.3.jar,\
+	com.liferay.portlet.configuration.icon.edit.guest-2.0.3.jar,\
+	com.liferay.portlet.configuration.icon.help-2.0.3.jar,\
+	com.liferay.portlet.configuration.icon.locator.api-2.0.4.jar,\
+	com.liferay.portlet.configuration.icon.maximize-2.0.3.jar,\
+	com.liferay.portlet.configuration.icon.minimize-2.0.3.jar,\
+	com.liferay.portlet.configuration.icon.print-2.0.3.jar,\
+	com.liferay.portlet.configuration.icon.refresh-2.0.3.jar,\
+	com.liferay.portlet.configuration.sharing.web-2.0.14.jar,\
+	com.liferay.portlet.configuration.toolbar.contributor.locator.api-2.0.3.jar,\
+	com.liferay.portlet.configuration.web-1.0.34.jar,\
+	com.liferay.portlet.display.template-2.2.6.jar,\
+	com.liferay.portlet.display.template.web-2.0.8.jar,\
+	com.liferay.product.navigation.accessibility-1.0.1.jar,\
+	com.liferay.product.navigation.control.menu.api-3.0.1.jar,\
+	com.liferay.product.navigation.control.menu.dxp.theme.contributor-1.0.15.jar,\
+	com.liferay.product.navigation.control.menu.web-2.0.21.jar,\
+	com.liferay.product.navigation.control.panel-2.0.3.jar,\
+	com.liferay.product.navigation.product.menu.dxp.theme.contributor-1.0.13.jar,\
+	com.liferay.product.navigation.product.menu.web-2.0.26.jar,\
+	com.liferay.product.navigation.simulation.api-1.1.0.jar,\
+	com.liferay.product.navigation.simulation.device-2.0.13.jar,\
+	com.liferay.product.navigation.simulation.theme.contributor-2.0.4.jar,\
+	com.liferay.product.navigation.simulation.web-3.0.4.jar,\
+	com.liferay.product.navigation.site.administration-2.0.17.jar,\
+	com.liferay.product.navigation.taglib-2.0.14.jar,\
+	com.liferay.product.navigation.user-2.0.8.jar,\
+	com.liferay.product.navigation.user.personal.bar.web-2.0.13.jar,\
+	com.liferay.rss.api-1.0.1.jar,\
+	com.liferay.rss.util-1.0.14.jar,\
+	com.liferay.rss.web-3.0.10.jar,\
+	com.liferay.site.admin.web-1.0.47.jar,\
+	com.liferay.site.api-2.1.11.jar,\
+	com.liferay.site.browser.web-2.0.23.jar,\
+	com.liferay.site.item.selector.api-1.0.4.jar,\
+	com.liferay.site.item.selector.web-2.0.21.jar,\
+	com.liferay.site.memberships.web-1.0.30.jar,\
+	com.liferay.site.my.sites.web-2.0.9.jar,\
+	com.liferay.site.navigation.breadcrumb.web-3.0.9.jar,\
+	com.liferay.site.navigation.directory.web-2.0.13.jar,\
+	com.liferay.site.navigation.language.api-1.0.1.jar,\
+	com.liferay.site.navigation.language.web-3.0.10.jar,\
+	com.liferay.site.navigation.menu.web-2.0.26.jar,\
+	com.liferay.site.navigation.site.map.web-2.0.21.jar,\
+	com.liferay.site.navigation.taglib-2.1.9.jar,\
+	com.liferay.site.teams.web-1.0.21.jar,\
+	com.liferay.staging.api-2.1.1.jar,\
+	com.liferay.staging.bar.web-1.0.29.jar,\
+	com.liferay.staging.configuration.web-1.0.25.jar,\
+	com.liferay.staging.lang-2.0.18.jar,\
+	com.liferay.staging.portlet.data.handler-3.0.1.jar,\
+	com.liferay.staging.processes.web-1.0.33.jar,\
+	com.liferay.staging.security-2.0.29.jar,\
+	com.liferay.staging.taglib-3.1.23.jar,\
+	com.liferay.trash.service-1.0.5.jar,\
+	com.liferay.trash.taglib-2.0.10.jar,\
+	com.liferay.trash.web-1.0.30.jar,\
+	com.liferay.xsl.content.web-2.0.14.jar
+
+app.change.log-7.0.60=LPS-52675 LPS-54392 LPS-61099 LPS-61420 LPS-64031 LPS-64383 LPS-64809 LPS-65012 LPS-65135 LPS-65225 LPS-66853 LPS-67352 LPS-67430 LPS-68062 LPS-69661 LPS-69825 LPS-70739 LPS-72081 LPS-72095 LPS-72726 LPS-73518 LPS-74897 LPS-75049 LPS-76213 LPS-78660 LPS-78772 LPS-79651 LPS-79781 LPS-80354 LPS-80540 LPS-81897 LPS-82462 LPS-82561 LPS-82827 LPS-82828 LPS-83705 LPS-83795 LPS-84003 LPS-84119 LPS-84204 LPS-84228 LPS-84262 LPS-84263 LPS-84270 LPS-84297 LPS-84308 LPS-84319 LPS-84490 
+
+app.git.id-7.0.60=46953d45f2eff733d3ab905b7d822df643d5189d
