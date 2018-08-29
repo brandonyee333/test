@@ -18,6 +18,8 @@ import com.liferay.osb.customer.rabbitmq.connector.router.BaseMessageRouter;
 import com.liferay.osb.customer.rabbitmq.connector.router.MessageRouter;
 import com.liferay.osb.customer.zendesk.connector.rabbitmq.processors.ZendeskOrganizationCreateMessageProcessor;
 import com.liferay.osb.customer.zendesk.connector.rabbitmq.processors.ZendeskOrganizationCreateOrUpdateMessageProcessor;
+import com.liferay.osb.customer.zendesk.connector.rabbitmq.processors.ZendeskOrganizationMembershipBulkCreateMessageProcessor;
+import com.liferay.osb.customer.zendesk.connector.rabbitmq.processors.ZendeskOrganizationMembershipBulkDeleteMessageProcessor;
 import com.liferay.osb.customer.zendesk.connector.rabbitmq.processors.ZendeskOrganizationMembershipDeleteMessageProcessor;
 import com.liferay.osb.customer.zendesk.connector.rabbitmq.processors.ZendeskTagAddMessageProcessor;
 import com.liferay.osb.customer.zendesk.connector.rabbitmq.processors.ZendeskTagDeleteMessageProcessor;
@@ -55,6 +57,28 @@ public class ZendeskMessageRouter extends BaseMessageRouter {
 		Map<String, Object> properties) {
 
 		addRoute(zendeskOrganizationCreateOrUpdateMessageProcessor, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setZendeskOrganizationMembershipBulkCreateMessageProcessor(
+		ZendeskOrganizationMembershipBulkCreateMessageProcessor
+			zendeskOrganizationMembershipBulkCreateMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(
+			zendeskOrganizationMembershipBulkCreateMessageProcessor,
+			properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setZendeskOrganizationMembershipBulkDeleteMessageProcessor(
+		ZendeskOrganizationMembershipBulkDeleteMessageProcessor
+			zendeskOrganizationMembershipBulkDeleteMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(
+			zendeskOrganizationMembershipBulkDeleteMessageProcessor,
+			properties);
 	}
 
 	@Reference(unbind = "-")

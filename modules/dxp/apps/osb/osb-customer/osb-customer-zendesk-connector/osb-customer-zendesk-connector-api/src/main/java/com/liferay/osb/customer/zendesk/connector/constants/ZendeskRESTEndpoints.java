@@ -19,6 +19,12 @@ package com.liferay.osb.customer.zendesk.connector.constants;
  */
 public interface ZendeskRESTEndpoints {
 
+	public static final String ORGANIZATION_MEMBERSHIPS_CREATE_MANY =
+		"organization_memberships/create_many.json";
+
+	public static final String ORGANIZATION_MEMBERSHIPS_DESTROY_MANY =
+		"organization_memberships/destroy_many.json";
+
 	public static final String ORGANIZATIONS = "organizations.json";
 
 	public static final String ORGANIZATIONS_CREATE_OR_UPDATE =

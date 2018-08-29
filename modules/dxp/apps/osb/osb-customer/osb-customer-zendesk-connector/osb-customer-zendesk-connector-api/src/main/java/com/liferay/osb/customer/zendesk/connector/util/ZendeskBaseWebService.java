@@ -24,6 +24,9 @@ import java.util.Map;
  */
 public interface ZendeskBaseWebService {
 
+	public JSONObject delete(String url, Map<String, String> parameters)
+		throws PortalException;
+
 	public JSONObject delete(String endpoint, String json)
 		throws PortalException;
 

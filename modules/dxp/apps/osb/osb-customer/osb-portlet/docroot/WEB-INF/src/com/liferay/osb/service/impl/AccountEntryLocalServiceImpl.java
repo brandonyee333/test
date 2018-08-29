@@ -767,7 +767,7 @@ public class AccountEntryLocalServiceImpl
 	}
 
 	public List<AccountEntry> getPartnerAccountEntries(long partnerEntryId) {
-		return accountEntryPersistence.findByPartnerEntryId(partnerEntryId);
+		return accountEntryPersistence.findByPEI_PMS(partnerEntryId, true);
 	}
 
 	public List<AccountEntry> getRedirectAccountEntries(long accountEntryId) {

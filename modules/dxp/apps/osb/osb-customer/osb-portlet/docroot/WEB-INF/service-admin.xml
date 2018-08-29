@@ -154,6 +154,10 @@
 		<finder name="PartnerEntryId" return-type="Collection">
 			<finder-column name="partnerEntryId" />
 		</finder>
+		<finder name="PEI_PMS" return-type="Collection">
+			<finder-column name="partnerEntryId" />
+			<finder-column name="partnerManagedSupport" />
+		</finder>
 		<finder name="U_T" return-type="Collection">
 			<finder-column name="userId" />
 			<finder-column name="type" />

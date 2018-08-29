@@ -23,6 +23,8 @@ public class ZendeskTagConstants {
 
 	public static final String OSB_KNOWLEDGE_BASE = "osb_kb";
 
+	public static final String OSB_PARTNER = "osb_partner";
+
 	public static final String PREFIX_OSB = "osb_";
 
 	public static final String WATCHER = "_watcher";

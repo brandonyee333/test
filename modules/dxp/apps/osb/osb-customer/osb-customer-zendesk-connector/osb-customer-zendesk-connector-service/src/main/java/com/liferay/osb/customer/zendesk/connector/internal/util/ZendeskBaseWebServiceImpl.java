@@ -19,6 +19,8 @@ import com.liferay.osb.customer.zendesk.connector.internal.http.ZendeskHttpDelet
 import com.liferay.osb.customer.zendesk.connector.internal.http.ZendeskHttpGet;
 import com.liferay.osb.customer.zendesk.connector.util.ZendeskBaseWebService;
 import com.liferay.petra.json.web.service.client.BaseJSONWebServiceClientImpl;
+import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
+import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -61,6 +63,25 @@ public class ZendeskBaseWebServiceImpl
 		setMaxAttempts(3);
 
 		super.afterPropertiesSet();
+	}
+
+	public JSONObject delete(String url, Map<String, String> parameters)
+		throws PortalException {
+
+		String response = null;
+
+		try {
+			response = doDelete(url, parameters, _authHeader);
+
+			return JSONFactoryUtil.createJSONObject(response);
+		}
+		catch (Exception e) {
+			if (response != null) {
+				_log.error("Error parsing response: " + response);
+			}
+
+			throw new PortalException(e);
+		}
 	}
 
 	public JSONObject delete(String endpoint, String json)
@@ -212,6 +233,18 @@ public class ZendeskBaseWebServiceImpl
 		}
 	}
 
+	@Override
+	protected String execute(HttpRequestBase httpRequestBase)
+		throws JSONWebServiceInvocationException,
+			   JSONWebServiceTransportException {
+
+		setHostName(ZendeskConnectorConfigurationValues.ZENDESK_DOMAIN_NAME);
+		setHostPort(Http.HTTPS_PORT);
+		setProtocol(Http.HTTPS);
+
+		return super.execute(httpRequestBase);
+	}
+
 	protected StringEntity getStringEntity(String endpoint, String json) {
 		StringEntity stringEntity = new StringEntity(
 			json, StandardCharsets.UTF_8);
@@ -239,11 +272,18 @@ public class ZendeskBaseWebServiceImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		ZendeskBaseWebServiceImpl.class);
 
-	private static final Map<String, String> _headers = new HashMap<>();
-
-	static {
-		_headers.put("Authorization", _CREDENTIALS);
-		_headers.put("Content-Type", "application/json");
-	}
+	private static final Map<String, String> _authHeader =
+		new HashMap<String, String>() {
+			{
+				put("Authorization", _CREDENTIALS);
+			}
+		};
+	private static final Map<String, String> _headers =
+		new HashMap<String, String>() {
+			{
+				put("Authorization", _CREDENTIALS);
+				put("Content-Type", "application/json");
+			}
+		};
 
 }

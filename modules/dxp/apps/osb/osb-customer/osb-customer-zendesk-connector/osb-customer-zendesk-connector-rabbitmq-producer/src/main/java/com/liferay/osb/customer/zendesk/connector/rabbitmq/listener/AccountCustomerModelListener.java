@@ -25,7 +25,6 @@ import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.ModelListenerException;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -64,12 +63,17 @@ public class AccountCustomerModelListener
 			JSONArray tagsJSONArray = getAddAccountCustomerTags(
 				accountCustomer);
 
+			AccountEntry accountEntry =
+				AccountEntryLocalServiceUtil.getAccountEntry(
+					accountCustomer.getAccountEntryId());
+
 			if (Validator.isNotNull(zendeskUserId)) {
-				zendeskUser = getZendeskUser(accountCustomer, null, user);
+				zendeskUser = ZendeskModelListenerUtil.getZendeskUser(
+					accountEntry, null, user);
 			}
 			else {
-				zendeskUser = getZendeskUser(
-					accountCustomer, tagsJSONArray, user);
+				zendeskUser = ZendeskModelListenerUtil.getZendeskUser(
+					accountEntry, tagsJSONArray, user);
 			}
 
 			_messagePublisher.sendMessage(
@@ -263,35 +267,6 @@ public class AccountCustomerModelListener
 		}
 
 		return jsonArray;
-	}
-
-	protected ZendeskUser getZendeskUser(
-			AccountCustomer accountCustomer, JSONArray tags, User user)
-		throws PortalException {
-
-		ZendeskUser zendeskUser = new ZendeskUser();
-
-		zendeskUser.setEmail(user.getEmailAddress());
-		zendeskUser.setExternalId(user.getUuid());
-
-		String locale = ZendeskModelListenerUtil.convertToZendeskLocale(
-			user.getLanguageId());
-
-		zendeskUser.setLocale(locale);
-
-		zendeskUser.setName(user.getFullName());
-
-		AccountEntry accountEntry =
-			AccountEntryLocalServiceUtil.getAccountEntry(
-				accountCustomer.getAccountEntryId());
-
-		zendeskUser.setOrganizationName(accountEntry.getName());
-
-		if (tags != null) {
-			zendeskUser.setTags(tags);
-		}
-
-		return zendeskUser;
 	}
 
 	@Reference(
