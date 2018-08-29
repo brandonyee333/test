@@ -17,7 +17,7 @@ package com.liferay.osb.customer.zendesk.documentation.sync.internal.deploy.auto
 import com.liferay.osb.customer.zendesk.documentation.sync.importer.DocumentationImporter;
 import com.liferay.osb.customer.zendesk.documentation.sync.importer.DocumentationImporterFactory;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory;
-import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskCategoryLocalServiceUtil;
+import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskCategoryLocalService;
 import com.liferay.portal.kernel.deploy.auto.AutoDeployException;
 import com.liferay.portal.kernel.deploy.auto.AutoDeployer;
 import com.liferay.portal.kernel.deploy.auto.context.AutoDeploymentContext;
@@ -37,9 +37,11 @@ import java.io.InputStream;
 public class ZendeskDocumentationSyncAutoDeployer implements AutoDeployer {
 
 	public ZendeskDocumentationSyncAutoDeployer(
-		DocumentationImporterFactory documentationImporterFactory) {
+		DocumentationImporterFactory documentationImporterFactory,
+		ZendeskCategoryLocalService zendeskCategoryLocalService) {
 
 		_documentationImporterFactory = documentationImporterFactory;
+		_zendeskCategoryLocalService = zendeskCategoryLocalService;
 	}
 
 	@Override
@@ -66,8 +68,7 @@ public class ZendeskDocumentationSyncAutoDeployer implements AutoDeployer {
 		File file = autoDeploymentContext.getFile();
 
 		ZendeskCategory zendeskCategory =
-			ZendeskCategoryLocalServiceUtil.fetchZendeskCategory(
-				file.getName());
+			_zendeskCategoryLocalService.fetchZendeskCategory(file.getName());
 
 		if (zendeskCategory == null) {
 			_log.error(
@@ -106,5 +107,6 @@ public class ZendeskDocumentationSyncAutoDeployer implements AutoDeployer {
 		ZendeskDocumentationSyncAutoDeployer.class);
 
 	private final DocumentationImporterFactory _documentationImporterFactory;
+	private final ZendeskCategoryLocalService _zendeskCategoryLocalService;
 
 }

@@ -17,6 +17,7 @@ package com.liferay.osb.customer.zendesk.documentation.sync.internal.deploy.auto
 import com.liferay.osb.customer.zendesk.documentation.sync.importer.DocumentationImporterFactory;
 import com.liferay.portal.deploy.auto.ThreadSafeAutoDeployer;
 import com.liferay.portal.kernel.deploy.auto.AutoDeployListener;
+import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskCategoryLocalService;
 import com.liferay.portal.kernel.deploy.auto.AutoDeployer;
 import com.liferay.portal.kernel.deploy.auto.BaseAutoDeployListener;
 
@@ -36,7 +37,7 @@ public class ZendeskDocumentationSyncAutoDeployListener
 	protected AutoDeployer buildAutoDeployer() {
 		return new ThreadSafeAutoDeployer(
 			new ZendeskDocumentationSyncAutoDeployer(
-				_documentationImporterFactory));
+				_documentationImporterFactory, _zendeskCategoryLocalService));
 	}
 
 	@Override
@@ -59,6 +60,9 @@ public class ZendeskDocumentationSyncAutoDeployListener
 
 		return false;
 	}
+
+	@Reference
+	private ZendeskCategoryLocalService _zendeskCategoryLocalService;
 
 	@Reference
 	private DocumentationImporterFactory _documentationImporterFactory;
