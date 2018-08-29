@@ -44,6 +44,7 @@ import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.nio.reactor.IOReactorException;
 import org.apache.http.util.EntityUtils;
 
 import org.osgi.service.component.annotations.Component;
@@ -54,6 +55,13 @@ import org.osgi.service.component.annotations.Component;
 @Component(immediate = true)
 public class ZendeskBaseWebServiceImpl
 	extends BaseJSONWebServiceClientImpl implements ZendeskBaseWebService {
+
+	@Override
+	public void afterPropertiesSet() throws IOReactorException {
+		setMaxAttempts(3);
+
+		super.afterPropertiesSet();
+	}
 
 	public JSONObject delete(String endpoint, String json)
 		throws PortalException {
