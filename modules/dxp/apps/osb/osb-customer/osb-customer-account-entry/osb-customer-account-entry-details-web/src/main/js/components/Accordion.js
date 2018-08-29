@@ -49,8 +49,8 @@ class AccordionItem extends React.Component {
 						{title}
 					</div>
 
-					<svg className="lexicon-icon lexicon-icon-angle-down">
-						<use xlinkHref="#angle-down" />
+					<svg className="lexicon-icon lexicon-icon-angle-right">
+						<use xlinkHref="#angle-right" />
 					</svg>
 				</button>
 
