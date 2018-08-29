@@ -53,15 +53,22 @@ public class LCSClusterEntryTokenContentAdvisorTest extends PowerMockito {
 				"consumerSecretPart", "lcs.liferay.com", "443", "https",
 				lcsServicesConfiguration, portalPropertiesBlacklist);
 
-		String contentA = lcsClusterEntryTokenContentAdvisorA.getContent();
+		String contentJSONStringA =
+			lcsClusterEntryTokenContentAdvisorA.getContentJSONString();
 
 		Assert.assertTrue(
-			contentA.contains("\"dataCenterHostName\":\"lcs.liferay.com\""));
+			contentJSONStringA.contains(
+				"\"dataCenterHostName\":\"lcs.liferay.com\""));
 		Assert.assertTrue(
-			contentA.contains(
+			contentJSONStringA.contains(
 				"\"portalPropertiesBlacklist\":" +
 					"\"property.key.1,property.key.2\""));
-		Assert.assertTrue(contentA.contains("lcsServicesConfiguration"));
+		Assert.assertTrue(
+			contentJSONStringA.contains("lcsServicesConfiguration"));
+
+		Assert.assertEquals(
+			"content structure version", 3,
+			lcsClusterEntryTokenContentAdvisorA.getContentStructureVersion());
 
 		LCSClusterEntryTokenContentAdvisor lcsClusterEntryTokenContentAdvisorB =
 			new LCSClusterEntryTokenContentAdvisor(
@@ -72,9 +79,15 @@ public class LCSClusterEntryTokenContentAdvisorTest extends PowerMockito {
 		Assert.assertNull(
 			lcsClusterEntryTokenContentAdvisorB.getPortalPropertiesBlacklist());
 
-		String contentB = lcsClusterEntryTokenContentAdvisorB.getContent();
+		String contentJSONStringB =
+			lcsClusterEntryTokenContentAdvisorB.getContentJSONString();
 
-		Assert.assertFalse(contentB.contains("portalPropertiesBlacklist"));
+		Assert.assertFalse(
+			contentJSONStringB.contains("portalPropertiesBlacklist"));
+
+		Assert.assertEquals(
+			"content structure version", 3,
+			lcsClusterEntryTokenContentAdvisorB.getContentStructureVersion());
 
 		LCSClusterEntryTokenContentAdvisor lcsClusterEntryTokenContentAdvisorC =
 			new LCSClusterEntryTokenContentAdvisor(
@@ -85,12 +98,17 @@ public class LCSClusterEntryTokenContentAdvisorTest extends PowerMockito {
 		Assert.assertNull(
 			lcsClusterEntryTokenContentAdvisorC.getConsumerSecret());
 
-		String contentC = lcsClusterEntryTokenContentAdvisorC.getContent();
+		String contentJSONStringC =
+			lcsClusterEntryTokenContentAdvisorC.getContentJSONString();
 
 		Assert.assertTrue(
-			contentC.contains(
+			contentJSONStringC.contains(
 				"\"portalPropertiesBlacklist\":" +
 					"\"property.key.1,property.key.2\""));
+
+		Assert.assertEquals(
+			"content structure version", 3,
+			lcsClusterEntryTokenContentAdvisorC.getContentStructureVersion());
 
 		lcsServicesConfiguration.clear();
 
@@ -99,9 +117,11 @@ public class LCSClusterEntryTokenContentAdvisorTest extends PowerMockito {
 				"accessSecretPart", "accessTokenPart", lcsServicesConfiguration,
 				null);
 
-		String contentD = lcsClusterEntryTokenContentAdvisorD.getContent();
+		String contentJSONStringD =
+			lcsClusterEntryTokenContentAdvisorD.getContentJSONString();
 
-		Assert.assertFalse(contentD.contains("portalPropertiesBlacklist"));
+		Assert.assertFalse(
+			contentJSONStringD.contains("portalPropertiesBlacklist"));
 	}
 
 	@Test
@@ -121,6 +141,9 @@ public class LCSClusterEntryTokenContentAdvisorTest extends PowerMockito {
 		Assert.assertNull(lcsClusterEntryTokenContentAdvisor.getConsumerKey());
 		Assert.assertNull(
 			lcsClusterEntryTokenContentAdvisor.getConsumerSecret());
+		Assert.assertEquals(
+			"content structure version", 1,
+			lcsClusterEntryTokenContentAdvisor.getContentStructureVersion());
 		Assert.assertNull(
 			lcsClusterEntryTokenContentAdvisor.getDataCenterHostName());
 		Assert.assertNull(
@@ -148,6 +171,9 @@ public class LCSClusterEntryTokenContentAdvisorTest extends PowerMockito {
 		Assert.assertNull(lcsClusterEntryTokenContentAdvisor.getConsumerKey());
 		Assert.assertNull(
 			lcsClusterEntryTokenContentAdvisor.getConsumerSecret());
+		Assert.assertEquals(
+			"content structure version", 2,
+			lcsClusterEntryTokenContentAdvisor.getContentStructureVersion());
 		Assert.assertNull(
 			lcsClusterEntryTokenContentAdvisor.getDataCenterHostName());
 		Assert.assertNull(
@@ -167,32 +193,17 @@ public class LCSClusterEntryTokenContentAdvisorTest extends PowerMockito {
 		lcsClusterEntryTokenContentAdvisor =
 			new LCSClusterEntryTokenContentAdvisor(contentV3);
 
-		Assert.assertEquals(
-			"accessTokenPart",
-			lcsClusterEntryTokenContentAdvisor.getAccessToken());
-		Assert.assertEquals(
-			"accessSecretPart",
-			lcsClusterEntryTokenContentAdvisor.getAccessSecret());
-		Assert.assertEquals(
-			"consumerKeyPart",
-			lcsClusterEntryTokenContentAdvisor.getConsumerKey());
-		Assert.assertEquals(
-			"consumerSecretPart",
-			lcsClusterEntryTokenContentAdvisor.getConsumerSecret());
-		Assert.assertEquals(
-			"lcs.liferay.com",
-			lcsClusterEntryTokenContentAdvisor.getDataCenterHostName());
-		Assert.assertEquals(
-			"443", lcsClusterEntryTokenContentAdvisor.getDataCenterHostPort());
-		Assert.assertEquals(
-			"https",
-			lcsClusterEntryTokenContentAdvisor.getDataCenterProtocol());
-		Assert.assertFalse(
-			lcsClusterEntryTokenContentAdvisor.
-				getLCSServicesConfiguration().isEmpty());
-		Assert.assertEquals(
-			"property.key.1,property.key.2",
-			lcsClusterEntryTokenContentAdvisor.getPortalPropertiesBlacklist());
+		_assertLCSClusterEntryTokenContentAdvisorValid(
+			3, lcsClusterEntryTokenContentAdvisor);
+
+		String contentV4 = getLCSClusterEntryTokenContent(
+			"lcs_cluster_entry_token_content_v4.json");
+
+		lcsClusterEntryTokenContentAdvisor =
+			new LCSClusterEntryTokenContentAdvisor(contentV4);
+
+		_assertLCSClusterEntryTokenContentAdvisorValid(
+			4, lcsClusterEntryTokenContentAdvisor);
 	}
 
 	protected String getLCSClusterEntryTokenContent(String fileName)
@@ -223,6 +234,41 @@ public class LCSClusterEntryTokenContentAdvisorTest extends PowerMockito {
 				inputStream.close();
 			}
 		}
+	}
+
+	private void _assertLCSClusterEntryTokenContentAdvisorValid(
+		int contentStructureVersion,
+		LCSClusterEntryTokenContentAdvisor lcsClusterEntryTokenContentAdvisor) {
+
+		Assert.assertEquals(
+			"accessTokenPart",
+			lcsClusterEntryTokenContentAdvisor.getAccessToken());
+		Assert.assertEquals(
+			"accessSecretPart",
+			lcsClusterEntryTokenContentAdvisor.getAccessSecret());
+		Assert.assertEquals(
+			"consumerKeyPart",
+			lcsClusterEntryTokenContentAdvisor.getConsumerKey());
+		Assert.assertEquals(
+			"consumerSecretPart",
+			lcsClusterEntryTokenContentAdvisor.getConsumerSecret());
+		Assert.assertEquals(
+			"content structure version", contentStructureVersion,
+			lcsClusterEntryTokenContentAdvisor.getContentStructureVersion());
+		Assert.assertEquals(
+			"lcs.liferay.com",
+			lcsClusterEntryTokenContentAdvisor.getDataCenterHostName());
+		Assert.assertEquals(
+			"443", lcsClusterEntryTokenContentAdvisor.getDataCenterHostPort());
+		Assert.assertEquals(
+			"https",
+			lcsClusterEntryTokenContentAdvisor.getDataCenterProtocol());
+		Assert.assertFalse(
+			lcsClusterEntryTokenContentAdvisor.
+				getLCSServicesConfiguration().isEmpty());
+		Assert.assertEquals(
+			"property.key.1,property.key.2",
+			lcsClusterEntryTokenContentAdvisor.getPortalPropertiesBlacklist());
 	}
 
 }
