@@ -149,17 +149,19 @@ body {
 	}
 }
 
-.product-menu {
-	.sidebar-header {
-		background-color: $product-menu-header-bg;
-		border-bottom: 1px solid $product-menu-header-border;
-		color: $product-menu-header-color;
+.sidenav-menu-slider {
+	.product-menu {
+		.sidebar-header {
+			background-color: $product-menu-header-bg;
+			border-bottom: 1px solid $product-menu-header-border;
+			color: $product-menu-header-color;
 
-		a {
-			color: $product-menu-header-link-color;
+			a {
+				color: $product-menu-header-link-color;
 
-			&:focus, &:hover {
-				color: $product-menu-header-link-hover-color;
+				&:focus, &:hover {
+					color: $product-menu-header-link-hover-color;
+				}
 			}
 		}
 	}
