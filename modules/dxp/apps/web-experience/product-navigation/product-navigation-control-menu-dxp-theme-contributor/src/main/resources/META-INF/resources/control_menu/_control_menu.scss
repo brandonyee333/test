@@ -9,14 +9,23 @@
 			visibility: hidden;
 		}
 
+		:target::before {
+			content: '';
+			display: block;
+			height: $has-control-menu-margin-top-mobile;
+			margin-top: -$has-control-menu-margin-top-mobile;
+		}
+
 		@include sm() {
 			margin-top: $has-control-menu-margin-top-desktop;
 
 			.portlet-boundary > span:first-child {
-				display: block;
-				position: relative;
 				top: -$has-control-menu-margin-top-desktop;
-				visibility: hidden;
+			}
+
+			:target::before {
+				height: $has-control-menu-margin-top-desktop;
+				margin-top: -$has-control-menu-margin-top-desktop;
 			}
 		}
 	}
@@ -31,14 +40,23 @@
 			visibility: hidden;
 		}
 
+		:target::before {
+			content: '';
+			display: block;
+			height: ($has-control-menu-margin-top-mobile + $has-customization-menu-margin-top-mobile);
+			margin-top: -($has-control-menu-margin-top-mobile + $has-customization-menu-margin-top-mobile);
+		}
+
 		@include sm() {
 			margin-top: ($has-control-menu-margin-top-desktop + $has-customization-menu-margin-top-desktop);
 
 			.portlet-boundary > span:first-child {
-				display: block;
-				position: relative;
 				top: -($has-control-menu-margin-top-desktop + $has-customization-menu-margin-top-desktop);
-				visibility: hidden;
+			}
+
+			:target::before {
+				height: ($has-control-menu-margin-top-desktop + $has-customization-menu-margin-top-desktop);
+				margin-top: -($has-control-menu-margin-top-desktop + $has-customization-menu-margin-top-desktop);
 			}
 		}
 	}
@@ -100,26 +118,23 @@
 .control-menu-level-2 {
 	background-color: $control-menu-level-2-bg;
 	color: $control-menu-level-2-color;
+	padding-bottom: 7px;
+	padding-top: 6px;
 
 	.container-fluid-1280 {
 		padding-left: 20px;
 		padding-right: 20px;
 	}
 
-	.control-menu-label {
-		@include sm() {
-			color: $control-menu-level-2-label-color;
-		}
-	}
-
-	padding-bottom: 7px;
-	padding-top: 6px;
-
 	@include sm() {
 		left: 0;
 		position: absolute;
 		right: 0;
 		top: 100%;
+
+		.control-menu-label {
+			color: $control-menu-level-2-label-color;
+		}
 	}
 
 	@include media-query(null, $screen-xs-max) {
@@ -130,10 +145,8 @@
 		right: 0;
 		top: 0;
 		z-index: 1;
-	}
 
-	&.open {
-		@include media-query(null, $screen-xs-max) {
+		&.open {
 			background-color: transparentize(#29343D, 0.1);
 			display: block;
 			overflow: auto;
@@ -158,20 +171,13 @@
 	@include flex-wrap(wrap);
 	@include justify-content(space-between);
 
-	> .control-menu-nav-item {
-		@include media-query(null, $screen-xs-max) {
+	@include media-query(null, $screen-xs-max) {
+		> .control-menu-nav-item {
 			margin-bottom: 55px;
 		}
-	}
 
-	.control-menu-nav-item {
-		@include media-query(null, $screen-xs-max) {
-			width: 100%;
-		}
-	}
-
-	.dropdown {
-		@include media-query(null, $screen-xs-max) {
+		.control-menu-nav-item,
+		.dropdown {
 			width: 100%;
 		}
 	}
@@ -256,9 +262,9 @@
 }
 
 .sidenav-transition {
+	.affix,
 	.control-menu,
-	.control-menu-level-2,
-	.affix {
+	.control-menu-level-2 {
 		@include transition($control-menu-css-transition);
 	}
 }
