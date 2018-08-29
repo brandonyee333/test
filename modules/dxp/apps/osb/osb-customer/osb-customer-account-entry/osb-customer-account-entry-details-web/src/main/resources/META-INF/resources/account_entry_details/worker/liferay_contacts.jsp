@@ -46,9 +46,9 @@ PortletURL portletURL = renderResponse.createRenderURL();
 	>
 
 		<%
-		User currAccountWorker = UserLocalServiceUtil.getUser(accountWorker.getUserId());
+		User curUser = UserLocalServiceUtil.getUser(accountWorker.getUserId());
 
-		List<Phone> phones = UsersAdminUtil.getPhones(request);
+		List<Phone> phones = curUser.getPhones();
 
 		String contactNumber = StringPool.BLANK;
 
@@ -63,7 +63,7 @@ PortletURL portletURL = renderResponse.createRenderURL();
 		<liferay-ui:search-container-column-text
 			cssClass="semibold"
 			name="name"
-			value="<%= currAccountWorker.getFullName() %>"
+			value="<%= curUser.getFullName() %>"
 		/>
 
 		<liferay-ui:search-container-column-text
@@ -73,7 +73,7 @@ PortletURL portletURL = renderResponse.createRenderURL();
 
 		<liferay-ui:search-container-column-text
 			name="email"
-			value="<%= currAccountWorker.getEmailAddress() %>"
+			value="<%= curUser.getEmailAddress() %>"
 		/>
 
 		<liferay-ui:search-container-column-text
