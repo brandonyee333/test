@@ -49,8 +49,16 @@ public class HandshakeMessage extends Message {
 		return _lcsClusterEntryId;
 	}
 
+	public String getLCSClusterNodeName() {
+		return _lcsClusterNodeName;
+	}
+
 	public int getLCSPortletBuildNumber() {
 		return _lcsPortletBuildNumber;
+	}
+
+	public String getLCSPortletVersion() {
+		return _lcsPortletVersion;
 	}
 
 	public int getPatchingToolVersion() {
@@ -65,6 +73,10 @@ public class HandshakeMessage extends Message {
 		return _portalEdition;
 	}
 
+	public int getProcessorCoresTotal() {
+		return _processorCoresTotal;
+	}
+
 	public List<Map<String, Long>> getUptimes() {
 		return _uptimes;
 	}
@@ -77,6 +89,11 @@ public class HandshakeMessage extends Message {
 		return _deregister;
 	}
 
+	/**
+	 * @return
+	 * @deprecated will be removed in next version
+	 */
+	@Deprecated
 	public boolean isMetricsLCSServiceEnabled() {
 		return _metricsLCSServiceEnabled;
 	}
@@ -85,6 +102,11 @@ public class HandshakeMessage extends Message {
 		return _monitoringEnabled;
 	}
 
+	/**
+	 * @return
+	 * @deprecated will be removed in next version
+	 */
+	@Deprecated
 	public boolean isPatchesLCSServiceEnabled() {
 		return _patchesLCSServiceEnabled;
 	}
@@ -93,6 +115,11 @@ public class HandshakeMessage extends Message {
 		return _patchingToolEnabled;
 	}
 
+	/**
+	 * @return
+	 * @deprecated will be removed in next version
+	 */
+	@Deprecated
 	public boolean isPortalPropertiesLCSServiceEnabled() {
 		return _portalPropertiesLCSServiceEnabled;
 	}
@@ -129,10 +156,22 @@ public class HandshakeMessage extends Message {
 		_lcsClusterEntryId = lcsClusterEntryId;
 	}
 
+	public void setLCSClusterNodeName(String lcsClusterNodeName) {
+		_lcsClusterNodeName = lcsClusterNodeName;
+	}
+
 	public void setLCSPortletBuildNumber(int lcsPortletBuildNumber) {
 		_lcsPortletBuildNumber = lcsPortletBuildNumber;
 	}
 
+	public void setLCSPortletVersion(String lcsPortletVersion) {
+		_lcsPortletVersion = lcsPortletVersion;
+	}
+
+	/**
+	 * @deprecated will be removed in next version
+	 */
+	@Deprecated
 	public void setMetricsLCSServiceEnabled(boolean metricsLCSServiceEnabled) {
 		_metricsLCSServiceEnabled = metricsLCSServiceEnabled;
 	}
@@ -141,6 +180,10 @@ public class HandshakeMessage extends Message {
 		_monitoringEnabled = monitoringEnabled;
 	}
 
+	/**
+	 * @deprecated will be removed in next version
+	 */
+	@Deprecated
 	public void setPatchesLCSServiceEnabled(boolean patchesLCSServiceEnabled) {
 		_patchesLCSServiceEnabled = patchesLCSServiceEnabled;
 	}
@@ -161,10 +204,18 @@ public class HandshakeMessage extends Message {
 		_portalEdition = portalEdition;
 	}
 
+	/**
+	 * @deprecated will be removed in next version
+	 */
+	@Deprecated
 	public void setPortalPropertiesLCSServiceEnabled(
 		boolean portalPropertiesLCSServiceEnabled) {
 
 		_portalPropertiesLCSServiceEnabled = portalPropertiesLCSServiceEnabled;
+	}
+
+	public void setProcessorCoresTotal(int processorCoresTotal) {
+		_processorCoresTotal = processorCoresTotal;
 	}
 
 	public void setServerManuallyShutdown(boolean serverManuallyShutdown) {
@@ -186,7 +237,9 @@ public class HandshakeMessage extends Message {
 	private int _hashCode;
 	private long _heartbeatInterval;
 	private long _lcsClusterEntryId;
+	private String _lcsClusterNodeName;
 	private int _lcsPortletBuildNumber;
+	private String _lcsPortletVersion;
 	private boolean _metricsLCSServiceEnabled;
 	private boolean _monitoringEnabled;
 	private boolean _patchesLCSServiceEnabled;
@@ -195,6 +248,7 @@ public class HandshakeMessage extends Message {
 	private int _portalBuildNumber;
 	private String _portalEdition;
 	private boolean _portalPropertiesLCSServiceEnabled;
+	private int _processorCoresTotal;
 	private boolean _serverManuallyShutdown;
 	private boolean _signOff;
 	private List<Map<String, Long>> _uptimes =
