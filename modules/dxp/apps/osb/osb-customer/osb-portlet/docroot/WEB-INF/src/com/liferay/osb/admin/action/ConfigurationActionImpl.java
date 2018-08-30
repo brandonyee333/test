@@ -20,9 +20,6 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 
 import javax.portlet.ActionRequest;
@@ -61,9 +58,6 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 
 		if (tabs1.equals("email-notifications")) {
 			updateEmailNotifications(actionRequest, preferences);
-		}
-		else if (tabs1.equals("support")) {
-			updateSupport(actionRequest, preferences);
 		}
 		else {
 			updateTrial(actionRequest, preferences);
@@ -124,52 +118,6 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 				preferences.store();
 			}
 		}
-	}
-
-	protected void updateFileRepositories(
-			ActionRequest actionRequest, PortletPreferences preferences)
-		throws Exception {
-
-		String fileRepositoryId = ParamUtil.getString(
-			actionRequest, "fileRepositoryId");
-
-		String name = ParamUtil.getString(actionRequest, "name");
-		String host = ParamUtil.getString(actionRequest, "host");
-		String status = ParamUtil.getString(actionRequest, "status");
-		String[] supportRegions = ParamUtil.getParameterValues(
-			actionRequest, "supportRegions");
-
-		String fileRepositories = preferences.getValue(
-			"fileRepositories", StringPool.BLANK);
-
-		UnicodeProperties fileRepositoriesProperties = new UnicodeProperties(
-			true);
-
-		fileRepositoriesProperties.fastLoad(fileRepositories);
-
-		UnicodeProperties serverProperties = new UnicodeProperties(true);
-
-		serverProperties.setProperty("fileRepositoryId", fileRepositoryId);
-		serverProperties.setProperty("host", host);
-		serverProperties.setProperty("name", name);
-		serverProperties.setProperty(
-			"supportRegionIds", StringUtil.merge(supportRegions));
-		serverProperties.setProperty("status", status);
-
-		fileRepositoriesProperties.setProperty(
-			fileRepositoryId, serverProperties.toString());
-
-		preferences.setValue(
-			"fileRepositories", fileRepositoriesProperties.toString());
-
-		preferences.store();
-	}
-
-	protected void updateSupport(
-			ActionRequest actionRequest, PortletPreferences preferences)
-		throws Exception {
-
-		updateFileRepositories(actionRequest, preferences);
 	}
 
 	protected void updateTrial(

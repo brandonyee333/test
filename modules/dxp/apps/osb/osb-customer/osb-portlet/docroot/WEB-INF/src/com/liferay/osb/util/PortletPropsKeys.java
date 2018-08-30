@@ -30,15 +30,6 @@ public interface PortletPropsKeys {
 	public static final String DEVELOPER_UPGRADE_ENABLED =
 		"developer.upgrade.enabled";
 
-	public static final String FILE_REPOSITORY_HOST = "file.repository.host";
-
-	public static final String FILE_REPOSITORY_IDS = "file.repository.ids";
-
-	public static final String FILE_REPOSITORY_NAME = "file.repository.name";
-
-	public static final String FILE_REPOSITORY_SUPPORT_REGION_IDS =
-		"file.repository.support.region.ids";
-
 	public static final String PROVISIONING_EMAIL_ADDRESS =
 		"provisioning.email.address";
 
@@ -98,9 +89,5 @@ public interface PortletPropsKeys {
 
 	public static final String SUPPORT_EMAIL_ADDRESS_FROM =
 		"support.email.address.from";
-
-	public static final String WEB_API_TOKEN = "web.api.token";
-
-	public static final String WEB_DOMAIN_NAME = "web.domain.name";
 
 }

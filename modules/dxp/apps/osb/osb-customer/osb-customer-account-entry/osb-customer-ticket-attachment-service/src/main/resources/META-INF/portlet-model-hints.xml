@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="com.liferay.osb.customer.ticket.attachment.model.TicketAttachment">
+		<field name="ticketAttachmentId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="accountEntryId" type="long" />
+		<field name="zendeskTicketId" type="long" />
+		<field name="fileRepositoryId" type="String" />
+		<field name="fileName" type="String">
+			<hint name="max-length">255</hint>
+		</field>
+		<field name="fileSize" type="long" />
+		<field name="type" type="int" />
+	</model>
+</model-hints>

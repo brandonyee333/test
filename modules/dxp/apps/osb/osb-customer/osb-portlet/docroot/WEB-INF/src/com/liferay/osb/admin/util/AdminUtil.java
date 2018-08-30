@@ -14,7 +14,6 @@
 
 package com.liferay.osb.admin.util;
 
-import com.liferay.osb.model.FileRepository;
 import com.liferay.osb.tools.BaseUpgradeImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
@@ -30,7 +29,6 @@ import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.File;
@@ -160,42 +158,6 @@ public class AdminUtil {
 					"/email_provisioning_create_account_subject.tmpl"));
 
 		return map;
-	}
-
-	public static List<FileRepository> getFileRepositories() {
-		List<FileRepository> fileRepositoryList = new ArrayList<>();
-
-		String fileRepositories = getPortletPreferences().getValue(
-			"fileRepositories", null);
-
-		UnicodeProperties fileRepositoriesProperties = new UnicodeProperties(
-			true);
-
-		fileRepositoriesProperties.fastLoad(fileRepositories);
-
-		for (String fileRepositoryProperties :
-				fileRepositoriesProperties.values()) {
-
-			fileRepositoryList.add(
-				new FileRepository(fileRepositoryProperties));
-		}
-
-		return fileRepositoryList;
-	}
-
-	public static FileRepository getFileRepository(String fileRepositoryId) {
-		String fileRepositories = getPortletPreferences().getValue(
-			"fileRepositories", null);
-
-		UnicodeProperties fileRepositoriesProperties = new UnicodeProperties(
-			true);
-
-		fileRepositoriesProperties.fastLoad(fileRepositories);
-
-		String fileRepositoryProperties =
-			fileRepositoriesProperties.getProperty(fileRepositoryId);
-
-		return new FileRepository(fileRepositoryProperties);
 	}
 
 	public static List<Class<?>> getManualUpgradeProcessClasses(int buildNumber)

@@ -1,0 +1,8 @@
+Bundle-Name: Liferay OSB Customer Ticket Attachment API
+Bundle-SymbolicName: com.liferay.osb.customer.ticket.attachment.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.osb.customer.ticket.attachment.exception,\
+	com.liferay.osb.customer.ticket.attachment.model,\
+	com.liferay.osb.customer.ticket.attachment.service,\
+	com.liferay.osb.customer.ticket.attachment.service.persistence

@@ -938,7 +938,6 @@
 		<exception>DuplicateProductEntry</exception>
 		<exception>DuplicateSupportRegion</exception>
 		<exception>DuplicateSupportResponse</exception>
-		<exception>FileRepositoryNotAvailable</exception>
 		<exception>OfferingBundleName</exception>
 		<exception>OfferingEntryQuantity</exception>
 		<exception>OfferingEntrySizing</exception>

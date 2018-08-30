@@ -14,27 +14,19 @@
 
 package com.liferay.osb.support.util;
 
-import com.liferay.osb.model.FileRepository;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.service.OrderEntryLocalServiceUtil;
-import com.liferay.osb.util.PortletPropsKeys;
-import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.petra.content.ContentUtil;
-import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.service.ListTypeServiceUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.util.portlet.PortletProps;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -98,107 +90,6 @@ public class SupportUtil {
 
 		return map;
 	}
-
-	/* Refactor for zendesk
-	 *
-	public static List<FileRepository> getFileRepositories() {
-		List<FileRepository> fileRepositoryList = new ArrayList<>();
-
-		PortletPreferences portletPreferences = getPortletPreferences();
-
-		String fileRepositories = portletPreferences.getValue(
-			"fileRepositories", null);
-
-		UnicodeProperties fileRepositoriesProperties = new UnicodeProperties(
-			true);
-
-		fileRepositoriesProperties.fastLoad(fileRepositories);
-
-		if (fileRepositoriesProperties.isEmpty()) {
-			return getDefaultFileRepositories();
-		}
-
-		for (String fileRepositoryProperties :
-				fileRepositoriesProperties.values()) {
-
-			FileRepository fileRepository = new FileRepository(
-				fileRepositoryProperties);
-
-			if (fileRepository.getStatus() ==
-					WorkflowConstants.STATUS_INACTIVE) {
-
-				continue;
-			}
-
-			fileRepositoryList.add(fileRepository);
-		}
-
-		return fileRepositoryList;
-	}
-
-	public static FileRepository getFileRepository(String fileRepositoryId) {
-		if (Validator.isNull(fileRepositoryId)) {
-			return null;
-		}
-
-		PortletPreferences portletPreferences = getPortletPreferences();
-
-		String fileRepositories = portletPreferences.getValue(
-			"fileRepositories", null);
-
-		if (fileRepositories != null) {
-			UnicodeProperties fileRepositoriesProperties =
-				new UnicodeProperties(true);
-
-			fileRepositoriesProperties.fastLoad(fileRepositories);
-
-			String fileRepositoryProperties =
-				fileRepositoriesProperties.getProperty(fileRepositoryId);
-
-			return new FileRepository(fileRepositoryProperties);
-		}
-		else {
-			return getDefaultFileRepository(fileRepositoryId);
-		}
-	}
-
-	public static FileRepository getFileRepository(TicketEntry ticketEntry) {
-		FileRepository defaultFileRepository = null;
-
-		for (FileRepository fileRepository : getFileRepositories()) {
-			long[] supportRegionIds = fileRepository.getSupportRegionIds();
-
-			if (ArrayUtil.contains(
-					supportRegionIds, ticketEntry.getSupportRegionId())) {
-
-				return fileRepository;
-			}
-
-			if (defaultFileRepository == null) {
-				defaultFileRepository = fileRepository;
-			}
-		}
-
-		return defaultFileRepository;
-	}
-
-	public static FileRepository getFirstActiveFileRepository(
-		Set<String> fileRepositoryIdsSet) {
-
-		if (fileRepositoryIdsSet.isEmpty()) {
-			return null;
-		}
-
-		for (FileRepository fileRepository : getFileRepositories()) {
-			String fileRepositoryId = fileRepository.getFileRepositoryId();
-
-			if (fileRepositoryIdsSet.contains(fileRepositoryId)) {
-				return fileRepository;
-			}
-		}
-
-		return null;
-	}*/
 
 	public static int getListTypeIdFromName(
 		String type, String name, boolean translate) {
@@ -278,38 +169,6 @@ public class SupportUtil {
 		return JSONFactoryUtil.looseSerializeDeep(orderEntryAttributes);
 	}
 
-	protected static List<FileRepository> getDefaultFileRepositories() {
-		List<FileRepository> fileRepositoryList = new ArrayList<>();
-
-		for (String fileRepositoryId : PortletPropsValues.FILE_REPOSITORY_IDS) {
-			fileRepositoryList.add(getDefaultFileRepository(fileRepositoryId));
-		}
-
-		return fileRepositoryList;
-	}
-
-	protected static FileRepository getDefaultFileRepository(
-		String fileRepositoryId) {
-
-		if (Validator.isNull(fileRepositoryId)) {
-			return null;
-		}
-
-		String host = PortletProps.get(
-			PortletPropsKeys.FILE_REPOSITORY_HOST,
-			new Filter(fileRepositoryId));
-		String name = PortletProps.get(
-			PortletPropsKeys.FILE_REPOSITORY_NAME,
-			new Filter(fileRepositoryId));
-		long[] supportRegionIds = GetterUtil.getLongValues(
-			PortletProps.getArray(
-				PortletPropsKeys.FILE_REPOSITORY_SUPPORT_REGION_IDS,
-				new Filter(fileRepositoryId)));
-
-		return new FileRepository(
-			fileRepositoryId, name, host, supportRegionIds);
-	}
-
 	protected static String getKey(OfferingEntry offeringEntry) {
 		StringBundler sb = new StringBundler(20);
 
@@ -358,7 +217,5 @@ public class SupportUtil {
 
 		return orderEntryAttributes;
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(SupportUtil.class);
 
 }

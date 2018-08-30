@@ -12,10 +12,8 @@
  *
  */
 
-package com.liferay.osb.model;
+package com.liferay.osb.customer.ticket.attachment.repository;
 
-import com.liferay.osb.util.WorkflowConstants;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 
@@ -23,6 +21,8 @@ import com.liferay.portal.kernel.util.UnicodeProperties;
  * @author Alan Zhang
  */
 public class FileRepository {
+
+	public static final String DIR_ZENDESK_TICKET = "/osb/zendesk/ticket/";
 
 	public FileRepository(String properties) {
 		UnicodeProperties fileRepositoryProperties = new UnicodeProperties(
@@ -33,7 +33,6 @@ public class FileRepository {
 		_fileRepositoryId = fileRepositoryProperties.get("fileRepositoryId");
 		_host = fileRepositoryProperties.get("host");
 		_name = fileRepositoryProperties.get("name");
-		_status = GetterUtil.getInteger(fileRepositoryProperties.get("status"));
 		_supportRegionIds = StringUtil.split(
 			fileRepositoryProperties.get("supportRegionIds"), 0L);
 	}
@@ -45,8 +44,6 @@ public class FileRepository {
 		_fileRepositoryId = fileRepositoryId;
 		_name = name;
 		_host = host;
-
-		_status = WorkflowConstants.STATUS_APPROVED;
 		_supportRegionIds = supportRegionIds;
 	}
 
@@ -62,14 +59,6 @@ public class FileRepository {
 		return _name;
 	}
 
-	public int getStatus() {
-		return _status;
-	}
-
-	public String getStatusLabel() {
-		return WorkflowConstants.getStatusLabel(_status);
-	}
-
 	public long[] getSupportRegionIds() {
 		return _supportRegionIds;
 	}
@@ -77,7 +66,6 @@ public class FileRepository {
 	private final String _fileRepositoryId;
 	private final String _host;
 	private final String _name;
-	private final int _status;
 	private final long[] _supportRegionIds;
 
 }

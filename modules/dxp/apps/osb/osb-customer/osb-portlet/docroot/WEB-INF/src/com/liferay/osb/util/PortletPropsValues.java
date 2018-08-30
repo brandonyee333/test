@@ -35,9 +35,6 @@ public class PortletPropsValues {
 		GetterUtil.getBoolean(
 			PortletProps.get(PortletPropsKeys.DEVELOPER_UPGRADE_ENABLED));
 
-	public static final String[] FILE_REPOSITORY_IDS = PortletProps.getArray(
-		PortletPropsKeys.FILE_REPOSITORY_IDS);
-
 	public static final String[]
 		PROVISIONING_OPPORTUNITY_PRODUCT_FAMILY_TOKENS = PortletProps.getArray(
 			PortletPropsKeys.PROVISIONING_OPPORTUNITY_PRODUCT_FAMILY_TOKENS);
@@ -99,11 +96,5 @@ public class PortletPropsValues {
 
 	public static final String SUPPORT_EMAIL_ADDRESS_FROM = PortletProps.get(
 		PortletPropsKeys.SUPPORT_EMAIL_ADDRESS_FROM);
-
-	public static final String WEB_API_TOKEN = PortletProps.get(
-		PortletPropsKeys.WEB_API_TOKEN);
-
-	public static final String WEB_DOMAIN_NAME = PortletProps.get(
-		PortletPropsKeys.WEB_DOMAIN_NAME);
 
 }
