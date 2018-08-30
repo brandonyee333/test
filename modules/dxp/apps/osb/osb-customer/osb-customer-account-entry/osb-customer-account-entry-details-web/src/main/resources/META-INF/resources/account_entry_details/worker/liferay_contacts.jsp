@@ -25,7 +25,7 @@ PortletURL portletURL = renderResponse.createRenderURL();
 %>
 
 <liferay-ui:search-container
-	emptyResultsMessage="no-team-members-were-found"
+	emptyResultsMessage="no-liferay-contacts-were-found"
 	headerNames="name,role,email,contact-number"
 	iteratorURL="<%= portletURL %>"
 >
@@ -48,30 +48,23 @@ PortletURL portletURL = renderResponse.createRenderURL();
 		<%
 		User curUser = UserLocalServiceUtil.getUser(accountWorker.getUserId());
 
-		if (!curUser.isActive()) {
-			row.setClassName("inactive");
-		}
-
 		List<Phone> phones = curUser.getPhones();
 
 		String contactNumber = StringPool.BLANK;
-		String extNumber = StringPool.BLANK;
-		String phoneNumber = StringPool.BLANK;
 
 		for (Phone phone : phones) {
 			if (phone.isPrimary()) {
-				phoneNumber = phone.getNumber();
+				String phoneNumber = phone.getNumber();
 
-				extNumber = phone.getExtension();
+				if (!phoneNumber.isEmpty() && !phone.getExtension().isEmpty()) {
+					contactNumber = phoneNumber + " ext: " + phone.getExtension();
+				}
+				else {
+					contactNumber = phoneNumber;
+				}
+
 				break;
 			}
-		}
-
-		if (!extNumber.isEmpty()) {
-			contactNumber = phoneNumber + " ext: " + extNumber;
-		}
-		else {
-			contactNumber = phoneNumber;
 		}
 		%>
 
