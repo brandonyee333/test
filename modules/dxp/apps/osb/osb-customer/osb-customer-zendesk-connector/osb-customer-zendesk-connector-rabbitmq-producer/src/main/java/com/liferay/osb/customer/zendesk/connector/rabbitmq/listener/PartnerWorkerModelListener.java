@@ -207,16 +207,14 @@ public class PartnerWorkerModelListener
 					partnerWorker.getUserId());
 
 			if (partnerWorkers.isEmpty() ||
-				partnerWorker.getRole() ==
-					PartnerWorkerConstants.ROLE_WATCHER) {
+				(partnerWorker.getRole() ==
+					PartnerWorkerConstants.ROLE_WATCHER)) {
 
 				JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-				int accountEntryCount =
-					AccountEntryLocalServiceUtil.getUserAccountEntriesCount(
-						partnerWorker.getUserId());
+				if (AccountEntryLocalServiceUtil.getUserAccountEntriesCount(
+						partnerWorker.getUserId()) == 0) {
 
-				if (accountEntryCount == 0) {
 					jsonArray.put(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
 				}
 

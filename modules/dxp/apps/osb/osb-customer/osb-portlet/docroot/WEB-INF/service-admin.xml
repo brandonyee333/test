@@ -154,10 +154,6 @@
 		<finder name="PartnerEntryId" return-type="Collection">
 			<finder-column name="partnerEntryId" />
 		</finder>
-		<finder name="PEI_PMS" return-type="Collection">
-			<finder-column name="partnerEntryId" />
-			<finder-column name="partnerManagedSupport" />
-		</finder>
 		<finder name="U_T" return-type="Collection">
 			<finder-column name="userId" />
 			<finder-column name="type" />
@@ -165,6 +161,10 @@
 		<finder name="RAEI_S" return-type="Collection">
 			<finder-column name="redirectAccountEntryId" />
 			<finder-column arrayable-operator="OR" name="status" />
+		</finder>
+		<finder name="PEI_PMS" return-type="Collection">
+			<finder-column name="partnerEntryId" />
+			<finder-column name="partnerManagedSupport" />
 		</finder>
 		<finder name="RAEI_NotT_S" return-type="Collection">
 			<finder-column name="redirectAccountEntryId" />

@@ -87,21 +87,25 @@ public class ZendeskBaseWebServiceImpl
 	public JSONObject delete(String endpoint, String json)
 		throws PortalException {
 
-		ZendeskHttpDelete httpDelete = new ZendeskHttpDelete(endpoint);
-
-		addHeaders(httpDelete, _headers);
-
-		StringEntity stringEntity = getStringEntity(endpoint, json);
-
-		httpDelete.setEntity(stringEntity);
-
-		String response = doExecute(httpDelete);
+		String response = null;
 
 		try {
+			ZendeskHttpDelete httpDelete = new ZendeskHttpDelete(endpoint);
+
+			addHeaders(httpDelete, _headers);
+
+			StringEntity stringEntity = getStringEntity(endpoint, json);
+
+			httpDelete.setEntity(stringEntity);
+
+			response = execute(httpDelete);
+
 			return JSONFactoryUtil.createJSONObject(response);
 		}
 		catch (Exception e) {
-			_log.error("Error parsing response: " + response);
+			if (response != null) {
+				_log.error("Error parsing response: " + response);
+			}
 
 			throw new PortalException(e);
 		}
@@ -110,19 +114,23 @@ public class ZendeskBaseWebServiceImpl
 	public JSONObject get(String endpoint, String json) throws PortalException {
 		ZendeskHttpGet httpGet = new ZendeskHttpGet(endpoint);
 
-		addHeaders(httpGet, _headers);
-
-		StringEntity stringEntity = getStringEntity(endpoint, json);
-
-		httpGet.setEntity(stringEntity);
-
-		String response = doExecute(httpGet);
+		String response = null;
 
 		try {
+			addHeaders(httpGet, _headers);
+
+			StringEntity stringEntity = getStringEntity(endpoint, json);
+
+			httpGet.setEntity(stringEntity);
+
+			response = execute(httpGet);
+
 			return JSONFactoryUtil.createJSONObject(response);
 		}
 		catch (Exception e) {
-			_log.error("Error parsing response: " + response);
+			if (response != null) {
+				_log.error("Error parsing response: " + response);
+			}
 
 			throw new PortalException(e);
 		}
@@ -177,58 +185,51 @@ public class ZendeskBaseWebServiceImpl
 	public JSONObject post(String endpoint, String json)
 		throws PortalException {
 
-		HttpPost httpPost = new HttpPost(endpoint);
-
-		addHeaders(httpPost, _headers);
-
-		StringEntity stringEntity = getStringEntity(endpoint, json);
-
-		httpPost.setEntity(stringEntity);
-
-		String response = doExecute(httpPost);
+		String response = null;
 
 		try {
+			HttpPost httpPost = new HttpPost(endpoint);
+
+			addHeaders(httpPost, _headers);
+
+			StringEntity stringEntity = getStringEntity(endpoint, json);
+
+			httpPost.setEntity(stringEntity);
+
+			response = execute(httpPost);
+
 			return JSONFactoryUtil.createJSONObject(response);
 		}
 		catch (Exception e) {
-			_log.error("Error parsing response: " + response);
+			if (response != null) {
+				_log.error("Error parsing response: " + response);
+			}
 
 			throw new PortalException(e);
 		}
 	}
 
 	public JSONObject put(String endpoint, String json) throws PortalException {
-		HttpPut httpPut = new HttpPut(endpoint);
-
-		addHeaders(httpPut, _headers);
-
-		StringEntity stringEntity = getStringEntity(endpoint, json);
-
-		httpPut.setEntity(stringEntity);
-
-		String response = doExecute(httpPut);
+		String response = null;
 
 		try {
+			HttpPut httpPut = new HttpPut(endpoint);
+
+			addHeaders(httpPut, _headers);
+
+			StringEntity stringEntity = getStringEntity(endpoint, json);
+
+			httpPut.setEntity(stringEntity);
+
+			response = execute(httpPut);
+
 			return JSONFactoryUtil.createJSONObject(response);
 		}
 		catch (Exception e) {
-			_log.error("Error parsing response: " + response);
+			if (response != null) {
+				_log.error("Error parsing response: " + response);
+			}
 
-			throw new PortalException(e);
-		}
-	}
-
-	protected String doExecute(HttpRequestBase httpRequestBase)
-		throws PortalException {
-
-		setHostName(ZendeskConnectorConfigurationValues.ZENDESK_DOMAIN_NAME);
-		setHostPort(Http.HTTPS_PORT);
-		setProtocol(Http.HTTPS);
-
-		try {
-			return super.execute(httpRequestBase);
-		}
-		catch (Exception e) {
 			throw new PortalException(e);
 		}
 	}

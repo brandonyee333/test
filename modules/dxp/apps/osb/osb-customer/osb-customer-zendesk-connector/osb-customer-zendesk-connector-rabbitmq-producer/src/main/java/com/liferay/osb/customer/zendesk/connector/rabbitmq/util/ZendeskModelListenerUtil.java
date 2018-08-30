@@ -109,7 +109,7 @@ public class ZendeskModelListenerUtil {
 	}
 
 	public static ZendeskUser getZendeskUser(
-			AccountEntry accountEntry, JSONArray tags, User user)
+			AccountEntry accountEntry, JSONArray tagsJSONArray, User user)
 		throws PortalException {
 
 		ZendeskUser zendeskUser = new ZendeskUser();
@@ -127,8 +127,8 @@ public class ZendeskModelListenerUtil {
 			zendeskUser.setOrganizationName(accountEntry.getName());
 		}
 
-		if (tags != null) {
-			zendeskUser.setTags(tags);
+		if (tagsJSONArray != null) {
+			zendeskUser.setTags(tagsJSONArray);
 		}
 
 		return zendeskUser;
