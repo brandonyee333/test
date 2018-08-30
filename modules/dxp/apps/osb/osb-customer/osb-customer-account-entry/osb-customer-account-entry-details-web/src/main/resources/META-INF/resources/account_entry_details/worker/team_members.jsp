@@ -76,7 +76,7 @@ PortletURL portletURL = renderResponse.createRenderURL();
 
 		<liferay-ui:search-container-column-text
 			name="role"
-			value="<%= StringUtil.upperCaseFirstLetter(accountCustomer.getRoleLabel()) %>"
+			value="<%= LanguageUtil.get(request, accountCustomer.getRoleLabel()) %>"
 		/>
 
 		<liferay-ui:search-container-column-text
