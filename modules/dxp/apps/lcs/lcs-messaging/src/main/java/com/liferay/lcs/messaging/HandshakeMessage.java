@@ -91,7 +91,7 @@ public class HandshakeMessage extends Message {
 
 	/**
 	 * @return
-	 * @deprecated will be removed in next version
+	 * @deprecated Will be removed in next version
 	 */
 	@Deprecated
 	public boolean isMetricsLCSServiceEnabled() {
@@ -104,7 +104,7 @@ public class HandshakeMessage extends Message {
 
 	/**
 	 * @return
-	 * @deprecated will be removed in next version
+	 * @deprecated Will be removed in next version
 	 */
 	@Deprecated
 	public boolean isPatchesLCSServiceEnabled() {
@@ -117,7 +117,7 @@ public class HandshakeMessage extends Message {
 
 	/**
 	 * @return
-	 * @deprecated will be removed in next version
+	 * @deprecated Will be removed in next version
 	 */
 	@Deprecated
 	public boolean isPortalPropertiesLCSServiceEnabled() {
@@ -169,7 +169,7 @@ public class HandshakeMessage extends Message {
 	}
 
 	/**
-	 * @deprecated will be removed in next version
+	 * @deprecated Will be removed in next version
 	 */
 	@Deprecated
 	public void setMetricsLCSServiceEnabled(boolean metricsLCSServiceEnabled) {
@@ -181,7 +181,7 @@ public class HandshakeMessage extends Message {
 	}
 
 	/**
-	 * @deprecated will be removed in next version
+	 * @deprecated Will be removed in next version
 	 */
 	@Deprecated
 	public void setPatchesLCSServiceEnabled(boolean patchesLCSServiceEnabled) {
@@ -205,7 +205,7 @@ public class HandshakeMessage extends Message {
 	}
 
 	/**
-	 * @deprecated will be removed in next version
+	 * @deprecated Will be removed in next version
 	 */
 	@Deprecated
 	public void setPortalPropertiesLCSServiceEnabled(
