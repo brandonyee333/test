@@ -16,14 +16,11 @@ package com.liferay.osb.customer.zendesk.connector.rabbitmq.util;
 
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskLocales;
 import com.liferay.osb.customer.zendesk.connector.model.ZendeskUser;
-import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.ExternalIdMapper;
 import com.liferay.osb.model.ExternalIdMapperConstants;
-import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.osb.util.WorkflowConstants;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -132,23 +129,6 @@ public class ZendeskModelListenerUtil {
 		}
 
 		return zendeskUser;
-	}
-
-	public static boolean hasActiveSupportOffering(
-		AccountCustomer accountCustomer) {
-
-		List<AccountEntry> accountEntries =
-			AccountEntryLocalServiceUtil.getUserAccountEntries(
-				accountCustomer.getUserId(), QueryUtil.ALL_POS,
-				QueryUtil.ALL_POS);
-
-		for (AccountEntry accountEntry : accountEntries) {
-			if (accountEntry.hasActiveSupportOffering()) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	public static boolean hasActiveSupportOffering(AccountEntry accountEntry) {

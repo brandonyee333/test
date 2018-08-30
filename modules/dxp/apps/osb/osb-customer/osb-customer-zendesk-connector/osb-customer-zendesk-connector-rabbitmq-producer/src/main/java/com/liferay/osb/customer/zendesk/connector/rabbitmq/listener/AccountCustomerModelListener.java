@@ -23,7 +23,6 @@ import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountCustomerConstants;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -34,8 +33,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.Validator;
-
-import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -63,17 +60,13 @@ public class AccountCustomerModelListener
 			JSONArray tagsJSONArray = getAddAccountCustomerTags(
 				accountCustomer);
 
-			AccountEntry accountEntry =
-				AccountEntryLocalServiceUtil.getAccountEntry(
-					accountCustomer.getAccountEntryId());
-
 			if (Validator.isNotNull(zendeskUserId)) {
 				zendeskUser = ZendeskModelListenerUtil.getZendeskUser(
-					accountEntry, null, user);
+					accountCustomer.getAccountEntry(), null, user);
 			}
 			else {
 				zendeskUser = ZendeskModelListenerUtil.getZendeskUser(
-					accountEntry, tagsJSONArray, user);
+					accountCustomer.getAccountEntry(), tagsJSONArray, user);
 			}
 
 			_messagePublisher.sendMessage(
@@ -155,23 +148,14 @@ public class AccountCustomerModelListener
 				addTagsJSONArray.put(
 					ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
 
-				int accountEntryCount =
-					AccountEntryLocalServiceUtil.getUserAccountEntriesCount(
-						accountCustomer.getUserId());
-
-				if ((accountEntryCount == 1) ||
-					!ZendeskModelListenerUtil.hasActiveSupportOffering(
-						accountCustomer)) {
+				if (AccountEntryLocalServiceUtil.getUserAccountEntriesCount(
+						accountCustomer.getUserId()) == 1) {
 
 					removeTagsJSONArray.put(ZendeskTagConstants.OSB_CUSTOMER);
 				}
 			}
 			else {
-				if (ZendeskModelListenerUtil.hasActiveSupportOffering(
-						accountCustomer.getAccountEntry())) {
-
-					addTagsJSONArray.put(ZendeskTagConstants.OSB_CUSTOMER);
-				}
+				addTagsJSONArray.put(ZendeskTagConstants.OSB_CUSTOMER);
 
 				removeTagsJSONArray.put(
 					ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
@@ -216,14 +200,14 @@ public class AccountCustomerModelListener
 				ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
 		}
 		else {
-			if (ZendeskModelListenerUtil.hasActiveSupportOffering(
-					accountCustomer)) {
-
-				jsonArray.put(ZendeskTagConstants.OSB_CUSTOMER);
-			}
+			jsonArray.put(ZendeskTagConstants.OSB_CUSTOMER);
 		}
 
-		jsonArray.put(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
+		if (AccountEntryLocalServiceUtil.hasValidSupportAccountEntry(
+				accountCustomer.getUserId())) {
+
+			jsonArray.put(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
+		}
 
 		return jsonArray;
 	}
@@ -233,12 +217,11 @@ public class AccountCustomerModelListener
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-		List<AccountEntry> accountEntries =
-			AccountEntryLocalServiceUtil.getUserAccountEntries(
-				accountCustomer.getUserId(), QueryUtil.ALL_POS,
-				QueryUtil.ALL_POS);
+		int accountEntriesCount =
+			AccountEntryLocalServiceUtil.getUserAccountEntriesCount(
+				accountCustomer.getUserId());
 
-		if (accountEntries.isEmpty()) {
+		if (accountEntriesCount == 0) {
 			jsonArray.put(ZendeskTagConstants.OSB_CUSTOMER);
 			jsonArray.put(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
 			jsonArray.put(
@@ -252,16 +235,10 @@ public class AccountCustomerModelListener
 					ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
 			}
 			else {
-				for (int i = 0; i < accountEntries.size(); i++) {
-					AccountEntry accountEntry = accountEntries.get(i);
+				if (!AccountEntryLocalServiceUtil.hasValidSupportAccountEntry(
+						accountCustomer.getUserId())) {
 
-					if (accountEntry.hasActiveSupportOffering()) {
-						break;
-					}
-
-					if (i == (accountEntries.size() - 1)) {
-						jsonArray.put(ZendeskTagConstants.OSB_CUSTOMER);
-					}
+					jsonArray.put(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
 				}
 			}
 		}

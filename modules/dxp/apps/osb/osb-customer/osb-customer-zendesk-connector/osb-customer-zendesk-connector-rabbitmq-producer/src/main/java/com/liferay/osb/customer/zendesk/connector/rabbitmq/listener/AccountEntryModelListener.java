@@ -15,9 +15,11 @@
 package com.liferay.osb.customer.zendesk.connector.rabbitmq.listener;
 
 import com.liferay.osb.customer.rabbitmq.connector.publisher.MessagePublisher;
+import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.connector.model.ZendeskOrganization;
 import com.liferay.osb.customer.zendesk.connector.rabbitmq.configuration.ZendeskConnectorConfigurationValues;
 import com.liferay.osb.customer.zendesk.connector.rabbitmq.util.ZendeskModelListenerUtil;
+import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.ExternalIdMapperConstants;
@@ -27,20 +29,30 @@ import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.model.SupportResponse;
+import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.osb.service.SupportRegionLocalServiceUtil;
 import com.liferay.osb.service.SupportResponseLocalServiceUtil;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
+
+import java.io.IOException;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeoutException;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -107,6 +119,31 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 					RABBITMQ_MESSAGE_EXCHANGE_NAME,
 				"zendesk.service.organization.create.or.update",
 				zendeskOrganization.toJSONObject());
+		}
+		catch (Exception e) {
+			throw new ModelListenerException(e);
+		}
+	}
+
+	@Override
+	public void onBeforeUpdate(AccountEntry accountEntry)
+		throws ModelListenerException {
+
+		try {
+			AccountEntry oldAccountEntry =
+				AccountEntryLocalServiceUtil.getAccountEntry(
+					accountEntry.getAccountEntryId());
+
+			if (oldAccountEntry.getStatus() == accountEntry.getStatus()) {
+				return;
+			}
+
+			if (accountEntry.getStatus() == WorkflowConstants.STATUS_APPROVED) {
+				updateAccountCustomers(accountEntry, true);
+			}
+			else {
+				updateAccountCustomers(accountEntry, false);
+			}
 		}
 		catch (Exception e) {
 			throw new ModelListenerException(e);
@@ -197,12 +234,69 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		return zendeskOrganization;
 	}
 
+	protected boolean hasActiveSupportOffering(
+		AccountCustomer accountCustomer, AccountEntry accountEntry) {
+
+		List<AccountEntry> accountEntries =
+			AccountEntryLocalServiceUtil.getUserAccountEntries(
+				accountCustomer.getUserId(), QueryUtil.ALL_POS,
+				QueryUtil.ALL_POS);
+
+		for (AccountEntry curAccountEntry : accountEntries) {
+			if (curAccountEntry.equals(accountEntry)) {
+				continue;
+			}
+
+			if (accountEntry.hasActiveSupportOffering()) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	@Reference(
 		target = "(module.service.lifecycle=osb.portlet.initialized)",
 		unbind = "-"
 	)
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
+	}
+
+	protected void updateAccountCustomers(
+			AccountEntry accountEntry, boolean approved)
+		throws IOException, TimeoutException {
+
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+		jsonArray.put(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
+
+		List<AccountCustomer> accountCustomers =
+			accountEntry.getAccountCustomers();
+
+		for (AccountCustomer accountCustomer : accountCustomers) {
+			String zendeskUserId = ZendeskModelListenerUtil.getExternalId(
+				User.class, accountCustomer.getUserId());
+
+			JSONObject tagsJSONObject =
+				ZendeskModelListenerUtil.getTagsJSONObject(
+					jsonArray, "users", Long.valueOf(zendeskUserId));
+
+			if (approved) {
+				_messagePublisher.sendMessage(
+					ZendeskConnectorConfigurationValues.
+						RABBITMQ_MESSAGE_EXCHANGE_NAME,
+					"zendesk.service.tag.add", tagsJSONObject);
+			}
+			else {
+				if (!hasActiveSupportOffering(accountCustomer, accountEntry)) {
+					_messagePublisher.sendMessage(
+						ZendeskConnectorConfigurationValues.
+							RABBITMQ_MESSAGE_EXCHANGE_NAME,
+						"zendesk.service.tag.delete", tagsJSONObject);
+				}
+			}
+		}
 	}
 
 	@Reference
