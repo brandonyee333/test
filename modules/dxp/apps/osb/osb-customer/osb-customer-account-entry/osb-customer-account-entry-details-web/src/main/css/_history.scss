@@ -20,7 +20,7 @@
 
 	.content {
 		font-size: $font-size-md;
-		margin: 0 48px;
+		width: 100%;
 
 		tr {
 			td:first-of-type,
@@ -43,16 +43,15 @@
 
 	.entry-header {
 		border-bottom: solid 1px $color-divider-border;
-		display: table-caption;
 		margin-bottom: 24px;
 		padding: 16px 0;
 
-		th {
+		.entry-header-item {
 			font-weight: $font-weight-normal;
 			padding: 0;
 		}
 
-		tr {
+		.entry-header-row {
 			align-items: center;
 			display: inline-flex;
 			height: 52px;
@@ -62,6 +61,10 @@
 		.create-date {
 			margin-left: auto;
 			margin-right: 0;
+		}
+
+		.icon .lexicon-icon-angle-right {
+			width: 8px;
 		}
 
 		.user-display {

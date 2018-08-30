@@ -29,10 +29,10 @@
 		AuditEntry auditEntry = auditEntries.get(0);
 	%>
 
-		<table class="audit-entry-set">
-			<thead class="entry-header">
-				<tr>
-					<th class="user-display">
+		<div class="audit-entry-set">
+			<div class="entry-header">
+				<div class="entry-header-row">
+					<div class="entry-header-item user-display">
 
 						<%
 						String auditEntryUserName = StringPool.BLANK;
@@ -51,40 +51,46 @@
 						%>
 
 						<span><%= HtmlUtil.escape(auditEntryUserName) %></span>
-					</th>
+					</div>
 
-					<th>
-						&gt;
-					</th>
+					<div class="entry-header-item icon">
+						<svg class="lexicon-icon lexicon-icon-angle-right">
+							<use href="<%= themeDisplay.getPathThemeImages() %>/lexicon/icons.svg#angle-right"></use>
+						</svg>
+					</div>
 
-					<th class="summary">
+					<div class="entry-header-item summary">
 						<liferay-ui:message key="<%= auditEntry.getActionLabel() %>" />
 
 						<liferay-ui:message key="<%= auditEntry.getFieldClassNameIdLabel() %>" />
-					</th>
+					</div>
 
-					<th class="create-date">
+					<div class="entry-header-item create-date">
 						<span title="<%= fullDateFormatDateTime.format(auditEntry.getCreateDate()) %>"><%= shortDateFormatDate.format(auditEntry.getCreateDate()) %> <%= shortDateFormatTime.format(auditEntry.getCreateDate()) %></span>
-					</th>
-				</tr>
-			</thead>
+					</div>
+				</div>
+			</div>
 
-			<tbody class="content">
+			<table class="content">
 				<c:if test="<%= auditEntry.getAction() != AuditEntryConstants.ACTION_AUDIT %>">
-					<tr class="content-header">
-						<td class="txt-sb w15">
-							<liferay-ui:message key="field" />
-						</td>
+					<thead class="content-header">
+						<tr>
+							<th class="txt-sb w15">
+								<liferay-ui:message key="field" />
+							</th>
 
-						<td class="txt-sb w40">
-							<liferay-ui:message key="original-value" />
-						</td>
+							<th class="txt-sb w40">
+								<liferay-ui:message key="original-value" />
+							</th>
 
-						<td class="txt-sb w40">
-							<liferay-ui:message key="new-value" />
-						</td>
-					</tr>
+							<th class="txt-sb w40">
+								<liferay-ui:message key="new-value" />
+							</th>
+						</tr>
+					</thead>
 				</c:if>
+
+				<tbody>
 
 				<%
 				for (int j = 0; j < auditEntries.size(); j++) {
@@ -103,83 +109,84 @@
 					}
 				%>
 
-				<tr class="content-row">
-					<c:choose>
-						<c:when test="<%= curAuditEntry.getAction() == AuditEntryConstants.ACTION_AUDIT %>">
-							<td>
+					<tr class="content-row">
+						<c:choose>
+							<c:when test="<%= curAuditEntry.getAction() == AuditEntryConstants.ACTION_AUDIT %>">
+								<td>
 
-								<%
-								int[] outOfSyncFields = StringUtil.split(curAuditEntry.getOldValue(), 0);
-								%>
+									<%
+									int[] outOfSyncFields = StringUtil.split(curAuditEntry.getOldValue(), 0);
+									%>
 
-								<c:choose>
-									<c:when test="<%= Validator.isNotNull(curAuditEntry.getOldLabel()) %>">
-										<liferay-ui:message key="<%= curAuditEntry.getOldLabel() %>" />
-									</c:when>
-									<c:when test="<%= ArrayUtil.isNotEmpty(outOfSyncFields) %>">
-										<liferay-ui:message key="the-following-fields-are-out-of-sync-with-dossiera" />
+									<c:choose>
+										<c:when test="<%= Validator.isNotNull(curAuditEntry.getOldLabel()) %>">
+											<liferay-ui:message key="<%= curAuditEntry.getOldLabel() %>" />
+										</c:when>
+										<c:when test="<%= ArrayUtil.isNotEmpty(outOfSyncFields) %>">
+											<liferay-ui:message key="the-following-fields-are-out-of-sync-with-dossiera" />
 
-										<%
-										for (int k = 0; k < outOfSyncFields.length; k++) {
-											int field = outOfSyncFields[k];
-										%>
+											<%
+											for (int k = 0; k < outOfSyncFields.length; k++) {
+												int field = outOfSyncFields[k];
+											%>
 
-											<liferay-ui:message key="<%= AuditEntryConstants.getFieldLabel(field) %>" /><%= ((k + 1) < outOfSyncFields.length) ? StringPool.COMMA : "" %>
+												<liferay-ui:message key="<%= AuditEntryConstants.getFieldLabel(field) %>" /><%= ((k + 1) < outOfSyncFields.length) ? StringPool.COMMA : "" %>
 
-										<%
-										}
-										%>
+											<%
+											}
+											%>
 
-									</c:when>
-									<c:otherwise>
-										<liferay-ui:message key="project-information-has-been-verified" />
-									</c:otherwise>
-								</c:choose>
+										</c:when>
+										<c:otherwise>
+											<liferay-ui:message key="project-information-has-been-verified" />
+										</c:otherwise>
+									</c:choose>
 
-							</td>
-						</c:when>
-						<c:otherwise>
-							<td class="txt-sb w15">
-								<liferay-ui:message key="<%= curAuditEntry.getFieldLabel() %>" />
-							</td>
+								</td>
+							</c:when>
+							<c:otherwise>
+								<td class="txt-sb w15">
+									<liferay-ui:message key="<%= curAuditEntry.getFieldLabel() %>" />
+								</td>
 
-							<td class="txt-code w40">
-								<c:choose>
-									<c:when test="<%= Validator.isNull(oldLabel) %>">
-										<%= AuditEntryConstants.NOT_AVAILABLE %>
-									</c:when>
-									<c:when test="<%= curAuditEntry.getI18n() %>">
-										<liferay-ui:message key="<%= HtmlUtil.escape(oldLabel) %>" />
-									</c:when>
-									<c:otherwise>
-										<%= HtmlUtil.escape(oldLabel) %>
-									</c:otherwise>
-								</c:choose>
-							</td>
+								<td class="txt-code w40">
+									<c:choose>
+										<c:when test="<%= Validator.isNull(oldLabel) %>">
+											<%= AuditEntryConstants.NOT_AVAILABLE %>
+										</c:when>
+										<c:when test="<%= curAuditEntry.getI18n() %>">
+											<liferay-ui:message key="<%= HtmlUtil.escape(oldLabel) %>" />
+										</c:when>
+										<c:otherwise>
+											<%= HtmlUtil.escape(oldLabel) %>
+										</c:otherwise>
+									</c:choose>
+								</td>
 
-							<td class="txt-code w40">
-								<c:choose>
-									<c:when test="<%= Validator.isNull(newLabel) %>">
-										<%= AuditEntryConstants.NOT_AVAILABLE %>
-									</c:when>
-									<c:when test="<%= curAuditEntry.getI18n() %>">
-										<liferay-ui:message key="<%= HtmlUtil.escape(newLabel) %>" />
-									</c:when>
-									<c:otherwise>
-										<%= HtmlUtil.escape(newLabel) %>
-									</c:otherwise>
-								</c:choose>
-							</td>
-						</c:otherwise>
-					</c:choose>
-				</tr>
+								<td class="txt-code w40">
+									<c:choose>
+										<c:when test="<%= Validator.isNull(newLabel) %>">
+											<%= AuditEntryConstants.NOT_AVAILABLE %>
+										</c:when>
+										<c:when test="<%= curAuditEntry.getI18n() %>">
+											<liferay-ui:message key="<%= HtmlUtil.escape(newLabel) %>" />
+										</c:when>
+										<c:otherwise>
+											<%= HtmlUtil.escape(newLabel) %>
+										</c:otherwise>
+									</c:choose>
+								</td>
+							</c:otherwise>
+						</c:choose>
+					</tr>
 
 				<%
 				}
 				%>
 
-			</tbody>
-		</table>
+				</tbody>
+			</table>
+		</div>
 
 	<%
 	}
