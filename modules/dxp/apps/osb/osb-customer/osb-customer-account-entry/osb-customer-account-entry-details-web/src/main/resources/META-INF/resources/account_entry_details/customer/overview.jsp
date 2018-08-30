@@ -23,17 +23,15 @@ JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
 List<CorpProjectMessage> corpProjectMessages = CorpProjectMessageLocalServiceUtil.getCorpProjectMessages(accountEntry.getCorpProjectId());
 
-if (!corpProjectMessages.isEmpty()) {
-	for (CorpProjectMessage corpProjectMessage : corpProjectMessages) {
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+for (CorpProjectMessage corpProjectMessage : corpProjectMessages) {
+	JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		jsonObject.put("content", corpProjectMessage.getContent());
-		jsonObject.put("id", corpProjectMessage.getCorpProjectMessageId());
-		jsonObject.put("severity", CorpProjectMessageConstants.getSeverityLevelLabel(corpProjectMessage.getSeverityLevel()));
-		jsonObject.put("title", corpProjectMessage.getTitle());
+	jsonObject.put("content", corpProjectMessage.getContent());
+	jsonObject.put("id", corpProjectMessage.getCorpProjectMessageId());
+	jsonObject.put("severity", CorpProjectMessageConstants.getSeverityLevelLabel(corpProjectMessage.getSeverityLevel()));
+	jsonObject.put("title", corpProjectMessage.getTitle());
 
-		jsonArray.put(jsonObject);
-	}
+	jsonArray.put(jsonObject);
 }
 %>
 
