@@ -47,12 +47,13 @@ class SubscriptionAlert extends React.Component {
 				>
 					<span className="lead">
 						{`${Liferay.Language.get('subscription-message')}:`}
-					</span>{' '}
-					{message.title}{' '}
-					<a
-						className="semibold"
-						onClick={this.handleShowModal}
-					>
+					</span>
+
+					{' '}
+					{message.title}
+					{' '}
+
+					<a className="semibold" onClick={this.handleShowModal}>
 						{Liferay.Language.get('view-message')}
 					</a>
 				</Alert>
@@ -60,10 +61,7 @@ class SubscriptionAlert extends React.Component {
 				<Modal
 					body={message.content}
 					footer={
-						<button
-							className="btn btn-primary pull-right"
-							onClick={this.handleCloseModal}
-						>
+						<button className="btn btn-primary pull-right" onClick={this.handleCloseModal}>
 							{Liferay.Language.get('okay')}
 						</button>
 					}
@@ -95,22 +93,24 @@ export default class SubscriptionMessages extends React.Component {
 			{
 				messages: newMessages
 			}
-		)
+		);
 	};
 
 	render() {
 		return (
 			<div>
-				{this.state.messages.map(
-					(message, index) => (
-						<SubscriptionAlert
-							key={index}
-							id={message.id}
-							message={message}
-							onClose={this.handleCloseAlert}
-						/>
+				{
+					this.state.messages.map(
+						(message, index) => (
+							<SubscriptionAlert
+								key={index}
+								id={message.id}
+								message={message}
+								onClose={this.handleCloseAlert}
+							/>
+						)
 					)
-				)}
+				}
 			</div>
 		);
 	}

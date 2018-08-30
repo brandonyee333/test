@@ -11,28 +11,31 @@ export default class Alert extends React.Component {
 	};
 
 	displayAlertIndicator = type => {
-		switch(type) {
-		case 'danger':
-			return (
+		let retVal = null;
+
+		if (type === 'danger') {
+			retVal = (
 				<svg className="lexicon-icon lexicon-icon-exclamation-full">
 					<use xlinkHref="#exclamation-full" />
 				</svg>
 			);
-		case 'info':
-			return (
+		}
+		else if (type === 'info') {
+			retVal = (
 				<svg className="lexicon-icon lexicon-icon-info-circle">
 					<use xlinkHref="#info-circle" />
 				</svg>
 			);
-		case 'warning':
-			return (
+		}
+		else if (type === 'warning') {
+			retVal = (
 				<svg className="lexicon-icon lexicon-icon-warning-full">
 					<use xlinkHref="#warning-full" />
 				</svg>
 			);
-		default:
-			return;
 		}
+
+		return retVal;
 	};
 
 	render() {
@@ -55,12 +58,7 @@ export default class Alert extends React.Component {
 				{children}
 
 				{onClose && (
-					<button
-						aria-label="Close"
-						className="close"
-						onClick={onClose}
-						type="button"
-					>
+					<button aria-label="Close" className="close" onClick={onClose} type="button">
 						<svg className="lexicon-icon lexicon-icon-times">
 							<use xlinkHref="#times" />
 						</svg>

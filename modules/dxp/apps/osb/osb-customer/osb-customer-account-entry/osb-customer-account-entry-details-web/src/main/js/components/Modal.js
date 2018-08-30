@@ -15,14 +15,11 @@ const Modal = ({body, footer, header, onClose, show, size}) => {
 				<div className="modal-content">
 					{header && (
 						<div className="modal-header">
-							<div className="modal-title">{header}</div>
+							<div className="modal-title">
+								{header}
+							</div>
 
-							<button
-								aria-label="Close"
-								className="close"
-								onClick={onClose}
-								type="button"
-							>
+							<button aria-label="Close" className="close" onClick={onClose} type="button">
 								<svg className="lexicon-icon lexicon-icon-times">
 									<use xlinkHref="#times" />
 								</svg>
@@ -30,9 +27,15 @@ const Modal = ({body, footer, header, onClose, show, size}) => {
 						</div>
 					)}
 
-					<div className="modal-body">{body}</div>
+					<div className="modal-body">
+						{body}
+					</div>
 
-					{footer && <div className="modal-footer">{footer}</div>}
+					{footer && (
+						<div className="modal-footer">
+							{footer}
+						</div>
+					)}
 				</div>
 			</div>
 		</div>

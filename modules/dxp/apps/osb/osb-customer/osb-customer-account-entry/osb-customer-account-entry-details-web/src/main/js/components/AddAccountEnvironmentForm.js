@@ -27,15 +27,7 @@ const FormFields = (
 							{Liferay.Language.get('name')}
 						</label>
 
-						<input
-							className="form-control"
-							id="accountEnvironmentName"
-							name="name"
-							onBlur={handleBlur}
-							onChange={handleChange}
-							type="text"
-							value={values.name}
-						/>
+						<input className="form-control" id="accountEnvironmentName" name="name" onBlur={handleBlur} onChange={handleChange} type="text" value={values.name} />
 					</div>
 
 					{touched.name && errors.name && (
@@ -47,20 +39,11 @@ const FormFields = (
 
 				<div className="col-md-9">
 					<div className="form-group">
-						<label
-							className="control-label"
-							htmlFor="accountEnvironmentProduct"
-						>
+						<label className="control-label" htmlFor="accountEnvironmentProduct">
 							{Liferay.Language.get('product')}
 						</label>
 
-						<select
-							className="form-control"
-							id="accountEnvironmentProduct"
-							name="product"
-							onBlur={handleBlur}
-							onChange={handleChange}
-						>
+						<select className="form-control" id="accountEnvironmentProduct" name="product" onBlur={handleBlur} onChange={handleChange}>
 							<option value="" />
 						</select>
 					</div>
@@ -78,13 +61,7 @@ const FormFields = (
 							{Liferay.Language.get('liferay-version')}
 						</label>
 
-						<select
-							className="form-control"
-							id="envLFR"
-							name="envLFR"
-							onBlur={handleBlur}
-							onChange={handleChange}
-						>
+						<select className="form-control" id="envLFR" name="envLFR" onBlur={handleBlur} onChange={handleChange}>
 							<option value="" />
 						</select>
 					</div>
@@ -102,13 +79,7 @@ const FormFields = (
 							{Liferay.Language.get('operating-system')}
 						</label>
 
-						<select
-							className="form-control"
-							id="envOS"
-							name="envOS"
-							onBlur={handleBlur}
-							onChange={handleChange}
-						>
+						<select className="form-control" id="envOS" name="envOS" onBlur={handleBlur} onChange={handleChange}>
 							<option value="" />
 						</select>
 					</div>
@@ -126,13 +97,7 @@ const FormFields = (
 							{Liferay.Language.get('java-version')}
 						</label>
 
-						<select
-							className="form-control"
-							id="envJVM"
-							name="envJVM"
-							onBlur={handleBlur}
-							onChange={handleChange}
-						>
+						<select className="form-control" id="envJVM" name="envJVM" onBlur={handleBlur} onChange={handleChange}>
 							<option value="" />
 						</select>
 					</div>
@@ -150,13 +115,7 @@ const FormFields = (
 							{Liferay.Language.get('application-server')}
 						</label>
 
-						<select
-							className="form-control"
-							id="envAS"
-							name="envAS"
-							onBlur={handleBlur}
-							onChange={handleChange}
-						>
+						<select className="form-control" id="envAS" name="envAS" onBlur={handleBlur} onChange={handleChange}>
 							<option value="" />
 						</select>
 					</div>
@@ -174,13 +133,7 @@ const FormFields = (
 							{Liferay.Language.get('database')}
 						</label>
 
-						<select
-							className="form-control"
-							id="envDB"
-							name="envDB"
-							onBlur={handleBlur}
-							onChange={handleChange}
-						>
+						<select className="form-control" id="envDB" name="envDB" onBlur={handleBlur} onChange={handleChange}>
 							<option value="" />
 						</select>
 					</div>
@@ -198,15 +151,7 @@ const FormFields = (
 							{Liferay.Language.get('portal-ext')}
 						</label>
 
-						<input
-							className="form-control"
-							id="portalExt"
-							multiple="true"
-							name="portalExt"
-							onBlur={handleBlur}
-							onChange={handleChange}
-							type="file"
-						/>
+						<input className="form-control" id="portalExt" multiple="true" name="portalExt" onBlur={handleBlur} onChange={handleChange} type="file" />
 					</div>
 
 					{touched.portalExt && errors.portalExt && (
@@ -222,15 +167,7 @@ const FormFields = (
 							{Liferay.Language.get('patch-info')}
 						</label>
 
-						<input
-							className="form-control"
-							id="patchLevel"
-							multiple="true"
-							name="patchLevel"
-							onBlur={handleBlur}
-							onChange={handleChange}
-							type="file"
-						/>
+						<input className="form-control" id="patchLevel" multiple="true" name="patchLevel" onBlur={handleBlur} onChange={handleChange} type="file" />
 					</div>
 
 					{touched.patchLevel && errors.patchLevel && (
@@ -242,11 +179,18 @@ const FormFields = (
 			</div>
 		</div>
 
-		<Button display="outline" onClick={handleReset} type="button">
+		<Button
+			display="outline"
+			onClick={handleReset}
+			type="button"
+		>
 			{Liferay.Language.get('cancel')}
 		</Button>
 
-		<Button disabled={isSubmitting} type="submit">
+		<Button
+			disabled={isSubmitting}
+			type="submit"
+		>
 			{Liferay.Language.get('submit')}
 		</Button>
 	</form>

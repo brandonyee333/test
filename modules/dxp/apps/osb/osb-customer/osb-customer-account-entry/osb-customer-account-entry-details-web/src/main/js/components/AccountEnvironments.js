@@ -84,7 +84,10 @@ export default class AccountEnvironments extends React.Component {
 							</div>
 
 							<div className="col-md-12">
-								<Button href={environment.editAccountEnvironmentURL} value="edit">
+								<Button
+									href={environment.editAccountEnvironmentURL}
+									value="edit"
+								>
 									{Liferay.Language.get('edit')}
 								</Button>
 
@@ -127,7 +130,10 @@ export default class AccountEnvironments extends React.Component {
 					{Liferay.Language.get('environment-configurations')}
 
 					{permitAdd && (
-						<Button onClick={this.handleDisplayModal} value="add">
+						<Button
+							onClick={this.handleDisplayModal}
+							value="add"
+						>
 							+
 						</Button>
 					)}
@@ -142,9 +148,13 @@ export default class AccountEnvironments extends React.Component {
 				</h3>
 
 				{!accordionItems.length ? (
-					<div className="no-results">{Liferay.Language.get('no-environment-details')}</div>
+					<div className="no-results">
+						{Liferay.Language.get('no-environment-details')}
+					</div>
 				) : (
-					<Accordion items={accordionItems} />
+					<Accordion
+						items={accordionItems}
+					/>
 				)}
 			</React.Fragment>
 		);
@@ -160,7 +170,9 @@ const EnvironmentDetail = props => (
 				{props.value}
 			</a>
 		) : (
-			<div>{props.value}</div>
+			<div>
+				{props.value}
+			</div>
 		)}
 	</div>
 );

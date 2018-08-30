@@ -44,13 +44,10 @@ class AccordionItem extends React.Component {
 
 		return (
 			<div className="panel">
-				<button
-					className={className}
-					onClick={this.handleClick}
-					role="tab"
-					type="button"
-				>
-					<div className="panel-title">{title}</div>
+				<button className={className} onClick={this.handleClick} role="tab" type="button">
+					<div className="panel-title">
+						{title}
+					</div>
 
 					<svg className="lexicon-icon lexicon-icon-angle-down">
 						<use xlinkHref="#angle-down" />
@@ -59,7 +56,9 @@ class AccordionItem extends React.Component {
 
 				{expanded && (
 					<div role="tabpanel">
-						<div className="panel-body">{body}</div>
+						<div className="panel-body">
+							{body}
+						</div>
 					</div>
 				)}
 			</div>
