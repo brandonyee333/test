@@ -59,7 +59,7 @@ public class ZendeskDocumentationSyncAutoDeployer implements AutoDeployer {
 	@Override
 	public AutoDeployer cloneAutoDeployer() {
 		return new ZendeskDocumentationSyncAutoDeployer(
-			_documentationImporterFactory);
+			_documentationImporterFactory, _zendeskCategoryLocalService);
 	}
 
 	protected int doAutoDeploy(AutoDeploymentContext autoDeploymentContext)
