@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<beans
+	default-destroy-method="destroy"
+	default-init-method="afterPropertiesSet"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+>
+	<bean class="com.liferay.osb.customer.ticket.service.impl.TicketAttachmentLocalServiceImpl" id="com.liferay.osb.customer.ticket.service.TicketAttachmentLocalService" />
+	<bean class="com.liferay.osb.customer.ticket.service.impl.TicketAttachmentServiceImpl" id="com.liferay.osb.customer.ticket.service.TicketAttachmentService" />
+	<bean class="com.liferay.osb.customer.ticket.service.persistence.impl.TicketAttachmentPersistenceImpl" id="com.liferay.osb.customer.ticket.service.persistence.TicketAttachmentPersistence" parent="basePersistence" />
+</beans>
