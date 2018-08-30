@@ -17,8 +17,6 @@ package com.liferay.osb.remote.lcs;
 import com.liferay.osb.exception.RemoteServiceException;
 import com.liferay.osb.remote.BaseWebService;
 import com.liferay.osb.util.PortletPropsValues;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -62,8 +60,5 @@ public class LCSJSONWebServiceImpl
 
 	private static final String _URL_API_JSONWS_LCS_GATEWAY =
 		_URL_API_JSONWS + "/lcsgateway";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		LCSJSONWebServiceImpl.class);
 
 }

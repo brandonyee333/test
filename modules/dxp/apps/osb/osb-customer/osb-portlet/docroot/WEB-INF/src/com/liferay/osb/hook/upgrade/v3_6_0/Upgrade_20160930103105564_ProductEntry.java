@@ -27,8 +27,6 @@ import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 
 import java.sql.PreparedStatement;
@@ -388,9 +386,6 @@ public class Upgrade_20160930103105564_ProductEntry extends BaseUpgradeProcess {
 
 	private static final long[] _PRODUCTION_PRODUCT_ENTRY_IDS =
 		{5968276, 27012837, 24576026, 44966204, 10034374};
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		Upgrade_20160930103105564_ProductEntry.class);
 
 	private long _deBackupProductEntryId;
 	private long _deDevelopmentProductEntryId;

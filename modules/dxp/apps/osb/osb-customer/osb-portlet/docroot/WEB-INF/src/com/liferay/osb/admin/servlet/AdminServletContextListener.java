@@ -25,8 +25,6 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
@@ -385,9 +383,6 @@ public class AdminServletContextListener
 
 		addListTypes();
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		AdminServletContextListener.class);
 
 	private AccountEntryAssetRendererFactory _accountEntryAssetRendererFactory;
 	private ServiceRegistration<ModuleServiceLifecycle>

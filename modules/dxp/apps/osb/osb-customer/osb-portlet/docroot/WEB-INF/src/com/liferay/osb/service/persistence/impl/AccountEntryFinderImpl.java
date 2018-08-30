@@ -1094,9 +1094,6 @@ public class AccountEntryFinderImpl
 	private static final String _REGION_ID_SQL =
 		"(Address.regionId = ?) [$AND_OR_CONNECTOR$]";
 
-	private static final String _TIER_SQL =
-		"(OSB_AccountEntry.tier = ?) [$AND_OR_CONNECTOR$]";
-
 	private static final String _USER_ID_SQL =
 		"(OSB_AccountEntry.userId = ?) [$AND_OR_CONNECTOR$]";
 

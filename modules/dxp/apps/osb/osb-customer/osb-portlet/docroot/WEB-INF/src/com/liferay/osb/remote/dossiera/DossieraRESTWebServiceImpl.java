@@ -19,8 +19,6 @@ import com.liferay.osb.remote.BaseWebService;
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.util.Map;
 
@@ -69,8 +67,5 @@ public class DossieraRESTWebServiceImpl
 
 	private static final String _URL_API_REST_PURCHASED_PRODUCT =
 		_URL_API_REST + "/purchased-product";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		DossieraRESTWebServiceImpl.class);
 
 }

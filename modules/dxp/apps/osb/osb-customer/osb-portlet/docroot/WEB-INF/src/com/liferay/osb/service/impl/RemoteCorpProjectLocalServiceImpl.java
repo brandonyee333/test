@@ -21,8 +21,6 @@ import com.liferay.osb.service.base.RemoteCorpProjectLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.StringPool;
@@ -157,8 +155,5 @@ public class RemoteCorpProjectLocalServiceImpl
 
 		WebRESTWebServiceUtil.putCorpProjects(corpProject.getUuid(), name);
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		RemoteCorpProjectLocalServiceImpl.class);
 
 }

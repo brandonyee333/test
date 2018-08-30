@@ -56,8 +56,7 @@ public class Upgrade_20141218193532347_PartnerEntries_SupportRegions
 	}
 
 	protected void populatePartnerData() throws Exception {
-		/*
-		long[][] supportResponseIds = {
+		/*long[][] supportResponseIds = {
 			{OSBConstants.SUPPORT_REGION_BRAZIL_ID, _ASSET_CATEGORY_BRAZIL_ID},
 			{OSBConstants.SUPPORT_REGION_CHINA_ID, _ASSET_CATEGORY_CHINA_ID},
 			{
@@ -91,6 +90,7 @@ public class Upgrade_20141218193532347_PartnerEntries_SupportRegions
 		}*/
 	}
 
+	/*
 	private static final long _ASSET_CATEGORY_BRAZIL_ID = 21343273;
 
 	private static final long _ASSET_CATEGORY_CHINA_ID = 21343274;
@@ -103,6 +103,6 @@ public class Upgrade_20141218193532347_PartnerEntries_SupportRegions
 
 	private static final long _ASSET_CATEGORY_US_ID = 21343278;
 
-	private static final long _PARTNER_ENTRY_CLASS_NAME_ID = 4840271;
+	private static final long _PARTNER_ENTRY_CLASS_NAME_ID = 4840271;*/
 
 }
