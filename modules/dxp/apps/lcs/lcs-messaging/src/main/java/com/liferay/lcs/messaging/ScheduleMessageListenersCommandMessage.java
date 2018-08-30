@@ -20,11 +20,20 @@ import java.util.Map;
 
 /**
  * @author Ivica Cardic
+ * @author Igor Beslic
  */
 public class ScheduleMessageListenersCommandMessage extends CommandMessage {
 
 	public List<Map<String, String>> getSchedulerContexts() {
 		return _schedulerContexts;
+	}
+
+	public boolean hasSchedulerContexts() {
+		if (_schedulerContexts.isEmpty()) {
+			return false;
+		}
+
+		return true;
 	}
 
 	public void setSchedulerContexts(
