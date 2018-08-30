@@ -12,9 +12,9 @@
  *
  */
 
-package com.liferay.osb.customer.ticket.attachment.repository;
+package com.liferay.osb.customer.ticket.repository;
 
-import com.liferay.osb.customer.ticket.attachment.model.TicketAttachment;
+import com.liferay.osb.customer.ticket.model.TicketAttachment;
 import com.liferay.portal.kernel.exception.PortalException;
 
 /**

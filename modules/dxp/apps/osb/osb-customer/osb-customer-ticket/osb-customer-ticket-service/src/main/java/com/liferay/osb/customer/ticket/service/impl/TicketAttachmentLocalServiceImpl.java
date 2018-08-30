@@ -12,11 +12,11 @@
  *
  */
 
-package com.liferay.osb.customer.ticket.attachment.service.impl;
+package com.liferay.osb.customer.ticket.service.impl;
 
-import com.liferay.osb.customer.ticket.attachment.model.TicketAttachment;
-import com.liferay.osb.customer.ticket.attachment.repository.FileRepositoryWebService;
-import com.liferay.osb.customer.ticket.attachment.service.base.TicketAttachmentLocalServiceBaseImpl;
+import com.liferay.osb.customer.ticket.model.TicketAttachment;
+import com.liferay.osb.customer.ticket.repository.FileRepositoryWebService;
+import com.liferay.osb.customer.ticket.service.base.TicketAttachmentLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.spring.extender.service.ServiceReference;

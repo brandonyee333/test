@@ -12,13 +12,13 @@
  *
  */
 
-package com.liferay.osb.customer.ticket.attachment.internal.repository;
+package com.liferay.osb.customer.ticket.internal.repository;
 
-import com.liferay.osb.customer.ticket.attachment.configuration.PortletPropsKeys;
-import com.liferay.osb.customer.ticket.attachment.configuration.TicketAttachmentConfigurationUtil;
-import com.liferay.osb.customer.ticket.attachment.configuration.TicketAttachmentConfigurationValues;
-import com.liferay.osb.customer.ticket.attachment.repository.FileRepository;
-import com.liferay.osb.customer.ticket.attachment.repository.FileRepositoryManager;
+import com.liferay.osb.customer.ticket.configuration.PortletPropsKeys;
+import com.liferay.osb.customer.ticket.configuration.TicketConfigurationUtil;
+import com.liferay.osb.customer.ticket.configuration.TicketConfigurationValues;
+import com.liferay.osb.customer.ticket.repository.FileRepository;
+import com.liferay.osb.customer.ticket.repository.FileRepositoryManager;
 import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -36,7 +36,7 @@ public class FileRepositoryManagerImpl implements FileRepositoryManager {
 		FileRepository defaultFileRepository = null;
 
 		for (String fileRepositoryId :
-				TicketAttachmentConfigurationValues.FILE_REPOSITORY_IDS) {
+				TicketConfigurationValues.FILE_REPOSITORY_IDS) {
 
 			FileRepository fileRepository = getFileRepository(fileRepositoryId);
 
@@ -59,14 +59,14 @@ public class FileRepositoryManagerImpl implements FileRepositoryManager {
 			return null;
 		}
 
-		String host = TicketAttachmentConfigurationUtil.get(
+		String host = TicketConfigurationUtil.get(
 			PortletPropsKeys.FILE_REPOSITORY_HOST,
 			new Filter(fileRepositoryId));
-		String name = TicketAttachmentConfigurationUtil.get(
+		String name = TicketConfigurationUtil.get(
 			PortletPropsKeys.FILE_REPOSITORY_NAME,
 			new Filter(fileRepositoryId));
 		long[] supportRegionIds = GetterUtil.getLongValues(
-			TicketAttachmentConfigurationUtil.getArray(
+			TicketConfigurationUtil.getArray(
 				PortletPropsKeys.FILE_REPOSITORY_SUPPORT_REGION_IDS,
 				new Filter(fileRepositoryId)));
 

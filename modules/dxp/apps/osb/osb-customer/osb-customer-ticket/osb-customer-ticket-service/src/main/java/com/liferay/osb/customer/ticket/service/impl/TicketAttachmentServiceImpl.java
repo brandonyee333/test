@@ -12,15 +12,13 @@
  *
  */
 
-package com.liferay.osb.customer.ticket.attachment.configuration;
+package com.liferay.osb.customer.ticket.service.impl;
+
+import com.liferay.osb.customer.ticket.service.base.TicketAttachmentServiceBaseImpl;
 
 /**
- * @author Amos Fong
+ * @author Brian Wing Shun Chan
  */
-public class TicketAttachmentConfigurationValues {
-
-	public static final String[] FILE_REPOSITORY_IDS =
-		TicketAttachmentConfigurationUtil.getArray(
-			PortletPropsKeys.FILE_REPOSITORY_IDS);
-
+public class TicketAttachmentServiceImpl
+	extends TicketAttachmentServiceBaseImpl {
 }

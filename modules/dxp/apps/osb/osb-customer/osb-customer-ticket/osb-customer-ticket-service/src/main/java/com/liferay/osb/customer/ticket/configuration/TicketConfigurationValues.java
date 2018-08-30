@@ -12,15 +12,14 @@
  *
  */
 
-package com.liferay.osb.customer.ticket.attachment.repository;
+package com.liferay.osb.customer.ticket.configuration;
 
 /**
  * @author Amos Fong
  */
-public interface FileRepositoryManager {
+public class TicketConfigurationValues {
 
-	public FileRepository getFileRepository(long supportRegionId);
-
-	public FileRepository getFileRepository(String fileRepositoryId);
+	public static final String[] FILE_REPOSITORY_IDS =
+		TicketConfigurationUtil.getArray(PortletPropsKeys.FILE_REPOSITORY_IDS);
 
 }

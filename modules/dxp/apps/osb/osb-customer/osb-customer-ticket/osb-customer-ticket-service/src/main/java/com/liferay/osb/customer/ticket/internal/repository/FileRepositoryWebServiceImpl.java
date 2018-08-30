@@ -12,17 +12,16 @@
  *
  */
 
-package com.liferay.osb.customer.ticket.attachment.internal.repository;
+package com.liferay.osb.customer.ticket.internal.repository;
 
-import com.liferay.osb.customer.ticket.attachment.model.TicketAttachment;
-import com.liferay.osb.customer.ticket.attachment.repository.FileRepository;
-import com.liferay.osb.customer.ticket.attachment.repository.FileRepositoryManager;
-import com.liferay.osb.customer.ticket.attachment.repository.FileRepositoryWebService;
+import com.liferay.osb.customer.ticket.model.TicketAttachment;
+import com.liferay.osb.customer.ticket.repository.FileRepository;
+import com.liferay.osb.customer.ticket.repository.FileRepositoryManager;
+import com.liferay.osb.customer.ticket.repository.FileRepositoryWebService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 
@@ -46,7 +45,7 @@ public class FileRepositoryWebServiceImpl implements FileRepositoryWebService {
 
 		sb.append(fileRepositoryURL);
 		sb.append(StringPool.FORWARD_SLASH);
-		sb.append(HttpUtil.encodePath(ticketAttachment.getFilePath()));
+		sb.append(_http.encodePath(ticketAttachment.getFilePath()));
 
 		String key = sendRequest(sb.toString(), true);
 
@@ -66,7 +65,7 @@ public class FileRepositoryWebServiceImpl implements FileRepositoryWebService {
 
 		String dirPath = getDirPath(zendeskTicketId);
 
-		tokenURL = HttpUtil.addParameter(tokenURL, "dirPath", dirPath);
+		tokenURL = _http.addParameter(tokenURL, "dirPath", dirPath);
 
 		return sendRequest(tokenURL, false);
 	}
@@ -83,14 +82,14 @@ public class FileRepositoryWebServiceImpl implements FileRepositoryWebService {
 		String updateURL = getFileRepositoryURL(
 			fileRepositoryId, _END_POINT_ADMIN);
 
-		updateURL = HttpUtil.addParameter(updateURL, "cmd", "update");
+		updateURL = _http.addParameter(updateURL, "cmd", "update");
 
 		String dirPath = getDirPath(zendeskTicketId);
 
-		updateURL = HttpUtil.addParameter(updateURL, "dirPath", dirPath);
+		updateURL = _http.addParameter(updateURL, "dirPath", dirPath);
 
-		updateURL = HttpUtil.addParameter(updateURL, "fileName", fileName);
-		updateURL = HttpUtil.addParameter(updateURL, "filePath", filePath);
+		updateURL = _http.addParameter(updateURL, "fileName", fileName);
+		updateURL = _http.addParameter(updateURL, "filePath", filePath);
 
 		return sendRequest(updateURL, true);
 	}
@@ -115,7 +114,7 @@ public class FileRepositoryWebServiceImpl implements FileRepositoryWebService {
 			options.setLocation(url);
 			options.setPost(post);
 
-			return HttpUtil.URLtoString(options);
+			return _http.URLtoString(options);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -132,10 +131,13 @@ public class FileRepositoryWebServiceImpl implements FileRepositoryWebService {
 
 	private static final String _END_POINT_UPLOAD = "/upload";
 
-	@Reference
-	FileRepositoryManager _fileRepositoryManager;
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		FileRepositoryWebServiceImpl.class);
+
+	@Reference
+	private FileRepositoryManager _fileRepositoryManager;
+
+	@Reference
+	private Http _http;
 
 }

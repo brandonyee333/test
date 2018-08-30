@@ -12,13 +12,15 @@
  *
  */
 
-package com.liferay.osb.customer.ticket.attachment.service.impl;
-
-import com.liferay.osb.customer.ticket.attachment.service.base.TicketAttachmentServiceBaseImpl;
+package com.liferay.osb.customer.ticket.repository;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Amos Fong
  */
-public class TicketAttachmentServiceImpl
-	extends TicketAttachmentServiceBaseImpl {
+public interface FileRepositoryManager {
+
+	public FileRepository getFileRepository(long supportRegionId);
+
+	public FileRepository getFileRepository(String fileRepositoryId);
+
 }

@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.ticket.attachment.repository;
+package com.liferay.osb.customer.ticket.repository;
 
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;

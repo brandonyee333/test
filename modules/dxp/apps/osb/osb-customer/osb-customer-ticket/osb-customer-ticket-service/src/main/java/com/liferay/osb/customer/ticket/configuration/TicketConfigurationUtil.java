@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.ticket.attachment.configuration;
+package com.liferay.osb.customer.ticket.configuration;
 
 import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.configuration.Filter;
 /**
  * @author Amos Fong
  */
-public class TicketAttachmentConfigurationUtil {
+public class TicketConfigurationUtil {
 
 	public static String get(String key) {
 		return _configuration.get(key);
@@ -41,7 +41,6 @@ public class TicketAttachmentConfigurationUtil {
 
 	private static final Configuration _configuration =
 		ConfigurationFactoryUtil.getConfiguration(
-			TicketAttachmentConfigurationUtil.class.getClassLoader(),
-			"portlet");
+			TicketConfigurationUtil.class.getClassLoader(), "portlet");
 
 }

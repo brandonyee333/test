@@ -12,11 +12,11 @@
  *
  */
 
-package com.liferay.osb.customer.ticket.attachment.model.impl;
+package com.liferay.osb.customer.ticket.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osb.customer.ticket.attachment.repository.FileRepository;
+import com.liferay.osb.customer.ticket.repository.FileRepository;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 

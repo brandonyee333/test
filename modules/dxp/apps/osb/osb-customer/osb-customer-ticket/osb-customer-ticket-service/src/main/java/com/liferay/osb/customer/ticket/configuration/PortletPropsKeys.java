@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.ticket.attachment.configuration;
+package com.liferay.osb.customer.ticket.configuration;
 
 /**
  * @author Amos Fong
