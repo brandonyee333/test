@@ -12,30 +12,30 @@
  *
  */
 
-package com.liferay.osb.exception;
+package com.liferay.osb.customer.ticket.attachment.exception;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.NoSuchModelException;
 
 /**
  * @author Brian Wing Shun Chan
  */
 @ProviderType
-public class FileRepositoryNotAvailableException extends PortalException {
+public class NoSuchTicketAttachmentException extends NoSuchModelException {
 
-	public FileRepositoryNotAvailableException() {
+	public NoSuchTicketAttachmentException() {
 	}
 
-	public FileRepositoryNotAvailableException(String msg) {
+	public NoSuchTicketAttachmentException(String msg) {
 		super(msg);
 	}
 
-	public FileRepositoryNotAvailableException(String msg, Throwable cause) {
+	public NoSuchTicketAttachmentException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
 
-	public FileRepositoryNotAvailableException(Throwable cause) {
+	public NoSuchTicketAttachmentException(Throwable cause) {
 		super(cause);
 	}
 

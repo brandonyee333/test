@@ -776,197 +776,6 @@ public class AccountEntryUtil {
 	}
 
 	/**
-	* Returns all the account entries where partnerEntryId = &#63; and partnerManagedSupport = &#63;.
-	*
-	* @param partnerEntryId the partner entry ID
-	* @param partnerManagedSupport the partner managed support
-	* @return the matching account entries
-	*/
-	public static List<AccountEntry> findByPEI_PMS(long partnerEntryId,
-		boolean partnerManagedSupport) {
-		return getPersistence()
-				   .findByPEI_PMS(partnerEntryId, partnerManagedSupport);
-	}
-
-	/**
-	* Returns a range of all the account entries where partnerEntryId = &#63; and partnerManagedSupport = &#63;.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param partnerEntryId the partner entry ID
-	* @param partnerManagedSupport the partner managed support
-	* @param start the lower bound of the range of account entries
-	* @param end the upper bound of the range of account entries (not inclusive)
-	* @return the range of matching account entries
-	*/
-	public static List<AccountEntry> findByPEI_PMS(long partnerEntryId,
-		boolean partnerManagedSupport, int start, int end) {
-		return getPersistence()
-				   .findByPEI_PMS(partnerEntryId, partnerManagedSupport, start,
-			end);
-	}
-
-	/**
-	* Returns an ordered range of all the account entries where partnerEntryId = &#63; and partnerManagedSupport = &#63;.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param partnerEntryId the partner entry ID
-	* @param partnerManagedSupport the partner managed support
-	* @param start the lower bound of the range of account entries
-	* @param end the upper bound of the range of account entries (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of matching account entries
-	*/
-	public static List<AccountEntry> findByPEI_PMS(long partnerEntryId,
-		boolean partnerManagedSupport, int start, int end,
-		OrderByComparator<AccountEntry> orderByComparator) {
-		return getPersistence()
-				   .findByPEI_PMS(partnerEntryId, partnerManagedSupport, start,
-			end, orderByComparator);
-	}
-
-	/**
-	* Returns an ordered range of all the account entries where partnerEntryId = &#63; and partnerManagedSupport = &#63;.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param partnerEntryId the partner entry ID
-	* @param partnerManagedSupport the partner managed support
-	* @param start the lower bound of the range of account entries
-	* @param end the upper bound of the range of account entries (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @param retrieveFromCache whether to retrieve from the finder cache
-	* @return the ordered range of matching account entries
-	*/
-	public static List<AccountEntry> findByPEI_PMS(long partnerEntryId,
-		boolean partnerManagedSupport, int start, int end,
-		OrderByComparator<AccountEntry> orderByComparator,
-		boolean retrieveFromCache) {
-		return getPersistence()
-				   .findByPEI_PMS(partnerEntryId, partnerManagedSupport, start,
-			end, orderByComparator, retrieveFromCache);
-	}
-
-	/**
-	* Returns the first account entry in the ordered set where partnerEntryId = &#63; and partnerManagedSupport = &#63;.
-	*
-	* @param partnerEntryId the partner entry ID
-	* @param partnerManagedSupport the partner managed support
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the first matching account entry
-	* @throws NoSuchAccountEntryException if a matching account entry could not be found
-	*/
-	public static AccountEntry findByPEI_PMS_First(long partnerEntryId,
-		boolean partnerManagedSupport,
-		OrderByComparator<AccountEntry> orderByComparator)
-		throws com.liferay.osb.exception.NoSuchAccountEntryException {
-		return getPersistence()
-				   .findByPEI_PMS_First(partnerEntryId, partnerManagedSupport,
-			orderByComparator);
-	}
-
-	/**
-	* Returns the first account entry in the ordered set where partnerEntryId = &#63; and partnerManagedSupport = &#63;.
-	*
-	* @param partnerEntryId the partner entry ID
-	* @param partnerManagedSupport the partner managed support
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the first matching account entry, or <code>null</code> if a matching account entry could not be found
-	*/
-	public static AccountEntry fetchByPEI_PMS_First(long partnerEntryId,
-		boolean partnerManagedSupport,
-		OrderByComparator<AccountEntry> orderByComparator) {
-		return getPersistence()
-				   .fetchByPEI_PMS_First(partnerEntryId, partnerManagedSupport,
-			orderByComparator);
-	}
-
-	/**
-	* Returns the last account entry in the ordered set where partnerEntryId = &#63; and partnerManagedSupport = &#63;.
-	*
-	* @param partnerEntryId the partner entry ID
-	* @param partnerManagedSupport the partner managed support
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the last matching account entry
-	* @throws NoSuchAccountEntryException if a matching account entry could not be found
-	*/
-	public static AccountEntry findByPEI_PMS_Last(long partnerEntryId,
-		boolean partnerManagedSupport,
-		OrderByComparator<AccountEntry> orderByComparator)
-		throws com.liferay.osb.exception.NoSuchAccountEntryException {
-		return getPersistence()
-				   .findByPEI_PMS_Last(partnerEntryId, partnerManagedSupport,
-			orderByComparator);
-	}
-
-	/**
-	* Returns the last account entry in the ordered set where partnerEntryId = &#63; and partnerManagedSupport = &#63;.
-	*
-	* @param partnerEntryId the partner entry ID
-	* @param partnerManagedSupport the partner managed support
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the last matching account entry, or <code>null</code> if a matching account entry could not be found
-	*/
-	public static AccountEntry fetchByPEI_PMS_Last(long partnerEntryId,
-		boolean partnerManagedSupport,
-		OrderByComparator<AccountEntry> orderByComparator) {
-		return getPersistence()
-				   .fetchByPEI_PMS_Last(partnerEntryId, partnerManagedSupport,
-			orderByComparator);
-	}
-
-	/**
-	* Returns the account entries before and after the current account entry in the ordered set where partnerEntryId = &#63; and partnerManagedSupport = &#63;.
-	*
-	* @param accountEntryId the primary key of the current account entry
-	* @param partnerEntryId the partner entry ID
-	* @param partnerManagedSupport the partner managed support
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the previous, current, and next account entry
-	* @throws NoSuchAccountEntryException if a account entry with the primary key could not be found
-	*/
-	public static AccountEntry[] findByPEI_PMS_PrevAndNext(
-		long accountEntryId, long partnerEntryId,
-		boolean partnerManagedSupport,
-		OrderByComparator<AccountEntry> orderByComparator)
-		throws com.liferay.osb.exception.NoSuchAccountEntryException {
-		return getPersistence()
-				   .findByPEI_PMS_PrevAndNext(accountEntryId, partnerEntryId,
-			partnerManagedSupport, orderByComparator);
-	}
-
-	/**
-	* Removes all the account entries where partnerEntryId = &#63; and partnerManagedSupport = &#63; from the database.
-	*
-	* @param partnerEntryId the partner entry ID
-	* @param partnerManagedSupport the partner managed support
-	*/
-	public static void removeByPEI_PMS(long partnerEntryId,
-		boolean partnerManagedSupport) {
-		getPersistence().removeByPEI_PMS(partnerEntryId, partnerManagedSupport);
-	}
-
-	/**
-	* Returns the number of account entries where partnerEntryId = &#63; and partnerManagedSupport = &#63;.
-	*
-	* @param partnerEntryId the partner entry ID
-	* @param partnerManagedSupport the partner managed support
-	* @return the number of matching account entries
-	*/
-	public static int countByPEI_PMS(long partnerEntryId,
-		boolean partnerManagedSupport) {
-		return getPersistence()
-				   .countByPEI_PMS(partnerEntryId, partnerManagedSupport);
-	}
-
-	/**
 	* Returns all the account entries where userId = &#63; and type = &#63;.
 	*
 	* @param userId the user ID
@@ -1405,6 +1214,197 @@ public class AccountEntryUtil {
 	*/
 	public static int countByRAEI_S(long redirectAccountEntryId, int[] statuses) {
 		return getPersistence().countByRAEI_S(redirectAccountEntryId, statuses);
+	}
+
+	/**
+	* Returns all the account entries where partnerEntryId = &#63; and partnerManagedSupport = &#63;.
+	*
+	* @param partnerEntryId the partner entry ID
+	* @param partnerManagedSupport the partner managed support
+	* @return the matching account entries
+	*/
+	public static List<AccountEntry> findByPEI_PMS(long partnerEntryId,
+		boolean partnerManagedSupport) {
+		return getPersistence()
+				   .findByPEI_PMS(partnerEntryId, partnerManagedSupport);
+	}
+
+	/**
+	* Returns a range of all the account entries where partnerEntryId = &#63; and partnerManagedSupport = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param partnerEntryId the partner entry ID
+	* @param partnerManagedSupport the partner managed support
+	* @param start the lower bound of the range of account entries
+	* @param end the upper bound of the range of account entries (not inclusive)
+	* @return the range of matching account entries
+	*/
+	public static List<AccountEntry> findByPEI_PMS(long partnerEntryId,
+		boolean partnerManagedSupport, int start, int end) {
+		return getPersistence()
+				   .findByPEI_PMS(partnerEntryId, partnerManagedSupport, start,
+			end);
+	}
+
+	/**
+	* Returns an ordered range of all the account entries where partnerEntryId = &#63; and partnerManagedSupport = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param partnerEntryId the partner entry ID
+	* @param partnerManagedSupport the partner managed support
+	* @param start the lower bound of the range of account entries
+	* @param end the upper bound of the range of account entries (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching account entries
+	*/
+	public static List<AccountEntry> findByPEI_PMS(long partnerEntryId,
+		boolean partnerManagedSupport, int start, int end,
+		OrderByComparator<AccountEntry> orderByComparator) {
+		return getPersistence()
+				   .findByPEI_PMS(partnerEntryId, partnerManagedSupport, start,
+			end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the account entries where partnerEntryId = &#63; and partnerManagedSupport = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param partnerEntryId the partner entry ID
+	* @param partnerManagedSupport the partner managed support
+	* @param start the lower bound of the range of account entries
+	* @param end the upper bound of the range of account entries (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the ordered range of matching account entries
+	*/
+	public static List<AccountEntry> findByPEI_PMS(long partnerEntryId,
+		boolean partnerManagedSupport, int start, int end,
+		OrderByComparator<AccountEntry> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByPEI_PMS(partnerEntryId, partnerManagedSupport, start,
+			end, orderByComparator, retrieveFromCache);
+	}
+
+	/**
+	* Returns the first account entry in the ordered set where partnerEntryId = &#63; and partnerManagedSupport = &#63;.
+	*
+	* @param partnerEntryId the partner entry ID
+	* @param partnerManagedSupport the partner managed support
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching account entry
+	* @throws NoSuchAccountEntryException if a matching account entry could not be found
+	*/
+	public static AccountEntry findByPEI_PMS_First(long partnerEntryId,
+		boolean partnerManagedSupport,
+		OrderByComparator<AccountEntry> orderByComparator)
+		throws com.liferay.osb.exception.NoSuchAccountEntryException {
+		return getPersistence()
+				   .findByPEI_PMS_First(partnerEntryId, partnerManagedSupport,
+			orderByComparator);
+	}
+
+	/**
+	* Returns the first account entry in the ordered set where partnerEntryId = &#63; and partnerManagedSupport = &#63;.
+	*
+	* @param partnerEntryId the partner entry ID
+	* @param partnerManagedSupport the partner managed support
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching account entry, or <code>null</code> if a matching account entry could not be found
+	*/
+	public static AccountEntry fetchByPEI_PMS_First(long partnerEntryId,
+		boolean partnerManagedSupport,
+		OrderByComparator<AccountEntry> orderByComparator) {
+		return getPersistence()
+				   .fetchByPEI_PMS_First(partnerEntryId, partnerManagedSupport,
+			orderByComparator);
+	}
+
+	/**
+	* Returns the last account entry in the ordered set where partnerEntryId = &#63; and partnerManagedSupport = &#63;.
+	*
+	* @param partnerEntryId the partner entry ID
+	* @param partnerManagedSupport the partner managed support
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching account entry
+	* @throws NoSuchAccountEntryException if a matching account entry could not be found
+	*/
+	public static AccountEntry findByPEI_PMS_Last(long partnerEntryId,
+		boolean partnerManagedSupport,
+		OrderByComparator<AccountEntry> orderByComparator)
+		throws com.liferay.osb.exception.NoSuchAccountEntryException {
+		return getPersistence()
+				   .findByPEI_PMS_Last(partnerEntryId, partnerManagedSupport,
+			orderByComparator);
+	}
+
+	/**
+	* Returns the last account entry in the ordered set where partnerEntryId = &#63; and partnerManagedSupport = &#63;.
+	*
+	* @param partnerEntryId the partner entry ID
+	* @param partnerManagedSupport the partner managed support
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching account entry, or <code>null</code> if a matching account entry could not be found
+	*/
+	public static AccountEntry fetchByPEI_PMS_Last(long partnerEntryId,
+		boolean partnerManagedSupport,
+		OrderByComparator<AccountEntry> orderByComparator) {
+		return getPersistence()
+				   .fetchByPEI_PMS_Last(partnerEntryId, partnerManagedSupport,
+			orderByComparator);
+	}
+
+	/**
+	* Returns the account entries before and after the current account entry in the ordered set where partnerEntryId = &#63; and partnerManagedSupport = &#63;.
+	*
+	* @param accountEntryId the primary key of the current account entry
+	* @param partnerEntryId the partner entry ID
+	* @param partnerManagedSupport the partner managed support
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next account entry
+	* @throws NoSuchAccountEntryException if a account entry with the primary key could not be found
+	*/
+	public static AccountEntry[] findByPEI_PMS_PrevAndNext(
+		long accountEntryId, long partnerEntryId,
+		boolean partnerManagedSupport,
+		OrderByComparator<AccountEntry> orderByComparator)
+		throws com.liferay.osb.exception.NoSuchAccountEntryException {
+		return getPersistence()
+				   .findByPEI_PMS_PrevAndNext(accountEntryId, partnerEntryId,
+			partnerManagedSupport, orderByComparator);
+	}
+
+	/**
+	* Removes all the account entries where partnerEntryId = &#63; and partnerManagedSupport = &#63; from the database.
+	*
+	* @param partnerEntryId the partner entry ID
+	* @param partnerManagedSupport the partner managed support
+	*/
+	public static void removeByPEI_PMS(long partnerEntryId,
+		boolean partnerManagedSupport) {
+		getPersistence().removeByPEI_PMS(partnerEntryId, partnerManagedSupport);
+	}
+
+	/**
+	* Returns the number of account entries where partnerEntryId = &#63; and partnerManagedSupport = &#63;.
+	*
+	* @param partnerEntryId the partner entry ID
+	* @param partnerManagedSupport the partner managed support
+	* @return the number of matching account entries
+	*/
+	public static int countByPEI_PMS(long partnerEntryId,
+		boolean partnerManagedSupport) {
+		return getPersistence()
+				   .countByPEI_PMS(partnerEntryId, partnerManagedSupport);
 	}
 
 	/**

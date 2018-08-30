@@ -1,0 +1,1 @@
+create index IX_F0FEBEDB on OSBCustomer_TicketAttachment (zendeskTicketId);

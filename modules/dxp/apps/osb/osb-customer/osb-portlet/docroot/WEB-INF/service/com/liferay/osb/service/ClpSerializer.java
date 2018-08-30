@@ -1837,12 +1837,6 @@ public class ClpSerializer {
 		}
 
 		if (className.equals(
-					"com.liferay.osb.exception.FileRepositoryNotAvailableException")) {
-			return new com.liferay.osb.exception.FileRepositoryNotAvailableException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
 					"com.liferay.osb.exception.LicenseEntryNameException")) {
 			return new com.liferay.osb.exception.LicenseEntryNameException(throwable.getMessage(),
 				throwable.getCause());
