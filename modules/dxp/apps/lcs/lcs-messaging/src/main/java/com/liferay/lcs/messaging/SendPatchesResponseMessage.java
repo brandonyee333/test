@@ -21,6 +21,7 @@ import java.util.Map;
 
 /**
  * @author Ivica Cardic
+ * @author Igor Beslic
  */
 public class SendPatchesResponseMessage extends ResponseMessage {
 
@@ -36,6 +37,14 @@ public class SendPatchesResponseMessage extends ResponseMessage {
 		return _patchIdsStatuses;
 	}
 
+	public int getPatchingToolVersion() {
+		return _patchingToolVersion;
+	}
+
+	public boolean isPatchingToolEnabled() {
+		return _patchingToolEnabled;
+	}
+
 	public void setFixedIssues(List<String> fixedIssues) {
 		_fixedIssues = fixedIssues;
 	}
@@ -48,9 +57,19 @@ public class SendPatchesResponseMessage extends ResponseMessage {
 		_patchIdsStatuses = patchIdsStatuses;
 	}
 
+	public void setPatchingToolEnabled(boolean patchingToolEnabled) {
+		_patchingToolEnabled = patchingToolEnabled;
+	}
+
+	public void setPatchingToolVersion(int patchingToolVersion) {
+		_patchingToolVersion = patchingToolVersion;
+	}
+
 	private List<String> _fixedIssues = new ArrayList<String>();
 	private String _hashCode;
 	private Map<String, Integer> _patchIdsStatuses =
 		new HashMap<String, Integer>();
+	private boolean _patchingToolEnabled;
+	private int _patchingToolVersion;
 
 }
