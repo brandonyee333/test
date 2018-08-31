@@ -71,7 +71,7 @@
 				</div>
 			</div>
 
-			<table class="content">
+			<table class="table">
 				<c:if test="<%= auditEntry.getAction() != AuditEntryConstants.ACTION_AUDIT %>">
 					<thead class="content-header">
 						<tr>
@@ -128,7 +128,7 @@
 													int field = outOfSyncFields[k];
 												%>
 
-													<liferay-ui:message key="<%= AuditEntryConstants.getFieldLabel(field) %>" /><%= ((k + 1) < outOfSyncFields.length) ? StringPool.COMMA : "" %>
+													<liferay-ui:message key="<%= AuditEntryConstants.getFieldLabel(field) %>" /><%= ((k + 1) < outOfSyncFields.length) ? StringPool.COMMA : StringPool.BLANK %>
 
 												<%
 												}

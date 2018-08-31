@@ -1,26 +1,20 @@
 .history {
 	margin-bottom: 64px;
 
-	td,
-	th {
-		padding: 12px;
-		vertical-align: top;
-	}
-
-	td {
-		line-height: 1.5em;
-		padding-bottom: 24px;
-	}
-
 	.audit-entry-set {
 		border-bottom: solid 1px $color-divider-border;
-		overflow: hidden;
-		width: 100%;
 	}
 
-	.content {
+	.table {
 		font-size: $font-size-md;
-		width: 100%;
+
+		td {
+			line-height: 1.5em;
+		}
+
+		thead > tr > th {
+			border-bottom: 0;
+		}
 
 		tr {
 			td:first-of-type,
@@ -31,6 +25,11 @@
 			td:last-of-type,
 			th:last-of-type {
 				padding-right: 48px;
+			}
+
+			& > td {
+				border-top: 0;
+				word-wrap: break-word;
 			}
 		}
 
@@ -77,14 +76,5 @@
 			font-style: italic;
 			margin-left: 16px;
 		}
-	}
-
-	.txt-code {
-		font-family: "Source Code Pro", "Source Sans Pro";
-		white-space: pre-wrap;
-	}
-
-	.txt-sb {
-		font-weight: $font-weight-semi-bold;
 	}
 }

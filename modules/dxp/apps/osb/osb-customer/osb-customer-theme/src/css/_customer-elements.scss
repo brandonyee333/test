@@ -215,3 +215,12 @@ textarea {
 .small {
 	line-height: $line-height-sm;
 }
+
+.txt-code {
+	font-family: "Source Code Pro", "Source Sans Pro";
+	white-space: pre-wrap;
+}
+
+.txt-sb {
+	font-weight: $font-weight-semi-bold;
+}
