@@ -28,15 +28,13 @@ import org.apache.commons.lang.StringUtils;
  */
 public abstract class TopLevelBuildRunner extends BaseBuildRunner {
 
-	public List<String> getBatchNames() {
-		return _batchNames;
-	}
-
 	@Override
 	public void run() {
 		super.run();
 
 		propagateDistFilesToDistNodes();
+
+		invokeBatchJobs();
 	}
 
 	protected TopLevelBuildRunner(BuildData buildData) {
@@ -52,6 +50,12 @@ public abstract class TopLevelBuildRunner extends BaseBuildRunner {
 
 	protected String[] getDistFileNames() {
 		return new String[] {BuildData.JENKINS_DATA_FILE_NAME};
+	}
+
+	protected List<String> getBatchNames() {
+		Job job = getJob();
+
+		return job.getBatchNames();
 	}
 
 	protected void invokeBatchJob(String batchName) {
@@ -72,6 +76,12 @@ public abstract class TopLevelBuildRunner extends BaseBuildRunner {
 		JenkinsResultsParserUtil.invokeJob(
 			_topLevelBuildData.getCohortName(),
 			_topLevelBuildData.getJobName() + "-batch", invocationParameters);
+	}
+
+	protected void invokeBatchJobs() {
+		for (String batchName : getBatchNames()) {
+			invokeBatchJob(batchName);
+		}
 	}
 
 	protected void propagateDistFilesToDistNodes() {
@@ -120,7 +130,6 @@ public abstract class TopLevelBuildRunner extends BaseBuildRunner {
 
 	private static final int _FILE_PROPAGATOR_THREAD_COUNT = 1;
 
-	private final List<String> _batchNames = new ArrayList<>();
 	private final TopLevelBuildData _topLevelBuildData;
 
 }
