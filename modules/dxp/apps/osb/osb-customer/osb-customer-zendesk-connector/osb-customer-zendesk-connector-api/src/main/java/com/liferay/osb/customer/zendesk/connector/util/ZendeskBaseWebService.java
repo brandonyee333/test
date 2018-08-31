@@ -30,6 +30,9 @@ public interface ZendeskBaseWebService {
 	public JSONObject delete(String endpoint, String json)
 		throws PortalException;
 
+	public JSONObject get(String url, Map<String, String> parameters)
+		throws PortalException;
+
 	public JSONObject get(String endpoint, String json) throws PortalException;
 
 	public JSONObject post(

@@ -111,6 +111,25 @@ public class ZendeskBaseWebServiceImpl
 		}
 	}
 
+	public JSONObject get(String url, Map<String, String> parameters)
+		throws PortalException {
+
+		String response = null;
+
+		try {
+			response = doGet(url, parameters, _authHeader);
+
+			return JSONFactoryUtil.createJSONObject(response);
+		}
+		catch (Exception e) {
+			if (response != null) {
+				_log.error("Error parsing response: " + response);
+			}
+
+			throw new PortalException(e);
+		}
+	}
+
 	public JSONObject get(String endpoint, String json) throws PortalException {
 		ZendeskHttpGet httpGet = new ZendeskHttpGet(endpoint);
 
