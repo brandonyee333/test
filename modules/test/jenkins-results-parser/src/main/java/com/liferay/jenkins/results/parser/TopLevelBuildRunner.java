@@ -17,7 +17,11 @@ package com.liferay.jenkins.results.parser;
 import java.io.File;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @author Michael Hashimoto
@@ -42,10 +46,32 @@ public abstract class TopLevelBuildRunner extends BaseBuildRunner {
 			throw new RuntimeException(
 				"Invalid build data " + buildData.toJSONObject());
 		}
+
+		_topLevelBuildData = (TopLevelBuildData)buildData;
 	}
 
 	protected String[] getDistFileNames() {
 		return new String[] {BuildData.JENKINS_DATA_FILE_NAME};
+	}
+
+	protected void invokeBatchJob(String batchName) {
+		Map<String, String> invocationParameters = new HashMap<>();
+
+		invocationParameters.put("BATCH_NAME", batchName);
+		invocationParameters.put(
+			"DIST_NODES",
+			StringUtils.join(_topLevelBuildData.getDistNodes(), ","));
+		invocationParameters.put("DIST_PATH", _topLevelBuildData.getDistPath());
+		invocationParameters.put("JENKINS_GITHUB_URL", _getJenkinsGitHubURL());
+		invocationParameters.put(
+			"RUN_ID",
+			"batch_" + JenkinsResultsParserUtil.getDistinctTimeStamp());
+		invocationParameters.put(
+			"TOP_LEVEL_RUN_ID", _topLevelBuildData.getRunID());
+
+		JenkinsResultsParserUtil.invokeJob(
+			_topLevelBuildData.getCohortName(),
+			_topLevelBuildData.getJobName() + "-batch", invocationParameters);
 	}
 
 	protected void propagateDistFilesToDistNodes() {
@@ -70,6 +96,19 @@ public abstract class TopLevelBuildRunner extends BaseBuildRunner {
 		filePropagator.start(_FILE_PROPAGATOR_THREAD_COUNT);
 	}
 
+	private String _getJenkinsGitHubURL() {
+		String jenkinsCachedBranchName = workspace.getJenkinsBranchName();
+
+		if (jenkinsCachedBranchName != null) {
+			return "https://github-dev.liferay.com/liferay/liferay-jenkins-ee" +
+				"/tree/" + jenkinsCachedBranchName;
+		}
+
+		BuildData buildData = getBuildData();
+
+		return buildData.getJenkinsGitHubURL();
+	}
+
 	private static final String _FILE_PROPAGATOR_CLEAN_UP_COMMAND =
 		JenkinsResultsParserUtil.combine(
 			"find ", BuildData.DIST_ROOT_PATH,
@@ -82,5 +121,6 @@ public abstract class TopLevelBuildRunner extends BaseBuildRunner {
 	private static final int _FILE_PROPAGATOR_THREAD_COUNT = 1;
 
 	private final List<String> _batchNames = new ArrayList<>();
+	private final TopLevelBuildData _topLevelBuildData;
 
 }
