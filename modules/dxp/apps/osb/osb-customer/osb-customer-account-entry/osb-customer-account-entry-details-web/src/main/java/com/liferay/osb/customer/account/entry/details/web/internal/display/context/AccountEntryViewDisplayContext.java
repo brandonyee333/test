@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.MimeResponse;
@@ -392,10 +393,11 @@ public class AccountEntryViewDisplayContext {
 		IntStream intStream = Arrays.stream(
 			ProductEntryConstants.LIST_TYPES_DEPRECATED);
 
-		long[] deprecatedTypes = intStream.asLongStream().toArray();
+		LongStream longStream = intStream.asLongStream();
 
 		for (ListType listType : envLFRTypes) {
-			if (ArrayUtil.contains(deprecatedTypes, listType.getListTypeId()) ||
+			if (ArrayUtil.contains(
+					longStream.toArray(), listType.getListTypeId()) ||
 				(listType.getListTypeId() ==
 					(long)ProductEntryConstants.PORTAL_VERSION_OTHER)) {
 
