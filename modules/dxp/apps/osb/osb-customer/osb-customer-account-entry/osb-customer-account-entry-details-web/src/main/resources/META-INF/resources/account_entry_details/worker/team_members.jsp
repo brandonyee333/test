@@ -46,21 +46,16 @@ PortletURL portletURL = renderResponse.createRenderURL();
 	>
 
 		<%
-		User curUser = UserLocalServiceUtil.getUser(accountCustomer.getUserId());
-
-		List<Phone> phones = curUser.getPhones();
+		User curUser = UserLocalServiceUtil.getUser(accountWorker.getUserId());
 
 		String contactNumber = StringPool.BLANK;
 
-		for (Phone phone : phones) {
+		for (Phone phone : curUser.getPhones()) {
 			if (phone.isPrimary()) {
-				String phoneNumber = phone.getNumber();
+				contactNumber = phoneNumber;
 
-				if (!phoneNumber.isEmpty() && !phone.getExtension().isEmpty()) {
-					contactNumber = phoneNumber + " ext: " + phone.getExtension();
-				}
-				else {
-					contactNumber = phoneNumber;
+				if (Validator.isNotNull(phone.getExtension())) {
+					contactNumber += " ext: " + phone.getExtension();
 				}
 
 				break;
