@@ -28,6 +28,7 @@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 <%@ page import="com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys" %><%@
 page import="com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsWebKeys" %><%@
 page import="com.liferay.osb.customer.account.entry.details.web.internal.display.context.AccountEntryViewDisplayContext" %><%@
+page import="com.liferay.osb.customer.zendesk.web.service.exception.NoSuchZendeskTicketException" %><%@
 page import="com.liferay.osb.exception.AccountEnvironmentAttachmentSizeException" %><%@
 page import="com.liferay.osb.exception.AccountEnvironmentEnvASException" %><%@
 page import="com.liferay.osb.exception.AccountEnvironmentEnvDBException" %><%@
@@ -35,6 +36,7 @@ page import="com.liferay.osb.exception.AccountEnvironmentEnvLFRException" %><%@
 page import="com.liferay.osb.exception.AccountEnvironmentEnvOSException" %><%@
 page import="com.liferay.osb.exception.AccountEnvironmentNameException" %><%@
 page import="com.liferay.osb.exception.DuplicateAccountEnvironmentException" %><%@
+page import="com.liferay.osb.exception.NoSuchAccountEntryException" %><%@
 page import="com.liferay.osb.model.AccountEntry" %><%@
 page import="com.liferay.osb.model.AccountEntryConstants" %><%@
 page import="com.liferay.osb.model.AccountEnvironment" %><%@

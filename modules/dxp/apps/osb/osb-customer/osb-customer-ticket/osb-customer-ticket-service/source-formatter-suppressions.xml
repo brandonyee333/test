@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<suppressions>
+	<source-check>
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/ticket/service/permission/TicketEntryPermissionChecker.java" />
+	</source-check>
+</suppressions>

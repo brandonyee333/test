@@ -18,6 +18,8 @@ import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints
 import com.liferay.osb.customer.zendesk.connector.util.ZendeskBaseWebService;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
+import com.liferay.osb.customer.zendesk.web.service.exception.NoSuchZendeskTicketException;
+import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.StringPool;
@@ -34,12 +36,17 @@ public class ZendeskTicketWebServiceImpl implements ZendeskTicketWebService {
 	public ZendeskTicket getZendeskTicket(long zendeskTicketId)
 		throws PortalException {
 
-		JSONObject responseJSONObject = _zendeskBaseWebService.get(
-			ZendeskRESTEndpoints.URL_API_V2 + "tickets/" + zendeskTicketId +
-				".json",
-			StringPool.BLANK);
+		try {
+			JSONObject responseJSONObject = _zendeskBaseWebService.get(
+				ZendeskRESTEndpoints.URL_API_V2 + "tickets/" + zendeskTicketId +
+					".json",
+				StringPool.BLANK);
 
-		return _translate(responseJSONObject.getJSONObject("ticket"));
+			return _translate(responseJSONObject.getJSONObject("ticket"));
+		}
+		catch (NoSuchModelException nsme) {
+			throw new NoSuchZendeskTicketException(nsme);
+		}
 	}
 
 	private ZendeskTicket _translate(JSONObject jsonObject) {
@@ -48,7 +55,7 @@ public class ZendeskTicketWebServiceImpl implements ZendeskTicketWebService {
 		zendeskTicket.setDescription(jsonObject.getString("description"));
 		zendeskTicket.setZendeskTicketId(jsonObject.getLong("id"));
 		zendeskTicket.setZendeskOrganizationId(
-			jsonObject.getLong("organiztion_id"));
+			jsonObject.getLong("organization_id"));
 		zendeskTicket.setSubject(jsonObject.getString("subject"));
 
 		return zendeskTicket;

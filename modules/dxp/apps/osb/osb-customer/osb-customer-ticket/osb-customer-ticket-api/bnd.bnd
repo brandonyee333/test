@@ -4,5 +4,6 @@ Bundle-Version: 1.0.0
 Export-Package:\
 	com.liferay.osb.customer.ticket.exception,\
 	com.liferay.osb.customer.ticket.model,\
+	com.liferay.osb.customer.ticket.repository,\
 	com.liferay.osb.customer.ticket.service,\
 	com.liferay.osb.customer.ticket.service.persistence

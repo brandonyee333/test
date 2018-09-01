@@ -21,6 +21,7 @@ import com.liferay.osb.customer.zendesk.connector.util.ZendeskBaseWebService;
 import com.liferay.petra.json.web.service.client.BaseJSONWebServiceClientImpl;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
+import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -35,6 +36,8 @@ import java.nio.charset.StandardCharsets;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -145,6 +148,13 @@ public class ZendeskBaseWebServiceImpl
 			response = execute(httpGet);
 
 			return JSONFactoryUtil.createJSONObject(response);
+		}
+		catch (JSONWebServiceInvocationException jsonwsie) {
+			if (jsonwsie.getStatus() == HttpServletResponse.SC_NOT_FOUND) {
+				throw new NoSuchModelException(jsonwsie);
+			}
+
+			throw new PortalException(jsonwsie);
 		}
 		catch (Exception e) {
 			if (response != null) {
