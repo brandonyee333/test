@@ -2,14 +2,14 @@
 	margin-bottom: 64px;
 
 	.audit-entry-set {
-		border-bottom: solid 1px $color-divider-border;
+		border-bottom: solid 1px $color-divider;
 	}
 
 	.table {
 		font-size: $font-size-md;
 
 		td {
-			line-height: 1.5em;
+			line-height: 24px;
 		}
 
 		thead > tr > th {
@@ -35,25 +35,17 @@
 
 		.content-header {
 			color: $secondary-text-color;
-			letter-spacing: 1px;
-			text-transform: uppercase;
 		}
 	}
 
 	.entry-header {
-		border-bottom: solid 1px $color-divider-border;
-		margin-bottom: 24px;
-		padding: 16px 0;
-
-		.entry-header-item {
-			font-weight: $font-weight-normal;
-			padding: 0;
-		}
+		border-bottom: solid 1px $color-divider;
+		margin-bottom: $margin-default;
+		padding: $padding-default 0;
 
 		.entry-header-row {
 			align-items: center;
 			display: inline-flex;
-			height: 52px;
 			width: 100%;
 		}
 
@@ -68,7 +60,6 @@
 
 		.user-display {
 			display: inline-flex;
-			font-weight: $font-weight-semi-bold;
 			margin-right: 16px;
 		}
 

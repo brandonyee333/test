@@ -16,7 +16,7 @@
 
 <%@ include file="/account_entry_details/init.jsp" %>
 
-<div class="history">
+<div class="container-fluid-1280 history">
 
 	<%
 	AccountEntry accountEntry = (AccountEntry)renderRequest.getAttribute(AccountEntryDetailsWebKeys.ACCOUNT_ENTRY);
@@ -32,7 +32,7 @@
 		<div class="audit-entry-set">
 			<div class="entry-header">
 				<div class="entry-header-row">
-					<div class="entry-header-item user-display">
+					<div class="semibold user-display">
 
 						<%
 						String auditEntryUserName = StringPool.BLANK;
@@ -53,13 +53,13 @@
 						<span><%= HtmlUtil.escape(auditEntryUserName) %></span>
 					</div>
 
-					<div class="entry-header-item icon">
+					<div class="icon">
 						<svg class="lexicon-icon lexicon-icon-angle-right">
-							<use href="<%= themeDisplay.getPathThemeImages() %>/lexicon/icons.svg#angle-right"></use>
+							<use xlink:href="#angle-right" />
 						</svg>
 					</div>
 
-					<div class="entry-header-item summary">
+					<div class="summary">
 						<liferay-ui:message key="<%= auditEntry.getActionLabel() %>" />
 
 						<liferay-ui:message key="<%= auditEntry.getFieldClassNameIdLabel() %>" />
@@ -74,15 +74,21 @@
 			<table class="table">
 				<c:if test="<%= auditEntry.getAction() != AuditEntryConstants.ACTION_AUDIT %>">
 					<thead class="content-header">
-						<tr>
-							<th class="txt-sb w15">
-								<liferay-ui:message key="field" />
+						<tr class="row">
+							<th class="col-md-2 semibold">
+								<h6>
+									<liferay-ui:message key="field" />
+								</h6>
 							</th>
-							<th class="txt-sb w40">
-								<liferay-ui:message key="original-value" />
+							<th class="col-md-5 semibold">
+								<h6>
+									<liferay-ui:message key="original-value" />
+								</h6>
 							</th>
-							<th class="txt-sb w40">
-								<liferay-ui:message key="new-value" />
+							<th class="col-md-5 semibold">
+								<h6>
+									<liferay-ui:message key="new-value" />
+								</h6>
 							</th>
 						</tr>
 					</thead>
@@ -107,7 +113,7 @@
 						}
 					%>
 
-						<tr class="content-row">
+						<tr class="row">
 							<c:choose>
 								<c:when test="<%= curAuditEntry.getAction() == AuditEntryConstants.ACTION_AUDIT %>">
 									<td>
@@ -142,10 +148,10 @@
 									</td>
 								</c:when>
 								<c:otherwise>
-									<td class="txt-sb w15">
+									<td class="col-md-2 semibold">
 										<liferay-ui:message key="<%= curAuditEntry.getFieldLabel() %>" />
 									</td>
-									<td class="txt-code w40">
+									<td class="code col-md-5">
 										<c:choose>
 											<c:when test="<%= Validator.isNull(oldLabel) %>">
 												<%= AuditEntryConstants.NOT_AVAILABLE %>
@@ -158,7 +164,7 @@
 											</c:otherwise>
 										</c:choose>
 									</td>
-									<td class="txt-code w40">
+									<td class="code col-md-5">
 										<c:choose>
 											<c:when test="<%= Validator.isNull(newLabel) %>">
 												<%= AuditEntryConstants.NOT_AVAILABLE %>
