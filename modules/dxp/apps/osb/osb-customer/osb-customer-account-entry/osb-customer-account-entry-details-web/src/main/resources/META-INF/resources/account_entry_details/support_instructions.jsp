@@ -18,15 +18,17 @@
 
 <%
 AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
+
+String instructions = accountEntry.getInstructions();
 %>
 
-<div class="support-instructions card" id="supportInstructions"></div>
+<div class="card support-instructions" id="supportInstructions"></div>
 
 <aui:script>
 	HelpCenter.render(
 		HelpCenter.SupportInstructions,
 		{
-			initialInstructions: '<%= String.valueOf(accountEntry.getInstructions()) %>'
+			supportInstructions: '<%= instructions %>'
 		},
 		document.getElementById('supportInstructions')
 	);

@@ -1,106 +1,73 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Button from './Button';
 import CKEditor from "react-ckeditor-component";
+
+import Button from './Button';
 import Modal from './Modal';
-import Parser from 'html-react-parser';
 
 export default class SupportInstructions extends React.Component {
 	static propTypes = {
-		initialInstructions: PropTypes.node.isRequired
+		supportInstructions: PropTypes.string.isRequired
 	};
 
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			editorInstructions: this.props.initialInstructions,
-			instructions: this.props.initialInstructions,
-			modalTriggered: false,
-			newInstructions: this.props.initialInstructions
-		};
+	state = {
+		instructions: this.props.supportInstructions,
+		modalTriggered: false,
 	};
 
-	closeAddInstructionsModal = () => {
-		let instructions = this.state.instructions;
-
-		this.setState(
-			{
-				editorInstructions: instructions,
-				modalTriggered: false
-			}
-		);
-	};
-
-	onChange = (e) => {
-		let editorData = e.editor.getData();
-		let newInstructions = this.state.newInstructions;
-
-		newInstructions = editorData;
-
-		this.setState(
-			{
-				editorInstructions: newInstructions,
-				newInstructions
-			}
-		);
-	};
-
-	triggerAddInstructionsModal = () => this.setState(
+	handleCloseModal = () => this.setState(
 		{
-			modalTriggered: true
+			modalTriggered: false
 		}
 	);
 
-	triggerEditInstructionsModal = () => this.setState(
+	handleDisplayModal = () => this.setState(
 		{
 			modalTriggered: true
 		}
 	);
 
 	updateInstructions = () => {
-		let newInstructions = this.state.newInstructions;
-
 		this.setState(
 			{
-				instructions: newInstructions,
+				instructions: CKEDITOR.instances.editor1.getData(),
 				modalTriggered: false
 			}
 		);
-	};
+	}
 
 	render() {
-		const {editorInstructions} = this.state;
-		const {instructions} = this.state;
-		const {modalTriggered} = this.state;
+		const {instructions, modalTriggered} = this.state;
 
 		const modalContent = {
 			body: (
-				<React.Fragment>
-					<CKEditor
-						config={{
-							basicEntities: false
-						}}
-						content={editorInstructions}
-						events={{
-							"change": this.onChange
-						}}
-					/>
-				</React.Fragment>
+				<CKEditor
+					config={{
+						basicEntities: false
+					}}
+					content={instructions}
+				/>
 			),
 			footer: (
-				<React.Fragment>
-					<Button display="default" onClick={this.closeAddInstructionsModal} value="cancel">
+				<div className="btn-row">
+					<Button
+						display="default"
+						onClick={this.handleCloseModal}
+						value="cancel"
+					>
 						{Liferay.Language.get('cancel')}
 					</Button>
 
-					<Button onClick={this.updateInstructions} value="save">
+					<Button
+						onClick={this.updateInstructions}
+						value="save"
+					>
 						{Liferay.Language.get('save')}
 					</Button>
-				</React.Fragment>
+				</div>
 			)
-		}
+		};
 
 		return (
 			<React.Fragment>
@@ -108,12 +75,21 @@ export default class SupportInstructions extends React.Component {
 					{Liferay.Language.get('support-instructions')}
 
 					{instructions ? (
-						<Button display="default" onClick={this.triggerEditInstructionsModal} size="sm" value="edit">
+						<Button
+							display="default"
+							onClick={this.handleDisplayModal}
+							size="sm"
+							value="edit"
+						>
 							{Liferay.Language.get('edit')}
 						</Button>
 
 					) : (
-						<Button icon={true} onClick={this.triggerAddInstructionsModal} value="add">
+						<Button
+							icon={true}
+							onClick={this.handleDisplayModal}
+							value="add"
+						>
 							<svg className="lexicon-icon lexicon-icon-plus">
 								<use xlinkHref="#plus" />
 							</svg>
@@ -125,7 +101,7 @@ export default class SupportInstructions extends React.Component {
 							body={modalContent.body}
 							footer={modalContent.footer}
 							header={Liferay.Language.get('edit-support-instructions')}
-							onClose={this.closeAddInstructionsModal}
+							onClose={this.handleCloseModal}
 							show={modalTriggered}
 						/>
 					)}
@@ -133,7 +109,7 @@ export default class SupportInstructions extends React.Component {
 
 				{instructions ? (
 					<div className="card-body">
-						{Parser(instructions)}
+						<div dangerouslySetInnerHTML={{__html: instructions}} />
 					</div>
 				) : (
 					<div className="no-results">
