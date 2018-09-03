@@ -19,17 +19,14 @@ import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.exception.InvalidLCSClusterEntryTokenException;
 import com.liferay.lcs.exception.LCSHandshakeException;
 import com.liferay.lcs.oauth.OAuthUtil;
-import com.liferay.lcs.rest.client.exception.NoSuchLCSSubscriptionEntryException;
 import com.liferay.lcs.util.LCSConnectionManager;
 import com.liferay.lcs.util.LCSUtil;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.util.ResourceBundle;
 import java.util.concurrent.Future;
 
 /**
@@ -77,18 +74,6 @@ public class LCSConnectorRunnable implements Runnable {
 				if (e instanceof LCSHandshakeException) {
 					_lcsClusterEntryTokenAdvisor.checkLCSClusterEntryTokenError(
 						(LCSHandshakeException)e);
-				}
-				else if (e instanceof NoSuchLCSSubscriptionEntryException) {
-					if (_log.isWarnEnabled()) {
-						ResourceBundle resourceBundle =
-							ResourceBundleUtil.getBundle(
-								"content.Language", getClass());
-
-						_log.warn(
-							ResourceBundleUtil.getString(
-								resourceBundle,
-								"exceeded-subscription-number"));
-					}
 				}
 				else if (OAuthUtil.hasOAuthTokenRejectedException(e)) {
 					LCSUtil.processLCSPortletState(
