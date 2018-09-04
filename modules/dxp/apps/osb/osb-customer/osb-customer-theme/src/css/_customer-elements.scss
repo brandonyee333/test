@@ -65,6 +65,33 @@ a {
 	cursor: pointer;
 }
 
+code,
+pre,
+.code {
+	font-family: "Roboto Mono", SFMono-Regular, monospace;
+}
+
+code,
+pre {
+	border-radius: $border-radius;
+}
+
+code {
+	background-color: $code-text-background-color;
+	padding: 4px;
+}
+
+pre {
+	background-color: $color-body;
+	color: $pre-text-color;
+	padding: 16px 20px;
+
+	code {
+		background-color: inherit;
+		font-weight: $font-weight-light;
+	}
+}
+
 dd,
 p {
 	margin-bottom: $margin-default;
@@ -117,39 +144,6 @@ main {
 
 textarea {
 	height: auto;
-}
-
-.article-content {
-	img {
-		max-width: 100%;
-	}
-}
-
-code,
-pre,
-.code {
-	font-family: "Roboto Mono", SFMono-Regular, monospace;
-}
-
-code,
-pre {
-	border-radius: $border-radius;
-}
-
-code {
-	background-color: $code-text-background-color;
-	padding: 4px;
-}
-
-pre {
-	background-color: $color-body;
-	color: $pre-text-color;
-	padding: 16px 20px;
-
-	code {
-		background-color: inherit;
-		font-weight: $font-weight-light;
-	}
 }
 
 .form-field {
