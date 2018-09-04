@@ -19,6 +19,7 @@ import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.exception.InvalidLCSClusterEntryTokenException;
 import com.liferay.lcs.exception.LCSHandshakeException;
 import com.liferay.lcs.oauth.OAuthUtil;
+import com.liferay.lcs.rest.client.LCSClientError;
 import com.liferay.lcs.util.LCSConnectionManager;
 import com.liferay.lcs.util.LCSUtil;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
@@ -67,7 +68,15 @@ public class LCSConnectorRunnable implements Runnable {
 					if (_log.isWarnEnabled() &&
 						Validator.isNotNull(e.getMessage())) {
 
-						_log.warn(e.getMessage());
+						LCSClientError lcsClientError =
+							LCSClientError.getRESTError(e.getMessage());
+
+						if (lcsClientError == LCSClientError.UNDEFINED) {
+							_log.warn(e.getMessage());
+						}
+						else {
+							_log.warn(lcsClientError.getErrorDescription());
+						}
 					}
 				}
 
