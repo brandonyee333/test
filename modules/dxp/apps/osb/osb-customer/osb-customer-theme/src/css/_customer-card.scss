@@ -5,10 +5,46 @@
 	box-shadow: 0 6px 15px -7px rgba(39, 40, 51, 0.05);
 	font-size: $font-size-sm;
 
-	.card-header {
-		border-bottom: 1px solid $color-divider;
+	&.account-environments .panel-group {
 		margin: 0;
-		padding: 20px 24px;
+
+		.panel {
+			border-color: $color-divider;
+			border-width: 0 0 1px;
+			box-shadow: none;
+			margin: 0;
+
+			.panel-body {
+				border-top: 1px solid $color-divider;
+
+				.btn-link {
+					margin-right: 16px;
+
+					&,
+					&:focus,
+					&:hover {
+						border: 1px solid $btn-default-border;
+						color: $secondary-text-color;
+						text-decoration: none;
+					}
+
+					&:focus,
+					&:hover {
+						background-color: $color-grey;
+					}
+				}
+			}
+
+			.panel-header {
+				h4 {
+					margin: 0;
+				}
+
+				&:active {
+					color: $color-body;
+				}
+			}
+		}
 	}
 
 	&.card-hover {
@@ -37,5 +73,30 @@
 			box-shadow: 0 6px 11px 0 rgba(9, 16, 29, 0.09);
 			margin-top: -4px;
 		}
+	}
+
+	.card-header {
+		align-items: center;
+		border-bottom: 1px solid $color-divider;
+		display: flex;
+		justify-content: space-between;
+		margin: 0;
+		padding: 20px 24px;
+		text-align: left;
+
+		> .btn {
+			position: absolute;
+			right: 24px;
+
+			.btn-sm {
+				padding: 6px 12px;
+			}
+		}
+	}
+
+	.card-body {
+		font-size: $normal-font-size;
+		line-height: 24px;
+		padding: 24px;
 	}
 }

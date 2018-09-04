@@ -9,8 +9,15 @@
 	}
 
 	.modal-header {
-		padding: $padding-default;
+		line-height: 10px;
+		padding: 18px 24px;
 		text-align: left;
+
+		.close {
+			height: 24px;
+			line-height: 24px;
+			width: 16px;
+		}
 	}
 
 	.modal-title {

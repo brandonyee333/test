@@ -17,9 +17,39 @@ select.form-control {
 	}
 }
 
+.btn-row {
+	display: flex;
+	justify-content: flex-end;
+
+	button:last-of-type {
+		margin-left: 16px;
+	}
+}
+
 .form-control {
 	&:disabled {
 		background-color: $color-divider;
 		color: $color-default-disabled;
+	}
+}
+
+.form-group {
+	.control-label {
+		color: $color-default;
+		font-weight: $font-weight-normal;
+		text-transform: initial;
+
+		.lexicon-icon-asterisk {
+			color: $color-warning;
+			height: 4px;
+			margin-left: 2px;
+			margin-top: -10px;
+			width: 4px;
+		}
+	}
+
+	.form-control {
+		background-color: $color-white;
+		border-color: $color-border;
 	}
 }

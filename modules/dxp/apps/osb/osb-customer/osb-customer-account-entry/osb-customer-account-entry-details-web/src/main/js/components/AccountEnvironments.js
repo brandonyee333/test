@@ -86,6 +86,7 @@ export default class AccountEnvironments extends React.Component {
 							<div className="col-md-12">
 								<Button
 									href={environment.editAccountEnvironmentURL}
+									size="sm"
 									value="edit"
 								>
 									{Liferay.Language.get('edit')}
@@ -94,6 +95,7 @@ export default class AccountEnvironments extends React.Component {
 								<Button
 									href={environment.deleteAccountEnvironmentURL}
 									onClick={event => this.handleDeleteEnvironment(event)}
+									size="sm"
 									value="delete"
 								>
 									{Liferay.Language.get('delete')}
@@ -131,10 +133,13 @@ export default class AccountEnvironments extends React.Component {
 
 					{permitAdd && (
 						<Button
+							icon="true"
 							onClick={this.handleDisplayModal}
 							value="add"
 						>
-							+
+							<svg className="lexicon-icon lexicon-icon-plus">
+								<use xlinkHref="#plus" />
+							</svg>
 						</Button>
 					)}
 
@@ -143,7 +148,6 @@ export default class AccountEnvironments extends React.Component {
 						header={Liferay.Language.get('new-environment-configuration')}
 						onClose={this.handleCloseModal}
 						show={showModal}
-						size='lg'
 					/>
 				</h3>
 

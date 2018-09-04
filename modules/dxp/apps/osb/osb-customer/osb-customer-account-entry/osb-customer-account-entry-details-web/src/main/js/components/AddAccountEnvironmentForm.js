@@ -19,12 +19,16 @@ const FormFields = (
 	}
 ) => (
 	<form onSubmit={handleSubmit}>
-		<div className="container-fluid-1280">
+		<div className="form-container">
 			<div className="row">
 				<div className="col-md-12">
 					<div className="form-group">
 						<label className="control-label" htmlFor="accountEnvironmentName">
 							{Liferay.Language.get('name')}
+
+							<svg className="lexicon-icon lexicon-icon-asterisk">
+								<use xlinkHref="#asterisk" />
+							</svg>
 						</label>
 
 						<input className="form-control" id="accountEnvironmentName" name="name" onBlur={handleBlur} onChange={handleChange} type="text" value={values.name} />
@@ -41,6 +45,10 @@ const FormFields = (
 					<div className="form-group">
 						<label className="control-label" htmlFor="accountEnvironmentProduct">
 							{Liferay.Language.get('product')}
+
+							<svg className="lexicon-icon lexicon-icon-asterisk">
+								<use xlinkHref="#asterisk" />
+							</svg>
 						</label>
 
 						<select className="form-control" id="accountEnvironmentProduct" name="product" onBlur={handleBlur} onChange={handleChange}>
@@ -59,6 +67,10 @@ const FormFields = (
 					<div className="form-group">
 						<label className="control-label" htmlFor="envLFR">
 							{Liferay.Language.get('liferay-version')}
+
+							<svg className="lexicon-icon lexicon-icon-asterisk">
+								<use xlinkHref="#asterisk" />
+							</svg>
 						</label>
 
 						<select className="form-control" id="envLFR" name="envLFR" onBlur={handleBlur} onChange={handleChange}>
@@ -77,6 +89,10 @@ const FormFields = (
 					<div className="form-group">
 						<label className="control-label" htmlFor="envOS">
 							{Liferay.Language.get('operating-system')}
+
+							<svg className="lexicon-icon lexicon-icon-asterisk">
+								<use xlinkHref="#asterisk" />
+							</svg>
 						</label>
 
 						<select className="form-control" id="envOS" name="envOS" onBlur={handleBlur} onChange={handleChange}>
@@ -95,6 +111,10 @@ const FormFields = (
 					<div className="form-group">
 						<label className="control-label" htmlFor="envJVM">
 							{Liferay.Language.get('java-version')}
+
+							<svg className="lexicon-icon lexicon-icon-asterisk">
+								<use xlinkHref="#asterisk" />
+							</svg>
 						</label>
 
 						<select className="form-control" id="envJVM" name="envJVM" onBlur={handleBlur} onChange={handleChange}>
@@ -113,6 +133,10 @@ const FormFields = (
 					<div className="form-group">
 						<label className="control-label" htmlFor="envAS">
 							{Liferay.Language.get('application-server')}
+
+							<svg className="lexicon-icon lexicon-icon-asterisk">
+								<use xlinkHref="#asterisk" />
+							</svg>
 						</label>
 
 						<select className="form-control" id="envAS" name="envAS" onBlur={handleBlur} onChange={handleChange}>
@@ -131,6 +155,10 @@ const FormFields = (
 					<div className="form-group">
 						<label className="control-label" htmlFor="envDB">
 							{Liferay.Language.get('database')}
+
+							<svg className="lexicon-icon lexicon-icon-asterisk">
+								<use xlinkHref="#asterisk" />
+							</svg>
 						</label>
 
 						<select className="form-control" id="envDB" name="envDB" onBlur={handleBlur} onChange={handleChange}>
@@ -149,6 +177,10 @@ const FormFields = (
 					<div className="form-group">
 						<label className="control-label" htmlFor="portalExt">
 							{Liferay.Language.get('portal-ext')}
+
+							<svg className="lexicon-icon lexicon-icon-asterisk">
+								<use xlinkHref="#asterisk" />
+							</svg>
 						</label>
 
 						<input className="form-control" id="portalExt" multiple="true" name="portalExt" onBlur={handleBlur} onChange={handleChange} type="file" />
@@ -165,6 +197,10 @@ const FormFields = (
 					<div className="form-group">
 						<label className="control-label" htmlFor="patchLevel">
 							{Liferay.Language.get('patch-info')}
+
+							<svg className="lexicon-icon lexicon-icon-asterisk">
+								<use xlinkHref="#asterisk" />
+							</svg>
 						</label>
 
 						<input className="form-control" id="patchLevel" multiple="true" name="patchLevel" onBlur={handleBlur} onChange={handleChange} type="file" />
@@ -179,24 +215,34 @@ const FormFields = (
 			</div>
 		</div>
 
-		<Button
-			display="outline"
-			onClick={handleReset}
-			type="button"
-		>
-			{Liferay.Language.get('cancel')}
-		</Button>
+		<div className="btn-row">
+			<Button
+				display="outline"
+				onClick={handleReset}
+				type="button"
+			>
+				{Liferay.Language.get('cancel')}
+			</Button>
 
-		<Button
-			disabled={isSubmitting}
-			type="submit"
-		>
-			{Liferay.Language.get('submit')}
-		</Button>
+			<Button
+				disabled={isSubmitting}
+				type="submit"
+			>
+				{Liferay.Language.get('save')}
+			</Button>
+		</div>
 	</form>
 );
 
-const requiredSchema = yup.string().required(Liferay.Language.get('this-field-is-required'));
+const requiredSchema = yup.string().required(
+	<React.Fragment>
+		<svg className="lexicon-icon lexicon-icon-exclamation-full">
+			<use xlinkHref="#exclamation-full" />
+		</svg>
+
+		{Liferay.Language.get('this-field-is-required')}
+	</React.Fragment>
+);
 
 export const AddAccountEnvironmentForm = withFormik(
 	{

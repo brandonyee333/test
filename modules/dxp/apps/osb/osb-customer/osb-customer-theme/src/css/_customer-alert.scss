@@ -6,6 +6,7 @@
 .portlet-msg-progress,
 .portlet-msg-success {
 	padding: 16px;
+	text-transform: initial;
 
 	.close {
 		right: 8px;
@@ -13,6 +14,10 @@
 
 	.lead {
 		margin-right: $alert-lead-spacer-x;
+	}
+
+	.lexicon-icon {
+		margin-right: 4px;
 	}
 }
 
