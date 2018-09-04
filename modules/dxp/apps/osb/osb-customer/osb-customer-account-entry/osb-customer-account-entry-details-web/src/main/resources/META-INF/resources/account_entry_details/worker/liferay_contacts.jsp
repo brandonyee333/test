@@ -52,7 +52,7 @@ PortletURL portletURL = renderResponse.createRenderURL();
 
 		for (Phone phone : curUser.getPhones()) {
 			if (phone.isPrimary()) {
-				contactNumber = phoneNumber;
+				contactNumber = phone.getNumber();
 
 				if (Validator.isNotNull(phone.getExtension())) {
 					contactNumber += " ext: " + phone.getExtension();
