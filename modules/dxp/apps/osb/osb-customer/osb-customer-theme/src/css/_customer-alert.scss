@@ -17,7 +17,16 @@
 }
 
 .alert-dismissible {
-	padding-right: 2.5rem;
+	padding-right: 40px;
+	position: relative;
+
+	.close {
+		height: 32px;
+		padding: 0;
+		position: absolute;
+		top: 10px;
+		width: 32px;
+	}
 }
 
 .alert-fluid {
