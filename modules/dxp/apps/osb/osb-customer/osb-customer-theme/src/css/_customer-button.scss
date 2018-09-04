@@ -45,13 +45,11 @@ input[type="submit"] {
 .btn-link {
 	font-weight: $font-weight-semi-bold;
 
-	&:focus,
-	&:not([href]):not([tabindex]):focus {
+	&:focus {
 		color: $color-primary-focus;
 	}
 
-	&:hover,
-	&:not([href]):not([tabindex]):hover {
+	&:hover {
 		color: $color-primary-hover;
 	}
 }
@@ -66,14 +64,12 @@ input[type="submit"] {
 		background-color: transparent;
 	}
 
-	&:focus,
-	&:not([href]):not([tabindex]):focus {
+	&:focus {
 		background-color: $color-focus;
 		color: $color-default;
 	}
 
-	&:hover,
-	&:not([href]):not([tabindex]):hover {
+	&:hover {
 		background-color: $color-active;
 		color: $color-default;
 	}
@@ -82,10 +78,7 @@ input[type="submit"] {
 .btn-outline-primary {
 	&,
 	&:focus,
-	&:hover,
-	&:not([href]):not([tabindex]),
-	&:not([href]):not([tabindex]):focus,
-	&:not([href]):not([tabindex]):hover {
+	&:hover {
 		border-color: $color-primary;
 		color: $color-primary;
 		cursor: pointer;
@@ -102,14 +95,12 @@ input[type="submit"] {
 		background-color: transparent;
 	}
 
-	&:focus,
-	&:not([href]):not([tabindex]):focus {
+	&:focus {
 		background-color: $color-focus;
 		box-shadow: none;
 	}
 
-	&:hover,
-	&:not([href]):not([tabindex]):hover {
+	&:hover {
 		background-color: $color-active;
 		box-shadow: 0 2px 6px 0 rgba(2, 19, 51, 0.15);
 	}
