@@ -28,10 +28,10 @@ export default class Button extends React.Component {
 		const className = getCN(
 			'btn',
 			`btn-${size}`,
-			`${icon ? 'btn-monospaced' : ''}`,
 			`${!href ? `btn-${display}` : ''}`,
 			{
-				'btn-link': href
+				'btn-link': href,
+				'btn-monospaced': icon
 			}
 		);
 

@@ -1,6 +1,38 @@
 .account-environments {
+	&.card .panel-group {
+		margin: 0;
+
+		.panel {
+			border-color: $color-divider;
+			border-width: 0 0 1px;
+			box-shadow: none;
+			margin: 0;
+
+			.panel-body {
+				border-top: 1px solid $color-divider;
+
+				.btn-link {
+					margin-right: 16px;
+
+					&,
+					&:focus,
+					&:hover {
+						border: 1px solid $color-border;
+						color: $secondary-text-color;
+						text-decoration: none;
+					}
+
+					&:focus,
+					&:hover {
+						background-color: $color-grey;
+					}
+				}
+			}
+		}
+	}
+
 	h4 {
-		margin-bottom: 0;
+		margin: 0;
 	}
 
 	.card-header, .panel-header {

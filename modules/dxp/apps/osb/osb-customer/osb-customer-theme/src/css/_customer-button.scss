@@ -9,6 +9,14 @@ input[type="submit"] {
 	);
 }
 
+a[role="button"] {
+	display: inline-block;
+	font-weight: $btn-font-weight;
+	text-align: center;
+	vertical-align: middle;
+	white-space: nowrap;
+}
+
 input[type="submit"],
 .btn-primary {
 	background-color: $color-primary;
@@ -28,14 +36,6 @@ input[type="submit"],
 	&[disabled="true"] {
 		background-color: $color-disabled;
 	}
-}
-
-a[role="button"] {
-	display: inline-block;
-	font-weight: $btn-font-weight;
-	text-align: center;
-	vertical-align: middle;
-	white-space: nowrap;
 }
 
 input[type="submit"] {
@@ -103,5 +103,14 @@ input[type="submit"] {
 	&:hover {
 		background-color: $color-active;
 		box-shadow: 0 2px 6px 0 rgba(2, 19, 51, 0.15);
+	}
+}
+
+.btn-row {
+	display: flex;
+	justify-content: flex-end;
+
+	button:last-of-type {
+		margin-left: 16px;
 	}
 }

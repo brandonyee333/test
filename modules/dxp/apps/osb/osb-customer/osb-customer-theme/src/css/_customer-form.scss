@@ -17,15 +17,6 @@ select.form-control {
 	}
 }
 
-.btn-row {
-	display: flex;
-	justify-content: flex-end;
-
-	button:last-of-type {
-		margin-left: 16px;
-	}
-}
-
 .form-control {
 	&:disabled {
 		background-color: $color-divider;
