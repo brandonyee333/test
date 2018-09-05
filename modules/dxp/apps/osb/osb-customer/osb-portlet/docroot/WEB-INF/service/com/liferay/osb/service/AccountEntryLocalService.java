@@ -191,6 +191,9 @@ public interface AccountEntryLocalService extends BaseLocalService,
 		long countryId, java.lang.String ewsaDossieraProjectKey)
 		throws PortalException;
 
+	public AccountEntry updateInstructions(long userId, long accountEntryId,
+		java.lang.String instructions) throws PortalException;
+
 	public AccountEntry updateStatus(long userId, long accountEntryId,
 		int status, ServiceContext serviceContext) throws PortalException;
 

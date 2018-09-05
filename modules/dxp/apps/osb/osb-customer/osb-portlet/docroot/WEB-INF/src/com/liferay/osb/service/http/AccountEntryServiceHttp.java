@@ -289,6 +289,39 @@ public class AccountEntryServiceHttp {
 		}
 	}
 
+	public static com.liferay.osb.model.AccountEntry updateInstructions(
+		HttpPrincipal httpPrincipal, long accountEntryId,
+		java.lang.String instructions)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		try {
+			MethodKey methodKey = new MethodKey(AccountEntryServiceUtil.class,
+					"updateInstructions", _updateInstructionsParameterTypes6);
+
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					accountEntryId, instructions);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			}
+
+			return (com.liferay.osb.model.AccountEntry)returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
+
+			throw se;
+		}
+	}
+
 	private static Log _log = LogFactoryUtil.getLog(AccountEntryServiceHttp.class);
 	private static final Class<?>[] _fetchCorpProjectAccountEntryParameterTypes0 =
 		new Class[] { java.lang.String.class };
@@ -322,5 +355,8 @@ public class AccountEntryServiceHttp {
 			java.lang.String.class, java.lang.Long.class, java.lang.Long.class,
 			java.lang.String.class, java.lang.String.class,
 			java.util.LinkedHashMap.class, boolean.class
+		};
+	private static final Class<?>[] _updateInstructionsParameterTypes6 = new Class[] {
+			long.class, java.lang.String.class
 		};
 }

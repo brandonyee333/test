@@ -227,6 +227,14 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	}
 
 	@Override
+	public com.liferay.osb.model.AccountEntry updateInstructions(long userId,
+		long accountEntryId, java.lang.String instructions)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountEntryLocalService.updateInstructions(userId,
+			accountEntryId, instructions);
+	}
+
+	@Override
 	public com.liferay.osb.model.AccountEntry updateStatus(long userId,
 		long accountEntryId, int status,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)

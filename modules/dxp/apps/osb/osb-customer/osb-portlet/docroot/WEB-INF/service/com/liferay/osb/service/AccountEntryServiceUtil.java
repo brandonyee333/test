@@ -59,6 +59,12 @@ public class AccountEntryServiceUtil {
 		return getService().getAccountEntryByCode(code);
 	}
 
+	public static com.liferay.osb.model.AccountEntry updateInstructions(
+		long accountEntryId, java.lang.String instructions)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().updateInstructions(accountEntryId, instructions);
+	}
+
 	public static int searchCount(java.lang.Long createUserId,
 		int createDateGTDay, int createDateGTMonth, int createDateGTYear,
 		int createDateLTDay, int createDateLTMonth, int createDateLTYear,

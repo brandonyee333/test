@@ -121,5 +121,21 @@ public class AccountEntryServiceSoap {
 		}
 	}
 
+	public static com.liferay.osb.model.AccountEntrySoap updateInstructions(
+		long accountEntryId, java.lang.String instructions)
+		throws RemoteException {
+		try {
+			com.liferay.osb.model.AccountEntry returnValue = AccountEntryServiceUtil.updateInstructions(accountEntryId,
+					instructions);
+
+			return com.liferay.osb.model.AccountEntrySoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
 	private static Log _log = LogFactoryUtil.getLog(AccountEntryServiceSoap.class);
 }

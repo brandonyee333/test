@@ -67,6 +67,9 @@ public interface AccountEntryService extends BaseService, InvokableService {
 	public AccountEntry getAccountEntryByCode(java.lang.String code)
 		throws PortalException;
 
+	public AccountEntry updateInstructions(long accountEntryId,
+		java.lang.String instructions) throws PortalException;
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(java.lang.Long createUserId, int createDateGTDay,
 		int createDateGTMonth, int createDateGTYear, int createDateLTDay,

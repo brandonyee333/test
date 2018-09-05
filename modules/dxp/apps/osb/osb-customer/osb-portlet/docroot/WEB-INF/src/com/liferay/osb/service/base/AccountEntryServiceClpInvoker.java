@@ -71,6 +71,10 @@ public class AccountEntryServiceClpInvoker {
 				"java.lang.Long", "java.lang.Long", "java.lang.String",
 				"java.lang.String", "java.util.LinkedHashMap", "boolean"
 			};
+
+		_methodName245 = "updateInstructions";
+
+		_methodParameterTypes245 = new String[] { "long", "java.lang.String" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -161,6 +165,12 @@ public class AccountEntryServiceClpInvoker {
 				((Boolean)arguments[29]).booleanValue());
 		}
 
+		if (_methodName245.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes245, parameterTypes)) {
+			return AccountEntryServiceUtil.updateInstructions(((Long)arguments[0]).longValue(),
+				(java.lang.String)arguments[1]);
+		}
+
 		throw new UnsupportedOperationException();
 	}
 
@@ -178,4 +188,6 @@ public class AccountEntryServiceClpInvoker {
 	private String[] _methodParameterTypes243;
 	private String _methodName244;
 	private String[] _methodParameterTypes244;
+	private String _methodName245;
+	private String[] _methodParameterTypes245;
 }

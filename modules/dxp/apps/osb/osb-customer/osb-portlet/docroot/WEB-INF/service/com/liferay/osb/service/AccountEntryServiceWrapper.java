@@ -54,6 +54,14 @@ public class AccountEntryServiceWrapper implements AccountEntryService,
 	}
 
 	@Override
+	public com.liferay.osb.model.AccountEntry updateInstructions(
+		long accountEntryId, java.lang.String instructions)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountEntryService.updateInstructions(accountEntryId,
+			instructions);
+	}
+
+	@Override
 	public int searchCount(java.lang.Long createUserId, int createDateGTDay,
 		int createDateGTMonth, int createDateGTYear, int createDateLTDay,
 		int createDateLTMonth, int createDateLTYear,

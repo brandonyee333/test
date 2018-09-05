@@ -216,6 +216,13 @@ public class AccountEntryLocalServiceUtil {
 			street3, city, zip, regionId, countryId, ewsaDossieraProjectKey);
 	}
 
+	public static com.liferay.osb.model.AccountEntry updateInstructions(
+		long userId, long accountEntryId, java.lang.String instructions)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updateInstructions(userId, accountEntryId, instructions);
+	}
+
 	public static com.liferay.osb.model.AccountEntry updateStatus(long userId,
 		long accountEntryId, int status,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
