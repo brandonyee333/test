@@ -33,7 +33,7 @@ public class PortalRegisterTestUtil {
 
 		IndexerRegistryUtil.register(new AssetEntryIndexer());
 		IndexerRegistryUtil.register(new ContactIndexer());
-		IndexerRegistryUtil.register(new OrganizationIndexer());
+//		IndexerRegistryUtil.register(new OrganizationIndexer());
 
 		_indexersRegistered = true;
 	}
