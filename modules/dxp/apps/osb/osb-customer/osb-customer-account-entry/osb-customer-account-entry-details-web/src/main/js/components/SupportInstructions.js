@@ -113,8 +113,10 @@ export default class SupportInstructions extends React.Component {
 						</Button>
 
 					) : (
-						<Button onClick={this.triggerAddInstructionsModal} size="sm" value="add">
-							+
+						<Button icon={true} onClick={this.triggerAddInstructionsModal} value="add">
+							<svg className="lexicon-icon lexicon-icon-plus">
+								<use xlinkHref="#plus" />
+							</svg>
 						</Button>
 					)}
 
