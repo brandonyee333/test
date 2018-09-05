@@ -6,6 +6,7 @@ import getCN from 'classnames';
 export default class Button extends React.Component {
 	static defaultProps = {
 		display: 'primary',
+		icon: false,
 		size: 'md',
 		type: 'button'
 	};
@@ -14,6 +15,7 @@ export default class Button extends React.Component {
 		children: PropTypes.node.isRequired,
 		display: PropTypes.oneOf(['default', 'disabled', 'link', 'outline', 'primary']),
 		href: PropTypes.string,
+		icon: PropTypes.bool,
 		onClick: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
 		size: PropTypes.oneOf(['lg', 'md', 'sm']),
 		type: PropTypes.oneOf(['button', 'reset', 'submit']),
@@ -21,11 +23,12 @@ export default class Button extends React.Component {
 	};
 
 	render() {
-		const {children, display, href, onClick, size, type, value} = this.props;
+		const {children, display, href, icon, onClick, size, type, value} = this.props;
 
 		const className = getCN(
 			'btn',
 			`btn-${size}`,
+			`${icon ? 'btn-monospaced' : ''}`,
 			`${!href ? `btn-${display}` : ''}`,
 			{
 				'btn-link': href
