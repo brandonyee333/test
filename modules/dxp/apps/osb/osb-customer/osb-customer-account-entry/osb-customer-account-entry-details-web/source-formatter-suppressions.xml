@@ -5,6 +5,7 @@
 		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/account/entry/details/web/internal/portlet/action/AccountEnvironmentAttachmentMVCResourceCommand.java" />
 		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/account/entry/details/web/internal/portlet/action/AddTicketAttachmentMVCRenderCommand.java" />
 		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/account/entry/details/web/internal/portlet/action/DeleteAccountEnvironmentMVCActionCommand.java" />
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/account/entry/details/web/internal/portlet/action/EditAccountEntryInstructionsMVCActionCommand.java" />
 		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/account/entry/details/web/internal/portlet/action/EditAccountEnvironmentMVCActionCommand.java" />
 		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/account/entry/details/web/internal/portlet/action/EditAccountEnvironmentMVCRenderCommand.java" />
 		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/account/entry/details/web/internal/portlet/action/ViewAccountEntryMVCRenderCommand.java" />

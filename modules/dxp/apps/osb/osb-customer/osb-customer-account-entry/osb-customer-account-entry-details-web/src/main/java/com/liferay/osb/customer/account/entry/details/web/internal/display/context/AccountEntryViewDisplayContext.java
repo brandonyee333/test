@@ -28,6 +28,7 @@ import com.liferay.osb.service.AccountEntryServiceUtil;
 import com.liferay.osb.service.AccountEnvironmentAttachmentLocalServiceUtil;
 import com.liferay.osb.service.AccountEnvironmentLocalServiceUtil;
 import com.liferay.osb.service.ProductEntryLocalServiceUtil;
+import com.liferay.osb.service.permission.OSBAccountEntryPermission;
 import com.liferay.osb.service.permission.OSBAccountEnvironmentPermission;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -91,6 +92,29 @@ public class AccountEntryViewDisplayContext {
 
 	public AccountEntry getAccountEntry() {
 		return _accountEntry;
+	}
+
+	public String getAccountEntryInstructionsEditURL() throws PortalException {
+		PortletURL portletURL = _mimeResponse.createActionURL();
+		long accountEntryId = _accountEntry.getAccountEntryId();
+
+		if ((accountEntryId > 0) &&
+			(OSBAccountEntryPermission.contains(
+				_accountEntryDetailsRequestHelper.getPermissionChecker(),
+				accountEntryId, OSBActionKeys.UPDATE_ACCOUNT_INFO) ||
+			 OSBAccountEntryPermission.contains(
+				_accountEntryDetailsRequestHelper.getPermissionChecker(),
+				accountEntryId, OSBActionKeys.UPDATE_ACCOUNT_INSTRUCTIONS))) {
+
+			portletURL.setParameter(
+				ActionRequest.ACTION_NAME, "editAccountEntryInstructions");
+			portletURL.setParameter(
+				"redirect", _accountEntryDetailsRequestHelper.getCurrentURL());
+			portletURL.setParameter(
+				"accountEntryId", String.valueOf(accountEntryId));
+		}
+
+		return portletURL.toString();
 	}
 
 	public String getAccountEnvironmentAddURL(AccountEntry accountEntry)

@@ -18,6 +18,7 @@ import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.service.base.AccountEntryServiceBaseImpl;
 import com.liferay.osb.service.permission.OSBAccountEntryPermission;
+import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -136,6 +137,18 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 			modifiedDateLTYear, name, code, industries, partnerManagedSupport,
 			tiers, statuses, instructions, notes, partnerEntryCode, street,
 			countryId, regionId, city, zip, params, andOperator);
+	}
+
+	public AccountEntry updateInstructions(
+			long accountEntryId, String instructions)
+		throws PortalException {
+
+		OSBAccountEntryPermission.check(
+			getPermissionChecker(), accountEntryId,
+			OSBActionKeys.UPDATE_ACCOUNT_INSTRUCTIONS);
+
+		return accountEntryLocalService.updateInstructions(
+			getUserId(), accountEntryId, instructions);
 	}
 
 	protected void addAccountMembershipParams(

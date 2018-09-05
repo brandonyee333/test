@@ -1364,6 +1364,28 @@ public class AccountEntryLocalServiceImpl
 			oldAccountEntry, workflowServiceContext);
 	}
 
+	public AccountEntry updateInstructions(
+			long userId, long accountEntryId, String instructions)
+		throws PortalException {
+
+		User user = userLocalService.getUser(userId);
+
+		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
+			accountEntryId);
+
+		AccountEntry oldAccountEntry = (AccountEntry)accountEntry.clone();
+
+		accountEntry.setInstructions(instructions);
+
+		accountEntryPersistence.update(accountEntry);
+
+		updateAuditEntry(
+			user.getUserId(), user.getFullName(), oldAccountEntry,
+			accountEntry);
+
+		return accountEntry;
+	}
+
 	public void updateLastAuditDate(
 			long userId, long accountEntryId, String auditLabel,
 			String auditValue)

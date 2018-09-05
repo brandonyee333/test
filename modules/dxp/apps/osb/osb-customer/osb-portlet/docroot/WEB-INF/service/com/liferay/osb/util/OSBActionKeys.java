@@ -29,6 +29,11 @@ public class OSBActionKeys extends ActionKeys {
 
 	public static final String ASSIGN_CUSTOMERS = "ASSIGN_CUSTOMERS";
 
+	public static final String UPDATE_ACCOUNT_INFO = "UPDATE_ACCOUNT_INFO";
+
+	public static final String UPDATE_ACCOUNT_INSTRUCTIONS =
+		"UPDATE_ACCOUNT_INSTRUCTIONS";
+
 	public static final String UPDATE_ADMIN = "UPDATE_ADMIN";
 
 	public static final String UPDATE_ADVANCED = "UPDATE_ADVANCED";
