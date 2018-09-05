@@ -95,24 +95,27 @@ public class AccountEntryViewDisplayContext {
 	}
 
 	public String getAccountEntryInstructionsEditURL() throws PortalException {
-		PortletURL portletURL = _mimeResponse.createActionURL();
-		long accountEntryId = _accountEntry.getAccountEntryId();
-
-		if ((accountEntryId > 0) &&
-			(OSBAccountEntryPermission.contains(
+		if (!OSBAccountEntryPermission.contains(
 				_accountEntryDetailsRequestHelper.getPermissionChecker(),
-				accountEntryId, OSBActionKeys.UPDATE_ACCOUNT_INFO) ||
-			 OSBAccountEntryPermission.contains(
+				_accountEntry.getAccountEntryId(),
+				OSBActionKeys.UPDATE_ACCOUNT_INFO) &&
+			!OSBAccountEntryPermission.contains(
 				_accountEntryDetailsRequestHelper.getPermissionChecker(),
-				accountEntryId, OSBActionKeys.UPDATE_ACCOUNT_INSTRUCTIONS))) {
+				_accountEntry.getAccountEntryId(),
+				OSBActionKeys.UPDATE_ACCOUNT_INSTRUCTIONS)) {
 
-			portletURL.setParameter(
-				ActionRequest.ACTION_NAME, "editAccountEntryInstructions");
-			portletURL.setParameter(
-				"redirect", _accountEntryDetailsRequestHelper.getCurrentURL());
-			portletURL.setParameter(
-				"accountEntryId", String.valueOf(accountEntryId));
+			return null;
 		}
+
+		PortletURL portletURL = _mimeResponse.createActionURL();
+
+		portletURL.setParameter(
+			ActionRequest.ACTION_NAME, "editAccountEntryInstructions");
+		portletURL.setParameter(
+			"redirect", _accountEntryDetailsRequestHelper.getCurrentURL());
+		portletURL.setParameter(
+			"accountEntryId",
+			String.valueOf(_accountEntry.getAccountEntryId()));
 
 		return portletURL.toString();
 	}

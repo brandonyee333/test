@@ -47,6 +47,7 @@ public class EditAccountEntryInstructionsMVCActionCommand
 
 		long accountEntryId = ParamUtil.getLong(
 			actionRequest, "accountEntryId");
+
 		String instructions = ParamUtil.getString(
 			actionRequest, "instructions");
 
