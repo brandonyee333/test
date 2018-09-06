@@ -233,6 +233,9 @@
 		<column name="envJVM" type="int" />
 		<column name="envAS" type="int" />
 		<column name="envLFR" type="int" />
+		<column name="envBrowser" type="int" />
+		<column name="envCS" type="int" />
+		<column name="envSearch" type="String" />
 
 		<!-- Order -->
 
@@ -921,9 +924,12 @@
 		<exception>AccountEnvironmentAttachment</exception>
 		<exception>AccountEnvironmentAttachmentSize</exception>
 		<exception>AccountEnvironmentEnvAS</exception>
+		<exception>AccountEnvironmentEnvBrowser</exception>
+		<exception>AccountEnvironmentEnvCS</exception>
 		<exception>AccountEnvironmentEnvDB</exception>
 		<exception>AccountEnvironmentEnvLFR</exception>
 		<exception>AccountEnvironmentEnvOS</exception>
+		<exception>AccountEnvironmentEnvSearch</exception>
 		<exception>AccountEnvironmentName</exception>
 		<exception>AccountProjectName</exception>
 		<exception>DuplicateAccountAttachment</exception>

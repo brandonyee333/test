@@ -16,6 +16,11 @@ package com.liferay.osb.model.impl;
 
 import com.liferay.osb.model.AccountEnvironmentConstants;
 import com.liferay.osb.model.ProductEntryConstants;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Lin Cui
@@ -24,6 +29,14 @@ public class AccountEnvironmentImpl extends AccountEnvironmentBaseImpl {
 
 	public String getEnvASLabel() {
 		return AccountEnvironmentConstants.getEnvLabel(getEnvAS());
+	}
+
+	public String getEnvBrowserLabel() {
+		return AccountEnvironmentConstants.getEnvLabel(getEnvBrowser());
+	}
+
+	public String getEnvCSLabel() {
+		return AccountEnvironmentConstants.getEnvLabel(getEnvCS());
 	}
 
 	public String getEnvDBLabel() {
@@ -40,6 +53,20 @@ public class AccountEnvironmentImpl extends AccountEnvironmentBaseImpl {
 
 	public String getEnvOSLabel() {
 		return AccountEnvironmentConstants.getEnvLabel(getEnvOS());
+	}
+
+	public List<String> getEnvSearchLabels() {
+		long[] envSearches = StringUtil.split(
+			getEnvSearch(), StringPool.NEW_LINE, 0L);
+
+		List<String> envSearchLabels = new ArrayList<>();
+
+		for (long envSearch : envSearches) {
+			envSearchLabels.add(
+				AccountEnvironmentConstants.getEnvLabel(envSearch));
+		}
+
+		return envSearchLabels;
 	}
 
 	public String getSupportPhaseLabel() {

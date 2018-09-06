@@ -45,6 +45,9 @@
 		int envJVM = BeanParamUtil.getInteger(accountEnvironment, request, "envJVM");
 		int envAS = BeanParamUtil.getInteger(accountEnvironment, request, "envAS");
 		int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
+		int envBrowser = BeanParamUtil.getInteger(accountEnvironment, request, "envBrowser");
+		int envCS = BeanParamUtil.getInteger(accountEnvironment, request, "envCS");
+		String envSearch = StringUtil.replace(BeanParamUtil.getString(accountEnvironment, request, "envSearch"), CharPool.NEW_LINE, CharPool.COMMA);
 		%>
 
 		<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/edit_account_environment">
@@ -59,9 +62,12 @@
 			<aui:input name="productEntryId" type="hidden" value="<%= productEntryId %>" />
 
 			<liferay-ui:error exception="<%= AccountEnvironmentEnvASException.class %>" message="please-select-a-valid-application-server" />
+			<liferay-ui:error exception="<%= AccountEnvironmentEnvBrowserException.class %>" message="please-select-a-valid-browser" />
+			<liferay-ui:error exception="<%= AccountEnvironmentEnvCSException.class %>" message="please-select-a-valid-cloud-service" />
 			<liferay-ui:error exception="<%= AccountEnvironmentEnvDBException.class %>" message="please-select-a-valid-database" />
 			<liferay-ui:error exception="<%= AccountEnvironmentEnvLFRException.class %>" message="please-select-a-valid-liferay-version" />
 			<liferay-ui:error exception="<%= AccountEnvironmentEnvOSException.class %>" message="please-select-a-valid-operating-system" />
+			<liferay-ui:error exception="<%= AccountEnvironmentEnvSearchException.class %>" message="please-select-a-valid-search" />
 
 			<liferay-ui:error exception="<%= AccountEnvironmentAttachmentSizeException.class %>">
 
@@ -183,6 +189,28 @@
 
 					<aui:col width="<%= 50 %>">
 						<aui:select label="database" name="envDB">
+							<aui:option value="0" />
+						</aui:select>
+					</aui:col>
+				</aui:row>
+
+				<aui:row>
+					<aui:col width="<%= 50 %>">
+						<aui:select label="primary-browser" name="envBrowser">
+							<aui:option value="0" />
+						</aui:select>
+					</aui:col>
+
+					<aui:col width="<%= 50 %>">
+						<aui:select label="cloud-services" name="envCS">
+							<aui:option value="0" />
+						</aui:select>
+					</aui:col>
+				</aui:row>
+
+				<aui:row>
+					<aui:col width="<%= 50 %>">
+						<aui:select label="search" multiple="true" name="envSearch">
 							<aui:option value="0" />
 						</aui:select>
 					</aui:col>

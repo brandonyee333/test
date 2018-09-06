@@ -254,6 +254,13 @@ public class AccountEntryViewDisplayContext {
 			"envASLabel",
 			LanguageUtil.get(_request, accountEnvironment.getEnvASLabel()));
 		jsonObject.put(
+			"envBrowserLabel",
+			LanguageUtil.get(
+				_request, accountEnvironment.getEnvBrowserLabel()));
+		jsonObject.put(
+			"envCSLabel",
+			LanguageUtil.get(_request, accountEnvironment.getEnvCSLabel()));
+		jsonObject.put(
 			"envDBLabel",
 			LanguageUtil.get(_request, accountEnvironment.getEnvDBLabel()));
 		jsonObject.put(
@@ -262,6 +269,9 @@ public class AccountEntryViewDisplayContext {
 		jsonObject.put(
 			"envLFRLabel",
 			LanguageUtil.get(_request, accountEnvironment.getEnvLFRLabel()));
+		jsonObject.put(
+			"envSearchLabels",
+			toEnvSearchJSONArray(accountEnvironment.getEnvSearchLabels()));
 
 		String envOSLabel = LanguageUtil.get(
 			_request, accountEnvironment.getEnvOSLabel());
@@ -351,7 +361,7 @@ public class AccountEntryViewDisplayContext {
 			AccountEnvironmentConstants.getPortalEnvListTypes(
 				listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_BROWSER);
 
-		jsonObject.put("envBR", toJSONArray(envBrowserListTypes));
+		jsonObject.put("envBrowser", toJSONArray(envBrowserListTypes));
 
 		if (ProductEntryConstants.isPortalVersion6_2(listTypeId) ||
 			ProductEntryConstants.isDigitalEnterpriseVersion7_0(listTypeId) ||
@@ -435,6 +445,18 @@ public class AccountEntryViewDisplayContext {
 			JSONObject jsonObject = getEnvLFRJSONObject(productEntry, listType);
 
 			jsonArray.put(jsonObject);
+		}
+
+		return jsonArray;
+	}
+
+	protected JSONArray toEnvSearchJSONArray(List<String> envSearches) {
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+		for (String envSearch : envSearches) {
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+			jsonObject.put("name", LanguageUtil.get(_request, envSearch));
 		}
 
 		return jsonArray;

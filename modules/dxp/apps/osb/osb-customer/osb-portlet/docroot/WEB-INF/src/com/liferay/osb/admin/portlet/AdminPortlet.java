@@ -28,9 +28,12 @@ import com.liferay.osb.exception.AccountEntryPartnerEntryException;
 import com.liferay.osb.exception.AccountEntrySupportRegionException;
 import com.liferay.osb.exception.AccountEnvironmentAttachmentSizeException;
 import com.liferay.osb.exception.AccountEnvironmentEnvASException;
+import com.liferay.osb.exception.AccountEnvironmentEnvBrowserException;
+import com.liferay.osb.exception.AccountEnvironmentEnvCSException;
 import com.liferay.osb.exception.AccountEnvironmentEnvDBException;
 import com.liferay.osb.exception.AccountEnvironmentEnvLFRException;
 import com.liferay.osb.exception.AccountEnvironmentEnvOSException;
+import com.liferay.osb.exception.AccountEnvironmentEnvSearchException;
 import com.liferay.osb.exception.AccountEnvironmentNameException;
 import com.liferay.osb.exception.DuplicateAccountCustomerException;
 import com.liferay.osb.exception.DuplicateAccountEntryException;
@@ -658,7 +661,7 @@ public class AdminPortlet extends OSBPortlet {
 				AccountEnvironmentLocalServiceUtil.updateAccountEnvironment(
 					themeDisplay.getUserId(), accountEnvironmentId,
 					productEntryId, name, envOS, envOSCustom, envDB, envJVM,
-					envAS, envLFR, files, types);
+					envAS, envLFR, 0, 0, null, files, types);
 
 				SessionMessages.add(
 					actionRequest,
@@ -1222,9 +1225,12 @@ public class AdminPortlet extends OSBPortlet {
 			cause instanceof AccountEntrySupportRegionException ||
 			cause instanceof AccountEnvironmentAttachmentSizeException ||
 			cause instanceof AccountEnvironmentEnvASException ||
+			cause instanceof AccountEnvironmentEnvBrowserException ||
+			cause instanceof AccountEnvironmentEnvCSException ||
 			cause instanceof AccountEnvironmentEnvDBException ||
 			cause instanceof AccountEnvironmentEnvLFRException ||
 			cause instanceof AccountEnvironmentEnvOSException ||
+			cause instanceof AccountEnvironmentEnvSearchException ||
 			cause instanceof AccountEnvironmentNameException ||
 			cause instanceof AddressCityException ||
 			cause instanceof AddressStreetException ||

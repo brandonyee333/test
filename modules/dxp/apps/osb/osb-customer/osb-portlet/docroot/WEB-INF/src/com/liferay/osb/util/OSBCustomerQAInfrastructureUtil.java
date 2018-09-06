@@ -199,7 +199,8 @@ public class OSBCustomerQAInfrastructureUtil {
 
 	protected static void checkAccountEnvironment(
 			long accountEntryId, long productEntryId, String name, int envOS,
-			String envOSCustom, int envDB, int envJVM, int envAS, int envLFR)
+			String envOSCustom, int envDB, int envJVM, int envAS, int envLFR,
+			int envBrowser, int envCS, String envSearch)
 		throws Exception {
 
 		AccountEnvironment accountEnvironment =
@@ -235,7 +236,7 @@ public class OSBCustomerQAInfrastructureUtil {
 			AccountEnvironmentLocalServiceUtil.addAccountEnvironment(
 				OSBConstants.USER_DEFAULT_USER_ID, accountEntryId,
 				productEntryId, name, envOS, envOSCustom, envDB, envJVM, envAS,
-				envLFR, files, types);
+				envLFR, envBrowser, envCS, envSearch, files, types);
 		}
 
 		if (_log.isInfoEnabled()) {
@@ -257,6 +258,12 @@ public class OSBCustomerQAInfrastructureUtil {
 			String envAS = OSBCustomerQAConfigurationUtil.get(
 				OSBCustomerQAConfigurationKeys.OSB_QA_ACCOUNT_ENVIRONMENT,
 				new Filter(accountEnvironmentNameFilter, "envAS"));
+			String envBrowser = OSBCustomerQAConfigurationUtil.get(
+				OSBCustomerQAConfigurationKeys.OSB_QA_ACCOUNT_ENVIRONMENT,
+				new Filter(accountEnvironmentNameFilter, "envBrowser"));
+			String envCS = OSBCustomerQAConfigurationUtil.get(
+				OSBCustomerQAConfigurationKeys.OSB_QA_ACCOUNT_ENVIRONMENT,
+				new Filter(accountEnvironmentNameFilter, "envCS"));
 			String envDB = OSBCustomerQAConfigurationUtil.get(
 				OSBCustomerQAConfigurationKeys.OSB_QA_ACCOUNT_ENVIRONMENT,
 				new Filter(accountEnvironmentNameFilter, "envDB"));
@@ -272,6 +279,9 @@ public class OSBCustomerQAInfrastructureUtil {
 			String envOSCustom = OSBCustomerQAConfigurationUtil.get(
 				OSBCustomerQAConfigurationKeys.OSB_QA_ACCOUNT_ENVIRONMENT,
 				new Filter(accountEnvironmentNameFilter, "envOSCustom"));
+			String envSearch = OSBCustomerQAConfigurationUtil.get(
+				OSBCustomerQAConfigurationKeys.OSB_QA_ACCOUNT_ENVIRONMENT,
+				new Filter(accountEnvironmentNameFilter, "envSearch"));
 			String productEntryId = OSBCustomerQAConfigurationUtil.get(
 				OSBCustomerQAConfigurationKeys.OSB_QA_ACCOUNT_ENVIRONMENT,
 				new Filter(accountEnvironmentNameFilter, "productEntryId"));
@@ -285,7 +295,9 @@ public class OSBCustomerQAInfrastructureUtil {
 				GetterUtil.getLong(productEntryId), accountEnvironmentName,
 				GetterUtil.getInteger(envOS), envOSCustom,
 				GetterUtil.getInteger(envDB), GetterUtil.getInteger(envJVM),
-				GetterUtil.getInteger(envAS), GetterUtil.getInteger(envLFR));
+				GetterUtil.getInteger(envAS), GetterUtil.getInteger(envLFR),
+				GetterUtil.getInteger(envBrowser), GetterUtil.getInteger(envCS),
+				GetterUtil.getString(envSearch));
 		}
 	}
 

@@ -29,6 +29,8 @@ import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.File;
@@ -80,6 +82,11 @@ public class EditAccountEnvironmentMVCActionCommand
 		int envJVM = ParamUtil.getInteger(actionRequest, "envJVM");
 		int envAS = ParamUtil.getInteger(actionRequest, "envAS");
 		int envLFR = ParamUtil.getInteger(actionRequest, "envLFR");
+		int envBrowser = ParamUtil.getInteger(actionRequest, "envBrowser");
+		int envCS = ParamUtil.getInteger(actionRequest, "envCS");
+		String envSearch = StringUtil.merge(
+			ParamUtil.getParameterValues(actionRequest, "envSearch"),
+			StringPool.NEW_LINE);
 
 		List<ObjectValuePair<String, File>> files = new ArrayList<>();
 
@@ -129,15 +136,15 @@ public class EditAccountEnvironmentMVCActionCommand
 				accountEnvironment =
 					AccountEnvironmentServiceUtil.updateAccountEnvironment(
 						accountEnvironmentId, productEntryId, name, envOS,
-						envOSCustom, envDB, envJVM, envAS, envLFR, files,
-						types);
+						envOSCustom, envDB, envJVM, envAS, envLFR, envBrowser,
+						envCS, envSearch, files, types);
 			}
 			else {
 				accountEnvironment =
 					AccountEnvironmentServiceUtil.addAccountEnvironment(
 						accountEntryId, productEntryId, name, envOS,
-						envOSCustom, envDB, envJVM, envAS, envLFR, files,
-						types);
+						envOSCustom, envDB, envJVM, envAS, envLFR, envBrowser,
+						envCS, envSearch, files, types);
 			}
 
 			PortletConfig portletConfig = getPortletConfig(actionRequest);

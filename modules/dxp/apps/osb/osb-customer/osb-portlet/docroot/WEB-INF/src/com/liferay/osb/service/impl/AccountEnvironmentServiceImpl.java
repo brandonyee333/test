@@ -38,6 +38,7 @@ public class AccountEnvironmentServiceImpl
 	public AccountEnvironment addAccountEnvironment(
 			long accountEntryId, long productEntryId, String name, int envOS,
 			String envOSCustom, int envDB, int envJVM, int envAS, int envLFR,
+			int envBrowser, int envCS, String envSearch,
 			List<ObjectValuePair<String, File>> files, List<Integer> types)
 		throws PortalException {
 
@@ -47,7 +48,8 @@ public class AccountEnvironmentServiceImpl
 
 		return accountEnvironmentLocalService.addAccountEnvironment(
 			getUserId(), accountEntryId, productEntryId, name, envOS,
-			envOSCustom, envDB, envJVM, envAS, envLFR, files, types);
+			envOSCustom, envDB, envJVM, envAS, envLFR, envBrowser, envCS,
+			envSearch, files, types);
 	}
 
 	public AccountEnvironment deleteAccountEnvironment(
@@ -104,8 +106,8 @@ public class AccountEnvironmentServiceImpl
 	public AccountEnvironment updateAccountEnvironment(
 			long accountEnvironmentId, long productEntryId, String name,
 			int envOS, String envOSCustom, int envDB, int envJVM, int envAS,
-			int envLFR, List<ObjectValuePair<String, File>> files,
-			List<Integer> types)
+			int envLFR, int envBrowser, int envCS, String envSearch,
+			List<ObjectValuePair<String, File>> files, List<Integer> types)
 		throws PortalException {
 
 		AccountEnvironment accountEnvironment =
@@ -118,7 +120,8 @@ public class AccountEnvironmentServiceImpl
 
 		return accountEnvironmentLocalService.updateAccountEnvironment(
 			getUserId(), accountEnvironmentId, productEntryId, name, envOS,
-			envOSCustom, envDB, envJVM, envAS, envLFR, files, types);
+			envOSCustom, envDB, envJVM, envAS, envLFR, envBrowser, envCS,
+			envSearch, files, types);
 	}
 
 }

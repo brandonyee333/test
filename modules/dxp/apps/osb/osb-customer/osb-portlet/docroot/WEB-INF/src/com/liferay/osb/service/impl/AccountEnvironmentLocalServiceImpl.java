@@ -16,9 +16,12 @@ package com.liferay.osb.service.impl;
 
 import com.liferay.osb.exception.AccountEnvironmentAttachmentException;
 import com.liferay.osb.exception.AccountEnvironmentEnvASException;
+import com.liferay.osb.exception.AccountEnvironmentEnvBrowserException;
+import com.liferay.osb.exception.AccountEnvironmentEnvCSException;
 import com.liferay.osb.exception.AccountEnvironmentEnvDBException;
 import com.liferay.osb.exception.AccountEnvironmentEnvLFRException;
 import com.liferay.osb.exception.AccountEnvironmentEnvOSException;
+import com.liferay.osb.exception.AccountEnvironmentEnvSearchException;
 import com.liferay.osb.exception.AccountEnvironmentNameException;
 import com.liferay.osb.exception.DuplicateAccountEnvironmentException;
 import com.liferay.osb.model.AccountEnvironment;
@@ -31,6 +34,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.ObjectValuePair;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.File;
@@ -50,8 +55,8 @@ public class AccountEnvironmentLocalServiceImpl
 	public AccountEnvironment addAccountEnvironment(
 			long userId, long accountEntryId, long productEntryId, String name,
 			int envOS, String envOSCustom, int envDB, int envJVM, int envAS,
-			int envLFR, List<ObjectValuePair<String, File>> files,
-			List<Integer> types)
+			int envLFR, int envBrowser, int envCS, String envSearch,
+			List<ObjectValuePair<String, File>> files, List<Integer> types)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
@@ -59,7 +64,7 @@ public class AccountEnvironmentLocalServiceImpl
 
 		validate(
 			0, accountEntryId, productEntryId, name, envOS, envDB, envAS,
-			envLFR, files);
+			envLFR, envBrowser, envCS, envSearch, files);
 
 		long accountEnvironmentId = counterLocalService.increment();
 
@@ -79,6 +84,9 @@ public class AccountEnvironmentLocalServiceImpl
 		accountEnvironment.setEnvJVM(envJVM);
 		accountEnvironment.setEnvAS(envAS);
 		accountEnvironment.setEnvLFR(envLFR);
+		accountEnvironment.setEnvBrowser(envBrowser);
+		accountEnvironment.setEnvCS(envCS);
+		accountEnvironment.setEnvSearch(envSearch);
 
 		accountEnvironmentPersistence.update(accountEnvironment);
 
@@ -171,8 +179,8 @@ public class AccountEnvironmentLocalServiceImpl
 	public AccountEnvironment updateAccountEnvironment(
 			long userId, long accountEnvironmentId, long productEntryId,
 			String name, int envOS, String envOSCustom, int envDB, int envJVM,
-			int envAS, int envLFR, List<ObjectValuePair<String, File>> files,
-			List<Integer> types)
+			int envAS, int envLFR, int envBrowser, int envCS, String envSearch,
+			List<ObjectValuePair<String, File>> files, List<Integer> types)
 		throws PortalException {
 
 		AccountEnvironment accountEnvironment =
@@ -181,7 +189,8 @@ public class AccountEnvironmentLocalServiceImpl
 
 		validate(
 			accountEnvironmentId, accountEnvironment.getAccountEntryId(),
-			productEntryId, name, envOS, envDB, envAS, envLFR, files);
+			productEntryId, name, envOS, envDB, envAS, envLFR, envBrowser,
+			envCS, envSearch, files);
 
 		accountEnvironment.setModifiedDate(new Date());
 		accountEnvironment.setProductEntryId(productEntryId);
@@ -192,6 +201,9 @@ public class AccountEnvironmentLocalServiceImpl
 		accountEnvironment.setEnvJVM(envJVM);
 		accountEnvironment.setEnvAS(envAS);
 		accountEnvironment.setEnvLFR(envLFR);
+		accountEnvironment.setEnvBrowser(envBrowser);
+		accountEnvironment.setEnvCS(envCS);
+		accountEnvironment.setEnvSearch(envSearch);
 
 		accountEnvironmentPersistence.update(accountEnvironment);
 
@@ -225,6 +237,7 @@ public class AccountEnvironmentLocalServiceImpl
 	protected void validate(
 			long accountEnvironmentId, long accountEntryId, long productEntryId,
 			String name, int envOS, int envDB, int envAS, int envLFR,
+			int envBrowser, int envCS, String envSearch,
 			List<ObjectValuePair<String, File>> files)
 		throws PortalException {
 
@@ -301,6 +314,50 @@ public class AccountEnvironmentLocalServiceImpl
 				!type.equals(
 					ProductEntryConstants.
 						LIST_TYPE_DIGITAL_ENTERPRISE_ALL_VERSIONS)) {
+
+				throw new AccountEnvironmentEnvLFRException();
+			}
+		}
+
+		if (envBrowser > 0) {
+			if (!isValidListType(
+					envBrowser,
+					AccountEnvironmentConstants.LIST_TYPE_ENV_BROWSER)) {
+
+				throw new AccountEnvironmentEnvBrowserException();
+			}
+		}
+
+		if (envCS > 0) {
+			if (!isValidListType(
+					envCS, AccountEnvironmentConstants.LIST_TYPE_ENV_CS)) {
+
+				throw new AccountEnvironmentEnvCSException();
+			}
+
+			if (!ProductEntryConstants.isPortalVersion6_2(envLFR) &&
+				!ProductEntryConstants.isDigitalEnterpriseVersion7_0(envLFR) &&
+				!ProductEntryConstants.isDigitalEnterpriseVersion7_1(envLFR)) {
+
+				throw new AccountEnvironmentEnvLFRException();
+			}
+		}
+
+		if (Validator.isNotNull(envSearch)) {
+			int[] envSearchesList = StringUtil.split(
+				envSearch, StringPool.NEW_LINE, 0);
+
+			for (int envSearches : envSearchesList) {
+				if (!isValidListType(
+						envSearches,
+						AccountEnvironmentConstants.LIST_TYPE_ENV_SEARCH)) {
+
+					throw new AccountEnvironmentEnvSearchException();
+				}
+			}
+
+			if (!ProductEntryConstants.isDigitalEnterpriseVersion7_0(envLFR) &&
+				!ProductEntryConstants.isDigitalEnterpriseVersion7_1(envLFR)) {
 
 				throw new AccountEnvironmentEnvLFRException();
 			}
