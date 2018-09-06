@@ -34,10 +34,11 @@ public class ZendeskTicketCommentWebServiceImpl
 	implements ZendeskTicketCommentWebService {
 
 	public ZendeskTicketComment addZendeskTicketComment(
-			long zendeskTicketId, long zendeskUserId, String body)
+			long zendeskTicketId, long zendeskUserId, String htmlBody)
 		throws PortalException {
 
-		JSONObject jsonObject = _createRequestJSONObject(zendeskUserId, body);
+		JSONObject jsonObject = _createRequestJSONObject(
+			zendeskUserId, htmlBody);
 
 		JSONObject responseJSONObject = _zendeskBaseWebService.put(
 			ZendeskRESTEndpoints.URL_API_V2 + "tickets/" + zendeskTicketId +
@@ -62,12 +63,12 @@ public class ZendeskTicketCommentWebServiceImpl
 	}
 
 	private JSONObject _createRequestJSONObject(
-		long zendeskUserId, String body) {
+		long zendeskUserId, String htmlBody) {
 
 		JSONObject commentJSONObject = JSONFactoryUtil.createJSONObject();
 
 		commentJSONObject.put("author_id", zendeskUserId);
-		commentJSONObject.put("body", body);
+		commentJSONObject.put("html_body", htmlBody);
 
 		JSONObject ticketJSONObject = JSONFactoryUtil.createJSONObject();
 

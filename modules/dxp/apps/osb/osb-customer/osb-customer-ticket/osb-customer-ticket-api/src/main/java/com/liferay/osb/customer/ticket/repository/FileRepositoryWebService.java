@@ -14,7 +14,6 @@
 
 package com.liferay.osb.customer.ticket.repository;
 
-import com.liferay.osb.customer.ticket.model.TicketAttachment;
 import com.liferay.portal.kernel.exception.PortalException;
 
 /**
@@ -23,7 +22,7 @@ import com.liferay.portal.kernel.exception.PortalException;
  */
 public interface FileRepositoryWebService {
 
-	public String getDownloadURL(TicketAttachment ticketAttachment)
+	public String getDownloadURL(String fileRepositoryId, String filePath)
 		throws PortalException;
 
 	public String getToken(String fileRepositoryId, long zendeskTicketId)

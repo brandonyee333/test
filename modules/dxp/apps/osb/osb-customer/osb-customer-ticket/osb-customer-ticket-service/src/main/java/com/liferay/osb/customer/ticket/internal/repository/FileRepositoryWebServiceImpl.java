@@ -14,7 +14,6 @@
 
 package com.liferay.osb.customer.ticket.internal.repository;
 
-import com.liferay.osb.customer.ticket.model.TicketAttachment;
 import com.liferay.osb.customer.ticket.repository.FileRepository;
 import com.liferay.osb.customer.ticket.repository.FileRepositoryManager;
 import com.liferay.osb.customer.ticket.repository.FileRepositoryWebService;
@@ -35,17 +34,17 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = FileRepositoryWebService.class)
 public class FileRepositoryWebServiceImpl implements FileRepositoryWebService {
 
-	public String getDownloadURL(TicketAttachment ticketAttachment)
+	public String getDownloadURL(String fileRepositoryId, String filePath)
 		throws PortalException {
 
 		String fileRepositoryURL = getFileRepositoryURL(
-			ticketAttachment.getFileRepositoryId(), _END_POINT_DOWNLOAD);
+			fileRepositoryId, _END_POINT_DOWNLOAD);
 
 		StringBundler sb = new StringBundler(3);
 
 		sb.append(fileRepositoryURL);
 		sb.append(StringPool.FORWARD_SLASH);
-		sb.append(_http.encodePath(ticketAttachment.getFilePath()));
+		sb.append(_http.encodePath(filePath));
 
 		String key = sendRequest(sb.toString(), true);
 

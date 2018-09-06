@@ -16,25 +16,16 @@ package com.liferay.osb.customer.account.entry.details.web.internal.portlet.acti
 
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys;
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsWebKeys;
+import com.liferay.osb.customer.account.entry.details.web.internal.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.ticket.constants.TicketActionKeys;
 import com.liferay.osb.customer.ticket.service.permission.TicketEntryPermissionChecker;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
-import com.liferay.osb.exception.NoSuchAccountEntryException;
 import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.ExternalIdMapper;
-import com.liferay.osb.model.ExternalIdMapperConstants;
-import com.liferay.osb.service.AccountEntryLocalServiceUtil;
-import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
-import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-
-import java.util.List;
 
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -65,7 +56,11 @@ public class AddTicketAttachmentMVCRenderCommand extends BaseMVCRenderCommand {
 		long zendeskTicketId = ParamUtil.getLong(
 			renderRequest, "zendeskTicketId");
 
-		AccountEntry accountEntry = getAccountEntry(zendeskTicketId);
+		ZendeskTicket zendeskTicket = _zendeskTicketWebService.getZendeskTicket(
+			zendeskTicketId);
+
+		AccountEntry accountEntry = _zendeskMapperUtil.getAccountEntry(
+			zendeskTicket.getZendeskOrganizationId());
 
 		TicketEntryPermissionChecker.check(
 			themeDisplay.getPermissionChecker(),
@@ -78,40 +73,8 @@ public class AddTicketAttachmentMVCRenderCommand extends BaseMVCRenderCommand {
 		return "/account_entry_details/add_ticket_attachment.jsp";
 	}
 
-	protected AccountEntry getAccountEntry(long zendeskTicketId)
-		throws PortalException {
-
-		ZendeskTicket zendeskTicket = _zendeskTicketWebService.getZendeskTicket(
-			zendeskTicketId);
-
-		long classNameId = _classNameLocalService.getClassNameId(
-			AccountEntry.class);
-
-		List<ExternalIdMapper> externalIdMappers =
-			ExternalIdMapperLocalServiceUtil.getExternalIdMappers(
-				classNameId, ExternalIdMapperConstants.TYPE_ZENDESK,
-				String.valueOf(zendeskTicket.getZendeskOrganizationId()));
-
-		if (externalIdMappers.isEmpty()) {
-			throw new NoSuchAccountEntryException();
-		}
-
-		ExternalIdMapper externalIdMapper = externalIdMappers.get(0);
-
-		return AccountEntryLocalServiceUtil.getAccountEntry(
-			externalIdMapper.getClassPK());
-	}
-
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
-	}
-
 	@Reference
-	private ClassNameLocalService _classNameLocalService;
+	private ZendeskMapperUtil _zendeskMapperUtil;
 
 	@Reference
 	private ZendeskTicketWebService _zendeskTicketWebService;

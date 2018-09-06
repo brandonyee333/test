@@ -14,10 +14,12 @@
 
 package com.liferay.osb.customer.ticket.constants;
 
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+
 /**
  * @author Amos Fong
  */
-public class TicketActionKeys {
+public class TicketActionKeys extends ActionKeys {
 
 	public static final String ADD_TICKET_ATTACHMENT = "ADD_TICKET_ATTACHMENT";
 

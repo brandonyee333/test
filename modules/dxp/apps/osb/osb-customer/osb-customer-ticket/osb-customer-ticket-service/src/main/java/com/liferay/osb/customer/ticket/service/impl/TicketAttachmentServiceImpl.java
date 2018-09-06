@@ -14,11 +14,45 @@
 
 package com.liferay.osb.customer.ticket.service.impl;
 
+import com.liferay.osb.customer.ticket.constants.TicketActionKeys;
+import com.liferay.osb.customer.ticket.model.TicketAttachment;
 import com.liferay.osb.customer.ticket.service.base.TicketAttachmentServiceBaseImpl;
+import com.liferay.osb.customer.ticket.service.permission.TicketAttachmentPermissionChecker;
+import com.liferay.osb.customer.ticket.service.permission.TicketEntryPermissionChecker;
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Amos Fong
  */
 public class TicketAttachmentServiceImpl
 	extends TicketAttachmentServiceBaseImpl {
+
+	public TicketAttachment addTicketAttachment(
+			long accountEntryId, long zendeskTicketId, String fileRepositoryId,
+			String fileName, long fileSize, int type)
+		throws PortalException {
+
+		TicketEntryPermissionChecker.check(
+			getPermissionChecker(), accountEntryId,
+			TicketActionKeys.ADD_TICKET_ATTACHMENT);
+
+		return ticketAttachmentLocalService.addTicketAttachment(
+			getUserId(), accountEntryId, zendeskTicketId, fileRepositoryId,
+			fileName, fileSize, type);
+	}
+
+	public TicketAttachment getTicketAttachment(long ticketAttachmentId)
+		throws PortalException {
+
+		TicketAttachment ticketAttachment =
+			ticketAttachmentLocalService.getTicketAttachment(
+				ticketAttachmentId);
+
+		TicketAttachmentPermissionChecker.check(
+			getPermissionChecker(), ticketAttachment.getAccountEntryId(),
+			TicketActionKeys.VIEW);
+
+		return ticketAttachment;
+	}
+
 }
