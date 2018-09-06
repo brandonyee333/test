@@ -30,9 +30,7 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.ReadOnlyException;
@@ -108,53 +106,6 @@ public class LCSPortletPreferencesUtil {
 		}
 
 		return _CREDENTIALS_STATUS_SET;
-	}
-
-	public static synchronized Map<String, String> getLCSServicesPreferences() {
-		javax.portlet.PortletPreferences jxPortletPreferences =
-			fetchReadOnlyJxPortletPreferences();
-
-		Boolean metricsServiceEnabled = Boolean.valueOf(
-			jxPortletPreferences.getValue(
-				LCSConstants.METRICS_LCS_SERVICE_ENABLED,
-				Boolean.FALSE.toString()));
-
-		Boolean patchesServiceEnabled = Boolean.valueOf(
-			jxPortletPreferences.getValue(
-				LCSConstants.PATCHES_LCS_SERVICE_ENABLED,
-				Boolean.FALSE.toString()));
-
-		Boolean portalPropertiesServiceEnabled = Boolean.valueOf(
-			jxPortletPreferences.getValue(
-				LCSConstants.PORTAL_PROPERTIES_LCS_SERVICE_ENABLED,
-				Boolean.FALSE.toString()));
-
-		Map<String, String> preferences = new HashMap<>();
-
-		preferences.put(
-			LCSConstants.METRICS_LCS_SERVICE_ENABLED,
-			metricsServiceEnabled ? "enabled" : "disabled");
-
-		preferences.put(
-			LCSConstants.PORTAL_PROPERTIES_LCS_SERVICE_ENABLED,
-			portalPropertiesServiceEnabled ? "enabled" : "disabled");
-
-		if (portalPropertiesServiceEnabled) {
-			String portalPropertiesBlacklist = jxPortletPreferences.getValue(
-				LCSConstants.PORTAL_PROPERTIES_BLACKLIST, null);
-
-			if (Validator.isNotNull(portalPropertiesBlacklist)) {
-				preferences.put(
-					LCSConstants.PORTAL_PROPERTIES_BLACKLIST,
-					portalPropertiesBlacklist);
-			}
-		}
-
-		preferences.put(
-			LCSConstants.PATCHES_LCS_SERVICE_ENABLED,
-			patchesServiceEnabled ? "enabled" : "disabled");
-
-		return preferences;
 	}
 
 	/**

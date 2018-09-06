@@ -25,9 +25,7 @@ import com.liferay.lcs.messaging.ResponseMessage;
 import com.liferay.lcs.runnable.LCSPortletBuildNumberCheckRunnable;
 import com.liferay.lcs.util.LCSAlert;
 import com.liferay.lcs.util.LCSConnectionManager;
-import com.liferay.lcs.util.LCSConstants;
 import com.liferay.lcs.util.LCSPatcherUtil;
-import com.liferay.lcs.util.LCSPortletPreferencesUtil;
 import com.liferay.lcs.util.LCSUtil;
 import com.liferay.lcs.util.PortletPropsValues;
 import com.liferay.lcs.util.comparator.MessagePriorityComparator;
@@ -52,8 +50,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
-
-import javax.portlet.PortletPreferences;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -212,13 +208,9 @@ public class HandshakeTask implements Task {
 		handshakeMessage.setHashCode(_key.hashCode());
 		handshakeMessage.setHeartbeatInterval(_heartbeatInterval);
 		handshakeMessage.setKey(_key);
-		handshakeMessage.setMetricsLCSServiceEnabled(
-			_getMetricsLCSServiceEnabled());
 		handshakeMessage.setMonitoringEnabled(_isMonitoringEnabled());
 		handshakeMessage.setLCSPortletBuildNumber(
 			LCSUtil.getLCSPortletBuildNumber());
-		handshakeMessage.setPatchesLCSServiceEnabled(
-			_getPatchesLCSServiceEnabled());
 
 		if (LCSPatcherUtil.isConfigured()) {
 			handshakeMessage.setPatchingToolEnabled(true);
@@ -228,8 +220,6 @@ public class HandshakeTask implements Task {
 			LCSPatcherUtil.getPatchingToolVersion());
 		handshakeMessage.setPortalBuildNumber(ReleaseInfo.getBuildNumber());
 		handshakeMessage.setPortalEdition(LCSUtil.getPortalEdition());
-		handshakeMessage.setPortalPropertiesLCSServiceEnabled(
-			_getPortalPropertiesLCSServiceEnabled());
 		handshakeMessage.setUptimes(_getPortalUptimeEntries());
 
 		return handshakeMessage;
@@ -246,36 +236,6 @@ public class HandshakeTask implements Task {
 		}
 
 		return companyIdsWebIds;
-	}
-
-	private boolean _getMetricsLCSServiceEnabled() {
-		PortletPreferences jxPortletPreferences =
-			LCSPortletPreferencesUtil.fetchReadOnlyJxPortletPreferences();
-
-		return GetterUtil.getBoolean(
-			jxPortletPreferences.getValue(
-				LCSConstants.METRICS_LCS_SERVICE_ENABLED,
-				Boolean.FALSE.toString()));
-	}
-
-	private boolean _getPatchesLCSServiceEnabled() {
-		PortletPreferences jxPortletPreferences =
-			LCSPortletPreferencesUtil.fetchReadOnlyJxPortletPreferences();
-
-		return GetterUtil.getBoolean(
-			jxPortletPreferences.getValue(
-				LCSConstants.PATCHES_LCS_SERVICE_ENABLED,
-				Boolean.FALSE.toString()));
-	}
-
-	private boolean _getPortalPropertiesLCSServiceEnabled() {
-		PortletPreferences jxPortletPreferences =
-			LCSPortletPreferencesUtil.fetchReadOnlyJxPortletPreferences();
-
-		return GetterUtil.getBoolean(
-			jxPortletPreferences.getValue(
-				LCSConstants.PORTAL_PROPERTIES_LCS_SERVICE_ENABLED,
-				Boolean.FALSE.toString()));
 	}
 
 	private List<Map<String, Long>> _getPortalUptimeEntries() {

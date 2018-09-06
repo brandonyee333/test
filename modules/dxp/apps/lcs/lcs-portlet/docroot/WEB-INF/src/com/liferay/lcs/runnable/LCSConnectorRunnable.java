@@ -220,20 +220,6 @@ public class LCSConnectorRunnable implements Runnable {
 
 	private void _checkDefaultPortletPreferences() {
 		try {
-			PortletPreferences jxPortletPreferences =
-				LCSPortletPreferencesUtil.fetchReadOnlyJxPortletPreferences();
-
-			if (Validator.isNull(
-					jxPortletPreferences.getValue(
-						LCSConstants.METRICS_LCS_SERVICE_ENABLED, null)) &&
-				Validator.isNotNull(
-					PortletPropsValues.METRICS_LCS_SERVICE_ENABLED)) {
-
-				LCSPortletPreferencesUtil.store(
-					LCSConstants.METRICS_LCS_SERVICE_ENABLED,
-					PortletPropsValues.METRICS_LCS_SERVICE_ENABLED);
-			}
-
 			if (Validator.isNull(LCSUtil.getPortalPropertiesBlacklist()) &&
 				Validator.isNotNull(
 					PortletPropsValues.PORTAL_PROPERTIES_BLACKLIST)) {

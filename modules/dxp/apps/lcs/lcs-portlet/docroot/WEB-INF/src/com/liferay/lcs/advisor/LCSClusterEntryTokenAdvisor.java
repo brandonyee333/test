@@ -40,7 +40,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
@@ -56,7 +55,6 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.cert.Certificate;
 
-import java.util.Map;
 import java.util.Set;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -372,26 +370,7 @@ public class LCSClusterEntryTokenAdvisor {
 				lcsClusterEntryTokenContentAdvisor)
 		throws ReadOnlyException {
 
-		Map<String, String> lcsServicesConfiguration =
-			lcsClusterEntryTokenContentAdvisor.getLCSServicesConfiguration();
-
-		_verifyLCSServiceConfiguration(
-			lcsServicesConfiguration, LCSConstants.METRICS_LCS_SERVICE_ENABLED,
-			LCSConstants.PATCHES_LCS_SERVICE_ENABLED,
-			LCSConstants.PORTAL_PROPERTIES_LCS_SERVICE_ENABLED);
-
-		for (Map.Entry<String, String> lcsServiceConfigurationEntry :
-				lcsServicesConfiguration.entrySet()) {
-
-			LCSPortletPreferencesUtil.store(
-				lcsServiceConfigurationEntry.getKey(),
-				lcsServiceConfigurationEntry.getValue());
-		}
-
-		if (GetterUtil.getBoolean(
-				lcsServicesConfiguration.get(
-					LCSConstants.PORTAL_PROPERTIES_LCS_SERVICE_ENABLED)) &&
-			Validator.isNotNull(
+		if (Validator.isNotNull(
 				lcsClusterEntryTokenContentAdvisor.
 					getPortalPropertiesBlacklist())) {
 
@@ -457,22 +436,6 @@ public class LCSClusterEntryTokenAdvisor {
 		}
 
 		return liferayHome;
-	}
-
-	private void _verifyLCSServiceConfiguration(
-		Map<String, String> lcsServicesConfiguration, String... keys) {
-
-		if (keys == null) {
-			return;
-		}
-
-		for (String key : keys) {
-			if (lcsServicesConfiguration.containsKey(key)) {
-				continue;
-			}
-
-			lcsServicesConfiguration.put(key, "false");
-		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
