@@ -34,8 +34,8 @@ public class SAMLCommandImpl
 	public SAMLCommandImpl(
 		Function
 			<SAMLMessageContext
-				<InboundMessageType, OutboundMessageType, NameID>, T>
-					samlMessageContextFunction) {
+				<InboundMessageType, OutboundMessageType, NameID>,
+			 T> samlMessageContextFunction) {
 
 		_samlMessageContextFunction = samlMessageContextFunction;
 	}
