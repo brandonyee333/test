@@ -422,9 +422,10 @@ public class AccountEntryViewDisplayContext {
 
 		LongStream longStream = intStream.asLongStream();
 
+		long[] deprecatedTypes = longStream.toArray();
+
 		for (ListType listType : envLFRTypes) {
-			if (ArrayUtil.contains(
-					longStream.toArray(), listType.getListTypeId()) ||
+			if (ArrayUtil.contains(deprecatedTypes, listType.getListTypeId()) ||
 				(listType.getListTypeId() ==
 					(long)ProductEntryConstants.PORTAL_VERSION_OTHER)) {
 
