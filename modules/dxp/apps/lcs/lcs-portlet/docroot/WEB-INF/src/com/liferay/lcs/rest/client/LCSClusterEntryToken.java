@@ -25,6 +25,10 @@ public class LCSClusterEntryToken {
 		return _content;
 	}
 
+	public int getContentStructureVersion() {
+		return _contentStructureVersion;
+	}
+
 	public Date getCreateDate() {
 		return _createDate;
 	}
@@ -45,6 +49,10 @@ public class LCSClusterEntryToken {
 		_content = content;
 	}
 
+	public void setContentStructureVersion(int contentStructureVersion) {
+		_contentStructureVersion = contentStructureVersion;
+	}
+
 	public void setCreateDate(Date createDate) {
 		_createDate = createDate;
 	}
@@ -62,6 +70,7 @@ public class LCSClusterEntryToken {
 	}
 
 	private String _content;
+	private int _contentStructureVersion;
 	private Date _createDate;
 	private long _lcsClusterEntryId;
 	private long _lcsClusterEntryTokenId;
