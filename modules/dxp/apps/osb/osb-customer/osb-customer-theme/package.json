@@ -1,26 +1,26 @@
 {
-  "devDependencies": {
-    "gulp": "3.9.1",
-    "liferay-theme-tasks": "8.0.0-alpha.3",
-    "liferay-theme-deps-7.0": "8.0.0-alpha.3"
-  },
-  "keywords": [
-    "liferay-theme"
-  ],
-  "liferayTheme": {
-    "baseTheme": "styled",
-    "rubySass": false,
-    "screenshot": "",
-    "templateLanguage": "ftl",
-    "version": "7.0"
-  },
-  "main": "package.json",
-  "name": "osb-customer-theme",
-  "publishConfig": {
-    "tag": "7_0_x"
-  },
-  "version": "1.0.0",
-  "dependencies": {
-    "clay-css": "^2.2.0"
-  }
+	"dependencies": {
+		"clay-css": "^2.2.0"
+	},
+	"devDependencies": {
+		"gulp": "3.9.1",
+		"liferay-theme-deps-7.0": "8.0.0-alpha.3",
+		"liferay-theme-tasks": "8.0.0-alpha.3"
+	},
+	"keywords": [
+		"liferay-theme"
+	],
+	"liferayTheme": {
+		"baseTheme": "styled",
+		"rubySass": false,
+		"screenshot": "",
+		"templateLanguage": "ftl",
+		"version": "7.0"
+	},
+	"main": "package.json",
+	"name": "osb-customer-theme",
+	"publishConfig": {
+		"tag": "7_0_x"
+	},
+	"version": "1.0.0"
 }

@@ -30,7 +30,7 @@
 	<div class="col-sm-3">
 		<#if getterUtil.getBoolean(theme_settings["footer-social-links"])>
 			<div class="social-links">
-				<#if social_link_one_name != "" && social_link_one_url != "">
+				<#if validator.isNotNull(social_link_one_name) && validator.isNotNull(social_link_one_url)>
 					<div class="social-icon">
 						<a href="${social_link_one_url}">
 							<svg class="lexicon-icon lexicon-icon-social-${social_link_one_name}">
@@ -40,7 +40,7 @@
 					</div>
 				</#if>
 
-				<#if social_link_two_url != "" && social_link_two_name != "">
+				<#if validator.isNotNull(social_link_two_url) && validator.isNotNull(social_link_two_name)>
 					<div class="social-icon">
 						<a href="${social_link_two_url}">
 							<svg class="lexicon-icon lexicon-icon-${social_link_two_name}">
@@ -50,7 +50,7 @@
 					</div>
 				</#if>
 
-				<#if social_link_three_name != "" && social_link_three_url != "">
+				<#if validator.isNotNull(social_link_three_name) && validator.isNotNull(social_link_three_url)>
 					<div class="social-icon">
 						<a href="${social_link_three_url}">
 							<svg class="lexicon-icon lexicon-icon-${social_link_three_name}">
