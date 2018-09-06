@@ -16,7 +16,7 @@
 
 <%@ include file="/account_entry_details/init.jsp" %>
 
-<div class="container-fluid-1280 history">
+<div class="container-fluid-max-xl history">
 
 	<%
 	AccountEntry accountEntry = (AccountEntry)renderRequest.getAttribute(AccountEntryDetailsWebKeys.ACCOUNT_ENTRY);
