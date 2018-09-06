@@ -22,10 +22,8 @@ import com.liferay.lcs.rest.client.LCSClusterEntryToken;
 import com.liferay.lcs.rest.client.exception.NoSuchLCSSubscriptionEntryException;
 import com.liferay.lcs.util.ClusterNodeUtil;
 import com.liferay.lcs.util.LCSConnectionManager;
-import com.liferay.lcs.util.LCSConstants;
 import com.liferay.lcs.util.LCSPortletPreferencesUtil;
 import com.liferay.lcs.util.LCSUtil;
-import com.liferay.lcs.util.PortletPropsValues;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 import com.liferay.portal.kernel.log.Log;
@@ -37,12 +35,11 @@ import com.liferay.portal.kernel.util.Validator;
 import java.util.ResourceBundle;
 import java.util.concurrent.Future;
 
-import javax.portlet.PortletPreferences;
-
 import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Mladen Cikara
+ * @author Igor Beslic
  */
 public class LCSConnectorRunnable implements Runnable {
 
@@ -177,8 +174,6 @@ public class LCSConnectorRunnable implements Runnable {
 	}
 
 	private Future<?> _activateLCS() throws Exception {
-		_checkDefaultPortletPreferences();
-
 		LCSClusterEntryToken lcsClusterEntryToken =
 			_lcsClusterEntryTokenAdvisor.processLCSClusterEntryToken(
 				LCSUtil.getLCSPortletBuildNumber());
@@ -216,22 +211,6 @@ public class LCSConnectorRunnable implements Runnable {
 		LCSUtil.processLCSPortletState(LCSPortletState.NO_CONNECTION);
 
 		return _lcsConnectionManager.start();
-	}
-
-	private void _checkDefaultPortletPreferences() {
-		try {
-			if (Validator.isNull(LCSUtil.getPortalPropertiesBlacklist()) &&
-				Validator.isNotNull(
-					PortletPropsValues.PORTAL_PROPERTIES_BLACKLIST)) {
-
-				LCSPortletPreferencesUtil.store(
-					LCSConstants.PORTAL_PROPERTIES_BLACKLIST,
-					PortletPropsValues.PORTAL_PROPERTIES_BLACKLIST);
-			}
-		}
-		catch (Exception e) {
-			_log.error("Unable to check default portlet", e);
-		}
 	}
 
 	private void _delayRun() {
