@@ -336,8 +336,8 @@ catch (Exception e) {
 						unableToDisplayConnectionStatus: '<%= UnicodeLanguageUtil.get(request, "unable-to-display-connection-status") %>'
 					},
 					lcsConstants: {
-						JSON_KEY_RESULT: '<%= LCSConstants.JSON_KEY_RESULT %>',
-						JSON_VALUE_FAILURE: '<%= LCSConstants.JSON_VALUE_FAILURE %>'
+						JSON_KEY_RESULT: 'result',
+						JSON_VALUE_FAILURE: 'failure'
 					},
 					ready: <%= ready %>
 				}

@@ -15,7 +15,6 @@
 package com.liferay.lcs.portlet;
 
 import com.liferay.lcs.util.LCSConnectionManagerUtil;
-import com.liferay.lcs.util.LCSConstants;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -53,8 +52,7 @@ public class ConnectedServicesPortlet extends MVCPortlet {
 		catch (Exception e) {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-			jsonObject.put(
-				LCSConstants.JSON_KEY_RESULT, LCSConstants.JSON_VALUE_FAILURE);
+			jsonObject.put("result", "failure");
 
 			_log.error(e, e);
 
@@ -69,11 +67,10 @@ public class ConnectedServicesPortlet extends MVCPortlet {
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		jsonObject.put(
-			LCSConstants.JSON_KEY_RESULT, LCSConstants.JSON_VALUE_SUCCESS);
-		jsonObject.put(
 			"lcsGatewayAvailable",
 			LCSConnectionManagerUtil.isLCSGatewayAvailable());
 		jsonObject.put("ready", LCSConnectionManagerUtil.isReady());
+		jsonObject.put("result", "success");
 
 		writeJSON(resourceRequest, resourceResponse, jsonObject);
 	}
