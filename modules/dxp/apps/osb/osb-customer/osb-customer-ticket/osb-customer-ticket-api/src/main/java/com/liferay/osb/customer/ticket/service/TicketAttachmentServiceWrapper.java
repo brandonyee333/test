@@ -33,6 +33,15 @@ public class TicketAttachmentServiceWrapper implements TicketAttachmentService,
 		_ticketAttachmentService = ticketAttachmentService;
 	}
 
+	@Override
+	public com.liferay.osb.customer.ticket.model.TicketAttachment addTicketAttachment(
+		long accountEntryId, long zendeskTicketId, String fileRepositoryId,
+		String fileName, long fileSize, int type)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ticketAttachmentService.addTicketAttachment(accountEntryId,
+			zendeskTicketId, fileRepositoryId, fileName, fileSize, type);
+	}
+
 	/**
 	* Returns the OSGi service identifier.
 	*
@@ -41,6 +50,13 @@ public class TicketAttachmentServiceWrapper implements TicketAttachmentService,
 	@Override
 	public String getOSGiServiceIdentifier() {
 		return _ticketAttachmentService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public com.liferay.osb.customer.ticket.model.TicketAttachment getTicketAttachment(
+		long ticketAttachmentId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ticketAttachmentService.getTicketAttachment(ticketAttachmentId);
 	}
 
 	@Override

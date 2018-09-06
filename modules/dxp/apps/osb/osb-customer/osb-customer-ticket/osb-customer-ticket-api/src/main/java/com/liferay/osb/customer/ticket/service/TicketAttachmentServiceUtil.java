@@ -42,6 +42,14 @@ public class TicketAttachmentServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.customer.ticket.service.impl.TicketAttachmentServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static com.liferay.osb.customer.ticket.model.TicketAttachment addTicketAttachment(
+		long accountEntryId, long zendeskTicketId, String fileRepositoryId,
+		String fileName, long fileSize, int type)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .addTicketAttachment(accountEntryId, zendeskTicketId,
+			fileRepositoryId, fileName, fileSize, type);
+	}
 
 	/**
 	* Returns the OSGi service identifier.
@@ -50,6 +58,12 @@ public class TicketAttachmentServiceUtil {
 	*/
 	public static String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static com.liferay.osb.customer.ticket.model.TicketAttachment getTicketAttachment(
+		long ticketAttachmentId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getTicketAttachment(ticketAttachmentId);
 	}
 
 	public static TicketAttachmentService getService() {
