@@ -172,6 +172,9 @@ public class PortletPropsValues {
 		PortletProps.get(
 			PortletPropsKeys.OSB_LCS_PORTLET_UPLOAD_EXCEPTIONS_URI);
 
+	/**
+	 * @deprecated Will be removed in next version
+	 */
 	@Deprecated
 	public static final String PORTAL_PROPERTIES_BLACKLIST = PortletProps.get(
 		PortletPropsKeys.PORTAL_PROPERTIES_BLACKLIST);

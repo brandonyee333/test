@@ -150,6 +150,9 @@ public interface PortletPropsKeys {
 	public static final String OSB_LCS_PORTLET_UPLOAD_EXCEPTIONS_URI =
 		"osb.lcs.portlet.upload.exceptions.uri";
 
+	/**
+	 * @deprecated Will be removed in next version
+	 */
 	@Deprecated
 	public static final String PORTAL_PROPERTIES_BLACKLIST =
 		"portal.properties.blacklist";
