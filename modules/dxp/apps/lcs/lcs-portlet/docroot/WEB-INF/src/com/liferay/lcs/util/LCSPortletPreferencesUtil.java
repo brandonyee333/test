@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.PortletPreferencesPersistence;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
-import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
 
@@ -86,28 +85,6 @@ public class LCSPortletPreferencesUtil {
 		return null;
 	}
 
-	public static synchronized int getCredentialsStatus() {
-		javax.portlet.PortletPreferences jxPortletPreferences =
-			fetchReadOnlyJxPortletPreferences();
-
-		if (jxPortletPreferences == null) {
-			return _CREDENTIALS_STATUS_MISSING;
-		}
-
-		String lcsAccessToken = jxPortletPreferences.getValue(
-			"lcsAccessToken", null);
-		String lcsAccessSecret = jxPortletPreferences.getValue(
-			"lcsAccessSecret", null);
-
-		if (Validator.isNull(lcsAccessToken) ||
-			Validator.isNull(lcsAccessSecret)) {
-
-			return _CREDENTIALS_STATUS_INVALID;
-		}
-
-		return _CREDENTIALS_STATUS_SET;
-	}
-
 	/**
 	 * @param      key
 	 * @param      defaultValue
@@ -146,26 +123,6 @@ public class LCSPortletPreferencesUtil {
 		}
 
 		return defaultValue;
-	}
-
-	public static boolean isCredentialsSet() {
-		if (getCredentialsStatus() == _CREDENTIALS_STATUS_SET) {
-			return true;
-		}
-
-		return false;
-	}
-
-	public static void removeCredentials() {
-		try {
-			reset("lcsAccessToken");
-			reset("lcsAccessSecret");
-			reset("lcsClusterEntryId");
-			reset("lcsClusterEntryTokenId");
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
 	}
 
 	public static synchronized void reset(String key) throws Exception {

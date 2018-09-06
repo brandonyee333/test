@@ -50,6 +50,7 @@
 		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
 	</bean>
 	<bean class="com.liferay.lcs.command.SendPortalPropertiesCommand" id="com.liferay.lcs.command.SendPortalPropertiesCommand">
+		<property name="LCSClusterEntryTokenAdvisor" ref="com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor" />
 		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
 	</bean>
 	<bean class="com.liferay.lcs.command.SignOffCommand" id="com.liferay.lcs.command.SignOffCommand">
@@ -222,6 +223,7 @@
 
 	<bean class="com.liferay.lcs.util.ClusterNodeUtil" id="com.liferay.lcs.util.ClusterNodeUtil">
 		<property name="keyGenerator" ref="com.liferay.lcs.util.KeyGenerator" />
+		<property name="LCSPortletStateAdvisor" ref="com.liferay.lcs.advisor.LCSPortletStateAdvisor" />
 	</bean>
 	<bean class="com.liferay.lcs.util.KeyGeneratorImpl" id="com.liferay.lcs.util.KeyGenerator">
 		<property name="LCSClusterNodeClient" ref="com.liferay.lcs.rest.client.internal.LCSClusterNodeClientImpl" />

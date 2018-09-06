@@ -14,11 +14,11 @@
 
 package com.liferay.lcs.command;
 
+import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.messaging.SendPortalPropertiesCommandMessage;
 import com.liferay.lcs.messaging.SendPortalPropertiesResponseMessage;
 import com.liferay.lcs.util.LCSConnectionManager;
 import com.liferay.lcs.util.LCSConstants;
-import com.liferay.lcs.util.LCSUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Digester;
@@ -85,6 +85,12 @@ public class SendPortalPropertiesCommand
 		}
 	}
 
+	public void setLCSClusterEntryTokenAdvisor(
+		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor) {
+
+		_lcsClusterEntryTokenAdvisor = lcsClusterEntryTokenAdvisor;
+	}
+
 	public void setLCSConnectionManager(
 		LCSConnectionManager lcsConnectionManager) {
 
@@ -93,7 +99,7 @@ public class SendPortalPropertiesCommand
 
 	protected Properties getSecurityInsensitivePropertiesKeys() {
 		String portalPropertiesBlacklist =
-			LCSUtil.getPortalPropertiesBlacklist();
+			_lcsClusterEntryTokenAdvisor.getPortalPropertiesBlacklist();
 
 		Properties portalProperties = new SortedProperties(
 			PropsUtil.getProperties());
@@ -175,6 +181,7 @@ public class SendPortalPropertiesCommand
 	private static final Log _log = LogFactoryUtil.getLog(
 		SendPortalPropertiesCommand.class);
 
+	private LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
 	private LCSConnectionManager _lcsConnectionManager;
 
 }

@@ -15,7 +15,6 @@
 package com.liferay.lcs.util;
 
 import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
-import com.liferay.lcs.exception.MissingLCSCredentialsException;
 import com.liferay.lcs.jsonwebserviceclient.OAuthJSONWebServiceClientImpl;
 import com.liferay.lcs.rest.client.LCSClusterNode;
 import com.liferay.lcs.rest.client.LCSClusterNodeClient;
@@ -24,7 +23,6 @@ import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 import com.liferay.portal.kernel.license.messaging.LicenseManagerMessageType;
@@ -161,14 +159,6 @@ public class LCSUtil {
 		}
 	}
 
-	public static synchronized String getPortalPropertiesBlacklist() {
-		PortletPreferences jxPortletPreferences =
-			LCSPortletPreferencesUtil.fetchReadOnlyJxPortletPreferences();
-
-		return jxPortletPreferences.getValue(
-			LCSConstants.PORTAL_PROPERTIES_BLACKLIST, null);
-	}
-
 	public static String getRegistrationLayoutURL(
 		LCSProject lcsProject, LCSClusterNode lcsClusterNode) {
 
@@ -272,29 +262,14 @@ public class LCSUtil {
 		}
 	}
 
-	public static void setUpJSONWebServiceClientCredentials()
-		throws PortalException {
-
-		PortletPreferences jxPortletPreferences =
-			LCSPortletPreferencesUtil.fetchReadOnlyJxPortletPreferences();
-
-		String lcsAccessToken = jxPortletPreferences.getValue(
-			"lcsAccessToken", null);
-		String lcsAccessSecret = jxPortletPreferences.getValue(
-			"lcsAccessSecret", null);
-
-		if (Validator.isNull(lcsAccessToken) ||
-			Validator.isNull(lcsAccessSecret)) {
-
-			throw new MissingLCSCredentialsException(
-				"Unable to setup LCS credentials");
-		}
-
+	public static void setUpJSONWebServiceClientCredentials() {
 		OAuthJSONWebServiceClientImpl oAuthJSONWebServiceClientImpl =
 			(OAuthJSONWebServiceClientImpl)_jsonWebServiceClient;
 
-		oAuthJSONWebServiceClientImpl.setAccessSecret(lcsAccessSecret);
-		oAuthJSONWebServiceClientImpl.setAccessToken(lcsAccessToken);
+		oAuthJSONWebServiceClientImpl.setAccessSecret(
+			_lcsClusterEntryTokenAdvisor.getLCSAccessSecret());
+		oAuthJSONWebServiceClientImpl.setAccessToken(
+			_lcsClusterEntryTokenAdvisor.getLCSAccessToken());
 
 		_jsonWebServiceClient.resetHttpClient();
 	}

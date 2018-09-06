@@ -22,9 +22,7 @@ import com.liferay.lcs.rest.client.LCSClusterEntryToken;
 import com.liferay.lcs.rest.client.exception.NoSuchLCSSubscriptionEntryException;
 import com.liferay.lcs.util.ClusterNodeUtil;
 import com.liferay.lcs.util.LCSConnectionManager;
-import com.liferay.lcs.util.LCSPortletPreferencesUtil;
 import com.liferay.lcs.util.LCSUtil;
-import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -34,8 +32,6 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ResourceBundle;
 import java.util.concurrent.Future;
-
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Mladen Cikara
@@ -79,17 +75,7 @@ public class LCSConnectorRunnable implements Runnable {
 					}
 				}
 
-				if (e instanceof JSONWebServiceInvocationException) {
-					JSONWebServiceInvocationException jsonwsie =
-						(JSONWebServiceInvocationException)e;
-
-					if (jsonwsie.getStatus() ==
-							HttpServletResponse.SC_NOT_ACCEPTABLE) {
-
-						LCSPortletPreferencesUtil.removeCredentials();
-					}
-				}
-				else if (e instanceof NoSuchLCSSubscriptionEntryException) {
+				if (e instanceof NoSuchLCSSubscriptionEntryException) {
 					if (_log.isWarnEnabled()) {
 						ResourceBundle resourceBundle =
 							ResourceBundleUtil.getBundle(
@@ -102,8 +88,6 @@ public class LCSConnectorRunnable implements Runnable {
 					}
 				}
 				else if (OAuthUtil.hasOAuthTokenRejectedException(e)) {
-					LCSPortletPreferencesUtil.removeCredentials();
-
 					LCSUtil.processLCSPortletState(
 						LCSPortletState.NO_CONNECTION);
 
@@ -182,8 +166,6 @@ public class LCSConnectorRunnable implements Runnable {
 
 		if (!LCSUtil.isLCSPortletAuthorized()) {
 			_lcsClusterEntryTokenAdvisor.deleteLCSCLusterEntryTokenFile();
-
-			LCSPortletPreferencesUtil.removeCredentials();
 
 			StringBundler sb = new StringBundler(5);
 

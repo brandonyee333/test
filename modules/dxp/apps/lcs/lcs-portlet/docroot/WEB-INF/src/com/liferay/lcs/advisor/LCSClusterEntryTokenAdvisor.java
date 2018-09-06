@@ -29,20 +29,16 @@ import com.liferay.lcs.rest.client.LCSClusterNode;
 import com.liferay.lcs.security.KeyStoreAdvisor;
 import com.liferay.lcs.security.KeyStoreFactory;
 import com.liferay.lcs.util.LCSAlert;
-import com.liferay.lcs.util.LCSConstants;
-import com.liferay.lcs.util.LCSPortletPreferencesUtil;
 import com.liferay.lcs.util.PortletPropsValues;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
-import com.liferay.portal.kernel.exception.NoSuchPortletPreferencesException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.util.Encryptor;
 import com.liferay.util.EncryptorException;
 
@@ -58,9 +54,6 @@ import java.security.cert.Certificate;
 import java.util.Set;
 
 import javax.crypto.spec.SecretKeySpec;
-
-import javax.portlet.PortletPreferences;
-import javax.portlet.ReadOnlyException;
 
 /**
  * @author Igor Beslic
@@ -120,7 +113,7 @@ public class LCSClusterEntryTokenAdvisor {
 
 		deleteLCSCLusterEntryTokenFile();
 
-		LCSPortletPreferencesUtil.removeCredentials();
+		_resetAttributes();
 
 		_lcsAlertAdvisor.add(LCSAlert.ERROR_INVALID_TOKEN);
 
@@ -138,6 +131,8 @@ public class LCSClusterEntryTokenAdvisor {
 	}
 
 	public void deleteLCSCLusterEntryTokenFile() {
+		_resetAttributes();
+
 		if (_log.isDebugEnabled()) {
 			_log.debug("Deleting LCS activation token file");
 		}
@@ -158,16 +153,27 @@ public class LCSClusterEntryTokenAdvisor {
 		}
 	}
 
+	public String getLCSAccessSecret() {
+		return _lcsAccessSecret;
+	}
+
+	public String getLCSAccessToken() {
+		return _lcsAccessToken;
+	}
+
 	public Set<LCSAlert> getLCSClusterEntryTokenAlerts() {
 		return _lcsAlertAdvisor.getLCSAlerts();
+	}
+
+	public String getPortalPropertiesBlacklist() {
+		return _portalPropertiesBlacklist;
 	}
 
 	public LCSClusterEntryToken processLCSClusterEntryToken(
 			int lcsPortletBuildNumber)
 		throws IOException, LCSClusterEntryTokenDecryptException,
 			   MissingLCSClusterEntryTokenException,
-			   MultipleLCSClusterEntryTokenException,
-			   NoSuchPortletPreferencesException, ReadOnlyException {
+			   MultipleLCSClusterEntryTokenException {
 
 		LCSClusterEntryToken lcsClusterEntryToken =
 			processLCSCLusterEntryTokenFile(lcsPortletBuildNumber);
@@ -176,13 +182,13 @@ public class LCSClusterEntryTokenAdvisor {
 			new LCSClusterEntryTokenContentAdvisor(
 				lcsClusterEntryToken.getContent());
 
-		storeLCSPortletCredentials(
-			lcsClusterEntryTokenContentAdvisor.getAccessSecret(),
-			lcsClusterEntryTokenContentAdvisor.getAccessToken(),
-			lcsClusterEntryToken.getLcsClusterEntryId(),
-			lcsClusterEntryToken.getLcsClusterEntryTokenId());
-
-		storeLCSConfiguration(lcsClusterEntryTokenContentAdvisor);
+		_lcsAccessSecret = lcsClusterEntryTokenContentAdvisor.getAccessSecret();
+		_lcsAccessToken = lcsClusterEntryTokenContentAdvisor.getAccessToken();
+		_lcsClusterEntryId = lcsClusterEntryToken.getLcsClusterEntryId();
+		_lcsClusterEntryTokenId =
+			lcsClusterEntryToken.getLcsClusterEntryTokenId();
+		_portalPropertiesBlacklist =
+			lcsClusterEntryTokenContentAdvisor.getPortalPropertiesBlacklist();
 
 		return lcsClusterEntryToken;
 	}
@@ -365,46 +371,6 @@ public class LCSClusterEntryTokenAdvisor {
 		return lcsClusterEntryToken;
 	}
 
-	protected void storeLCSConfiguration(
-			LCSClusterEntryTokenContentAdvisor
-				lcsClusterEntryTokenContentAdvisor)
-		throws ReadOnlyException {
-
-		if (Validator.isNotNull(
-				lcsClusterEntryTokenContentAdvisor.
-					getPortalPropertiesBlacklist())) {
-
-			LCSPortletPreferencesUtil.store(
-				LCSConstants.PORTAL_PROPERTIES_BLACKLIST,
-				lcsClusterEntryTokenContentAdvisor.
-					getPortalPropertiesBlacklist());
-		}
-	}
-
-	protected void storeLCSPortletCredentials(
-			String lcsAccessSecret, String lcsAccessToken,
-			long lcsClusterEntryId, long lcsClusterEntryTokenId)
-		throws NoSuchPortletPreferencesException, ReadOnlyException {
-
-		PortletPreferences jxPortletPreferences =
-			LCSPortletPreferencesUtil.fetchReadOnlyJxPortletPreferences();
-
-		if (jxPortletPreferences == null) {
-			throw new NoSuchPortletPreferencesException();
-		}
-
-		LCSPortletPreferencesUtil.store("lcsAccessSecret", lcsAccessSecret);
-		LCSPortletPreferencesUtil.store("lcsAccessToken", lcsAccessToken);
-
-		if (lcsClusterEntryId != 0) {
-			LCSPortletPreferencesUtil.store(
-				"lcsClusterEntryId", String.valueOf(lcsClusterEntryId));
-			LCSPortletPreferencesUtil.store(
-				"lcsClusterEntryTokenId",
-				String.valueOf(lcsClusterEntryTokenId));
-		}
-	}
-
 	private Certificate _getCertificate(KeyStore keyStore, String keyName) {
 		try {
 			return keyStore.getCertificate(keyName);
@@ -438,10 +404,27 @@ public class LCSClusterEntryTokenAdvisor {
 		return liferayHome;
 	}
 
+	private void _resetAttributes() {
+		if (_log.isDebugEnabled()) {
+			_log.debug("Reset attributes");
+		}
+
+		_portalPropertiesBlacklist = null;
+		_lcsAccessToken = null;
+		_lcsAccessSecret = null;
+		_lcsClusterEntryTokenId = 0L;
+		_lcsClusterEntryId = 0L;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		LCSClusterEntryTokenAdvisor.class);
 
+	private String _lcsAccessSecret;
+	private String _lcsAccessToken;
 	private LCSAlertAdvisor _lcsAlertAdvisor;
+	private long _lcsClusterEntryId;
 	private LCSClusterEntryTokenClient _lcsClusterEntryTokenClient;
+	private long _lcsClusterEntryTokenId;
+	private String _portalPropertiesBlacklist;
 
 }

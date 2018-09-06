@@ -16,6 +16,7 @@ package com.liferay.lcs.util;
 
 import com.liferay.lcs.advisor.InstallationEnvironmentAdvisor;
 import com.liferay.lcs.advisor.InstallationEnvironmentAdvisorFactory;
+import com.liferay.lcs.advisor.LCSPortletStateAdvisor;
 import com.liferay.lcs.rest.LCSClusterNodeClientUtil;
 import com.liferay.lcs.rest.client.LCSClusterNode;
 import com.liferay.lcs.rest.client.exception.DuplicateLCSClusterNodeNameException;
@@ -30,6 +31,7 @@ import com.liferay.portal.kernel.cluster.ClusterNodeResponse;
 import com.liferay.portal.kernel.cluster.ClusterNodeResponses;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.cluster.FutureClusterResponses;
+import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 import com.liferay.portal.kernel.license.util.LicenseManagerUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -74,14 +76,17 @@ public class ClusterNodeUtil {
 
 			clusterNodeInfo.put("key", _keyGenerator.getKey());
 
-			if (LCSPortletPreferencesUtil.isCredentialsSet()) {
-				LCSUtil.setUpJSONWebServiceClientCredentials();
+			LCSPortletState lcsPortletState =
+				_lcsPortletStateAdvisor.getLCSPortletState(false);
 
-				clusterNodeInfo.put(
-					"registered", LCSUtil.isLCSClusterNodeRegistered());
+			if ((lcsPortletState == LCSPortletState.NO_CONNECTION) ||
+				(lcsPortletState == LCSPortletState.NOT_REGISTERED)) {
+
+				clusterNodeInfo.put("registered", false);
 			}
 			else {
-				clusterNodeInfo.put("registered", false);
+				clusterNodeInfo.put(
+					"registered", LCSUtil.isLCSClusterNodeRegistered());
 			}
 
 			clusterNodeInfo.put("ready", LCSConnectionManagerUtil.isReady());
@@ -184,6 +189,12 @@ public class ClusterNodeUtil {
 		_keyGenerator = keyGenerator;
 	}
 
+	public void setLCSPortletStateAdvisor(
+		LCSPortletStateAdvisor lcsPortletStateAdvisor) {
+
+		_lcsPortletStateAdvisor = lcsPortletStateAdvisor;
+	}
+
 	private static String _generateLCSClusterNodeName() {
 		return LicenseManagerUtil.getHostName() + StringPool.DASH +
 			System.currentTimeMillis();
@@ -266,5 +277,6 @@ public class ClusterNodeUtil {
 		new MethodHandler(
 			new MethodKey(ClusterNodeUtil.class, "getClusterNodeInfo"));
 	private static KeyGenerator _keyGenerator;
+	private static LCSPortletStateAdvisor _lcsPortletStateAdvisor;
 
 }

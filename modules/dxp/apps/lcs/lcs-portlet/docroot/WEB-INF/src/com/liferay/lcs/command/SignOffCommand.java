@@ -18,7 +18,6 @@ import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.messaging.SignOffCommandMessage;
 import com.liferay.lcs.util.KeyGenerator;
 import com.liferay.lcs.util.LCSConnectionManager;
-import com.liferay.lcs.util.LCSPortletPreferencesUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -44,8 +43,6 @@ public class SignOffCommand implements Command<SignOffCommandMessage> {
 
 		if (signOffCommandMessage.isDeregister() ||
 			signOffCommandMessage.isInvalidateToken()) {
-
-			LCSPortletPreferencesUtil.removeCredentials();
 
 			_lcsClusterEntryTokenAdvisor.deleteLCSCLusterEntryTokenFile();
 
