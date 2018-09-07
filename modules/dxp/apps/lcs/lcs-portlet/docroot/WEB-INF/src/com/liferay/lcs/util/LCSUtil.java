@@ -14,7 +14,7 @@
 
 package com.liferay.lcs.util;
 
-import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
+import com.liferay.lcs.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.jsonwebserviceclient.OAuthJSONWebServiceClientImpl;
 import com.liferay.lcs.rest.client.LCSClusterNode;
 import com.liferay.lcs.rest.client.LCSClusterNodeClient;
@@ -55,6 +55,10 @@ import javax.portlet.PortletPreferences;
  */
 public class LCSUtil {
 
+	public static Set<LCSAlert> getLCSAlerts() {
+		return _lcsAlertAdvisor.getLCSAlerts();
+	}
+
 	public static String getLCSClusterEntryLayoutURL(
 		LCSProject lcsProject, LCSClusterNode lcsClusterNode) {
 
@@ -70,10 +74,6 @@ public class LCSUtil {
 		return getLCSLayoutURL(
 			PortletPropsValues.OSB_LCS_PORTLET_LAYOUT_LCS_CLUSTER_ENTRY,
 			publicRenderParameters);
-	}
-
-	public static Set<LCSAlert> getLCSClusterEntryTokenAlerts() {
-		return _lcsClusterEntryTokenAdvisor.getLCSClusterEntryTokenAlerts();
 	}
 
 	public static String getLCSClusterNodeLayoutURL(
@@ -262,14 +262,14 @@ public class LCSUtil {
 		}
 	}
 
-	public static void setUpJSONWebServiceClientCredentials() {
+	public static void setUpJSONWebServiceClientCredentials(
+		String lcsAccessSecret, String lcsAccessToken) {
+
 		OAuthJSONWebServiceClientImpl oAuthJSONWebServiceClientImpl =
 			(OAuthJSONWebServiceClientImpl)_jsonWebServiceClient;
 
-		oAuthJSONWebServiceClientImpl.setAccessSecret(
-			_lcsClusterEntryTokenAdvisor.getLCSAccessSecret());
-		oAuthJSONWebServiceClientImpl.setAccessToken(
-			_lcsClusterEntryTokenAdvisor.getLCSAccessToken());
+		oAuthJSONWebServiceClientImpl.setAccessSecret(lcsAccessSecret);
+		oAuthJSONWebServiceClientImpl.setAccessToken(lcsAccessToken);
 
 		_jsonWebServiceClient.resetHttpClient();
 	}
@@ -284,10 +284,8 @@ public class LCSUtil {
 		_keyGenerator = keyGenerator;
 	}
 
-	public void setLCSClusterEntryTokenAdvisor(
-		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor) {
-
-		_lcsClusterEntryTokenAdvisor = lcsClusterEntryTokenAdvisor;
+	public void setLCSAlertAdvisor(LCSAlertAdvisor lcsAlertAdvisor) {
+		_lcsAlertAdvisor = lcsAlertAdvisor;
 	}
 
 	public void setLCSClusterNodeClient(
@@ -340,7 +338,7 @@ public class LCSUtil {
 	private static KeyGenerator _keyGenerator;
 	private static final AtomicLong _lcsAccessTokenNextValidityCheckMillis =
 		new AtomicLong(0);
-	private static LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
+	private static LCSAlertAdvisor _lcsAlertAdvisor;
 	private static LCSClusterNodeClient _lcsClusterNodeClient;
 
 }

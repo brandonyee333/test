@@ -19,12 +19,12 @@
 <%
 String lcsPage = ParamUtil.getString(request, "lcsPage", "connection");
 
-Set<LCSAlert> lcsClusterEntryTokenAlerts = LCSUtil.getLCSClusterEntryTokenAlerts();
+Set<LCSAlert> lcsAlerts = LCSUtil.getLCSAlerts();
 %>
 
 <section class="content">
 	<c:choose>
-		<c:when test="<%= !lcsClusterEntryTokenAlerts.contains(LCSAlert.SUCCESS_CONNECTION_TO_LCS_VALID) %>">
+		<c:when test="<%= !lcsAlerts.contains(LCSAlert.SUCCESS_CONNECTION_TO_LCS_VALID) %>">
 			<div class="container-fluid-1280">
 				<%@ include file="/info.jspf" %>
 			</div>
@@ -59,11 +59,11 @@ Set<LCSAlert> lcsClusterEntryTokenAlerts = LCSUtil.getLCSClusterEntryTokenAlerts
 		</c:otherwise>
 	</c:choose>
 
-	<c:if test="<%= !lcsClusterEntryTokenAlerts.isEmpty() %>">
+	<c:if test="<%= !lcsAlerts.isEmpty() %>">
 		<div class="container-fluid-1280">
 
 			<%
-			for (LCSAlert lcsAlert : lcsClusterEntryTokenAlerts) {
+			for (LCSAlert lcsAlert : lcsAlerts) {
 				if ("success".equals(lcsAlert.getType())) {
 					continue;
 				}

@@ -51,8 +51,6 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.cert.Certificate;
 
-import java.util.Set;
-
 import javax.crypto.spec.SecretKeySpec;
 
 /**
@@ -60,6 +58,7 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public class LCSClusterEntryTokenAdvisor {
 
+	@Deprecated
 	public void checkLCSClusterEntry(LCSClusterEntryToken lcsClusterEntryToken)
 		throws InvalidLCSClusterEntryTokenException,
 			   JSONWebServiceInvocationException,
@@ -97,6 +96,7 @@ public class LCSClusterEntryTokenAdvisor {
 		throw new InvalidLCSClusterEntryTokenException(sb.toString());
 	}
 
+	@Deprecated
 	public void checkLCSClusterEntryTokenId(long lcsClusterEntryTokenId)
 		throws InvalidLCSClusterEntryTokenException,
 			   JSONWebServiceInvocationException,
@@ -161,8 +161,8 @@ public class LCSClusterEntryTokenAdvisor {
 		return _lcsAccessToken;
 	}
 
-	public Set<LCSAlert> getLCSClusterEntryTokenAlerts() {
-		return _lcsAlertAdvisor.getLCSAlerts();
+	public long getLcsClusterEntryTokenId() {
+		return _lcsClusterEntryTokenId;
 	}
 
 	public String getPortalPropertiesBlacklist() {
@@ -184,9 +184,11 @@ public class LCSClusterEntryTokenAdvisor {
 
 		_lcsAccessSecret = lcsClusterEntryTokenContentAdvisor.getAccessSecret();
 		_lcsAccessToken = lcsClusterEntryTokenContentAdvisor.getAccessToken();
+
 		_lcsClusterEntryId = lcsClusterEntryToken.getLcsClusterEntryId();
 		_lcsClusterEntryTokenId =
 			lcsClusterEntryToken.getLcsClusterEntryTokenId();
+
 		_portalPropertiesBlacklist =
 			lcsClusterEntryTokenContentAdvisor.getPortalPropertiesBlacklist();
 

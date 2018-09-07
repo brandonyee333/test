@@ -245,7 +245,7 @@
 	<bean class="com.liferay.lcs.util.LCSUtil" id="com.liferay.lcs.util.LCSUtil">
 		<property name="JSONWebServiceClient" ref="osbLCSPortletJSONWebServiceClient" />
 		<property name="keyGenerator" ref="com.liferay.lcs.util.KeyGenerator" />
-		<property name="LCSClusterEntryTokenAdvisor" ref="com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor" />
+		<property name="LCSAlertAdvisor" ref="com.liferay.lcs.advisor.LCSAlertAdvisor" />
 		<property name="LCSClusterNodeClient" ref="com.liferay.lcs.rest.client.internal.LCSClusterNodeClientImpl" />
 	</bean>
 </beans>
