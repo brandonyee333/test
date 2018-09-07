@@ -59,7 +59,7 @@
 * Useful for making responsive utilities.
 *
 * >> breakpoint-infix(xs, (xs: 0, sm: 576px, md: 768px, lg: 992px, xl: 1200px))
-* ""  (Returns a blank string)
+* "" (Returns a blank string)
 * >> breakpoint-infix(sm, (xs: 0, sm: 576px, md: 768px, lg: 992px, xl: 1200px))
 * "-sm"
 **/
