@@ -23,6 +23,10 @@ public class HandshakeResponseMessage extends ResponseMessage {
 		return _latestLCSPortletBuildNumber;
 	}
 
+	public String getNewKey() {
+		return _newKey;
+	}
+
 	public boolean isHandshakeExpiredError() {
 		return _handshakeExpiredError;
 	}
@@ -37,7 +41,12 @@ public class HandshakeResponseMessage extends ResponseMessage {
 		_latestLCSPortletBuildNumber = latestLCSPortletBuildNumber;
 	}
 
+	public void setNewKey(String newKey) {
+		_newKey = newKey;
+	}
+
 	private boolean _handshakeExpiredError;
 	private int _latestLCSPortletBuildNumber;
+	private String _newKey;
 
 }
