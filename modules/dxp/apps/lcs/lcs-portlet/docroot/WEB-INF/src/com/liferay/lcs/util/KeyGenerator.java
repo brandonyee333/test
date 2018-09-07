@@ -23,6 +23,6 @@ public interface KeyGenerator {
 
 	public String getKey();
 
-	public String getKey(boolean create);
+	public void updateKey(String key);
 
 }
