@@ -14,6 +14,8 @@
 
 package com.liferay.lcs.task;
 
+import com.liferay.lcs.advisor.InstallationEnvironmentAdvisor;
+import com.liferay.lcs.advisor.InstallationEnvironmentAdvisorFactory;
 import com.liferay.lcs.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.advisor.UptimeMonitoringAdvisor;
 import com.liferay.lcs.exception.LCSHandshakeException;
@@ -32,6 +34,7 @@ import com.liferay.lcs.util.comparator.MessagePriorityComparator;
 import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.license.util.LicenseManagerUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
@@ -41,6 +44,7 @@ import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.LiferayFilter;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ReleaseInfo;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
@@ -64,7 +68,8 @@ import org.osgi.framework.ServiceReference;
 public class HandshakeTask implements Task {
 
 	public HandshakeTask(
-		String key, LCSAlertAdvisor lcsAlertAdvisor,
+		String key, long lcsClusterEntryTokenId,
+		LCSAlertAdvisor lcsAlertAdvisor,
 		LCSConnectionManager lcsConnectionManager, ThreadFactory threadFactory,
 		UptimeMonitoringAdvisor uptimeMonitoringAdvisor) {
 
@@ -78,6 +83,7 @@ public class HandshakeTask implements Task {
 			PortletPropsValues.COMMUNICATION_HEARTBEAT_INTERVAL, 60000L);
 
 		_key = key;
+		_lcsClusterEntryTokenId = lcsClusterEntryTokenId;
 		_lcsAlertAdvisor = lcsAlertAdvisor;
 		_lcsConnectionManager = lcsConnectionManager;
 		_threadFactory = threadFactory;
@@ -131,16 +137,6 @@ public class HandshakeTask implements Task {
 		if (_log.isTraceEnabled()) {
 			_log.trace("Finalized " + this);
 		}
-	}
-
-	protected boolean isNewLCSPortletBuildNumber(
-		int latestLCSPortletBuildNumber) {
-
-		if (latestLCSPortletBuildNumber > LCSUtil.getLCSPortletBuildNumber()) {
-			return true;
-		}
-
-		return false;
 	}
 
 	protected boolean processResponse(
@@ -208,9 +204,17 @@ public class HandshakeTask implements Task {
 		handshakeMessage.setHashCode(_key.hashCode());
 		handshakeMessage.setHeartbeatInterval(_heartbeatInterval);
 		handshakeMessage.setKey(_key);
-		handshakeMessage.setMonitoringEnabled(_isMonitoringEnabled());
+		handshakeMessage.setLCSClusterEntryTokenId(_lcsClusterEntryTokenId);
+
+		handshakeMessage.setLCSClusterNodeName(
+			LicenseManagerUtil.getHostName() + StringPool.DASH +
+				System.currentTimeMillis());
+
 		handshakeMessage.setLCSPortletBuildNumber(
 			LCSUtil.getLCSPortletBuildNumber());
+		handshakeMessage.setLCSPortletVersion(
+			PortletPropsValues.LCS_CLIENT_VERSION);
+		handshakeMessage.setMonitoringEnabled(_isMonitoringEnabled());
 
 		if (LCSPatcherUtil.isConfigured()) {
 			handshakeMessage.setPatchingToolEnabled(true);
@@ -220,6 +224,7 @@ public class HandshakeTask implements Task {
 			LCSPatcherUtil.getPatchingToolVersion());
 		handshakeMessage.setPortalBuildNumber(ReleaseInfo.getBuildNumber());
 		handshakeMessage.setPortalEdition(LCSUtil.getPortalEdition());
+		handshakeMessage.setProcessorCoresTotal(_getProcessorCoresTotal());
 		handshakeMessage.setUptimes(_getPortalUptimeEntries());
 
 		return handshakeMessage;
@@ -255,6 +260,13 @@ public class HandshakeTask implements Task {
 			throw new LCSHandshakeException(
 				"Portal uptime entries are required", pe);
 		}
+	}
+
+	private int _getProcessorCoresTotal() {
+		InstallationEnvironmentAdvisor installationEnvironmentAdvisor =
+			InstallationEnvironmentAdvisorFactory.getInstance();
+
+		return installationEnvironmentAdvisor.getProcessorCoresTotal();
 	}
 
 	private boolean _isMonitoringEnabled() {
@@ -355,6 +367,7 @@ public class HandshakeTask implements Task {
 	private final long _heartbeatInterval;
 	private final String _key;
 	private final LCSAlertAdvisor _lcsAlertAdvisor;
+	private final long _lcsClusterEntryTokenId;
 	private final LCSConnectionManager _lcsConnectionManager;
 	private final ThreadFactory _threadFactory;
 	private final UptimeMonitoringAdvisor _uptimeMonitoringAdvisor;

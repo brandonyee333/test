@@ -310,7 +310,9 @@ public class LCSConnectionManagerImpl implements LCSConnectionManager {
 
 		return _scheduledExecutorService.submit(
 			new HandshakeTask(
-				_keyGenerator.getKey(), _lcsAlertAdvisor, this, _threadFactory,
+				_keyGenerator.getKey(),
+				_lcsClusterEntryTokenAdvisor.getLcsClusterEntryTokenId(),
+				_lcsAlertAdvisor, this, _threadFactory,
 				_uptimeMonitoringAdvisor));
 	}
 

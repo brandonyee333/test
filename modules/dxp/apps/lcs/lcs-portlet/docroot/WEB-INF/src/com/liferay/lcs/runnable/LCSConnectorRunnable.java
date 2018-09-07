@@ -18,9 +18,7 @@ import com.liferay.lcs.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.exception.InvalidLCSClusterEntryTokenException;
 import com.liferay.lcs.oauth.OAuthUtil;
-import com.liferay.lcs.rest.client.LCSClusterEntryToken;
 import com.liferay.lcs.rest.client.exception.NoSuchLCSSubscriptionEntryException;
-import com.liferay.lcs.util.ClusterNodeUtil;
 import com.liferay.lcs.util.LCSConnectionManager;
 import com.liferay.lcs.util.LCSUtil;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
@@ -158,11 +156,12 @@ public class LCSConnectorRunnable implements Runnable {
 	}
 
 	private Future<?> _activateLCS() throws Exception {
-		LCSClusterEntryToken lcsClusterEntryToken =
-			_lcsClusterEntryTokenAdvisor.processLCSClusterEntryToken(
-				LCSUtil.getLCSPortletBuildNumber());
+		_lcsClusterEntryTokenAdvisor.processLCSClusterEntryToken(
+			LCSUtil.getLCSPortletBuildNumber());
 
-		LCSUtil.setUpJSONWebServiceClientCredentials();
+		LCSUtil.setUpJSONWebServiceClientCredentials(
+			_lcsClusterEntryTokenAdvisor.getLCSAccessSecret(),
+			_lcsClusterEntryTokenAdvisor.getLCSAccessToken());
 
 		if (!LCSUtil.isLCSPortletAuthorized()) {
 			_lcsClusterEntryTokenAdvisor.deleteLCSCLusterEntryTokenFile();
@@ -176,18 +175,6 @@ public class LCSConnectorRunnable implements Runnable {
 			sb.append("deploy it.");
 
 			throw new InvalidLCSClusterEntryTokenException(sb.toString());
-		}
-
-		_lcsClusterEntryTokenAdvisor.checkLCSClusterEntryTokenId(
-			lcsClusterEntryToken.getLcsClusterEntryTokenId());
-
-		if (!LCSUtil.isLCSClusterNodeRegistered()) {
-			ClusterNodeUtil.registerClusterNode(
-				lcsClusterEntryToken.getLcsClusterEntryId());
-		}
-		else {
-			_lcsClusterEntryTokenAdvisor.checkLCSClusterEntry(
-				lcsClusterEntryToken);
 		}
 
 		LCSUtil.processLCSPortletState(LCSPortletState.NO_CONNECTION);
