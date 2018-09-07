@@ -163,7 +163,9 @@ public class PartnerWorkerModelListener
 				ZendeskModelListenerUtil.getExternalId(
 					AccountEntry.class, accountEntry.getAccountEntryId());
 
-			jsonArray.put(Long.valueOf(zendeskOrganizationId));
+			if (Validator.isNotNull(zendeskOrganizationId)) {
+				jsonArray.put(Long.valueOf(zendeskOrganizationId));
+			}
 		}
 
 		return jsonArray;
@@ -183,24 +185,28 @@ public class PartnerWorkerModelListener
 					ZendeskModelListenerUtil.getExternalId(
 						AccountEntry.class, accountEntry.getAccountEntryId());
 
-				organizationIdsJSONArray.put(
-					Long.valueOf(zendeskOrganizationId));
+				if (Validator.isNotNull(zendeskOrganizationId)) {
+					organizationIdsJSONArray.put(
+						Long.valueOf(zendeskOrganizationId));
+				}
 			}
-
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-			jsonObject.put("organization_ids", organizationIdsJSONArray);
 
 			String zendeskUserId = ZendeskModelListenerUtil.getExternalId(
 				User.class, partnerWorker.getUserId());
 
-			jsonObject.put("user_id", zendeskUserId);
+			if (organizationIdsJSONArray.length() > 0) {
+				JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-			_messagePublisher.sendMessage(
-				ZendeskConnectorConfigurationValues.
-					RABBITMQ_MESSAGE_EXCHANGE_NAME,
-				"zendesk.service.organization.membership.bulk.delete",
-				jsonObject);
+				jsonObject.put("organization_ids", organizationIdsJSONArray);
+
+				jsonObject.put("user_id", zendeskUserId);
+
+				_messagePublisher.sendMessage(
+					ZendeskConnectorConfigurationValues.
+						RABBITMQ_MESSAGE_EXCHANGE_NAME,
+					"zendesk.service.organization.membership.bulk.delete",
+					jsonObject);
+			}
 
 			List<PartnerWorker> partnerWorkers =
 				PartnerWorkerLocalServiceUtil.getUserPartnerWorkers(
@@ -220,8 +226,9 @@ public class PartnerWorkerModelListener
 
 				jsonArray.put(ZendeskTagConstants.OSB_PARTNER);
 
-				jsonObject = ZendeskModelListenerUtil.getTagsJSONObject(
-					jsonArray, "users", Long.valueOf(zendeskUserId));
+				JSONObject jsonObject =
+					ZendeskModelListenerUtil.getTagsJSONObject(
+						jsonArray, "users", Long.valueOf(zendeskUserId));
 
 				_messagePublisher.sendMessage(
 					ZendeskConnectorConfigurationValues.

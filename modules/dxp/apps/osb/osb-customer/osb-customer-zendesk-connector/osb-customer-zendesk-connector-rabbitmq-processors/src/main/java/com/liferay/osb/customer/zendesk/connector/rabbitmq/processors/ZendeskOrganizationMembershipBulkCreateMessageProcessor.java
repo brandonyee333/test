@@ -65,16 +65,18 @@ public class ZendeskOrganizationMembershipBulkCreateMessageProcessor
 		JSONArray organizationsJSONArray = jsonObject.getJSONArray(
 			"organizationsArray");
 
-		JSONObject organizationMembershipJSONObject =
-			getOrganizationMembershipJSONObject(
-				organizationsJSONArray, zendeskUserId);
+		if (organizationsJSONArray.length() > 0) {
+			JSONObject organizationMembershipJSONObject =
+				getOrganizationMembershipJSONObject(
+					organizationsJSONArray, zendeskUserId);
 
-		JSONObject responseJSONObject = _zendeskBaseWebService.post(
-			ZendeskRESTEndpoints.URL_API_V2 +
-				ZendeskRESTEndpoints.ORGANIZATION_MEMBERSHIPS_CREATE_MANY,
-			organizationMembershipJSONObject.toString());
+			JSONObject responseJSONObject = _zendeskBaseWebService.post(
+				ZendeskRESTEndpoints.URL_API_V2 +
+					ZendeskRESTEndpoints.ORGANIZATION_MEMBERSHIPS_CREATE_MANY,
+				organizationMembershipJSONObject.toString());
 
-		handleResponseErrors(responseJSONObject);
+			handleResponseErrors(responseJSONObject);
+		}
 	}
 
 	protected JSONObject getOrganizationMembershipJSONObject(
