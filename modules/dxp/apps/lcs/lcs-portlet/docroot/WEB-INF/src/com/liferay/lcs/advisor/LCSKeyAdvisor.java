@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.lcs.util;
+package com.liferay.lcs.advisor;
 
 import com.liferay.lcs.exception.InitializationException;
 import com.liferay.portal.kernel.log.Log;
@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
  * @author Ivica Cardic
  * @author Igor Beslic
  */
-public class KeyGeneratorImpl implements KeyGenerator {
+public class LCSKeyAdvisor implements LCSKeyAdvisor {
 
 	@Override
 	public void clearCache() {
@@ -102,7 +102,7 @@ public class KeyGeneratorImpl implements KeyGenerator {
 		PropsUtil.get(PropsKeys.LIFERAY_HOME) + "/data/license";
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		KeyGeneratorImpl.class);
+		LCSKeyAdvisor.class);
 
 	private static final Pattern _hostNamePattern = Pattern.compile(
 		"hostName=(.*)(\\s?)");
