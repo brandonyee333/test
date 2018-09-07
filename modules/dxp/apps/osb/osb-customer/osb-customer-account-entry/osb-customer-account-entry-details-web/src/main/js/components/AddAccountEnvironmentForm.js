@@ -233,13 +233,7 @@ const FormFields = (
 );
 
 const requiredSchema = yup.string().required(
-	<React.Fragment>
-		<svg className="lexicon-icon lexicon-icon-exclamation-full">
-			<use xlinkHref="#exclamation-full" />
-		</svg>
-
-		{Liferay.Language.get('this-field-is-required')}
-	</React.Fragment>
+	Liferay.Language.get('this-field-is-required')
 );
 
 export const AddAccountEnvironmentForm = withFormik(
