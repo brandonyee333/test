@@ -14,9 +14,6 @@
 
 package com.liferay.lcs.rest.client;
 
-import com.liferay.lcs.rest.client.exception.DuplicateLCSClusterNodeNameException;
-import com.liferay.lcs.rest.client.exception.NoSuchLCSSubscriptionEntryException;
-import com.liferay.lcs.rest.client.exception.RequiredLCSClusterNodeNameException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
@@ -28,16 +25,6 @@ import java.util.List;
  * @author Igor Beslic
  */
 public interface LCSClusterNodeClient {
-
-	public LCSClusterNode addLCSClusterNode(
-			long lcsClusterEntryId, String name, String description, String key,
-			int portalBuildNumber, int processorCoresTotal)
-		throws DuplicateLCSClusterNodeNameException,
-			   JSONWebServiceInvocationException,
-			   JSONWebServiceSerializeException,
-			   JSONWebServiceTransportException,
-			   NoSuchLCSSubscriptionEntryException,
-			   RequiredLCSClusterNodeNameException;
 
 	public LCSClusterNode fetchLCSClusterNode(String key)
 		throws JSONWebServiceInvocationException,

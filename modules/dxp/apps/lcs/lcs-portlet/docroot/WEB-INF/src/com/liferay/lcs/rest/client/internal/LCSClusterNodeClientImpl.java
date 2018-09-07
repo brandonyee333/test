@@ -14,17 +14,12 @@
 
 package com.liferay.lcs.rest.client.internal;
 
-import com.liferay.lcs.rest.client.LCSClientError;
 import com.liferay.lcs.rest.client.LCSClusterNode;
 import com.liferay.lcs.rest.client.LCSClusterNodeClient;
-import com.liferay.lcs.rest.client.exception.DuplicateLCSClusterNodeNameException;
-import com.liferay.lcs.rest.client.exception.NoSuchLCSSubscriptionEntryException;
-import com.liferay.lcs.rest.client.exception.RequiredLCSClusterNodeNameException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
-import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,42 +31,6 @@ import javax.servlet.http.HttpServletResponse;
  * @author Igor Beslic
  */
 public class LCSClusterNodeClientImpl implements LCSClusterNodeClient {
-
-	@Override
-	public LCSClusterNode addLCSClusterNode(
-			long lcsClusterEntryId, String name, String description, String key,
-			int portalBuildNumber, int processorCoresTotal)
-		throws DuplicateLCSClusterNodeNameException,
-			   JSONWebServiceInvocationException,
-			   JSONWebServiceSerializeException,
-			   JSONWebServiceTransportException,
-			   NoSuchLCSSubscriptionEntryException,
-			   RequiredLCSClusterNodeNameException {
-
-		validate(lcsClusterEntryId, name);
-
-		if ((description != null) && description.equals("")) {
-			description = null;
-		}
-
-		try {
-			return _jsonWebServiceClient.doPostToObject(
-				LCSClusterNode.class, _URL_LCS_CLUSTER_NODE, "name", name,
-				"description", description, "lcsClusterEntryId",
-				String.valueOf(lcsClusterEntryId), "key", key,
-				"portalBuildNumber", String.valueOf(portalBuildNumber),
-				"processorCoresTotal", String.valueOf(processorCoresTotal));
-		}
-		catch (JSONWebServiceInvocationException jsonwsie) {
-			if (LCSClientError.getRESTError(jsonwsie) ==
-					LCSClientError.NO_SUCH_LCS_SUBSCRIPTION_ENTRY) {
-
-				throw new NoSuchLCSSubscriptionEntryException(jsonwsie);
-			}
-
-			throw jsonwsie;
-		}
-	}
 
 	@Override
 	public LCSClusterNode fetchLCSClusterNode(String key)
@@ -126,29 +85,6 @@ public class LCSClusterNodeClientImpl implements LCSClusterNodeClient {
 		JSONWebServiceClient jsonWebServiceClient) {
 
 		_jsonWebServiceClient = jsonWebServiceClient;
-	}
-
-	protected void validate(long lcsClusterEntryId, String lcsClusterNodeName)
-		throws DuplicateLCSClusterNodeNameException,
-			   JSONWebServiceInvocationException,
-			   JSONWebServiceSerializeException,
-			   JSONWebServiceTransportException,
-			   RequiredLCSClusterNodeNameException {
-
-		if ((lcsClusterNodeName == null) || lcsClusterNodeName.equals("")) {
-			throw new RequiredLCSClusterNodeNameException();
-		}
-
-		List<LCSClusterNode> lcsClusterNodes =
-			getLCSClusterEntryLCSClusterNodes(lcsClusterEntryId);
-
-		for (LCSClusterNode lcsClusterNode : lcsClusterNodes) {
-			if (StringUtil.equalsIgnoreCase(
-					lcsClusterNodeName, lcsClusterNode.getName())) {
-
-				throw new DuplicateLCSClusterNodeNameException();
-			}
-		}
 	}
 
 	private static final String _URL_LCS_CLUSTER_NODE =
