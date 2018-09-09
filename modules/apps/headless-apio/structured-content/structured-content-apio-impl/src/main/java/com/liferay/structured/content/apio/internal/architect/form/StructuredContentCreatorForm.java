@@ -18,7 +18,9 @@ import com.liferay.apio.architect.form.Form;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.structure.apio.architect.identifier.ContentStructureIdentifier;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -52,18 +54,22 @@ public class StructuredContentCreatorForm {
 			__ -> "This form can be used to create a structured content"
 		).constructor(
 			StructuredContentCreatorForm::new
+		).addOptionalString(
+			"template", StructuredContentCreatorForm::setTemplate
+		).addOptionalString(
+			"text", StructuredContentCreatorForm::setText
 		).addOptionalStringList(
 			"keywords", StructuredContentCreatorForm::setKeywords
 		).addRequiredDate(
 			"displayDate", StructuredContentCreatorForm::setDisplayDate
+		).addRequiredLinkedModel(
+			"structure", ContentStructureIdentifier.class,
+			StructuredContentCreatorForm::setStructure
+		).addOptionalNestedModelList(
+			"values", StructuredContentValuesForm::buildValuesForm,
+			StructuredContentCreatorForm::setStructuredContentValuesForms
 		).addRequiredString(
 			"description", StructuredContentCreatorForm::setDescription
-		).addRequiredString(
-			"structure", StructuredContentCreatorForm::setStructure
-		).addRequiredString(
-			"template", StructuredContentCreatorForm::setTemplate
-		).addRequiredString(
-			"text", StructuredContentCreatorForm::setText
 		).addRequiredString(
 			"title", StructuredContentCreatorForm::setTitle
 		).build();
@@ -160,7 +166,7 @@ public class StructuredContentCreatorForm {
 	 * @return the structured content's structure ID
 	 * @review
 	 */
-	public String getStructure() {
+	public Long getStructure() {
 		return _structure;
 	}
 
@@ -198,6 +204,10 @@ public class StructuredContentCreatorForm {
 		return titleMap;
 	}
 
+	public List<StructuredContentValuesForm> getValues() {
+		return _structuredContentValuesForms;
+	}
+
 	public void setDescription(String description) {
 		_description = description;
 	}
@@ -218,8 +228,14 @@ public class StructuredContentCreatorForm {
 		_keywords = keywords;
 	}
 
-	public void setStructure(String structure) {
+	public void setStructure(Long structure) {
 		_structure = structure;
+	}
+
+	public void setStructuredContentValuesForms(
+		List<StructuredContentValuesForm> structuredContentValuesForms) {
+
+		_structuredContentValuesForms = structuredContentValuesForms;
 	}
 
 	public void setTemplate(String template) {
@@ -241,7 +257,9 @@ public class StructuredContentCreatorForm {
 	private Integer _displayDateMonth;
 	private Integer _displayDateYear;
 	private List<String> _keywords;
-	private String _structure;
+	private Long _structure;
+	private List<StructuredContentValuesForm> _structuredContentValuesForms =
+		new ArrayList<>();
 	private String _template;
 	private String _text;
 	private String _title;
