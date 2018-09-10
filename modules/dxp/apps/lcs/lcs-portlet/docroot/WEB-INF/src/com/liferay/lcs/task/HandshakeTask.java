@@ -17,6 +17,7 @@ package com.liferay.lcs.task;
 import com.liferay.lcs.advisor.InstallationEnvironmentAdvisor;
 import com.liferay.lcs.advisor.InstallationEnvironmentAdvisorFactory;
 import com.liferay.lcs.advisor.LCSAlertAdvisor;
+import com.liferay.lcs.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.advisor.UptimeMonitoringAdvisor;
 import com.liferay.lcs.exception.LCSHandshakeException;
 import com.liferay.lcs.messaging.CommandMessage;
@@ -52,6 +53,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
@@ -68,9 +70,9 @@ import org.osgi.framework.ServiceReference;
 public class HandshakeTask implements Task {
 
 	public HandshakeTask(
-		String key, long lcsClusterEntryTokenId,
-		LCSAlertAdvisor lcsAlertAdvisor,
-		LCSConnectionManager lcsConnectionManager, ThreadFactory threadFactory,
+		long lcsClusterEntryTokenId, LCSAlertAdvisor lcsAlertAdvisor,
+		LCSConnectionManager lcsConnectionManager, LCSKeyAdvisor lcsKeyAdvisor,
+		ThreadFactory threadFactory,
 		UptimeMonitoringAdvisor uptimeMonitoringAdvisor) {
 
 		_handshakeReplyReads = GetterUtil.getInteger(
@@ -82,12 +84,19 @@ public class HandshakeTask implements Task {
 		_heartbeatInterval = GetterUtil.getLong(
 			PortletPropsValues.COMMUNICATION_HEARTBEAT_INTERVAL, 60000L);
 
-		_key = key;
 		_lcsClusterEntryTokenId = lcsClusterEntryTokenId;
 		_lcsAlertAdvisor = lcsAlertAdvisor;
 		_lcsConnectionManager = lcsConnectionManager;
+		_lcsKeyAdvisor = lcsKeyAdvisor;
 		_threadFactory = threadFactory;
 		_uptimeMonitoringAdvisor = uptimeMonitoringAdvisor;
+
+		if (_lcsKeyAdvisor.getKey() != null) {
+			_key = _lcsKeyAdvisor.getKey();
+		}
+		else {
+			_key = _createTemporaryKey();
+		}
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Initialized " + this);
@@ -113,7 +122,9 @@ public class HandshakeTask implements Task {
 			_log.info("Initiate handshake");
 		}
 
-		_lcsConnectionManager.deleteMessages(_key);
+		if (!_temporaryKey) {
+			_lcsConnectionManager.deleteMessages(_key);
+		}
 
 		HandshakeMessage handshakeMessage = _createHandshakeMessage();
 
@@ -188,6 +199,12 @@ public class HandshakeTask implements Task {
 
 			receivedHandshakeResponse = true;
 
+			if (_temporaryKey) {
+				_lcsKeyAdvisor.updateKey(handshakeResponseMessage.getNewKey());
+
+				_temporaryKey = false;
+			}
+
 			_submitLCSPortletBuildNumberCheck(
 				handshakeResponseMessage.getLatestLCSPortletBuildNumber());
 		}
@@ -228,6 +245,22 @@ public class HandshakeTask implements Task {
 		handshakeMessage.setUptimes(_getPortalUptimeEntries());
 
 		return handshakeMessage;
+	}
+
+	private String _createTemporaryKey() {
+		if (_temporaryKey) {
+			throw new UnsupportedOperationException(
+				"Temporary key is already created");
+		}
+
+		UUID uuid = UUID.randomUUID();
+
+		try {
+			return _LCS_KEY_TEMPORARY_PREFIX + uuid.toString();
+		}
+		finally {
+			_temporaryKey = true;
+		}
 	}
 
 	private Map<Integer, String> _getCompanyIdsWebIds() {
@@ -328,7 +361,7 @@ public class HandshakeTask implements Task {
 			}
 
 			if (_log.isDebugEnabled()) {
-				_log.debug("Sending messages for processing");
+				_log.debug("Processing received messages");
 			}
 
 			if (_log.isTraceEnabled()) {
@@ -360,6 +393,8 @@ public class HandshakeTask implements Task {
 		}
 	}
 
+	private static final String _LCS_KEY_TEMPORARY_PREFIX = "TEMP-KEY-";
+
 	private static final Log _log = LogFactoryUtil.getLog(HandshakeTask.class);
 
 	private final int _handshakeReplyReads;
@@ -369,6 +404,8 @@ public class HandshakeTask implements Task {
 	private final LCSAlertAdvisor _lcsAlertAdvisor;
 	private final long _lcsClusterEntryTokenId;
 	private final LCSConnectionManager _lcsConnectionManager;
+	private final LCSKeyAdvisor _lcsKeyAdvisor;
+	private boolean _temporaryKey;
 	private final ThreadFactory _threadFactory;
 	private final UptimeMonitoringAdvisor _uptimeMonitoringAdvisor;
 
