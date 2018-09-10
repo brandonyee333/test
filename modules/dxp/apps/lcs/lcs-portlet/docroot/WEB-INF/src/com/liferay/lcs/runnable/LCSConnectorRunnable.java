@@ -17,6 +17,7 @@ package com.liferay.lcs.runnable;
 import com.liferay.lcs.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.exception.InvalidLCSClusterEntryTokenException;
+import com.liferay.lcs.exception.LCSHandshakeException;
 import com.liferay.lcs.oauth.OAuthUtil;
 import com.liferay.lcs.rest.client.exception.NoSuchLCSSubscriptionEntryException;
 import com.liferay.lcs.util.LCSConnectionManager;
@@ -73,7 +74,11 @@ public class LCSConnectorRunnable implements Runnable {
 					}
 				}
 
-				if (e instanceof NoSuchLCSSubscriptionEntryException) {
+				if (e instanceof LCSHandshakeException) {
+					_lcsClusterEntryTokenAdvisor.checkLCSClusterEntryTokenError(
+						(LCSHandshakeException)e);
+				}
+				else if (e instanceof NoSuchLCSSubscriptionEntryException) {
 					if (_log.isWarnEnabled()) {
 						ResourceBundle resourceBundle =
 							ResourceBundleUtil.getBundle(

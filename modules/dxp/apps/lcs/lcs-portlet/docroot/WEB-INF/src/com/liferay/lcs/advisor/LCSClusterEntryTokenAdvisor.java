@@ -17,22 +17,16 @@ package com.liferay.lcs.advisor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.lcs.activation.LCSClusterEntryTokenContentAdvisor;
-import com.liferay.lcs.exception.InvalidLCSClusterEntryTokenException;
 import com.liferay.lcs.exception.LCSClusterEntryTokenDecryptException;
+import com.liferay.lcs.exception.LCSHandshakeException;
 import com.liferay.lcs.exception.LCSKeystoreException;
 import com.liferay.lcs.exception.MissingLCSClusterEntryTokenException;
 import com.liferay.lcs.exception.MultipleLCSClusterEntryTokenException;
-import com.liferay.lcs.rest.LCSClusterNodeClientUtil;
 import com.liferay.lcs.rest.client.LCSClusterEntryToken;
-import com.liferay.lcs.rest.client.LCSClusterEntryTokenClient;
-import com.liferay.lcs.rest.client.LCSClusterNode;
 import com.liferay.lcs.security.KeyStoreAdvisor;
 import com.liferay.lcs.security.KeyStoreFactory;
 import com.liferay.lcs.util.LCSAlert;
 import com.liferay.lcs.util.PortletPropsValues;
-import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -58,76 +52,15 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public class LCSClusterEntryTokenAdvisor {
 
-	@Deprecated
-	public void checkLCSClusterEntry(LCSClusterEntryToken lcsClusterEntryToken)
-		throws InvalidLCSClusterEntryTokenException,
-			   JSONWebServiceInvocationException,
-			   JSONWebServiceSerializeException,
-			   JSONWebServiceTransportException {
-
-		LCSClusterNode lcsClusterNode =
-			LCSClusterNodeClientUtil.fetchLCSClusterNode();
-
-		if (lcsClusterEntryToken.getLcsClusterEntryId() ==
-				lcsClusterNode.getLcsClusterEntryId()) {
-
-			return;
+	public void checkLCSClusterEntryTokenError(LCSHandshakeException lcshe) {
+		if (lcshe.getStatus() == 200) {
+			_lcsAlertAdvisor.add(LCSAlert.ERROR_INVALID_TOKEN);
 		}
-
-		_lcsAlertAdvisor.add(LCSAlert.ERROR_ENVIRONMENT_MISMATCH);
-
-		deleteLCSCLusterEntryTokenFile();
-
-		StringBundler sb = new StringBundler(12);
-
-		sb.append("Environment ID ");
-		sb.append(lcsClusterEntryToken.getLcsClusterEntryId());
-		sb.append(" defined in the LCS activation token file does not match ");
-		sb.append("the environment ID ");
-		sb.append(lcsClusterNode.getLcsClusterEntryId());
-		sb.append(" where the server was registered. The LCS activation ");
-		sb.append("token file will be deleted. Please redeploy the correct ");
-		sb.append("LCS activation token file. If you intend to change the ");
-		sb.append("environment, please unregister server ");
-		sb.append(lcsClusterNode.getKey());
-		sb.append(" from the old environment using the LCS platform ");
-		sb.append("dashboard.");
-
-		throw new InvalidLCSClusterEntryTokenException(sb.toString());
-	}
-
-	@Deprecated
-	public void checkLCSClusterEntryTokenId(long lcsClusterEntryTokenId)
-		throws InvalidLCSClusterEntryTokenException,
-			   JSONWebServiceInvocationException,
-			   JSONWebServiceSerializeException,
-			   JSONWebServiceTransportException {
-
-		LCSClusterEntryToken lcsClusterEntryToken =
-			_lcsClusterEntryTokenClient.fetchLCSClusterEntryToken(
-				lcsClusterEntryTokenId);
-
-		if (lcsClusterEntryToken != null) {
-			return;
+		else if (lcshe.getStatus() == 201) {
+			_lcsAlertAdvisor.add(LCSAlert.ERROR_ENVIRONMENT_MISMATCH);
 		}
 
 		deleteLCSCLusterEntryTokenFile();
-
-		_resetAttributes();
-
-		_lcsAlertAdvisor.add(LCSAlert.ERROR_INVALID_TOKEN);
-
-		StringBundler sb = new StringBundler(7);
-
-		sb.append("The LCS activation token file is invalid since the ID ");
-		sb.append(lcsClusterEntryTokenId);
-		sb.append(" defined in file does not exist on the LCS platform. The ");
-		sb.append("LCS activation token file will be deleted. If the ");
-		sb.append("activation token file was regenerated, please make sure ");
-		sb.append("to download the latest activation token file using the ");
-		sb.append("LCS platform dashboard and deploy it.");
-
-		throw new InvalidLCSClusterEntryTokenException(sb.toString());
 	}
 
 	public void deleteLCSCLusterEntryTokenFile() {
@@ -197,12 +130,6 @@ public class LCSClusterEntryTokenAdvisor {
 
 	public void setLCSAlertAdvisor(LCSAlertAdvisor lcsAlertAdvisor) {
 		_lcsAlertAdvisor = lcsAlertAdvisor;
-	}
-
-	public void setLCSClusterEntryTokenClient(
-		LCSClusterEntryTokenClient lcsClusterEntryTokenClient) {
-
-		_lcsClusterEntryTokenClient = lcsClusterEntryTokenClient;
 	}
 
 	protected String decrypt(byte[] bytes, int lcsPortletBuildNumber)
@@ -425,7 +352,6 @@ public class LCSClusterEntryTokenAdvisor {
 	private String _lcsAccessToken;
 	private LCSAlertAdvisor _lcsAlertAdvisor;
 	private long _lcsClusterEntryId;
-	private LCSClusterEntryTokenClient _lcsClusterEntryTokenClient;
 	private long _lcsClusterEntryTokenId;
 	private String _portalPropertiesBlacklist;
 
