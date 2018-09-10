@@ -12,7 +12,7 @@
 			a:focus,
 			a:hover,
 			a:active {
-				border-bottom-color: $nav-tabs-border-color;
+				border-bottom-color: $color-divider;
 				border-width: 0;
 
 				&:after {
