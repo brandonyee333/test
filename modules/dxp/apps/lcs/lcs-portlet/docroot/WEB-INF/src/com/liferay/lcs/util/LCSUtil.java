@@ -15,14 +15,11 @@
 package com.liferay.lcs.util;
 
 import com.liferay.lcs.advisor.LCSAlertAdvisor;
-import com.liferay.lcs.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.jsonwebserviceclient.OAuthJSONWebServiceClientImpl;
 import com.liferay.lcs.rest.client.LCSClusterNode;
-import com.liferay.lcs.rest.client.LCSClusterNodeClient;
 import com.liferay.lcs.rest.client.LCSProject;
 import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
@@ -179,21 +176,6 @@ public class LCSUtil {
 			publicRenderParameters);
 	}
 
-	public static boolean isLCSClusterNodeRegistered()
-		throws JSONWebServiceInvocationException,
-			   JSONWebServiceSerializeException,
-			   JSONWebServiceTransportException {
-
-		LCSClusterNode lcsClusterNode =
-			_lcsClusterNodeClient.fetchLCSClusterNode(_lcsKeyAdvisor.getKey());
-
-		if ((lcsClusterNode == null) || lcsClusterNode.isArchived()) {
-			return false;
-		}
-
-		return true;
-	}
-
 	public static synchronized boolean isLCSPortletAuthorized()
 		throws JSONWebServiceInvocationException,
 			   JSONWebServiceTransportException {
@@ -285,16 +267,6 @@ public class LCSUtil {
 		_lcsAlertAdvisor = lcsAlertAdvisor;
 	}
 
-	public void setLCSClusterNodeClient(
-		LCSClusterNodeClient lcsClusterNodeClient) {
-
-		_lcsClusterNodeClient = lcsClusterNodeClient;
-	}
-
-	public void setLCSKeyAdvisor(LCSKeyAdvisor lcsKeyAdvisor) {
-		_lcsKeyAdvisor = lcsKeyAdvisor;
-	}
-
 	protected static String getLCSLayoutURL(
 		String friendlyURL, Map<String, String> publicRenderParameters) {
 
@@ -339,7 +311,5 @@ public class LCSUtil {
 	private static final AtomicLong _lcsAccessTokenNextValidityCheckMillis =
 		new AtomicLong(0);
 	private static LCSAlertAdvisor _lcsAlertAdvisor;
-	private static LCSClusterNodeClient _lcsClusterNodeClient;
-	private static LCSKeyAdvisor _lcsKeyAdvisor;
 
 }
