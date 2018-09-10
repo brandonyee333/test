@@ -34,6 +34,10 @@ public class StructuredContentValuesForm {
 		).addOptionalLinkedModel(
 			"mediaObject", MediaObjectIdentifier.class,
 			StructuredContentValuesForm::setDocument
+		).addOptionalDouble(
+			"latitude", StructuredContentValuesForm::setLatitude
+		).addOptionalDouble(
+			"longitude", StructuredContentValuesForm::setLongitude
 		).addOptionalString(
 			"name", StructuredContentValuesForm::setName
 		).addOptionalString(
@@ -43,6 +47,14 @@ public class StructuredContentValuesForm {
 
 	public Long getDocument() {
 		return _document;
+	}
+
+	public Double getLatitude() {
+		return _latitude;
+	}
+
+	public Double getLongitude() {
+		return _longitude;
 	}
 
 	public String getName() {
@@ -57,8 +69,18 @@ public class StructuredContentValuesForm {
 		_document = document;
 	}
 
+	public void setLatitude(Double latitude) {
+		_latitude = latitude;
+	}
+
+	public void setLongitude(Double longitude) {
+		_longitude = longitude;
+	}
+
 	public void setName(String name) {
 		_name = name;
+	}
+
 	}
 
 	public void setValue(String value) {
@@ -66,6 +88,8 @@ public class StructuredContentValuesForm {
 	}
 
 	private Long _document;
+	private Double _latitude;
+	private Double _longitude;
 	private String _name;
 	private String _value;
 

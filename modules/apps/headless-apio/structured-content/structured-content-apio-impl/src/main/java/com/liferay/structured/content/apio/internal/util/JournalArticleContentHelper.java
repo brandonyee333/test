@@ -128,13 +128,25 @@ public class JournalArticleContentHelper {
 	}
 
 	private String _getData(
-		String type, StructuredContentValuesForm valuesForm) {
+		String type, StructuredContentValuesForm structuredContentValuesForm) {
 
 		if (type.equals("image") || type.equals("document-library")) {
-			return _getFileData(valuesForm, type);
+			return _getFileData(structuredContentValuesForm, type);
+		} else if (type.equals("ddm-geolocation")) {
+			return _getGeoLocationData(structuredContentValuesForm);
 		}
 
-		return valuesForm.getValue();
+		return structuredContentValuesForm.getValue();
+	}
+
+	private String _getGeoLocationData(StructuredContentValuesForm structuredContentValuesForm) {
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("latitude", structuredContentValuesForm.getLatitude());
+		jsonObject.put("longitude", structuredContentValuesForm.getLongitude());
+
+		return jsonObject.toString();
 	}
 
 	private Document _getDocument() throws ParserConfigurationException {
@@ -212,6 +224,8 @@ public class JournalArticleContentHelper {
 			return ddmFormField.getDataType();
 		} else if (type.equals("ddm-text-html")) {
 			return "text_area";
+		} else if (type.equals("select")) {
+			return "list";
 		}
 
 		return type;
