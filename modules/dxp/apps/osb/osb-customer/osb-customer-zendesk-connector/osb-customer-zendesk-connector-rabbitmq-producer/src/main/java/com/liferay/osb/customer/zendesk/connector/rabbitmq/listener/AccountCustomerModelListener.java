@@ -104,13 +104,20 @@ public class AccountCustomerModelListener
 			String zendeskUserId = ZendeskModelListenerUtil.getExternalId(
 				User.class, accountCustomer.getUserId());
 
-			jsonObject.put(
-				"organization_id", Long.valueOf(zendeskOrganizationId));
+			JSONArray organizationIdsJSONArray =
+				JSONFactoryUtil.createJSONArray();
+
+			organizationIdsJSONArray.put(Long.valueOf(zendeskOrganizationId));
+
+			jsonObject.put("organization_ids", organizationIdsJSONArray);
+
+			jsonObject.put("user_id", zendeskUserId);
 
 			_messagePublisher.sendMessage(
 				ZendeskConnectorConfigurationValues.
 					RABBITMQ_MESSAGE_EXCHANGE_NAME,
-				"zendesk.service.organization.membership.delete", jsonObject);
+				"zendesk.service.organization.membership.bulk.delete",
+				jsonObject);
 
 			JSONArray jsonArray = getDeleteAccountCustomerTags(
 				accountCustomer, zendeskOrganizationId);
