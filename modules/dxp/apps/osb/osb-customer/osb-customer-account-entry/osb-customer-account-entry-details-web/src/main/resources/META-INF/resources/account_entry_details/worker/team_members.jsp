@@ -61,6 +61,12 @@ PortletURL portletURL = renderResponse.createRenderURL();
 				break;
 			}
 		}
+
+		String roleLabel = StringPool.BLANK;
+
+		if (Validator.isNotNull(accountCustomer.getRoleLabel())) {
+			roleLabel = LanguageUtil.get(request, accountCustomer.getRoleLabel());
+		}
 		%>
 
 		<liferay-ui:search-container-column-text
@@ -71,7 +77,7 @@ PortletURL portletURL = renderResponse.createRenderURL();
 
 		<liferay-ui:search-container-column-text
 			name="role"
-			value="<%= LanguageUtil.get(request, accountCustomer.getRoleLabel()) %>"
+			value="<%= roleLabel %>"
 		/>
 
 		<liferay-ui:search-container-column-text
