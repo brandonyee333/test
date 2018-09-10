@@ -17,6 +17,8 @@ package com.liferay.lcs.advisor;
 import com.liferay.lcs.exception.InitializationException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.Digester;
+import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -74,8 +76,6 @@ public class LCSKeyAdvisor {
 	}
 
 	private void _readKey() {
-		byte[] lcsServerIdBytes = null;
-
 		try {
 			File lcsServerIdFile = new File(_LCS_KEY_FILE_PATH);
 
@@ -87,9 +87,20 @@ public class LCSKeyAdvisor {
 				return;
 			}
 
-			lcsServerIdBytes = FileUtil.getBytes(lcsServerIdFile);
+			byte[] keyBytes = FileUtil.getBytes(lcsServerIdFile);
 
-			_key = Arrays.toString(lcsServerIdBytes);
+			if (Arrays.binarySearch(keyBytes, (byte)45) >= 0) {
+				_key = new String(keyBytes);
+			}
+			else {
+				_key = Arrays.toString(keyBytes);
+
+				_key = DigesterUtil.digestHex(Digester.MD5, _key);
+
+				if (_log.isInfoEnabled()) {
+					_log.info("Legacy LCS key detected");
+				}
+			}
 
 			if (_log.isDebugEnabled()) {
 				_log.debug("LCS key detected and red from file system " + _key);
