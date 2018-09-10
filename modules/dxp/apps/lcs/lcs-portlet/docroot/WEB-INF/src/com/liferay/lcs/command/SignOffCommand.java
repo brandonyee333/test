@@ -15,8 +15,8 @@
 package com.liferay.lcs.command;
 
 import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
+import com.liferay.lcs.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.messaging.SignOffCommandMessage;
-import com.liferay.lcs.util.KeyGenerator;
 import com.liferay.lcs.util.LCSConnectionManager;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -47,7 +47,7 @@ public class SignOffCommand implements Command<SignOffCommandMessage> {
 			_lcsClusterEntryTokenAdvisor.deleteLCSCLusterEntryTokenFile();
 
 			if (signOffCommandMessage.isDeregister()) {
-				_keyGenerator.clearCache();
+				_lcsKeyAdvisor.clearCache();
 			}
 		}
 
@@ -56,10 +56,6 @@ public class SignOffCommand implements Command<SignOffCommandMessage> {
 		if (_log.isDebugEnabled()) {
 			_log.debug("Signed off server from LCS");
 		}
-	}
-
-	public void setKeyGenerator(KeyGenerator keyGenerator) {
-		_keyGenerator = keyGenerator;
 	}
 
 	public void setLCSClusterEntryTokenAdvisor(
@@ -74,10 +70,14 @@ public class SignOffCommand implements Command<SignOffCommandMessage> {
 		_lcsConnectionManager = lcsConnectionManager;
 	}
 
+	public void setLCSKeyAdvisor(LCSKeyAdvisor lcsKeyAdvisor) {
+		_lcsKeyAdvisor = lcsKeyAdvisor;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(SignOffCommand.class);
 
-	private KeyGenerator _keyGenerator;
 	private LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
 	private LCSConnectionManager _lcsConnectionManager;
+	private LCSKeyAdvisor _lcsKeyAdvisor;
 
 }

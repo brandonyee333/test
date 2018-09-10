@@ -20,92 +20,92 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.File;
 import java.io.IOException;
 
 import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author Ivica Cardic
  * @author Igor Beslic
  */
-public class LCSKeyAdvisor implements LCSKeyAdvisor {
+public class LCSKeyAdvisor {
 
-	@Override
 	public void clearCache() {
 		_key = null;
 	}
 
-	@Override
 	public synchronized String getKey() {
 		if (_key != null) {
 			return _key;
 		}
 
-		_key = _readKey();
+		_readKey();
 
 		return _key;
 	}
 
 	public synchronized void updateKey(String key) {
 		try {
-			File lcsServerIdFile = new File(
-				_LICENSE_REPOSITORY_DIR + "/server/lcsServerId");
+			File lcsServerIdFile = new File(_LCS_KEY_FILE_PATH);
 
 			FileUtil.write(lcsServerIdFile, key.getBytes());
 
 			_key = key;
+
+			if (_log.isInfoEnabled()) {
+				_log.info("LCS key updated to value " + _key);
+			}
 		}
 		catch (IOException ioe) {
 			throw new InitializationException.FileSystemAccessException(
-				_LICENSE_REPOSITORY_DIR + "/server/lcsServerId", ioe);
+				_LCS_KEY_FILE_PATH, ioe);
 		}
 	}
 
-	protected String getHostName(String lcsServerIdPropertiesString) {
-		Matcher matcher = _hostNamePattern.matcher(lcsServerIdPropertiesString);
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
 
-		if (matcher.find()) {
-			return matcher.group(1);
+		if (_log.isTraceEnabled()) {
+			_log.trace("Finalized " + this);
 		}
-
-		return StringPool.BLANK;
 	}
 
-	private String _readKey() {
+	private void _readKey() {
 		byte[] lcsServerIdBytes = null;
 
 		try {
-			File lcsServerIdFile = new File(
-				_LICENSE_REPOSITORY_DIR + "/server/lcsServerId");
+			File lcsServerIdFile = new File(_LCS_KEY_FILE_PATH);
 
-			if (lcsServerIdFile.exists()) {
-				lcsServerIdBytes = FileUtil.getBytes(lcsServerIdFile);
+			if (!lcsServerIdFile.exists()) {
+				if (_log.isDebugEnabled()) {
+					_log.debug("LCS key file doesn't exist");
+				}
 
-				return Arrays.toString(lcsServerIdBytes);
+				return;
 			}
 
-			return null;
+			lcsServerIdBytes = FileUtil.getBytes(lcsServerIdFile);
+
+			_key = Arrays.toString(lcsServerIdBytes);
+
+			if (_log.isDebugEnabled()) {
+				_log.debug("LCS key detected and red from file system " + _key);
+			}
 		}
 		catch (IOException ioe) {
 			throw new InitializationException.FileSystemAccessException(
-				PropsKeys.LIFERAY_HOME + "/data/license/server/lcsServerId",
-				ioe);
+				_LCS_KEY_FILE_PATH, ioe);
 		}
 	}
 
-	private static final String _LICENSE_REPOSITORY_DIR =
-		PropsUtil.get(PropsKeys.LIFERAY_HOME) + "/data/license";
+	private static final String _LCS_KEY_FILE_PATH =
+		PropsUtil.get(PropsKeys.LIFERAY_HOME) +
+			"/data/license/server/lcsServerId";
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		LCSKeyAdvisor.class);
-
-	private static final Pattern _hostNamePattern = Pattern.compile(
-		"hostName=(.*)(\\s?)");
+	private static final Log _log = LogFactoryUtil.getLog(LCSKeyAdvisor.class);
 
 	private String _key;
 

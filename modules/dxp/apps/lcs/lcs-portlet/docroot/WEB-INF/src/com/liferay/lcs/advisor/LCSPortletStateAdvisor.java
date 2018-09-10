@@ -16,7 +16,6 @@ package com.liferay.lcs.advisor;
 
 import com.liferay.lcs.rest.client.LCSSubscriptionEntry;
 import com.liferay.lcs.rest.client.LCSSubscriptionEntryClient;
-import com.liferay.lcs.util.KeyGenerator;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
@@ -40,7 +39,7 @@ public class LCSPortletStateAdvisor {
 		try {
 			LCSSubscriptionEntry lcsSubscriptionEntry =
 				_lcsSubscriptionEntryClient.fetchLCSSubscriptionEntry(
-					_keyGenerator.getKey());
+					_lcsKeyAdvisor.getKey());
 
 			if (lcsSubscriptionEntry == null) {
 				_lastLCSPortletState = LCSPortletState.NO_SUBSCRIPTION;
@@ -120,8 +119,8 @@ public class LCSPortletStateAdvisor {
 		return _lastLCSPortletState;
 	}
 
-	public void setKeyGenerator(KeyGenerator keyGenerator) {
-		_keyGenerator = keyGenerator;
+	public void setLCSKeyAdvisor(LCSKeyAdvisor lcsKeyAdvisor) {
+		_lcsKeyAdvisor = lcsKeyAdvisor;
 	}
 
 	public void setLCSSubscriptionEntryClient(
@@ -133,9 +132,9 @@ public class LCSPortletStateAdvisor {
 	private static final Log _log = LogFactoryUtil.getLog(
 		LCSPortletStateAdvisor.class);
 
-	private KeyGenerator _keyGenerator;
 	private LCSPortletState _lastLCSPortletState =
 		LCSPortletState.NO_SUBSCRIPTION;
+	private LCSKeyAdvisor _lcsKeyAdvisor;
 	private LCSSubscriptionEntryClient _lcsSubscriptionEntryClient;
 
 }

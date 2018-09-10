@@ -14,8 +14,8 @@
 
 package com.liferay.lcs.task;
 
+import com.liferay.lcs.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.messaging.Message;
-import com.liferay.lcs.util.KeyGenerator;
 import com.liferay.lcs.util.LCSConnectionManager;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -44,20 +44,20 @@ public abstract class BaseScheduledTask implements ScheduledTask {
 		}
 	}
 
-	public void setKeyGenerator(KeyGenerator keyGenerator) {
-		_keyGenerator = keyGenerator;
-	}
-
 	public void setLCSConnectionManager(
 		LCSConnectionManager lcsConnectionManager) {
 
 		_lcsConnectionManager = lcsConnectionManager;
 	}
 
+	public void setLCSKeyAdvisor(LCSKeyAdvisor lcsKeyAdvisor) {
+		_lcsKeyAdvisor = lcsKeyAdvisor;
+	}
+
 	protected abstract void doRun() throws Exception;
 
 	protected String getKey() {
-		return _keyGenerator.getKey();
+		return _lcsKeyAdvisor.getKey();
 	}
 
 	protected void sendMessage(Message message) throws PortalException {
@@ -76,7 +76,7 @@ public abstract class BaseScheduledTask implements ScheduledTask {
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseScheduledTask.class);
 
-	private KeyGenerator _keyGenerator;
 	private LCSConnectionManager _lcsConnectionManager;
+	private LCSKeyAdvisor _lcsKeyAdvisor;
 
 }

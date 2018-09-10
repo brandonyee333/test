@@ -14,6 +14,7 @@
 
 package com.liferay.lcs.util;
 
+import com.liferay.lcs.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.advisor.LCSPortletStateAdvisor;
 import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
 import com.liferay.portal.kernel.cluster.ClusterNode;
@@ -63,7 +64,7 @@ public class ClusterNodeUtil {
 
 			clusterNodeInfo.put("address", inetAddress.getHostAddress());
 
-			clusterNodeInfo.put("key", _keyGenerator.getKey());
+			clusterNodeInfo.put("key", _lcsKeyAdvisor.getKey());
 
 			LCSPortletState lcsPortletState =
 				_lcsPortletStateAdvisor.getLCSPortletState(false);
@@ -154,8 +155,8 @@ public class ClusterNodeUtil {
 		return clusterNodeKeys;
 	}
 
-	public void setKeyGenerator(KeyGenerator keyGenerator) {
-		_keyGenerator = keyGenerator;
+	public void setLCSKeyAdvisor(LCSKeyAdvisor lcsKeyAdvisor) {
+		_lcsKeyAdvisor = lcsKeyAdvisor;
 	}
 
 	public void setLCSPortletStateAdvisor(
@@ -245,7 +246,7 @@ public class ClusterNodeUtil {
 	private static final MethodHandler _getClusterNodeInfoMethodHandler =
 		new MethodHandler(
 			new MethodKey(ClusterNodeUtil.class, "getClusterNodeInfo"));
-	private static KeyGenerator _keyGenerator;
+	private static LCSKeyAdvisor _lcsKeyAdvisor;
 	private static LCSPortletStateAdvisor _lcsPortletStateAdvisor;
 
 }

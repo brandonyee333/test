@@ -14,7 +14,6 @@
 
 package com.liferay.lcs.advisor;
 
-import com.liferay.lcs.util.KeyGeneratorImpl;
 import com.liferay.lcs.util.LCSUtil;
 import com.liferay.portal.json.JSONArrayImpl;
 import com.liferay.portal.json.JSONObjectImpl;
@@ -55,17 +54,15 @@ public class UptimeMonitoringAdvisorTest extends PowerMockito {
 			JSONFactoryUtil.class, LCSUtil.class, ManagementFactory.class,
 			PropsUtil.class);
 
-		KeyGeneratorImpl keyGenerator = spy(new KeyGeneratorImpl());
+		LCSKeyAdvisor lcsKeyAdvisor = spy(new LCSKeyAdvisor());
 
 		doReturn(
 			"lcsServerId"
 		).when(
-			keyGenerator
-		).getKey(
-			Boolean.FALSE
-		);
+			lcsKeyAdvisor
+		).getKey();
 
-		_uptimeMonitoringAdvisor.setKeyGenerator(keyGenerator);
+		_uptimeMonitoringAdvisor.setLCSKeyAdvisor(lcsKeyAdvisor);
 
 		_uptimeMonitoringAdvisor.init();
 

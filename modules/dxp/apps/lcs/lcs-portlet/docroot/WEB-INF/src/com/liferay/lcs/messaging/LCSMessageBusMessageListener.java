@@ -14,7 +14,7 @@
 
 package com.liferay.lcs.messaging;
 
-import com.liferay.lcs.util.KeyGenerator;
+import com.liferay.lcs.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.util.LCSConnectionManager;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
@@ -26,14 +26,14 @@ import java.util.Map;
  */
 public class LCSMessageBusMessageListener extends BaseMessageListener {
 
-	public void setKeyGenerator(KeyGenerator keyGenerator) {
-		_keyGenerator = keyGenerator;
-	}
-
 	public void setLCSConnectionManager(
 		LCSConnectionManager lcsConnectionManager) {
 
 		_lcsConnectionManager = lcsConnectionManager;
+	}
+
+	public void setLCSKeyAdvisor(LCSKeyAdvisor lcsKeyAdvisor) {
+		_lcsKeyAdvisor = lcsKeyAdvisor;
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class LCSMessageBusMessageListener extends BaseMessageListener {
 
 		messageBusMessage.setDestinationName(
 			message.getString("LCS_DESTINATION"));
-		messageBusMessage.setKey(_keyGenerator.getKey());
+		messageBusMessage.setKey(_lcsKeyAdvisor.getKey());
 		messageBusMessage.setResponseDestinationName(
 			message.getResponseDestinationName());
 		messageBusMessage.setResponseId(message.getResponseId());
@@ -78,7 +78,7 @@ public class LCSMessageBusMessageListener extends BaseMessageListener {
 		return false;
 	}
 
-	private KeyGenerator _keyGenerator;
 	private LCSConnectionManager _lcsConnectionManager;
+	private LCSKeyAdvisor _lcsKeyAdvisor;
 
 }

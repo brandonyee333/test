@@ -14,9 +14,9 @@
 
 package com.liferay.lcs.rest;
 
+import com.liferay.lcs.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.rest.client.LCSClusterNode;
 import com.liferay.lcs.rest.client.LCSClusterNodeClient;
-import com.liferay.lcs.util.KeyGenerator;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
@@ -33,11 +33,7 @@ public class LCSClusterNodeClientUtil {
 			   JSONWebServiceTransportException {
 
 		return _lcsClusterNodeClient.fetchLCSClusterNode(
-			_keyGenerator.getKey());
-	}
-
-	public void setKeyGenerator(KeyGenerator keyGenerator) {
-		_keyGenerator = keyGenerator;
+			_lcsKeyAdvisor.getKey());
 	}
 
 	public void setLCSClusterNodeService(
@@ -46,7 +42,11 @@ public class LCSClusterNodeClientUtil {
 		_lcsClusterNodeClient = lcsClusterNodeClient;
 	}
 
-	private static KeyGenerator _keyGenerator;
+	public void setLCSKeyAdvisor(LCSKeyAdvisor lcsKeyAdvisor) {
+		_lcsKeyAdvisor = lcsKeyAdvisor;
+	}
+
 	private static LCSClusterNodeClient _lcsClusterNodeClient;
+	private static LCSKeyAdvisor _lcsKeyAdvisor;
 
 }

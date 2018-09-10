@@ -14,9 +14,9 @@
 
 package com.liferay.lcs.task;
 
+import com.liferay.lcs.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.management.MBeanServerService;
 import com.liferay.lcs.messaging.ServerMetricsMessage;
-import com.liferay.lcs.util.KeyGenerator;
 import com.liferay.lcs.util.LCSConnectionManager;
 import com.liferay.portal.kernel.dao.jdbc.pool.metrics.ConnectionPoolMetrics;
 import com.liferay.portal.kernel.log.Log;
@@ -186,15 +186,15 @@ public abstract class BaseServerMetricsTask implements ServerMetricsTask {
 	}
 
 	@Override
-	public void setKeyGenerator(KeyGenerator keyGenerator) {
-		this.keyGenerator = keyGenerator;
-	}
-
-	@Override
 	public void setLCSConnectionManager(
 		LCSConnectionManager lcsConnectionManager) {
 
 		this.lcsConnectionManager = lcsConnectionManager;
+	}
+
+	@Override
+	public void setLCSKeyAdvisor(LCSKeyAdvisor lcsKeyAdvisor) {
+		this.lcsKeyAdvisor = lcsKeyAdvisor;
 	}
 
 	@Override
@@ -220,7 +220,7 @@ public abstract class BaseServerMetricsTask implements ServerMetricsTask {
 		serverMetricsMessage.setCreateTime(System.currentTimeMillis());
 		serverMetricsMessage.setCurrentThreadsMetrics(
 			getCurrentThreadsMetrics());
-		serverMetricsMessage.setKey(keyGenerator.getKey());
+		serverMetricsMessage.setKey(lcsKeyAdvisor.getKey());
 		serverMetricsMessage.setJDBCConnectionPoolsMetrics(
 			getJDBCConnectionPoolsMetrics());
 
@@ -284,8 +284,8 @@ public abstract class BaseServerMetricsTask implements ServerMetricsTask {
 	protected abstract void setUpJNDIJDBCConnectionPoolsObjectNames()
 		throws Exception;
 
-	protected KeyGenerator keyGenerator;
 	protected LCSConnectionManager lcsConnectionManager;
+	protected LCSKeyAdvisor lcsKeyAdvisor;
 	protected MBeanServerService mBeanServerService;
 
 	private static final Log _log = LogFactoryUtil.getLog(

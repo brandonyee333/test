@@ -14,7 +14,6 @@
 
 package com.liferay.lcs.advisor;
 
-import com.liferay.lcs.util.KeyGenerator;
 import com.liferay.lcs.util.LCSPortletPreferencesUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONException;
@@ -111,8 +110,8 @@ public class UptimeMonitoringAdvisor {
 		}
 	}
 
-	public void setKeyGenerator(KeyGenerator keyGenerator) {
-		_keyGenerator = keyGenerator;
+	public void setLCSKeyAdvisor(LCSKeyAdvisor lcsKeyAdvisor) {
+		_lcsKeyAdvisor = lcsKeyAdvisor;
 	}
 
 	public synchronized void updateCurrentUptime() throws JSONException {
@@ -196,7 +195,7 @@ public class UptimeMonitoringAdvisor {
 	private JSONArray _getUptimesJSONArray() throws JSONException {
 		JSONArray jsonArray = null;
 
-		String key = _keyGenerator.getKey(false);
+		String key = _lcsKeyAdvisor.getKey();
 
 		if (key == null) {
 			jsonArray = JSONFactoryUtil.createJSONArray();
@@ -254,7 +253,7 @@ public class UptimeMonitoringAdvisor {
 	}
 
 	private void _storeUptimesJSONArray(JSONArray jsonArray) {
-		String key = _keyGenerator.getKey(false);
+		String key = _lcsKeyAdvisor.getKey();
 
 		if (key == null) {
 			return;
@@ -276,7 +275,7 @@ public class UptimeMonitoringAdvisor {
 		ManagementFactory.getRuntimeMXBean();
 
 	private boolean _initalized;
-	private KeyGenerator _keyGenerator;
+	private LCSKeyAdvisor _lcsKeyAdvisor;
 	private boolean _readyForUpdates;
 	private final List<String> _uptimes = new ArrayList();
 

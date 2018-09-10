@@ -55,8 +55,8 @@
 		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
 	</bean>
 	<bean class="com.liferay.lcs.messaging.LCSMessageBusMessageListener" id="messageListener.lcs_message_bus">
-		<property name="keyGenerator" ref="com.liferay.lcs.util.KeyGenerator" />
 		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
+		<property name="LCSKeyAdvisor" ref="com.liferay.lcs.advisor.LCSKeyAdvisor" />
 	</bean>
 	<bean class="com.liferay.lcs.messaging.PortalMetricsMessageListener" id="messageListener.monitoring">
 		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />

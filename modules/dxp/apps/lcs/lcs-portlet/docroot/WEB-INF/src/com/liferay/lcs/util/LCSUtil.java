@@ -15,6 +15,7 @@
 package com.liferay.lcs.util;
 
 import com.liferay.lcs.advisor.LCSAlertAdvisor;
+import com.liferay.lcs.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.jsonwebserviceclient.OAuthJSONWebServiceClientImpl;
 import com.liferay.lcs.rest.client.LCSClusterNode;
 import com.liferay.lcs.rest.client.LCSClusterNodeClient;
@@ -184,7 +185,7 @@ public class LCSUtil {
 			   JSONWebServiceTransportException {
 
 		LCSClusterNode lcsClusterNode =
-			_lcsClusterNodeClient.fetchLCSClusterNode(_keyGenerator.getKey());
+			_lcsClusterNodeClient.fetchLCSClusterNode(_lcsKeyAdvisor.getKey());
 
 		if ((lcsClusterNode == null) || lcsClusterNode.isArchived()) {
 			return false;
@@ -280,10 +281,6 @@ public class LCSUtil {
 		_jsonWebServiceClient = jsonWebServiceClient;
 	}
 
-	public void setKeyGenerator(KeyGenerator keyGenerator) {
-		_keyGenerator = keyGenerator;
-	}
-
 	public void setLCSAlertAdvisor(LCSAlertAdvisor lcsAlertAdvisor) {
 		_lcsAlertAdvisor = lcsAlertAdvisor;
 	}
@@ -292,6 +289,10 @@ public class LCSUtil {
 		LCSClusterNodeClient lcsClusterNodeClient) {
 
 		_lcsClusterNodeClient = lcsClusterNodeClient;
+	}
+
+	public void setLCSKeyAdvisor(LCSKeyAdvisor lcsKeyAdvisor) {
+		_lcsKeyAdvisor = lcsKeyAdvisor;
 	}
 
 	protected static String getLCSLayoutURL(
@@ -335,10 +336,10 @@ public class LCSUtil {
 	private static final Log _log = LogFactoryUtil.getLog(LCSUtil.class);
 
 	private static JSONWebServiceClient _jsonWebServiceClient;
-	private static KeyGenerator _keyGenerator;
 	private static final AtomicLong _lcsAccessTokenNextValidityCheckMillis =
 		new AtomicLong(0);
 	private static LCSAlertAdvisor _lcsAlertAdvisor;
 	private static LCSClusterNodeClient _lcsClusterNodeClient;
+	private static LCSKeyAdvisor _lcsKeyAdvisor;
 
 }

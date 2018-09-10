@@ -16,6 +16,7 @@ package com.liferay.lcs.util;
 
 import com.liferay.lcs.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
+import com.liferay.lcs.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.advisor.LCSPortletStateAdvisor;
 import com.liferay.lcs.advisor.UptimeMonitoringAdvisor;
 import com.liferay.lcs.exception.CompressionException;
@@ -61,9 +62,9 @@ import javax.servlet.http.HttpServletResponse;
 public class LCSConnectionManagerImpl implements LCSConnectionManager {
 
 	public LCSConnectionManagerImpl(
-		KeyGenerator keyGenerator, LCSAlertAdvisor lcsAlertAdvisor,
+		LCSAlertAdvisor lcsAlertAdvisor,
 		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor,
-		LCSGatewayService lcsGatewayService,
+		LCSGatewayService lcsGatewayService, LCSKeyAdvisor lcsKeyAdvisor,
 		LCSPortletStateAdvisor lcsPortletStateAdvisor,
 		MessageListenerSchedulerService messageListenerSchedulerService,
 		TaskSchedulerService taskSchedulerService, ThreadFactory threadFactory,
@@ -71,8 +72,6 @@ public class LCSConnectionManagerImpl implements LCSConnectionManager {
 
 		_heartbeatInterval = GetterUtil.getLong(
 			PortletPropsValues.COMMUNICATION_HEARTBEAT_INTERVAL);
-
-		_keyGenerator = keyGenerator;
 
 		_lcsConnectionMetadata.put(
 			"handshakeWaitTime",
@@ -84,6 +83,7 @@ public class LCSConnectionManagerImpl implements LCSConnectionManager {
 		_lcsAlertAdvisor = lcsAlertAdvisor;
 		_lcsClusterEntryTokenAdvisor = lcsClusterEntryTokenAdvisor;
 		_lcsGatewayService = lcsGatewayService;
+		_lcsKeyAdvisor = lcsKeyAdvisor;
 		_lcsPortletStateAdvisor = lcsPortletStateAdvisor;
 		_messageListenerSchedulerService = messageListenerSchedulerService;
 
@@ -225,7 +225,7 @@ public class LCSConnectionManagerImpl implements LCSConnectionManager {
 
 		_scheduledFutures.add(
 			_scheduledExecutorService.scheduleAtFixedRate(
-				new CommandMessageTask(_keyGenerator.getKey(), this),
+				new CommandMessageTask(_lcsKeyAdvisor.getKey(), this),
 				LCSConstants.COMMAND_MESSAGE_TASK_SCHEDULE_PERIOD,
 				LCSConstants.COMMAND_MESSAGE_TASK_SCHEDULE_PERIOD,
 				TimeUnit.SECONDS));
@@ -236,7 +236,7 @@ public class LCSConnectionManagerImpl implements LCSConnectionManager {
 
 		_scheduledFutures.add(
 			_scheduledExecutorService.scheduleAtFixedRate(
-				new HeartbeatTask(_keyGenerator.getKey(), this), 10000L,
+				new HeartbeatTask(_lcsKeyAdvisor.getKey(), this), 10000L,
 				_heartbeatInterval, TimeUnit.MILLISECONDS));
 
 		if (_log.isTraceEnabled()) {
@@ -310,9 +310,8 @@ public class LCSConnectionManagerImpl implements LCSConnectionManager {
 
 		return _scheduledExecutorService.submit(
 			new HandshakeTask(
-				_keyGenerator.getKey(),
 				_lcsClusterEntryTokenAdvisor.getLcsClusterEntryTokenId(),
-				_lcsAlertAdvisor, this, _threadFactory,
+				_lcsAlertAdvisor, this, _lcsKeyAdvisor, _threadFactory,
 				_uptimeMonitoringAdvisor));
 	}
 
@@ -329,7 +328,8 @@ public class LCSConnectionManagerImpl implements LCSConnectionManager {
 
 		_cancelSchedulers();
 
-		SignOffTask signOffTask = new SignOffTask(_keyGenerator.getKey(), this);
+		SignOffTask signOffTask = new SignOffTask(
+			_lcsKeyAdvisor.getKey(), this);
 
 		signOffTask.setServerManuallyShutdown(serverManuallyShutdown);
 
@@ -458,7 +458,6 @@ public class LCSConnectionManagerImpl implements LCSConnectionManager {
 		LCSConnectionManagerImpl.class);
 
 	private final long _heartbeatInterval;
-	private final KeyGenerator _keyGenerator;
 	private final LCSAlertAdvisor _lcsAlertAdvisor;
 	private final LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
 	private final Map<String, String> _lcsConnectionMetadata = new HashMap<>();
@@ -466,6 +465,7 @@ public class LCSConnectionManagerImpl implements LCSConnectionManager {
 		_lcsConnectorRunnableWeakReference;
 	private volatile boolean _lcsGatewayAvailable;
 	private final LCSGatewayService _lcsGatewayService;
+	private final LCSKeyAdvisor _lcsKeyAdvisor;
 	private final LCSPortletStateAdvisor _lcsPortletStateAdvisor;
 	private final MessageListenerSchedulerService
 		_messageListenerSchedulerService;

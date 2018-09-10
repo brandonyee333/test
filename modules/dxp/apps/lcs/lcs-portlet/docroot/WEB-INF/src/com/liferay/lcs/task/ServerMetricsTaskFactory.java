@@ -14,8 +14,8 @@
 
 package com.liferay.lcs.task;
 
+import com.liferay.lcs.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.management.MBeanServerService;
-import com.liferay.lcs.util.KeyGenerator;
 import com.liferay.lcs.util.LCSConnectionManager;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -53,21 +53,21 @@ public class ServerMetricsTaskFactory {
 			return null;
 		}
 
-		serverMetricsTask.setKeyGenerator(_keyGenerator);
+		serverMetricsTask.setLCSKeyAdvisor(_lcsKeyAdvisor);
 		serverMetricsTask.setLCSConnectionManager(_lcsConnectionManager);
 		serverMetricsTask.setMBeanServerService(_mBeanServerService);
 
 		return serverMetricsTask;
 	}
 
-	public void setKeyGenerator(KeyGenerator keyGenerator) {
-		_keyGenerator = keyGenerator;
-	}
-
 	public void setLCSConnectionManager(
 		LCSConnectionManager lcsConnectionManager) {
 
 		_lcsConnectionManager = lcsConnectionManager;
+	}
+
+	public void setLCSKeyAdvisor(LCSKeyAdvisor lcsKeyAdvisor) {
+		_lcsKeyAdvisor = lcsKeyAdvisor;
 	}
 
 	public void setmBeanServerService(MBeanServerService mBeanServerService) {
@@ -77,8 +77,8 @@ public class ServerMetricsTaskFactory {
 	private static final Log _log = LogFactoryUtil.getLog(
 		ServerMetricsTaskFactory.class);
 
-	private KeyGenerator _keyGenerator;
 	private LCSConnectionManager _lcsConnectionManager;
+	private LCSKeyAdvisor _lcsKeyAdvisor;
 	private MBeanServerService _mBeanServerService;
 
 }
