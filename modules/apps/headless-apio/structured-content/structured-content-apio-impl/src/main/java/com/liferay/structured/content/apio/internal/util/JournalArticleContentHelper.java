@@ -208,8 +208,10 @@ public class JournalArticleContentHelper {
 	private String _getType(DDMFormField ddmFormField) {
 		String type = ddmFormField.getType();
 
-		if (type.equals("ddm-image") || (type.equals("ddm-documentlibrary"))) {
+		if (type.equals("ddm-image") || (type.equals("ddm-documentlibrary")) || (type.equals("checkbox"))) {
 			return ddmFormField.getDataType();
+		} else if (type.equals("ddm-text-html")) {
+			return "text_area";
 		}
 
 		return type;
