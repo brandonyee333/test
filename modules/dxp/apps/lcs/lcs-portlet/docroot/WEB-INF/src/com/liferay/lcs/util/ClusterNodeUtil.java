@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.cluster.ClusterNodeResponses;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.cluster.FutureClusterResponses;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
-import com.liferay.portal.kernel.license.util.LicenseManagerUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.ServletContextPool;
@@ -31,7 +30,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.net.InetAddress;
 
@@ -75,8 +73,7 @@ public class ClusterNodeUtil {
 				clusterNodeInfo.put("registered", false);
 			}
 			else {
-				clusterNodeInfo.put(
-					"registered", LCSUtil.isLCSClusterNodeRegistered());
+				clusterNodeInfo.put("registered", true);
 			}
 
 			clusterNodeInfo.put("ready", LCSConnectionManagerUtil.isReady());
@@ -163,11 +160,6 @@ public class ClusterNodeUtil {
 		LCSPortletStateAdvisor lcsPortletStateAdvisor) {
 
 		_lcsPortletStateAdvisor = lcsPortletStateAdvisor;
-	}
-
-	private static String _generateLCSClusterNodeName() {
-		return LicenseManagerUtil.getHostName() + StringPool.DASH +
-			System.currentTimeMillis();
 	}
 
 	private static Map<String, Object> _getClusterNodeInfo(String clusterNodeId)
