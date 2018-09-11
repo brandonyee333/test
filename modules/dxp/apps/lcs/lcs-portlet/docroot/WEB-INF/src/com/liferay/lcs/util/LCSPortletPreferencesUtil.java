@@ -240,12 +240,6 @@ public class LCSPortletPreferencesUtil {
 			PortletPreferencesPersistence.class.getName());
 	}
 
-	private static final int _CREDENTIALS_STATUS_INVALID = 2;
-
-	private static final int _CREDENTIALS_STATUS_MISSING = 1;
-
-	private static final int _CREDENTIALS_STATUS_SET = 3;
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		LCSPortletPreferencesUtil.class);
 
