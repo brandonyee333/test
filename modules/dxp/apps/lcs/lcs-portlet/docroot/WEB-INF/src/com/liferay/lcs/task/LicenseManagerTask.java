@@ -27,7 +27,7 @@ import java.util.Map;
 /**
  * @author Igor Beslic
  */
-public class LicenseManagerTask implements Task {
+public class LicenseManagerTask implements ScheduledTask {
 
 	public LicenseManagerTask(
 		LCSConnectionManager lcsConnectionManager,
@@ -39,6 +39,11 @@ public class LicenseManagerTask implements Task {
 		if (_log.isTraceEnabled()) {
 			_log.trace("Initialized " + this);
 		}
+	}
+
+	@Override
+	public Scope getScope() {
+		return Scope.NODE;
 	}
 
 	@Override

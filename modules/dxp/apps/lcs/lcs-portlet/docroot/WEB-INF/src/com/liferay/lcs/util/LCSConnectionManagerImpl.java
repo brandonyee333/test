@@ -17,7 +17,6 @@ package com.liferay.lcs.util;
 import com.liferay.lcs.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.advisor.LCSKeyAdvisor;
-import com.liferay.lcs.advisor.LCSPortletStateAdvisor;
 import com.liferay.lcs.advisor.UptimeMonitoringAdvisor;
 import com.liferay.lcs.exception.CompressionException;
 import com.liferay.lcs.messaging.Message;
@@ -27,7 +26,6 @@ import com.liferay.lcs.service.LCSGatewayService;
 import com.liferay.lcs.task.CommandMessageTask;
 import com.liferay.lcs.task.HandshakeTask;
 import com.liferay.lcs.task.HeartbeatTask;
-import com.liferay.lcs.task.LicenseManagerTask;
 import com.liferay.lcs.task.SignOffTask;
 import com.liferay.lcs.task.UptimeMonitoringTask;
 import com.liferay.lcs.task.scheduler.TaskSchedulerService;
@@ -65,7 +63,6 @@ public class LCSConnectionManagerImpl implements LCSConnectionManager {
 		LCSAlertAdvisor lcsAlertAdvisor,
 		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor,
 		LCSGatewayService lcsGatewayService, LCSKeyAdvisor lcsKeyAdvisor,
-		LCSPortletStateAdvisor lcsPortletStateAdvisor,
 		MessageListenerSchedulerService messageListenerSchedulerService,
 		TaskSchedulerService taskSchedulerService, ThreadFactory threadFactory,
 		UptimeMonitoringAdvisor uptimeMonitoringAdvisor) {
@@ -84,7 +81,6 @@ public class LCSConnectionManagerImpl implements LCSConnectionManager {
 		_lcsClusterEntryTokenAdvisor = lcsClusterEntryTokenAdvisor;
 		_lcsGatewayService = lcsGatewayService;
 		_lcsKeyAdvisor = lcsKeyAdvisor;
-		_lcsPortletStateAdvisor = lcsPortletStateAdvisor;
 		_messageListenerSchedulerService = messageListenerSchedulerService;
 
 		_scheduledExecutorService = Executors.newScheduledThreadPool(
@@ -238,15 +234,6 @@ public class LCSConnectionManagerImpl implements LCSConnectionManager {
 			_scheduledExecutorService.scheduleAtFixedRate(
 				new HeartbeatTask(_lcsKeyAdvisor.getKey(), this), 10000L,
 				_heartbeatInterval, TimeUnit.MILLISECONDS));
-
-		if (_log.isTraceEnabled()) {
-			_log.trace("Scheduling license manager task");
-		}
-
-		_scheduledFutures.add(
-			_scheduledExecutorService.scheduleAtFixedRate(
-				new LicenseManagerTask(this, _lcsPortletStateAdvisor), 0L, 2L,
-				TimeUnit.MINUTES));
 
 		_lcsAlertAdvisor.clear();
 
@@ -466,7 +453,6 @@ public class LCSConnectionManagerImpl implements LCSConnectionManager {
 	private volatile boolean _lcsGatewayAvailable;
 	private final LCSGatewayService _lcsGatewayService;
 	private final LCSKeyAdvisor _lcsKeyAdvisor;
-	private final LCSPortletStateAdvisor _lcsPortletStateAdvisor;
 	private final MessageListenerSchedulerService
 		_messageListenerSchedulerService;
 	private volatile boolean _ready;
