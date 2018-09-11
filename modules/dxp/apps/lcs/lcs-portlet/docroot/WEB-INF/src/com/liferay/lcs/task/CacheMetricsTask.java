@@ -39,8 +39,8 @@ import javax.management.ObjectName;
 public class CacheMetricsTask extends BaseScheduledTask {
 
 	@Override
-	public Type getType() {
-		return Type.LOCAL;
+	public Scope getScope() {
+		return Scope.NODE;
 	}
 
 	public void setmBeanServerService(MBeanServerService mBeanServerService) {

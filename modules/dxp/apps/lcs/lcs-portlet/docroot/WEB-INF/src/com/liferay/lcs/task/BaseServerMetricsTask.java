@@ -148,8 +148,8 @@ public abstract class BaseServerMetricsTask implements ServerMetricsTask {
 	}
 
 	@Override
-	public Type getType() {
-		return Type.LOCAL;
+	public Scope getScope() {
+		return Scope.NODE;
 	}
 
 	@Override

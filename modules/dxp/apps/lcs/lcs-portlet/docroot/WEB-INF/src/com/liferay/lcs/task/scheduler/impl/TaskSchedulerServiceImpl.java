@@ -15,7 +15,7 @@
 package com.liferay.lcs.task.scheduler.impl;
 
 import com.liferay.lcs.task.ScheduledTask;
-import com.liferay.lcs.task.Type;
+import com.liferay.lcs.task.Scope;
 import com.liferay.lcs.task.scheduler.TaskSchedulerService;
 import com.liferay.lcs.util.ClusterNodeUtil;
 import com.liferay.petra.string.StringBundler;
@@ -95,10 +95,10 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 				return;
 			}
 
-			if (scheduledTask.getType() == Type.LOCAL) {
+			if (scheduledTask.getScope() == Scope.NODE) {
 				scheduleLocalScheduledTask(schedulerContext);
 			}
-			else if (scheduledTask.getType() == Type.MEMORY_CLUSTERED) {
+			else if (scheduledTask.getScope() == Scope.CLUSTER) {
 				_scheduleClusteredScheduledTask(schedulerContext);
 			}
 		}

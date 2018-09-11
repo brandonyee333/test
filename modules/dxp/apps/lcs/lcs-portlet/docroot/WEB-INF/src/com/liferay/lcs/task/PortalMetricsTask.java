@@ -28,8 +28,8 @@ import java.util.Map;
 public class PortalMetricsTask extends BaseScheduledTask {
 
 	@Override
-	public Type getType() {
-		return Type.LOCAL;
+	public Scope getScope() {
+		return Scope.NODE;
 	}
 
 	public void setPortalMetricsAggregator(

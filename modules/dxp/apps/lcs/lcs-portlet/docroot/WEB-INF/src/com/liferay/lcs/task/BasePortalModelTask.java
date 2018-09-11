@@ -27,8 +27,8 @@ import java.util.Map;
 public abstract class BasePortalModelTask extends BaseScheduledTask {
 
 	@Override
-	public Type getType() {
-		return Type.MEMORY_CLUSTERED;
+	public Scope getScope() {
+		return Scope.CLUSTER;
 	}
 
 	public void setPageSize(int pageSize) {

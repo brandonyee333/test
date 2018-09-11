@@ -17,8 +17,8 @@ package com.liferay.lcs.task;
 /**
  * @author Ivica Cardic
  */
-public enum Type {
+public enum Scope {
 
-	LOCAL, MEMORY_CLUSTERED
+	CLUSTER, NODE
 
 }

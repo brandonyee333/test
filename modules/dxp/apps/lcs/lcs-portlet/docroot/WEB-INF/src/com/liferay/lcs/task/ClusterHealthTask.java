@@ -26,8 +26,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 public class ClusterHealthTask extends BaseScheduledTask {
 
 	@Override
-	public Type getType() {
-		return Type.LOCAL;
+	public Scope getScope() {
+		return Scope.NODE;
 	}
 
 	@Override

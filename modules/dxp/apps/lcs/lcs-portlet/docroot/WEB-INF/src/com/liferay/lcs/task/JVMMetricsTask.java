@@ -34,8 +34,8 @@ import java.util.concurrent.TimeUnit;
 public class JVMMetricsTask extends BaseScheduledTask {
 
 	@Override
-	public Type getType() {
-		return Type.LOCAL;
+	public Scope getScope() {
+		return Scope.NODE;
 	}
 
 	@Override

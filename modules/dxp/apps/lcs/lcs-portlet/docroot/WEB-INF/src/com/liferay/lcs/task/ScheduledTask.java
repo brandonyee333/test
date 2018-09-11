@@ -19,6 +19,6 @@ package com.liferay.lcs.task;
  */
 public interface ScheduledTask extends Task {
 
-	public Type getType();
+	public Scope getScope();
 
 }
