@@ -2287,7 +2287,7 @@
 						controlledInputs: [
 							'dateAccepted'
 						],
-						dependentKey: '${WatsonListTypeConstants.PERSON_TYPE_VICTIM} ${WatsonListTypeConstants.PERSON_TYPE_ORPHAN}',
+						dependentKey: '${WatsonListTypeConstants.PERSON_TYPE_ORPHAN} ${WatsonListTypeConstants.PERSON_TYPE_OTHER} ${WatsonListTypeConstants.PERSON_TYPE_VICTIM}',
 						filterable: ${false},
 						htmlType: 'checkbox',
 						invertHidden: ${true},
@@ -2626,7 +2626,7 @@
 						controlledInputs: [
 							'dateRescued'
 						],
-						dependentKey: '${WatsonListTypeConstants.PERSON_TYPE_VICTIM}',
+						dependentKey: '${WatsonListTypeConstants.PERSON_TYPE_ORPHAN} ${WatsonListTypeConstants.PERSON_TYPE_OTHER} ${WatsonListTypeConstants.PERSON_TYPE_VICTIM}',
 						filterable: ${false},
 						htmlType: 'checkbox',
 						invertHidden: ${true},
