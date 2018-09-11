@@ -89,6 +89,8 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		WatsonHistory.add(watsonIncident.getWatsonIncidentId(), watsonIncident, request, WatsonHistory.HISTORY_TYPE_CREATED);
 
+		watsonIncident.applyCaseId();
+
 		respondWith(translate("incident-saved-successfully"), WatsonIncident.getAsJSONObject(watsonIncident));
 	}
 

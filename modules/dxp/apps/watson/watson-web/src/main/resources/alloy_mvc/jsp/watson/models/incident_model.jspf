@@ -612,14 +612,14 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 		return null;
 	}
 
-	public WatsonIncident add() throws Exception {
+	public WatsonIncident applyCaseId() throws Exception {
 		Calendar calendar = CalendarFactoryUtil.getCalendar();
 
 		String year = String.valueOf(calendar.get(Calendar.YEAR));
 
 		setName(year + StringPool.DASH + _increment(year));
 
-		return add(this);
+		return update(this);
 	}
 
 	public WatsonIncident updateTranslations(HttpServletRequest request, Locale locale) throws Exception {
