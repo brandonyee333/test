@@ -20,8 +20,26 @@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
+<%@ page import="com.liferay.dynamic.data.mapping.storage.Field" %><%@
+page import="com.liferay.dynamic.data.mapping.storage.Fields" %><%@
+page import="com.liferay.journal.model.JournalArticle" %><%@
+page import="com.liferay.journal.model.JournalArticleDisplay" %><%@
+page import="com.liferay.journal.service.JournalArticleLocalServiceUtil" %><%@
+page import="com.liferay.journal.util.JournalConverter" %><%@
+page import="com.liferay.osb.customer.downloads.display.web.internal.constants.DownloadsDisplayWebKeys" %><%@
+page import="com.liferay.osb.customer.downloads.display.web.internal.display.context.DownloadsDisplayContext" %><%@
+page import="com.liferay.portal.kernel.portlet.PortletRequestModel" %><%@
+page import="com.liferay.portal.kernel.util.GetterUtil" %><%@
+page import="com.liferay.portal.kernel.util.HtmlUtil" %>
+
 <liferay-frontend:defineObjects />
 
 <liferay-theme:defineObjects />
 
 <portlet:defineObjects />
+
+<%
+DownloadsDisplayContext downloadsDisplayContext = new DownloadsDisplayContext(renderRequest, renderResponse);
+
+JournalConverter journalConverter = (JournalConverter)renderRequest.getAttribute(JournalConverter.class.getName());
+%>

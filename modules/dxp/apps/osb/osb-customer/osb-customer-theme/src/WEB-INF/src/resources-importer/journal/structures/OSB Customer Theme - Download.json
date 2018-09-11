@@ -93,29 +93,6 @@
 			"type": "ddm-date"
 		},
 		{
-			"dataType": "string",
-			"indexType": "keyword",
-			"label": {
-				"en_US": "Title"
-			},
-			"localizable": true,
-			"name": "title",
-			"predefinedValue": {
-				"en_US": ""
-			},
-			"readOnly": false,
-			"repeatable": false,
-			"required": true,
-			"showLabel": true,
-			"style": {
-				"en_US": ""
-			},
-			"tip": {
-				"en_US": ""
-			},
-			"type": "text"
-		},
-		{
 			"dataType": "number",
 			"fieldNamespace": "ddm",
 			"indexType": "keyword",
@@ -161,7 +138,7 @@
 					},
 					"readOnly": false,
 					"repeatable": false,
-					"required": true,
+					"required": false,
 					"showLabel": true,
 					"style": {
 						"en_US": ""

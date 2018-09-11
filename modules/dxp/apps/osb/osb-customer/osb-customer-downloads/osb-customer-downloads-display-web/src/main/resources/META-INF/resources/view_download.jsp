@@ -16,41 +16,48 @@
 
 <%@ include file="/init.jsp" %>
 
-<h1>
-	<liferay-ui:message key="downloads" />
-</h1>
+<%
+JournalArticle journalArticle = (JournalArticle)renderRequest.getAttribute(DownloadsDisplayWebKeys.JOURNAL_ARTICLE);
 
-<div>
-	<liferay-ui:message key="find-the-downloads-you-need-by-filtering-the-results-with-the-drop-down-menus-below" />
-</div>
+Fields ddmFields = journalConverter.getDDMFields(journalArticle.getDDMStructure(), journalArticle.getContent());
 
-<div class="filters">
+Field productDDMField = ddmFields.get("product");
 
-</div>
+String product = GetterUtil.getString(productDDMField.getValue());
+%>
+
+<c:choose>
+	<c:when test='<%= product.equals("commerce") %>'>
+	</c:when>
+	<c:when test='<%= product.equals("dxp") %>'>
+	</c:when>
+</c:choose>
 
 <div class="results">
-	<liferay-ui:search-container
-		emptyResultsMessage="no-downloads-were-found"
-		searchContainer="<%= downloadsDisplayContext.getSearchContainer() %>"
-	>
-		<liferay-ui:search-container-row
-			className="com.liferay.journal.model.JournalArticle"
-			modelVar="journalArticle"
-		>
+	<liferay-ui:search-container>
+		<liferay-ui:search-container-results>
 
 			<%
-			Fields ddmFields = journalConverter.getDDMFields(journalArticle.getDDMStructure(), journalArticle.getContent());
+			results.add(journalArticle);
+
+			searchContainer.setResults(results);
+			searchContainer.setTotal(results.size());
 			%>
 
+		</liferay-ui:search-container-results>
+
+		<liferay-ui:search-container-row
+			className="com.liferay.journal.model.JournalArticle"
+		>
 			<liferay-ui:search-container-column-text
 				name="released"
 			>
 
 				<%
-				Field ddmField = ddmFields.get("releaseDate");
+				Field releaseDateDDMField = ddmFields.get("releaseDate");
 				%>
 
-				<%= String.valueOf(ddmField.getValue()) %>
+				<%= String.valueOf(releaseDateDDMField.getValue()) %>
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
@@ -76,3 +83,9 @@
 		/>
 	</liferay-ui:search-container>
 </div>
+
+<portlet:renderURL var="backURL">
+	<portlet:param name="mvcRenderCommandName" value="/view" />
+</portlet:renderURL>
+
+<liferay-ui:message arguments="<%= backURL %>" key="view-previous-releases-in-liferay's-archive" />

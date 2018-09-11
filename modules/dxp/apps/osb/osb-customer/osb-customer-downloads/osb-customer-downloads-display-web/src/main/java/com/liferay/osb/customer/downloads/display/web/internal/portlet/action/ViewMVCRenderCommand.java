@@ -14,14 +14,21 @@
 
 package com.liferay.osb.customer.downloads.display.web.internal.portlet.action;
 
+import com.liferay.journal.model.JournalArticle;
+import com.liferay.journal.service.JournalArticleService;
 import com.liferay.osb.customer.downloads.display.web.internal.constants.DownloadsDisplayPortletKeys;
+import com.liferay.osb.customer.downloads.display.web.internal.constants.DownloadsDisplayWebKeys;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
+import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.util.ParamUtil;
 
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
@@ -40,7 +47,38 @@ public class ViewMVCRenderCommand implements MVCRenderCommand {
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws PortletException {
 
+		try {
+			return doRender(renderRequest, renderResponse);
+		}
+		catch (Exception e) {
+			SessionErrors.add(renderRequest, e.getClass());
+
+			return "/error.jsp";
+		}
+	}
+
+	protected String doRender(
+			RenderRequest renderRequest, RenderResponse renderResponse)
+		throws PortalException {
+
+		long journalArticleResourcePrimKey = ParamUtil.getLong(
+			renderRequest, "journalArticleResourcePrimKey");
+
+		if (journalArticleResourcePrimKey > 0) {
+			JournalArticle journalArticle =
+				_journalArticleService.getLatestArticle(
+					journalArticleResourcePrimKey);
+
+			renderRequest.setAttribute(
+				DownloadsDisplayWebKeys.JOURNAL_ARTICLE, journalArticle);
+
+			return "/view_download.jsp";
+		}
+
 		return "/view.jsp";
 	}
+
+	@Reference
+	private JournalArticleService _journalArticleService;
 
 }
