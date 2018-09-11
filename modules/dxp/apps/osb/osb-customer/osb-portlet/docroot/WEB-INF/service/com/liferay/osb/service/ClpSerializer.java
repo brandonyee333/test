@@ -1717,6 +1717,18 @@ public class ClpSerializer {
 		}
 
 		if (className.equals(
+					"com.liferay.osb.exception.AccountEnvironmentEnvBrowserException")) {
+			return new com.liferay.osb.exception.AccountEnvironmentEnvBrowserException(throwable.getMessage(),
+				throwable.getCause());
+		}
+
+		if (className.equals(
+					"com.liferay.osb.exception.AccountEnvironmentEnvCSException")) {
+			return new com.liferay.osb.exception.AccountEnvironmentEnvCSException(throwable.getMessage(),
+				throwable.getCause());
+		}
+
+		if (className.equals(
 					"com.liferay.osb.exception.AccountEnvironmentEnvDBException")) {
 			return new com.liferay.osb.exception.AccountEnvironmentEnvDBException(throwable.getMessage(),
 				throwable.getCause());
@@ -1731,6 +1743,12 @@ public class ClpSerializer {
 		if (className.equals(
 					"com.liferay.osb.exception.AccountEnvironmentEnvOSException")) {
 			return new com.liferay.osb.exception.AccountEnvironmentEnvOSException(throwable.getMessage(),
+				throwable.getCause());
+		}
+
+		if (className.equals(
+					"com.liferay.osb.exception.AccountEnvironmentEnvSearchException")) {
+			return new com.liferay.osb.exception.AccountEnvironmentEnvSearchException(throwable.getMessage(),
 				throwable.getCause());
 		}
 

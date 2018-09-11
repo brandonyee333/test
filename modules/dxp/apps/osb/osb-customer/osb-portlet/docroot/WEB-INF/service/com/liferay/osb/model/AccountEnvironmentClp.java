@@ -95,6 +95,9 @@ public class AccountEnvironmentClp extends BaseModelImpl<AccountEnvironment>
 		attributes.put("envJVM", getEnvJVM());
 		attributes.put("envAS", getEnvAS());
 		attributes.put("envLFR", getEnvLFR());
+		attributes.put("envBrowser", getEnvBrowser());
+		attributes.put("envCS", getEnvCS());
+		attributes.put("envSearch", getEnvSearch());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -186,6 +189,24 @@ public class AccountEnvironmentClp extends BaseModelImpl<AccountEnvironment>
 
 		if (envLFR != null) {
 			setEnvLFR(envLFR);
+		}
+
+		Integer envBrowser = (Integer)attributes.get("envBrowser");
+
+		if (envBrowser != null) {
+			setEnvBrowser(envBrowser);
+		}
+
+		Integer envCS = (Integer)attributes.get("envCS");
+
+		if (envCS != null) {
+			setEnvCS(envCS);
+		}
+
+		String envSearch = (String)attributes.get("envSearch");
+
+		if (envSearch != null) {
+			setEnvSearch(envSearch);
 		}
 
 		_entityCacheEnabled = GetterUtil.getBoolean("entityCacheEnabled");
@@ -533,9 +554,116 @@ public class AccountEnvironmentClp extends BaseModelImpl<AccountEnvironment>
 	}
 
 	@Override
+	public int getEnvBrowser() {
+		return _envBrowser;
+	}
+
+	@Override
+	public void setEnvBrowser(int envBrowser) {
+		_envBrowser = envBrowser;
+
+		if (_accountEnvironmentRemoteModel != null) {
+			try {
+				Class<?> clazz = _accountEnvironmentRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setEnvBrowser", int.class);
+
+				method.invoke(_accountEnvironmentRemoteModel, envBrowser);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
+	public int getEnvCS() {
+		return _envCS;
+	}
+
+	@Override
+	public void setEnvCS(int envCS) {
+		_envCS = envCS;
+
+		if (_accountEnvironmentRemoteModel != null) {
+			try {
+				Class<?> clazz = _accountEnvironmentRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setEnvCS", int.class);
+
+				method.invoke(_accountEnvironmentRemoteModel, envCS);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
+	public String getEnvSearch() {
+		return _envSearch;
+	}
+
+	@Override
+	public void setEnvSearch(String envSearch) {
+		_envSearch = envSearch;
+
+		if (_accountEnvironmentRemoteModel != null) {
+			try {
+				Class<?> clazz = _accountEnvironmentRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setEnvSearch", String.class);
+
+				method.invoke(_accountEnvironmentRemoteModel, envSearch);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
 	public java.lang.String getEnvASLabel() {
 		try {
 			String methodName = "getEnvASLabel";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public java.lang.String getEnvBrowserLabel() {
+		try {
+			String methodName = "getEnvBrowserLabel";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public java.lang.String getEnvCSLabel() {
+		try {
+			String methodName = "getEnvCSLabel";
 
 			Class<?>[] parameterTypes = new Class<?>[] {  };
 
@@ -618,6 +746,25 @@ public class AccountEnvironmentClp extends BaseModelImpl<AccountEnvironment>
 			Object[] parameterValues = new Object[] {  };
 
 			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public java.util.List<java.lang.String> getEnvSearchLabels() {
+		try {
+			String methodName = "getEnvSearchLabels";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			java.util.List<java.lang.String> returnObj = (java.util.List<java.lang.String>)invokeOnRemoteModel(methodName,
 					parameterTypes, parameterValues);
 
 			return returnObj;
@@ -731,6 +878,9 @@ public class AccountEnvironmentClp extends BaseModelImpl<AccountEnvironment>
 		clone.setEnvJVM(getEnvJVM());
 		clone.setEnvAS(getEnvAS());
 		clone.setEnvLFR(getEnvLFR());
+		clone.setEnvBrowser(getEnvBrowser());
+		clone.setEnvCS(getEnvCS());
+		clone.setEnvSearch(getEnvSearch());
 
 		return clone;
 	}
@@ -791,7 +941,7 @@ public class AccountEnvironmentClp extends BaseModelImpl<AccountEnvironment>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(29);
+		StringBundler sb = new StringBundler(35);
 
 		sb.append("{accountEnvironmentId=");
 		sb.append(getAccountEnvironmentId());
@@ -821,6 +971,12 @@ public class AccountEnvironmentClp extends BaseModelImpl<AccountEnvironment>
 		sb.append(getEnvAS());
 		sb.append(", envLFR=");
 		sb.append(getEnvLFR());
+		sb.append(", envBrowser=");
+		sb.append(getEnvBrowser());
+		sb.append(", envCS=");
+		sb.append(getEnvCS());
+		sb.append(", envSearch=");
+		sb.append(getEnvSearch());
 		sb.append("}");
 
 		return sb.toString();
@@ -828,7 +984,7 @@ public class AccountEnvironmentClp extends BaseModelImpl<AccountEnvironment>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(46);
+		StringBundler sb = new StringBundler(55);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.AccountEnvironment");
@@ -890,6 +1046,18 @@ public class AccountEnvironmentClp extends BaseModelImpl<AccountEnvironment>
 			"<column><column-name>envLFR</column-name><column-value><![CDATA[");
 		sb.append(getEnvLFR());
 		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>envBrowser</column-name><column-value><![CDATA[");
+		sb.append(getEnvBrowser());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>envCS</column-name><column-value><![CDATA[");
+		sb.append(getEnvCS());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>envSearch</column-name><column-value><![CDATA[");
+		sb.append(getEnvSearch());
+		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -910,6 +1078,9 @@ public class AccountEnvironmentClp extends BaseModelImpl<AccountEnvironment>
 	private int _envJVM;
 	private int _envAS;
 	private int _envLFR;
+	private int _envBrowser;
+	private int _envCS;
+	private String _envSearch;
 	private BaseModel<?> _accountEnvironmentRemoteModel;
 	private Class<?> _clpSerializerClass = ClpSerializer.class;
 	private boolean _entityCacheEnabled;

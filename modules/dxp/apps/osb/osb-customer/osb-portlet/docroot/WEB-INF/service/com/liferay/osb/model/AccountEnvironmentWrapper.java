@@ -72,6 +72,9 @@ public class AccountEnvironmentWrapper implements AccountEnvironment,
 		attributes.put("envJVM", getEnvJVM());
 		attributes.put("envAS", getEnvAS());
 		attributes.put("envLFR", getEnvLFR());
+		attributes.put("envBrowser", getEnvBrowser());
+		attributes.put("envCS", getEnvCS());
+		attributes.put("envSearch", getEnvSearch());
 
 		return attributes;
 	}
@@ -161,6 +164,24 @@ public class AccountEnvironmentWrapper implements AccountEnvironment,
 		if (envLFR != null) {
 			setEnvLFR(envLFR);
 		}
+
+		Integer envBrowser = (Integer)attributes.get("envBrowser");
+
+		if (envBrowser != null) {
+			setEnvBrowser(envBrowser);
+		}
+
+		Integer envCS = (Integer)attributes.get("envCS");
+
+		if (envCS != null) {
+			setEnvCS(envCS);
+		}
+
+		String envSearch = (String)attributes.get("envSearch");
+
+		if (envSearch != null) {
+			setEnvSearch(envSearch);
+		}
 	}
 
 	@Override
@@ -211,6 +232,26 @@ public class AccountEnvironmentWrapper implements AccountEnvironment,
 	@Override
 	public int getEnvAS() {
 		return _accountEnvironment.getEnvAS();
+	}
+
+	/**
+	* Returns the env browser of this account environment.
+	*
+	* @return the env browser of this account environment
+	*/
+	@Override
+	public int getEnvBrowser() {
+		return _accountEnvironment.getEnvBrowser();
+	}
+
+	/**
+	* Returns the env cs of this account environment.
+	*
+	* @return the env cs of this account environment
+	*/
+	@Override
+	public int getEnvCS() {
+		return _accountEnvironment.getEnvCS();
 	}
 
 	/**
@@ -274,6 +315,16 @@ public class AccountEnvironmentWrapper implements AccountEnvironment,
 	}
 
 	@Override
+	public java.lang.String getEnvBrowserLabel() {
+		return _accountEnvironment.getEnvBrowserLabel();
+	}
+
+	@Override
+	public java.lang.String getEnvCSLabel() {
+		return _accountEnvironment.getEnvCSLabel();
+	}
+
+	@Override
 	public java.lang.String getEnvDBLabel() {
 		return _accountEnvironment.getEnvDBLabel();
 	}
@@ -301,6 +352,16 @@ public class AccountEnvironmentWrapper implements AccountEnvironment,
 	@Override
 	public java.lang.String getEnvOSLabel() {
 		return _accountEnvironment.getEnvOSLabel();
+	}
+
+	/**
+	* Returns the env search of this account environment.
+	*
+	* @return the env search of this account environment
+	*/
+	@Override
+	public java.lang.String getEnvSearch() {
+		return _accountEnvironment.getEnvSearch();
 	}
 
 	/**
@@ -366,6 +427,11 @@ public class AccountEnvironmentWrapper implements AccountEnvironment,
 	@Override
 	public Date getModifiedDate() {
 		return _accountEnvironment.getModifiedDate();
+	}
+
+	@Override
+	public java.util.List<java.lang.String> getEnvSearchLabels() {
+		return _accountEnvironment.getEnvSearchLabels();
 	}
 
 	/**
@@ -469,6 +535,26 @@ public class AccountEnvironmentWrapper implements AccountEnvironment,
 	}
 
 	/**
+	* Sets the env browser of this account environment.
+	*
+	* @param envBrowser the env browser of this account environment
+	*/
+	@Override
+	public void setEnvBrowser(int envBrowser) {
+		_accountEnvironment.setEnvBrowser(envBrowser);
+	}
+
+	/**
+	* Sets the env cs of this account environment.
+	*
+	* @param envCS the env cs of this account environment
+	*/
+	@Override
+	public void setEnvCS(int envCS) {
+		_accountEnvironment.setEnvCS(envCS);
+	}
+
+	/**
 	* Sets the env db of this account environment.
 	*
 	* @param envDB the env db of this account environment
@@ -516,6 +602,16 @@ public class AccountEnvironmentWrapper implements AccountEnvironment,
 	@Override
 	public void setEnvOSCustom(java.lang.String envOSCustom) {
 		_accountEnvironment.setEnvOSCustom(envOSCustom);
+	}
+
+	/**
+	* Sets the env search of this account environment.
+	*
+	* @param envSearch the env search of this account environment
+	*/
+	@Override
+	public void setEnvSearch(java.lang.String envSearch) {
+		_accountEnvironment.setEnvSearch(envSearch);
 	}
 
 	@Override

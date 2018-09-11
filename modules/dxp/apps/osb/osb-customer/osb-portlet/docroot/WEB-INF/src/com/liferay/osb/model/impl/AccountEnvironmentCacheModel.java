@@ -66,7 +66,7 @@ public class AccountEnvironmentCacheModel implements CacheModel<AccountEnvironme
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(29);
+		StringBundler sb = new StringBundler(35);
 
 		sb.append("{accountEnvironmentId=");
 		sb.append(accountEnvironmentId);
@@ -96,6 +96,12 @@ public class AccountEnvironmentCacheModel implements CacheModel<AccountEnvironme
 		sb.append(envAS);
 		sb.append(", envLFR=");
 		sb.append(envLFR);
+		sb.append(", envBrowser=");
+		sb.append(envBrowser);
+		sb.append(", envCS=");
+		sb.append(envCS);
+		sb.append(", envSearch=");
+		sb.append(envSearch);
 		sb.append("}");
 
 		return sb.toString();
@@ -152,6 +158,15 @@ public class AccountEnvironmentCacheModel implements CacheModel<AccountEnvironme
 		accountEnvironmentImpl.setEnvJVM(envJVM);
 		accountEnvironmentImpl.setEnvAS(envAS);
 		accountEnvironmentImpl.setEnvLFR(envLFR);
+		accountEnvironmentImpl.setEnvBrowser(envBrowser);
+		accountEnvironmentImpl.setEnvCS(envCS);
+
+		if (envSearch == null) {
+			accountEnvironmentImpl.setEnvSearch(StringPool.BLANK);
+		}
+		else {
+			accountEnvironmentImpl.setEnvSearch(envSearch);
+		}
 
 		accountEnvironmentImpl.resetOriginalValues();
 
@@ -182,6 +197,11 @@ public class AccountEnvironmentCacheModel implements CacheModel<AccountEnvironme
 		envAS = objectInput.readInt();
 
 		envLFR = objectInput.readInt();
+
+		envBrowser = objectInput.readInt();
+
+		envCS = objectInput.readInt();
+		envSearch = objectInput.readUTF();
 	}
 
 	@Override
@@ -228,6 +248,17 @@ public class AccountEnvironmentCacheModel implements CacheModel<AccountEnvironme
 		objectOutput.writeInt(envAS);
 
 		objectOutput.writeInt(envLFR);
+
+		objectOutput.writeInt(envBrowser);
+
+		objectOutput.writeInt(envCS);
+
+		if (envSearch == null) {
+			objectOutput.writeUTF(StringPool.BLANK);
+		}
+		else {
+			objectOutput.writeUTF(envSearch);
+		}
 	}
 
 	public long accountEnvironmentId;
@@ -244,4 +275,7 @@ public class AccountEnvironmentCacheModel implements CacheModel<AccountEnvironme
 	public int envJVM;
 	public int envAS;
 	public int envLFR;
+	public int envBrowser;
+	public int envCS;
+	public String envSearch;
 }

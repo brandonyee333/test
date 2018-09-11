@@ -58,6 +58,10 @@ public interface AccountEnvironment extends AccountEnvironmentModel,
 
 	public java.lang.String getEnvASLabel();
 
+	public java.lang.String getEnvBrowserLabel();
+
+	public java.lang.String getEnvCSLabel();
+
 	public java.lang.String getEnvDBLabel();
 
 	public java.lang.String getEnvJVMLabel();
@@ -65,6 +69,8 @@ public interface AccountEnvironment extends AccountEnvironmentModel,
 	public java.lang.String getEnvLFRLabel();
 
 	public java.lang.String getEnvOSLabel();
+
+	public java.util.List<java.lang.String> getEnvSearchLabels();
 
 	public java.lang.String getSupportPhaseLabel();
 }

@@ -58,7 +58,8 @@ public class AccountEnvironmentServiceHttp {
 	public static com.liferay.osb.model.AccountEnvironment addAccountEnvironment(
 		HttpPrincipal httpPrincipal, long accountEntryId, long productEntryId,
 		java.lang.String name, int envOS, java.lang.String envOSCustom,
-		int envDB, int envJVM, int envAS, int envLFR,
+		int envDB, int envJVM, int envAS, int envLFR, int envBrowser,
+		int envCS, java.lang.String envSearch,
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
 		java.util.List<java.lang.Integer> types)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -69,7 +70,8 @@ public class AccountEnvironmentServiceHttp {
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					accountEntryId, productEntryId, name, envOS, envOSCustom,
-					envDB, envJVM, envAS, envLFR, files, types);
+					envDB, envJVM, envAS, envLFR, envBrowser, envCS, envSearch,
+					files, types);
 
 			Object returnObj = null;
 
@@ -229,7 +231,7 @@ public class AccountEnvironmentServiceHttp {
 		HttpPrincipal httpPrincipal, long accountEnvironmentId,
 		long productEntryId, java.lang.String name, int envOS,
 		java.lang.String envOSCustom, int envDB, int envJVM, int envAS,
-		int envLFR,
+		int envLFR, int envBrowser, int envCS, java.lang.String envSearch,
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
 		java.util.List<java.lang.Integer> types)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -240,7 +242,8 @@ public class AccountEnvironmentServiceHttp {
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					accountEnvironmentId, productEntryId, name, envOS,
-					envOSCustom, envDB, envJVM, envAS, envLFR, files, types);
+					envOSCustom, envDB, envJVM, envAS, envLFR, envBrowser,
+					envCS, envSearch, files, types);
 
 			Object returnObj = null;
 
@@ -268,7 +271,8 @@ public class AccountEnvironmentServiceHttp {
 	private static final Class<?>[] _addAccountEnvironmentParameterTypes0 = new Class[] {
 			long.class, long.class, java.lang.String.class, int.class,
 			java.lang.String.class, int.class, int.class, int.class, int.class,
-			java.util.List.class, java.util.List.class
+			int.class, int.class, java.lang.String.class, java.util.List.class,
+			java.util.List.class
 		};
 	private static final Class<?>[] _deleteAccountEnvironmentParameterTypes1 = new Class[] {
 			long.class
@@ -285,6 +289,7 @@ public class AccountEnvironmentServiceHttp {
 	private static final Class<?>[] _updateAccountEnvironmentParameterTypes5 = new Class[] {
 			long.class, long.class, java.lang.String.class, int.class,
 			java.lang.String.class, int.class, int.class, int.class, int.class,
-			java.util.List.class, java.util.List.class
+			int.class, int.class, java.lang.String.class, java.util.List.class,
+			java.util.List.class
 		};
 }

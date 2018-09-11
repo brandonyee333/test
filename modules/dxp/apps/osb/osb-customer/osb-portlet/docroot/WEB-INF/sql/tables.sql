@@ -78,7 +78,10 @@ create table OSB_AccountEnvironment (
 	envDB INTEGER,
 	envJVM INTEGER,
 	envAS INTEGER,
-	envLFR INTEGER
+	envLFR INTEGER,
+	envBrowser INTEGER,
+	envCS INTEGER,
+	envSearch VARCHAR(75) null
 );
 
 create table OSB_AccountEnvironmentAttachment (

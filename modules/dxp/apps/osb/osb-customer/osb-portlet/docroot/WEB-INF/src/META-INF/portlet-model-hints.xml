@@ -85,6 +85,9 @@
 		<field name="envJVM" type="int" />
 		<field name="envAS" type="int" />
 		<field name="envLFR" type="int" />
+		<field name="envBrowser" type="int" />
+		<field name="envCS" type="int" />
+		<field name="envSearch" type="String" />
 	</model>
 	<model name="com.liferay.osb.model.AccountEnvironmentAttachment">
 		<field name="accountEnvironmentAttachmentId" type="long" />

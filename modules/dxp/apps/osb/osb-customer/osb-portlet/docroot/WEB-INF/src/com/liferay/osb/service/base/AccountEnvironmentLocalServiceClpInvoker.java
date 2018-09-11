@@ -131,8 +131,8 @@ public class AccountEnvironmentLocalServiceClpInvoker {
 
 		_methodParameterTypes175 = new String[] {
 				"long", "long", "long", "java.lang.String", "int",
-				"java.lang.String", "int", "int", "int", "int", "java.util.List",
-				"java.util.List"
+				"java.lang.String", "int", "int", "int", "int", "int", "int",
+				"java.lang.String", "java.util.List", "java.util.List"
 			};
 
 		_methodName176 = "deleteAccountEnvironment";
@@ -161,8 +161,8 @@ public class AccountEnvironmentLocalServiceClpInvoker {
 
 		_methodParameterTypes181 = new String[] {
 				"long", "long", "long", "java.lang.String", "int",
-				"java.lang.String", "int", "int", "int", "int", "java.util.List",
-				"java.util.List"
+				"java.lang.String", "int", "int", "int", "int", "int", "int",
+				"java.lang.String", "java.util.List", "java.util.List"
 			};
 	}
 
@@ -287,8 +287,11 @@ public class AccountEnvironmentLocalServiceClpInvoker {
 				((Integer)arguments[7]).intValue(),
 				((Integer)arguments[8]).intValue(),
 				((Integer)arguments[9]).intValue(),
-				(java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>>)arguments[10],
-				(java.util.List<java.lang.Integer>)arguments[11]);
+				((Integer)arguments[10]).intValue(),
+				((Integer)arguments[11]).intValue(),
+				(java.lang.String)arguments[12],
+				(java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>>)arguments[13],
+				(java.util.List<java.lang.Integer>)arguments[14]);
 		}
 
 		if (_methodName176.equals(name) &&
@@ -330,8 +333,11 @@ public class AccountEnvironmentLocalServiceClpInvoker {
 				((Integer)arguments[7]).intValue(),
 				((Integer)arguments[8]).intValue(),
 				((Integer)arguments[9]).intValue(),
-				(java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>>)arguments[10],
-				(java.util.List<java.lang.Integer>)arguments[11]);
+				((Integer)arguments[10]).intValue(),
+				((Integer)arguments[11]).intValue(),
+				(java.lang.String)arguments[12],
+				(java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>>)arguments[13],
+				(java.util.List<java.lang.Integer>)arguments[14]);
 		}
 
 		throw new UnsupportedOperationException();

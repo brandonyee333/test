@@ -109,6 +109,9 @@
 		<property name="envJVM" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="envAS" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="envLFR" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="envBrowser" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="envCS" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="envSearch" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.AccountEnvironmentAttachmentImpl" table="OSB_AccountEnvironmentAttachment">
 		<id name="accountEnvironmentAttachmentId" type="long">

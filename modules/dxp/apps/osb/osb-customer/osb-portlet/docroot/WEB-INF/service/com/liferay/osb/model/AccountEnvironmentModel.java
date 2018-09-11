@@ -275,6 +275,49 @@ public interface AccountEnvironmentModel extends BaseModel<AccountEnvironment> {
 	 */
 	public void setEnvLFR(int envLFR);
 
+	/**
+	 * Returns the env browser of this account environment.
+	 *
+	 * @return the env browser of this account environment
+	 */
+	public int getEnvBrowser();
+
+	/**
+	 * Sets the env browser of this account environment.
+	 *
+	 * @param envBrowser the env browser of this account environment
+	 */
+	public void setEnvBrowser(int envBrowser);
+
+	/**
+	 * Returns the env cs of this account environment.
+	 *
+	 * @return the env cs of this account environment
+	 */
+	public int getEnvCS();
+
+	/**
+	 * Sets the env cs of this account environment.
+	 *
+	 * @param envCS the env cs of this account environment
+	 */
+	public void setEnvCS(int envCS);
+
+	/**
+	 * Returns the env search of this account environment.
+	 *
+	 * @return the env search of this account environment
+	 */
+	@AutoEscape
+	public String getEnvSearch();
+
+	/**
+	 * Sets the env search of this account environment.
+	 *
+	 * @param envSearch the env search of this account environment
+	 */
+	public void setEnvSearch(String envSearch);
+
 	@Override
 	public boolean isNew();
 

@@ -35,7 +35,8 @@ public class AccountEnvironmentServiceClpInvoker {
 
 		_methodParameterTypes213 = new String[] {
 				"long", "long", "java.lang.String", "int", "java.lang.String",
-				"int", "int", "int", "int", "java.util.List", "java.util.List"
+				"int", "int", "int", "int", "int", "int", "java.lang.String",
+				"java.util.List", "java.util.List"
 			};
 
 		_methodName214 = "deleteAccountEnvironment";
@@ -58,7 +59,8 @@ public class AccountEnvironmentServiceClpInvoker {
 
 		_methodParameterTypes218 = new String[] {
 				"long", "long", "java.lang.String", "int", "java.lang.String",
-				"int", "int", "int", "int", "java.util.List", "java.util.List"
+				"int", "int", "int", "int", "int", "int", "java.lang.String",
+				"java.util.List", "java.util.List"
 			};
 	}
 
@@ -80,8 +82,11 @@ public class AccountEnvironmentServiceClpInvoker {
 				((Integer)arguments[6]).intValue(),
 				((Integer)arguments[7]).intValue(),
 				((Integer)arguments[8]).intValue(),
-				(java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>>)arguments[9],
-				(java.util.List<java.lang.Integer>)arguments[10]);
+				((Integer)arguments[9]).intValue(),
+				((Integer)arguments[10]).intValue(),
+				(java.lang.String)arguments[11],
+				(java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>>)arguments[12],
+				(java.util.List<java.lang.Integer>)arguments[13]);
 		}
 
 		if (_methodName214.equals(name) &&
@@ -115,8 +120,11 @@ public class AccountEnvironmentServiceClpInvoker {
 				((Integer)arguments[6]).intValue(),
 				((Integer)arguments[7]).intValue(),
 				((Integer)arguments[8]).intValue(),
-				(java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>>)arguments[9],
-				(java.util.List<java.lang.Integer>)arguments[10]);
+				((Integer)arguments[9]).intValue(),
+				((Integer)arguments[10]).intValue(),
+				(java.lang.String)arguments[11],
+				(java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>>)arguments[12],
+				(java.util.List<java.lang.Integer>)arguments[13]);
 		}
 
 		throw new UnsupportedOperationException();
