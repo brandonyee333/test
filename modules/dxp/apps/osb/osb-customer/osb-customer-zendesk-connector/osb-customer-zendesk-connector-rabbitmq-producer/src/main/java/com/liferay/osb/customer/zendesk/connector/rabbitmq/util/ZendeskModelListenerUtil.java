@@ -15,7 +15,7 @@
 package com.liferay.osb.customer.zendesk.connector.rabbitmq.util;
 
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskLocales;
-import com.liferay.osb.customer.zendesk.connector.model.ZendeskUser;
+import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.ExternalIdMapper;
 import com.liferay.osb.model.ExternalIdMapperConstants;

@@ -16,9 +16,9 @@ package com.liferay.osb.customer.zendesk.connector.rabbitmq.listener;
 
 import com.liferay.osb.customer.rabbitmq.connector.publisher.MessagePublisher;
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
-import com.liferay.osb.customer.zendesk.connector.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.connector.rabbitmq.configuration.ZendeskConnectorConfigurationValues;
 import com.liferay.osb.customer.zendesk.connector.rabbitmq.util.ZendeskModelListenerUtil;
+import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountCustomerConstants;
 import com.liferay.osb.model.AccountEntry;

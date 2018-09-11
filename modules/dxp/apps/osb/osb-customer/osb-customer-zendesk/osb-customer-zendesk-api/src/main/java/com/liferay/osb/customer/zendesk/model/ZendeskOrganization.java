@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.connector.model;
+package com.liferay.osb.customer.zendesk.model;
 
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
