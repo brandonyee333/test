@@ -19,6 +19,8 @@ import com.liferay.document.library.kernel.service.DLAppService;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
+import com.liferay.journal.model.JournalArticle;
+import com.liferay.journal.service.JournalArticleService;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.security.xml.SecureXMLFactoryProviderUtil;
@@ -149,6 +151,9 @@ public class JournalArticleContentHelper {
 		else if (type.equals("ddm-geolocation")) {
 			return _getGeoLocationData(structuredContentValuesForm);
 		}
+		else if (type.equals("ddm-journal-article")) {
+			return _getStructuredContentData(structuredContentValuesForm);
+		}
 
 		return structuredContentValuesForm.getValue();
 	}
@@ -258,6 +263,28 @@ public class JournalArticleContentHelper {
 		return element;
 	}
 
+	private String _getStructuredContentData(
+		StructuredContentValuesForm structuredContentValuesForm) {
+
+		return Try.fromFallible(
+			structuredContentValuesForm::getStructuredContent
+		).map(
+			_journalArticleService::getArticle
+		).map(
+			journalArticle -> {
+				JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+				jsonObject.put("className", JournalArticle.class.getName());
+				jsonObject.put("classPK", journalArticle.getResourcePrimKey());
+				jsonObject.put("title", journalArticle.getTitle());
+
+				return jsonObject.toString();
+			}
+		).orElse(
+			null
+		);
+	}
+
 	private String _getType(DDMFormField ddmFormField) {
 		String type = ddmFormField.getType();
 
@@ -301,5 +328,8 @@ public class JournalArticleContentHelper {
 
 	@Reference
 	private DLAppService _dlAppService;
+
+	@Reference
+	private JournalArticleService _journalArticleService;
 
 }

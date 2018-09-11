@@ -16,6 +16,7 @@ package com.liferay.structured.content.apio.internal.architect.form;
 
 import com.liferay.apio.architect.form.Form;
 import com.liferay.media.object.apio.architect.identifier.MediaObjectIdentifier;
+import com.liferay.structured.content.apio.architect.identifier.StructuredContentIdentifier;
 
 /**
  * @author Javier Gamarra
@@ -34,6 +35,9 @@ public class StructuredContentValuesForm {
 		).addOptionalLinkedModel(
 			"mediaObject", MediaObjectIdentifier.class,
 			StructuredContentValuesForm::setDocument
+		).addOptionalLinkedModel(
+			"structuredContent", StructuredContentIdentifier.class,
+			StructuredContentValuesForm::setStructuredContent
 		).addOptionalDouble(
 			"latitude", StructuredContentValuesForm::setLatitude
 		).addOptionalDouble(
@@ -61,6 +65,10 @@ public class StructuredContentValuesForm {
 		return _name;
 	}
 
+	public Long getStructuredContent() {
+		return _structuredContent;
+	}
+
 	public String getValue() {
 		return _value;
 	}
@@ -81,6 +89,8 @@ public class StructuredContentValuesForm {
 		_name = name;
 	}
 
+	public void setStructuredContent(Long structuredContent) {
+		_structuredContent = structuredContent;
 	}
 
 	public void setValue(String value) {
@@ -91,6 +101,7 @@ public class StructuredContentValuesForm {
 	private Double _latitude;
 	private Double _longitude;
 	private String _name;
+	private Long _structuredContent;
 	private String _value;
 
 }
