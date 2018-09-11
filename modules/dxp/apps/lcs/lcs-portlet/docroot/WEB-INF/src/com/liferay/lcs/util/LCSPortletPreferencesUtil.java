@@ -26,45 +26,22 @@ import com.liferay.portal.kernel.model.PortletPreferences;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.service.persistence.PortletPreferencesPersistence;
-import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 
 import java.util.List;
 
-import javax.portlet.PortletRequest;
 import javax.portlet.ReadOnlyException;
 
 /**
  * @author Mladen Cikara
+ * @author Igor Beslic
  */
 public class LCSPortletPreferencesUtil {
-
-	public static synchronized void deletePortletPreferences() {
-		try {
-			PortletPreferencesLocalServiceUtil.deletePortletPreferences(
-				CompanyConstants.SYSTEM, PortletKeys.PREFS_OWNER_TYPE_COMPANY,
-				0, PortletKeys.MONITORING);
-
-			if (_log.isInfoEnabled()) {
-				_log.info("Deleted portlet preferences");
-			}
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
-	}
 
 	public static synchronized javax.portlet.PortletPreferences
 		fetchReadOnlyJxPortletPreferences() {
 
-		return fetchReadOnlyJxPortletPreferences(null);
-	}
-
-	public static synchronized javax.portlet.PortletPreferences
-		fetchReadOnlyJxPortletPreferences(PortletRequest portletRequest) {
-
-		PortletPreferences portletPreferences = _fetchPortletPreferences(
-			portletRequest);
+		PortletPreferences portletPreferences = _fetchPortletPreferences();
 
 		try {
 			return new ImmutablePortletPreferences(
@@ -76,82 +53,15 @@ public class LCSPortletPreferencesUtil {
 		}
 		catch (SystemException se) {
 			_log.error(se, se);
-
-			if (portletRequest != null) {
-				SessionErrors.add(portletRequest, "oAuthSettingsAccess");
-			}
 		}
 
 		return null;
 	}
 
-	/**
-	 * @param      key
-	 * @param      defaultValue
-	 * @return
-	 * @deprecated Classes of LCS Client should newer interact with portlet
-	 *             preferences in this way because it introduces issues in
-	 *             clusters
-	 */
-	@Deprecated
-	public static String getValue(String key, String defaultValue) {
-		PortletPreferences portletPreferences = _fetchPortletPreferences(null);
-
-		if (portletPreferences == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn("Unable to read portlet preferences");
-			}
-
-			return defaultValue;
-		}
-
-		try {
-			javax.portlet.PortletPreferences jxPortletPreferences =
-				PortletPreferencesFactoryUtil.fromXML(
-					CompanyConstants.SYSTEM, CompanyConstants.SYSTEM,
-					PortletKeys.PREFS_OWNER_TYPE_COMPANY, 0,
-					PortletKeys.MONITORING,
-					portletPreferences.getPreferences());
-
-			return jxPortletPreferences.getValue(key, defaultValue);
-		}
-		catch (SystemException se) {
-			_log.error(
-				"Unable to read portlet preferences. Default value " +
-					defaultValue + " is returned.",
-				se);
-		}
-
-		return defaultValue;
-	}
-
-	public static synchronized void reset(String key) throws Exception {
-		PortletPreferences portletPreferences = _fetchPortletPreferences(null);
-
-		javax.portlet.PortletPreferences jxPortletPreferences =
-			PortletPreferencesFactoryUtil.fromXML(
-				CompanyConstants.SYSTEM, CompanyConstants.SYSTEM,
-				PortletKeys.PREFS_OWNER_TYPE_COMPANY, 0, PortletKeys.MONITORING,
-				portletPreferences.getPreferences());
-
-		jxPortletPreferences.reset(key);
-
-		portletPreferences.setPreferences(
-			PortletPreferencesFactoryUtil.toXML(jxPortletPreferences));
-
-		PortletPreferencesLocalServiceUtil.updatePortletPreferences(
-			portletPreferences);
-
-		PortletPreferencesPersistence portletPreferencesPersistence =
-			_getPersistence();
-
-		portletPreferencesPersistence.clearCache(portletPreferences);
-	}
-
 	public static synchronized void store(String key, String value)
 		throws ReadOnlyException {
 
-		PortletPreferences portletPreferences = _fetchPortletPreferences(null);
+		PortletPreferences portletPreferences = _fetchPortletPreferences();
 
 		javax.portlet.PortletPreferences jxPortletPreferences =
 			PortletPreferencesFactoryUtil.fromXML(
@@ -173,9 +83,7 @@ public class LCSPortletPreferencesUtil {
 		portletPreferencesPersistence.clearCache(portletPreferences);
 	}
 
-	private static PortletPreferences _fetchPortletPreferences(
-		PortletRequest portletRequest) {
-
+	private static PortletPreferences _fetchPortletPreferences() {
 		PortletPreferences portletPreferences = null;
 
 		try {
@@ -205,11 +113,6 @@ public class LCSPortletPreferencesUtil {
 					_log.error(
 						"Unable to determine unique portlet preferences");
 
-					if (portletRequest != null) {
-						SessionErrors.add(
-							portletRequest, "oAuthSettingsAccess");
-					}
-
 					return null;
 				}
 			}
@@ -224,12 +127,6 @@ public class LCSPortletPreferencesUtil {
 		}
 		catch (SystemException se) {
 			_log.error("Unable to get portlet preferences", se);
-
-			if (portletRequest != null) {
-				SessionErrors.add(portletRequest, "oAuthSettingsAccess");
-			}
-
-			return null;
 		}
 
 		return portletPreferences;
