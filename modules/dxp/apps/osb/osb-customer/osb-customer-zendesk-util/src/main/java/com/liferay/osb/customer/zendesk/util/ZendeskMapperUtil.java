@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.account.entry.details.web.internal.util;
+package com.liferay.osb.customer.zendesk.util;
 
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
