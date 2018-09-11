@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Validator;
 
 import java.lang.reflect.Field;
 
@@ -44,8 +43,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.concurrent.atomic.AtomicLong;
-
-import javax.portlet.PortletPreferences;
 
 /**
  * @author Igor Beslic
@@ -176,27 +173,10 @@ public class LCSUtil {
 			publicRenderParameters);
 	}
 
-	public static synchronized boolean isLCSPortletAuthorized()
+	public static synchronized boolean isLCSPortletAuthorized(
+			String lcsAccessSecret, String lcsAccessToken)
 		throws JSONWebServiceInvocationException,
 			   JSONWebServiceTransportException {
-
-		PortletPreferences jxPortletPreferences =
-			LCSPortletPreferencesUtil.fetchReadOnlyJxPortletPreferences();
-
-		if (jxPortletPreferences == null) {
-			return false;
-		}
-
-		String lcsAccessToken = jxPortletPreferences.getValue(
-			"lcsAccessToken", null);
-		String lcsAccessSecret = jxPortletPreferences.getValue(
-			"lcsAccessSecret", null);
-
-		if (Validator.isNull(lcsAccessToken) ||
-			Validator.isNull(lcsAccessSecret)) {
-
-			return false;
-		}
 
 		if (System.currentTimeMillis() <
 				_lcsAccessTokenNextValidityCheckMillis.get()) {
@@ -207,6 +187,8 @@ public class LCSUtil {
 		if (!(_jsonWebServiceClient instanceof OAuthJSONWebServiceClientImpl)) {
 			return true;
 		}
+
+		_setUpJSONWebServiceClientCredentials(lcsAccessSecret, lcsAccessToken);
 
 		try {
 			((OAuthJSONWebServiceClientImpl)_jsonWebServiceClient).
@@ -243,18 +225,6 @@ public class LCSUtil {
 
 			_log.debug(sb.toString());
 		}
-	}
-
-	public static void setUpJSONWebServiceClientCredentials(
-		String lcsAccessSecret, String lcsAccessToken) {
-
-		OAuthJSONWebServiceClientImpl oAuthJSONWebServiceClientImpl =
-			(OAuthJSONWebServiceClientImpl)_jsonWebServiceClient;
-
-		oAuthJSONWebServiceClientImpl.setAccessSecret(lcsAccessSecret);
-		oAuthJSONWebServiceClientImpl.setAccessToken(lcsAccessToken);
-
-		_jsonWebServiceClient.resetHttpClient();
 	}
 
 	public void setJSONWebServiceClient(
@@ -303,6 +273,18 @@ public class LCSUtil {
 		sb.append(parameterName);
 
 		return sb.toString();
+	}
+
+	private static void _setUpJSONWebServiceClientCredentials(
+		String lcsAccessSecret, String lcsAccessToken) {
+
+		OAuthJSONWebServiceClientImpl oAuthJSONWebServiceClientImpl =
+			(OAuthJSONWebServiceClientImpl)_jsonWebServiceClient;
+
+		oAuthJSONWebServiceClientImpl.setAccessSecret(lcsAccessSecret);
+		oAuthJSONWebServiceClientImpl.setAccessToken(lcsAccessToken);
+
+		_jsonWebServiceClient.resetHttpClient();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(LCSUtil.class);

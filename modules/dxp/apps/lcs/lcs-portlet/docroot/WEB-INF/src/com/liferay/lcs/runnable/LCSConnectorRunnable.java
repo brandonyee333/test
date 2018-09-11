@@ -164,11 +164,10 @@ public class LCSConnectorRunnable implements Runnable {
 		_lcsClusterEntryTokenAdvisor.processLCSClusterEntryToken(
 			LCSUtil.getLCSPortletBuildNumber());
 
-		LCSUtil.setUpJSONWebServiceClientCredentials(
-			_lcsClusterEntryTokenAdvisor.getLCSAccessSecret(),
-			_lcsClusterEntryTokenAdvisor.getLCSAccessToken());
+		if (!LCSUtil.isLCSPortletAuthorized(
+				_lcsClusterEntryTokenAdvisor.getLCSAccessSecret(),
+				_lcsClusterEntryTokenAdvisor.getLCSAccessToken())) {
 
-		if (!LCSUtil.isLCSPortletAuthorized()) {
 			_lcsClusterEntryTokenAdvisor.deleteLCSCLusterEntryTokenFile();
 
 			StringBundler sb = new StringBundler(5);
