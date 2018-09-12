@@ -34,15 +34,15 @@
 				},
 				{
 					"label": {
-						"en_US": "Enterprise Search Standard"
-					},
-					"value": "enterpriseSearchStandard"
-				},
-				{
-					"label": {
 						"en_US": "Enterprise Search Premium"
 					},
 					"value": "enterpriseSearchPremium"
+				},
+				{
+					"label": {
+						"en_US": "Enterprise Search Standard"
+					},
+					"value": "enterpriseSearchStandard"
 				},
 				{
 					"label": {

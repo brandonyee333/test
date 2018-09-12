@@ -23,13 +23,13 @@ Fields ddmFields = journalConverter.getDDMFields(journalArticle.getDDMStructure(
 
 Field productDDMField = ddmFields.get("product");
 
-String product = GetterUtil.getString(productDDMField.getValue());
+String product = JournalArticleUtil.getSelectOptionValue(productDDMField);
 %>
 
 <c:choose>
-	<c:when test='<%= product.equals("commerce") %>'>
+	<c:when test="<%= product.equals(DDMStructureConstants.PRODUCT_COMMERCE) %>">
 	</c:when>
-	<c:when test='<%= product.equals("dxp") %>'>
+	<c:when test="<%= product.equals(DDMStructureConstants.PRODUCT_DXP) %>">
 	</c:when>
 </c:choose>
 
