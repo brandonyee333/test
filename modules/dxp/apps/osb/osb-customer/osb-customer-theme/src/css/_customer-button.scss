@@ -42,6 +42,35 @@ input[type="submit"] {
 	border-color: transparent;
 }
 
+.btn-monospaced {
+	border-radius: 4px;
+	border-width: 0;
+	font-size: 8px;
+
+	.lexicon-icon {
+		height: 100%;
+		width: 100%;
+	}
+
+	&.btn-lg {
+		height: 40px;
+		padding: 10px;
+		width: 40px;
+	}
+
+	&.btn-md {
+		height: 32px;
+		padding: 8px;
+		width: 32px;
+	}
+
+	&.btn-sm {
+		height: 24px;
+		padding: 6px;
+		width: 24px;
+	}
+}
+
 .btn-link {
 	font-weight: $font-weight-semi-bold;
 
