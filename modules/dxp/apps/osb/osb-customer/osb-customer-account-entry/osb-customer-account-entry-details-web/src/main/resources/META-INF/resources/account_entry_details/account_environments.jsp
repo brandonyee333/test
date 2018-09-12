@@ -19,7 +19,8 @@
 <%
 AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 
-JSONArray jsonArray = accountEntryViewDisplayContext.getAccountEnvironmentsJSONArray();
+JSONArray accountEnvironmentsJSONArray = accountEntryViewDisplayContext.getAccountEnvironmentsJSONArray();
+JSONArray productEntriesJSONArray = accountEntryViewDisplayContext.getProductEntriesJSONArray();
 %>
 
 <div class="account-environments card" id="<portlet:namespace />accountEnvironments"></div>
@@ -28,8 +29,9 @@ JSONArray jsonArray = accountEntryViewDisplayContext.getAccountEnvironmentsJSONA
 	AccountDetails.render(
 		AccountDetails.AccountEnvironments,
 		{
-			environments: <%= jsonArray %>,
-			permitAdd: <%= OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.ADD_ACCOUNT_ENVIRONMENT) %>
+			environments: <%= accountEnvironmentsJSONArray %>,
+			permitAdd: <%= OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.ADD_ACCOUNT_ENVIRONMENT) %>,
+			productEntries: <%= productEntriesJSONArray %>
 		},
 		document.getElementById('<portlet:namespace />accountEnvironments')
 	);

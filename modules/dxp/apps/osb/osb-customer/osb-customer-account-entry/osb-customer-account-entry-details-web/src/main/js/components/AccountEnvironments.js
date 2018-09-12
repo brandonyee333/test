@@ -13,7 +13,8 @@ export default class AccountEnvironments extends React.Component {
 
 	static propTypes = {
 		environments: PropTypes.array.isRequired,
-		permitAdd: PropTypes.bool.isRequired
+		permitAdd: PropTypes.bool.isRequired,
+		productEntries: PropTypes.array.isRequired
 	};
 
 	handleCloseModal = () => this.setState(
@@ -39,7 +40,7 @@ export default class AccountEnvironments extends React.Component {
 	);
 
 	render() {
-		const {environments, permitAdd} = this.props;
+		const {environments, permitAdd, productEntries} = this.props;
 		const {showModal} = this.state;
 
 		const accordionItems = environments.map(
@@ -124,7 +125,7 @@ export default class AccountEnvironments extends React.Component {
 			)
 		);
 
-		const addAccountEnvironmentForm = <AddAccountEnvironmentForm />;
+		const addAccountEnvironmentForm = <AddAccountEnvironmentForm productEntries={productEntries} />;
 
 		return (
 			<React.Fragment>
