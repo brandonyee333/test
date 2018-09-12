@@ -344,12 +344,12 @@ public class AccountEnvironmentLocalServiceImpl
 		}
 
 		if (Validator.isNotNull(envSearch)) {
-			int[] envSearchesList = StringUtil.split(
+			int[] envSearches = StringUtil.split(
 				envSearch, StringPool.NEW_LINE, 0);
 
-			for (int envSearches : envSearchesList) {
+			for (int curEnvSearch : envSearches) {
 				if (!isValidListType(
-						envSearches,
+						curEnvSearch,
 						AccountEnvironmentConstants.LIST_TYPE_ENV_SEARCH)) {
 
 					throw new AccountEnvironmentEnvSearchException();
