@@ -56,18 +56,12 @@
 			<liferay-ui:search-container-column-text
 				name="name"
 			>
-				<div class="title">
-					<%= HtmlUtil.escape(journalArticle.getTitle(locale)) %>
-				</div>
 
-				<div>
+				<%
+				JournalArticleDisplay journalArticleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(journalArticle, null, null, themeDisplay.getLanguageId(), 0, new PortletRequestModel(renderRequest, renderResponse), themeDisplay);
+				%>
 
-					<%
-					JournalArticleDisplay journalArticleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(journalArticle, null, null, themeDisplay.getLanguageId(), 0, new PortletRequestModel(renderRequest, renderResponse), themeDisplay);
-					%>
-
-					<%= journalArticleDisplay.getContent() %>
-				</div>
+				<%= journalArticleDisplay.getContent() %>
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 

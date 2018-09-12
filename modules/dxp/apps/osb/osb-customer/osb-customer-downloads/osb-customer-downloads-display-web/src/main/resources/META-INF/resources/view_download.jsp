@@ -29,7 +29,7 @@ String product = JournalArticleUtil.getSelectOptionValue(productDDMField);
 <c:choose>
 	<c:when test="<%= product.equals(DDMStructureConstants.PRODUCT_COMMERCE) %>">
 	</c:when>
-	<c:when test="<%= product.equals(DDMStructureConstants.PRODUCT_DXP) %>">
+	<c:when test="<%= product.equals(DDMStructureConstants.PRODUCT_DXP_70) || product.equals(DDMStructureConstants.PRODUCT_DXP_71) %>">
 	</c:when>
 </c:choose>
 
@@ -63,18 +63,12 @@ String product = JournalArticleUtil.getSelectOptionValue(productDDMField);
 			<liferay-ui:search-container-column-text
 				name="name"
 			>
-				<div class="title">
-					<%= HtmlUtil.escape(journalArticle.getTitle(locale)) %>
-				</div>
 
-				<div>
+				<%
+				JournalArticleDisplay journalArticleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(journalArticle, null, null, themeDisplay.getLanguageId(), 0, new PortletRequestModel(renderRequest, renderResponse), themeDisplay);
+				%>
 
-					<%
-					JournalArticleDisplay journalArticleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(journalArticle, null, null, themeDisplay.getLanguageId(), 0, new PortletRequestModel(renderRequest, renderResponse), themeDisplay);
-					%>
-
-					<%= journalArticleDisplay.getContent() %>
-				</div>
+				<%= journalArticleDisplay.getContent() %>
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 

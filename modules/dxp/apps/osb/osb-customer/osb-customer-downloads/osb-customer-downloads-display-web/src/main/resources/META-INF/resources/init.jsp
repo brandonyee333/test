@@ -30,8 +30,7 @@ page import="com.liferay.osb.customer.downloads.display.web.internal.constants.D
 page import="com.liferay.osb.customer.downloads.display.web.internal.constants.DownloadsDisplayWebKeys" %><%@
 page import="com.liferay.osb.customer.downloads.display.web.internal.display.context.DownloadsDisplayContext" %><%@
 page import="com.liferay.osb.customer.downloads.display.web.internal.util.JournalArticleUtil" %><%@
-page import="com.liferay.portal.kernel.portlet.PortletRequestModel" %><%@
-page import="com.liferay.portal.kernel.util.HtmlUtil" %>
+page import="com.liferay.portal.kernel.portlet.PortletRequestModel" %>
 
 <liferay-frontend:defineObjects />
 

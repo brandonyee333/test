@@ -1,10 +1,4 @@
-<#assign releaseDateObject = dateUtil.parseDate("yyyy-MM-dd", releaseDate.data, locale) />
-
-${dateUtil.getDate(releaseDateObject, "yyyy-MM-dd", locale)}
-
-<br />
-
-${title.data}
+<strong>${.vars['reserved-article-title'].data}</strong>
 
 <br />
 
