@@ -17,9 +17,6 @@ package com.liferay.osb.customer.zendesk.connector.rabbitmq.util;
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskLocales;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.ExternalIdMapper;
-import com.liferay.osb.model.ExternalIdMapperConstants;
-import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -27,12 +24,9 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
-import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-
-import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -68,23 +62,6 @@ public class ZendeskModelListenerUtil {
 		}
 		else {
 			return StringPool.BLANK;
-		}
-	}
-
-	public static String getExternalId(Class<?> clazz, long classPK) {
-		long classNameId = ClassNameLocalServiceUtil.getClassNameId(clazz);
-
-		List<ExternalIdMapper> externalIdMappers =
-			ExternalIdMapperLocalServiceUtil.getExternalIdMappers(
-				classNameId, classPK, ExternalIdMapperConstants.TYPE_ZENDESK);
-
-		if (!externalIdMappers.isEmpty()) {
-			ExternalIdMapper externalIdMapper = externalIdMappers.get(0);
-
-			return externalIdMapper.getExternalId();
-		}
-		else {
-			return null;
 		}
 	}
 

@@ -41,26 +41,20 @@ public class ZendeskOrganizationMembershipBulkCreateMessageProcessor
 
 		JSONObject userJSONObject = jsonObject.getJSONObject("userObject");
 
-		if (userJSONObject != null) {
-			JSONObject userResponseJSONObject = _zendeskBaseWebService.post(
-				ZendeskRESTEndpoints.URL_API_V2 +
-					ZendeskRESTEndpoints.USERS_CREATE_OR_UPDATE,
-				userJSONObject.toString());
+		JSONObject userResponseJSONObject = _zendeskBaseWebService.post(
+			ZendeskRESTEndpoints.URL_API_V2 +
+				ZendeskRESTEndpoints.USERS_CREATE_OR_UPDATE,
+			userJSONObject.toString());
 
-			handleResponseErrors(userResponseJSONObject);
+		handleResponseErrors(userResponseJSONObject);
 
-			userJSONObject = userResponseJSONObject.getJSONObject("user");
+		userJSONObject = userResponseJSONObject.getJSONObject("user");
 
-			zendeskUserId = userJSONObject.getLong("id");
+		zendeskUserId = userJSONObject.getLong("id");
 
-			_messagePublisher.sendMessage(
-				ZendeskConnectorConfigurationValues.
-					RABBITMQ_MESSAGE_EXCHANGE_NAME,
-				"zendesk.user.create.or.update", userResponseJSONObject);
-		}
-		else {
-			zendeskUserId = jsonObject.getLong("user_id");
-		}
+		_messagePublisher.sendMessage(
+			ZendeskConnectorConfigurationValues.RABBITMQ_MESSAGE_EXCHANGE_NAME,
+			"zendesk.user.create.or.update", userResponseJSONObject);
 
 		JSONArray organizationsJSONArray = jsonObject.getJSONArray(
 			"organizationsArray");

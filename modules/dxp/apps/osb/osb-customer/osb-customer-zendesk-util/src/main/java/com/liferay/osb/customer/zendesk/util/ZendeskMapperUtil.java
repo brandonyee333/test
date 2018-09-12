@@ -14,8 +14,11 @@
 
 package com.liferay.osb.customer.zendesk.util;
 
+import com.liferay.osb.customer.zendesk.model.ZendeskOrganization;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
+import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
+import com.liferay.osb.customer.zendesk.web.service.exception.NoSuchZendeskUserException;
 import com.liferay.osb.exception.NoSuchAccountEntryException;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.ExternalIdMapper;
@@ -35,9 +38,68 @@ import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
+ * @author Kyle Bischof
  */
 @Component(immediate = true, service = ZendeskMapperUtil.class)
 public class ZendeskMapperUtil {
+
+	public long fetchZendeskOrganizationId(long accountEntryId)
+		throws PortalException {
+
+		long classNameId = _classNameLocalService.getClassNameId(
+			AccountEntry.class);
+
+		List<ExternalIdMapper> externalIdMappers =
+			ExternalIdMapperLocalServiceUtil.getExternalIdMappers(
+				classNameId, accountEntryId,
+				ExternalIdMapperConstants.TYPE_ZENDESK);
+
+		if (!externalIdMappers.isEmpty()) {
+			ExternalIdMapper externalIdMapper = externalIdMappers.get(0);
+
+			return GetterUtil.getLong(externalIdMapper.getExternalId());
+		}
+
+		ZendeskOrganization zendeskOrganization =
+			_zendeskOrganizationWebService.getZendeskOrganization(
+				accountEntryId);
+
+		if (zendeskOrganization == null) {
+			return 0;
+		}
+
+		ExternalIdMapperLocalServiceUtil.addExternalIdMapper(
+			classNameId, accountEntryId, ExternalIdMapperConstants.TYPE_ZENDESK,
+			String.valueOf(zendeskOrganization.getZendeskOrgazniationId()));
+
+		return zendeskOrganization.getZendeskOrgazniationId();
+	}
+
+	public long fetchZendeskUserId(long userId) throws PortalException {
+		long classNameId = _classNameLocalService.getClassNameId(User.class);
+
+		List<ExternalIdMapper> externalIdMappers =
+			ExternalIdMapperLocalServiceUtil.getExternalIdMappers(
+				classNameId, userId, ExternalIdMapperConstants.TYPE_ZENDESK);
+
+		if (!externalIdMappers.isEmpty()) {
+			ExternalIdMapper externalIdMapper = externalIdMappers.get(0);
+
+			return GetterUtil.getLong(externalIdMapper.getExternalId());
+		}
+
+		ZendeskUser zendeskUser = _zendeskUserWebService.getZendeskUser(userId);
+
+		if (zendeskUser == null) {
+			return 0;
+		}
+
+		ExternalIdMapperLocalServiceUtil.addExternalIdMapper(
+			classNameId, userId, ExternalIdMapperConstants.TYPE_ZENDESK,
+			String.valueOf(zendeskUser.getZendeskUserId()));
+
+		return zendeskUser.getZendeskUserId();
+	}
 
 	public AccountEntry getAccountEntry(long zendeskOrganizationId)
 		throws PortalException {
@@ -75,6 +137,10 @@ public class ZendeskMapperUtil {
 
 		ZendeskUser zendeskUser = _zendeskUserWebService.getZendeskUser(userId);
 
+		if (zendeskUser == null) {
+			throw new NoSuchZendeskUserException();
+		}
+
 		ExternalIdMapperLocalServiceUtil.addExternalIdMapper(
 			classNameId, userId, ExternalIdMapperConstants.TYPE_ZENDESK,
 			String.valueOf(zendeskUser.getZendeskUserId()));
@@ -92,6 +158,9 @@ public class ZendeskMapperUtil {
 
 	@Reference
 	private ClassNameLocalService _classNameLocalService;
+
+	@Reference
+	private ZendeskOrganizationWebService _zendeskOrganizationWebService;
 
 	@Reference
 	private ZendeskUserWebService _zendeskUserWebService;

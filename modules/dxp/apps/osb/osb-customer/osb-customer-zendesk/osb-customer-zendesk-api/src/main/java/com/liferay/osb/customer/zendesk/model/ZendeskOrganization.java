@@ -77,6 +77,10 @@ public class ZendeskOrganization {
 		return _tier;
 	}
 
+	public long getZendeskOrgazniationId() {
+		return _zendeskOrganizationId;
+	}
+
 	public void setExternalId(String externalId) {
 		_externalId = externalId;
 	}
@@ -123,6 +127,10 @@ public class ZendeskOrganization {
 
 	public void setTier(String tier) {
 		_tier = tier;
+	}
+
+	public void setZendeskOrganizationId(long zendeskOrganizationId) {
+		_zendeskOrganizationId = zendeskOrganizationId;
 	}
 
 	public JSONObject toJSONObject() {
@@ -208,5 +216,6 @@ public class ZendeskOrganization {
 	private String _supportRegion;
 	private Set<String> _tags;
 	private String _tier;
+	private long _zendeskOrganizationId;
 
 }

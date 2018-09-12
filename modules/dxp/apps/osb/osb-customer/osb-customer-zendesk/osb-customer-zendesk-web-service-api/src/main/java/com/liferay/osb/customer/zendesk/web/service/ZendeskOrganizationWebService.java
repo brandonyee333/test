@@ -12,25 +12,20 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.connector.constants;
+package com.liferay.osb.customer.zendesk.web.service;
+
+import aQute.bnd.annotation.ProviderType;
+
+import com.liferay.osb.customer.zendesk.model.ZendeskOrganization;
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * @author Kyle Bischof
  */
-public class ZendeskTagConstants {
+@ProviderType
+public interface ZendeskOrganizationWebService {
 
-	public static final String OSB_CUSTOMER = "osb_customer";
-
-	public static final String OSB_KNOWLEDGE_BASE = "osb_kb";
-
-	public static final String OSB_PARTNER = "osb_partner";
-
-	public static final String PREFIX_OSB = "osb_";
-
-	public static final String WATCHER = "_watcher";
-
-	public static String getWatcherTag(long externalId) {
-		return PREFIX_OSB + String.valueOf(externalId) + WATCHER;
-	}
+	public ZendeskOrganization getZendeskOrganization(long accountEntryId)
+		throws PortalException;
 
 }

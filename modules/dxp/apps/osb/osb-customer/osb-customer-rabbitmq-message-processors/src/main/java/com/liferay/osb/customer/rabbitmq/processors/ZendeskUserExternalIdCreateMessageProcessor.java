@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.rabbitmq.processors;
 
+import com.liferay.osb.model.ExternalIdMapper;
 import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
@@ -22,6 +23,8 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalService;
+
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -47,15 +50,25 @@ public class ZendeskUserExternalIdCreateMessageProcessor
 		User user = _userLocalService.getUserByUuidAndCompanyId(
 			uuid, OSBConstants.COMPANY_ID);
 
-		boolean externalIdMappers =
-			ExternalIdMapperLocalServiceUtil.hasExternalIdMappers(
+		List<ExternalIdMapper> externalIdMappers =
+			ExternalIdMapperLocalServiceUtil.getExternalIdMappers(
 				classNameId, user.getUserId(),
 				ExternalIdMapperConstants.TYPE_ZENDESK);
 
-		if (!externalIdMappers) {
+		if (externalIdMappers.isEmpty()) {
 			ExternalIdMapperLocalServiceUtil.addExternalIdMapper(
 				classNameId, user.getUserId(),
 				ExternalIdMapperConstants.TYPE_ZENDESK, zendeskUserId);
+		}
+		else {
+			ExternalIdMapper externalIdMapper = externalIdMappers.get(0);
+
+			if (externalIdMapper.getExternalId() != zendeskUserId) {
+				ExternalIdMapperLocalServiceUtil.updateExternalIdMapper(
+					externalIdMapper.getExternalIdMapperId(), classNameId,
+					user.getUserId(), ExternalIdMapperConstants.TYPE_ZENDESK,
+					zendeskUserId);
+			}
 		}
 	}
 

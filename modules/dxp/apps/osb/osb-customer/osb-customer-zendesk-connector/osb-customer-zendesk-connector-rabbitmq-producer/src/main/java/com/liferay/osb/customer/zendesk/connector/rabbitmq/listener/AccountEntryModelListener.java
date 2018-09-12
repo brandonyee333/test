@@ -19,6 +19,7 @@ import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.connector.rabbitmq.configuration.ZendeskConnectorConfigurationValues;
 import com.liferay.osb.customer.zendesk.connector.rabbitmq.util.ZendeskModelListenerUtil;
 import com.liferay.osb.customer.zendesk.model.ZendeskOrganization;
+import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
@@ -41,7 +42,6 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
-import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.util.StringPool;
@@ -265,7 +265,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 
 	protected void updateAccountCustomers(
 			AccountEntry accountEntry, boolean approved)
-		throws IOException, TimeoutException {
+		throws IOException, PortalException, TimeoutException {
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
@@ -275,12 +275,12 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			accountEntry.getAccountCustomers();
 
 		for (AccountCustomer accountCustomer : accountCustomers) {
-			String zendeskUserId = ZendeskModelListenerUtil.getExternalId(
-				User.class, accountCustomer.getUserId());
+			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+				accountCustomer.getUserId());
 
 			JSONObject tagsJSONObject =
 				ZendeskModelListenerUtil.getTagsJSONObject(
-					jsonArray, "users", Long.valueOf(zendeskUserId));
+					jsonArray, "users", zendeskUserId);
 
 			if (approved) {
 				_messagePublisher.sendMessage(
@@ -301,5 +301,8 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 
 	@Reference
 	private MessagePublisher _messagePublisher;
+
+	@Reference
+	private ZendeskMapperUtil _zendeskMapperUtil;
 
 }

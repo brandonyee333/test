@@ -19,11 +19,12 @@ import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.connector.rabbitmq.configuration.ZendeskConnectorConfigurationValues;
 import com.liferay.osb.customer.zendesk.connector.rabbitmq.util.ZendeskModelListenerUtil;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
+import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountCustomerConstants;
-import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.ModelListenerException;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -32,7 +33,6 @@ import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.Validator;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -52,15 +52,15 @@ public class AccountCustomerModelListener
 			User user = UserLocalServiceUtil.getUser(
 				accountCustomer.getUserId());
 
-			String zendeskUserId = ZendeskModelListenerUtil.getExternalId(
-				User.class, accountCustomer.getUserId());
+			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+				accountCustomer.getUserId());
 
 			ZendeskUser zendeskUser = null;
 
 			JSONArray tagsJSONArray = getAddAccountCustomerTags(
 				accountCustomer);
 
-			if (Validator.isNotNull(zendeskUserId)) {
+			if (zendeskUserId != 0) {
 				zendeskUser = ZendeskModelListenerUtil.getZendeskUser(
 					accountCustomer.getAccountEntry(), null, user);
 			}
@@ -75,10 +75,10 @@ public class AccountCustomerModelListener
 				"zendesk.service.user.create.or.update",
 				zendeskUser.toJSONObject());
 
-			if (Validator.isNotNull(zendeskUserId)) {
+			if (zendeskUserId != 0) {
 				JSONObject jsonObject =
 					ZendeskModelListenerUtil.getTagsJSONObject(
-						tagsJSONArray, "users", Long.valueOf(zendeskUserId));
+						tagsJSONArray, "users", zendeskUserId);
 
 				_messagePublisher.sendMessage(
 					ZendeskConnectorConfigurationValues.
@@ -98,11 +98,11 @@ public class AccountCustomerModelListener
 		try {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-			String zendeskOrganizationId =
-				ZendeskModelListenerUtil.getExternalId(
-					AccountEntry.class, accountCustomer.getAccountEntryId());
-			String zendeskUserId = ZendeskModelListenerUtil.getExternalId(
-				User.class, accountCustomer.getUserId());
+			long zendeskOrganizationId =
+				_zendeskMapperUtil.fetchZendeskOrganizationId(
+					accountCustomer.getAccountEntryId());
+			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+				accountCustomer.getUserId());
 
 			JSONArray organizationIdsJSONArray =
 				JSONFactoryUtil.createJSONArray();
@@ -123,7 +123,7 @@ public class AccountCustomerModelListener
 				accountCustomer, zendeskOrganizationId);
 
 			jsonObject = ZendeskModelListenerUtil.getTagsJSONObject(
-				jsonArray, "users", Long.valueOf(zendeskUserId));
+				jsonArray, "users", zendeskUserId);
 
 			_messagePublisher.sendMessage(
 				ZendeskConnectorConfigurationValues.
@@ -140,11 +140,11 @@ public class AccountCustomerModelListener
 		throws ModelListenerException {
 
 		try {
-			String zendeskOrganizationId =
-				ZendeskModelListenerUtil.getExternalId(
-					AccountEntry.class, accountCustomer.getAccountEntryId());
-			String zendeskUserId = ZendeskModelListenerUtil.getExternalId(
-				User.class, accountCustomer.getUserId());
+			long zendeskOrganizationId =
+				_zendeskMapperUtil.fetchZendeskOrganizationId(
+					accountCustomer.getAccountEntryId());
+			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+				accountCustomer.getUserId());
 
 			JSONArray addTagsJSONArray = JSONFactoryUtil.createJSONArray();
 			JSONArray removeTagsJSONArray = JSONFactoryUtil.createJSONArray();
@@ -164,13 +164,20 @@ public class AccountCustomerModelListener
 			else {
 				addTagsJSONArray.put(ZendeskTagConstants.OSB_CUSTOMER);
 
+				if (AccountEntryLocalServiceUtil.hasValidSupportAccountEntry(
+						accountCustomer.getUserId())) {
+
+					addTagsJSONArray.put(
+						ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
+				}
+
 				removeTagsJSONArray.put(
 					ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
 			}
 
 			JSONObject addTagsJSONObject =
 				ZendeskModelListenerUtil.getTagsJSONObject(
-					addTagsJSONArray, "users", Long.valueOf(zendeskUserId));
+					addTagsJSONArray, "users", zendeskUserId);
 
 			_messagePublisher.sendMessage(
 				ZendeskConnectorConfigurationValues.
@@ -179,7 +186,7 @@ public class AccountCustomerModelListener
 
 			JSONObject removeTagsJSONObject =
 				ZendeskModelListenerUtil.getTagsJSONObject(
-					removeTagsJSONArray, "users", Long.valueOf(zendeskUserId));
+					removeTagsJSONArray, "users", zendeskUserId);
 
 			_messagePublisher.sendMessage(
 				ZendeskConnectorConfigurationValues.
@@ -192,16 +199,17 @@ public class AccountCustomerModelListener
 	}
 
 	protected JSONArray getAddAccountCustomerTags(
-		AccountCustomer accountCustomer) {
+			AccountCustomer accountCustomer)
+		throws PortalException {
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
 		if (accountCustomer.getRole() ==
 				AccountCustomerConstants.ROLE_WATCHER) {
 
-			String zendeskOrganizationId =
-				ZendeskModelListenerUtil.getExternalId(
-					AccountEntry.class, accountCustomer.getAccountEntryId());
+			long zendeskOrganizationId =
+				_zendeskMapperUtil.fetchZendeskOrganizationId(
+					accountCustomer.getAccountEntryId());
 
 			jsonArray.put(
 				ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
@@ -220,7 +228,7 @@ public class AccountCustomerModelListener
 	}
 
 	protected JSONArray getDeleteAccountCustomerTags(
-		AccountCustomer accountCustomer, String zendeskOrganizationId) {
+		AccountCustomer accountCustomer, long zendeskOrganizationId) {
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
@@ -263,5 +271,8 @@ public class AccountCustomerModelListener
 
 	@Reference
 	private MessagePublisher _messagePublisher;
+
+	@Reference
+	private ZendeskMapperUtil _zendeskMapperUtil;
 
 }

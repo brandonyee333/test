@@ -16,13 +16,11 @@ package com.liferay.osb.customer.zendesk.web.service.internal;
 
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints;
 import com.liferay.osb.customer.zendesk.connector.util.ZendeskBaseWebService;
-import com.liferay.osb.customer.zendesk.model.ZendeskUser;
-import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
+import com.liferay.osb.customer.zendesk.model.ZendeskOrganization;
+import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationWebService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.UserLocalService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,42 +29,41 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * @author Amos Fong
+ * @author Kyle Bischof
  */
-@Component(immediate = true, service = ZendeskUserWebService.class)
-public class ZendeskUserWebServiceImpl implements ZendeskUserWebService {
+@Component(immediate = true, service = ZendeskOrganizationWebService.class)
+public class ZendeskOrganizationWebServiceImpl
+	implements ZendeskOrganizationWebService {
 
-	public ZendeskUser getZendeskUser(long userId) throws PortalException {
-		User user = _userLocalService.getUser(userId);
+	public ZendeskOrganization getZendeskOrganization(long accountEntryId)
+		throws PortalException {
 
 		Map<String, String> parameters = new HashMap<>();
 
-		parameters.put("external_id", user.getUuid());
+		parameters.put("external_id", String.valueOf(accountEntryId));
 
 		JSONObject responseJSONObject = _zendeskBaseWebService.get(
-			ZendeskRESTEndpoints.URL_API_V2 + "users/search.json", parameters);
+			ZendeskRESTEndpoints.URL_API_V2 + "organizations/search.json",
+			parameters);
 
-		JSONArray usersJSONArray = responseJSONObject.getJSONArray("users");
+		JSONArray organizationsJSONArray = responseJSONObject.getJSONArray(
+			"organizations");
 
-		if (usersJSONArray.length() <= 0) {
+		if (organizationsJSONArray.length() <= 0) {
 			return null;
 		}
 
-		return _translate(usersJSONArray.getJSONObject(0));
+		return _translate(organizationsJSONArray.getJSONObject(0));
 	}
 
-	private ZendeskUser _translate(JSONObject jsonObject) {
-		ZendeskUser zendeskUser = new ZendeskUser();
+	private ZendeskOrganization _translate(JSONObject jsonObject) {
+		ZendeskOrganization zendeskOrganization = new ZendeskOrganization();
 
-		zendeskUser.setEmail(jsonObject.getString("email"));
-		zendeskUser.setZendeskUserId(jsonObject.getLong("id"));
-		zendeskUser.setName(jsonObject.getString("name"));
+		zendeskOrganization.setZendeskOrganizationId(jsonObject.getLong("id"));
+		zendeskOrganization.setName(jsonObject.getString("name"));
 
-		return zendeskUser;
+		return zendeskOrganization;
 	}
-
-	@Reference
-	private UserLocalService _userLocalService;
 
 	@Reference
 	private ZendeskBaseWebService _zendeskBaseWebService;

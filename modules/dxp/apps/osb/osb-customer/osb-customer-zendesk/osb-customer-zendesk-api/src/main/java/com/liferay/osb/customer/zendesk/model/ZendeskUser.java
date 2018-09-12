@@ -51,7 +51,7 @@ public class ZendeskUser {
 	public JSONArray getTags() {
 		return _tags;
 	}
-	
+
 	public long getZendeskUserId() {
 		return _zendeskUserId;
 	}
@@ -79,7 +79,7 @@ public class ZendeskUser {
 	public void setTags(JSONArray tags) {
 		_tags = tags;
 	}
-	
+
 	public void setZendeskUserId(long zendeskUserId) {
 		_zendeskUserId = zendeskUserId;
 	}
