@@ -16,6 +16,12 @@
 			"options": [
 				{
 					"label": {
+						"en_US": "Analytics Cloud"
+					},
+					"value": "analyticsCloud"
+				},
+				{
+					"label": {
 						"en_US": "Commerce"
 					},
 					"value": "commerce"
@@ -28,9 +34,27 @@
 				},
 				{
 					"label": {
-						"en_US": "DXP"
+						"en_US": "Connected Services"
 					},
-					"value": "dxp"
+					"value": "connectedServices"
+				},
+				{
+					"label": {
+						"en_US": "Developer Tools"
+					},
+					"value": "developerTools"
+				},
+				{
+					"label": {
+						"en_US": "DXP 7.0"
+					},
+					"value": "dxp_70"
+				},
+				{
+					"label": {
+						"en_US": "DXP 7.1"
+					},
+					"value": "dxp_71"
 				},
 				{
 					"label": {
@@ -46,9 +70,115 @@
 				},
 				{
 					"label": {
-						"en_US": "Portal"
+						"en_US": "Mobile Experience Platform"
 					},
-					"value": "portal"
+					"value": "mobileExperiencePlatform"
+				},
+				{
+					"label": {
+						"en_US": "Patching Tool"
+					},
+					"value": "patchingTool"
+				},
+				{
+					"label": {
+						"en_US": "Portal 5.2"
+					},
+					"value": "portal_52"
+				},
+				{
+					"label": {
+						"en_US": "Portal 6.0"
+					},
+					"value": "portal_60"
+				},
+				{
+					"label": {
+						"en_US": "Portal 6.1"
+					},
+					"value": "portal_61"
+				},
+				{
+					"label": {
+						"en_US": "Portal 6.2"
+					},
+					"value": "portal_62"
+				},
+				{
+					"label": {
+						"en_US": "Sync"
+					},
+					"value": "sync"
+				}
+			],
+			"predefinedValue": {
+				"en_US": [
+					""
+				]
+			},
+			"readOnly": false,
+			"repeatable": false,
+			"required": false,
+			"showLabel": true,
+			"style": {
+				"en_US": ""
+			},
+			"tip": {
+				"en_US": ""
+			},
+			"type": "select"
+		},
+		{
+			"dataType": "string",
+			"indexType": "keyword",
+			"label": {
+				"en_US": "File Type"
+			},
+			"localizable": true,
+			"multiple": false,
+			"name": "fileType",
+			"options": [
+				{
+					"label": {
+						"en_US": "Developer Studio"
+					},
+					"value": "developerStudio"
+				},
+				{
+					"label": {
+						"en_US": "Faces"
+					},
+					"value": "faces"
+				},
+				{
+					"label": {
+						"en_US": "Fix Packs"
+					},
+					"value": "fixPacks"
+				},
+				{
+					"label": {
+						"en_US": "Plugins"
+					},
+					"value": "plugins"
+				},
+				{
+					"label": {
+						"en_US": "Plugins SDK"
+					},
+					"value": "pluginsSDK"
+				},
+				{
+					"label": {
+						"en_US": "Product"
+					},
+					"value": "product"
+				},
+				{
+					"label": {
+						"en_US": "Security"
+					},
+					"value": "security"
 				}
 			],
 			"predefinedValue": {

@@ -180,7 +180,9 @@ public class DownloadsJournalArticleLocalServiceWrapper
 				OSBCustomerConstants.ROLE_CUSTOMER_COMMERCE_CONNECTORS_ID,
 				new String[] {ActionKeys.VIEW});
 		}
-		else if (product.equals(DDMStructureConstants.PRODUCT_DXP)) {
+		else if (product.equals(DDMStructureConstants.PRODUCT_DXP_70) ||
+				 product.equals(DDMStructureConstants.PRODUCT_DXP_71)) {
+
 			roleIdsToActionIds.put(
 				OSBCustomerConstants.ROLE_CUSTOMER_DXP_ID,
 				new String[] {ActionKeys.VIEW});
@@ -201,7 +203,11 @@ public class DownloadsJournalArticleLocalServiceWrapper
 					ROLE_CUSTOMER_ENTERPRISE_SEARCH_STANDARD_ID,
 				new String[] {ActionKeys.VIEW});
 		}
-		else if (product.equals(DDMStructureConstants.PRODUCT_PORTAL)) {
+		else if (product.equals(DDMStructureConstants.PRODUCT_PORTAL_52) ||
+				 product.equals(DDMStructureConstants.PRODUCT_PORTAL_60) ||
+				 product.equals(DDMStructureConstants.PRODUCT_PORTAL_61) ||
+				 product.equals(DDMStructureConstants.PRODUCT_PORTAL_62)) {
+
 			roleIdsToActionIds.put(
 				OSBCustomerConstants.ROLE_CUSTOMER_PORTAL_ID,
 				new String[] {ActionKeys.VIEW});
