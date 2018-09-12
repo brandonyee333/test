@@ -1,0 +1,46 @@
+.add-ticket-attachment {
+	margin: auto;
+
+	.attachment {
+		color: $secondary-text-color;
+		font-style: italic;
+		margin: 8px 0;
+
+		.lexicon-icon {
+			width: 12px;
+		}
+
+		.attachment-name {
+			margin: 0 8px;
+		}
+	}
+
+	.form-control.attachment, .attachment {
+		cursor: pointer;
+	}
+
+	.btn-row {
+		justify-content: unset;
+	}
+
+	.dropzone {
+		display: inline-flex;
+		height: auto;
+	
+		input {
+			left: 0;
+			opacity: 0;
+			position: absolute;
+		}
+	}
+
+	.dropzone-label {
+		align-items: center;
+		margin: auto;
+		padding: 8px;
+	
+		.lexicon-icon-paperclip {
+			margin-right: 4px;
+		}
+	}
+}

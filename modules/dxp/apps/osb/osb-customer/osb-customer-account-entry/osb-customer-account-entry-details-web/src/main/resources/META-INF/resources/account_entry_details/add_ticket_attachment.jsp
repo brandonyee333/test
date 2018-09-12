@@ -17,12 +17,28 @@
 <%@ include file="/init.jsp" %>
 
 <%
+long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
+
 long zendeskTicketId = ParamUtil.getLong(request, "zendeskTicketId");
 %>
 
-<h1>
-	<liferay-ui:message key="attach-files-to-ticket" /> <a href="">#<%= zendeskTicketId %></a>
-</h1>
+<portlet:actionURL name="addTicketAttachment" var="addTicketAttachmentURL" />
+
+<div class="add-ticket-attachment" id="addTicketAttachment"></div>
 
 <liferay-ui:error exception="<%= NoSuchAccountEntryException.class %>" message="the-project-could-not-be-found" />
 <liferay-ui:error exception="<%= NoSuchZendeskTicketException.class %>" message="the-ticket-could-not-be-found" />
+
+<aui:script>
+	HelpCenter.render(
+		HelpCenter.AddTicketAttachment,
+		{
+			accountEntryId: '<%= accountEntryId %>',
+			addTicketAttachmentURL: '<%= addTicketAttachmentURL %>',
+			namespace: '${renderResponse.namespace}',
+			zendeskTicketId: '<%= zendeskTicketId %>',
+			zendeskURL: "temporaryUrl"
+		},
+		document.getElementById('addTicketAttachment')
+	);
+</aui:script>
