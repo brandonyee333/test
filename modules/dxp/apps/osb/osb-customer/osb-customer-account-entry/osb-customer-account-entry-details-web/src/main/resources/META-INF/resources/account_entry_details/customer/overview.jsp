@@ -36,7 +36,7 @@ for (CorpProjectMessage corpProjectMessage : corpProjectMessages) {
 %>
 
 <c:if test="<%= !corpProjectMessages.isEmpty() %>">
-	<div id="subscriptionMessages"></div>
+	<div id="<portlet:namespace />subscriptionMessages"></div>
 
 	<aui:script>
 		HelpCenter.render(
@@ -44,7 +44,7 @@ for (CorpProjectMessage corpProjectMessage : corpProjectMessages) {
 			{
 				messages: <%= jsonArray %>
 			},
-			document.getElementById('subscriptionMessages')
+			document.getElementById('<portlet:namespace />subscriptionMessages')
 		);
 	</aui:script>
 </c:if>
