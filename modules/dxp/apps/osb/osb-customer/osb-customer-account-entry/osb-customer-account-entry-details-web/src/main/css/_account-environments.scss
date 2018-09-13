@@ -52,6 +52,33 @@
 		color: $secondary-text-color;
 	}
 
+	.file-list {
+		padding: 12px 0;
+		width: 50%;
+
+		.attachment-pool {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+
+			.attachment {
+				border-radius: 4px;
+				color: $color-body;
+				font-size: 12px;
+				font-weight: $font-weight-normal;
+				padding: 4px 8px;
+				text-transform: initial;
+
+				.lexicon-icon-paperclip {
+					color: $secondary-text-color;
+					height: 12px;
+					margin-right: 8px;
+					width: 12px;
+				}
+			}
+		}
+	}
+
 	.panel-body {
 		a {
 			color: $color-primary;

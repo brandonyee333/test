@@ -8,7 +8,24 @@ import Button from './Button';
 class FormFields extends React.Component {
 	state = {
 		envLFRIndex: null,
+		patchLevelFiles: [],
+		portalExtFiles: [],
 		productIndex: null
+	};
+
+	handleFileChange = (event, fieldName) => {
+		const fileList = event.target.files;
+		const fileNames = [];
+
+		for (var i = 0; i < fileList.length; i++) {
+			fileNames.push(fileList[i].name);
+		};
+
+		this.setState({
+			[fieldName]: fileNames
+		});
+
+		this.props.handleChange(event);
 	};
 
 	handleSelectChange = (event, fieldName) => {
@@ -248,7 +265,31 @@ class FormFields extends React.Component {
 							</label>
 
 							<div className="upload-dropzone">
-								<input className="form-control" id="portalExt" multiple={true} name="portalExt" onBlur={handleBlur} onChange={handleChange} type="file" />
+								<input className="form-control" id="portalExt" multiple={true} name="portalExt" onBlur={handleBlur} onChange={(event) => this.handleFileChange(event, 'portalExtFiles')} type="file" />
+
+								<svg className="lexicon-icon lexicon-icon-paperclip">
+									<use xlinkHref="#paperclip" />
+								</svg>
+
+								<span>{Liferay.Language.get('add-file-or-drop-files-here')}</span>
+							</div>
+
+							<div className="file-list">
+								<ul className="attachment-pool">
+									{this.state.portalExtFiles ?
+										this.state.portalExtFiles.map(
+											(file, index) => (
+												<li className="attachment" key={'portal-ext-file-' + index}>
+													<svg className="lexicon-icon lexicon-icon-paperclip">
+														<use xlinkHref="#paperclip" />
+													</svg>
+
+													{file}
+												</li>
+											)
+										) : null
+									}
+								</ul>
 							</div>
 						</div>
 
@@ -270,7 +311,31 @@ class FormFields extends React.Component {
 							</label>
 
 							<div className="upload-dropzone">
-								<input className="form-control" id="patchLevel" multiple={true} name="patchLevel" onBlur={handleBlur} onChange={handleChange} type="file" />
+								<input className="form-control" id="patchLevel" multiple={true} name="patchLevel" onBlur={handleBlur} onChange={(event) => this.handleFileChange(event, 'patchLevelFiles')} type="file" />
+
+								<svg className="lexicon-icon lexicon-icon-paperclip">
+									<use xlinkHref="#paperclip" />
+								</svg>
+
+								<span>{Liferay.Language.get('add-file-or-drop-files-here')}</span>
+							</div>
+
+							<div className="file-list">
+								<ul className="attachment-pool">
+									{this.state.patchLevelFiles ?
+										this.state.patchLevelFiles.map(
+											(file, index) => (
+												<li className="attachment" key={'patch-file-' + index}>
+													<svg className="lexicon-icon lexicon-icon-paperclip">
+														<use xlinkHref="#paperclip" />
+													</svg>
+
+													{file}
+												</li>
+											)
+										) : null
+									}
+								</ul>
 							</div>
 						</div>
 
