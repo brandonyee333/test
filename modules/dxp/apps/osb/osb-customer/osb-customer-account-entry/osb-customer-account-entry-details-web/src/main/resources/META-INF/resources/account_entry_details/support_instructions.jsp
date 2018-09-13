@@ -28,7 +28,7 @@ String instructions = accountEntry.getInstructions();
 	HelpCenter.render(
 		HelpCenter.SupportInstructions,
 		{
-			supportInstructions: '<%= instructions %>'
+			instructions: '<%= instructions %>'
 		},
 		document.getElementById('supportInstructions')
 	);

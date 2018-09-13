@@ -1,51 +1,50 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import CKEditor from "react-ckeditor-component";
+import CKEditor from 'react-ckeditor-component';
 
 import Button from './Button';
 import Modal from './Modal';
 
 export default class SupportInstructions extends React.Component {
 	static propTypes = {
-		supportInstructions: PropTypes.string.isRequired
+		instructions: PropTypes.string.isRequired
 	};
 
 	state = {
-		instructions: this.props.supportInstructions,
-		modalTriggered: false,
+		instructions: this.props.instructions,
+		showModal: false
 	};
 
-	handleCloseModal = () => this.setState(
-		{
-			modalTriggered: false
-		}
-	);
+	handleCloseModal = () =>
+		this.setState(
+			{
+				showModal: false
+			}
+		);
 
-	handleDisplayModal = () => this.setState(
-		{
-			modalTriggered: true
-		}
-	);
+	handleShowModal = () =>
+		this.setState(
+			{
+				showModal: true
+			}
+		);
 
-	updateInstructions = () => {
+	handleUpdate = () => {
 		this.setState(
 			{
 				instructions: CKEDITOR.instances.editor1.getData(),
-				modalTriggered: false
+				showModal: false
 			}
 		);
-	}
+	};
 
 	render() {
-		const {instructions, modalTriggered} = this.state;
+		const {instructions, showModal} = this.state;
 
-		const modalContent = {
+		const modalConfig = {
 			body: (
 				<CKEditor
-					config={{
-						basicEntities: false
-					}}
 					content={instructions}
 				/>
 			),
@@ -59,10 +58,7 @@ export default class SupportInstructions extends React.Component {
 						{Liferay.Language.get('cancel')}
 					</Button>
 
-					<Button
-						onClick={this.updateInstructions}
-						value="save"
-					>
+					<Button onClick={this.handleUpdate} value="save">
 						{Liferay.Language.get('save')}
 					</Button>
 				</div>
@@ -77,32 +73,27 @@ export default class SupportInstructions extends React.Component {
 					{instructions ? (
 						<Button
 							display="default"
-							onClick={this.handleDisplayModal}
+							onClick={this.handleShowModal}
 							size="sm"
 							value="edit"
 						>
 							{Liferay.Language.get('edit')}
 						</Button>
-
 					) : (
-						<Button
-							icon={true}
-							onClick={this.handleDisplayModal}
-							value="add"
-						>
+						<Button icon={true} onClick={this.handleShowModal} value="add">
 							<svg className="lexicon-icon lexicon-icon-plus">
 								<use xlinkHref="#plus" />
 							</svg>
 						</Button>
 					)}
 
-					{modalTriggered && (
+					{showModal && (
 						<Modal
-							body={modalContent.body}
-							footer={modalContent.footer}
+							body={modalConfig.body}
+							footer={modalConfig.footer}
 							header={Liferay.Language.get('edit-support-instructions')}
 							onClose={this.handleCloseModal}
-							show={modalTriggered}
+							show={showModal}
 						/>
 					)}
 				</h3>
