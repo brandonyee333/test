@@ -1,7 +1,3 @@
-<strong>${.vars['reserved-article-title'].data}</strong>
-
-<br />
-
 ${product.data}
 
 <br />

@@ -14,7 +14,7 @@
 
 package com.liferay.osb.customer.account.entry.details.web.internal.portlet.action;
 
-import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsConstants;
+import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
@@ -52,8 +52,7 @@ public abstract class BaseMVCRenderCommand implements MVCRenderCommand {
 
 	protected boolean isLiferayIncOrg(long userId) throws PortalException {
 		if (organizationLocalService.hasUserOrganization(
-				userId,
-				AccountEntryDetailsConstants.ORGANIZATION_LIFERAY_INC_ID)) {
+				userId, OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID)) {
 
 			return true;
 		}

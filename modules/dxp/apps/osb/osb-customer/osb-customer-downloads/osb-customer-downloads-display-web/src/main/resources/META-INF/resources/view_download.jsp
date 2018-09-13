@@ -48,6 +48,7 @@ String product = JournalArticleUtil.getSelectOptionValue(productDDMField);
 
 		<liferay-ui:search-container-row
 			className="com.liferay.journal.model.JournalArticle"
+			keyProperty="resourcePrimKey"
 		>
 			<liferay-ui:search-container-column-text
 				name="released"
@@ -63,6 +64,14 @@ String product = JournalArticleUtil.getSelectOptionValue(productDDMField);
 			<liferay-ui:search-container-column-text
 				name="name"
 			>
+				<portlet:renderURL var="journalArticleURL">
+					<portlet:param name="mvcRenderCommandName" value="/view" />
+					<portlet:param name="journalArticleResourcePrimKey" value="<%= String.valueOf(journalArticle.getResourcePrimKey()) %>" />
+				</portlet:renderURL>
+
+				<div>
+					<a href="<%= journalArticleURL.toString() %>"><%= journalArticle.getTitle(locale) %></a>
+				</div>
 
 				<%
 				JournalArticleDisplay journalArticleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(journalArticle, null, null, themeDisplay.getLanguageId(), 0, new PortletRequestModel(renderRequest, renderResponse), themeDisplay);

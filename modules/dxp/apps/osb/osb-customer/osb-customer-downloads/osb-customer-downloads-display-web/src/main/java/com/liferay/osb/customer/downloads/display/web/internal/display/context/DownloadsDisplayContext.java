@@ -19,9 +19,15 @@ import com.liferay.dynamic.data.mapping.service.DDMStructureLocalServiceUtil;
 import com.liferay.dynamic.data.mapping.util.DDMIndexer;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalServiceUtil;
+import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.downloads.display.web.configuration.DownloadsDisplayConfiguration;
+import com.liferay.osb.customer.downloads.display.web.internal.constants.DDMStructureConstants;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
@@ -31,13 +37,19 @@ import com.liferay.portal.kernel.search.QueryConfig;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
+import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -68,6 +80,25 @@ public class DownloadsDisplayContext {
 		_ddmStructure = DDMStructureLocalServiceUtil.getStructure(
 			_themeDisplay.getCompanyGroupId(), classNameId,
 			_downloadsDisplayConfiguration.ddmStructureKey());
+	}
+
+	public JSONArray getProductsJSONArray() {
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+		Set<String> products = getProducts();
+
+		for (String product : products) {
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+			jsonObject.put("fileTypes", getFileTypesJSONArray(product));
+			jsonObject.put(
+				"name", DDMStructureConstants.getProductLabel(product));
+			jsonObject.put("value", product);
+
+			jsonArray.put(jsonObject);
+		}
+
+		return jsonArray;
 	}
 
 	public SearchContainer getSearchContainer() throws PortalException {
@@ -104,6 +135,9 @@ public class DownloadsDisplayContext {
 	}
 
 	protected SearchContext buildSearchContext(int start, int end) {
+		String fileType = ParamUtil.getString(_renderRequest, "fileType");
+		String product = ParamUtil.getString(_renderRequest, "product");
+
 		SearchContext searchContext = new SearchContext();
 
 		searchContext.setAndSearch(true);
@@ -114,13 +148,25 @@ public class DownloadsDisplayContext {
 			Field.STATUS, WorkflowConstants.STATUS_APPROVED);
 
 		searchContext.setAttribute(
+			"ddmStructureId", _ddmStructure.getStructureId());
+		searchContext.setAttribute(
 			"ddmStructureKey", _ddmStructure.getStructureKey());
+
+		if (Validator.isNotNull(fileType)) {
+			searchContext.setAttribute("fileType", fileType);
+		}
+
 		searchContext.setAttribute("head", Boolean.TRUE);
 		searchContext.setAttribute("latest", Boolean.TRUE);
+
+		if (Validator.isNotNull(product)) {
+			searchContext.setAttribute("product", product);
+		}
 
 		searchContext.setCompanyId(_themeDisplay.getCompanyId());
 		searchContext.setEnd(end);
 		searchContext.setGroupIds(new long[] {_themeDisplay.getScopeGroupId()});
+		searchContext.setLocale(_themeDisplay.getLocale());
 
 		QueryConfig queryConfig = new QueryConfig();
 
@@ -142,6 +188,104 @@ public class DownloadsDisplayContext {
 		searchContext.setStart(start);
 
 		return searchContext;
+	}
+
+	protected JSONArray getFileTypesJSONArray(String product) {
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+		String[] fileTypes = DDMStructureConstants.getFileTypes(product);
+
+		for (String fileType : fileTypes) {
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+			jsonObject.put(
+				"name", DDMStructureConstants.getFileTypeLabel(fileType));
+			jsonObject.put("value", fileType);
+
+			jsonArray.put(jsonObject);
+		}
+
+		return jsonArray;
+	}
+
+	protected Set<String> getProducts() {
+		User user = _themeDisplay.getUser();
+
+		boolean liferayIncOrg =
+			OrganizationLocalServiceUtil.hasUserOrganization(
+				user.getUserId(),
+				OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID);
+
+		long[] roleIds = user.getRoleIds();
+
+		Set<String> products = new TreeSet<>();
+
+		if (liferayIncOrg ||
+			ArrayUtil.contains(
+				roleIds, OSBCustomerConstants.ROLE_CUSTOMER_COMMERCE_ID)) {
+
+			products.add(DDMStructureConstants.PRODUCT_COMMERCE);
+		}
+
+		if (liferayIncOrg ||
+			ArrayUtil.contains(
+				roleIds,
+				OSBCustomerConstants.ROLE_CUSTOMER_COMMERCE_CONNECTORS_ID)) {
+
+			products.add(DDMStructureConstants.PRODUCT_COMMERCE_CONNECTORS);
+		}
+
+		if (liferayIncOrg ||
+			ArrayUtil.contains(
+				roleIds, OSBCustomerConstants.ROLE_CUSTOMER_DXP_ID)) {
+
+			products.add(DDMStructureConstants.PRODUCT_CONNECTED_SERVICES);
+			products.add(DDMStructureConstants.PRODUCT_DEVELOPER_TOOLS);
+			products.add(DDMStructureConstants.PRODUCT_DXP_70);
+			products.add(DDMStructureConstants.PRODUCT_DXP_71);
+			products.add(
+				DDMStructureConstants.PRODUCT_MOBILE_EXPERIENCE_PLATFORM);
+			products.add(DDMStructureConstants.PRODUCT_PATCHING_TOOL);
+			products.add(DDMStructureConstants.PRODUCT_SYNC);
+		}
+
+		if (liferayIncOrg ||
+			ArrayUtil.contains(
+				roleIds,
+				OSBCustomerConstants.
+					ROLE_CUSTOMER_ENTERPRISE_SEARCH_PREMIUM_ID)) {
+
+			products.add(
+				DDMStructureConstants.PRODUCT_ENTERPRISE_SEARCH_PREMIUM);
+		}
+
+		if (liferayIncOrg ||
+			ArrayUtil.contains(
+				roleIds,
+				OSBCustomerConstants.
+					ROLE_CUSTOMER_ENTERPRISE_SEARCH_STANDARD_ID)) {
+
+			products.add(
+				DDMStructureConstants.PRODUCT_ENTERPRISE_SEARCH_STANDARD);
+		}
+
+		if (liferayIncOrg ||
+			ArrayUtil.contains(
+				roleIds, OSBCustomerConstants.ROLE_CUSTOMER_PORTAL_ID)) {
+
+			products.add(DDMStructureConstants.PRODUCT_CONNECTED_SERVICES);
+			products.add(DDMStructureConstants.PRODUCT_DEVELOPER_TOOLS);
+			products.add(
+				DDMStructureConstants.PRODUCT_MOBILE_EXPERIENCE_PLATFORM);
+			products.add(DDMStructureConstants.PRODUCT_PATCHING_TOOL);
+			products.add(DDMStructureConstants.PRODUCT_PORTAL_52);
+			products.add(DDMStructureConstants.PRODUCT_PORTAL_60);
+			products.add(DDMStructureConstants.PRODUCT_PORTAL_61);
+			products.add(DDMStructureConstants.PRODUCT_PORTAL_62);
+			products.add(DDMStructureConstants.PRODUCT_SYNC);
+		}
+
+		return products;
 	}
 
 	private final DDMIndexer _ddmIndexer;
