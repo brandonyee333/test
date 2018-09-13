@@ -22,7 +22,7 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 JSONArray jsonArray = accountEntryViewDisplayContext.getAccountEnvironmentsJSONArray();
 %>
 
-<div class="account-environments card" id="accountEnvironments"></div>
+<div class="account-environments card" id="<portlet:namespace />accountEnvironments"></div>
 
 <aui:script>
 	HelpCenter.render(
@@ -31,6 +31,6 @@ JSONArray jsonArray = accountEntryViewDisplayContext.getAccountEnvironmentsJSONA
 			environments: <%= jsonArray %>,
 			permitAdd: <%= OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.ADD_ACCOUNT_ENVIRONMENT) %>
 		},
-		document.getElementById('accountEnvironments')
+		document.getElementById('<portlet:namespace />accountEnvironments')
 	);
 </aui:script>
