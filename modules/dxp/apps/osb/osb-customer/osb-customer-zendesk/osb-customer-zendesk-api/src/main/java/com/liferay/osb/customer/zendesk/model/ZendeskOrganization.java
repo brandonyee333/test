@@ -77,7 +77,7 @@ public class ZendeskOrganization {
 		return _tier;
 	}
 
-	public long getZendeskOrgazniationId() {
+	public long getZendeskOrganizationId() {
 		return _zendeskOrganizationId;
 	}
 

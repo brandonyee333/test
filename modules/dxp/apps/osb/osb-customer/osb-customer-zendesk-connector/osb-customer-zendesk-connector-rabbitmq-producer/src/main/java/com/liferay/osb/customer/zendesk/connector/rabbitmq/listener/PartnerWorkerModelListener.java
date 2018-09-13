@@ -37,7 +37,9 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -108,10 +110,10 @@ public class PartnerWorkerModelListener
 
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-			JSONArray tagsJSONArray = JSONFactoryUtil.createJSONArray();
+			Set<String> tags = new HashSet<>();
 
-			tagsJSONArray.put(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
-			tagsJSONArray.put(ZendeskTagConstants.OSB_PARTNER);
+			tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
+			tags.add(ZendeskTagConstants.OSB_PARTNER);
 
 			ZendeskUser zendeskUser = null;
 
@@ -121,7 +123,7 @@ public class PartnerWorkerModelListener
 			if (zendeskUserId != 0) {
 				JSONObject tagsJSONObject =
 					ZendeskModelListenerUtil.getTagsJSONObject(
-						tagsJSONArray, "users", zendeskUserId);
+						tags, "users", zendeskUserId);
 
 				_messagePublisher.sendMessage(
 					ZendeskConnectorConfigurationValues.
@@ -133,7 +135,7 @@ public class PartnerWorkerModelListener
 			}
 			else {
 				zendeskUser = ZendeskModelListenerUtil.getZendeskUser(
-					null, tagsJSONArray, user);
+					null, tags, user);
 			}
 
 			jsonObject.put(
@@ -215,19 +217,19 @@ public class PartnerWorkerModelListener
 				(partnerWorker.getRole() ==
 					PartnerWorkerConstants.ROLE_WATCHER)) {
 
-				JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+				Set<String> tags = new HashSet<>();
 
 				if (AccountEntryLocalServiceUtil.getUserAccountEntriesCount(
 						partnerWorker.getUserId()) == 0) {
 
-					jsonArray.put(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
+					tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
 				}
 
-				jsonArray.put(ZendeskTagConstants.OSB_PARTNER);
+				tags.add(ZendeskTagConstants.OSB_PARTNER);
 
 				JSONObject jsonObject =
 					ZendeskModelListenerUtil.getTagsJSONObject(
-						jsonArray, "users", zendeskUserId);
+						tags, "users", zendeskUserId);
 
 				_messagePublisher.sendMessage(
 					ZendeskConnectorConfigurationValues.

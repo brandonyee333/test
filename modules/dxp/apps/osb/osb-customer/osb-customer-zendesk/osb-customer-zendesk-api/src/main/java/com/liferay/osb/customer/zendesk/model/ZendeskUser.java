@@ -19,6 +19,9 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @author Amos Fong
  * @author Kyle Bischof
@@ -48,7 +51,7 @@ public class ZendeskUser {
 		return _organizationName;
 	}
 
-	public JSONArray getTags() {
+	public Set<String> getTags() {
 		return _tags;
 	}
 
@@ -76,7 +79,7 @@ public class ZendeskUser {
 		_organizationName = organizationName;
 	}
 
-	public void setTags(JSONArray tags) {
+	public void setTags(Set<String> tags) {
 		_tags = tags;
 	}
 
@@ -87,33 +90,39 @@ public class ZendeskUser {
 	public JSONObject toJSONObject() {
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		JSONObject fieldsJSONObject = JSONFactoryUtil.createJSONObject();
+		JSONObject userJSONObject = JSONFactoryUtil.createJSONObject();
 
-		fieldsJSONObject.put("name", _name);
+		userJSONObject.put("name", _name);
 
 		if (Validator.isNotNull(_email)) {
-			fieldsJSONObject.put("email", _email);
+			userJSONObject.put("email", _email);
 		}
 
 		if (Validator.isNotNull(_externalId)) {
-			fieldsJSONObject.put("external_id", _externalId);
+			userJSONObject.put("external_id", _externalId);
 		}
 
 		if (Validator.isNotNull(_locale)) {
-			fieldsJSONObject.put("locale", _locale);
+			userJSONObject.put("locale", _locale);
 		}
 
 		JSONObject organizationJSONObject = JSONFactoryUtil.createJSONObject();
 
 		organizationJSONObject.put("name", _organizationName);
 
-		fieldsJSONObject.put("organization", organizationJSONObject);
+		userJSONObject.put("organization", organizationJSONObject);
 
-		if (_tags.length() > 0) {
-			fieldsJSONObject.put("tags", _tags);
+		JSONArray tagsJSONArray = JSONFactoryUtil.createJSONArray();
+
+		if (_tags != null) {
+			for (String tag : _tags) {
+				tagsJSONArray.put(tag);
+			}
+
+			userJSONObject.put("tags", tagsJSONArray);
 		}
 
-		jsonObject.put("user", fieldsJSONObject);
+		jsonObject.put("user", userJSONObject);
 
 		return jsonObject;
 	}
@@ -123,7 +132,7 @@ public class ZendeskUser {
 	private String _locale;
 	private String _name;
 	private String _organizationName;
-	private JSONArray _tags = JSONFactoryUtil.createJSONArray();
+	private Set<String> _tags = new HashSet<>();
 	private long _zendeskUserId;
 
 }

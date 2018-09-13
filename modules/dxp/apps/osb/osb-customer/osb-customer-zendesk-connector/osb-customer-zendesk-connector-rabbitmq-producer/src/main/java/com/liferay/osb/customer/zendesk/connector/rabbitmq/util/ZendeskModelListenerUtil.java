@@ -28,6 +28,8 @@ import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
+import java.util.Set;
+
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -66,7 +68,7 @@ public class ZendeskModelListenerUtil {
 	}
 
 	public static JSONObject getTagsJSONObject(
-		JSONArray tagsJSONArray, String resource, long id) {
+		Set<String> tags, String resource, long id) {
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
@@ -74,6 +76,12 @@ public class ZendeskModelListenerUtil {
 		jsonObject.put("resource", resource);
 
 		JSONObject tagsJSONObject = JSONFactoryUtil.createJSONObject();
+
+		JSONArray tagsJSONArray = JSONFactoryUtil.createJSONArray();
+
+		for (String tag : tags) {
+			tagsJSONArray.put(tag);
+		}
 
 		tagsJSONObject.put("tags", tagsJSONArray);
 
@@ -83,7 +91,7 @@ public class ZendeskModelListenerUtil {
 	}
 
 	public static ZendeskUser getZendeskUser(
-			AccountEntry accountEntry, JSONArray tagsJSONArray, User user)
+			AccountEntry accountEntry, Set<String> tags, User user)
 		throws PortalException {
 
 		ZendeskUser zendeskUser = new ZendeskUser();
@@ -101,8 +109,8 @@ public class ZendeskModelListenerUtil {
 			zendeskUser.setOrganizationName(accountEntry.getName());
 		}
 
-		if (tagsJSONArray != null) {
-			zendeskUser.setTags(tagsJSONArray);
+		if (tags != null) {
+			zendeskUser.setTags(tags);
 		}
 
 		return zendeskUser;

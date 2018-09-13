@@ -70,9 +70,9 @@ public class ZendeskMapperUtil {
 
 		ExternalIdMapperLocalServiceUtil.addExternalIdMapper(
 			classNameId, accountEntryId, ExternalIdMapperConstants.TYPE_ZENDESK,
-			String.valueOf(zendeskOrganization.getZendeskOrgazniationId()));
+			String.valueOf(zendeskOrganization.getZendeskOrganizationId()));
 
-		return zendeskOrganization.getZendeskOrgazniationId();
+		return zendeskOrganization.getZendeskOrganizationId();
 	}
 
 	public long fetchZendeskUserId(long userId) throws PortalException {

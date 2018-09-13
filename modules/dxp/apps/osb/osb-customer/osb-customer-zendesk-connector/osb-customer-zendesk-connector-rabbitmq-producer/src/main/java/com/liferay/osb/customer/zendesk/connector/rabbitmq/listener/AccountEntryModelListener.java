@@ -37,8 +37,6 @@ import com.liferay.osb.service.SupportResponseLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
@@ -47,12 +45,9 @@ import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
-import java.io.IOException;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.TimeoutException;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -265,11 +260,11 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 
 	protected void updateAccountCustomers(
 			AccountEntry accountEntry, boolean approved)
-		throws IOException, PortalException, TimeoutException {
+		throws Exception {
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		Set<String> tags = new HashSet<>();
 
-		jsonArray.put(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
+		tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
 
 		List<AccountCustomer> accountCustomers =
 			accountEntry.getAccountCustomers();
@@ -280,7 +275,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 
 			JSONObject tagsJSONObject =
 				ZendeskModelListenerUtil.getTagsJSONObject(
-					jsonArray, "users", zendeskUserId);
+					tags, "users", zendeskUserId);
 
 			if (approved) {
 				_messagePublisher.sendMessage(

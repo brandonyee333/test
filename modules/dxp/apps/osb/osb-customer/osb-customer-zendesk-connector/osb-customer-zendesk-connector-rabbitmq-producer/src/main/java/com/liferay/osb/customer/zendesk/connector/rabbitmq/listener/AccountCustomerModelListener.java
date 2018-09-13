@@ -34,6 +34,9 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -57,8 +60,7 @@ public class AccountCustomerModelListener
 
 			ZendeskUser zendeskUser = null;
 
-			JSONArray tagsJSONArray = getAddAccountCustomerTags(
-				accountCustomer);
+			Set<String> tags = getAddAccountCustomerTags(accountCustomer);
 
 			if (zendeskUserId != 0) {
 				zendeskUser = ZendeskModelListenerUtil.getZendeskUser(
@@ -66,7 +68,7 @@ public class AccountCustomerModelListener
 			}
 			else {
 				zendeskUser = ZendeskModelListenerUtil.getZendeskUser(
-					accountCustomer.getAccountEntry(), tagsJSONArray, user);
+					accountCustomer.getAccountEntry(), tags, user);
 			}
 
 			_messagePublisher.sendMessage(
@@ -78,7 +80,7 @@ public class AccountCustomerModelListener
 			if (zendeskUserId != 0) {
 				JSONObject jsonObject =
 					ZendeskModelListenerUtil.getTagsJSONObject(
-						tagsJSONArray, "users", zendeskUserId);
+						tags, "users", zendeskUserId);
 
 				_messagePublisher.sendMessage(
 					ZendeskConnectorConfigurationValues.
@@ -119,11 +121,11 @@ public class AccountCustomerModelListener
 				"zendesk.service.organization.membership.bulk.delete",
 				jsonObject);
 
-			JSONArray jsonArray = getDeleteAccountCustomerTags(
+			Set<String> tags = getDeleteAccountCustomerTags(
 				accountCustomer, zendeskOrganizationId);
 
 			jsonObject = ZendeskModelListenerUtil.getTagsJSONObject(
-				jsonArray, "users", zendeskUserId);
+				tags, "users", zendeskUserId);
 
 			_messagePublisher.sendMessage(
 				ZendeskConnectorConfigurationValues.
@@ -146,38 +148,37 @@ public class AccountCustomerModelListener
 			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
 				accountCustomer.getUserId());
 
-			JSONArray addTagsJSONArray = JSONFactoryUtil.createJSONArray();
-			JSONArray removeTagsJSONArray = JSONFactoryUtil.createJSONArray();
+			Set<String> addTags = new HashSet<>();
+			Set<String> removeTags = new HashSet<>();
 
 			if (accountCustomer.getRole() ==
 					AccountCustomerConstants.ROLE_WATCHER) {
 
-				addTagsJSONArray.put(
+				addTags.add(
 					ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
 
 				if (AccountEntryLocalServiceUtil.getUserAccountEntriesCount(
 						accountCustomer.getUserId()) == 1) {
 
-					removeTagsJSONArray.put(ZendeskTagConstants.OSB_CUSTOMER);
+					removeTags.add(ZendeskTagConstants.OSB_CUSTOMER);
 				}
 			}
 			else {
-				addTagsJSONArray.put(ZendeskTagConstants.OSB_CUSTOMER);
+				addTags.add(ZendeskTagConstants.OSB_CUSTOMER);
 
 				if (AccountEntryLocalServiceUtil.hasValidSupportAccountEntry(
 						accountCustomer.getUserId())) {
 
-					addTagsJSONArray.put(
-						ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
+					addTags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
 				}
 
-				removeTagsJSONArray.put(
+				removeTags.add(
 					ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
 			}
 
 			JSONObject addTagsJSONObject =
 				ZendeskModelListenerUtil.getTagsJSONObject(
-					addTagsJSONArray, "users", zendeskUserId);
+					addTags, "users", zendeskUserId);
 
 			_messagePublisher.sendMessage(
 				ZendeskConnectorConfigurationValues.
@@ -186,7 +187,7 @@ public class AccountCustomerModelListener
 
 			JSONObject removeTagsJSONObject =
 				ZendeskModelListenerUtil.getTagsJSONObject(
-					removeTagsJSONArray, "users", zendeskUserId);
+					removeTags, "users", zendeskUserId);
 
 			_messagePublisher.sendMessage(
 				ZendeskConnectorConfigurationValues.
@@ -198,11 +199,11 @@ public class AccountCustomerModelListener
 		}
 	}
 
-	protected JSONArray getAddAccountCustomerTags(
+	protected Set<String> getAddAccountCustomerTags(
 			AccountCustomer accountCustomer)
 		throws PortalException {
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		Set<String> tags = new HashSet<>();
 
 		if (accountCustomer.getRole() ==
 				AccountCustomerConstants.ROLE_WATCHER) {
@@ -211,54 +212,52 @@ public class AccountCustomerModelListener
 				_zendeskMapperUtil.fetchZendeskOrganizationId(
 					accountCustomer.getAccountEntryId());
 
-			jsonArray.put(
-				ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
+			tags.add(ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
 		}
 		else {
-			jsonArray.put(ZendeskTagConstants.OSB_CUSTOMER);
+			tags.add(ZendeskTagConstants.OSB_CUSTOMER);
 		}
 
 		if (AccountEntryLocalServiceUtil.hasValidSupportAccountEntry(
 				accountCustomer.getUserId())) {
 
-			jsonArray.put(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
+			tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
 		}
 
-		return jsonArray;
+		return tags;
 	}
 
-	protected JSONArray getDeleteAccountCustomerTags(
+	protected Set<String> getDeleteAccountCustomerTags(
 		AccountCustomer accountCustomer, long zendeskOrganizationId) {
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		Set<String> tags = new HashSet<>();
 
 		int accountEntriesCount =
 			AccountEntryLocalServiceUtil.getUserAccountEntriesCount(
 				accountCustomer.getUserId());
 
 		if (accountEntriesCount == 0) {
-			jsonArray.put(ZendeskTagConstants.OSB_CUSTOMER);
-			jsonArray.put(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
-			jsonArray.put(
-				ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
+			tags.add(ZendeskTagConstants.OSB_CUSTOMER);
+			tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
+			tags.add(ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
 		}
 		else {
 			if (accountCustomer.getRole() ==
 					AccountCustomerConstants.ROLE_WATCHER) {
 
-				jsonArray.put(
+				tags.add(
 					ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
 			}
 			else {
 				if (!AccountEntryLocalServiceUtil.hasValidSupportAccountEntry(
 						accountCustomer.getUserId())) {
 
-					jsonArray.put(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
+					tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
 				}
 			}
 		}
 
-		return jsonArray;
+		return tags;
 	}
 
 	@Reference(
