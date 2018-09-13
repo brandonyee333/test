@@ -18,8 +18,6 @@
 
 <%
 AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
-
-String instructions = accountEntry.getInstructions();
 %>
 
 <div class="card support-instructions" id="supportInstructions"></div>
@@ -28,7 +26,7 @@ String instructions = accountEntry.getInstructions();
 	HelpCenter.render(
 		HelpCenter.SupportInstructions,
 		{
-			instructions: '<%= instructions %>'
+			instructions: '<%= accountEntry.getInstructions() %>'
 		},
 		document.getElementById('supportInstructions')
 	);
