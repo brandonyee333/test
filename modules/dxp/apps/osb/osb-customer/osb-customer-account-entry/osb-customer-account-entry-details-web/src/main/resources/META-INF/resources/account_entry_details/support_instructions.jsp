@@ -20,7 +20,7 @@
 AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 %>
 
-<div class="card support-instructions" id="supportInstructions"></div>
+<div class="card support-instructions" id="<portlet:namespace />supportInstructions"></div>
 
 <aui:script>
 	HelpCenter.render(
@@ -28,6 +28,6 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 		{
 			instructions: '<%= accountEntry.getInstructions() %>'
 		},
-		document.getElementById('supportInstructions')
+		document.getElementById('<portlet:namespace />supportInstructions')
 	);
 </aui:script>

@@ -3,6 +3,10 @@
 		background-color: rgba(0, 0, 0, 0.3);
 	}
 
+	.lexicon-icon {
+		height: 12px;
+	}
+
 	.modal-body {
 		font-size: $normal-font-size;
 		max-height: 85vh;
@@ -31,9 +35,5 @@
 		line-height: 28px;
 		text-align: left;
 		text-transform: initial;
-	}
-
-	.lexicon-icon {
-		height: 12px;
 	}
 }
