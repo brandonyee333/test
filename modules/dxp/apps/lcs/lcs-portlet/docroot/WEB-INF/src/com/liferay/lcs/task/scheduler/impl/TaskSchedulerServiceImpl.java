@@ -113,11 +113,11 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 				return;
 			}
 
-			if (scheduledTask.getScope() == Scope.NODE) {
-				scheduleLocalScheduledTask(schedulerContext);
-			}
-			else if (scheduledTask.getScope() == Scope.CLUSTER) {
+			if (scheduledTask.getScope() == Scope.CLUSTER) {
 				_scheduleClusteredScheduledTask(schedulerContext);
+			}
+			else if (scheduledTask.getScope() == Scope.NODE) {
+				scheduleLocalScheduledTask(schedulerContext);
 			}
 		}
 		catch (Exception e) {
