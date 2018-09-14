@@ -12,9 +12,8 @@
  *
  */
 
-package com.liferay.lcs.util;
+package com.liferay.lcs.advisor;
 
-import com.liferay.lcs.advisor.LCSKeyAdvisor;
 import com.liferay.portal.kernel.license.util.LicenseManagerUtil;
 import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -38,7 +37,7 @@ public class LCSKeyAdvisorImplTest extends PowerMockito {
 
 	@Before
 	public void setUp() {
-		mockStatic(LicenseManagerUtil.class);
+		mockStatic(LicenseManagerUtil.class, PropsUtil.class);
 
 		when(
 			LicenseManagerUtil.getHostName()

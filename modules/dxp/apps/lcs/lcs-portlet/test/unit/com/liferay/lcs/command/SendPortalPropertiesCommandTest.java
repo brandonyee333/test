@@ -14,6 +14,7 @@
 
 package com.liferay.lcs.command;
 
+import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.util.LCSConstants;
 import com.liferay.lcs.util.LCSUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -39,12 +40,6 @@ public class SendPortalPropertiesCommandTest extends PowerMockito {
 	@Before
 	public void setUp() {
 		mockStatic(LCSUtil.class);
-
-		when(
-			LCSUtil.getPortalPropertiesBlacklist()
-		).thenReturn(
-			""
-		);
 
 		mockStatic(PropsUtil.class);
 
@@ -79,8 +74,20 @@ public class SendPortalPropertiesCommandTest extends PowerMockito {
 
 	@Test
 	public void testGetSecurityInsensitivePropertiesKeys() {
+		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor = mock(
+			LCSClusterEntryTokenAdvisor.class);
+
+		when(
+			lcsClusterEntryTokenAdvisor.getPortalPropertiesBlacklist()
+		).thenReturn(
+			"blacklist.key.1,blacklist.key.2"
+		);
+
 		SendPortalPropertiesCommand sendPortalPropertiesCommand =
 			new SendPortalPropertiesCommand();
+
+		sendPortalPropertiesCommand.setLCSClusterEntryTokenAdvisor(
+			lcsClusterEntryTokenAdvisor);
 
 		Properties properties =
 			sendPortalPropertiesCommand.getSecurityInsensitivePropertiesKeys();
@@ -100,6 +107,11 @@ public class SendPortalPropertiesCommandTest extends PowerMockito {
 				Assert.fail();
 			}
 		}
+
+		Assert.assertTrue(
+			"blacklist.key.1 present", properties.contains("blacklist.key.1"));
+		Assert.assertTrue(
+			"blacklist.key.2 present", properties.contains("blacklist.key.2"));
 	}
 
 	private final Properties _properties = new Properties();
