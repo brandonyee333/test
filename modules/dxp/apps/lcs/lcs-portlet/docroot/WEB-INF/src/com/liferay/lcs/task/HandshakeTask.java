@@ -199,7 +199,9 @@ public class HandshakeTask implements Task {
 
 			receivedHandshakeResponse = true;
 
-			if (_temporaryKey) {
+			if (_temporaryKey ||
+				Validator.isNotNull(handshakeResponseMessage.getNewKey())) {
+
 				_lcsKeyAdvisor.updateKey(handshakeResponseMessage.getNewKey());
 
 				_temporaryKey = false;
