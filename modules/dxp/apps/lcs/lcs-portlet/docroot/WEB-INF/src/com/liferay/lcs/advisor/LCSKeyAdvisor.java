@@ -81,7 +81,7 @@ public class LCSKeyAdvisor {
 
 			if (!lcsServerIdFile.exists()) {
 				if (_log.isDebugEnabled()) {
-					_log.debug("LCS key file doesn't exist");
+					_log.debug("LCS key file does not exist");
 				}
 
 				return;
