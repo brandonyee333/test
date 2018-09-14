@@ -77,6 +77,24 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 	}
 
 	@Override
+	public List<String> getLocalScheduledTaskLabels() {
+		List<String> labels = new ArrayList<>();
+
+		for (String taskName : _scheduledFuturesMap.keySet()) {
+			ScheduledFuture<?> scheduledFuture = _scheduledFuturesMap.get(
+				taskName);
+
+			if (scheduledFuture.isCancelled()) {
+				continue;
+			}
+
+			labels.add(taskName);
+		}
+
+		return labels;
+	}
+
+	@Override
 	public void scheduleTask(Map<String, String> schedulerContext) {
 		BeanLocator beanLocator = PortletBeanLocatorUtil.getBeanLocator(
 			"lcs-portlet");
