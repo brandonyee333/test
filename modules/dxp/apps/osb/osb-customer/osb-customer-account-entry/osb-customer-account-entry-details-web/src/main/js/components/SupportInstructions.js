@@ -8,7 +8,10 @@ import Modal from './Modal';
 
 export default class SupportInstructions extends React.Component {
 	static propTypes = {
-		instructions: PropTypes.string.isRequired
+		accountEntryId: PropTypes.string.isRequired,
+		editInstructionsURL: PropTypes.string.isRequired,
+		instructions: PropTypes.string.isRequired,
+		portletNamespace: PropTypes.string.isRequired
 	};
 
 	state = {
@@ -30,38 +33,45 @@ export default class SupportInstructions extends React.Component {
 			}
 		);
 
-	handleUpdate = () => {
+	handleUpdate = () =>
 		this.setState(
 			{
-				instructions: CKEDITOR.instances.editor1.getData(),
-				showModal: false
+				instructions: CKEDITOR.instances.editor1.document.getBody().getHtml()
 			}
 		);
-	};
 
 	render() {
 		const {instructions, showModal} = this.state;
+		const {accountEntryId, editInstructionsURL, portletNamespace} = this.props;
 
 		const modalConfig = {
 			body: (
 				<CKEditor
 					content={instructions}
+					config={{
+						basicEntities: false
+					}}
 				/>
 			),
 			footer: (
-				<div className="btn-row">
-					<Button
-						display="default"
-						onClick={this.handleCloseModal}
-						value="cancel"
-					>
-						{Liferay.Language.get('cancel')}
-					</Button>
+				<form action={editInstructionsURL} onSubmit={this.handleUpdate} method="post">
+					<input name={`${portletNamespace}accountEntryId`} type="hidden" value={accountEntryId} />
+					<input name={`${portletNamespace}instructions`} type="hidden" value={instructions} />
 
-					<Button onClick={this.handleUpdate} value="save">
-						{Liferay.Language.get('save')}
-					</Button>
-				</div>
+					<div className="btn-row">
+						<Button
+							display="default"
+							onClick={this.handleCloseModal}
+							value="cancel"
+						>
+							{Liferay.Language.get('cancel')}
+						</Button>
+
+						<Button type="submit" value="save">
+							{Liferay.Language.get('save')}
+						</Button>
+					</div>
+				</form>
 			)
 		};
 

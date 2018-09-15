@@ -18,6 +18,14 @@
 
 <%
 AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
+
+String editInstructionsURL = accountEntryViewDisplayContext.getAccountEntryInstructionsEditURL();
+
+String portletNamespace = renderResponse.getNamespace();
+
+long accountEntryId = accountEntry.getAccountEntryId();
+
+String instructions = accountEntry.getInstructions();
 %>
 
 <div class="card support-instructions" id="<portlet:namespace />supportInstructions"></div>
@@ -26,7 +34,10 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 	HelpCenter.render(
 		HelpCenter.SupportInstructions,
 		{
-			instructions: '<%= accountEntry.getInstructions() %>'
+			accountEntryId: '<%= String.valueOf(accountEntryId) %>',
+			editInstructionsURL: '<%= editInstructionsURL %>',
+			instructions: '<%= instructions %>',
+			portletNamespace: '<%= portletNamespace %>'
 		},
 		document.getElementById('<portlet:namespace />supportInstructions')
 	);
