@@ -23,7 +23,7 @@ String editInstructionsURL = accountEntryViewDisplayContext.getAccountEntryInstr
 
 AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 long accountEntryId = accountEntry.getAccountEntryId();
-String instructions = accountEntry.getInstructions();
+String instructions = HtmlUtil.escapeJS(accountEntry.getInstructions());
 %>
 
 <div class="card support-instructions" id="<portlet:namespace />supportInstructions"></div>

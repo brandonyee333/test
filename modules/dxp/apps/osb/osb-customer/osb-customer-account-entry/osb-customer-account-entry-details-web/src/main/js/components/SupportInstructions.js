@@ -47,9 +47,6 @@ export default class SupportInstructions extends React.Component {
 		const modalConfig = {
 			body: (
 				<CKEditor
-					config={{
-						basicEntities: false
-					}}
 					content={instructions}
 				/>
 			),
