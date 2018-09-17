@@ -53,6 +53,10 @@ import javax.crypto.spec.SecretKeySpec;
 public class LCSClusterEntryTokenAdvisor {
 
 	public void checkLCSClusterEntryTokenError(LCSHandshakeException lcshe) {
+		if ((lcshe.getStatus() < 200) || (lcshe.getStatus() > 299)) {
+			return;
+		}
+
 		if (lcshe.getStatus() == 200) {
 			_lcsAlertAdvisor.add(LCSAlert.ERROR_INVALID_TOKEN);
 		}
