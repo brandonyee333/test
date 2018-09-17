@@ -29,12 +29,12 @@ import org.powermock.modules.junit4.PowerMockRunner;
  * @author Igor Beslic
  */
 @RunWith(PowerMockRunner.class)
-public class LCSClientErrorTest extends PowerMockito {
+public class LCSRESTErrorTest extends PowerMockito {
 
 	@Test
 	public void testToJSON() throws Exception {
 		String restErrorJSON =
-			LCSRestError.NO_SUCH_LCS_SUBSCRIPTION_ENTRY.toJSON(
+			LCSRESTError.NO_SUCH_LCS_SUBSCRIPTION_ENTRY.toJSON(
 				"Test Message", 400, "arg1", "10000", "arg2", 20000);
 
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -50,14 +50,14 @@ public class LCSClientErrorTest extends PowerMockito {
 		JsonNode errorCodeJsonNode = objectNode.get("errorCode");
 
 		Assert.assertEquals(
-			LCSRestError.NO_SUCH_LCS_SUBSCRIPTION_ENTRY.getErrorCode(),
+			LCSRESTError.NO_SUCH_LCS_SUBSCRIPTION_ENTRY.getErrorCode(),
 			errorCodeJsonNode.asInt());
 
 		JsonNode statusJsonNode = objectNode.get("status");
 
 		Assert.assertEquals(400, statusJsonNode.asInt());
 
-		restErrorJSON = LCSRestError.NO_SUCH_LCS_SUBSCRIPTION_ENTRY.toJSON(
+		restErrorJSON = LCSRESTError.NO_SUCH_LCS_SUBSCRIPTION_ENTRY.toJSON(
 			"Test Message", 404);
 
 		objectNode = objectMapper.readValue(restErrorJSON, ObjectNode.class);
@@ -74,10 +74,10 @@ public class LCSClientErrorTest extends PowerMockito {
 
 	@Test
 	public void testToRESTError() {
-		for (LCSRestError lcsRestError : LCSRestError.values()) {
+		for (LCSRESTError lcsRESTError : LCSRESTError.values()) {
 			Assert.assertEquals(
-				lcsRestError,
-				LCSRestError.toLCSClientError(lcsRestError.getErrorCode()));
+				lcsRESTError,
+				LCSRESTError.toLCSClientError(lcsRESTError.getErrorCode()));
 		}
 	}
 
