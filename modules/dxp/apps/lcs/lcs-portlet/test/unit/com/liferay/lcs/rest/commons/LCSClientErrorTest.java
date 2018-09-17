@@ -12,13 +12,11 @@
  *
  */
 
-package com.liferay.lcs.rest.client;
+package com.liferay.lcs.rest.commons;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import com.liferay.lcs.rest.commons.LCSRestError;
 
 import org.junit.Assert;
 import org.junit.Test;
