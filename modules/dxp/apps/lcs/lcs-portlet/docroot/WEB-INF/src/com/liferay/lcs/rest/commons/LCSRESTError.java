@@ -14,13 +14,8 @@
 
 package com.liferay.lcs.rest.commons;
 
-import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.Validator;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author Mladen Cikara
@@ -35,6 +30,17 @@ public enum LCSRESTError {
 			"parameter format is correct and try again."),
 	INTERNAL_LCS_PLATFORM_ERROR(
 		998, "Internal LCS platform error. Please try again later."),
+	LCS_CLUSTER_ENTRY_TOKEN_ERROR_INVALID_LCS_CLUSTER_ENTRY(
+		201,
+		"AATF reference received indicates that referring environment does " +
+			"not match. Please make sure AATF is correct and try again. As " +
+				"result of this error AATF at LCS Client will be deleted."),
+	LCS_CLUSTER_ENTRY_TOKEN_ERROR_NO_SUCH_TOKEN(
+		200,
+		"AATF reference received indicates that corresponding entity is " +
+			"missing at LCS Platform. Please make sure AATF is correct and " +
+				"try again. As result of this error AATF at LCS Client will " +
+					"be deleted."),
 	LCS_SUBSCRIPTION_ENTRY_ERROR_NO_ACTIVE_SUBSCRIPTION(
 		3,
 		"There is no active subscription on the project. Please contact " +
@@ -61,25 +67,20 @@ public enum LCSRESTError {
 	REQUIRED_PARAMETER_MISSING(2, "Required parameter is missing."),
 	UNDEFINED(0, "Undefined error.");
 
-	public static LCSRESTError getRESTError(
-		JSONWebServiceInvocationException jsonwsie) {
-
-		return getRESTError(jsonwsie.getMessage());
-	}
-
 	public static LCSRESTError getRESTError(String message) {
-		if (Validator.isNull(message)) {
-			return UNDEFINED;
-		}
-
-		Matcher matcher = _errorMessagePattern.matcher(message);
-
 		try {
-			if (matcher.find()) {
-				int errorCode = Integer.parseInt(matcher.group(1));
+			int idx = message.indexOf("errorCode");
 
-				return toLCSClientError(errorCode);
+			if (idx < 0) {
+				return UNDEFINED;
 			}
+
+			idx = idx + 13;
+
+			int errorCode = Integer.parseInt(
+				message.substring(idx, message.indexOf(",", idx)));
+
+			return toLCSClientError(errorCode);
 		}
 		catch (NumberFormatException nfe) {
 			_log.error("Unable to extract error code", nfe);
@@ -107,11 +108,13 @@ public enum LCSRESTError {
 	}
 
 	public String toJSON(String message, int status, Object... args) {
-		StringBuilder sb = new StringBuilder(7 + (args.length * 8));
+		StringBuilder sb = new StringBuilder(9 + (args.length * 8));
 
 		sb.append("{\"errorCode\": ");
 		sb.append(getErrorCode());
-		sb.append(", \"message\": \"");
+		sb.append(", \"errorDescription\": \"");
+		sb.append(getErrorDescription());
+		sb.append("\", \"message\": \"");
 		sb.append(message);
 		sb.append("\", \"status\": ");
 		sb.append(status);
@@ -149,9 +152,6 @@ public enum LCSRESTError {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(LCSRESTError.class);
-
-	private static final Pattern _errorMessagePattern = Pattern.compile(
-		"errorCode\":\\s*(\\d+).+message\":.+status\":\\s*(\\d+)");
 
 	private final int _errorCode;
 	private final String _errorDescription;
