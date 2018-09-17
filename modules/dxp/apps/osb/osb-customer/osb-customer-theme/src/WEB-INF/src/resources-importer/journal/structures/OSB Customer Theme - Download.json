@@ -295,8 +295,9 @@
 			"type": "text"
 		},
 		{
-			"dataType": "string",
-			"indexType": "keyword",
+			"dataType": "html",
+			"fieldNamespace": "ddm",
+			"indexType": "text",
 			"label": {
 				"en_US": "Alert Message"
 			},
@@ -315,33 +316,11 @@
 			"tip": {
 				"en_US": ""
 			},
-			"type": "text"
+			"type": "ddm-text-html"
 		},
 		{
-			"dataType": "string",
-			"indexType": "keyword",
-			"label": {
-				"en_US": "Heading"
-			},
-			"localizable": true,
-			"name": "heading",
-			"predefinedValue": {
-				"en_US": ""
-			},
-			"readOnly": false,
-			"repeatable": false,
-			"required": false,
-			"showLabel": true,
-			"style": {
-				"en_US": ""
-			},
-			"tip": {
-				"en_US": ""
-			},
-			"type": "text"
-		},
-		{
-			"dataType": "string",
+			"dataType": "html",
+			"fieldNamespace": "ddm",
 			"indexType": "text",
 			"label": {
 				"en_US": "Additional Notes"
@@ -361,7 +340,7 @@
 			"tip": {
 				"en_US": ""
 			},
-			"type": "textarea"
+			"type": "ddm-text-html"
 		},
 		{
 			"dataType": "string",
@@ -465,7 +444,7 @@
 								"en_US": ""
 							},
 							"readOnly": false,
-							"repeatable": false,
+							"repeatable": true,
 							"required": false,
 							"showLabel": true,
 							"style": {
