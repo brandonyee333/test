@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.lcs.rest.client;
+package com.liferay.lcs.rest.commons;
 
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
 import com.liferay.portal.kernel.log.Log;

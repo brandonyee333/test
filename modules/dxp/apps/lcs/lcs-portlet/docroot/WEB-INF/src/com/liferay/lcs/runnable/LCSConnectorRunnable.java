@@ -19,7 +19,7 @@ import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.exception.InvalidLCSClusterEntryTokenException;
 import com.liferay.lcs.exception.LCSHandshakeException;
 import com.liferay.lcs.oauth.OAuthUtil;
-import com.liferay.lcs.rest.client.LCSClientError;
+import com.liferay.lcs.rest.commons.LCSClientError;
 import com.liferay.lcs.util.LCSConnectionManager;
 import com.liferay.lcs.util.LCSUtil;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
