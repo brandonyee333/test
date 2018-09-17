@@ -201,7 +201,7 @@ public class LiferayPortlet extends GenericPortlet {
 			Throwable cause = ite.getCause();
 
 			if (cause != null) {
-				_log.error(cause.getMessage());
+				_log.error(cause.getMessage(), cause);
 				throw new PortletException(cause);
 			}
 			else {
