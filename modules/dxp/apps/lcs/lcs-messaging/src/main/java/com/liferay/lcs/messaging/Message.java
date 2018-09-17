@@ -264,18 +264,18 @@ public abstract class Message implements Serializable {
 		return _toString;
 	}
 
-	private static final ObjectMapper _objectMapper = new ObjectMapper();
+	private static final ObjectMapper _objectMapper = new ObjectMapper() {
+		{
+			disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
 
-	static {
-		_objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+			TypeFactory typeFactory = TypeFactory.defaultInstance();
 
-		TypeFactory typeFactory = TypeFactory.defaultInstance();
+			typeFactory = typeFactory.withClassLoader(
+				Message.class.getClassLoader());
 
-		typeFactory = typeFactory.withClassLoader(
-			Message.class.getClassLoader());
-
-		_objectMapper.setTypeFactory(typeFactory);
-	}
+			setTypeFactory(typeFactory);
+		}
+	};
 
 	private long _createTime = System.currentTimeMillis();
 	private long _deliveryTag;
