@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
  * @author Mladen Cikara
  * @author Igor Beslic
  */
-public enum LCSClientError {
+public enum LCSRESTError {
 
 	GENERAL_LCS_PLATFORM_ERROR(999, "General LCS platform error."),
 	ILLEGAL_PARAMETER_ERROR(
@@ -61,32 +61,37 @@ public enum LCSClientError {
 	REQUIRED_PARAMETER_MISSING(2, "Required parameter is missing."),
 	UNDEFINED(0, "Undefined error.");
 
-	public static LCSClientError getRESTError(
+	public static LCSRESTError getRESTError(
 		JSONWebServiceInvocationException jsonwsie) {
 
 		return getRESTError(jsonwsie.getMessage());
 	}
 
-	public static LCSClientError getRESTError(String message) {
+	public static LCSRESTError getRESTError(String message) {
 		if (Validator.isNull(message)) {
 			return UNDEFINED;
 		}
 
 		Matcher matcher = _errorMessagePattern.matcher(message);
 
-		if (matcher.find()) {
-			int errorCode = Integer.parseInt(matcher.group(1));
+		try {
+			if (matcher.find()) {
+				int errorCode = Integer.parseInt(matcher.group(1));
 
-			return toLCSClientError(errorCode);
+				return toLCSClientError(errorCode);
+			}
+		}
+		catch (NumberFormatException nfe) {
+			_log.error("Unable to extract error code", nfe);
 		}
 
 		return UNDEFINED;
 	}
 
-	public static LCSClientError toLCSClientError(int errorCode) {
-		for (LCSClientError lcsClientError : values()) {
-			if (lcsClientError.getErrorCode() == errorCode) {
-				return lcsClientError;
+	public static LCSRESTError toLCSClientError(int errorCode) {
+		for (LCSRESTError lcsRESTError : values()) {
+			if (lcsRESTError.getErrorCode() == errorCode) {
+				return lcsRESTError;
 			}
 		}
 
@@ -138,12 +143,12 @@ public enum LCSClientError {
 		return sb.toString();
 	}
 
-	private LCSClientError(int errorCode, String errorDescription) {
+	private LCSRESTError(int errorCode, String errorDescription) {
 		_errorCode = errorCode;
 		_errorDescription = errorDescription;
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(LCSClientError.class);
+	private static final Log _log = LogFactoryUtil.getLog(LCSRESTError.class);
 
 	private static final Pattern _errorMessagePattern = Pattern.compile(
 		"errorCode\":\\s*(\\d+).+message\":.+status\":\\s*(\\d+)");

@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import com.liferay.lcs.rest.commons.LCSClientError;
+import com.liferay.lcs.rest.commons.LCSRestError;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -36,7 +36,7 @@ public class LCSClientErrorTest extends PowerMockito {
 	@Test
 	public void testToJSON() throws Exception {
 		String restErrorJSON =
-			LCSClientError.NO_SUCH_LCS_SUBSCRIPTION_ENTRY.toJSON(
+			LCSRestError.NO_SUCH_LCS_SUBSCRIPTION_ENTRY.toJSON(
 				"Test Message", 400, "arg1", "10000", "arg2", 20000);
 
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -52,14 +52,14 @@ public class LCSClientErrorTest extends PowerMockito {
 		JsonNode errorCodeJsonNode = objectNode.get("errorCode");
 
 		Assert.assertEquals(
-			LCSClientError.NO_SUCH_LCS_SUBSCRIPTION_ENTRY.getErrorCode(),
+			LCSRestError.NO_SUCH_LCS_SUBSCRIPTION_ENTRY.getErrorCode(),
 			errorCodeJsonNode.asInt());
 
 		JsonNode statusJsonNode = objectNode.get("status");
 
 		Assert.assertEquals(400, statusJsonNode.asInt());
 
-		restErrorJSON = LCSClientError.NO_SUCH_LCS_SUBSCRIPTION_ENTRY.toJSON(
+		restErrorJSON = LCSRestError.NO_SUCH_LCS_SUBSCRIPTION_ENTRY.toJSON(
 			"Test Message", 404);
 
 		objectNode = objectMapper.readValue(restErrorJSON, ObjectNode.class);
@@ -76,10 +76,10 @@ public class LCSClientErrorTest extends PowerMockito {
 
 	@Test
 	public void testToRESTError() {
-		for (LCSClientError lcsClientError : LCSClientError.values()) {
+		for (LCSRestError lcsRestError : LCSRestError.values()) {
 			Assert.assertEquals(
-				lcsClientError,
-				LCSClientError.toLCSClientError(lcsClientError.getErrorCode()));
+				lcsRestError,
+				LCSRestError.toLCSClientError(lcsRestError.getErrorCode()));
 		}
 	}
 
