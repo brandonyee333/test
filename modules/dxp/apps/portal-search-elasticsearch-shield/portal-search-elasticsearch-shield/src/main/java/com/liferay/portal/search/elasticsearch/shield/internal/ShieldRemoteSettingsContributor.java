@@ -80,6 +80,12 @@ public class ShieldRemoteSettingsContributor extends BaseSettingsContributor {
 		clientSettingsHelper.put(
 			"shield.ssl.keystore.password",
 			shieldConfiguration.sslKeystorePassword());
+		clientSettingsHelper.put(
+			"shield.ssl.truststore.path",
+			shieldConfiguration.sslTruststorePath());
+		clientSettingsHelper.put(
+			"shield.ssl.truststore.password",
+			shieldConfiguration.sslTruststorePassword());
 		clientSettingsHelper.put("shield.transport.ssl", "true");
 
 		String sslKeystoreKeyPassword =

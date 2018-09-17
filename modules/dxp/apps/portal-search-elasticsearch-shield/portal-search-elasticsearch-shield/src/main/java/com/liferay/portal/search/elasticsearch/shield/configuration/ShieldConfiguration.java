@@ -67,6 +67,19 @@ public interface ShieldConfiguration {
 	public String sslKeystorePath();
 
 	@Meta.AD(
+		description = "ssl-truststore-password-help",
+		name = "ssl-truststore-password", required = false,
+		type = Meta.Type.Password
+	)
+	public String sslTruststorePassword();
+
+	@Meta.AD(
+		description = "ssl-truststore-path-help", name = "ssl-truststore-path",
+		required = false
+	)
+	public String sslTruststorePath();
+
+	@Meta.AD(
 		deflt = "liferay", description = "username-help", name = "username",
 		required = false
 	)
