@@ -41,16 +41,16 @@ export default class SupportInstructions extends React.Component {
 		);
 
 	render() {
-		const {instructions, showModal} = this.state;
 		const {accountEntryId, editInstructionsURL, portletNamespace} = this.props;
+		const {instructions, showModal} = this.state;
 
 		const modalConfig = {
 			body: (
 				<CKEditor
-					content={instructions}
 					config={{
 						basicEntities: false
 					}}
+					content={instructions}
 				/>
 			),
 			footer: (

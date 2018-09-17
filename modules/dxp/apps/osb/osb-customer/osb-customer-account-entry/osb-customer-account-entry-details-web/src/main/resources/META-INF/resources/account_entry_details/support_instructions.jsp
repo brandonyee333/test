@@ -17,14 +17,12 @@
 <%@ include file="/account_entry_details/init.jsp" %>
 
 <%
-AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
+String portletNamespace = renderResponse.getNamespace();
 
 String editInstructionsURL = accountEntryViewDisplayContext.getAccountEntryInstructionsEditURL();
 
-String portletNamespace = renderResponse.getNamespace();
-
+AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 long accountEntryId = accountEntry.getAccountEntryId();
-
 String instructions = accountEntry.getInstructions();
 %>
 
