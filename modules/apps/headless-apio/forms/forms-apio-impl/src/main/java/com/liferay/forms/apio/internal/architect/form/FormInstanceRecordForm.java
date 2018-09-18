@@ -44,10 +44,10 @@ public class FormInstanceRecordForm {
 					"record"
 		).constructor(
 			FormInstanceRecordForm::new
-		).addRequiredString(
-			"fieldValues", FormInstanceRecordForm::setFieldValues
 		).addRequiredBoolean(
 			"isDraft", FormInstanceRecordForm::setDraft
+		).addRequiredString(
+			"fieldValues", FormInstanceRecordForm::setFieldValues
 		).build();
 	}
 

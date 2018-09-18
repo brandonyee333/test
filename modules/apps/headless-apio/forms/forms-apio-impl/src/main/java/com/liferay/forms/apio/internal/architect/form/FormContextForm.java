@@ -43,7 +43,7 @@ public class FormContextForm {
 		).constructor(
 			FormContextForm::new
 		).addRequiredString(
-			"fieldValues", FormContextForm::_setFieldValues
+			"fieldValues", FormContextForm::setFieldValues
 		).build();
 	}
 
@@ -51,7 +51,7 @@ public class FormContextForm {
 		return _fieldValues;
 	}
 
-	private void _setFieldValues(String fieldValues) {
+	public void setFieldValues(String fieldValues) {
 		_fieldValues = fieldValues;
 	}
 

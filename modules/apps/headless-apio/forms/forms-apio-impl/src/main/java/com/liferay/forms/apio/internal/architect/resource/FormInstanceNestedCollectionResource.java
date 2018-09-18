@@ -208,16 +208,14 @@ public class FormInstanceNestedCollectionResource
 		DDMFormRenderingContext ddmFormRenderingContext,
 		AcceptLanguage language) {
 
-		String fieldValues = formContextForm.getFieldValues();
-		Locale locale = language.getPreferredLocale();
-
 		return Try.fromFallible(
 			() -> _ddmFormInstanceService.getFormInstance(ddmFormInstanceId)
 		).map(
 			DDMFormInstance::getStructure
 		).map(
 			ddmStructure -> _evaluateContextHelper.evaluateContext(
-				fieldValues, ddmStructure, ddmFormRenderingContext, locale)
+				formContextForm.getFieldValues(), ddmStructure,
+				ddmFormRenderingContext, language.getPreferredLocale())
 		).orElse(
 			null
 		);
