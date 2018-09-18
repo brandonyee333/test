@@ -33,7 +33,6 @@ import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Paulo Cruz
- * @review
  */
 @Component(immediate = true, service = EvaluateContextHelper.class)
 public final class EvaluateContextHelper {
