@@ -19,7 +19,12 @@
 <%
 AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 
+String addEnvironmentURL = accountEntryViewDisplayContext.getAccountEnvironmentAddURL(accountEntry);
+
+String portletNamespace = renderResponse.getNamespace();
+
 JSONArray accountEnvironmentsJSONArray = accountEntryViewDisplayContext.getAccountEnvironmentsJSONArray();
+
 JSONArray productEntriesJSONArray = accountEntryViewDisplayContext.getProductEntriesJSONArray();
 %>
 
@@ -29,7 +34,9 @@ JSONArray productEntriesJSONArray = accountEntryViewDisplayContext.getProductEnt
 	AccountDetails.render(
 		AccountDetails.AccountEnvironments,
 		{
+			addEnvironmentURL: '<%= addEnvironmentURL %>',
 			environments: <%= accountEnvironmentsJSONArray %>,
+			portletNamespace: '<%= portletNamespace %>',
 			permitAdd: <%= OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.ADD_ACCOUNT_ENVIRONMENT) %>,
 			productEntries: <%= productEntriesJSONArray %>
 		},

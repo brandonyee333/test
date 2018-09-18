@@ -12,8 +12,10 @@ export default class AccountEnvironments extends React.Component {
 	};
 
 	static propTypes = {
+		addEnvironmentURL: PropTypes.string.isRequired,
 		environments: PropTypes.array.isRequired,
 		permitAdd: PropTypes.bool.isRequired,
+		portletNamespace: PropTypes.string.isRequired,
 		productEntries: PropTypes.array.isRequired
 	};
 
@@ -40,7 +42,7 @@ export default class AccountEnvironments extends React.Component {
 	);
 
 	render() {
-		const {environments, permitAdd, productEntries} = this.props;
+		const {addEnvironmentURL, environments, permitAdd, portletNamespace, productEntries} = this.props;
 		const {showModal} = this.state;
 
 		const accordionItems = environments.map(
@@ -125,7 +127,7 @@ export default class AccountEnvironments extends React.Component {
 			)
 		);
 
-		const addAccountEnvironmentForm = <AddAccountEnvironmentForm productEntries={productEntries} />;
+		const addAccountEnvironmentForm = <AddAccountEnvironmentForm addEnvironmentURL={addEnvironmentURL} portletNamespace={portletNamespace} productEntries={productEntries} />;
 
 		return (
 			<React.Fragment>
