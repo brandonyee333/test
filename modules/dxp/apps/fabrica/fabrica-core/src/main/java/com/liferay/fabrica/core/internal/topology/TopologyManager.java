@@ -64,7 +64,7 @@ public class TopologyManager implements RemoteServiceAdminListener {
 					exportReference, announcement));
 		}
 		else if (remoteServiceAdminEvent.getType() ==
-					 RemoteServiceAdminEvent.EXPORT_UNREGISTRATION) {
+					RemoteServiceAdminEvent.EXPORT_UNREGISTRATION) {
 
 			Announcement announcement = _announcements.get(exportReference);
 
