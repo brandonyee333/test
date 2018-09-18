@@ -16,6 +16,7 @@ package com.liferay.lcs.task.scheduler.impl;
 
 import com.liferay.lcs.task.ScheduledTask;
 import com.liferay.lcs.task.Scope;
+import com.liferay.lcs.task.advisor.TaskAdvisor;
 import com.liferay.lcs.task.scheduler.TaskSchedulerService;
 import com.liferay.lcs.util.ClusterNodeUtil;
 import com.liferay.petra.string.StringBundler;
@@ -47,15 +48,17 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author Riccardo Ferrari
+ * @author Igor Beslic
  */
 public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 
 	public TaskSchedulerServiceImpl(
-		int defaultInterval, int scheduleDelayMax,
+		int defaultInterval, int scheduleDelayMax, TaskAdvisor taskAdvisor,
 		ThreadFactory threadFactory) {
 
 		_defaultInterval = defaultInterval;
 		_scheduleDelayMax = scheduleDelayMax;
+		_taskAdvisor = taskAdvisor;
 
 		_scheduledExecutorService = Executors.newScheduledThreadPool(
 			10, threadFactory);
@@ -74,24 +77,6 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		catch (InterruptedException ie) {
 			_scheduledExecutorService.shutdownNow();
 		}
-	}
-
-	@Override
-	public List<String> getLocalScheduledTaskLabels() {
-		List<String> labels = new ArrayList<>();
-
-		for (String taskName : _scheduledFuturesMap.keySet()) {
-			ScheduledFuture<?> scheduledFuture = _scheduledFuturesMap.get(
-				taskName);
-
-			if (scheduledFuture.isCancelled()) {
-				continue;
-			}
-
-			labels.add(taskName);
-		}
-
-		return labels;
 	}
 
 	@Override
@@ -119,6 +104,8 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 			else if (scheduledTask.getScope() == Scope.NODE) {
 				scheduleLocalScheduledTask(schedulerContext);
 			}
+
+			_taskAdvisor.registerActivity(scheduledTask);
 		}
 		catch (Exception e) {
 			StringBundler sb = new StringBundler(4);
@@ -342,5 +329,6 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 	private final ScheduledExecutorService _scheduledExecutorService;
 	private final Map<String, ScheduledFuture<?>> _scheduledFuturesMap =
 		new HashMap<>();
+	private final TaskAdvisor _taskAdvisor;
 
 }

@@ -14,15 +14,12 @@
 
 package com.liferay.lcs.task.scheduler;
 
-import java.util.List;
 import java.util.Map;
 
 /**
  * @author Riccardo Ferrari
  */
 public interface TaskSchedulerService {
-
-	public List<String> getLocalScheduledTaskLabels();
 
 	public void scheduleTask(Map<String, String> schedulerContext);
 
