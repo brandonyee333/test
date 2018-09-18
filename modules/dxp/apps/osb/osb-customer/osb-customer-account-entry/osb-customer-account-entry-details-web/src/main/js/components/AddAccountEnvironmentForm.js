@@ -7,33 +7,37 @@ import Button from './Button';
 
 class FormFields extends React.Component {
 	state = {
-		envLFRIndex: null,
-		patchLevelFiles: [],
-		portalExtFiles: [],
-		productIndex: null
+		[`${this.props.portletNamespace}envLFRIndex`]: null,
+		[`${this.props.portletNamespace}patchLevelFiles`]: [],
+		[`${this.props.portletNamespace}portalExtFiles`]: [],
+		[`${this.props.portletNamespace}productIndex`]: null
 	};
 
-	handleFileChange = (event, fieldName) => {
-		const fileList = event.target.files;
+	handleFileChange = (event) => {
+		const {files} = event.target;
 		const fileNames = [];
 
-		for (var i = 0; i < fileList.length; i++) {
-			fileNames.push(fileList[i].name);
+		const {name} = event.target;
+
+		for (var i = 0; i < files.length; i++) {
+			fileNames.push(files[i].name);
 		};
 
 		this.setState({
-			[fieldName]: fileNames
+			[`${name}Files`]: fileNames
 		});
 
 		this.props.handleChange(event);
 	};
 
-	handleSelectChange = (event, fieldName) => {
+	handleSelectChange = (event) => {
 		const {options} = event.target;
 		const fieldNameIndex = options[options.selectedIndex].id.replace(/\D+/g, '');
 
+		const {name} = event.target;
+
 		this.setState({
-			[fieldName]: fieldNameIndex
+			[`${name}Index`]: fieldNameIndex
 		});
 
 		this.props.handleChange(event);
@@ -41,6 +45,7 @@ class FormFields extends React.Component {
 
 	render() {
 		const {
+			addEnvironmentURL,
 			dirty,
 			errors,
 			handleBlur,
@@ -48,13 +53,21 @@ class FormFields extends React.Component {
 			handleReset,
 			handleSubmit,
 			isSubmitting,
+			portletNamespace,
 			productEntries,
 			touched,
 			values
 		} = this.props;
 
+		const envLFRIndex = this.state[`${portletNamespace}envLFRIndex`];
+		const patchLevelFiles = this.state[`${portletNamespace}patchLevelFiles`];
+		const portalExtFiles = this.state[`${portletNamespace}portalExtFiles`];
+		const productIndex = this.state[`${portletNamespace}productIndex`];
+
 		return(
 			<form onSubmit={handleSubmit}>
+				<input name={`${portletNamespace}productEntryId`} type="hidden" value={productIndex ? productEntries[productIndex].productEntryId : ''} />
+
 				<div className="row">
 					<div className="col-md-12">
 						<div className="form-group">
@@ -66,12 +79,12 @@ class FormFields extends React.Component {
 								</svg>
 							</label>
 
-							<input className="form-control" id="accountEnvironmentName" name="name" onBlur={handleBlur} onChange={handleChange} type="text" value={values.name} />
+							<input className="form-control" id={`${portletNamespace}accountEnvironmentName`} name={`${portletNamespace}name`} onBlur={handleBlur} onChange={handleChange} type="text" value={values.name} />
 						</div>
 
-						{touched.name && errors.name && (
+						{touched[`${portletNamespace}name`] && errors[`${portletNamespace}name`] && (
 							<div className="alert alert-danger" role="alert">
-								{errors.name}
+								{errors[`${portletNamespace}name`]}
 							</div>
 						)}
 					</div>
@@ -86,7 +99,7 @@ class FormFields extends React.Component {
 								</svg>
 							</label>
 
-							<select className="form-control" id="accountEnvironmentProduct" name="product" onBlur={handleBlur} onChange={(event) => this.handleSelectChange(event, 'productIndex')}>
+							<select className="form-control" id={`${portletNamespace}accountEnvironmentProduct`} name={`${portletNamespace}product`} onBlur={handleBlur} onChange={this.handleSelectChange}>
 								<option value="" label={Liferay.Language.get('select')} />
 
 								{productEntries.map(
@@ -97,9 +110,9 @@ class FormFields extends React.Component {
 							</select>
 						</div>
 
-						{touched.product && errors.product && (
+						{touched[`${portletNamespace}product`] && errors[`${portletNamespace}product`] && (
 							<div className="alert alert-danger" role="alert">
-								{errors.product}
+								{errors[`${portletNamespace}product`]}
 							</div>
 						)}
 					</div>
@@ -114,11 +127,11 @@ class FormFields extends React.Component {
 								</svg>
 							</label>
 
-							<select className="form-control" disabled={this.state.productIndex == null} id="envLFR" name="envLFR" onBlur={handleBlur} onChange={(event) => this.handleSelectChange(event, 'envLFRIndex')}>
+							<select className="form-control" disabled={productIndex == null} id={`${portletNamespace}envLFR`} name={`${portletNamespace}envLFR`} onBlur={handleBlur} onChange={this.handleSelectChange}>
 								<option value="" label={Liferay.Language.get('select')} />
 
-								{this.state.productIndex ?
-									productEntries[this.state.productIndex].envListTypes.map(
+								{productIndex ?
+									productEntries[productIndex].envListTypes.map(
 										(listType, index) => (
 											<option id={'envLFR-' + index} key={'envLFR-' + index} label={listType.envLFR} value={listType.envLFR} />
 										)
@@ -127,9 +140,9 @@ class FormFields extends React.Component {
 							</select>
 						</div>
 
-						{touched.envLFR && errors.envLFR && (
+						{touched[`${portletNamespace}envLFR`] && errors[`${portletNamespace}envLFR`] && (
 							<div className="alert alert-danger" role="alert">
-								{errors.envLFR}
+								{errors[`${portletNamespace}envLFR`]}
 							</div>
 						)}
 					</div>
@@ -144,22 +157,22 @@ class FormFields extends React.Component {
 								</svg>
 							</label>
 
-							<select className="form-control" disabled={this.state.envLFRIndex == null} id="envOS" name="envOS" onBlur={handleBlur} onChange={handleChange}>
+							<select className="form-control" disabled={envLFRIndex == null} id={`${portletNamespace}envOS`} name={`${portletNamespace}envOS`} onBlur={handleBlur} onChange={handleChange}>
 								<option value="" label={Liferay.Language.get('select')} />
 
-								{this.state.envLFRIndex ?
-									productEntries[this.state.productIndex].envListTypes[this.state.envLFRIndex].envOS.map(
+								{envLFRIndex ?
+									productEntries[productIndex].envListTypes[envLFRIndex].envOS.map(
 										(envOS, index) => (
-											<option id={'envOS-' + index} key={'envOS-' + index} label={envOS.name} value={envOS.name} />
+											<option id={'envOS-' + index} key={'envOS-' + index} label={envOS.name} value={envOS.value} />
 										)
 									) : null
 								}
 							</select>
 						</div>
 
-						{touched.envOS && errors.envOS && (
+						{touched[`${portletNamespace}envOS`] && errors[`${portletNamespace}envOS`] && (
 							<div className="alert alert-danger" role="alert">
-								{errors.envOS}
+								{errors[`${portletNamespace}envOS`]}
 							</div>
 						)}
 					</div>
@@ -174,22 +187,22 @@ class FormFields extends React.Component {
 								</svg>
 							</label>
 
-							<select className="form-control" disabled={this.state.envLFRIndex == null} id="envJVM" name="envJVM" onBlur={handleBlur} onChange={handleChange}>
+							<select className="form-control" disabled={envLFRIndex == null} id={`${portletNamespace}envJVM`} name={`${portletNamespace}envJVM`} onBlur={handleBlur} onChange={handleChange}>
 								<option value="" label={Liferay.Language.get('select')} />
 
-								{this.state.envLFRIndex ?
-									productEntries[this.state.productIndex].envListTypes[this.state.envLFRIndex].envJVM.map(
+								{envLFRIndex ?
+									productEntries[productIndex].envListTypes[envLFRIndex].envJVM.map(
 										(envJVM, index) => (
-											<option id={'envJVM-' + index} key={'envJVM-' + index} label={envJVM.name} value={envJVM.name} />
+											<option id={'envJVM-' + index} key={'envJVM-' + index} label={envJVM.name} value={envJVM.value} />
 										)
 									) : null
 								}
 							</select>
 						</div>
 
-						{touched.envJVM && errors.envJVM && (
+						{touched[`${portletNamespace}envJVM`] && errors[`${portletNamespace}envJVM`] && (
 							<div className="alert alert-danger" role="alert">
-								{errors.envJVM}
+								{errors[`${portletNamespace}envJVM`]}
 							</div>
 						)}
 					</div>
@@ -204,22 +217,22 @@ class FormFields extends React.Component {
 								</svg>
 							</label>
 
-							<select className="form-control" disabled={this.state.envLFRIndex == null} id="envAS" name="envAS" onBlur={handleBlur} onChange={handleChange}>
+							<select className="form-control" disabled={envLFRIndex == null} id={`${portletNamespace}envAS`} name={`${portletNamespace}envAS`} onBlur={handleBlur} onChange={handleChange}>
 								<option value="" label={Liferay.Language.get('select')} />
 
-								{this.state.envLFRIndex ?
-									productEntries[this.state.productIndex].envListTypes[this.state.envLFRIndex].envAS.map(
+								{envLFRIndex ?
+									productEntries[productIndex].envListTypes[envLFRIndex].envAS.map(
 										(envAS, index) => (
-											<option id={'envAS-' + index} key={'envAS-' + index} label={envAS.name} value={envAS.name} />
+											<option id={'envAS-' + index} key={'envAS-' + index} label={envAS.name} value={envAS.value} />
 										)
 									) : null
 								}
 							</select>
 						</div>
 
-						{touched.envAS && errors.envAS && (
+						{touched[`${portletNamespace}envAS`] && errors[`${portletNamespace}envAS`] && (
 							<div className="alert alert-danger" role="alert">
-								{errors.envAS}
+								{errors[`${portletNamespace}envAS`]}
 							</div>
 						)}
 					</div>
@@ -234,25 +247,87 @@ class FormFields extends React.Component {
 								</svg>
 							</label>
 
-							<select className="form-control" disabled={this.state.envLFRIndex == null} id="envDB" name="envDB" onBlur={handleBlur} onChange={handleChange}>
+							<select className="form-control" disabled={envLFRIndex == null} id={`${portletNamespace}envDB`} name={`${portletNamespace}envDB`} onBlur={handleBlur} onChange={handleChange}>
 								<option value="" label={Liferay.Language.get('select')} />
 
-								{this.state.envLFRIndex ?
-									productEntries[this.state.productIndex].envListTypes[this.state.envLFRIndex].envDB.map(
+								{envLFRIndex ?
+									productEntries[productIndex].envListTypes[envLFRIndex].envDB.map(
 										(envDB, index) => (
-											<option id={'envDB-' + index} key={'envDB-' + index} label={envDB.name} value={envDB.name} />
+											<option id={'envDB-' + index} key={'envDB-' + index} label={envDB.name} value={envDB.value} />
 										)
 									) : null
 								}
 							</select>
 						</div>
 
-						{touched.envDB && errors.envDB && (
+						{touched[`${portletNamespace}envDB`] && errors[`${portletNamespace}envDB`] && (
 							<div className="alert alert-danger" role="alert">
-								{errors.envDB}
+								{errors[`${portletNamespace}envDB`]}
 							</div>
 						)}
 					</div>
+
+					<div className="col-md-6">
+						<div className="form-group">
+							<label className="control-label" htmlFor="envBrowser">
+								{Liferay.Language.get('browser')}
+
+								<svg className="lexicon-icon lexicon-icon-asterisk">
+									<use xlinkHref="#asterisk" />
+								</svg>
+							</label>
+
+							<select className="form-control" disabled={envLFRIndex == null} id={`${portletNamespace}envBrowser`} name={`${portletNamespace}envBrowser`} onBlur={handleBlur} onChange={handleChange}>
+								<option value="" label={Liferay.Language.get('select')} />
+
+								{envLFRIndex ?
+									productEntries[productIndex].envListTypes[envLFRIndex].envBrowser.map(
+										(envBrowser, index) => (
+											<option id={'envBrowser-' + index} key={'envBrowser-' + index} label={envBrowser.name} value={envBrowser.value} />
+										)
+									) : null
+								}
+							</select>
+						</div>
+
+						{touched[`${portletNamespace}envBrowser`] && errors[`${portletNamespace}envBrowser`] && (
+							<div className="alert alert-danger" role="alert">
+								{errors[`${portletNamespace}envBrowser`]}
+							</div>
+						)}
+					</div>
+
+					{envLFRIndex && productEntries[productIndex].envListTypes[envLFRIndex].envCS ? (
+						<div className="col-md-6">
+							<div className="form-group">
+								<label className="control-label" htmlFor="envCS">
+									{Liferay.Language.get('cloud-services')}
+
+									<svg className="lexicon-icon lexicon-icon-asterisk">
+										<use xlinkHref="#asterisk" />
+									</svg>
+								</label>
+
+								<select className="form-control" disabled={envLFRIndex == null} id={`${portletNamespace}envCS`} name={`${portletNamespace}envCS`} onBlur={handleBlur} onChange={handleChange} required={true}>
+									<option value="" label={Liferay.Language.get('select')} />
+
+									{productEntries[productIndex].envListTypes[envLFRIndex].envCS.map(
+										(envCS, index) => (
+											<option id={'envCS-' + index} key={'envCS-' + index} label={envCS.name} value={envCS.value} />
+										)
+									)}
+								</select>
+							</div>
+
+							{touched[`${portletNamespace}envCS`] && errors[`${portletNamespace}envCS`] && (
+								<div className="alert alert-danger" role="alert">
+									{errors[`${portletNamespace}envCS`]}
+								</div>
+							)}
+						</div>
+					) : (
+						null
+					)}
 
 					<div className="col-md-12">
 						<div className="form-group">
@@ -265,7 +340,7 @@ class FormFields extends React.Component {
 							</label>
 
 							<div className="upload-dropzone">
-								<input className="form-control" id="portalExt" multiple={true} name="portalExt" onBlur={handleBlur} onChange={(event) => this.handleFileChange(event, 'portalExtFiles')} type="file" />
+								<input className="form-control" id={`${portletNamespace}portalExt`} multiple={true} name={`${portletNamespace}portalExt`} onBlur={handleBlur} onChange={this.handleFileChange} type="file" />
 
 								<svg className="lexicon-icon lexicon-icon-paperclip">
 									<use xlinkHref="#paperclip" />
@@ -276,8 +351,8 @@ class FormFields extends React.Component {
 
 							<div className="file-list">
 								<ul className="attachment-pool">
-									{this.state.portalExtFiles ?
-										this.state.portalExtFiles.map(
+									{portalExtFiles ?
+										portalExtFiles.map(
 											(file, index) => (
 												<li className="attachment" key={'portal-ext-file-' + index}>
 													<svg className="lexicon-icon lexicon-icon-paperclip">
@@ -293,9 +368,9 @@ class FormFields extends React.Component {
 							</div>
 						</div>
 
-						{touched.portalExt && errors.portalExt && (
+						{touched[`${portletNamespace}portalExt`] && errors[`${portletNamespace}portalExt`] && (
 							<div className="alert alert-danger" role="alert">
-								{errors.portalExt}
+								{errors[`${portletNamespace}portalExt`]}
 							</div>
 						)}
 					</div>
@@ -311,7 +386,7 @@ class FormFields extends React.Component {
 							</label>
 
 							<div className="upload-dropzone">
-								<input className="form-control" id="patchLevel" multiple={true} name="patchLevel" onBlur={handleBlur} onChange={(event) => this.handleFileChange(event, 'patchLevelFiles')} type="file" />
+								<input className="form-control" id={`${portletNamespace}patchLevel`} multiple={true} name={`${portletNamespace}patchLevel`} onBlur={handleBlur} onChange={this.handleFileChange} type="file" />
 
 								<svg className="lexicon-icon lexicon-icon-paperclip">
 									<use xlinkHref="#paperclip" />
@@ -322,8 +397,8 @@ class FormFields extends React.Component {
 
 							<div className="file-list">
 								<ul className="attachment-pool">
-									{this.state.patchLevelFiles ?
-										this.state.patchLevelFiles.map(
+									{patchLevelFiles ?
+										patchLevelFiles.map(
 											(file, index) => (
 												<li className="attachment" key={'patch-file-' + index}>
 													<svg className="lexicon-icon lexicon-icon-paperclip">
@@ -339,9 +414,9 @@ class FormFields extends React.Component {
 							</div>
 						</div>
 
-						{touched.patchLevel && errors.patchLevel && (
+						{touched[`${portletNamespace}patchLevel`] && errors[`${portletNamespace}patchLevel`] && (
 							<div className="alert alert-danger" role="alert">
-								{errors.patchLevel}
+								{errors[`${portletNamespace}patchLevel`]}
 							</div>
 						)}
 					</div>
@@ -379,31 +454,36 @@ export const AddAccountEnvironmentForm = withFormik(
 			alert(JSON.stringify(values, null, 2));
 			setSubmitting(false);
 		},
-		mapPropsToValues: () => (
+		mapPropsToValues: props => (
 			{
-				envAS: '',
-				envDB: '',
-				envJVM: '',
-				envLFR: '',
-				envOS: '',
-				name: '',
-				patchLevel: '',
-				portalExt: '',
-				product: ''
+				[`${props.portletNamespace}envAS`]: '',
+				[`${props.portletNamespace}envBrowser`]: '',
+				[`${props.portletNamespace}envCS`]: '',
+				[`${props.portletNamespace}envDB`]: '',
+				[`${props.portletNamespace}envJVM`]: '',
+				[`${props.portletNamespace}envLFR`]: '',
+				[`${props.portletNamespace}envOS`]: '',
+				[`${props.portletNamespace}name`]: '',
+				[`${props.portletNamespace}patchLevel`]: '',
+				[`${props.portletNamespace}portalExt`]: '',
+				[`${props.portletNamespace}product`]: ''
 			}
 		),
-		validationSchema: yup.object().shape(
-			{
-				envAS: requiredSchema,
-				envDB: requiredSchema,
-				envJVM: requiredSchema,
-				envLFR: requiredSchema,
-				envOS: requiredSchema,
-				name: requiredSchema,
-				patchLevel: requiredSchema,
-				portalExt: requiredSchema,
-				product: requiredSchema
-			}
+		validationSchema: props => (
+			yup.object().shape(
+				{
+					[`${props.portletNamespace}envAS`]: requiredSchema,
+					[`${props.portletNamespace}envBrowser`]: requiredSchema,
+					[`${props.portletNamespace}envDB`]: requiredSchema,
+					[`${props.portletNamespace}envJVM`]: requiredSchema,
+					[`${props.portletNamespace}envLFR`]: requiredSchema,
+					[`${props.portletNamespace}envOS`]: requiredSchema,
+					[`${props.portletNamespace}name`]: requiredSchema,
+					[`${props.portletNamespace}patchLevel`]: requiredSchema,
+					[`${props.portletNamespace}portalExt`]: requiredSchema,
+					[`${props.portletNamespace}product`]: requiredSchema
+				}
+			)
 		)
 	}
 )(FormFields);
