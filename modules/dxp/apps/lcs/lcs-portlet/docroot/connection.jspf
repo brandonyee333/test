@@ -162,26 +162,26 @@ catch (Exception e) {
 			<%
 			BeanLocator beanLocator = PortletBeanLocatorUtil.getBeanLocator("lcs-portlet");
 
-			TaskSchedulerService taskSchedulerService = (TaskSchedulerService)beanLocator.locate("com.liferay.lcs.scheduler.TaskSchedulerService");
+			TaskAdvisor taskSchedulerService = (TaskAdvisor)beanLocator.locate("com.liferay.lcs.task.advisor.TaskAdvisor");
 
-			List<String> localScheduledTaskLabels = taskSchedulerService.getLocalScheduledTaskLabels();
+			Set<String> activeServiceLabels = taskSchedulerService.getActiveServiceLabels();
 
 			LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor = (LCSClusterEntryTokenAdvisor)beanLocator.locate("com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor");
 			%>
 
 			<%
-			for (String localScheduledTaskLabel : localScheduledTaskLabels) {
+			for (String activeServiceLabel : activeServiceLabels) {
 			%>
 
 				<li class="list-group-item">
 					<aui:row>
 						<aui:col width="<%= 100 %>">
-							<liferay-ui:message key="<%= localScheduledTaskLabel %>" />
+							<liferay-ui:message key="<%= activeServiceLabel %>" />
 						</aui:col>
 					</aui:row>
 				</li>
 
-				<c:if test='<%= localScheduledTaskLabel.contains("portal-properties") && Validator.isNotNull(lcsClusterEntryTokenAdvisor.getPortalPropertiesBlacklist()) %>'>
+				<c:if test='<%= activeServiceLabel.contains("portal-properties") && Validator.isNotNull(lcsClusterEntryTokenAdvisor.getPortalPropertiesBlacklist()) %>'>
 
 					<%
 					String portalPropertiesBlacklist = lcsClusterEntryTokenAdvisor.getPortalPropertiesBlacklist();
