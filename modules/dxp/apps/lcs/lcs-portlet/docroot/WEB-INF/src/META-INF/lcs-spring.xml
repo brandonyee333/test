@@ -19,6 +19,7 @@
 		<property name="LCSKeyAdvisor" ref="com.liferay.lcs.advisor.LCSKeyAdvisor" />
 		<property name="LCSSubscriptionEntryClient" ref="com.liferay.lcs.rest.client.internal.LCSSubscriptionEntryClientImpl" />
 	</bean>
+	<bean class="com.liferay.lcs.task.advisor.TaskAdvisor" id="com.liferay.lcs.task.advisor.TaskAdvisor" />
 
 	<!-- Aggregator -->
 
@@ -47,11 +48,13 @@
 		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
 	</bean>
 	<bean class="com.liferay.lcs.command.SendPatchesCommand" id="com.liferay.lcs.command.SendPatchesCommand">
-		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
+		<constructor-arg ref="com.liferay.lcs.util.LCSConnectionManager" />
+		<constructor-arg ref="com.liferay.lcs.task.advisor.TaskAdvisor" />
 	</bean>
 	<bean class="com.liferay.lcs.command.SendPortalPropertiesCommand" id="com.liferay.lcs.command.SendPortalPropertiesCommand">
-		<property name="LCSClusterEntryTokenAdvisor" ref="com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor" />
-		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
+		<constructor-arg ref="com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor" />
+		<constructor-arg ref="com.liferay.lcs.util.LCSConnectionManager" />
+		<constructor-arg ref="com.liferay.lcs.task.advisor.TaskAdvisor" />
 	</bean>
 	<bean class="com.liferay.lcs.command.SignOffCommand" id="com.liferay.lcs.command.SignOffCommand">
 		<property name="LCSClusterEntryTokenAdvisor" ref="com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor" />
@@ -214,6 +217,7 @@
 	<bean class="com.liferay.lcs.task.scheduler.impl.TaskSchedulerServiceImpl" id="com.liferay.lcs.scheduler.TaskSchedulerService">
 		<constructor-arg name="defaultInterval" value="#{T(com.liferay.lcs.util.PortletPropsValues).COMMAND_SCHEDULE_DEFAULT_INTERVAL}" />
 		<constructor-arg name="scheduleDelayMax" value="#{T(com.liferay.lcs.util.PortletPropsValues).COMMAND_SCHEDULE_DELAY_MAX}" />
+		<constructor-arg name="taskAdvisor" ref="com.liferay.lcs.task.advisor.TaskAdvisor" />
 		<constructor-arg name="threadFactory" ref="com.liferay.lcs.runnable.LCSThreadFactory" />
 	</bean>
 
@@ -235,6 +239,7 @@
 		<constructor-arg name="lcsGatewayService" ref="com.liferay.lcs.service.LCSGatewayService" />
 		<constructor-arg name="lcsKeyAdvisor" ref="com.liferay.lcs.advisor.LCSKeyAdvisor" />
 		<constructor-arg name="messageListenerSchedulerService" ref="com.liferay.lcs.messaging.scheduler.impl.MessageListenerSchedulerService" />
+		<constructor-arg name="taskAdvisor" ref="com.liferay.lcs.task.advisor.TaskAdvisor" />
 		<constructor-arg name="taskSchedulerService" ref="com.liferay.lcs.scheduler.TaskSchedulerService" />
 		<constructor-arg name="threadFactory" ref="com.liferay.lcs.runnable.LCSThreadFactory" />
 		<constructor-arg name="uptimeMonitoringAdvisor" ref="com.liferay.lcs.advisor.UptimeMonitoringAdvisor" />
