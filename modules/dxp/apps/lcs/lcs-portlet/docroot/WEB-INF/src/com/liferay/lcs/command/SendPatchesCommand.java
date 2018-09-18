@@ -16,6 +16,7 @@ package com.liferay.lcs.command;
 
 import com.liferay.lcs.messaging.SendPatchesCommandMessage;
 import com.liferay.lcs.messaging.SendPatchesResponseMessage;
+import com.liferay.lcs.task.advisor.TaskAdvisor;
 import com.liferay.lcs.util.LCSConnectionManager;
 import com.liferay.lcs.util.LCSConstants;
 import com.liferay.lcs.util.LCSPatcherUtil;
@@ -32,8 +33,16 @@ import java.util.Map;
 
 /**
  * @author Ivica Cardic
+ * @author Igor Beslic
  */
 public class SendPatchesCommand implements Command<SendPatchesCommandMessage> {
+
+	public SendPatchesCommand(
+		LCSConnectionManager lcsConnectionManager, TaskAdvisor taskAdvisor) {
+
+		_lcsConnectionManager = lcsConnectionManager;
+		_taskAdvisor = taskAdvisor;
+	}
 
 	@Override
 	public void execute(SendPatchesCommandMessage sendPatchesCommandMessage) {
@@ -48,6 +57,8 @@ public class SendPatchesCommand implements Command<SendPatchesCommandMessage> {
 		if (_log.isTraceEnabled()) {
 			_log.trace("Executing send patches command");
 		}
+
+		_taskAdvisor.registerActivity(this);
 
 		String[] installedPatches = LCSPatcherUtil.getInstalledPatches();
 
@@ -98,12 +109,6 @@ public class SendPatchesCommand implements Command<SendPatchesCommandMessage> {
 		}
 	}
 
-	public void setLCSConnectionManager(
-		LCSConnectionManager lcsConnectionManager) {
-
-		_lcsConnectionManager = lcsConnectionManager;
-	}
-
 	private SendPatchesResponseMessage _getSendPatchesResponseMessage(
 		SendPatchesCommandMessage sendPatchesCommandMessage, String hashCode,
 		Map<String, Integer> patchIdsStatuses) {
@@ -124,6 +129,7 @@ public class SendPatchesCommand implements Command<SendPatchesCommandMessage> {
 	private static final Log _log = LogFactoryUtil.getLog(
 		SendPatchesCommand.class);
 
-	private LCSConnectionManager _lcsConnectionManager;
+	private final LCSConnectionManager _lcsConnectionManager;
+	private final TaskAdvisor _taskAdvisor;
 
 }

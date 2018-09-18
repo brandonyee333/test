@@ -17,6 +17,7 @@ package com.liferay.lcs.command;
 import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.messaging.SendPortalPropertiesCommandMessage;
 import com.liferay.lcs.messaging.SendPortalPropertiesResponseMessage;
+import com.liferay.lcs.task.advisor.TaskAdvisor;
 import com.liferay.lcs.util.LCSConnectionManager;
 import com.liferay.lcs.util.LCSConstants;
 import com.liferay.portal.kernel.log.Log;
@@ -36,9 +37,19 @@ import java.util.TreeMap;
 
 /**
  * @author Ivica Cardic
+ * @author Igor Beslic
  */
 public class SendPortalPropertiesCommand
 	implements Command<SendPortalPropertiesCommandMessage> {
+
+	public SendPortalPropertiesCommand(
+		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor,
+		LCSConnectionManager lcsConnectionManager, TaskAdvisor taskAdvisor) {
+
+		_lcsClusterEntryTokenAdvisor = lcsClusterEntryTokenAdvisor;
+		_lcsConnectionManager = lcsConnectionManager;
+		_taskAdvisor = taskAdvisor;
+	}
 
 	@Override
 	@SuppressWarnings("unchecked")
@@ -49,18 +60,11 @@ public class SendPortalPropertiesCommand
 			_log.trace("Executing send portal properties command");
 		}
 
+		_taskAdvisor.registerActivity(this);
+
 		Properties portalProperties = getSecurityInsensitivePropertiesKeys();
 
-		StringBundler sb = new StringBundler(portalProperties.size());
-
-		for (Object key : portalProperties.keySet()) {
-			sb.append(
-				DigesterUtil.digestHex(
-					Digester.MD5, (String)portalProperties.get(key)));
-		}
-
-		String installedHashCode = DigesterUtil.digestHex(
-			Digester.MD5, sb.toString());
+		String installedHashCode = _getHashCode(portalProperties);
 
 		if (installedHashCode.equals(
 				sendPortalPropertiesCommandMessage.getHashCode())) {
@@ -83,18 +87,6 @@ public class SendPortalPropertiesCommand
 		catch (Exception e) {
 			_log.error("Unable to send portal properties", e);
 		}
-	}
-
-	public void setLCSClusterEntryTokenAdvisor(
-		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor) {
-
-		_lcsClusterEntryTokenAdvisor = lcsClusterEntryTokenAdvisor;
-	}
-
-	public void setLCSConnectionManager(
-		LCSConnectionManager lcsConnectionManager) {
-
-		_lcsConnectionManager = lcsConnectionManager;
 	}
 
 	protected Properties getSecurityInsensitivePropertiesKeys() {
@@ -157,6 +149,18 @@ public class SendPortalPropertiesCommand
 		return false;
 	}
 
+	private String _getHashCode(Properties properties) {
+		StringBundler sb = new StringBundler(properties.size());
+
+		for (Object key : properties.keySet()) {
+			sb.append(
+				DigesterUtil.digestHex(
+					Digester.MD5, (String)properties.get(key)));
+		}
+
+		return DigesterUtil.digestHex(Digester.MD5, sb.toString());
+	}
+
 	private SendPortalPropertiesResponseMessage
 		_getSendPortalPropertiesResponseMessage(
 			SendPortalPropertiesCommandMessage
@@ -181,7 +185,8 @@ public class SendPortalPropertiesCommand
 	private static final Log _log = LogFactoryUtil.getLog(
 		SendPortalPropertiesCommand.class);
 
-	private LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
-	private LCSConnectionManager _lcsConnectionManager;
+	private final LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
+	private final LCSConnectionManager _lcsConnectionManager;
+	private final TaskAdvisor _taskAdvisor;
 
 }

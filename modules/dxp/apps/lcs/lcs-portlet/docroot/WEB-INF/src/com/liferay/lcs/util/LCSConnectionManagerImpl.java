@@ -28,6 +28,7 @@ import com.liferay.lcs.task.HandshakeTask;
 import com.liferay.lcs.task.HeartbeatTask;
 import com.liferay.lcs.task.SignOffTask;
 import com.liferay.lcs.task.UptimeMonitoringTask;
+import com.liferay.lcs.task.advisor.TaskAdvisor;
 import com.liferay.lcs.task.scheduler.TaskSchedulerService;
 import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
@@ -64,7 +65,8 @@ public class LCSConnectionManagerImpl implements LCSConnectionManager {
 		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor,
 		LCSGatewayService lcsGatewayService, LCSKeyAdvisor lcsKeyAdvisor,
 		MessageListenerSchedulerService messageListenerSchedulerService,
-		TaskSchedulerService taskSchedulerService, ThreadFactory threadFactory,
+		TaskAdvisor taskAdvisor, TaskSchedulerService taskSchedulerService,
+		ThreadFactory threadFactory,
 		UptimeMonitoringAdvisor uptimeMonitoringAdvisor) {
 
 		_heartbeatInterval = GetterUtil.getLong(
@@ -86,6 +88,7 @@ public class LCSConnectionManagerImpl implements LCSConnectionManager {
 		_scheduledExecutorService = Executors.newScheduledThreadPool(
 			10, threadFactory);
 
+		_taskAdvisor = taskAdvisor;
 		_taskSchedulerService = taskSchedulerService;
 		_threadFactory = threadFactory;
 		_uptimeMonitoringAdvisor = uptimeMonitoringAdvisor;
@@ -324,6 +327,8 @@ public class LCSConnectionManagerImpl implements LCSConnectionManager {
 
 		LCSUtil.processLCSPortletState(LCSPortletState.NO_CONNECTION);
 
+		_taskAdvisor.reset();
+
 		if (reconnect) {
 			_executeLCSConnectorRunnable(delayReconnect);
 		}
@@ -347,6 +352,8 @@ public class LCSConnectionManagerImpl implements LCSConnectionManager {
 		LCSUtil.processLCSPortletState(LCSPortletState.NO_CONNECTION);
 
 		_cancelSchedulers();
+
+		_taskAdvisor.reset();
 
 		_executeLCSConnectorRunnable(true);
 	}
@@ -460,6 +467,7 @@ public class LCSConnectionManagerImpl implements LCSConnectionManager {
 	private final List<ScheduledFuture<?>> _scheduledFutures =
 		new ArrayList<>();
 	private volatile boolean _shutdownRequested;
+	private final TaskAdvisor _taskAdvisor;
 	private final TaskSchedulerService _taskSchedulerService;
 	private final ThreadFactory _threadFactory;
 	private final UptimeMonitoringAdvisor _uptimeMonitoringAdvisor;
