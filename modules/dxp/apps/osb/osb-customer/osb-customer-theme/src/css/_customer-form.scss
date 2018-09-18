@@ -44,3 +44,40 @@ select.form-control {
 		border-color: $color-border;
 	}
 }
+
+.upload-dropzone {
+	border: 1px solid $color-border;
+	border-radius: $input-border-radius;
+	line-height: $input-line-height;
+	overflow: hidden;
+	padding: 14px;
+	position: relative;
+	text-align: center;
+	width: 100%;
+
+	input[type="file"] {
+		cursor: pointer;
+		height: 100%;
+		opacity: 0;
+		position: absolute;
+		right: 0;
+		top: 0;
+	}
+
+	span {
+		color: $color-primary;
+		font-size: 14px;
+		font-weight: $font-weight-semi-bold;
+		text-decoration: none;
+		text-transform: initial;
+	}
+
+	.lexicon-icon-paperclip {
+		height: 16px;
+		margin-right: 4px;
+		position: relative;
+		top: -2px;
+		vertical-align: middle;
+		width: 16px;
+	}
+}
