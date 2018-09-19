@@ -50,7 +50,7 @@ export class AddAccountEnvironmentForm extends React.Component {
 			errors,
 			handleBlur,
 			handleChange,
-			handleReset,
+			handleCloseModal,
 			handleSubmit,
 			isSubmitting,
 			portletNamespace,
@@ -483,7 +483,7 @@ export class AddAccountEnvironmentForm extends React.Component {
 					<div className="btn-row">
 						<Button
 							display="outline"
-							onClick={props.handleReset}
+							onClick={handleCloseModal}
 							type="button"
 						>
 							{Liferay.Language.get('cancel')}

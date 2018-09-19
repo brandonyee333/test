@@ -19,27 +19,30 @@ export default class AccountEnvironments extends React.Component {
 		productEntries: PropTypes.array.isRequired
 	};
 
-	handleCloseModal = () => this.setState(
+	handleCloseModal = () =>
 		{
-			showModal: false
-		}
-	);
+			if (!confirm(Liferay.Language.get('are-you-sure-you-want-to-close-this'))) {
+				event.preventDefault();
+			} else {
+				this.setState({
+					showModal: false
+				})
+			}
+		};
 
-	handleDeleteEnvironment = event => {
-		if (
-			!confirm(
-				Liferay.Language.get('are-you-sure-you-want-to-delete-this')
-			)
-		) {
-			event.preventDefault();
-		}
-	};
-
-	handleDisplayModal = () => this.setState(
+	handleDeleteEnvironment = event =>
 		{
-			showModal: true
-		}
-	);
+			if (!confirm(Liferay.Language.get('are-you-sure-you-want-to-delete-this'))) {
+				event.preventDefault();
+			}
+		};
+
+	handleDisplayModal = () =>
+		this.setState(
+			{
+				showModal: true
+			}
+		);
 
 	render() {
 		const {addEnvironmentURL, environments, permitAdd, portletNamespace, productEntries} = this.props;
@@ -127,7 +130,12 @@ export default class AccountEnvironments extends React.Component {
 			)
 		);
 
-		const addAccountEnvironmentForm = <AddAccountEnvironmentForm addEnvironmentURL={addEnvironmentURL} portletNamespace={portletNamespace} productEntries={productEntries} />;
+		const addAccountEnvironmentForm = <AddAccountEnvironmentForm
+			addEnvironmentURL={addEnvironmentURL}
+			handleCloseModal={this.handleCloseModal}
+			portletNamespace={portletNamespace}
+			productEntries={productEntries}
+		/>;
 
 		return (
 			<React.Fragment>
