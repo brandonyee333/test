@@ -9,9 +9,10 @@ input[type="submit"] {
 	);
 }
 
-a[role="button"] {
+a[role="button"],
+button[type="button"] {
 	display: inline-block;
-	font-weight: $btn-font-weight;
+	font-weight: $font-weight-semi-bold;
 	text-align: center;
 	vertical-align: middle;
 	white-space: nowrap;
