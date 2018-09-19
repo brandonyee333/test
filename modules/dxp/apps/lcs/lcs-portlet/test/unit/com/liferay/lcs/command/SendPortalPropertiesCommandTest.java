@@ -84,10 +84,8 @@ public class SendPortalPropertiesCommandTest extends PowerMockito {
 		);
 
 		SendPortalPropertiesCommand sendPortalPropertiesCommand =
-			new SendPortalPropertiesCommand();
-
-		sendPortalPropertiesCommand.setLCSClusterEntryTokenAdvisor(
-			lcsClusterEntryTokenAdvisor);
+			new SendPortalPropertiesCommand(
+				lcsClusterEntryTokenAdvisor, null, null);
 
 		Properties properties =
 			sendPortalPropertiesCommand.getSecurityInsensitivePropertiesKeys();

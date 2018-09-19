@@ -34,7 +34,7 @@
 		<property name="lcsPortletStateAdvisor" ref="com.liferay.lcs.advisor.LCSPortletStateAdvisor" />
 	</bean>
 	<bean class="com.liferay.lcs.messaging.CommandMessageListener" id="messageListener.lcs_commands">
-		<property name="commands">
+		<constructor-arg name="commands">
 			<map>
 				<entry key="com.liferay.lcs.messaging.CheckHeartbeatCommandMessage" value-ref="com.liferay.lcs.command.CheckHeartbeatCommand" />
 				<entry key="com.liferay.lcs.messaging.DownloadPatchCommandMessage" value-ref="com.liferay.lcs.command.DownloadPatchCommand" />
@@ -47,9 +47,9 @@
 				<entry key="com.liferay.lcs.messaging.SendPortalPropertiesCommandMessage" value-ref="com.liferay.lcs.command.SendPortalPropertiesCommand" />
 				<entry key="com.liferay.lcs.messaging.SignOffCommandMessage" value-ref="com.liferay.lcs.command.SignOffCommand" />
 			</map>
-		</property>
-		<property name="digitalSignature" ref="com.liferay.lcs.messaging.security.DigitalSignature" />
-		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
+		</constructor-arg>
+		<constructor-arg name="digitalSignature" ref="com.liferay.lcs.messaging.security.DigitalSignature" />
+		<constructor-arg name="lcsConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
 	</bean>
 	<bean class="com.liferay.lcs.messaging.LCSHotDeployMessageListener" id="messageListener.lcs_hot_deploy">
 		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
