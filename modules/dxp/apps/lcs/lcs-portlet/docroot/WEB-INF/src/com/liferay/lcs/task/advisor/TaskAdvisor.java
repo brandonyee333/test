@@ -65,9 +65,9 @@ public class TaskAdvisor {
 	}
 
 	public synchronized void reset() {
+		_activeClassNames.clear();
 		_executedCommandClassNames.clear();
 		_scheduledTaskClassNames.clear();
-		_activeClassNames.clear();
 	}
 
 	private final Set<String> _activeClassNames = new HashSet<>();
