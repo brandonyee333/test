@@ -166,7 +166,7 @@ public class DynamicDataSourceAdviceTest {
 			serviceBeanMethodInvocation, annotations);
 
 		serviceBeanMethodInvocation.setMethodInterceptors(
-			Arrays.<MethodInterceptor>asList(_dynamicDataSourceAdvice));
+			new MethodInterceptor[] {_dynamicDataSourceAdvice});
 
 		return serviceBeanMethodInvocation;
 	}

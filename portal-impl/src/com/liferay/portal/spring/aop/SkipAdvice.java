@@ -18,8 +18,6 @@ import com.liferay.portal.kernel.spring.aop.Skip;
 
 import java.lang.annotation.Annotation;
 
-import java.util.Collections;
-
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
@@ -34,13 +32,13 @@ public class SkipAdvice extends AnnotationChainableMethodAdvice<Skip> {
 
 		if (skip != _nullSkip) {
 			serviceBeanAopCacheManager.putMethodInterceptors(
-				methodInvocation, Collections.<MethodInterceptor>emptyList());
+				methodInvocation, _emptyMethodInterceptors);
 
 			ServiceBeanMethodInvocation serviceBeanMethodInvocation =
 				(ServiceBeanMethodInvocation)methodInvocation;
 
 			serviceBeanMethodInvocation.setMethodInterceptors(
-				Collections.<MethodInterceptor>emptyList());
+				_emptyMethodInterceptors);
 		}
 
 		return null;
@@ -50,6 +48,9 @@ public class SkipAdvice extends AnnotationChainableMethodAdvice<Skip> {
 	public Skip getNullAnnotation() {
 		return _nullSkip;
 	}
+
+	private static final MethodInterceptor[] _emptyMethodInterceptors =
+		new MethodInterceptor[0];
 
 	private static final Skip _nullSkip = new Skip() {
 
