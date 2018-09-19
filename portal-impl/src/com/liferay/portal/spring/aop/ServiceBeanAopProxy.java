@@ -84,7 +84,9 @@ public class ServiceBeanAopProxy
 			new ServiceBeanMethodInvocation(
 				_advisedSupport.getTarget(), method, arguments);
 
-		_setMethodInterceptors(serviceBeanMethodInvocation);
+		serviceBeanMethodInvocation.setMethodInterceptors(
+			_serviceBeanAopCacheManager.getMethodInterceptors(
+				serviceBeanMethodInvocation));
 
 		return serviceBeanMethodInvocation.proceed();
 	}
@@ -98,17 +100,6 @@ public class ServiceBeanAopProxy
 		public InvocationHandler getInvocationHandler(
 			InvocationHandler invocationHandler, AdvisedSupport advisedSupport);
 
-	}
-
-	private void _setMethodInterceptors(
-		ServiceBeanMethodInvocation serviceBeanMethodInvocation) {
-
-		MethodInterceptorsBag methodInterceptorsBag =
-			_serviceBeanAopCacheManager.getMethodInterceptorsBag(
-				serviceBeanMethodInvocation);
-
-		serviceBeanMethodInvocation.setMethodInterceptors(
-			methodInterceptorsBag.getMergedMethodInterceptors());
 	}
 
 	private final AdvisedSupport _advisedSupport;
