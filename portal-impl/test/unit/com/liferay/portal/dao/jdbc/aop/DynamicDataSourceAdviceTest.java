@@ -89,7 +89,7 @@ public class DynamicDataSourceAdviceTest {
 			_dynamicDataSourceTargetSource);
 
 		ServiceBeanAopCacheManager serviceBeanAopCacheManager =
-			new ServiceBeanAopCacheManager();
+			new ServiceBeanAopCacheManager(null);
 
 		_dynamicDataSourceAdvice.setServiceBeanAopCacheManager(
 			serviceBeanAopCacheManager);
