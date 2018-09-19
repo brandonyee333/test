@@ -56,27 +56,3 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntry.getAccount
 		</c:otherwise>
 	</c:choose>
 </div>
-
-<aui:script>
-	Liferay.provide(
-		window,
-		'<portlet:namespace />openDialog',
-		function(title, url, popupId) {
-			Liferay.Util.openWindow(
-				{
-					cache: false,
-					dialog: {
-						align: Liferay.Util.Window.ALIGN_CENTER,
-						centered: true,
-						height: 800,
-						width: 870
-					},
-					id: popupId,
-					title: title,
-					uri: url
-				}
-			);
-		},
-		['aui-dialog', 'aui-overlay-manager', 'liferay-util-window']
-	);
-</aui:script>
