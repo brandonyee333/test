@@ -39,11 +39,11 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntry.getAccount
 
 <div class="container-fluid-max-xl">
 	<c:choose>
-		<c:when test='<%= tabs1.equals("team-members") %>'>
-			<liferay-util:include page="/account_entry_details/customer/team_members.jsp" servletContext="<%= application %>" />
-		</c:when>
 		<c:when test='<%= tabs1.equals("liferay-contacts") %>'>
-			<liferay-util:include page="/account_entry_details/customer/liferay_contacts.jsp" servletContext="<%= application %>" />
+			<liferay-util:include page="/account_entry_details/liferay_contacts.jsp" servletContext="<%= application %>" />
+		</c:when>
+		<c:when test='<%= tabs1.equals("team-members") %>'>
+			<liferay-util:include page="/account_entry_details/team_members.jsp" servletContext="<%= application %>" />
 		</c:when>
 		<c:otherwise>
 			<liferay-util:include page="/account_entry_details/customer/overview.jsp" servletContext="<%= application %>" />
