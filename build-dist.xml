@@ -4081,6 +4081,14 @@ plugins.includes=</echo>
 			</sequential>
 		</parallel>
 
+		<exec dir="${tstamp.value}" executable="tar">
+			<arg line="-czf ${project.dir}/dist/liferay-portal-tomcat-${lp.version}.tar.gz liferay-portal-${lp.version}" />
+		</exec>
+
+		<exec dir="${tstamp.value}" executable="zip">
+			<arg line="-r -q ${project.dir}/dist/liferay-portal-tomcat-${lp.version}-with-osgi-state.zip liferay-portal-${lp.version}" />
+		</exec>
+
 		<echo>Calling 7-Zip, this will take a few minutes...</echo>
 
 		<delete failonerror="false" file="${project.dir}/dist/liferay-portal-tomcat-${lp.version}.7z" />
