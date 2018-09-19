@@ -28,7 +28,13 @@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 <%@ page import="com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys" %><%@
 page import="com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsWebKeys" %><%@
 page import="com.liferay.osb.customer.account.entry.details.web.internal.display.context.AccountEntryViewDisplayContext" %><%@
+page import="com.liferay.osb.customer.ticket.repository.FileRepository" %><%@
+page import="com.liferay.osb.customer.ticket.repository.FileRepositoryManager" %><%@
+page import="com.liferay.osb.customer.ticket.repository.FileRepositoryWebService" %><%@
+page import="com.liferay.osb.customer.ticket.internal.repository.FileRepositoryManagerImpl" %><%@
+page import="com.liferay.osb.customer.zendesk.model.ZendeskTicket" %><%@
 page import="com.liferay.osb.customer.zendesk.web.service.exception.NoSuchZendeskTicketException" %><%@
+page import="com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService" %><%@
 page import="com.liferay.osb.exception.AccountEnvironmentAttachmentSizeException" %><%@
 page import="com.liferay.osb.exception.AccountEnvironmentEnvASException" %><%@
 page import="com.liferay.osb.exception.AccountEnvironmentEnvBrowserException" %><%@

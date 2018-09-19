@@ -14,17 +14,37 @@
  */
 --%>
 
-<%@ include file="/init.jsp" %>
+<%@ include file="/account_entry_details/init.jsp" %>
 
 <%
 long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 
 long zendeskTicketId = ParamUtil.getLong(request, "zendeskTicketId");
+
+AccountEntry accountEntry = AccountEntryServiceUtil.getAccountEntry(accountEntryId);
+
+long[] supportRegionIds = accountEntry.getSupportRegionIds();
+
+long supportRegionId = supportRegionIds[0];
+
+FileRepositoryManager fileRepositoryManager = new FileRepositoryManagerImpl();
+
+FileRepository fileRepository = fileRepositoryManager.getFileRepository(supportRegionId);
+
+String fileRepositoryId = fileRepository.getFileRepositoryId();
+
+String uploadURL = FileRepositoryWebService.getUploadURL(fileRepositoryId);
+
+String token = FileRepositoryWebService.getToken(fileRepositoryId, zendeskTicketId);
 %>
 
-<portlet:actionURL name="addTicketAttachment" var="addTicketAttachmentURL" />
+<portlet:actionURL name="addTicketAttachment" var="addTicketAttachmentURL">
+	<portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntryId) %>" />
+	<portlet:param name="fileRepositoryId" value="<%= fileRepositoryId %>" />
+	<portlet:param name="zendeskTicketId" value="<%= String.valueOf(zendeskTicketId) %>" />
+</portlet:actionURL>
 
-<div class="add-ticket-attachment" id="addTicketAttachment"></div>
+<div class="add-ticket-attachment" id="<portlet:namespace />addTicketAttachment"></div>
 
 <liferay-ui:error exception="<%= NoSuchAccountEntryException.class %>" message="the-project-could-not-be-found" />
 <liferay-ui:error exception="<%= NoSuchZendeskTicketException.class %>" message="the-ticket-could-not-be-found" />
@@ -33,12 +53,11 @@ long zendeskTicketId = ParamUtil.getLong(request, "zendeskTicketId");
 	HelpCenter.render(
 		HelpCenter.AddTicketAttachment,
 		{
-			accountEntryId: '<%= accountEntryId %>',
 			addTicketAttachmentURL: '<%= addTicketAttachmentURL %>',
-			namespace: '${renderResponse.namespace}',
-			zendeskTicketId: '<%= zendeskTicketId %>',
-			zendeskURL: "temporaryUrl"
+			portletNamespace: '${renderResponse.namespace}',
+			uploadURL: '<%= uploadURL %>',
+			zendeskTicketId: '<%= String.valueOf(zendeskTicketId) %>'
 		},
-		document.getElementById('addTicketAttachment')
+		document.getElementById('${renderResponse.namespace}addTicketAttachment')
 	);
 </aui:script>
