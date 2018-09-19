@@ -76,7 +76,10 @@ public class CommandMessageListener implements MessageListener {
 								commandMessageClass.getName());
 					}
 
-					((Command<CommandMessage>)command).execute(commandMessage);
+					Command<CommandMessage> castCommand =
+						(Command<CommandMessage>)command;
+
+					castCommand.execute(commandMessage);
 				}
 				catch (Exception e) {
 					_log.error(e, e);
