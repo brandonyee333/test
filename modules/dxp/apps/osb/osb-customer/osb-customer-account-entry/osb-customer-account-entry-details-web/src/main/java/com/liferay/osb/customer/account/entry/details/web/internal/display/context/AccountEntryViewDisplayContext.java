@@ -125,13 +125,14 @@ public class AccountEntryViewDisplayContext {
 	public String getAccountEnvironmentAddURL(AccountEntry accountEntry)
 		throws PortletException {
 
-		PortletURL portletURL = _mimeResponse.createRenderURL();
+		PortletURL portletURL = _mimeResponse.createActionURL();
 
 		portletURL.setParameter(
-			"mvcRenderCommandName", "/edit_account_environment");
+			ActionRequest.ACTION_NAME, "editAccountEnvironment");
+		portletURL.setParameter(
+			"redirect", _accountEntryDetailsRequestHelper.getCurrentURL());
 		portletURL.setParameter(
 			"accountEntryId", String.valueOf(accountEntry.getAccountEntryId()));
-		portletURL.setWindowState(LiferayWindowState.POP_UP);
 
 		return portletURL.toString();
 	}
@@ -368,6 +369,8 @@ public class AccountEntryViewDisplayContext {
 
 		long listTypeId = listType.getListTypeId();
 
+		jsonObject.put("envLFR", toJSONArray(listType));
+
 		List<ListType> envASListTypes =
 			AccountEnvironmentConstants.getPortalEnvListTypes(
 				listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_AS);
@@ -513,6 +516,20 @@ public class AccountEntryViewDisplayContext {
 
 			jsonArray.put(jsonObject);
 		}
+
+		return jsonArray;
+	}
+
+	protected JSONArray toJSONArray(ListType listType) {
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put(
+			"name", LanguageUtil.get(_request, listType.getName()));
+		jsonObject.put("value", String.valueOf(listType.getListTypeId()));
+
+		jsonArray.put(jsonObject);
 
 		return jsonArray;
 	}

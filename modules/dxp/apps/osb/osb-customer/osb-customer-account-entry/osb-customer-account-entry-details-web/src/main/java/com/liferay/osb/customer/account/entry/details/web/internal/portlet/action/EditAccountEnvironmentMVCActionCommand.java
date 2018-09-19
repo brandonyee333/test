@@ -92,7 +92,7 @@ public class EditAccountEnvironmentMVCActionCommand
 
 		List<Integer> types = new ArrayList<>();
 
-		String[] uploadFileNames = {"patch-level", "portal-ext"};
+		String[] uploadFileNames = {"patchLevel", "portalExt"};
 
 		try {
 			for (String uploadFileName : uploadFileNames) {
@@ -120,7 +120,7 @@ public class EditAccountEnvironmentMVCActionCommand
 
 				files.add(ovp);
 
-				if (uploadFileName.equals("portal-ext")) {
+				if (uploadFileName.equals("portalExt")) {
 					types.add(
 						AccountEnvironmentAttachmentConstants.TYPE_PORTAL_EXT);
 				}

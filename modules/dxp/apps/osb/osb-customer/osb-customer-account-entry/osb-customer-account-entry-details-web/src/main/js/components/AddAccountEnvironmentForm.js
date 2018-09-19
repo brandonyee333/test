@@ -97,7 +97,7 @@ export class AddAccountEnvironmentForm extends React.Component {
 
 		return(
 			<Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={this.handleSubmit} ref="formikInstanceRef" render = {props => (
-				<form action={addEnvironmentURL} onSubmit={props.handleSubmit} method="post" ref={this.addEnvironmentFormRef}>
+				<form action={addEnvironmentURL} encType="multipart/form-data" onSubmit={props.handleSubmit} method="post" ref={this.addEnvironmentFormRef}>
 					<input name={`${portletNamespace}productEntryId`} type="hidden" value={productIndex ? productEntries[productIndex].productEntryId : ''} />
 
 					<div className="row">
@@ -165,7 +165,7 @@ export class AddAccountEnvironmentForm extends React.Component {
 									{productIndex ? (
 										productEntries[productIndex].envListTypes.map(
 											(listType, index) => (
-												<option id={'envLFR-' + index} key={'envLFR-' + index} label={listType.envLFR} value={listType.envLFR} />
+												<option id={'envLFR-' + index} key={'envLFR-' + index} label={listType.envLFR[0].name} value={listType.envLFR[0].value} />
 											)
 										)
 									) : (
