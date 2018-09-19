@@ -162,9 +162,9 @@ catch (Exception e) {
 			<%
 			BeanLocator beanLocator = PortletBeanLocatorUtil.getBeanLocator("lcs-portlet");
 
-			TaskAdvisor taskSchedulerService = (TaskAdvisor)beanLocator.locate("com.liferay.lcs.task.advisor.TaskAdvisor");
+			TaskAdvisor taskAdvisor = (TaskAdvisor)beanLocator.locate("com.liferay.lcs.task.advisor.TaskAdvisor");
 
-			Set<String> activeServiceLabels = taskSchedulerService.getActiveServiceLabels();
+			Set<String> activeServiceLabels = taskAdvisor.getActiveServiceLabels();
 
 			LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor = (LCSClusterEntryTokenAdvisor)beanLocator.locate("com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor");
 			%>
