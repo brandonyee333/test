@@ -3417,14 +3417,6 @@ plugins.includes=</echo>
 
 		<echo file="${zip.executable.dir}/.githash">${githash.rev.parse}</echo>
 
-		<local name="tstamp.value" />
-
-		<tstamp>
-			<format pattern="yyyyMMddkkmmssSSS" property="tstamp.value" />
-		</tstamp>
-
-		<mkdir dir="dist/${tstamp.value}" />
-
 		<antelope:stringutil property="zip.executable.dir.beginindex" string="${zip.executable.dir}">
 			<lastindexof string="/" />
 		</antelope:stringutil>
@@ -3440,6 +3432,14 @@ plugins.includes=</echo>
 		<antelope:stringutil property="zip.executable.dir.name" string="${zip.executable.dir}">
 			<substring beginindex="${zip.executable.dir.beginindex}" />
 		</antelope:stringutil>
+
+		<local name="tstamp.value" />
+
+		<tstamp>
+			<format pattern="yyyyMMddkkmmssSSS" property="tstamp.value" />
+		</tstamp>
+
+		<mkdir dir="dist/${tstamp.value}" />
 
 		<if>
 			<available file="${zip.executable.dir}/../data" />
@@ -3594,6 +3594,15 @@ plugins.includes=</echo>
 						includes="**/*.sh"
 					/>
 				</chmod>
+
+				<exec dir="dist/${tstamp.value}" executable="7z">
+					<arg value="a" />
+					<arg value="-md1024m" />
+					<arg value="${project.dir}/dist/${zip.executable.file}-${lp.version}.7z" />
+					<arg value="liferay-portal-${lp.version}/osgi" />
+				</exec>
+
+				<delete dir="dist/${tstamp.value}/liferay-portal-${lp.version}/osgi" />
 
 				<exec dir="dist/${tstamp.value}" executable="7z">
 					<arg value="a" />
