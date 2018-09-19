@@ -31,7 +31,18 @@ import java.util.Map;
  */
 public class CommandMessageListener implements MessageListener {
 
+	public CommandMessageListener(
+		Map<String, Command<? extends CommandMessage>> commands,
+		DigitalSignature digitalSignature,
+		LCSConnectionManager lcsConnectionManager) {
+
+		_commands = commands;
+		_digitalSignature = digitalSignature;
+		_lcsConnectionManager = lcsConnectionManager;
+	}
+
 	@Override
+	@SuppressWarnings("unchecked")
 	public void receive(Message message) {
 		if (_log.isTraceEnabled()) {
 			_log.trace("Receiving message: " + message.getPayload());
@@ -56,7 +67,7 @@ public class CommandMessageListener implements MessageListener {
 				try {
 					Class<?> commandMessageClass = commandMessage.getClass();
 
-					Command<CommandMessage> command = _commands.get(
+					Command<? extends CommandMessage> command = _commands.get(
 						commandMessageClass.getName());
 
 					if (_log.isDebugEnabled()) {
@@ -65,7 +76,7 @@ public class CommandMessageListener implements MessageListener {
 								commandMessageClass.getName());
 					}
 
-					command.execute(commandMessage);
+					((Command<CommandMessage>)command).execute(commandMessage);
 				}
 				catch (Exception e) {
 					_log.error(e, e);
@@ -102,20 +113,6 @@ public class CommandMessageListener implements MessageListener {
 		}
 	}
 
-	public void setCommands(Map<String, Command<CommandMessage>> commands) {
-		_commands = commands;
-	}
-
-	public void setDigitalSignature(DigitalSignature digitalSignature) {
-		_digitalSignature = digitalSignature;
-	}
-
-	public void setLCSConnectionManager(
-		LCSConnectionManager lcsConnectionManager) {
-
-		_lcsConnectionManager = lcsConnectionManager;
-	}
-
 	protected ErrorResponseMessage getErrorResponseMessage(
 		CommandMessage commandMessage, String errorMessage) {
 
@@ -133,8 +130,8 @@ public class CommandMessageListener implements MessageListener {
 	private static final Log _log = LogFactoryUtil.getLog(
 		CommandMessageListener.class);
 
-	private Map<String, Command<CommandMessage>> _commands;
-	private DigitalSignature _digitalSignature;
-	private LCSConnectionManager _lcsConnectionManager;
+	private final Map<String, Command<? extends CommandMessage>> _commands;
+	private final DigitalSignature _digitalSignature;
+	private final LCSConnectionManager _lcsConnectionManager;
 
 }
