@@ -17,12 +17,9 @@
 <%@ include file="/account_entry_details/init.jsp" %>
 
 <%
-String portletNamespace = renderResponse.getNamespace();
-
-String editInstructionsURL = accountEntryViewDisplayContext.getAccountEntryInstructionsEditURL();
-
 AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 long accountEntryId = accountEntry.getAccountEntryId();
+String editInstructionsURL = accountEntryViewDisplayContext.getAccountEntryInstructionsEditURL();
 String instructions = HtmlUtil.escapeJS(accountEntry.getInstructions());
 %>
 
@@ -35,7 +32,7 @@ String instructions = HtmlUtil.escapeJS(accountEntry.getInstructions());
 			accountEntryId: '<%= String.valueOf(accountEntryId) %>',
 			editInstructionsURL: '<%= editInstructionsURL %>',
 			instructions: '<%= instructions %>',
-			portletNamespace: '<%= portletNamespace %>'
+			portletNamespace: '<portlet:namespace />'
 		},
 		document.getElementById('<portlet:namespace />supportInstructions')
 	);
