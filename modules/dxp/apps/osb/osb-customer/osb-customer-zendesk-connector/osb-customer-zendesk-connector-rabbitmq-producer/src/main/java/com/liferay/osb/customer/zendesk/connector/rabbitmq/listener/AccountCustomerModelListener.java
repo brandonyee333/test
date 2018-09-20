@@ -17,22 +17,19 @@ package com.liferay.osb.customer.zendesk.connector.rabbitmq.listener;
 import com.liferay.osb.customer.rabbitmq.connector.publisher.MessagePublisher;
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.connector.rabbitmq.configuration.ZendeskConnectorConfigurationValues;
+import com.liferay.osb.customer.zendesk.connector.rabbitmq.util.AccountCustomerUtil;
 import com.liferay.osb.customer.zendesk.connector.rabbitmq.util.ZendeskModelListenerUtil;
-import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountCustomerConstants;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.ModelListenerException;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
-import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -52,41 +49,7 @@ public class AccountCustomerModelListener
 		throws ModelListenerException {
 
 		try {
-			User user = UserLocalServiceUtil.getUser(
-				accountCustomer.getUserId());
-
-			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
-				accountCustomer.getUserId());
-
-			ZendeskUser zendeskUser = null;
-
-			Set<String> tags = getAddAccountCustomerTags(accountCustomer);
-
-			if (zendeskUserId != 0) {
-				zendeskUser = ZendeskModelListenerUtil.getZendeskUser(
-					accountCustomer.getAccountEntry(), null, user);
-			}
-			else {
-				zendeskUser = ZendeskModelListenerUtil.getZendeskUser(
-					accountCustomer.getAccountEntry(), tags, user);
-			}
-
-			_messagePublisher.sendMessage(
-				ZendeskConnectorConfigurationValues.
-					RABBITMQ_MESSAGE_EXCHANGE_NAME,
-				"zendesk.service.user.create.or.update",
-				zendeskUser.toJSONObject());
-
-			if (zendeskUserId != 0) {
-				JSONObject jsonObject =
-					ZendeskModelListenerUtil.getTagsJSONObject(
-						tags, "users", zendeskUserId);
-
-				_messagePublisher.sendMessage(
-					ZendeskConnectorConfigurationValues.
-						RABBITMQ_MESSAGE_EXCHANGE_NAME,
-					"zendesk.service.tag.add", jsonObject);
-			}
+			_accountCustomerUtil.addAccountCustomer(accountCustomer);
 		}
 		catch (Exception e) {
 			throw new ModelListenerException(e);
@@ -199,34 +162,6 @@ public class AccountCustomerModelListener
 		}
 	}
 
-	protected Set<String> getAddAccountCustomerTags(
-			AccountCustomer accountCustomer)
-		throws PortalException {
-
-		Set<String> tags = new HashSet<>();
-
-		if (accountCustomer.getRole() ==
-				AccountCustomerConstants.ROLE_WATCHER) {
-
-			long zendeskOrganizationId =
-				_zendeskMapperUtil.fetchZendeskOrganizationId(
-					accountCustomer.getAccountEntryId());
-
-			tags.add(ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
-		}
-		else {
-			tags.add(ZendeskTagConstants.OSB_CUSTOMER);
-		}
-
-		if (AccountEntryLocalServiceUtil.hasValidSupportAccountEntry(
-				accountCustomer.getUserId())) {
-
-			tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
-		}
-
-		return tags;
-	}
-
 	protected Set<String> getDeleteAccountCustomerTags(
 		AccountCustomer accountCustomer, long zendeskOrganizationId) {
 
@@ -267,6 +202,9 @@ public class AccountCustomerModelListener
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
+
+	@Reference
+	private AccountCustomerUtil _accountCustomerUtil;
 
 	@Reference
 	private MessagePublisher _messagePublisher;

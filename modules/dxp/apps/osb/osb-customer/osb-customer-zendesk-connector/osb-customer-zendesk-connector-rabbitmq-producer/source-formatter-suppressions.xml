@@ -5,6 +5,7 @@
 		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/zendesk/connector/rabbitmq/listener/AccountCustomerModelListener.java" />
 		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/zendesk/connector/rabbitmq/listener/AccountEntryModelListener.java" />
 		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/zendesk/connector/rabbitmq/listener/PartnerWorkerModelListener.java" />
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/zendesk/connector/rabbitmq/util/AccountCustomerUtil.java" />
 		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/zendesk/connector/rabbitmq/util/ZendeskModelListenerUtil.java" />
 	</source-check>
 </suppressions>

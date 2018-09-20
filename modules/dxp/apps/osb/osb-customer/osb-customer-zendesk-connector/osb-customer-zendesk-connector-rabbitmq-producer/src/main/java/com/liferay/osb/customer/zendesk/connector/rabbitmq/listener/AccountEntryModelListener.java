@@ -17,8 +17,10 @@ package com.liferay.osb.customer.zendesk.connector.rabbitmq.listener;
 import com.liferay.osb.customer.rabbitmq.connector.publisher.MessagePublisher;
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.connector.rabbitmq.configuration.ZendeskConnectorConfigurationValues;
+import com.liferay.osb.customer.zendesk.connector.rabbitmq.util.AccountCustomerUtil;
 import com.liferay.osb.customer.zendesk.connector.rabbitmq.util.ZendeskModelListenerUtil;
 import com.liferay.osb.customer.zendesk.model.ZendeskOrganization;
+import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountEntry;
@@ -27,11 +29,14 @@ import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.PartnerEntry;
+import com.liferay.osb.model.PartnerWorker;
+import com.liferay.osb.model.PartnerWorkerConstants;
 import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.model.SupportResponse;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
+import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.osb.service.SupportRegionLocalServiceUtil;
 import com.liferay.osb.service.SupportResponseLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -40,8 +45,10 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -115,6 +122,12 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 					RABBITMQ_MESSAGE_EXCHANGE_NAME,
 				"zendesk.service.organization.create.or.update",
 				zendeskOrganization.toJSONObject());
+
+			addAccountCustomers(accountEntry);
+
+			if (accountEntry.isPartnerManagedSupport()) {
+				addPartnerWorkers(accountEntry);
+			}
 		}
 		catch (Exception e) {
 			throw new ModelListenerException(e);
@@ -143,6 +156,80 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		}
 		catch (Exception e) {
 			throw new ModelListenerException(e);
+		}
+	}
+
+	protected void addAccountCustomers(AccountEntry accountEntry)
+		throws PortalException {
+
+		for (AccountCustomer accountCustomer :
+				accountEntry.getAccountCustomers()) {
+
+			_accountCustomerUtil.addAccountCustomer(accountCustomer);
+		}
+	}
+
+	protected void addPartnerWorker(
+			AccountEntry accountEntry, PartnerWorker partnerWorker)
+		throws PortalException {
+
+		try {
+			User user = UserLocalServiceUtil.getUser(partnerWorker.getUserId());
+
+			Set<String> tags = new HashSet<>();
+
+			tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
+			tags.add(ZendeskTagConstants.OSB_PARTNER);
+
+			ZendeskUser zendeskUser = null;
+
+			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+				partnerWorker.getUserId());
+
+			if (zendeskUserId != 0) {
+				zendeskUser = ZendeskModelListenerUtil.getZendeskUser(
+					accountEntry, null, user);
+			}
+			else {
+				zendeskUser = ZendeskModelListenerUtil.getZendeskUser(
+					accountEntry, tags, user);
+			}
+
+			_messagePublisher.sendMessage(
+				ZendeskConnectorConfigurationValues.
+					RABBITMQ_MESSAGE_EXCHANGE_NAME,
+				"zendesk.service.user.create.or.update",
+				zendeskUser.toJSONObject());
+
+			if (zendeskUserId != 0) {
+				JSONObject jsonObject =
+					ZendeskModelListenerUtil.getTagsJSONObject(
+						tags, "users", zendeskUserId);
+
+				_messagePublisher.sendMessage(
+					ZendeskConnectorConfigurationValues.
+						RABBITMQ_MESSAGE_EXCHANGE_NAME,
+					"zendesk.service.tag.add", jsonObject);
+			}
+		}
+		catch (Exception e) {
+			throw new PortalException(e);
+		}
+	}
+
+	protected void addPartnerWorkers(AccountEntry accountEntry)
+		throws PortalException {
+
+		List<PartnerWorker> partnerWorkers =
+			PartnerWorkerLocalServiceUtil.getPartnerWorkers(
+				accountEntry.getPartnerEntryId());
+
+		for (PartnerWorker partnerWorker : partnerWorkers) {
+			if (partnerWorker.getRole() !=
+					PartnerWorkerConstants.ROLE_WATCHER) {
+
+				addPartnerWorker(accountEntry, partnerWorker);
+			}
 		}
 	}
 
@@ -269,10 +356,9 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 
 		tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
 
-		List<AccountCustomer> accountCustomers =
-			accountEntry.getAccountCustomers();
+		for (AccountCustomer accountCustomer :
+				accountEntry.getAccountCustomers()) {
 
-		for (AccountCustomer accountCustomer : accountCustomers) {
 			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
 				accountCustomer.getUserId());
 
@@ -296,6 +382,9 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			}
 		}
 	}
+
+	@Reference
+	private AccountCustomerUtil _accountCustomerUtil;
 
 	@Reference
 	private MessagePublisher _messagePublisher;
