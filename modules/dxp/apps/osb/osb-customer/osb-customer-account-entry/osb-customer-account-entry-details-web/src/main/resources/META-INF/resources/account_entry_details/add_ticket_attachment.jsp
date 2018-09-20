@@ -27,16 +27,17 @@ long[] supportRegionIds = accountEntry.getSupportRegionIds();
 
 long supportRegionId = supportRegionIds[0];
 
-FileRepositoryManager fileRepositoryManager = new FileRepositoryManagerImpl();
-
 FileRepository fileRepository = fileRepositoryManager.getFileRepository(supportRegionId);
 
 String fileRepositoryId = fileRepository.getFileRepositoryId();
 
-String uploadURL = FileRepositoryWebService.getUploadURL(fileRepositoryId);
-
-String token = FileRepositoryWebService.getToken(fileRepositoryId, zendeskTicketId);
+String uploadURL = fileRepositoryWebService.getUploadURL(fileRepositoryId);
 %>
+
+<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/file_repository_token" var="generateTokenURL">
+	<portlet:param name="fileRepositoryId" value="<%= fileRepositoryId %>" />
+	<portlet:param name="zendeskTicketId" value="<%= String.valueOf(zendeskTicketId) %>" />
+</liferay-portlet:resourceURL>
 
 <portlet:actionURL name="addTicketAttachment" var="addTicketAttachmentURL">
 	<portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntryId) %>" />
@@ -54,6 +55,7 @@ String token = FileRepositoryWebService.getToken(fileRepositoryId, zendeskTicket
 		HelpCenter.AddTicketAttachment,
 		{
 			addTicketAttachmentURL: '<%= addTicketAttachmentURL %>',
+			generateTokenURL: '<%= generateTokenURL %>',
 			portletNamespace: '${renderResponse.namespace}',
 			uploadURL: '<%= uploadURL %>',
 			zendeskTicketId: '<%= String.valueOf(zendeskTicketId) %>'

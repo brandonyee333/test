@@ -114,6 +114,9 @@ page import="java.util.List" %>
 <portlet:defineObjects />
 
 <%
+FileRepositoryManager fileRepositoryManager = (FileRepositoryManager)renderRequest.getAttribute(FileRepositoryManager.class.getName());
+FileRepositoryWebService fileRepositoryWebService = (FileRepositoryWebService)renderRequest.getAttribute(FileRepositoryWebService.class.getName());
+
 Format fullDateFormatDateTime = FastDateFormatFactoryUtil.getDateTime(DateFormat.FULL, DateFormat.FULL, locale, timeZone);
 
 Format longDateFormatDate = FastDateFormatFactoryUtil.getDate(DateFormat.LONG, locale, timeZone);
