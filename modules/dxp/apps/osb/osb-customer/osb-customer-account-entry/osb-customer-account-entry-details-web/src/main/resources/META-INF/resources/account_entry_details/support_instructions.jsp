@@ -18,7 +18,9 @@
 
 <%
 AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
+
 long accountEntryId = accountEntry.getAccountEntryId();
+
 String editInstructionsURL = accountEntryViewDisplayContext.getAccountEntryInstructionsEditURL();
 String instructions = HtmlUtil.escapeJS(accountEntry.getInstructions());
 %>
