@@ -126,8 +126,8 @@ public class EmailNotificationSender
 
 		List<InternetAddress> internetAddresses = new ArrayList<>();
 
-		Collection<Set<NotificationRecipient>> notificationRecipientsCollection =
-			notificationRecipients.values();
+		Collection<Set<NotificationRecipient>>
+			notificationRecipientsCollection = notificationRecipients.values();
 
 		Iterator<Set<NotificationRecipient>> iterator =
 			notificationRecipientsCollection.iterator();
