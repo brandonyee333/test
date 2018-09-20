@@ -231,12 +231,13 @@ public class OracleDataPartitioningExporter
 	private static final Logger _logger = LoggerFactory.getLogger(
 		OracleDataPartitioningExporter.class);
 
+	private static final Pattern _pattern = Pattern.compile(
+		"(.*):@(\\S+):(\\d+):(.*)");
+
 	private String _credentials;
 	private Map<String, String> _environment = System.getenv();
 	private ExportContext _exportContext;
 	private final String _fileExtension;
-	private final Pattern _pattern = Pattern.compile(
-		"(.*):@(\\S+):(\\d+):(.*)");
 	private final String _scriptComment;
 
 }
