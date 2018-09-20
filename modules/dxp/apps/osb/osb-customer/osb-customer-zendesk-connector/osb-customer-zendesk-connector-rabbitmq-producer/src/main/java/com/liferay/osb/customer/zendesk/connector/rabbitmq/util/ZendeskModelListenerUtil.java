@@ -141,7 +141,7 @@ public class ZendeskModelListenerUtil {
 			zendeskUser.setOrganizationName(accountEntry.getName());
 		}
 
-		if (tags != null) {
+		if ((tags != null) && !tags.isEmpty()) {
 			zendeskUser.setTags(tags);
 		}
 

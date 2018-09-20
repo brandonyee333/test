@@ -114,7 +114,7 @@ public class ZendeskUser {
 
 		JSONArray tagsJSONArray = JSONFactoryUtil.createJSONArray();
 
-		if (_tags != null) {
+		if ((_tags != null) && !_tags.isEmpty()) {
 			for (String tag : _tags) {
 				tagsJSONArray.put(tag);
 			}
