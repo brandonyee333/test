@@ -69,6 +69,14 @@
 	<!-- Configurator -->
 
 	<bean class="com.liferay.portal.kernel.messaging.config.PluginMessagingConfigurator" id="messagingConfigurator">
+		<property name="destinations">
+			<list>
+				<ref bean="destination.lcs_commands" />
+				<ref bean="destination.lcs_message_bus" />
+				<ref bean="destination.lcs_request" />
+				<ref bean="destination.lcs_scheduler" />
+			</list>
+		</property>
 		<property name="messageListeners">
 			<map key-type="java.lang.String" value-type="java.util.List">
 				<entry key="#{T(com.liferay.portal.kernel.license.messaging.LicenseManagerMessageType).MESSAGE_BUS_DESTINATION_REQUEST}">
@@ -98,14 +106,6 @@
 					</list>
 				</entry>
 			</map>
-		</property>
-		<property name="destinations">
-			<list>
-				<ref bean="destination.lcs_commands" />
-				<ref bean="destination.lcs_message_bus" />
-				<ref bean="destination.lcs_request" />
-				<ref bean="destination.lcs_scheduler" />
-			</list>
 		</property>
 	</bean>
 
