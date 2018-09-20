@@ -15,8 +15,10 @@
 package com.liferay.osb.customer.zendesk.connector.rabbitmq.util;
 
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskLocales;
+import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.model.AccountEntry;
+import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -24,9 +26,7 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
-import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.Set;
 
@@ -39,14 +39,46 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true)
 public class ZendeskModelListenerUtil {
 
-	public static String convertToTag(String s) {
-		s = StringUtil.toLowerCase(s);
-
-		s = StringUtil.replace(s, CharPool.SPACE, CharPool.UNDERLINE);
-		s = StringUtil.replace(s, CharPool.OPEN_PARENTHESIS, StringPool.BLANK);
-		s = StringUtil.replace(s, CharPool.CLOSE_PARENTHESIS, StringPool.BLANK);
-
-		return s;
+	public static String convertToTag(ProductEntry productEntry) {
+		if (productEntry.isAnalyticsCloud()) {
+			return ZendeskTagConstants.LIFERAY_ANALYTICS_CLOUD;
+		}
+		else if (productEntry.isCommerce()) {
+			return ZendeskTagConstants.LIFERAY_COMMERCE;
+		}
+		else if (productEntry.isDeveloperTools()) {
+			return ZendeskTagConstants.DEVELOPER_TOOLS;
+		}
+		else if (productEntry.isDeviceDetection()) {
+			return ZendeskTagConstants.MOBILE_DEVICE_DETECTION;
+		}
+		else if (productEntry.isDigitalEnterprise()) {
+			return ZendeskTagConstants.LIFERAY_DXP;
+		}
+		else if (productEntry.isEnterpriseSearch()) {
+			return ZendeskTagConstants.ENTERPRISE_SEARCH;
+		}
+		else if (productEntry.isExtendedPremiumSupport()) {
+			return ZendeskTagConstants.EXTENDED_PREMIUM_SUPPORT;
+		}
+		else if (productEntry.isManagementTools()) {
+			return ZendeskTagConstants.MANAGEMENT_TOOLS_LCS;
+		}
+		else if (productEntry.isMobileExperience()) {
+			return ZendeskTagConstants.MOBILE_EXPERIENCE;
+		}
+		else if (productEntry.isPortal()) {
+			return ZendeskTagConstants.LIFERAY_PORTAL;
+		}
+		else if (productEntry.isProductivityTools()) {
+			return ZendeskTagConstants.PRODUCTIVITY_TOOLS_SYNC;
+		}
+		else if (productEntry.isSocialOffice()) {
+			return ZendeskTagConstants.SOCIAL_OFFICE;
+		}
+		else {
+			return StringPool.BLANK;
+		}
 	}
 
 	public static String convertToZendeskLocale(String locale) {

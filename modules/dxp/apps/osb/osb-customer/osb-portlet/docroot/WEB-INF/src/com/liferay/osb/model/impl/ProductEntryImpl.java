@@ -115,6 +115,28 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		return ListTypeServiceUtil.getListTypes(listType);
 	}
 
+	public boolean isAnalyticsCloud() {
+		String name = getName();
+
+		if (name.contains("Analytics Cloud")) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	public boolean isCommerce() {
+		String name = getName();
+
+		if (name.contains("Commerce")) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
 	public boolean isDeveloperTools() {
 		String name = getName();
 

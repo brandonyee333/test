@@ -163,7 +163,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			ProductEntry productEntry = offeringEntry.getProductEntry();
 
 			String zendeskTag = ZendeskModelListenerUtil.convertToTag(
-				productEntry.getName());
+				productEntry);
 
 			tags.add(zendeskTag);
 		}
