@@ -101,7 +101,7 @@ public class ZendeskMapperUtil {
 		return zendeskUser.getZendeskUserId();
 	}
 
-	public AccountEntry getAccountEntry(long zendeskOrganizationId)
+	public long getAccountEntryId(long zendeskOrganizationId)
 		throws PortalException {
 
 		long classNameId = _classNameLocalService.getClassNameId(
@@ -118,8 +118,7 @@ public class ZendeskMapperUtil {
 
 		ExternalIdMapper externalIdMapper = externalIdMappers.get(0);
 
-		return AccountEntryLocalServiceUtil.getAccountEntry(
-			externalIdMapper.getClassPK());
+		return externalIdMapper.getClassPK();
 	}
 
 	public long getZendeskUserId(long userId) throws PortalException {

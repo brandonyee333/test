@@ -67,12 +67,11 @@ public class FileRepositoryTokenMVCResourceCommand
 		ZendeskTicket zendeskTicket = _zendeskTicketWebService.getZendeskTicket(
 			zendeskTicketId);
 
-		AccountEntry accountEntry = _zendeskMapperUtil.getAccountEntry(
+		long accountEntryId = _zendeskMapperUtil.getAccountEntryId(
 			zendeskTicket.getZendeskOrganizationId());
 
 		TicketEntryPermissionChecker.check(
-			themeDisplay.getPermissionChecker(),
-			accountEntry.getAccountEntryId(),
+			themeDisplay.getPermissionChecker(), accountEntryId,
 			TicketActionKeys.ADD_TICKET_ATTACHMENT);
 
 		String token = _fileRepositoryWebService.getToken(

@@ -22,6 +22,7 @@ import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
 import com.liferay.osb.model.AccountEntry;
+import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -59,13 +60,15 @@ public class AddTicketAttachmentMVCRenderCommand extends BaseMVCRenderCommand {
 		ZendeskTicket zendeskTicket = _zendeskTicketWebService.getZendeskTicket(
 			zendeskTicketId);
 
-		AccountEntry accountEntry = _zendeskMapperUtil.getAccountEntry(
+		long accountEntryId = _zendeskMapperUtil.getAccountEntryId(
 			zendeskTicket.getZendeskOrganizationId());
 
 		TicketEntryPermissionChecker.check(
-			themeDisplay.getPermissionChecker(),
-			accountEntry.getAccountEntryId(),
+			themeDisplay.getPermissionChecker(), accountEntryId,
 			TicketActionKeys.ADD_TICKET_ATTACHMENT);
+
+		AccountEntry accountEntry =
+			AccountEntryLocalServiceUtil.getAccountEntry(accountEntryId);
 
 		renderRequest.setAttribute(
 			AccountEntryDetailsWebKeys.ACCOUNT_ENTRY, accountEntry);
