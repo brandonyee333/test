@@ -18,10 +18,6 @@ ${alertMessage.data}
 
 <br />
 
-${heading.data}
-
-<br />
-
 ${additionalNotes.data}
 
 <br />
