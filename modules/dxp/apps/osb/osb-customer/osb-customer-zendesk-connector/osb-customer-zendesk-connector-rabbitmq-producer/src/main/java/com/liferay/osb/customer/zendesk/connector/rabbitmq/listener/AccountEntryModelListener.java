@@ -43,6 +43,7 @@ import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.HashSet;
@@ -165,7 +166,9 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			String zendeskTag = ZendeskModelListenerUtil.convertToTag(
 				productEntry);
 
-			tags.add(zendeskTag);
+			if (Validator.isNotNull(zendeskTag)) {
+				tags.add(zendeskTag);
+			}
 		}
 
 		return tags;
