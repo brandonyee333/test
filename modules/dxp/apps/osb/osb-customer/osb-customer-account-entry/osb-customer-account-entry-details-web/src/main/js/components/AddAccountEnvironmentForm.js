@@ -9,10 +9,10 @@ export default class AddAccountEnvironmentForm extends React.Component {
 	addEnvironmentFormRef = React.createRef();
 
 	state = {
-		[`${this.props.portletNamespace}envLFRIndex`]: null,
-		[`${this.props.portletNamespace}patchLevelFile`]: null,
-		[`${this.props.portletNamespace}portalExtFile`]: null,
-		[`${this.props.portletNamespace}productIndex`]: null
+		envLFRIndex: null,
+		patchLevelFile: null,
+		portalExtFile: null,
+		productIndex: null
 	};
 
 	handleFileChange = event => {
@@ -59,10 +59,12 @@ export default class AddAccountEnvironmentForm extends React.Component {
 			values
 		} = this.props;
 
-		const envLFRIndex = this.state[`${portletNamespace}envLFRIndex`];
-		const patchLevelFile = this.state[`${portletNamespace}patchLevelFile`];
-		const portalExtFile = this.state[`${portletNamespace}portalExtFile`];
-		const productIndex = this.state[`${portletNamespace}productIndex`];
+		const {
+			envLFRIndex,
+			patchLevelFile,
+			portalExtFile,
+			productIndex
+		} = this.state;
 
 		const initialValues = {
 			[`${portletNamespace}envAS`]: '',
