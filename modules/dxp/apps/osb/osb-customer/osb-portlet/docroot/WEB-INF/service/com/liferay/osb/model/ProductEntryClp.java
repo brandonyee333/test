@@ -515,6 +515,44 @@ public class ProductEntryClp extends BaseModelImpl<ProductEntry>
 	}
 
 	@Override
+	public boolean isAnalyticsCloud() {
+		try {
+			String methodName = "isAnalyticsCloud";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			Boolean returnObj = (Boolean)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public boolean isCommerce() {
+		try {
+			String methodName = "isCommerce";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			Boolean returnObj = (Boolean)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
 	public boolean isDeveloperTools() {
 		try {
 			String methodName = "isDeveloperTools";

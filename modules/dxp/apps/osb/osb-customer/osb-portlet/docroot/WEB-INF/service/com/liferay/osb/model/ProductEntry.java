@@ -69,6 +69,10 @@ public interface ProductEntry extends ProductEntryModel, PersistedModel {
 
 	public java.util.List<com.liferay.portal.kernel.model.ListType> getVersionsListTypes();
 
+	public boolean isAnalyticsCloud();
+
+	public boolean isCommerce();
+
 	public boolean isDeveloperTools();
 
 	public boolean isDeviceDetection();
