@@ -124,7 +124,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 								<div className="form-group">
 									<label
 										className="control-label"
-										htmlFor="accountEnvironmentName"
+										htmlFor={`${portletNamespace}accountEnvironmentName`}
 									>
 										{Liferay.Language.get('name')}
 
@@ -156,7 +156,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 								<div className="form-group">
 									<label
 										className="control-label"
-										htmlFor="accountEnvironmentProduct"
+										htmlFor={`${portletNamespace}accountEnvironmentProduct`}
 									>
 										{Liferay.Language.get('product')}
 
@@ -195,7 +195,10 @@ export default class AddAccountEnvironmentForm extends React.Component {
 
 							<div className="col-md-3">
 								<div className="form-group">
-									<label className="control-label" htmlFor="envLFR">
+									<label
+										className="control-label"
+										htmlFor={`${portletNamespace}envLFR`}
+									>
 										{Liferay.Language.get('liferay-version')}
 
 										<svg className="lexicon-icon lexicon-icon-asterisk">
@@ -238,7 +241,10 @@ export default class AddAccountEnvironmentForm extends React.Component {
 
 							<div className="col-md-6">
 								<div className="form-group">
-									<label className="control-label" htmlFor="envOS">
+									<label
+										className="control-label"
+										htmlFor={`${portletNamespace}envOS`}
+									>
 										{Liferay.Language.get('operating-system')}
 
 										<svg className="lexicon-icon lexicon-icon-asterisk">
@@ -281,7 +287,10 @@ export default class AddAccountEnvironmentForm extends React.Component {
 
 							<div className="col-md-6">
 								<div className="form-group">
-									<label className="control-label" htmlFor="envJVM">
+									<label
+										className="control-label"
+										htmlFor={`${portletNamespace}envJVM`}
+									>
 										{Liferay.Language.get('java-version')}
 
 										<svg className="lexicon-icon lexicon-icon-asterisk">
@@ -324,7 +333,10 @@ export default class AddAccountEnvironmentForm extends React.Component {
 
 							<div className="col-md-6">
 								<div className="form-group">
-									<label className="control-label" htmlFor="envAS">
+									<label
+										className="control-label"
+										htmlFor={`${portletNamespace}envAS`}
+									>
 										{Liferay.Language.get('application-server')}
 
 										<svg className="lexicon-icon lexicon-icon-asterisk">
@@ -367,7 +379,10 @@ export default class AddAccountEnvironmentForm extends React.Component {
 
 							<div className="col-md-6">
 								<div className="form-group">
-									<label className="control-label" htmlFor="envDB">
+									<label
+										className="control-label"
+										htmlFor={`${portletNamespace}envDB`}
+									>
 										{Liferay.Language.get('database')}
 
 										<svg className="lexicon-icon lexicon-icon-asterisk">
@@ -410,7 +425,10 @@ export default class AddAccountEnvironmentForm extends React.Component {
 
 							<div className="col-md-6">
 								<div className="form-group">
-									<label className="control-label" htmlFor="envBrowser">
+									<label
+										className="control-label"
+										htmlFor={`${portletNamespace}envBrowser`}
+									>
 										{Liferay.Language.get('browser')}
 									</label>
 
@@ -452,7 +470,10 @@ export default class AddAccountEnvironmentForm extends React.Component {
 							productEntries[productIndex].envListTypes[envLFRIndex].envCS ? (
 								<div className="col-md-6">
 									<div className="form-group">
-										<label className="control-label" htmlFor="envCS">
+										<label
+											className="control-label"
+											htmlFor={`${portletNamespace}envCS`}
+										>
 											{Liferay.Language.get('cloud-services')}
 										</label>
 
@@ -494,7 +515,10 @@ export default class AddAccountEnvironmentForm extends React.Component {
 								.envSearch ? (
 								<div className="col-md-12">
 									<div className="form-group">
-										<label className="control-label" htmlFor="envSearch">
+										<label
+											className="control-label"
+											htmlFor={`${portletNamespace}envSearch`}
+										>
 											{Liferay.Language.get('search')}
 										</label>
 
@@ -531,7 +555,10 @@ export default class AddAccountEnvironmentForm extends React.Component {
 
 							<div className="col-md-12">
 								<div className="form-group">
-									<label className="control-label" htmlFor="portalExt">
+									<label
+										className="control-label"
+										htmlFor={`${portletNamespace}portalExt`}
+									>
 										{Liferay.Language.get('portal-ext')}
 
 										<svg className="lexicon-icon lexicon-icon-asterisk">
@@ -583,7 +610,10 @@ export default class AddAccountEnvironmentForm extends React.Component {
 
 							<div className="col-md-12">
 								<div className="form-group">
-									<label className="control-label" htmlFor="patchLevel">
+									<label
+										className="control-label"
+										htmlFor={`${portletNamespace}patchLevel`}
+									>
 										{Liferay.Language.get('patch-info')}
 
 										<svg className="lexicon-icon lexicon-icon-asterisk">
