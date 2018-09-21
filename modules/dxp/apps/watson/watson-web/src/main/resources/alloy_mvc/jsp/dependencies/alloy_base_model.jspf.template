@@ -22,7 +22,7 @@ public static class ${baseclassname} extends ${classname}Wrapper {
 	}
 
 	public ${baseclassname}(${modelpath}.${classname} ${instancename}) {
-		super(${instancename});
+		super((${modelpath}.${classname})WatsonAlloyControllerImpl.copyBaseModelProperties(${instancename}, new ${classname}Impl()));
 	}
 
 	public static ${classname} add(HttpServletRequest request) throws Exception {
@@ -146,10 +146,6 @@ public static class ${baseclassname} extends ${classname}Wrapper {
 	}
 
 	public static ${classname} create(long ${instancename}Id) throws Exception {
-		if (${instancename}Id <= 0) {
-			${instancename}Id = CounterLocalServiceUtil.increment();
-		}
-
 		return new ${classname}((${modelpath}.${classname})baseModelAlloyServiceInvoker.createModel(${instancename}Id));
 	}
 

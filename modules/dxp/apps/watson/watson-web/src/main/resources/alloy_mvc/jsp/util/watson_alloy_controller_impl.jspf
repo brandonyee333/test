@@ -17,6 +17,24 @@
 <%!
 public static class WatsonAlloyControllerImpl extends BaseAlloyControllerImpl {
 
+	public static <T> BaseModel<T> copyBaseModelProperties(BaseModel<T> sourceBaseModel, BaseModel<T> targetBaseModel) {
+		Map<String, Object> sourceModelAttributes = sourceBaseModel.getModelAttributes();
+
+		Map<String, Object> targetModelAttributes = targetBaseModel.getModelAttributes();
+
+		String[] ignoreProperties = new String[] {"entityCacheEnabled", "finderCacheEnabled"};
+
+		for (Map.Entry<String, Object> attribute : sourceModelAttributes.entrySet()) {
+			if (!targetModelAttributes.containsKey(attribute.getKey())) {
+				ArrayUtil.append(ignoreProperties, attribute.getKey());
+			}
+		}
+
+		BeanPropertiesUtil.copyProperties(sourceBaseModel, targetBaseModel, ignoreProperties);
+
+		return targetBaseModel;
+	}
+
 	public static String getControllerName(long classNameId) throws Exception {
 		ClassName className = ClassNameLocalServiceUtil.fetchClassName(classNameId);
 
