@@ -58,9 +58,6 @@ public class ZendeskModelListenerUtil {
 		else if (productEntry.isEnterpriseSearch()) {
 			return ZendeskTagConstants.ENTERPRISE_SEARCH;
 		}
-		else if (productEntry.isExtendedPremiumSupport()) {
-			return ZendeskTagConstants.EXTENDED_PREMIUM_SUPPORT;
-		}
 		else if (productEntry.isManagementTools()) {
 			return ZendeskTagConstants.MANAGEMENT_TOOLS_LCS;
 		}

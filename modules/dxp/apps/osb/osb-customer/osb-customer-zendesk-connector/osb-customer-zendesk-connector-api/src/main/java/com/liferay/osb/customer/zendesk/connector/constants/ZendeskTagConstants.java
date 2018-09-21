@@ -23,9 +23,6 @@ public class ZendeskTagConstants {
 
 	public static final String ENTERPRISE_SEARCH = "enterprise_search";
 
-	public static final String EXTENDED_PREMIUM_SUPPORT =
-		"extended_premium_support";
-
 	public static final String LIFERAY_ANALYTICS_CLOUD =
 		"liferay_analytics_cloud";
 
