@@ -16,7 +16,7 @@ export default class AccountEnvironments extends React.Component {
 		environments: PropTypes.array.isRequired,
 		permitAdd: PropTypes.bool.isRequired,
 		portletNamespace: PropTypes.string.isRequired,
-		productEntries: PropTypes.array.isRequired
+		environmentConfiguration: PropTypes.object.isRequired
 	};
 
 	handleCloseModal = () =>
@@ -47,7 +47,7 @@ export default class AccountEnvironments extends React.Component {
 			environments,
 			permitAdd,
 			portletNamespace,
-			productEntries
+			environmentConfiguration
 		} = this.props;
 
 		const {showModal} = this.state;
@@ -132,7 +132,7 @@ export default class AccountEnvironments extends React.Component {
 				addEnvironmentURL={addEnvironmentURL}
 				handleCloseModal={this.handleCloseModal}
 				portletNamespace={portletNamespace}
-				productEntries={productEntries}
+				environmentConfiguration={environmentConfiguration}
 			/>
 		);
 

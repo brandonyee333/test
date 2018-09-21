@@ -23,7 +23,7 @@ String addEnvironmentURL = accountEntryViewDisplayContext.getAccountEnvironmentA
 
 JSONArray accountEnvironmentsJSONArray = accountEntryViewDisplayContext.getAccountEnvironmentsJSONArray();
 
-JSONArray productEntriesJSONArray = accountEntryViewDisplayContext.getProductEntriesJSONArray();
+JSONObject environmentConfigurationJSONObject = accountEntryViewDisplayContext.getEnvironmentConfigurationJSONObject();
 %>
 
 <div class="account-environments card" id="<portlet:namespace />accountEnvironments"></div>
@@ -36,7 +36,7 @@ JSONArray productEntriesJSONArray = accountEntryViewDisplayContext.getProductEnt
 			environments: <%= accountEnvironmentsJSONArray %>,
 			permitAdd: <%= OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.ADD_ACCOUNT_ENVIRONMENT) %>,
 			portletNamespace: '<portlet:namespace />',
-			productEntries: <%= productEntriesJSONArray %>
+			environmentConfiguration: <%= environmentConfigurationJSONObject %>
 		},
 		document.getElementById('<portlet:namespace />accountEnvironments')
 	);

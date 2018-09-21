@@ -10,14 +10,16 @@ export default class AddAccountEnvironmentForm extends React.Component {
 
 	state = {
 		envLFRIndex: null,
+		envLFRVersion: null,
 		patchLevelFile: null,
 		portalExtFile: null,
-		productIndex: null
+		productEntryIdIndex: null
 	};
 
 	handleFileChange = event => {
 		const {files} = event.target;
-		const {name} = event.target;
+		const name = event.target.name.replace(
+			[`${this.props.portletNamespace}`], '');
 
 		this.setState({
 			[`${name}File`]: files.length > 0 ? files[0].name : null
@@ -28,15 +30,20 @@ export default class AddAccountEnvironmentForm extends React.Component {
 
 	handleSelectChange = event => {
 		const {options} = event.target;
+		const {value} = options[options.selectedIndex];
 		const fieldNameIndex = options[options.selectedIndex].id.replace(
 			/\D+/g,
 			''
 		);
 
-		const {name} = event.target;
+		const name = event.target.name.replace(
+			[`${this.props.portletNamespace}`], '');
+
+		const envLFRVersion = (name == 'envLFR') ? value : null;
 
 		this.setState({
-			[`${name}Index`]: fieldNameIndex
+			[`${name}Index`]: fieldNameIndex,
+			envLFRVersion
 		});
 
 		this.refs.formikInstanceRef.handleChange(event);
@@ -54,16 +61,17 @@ export default class AddAccountEnvironmentForm extends React.Component {
 			handleSubmit,
 			isSubmitting,
 			portletNamespace,
-			productEntries,
+			environmentConfiguration,
 			touched,
 			values
 		} = this.props;
 
 		const {
 			envLFRIndex,
+			envLFRVersion,
 			patchLevelFile,
 			portalExtFile,
-			productIndex
+			productEntryIdIndex
 		} = this.state;
 
 		const initialValues = {
@@ -78,7 +86,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 			[`${portletNamespace}name`]: '',
 			[`${portletNamespace}patchLevel`]: '',
 			[`${portletNamespace}portalExt`]: '',
-			[`${portletNamespace}product`]: ''
+			[`${portletNamespace}productEntryId`]: ''
 		};
 
 		const requiredSchema = yup
@@ -94,8 +102,11 @@ export default class AddAccountEnvironmentForm extends React.Component {
 			[`${portletNamespace}name`]: requiredSchema,
 			[`${portletNamespace}patchLevel`]: requiredSchema,
 			[`${portletNamespace}portalExt`]: requiredSchema,
-			[`${portletNamespace}product`]: requiredSchema
+			[`${portletNamespace}productEntryId`]: requiredSchema
 		});
+
+		const {products} = environmentConfiguration;
+		const {envLFRVersions} = environmentConfiguration;
 
 		return (
 			<Formik
@@ -111,14 +122,6 @@ export default class AddAccountEnvironmentForm extends React.Component {
 						onSubmit={props.handleSubmit}
 						ref={this.addEnvironmentFormRef}
 					>
-						<input
-							name={`${portletNamespace}productEntryId`}
-							type="hidden"
-							value={
-								productIndex ? productEntries[productIndex].productEntryId : ''
-							}
-						/>
-
 						<div className="row">
 							<div className="col-md-12">
 								<div className="form-group">
@@ -168,27 +171,27 @@ export default class AddAccountEnvironmentForm extends React.Component {
 									<select
 										className="form-control"
 										id={`${portletNamespace}accountEnvironmentProduct`}
-										name={`${portletNamespace}product`}
+										name={`${portletNamespace}productEntryId`}
 										onBlur={props.handleBlur}
 										onChange={this.handleSelectChange}
 									>
 										<option value="" label={Liferay.Language.get('select')} />
 
-										{productEntries.map((productEntry, index) => (
+										{products.map((product, index) => (
 											<option
 												key={'product-' + index}
 												id={'product-' + index}
-												label={productEntry.displayName}
-												value={productEntry.displayName}
+												label={product.displayName}
+												value={product.productEntryId}
 											/>
 										))}
 									</select>
 								</div>
 
-								{props.touched[`${portletNamespace}product`] &&
-									props.errors[`${portletNamespace}product`] && (
+								{props.touched[`${portletNamespace}productEntryId`] &&
+									props.errors[`${portletNamespace}productEntryId`] && (
 										<div className="alert alert-danger" role="alert">
-											{props.errors[`${portletNamespace}product`]}
+											{props.errors[`${portletNamespace}productEntryId`]}
 										</div>
 									)}
 							</div>
@@ -208,7 +211,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 
 									<select
 										className="form-control"
-										disabled={productIndex == null}
+										disabled={productEntryIdIndex == null}
 										id={`${portletNamespace}envLFR`}
 										name={`${portletNamespace}envLFR`}
 										onBlur={props.handleBlur}
@@ -216,14 +219,14 @@ export default class AddAccountEnvironmentForm extends React.Component {
 									>
 										<option value="" label={Liferay.Language.get('select')} />
 
-										{productIndex
-											? productEntries[productIndex].envListTypes.map(
-													(listType, index) => (
+										{productEntryIdIndex
+											? products[productEntryIdIndex].envLFR.map(
+													(version, index) => (
 														<option
 															key={'envLFR-' + index}
 															id={'envLFR-' + index}
-															label={listType.envLFR[0].name}
-															value={listType.envLFR[0].value}
+															label={version.name}
+															value={version.value}
 														/>
 													)
 											  )
@@ -262,10 +265,10 @@ export default class AddAccountEnvironmentForm extends React.Component {
 									>
 										<option value="" label={Liferay.Language.get('select')} />
 
-										{productIndex && envLFRIndex
-											? productEntries[productIndex].envListTypes[
+										{envLFRIndex && envLFRVersion
+											? envLFRVersions[
 													envLFRIndex
-											  ].envOS.map((envOS, index) => (
+											  ][envLFRVersion].envOS.map((envOS, index) => (
 													<option
 														key={'envOS-' + index}
 														id={'envOS-' + index}
@@ -308,10 +311,10 @@ export default class AddAccountEnvironmentForm extends React.Component {
 									>
 										<option value="" label={Liferay.Language.get('select')} />
 
-										{productIndex && envLFRIndex
-											? productEntries[productIndex].envListTypes[
+										{envLFRIndex && envLFRVersion
+											? envLFRVersions[
 													envLFRIndex
-											  ].envJVM.map((envJVM, index) => (
+											  ][envLFRVersion].envJVM.map((envJVM, index) => (
 													<option
 														key={'envJVM-' + index}
 														id={'envJVM-' + index}
@@ -354,10 +357,10 @@ export default class AddAccountEnvironmentForm extends React.Component {
 									>
 										<option value="" label={Liferay.Language.get('select')} />
 
-										{productIndex && envLFRIndex
-											? productEntries[productIndex].envListTypes[
+										{envLFRIndex && envLFRVersion
+											? envLFRVersions[
 													envLFRIndex
-											  ].envAS.map((envAS, index) => (
+											  ][envLFRVersion].envAS.map((envAS, index) => (
 													<option
 														key={'envAS-' + index}
 														id={'envAS-' + index}
@@ -400,10 +403,10 @@ export default class AddAccountEnvironmentForm extends React.Component {
 									>
 										<option value="" label={Liferay.Language.get('select')} />
 
-										{productIndex && envLFRIndex
-											? productEntries[productIndex].envListTypes[
+										{envLFRIndex && envLFRVersion
+											? envLFRVersions[
 													envLFRIndex
-											  ].envDB.map((envDB, index) => (
+											  ][envLFRVersion].envDB.map((envDB, index) => (
 													<option
 														key={'envDB-' + index}
 														id={'envDB-' + index}
@@ -442,10 +445,10 @@ export default class AddAccountEnvironmentForm extends React.Component {
 									>
 										<option value="" label={Liferay.Language.get('select')} />
 
-										{productIndex && envLFRIndex
-											? productEntries[productIndex].envListTypes[
+										{envLFRIndex && envLFRVersion
+											? envLFRVersions[
 													envLFRIndex
-											  ].envBrowser.map((envBrowser, index) => (
+											  ][envLFRVersion].envBrowser.map((envBrowser, index) => (
 													<option
 														key={'envBrowser-' + index}
 														id={'envBrowser-' + index}
@@ -465,9 +468,11 @@ export default class AddAccountEnvironmentForm extends React.Component {
 									)}
 							</div>
 
-							{productIndex &&
-							envLFRIndex &&
-							productEntries[productIndex].envListTypes[envLFRIndex].envCS ? (
+							{envLFRIndex &&
+							 envLFRVersion &&
+							 envLFRVersions[
+									envLFRIndex
+							 ][envLFRVersion].envCS ? (
 								<div className="col-md-6">
 									<div className="form-group">
 										<label
@@ -487,9 +492,9 @@ export default class AddAccountEnvironmentForm extends React.Component {
 										>
 											<option value="" label={Liferay.Language.get('select')} />
 
-											{productEntries[productIndex].envListTypes[
-												envLFRIndex
-											].envCS.map((envCS, index) => (
+											{envLFRVersions[
+													envLFRIndex
+											 ][envLFRVersion].envCS.map((envCS, index) => (
 												<option
 													key={'envCS-' + index}
 													id={'envCS-' + index}
@@ -509,10 +514,10 @@ export default class AddAccountEnvironmentForm extends React.Component {
 								</div>
 							) : null}
 
-							{productIndex &&
-							envLFRIndex &&
-							productEntries[productIndex].envListTypes[envLFRIndex]
-								.envSearch ? (
+							{envLFRIndex &&
+							 envLFRVersion &&
+							 productEntryIdIndex &&
+							 'enterpriseSearch' in products[productEntryIdIndex] ? (
 								<div className="col-md-12">
 									<div className="form-group">
 										<label
@@ -531,9 +536,13 @@ export default class AddAccountEnvironmentForm extends React.Component {
 											onBlur={props.handleBlur}
 											onChange={props.handleChange}
 										>
-											{productEntries[productIndex].envListTypes[
-												envLFRIndex
-											].envSearch.map((envSearch, index) => (
+											{envLFRVersions[envLFRIndex][
+													envLFRVersion
+											 ].envSearch[products[productEntryIdIndex].enterpriseSearch
+												? 0 : 1
+											 ][products[productEntryIdIndex].enterpriseSearch
+										 		? 'enterprise' : 'standard'
+											 ].map((envSearch, index) => (
 												<option
 													key={'envSearch-' + index}
 													id={'envSearch-' + index}
