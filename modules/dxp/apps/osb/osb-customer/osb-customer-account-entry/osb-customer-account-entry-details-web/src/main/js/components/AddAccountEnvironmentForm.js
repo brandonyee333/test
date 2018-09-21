@@ -174,8 +174,8 @@ export default class AddAccountEnvironmentForm extends React.Component {
 
 										{productEntries.map((productEntry, index) => (
 											<option
-												id={'product-' + index}
 												key={'product-' + index}
+												id={'product-' + index}
 												label={productEntry.displayName}
 												value={productEntry.displayName}
 											/>
@@ -215,8 +215,8 @@ export default class AddAccountEnvironmentForm extends React.Component {
 											? productEntries[productIndex].envListTypes.map(
 													(listType, index) => (
 														<option
-															id={'envLFR-' + index}
 															key={'envLFR-' + index}
+															id={'envLFR-' + index}
 															label={listType.envLFR[0].name}
 															value={listType.envLFR[0].value}
 														/>
@@ -259,8 +259,8 @@ export default class AddAccountEnvironmentForm extends React.Component {
 													envLFRIndex
 											  ].envOS.map((envOS, index) => (
 													<option
-														id={'envOS-' + index}
 														key={'envOS-' + index}
+														id={'envOS-' + index}
 														label={envOS.name}
 														value={envOS.value}
 													/>
@@ -302,8 +302,8 @@ export default class AddAccountEnvironmentForm extends React.Component {
 													envLFRIndex
 											  ].envJVM.map((envJVM, index) => (
 													<option
-														id={'envJVM-' + index}
 														key={'envJVM-' + index}
+														id={'envJVM-' + index}
 														label={envJVM.name}
 														value={envJVM.value}
 													/>
@@ -345,8 +345,8 @@ export default class AddAccountEnvironmentForm extends React.Component {
 													envLFRIndex
 											  ].envAS.map((envAS, index) => (
 													<option
-														id={'envAS-' + index}
 														key={'envAS-' + index}
+														id={'envAS-' + index}
 														label={envAS.name}
 														value={envAS.value}
 													/>
@@ -388,8 +388,8 @@ export default class AddAccountEnvironmentForm extends React.Component {
 													envLFRIndex
 											  ].envDB.map((envDB, index) => (
 													<option
-														id={'envDB-' + index}
 														key={'envDB-' + index}
+														id={'envDB-' + index}
 														label={envDB.name}
 														value={envDB.value}
 													/>
@@ -427,8 +427,8 @@ export default class AddAccountEnvironmentForm extends React.Component {
 													envLFRIndex
 											  ].envBrowser.map((envBrowser, index) => (
 													<option
-														id={'envBrowser-' + index}
 														key={'envBrowser-' + index}
+														id={'envBrowser-' + index}
 														label={envBrowser.name}
 														value={envBrowser.value}
 													/>
@@ -468,8 +468,8 @@ export default class AddAccountEnvironmentForm extends React.Component {
 												envLFRIndex
 											].envCS.map((envCS, index) => (
 												<option
-													id={'envCS-' + index}
 													key={'envCS-' + index}
+													id={'envCS-' + index}
 													label={envCS.name}
 													value={envCS.value}
 												/>
@@ -509,8 +509,8 @@ export default class AddAccountEnvironmentForm extends React.Component {
 												envLFRIndex
 											].envSearch.map((envSearch, index) => (
 												<option
-													id={'envSearch-' + index}
 													key={'envSearch-' + index}
+													id={'envSearch-' + index}
 													label={envSearch.name}
 													value={envSearch.value}
 												/>
