@@ -22,7 +22,7 @@ public static class WatsonListTypeRelBaseModel extends WatsonListTypeRelWrapper 
 	}
 
 	public WatsonListTypeRelBaseModel(com.liferay.watson.model.WatsonListTypeRel watsonListTypeRel) {
-		super(watsonListTypeRel);
+		super((com.liferay.watson.model.WatsonListTypeRel)WatsonAlloyControllerImpl.copyBaseModelProperties(watsonListTypeRel, new WatsonListTypeRelImpl()));
 	}
 
 	public static WatsonListTypeRel add(HttpServletRequest request) throws Exception {
@@ -146,10 +146,6 @@ public static class WatsonListTypeRelBaseModel extends WatsonListTypeRelWrapper 
 	}
 
 	public static WatsonListTypeRel create(long watsonListTypeRelId) throws Exception {
-		if (watsonListTypeRelId <= 0) {
-			watsonListTypeRelId = CounterLocalServiceUtil.increment();
-		}
-
 		return new WatsonListTypeRel((com.liferay.watson.model.WatsonListTypeRel)baseModelAlloyServiceInvoker.createModel(watsonListTypeRelId));
 	}
 

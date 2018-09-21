@@ -22,7 +22,7 @@ public static class WatsonHistoryBaseModel extends WatsonHistoryWrapper {
 	}
 
 	public WatsonHistoryBaseModel(com.liferay.watson.model.WatsonHistory watsonHistory) {
-		super(watsonHistory);
+		super((com.liferay.watson.model.WatsonHistory)WatsonAlloyControllerImpl.copyBaseModelProperties(watsonHistory, new WatsonHistoryImpl()));
 	}
 
 	public static WatsonHistory add(HttpServletRequest request) throws Exception {
@@ -146,10 +146,6 @@ public static class WatsonHistoryBaseModel extends WatsonHistoryWrapper {
 	}
 
 	public static WatsonHistory create(long watsonHistoryId) throws Exception {
-		if (watsonHistoryId <= 0) {
-			watsonHistoryId = CounterLocalServiceUtil.increment();
-		}
-
 		return new WatsonHistory((com.liferay.watson.model.WatsonHistory)baseModelAlloyServiceInvoker.createModel(watsonHistoryId));
 	}
 

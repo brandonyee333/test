@@ -22,7 +22,7 @@ public static class WatsonActivityBaseModel extends WatsonActivityWrapper {
 	}
 
 	public WatsonActivityBaseModel(com.liferay.watson.model.WatsonActivity watsonActivity) {
-		super(watsonActivity);
+		super((com.liferay.watson.model.WatsonActivity)WatsonAlloyControllerImpl.copyBaseModelProperties(watsonActivity, new WatsonActivityImpl()));
 	}
 
 	public static WatsonActivity add(HttpServletRequest request) throws Exception {
@@ -146,10 +146,6 @@ public static class WatsonActivityBaseModel extends WatsonActivityWrapper {
 	}
 
 	public static WatsonActivity create(long watsonActivityId) throws Exception {
-		if (watsonActivityId <= 0) {
-			watsonActivityId = CounterLocalServiceUtil.increment();
-		}
-
 		return new WatsonActivity((com.liferay.watson.model.WatsonActivity)baseModelAlloyServiceInvoker.createModel(watsonActivityId));
 	}
 

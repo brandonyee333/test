@@ -22,7 +22,7 @@ public static class WatsonAddressBaseModel extends WatsonAddressWrapper {
 	}
 
 	public WatsonAddressBaseModel(com.liferay.watson.model.WatsonAddress watsonAddress) {
-		super(watsonAddress);
+		super((com.liferay.watson.model.WatsonAddress)WatsonAlloyControllerImpl.copyBaseModelProperties(watsonAddress, new WatsonAddressImpl()));
 	}
 
 	public static WatsonAddress add(HttpServletRequest request) throws Exception {
@@ -146,10 +146,6 @@ public static class WatsonAddressBaseModel extends WatsonAddressWrapper {
 	}
 
 	public static WatsonAddress create(long watsonAddressId) throws Exception {
-		if (watsonAddressId <= 0) {
-			watsonAddressId = CounterLocalServiceUtil.increment();
-		}
-
 		return new WatsonAddress((com.liferay.watson.model.WatsonAddress)baseModelAlloyServiceInvoker.createModel(watsonAddressId));
 	}
 

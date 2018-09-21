@@ -22,7 +22,7 @@ public static class WatsonResourceBaseModel extends WatsonResourceWrapper {
 	}
 
 	public WatsonResourceBaseModel(com.liferay.watson.model.WatsonResource watsonResource) {
-		super(watsonResource);
+		super((com.liferay.watson.model.WatsonResource)WatsonAlloyControllerImpl.copyBaseModelProperties(watsonResource, new WatsonResourceImpl()));
 	}
 
 	public static WatsonResource add(HttpServletRequest request) throws Exception {
@@ -146,10 +146,6 @@ public static class WatsonResourceBaseModel extends WatsonResourceWrapper {
 	}
 
 	public static WatsonResource create(long watsonResourceId) throws Exception {
-		if (watsonResourceId <= 0) {
-			watsonResourceId = CounterLocalServiceUtil.increment();
-		}
-
 		return new WatsonResource((com.liferay.watson.model.WatsonResource)baseModelAlloyServiceInvoker.createModel(watsonResourceId));
 	}
 

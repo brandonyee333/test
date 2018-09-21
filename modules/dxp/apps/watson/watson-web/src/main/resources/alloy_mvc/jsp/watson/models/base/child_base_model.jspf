@@ -22,7 +22,7 @@ public static class WatsonChildBaseModel extends WatsonChildWrapper {
 	}
 
 	public WatsonChildBaseModel(com.liferay.watson.model.WatsonChild watsonChild) {
-		super(watsonChild);
+		super((com.liferay.watson.model.WatsonChild)WatsonAlloyControllerImpl.copyBaseModelProperties(watsonChild, new WatsonChildImpl()));
 	}
 
 	public static WatsonChild add(HttpServletRequest request) throws Exception {
@@ -146,10 +146,6 @@ public static class WatsonChildBaseModel extends WatsonChildWrapper {
 	}
 
 	public static WatsonChild create(long watsonChildId) throws Exception {
-		if (watsonChildId <= 0) {
-			watsonChildId = CounterLocalServiceUtil.increment();
-		}
-
 		return new WatsonChild((com.liferay.watson.model.WatsonChild)baseModelAlloyServiceInvoker.createModel(watsonChildId));
 	}
 

@@ -22,7 +22,7 @@ public static class WatsonPersonBaseModel extends WatsonPersonWrapper {
 	}
 
 	public WatsonPersonBaseModel(com.liferay.watson.model.WatsonPerson watsonPerson) {
-		super(watsonPerson);
+		super((com.liferay.watson.model.WatsonPerson)WatsonAlloyControllerImpl.copyBaseModelProperties(watsonPerson, new WatsonPersonImpl()));
 	}
 
 	public static WatsonPerson add(HttpServletRequest request) throws Exception {
@@ -146,10 +146,6 @@ public static class WatsonPersonBaseModel extends WatsonPersonWrapper {
 	}
 
 	public static WatsonPerson create(long watsonPersonId) throws Exception {
-		if (watsonPersonId <= 0) {
-			watsonPersonId = CounterLocalServiceUtil.increment();
-		}
-
 		return new WatsonPerson((com.liferay.watson.model.WatsonPerson)baseModelAlloyServiceInvoker.createModel(watsonPersonId));
 	}
 

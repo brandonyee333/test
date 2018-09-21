@@ -22,7 +22,7 @@ public static class WatsonReportBaseModel extends WatsonReportWrapper {
 	}
 
 	public WatsonReportBaseModel(com.liferay.watson.model.WatsonReport watsonReport) {
-		super(watsonReport);
+		super((com.liferay.watson.model.WatsonReport)WatsonAlloyControllerImpl.copyBaseModelProperties(watsonReport, new WatsonReportImpl()));
 	}
 
 	public static WatsonReport add(HttpServletRequest request) throws Exception {
@@ -146,10 +146,6 @@ public static class WatsonReportBaseModel extends WatsonReportWrapper {
 	}
 
 	public static WatsonReport create(long watsonReportId) throws Exception {
-		if (watsonReportId <= 0) {
-			watsonReportId = CounterLocalServiceUtil.increment();
-		}
-
 		return new WatsonReport((com.liferay.watson.model.WatsonReport)baseModelAlloyServiceInvoker.createModel(watsonReportId));
 	}
 

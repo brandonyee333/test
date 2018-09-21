@@ -22,7 +22,7 @@ public static class WatsonIncidentBaseModel extends WatsonIncidentWrapper {
 	}
 
 	public WatsonIncidentBaseModel(com.liferay.watson.model.WatsonIncident watsonIncident) {
-		super(watsonIncident);
+		super((com.liferay.watson.model.WatsonIncident)WatsonAlloyControllerImpl.copyBaseModelProperties(watsonIncident, new WatsonIncidentImpl()));
 	}
 
 	public static WatsonIncident add(HttpServletRequest request) throws Exception {
@@ -146,10 +146,6 @@ public static class WatsonIncidentBaseModel extends WatsonIncidentWrapper {
 	}
 
 	public static WatsonIncident create(long watsonIncidentId) throws Exception {
-		if (watsonIncidentId <= 0) {
-			watsonIncidentId = CounterLocalServiceUtil.increment();
-		}
-
 		return new WatsonIncident((com.liferay.watson.model.WatsonIncident)baseModelAlloyServiceInvoker.createModel(watsonIncidentId));
 	}
 

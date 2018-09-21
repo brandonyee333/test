@@ -22,7 +22,7 @@ public static class WatsonRelationshipBaseModel extends WatsonRelationshipWrappe
 	}
 
 	public WatsonRelationshipBaseModel(com.liferay.watson.model.WatsonRelationship watsonRelationship) {
-		super(watsonRelationship);
+		super((com.liferay.watson.model.WatsonRelationship)WatsonAlloyControllerImpl.copyBaseModelProperties(watsonRelationship, new WatsonRelationshipImpl()));
 	}
 
 	public static WatsonRelationship add(HttpServletRequest request) throws Exception {
@@ -146,10 +146,6 @@ public static class WatsonRelationshipBaseModel extends WatsonRelationshipWrappe
 	}
 
 	public static WatsonRelationship create(long watsonRelationshipId) throws Exception {
-		if (watsonRelationshipId <= 0) {
-			watsonRelationshipId = CounterLocalServiceUtil.increment();
-		}
-
 		return new WatsonRelationship((com.liferay.watson.model.WatsonRelationship)baseModelAlloyServiceInvoker.createModel(watsonRelationshipId));
 	}
 

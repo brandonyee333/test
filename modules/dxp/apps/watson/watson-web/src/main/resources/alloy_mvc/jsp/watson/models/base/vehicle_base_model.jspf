@@ -22,7 +22,7 @@ public static class WatsonVehicleBaseModel extends WatsonVehicleWrapper {
 	}
 
 	public WatsonVehicleBaseModel(com.liferay.watson.model.WatsonVehicle watsonVehicle) {
-		super(watsonVehicle);
+		super((com.liferay.watson.model.WatsonVehicle)WatsonAlloyControllerImpl.copyBaseModelProperties(watsonVehicle, new WatsonVehicleImpl()));
 	}
 
 	public static WatsonVehicle add(HttpServletRequest request) throws Exception {
@@ -146,10 +146,6 @@ public static class WatsonVehicleBaseModel extends WatsonVehicleWrapper {
 	}
 
 	public static WatsonVehicle create(long watsonVehicleId) throws Exception {
-		if (watsonVehicleId <= 0) {
-			watsonVehicleId = CounterLocalServiceUtil.increment();
-		}
-
 		return new WatsonVehicle((com.liferay.watson.model.WatsonVehicle)baseModelAlloyServiceInvoker.createModel(watsonVehicleId));
 	}
 

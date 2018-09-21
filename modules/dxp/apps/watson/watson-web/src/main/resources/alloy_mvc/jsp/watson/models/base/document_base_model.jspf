@@ -22,7 +22,7 @@ public static class WatsonDocumentBaseModel extends WatsonDocumentWrapper {
 	}
 
 	public WatsonDocumentBaseModel(com.liferay.watson.model.WatsonDocument watsonDocument) {
-		super(watsonDocument);
+		super((com.liferay.watson.model.WatsonDocument)WatsonAlloyControllerImpl.copyBaseModelProperties(watsonDocument, new WatsonDocumentImpl()));
 	}
 
 	public static WatsonDocument add(HttpServletRequest request) throws Exception {
@@ -146,10 +146,6 @@ public static class WatsonDocumentBaseModel extends WatsonDocumentWrapper {
 	}
 
 	public static WatsonDocument create(long watsonDocumentId) throws Exception {
-		if (watsonDocumentId <= 0) {
-			watsonDocumentId = CounterLocalServiceUtil.increment();
-		}
-
 		return new WatsonDocument((com.liferay.watson.model.WatsonDocument)baseModelAlloyServiceInvoker.createModel(watsonDocumentId));
 	}
 
