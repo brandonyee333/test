@@ -75,7 +75,7 @@ public enum LCSRESTError {
 				return UNDEFINED;
 			}
 
-			idx = idx + 13;
+			idx = idx + 12;
 
 			int errorCode = Integer.parseInt(
 				message.substring(idx, message.indexOf(",", idx)));
