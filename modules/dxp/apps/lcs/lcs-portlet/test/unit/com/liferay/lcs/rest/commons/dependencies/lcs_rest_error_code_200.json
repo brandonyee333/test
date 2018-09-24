@@ -1,0 +1,6 @@
+{
+	"errorCode": 200,
+	"errorDescription": "AATF reference received indicates that corresponding entity is missing at LCS Platform. Please make sure AATF is correct and try again. As result of this error AATF at LCS Client will be deleted.",
+	"message": "The LCS activation token file is invalid since the ID 1401 defined in file does not exist on the LCS platform. The LCS activation token file will be deleted. If the activation token file was regenerated, please make sure to download the latest activation token file using the LCS platform dashboard and deploy it.",
+	"status": 404
+}

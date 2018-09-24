@@ -18,6 +18,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -73,11 +78,53 @@ public class LCSRESTErrorTest extends PowerMockito {
 	}
 
 	@Test
+	public void testToLCSRESTErrorWithErrorCode200() throws Exception {
+		String jsonContent = getJSONContent("lcs_rest_error_code_200.json");
+
+		LCSRESTError lcsRESTError = LCSRESTError.getRESTError(jsonContent);
+
+		Assert.assertEquals(
+			"Expected AATF error",
+			LCSRESTError.LCS_CLUSTER_ENTRY_TOKEN_ERROR_NO_SUCH_TOKEN,
+			lcsRESTError);
+	}
+
+	@Test
 	public void testToRESTError() {
 		for (LCSRESTError lcsRESTError : LCSRESTError.values()) {
 			Assert.assertEquals(
 				lcsRESTError,
 				LCSRESTError.toLCSClientError(lcsRESTError.getErrorCode()));
+		}
+	}
+
+	protected String getJSONContent(String fileName) throws IOException {
+		InputStream inputStream = null;
+
+		try {
+			Class<?> clazz = LCSRESTErrorTest.class;
+
+			inputStream = clazz.getResourceAsStream("dependencies/" + fileName);
+
+			BufferedReader bufferedReader = new BufferedReader(
+				new InputStreamReader(inputStream, "UTF-8"));
+
+			StringBuilder sb = new StringBuilder();
+
+			String line = null;
+
+			while ((line = bufferedReader.readLine()) != null) {
+				sb.append(line);
+			}
+
+			bufferedReader.close();
+
+			return sb.toString();
+		}
+		finally {
+			if (inputStream != null) {
+				inputStream.close();
+			}
 		}
 	}
 
