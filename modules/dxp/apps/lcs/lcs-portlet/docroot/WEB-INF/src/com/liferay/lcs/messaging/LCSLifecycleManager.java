@@ -28,9 +28,9 @@ import com.liferay.portal.kernel.util.OSDetector;
 /**
  * @author Igor Beslic
  */
-public class LCSHotDeployMessageListener extends HotDeployMessageListener {
+public class LCSLifecycleManager extends HotDeployMessageListener {
 
-	public LCSHotDeployMessageListener() {
+	public LCSLifecycleManager() {
 		super("lcs-portlet");
 	}
 
@@ -71,7 +71,7 @@ public class LCSHotDeployMessageListener extends HotDeployMessageListener {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		LCSHotDeployMessageListener.class);
+		LCSLifecycleManager.class);
 
 	private LCSConnectionManager _lcsConnectionManager;
 

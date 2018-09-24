@@ -51,8 +51,9 @@
 		<constructor-arg name="digitalSignature" ref="com.liferay.lcs.messaging.security.DigitalSignature" />
 		<constructor-arg name="lcsConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
 	</bean>
-	<bean class="com.liferay.lcs.messaging.LCSHotDeployMessageListener" id="messageListener.lcs_hot_deploy">
-		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
+	<bean class="com.liferay.lcs.messaging.LCSLifecycleManager" id="messageListener.lcs_lifecycle_manager">
+		<constructor-arg name="taskSchedulerService" ref="com.liferay.lcs.scheduler.TaskSchedulerService" />
+		<constructor-arg name="uptimeMonitoringAdvisor" ref="com.liferay.lcs.advisor.UptimeMonitoringAdvisor" />
 	</bean>
 	<bean class="com.liferay.lcs.messaging.LCSMessageBusMessageListener" id="messageListener.lcs_message_bus">
 		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
@@ -87,7 +88,7 @@
 				</entry>
 				<entry key="liferay/hot_deploy">
 					<list value-type="com.liferay.portal.kernel.messaging.MessageListener">
-						<ref bean="messageListener.lcs_hot_deploy" />
+						<ref bean="messageListener.lcs_lifecycle_manager" />
 					</list>
 				</entry>
 				<entry key="liferay/lcs_commands">
