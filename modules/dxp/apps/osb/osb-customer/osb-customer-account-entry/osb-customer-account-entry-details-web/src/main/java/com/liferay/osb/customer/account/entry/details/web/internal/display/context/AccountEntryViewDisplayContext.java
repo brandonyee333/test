@@ -39,15 +39,13 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
-import java.util.stream.IntStream;
-import java.util.stream.LongStream;
+import java.util.Set;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.MimeResponse;
@@ -150,13 +148,19 @@ public class AccountEntryViewDisplayContext {
 		return jsonArray;
 	}
 
-	public JSONArray getProductEntriesJSONArray() throws Exception {
+	public JSONObject getEnvironmentConfigurationJSONObject() throws Exception {
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		Set<ListType> envLFRVersions = new HashSet<>();
+
+		List<String> productEntryDisplayNames = new ArrayList<>();
+
+		boolean enterpriseSearch = false;
 
 		List<OfferingEntry> offeringEntries =
 			_accountEntry.getOfferingEntries();
-
-		List<String> productEntryDisplayNames = new ArrayList<>();
 
 		for (OfferingEntry offeringEntry : offeringEntries) {
 			ProductEntry productEntry = offeringEntry.getProductEntry();
@@ -166,13 +170,30 @@ public class AccountEntryViewDisplayContext {
 
 				productEntryDisplayNames.add(productEntry.getDisplayName());
 
-				JSONObject jsonObject = getDisplayJSONObject(productEntry);
+				JSONObject productJSONObject = getProductJSONObject(
+					productEntry);
 
-				jsonArray.put(jsonObject);
+				jsonArray.put(productJSONObject);
+
+				envLFRVersions.addAll(productEntry.getAllVersionsListTypes());
+
+				if (!enterpriseSearch && productEntry.isDigitalEnterprise()) {
+					if (_accountEntry.hasEnterpriseSearchOffering(
+							productEntry.getEnvironment())) {
+
+						enterpriseSearch = true;
+					}
+				}
 			}
 		}
 
-		return jsonArray;
+		jsonObject.put("products", jsonArray);
+
+		jsonObject.put(
+			"envLFRVersions",
+			getEnvLFRVersionsJSONArray(envLFRVersions, enterpriseSearch));
+
+		return jsonObject;
 	}
 
 	protected String getAccountEnvironmentAttachmentURL(
@@ -327,27 +348,11 @@ public class AccountEntryViewDisplayContext {
 		return jsonObject;
 	}
 
-	protected JSONObject getDisplayJSONObject(ProductEntry productEntry)
-		throws Exception {
-
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-		jsonObject.put("displayName", productEntry.getDisplayName());
-		jsonObject.put("envListTypes", getEnvListTypes(productEntry));
-		jsonObject.put(
-			"productEntryId", String.valueOf(productEntry.getProductEntryId()));
-
-		return jsonObject;
-	}
-
 	protected JSONObject getEnvLFRJSONObject(
-			ProductEntry productEntry, ListType listType)
+			ListType listType, boolean enterpriseSearch)
 		throws Exception {
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-		jsonObject.put(
-			"envLFR", LanguageUtil.get(_request, listType.getName()));
 
 		long listTypeId = listType.getListTypeId();
 
@@ -395,59 +400,84 @@ public class AccountEntryViewDisplayContext {
 		if (ProductEntryConstants.isDigitalEnterpriseVersion7_0(listTypeId) ||
 			ProductEntryConstants.isDigitalEnterpriseVersion7_1(listTypeId)) {
 
-			List<ListType> envSearchListTypes = new ArrayList<>();
+			JSONArray envSearchJSONArray = JSONFactoryUtil.createJSONArray();
 
-			if (_accountEntry.hasEnterpriseSearchOffering(
-					productEntry.getEnvironment())) {
+			if (enterpriseSearch) {
+				JSONObject envSearchEnterpriseJSONObject =
+					JSONFactoryUtil.createJSONObject();
 
-				envSearchListTypes =
+				List<ListType> envSearchEnterpriseListTypes =
 					AccountEnvironmentConstants.getPortalEnvListTypes(
 						listTypeId,
 						AccountEnvironmentConstants.LIST_TYPE_ENV_SEARCH,
 						"enterprise");
-			}
-			else {
-				envSearchListTypes =
-					AccountEnvironmentConstants.getPortalEnvListTypes(
-						listTypeId,
-						AccountEnvironmentConstants.LIST_TYPE_ENV_SEARCH,
-						"standard");
+
+				envSearchEnterpriseJSONObject.put(
+					"enterprise", toJSONArray(envSearchEnterpriseListTypes));
+
+				envSearchJSONArray.put(envSearchEnterpriseJSONObject);
 			}
 
-			jsonObject.put("envSearch", toJSONArray(envSearchListTypes));
+			JSONObject envSearchStandardJSONObject =
+				JSONFactoryUtil.createJSONObject();
+
+			List<ListType> envSearchStandardListTypes =
+				AccountEnvironmentConstants.getPortalEnvListTypes(
+					listTypeId,
+					AccountEnvironmentConstants.LIST_TYPE_ENV_SEARCH,
+					"standard");
+
+			envSearchStandardJSONObject.put(
+				"standard", toJSONArray(envSearchStandardListTypes));
+
+			envSearchJSONArray.put(envSearchStandardJSONObject);
+
+			jsonObject.put("envSearch", envSearchJSONArray);
 		}
 
 		return jsonObject;
 	}
 
-	protected JSONArray getEnvListTypes(ProductEntry productEntry)
+	protected JSONArray getEnvLFRVersionsJSONArray(
+			Set<ListType> envLFRVersions, boolean enterpriseSearch)
 		throws Exception {
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-		List<ListType> envLFRTypes = productEntry.getAllVersionsListTypes();
+		for (ListType listType : envLFRVersions) {
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		IntStream intStream = Arrays.stream(
-			ProductEntryConstants.LIST_TYPES_DEPRECATED);
-
-		LongStream longStream = intStream.asLongStream();
-
-		long[] deprecatedTypes = longStream.toArray();
-
-		for (ListType listType : envLFRTypes) {
-			if (ArrayUtil.contains(deprecatedTypes, listType.getListTypeId()) ||
-				(listType.getListTypeId() ==
-					(long)ProductEntryConstants.PORTAL_VERSION_OTHER)) {
-
-				continue;
-			}
-
-			JSONObject jsonObject = getEnvLFRJSONObject(productEntry, listType);
+			jsonObject.put(
+				String.valueOf(listType.getListTypeId()),
+				getEnvLFRJSONObject(listType, enterpriseSearch));
 
 			jsonArray.put(jsonObject);
 		}
 
 		return jsonArray;
+	}
+
+	protected JSONObject getProductJSONObject(ProductEntry productEntry)
+		throws Exception {
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("displayName", productEntry.getDisplayName());
+
+		if (productEntry.isDigitalEnterprise()) {
+			boolean enterpriseSearch =
+				_accountEntry.hasEnterpriseSearchOffering(
+					productEntry.getEnvironment());
+
+			jsonObject.put("enterpriseSearch", enterpriseSearch);
+		}
+
+		jsonObject.put(
+			"envLFR", toJSONArray(productEntry.getAllVersionsListTypes()));
+		jsonObject.put(
+			"productEntryId", String.valueOf(productEntry.getProductEntryId()));
+
+		return jsonObject;
 	}
 
 	protected JSONArray toEnvSearchJSONArray(List<String> envSearches) {

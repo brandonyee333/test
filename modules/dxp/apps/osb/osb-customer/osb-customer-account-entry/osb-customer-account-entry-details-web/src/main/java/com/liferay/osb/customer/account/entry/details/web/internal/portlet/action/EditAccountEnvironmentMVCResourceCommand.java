@@ -16,7 +16,7 @@ package com.liferay.osb.customer.account.entry.details.web.internal.portlet.acti
 
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys;
 import com.liferay.osb.customer.account.entry.details.web.internal.display.context.AccountEntryViewDisplayContext;
-import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
@@ -49,11 +49,12 @@ public class EditAccountEnvironmentMVCResourceCommand
 			new AccountEntryViewDisplayContext(
 				resourceRequest, resourceResponse);
 
-		JSONArray jsonArray =
-			accountEntryViewDisplayContext.getProductEntriesJSONArray();
+		JSONObject jsonObject =
+			accountEntryViewDisplayContext.
+				getEnvironmentConfigurationJSONObject();
 
 		JSONPortletResponseUtil.writeJSON(
-			resourceRequest, resourceResponse, jsonArray);
+			resourceRequest, resourceResponse, jsonObject);
 	}
 
 	@Reference(
