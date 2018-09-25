@@ -140,3 +140,14 @@ app.artifacts-3.0.15=\
 app.change.log-3.0.15=LPS-80309 LPS-84410
 
 app.git.id-3.0.15=c404f74c8586aa41b6490132cf81862aeace38c9
+
+#
+# Liferay App Version 3.0.16
+#
+
+app.artifacts-3.0.16=\
+	com.liferay.portal.mobile.device.detection.fiftyonedegrees.enterprise-1.0.20.jar
+
+app.change.log-3.0.16=LPS-85516
+
+app.git.id-3.0.16=f1602a641f425a1e31a35db277758a5e03d2c895
