@@ -1,10 +1,14 @@
-import React from 'react';
-import PropTypes from "prop-types";
-
 import axios from 'axios';
-import {Formik} from 'formik';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 import Button from './Button';
+import Resumable from '../third-party/resumable.nocsf';
+import {
+	getFileProgress,
+	handleFileError,
+	handleFileSuccess
+} from '../helpers/resumable-util';
 
 export default class DynamicUploaderForm extends React.Component {
 	static propTypes = {
@@ -17,233 +21,429 @@ export default class DynamicUploaderForm extends React.Component {
 	formRef = React.createRef();
 
 	state = {
-		comment: '',
-		fileName: '',
-		fileSize: '',
-		type: ''
+		file: {
+			comment: '',
+			fileName: '',
+			fileSize: '',
+			type: ''
+		},
+		message: {
+			content: '',
+			type: ''
+		},
+		token: '',
+		toolbar: {
+			paused: false,
+			progress: 0,
+			visible: false
+		}
 	}
 
-	handleAcceptAttachment = (event) => {
-		const {portletNamespace} = this.props;
+	componentDidMount() {
+		const {portletNamespace, uploadURL} = this.props;
 
-		const file = event.currentTarget.files[0];
-
-		const props = this.refs.dynamicUploaderFormikForm;
-
-		props.setFieldValue(`${portletNamespace}fileName`, file.name);
-		props.setFieldValue(`${portletNamespace}fileSize`, file.size);
-		props.setFieldValue(`${portletNamespace}type`, file.type);
-
-		this.setState(
+		const resumable = new Resumable(
 			{
-				fileName: file.name,
-				fileSize: file.size,
-				type: file.type
+				chunkSize: 25 * 1024 * 1024,
+				headers: {
+					'Content-Type': 'multipart/form-data;charset=utf-8'
+				},
+				maxFiles: 1,
+				maxFileSize: 35 * 1024 * 1024 * 1024,
+				method: 'octet',
+				query: (resumableFile, resumableChunk) => {
+					const queryParam = {
+						token: this.state.token
+					};
+
+					return queryParam;
+				},
+				simultaneousUploads: 10,
+				target: uploadURL,
+				testChunks: true,
+				throttleProgressCallbacks: 1
 			}
 		);
-	}
 
-	handleCheckAttachment = () => {
-		let fileName = '';
-
-		if (this.state.fileName) {
-			fileName = this.state.fileName;
+		if (!resumable.support) {
+			this.setState(
+				{
+					message: {
+						content: Liferay.Language.get('invalid-browser'),
+						type: 'error'
+					},
+					toolbar: {
+						visibile: false
+					}
+				}
+			);
 		}
+		else {
+			resumable.assignBrowse(document.getElementById(`${portletNamespace}selectButton`));
+			resumable.assignDrop(document.getElementById(`${portletNamespace}uploadArea`));
 
-		return fileName;
+			resumable.on(
+				'fileAdded',
+				(file) => {
+					this.generateToken(resumable, file)
+						.then(
+							response => {
+								this.setState(
+									{
+										message: {
+											content: Liferay.Language.get('loading'),
+											type: 'pending'
+										},
+										token: response.data.token,
+										toolbar: {
+											visible: true
+										}
+									}
+								);
+
+								resumable.upload();
+							}
+						)
+						.catch(
+							err => {
+								this.setState(
+									{
+										message: {
+											content: err.message,
+											type: 'error'
+										}
+									}
+								);
+							}
+						);
+				}
+			);
+
+			resumable.on(
+				'fileError',
+				(file, message) => {
+					const response = handleFileError(file, message);
+
+					this.setState(
+						{
+							message: {
+								content: response.message,
+								type: 'error'
+							},
+							toolbar: {
+								visible: true
+							}
+						}
+					);
+				}
+			);
+
+			resumable.on(
+				'fileProgress',
+				(file) => {
+					this.setState(
+						{
+							toolbar: {
+								progress: getFileProgress(file),
+								visible: true
+							}
+						}
+					);
+				}
+			);
+
+			resumable.on(
+				'fileSuccess',
+				(file, message) => {
+					const resumableFile = handleFileSuccess(file, message);
+
+					this.setState(
+						(prevState) => (
+							{
+								file: {
+									...prevState.file,
+									fileName: file.fileName,
+									fileSize: file.size,
+									type: file.file.type
+								},
+								fileObj: file,
+								message: {
+									content: resumableFile.message,
+									type: 'success'
+								},
+								toolbar: {
+									visible: false
+								}
+							}
+						)
+					);
+				}
+			);
+
+			this.setState(
+				{
+					resumable
+				}
+			);
+		}
 	}
 
-	isRequired = message => value => (!!value ? undefined : message);
+	generateToken = () => {
+		return axios.get(this.props.generateTokenURL);
+	}
 
 	handleClear = () => {
+		this.state.resumable.cancel();
+
 		this.setState(
 			{
-				comment: '',
-				fileName: '',
-				fileSize: '',
-				type: ''
+				file: '',
+				fileObj: '',
+				toolbar: {
+					visible: false
+				}
 			}
-		)
-
-		this.refs.dynamicUploaderFormikForm.handleReset();
+		);
 	}
 
 	handleClearAccepted = () => {
+		this.state.resumable.removeFile(this.state.fileObj);
+
+		this.setState(
+			(prevState) => (
+				{
+					file: {
+						...prevState.file,
+						fileName: '',
+						fileSize: '',
+						type: ''
+					},
+					fileObj: ''
+				}
+			)
+		);
+	}
+
+	handlePause = () => {
+		this.state.resumable.pause();
+
 		this.setState(
 			{
-				fileName: '',
-				fileSize: '',
-				type: ''
+				toolbar: {
+					paused: true,
+					visible: true
+				}
 			}
 		);
 	}
 
-	handleSubmit = () => {
-		this.formRef.current.submit();
+	handlePlay = () => {
+		this.state.resumable.upload();
+
+		this.setState(
+			{
+				toolbar: {
+					paused: false,
+					visible: true
+				}
+			}
+		);
 	}
 
-	updateActionUrl = (values) => {
+	handleSubmit = (event) => {
+		event.preventDefault();
+
+		if (this.validateForm()) {
+			this.setState(
+				{
+					submitting: true
+				}
+			);
+
+			this.updateActionUrl();
+
+			this.formRef.current.submit();
+		}
+		else {
+			this.setState(
+				{
+					message: {
+						content: Liferay.Language.get('error-validating-file-attachment-please-reupload-file'),
+						type: 'error'
+					}
+				}
+			);
+		}
+	}
+
+	updateActionUrl = () => {
+		const {addTicketAttachmentURL, portletNamespace} = this.props;
+
+		const formFields = Object.keys(this.state.file);
+
 		let actionUrl = addTicketAttachmentURL;
 
-		const valueKeys = Object.keys(values);
-
-		valueKeys.map(key => {
-			actionUrl += `&${key}=${values[key]}`;
-		});
+		formFields.forEach(
+			key => {
+				actionUrl += `&${portletNamespace}${key}=${this.state.file[key]}`;
+			}
+		);
 
 		this.formRef.current.action = actionUrl;
 	}
 
+	validateForm = () => {
+		const {
+			fileName,
+			fileSize,
+			type
+		} = this.state.file;
+
+		return (fileName && fileSize && type);
+	}
+
 	render() {
-		const intialValuesList = [
-			'comment',
-			'fileName',
-			'fileSize',
-			'type',
-		];
-
-		const {addTicketAttachmentURL, portletNamespace} = this.props;
-
-		const initialValues = {};
-
-		intialValuesList.map(value => {
-			initialValues[this.props.portletNamespace + value] = this.props[value] ? this.props[value] : '';
-		})
-
-		const checkAttachment = this.handleCheckAttachment();
+		const {portletNamespace} = this.props;
 
 		return (
-			<Formik
-				initialValues={initialValues}
-				onSubmit={(values) => {
-					this.updateActionUrl(values);
+			<form
+				method="post"
+				onSubmit={this.handleSubmit}
+				ref={this.formRef}
+			>
+				<div className="row">
+					<div className="col-md-12">
+						<div className="form-group" id={`${portletNamespace}uploadContainer`}>
+							<label className="control-label">
+								{Liferay.Language.get('attachment')}
 
-					this.handleSubmit();
-				}}
-				ref="dynamicUploaderFormikForm"
-				render={(props) => (
-					<form
-						action={addTicketAttachmentURL}
-						method="post"
-						onSubmit={props.handleSubmit}
-						ref={this.formRef}
-					>
-						<div className="row">
-							<div className="col-md-12">
+								<svg className="lexicon-icon lexicon-icon-asterisk">
+									<use xlinkHref="#asterisk" />
+								</svg>
+							</label>
+
+							<div
+								className="form-control upload-area"
+								id={`${portletNamespace}uploadArea`}
+							>
 								<input
-									id={`${portletNamespace}fileName`}
-									name={`${portletNamespace}fileName`}
-									type="hidden"
-									defaultValue={this.state.fileName}
+									className="attachment"
+									id={`${portletNamespace}selectButton`}
+									name={`${portletNamespace}attachment`}
+									type="file"
 								/>
 
-								<input
-									id={`${portletNamespace}fileSize`}
-									name={`${portletNamespace}fileSize`}
-									type="hidden"
-									defaultValue={this.state.fileSize}
-								/>
-
-								<input
-									id={`${portletNamespace}type`}
-									name={`${portletNamespace}type`}
-									type="hidden"
-									defaultValue={this.state.type}
-								/>
-
-								<div className="form-group">
-									<label className="control-label" htmlFor={`${portletNamespace}attachment`}>
-										{Liferay.Language.get('attachment')}
-
-										<svg className="lexicon-icon lexicon-icon-asterisk">
-											<use xlinkHref="#asterisk" />
-										</svg>
-									</label>
-
-									<div className="form-control dropzone">
-										<input
-											className="attachment"
-											id={`${portletNamespace}attachment`}
-											name={`${portletNamespace}attachment`}
-											onChange={this.handleAcceptAttachment}
-											required={true}
-											type="file"
-										/>
-
-										<div className="dropzone-label">
-											<svg className="lexicon-icon lexicon-icon-paperclip">
-												<use xlinkHref="#paperclip" />
-											</svg>
-											Add file or drop files here
-										</div>
-									</div>
-
-									{checkAttachment && (
-										<div className="attachment" key={this.state.fileName} onClick={this.handleClearAccepted}>
-											<svg className="lexicon-icon lexicon-icon-paperclip">
-												<use xlinkHref="#paperclip" />
-											</svg>
-
-											<span className="attachment-name">{this.state.fileName}</span>
-
-											<svg className="lexicon-icon lexicon-icon-times">
-												<use xlinkHref="#times" />
-											</svg>
-										</div>
-									)}
+								<div className="upload-area-label">
+									<svg className="lexicon-icon lexicon-icon-paperclip">
+										<use xlinkHref="#paperclip" />
+									</svg>
+									Add file or drop files here
 								</div>
+							</div>
 
-								{props.touched.attachment && props.errors.attachment && (
-									<div className="alert alert-danger" role="alert">
-										{props.errors.attachment}
+							<div className="toolbar" id={`${portletNamespace}toolbar`}>
+								{this.state.file.fileName && (
+									<div className="attachment" onClick={this.handleClearAccepted}>
+										<svg className="lexicon-icon lexicon-icon-paperclip">
+											<use xlinkHref="#paperclip" />
+										</svg>
+
+										<span className="attachment-name">{this.state.file.fileName}</span>
+
+										<svg className="lexicon-icon lexicon-icon-times">
+											<use xlinkHref="#times" />
+										</svg>
+									</div>
+								)}
+
+								{this.state.toolbar.visible && (
+									<div className="progress-bar-container">
+										<div
+											className="progress-bar form-control"
+											id={`${portletNamespace}progressBar`}
+										>
+											<div
+												className="progress"
+												id={`${portletNamespace}progress`}
+												style={{width: this.state.toolbar.progress + '%'}}
+											>
+											</div>
+										</div>
+
+										{!this.state.toolbar.paused && (
+											<div className="btn form-control toolbar-control-container" onClick={this.handlePause}>
+												<svg className="lexicon-icon lexicon-icon-pause">
+													<use xlinkHref="#pause" />
+												</svg>
+											</div>
+										)}
+
+										{this.state.toolbar.paused && (
+											<div className="btn form-control toolbar-control-container" onClick={this.handlePlay}>
+												<svg className="lexicon-icon lexicon-icon-play">
+													<use xlinkHref="#play" />
+												</svg>
+											</div>
+										)}
 									</div>
 								)}
 							</div>
+						</div>
 
-							<div className="col-md-12">
-								<div className="form-group">
-									<label className="control-label" htmlFor={`${portletNamespace}comment`}>
-										{Liferay.Language.get('leave-a-comment')}
-									</label>
-
-									<textarea
-										className="form-control"
-										id={`${portletNamespace}comment`}
-										name={`${portletNamespace}comment`}
-										onChange={(event) => {
-											props.setFieldValue(`${portletNamespace}comment`, this.state.comment);
-
-											this.setState(
-												{
-													comment: event.currentTarget.value
-												}
-											)
-										}}
-										value={this.state.comment}
-									/>
-								</div>
+						{this.state.message.type === 'error' && (
+							<div className="alert alert-danger" role="alert">
+								{this.state.message.content}
 							</div>
-						</div>
+						)}
+					</div>
 
-						<div className="btn-row">
-							<Button
-								disabled={props.isSubmitting}
-								type="submit"
-							>
-								{Liferay.Language.get('submit')}
-							</Button>
+					<div className="col-md-12">
+						<div className="form-group">
+							<label className="control-label">
+								{Liferay.Language.get('leave-a-comment')}
+							</label>
 
-							<Button
-								display="outline"
-								onClick={this.handleClear}
-								type="button"
-							>
-								{Liferay.Language.get('clear')}
-							</Button>
+							<textarea
+								className="form-control"
+								id={`${portletNamespace}comment`}
+								name={`${portletNamespace}comment`}
+								onChange={(event) => {
+									const comment = event.currentTarget.value;
+
+									this.setState(
+										(prevState) => (
+											{
+												file: {
+													...prevState.file,
+													comment
+												}
+											}
+										)
+									);
+								}}
+								value={this.state.file.comment}
+							/>
 						</div>
-					</form>
-				)}
-			/>
-		)
+					</div>
+				</div>
+
+				<div className="btn-row">
+					<Button
+						disabled={this.state.submitting}
+						type="submit"
+					>
+						{Liferay.Language.get('submit')}
+					</Button>
+
+					<Button
+						display="outline"
+						onClick={this.handleClear}
+						type="button"
+					>
+						{Liferay.Language.get('clear')}
+					</Button>
+				</div>
+			</form>
+		);
 	}
 }

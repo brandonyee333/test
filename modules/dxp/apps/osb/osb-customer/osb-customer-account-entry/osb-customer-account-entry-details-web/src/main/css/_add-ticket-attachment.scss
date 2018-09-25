@@ -3,6 +3,7 @@
 
 	.attachment {
 		color: $secondary-text-color;
+		display: inline;
 		font-style: italic;
 		margin: 8px 0;
 
@@ -15,7 +16,7 @@
 		}
 	}
 
-	.form-control.attachment, .attachment {
+	.form-control.attachment, .attachment, .upload-area {
 		cursor: pointer;
 	}
 
@@ -23,10 +24,44 @@
 		justify-content: unset;
 	}
 
-	.dropzone {
+	.progress-bar-container {
+		display: inline-flex;
+		width: 100%;
+	}
+
+	.progress-bar {
+		height: auto;
+		padding: 0;
+		width: 90%;
+
+		.progress {
+			border-radius: 0;
+			height: 100%;
+			margin: 0;
+			padding: 0;
+		}
+	}
+
+	.toolbar {
+		margin-top: 24px;
+
+		.toolbar-control-container {
+			display: inline-flex;
+			height: auto;
+			margin-left: auto;
+			width: auto;
+
+			.lexicon-icon {
+				color: $secondary-text-color;
+				margin: auto;
+			}
+		}
+	}
+
+	.upload-area {
 		display: inline-flex;
 		height: auto;
-	
+
 		input {
 			left: 0;
 			opacity: 0;
@@ -34,11 +69,11 @@
 		}
 	}
 
-	.dropzone-label {
+	.upload-area-label {
 		align-items: center;
 		margin: auto;
 		padding: 8px;
-	
+
 		.lexicon-icon-paperclip {
 			margin-right: 4px;
 		}
