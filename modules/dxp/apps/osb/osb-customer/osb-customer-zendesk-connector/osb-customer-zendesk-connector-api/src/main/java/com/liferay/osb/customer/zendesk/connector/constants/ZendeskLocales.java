@@ -19,11 +19,13 @@ package com.liferay.osb.customer.zendesk.connector.constants;
  */
 public interface ZendeskLocales {
 
+	public static final String CHINA = "zh-cn";
+
 	public static final String JAPAN = "ja";
 
 	public static final String[] LOCALES_ENABLED = {
-		ZendeskLocales.JAPAN, ZendeskLocales.PORTUGAL, ZendeskLocales.SPAIN,
-		ZendeskLocales.US
+		ZendeskLocales.CHINA, ZendeskLocales.JAPAN, ZendeskLocales.PORTUGAL,
+		ZendeskLocales.SPAIN, ZendeskLocales.US
 	};
 
 	public static final String PORTUGAL = "pt";
