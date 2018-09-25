@@ -84,7 +84,8 @@ public class ProvisioningCreateRabbitMQConsumer
 		AccountWorker accountWorker = parseAccountWorker(
 			jsonObject, accountEntry);
 
-		ServiceContext serviceContext = createServiceContext(jsonObject);
+		ServiceContext serviceContext = createServiceContext(
+			jsonObject, orderEntries);
 
 		if (salesforceOpportunityStageName.equals(
 				SalesforceConstants.OPPORTUNITY_STAGE_CLOSED_LOST) &&

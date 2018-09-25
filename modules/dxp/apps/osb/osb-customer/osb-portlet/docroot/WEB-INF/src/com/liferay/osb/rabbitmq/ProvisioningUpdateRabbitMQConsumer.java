@@ -62,7 +62,8 @@ public class ProvisioningUpdateRabbitMQConsumer
 		AccountWorker accountWorker = parseAccountWorker(
 			jsonObject, accountEntry);
 
-		ServiceContext serviceContext = createServiceContext(jsonObject);
+		ServiceContext serviceContext = createServiceContext(
+			jsonObject, orderEntries);
 
 		if (hasUnlimitedEnterpriseWide(orderEntries)) {
 			long classNameId = PortalUtil.getClassNameId(AccountEntry.class);

@@ -218,7 +218,23 @@ Date lastEnabledDate = calendar.getTime();
 						</td>
 					</tr>
 					<tr>
-						<td colspan="4">
+						<td>
+							<aui:select label="type" multiple="<%= true %>" name="<portlet:namespace /><%= displayTerms.TYPES %>">
+								<aui:option label="any" value="" />
+
+								<%
+								for (int type : AccountEntryConstants.TYPES) {
+								%>
+
+									<aui:option label="<%= AccountEntryConstants.getTypeLabel(type) %>" selected="<%= ArrayUtil.contains(displayTerms.getTypes(), type) %>" value="<%= type %>" />
+
+								<%
+								}
+								%>
+
+							</aui:select>
+						</td>
+						<td colspan="3">
 							<aui:select label="status" multiple="<%= true %>" name="<%= displayTerms.STATUSES %>">
 								<aui:option label="any" value="-1" />
 

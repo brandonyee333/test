@@ -34,7 +34,10 @@
 		<field name="modifiedDate" type="Date" />
 		<field name="corpProjectUuid" type="String" />
 		<field name="corpProjectId" type="long" />
-		<field name="corpEntryName" type="String" />
+		<field name="dossieraAccountKey" type="String" />
+		<field name="corpEntryName" type="String">
+			<hint name="max-length">255</hint>
+		</field>
 		<field name="name" type="String">
 			<hint name="max-length">500</hint>
 		</field>

@@ -126,6 +126,28 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		}
 	}
 
+	public boolean isAnalyticsCloudBusiness() {
+		String name = getName();
+
+		if (name.equals("Liferay Analytics Cloud Business")) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	public boolean isAnalyticsCloudEnterprise() {
+		String name = getName();
+
+		if (name.equals("Liferay Analytics Cloud Enterprise")) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
 	public boolean isCommerce() {
 		String name = getName();
 

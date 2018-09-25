@@ -166,6 +166,9 @@ public class AccountEntrySearch extends SearchContainer<AccountEntry> {
 			AccountEntryDisplayTerms.TIERS,
 			ArrayUtil.toStringArray(displayTerms.getTiers()));
 		iteratorURL.setParameter(
+			AccountEntryDisplayTerms.TYPES,
+			ArrayUtil.toStringArray(displayTerms.getTypes()));
+		iteratorURL.setParameter(
 			AccountEntryDisplayTerms.ZIP, displayTerms.getZip());
 	}
 

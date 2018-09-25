@@ -131,6 +131,13 @@ public class AccountEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 			WorkflowConstants.CONTEXT_SERVICE_CONTEXT);
 
 		if (status == WorkflowConstants.STATUS_APPROVED) {
+			ArrayList<User> analyticsCloudUsers =
+				(ArrayList<User>)workflowContext.get(
+					WorkflowConstants.CONTEXT_ANALYTICS_CLOUD_USERS);
+
+			serviceContext.setAttribute(
+				"analyticsCloudUsers", analyticsCloudUsers);
+
 			ArrayList<User> missingAnalyticsCloudUsers =
 				(ArrayList<User>)workflowContext.get(
 					WorkflowConstants.CONTEXT_MISSING_ANALYTICS_CLOUD_USERS);

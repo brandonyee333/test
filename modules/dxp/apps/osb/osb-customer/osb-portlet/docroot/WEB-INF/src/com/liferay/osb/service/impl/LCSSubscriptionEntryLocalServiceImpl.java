@@ -15,6 +15,7 @@
 package com.liferay.osb.service.impl;
 
 import com.liferay.osb.model.AccountEntry;
+import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.model.LCSSubscriptionEntry;
 import com.liferay.osb.model.LCSSubscriptionEntryConstants;
@@ -97,14 +98,20 @@ public class LCSSubscriptionEntryLocalServiceImpl
 			return;
 		}
 
+		AccountEntry accountEntry = accountEntryLocalService.getAccountEntry(
+			accountEntryId);
+
+		if (accountEntry.getType() ==
+				AccountEntryConstants.TYPE_ANALYTICS_CLOUD_BASIC) {
+
+			return;
+		}
+
 		List<LCSSubscriptionEntry> lcsSubscriptionEntries =
 			getLCSSubscriptionEntries(accountEntryId);
 
 		String lcsSubscriptionEntriesJSON = JSONFactoryUtil.looseSerialize(
 			lcsSubscriptionEntries);
-
-		AccountEntry accountEntry = accountEntryLocalService.getAccountEntry(
-			accountEntryId);
 
 		CorpProject corpProject = corpProjectLocalService.getCorpProjectByUuid(
 			accountEntry.getCorpProjectUuid());
@@ -142,9 +149,7 @@ public class LCSSubscriptionEntryLocalServiceImpl
 			return null;
 		}
 
-		if (!offeringEntry.isLicenses() &&
-			!product.contains(_ANALYTICS_CLOUD)) {
-
+		if (!offeringEntry.isLicenses()) {
 			return null;
 		}
 
@@ -154,17 +159,8 @@ public class LCSSubscriptionEntryLocalServiceImpl
 			return null;
 		}
 
-		int quantity = 0;
-		int serversAllowed = 0;
-
-		if (product.contains(_ANALYTICS_CLOUD)) {
-			quantity = offeringEntry.getQuantity();
-		}
-		else {
-			serversAllowed =
-				offeringEntry.getQuantity() -
-					offeringEntry.getLicenseKeysCount();
-		}
+		int serversAllowed =
+			offeringEntry.getQuantity() - offeringEntry.getLicenseKeysCount();
 
 		LCSSubscriptionEntry lcsSubscriptionEntry =
 			new LCSSubscriptionEntryImpl();
@@ -177,7 +173,6 @@ public class LCSSubscriptionEntryLocalServiceImpl
 		lcsSubscriptionEntry.setPlatformVersion(
 			offeringEntry.getPlatformVersion());
 		lcsSubscriptionEntry.setServersAllowed(serversAllowed);
-		lcsSubscriptionEntry.setQuantity(quantity);
 		lcsSubscriptionEntry.setInstanceSize(offeringEntry.getSizing());
 		lcsSubscriptionEntry.setStartDate(startDate);
 
@@ -235,13 +230,9 @@ public class LCSSubscriptionEntryLocalServiceImpl
 	protected String getProduct(
 		ProductEntry productEntry, SupportResponse supportResponse) {
 
-		String productEntryName = productEntry.getName();
-
-		if (productEntryName.contains(_ANALYTICS_CLOUD)) {
-			return productEntryName;
-		}
-
 		String product = StringPool.BLANK;
+
+		String productEntryName = productEntry.getName();
 
 		if (productEntryName.contains(_DIGITAL_ENTERPRISE_BACKUP) ||
 			productEntryName.contains(_PORTAL_BACKUP)) {
@@ -302,11 +293,8 @@ public class LCSSubscriptionEntryLocalServiceImpl
 	}
 
 	protected String getType(String product) {
-		if (product.contains(_ANALYTICS_CLOUD)) {
-			return LicenseEntryConstants.TYPE_ENTERPRISE;
-		}
-		else if (product.contains(_DIGITAL_ENTERPRISE_BACKUP) ||
-				 product.contains(_PORTAL_BACKUP)) {
+		if (product.contains(_DIGITAL_ENTERPRISE_BACKUP) ||
+			product.contains(_PORTAL_BACKUP)) {
 
 			return LicenseEntryConstants.TYPE_BACKUP;
 		}
@@ -381,8 +369,6 @@ public class LCSSubscriptionEntryLocalServiceImpl
 
 		return lcsSubscriptionEntry;
 	}
-
-	private static final String _ANALYTICS_CLOUD = "Liferay Analytics Cloud";
 
 	private static final String _DIGITAL_ENTERPRISE_BACKUP =
 		"Digital Enterprise Backup";

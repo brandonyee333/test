@@ -54,6 +54,9 @@ public class OfferingEntryFinderImpl
 	public static final String FIND_BY_U_AEI_PEI_T_S_SED =
 		OfferingEntryFinder.class.getName() + ".findByU_AEI_PEI_T_S_SED";
 
+	public static final String JOIN_BY_ACCOUNT_ENTRY =
+		OfferingEntryFinder.class.getName() + ".joinByAccountEntry";
+
 	public static final String JOIN_BY_LICENSE_LIFETIME =
 		OfferingEntryFinder.class.getName() + ".joinByLicenseLifetime";
 
@@ -70,7 +73,7 @@ public class OfferingEntryFinderImpl
 		OfferingEntryFinder.class.getName() + ".joinByValidTicket";
 
 	public int countByU_AEI_PEI_T_S_SED(
-		long userId, long accountEntryId, long productEntryId, int[] types,
+		long userId, long accountEntryId, long[] productEntryIds, int[] types,
 		int[] statuses, Date supportEndDateGT, Date supportEndDateLT,
 		LinkedHashMap<String, Object> params, boolean andOperator) {
 
@@ -89,10 +92,8 @@ public class OfferingEntryFinderImpl
 			sql = StringUtil.replace(sql, _ACCOUNT_ENTRY_SQL, StringPool.BLANK);
 		}
 
-		if (productEntryId <= 0) {
-			sql = StringUtil.replace(sql, _PRODUCT_ENTRY_SQL, StringPool.BLANK);
-		}
-
+		sql = CustomSQLUtil.replaceKeywords(
+			sql, "OSB_OfferingEntry.productEntryId", false, productEntryIds);
 		sql = CustomSQLUtil.replaceKeywords(
 			sql, "OSB_OfferingEntry.type_", false, types);
 		sql = CustomSQLUtil.replaceKeywords(
@@ -122,10 +123,7 @@ public class OfferingEntryFinderImpl
 				qPos.add(accountEntryId);
 			}
 
-			if (productEntryId > 0) {
-				qPos.add(productEntryId);
-			}
-
+			qPos.add(productEntryIds);
 			qPos.add(types);
 			qPos.add(statuses);
 			qPos.add(supportEndDateGT_TS);
@@ -154,7 +152,7 @@ public class OfferingEntryFinderImpl
 	}
 
 	public List<OfferingEntry> findByU_AEI_PEI_T_S_SED(
-		long userId, long accountEntryId, long productEntryId, int[] types,
+		long userId, long accountEntryId, long[] productEntryIds, int[] types,
 		int[] statuses, Date supportEndDateGT, Date supportEndDateLT,
 		LinkedHashMap<String, Object> params, boolean andOperator, int start,
 		int end, OrderByComparator obc) {
@@ -174,10 +172,8 @@ public class OfferingEntryFinderImpl
 			sql = StringUtil.replace(sql, _ACCOUNT_ENTRY_SQL, StringPool.BLANK);
 		}
 
-		if (productEntryId <= 0) {
-			sql = StringUtil.replace(sql, _PRODUCT_ENTRY_SQL, StringPool.BLANK);
-		}
-
+		sql = CustomSQLUtil.replaceKeywords(
+			sql, "OSB_OfferingEntry.productEntryId", false, productEntryIds);
 		sql = CustomSQLUtil.replaceKeywords(
 			sql, "OSB_OfferingEntry.type_", false, types);
 		sql = CustomSQLUtil.replaceKeywords(
@@ -208,10 +204,7 @@ public class OfferingEntryFinderImpl
 				qPos.add(accountEntryId);
 			}
 
-			if (productEntryId > 0) {
-				qPos.add(productEntryId);
-			}
-
+			qPos.add(productEntryIds);
 			qPos.add(types);
 			qPos.add(statuses);
 			qPos.add(supportEndDateGT_TS);
@@ -252,7 +245,10 @@ public class OfferingEntryFinderImpl
 	protected String getJoin(String key, Object value) {
 		String join = StringPool.BLANK;
 
-		if (key.equals("licenseLifetime")) {
+		if (key.equals("accountEntry")) {
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_ENTRY);
+		}
+		else if (key.equals("licenseLifetime")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_LICENSE_LIFETIME);
 		}
 		else if (key.equals("productEntry")) {
@@ -303,7 +299,10 @@ public class OfferingEntryFinderImpl
 	protected String getWhere(String key, Object value) {
 		String join = StringPool.BLANK;
 
-		if (key.equals("licenseLifetime")) {
+		if (key.equals("accountEntry")) {
+			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_ENTRY);
+		}
+		else if (key.equals("licenseLifetime")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_LICENSE_LIFETIME);
 		}
 		else if (key.equals("productEntry")) {
@@ -394,9 +393,6 @@ public class OfferingEntryFinderImpl
 
 	private static final String _ACCOUNT_ENTRY_SQL =
 		"(OSB_OfferingEntry.accountEntryId = ?) [$AND_OR_CONNECTOR$]";
-
-	private static final String _PRODUCT_ENTRY_SQL =
-		"(OSB_OfferingEntry.productEntryId = ?) [$AND_OR_CONNECTOR$]";
 
 	private static final String _USER_SQL =
 		"(OSB_OfferingEntry.userId = ?) [$AND_OR_CONNECTOR$]";

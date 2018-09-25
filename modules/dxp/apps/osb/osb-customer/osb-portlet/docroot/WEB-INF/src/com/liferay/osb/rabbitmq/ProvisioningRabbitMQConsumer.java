@@ -111,13 +111,19 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 		}
 	}
 
-	protected ServiceContext createServiceContext(JSONObject jsonObject) {
+	protected ServiceContext createServiceContext(
+			JSONObject jsonObject, List<OrderEntry> orderEntries)
+		throws PortalException {
+
 		ServiceContext serviceContext = new ServiceContext();
 
-		ArrayList<User> analyticsCloudUsers = parseUsers(
-			jsonObject, "Analytics Cloud Owner", false);
+		if (hasAnalyticsCloud(orderEntries)) {
+			ArrayList<User> analyticsCloudUsers = parseUsers(
+				jsonObject, "Analytics Cloud Owner", false);
 
-		serviceContext.setAttribute("analyticsCloudUsers", analyticsCloudUsers);
+			serviceContext.setAttribute(
+				"analyticsCloudUsers", analyticsCloudUsers);
+		}
 
 		serviceContext.setAttribute(
 			"salesforceOpportunityStageName",
@@ -684,6 +690,27 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 		return (int)listType.getListTypeId();
 	}
 
+	protected boolean hasAnalyticsCloud(List<OrderEntry> orderEntries)
+		throws PortalException {
+
+		for (OrderEntry orderEntry : orderEntries) {
+			List<OfferingEntry> offeringEntries =
+				orderEntry.getOfferingEntries();
+
+			for (OfferingEntry offeringEntry : offeringEntries) {
+				ProductEntry productEntry = offeringEntry.getProductEntry();
+
+				if (productEntry.isAnalyticsCloudBusiness() ||
+					productEntry.isAnalyticsCloudEnterprise()) {
+
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
 	protected boolean hasOpportunityProductFamily(JSONObject jsonObject) {
 		String salesforceOpportunityProductFamily = jsonObject.getString(
 			"_salesforceOpportunityProductFamily");
@@ -756,6 +783,8 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 			accountEntry = AccountEntryLocalServiceUtil.createAccountEntry(0);
 
 			accountEntry.setUserId(OSBConstants.USER_AMOS_FONG_USER_ID);
+			accountEntry.setDossieraAccountKey(
+				accountJSONObject.getString("_dossieraAccountKey"));
 			accountEntry.setCorpEntryName(accountJSONObject.getString("_name"));
 			accountEntry.setName(corpProject.getName());
 			accountEntry.setType(AccountEntryConstants.TYPE_GROUP);
@@ -768,6 +797,8 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 			accountEntry.setSupportRegionIds(supportRegionIds);
 		}
 		else {
+			accountEntry.setDossieraAccountKey(
+				accountJSONObject.getString("_dossieraAccountKey"));
 			accountEntry.setCorpEntryName(accountJSONObject.getString("_name"));
 			accountEntry.setName(corpProject.getName());
 			accountEntry.setIndustry(industry);

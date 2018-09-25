@@ -20,9 +20,11 @@ import com.liferay.osb.service.base.AccountEntryServiceBaseImpl;
 import com.liferay.osb.service.permission.OSBAccountEntryPermission;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.osb.util.OSBConstants;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -45,6 +47,26 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 		return accountEntryPersistence.fetchByCorpProjectUuid(corpProjectUuid);
 	}
 
+	@JSONWebService
+	public List<AccountEntry> getAccountEntries(
+			String userUuid, long[] productEntryIds)
+		throws PortalException {
+
+		validateJSONWebServicePermissions();
+
+		User user = userLocalService.getUserByUuidAndCompanyId(
+			userUuid, OSBConstants.COMPANY_ID);
+
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
+
+		params.put("accountCustomer", Long.valueOf(user.getUserId()));
+		params.put("productEntryIds", productEntryIds);
+		params.put("status", AccountEntryConstants.STATUSES_ACTIVE);
+
+		return accountEntryLocalService.search(
+			null, params, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
 	public AccountEntry getAccountEntry(long accountEntryId)
 		throws PortalException {
 
@@ -65,6 +87,15 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 			ActionKeys.VIEW);
 
 		return accountEntry;
+	}
+
+	@JSONWebService
+	public AccountEntry getCorpProjectAccountEntry(String corpProjectUuid)
+		throws PortalException {
+
+		validateJSONWebServicePermissions();
+
+		return accountEntryPersistence.findByCorpProjectUuid(corpProjectUuid);
 	}
 
 	public List<AccountEntry> getSecurityPatchAccountEntries(String portletId)

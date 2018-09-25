@@ -93,7 +93,7 @@ public class CorpProjectMessageLocalServiceImpl
 
 		List<OfferingEntry> offeringEntries =
 			offeringEntryFinder.findByU_AEI_PEI_T_S_SED(
-				0, 0, 0, types,
+				0, 0, new long[0], types,
 				new int[] {OfferingEntryConstants.STATUS_ACTIVE},
 				supportEndDateGT, supportEndDateLT, params, true,
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS,
@@ -133,7 +133,7 @@ public class CorpProjectMessageLocalServiceImpl
 
 			List<OfferingEntry> accountEntryOfferingEntries =
 				offeringEntryFinder.findByU_AEI_PEI_T_S_SED(
-					0, accountEntry.getAccountEntryId(), 0, types,
+					0, accountEntry.getAccountEntryId(), new long[0], types,
 					new int[] {OfferingEntryConstants.STATUS_ACTIVE},
 					supportEndDateLT, null, params, true, QueryUtil.ALL_POS,
 					QueryUtil.ALL_POS, null);
@@ -246,7 +246,7 @@ public class CorpProjectMessageLocalServiceImpl
 
 			if (accountEntry != null) {
 				offeringEntries = offeringEntryFinder.findByU_AEI_PEI_T_S_SED(
-					0, accountEntry.getAccountEntryId(), 0, types,
+					0, accountEntry.getAccountEntryId(), new long[0], types,
 					new int[] {OfferingEntryConstants.STATUS_ACTIVE}, null,
 					null, params, true, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 					new OfferingEntrySupportEndDateComparator(false));

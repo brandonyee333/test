@@ -25,15 +25,25 @@ import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.AuditEntryConstants;
 import com.liferay.osb.service.base.AccountCustomerLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
+import com.liferay.osb.util.OSBCustomSQLParam;
 import com.liferay.osb.util.VisibilityConstants;
+import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
+import com.liferay.portal.kernel.dao.orm.CustomSQLParam;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Brian Wing Shun Chan
@@ -56,17 +66,8 @@ public class AccountCustomerLocalServiceImpl
 
 		validate(customerUserId, accountEntryId);
 
-		long accountCustomerId = counterLocalService.increment();
-
-		AccountCustomer accountCustomer = accountCustomerPersistence.create(
-			accountCustomerId);
-
-		accountCustomer.setUserId(customerUserId);
-		accountCustomer.setAccountEntryId(accountEntryId);
-		accountCustomer.setRole(role);
-		accountCustomer.setNotifications(notifications);
-
-		accountCustomerPersistence.update(accountCustomer);
+		AccountCustomer accountCustomer = doAddAccountCustomer(
+			customerUserId, accountEntryId, role, notifications);
 
 		long auditSetId = auditEntryLocalService.getNextAuditSetId(
 			AccountEntry.class.getName(), accountEntryId);
@@ -77,7 +78,8 @@ public class AccountCustomerLocalServiceImpl
 
 		auditEntryLocalService.addAuditEntry(
 			userId, user.getFullName(), now, classNameId, accountEntryId,
-			auditSetId, fieldClassNameId, accountCustomerId,
+			auditSetId, fieldClassNameId,
+			accountCustomer.getAccountCustomerId(),
 			AuditEntryConstants.ACTION_ASSIGN, AuditEntryConstants.FIELD_USER,
 			VisibilityConstants.WORKERS, StringPool.BLANK, StringPool.BLANK,
 			customerUser.getFullName(), String.valueOf(customerUserId));
@@ -97,11 +99,16 @@ public class AccountCustomerLocalServiceImpl
 		}
 		else if (accountEntry.isApproved() &&
 				 (accountEntry.getType() !=
+					 AccountEntryConstants.TYPE_ANALYTICS_CLOUD_BASIC) &&
+				 (accountEntry.getType() !=
 					 AccountEntryConstants.TYPE_INTERNAL_TEST)) {
 
 			assignOrganizations(
 				customerUserId, OSBConstants.ORGANIZATION_CUSTOMER_ID);
 		}
+
+		syncAnalyticsCloudBasicAccountEntry(
+			accountEntry.getDossieraAccountKey());
 
 		return accountCustomer;
 	}
@@ -160,6 +167,12 @@ public class AccountCustomerLocalServiceImpl
 		throws PortalException {
 
 		deleteAccountCustomer(accountCustomer);
+
+		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
+			accountCustomer.getAccountEntryId());
+
+		syncAnalyticsCloudBasicAccountEntry(
+			accountEntry.getDossieraAccountKey());
 
 		updateAuditEntry(userId, accountCustomer);
 
@@ -310,6 +323,100 @@ public class AccountCustomerLocalServiceImpl
 
 			remoteUserLocalService.addOrganizationUsers(
 				organizationId, new long[] {userId});
+		}
+	}
+
+	protected AccountCustomer doAddAccountCustomer(
+		long userId, long accountEntryId, int role, int notifications) {
+
+		long accountCustomerId = counterLocalService.increment();
+
+		AccountCustomer accountCustomer = accountCustomerPersistence.create(
+			accountCustomerId);
+
+		accountCustomer.setUserId(userId);
+		accountCustomer.setAccountEntryId(accountEntryId);
+		accountCustomer.setRole(role);
+		accountCustomer.setNotifications(notifications);
+
+		return accountCustomerPersistence.update(accountCustomer);
+	}
+
+	protected void syncAnalyticsCloudBasicAccountEntry(
+			String dossieraAccountKey)
+		throws PortalException {
+
+		if (Validator.isNull(dossieraAccountKey)) {
+			return;
+		}
+
+		AccountEntry accountEntry =
+			accountEntryLocalService.fetchAnalyticsCloudBasicAccountEntry(
+				dossieraAccountKey);
+
+		if (accountEntry == null) {
+			return;
+		}
+
+		List<AccountCustomer> accountCustomers =
+			accountEntry.getAccountCustomers();
+
+		for (AccountCustomer accountCustomer : accountCustomers) {
+			if (corpProjectLocalService.hasUserCorpProjectRole(
+					accountCustomer.getUserId(),
+					accountEntry.getCorpProjectId(),
+					OSBConstants.ROLE_OSB_CORP_ANALYTICS_CLOUD_OWNER_ID)) {
+
+				return;
+			}
+		}
+
+		LinkedHashMap<String, Object> userParams = new LinkedHashMap<>();
+
+		String customJoinSQL = CustomSQLUtil.get(
+			getClass(),
+			"com.liferay.portal.service.persistence.UserFinder." +
+				"joinByDossieraAccountAccountCustomer");
+
+		CustomSQLParam customSQLParam = new OSBCustomSQLParam(
+			"usersDossieraAccountAccountCustomers", customJoinSQL,
+			new Object[] {
+				dossieraAccountKey,
+				Integer.valueOf(
+					AccountEntryConstants.TYPE_ANALYTICS_CLOUD_BASIC)
+			});
+
+		userParams.put("usersDossieraAccountAccountCustomers", customSQLParam);
+
+		List<User> users = userLocalService.search(
+			OSBConstants.COMPANY_ID, null, WorkflowConstants.STATUS_APPROVED,
+			userParams, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			(OrderByComparator)null);
+
+		Set<Long> userIds = new HashSet<>();
+
+		for (User user : users) {
+			userIds.add(user.getUserId());
+		}
+
+		for (AccountCustomer accountCustomer : accountCustomers) {
+			if (!userIds.contains(accountCustomer.getUserId())) {
+				deleteAccountCustomer(accountCustomer);
+			}
+			else {
+				accountCustomer.setRole(AccountCustomerConstants.ROLE_WATCHER);
+
+				accountCustomerPersistence.update(accountCustomer);
+
+				userIds.remove(accountCustomer.getUserId());
+			}
+		}
+
+		for (long userId : userIds) {
+			doAddAccountCustomer(
+				userId, accountEntry.getAccountEntryId(),
+				AccountCustomerConstants.ROLE_WATCHER,
+				AccountCustomerConstants.NOTIFICATIONS_NONE);
 		}
 	}
 

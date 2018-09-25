@@ -145,7 +145,6 @@ public class OfferingEntryImpl extends OfferingEntryBaseImpl {
 		return OrderEntryLocalServiceUtil.getOrderEntry(getOrderEntryId());
 	}
 
-	@JSON
 	public ProductEntry getProductEntry() throws PortalException {
 		return ProductEntryLocalServiceUtil.getProductEntry(
 			getProductEntryId());
@@ -155,6 +154,7 @@ public class OfferingEntryImpl extends OfferingEntryBaseImpl {
 		return OfferingEntryConstants.getSizingLabel(getSizing());
 	}
 
+	@JSON
 	public Date getStartDate() throws PortalException {
 		OrderEntry orderEntry = getOrderEntry();
 

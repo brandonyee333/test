@@ -119,6 +119,8 @@ public class AccountEntryDisplayTerms extends DisplayTerms {
 
 	public static final String TIERS = "tiers";
 
+	public static final String TYPES = "types";
+
 	public static final String ZIP = "zip";
 
 	public AccountEntryDisplayTerms(PortletRequest portletRequest) {
@@ -214,6 +216,7 @@ public class AccountEntryDisplayTerms extends DisplayTerms {
 			ticketSupport = GetterUtil.getBoolean(ticketSupportString);
 		}
 
+		types = ParamUtil.getIntegerValues(portletRequest, TYPES);
 		zip = ParamUtil.getString(portletRequest, ZIP);
 	}
 
@@ -433,6 +436,14 @@ public class AccountEntryDisplayTerms extends DisplayTerms {
 		return tiers;
 	}
 
+	public int[] getTypes() {
+		if (ArrayUtil.contains(types, 0)) {
+			return new int[0];
+		}
+
+		return types;
+	}
+
 	public String getZip() {
 		return zip;
 	}
@@ -531,6 +542,7 @@ public class AccountEntryDisplayTerms extends DisplayTerms {
 	protected long[] supportResponseIds;
 	protected Boolean ticketSupport;
 	protected int[] tiers;
+	protected int[] types;
 	protected String zip;
 
 }

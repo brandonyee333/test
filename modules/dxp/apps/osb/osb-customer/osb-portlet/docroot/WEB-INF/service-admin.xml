@@ -107,6 +107,7 @@
 
 		<column name="corpProjectUuid" type="String" />
 		<column name="corpProjectId" type="long" />
+		<column name="dossieraAccountKey" type="String" />
 		<column name="corpEntryName" type="String" />
 		<column name="name" type="String" />
 		<column name="code" type="String" />
@@ -142,6 +143,9 @@
 		<finder name="CorpProjectId" return-type="AccountEntry">
 			<finder-column name="corpProjectId" />
 		</finder>
+		<finder name="DossieraAccountKey" return-type="Collection">
+			<finder-column name="dossieraAccountKey" />
+		</finder>
 		<finder name="Name" return-type="Collection">
 			<finder-column name="name" />
 		</finder>
@@ -156,6 +160,10 @@
 		</finder>
 		<finder name="U_T" return-type="Collection">
 			<finder-column name="userId" />
+			<finder-column name="type" />
+		</finder>
+		<finder name="DAK_T" return-type="Collection">
+			<finder-column name="dossieraAccountKey" />
 			<finder-column name="type" />
 		</finder>
 		<finder name="RAEI_S" return-type="Collection">

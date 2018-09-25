@@ -19,6 +19,7 @@ import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.service.base.CorpProjectLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -141,6 +142,20 @@ public class CorpProjectLocalServiceImpl
 		name = StringUtil.quote(name, StringPool.PERCENT);
 
 		return corpProjectPersistence.countByName(name);
+	}
+
+	public boolean hasUserCorpProjectRole(
+			long userId, long corpProjectId, long roleId)
+		throws PortalException {
+
+		CorpProject corpProject = corpProjectPersistence.findByPrimaryKey(
+			corpProjectId);
+
+		Organization organization = organizationPersistence.findByPrimaryKey(
+			corpProject.getOrganizationId());
+
+		return userGroupRoleLocalService.hasUserGroupRole(
+			userId, organization.getGroupId(), roleId);
 	}
 
 	public CorpProject updateCorpProject(

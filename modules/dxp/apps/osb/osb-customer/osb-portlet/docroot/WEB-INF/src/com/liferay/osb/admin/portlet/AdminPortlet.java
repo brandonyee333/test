@@ -539,6 +539,8 @@ public class AdminPortlet extends OSBPortlet {
 
 		String corpProjectUuid = ParamUtil.getString(
 			actionRequest, "corpProjectUuid");
+		String dossieraAccountKey = ParamUtil.getString(
+			actionRequest, "dossieraAccountKey");
 		String name = ParamUtil.getString(actionRequest, "name");
 		String code = ParamUtil.getString(actionRequest, "code");
 		int type = ParamUtil.getInteger(actionRequest, "type");
@@ -570,8 +572,8 @@ public class AdminPortlet extends OSBPortlet {
 
 		if (accountEntryId <= 0) {
 			AccountEntryLocalServiceUtil.addAccountEntry(
-				themeDisplay.getUserId(), corpProjectUuid, StringPool.BLANK,
-				name, code, type, industry, partnerEntryId,
+				themeDisplay.getUserId(), corpProjectUuid, dossieraAccountKey,
+				StringPool.BLANK, name, code, type, industry, partnerEntryId,
 				partnerManagedSupport, tier, maxCustomers, instructions, notes,
 				languageIds, supportRegionIds, street1, street2, street3, city,
 				zip, regionId, countryId, ewsaDossieraProjectKey);
@@ -582,11 +584,11 @@ public class AdminPortlet extends OSBPortlet {
 
 			AccountEntryLocalServiceUtil.updateAccountEntry(
 				themeDisplay.getUserId(), accountEntryId, corpProjectUuid,
-				accountEntry.getCorpEntryName(), name, code, type, industry,
-				partnerEntryId, partnerManagedSupport, tier, maxCustomers,
-				instructions, notes, languageIds, supportRegionIds, addressId,
-				street1, street2, street3, city, zip, regionId, countryId,
-				ewsaDossieraProjectKey);
+				dossieraAccountKey, accountEntry.getCorpEntryName(), name, code,
+				type, industry, partnerEntryId, partnerManagedSupport, tier,
+				maxCustomers, instructions, notes, languageIds,
+				supportRegionIds, addressId, street1, street2, street3, city,
+				zip, regionId, countryId, ewsaDossieraProjectKey);
 		}
 
 		updateAccountAttachment(actionRequest);

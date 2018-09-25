@@ -72,6 +72,8 @@ public class AccountEntryConstants {
 	public static final int[] TIERS =
 		{TIER_OEM, TIER_PREMIER, TIER_REGULAR, TIER_STRATEGIC};
 
+	public static final int TYPE_ANALYTICS_CLOUD_BASIC = 5;
+
 	public static final int TYPE_GROUP = 1;
 
 	public static final int TYPE_INDIVIDUAL = 2;
@@ -79,6 +81,11 @@ public class AccountEntryConstants {
 	public static final int TYPE_INTERNAL_TEST = 3;
 
 	public static final int TYPE_TRIAL = 4;
+
+	public static final int[] TYPES = {
+		TYPE_ANALYTICS_CLOUD_BASIC, TYPE_GROUP, TYPE_INDIVIDUAL,
+		TYPE_INTERNAL_TEST, TYPE_TRIAL
+	};
 
 	public static String getIndustryLabel(int industry) {
 		try {
@@ -121,7 +128,10 @@ public class AccountEntryConstants {
 	}
 
 	public static String getTypeLabel(int type) {
-		if (type == TYPE_GROUP) {
+		if (type == TYPE_ANALYTICS_CLOUD_BASIC) {
+			return "analytics-cloud-basic";
+		}
+		else if (type == TYPE_GROUP) {
 			return "group";
 		}
 		else if (type == TYPE_INDIVIDUAL) {

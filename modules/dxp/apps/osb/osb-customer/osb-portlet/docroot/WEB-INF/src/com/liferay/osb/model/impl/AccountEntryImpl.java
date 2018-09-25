@@ -39,6 +39,7 @@ import com.liferay.osb.service.SupportRegionLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.service.AddressLocalServiceUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -157,6 +158,7 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 		return languageIds;
 	}
 
+	@JSON
 	public List<OfferingEntry> getOfferingEntries() {
 		return OfferingEntryLocalServiceUtil.getAccountEntryOfferingEntries(
 			getAccountEntryId());

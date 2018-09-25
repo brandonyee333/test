@@ -76,6 +76,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.Country;
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Indexer;
@@ -108,11 +109,12 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import javax.portlet.PortletPreferences;
@@ -125,10 +127,10 @@ public class AccountEntryLocalServiceImpl
 	extends AccountEntryLocalServiceBaseImpl {
 
 	public AccountEntry addAccountEntry(
-			long userId, String corpProjectUuid, String corpEntryName,
-			String name, String code, int type, int industry,
-			long partnerEntryId, boolean partnerManagedSupport, int tier,
-			int maxCustomers, String instructions, String notes,
+			long userId, String corpProjectUuid, String dossieraAccountKey,
+			String corpEntryName, String name, String code, int type,
+			int industry, long partnerEntryId, boolean partnerManagedSupport,
+			int tier, int maxCustomers, String instructions, String notes,
 			String[] languageIds, long[] supportRegionIds, String street1,
 			String street2, String street3, String city, String zip,
 			long regionId, long countryId, String ewsaDossieraProjectKey)
@@ -139,10 +141,10 @@ public class AccountEntryLocalServiceImpl
 			maxCustomers, languageIds, supportRegionIds);
 
 		return doAddAccountEntry(
-			userId, corpProjectUuid, corpEntryName, name, code, type, industry,
-			partnerEntryId, partnerManagedSupport, tier, maxCustomers,
-			instructions, notes, languageIds, supportRegionIds, street1,
-			street2, street3, city, zip, regionId, countryId,
+			userId, corpProjectUuid, dossieraAccountKey, corpEntryName, name,
+			code, type, industry, partnerEntryId, partnerManagedSupport, tier,
+			maxCustomers, instructions, notes, languageIds, supportRegionIds,
+			street1, street2, street3, city, zip, regionId, countryId,
 			ewsaDossieraProjectKey);
 	}
 
@@ -177,6 +179,7 @@ public class AccountEntryLocalServiceImpl
 
 		accountEntry = doAddAccountEntry(
 			accountEntry.getUserId(), corpProject.getUuid(),
+			accountEntry.getDossieraAccountKey(),
 			accountEntry.getCorpEntryName(), accountEntry.getName(),
 			accountEntry.getCode(), accountEntry.getType(),
 			accountEntry.getIndustry(), partnerEntryId,
@@ -220,10 +223,10 @@ public class AccountEntryLocalServiceImpl
 
 		// Users
 
-		ArrayList<User> missingAnalyticsCloudUsers = new ArrayList<>();
+		ArrayList<User> analyticsCloudUsers =
+			(ArrayList<User>)serviceContext.getAttribute("analyticsCloudUsers");
 
-		List<User> analyticsCloudUsers =
-			(List<User>)serviceContext.getAttribute("analyticsCloudUsers");
+		ArrayList<User> missingAnalyticsCloudUsers = new ArrayList<>();
 
 		if ((analyticsCloudUsers != null) && !analyticsCloudUsers.isEmpty()) {
 			missingAnalyticsCloudUsers = addCorpProjectUsers(
@@ -244,6 +247,12 @@ public class AccountEntryLocalServiceImpl
 		// Workflow
 
 		HashMap<String, Serializable> workflowContext = new HashMap<>();
+
+		if ((analyticsCloudUsers != null) && !analyticsCloudUsers.isEmpty()) {
+			workflowContext.put(
+				WorkflowConstants.CONTEXT_ANALYTICS_CLOUD_USERS,
+				analyticsCloudUsers);
+		}
 
 		if (!missingAnalyticsCloudUsers.isEmpty()) {
 			workflowContext.put(
@@ -319,6 +328,86 @@ public class AccountEntryLocalServiceImpl
 		return accountEntry;
 	}
 
+	public void addAnalyticsCloudBasicAccountEntry(
+			String dossieraAccountKey, String corpEntryName,
+			Date supportEndDate)
+		throws PortalException {
+
+		String name = corpEntryName + " Basic AC Tier";
+
+		// Corp project
+
+		CorpProject corpProject = remoteCorpProjectLocalService.addCorpProject(
+			OSBConstants.USER_DEFAULT_USER_ID, 0, StringPool.BLANK,
+			StringPool.BLANK, name);
+
+		// Account entry
+
+		String[] languageIds = {LocaleUtil.toLanguageId(LocaleUtil.US)};
+		long[] supportRegionIds = {OSBConstants.SUPPORT_REGION_US_ID};
+
+		AccountEntry analyticsCloudAccountEntry = doAddAccountEntry(
+			OSBConstants.USER_DEFAULT_USER_ID, corpProject.getUuid(),
+			dossieraAccountKey, corpEntryName, name, null,
+			AccountEntryConstants.TYPE_ANALYTICS_CLOUD_BASIC, 0, 0, false,
+			AccountEntryConstants.TIER_REGULAR, 10000, StringPool.BLANK,
+			StringPool.BLANK, languageIds, supportRegionIds, "N/A",
+			StringPool.BLANK, StringPool.BLANK, StringPool.BLANK, "N/A", 0, 0,
+			StringPool.BLANK);
+
+		// Account customer
+
+		List<AccountEntry> accountEntries = getAccountEntries(
+			dossieraAccountKey);
+
+		for (AccountEntry accountEntry : accountEntries) {
+			List<AccountCustomer> accountCustomers =
+				accountEntry.getAccountCustomers();
+
+			for (AccountCustomer accountCustomer : accountCustomers) {
+				accountCustomerLocalService.addAccountCustomer(
+					OSBConstants.USER_DEFAULT_USER_ID,
+					accountCustomer.getUserId(),
+					analyticsCloudAccountEntry.getAccountEntryId(),
+					AccountCustomerConstants.ROLE_WATCHER,
+					AccountCustomerConstants.NOTIFICATIONS_NONE);
+			}
+		}
+
+		// Order entry
+
+		Calendar cal = Calendar.getInstance();
+
+		OrderEntry orderEntry = orderEntryLocalService.addOrderEntry(
+			OSBConstants.USER_DEFAULT_USER_ID,
+			analyticsCloudAccountEntry.getAccountEntryId(), StringPool.BLANK,
+			cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH),
+			cal.get(Calendar.YEAR), false, cal.get(Calendar.MONTH),
+			cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.YEAR),
+			WorkflowConstants.STATUS_APPROVED, StringPool.BLANK,
+			new ArrayList<OfferingEntry>());
+
+		// Offering entry
+
+		ProductEntry productEntry =
+			productEntryLocalService.getProductEntryByName(
+				"Liferay Analytics Cloud Basic");
+
+		long supportLifetime = supportEndDate.getTime() - cal.getTimeInMillis();
+
+		SupportResponse supportResponse =
+			supportResponseLocalService.getSupportResponseByName("Limited");
+
+		offeringEntryLocalService.addOfferingEntry(
+			OSBConstants.USER_DEFAULT_USER_ID,
+			analyticsCloudAccountEntry.getAccountEntryId(),
+			orderEntry.getOrderEntryId(), productEntry.getProductEntryId(),
+			supportResponse.getSupportResponseId(), StringPool.BLANK,
+			OfferingEntryConstants.TYPE_REGULAR, 0, false, 0, 0, 0, true,
+			supportLifetime, OfferingEntryConstants.SIZING_1, 1,
+			OfferingEntryConstants.STATUS_ACTIVE);
+	}
+
 	public void addTrialAccountEntry(long userId) throws Exception {
 		User user = userLocalService.getUser(userId);
 
@@ -374,9 +463,9 @@ public class AccountEntryLocalServiceImpl
 		}
 
 		AccountEntry accountEntry = doAddAccountEntry(
-			userId, corpProject.getUuid(), StringPool.BLANK, companyName, null,
-			AccountEntryConstants.TYPE_TRIAL, industry, 0L, false,
-			AccountEntryConstants.TIER_REGULAR, 1, StringPool.BLANK,
+			userId, corpProject.getUuid(), StringPool.BLANK, StringPool.BLANK,
+			companyName, null, AccountEntryConstants.TYPE_TRIAL, industry, 0L,
+			false, AccountEntryConstants.TIER_REGULAR, 1, StringPool.BLANK,
 			StringPool.BLANK, new String[0], new long[0], "N/A",
 			StringPool.BLANK, StringPool.BLANK, "N/A", "N/A", 0L, countryId,
 			StringPool.BLANK);
@@ -552,6 +641,64 @@ public class AccountEntryLocalServiceImpl
 			accountEntry, workflowServiceContext);
 	}
 
+	public void assignOwnership(long corpProjectId, long[] userIds)
+		throws PortalException {
+
+		AccountEntry accountEntry = fetchCorpProjectAccountEntry(corpProjectId);
+
+		if ((accountEntry == null) ||
+			(accountEntry.getType() !=
+				AccountEntryConstants.TYPE_ANALYTICS_CLOUD_BASIC)) {
+
+			return;
+		}
+
+		CorpProject corpProject = corpProjectLocalService.getCorpProject(
+			corpProjectId);
+
+		Group group = corpProject.getGroup();
+
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
+
+		params.put(
+			"userGroupRole",
+			new Long[] {
+				group.getGroupId(),
+				OSBConstants.ROLE_OSB_CORP_ANALYTICS_CLOUD_OWNER_ID
+			});
+		params.put("usersOrgs", corpProject.getOrganizationId());
+
+		List<User> users = userLocalService.search(
+			group.getCompanyId(), null, WorkflowConstants.STATUS_APPROVED,
+			params, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			(OrderByComparator)null);
+
+		for (User user : users) {
+			if (!ArrayUtil.contains(userIds, user.getUserId())) {
+				return;
+			}
+		}
+
+		List<AccountCustomer> acccountCustomers =
+			accountCustomerLocalService.getAccountCustomers(
+				accountEntry.getAccountEntryId());
+
+		for (AccountCustomer accountCustomer : acccountCustomers) {
+			if (!ArrayUtil.contains(userIds, accountCustomer.getUserId())) {
+				accountCustomerLocalService.deleteAccountCustomer(
+					accountCustomer);
+			}
+		}
+
+		for (long userId : userIds) {
+			accountCustomerLocalService.addAccountCustomer(
+				OSBConstants.USER_DEFAULT_USER_ID, userId,
+				accountEntry.getAccountEntryId(),
+				AccountCustomerConstants.ROLE_DEVELOPER,
+				AccountCustomerConstants.NOTIFICATIONS_NONE);
+		}
+	}
+
 	public void auditAccountEntries() throws PortalException {
 		if (!PortletPropsValues.REMOTE_REST_SERVICE_API_DOSSIERA_ENABLED) {
 			return;
@@ -699,6 +846,14 @@ public class AccountEntryLocalServiceImpl
 		return accountEntry;
 	}
 
+	public AccountEntry fetchAnalyticsCloudBasicAccountEntry(
+		String dossieraAccountKey) {
+
+		return accountEntryPersistence.fetchByDAK_T_First(
+			dossieraAccountKey,
+			AccountEntryConstants.TYPE_ANALYTICS_CLOUD_BASIC, null);
+	}
+
 	@Override
 	public AccountEntry fetchCorpProjectAccountEntry(long corpProjectId) {
 		return accountEntryPersistence.fetchByCorpProjectId(corpProjectId);
@@ -726,6 +881,17 @@ public class AccountEntryLocalServiceImpl
 
 		return accountEntryPersistence.findByRAEI_NotT_S(
 			0, notTypes, statuses, start, end);
+	}
+
+	public List<AccountEntry> getAccountEntries(String dossieraAccountKey) {
+		return accountEntryPersistence.findByDossieraAccountKey(
+			dossieraAccountKey);
+	}
+
+	public List<AccountEntry> getAccountEntries(
+		String dossieraAccountKey, int type) {
+
+		return accountEntryPersistence.findByDAK_T(dossieraAccountKey, type);
 	}
 
 	@Override
@@ -764,6 +930,12 @@ public class AccountEntryLocalServiceImpl
 
 		return accountEntryFinder.findByKeywords(
 			null, params, start, end, new AccountEntryNameComparator(true));
+	}
+
+	public AccountEntry getCorpProjectAccountEntry(long corpProjectId)
+		throws PortalException {
+
+		return accountEntryPersistence.findByCorpProjectId(corpProjectId);
 	}
 
 	public List<AccountEntry> getPartnerAccountEntries(long partnerEntryId) {
@@ -960,13 +1132,13 @@ public class AccountEntryLocalServiceImpl
 
 	public AccountEntry updateAccountEntry(
 			long userId, long accountEntryId, String corpProjectUuid,
-			String corpEntryName, String name, String code, int type,
-			int industry, long partnerEntryId, boolean partnerManagedSupport,
-			int tier, int maxCustomers, String instructions, String notes,
-			String[] languageIds, long[] supportRegionIds, long addressId,
-			String street1, String street2, String street3, String city,
-			String zip, long regionId, long countryId,
-			String ewsaDossieraProjectKey)
+			String dossieraAccountKey, String corpEntryName, String name,
+			String code, int type, int industry, long partnerEntryId,
+			boolean partnerManagedSupport, int tier, int maxCustomers,
+			String instructions, String notes, String[] languageIds,
+			long[] supportRegionIds, long addressId, String street1,
+			String street2, String street3, String city, String zip,
+			long regionId, long countryId, String ewsaDossieraProjectKey)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
@@ -996,6 +1168,7 @@ public class AccountEntryLocalServiceImpl
 			}
 		}
 
+		accountEntry.setDossieraAccountKey(dossieraAccountKey);
 		accountEntry.setCorpEntryName(corpEntryName);
 		accountEntry.setName(name);
 		accountEntry.setCode(code);
@@ -1075,6 +1248,7 @@ public class AccountEntryLocalServiceImpl
 				OSBConstants.USER_DEFAULT_USER_ID,
 				oldAccountEntry.getAccountEntryId(),
 				oldAccountEntry.getCorpProjectUuid(),
+				accountEntry.getDossieraAccountKey(),
 				accountEntry.getCorpEntryName(), oldAccountEntry.getName(),
 				oldAccountEntry.getCode(), oldAccountEntry.getType(),
 				accountEntry.getIndustry(), oldAccountEntry.getPartnerEntryId(),
@@ -1468,9 +1642,6 @@ public class AccountEntryLocalServiceImpl
 				accountEntry.getSupportRegionIds());
 		}
 
-		List<User> missingAnalyticsCloudUsers = new ArrayList<>();
-		List<User> missingUsers = new ArrayList<>();
-
 		if ((accountEntry.getStatus() != WorkflowConstants.STATUS_APPROVED) &&
 			(accountEntry.getStatus() != status)) {
 
@@ -1479,21 +1650,6 @@ public class AccountEntryLocalServiceImpl
 			accountEntry.setModifiedDate(serviceContext.getModifiedDate(now));
 
 			if (status == WorkflowConstants.STATUS_APPROVED) {
-				missingAnalyticsCloudUsers =
-					(List<User>)serviceContext.getAttribute(
-						"missingAnalyticsCloudUsers");
-
-				if (missingAnalyticsCloudUsers == null) {
-					missingAnalyticsCloudUsers = new ArrayList<>();
-				}
-
-				missingUsers = (List<User>)serviceContext.getAttribute(
-					"missingUsers");
-
-				if (missingUsers == null) {
-					missingUsers = new ArrayList<>();
-				}
-
 				accountEntry.setStatus(getStatus(accountEntryId));
 			}
 			else {
@@ -1523,25 +1679,53 @@ public class AccountEntryLocalServiceImpl
 			}
 		}
 
-		if ((status == WorkflowConstants.STATUS_APPROVED) &&
-			(!missingAnalyticsCloudUsers.isEmpty() ||
-			 !missingUsers.isEmpty())) {
+		if ((accountEntry.getStatus() != WorkflowConstants.STATUS_APPROVED) &&
+			(accountEntry.getStatus() != status) &&
+			(status == WorkflowConstants.STATUS_APPROVED)) {
 
-			List<User> users = new ArrayList<>(missingAnalyticsCloudUsers);
+			Set<String> sentEmails = new HashSet<>();
 
-			sendUserCreationNotification(
-				users, accountEntry,
-				"Analytics Cloud, Customer Portal, all of our downloads, and " +
-					"our support system");
+			List<User> missingAnalyticsCloudUsers =
+				(List<User>)serviceContext.getAttribute(
+					"missingAnalyticsCloudUsers");
 
-			users = new ArrayList<>(missingUsers);
+			if (missingAnalyticsCloudUsers != null) {
+				for (User missingUser : missingAnalyticsCloudUsers) {
+					if (sentEmails.contains(missingUser.getEmailAddress())) {
+						continue;
+					}
 
-			users.removeAll(missingAnalyticsCloudUsers);
+					sendUserCreationEmail(
+						missingUser, accountEntry,
+						"Analytics Cloud, Customer Portal, all of our " +
+							"downloads, and our support system");
 
-			sendUserCreationNotification(
-				users, accountEntry,
-				"Customer Portal, all of our downloads, and our support " +
-					"system");
+					sentEmails.add(missingUser.getEmailAddress());
+				}
+			}
+
+			List<User> missingUsers = (List<User>)serviceContext.getAttribute(
+				"missingUsers");
+
+			if (missingUsers != null) {
+				for (User missingUser : missingUsers) {
+					if (sentEmails.contains(missingUser.getEmailAddress())) {
+						continue;
+					}
+
+					sendUserCreationEmail(
+						missingUser, accountEntry,
+						"Customer Portal, all of our downloads, and our " +
+							"support system");
+
+					sentEmails.add(missingUser.getEmailAddress());
+				}
+			}
+
+			List<User> analyticsCloudUsers =
+				(List<User>)serviceContext.getAttribute("analyticsCloudUsers");
+
+			sendAnalyticsCloudWelcomeEmail(analyticsCloudUsers);
 		}
 
 		return accountEntry;
@@ -1674,14 +1858,12 @@ public class AccountEntryLocalServiceImpl
 			List<User> users, long[] roleIds)
 		throws PortalException {
 
-		ArrayList<User> missingUsers = new ArrayList<>(users);
+		ArrayList<User> missingUsers = new ArrayList<>();
 
-		Iterator<User> itr = missingUsers.iterator();
-
-		while (itr.hasNext()) {
-			User user = itr.next();
-
+		for (User user : users) {
 			if (user.getUserId() <= 0) {
+				missingUsers.add((User)user.clone());
+
 				continue;
 			}
 
@@ -1699,18 +1881,16 @@ public class AccountEntryLocalServiceImpl
 				accountEntry.getAccountEntryId(),
 				AccountCustomerConstants.ROLE_WATCHER,
 				AccountCustomerConstants.NOTIFICATIONS_ALL);
-
-			itr.remove();
 		}
 
 		return missingUsers;
 	}
 
 	protected AccountEntry doAddAccountEntry(
-			long userId, String corpProjectUuid, String corpEntryName,
-			String name, String code, int type, int industry,
-			long partnerEntryId, boolean partnerManagedSupport, int tier,
-			int maxCustomers, String instructions, String notes,
+			long userId, String corpProjectUuid, String dossieraAccountKey,
+			String corpEntryName, String name, String code, int type,
+			int industry, long partnerEntryId, boolean partnerManagedSupport,
+			int tier, int maxCustomers, String instructions, String notes,
 			String[] languageIds, long[] supportRegionIds, String street1,
 			String street2, String street3, String city, String zip,
 			long regionId, long countryId, String ewsaDossieraProjectKey)
@@ -1746,6 +1926,7 @@ public class AccountEntryLocalServiceImpl
 			}
 		}
 
+		accountEntry.setDossieraAccountKey(dossieraAccountKey);
 		accountEntry.setCorpEntryName(corpEntryName);
 		accountEntry.setName(name);
 		accountEntry.setCode(code);
@@ -1761,10 +1942,13 @@ public class AccountEntryLocalServiceImpl
 
 		// Address
 
-		addressLocalService.addAddress(
-			userId, AccountEntry.class.getName(),
-			accountEntry.getAccountEntryId(), street1, street2, street3, city,
-			zip, regionId, countryId, 0, false, true, new ServiceContext());
+		if (type != AccountEntryConstants.TYPE_ANALYTICS_CLOUD_BASIC) {
+			addressLocalService.addAddress(
+				userId, AccountEntry.class.getName(),
+				accountEntry.getAccountEntryId(), street1, street2, street3,
+				city, zip, regionId, countryId, 0, false, true,
+				new ServiceContext());
+		}
 
 		// External ids
 
@@ -1993,6 +2177,46 @@ public class AccountEntryLocalServiceImpl
 		}
 	}
 
+	protected void sendAnalyticsCloudWelcomeEmail(List<User> users) {
+		if ((users == null) || users.isEmpty()) {
+			return;
+		}
+
+		PortletPreferences portletPreferences =
+			AdminUtil.getPortletPreferences();
+
+		Map<Locale, String> subjectMap =
+			AdminUtil.getEmailAnalyticsCloudWelcomeSubjectMap(
+				portletPreferences);
+		Map<Locale, String> bodyMap =
+			AdminUtil.getEmailAnalyticsCloudWelcomeBodyMap(portletPreferences);
+
+		for (User user : users) {
+			Locale locale = user.getLocale();
+
+			if (!LanguageUtil.isAvailableLocale(locale)) {
+				locale = LocaleUtil.getDefault();
+			}
+
+			SubscriptionSender subscriptionSender = new SubscriptionSender();
+
+			subscriptionSender.setBody(bodyMap.get(locale));
+			subscriptionSender.setCompanyId(OSBConstants.COMPANY_ID);
+			subscriptionSender.setFrom(
+				"noreply@liferay.com", "Liferay Analytics Cloud");
+			subscriptionSender.setHtmlFormat(true);
+			subscriptionSender.setMailId(
+				"analytics_cloud_welcome", user.getUserId());
+			subscriptionSender.setReplyToAddress("noreply@liferay.com");
+			subscriptionSender.setSubject(subjectMap.get(locale));
+
+			subscriptionSender.addRuntimeSubscribers(
+				user.getEmailAddress(), user.getFullName());
+
+			subscriptionSender.flushNotificationsAsync();
+		}
+	}
+
 	protected void sendEmail(AccountEntry accountEntry, int oldTier)
 		throws PortalException {
 
@@ -2072,15 +2296,15 @@ public class AccountEntryLocalServiceImpl
 		subscriptionSender.flushNotificationsAsync();
 	}
 
-	protected void sendUserCreationNotification(
-		List<User> users, AccountEntry accountEntry,
-		String subscriptionServices) {
+	protected void sendUserCreationEmail(
+		User user, AccountEntry accountEntry, String subscriptionServices) {
 
-		if ((users == null) || users.isEmpty()) {
+		User curUser = userLocalService.fetchUserByEmailAddress(
+			OSBConstants.COMPANY_ID, user.getEmailAddress());
+
+		if (curUser != null) {
 			return;
 		}
-
-		ListUtil.distinct(users);
 
 		String supportRegionName = StringPool.BLANK;
 
@@ -2132,37 +2356,28 @@ public class AccountEntryLocalServiceImpl
 			body = bodyMap.get(LocaleUtil.getDefault());
 		}
 
-		for (User user : users) {
-			User curUser = userLocalService.fetchUserByEmailAddress(
-				OSBConstants.COMPANY_ID, user.getEmailAddress());
+		user.setLanguageId(LocaleUtil.toLanguageId(locale));
 
-			if (curUser != null) {
-				continue;
-			}
+		SubscriptionSender subscriptionSender = new SubscriptionSender();
 
-			user.setLanguageId(LocaleUtil.toLanguageId(locale));
+		subscriptionSender.setBody(body);
+		subscriptionSender.setCompanyId(OSBConstants.COMPANY_ID);
+		subscriptionSender.setContextAttributes(
+			"[$ACCOUNT_ENTRY_NAME$]", accountEntry.getName(),
+			"[$SUBSCRIPTION_SERVICES$]", subscriptionServices);
+		subscriptionSender.setFrom(
+			provisioningEmailAddress, "Liferay Provisioning");
+		subscriptionSender.setHtmlFormat(true);
+		subscriptionSender.setMailId("provisioning");
+		subscriptionSender.setReplyToAddress(provisioningEmailAddress);
+		subscriptionSender.setSubject(subject);
 
-			SubscriptionSender subscriptionSender = new SubscriptionSender();
+		subscriptionSender.addRuntimeSubscribers(
+			user.getEmailAddress(), user.getFullName());
+		subscriptionSender.addRuntimeSubscribers(
+			provisioningEmailAddress, user.getFullName());
 
-			subscriptionSender.setBody(body);
-			subscriptionSender.setCompanyId(OSBConstants.COMPANY_ID);
-			subscriptionSender.setContextAttributes(
-				"[$ACCOUNT_ENTRY_NAME$]", accountEntry.getName(),
-				"[$SUBSCRIPTION_SERVICES$]", subscriptionServices);
-			subscriptionSender.setFrom(
-				provisioningEmailAddress, "Liferay Provisioning");
-			subscriptionSender.setHtmlFormat(true);
-			subscriptionSender.setMailId("provisioning");
-			subscriptionSender.setReplyToAddress(provisioningEmailAddress);
-			subscriptionSender.setSubject(subject);
-
-			subscriptionSender.addRuntimeSubscribers(
-				user.getEmailAddress(), user.getFullName());
-			subscriptionSender.addRuntimeSubscribers(
-				provisioningEmailAddress, user.getFullName());
-
-			subscriptionSender.flushNotificationsAsync();
-		}
+		subscriptionSender.flushNotificationsAsync();
 	}
 
 	protected void updateAuditEntry(

@@ -21,6 +21,9 @@ package com.liferay.osb.util;
 public class WorkflowConstants
 	extends com.liferay.portal.kernel.workflow.WorkflowConstants {
 
+	public static final String CONTEXT_ANALYTICS_CLOUD_USERS =
+		"osbAnalyticsCloudUsers";
+
 	public static final String CONTEXT_EXISTING_ORDER_ENTRY_IDS =
 		"osbExistingOrderEntryIds";
 

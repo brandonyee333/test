@@ -564,6 +564,575 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 	}
 
 	private static final String _FINDER_COLUMN_CORPPROJECTID_CORPPROJECTID_2 = "accountEntry.corpProjectId = ?";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_DOSSIERAACCOUNTKEY =
+		new FinderPath(AccountEntryModelImpl.ENTITY_CACHE_ENABLED,
+			AccountEntryModelImpl.FINDER_CACHE_ENABLED, AccountEntryImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByDossieraAccountKey",
+			new String[] {
+				String.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_DOSSIERAACCOUNTKEY =
+		new FinderPath(AccountEntryModelImpl.ENTITY_CACHE_ENABLED,
+			AccountEntryModelImpl.FINDER_CACHE_ENABLED, AccountEntryImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"findByDossieraAccountKey",
+			new String[] { String.class.getName() },
+			AccountEntryModelImpl.DOSSIERAACCOUNTKEY_COLUMN_BITMASK |
+			AccountEntryModelImpl.NAME_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_DOSSIERAACCOUNTKEY = new FinderPath(AccountEntryModelImpl.ENTITY_CACHE_ENABLED,
+			AccountEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"countByDossieraAccountKey", new String[] { String.class.getName() });
+
+	/**
+	 * Returns all the account entries where dossieraAccountKey = &#63;.
+	 *
+	 * @param dossieraAccountKey the dossiera account key
+	 * @return the matching account entries
+	 */
+	@Override
+	public List<AccountEntry> findByDossieraAccountKey(
+		String dossieraAccountKey) {
+		return findByDossieraAccountKey(dossieraAccountKey, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the account entries where dossieraAccountKey = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param dossieraAccountKey the dossiera account key
+	 * @param start the lower bound of the range of account entries
+	 * @param end the upper bound of the range of account entries (not inclusive)
+	 * @return the range of matching account entries
+	 */
+	@Override
+	public List<AccountEntry> findByDossieraAccountKey(
+		String dossieraAccountKey, int start, int end) {
+		return findByDossieraAccountKey(dossieraAccountKey, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the account entries where dossieraAccountKey = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param dossieraAccountKey the dossiera account key
+	 * @param start the lower bound of the range of account entries
+	 * @param end the upper bound of the range of account entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching account entries
+	 */
+	@Override
+	public List<AccountEntry> findByDossieraAccountKey(
+		String dossieraAccountKey, int start, int end,
+		OrderByComparator<AccountEntry> orderByComparator) {
+		return findByDossieraAccountKey(dossieraAccountKey, start, end,
+			orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the account entries where dossieraAccountKey = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param dossieraAccountKey the dossiera account key
+	 * @param start the lower bound of the range of account entries
+	 * @param end the upper bound of the range of account entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @return the ordered range of matching account entries
+	 */
+	@Override
+	public List<AccountEntry> findByDossieraAccountKey(
+		String dossieraAccountKey, int start, int end,
+		OrderByComparator<AccountEntry> orderByComparator,
+		boolean retrieveFromCache) {
+		boolean pagination = true;
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_DOSSIERAACCOUNTKEY;
+			finderArgs = new Object[] { dossieraAccountKey };
+		}
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_DOSSIERAACCOUNTKEY;
+			finderArgs = new Object[] {
+					dossieraAccountKey,
+					
+					start, end, orderByComparator
+				};
+		}
+
+		List<AccountEntry> list = null;
+
+		if (retrieveFromCache) {
+			list = (List<AccountEntry>)finderCache.getResult(finderPath,
+					finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (AccountEntry accountEntry : list) {
+					if (!Objects.equals(dossieraAccountKey,
+								accountEntry.getDossieraAccountKey())) {
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler query = null;
+
+			if (orderByComparator != null) {
+				query = new StringBundler(3 +
+						(orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				query = new StringBundler(3);
+			}
+
+			query.append(_SQL_SELECT_ACCOUNTENTRY_WHERE);
+
+			boolean bindDossieraAccountKey = false;
+
+			if (dossieraAccountKey == null) {
+				query.append(_FINDER_COLUMN_DOSSIERAACCOUNTKEY_DOSSIERAACCOUNTKEY_1);
+			}
+			else if (dossieraAccountKey.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_DOSSIERAACCOUNTKEY_DOSSIERAACCOUNTKEY_3);
+			}
+			else {
+				bindDossieraAccountKey = true;
+
+				query.append(_FINDER_COLUMN_DOSSIERAACCOUNTKEY_DOSSIERAACCOUNTKEY_2);
+			}
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
+			}
+			else
+			 if (pagination) {
+				query.append(AccountEntryModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				if (bindDossieraAccountKey) {
+					qPos.add(dossieraAccountKey);
+				}
+
+				if (!pagination) {
+					list = (List<AccountEntry>)QueryUtil.list(q, getDialect(),
+							start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<AccountEntry>)QueryUtil.list(q, getDialect(),
+							start, end);
+				}
+
+				cacheResult(list);
+
+				finderCache.putResult(finderPath, finderArgs, list);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first account entry in the ordered set where dossieraAccountKey = &#63;.
+	 *
+	 * @param dossieraAccountKey the dossiera account key
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching account entry
+	 * @throws NoSuchAccountEntryException if a matching account entry could not be found
+	 */
+	@Override
+	public AccountEntry findByDossieraAccountKey_First(
+		String dossieraAccountKey,
+		OrderByComparator<AccountEntry> orderByComparator)
+		throws NoSuchAccountEntryException {
+		AccountEntry accountEntry = fetchByDossieraAccountKey_First(dossieraAccountKey,
+				orderByComparator);
+
+		if (accountEntry != null) {
+			return accountEntry;
+		}
+
+		StringBundler msg = new StringBundler(4);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("dossieraAccountKey=");
+		msg.append(dossieraAccountKey);
+
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+		throw new NoSuchAccountEntryException(msg.toString());
+	}
+
+	/**
+	 * Returns the first account entry in the ordered set where dossieraAccountKey = &#63;.
+	 *
+	 * @param dossieraAccountKey the dossiera account key
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching account entry, or <code>null</code> if a matching account entry could not be found
+	 */
+	@Override
+	public AccountEntry fetchByDossieraAccountKey_First(
+		String dossieraAccountKey,
+		OrderByComparator<AccountEntry> orderByComparator) {
+		List<AccountEntry> list = findByDossieraAccountKey(dossieraAccountKey,
+				0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last account entry in the ordered set where dossieraAccountKey = &#63;.
+	 *
+	 * @param dossieraAccountKey the dossiera account key
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching account entry
+	 * @throws NoSuchAccountEntryException if a matching account entry could not be found
+	 */
+	@Override
+	public AccountEntry findByDossieraAccountKey_Last(
+		String dossieraAccountKey,
+		OrderByComparator<AccountEntry> orderByComparator)
+		throws NoSuchAccountEntryException {
+		AccountEntry accountEntry = fetchByDossieraAccountKey_Last(dossieraAccountKey,
+				orderByComparator);
+
+		if (accountEntry != null) {
+			return accountEntry;
+		}
+
+		StringBundler msg = new StringBundler(4);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("dossieraAccountKey=");
+		msg.append(dossieraAccountKey);
+
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+		throw new NoSuchAccountEntryException(msg.toString());
+	}
+
+	/**
+	 * Returns the last account entry in the ordered set where dossieraAccountKey = &#63;.
+	 *
+	 * @param dossieraAccountKey the dossiera account key
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching account entry, or <code>null</code> if a matching account entry could not be found
+	 */
+	@Override
+	public AccountEntry fetchByDossieraAccountKey_Last(
+		String dossieraAccountKey,
+		OrderByComparator<AccountEntry> orderByComparator) {
+		int count = countByDossieraAccountKey(dossieraAccountKey);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<AccountEntry> list = findByDossieraAccountKey(dossieraAccountKey,
+				count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the account entries before and after the current account entry in the ordered set where dossieraAccountKey = &#63;.
+	 *
+	 * @param accountEntryId the primary key of the current account entry
+	 * @param dossieraAccountKey the dossiera account key
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next account entry
+	 * @throws NoSuchAccountEntryException if a account entry with the primary key could not be found
+	 */
+	@Override
+	public AccountEntry[] findByDossieraAccountKey_PrevAndNext(
+		long accountEntryId, String dossieraAccountKey,
+		OrderByComparator<AccountEntry> orderByComparator)
+		throws NoSuchAccountEntryException {
+		AccountEntry accountEntry = findByPrimaryKey(accountEntryId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			AccountEntry[] array = new AccountEntryImpl[3];
+
+			array[0] = getByDossieraAccountKey_PrevAndNext(session,
+					accountEntry, dossieraAccountKey, orderByComparator, true);
+
+			array[1] = accountEntry;
+
+			array[2] = getByDossieraAccountKey_PrevAndNext(session,
+					accountEntry, dossieraAccountKey, orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception e) {
+			throw processException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected AccountEntry getByDossieraAccountKey_PrevAndNext(
+		Session session, AccountEntry accountEntry, String dossieraAccountKey,
+		OrderByComparator<AccountEntry> orderByComparator, boolean previous) {
+		StringBundler query = null;
+
+		if (orderByComparator != null) {
+			query = new StringBundler(4 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			query = new StringBundler(3);
+		}
+
+		query.append(_SQL_SELECT_ACCOUNTENTRY_WHERE);
+
+		boolean bindDossieraAccountKey = false;
+
+		if (dossieraAccountKey == null) {
+			query.append(_FINDER_COLUMN_DOSSIERAACCOUNTKEY_DOSSIERAACCOUNTKEY_1);
+		}
+		else if (dossieraAccountKey.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_DOSSIERAACCOUNTKEY_DOSSIERAACCOUNTKEY_3);
+		}
+		else {
+			bindDossieraAccountKey = true;
+
+			query.append(_FINDER_COLUMN_DOSSIERAACCOUNTKEY_DOSSIERAACCOUNTKEY_2);
+		}
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				query.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			query.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						query.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC);
+					}
+					else {
+						query.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			query.append(AccountEntryModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = query.toString();
+
+		Query q = session.createQuery(sql);
+
+		q.setFirstResult(0);
+		q.setMaxResults(2);
+
+		QueryPos qPos = QueryPos.getInstance(q);
+
+		if (bindDossieraAccountKey) {
+			qPos.add(dossieraAccountKey);
+		}
+
+		if (orderByComparator != null) {
+			Object[] values = orderByComparator.getOrderByConditionValues(accountEntry);
+
+			for (Object value : values) {
+				qPos.add(value);
+			}
+		}
+
+		List<AccountEntry> list = q.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the account entries where dossieraAccountKey = &#63; from the database.
+	 *
+	 * @param dossieraAccountKey the dossiera account key
+	 */
+	@Override
+	public void removeByDossieraAccountKey(String dossieraAccountKey) {
+		for (AccountEntry accountEntry : findByDossieraAccountKey(
+				dossieraAccountKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+			remove(accountEntry);
+		}
+	}
+
+	/**
+	 * Returns the number of account entries where dossieraAccountKey = &#63;.
+	 *
+	 * @param dossieraAccountKey the dossiera account key
+	 * @return the number of matching account entries
+	 */
+	@Override
+	public int countByDossieraAccountKey(String dossieraAccountKey) {
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_DOSSIERAACCOUNTKEY;
+
+		Object[] finderArgs = new Object[] { dossieraAccountKey };
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler(2);
+
+			query.append(_SQL_COUNT_ACCOUNTENTRY_WHERE);
+
+			boolean bindDossieraAccountKey = false;
+
+			if (dossieraAccountKey == null) {
+				query.append(_FINDER_COLUMN_DOSSIERAACCOUNTKEY_DOSSIERAACCOUNTKEY_1);
+			}
+			else if (dossieraAccountKey.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_DOSSIERAACCOUNTKEY_DOSSIERAACCOUNTKEY_3);
+			}
+			else {
+				bindDossieraAccountKey = true;
+
+				query.append(_FINDER_COLUMN_DOSSIERAACCOUNTKEY_DOSSIERAACCOUNTKEY_2);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				if (bindDossieraAccountKey) {
+					qPos.add(dossieraAccountKey);
+				}
+
+				count = (Long)q.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_DOSSIERAACCOUNTKEY_DOSSIERAACCOUNTKEY_1 =
+		"accountEntry.dossieraAccountKey IS NULL";
+	private static final String _FINDER_COLUMN_DOSSIERAACCOUNTKEY_DOSSIERAACCOUNTKEY_2 =
+		"accountEntry.dossieraAccountKey = ?";
+	private static final String _FINDER_COLUMN_DOSSIERAACCOUNTKEY_DOSSIERAACCOUNTKEY_3 =
+		"(accountEntry.dossieraAccountKey IS NULL OR accountEntry.dossieraAccountKey = '')";
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_NAME = new FinderPath(AccountEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AccountEntryModelImpl.FINDER_CACHE_ENABLED, AccountEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByName",
@@ -2923,6 +3492,594 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 
 	private static final String _FINDER_COLUMN_U_T_USERID_2 = "accountEntry.userId = ? AND ";
 	private static final String _FINDER_COLUMN_U_T_TYPE_2 = "accountEntry.type = ?";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_DAK_T = new FinderPath(AccountEntryModelImpl.ENTITY_CACHE_ENABLED,
+			AccountEntryModelImpl.FINDER_CACHE_ENABLED, AccountEntryImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByDAK_T",
+			new String[] {
+				String.class.getName(), Integer.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_DAK_T = new FinderPath(AccountEntryModelImpl.ENTITY_CACHE_ENABLED,
+			AccountEntryModelImpl.FINDER_CACHE_ENABLED, AccountEntryImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByDAK_T",
+			new String[] { String.class.getName(), Integer.class.getName() },
+			AccountEntryModelImpl.DOSSIERAACCOUNTKEY_COLUMN_BITMASK |
+			AccountEntryModelImpl.TYPE_COLUMN_BITMASK |
+			AccountEntryModelImpl.NAME_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_DAK_T = new FinderPath(AccountEntryModelImpl.ENTITY_CACHE_ENABLED,
+			AccountEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByDAK_T",
+			new String[] { String.class.getName(), Integer.class.getName() });
+
+	/**
+	 * Returns all the account entries where dossieraAccountKey = &#63; and type = &#63;.
+	 *
+	 * @param dossieraAccountKey the dossiera account key
+	 * @param type the type
+	 * @return the matching account entries
+	 */
+	@Override
+	public List<AccountEntry> findByDAK_T(String dossieraAccountKey, int type) {
+		return findByDAK_T(dossieraAccountKey, type, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the account entries where dossieraAccountKey = &#63; and type = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param dossieraAccountKey the dossiera account key
+	 * @param type the type
+	 * @param start the lower bound of the range of account entries
+	 * @param end the upper bound of the range of account entries (not inclusive)
+	 * @return the range of matching account entries
+	 */
+	@Override
+	public List<AccountEntry> findByDAK_T(String dossieraAccountKey, int type,
+		int start, int end) {
+		return findByDAK_T(dossieraAccountKey, type, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the account entries where dossieraAccountKey = &#63; and type = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param dossieraAccountKey the dossiera account key
+	 * @param type the type
+	 * @param start the lower bound of the range of account entries
+	 * @param end the upper bound of the range of account entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching account entries
+	 */
+	@Override
+	public List<AccountEntry> findByDAK_T(String dossieraAccountKey, int type,
+		int start, int end, OrderByComparator<AccountEntry> orderByComparator) {
+		return findByDAK_T(dossieraAccountKey, type, start, end,
+			orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the account entries where dossieraAccountKey = &#63; and type = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param dossieraAccountKey the dossiera account key
+	 * @param type the type
+	 * @param start the lower bound of the range of account entries
+	 * @param end the upper bound of the range of account entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @return the ordered range of matching account entries
+	 */
+	@Override
+	public List<AccountEntry> findByDAK_T(String dossieraAccountKey, int type,
+		int start, int end, OrderByComparator<AccountEntry> orderByComparator,
+		boolean retrieveFromCache) {
+		boolean pagination = true;
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_DAK_T;
+			finderArgs = new Object[] { dossieraAccountKey, type };
+		}
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_DAK_T;
+			finderArgs = new Object[] {
+					dossieraAccountKey, type,
+					
+					start, end, orderByComparator
+				};
+		}
+
+		List<AccountEntry> list = null;
+
+		if (retrieveFromCache) {
+			list = (List<AccountEntry>)finderCache.getResult(finderPath,
+					finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (AccountEntry accountEntry : list) {
+					if (!Objects.equals(dossieraAccountKey,
+								accountEntry.getDossieraAccountKey()) ||
+							(type != accountEntry.getType())) {
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler query = null;
+
+			if (orderByComparator != null) {
+				query = new StringBundler(4 +
+						(orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				query = new StringBundler(4);
+			}
+
+			query.append(_SQL_SELECT_ACCOUNTENTRY_WHERE);
+
+			boolean bindDossieraAccountKey = false;
+
+			if (dossieraAccountKey == null) {
+				query.append(_FINDER_COLUMN_DAK_T_DOSSIERAACCOUNTKEY_1);
+			}
+			else if (dossieraAccountKey.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_DAK_T_DOSSIERAACCOUNTKEY_3);
+			}
+			else {
+				bindDossieraAccountKey = true;
+
+				query.append(_FINDER_COLUMN_DAK_T_DOSSIERAACCOUNTKEY_2);
+			}
+
+			query.append(_FINDER_COLUMN_DAK_T_TYPE_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
+			}
+			else
+			 if (pagination) {
+				query.append(AccountEntryModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				if (bindDossieraAccountKey) {
+					qPos.add(dossieraAccountKey);
+				}
+
+				qPos.add(type);
+
+				if (!pagination) {
+					list = (List<AccountEntry>)QueryUtil.list(q, getDialect(),
+							start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<AccountEntry>)QueryUtil.list(q, getDialect(),
+							start, end);
+				}
+
+				cacheResult(list);
+
+				finderCache.putResult(finderPath, finderArgs, list);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first account entry in the ordered set where dossieraAccountKey = &#63; and type = &#63;.
+	 *
+	 * @param dossieraAccountKey the dossiera account key
+	 * @param type the type
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching account entry
+	 * @throws NoSuchAccountEntryException if a matching account entry could not be found
+	 */
+	@Override
+	public AccountEntry findByDAK_T_First(String dossieraAccountKey, int type,
+		OrderByComparator<AccountEntry> orderByComparator)
+		throws NoSuchAccountEntryException {
+		AccountEntry accountEntry = fetchByDAK_T_First(dossieraAccountKey,
+				type, orderByComparator);
+
+		if (accountEntry != null) {
+			return accountEntry;
+		}
+
+		StringBundler msg = new StringBundler(6);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("dossieraAccountKey=");
+		msg.append(dossieraAccountKey);
+
+		msg.append(", type=");
+		msg.append(type);
+
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+		throw new NoSuchAccountEntryException(msg.toString());
+	}
+
+	/**
+	 * Returns the first account entry in the ordered set where dossieraAccountKey = &#63; and type = &#63;.
+	 *
+	 * @param dossieraAccountKey the dossiera account key
+	 * @param type the type
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching account entry, or <code>null</code> if a matching account entry could not be found
+	 */
+	@Override
+	public AccountEntry fetchByDAK_T_First(String dossieraAccountKey, int type,
+		OrderByComparator<AccountEntry> orderByComparator) {
+		List<AccountEntry> list = findByDAK_T(dossieraAccountKey, type, 0, 1,
+				orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last account entry in the ordered set where dossieraAccountKey = &#63; and type = &#63;.
+	 *
+	 * @param dossieraAccountKey the dossiera account key
+	 * @param type the type
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching account entry
+	 * @throws NoSuchAccountEntryException if a matching account entry could not be found
+	 */
+	@Override
+	public AccountEntry findByDAK_T_Last(String dossieraAccountKey, int type,
+		OrderByComparator<AccountEntry> orderByComparator)
+		throws NoSuchAccountEntryException {
+		AccountEntry accountEntry = fetchByDAK_T_Last(dossieraAccountKey, type,
+				orderByComparator);
+
+		if (accountEntry != null) {
+			return accountEntry;
+		}
+
+		StringBundler msg = new StringBundler(6);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("dossieraAccountKey=");
+		msg.append(dossieraAccountKey);
+
+		msg.append(", type=");
+		msg.append(type);
+
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+		throw new NoSuchAccountEntryException(msg.toString());
+	}
+
+	/**
+	 * Returns the last account entry in the ordered set where dossieraAccountKey = &#63; and type = &#63;.
+	 *
+	 * @param dossieraAccountKey the dossiera account key
+	 * @param type the type
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching account entry, or <code>null</code> if a matching account entry could not be found
+	 */
+	@Override
+	public AccountEntry fetchByDAK_T_Last(String dossieraAccountKey, int type,
+		OrderByComparator<AccountEntry> orderByComparator) {
+		int count = countByDAK_T(dossieraAccountKey, type);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<AccountEntry> list = findByDAK_T(dossieraAccountKey, type,
+				count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the account entries before and after the current account entry in the ordered set where dossieraAccountKey = &#63; and type = &#63;.
+	 *
+	 * @param accountEntryId the primary key of the current account entry
+	 * @param dossieraAccountKey the dossiera account key
+	 * @param type the type
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next account entry
+	 * @throws NoSuchAccountEntryException if a account entry with the primary key could not be found
+	 */
+	@Override
+	public AccountEntry[] findByDAK_T_PrevAndNext(long accountEntryId,
+		String dossieraAccountKey, int type,
+		OrderByComparator<AccountEntry> orderByComparator)
+		throws NoSuchAccountEntryException {
+		AccountEntry accountEntry = findByPrimaryKey(accountEntryId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			AccountEntry[] array = new AccountEntryImpl[3];
+
+			array[0] = getByDAK_T_PrevAndNext(session, accountEntry,
+					dossieraAccountKey, type, orderByComparator, true);
+
+			array[1] = accountEntry;
+
+			array[2] = getByDAK_T_PrevAndNext(session, accountEntry,
+					dossieraAccountKey, type, orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception e) {
+			throw processException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected AccountEntry getByDAK_T_PrevAndNext(Session session,
+		AccountEntry accountEntry, String dossieraAccountKey, int type,
+		OrderByComparator<AccountEntry> orderByComparator, boolean previous) {
+		StringBundler query = null;
+
+		if (orderByComparator != null) {
+			query = new StringBundler(5 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			query = new StringBundler(4);
+		}
+
+		query.append(_SQL_SELECT_ACCOUNTENTRY_WHERE);
+
+		boolean bindDossieraAccountKey = false;
+
+		if (dossieraAccountKey == null) {
+			query.append(_FINDER_COLUMN_DAK_T_DOSSIERAACCOUNTKEY_1);
+		}
+		else if (dossieraAccountKey.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_DAK_T_DOSSIERAACCOUNTKEY_3);
+		}
+		else {
+			bindDossieraAccountKey = true;
+
+			query.append(_FINDER_COLUMN_DAK_T_DOSSIERAACCOUNTKEY_2);
+		}
+
+		query.append(_FINDER_COLUMN_DAK_T_TYPE_2);
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				query.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			query.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						query.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC);
+					}
+					else {
+						query.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			query.append(AccountEntryModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = query.toString();
+
+		Query q = session.createQuery(sql);
+
+		q.setFirstResult(0);
+		q.setMaxResults(2);
+
+		QueryPos qPos = QueryPos.getInstance(q);
+
+		if (bindDossieraAccountKey) {
+			qPos.add(dossieraAccountKey);
+		}
+
+		qPos.add(type);
+
+		if (orderByComparator != null) {
+			Object[] values = orderByComparator.getOrderByConditionValues(accountEntry);
+
+			for (Object value : values) {
+				qPos.add(value);
+			}
+		}
+
+		List<AccountEntry> list = q.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the account entries where dossieraAccountKey = &#63; and type = &#63; from the database.
+	 *
+	 * @param dossieraAccountKey the dossiera account key
+	 * @param type the type
+	 */
+	@Override
+	public void removeByDAK_T(String dossieraAccountKey, int type) {
+		for (AccountEntry accountEntry : findByDAK_T(dossieraAccountKey, type,
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+			remove(accountEntry);
+		}
+	}
+
+	/**
+	 * Returns the number of account entries where dossieraAccountKey = &#63; and type = &#63;.
+	 *
+	 * @param dossieraAccountKey the dossiera account key
+	 * @param type the type
+	 * @return the number of matching account entries
+	 */
+	@Override
+	public int countByDAK_T(String dossieraAccountKey, int type) {
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_DAK_T;
+
+		Object[] finderArgs = new Object[] { dossieraAccountKey, type };
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler(3);
+
+			query.append(_SQL_COUNT_ACCOUNTENTRY_WHERE);
+
+			boolean bindDossieraAccountKey = false;
+
+			if (dossieraAccountKey == null) {
+				query.append(_FINDER_COLUMN_DAK_T_DOSSIERAACCOUNTKEY_1);
+			}
+			else if (dossieraAccountKey.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_DAK_T_DOSSIERAACCOUNTKEY_3);
+			}
+			else {
+				bindDossieraAccountKey = true;
+
+				query.append(_FINDER_COLUMN_DAK_T_DOSSIERAACCOUNTKEY_2);
+			}
+
+			query.append(_FINDER_COLUMN_DAK_T_TYPE_2);
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				if (bindDossieraAccountKey) {
+					qPos.add(dossieraAccountKey);
+				}
+
+				qPos.add(type);
+
+				count = (Long)q.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_DAK_T_DOSSIERAACCOUNTKEY_1 = "accountEntry.dossieraAccountKey IS NULL AND ";
+	private static final String _FINDER_COLUMN_DAK_T_DOSSIERAACCOUNTKEY_2 = "accountEntry.dossieraAccountKey = ? AND ";
+	private static final String _FINDER_COLUMN_DAK_T_DOSSIERAACCOUNTKEY_3 = "(accountEntry.dossieraAccountKey IS NULL OR accountEntry.dossieraAccountKey = '') AND ";
+	private static final String _FINDER_COLUMN_DAK_T_TYPE_2 = "accountEntry.type = ?";
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_RAEI_S = new FinderPath(AccountEntryModelImpl.ENTITY_CACHE_ENABLED,
 			AccountEntryModelImpl.FINDER_CACHE_ENABLED, AccountEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByRAEI_S",
@@ -6243,7 +7400,16 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 		}
 		else
 		 if (isNew) {
-			Object[] args = new Object[] { accountEntryModelImpl.getName() };
+			Object[] args = new Object[] {
+					accountEntryModelImpl.getDossieraAccountKey()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_DOSSIERAACCOUNTKEY,
+				args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_DOSSIERAACCOUNTKEY,
+				args);
+
+			args = new Object[] { accountEntryModelImpl.getName() };
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_NAME, args);
 			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_NAME,
@@ -6274,6 +7440,15 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 				args);
 
 			args = new Object[] {
+					accountEntryModelImpl.getDossieraAccountKey(),
+					accountEntryModelImpl.getType()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_DAK_T, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_DAK_T,
+				args);
+
+			args = new Object[] {
 					accountEntryModelImpl.getRedirectAccountEntryId(),
 					accountEntryModelImpl.getStatus()
 				};
@@ -6297,6 +7472,27 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 		}
 
 		else {
+			if ((accountEntryModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_DOSSIERAACCOUNTKEY.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						accountEntryModelImpl.getOriginalDossieraAccountKey()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_DOSSIERAACCOUNTKEY,
+					args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_DOSSIERAACCOUNTKEY,
+					args);
+
+				args = new Object[] {
+						accountEntryModelImpl.getDossieraAccountKey()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_DOSSIERAACCOUNTKEY,
+					args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_DOSSIERAACCOUNTKEY,
+					args);
+			}
+
 			if ((accountEntryModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_NAME.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
@@ -6376,6 +7572,27 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 			}
 
 			if ((accountEntryModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_DAK_T.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						accountEntryModelImpl.getOriginalDossieraAccountKey(),
+						accountEntryModelImpl.getOriginalType()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_DAK_T, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_DAK_T,
+					args);
+
+				args = new Object[] {
+						accountEntryModelImpl.getDossieraAccountKey(),
+						accountEntryModelImpl.getType()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_DAK_T, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_DAK_T,
+					args);
+			}
+
+			if ((accountEntryModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_RAEI_S.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
 						accountEntryModelImpl.getOriginalRedirectAccountEntryId(),
@@ -6450,6 +7667,7 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 		accountEntryImpl.setModifiedDate(accountEntry.getModifiedDate());
 		accountEntryImpl.setCorpProjectUuid(accountEntry.getCorpProjectUuid());
 		accountEntryImpl.setCorpProjectId(accountEntry.getCorpProjectId());
+		accountEntryImpl.setDossieraAccountKey(accountEntry.getDossieraAccountKey());
 		accountEntryImpl.setCorpEntryName(accountEntry.getCorpEntryName());
 		accountEntryImpl.setName(accountEntry.getName());
 		accountEntryImpl.setCode(accountEntry.getCode());

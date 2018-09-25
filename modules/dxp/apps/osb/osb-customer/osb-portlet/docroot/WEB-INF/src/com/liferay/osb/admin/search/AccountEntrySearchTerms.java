@@ -171,6 +171,12 @@ public class AccountEntrySearchTerms extends AccountEntryDisplayTerms {
 			params.put("ticketSupport", isTicketSupport());
 		}
 
+		int[] types = getTypes();
+
+		if (types.length > 0) {
+			params.put("type", types);
+		}
+
 		return params;
 	}
 

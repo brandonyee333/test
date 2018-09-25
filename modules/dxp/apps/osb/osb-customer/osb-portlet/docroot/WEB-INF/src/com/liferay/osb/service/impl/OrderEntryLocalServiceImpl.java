@@ -107,6 +107,7 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 			OSBConstants.USER_DEFAULT_USER_ID,
 			oldAccountEntry.getAccountEntryId(),
 			oldAccountEntry.getCorpProjectUuid(),
+			accountEntry.getDossieraAccountKey(),
 			accountEntry.getCorpEntryName(), oldAccountEntry.getName(),
 			oldAccountEntry.getCode(), oldAccountEntry.getType(),
 			accountEntry.getIndustry(), oldAccountEntry.getPartnerEntryId(),

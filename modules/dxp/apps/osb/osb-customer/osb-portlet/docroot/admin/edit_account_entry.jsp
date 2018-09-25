@@ -271,6 +271,15 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 	</c:if>
 
 	<table class="lfr-table">
+		<tr>
+			<td>
+				<liferay-ui:message key="dossiera-account-key" />
+			</td>
+			<td>
+				<aui:input label="" name="dossieraAccountKey" />
+			</td>
+		</tr>
+
 		<c:if test="<%= accountEntry != null %>">
 			<tr>
 				<td>
@@ -397,10 +406,10 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<aui:select label="" name="type">
 
 					<%
-					for (int i = 1; i <= 4; i++) {
+					for (int curType : AccountEntryConstants.TYPES) {
 					%>
 
-						<aui:option label="<%= AccountEntryConstants.getTypeLabel(i) %>" selected="<%= type == i %>" value="<%= i %>" />
+						<aui:option label="<%= AccountEntryConstants.getTypeLabel(curType) %>" selected="<%= type == curType %>" value="<%= curType %>" />
 
 					<%
 					}

@@ -518,6 +518,15 @@
 				OSB_OfferingEntry.createDate DESC
 		]]>
 	</sql>
+	<sql id="com.liferay.osb.service.persistence.OfferingEntryFinder.joinByAccountEntry">
+		<![CDATA[
+			INNER JOIN
+				OSB_AccountEntry ON
+					(OSB_AccountEntry.accountEntryId = OSB_OfferingEntry.accountEntryId)
+			WHERE
+				(OSB_AccountEntry.dossieraAccountKey = ?)
+		]]>
+	</sql>
 	<sql id="com.liferay.osb.service.persistence.OfferingEntryFinder.joinByLicenseLifetime">
 		<![CDATA[
 			WHERE
@@ -797,6 +806,21 @@
 					(OSB_AccountWorker.userId = User_.userId)
 			WHERE
 				(OSB_AccountWorker.role = ?)
+		]]>
+	</sql>
+	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByDossieraAccountAccountCustomer">
+		<![CDATA[
+			INNER JOIN
+				OSB_AccountCustomer ON
+					(OSB_AccountCustomer.userId = User_.userId)
+			INNER JOIN
+				OSB_AccountEntry ON
+					(OSB_AccountEntry.accountEntryId = OSB_AccountCustomer.accountEntryId)
+			WHERE
+				(
+					(OSB_AccountEntry.dossieraAccountKey = ?) AND
+					(OSB_AccountEntry.type_ != ?)
+				)
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByPartnerEntryWorkers">
