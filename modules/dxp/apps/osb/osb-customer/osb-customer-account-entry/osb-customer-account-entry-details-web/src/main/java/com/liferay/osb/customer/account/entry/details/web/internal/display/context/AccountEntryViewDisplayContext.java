@@ -39,13 +39,17 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.MimeResponse;
@@ -163,7 +167,8 @@ public class AccountEntryViewDisplayContext {
 
 				productEntryDisplayNames.add(productEntry.getDisplayName());
 
-				envLFRVersions.addAll(productEntry.getAllVersionsListTypes());
+				envLFRVersions.addAll(
+					getCurrentVersionsListTypes(productEntry));
 
 				productsJSONArray.put(getProductJSONObject(productEntry));
 			}
@@ -223,6 +228,32 @@ public class AccountEntryViewDisplayContext {
 		portletURL.setWindowState(LiferayWindowState.POP_UP);
 
 		return portletURL.toString();
+	}
+
+	protected List<ListType> getCurrentVersionsListTypes(
+		ProductEntry productEntry) {
+
+		List<ListType> envLFRTypes = new ArrayList<>();
+
+		IntStream intStream = Arrays.stream(
+			ProductEntryConstants.LIST_TYPES_DEPRECATED);
+
+		LongStream longStream = intStream.asLongStream();
+
+		long[] deprecatedTypes = longStream.toArray();
+
+		for (ListType listType : productEntry.getAllVersionsListTypes()) {
+			if (ArrayUtil.contains(deprecatedTypes, listType.getListTypeId()) ||
+				(listType.getListTypeId() ==
+					(long)ProductEntryConstants.PORTAL_VERSION_OTHER)) {
+
+				continue;
+			}
+
+			envLFRTypes.add(listType);
+		}
+
+		return envLFRTypes;
 	}
 
 	protected JSONObject getDisplayJSONObject(
@@ -451,7 +482,7 @@ public class AccountEntryViewDisplayContext {
 		}
 
 		jsonObject.put(
-			"envLFR", toJSONArray(productEntry.getAllVersionsListTypes()));
+			"envLFR", toJSONArray(getCurrentVersionsListTypes(productEntry)));
 		jsonObject.put(
 			"productEntryId", String.valueOf(productEntry.getProductEntryId()));
 
