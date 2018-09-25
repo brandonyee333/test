@@ -641,7 +641,7 @@ public class AccountEntryLocalServiceImpl
 			accountEntry, workflowServiceContext);
 	}
 
-	public void assignOwnership(long corpProjectId, long[] userIds)
+	public void assignOwnership(long corpProjectId, long userId)
 		throws PortalException {
 
 		AccountEntry accountEntry = fetchCorpProjectAccountEntry(corpProjectId);
@@ -674,7 +674,7 @@ public class AccountEntryLocalServiceImpl
 			(OrderByComparator)null);
 
 		for (User user : users) {
-			if (!ArrayUtil.contains(userIds, user.getUserId())) {
+			if (userId != user.getUserId()) {
 				return;
 			}
 		}
@@ -684,19 +684,17 @@ public class AccountEntryLocalServiceImpl
 				accountEntry.getAccountEntryId());
 
 		for (AccountCustomer accountCustomer : acccountCustomers) {
-			if (!ArrayUtil.contains(userIds, accountCustomer.getUserId())) {
+			if (userId != accountCustomer.getUserId()) {
 				accountCustomerLocalService.deleteAccountCustomer(
 					accountCustomer);
 			}
 		}
 
-		for (long userId : userIds) {
-			accountCustomerLocalService.addAccountCustomer(
-				OSBConstants.USER_DEFAULT_USER_ID, userId,
-				accountEntry.getAccountEntryId(),
-				AccountCustomerConstants.ROLE_DEVELOPER,
-				AccountCustomerConstants.NOTIFICATIONS_NONE);
-		}
+		accountCustomerLocalService.addAccountCustomer(
+			OSBConstants.USER_DEFAULT_USER_ID, userId,
+			accountEntry.getAccountEntryId(),
+			AccountCustomerConstants.ROLE_DEVELOPER,
+			AccountCustomerConstants.NOTIFICATIONS_NONE);
 	}
 
 	public void auditAccountEntries() throws PortalException {
