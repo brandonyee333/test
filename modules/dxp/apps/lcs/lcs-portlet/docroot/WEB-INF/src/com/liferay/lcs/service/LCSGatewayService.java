@@ -16,9 +16,9 @@ package com.liferay.lcs.service;
 
 import com.liferay.lcs.exception.CompressionException;
 import com.liferay.lcs.messaging.Message;
-import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
+import com.liferay.lcs.platform.gateway.LCSGatewayStateListener;
+import com.liferay.lcs.task.TaskStateListener;
+import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 
 import java.util.List;
 
@@ -26,22 +26,18 @@ import java.util.List;
  * @author Ivica Cardic
  * @author Igor Beslic
  */
-public interface LCSGatewayService {
+public interface LCSGatewayService extends TaskStateListener {
 
-	public void deleteMessages(String key)
-		throws JSONWebServiceInvocationException,
-			   JSONWebServiceTransportException;
+	public void deleteMessages(String key) throws JSONWebServiceException;
 
-	public List<Message> getMessages(String key)
-		throws JSONWebServiceInvocationException,
-			   JSONWebServiceSerializeException,
-			   JSONWebServiceTransportException;
+	public List<Message> getMessages(String key) throws JSONWebServiceException;
+
+	public boolean isAvailable();
+
+	public void registerLCSGatewayStateListener(
+		LCSGatewayStateListener lcsGatewayStateListener);
 
 	public void sendMessage(Message message)
-		throws CompressionException,
-			   JSONWebServiceInvocationException,
-			   JSONWebServiceTransportException;
-
-	public boolean testLCSGatewayAvailability();
+		throws CompressionException, JSONWebServiceException;
 
 }

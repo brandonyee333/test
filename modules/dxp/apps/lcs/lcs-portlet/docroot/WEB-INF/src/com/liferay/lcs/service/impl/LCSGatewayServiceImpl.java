@@ -16,12 +16,16 @@ package com.liferay.lcs.service.impl;
 
 import com.liferay.lcs.exception.CompressionException;
 import com.liferay.lcs.messaging.Message;
+import com.liferay.lcs.platform.LCSEvent;
+import com.liferay.lcs.platform.gateway.LCSGatewayStateListener;
 import com.liferay.lcs.service.LCSGatewayService;
+import com.liferay.lcs.task.HandshakeTask;
+import com.liferay.lcs.task.SignOffTask;
+import com.liferay.lcs.task.Task;
 import com.liferay.lcs.util.CompressionUtil;
 import com.liferay.lcs.util.LCSUtil;
 import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
-import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
+import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -29,9 +33,13 @@ import com.liferay.portal.kernel.util.ReleaseInfo;
 
 import java.io.IOException;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Ivica Cardic
@@ -40,53 +48,106 @@ import java.util.Map;
 public class LCSGatewayServiceImpl implements LCSGatewayService {
 
 	@Override
-	public void deleteMessages(String key)
-		throws JSONWebServiceInvocationException,
-			   JSONWebServiceTransportException {
-
-		_jsonWebServiceClient.doGet(
-			_URL_LCS_GATEWAY_DELETE_MESSAGES, "key", key);
+	public void deleteMessages(String key) throws JSONWebServiceException {
+		try {
+			_jsonWebServiceClient.doGet(
+				_URL_LCS_GATEWAY_DELETE_MESSAGES, "key", key);
+		}
+		catch (JSONWebServiceException jsonwse) {
+			_processJSONWebServiceException(jsonwse);
+		}
 	}
 
 	@Override
 	public List<Message> getMessages(String key)
-		throws JSONWebServiceInvocationException,
-			   JSONWebServiceSerializeException,
-			   JSONWebServiceTransportException {
+		throws JSONWebServiceException {
 
 		Map<String, String> parameters = new HashMap<>();
 
 		parameters.put("key", key);
 
-		Map<String, String> headers = new HashMap<>();
-
-		headers.put(
-			"BUILD_NUMBER", String.valueOf(ReleaseInfo.getBuildNumber()));
-		headers.put("HASH_CODE", String.valueOf(key.hashCode()));
-		headers.put(
-			"LCS_PORTLET_BUILD_NUMBER",
-			String.valueOf(LCSUtil.getLCSPortletBuildNumber()));
-		headers.put("PROTOCOL_VERSION", Message.PROTOCOL_VERSION_CURRENT);
+		Map<String, String> headers = _getBaseHeaders(key.hashCode());
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Getting messages from gateway");
 		}
 
-		List<Message> messages = _jsonWebServiceClient.doGetToList(
-			Message.class, _URL_LCS_GATEWAY_GET_MESSAGES, parameters, headers);
+		try {
+			List<Message> messages = _jsonWebServiceClient.doGetToList(
+				Message.class, _URL_LCS_GATEWAY_GET_MESSAGES, parameters,
+				headers);
 
-		if (_log.isTraceEnabled()) {
-			_log.trace("Received messages: " + messages);
+			if (_log.isTraceEnabled()) {
+				_log.trace("Received messages: " + messages);
+			}
+
+			_lastMessageReceived = System.currentTimeMillis();
+
+			return messages;
+		}
+		catch (JSONWebServiceException jsonwse) {
+			_processJSONWebServiceException(jsonwse);
 		}
 
-		return messages;
+		return Collections.emptyList();
+	}
+
+	@Override
+	public boolean isAvailable() {
+		return _available;
+	}
+
+	@Override
+	public void onTaskFail(Class<? extends Task> taskClass) {
+		if (taskClass.equals(HandshakeTask.class)) {
+			if (!_available) {
+				return;
+			}
+
+			_available = false;
+
+			_notifyStateChangedListeners(LCSEvent.UNAVAILABLE);
+		}
+	}
+
+	@Override
+	public void onTaskSuccess(Class<? extends Task> taskClass) {
+		if (taskClass.equals(HandshakeTask.class)) {
+			if (_available) {
+				return;
+			}
+
+			_available = true;
+
+			_notifyStateChangedListeners(LCSEvent.AVAILABLE);
+
+			return;
+		}
+
+		if (taskClass.equals(SignOffTask.class)) {
+			if (!_available) {
+				return;
+			}
+
+			_available = false;
+
+			_notifyStateChangedListeners(LCSEvent.UNAVAILABLE);
+
+			return;
+		}
+	}
+
+	@Override
+	public void registerLCSGatewayStateListener(
+		LCSGatewayStateListener lcsGatewayStateListener) {
+
+		_lcsGatewayStateListeners.add(lcsGatewayStateListener);
 	}
 
 	@Override
 	public void sendMessage(Message message)
 		throws CompressionException,
-			   JSONWebServiceInvocationException,
-			   JSONWebServiceTransportException {
+			   JSONWebServiceException {
 
 		String json = message.toJSON();
 
@@ -111,22 +172,22 @@ public class LCSGatewayServiceImpl implements LCSGatewayService {
 
 		parameters.put("json", json);
 
-		Map<String, String> headers = new HashMap<>();
-
 		String key = message.getKey();
 
-		headers.put(
-			"BUILD_NUMBER", String.valueOf(ReleaseInfo.getBuildNumber()));
-		headers.put("HASH_CODE", String.valueOf(key.hashCode()));
-		headers.put("KEY", key);
-		headers.put(
-			"LCS_PORTLET_BUILD_NUMBER",
-			String.valueOf(LCSUtil.getLCSPortletBuildNumber()));
-		headers.put("MESSAGE_TYPE_CODE", _getMessageNameHashCode(message));
-		headers.put("PROTOCOL_VERSION", Message.PROTOCOL_VERSION_CURRENT);
+		Map<String, String> headers = _getBaseHeaders(key.hashCode());
 
-		_jsonWebServiceClient.doPost(
-			_URL_LCS_GATEWAY_SEND_MESSAGE, parameters, headers);
+		headers.put("KEY", key);
+		headers.put("MESSAGE_TYPE_CODE", _getMessageNameHashCode(message));
+
+		try {
+			_jsonWebServiceClient.doPost(
+				_URL_LCS_GATEWAY_SEND_MESSAGE, parameters, headers);
+
+			_lastMessageSent = System.currentTimeMillis();
+		}
+		catch (JSONWebServiceException jsonwse) {
+			_processJSONWebServiceException(jsonwse);
+		}
 	}
 
 	public void setJSONWebServiceClient(
@@ -135,19 +196,20 @@ public class LCSGatewayServiceImpl implements LCSGatewayService {
 		_jsonWebServiceClient = jsonWebServiceClient;
 	}
 
-	@Override
-	public boolean testLCSGatewayAvailability() {
-		try {
-			_jsonWebServiceClient.doGet(_URL_LCS_GATEWAY_HEALTH);
-		}
-		catch (JSONWebServiceTransportException jsonwste) {
-			return false;
-		}
-		catch (JSONWebServiceInvocationException jsonwsie) {
-			return false;
+	private Map<String, String> _getBaseHeaders(int hashCode) {
+		if (!_baseHeaders.isEmpty()) {
+			return new HashMap<>(_baseHeaders);
 		}
 
-		return true;
+		_baseHeaders.put(
+			"BUILD_NUMBER", String.valueOf(ReleaseInfo.getBuildNumber()));
+		_baseHeaders.put("HASH_CODE", String.valueOf(hashCode));
+		_baseHeaders.put(
+			"LCS_PORTLET_BUILD_NUMBER",
+			String.valueOf(LCSUtil.getLCSPortletBuildNumber()));
+		_baseHeaders.put("PROTOCOL_VERSION", Message.PROTOCOL_VERSION_CURRENT);
+
+		return new HashMap<>(_baseHeaders);
 	}
 
 	private String _getMessageNameHashCode(Message message) {
@@ -158,6 +220,45 @@ public class LCSGatewayServiceImpl implements LCSGatewayService {
 		return String.valueOf(name.hashCode());
 	}
 
+	private void _notifyStateChangedListeners(LCSEvent lcsEvent) {
+		for (LCSGatewayStateListener lcsGatewayStateListener :
+				_lcsGatewayStateListeners) {
+
+			lcsGatewayStateListener.onLCSGatewayStateChanged(lcsEvent);
+		}
+	}
+
+	private void _processJSONWebServiceException(
+			JSONWebServiceException jsonwse)
+		throws JSONWebServiceException {
+
+		if (_log.isDebugEnabled()) {
+			_log.debug(jsonwse.getMessage(), jsonwse);
+		}
+
+		if (jsonwse instanceof JSONWebServiceTransportException) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("LCS gateway is unavailable");
+			}
+
+			if (jsonwse.getStatus() == HttpServletResponse.SC_UNAUTHORIZED) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"LCS portlet is not authorized to access LCS " +
+							"gateway. Will attempt to reauthorize.");
+				}
+			}
+
+			if (_available) {
+				_available = false;
+
+				_notifyStateChangedListeners(LCSEvent.UNAVAILABLE);
+			}
+		}
+
+		throw jsonwse;
+	}
+
 	private static final String _URL_LCS_GATEWAY = "/api/lcsgateway";
 
 	private static final String _URL_LCS_GATEWAY_DELETE_MESSAGES =
@@ -166,14 +267,18 @@ public class LCSGatewayServiceImpl implements LCSGatewayService {
 	private static final String _URL_LCS_GATEWAY_GET_MESSAGES =
 		LCSGatewayServiceImpl._URL_LCS_GATEWAY + "/v12/get-messages";
 
-	private static final String _URL_LCS_GATEWAY_HEALTH = "/management/health";
-
 	private static final String _URL_LCS_GATEWAY_SEND_MESSAGE =
 		LCSGatewayServiceImpl._URL_LCS_GATEWAY + "/send-message";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		LCSGatewayServiceImpl.class);
 
+	private volatile boolean _available;
+	private final Map<String, String> _baseHeaders = new HashMap<>();
 	private JSONWebServiceClient _jsonWebServiceClient;
+	private long _lastMessageReceived;
+	private long _lastMessageSent;
+	private final List<LCSGatewayStateListener> _lcsGatewayStateListeners =
+		new ArrayList<>();
 
 }
