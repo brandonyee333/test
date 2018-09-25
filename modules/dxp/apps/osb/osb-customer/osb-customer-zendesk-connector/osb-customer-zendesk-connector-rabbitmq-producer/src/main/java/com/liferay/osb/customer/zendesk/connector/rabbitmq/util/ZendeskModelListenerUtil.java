@@ -79,7 +79,10 @@ public class ZendeskModelListenerUtil {
 	}
 
 	public static String convertToZendeskLocale(String locale) {
-		if (locale.equals("en_US")) {
+		if (locale.equals("zh_CN")) {
+			return ZendeskLocales.CHINA;
+		}
+		else if (locale.equals("en_US")) {
 			return ZendeskLocales.US;
 		}
 		else if (locale.equals("es_ES")) {
