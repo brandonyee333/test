@@ -31,7 +31,6 @@ import com.liferay.dynamic.data.mapping.form.renderer.DDMFormRenderingContext;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstance;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecord;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstanceSettings;
-import com.liferay.dynamic.data.mapping.model.DDMFormInstanceVersion;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceService;
 import com.liferay.forms.apio.architect.identifier.FormContextIdentifier;
 import com.liferay.forms.apio.architect.identifier.FormInstanceIdentifier;
@@ -84,7 +83,7 @@ public class FormInstanceNestedCollectionResource
 
 	@Override
 	public String getName() {
-		return "form-instance";
+		return "form";
 	}
 
 	@Override
@@ -114,11 +113,11 @@ public class FormInstanceNestedCollectionResource
 		Representor.Builder<DDMFormInstance, Long> builder) {
 
 		return builder.types(
-			"FormInstance"
+			"Form"
 		).identifier(
 			DDMFormInstance::getFormInstanceId
 		).addBidirectionalModel(
-			"contentSpace", "formInstances", ContentSpaceIdentifier.class,
+			"contentSpace", "forms", ContentSpaceIdentifier.class,
 			DDMFormInstance::getGroupId
 		).addDate(
 			"dateCreated", DDMFormInstance::getCreateDate
@@ -134,16 +133,6 @@ public class FormInstanceNestedCollectionResource
 		).addNested(
 			"settings", FormInstanceRepresentorUtil::getSettings,
 			FormInstanceNestedCollectionResource::_buildSettings
-		).addNested(
-			"version", FormInstanceRepresentorUtil::getVersion,
-			nestedBuilder -> nestedBuilder.types(
-				"FormInstanceVersion"
-			).addLinkedModel(
-				"creator", PersonIdentifier.class,
-				DDMFormInstanceVersion::getUserId
-			).addString(
-				"name", DDMFormInstanceVersion::getVersion
-			).build()
 		).addLocalizedStringByLocale(
 			"description", DDMFormInstance::getDescription
 		).addLocalizedStringByLocale(
@@ -160,20 +149,13 @@ public class FormInstanceNestedCollectionResource
 		NestedRepresentor.Builder<DDMFormInstanceSettings> builder) {
 
 		return builder.types(
-			"FormInstanceSettings"
-		).addBoolean(
-			"isPublished", DDMFormInstanceSettings::published
-		).addBoolean(
-			"isRequireAuthentication",
-			DDMFormInstanceSettings::requireAuthentication
-		).addBoolean(
-			"isRequireCaptcha", DDMFormInstanceSettings::requireCaptcha
+			"FormSettings"
 		).addNested(
 			"emailNotification", identity(),
 			emailSettingsBuilder -> emailSettingsBuilder.types(
 				"EmailMessage"
 			).addBoolean(
-				"isEnabled", DDMFormInstanceSettings::sendEmailNotification
+				"enabled", DDMFormInstanceSettings::sendEmailNotification
 			).addNested(
 				"sender", identity(),
 				senderBuilder -> senderBuilder.types(
@@ -184,7 +166,7 @@ public class FormInstanceNestedCollectionResource
 					"name", DDMFormInstanceSettings::emailFromName
 				).build()
 			).addNested(
-				"toRecipient", identity(),
+				"recipient", identity(),
 				toRecipientBuilder -> toRecipientBuilder.types(
 					"ContactPoint"
 				).addString(
@@ -195,10 +177,6 @@ public class FormInstanceNestedCollectionResource
 			).build()
 		).addString(
 			"redirectURL", DDMFormInstanceSettings::redirectURL
-		).addString(
-			"storageType", DDMFormInstanceSettings::storageType
-		).addString(
-			"workflowDefinition", DDMFormInstanceSettings::workflowDefinition
 		).build();
 	}
 
