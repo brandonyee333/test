@@ -149,20 +149,13 @@ public class AccountEntryViewDisplayContext {
 	}
 
 	public JSONObject getEnvironmentConfigurationJSONObject() throws Exception {
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		List<String> productEntryDisplayNames = new ArrayList<>();
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		JSONArray productsJSONArray = JSONFactoryUtil.createJSONArray();
 
 		Set<ListType> envLFRVersions = new HashSet<>();
 
-		List<String> productEntryDisplayNames = new ArrayList<>();
-
-		boolean enterpriseSearch = false;
-
-		List<OfferingEntry> offeringEntries =
-			_accountEntry.getOfferingEntries();
-
-		for (OfferingEntry offeringEntry : offeringEntries) {
+		for (OfferingEntry offeringEntry : _accountEntry.getOfferingEntries()) {
 			ProductEntry productEntry = offeringEntry.getProductEntry();
 
 			if (!productEntryDisplayNames.contains(
@@ -170,28 +163,17 @@ public class AccountEntryViewDisplayContext {
 
 				productEntryDisplayNames.add(productEntry.getDisplayName());
 
-				JSONObject productJSONObject = getProductJSONObject(
-					productEntry);
-
-				jsonArray.put(productJSONObject);
-
 				envLFRVersions.addAll(productEntry.getAllVersionsListTypes());
 
-				if (!enterpriseSearch && productEntry.isDigitalEnterprise()) {
-					if (_accountEntry.hasEnterpriseSearchOffering(
-							productEntry.getEnvironment())) {
-
-						enterpriseSearch = true;
-					}
-				}
+				productsJSONArray.put(getProductJSONObject(productEntry));
 			}
 		}
 
-		jsonObject.put("products", jsonArray);
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		jsonObject.put(
-			"envLFRVersions",
-			getEnvLFRVersionsJSONArray(envLFRVersions, enterpriseSearch));
+			"envLFRVersions", getEnvLFRVersionsJSONArray(envLFRVersions));
+		jsonObject.put("products", productsJSONArray);
 
 		return jsonObject;
 	}
@@ -348,8 +330,7 @@ public class AccountEntryViewDisplayContext {
 		return jsonObject;
 	}
 
-	protected JSONObject getEnvLFRJSONObject(
-			ListType listType, boolean enterpriseSearch)
+	protected JSONObject getEnvLFRJSONObject(ListType listType)
 		throws Exception {
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
@@ -402,21 +383,19 @@ public class AccountEntryViewDisplayContext {
 
 			JSONArray envSearchJSONArray = JSONFactoryUtil.createJSONArray();
 
-			if (enterpriseSearch) {
-				JSONObject envSearchEnterpriseJSONObject =
-					JSONFactoryUtil.createJSONObject();
+			JSONObject envSearchEnterpriseJSONObject =
+				JSONFactoryUtil.createJSONObject();
 
-				List<ListType> envSearchEnterpriseListTypes =
-					AccountEnvironmentConstants.getPortalEnvListTypes(
-						listTypeId,
-						AccountEnvironmentConstants.LIST_TYPE_ENV_SEARCH,
-						"enterprise");
+			List<ListType> envSearchEnterpriseListTypes =
+				AccountEnvironmentConstants.getPortalEnvListTypes(
+					listTypeId,
+					AccountEnvironmentConstants.LIST_TYPE_ENV_SEARCH,
+					"enterprise");
 
-				envSearchEnterpriseJSONObject.put(
-					"enterprise", toJSONArray(envSearchEnterpriseListTypes));
+			envSearchEnterpriseJSONObject.put(
+				"enterprise", toJSONArray(envSearchEnterpriseListTypes));
 
-				envSearchJSONArray.put(envSearchEnterpriseJSONObject);
-			}
+			envSearchJSONArray.put(envSearchEnterpriseJSONObject);
 
 			JSONObject envSearchStandardJSONObject =
 				JSONFactoryUtil.createJSONObject();
@@ -438,8 +417,7 @@ public class AccountEntryViewDisplayContext {
 		return jsonObject;
 	}
 
-	protected JSONArray getEnvLFRVersionsJSONArray(
-			Set<ListType> envLFRVersions, boolean enterpriseSearch)
+	protected JSONArray getEnvLFRVersionsJSONArray(Set<ListType> envLFRVersions)
 		throws Exception {
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
@@ -449,7 +427,7 @@ public class AccountEntryViewDisplayContext {
 
 			jsonObject.put(
 				String.valueOf(listType.getListTypeId()),
-				getEnvLFRJSONObject(listType, enterpriseSearch));
+				getEnvLFRJSONObject(listType));
 
 			jsonArray.put(jsonObject);
 		}
