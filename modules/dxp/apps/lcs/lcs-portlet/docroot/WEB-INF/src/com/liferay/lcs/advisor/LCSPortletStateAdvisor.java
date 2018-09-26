@@ -31,7 +31,15 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class LCSPortletStateAdvisor {
 
+	public long getLastLicenseCheckTime() {
+		return _lastLicenseCheckTime;
+	}
+
 	public LCSPortletState getLCSPortletState(boolean checkSubscription) {
+		if (_log.isTraceEnabled()) {
+			_log.trace("Checking LCS portlet state");
+		}
+
 		if (!checkSubscription) {
 			return _lastLCSPortletState;
 		}
@@ -129,11 +137,18 @@ public class LCSPortletStateAdvisor {
 		_lcsSubscriptionEntryClient = lcsSubscriptionEntryClient;
 	}
 
+	public long updateLicenseCheckTime() {
+		_lastLicenseCheckTime = System.currentTimeMillis();
+
+		return _lastLicenseCheckTime;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		LCSPortletStateAdvisor.class);
 
 	private LCSPortletState _lastLCSPortletState =
 		LCSPortletState.NO_SUBSCRIPTION;
+	private long _lastLicenseCheckTime;
 	private LCSKeyAdvisor _lcsKeyAdvisor;
 	private LCSSubscriptionEntryClient _lcsSubscriptionEntryClient;
 

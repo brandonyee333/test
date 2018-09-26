@@ -14,7 +14,12 @@
 
 package com.liferay.lcs.advisor;
 
+import com.liferay.lcs.platform.LCSEvent;
+import com.liferay.lcs.platform.gateway.LCSGatewayStateListener;
+import com.liferay.lcs.service.LCSGatewayService;
 import com.liferay.lcs.util.LCSAlert;
+import com.liferay.lcs.util.LCSUtil;
+import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +27,11 @@ import java.util.Set;
 /**
  * @author Igor Beslic
  */
-public class LCSAlertAdvisor {
+public class LCSAlertAdvisor implements LCSGatewayStateListener {
+
+	public LCSAlertAdvisor(LCSGatewayService lcsGatewayService) {
+		lcsGatewayService.registerLCSGatewayStateListener(this);
+	}
 
 	public boolean add(LCSAlert lcsAlert) {
 		return _lcsAlerts.add(lcsAlert);
@@ -34,6 +43,22 @@ public class LCSAlertAdvisor {
 
 	public Set<LCSAlert> getLCSAlerts() {
 		return _lcsAlerts;
+	}
+
+	@Override
+	public void onLCSGatewayStateChanged(LCSEvent lcsEvent) {
+		if (lcsEvent == LCSEvent.AVAILABLE) {
+			LCSUtil.processLCSPortletState(LCSPortletState.NO_SUBSCRIPTION);
+
+			clear();
+
+			add(LCSAlert.SUCCESS_CONNECTION_TO_LCS_VALID);
+		}
+		else if (lcsEvent == LCSEvent.UNAVAILABLE) {
+			LCSUtil.processLCSPortletState(LCSPortletState.NO_CONNECTION);
+
+			clear();
+		}
 	}
 
 	public boolean remove(LCSAlert lcsAlert) {
