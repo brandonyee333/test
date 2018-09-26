@@ -276,10 +276,8 @@ export default class DynamicUploaderForm extends React.Component {
 	}
 
 	handleUpdateComment = (event) => {
-		const comment = event.currentTarget.value;
-
 		this.setState({
-			comment
+			comment: event.currentTarget.value
 		});
 	}
 
