@@ -353,6 +353,10 @@ public class WebRESTWebServiceImpl
 		catch (Exception e) {
 			sendEmail(StackTraceUtil.getStackTrace(e));
 
+			if (e instanceof RemoteServiceException) {
+				throw (RemoteServiceException)e;
+			}
+
 			throw new RemoteServiceException(e);
 		}
 	}
@@ -369,6 +373,10 @@ public class WebRESTWebServiceImpl
 		catch (Exception e) {
 			sendEmail(StackTraceUtil.getStackTrace(e));
 
+			if (e instanceof RemoteServiceException) {
+				throw (RemoteServiceException)e;
+			}
+
 			throw new RemoteServiceException(e);
 		}
 	}
@@ -384,6 +392,10 @@ public class WebRESTWebServiceImpl
 		}
 		catch (Exception e) {
 			sendEmail(StackTraceUtil.getStackTrace(e));
+
+			if (e instanceof RemoteServiceException) {
+				throw (RemoteServiceException)e;
+			}
 
 			throw new RemoteServiceException(e);
 		}
