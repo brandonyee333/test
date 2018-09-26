@@ -69,7 +69,8 @@ public class ConnectedServicesPortlet extends MVCPortlet {
 		jsonObject.put(
 			"lcsGatewayAvailable",
 			LCSConnectionManagerUtil.isLCSGatewayAvailable());
-		jsonObject.put("ready", LCSConnectionManagerUtil.isReady());
+		jsonObject.put(
+			"ready", LCSConnectionManagerUtil.isLCSGatewayAvailable());
 		jsonObject.put("result", "success");
 
 		writeJSON(resourceRequest, resourceResponse, jsonObject);

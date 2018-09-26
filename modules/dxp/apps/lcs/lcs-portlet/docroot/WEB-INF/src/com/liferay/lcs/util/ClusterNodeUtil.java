@@ -70,13 +70,13 @@ public class ClusterNodeUtil {
 			if ((lcsPortletState == LCSPortletState.NO_CONNECTION) ||
 				(lcsPortletState == LCSPortletState.NOT_REGISTERED)) {
 
+				clusterNodeInfo.put("ready", false);
 				clusterNodeInfo.put("registered", false);
 			}
 			else {
+				clusterNodeInfo.put("ready", true);
 				clusterNodeInfo.put("registered", true);
 			}
-
-			clusterNodeInfo.put("ready", LCSConnectionManagerUtil.isReady());
 		}
 		catch (Exception e) {
 			_log.error(e, e);
