@@ -25,8 +25,8 @@ import com.liferay.lcs.messaging.SendPatchesCommandMessage;
 import com.liferay.lcs.messaging.SendPortalPropertiesCommandMessage;
 import com.liferay.lcs.messaging.internal.security.DigitalSignatureImpl;
 import com.liferay.lcs.messaging.security.DigitalSignature;
-import com.liferay.lcs.platform.gateway.LCSGatewayService;
-import com.liferay.lcs.platform.gateway.impl.LCSGatewayServiceImpl;
+import com.liferay.lcs.platform.gateway.LCSGatewayClient;
+import com.liferay.lcs.platform.gateway.impl.LCSGatewayClientImpl;
 import com.liferay.lcs.util.LCSPatcherUtil;
 import com.liferay.lcs.util.LCSUtil;
 import com.liferay.portal.kernel.util.DigesterUtil;
@@ -120,11 +120,11 @@ public class TaskAdvisorTest extends PowerMockito {
 			Matchers.eq(500), Matchers.any(Message.class)
 		);
 
-		_lcsGatewayService = mock(LCSGatewayServiceImpl.class);
+		_lcsGatewayClient = mock(LCSGatewayClientImpl.class);
 
 		doNothing(
 		).when(
-			_lcsGatewayService
+			_lcsGatewayClient
 		).sendMessage(
 			Matchers.any(Message.class)
 		);
@@ -142,14 +142,14 @@ public class TaskAdvisorTest extends PowerMockito {
 
 		Command<? extends CommandMessage> sendPortalPropertiesCommand =
 			new SendPortalPropertiesCommand(
-				lcsClusterEntryTokenAdvisor, _lcsGatewayService, taskAdvisor);
+				lcsClusterEntryTokenAdvisor, _lcsGatewayClient, taskAdvisor);
 
 		messageCommands.put(
 			"com.liferay.lcs.messaging.SendPortalPropertiesCommandMessage",
 			sendPortalPropertiesCommand);
 
 		Command<? extends CommandMessage> sendPatchesCommand =
-			new SendPatchesCommand(_lcsGatewayService, taskAdvisor);
+			new SendPatchesCommand(_lcsGatewayClient, taskAdvisor);
 
 		messageCommands.put(
 			"com.liferay.lcs.messaging.SendPatchesCommandMessage",
@@ -157,7 +157,7 @@ public class TaskAdvisorTest extends PowerMockito {
 
 		CommandMessageListener commandMessageListener =
 			new CommandMessageListener(
-				messageCommands, _digitalSignature, _lcsGatewayService);
+				messageCommands, _digitalSignature, _lcsGatewayClient);
 
 		com.liferay.portal.kernel.messaging.Message message =
 			new com.liferay.portal.kernel.messaging.Message();
@@ -194,6 +194,6 @@ public class TaskAdvisorTest extends PowerMockito {
 	}
 
 	private DigitalSignature _digitalSignature;
-	private LCSGatewayService _lcsGatewayService;
+	private LCSGatewayClient _lcsGatewayClient;
 
 }

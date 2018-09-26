@@ -18,7 +18,7 @@ import com.liferay.lcs.exception.CompressionException;
 import com.liferay.lcs.messaging.CommandMessage;
 import com.liferay.lcs.messaging.DownloadPatchCommandMessage;
 import com.liferay.lcs.messaging.DownloadPatchResponseMessage;
-import com.liferay.lcs.platform.gateway.LCSGatewayService;
+import com.liferay.lcs.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.util.LCSConstants;
 import com.liferay.lcs.util.LCSPatcherUtil;
 import com.liferay.lcs.util.PatchUtil;
@@ -52,8 +52,8 @@ import java.util.zip.ZipInputStream;
 public class DownloadPatchCommand
 	implements Command<DownloadPatchCommandMessage> {
 
-	public DownloadPatchCommand(LCSGatewayService lcsGatewayService) {
-		_lcsGatewayService = lcsGatewayService;
+	public DownloadPatchCommand(LCSGatewayClient lcsGatewayClient) {
+		_lcsGatewayClient = lcsGatewayClient;
 	}
 
 	public void downloadPatch(
@@ -62,7 +62,7 @@ public class DownloadPatchCommand
 
 		String patchFileName = downloadPatchCommandMessage.getPatchFileName();
 
-		_lcsGatewayService.sendMessage(
+		_lcsGatewayClient.sendMessage(
 			_getDownloadPatchResponseMessage(
 				downloadPatchCommandMessage, patchFileName,
 				LCSConstants.PATCHES_DOWNLOADING));
@@ -87,7 +87,7 @@ public class DownloadPatchCommand
 		catch (IOException ioe) {
 			_log.error(ioe, ioe);
 
-			_lcsGatewayService.sendMessage(
+			_lcsGatewayClient.sendMessage(
 				_getDownloadPatchResponseMessage(
 					downloadPatchCommandMessage, patchFileName,
 					LCSConstants.PATCHES_ERROR));
@@ -95,7 +95,7 @@ public class DownloadPatchCommand
 			return;
 		}
 
-		_lcsGatewayService.sendMessage(
+		_lcsGatewayClient.sendMessage(
 			_getDownloadPatchResponseMessage(
 				downloadPatchCommandMessage, patchFileName,
 				LCSConstants.PATCHES_DOWNLOADED));
@@ -309,6 +309,6 @@ public class DownloadPatchCommand
 	private static final Log _log = LogFactoryUtil.getLog(
 		DownloadPatchCommand.class);
 
-	private final LCSGatewayService _lcsGatewayService;
+	private final LCSGatewayClient _lcsGatewayClient;
 
 }

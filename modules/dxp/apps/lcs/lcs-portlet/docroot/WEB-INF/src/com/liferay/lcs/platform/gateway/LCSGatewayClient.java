@@ -25,7 +25,7 @@ import java.util.List;
  * @author Ivica Cardic
  * @author Igor Beslic
  */
-public interface LCSGatewayService extends TaskStateListener {
+public interface LCSGatewayClient extends TaskStateListener {
 
 	public void deleteMessages(String key) throws JSONWebServiceException;
 

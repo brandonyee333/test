@@ -14,7 +14,7 @@
 
 package com.liferay.lcs.task.scheduler.messaging;
 
-import com.liferay.lcs.platform.gateway.LCSGatewayService;
+import com.liferay.lcs.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.task.ScheduledTask;
 import com.liferay.portal.kernel.bean.BeanLocator;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
@@ -34,9 +34,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class TaskSchedulerReceiverMessageListener extends BaseMessageListener {
 
 	public TaskSchedulerReceiverMessageListener(
-		LCSGatewayService lcsGatewayService) {
+		LCSGatewayClient lcsGatewayClient) {
 
-		_lcsGatewayService = lcsGatewayService;
+		_lcsGatewayClient = lcsGatewayClient;
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class TaskSchedulerReceiverMessageListener extends BaseMessageListener {
 
 		try {
 			if (!_runningTaskNames.contains(taskName)) {
-				if (!_lcsGatewayService.isAvailable()) {
+				if (!_lcsGatewayClient.isAvailable()) {
 					if (_log.isDebugEnabled()) {
 						_log.debug("Waiting for LCS connection manager");
 					}
@@ -107,6 +107,6 @@ public class TaskSchedulerReceiverMessageListener extends BaseMessageListener {
 	private static final Set<String> _runningTaskNames =
 		Collections.newSetFromMap(new ConcurrentHashMap<>());
 
-	private final LCSGatewayService _lcsGatewayService;
+	private final LCSGatewayClient _lcsGatewayClient;
 
 }

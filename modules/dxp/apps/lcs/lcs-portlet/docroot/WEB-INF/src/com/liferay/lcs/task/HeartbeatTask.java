@@ -15,7 +15,7 @@
 package com.liferay.lcs.task;
 
 import com.liferay.lcs.messaging.HeartbeatMessage;
-import com.liferay.lcs.platform.gateway.LCSGatewayService;
+import com.liferay.lcs.platform.gateway.LCSGatewayClient;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -24,9 +24,9 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
  */
 public class HeartbeatTask implements Task {
 
-	public HeartbeatTask(String key, LCSGatewayService lcsGatewayService) {
+	public HeartbeatTask(String key, LCSGatewayClient lcsGatewayClient) {
 		_key = key;
-		_lcsGatewayService = lcsGatewayService;
+		_lcsGatewayClient = lcsGatewayClient;
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Initialized " + this);
@@ -48,7 +48,7 @@ public class HeartbeatTask implements Task {
 			_log.trace("Running heartbeat task");
 		}
 
-		if (!_lcsGatewayService.isAvailable()) {
+		if (!_lcsGatewayClient.isAvailable()) {
 			if (_log.isDebugEnabled()) {
 				_log.debug("Waiting for LCS connection manager");
 			}
@@ -61,7 +61,7 @@ public class HeartbeatTask implements Task {
 		heartbeatMessage.setCreateTime(System.currentTimeMillis());
 		heartbeatMessage.setKey(_key);
 
-		_lcsGatewayService.sendMessage(heartbeatMessage);
+		_lcsGatewayClient.sendMessage(heartbeatMessage);
 	}
 
 	@Override
@@ -76,6 +76,6 @@ public class HeartbeatTask implements Task {
 	private static final Log _log = LogFactoryUtil.getLog(HeartbeatTask.class);
 
 	private final String _key;
-	private final LCSGatewayService _lcsGatewayService;
+	private final LCSGatewayClient _lcsGatewayClient;
 
 }

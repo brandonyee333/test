@@ -19,7 +19,7 @@ import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.advisor.UptimeMonitoringAdvisor;
 import com.liferay.lcs.platform.LCSEvent;
-import com.liferay.lcs.platform.gateway.LCSGatewayService;
+import com.liferay.lcs.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.platform.gateway.LCSGatewayStateListener;
 import com.liferay.lcs.runnable.LCSConnectorRunnable;
 import com.liferay.lcs.task.CommandMessageTask;
@@ -72,7 +72,7 @@ public class TaskSchedulerServiceImpl
 	public TaskSchedulerServiceImpl(
 		int defaultInterval, LCSAlertAdvisor lcsAlertAdvisor,
 		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor,
-		LCSGatewayService lcsGatewayService, LCSKeyAdvisor lcsKeyAdvisor,
+		LCSGatewayClient lcsGatewayClient, LCSKeyAdvisor lcsKeyAdvisor,
 		int scheduleDelayMax, TaskAdvisor taskAdvisor,
 		ThreadFactory threadFactory,
 		UptimeMonitoringAdvisor uptimeMonitoringAdvisor) {
@@ -80,14 +80,14 @@ public class TaskSchedulerServiceImpl
 		_defaultInterval = defaultInterval;
 		_lcsAlertAdvisor = lcsAlertAdvisor;
 		_lcsClusterEntryTokenAdvisor = lcsClusterEntryTokenAdvisor;
-		_lcsGatewayService = lcsGatewayService;
+		_lcsGatewayClient = lcsGatewayClient;
 		_lcsKeyAdvisor = lcsKeyAdvisor;
 		_scheduleDelayMax = scheduleDelayMax;
 		_taskAdvisor = taskAdvisor;
 		_threadFactory = threadFactory;
 		_uptimeMonitoringAdvisor = uptimeMonitoringAdvisor;
 
-		_lcsGatewayService.registerLCSGatewayStateListener(this);
+		_lcsGatewayClient.registerLCSGatewayStateListener(this);
 
 		_scheduledExecutorService = Executors.newScheduledThreadPool(
 			10, threadFactory);
@@ -196,15 +196,14 @@ public class TaskSchedulerServiceImpl
 		return _scheduledExecutorService.submit(
 			new HandshakeTask(
 				_lcsClusterEntryTokenAdvisor.getLcsClusterEntryTokenId(),
-				_lcsAlertAdvisor, _lcsGatewayService, _lcsKeyAdvisor,
+				_lcsAlertAdvisor, _lcsGatewayClient, _lcsKeyAdvisor,
 				_threadFactory, _uptimeMonitoringAdvisor));
 	}
 
 	@Override
 	public Future<?> submitSignOffTask(boolean serverManuallyShutdown) {
 		SignOffTask signOffTask = new SignOffTask(
-			_lcsKeyAdvisor.getKey(), _lcsGatewayService,
-			serverManuallyShutdown);
+			_lcsKeyAdvisor.getKey(), _lcsGatewayClient, serverManuallyShutdown);
 
 		Future<?> future = _scheduledExecutorService.submit(signOffTask);
 
@@ -359,7 +358,7 @@ public class TaskSchedulerServiceImpl
 			clazz.getName(),
 			_scheduledExecutorService.scheduleAtFixedRate(
 				new CommandMessageTask(
-					_lcsKeyAdvisor.getKey(), _lcsGatewayService),
+					_lcsKeyAdvisor.getKey(), _lcsGatewayClient),
 				LCSConstants.COMMAND_MESSAGE_TASK_SCHEDULE_PERIOD,
 				LCSConstants.COMMAND_MESSAGE_TASK_SCHEDULE_PERIOD,
 				TimeUnit.SECONDS));
@@ -373,7 +372,7 @@ public class TaskSchedulerServiceImpl
 		_scheduledFuturesMap.put(
 			clazz.getName(),
 			_scheduledExecutorService.scheduleAtFixedRate(
-				new HeartbeatTask(_lcsKeyAdvisor.getKey(), _lcsGatewayService),
+				new HeartbeatTask(_lcsKeyAdvisor.getKey(), _lcsGatewayClient),
 				10000L,
 				GetterUtil.getLong(
 					PortletPropsValues.COMMUNICATION_HEARTBEAT_INTERVAL),
@@ -454,7 +453,7 @@ public class TaskSchedulerServiceImpl
 	private final int _defaultInterval;
 	private final LCSAlertAdvisor _lcsAlertAdvisor;
 	private final LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
-	private final LCSGatewayService _lcsGatewayService;
+	private final LCSGatewayClient _lcsGatewayClient;
 	private final LCSKeyAdvisor _lcsKeyAdvisor;
 	private final int _scheduleDelayMax;
 	private final ScheduledExecutorService _scheduledExecutorService;

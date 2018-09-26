@@ -15,7 +15,7 @@
 package com.liferay.lcs.messaging;
 
 import com.liferay.lcs.metrics.PortalMetricsAggregator;
-import com.liferay.lcs.platform.gateway.LCSGatewayService;
+import com.liferay.lcs.platform.gateway.LCSGatewayClient;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Message;
@@ -31,10 +31,10 @@ import java.util.List;
 public class PortalMetricsMessageListener implements MessageListener {
 
 	public PortalMetricsMessageListener(
-		LCSGatewayService lcsGatewayService,
+		LCSGatewayClient lcsGatewayClient,
 		PortalMetricsAggregator portalMetricsAggregator) {
 
-		_lcsGatewayService = lcsGatewayService;
+		_lcsGatewayClient = lcsGatewayClient;
 		_portalMetricsAggregator = portalMetricsAggregator;
 	}
 
@@ -43,7 +43,7 @@ public class PortalMetricsMessageListener implements MessageListener {
 
 	@Override
 	public void receive(Message message) {
-		if (!_lcsGatewayService.isAvailable()) {
+		if (!_lcsGatewayClient.isAvailable()) {
 			if (_log.isDebugEnabled()) {
 				_log.debug("Waiting for LCS connection manager");
 			}
@@ -63,7 +63,7 @@ public class PortalMetricsMessageListener implements MessageListener {
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortalMetricsMessageListener.class);
 
-	private final LCSGatewayService _lcsGatewayService;
+	private final LCSGatewayClient _lcsGatewayClient;
 	private final PortalMetricsAggregator _portalMetricsAggregator;
 
 }

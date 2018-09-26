@@ -25,7 +25,7 @@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
 <%@ page import="com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor" %><%@
 page import="com.liferay.lcs.exception.LCSExceptionHandler" %><%@
-page import="com.liferay.lcs.platform.gateway.LCSGatewayService" %><%@
+page import="com.liferay.lcs.platform.gateway.LCSGatewayClient" %><%@
 page import="com.liferay.lcs.rest.LCSClusterEntryClientUtil" %><%@
 page import="com.liferay.lcs.rest.LCSClusterNodeClientUtil" %><%@
 page import="com.liferay.lcs.rest.LCSProjectClientUtil" %><%@

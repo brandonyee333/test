@@ -16,7 +16,7 @@ package com.liferay.lcs.task;
 
 import com.liferay.lcs.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.management.MBeanServerService;
-import com.liferay.lcs.platform.gateway.LCSGatewayService;
+import com.liferay.lcs.platform.gateway.LCSGatewayClient;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ServerDetector;
@@ -27,10 +27,10 @@ import com.liferay.portal.kernel.util.ServerDetector;
 public class ServerMetricsTaskFactory {
 
 	public ServerMetricsTaskFactory(
-		LCSGatewayService lcsGatewayService, LCSKeyAdvisor lcsKeyAdvisor,
+		LCSGatewayClient lcsGatewayClient, LCSKeyAdvisor lcsKeyAdvisor,
 		MBeanServerService mBeanServerService) {
 
-		_lcsGatewayService = lcsGatewayService;
+		_lcsGatewayClient = lcsGatewayClient;
 		_lcsKeyAdvisor = lcsKeyAdvisor;
 		_mBeanServerService = mBeanServerService;
 	}
@@ -63,7 +63,7 @@ public class ServerMetricsTaskFactory {
 		}
 
 		serverMetricsTask.setLCSKeyAdvisor(_lcsKeyAdvisor);
-		serverMetricsTask.setLCSGatewayService(_lcsGatewayService);
+		serverMetricsTask.setLCSGatewayService(_lcsGatewayClient);
 		serverMetricsTask.setMBeanServerService(_mBeanServerService);
 
 		return serverMetricsTask;
@@ -72,7 +72,7 @@ public class ServerMetricsTaskFactory {
 	private static final Log _log = LogFactoryUtil.getLog(
 		ServerMetricsTaskFactory.class);
 
-	private final LCSGatewayService _lcsGatewayService;
+	private final LCSGatewayClient _lcsGatewayClient;
 	private final LCSKeyAdvisor _lcsKeyAdvisor;
 	private final MBeanServerService _mBeanServerService;
 

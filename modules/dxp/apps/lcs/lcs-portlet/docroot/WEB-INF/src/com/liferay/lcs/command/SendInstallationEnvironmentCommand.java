@@ -18,7 +18,7 @@ import com.liferay.lcs.advisor.InstallationEnvironmentAdvisor;
 import com.liferay.lcs.advisor.InstallationEnvironmentAdvisorFactory;
 import com.liferay.lcs.messaging.SendInstallationEnvironmentCommandMessage;
 import com.liferay.lcs.messaging.SendInstallationEnvironmentResponseMessage;
-import com.liferay.lcs.platform.gateway.LCSGatewayService;
+import com.liferay.lcs.platform.gateway.LCSGatewayClient;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -29,9 +29,9 @@ public class SendInstallationEnvironmentCommand
 	implements Command<SendInstallationEnvironmentCommandMessage> {
 
 	public SendInstallationEnvironmentCommand(
-		LCSGatewayService lcsGatewayService) {
+		LCSGatewayClient lcsGatewayClient) {
 
-		_lcsGatewayService = lcsGatewayService;
+		_lcsGatewayClient = lcsGatewayClient;
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class SendInstallationEnvironmentCommand
 					sendInstallationEnvironmentCommandMessage);
 
 		try {
-			_lcsGatewayService.sendMessage(
+			_lcsGatewayClient.sendMessage(
 				sendInstallationEnvironmentResponseMessage);
 		}
 		catch (Exception e) {
@@ -86,6 +86,6 @@ public class SendInstallationEnvironmentCommand
 	private static final Log _log = LogFactoryUtil.getLog(
 		SendInstallationEnvironmentCommand.class);
 
-	private final LCSGatewayService _lcsGatewayService;
+	private final LCSGatewayClient _lcsGatewayClient;
 
 }

@@ -15,7 +15,7 @@
 package com.liferay.lcs.task;
 
 import com.liferay.lcs.messaging.HandshakeMessage;
-import com.liferay.lcs.platform.gateway.LCSGatewayService;
+import com.liferay.lcs.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.util.LCSUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
@@ -32,16 +32,16 @@ import java.util.List;
 public class SignOffTask implements Task {
 
 	public SignOffTask(
-		String key, LCSGatewayService lcsGatewayService,
+		String key, LCSGatewayClient lcsGatewayClient,
 		boolean serverManuallyShutdown) {
 
 		_key = key;
-		_lcsGatewayService = lcsGatewayService;
+		_lcsGatewayClient = lcsGatewayClient;
 		_serverManuallyShutdown = serverManuallyShutdown;
 
 		_taskStateListeners = new ArrayList<>();
 
-		_taskStateListeners.add(lcsGatewayService);
+		_taskStateListeners.add(lcsGatewayClient);
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Initialized " + this);
@@ -70,7 +70,7 @@ public class SignOffTask implements Task {
 		handshakeMessage.setKey(_key);
 
 		try {
-			_lcsGatewayService.sendMessage(handshakeMessage);
+			_lcsGatewayClient.sendMessage(handshakeMessage);
 
 			LCSUtil.processLCSPortletState(LCSPortletState.NO_CONNECTION);
 
@@ -111,7 +111,7 @@ public class SignOffTask implements Task {
 	private static final Log _log = LogFactoryUtil.getLog(SignOffTask.class);
 
 	private final String _key;
-	private final LCSGatewayService _lcsGatewayService;
+	private final LCSGatewayClient _lcsGatewayClient;
 	private final boolean _serverManuallyShutdown;
 	private final List<TaskStateListener> _taskStateListeners;
 

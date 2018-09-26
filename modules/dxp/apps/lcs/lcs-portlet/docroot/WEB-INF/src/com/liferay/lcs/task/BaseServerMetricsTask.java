@@ -17,7 +17,7 @@ package com.liferay.lcs.task;
 import com.liferay.lcs.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.management.MBeanServerService;
 import com.liferay.lcs.messaging.ServerMetricsMessage;
-import com.liferay.lcs.platform.gateway.LCSGatewayService;
+import com.liferay.lcs.platform.gateway.LCSGatewayClient;
 import com.liferay.portal.kernel.dao.jdbc.pool.metrics.ConnectionPoolMetrics;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -186,8 +186,8 @@ public abstract class BaseServerMetricsTask implements ServerMetricsTask {
 	}
 
 	@Override
-	public void setLCSGatewayService(LCSGatewayService lcsGatewayService) {
-		this.lcsGatewayService = lcsGatewayService;
+	public void setLCSGatewayService(LCSGatewayClient lcsGatewayClient) {
+		this.lcsGatewayClient = lcsGatewayClient;
 	}
 
 	@Override
@@ -205,7 +205,7 @@ public abstract class BaseServerMetricsTask implements ServerMetricsTask {
 			_log.trace("Running " + getClass());
 		}
 
-		if (!lcsGatewayService.isAvailable()) {
+		if (!lcsGatewayClient.isAvailable()) {
 			if (_log.isDebugEnabled()) {
 				_log.debug("Waiting for LCS connection manager");
 			}
@@ -222,7 +222,7 @@ public abstract class BaseServerMetricsTask implements ServerMetricsTask {
 		serverMetricsMessage.setJDBCConnectionPoolsMetrics(
 			getJDBCConnectionPoolsMetrics());
 
-		lcsGatewayService.sendMessage(serverMetricsMessage);
+		lcsGatewayClient.sendMessage(serverMetricsMessage);
 	}
 
 	protected abstract Map<String, Map<String, Object>>
@@ -282,7 +282,7 @@ public abstract class BaseServerMetricsTask implements ServerMetricsTask {
 	protected abstract void setUpJNDIJDBCConnectionPoolsObjectNames()
 		throws Exception;
 
-	protected LCSGatewayService lcsGatewayService;
+	protected LCSGatewayClient lcsGatewayClient;
 	protected LCSKeyAdvisor lcsKeyAdvisor;
 	protected MBeanServerService mBeanServerService;
 

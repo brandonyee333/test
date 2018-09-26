@@ -78,9 +78,9 @@ catch (Exception e) {
 		</c:if>
 
 		<%
-			LCSGatewayService lcsGatewayService = (LCSGatewayService)beanLocator.locate("com.liferay.lcs.platform.gateway.LCSGatewayService");
+		LCSGatewayClient lcsGatewayClient = (LCSGatewayClient)beanLocator.locate("com.liferay.lcs.platform.gateway.LCSGatewayClient");
 
-			boolean ready = lcsGatewayService.isAvailable();
+		boolean ready = lcsGatewayClient.isAvailable();
 
 		String connectionStatusCSSClass = "alert-success";
 		String connectionStatusLabel = "connected";
@@ -90,7 +90,7 @@ catch (Exception e) {
 			connectionStatusLabel = "disconnected";
 		}
 
-		long lastHandshakeSuccess = lcsGatewayService.getLastHandshakeSuccess();
+		long lastHandshakeSuccess = lcsGatewayClient.getLastHandshakeSuccess();
 		%>
 
 		<div class="alert alert-connection <%= connectionStatusCSSClass %>" id="<portlet:namespace />connectionStatus">
@@ -143,10 +143,10 @@ catch (Exception e) {
 					</aui:col>
 
 					<aui:col width="<%= 50 %>">
-						<c:if test="<%= lcsGatewayService.getLastMessageReceived() != 0 %>">
+						<c:if test="<%= lcsGatewayClient.getLastMessageReceived() != 0 %>">
 
 							<%
-							Date messageTaskTimeDate = new Date(lcsGatewayService.getLastMessageReceived());
+							Date messageTaskTimeDate = new Date(lcsGatewayClient.getLastMessageReceived());
 							%>
 
 							<%= dateFormatDate.format(messageTaskTimeDate) %>

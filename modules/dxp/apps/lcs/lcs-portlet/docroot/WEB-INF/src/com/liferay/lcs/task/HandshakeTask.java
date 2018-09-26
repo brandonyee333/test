@@ -25,7 +25,7 @@ import com.liferay.lcs.messaging.HandshakeMessage;
 import com.liferay.lcs.messaging.HandshakeResponseMessage;
 import com.liferay.lcs.messaging.Message;
 import com.liferay.lcs.messaging.ResponseMessage;
-import com.liferay.lcs.platform.gateway.LCSGatewayService;
+import com.liferay.lcs.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.runnable.LCSPortletBuildNumberCheckRunnable;
 import com.liferay.lcs.util.LCSAlert;
 import com.liferay.lcs.util.LCSPatcherUtil;
@@ -71,7 +71,7 @@ public class HandshakeTask implements Task {
 
 	public HandshakeTask(
 		long lcsClusterEntryTokenId, LCSAlertAdvisor lcsAlertAdvisor,
-		LCSGatewayService lcsConnectionManager, LCSKeyAdvisor lcsKeyAdvisor,
+		LCSGatewayClient lcsConnectionManager, LCSKeyAdvisor lcsKeyAdvisor,
 		ThreadFactory threadFactory,
 		UptimeMonitoringAdvisor uptimeMonitoringAdvisor) {
 
@@ -83,7 +83,7 @@ public class HandshakeTask implements Task {
 
 		_lcsClusterEntryTokenId = lcsClusterEntryTokenId;
 		_lcsAlertAdvisor = lcsAlertAdvisor;
-		_lcsGatewayService = lcsConnectionManager;
+		_lcsGatewayClient = lcsConnectionManager;
 		_lcsKeyAdvisor = lcsKeyAdvisor;
 		_threadFactory = threadFactory;
 		_uptimeMonitoringAdvisor = uptimeMonitoringAdvisor;
@@ -97,7 +97,7 @@ public class HandshakeTask implements Task {
 
 		_taskStateListeners = new ArrayList<>();
 
-		_taskStateListeners.add(_lcsGatewayService);
+		_taskStateListeners.add(_lcsGatewayClient);
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Initialized " + this);
@@ -126,12 +126,12 @@ public class HandshakeTask implements Task {
 		}
 
 		if (!_temporaryKey) {
-			_lcsGatewayService.deleteMessages(_key);
+			_lcsGatewayClient.deleteMessages(_key);
 		}
 
 		HandshakeMessage handshakeMessage = _createHandshakeMessage();
 
-		_lcsGatewayService.sendMessage(handshakeMessage);
+		_lcsGatewayClient.sendMessage(handshakeMessage);
 
 		_waitForHandshakeResponse();
 
@@ -368,7 +368,7 @@ public class HandshakeTask implements Task {
 						_handshakeReplyReads + " handshakes");
 			}
 
-			receivedMessages = _lcsGatewayService.getMessages(_key);
+			receivedMessages = _lcsGatewayClient.getMessages(_key);
 
 			if (receivedMessages.isEmpty()) {
 				try {
@@ -423,7 +423,7 @@ public class HandshakeTask implements Task {
 	private final String _key;
 	private final LCSAlertAdvisor _lcsAlertAdvisor;
 	private final long _lcsClusterEntryTokenId;
-	private final LCSGatewayService _lcsGatewayService;
+	private final LCSGatewayClient _lcsGatewayClient;
 	private final LCSKeyAdvisor _lcsKeyAdvisor;
 	private final List<TaskStateListener> _taskStateListeners;
 	private boolean _temporaryKey;

@@ -17,7 +17,7 @@ package com.liferay.lcs.command;
 import com.liferay.lcs.exception.CompressionException;
 import com.liferay.lcs.messaging.ExecuteScriptCommandMessage;
 import com.liferay.lcs.messaging.ExecuteScriptResponseMessage;
-import com.liferay.lcs.platform.gateway.LCSGatewayService;
+import com.liferay.lcs.platform.gateway.LCSGatewayClient;
 import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncPrintWriter;
@@ -37,8 +37,8 @@ import java.util.Set;
 public class ExecuteScriptCommand
 	implements Command<ExecuteScriptCommandMessage> {
 
-	public ExecuteScriptCommand(LCSGatewayService lcsGatewayService) {
-		_lcsGatewayService = lcsGatewayService;
+	public ExecuteScriptCommand(LCSGatewayClient lcsGatewayClient) {
+		_lcsGatewayClient = lcsGatewayClient;
 	}
 
 	@Override
@@ -108,7 +108,7 @@ public class ExecuteScriptCommand
 			errorMessage = se.getMessage();
 		}
 
-		_lcsGatewayService.sendMessage(
+		_lcsGatewayClient.sendMessage(
 			_getExecuteScriptResponseMessage(
 				executeScriptCommandMessage, result, errorMessage));
 	}
@@ -134,6 +134,6 @@ public class ExecuteScriptCommand
 	private static final Log _log = LogFactoryUtil.getLog(
 		ExecuteScriptCommand.class);
 
-	private final LCSGatewayService _lcsGatewayService;
+	private final LCSGatewayClient _lcsGatewayClient;
 
 }

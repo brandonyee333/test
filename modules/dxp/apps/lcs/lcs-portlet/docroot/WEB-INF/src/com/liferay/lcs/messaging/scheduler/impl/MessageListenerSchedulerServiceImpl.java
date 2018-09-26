@@ -18,7 +18,7 @@ import com.liferay.lcs.advisor.MonitoringAdvisor;
 import com.liferay.lcs.advisor.MonitoringAdvisorFactory;
 import com.liferay.lcs.messaging.scheduler.MessageListenerSchedulerService;
 import com.liferay.lcs.platform.LCSEvent;
-import com.liferay.lcs.platform.gateway.LCSGatewayService;
+import com.liferay.lcs.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.platform.gateway.LCSGatewayStateListener;
 import com.liferay.portal.kernel.bean.BeanLocator;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
@@ -38,9 +38,9 @@ public class MessageListenerSchedulerServiceImpl
 	implements LCSGatewayStateListener, MessageListenerSchedulerService {
 
 	public MessageListenerSchedulerServiceImpl(
-		LCSGatewayService lcsGatewayService) {
+		LCSGatewayClient lcsGatewayClient) {
 
-		lcsGatewayService.registerLCSGatewayStateListener(this);
+		lcsGatewayClient.registerLCSGatewayStateListener(this);
 	}
 
 	@Override

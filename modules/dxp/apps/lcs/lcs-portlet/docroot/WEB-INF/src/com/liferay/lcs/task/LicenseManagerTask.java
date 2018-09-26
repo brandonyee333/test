@@ -15,7 +15,7 @@
 package com.liferay.lcs.task;
 
 import com.liferay.lcs.advisor.LCSPortletStateAdvisor;
-import com.liferay.lcs.platform.gateway.LCSGatewayService;
+import com.liferay.lcs.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.util.LCSUtil;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 import com.liferay.portal.kernel.log.Log;
@@ -27,10 +27,10 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 public class LicenseManagerTask implements ScheduledTask {
 
 	public LicenseManagerTask(
-		LCSGatewayService lcsGatewayService,
+		LCSGatewayClient lcsGatewayClient,
 		LCSPortletStateAdvisor lcsPortletStateAdvisor) {
 
-		_lcsGatewayService = lcsGatewayService;
+		_lcsGatewayClient = lcsGatewayClient;
 		_lcsPortletStateAdvisor = lcsPortletStateAdvisor;
 
 		if (_log.isTraceEnabled()) {
@@ -87,7 +87,7 @@ public class LicenseManagerTask implements ScheduledTask {
 	private static final Log _log = LogFactoryUtil.getLog(
 		LicenseManagerTask.class);
 
-	private final LCSGatewayService _lcsGatewayService;
+	private final LCSGatewayClient _lcsGatewayClient;
 	private final LCSPortletStateAdvisor _lcsPortletStateAdvisor;
 
 }

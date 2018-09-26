@@ -17,7 +17,7 @@ package com.liferay.lcs.platform.gateway.impl;
 import com.liferay.lcs.exception.CompressionException;
 import com.liferay.lcs.messaging.Message;
 import com.liferay.lcs.platform.LCSEvent;
-import com.liferay.lcs.platform.gateway.LCSGatewayService;
+import com.liferay.lcs.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.platform.gateway.LCSGatewayStateListener;
 import com.liferay.lcs.task.HandshakeTask;
 import com.liferay.lcs.task.SignOffTask;
@@ -45,7 +45,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Ivica Cardic
  * @author Igor Beslic
  */
-public class LCSGatewayServiceImpl implements LCSGatewayService {
+public class LCSGatewayClientImpl implements LCSGatewayClient {
 
 	@Override
 	public void deleteMessages(String key) throws JSONWebServiceException {
@@ -275,16 +275,16 @@ public class LCSGatewayServiceImpl implements LCSGatewayService {
 	private static final String _URL_LCS_GATEWAY = "/api/lcsgateway";
 
 	private static final String _URL_LCS_GATEWAY_DELETE_MESSAGES =
-		LCSGatewayServiceImpl._URL_LCS_GATEWAY + "/delete-messages";
+		LCSGatewayClientImpl._URL_LCS_GATEWAY + "/delete-messages";
 
 	private static final String _URL_LCS_GATEWAY_GET_MESSAGES =
-		LCSGatewayServiceImpl._URL_LCS_GATEWAY + "/v12/get-messages";
+		LCSGatewayClientImpl._URL_LCS_GATEWAY + "/v12/get-messages";
 
 	private static final String _URL_LCS_GATEWAY_SEND_MESSAGE =
-		LCSGatewayServiceImpl._URL_LCS_GATEWAY + "/send-message";
+		LCSGatewayClientImpl._URL_LCS_GATEWAY + "/send-message";
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		LCSGatewayServiceImpl.class);
+		LCSGatewayClientImpl.class);
 
 	private volatile boolean _available;
 	private final Map<String, String> _baseHeaders = new HashMap<>();

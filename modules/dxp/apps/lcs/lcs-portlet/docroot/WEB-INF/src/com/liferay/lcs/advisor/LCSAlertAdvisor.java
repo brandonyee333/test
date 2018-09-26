@@ -15,7 +15,7 @@
 package com.liferay.lcs.advisor;
 
 import com.liferay.lcs.platform.LCSEvent;
-import com.liferay.lcs.platform.gateway.LCSGatewayService;
+import com.liferay.lcs.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.platform.gateway.LCSGatewayStateListener;
 import com.liferay.lcs.util.LCSAlert;
 import com.liferay.lcs.util.LCSUtil;
@@ -29,8 +29,8 @@ import java.util.Set;
  */
 public class LCSAlertAdvisor implements LCSGatewayStateListener {
 
-	public LCSAlertAdvisor(LCSGatewayService lcsGatewayService) {
-		lcsGatewayService.registerLCSGatewayStateListener(this);
+	public LCSAlertAdvisor(LCSGatewayClient lcsGatewayClient) {
+		lcsGatewayClient.registerLCSGatewayStateListener(this);
 	}
 
 	public boolean add(LCSAlert lcsAlert) {

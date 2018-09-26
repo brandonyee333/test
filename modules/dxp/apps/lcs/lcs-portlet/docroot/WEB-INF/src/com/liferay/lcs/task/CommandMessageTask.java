@@ -16,7 +16,7 @@ package com.liferay.lcs.task;
 
 import com.liferay.lcs.messaging.CommandMessage;
 import com.liferay.lcs.messaging.Message;
-import com.liferay.lcs.platform.gateway.LCSGatewayService;
+import com.liferay.lcs.platform.gateway.LCSGatewayClient;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
@@ -29,9 +29,9 @@ import java.util.List;
  */
 public class CommandMessageTask implements Task {
 
-	public CommandMessageTask(String key, LCSGatewayService lcsGatewayService) {
+	public CommandMessageTask(String key, LCSGatewayClient lcsGatewayClient) {
 		_key = key;
-		_lcsGatewayService = lcsGatewayService;
+		_lcsGatewayClient = lcsGatewayClient;
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Initialized " + this);
@@ -53,7 +53,7 @@ public class CommandMessageTask implements Task {
 			_log.trace("Running command message task");
 		}
 
-		if (!_lcsGatewayService.isAvailable()) {
+		if (!_lcsGatewayClient.isAvailable()) {
 			if (_log.isDebugEnabled()) {
 				_log.debug("Waiting for LCS gateway service");
 			}
@@ -65,7 +65,7 @@ public class CommandMessageTask implements Task {
 			_log.trace("Checking messages for " + _key);
 		}
 
-		List<Message> messages = _lcsGatewayService.getMessages(_key);
+		List<Message> messages = _lcsGatewayClient.getMessages(_key);
 
 		for (Message message : messages) {
 			if (_log.isTraceEnabled()) {
@@ -94,6 +94,6 @@ public class CommandMessageTask implements Task {
 		CommandMessageTask.class);
 
 	private final String _key;
-	private final LCSGatewayService _lcsGatewayService;
+	private final LCSGatewayClient _lcsGatewayClient;
 
 }
