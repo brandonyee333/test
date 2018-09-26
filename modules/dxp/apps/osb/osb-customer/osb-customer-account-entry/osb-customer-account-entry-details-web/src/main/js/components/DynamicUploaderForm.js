@@ -1,6 +1,7 @@
-import axios from 'axios';
 import PropTypes from 'prop-types';
 import React from 'react';
+
+import axios from 'axios';
 
 import Button from './Button';
 import Resumable from '../third-party/resumable.nocsf';
@@ -71,9 +72,6 @@ export default class DynamicUploaderForm extends React.Component {
 					message: {
 						content: Liferay.Language.get('invalid-browser'),
 						type: 'error'
-					},
-					toolbar: {
-						visibile: false
 					}
 				}
 			);
@@ -277,6 +275,14 @@ export default class DynamicUploaderForm extends React.Component {
 		}
 	}
 
+	handleUpdateComment = (event) => {
+		const comment = event.currentTarget.value;
+
+		this.setState({
+			comment
+		});
+	}
+
 	updateActionUrl = () => {
 		const {addTicketAttachmentURL, portletNamespace} = this.props;
 
@@ -340,7 +346,7 @@ export default class DynamicUploaderForm extends React.Component {
 									<svg className="lexicon-icon lexicon-icon-paperclip">
 										<use xlinkHref="#paperclip" />
 									</svg>
-									Add file or drop files here
+									{Liferay.Language.get('add-file-or-drop-file-here')}
 								</div>
 							</div>
 
@@ -410,13 +416,7 @@ export default class DynamicUploaderForm extends React.Component {
 								className="form-control"
 								id={`${portletNamespace}comment`}
 								name={`${portletNamespace}comment`}
-								onChange={(event) => {
-									const comment = event.currentTarget.value;
-
-									this.setState({
-										comment
-									});
-								}}
+								onChange={this.handleUpdateComment}
 								value={this.state.comment}
 							/>
 						</div>

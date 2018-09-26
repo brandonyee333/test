@@ -3,25 +3,23 @@ export const handleFileError = (file, message) => {
 };
 
 export const getFileProgress = (file) => {
-;	return Math.floor(file.progress() * 100);
+	return Math.floor(file.progress() * 100);
 }
 
 export const handleFileSuccess = (file, message) => {
 	const response = JSON.parse(message);
 
-	let retVal = {};
+	let retVal = {
+		fileAttachment : null,
+		file : null,
+		message : response.message,
+		submitForm : false
+	};
 
 	if ((response.message == 'complete') || (response.message == 'file-exists')) {
 		retVal.fileAttachment = file;
 		retVal.file = JSON.stringify(response.file);
-		retVal.message = response.message;
 		retVal.submitForm = true;
-	}
-	else {
-		retVal.fileAttachment = null;
-		retVal.file = null;
-		retVal.message = response.message;
-		retVal.submitForm = false;
 	}
 
 	return retVal;

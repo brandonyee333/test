@@ -7,26 +7,21 @@
 		font-style: italic;
 		margin: 8px 0;
 
-		.lexicon-icon {
-			width: 12px;
-		}
-
 		.attachment-name {
 			margin: 0 8px;
 		}
+
+		.lexicon-icon {
+			width: 12px;
+		}
 	}
 
-	.form-control.attachment, .attachment, .upload-area {
+	.attachment, .form-control.attachment, .upload-area {
 		cursor: pointer;
 	}
 
 	.btn-row {
 		justify-content: unset;
-	}
-
-	.progress-bar-container {
-		display: inline-flex;
-		width: 100%;
 	}
 
 	.progress-bar {
@@ -40,6 +35,11 @@
 			margin: 0;
 			padding: 0;
 		}
+	}
+
+	.progress-bar-container {
+		display: inline-flex;
+		width: 100%;
 	}
 
 	.toolbar {
