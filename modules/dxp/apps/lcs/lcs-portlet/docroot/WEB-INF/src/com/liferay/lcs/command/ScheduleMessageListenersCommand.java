@@ -41,12 +41,14 @@ public class ScheduleMessageListenersCommand
 		List<Map<String, String>> schedulerContexts =
 			scheduleMessageListenersCommandMessage.getSchedulerContexts();
 
+		if ((schedulerContexts == null) || schedulerContexts.isEmpty()) {
+			return;
+		}
+
 		Collections.shuffle(schedulerContexts);
 
-		if (schedulerContexts != null) {
-			for (Map<String, String> schedulerContext : schedulerContexts) {
-				scheduleMessageListener(schedulerContext);
-			}
+		for (Map<String, String> schedulerContext : schedulerContexts) {
+			scheduleMessageListener(schedulerContext);
 		}
 	}
 

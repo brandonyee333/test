@@ -18,7 +18,7 @@ import com.liferay.lcs.advisor.InstallationEnvironmentAdvisor;
 import com.liferay.lcs.advisor.InstallationEnvironmentAdvisorFactory;
 import com.liferay.lcs.messaging.SendInstallationEnvironmentCommandMessage;
 import com.liferay.lcs.messaging.SendInstallationEnvironmentResponseMessage;
-import com.liferay.lcs.util.LCSConnectionManager;
+import com.liferay.lcs.service.LCSGatewayService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -27,6 +27,12 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
  */
 public class SendInstallationEnvironmentCommand
 	implements Command<SendInstallationEnvironmentCommandMessage> {
+
+	public SendInstallationEnvironmentCommand(
+		LCSGatewayService lcsGatewayService) {
+
+		_lcsGatewayService = lcsGatewayService;
+	}
 
 	@Override
 	public void execute(
@@ -43,18 +49,12 @@ public class SendInstallationEnvironmentCommand
 					sendInstallationEnvironmentCommandMessage);
 
 		try {
-			_lcsConnectionManager.sendMessage(
+			_lcsGatewayService.sendMessage(
 				sendInstallationEnvironmentResponseMessage);
 		}
 		catch (Exception e) {
 			_log.error("Unable to send installation environment", e);
 		}
-	}
-
-	public void setLCSConnectionManager(
-		LCSConnectionManager lcsConnectionManager) {
-
-		_lcsConnectionManager = lcsConnectionManager;
 	}
 
 	private SendInstallationEnvironmentResponseMessage
@@ -86,6 +86,6 @@ public class SendInstallationEnvironmentCommand
 	private static final Log _log = LogFactoryUtil.getLog(
 		SendInstallationEnvironmentCommand.class);
 
-	private LCSConnectionManager _lcsConnectionManager;
+	private final LCSGatewayService _lcsGatewayService;
 
 }

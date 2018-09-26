@@ -18,7 +18,7 @@ import com.liferay.lcs.exception.CompressionException;
 import com.liferay.lcs.messaging.CommandMessage;
 import com.liferay.lcs.messaging.DownloadPatchCommandMessage;
 import com.liferay.lcs.messaging.DownloadPatchResponseMessage;
-import com.liferay.lcs.util.LCSConnectionManager;
+import com.liferay.lcs.service.LCSGatewayService;
 import com.liferay.lcs.util.LCSConstants;
 import com.liferay.lcs.util.LCSPatcherUtil;
 import com.liferay.lcs.util.PatchUtil;
@@ -52,13 +52,17 @@ import java.util.zip.ZipInputStream;
 public class DownloadPatchCommand
 	implements Command<DownloadPatchCommandMessage> {
 
+	public DownloadPatchCommand(LCSGatewayService lcsGatewayService) {
+		_lcsGatewayService = lcsGatewayService;
+	}
+
 	public void downloadPatch(
 			DownloadPatchCommandMessage downloadPatchCommandMessage)
 		throws CompressionException, JSONWebServiceException {
 
 		String patchFileName = downloadPatchCommandMessage.getPatchFileName();
 
-		_lcsConnectionManager.sendMessage(
+		_lcsGatewayService.sendMessage(
 			_getDownloadPatchResponseMessage(
 				downloadPatchCommandMessage, patchFileName,
 				LCSConstants.PATCHES_DOWNLOADING));
@@ -83,7 +87,7 @@ public class DownloadPatchCommand
 		catch (IOException ioe) {
 			_log.error(ioe, ioe);
 
-			_lcsConnectionManager.sendMessage(
+			_lcsGatewayService.sendMessage(
 				_getDownloadPatchResponseMessage(
 					downloadPatchCommandMessage, patchFileName,
 					LCSConstants.PATCHES_ERROR));
@@ -91,7 +95,7 @@ public class DownloadPatchCommand
 			return;
 		}
 
-		_lcsConnectionManager.sendMessage(
+		_lcsGatewayService.sendMessage(
 			_getDownloadPatchResponseMessage(
 				downloadPatchCommandMessage, patchFileName,
 				LCSConstants.PATCHES_DOWNLOADED));
@@ -139,12 +143,6 @@ public class DownloadPatchCommand
 
 			_log.error(sb.toString(), e);
 		}
-	}
-
-	public void setLCSConnectionManager(
-		LCSConnectionManager lcsConnectionManager) {
-
-		_lcsConnectionManager = lcsConnectionManager;
 	}
 
 	private void _checkMD5Sum(String fileName, String md5Sum)
@@ -311,6 +309,6 @@ public class DownloadPatchCommand
 	private static final Log _log = LogFactoryUtil.getLog(
 		DownloadPatchCommand.class);
 
-	private LCSConnectionManager _lcsConnectionManager;
+	private final LCSGatewayService _lcsGatewayService;
 
 }

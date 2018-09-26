@@ -16,8 +16,8 @@ package com.liferay.lcs.command;
 
 import com.liferay.lcs.messaging.SendPatchesCommandMessage;
 import com.liferay.lcs.messaging.SendPatchesResponseMessage;
+import com.liferay.lcs.service.LCSGatewayService;
 import com.liferay.lcs.task.advisor.TaskAdvisor;
-import com.liferay.lcs.util.LCSConnectionManager;
 import com.liferay.lcs.util.LCSConstants;
 import com.liferay.lcs.util.LCSPatcherUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -38,9 +38,9 @@ import java.util.Map;
 public class SendPatchesCommand implements Command<SendPatchesCommandMessage> {
 
 	public SendPatchesCommand(
-		LCSConnectionManager lcsConnectionManager, TaskAdvisor taskAdvisor) {
+		LCSGatewayService lcsGatewayService, TaskAdvisor taskAdvisor) {
 
-		_lcsConnectionManager = lcsConnectionManager;
+		_lcsGatewayService = lcsGatewayService;
 		_taskAdvisor = taskAdvisor;
 	}
 
@@ -102,7 +102,7 @@ public class SendPatchesCommand implements Command<SendPatchesCommandMessage> {
 				sendPatchesCommandMessage, installedHashCode, patchIdsStatuses);
 
 		try {
-			_lcsConnectionManager.sendMessage(sendPatchesResponseMessage);
+			_lcsGatewayService.sendMessage(sendPatchesResponseMessage);
 		}
 		catch (Exception e) {
 			_log.error("Unable to send installed patches statuses", e);
@@ -129,7 +129,7 @@ public class SendPatchesCommand implements Command<SendPatchesCommandMessage> {
 	private static final Log _log = LogFactoryUtil.getLog(
 		SendPatchesCommand.class);
 
-	private final LCSConnectionManager _lcsConnectionManager;
+	private final LCSGatewayService _lcsGatewayService;
 	private final TaskAdvisor _taskAdvisor;
 
 }

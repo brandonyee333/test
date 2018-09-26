@@ -16,8 +16,8 @@ package com.liferay.lcs.command;
 
 import com.liferay.lcs.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.messaging.CheckHeartbeatCommandMessage;
+import com.liferay.lcs.service.LCSGatewayService;
 import com.liferay.lcs.task.HeartbeatTask;
-import com.liferay.lcs.util.LCSConnectionManager;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -28,10 +28,9 @@ public class CheckHeartbeatCommand
 	implements Command<CheckHeartbeatCommandMessage> {
 
 	public CheckHeartbeatCommand(
-		LCSConnectionManager lcsConnectionManager,
-		LCSKeyAdvisor lcsKeyAdvisor) {
+		LCSGatewayService lcsGatewayService, LCSKeyAdvisor lcsKeyAdvisor) {
 
-		_lcsConnectionManager = lcsConnectionManager;
+		_lcsGatewayService = lcsGatewayService;
 		_lcsKeyAdvisor = lcsKeyAdvisor;
 
 		if (_log.isTraceEnabled()) {
@@ -48,7 +47,7 @@ public class CheckHeartbeatCommand
 		}
 
 		HeartbeatTask heartbeatTask = new HeartbeatTask(
-			_lcsKeyAdvisor.getKey(), _lcsConnectionManager);
+			_lcsKeyAdvisor.getKey(), _lcsGatewayService);
 
 		heartbeatTask.run();
 	}
@@ -65,7 +64,7 @@ public class CheckHeartbeatCommand
 	private static final Log _log = LogFactoryUtil.getLog(
 		CheckHeartbeatCommand.class);
 
-	private final LCSConnectionManager _lcsConnectionManager;
+	private final LCSGatewayService _lcsGatewayService;
 	private final LCSKeyAdvisor _lcsKeyAdvisor;
 
 }

@@ -17,8 +17,8 @@ package com.liferay.lcs.command;
 import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.messaging.SendPortalPropertiesCommandMessage;
 import com.liferay.lcs.messaging.SendPortalPropertiesResponseMessage;
+import com.liferay.lcs.service.LCSGatewayService;
 import com.liferay.lcs.task.advisor.TaskAdvisor;
-import com.liferay.lcs.util.LCSConnectionManager;
 import com.liferay.lcs.util.LCSConstants;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -44,10 +44,10 @@ public class SendPortalPropertiesCommand
 
 	public SendPortalPropertiesCommand(
 		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor,
-		LCSConnectionManager lcsConnectionManager, TaskAdvisor taskAdvisor) {
+		LCSGatewayService lcsGatewayService, TaskAdvisor taskAdvisor) {
 
 		_lcsClusterEntryTokenAdvisor = lcsClusterEntryTokenAdvisor;
-		_lcsConnectionManager = lcsConnectionManager;
+		_lcsGatewayService = lcsGatewayService;
 		_taskAdvisor = taskAdvisor;
 	}
 
@@ -81,8 +81,7 @@ public class SendPortalPropertiesCommand
 					portalPropertiesMap);
 
 		try {
-			_lcsConnectionManager.sendMessage(
-				sendPortalPropertiesResponseMessage);
+			_lcsGatewayService.sendMessage(sendPortalPropertiesResponseMessage);
 		}
 		catch (Exception e) {
 			_log.error("Unable to send portal properties", e);
@@ -186,7 +185,7 @@ public class SendPortalPropertiesCommand
 		SendPortalPropertiesCommand.class);
 
 	private final LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
-	private final LCSConnectionManager _lcsConnectionManager;
+	private final LCSGatewayService _lcsGatewayService;
 	private final TaskAdvisor _taskAdvisor;
 
 }

@@ -17,7 +17,7 @@ package com.liferay.lcs.command;
 import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.messaging.SignOffCommandMessage;
-import com.liferay.lcs.util.LCSConnectionManager;
+import com.liferay.lcs.task.scheduler.TaskSchedulerService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -26,6 +26,16 @@ import com.liferay.portal.kernel.util.StringBundler;
  * @author Igor Beslic
  */
 public class SignOffCommand implements Command<SignOffCommandMessage> {
+
+	public SignOffCommand(
+		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor,
+		LCSKeyAdvisor lcsKeyAdvisor,
+		TaskSchedulerService taskSchedulerService) {
+
+		_lcsClusterEntryTokenAdvisor = lcsClusterEntryTokenAdvisor;
+		_lcsKeyAdvisor = lcsKeyAdvisor;
+		_taskSchedulerService = taskSchedulerService;
+	}
 
 	@Override
 	public void execute(SignOffCommandMessage signOffCommandMessage) {
@@ -51,33 +61,17 @@ public class SignOffCommand implements Command<SignOffCommandMessage> {
 			}
 		}
 
-		_lcsConnectionManager.stop(true, true, false);
+		_taskSchedulerService.executeLCSConnectorRunnable(true);
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Signed off server from LCS");
 		}
 	}
 
-	public void setLCSClusterEntryTokenAdvisor(
-		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor) {
-
-		_lcsClusterEntryTokenAdvisor = lcsClusterEntryTokenAdvisor;
-	}
-
-	public void setLCSConnectionManager(
-		LCSConnectionManager lcsConnectionManager) {
-
-		_lcsConnectionManager = lcsConnectionManager;
-	}
-
-	public void setLCSKeyAdvisor(LCSKeyAdvisor lcsKeyAdvisor) {
-		_lcsKeyAdvisor = lcsKeyAdvisor;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(SignOffCommand.class);
 
-	private LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
-	private LCSConnectionManager _lcsConnectionManager;
-	private LCSKeyAdvisor _lcsKeyAdvisor;
+	private final LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
+	private final LCSKeyAdvisor _lcsKeyAdvisor;
+	private final TaskSchedulerService _taskSchedulerService;
 
 }
