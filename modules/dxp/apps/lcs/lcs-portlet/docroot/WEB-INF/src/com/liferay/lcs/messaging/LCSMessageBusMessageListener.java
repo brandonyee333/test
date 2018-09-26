@@ -15,7 +15,7 @@
 package com.liferay.lcs.messaging;
 
 import com.liferay.lcs.advisor.LCSKeyAdvisor;
-import com.liferay.lcs.util.LCSConnectionManager;
+import com.liferay.lcs.service.LCSGatewayService;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
 
@@ -26,13 +26,10 @@ import java.util.Map;
  */
 public class LCSMessageBusMessageListener extends BaseMessageListener {
 
-	public void setLCSConnectionManager(
-		LCSConnectionManager lcsConnectionManager) {
+	public LCSMessageBusMessageListener(
+		LCSGatewayService lcsGatewayService, LCSKeyAdvisor lcsKeyAdvisor) {
 
-		_lcsConnectionManager = lcsConnectionManager;
-	}
-
-	public void setLCSKeyAdvisor(LCSKeyAdvisor lcsKeyAdvisor) {
+		_lcsGatewayService = lcsGatewayService;
 		_lcsKeyAdvisor = lcsKeyAdvisor;
 	}
 
@@ -63,7 +60,7 @@ public class LCSMessageBusMessageListener extends BaseMessageListener {
 
 		messageBusMessage.setPayload(message.getPayload());
 
-		_lcsConnectionManager.sendMessage(messageBusMessage);
+		_lcsGatewayService.sendMessage(messageBusMessage);
 	}
 
 	protected boolean isWrapper(Class<? extends Object> clazz) {
@@ -78,7 +75,7 @@ public class LCSMessageBusMessageListener extends BaseMessageListener {
 		return false;
 	}
 
-	private LCSConnectionManager _lcsConnectionManager;
-	private LCSKeyAdvisor _lcsKeyAdvisor;
+	private final LCSGatewayService _lcsGatewayService;
+	private final LCSKeyAdvisor _lcsKeyAdvisor;
 
 }

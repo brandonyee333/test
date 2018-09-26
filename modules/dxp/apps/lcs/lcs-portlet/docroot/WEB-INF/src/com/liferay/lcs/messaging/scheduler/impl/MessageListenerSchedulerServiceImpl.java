@@ -17,6 +17,9 @@ package com.liferay.lcs.messaging.scheduler.impl;
 import com.liferay.lcs.advisor.MonitoringAdvisor;
 import com.liferay.lcs.advisor.MonitoringAdvisorFactory;
 import com.liferay.lcs.messaging.scheduler.MessageListenerSchedulerService;
+import com.liferay.lcs.platform.LCSEvent;
+import com.liferay.lcs.platform.gateway.LCSGatewayStateListener;
+import com.liferay.lcs.service.LCSGatewayService;
 import com.liferay.portal.kernel.bean.BeanLocator;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -32,7 +35,20 @@ import java.util.Map;
  * @author Igor Beslic
  */
 public class MessageListenerSchedulerServiceImpl
-	implements MessageListenerSchedulerService {
+	implements LCSGatewayStateListener, MessageListenerSchedulerService {
+
+	public MessageListenerSchedulerServiceImpl(
+		LCSGatewayService lcsGatewayService) {
+
+		lcsGatewayService.registerLCSGatewayStateListener(this);
+	}
+
+	@Override
+	public void onLCSGatewayStateChanged(LCSEvent lcsEvent) {
+		if (lcsEvent == LCSEvent.UNAVAILABLE) {
+			unscheduleAllMessageListeners();
+		}
+	}
 
 	@Override
 	public void scheduleMessageListener(Map<String, String> schedulerContext) {

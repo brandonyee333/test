@@ -16,7 +16,7 @@ package com.liferay.lcs.messaging;
 
 import com.liferay.lcs.command.Command;
 import com.liferay.lcs.messaging.security.DigitalSignature;
-import com.liferay.lcs.util.LCSConnectionManager;
+import com.liferay.lcs.service.LCSGatewayService;
 import com.liferay.lcs.util.LCSUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -34,11 +34,11 @@ public class CommandMessageListener implements MessageListener {
 	public CommandMessageListener(
 		Map<String, Command<? extends CommandMessage>> commands,
 		DigitalSignature digitalSignature,
-		LCSConnectionManager lcsConnectionManager) {
+		LCSGatewayService lcsGatewayService) {
 
 		_commands = commands;
 		_digitalSignature = digitalSignature;
-		_lcsConnectionManager = lcsConnectionManager;
+		_lcsGatewayService = lcsGatewayService;
 	}
 
 	@Override
@@ -108,7 +108,7 @@ public class CommandMessageListener implements MessageListener {
 					_log.trace("Sending response message");
 				}
 
-				_lcsConnectionManager.sendMessage(errorResponseMessage);
+				_lcsGatewayService.sendMessage(errorResponseMessage);
 			}
 			catch (Exception e) {
 				_log.error(e, e);
@@ -135,6 +135,6 @@ public class CommandMessageListener implements MessageListener {
 
 	private final Map<String, Command<? extends CommandMessage>> _commands;
 	private final DigitalSignature _digitalSignature;
-	private final LCSConnectionManager _lcsConnectionManager;
+	private final LCSGatewayService _lcsGatewayService;
 
 }
