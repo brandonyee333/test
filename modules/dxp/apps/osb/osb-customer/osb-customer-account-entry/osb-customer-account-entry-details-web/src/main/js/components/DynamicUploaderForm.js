@@ -21,8 +21,8 @@ export default class DynamicUploaderForm extends React.Component {
 	formRef = React.createRef();
 
 	state = {
+		comment: '',
 		file: {
-			comment: '',
 			fileName: '',
 			fileSize: '',
 			type: ''
@@ -197,6 +197,7 @@ export default class DynamicUploaderForm extends React.Component {
 
 		this.setState(
 			{
+				comment: '',
 				file: '',
 				fileObj: '',
 				toolbar: {
@@ -288,6 +289,8 @@ export default class DynamicUploaderForm extends React.Component {
 				actionUrl += `&${portletNamespace}${key}=${this.state.file[key]}`;
 			}
 		);
+
+		actionUrl += `&${portletNamespace}comment=${this.state.comment}`;
 
 		this.formRef.current.action = actionUrl;
 	}
@@ -410,18 +413,11 @@ export default class DynamicUploaderForm extends React.Component {
 								onChange={(event) => {
 									const comment = event.currentTarget.value;
 
-									this.setState(
-										(prevState) => (
-											{
-												file: {
-													...prevState.file,
-													comment
-												}
-											}
-										)
-									);
+									this.setState({
+										comment
+									});
 								}}
-								value={this.state.file.comment}
+								value={this.state.comment}
 							/>
 						</div>
 					</div>
