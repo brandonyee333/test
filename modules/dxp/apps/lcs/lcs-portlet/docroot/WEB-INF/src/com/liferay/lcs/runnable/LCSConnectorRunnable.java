@@ -14,13 +14,12 @@
 
 package com.liferay.lcs.runnable;
 
-import com.liferay.lcs.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.exception.InvalidLCSClusterEntryTokenException;
 import com.liferay.lcs.exception.LCSHandshakeException;
 import com.liferay.lcs.oauth.OAuthUtil;
 import com.liferay.lcs.rest.commons.LCSRESTError;
-import com.liferay.lcs.util.LCSConnectionManager;
+import com.liferay.lcs.task.scheduler.TaskSchedulerService;
 import com.liferay.lcs.util.LCSUtil;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 import com.liferay.portal.kernel.log.Log;
@@ -50,8 +49,6 @@ public class LCSConnectorRunnable implements Runnable {
 
 		LCSUtil.processLCSPortletState(LCSPortletState.NOT_REGISTERED);
 
-		_lcsAlertAdvisor.clear();
-
 		while (!_stop) {
 			try {
 				Future<?> future = _activateLCS();
@@ -60,19 +57,19 @@ public class LCSConnectorRunnable implements Runnable {
 
 				break;
 			}
-			catch (Exception e) {
+			catch (Throwable throwable) {
 				if (_log.isDebugEnabled()) {
-					_log.debug(e.getMessage(), e);
+					_log.debug(throwable.getMessage(), throwable);
 				}
 				else {
 					if (_log.isWarnEnabled() &&
-						Validator.isNotNull(e.getMessage())) {
+						Validator.isNotNull(throwable.getMessage())) {
 
 						LCSRESTError lcsRESTError = LCSRESTError.getRESTError(
-							e.getMessage());
+							throwable.getMessage());
 
 						if (lcsRESTError == LCSRESTError.UNDEFINED) {
-							_log.warn(e.getMessage());
+							_log.warn(throwable.getMessage());
 						}
 						else {
 							_log.warn(lcsRESTError.getErrorDescription());
@@ -80,11 +77,15 @@ public class LCSConnectorRunnable implements Runnable {
 					}
 				}
 
-				if (e instanceof LCSHandshakeException) {
-					_lcsClusterEntryTokenAdvisor.checkLCSClusterEntryTokenError(
-						(LCSHandshakeException)e);
+				if (throwable.getCause() instanceof LCSHandshakeException) {
+					throwable = throwable.getCause();
 				}
-				else if (OAuthUtil.hasOAuthTokenRejectedException(e)) {
+
+				if (throwable instanceof LCSHandshakeException) {
+					_lcsClusterEntryTokenAdvisor.checkLCSClusterEntryTokenError(
+						(LCSHandshakeException)throwable);
+				}
+				else if (OAuthUtil.hasOAuthTokenRejectedException(throwable)) {
 					LCSUtil.processLCSPortletState(
 						LCSPortletState.NO_CONNECTION);
 
@@ -92,29 +93,32 @@ public class LCSConnectorRunnable implements Runnable {
 						_log.warn("A new OAuth token is required");
 					}
 				}
+				else {
+					_log.error(
+						"Current thread will be terminated because unable to " +
+							"recover from error. Please report error to " +
+								"support.",
+						throwable);
 
-				if (_log.isInfoEnabled()) {
-					_log.info("LCS portlet is not connected");
-				}
-
-				try {
-					if (_log.isInfoEnabled()) {
-						_log.info("Retry in 60 seconds");
-					}
-
-					Thread.sleep(60000);
-				}
-				catch (InterruptedException ie) {
-					if (_log.isWarnEnabled()) {
-						_log.warn("Interrupted while waiting for connection");
-					}
+					stop();
 				}
 			}
-			catch (Throwable throwable) {
-				_log.error(
-					"Current thread will be terminated because unable to " +
-						"recover from error. Please report error to support.",
-					throwable);
+
+			if (_log.isInfoEnabled()) {
+				_log.info("LCS portlet is not connected");
+			}
+
+			try {
+				if (_log.isInfoEnabled()) {
+					_log.info("Retry in 60 seconds");
+				}
+
+				Thread.sleep(60000);
+			}
+			catch (InterruptedException ie) {
+				if (_log.isWarnEnabled()) {
+					_log.warn("Interrupted while waiting for connection");
+				}
 
 				stop();
 			}
@@ -125,20 +129,16 @@ public class LCSConnectorRunnable implements Runnable {
 		}
 	}
 
-	public void setLCSAlertAdvisor(LCSAlertAdvisor lcsAlertAdvisor) {
-		_lcsAlertAdvisor = lcsAlertAdvisor;
-	}
-
 	public void setLCSClusterEntryTokenAdvisor(
 		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor) {
 
 		_lcsClusterEntryTokenAdvisor = lcsClusterEntryTokenAdvisor;
 	}
 
-	public void setLCSConnectionManager(
-		LCSConnectionManager lcsConnectionManager) {
+	public void setTaskSchedulerService(
+		TaskSchedulerService taskSchedulerService) {
 
-		_lcsConnectionManager = lcsConnectionManager;
+		_taskSchedulerService = taskSchedulerService;
 	}
 
 	public void stop() {
@@ -177,7 +177,7 @@ public class LCSConnectorRunnable implements Runnable {
 
 		LCSUtil.processLCSPortletState(LCSPortletState.NO_CONNECTION);
 
-		return _lcsConnectionManager.start();
+		return _taskSchedulerService.submitHandshakeTask();
 	}
 
 	private void _delayRun() {
@@ -203,9 +203,8 @@ public class LCSConnectorRunnable implements Runnable {
 		LCSConnectorRunnable.class);
 
 	private final boolean _delayRun;
-	private LCSAlertAdvisor _lcsAlertAdvisor;
 	private LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
-	private LCSConnectionManager _lcsConnectionManager;
 	private boolean _stop;
+	private TaskSchedulerService _taskSchedulerService;
 
 }
