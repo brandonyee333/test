@@ -15,6 +15,8 @@
 --%>
 
 <%
+BeanLocator beanLocator = PortletBeanLocatorUtil.getBeanLocator("lcs-portlet");
+
 String lcsClusterEntryLayoutURL = StringPool.BLANK;
 String lcsClusterNodeLayoutURL = StringPool.BLANK;
 String lcsProjectLayoutURL = StringPool.BLANK;
@@ -76,7 +78,9 @@ catch (Exception e) {
 		</c:if>
 
 		<%
-		boolean ready = LCSConnectionManagerUtil.isReady();
+			LCSGatewayService lcsGatewayService = (LCSGatewayService)beanLocator.locate("com.liferay.lcs.service.LCSGatewayService");
+
+			boolean ready = lcsGatewayService.isAvailable();
 
 		String connectionStatusCSSClass = "alert-success";
 		String connectionStatusLabel = "connected";
@@ -86,9 +90,7 @@ catch (Exception e) {
 			connectionStatusLabel = "disconnected";
 		}
 
-		Map<String, String> lcsConnectionMetadata = LCSConnectionManagerUtil.getLCSConnectionMetadata();
-
-		String handshakeTime = lcsConnectionMetadata.get("handshakeTime");
+		long lastHandshakeSuccess = lcsGatewayService.getLastHandshakeSuccess();
 		%>
 
 		<div class="alert alert-connection <%= connectionStatusCSSClass %>" id="<portlet:namespace />connectionStatus">
@@ -97,7 +99,7 @@ catch (Exception e) {
 			</strong>
 		</div>
 
-		<div class="alert alert-danger lcs-alert <%= LCSConnectionManagerUtil.isLCSGatewayAvailable() ? "hide" : StringPool.BLANK %>" id="<portlet:namespace />lcsGatewayUnavailable">
+		<div class="alert alert-danger lcs-alert <%= ready ? "hide" : StringPool.BLANK %>" id="<portlet:namespace />lcsGatewayUnavailable">
 			<liferay-ui:message key="unable-to-access-liferay-connected-services-gateway" />
 		</div>
 
@@ -116,10 +118,10 @@ catch (Exception e) {
 					<aui:col width="<%= 50 %>">
 						<div id="<portlet:namespace />duration">
 							<c:choose>
-								<c:when test="<%= ready && (handshakeTime != null) %>">
+								<c:when test="<%= ready && (lastHandshakeSuccess != 0) %>">
 
 									<%
-									Date handshakeTimeDate = new Date(System.currentTimeMillis() - GetterUtil.getLong(handshakeTime));
+									Date handshakeTimeDate = new Date(System.currentTimeMillis() - GetterUtil.getLong(lastHandshakeSuccess));
 									%>
 
 									<%= intervalDateFormatDate.format(handshakeTimeDate) %>
@@ -141,10 +143,10 @@ catch (Exception e) {
 					</aui:col>
 
 					<aui:col width="<%= 50 %>">
-						<c:if test='<%= lcsConnectionMetadata.get("messageTaskTime") != null %>'>
+						<c:if test="<%= lcsGatewayService.getLastMessageReceived() != 0 %>">
 
 							<%
-							Date messageTaskTimeDate = new Date(GetterUtil.getLong(lcsConnectionMetadata.get("messageTaskTime")));
+							Date messageTaskTimeDate = new Date(lcsGatewayService.getLastMessageReceived());
 							%>
 
 							<%= dateFormatDate.format(messageTaskTimeDate) %>
@@ -160,8 +162,6 @@ catch (Exception e) {
 			</li>
 
 			<%
-			BeanLocator beanLocator = PortletBeanLocatorUtil.getBeanLocator("lcs-portlet");
-
 			TaskAdvisor taskAdvisor = (TaskAdvisor)beanLocator.locate("com.liferay.lcs.task.advisor.TaskAdvisor");
 
 			Set<String> activeServiceLabels = taskAdvisor.getActiveServiceLabels();
@@ -318,7 +318,7 @@ catch (Exception e) {
 			lcsPortlet.initializeConnectionPage(
 				{
 					connectionStatusURL: '<portlet:resourceURL id="serveConnectionStatus" />',
-					handshakeTime: <%= handshakeTime %>,
+					handshakeTime: <%= lastHandshakeSuccess %>,
 					labels: {
 						connected: '<%= UnicodeLanguageUtil.get(request, "connected") %>',
 						disconnected: '<%= UnicodeLanguageUtil.get(request, "disconnected") %>',
