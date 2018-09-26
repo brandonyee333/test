@@ -59,6 +59,12 @@ public class AccountEntryServiceUtil {
 		return getService().getAccountEntryByCode(code);
 	}
 
+	public static com.liferay.osb.model.AccountEntry getCorpProjectAccountEntry(
+		java.lang.String corpProjectUuid)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getCorpProjectAccountEntry(corpProjectUuid);
+	}
+
 	public static com.liferay.osb.model.AccountEntry updateInstructions(
 		long accountEntryId, java.lang.String instructions)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -104,6 +110,12 @@ public class AccountEntryServiceUtil {
 	*/
 	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static java.util.List<com.liferay.osb.model.AccountEntry> getAccountEntries(
+		java.lang.String userUuid, long[] productEntryIds)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getAccountEntries(userUuid, productEntryIds);
 	}
 
 	public static java.util.List<com.liferay.osb.model.AccountEntry> getSecurityPatchAccountEntries(

@@ -92,6 +92,7 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("corpProjectUuid", getCorpProjectUuid());
 		attributes.put("corpProjectId", getCorpProjectId());
+		attributes.put("dossieraAccountKey", getDossieraAccountKey());
 		attributes.put("corpEntryName", getCorpEntryName());
 		attributes.put("name", getName());
 		attributes.put("code", getCode());
@@ -179,6 +180,12 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 
 		if (corpProjectId != null) {
 			setCorpProjectId(corpProjectId);
+		}
+
+		String dossieraAccountKey = (String)attributes.get("dossieraAccountKey");
+
+		if (dossieraAccountKey != null) {
+			setDossieraAccountKey(dossieraAccountKey);
 		}
 
 		String corpEntryName = (String)attributes.get("corpEntryName");
@@ -565,6 +572,30 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 				Method method = clazz.getMethod("setCorpProjectId", long.class);
 
 				method.invoke(_accountEntryRemoteModel, corpProjectId);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
+	public String getDossieraAccountKey() {
+		return _dossieraAccountKey;
+	}
+
+	@Override
+	public void setDossieraAccountKey(String dossieraAccountKey) {
+		_dossieraAccountKey = dossieraAccountKey;
+
+		if (_accountEntryRemoteModel != null) {
+			try {
+				Class<?> clazz = _accountEntryRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setDossieraAccountKey",
+						String.class);
+
+				method.invoke(_accountEntryRemoteModel, dossieraAccountKey);
 			}
 			catch (Exception e) {
 				throw new UnsupportedOperationException(e);
@@ -1571,6 +1602,7 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 		clone.setModifiedDate(getModifiedDate());
 		clone.setCorpProjectUuid(getCorpProjectUuid());
 		clone.setCorpProjectId(getCorpProjectId());
+		clone.setDossieraAccountKey(getDossieraAccountKey());
 		clone.setCorpEntryName(getCorpEntryName());
 		clone.setName(getName());
 		clone.setCode(getCode());
@@ -1651,7 +1683,7 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(61);
+		StringBundler sb = new StringBundler(63);
 
 		sb.append("{accountEntryId=");
 		sb.append(getAccountEntryId());
@@ -1673,6 +1705,8 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 		sb.append(getCorpProjectUuid());
 		sb.append(", corpProjectId=");
 		sb.append(getCorpProjectId());
+		sb.append(", dossieraAccountKey=");
+		sb.append(getDossieraAccountKey());
 		sb.append(", corpEntryName=");
 		sb.append(getCorpEntryName());
 		sb.append(", name=");
@@ -1720,7 +1754,7 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(94);
+		StringBundler sb = new StringBundler(97);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.AccountEntry");
@@ -1765,6 +1799,10 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 		sb.append(
 			"<column><column-name>corpProjectId</column-name><column-value><![CDATA[");
 		sb.append(getCorpProjectId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>dossieraAccountKey</column-name><column-value><![CDATA[");
+		sb.append(getDossieraAccountKey());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>corpEntryName</column-name><column-value><![CDATA[");
@@ -1862,6 +1900,7 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 	private Date _modifiedDate;
 	private String _corpProjectUuid;
 	private long _corpProjectId;
+	private String _dossieraAccountKey;
 	private String _corpEntryName;
 	private String _name;
 	private String _code;

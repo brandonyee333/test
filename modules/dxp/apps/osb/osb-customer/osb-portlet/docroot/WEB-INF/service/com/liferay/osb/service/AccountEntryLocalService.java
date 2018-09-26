@@ -44,6 +44,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -92,15 +93,15 @@ public interface AccountEntryLocalService extends BaseLocalService,
 	public AccountEntry addAccountEntry(AccountEntry accountEntry);
 
 	public AccountEntry addAccountEntry(long userId,
-		java.lang.String corpProjectUuid, java.lang.String corpEntryName,
-		java.lang.String name, java.lang.String code, int type, int industry,
-		long partnerEntryId, boolean partnerManagedSupport, int tier,
-		int maxCustomers, java.lang.String instructions,
-		java.lang.String notes, java.lang.String[] languageIds,
-		long[] supportRegionIds, java.lang.String street1,
-		java.lang.String street2, java.lang.String street3,
-		java.lang.String city, java.lang.String zip, long regionId,
-		long countryId, java.lang.String ewsaDossieraProjectKey)
+		java.lang.String corpProjectUuid, java.lang.String dossieraAccountKey,
+		java.lang.String corpEntryName, java.lang.String name,
+		java.lang.String code, int type, int industry, long partnerEntryId,
+		boolean partnerManagedSupport, int tier, int maxCustomers,
+		java.lang.String instructions, java.lang.String notes,
+		java.lang.String[] languageIds, long[] supportRegionIds,
+		java.lang.String street1, java.lang.String street2,
+		java.lang.String street3, java.lang.String city, java.lang.String zip,
+		long regionId, long countryId, java.lang.String ewsaDossieraProjectKey)
 		throws PortalException;
 
 	public AccountEntry addAccountEntryWithWorkflow(
@@ -142,6 +143,10 @@ public interface AccountEntryLocalService extends BaseLocalService,
 	public AccountEntry fetchAccountEntry(long accountEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountEntry fetchAnalyticsCloudBasicAccountEntry(
+		java.lang.String dossieraAccountKey);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AccountEntry fetchCorpProjectAccountEntry(
 		java.lang.String corpProjectUuid);
 
@@ -170,6 +175,10 @@ public interface AccountEntryLocalService extends BaseLocalService,
 	public AccountEntry getAccountEntryByName(java.lang.String name)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountEntry getCorpProjectAccountEntry(long corpProjectId)
+		throws PortalException;
+
 	/**
 	* Updates the account entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -180,15 +189,15 @@ public interface AccountEntryLocalService extends BaseLocalService,
 	public AccountEntry updateAccountEntry(AccountEntry accountEntry);
 
 	public AccountEntry updateAccountEntry(long userId, long accountEntryId,
-		java.lang.String corpProjectUuid, java.lang.String corpEntryName,
-		java.lang.String name, java.lang.String code, int type, int industry,
-		long partnerEntryId, boolean partnerManagedSupport, int tier,
-		int maxCustomers, java.lang.String instructions,
-		java.lang.String notes, java.lang.String[] languageIds,
-		long[] supportRegionIds, long addressId, java.lang.String street1,
-		java.lang.String street2, java.lang.String street3,
-		java.lang.String city, java.lang.String zip, long regionId,
-		long countryId, java.lang.String ewsaDossieraProjectKey)
+		java.lang.String corpProjectUuid, java.lang.String dossieraAccountKey,
+		java.lang.String corpEntryName, java.lang.String name,
+		java.lang.String code, int type, int industry, long partnerEntryId,
+		boolean partnerManagedSupport, int tier, int maxCustomers,
+		java.lang.String instructions, java.lang.String notes,
+		java.lang.String[] languageIds, long[] supportRegionIds,
+		long addressId, java.lang.String street1, java.lang.String street2,
+		java.lang.String street3, java.lang.String city, java.lang.String zip,
+		long regionId, long countryId, java.lang.String ewsaDossieraProjectKey)
 		throws PortalException;
 
 	public AccountEntry updateInstructions(long userId, long accountEntryId,
@@ -329,6 +338,14 @@ public interface AccountEntryLocalService extends BaseLocalService,
 		int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountEntry> getAccountEntries(
+		java.lang.String dossieraAccountKey);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountEntry> getAccountEntries(
+		java.lang.String dossieraAccountKey, int type);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountEntry> getActiveAccountEntries(int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -419,6 +436,10 @@ public interface AccountEntryLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public long[] getSupportRegionPrimaryKeys(long accountEntryId);
 
+	public void addAnalyticsCloudBasicAccountEntry(
+		java.lang.String dossieraAccountKey, java.lang.String corpEntryName,
+		Date supportEndDate) throws PortalException;
+
 	public void addSupportRegionAccountEntries(long supportRegionId,
 		List<AccountEntry> accountEntries);
 
@@ -435,6 +456,9 @@ public interface AccountEntryLocalService extends BaseLocalService,
 
 	public void addWorkflowTask(java.lang.String salesforceOpportunityKey,
 		AccountEntry accountEntry, ServiceContext serviceContext)
+		throws PortalException;
+
+	public void assignOwnership(java.lang.String corpProjectUuid, long userId)
 		throws PortalException;
 
 	public void auditAccountEntries() throws PortalException;

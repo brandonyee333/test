@@ -170,22 +170,31 @@ public class OfferingEntryLocalServiceClp implements OfferingEntryLocalService {
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName29 = "dynamicQueryCount";
+		_methodName29 = "search";
 
 		_methodParameterTypes29 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
+				"long", "long", "long[][]", "int[][]", "int[][]",
+				"java.util.Date", "java.util.Date", "java.util.LinkedHashMap",
+				"boolean", "int", "int",
+				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
 		_methodName30 = "dynamicQueryCount";
 
 		_methodParameterTypes30 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
+			};
+
+		_methodName31 = "dynamicQueryCount";
+
+		_methodParameterTypes31 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery",
 				"com.liferay.portal.kernel.dao.orm.Projection"
 			};
 
-		_methodName31 = "checkOfferingEntries";
+		_methodName32 = "checkOfferingEntries";
 
-		_methodParameterTypes31 = new String[] {  };
+		_methodParameterTypes32 = new String[] {  };
 	}
 
 	@Override
@@ -1071,13 +1080,67 @@ public class OfferingEntryLocalServiceClp implements OfferingEntryLocalService {
 	}
 
 	@Override
-	public long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+	public java.util.List<com.liferay.osb.model.OfferingEntry> search(
+		long userId, long accountEntryId, long[] productEntryIds, int[] types,
+		int[] statuses, java.util.Date supportEndDateGT,
+		java.util.Date supportEndDateLT,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andSearch, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator obc) {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName29,
 					_methodParameterTypes29,
+					new Object[] {
+						userId,
+						
+					accountEntryId,
+						
+					ClpSerializer.translateInput(productEntryIds),
+						
+					ClpSerializer.translateInput(types),
+						
+					ClpSerializer.translateInput(statuses),
+						
+					ClpSerializer.translateInput(supportEndDateGT),
+						
+					ClpSerializer.translateInput(supportEndDateLT),
+						
+					ClpSerializer.translateInput(params),
+						
+					andSearch,
+						
+					start,
+						
+					end,
+						
+					ClpSerializer.translateInput(obc)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<com.liferay.osb.model.OfferingEntry>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName30,
+					_methodParameterTypes30,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -1102,8 +1165,8 @@ public class OfferingEntryLocalServiceClp implements OfferingEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName30,
-					_methodParameterTypes30,
+			returnObj = _invokableLocalService.invokeMethod(_methodName31,
+					_methodParameterTypes31,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -1128,8 +1191,8 @@ public class OfferingEntryLocalServiceClp implements OfferingEntryLocalService {
 	@Override
 	public void checkOfferingEntries() throws java.lang.Exception {
 		try {
-			_invokableLocalService.invokeMethod(_methodName31,
-				_methodParameterTypes31, new Object[] {  });
+			_invokableLocalService.invokeMethod(_methodName32,
+				_methodParameterTypes32, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1211,4 +1274,6 @@ public class OfferingEntryLocalServiceClp implements OfferingEntryLocalService {
 	private String[] _methodParameterTypes30;
 	private String _methodName31;
 	private String[] _methodParameterTypes31;
+	private String _methodName32;
+	private String[] _methodParameterTypes32;
 }

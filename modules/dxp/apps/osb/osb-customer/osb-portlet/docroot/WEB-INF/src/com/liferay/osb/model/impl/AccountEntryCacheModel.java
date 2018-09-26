@@ -66,7 +66,7 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(61);
+		StringBundler sb = new StringBundler(63);
 
 		sb.append("{accountEntryId=");
 		sb.append(accountEntryId);
@@ -88,6 +88,8 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 		sb.append(corpProjectUuid);
 		sb.append(", corpProjectId=");
 		sb.append(corpProjectId);
+		sb.append(", dossieraAccountKey=");
+		sb.append(dossieraAccountKey);
 		sb.append(", corpEntryName=");
 		sb.append(corpEntryName);
 		sb.append(", name=");
@@ -179,6 +181,13 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 		}
 
 		accountEntryImpl.setCorpProjectId(corpProjectId);
+
+		if (dossieraAccountKey == null) {
+			accountEntryImpl.setDossieraAccountKey(StringPool.BLANK);
+		}
+		else {
+			accountEntryImpl.setDossieraAccountKey(dossieraAccountKey);
+		}
 
 		if (corpEntryName == null) {
 			accountEntryImpl.setCorpEntryName(StringPool.BLANK);
@@ -278,6 +287,7 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 		corpProjectUuid = objectInput.readUTF();
 
 		corpProjectId = objectInput.readLong();
+		dossieraAccountKey = objectInput.readUTF();
 		corpEntryName = objectInput.readUTF();
 		name = objectInput.readUTF();
 		code = objectInput.readUTF();
@@ -348,6 +358,13 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 		}
 
 		objectOutput.writeLong(corpProjectId);
+
+		if (dossieraAccountKey == null) {
+			objectOutput.writeUTF(StringPool.BLANK);
+		}
+		else {
+			objectOutput.writeUTF(dossieraAccountKey);
+		}
 
 		if (corpEntryName == null) {
 			objectOutput.writeUTF(StringPool.BLANK);
@@ -434,6 +451,7 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 	public long modifiedDate;
 	public String corpProjectUuid;
 	public long corpProjectId;
+	public String dossieraAccountKey;
 	public String corpEntryName;
 	public String name;
 	public String code;

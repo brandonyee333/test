@@ -23,13 +23,13 @@ import aQute.bnd.annotation.ProviderType;
 @ProviderType
 public interface OfferingEntryFinder {
 	public int countByU_AEI_PEI_T_S_SED(long userId, long accountEntryId,
-		long productEntryId, int[] types, int[] statuses,
+		long[] productEntryIds, int[] types, int[] statuses,
 		java.util.Date supportEndDateGT, java.util.Date supportEndDateLT,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator);
 
 	public java.util.List<com.liferay.osb.model.OfferingEntry> findByU_AEI_PEI_T_S_SED(
-		long userId, long accountEntryId, long productEntryId, int[] types,
+		long userId, long accountEntryId, long[] productEntryIds, int[] types,
 		int[] statuses, java.util.Date supportEndDateGT,
 		java.util.Date supportEndDateLT,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,

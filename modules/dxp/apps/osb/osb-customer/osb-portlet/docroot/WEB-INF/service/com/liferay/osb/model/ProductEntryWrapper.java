@@ -144,6 +144,16 @@ public class ProductEntryWrapper implements ProductEntry,
 	}
 
 	@Override
+	public boolean isAnalyticsCloudBusiness() {
+		return _productEntry.isAnalyticsCloudBusiness();
+	}
+
+	@Override
+	public boolean isAnalyticsCloudEnterprise() {
+		return _productEntry.isAnalyticsCloudEnterprise();
+	}
+
+	@Override
 	public boolean isCachedModel() {
 		return _productEntry.isCachedModel();
 	}

@@ -225,6 +225,182 @@ public class AccountEntryUtil {
 	}
 
 	/**
+	* Returns all the account entries where dossieraAccountKey = &#63;.
+	*
+	* @param dossieraAccountKey the dossiera account key
+	* @return the matching account entries
+	*/
+	public static List<AccountEntry> findByDossieraAccountKey(
+		java.lang.String dossieraAccountKey) {
+		return getPersistence().findByDossieraAccountKey(dossieraAccountKey);
+	}
+
+	/**
+	* Returns a range of all the account entries where dossieraAccountKey = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param dossieraAccountKey the dossiera account key
+	* @param start the lower bound of the range of account entries
+	* @param end the upper bound of the range of account entries (not inclusive)
+	* @return the range of matching account entries
+	*/
+	public static List<AccountEntry> findByDossieraAccountKey(
+		java.lang.String dossieraAccountKey, int start, int end) {
+		return getPersistence()
+				   .findByDossieraAccountKey(dossieraAccountKey, start, end);
+	}
+
+	/**
+	* Returns an ordered range of all the account entries where dossieraAccountKey = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param dossieraAccountKey the dossiera account key
+	* @param start the lower bound of the range of account entries
+	* @param end the upper bound of the range of account entries (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching account entries
+	*/
+	public static List<AccountEntry> findByDossieraAccountKey(
+		java.lang.String dossieraAccountKey, int start, int end,
+		OrderByComparator<AccountEntry> orderByComparator) {
+		return getPersistence()
+				   .findByDossieraAccountKey(dossieraAccountKey, start, end,
+			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the account entries where dossieraAccountKey = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param dossieraAccountKey the dossiera account key
+	* @param start the lower bound of the range of account entries
+	* @param end the upper bound of the range of account entries (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the ordered range of matching account entries
+	*/
+	public static List<AccountEntry> findByDossieraAccountKey(
+		java.lang.String dossieraAccountKey, int start, int end,
+		OrderByComparator<AccountEntry> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByDossieraAccountKey(dossieraAccountKey, start, end,
+			orderByComparator, retrieveFromCache);
+	}
+
+	/**
+	* Returns the first account entry in the ordered set where dossieraAccountKey = &#63;.
+	*
+	* @param dossieraAccountKey the dossiera account key
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching account entry
+	* @throws NoSuchAccountEntryException if a matching account entry could not be found
+	*/
+	public static AccountEntry findByDossieraAccountKey_First(
+		java.lang.String dossieraAccountKey,
+		OrderByComparator<AccountEntry> orderByComparator)
+		throws com.liferay.osb.exception.NoSuchAccountEntryException {
+		return getPersistence()
+				   .findByDossieraAccountKey_First(dossieraAccountKey,
+			orderByComparator);
+	}
+
+	/**
+	* Returns the first account entry in the ordered set where dossieraAccountKey = &#63;.
+	*
+	* @param dossieraAccountKey the dossiera account key
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching account entry, or <code>null</code> if a matching account entry could not be found
+	*/
+	public static AccountEntry fetchByDossieraAccountKey_First(
+		java.lang.String dossieraAccountKey,
+		OrderByComparator<AccountEntry> orderByComparator) {
+		return getPersistence()
+				   .fetchByDossieraAccountKey_First(dossieraAccountKey,
+			orderByComparator);
+	}
+
+	/**
+	* Returns the last account entry in the ordered set where dossieraAccountKey = &#63;.
+	*
+	* @param dossieraAccountKey the dossiera account key
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching account entry
+	* @throws NoSuchAccountEntryException if a matching account entry could not be found
+	*/
+	public static AccountEntry findByDossieraAccountKey_Last(
+		java.lang.String dossieraAccountKey,
+		OrderByComparator<AccountEntry> orderByComparator)
+		throws com.liferay.osb.exception.NoSuchAccountEntryException {
+		return getPersistence()
+				   .findByDossieraAccountKey_Last(dossieraAccountKey,
+			orderByComparator);
+	}
+
+	/**
+	* Returns the last account entry in the ordered set where dossieraAccountKey = &#63;.
+	*
+	* @param dossieraAccountKey the dossiera account key
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching account entry, or <code>null</code> if a matching account entry could not be found
+	*/
+	public static AccountEntry fetchByDossieraAccountKey_Last(
+		java.lang.String dossieraAccountKey,
+		OrderByComparator<AccountEntry> orderByComparator) {
+		return getPersistence()
+				   .fetchByDossieraAccountKey_Last(dossieraAccountKey,
+			orderByComparator);
+	}
+
+	/**
+	* Returns the account entries before and after the current account entry in the ordered set where dossieraAccountKey = &#63;.
+	*
+	* @param accountEntryId the primary key of the current account entry
+	* @param dossieraAccountKey the dossiera account key
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next account entry
+	* @throws NoSuchAccountEntryException if a account entry with the primary key could not be found
+	*/
+	public static AccountEntry[] findByDossieraAccountKey_PrevAndNext(
+		long accountEntryId, java.lang.String dossieraAccountKey,
+		OrderByComparator<AccountEntry> orderByComparator)
+		throws com.liferay.osb.exception.NoSuchAccountEntryException {
+		return getPersistence()
+				   .findByDossieraAccountKey_PrevAndNext(accountEntryId,
+			dossieraAccountKey, orderByComparator);
+	}
+
+	/**
+	* Removes all the account entries where dossieraAccountKey = &#63; from the database.
+	*
+	* @param dossieraAccountKey the dossiera account key
+	*/
+	public static void removeByDossieraAccountKey(
+		java.lang.String dossieraAccountKey) {
+		getPersistence().removeByDossieraAccountKey(dossieraAccountKey);
+	}
+
+	/**
+	* Returns the number of account entries where dossieraAccountKey = &#63;.
+	*
+	* @param dossieraAccountKey the dossiera account key
+	* @return the number of matching account entries
+	*/
+	public static int countByDossieraAccountKey(
+		java.lang.String dossieraAccountKey) {
+		return getPersistence().countByDossieraAccountKey(dossieraAccountKey);
+	}
+
+	/**
 	* Returns all the account entries where name = &#63;.
 	*
 	* @param name the name
@@ -940,6 +1116,190 @@ public class AccountEntryUtil {
 	*/
 	public static int countByU_T(long userId, int type) {
 		return getPersistence().countByU_T(userId, type);
+	}
+
+	/**
+	* Returns all the account entries where dossieraAccountKey = &#63; and type = &#63;.
+	*
+	* @param dossieraAccountKey the dossiera account key
+	* @param type the type
+	* @return the matching account entries
+	*/
+	public static List<AccountEntry> findByDAK_T(
+		java.lang.String dossieraAccountKey, int type) {
+		return getPersistence().findByDAK_T(dossieraAccountKey, type);
+	}
+
+	/**
+	* Returns a range of all the account entries where dossieraAccountKey = &#63; and type = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param dossieraAccountKey the dossiera account key
+	* @param type the type
+	* @param start the lower bound of the range of account entries
+	* @param end the upper bound of the range of account entries (not inclusive)
+	* @return the range of matching account entries
+	*/
+	public static List<AccountEntry> findByDAK_T(
+		java.lang.String dossieraAccountKey, int type, int start, int end) {
+		return getPersistence().findByDAK_T(dossieraAccountKey, type, start, end);
+	}
+
+	/**
+	* Returns an ordered range of all the account entries where dossieraAccountKey = &#63; and type = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param dossieraAccountKey the dossiera account key
+	* @param type the type
+	* @param start the lower bound of the range of account entries
+	* @param end the upper bound of the range of account entries (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching account entries
+	*/
+	public static List<AccountEntry> findByDAK_T(
+		java.lang.String dossieraAccountKey, int type, int start, int end,
+		OrderByComparator<AccountEntry> orderByComparator) {
+		return getPersistence()
+				   .findByDAK_T(dossieraAccountKey, type, start, end,
+			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the account entries where dossieraAccountKey = &#63; and type = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param dossieraAccountKey the dossiera account key
+	* @param type the type
+	* @param start the lower bound of the range of account entries
+	* @param end the upper bound of the range of account entries (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the ordered range of matching account entries
+	*/
+	public static List<AccountEntry> findByDAK_T(
+		java.lang.String dossieraAccountKey, int type, int start, int end,
+		OrderByComparator<AccountEntry> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByDAK_T(dossieraAccountKey, type, start, end,
+			orderByComparator, retrieveFromCache);
+	}
+
+	/**
+	* Returns the first account entry in the ordered set where dossieraAccountKey = &#63; and type = &#63;.
+	*
+	* @param dossieraAccountKey the dossiera account key
+	* @param type the type
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching account entry
+	* @throws NoSuchAccountEntryException if a matching account entry could not be found
+	*/
+	public static AccountEntry findByDAK_T_First(
+		java.lang.String dossieraAccountKey, int type,
+		OrderByComparator<AccountEntry> orderByComparator)
+		throws com.liferay.osb.exception.NoSuchAccountEntryException {
+		return getPersistence()
+				   .findByDAK_T_First(dossieraAccountKey, type,
+			orderByComparator);
+	}
+
+	/**
+	* Returns the first account entry in the ordered set where dossieraAccountKey = &#63; and type = &#63;.
+	*
+	* @param dossieraAccountKey the dossiera account key
+	* @param type the type
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching account entry, or <code>null</code> if a matching account entry could not be found
+	*/
+	public static AccountEntry fetchByDAK_T_First(
+		java.lang.String dossieraAccountKey, int type,
+		OrderByComparator<AccountEntry> orderByComparator) {
+		return getPersistence()
+				   .fetchByDAK_T_First(dossieraAccountKey, type,
+			orderByComparator);
+	}
+
+	/**
+	* Returns the last account entry in the ordered set where dossieraAccountKey = &#63; and type = &#63;.
+	*
+	* @param dossieraAccountKey the dossiera account key
+	* @param type the type
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching account entry
+	* @throws NoSuchAccountEntryException if a matching account entry could not be found
+	*/
+	public static AccountEntry findByDAK_T_Last(
+		java.lang.String dossieraAccountKey, int type,
+		OrderByComparator<AccountEntry> orderByComparator)
+		throws com.liferay.osb.exception.NoSuchAccountEntryException {
+		return getPersistence()
+				   .findByDAK_T_Last(dossieraAccountKey, type, orderByComparator);
+	}
+
+	/**
+	* Returns the last account entry in the ordered set where dossieraAccountKey = &#63; and type = &#63;.
+	*
+	* @param dossieraAccountKey the dossiera account key
+	* @param type the type
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching account entry, or <code>null</code> if a matching account entry could not be found
+	*/
+	public static AccountEntry fetchByDAK_T_Last(
+		java.lang.String dossieraAccountKey, int type,
+		OrderByComparator<AccountEntry> orderByComparator) {
+		return getPersistence()
+				   .fetchByDAK_T_Last(dossieraAccountKey, type,
+			orderByComparator);
+	}
+
+	/**
+	* Returns the account entries before and after the current account entry in the ordered set where dossieraAccountKey = &#63; and type = &#63;.
+	*
+	* @param accountEntryId the primary key of the current account entry
+	* @param dossieraAccountKey the dossiera account key
+	* @param type the type
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next account entry
+	* @throws NoSuchAccountEntryException if a account entry with the primary key could not be found
+	*/
+	public static AccountEntry[] findByDAK_T_PrevAndNext(long accountEntryId,
+		java.lang.String dossieraAccountKey, int type,
+		OrderByComparator<AccountEntry> orderByComparator)
+		throws com.liferay.osb.exception.NoSuchAccountEntryException {
+		return getPersistence()
+				   .findByDAK_T_PrevAndNext(accountEntryId, dossieraAccountKey,
+			type, orderByComparator);
+	}
+
+	/**
+	* Removes all the account entries where dossieraAccountKey = &#63; and type = &#63; from the database.
+	*
+	* @param dossieraAccountKey the dossiera account key
+	* @param type the type
+	*/
+	public static void removeByDAK_T(java.lang.String dossieraAccountKey,
+		int type) {
+		getPersistence().removeByDAK_T(dossieraAccountKey, type);
+	}
+
+	/**
+	* Returns the number of account entries where dossieraAccountKey = &#63; and type = &#63;.
+	*
+	* @param dossieraAccountKey the dossiera account key
+	* @param type the type
+	* @return the number of matching account entries
+	*/
+	public static int countByDAK_T(java.lang.String dossieraAccountKey, int type) {
+		return getPersistence().countByDAK_T(dossieraAccountKey, type);
 	}
 
 	/**

@@ -168,9 +168,13 @@ public class CorpProjectLocalServiceClpInvoker {
 
 		_methodParameterTypes190 = new String[] { "java.lang.String" };
 
-		_methodName191 = "updateCorpProject";
+		_methodName191 = "hasUserCorpProjectRole";
 
-		_methodParameterTypes191 = new String[] {
+		_methodParameterTypes191 = new String[] { "long", "long", "long" };
+
+		_methodName192 = "updateCorpProject";
+
+		_methodParameterTypes192 = new String[] {
 				"long", "java.lang.String",
 				"com.liferay.portal.kernel.service.ServiceContext"
 			};
@@ -334,6 +338,13 @@ public class CorpProjectLocalServiceClpInvoker {
 
 		if (_methodName191.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes191, parameterTypes)) {
+			return CorpProjectLocalServiceUtil.hasUserCorpProjectRole(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				((Long)arguments[2]).longValue());
+		}
+
+		if (_methodName192.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes192, parameterTypes)) {
 			return CorpProjectLocalServiceUtil.updateCorpProject(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1],
 				(com.liferay.portal.kernel.service.ServiceContext)arguments[2]);
@@ -400,4 +411,6 @@ public class CorpProjectLocalServiceClpInvoker {
 	private String[] _methodParameterTypes190;
 	private String _methodName191;
 	private String[] _methodParameterTypes191;
+	private String _methodName192;
+	private String[] _methodParameterTypes192;
 }

@@ -79,6 +79,22 @@ public class AccountEntryServiceSoap {
 		}
 	}
 
+	public static com.liferay.osb.model.AccountEntrySoap[] getAccountEntries(
+		java.lang.String userUuid, long[] productEntryIds)
+		throws RemoteException {
+		try {
+			java.util.List<com.liferay.osb.model.AccountEntry> returnValue = AccountEntryServiceUtil.getAccountEntries(userUuid,
+					productEntryIds);
+
+			return com.liferay.osb.model.AccountEntrySoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
 	public static com.liferay.osb.model.AccountEntrySoap getAccountEntry(
 		long accountEntryId) throws RemoteException {
 		try {
@@ -97,6 +113,20 @@ public class AccountEntryServiceSoap {
 		java.lang.String code) throws RemoteException {
 		try {
 			com.liferay.osb.model.AccountEntry returnValue = AccountEntryServiceUtil.getAccountEntryByCode(code);
+
+			return com.liferay.osb.model.AccountEntrySoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.AccountEntrySoap getCorpProjectAccountEntry(
+		java.lang.String corpProjectUuid) throws RemoteException {
+		try {
+			com.liferay.osb.model.AccountEntry returnValue = AccountEntryServiceUtil.getCorpProjectAccountEntry(corpProjectUuid);
 
 			return com.liferay.osb.model.AccountEntrySoap.toSoapModel(returnValue);
 		}

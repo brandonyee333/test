@@ -72,21 +72,23 @@ public class AccountEntryLocalServiceUtil {
 
 	public static com.liferay.osb.model.AccountEntry addAccountEntry(
 		long userId, java.lang.String corpProjectUuid,
-		java.lang.String corpEntryName, java.lang.String name,
-		java.lang.String code, int type, int industry, long partnerEntryId,
-		boolean partnerManagedSupport, int tier, int maxCustomers,
-		java.lang.String instructions, java.lang.String notes,
-		java.lang.String[] languageIds, long[] supportRegionIds,
-		java.lang.String street1, java.lang.String street2,
-		java.lang.String street3, java.lang.String city, java.lang.String zip,
-		long regionId, long countryId, java.lang.String ewsaDossieraProjectKey)
+		java.lang.String dossieraAccountKey, java.lang.String corpEntryName,
+		java.lang.String name, java.lang.String code, int type, int industry,
+		long partnerEntryId, boolean partnerManagedSupport, int tier,
+		int maxCustomers, java.lang.String instructions,
+		java.lang.String notes, java.lang.String[] languageIds,
+		long[] supportRegionIds, java.lang.String street1,
+		java.lang.String street2, java.lang.String street3,
+		java.lang.String city, java.lang.String zip, long regionId,
+		long countryId, java.lang.String ewsaDossieraProjectKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
-				   .addAccountEntry(userId, corpProjectUuid, corpEntryName,
-			name, code, type, industry, partnerEntryId, partnerManagedSupport,
-			tier, maxCustomers, instructions, notes, languageIds,
-			supportRegionIds, street1, street2, street3, city, zip, regionId,
-			countryId, ewsaDossieraProjectKey);
+				   .addAccountEntry(userId, corpProjectUuid,
+			dossieraAccountKey, corpEntryName, name, code, type, industry,
+			partnerEntryId, partnerManagedSupport, tier, maxCustomers,
+			instructions, notes, languageIds, supportRegionIds, street1,
+			street2, street3, city, zip, regionId, countryId,
+			ewsaDossieraProjectKey);
 	}
 
 	public static com.liferay.osb.model.AccountEntry addAccountEntryWithWorkflow(
@@ -146,6 +148,12 @@ public class AccountEntryLocalServiceUtil {
 		return getService().fetchAccountEntry(accountEntryId);
 	}
 
+	public static com.liferay.osb.model.AccountEntry fetchAnalyticsCloudBasicAccountEntry(
+		java.lang.String dossieraAccountKey) {
+		return getService()
+				   .fetchAnalyticsCloudBasicAccountEntry(dossieraAccountKey);
+	}
+
 	public static com.liferay.osb.model.AccountEntry fetchCorpProjectAccountEntry(
 		java.lang.String corpProjectUuid) {
 		return getService().fetchCorpProjectAccountEntry(corpProjectUuid);
@@ -186,6 +194,12 @@ public class AccountEntryLocalServiceUtil {
 		return getService().getAccountEntryByName(name);
 	}
 
+	public static com.liferay.osb.model.AccountEntry getCorpProjectAccountEntry(
+		long corpProjectId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getCorpProjectAccountEntry(corpProjectId);
+	}
+
 	/**
 	* Updates the account entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -199,21 +213,23 @@ public class AccountEntryLocalServiceUtil {
 
 	public static com.liferay.osb.model.AccountEntry updateAccountEntry(
 		long userId, long accountEntryId, java.lang.String corpProjectUuid,
-		java.lang.String corpEntryName, java.lang.String name,
-		java.lang.String code, int type, int industry, long partnerEntryId,
-		boolean partnerManagedSupport, int tier, int maxCustomers,
-		java.lang.String instructions, java.lang.String notes,
-		java.lang.String[] languageIds, long[] supportRegionIds,
-		long addressId, java.lang.String street1, java.lang.String street2,
-		java.lang.String street3, java.lang.String city, java.lang.String zip,
-		long regionId, long countryId, java.lang.String ewsaDossieraProjectKey)
+		java.lang.String dossieraAccountKey, java.lang.String corpEntryName,
+		java.lang.String name, java.lang.String code, int type, int industry,
+		long partnerEntryId, boolean partnerManagedSupport, int tier,
+		int maxCustomers, java.lang.String instructions,
+		java.lang.String notes, java.lang.String[] languageIds,
+		long[] supportRegionIds, long addressId, java.lang.String street1,
+		java.lang.String street2, java.lang.String street3,
+		java.lang.String city, java.lang.String zip, long regionId,
+		long countryId, java.lang.String ewsaDossieraProjectKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateAccountEntry(userId, accountEntryId, corpProjectUuid,
-			corpEntryName, name, code, type, industry, partnerEntryId,
-			partnerManagedSupport, tier, maxCustomers, instructions, notes,
-			languageIds, supportRegionIds, addressId, street1, street2,
-			street3, city, zip, regionId, countryId, ewsaDossieraProjectKey);
+			dossieraAccountKey, corpEntryName, name, code, type, industry,
+			partnerEntryId, partnerManagedSupport, tier, maxCustomers,
+			instructions, notes, languageIds, supportRegionIds, addressId,
+			street1, street2, street3, city, zip, regionId, countryId,
+			ewsaDossieraProjectKey);
 	}
 
 	public static com.liferay.osb.model.AccountEntry updateInstructions(
@@ -406,6 +422,16 @@ public class AccountEntryLocalServiceUtil {
 		return getService().getAccountEntries(statuses, start, end);
 	}
 
+	public static java.util.List<com.liferay.osb.model.AccountEntry> getAccountEntries(
+		java.lang.String dossieraAccountKey) {
+		return getService().getAccountEntries(dossieraAccountKey);
+	}
+
+	public static java.util.List<com.liferay.osb.model.AccountEntry> getAccountEntries(
+		java.lang.String dossieraAccountKey, int type) {
+		return getService().getAccountEntries(dossieraAccountKey, type);
+	}
+
 	public static java.util.List<com.liferay.osb.model.AccountEntry> getActiveAccountEntries(
 		int start, int end) {
 		return getService().getActiveAccountEntries(start, end);
@@ -534,6 +560,15 @@ public class AccountEntryLocalServiceUtil {
 		return getService().getSupportRegionPrimaryKeys(accountEntryId);
 	}
 
+	public static void addAnalyticsCloudBasicAccountEntry(
+		java.lang.String dossieraAccountKey, java.lang.String corpEntryName,
+		java.util.Date supportEndDate)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService()
+			.addAnalyticsCloudBasicAccountEntry(dossieraAccountKey,
+			corpEntryName, supportEndDate);
+	}
+
 	public static void addSupportRegionAccountEntries(long supportRegionId,
 		java.util.List<com.liferay.osb.model.AccountEntry> accountEntries) {
 		getService()
@@ -570,6 +605,11 @@ public class AccountEntryLocalServiceUtil {
 		getService()
 			.addWorkflowTask(salesforceOpportunityKey, accountEntry,
 			serviceContext);
+	}
+
+	public static void assignOwnership(java.lang.String corpProjectUuid,
+		long userId) throws com.liferay.portal.kernel.exception.PortalException {
+		getService().assignOwnership(corpProjectUuid, userId);
 	}
 
 	public static void auditAccountEntries()

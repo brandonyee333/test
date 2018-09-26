@@ -67,6 +67,11 @@ public interface AccountEntryService extends BaseService, InvokableService {
 	public AccountEntry getAccountEntryByCode(java.lang.String code)
 		throws PortalException;
 
+	@JSONWebService
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountEntry getCorpProjectAccountEntry(
+		java.lang.String corpProjectUuid) throws PortalException;
+
 	public AccountEntry updateInstructions(long accountEntryId,
 		java.lang.String instructions) throws PortalException;
 
@@ -97,6 +102,11 @@ public interface AccountEntryService extends BaseService, InvokableService {
 	* @return the OSGi service identifier
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
+
+	@JSONWebService
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountEntry> getAccountEntries(java.lang.String userUuid,
+		long[] productEntryIds) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountEntry> getSecurityPatchAccountEntries(

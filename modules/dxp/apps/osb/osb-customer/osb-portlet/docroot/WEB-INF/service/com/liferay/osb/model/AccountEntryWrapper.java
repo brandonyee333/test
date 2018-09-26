@@ -68,6 +68,7 @@ public class AccountEntryWrapper implements AccountEntry,
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("corpProjectUuid", getCorpProjectUuid());
 		attributes.put("corpProjectId", getCorpProjectId());
+		attributes.put("dossieraAccountKey", getDossieraAccountKey());
 		attributes.put("corpEntryName", getCorpEntryName());
 		attributes.put("name", getName());
 		attributes.put("code", getCode());
@@ -152,6 +153,12 @@ public class AccountEntryWrapper implements AccountEntry,
 
 		if (corpProjectId != null) {
 			setCorpProjectId(corpProjectId);
+		}
+
+		String dossieraAccountKey = (String)attributes.get("dossieraAccountKey");
+
+		if (dossieraAccountKey != null) {
+			setDossieraAccountKey(dossieraAccountKey);
 		}
 
 		String corpEntryName = (String)attributes.get("corpEntryName");
@@ -533,6 +540,16 @@ public class AccountEntryWrapper implements AccountEntry,
 	@Override
 	public java.lang.String getCorpProjectUuid() {
 		return _accountEntry.getCorpProjectUuid();
+	}
+
+	/**
+	* Returns the dossiera account key of this account entry.
+	*
+	* @return the dossiera account key of this account entry
+	*/
+	@Override
+	public java.lang.String getDossieraAccountKey() {
+		return _accountEntry.getDossieraAccountKey();
 	}
 
 	@Override
@@ -949,6 +966,16 @@ public class AccountEntryWrapper implements AccountEntry,
 	@Override
 	public void setCreateDate(Date createDate) {
 		_accountEntry.setCreateDate(createDate);
+	}
+
+	/**
+	* Sets the dossiera account key of this account entry.
+	*
+	* @param dossieraAccountKey the dossiera account key of this account entry
+	*/
+	@Override
+	public void setDossieraAccountKey(java.lang.String dossieraAccountKey) {
+		_accountEntry.setDossieraAccountKey(dossieraAccountKey);
 	}
 
 	@Override

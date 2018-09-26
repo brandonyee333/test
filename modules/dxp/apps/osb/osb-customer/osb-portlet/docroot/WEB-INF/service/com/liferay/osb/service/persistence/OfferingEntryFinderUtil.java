@@ -26,18 +26,19 @@ import com.liferay.portal.kernel.util.ReferenceRegistry;
 @ProviderType
 public class OfferingEntryFinderUtil {
 	public static int countByU_AEI_PEI_T_S_SED(long userId,
-		long accountEntryId, long productEntryId, int[] types, int[] statuses,
-		java.util.Date supportEndDateGT, java.util.Date supportEndDateLT,
+		long accountEntryId, long[] productEntryIds, int[] types,
+		int[] statuses, java.util.Date supportEndDateGT,
+		java.util.Date supportEndDateLT,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator) {
 		return getFinder()
 				   .countByU_AEI_PEI_T_S_SED(userId, accountEntryId,
-			productEntryId, types, statuses, supportEndDateGT,
+			productEntryIds, types, statuses, supportEndDateGT,
 			supportEndDateLT, params, andOperator);
 	}
 
 	public static java.util.List<com.liferay.osb.model.OfferingEntry> findByU_AEI_PEI_T_S_SED(
-		long userId, long accountEntryId, long productEntryId, int[] types,
+		long userId, long accountEntryId, long[] productEntryIds, int[] types,
 		int[] statuses, java.util.Date supportEndDateGT,
 		java.util.Date supportEndDateLT,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
@@ -45,7 +46,7 @@ public class OfferingEntryFinderUtil {
 		com.liferay.portal.kernel.util.OrderByComparator obc) {
 		return getFinder()
 				   .findByU_AEI_PEI_T_S_SED(userId, accountEntryId,
-			productEntryId, types, statuses, supportEndDateGT,
+			productEntryIds, types, statuses, supportEndDateGT,
 			supportEndDateLT, params, andOperator, start, end, obc);
 	}
 

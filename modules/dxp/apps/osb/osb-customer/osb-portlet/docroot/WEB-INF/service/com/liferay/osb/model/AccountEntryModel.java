@@ -250,6 +250,21 @@ public interface AccountEntryModel extends AuditedModel, BaseModel<AccountEntry>
 	public void setCorpProjectId(long corpProjectId);
 
 	/**
+	 * Returns the dossiera account key of this account entry.
+	 *
+	 * @return the dossiera account key of this account entry
+	 */
+	@AutoEscape
+	public String getDossieraAccountKey();
+
+	/**
+	 * Sets the dossiera account key of this account entry.
+	 *
+	 * @param dossieraAccountKey the dossiera account key of this account entry
+	 */
+	public void setDossieraAccountKey(String dossieraAccountKey);
+
+	/**
 	 * Returns the corp entry name of this account entry.
 	 *
 	 * @return the corp entry name of this account entry

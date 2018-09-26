@@ -62,6 +62,9 @@ public interface CorpProjectLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CorpProjectLocalServiceUtil} to access the corp project local service. Add custom service methods to {@link com.liferay.osb.service.impl.CorpProjectLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasUserCorpProjectRole(long userId, long corpProjectId,
+		long roleId) throws PortalException;
 
 	/**
 	* Adds the corp project to the database. Also notifies the appropriate model listeners.

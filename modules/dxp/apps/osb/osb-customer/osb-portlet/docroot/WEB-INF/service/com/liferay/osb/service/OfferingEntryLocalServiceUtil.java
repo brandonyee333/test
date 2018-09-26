@@ -323,6 +323,19 @@ public class OfferingEntryLocalServiceUtil {
 			params, andSearch, start, end, obc);
 	}
 
+	public static java.util.List<com.liferay.osb.model.OfferingEntry> search(
+		long userId, long accountEntryId, long[] productEntryIds, int[] types,
+		int[] statuses, java.util.Date supportEndDateGT,
+		java.util.Date supportEndDateLT,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andSearch, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator obc) {
+		return getService()
+				   .search(userId, accountEntryId, productEntryIds, types,
+			statuses, supportEndDateGT, supportEndDateLT, params, andSearch,
+			start, end, obc);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*

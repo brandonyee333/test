@@ -54,6 +54,13 @@ public class AccountEntryServiceWrapper implements AccountEntryService,
 	}
 
 	@Override
+	public com.liferay.osb.model.AccountEntry getCorpProjectAccountEntry(
+		java.lang.String corpProjectUuid)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountEntryService.getCorpProjectAccountEntry(corpProjectUuid);
+	}
+
+	@Override
 	public com.liferay.osb.model.AccountEntry updateInstructions(
 		long accountEntryId, java.lang.String instructions)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -102,6 +109,13 @@ public class AccountEntryServiceWrapper implements AccountEntryService,
 	@Override
 	public java.lang.String getOSGiServiceIdentifier() {
 		return _accountEntryService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountEntry> getAccountEntries(
+		java.lang.String userUuid, long[] productEntryIds)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountEntryService.getAccountEntries(userUuid, productEntryIds);
 	}
 
 	@Override

@@ -11,6 +11,7 @@ create index IX_B9459F3D on OSB_AccountEntries_SupportRegions (supportRegionId);
 create unique index IX_32214056 on OSB_AccountEntry (code_[$COLUMN_LENGTH:75$]);
 create index IX_6AA361CE on OSB_AccountEntry (corpProjectId);
 create index IX_64D9942E on OSB_AccountEntry (corpProjectUuid[$COLUMN_LENGTH:75$]);
+create index IX_20B23F6D on OSB_AccountEntry (dossieraAccountKey[$COLUMN_LENGTH:75$], type_);
 create index IX_2FB47967 on OSB_AccountEntry (name[$COLUMN_LENGTH:500$], code_[$COLUMN_LENGTH:75$], redirectAccountEntryId);
 create index IX_31810943 on OSB_AccountEntry (partnerEntryId, partnerManagedSupport);
 create index IX_5F5D3902 on OSB_AccountEntry (redirectAccountEntryId, status);

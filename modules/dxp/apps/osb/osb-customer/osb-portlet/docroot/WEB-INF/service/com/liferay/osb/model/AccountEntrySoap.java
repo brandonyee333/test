@@ -44,6 +44,7 @@ public class AccountEntrySoap implements Serializable {
 		soapModel.setModifiedDate(model.getModifiedDate());
 		soapModel.setCorpProjectUuid(model.getCorpProjectUuid());
 		soapModel.setCorpProjectId(model.getCorpProjectId());
+		soapModel.setDossieraAccountKey(model.getDossieraAccountKey());
 		soapModel.setCorpEntryName(model.getCorpEntryName());
 		soapModel.setName(model.getName());
 		soapModel.setCode(model.getCode());
@@ -194,6 +195,14 @@ public class AccountEntrySoap implements Serializable {
 
 	public void setCorpProjectId(long corpProjectId) {
 		_corpProjectId = corpProjectId;
+	}
+
+	public String getDossieraAccountKey() {
+		return _dossieraAccountKey;
+	}
+
+	public void setDossieraAccountKey(String dossieraAccountKey) {
+		_dossieraAccountKey = dossieraAccountKey;
 	}
 
 	public String getCorpEntryName() {
@@ -370,6 +379,7 @@ public class AccountEntrySoap implements Serializable {
 	private Date _modifiedDate;
 	private String _corpProjectUuid;
 	private long _corpProjectId;
+	private String _dossieraAccountKey;
 	private String _corpEntryName;
 	private String _name;
 	private String _code;

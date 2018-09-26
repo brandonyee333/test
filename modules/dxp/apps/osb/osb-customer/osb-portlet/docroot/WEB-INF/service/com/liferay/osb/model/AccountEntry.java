@@ -69,6 +69,7 @@ public interface AccountEntry extends AccountEntryModel, PersistedModel {
 
 	public java.lang.String[] getLanguageIds();
 
+	@com.liferay.portal.kernel.json.JSON()
 	public java.util.List<OfferingEntry> getOfferingEntries();
 
 	public java.util.List<OrderEntry> getOrderEntries();

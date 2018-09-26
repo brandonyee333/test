@@ -69,21 +69,21 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 
 	@Override
 	public com.liferay.osb.model.AccountEntry addAccountEntry(long userId,
-		java.lang.String corpProjectUuid, java.lang.String corpEntryName,
-		java.lang.String name, java.lang.String code, int type, int industry,
-		long partnerEntryId, boolean partnerManagedSupport, int tier,
-		int maxCustomers, java.lang.String instructions,
-		java.lang.String notes, java.lang.String[] languageIds,
-		long[] supportRegionIds, java.lang.String street1,
-		java.lang.String street2, java.lang.String street3,
-		java.lang.String city, java.lang.String zip, long regionId,
-		long countryId, java.lang.String ewsaDossieraProjectKey)
+		java.lang.String corpProjectUuid, java.lang.String dossieraAccountKey,
+		java.lang.String corpEntryName, java.lang.String name,
+		java.lang.String code, int type, int industry, long partnerEntryId,
+		boolean partnerManagedSupport, int tier, int maxCustomers,
+		java.lang.String instructions, java.lang.String notes,
+		java.lang.String[] languageIds, long[] supportRegionIds,
+		java.lang.String street1, java.lang.String street2,
+		java.lang.String street3, java.lang.String city, java.lang.String zip,
+		long regionId, long countryId, java.lang.String ewsaDossieraProjectKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountEntryLocalService.addAccountEntry(userId,
-			corpProjectUuid, corpEntryName, name, code, type, industry,
-			partnerEntryId, partnerManagedSupport, tier, maxCustomers,
-			instructions, notes, languageIds, supportRegionIds, street1,
-			street2, street3, city, zip, regionId, countryId,
+			corpProjectUuid, dossieraAccountKey, corpEntryName, name, code,
+			type, industry, partnerEntryId, partnerManagedSupport, tier,
+			maxCustomers, instructions, notes, languageIds, supportRegionIds,
+			street1, street2, street3, city, zip, regionId, countryId,
 			ewsaDossieraProjectKey);
 	}
 
@@ -149,6 +149,12 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	}
 
 	@Override
+	public com.liferay.osb.model.AccountEntry fetchAnalyticsCloudBasicAccountEntry(
+		java.lang.String dossieraAccountKey) {
+		return _accountEntryLocalService.fetchAnalyticsCloudBasicAccountEntry(dossieraAccountKey);
+	}
+
+	@Override
 	public com.liferay.osb.model.AccountEntry fetchCorpProjectAccountEntry(
 		java.lang.String corpProjectUuid) {
 		return _accountEntryLocalService.fetchCorpProjectAccountEntry(corpProjectUuid);
@@ -194,6 +200,13 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 		return _accountEntryLocalService.getAccountEntryByName(name);
 	}
 
+	@Override
+	public com.liferay.osb.model.AccountEntry getCorpProjectAccountEntry(
+		long corpProjectId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountEntryLocalService.getCorpProjectAccountEntry(corpProjectId);
+	}
+
 	/**
 	* Updates the account entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -209,21 +222,22 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	@Override
 	public com.liferay.osb.model.AccountEntry updateAccountEntry(long userId,
 		long accountEntryId, java.lang.String corpProjectUuid,
-		java.lang.String corpEntryName, java.lang.String name,
-		java.lang.String code, int type, int industry, long partnerEntryId,
-		boolean partnerManagedSupport, int tier, int maxCustomers,
-		java.lang.String instructions, java.lang.String notes,
-		java.lang.String[] languageIds, long[] supportRegionIds,
-		long addressId, java.lang.String street1, java.lang.String street2,
-		java.lang.String street3, java.lang.String city, java.lang.String zip,
-		long regionId, long countryId, java.lang.String ewsaDossieraProjectKey)
+		java.lang.String dossieraAccountKey, java.lang.String corpEntryName,
+		java.lang.String name, java.lang.String code, int type, int industry,
+		long partnerEntryId, boolean partnerManagedSupport, int tier,
+		int maxCustomers, java.lang.String instructions,
+		java.lang.String notes, java.lang.String[] languageIds,
+		long[] supportRegionIds, long addressId, java.lang.String street1,
+		java.lang.String street2, java.lang.String street3,
+		java.lang.String city, java.lang.String zip, long regionId,
+		long countryId, java.lang.String ewsaDossieraProjectKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountEntryLocalService.updateAccountEntry(userId,
-			accountEntryId, corpProjectUuid, corpEntryName, name, code, type,
-			industry, partnerEntryId, partnerManagedSupport, tier,
-			maxCustomers, instructions, notes, languageIds, supportRegionIds,
-			addressId, street1, street2, street3, city, zip, regionId,
-			countryId, ewsaDossieraProjectKey);
+			accountEntryId, corpProjectUuid, dossieraAccountKey, corpEntryName,
+			name, code, type, industry, partnerEntryId, partnerManagedSupport,
+			tier, maxCustomers, instructions, notes, languageIds,
+			supportRegionIds, addressId, street1, street2, street3, city, zip,
+			regionId, countryId, ewsaDossieraProjectKey);
 	}
 
 	@Override
@@ -438,6 +452,19 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	}
 
 	@Override
+	public java.util.List<com.liferay.osb.model.AccountEntry> getAccountEntries(
+		java.lang.String dossieraAccountKey) {
+		return _accountEntryLocalService.getAccountEntries(dossieraAccountKey);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountEntry> getAccountEntries(
+		java.lang.String dossieraAccountKey, int type) {
+		return _accountEntryLocalService.getAccountEntries(dossieraAccountKey,
+			type);
+	}
+
+	@Override
 	public java.util.List<com.liferay.osb.model.AccountEntry> getActiveAccountEntries(
 		int start, int end) {
 		return _accountEntryLocalService.getActiveAccountEntries(start, end);
@@ -586,6 +613,15 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	}
 
 	@Override
+	public void addAnalyticsCloudBasicAccountEntry(
+		java.lang.String dossieraAccountKey, java.lang.String corpEntryName,
+		java.util.Date supportEndDate)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_accountEntryLocalService.addAnalyticsCloudBasicAccountEntry(dossieraAccountKey,
+			corpEntryName, supportEndDate);
+	}
+
+	@Override
 	public void addSupportRegionAccountEntries(long supportRegionId,
 		java.util.List<com.liferay.osb.model.AccountEntry> accountEntries) {
 		_accountEntryLocalService.addSupportRegionAccountEntries(supportRegionId,
@@ -625,6 +661,12 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_accountEntryLocalService.addWorkflowTask(salesforceOpportunityKey,
 			accountEntry, serviceContext);
+	}
+
+	@Override
+	public void assignOwnership(java.lang.String corpProjectUuid, long userId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_accountEntryLocalService.assignOwnership(corpProjectUuid, userId);
 	}
 
 	@Override

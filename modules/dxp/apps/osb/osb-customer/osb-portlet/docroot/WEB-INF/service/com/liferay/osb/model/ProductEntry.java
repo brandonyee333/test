@@ -71,6 +71,10 @@ public interface ProductEntry extends ProductEntryModel, PersistedModel {
 
 	public boolean isAnalyticsCloud();
 
+	public boolean isAnalyticsCloudBusiness();
+
+	public boolean isAnalyticsCloudEnterprise();
+
 	public boolean isCommerce();
 
 	public boolean isDeveloperTools();

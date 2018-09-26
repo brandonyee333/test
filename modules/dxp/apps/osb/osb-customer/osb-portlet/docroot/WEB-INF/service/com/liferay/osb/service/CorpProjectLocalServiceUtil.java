@@ -41,6 +41,11 @@ public class CorpProjectLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.CorpProjectLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static boolean hasUserCorpProjectRole(long userId,
+		long corpProjectId, long roleId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().hasUserCorpProjectRole(userId, corpProjectId, roleId);
+	}
 
 	/**
 	* Adds the corp project to the database. Also notifies the appropriate model listeners.

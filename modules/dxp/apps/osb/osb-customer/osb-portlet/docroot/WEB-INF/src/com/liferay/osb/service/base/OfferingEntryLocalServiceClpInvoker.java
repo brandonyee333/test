@@ -177,24 +177,33 @@ public class OfferingEntryLocalServiceClpInvoker {
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName181 = "searchCount";
+		_methodName181 = "search";
 
 		_methodParameterTypes181 = new String[] {
+				"long", "long", "long[][]", "int[][]", "int[][]",
+				"java.util.Date", "java.util.Date", "java.util.LinkedHashMap",
+				"boolean", "int", "int",
+				"com.liferay.portal.kernel.util.OrderByComparator"
+			};
+
+		_methodName182 = "searchCount";
+
+		_methodParameterTypes182 = new String[] {
 				"long", "long", "int[][]", "int[][]", "int", "int", "int", "int",
 				"int", "int", "java.util.LinkedHashMap", "boolean"
 			};
 
-		_methodName182 = "updateOfferingEntry";
+		_methodName183 = "updateOfferingEntry";
 
-		_methodParameterTypes182 = new String[] {
+		_methodParameterTypes183 = new String[] {
 				"long", "long", "long", "long", "long", "long",
 				"java.lang.String", "int", "int", "boolean", "long", "long",
 				"long", "boolean", "long", "int", "int"
 			};
 
-		_methodName183 = "updateStatus";
+		_methodName184 = "updateStatus";
 
-		_methodParameterTypes183 = new String[] { "long", "long", "int" };
+		_methodParameterTypes184 = new String[] { "long", "long", "int" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -388,6 +397,19 @@ public class OfferingEntryLocalServiceClpInvoker {
 
 		if (_methodName181.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes181, parameterTypes)) {
+			return OfferingEntryLocalServiceUtil.search(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(), (long[])arguments[2],
+				(int[])arguments[3], (int[])arguments[4],
+				(java.util.Date)arguments[5], (java.util.Date)arguments[6],
+				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[7],
+				((Boolean)arguments[8]).booleanValue(),
+				((Integer)arguments[9]).intValue(),
+				((Integer)arguments[10]).intValue(),
+				(com.liferay.portal.kernel.util.OrderByComparator)arguments[11]);
+		}
+
+		if (_methodName182.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes182, parameterTypes)) {
 			return OfferingEntryLocalServiceUtil.searchCount(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(), (int[])arguments[2],
 				(int[])arguments[3], ((Integer)arguments[4]).intValue(),
@@ -400,8 +422,8 @@ public class OfferingEntryLocalServiceClpInvoker {
 				((Boolean)arguments[11]).booleanValue());
 		}
 
-		if (_methodName182.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes182, parameterTypes)) {
+		if (_methodName183.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes183, parameterTypes)) {
 			return OfferingEntryLocalServiceUtil.updateOfferingEntry(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -421,8 +443,8 @@ public class OfferingEntryLocalServiceClpInvoker {
 				((Integer)arguments[16]).intValue());
 		}
 
-		if (_methodName183.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes183, parameterTypes)) {
+		if (_methodName184.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes184, parameterTypes)) {
 			return OfferingEntryLocalServiceUtil.updateStatus(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Integer)arguments[2]).intValue());
@@ -497,4 +519,6 @@ public class OfferingEntryLocalServiceClpInvoker {
 	private String[] _methodParameterTypes182;
 	private String _methodName183;
 	private String[] _methodParameterTypes183;
+	private String _methodName184;
+	private String[] _methodParameterTypes184;
 }

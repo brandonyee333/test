@@ -81,6 +81,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 			{ "modifiedDate", Types.TIMESTAMP },
 			{ "corpProjectUuid", Types.VARCHAR },
 			{ "corpProjectId", Types.BIGINT },
+			{ "dossieraAccountKey", Types.VARCHAR },
 			{ "corpEntryName", Types.VARCHAR },
 			{ "name", Types.VARCHAR },
 			{ "code_", Types.VARCHAR },
@@ -115,6 +116,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("corpProjectUuid", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("corpProjectId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("dossieraAccountKey", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("corpEntryName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("code_", Types.VARCHAR);
@@ -137,7 +139,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		TABLE_COLUMNS_MAP.put("statusMessage", Types.VARCHAR);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSB_AccountEntry (accountEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,corpProjectUuid VARCHAR(75) null,corpProjectId LONG,corpEntryName VARCHAR(75) null,name VARCHAR(500) null,code_ VARCHAR(75) null,redirectAccountEntryId LONG,type_ INTEGER,industry INTEGER,countryId LONG,partnerEntryId LONG,partnerManagedSupport BOOLEAN,tier INTEGER,maxCustomers INTEGER,instructions STRING null,notes STRING null,highestSupportResponseId LONG,lastAuditDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,statusMessage STRING null)";
+	public static final String TABLE_SQL_CREATE = "create table OSB_AccountEntry (accountEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,corpProjectUuid VARCHAR(75) null,corpProjectId LONG,dossieraAccountKey VARCHAR(75) null,corpEntryName VARCHAR(255) null,name VARCHAR(500) null,code_ VARCHAR(75) null,redirectAccountEntryId LONG,type_ INTEGER,industry INTEGER,countryId LONG,partnerEntryId LONG,partnerManagedSupport BOOLEAN,tier INTEGER,maxCustomers INTEGER,instructions STRING null,notes STRING null,highestSupportResponseId LONG,lastAuditDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,statusMessage STRING null)";
 	public static final String TABLE_SQL_DROP = "drop table OSB_AccountEntry";
 	public static final String ORDER_BY_JPQL = " ORDER BY accountEntry.name ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY OSB_AccountEntry.name ASC";
@@ -156,13 +158,14 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 	public static final long CODE_COLUMN_BITMASK = 1L;
 	public static final long CORPPROJECTID_COLUMN_BITMASK = 2L;
 	public static final long CORPPROJECTUUID_COLUMN_BITMASK = 4L;
-	public static final long NAME_COLUMN_BITMASK = 8L;
-	public static final long PARTNERENTRYID_COLUMN_BITMASK = 16L;
-	public static final long PARTNERMANAGEDSUPPORT_COLUMN_BITMASK = 32L;
-	public static final long REDIRECTACCOUNTENTRYID_COLUMN_BITMASK = 64L;
-	public static final long STATUS_COLUMN_BITMASK = 128L;
-	public static final long TYPE_COLUMN_BITMASK = 256L;
-	public static final long USERID_COLUMN_BITMASK = 512L;
+	public static final long DOSSIERAACCOUNTKEY_COLUMN_BITMASK = 8L;
+	public static final long NAME_COLUMN_BITMASK = 16L;
+	public static final long PARTNERENTRYID_COLUMN_BITMASK = 32L;
+	public static final long PARTNERMANAGEDSUPPORT_COLUMN_BITMASK = 64L;
+	public static final long REDIRECTACCOUNTENTRYID_COLUMN_BITMASK = 128L;
+	public static final long STATUS_COLUMN_BITMASK = 256L;
+	public static final long TYPE_COLUMN_BITMASK = 512L;
+	public static final long USERID_COLUMN_BITMASK = 1024L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -187,6 +190,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		model.setModifiedDate(soapModel.getModifiedDate());
 		model.setCorpProjectUuid(soapModel.getCorpProjectUuid());
 		model.setCorpProjectId(soapModel.getCorpProjectId());
+		model.setDossieraAccountKey(soapModel.getDossieraAccountKey());
 		model.setCorpEntryName(soapModel.getCorpEntryName());
 		model.setName(soapModel.getName());
 		model.setCode(soapModel.getCode());
@@ -295,6 +299,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("corpProjectUuid", getCorpProjectUuid());
 		attributes.put("corpProjectId", getCorpProjectId());
+		attributes.put("dossieraAccountKey", getDossieraAccountKey());
 		attributes.put("corpEntryName", getCorpEntryName());
 		attributes.put("name", getName());
 		attributes.put("code", getCode());
@@ -382,6 +387,12 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 		if (corpProjectId != null) {
 			setCorpProjectId(corpProjectId);
+		}
+
+		String dossieraAccountKey = (String)attributes.get("dossieraAccountKey");
+
+		if (dossieraAccountKey != null) {
+			setDossieraAccountKey(dossieraAccountKey);
 		}
 
 		String corpEntryName = (String)attributes.get("corpEntryName");
@@ -703,6 +714,32 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 	public long getOriginalCorpProjectId() {
 		return _originalCorpProjectId;
+	}
+
+	@JSON
+	@Override
+	public String getDossieraAccountKey() {
+		if (_dossieraAccountKey == null) {
+			return StringPool.BLANK;
+		}
+		else {
+			return _dossieraAccountKey;
+		}
+	}
+
+	@Override
+	public void setDossieraAccountKey(String dossieraAccountKey) {
+		_columnBitmask |= DOSSIERAACCOUNTKEY_COLUMN_BITMASK;
+
+		if (_originalDossieraAccountKey == null) {
+			_originalDossieraAccountKey = _dossieraAccountKey;
+		}
+
+		_dossieraAccountKey = dossieraAccountKey;
+	}
+
+	public String getOriginalDossieraAccountKey() {
+		return GetterUtil.getString(_originalDossieraAccountKey);
 	}
 
 	@JSON
@@ -1183,6 +1220,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		accountEntryImpl.setModifiedDate(getModifiedDate());
 		accountEntryImpl.setCorpProjectUuid(getCorpProjectUuid());
 		accountEntryImpl.setCorpProjectId(getCorpProjectId());
+		accountEntryImpl.setDossieraAccountKey(getDossieraAccountKey());
 		accountEntryImpl.setCorpEntryName(getCorpEntryName());
 		accountEntryImpl.setName(getName());
 		accountEntryImpl.setCode(getCode());
@@ -1275,6 +1313,8 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 		accountEntryModelImpl._setOriginalCorpProjectId = false;
 
+		accountEntryModelImpl._originalDossieraAccountKey = accountEntryModelImpl._dossieraAccountKey;
+
 		accountEntryModelImpl._originalName = accountEntryModelImpl._name;
 
 		accountEntryModelImpl._originalCode = accountEntryModelImpl._code;
@@ -1357,6 +1397,14 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		}
 
 		accountEntryCacheModel.corpProjectId = getCorpProjectId();
+
+		accountEntryCacheModel.dossieraAccountKey = getDossieraAccountKey();
+
+		String dossieraAccountKey = accountEntryCacheModel.dossieraAccountKey;
+
+		if ((dossieraAccountKey != null) && (dossieraAccountKey.length() == 0)) {
+			accountEntryCacheModel.dossieraAccountKey = null;
+		}
 
 		accountEntryCacheModel.corpEntryName = getCorpEntryName();
 
@@ -1459,7 +1507,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(61);
+		StringBundler sb = new StringBundler(63);
 
 		sb.append("{accountEntryId=");
 		sb.append(getAccountEntryId());
@@ -1481,6 +1529,8 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		sb.append(getCorpProjectUuid());
 		sb.append(", corpProjectId=");
 		sb.append(getCorpProjectId());
+		sb.append(", dossieraAccountKey=");
+		sb.append(getDossieraAccountKey());
 		sb.append(", corpEntryName=");
 		sb.append(getCorpEntryName());
 		sb.append(", name=");
@@ -1528,7 +1578,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(94);
+		StringBundler sb = new StringBundler(97);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.AccountEntry");
@@ -1573,6 +1623,10 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		sb.append(
 			"<column><column-name>corpProjectId</column-name><column-value><![CDATA[");
 		sb.append(getCorpProjectId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>dossieraAccountKey</column-name><column-value><![CDATA[");
+		sb.append(getDossieraAccountKey());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>corpEntryName</column-name><column-value><![CDATA[");
@@ -1680,6 +1734,8 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 	private long _corpProjectId;
 	private long _originalCorpProjectId;
 	private boolean _setOriginalCorpProjectId;
+	private String _dossieraAccountKey;
+	private String _originalDossieraAccountKey;
 	private String _corpEntryName;
 	private String _name;
 	private String _originalName;

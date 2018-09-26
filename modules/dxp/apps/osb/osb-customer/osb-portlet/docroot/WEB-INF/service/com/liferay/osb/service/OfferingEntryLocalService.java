@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -265,6 +266,13 @@ public interface OfferingEntryLocalService extends BaseLocalService,
 		int supportEndDateGTMonth, int supportEndDateGTYear,
 		int supportEndDateLTDay, int supportEndDateLTMonth,
 		int supportEndDateLTYear,
+		LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andSearch, int start, int end, OrderByComparator obc);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<OfferingEntry> search(long userId, long accountEntryId,
+		long[] productEntryIds, int[] types, int[] statuses,
+		Date supportEndDateGT, Date supportEndDateLT,
 		LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andSearch, int start, int end, OrderByComparator obc);
 

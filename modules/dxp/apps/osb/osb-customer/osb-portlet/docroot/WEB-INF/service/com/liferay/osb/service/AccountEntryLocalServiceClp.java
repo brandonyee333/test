@@ -54,11 +54,12 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 		_methodParameterTypes5 = new String[] {
 				"long", "java.lang.String", "java.lang.String",
-				"java.lang.String", "java.lang.String", "int", "int", "long",
-				"boolean", "int", "int", "java.lang.String", "java.lang.String",
-				"java.lang.String[][]", "long[][]", "java.lang.String",
 				"java.lang.String", "java.lang.String", "java.lang.String",
-				"java.lang.String", "long", "long", "java.lang.String"
+				"int", "int", "long", "boolean", "int", "int",
+				"java.lang.String", "java.lang.String", "java.lang.String[][]",
+				"long[][]", "java.lang.String", "java.lang.String",
+				"java.lang.String", "java.lang.String", "java.lang.String",
+				"long", "long", "java.lang.String"
 			};
 
 		_methodName6 = "addAccountEntryWithWorkflow";
@@ -91,104 +92,113 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 		_methodParameterTypes10 = new String[] { "long" };
 
-		_methodName11 = "fetchCorpProjectAccountEntry";
+		_methodName11 = "fetchAnalyticsCloudBasicAccountEntry";
 
 		_methodParameterTypes11 = new String[] { "java.lang.String" };
 
 		_methodName12 = "fetchCorpProjectAccountEntry";
 
-		_methodParameterTypes12 = new String[] { "long" };
+		_methodParameterTypes12 = new String[] { "java.lang.String" };
 
-		_methodName13 = "fetchUserTrialAccountEntry";
+		_methodName13 = "fetchCorpProjectAccountEntry";
 
 		_methodParameterTypes13 = new String[] { "long" };
 
-		_methodName14 = "getAccountEntry";
+		_methodName14 = "fetchUserTrialAccountEntry";
 
 		_methodParameterTypes14 = new String[] { "long" };
 
-		_methodName15 = "getAccountEntryByCode";
+		_methodName15 = "getAccountEntry";
 
-		_methodParameterTypes15 = new String[] { "java.lang.String" };
+		_methodParameterTypes15 = new String[] { "long" };
 
-		_methodName16 = "getAccountEntryByName";
+		_methodName16 = "getAccountEntryByCode";
 
 		_methodParameterTypes16 = new String[] { "java.lang.String" };
 
-		_methodName17 = "updateAccountEntry";
+		_methodName17 = "getAccountEntryByName";
 
-		_methodParameterTypes17 = new String[] {
+		_methodParameterTypes17 = new String[] { "java.lang.String" };
+
+		_methodName18 = "getCorpProjectAccountEntry";
+
+		_methodParameterTypes18 = new String[] { "long" };
+
+		_methodName19 = "updateAccountEntry";
+
+		_methodParameterTypes19 = new String[] {
 				"com.liferay.osb.model.AccountEntry"
 			};
 
-		_methodName18 = "updateAccountEntry";
+		_methodName20 = "updateAccountEntry";
 
-		_methodParameterTypes18 = new String[] {
+		_methodParameterTypes20 = new String[] {
 				"long", "long", "java.lang.String", "java.lang.String",
-				"java.lang.String", "java.lang.String", "int", "int", "long",
-				"boolean", "int", "int", "java.lang.String", "java.lang.String",
-				"java.lang.String[][]", "long[][]", "long", "java.lang.String",
 				"java.lang.String", "java.lang.String", "java.lang.String",
-				"java.lang.String", "long", "long", "java.lang.String"
-			};
-
-		_methodName19 = "updateInstructions";
-
-		_methodParameterTypes19 = new String[] {
+				"int", "int", "long", "boolean", "int", "int",
+				"java.lang.String", "java.lang.String", "java.lang.String[][]",
+				"long[][]", "long", "java.lang.String", "java.lang.String",
+				"java.lang.String", "java.lang.String", "java.lang.String",
 				"long", "long", "java.lang.String"
 			};
 
-		_methodName20 = "updateStatus";
+		_methodName21 = "updateInstructions";
 
-		_methodParameterTypes20 = new String[] {
+		_methodParameterTypes21 = new String[] {
+				"long", "long", "java.lang.String"
+			};
+
+		_methodName22 = "updateStatus";
+
+		_methodParameterTypes22 = new String[] {
 				"long", "long", "int",
 				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 
-		_methodName21 = "updateStatus";
+		_methodName23 = "updateStatus";
 
-		_methodParameterTypes21 = new String[] {
+		_methodParameterTypes23 = new String[] {
 				"long", "long", "java.lang.String", "int",
 				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 
-		_methodName22 = "getActionableDynamicQuery";
-
-		_methodParameterTypes22 = new String[] {  };
-
-		_methodName23 = "dynamicQuery";
-
-		_methodParameterTypes23 = new String[] {  };
-
-		_methodName24 = "getIndexableActionableDynamicQuery";
+		_methodName24 = "getActionableDynamicQuery";
 
 		_methodParameterTypes24 = new String[] {  };
 
-		_methodName25 = "deletePersistedModel";
+		_methodName25 = "dynamicQuery";
 
-		_methodParameterTypes25 = new String[] {
+		_methodParameterTypes25 = new String[] {  };
+
+		_methodName26 = "getIndexableActionableDynamicQuery";
+
+		_methodParameterTypes26 = new String[] {  };
+
+		_methodName27 = "deletePersistedModel";
+
+		_methodParameterTypes27 = new String[] {
 				"com.liferay.portal.kernel.model.PersistedModel"
 			};
 
-		_methodName26 = "getPersistedModel";
+		_methodName28 = "getPersistedModel";
 
-		_methodParameterTypes26 = new String[] { "java.io.Serializable" };
+		_methodParameterTypes28 = new String[] { "java.io.Serializable" };
 
-		_methodName27 = "getAccountEntriesCount";
+		_methodName29 = "getAccountEntriesCount";
 
-		_methodParameterTypes27 = new String[] {  };
+		_methodParameterTypes29 = new String[] {  };
 
-		_methodName28 = "getSupportRegionAccountEntriesCount";
+		_methodName30 = "getSupportRegionAccountEntriesCount";
 
-		_methodParameterTypes28 = new String[] { "long" };
+		_methodParameterTypes30 = new String[] { "long" };
 
-		_methodName29 = "getUserAccountEntriesCount";
+		_methodName31 = "getUserAccountEntriesCount";
 
-		_methodParameterTypes29 = new String[] { "long" };
+		_methodParameterTypes31 = new String[] { "long" };
 
-		_methodName30 = "searchCount";
+		_methodName32 = "searchCount";
 
-		_methodParameterTypes30 = new String[] {
+		_methodParameterTypes32 = new String[] {
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.String", "java.lang.String", "int[][]",
@@ -198,97 +208,105 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 				"java.lang.String", "java.util.LinkedHashMap", "boolean"
 			};
 
-		_methodName31 = "searchCount";
+		_methodName33 = "searchCount";
 
-		_methodParameterTypes31 = new String[] {
+		_methodParameterTypes33 = new String[] {
 				"java.lang.String", "java.util.LinkedHashMap"
 			};
 
-		_methodName33 = "getOSGiServiceIdentifier";
+		_methodName35 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes33 = new String[] {  };
-
-		_methodName34 = "dynamicQuery";
-
-		_methodParameterTypes34 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
-			};
-
-		_methodName35 = "dynamicQuery";
-
-		_methodParameterTypes35 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
-			};
+		_methodParameterTypes35 = new String[] {  };
 
 		_methodName36 = "dynamicQuery";
 
 		_methodParameterTypes36 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
+			};
+
+		_methodName37 = "dynamicQuery";
+
+		_methodParameterTypes37 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
+			};
+
+		_methodName38 = "dynamicQuery";
+
+		_methodParameterTypes38 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName37 = "getAccountEntries";
+		_methodName39 = "getAccountEntries";
 
-		_methodParameterTypes37 = new String[] { "int", "int" };
+		_methodParameterTypes39 = new String[] { "int", "int" };
 
-		_methodName38 = "getAccountEntries";
+		_methodName40 = "getAccountEntries";
 
-		_methodParameterTypes38 = new String[] {
+		_methodParameterTypes40 = new String[] {
 				"int[][]", "int[][]", "int", "int"
 			};
 
-		_methodName39 = "getAccountEntries";
+		_methodName41 = "getAccountEntries";
 
-		_methodParameterTypes39 = new String[] { "int[][]", "int", "int" };
+		_methodParameterTypes41 = new String[] { "int[][]", "int", "int" };
 
-		_methodName40 = "getActiveAccountEntries";
+		_methodName42 = "getAccountEntries";
 
-		_methodParameterTypes40 = new String[] { "int", "int" };
+		_methodParameterTypes42 = new String[] { "java.lang.String" };
 
-		_methodName41 = "getPartnerAccountEntries";
+		_methodName43 = "getAccountEntries";
 
-		_methodParameterTypes41 = new String[] { "long" };
+		_methodParameterTypes43 = new String[] { "java.lang.String", "int" };
 
-		_methodName42 = "getRedirectAccountEntries";
+		_methodName44 = "getActiveAccountEntries";
 
-		_methodParameterTypes42 = new String[] { "long" };
+		_methodParameterTypes44 = new String[] { "int", "int" };
 
-		_methodName43 = "getSecurityPatchAccountEntries";
+		_methodName45 = "getPartnerAccountEntries";
 
-		_methodParameterTypes43 = new String[] {
+		_methodParameterTypes45 = new String[] { "long" };
+
+		_methodName46 = "getRedirectAccountEntries";
+
+		_methodParameterTypes46 = new String[] { "long" };
+
+		_methodName47 = "getSecurityPatchAccountEntries";
+
+		_methodParameterTypes47 = new String[] {
 				"java.lang.String", "java.util.LinkedHashMap"
 			};
 
-		_methodName44 = "getSupportRegionAccountEntries";
+		_methodName48 = "getSupportRegionAccountEntries";
 
-		_methodParameterTypes44 = new String[] { "long" };
+		_methodParameterTypes48 = new String[] { "long" };
 
-		_methodName45 = "getSupportRegionAccountEntries";
+		_methodName49 = "getSupportRegionAccountEntries";
 
-		_methodParameterTypes45 = new String[] { "long", "int", "int" };
+		_methodParameterTypes49 = new String[] { "long", "int", "int" };
 
-		_methodName46 = "getSupportRegionAccountEntries";
+		_methodName50 = "getSupportRegionAccountEntries";
 
-		_methodParameterTypes46 = new String[] {
+		_methodParameterTypes50 = new String[] {
 				"long", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName47 = "getUserAccountEntries";
+		_methodName51 = "getUserAccountEntries";
 
-		_methodParameterTypes47 = new String[] { "long", "int", "int" };
+		_methodParameterTypes51 = new String[] { "long", "int", "int" };
 
-		_methodName48 = "getUserAccountEntryIds";
+		_methodName52 = "getUserAccountEntryIds";
 
-		_methodParameterTypes48 = new String[] { "long", "int", "int" };
+		_methodParameterTypes52 = new String[] { "long", "int", "int" };
 
-		_methodName49 = "getUserActiveAccountEntries";
+		_methodName53 = "getUserActiveAccountEntries";
 
-		_methodParameterTypes49 = new String[] { "long", "int", "int" };
+		_methodParameterTypes53 = new String[] { "long", "int", "int" };
 
-		_methodName50 = "search";
+		_methodName54 = "search";
 
-		_methodParameterTypes50 = new String[] {
+		_methodParameterTypes54 = new String[] {
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.String", "java.lang.String", "int[][]",
@@ -299,106 +317,116 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 				"int", "com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName51 = "search";
+		_methodName55 = "search";
 
-		_methodParameterTypes51 = new String[] {
+		_methodParameterTypes55 = new String[] {
 				"java.lang.String", "java.util.LinkedHashMap", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName52 = "search";
+		_methodName56 = "search";
 
-		_methodParameterTypes52 = new String[] {
+		_methodParameterTypes56 = new String[] {
 				"java.lang.String", "java.lang.String"
 			};
 
-		_methodName53 = "dynamicQueryCount";
+		_methodName57 = "dynamicQueryCount";
 
-		_methodParameterTypes53 = new String[] {
+		_methodParameterTypes57 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
-		_methodName54 = "dynamicQueryCount";
+		_methodName58 = "dynamicQueryCount";
 
-		_methodParameterTypes54 = new String[] {
+		_methodParameterTypes58 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery",
 				"com.liferay.portal.kernel.dao.orm.Projection"
 			};
 
-		_methodName55 = "getSupportRegionPrimaryKeys";
+		_methodName59 = "getSupportRegionPrimaryKeys";
 
-		_methodParameterTypes55 = new String[] { "long" };
+		_methodParameterTypes59 = new String[] { "long" };
 
-		_methodName56 = "addSupportRegionAccountEntries";
+		_methodName60 = "addAnalyticsCloudBasicAccountEntry";
 
-		_methodParameterTypes56 = new String[] { "long", "java.util.List" };
+		_methodParameterTypes60 = new String[] {
+				"java.lang.String", "java.lang.String", "java.util.Date"
+			};
 
-		_methodName57 = "addSupportRegionAccountEntries";
+		_methodName61 = "addSupportRegionAccountEntries";
 
-		_methodParameterTypes57 = new String[] { "long", "long[][]" };
+		_methodParameterTypes61 = new String[] { "long", "java.util.List" };
 
-		_methodName58 = "addSupportRegionAccountEntry";
+		_methodName62 = "addSupportRegionAccountEntries";
 
-		_methodParameterTypes58 = new String[] {
+		_methodParameterTypes62 = new String[] { "long", "long[][]" };
+
+		_methodName63 = "addSupportRegionAccountEntry";
+
+		_methodParameterTypes63 = new String[] {
 				"long", "com.liferay.osb.model.AccountEntry"
 			};
 
-		_methodName59 = "addSupportRegionAccountEntry";
+		_methodName64 = "addSupportRegionAccountEntry";
 
-		_methodParameterTypes59 = new String[] { "long", "long" };
+		_methodParameterTypes64 = new String[] { "long", "long" };
 
-		_methodName60 = "addTrialAccountEntry";
+		_methodName65 = "addTrialAccountEntry";
 
-		_methodParameterTypes60 = new String[] { "long" };
+		_methodParameterTypes65 = new String[] { "long" };
 
-		_methodName61 = "addWorkflowTask";
+		_methodName66 = "addWorkflowTask";
 
-		_methodParameterTypes61 = new String[] {
+		_methodParameterTypes66 = new String[] {
 				"java.lang.String", "com.liferay.osb.model.AccountEntry",
 				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 
-		_methodName62 = "auditAccountEntries";
+		_methodName67 = "assignOwnership";
 
-		_methodParameterTypes62 = new String[] {  };
+		_methodParameterTypes67 = new String[] { "java.lang.String", "long" };
 
-		_methodName63 = "auditAccountEntry";
+		_methodName68 = "auditAccountEntries";
 
-		_methodParameterTypes63 = new String[] { "long", "long" };
+		_methodParameterTypes68 = new String[] {  };
 
-		_methodName64 = "clearSupportRegionAccountEntries";
+		_methodName69 = "auditAccountEntry";
 
-		_methodParameterTypes64 = new String[] { "long" };
+		_methodParameterTypes69 = new String[] { "long", "long" };
 
-		_methodName65 = "deleteSupportRegionAccountEntries";
+		_methodName70 = "clearSupportRegionAccountEntries";
 
-		_methodParameterTypes65 = new String[] { "long", "java.util.List" };
+		_methodParameterTypes70 = new String[] { "long" };
 
-		_methodName66 = "deleteSupportRegionAccountEntries";
+		_methodName71 = "deleteSupportRegionAccountEntries";
 
-		_methodParameterTypes66 = new String[] { "long", "long[][]" };
+		_methodParameterTypes71 = new String[] { "long", "java.util.List" };
 
-		_methodName67 = "deleteSupportRegionAccountEntry";
+		_methodName72 = "deleteSupportRegionAccountEntries";
 
-		_methodParameterTypes67 = new String[] {
+		_methodParameterTypes72 = new String[] { "long", "long[][]" };
+
+		_methodName73 = "deleteSupportRegionAccountEntry";
+
+		_methodParameterTypes73 = new String[] {
 				"long", "com.liferay.osb.model.AccountEntry"
 			};
 
-		_methodName68 = "deleteSupportRegionAccountEntry";
+		_methodName74 = "deleteSupportRegionAccountEntry";
 
-		_methodParameterTypes68 = new String[] { "long", "long" };
+		_methodParameterTypes74 = new String[] { "long", "long" };
 
-		_methodName69 = "recalculateHighestSupportResponse";
+		_methodName75 = "recalculateHighestSupportResponse";
 
-		_methodParameterTypes69 = new String[] { "long" };
+		_methodParameterTypes75 = new String[] { "long" };
 
-		_methodName70 = "setSupportRegionAccountEntries";
+		_methodName76 = "setSupportRegionAccountEntries";
 
-		_methodParameterTypes70 = new String[] { "long", "long[][]" };
+		_methodParameterTypes76 = new String[] { "long", "long[][]" };
 
-		_methodName71 = "updateAccountEntryWithWorkflow";
+		_methodName77 = "updateAccountEntryWithWorkflow";
 
-		_methodParameterTypes71 = new String[] {
+		_methodParameterTypes77 = new String[] {
 				"java.lang.String", "com.liferay.osb.model.AccountEntry",
 				"com.liferay.osb.model.PartnerEntry",
 				"com.liferay.osb.model.AccountWorker",
@@ -407,19 +435,19 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 
-		_methodName72 = "updateLastAuditDate";
+		_methodName78 = "updateLastAuditDate";
 
-		_methodParameterTypes72 = new String[] {
+		_methodParameterTypes78 = new String[] {
 				"long", "long", "java.lang.String", "java.lang.String"
 			};
 
-		_methodName73 = "updateStatus";
+		_methodName79 = "updateStatus";
 
-		_methodParameterTypes73 = new String[] { "long" };
+		_methodParameterTypes79 = new String[] { "long" };
 
-		_methodName74 = "validate";
+		_methodName80 = "validate";
 
-		_methodParameterTypes74 = new String[] {
+		_methodParameterTypes80 = new String[] {
 				"com.liferay.osb.model.AccountEntry"
 			};
 	}
@@ -545,15 +573,15 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 	@Override
 	public com.liferay.osb.model.AccountEntry addAccountEntry(long userId,
-		java.lang.String corpProjectUuid, java.lang.String corpEntryName,
-		java.lang.String name, java.lang.String code, int type, int industry,
-		long partnerEntryId, boolean partnerManagedSupport, int tier,
-		int maxCustomers, java.lang.String instructions,
-		java.lang.String notes, java.lang.String[] languageIds,
-		long[] supportRegionIds, java.lang.String street1,
-		java.lang.String street2, java.lang.String street3,
-		java.lang.String city, java.lang.String zip, long regionId,
-		long countryId, java.lang.String ewsaDossieraProjectKey)
+		java.lang.String corpProjectUuid, java.lang.String dossieraAccountKey,
+		java.lang.String corpEntryName, java.lang.String name,
+		java.lang.String code, int type, int industry, long partnerEntryId,
+		boolean partnerManagedSupport, int tier, int maxCustomers,
+		java.lang.String instructions, java.lang.String notes,
+		java.lang.String[] languageIds, long[] supportRegionIds,
+		java.lang.String street1, java.lang.String street2,
+		java.lang.String street3, java.lang.String city, java.lang.String zip,
+		long regionId, long countryId, java.lang.String ewsaDossieraProjectKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
@@ -564,6 +592,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 						userId,
 						
 					ClpSerializer.translateInput(corpProjectUuid),
+						
+					ClpSerializer.translateInput(dossieraAccountKey),
 						
 					ClpSerializer.translateInput(corpEntryName),
 						
@@ -786,13 +816,40 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	}
 
 	@Override
-	public com.liferay.osb.model.AccountEntry fetchCorpProjectAccountEntry(
-		java.lang.String corpProjectUuid) {
+	public com.liferay.osb.model.AccountEntry fetchAnalyticsCloudBasicAccountEntry(
+		java.lang.String dossieraAccountKey) {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName11,
 					_methodParameterTypes11,
+					new Object[] {
+						ClpSerializer.translateInput(dossieraAccountKey)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.AccountEntry)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountEntry fetchCorpProjectAccountEntry(
+		java.lang.String corpProjectUuid) {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName12,
+					_methodParameterTypes12,
 					new Object[] { ClpSerializer.translateInput(corpProjectUuid) });
 		}
 		catch (Throwable t) {
@@ -816,8 +873,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName12,
-					_methodParameterTypes12, new Object[] { corpProjectId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName13,
+					_methodParameterTypes13, new Object[] { corpProjectId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -840,8 +897,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName13,
-					_methodParameterTypes13, new Object[] { userId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName14,
+					_methodParameterTypes14, new Object[] { userId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -865,8 +922,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName14,
-					_methodParameterTypes14, new Object[] { accountEntryId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName15,
+					_methodParameterTypes15, new Object[] { accountEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -894,8 +951,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName15,
-					_methodParameterTypes15,
+			returnObj = _invokableLocalService.invokeMethod(_methodName16,
+					_methodParameterTypes16,
 					new Object[] { ClpSerializer.translateInput(code) });
 		}
 		catch (Throwable t) {
@@ -924,9 +981,38 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName16,
-					_methodParameterTypes16,
+			returnObj = _invokableLocalService.invokeMethod(_methodName17,
+					_methodParameterTypes17,
 					new Object[] { ClpSerializer.translateInput(name) });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.AccountEntry)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountEntry getCorpProjectAccountEntry(
+		long corpProjectId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName18,
+					_methodParameterTypes18, new Object[] { corpProjectId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -953,8 +1039,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName17,
-					_methodParameterTypes17,
+			returnObj = _invokableLocalService.invokeMethod(_methodName19,
+					_methodParameterTypes19,
 					new Object[] { ClpSerializer.translateInput(accountEntry) });
 		}
 		catch (Throwable t) {
@@ -975,26 +1061,29 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	@Override
 	public com.liferay.osb.model.AccountEntry updateAccountEntry(long userId,
 		long accountEntryId, java.lang.String corpProjectUuid,
-		java.lang.String corpEntryName, java.lang.String name,
-		java.lang.String code, int type, int industry, long partnerEntryId,
-		boolean partnerManagedSupport, int tier, int maxCustomers,
-		java.lang.String instructions, java.lang.String notes,
-		java.lang.String[] languageIds, long[] supportRegionIds,
-		long addressId, java.lang.String street1, java.lang.String street2,
-		java.lang.String street3, java.lang.String city, java.lang.String zip,
-		long regionId, long countryId, java.lang.String ewsaDossieraProjectKey)
+		java.lang.String dossieraAccountKey, java.lang.String corpEntryName,
+		java.lang.String name, java.lang.String code, int type, int industry,
+		long partnerEntryId, boolean partnerManagedSupport, int tier,
+		int maxCustomers, java.lang.String instructions,
+		java.lang.String notes, java.lang.String[] languageIds,
+		long[] supportRegionIds, long addressId, java.lang.String street1,
+		java.lang.String street2, java.lang.String street3,
+		java.lang.String city, java.lang.String zip, long regionId,
+		long countryId, java.lang.String ewsaDossieraProjectKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName18,
-					_methodParameterTypes18,
+			returnObj = _invokableLocalService.invokeMethod(_methodName20,
+					_methodParameterTypes20,
 					new Object[] {
 						userId,
 						
 					accountEntryId,
 						
 					ClpSerializer.translateInput(corpProjectUuid),
+						
+					ClpSerializer.translateInput(dossieraAccountKey),
 						
 					ClpSerializer.translateInput(corpEntryName),
 						
@@ -1067,8 +1156,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName19,
-					_methodParameterTypes19,
+			returnObj = _invokableLocalService.invokeMethod(_methodName21,
+					_methodParameterTypes21,
 					new Object[] {
 						userId,
 						
@@ -1104,8 +1193,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName20,
-					_methodParameterTypes20,
+			returnObj = _invokableLocalService.invokeMethod(_methodName22,
+					_methodParameterTypes22,
 					new Object[] {
 						userId,
 						
@@ -1144,8 +1233,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName21,
-					_methodParameterTypes21,
+			returnObj = _invokableLocalService.invokeMethod(_methodName23,
+					_methodParameterTypes23,
 					new Object[] {
 						userId,
 						
@@ -1182,8 +1271,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName22,
-					_methodParameterTypes22, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName24,
+					_methodParameterTypes24, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1205,8 +1294,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName23,
-					_methodParameterTypes23, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName25,
+					_methodParameterTypes25, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1228,8 +1317,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName24,
-					_methodParameterTypes24, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName26,
+					_methodParameterTypes26, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1253,8 +1342,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName25,
-					_methodParameterTypes25,
+			returnObj = _invokableLocalService.invokeMethod(_methodName27,
+					_methodParameterTypes27,
 					new Object[] { ClpSerializer.translateInput(persistedModel) });
 		}
 		catch (Throwable t) {
@@ -1283,8 +1372,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName26,
-					_methodParameterTypes26,
+			returnObj = _invokableLocalService.invokeMethod(_methodName28,
+					_methodParameterTypes28,
 					new Object[] { ClpSerializer.translateInput(primaryKeyObj) });
 		}
 		catch (Throwable t) {
@@ -1311,8 +1400,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName27,
-					_methodParameterTypes27, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName29,
+					_methodParameterTypes29, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1334,8 +1423,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName28,
-					_methodParameterTypes28, new Object[] { supportRegionId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName30,
+					_methodParameterTypes30, new Object[] { supportRegionId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1357,8 +1446,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName29,
-					_methodParameterTypes29, new Object[] { userId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName31,
+					_methodParameterTypes31, new Object[] { userId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1393,8 +1482,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName30,
-					_methodParameterTypes30,
+			returnObj = _invokableLocalService.invokeMethod(_methodName32,
+					_methodParameterTypes32,
 					new Object[] {
 						ClpSerializer.translateInput(createUserId),
 						
@@ -1478,8 +1567,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName31,
-					_methodParameterTypes31,
+			returnObj = _invokableLocalService.invokeMethod(_methodName33,
+					_methodParameterTypes33,
 					new Object[] {
 						ClpSerializer.translateInput(keywords),
 						
@@ -1513,8 +1602,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName33,
-					_methodParameterTypes33, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName35,
+					_methodParameterTypes35, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1537,8 +1626,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName34,
-					_methodParameterTypes34,
+			returnObj = _invokableLocalService.invokeMethod(_methodName36,
+					_methodParameterTypes36,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -1563,8 +1652,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName35,
-					_methodParameterTypes35,
+			returnObj = _invokableLocalService.invokeMethod(_methodName37,
+					_methodParameterTypes37,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -1596,8 +1685,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName36,
-					_methodParameterTypes36,
+			returnObj = _invokableLocalService.invokeMethod(_methodName38,
+					_methodParameterTypes38,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -1629,8 +1718,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName37,
-					_methodParameterTypes37, new Object[] { start, end });
+			returnObj = _invokableLocalService.invokeMethod(_methodName39,
+					_methodParameterTypes39, new Object[] { start, end });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1653,8 +1742,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName38,
-					_methodParameterTypes38,
+			returnObj = _invokableLocalService.invokeMethod(_methodName40,
+					_methodParameterTypes40,
 					new Object[] {
 						ClpSerializer.translateInput(notTypes),
 						
@@ -1686,8 +1775,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName39,
-					_methodParameterTypes39,
+			returnObj = _invokableLocalService.invokeMethod(_methodName41,
+					_methodParameterTypes41,
 					new Object[] {
 						ClpSerializer.translateInput(statuses),
 						
@@ -1712,13 +1801,69 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	}
 
 	@Override
+	public java.util.List<com.liferay.osb.model.AccountEntry> getAccountEntries(
+		java.lang.String dossieraAccountKey) {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName42,
+					_methodParameterTypes42,
+					new Object[] {
+						ClpSerializer.translateInput(dossieraAccountKey)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<com.liferay.osb.model.AccountEntry>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountEntry> getAccountEntries(
+		java.lang.String dossieraAccountKey, int type) {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName43,
+					_methodParameterTypes43,
+					new Object[] {
+						ClpSerializer.translateInput(dossieraAccountKey),
+						
+					type
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<com.liferay.osb.model.AccountEntry>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
 	public java.util.List<com.liferay.osb.model.AccountEntry> getActiveAccountEntries(
 		int start, int end) {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName40,
-					_methodParameterTypes40, new Object[] { start, end });
+			returnObj = _invokableLocalService.invokeMethod(_methodName44,
+					_methodParameterTypes44, new Object[] { start, end });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1741,8 +1886,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName41,
-					_methodParameterTypes41, new Object[] { partnerEntryId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName45,
+					_methodParameterTypes45, new Object[] { partnerEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1765,8 +1910,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName42,
-					_methodParameterTypes42, new Object[] { accountEntryId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName46,
+					_methodParameterTypes46, new Object[] { accountEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1790,8 +1935,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName43,
-					_methodParameterTypes43,
+			returnObj = _invokableLocalService.invokeMethod(_methodName47,
+					_methodParameterTypes47,
 					new Object[] {
 						ClpSerializer.translateInput(portletId),
 						
@@ -1819,8 +1964,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName44,
-					_methodParameterTypes44, new Object[] { supportRegionId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName48,
+					_methodParameterTypes48, new Object[] { supportRegionId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1843,8 +1988,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName45,
-					_methodParameterTypes45,
+			returnObj = _invokableLocalService.invokeMethod(_methodName49,
+					_methodParameterTypes49,
 					new Object[] { supportRegionId, start, end });
 		}
 		catch (Throwable t) {
@@ -1869,8 +2014,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName46,
-					_methodParameterTypes46,
+			returnObj = _invokableLocalService.invokeMethod(_methodName50,
+					_methodParameterTypes50,
 					new Object[] {
 						supportRegionId,
 						
@@ -1902,8 +2047,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName47,
-					_methodParameterTypes47, new Object[] { userId, start, end });
+			returnObj = _invokableLocalService.invokeMethod(_methodName51,
+					_methodParameterTypes51, new Object[] { userId, start, end });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1926,8 +2071,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName48,
-					_methodParameterTypes48, new Object[] { userId, start, end });
+			returnObj = _invokableLocalService.invokeMethod(_methodName52,
+					_methodParameterTypes52, new Object[] { userId, start, end });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1950,8 +2095,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName49,
-					_methodParameterTypes49, new Object[] { userId, start, end });
+			returnObj = _invokableLocalService.invokeMethod(_methodName53,
+					_methodParameterTypes53, new Object[] { userId, start, end });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1988,8 +2133,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName50,
-					_methodParameterTypes50,
+			returnObj = _invokableLocalService.invokeMethod(_methodName54,
+					_methodParameterTypes54,
 					new Object[] {
 						ClpSerializer.translateInput(createUserId),
 						
@@ -2081,8 +2226,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName51,
-					_methodParameterTypes51,
+			returnObj = _invokableLocalService.invokeMethod(_methodName55,
+					_methodParameterTypes55,
 					new Object[] {
 						ClpSerializer.translateInput(keywords),
 						
@@ -2116,8 +2261,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName52,
-					_methodParameterTypes52,
+			returnObj = _invokableLocalService.invokeMethod(_methodName56,
+					_methodParameterTypes56,
 					new Object[] {
 						ClpSerializer.translateInput(name),
 						
@@ -2145,8 +2290,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName53,
-					_methodParameterTypes53,
+			returnObj = _invokableLocalService.invokeMethod(_methodName57,
+					_methodParameterTypes57,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -2171,8 +2316,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName54,
-					_methodParameterTypes54,
+			returnObj = _invokableLocalService.invokeMethod(_methodName58,
+					_methodParameterTypes58,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -2199,8 +2344,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName55,
-					_methodParameterTypes55, new Object[] { accountEntryId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName59,
+					_methodParameterTypes59, new Object[] { accountEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -2218,11 +2363,44 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	}
 
 	@Override
+	public void addAnalyticsCloudBasicAccountEntry(
+		java.lang.String dossieraAccountKey, java.lang.String corpEntryName,
+		java.util.Date supportEndDate)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		try {
+			_invokableLocalService.invokeMethod(_methodName60,
+				_methodParameterTypes60,
+				new Object[] {
+					ClpSerializer.translateInput(dossieraAccountKey),
+					
+				ClpSerializer.translateInput(corpEntryName),
+					
+				ClpSerializer.translateInput(supportEndDate)
+				});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+	}
+
+	@Override
 	public void addSupportRegionAccountEntries(long supportRegionId,
 		java.util.List<com.liferay.osb.model.AccountEntry> accountEntries) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName56,
-				_methodParameterTypes56,
+			_invokableLocalService.invokeMethod(_methodName61,
+				_methodParameterTypes61,
 				new Object[] {
 					supportRegionId,
 					
@@ -2246,8 +2424,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	public void addSupportRegionAccountEntries(long supportRegionId,
 		long[] accountEntryIds) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName57,
-				_methodParameterTypes57,
+			_invokableLocalService.invokeMethod(_methodName62,
+				_methodParameterTypes62,
 				new Object[] {
 					supportRegionId,
 					
@@ -2271,8 +2449,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	public void addSupportRegionAccountEntry(long supportRegionId,
 		com.liferay.osb.model.AccountEntry accountEntry) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName58,
-				_methodParameterTypes58,
+			_invokableLocalService.invokeMethod(_methodName63,
+				_methodParameterTypes63,
 				new Object[] {
 					supportRegionId,
 					
@@ -2296,8 +2474,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	public void addSupportRegionAccountEntry(long supportRegionId,
 		long accountEntryId) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName59,
-				_methodParameterTypes59,
+			_invokableLocalService.invokeMethod(_methodName64,
+				_methodParameterTypes64,
 				new Object[] { supportRegionId, accountEntryId });
 		}
 		catch (Throwable t) {
@@ -2316,8 +2494,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	@Override
 	public void addTrialAccountEntry(long userId) throws java.lang.Exception {
 		try {
-			_invokableLocalService.invokeMethod(_methodName60,
-				_methodParameterTypes60, new Object[] { userId });
+			_invokableLocalService.invokeMethod(_methodName65,
+				_methodParameterTypes65, new Object[] { userId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -2342,8 +2520,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableLocalService.invokeMethod(_methodName61,
-				_methodParameterTypes61,
+			_invokableLocalService.invokeMethod(_methodName66,
+				_methodParameterTypes66,
 				new Object[] {
 					ClpSerializer.translateInput(salesforceOpportunityKey),
 					
@@ -2370,11 +2548,40 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	}
 
 	@Override
+	public void assignOwnership(java.lang.String corpProjectUuid, long userId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		try {
+			_invokableLocalService.invokeMethod(_methodName67,
+				_methodParameterTypes67,
+				new Object[] {
+					ClpSerializer.translateInput(corpProjectUuid),
+					
+				userId
+				});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+	}
+
+	@Override
 	public void auditAccountEntries()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableLocalService.invokeMethod(_methodName62,
-				_methodParameterTypes62, new Object[] {  });
+			_invokableLocalService.invokeMethod(_methodName68,
+				_methodParameterTypes68, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -2397,8 +2604,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	public void auditAccountEntry(long userId, long accountEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableLocalService.invokeMethod(_methodName63,
-				_methodParameterTypes63, new Object[] { userId, accountEntryId });
+			_invokableLocalService.invokeMethod(_methodName69,
+				_methodParameterTypes69, new Object[] { userId, accountEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -2420,8 +2627,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	@Override
 	public void clearSupportRegionAccountEntries(long supportRegionId) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName64,
-				_methodParameterTypes64, new Object[] { supportRegionId });
+			_invokableLocalService.invokeMethod(_methodName70,
+				_methodParameterTypes70, new Object[] { supportRegionId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -2440,8 +2647,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	public void deleteSupportRegionAccountEntries(long supportRegionId,
 		java.util.List<com.liferay.osb.model.AccountEntry> accountEntries) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName65,
-				_methodParameterTypes65,
+			_invokableLocalService.invokeMethod(_methodName71,
+				_methodParameterTypes71,
 				new Object[] {
 					supportRegionId,
 					
@@ -2465,8 +2672,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	public void deleteSupportRegionAccountEntries(long supportRegionId,
 		long[] accountEntryIds) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName66,
-				_methodParameterTypes66,
+			_invokableLocalService.invokeMethod(_methodName72,
+				_methodParameterTypes72,
 				new Object[] {
 					supportRegionId,
 					
@@ -2490,8 +2697,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	public void deleteSupportRegionAccountEntry(long supportRegionId,
 		com.liferay.osb.model.AccountEntry accountEntry) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName67,
-				_methodParameterTypes67,
+			_invokableLocalService.invokeMethod(_methodName73,
+				_methodParameterTypes73,
 				new Object[] {
 					supportRegionId,
 					
@@ -2515,8 +2722,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	public void deleteSupportRegionAccountEntry(long supportRegionId,
 		long accountEntryId) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName68,
-				_methodParameterTypes68,
+			_invokableLocalService.invokeMethod(_methodName74,
+				_methodParameterTypes74,
 				new Object[] { supportRegionId, accountEntryId });
 		}
 		catch (Throwable t) {
@@ -2536,8 +2743,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	public void recalculateHighestSupportResponse(long accountEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableLocalService.invokeMethod(_methodName69,
-				_methodParameterTypes69, new Object[] { accountEntryId });
+			_invokableLocalService.invokeMethod(_methodName75,
+				_methodParameterTypes75, new Object[] { accountEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -2560,8 +2767,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	public void setSupportRegionAccountEntries(long supportRegionId,
 		long[] accountEntryIds) {
 		try {
-			_invokableLocalService.invokeMethod(_methodName70,
-				_methodParameterTypes70,
+			_invokableLocalService.invokeMethod(_methodName76,
+				_methodParameterTypes76,
 				new Object[] {
 					supportRegionId,
 					
@@ -2593,8 +2800,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableLocalService.invokeMethod(_methodName71,
-				_methodParameterTypes71,
+			_invokableLocalService.invokeMethod(_methodName77,
+				_methodParameterTypes77,
 				new Object[] {
 					ClpSerializer.translateInput(salesforceOpportunityKey),
 					
@@ -2635,8 +2842,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		java.lang.String auditLabel, java.lang.String auditValue)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableLocalService.invokeMethod(_methodName72,
-				_methodParameterTypes72,
+			_invokableLocalService.invokeMethod(_methodName78,
+				_methodParameterTypes78,
 				new Object[] {
 					userId,
 					
@@ -2668,8 +2875,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	public void updateStatus(long accountEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableLocalService.invokeMethod(_methodName73,
-				_methodParameterTypes73, new Object[] { accountEntryId });
+			_invokableLocalService.invokeMethod(_methodName79,
+				_methodParameterTypes79, new Object[] { accountEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -2692,8 +2899,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	public void validate(com.liferay.osb.model.AccountEntry accountEntry)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableLocalService.invokeMethod(_methodName74,
-				_methodParameterTypes74,
+			_invokableLocalService.invokeMethod(_methodName80,
+				_methodParameterTypes80,
 				new Object[] { ClpSerializer.translateInput(accountEntry) });
 		}
 		catch (Throwable t) {
@@ -2778,10 +2985,10 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	private String[] _methodParameterTypes30;
 	private String _methodName31;
 	private String[] _methodParameterTypes31;
+	private String _methodName32;
+	private String[] _methodParameterTypes32;
 	private String _methodName33;
 	private String[] _methodParameterTypes33;
-	private String _methodName34;
-	private String[] _methodParameterTypes34;
 	private String _methodName35;
 	private String[] _methodParameterTypes35;
 	private String _methodName36;
@@ -2862,4 +3069,16 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	private String[] _methodParameterTypes73;
 	private String _methodName74;
 	private String[] _methodParameterTypes74;
+	private String _methodName75;
+	private String[] _methodParameterTypes75;
+	private String _methodName76;
+	private String[] _methodParameterTypes76;
+	private String _methodName77;
+	private String[] _methodParameterTypes77;
+	private String _methodName78;
+	private String[] _methodParameterTypes78;
+	private String _methodName79;
+	private String[] _methodParameterTypes79;
+	private String _methodName80;
+	private String[] _methodParameterTypes80;
 }

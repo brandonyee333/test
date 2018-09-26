@@ -33,6 +33,13 @@ public class CorpProjectLocalServiceWrapper implements CorpProjectLocalService,
 		_corpProjectLocalService = corpProjectLocalService;
 	}
 
+	@Override
+	public boolean hasUserCorpProjectRole(long userId, long corpProjectId,
+		long roleId) throws com.liferay.portal.kernel.exception.PortalException {
+		return _corpProjectLocalService.hasUserCorpProjectRole(userId,
+			corpProjectId, roleId);
+	}
+
 	/**
 	* Adds the corp project to the database. Also notifies the appropriate model listeners.
 	*
