@@ -12,13 +12,13 @@
  *
  */
 
-package com.liferay.lcs.service.impl;
+package com.liferay.lcs.platform.gateway.impl;
 
 import com.liferay.lcs.exception.CompressionException;
 import com.liferay.lcs.messaging.Message;
 import com.liferay.lcs.platform.LCSEvent;
+import com.liferay.lcs.platform.gateway.LCSGatewayService;
 import com.liferay.lcs.platform.gateway.LCSGatewayStateListener;
-import com.liferay.lcs.service.LCSGatewayService;
 import com.liferay.lcs.task.HandshakeTask;
 import com.liferay.lcs.task.SignOffTask;
 import com.liferay.lcs.task.Task;

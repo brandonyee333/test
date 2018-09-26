@@ -25,13 +25,13 @@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
 <%@ page import="com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor" %><%@
 page import="com.liferay.lcs.exception.LCSExceptionHandler" %><%@
+page import="com.liferay.lcs.platform.gateway.LCSGatewayService" %><%@
 page import="com.liferay.lcs.rest.LCSClusterEntryClientUtil" %><%@
 page import="com.liferay.lcs.rest.LCSClusterNodeClientUtil" %><%@
 page import="com.liferay.lcs.rest.LCSProjectClientUtil" %><%@
 page import="com.liferay.lcs.rest.client.LCSClusterEntry" %><%@
 page import="com.liferay.lcs.rest.client.LCSClusterNode" %><%@
 page import="com.liferay.lcs.rest.client.LCSProject" %><%@
-page import="com.liferay.lcs.service.LCSGatewayService" %><%@
 page import="com.liferay.lcs.task.advisor.TaskAdvisor" %><%@
 page import="com.liferay.lcs.util.ClusterNodeUtil" %><%@
 page import="com.liferay.lcs.util.LCSAlert" %><%@

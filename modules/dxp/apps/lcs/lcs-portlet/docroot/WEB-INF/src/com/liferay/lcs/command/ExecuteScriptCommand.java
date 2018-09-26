@@ -17,7 +17,7 @@ package com.liferay.lcs.command;
 import com.liferay.lcs.exception.CompressionException;
 import com.liferay.lcs.messaging.ExecuteScriptCommandMessage;
 import com.liferay.lcs.messaging.ExecuteScriptResponseMessage;
-import com.liferay.lcs.service.LCSGatewayService;
+import com.liferay.lcs.platform.gateway.LCSGatewayService;
 import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncPrintWriter;

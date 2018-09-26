@@ -15,8 +15,8 @@
 package com.liferay.lcs.advisor;
 
 import com.liferay.lcs.platform.LCSEvent;
+import com.liferay.lcs.platform.gateway.LCSGatewayService;
 import com.liferay.lcs.platform.gateway.LCSGatewayStateListener;
-import com.liferay.lcs.service.LCSGatewayService;
 import com.liferay.lcs.util.LCSAlert;
 import com.liferay.lcs.util.LCSUtil;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;

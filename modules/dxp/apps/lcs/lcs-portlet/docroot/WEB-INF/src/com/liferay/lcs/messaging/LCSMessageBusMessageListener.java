@@ -15,7 +15,7 @@
 package com.liferay.lcs.messaging;
 
 import com.liferay.lcs.advisor.LCSKeyAdvisor;
-import com.liferay.lcs.service.LCSGatewayService;
+import com.liferay.lcs.platform.gateway.LCSGatewayService;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
 

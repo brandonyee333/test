@@ -78,7 +78,7 @@ catch (Exception e) {
 		</c:if>
 
 		<%
-			LCSGatewayService lcsGatewayService = (LCSGatewayService)beanLocator.locate("com.liferay.lcs.service.LCSGatewayService");
+			LCSGatewayService lcsGatewayService = (LCSGatewayService)beanLocator.locate("com.liferay.lcs.platform.gateway.LCSGatewayService");
 
 			boolean ready = lcsGatewayService.isAvailable();
 

@@ -14,7 +14,7 @@
 
 package com.liferay.lcs.task.scheduler.messaging;
 
-import com.liferay.lcs.service.LCSGatewayService;
+import com.liferay.lcs.platform.gateway.LCSGatewayService;
 import com.liferay.lcs.task.ScheduledTask;
 import com.liferay.portal.kernel.bean.BeanLocator;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;

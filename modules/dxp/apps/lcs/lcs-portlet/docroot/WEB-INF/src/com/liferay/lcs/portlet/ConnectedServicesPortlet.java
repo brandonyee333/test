@@ -15,7 +15,7 @@
 package com.liferay.lcs.portlet;
 
 import com.liferay.lcs.advisor.LCSPortletStateAdvisor;
-import com.liferay.lcs.service.LCSGatewayService;
+import com.liferay.lcs.platform.gateway.LCSGatewayService;
 import com.liferay.portal.kernel.bean.BeanLocator;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -73,7 +73,7 @@ public class ConnectedServicesPortlet extends MVCPortlet {
 
 		LCSGatewayService lcsGatewayService =
 			(LCSGatewayService)beanLocator.locate(
-				"com.liferay.lcs.service.LCSGatewayService");
+				"com.liferay.lcs.platform.gateway.LCSGatewayService");
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 

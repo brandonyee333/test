@@ -12,11 +12,10 @@
  *
  */
 
-package com.liferay.lcs.service;
+package com.liferay.lcs.platform.gateway;
 
 import com.liferay.lcs.exception.CompressionException;
 import com.liferay.lcs.messaging.Message;
-import com.liferay.lcs.platform.gateway.LCSGatewayStateListener;
 import com.liferay.lcs.task.TaskStateListener;
 import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 

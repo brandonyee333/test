@@ -16,7 +16,7 @@ package com.liferay.lcs.messaging;
 
 import com.liferay.lcs.command.Command;
 import com.liferay.lcs.messaging.security.DigitalSignature;
-import com.liferay.lcs.service.LCSGatewayService;
+import com.liferay.lcs.platform.gateway.LCSGatewayService;
 import com.liferay.lcs.util.LCSUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;

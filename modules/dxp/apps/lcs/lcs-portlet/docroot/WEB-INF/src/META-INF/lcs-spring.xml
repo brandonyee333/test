@@ -161,7 +161,7 @@
 
 	<!-- Service -->
 
-	<bean class="com.liferay.lcs.service.impl.LCSGatewayServiceImpl" id="com.liferay.lcs.service.LCSGatewayService">
+	<bean class="com.liferay.lcs.platform.gateway.impl.LCSGatewayServiceImpl" id="com.liferay.lcs.service.LCSGatewayService">
 		<property name="JSONWebServiceClient" ref="osbLCSGatewayWebJSONWebServiceClient" />
 	</bean>
 
