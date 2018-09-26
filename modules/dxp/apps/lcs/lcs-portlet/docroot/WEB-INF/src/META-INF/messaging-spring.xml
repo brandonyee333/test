@@ -49,22 +49,22 @@
 			</map>
 		</constructor-arg>
 		<constructor-arg name="digitalSignature" ref="com.liferay.lcs.messaging.security.DigitalSignature" />
-		<constructor-arg name="lcsConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
+		<constructor-arg name="lcsGatewayService" ref="com.liferay.lcs.service.LCSGatewayService" />
 	</bean>
 	<bean class="com.liferay.lcs.messaging.LCSLifecycleManager" id="messageListener.lcs_lifecycle_manager">
 		<constructor-arg name="taskSchedulerService" ref="com.liferay.lcs.scheduler.TaskSchedulerService" />
 		<constructor-arg name="uptimeMonitoringAdvisor" ref="com.liferay.lcs.advisor.UptimeMonitoringAdvisor" />
 	</bean>
 	<bean class="com.liferay.lcs.messaging.LCSMessageBusMessageListener" id="messageListener.lcs_message_bus">
-		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
-		<property name="LCSKeyAdvisor" ref="com.liferay.lcs.advisor.LCSKeyAdvisor" />
+		<constructor-arg name="lcsGatewayService" ref="com.liferay.lcs.service.LCSGatewayService" />
+		<constructor-arg name="lcsKeyAdvisor" ref="com.liferay.lcs.advisor.LCSKeyAdvisor" />
 	</bean>
 	<bean class="com.liferay.lcs.messaging.PortalMetricsMessageListener" id="messageListener.monitoring">
-		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
-		<property name="portalMetricsAggregator" ref="com.liferay.lcs.metrics.PortalMetricsAggregator" />
+		<constructor-arg name="lcsGatewayService" ref="com.liferay.lcs.service.LCSGatewayService" />
+		<constructor-arg name="portalMetricsAggregator" ref="com.liferay.lcs.metrics.PortalMetricsAggregator" />
 	</bean>
 	<bean class="com.liferay.lcs.task.scheduler.messaging.TaskSchedulerReceiverMessageListener" id="messageListener.lcs_scheduler">
-		<property name="LCSConnectionManager" ref="com.liferay.lcs.util.LCSConnectionManager" />
+		<constructor-arg name="lcsGatewayService" ref="com.liferay.lcs.service.LCSGatewayService" />
 	</bean>
 
 	<!-- Configurator -->
@@ -112,5 +112,7 @@
 
 	<!-- Scheduler -->
 
-	<bean class="com.liferay.lcs.messaging.scheduler.impl.MessageListenerSchedulerServiceImpl" id="com.liferay.lcs.messaging.scheduler.impl.MessageListenerSchedulerService" />
+	<bean class="com.liferay.lcs.messaging.scheduler.impl.MessageListenerSchedulerServiceImpl" id="com.liferay.lcs.messaging.scheduler.impl.MessageListenerSchedulerService">
+		<constructor-arg ref="com.liferay.lcs.service.LCSGatewayService" />
+	</bean>
 </beans>
