@@ -15,13 +15,22 @@
 package com.liferay.lcs.task.scheduler;
 
 import java.util.Map;
+import java.util.concurrent.Future;
 
 /**
  * @author Riccardo Ferrari
  */
 public interface TaskSchedulerService {
 
+	public void executeLCSConnectorRunnable(boolean delayRun);
+
 	public void scheduleTask(Map<String, String> schedulerContext);
+
+	public void scheduleUptimeMonitoringTask();
+
+	public Future<?> submitHandshakeTask();
+
+	public Future<?> submitSignOffTask(boolean serverManuallyShutdown);
 
 	public void unscheduleAllTasks();
 

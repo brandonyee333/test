@@ -14,11 +14,26 @@
 
 package com.liferay.lcs.task.scheduler.impl;
 
+import com.liferay.lcs.advisor.LCSAlertAdvisor;
+import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
+import com.liferay.lcs.advisor.LCSKeyAdvisor;
+import com.liferay.lcs.advisor.UptimeMonitoringAdvisor;
+import com.liferay.lcs.platform.LCSEvent;
+import com.liferay.lcs.platform.gateway.LCSGatewayStateListener;
+import com.liferay.lcs.runnable.LCSConnectorRunnable;
+import com.liferay.lcs.service.LCSGatewayService;
+import com.liferay.lcs.task.CommandMessageTask;
+import com.liferay.lcs.task.HandshakeTask;
+import com.liferay.lcs.task.HeartbeatTask;
 import com.liferay.lcs.task.ScheduledTask;
 import com.liferay.lcs.task.Scope;
+import com.liferay.lcs.task.SignOffTask;
+import com.liferay.lcs.task.UptimeMonitoringTask;
 import com.liferay.lcs.task.advisor.TaskAdvisor;
 import com.liferay.lcs.task.scheduler.TaskSchedulerService;
 import com.liferay.lcs.util.ClusterNodeUtil;
+import com.liferay.lcs.util.LCSConstants;
+import com.liferay.lcs.util.PortletPropsValues;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.bean.BeanLocator;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
@@ -41,6 +56,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ThreadFactory;
@@ -50,15 +66,28 @@ import java.util.concurrent.TimeUnit;
  * @author Riccardo Ferrari
  * @author Igor Beslic
  */
-public class TaskSchedulerServiceImpl implements TaskSchedulerService {
+public class TaskSchedulerServiceImpl
+	implements LCSGatewayStateListener, TaskSchedulerService {
 
 	public TaskSchedulerServiceImpl(
-		int defaultInterval, int scheduleDelayMax, TaskAdvisor taskAdvisor,
-		ThreadFactory threadFactory) {
+		int defaultInterval, LCSAlertAdvisor lcsAlertAdvisor,
+		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor,
+		LCSGatewayService lcsGatewayService, LCSKeyAdvisor lcsKeyAdvisor,
+		int scheduleDelayMax, TaskAdvisor taskAdvisor,
+		ThreadFactory threadFactory,
+		UptimeMonitoringAdvisor uptimeMonitoringAdvisor) {
 
 		_defaultInterval = defaultInterval;
+		_lcsAlertAdvisor = lcsAlertAdvisor;
+		_lcsClusterEntryTokenAdvisor = lcsClusterEntryTokenAdvisor;
+		_lcsGatewayService = lcsGatewayService;
+		_lcsKeyAdvisor = lcsKeyAdvisor;
 		_scheduleDelayMax = scheduleDelayMax;
 		_taskAdvisor = taskAdvisor;
+		_threadFactory = threadFactory;
+		_uptimeMonitoringAdvisor = uptimeMonitoringAdvisor;
+
+		_lcsGatewayService.registerLCSGatewayStateListener(this);
 
 		_scheduledExecutorService = Executors.newScheduledThreadPool(
 			10, threadFactory);
@@ -76,6 +105,32 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		}
 		catch (InterruptedException ie) {
 			_scheduledExecutorService.shutdownNow();
+		}
+	}
+
+	@Override
+	public void executeLCSConnectorRunnable(boolean delayRun) {
+		LCSConnectorRunnable lcsConnectorRunnable = new LCSConnectorRunnable(
+			delayRun);
+
+		lcsConnectorRunnable.setLCSClusterEntryTokenAdvisor(
+			_lcsClusterEntryTokenAdvisor);
+		lcsConnectorRunnable.setTaskSchedulerService(this);
+
+		_scheduledExecutorService.execute(lcsConnectorRunnable);
+
+		if (_log.isTraceEnabled()) {
+			_log.trace(lcsConnectorRunnable + " executed");
+		}
+	}
+
+	@Override
+	public void onLCSGatewayStateChanged(LCSEvent lcsEvent) {
+		if (lcsEvent == LCSEvent.AVAILABLE) {
+			_onLCSGatewayServiceAvailable();
+		}
+		else if (lcsEvent == LCSEvent.UNAVAILABLE) {
+			_onLCSGatewayServiceUnavailable();
 		}
 	}
 
@@ -122,6 +177,38 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 				_log.warn(sb.toString());
 			}
 		}
+	}
+
+	@Override
+	public void scheduleUptimeMonitoringTask() {
+		UptimeMonitoringTask uptimeMonitoringTask = new UptimeMonitoringTask();
+
+		_scheduledExecutorService.scheduleAtFixedRate(
+			uptimeMonitoringTask, 1, 1, TimeUnit.MINUTES);
+
+		if (_log.isTraceEnabled()) {
+			_log.trace(uptimeMonitoringTask.toString() + " scheduled");
+		}
+	}
+
+	@Override
+	public Future<?> submitHandshakeTask() {
+		return _scheduledExecutorService.submit(
+			new HandshakeTask(
+				_lcsClusterEntryTokenAdvisor.getLcsClusterEntryTokenId(),
+				_lcsAlertAdvisor, _lcsGatewayService, _lcsKeyAdvisor,
+				_threadFactory, _uptimeMonitoringAdvisor));
+	}
+
+	@Override
+	public Future<?> submitSignOffTask(boolean serverManuallyShutdown) {
+		SignOffTask signOffTask = new SignOffTask(
+			_lcsKeyAdvisor.getKey(), _lcsGatewayService,
+			serverManuallyShutdown);
+
+		Future<?> future = _scheduledExecutorService.submit(signOffTask);
+
+		return future;
 	}
 
 	@Override
@@ -261,6 +348,46 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		_scheduledFuturesMap.clear();
 	}
 
+	private void _onLCSGatewayServiceAvailable() {
+		if (_log.isTraceEnabled()) {
+			_log.trace("Scheduling command message task");
+		}
+
+		Class<?> clazz = CommandMessageTask.class;
+
+		_scheduledFuturesMap.put(
+			clazz.getName(),
+			_scheduledExecutorService.scheduleAtFixedRate(
+				new CommandMessageTask(
+					_lcsKeyAdvisor.getKey(), _lcsGatewayService),
+				LCSConstants.COMMAND_MESSAGE_TASK_SCHEDULE_PERIOD,
+				LCSConstants.COMMAND_MESSAGE_TASK_SCHEDULE_PERIOD,
+				TimeUnit.SECONDS));
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Scheduling heartbeat task");
+		}
+
+		clazz = HeartbeatTask.class;
+
+		_scheduledFuturesMap.put(
+			clazz.getName(),
+			_scheduledExecutorService.scheduleAtFixedRate(
+				new HeartbeatTask(_lcsKeyAdvisor.getKey(), _lcsGatewayService),
+				10000L,
+				GetterUtil.getLong(
+					PortletPropsValues.COMMUNICATION_HEARTBEAT_INTERVAL),
+				TimeUnit.MILLISECONDS));
+	}
+
+	private void _onLCSGatewayServiceUnavailable() {
+		unscheduleAllTasks();
+
+		_taskAdvisor.reset();
+
+		executeLCSConnectorRunnable(true);
+	}
+
 	private void _scheduleClusteredScheduledTask(
 		Map<String, String> schedulerContext) {
 
@@ -325,10 +452,16 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		TaskSchedulerServiceImpl.class);
 
 	private final int _defaultInterval;
+	private final LCSAlertAdvisor _lcsAlertAdvisor;
+	private final LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
+	private final LCSGatewayService _lcsGatewayService;
+	private final LCSKeyAdvisor _lcsKeyAdvisor;
 	private final int _scheduleDelayMax;
 	private final ScheduledExecutorService _scheduledExecutorService;
 	private final Map<String, ScheduledFuture<?>> _scheduledFuturesMap =
 		new HashMap<>();
 	private final TaskAdvisor _taskAdvisor;
+	private final ThreadFactory _threadFactory;
+	private final UptimeMonitoringAdvisor _uptimeMonitoringAdvisor;
 
 }
