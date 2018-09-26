@@ -16,7 +16,7 @@ package com.liferay.lcs.task;
 
 import com.liferay.lcs.messaging.CommandMessage;
 import com.liferay.lcs.messaging.Message;
-import com.liferay.lcs.util.LCSConnectionManager;
+import com.liferay.lcs.service.LCSGatewayService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
@@ -29,11 +29,9 @@ import java.util.List;
  */
 public class CommandMessageTask implements Task {
 
-	public CommandMessageTask(
-		String key, LCSConnectionManager lcsConnectionManager) {
-
+	public CommandMessageTask(String key, LCSGatewayService lcsGatewayService) {
 		_key = key;
-		_lcsConnectionManager = lcsConnectionManager;
+		_lcsGatewayService = lcsGatewayService;
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Initialized " + this);
@@ -55,9 +53,9 @@ public class CommandMessageTask implements Task {
 			_log.trace("Running command message task");
 		}
 
-		if (!_lcsConnectionManager.isReady()) {
+		if (!_lcsGatewayService.isAvailable()) {
 			if (_log.isDebugEnabled()) {
-				_log.debug("Waiting for LCS connection manager");
+				_log.debug("Waiting for LCS gateway service");
 			}
 
 			return;
@@ -67,7 +65,7 @@ public class CommandMessageTask implements Task {
 			_log.trace("Checking messages for " + _key);
 		}
 
-		List<Message> messages = _lcsConnectionManager.getMessages(_key);
+		List<Message> messages = _lcsGatewayService.getMessages(_key);
 
 		for (Message message : messages) {
 			if (_log.isTraceEnabled()) {
@@ -76,10 +74,6 @@ public class CommandMessageTask implements Task {
 
 			if (message instanceof CommandMessage) {
 				MessageBusUtil.sendMessage("liferay/lcs_commands", message);
-
-				_lcsConnectionManager.putLCSConnectionMetadata(
-					"messageTaskTime",
-					String.valueOf(System.currentTimeMillis()));
 			}
 			else {
 				_log.error("Unknown message " + message);
@@ -100,6 +94,6 @@ public class CommandMessageTask implements Task {
 		CommandMessageTask.class);
 
 	private final String _key;
-	private final LCSConnectionManager _lcsConnectionManager;
+	private final LCSGatewayService _lcsGatewayService;
 
 }

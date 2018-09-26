@@ -16,7 +16,7 @@ package com.liferay.lcs.task;
 
 import com.liferay.lcs.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.messaging.Message;
-import com.liferay.lcs.util.LCSConnectionManager;
+import com.liferay.lcs.service.LCSGatewayService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -28,7 +28,7 @@ public abstract class BaseScheduledTask implements ScheduledTask {
 
 	@Override
 	public void run() {
-		if (!_lcsConnectionManager.isReady()) {
+		if (!_lcsGatewayService.isAvailable()) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(getClass() + " waiting for LCS connection manager");
 			}
@@ -44,10 +44,8 @@ public abstract class BaseScheduledTask implements ScheduledTask {
 		}
 	}
 
-	public void setLCSConnectionManager(
-		LCSConnectionManager lcsConnectionManager) {
-
-		_lcsConnectionManager = lcsConnectionManager;
+	public void setLCSGatewayService(LCSGatewayService lcsGatewayService) {
+		_lcsGatewayService = lcsGatewayService;
 	}
 
 	public void setLCSKeyAdvisor(LCSKeyAdvisor lcsKeyAdvisor) {
@@ -66,7 +64,7 @@ public abstract class BaseScheduledTask implements ScheduledTask {
 		}
 
 		try {
-			_lcsConnectionManager.sendMessage(message);
+			_lcsGatewayService.sendMessage(message);
 		}
 		catch (Exception e) {
 			_log.error("Unable to send message", e);
@@ -76,7 +74,7 @@ public abstract class BaseScheduledTask implements ScheduledTask {
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseScheduledTask.class);
 
-	private LCSConnectionManager _lcsConnectionManager;
+	private LCSGatewayService _lcsGatewayService;
 	private LCSKeyAdvisor _lcsKeyAdvisor;
 
 }

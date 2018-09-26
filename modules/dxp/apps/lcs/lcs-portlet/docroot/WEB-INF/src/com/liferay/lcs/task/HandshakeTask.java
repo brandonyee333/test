@@ -26,8 +26,8 @@ import com.liferay.lcs.messaging.HandshakeResponseMessage;
 import com.liferay.lcs.messaging.Message;
 import com.liferay.lcs.messaging.ResponseMessage;
 import com.liferay.lcs.runnable.LCSPortletBuildNumberCheckRunnable;
+import com.liferay.lcs.service.LCSGatewayService;
 import com.liferay.lcs.util.LCSAlert;
-import com.liferay.lcs.util.LCSConnectionManager;
 import com.liferay.lcs.util.LCSPatcherUtil;
 import com.liferay.lcs.util.LCSUtil;
 import com.liferay.lcs.util.PortletPropsValues;
@@ -71,7 +71,7 @@ public class HandshakeTask implements Task {
 
 	public HandshakeTask(
 		long lcsClusterEntryTokenId, LCSAlertAdvisor lcsAlertAdvisor,
-		LCSConnectionManager lcsConnectionManager, LCSKeyAdvisor lcsKeyAdvisor,
+		LCSGatewayService lcsConnectionManager, LCSKeyAdvisor lcsKeyAdvisor,
 		ThreadFactory threadFactory,
 		UptimeMonitoringAdvisor uptimeMonitoringAdvisor) {
 
@@ -81,12 +81,9 @@ public class HandshakeTask implements Task {
 		_handshakeWaitTime = GetterUtil.getLong(
 			PortletPropsValues.COMMUNICATION_HANDSHAKE_WAIT_TIME, 60000L);
 
-		_heartbeatInterval = GetterUtil.getLong(
-			PortletPropsValues.COMMUNICATION_HEARTBEAT_INTERVAL, 60000L);
-
 		_lcsClusterEntryTokenId = lcsClusterEntryTokenId;
 		_lcsAlertAdvisor = lcsAlertAdvisor;
-		_lcsConnectionManager = lcsConnectionManager;
+		_lcsGatewayService = lcsConnectionManager;
 		_lcsKeyAdvisor = lcsKeyAdvisor;
 		_threadFactory = threadFactory;
 		_uptimeMonitoringAdvisor = uptimeMonitoringAdvisor;
@@ -97,6 +94,10 @@ public class HandshakeTask implements Task {
 		else {
 			_key = _createTemporaryKey();
 		}
+
+		_taskStateListeners = new ArrayList<>();
+
+		_taskStateListeners.add(_lcsGatewayService);
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Initialized " + this);
@@ -109,6 +110,8 @@ public class HandshakeTask implements Task {
 			doRun();
 		}
 		catch (Exception e) {
+			_notifyOnTaskFailTaskStateListeners();
+
 			if (e instanceof LCSHandshakeException) {
 				throw (LCSHandshakeException)e;
 			}
@@ -123,18 +126,18 @@ public class HandshakeTask implements Task {
 		}
 
 		if (!_temporaryKey) {
-			_lcsConnectionManager.deleteMessages(_key);
+			_lcsGatewayService.deleteMessages(_key);
 		}
 
 		HandshakeMessage handshakeMessage = _createHandshakeMessage();
 
-		_lcsConnectionManager.sendMessage(handshakeMessage);
+		_lcsGatewayService.sendMessage(handshakeMessage);
 
 		_waitForHandshakeResponse();
 
 		_uptimeMonitoringAdvisor.resetUptimes();
 
-		_lcsConnectionManager.onHandshakeSuccess();
+		_notifyOnTaskSuccessTaskStateListeners();
 
 		if (_log.isInfoEnabled()) {
 			_log.info("Established connection");
@@ -221,7 +224,11 @@ public class HandshakeTask implements Task {
 			ClusterExecutorUtil.isEnabled());
 		handshakeMessage.setCompanyIdsWebIds(_getCompanyIdsWebIds());
 		handshakeMessage.setHashCode(_key.hashCode());
-		handshakeMessage.setHeartbeatInterval(_heartbeatInterval);
+
+		handshakeMessage.setHeartbeatInterval(
+			GetterUtil.getLong(
+				PortletPropsValues.COMMUNICATION_HEARTBEAT_INTERVAL, 60000L));
+
 		handshakeMessage.setKey(_key);
 		handshakeMessage.setLCSClusterEntryTokenId(_lcsClusterEntryTokenId);
 
@@ -326,6 +333,18 @@ public class HandshakeTask implements Task {
 		return false;
 	}
 
+	private void _notifyOnTaskFailTaskStateListeners() {
+		for (TaskStateListener taskStateListener : _taskStateListeners) {
+			taskStateListener.onTaskFail(HandshakeTask.class);
+		}
+	}
+
+	private void _notifyOnTaskSuccessTaskStateListeners() {
+		for (TaskStateListener taskStateListener : _taskStateListeners) {
+			taskStateListener.onTaskSuccess(HandshakeTask.class);
+		}
+	}
+
 	private void _submitLCSPortletBuildNumberCheck(
 		int latestLCSPortletBuildNumber) {
 
@@ -349,7 +368,7 @@ public class HandshakeTask implements Task {
 						_handshakeReplyReads + " handshakes");
 			}
 
-			receivedMessages = _lcsConnectionManager.getMessages(_key);
+			receivedMessages = _lcsGatewayService.getMessages(_key);
 
 			if (receivedMessages.isEmpty()) {
 				try {
@@ -401,12 +420,12 @@ public class HandshakeTask implements Task {
 
 	private final int _handshakeReplyReads;
 	private final long _handshakeWaitTime;
-	private final long _heartbeatInterval;
 	private final String _key;
 	private final LCSAlertAdvisor _lcsAlertAdvisor;
 	private final long _lcsClusterEntryTokenId;
-	private final LCSConnectionManager _lcsConnectionManager;
+	private final LCSGatewayService _lcsGatewayService;
 	private final LCSKeyAdvisor _lcsKeyAdvisor;
+	private final List<TaskStateListener> _taskStateListeners;
 	private boolean _temporaryKey;
 	private final ThreadFactory _threadFactory;
 	private final UptimeMonitoringAdvisor _uptimeMonitoringAdvisor;

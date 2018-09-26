@@ -16,7 +16,7 @@ package com.liferay.lcs.task;
 
 import com.liferay.lcs.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.management.MBeanServerService;
-import com.liferay.lcs.util.LCSConnectionManager;
+import com.liferay.lcs.service.LCSGatewayService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ServerDetector;
@@ -25,6 +25,15 @@ import com.liferay.portal.kernel.util.ServerDetector;
  * @author Riccardo Ferrari
  */
 public class ServerMetricsTaskFactory {
+
+	public ServerMetricsTaskFactory(
+		LCSGatewayService lcsGatewayService, LCSKeyAdvisor lcsKeyAdvisor,
+		MBeanServerService mBeanServerService) {
+
+		_lcsGatewayService = lcsGatewayService;
+		_lcsKeyAdvisor = lcsKeyAdvisor;
+		_mBeanServerService = mBeanServerService;
+	}
 
 	public ServerMetricsTask getInstance() {
 		ServerMetricsTask serverMetricsTask = null;
@@ -54,31 +63,17 @@ public class ServerMetricsTaskFactory {
 		}
 
 		serverMetricsTask.setLCSKeyAdvisor(_lcsKeyAdvisor);
-		serverMetricsTask.setLCSConnectionManager(_lcsConnectionManager);
+		serverMetricsTask.setLCSGatewayService(_lcsGatewayService);
 		serverMetricsTask.setMBeanServerService(_mBeanServerService);
 
 		return serverMetricsTask;
 	}
 
-	public void setLCSConnectionManager(
-		LCSConnectionManager lcsConnectionManager) {
-
-		_lcsConnectionManager = lcsConnectionManager;
-	}
-
-	public void setLCSKeyAdvisor(LCSKeyAdvisor lcsKeyAdvisor) {
-		_lcsKeyAdvisor = lcsKeyAdvisor;
-	}
-
-	public void setmBeanServerService(MBeanServerService mBeanServerService) {
-		_mBeanServerService = mBeanServerService;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		ServerMetricsTaskFactory.class);
 
-	private LCSConnectionManager _lcsConnectionManager;
-	private LCSKeyAdvisor _lcsKeyAdvisor;
-	private MBeanServerService _mBeanServerService;
+	private final LCSGatewayService _lcsGatewayService;
+	private final LCSKeyAdvisor _lcsKeyAdvisor;
+	private final MBeanServerService _mBeanServerService;
 
 }

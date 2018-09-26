@@ -15,14 +15,11 @@
 package com.liferay.lcs.task;
 
 import com.liferay.lcs.advisor.LCSPortletStateAdvisor;
-import com.liferay.lcs.util.LCSConnectionManager;
+import com.liferay.lcs.service.LCSGatewayService;
 import com.liferay.lcs.util.LCSUtil;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
-
-import java.util.Map;
 
 /**
  * @author Igor Beslic
@@ -30,10 +27,10 @@ import java.util.Map;
 public class LicenseManagerTask implements ScheduledTask {
 
 	public LicenseManagerTask(
-		LCSConnectionManager lcsConnectionManager,
+		LCSGatewayService lcsGatewayService,
 		LCSPortletStateAdvisor lcsPortletStateAdvisor) {
 
-		_lcsConnectionManager = lcsConnectionManager;
+		_lcsGatewayService = lcsGatewayService;
 		_lcsPortletStateAdvisor = lcsPortletStateAdvisor;
 
 		if (_log.isTraceEnabled()) {
@@ -52,19 +49,12 @@ public class LicenseManagerTask implements ScheduledTask {
 			_log.trace("Running license manager task");
 		}
 
-		Map<String, String> lcsConnectionMetadata =
-			_lcsConnectionManager.getLCSConnectionMetadata();
-
-		if (_log.isTraceEnabled()) {
-			_log.trace("Checking LCS portlet state");
-		}
-
 		long currentTimeMills = System.currentTimeMillis();
 
-		long licenseCheckTime = GetterUtil.getLong(
-			lcsConnectionMetadata.get("licenseCheckTime"));
+		long lastLicenseCheckTime =
+			_lcsPortletStateAdvisor.getLastLicenseCheckTime();
 
-		if ((currentTimeMills - licenseCheckTime) < _LICENSE_CHECK_PERIOD) {
+		if ((currentTimeMills - lastLicenseCheckTime) < _LICENSE_CHECK_PERIOD) {
 			LCSUtil.processLCSPortletState(
 				_lcsPortletStateAdvisor.getLCSPortletState(false));
 
@@ -80,8 +70,7 @@ public class LicenseManagerTask implements ScheduledTask {
 
 		LCSUtil.processLCSPortletState(lcsPortletState);
 
-		_lcsConnectionManager.putLCSConnectionMetadata(
-			"licenseCheckTime", String.valueOf(currentTimeMills));
+		_lcsPortletStateAdvisor.updateLicenseCheckTime();
 	}
 
 	@Override
@@ -98,7 +87,7 @@ public class LicenseManagerTask implements ScheduledTask {
 	private static final Log _log = LogFactoryUtil.getLog(
 		LicenseManagerTask.class);
 
-	private final LCSConnectionManager _lcsConnectionManager;
+	private final LCSGatewayService _lcsGatewayService;
 	private final LCSPortletStateAdvisor _lcsPortletStateAdvisor;
 
 }

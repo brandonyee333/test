@@ -16,7 +16,7 @@ package com.liferay.lcs.task;
 
 import com.liferay.lcs.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.management.MBeanServerService;
-import com.liferay.lcs.util.LCSConnectionManager;
+import com.liferay.lcs.service.LCSGatewayService;
 
 /**
  * @author Riccardo Ferrari
@@ -27,8 +27,7 @@ public interface ServerMetricsTask extends ScheduledTask {
 
 	public boolean isJDBCConnectionPoolsMetricsEnabled();
 
-	public void setLCSConnectionManager(
-		LCSConnectionManager lcsConnectionManager);
+	public void setLCSGatewayService(LCSGatewayService lcsGatewayService);
 
 	public void setLCSKeyAdvisor(LCSKeyAdvisor lcsKeyAdvisor);
 

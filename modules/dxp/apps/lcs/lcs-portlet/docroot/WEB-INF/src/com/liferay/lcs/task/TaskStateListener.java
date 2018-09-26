@@ -16,12 +16,11 @@ package com.liferay.lcs.task;
 
 /**
  * @author Igor Beslic
- * @param <T> concrete task to listen for
  */
-public interface TaskStateListener<T> {
+public interface TaskStateListener {
 
-	public void onTaskFail();
+	public void onTaskFail(Class<? extends Task> taskClass);
 
-	public void onTaskSuccess();
+	public void onTaskSuccess(Class<? extends Task> taskClass);
 
 }

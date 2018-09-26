@@ -15,10 +15,15 @@
 package com.liferay.lcs.task;
 
 import com.liferay.lcs.messaging.HandshakeMessage;
-import com.liferay.lcs.util.LCSConnectionManager;
+import com.liferay.lcs.service.LCSGatewayService;
+import com.liferay.lcs.util.LCSUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Ivica Cardic
@@ -26,9 +31,17 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
  */
 public class SignOffTask implements Task {
 
-	public SignOffTask(String key, LCSConnectionManager lcsConnectionManager) {
+	public SignOffTask(
+		String key, LCSGatewayService lcsGatewayService,
+		boolean serverManuallyShutdown) {
+
 		_key = key;
-		_lcsConnectionManager = lcsConnectionManager;
+		_lcsGatewayService = lcsGatewayService;
+		_serverManuallyShutdown = serverManuallyShutdown;
+
+		_taskStateListeners = new ArrayList<>();
+
+		_taskStateListeners.add(lcsGatewayService);
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Initialized " + this);
@@ -45,10 +58,6 @@ public class SignOffTask implements Task {
 		}
 	}
 
-	public void setServerManuallyShutdown(boolean serverManuallyShutdown) {
-		_serverManuallyShutdown = serverManuallyShutdown;
-	}
-
 	protected void doRun() throws PortalException {
 		if (_log.isTraceEnabled()) {
 			_log.trace("Running sign off task");
@@ -61,14 +70,20 @@ public class SignOffTask implements Task {
 		handshakeMessage.setKey(_key);
 
 		try {
-			_lcsConnectionManager.sendMessage(handshakeMessage);
+			_lcsGatewayService.sendMessage(handshakeMessage);
+
+			LCSUtil.processLCSPortletState(LCSPortletState.NO_CONNECTION);
 
 			if (_log.isInfoEnabled()) {
 				_log.info("Signed off from LCS platform");
 			}
+
+			_notifyOnTaskSuccessTaskStateListeners();
 		}
 		catch (Exception e) {
 			_log.error("Unable to send sign off message", e);
+
+			_notifyOnTaskFailTaskStateListeners();
 		}
 	}
 
@@ -81,10 +96,23 @@ public class SignOffTask implements Task {
 		}
 	}
 
+	private void _notifyOnTaskFailTaskStateListeners() {
+		for (TaskStateListener taskStateListener : _taskStateListeners) {
+			taskStateListener.onTaskFail(SignOffTask.class);
+		}
+	}
+
+	private void _notifyOnTaskSuccessTaskStateListeners() {
+		for (TaskStateListener taskStateListener : _taskStateListeners) {
+			taskStateListener.onTaskSuccess(SignOffTask.class);
+		}
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(SignOffTask.class);
 
 	private final String _key;
-	private final LCSConnectionManager _lcsConnectionManager;
-	private boolean _serverManuallyShutdown;
+	private final LCSGatewayService _lcsGatewayService;
+	private final boolean _serverManuallyShutdown;
+	private final List<TaskStateListener> _taskStateListeners;
 
 }
