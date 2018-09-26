@@ -14,9 +14,13 @@
 
 package com.liferay.lcs.portlet;
 
-import com.liferay.lcs.util.LCSConnectionManagerUtil;
+import com.liferay.lcs.advisor.LCSPortletStateAdvisor;
+import com.liferay.lcs.service.LCSGatewayService;
+import com.liferay.portal.kernel.bean.BeanLocator;
+import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
@@ -64,13 +68,33 @@ public class ConnectedServicesPortlet extends MVCPortlet {
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 		throws Exception {
 
+		BeanLocator beanLocator = PortletBeanLocatorUtil.getBeanLocator(
+			"lcs-portlet");
+
+		LCSGatewayService lcsGatewayService =
+			(LCSGatewayService)beanLocator.locate(
+				"com.liferay.lcs.service.LCSGatewayService");
+
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		jsonObject.put(
-			"lcsGatewayAvailable",
-			LCSConnectionManagerUtil.isLCSGatewayAvailable());
-		jsonObject.put(
-			"ready", LCSConnectionManagerUtil.isLCSGatewayAvailable());
+		jsonObject.put("lcsGatewayAvailable", lcsGatewayService.isAvailable());
+
+		LCSPortletStateAdvisor lcsPortletStateAdvisor =
+			(LCSPortletStateAdvisor)beanLocator.locate(
+				"com.liferay.lcs.advisor.LCSPortletStateAdvisor");
+
+		LCSPortletState lcsPortletState =
+			lcsPortletStateAdvisor.getLCSPortletState(false);
+
+		if ((lcsPortletState == LCSPortletState.NO_CONNECTION) ||
+			(lcsPortletState == LCSPortletState.NOT_REGISTERED)) {
+
+			jsonObject.put("ready", Boolean.FALSE);
+		}
+		else {
+			jsonObject.put("ready", Boolean.TRUE);
+		}
+
 		jsonObject.put("result", "success");
 
 		writeJSON(resourceRequest, resourceResponse, jsonObject);
