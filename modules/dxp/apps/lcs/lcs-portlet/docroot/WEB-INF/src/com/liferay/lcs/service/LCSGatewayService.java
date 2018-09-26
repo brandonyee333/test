@@ -30,6 +30,12 @@ public interface LCSGatewayService extends TaskStateListener {
 
 	public void deleteMessages(String key) throws JSONWebServiceException;
 
+	public long getLastHandshakeSuccess();
+
+	public long getLastMessageReceived();
+
+	public long getLastMessageSent();
+
 	public List<Message> getMessages(String key) throws JSONWebServiceException;
 
 	public boolean isAvailable();

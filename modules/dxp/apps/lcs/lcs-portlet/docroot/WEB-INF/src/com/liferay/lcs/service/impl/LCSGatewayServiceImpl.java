@@ -58,6 +58,18 @@ public class LCSGatewayServiceImpl implements LCSGatewayService {
 		}
 	}
 
+	public long getLastHandshakeSuccess() {
+		return _lastHandshakeSuccess;
+	}
+
+	public long getLastMessageReceived() {
+		return _lastMessageReceived;
+	}
+
+	public long getLastMessageSent() {
+		return _lastMessageSent;
+	}
+
 	@Override
 	public List<Message> getMessages(String key)
 		throws JSONWebServiceException {
@@ -118,6 +130,7 @@ public class LCSGatewayServiceImpl implements LCSGatewayService {
 			}
 
 			_available = true;
+			_lastHandshakeSuccess = System.currentTimeMillis();
 
 			_notifyStateChangedListeners(LCSEvent.AVAILABLE);
 
@@ -276,6 +289,7 @@ public class LCSGatewayServiceImpl implements LCSGatewayService {
 	private volatile boolean _available;
 	private final Map<String, String> _baseHeaders = new HashMap<>();
 	private JSONWebServiceClient _jsonWebServiceClient;
+	private long _lastHandshakeSuccess;
 	private long _lastMessageReceived;
 	private long _lastMessageSent;
 	private final List<LCSGatewayStateListener> _lcsGatewayStateListeners =
