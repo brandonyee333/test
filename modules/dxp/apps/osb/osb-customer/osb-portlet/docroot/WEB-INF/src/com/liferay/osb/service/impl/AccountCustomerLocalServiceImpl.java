@@ -27,7 +27,6 @@ import com.liferay.osb.service.base.AccountCustomerLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBCustomSQLParam;
 import com.liferay.osb.util.VisibilityConstants;
-import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.CustomSQLParam;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
@@ -38,6 +37,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -374,8 +374,7 @@ public class AccountCustomerLocalServiceImpl
 		LinkedHashMap<String, Object> userParams = new LinkedHashMap<>();
 
 		String customJoinSQL = CustomSQLUtil.get(
-			getClass(),
-			"com.liferay.portal.service.persistence.UserFinder." +
+			"com.liferay.portal.kernel.service.persistence.UserFinder." +
 				"joinByDossieraAccountAccountCustomer");
 
 		CustomSQLParam customSQLParam = new OSBCustomSQLParam(

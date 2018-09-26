@@ -75,7 +75,7 @@ public class CorpProjectRoleAssignedMessageProcessor
 				OSBConstants.ROLE_OSB_CORP_ANALYTICS_CLOUD_OWNER_ID) {
 
 			AccountEntryLocalServiceUtil.assignOwnership(
-				corpProject.getCorpProjectId(), user.getUserId());
+				corpProject.getUuid(), user.getUserId());
 		}
 	}
 

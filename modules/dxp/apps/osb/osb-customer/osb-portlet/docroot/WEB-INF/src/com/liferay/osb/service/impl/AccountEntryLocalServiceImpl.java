@@ -641,10 +641,11 @@ public class AccountEntryLocalServiceImpl
 			accountEntry, workflowServiceContext);
 	}
 
-	public void assignOwnership(long corpProjectId, long userId)
+	public void assignOwnership(String corpProjectUuid, long userId)
 		throws PortalException {
 
-		AccountEntry accountEntry = fetchCorpProjectAccountEntry(corpProjectId);
+		AccountEntry accountEntry = fetchCorpProjectAccountEntry(
+			corpProjectUuid);
 
 		if ((accountEntry == null) ||
 			(accountEntry.getType() !=
@@ -653,8 +654,8 @@ public class AccountEntryLocalServiceImpl
 			return;
 		}
 
-		CorpProject corpProject = corpProjectLocalService.getCorpProject(
-			corpProjectId);
+		CorpProject corpProject = corpProjectLocalService.getCorpProjectByUuid(
+			corpProjectUuid);
 
 		Group group = corpProject.getGroup();
 
@@ -684,17 +685,18 @@ public class AccountEntryLocalServiceImpl
 				accountEntry.getAccountEntryId());
 
 		for (AccountCustomer accountCustomer : acccountCustomers) {
-			if (userId != accountCustomer.getUserId()) {
+			if (userId == accountCustomer.getUserId()) {
+				accountCustomerLocalService.updateAccountCustomer(
+					OSBConstants.USER_DEFAULT_USER_ID,
+					accountCustomer.getAccountCustomerId(),
+					AccountCustomerConstants.ROLE_DEVELOPER,
+					AccountCustomerConstants.NOTIFICATIONS_NONE);
+			}
+			else {
 				accountCustomerLocalService.deleteAccountCustomer(
 					accountCustomer);
 			}
 		}
-
-		accountCustomerLocalService.addAccountCustomer(
-			OSBConstants.USER_DEFAULT_USER_ID, userId,
-			accountEntry.getAccountEntryId(),
-			AccountCustomerConstants.ROLE_DEVELOPER,
-			AccountCustomerConstants.NOTIFICATIONS_NONE);
 	}
 
 	public void auditAccountEntries() throws PortalException {
@@ -2194,6 +2196,8 @@ public class AccountEntryLocalServiceImpl
 
 			if (!LanguageUtil.isAvailableLocale(locale)) {
 				locale = LocaleUtil.getDefault();
+
+				user.setLanguageId(LocaleUtil.toLanguageId(locale));
 			}
 
 			SubscriptionSender subscriptionSender = new SubscriptionSender();
