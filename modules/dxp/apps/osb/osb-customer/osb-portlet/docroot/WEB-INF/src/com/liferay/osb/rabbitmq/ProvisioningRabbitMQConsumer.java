@@ -14,6 +14,7 @@
 
 package com.liferay.osb.rabbitmq;
 
+import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.osb.exception.NoSuchCorpProjectException;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
@@ -41,6 +42,7 @@ import com.liferay.osb.service.CorpProjectLocalServiceUtil;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.osb.service.PartnerEntryLocalServiceUtil;
 import com.liferay.osb.service.ProductEntryLocalServiceUtil;
+import com.liferay.osb.service.RemoteUserLocalServiceUtil;
 import com.liferay.osb.service.SupportRegionLocalServiceUtil;
 import com.liferay.osb.service.SupportResponseLocalServiceUtil;
 import com.liferay.osb.support.util.SupportUtil;
@@ -144,6 +146,38 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 
 	protected abstract void doParse(JSONObject jsonObject)
 		throws PortalException;
+
+	protected User fetchRemoteUser(String emailAddress) throws PortalException {
+		User remoteUser = RemoteUserLocalServiceUtil.fetchUserByEmailAddress(
+			emailAddress);
+
+		if (remoteUser == null) {
+			return null;
+		}
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setCreateDate(remoteUser.getCreateDate());
+		serviceContext.setUuid(remoteUser.getUuid());
+
+		User user = UserLocalServiceUtil.addUser(
+			OSBConstants.USER_DEFAULT_USER_ID, OSBConstants.COMPANY_ID, true,
+			StringPool.BLANK, StringPool.BLANK, false,
+			remoteUser.getScreenName(), remoteUser.getEmailAddress(), 0,
+			StringPool.BLANK, remoteUser.getLocale(), remoteUser.getFirstName(),
+			remoteUser.getMiddleName(), remoteUser.getLastName(), 0, 0, false,
+			0, 1, 1970, StringPool.BLANK, new long[0],
+			remoteUser.getOrganizationIds(), remoteUser.getRoleIds(),
+			new long[0], false, serviceContext);
+
+		ExpandoBridge expandoBridge = user.getExpandoBridge();
+
+		ExpandoBridge remoteExpandoBridge = remoteUser.getExpandoBridge();
+
+		expandoBridge.setAttributes(remoteExpandoBridge.getAttributes(), false);
+
+		return user;
+	}
 
 	protected SupportResponse fetchSupportResponse(
 			JSONArray bundledProductsJSONArray)
@@ -1144,12 +1178,15 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 		return partnerEntry;
 	}
 
-	protected ArrayList<User> parseUsers(JSONObject jsonObject) {
+	protected ArrayList<User> parseUsers(JSONObject jsonObject)
+		throws PortalException {
+
 		return parseUsers(jsonObject, "Analytics Cloud Owner", true);
 	}
 
 	protected ArrayList<User> parseUsers(
-		JSONObject jsonObject, String filterRoleName, boolean excludeFilter) {
+			JSONObject jsonObject, String filterRoleName, boolean excludeFilter)
+		throws PortalException {
 
 		JSONArray contactsJSONArray = jsonObject.getJSONArray("_contacts");
 
@@ -1179,6 +1216,10 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 
 			User user = UserLocalServiceUtil.fetchUserByEmailAddress(
 				OSBConstants.COMPANY_ID, emailAddress);
+
+			if (user == null) {
+				user = fetchRemoteUser(emailAddress);
+			}
 
 			if (user == null) {
 				user = UserLocalServiceUtil.createUser(0);
