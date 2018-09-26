@@ -162,10 +162,10 @@ for (SupportRegion supportRegion : supportRegions) {
 						<liferay-ui:search-container-column-text
 							name="status"
 						>
-							<aui:select label="" name='<%= "status_" + key %>' onChange='<%= renderResponse.getNamespace() + "updateOfferingEntry('" + key + "', '" + StringUtil.merge(offeringEntryGroup.getOfferingEntryIds()) + "', '" + OfferingEntryConstants.getStatusLabel(offeringEntryGroup.getStatus()) + "');" %>'>
+							<aui:select label="" name='<%= "status_" + key %>' onChange='<%= renderResponse.getNamespace() + "updateOfferingEntry('" + key + "', '" + StringUtil.merge(offeringEntryGroup.getOfferingEntryIds()) + "', '" + offeringEntryGroup.getStatus() + "', '" + LanguageUtil.get(request, OfferingEntryConstants.getStatusLabel(offeringEntryGroup.getStatus())) + "');" %>'>
 
 								<%
-								for (int i = 1; i <= 3; i++) {
+								for (int i = 1; i <= 4; i++) {
 								%>
 
 									<aui:option label="<%= OfferingEntryConstants.getStatusLabel(i) %>" selected="<%= offeringEntryGroup.getStatus() == i %>" value="<%= i %>" />
@@ -770,12 +770,12 @@ for (SupportRegion supportRegion : supportRegions) {
 	Liferay.provide(
 		window,
 		'<portlet:namespace />updateOfferingEntry',
-		function(key, offeringEntryIds, oldStatusLabel) {
+		function(key, offeringEntryIds, oldStatusValue, oldStatusLabel) {
 			var A = AUI();
 
 			var newStatusLabel = A.one('#<portlet:namespace />status_' + key + ' option:selected').html();
 
-			if (confirm(Liferay.Language.get('are-you-sure-you-want-to-modify-the-status-from-x-to-x', [oldStatusLabel, newStatusLabel.trim()]))) {
+			if (confirm(A.Lang.sub('<liferay-ui:message key="are-you-sure-you-want-to-modify-the-status-from-x-to-x" />', [oldStatusLabel, newStatusLabel.trim()]))) {
 				var form = A.one('#<portlet:namespace />fm');
 
 				if (form) {
@@ -785,6 +785,11 @@ for (SupportRegion supportRegion : supportRegions) {
 
 					submitForm(form, '<portlet:actionURL name="updateOfferingEntryStatus"><portlet:param name="mvcPath" value="/admin/edit_account_entry.jsp" /></portlet:actionURL>');
 				}
+			}
+			else {
+				var statusElement = A.one('#<portlet:namespace />status_' + key);
+
+				statusElement.val(oldStatusValue);
 			}
 		},
 		['aui-base']
