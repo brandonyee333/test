@@ -21,7 +21,9 @@ export default class AddTicketAttachment extends React.Component {
 			zendeskTicketId
 		} = this.props;
 
-		const zendeskURL = 'https://liferaysupport1528999723.zendesk.com/agent/tickets/';
+		const zendeskURL = process.env.NODE_ENV === 'production'
+			? 'https://help.liferay.com/agent/tickets/'
+			: 'https://liferaysupport1528999723.zendesk.com/agent/tickets/';
 
 		return (
 			<div className='add-ticket-attachment container-fluid-max-md'>
