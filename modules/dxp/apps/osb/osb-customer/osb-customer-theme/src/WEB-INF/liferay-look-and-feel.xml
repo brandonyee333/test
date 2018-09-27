@@ -3,7 +3,7 @@
 
 <look-and-feel>
 	<compatibility>
-		<version>7.0.0+</version>
+		<version>7.0.10+</version>
 	</compatibility>
 	<theme id="osb-customer" name="OSB Customer">
 		<template-extension>ftl</template-extension>
@@ -29,6 +29,7 @@
 			<setting configurable="true" key="social-link-three-url" value="https://www.linkedin.com/company/liferay-inc-" />
 			<setting configurable="true" key="social-link-two-name" value="twitter" />
 			<setting configurable="true" key="social-link-two-url" value="https://twitter.com/liferay" />
+			<setting configurable="true" key="zendesk-url" value="" />
 		</settings>
 	</theme>
 </look-and-feel>

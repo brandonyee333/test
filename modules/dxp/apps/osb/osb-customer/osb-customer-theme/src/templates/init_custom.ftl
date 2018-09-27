@@ -15,4 +15,5 @@
 	social_link_three_url = themeDisplay.getThemeSetting("social-link-three-url")
 	social_link_two_name = themeDisplay.getThemeSetting("social-link-two-name")
 	social_link_two_url = themeDisplay.getThemeSetting("social-link-two-url")
+	zendesk_url = themeDisplay.getThemeSetting("zendesk-url")
 />
