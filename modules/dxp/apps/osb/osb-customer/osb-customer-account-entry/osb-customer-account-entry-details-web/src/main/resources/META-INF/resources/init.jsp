@@ -116,3 +116,9 @@ Format shortDateFormatDate = FastDateFormatFactoryUtil.getDate(DateFormat.SHORT,
 
 Format shortDateFormatTime = FastDateFormatFactoryUtil.getTime(DateFormat.SHORT, locale, timeZone);
 %>
+
+<aui:script>
+	window.AccountDetailsConstants = {
+		namespace: '${renderResponse.namespace}'
+	}
+</aui:script>
