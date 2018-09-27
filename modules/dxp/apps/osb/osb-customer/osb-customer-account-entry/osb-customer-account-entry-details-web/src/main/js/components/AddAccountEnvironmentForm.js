@@ -11,7 +11,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 	portalExtRef = React.createRef();
 
 	state = {
-		envSearchType: null,
+		isEnterprise: null,
 		patchLevel: null,
 		portalExt: null,
 		selectedLFRVersion: null,
@@ -23,17 +23,13 @@ export default class AddAccountEnvironmentForm extends React.Component {
 		const fileInputName = fileRef.current.name.replace(
 			[`${this.props.portletNamespace}`], '');
 
-		if (
-			confirm(Liferay.Language.get('are-you-sure-you-want-to-delete-this'))
-		) {
-			fileInput.value = null;
+		fileInput.value = null;
 
-			this.setState(
-				{
-					[fileInputName]: null
-				}
-			);
-		}
+		this.setState(
+			{
+				[fileInputName]: null
+			}
+		);
 	};
 
 	handleFileChange = event => {
@@ -53,23 +49,20 @@ export default class AddAccountEnvironmentForm extends React.Component {
 	};
 
 	handleSelectChange = event => {
-		const {envLFRVersions} = this.props.environmentConfiguration;
-		const {products} = this.props.environmentConfiguration;
+		const {envLFRVersions, products} = this.props.environmentConfiguration;
 
 		const {options} = event.target;
+		const {name} = event.target;
 		const {value} = options[options.selectedIndex];
-
-		const name = event.target.name.replace(
-			[`${this.props.portletNamespace}`], '');
 
 		const selectedProduct = products.find(product =>
 			product.productEntryId == value
 		);
 
-		if (name == 'productEntryId') {
+		if (name == [`${this.props.portletNamespace}productEntryId`]) {
 			this.setState(
 				{
-					envSearchType: !!selectedProduct && selectedProduct.enterpriseSearch ? 'enterprise' : 'standard',
+					isEnterprise: !!selectedProduct && selectedProduct.enterpriseSearch,
 					selectedProduct: selectedProduct
 				}
 			);
@@ -96,7 +89,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 		} = this.props;
 
 		const {
-			envSearchType,
+			isEnterprise,
 			patchLevel,
 			portalExt,
 			selectedLFRVersion,
@@ -136,9 +129,8 @@ export default class AddAccountEnvironmentForm extends React.Component {
 
 		const {products} = environmentConfiguration;
 		const renderEnvCS = selectedLFRVersion && selectedLFRVersion.envCS;
-		const renderEnvSearch = selectedLFRVersion &&
-								selectedProduct &&
-								'enterpriseSearch' in selectedProduct;
+		const renderEnvSearch = selectedLFRVersion && selectedProduct &&
+			'enterpriseSearch' in selectedProduct;
 
 		return (
 			<Formik
@@ -146,7 +138,15 @@ export default class AddAccountEnvironmentForm extends React.Component {
 				onSubmit={this.handleSubmit}
 				ref="formikInstanceRef"
 				validationSchema={validationSchema}
-				render={({errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values}) => (
+				render={({
+					errors,
+					handleBlur,
+					handleChange,
+					handleSubmit,
+					isSubmitting,
+					touched,
+					values
+				}) => (
 					<form
 						action={addEnvironmentURL}
 						encType="multipart/form-data"
@@ -550,15 +550,17 @@ export default class AddAccountEnvironmentForm extends React.Component {
 											onChange={handleChange}
 										>
 											{selectedLFRVersion.envSearch.find(
-												search => search[envSearchType]
-											 )[envSearchType].map((envSearch, index) => (
+												search => search[isEnterprise ? 'enterprise' : 'standard']
+											 )[isEnterprise ? 'enterprise' : 'standard'].map(
+												(envSearch, index) => (
 													<option
 														key={'envSearch-' + index}
 														id={'envSearch-' + index}
 														label={envSearch.name}
 														value={envSearch.value}
 													/>
-											   ))
+												)
+											 )
 											}
 										</select>
 									</div>
@@ -619,7 +621,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 															<use xlinkHref="#paperclip" />
 														</svg>
 
-														{portalExt}
+														<span className="attachment-name">{portalExt}</span>
 
 														<svg className="lexicon-icon lexicon-icon-times">
 															<use xlinkHref="#times" />
@@ -686,7 +688,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 															<use xlinkHref="#paperclip" />
 														</svg>
 
-														{patchLevel}
+														<span className="attachment-name">{patchLevel}</span>
 
 														<svg className="lexicon-icon lexicon-icon-times">
 															<use xlinkHref="#times" />
