@@ -17,6 +17,7 @@ package com.liferay.lcs.task;
 import com.liferay.lcs.advisor.InstallationEnvironmentAdvisor;
 import com.liferay.lcs.advisor.InstallationEnvironmentAdvisorFactory;
 import com.liferay.lcs.advisor.LCSAlertAdvisor;
+import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.advisor.UptimeMonitoringAdvisor;
 import com.liferay.lcs.exception.LCSHandshakeException;
@@ -26,7 +27,9 @@ import com.liferay.lcs.messaging.HandshakeResponseMessage;
 import com.liferay.lcs.messaging.Message;
 import com.liferay.lcs.messaging.ResponseMessage;
 import com.liferay.lcs.platform.gateway.LCSGatewayClient;
+import com.liferay.lcs.rest.commons.LCSRESTError;
 import com.liferay.lcs.runnable.LCSPortletBuildNumberCheckRunnable;
+import com.liferay.lcs.task.scheduler.TaskSchedulerService;
 import com.liferay.lcs.util.LCSAlert;
 import com.liferay.lcs.util.LCSPatcherUtil;
 import com.liferay.lcs.util.LCSUtil;
@@ -71,8 +74,9 @@ public class HandshakeTask implements Task {
 
 	public HandshakeTask(
 		long lcsClusterEntryTokenId, LCSAlertAdvisor lcsAlertAdvisor,
-		LCSGatewayClient lcsConnectionManager, LCSKeyAdvisor lcsKeyAdvisor,
-		ThreadFactory threadFactory,
+		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor,
+		LCSGatewayClient lcsGatewayClient, LCSKeyAdvisor lcsKeyAdvisor,
+		TaskSchedulerService taskSchedulerService, ThreadFactory threadFactory,
 		UptimeMonitoringAdvisor uptimeMonitoringAdvisor) {
 
 		_handshakeReplyReads = GetterUtil.getInteger(
@@ -83,7 +87,8 @@ public class HandshakeTask implements Task {
 
 		_lcsClusterEntryTokenId = lcsClusterEntryTokenId;
 		_lcsAlertAdvisor = lcsAlertAdvisor;
-		_lcsGatewayClient = lcsConnectionManager;
+		_lcsClusterEntryTokenAdvisor = lcsClusterEntryTokenAdvisor;
+		_lcsGatewayClient = lcsGatewayClient;
 		_lcsKeyAdvisor = lcsKeyAdvisor;
 		_threadFactory = threadFactory;
 		_uptimeMonitoringAdvisor = uptimeMonitoringAdvisor;
@@ -97,7 +102,8 @@ public class HandshakeTask implements Task {
 
 		_taskStateListeners = new ArrayList<>();
 
-		_taskStateListeners.add(_lcsGatewayClient);
+		_taskStateListeners.add(lcsGatewayClient);
+		_taskStateListeners.add(taskSchedulerService);
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Initialized " + this);
@@ -107,40 +113,55 @@ public class HandshakeTask implements Task {
 	@Override
 	public void run() {
 		try {
-			doRun();
-		}
-		catch (Exception e) {
-			_notifyOnTaskFailTaskStateListeners();
-
-			if (e instanceof LCSHandshakeException) {
-				throw (LCSHandshakeException)e;
+			if (_log.isInfoEnabled()) {
+				_log.info("Initiate handshake");
 			}
 
-			throw new LCSHandshakeException(e);
+			if (!_temporaryKey) {
+				_lcsGatewayClient.deleteMessages(_key);
+			}
+
+			HandshakeMessage handshakeMessage = _createHandshakeMessage();
+
+			_lcsGatewayClient.sendMessage(handshakeMessage);
+
+			_waitForHandshakeResponse();
+
+			_uptimeMonitoringAdvisor.resetUptimes();
+
+			_notifyOnTaskSuccessTaskStateListeners();
+
+			if (_log.isInfoEnabled()) {
+				_log.info("Established connection");
+			}
 		}
-	}
+		catch (Exception e) {
+			LCSRESTError lcsRESTError = LCSRESTError.UNDEFINED;
 
-	protected void doRun() throws Exception {
-		if (_log.isInfoEnabled()) {
-			_log.info("Initiate handshake");
-		}
+			if (Validator.isNotNull(e.getMessage())) {
+				lcsRESTError = LCSRESTError.getRESTError(e.getMessage());
+			}
 
-		if (!_temporaryKey) {
-			_lcsGatewayClient.deleteMessages(_key);
-		}
+			if (_log.isDebugEnabled()) {
+				_log.debug(e.getMessage(), e);
+			}
+			else {
+				if (_log.isWarnEnabled()) {
+					if (lcsRESTError == LCSRESTError.UNDEFINED) {
+						_log.warn(e.getMessage());
+					}
+					else {
+						_log.warn(lcsRESTError.getErrorDescription());
+					}
+				}
+			}
 
-		HandshakeMessage handshakeMessage = _createHandshakeMessage();
+			if (e instanceof LCSHandshakeException) {
+				_lcsClusterEntryTokenAdvisor.checkLCSClusterEntryTokenError(
+					(LCSHandshakeException)e);
+			}
 
-		_lcsGatewayClient.sendMessage(handshakeMessage);
-
-		_waitForHandshakeResponse();
-
-		_uptimeMonitoringAdvisor.resetUptimes();
-
-		_notifyOnTaskSuccessTaskStateListeners();
-
-		if (_log.isInfoEnabled()) {
-			_log.info("Established connection");
+			_notifyOnTaskFailTaskStateListeners(lcsRESTError.getErrorCode());
 		}
 	}
 
@@ -333,9 +354,9 @@ public class HandshakeTask implements Task {
 		return false;
 	}
 
-	private void _notifyOnTaskFailTaskStateListeners() {
+	private void _notifyOnTaskFailTaskStateListeners(int errorCode) {
 		for (TaskStateListener taskStateListener : _taskStateListeners) {
-			taskStateListener.onTaskFail(HandshakeTask.class);
+			taskStateListener.onTaskFail(HandshakeTask.class, errorCode);
 		}
 	}
 
@@ -422,6 +443,7 @@ public class HandshakeTask implements Task {
 	private final long _handshakeWaitTime;
 	private final String _key;
 	private final LCSAlertAdvisor _lcsAlertAdvisor;
+	private final LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
 	private final long _lcsClusterEntryTokenId;
 	private final LCSGatewayClient _lcsGatewayClient;
 	private final LCSKeyAdvisor _lcsKeyAdvisor;
