@@ -151,7 +151,7 @@ public class CorpProjectLocalServiceImpl
 		CorpProject corpProject = corpProjectPersistence.findByPrimaryKey(
 			corpProjectId);
 
-		Organization organization = organizationPersistence.findByPrimaryKey(
+		Organization organization = organizationLocalService.findByPrimaryKey(
 			corpProject.getOrganizationId());
 
 		return userGroupRoleLocalService.hasUserGroupRole(
