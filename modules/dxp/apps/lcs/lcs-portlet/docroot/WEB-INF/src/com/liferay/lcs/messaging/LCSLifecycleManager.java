@@ -56,9 +56,7 @@ public class LCSLifecycleManager extends HotDeployMessageListener {
 			_log.error(e, e);
 		}
 
-		_taskSchedulerService.scheduleUptimeMonitoringTask();
-
-		_taskSchedulerService.executeLCSConnectorRunnable(false);
+		_taskSchedulerService.schedule();
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
