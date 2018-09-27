@@ -1633,7 +1633,7 @@
 	</javadoc>
 	<javadoc>
 		<name>LCSGatewayServiceImpl</name>
-		<type>com.liferay.lcs.service.impl.LCSGatewayServiceImpl</type>
+		<type>com.liferay.lcs.platform.gateway.impl.LCSGatewayClientImpl</type>
 		<author><![CDATA[Ivica Cardic]]></author>
 		<author><![CDATA[Igor Beslic]]></author>
 		<method>
