@@ -69,11 +69,18 @@
 				padding: 4px 8px;
 				text-transform: initial;
 
-				.lexicon-icon-paperclip {
+				.lexicon-icon {
 					color: $secondary-text-color;
 					height: 12px;
-					margin-right: 8px;
 					width: 12px;
+
+					&.lexicon-icon-paperclip {
+						margin-right: 8px;
+					}
+
+					&.lexicon-icon-times {
+						margin-left: 20px;
+					}
 				}
 			}
 		}

@@ -7,13 +7,33 @@ import Button from './Button';
 
 export default class AddAccountEnvironmentForm extends React.Component {
 	addEnvironmentFormRef = React.createRef();
+	patchLevelRef = React.createRef();
+	portalExtRef = React.createRef();
 
 	state = {
-		envLFRIndex: null,
-		envLFRVersion: null,
-		patchLevelFile: null,
-		portalExtFile: null,
-		productEntryIdIndex: null
+		envSearchType: null,
+		patchLevel: null,
+		portalExt: null,
+		selectedLFRVersion: null,
+		selectedProduct: null
+	};
+
+	handleDeleteFile = fileRef => {
+		const fileInput = fileRef.current;
+		const fileInputName = fileRef.current.name.replace(
+			[`${this.props.portletNamespace}`], '');
+
+		if (
+			confirm(Liferay.Language.get('are-you-sure-you-want-to-delete-this'))
+		) {
+			fileInput.value = null;
+
+			this.setState(
+				{
+					[fileInputName]: null
+				}
+			);
+		}
 	};
 
 	handleFileChange = event => {
@@ -21,30 +41,46 @@ export default class AddAccountEnvironmentForm extends React.Component {
 		const name = event.target.name.replace(
 			[`${this.props.portletNamespace}`], '');
 
-		this.setState({
-			[`${name}File`]: files.length > 0 ? files[0].name : null
-		});
+		if (files.length) {
+			this.setState(
+				{
+					[name]: files[0].name
+				}
+			);
+		}
 
 		this.refs.formikInstanceRef.handleChange(event);
 	};
 
 	handleSelectChange = event => {
+		const {envLFRVersions} = this.props.environmentConfiguration;
+		const {products} = this.props.environmentConfiguration;
+
 		const {options} = event.target;
 		const {value} = options[options.selectedIndex];
-		const fieldNameIndex = options[options.selectedIndex].id.replace(
-			/\D+/g,
-			''
-		);
 
 		const name = event.target.name.replace(
 			[`${this.props.portletNamespace}`], '');
 
-		const envLFRVersion = (name == 'envLFR') ? value : null;
+		const selectedProduct = products.find(product =>
+			product.productEntryId == value
+		);
 
-		this.setState({
-			[`${name}Index`]: fieldNameIndex,
-			envLFRVersion
-		});
+		if (name == 'productEntryId') {
+			this.setState(
+				{
+					envSearchType: !!selectedProduct && selectedProduct.enterpriseSearch ? 'enterprise' : 'standard',
+					selectedProduct: selectedProduct
+				}
+			);
+		}
+		else {
+			this.setState(
+				{
+					selectedLFRVersion: envLFRVersions.find(version => version[value])[value]
+				}
+			);
+		};
 
 		this.refs.formikInstanceRef.handleChange(event);
 	};
@@ -54,24 +90,17 @@ export default class AddAccountEnvironmentForm extends React.Component {
 	render() {
 		const {
 			addEnvironmentURL,
-			errors,
-			handleBlur,
-			handleChange,
-			handleCloseModal,
-			handleSubmit,
-			isSubmitting,
-			portletNamespace,
 			environmentConfiguration,
-			touched,
-			values
+			handleCloseModal,
+			portletNamespace
 		} = this.props;
 
 		const {
-			envLFRIndex,
-			envLFRVersion,
-			patchLevelFile,
-			portalExtFile,
-			productEntryIdIndex
+			envSearchType,
+			patchLevel,
+			portalExt,
+			selectedLFRVersion,
+			selectedProduct
 		} = this.state;
 
 		const initialValues = {
@@ -106,20 +135,23 @@ export default class AddAccountEnvironmentForm extends React.Component {
 		});
 
 		const {products} = environmentConfiguration;
-		const {envLFRVersions} = environmentConfiguration;
+		const renderEnvCS = selectedLFRVersion && selectedLFRVersion.envCS;
+		const renderEnvSearch = selectedLFRVersion &&
+								selectedProduct &&
+								'enterpriseSearch' in selectedProduct;
 
 		return (
 			<Formik
 				initialValues={initialValues}
-				validationSchema={validationSchema}
 				onSubmit={this.handleSubmit}
 				ref="formikInstanceRef"
-				render={props => (
+				validationSchema={validationSchema}
+				render={({errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values}) => (
 					<form
 						action={addEnvironmentURL}
 						encType="multipart/form-data"
 						method="post"
-						onSubmit={props.handleSubmit}
+						onSubmit={handleSubmit}
 						ref={this.addEnvironmentFormRef}
 					>
 						<div className="row">
@@ -140,17 +172,17 @@ export default class AddAccountEnvironmentForm extends React.Component {
 										className="form-control"
 										id={`${portletNamespace}accountEnvironmentName`}
 										name={`${portletNamespace}name`}
-										onBlur={props.handleBlur}
-										onChange={props.handleChange}
+										onBlur={handleBlur}
+										onChange={handleChange}
 										type="text"
-										value={props.values.name}
+										value={values.name}
 									/>
 								</div>
 
-								{props.touched[`${portletNamespace}name`] &&
-									props.errors[`${portletNamespace}name`] && (
+								{touched[`${portletNamespace}name`] &&
+									errors[`${portletNamespace}name`] && (
 										<div className="alert alert-danger" role="alert">
-											{props.errors[`${portletNamespace}name`]}
+											{errors[`${portletNamespace}name`]}
 										</div>
 									)}
 							</div>
@@ -172,15 +204,15 @@ export default class AddAccountEnvironmentForm extends React.Component {
 										className="form-control"
 										id={`${portletNamespace}accountEnvironmentProduct`}
 										name={`${portletNamespace}productEntryId`}
-										onBlur={props.handleBlur}
+										onBlur={handleBlur}
 										onChange={this.handleSelectChange}
 									>
 										<option value="" label={Liferay.Language.get('select')} />
 
 										{products.map((product, index) => (
 											<option
-												key={'product-' + index}
-												id={'product-' + index}
+												key={'productEntryId-' + index}
+												id={'productEntryId-' + index}
 												label={product.displayName}
 												value={product.productEntryId}
 											/>
@@ -188,10 +220,10 @@ export default class AddAccountEnvironmentForm extends React.Component {
 									</select>
 								</div>
 
-								{props.touched[`${portletNamespace}productEntryId`] &&
-									props.errors[`${portletNamespace}productEntryId`] && (
+								{touched[`${portletNamespace}productEntryId`] &&
+									errors[`${portletNamespace}productEntryId`] && (
 										<div className="alert alert-danger" role="alert">
-											{props.errors[`${portletNamespace}productEntryId`]}
+											{errors[`${portletNamespace}productEntryId`]}
 										</div>
 									)}
 							</div>
@@ -211,33 +243,31 @@ export default class AddAccountEnvironmentForm extends React.Component {
 
 									<select
 										className="form-control"
-										disabled={productEntryIdIndex == null}
+										disabled={!selectedProduct}
 										id={`${portletNamespace}envLFR`}
 										name={`${portletNamespace}envLFR`}
-										onBlur={props.handleBlur}
+										onBlur={handleBlur}
 										onChange={this.handleSelectChange}
 									>
 										<option value="" label={Liferay.Language.get('select')} />
 
-										{productEntryIdIndex
-											? products[productEntryIdIndex].envLFR.map(
-													(version, index) => (
-														<option
-															key={'envLFR-' + index}
-															id={'envLFR-' + index}
-															label={version.name}
-															value={version.value}
-														/>
-													)
-											  )
-											: null}
+										{selectedProduct &&
+											selectedProduct.envLFR.map((version, index) => (
+												<option
+													key={'envLFR-' + index}
+													id={'envLFR-' + index}
+													label={version.name}
+													value={version.value}
+												/>
+											)
+										)}
 									</select>
 								</div>
 
-								{props.touched[`${portletNamespace}envLFR`] &&
-									props.errors[`${portletNamespace}envLFR`] && (
+								{touched[`${portletNamespace}envLFR`] &&
+									errors[`${portletNamespace}envLFR`] && (
 										<div className="alert alert-danger" role="alert">
-											{props.errors[`${portletNamespace}envLFR`]}
+											{errors[`${portletNamespace}envLFR`]}
 										</div>
 									)}
 							</div>
@@ -257,33 +287,31 @@ export default class AddAccountEnvironmentForm extends React.Component {
 
 									<select
 										className="form-control"
-										disabled={envLFRIndex == null}
+										disabled={!selectedLFRVersion}
 										id={`${portletNamespace}envOS`}
 										name={`${portletNamespace}envOS`}
-										onBlur={props.handleBlur}
-										onChange={props.handleChange}
+										onBlur={handleBlur}
+										onChange={handleChange}
 									>
 										<option value="" label={Liferay.Language.get('select')} />
 
-										{envLFRIndex && envLFRVersion
-											? envLFRVersions[
-													envLFRIndex
-											  ][envLFRVersion].envOS.map((envOS, index) => (
-													<option
-														key={'envOS-' + index}
-														id={'envOS-' + index}
-														label={envOS.name}
-														value={envOS.value}
-													/>
-											  ))
-											: null}
+										{selectedLFRVersion &&
+											selectedLFRVersion.envOS.map((envOS, index) => (
+												<option
+													key={'envOS-' + index}
+													id={'envOS-' + index}
+													label={envOS.name}
+													value={envOS.value}
+												/>
+											))
+										}
 									</select>
 								</div>
 
-								{props.touched[`${portletNamespace}envOS`] &&
-									props.errors[`${portletNamespace}envOS`] && (
+								{touched[`${portletNamespace}envOS`] &&
+									errors[`${portletNamespace}envOS`] && (
 										<div className="alert alert-danger" role="alert">
-											{props.errors[`${portletNamespace}envOS`]}
+											{errors[`${portletNamespace}envOS`]}
 										</div>
 									)}
 							</div>
@@ -303,33 +331,31 @@ export default class AddAccountEnvironmentForm extends React.Component {
 
 									<select
 										className="form-control"
-										disabled={envLFRIndex == null}
+										disabled={!selectedLFRVersion}
 										id={`${portletNamespace}envJVM`}
 										name={`${portletNamespace}envJVM`}
-										onBlur={props.handleBlur}
-										onChange={props.handleChange}
+										onBlur={handleBlur}
+										onChange={handleChange}
 									>
 										<option value="" label={Liferay.Language.get('select')} />
 
-										{envLFRIndex && envLFRVersion
-											? envLFRVersions[
-													envLFRIndex
-											  ][envLFRVersion].envJVM.map((envJVM, index) => (
-													<option
-														key={'envJVM-' + index}
-														id={'envJVM-' + index}
-														label={envJVM.name}
-														value={envJVM.value}
-													/>
-											  ))
-											: null}
+										{selectedLFRVersion &&
+											selectedLFRVersion.envJVM.map((envJVM, index) => (
+												<option
+													key={'envJVM-' + index}
+													id={'envJVM-' + index}
+													label={envJVM.name}
+													value={envJVM.value}
+												/>
+											))
+										}
 									</select>
 								</div>
 
-								{props.touched[`${portletNamespace}envJVM`] &&
-									props.errors[`${portletNamespace}envJVM`] && (
+								{touched[`${portletNamespace}envJVM`] &&
+									errors[`${portletNamespace}envJVM`] && (
 										<div className="alert alert-danger" role="alert">
-											{props.errors[`${portletNamespace}envJVM`]}
+											{errors[`${portletNamespace}envJVM`]}
 										</div>
 									)}
 							</div>
@@ -349,33 +375,31 @@ export default class AddAccountEnvironmentForm extends React.Component {
 
 									<select
 										className="form-control"
-										disabled={envLFRIndex == null}
+										disabled={!selectedLFRVersion}
 										id={`${portletNamespace}envAS`}
 										name={`${portletNamespace}envAS`}
-										onBlur={props.handleBlur}
-										onChange={props.handleChange}
+										onBlur={handleBlur}
+										onChange={handleChange}
 									>
 										<option value="" label={Liferay.Language.get('select')} />
 
-										{envLFRIndex && envLFRVersion
-											? envLFRVersions[
-													envLFRIndex
-											  ][envLFRVersion].envAS.map((envAS, index) => (
-													<option
-														key={'envAS-' + index}
-														id={'envAS-' + index}
-														label={envAS.name}
-														value={envAS.value}
-													/>
-											  ))
-											: null}
+										{selectedLFRVersion &&
+											selectedLFRVersion.envAS.map((envAS, index) => (
+												<option
+													key={'envAS-' + index}
+													id={'envAS-' + index}
+													label={envAS.name}
+													value={envAS.value}
+												/>
+											))
+										}
 									</select>
 								</div>
 
-								{props.touched[`${portletNamespace}envAS`] &&
-									props.errors[`${portletNamespace}envAS`] && (
+								{touched[`${portletNamespace}envAS`] &&
+									errors[`${portletNamespace}envAS`] && (
 										<div className="alert alert-danger" role="alert">
-											{props.errors[`${portletNamespace}envAS`]}
+											{errors[`${portletNamespace}envAS`]}
 										</div>
 									)}
 							</div>
@@ -395,33 +419,31 @@ export default class AddAccountEnvironmentForm extends React.Component {
 
 									<select
 										className="form-control"
-										disabled={envLFRIndex == null}
+										disabled={!selectedLFRVersion}
 										id={`${portletNamespace}envDB`}
 										name={`${portletNamespace}envDB`}
-										onBlur={props.handleBlur}
-										onChange={props.handleChange}
+										onBlur={handleBlur}
+										onChange={handleChange}
 									>
 										<option value="" label={Liferay.Language.get('select')} />
 
-										{envLFRIndex && envLFRVersion
-											? envLFRVersions[
-													envLFRIndex
-											  ][envLFRVersion].envDB.map((envDB, index) => (
-													<option
-														key={'envDB-' + index}
-														id={'envDB-' + index}
-														label={envDB.name}
-														value={envDB.value}
-													/>
-											  ))
-											: null}
+										{selectedLFRVersion &&
+											selectedLFRVersion.envDB.map((envDB, index) => (
+												<option
+													key={'envDB-' + index}
+													id={'envDB-' + index}
+													label={envDB.name}
+													value={envDB.value}
+												/>
+											))
+										}
 									</select>
 								</div>
 
-								{props.touched[`${portletNamespace}envDB`] &&
-									props.errors[`${portletNamespace}envDB`] && (
+								{touched[`${portletNamespace}envDB`] &&
+									errors[`${portletNamespace}envDB`] && (
 										<div className="alert alert-danger" role="alert">
-											{props.errors[`${portletNamespace}envDB`]}
+											{errors[`${portletNamespace}envDB`]}
 										</div>
 									)}
 							</div>
@@ -437,42 +459,36 @@ export default class AddAccountEnvironmentForm extends React.Component {
 
 									<select
 										className="form-control"
-										disabled={envLFRIndex == null}
+										disabled={!selectedLFRVersion}
 										id={`${portletNamespace}envBrowser`}
 										name={`${portletNamespace}envBrowser`}
-										onBlur={props.handleBlur}
-										onChange={props.handleChange}
+										onBlur={handleBlur}
+										onChange={handleChange}
 									>
 										<option value="" label={Liferay.Language.get('select')} />
 
-										{envLFRIndex && envLFRVersion
-											? envLFRVersions[
-													envLFRIndex
-											  ][envLFRVersion].envBrowser.map((envBrowser, index) => (
-													<option
-														key={'envBrowser-' + index}
-														id={'envBrowser-' + index}
-														label={envBrowser.name}
-														value={envBrowser.value}
-													/>
-											  ))
-											: null}
+										{selectedLFRVersion &&
+											selectedLFRVersion.envBrowser.map((envBrowser, index) => (
+												<option
+													key={'envBrowser-' + index}
+													id={'envBrowser-' + index}
+													label={envBrowser.name}
+													value={envBrowser.value}
+												/>
+											))
+										}
 									</select>
 								</div>
 
-								{props.touched[`${portletNamespace}envBrowser`] &&
-									props.errors[`${portletNamespace}envBrowser`] && (
+								{touched[`${portletNamespace}envBrowser`] &&
+									errors[`${portletNamespace}envBrowser`] && (
 										<div className="alert alert-danger" role="alert">
-											{props.errors[`${portletNamespace}envBrowser`]}
+											{errors[`${portletNamespace}envBrowser`]}
 										</div>
 									)}
 							</div>
 
-							{envLFRIndex &&
-							 envLFRVersion &&
-							 envLFRVersions[
-									envLFRIndex
-							 ][envLFRVersion].envCS ? (
+							{renderEnvCS && (
 								<div className="col-md-6">
 									<div className="form-group">
 										<label
@@ -484,40 +500,37 @@ export default class AddAccountEnvironmentForm extends React.Component {
 
 										<select
 											className="form-control"
-											disabled={envLFRIndex == null}
+											disabled={!selectedLFRVersion}
 											id={`${portletNamespace}envCS`}
 											name={`${portletNamespace}envCS`}
-											onBlur={props.handleBlur}
-											onChange={props.handleChange}
+											onBlur={handleBlur}
+											onChange={handleChange}
 										>
 											<option value="" label={Liferay.Language.get('select')} />
 
-											{envLFRVersions[
-													envLFRIndex
-											 ][envLFRVersion].envCS.map((envCS, index) => (
-												<option
-													key={'envCS-' + index}
-													id={'envCS-' + index}
-													label={envCS.name}
-													value={envCS.value}
-												/>
-											))}
+											{selectedLFRVersion &&
+												selectedLFRVersion.envCS.map((envCS, index) => (
+													<option
+														key={'envCS-' + index}
+														id={'envCS-' + index}
+														label={envCS.name}
+														value={envCS.value}
+													/>
+												))
+											}
 										</select>
 									</div>
 
-									{props.touched[`${portletNamespace}envCS`] &&
-										props.errors[`${portletNamespace}envCS`] && (
+									{touched[`${portletNamespace}envCS`] &&
+										errors[`${portletNamespace}envCS`] && (
 											<div className="alert alert-danger" role="alert">
-												{props.errors[`${portletNamespace}envCS`]}
+												{errors[`${portletNamespace}envCS`]}
 											</div>
 										)}
 								</div>
-							) : null}
+							)}
 
-							{envLFRIndex &&
-							 envLFRVersion &&
-							 productEntryIdIndex &&
-							 'enterpriseSearch' in products[productEntryIdIndex] ? (
+							{renderEnvSearch && (
 								<div className="col-md-12">
 									<div className="form-group">
 										<label
@@ -529,38 +542,35 @@ export default class AddAccountEnvironmentForm extends React.Component {
 
 										<select
 											className="form-control"
-											disabled={envLFRIndex == null}
+											disabled={!selectedLFRVersion}
 											id={`${portletNamespace}envSearch`}
 											multiple={true}
 											name={`${portletNamespace}envSearch`}
-											onBlur={props.handleBlur}
-											onChange={props.handleChange}
+											onBlur={handleBlur}
+											onChange={handleChange}
 										>
-											{envLFRVersions[envLFRIndex][
-													envLFRVersion
-											 ].envSearch[products[productEntryIdIndex].enterpriseSearch
-												? 0 : 1
-											 ][products[productEntryIdIndex].enterpriseSearch
-										 		? 'enterprise' : 'standard'
-											 ].map((envSearch, index) => (
-												<option
-													key={'envSearch-' + index}
-													id={'envSearch-' + index}
-													label={envSearch.name}
-													value={envSearch.value}
-												/>
-											))}
+											{selectedLFRVersion.envSearch.find(
+												search => search[envSearchType]
+											 )[envSearchType].map((envSearch, index) => (
+													<option
+														key={'envSearch-' + index}
+														id={'envSearch-' + index}
+														label={envSearch.name}
+														value={envSearch.value}
+													/>
+											   ))
+											}
 										</select>
 									</div>
 
-									{props.touched[`${portletNamespace}envSearch`] &&
-										props.errors[`${portletNamespace}envSearch`] && (
+									{touched[`${portletNamespace}envSearch`] &&
+										errors[`${portletNamespace}envSearch`] && (
 											<div className="alert alert-danger" role="alert">
-												{props.errors[`${portletNamespace}envSearch`]}
+												{errors[`${portletNamespace}envSearch`]}
 											</div>
 										)}
 								</div>
-							) : null}
+							)}
 
 							<div className="col-md-12">
 								<div className="form-group">
@@ -580,8 +590,9 @@ export default class AddAccountEnvironmentForm extends React.Component {
 											className="form-control"
 											id={`${portletNamespace}portalExt`}
 											name={`${portletNamespace}portalExt`}
-											onBlur={props.handleBlur}
+											onBlur={handleBlur}
 											onChange={this.handleFileChange}
+											ref={this.portalExtRef}
 											type="file"
 										/>
 
@@ -594,25 +605,36 @@ export default class AddAccountEnvironmentForm extends React.Component {
 										</span>
 									</div>
 
-									{portalExtFile ? (
+									{portalExt && (
 										<div className="file-list">
 											<ul className="attachment-pool">
 												<li className="attachment">
-													<svg className="lexicon-icon lexicon-icon-paperclip">
-														<use xlinkHref="#paperclip" />
-													</svg>
+													<Button
+														display="outline"
+														onClick={() => this.handleDeleteFile(this.portalExtRef)}
+														size="sm"
+														type="button"
+													>
+														<svg className="lexicon-icon lexicon-icon-paperclip">
+															<use xlinkHref="#paperclip" />
+														</svg>
 
-													{portalExtFile}
+														{portalExt}
+
+														<svg className="lexicon-icon lexicon-icon-times">
+															<use xlinkHref="#times" />
+														</svg>
+													</Button>
 												</li>
 											</ul>
 										</div>
-									) : null}
+									)}
 								</div>
 
-								{props.touched[`${portletNamespace}portalExt`] &&
-									props.errors[`${portletNamespace}portalExt`] && (
+								{touched[`${portletNamespace}portalExt`] &&
+									errors[`${portletNamespace}portalExt`] && (
 										<div className="alert alert-danger" role="alert">
-											{props.errors[`${portletNamespace}portalExt`]}
+											{errors[`${portletNamespace}portalExt`]}
 										</div>
 									)}
 							</div>
@@ -635,8 +657,9 @@ export default class AddAccountEnvironmentForm extends React.Component {
 											className="form-control"
 											id={`${portletNamespace}patchLevel`}
 											name={`${portletNamespace}patchLevel`}
-											onBlur={props.handleBlur}
+											onBlur={handleBlur}
 											onChange={this.handleFileChange}
+											ref={this.patchLevelRef}
 											type="file"
 										/>
 
@@ -649,25 +672,36 @@ export default class AddAccountEnvironmentForm extends React.Component {
 										</span>
 									</div>
 
-									{patchLevelFile ? (
+									{patchLevel && (
 										<div className="file-list">
 											<ul className="attachment-pool">
 												<li className="attachment">
-													<svg className="lexicon-icon lexicon-icon-paperclip">
-														<use xlinkHref="#paperclip" />
-													</svg>
+													<Button
+														display="outline"
+														onClick={() => this.handleDeleteFile(this.patchLevelRef)}
+														size="sm"
+														type="button"
+													>
+														<svg className="lexicon-icon lexicon-icon-paperclip">
+															<use xlinkHref="#paperclip" />
+														</svg>
 
-													{patchLevelFile}
+														{patchLevel}
+
+														<svg className="lexicon-icon lexicon-icon-times">
+															<use xlinkHref="#times" />
+														</svg>
+													</Button>
 												</li>
 											</ul>
 										</div>
-									) : null}
+									)}
 								</div>
 
-								{props.touched[`${portletNamespace}patchLevel`] &&
-									props.errors[`${portletNamespace}patchLevel`] && (
+								{touched[`${portletNamespace}patchLevel`] &&
+									errors[`${portletNamespace}patchLevel`] && (
 										<div className="alert alert-danger" role="alert">
-											{props.errors[`${portletNamespace}patchLevel`]}
+											{errors[`${portletNamespace}patchLevel`]}
 										</div>
 									)}
 							</div>
@@ -682,7 +716,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 								{Liferay.Language.get('cancel')}
 							</Button>
 
-							<Button disabled={props.isSubmitting} type="submit">
+							<Button disabled={isSubmitting} type="submit">
 								{Liferay.Language.get('save')}
 							</Button>
 						</div>
