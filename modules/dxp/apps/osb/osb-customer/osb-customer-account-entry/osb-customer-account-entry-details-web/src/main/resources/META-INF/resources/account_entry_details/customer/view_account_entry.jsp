@@ -26,6 +26,8 @@ PortletURL portletURL = renderResponse.createRenderURL();
 portletURL.setParameter("mvcRenderCommandName", "/view_account_entry");
 portletURL.setParameter("tabs1", tabs1);
 portletURL.setParameter("accountEntryId", String.valueOf(accountEntry.getAccountEntryId()));
+
+PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "project-details"), portletURL.toString(), null, false);
 %>
 
 <h1>

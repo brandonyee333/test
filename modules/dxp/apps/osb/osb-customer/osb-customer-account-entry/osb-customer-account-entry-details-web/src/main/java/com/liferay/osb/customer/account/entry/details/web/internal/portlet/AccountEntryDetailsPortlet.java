@@ -39,6 +39,7 @@ import org.osgi.service.component.annotations.Reference;
 		"com.liferay.portlet.display-category=category.osb",
 		"com.liferay.portlet.footer-portlet-javascript=/dist/main.js",
 		"com.liferay.portlet.header-portlet-css=/dist/main.css",
+		"com.liferay.portlet.render-weight=50",
 		"javax.portlet.display-name=OSB Support Project Details",
 		"javax.portlet.expiration-cache=0",
 		"javax.portlet.init-param.mvc-command-names-default-views=/view",
