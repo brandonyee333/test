@@ -20,7 +20,6 @@ import com.liferay.dynamic.data.mapping.util.DDMIndexer;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalServiceUtil;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
-import com.liferay.osb.customer.downloads.display.web.configuration.DownloadsDisplayConfiguration;
 import com.liferay.osb.customer.downloads.display.web.internal.constants.DDMStructureConstants;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -51,6 +50,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
@@ -68,18 +68,29 @@ public class DownloadsDisplayContext {
 
 		_ddmIndexer = (DDMIndexer)_renderRequest.getAttribute(
 			DDMIndexer.class.getName());
-		_downloadsDisplayConfiguration =
-			(DownloadsDisplayConfiguration)_renderRequest.getAttribute(
-				DownloadsDisplayConfiguration.class.getName());
 		_themeDisplay = (ThemeDisplay)_renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		long classNameId = ClassNameLocalServiceUtil.getClassNameId(
-			JournalArticle.class);
+		PortletPreferences portletPreferences = _renderRequest.getPreferences();
 
-		_ddmStructure = DDMStructureLocalServiceUtil.getStructure(
-			_themeDisplay.getCompanyGroupId(), classNameId,
-			_downloadsDisplayConfiguration.ddmStructureKey());
+		String ddmStructureKey = portletPreferences.getValue(
+			"ddmStructureKey", null);
+
+		if (Validator.isNotNull(ddmStructureKey)) {
+			long classNameId = ClassNameLocalServiceUtil.getClassNameId(
+				JournalArticle.class);
+
+			_ddmStructure = DDMStructureLocalServiceUtil.getStructure(
+				_themeDisplay.getCompanyGroupId(), classNameId,
+				ddmStructureKey);
+		}
+		else {
+			_ddmStructure = null;
+		}
+	}
+
+	public String getDDMStructureKey() {
+		return _ddmStructure.getStructureKey();
 	}
 
 	public JSONArray getProductsJSONArray() {
@@ -290,7 +301,6 @@ public class DownloadsDisplayContext {
 
 	private final DDMIndexer _ddmIndexer;
 	private final DDMStructure _ddmStructure;
-	private final DownloadsDisplayConfiguration _downloadsDisplayConfiguration;
 	private final RenderRequest _renderRequest;
 	private final RenderResponse _renderResponse;
 	private final ThemeDisplay _themeDisplay;

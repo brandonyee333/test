@@ -22,10 +22,8 @@ import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.journal.service.JournalArticleLocalServiceWrapper;
 import com.liferay.journal.util.JournalConverter;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
-import com.liferay.osb.customer.downloads.display.web.configuration.DownloadsDisplayConfiguration;
 import com.liferay.osb.customer.downloads.display.web.internal.constants.DDMStructureConstants;
 import com.liferay.osb.customer.downloads.display.web.internal.util.JournalArticleUtil;
-import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.search.Indexable;
@@ -36,6 +34,7 @@ import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -45,9 +44,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -98,9 +95,7 @@ public class DownloadsJournalArticleLocalServiceWrapper
 			reviewDateMinute, neverReview, indexable, smallImage, smallImageURL,
 			smallImageFile, images, articleURL, serviceContext);
 
-		if (ddmStructureKey.equals(
-				_downloadsDisplayConfiguration.ddmStructureKey())) {
-
+		if (ArrayUtil.contains(DDMStructureConstants.KEYS, ddmStructureKey)) {
 			updateResourcePermissions(journalArticle);
 		}
 
@@ -137,20 +132,11 @@ public class DownloadsJournalArticleLocalServiceWrapper
 			indexable, smallImage, smallImageURL, smallImageFile, images,
 			articleURL, serviceContext);
 
-		if (ddmStructureKey.equals(
-				_downloadsDisplayConfiguration.ddmStructureKey())) {
-
+		if (ArrayUtil.contains(DDMStructureConstants.KEYS, ddmStructureKey)) {
 			updateResourcePermissions(journalArticle);
 		}
 
 		return journalArticle;
-	}
-
-	@Activate
-	@Modified
-	protected void activate(Map<String, Object> properties) {
-		_downloadsDisplayConfiguration = ConfigurableUtil.createConfigurable(
-			DownloadsDisplayConfiguration.class, properties);
 	}
 
 	protected Map<Long, String[]> getRoleIdsToActionIds(String product) {
@@ -174,7 +160,7 @@ public class DownloadsJournalArticleLocalServiceWrapper
 				new String[] {ActionKeys.VIEW});
 		}
 		else if (product.equals(
-					 DDMStructureConstants.PRODUCT_COMMERCE_CONNECTORS)) {
+					DDMStructureConstants.PRODUCT_COMMERCE_CONNECTORS)) {
 
 			roleIdsToActionIds.put(
 				OSBCustomerConstants.ROLE_CUSTOMER_COMMERCE_CONNECTORS_ID,
@@ -188,15 +174,14 @@ public class DownloadsJournalArticleLocalServiceWrapper
 				new String[] {ActionKeys.VIEW});
 		}
 		else if (product.equals(
-					 DDMStructureConstants.PRODUCT_ENTERPRISE_SEARCH_PREMIUM)) {
+					DDMStructureConstants.PRODUCT_ENTERPRISE_SEARCH_PREMIUM)) {
 
 			roleIdsToActionIds.put(
 				OSBCustomerConstants.ROLE_CUSTOMER_ENTERPRISE_SEARCH_PREMIUM_ID,
 				new String[] {ActionKeys.VIEW});
 		}
 		else if (product.equals(
-					 DDMStructureConstants.
-						 PRODUCT_ENTERPRISE_SEARCH_STANDARD)) {
+					DDMStructureConstants.PRODUCT_ENTERPRISE_SEARCH_STANDARD)) {
 
 			roleIdsToActionIds.put(
 				OSBCustomerConstants.
@@ -216,17 +201,42 @@ public class DownloadsJournalArticleLocalServiceWrapper
 		return roleIdsToActionIds;
 	}
 
+	protected Map<Long, String[]> getTrialRoleIdsToActionIds() {
+		Map<Long, String[]> roleIdsToActionIds = new HashMap<>();
+
+		roleIdsToActionIds.put(
+			OSBCustomerConstants.ROLE_GUEST_ID, new String[0]);
+		roleIdsToActionIds.put(
+			OSBCustomerConstants.ROLE_LIFERAY_EMPLOYEE_ID,
+			new String[] {ActionKeys.VIEW});
+		roleIdsToActionIds.put(
+			OSBCustomerConstants.ROLE_SITE_MEMBER_ID, new String[0]);
+		roleIdsToActionIds.put(
+			OSBCustomerConstants.ROLE_TRIAL_ID, new String[] {ActionKeys.VIEW});
+
+		return roleIdsToActionIds;
+	}
+
 	protected void updateResourcePermissions(JournalArticle journalArticle)
 		throws PortalException {
 
-		Fields ddmFields = _journalConverter.getDDMFields(
-			journalArticle.getDDMStructure(), journalArticle.getContent());
+		String ddmStructureKey = journalArticle.getDDMStructureKey();
 
-		Field ddmField = ddmFields.get("product");
+		Map<Long, String[]> roleIdsToActionIds = null;
 
-		String product = JournalArticleUtil.getSelectOptionValue(ddmField);
+		if (ddmStructureKey.equals(DDMStructureConstants.KEY_TRIAL_DOWNLOAD)) {
+			roleIdsToActionIds = getTrialRoleIdsToActionIds();
+		}
+		else {
+			Fields ddmFields = _journalConverter.getDDMFields(
+				journalArticle.getDDMStructure(), journalArticle.getContent());
 
-		Map<Long, String[]> roleIdsToActionIds = getRoleIdsToActionIds(product);
+			Field ddmField = ddmFields.get("product");
+
+			String product = JournalArticleUtil.getSelectOptionValue(ddmField);
+
+			roleIdsToActionIds = getRoleIdsToActionIds(product);
+		}
 
 		_resourcePermissionLocalService.setResourcePermissions(
 			journalArticle.getCompanyId(), JournalArticle.class.getName(),
@@ -240,9 +250,6 @@ public class DownloadsJournalArticleLocalServiceWrapper
 
 	@Reference
 	private DDMStructureLocalService _ddmStructureLocalService;
-
-	private volatile DownloadsDisplayConfiguration
-		_downloadsDisplayConfiguration;
 
 	@Reference
 	private JournalArticleLocalService _journalArticleLocalService;

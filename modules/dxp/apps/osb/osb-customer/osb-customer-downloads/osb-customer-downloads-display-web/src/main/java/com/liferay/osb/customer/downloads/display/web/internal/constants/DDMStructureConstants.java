@@ -35,6 +35,13 @@ public class DDMStructureConstants {
 
 	public static final String FILE_TYPE_SECURITY = "security";
 
+	public static final String KEY_DOWNLOAD = "OSB-CUSTOMER-THEME---DOWNLOAD";
+
+	public static final String KEY_TRIAL_DOWNLOAD =
+		"OSB-CUSTOMER-THEME---TRIAL-DOWNLOAD";
+
+	public static final String[] KEYS = {KEY_DOWNLOAD, KEY_TRIAL_DOWNLOAD};
+
 	public static final String PRODUCT_ANALYTICS_CLOUD = "analyticsCloud";
 
 	public static final String PRODUCT_COMMERCE = "commerce";

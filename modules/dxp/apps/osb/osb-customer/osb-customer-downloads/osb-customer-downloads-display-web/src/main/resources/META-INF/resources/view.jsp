@@ -20,6 +20,7 @@
 String product = ParamUtil.getString(request, "product");
 String fileType = ParamUtil.getString(request, "fileType");
 
+String ddmStructureKey = downloadsDisplayContext.getDDMStructureKey();
 JSONArray productsJSONArray = downloadsDisplayContext.getProductsJSONArray();
 %>
 
@@ -27,73 +28,75 @@ JSONArray productsJSONArray = downloadsDisplayContext.getProductsJSONArray();
 	<liferay-ui:message key="downloads" />
 </h1>
 
-<div>
-	<liferay-ui:message key="find-the-downloads-you-need-by-filtering-the-results-with-the-drop-down-menus-below" />
-</div>
+<c:if test="<%= ddmStructureKey.equals(DDMStructureConstants.KEY_DOWNLOAD) %>">
+	<div>
+		<liferay-ui:message key="find-the-downloads-you-need-by-filtering-the-results-with-the-drop-down-menus-below" />
+	</div>
 
-<div class="filters">
-
-	<%
-	PortletURL portletURL = renderResponse.createRenderURL();
-	%>
-
-	<aui:form action="<%= portletURL.toString() %>" method="get" name="fm">
-		<liferay-portlet:renderURLParams portletURL="<%= portletURL %>" />
+	<div class="filters">
 
 		<%
-		JSONArray fileTypesJSONArray = null;
+		PortletURL portletURL = renderResponse.createRenderURL();
 		%>
 
-		<aui:select name="product" onChange='<%= renderResponse.getNamespace() + "updateFileType(this.value);" %>'>
-			<aui:option label="select-product" value="" />
+		<aui:form action="<%= portletURL.toString() %>" method="get" name="fm">
+			<liferay-portlet:renderURLParams portletURL="<%= portletURL %>" />
 
 			<%
-			for (int i = 0; i < productsJSONArray.length(); i++) {
-				JSONObject jsonObject = productsJSONArray.getJSONObject(i);
-
-				String productName = jsonObject.getString("name");
-				String productValue = jsonObject.getString("value");
-
-				boolean selected = false;
-
-				if (productValue.equals(product)) {
-					selected = true;
-
-					fileTypesJSONArray = jsonObject.getJSONArray("fileTypes");
-				}
+			JSONArray fileTypesJSONArray = null;
 			%>
 
-				<aui:option label="<%= productName %>" selected="<%= selected %>" value="<%= productValue %>" />
-
-			<%
-			}
-			%>
-
-		</aui:select>
-
-		<aui:select name="fileType" onChange='<%= "if (this.value != '') {submitForm(document." + renderResponse.getNamespace() + "fm);}" %>'>
-			<aui:option label="select-file-type" value="" />
-
-			<c:if test="<%= fileTypesJSONArray != null %>">
+			<aui:select name="product" onChange='<%= renderResponse.getNamespace() + "updateFileType(this.value);" %>'>
+				<aui:option label="select-product" value="" />
 
 				<%
-				for (int j = 0; j < fileTypesJSONArray.length(); j++) {
-					JSONObject jsonObject = fileTypesJSONArray.getJSONObject(j);
+				for (int i = 0; i < productsJSONArray.length(); i++) {
+					JSONObject jsonObject = productsJSONArray.getJSONObject(i);
 
-					String fileTypeName = jsonObject.getString("name");
-					String fileTypeValue = jsonObject.getString("value");
+					String productName = jsonObject.getString("name");
+					String productValue = jsonObject.getString("value");
+
+					boolean selected = false;
+
+					if (productValue.equals(product)) {
+						selected = true;
+
+						fileTypesJSONArray = jsonObject.getJSONArray("fileTypes");
+					}
 				%>
 
-					<aui:option label="<%= fileTypeName %>" selected="<%= fileTypeValue.equals(fileType) %>" value="<%= fileTypeValue %>" />
+					<aui:option label="<%= productName %>" selected="<%= selected %>" value="<%= productValue %>" />
 
 				<%
 				}
 				%>
 
-			</c:if>
-		</aui:select>
-	</aui:form>
-</div>
+			</aui:select>
+
+			<aui:select name="fileType" onChange='<%= "if (this.value != '') {submitForm(document." + renderResponse.getNamespace() + "fm);}" %>'>
+				<aui:option label="select-file-type" value="" />
+
+				<c:if test="<%= fileTypesJSONArray != null %>">
+
+					<%
+					for (int j = 0; j < fileTypesJSONArray.length(); j++) {
+						JSONObject jsonObject = fileTypesJSONArray.getJSONObject(j);
+
+						String fileTypeName = jsonObject.getString("name");
+						String fileTypeValue = jsonObject.getString("value");
+					%>
+
+						<aui:option label="<%= fileTypeName %>" selected="<%= fileTypeValue.equals(fileType) %>" value="<%= fileTypeValue %>" />
+
+					<%
+					}
+					%>
+
+				</c:if>
+			</aui:select>
+		</aui:form>
+	</div>
+</c:if>
 
 <div class="results">
 	<liferay-ui:search-container
@@ -144,66 +147,68 @@ JSONArray productsJSONArray = downloadsDisplayContext.getProductsJSONArray();
 	</liferay-ui:search-container>
 </div>
 
-<aui:script>
-	function <portlet:namespace />appendOption(selectElement, text, value) {
-		var option = document.createElement('option');
+<c:if test="<%= ddmStructureKey.equals(DDMStructureConstants.KEY_DOWNLOAD) %>">
+	<aui:script>
+		function <portlet:namespace />appendOption(selectElement, text, value) {
+			var option = document.createElement('option');
 
-		option.text = text;
-		option.value = value;
+			option.text = text;
+			option.value = value;
 
-		selectElement.append(option);
-	}
-
-	function <portlet:namespace />updateFileType(product) {
-		var A = AUI();
-
-		var fileType = A.one('#<portlet:namespace />fileType');
-
-		fileType.empty();
-
-		<portlet:namespace />appendOption(fileType, '<liferay-ui:message key="select-file-type" />', '');
-
-		if (product == '') {
-			submitForm(document.<portlet:namespace />fm);
-
-			return;
+			selectElement.append(option);
 		}
 
-		<%
-		for (int i = 0; i < productsJSONArray.length(); i++) {
-			JSONObject jsonObject = productsJSONArray.getJSONObject(i);
+		function <portlet:namespace />updateFileType(product) {
+			var A = AUI();
 
-			JSONArray fileTypesJSONArray = jsonObject.getJSONArray("fileTypes");
-		%>
+			var fileType = A.one('#<portlet:namespace />fileType');
 
-			if (product == '<%= jsonObject.getString("value") %>') {
+			fileType.empty();
 
-				<%
-				for (int j = 0; j < fileTypesJSONArray.length(); j++) {
-					JSONObject fileTypeJSONObject = fileTypesJSONArray.getJSONObject(j);
-				%>
+			<portlet:namespace />appendOption(fileType, '<liferay-ui:message key="select-file-type" />', '');
 
-					<portlet:namespace />appendOption(fileType, '<%= fileTypeJSONObject.getString("name") %>', '<%= fileTypeJSONObject.getString("value") %>');
+			if (product == '') {
+				submitForm(document.<portlet:namespace />fm);
 
-				<%
-				}
-				%>
-
-				<c:if test="<%= fileTypesJSONArray.length() == 1 %>">
-
-					<%
-					JSONObject fileTypeJSONObject = fileTypesJSONArray.getJSONObject(0);
-					%>
-
-					fileType.val('<%= fileTypeJSONObject.getString("value") %>');
-
-					submitForm(document.<portlet:namespace />fm);
-				</c:if>
+				return;
 			}
 
-		<%
-		}
-		%>
+			<%
+			for (int i = 0; i < productsJSONArray.length(); i++) {
+				JSONObject jsonObject = productsJSONArray.getJSONObject(i);
 
-	}
-</aui:script>
+				JSONArray fileTypesJSONArray = jsonObject.getJSONArray("fileTypes");
+			%>
+
+				if (product == '<%= jsonObject.getString("value") %>') {
+
+					<%
+					for (int j = 0; j < fileTypesJSONArray.length(); j++) {
+						JSONObject fileTypeJSONObject = fileTypesJSONArray.getJSONObject(j);
+					%>
+
+						<portlet:namespace />appendOption(fileType, '<%= fileTypeJSONObject.getString("name") %>', '<%= fileTypeJSONObject.getString("value") %>');
+
+					<%
+					}
+					%>
+
+					<c:if test="<%= fileTypesJSONArray.length() == 1 %>">
+
+						<%
+						JSONObject fileTypeJSONObject = fileTypesJSONArray.getJSONObject(0);
+						%>
+
+						fileType.val('<%= fileTypeJSONObject.getString("value") %>');
+
+						submitForm(document.<portlet:namespace />fm);
+					</c:if>
+				}
+
+			<%
+			}
+			%>
+
+		}
+	</aui:script>
+</c:if>

@@ -1,0 +1,543 @@
+{
+	"availableLanguageIds": [
+		"en_US"
+	],
+	"defaultLanguageId": "en_US",
+	"fields": [
+		{
+			"dataType": "string",
+			"indexType": "keyword",
+			"label": {
+				"en_US": "Product"
+			},
+			"localizable": true,
+			"multiple": false,
+			"name": "product",
+			"options": [
+				{
+					"label": {
+						"en_US": "Analytics Cloud"
+					},
+					"value": "analyticsCloud"
+				},
+				{
+					"label": {
+						"en_US": "Commerce"
+					},
+					"value": "commerce"
+				},
+				{
+					"label": {
+						"en_US": "Commerce Connectors"
+					},
+					"value": "commerceConnectors"
+				},
+				{
+					"label": {
+						"en_US": "Connected Services"
+					},
+					"value": "connectedServices"
+				},
+				{
+					"label": {
+						"en_US": "Developer Tools"
+					},
+					"value": "developerTools"
+				},
+				{
+					"label": {
+						"en_US": "DXP 7.0"
+					},
+					"value": "dxp_70"
+				},
+				{
+					"label": {
+						"en_US": "DXP 7.1"
+					},
+					"value": "dxp_71"
+				},
+				{
+					"label": {
+						"en_US": "Enterprise Search Premium"
+					},
+					"value": "enterpriseSearchPremium"
+				},
+				{
+					"label": {
+						"en_US": "Enterprise Search Standard"
+					},
+					"value": "enterpriseSearchStandard"
+				},
+				{
+					"label": {
+						"en_US": "Mobile Experience Platform"
+					},
+					"value": "mobileExperiencePlatform"
+				},
+				{
+					"label": {
+						"en_US": "Patching Tool"
+					},
+					"value": "patchingTool"
+				},
+				{
+					"label": {
+						"en_US": "Portal 5.2"
+					},
+					"value": "portal_52"
+				},
+				{
+					"label": {
+						"en_US": "Portal 6.0"
+					},
+					"value": "portal_60"
+				},
+				{
+					"label": {
+						"en_US": "Portal 6.1"
+					},
+					"value": "portal_61"
+				},
+				{
+					"label": {
+						"en_US": "Portal 6.2"
+					},
+					"value": "portal_62"
+				},
+				{
+					"label": {
+						"en_US": "Sync"
+					},
+					"value": "sync"
+				}
+			],
+			"predefinedValue": {
+				"en_US": [
+					""
+				]
+			},
+			"readOnly": false,
+			"repeatable": false,
+			"required": false,
+			"showLabel": true,
+			"style": {
+				"en_US": ""
+			},
+			"tip": {
+				"en_US": ""
+			},
+			"type": "select"
+		},
+		{
+			"dataType": "string",
+			"indexType": "keyword",
+			"label": {
+				"en_US": "File Type"
+			},
+			"localizable": true,
+			"multiple": false,
+			"name": "fileType",
+			"options": [
+				{
+					"label": {
+						"en_US": "Developer Studio"
+					},
+					"value": "developerStudio"
+				},
+				{
+					"label": {
+						"en_US": "Faces"
+					},
+					"value": "faces"
+				},
+				{
+					"label": {
+						"en_US": "Fix Packs"
+					},
+					"value": "fixPacks"
+				},
+				{
+					"label": {
+						"en_US": "Plugins"
+					},
+					"value": "plugins"
+				},
+				{
+					"label": {
+						"en_US": "Plugins SDK"
+					},
+					"value": "pluginsSDK"
+				},
+				{
+					"label": {
+						"en_US": "Product"
+					},
+					"value": "product"
+				},
+				{
+					"label": {
+						"en_US": "Security"
+					},
+					"value": "security"
+				}
+			],
+			"predefinedValue": {
+				"en_US": [
+					""
+				]
+			},
+			"readOnly": false,
+			"repeatable": false,
+			"required": false,
+			"showLabel": true,
+			"style": {
+				"en_US": ""
+			},
+			"tip": {
+				"en_US": ""
+			},
+			"type": "select"
+		},
+		{
+			"dataType": "date",
+			"fieldNamespace": "ddm",
+			"indexType": "keyword",
+			"label": {
+				"en_US": "Release Date"
+			},
+			"localizable": true,
+			"name": "releaseDate",
+			"predefinedValue": {
+				"en_US": ""
+			},
+			"readOnly": false,
+			"repeatable": false,
+			"required": false,
+			"showLabel": true,
+			"style": {
+				"en_US": ""
+			},
+			"tip": {
+				"en_US": ""
+			},
+			"type": "ddm-date"
+		},
+		{
+			"dataType": "number",
+			"fieldNamespace": "ddm",
+			"indexType": "keyword",
+			"label": {
+				"en_US": "Download Number"
+			},
+			"localizable": true,
+			"name": "downloadNumber",
+			"predefinedValue": {
+				"en_US": ""
+			},
+			"readOnly": false,
+			"repeatable": false,
+			"required": false,
+			"showLabel": true,
+			"style": {
+				"en_US": ""
+			},
+			"tip": {
+				"en_US": ""
+			},
+			"type": "ddm-number"
+		},
+		{
+			"dataType": "string",
+			"indexType": "keyword",
+			"label": {
+				"en_US": "Link"
+			},
+			"localizable": true,
+			"name": "link",
+			"nestedFields": [
+				{
+					"dataType": "string",
+					"indexType": "keyword",
+					"label": {
+						"en_US": "Link URL"
+					},
+					"localizable": true,
+					"name": "linkUrl",
+					"predefinedValue": {
+						"en_US": ""
+					},
+					"readOnly": false,
+					"repeatable": false,
+					"required": false,
+					"showLabel": true,
+					"style": {
+						"en_US": ""
+					},
+					"tip": {
+						"en_US": ""
+					},
+					"type": "text"
+				}
+			],
+			"predefinedValue": {
+				"en_US": ""
+			},
+			"readOnly": false,
+			"repeatable": true,
+			"required": false,
+			"showLabel": true,
+			"style": {
+				"en_US": ""
+			},
+			"tip": {
+				"en_US": ""
+			},
+			"type": "text"
+		},
+		{
+			"dataType": "html",
+			"fieldNamespace": "ddm",
+			"indexType": "text",
+			"label": {
+				"en_US": "Alert Message"
+			},
+			"localizable": true,
+			"name": "alertMessage",
+			"predefinedValue": {
+				"en_US": ""
+			},
+			"readOnly": false,
+			"repeatable": false,
+			"required": false,
+			"showLabel": true,
+			"style": {
+				"en_US": ""
+			},
+			"tip": {
+				"en_US": ""
+			},
+			"type": "ddm-text-html"
+		},
+		{
+			"dataType": "html",
+			"fieldNamespace": "ddm",
+			"indexType": "text",
+			"label": {
+				"en_US": "Additional Notes"
+			},
+			"localizable": true,
+			"name": "additionalNotes",
+			"predefinedValue": {
+				"en_US": ""
+			},
+			"readOnly": false,
+			"repeatable": false,
+			"required": false,
+			"showLabel": true,
+			"style": {
+				"en_US": ""
+			},
+			"tip": {
+				"en_US": ""
+			},
+			"type": "ddm-text-html"
+		},
+		{
+			"dataType": "string",
+			"indexType": "keyword",
+			"label": {
+				"en_US": "Download Group"
+			},
+			"localizable": true,
+			"name": "downloadGroup",
+			"nestedFields": [
+				{
+					"dataType": "string",
+					"indexType": "keyword",
+					"label": {
+						"en_US": "Download"
+					},
+					"localizable": true,
+					"name": "download",
+					"nestedFields": [
+						{
+							"dataType": "string",
+							"indexType": "keyword",
+							"label": {
+								"en_US": "Download URL"
+							},
+							"localizable": true,
+							"name": "downloadUrl",
+							"predefinedValue": {
+								"en_US": ""
+							},
+							"readOnly": false,
+							"repeatable": false,
+							"required": false,
+							"showLabel": true,
+							"style": {
+								"en_US": ""
+							},
+							"tip": {
+								"en_US": ""
+							},
+							"type": "text"
+						},
+						{
+							"dataType": "",
+							"fieldNamespace": "ddm",
+							"indexType": "keyword",
+							"label": {
+								"en_US": "Download Detail"
+							},
+							"localizable": true,
+							"name": "downloadDetail",
+							"nestedFields": [
+								{
+									"dataType": "string",
+									"indexType": "keyword",
+									"label": {
+										"en_US": "Detail Label"
+									},
+									"localizable": true,
+									"name": "detailLabel",
+									"predefinedValue": {
+										"en_US": ""
+									},
+									"readOnly": false,
+									"repeatable": false,
+									"required": false,
+									"showLabel": true,
+									"style": {
+										"en_US": ""
+									},
+									"tip": {
+										"en_US": ""
+									},
+									"type": "text"
+								},
+								{
+									"dataType": "string",
+									"indexType": "keyword",
+									"label": {
+										"en_US": "Detail Value"
+									},
+									"localizable": true,
+									"name": "detailValue",
+									"predefinedValue": {
+										"en_US": ""
+									},
+									"readOnly": false,
+									"repeatable": false,
+									"required": false,
+									"showLabel": true,
+									"style": {
+										"en_US": ""
+									},
+									"tip": {
+										"en_US": ""
+									},
+									"type": "text"
+								}
+							],
+							"predefinedValue": {
+								"en_US": ""
+							},
+							"readOnly": false,
+							"repeatable": true,
+							"required": false,
+							"showLabel": true,
+							"style": {
+								"en_US": ""
+							},
+							"tip": {
+								"en_US": ""
+							},
+							"type": "ddm-separator"
+						}
+					],
+					"predefinedValue": {
+						"en_US": ""
+					},
+					"readOnly": false,
+					"repeatable": true,
+					"required": false,
+					"showLabel": true,
+					"style": {
+						"en_US": ""
+					},
+					"tip": {
+						"en_US": ""
+					},
+					"type": "text"
+				}
+			],
+			"predefinedValue": {
+				"en_US": ""
+			},
+			"readOnly": false,
+			"repeatable": true,
+			"required": false,
+			"showLabel": true,
+			"style": {
+				"en_US": ""
+			},
+			"tip": {
+				"en_US": ""
+			},
+			"type": "text"
+		},
+		{
+			"dataType": "string",
+			"indexType": "keyword",
+			"label": {
+				"en_US": "Required Agreement"
+			},
+			"localizable": true,
+			"multiple": false,
+			"name": "requiredAgreement",
+			"options": [
+				{
+					"label": {
+						"en_US": "None"
+					},
+					"value": ""
+				},
+				{
+					"label": {
+						"en_US": "DXP EULA"
+					},
+					"value": "dxpEULA"
+				},
+				{
+					"label": {
+						"en_US": "Studio EULA"
+					},
+					"value": "studioEULA"
+				},
+				{
+					"label": {
+						"en_US": "Evaluation EULA"
+					},
+					"value": "evaluationEULA"
+				}
+			],
+			"predefinedValue": {
+				"en_US": [
+					""
+				]
+			},
+			"readOnly": false,
+			"repeatable": false,
+			"required": false,
+			"showLabel": true,
+			"style": {
+				"en_US": ""
+			},
+			"tip": {
+				"en_US": ""
+			},
+			"type": "select"
+		}
+	]
+}

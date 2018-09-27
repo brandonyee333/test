@@ -22,8 +22,11 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
 
 import javax.portlet.PortletException;
+import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
@@ -48,6 +51,19 @@ public class ViewMVCRenderCommand implements MVCRenderCommand {
 		throws PortletException {
 
 		try {
+			PortletPreferences portletPreferences =
+				renderRequest.getPreferences();
+
+			String ddmStructureKey = portletPreferences.getValue(
+				"ddmStructureKey", null);
+
+			if (Validator.isNull(ddmStructureKey)) {
+				renderRequest.setAttribute(
+					WebKeys.PORTLET_CONFIGURATOR_VISIBILITY, Boolean.TRUE);
+
+				return "/portlet_not_setup.jsp";
+			}
+
 			return doRender(renderRequest, renderResponse);
 		}
 		catch (Exception e) {

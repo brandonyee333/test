@@ -16,32 +16,23 @@ package com.liferay.osb.customer.downloads.display.web.internal.portlet;
 
 import com.liferay.dynamic.data.mapping.util.DDMIndexer;
 import com.liferay.journal.util.JournalConverter;
-import com.liferay.osb.customer.downloads.display.web.configuration.DownloadsDisplayConfiguration;
 import com.liferay.osb.customer.downloads.display.web.internal.constants.DownloadsDisplayPortletKeys;
-import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 
 import java.io.IOException;
-
-import java.util.Map;
 
 import javax.portlet.Portlet;
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.ConfigurationPolicy;
-import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
  */
 @Component(
-	configurationPid = "com.liferay.osb.customer.downloads.display.web.configuration.DownloadsDisplayConfiguration",
-	configurationPolicy = ConfigurationPolicy.OPTIONAL, immediate = true,
 	property = {
 		"com.liferay.portlet.css-class-wrapper=osb-downloads-display-portlet",
 		"com.liferay.portlet.display-category=category.osb",
@@ -63,26 +54,13 @@ public class DownloadsDisplayPortlet extends MVCPortlet {
 
 		renderRequest.setAttribute(DDMIndexer.class.getName(), _ddmIndexer);
 		renderRequest.setAttribute(
-			DownloadsDisplayConfiguration.class.getName(),
-			_downloadsDisplayConfiguration);
-		renderRequest.setAttribute(
 			JournalConverter.class.getName(), _journalConverter);
 
 		super.render(renderRequest, renderResponse);
 	}
 
-	@Activate
-	@Modified
-	protected void activate(Map<String, Object> properties) {
-		_downloadsDisplayConfiguration = ConfigurableUtil.createConfigurable(
-			DownloadsDisplayConfiguration.class, properties);
-	}
-
 	@Reference
 	private DDMIndexer _ddmIndexer;
-
-	private volatile DownloadsDisplayConfiguration
-		_downloadsDisplayConfiguration;
 
 	@Reference
 	private JournalConverter _journalConverter;
