@@ -110,7 +110,7 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 	}
 
 	@Override
-	public void onTaskFail(Class<? extends Task> taskClass) {
+	public void onTaskFail(Class<? extends Task> taskClass, int errorCode) {
 		if (taskClass.equals(HandshakeTask.class)) {
 			if (!_available) {
 				return;
@@ -143,8 +143,6 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 			}
 
 			_available = false;
-
-			_notifyStateChangedListeners(LCSEvent.UNAVAILABLE);
 
 			return;
 		}

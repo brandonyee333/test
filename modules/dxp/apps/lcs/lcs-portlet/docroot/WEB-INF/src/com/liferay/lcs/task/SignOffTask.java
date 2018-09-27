@@ -98,7 +98,7 @@ public class SignOffTask implements Task {
 
 	private void _notifyOnTaskFailTaskStateListeners() {
 		for (TaskStateListener taskStateListener : _taskStateListeners) {
-			taskStateListener.onTaskFail(SignOffTask.class);
+			taskStateListener.onTaskFail(SignOffTask.class, 0);
 		}
 	}
 

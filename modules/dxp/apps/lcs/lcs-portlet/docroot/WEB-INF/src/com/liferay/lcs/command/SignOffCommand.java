@@ -17,10 +17,16 @@ package com.liferay.lcs.command;
 import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.messaging.SignOffCommandMessage;
+import com.liferay.lcs.platform.gateway.LCSGatewayClient;
+import com.liferay.lcs.task.SignOffTask;
+import com.liferay.lcs.task.TaskStateListener;
 import com.liferay.lcs.task.scheduler.TaskSchedulerService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Igor Beslic
@@ -29,12 +35,16 @@ public class SignOffCommand implements Command<SignOffCommandMessage> {
 
 	public SignOffCommand(
 		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor,
-		LCSKeyAdvisor lcsKeyAdvisor,
+		LCSGatewayClient lcsGatewayClient, LCSKeyAdvisor lcsKeyAdvisor,
 		TaskSchedulerService taskSchedulerService) {
 
 		_lcsClusterEntryTokenAdvisor = lcsClusterEntryTokenAdvisor;
 		_lcsKeyAdvisor = lcsKeyAdvisor;
-		_taskSchedulerService = taskSchedulerService;
+
+		_taskStateListeners = new ArrayList<>();
+
+		_taskStateListeners.add(lcsGatewayClient);
+		_taskStateListeners.add(taskSchedulerService);
 	}
 
 	@Override
@@ -61,7 +71,9 @@ public class SignOffCommand implements Command<SignOffCommandMessage> {
 			}
 		}
 
-		_taskSchedulerService.executeLCSConnectorRunnable(true);
+		for (TaskStateListener taskStateListener : _taskStateListeners) {
+			taskStateListener.onTaskSuccess(SignOffTask.class);
+		}
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Signed off server from LCS");
@@ -72,6 +84,6 @@ public class SignOffCommand implements Command<SignOffCommandMessage> {
 
 	private final LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
 	private final LCSKeyAdvisor _lcsKeyAdvisor;
-	private final TaskSchedulerService _taskSchedulerService;
+	private final List<TaskStateListener> _taskStateListeners;
 
 }

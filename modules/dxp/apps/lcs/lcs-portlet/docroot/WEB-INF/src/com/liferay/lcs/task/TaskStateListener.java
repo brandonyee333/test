@@ -19,7 +19,7 @@ package com.liferay.lcs.task;
  */
 public interface TaskStateListener {
 
-	public void onTaskFail(Class<? extends Task> taskClass);
+	public void onTaskFail(Class<? extends Task> taskClass, int errorCode);
 
 	public void onTaskSuccess(Class<? extends Task> taskClass);
 

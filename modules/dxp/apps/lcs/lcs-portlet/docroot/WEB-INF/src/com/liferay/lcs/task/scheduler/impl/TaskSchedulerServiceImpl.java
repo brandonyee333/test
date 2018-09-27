@@ -21,13 +21,14 @@ import com.liferay.lcs.advisor.UptimeMonitoringAdvisor;
 import com.liferay.lcs.platform.LCSEvent;
 import com.liferay.lcs.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.platform.gateway.LCSGatewayStateListener;
-import com.liferay.lcs.runnable.LCSConnectorRunnable;
 import com.liferay.lcs.task.CommandMessageTask;
 import com.liferay.lcs.task.HandshakeTask;
 import com.liferay.lcs.task.HeartbeatTask;
+import com.liferay.lcs.task.LCSClusterEntryTokenCheckTask;
 import com.liferay.lcs.task.ScheduledTask;
 import com.liferay.lcs.task.Scope;
 import com.liferay.lcs.task.SignOffTask;
+import com.liferay.lcs.task.Task;
 import com.liferay.lcs.task.UptimeMonitoringTask;
 import com.liferay.lcs.task.advisor.TaskAdvisor;
 import com.liferay.lcs.task.scheduler.TaskSchedulerService;
@@ -109,22 +110,6 @@ public class TaskSchedulerServiceImpl
 	}
 
 	@Override
-	public void executeLCSConnectorRunnable(boolean delayRun) {
-		LCSConnectorRunnable lcsConnectorRunnable = new LCSConnectorRunnable(
-			delayRun);
-
-		lcsConnectorRunnable.setLCSClusterEntryTokenAdvisor(
-			_lcsClusterEntryTokenAdvisor);
-		lcsConnectorRunnable.setTaskSchedulerService(this);
-
-		_scheduledExecutorService.execute(lcsConnectorRunnable);
-
-		if (_log.isTraceEnabled()) {
-			_log.trace(lcsConnectorRunnable + " executed");
-		}
-	}
-
-	@Override
 	public void onLCSGatewayStateChanged(LCSEvent lcsEvent) {
 		if (lcsEvent == LCSEvent.AVAILABLE) {
 			_onLCSGatewayServiceAvailable();
@@ -132,6 +117,51 @@ public class TaskSchedulerServiceImpl
 		else if (lcsEvent == LCSEvent.UNAVAILABLE) {
 			_onLCSGatewayServiceUnavailable();
 		}
+	}
+
+	@Override
+	public void onTaskFail(Class<? extends Task> taskClass, int errorCode) {
+		if (taskClass.equals(LCSClusterEntryTokenCheckTask.class)) {
+			if (_log.isInfoEnabled()) {
+				_log.info("LCS portlet is not connected. Retry in 60 seconds.");
+			}
+
+			_executeLCSClusterEntryTokenCheckTask(true);
+
+			return;
+		}
+
+		if (taskClass.equals(HandshakeTask.class)) {
+			if (_log.isInfoEnabled()) {
+				_log.info("LCS portlet is not connected. Retry in 60 seconds.");
+			}
+
+			if ((errorCode > 199) && (errorCode < 300)) {
+				_executeLCSClusterEntryTokenCheckTask(true);
+			}
+			else {
+				_executeHandshakeTask(true);
+			}
+		}
+	}
+
+	@Override
+	public void onTaskSuccess(Class<? extends Task> taskClass) {
+		if (taskClass.equals(LCSClusterEntryTokenCheckTask.class)) {
+			_executeHandshakeTask(false);
+		}
+		else if (taskClass.equals(SignOffTask.class)) {
+			unscheduleAllTasks();
+
+			_executeLCSClusterEntryTokenCheckTask(true);
+		}
+	}
+
+	@Override
+	public void schedule() {
+		_scheduleUptimeMonitoringTask();
+
+		_executeLCSClusterEntryTokenCheckTask(false);
 	}
 
 	@Override
@@ -180,27 +210,6 @@ public class TaskSchedulerServiceImpl
 	}
 
 	@Override
-	public void scheduleUptimeMonitoringTask() {
-		UptimeMonitoringTask uptimeMonitoringTask = new UptimeMonitoringTask();
-
-		_scheduledExecutorService.scheduleAtFixedRate(
-			uptimeMonitoringTask, 1, 1, TimeUnit.MINUTES);
-
-		if (_log.isTraceEnabled()) {
-			_log.trace(uptimeMonitoringTask.toString() + " scheduled");
-		}
-	}
-
-	@Override
-	public Future<?> submitHandshakeTask() {
-		return _scheduledExecutorService.submit(
-			new HandshakeTask(
-				_lcsClusterEntryTokenAdvisor.getLcsClusterEntryTokenId(),
-				_lcsAlertAdvisor, _lcsGatewayClient, _lcsKeyAdvisor,
-				_threadFactory, _uptimeMonitoringAdvisor));
-	}
-
-	@Override
 	public Future<?> submitSignOffTask(boolean serverManuallyShutdown) {
 		SignOffTask signOffTask = new SignOffTask(
 			_lcsKeyAdvisor.getKey(), _lcsGatewayClient, serverManuallyShutdown);
@@ -212,6 +221,8 @@ public class TaskSchedulerServiceImpl
 
 	@Override
 	public void unscheduleAllTasks() {
+		_taskAdvisor.reset();
+
 		unscheduleLocalScheduledTasks();
 
 		unscheduleClusteredScheduledTasks();
@@ -347,6 +358,45 @@ public class TaskSchedulerServiceImpl
 		_scheduledFuturesMap.clear();
 	}
 
+	private void _executeHandshakeTask(boolean delayRun) {
+		HandshakeTask handshakeTask = new HandshakeTask(
+			_lcsClusterEntryTokenAdvisor.getLcsClusterEntryTokenId(),
+			_lcsAlertAdvisor, _lcsClusterEntryTokenAdvisor, _lcsGatewayClient,
+			_lcsKeyAdvisor, this, _threadFactory, _uptimeMonitoringAdvisor);
+
+		if (delayRun) {
+			_scheduledExecutorService.schedule(
+				handshakeTask, 60, TimeUnit.SECONDS);
+		}
+		else {
+			_scheduledExecutorService.submit(handshakeTask);
+		}
+	}
+
+	private void _executeLCSClusterEntryTokenCheckTask(boolean delayRun) {
+		if (_scheduledExecutorService.isShutdown() ||
+			_scheduledExecutorService.isTerminated()) {
+
+			return;
+		}
+
+		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =
+			new LCSClusterEntryTokenCheckTask(
+				_lcsClusterEntryTokenAdvisor, this);
+
+		if (delayRun) {
+			_scheduledExecutorService.schedule(
+				lcsClusterEntryTokenCheckTask, 60, TimeUnit.SECONDS);
+		}
+		else {
+			_scheduledExecutorService.submit(lcsClusterEntryTokenCheckTask);
+		}
+
+		if (_log.isTraceEnabled()) {
+			_log.trace(lcsClusterEntryTokenCheckTask + " executed");
+		}
+	}
+
 	private void _onLCSGatewayServiceAvailable() {
 		if (_log.isTraceEnabled()) {
 			_log.trace("Scheduling command message task");
@@ -380,11 +430,13 @@ public class TaskSchedulerServiceImpl
 	}
 
 	private void _onLCSGatewayServiceUnavailable() {
+		if (_log.isInfoEnabled()) {
+			_log.info("LCS Gateway unavailable. Start connection recovery.");
+		}
+
 		unscheduleAllTasks();
 
-		_taskAdvisor.reset();
-
-		executeLCSConnectorRunnable(true);
+		_executeLCSClusterEntryTokenCheckTask(false);
 	}
 
 	private void _scheduleClusteredScheduledTask(
@@ -442,6 +494,17 @@ public class TaskSchedulerServiceImpl
 		}
 		catch (Exception e) {
 			_log.error(e, e);
+		}
+	}
+
+	private void _scheduleUptimeMonitoringTask() {
+		UptimeMonitoringTask uptimeMonitoringTask = new UptimeMonitoringTask();
+
+		_scheduledExecutorService.scheduleAtFixedRate(
+			uptimeMonitoringTask, 1, 1, TimeUnit.MINUTES);
+
+		if (_log.isTraceEnabled()) {
+			_log.trace(uptimeMonitoringTask.toString() + " scheduled");
 		}
 	}
 
