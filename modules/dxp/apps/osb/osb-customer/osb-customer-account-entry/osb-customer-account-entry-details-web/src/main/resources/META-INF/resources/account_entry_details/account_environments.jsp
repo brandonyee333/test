@@ -35,7 +35,6 @@ JSONObject environmentConfigurationJSONObject = accountEntryViewDisplayContext.g
 			addEnvironmentURL: '<%= addEnvironmentURL %>',
 			environments: <%= accountEnvironmentsJSONArray %>,
 			permitAdd: <%= OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.ADD_ACCOUNT_ENVIRONMENT) %>,
-			portletNamespace: '<portlet:namespace />',
 			environmentConfiguration: <%= environmentConfigurationJSONObject %>
 		},
 		document.getElementById('<portlet:namespace />accountEnvironments')

@@ -8,6 +8,7 @@ import Modal from './Modal';
 
 export default class AccountEnvironments extends React.Component {
 	state = {
+		namespace: null,
 		showModal: false
 	};
 
@@ -15,8 +16,17 @@ export default class AccountEnvironments extends React.Component {
 		addEnvironmentURL: PropTypes.string.isRequired,
 		environments: PropTypes.array.isRequired,
 		permitAdd: PropTypes.bool.isRequired,
-		portletNamespace: PropTypes.string.isRequired,
 		environmentConfiguration: PropTypes.object.isRequired
+	};
+
+	componentDidMount() {
+		const {namespace} = window.AccountDetailsConstants;
+
+		this.setState(
+			{
+				namespace
+			}
+		);
 	};
 
 	handleCloseModal = () =>
@@ -46,11 +56,10 @@ export default class AccountEnvironments extends React.Component {
 			addEnvironmentURL,
 			environments,
 			permitAdd,
-			portletNamespace,
 			environmentConfiguration
 		} = this.props;
 
-		const {showModal} = this.state;
+		const {namespace, showModal} = this.state;
 
 		const accordionItems = environments.map((environment, index) => ({
 			body: (
@@ -131,7 +140,7 @@ export default class AccountEnvironments extends React.Component {
 			<AddAccountEnvironmentForm
 				addEnvironmentURL={addEnvironmentURL}
 				handleCloseModal={this.handleCloseModal}
-				portletNamespace={portletNamespace}
+				namespace={namespace}
 				environmentConfiguration={environmentConfiguration}
 			/>
 		);
