@@ -60,7 +60,6 @@
 	</bean>
 	<bean class="com.liferay.lcs.command.SignOffCommand" id="com.liferay.lcs.command.SignOffCommand">
 		<constructor-arg ref="com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor" />
-		<constructor-arg ref="com.liferay.lcs.platform.gateway.LCSGatewayClient" />
 		<constructor-arg ref="com.liferay.lcs.advisor.LCSKeyAdvisor" />
 		<constructor-arg ref="com.liferay.lcs.scheduler.TaskSchedulerService" />
 	</bean>

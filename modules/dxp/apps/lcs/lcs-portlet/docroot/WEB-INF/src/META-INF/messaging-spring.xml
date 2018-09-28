@@ -53,7 +53,6 @@
 	</bean>
 	<bean class="com.liferay.lcs.messaging.LCSLifecycleManager" id="messageListener.lcs_lifecycle_manager">
 		<constructor-arg name="taskSchedulerService" ref="com.liferay.lcs.scheduler.TaskSchedulerService" />
-		<constructor-arg name="uptimeMonitoringAdvisor" ref="com.liferay.lcs.advisor.UptimeMonitoringAdvisor" />
 	</bean>
 	<bean class="com.liferay.lcs.messaging.LCSMessageBusMessageListener" id="messageListener.lcs_message_bus">
 		<constructor-arg name="lcsGatewayClient" ref="com.liferay.lcs.platform.gateway.LCSGatewayClient" />
