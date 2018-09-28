@@ -120,5 +120,5 @@ Format shortDateFormatTime = FastDateFormatFactoryUtil.getTime(DateFormat.SHORT,
 <aui:script>
 	window.AccountDetailsConstants = {
 		namespace: '${renderResponse.namespace}'
-	}
+	};
 </aui:script>
