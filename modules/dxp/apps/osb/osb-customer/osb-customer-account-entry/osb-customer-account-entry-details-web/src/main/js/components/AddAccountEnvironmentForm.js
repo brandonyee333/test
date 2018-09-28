@@ -456,22 +456,17 @@ export default class AddAccountEnvironmentForm extends React.Component {
 										<div className="file-list">
 											<ul className="attachment-pool">
 												<li className="attachment">
-													<Button
-														display="outline"
-														onClick={() => this.handleDeleteFile(this.portalExtRef)}
-														size="sm"
-														type="button"
-													>
-														<svg className="lexicon-icon lexicon-icon-paperclip">
-															<use xlinkHref="#paperclip" />
-														</svg>
+													<svg className="lexicon-icon lexicon-icon-paperclip">
+														<use xlinkHref="#paperclip" />
+													</svg>
 
-														<span className="attachment-name">{portalExt}</span>
+													<span className="attachment-name">{portalExt}</span>
 
+													<span className="icon-delete-file" onClick={() => this.handleDeleteFile(this.portalExtRef)}>
 														<svg className="lexicon-icon lexicon-icon-times">
 															<use xlinkHref="#times" />
 														</svg>
-													</Button>
+													</span>
 												</li>
 											</ul>
 										</div>
@@ -511,22 +506,17 @@ export default class AddAccountEnvironmentForm extends React.Component {
 										<div className="file-list">
 											<ul className="attachment-pool">
 												<li className="attachment">
-													<Button
-														display="outline"
-														onClick={() => this.handleDeleteFile(this.patchLevelRef)}
-														size="sm"
-														type="button"
-													>
-														<svg className="lexicon-icon lexicon-icon-paperclip">
-															<use xlinkHref="#paperclip" />
-														</svg>
+													<svg className="lexicon-icon lexicon-icon-paperclip">
+														<use xlinkHref="#paperclip" />
+													</svg>
 
-														<span className="attachment-name">{patchLevel}</span>
+													<span className="attachment-name">{patchLevel}</span>
 
+													<span className="icon-delete-file" onClick={() => this.handleDeleteFile(this.patchLevelRef)}>
 														<svg className="lexicon-icon lexicon-icon-times">
 															<use xlinkHref="#times" />
 														</svg>
-													</Button>
+													</span>
 												</li>
 											</ul>
 										</div>
