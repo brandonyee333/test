@@ -90,6 +90,7 @@ public class TaskSchedulerServiceImpl
 		_uptimeMonitoringAdvisor = uptimeMonitoringAdvisor;
 
 		_executorService = Executors.newCachedThreadPool(_threadFactory);
+
 		_lcsGatewayClient.registerLCSGatewayStateListener(this);
 
 		_scheduledExecutorService = Executors.newScheduledThreadPool(
