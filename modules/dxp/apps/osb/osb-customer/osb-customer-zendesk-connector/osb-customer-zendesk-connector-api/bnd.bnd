@@ -3,5 +3,4 @@ Bundle-SymbolicName: com.liferay.osb.customer.zendesk.connector.api
 Bundle-Version: 1.0.0
 Export-Package:\
 	com.liferay.osb.customer.zendesk.connector.constants,\
-	com.liferay.osb.customer.zendesk.connector.model,\
 	com.liferay.osb.customer.zendesk.connector.util

@@ -44,4 +44,6 @@ public interface ZendeskBaseWebService {
 
 	public JSONObject put(String endpoint, String json) throws PortalException;
 
+	public JSONObject send(JSONObject jsonObject) throws PortalException;
+
 }

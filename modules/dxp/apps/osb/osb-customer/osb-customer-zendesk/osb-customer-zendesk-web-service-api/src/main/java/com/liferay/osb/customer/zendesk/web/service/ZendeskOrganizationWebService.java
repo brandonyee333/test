@@ -19,13 +19,27 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.osb.customer.zendesk.model.ZendeskOrganization;
 import com.liferay.portal.kernel.exception.PortalException;
 
+import java.util.Set;
+
 /**
  * @author Kyle Bischof
  */
 @ProviderType
 public interface ZendeskOrganizationWebService {
 
+	public void createOrUpdateZendeskOrganization(
+			String externalId, String name, String partnerFirstLineSupport,
+			String partnerCode, String sla, String status,
+			String supportLanguage, String supportRegion, Set<String> tags,
+			String tier)
+		throws PortalException;
+
 	public ZendeskOrganization getZendeskOrganization(long accountEntryId)
 		throws PortalException;
+
+	public ZendeskOrganization getZendeskOrganization(
+		String externalId, String name, String partnerFirstLineSupport,
+		String partnerCode, String sla, String status, String supportLanguage,
+		String supportRegion, Set<String> tags, String tier);
 
 }

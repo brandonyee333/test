@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import java.nio.charset.StandardCharsets;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -260,6 +261,46 @@ public class ZendeskBaseWebServiceImpl
 			}
 
 			throw new PortalException(e);
+		}
+	}
+
+	public JSONObject send(JSONObject jsonObject) throws PortalException {
+		String endpoint = jsonObject.getString("endpoint");
+		String method = jsonObject.getString("method");
+		JSONObject payload = JSONFactoryUtil.createJSONObject(
+			jsonObject.getString("payload"));
+
+		if (method.equals("post")) {
+			return post(endpoint, payload.toString());
+		}
+		else if (method.equals("put")) {
+			return put(endpoint, payload.toString());
+		}
+		else if (method.equals("delete")) {
+			if (payload.has("parameters")) {
+				Map<String, String> parameters = new HashMap<>();
+
+				JSONObject parametersJSONObject = payload.getJSONObject(
+					"parameters");
+
+				Iterator<String> keys = parametersJSONObject.keys();
+
+				while (keys.hasNext()) {
+					String key = keys.next();
+
+					String value = parametersJSONObject.getString(key);
+
+					parameters.put(key, value);
+				}
+
+				return delete(endpoint, parameters);
+			}
+			else {
+				return delete(endpoint, payload.toString());
+			}
+		}
+		else {
+			throw new PortalException();
 		}
 	}
 

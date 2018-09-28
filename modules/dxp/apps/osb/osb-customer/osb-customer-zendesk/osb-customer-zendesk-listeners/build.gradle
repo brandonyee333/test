@@ -1,11 +1,9 @@
 dependencies {
-	compileOnly group: "biz.aQute.bnd", name: "biz.aQute.bndlib", version: "3.1.0"
-	compileOnly group: "com.liferay", name: "com.liferay.osgi.util", version: "3.0.0"
+	compileOnly files("../../osb-portlet/docroot/WEB-INF/lib/osb-portlet-service.jar")
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.6.0"
-	compileOnly group: "org.osgi", name: "org.osgi.core", version: "5.0.0"
 	compileOnly group: "org.osgi", name: "org.osgi.service.component.annotations", version: "1.3.0"
-	compileOnly project(":private:apps:osb-customer:osb-customer-rabbitmq-connector:osb-customer-rabbitmq-connector-api")
 	compileOnly project(":private:apps:osb-customer:osb-customer-zendesk-connector:osb-customer-zendesk-connector-api")
+	compileOnly project(":private:apps:osb-customer:osb-customer-zendesk-util")
 	compileOnly project(":private:apps:osb-customer:osb-customer-zendesk:osb-customer-zendesk-api")
 	compileOnly project(":private:apps:osb-customer:osb-customer-zendesk:osb-customer-zendesk-web-service-api")
 }

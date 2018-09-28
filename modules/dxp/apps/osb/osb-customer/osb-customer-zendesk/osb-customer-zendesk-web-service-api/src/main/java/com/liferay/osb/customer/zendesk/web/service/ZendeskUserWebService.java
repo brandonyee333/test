@@ -19,12 +19,41 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.portal.kernel.exception.PortalException;
 
+import java.util.Map;
+import java.util.Set;
+
 /**
  * @author Amos Fong
  */
 @ProviderType
 public interface ZendeskUserWebService {
 
+	public void addZendeskUserTags(long zendeskUserId, Set<String> tags)
+		throws PortalException;
+
+	public ZendeskUser createOrUpdateZendeskUser(
+			String email, String externalId, String locale, String name,
+			String organizationName, Set<String> tags)
+		throws PortalException;
+
+	public void createZendeskUserOrganizationMemberships(
+			long zendeskUserId, long[] zendeskOrganizationIds)
+		throws PortalException;
+
+	public void deleteZendeskUserOrganizationMemberships(
+			long zendeskUserId, long[] zendeskOrganizationIds)
+		throws PortalException;
+
+	public void deleteZendeskUserTags(long zendeskUserId, Set<String> tags)
+		throws PortalException;
+
+	public Map<Long, Long> getOrganizationMemberships(long zendeskUserId)
+		throws PortalException;
+
 	public ZendeskUser getZendeskUser(long userId) throws PortalException;
+
+	public ZendeskUser getZendeskUser(
+		String email, String externalId, String locale, String name,
+		String organizationName, Set<String> tags);
 
 }

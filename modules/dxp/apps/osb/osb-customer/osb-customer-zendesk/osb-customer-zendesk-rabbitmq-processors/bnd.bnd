@@ -1,0 +1,3 @@
+Bundle-Name: Liferay OSB Customer Zendesk RabbitMQ Processors
+Bundle-SymbolicName: com.liferay.osb.customer.zendesk.rabbitmq.processors
+Bundle-Version: 1.0.0
