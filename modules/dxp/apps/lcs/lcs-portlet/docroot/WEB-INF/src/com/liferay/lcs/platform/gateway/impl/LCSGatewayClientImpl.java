@@ -29,7 +29,6 @@ import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.ReleaseInfo;
 
 import java.io.IOException;
 
@@ -78,7 +77,7 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 
 		parameters.put("key", key);
 
-		Map<String, String> headers = _getBaseHeaders(key.hashCode());
+		Map<String, String> headers = _getBaseHeaders();
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Getting messages from gateway");
@@ -185,8 +184,9 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 
 		String key = message.getKey();
 
-		Map<String, String> headers = _getBaseHeaders(key.hashCode());
+		Map<String, String> headers = _getBaseHeaders();
 
+		headers.put("HASH_CODE", String.valueOf(key.hashCode()));
 		headers.put("KEY", key);
 		headers.put("MESSAGE_TYPE_CODE", _getMessageNameHashCode(message));
 
@@ -207,20 +207,17 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 		_jsonWebServiceClient = jsonWebServiceClient;
 	}
 
-	private Map<String, String> _getBaseHeaders(int hashCode) {
+	private Map<String, String> _getBaseHeaders() {
 		if (!_baseHeaders.isEmpty()) {
-			return new HashMap<>(_baseHeaders);
+			return _baseHeaders;
 		}
 
-		_baseHeaders.put(
-			"BUILD_NUMBER", String.valueOf(ReleaseInfo.getBuildNumber()));
-		_baseHeaders.put("HASH_CODE", String.valueOf(hashCode));
 		_baseHeaders.put(
 			"LCS_PORTLET_BUILD_NUMBER",
 			String.valueOf(LCSUtil.getLCSPortletBuildNumber()));
 		_baseHeaders.put("PROTOCOL_VERSION", Message.PROTOCOL_VERSION_CURRENT);
 
-		return new HashMap<>(_baseHeaders);
+		return _baseHeaders;
 	}
 
 	private String _getMessageNameHashCode(Message message) {
