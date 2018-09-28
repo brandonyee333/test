@@ -11,7 +11,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 	portalExtRef = React.createRef();
 
 	state = {
-		isEnterprise: null,
+		isEnterprise: false,
 		patchLevel: null,
 		portalExt: null,
 		selectedLFRVersion: null,
@@ -21,7 +21,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 	handleDeleteFile = fileRef => {
 		const fileInput = fileRef.current;
 		const fileInputName = fileRef.current.name.replace(
-			[`${this.props.portletNamespace}`], '');
+			`${this.props.portletNamespace}`, '');
 
 		fileInput.value = null;
 
@@ -30,17 +30,19 @@ export default class AddAccountEnvironmentForm extends React.Component {
 				[fileInputName]: null
 			}
 		);
+
+		this.refs.formikInstanceRef.setFieldValue(
+			`${this.props.portletNamespace + fileInputName}`, '');
 	};
 
 	handleFileChange = event => {
-		const {files} = event.target;
-		const name = event.target.name.replace(
-			[`${this.props.portletNamespace}`], '');
+		const {files, name} = event.target;
+		const fileName = name.replace(`${this.props.portletNamespace}`, '');
 
 		if (files.length) {
 			this.setState(
 				{
-					[name]: files[0].name
+					[fileName]: files[0].name
 				}
 			);
 		}
@@ -50,16 +52,14 @@ export default class AddAccountEnvironmentForm extends React.Component {
 
 	handleSelectChange = event => {
 		const {envLFRVersions, products} = this.props.environmentConfiguration;
-
-		const {options} = event.target;
-		const {name} = event.target;
+		const {name, options} = event.target;
 		const {value} = options[options.selectedIndex];
 
 		const selectedProduct = products.find(product =>
 			product.productEntryId == value
 		);
 
-		if (name == [`${this.props.portletNamespace}productEntryId`]) {
+		if (name == `${this.props.portletNamespace}productEntryId`) {
 			this.setState(
 				{
 					isEnterprise: !!selectedProduct && selectedProduct.enterpriseSearch,
@@ -184,7 +184,8 @@ export default class AddAccountEnvironmentForm extends React.Component {
 										<div className="alert alert-danger" role="alert">
 											{errors[`${portletNamespace}name`]}
 										</div>
-									)}
+									)
+								}
 							</div>
 
 							<div className="col-md-9">
@@ -225,7 +226,8 @@ export default class AddAccountEnvironmentForm extends React.Component {
 										<div className="alert alert-danger" role="alert">
 											{errors[`${portletNamespace}productEntryId`]}
 										</div>
-									)}
+									)
+								}
 							</div>
 
 							<div className="col-md-3">
@@ -269,7 +271,8 @@ export default class AddAccountEnvironmentForm extends React.Component {
 										<div className="alert alert-danger" role="alert">
 											{errors[`${portletNamespace}envLFR`]}
 										</div>
-									)}
+									)
+								}
 							</div>
 
 							<div className="col-md-6">
@@ -313,7 +316,8 @@ export default class AddAccountEnvironmentForm extends React.Component {
 										<div className="alert alert-danger" role="alert">
 											{errors[`${portletNamespace}envOS`]}
 										</div>
-									)}
+									)
+								}
 							</div>
 
 							<div className="col-md-6">
@@ -357,7 +361,8 @@ export default class AddAccountEnvironmentForm extends React.Component {
 										<div className="alert alert-danger" role="alert">
 											{errors[`${portletNamespace}envJVM`]}
 										</div>
-									)}
+									)
+								}
 							</div>
 
 							<div className="col-md-6">
@@ -401,7 +406,8 @@ export default class AddAccountEnvironmentForm extends React.Component {
 										<div className="alert alert-danger" role="alert">
 											{errors[`${portletNamespace}envAS`]}
 										</div>
-									)}
+									)
+								}
 							</div>
 
 							<div className="col-md-6">
@@ -445,7 +451,8 @@ export default class AddAccountEnvironmentForm extends React.Component {
 										<div className="alert alert-danger" role="alert">
 											{errors[`${portletNamespace}envDB`]}
 										</div>
-									)}
+									)
+								}
 							</div>
 
 							<div className="col-md-6">
@@ -485,7 +492,8 @@ export default class AddAccountEnvironmentForm extends React.Component {
 										<div className="alert alert-danger" role="alert">
 											{errors[`${portletNamespace}envBrowser`]}
 										</div>
-									)}
+									)
+								}
 							</div>
 
 							{renderEnvCS && (
@@ -526,7 +534,8 @@ export default class AddAccountEnvironmentForm extends React.Component {
 											<div className="alert alert-danger" role="alert">
 												{errors[`${portletNamespace}envCS`]}
 											</div>
-										)}
+										)
+									}
 								</div>
 							)}
 
@@ -570,7 +579,8 @@ export default class AddAccountEnvironmentForm extends React.Component {
 											<div className="alert alert-danger" role="alert">
 												{errors[`${portletNamespace}envSearch`]}
 											</div>
-										)}
+										)
+									}
 								</div>
 							)}
 
@@ -638,7 +648,8 @@ export default class AddAccountEnvironmentForm extends React.Component {
 										<div className="alert alert-danger" role="alert">
 											{errors[`${portletNamespace}portalExt`]}
 										</div>
-									)}
+									)
+								}
 							</div>
 
 							<div className="col-md-12">
@@ -705,7 +716,8 @@ export default class AddAccountEnvironmentForm extends React.Component {
 										<div className="alert alert-danger" role="alert">
 											{errors[`${portletNamespace}patchLevel`]}
 										</div>
-									)}
+									)
+								}
 							</div>
 						</div>
 
