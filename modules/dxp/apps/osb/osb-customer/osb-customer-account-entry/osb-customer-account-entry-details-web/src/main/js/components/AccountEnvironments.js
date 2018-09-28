@@ -37,9 +37,7 @@ export default class AccountEnvironments extends React.Component {
 		);
 
 	handleDeleteEnvironment = event => {
-		if (
-			!confirm(Liferay.Language.get('are-you-sure-you-want-to-delete-this'))
-		) {
+		if (!confirm(Liferay.Language.get('are-you-sure-you-want-to-delete-this'))) {
 			event.preventDefault();
 		}
 	};
@@ -151,7 +149,11 @@ export default class AccountEnvironments extends React.Component {
 					{Liferay.Language.get('environment-configurations')}
 
 					{permitAdd && (
-						<Button icon={true} onClick={this.handleDisplayModal} value="add">
+						<Button
+							icon={true}
+							onClick={this.handleDisplayModal}
+							value="add"
+						>
 							<svg className="lexicon-icon lexicon-icon-plus">
 								<use xlinkHref="#plus" />
 							</svg>
