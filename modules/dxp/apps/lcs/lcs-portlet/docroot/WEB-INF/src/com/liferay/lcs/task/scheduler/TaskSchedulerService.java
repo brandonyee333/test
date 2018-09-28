@@ -17,17 +17,18 @@ package com.liferay.lcs.task.scheduler;
 import com.liferay.lcs.task.TaskStateListener;
 
 import java.util.Map;
-import java.util.concurrent.Future;
 
 /**
  * @author Riccardo Ferrari
  */
 public interface TaskSchedulerService extends TaskStateListener {
 
-	public void schedule();
+	public void end();
+
+	public void restart();
 
 	public void scheduleTask(Map<String, String> schedulerContext);
 
-	public Future<?> submitSignOffTask(boolean serverManuallyShutdown);
+	public void start();
 
 }

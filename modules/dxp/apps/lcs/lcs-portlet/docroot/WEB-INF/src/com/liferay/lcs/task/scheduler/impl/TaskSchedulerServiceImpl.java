@@ -97,7 +97,18 @@ public class TaskSchedulerServiceImpl
 			10, threadFactory);
 	}
 
-	public void destroy() {
+	@Override
+	public void end() {
+		_cancelAllTasks();
+
+		_executeSignOffTask();
+
+		if (_uptimeMonitoringTaskScheduledFuture != null) {
+			_uptimeMonitoringTaskScheduledFuture.cancel(true);
+		}
+
+		_executorService.shutdown();
+
 		_scheduledExecutorService.shutdown();
 
 		try {
@@ -153,26 +164,15 @@ public class TaskSchedulerServiceImpl
 		if (taskClass.equals(LCSClusterEntryTokenCheckTask.class)) {
 			_executeHandshakeTask(false);
 		}
-		else if (taskClass.equals(SignOffTask.class)) {
-			_executorService.submit(
-				new Runnable() {
-
-					@Override
-					public void run() {
-						_cancelAllTasks();
-
-						_executeLCSClusterEntryTokenCheckTask(true);
-					}
-
-				});
-		}
 	}
 
 	@Override
-	public void schedule() {
-		_scheduleUptimeMonitoringTask();
+	public void restart() {
+		_cancelAllTasks();
 
-		_executeLCSClusterEntryTokenCheckTask(false);
+		_executeSignOffTask();
+
+		_executeLCSClusterEntryTokenCheckTask(true);
 	}
 
 	@Override
@@ -221,13 +221,10 @@ public class TaskSchedulerServiceImpl
 	}
 
 	@Override
-	public Future<?> submitSignOffTask(boolean serverManuallyShutdown) {
-		SignOffTask signOffTask = new SignOffTask(
-			_lcsKeyAdvisor.getKey(), _lcsGatewayClient, serverManuallyShutdown);
+	public void start() {
+		_scheduleUptimeMonitoringTask();
 
-		Future<?> future = _scheduledExecutorService.submit(signOffTask);
-
-		return future;
+		_executeLCSClusterEntryTokenCheckTask(false);
 	}
 
 	protected int getInterval(Map<String, String> schedulerContext) {
@@ -407,6 +404,28 @@ public class TaskSchedulerServiceImpl
 		}
 	}
 
+	private void _executeSignOffTask() {
+		SignOffTask signOffTask = new SignOffTask(
+			_lcsKeyAdvisor.getKey(), _lcsGatewayClient, true);
+
+		Future<?> future = _scheduledExecutorService.submit(signOffTask);
+
+		while (!future.isDone()) {
+			try {
+				Thread.sleep(100);
+			}
+			catch (InterruptedException ie) {
+				if (_log.isWarnEnabled()) {
+					_log.warn("Interrupted while waiting for SignOff task");
+				}
+				else if (_log.isDebugEnabled()) {
+					_log.debug(
+						"Interrupted while waiting for SignOff task", ie);
+				}
+			}
+		}
+	}
+
 	private void _onLCSGatewayServiceAvailable() {
 		if (_log.isTraceEnabled()) {
 			_log.trace("Scheduling command message task");
@@ -516,10 +535,18 @@ public class TaskSchedulerServiceImpl
 	}
 
 	private void _scheduleUptimeMonitoringTask() {
+		try {
+			_uptimeMonitoringAdvisor.init();
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+		}
+
 		UptimeMonitoringTask uptimeMonitoringTask = new UptimeMonitoringTask();
 
-		_scheduledExecutorService.scheduleAtFixedRate(
-			uptimeMonitoringTask, 1, 1, TimeUnit.MINUTES);
+		_uptimeMonitoringTaskScheduledFuture =
+			_scheduledExecutorService.scheduleAtFixedRate(
+				uptimeMonitoringTask, 1, 1, TimeUnit.MINUTES);
 
 		if (_log.isTraceEnabled()) {
 			_log.trace(uptimeMonitoringTask.toString() + " scheduled");
@@ -544,5 +571,6 @@ public class TaskSchedulerServiceImpl
 	private final TaskAdvisor _taskAdvisor;
 	private final ThreadFactory _threadFactory;
 	private final UptimeMonitoringAdvisor _uptimeMonitoringAdvisor;
+	private ScheduledFuture<?> _uptimeMonitoringTaskScheduledFuture;
 
 }

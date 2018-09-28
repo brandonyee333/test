@@ -14,7 +14,6 @@
 
 package com.liferay.lcs.messaging;
 
-import com.liferay.lcs.advisor.UptimeMonitoringAdvisor;
 import com.liferay.lcs.sigar.SigarNativeLoader;
 import com.liferay.lcs.task.scheduler.TaskSchedulerService;
 import com.liferay.lcs.util.LCSUtil;
@@ -26,21 +25,15 @@ import com.liferay.portal.kernel.messaging.HotDeployMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.util.OSDetector;
 
-import java.util.concurrent.Future;
-
 /**
  * @author Igor Beslic
  */
 public class LCSLifecycleManager extends HotDeployMessageListener {
 
-	public LCSLifecycleManager(
-		TaskSchedulerService taskSchedulerService,
-		UptimeMonitoringAdvisor uptimeMonitoringAdvisor) {
-
+	public LCSLifecycleManager(TaskSchedulerService taskSchedulerService) {
 		super("lcs-portlet");
 
 		_taskSchedulerService = taskSchedulerService;
-		_uptimeMonitoringAdvisor = uptimeMonitoringAdvisor;
 	}
 
 	@Override
@@ -49,14 +42,7 @@ public class LCSLifecycleManager extends HotDeployMessageListener {
 			SigarNativeLoader.load();
 		}
 
-		try {
-			_uptimeMonitoringAdvisor.init();
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
-
-		_taskSchedulerService.schedule();
+		_taskSchedulerService.start();
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
@@ -67,22 +53,7 @@ public class LCSLifecycleManager extends HotDeployMessageListener {
 
 	@Override
 	protected void onUndeploy(Message message) throws Exception {
-		Future<?> future = _taskSchedulerService.submitSignOffTask(true);
-
-		while (!future.isDone()) {
-			try {
-				Thread.sleep(100);
-			}
-			catch (InterruptedException ie) {
-				if (_log.isWarnEnabled()) {
-					_log.warn("Interrupted while waiting for SignOff task");
-				}
-				else if (_log.isDebugEnabled()) {
-					_log.debug(
-						"Interrupted while waiting for SignOff task", ie);
-				}
-			}
-		}
+		_taskSchedulerService.end();
 
 		LCSUtil.processLCSPortletState(LCSPortletState.PLUGIN_ABSENT);
 
@@ -101,6 +72,5 @@ public class LCSLifecycleManager extends HotDeployMessageListener {
 		LCSLifecycleManager.class);
 
 	private final TaskSchedulerService _taskSchedulerService;
-	private final UptimeMonitoringAdvisor _uptimeMonitoringAdvisor;
 
 }
