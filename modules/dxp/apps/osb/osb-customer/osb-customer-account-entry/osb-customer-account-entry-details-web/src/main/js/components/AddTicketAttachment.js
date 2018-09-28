@@ -27,7 +27,7 @@ export default class AddTicketAttachment extends React.Component {
 			<div className='add-ticket-attachment container-fluid-max-md'>
 				<h1>
 					{Liferay.Language.get('attach-files-to-ticket')}
-
+					{' '}
 					<a href={zendeskURL + zendeskTicketId}>#{zendeskTicketId}</a>
 				</h1>
 
