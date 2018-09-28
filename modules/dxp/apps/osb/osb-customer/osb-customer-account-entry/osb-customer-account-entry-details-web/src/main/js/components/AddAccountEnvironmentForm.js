@@ -11,6 +11,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 	portalExtRef = React.createRef();
 
 	state = {
+		isCustomOS: false,
 		isEnterprise: false,
 		patchLevel: null,
 		portalExt: null,
@@ -44,6 +45,19 @@ export default class AddAccountEnvironmentForm extends React.Component {
 				}
 			);
 		}
+
+		this.refs.formikInstanceRef.handleChange(event);
+	};
+
+	handleOSChange = event => {
+		const {options} = event.target;
+		const {label} = options[options.selectedIndex];
+
+		this.setState(
+			{
+				isCustomOS: label == "Other"
+			}
+		);
 
 		this.refs.formikInstanceRef.handleChange(event);
 	};
@@ -85,12 +99,18 @@ export default class AddAccountEnvironmentForm extends React.Component {
 		} = this.props;
 
 		const {
+			isCustomOS,
 			isEnterprise,
 			patchLevel,
 			portalExt,
 			selectedLFRVersion,
 			selectedProduct
 		} = this.state;
+
+		const {products} = environmentConfiguration;
+		const renderEnvCS = selectedLFRVersion && selectedLFRVersion.envCS;
+		const renderEnvSearch = selectedLFRVersion && selectedProduct && 'enterpriseSearch' in selectedProduct;
+		const renderEnvOSCustom = isCustomOS;
 
 		const initialValues = {
 			[`${namespace}envAS`]: '',
@@ -100,6 +120,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 			[`${namespace}envJVM`]: '',
 			[`${namespace}envLFR`]: '',
 			[`${namespace}envOS`]: '',
+			[`${namespace}envOSCustom`]: '',
 			[`${namespace}envSearch`]: '',
 			[`${namespace}name`]: '',
 			[`${namespace}patchLevel`]: '',
@@ -115,15 +136,12 @@ export default class AddAccountEnvironmentForm extends React.Component {
 			[`${namespace}envJVM`]: requiredSchema,
 			[`${namespace}envLFR`]: requiredSchema,
 			[`${namespace}envOS`]: requiredSchema,
+			[`${namespace}envOSCustom`]: renderEnvOSCustom ? requiredSchema : yup.mixed().notRequired(),
 			[`${namespace}name`]: requiredSchema,
 			[`${namespace}patchLevel`]: requiredSchema,
 			[`${namespace}portalExt`]: requiredSchema,
 			[`${namespace}productEntryId`]: requiredSchema
 		});
-
-		const {products} = environmentConfiguration;
-		const renderEnvCS = selectedLFRVersion && selectedLFRVersion.envCS;
-		const renderEnvSearch = selectedLFRVersion && selectedProduct && 'enterpriseSearch' in selectedProduct;
 
 		return (
 			<Formik
@@ -224,7 +242,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 										</svg>
 									</label>
 
-									<select className="form-control" disabled={!selectedLFRVersion} id={`${namespace}envOS`} name={`${namespace}envOS`} onBlur={handleBlur} onChange={handleChange}>
+									<select className="form-control" disabled={!selectedLFRVersion} id={`${namespace}envOS`} name={`${namespace}envOS`} onBlur={handleBlur} onChange={this.handleOSChange}>
 										<option value="" label={Liferay.Language.get('select')} />
 
 										{selectedLFRVersion && selectedLFRVersion.envOS.map((envOS, index) => (
@@ -265,6 +283,28 @@ export default class AddAccountEnvironmentForm extends React.Component {
 									</div>
 								)}
 							</div>
+
+							{renderEnvOSCustom && (
+								<div className="col-md-12">
+									<div className="form-group">
+										<label className="control-label" htmlFor={`${namespace}envOSCustom`}>
+											{Liferay.Language.get('custom-operating-system')}
+
+											<svg className="lexicon-icon lexicon-icon-asterisk">
+												<use xlinkHref="#asterisk" />
+											</svg>
+										</label>
+
+										<input className="form-control" id={`${namespace}envOSCustom`} name={`${namespace}envOSCustom`} onBlur={handleBlur} onChange={handleChange} type="text" value={values.envOSCustom} />
+									</div>
+
+									{touched[`${namespace}envOSCustom`] && errors[`${namespace}envOSCustom`] && (
+										<div className="alert alert-danger" role="alert">
+											{errors[`${namespace}envOSCustom`]}
+										</div>
+									)}
+								</div>
+							)}
 
 							<div className="col-md-6">
 								<div className="form-group">
