@@ -50,6 +50,14 @@ public class SignOffTask implements Task {
 
 	@Override
 	public void run() {
+		if (!_lcsGatewayClient.isAvailable()) {
+			if (_log.isTraceEnabled()) {
+				_log.trace("LCS gateway is unavailable, skip sign off task");
+			}
+
+			return;
+		}
+
 		try {
 			doRun();
 		}

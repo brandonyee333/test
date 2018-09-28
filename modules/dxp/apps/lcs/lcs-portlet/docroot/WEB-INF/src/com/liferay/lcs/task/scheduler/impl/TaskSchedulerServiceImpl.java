@@ -56,6 +56,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
@@ -88,6 +89,7 @@ public class TaskSchedulerServiceImpl
 		_threadFactory = threadFactory;
 		_uptimeMonitoringAdvisor = uptimeMonitoringAdvisor;
 
+		_executorService = Executors.newCachedThreadPool(_threadFactory);
 		_lcsGatewayClient.registerLCSGatewayStateListener(this);
 
 		_scheduledExecutorService = Executors.newScheduledThreadPool(
@@ -151,9 +153,17 @@ public class TaskSchedulerServiceImpl
 			_executeHandshakeTask(false);
 		}
 		else if (taskClass.equals(SignOffTask.class)) {
-			unscheduleAllTasks();
+			_executorService.submit(
+				new Runnable() {
 
-			_executeLCSClusterEntryTokenCheckTask(true);
+					@Override
+					public void run() {
+						_cancelAllTasks();
+
+						_executeLCSClusterEntryTokenCheckTask(true);
+					}
+
+				});
 		}
 	}
 
@@ -219,15 +229,6 @@ public class TaskSchedulerServiceImpl
 		return future;
 	}
 
-	@Override
-	public void unscheduleAllTasks() {
-		_taskAdvisor.reset();
-
-		unscheduleLocalScheduledTasks();
-
-		unscheduleClusteredScheduledTasks();
-	}
-
 	protected int getInterval(Map<String, String> schedulerContext) {
 		String interval = schedulerContext.get("interval");
 
@@ -280,7 +281,15 @@ public class TaskSchedulerServiceImpl
 		}
 	}
 
-	protected void unscheduleClusteredScheduledTasks() {
+	private void _cancelAllTasks() {
+		_taskAdvisor.reset();
+
+		_cancelClusteredScheduledTasks();
+
+		_cancelLocalScheduledTasks();
+	}
+
+	private void _cancelClusteredScheduledTasks() {
 		try {
 			if (ClusterExecutorUtil.isEnabled()) {
 				try {
@@ -341,7 +350,7 @@ public class TaskSchedulerServiceImpl
 		}
 	}
 
-	protected void unscheduleLocalScheduledTasks() {
+	private void _cancelLocalScheduledTasks() {
 		for (String taskName : _scheduledFuturesMap.keySet()) {
 			ScheduledFuture<?> scheduledFuture = _scheduledFuturesMap.get(
 				taskName);
@@ -434,9 +443,17 @@ public class TaskSchedulerServiceImpl
 			_log.info("LCS Gateway unavailable. Start connection recovery.");
 		}
 
-		unscheduleAllTasks();
+		_executorService.submit(
+			new Runnable() {
 
-		_executeLCSClusterEntryTokenCheckTask(false);
+				@Override
+				public void run() {
+					_cancelAllTasks();
+
+					_executeLCSClusterEntryTokenCheckTask(false);
+				}
+
+			});
 	}
 
 	private void _scheduleClusteredScheduledTask(
@@ -514,6 +531,7 @@ public class TaskSchedulerServiceImpl
 		TaskSchedulerServiceImpl.class);
 
 	private final int _defaultInterval;
+	private final ExecutorService _executorService;
 	private final LCSAlertAdvisor _lcsAlertAdvisor;
 	private final LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
 	private final LCSGatewayClient _lcsGatewayClient;

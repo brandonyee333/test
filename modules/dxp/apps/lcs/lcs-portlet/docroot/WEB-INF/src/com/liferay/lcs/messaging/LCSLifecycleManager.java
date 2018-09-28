@@ -69,7 +69,7 @@ public class LCSLifecycleManager extends HotDeployMessageListener {
 	protected void onUndeploy(Message message) throws Exception {
 		Future<?> future = _taskSchedulerService.submitSignOffTask(true);
 
-		while (future.isDone()) {
+		while (!future.isDone()) {
 			try {
 				Thread.sleep(100);
 			}

@@ -30,6 +30,4 @@ public interface TaskSchedulerService extends TaskStateListener {
 
 	public Future<?> submitSignOffTask(boolean serverManuallyShutdown);
 
-	public void unscheduleAllTasks();
-
 }
