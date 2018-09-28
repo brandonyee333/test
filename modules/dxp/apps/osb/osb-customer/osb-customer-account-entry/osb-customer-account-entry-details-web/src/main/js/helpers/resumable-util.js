@@ -4,16 +4,16 @@ export const handleFileError = (file, message) => {
 
 export const getFileProgress = (file) => {
 	return Math.floor(file.progress() * 100);
-}
+};
 
 export const handleFileSuccess = (file, message) => {
 	const response = JSON.parse(message);
 
 	let retVal = {
-		fileAttachment : null,
-		file : null,
-		message : response.message,
-		submitForm : false
+		file: null,
+		fileAttachment: null,
+		message: response.message,
+		submitForm: false
 	};
 
 	if ((response.message == 'complete') || (response.message == 'file-exists')) {

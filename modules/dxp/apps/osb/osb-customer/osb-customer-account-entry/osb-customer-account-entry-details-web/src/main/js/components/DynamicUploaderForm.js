@@ -83,37 +83,36 @@ export default class DynamicUploaderForm extends React.Component {
 			resumable.on(
 				'fileAdded',
 				(file) => {
-					this.generateToken(resumable, file)
-						.then(
-							response => {
-								this.setState(
-									{
-										message: {
-											content: Liferay.Language.get('loading'),
-											type: 'pending'
-										},
-										token: response.data.token,
-										toolbar: {
-											visible: true
-										}
+					this.generateToken(resumable, file).then(
+						response => {
+							this.setState(
+								{
+									message: {
+										content: Liferay.Language.get('loading'),
+										type: 'pending'
+									},
+									token: response.data.token,
+									toolbar: {
+										visible: true
 									}
-								);
+								}
+							);
 
-								resumable.upload();
-							}
-						)
-						.catch(
-							err => {
-								this.setState(
-									{
-										message: {
-											content: err.message,
-											type: 'error'
-										}
+							resumable.upload();
+						}
+					)
+					.catch(
+						err => {
+							this.setState(
+								{
+									message: {
+										content: err.message,
+										type: 'error'
 									}
-								);
-							}
-						);
+								}
+							);
+						}
+					);
 				}
 			);
 
@@ -276,9 +275,11 @@ export default class DynamicUploaderForm extends React.Component {
 	}
 
 	handleUpdateComment = (event) => {
-		this.setState({
-			comment: event.currentTarget.value
-		});
+		this.setState(
+			{
+				comment: event.currentTarget.value
+			}
+		);
 	}
 
 	updateActionUrl = () => {
@@ -313,11 +314,7 @@ export default class DynamicUploaderForm extends React.Component {
 		const {portletNamespace} = this.props;
 
 		return (
-			<form
-				method="post"
-				onSubmit={this.handleSubmit}
-				ref={this.formRef}
-			>
+			<form method="post" onSubmit={this.handleSubmit} ref={this.formRef}>
 				<div className="row">
 					<div className="col-md-12">
 						<div className="form-group" id={`${portletNamespace}uploadContainer`}>
@@ -329,21 +326,14 @@ export default class DynamicUploaderForm extends React.Component {
 								</svg>
 							</label>
 
-							<div
-								className="form-control upload-area"
-								id={`${portletNamespace}uploadArea`}
-							>
-								<input
-									className="attachment"
-									id={`${portletNamespace}selectButton`}
-									name={`${portletNamespace}attachment`}
-									type="file"
-								/>
+							<div className="form-control upload-area" id={`${portletNamespace}uploadArea`}>
+								<input className="attachment" id={`${portletNamespace}selectButton`} name={`${portletNamespace}attachment`} type="file" />
 
 								<div className="upload-area-label">
 									<svg className="lexicon-icon lexicon-icon-paperclip">
 										<use xlinkHref="#paperclip" />
 									</svg>
+
 									{Liferay.Language.get('add-file-or-drop-file-here')}
 								</div>
 							</div>
@@ -365,16 +355,8 @@ export default class DynamicUploaderForm extends React.Component {
 
 								{this.state.toolbar.visible && (
 									<div className="progress-bar-container">
-										<div
-											className="progress-bar form-control"
-											id={`${portletNamespace}progressBar`}
-										>
-											<div
-												className="progress"
-												id={`${portletNamespace}progress`}
-												style={{width: this.state.toolbar.progress + '%'}}
-											>
-											</div>
+										<div className="progress-bar form-control" id={`${portletNamespace}progressBar`}>
+											<div className="progress" id={`${portletNamespace}progress`} style={{width: this.state.toolbar.progress + '%'}}></div>
 										</div>
 
 										{!this.state.toolbar.paused && (
@@ -410,13 +392,7 @@ export default class DynamicUploaderForm extends React.Component {
 								{Liferay.Language.get('leave-a-comment')}
 							</label>
 
-							<textarea
-								className="form-control"
-								id={`${portletNamespace}comment`}
-								name={`${portletNamespace}comment`}
-								onChange={this.handleUpdateComment}
-								value={this.state.comment}
-							/>
+							<textarea className="form-control" id={`${portletNamespace}comment`} name={`${portletNamespace}comment`} onChange={this.handleUpdateComment} value={this.state.comment} />
 						</div>
 					</div>
 				</div>
