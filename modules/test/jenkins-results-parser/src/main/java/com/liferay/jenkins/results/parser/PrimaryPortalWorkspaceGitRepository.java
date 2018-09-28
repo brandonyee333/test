@@ -14,41 +14,39 @@
 
 package com.liferay.jenkins.results.parser;
 
-import java.io.File;
-
-import java.util.List;
-
 import org.json.JSONObject;
 
 /**
  * @author Michael Hashimoto
  */
-public interface BuildData {
+public class PrimaryPortalWorkspaceGitRepository
+	extends BasePortalWorkspaceGitRepository {
 
-	public static final String DIST_ROOT_PATH = "/tmp/dist";
+	public static boolean isValidJSONObject(JSONObject jsonObject) {
+		return isValidJSONObject(jsonObject, _TYPE);
+	}
 
-	public Integer getBuildNumber();
+	@Override
+	public String getType() {
+		return _TYPE;
+	}
 
-	public String getBuildURL();
+	protected PrimaryPortalWorkspaceGitRepository(JSONObject jsonObject) {
+		super(jsonObject);
+	}
 
-	public String getCohortName();
+	protected PrimaryPortalWorkspaceGitRepository(
+		PullRequest pullRequest, String upstreamBranchName) {
 
-	public List<String> getDistNodes();
+		super(pullRequest, upstreamBranchName);
+	}
 
-	public String getDistPath();
+	protected PrimaryPortalWorkspaceGitRepository(
+		RemoteGitRef remoteGitRef, String upstreamBranchName) {
 
-	public String getHostname();
+		super(remoteGitRef, upstreamBranchName);
+	}
 
-	public String getJenkinsGitHubURL();
-
-	public String getJobName();
-
-	public JSONObject getJSONObject();
-
-	public String getMasterHostname();
-
-	public String getRunID();
-
-	public File getWorkspaceDir();
+	private static final String _TYPE = "portal";
 
 }

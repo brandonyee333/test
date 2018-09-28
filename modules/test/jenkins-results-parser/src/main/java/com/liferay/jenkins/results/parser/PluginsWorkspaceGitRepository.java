@@ -14,10 +14,25 @@
 
 package com.liferay.jenkins.results.parser;
 
+import org.json.JSONObject;
+
 /**
  * @author Michael Hashimoto
  */
 public class PluginsWorkspaceGitRepository extends BaseWorkspaceGitRepository {
+
+	public static boolean isValidJSONObject(JSONObject jsonObject) {
+		return isValidJSONObject(jsonObject, _TYPE);
+	}
+
+	@Override
+	public String getType() {
+		return _TYPE;
+	}
+
+	protected PluginsWorkspaceGitRepository(JSONObject jsonObject) {
+		super(jsonObject);
+	}
 
 	protected PluginsWorkspaceGitRepository(
 		PullRequest pullRequest, String upstreamBranchName) {
@@ -32,9 +47,10 @@ public class PluginsWorkspaceGitRepository extends BaseWorkspaceGitRepository {
 	}
 
 	@Override
-	protected String getDefaultRelativeGitRepositoryDirPath() {
+	protected String getDefaultRelativeGitRepositoryDirPath(
+		String upstreamBranchName) {
+
 		String name = getName();
-		String upstreamBranchName = getUpstreamBranchName();
 
 		if (upstreamBranchName.equals("master")) {
 			return name.replace("-ee", "");
@@ -43,5 +59,7 @@ public class PluginsWorkspaceGitRepository extends BaseWorkspaceGitRepository {
 		return JenkinsResultsParserUtil.combine(
 			name.replace("-ee", ""), "-", upstreamBranchName);
 	}
+
+	private static final String _TYPE = "plugins";
 
 }

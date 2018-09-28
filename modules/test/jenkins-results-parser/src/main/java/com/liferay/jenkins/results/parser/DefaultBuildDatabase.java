@@ -14,15 +14,15 @@
 
 package com.liferay.jenkins.results.parser;
 
-import org.json.JSONObject;
+import java.io.File;
 
 /**
- * @author Peter Yoo
+ * @author Michael Hashimoto
  */
-public interface GitRepository {
+public class DefaultBuildDatabase extends BaseBuildDatabase {
 
-	public JSONObject getJSONObject();
-
-	public String getName();
+	public DefaultBuildDatabase(File basedir) {
+		super(basedir);
+	}
 
 }

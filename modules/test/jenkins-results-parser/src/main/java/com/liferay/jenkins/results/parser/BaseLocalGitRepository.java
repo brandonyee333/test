@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.json.JSONObject;
+
 /**
  * @author Peter Yoo
  * @author Michael Hashimoto
@@ -50,6 +52,12 @@ public abstract class BaseLocalGitRepository
 		return getString("upstream_branch_name");
 	}
 
+	protected BaseLocalGitRepository(JSONObject jsonObject) {
+		super(jsonObject);
+
+		validateKeys(_REQUIRED_KEYS);
+	}
+
 	protected BaseLocalGitRepository(String name, String upstreamBranchName) {
 		super(name);
 
@@ -59,7 +67,9 @@ public abstract class BaseLocalGitRepository
 		validateKeys(_REQUIRED_KEYS);
 	}
 
-	protected String getDefaultRelativeGitRepositoryDirPath() {
+	protected String getDefaultRelativeGitRepositoryDirPath(
+		String upstreamBranchName) {
+
 		return getName();
 	}
 
@@ -77,7 +87,7 @@ public abstract class BaseLocalGitRepository
 		if ((directory == null) || !directory.exists()) {
 			directory = new File(
 				JenkinsResultsParserUtil.getBaseGitRepositoryDir(),
-				getDefaultRelativeGitRepositoryDirPath());
+				getDefaultRelativeGitRepositoryDirPath(upstreamBranchName));
 		}
 
 		try {
