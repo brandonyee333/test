@@ -15,7 +15,10 @@
 package com.liferay.osb.customer.account.entry.details.web.internal.portlet.action;
 
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys;
+import com.liferay.osb.customer.ticket.constants.TicketActionKeys;
 import com.liferay.osb.customer.ticket.repository.FileRepositoryWebService;
+import com.liferay.osb.customer.ticket.service.permission.TicketEntryPermissionChecker;
+import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;

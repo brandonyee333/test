@@ -15,9 +15,18 @@
 package com.liferay.osb.customer.account.entry.details.web.internal.portlet.action;
 
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys;
+import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsWebKeys;
+import com.liferay.osb.customer.ticket.constants.TicketActionKeys;
+import com.liferay.osb.customer.ticket.service.permission.TicketEntryPermissionChecker;
+import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
+import com.liferay.osb.model.AccountEntry;
+import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.WebKeys;
 
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
