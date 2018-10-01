@@ -45,44 +45,6 @@ public class PatchUtil {
 	}
 
 	/**
-	 * Returns the patch's name in human readable form. For example, all dashes
-	 * are replaced with spaces, and words are capitalized.
-	 *
-	 * @param  patchName the patch's name
-	 * @return the patch's name in human readable form
-	 * @since  LCS 0.1
-	 */
-	public static String getPatchHumanName(String patchName) {
-		StringBuilder sb = new StringBuilder();
-
-		String patchId = getPatchId(patchName);
-
-		patchId = patchId.replaceFirst("-\\d{4}$", "");
-
-		String[] parts = patchId.split("-");
-
-		for (int i = 0; i < parts.length; i++) {
-			String part = parts[i];
-
-			int partLength = part.length();
-
-			if (partLength > 0) {
-				sb.append(Character.toUpperCase(part.charAt(0)));
-			}
-
-			if (partLength > 1) {
-				sb.append(part.substring(1, partLength));
-			}
-
-			if (i != (parts.length - 1)) {
-				sb.append(" ");
-			}
-		}
-
-		return sb.toString();
-	}
-
-	/**
 	 * Returns the patch ID, which is extracted from the patch name.
 	 *
 	 * @param  patchName the patch's name
