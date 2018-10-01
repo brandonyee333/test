@@ -18,16 +18,13 @@
 
 <%
 long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
-
 long zendeskTicketId = ParamUtil.getLong(request, "zendeskTicketId");
 
 AccountEntry accountEntry = AccountEntryServiceUtil.getAccountEntry(accountEntryId);
 
 long[] supportRegionIds = accountEntry.getSupportRegionIds();
 
-long supportRegionId = supportRegionIds[0];
-
-FileRepository fileRepository = fileRepositoryManager.getFileRepository(supportRegionId);
+FileRepository fileRepository = fileRepositoryManager.getFileRepository(supportRegionIds[0]);
 
 String fileRepositoryId = fileRepository.getFileRepositoryId();
 
