@@ -164,6 +164,34 @@ public class ClusterNodeUtil {
 		return clusterNodeKeys;
 	}
 
+	public static boolean hasAnyClusterNodeWithLCSAvailable() {
+		ClusterNode localClusterNode =
+			ClusterExecutorUtil.getLocalClusterNode();
+
+		String localClusterNodeId = localClusterNode.getClusterNodeId();
+
+		List<ClusterNode> clusterNodes = ClusterExecutorUtil.getClusterNodes();
+
+		for (ClusterNode clusterNode : clusterNodes) {
+			String clusterNodeId = clusterNode.getClusterNodeId();
+
+			if (clusterNodeId.equals(localClusterNodeId)) {
+				if (_log.isTraceEnabled()) {
+					_log.trace(
+						"Skipped local cluster node id " + localClusterNodeId);
+				}
+
+				continue;
+			}
+
+			if (_hasClusterNodeLCSPortletServletContext(clusterNodeId)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	public void setLCSKeyAdvisor(LCSKeyAdvisor lcsKeyAdvisor) {
 		_lcsKeyAdvisor = lcsKeyAdvisor;
 	}
@@ -208,8 +236,7 @@ public class ClusterNodeUtil {
 	}
 
 	private static boolean _hasClusterNodeLCSPortletServletContext(
-			String clusterNodeId)
-		throws Exception {
+		String clusterNodeId) {
 
 		if (_log.isTraceEnabled()) {
 			_log.trace(
@@ -223,20 +250,30 @@ public class ClusterNodeUtil {
 		FutureClusterResponses futureClusterResponses =
 			ClusterExecutorUtil.execute(clusterRequest);
 
-		ClusterNodeResponses clusterNodeResponses = futureClusterResponses.get(
-			20000, TimeUnit.MILLISECONDS);
+		try {
+			ClusterNodeResponses clusterNodeResponses =
+				futureClusterResponses.get(10, TimeUnit.SECONDS);
 
-		ClusterNodeResponse clusterNodeResponse =
-			clusterNodeResponses.getClusterResponse(clusterNodeId);
+			ClusterNodeResponse clusterNodeResponse =
+				clusterNodeResponses.getClusterResponse(clusterNodeId);
 
-		boolean result = (Boolean)clusterNodeResponse.getResult();
+			boolean result = (Boolean)clusterNodeResponse.getResult();
 
-		if (_log.isTraceEnabled()) {
-			_log.trace(
-				"containsKey method handler invocation returned " + result);
+			if (_log.isTraceEnabled()) {
+				_log.trace(
+					"containsKey method handler invocation returned " + result);
+			}
+
+			return result;
+		}
+		catch (Exception e) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Unable to query cluster node ID " + clusterNodeId, e);
+			}
 		}
 
-		return result;
+		return false;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

@@ -328,10 +328,7 @@ public class TaskSchedulerServiceImpl
 					_log.error(ie, ie);
 				}
 
-				List<Map<String, Object>> clusterNodeInfos =
-					ClusterNodeUtil.getClusterNodeInfos();
-
-				if (!clusterNodeInfos.isEmpty()) {
+				if (ClusterNodeUtil.hasAnyClusterNodeWithLCSAvailable()) {
 					if (_log.isDebugEnabled()) {
 						_log.debug("Skip clustered tasks cancellation");
 					}
