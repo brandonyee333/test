@@ -297,47 +297,31 @@ public class TaskSchedulerServiceImpl
 					_log.error(ie, ie);
 				}
 
-				boolean otherClusterNodesConnected = false;
-
 				List<Map<String, Object>> clusterNodeInfos =
 					ClusterNodeUtil.getClusterNodeInfos();
 
-				for (Map<String, Object> clusterNodeInfo : clusterNodeInfos) {
-					if (GetterUtil.getBoolean(clusterNodeInfo.get("ready"))) {
-						otherClusterNodesConnected = true;
-
-						break;
+				if (!clusterNodeInfos.isEmpty()) {
+					if (_log.isDebugEnabled()) {
+						_log.debug("Skip clustered tasks cancellation");
 					}
+
+					return;
 				}
 
-				if (!otherClusterNodesConnected) {
-					List<String> scheduledTaskJobNames =
-						getScheduledTaskJobNames();
-
-					for (String scheduledTaskJobName : scheduledTaskJobNames) {
-						SchedulerEngineHelperUtil.delete(
-							scheduledTaskJobName, _LCS_SCHEDULE_GROUP_NAME,
-							StorageType.MEMORY_CLUSTERED);
-
-						if (_log.isDebugEnabled()) {
-							_log.debug(
-								"Unscheduled clustered task " +
-									scheduledTaskJobName);
-						}
-					}
+				if (_log.isDebugEnabled()) {
+					_log.debug("Cancel clustered tasks");
 				}
 			}
-			else {
-				List<String> scheduledTaskJobNames = getScheduledTaskJobNames();
 
-				for (String scheduledTaskJobName : scheduledTaskJobNames) {
-					SchedulerEngineHelperUtil.delete(
-						scheduledTaskJobName, _LCS_SCHEDULE_GROUP_NAME,
-						StorageType.MEMORY_CLUSTERED);
+			List<String> scheduledTaskJobNames = getScheduledTaskJobNames();
 
-					if (_log.isDebugEnabled()) {
-						_log.debug("Unscheduled task " + scheduledTaskJobName);
-					}
+			for (String scheduledTaskJobName : scheduledTaskJobNames) {
+				SchedulerEngineHelperUtil.delete(
+					scheduledTaskJobName, _LCS_SCHEDULE_GROUP_NAME,
+					StorageType.MEMORY_CLUSTERED);
+
+				if (_log.isDebugEnabled()) {
+					_log.debug("Canceled task " + scheduledTaskJobName);
 				}
 			}
 		}
@@ -358,7 +342,7 @@ public class TaskSchedulerServiceImpl
 			}
 
 			if (_log.isDebugEnabled()) {
-				_log.debug("Unscheduled task " + taskName);
+				_log.debug("Canceled task " + taskName);
 			}
 		}
 
