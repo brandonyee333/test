@@ -59,6 +59,16 @@ public abstract class BaseScheduledTask implements ScheduledTask {
 	}
 
 	protected void sendMessage(Message message) throws PortalException {
+		if (!_lcsGatewayClient.isAvailable()) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					getClass() + " unable to send message. Gateway became " +
+						"unavailable");
+			}
+
+			return;
+		}
+
 		if (_log.isTraceEnabled()) {
 			_log.trace("Sending message: " + message);
 		}
