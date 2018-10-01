@@ -54,7 +54,7 @@ public class ClusterNodeUtil {
 
 			if (_log.isTraceEnabled()) {
 				_log.trace(
-					"Executing getClusterInfo method for cluster node ID " +
+					"Execute getClusterInfo method for local cluster node ID " +
 						localClusterNode.getClusterNodeId());
 			}
 
@@ -107,6 +107,12 @@ public class ClusterNodeUtil {
 				String clusterNodeId = clusterNode.getClusterNodeId();
 
 				if (clusterNodeId.equals(localClusterNodeId)) {
+					if (_log.isTraceEnabled()) {
+						_log.trace(
+							"Skipped local cluster node id " +
+								localClusterNodeId);
+					}
+
 					continue;
 				}
 
@@ -121,6 +127,12 @@ public class ClusterNodeUtil {
 				}
 
 				clusterNodeInfo.put("clusterNodeId", clusterNodeId);
+
+				if (_log.isTraceEnabled()) {
+					_log.trace(
+						"Obtained cluster node info " +
+							MapUtil.toString(clusterNodeInfo));
+				}
 
 				clusterNodeInfos.add(clusterNodeInfo);
 			}
