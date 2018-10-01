@@ -56,7 +56,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
@@ -89,8 +88,6 @@ public class TaskSchedulerServiceImpl
 		_threadFactory = threadFactory;
 		_uptimeMonitoringAdvisor = uptimeMonitoringAdvisor;
 
-		_executorService = Executors.newCachedThreadPool(_threadFactory);
-
 		_lcsGatewayClient.registerLCSGatewayStateListener(this);
 
 		_scheduledExecutorService = Executors.newScheduledThreadPool(
@@ -99,15 +96,19 @@ public class TaskSchedulerServiceImpl
 
 	@Override
 	public void end() {
-		_cancelAllTasks();
+		if (_log.isInfoEnabled()) {
+			_log.info("End of life for " + this);
+		}
+
+		_shutdownPending = true;
 
 		_executeSignOffTask();
+
+		_cancelAllTasks();
 
 		if (_uptimeMonitoringTaskScheduledFuture != null) {
 			_uptimeMonitoringTaskScheduledFuture.cancel(true);
 		}
-
-		_executorService.shutdown();
 
 		_scheduledExecutorService.shutdown();
 
@@ -135,17 +136,24 @@ public class TaskSchedulerServiceImpl
 
 	@Override
 	public void onTaskFail(Class<? extends Task> taskClass, int errorCode) {
+		if (_shutdownPending) {
+			if (_log.isTraceEnabled()) {
+				_log.trace(
+					"Shutdown pending. No action is taken for failed task " +
+						taskClass);
+			}
+
+			return;
+		}
+
 		if (taskClass.equals(LCSClusterEntryTokenCheckTask.class)) {
 			if (_log.isInfoEnabled()) {
 				_log.info("LCS portlet is not connected. Retry in 60 seconds.");
 			}
 
 			_executeLCSClusterEntryTokenCheckTask(true);
-
-			return;
 		}
-
-		if (taskClass.equals(HandshakeTask.class)) {
+		else if (taskClass.equals(HandshakeTask.class)) {
 			if (_log.isInfoEnabled()) {
 				_log.info("LCS portlet is not connected. Retry in 60 seconds.");
 			}
@@ -161,6 +169,16 @@ public class TaskSchedulerServiceImpl
 
 	@Override
 	public void onTaskSuccess(Class<? extends Task> taskClass) {
+		if (_shutdownPending) {
+			if (_log.isTraceEnabled()) {
+				_log.trace(
+					"Shutdown pending. No action is taken for succeeded task " +
+						taskClass);
+			}
+
+			return;
+		}
+
 		if (taskClass.equals(LCSClusterEntryTokenCheckTask.class)) {
 			_executeHandshakeTask(false);
 		}
@@ -168,9 +186,13 @@ public class TaskSchedulerServiceImpl
 
 	@Override
 	public void restart() {
-		_cancelAllTasks();
+		if (_log.isDebugEnabled()) {
+			_log.debug("Reconnecting to LCS gateway");
+		}
 
 		_executeSignOffTask();
+
+		_cancelAllTasks();
 
 		_executeLCSClusterEntryTokenCheckTask(true);
 	}
@@ -225,6 +247,15 @@ public class TaskSchedulerServiceImpl
 		_scheduleUptimeMonitoringTask();
 
 		_executeLCSClusterEntryTokenCheckTask(false);
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Finalized " + this);
+		}
 	}
 
 	protected int getInterval(Map<String, String> schedulerContext) {
@@ -326,8 +357,19 @@ public class TaskSchedulerServiceImpl
 			}
 		}
 		catch (Exception e) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(e.getMessage());
+			String message = e.getMessage();
+
+			if (message == null) {
+				message = "Detected exception without error message";
+			}
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(message, e);
+			}
+			else if (_log.isWarnEnabled()) {
+				message = message + ". Switch to debug mode for stacktrace.";
+
+				_log.warn(message);
 			}
 		}
 	}
@@ -350,6 +392,14 @@ public class TaskSchedulerServiceImpl
 	}
 
 	private void _executeHandshakeTask(boolean delayRun) {
+		if (_shutdownPending) {
+			if (_log.isTraceEnabled()) {
+				_log.trace("Shutdown pending. Aborting handshake task.");
+			}
+
+			return;
+		}
+
 		HandshakeTask handshakeTask = new HandshakeTask(
 			_lcsClusterEntryTokenAdvisor.getLcsClusterEntryTokenId(),
 			_lcsAlertAdvisor, _lcsClusterEntryTokenAdvisor, _lcsGatewayClient,
@@ -365,8 +415,10 @@ public class TaskSchedulerServiceImpl
 	}
 
 	private void _executeLCSClusterEntryTokenCheckTask(boolean delayRun) {
-		if (_scheduledExecutorService.isShutdown() ||
-			_scheduledExecutorService.isTerminated()) {
+		if (_shutdownPending) {
+			if (_log.isTraceEnabled()) {
+				_log.trace("Shutdown pending. Aborting AATF check task.");
+			}
 
 			return;
 		}
@@ -384,11 +436,17 @@ public class TaskSchedulerServiceImpl
 		}
 
 		if (_log.isTraceEnabled()) {
-			_log.trace(lcsClusterEntryTokenCheckTask + " executed");
+			_log.trace("Executed " + lcsClusterEntryTokenCheckTask);
 		}
 	}
 
 	private void _executeSignOffTask() {
+		if (_signOffPending) {
+			return;
+		}
+
+		_signOffPending = true;
+
 		SignOffTask signOffTask = new SignOffTask(
 			_lcsKeyAdvisor.getKey(), _lcsGatewayClient, true);
 
@@ -407,6 +465,12 @@ public class TaskSchedulerServiceImpl
 						"Interrupted while waiting for SignOff task", ie);
 				}
 			}
+		}
+
+		_signOffPending = false;
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Sign off executed");
 		}
 	}
 
@@ -443,21 +507,22 @@ public class TaskSchedulerServiceImpl
 	}
 
 	private void _onLCSGatewayServiceUnavailable() {
+		if (_signOffPending) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Skip connection recovery while SignOffTask is running");
+			}
+
+			return;
+		}
+
 		if (_log.isInfoEnabled()) {
 			_log.info("LCS Gateway unavailable. Start connection recovery.");
 		}
 
-		_executorService.submit(
-			new Runnable() {
+		_cancelAllTasks();
 
-				@Override
-				public void run() {
-					_cancelAllTasks();
-
-					_executeLCSClusterEntryTokenCheckTask(false);
-				}
-
-			});
+		_executeLCSClusterEntryTokenCheckTask(false);
 	}
 
 	private void _scheduleClusteredScheduledTask(
@@ -543,7 +608,6 @@ public class TaskSchedulerServiceImpl
 		TaskSchedulerServiceImpl.class);
 
 	private final int _defaultInterval;
-	private final ExecutorService _executorService;
 	private final LCSAlertAdvisor _lcsAlertAdvisor;
 	private final LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
 	private final LCSGatewayClient _lcsGatewayClient;
@@ -552,6 +616,8 @@ public class TaskSchedulerServiceImpl
 	private final ScheduledExecutorService _scheduledExecutorService;
 	private final Map<String, ScheduledFuture<?>> _scheduledFuturesMap =
 		new HashMap<>();
+	private volatile boolean _shutdownPending;
+	private volatile boolean _signOffPending;
 	private final TaskAdvisor _taskAdvisor;
 	private final ThreadFactory _threadFactory;
 	private final UptimeMonitoringAdvisor _uptimeMonitoringAdvisor;

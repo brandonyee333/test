@@ -105,17 +105,21 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 
 	@Override
 	public boolean isAvailable() {
-		return _available;
+		synchronized (this) {
+			return _available;
+		}
 	}
 
 	@Override
 	public void onTaskFail(Class<? extends Task> taskClass, int errorCode) {
 		if (taskClass.equals(HandshakeTask.class)) {
-			if (!_available) {
-				return;
-			}
+			synchronized (this) {
+				if (!_available) {
+					return;
+				}
 
-			_available = false;
+				_available = false;
+			}
 
 			_notifyStateChangedListeners(LCSEvent.UNAVAILABLE);
 		}
@@ -124,11 +128,14 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 	@Override
 	public void onTaskSuccess(Class<? extends Task> taskClass) {
 		if (taskClass.equals(HandshakeTask.class)) {
-			if (_available) {
-				return;
+			synchronized (this) {
+				if (_available) {
+					return;
+				}
+
+				_available = true;
 			}
 
-			_available = true;
 			_lastHandshakeSuccess = System.currentTimeMillis();
 
 			_notifyStateChangedListeners(LCSEvent.AVAILABLE);
@@ -137,11 +144,13 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 		}
 
 		if (taskClass.equals(SignOffTask.class)) {
-			if (!_available) {
-				return;
-			}
+			synchronized (this) {
+				if (!_available) {
+					return;
+				}
 
-			_available = false;
+				_available = false;
+			}
 
 			return;
 		}
@@ -257,10 +266,12 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 				}
 			}
 
-			if (_available) {
-				_available = false;
+			synchronized (this) {
+				if (_available) {
+					_available = false;
 
-				_notifyStateChangedListeners(LCSEvent.UNAVAILABLE);
+					_notifyStateChangedListeners(LCSEvent.UNAVAILABLE);
+				}
 			}
 		}
 
