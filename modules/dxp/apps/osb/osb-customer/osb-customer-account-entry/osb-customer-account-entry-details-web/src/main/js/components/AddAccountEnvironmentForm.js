@@ -38,8 +38,9 @@ export default class AddAccountEnvironmentForm extends React.Component {
 
 	handleDeleteFile = fileRef => {
 		const {inputFileField} = this.state;
+
 		const fileInput = fileRef.current;
-		const fieldName = fileRef.current.name.replace(this.props.namespace, '');
+		const fieldName = this.updateFieldName(fileInput.name);
 
 		fileInput.value = null;
 
@@ -57,8 +58,9 @@ export default class AddAccountEnvironmentForm extends React.Component {
 
 	handleFileChange = event => {
 		const {inputFileField} = this.state;
+
 		const {files, name} = event.target;
-		const fieldName = name.replace(this.props.namespace, '');
+		const fieldName = this.updateFieldName(name);
 
 		if (files.length) {
 			this.setState(
@@ -76,6 +78,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 
 	handleOSChange = event => {
 		const {configurations} = this.state;
+
 		const {options} = event.target;
 		const {label} = options[options.selectedIndex];
 
@@ -132,6 +135,12 @@ export default class AddAccountEnvironmentForm extends React.Component {
 	};
 
 	handleSubmit = () => this.addEnvironmentFormRef.current.submit();
+
+	updateFieldName = (name) => {
+		const {namespace} = this.props;
+
+		return name.replace(namespace, '');
+	}
 
 	render() {
 		const {
