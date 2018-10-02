@@ -495,7 +495,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 										</svg>
 
 										<span>
-											{Liferay.Language.get('add-file-or-drop-files-here')}
+											{Liferay.Language.get('add-file-or-drop-file-here')}
 										</span>
 									</div>
 
@@ -545,7 +545,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 										</svg>
 
 										<span>
-											{Liferay.Language.get('add-file-or-drop-files-here')}
+											{Liferay.Language.get('add-file-or-drop-file-here')}
 										</span>
 									</div>
 
