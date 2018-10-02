@@ -16,7 +16,7 @@ package com.liferay.osb.customer.zendesk.rabbitmq.router;
 
 import com.liferay.osb.customer.rabbitmq.connector.router.BaseMessageRouter;
 import com.liferay.osb.customer.rabbitmq.connector.router.MessageRouter;
-import com.liferay.osb.customer.zendesk.rabbitmq.processors.ZendeskMessageProcessor;
+import com.liferay.osb.customer.zendesk.rabbitmq.processors.ZendeskWebServiceMessageProcessor;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -35,11 +35,11 @@ import org.osgi.service.component.annotations.Reference;
 public class ZendeskMessageRouter extends BaseMessageRouter {
 
 	@Reference(unbind = "-")
-	protected void setZendeskMessageProcessor(
-		ZendeskMessageProcessor zendeskMessageProcessor,
+	protected void setZendeskWebServiceMessageProcessor(
+		ZendeskWebServiceMessageProcessor zendeskWebServiceMessageProcessor,
 		Map<String, Object> properties) {
 
-		addRoute(zendeskMessageProcessor, properties);
+		addRoute(zendeskWebServiceMessageProcessor, properties);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

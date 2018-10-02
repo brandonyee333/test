@@ -12,12 +12,13 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.connector.internal.util;
+package com.liferay.osb.customer.zendesk.connector.internal.service;
 
 import com.liferay.osb.customer.zendesk.connector.configuration.ZendeskConnectorConfigurationValues;
 import com.liferay.osb.customer.zendesk.connector.internal.http.ZendeskHttpDelete;
 import com.liferay.osb.customer.zendesk.connector.internal.http.ZendeskHttpGet;
-import com.liferay.osb.customer.zendesk.connector.util.ZendeskBaseWebService;
+import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
+import com.liferay.osb.customer.zendesk.connector.service.ZendeskRequest;
 import com.liferay.petra.json.web.service.client.BaseJSONWebServiceClientImpl;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
@@ -264,17 +265,17 @@ public class ZendeskBaseWebServiceImpl
 		}
 	}
 
-	public JSONObject send(JSONObject jsonObject) throws PortalException {
-		String endpoint = jsonObject.getString("endpoint");
-		String method = jsonObject.getString("method");
-		JSONObject payload = JSONFactoryUtil.createJSONObject(
-			jsonObject.getString("payload"));
+	public JSONObject send(ZendeskRequest zendeskRequest)
+		throws PortalException {
+
+		String method = zendeskRequest.getMethod();
+		JSONObject payload = zendeskRequest.getPayload();
 
 		if (method.equals("post")) {
-			return post(endpoint, payload.toString());
+			return post(zendeskRequest.getEndpoint(), payload.toString());
 		}
 		else if (method.equals("put")) {
-			return put(endpoint, payload.toString());
+			return put(zendeskRequest.getEndpoint(), payload.toString());
 		}
 		else if (method.equals("delete")) {
 			if (payload.has("parameters")) {
@@ -293,10 +294,10 @@ public class ZendeskBaseWebServiceImpl
 					parameters.put(key, value);
 				}
 
-				return delete(endpoint, parameters);
+				return delete(zendeskRequest.getEndpoint(), parameters);
 			}
 			else {
-				return delete(endpoint, payload.toString());
+				return delete(zendeskRequest.getEndpoint(), payload.toString());
 			}
 		}
 		else {

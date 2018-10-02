@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.web.service.api;
+package com.liferay.osb.customer.zendesk.connector.service;
 
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -21,12 +21,17 @@ import com.liferay.portal.kernel.util.Validator;
 /**
  * @author Kyle Bischof
  */
-public class ZendeskAPICall {
+public class ZendeskRequest {
 
-	public ZendeskAPICall() {
+	public static ZendeskRequest getInstance(JSONObject jsonObject) {
+		return new ZendeskRequest(
+			jsonObject.getString("_FIELD_ENDPOINT"),
+			jsonObject.getString("_FIELD_METHOD"),
+			jsonObject.getJSONObject("_FIELD_PAYLOAD"),
+			jsonObject.getString("_FIELD_RESPONSE_ROUTING_KEY"));
 	}
 
-	public ZendeskAPICall(
+	public ZendeskRequest(
 		String endpoint, String method, JSONObject payload,
 		String responseRoutingKey) {
 
@@ -52,39 +57,41 @@ public class ZendeskAPICall {
 		return _responseRoutingKey;
 	}
 
-	public void setEndpoint(String endpoint) {
-		_endpoint = endpoint;
-	}
-
-	public void setMethod(String method) {
-		_method = method;
-	}
-
-	public void setPayload(JSONObject payload) {
-		_payload = payload;
-	}
-
-	public void setResponseRoutingKey(String responseRoutingKey) {
-		_responseRoutingKey = responseRoutingKey;
+	public boolean hasResponseRoutingKey() {
+		if (Validator.isNotNull(_responseRoutingKey)) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	public JSONObject toJSONObject() {
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		jsonObject.put("endpoint", _endpoint);
-		jsonObject.put("method", _method);
-		jsonObject.put("payload", _payload.toJSONString());
+		jsonObject.put(_FIELD_ENDPOINT, _endpoint);
+		jsonObject.put(_FIELD_METHOD, _method);
+		jsonObject.put(_FIELD_PAYLOAD, _payload);
 
 		if (Validator.isNotNull(_responseRoutingKey)) {
-			jsonObject.put("responseRoutingKey", _responseRoutingKey);
+			jsonObject.put(_FIELD_RESPONSE_ROUTING_KEY, _responseRoutingKey);
 		}
 
 		return jsonObject;
 	}
 
-	private String _endpoint;
-	private String _method;
-	private JSONObject _payload;
-	private String _responseRoutingKey;
+	private static final String _FIELD_ENDPOINT = "endpoint";
+
+	private static final String _FIELD_METHOD = "method";
+
+	private static final String _FIELD_PAYLOAD = "payload";
+
+	private static final String _FIELD_RESPONSE_ROUTING_KEY =
+		"responseRoutingKey";
+
+	private final String _endpoint;
+	private final String _method;
+	private final JSONObject _payload;
+	private final String _responseRoutingKey;
 
 }

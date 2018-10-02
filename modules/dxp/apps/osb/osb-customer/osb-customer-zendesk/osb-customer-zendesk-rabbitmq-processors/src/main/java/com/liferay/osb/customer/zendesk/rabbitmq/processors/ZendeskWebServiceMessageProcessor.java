@@ -15,7 +15,8 @@
 package com.liferay.osb.customer.zendesk.rabbitmq.processors;
 
 import com.liferay.osb.customer.rabbitmq.connector.publisher.MessagePublisher;
-import com.liferay.osb.customer.zendesk.connector.util.ZendeskBaseWebService;
+import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
+import com.liferay.osb.customer.zendesk.connector.service.ZendeskRequest;
 import com.liferay.osb.customer.zendesk.rabbitmq.configuration.ZendeskConnectorConfigurationValues;
 import com.liferay.portal.kernel.json.JSONObject;
 
@@ -27,23 +28,23 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	immediate = true, property = "routing.key=zendesk.service",
-	service = ZendeskMessageProcessor.class
+	service = ZendeskWebServiceMessageProcessor.class
 )
-public class ZendeskMessageProcessor extends BaseMessageProcessor {
+public class ZendeskWebServiceMessageProcessor extends BaseMessageProcessor {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
-		JSONObject responseJSONObject = _zendeskBaseWebService.send(jsonObject);
+		ZendeskRequest zendeskRequest = ZendeskRequest.getInstance(jsonObject);
+
+		JSONObject responseJSONObject = _zendeskBaseWebService.send(
+			zendeskRequest);
 
 		handleResponseErrors(responseJSONObject);
 
-		if (jsonObject.has("responseRoutingKey")) {
-			String responseRoutingKey = jsonObject.getString(
-				"responseRoutingKey");
-
+		if (zendeskRequest.hasResponseRoutingKey()) {
 			_messagePublisher.sendMessage(
 				ZendeskConnectorConfigurationValues.
 					RABBITMQ_MESSAGE_EXCHANGE_NAME,
-				responseRoutingKey, responseJSONObject);
+				zendeskRequest.getResponseRoutingKey(), responseJSONObject);
 		}
 	}
 

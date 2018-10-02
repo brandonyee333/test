@@ -119,6 +119,9 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		throws ModelListenerException {
 
 		try {
+			long classNameId = ClassNameLocalServiceUtil.getClassNameId(
+				AccountEntry.class);
+
 			boolean externalIdMappers =
 				ExternalIdMapperLocalServiceUtil.hasExternalIdMappers(
 					classNameId, accountEntry.getAccountEntryId(),

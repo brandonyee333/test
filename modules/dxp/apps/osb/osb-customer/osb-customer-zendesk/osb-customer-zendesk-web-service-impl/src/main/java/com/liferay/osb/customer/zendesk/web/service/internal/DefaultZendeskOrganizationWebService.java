@@ -15,10 +15,9 @@
 package com.liferay.osb.customer.zendesk.web.service.internal;
 
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints;
-import com.liferay.osb.customer.zendesk.connector.util.ZendeskBaseWebService;
+import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
 import com.liferay.osb.customer.zendesk.model.ZendeskOrganization;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationWebService;
-import com.liferay.osb.customer.zendesk.web.service.exception.UnsupportedServiceException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -44,7 +43,7 @@ public class DefaultZendeskOrganizationWebService
 			String tier)
 		throws PortalException {
 
-		throw new UnsupportedServiceException();
+		throw new UnsupportedOperationException();
 	}
 
 	public ZendeskOrganization getZendeskOrganization(long accountEntryId)

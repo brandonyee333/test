@@ -15,7 +15,7 @@
 package com.liferay.osb.customer.zendesk.web.service.internal;
 
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints;
-import com.liferay.osb.customer.zendesk.connector.util.ZendeskBaseWebService;
+import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
 import com.liferay.osb.customer.zendesk.web.service.exception.NoSuchZendeskTicketException;

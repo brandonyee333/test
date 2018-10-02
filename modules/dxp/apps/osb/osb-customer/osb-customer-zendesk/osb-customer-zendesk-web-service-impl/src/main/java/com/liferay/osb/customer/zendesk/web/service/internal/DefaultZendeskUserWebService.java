@@ -16,11 +16,10 @@ package com.liferay.osb.customer.zendesk.web.service.internal;
 
 import com.liferay.osb.customer.rabbitmq.connector.publisher.MessagePublisher;
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints;
-import com.liferay.osb.customer.zendesk.connector.util.ZendeskBaseWebService;
+import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.customer.zendesk.web.service.configuration.ZendeskConnectorConfigurationValues;
-import com.liferay.osb.customer.zendesk.web.service.exception.UnsupportedServiceException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -44,7 +43,7 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 	public void addZendeskUserTags(long zendeskUserId, Set<String> tags)
 		throws PortalException {
 
-		throw new UnsupportedServiceException();
+		throw new UnsupportedOperationException();
 	}
 
 	public ZendeskUser createOrUpdateZendeskUser(
@@ -81,20 +80,20 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 			long zendeskUserId, long[] zendeskOrganizationIds)
 		throws PortalException {
 
-		throw new UnsupportedServiceException();
+		throw new UnsupportedOperationException();
 	}
 
 	public void deleteZendeskUserOrganizationMemberships(
 			long zendeskUserId, long[] zendeskOrganizationIds)
 		throws PortalException {
 
-		throw new UnsupportedServiceException();
+		throw new UnsupportedOperationException();
 	}
 
 	public void deleteZendeskUserTags(long zendeskUserId, Set<String> tags)
 		throws PortalException {
 
-		throw new UnsupportedServiceException();
+		throw new UnsupportedOperationException();
 	}
 
 	public Map<Long, Long> getOrganizationMemberships(long zendeskUserId)

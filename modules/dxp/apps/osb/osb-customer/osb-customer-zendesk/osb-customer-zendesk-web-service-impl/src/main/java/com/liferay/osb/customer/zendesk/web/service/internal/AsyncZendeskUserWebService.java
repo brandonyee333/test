@@ -16,9 +16,9 @@ package com.liferay.osb.customer.zendesk.web.service.internal;
 
 import com.liferay.osb.customer.rabbitmq.connector.publisher.MessagePublisher;
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints;
+import com.liferay.osb.customer.zendesk.connector.service.ZendeskRequest;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
-import com.liferay.osb.customer.zendesk.web.service.api.ZendeskAPICall;
 import com.liferay.osb.customer.zendesk.web.service.configuration.ZendeskConnectorConfigurationValues;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -63,13 +63,13 @@ public class AsyncZendeskUserWebService
 				ZendeskRESTEndpoints.URL_API_V2 + "users" + StringPool.SLASH +
 					zendeskUserId + StringPool.SLASH + "tags.json";
 
-			ZendeskAPICall zendeskAPICall = new ZendeskAPICall(
+			ZendeskRequest zendeskRequest = new ZendeskRequest(
 				endpoint, "put", jsonObject, null);
 
 			_messagePublisher.sendMessage(
 				ZendeskConnectorConfigurationValues.
 					ZENDESK_RABBITMQ_MESSAGE_EXCHANGE_NAME,
-				"zendesk.service", zendeskAPICall.toJSONObject());
+				"zendesk.service", zendeskRequest.toJSONObject());
 		}
 		catch (Exception e) {
 			throw new PortalException(e);
@@ -90,14 +90,14 @@ public class AsyncZendeskUserWebService
 				ZendeskRESTEndpoints.URL_API_V2 +
 					ZendeskRESTEndpoints.USERS_CREATE_OR_UPDATE;
 
-			ZendeskAPICall zendeskAPICall = new ZendeskAPICall(
+			ZendeskRequest zendeskRequest = new ZendeskRequest(
 				endpoint, "post", zendeskUser.toJSONObject(),
 				"zendesk.user.create.or.update");
 
 			_messagePublisher.sendMessage(
 				ZendeskConnectorConfigurationValues.
 					ZENDESK_RABBITMQ_MESSAGE_EXCHANGE_NAME,
-				"zendesk.service", zendeskAPICall.toJSONObject());
+				"zendesk.service", zendeskRequest.toJSONObject());
 
 			return zendeskUser;
 		}
@@ -132,13 +132,13 @@ public class AsyncZendeskUserWebService
 				ZendeskRESTEndpoints.URL_API_V2 +
 					ZendeskRESTEndpoints.ORGANIZATION_MEMBERSHIPS_CREATE_MANY;
 
-			ZendeskAPICall zendeskAPICall = new ZendeskAPICall(
+			ZendeskRequest zendeskRequest = new ZendeskRequest(
 				endpoint, "post", jsonObject, null);
 
 			_messagePublisher.sendMessage(
 				ZendeskConnectorConfigurationValues.
 					ZENDESK_RABBITMQ_MESSAGE_EXCHANGE_NAME,
-				"zendesk.service", zendeskAPICall.toJSONObject());
+				"zendesk.service", zendeskRequest.toJSONObject());
 		}
 		catch (Exception e) {
 			throw new PortalException(e);
@@ -186,13 +186,13 @@ public class AsyncZendeskUserWebService
 				ZendeskRESTEndpoints.URL_API_V2 +
 					ZendeskRESTEndpoints.ORGANIZATION_MEMBERSHIPS_DESTROY_MANY;
 
-			ZendeskAPICall zendeskAPICall = new ZendeskAPICall(
+			ZendeskRequest zendeskRequest = new ZendeskRequest(
 				endpoint, "delete", parametersJSONObject, null);
 
 			_messagePublisher.sendMessage(
 				ZendeskConnectorConfigurationValues.
 					ZENDESK_RABBITMQ_MESSAGE_EXCHANGE_NAME,
-				"zendesk.service", zendeskAPICall.toJSONObject());
+				"zendesk.service", zendeskRequest.toJSONObject());
 		}
 		catch (Exception e) {
 			throw new PortalException(e);
@@ -218,13 +218,13 @@ public class AsyncZendeskUserWebService
 				ZendeskRESTEndpoints.URL_API_V2 + "users" + StringPool.SLASH +
 					zendeskUserId + StringPool.SLASH + "tags.json";
 
-			ZendeskAPICall zendeskAPICall = new ZendeskAPICall(
+			ZendeskRequest zendeskRequest = new ZendeskRequest(
 				endpoint, "delete", jsonObject, null);
 
 			_messagePublisher.sendMessage(
 				ZendeskConnectorConfigurationValues.
 					ZENDESK_RABBITMQ_MESSAGE_EXCHANGE_NAME,
-				"zendesk.service", zendeskAPICall.toJSONObject());
+				"zendesk.service", zendeskRequest.toJSONObject());
 		}
 		catch (Exception e) {
 			throw new PortalException(e);

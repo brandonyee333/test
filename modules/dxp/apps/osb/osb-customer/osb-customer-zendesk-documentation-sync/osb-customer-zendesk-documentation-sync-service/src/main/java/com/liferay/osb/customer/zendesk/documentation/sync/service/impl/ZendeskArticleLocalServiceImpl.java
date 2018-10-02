@@ -15,7 +15,7 @@
 package com.liferay.osb.customer.zendesk.documentation.sync.service.impl;
 
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints;
-import com.liferay.osb.customer.zendesk.connector.util.ZendeskBaseWebService;
+import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection;

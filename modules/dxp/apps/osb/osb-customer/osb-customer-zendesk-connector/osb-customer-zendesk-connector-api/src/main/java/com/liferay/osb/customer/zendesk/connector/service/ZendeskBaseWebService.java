@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.connector.util;
+package com.liferay.osb.customer.zendesk.connector.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -44,6 +44,7 @@ public interface ZendeskBaseWebService {
 
 	public JSONObject put(String endpoint, String json) throws PortalException;
 
-	public JSONObject send(JSONObject jsonObject) throws PortalException;
+	public JSONObject send(ZendeskRequest zendeskRequest)
+		throws PortalException;
 
 }
