@@ -123,15 +123,6 @@ export default class AccountEnvironments extends React.Component {
 			)
 		}));
 
-		const addAccountEnvironmentForm = (
-			<AddAccountEnvironmentForm
-				addEnvironmentURL={addEnvironmentURL}
-				handleCloseModal={this.handleCloseModal}
-				namespace={window.AccountDetailsConstants.namespace}
-				environmentConfiguration={environmentConfiguration}
-			/>
-		);
-
 		return (
 			<React.Fragment>
 				<h3 className="card-header">
@@ -150,11 +141,17 @@ export default class AccountEnvironments extends React.Component {
 					)}
 
 					<Modal
-						body={addAccountEnvironmentForm}
 						header={Liferay.Language.get('new-environment-configuration')}
 						onClose={this.handleCloseModal}
 						show={showModal}
-					/>
+					>
+						<AddAccountEnvironmentForm
+							addEnvironmentURL={addEnvironmentURL}
+							handleCloseModal={this.handleCloseModal}
+							namespace={window.AccountDetailsConstants.namespace}
+							environmentConfiguration={environmentConfiguration}
+						/>
+					</Modal>
 				</h3>
 
 				{!accordionItems.length ? (

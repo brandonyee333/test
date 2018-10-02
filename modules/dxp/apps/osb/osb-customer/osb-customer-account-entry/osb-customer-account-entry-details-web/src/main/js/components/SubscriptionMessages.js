@@ -59,7 +59,6 @@ class SubscriptionAlert extends React.Component {
 				</Alert>
 
 				<Modal
-					body={message.content}
 					footer={
 						<button className="btn btn-primary pull-right" onClick={this.handleCloseModal}>
 							{Liferay.Language.get('okay')}
@@ -69,7 +68,9 @@ class SubscriptionAlert extends React.Component {
 					onClose={this.handleCloseModal}
 					show={showModal}
 					size="lg"
-				/>
+				>
+					{message.content}
+				</Modal>
 			</div>
 		);
 	}

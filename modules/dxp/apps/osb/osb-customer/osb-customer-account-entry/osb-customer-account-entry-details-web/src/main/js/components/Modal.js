@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import getCN from 'classnames';
 
-const Modal = ({body, footer, header, onClose, show, size}) => {
+const Modal = ({children, footer, header, onClose, show, size}) => {
 	const className = getCN(
 		'modal-dialog',
 		`${size ? `modal-${size}` : ''}`
@@ -28,7 +28,7 @@ const Modal = ({body, footer, header, onClose, show, size}) => {
 					)}
 
 					<div className="modal-body">
-						{body}
+						{children}
 					</div>
 
 					{footer && (
@@ -43,7 +43,7 @@ const Modal = ({body, footer, header, onClose, show, size}) => {
 };
 
 Modal.propTypes = {
-	body: PropTypes.node.isRequired,
+	children: PropTypes.node.isRequired,
 	footer: PropTypes.node,
 	header: PropTypes.node,
 	onClose: PropTypes.func.isRequired,
