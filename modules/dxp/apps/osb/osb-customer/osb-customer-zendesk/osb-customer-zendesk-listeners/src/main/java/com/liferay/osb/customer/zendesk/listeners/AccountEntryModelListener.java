@@ -195,47 +195,40 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 	protected void createOrUpdateZendeskOrganization(AccountEntry accountEntry)
 		throws PortalException {
 
-		try {
-			String partnerEntryCode = StringPool.BLANK;
+		String partnerEntryCode = StringPool.BLANK;
 
-			PartnerEntry partnerEntry = accountEntry.getPartnerEntry();
+		PartnerEntry partnerEntry = accountEntry.getPartnerEntry();
 
-			if (partnerEntry != null) {
-				partnerEntryCode = partnerEntry.getCode();
-			}
-
-			String supportLevelLabel = StringPool.BLANK;
-
-			SupportResponse supportResponse =
-				SupportResponseLocalServiceUtil.fetchSupportResponse(
-					accountEntry.getHighestSupportResponseId());
-
-			if (supportResponse != null) {
-				supportLevelLabel = supportResponse.getSupportLevelLabel();
-			}
-
-			String[] languageIds = accountEntry.getLanguageIds();
-
-			long[] supportRegionIds = accountEntry.getSupportRegionIds();
-
-			SupportRegion supportRegion =
-				SupportRegionLocalServiceUtil.getSupportRegion(
-					supportRegionIds[0]);
-
-			_zendeskOrganizationWebService.createOrUpdateZendeskOrganization(
-				String.valueOf(accountEntry.getAccountEntryId()),
-				accountEntry.getName(),
-				String.valueOf(accountEntry.getPartnerManagedSupport()),
-				partnerEntryCode, supportLevelLabel,
-				accountEntry.getStatusLabel(),
-				AccountEntryConstants.getLanguageLabel(languageIds[0]),
-				supportRegion.getName(),
-				AccountEntryConstants.getTierLabel(accountEntry.getTier()),
-				getTags(accountEntry));
+		if (partnerEntry != null) {
+			partnerEntryCode = partnerEntry.getCode();
 		}
-		catch (Exception e) {
-			throw new PortalException(e);
+
+		String supportLevelLabel = StringPool.BLANK;
+
+		SupportResponse supportResponse =
+			SupportResponseLocalServiceUtil.fetchSupportResponse(
+				accountEntry.getHighestSupportResponseId());
+
+		if (supportResponse != null) {
+			supportLevelLabel = supportResponse.getSupportLevelLabel();
 		}
+
+		String[] languageIds = accountEntry.getLanguageIds();
+
+		long[] supportRegionIds = accountEntry.getSupportRegionIds();
+
+		SupportRegion supportRegion =
+			SupportRegionLocalServiceUtil.getSupportRegion(supportRegionIds[0]);
+
+		_zendeskOrganizationWebService.createOrUpdateZendeskOrganization(
+			String.valueOf(accountEntry.getAccountEntryId()),
+			accountEntry.getName(),
+			String.valueOf(accountEntry.getPartnerManagedSupport()),
+			partnerEntryCode, supportLevelLabel, accountEntry.getStatusLabel(),
+			AccountEntryConstants.getLanguageLabel(languageIds[0]),
+			supportRegion.getName(),
+			AccountEntryConstants.getTierLabel(accountEntry.getTier()),
+			getTags(accountEntry));
 	}
 
 	protected Set<String> getTags(AccountEntry accountEntry)
@@ -279,7 +272,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 				continue;
 			}
 
-			if (accountEntry.hasActiveSupportOffering()) {
+			if (curAccountEntry.hasActiveSupportOffering()) {
 				return true;
 			}
 		}
