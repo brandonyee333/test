@@ -53,7 +53,6 @@ String uploadURL = fileRepositoryWebService.getUploadURL(fileRepositoryId);
 		{
 			addTicketAttachmentURL: '<%= addTicketAttachmentURL %>',
 			generateTokenURL: '<%= generateTokenURL %>',
-			portletNamespace: '${renderResponse.namespace}',
 			uploadURL: '<%= uploadURL %>',
 			zendeskTicketId: '<%= String.valueOf(zendeskTicketId) %>'
 		},

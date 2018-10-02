@@ -7,7 +7,6 @@ export default class AddTicketAttachment extends React.Component {
 	static propTypes = {
 		addTicketAttachmentURL: PropTypes.string.isRequired,
 		generateTokenURL: PropTypes.string.isRequired,
-		portletNamespace: PropTypes.string.isRequired,
 		uploadURL: PropTypes.string.isRequired,
 		zendeskTicketId: PropTypes.string.isRequired
 	}
@@ -16,7 +15,6 @@ export default class AddTicketAttachment extends React.Component {
 		const {
 			addTicketAttachmentURL,
 			generateTokenURL,
-			portletNamespace,
 			uploadURL,
 			zendeskTicketId
 		} = this.props;
@@ -34,7 +32,6 @@ export default class AddTicketAttachment extends React.Component {
 				<DynamicUploaderForm
 					addTicketAttachmentURL={addTicketAttachmentURL}
 					generateTokenURL={generateTokenURL}
-					portletNamespace={portletNamespace}
 					uploadURL={uploadURL}
 				/>
 			</div>

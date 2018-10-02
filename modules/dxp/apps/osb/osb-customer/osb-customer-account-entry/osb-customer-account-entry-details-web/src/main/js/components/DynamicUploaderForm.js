@@ -15,7 +15,6 @@ export default class DynamicUploaderForm extends React.Component {
 	static propTypes = {
 		addTicketAttachmentURL: PropTypes.string.isRequired,
 		generateTokenURL: PropTypes.string.isRequired,
-		portletNamespace: PropTypes.string.isRequired,
 		uploadURL: PropTypes.string.isRequired
 	}
 
@@ -41,7 +40,9 @@ export default class DynamicUploaderForm extends React.Component {
 	}
 
 	componentDidMount() {
-		const {portletNamespace, uploadURL} = this.props;
+		const {uploadURL} = this.props;
+
+		const {namespace} = window.AccountDetailsConstants;
 
 		const resumable = new Resumable(
 			{
@@ -77,8 +78,8 @@ export default class DynamicUploaderForm extends React.Component {
 			);
 		}
 		else {
-			resumable.assignBrowse(document.getElementById(`${portletNamespace}selectButton`));
-			resumable.assignDrop(document.getElementById(`${portletNamespace}uploadArea`));
+			resumable.assignBrowse(document.getElementById(`${namespace}selectButton`));
+			resumable.assignDrop(document.getElementById(`${namespace}uploadArea`));
 
 			resumable.on(
 				'fileAdded',
@@ -179,6 +180,7 @@ export default class DynamicUploaderForm extends React.Component {
 
 			this.setState(
 				{
+					namespace,
 					resumable
 				}
 			);
@@ -283,7 +285,9 @@ export default class DynamicUploaderForm extends React.Component {
 	}
 
 	updateActionUrl = () => {
-		const {addTicketAttachmentURL, portletNamespace} = this.props;
+		const {addTicketAttachmentURL} = this.props;
+
+		const {namespace} = this.state;
 
 		const formFields = Object.keys(this.state.file);
 
@@ -291,11 +295,11 @@ export default class DynamicUploaderForm extends React.Component {
 
 		formFields.forEach(
 			key => {
-				actionUrl += `&${portletNamespace}${key}=${this.state.file[key]}`;
+				actionUrl += `&${namespace}${key}=${this.state.file[key]}`;
 			}
 		);
 
-		actionUrl += `&${portletNamespace}comment=${this.state.comment}`;
+		actionUrl += `&${namespace}comment=${this.state.comment}`;
 
 		this.formRef.current.action = actionUrl;
 	}
@@ -311,13 +315,13 @@ export default class DynamicUploaderForm extends React.Component {
 	}
 
 	render() {
-		const {portletNamespace} = this.props;
+		const {namespace} = this.state;
 
 		return (
 			<form method="post" onSubmit={this.handleSubmit} ref={this.formRef}>
 				<div className="row">
 					<div className="col-md-12">
-						<div className="form-group" id={`${portletNamespace}uploadContainer`}>
+						<div className="form-group" id={`${namespace}uploadContainer`}>
 							<label className="control-label">
 								{Liferay.Language.get('attachment')}
 
@@ -326,8 +330,8 @@ export default class DynamicUploaderForm extends React.Component {
 								</svg>
 							</label>
 
-							<div className="form-control upload-area" id={`${portletNamespace}uploadArea`}>
-								<input className="attachment" id={`${portletNamespace}selectButton`} name={`${portletNamespace}attachment`} type="file" />
+							<div className="form-control upload-area" id={`${namespace}uploadArea`}>
+								<input className="attachment" id={`${namespace}selectButton`} name={`${namespace}attachment`} type="file" />
 
 								<div className="upload-area-label">
 									<svg className="lexicon-icon lexicon-icon-paperclip">
@@ -338,7 +342,7 @@ export default class DynamicUploaderForm extends React.Component {
 								</div>
 							</div>
 
-							<div className="toolbar" id={`${portletNamespace}toolbar`}>
+							<div className="toolbar" id={`${namespace}toolbar`}>
 								{this.state.file.fileName && (
 									<div className="attachment" onClick={this.handleClearAccepted}>
 										<svg className="lexicon-icon lexicon-icon-paperclip">
@@ -355,8 +359,8 @@ export default class DynamicUploaderForm extends React.Component {
 
 								{this.state.toolbar.visible && (
 									<div className="progress-bar-container">
-										<div className="progress-bar form-control" id={`${portletNamespace}progressBar`}>
-											<div className="progress" id={`${portletNamespace}progress`} style={{width: this.state.toolbar.progress + '%'}}></div>
+										<div className="progress-bar form-control" id={`${namespace}progressBar`}>
+											<div className="progress" id={`${namespace}progress`} style={{width: this.state.toolbar.progress + '%'}}></div>
 										</div>
 
 										{!this.state.toolbar.paused && (
@@ -392,7 +396,7 @@ export default class DynamicUploaderForm extends React.Component {
 								{Liferay.Language.get('leave-a-comment')}
 							</label>
 
-							<textarea className="form-control" id={`${portletNamespace}comment`} name={`${portletNamespace}comment`} onChange={this.handleUpdateComment} value={this.state.comment} />
+							<textarea className="form-control" id={`${namespace}comment`} name={`${namespace}comment`} onChange={this.handleUpdateComment} value={this.state.comment} />
 						</div>
 					</div>
 				</div>
