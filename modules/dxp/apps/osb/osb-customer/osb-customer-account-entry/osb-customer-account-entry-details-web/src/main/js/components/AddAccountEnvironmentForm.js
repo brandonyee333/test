@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {Formik} from 'formik';
 import * as yup from 'yup';
@@ -24,6 +25,13 @@ export default class AddAccountEnvironmentForm extends React.Component {
 			selectedProduct: null
 		}
 	};
+
+	static propTypes = {
+		addEnvironmentURL: PropTypes.string.isRequired,
+		environmentConfiguration: PropTypes.object.isRequired,
+		handleCloseModal: PropTypes.func.isRequired,
+		namespace: PropTypes.string.isRequired
+	}
 
 	handleDeleteFile = fileRef => {
 		const {inputFileField} = this.state;

@@ -15,7 +15,12 @@ export default class AccountEnvironments extends React.Component {
 		addEnvironmentURL: PropTypes.string.isRequired,
 		environments: PropTypes.array.isRequired,
 		permitAdd: PropTypes.bool.isRequired,
-		environmentConfiguration: PropTypes.object.isRequired
+		environmentConfiguration: PropTypes.shape(
+			{
+				envLFRVersions: PropTypes.arrayOf(PropTypes.object),
+				products: PropTypes.arrayOf(PropTypes.object)
+			}
+		).isRequired
 	};
 
 	handleCloseModal = () =>
@@ -117,7 +122,8 @@ export default class AccountEnvironments extends React.Component {
 					</div>
 
 					<div className="panel-subtitle">
-						<span>LR</span>: {environment.envLFRLabel}
+						<span>LR</span>:{' '}
+						{environment.envLFRLabel}
 					</div>
 				</React.Fragment>
 			)
@@ -147,9 +153,9 @@ export default class AccountEnvironments extends React.Component {
 					>
 						<AddAccountEnvironmentForm
 							addEnvironmentURL={addEnvironmentURL}
+							environmentConfiguration={environmentConfiguration}
 							handleCloseModal={this.handleCloseModal}
 							namespace={window.AccountDetailsConstants.namespace}
-							environmentConfiguration={environmentConfiguration}
 						/>
 					</Modal>
 				</h3>
@@ -175,7 +181,9 @@ const EnvironmentDetail = props => (
 				{props.value}
 			</a>
 		) : (
-			<div>{props.value}</div>
+			<div>
+				{props.value}
+			</div>
 		)}
 	</div>
 );
