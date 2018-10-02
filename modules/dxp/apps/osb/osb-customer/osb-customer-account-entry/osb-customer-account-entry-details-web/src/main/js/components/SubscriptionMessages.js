@@ -9,11 +9,11 @@ class SubscriptionAlert extends React.Component {
 		id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 		message: PropTypes.object,
 		onClose: PropTypes.func
-	}
+	};
 
 	state = {
 		showModal: false
-	}
+	};
 
 	handleCloseAlert = () => {
 		const {id, onClose} = this.props;
@@ -79,7 +79,7 @@ class SubscriptionAlert extends React.Component {
 export default class SubscriptionMessages extends React.Component {
 	state = {
 		messages: this.props.messages
-	}
+	};
 
 	static propTypes = {
 		messages: PropTypes.arrayOf(PropTypes.object).isRequired

@@ -34,7 +34,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 		environmentConfiguration: PropTypes.object.isRequired,
 		handleCloseModal: PropTypes.func.isRequired,
 		namespace: PropTypes.string.isRequired
-	}
+	};
 
 	handleDeleteFile = fileRef => {
 		const {inputFileField} = this.state;

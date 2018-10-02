@@ -3,7 +3,6 @@ import React from 'react';
 
 import axios from 'axios';
 
-import Button from './Button';
 import Resumable from '../third-party/resumable.nocsf';
 import {
 	getFileProgress,
@@ -11,12 +10,14 @@ import {
 	handleFileSuccess
 } from '../helpers/resumable-util';
 
+import Button from './Button';
+
 export default class DynamicUploaderForm extends React.Component {
 	static propTypes = {
 		addTicketAttachmentURL: PropTypes.string.isRequired,
 		generateTokenURL: PropTypes.string.isRequired,
 		uploadURL: PropTypes.string.isRequired
-	}
+	};
 
 	formRef = React.createRef();
 
@@ -39,7 +40,7 @@ export default class DynamicUploaderForm extends React.Component {
 			progress: 0,
 			visible: false
 		}
-	}
+	};
 
 	componentDidMount() {
 		const {uploadURL} = this.props;

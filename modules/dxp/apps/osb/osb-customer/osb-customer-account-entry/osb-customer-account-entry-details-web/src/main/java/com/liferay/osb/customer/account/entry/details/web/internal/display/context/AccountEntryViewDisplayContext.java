@@ -525,8 +525,7 @@ public class AccountEntryViewDisplayContext {
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		jsonObject.put(
-			"name", LanguageUtil.get(_request, listType.getName()));
+		jsonObject.put("name", LanguageUtil.get(_request, listType.getName()));
 		jsonObject.put("value", String.valueOf(listType.getListTypeId()));
 
 		jsonArray.put(jsonObject);
