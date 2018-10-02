@@ -63,7 +63,7 @@ public abstract class BaseScheduledTask implements ScheduledTask {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					getClass() + " unable to send message. Gateway became " +
-						"unavailable");
+						"unavailable.");
 			}
 
 			return;
