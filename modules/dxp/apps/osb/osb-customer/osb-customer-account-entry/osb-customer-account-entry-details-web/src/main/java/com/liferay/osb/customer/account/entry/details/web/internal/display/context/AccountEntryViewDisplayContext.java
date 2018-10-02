@@ -219,14 +219,15 @@ public class AccountEntryViewDisplayContext {
 			AccountEnvironment accountEnvironment)
 		throws PortletException {
 
-		PortletURL portletURL = _mimeResponse.createRenderURL();
+		PortletURL portletURL = _mimeResponse.createActionURL();
 
 		portletURL.setParameter(
-			"mvcRenderCommandName", "/edit_account_environment");
+			ActionRequest.ACTION_NAME, "editAccountEnvironment");
+		portletURL.setParameter(
+			"redirect", _accountEntryDetailsRequestHelper.getCurrentURL());
 		portletURL.setParameter(
 			"accountEnvironmentId",
 			String.valueOf(accountEnvironment.getAccountEnvironmentId()));
-		portletURL.setWindowState(LiferayWindowState.POP_UP);
 
 		return portletURL.toString();
 	}

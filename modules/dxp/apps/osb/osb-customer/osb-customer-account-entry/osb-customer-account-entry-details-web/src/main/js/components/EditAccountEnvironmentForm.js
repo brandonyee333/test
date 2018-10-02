@@ -11,28 +11,43 @@ const REQUIRED_SCHEMA = yup.string().required(Liferay.Language.get('this-field-i
 
 const SELECT_LABEL = Liferay.Language.get('select');
 
-export default class AddAccountEnvironmentForm extends React.Component {
-	addEnvironmentFormRef = React.createRef();
+export default class EditAccountEnvironmentForm extends React.Component {
+	editEnvironmentFormRef = React.createRef();
+	formikInstanceRef = React.createRef();
 	patchLevelRef = React.createRef();
 	portalExtRef = React.createRef();
 
-	state = {
-		configurations: {
-			customOS: false,
-			enterprise: false
-		},
-		inputFileField: {
-			patchLevel: null,
-			portalExt: null
-		},
-		selectedOptions: {
-			selectedLFRVersion: null,
-			selectedProduct: null
+	constructor(props) {
+		super(props);
+
+		const {curEnvironment, environmentConfiguration} = props;
+		const {envLFRVersions, products} = environmentConfiguration;
+
+		if (curEnvironment) {
+			var curEnvironmentProduct = products.find(product => product.productEntryId == curEnvironment.productEntryId);
+			var curEnvLFRValue = curEnvironmentProduct.envLFR.find(version => version.name == curEnvironment.envLFRLabel).value;
+			var curEnvironmentLFRVersion = envLFRVersions.find(version => version[curEnvLFRValue])[curEnvLFRValue];
+		}
+
+		this.state = {
+			configurations: {
+				customOS: false,
+				enterprise: curEnvironment ? curEnvironmentProduct.enterpriseSearch : false
+			},
+			inputFileField: {
+				patchLevel: null,
+				portalExt: null
+			},
+			selectedOptions: {
+				selectedLFRVersion: curEnvironment ? curEnvironmentLFRVersion : null,
+				selectedProduct: curEnvironment ? curEnvironmentProduct : null
+			}
 		}
 	};
 
 	static propTypes = {
 		addEnvironmentURL: PropTypes.string.isRequired,
+		curEnvironment: PropTypes.object,
 		environmentConfiguration: PropTypes.object.isRequired,
 		handleCloseModal: PropTypes.func.isRequired,
 		namespace: PropTypes.string.isRequired
@@ -56,7 +71,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 			}
 		);
 
-		this.refs.formikInstanceRef.setFieldValue(this.props.namespace + fieldName, '');
+		this.formikInstanceRef.current.setFieldValue(this.props.namespace + fieldName, '');
 	};
 
 	handleFileChange = event => {
@@ -76,7 +91,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 			);
 		}
 
-		this.refs.formikInstanceRef.handleChange(event);
+		this.formikInstanceRef.current.handleChange(event);
 	};
 
 	handleOSChange = event => {
@@ -94,7 +109,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 			}
 		);
 
-		this.refs.formikInstanceRef.handleChange(event);
+		this.formikInstanceRef.current.handleChange(event);
 	};
 
 	handleSelectChange = event => {
@@ -135,20 +150,56 @@ export default class AddAccountEnvironmentForm extends React.Component {
 			);
 		}
 
-		this.refs.formikInstanceRef.handleChange(event);
+		this.formikInstanceRef.current.handleChange(event);
 	};
 
-	handleSubmit = () => this.addEnvironmentFormRef.current.submit();
+	handleSubmit = () => this.editEnvironmentFormRef.current.submit();
+
+	getSearchValues = searchLabelsArray => {
+		const {curEnvironment} = this.props;
+
+		const {selectedLFRVersion} = this.state.selectedOptions;
+		const {enterprise} = this.state.configurations;
+
+		const searchValuesArray = [];
+
+		if (selectedLFRVersion && selectedLFRVersion.envSearch) {
+			const curEnvironmentVersionName = curEnvironment.envLFRLabel;
+			const searchType = selectedLFRVersion.envSearch.find(search => search[enterprise ? 'enterprise' : 'standard'])[enterprise ? 'enterprise' : 'standard'];
+			const selectedVersionName = selectedLFRVersion.envLFR.find(version => version).name;
+
+			if (selectedVersionName == curEnvironmentVersionName) {
+				for (var i = 0; i < searchLabelsArray.length; i++) {
+					const searchValue = searchType.find(type => type.name == searchLabelsArray[i]).value;
+
+					searchValuesArray.push(searchValue);
+				}
+			}
+		}
+
+		return searchValuesArray;
+	};
+
+	getValueFromLabel = (envType, label) => {
+		const {selectedLFRVersion} = this.state.selectedOptions
+
+		if (selectedLFRVersion && selectedLFRVersion[envType]) {
+			const selectedVersionHasLabel = selectedLFRVersion[envType].find(type => type.name == label);
+
+			return selectedVersionHasLabel ? selectedVersionHasLabel.value : '';
+		}
+	};
 
 	updateFieldName = (name) => {
 		const {namespace} = this.props;
 
 		return name.replace(namespace, '');
-	}
+	};
 
 	render() {
 		const {
 			addEnvironmentURL,
+			curEnvironment,
 			environmentConfiguration,
 			handleCloseModal,
 			namespace
@@ -166,24 +217,37 @@ export default class AddAccountEnvironmentForm extends React.Component {
 		const {customOS, enterprise} = configurations;
 		const {patchLevel, portalExt} = inputFileField;
 
+		const actionURL = curEnvironment ? curEnvironment.editAccountEnvironmentURL : addEnvironmentURL;
 		const renderEnvCS = selectedLFRVersion && selectedLFRVersion.envCS;
 		const renderEnvOSCustom = customOS;
 		const renderEnvSearch = selectedLFRVersion && selectedProduct && 'enterpriseSearch' in selectedProduct;
 
+		if (curEnvironment) {
+			var curEnvironmentValues = {
+				envASValue: this.getValueFromLabel('envAS', curEnvironment.envASLabel),
+				envBrowserValue: this.getValueFromLabel('envBrowser', curEnvironment.envBrowserLabel),
+				envCSValue: this.getValueFromLabel('envCS', curEnvironment.envCSLabel),
+				envDBValue: this.getValueFromLabel('envDB', curEnvironment.envDBLabel),
+				envJVMValue: this.getValueFromLabel('envJVM', curEnvironment.envJVMLabel),
+				envLFRValue: this.getValueFromLabel('envLFR', curEnvironment.envLFRLabel),
+				envOSValue: this.getValueFromLabel('envOS', curEnvironment.envOSLabel),
+				envSearchValues: this.getSearchValues(curEnvironment.envSearchLabels)
+			}
+		};
+
 		const initialValues = {
-			[`${namespace}envAS`]: '',
-			[`${namespace}envBrowser`]: '',
-			[`${namespace}envCS`]: '',
-			[`${namespace}envDB`]: '',
-			[`${namespace}envJVM`]: '',
-			[`${namespace}envLFR`]: '',
-			[`${namespace}envOS`]: '',
-			[`${namespace}envOSCustom`]: '',
-			[`${namespace}envSearch`]: '',
-			[`${namespace}name`]: '',
+			[`${namespace}envAS`]: curEnvironment ? curEnvironmentValues.envASValue : '',
+			[`${namespace}envBrowser`]: curEnvironment ? curEnvironmentValues.envBrowserValue : '',
+			[`${namespace}envCS`]: curEnvironment ? curEnvironmentValues.envCSValue : '',
+			[`${namespace}envDB`]: curEnvironment ? curEnvironmentValues.envDBValue : '',
+			[`${namespace}envJVM`]: curEnvironment ? curEnvironmentValues.envJVMValue : '',
+			[`${namespace}envLFR`]: curEnvironment ? curEnvironmentValues.envLFRValue : '',
+			[`${namespace}envOS`]: curEnvironment ? curEnvironmentValues.envOSValue : '',
+			[`${namespace}envSearch`]: curEnvironment ? curEnvironmentValues.envSearchValues : '',
+			[`${namespace}name`]: curEnvironment ? curEnvironment.name : '',
 			[`${namespace}patchLevel`]: '',
 			[`${namespace}portalExt`]: '',
-			[`${namespace}productEntryId`]: ''
+			[`${namespace}productEntryId`]: curEnvironment ? curEnvironment.productEntryId : ''
 		};
 
 		const validationSchema = yup.object().shape(
@@ -204,7 +268,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 			<Formik
 				initialValues={initialValues}
 				onSubmit={this.handleSubmit}
-				ref="formikInstanceRef"
+				ref={this.formikInstanceRef}
 				render={({
 					errors,
 					handleBlur,
@@ -214,7 +278,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 					touched,
 					values
 				}) => (
-					<form action={addEnvironmentURL} encType="multipart/form-data" method="post" onSubmit={handleSubmit} ref={this.addEnvironmentFormRef}>
+					<form action={actionURL} encType="multipart/form-data" method="post" onSubmit={handleSubmit} ref={this.editEnvironmentFormRef}>
 						<div className="row">
 							<div className="col-md-12">
 								<div className="form-group">
@@ -226,7 +290,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 										</svg>
 									</label>
 
-									<input className="form-control" id={`${namespace}accountEnvironmentName`} name={`${namespace}name`} onBlur={handleBlur} onChange={handleChange} type="text" value={values.name} />
+									<input className="form-control" defaultValue={curEnvironment && curEnvironment.name} id={`${namespace}accountEnvironmentName`} name={`${namespace}name`} onBlur={handleBlur} onChange={handleChange} type="text" value={values.name} />
 								</div>
 
 								{touched[`${namespace}name`] && errors[`${namespace}name`] && (
@@ -246,7 +310,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 										</svg>
 									</label>
 
-									<select className="form-control" id={`${namespace}accountEnvironmentProduct`} name={`${namespace}productEntryId`} onBlur={handleBlur} onChange={this.handleSelectChange}>
+									<select className="form-control" defaultValue={curEnvironment && curEnvironment.productEntryId} id={`${namespace}accountEnvironmentProduct`} name={`${namespace}productEntryId`} onBlur={handleBlur} onChange={this.handleSelectChange}>
 										<option value="" label={SELECT_LABEL} />
 
 										{products.map(
@@ -274,7 +338,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 										</svg>
 									</label>
 
-									<select className="form-control" disabled={!selectedProduct} id={`${namespace}envLFR`} name={`${namespace}envLFR`} onBlur={handleBlur} onChange={this.handleSelectChange}>
+									<select className="form-control" defaultValue={(curEnvironment && selectedLFRVersion) && selectedLFRVersion.envLFR.find(LFR => LFR).value} disabled={!selectedProduct} id={`${namespace}envLFR`} name={`${namespace}envLFR`} onBlur={handleBlur} onChange={this.handleSelectChange}>
 										<option value="" label={SELECT_LABEL} />
 
 										{selectedProduct && selectedProduct.envLFR.map(
@@ -302,7 +366,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 										</svg>
 									</label>
 
-									<select className="form-control" disabled={!selectedLFRVersion} id={`${namespace}envOS`} name={`${namespace}envOS`} onBlur={handleBlur} onChange={this.handleOSChange}>
+									<select className="form-control" defaultValue={curEnvironment && curEnvironmentValues.envOSValue} disabled={!selectedLFRVersion} id={`${namespace}envOS`} name={`${namespace}envOS`} onBlur={handleBlur} onChange={this.handleOSChange}>
 										<option value="" label={SELECT_LABEL} />
 
 										{selectedLFRVersion && selectedLFRVersion.envOS.map(
@@ -330,7 +394,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 										</svg>
 									</label>
 
-									<select className="form-control" disabled={!selectedLFRVersion} id={`${namespace}envJVM`} name={`${namespace}envJVM`} onBlur={handleBlur} onChange={handleChange}>
+									<select className="form-control" defaultValue={curEnvironment && curEnvironmentValues.envJVMValue} disabled={!selectedLFRVersion} id={`${namespace}envJVM`} name={`${namespace}envJVM`} onBlur={handleBlur} onChange={handleChange}>
 										<option value="" label={SELECT_LABEL} />
 
 										{selectedLFRVersion && selectedLFRVersion.envJVM.map(
@@ -370,7 +434,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 										</svg>
 									</label>
 
-									<select className="form-control" disabled={!selectedLFRVersion} id={`${namespace}envAS`} name={`${namespace}envAS`} onBlur={handleBlur} onChange={handleChange}>
+									<select className="form-control" defaultValue={curEnvironment && curEnvironmentValues.envASValue} disabled={!selectedLFRVersion} id={`${namespace}envAS`} name={`${namespace}envAS`} onBlur={handleBlur} onChange={handleChange}>
 										<option value="" label={SELECT_LABEL} />
 
 										{selectedLFRVersion && selectedLFRVersion.envAS.map(
@@ -398,7 +462,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 										</svg>
 									</label>
 
-									<select className="form-control" disabled={!selectedLFRVersion} id={`${namespace}envDB`} name={`${namespace}envDB`} onBlur={handleBlur} onChange={handleChange}>
+									<select className="form-control" defaultValue={curEnvironment && curEnvironmentValues.envDBValue} disabled={!selectedLFRVersion} id={`${namespace}envDB`} name={`${namespace}envDB`} onBlur={handleBlur} onChange={handleChange}>
 										<option value="" label={SELECT_LABEL} />
 
 										{selectedLFRVersion && selectedLFRVersion.envDB.map(
@@ -422,7 +486,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 										{Liferay.Language.get('browser')}
 									</label>
 
-									<select className="form-control" disabled={!selectedLFRVersion} id={`${namespace}envBrowser`} name={`${namespace}envBrowser`} onBlur={handleBlur} onChange={handleChange}>
+									<select className="form-control" defaultValue={curEnvironment && curEnvironmentValues.envBrowserValue} disabled={!selectedLFRVersion} id={`${namespace}envBrowser`} name={`${namespace}envBrowser`} onBlur={handleBlur} onChange={handleChange}>
 										<option value="" label={SELECT_LABEL} />
 
 										{selectedLFRVersion && selectedLFRVersion.envBrowser.map(
@@ -447,7 +511,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 											{Liferay.Language.get('cloud-services')}
 										</label>
 
-										<select className="form-control" disabled={!selectedLFRVersion} id={`${namespace}envCS`} name={`${namespace}envCS`} onBlur={handleBlur} onChange={handleChange}>
+										<select className="form-control" defaultValue={curEnvironment && curEnvironmentValues.envCSValue} disabled={!selectedLFRVersion} id={`${namespace}envCS`} name={`${namespace}envCS`} onBlur={handleBlur} onChange={handleChange}>
 											<option value="" label={SELECT_LABEL} />
 
 											{selectedLFRVersion && selectedLFRVersion.envCS.map(
@@ -473,7 +537,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 											{Liferay.Language.get('search')}
 										</label>
 
-										<select className="form-control" disabled={!selectedLFRVersion} id={`${namespace}envSearch`} multiple={true} name={`${namespace}envSearch`} onBlur={handleBlur} onChange={handleChange}>
+										<select className="form-control" defaultValue={curEnvironment && curEnvironmentValues.envSearchValues} disabled={!selectedLFRVersion} id={`${namespace}envSearch`} multiple={true} name={`${namespace}envSearch`} onBlur={handleBlur} onChange={handleChange}>
 											{selectedLFRVersion.envSearch.find(
 												search => search[enterprise ? 'enterprise' : 'standard'])[enterprise ? 'enterprise' : 'standard'].map(
 													(envSearch) => (
@@ -500,6 +564,14 @@ export default class AddAccountEnvironmentForm extends React.Component {
 										<svg className="lexicon-icon lexicon-icon-asterisk">
 											<use xlinkHref="#asterisk" />
 										</svg>
+
+										<div className="uploadedPortalExt">
+											{curEnvironment &&
+												<a href={curEnvironment.portalExtAccountEnvironmentAttachmentURL}>
+													{curEnvironment.portalExtAccountEnvironmentAttachmentFileName}
+												</a>
+											}
+										</div>
 									</label>
 
 									<div className="upload-dropzone">
@@ -550,6 +622,14 @@ export default class AddAccountEnvironmentForm extends React.Component {
 										<svg className="lexicon-icon lexicon-icon-asterisk">
 											<use xlinkHref="#asterisk" />
 										</svg>
+
+										<div className="uploadedPatchLevel">
+											{curEnvironment &&
+												<a href={curEnvironment.patchLevelAccountEnvironmentAttachmentURL}>
+													{curEnvironment.patchLevelAccountEnvironmentAttachmentFileName}
+												</a>
+											}
+										</div>
 									</label>
 
 									<div className="upload-dropzone">

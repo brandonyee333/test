@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Accordion from './Accordion';
-import AddAccountEnvironmentForm from './AddAccountEnvironmentForm';
+import EditAccountEnvironmentForm from './EditAccountEnvironmentForm';
 import Button from './Button';
 import Modal from './Modal';
 
 export default class AccountEnvironments extends React.Component {
 	state = {
+		curEnvironment: null,
 		showModal: false
 	};
 
@@ -36,9 +37,18 @@ export default class AccountEnvironments extends React.Component {
 		}
 	};
 
-	handleDisplayModal = () =>
+	handleDisplayEditModal = environment =>
 		this.setState(
 			{
+				curEnvironment: environment,
+				showModal: true
+			}
+		);
+
+	handleDisplayNewModal = () =>
+		this.setState(
+			{
+				curEnvironment: null,
 				showModal: true
 			}
 		);
@@ -51,7 +61,7 @@ export default class AccountEnvironments extends React.Component {
 			permitAdd
 		} = this.props;
 
-		const {showModal} = this.state;
+		const {curEnvironment, showModal} = this.state;
 
 		const accordionItems = environments.map(
 			(environment, index) => (
@@ -117,7 +127,8 @@ export default class AccountEnvironments extends React.Component {
 
 							<div className="col-md-12">
 								<Button
-									href={environment.editAccountEnvironmentURL}
+									display="link"
+									onClick={() => this.handleDisplayEditModal(environment)}
 									size="sm"
 									value="edit"
 								>
@@ -158,6 +169,8 @@ export default class AccountEnvironments extends React.Component {
 			)
 		);
 
+		const modalHeader = curEnvironment ? Liferay.Language.get('edit-environment-configuration') : Liferay.Language.get('new-environment-configuration');
+
 		return (
 			<React.Fragment>
 				<h3 className="card-header">
@@ -166,7 +179,7 @@ export default class AccountEnvironments extends React.Component {
 					{permitAdd && (
 						<Button
 							icon={true}
-							onClick={this.handleDisplayModal}
+							onClick={this.handleDisplayNewModal}
 							value="add"
 						>
 							<svg className="lexicon-icon lexicon-icon-plus">
@@ -176,12 +189,13 @@ export default class AccountEnvironments extends React.Component {
 					)}
 
 					<Modal
-						header={Liferay.Language.get('new-environment-configuration')}
+						header={modalHeader}
 						onClose={this.handleCloseModal}
 						show={showModal}
 					>
-						<AddAccountEnvironmentForm
+						<EditAccountEnvironmentForm
 							addEnvironmentURL={addEnvironmentURL}
+							curEnvironment={curEnvironment}
 							environmentConfiguration={environmentConfiguration}
 							handleCloseModal={this.handleCloseModal}
 							namespace={window.AccountDetailsConstants.namespace}
