@@ -11,37 +11,51 @@ export default class AddAccountEnvironmentForm extends React.Component {
 	portalExtRef = React.createRef();
 
 	state = {
-		isCustomOS: false,
-		isEnterprise: false,
-		patchLevel: null,
-		portalExt: null,
-		selectedLFRVersion: null,
-		selectedProduct: null
+		configurations: {
+			isCustomOS: false,
+			isEnterprise: false,
+		},
+		inputFileField: {
+			patchLevel: null,
+			portalExt: null,
+		},
+		selectedOption: {
+			selectedLFRVersion: null,
+			selectedProduct: null
+		}
 	};
 
 	handleDeleteFile = fileRef => {
+		const {inputFileField} = this.state;
 		const fileInput = fileRef.current;
-		const fileInputName = fileRef.current.name.replace(`${this.props.namespace}`, '');
+		const fieldName = fileRef.current.name.replace(this.props.namespace, '');
 
 		fileInput.value = null;
 
 		this.setState(
 			{
-				[fileInputName]: null
+				inputFileField: {
+					...inputFileField,
+					[fieldName]: null
+				}
 			}
 		);
 
-		this.refs.formikInstanceRef.setFieldValue(`${this.props.namespace + fileInputName}`, '');
+		this.refs.formikInstanceRef.setFieldValue(this.props.namespace + fieldName, '');
 	};
 
 	handleFileChange = event => {
+		const {inputFileField} = this.state;
 		const {files, name} = event.target;
-		const fileName = name.replace(`${this.props.namespace}`, '');
+		const fieldName = name.replace(this.props.namespace, '');
 
 		if (files.length) {
 			this.setState(
 				{
-					[fileName]: files[0].name
+					inputFileField: {
+						...inputFileField,
+						[fieldName]: files[0].name
+					}
 				}
 			);
 		}
@@ -50,12 +64,16 @@ export default class AddAccountEnvironmentForm extends React.Component {
 	};
 
 	handleOSChange = event => {
+		const {configurations} = this.state;
 		const {options} = event.target;
 		const {label} = options[options.selectedIndex];
 
 		this.setState(
 			{
-				isCustomOS: label == "Other"
+				configurations: {
+					...configurations,
+					isCustomOS: label == "Other"
+				}
 			}
 		);
 
@@ -63,24 +81,36 @@ export default class AddAccountEnvironmentForm extends React.Component {
 	};
 
 	handleSelectChange = event => {
+		const {configurations, selectedOption} = this.state;
 		const {envLFRVersions, products} = this.props.environmentConfiguration;
 		const {name, options} = event.target;
 		const {value} = options[options.selectedIndex];
 
-		const selectedProduct = products.find(product => product.productEntryId == value);
-
 		if (name == `${this.props.namespace}productEntryId`) {
+			const curSelectedProduct = products.find(product => product.productEntryId == value);
+
 			this.setState(
 				{
-					isEnterprise: !!selectedProduct && selectedProduct.enterpriseSearch,
-					selectedProduct: selectedProduct
+					configurations: {
+						...configurations,
+						isEnterprise: !!curSelectedProduct && curSelectedProduct.enterpriseSearch,
+					},
+					selectedOption: {
+						...selectedOption,
+						selectedProduct: curSelectedProduct
+					}
 				}
 			);
 		}
 		else {
+			const curLFRVersion = envLFRVersions.find(version => version[value]);
+
 			this.setState(
 				{
-					selectedLFRVersion: envLFRVersions.find(version => version[value])[value]
+					selectedOption: {
+						...selectedOption,
+						selectedLFRVersion: curLFRVersion ? curLFRVersion[value] : null
+					}
 				}
 			);
 		};
@@ -99,15 +129,17 @@ export default class AddAccountEnvironmentForm extends React.Component {
 		} = this.props;
 
 		const {
-			isCustomOS,
-			isEnterprise,
-			patchLevel,
-			portalExt,
-			selectedLFRVersion,
-			selectedProduct
+			configurations,
+			inputFileField,
+			selectedOption
 		} = this.state;
 
 		const {products} = environmentConfiguration;
+
+		const {selectedLFRVersion, selectedProduct} = selectedOption;
+		const {isCustomOS, isEnterprise} = configurations;
+		const {patchLevel, portalExt} = inputFileField;
+
 		const renderEnvCS = selectedLFRVersion && selectedLFRVersion.envCS;
 		const renderEnvSearch = selectedLFRVersion && selectedProduct && 'enterpriseSearch' in selectedProduct;
 		const renderEnvOSCustom = isCustomOS;
@@ -136,7 +168,6 @@ export default class AddAccountEnvironmentForm extends React.Component {
 			[`${namespace}envJVM`]: requiredSchema,
 			[`${namespace}envLFR`]: requiredSchema,
 			[`${namespace}envOS`]: requiredSchema,
-			[`${namespace}envOSCustom`]: renderEnvOSCustom ? requiredSchema : yup.mixed().notRequired(),
 			[`${namespace}name`]: requiredSchema,
 			[`${namespace}patchLevel`]: requiredSchema,
 			[`${namespace}portalExt`]: requiredSchema,
@@ -148,7 +179,6 @@ export default class AddAccountEnvironmentForm extends React.Component {
 				initialValues={initialValues}
 				onSubmit={this.handleSubmit}
 				ref="formikInstanceRef"
-				validationSchema={validationSchema}
 				render={({
 					errors,
 					handleBlur,
@@ -193,9 +223,11 @@ export default class AddAccountEnvironmentForm extends React.Component {
 									<select className="form-control" id={`${namespace}accountEnvironmentProduct`} name={`${namespace}productEntryId`} onBlur={handleBlur} onChange={this.handleSelectChange}>
 										<option value="" label={Liferay.Language.get('select')} />
 
-										{products.map((product, index) => (
-											<option key={'productEntryId-' + index} id={'productEntryId-' + index} label={product.displayName} value={product.productEntryId} />
-										))}
+										{products.map(
+											(product, index) => (
+												<option key={'productEntryId-' + index} id={'productEntryId-' + index} label={product.displayName} value={product.productEntryId} />
+											)
+										)}
 									</select>
 								</div>
 
@@ -219,9 +251,11 @@ export default class AddAccountEnvironmentForm extends React.Component {
 									<select className="form-control" disabled={!selectedProduct} id={`${namespace}envLFR`} name={`${namespace}envLFR`} onBlur={handleBlur} onChange={this.handleSelectChange}>
 										<option value="" label={Liferay.Language.get('select')} />
 
-										{selectedProduct && selectedProduct.envLFR.map((version, index) => (
-											<option key={'envLFR-' + index} id={'envLFR-' + index} label={version.name} value={version.value} />
-										))}
+										{selectedProduct && selectedProduct.envLFR.map(
+											(version, index) => (
+												<option key={'envLFR-' + index} id={'envLFR-' + index} label={version.name} value={version.value} />
+											)
+										)}
 									</select>
 								</div>
 
@@ -245,9 +279,11 @@ export default class AddAccountEnvironmentForm extends React.Component {
 									<select className="form-control" disabled={!selectedLFRVersion} id={`${namespace}envOS`} name={`${namespace}envOS`} onBlur={handleBlur} onChange={this.handleOSChange}>
 										<option value="" label={Liferay.Language.get('select')} />
 
-										{selectedLFRVersion && selectedLFRVersion.envOS.map((envOS, index) => (
-											<option key={'envOS-' + index} id={'envOS-' + index} label={envOS.name} value={envOS.value} />
-										))}
+										{selectedLFRVersion && selectedLFRVersion.envOS.map(
+											(envOS, index) => (
+												<option key={'envOS-' + index} id={'envOS-' + index} label={envOS.name} value={envOS.value} />
+											)
+										)}
 									</select>
 								</div>
 
@@ -271,9 +307,11 @@ export default class AddAccountEnvironmentForm extends React.Component {
 									<select className="form-control" disabled={!selectedLFRVersion} id={`${namespace}envJVM`} name={`${namespace}envJVM`} onBlur={handleBlur} onChange={handleChange}>
 										<option value="" label={Liferay.Language.get('select')} />
 
-										{selectedLFRVersion && selectedLFRVersion.envJVM.map((envJVM, index) => (
-											<option key={'envJVM-' + index} id={'envJVM-' + index} label={envJVM.name} value={envJVM.value} />
-										))}
+										{selectedLFRVersion && selectedLFRVersion.envJVM.map(
+											(envJVM, index) => (
+												<option key={'envJVM-' + index} id={'envJVM-' + index} label={envJVM.name} value={envJVM.value} />
+											)
+										)}
 									</select>
 								</div>
 
@@ -289,20 +327,10 @@ export default class AddAccountEnvironmentForm extends React.Component {
 									<div className="form-group">
 										<label className="control-label" htmlFor={`${namespace}envOSCustom`}>
 											{Liferay.Language.get('custom-operating-system')}
-
-											<svg className="lexicon-icon lexicon-icon-asterisk">
-												<use xlinkHref="#asterisk" />
-											</svg>
 										</label>
 
 										<input className="form-control" id={`${namespace}envOSCustom`} name={`${namespace}envOSCustom`} onBlur={handleBlur} onChange={handleChange} type="text" value={values.envOSCustom} />
 									</div>
-
-									{touched[`${namespace}envOSCustom`] && errors[`${namespace}envOSCustom`] && (
-										<div className="alert alert-danger" role="alert">
-											{errors[`${namespace}envOSCustom`]}
-										</div>
-									)}
 								</div>
 							)}
 
@@ -319,9 +347,11 @@ export default class AddAccountEnvironmentForm extends React.Component {
 									<select className="form-control" disabled={!selectedLFRVersion} id={`${namespace}envAS`} name={`${namespace}envAS`} onBlur={handleBlur} onChange={handleChange}>
 										<option value="" label={Liferay.Language.get('select')} />
 
-										{selectedLFRVersion && selectedLFRVersion.envAS.map((envAS, index) => (
-											<option key={'envAS-' + index} id={'envAS-' + index} label={envAS.name} value={envAS.value} />
-										))}
+										{selectedLFRVersion && selectedLFRVersion.envAS.map(
+											(envAS, index) => (
+												<option key={'envAS-' + index} id={'envAS-' + index} label={envAS.name} value={envAS.value} />
+											)
+										)}
 									</select>
 								</div>
 
@@ -345,9 +375,11 @@ export default class AddAccountEnvironmentForm extends React.Component {
 									<select className="form-control" disabled={!selectedLFRVersion} id={`${namespace}envDB`} name={`${namespace}envDB`} onBlur={handleBlur} onChange={handleChange}>
 										<option value="" label={Liferay.Language.get('select')} />
 
-										{selectedLFRVersion && selectedLFRVersion.envDB.map((envDB, index) => (
-											<option key={'envDB-' + index} id={'envDB-' + index} label={envDB.name} value={envDB.value} />
-										))}
+										{selectedLFRVersion && selectedLFRVersion.envDB.map(
+											(envDB, index) => (
+												<option key={'envDB-' + index} id={'envDB-' + index} label={envDB.name} value={envDB.value} />
+											)
+										)}
 									</select>
 								</div>
 
@@ -367,9 +399,11 @@ export default class AddAccountEnvironmentForm extends React.Component {
 									<select className="form-control" disabled={!selectedLFRVersion} id={`${namespace}envBrowser`} name={`${namespace}envBrowser`} onBlur={handleBlur} onChange={handleChange}>
 										<option value="" label={Liferay.Language.get('select')} />
 
-										{selectedLFRVersion && selectedLFRVersion.envBrowser.map((envBrowser, index) => (
-											<option key={'envBrowser-' + index} id={'envBrowser-' + index} label={envBrowser.name} value={envBrowser.value} />
-										))}
+										{selectedLFRVersion && selectedLFRVersion.envBrowser.map(
+											(envBrowser, index) => (
+												<option key={'envBrowser-' + index} id={'envBrowser-' + index} label={envBrowser.name} value={envBrowser.value} />
+											)
+										)}
 									</select>
 								</div>
 
@@ -390,9 +424,11 @@ export default class AddAccountEnvironmentForm extends React.Component {
 										<select className="form-control" disabled={!selectedLFRVersion} id={`${namespace}envCS`} name={`${namespace}envCS`} onBlur={handleBlur} onChange={handleChange}>
 											<option value="" label={Liferay.Language.get('select')} />
 
-											{selectedLFRVersion && selectedLFRVersion.envCS.map((envCS, index) => (
-												<option key={'envCS-' + index} id={'envCS-' + index} label={envCS.name} value={envCS.value} />
-											))}
+											{selectedLFRVersion && selectedLFRVersion.envCS.map(
+												(envCS, index) => (
+													<option key={'envCS-' + index} id={'envCS-' + index} label={envCS.name} value={envCS.value} />
+												)
+											)}
 										</select>
 									</div>
 
@@ -546,6 +582,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 						</div>
 					</form>
 				)}
+				validationSchema={validationSchema}
 			/>
 		);
 	}

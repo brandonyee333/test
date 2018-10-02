@@ -8,7 +8,6 @@ import Modal from './Modal';
 
 export default class AccountEnvironments extends React.Component {
 	state = {
-		namespace: null,
 		showModal: false
 	};
 
@@ -17,16 +16,6 @@ export default class AccountEnvironments extends React.Component {
 		environments: PropTypes.array.isRequired,
 		permitAdd: PropTypes.bool.isRequired,
 		environmentConfiguration: PropTypes.object.isRequired
-	};
-
-	componentDidMount() {
-		const {namespace} = window.AccountDetailsConstants;
-
-		this.setState(
-			{
-				namespace
-			}
-		);
 	};
 
 	handleCloseModal = () =>
@@ -57,7 +46,7 @@ export default class AccountEnvironments extends React.Component {
 			environmentConfiguration
 		} = this.props;
 
-		const {namespace, showModal} = this.state;
+		const {showModal} = this.state;
 
 		const accordionItems = environments.map((environment, index) => ({
 			body: (
@@ -138,7 +127,7 @@ export default class AccountEnvironments extends React.Component {
 			<AddAccountEnvironmentForm
 				addEnvironmentURL={addEnvironmentURL}
 				handleCloseModal={this.handleCloseModal}
-				namespace={namespace}
+				namespace={window.AccountDetailsConstants.namespace}
 				environmentConfiguration={environmentConfiguration}
 			/>
 		);
