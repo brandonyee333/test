@@ -31,6 +31,8 @@ export default class DynamicUploaderForm extends React.Component {
 			content: '',
 			type: ''
 		},
+		namespace: '',
+		resumable: {},
 		token: '',
 		toolbar: {
 			paused: false,
