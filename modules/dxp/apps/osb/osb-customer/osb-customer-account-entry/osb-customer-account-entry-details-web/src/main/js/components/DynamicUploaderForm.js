@@ -84,36 +84,37 @@ export default class DynamicUploaderForm extends React.Component {
 			resumable.on(
 				'fileAdded',
 				(file) => {
-					this.generateToken(resumable, file).then(
-						response => {
-							this.setState(
-								{
-									message: {
-										content: Liferay.Language.get('loading'),
-										type: 'pending'
-									},
-									token: response.data.token,
-									toolbar: {
-										visible: true
+					this.generateToken(resumable, file)
+						.then(
+							response => {
+								this.setState(
+									{
+										message: {
+											content: Liferay.Language.get('loading'),
+											type: 'pending'
+										},
+										token: response.data.token,
+										toolbar: {
+											visible: true
+										}
 									}
-								}
-							);
+								);
 
-							resumable.upload();
-						}
-					)
-					.catch(
-						err => {
-							this.setState(
-								{
-									message: {
-										content: err.message,
-										type: 'error'
+								resumable.upload();
+							}
+						)
+						.catch(
+							err => {
+								this.setState(
+									{
+										message: {
+											content: err.message,
+											type: 'error'
+										}
 									}
-								}
-							);
-						}
-					);
+								);
+							}
+						);
 				}
 			);
 
