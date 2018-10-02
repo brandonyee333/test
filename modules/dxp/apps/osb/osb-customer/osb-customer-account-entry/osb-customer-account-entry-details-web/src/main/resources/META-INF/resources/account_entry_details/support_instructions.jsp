@@ -33,8 +33,7 @@ String instructions = HtmlUtil.escapeJS(accountEntry.getInstructions());
 		{
 			accountEntryId: '<%= String.valueOf(accountEntryId) %>',
 			editInstructionsURL: '<%= editInstructionsURL %>',
-			instructions: '<%= instructions %>',
-			portletNamespace: '<portlet:namespace />'
+			instructions: '<%= instructions %>'
 		},
 		document.getElementById('<portlet:namespace />supportInstructions')
 	);

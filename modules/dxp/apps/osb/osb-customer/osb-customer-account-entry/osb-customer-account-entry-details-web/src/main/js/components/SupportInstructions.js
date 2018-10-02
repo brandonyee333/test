@@ -10,8 +10,7 @@ export default class SupportInstructions extends React.Component {
 	static propTypes = {
 		accountEntryId: PropTypes.string.isRequired,
 		editInstructionsURL: PropTypes.string.isRequired,
-		instructions: PropTypes.string.isRequired,
-		portletNamespace: PropTypes.string.isRequired
+		instructions: PropTypes.string.isRequired
 	};
 
 	state = {
@@ -41,8 +40,9 @@ export default class SupportInstructions extends React.Component {
 		);
 
 	render() {
-		const {accountEntryId, editInstructionsURL, portletNamespace} = this.props;
+		const {accountEntryId, editInstructionsURL} = this.props;
 		const {instructions, showModal} = this.state;
+		const {namespace} = window.AccountDetailsConstants;
 
 		const modalConfig = {
 			body: (
@@ -52,8 +52,8 @@ export default class SupportInstructions extends React.Component {
 			),
 			footer: (
 				<form action={editInstructionsURL} onSubmit={this.handleUpdate} method="post">
-					<input name={`${portletNamespace}accountEntryId`} type="hidden" value={accountEntryId} />
-					<input name={`${portletNamespace}instructions`} type="hidden" value={instructions} />
+					<input name={`${namespace}accountEntryId`} type="hidden" value={accountEntryId} />
+					<input name={`${namespace}instructions`} type="hidden" value={instructions} />
 
 					<div className="btn-row">
 						<Button
