@@ -14,7 +14,6 @@
 
 package com.liferay.lcs.messaging;
 
-import com.liferay.lcs.sigar.SigarNativeLoader;
 import com.liferay.lcs.task.scheduler.TaskSchedulerService;
 import com.liferay.lcs.util.LCSUtil;
 import com.liferay.lcs.util.PortletPropsValues;
@@ -23,7 +22,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.HotDeployMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
-import com.liferay.portal.kernel.util.OSDetector;
 
 /**
  * @author Igor Beslic
@@ -38,10 +36,6 @@ public class LCSLifecycleManager extends HotDeployMessageListener {
 
 	@Override
 	protected void onDeploy(Message message) throws Exception {
-		if (!OSDetector.isAIX()) {
-			SigarNativeLoader.load();
-		}
-
 		_taskSchedulerService.start();
 
 		if (_log.isInfoEnabled()) {
@@ -56,10 +50,6 @@ public class LCSLifecycleManager extends HotDeployMessageListener {
 		_taskSchedulerService.end();
 
 		LCSUtil.processLCSPortletState(LCSPortletState.PLUGIN_ABSENT);
-
-		if (!OSDetector.isAIX()) {
-			SigarNativeLoader.unload();
-		}
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
