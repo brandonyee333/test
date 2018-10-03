@@ -12,18 +12,10 @@
  * details.
  */
 
-package com.liferay.post.upgrade.fix.LPS_777842.osgi.command;
+package com.liferay.post.upgrade.fix.LPS_77842.osgi.commands;
 
-import com.liferay.portal.kernel.dao.db.DB;
-import com.liferay.portal.kernel.dao.db.DBManagerUtil;
-import com.liferay.portal.kernel.dao.db.DBType;
-import com.liferay.portal.kernel.dao.jdbc.DataAccess;
-import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.upgrade.v7_0_6.UpgradeRepository;
 import com.liferay.post.upgrade.fix.BasePostUpgradeFixOSGiCommands;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -46,34 +38,11 @@ public class PostUpgradeFixOSGiCommands extends BasePostUpgradeFixOSGiCommands {
 		execute();
 	}
 
-	protected void alterRepositoryTableNameColumn() throws SQLException {
-		StringBundler sb = new StringBundler(5);
-
-		sb.append("alter table ");
-		sb.append("repository");
-		sb.append(" modify ");
-		sb.append("name");
-
-		DB db = DBManagerUtil.getDB();
-
-		if (db.getDBType() == DBType.ORACLE) {
-			sb.append(" varchar(200 CHAR)");
-		}
-		else {
-			sb.append(" varchar(200)");
-		}
-
-		try (Connection connection = DataAccess.getConnection();
-				PreparedStatement ps = connection.prepareStatement(
-				sb.toString())) {
-
-			ps.execute();
-		}
-	}
-
 	@Override
 	protected void doExecute() throws Exception {
-		alterRepositoryTableNameColumn();
+		UpgradeRepository upgradeRepository = new UpgradeRepository();
+
+		upgradeRepository.upgrade();
 	}
 
 	@Override
