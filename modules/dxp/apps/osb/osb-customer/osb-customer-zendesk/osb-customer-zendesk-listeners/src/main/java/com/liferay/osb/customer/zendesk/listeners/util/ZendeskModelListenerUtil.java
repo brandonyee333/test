@@ -16,9 +16,7 @@ package com.liferay.osb.customer.zendesk.listeners.util;
 
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskLocales;
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
-import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.ProductEntry;
-import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.util.StringPool;
 
 import org.osgi.service.component.annotations.Component;
@@ -87,17 +85,6 @@ public class ZendeskModelListenerUtil {
 		else {
 			return StringPool.BLANK;
 		}
-	}
-
-	public static boolean hasActiveSupportOffering(AccountEntry accountEntry) {
-		if ((accountEntry.getStatus() ==
-				WorkflowConstants.STATUS_APPROVED) &&
-			accountEntry.hasActiveSupportOffering()) {
-
-			return true;
-		}
-
-		return false;
 	}
 
 }

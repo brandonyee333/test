@@ -14,21 +14,13 @@
 
 package com.liferay.osb.customer.zendesk.listeners;
 
-import com.liferay.osb.customer.zendesk.listeners.util.PartnerWorkerUtil;
-import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.PartnerEntry;
+import com.liferay.osb.customer.zendesk.listeners.synchronizer.PartnerWorkerSynchronizer;
 import com.liferay.osb.model.PartnerWorker;
 import com.liferay.osb.model.PartnerWorkerConstants;
 import com.liferay.portal.kernel.exception.ModelListenerException;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
-import com.liferay.portal.kernel.util.ArrayUtil;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -48,8 +40,7 @@ public class PartnerWorkerModelListener
 			if (partnerWorker.getRole() !=
 					PartnerWorkerConstants.ROLE_WATCHER) {
 
-				_partnerWorkerUtil.addPartnerWorker(
-					partnerWorker, getZendeskOrganizationIds(partnerWorker));
+				_partnerWorkerSynchronizer.add(partnerWorker);
 			}
 		}
 		catch (Exception e) {
@@ -65,8 +56,7 @@ public class PartnerWorkerModelListener
 			if (partnerWorker.getRole() !=
 					PartnerWorkerConstants.ROLE_WATCHER) {
 
-				_partnerWorkerUtil.removePartnerWorker(
-					partnerWorker, getZendeskOrganizationIds(partnerWorker));
+				_partnerWorkerSynchronizer.remove(partnerWorker);
 			}
 		}
 		catch (Exception e) {
@@ -82,39 +72,15 @@ public class PartnerWorkerModelListener
 			if (partnerWorker.getRole() !=
 					PartnerWorkerConstants.ROLE_WATCHER) {
 
-				_partnerWorkerUtil.addPartnerWorker(
-					partnerWorker, getZendeskOrganizationIds(partnerWorker));
+				_partnerWorkerSynchronizer.add(partnerWorker);
 			}
 			else {
-				_partnerWorkerUtil.removePartnerWorker(
-					partnerWorker, getZendeskOrganizationIds(partnerWorker));
+				_partnerWorkerSynchronizer.remove(partnerWorker);
 			}
 		}
 		catch (Exception e) {
 			throw new ModelListenerException(e);
 		}
-	}
-
-	protected long[] getZendeskOrganizationIds(PartnerWorker partnerWorker)
-		throws PortalException {
-
-		PartnerEntry partnerEntry = partnerWorker.getPartnerEntry();
-
-		List<AccountEntry> accountEntries = partnerEntry.getAccountEntries();
-
-		List<Long> zendeskOrganizationIds = new ArrayList<>();
-
-		for (AccountEntry accountEntry : accountEntries) {
-			long zendeskOrganizationId =
-				_zendeskMapperUtil.fetchZendeskOrganizationId(
-					accountEntry.getAccountEntryId());
-
-			if (zendeskOrganizationId != 0) {
-				zendeskOrganizationIds.add(zendeskOrganizationId);
-			}
-		}
-
-		return ArrayUtil.toLongArray(zendeskOrganizationIds);
 	}
 
 	@Reference(
@@ -126,9 +92,6 @@ public class PartnerWorkerModelListener
 	}
 
 	@Reference
-	private PartnerWorkerUtil _partnerWorkerUtil;
-
-	@Reference
-	private ZendeskMapperUtil _zendeskMapperUtil;
+	private PartnerWorkerSynchronizer _partnerWorkerSynchronizer;
 
 }
