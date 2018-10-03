@@ -53,3 +53,9 @@ DownloadsDisplayContext downloadsDisplayContext = new DownloadsDisplayContext(re
 
 JournalConverter journalConverter = (JournalConverter)renderRequest.getAttribute(JournalConverter.class.getName());
 %>
+
+<aui:script>
+	window.DownloadsConstants = {
+		namespace: '${renderResponse.namespace}'
+	};
+</aui:script>
