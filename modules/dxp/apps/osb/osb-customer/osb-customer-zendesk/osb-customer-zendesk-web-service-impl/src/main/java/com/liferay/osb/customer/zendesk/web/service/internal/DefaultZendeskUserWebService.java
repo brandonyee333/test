@@ -14,18 +14,17 @@
 
 package com.liferay.osb.customer.zendesk.web.service.internal;
 
-import com.liferay.osb.customer.rabbitmq.connector.publisher.MessagePublisher;
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints;
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
-import com.liferay.osb.customer.zendesk.web.service.configuration.ZendeskConnectorConfigurationValues;
+import com.liferay.osb.customer.zendesk.web.service.internal.util.MessagePublisherUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,33 +46,24 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 	}
 
 	public ZendeskUser createOrUpdateZendeskUser(
-			String email, String externalId, String locale, String name,
+			String externalId, String email, String locale, String name,
 			String organizationName, Set<String> tags)
 		throws PortalException {
 
-		try {
-			ZendeskUser zendeskUser = getZendeskUser(
-				email, externalId, locale, name, organizationName, tags);
+		String endpoint =
+			ZendeskRESTEndpoints.URL_API_V2 +
+				ZendeskRESTEndpoints.USERS_CREATE_OR_UPDATE;
 
-			String endpoint =
-				ZendeskRESTEndpoints.URL_API_V2 +
-					ZendeskRESTEndpoints.USERS_CREATE_OR_UPDATE;
+		JSONObject jsonObject = getZendeskUserJSONObject(
+			email, externalId, locale, name, organizationName, tags);
 
-			JSONObject zendeskUserJSONObject = zendeskUser.toJSONObject();
+		JSONObject responseJSONObject = _zendeskBaseWebService.post(
+			endpoint, jsonObject.toString());
 
-			JSONObject responseJSONObject = _zendeskBaseWebService.post(
-				endpoint, zendeskUserJSONObject.toString());
+		_messagePublisherUtil.sendEventNotification(
+			"zendesk.user.create.or.update", responseJSONObject);
 
-			_messagePublisher.sendMessage(
-				ZendeskConnectorConfigurationValues.
-					OSB_RABBITMQ_MESSAGE_EXCHANGE_NAME,
-				"zendesk.user.create.or.update", responseJSONObject);
-
-			return _translate(responseJSONObject);
-		}
-		catch (Exception e) {
-			throw new PortalException(e);
-		}
+		return toZendeskUser(responseJSONObject);
 	}
 
 	public void createZendeskUserOrganizationMemberships(
@@ -99,12 +89,12 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 	public Map<Long, Long> getOrganizationMemberships(long zendeskUserId)
 		throws PortalException {
 
-		String getEndpoint =
+		String endpoint =
 			ZendeskRESTEndpoints.URL_API_V2 + "users/" + zendeskUserId +
 				"/organization_memberships.json";
 
 		JSONObject organizationMembershipsJSONObject =
-			_zendeskBaseWebService.get(getEndpoint, StringPool.BLANK);
+			_zendeskBaseWebService.get(endpoint, StringPool.BLANK);
 
 		Map<Long, Long> organizationMembershipMap = new HashMap<>();
 
@@ -126,12 +116,12 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 		return organizationMembershipMap;
 	}
 
-	public ZendeskUser getZendeskUser(long userId) throws PortalException {
-		User user = _userLocalService.getUser(userId);
+	public ZendeskUser getZendeskUser(String externalId)
+		throws PortalException {
 
 		Map<String, String> parameters = new HashMap<>();
 
-		parameters.put("external_id", user.getUuid());
+		parameters.put("external_id", externalId);
 
 		JSONObject responseJSONObject = _zendeskBaseWebService.get(
 			ZendeskRESTEndpoints.URL_API_V2 + "users/search.json", parameters);
@@ -142,36 +132,57 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 			return null;
 		}
 
-		return _translate(usersJSONArray.getJSONObject(0));
+		return toZendeskUser(usersJSONArray.getJSONObject(0));
 	}
 
-	public ZendeskUser getZendeskUser(
-		String email, String externalId, String locale, String name,
+	protected JSONObject getZendeskUserJSONObject(
+		String externalId, String email, String locale, String name,
 		String organizationName, Set<String> tags) {
 
-		ZendeskUser zendeskUser = new ZendeskUser();
+		JSONObject userJSONObject = JSONFactoryUtil.createJSONObject();
 
-		zendeskUser.setEmail(email);
-		zendeskUser.setExternalId(externalId);
-		zendeskUser.setLocale(locale);
-		zendeskUser.setName(name);
-		zendeskUser.setOrganizationName(organizationName);
+		userJSONObject.put("name", name);
 
-		if ((tags != null) && !tags.isEmpty()) {
-			zendeskUser.setTags(tags);
+		if (Validator.isNotNull(email)) {
+			userJSONObject.put("email", email);
 		}
 
-		return zendeskUser;
+		if (Validator.isNotNull(externalId)) {
+			userJSONObject.put("external_id", externalId);
+		}
+
+		if (Validator.isNotNull(locale)) {
+			userJSONObject.put("locale", locale);
+		}
+
+		JSONObject organizationJSONObject = JSONFactoryUtil.createJSONObject();
+
+		organizationJSONObject.put("name", organizationName);
+
+		userJSONObject.put("organization", organizationJSONObject);
+
+		JSONArray tagsJSONArray = JSONFactoryUtil.createJSONArray();
+
+		if ((tags != null) && !tags.isEmpty()) {
+			for (String tag : tags) {
+				tagsJSONArray.put(tag);
+			}
+
+			userJSONObject.put("tags", tagsJSONArray);
+		}
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("user", userJSONObject);
+
+		return jsonObject;
 	}
 
 	@Reference(unbind = "-")
-	protected void setMessagePublisher(MessagePublisher messagePublisher) {
-		_messagePublisher = messagePublisher;
-	}
+	protected void setMessagePublisherUtil(
+		MessagePublisherUtil messagePublisherUtil) {
 
-	@Reference(unbind = "-")
-	protected void setUserLocalService(UserLocalService userLocalService) {
-		_userLocalService = userLocalService;
+		_messagePublisherUtil = messagePublisherUtil;
 	}
 
 	@Reference(unbind = "-")
@@ -181,7 +192,7 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 		_zendeskBaseWebService = zendeskBaseWebService;
 	}
 
-	private ZendeskUser _translate(JSONObject jsonObject) {
+	protected ZendeskUser toZendeskUser(JSONObject jsonObject) {
 		ZendeskUser zendeskUser = new ZendeskUser();
 
 		zendeskUser.setEmail(jsonObject.getString("email"));
@@ -193,8 +204,7 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 		return zendeskUser;
 	}
 
-	private static MessagePublisher _messagePublisher;
-	private static UserLocalService _userLocalService;
-	private static ZendeskBaseWebService _zendeskBaseWebService;
+	private MessagePublisherUtil _messagePublisherUtil;
+	private ZendeskBaseWebService _zendeskBaseWebService;
 
 }

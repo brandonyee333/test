@@ -229,8 +229,9 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 				partnerEntryCode, supportLevelLabel,
 				accountEntry.getStatusLabel(),
 				AccountEntryConstants.getLanguageLabel(languageIds[0]),
-				supportRegion.getName(), getTags(accountEntry),
-				AccountEntryConstants.getTierLabel(accountEntry.getTier()));
+				supportRegion.getName(),
+				AccountEntryConstants.getTierLabel(accountEntry.getTier()),
+				getTags(accountEntry));
 		}
 		catch (Exception e) {
 			throw new PortalException(e);

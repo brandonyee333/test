@@ -16,22 +16,12 @@ package com.liferay.osb.customer.zendesk.listeners.util;
 
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskLocales;
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
-import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.util.WorkflowConstants;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.util.StringPool;
 
-import java.util.Set;
-
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Kyle Bischof
@@ -99,55 +89,6 @@ public class ZendeskModelListenerUtil {
 		}
 	}
 
-	public static JSONObject getTagsJSONObject(
-		Set<String> tags, String resource, long id) {
-
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-		jsonObject.put("id", id);
-		jsonObject.put("resource", resource);
-
-		JSONObject tagsJSONObject = JSONFactoryUtil.createJSONObject();
-
-		JSONArray tagsJSONArray = JSONFactoryUtil.createJSONArray();
-
-		for (String tag : tags) {
-			tagsJSONArray.put(tag);
-		}
-
-		tagsJSONObject.put("tags", tagsJSONArray);
-
-		jsonObject.put("tagsArray", tagsJSONObject);
-
-		return jsonObject;
-	}
-
-	public static ZendeskUser getZendeskUser(
-			AccountEntry accountEntry, Set<String> tags, User user)
-		throws PortalException {
-
-		ZendeskUser zendeskUser = new ZendeskUser();
-
-		zendeskUser.setEmail(user.getEmailAddress());
-		zendeskUser.setExternalId(user.getUuid());
-
-		String locale = convertToZendeskLocale(user.getLanguageId());
-
-		zendeskUser.setLocale(locale);
-
-		zendeskUser.setName(user.getFullName());
-
-		if (accountEntry != null) {
-			zendeskUser.setOrganizationName(accountEntry.getName());
-		}
-
-		if ((tags != null) && !tags.isEmpty()) {
-			zendeskUser.setTags(tags);
-		}
-
-		return zendeskUser;
-	}
-
 	public static boolean hasActiveSupportOffering(AccountEntry accountEntry) {
 		if ((accountEntry.getStatus() ==
 				WorkflowConstants.STATUS_APPROVED) &&
@@ -157,14 +98,6 @@ public class ZendeskModelListenerUtil {
 		}
 
 		return false;
-	}
-
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
 }

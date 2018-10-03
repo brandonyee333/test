@@ -14,11 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.model;
 
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.util.Validator;
-
 import java.util.Set;
 
 /**
@@ -131,77 +126,6 @@ public class ZendeskOrganization {
 
 	public void setZendeskOrganizationId(long zendeskOrganizationId) {
 		_zendeskOrganizationId = zendeskOrganizationId;
-	}
-
-	public JSONObject toJSONObject() {
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-		JSONObject organizationJSONObject = JSONFactoryUtil.createJSONObject();
-
-		organizationJSONObject.put("name", _name);
-
-		if (Validator.isNotNull(_externalId)) {
-			organizationJSONObject.put("external_id", _externalId);
-		}
-
-		if (Validator.isNotNull(_sharedTickets)) {
-			organizationJSONObject.put("shared_tickets", _sharedTickets);
-		}
-
-		if (Validator.isNotNull(_sharedComments)) {
-			organizationJSONObject.put("shared_comments", _sharedComments);
-		}
-
-		JSONObject organizationFieldsJSONObject =
-			JSONFactoryUtil.createJSONObject();
-
-		if (Validator.isNotNull(_partnerFirstLineSupport)) {
-			organizationFieldsJSONObject.put(
-				"partner_first_line_support", _partnerFirstLineSupport);
-		}
-
-		if (Validator.isNotNull(_partnerOrganization)) {
-			organizationFieldsJSONObject.put(
-				"partner_organization", _partnerOrganization);
-		}
-
-		if (Validator.isNotNull(_sla)) {
-			organizationFieldsJSONObject.put("sla", _sla);
-		}
-
-		if (Validator.isNotNull(_status)) {
-			organizationFieldsJSONObject.put("status", _status);
-		}
-
-		if (Validator.isNotNull(_supportLanguage)) {
-			organizationFieldsJSONObject.put(
-				"support_language", _supportLanguage);
-		}
-
-		if (Validator.isNotNull(_supportRegion)) {
-			organizationFieldsJSONObject.put("support_region", _supportRegion);
-		}
-
-		if (Validator.isNotNull(_tier)) {
-			organizationFieldsJSONObject.put("tier", _tier);
-		}
-
-		organizationJSONObject.put(
-			"organization_fields", organizationFieldsJSONObject);
-
-		JSONArray tagsJSONArray = JSONFactoryUtil.createJSONArray();
-
-		if (_tags != null) {
-			for (String tag : _tags) {
-				tagsJSONArray.put(tag);
-			}
-
-			organizationJSONObject.put("tags", tagsJSONArray);
-		}
-
-		jsonObject.put("organization", organizationJSONObject);
-
-		return jsonObject;
 	}
 
 	private String _externalId;

@@ -21,14 +21,14 @@ import com.liferay.portal.kernel.util.GetterUtil;
  */
 public class ZendeskConnectorConfigurationValues {
 
-	public static final String OSB_RABBITMQ_MESSAGE_EXCHANGE_NAME =
+	public static final String ZENDESK_EVENT_RABBITMQ_EXCHANGE_NAME =
 		GetterUtil.getString(
 			ZendeskConnectorConfigurationUtil.get(
-				"osb.rabbitmq.message.exchange.name"));
+				"zendesk.event.rabbitmq.exchange.name"));
 
-	public static final String ZENDESK_RABBITMQ_MESSAGE_EXCHANGE_NAME =
+	public static final String ZENDESK_SERVICE_RABBITMQ_EXCHANGE_NAME =
 		GetterUtil.getString(
 			ZendeskConnectorConfigurationUtil.get(
-				"zendesk.rabbitmq.message.exchange.name"));
+				"zendesk.service.rabbitmq.exchange.name"));
 
 }

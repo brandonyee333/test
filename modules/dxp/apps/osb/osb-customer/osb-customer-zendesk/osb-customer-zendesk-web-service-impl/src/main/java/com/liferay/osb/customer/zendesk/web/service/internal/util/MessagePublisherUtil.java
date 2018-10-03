@@ -12,46 +12,52 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.rabbitmq.processors;
+package com.liferay.osb.customer.zendesk.web.service.internal.util;
 
 import com.liferay.osb.customer.rabbitmq.connector.publisher.MessagePublisher;
-import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskRequest;
-import com.liferay.osb.customer.zendesk.rabbitmq.configuration.ZendeskConnectorConfigurationValues;
+import com.liferay.osb.customer.zendesk.web.service.configuration.ZendeskConnectorConfigurationValues;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * @author Kyle Bischof
+ * @author Amos Fong
  */
-@Component(
-	immediate = true, property = "routing.key=zendesk.service",
-	service = ZendeskWebServiceMessageProcessor.class
-)
-public class ZendeskWebServiceMessageProcessor extends BaseMessageProcessor {
+@Component(immediate = true, service = MessagePublisherUtil.class)
+public class MessagePublisherUtil {
 
-	protected void doProcess(JSONObject jsonObject) throws Exception {
-		ZendeskRequest zendeskRequest = ZendeskRequest.getInstance(jsonObject);
+	public void sendAsyncZendeskRequest(ZendeskRequest zendeskRequest)
+		throws PortalException {
 
-		JSONObject responseJSONObject = _zendeskBaseWebService.send(
-			zendeskRequest);
+		try {
+			_messagePublisher.sendMessage(
+				ZendeskConnectorConfigurationValues.
+					ZENDESK_SERVICE_RABBITMQ_EXCHANGE_NAME,
+				"zendesk.service", zendeskRequest.toJSONObject());
+		}
+		catch (Exception e) {
+			throw new PortalException(e);
+		}
+	}
 
-		handleResponseErrors(responseJSONObject);
+	public void sendEventNotification(String routingKey, JSONObject jsonObject)
+		throws PortalException {
 
-		if (zendeskRequest.hasResponseRoutingKey()) {
+		try {
 			_messagePublisher.sendMessage(
 				ZendeskConnectorConfigurationValues.
 					ZENDESK_EVENT_RABBITMQ_EXCHANGE_NAME,
-				zendeskRequest.getResponseRoutingKey(), responseJSONObject);
+				routingKey, jsonObject);
+		}
+		catch (Exception e) {
+			throw new PortalException(e);
 		}
 	}
 
 	@Reference
 	private MessagePublisher _messagePublisher;
-
-	@Reference
-	private ZendeskBaseWebService _zendeskBaseWebService;
 
 }

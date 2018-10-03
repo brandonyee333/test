@@ -20,7 +20,9 @@ import com.liferay.osb.customer.zendesk.model.ZendeskOrganization;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationWebService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,19 +41,19 @@ public class DefaultZendeskOrganizationWebService
 	public void createOrUpdateZendeskOrganization(
 			String externalId, String name, String partnerFirstLineSupport,
 			String partnerCode, String sla, String status,
-			String supportLanguage, String supportRegion, Set<String> tags,
-			String tier)
+			String supportLanguage, String supportRegion, String tier,
+			Set<String> tags)
 		throws PortalException {
 
 		throw new UnsupportedOperationException();
 	}
 
-	public ZendeskOrganization getZendeskOrganization(long accountEntryId)
+	public ZendeskOrganization getZendeskOrganization(String externalId)
 		throws PortalException {
 
 		Map<String, String> parameters = new HashMap<>();
 
-		parameters.put("external_id", String.valueOf(accountEntryId));
+		parameters.put("external_id", externalId);
 
 		JSONObject responseJSONObject = _zendeskBaseWebService.get(
 			ZendeskRESTEndpoints.URL_API_V2 + "organizations/search.json",
@@ -64,30 +66,75 @@ public class DefaultZendeskOrganizationWebService
 			return null;
 		}
 
-		return _translate(organizationsJSONArray.getJSONObject(0));
+		return toZendeskOrganization(organizationsJSONArray.getJSONObject(0));
 	}
 
-	public ZendeskOrganization getZendeskOrganization(
+	protected JSONObject getZendeskOrganizationJSONObject(
 		String externalId, String name, String partnerFirstLineSupport,
-		String partnerCode, String sla, String status, String supportLanguage,
-		String supportRegion, Set<String> tags, String tier) {
+		String partnerOrganization, String sla, String status,
+		String supportLanguage, String supportRegion, String tier,
+		Set<String> tags) {
 
-		ZendeskOrganization zendeskOrganization = new ZendeskOrganization();
+		JSONObject organizationJSONObject = JSONFactoryUtil.createJSONObject();
 
-		zendeskOrganization.setExternalId(externalId);
-		zendeskOrganization.setName(name);
-		zendeskOrganization.setPartnerFirstLineSupport(partnerFirstLineSupport);
-		zendeskOrganization.setPartnerOrganization(partnerCode);
-		zendeskOrganization.setSharedComments(Boolean.TRUE.toString());
-		zendeskOrganization.setSharedTickets(Boolean.TRUE.toString());
-		zendeskOrganization.setSLA(sla);
-		zendeskOrganization.setStatus(status);
-		zendeskOrganization.setSupportLanguage(supportLanguage);
-		zendeskOrganization.setSupportRegion(supportRegion);
-		zendeskOrganization.setTags(tags);
-		zendeskOrganization.setTier(tier);
+		organizationJSONObject.put("external_id", externalId);
+		organizationJSONObject.put("name", name);
 
-		return zendeskOrganization;
+		JSONObject organizationFieldsJSONObject =
+			JSONFactoryUtil.createJSONObject();
+
+		if (Validator.isNotNull(partnerFirstLineSupport)) {
+			organizationFieldsJSONObject.put(
+				"partner_first_line_support", partnerFirstLineSupport);
+		}
+
+		if (Validator.isNotNull(partnerOrganization)) {
+			organizationFieldsJSONObject.put(
+				"partner_organization", partnerOrganization);
+		}
+
+		if (Validator.isNotNull(sla)) {
+			organizationFieldsJSONObject.put("sla", sla);
+		}
+
+		if (Validator.isNotNull(status)) {
+			organizationFieldsJSONObject.put("status", status);
+		}
+
+		if (Validator.isNotNull(supportLanguage)) {
+			organizationFieldsJSONObject.put(
+				"support_language", supportLanguage);
+		}
+
+		if (Validator.isNotNull(supportRegion)) {
+			organizationFieldsJSONObject.put("support_region", supportRegion);
+		}
+
+		if (Validator.isNotNull(tier)) {
+			organizationFieldsJSONObject.put("tier", tier);
+		}
+
+		organizationJSONObject.put(
+			"organization_fields", organizationFieldsJSONObject);
+
+		organizationJSONObject.put("shared_comments", Boolean.TRUE.toString());
+		organizationJSONObject.put("shared_tickets", Boolean.TRUE.toString());
+
+		JSONArray tagsJSONArray = JSONFactoryUtil.createJSONArray();
+
+		if ((tags != null) && tags.isEmpty()) {
+			for (String tag : tags) {
+				tagsJSONArray.put(tag);
+			}
+
+			organizationJSONObject.put("tags", tagsJSONArray);
+		}
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("organization", organizationJSONObject);
+
+		return jsonObject;
 	}
 
 	@Reference(unbind = "-")
@@ -97,7 +144,7 @@ public class DefaultZendeskOrganizationWebService
 		_zendeskBaseWebService = zendeskBaseWebService;
 	}
 
-	private ZendeskOrganization _translate(JSONObject jsonObject) {
+	protected ZendeskOrganization toZendeskOrganization(JSONObject jsonObject) {
 		ZendeskOrganization zendeskOrganization = new ZendeskOrganization();
 
 		zendeskOrganization.setZendeskOrganizationId(jsonObject.getLong("id"));
@@ -106,6 +153,6 @@ public class DefaultZendeskOrganizationWebService
 		return zendeskOrganization;
 	}
 
-	private static ZendeskBaseWebService _zendeskBaseWebService;
+	private ZendeskBaseWebService _zendeskBaseWebService;
 
 }

@@ -21,9 +21,9 @@ import com.liferay.portal.kernel.util.GetterUtil;
  */
 public class ZendeskConnectorConfigurationValues {
 
-	public static final String RABBITMQ_MESSAGE_EXCHANGE_NAME =
+	public static final String ZENDESK_EVENT_RABBITMQ_EXCHANGE_NAME =
 		GetterUtil.getString(
 			ZendeskConnectorConfigurationUtil.get(
-				"rabbitmq.message.exchange.name"));
+				"zendesk.event.rabbitmq.exchange.name"));
 
 }

@@ -42,14 +42,14 @@ public class DefaultZendeskTicketWebService implements ZendeskTicketWebService {
 					".json",
 				StringPool.BLANK);
 
-			return _translate(responseJSONObject.getJSONObject("ticket"));
+			return toZendeskTicket(responseJSONObject.getJSONObject("ticket"));
 		}
 		catch (NoSuchModelException nsme) {
 			throw new NoSuchZendeskTicketException(nsme);
 		}
 	}
 
-	private ZendeskTicket _translate(JSONObject jsonObject) {
+	protected ZendeskTicket toZendeskTicket(JSONObject jsonObject) {
 		ZendeskTicket zendeskTicket = new ZendeskTicket();
 
 		zendeskTicket.setDescription(jsonObject.getString("description"));

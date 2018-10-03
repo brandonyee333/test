@@ -17,6 +17,9 @@ package com.liferay.osb.customer.zendesk.connector.service;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.Validator;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * @author Kyle Bischof
@@ -24,20 +27,38 @@ import com.liferay.portal.kernel.util.Validator;
 public class ZendeskRequest {
 
 	public static ZendeskRequest getInstance(JSONObject jsonObject) {
+		Map<String, String> parameters = null;
+
+		JSONObject parametersJSONObject = jsonObject.getJSONObject(
+			_FIELD_PARAMETERS);
+
+		if (parametersJSONObject != null) {
+			parameters = new HashMap<String, String>();
+
+			Iterator<String> keys = parametersJSONObject.keys();
+
+			while (keys.hasNext()) {
+				String key = keys.next();
+
+				parameters.put(key, parametersJSONObject.getString(key));
+			}
+		}
+
 		return new ZendeskRequest(
 			jsonObject.getString("_FIELD_ENDPOINT"),
-			jsonObject.getString("_FIELD_METHOD"),
-			jsonObject.getJSONObject("_FIELD_PAYLOAD"),
+			jsonObject.getString("_FIELD_METHOD"), parameters,
+			jsonObject.getJSONObject("_FIELD_BODY"),
 			jsonObject.getString("_FIELD_RESPONSE_ROUTING_KEY"));
 	}
 
 	public ZendeskRequest(
-		String endpoint, String method, JSONObject payload,
-		String responseRoutingKey) {
+		String endpoint, String method, Map<String, String> parameters,
+		JSONObject body, String responseRoutingKey) {
 
 		_endpoint = endpoint;
 		_method = method;
-		_payload = payload;
+		_parameters = parameters;
+		_body = body;
 		_responseRoutingKey = responseRoutingKey;
 	}
 
@@ -49,12 +70,25 @@ public class ZendeskRequest {
 		return _method;
 	}
 
-	public JSONObject getPayload() {
-		return _payload;
+	public JSONObject getBody() {
+		return _body;
+	}
+
+	public Map<String, String> getParameters() {
+		return _parameters;
 	}
 
 	public String getResponseRoutingKey() {
 		return _responseRoutingKey;
+	}
+
+	public boolean hasParameters() {
+		if ((_parameters != null) && !_parameters.isEmpty()) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	public boolean hasResponseRoutingKey() {
@@ -71,9 +105,22 @@ public class ZendeskRequest {
 
 		jsonObject.put(_FIELD_ENDPOINT, _endpoint);
 		jsonObject.put(_FIELD_METHOD, _method);
-		jsonObject.put(_FIELD_PAYLOAD, _payload);
 
-		if (Validator.isNotNull(_responseRoutingKey)) {
+		if (hasParameters()) {
+			JSONObject parametersJSONObject = JSONFactoryUtil.createJSONObject();
+
+			for (Map.Entry<String, String> entry : _parameters.entrySet()) {
+				parametersJSONObject.put(entry.getKey(), entry.getValue());
+			}
+
+			jsonObject.put(_FIELD_PARAMETERS, parametersJSONObject);
+		}
+
+		if (Validator.isNotNull(_body)) {
+			jsonObject.put(_FIELD_BODY, _body);
+		}
+
+		if (hasResponseRoutingKey()) {
 			jsonObject.put(_FIELD_RESPONSE_ROUTING_KEY, _responseRoutingKey);
 		}
 
@@ -82,16 +129,19 @@ public class ZendeskRequest {
 
 	private static final String _FIELD_ENDPOINT = "endpoint";
 
+	private static final String _FIELD_PARAMETERS = "parameters";
+
 	private static final String _FIELD_METHOD = "method";
 
-	private static final String _FIELD_PAYLOAD = "payload";
+	private static final String _FIELD_BODY = "body";
 
 	private static final String _FIELD_RESPONSE_ROUTING_KEY =
 		"responseRoutingKey";
 
+	private final Map<String, String> _parameters;
 	private final String _endpoint;
 	private final String _method;
-	private final JSONObject _payload;
+	private final JSONObject _body;
 	private final String _responseRoutingKey;
 
 }

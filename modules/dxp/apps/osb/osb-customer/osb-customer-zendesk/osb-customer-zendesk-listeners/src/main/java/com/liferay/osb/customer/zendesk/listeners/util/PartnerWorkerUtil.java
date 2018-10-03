@@ -61,7 +61,7 @@ public class PartnerWorkerUtil {
 			if (zendeskUserId == 0) {
 				ZendeskUser zendeskUser =
 					_zendeskUserWebService.createOrUpdateZendeskUser(
-						user.getEmailAddress(), user.getUuid(), locale,
+						user.getUuid(), user.getEmailAddress(), locale,
 						user.getFullName(), null, tags);
 
 				zendeskUserId = zendeskUser.getZendeskUserId();

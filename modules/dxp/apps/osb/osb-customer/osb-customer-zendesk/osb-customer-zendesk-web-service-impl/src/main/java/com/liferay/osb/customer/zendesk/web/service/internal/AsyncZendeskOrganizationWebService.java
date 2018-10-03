@@ -14,13 +14,12 @@
 
 package com.liferay.osb.customer.zendesk.web.service.internal;
 
-import com.liferay.osb.customer.rabbitmq.connector.publisher.MessagePublisher;
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints;
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskRequest;
-import com.liferay.osb.customer.zendesk.model.ZendeskOrganization;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationWebService;
-import com.liferay.osb.customer.zendesk.web.service.configuration.ZendeskConnectorConfigurationValues;
+import com.liferay.osb.customer.zendesk.web.service.internal.util.MessagePublisherUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONObject;
 
 import java.util.Set;
 
@@ -41,35 +40,28 @@ public class AsyncZendeskOrganizationWebService
 	@Override
 	public void createOrUpdateZendeskOrganization(
 			String externalId, String name, String partnerFirstLineSupport,
-			String partnerCode, String sla, String status,
-			String supportLanguage, String supportRegion, Set<String> tags,
-			String tier)
+			String partnerOrganization, String sla, String status,
+			String supportLanguage, String supportRegion, String tier,
+			Set<String> tags)
 		throws PortalException {
 
-		try {
-			ZendeskOrganization zendeskOrganization = getZendeskOrganization(
-				externalId, name, partnerFirstLineSupport, partnerCode, sla,
-				status, supportLanguage, supportRegion, tags, tier);
+		String endpoint =
+			ZendeskRESTEndpoints.URL_API_V2 +
+				ZendeskRESTEndpoints.ORGANIZATIONS_CREATE_OR_UPDATE;
 
-			String endpoint =
-				ZendeskRESTEndpoints.URL_API_V2 +
-					ZendeskRESTEndpoints.ORGANIZATIONS_CREATE_OR_UPDATE;
+		JSONObject zendeskOrganizationJSONObject =
+			getZendeskOrganizationJSONObject(
+				externalId, name, partnerFirstLineSupport, partnerOrganization,
+				sla, status, supportLanguage, supportRegion, tier, tags);
 
-			ZendeskRequest zendeskRequest = new ZendeskRequest(
-				endpoint, "post", zendeskOrganization.toJSONObject(),
-				"zendesk.organization.create");
+		ZendeskRequest zendeskRequest = new ZendeskRequest(
+			endpoint, "post", null, zendeskOrganizationJSONObject,
+			"zendesk.organization.create");
 
-			_messagePublisher.sendMessage(
-				ZendeskConnectorConfigurationValues.
-					ZENDESK_RABBITMQ_MESSAGE_EXCHANGE_NAME,
-				"zendesk.service", zendeskRequest.toJSONObject());
-		}
-		catch (Exception e) {
-			throw new PortalException(e);
-		}
+		_messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
 	}
 
 	@Reference
-	private MessagePublisher _messagePublisher;
+	private MessagePublisherUtil _messagePublisherUtil;
 
 }

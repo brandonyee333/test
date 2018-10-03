@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 
 import java.util.List;
@@ -61,7 +62,7 @@ public class ZendeskMapperUtil {
 
 		ZendeskOrganization zendeskOrganization =
 			_zendeskOrganizationWebService.getZendeskOrganization(
-				accountEntryId);
+				String.valueOf(accountEntryId));
 
 		if (zendeskOrganization == null) {
 			return 0;
@@ -87,7 +88,10 @@ public class ZendeskMapperUtil {
 			return GetterUtil.getLong(externalIdMapper.getExternalId());
 		}
 
-		ZendeskUser zendeskUser = _zendeskUserWebService.getZendeskUser(userId);
+		User user = _userLocalService.getUser(userId);
+
+		ZendeskUser zendeskUser = _zendeskUserWebService.getZendeskUser(
+			user.getUuid());
 
 		if (zendeskUser == null) {
 			return 0;
@@ -133,7 +137,10 @@ public class ZendeskMapperUtil {
 			return GetterUtil.getLong(externalIdMapper.getExternalId());
 		}
 
-		ZendeskUser zendeskUser = _zendeskUserWebService.getZendeskUser(userId);
+		User user = _userLocalService.getUser(userId);
+
+		ZendeskUser zendeskUser = _zendeskUserWebService.getZendeskUser(
+			user.getUuid());
 
 		if (zendeskUser == null) {
 			throw new NoSuchZendeskUserException();
@@ -156,6 +163,9 @@ public class ZendeskMapperUtil {
 
 	@Reference
 	private ClassNameLocalService _classNameLocalService;
+
+	@Reference
+	private UserLocalService _userLocalService;
 
 	@Reference
 	private ZendeskOrganizationWebService _zendeskOrganizationWebService;

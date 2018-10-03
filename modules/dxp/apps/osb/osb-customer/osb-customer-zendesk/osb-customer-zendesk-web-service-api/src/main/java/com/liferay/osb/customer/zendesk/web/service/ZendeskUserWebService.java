@@ -32,7 +32,7 @@ public interface ZendeskUserWebService {
 		throws PortalException;
 
 	public ZendeskUser createOrUpdateZendeskUser(
-			String email, String externalId, String locale, String name,
+			String externalId, String email, String locale, String name,
 			String organizationName, Set<String> tags)
 		throws PortalException;
 
@@ -50,10 +50,6 @@ public interface ZendeskUserWebService {
 	public Map<Long, Long> getOrganizationMemberships(long zendeskUserId)
 		throws PortalException;
 
-	public ZendeskUser getZendeskUser(long userId) throws PortalException;
-
-	public ZendeskUser getZendeskUser(
-		String email, String externalId, String locale, String name,
-		String organizationName, Set<String> tags);
+	public ZendeskUser getZendeskUser(String externalId) throws PortalException;
 
 }

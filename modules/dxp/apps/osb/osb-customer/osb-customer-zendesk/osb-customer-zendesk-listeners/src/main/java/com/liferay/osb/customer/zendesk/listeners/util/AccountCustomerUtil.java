@@ -57,14 +57,14 @@ public class AccountCustomerUtil {
 
 			if (zendeskUserId != 0) {
 				_zendeskUserWebService.createOrUpdateZendeskUser(
-					user.getEmailAddress(), user.getUuid(), locale,
+					user.getUuid(), user.getEmailAddress(), locale,
 					user.getFullName(), accountEntry.getName(), null);
 
 				_zendeskUserWebService.addZendeskUserTags(zendeskUserId, tags);
 			}
 			else {
 				_zendeskUserWebService.createOrUpdateZendeskUser(
-					user.getEmailAddress(), user.getUuid(), locale,
+					user.getUuid(), user.getEmailAddress(), locale,
 					user.getFullName(), accountEntry.getName(), tags);
 			}
 		}

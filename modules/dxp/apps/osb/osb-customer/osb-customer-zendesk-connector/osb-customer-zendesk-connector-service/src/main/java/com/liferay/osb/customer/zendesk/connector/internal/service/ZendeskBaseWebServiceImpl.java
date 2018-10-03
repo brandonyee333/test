@@ -36,7 +36,6 @@ import com.liferay.portal.kernel.util.StringPool;
 import java.nio.charset.StandardCharsets;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -269,39 +268,26 @@ public class ZendeskBaseWebServiceImpl
 		throws PortalException {
 
 		String method = zendeskRequest.getMethod();
-		JSONObject payload = zendeskRequest.getPayload();
+		JSONObject body = zendeskRequest.getBody();
 
 		if (method.equals("post")) {
-			return post(zendeskRequest.getEndpoint(), payload.toString());
+			return post(zendeskRequest.getEndpoint(), body.toString());
 		}
 		else if (method.equals("put")) {
-			return put(zendeskRequest.getEndpoint(), payload.toString());
+			return put(zendeskRequest.getEndpoint(), body.toString());
 		}
 		else if (method.equals("delete")) {
-			if (payload.has("parameters")) {
-				Map<String, String> parameters = new HashMap<>();
-
-				JSONObject parametersJSONObject = payload.getJSONObject(
-					"parameters");
-
-				Iterator<String> keys = parametersJSONObject.keys();
-
-				while (keys.hasNext()) {
-					String key = keys.next();
-
-					String value = parametersJSONObject.getString(key);
-
-					parameters.put(key, value);
-				}
-
-				return delete(zendeskRequest.getEndpoint(), parameters);
+			if (zendeskRequest.hasParameters()) {
+				return delete(
+					zendeskRequest.getEndpoint(),
+					zendeskRequest.getParameters());
 			}
 			else {
-				return delete(zendeskRequest.getEndpoint(), payload.toString());
+				return delete(zendeskRequest.getEndpoint(), body.toString());
 			}
 		}
 		else {
-			throw new PortalException();
+			throw new PortalException("Invalid Zendesk Request");
 		}
 	}
 

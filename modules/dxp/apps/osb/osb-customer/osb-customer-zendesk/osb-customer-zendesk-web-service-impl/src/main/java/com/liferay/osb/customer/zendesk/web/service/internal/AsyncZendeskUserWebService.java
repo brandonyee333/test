@@ -14,12 +14,11 @@
 
 package com.liferay.osb.customer.zendesk.web.service.internal;
 
-import com.liferay.osb.customer.rabbitmq.connector.publisher.MessagePublisher;
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints;
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskRequest;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
-import com.liferay.osb.customer.zendesk.web.service.configuration.ZendeskConnectorConfigurationValues;
+import com.liferay.osb.customer.zendesk.web.service.internal.util.MessagePublisherUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -28,6 +27,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -48,62 +48,46 @@ public class AsyncZendeskUserWebService
 	public void addZendeskUserTags(long zendeskUserId, Set<String> tags)
 		throws PortalException {
 
-		try {
-			JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		String endpoint =
+			ZendeskRESTEndpoints.URL_API_V2 + "users" + StringPool.SLASH +
+				zendeskUserId + StringPool.SLASH + "tags.json";
 
-			for (String tag : tags) {
-				jsonArray.put(tag);
-			}
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-			jsonObject.put("tags", jsonArray);
-
-			String endpoint =
-				ZendeskRESTEndpoints.URL_API_V2 + "users" + StringPool.SLASH +
-					zendeskUserId + StringPool.SLASH + "tags.json";
-
-			ZendeskRequest zendeskRequest = new ZendeskRequest(
-				endpoint, "put", jsonObject, null);
-
-			_messagePublisher.sendMessage(
-				ZendeskConnectorConfigurationValues.
-					ZENDESK_RABBITMQ_MESSAGE_EXCHANGE_NAME,
-				"zendesk.service", zendeskRequest.toJSONObject());
+		for (String tag : tags) {
+			jsonArray.put(tag);
 		}
-		catch (Exception e) {
-			throw new PortalException(e);
-		}
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("tags", jsonArray);
+
+		ZendeskRequest zendeskRequest = new ZendeskRequest(
+			endpoint, "put", null, jsonObject, null);
+
+		_messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
 	}
 
 	@Override
 	public ZendeskUser createOrUpdateZendeskUser(
-			String email, String externalId, String locale, String name,
+			String externalId, String email, String locale, String name,
 			String organizationName, Set<String> tags)
 		throws PortalException {
 
-		try {
-			ZendeskUser zendeskUser = getZendeskUser(
-				email, externalId, locale, name, organizationName, tags);
+		String endpoint =
+			ZendeskRESTEndpoints.URL_API_V2 +
+				ZendeskRESTEndpoints.USERS_CREATE_OR_UPDATE;
 
-			String endpoint =
-				ZendeskRESTEndpoints.URL_API_V2 +
-					ZendeskRESTEndpoints.USERS_CREATE_OR_UPDATE;
+		JSONObject jsonObject = getZendeskUserJSONObject(
+			email, externalId, locale, name, organizationName, tags);
 
-			ZendeskRequest zendeskRequest = new ZendeskRequest(
-				endpoint, "post", zendeskUser.toJSONObject(),
-				"zendesk.user.create.or.update");
+		ZendeskRequest zendeskRequest = new ZendeskRequest(
+			endpoint, "post", null, jsonObject,
+			"zendesk.user.create.or.update");
 
-			_messagePublisher.sendMessage(
-				ZendeskConnectorConfigurationValues.
-					ZENDESK_RABBITMQ_MESSAGE_EXCHANGE_NAME,
-				"zendesk.service", zendeskRequest.toJSONObject());
+		_messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
 
-			return zendeskUser;
-		}
-		catch (Exception e) {
-			throw new PortalException(e);
-		}
+		return null;
 	}
 
 	@Override
@@ -111,38 +95,30 @@ public class AsyncZendeskUserWebService
 			long zendeskUserId, long[] zendeskOrganizationIds)
 		throws PortalException {
 
-		try {
-			JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		String endpoint =
+			ZendeskRESTEndpoints.URL_API_V2 +
+				ZendeskRESTEndpoints.ORGANIZATION_MEMBERSHIPS_CREATE_MANY;
 
-			for (long organizationId : zendeskOrganizationIds) {
-				JSONObject membershipJSONObject =
-					JSONFactoryUtil.createJSONObject();
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-				membershipJSONObject.put("organization_id", organizationId);
-				membershipJSONObject.put("user_id", zendeskUserId);
+		for (long organizationId : zendeskOrganizationIds) {
+			JSONObject membershipJSONObject =
+				JSONFactoryUtil.createJSONObject();
 
-				jsonArray.put(membershipJSONObject);
-			}
+			membershipJSONObject.put("organization_id", organizationId);
+			membershipJSONObject.put("user_id", zendeskUserId);
 
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-			jsonObject.put("organization_memberships", jsonArray);
-
-			String endpoint =
-				ZendeskRESTEndpoints.URL_API_V2 +
-					ZendeskRESTEndpoints.ORGANIZATION_MEMBERSHIPS_CREATE_MANY;
-
-			ZendeskRequest zendeskRequest = new ZendeskRequest(
-				endpoint, "post", jsonObject, null);
-
-			_messagePublisher.sendMessage(
-				ZendeskConnectorConfigurationValues.
-					ZENDESK_RABBITMQ_MESSAGE_EXCHANGE_NAME,
-				"zendesk.service", zendeskRequest.toJSONObject());
+			jsonArray.put(membershipJSONObject);
 		}
-		catch (Exception e) {
-			throw new PortalException(e);
-		}
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("organization_memberships", jsonArray);
+
+		ZendeskRequest zendeskRequest = new ZendeskRequest(
+			endpoint, "post", null, jsonObject, null);
+
+		_messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
 	}
 
 	@Override
@@ -150,88 +126,63 @@ public class AsyncZendeskUserWebService
 			long zendeskUserId, long[] zendeskOrganizationIds)
 		throws PortalException {
 
-		try {
-			Map<Long, Long> organizationMemberships =
-				getOrganizationMemberships(zendeskUserId);
+		String endpoint =
+			ZendeskRESTEndpoints.URL_API_V2 +
+				ZendeskRESTEndpoints.ORGANIZATION_MEMBERSHIPS_DESTROY_MANY;
 
-			StringBundler sb = new StringBundler(
-				(organizationMemberships.size() * 2) - 1);
+		Map<Long, Long> organizationMemberships = getOrganizationMemberships(
+			zendeskUserId);
 
-			for (Map.Entry<Long, Long> entry :
-					organizationMemberships.entrySet()) {
+		StringBundler sb = new StringBundler(
+			(organizationMemberships.size() * 2) - 1);
 
-				if (!ArrayUtil.contains(
-						zendeskOrganizationIds, entry.getKey())) {
-
-					continue;
-				}
-
-				sb.append(entry.getValue());
-
-				if (sb.index() < sb.capacity()) {
-					sb.append(StringPool.COMMA);
-				}
+		for (Map.Entry<Long, Long> entry : organizationMemberships.entrySet()) {
+			if (!ArrayUtil.contains(zendeskOrganizationIds, entry.getKey())) {
+				continue;
 			}
 
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+			sb.append(entry.getValue());
 
-			jsonObject.put("ids", sb.toString());
-
-			JSONObject parametersJSONObject =
-				JSONFactoryUtil.createJSONObject();
-
-			parametersJSONObject.put("parameters", jsonObject);
-
-			String endpoint =
-				ZendeskRESTEndpoints.URL_API_V2 +
-					ZendeskRESTEndpoints.ORGANIZATION_MEMBERSHIPS_DESTROY_MANY;
-
-			ZendeskRequest zendeskRequest = new ZendeskRequest(
-				endpoint, "delete", parametersJSONObject, null);
-
-			_messagePublisher.sendMessage(
-				ZendeskConnectorConfigurationValues.
-					ZENDESK_RABBITMQ_MESSAGE_EXCHANGE_NAME,
-				"zendesk.service", zendeskRequest.toJSONObject());
+			if (sb.index() < sb.capacity()) {
+				sb.append(StringPool.COMMA);
+			}
 		}
-		catch (Exception e) {
-			throw new PortalException(e);
-		}
+
+		Map<String, String> parameters = new HashMap<>();
+
+		parameters.put("ids", sb.toString());
+
+		ZendeskRequest zendeskRequest = new ZendeskRequest(
+			endpoint, "delete", parameters, null, null);
+
+		_messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
 	}
 
 	@Override
 	public void deleteZendeskUserTags(long zendeskUserId, Set<String> tags)
 		throws PortalException {
 
-		try {
-			JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-			for (String tag : tags) {
-				jsonArray.put(tag);
-			}
-
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-			jsonObject.put("tags", jsonArray);
-
-			String endpoint =
-				ZendeskRESTEndpoints.URL_API_V2 + "users" + StringPool.SLASH +
-					zendeskUserId + StringPool.SLASH + "tags.json";
-
-			ZendeskRequest zendeskRequest = new ZendeskRequest(
-				endpoint, "delete", jsonObject, null);
-
-			_messagePublisher.sendMessage(
-				ZendeskConnectorConfigurationValues.
-					ZENDESK_RABBITMQ_MESSAGE_EXCHANGE_NAME,
-				"zendesk.service", zendeskRequest.toJSONObject());
+		for (String tag : tags) {
+			jsonArray.put(tag);
 		}
-		catch (Exception e) {
-			throw new PortalException(e);
-		}
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("tags", jsonArray);
+
+		String endpoint =
+			ZendeskRESTEndpoints.URL_API_V2 + "users" + StringPool.SLASH +
+				zendeskUserId + StringPool.SLASH + "tags.json";
+
+		ZendeskRequest zendeskRequest = new ZendeskRequest(
+			endpoint, "delete", null, jsonObject, null);
+
+		_messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
 	}
 
 	@Reference
-	private MessagePublisher _messagePublisher;
+	private MessagePublisherUtil _messagePublisherUtil;
 
 }

@@ -42,7 +42,4 @@ public class ZendeskMessageRouter extends BaseMessageRouter {
 		addRoute(zendeskWebServiceMessageProcessor, properties);
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		ZendeskMessageRouter.class);
-
 }

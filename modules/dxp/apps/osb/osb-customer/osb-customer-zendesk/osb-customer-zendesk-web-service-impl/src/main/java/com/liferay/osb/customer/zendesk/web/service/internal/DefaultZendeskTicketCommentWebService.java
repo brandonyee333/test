@@ -37,7 +37,7 @@ public class DefaultZendeskTicketCommentWebService
 			long zendeskTicketId, long zendeskUserId, String htmlBody)
 		throws PortalException {
 
-		JSONObject jsonObject = _createRequestJSONObject(
+		JSONObject jsonObject = getZendeskTicketCommentJSONObject(
 			zendeskUserId, htmlBody);
 
 		JSONObject responseJSONObject = _zendeskBaseWebService.put(
@@ -55,14 +55,14 @@ public class DefaultZendeskTicketCommentWebService
 			String type = eventJSONObject.getString("type");
 
 			if (type.equals("Comment")) {
-				return _translate(eventJSONObject);
+				return toZendeskTicketComment(eventJSONObject);
 			}
 		}
 
 		return null;
 	}
 
-	private JSONObject _createRequestJSONObject(
+	protected JSONObject getZendeskTicketCommentJSONObject(
 		long zendeskUserId, String htmlBody) {
 
 		JSONObject commentJSONObject = JSONFactoryUtil.createJSONObject();
@@ -81,7 +81,9 @@ public class DefaultZendeskTicketCommentWebService
 		return jsonObject;
 	}
 
-	private ZendeskTicketComment _translate(JSONObject jsonObject) {
+	protected ZendeskTicketComment toZendeskTicketComment(
+		JSONObject jsonObject) {
+
 		ZendeskTicketComment zendeskTicketComment = new ZendeskTicketComment();
 
 		zendeskTicketComment.setZendeskTicketCommentId(
