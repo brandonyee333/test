@@ -14,32 +14,4 @@
 			<param name="lang.translate" value="false" />
 		</antcall>
 	</target>
-
-	<target name="clean">
-		<clean
-			module.dir="${basedir}"
-		/>
-	</target>
-
-	<target name="compile">
-		<antcall target="merge-unzip" />
-
-		<compile
-			module.dir="${basedir}"
-		/>
-	</target>
-
-	<target name="merge-unzip">
-		<unzip
-			dest="docroot/WEB-INF/classes/com/liferay/lcs/dependencies"
-			src="${hyperic.sigar.zip.file}"
-		>
-			<patternset
-				includes="**/sigar-bin/lib/*.dll,**/sigar-bin/lib/*.dylib,**/sigar-bin/lib/*.lib,**/sigar-bin/lib/*.sl,**/sigar-bin/lib/*.so"
-			/>
-			<mapper
-				type="flatten"
-			/>
-		</unzip>
-	</target>
 </project>
