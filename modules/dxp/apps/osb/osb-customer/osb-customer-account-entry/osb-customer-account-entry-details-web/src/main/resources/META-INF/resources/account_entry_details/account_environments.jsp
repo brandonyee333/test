@@ -25,8 +25,8 @@ JSONArray jsonArray = accountEntryViewDisplayContext.getAccountEnvironmentsJSONA
 <div class="account-environments card" id="<portlet:namespace />accountEnvironments"></div>
 
 <aui:script>
-	HelpCenter.render(
-		HelpCenter.AccountEnvironments,
+	AccountDetails.render(
+		AccountDetails.AccountEnvironments,
 		{
 			environments: <%= jsonArray %>,
 			permitAdd: <%= OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.ADD_ACCOUNT_ENVIRONMENT) %>

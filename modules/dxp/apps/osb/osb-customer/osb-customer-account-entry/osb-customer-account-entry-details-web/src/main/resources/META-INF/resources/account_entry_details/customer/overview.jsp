@@ -39,8 +39,8 @@ for (CorpProjectMessage corpProjectMessage : corpProjectMessages) {
 	<div id="<portlet:namespace />subscriptionMessages"></div>
 
 	<aui:script>
-		HelpCenter.render(
-			HelpCenter.SubscriptionMessages,
+		AccountDetails.render(
+			AccountDetails.SubscriptionMessages,
 			{
 				messages: <%= jsonArray %>
 			},

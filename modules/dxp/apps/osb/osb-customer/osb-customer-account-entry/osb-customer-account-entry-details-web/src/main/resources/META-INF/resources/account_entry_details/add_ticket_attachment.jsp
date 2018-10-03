@@ -44,8 +44,8 @@ String fileRepositoryId = fileRepository.getFileRepositoryId();
 <liferay-ui:error exception="<%= NoSuchZendeskTicketException.class %>" message="the-ticket-could-not-be-found" />
 
 <aui:script>
-	HelpCenter.render(
-		HelpCenter.AddTicketAttachment,
+	AccountDetails.render(
+		AccountDetails.AddTicketAttachment,
 		{
 			addTicketAttachmentURL: '<%= addTicketAttachmentURL %>',
 			generateTokenURL: '<%= generateTokenURL %>',

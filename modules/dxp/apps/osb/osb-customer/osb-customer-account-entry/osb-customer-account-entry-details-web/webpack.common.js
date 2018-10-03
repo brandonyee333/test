@@ -42,7 +42,7 @@ module.exports = {
 	},
 	output: {
 		filename: 'main.js',
-		library: 'HelpCenter',
+		library: 'AccountDetails',
 		libraryTarget: 'window',
 		path: path.resolve('src/main/resources/META-INF/resources/dist'),
 		publicPath: PUBLIC_PATH

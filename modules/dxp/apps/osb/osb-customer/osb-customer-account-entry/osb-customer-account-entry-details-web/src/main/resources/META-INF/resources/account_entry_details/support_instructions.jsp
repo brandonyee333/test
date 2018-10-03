@@ -28,8 +28,8 @@ String instructions = HtmlUtil.escapeJS(accountEntry.getInstructions());
 <div class="card support-instructions" id="<portlet:namespace />supportInstructions"></div>
 
 <aui:script>
-	HelpCenter.render(
-		HelpCenter.SupportInstructions,
+	AccountDetails.render(
+		AccountDetails.SupportInstructions,
 		{
 			accountEntryId: '<%= String.valueOf(accountEntryId) %>',
 			editInstructionsURL: '<%= editInstructionsURL %>',
