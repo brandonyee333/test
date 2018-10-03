@@ -64,8 +64,6 @@ public class LCSPortletBuildNumberCheckRunnable implements Runnable {
 			_lcsAlertAdvisor.remove(
 				LCSAlert.WARNING_LCS_PORTLET_NEW_VERSION_AVAILABLE);
 		}
-
-		return;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
