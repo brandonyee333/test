@@ -17,18 +17,15 @@
 <%@ include file="/account_entry_details/init.jsp" %>
 
 <%
-long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
-long zendeskTicketId = ParamUtil.getLong(request, "zendeskTicketId");
+AccountEntry accountEntry = (AccountEntry)renderRequest.getAttribute(AccountEntryDetailsWebKeys.ACCOUNT_ENTRY);
 
-AccountEntry accountEntry = AccountEntryServiceUtil.getAccountEntry(accountEntryId);
+long zendeskTicketId = ParamUtil.getLong(request, "zendeskTicketId");
 
 long[] supportRegionIds = accountEntry.getSupportRegionIds();
 
 FileRepository fileRepository = fileRepositoryManager.getFileRepository(supportRegionIds[0]);
 
 String fileRepositoryId = fileRepository.getFileRepositoryId();
-
-String uploadURL = fileRepositoryWebService.getUploadURL(fileRepositoryId);
 %>
 
 <liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/file_repository_token" var="generateTokenURL">
@@ -37,7 +34,6 @@ String uploadURL = fileRepositoryWebService.getUploadURL(fileRepositoryId);
 </liferay-portlet:resourceURL>
 
 <portlet:actionURL name="addTicketAttachment" var="addTicketAttachmentURL">
-	<portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntryId) %>" />
 	<portlet:param name="fileRepositoryId" value="<%= fileRepositoryId %>" />
 	<portlet:param name="zendeskTicketId" value="<%= String.valueOf(zendeskTicketId) %>" />
 </portlet:actionURL>
@@ -53,7 +49,7 @@ String uploadURL = fileRepositoryWebService.getUploadURL(fileRepositoryId);
 		{
 			addTicketAttachmentURL: '<%= addTicketAttachmentURL %>',
 			generateTokenURL: '<%= generateTokenURL %>',
-			uploadURL: '<%= uploadURL %>',
+			uploadURL: '<%= fileRepositoryWebService.getUploadURL(fileRepositoryId) %>',
 			zendeskTicketId: '<%= String.valueOf(zendeskTicketId) %>'
 		},
 		document.getElementById('${renderResponse.namespace}addTicketAttachment')

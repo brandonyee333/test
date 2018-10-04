@@ -4,10 +4,7 @@ Bundle-ClassPath:\
 Bundle-Name: Liferay OSB Customer Ticket Service
 Bundle-SymbolicName: com.liferay.osb.customer.ticket.service
 Bundle-Version: 1.0.0
-Export-Package:\
-	com.liferay.osb.customer.ticket.internal.repository,\
-	com.liferay.osb.customer.ticket.repository,\
-	com.liferay.osb.customer.ticket.service.permission
+Export-Package: com.liferay.osb.customer.ticket.service.permission
 Liferay-Require-SchemaVersion: 1.0.0
 Liferay-Service: true
 -includeresource: lib/osb-portlet-service.jar=osb-portlet-service.jar
