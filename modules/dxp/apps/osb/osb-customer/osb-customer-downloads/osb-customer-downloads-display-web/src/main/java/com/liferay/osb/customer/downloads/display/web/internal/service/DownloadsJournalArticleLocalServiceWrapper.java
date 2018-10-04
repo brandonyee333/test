@@ -15,7 +15,6 @@
 package com.liferay.osb.customer.downloads.display.web.internal.service;
 
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
-import com.liferay.dynamic.data.mapping.storage.Field;
 import com.liferay.dynamic.data.mapping.storage.Fields;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalService;
@@ -23,7 +22,7 @@ import com.liferay.journal.service.JournalArticleLocalServiceWrapper;
 import com.liferay.journal.util.JournalConverter;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.downloads.display.web.internal.constants.DDMStructureConstants;
-import com.liferay.osb.customer.downloads.display.web.internal.util.JournalArticleUtil;
+import com.liferay.osb.customer.downloads.display.web.internal.util.DDMFieldsUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.search.Indexable;
@@ -231,9 +230,8 @@ public class DownloadsJournalArticleLocalServiceWrapper
 			Fields ddmFields = _journalConverter.getDDMFields(
 				journalArticle.getDDMStructure(), journalArticle.getContent());
 
-			Field ddmField = ddmFields.get("product");
-
-			String product = JournalArticleUtil.getSelectOptionValue(ddmField);
+			String product = DDMFieldsUtil.getSelectOption(
+				ddmFields, "product");
 
 			roleIdsToActionIds = getRoleIdsToActionIds(product);
 		}

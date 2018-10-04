@@ -114,11 +114,9 @@ JSONArray productsJSONArray = downloadsDisplayContext.getProductsJSONArray();
 
 				<%
 				Fields ddmFields = journalConverter.getDDMFields(journalArticle.getDDMStructure(), journalArticle.getContent());
-
-				Field ddmField = ddmFields.get("releaseDate");
 				%>
 
-				<%= String.valueOf(ddmField.getValue()) %>
+				<%= DDMFieldsUtil.getString(ddmFields, "releaseDate") %>
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text

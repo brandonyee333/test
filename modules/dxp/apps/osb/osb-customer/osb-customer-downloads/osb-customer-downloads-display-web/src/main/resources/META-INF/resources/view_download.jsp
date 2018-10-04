@@ -21,9 +21,7 @@ JournalArticle journalArticle = (JournalArticle)renderRequest.getAttribute(Downl
 
 Fields ddmFields = journalConverter.getDDMFields(journalArticle.getDDMStructure(), journalArticle.getContent());
 
-Field productDDMField = ddmFields.get("product");
-
-String product = JournalArticleUtil.getSelectOptionValue(productDDMField);
+String product = DDMFieldsUtil.getSelectOption(ddmFields, "product");
 %>
 
 <c:choose>
@@ -52,14 +50,8 @@ String product = JournalArticleUtil.getSelectOptionValue(productDDMField);
 		>
 			<liferay-ui:search-container-column-text
 				name="released"
-			>
-
-				<%
-				Field releaseDateDDMField = ddmFields.get("releaseDate");
-				%>
-
-				<%= String.valueOf(releaseDateDDMField.getValue()) %>
-			</liferay-ui:search-container-column-text>
+				value='<%= DDMFieldsUtil.getString(ddmFields, "releaseDate") %>'
+			/>
 
 			<liferay-ui:search-container-column-text
 				name="name"

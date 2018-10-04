@@ -1,3 +1,4 @@
+<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -11,21 +12,22 @@
  *
  *
  */
+--%>
 
-package com.liferay.osb.customer.downloads.display.web.internal.util;
+<%@ include file="/init.jsp" %>
 
-import com.liferay.dynamic.data.mapping.storage.Field;
-import com.liferay.portal.kernel.util.GetterUtil;
+<portlet:actionURL name="migrateJournalArticles" var="migrateJournalArticlesURL" />
 
-/**
- * @author Amos Fong
- */
-public class JournalArticleUtil {
+<div class="container-fluid-1280">
+	<aui:form action="<%= migrateJournalArticlesURL %>" method="post" name="fm">
+		<aui:fieldset-group markupView="lexicon">
+			<aui:fieldset>
+				<aui:input name="groupId" />
 
-	public static String getSelectOptionValue(Field field) {
-		String value = GetterUtil.getString(field.getValue());
+				<aui:input name="folderId" />
 
-		return value.substring(2, value.length() - 2);
-	}
-
-}
+				<aui:button type="submit" value="migrate" />
+			</aui:fieldset>
+		</aui:fieldset-group>
+	</aui:form>
+</div>

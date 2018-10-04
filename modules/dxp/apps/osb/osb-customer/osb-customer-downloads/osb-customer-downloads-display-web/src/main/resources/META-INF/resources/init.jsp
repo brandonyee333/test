@@ -25,8 +25,7 @@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %><%@
 taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
-<%@ page import="com.liferay.dynamic.data.mapping.storage.Field" %><%@
-page import="com.liferay.dynamic.data.mapping.storage.Fields" %><%@
+<%@ page import="com.liferay.dynamic.data.mapping.storage.Fields" %><%@
 page import="com.liferay.journal.model.JournalArticle" %><%@
 page import="com.liferay.journal.model.JournalArticleDisplay" %><%@
 page import="com.liferay.journal.service.JournalArticleLocalServiceUtil" %><%@
@@ -34,7 +33,7 @@ page import="com.liferay.journal.util.JournalConverter" %><%@
 page import="com.liferay.osb.customer.downloads.display.web.internal.constants.DDMStructureConstants" %><%@
 page import="com.liferay.osb.customer.downloads.display.web.internal.constants.DownloadsDisplayWebKeys" %><%@
 page import="com.liferay.osb.customer.downloads.display.web.internal.display.context.DownloadsDisplayContext" %><%@
-page import="com.liferay.osb.customer.downloads.display.web.internal.util.JournalArticleUtil" %><%@
+page import="com.liferay.osb.customer.downloads.display.web.internal.util.DDMFieldsUtil" %><%@
 page import="com.liferay.portal.kernel.json.JSONArray" %><%@
 page import="com.liferay.portal.kernel.json.JSONObject" %><%@
 page import="com.liferay.portal.kernel.portlet.PortletRequestModel" %><%@
