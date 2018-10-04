@@ -51,6 +51,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import javax.portlet.PortletPreferences;
+import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
@@ -113,15 +114,24 @@ public class DownloadsDisplayContext {
 	}
 
 	public SearchContainer getSearchContainer() throws PortalException {
+		String fileType = ParamUtil.getString(_renderRequest, "fileType");
+		String product = ParamUtil.getString(_renderRequest, "product");
+
+		PortletURL iteratorURL = _renderResponse.createRenderURL();
+
+		iteratorURL.setParameter("product", product);
+		iteratorURL.setParameter("fileType", fileType);
+
 		SearchContainer searchContainer = new SearchContainer(
-			_renderRequest, _renderResponse.createRenderURL(), null, null);
+			_renderRequest, iteratorURL, null, null);
 
 		searchContainer.setSearch(true);
 
 		Indexer indexer = IndexerRegistryUtil.getIndexer(JournalArticle.class);
 
 		SearchContext searchContext = buildSearchContext(
-			searchContainer.getStart(), searchContainer.getEnd());
+			fileType, product, searchContainer.getStart(),
+			searchContainer.getEnd());
 
 		Hits hits = indexer.search(searchContext);
 
@@ -145,9 +155,8 @@ public class DownloadsDisplayContext {
 		return searchContainer;
 	}
 
-	protected SearchContext buildSearchContext(int start, int end) {
-		String fileType = ParamUtil.getString(_renderRequest, "fileType");
-		String product = ParamUtil.getString(_renderRequest, "product");
+	protected SearchContext buildSearchContext(
+		String fileType, String product, int start, int end) {
 
 		SearchContext searchContext = new SearchContext();
 
@@ -186,16 +195,7 @@ public class DownloadsDisplayContext {
 
 		searchContext.setQueryConfig(queryConfig);
 
-		String sortFieldName = _ddmIndexer.encodeName(
-			_ddmStructure.getStructureId(), "downloadNumber",
-			_themeDisplay.getLocale());
-
-		sortFieldName += "_Number";
-
-		Sort sort = new Sort(sortFieldName, Sort.LONG_TYPE, true);
-
-		searchContext.setSorts(sort);
-
+		searchContext.setSorts(getSorts());
 		searchContext.setStart(start);
 
 		return searchContext;
@@ -297,6 +297,28 @@ public class DownloadsDisplayContext {
 		}
 
 		return products;
+	}
+
+	protected Sort[] getSorts() {
+		Sort[] sorts = new Sort[2];
+
+		String downloadNumberSortFieldName = _ddmIndexer.encodeName(
+			_ddmStructure.getStructureId(), "downloadNumber",
+			_themeDisplay.getLocale());
+
+		downloadNumberSortFieldName += "_Number";
+
+		sorts[0] = new Sort(downloadNumberSortFieldName, Sort.LONG_TYPE, true);
+
+		String releaseDateSortFieldName = _ddmIndexer.encodeName(
+			_ddmStructure.getStructureId(), "releaseDate",
+			_themeDisplay.getLocale());
+
+		releaseDateSortFieldName += "_String_sortable";
+
+		sorts[1] = new Sort(releaseDateSortFieldName, Sort.STRING_TYPE, true);
+
+		return sorts;
 	}
 
 	private final DDMIndexer _ddmIndexer;
