@@ -496,9 +496,7 @@ public class AccountEntryViewDisplayContext {
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
 		for (String envSearch : envSearches) {
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-			jsonObject.put("name", LanguageUtil.get(_request, envSearch));
+			jsonArray.put(LanguageUtil.get(_request, envSearch));
 		}
 
 		return jsonArray;
