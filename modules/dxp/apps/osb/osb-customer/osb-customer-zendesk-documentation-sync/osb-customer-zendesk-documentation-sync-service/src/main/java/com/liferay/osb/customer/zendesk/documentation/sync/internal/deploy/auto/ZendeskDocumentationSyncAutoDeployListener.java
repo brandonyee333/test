@@ -29,7 +29,10 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Amos Fong
  */
-@Component(immediate = true, service = AutoDeployListener.class)
+@Component(
+	immediate = true, property = "service.ranking:Integer=100",
+	service = AutoDeployListener.class
+)
 public class ZendeskDocumentationSyncAutoDeployListener
 	extends BaseAutoDeployListener {
 
