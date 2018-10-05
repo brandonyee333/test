@@ -329,7 +329,7 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 		_lpkgIndexValidator.setLPKGDeployer(this);
 		_lpkgIndexValidator.setJarFiles(jarFiles);
 
-		List<File> explodedLpkgFiles = new ArrayList<>();
+		List<File> explodedLPKGFiles = new ArrayList<>();
 
 		Iterator<File> iterator = lpkgFiles.iterator();
 
@@ -342,11 +342,11 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 			if (innerLpkgs != null) {
 				iterator.remove();
 
-				explodedLpkgFiles.addAll(innerLpkgs);
+				explodedLPKGFiles.addAll(innerLpkgs);
 			}
 		}
 
-		lpkgFiles.addAll(explodedLpkgFiles);
+		lpkgFiles.addAll(explodedLPKGFiles);
 
 		boolean updateIntegrityProperties = _lpkgIndexValidator.validate(
 			lpkgFiles);
