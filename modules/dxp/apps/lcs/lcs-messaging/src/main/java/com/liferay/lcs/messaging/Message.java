@@ -99,10 +99,24 @@ public abstract class Message implements Serializable {
 		return _deliveryTag;
 	}
 
+	/**
+	 * Returns the message's error code.
+	 *
+	 * @return
+	 * @see   #setErrorCode(int)
+	 * @since LCS Messaging 10.1.2
+	 */
 	public int getErrorCode() {
 		return _errorCode;
 	}
 
+	/**
+	 * Returns the message's error message.
+	 *
+	 * @return
+	 * @see   #setErrorMessage(String)
+	 * @since LCS Messaging 10.1.2
+	 */
 	public String getErrorMessage() {
 		return _errorMessage;
 	}
@@ -184,10 +198,27 @@ public abstract class Message implements Serializable {
 		_deliveryTag = deliveryTag;
 	}
 
+	/**
+	 * Sets the error code. The error code is used in response messages as
+	 * complement to error message. LCS error codes uniquely identify the
+	 * problem in LCS Platform and thus LCS Client may use error code to take
+	 * specific recovery action.
+	 *
+	 * @param errorCode
+	 * @since LCS Messaging 10.1.2
+	 */
 	public void setErrorCode(int errorCode) {
 		_errorCode = errorCode;
 	}
 
+	/**
+	 * Sets the error message. The error message is used in response messages to
+	 * notify caller about problem at platform side. LCS Client may use error
+	 * message to display error in the client log.
+	 *
+	 * @param errorMessage the error's description
+	 * @since LCS Messaging 10.1.2
+	 */
 	public void setErrorMessage(String errorMessage) {
 		_errorMessage = errorMessage;
 	}
