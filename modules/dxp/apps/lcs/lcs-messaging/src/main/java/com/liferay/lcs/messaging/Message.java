@@ -99,12 +99,12 @@ public abstract class Message implements Serializable {
 		return _deliveryTag;
 	}
 
-	public String getErrorMessage() {
-		return _errorMessage;
+	public int getErrorCode() {
+		return _errorCode;
 	}
 
-	public int getErrorStatus() {
-		return _errorStatus;
+	public String getErrorMessage() {
+		return _errorMessage;
 	}
 
 	/**
@@ -184,12 +184,12 @@ public abstract class Message implements Serializable {
 		_deliveryTag = deliveryTag;
 	}
 
-	public void setErrorMessage(String errorMessage) {
-		_errorMessage = errorMessage;
+	public void setErrorCode(int errorCode) {
+		_errorCode = errorCode;
 	}
 
-	public void setErrorStatus(int errorStatus) {
-		_errorStatus = errorStatus;
+	public void setErrorMessage(String errorMessage) {
+		_errorMessage = errorMessage;
 	}
 
 	/**
@@ -279,8 +279,8 @@ public abstract class Message implements Serializable {
 
 	private long _createTime = System.currentTimeMillis();
 	private long _deliveryTag;
+	private int _errorCode;
 	private String _errorMessage;
-	private int _errorStatus;
 	private String _key;
 	private String _protocolVersion = PROTOCOL_VERSION_CURRENT;
 	private String _queueName;
