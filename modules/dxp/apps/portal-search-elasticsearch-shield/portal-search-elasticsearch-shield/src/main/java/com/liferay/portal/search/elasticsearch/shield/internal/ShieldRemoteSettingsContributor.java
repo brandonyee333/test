@@ -75,12 +75,6 @@ public class ShieldRemoteSettingsContributor extends BaseSettingsContributor {
 		}
 
 		clientSettingsHelper.put("shield.http.ssl", "true");
-		clientSettingsHelper.put(
-			"shield.ssl.keystore.path", shieldConfiguration.sslKeystorePath());
-		clientSettingsHelper.put(
-			"shield.ssl.keystore.password",
-			shieldConfiguration.sslKeystorePassword());
-		clientSettingsHelper.put("shield.transport.ssl", "true");
 
 		String sslKeystoreKeyPassword =
 			shieldConfiguration.sslKeystoreKeyPassword();
@@ -90,18 +84,26 @@ public class ShieldRemoteSettingsContributor extends BaseSettingsContributor {
 				"shield.ssl.keystore.key_password", sslKeystoreKeyPassword);
 		}
 
+		clientSettingsHelper.put(
+			"shield.ssl.keystore.password",
+			shieldConfiguration.sslKeystorePassword());
+		clientSettingsHelper.put(
+			"shield.ssl.keystore.path", shieldConfiguration.sslKeystorePath());
+
 		String sslTruststorePassword =
 			shieldConfiguration.sslTruststorePassword();
 		String sslTruststorePath = shieldConfiguration.sslTruststorePath();
 
 		if ((sslTruststorePath != null) && (sslTruststorePassword != null)) {
 			clientSettingsHelper.put(
-				"shield.ssl.truststore.path",
-				shieldConfiguration.sslTruststorePath());
-			clientSettingsHelper.put(
 				"shield.ssl.truststore.password",
 				shieldConfiguration.sslTruststorePassword());
+			clientSettingsHelper.put(
+				"shield.ssl.truststore.path",
+				shieldConfiguration.sslTruststorePath());
 		}
+
+		clientSettingsHelper.put("shield.transport.ssl", "true");
 	}
 
 	protected volatile ShieldConfiguration shieldConfiguration;
