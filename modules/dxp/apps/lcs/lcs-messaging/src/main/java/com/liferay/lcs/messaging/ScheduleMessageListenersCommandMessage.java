@@ -15,6 +15,7 @@
 package com.liferay.lcs.messaging;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,10 +40,23 @@ public class ScheduleMessageListenersCommandMessage extends CommandMessage {
 	public void setSchedulerContexts(
 		List<Map<String, String>> schedulerContexts) {
 
-		_schedulerContexts = schedulerContexts;
+		_schedulerContexts.clear();
+
+		for (Map<String, String> schedulerContext : schedulerContexts) {
+			Map<String, String> immutableSchedulerContext =
+				new HashMap<String, String>();
+
+			for (Map.Entry<String, String> entry :
+					schedulerContext.entrySet()) {
+
+				immutableSchedulerContext.put(entry.getKey(), entry.getValue());
+			}
+
+			_schedulerContexts.add(immutableSchedulerContext);
+		}
 	}
 
-	private List<Map<String, String>> _schedulerContexts =
+	private final List<Map<String, String>> _schedulerContexts =
 		new ArrayList<Map<String, String>>();
 
 }
