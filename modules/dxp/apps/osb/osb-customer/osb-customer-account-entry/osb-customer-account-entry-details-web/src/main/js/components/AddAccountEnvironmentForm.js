@@ -7,6 +7,7 @@ import * as yup from 'yup';
 import Button from './Button';
 
 const REQUIRED_SCHEMA = yup.string().required(Liferay.Language.get('this-field-is-required'));
+
 const SELECT_LABEL = Liferay.Language.get('select');
 
 export default class AddAccountEnvironmentForm extends React.Component {
@@ -16,12 +17,12 @@ export default class AddAccountEnvironmentForm extends React.Component {
 
 	state = {
 		configurations: {
-			isCustomOS: false,
-			isEnterprise: false,
+			customOS: false,
+			enterprise: false
 		},
 		inputFileField: {
 			patchLevel: null,
-			portalExt: null,
+			portalExt: null
 		},
 		selectedOptions: {
 			selectedLFRVersion: null,
@@ -40,6 +41,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 		const {inputFileField} = this.state;
 
 		const fileInput = fileRef.current;
+
 		const fieldName = this.updateFieldName(fileInput.name);
 
 		fileInput.value = null;
@@ -86,7 +88,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 			{
 				configurations: {
 					...configurations,
-					isCustomOS: label === "Other"
+					customOS: label === 'Other'
 				}
 			}
 		);
@@ -109,7 +111,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 				{
 					configurations: {
 						...configurations,
-						isEnterprise: !!curSelectedProduct && curSelectedProduct.enterpriseSearch,
+						enterprise: !!curSelectedProduct && curSelectedProduct.enterpriseSearch,
 					},
 					selectedOptions: {
 						...selectedOptions,
@@ -129,7 +131,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 					}
 				}
 			);
-		};
+		}
 
 		this.refs.formikInstanceRef.handleChange(event);
 	};
@@ -159,12 +161,12 @@ export default class AddAccountEnvironmentForm extends React.Component {
 		const {products} = environmentConfiguration;
 
 		const {selectedLFRVersion, selectedProduct} = selectedOptions;
-		const {isCustomOS, isEnterprise} = configurations;
+		const {customOS, enterprise} = configurations;
 		const {patchLevel, portalExt} = inputFileField;
 
 		const renderEnvCS = selectedLFRVersion && selectedLFRVersion.envCS;
+		const renderEnvOSCustom = customOS;
 		const renderEnvSearch = selectedLFRVersion && selectedProduct && 'enterpriseSearch' in selectedProduct;
-		const renderEnvOSCustom = isCustomOS;
 
 		const initialValues = {
 			[`${namespace}envAS`]: '',
@@ -182,17 +184,19 @@ export default class AddAccountEnvironmentForm extends React.Component {
 			[`${namespace}productEntryId`]: ''
 		};
 
-		const validationSchema = yup.object().shape({
-			[`${namespace}envAS`]: REQUIRED_SCHEMA,
-			[`${namespace}envDB`]: REQUIRED_SCHEMA,
-			[`${namespace}envJVM`]: REQUIRED_SCHEMA,
-			[`${namespace}envLFR`]: REQUIRED_SCHEMA,
-			[`${namespace}envOS`]: REQUIRED_SCHEMA,
-			[`${namespace}name`]: REQUIRED_SCHEMA,
-			[`${namespace}patchLevel`]: REQUIRED_SCHEMA,
-			[`${namespace}portalExt`]: REQUIRED_SCHEMA,
-			[`${namespace}productEntryId`]: REQUIRED_SCHEMA
-		});
+		const validationSchema = yup.object().shape(
+			{
+				[`${namespace}envAS`]: REQUIRED_SCHEMA,
+				[`${namespace}envDB`]: REQUIRED_SCHEMA,
+				[`${namespace}envJVM`]: REQUIRED_SCHEMA,
+				[`${namespace}envLFR`]: REQUIRED_SCHEMA,
+				[`${namespace}envOS`]: REQUIRED_SCHEMA,
+				[`${namespace}name`]: REQUIRED_SCHEMA,
+				[`${namespace}patchLevel`]: REQUIRED_SCHEMA,
+				[`${namespace}portalExt`]: REQUIRED_SCHEMA,
+				[`${namespace}productEntryId`]: REQUIRED_SCHEMA
+			}
+		);
 
 		return (
 			<Formik
@@ -469,7 +473,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 
 										<select className="form-control" disabled={!selectedLFRVersion} id={`${namespace}envSearch`} multiple={true} name={`${namespace}envSearch`} onBlur={handleBlur} onChange={handleChange}>
 											{selectedLFRVersion.envSearch.find(
-												search => search[isEnterprise ? 'enterprise' : 'standard'])[isEnterprise ? 'enterprise' : 'standard'].map(
+												search => search[enterprise ? 'enterprise' : 'standard'])[enterprise ? 'enterprise' : 'standard'].map(
 													(envSearch) => (
 														<option key={envSearch.value} id={'envSearch-' + envSearch.value} label={envSearch.name} value={envSearch.value} />
 													)
@@ -596,7 +600,10 @@ export default class AddAccountEnvironmentForm extends React.Component {
 								{Liferay.Language.get('cancel')}
 							</Button>
 
-							<Button disabled={isSubmitting} type="submit">
+							<Button
+								disabled={isSubmitting}
+								type="submit"
+							>
 								{Liferay.Language.get('save')}
 							</Button>
 						</div>
