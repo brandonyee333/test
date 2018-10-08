@@ -46,10 +46,10 @@ public class ZendeskRequest {
 		}
 
 		return new ZendeskRequest(
-			jsonObject.getString("_FIELD_ENDPOINT"),
-			jsonObject.getString("_FIELD_METHOD"), parameters,
-			jsonObject.getJSONObject("_FIELD_BODY"),
-			jsonObject.getString("_FIELD_RESPONSE_ROUTING_KEY"));
+			jsonObject.getString(_FIELD_ENDPOINT),
+			jsonObject.getString(_FIELD_METHOD), parameters,
+			jsonObject.getJSONObject(_FIELD_BODY),
+			jsonObject.getString(_FIELD_RESPONSE_ROUTING_KEY));
 	}
 
 	public ZendeskRequest(
