@@ -79,7 +79,7 @@ public class AsyncZendeskUserWebService
 				ZendeskRESTEndpoints.USERS_CREATE_OR_UPDATE;
 
 		JSONObject jsonObject = getZendeskUserJSONObject(
-			email, externalId, locale, name, organizationName, tags);
+			externalId, email, locale, name, organizationName, tags);
 
 		ZendeskRequest zendeskRequest = new ZendeskRequest(
 			endpoint, "post", null, jsonObject,
