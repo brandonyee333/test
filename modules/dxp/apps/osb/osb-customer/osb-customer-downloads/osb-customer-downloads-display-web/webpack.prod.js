@@ -14,7 +14,9 @@ module.exports = merge(
 				new OptimizeCssAssetsPlugin(
 					{
 						cssProcessorOptions: {
-							discardComments: {removeAll: true}
+							discardComments: {
+								removeAll: true
+							}
 						}
 					}
 				),
