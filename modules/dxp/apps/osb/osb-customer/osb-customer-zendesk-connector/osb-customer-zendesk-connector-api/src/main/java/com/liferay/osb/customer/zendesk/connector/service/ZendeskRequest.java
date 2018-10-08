@@ -17,9 +17,10 @@ package com.liferay.osb.customer.zendesk.connector.service;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.Validator;
+
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.HashMap;
 
 /**
  * @author Kyle Bischof
@@ -33,7 +34,7 @@ public class ZendeskRequest {
 			_FIELD_PARAMETERS);
 
 		if (parametersJSONObject != null) {
-			parameters = new HashMap<String, String>();
+			parameters = new HashMap<>();
 
 			Iterator<String> keys = parametersJSONObject.keys();
 
@@ -62,16 +63,16 @@ public class ZendeskRequest {
 		_responseRoutingKey = responseRoutingKey;
 	}
 
+	public JSONObject getBody() {
+		return _body;
+	}
+
 	public String getEndpoint() {
 		return _endpoint;
 	}
 
 	public String getMethod() {
 		return _method;
-	}
-
-	public JSONObject getBody() {
-		return _body;
 	}
 
 	public Map<String, String> getParameters() {
@@ -107,7 +108,8 @@ public class ZendeskRequest {
 		jsonObject.put(_FIELD_METHOD, _method);
 
 		if (hasParameters()) {
-			JSONObject parametersJSONObject = JSONFactoryUtil.createJSONObject();
+			JSONObject parametersJSONObject =
+				JSONFactoryUtil.createJSONObject();
 
 			for (Map.Entry<String, String> entry : _parameters.entrySet()) {
 				parametersJSONObject.put(entry.getKey(), entry.getValue());
@@ -127,21 +129,21 @@ public class ZendeskRequest {
 		return jsonObject;
 	}
 
-	private static final String _FIELD_ENDPOINT = "endpoint";
+	private static final String _FIELD_BODY = "body";
 
-	private static final String _FIELD_PARAMETERS = "parameters";
+	private static final String _FIELD_ENDPOINT = "endpoint";
 
 	private static final String _FIELD_METHOD = "method";
 
-	private static final String _FIELD_BODY = "body";
+	private static final String _FIELD_PARAMETERS = "parameters";
 
 	private static final String _FIELD_RESPONSE_ROUTING_KEY =
 		"responseRoutingKey";
 
-	private final Map<String, String> _parameters;
+	private final JSONObject _body;
 	private final String _endpoint;
 	private final String _method;
-	private final JSONObject _body;
+	private final Map<String, String> _parameters;
 	private final String _responseRoutingKey;
 
 }
