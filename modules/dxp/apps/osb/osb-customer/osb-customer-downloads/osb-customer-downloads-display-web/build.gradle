@@ -16,6 +16,6 @@ dependencies {
 	compileOnly project(":private:apps:osb-customer:osb-customer-api")
 }
 
- processResources {
+processResources {
 	dependsOn npmRunWebpack
 }
