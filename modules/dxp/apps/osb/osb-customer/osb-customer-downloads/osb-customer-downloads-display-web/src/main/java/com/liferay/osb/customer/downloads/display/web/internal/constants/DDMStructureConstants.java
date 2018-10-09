@@ -78,6 +78,13 @@ public class DDMStructureConstants {
 
 	public static final String PRODUCT_SYNC = "sync";
 
+	public static final String REQUIRED_AGREEMENT_ESA = "esa";
+
+	public static final String REQUIRED_AGREEMENT_EVALUATION_EULA =
+		"evaluationEula";
+
+	public static final String REQUIRED_AGREEMENT_STUDIO_EULA = "studioEula";
+
 	public static String getFileTypeLabel(String fileType) {
 		if (fileType.equals(FILE_TYPE_DEVELOPER_STUDIO)) {
 			return "Developer Studio";

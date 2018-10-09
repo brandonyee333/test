@@ -50,10 +50,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.portlet.ActionRequest;
+import javax.portlet.MimeResponse;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
+import javax.portlet.ResourceURL;
 
 /**
  * @author Amos Fong
@@ -61,11 +63,11 @@ import javax.portlet.RenderResponse;
 public class DownloadsDisplayContext {
 
 	public DownloadsDisplayContext(
-			RenderRequest renderRequest, RenderResponse renderResponse)
+			RenderRequest renderRequest, MimeResponse mimeResponse)
 		throws Exception {
 
 		_renderRequest = renderRequest;
-		_renderResponse = renderResponse;
+		_mimeResponse = mimeResponse;
 
 		_ddmIndexer = (DDMIndexer)_renderRequest.getAttribute(
 			DDMIndexer.class.getName());
@@ -88,6 +90,15 @@ public class DownloadsDisplayContext {
 		else {
 			_ddmStructure = null;
 		}
+	}
+
+	public String getAcceptAgreementURL() {
+		PortletURL acceptAgreementURL = _mimeResponse.createActionURL();
+
+		acceptAgreementURL.setParameter(
+			ActionRequest.ACTION_NAME, "acceptAgreement");
+
+		return acceptAgreementURL.toString();
 	}
 
 	public String getDDMStructureKey() {
@@ -117,7 +128,7 @@ public class DownloadsDisplayContext {
 		String fileType = ParamUtil.getString(_renderRequest, "fileType");
 		String product = ParamUtil.getString(_renderRequest, "product");
 
-		PortletURL iteratorURL = _renderResponse.createRenderURL();
+		PortletURL iteratorURL = _mimeResponse.createRenderURL();
 
 		iteratorURL.setParameter("product", product);
 		iteratorURL.setParameter("fileType", fileType);
@@ -153,6 +164,14 @@ public class DownloadsDisplayContext {
 		searchContainer.setResults(results);
 
 		return searchContainer;
+	}
+
+	public String getVerifyAgreementURL() {
+		ResourceURL verifyAgreementURL = _mimeResponse.createResourceURL();
+
+		verifyAgreementURL.setResourceID("/verify_agreement");
+
+		return verifyAgreementURL.toString();
 	}
 
 	protected SearchContext buildSearchContext(
@@ -323,8 +342,8 @@ public class DownloadsDisplayContext {
 
 	private final DDMIndexer _ddmIndexer;
 	private final DDMStructure _ddmStructure;
+	private final MimeResponse _mimeResponse;
 	private final RenderRequest _renderRequest;
-	private final RenderResponse _renderResponse;
 	private final ThemeDisplay _themeDisplay;
 
 }

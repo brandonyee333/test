@@ -99,6 +99,12 @@ JSONArray productsJSONArray = downloadsDisplayContext.getProductsJSONArray();
 </c:if>
 
 <div class="results">
+
+	<%
+	request.setAttribute(DownloadsDisplayWebKeys.ACCEPT_AGREEMENT_URL, downloadsDisplayContext.getAcceptAgreementURL());
+	request.setAttribute(DownloadsDisplayWebKeys.VERIFY_AGREEMENT_URL, downloadsDisplayContext.getVerifyAgreementURL());
+	%>
+
 	<liferay-ui:search-container
 		emptyResultsMessage="no-downloads-were-found"
 		searchContainer="<%= downloadsDisplayContext.getSearchContainer() %>"

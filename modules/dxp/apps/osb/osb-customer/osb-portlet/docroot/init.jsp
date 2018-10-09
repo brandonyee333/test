@@ -24,10 +24,7 @@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %><%@
 taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
-<%@ page import="com.liferay.document.library.kernel.exception.NoSuchFileEntryException" %><%@
-page import="com.liferay.document.library.kernel.model.DLFileEntry" %><%@
-page import="com.liferay.document.library.kernel.service.DLFileEntryLocalServiceUtil" %><%@
-page import="com.liferay.expando.kernel.service.ExpandoValueLocalServiceUtil" %><%@
+<%@ page import="com.liferay.expando.kernel.service.ExpandoValueLocalServiceUtil" %><%@
 page import="com.liferay.osb.admin.asset.AccountEntryAssetRenderer" %><%@
 page import="com.liferay.osb.admin.search.AccountEntryDisplayTerms" %><%@
 page import="com.liferay.osb.admin.search.AccountEntrySearch" %><%@

@@ -19,6 +19,10 @@ package com.liferay.osb.customer.downloads.display.web.internal.constants;
  */
 public class DownloadsDisplayWebKeys {
 
+	public static final String ACCEPT_AGREEMENT_URL = "ACCEPT_AGREEMENT_URL";
+
 	public static final String JOURNAL_ARTICLE = "JOURNAL_ARTICLE";
+
+	public static final String VERIFY_AGREEMENT_URL = "VERIFY_AGREEMENT_URL";
 
 }

@@ -16,6 +16,7 @@ package com.liferay.osb.downloads.portlet;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.osb.downloads.util.DownloadsUtil;
+import com.liferay.osb.util.AgreementUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.audit.AuditMessage;
 import com.liferay.portal.kernel.audit.AuditRouterUtil;
@@ -54,10 +55,6 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
-
-/* TODO update OSBUtil integration
-import com.liferay.osb.shared.util.OSBUtil;
-*/
 
 /**
  * @author Brian Wing Shun Chan
@@ -307,24 +304,16 @@ public class DownloadsPortlet extends MVCPortlet {
 			return false;
 		}
 
-		/* TODO update OSBUtil integration
-
 		if (fileName.startsWith("/trial/sync/")) {
-			if (OSBUtil.isLiferaySyncEULA(
-					themeDisplay.getCompanyId(), themeDisplay.getUserId())) {
-
+			if (AgreementUtil.hasLiferaySyncEULA(themeDisplay.getUserId())) {
 				return true;
 			}
 		}
 		else {
-			if (OSBUtil.isTrialEULA(
-					themeDisplay.getCompanyId(), themeDisplay.getUserId())) {
-
+			if (AgreementUtil.hasTrialEULA(themeDisplay.getUserId())) {
 				return true;
 			}
 		}
-
-		*/
 
 		return false;
 	}

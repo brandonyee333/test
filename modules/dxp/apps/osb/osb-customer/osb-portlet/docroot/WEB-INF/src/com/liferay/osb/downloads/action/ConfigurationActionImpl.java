@@ -57,6 +57,9 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 		if (tabs1.equals("customer-access")) {
 			updateCustomerAccess(actionRequest, preferences);
 		}
+		else if (tabs1.equals("esa")) {
+			updateESA(actionRequest, preferences);
+		}
 		else if (tabs1.equals("evaluation-eula")) {
 			updateEvaluationEULA(actionRequest, preferences);
 		}
@@ -90,14 +93,40 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 		preferences.setValue("customerAccessPattern", customerAccessPattern);
 	}
 
+	protected void updateESA(
+			ActionRequest actionRequest, PortletPreferences preferences)
+		throws Exception {
+
+		String languageId = LanguageUtil.getLanguageId(actionRequest);
+
+		String esaUrl = ParamUtil.getString(
+			actionRequest, "esaUrl_" + languageId);
+		double esaVersion = ParamUtil.getDouble(
+			actionRequest, "esaVersion_" + languageId);
+		double esaVersionRequired = ParamUtil.getDouble(
+			actionRequest, "esaVersionRequired_" + languageId);
+
+		if (esaVersion < esaVersionRequired) {
+			SessionErrors.add(actionRequest, "esaVersion");
+		}
+		else {
+			preferences.setValue("esaUrl_" + languageId, esaUrl);
+			preferences.setValue(
+				"esaVersion_" + languageId, String.valueOf(esaVersion));
+			preferences.setValue(
+				"esaVersionRequired_" + languageId,
+				String.valueOf(esaVersionRequired));
+		}
+	}
+
 	protected void updateEvaluationEULA(
 			ActionRequest actionRequest, PortletPreferences preferences)
 		throws Exception {
 
 		String languageId = LanguageUtil.getLanguageId(actionRequest);
 
-		long evaluationEulaFileEntryId = ParamUtil.getLong(
-			actionRequest, "evaluationEulaFileEntryId_" + languageId);
+		String evaluationEulaUrl = ParamUtil.getString(
+			actionRequest, "evaluationEulaUrl_" + languageId);
 		double evaluationEulaVersion = ParamUtil.getDouble(
 			actionRequest, "evaluationEulaVersion_" + languageId);
 		double evaluationEulaVersionRequired = ParamUtil.getDouble(
@@ -108,8 +137,7 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 		}
 		else {
 			preferences.setValue(
-				"evaluationEulaFileEntryId_" + languageId,
-				String.valueOf(evaluationEulaFileEntryId));
+				"evaluationEulaUrl_" + languageId, evaluationEulaUrl);
 			preferences.setValue(
 				"evaluationEulaVersion_" + languageId,
 				String.valueOf(evaluationEulaVersion));
@@ -148,8 +176,8 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 
 		String languageId = LanguageUtil.getLanguageId(actionRequest);
 
-		long studioEulaFileEntryId = ParamUtil.getLong(
-			actionRequest, "studioEulaFileEntryId_" + languageId);
+		String studioEulaUrl = ParamUtil.getString(
+			actionRequest, "studioEulaUrl_" + languageId);
 		double studioEulaVersion = ParamUtil.getDouble(
 			actionRequest, "studioEulaVersion_" + languageId);
 		double studioEulaVersionRequired = ParamUtil.getDouble(
@@ -159,9 +187,7 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 			SessionErrors.add(actionRequest, "studioEulaVersion");
 		}
 		else {
-			preferences.setValue(
-				"studioEulaFileEntryId_" + languageId,
-				String.valueOf(studioEulaFileEntryId));
+			preferences.setValue("studioEulaUrl_" + languageId, studioEulaUrl);
 			preferences.setValue(
 				"studioEulaVersion_" + languageId,
 				String.valueOf(studioEulaVersion));

@@ -32,6 +32,12 @@ String product = DDMFieldsUtil.getSelectOption(ddmFields, "product");
 </c:choose>
 
 <div class="results">
+	
+	<%
+	request.setAttribute(DownloadsDisplayWebKeys.ACCEPT_AGREEMENT_URL, downloadsDisplayContext.getAcceptAgreementURL());
+	request.setAttribute(DownloadsDisplayWebKeys.VERIFY_AGREEMENT_URL, downloadsDisplayContext.getVerifyAgreementURL());
+	%>
+
 	<liferay-ui:search-container>
 		<liferay-ui:search-container-results>
 

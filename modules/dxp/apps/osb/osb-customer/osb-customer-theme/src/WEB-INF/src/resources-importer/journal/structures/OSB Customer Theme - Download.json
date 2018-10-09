@@ -505,21 +505,21 @@
 				},
 				{
 					"label": {
-						"en_US": "DXP EULA"
+						"en_US": "ESA"
 					},
-					"value": "dxpEULA"
+					"value": "esa"
 				},
 				{
 					"label": {
 						"en_US": "Studio EULA"
 					},
-					"value": "studioEULA"
+					"value": "studioEula"
 				},
 				{
 					"label": {
 						"en_US": "Evaluation EULA"
 					},
-					"value": "evaluationEULA"
+					"value": "evaluationEula"
 				}
 			],
 			"predefinedValue": {

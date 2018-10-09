@@ -25,38 +25,18 @@ String customerAccessPattern = PrefsParamUtil.getString(portletPreferences, requ
 String guestAccessPattern = PrefsParamUtil.getString(portletPreferences, request, "guestAccessPattern", StringPool.BLANK);
 String trialPattern = PrefsParamUtil.getString(portletPreferences, request, "trialPattern", StringPool.BLANK);
 
-long evaluationEulaFileEntryId = PrefsParamUtil.getLong(portletPreferences, request, "evaluationEulaFileEntryId_" + currentLanguageId, 0L);
+String esaUrl = PrefsParamUtil.getString(portletPreferences, request, "esaUrl_" + currentLanguageId, StringPool.BLANK);
+String esaVersion = PrefsParamUtil.getString(portletPreferences, request, "esaVersion_" + currentLanguageId, StringPool.BLANK);
+String esaVersionRequired = PrefsParamUtil.getString(portletPreferences, request, "esaVersionRequired_" + currentLanguageId, StringPool.BLANK);
+
+String evaluationEulaUrl = PrefsParamUtil.getString(portletPreferences, request, "evaluationEulaUrl_" + currentLanguageId, StringPool.BLANK);
 String evaluationEulaVersion = PrefsParamUtil.getString(portletPreferences, request, "evaluationEulaVersion_" + currentLanguageId, StringPool.BLANK);
 String evaluationEulaVersionRequired = PrefsParamUtil.getString(portletPreferences, request, "evaluationEulaVersionRequired_" + currentLanguageId, StringPool.BLANK);
-
-String evaluationEulaFileTitle = StringPool.BLANK;
-
-if (evaluationEulaFileEntryId > 0) {
-	try {
-		DLFileEntry fileEntry = DLFileEntryLocalServiceUtil.getFileEntry(evaluationEulaFileEntryId);
-
-		evaluationEulaFileTitle = fileEntry.getTitle();
-	}
-	catch (NoSuchFileEntryException nsfee) {
-	}
-}
 
 String fileDirectory = PrefsParamUtil.getString(portletPreferences, request, "fileDirectory", StringPool.BLANK);
 String downloadPage = PrefsParamUtil.getString(portletPreferences, request, "downloadPage", StringPool.BLANK);
 
-long studioEulaFileEntryId = PrefsParamUtil.getLong(portletPreferences, request, "studioEulaFileEntryId_" + currentLanguageId, 0L);
+String studioEulaUrl = PrefsParamUtil.getString(portletPreferences, request, "studioEulaUrl_" + currentLanguageId, StringPool.BLANK);
 String studioEulaVersion = PrefsParamUtil.getString(portletPreferences, request, "studioEulaVersion_" + currentLanguageId, StringPool.BLANK);
 String studioEulaVersionRequired = PrefsParamUtil.getString(portletPreferences, request, "studioEulaVersionRequired_" + currentLanguageId, StringPool.BLANK);
-
-String studioEulaFileTitle = StringPool.BLANK;
-
-if (studioEulaFileEntryId > 0) {
-	try {
-		DLFileEntry fileEntry = DLFileEntryLocalServiceUtil.getFileEntry(studioEulaFileEntryId);
-
-		studioEulaFileTitle = fileEntry.getTitle();
-	}
-	catch (NoSuchFileEntryException nsfee) {
-	}
-}
 %>
