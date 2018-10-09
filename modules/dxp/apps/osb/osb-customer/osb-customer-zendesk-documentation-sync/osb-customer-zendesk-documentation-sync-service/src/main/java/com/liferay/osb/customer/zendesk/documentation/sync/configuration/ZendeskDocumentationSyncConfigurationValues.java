@@ -21,8 +21,8 @@ import com.liferay.portal.kernel.util.GetterUtil;
  */
 public class ZendeskDocumentationSyncConfigurationValues {
 
-	public static final int ZENDESK_SECTION_USER_SEGMENT_ID =
-		GetterUtil.getInteger(
+	public static final long ZENDESK_SECTION_USER_SEGMENT_ID =
+		GetterUtil.getLong(
 			ZendeskDocumentationSyncConfigurationUtil.get(
 				"zendesk.section.user.segment.id"));
 
