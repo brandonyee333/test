@@ -32,5 +32,5 @@ create table OSBCustomer_ZendeskSection (
 	zendeskCategoryId LONG,
 	documentationKey VARCHAR(150) null,
 	remoteId LONG,
-	remoteHtmlURL VARCHAR(75) null
+	remoteHtmlURL STRING null
 );

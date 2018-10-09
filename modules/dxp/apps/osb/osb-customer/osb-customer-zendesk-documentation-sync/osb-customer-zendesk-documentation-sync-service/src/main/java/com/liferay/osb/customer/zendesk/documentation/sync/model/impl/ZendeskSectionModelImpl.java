@@ -80,7 +80,7 @@ public class ZendeskSectionModelImpl extends BaseModelImpl<ZendeskSection>
 		TABLE_COLUMNS_MAP.put("remoteHtmlURL", Types.VARCHAR);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSBCustomer_ZendeskSection (zendeskSectionId LONG not null primary key,modifiedDate DATE null,zendeskCategoryId LONG,documentationKey VARCHAR(150) null,remoteId LONG,remoteHtmlURL VARCHAR(75) null)";
+	public static final String TABLE_SQL_CREATE = "create table OSBCustomer_ZendeskSection (zendeskSectionId LONG not null primary key,modifiedDate DATE null,zendeskCategoryId LONG,documentationKey VARCHAR(150) null,remoteId LONG,remoteHtmlURL STRING null)";
 	public static final String TABLE_SQL_DROP = "drop table OSBCustomer_ZendeskSection";
 	public static final String ORDER_BY_JPQL = " ORDER BY zendeskSection.zendeskSectionId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY OSBCustomer_ZendeskSection.zendeskSectionId ASC";
