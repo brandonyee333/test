@@ -48,6 +48,8 @@
 			<hint name="max-length">150</hint>
 		</field>
 		<field name="remoteId" type="long" />
-		<field name="remoteHtmlURL" type="String" />
+		<field name="remoteHtmlURL" type="String">
+			<hint-collection name="URL" />
+		</field>
 	</model>
 </model-hints>
