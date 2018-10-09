@@ -71,6 +71,20 @@ export default class AccountEnvironments extends React.Component {
 									value={environment.envASLabel}
 								/>
 
+								{!!environment.envSearchLabels.length && (
+									<EnvironmentDetail
+										label={Liferay.Language.get('search')}
+										value={environment.envSearchLabels.toString().replace(',', ', ')}
+									/>
+								)}
+
+								{(environment.envCSLabel !== 'N/A') && (
+									<EnvironmentDetail
+										label={Liferay.Language.get('cloud-services')}
+										value={environment.envCSLabel}
+									/>
+								)}
+
 								<EnvironmentDetail
 									href={environment.portalExtAccountEnvironmentAttachmentURL}
 									label={Liferay.Language.get('portal-ext')}
@@ -87,6 +101,11 @@ export default class AccountEnvironments extends React.Component {
 								<EnvironmentDetail
 									label={Liferay.Language.get('database')}
 									value={environment.envDBLabel}
+								/>
+
+								<EnvironmentDetail
+									label={Liferay.Language.get('browser')}
+									value={environment.envBrowserLabel}
 								/>
 
 								<EnvironmentDetail
