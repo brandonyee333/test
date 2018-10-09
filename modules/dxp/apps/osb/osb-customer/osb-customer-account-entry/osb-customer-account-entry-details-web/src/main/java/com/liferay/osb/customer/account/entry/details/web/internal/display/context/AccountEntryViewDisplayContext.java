@@ -369,7 +369,7 @@ public class AccountEntryViewDisplayContext {
 
 		long listTypeId = listType.getListTypeId();
 
-		jsonObject.put("envLFR", toJSONArray(listType));
+		jsonObject.put("envLFR", toJSONArray(Arrays.asList(listType)));
 
 		List<ListType> envASListTypes =
 			AccountEnvironmentConstants.getPortalEnvListTypes(
@@ -516,19 +516,6 @@ public class AccountEntryViewDisplayContext {
 
 			jsonArray.put(jsonObject);
 		}
-
-		return jsonArray;
-	}
-
-	protected JSONArray toJSONArray(ListType listType) {
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
-
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-		jsonObject.put("name", LanguageUtil.get(_request, listType.getName()));
-		jsonObject.put("value", String.valueOf(listType.getListTypeId()));
-
-		jsonArray.put(jsonObject);
 
 		return jsonArray;
 	}
