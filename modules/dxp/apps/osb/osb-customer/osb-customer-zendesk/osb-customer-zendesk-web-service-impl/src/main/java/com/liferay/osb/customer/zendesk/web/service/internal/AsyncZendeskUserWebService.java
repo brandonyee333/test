@@ -18,7 +18,6 @@ import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskRequest;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
-import com.liferay.osb.customer.zendesk.web.service.internal.util.MessagePublisherUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -32,7 +31,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Kyle Bischof
@@ -65,7 +63,7 @@ public class AsyncZendeskUserWebService
 		ZendeskRequest zendeskRequest = new ZendeskRequest(
 			endpoint, "put", null, jsonObject, null);
 
-		_messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
+		messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
 	}
 
 	@Override
@@ -85,7 +83,7 @@ public class AsyncZendeskUserWebService
 			endpoint, "post", null, jsonObject,
 			"zendesk.user.create.or.update");
 
-		_messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
+		messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
 
 		return null;
 	}
@@ -118,7 +116,7 @@ public class AsyncZendeskUserWebService
 		ZendeskRequest zendeskRequest = new ZendeskRequest(
 			endpoint, "post", null, jsonObject, null);
 
-		_messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
+		messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
 	}
 
 	@Override
@@ -155,7 +153,7 @@ public class AsyncZendeskUserWebService
 		ZendeskRequest zendeskRequest = new ZendeskRequest(
 			endpoint, "delete", parameters, null, null);
 
-		_messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
+		messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
 	}
 
 	@Override
@@ -179,10 +177,7 @@ public class AsyncZendeskUserWebService
 		ZendeskRequest zendeskRequest = new ZendeskRequest(
 			endpoint, "delete", null, jsonObject, null);
 
-		_messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
+		messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
 	}
-
-	@Reference
-	private MessagePublisherUtil _messagePublisherUtil;
 
 }

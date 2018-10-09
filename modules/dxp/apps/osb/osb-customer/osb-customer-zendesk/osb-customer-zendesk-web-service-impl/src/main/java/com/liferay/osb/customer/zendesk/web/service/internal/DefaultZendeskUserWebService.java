@@ -57,10 +57,10 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 		JSONObject jsonObject = getZendeskUserJSONObject(
 			email, externalId, locale, name, organizationName, tags);
 
-		JSONObject responseJSONObject = _zendeskBaseWebService.post(
+		JSONObject responseJSONObject = zendeskBaseWebService.post(
 			endpoint, jsonObject.toString());
 
-		_messagePublisherUtil.sendEventNotification(
+		messagePublisherUtil.sendEventNotification(
 			"zendesk.user.create.or.update", responseJSONObject);
 
 		return toZendeskUser(responseJSONObject);
@@ -94,7 +94,7 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 				"/organization_memberships.json";
 
 		JSONObject organizationMembershipsJSONObject =
-			_zendeskBaseWebService.get(endpoint, StringPool.BLANK);
+			zendeskBaseWebService.get(endpoint, StringPool.BLANK);
 
 		Map<Long, Long> organizationMembershipMap = new HashMap<>();
 
@@ -123,7 +123,7 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 
 		parameters.put("external_id", externalId);
 
-		JSONObject responseJSONObject = _zendeskBaseWebService.get(
+		JSONObject responseJSONObject = zendeskBaseWebService.get(
 			ZendeskRESTEndpoints.URL_API_V2 + "users/search.json", parameters);
 
 		JSONArray usersJSONArray = responseJSONObject.getJSONArray("users");
@@ -178,20 +178,6 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 		return jsonObject;
 	}
 
-	@Reference(unbind = "-")
-	protected void setMessagePublisherUtil(
-		MessagePublisherUtil messagePublisherUtil) {
-
-		_messagePublisherUtil = messagePublisherUtil;
-	}
-
-	@Reference(unbind = "-")
-	protected void setZendeskBaseWebService(
-		ZendeskBaseWebService zendeskBaseWebService) {
-
-		_zendeskBaseWebService = zendeskBaseWebService;
-	}
-
 	protected ZendeskUser toZendeskUser(JSONObject jsonObject) {
 		ZendeskUser zendeskUser = new ZendeskUser();
 
@@ -204,7 +190,10 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 		return zendeskUser;
 	}
 
-	private MessagePublisherUtil _messagePublisherUtil;
-	private ZendeskBaseWebService _zendeskBaseWebService;
+	@Reference
+	protected MessagePublisherUtil messagePublisherUtil;
+
+	@Reference
+	protected ZendeskBaseWebService zendeskBaseWebService;
 
 }

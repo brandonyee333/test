@@ -1,3 +1,4 @@
 Bundle-Name: Liferay OSB Customer Zendesk Web Service Implementation
 Bundle-SymbolicName: com.liferay.osb.customer.zendesk.web.service.impl
 Bundle-Version: 1.0.0
+-dsannotations-options: inherit

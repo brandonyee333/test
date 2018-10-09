@@ -55,7 +55,7 @@ public class DefaultZendeskOrganizationWebService
 
 		parameters.put("external_id", externalId);
 
-		JSONObject responseJSONObject = _zendeskBaseWebService.get(
+		JSONObject responseJSONObject = zendeskBaseWebService.get(
 			ZendeskRESTEndpoints.URL_API_V2 + "organizations/search.json",
 			parameters);
 
@@ -137,13 +137,6 @@ public class DefaultZendeskOrganizationWebService
 		return jsonObject;
 	}
 
-	@Reference(unbind = "-")
-	protected void setZendeskBaseWebService(
-		ZendeskBaseWebService zendeskBaseWebService) {
-
-		_zendeskBaseWebService = zendeskBaseWebService;
-	}
-
 	protected ZendeskOrganization toZendeskOrganization(JSONObject jsonObject) {
 		ZendeskOrganization zendeskOrganization = new ZendeskOrganization();
 
@@ -153,6 +146,7 @@ public class DefaultZendeskOrganizationWebService
 		return zendeskOrganization;
 	}
 
-	private ZendeskBaseWebService _zendeskBaseWebService;
+	@Reference
+	protected ZendeskBaseWebService zendeskBaseWebService;
 
 }
