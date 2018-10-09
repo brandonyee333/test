@@ -52,6 +52,7 @@ public class AssetListEntryUsageLocalServiceImpl
 			serviceContext.getCreateDate(new Date()));
 		assetListEntryUsage.setModifiedDate(
 			serviceContext.getModifiedDate(new Date()));
+
 		assetListEntryUsage.setAssetListEntryId(assetListEntryId);
 		assetListEntryUsage.setClassNameId(classNameId);
 		assetListEntryUsage.setClassPK(classPK);
