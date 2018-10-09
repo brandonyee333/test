@@ -40,6 +40,6 @@ create table AssetListEntryUsage (
 	assetListEntryId LONG,
 	classNameId LONG,
 	classPK LONG,
-	portletId VARCHAR(200) null,
+	portletId VARCHAR(75) null,
 	lastPublishDate DATE null
 );
