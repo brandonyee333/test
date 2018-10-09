@@ -214,6 +214,7 @@ public class PortalMetricsAggregator {
 		performanceMetrics.put("metricsType", metricsType);
 
 		AverageStatistics averageStatistics = null;
+
 		String averageStatisticsName = null;
 		String key = null;
 

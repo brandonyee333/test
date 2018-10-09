@@ -345,6 +345,7 @@ public class DefaultAttributeResolver implements AttributeResolver {
 
 			List<Group> groups = user.getGroups();
 			List<Organization> organizations = user.getOrganizations();
+
 			List<UserGroup> userGroups = user.getUserGroups();
 
 			List<Group> inheritedSiteGroups =
