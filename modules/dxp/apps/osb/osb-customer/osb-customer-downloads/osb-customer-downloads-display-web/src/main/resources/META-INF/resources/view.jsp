@@ -99,12 +99,6 @@ JSONArray productsJSONArray = downloadsDisplayContext.getProductsJSONArray();
 </c:if>
 
 <div class="results">
-
-	<%
-	request.setAttribute(DownloadsDisplayWebKeys.ACCEPT_AGREEMENT_URL, downloadsDisplayContext.getAcceptAgreementURL());
-	request.setAttribute(DownloadsDisplayWebKeys.VERIFY_AGREEMENT_URL, downloadsDisplayContext.getVerifyAgreementURL());
-	%>
-
 	<liferay-ui:search-container
 		emptyResultsMessage="no-downloads-were-found"
 		searchContainer="<%= downloadsDisplayContext.getSearchContainer() %>"
@@ -125,24 +119,10 @@ JSONArray productsJSONArray = downloadsDisplayContext.getProductsJSONArray();
 				<%= DDMFieldsUtil.getString(ddmFields, "releaseDate") %>
 			</liferay-ui:search-container-column-text>
 
-			<liferay-ui:search-container-column-text
+			<liferay-ui:search-container-column-jsp
 				name="name"
-			>
-				<portlet:renderURL var="journalArticleURL">
-					<portlet:param name="mvcRenderCommandName" value="/view" />
-					<portlet:param name="journalArticleResourcePrimKey" value="<%= String.valueOf(journalArticle.getResourcePrimKey()) %>" />
-				</portlet:renderURL>
-
-				<div>
-					<a href="<%= journalArticleURL.toString() %>"><%= journalArticle.getTitle(locale) %></a>
-				</div>
-
-				<%
-				JournalArticleDisplay journalArticleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(journalArticle, null, null, themeDisplay.getLanguageId(), 0, new PortletRequestModel(renderRequest, renderResponse), themeDisplay);
-				%>
-
-				<%= journalArticleDisplay.getContent() %>
-			</liferay-ui:search-container-column-text>
+				path="/view_journal_article.jsp"
+			/>
 		</liferay-ui:search-container-row>
 
 		<liferay-ui:search-iterator

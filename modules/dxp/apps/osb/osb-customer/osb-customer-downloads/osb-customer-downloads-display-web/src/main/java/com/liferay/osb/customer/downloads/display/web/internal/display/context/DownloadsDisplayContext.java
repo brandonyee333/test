@@ -92,11 +92,13 @@ public class DownloadsDisplayContext {
 		}
 	}
 
-	public String getAcceptAgreementURL() {
+	public String getAcceptAgreementURL(String agreement, String version) {
 		PortletURL acceptAgreementURL = _mimeResponse.createActionURL();
 
 		acceptAgreementURL.setParameter(
 			ActionRequest.ACTION_NAME, "acceptAgreement");
+		acceptAgreementURL.setParameter("agreement", agreement);
+		acceptAgreementURL.setParameter("version", version);
 
 		return acceptAgreementURL.toString();
 	}
@@ -166,9 +168,11 @@ public class DownloadsDisplayContext {
 		return searchContainer;
 	}
 
-	public String getVerifyAgreementURL() {
+	public String getVerifyAgreementURL(String agreement, String version) {
 		ResourceURL verifyAgreementURL = _mimeResponse.createResourceURL();
 
+		verifyAgreementURL.setParameter("agreement", agreement);
+		verifyAgreementURL.setParameter("version", version);
 		verifyAgreementURL.setResourceID("/verify_agreement");
 
 		return verifyAgreementURL.toString();

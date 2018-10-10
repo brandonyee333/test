@@ -25,22 +25,38 @@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %><%@
 taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
-<%@ page import="com.liferay.dynamic.data.mapping.storage.Fields" %><%@
+<%@ page import="com.liferay.dynamic.data.mapping.model.DDMFormFieldType" %><%@
+page import="com.liferay.dynamic.data.mapping.model.Value" %><%@
+page import="com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue" %><%@
+page import="com.liferay.dynamic.data.mapping.storage.DDMFormValues" %><%@
+page import="com.liferay.dynamic.data.mapping.storage.Fields" %><%@
 page import="com.liferay.journal.model.JournalArticle" %><%@
-page import="com.liferay.journal.model.JournalArticleDisplay" %><%@
-page import="com.liferay.journal.service.JournalArticleLocalServiceUtil" %><%@
 page import="com.liferay.journal.util.JournalConverter" %><%@
 page import="com.liferay.osb.customer.downloads.display.web.internal.constants.DDMStructureConstants" %><%@
 page import="com.liferay.osb.customer.downloads.display.web.internal.constants.DownloadsDisplayWebKeys" %><%@
 page import="com.liferay.osb.customer.downloads.display.web.internal.display.context.DownloadsDisplayContext" %><%@
 page import="com.liferay.osb.customer.downloads.display.web.internal.util.DDMFieldsUtil" %><%@
+page import="com.liferay.portal.kernel.dao.search.ResultRow" %><%@
 page import="com.liferay.portal.kernel.json.JSONArray" %><%@
+page import="com.liferay.portal.kernel.json.JSONFactoryUtil" %><%@
 page import="com.liferay.portal.kernel.json.JSONObject" %><%@
-page import="com.liferay.portal.kernel.portlet.PortletRequestModel" %><%@
+page import="com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil" %><%@
 page import="com.liferay.portal.kernel.util.Constants" %><%@
-page import="com.liferay.portal.kernel.util.ParamUtil" %>
+page import="com.liferay.portal.kernel.util.GetterUtil" %><%@
+page import="com.liferay.portal.kernel.util.LocaleUtil" %><%@
+page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
+page import="com.liferay.portal.kernel.util.PortletKeys" %><%@
+page import="com.liferay.portal.kernel.util.StringPool" %><%@
+page import="com.liferay.portal.kernel.util.Validator" %><%@
+page import="com.liferay.portal.kernel.util.WebKeys" %>
 
-<%@ page import="javax.portlet.PortletURL" %>
+<%@ page import="java.util.HashMap" %><%@
+page import="java.util.List" %><%@
+page import="java.util.Locale" %><%@
+page import="java.util.Map" %>
+
+<%@ page import="javax.portlet.PortletPreferences" %><%@
+page import="javax.portlet.PortletURL" %>
 
 <liferay-frontend:defineObjects />
 
