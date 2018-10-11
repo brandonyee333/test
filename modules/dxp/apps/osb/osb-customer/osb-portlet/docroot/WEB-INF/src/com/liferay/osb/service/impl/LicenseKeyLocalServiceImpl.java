@@ -514,6 +514,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		throws Exception {
 
 		User user = userLocalService.getUser(userId);
+
 		LicenseKey licenseKey = licenseKeyPersistence.findByPrimaryKey(
 			licenseKeyId);
 
@@ -579,6 +580,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 	public LicenseKey renewTrialLicenseKey(long userId) throws Exception {
 		User user = userLocalService.getUser(userId);
+
 		AccountEntry accountEntry =
 			accountEntryLocalService.fetchUserTrialAccountEntry(userId);
 

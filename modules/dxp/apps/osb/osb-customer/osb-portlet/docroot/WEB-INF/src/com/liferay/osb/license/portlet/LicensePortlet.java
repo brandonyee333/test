@@ -292,6 +292,7 @@ public class LicensePortlet extends OSBPortlet {
 		for (int serverIdsIndex : serverIdsIndexes) {
 			String hostName = ParamUtil.getString(
 				actionRequest, "hostName" + serverIdsIndex);
+
 			String[] curIpAddresses = StringUtil.split(
 				ParamUtil.getString(
 					actionRequest, "ipAddresses" + serverIdsIndex),

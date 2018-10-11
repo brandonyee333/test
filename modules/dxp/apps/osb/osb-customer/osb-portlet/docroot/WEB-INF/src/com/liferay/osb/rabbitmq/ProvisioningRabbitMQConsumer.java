@@ -915,6 +915,7 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 
 		String dossieraProjectKey = projectJSONObject.getString(
 			"_dossieraProjectKey");
+
 		String name = projectJSONObject.getString("_name");
 
 		name = StringUtil.shorten(name, 150);
@@ -1212,6 +1213,7 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 
 			String firstName = contactJSONObject.getString("_firstName");
 			String lastName = contactJSONObject.getString("_lastName");
+
 			String emailAddress = contactJSONObject.getString("_emailAddress");
 
 			User user = UserLocalServiceUtil.fetchUserByEmailAddress(

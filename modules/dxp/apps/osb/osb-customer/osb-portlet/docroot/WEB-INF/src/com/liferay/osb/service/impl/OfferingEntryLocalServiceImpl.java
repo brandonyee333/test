@@ -64,6 +64,7 @@ public class OfferingEntryLocalServiceImpl
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
+
 		OrderEntry orderEntry = orderEntryPersistence.findByPrimaryKey(
 			orderEntryId);
 

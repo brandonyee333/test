@@ -91,6 +91,7 @@ public class Upgrade_20160413174405139_OfferingEntry
 
 			while (rs.next()) {
 				long offeringEntryId = rs.getLong("offeringEntryId");
+
 				Timestamp modifiedDate = rs.getTimestamp("modifiedDate");
 
 				int portalVerison = getPortalVersion(modifiedDate.getTime());
