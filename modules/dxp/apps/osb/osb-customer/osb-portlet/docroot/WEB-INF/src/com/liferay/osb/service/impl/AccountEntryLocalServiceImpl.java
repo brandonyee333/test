@@ -2425,6 +2425,20 @@ public class AccountEntryLocalServiceImpl
 				String.valueOf(accountEntry.getCorpProjectId()));
 		}
 
+		String oldDossieraAccountKey = oldAccountEntry.getDossieraAccountKey();
+
+		if (!oldDossieraAccountKey.equals(
+				accountEntry.getDossieraAccountKey())) {
+
+			auditEntryLocalService.addAuditEntry(
+				userId, userName, createDate, classNameId, classPK, auditSetId,
+				classNameId, classPK, auditAction,
+				AuditEntryConstants.FIELD_DOSSIERA_ACCOUNT_KEY,
+				VisibilityConstants.LIFERAY_INC, StringPool.BLANK,
+				oldDossieraAccountKey, StringPool.BLANK,
+				accountEntry.getDossieraAccountKey());
+		}
+
 		String oldCorpEntryName = oldAccountEntry.getCorpEntryName();
 
 		if (!oldCorpEntryName.equals(accountEntry.getCorpEntryName())) {

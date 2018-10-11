@@ -46,6 +46,8 @@ public class AuditEntryConstants {
 
 	public static final int FIELD_CORP_PROJECT = 34058;
 
+	public static final int FIELD_DOSSIERA_ACCOUNT_KEY = 34078;
+
 	public static final int FIELD_ENV_AS = 34001;
 
 	public static final int FIELD_ENV_BROWSER = 34029;

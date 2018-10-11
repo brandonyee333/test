@@ -257,6 +257,7 @@ insert into ListType (listTypeId, name, type_) values (34070, 'languages', 'com.
 insert into ListType (listTypeId, name, type_) values (34071, 'support-regions', 'com.liferay.osb.model.AuditEntry.field');
 insert into ListType (listTypeId, name, type_) values (34072, 'not-applicable', 'com.liferay.osb.model.AuditEntry.field');
 insert into ListType (listTypeId, name, type_) values (34073, 'offerings', 'com.liferay.osb.model.AuditEntry.field');
+insert into ListType (listTypeId, name, type_) values (34078, 'dossiera-account-key', 'com.liferay.osb.model.AuditEntry.field');
 
 insert into ListType (listTypeId, name, type_) values (35000, 'aerospace-and-defense', 'com.liferay.osb.model.AccountEntry.industry');
 insert into ListType (listTypeId, name, type_) values (35001, 'agriculture', 'com.liferay.osb.model.AccountEntry.industry');
