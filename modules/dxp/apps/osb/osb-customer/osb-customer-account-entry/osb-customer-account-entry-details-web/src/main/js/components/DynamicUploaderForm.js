@@ -74,7 +74,7 @@ export default class DynamicUploaderForm extends React.Component {
 			this.setState(
 				{
 					message: {
-						content: Liferay.Language.get('invalid-browser'),
+						content: Liferay.Language.get('this-browser-is-not-supported'),
 						type: 'error'
 					}
 				}
