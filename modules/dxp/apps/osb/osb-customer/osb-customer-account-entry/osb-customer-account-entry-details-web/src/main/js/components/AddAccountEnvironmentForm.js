@@ -115,6 +115,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 					},
 					selectedOptions: {
 						...selectedOptions,
+						selectedLFRVersion: null,
 						selectedProduct: curSelectedProduct
 					}
 				}
@@ -501,7 +502,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 									</label>
 
 									<div className="upload-dropzone">
-										<input className="form-control" id={`${namespace}portalExt`} name={`${namespace}portalExt`} onBlur={handleBlur} onChange={this.handleFileChange} ref={this.portalExtRef} type="file" />
+										<input className="form-control" id={`${namespace}portalExt`} name={`${namespace}portalExt`} onChange={this.handleFileChange} ref={this.portalExtRef} type="file" />
 
 										<svg className="lexicon-icon lexicon-icon-paperclip">
 											<use xlinkHref="#paperclip" />
@@ -551,7 +552,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 									</label>
 
 									<div className="upload-dropzone">
-										<input className="form-control" id={`${namespace}patchLevel`} name={`${namespace}patchLevel`} onBlur={handleBlur} onChange={this.handleFileChange} ref={this.patchLevelRef} type="file" />
+										<input className="form-control" id={`${namespace}patchLevel`} name={`${namespace}patchLevel`} onChange={this.handleFileChange} ref={this.patchLevelRef} type="file" />
 
 										<svg className="lexicon-icon lexicon-icon-paperclip">
 											<use xlinkHref="#paperclip" />
