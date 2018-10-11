@@ -36,7 +36,10 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Amos Fong
  */
-@Component(immediate = true, service = ZendeskUserWebService.class)
+@Component(
+	immediate = true, property = "service.ranking:Integer=100",
+	service = ZendeskUserWebService.class
+)
 public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 
 	public void addZendeskUserTags(long zendeskUserId, Set<String> tags)
@@ -55,7 +58,7 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 				ZendeskRESTEndpoints.USERS_CREATE_OR_UPDATE;
 
 		JSONObject jsonObject = getZendeskUserJSONObject(
-			email, externalId, locale, name, organizationName, tags);
+			externalId, email, locale, name, organizationName, tags);
 
 		JSONObject responseJSONObject = zendeskBaseWebService.post(
 			endpoint, jsonObject.toString());

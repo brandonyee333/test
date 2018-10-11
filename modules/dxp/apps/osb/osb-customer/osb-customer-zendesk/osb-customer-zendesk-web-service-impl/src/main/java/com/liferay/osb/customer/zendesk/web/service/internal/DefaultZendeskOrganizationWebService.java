@@ -34,7 +34,10 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Kyle Bischof
  */
-@Component(immediate = true, service = ZendeskOrganizationWebService.class)
+@Component(
+	immediate = true, property = "service.ranking:Integer=100",
+	service = ZendeskOrganizationWebService.class
+)
 public class DefaultZendeskOrganizationWebService
 	implements ZendeskOrganizationWebService {
 
