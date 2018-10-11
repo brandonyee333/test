@@ -15,7 +15,12 @@
 package com.liferay.osb.customer.ticket.service.permission;
 
 import com.liferay.osb.model.AccountCustomer;
+import com.liferay.osb.model.AccountEntry;
+import com.liferay.osb.model.PartnerWorker;
+import com.liferay.osb.model.PartnerWorkerConstants;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
+import com.liferay.osb.service.AccountEntryLocalServiceUtil;
+import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
@@ -61,6 +66,26 @@ public class TicketAttachmentPermissionChecker {
 
 		if (accountCustomer != null) {
 			return true;
+		}
+
+		AccountEntry accountEntry =
+			AccountEntryLocalServiceUtil.getAccountEntry(accountEntryId);
+
+		if (accountEntry.isPartnerManagedSupport()) {
+			PartnerWorker partnerWorker =
+				PartnerWorkerLocalServiceUtil.fetchPartnerWorker(
+					permissionChecker.getUserId(),
+					accountEntry.getPartnerEntryId());
+
+			if (partnerWorker != null) {
+				if ((partnerWorker.getRole() ==
+						PartnerWorkerConstants.ROLE_MANAGER) ||
+					(partnerWorker.getRole() ==
+						PartnerWorkerConstants.ROLE_MEMBER)) {
+
+					return true;
+				}
+			}
 		}
 
 		return false;
