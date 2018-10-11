@@ -3,8 +3,10 @@
 }
 
 .aui {
-	.sub-grid ul li {
-		list-style: initial;
+	article, .lego-article, .security-vulnerabilities {
+		ul li {
+			list-style: initial;
+		}
 	}
 
 	.section-heading {
