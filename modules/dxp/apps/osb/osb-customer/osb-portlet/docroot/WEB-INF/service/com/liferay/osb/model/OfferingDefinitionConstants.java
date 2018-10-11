@@ -27,17 +27,12 @@ public class OfferingDefinitionConstants {
 		36500 * 1440 * Time.MINUTE;
 
 	public static final Object[][] LIFETIME_VALUES_ARRAY = {
-		new Object[] {1, "1-minute"}, new Object[] {30 * 1440, "30-days"},
-		new Object[] {60 * 1440, "60-days"},
-		new Object[] {90 * 1440, "90-days"},
-		new Object[] {150 * 1440, "150-days"},
-		new Object[] {183 * 1440, "6-months"},
-		new Object[] {365 * 1440, "1-year"},
-		new Object[] {465 * 1440, "15-months"},
-		new Object[] {730 * 1440, "2-years"},
-		new Object[] {1095 * 1440, "3-years"},
-		new Object[] {1825 * 1440, "5-years"},
-		new Object[] {36500 * 1440, "indefinite"}
+		{1, "1-minute"}, {30 * 1440, "30-days"}, {60 * 1440, "60-days"},
+		{90 * 1440, "90-days"}, {150 * 1440, "150-days"},
+		{183 * 1440, "6-months"}, {365 * 1440, "1-year"},
+		{465 * 1440, "15-months"}, {730 * 1440, "2-years"},
+		{1095 * 1440, "3-years"}, {1825 * 1440, "5-years"},
+		{36500 * 1440, "indefinite"}
 	};
 
 	public static String getCustomLifetimeLabel(long lifetime) {

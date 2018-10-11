@@ -204,7 +204,7 @@ public class LCSSubscriptionEntryLocalServiceImpl
 			return 6200;
 		}
 		else if (version ==
-					 ProductEntryConstants.DIGITAL_ENTERPRISE_MAJOR_VERSION_7) {
+					ProductEntryConstants.DIGITAL_ENTERPRISE_MAJOR_VERSION_7) {
 
 			return 7000;
 		}
@@ -255,7 +255,7 @@ public class LCSSubscriptionEntryLocalServiceImpl
 			product = _PORTAL_LIMITED;
 		}
 		else if (productEntryName.contains(
-					 _DIGITAL_ENTERPRISE_NON_PRODUCTION) ||
+					_DIGITAL_ENTERPRISE_NON_PRODUCTION) ||
 				 productEntryName.contains(_PORTAL_NON_PRODUCTION)) {
 
 			product = _PORTAL_NON_PRODUCTION;
@@ -279,12 +279,12 @@ public class LCSSubscriptionEntryLocalServiceImpl
 			product = "Gold " + product;
 		}
 		else if (supportResponse.getSupportLevel() ==
-					 SupportResponseConstants.SUPPORT_LEVEL_PLATINUM) {
+					SupportResponseConstants.SUPPORT_LEVEL_PLATINUM) {
 
 			product = "Platinum " + product;
 		}
 		else if (supportResponse.getSupportLevel() ==
-					 SupportResponseConstants.SUPPORT_LEVEL_SILVER) {
+					SupportResponseConstants.SUPPORT_LEVEL_SILVER) {
 
 			product = "Silver " + product;
 		}

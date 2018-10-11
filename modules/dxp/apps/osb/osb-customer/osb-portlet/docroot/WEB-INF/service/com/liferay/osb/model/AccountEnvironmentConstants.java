@@ -487,14 +487,14 @@ public class AccountEnvironmentConstants {
 			return _envDigitalEnterpriseVersion71.get(envListType);
 		}
 		else if ((envLFR >=
-					 ProductEntryConstants.SOCIAL_OFFICE_VERSION_2_0_3) &&
+					ProductEntryConstants.SOCIAL_OFFICE_VERSION_2_0_3) &&
 				 (envLFR <=
 					 ProductEntryConstants.SOCIAL_OFFICE_VERSION_2_1_0)) {
 
 			return _envSocialOfficeVersion2.get(envListType);
 		}
 		else if ((envLFR >=
-					 ProductEntryConstants.SOCIAL_OFFICE_VERSION_3_0_0) &&
+					ProductEntryConstants.SOCIAL_OFFICE_VERSION_3_0_0) &&
 				 (envLFR <=
 					 ProductEntryConstants.SOCIAL_OFFICE_VERSION_3_1_1)) {
 

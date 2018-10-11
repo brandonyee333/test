@@ -211,7 +211,7 @@ public class ProductEntryConstants {
 			return LIST_TYPE_PORTAL_ALL_VERSIONS;
 		}
 		else if (majorListType.equals(
-					 LIST_TYPE_DIGITAL_ENTERPRISE_MAJOR_VERSIONS)) {
+					LIST_TYPE_DIGITAL_ENTERPRISE_MAJOR_VERSIONS)) {
 
 			return LIST_TYPE_DIGITAL_ENTERPRISE_ALL_VERSIONS;
 		}
