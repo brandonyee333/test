@@ -39,7 +39,7 @@ The available fields for adding a new environment configuration are:
 * Patch info file
 
 #### Special Cases
-##### *Search Option*
+##### Search Option
 
 For any _DXP_ product, the user will see an additional multi-select field.
 
@@ -47,13 +47,13 @@ Based on the offering, a customer could have the _Standard Search_ option or the
 
 This field is not required.
 
-##### *Cloud Services*
+##### Cloud Services
 
 For any _Liferay Version_ 6.2 and above, there will be an additional field for _Cloud Services_.
 
 This field is a not required.
 
-##### *Other Operating Systems*
+##### Other Operating Systems
 
 `Other` is a value for the _Operating System_ select field. When `Other` is selected,  a _Custom Operating System_ input text field will appear for the user to enter a value.
 
