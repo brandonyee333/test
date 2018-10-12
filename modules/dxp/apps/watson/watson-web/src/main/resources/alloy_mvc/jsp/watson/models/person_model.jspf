@@ -472,10 +472,10 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 		if (!names.isEmpty()) {
 			for (WatsonListTypeRel name : names) {
 				if (name.getPrimary()) {
-					return name.getValue();
+					return name.getValue(LocaleUtil.getMostRelevantLocale());
 				}
 				else {
-					secondaryName = name.getValue();
+					secondaryName = name.getValue(LocaleUtil.getMostRelevantLocale());
 				}
 			}
 		}
