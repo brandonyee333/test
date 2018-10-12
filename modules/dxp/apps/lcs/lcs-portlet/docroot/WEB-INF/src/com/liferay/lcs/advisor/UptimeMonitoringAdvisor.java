@@ -290,8 +290,7 @@ public class UptimeMonitoringAdvisor {
 
 		@Override
 		public String toString() {
-			return
-				"Uptime{startTime=" + startTime + ", endTime=" + endTime + "}";
+			return "{endTime=" + endTime + ", startTime=" + startTime + "}";
 		}
 
 		protected long endTime;
