@@ -42,12 +42,23 @@ import javax.portlet.PortletPreferences;
  */
 public class UptimeMonitoringAdvisor {
 
-	public List<Map<String, Long>> getUptimes() throws IOException {
+	public List<Map<String, Long>> getUptimeEntries() throws IOException {
 		if (!_initalized) {
 			throw new UnsupportedOperationException("Bean is not initialized");
 		}
 
-		return _getUptimesMap();
+		List<Map<String, Long>> uptimeEntries = new ArrayList<>();
+
+		for (Uptime uptime : _getUptimes()) {
+			Map<String, Long> uptimeEntry = new HashMap<>();
+
+			uptimeEntry.put("endTime", uptime.endTime);
+			uptimeEntry.put("startTime", uptime.startTime);
+
+			uptimeEntries.add(uptimeEntry);
+		}
+
+		return uptimeEntries;
 	}
 
 	public void init() throws IOException {
@@ -133,6 +144,8 @@ public class UptimeMonitoringAdvisor {
 				if (_log.isTraceEnabled()) {
 					_log.trace("Uptimes updated to: " + uptimes);
 				}
+
+				return;
 			}
 		}
 	}
@@ -159,74 +172,60 @@ public class UptimeMonitoringAdvisor {
 	}
 
 	private List<Uptime> _getUptimes() throws IOException {
-		List<Uptime> uptimesList = new ArrayList<>();
+		List<Uptime> uptimes = new ArrayList<>();
 
 		String key = _lcsKeyAdvisor.getKey();
 
 		if (key == null) {
-			return uptimesList;
+			return uptimes;
 		}
+
+		_addPersistedUptimes(key, uptimes);
+
+		_addTemporaryUptimes(uptimes);
+
+		return uptimes;
+	}
+
+	private void _addPersistedUptimes(String key, List<Uptime> uptimesList)
+		throws IOException {
 
 		PortletPreferences portletPreferences =
 			LCSPortletPreferencesUtil.fetchReadOnlyJxPortletPreferences();
 
 		String json = portletPreferences.getValue("uptimes-" + key, null);
 
-		if (json != null) {
-			ObjectMapper objectMapper = new ObjectMapper();
+		if (json == null) {
+			return;
+		}
 
-			JsonNode jsonNode = objectMapper.readTree(json);
+		ObjectMapper objectMapper = new ObjectMapper();
 
-			if (jsonNode.isArray()) {
-				Iterator<JsonNode> iterator = jsonNode.iterator();
+		JsonNode jsonNode = objectMapper.readTree(json);
 
-				while (iterator.hasNext()) {
-					JsonNode uptimeJSONNode = iterator.next();
+		if (jsonNode.isArray()) {
+			Iterator<JsonNode> iterator = jsonNode.iterator();
 
-					Uptime uptime = new Uptime();
+			while (iterator.hasNext()) {
+				JsonNode uptimeJSONNode = iterator.next();
 
-					JsonNode endTimeJSONNode = uptimeJSONNode.get("endTime");
+				Uptime uptime = new Uptime();
 
-					uptime.endTime = endTimeJSONNode.asLong();
+				JsonNode endTimeJSONNode = uptimeJSONNode.get("endTime");
 
-					JsonNode startTimeJSONNode = uptimeJSONNode.get(
-						"startTime");
+				uptime.endTime = endTimeJSONNode.asLong();
 
-					uptime.startTime = startTimeJSONNode.asLong();
+				JsonNode startTimeJSONNode = uptimeJSONNode.get("startTime");
 
-					uptimesList.add(uptime);
-				}
+				uptime.startTime = startTimeJSONNode.asLong();
+
+				uptimesList.add(uptime);
 			}
 		}
-
-		_mergeUptimesJSONArrays(uptimesList);
-
-		return uptimesList;
 	}
 
-	private List<Map<String, Long>> _getUptimesMap() throws IOException {
-		List<Map<String, Long>> uptimes = new ArrayList<>();
-
-		List<Uptime> uptimes1 = _getUptimes();
-
-		Iterator<Uptime> iterator = uptimes1.iterator();
-
-		while (iterator.hasNext()) {
-			Uptime next = iterator.next();
-
-			Map<String, Long> uptime = new HashMap<>();
-
-			uptime.put("endTime", next.endTime);
-			uptime.put("startTime", next.startTime);
-
-			uptimes.add(uptime);
-		}
-
-		return uptimes;
-	}
-
-	private void _mergeUptimesJSONArrays(List<Uptime> uptimes) {
-		List<Uptime> mergeableUptimes = new ArrayList<>();
+	private void _addTemporaryUptimes(List<Uptime> uptimes) {
+		List<Uptime> mergeableTemporaryUptimes = new ArrayList<>();
 
 		for (Uptime temporaryUptime : _temporaryUptimes) {
 			boolean mergeable = true;
@@ -240,11 +239,11 @@ public class UptimeMonitoringAdvisor {
 			}
 
 			if (mergeable) {
-				mergeableUptimes.add(temporaryUptime);
+				mergeableTemporaryUptimes.add(temporaryUptime);
 			}
 		}
 
-		uptimes.addAll(mergeableUptimes);
+		uptimes.addAll(mergeableTemporaryUptimes);
 	}
 
 	private void _storeUptimesJSONArray(List<Uptime> uptimes) {
