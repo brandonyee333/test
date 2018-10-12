@@ -37,7 +37,6 @@ import com.liferay.lcs.util.PortletPropsValues;
 import com.liferay.lcs.util.comparator.MessagePriorityComparator;
 import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.license.util.LicenseManagerUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -50,6 +49,8 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
+
+import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -315,13 +316,13 @@ public class HandshakeTask implements Task {
 
 			return uptimeEntries;
 		}
-		catch (PortalException pe) {
+		catch (IOException ioe) {
 			_log.error(
 				"Unable to collect portal uptime entries required for " +
 					"handshake message");
 
 			throw new LCSHandshakeException(
-				"Portal uptime entries are required", pe);
+				"Portal uptime entries are required", ioe);
 		}
 	}
 

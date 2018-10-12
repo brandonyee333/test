@@ -14,19 +14,23 @@
 
 package com.liferay.lcs.advisor;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import com.liferay.lcs.util.LCSPortletPreferencesUtil;
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.io.IOException;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -38,22 +42,22 @@ import javax.portlet.PortletPreferences;
  */
 public class UptimeMonitoringAdvisor {
 
-	public List<Map<String, Long>> getUptimes() throws JSONException {
+	public List<Map<String, Long>> getUptimes() throws IOException {
 		if (!_initalized) {
 			throw new UnsupportedOperationException("Bean is not initialized");
 		}
 
-		return _getUptimes();
+		return _getUptimesMap();
 	}
 
-	public void init() throws JSONException {
+	public void init() throws IOException {
 		if (_initalized) {
 			return;
 		}
 
-		JSONArray jsonArray = _getUptimesJSONArray();
+		List<Uptime> uptimes = _getUptimes();
 
-		_checkUptime(jsonArray);
+		_checkUptime(uptimes);
 
 		_initalized = true;
 
@@ -74,7 +78,7 @@ public class UptimeMonitoringAdvisor {
 		}
 	}
 
-	public synchronized void resetUptimes() throws JSONException {
+	public synchronized void resetUptimes() throws IOException {
 		if (!_initalized) {
 			throw new UnsupportedOperationException("Bean is not initialized");
 		}
@@ -83,30 +87,24 @@ public class UptimeMonitoringAdvisor {
 			_log.trace("Reset uptimes");
 		}
 
-		JSONArray jsonArray = _getUptimesJSONArray();
+		List<Uptime> uptimes = _getUptimes();
 
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
+		Iterator<Uptime> iterator = uptimes.iterator();
 
-			if (jsonObject.getLong("startTime") !=
-					_runtimeMXBean.getStartTime()) {
+		while (iterator.hasNext()) {
+			Uptime next = iterator.next();
 
-				continue;
+			if (next.startTime != _runtimeMXBean.getStartTime()) {
+				iterator.remove();
 			}
+		}
 
-			jsonArray = JSONFactoryUtil.createJSONArray();
+		_storeUptimesJSONArray(uptimes);
 
-			jsonArray.put(jsonObject);
+		_readyForUpdates = true;
 
-			_storeUptimesJSONArray(jsonArray);
-
-			_readyForUpdates = true;
-
-			if (_log.isDebugEnabled()) {
-				_log.debug("Uptimes reset and ready for updates");
-			}
-
-			break;
+		if (_log.isDebugEnabled()) {
+			_log.debug("Uptimes reset and ready for updates");
 		}
 	}
 
@@ -114,7 +112,7 @@ public class UptimeMonitoringAdvisor {
 		_lcsKeyAdvisor = lcsKeyAdvisor;
 	}
 
-	public synchronized void updateCurrentUptime() throws JSONException {
+	public synchronized void updateCurrentUptime() throws IOException {
 		if (!_initalized) {
 			throw new UnsupportedOperationException("Bean is not initialized");
 		}
@@ -123,84 +121,50 @@ public class UptimeMonitoringAdvisor {
 			return;
 		}
 
-		JSONArray jsonArray = _getUptimesJSONArray();
+		List<Uptime> uptimes = _getUptimes();
 
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
+		for (Uptime uptime : uptimes) {
+			if (uptime.startTime == _runtimeMXBean.getStartTime()) {
+				uptime.endTime =
+					_runtimeMXBean.getStartTime() + _runtimeMXBean.getUptime();
 
-			if (jsonObject.getLong("startTime") !=
-					_runtimeMXBean.getStartTime()) {
+				_storeUptimesJSONArray(uptimes);
 
-				continue;
+				if (_log.isTraceEnabled()) {
+					_log.trace("Uptimes updated to: " + uptimes);
+				}
 			}
-
-			jsonObject.put(
-				"endTime",
-				_runtimeMXBean.getStartTime() + _runtimeMXBean.getUptime());
-
-			_storeUptimesJSONArray(jsonArray);
-
-			if (_log.isTraceEnabled()) {
-				_log.trace("Uptimes updated to: " + jsonArray.toString());
-			}
-
-			break;
 		}
 	}
 
-	private void _checkUptime(JSONArray jsonArray) {
+	private void _checkUptime(List<Uptime> uptimes) {
 		long startTime = _runtimeMXBean.getStartTime();
 
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-			if (jsonObject.getLong("startTime") == startTime) {
+		for (Uptime uptime : uptimes) {
+			if (startTime == uptime.startTime) {
 				return;
 			}
 		}
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		Uptime uptime = new Uptime();
 
-		jsonObject.put("endTime", startTime + _runtimeMXBean.getUptime());
-		jsonObject.put("startTime", startTime);
+		uptime.endTime = startTime + _runtimeMXBean.getUptime();
+		uptime.startTime = startTime;
 
-		jsonArray.put(jsonObject);
-
-		_uptimes.add(jsonArray.toString());
+		_temporaryUptimes.add(uptime);
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Temporary uptime created");
 		}
 	}
 
-	private List<Map<String, Long>> _getUptimes() throws JSONException {
-		List<Map<String, Long>> uptimes = new ArrayList<>();
-
-		JSONArray jsonArray = _getUptimesJSONArray();
-
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-			Map<String, Long> uptime = new HashMap<>();
-
-			uptime.put("endTime", jsonObject.getLong("endTime"));
-			uptime.put("startTime", jsonObject.getLong("startTime"));
-
-			uptimes.add(uptime);
-		}
-
-		return uptimes;
-	}
-
-	private JSONArray _getUptimesJSONArray() throws JSONException {
-		JSONArray jsonArray = null;
+	private List<Uptime> _getUptimes() throws IOException {
+		List<Uptime> uptimesList = new ArrayList<>();
 
 		String key = _lcsKeyAdvisor.getKey();
 
 		if (key == null) {
-			jsonArray = JSONFactoryUtil.createJSONArray();
-
-			return jsonArray;
+			return uptimesList;
 		}
 
 		PortletPreferences portletPreferences =
@@ -208,60 +172,104 @@ public class UptimeMonitoringAdvisor {
 
 		String json = portletPreferences.getValue("uptimes-" + key, null);
 
-		if (json == null) {
-			jsonArray = JSONFactoryUtil.createJSONArray();
-		}
-		else {
-			jsonArray = JSONFactoryUtil.createJSONArray(json);
-		}
+		if (json != null) {
+			ObjectMapper objectMapper = new ObjectMapper();
 
-		_mergeUptimesJSONArrays(jsonArray);
+			JsonNode jsonNode = objectMapper.readTree(json);
 
-		return jsonArray;
-	}
+			if (jsonNode.isArray()) {
+				Iterator<JsonNode> iterator = jsonNode.iterator();
 
-	private void _mergeUptimesJSONArrays(JSONArray jsonArray)
-		throws JSONException {
+				while (iterator.hasNext()) {
+					JsonNode uptimeJSONNode = iterator.next();
 
-		for (String json : _uptimes) {
-			JSONArray uptimeJSONArray = JSONFactoryUtil.createJSONArray(json);
+					Uptime uptime = new Uptime();
 
-			for (int i = 0; i < uptimeJSONArray.length(); i++) {
-				JSONObject uptimeJSONObject = uptimeJSONArray.getJSONObject(i);
+					JsonNode endTimeJSONNode = uptimeJSONNode.get("endTime");
 
-				boolean duplicate = false;
+					uptime.endTime = endTimeJSONNode.asLong();
 
-				for (int j = 0; j < jsonArray.length(); j++) {
-					JSONObject jsonObject = jsonArray.getJSONObject(j);
+					JsonNode startTimeJSONNode = uptimeJSONNode.get(
+						"startTime");
 
-					if (uptimeJSONObject.getLong("startTime") ==
-							jsonObject.getLong("startTime")) {
+					uptime.startTime = startTimeJSONNode.asLong();
 
-						duplicate = true;
-
-						break;
-					}
+					uptimesList.add(uptime);
 				}
-
-				if (duplicate) {
-					continue;
-				}
-
-				jsonArray.put(uptimeJSONObject);
 			}
 		}
+
+		_mergeUptimesJSONArrays(uptimesList);
+
+		return uptimesList;
 	}
 
-	private void _storeUptimesJSONArray(JSONArray jsonArray) {
+	private List<Map<String, Long>> _getUptimesMap() throws IOException {
+		List<Map<String, Long>> uptimes = new ArrayList<>();
+
+		List<Uptime> uptimes1 = _getUptimes();
+
+		Iterator<Uptime> iterator = uptimes1.iterator();
+
+		while (iterator.hasNext()) {
+			Uptime next = iterator.next();
+
+			Map<String, Long> uptime = new HashMap<>();
+
+			uptime.put("endTime", next.endTime);
+			uptime.put("startTime", next.startTime);
+
+			uptimes.add(uptime);
+		}
+
+		return uptimes;
+	}
+
+	private void _mergeUptimesJSONArrays(List<Uptime> uptimes) {
+		List<Uptime> mergeableUptimes = new ArrayList<>();
+
+		for (Uptime temporaryUptime : _temporaryUptimes) {
+			boolean mergeable = true;
+
+			for (Uptime uptime : uptimes) {
+				if (temporaryUptime.startTime == uptime.startTime) {
+					mergeable = false;
+
+					break;
+				}
+			}
+
+			if (mergeable) {
+				mergeableUptimes.add(temporaryUptime);
+			}
+		}
+
+		uptimes.addAll(mergeableUptimes);
+	}
+
+	private void _storeUptimesJSONArray(List<Uptime> uptimes) {
 		String key = _lcsKeyAdvisor.getKey();
 
 		if (key == null) {
 			return;
 		}
 
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		ArrayNode arrayNode = objectMapper.createArrayNode();
+
+		for (Uptime uptime : uptimes) {
+			ObjectNode objectNode = objectMapper.createObjectNode();
+
+			objectNode.put("endTime", uptime.endTime);
+			objectNode.put("startTime", uptime.startTime);
+
+			arrayNode.add(objectNode);
+		}
+
 		try {
 			LCSPortletPreferencesUtil.store(
-				"uptimes-" + key, jsonArray.toString());
+				"uptimes-" + key, arrayNode.toString());
 		}
 		catch (Exception e) {
 			_log.error("Unable to store portal uptimes for key " + key, e);
@@ -277,6 +285,19 @@ public class UptimeMonitoringAdvisor {
 	private boolean _initalized;
 	private LCSKeyAdvisor _lcsKeyAdvisor;
 	private boolean _readyForUpdates;
-	private final List<String> _uptimes = new ArrayList();
+	private final List<Uptime> _temporaryUptimes = new ArrayList();
+
+	private class Uptime {
+
+		@Override
+		public String toString() {
+			return
+				"Uptime{startTime=" + startTime + ", endTime=" + endTime + "}";
+		}
+
+		protected long endTime;
+		protected long startTime;
+
+	}
 
 }
