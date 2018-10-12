@@ -33,10 +33,6 @@ public class InstallationEnvironmentAdvisorTest {
 		Assert.assertNotNull(hardwareMetadata.get("fs.root"));
 		Assert.assertNotNull(hardwareMetadata.get("fs.root.total.space"));
 		Assert.assertNotNull(hardwareMetadata.get("fs.root.usable.space"));
-		Assert.assertNotNull(hardwareMetadata.get("physical.memory.free"));
-		Assert.assertNotNull(hardwareMetadata.get("physical.memory.total"));
-		Assert.assertNotNull(hardwareMetadata.get("swap.free"));
-		Assert.assertNotNull(hardwareMetadata.get("swap.total"));
 	}
 
 	private final InstallationEnvironmentAdvisor

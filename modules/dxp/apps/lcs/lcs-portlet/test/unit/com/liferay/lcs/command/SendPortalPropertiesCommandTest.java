@@ -65,6 +65,11 @@ public class SendPortalPropertiesCommandTest extends PowerMockito {
 				"test");
 		}
 
+		_properties.put("blacklist.key.1", "blacklist.key.value.1");
+		_properties.put("blacklist.key.2", "blacklist.key.value.2");
+		_properties.put("blacklist.key.3", "blacklist.key.value.3");
+		_properties.put("blacklist.key.4", "blacklist.key.value.4");
+
 		when(
 			PropsUtil.getProperties()
 		).thenReturn(
@@ -80,7 +85,7 @@ public class SendPortalPropertiesCommandTest extends PowerMockito {
 		when(
 			lcsClusterEntryTokenAdvisor.getPortalPropertiesBlacklist()
 		).thenReturn(
-			"blacklist.key.1,blacklist.key.2"
+			"blacklist.key.1,blacklist.key.3"
 		);
 
 		SendPortalPropertiesCommand sendPortalPropertiesCommand =
@@ -93,23 +98,31 @@ public class SendPortalPropertiesCommandTest extends PowerMockito {
 		for (String portalPropertiesInsensitiveKey :
 				LCSConstants.PORTAL_PROPERTIES_SECURITY_INSENSITIVE) {
 
-			if (!properties.containsKey(portalPropertiesInsensitiveKey)) {
-				Assert.fail();
-			}
+			Assert.assertTrue(
+				"contains key " + portalPropertiesInsensitiveKey,
+				properties.containsKey(portalPropertiesInsensitiveKey));
 		}
 
 		for (String portalPropertiesSensitiveKey :
 				LCSConstants.PORTAL_PROPERTIES_SECURITY_SENSITIVE) {
 
-			if (properties.containsKey(portalPropertiesSensitiveKey)) {
-				Assert.fail();
-			}
+			Assert.assertFalse(
+				"must not contain key " + portalPropertiesSensitiveKey,
+				properties.containsKey(portalPropertiesSensitiveKey));
 		}
 
+		Assert.assertFalse(
+			"must not contain key blacklist.key.1",
+			properties.containsKey("blacklist.key.1"));
 		Assert.assertTrue(
-			"blacklist.key.1 present", properties.contains("blacklist.key.1"));
+			"contains key blacklist.key.2",
+			properties.containsKey("blacklist.key.2"));
+		Assert.assertFalse(
+			"must not contain key blacklist.key.3",
+			properties.containsKey("blacklist.key.3"));
 		Assert.assertTrue(
-			"blacklist.key.2 present", properties.contains("blacklist.key.2"));
+			"contains key blacklist.key.4",
+			properties.containsKey("blacklist.key.4"));
 	}
 
 	private final Properties _properties = new Properties();
