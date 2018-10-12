@@ -135,7 +135,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 				%>
 
 				<c:if test="<%= !supportRegions.isEmpty() %>">
-					<span class="expand" id="<portlet:namespace />expand_<%= accountEntry.getAccountEntryId() %>_supportRegions">
+					<span id="<portlet:namespace />expand_<%= accountEntry.getAccountEntryId() %>_supportRegions">
 						<liferay-ui:icon
 							image="../arrows/01_plus"
 							label="<%= true %>"
@@ -143,7 +143,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 							url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportRegions(" + accountEntry.getAccountEntryId() + ", true);" %>'
 						/>
 					</span>
-					<span class="collapse hide" id="<portlet:namespace />collapse_<%= accountEntry.getAccountEntryId() %>_supportRegions">
+					<span class="hide" id="<portlet:namespace />collapse_<%= accountEntry.getAccountEntryId() %>_supportRegions">
 						<liferay-ui:icon
 							image="../arrows/01_minus"
 							label="<%= true %>"
@@ -202,7 +202,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 </aui:form>
 
 <aui:script>
-	function <portlet:namespace />toggleSupportRegions(accountEntryIdId, expand) {
+	function <portlet:namespace />toggleSupportRegions(accountEntryId, expand) {
 		var A = AUI();
 
 		if (expand) {
