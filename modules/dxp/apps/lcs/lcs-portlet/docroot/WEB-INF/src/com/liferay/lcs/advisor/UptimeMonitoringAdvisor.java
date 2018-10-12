@@ -150,43 +150,6 @@ public class UptimeMonitoringAdvisor {
 		}
 	}
 
-	private void _checkUptime(List<Uptime> uptimes) {
-		long startTime = _runtimeMXBean.getStartTime();
-
-		for (Uptime uptime : uptimes) {
-			if (startTime == uptime.startTime) {
-				return;
-			}
-		}
-
-		Uptime uptime = new Uptime();
-
-		uptime.endTime = startTime + _runtimeMXBean.getUptime();
-		uptime.startTime = startTime;
-
-		_temporaryUptimes.add(uptime);
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Temporary uptime created");
-		}
-	}
-
-	private List<Uptime> _getUptimes() throws IOException {
-		List<Uptime> uptimes = new ArrayList<>();
-
-		String key = _lcsKeyAdvisor.getKey();
-
-		if (key == null) {
-			return uptimes;
-		}
-
-		_addPersistedUptimes(key, uptimes);
-
-		_addTemporaryUptimes(uptimes);
-
-		return uptimes;
-	}
-
 	private void _addPersistedUptimes(String key, List<Uptime> uptimesList)
 		throws IOException {
 
@@ -244,6 +207,43 @@ public class UptimeMonitoringAdvisor {
 		}
 
 		uptimes.addAll(mergeableTemporaryUptimes);
+	}
+
+	private void _checkUptime(List<Uptime> uptimes) {
+		long startTime = _runtimeMXBean.getStartTime();
+
+		for (Uptime uptime : uptimes) {
+			if (startTime == uptime.startTime) {
+				return;
+			}
+		}
+
+		Uptime uptime = new Uptime();
+
+		uptime.endTime = startTime + _runtimeMXBean.getUptime();
+		uptime.startTime = startTime;
+
+		_temporaryUptimes.add(uptime);
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Temporary uptime created");
+		}
+	}
+
+	private List<Uptime> _getUptimes() throws IOException {
+		List<Uptime> uptimes = new ArrayList<>();
+
+		String key = _lcsKeyAdvisor.getKey();
+
+		if (key == null) {
+			return uptimes;
+		}
+
+		_addPersistedUptimes(key, uptimes);
+
+		_addTemporaryUptimes(uptimes);
+
+		return uptimes;
 	}
 
 	private void _storeUptimesJSONArray(List<Uptime> uptimes) {

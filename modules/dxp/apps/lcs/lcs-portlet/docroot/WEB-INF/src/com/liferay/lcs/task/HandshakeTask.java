@@ -310,7 +310,7 @@ public class HandshakeTask implements Task {
 	private List<Map<String, Long>> _getPortalUptimeEntries() {
 		try {
 			List<Map<String, Long>> uptimeEntries =
-				_uptimeMonitoringAdvisor.getUptimes();
+				_uptimeMonitoringAdvisor.getUptimeEntries();
 
 			_uptimeMonitoringAdvisor.resetCurrentUptimeEndTime(uptimeEntries);
 

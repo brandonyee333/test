@@ -75,11 +75,13 @@ public class UptimeMonitoringAdvisorTest extends PowerMockito {
 
 	@Test
 	public void testGetUptimes() throws Exception {
-		List<Map<String, Long>> uptimes = _uptimeMonitoringAdvisor.getUptimes();
+		List<Map<String, Long>> uptimeEntries =
+			_uptimeMonitoringAdvisor.getUptimeEntries();
 
-		Assert.assertEquals("uptimes has one uptime entry", 1, uptimes.size());
+		Assert.assertEquals(
+			"uptimeEntries has one uptime entry", 1, uptimeEntries.size());
 
-		Map<String, Long> uptime = uptimes.get(0);
+		Map<String, Long> uptime = uptimeEntries.get(0);
 
 		Assert.assertTrue(
 			"JVM end time greater than start time",
@@ -87,20 +89,19 @@ public class UptimeMonitoringAdvisorTest extends PowerMockito {
 	}
 
 	@Test
-	public void testGetUptimesIfPortletPreferencesUptimeAvailable()
-		throws Exception {
-
+	public void testGetUptimesIfPersistedUptimesAvailable() throws Exception {
 		_portletPreferences.setValue(
 			"uptimes-lcsServerId",
 			"[{\"startTime\":\"1539092605095\",\"endTime\":\"1539098932697\"}" +
 				"]");
 
-		List<Map<String, Long>> uptimes = _uptimeMonitoringAdvisor.getUptimes();
+		List<Map<String, Long>> uptimeEntries =
+			_uptimeMonitoringAdvisor.getUptimeEntries();
 
 		Assert.assertEquals(
-			"uptimes has two uptime entries", 2, uptimes.size());
+			"uptimeEntries has two uptime entries", 2, uptimeEntries.size());
 
-		Map<String, Long> uptime = uptimes.get(0);
+		Map<String, Long> uptime = uptimeEntries.get(0);
 
 		Assert.assertEquals(
 			"portlet preferences uptime end time", Long.valueOf(1539098932697L),
@@ -118,19 +119,20 @@ public class UptimeMonitoringAdvisorTest extends PowerMockito {
 				",{\"startTime\":\"1539099932697\",\"endTime\":" +
 					"\"1539099992697\"}]");
 
-		List<Map<String, Long>> uptimes = _uptimeMonitoringAdvisor.getUptimes();
+		List<Map<String, Long>> uptimeEntries =
+			_uptimeMonitoringAdvisor.getUptimeEntries();
 
 		Assert.assertEquals(
-			"uptimes has two uptime entries", 3, uptimes.size());
+			"uptimes has two uptime entries", 3, uptimeEntries.size());
 
-		Map<String, Long> uptime = uptimes.get(2);
+		Map<String, Long> uptime = uptimeEntries.get(2);
 
 		Assert.assertNotNull(
 			"current uptime end time defined", uptime.get("endTime"));
 
-		_uptimeMonitoringAdvisor.resetCurrentUptimeEndTime(uptimes);
+		_uptimeMonitoringAdvisor.resetCurrentUptimeEndTime(uptimeEntries);
 
-		uptime = uptimes.get(2);
+		uptime = uptimeEntries.get(2);
 
 		Assert.assertNull(
 			"current uptime end time must be null after reset",
@@ -139,9 +141,10 @@ public class UptimeMonitoringAdvisorTest extends PowerMockito {
 
 	@Test
 	public void testUpdateCurrentUptime() throws Exception {
-		List<Map<String, Long>> uptimes = _uptimeMonitoringAdvisor.getUptimes();
+		List<Map<String, Long>> uptimeEntries =
+			_uptimeMonitoringAdvisor.getUptimeEntries();
 
-		Map<String, Long> uptime = uptimes.get(0);
+		Map<String, Long> uptime = uptimeEntries.get(0);
 
 		long endTimeBeforeUpdate = uptime.get("endTime");
 
@@ -155,9 +158,9 @@ public class UptimeMonitoringAdvisorTest extends PowerMockito {
 
 		_uptimeMonitoringAdvisor.updateCurrentUptime();
 
-		uptimes = _uptimeMonitoringAdvisor.getUptimes();
+		uptimeEntries = _uptimeMonitoringAdvisor.getUptimeEntries();
 
-		uptime = uptimes.get(0);
+		uptime = uptimeEntries.get(0);
 
 		long updatedEndTime = uptime.get("endTime");
 
