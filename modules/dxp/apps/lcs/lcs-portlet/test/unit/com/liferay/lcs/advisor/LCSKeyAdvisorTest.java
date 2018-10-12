@@ -46,7 +46,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
  */
 @PrepareForTest({DigesterUtil.class, FileUtil.class})
 @RunWith(PowerMockRunner.class)
-public class LCSKeyAdvisorImplTest extends PowerMockito {
+public class LCSKeyAdvisorTest extends PowerMockito {
 
 	@Before
 	public void setUp() throws IOException {
@@ -143,7 +143,7 @@ public class LCSKeyAdvisorImplTest extends PowerMockito {
 	}
 
 	private String _getTestLCSKeyFilePath(String fileName) {
-		Class<LCSKeyAdvisorImplTest> clazz = LCSKeyAdvisorImplTest.class;
+		Class<LCSKeyAdvisorTest> clazz = LCSKeyAdvisorTest.class;
 
 		URL resource = clazz.getResource(
 			"dependencies/data/license/server/" + fileName);
