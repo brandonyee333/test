@@ -16,9 +16,6 @@ package com.liferay.lcs.advisor;
 
 import com.liferay.lcs.MockPortletPreferencesImpl;
 import com.liferay.lcs.util.LCSPortletPreferencesUtil;
-import com.liferay.lcs.util.LCSUtil;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.util.PropsUtil;
 
 import java.lang.management.ManagementFactory;
 
@@ -38,21 +35,15 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 /**
  * @author Ivica Cardic
+ * @author Igor Beslic
  */
-@PrepareForTest(
-	{
-		JSONFactoryUtil.class, LCSUtil.class, ManagementFactory.class,
-		PropsUtil.class, LCSPortletPreferencesUtil.class
-	}
-)
+@PrepareForTest({ManagementFactory.class, LCSPortletPreferencesUtil.class})
 @RunWith(PowerMockRunner.class)
 public class UptimeMonitoringAdvisorTest extends PowerMockito {
 
 	@Before
 	public void setUp() throws Exception {
-		mockStatic(
-			LCSUtil.class, ManagementFactory.class,
-			LCSPortletPreferencesUtil.class);
+		mockStatic(ManagementFactory.class, LCSPortletPreferencesUtil.class);
 
 		when(
 			LCSPortletPreferencesUtil.fetchReadOnlyJxPortletPreferences()
