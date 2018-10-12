@@ -20,6 +20,8 @@ export default class DynamicUploaderForm extends React.Component {
 	};
 
 	formRef = React.createRef();
+	selectButtonRef = React.createRef();
+	uploadAreaRef = React.createRef();
 
 	state = {
 		comment: '',
@@ -81,8 +83,8 @@ export default class DynamicUploaderForm extends React.Component {
 			);
 		}
 		else {
-			resumable.assignBrowse(document.getElementById(`${namespace}selectButton`));
-			resumable.assignDrop(document.getElementById(`${namespace}uploadArea`));
+			resumable.assignBrowse(this.selectButtonRef.current);
+			resumable.assignDrop(this.uploadAreaRef.current);
 
 			resumable.on(
 				'fileAdded',
@@ -334,8 +336,8 @@ export default class DynamicUploaderForm extends React.Component {
 								</svg>
 							</label>
 
-							<div className="form-control upload-area" id={`${namespace}uploadArea`}>
-								<input className="attachment" id={`${namespace}selectButton`} name={`${namespace}attachment`} type="file" />
+							<div className="form-control upload-area" id={`${namespace}uploadArea`} ref={this.uploadAreaRef}>
+								<input className="attachment" id={`${namespace}selectButton`} name={`${namespace}attachment`} ref={this.selectButtonRef} type="file" />
 
 								<div className="upload-area-label">
 									<svg className="lexicon-icon lexicon-icon-paperclip">
