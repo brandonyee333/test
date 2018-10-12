@@ -111,7 +111,7 @@ export default class AddAccountEnvironmentForm extends React.Component {
 				{
 					configurations: {
 						...configurations,
-						enterprise: !!curSelectedProduct && curSelectedProduct.enterpriseSearch,
+						enterprise: !!curSelectedProduct && curSelectedProduct.enterpriseSearch
 					},
 					selectedOptions: {
 						...selectedOptions,
