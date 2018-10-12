@@ -852,10 +852,8 @@ public class SingleLogoutProfileImpl
 		logoutRequest.setID(generateIdentifier(20));
 		logoutRequest.setIssueInstant(new DateTime(DateTimeZone.UTC));
 
-		SSODescriptor ssoDescriptor =
-			(SSODescriptor)samlMessageContext.getLocalEntityRoleMetadata();
-
-		Issuer issuer = OpenSamlUtil.buildIssuer(ssoDescriptor.getID());
+		Issuer issuer = OpenSamlUtil.buildIssuer(
+			samlMessageContext.getLocalEntityId());
 
 		logoutRequest.setIssuer(issuer);
 
@@ -1099,10 +1097,8 @@ public class SingleLogoutProfileImpl
 		logoutRequest.setID(generateIdentifier(20));
 		logoutRequest.setIssueInstant(new DateTime(DateTimeZone.UTC));
 
-		SSODescriptor ssoDescriptor =
-			(SSODescriptor)samlMessageContext.getLocalEntityRoleMetadata();
-
-		Issuer issuer = OpenSamlUtil.buildIssuer(ssoDescriptor.getID());
+		Issuer issuer = OpenSamlUtil.buildIssuer(
+			samlMessageContext.getLocalEntityId());
 
 		logoutRequest.setIssuer(issuer);
 
