@@ -125,7 +125,7 @@ public class DefaultZendeskOrganizationWebService
 
 		JSONArray tagsJSONArray = JSONFactoryUtil.createJSONArray();
 
-		if ((tags != null) && tags.isEmpty()) {
+		if ((tags != null) && !tags.isEmpty()) {
 			for (String tag : tags) {
 				tagsJSONArray.put(tag);
 			}
