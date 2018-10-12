@@ -64,7 +64,7 @@ public class UserSynchronizer {
 
 		tags.add(ZendeskTagConstants.OSB_PARTNER);
 
-		_zendeskUserWebService.deleteZendeskUserTags(zendeskUserId, tags);
+		_asyncZendeskUserWebService.deleteZendeskUserTags(zendeskUserId, tags);
 	}
 
 	public long sync(User user, String organizationName, Set<String> tags)

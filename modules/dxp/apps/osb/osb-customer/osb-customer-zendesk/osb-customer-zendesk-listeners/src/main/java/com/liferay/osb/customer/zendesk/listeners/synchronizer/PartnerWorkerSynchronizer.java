@@ -65,7 +65,7 @@ public class PartnerWorkerSynchronizer {
 			partnerWorker);
 
 		if (zendeskOrganizationIds.length > 0) {
-			_zendeskUserWebService.deleteZendeskUserOrganizationMemberships(
+			_asyncZendeskUserWebService.deleteZendeskUserOrganizationMemberships(
 				zendeskUserId, zendeskOrganizationIds);
 		}
 
@@ -111,8 +111,5 @@ public class PartnerWorkerSynchronizer {
 
 	@Reference
 	private ZendeskMapperUtil _zendeskMapperUtil;
-
-	@Reference
-	private ZendeskUserWebService _zendeskUserWebService;
 
 }
