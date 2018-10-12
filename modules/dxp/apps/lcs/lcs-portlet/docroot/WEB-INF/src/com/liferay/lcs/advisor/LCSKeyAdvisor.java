@@ -49,8 +49,10 @@ public class LCSKeyAdvisor {
 	}
 
 	public synchronized void updateKey(String key) {
+		String lcsKeyFilePath = getLCSKeyFilePath();
+
 		try {
-			File lcsServerIdFile = new File(_LCS_KEY_FILE_PATH);
+			File lcsServerIdFile = new File(lcsKeyFilePath);
 
 			FileUtil.write(lcsServerIdFile, key.getBytes());
 
@@ -62,7 +64,7 @@ public class LCSKeyAdvisor {
 		}
 		catch (IOException ioe) {
 			throw new InitializationException.FileSystemAccessException(
-				_LCS_KEY_FILE_PATH, ioe);
+				lcsKeyFilePath, ioe);
 		}
 	}
 
@@ -75,9 +77,16 @@ public class LCSKeyAdvisor {
 		}
 	}
 
+	protected String getLCSKeyFilePath() {
+		return
+			PropsUtil.get(PropsKeys.LIFERAY_HOME) + _LCS_KEY_FILE_RELATIVE_PATH;
+	}
+
 	private void _readKey() {
+		String lcsKeyFilePath = getLCSKeyFilePath();
+
 		try {
-			File lcsServerIdFile = new File(_LCS_KEY_FILE_PATH);
+			File lcsServerIdFile = new File(lcsKeyFilePath);
 
 			if (!lcsServerIdFile.exists()) {
 				if (_log.isDebugEnabled()) {
@@ -108,13 +117,12 @@ public class LCSKeyAdvisor {
 		}
 		catch (IOException ioe) {
 			throw new InitializationException.FileSystemAccessException(
-				_LCS_KEY_FILE_PATH, ioe);
+				lcsKeyFilePath, ioe);
 		}
 	}
 
-	private static final String _LCS_KEY_FILE_PATH =
-		PropsUtil.get(PropsKeys.LIFERAY_HOME) +
-			"/data/license/server/lcsServerId";
+	private static final String _LCS_KEY_FILE_RELATIVE_PATH =
+		"/data/license/server/lcsServerId";
 
 	private static final Log _log = LogFactoryUtil.getLog(LCSKeyAdvisor.class);
 
