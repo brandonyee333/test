@@ -14,6 +14,8 @@
 
 package com.liferay.forms.apio.internal.architect.resource;
 
+import static com.liferay.portal.apio.permission.HasPermissionUtil.failOnException;
+
 import com.liferay.apio.architect.credentials.Credentials;
 import com.liferay.apio.architect.functional.Try;
 import com.liferay.apio.architect.language.AcceptLanguage;
@@ -48,7 +50,6 @@ import com.liferay.forms.apio.internal.model.FormContextWrapper;
 import com.liferay.media.object.apio.architect.identifier.MediaObjectIdentifier;
 import com.liferay.person.apio.architect.identifier.PersonIdentifier;
 import com.liferay.portal.apio.permission.HasPermission;
-import com.liferay.portal.apio.permission.HasPermissionUtil;
 import com.liferay.portal.apio.user.CurrentUser;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.repository.model.FileEntry;
@@ -58,11 +59,10 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BiFunction;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-
-import static com.liferay.portal.apio.permission.HasPermissionUtil.failOnException;
 
 /**
  * Provides the information necessary to expose FormInstance resources through a
@@ -101,17 +101,14 @@ public class FormInstanceNestedCollectionResource
 			new EvaluateContextRoute(), this::_evaluateContext,
 			AcceptLanguage.class, DDMFormRenderingContext.class,
 			ThemeDisplay.class, FormContextIdentifier.class,
-			failOnException(_hasPermission.forAddingIn(
-				FormInstanceRecordIdentifier.class)), FormContextForm::buildForm
+			_getPermissionBiFunction(), FormContextForm::buildForm
 		).addCustomRoute(
 			new FetchLatestDraftRoute(), this::_fetchDDMFormInstanceRecord,
 			CurrentUser.class, FormInstanceRecordIdentifier.class,
-			failOnException(_hasPermission.forAddingIn(
-				FormInstanceRecordIdentifier.class)), FetchLatestDraftForm::buildForm
+			_getPermissionBiFunction(), FetchLatestDraftForm::buildForm
 		).addCustomRoute(
 			new UploadFileRoute(), this::_uploadFile,
-			MediaObjectIdentifier.class, failOnException(_hasPermission.forAddingIn(
-				FormInstanceRecordIdentifier.class)),
+			MediaObjectIdentifier.class, _getPermissionBiFunction(),
 			MediaObjectCreatorForm::buildForm
 		).build();
 	}
@@ -196,6 +193,11 @@ public class FormInstanceNestedCollectionResource
 			company.getCompanyId(), groupId);
 
 		return new PageItems<>(ddmFormInstances, count);
+	}
+
+	private BiFunction<Credentials, Long, Boolean> _getPermissionBiFunction() {
+		return failOnException(
+			_hasPermission.forAddingIn(FormInstanceRecordIdentifier.class));
 	}
 
 	private Long _getStructureId(DDMFormInstance ddmFormInstance) {
