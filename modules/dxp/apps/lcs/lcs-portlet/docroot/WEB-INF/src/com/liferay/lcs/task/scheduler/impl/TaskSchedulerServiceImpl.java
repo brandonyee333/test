@@ -94,17 +94,16 @@ public class TaskSchedulerServiceImpl
 			10, threadFactory);
 	}
 
-	@Override
-	public void end() {
+	public void destroy() {
 		if (_log.isInfoEnabled()) {
-			_log.info("End of life for " + this);
+			_log.info("Destroying " + this);
 		}
 
 		_shutdownPending = true;
 
-		_executeSignOffTask();
-
 		_cancelAllTasks();
+
+		_executeSignOffTask();
 
 		if (_uptimeMonitoringTaskScheduledFuture != null) {
 			_uptimeMonitoringTaskScheduledFuture.cancel(true);
@@ -121,6 +120,10 @@ public class TaskSchedulerServiceImpl
 		}
 		catch (InterruptedException ie) {
 			_scheduledExecutorService.shutdownNow();
+		}
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Destroyed " + this);
 		}
 	}
 
@@ -190,9 +193,9 @@ public class TaskSchedulerServiceImpl
 			_log.debug("Reconnecting to LCS gateway");
 		}
 
-		_executeSignOffTask();
-
 		_cancelAllTasks();
+
+		_executeSignOffTask();
 
 		_executeLCSClusterEntryTokenCheckTask(true);
 	}

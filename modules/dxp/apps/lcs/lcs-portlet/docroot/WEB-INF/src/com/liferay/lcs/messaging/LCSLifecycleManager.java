@@ -47,8 +47,6 @@ public class LCSLifecycleManager extends HotDeployMessageListener {
 
 	@Override
 	protected void onUndeploy(Message message) throws Exception {
-		_taskSchedulerService.end();
-
 		LCSUtil.processLCSPortletState(LCSPortletState.PLUGIN_ABSENT);
 
 		if (_log.isInfoEnabled()) {

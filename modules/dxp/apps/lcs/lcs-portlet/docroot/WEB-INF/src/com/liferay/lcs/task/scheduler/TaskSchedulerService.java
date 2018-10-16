@@ -23,8 +23,6 @@ import java.util.Map;
  */
 public interface TaskSchedulerService extends TaskStateListener {
 
-	public void end();
-
 	public void restart();
 
 	public void scheduleTask(Map<String, String> schedulerContext);
