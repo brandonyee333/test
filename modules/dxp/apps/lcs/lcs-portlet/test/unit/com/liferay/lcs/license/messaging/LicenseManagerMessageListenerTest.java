@@ -104,18 +104,12 @@ public class LicenseManagerMessageListenerTest extends PowerMockito {
 			licenseManagerValidateLCSMessageListener = spy(
 				new LicenseManagerValidateLCSMessageListener());
 
-		licenseManagerValidateLCSMessageListener.setLCSPortletStateAdvisor(
-			lcsPortletStateAdvisor);
-
 		licenseManagerBaseMessageListeners.add(
 			licenseManagerValidateLCSMessageListener);
 
 		LicenseManagerValidateSubscriptionMessageListener
 			licenseManagerValidateSubscriptionMessageListener = spy(
 				new LicenseManagerValidateSubscriptionMessageListener());
-
-		licenseManagerValidateSubscriptionMessageListener.
-			setLcsPortletStateAdvisor(lcsPortletStateAdvisor);
 
 		licenseManagerBaseMessageListeners.add(
 			licenseManagerValidateSubscriptionMessageListener);
@@ -145,7 +139,7 @@ public class LicenseManagerMessageListenerTest extends PowerMockito {
 		}
 
 		Mockito.verify(
-			lcsPortletStateAdvisor, Mockito.times(2)
+			lcsPortletStateAdvisor, Mockito.times(0)
 		).getLCSPortletState(
 			Boolean.TRUE
 		);
