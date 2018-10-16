@@ -14,7 +14,6 @@
 
 package com.liferay.lcs.license.messaging;
 
-import com.liferay.lcs.advisor.LCSPortletStateAdvisor;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 import com.liferay.portal.kernel.license.messaging.LicenseManagerMessageType;
@@ -33,34 +32,22 @@ public class LicenseManagerValidateSubscriptionMessageListener
 			LicenseManagerMessageType.VALIDATE_SUBSCRIPTION);
 	}
 
-	public void setLcsPortletStateAdvisor(
-		LCSPortletStateAdvisor lcsPortletStateAdvisor) {
-
-		_lcsPortletStateAdvisor = lcsPortletStateAdvisor;
-	}
-
 	@Override
 	protected Message createResponseMessage(JSONObject jsonObject) {
 		LicenseManagerMessageType licenseManagerMessageType =
 			LicenseManagerMessageType.SUBSCRIPTION_VALID;
 
-		if (_log.isTraceEnabled()) {
-			_log.trace("Checking LCS portlet state");
+		if (_log.isWarnEnabled()) {
+			_log.warn(
+				"Responding to LicenseManager with " +
+					LCSPortletState.UNDEFINED);
 		}
 
-		LCSPortletState lcsPortletState =
-			_lcsPortletStateAdvisor.getLCSPortletState(true);
-
-		if (_log.isTraceEnabled()) {
-			_log.trace("LCS portlet state: " + lcsPortletState);
-		}
-
-		return licenseManagerMessageType.createMessage(lcsPortletState);
+		return licenseManagerMessageType.createMessage(
+			LCSPortletState.UNDEFINED);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		LicenseManagerValidateSubscriptionMessageListener.class);
-
-	private LCSPortletStateAdvisor _lcsPortletStateAdvisor;
 
 }

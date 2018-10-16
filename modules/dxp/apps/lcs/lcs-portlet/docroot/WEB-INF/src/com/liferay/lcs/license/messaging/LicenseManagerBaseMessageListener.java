@@ -17,9 +17,12 @@ package com.liferay.lcs.license.messaging;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.license.messaging.LicenseManagerMessageType;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 
 /**
@@ -58,6 +61,17 @@ public abstract class LicenseManagerBaseMessageListener
 			return;
 		}
 
+		if (_log.isWarnEnabled()) {
+			StringBundler sb = new StringBundler(4);
+
+			sb.append("Since LCS Client version 5.0.0 subscription ");
+			sb.append("verification is optional and must be activated at LCS ");
+			sb.append("Platform Dashboard. Please make sure correct portal ");
+			sb.append("fix pack is installed.");
+
+			_log.warn(sb.toString());
+		}
+
 		Message responseMessage = createResponseMessage(jsonObject);
 
 		if (isSynchronous(message)) {
@@ -79,6 +93,9 @@ public abstract class LicenseManagerBaseMessageListener
 
 		return true;
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		LicenseManagerBaseMessageListener.class);
 
 	private LicenseManagerMessageType _allowedLicenseManagerMessageType;
 

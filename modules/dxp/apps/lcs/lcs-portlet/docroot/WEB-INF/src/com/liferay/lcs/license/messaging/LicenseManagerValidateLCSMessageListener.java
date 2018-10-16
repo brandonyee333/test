@@ -14,9 +14,11 @@
 
 package com.liferay.lcs.license.messaging;
 
-import com.liferay.lcs.advisor.LCSPortletStateAdvisor;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 import com.liferay.portal.kernel.license.messaging.LicenseManagerMessageType;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Message;
 
 /**
@@ -30,21 +32,22 @@ public class LicenseManagerValidateLCSMessageListener
 			LicenseManagerMessageType.VALIDATE_LCS);
 	}
 
-	public void setLCSPortletStateAdvisor(
-		LCSPortletStateAdvisor lcsPortletStateAdvisor) {
-
-		_lcsPortletStateAdvisor = lcsPortletStateAdvisor;
-	}
-
 	@Override
 	protected Message createResponseMessage(JSONObject jsonObject) {
 		LicenseManagerMessageType licenseManagerMessageType =
 			LicenseManagerMessageType.LCS_AVAILABLE;
 
+		if (_log.isWarnEnabled()) {
+			_log.warn(
+				"Responding to LicenseManager with " +
+					LCSPortletState.NO_CONNECTION);
+		}
+
 		return licenseManagerMessageType.createMessage(
-			_lcsPortletStateAdvisor.getLCSPortletState(true));
+			LCSPortletState.NO_CONNECTION);
 	}
 
-	private LCSPortletStateAdvisor _lcsPortletStateAdvisor;
+	private static final Log _log = LogFactoryUtil.getLog(
+		LicenseManagerValidateLCSMessageListener.class);
 
 }
