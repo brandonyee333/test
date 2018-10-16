@@ -36,6 +36,10 @@ public class ZendeskOrganization {
 		return _partnerFirstLineSupport;
 	}
 
+	public String getPartnerJiraProject() {
+		return _partnerJiraProject;
+	}
+
 	public String getPartnerOrganization() {
 		return _partnerOrganization;
 	}
@@ -88,6 +92,10 @@ public class ZendeskOrganization {
 		_partnerFirstLineSupport = partnerFirstLineSupport;
 	}
 
+	public void setPartnerJiraProject(String partnerJiraProject) {
+		_partnerJiraProject = partnerJiraProject;
+	}
+
 	public void setPartnerOrganization(String partnerOrganization) {
 		_partnerOrganization = partnerOrganization;
 	}
@@ -131,6 +139,7 @@ public class ZendeskOrganization {
 	private String _externalId;
 	private String _name;
 	private String _partnerFirstLineSupport;
+	private String _partnerJiraProject;
 	private String _partnerOrganization;
 	private String _sharedComments;
 	private String _sharedTickets;

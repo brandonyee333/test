@@ -65,8 +65,9 @@ public class PartnerWorkerSynchronizer {
 			partnerWorker);
 
 		if (zendeskOrganizationIds.length > 0) {
-			_asyncZendeskUserWebService.deleteZendeskUserOrganizationMemberships(
-				zendeskUserId, zendeskOrganizationIds);
+			_asyncZendeskUserWebService.
+				deleteZendeskUserOrganizationMemberships(
+					zendeskUserId, zendeskOrganizationIds);
 		}
 
 		_userSynchronizer.removeObsoleteTags(partnerWorker.getUserId());

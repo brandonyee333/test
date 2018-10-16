@@ -43,9 +43,9 @@ public class DefaultZendeskOrganizationWebService
 
 	public void createOrUpdateZendeskOrganization(
 			String externalId, String name, String partnerFirstLineSupport,
-			String partnerCode, String sla, String status,
-			String supportLanguage, String supportRegion, String tier,
-			Set<String> tags)
+			String partnerJiraProject, String partnerCode, String sla,
+			String status, String supportLanguage, String supportRegion,
+			String tier, Set<String> tags)
 		throws PortalException {
 
 		throw new UnsupportedOperationException();
@@ -74,9 +74,9 @@ public class DefaultZendeskOrganizationWebService
 
 	protected JSONObject getZendeskOrganizationJSONObject(
 		String externalId, String name, String partnerFirstLineSupport,
-		String partnerOrganization, String sla, String status,
-		String supportLanguage, String supportRegion, String tier,
-		Set<String> tags) {
+		String partnerJiraProject, String partnerOrganization, String sla,
+		String status, String supportLanguage, String supportRegion,
+		String tier, Set<String> tags) {
 
 		JSONObject organizationJSONObject = JSONFactoryUtil.createJSONObject();
 
@@ -89,6 +89,11 @@ public class DefaultZendeskOrganizationWebService
 		if (Validator.isNotNull(partnerFirstLineSupport)) {
 			organizationFieldsJSONObject.put(
 				"partner_first_line_support", partnerFirstLineSupport);
+		}
+
+		if (Validator.isNotNull(partnerJiraProject)) {
+			organizationFieldsJSONObject.put(
+				"partner_jira_project", partnerJiraProject);
 		}
 
 		if (Validator.isNotNull(partnerOrganization)) {

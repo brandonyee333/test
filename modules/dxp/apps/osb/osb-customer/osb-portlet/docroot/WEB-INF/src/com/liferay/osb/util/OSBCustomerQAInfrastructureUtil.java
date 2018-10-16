@@ -484,7 +484,7 @@ public class OSBCustomerQAInfrastructureUtil {
 
 			PartnerEntryLocalServiceUtil.addPartnerEntry(
 				OSBConstants.USER_DEFAULT_USER_ID, 0, dossieraAccountKey, code,
-				StringPool.BLANK, supportRegionIds);
+				StringPool.BLANK, StringPool.BLANK, supportRegionIds);
 		}
 
 		if (_log.isInfoEnabled()) {

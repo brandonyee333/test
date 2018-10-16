@@ -44,7 +44,8 @@ public class PartnerEntryLocalServiceImpl
 
 	public PartnerEntry addPartnerEntry(
 			long userId, long parentPartnerEntryId, String dossieraAccountKey,
-			String code, String notes, long[] supportRegionIds)
+			String code, String jiraProjectKey, String notes,
+			long[] supportRegionIds)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
@@ -69,6 +70,7 @@ public class PartnerEntryLocalServiceImpl
 		partnerEntry.setParentPartnerEntryId(parentPartnerEntryId);
 		partnerEntry.setDossieraAccountKey(dossieraAccountKey);
 		partnerEntry.setCode(code);
+		partnerEntry.setJiraProjectKey(jiraProjectKey);
 		partnerEntry.setNotes(notes);
 		partnerEntry.setStatus(WorkflowConstants.STATUS_APPROVED);
 
@@ -182,7 +184,8 @@ public class PartnerEntryLocalServiceImpl
 
 	public PartnerEntry updatePartnerEntry(
 			long userId, long partnerEntryId, String dossieraAccountKey,
-			String code, String notes, int status, long[] supportRegionIds)
+			String code, String jiraProjectKey, String notes, int status,
+			long[] supportRegionIds)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
@@ -201,6 +204,7 @@ public class PartnerEntryLocalServiceImpl
 		partnerEntry.setModifiedDate(now);
 		partnerEntry.setDossieraAccountKey(dossieraAccountKey);
 		partnerEntry.setCode(code);
+		partnerEntry.setJiraProjectKey(jiraProjectKey);
 		partnerEntry.setNotes(notes);
 		partnerEntry.setStatus(status);
 
@@ -248,8 +252,10 @@ public class PartnerEntryLocalServiceImpl
 			updatePartnerEntry(
 				user.getUserId(), childPartnerEntry.getPartnerEntryId(),
 				childPartnerEntry.getDossieraAccountKey(),
-				childPartnerEntry.getCode(), childPartnerEntry.getNotes(),
-				WorkflowConstants.STATUS_INACTIVE, null);
+				childPartnerEntry.getCode(),
+				childPartnerEntry.getJiraProjectKey(),
+				childPartnerEntry.getNotes(), WorkflowConstants.STATUS_INACTIVE,
+				null);
 		}
 	}
 

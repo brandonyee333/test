@@ -118,6 +118,14 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 				<aui:input label="" name="code" />
 			</td>
 		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="jira-project-key" />
+			</td>
+			<td>
+				<aui:input label="" name="jiraProjectKey" />
+			</td>
+		</tr>
 
 		<c:if test="<%= partnerEntry != null %>">
 			<tr>

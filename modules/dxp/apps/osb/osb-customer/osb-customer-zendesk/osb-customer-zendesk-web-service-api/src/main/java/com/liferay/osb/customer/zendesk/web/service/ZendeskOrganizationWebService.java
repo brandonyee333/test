@@ -29,9 +29,9 @@ public interface ZendeskOrganizationWebService {
 
 	public void createOrUpdateZendeskOrganization(
 			String externalId, String name, String partnerFirstLineSupport,
-			String partnerCode, String sla, String status,
-			String supportLanguage, String supportRegion, String tier,
-			Set<String> tags)
+			String partnerJiraProject, String partnerCode, String sla,
+			String status, String supportLanguage, String supportRegion,
+			String tier, Set<String> tags)
 		throws PortalException;
 
 	public ZendeskOrganization getZendeskOrganization(String externalId)
