@@ -16,6 +16,8 @@ package com.liferay.osb.customer.account.entry.details.web.internal.portlet.acti
 
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
 import com.liferay.portal.kernel.servlet.SessionErrors;
@@ -40,6 +42,8 @@ public abstract class BaseMVCRenderCommand implements MVCRenderCommand {
 			return doRender(renderRequest, renderResponse);
 		}
 		catch (Exception e) {
+			_log.error(e, e);
+
 			SessionErrors.add(renderRequest, e.getClass());
 
 			return "/account_entry_details/error.jsp";
@@ -69,5 +73,8 @@ public abstract class BaseMVCRenderCommand implements MVCRenderCommand {
 	}
 
 	protected OrganizationLocalService organizationLocalService;
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		BaseMVCRenderCommand.class);
 
 }
