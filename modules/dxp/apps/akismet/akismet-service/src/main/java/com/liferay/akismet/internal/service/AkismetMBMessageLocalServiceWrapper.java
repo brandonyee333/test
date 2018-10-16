@@ -20,20 +20,22 @@ import com.liferay.akismet.client.util.AkismetServiceConfigurationUtil;
 import com.liferay.akismet.model.AkismetEntry;
 import com.liferay.akismet.service.AkismetEntryLocalService;
 import com.liferay.message.boards.kernel.model.MBMessage;
+import com.liferay.message.boards.kernel.model.MBMessageConstants;
 import com.liferay.message.boards.kernel.service.MBMessageLocalService;
+import com.liferay.message.boards.kernel.service.MBMessageLocalServiceUtil;
 import com.liferay.message.boards.kernel.service.MBMessageLocalServiceWrapper;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
-import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.*;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
+import java.io.InputStream;
 import java.io.Serializable;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
@@ -51,16 +53,63 @@ public class AkismetMBMessageLocalServiceWrapper
 	}
 
 	@Override
-	public MBMessage updateStatus(
-			long userId, long messageId, int status,
-			ServiceContext serviceContext,
-			Map<String, Serializable> workflowContext)
-		throws PortalException {
+	public MBMessage addMessage(
+			long userId, String userName, long groupId, long categoryId,
+			long threadId, long parentMessageId, String subject, String body,
+			String format,
+			List<ObjectValuePair<String, InputStream>> inputStreamOVPs,
+			boolean anonymous, double priority, boolean allowPingbacks,
+			ServiceContext serviceContext)
+			throws PortalException {
 
-		status = _checkSpam(messageId, serviceContext);
+		boolean enabled = _isCheckSpamEnabled(userId, groupId, serviceContext);
 
-		return super.updateStatus(
-			userId, messageId, status, serviceContext, workflowContext);
+
+		MBMessage message = super.addMessage(
+				userId, userName, groupId, categoryId, threadId,
+				parentMessageId, subject, body, format, inputStreamOVPs,
+				anonymous, priority, allowPingbacks, serviceContext);
+
+		if (!enabled) {
+			return message;
+		}
+
+		int status = _checkSpam(message.getMessageId(), serviceContext);
+
+		if (status == WorkflowConstants.STATUS_APPROVED) {
+
+			super.updateMessage(
+					userId, message.getMessageId(),
+					message.getBody(), serviceContext);
+		}
+
+		else {
+			super.updateStatus(
+					userId, message.getMessageId(), status, serviceContext,
+					new HashMap<String, Serializable>());
+		}
+
+		return message;
+	}
+
+	@Override
+	public MBMessage addMessage(
+			long userId, String userName, long groupId, long categoryId,
+			String subject, String body, String format,
+			List<ObjectValuePair<String, InputStream>> inputStreamOVPs,
+			boolean anonymous, double priority, boolean allowPingbacks,
+			ServiceContext serviceContext)
+			throws PortalException {
+
+
+		long threadId = 0;
+		long parentMessageId = MBMessageConstants.DEFAULT_PARENT_MESSAGE_ID;
+
+		return addMessage(
+				userId, userName, groupId, categoryId, threadId, parentMessageId,
+				subject, body, format, inputStreamOVPs, anonymous, priority,
+				allowPingbacks, serviceContext);
+
 	}
 
 	private int _checkSpam(long messageId, ServiceContext serviceContext)
