@@ -105,7 +105,7 @@ public class AddTicketAttachmentMVCActionCommand extends BaseMVCActionCommand {
 
 		TicketAttachment ticketAttachment =
 			_ticketAttachmentService.addTicketAttachment(
-				zendeskTicketId, accountEntryId, fileRepositoryId, fileName,
+				accountEntryId, zendeskTicketId, fileRepositoryId, fileName,
 				fileSize, type);
 
 		long zendeskUserId = _zendeskMapperUtil.getZendeskUserId(
