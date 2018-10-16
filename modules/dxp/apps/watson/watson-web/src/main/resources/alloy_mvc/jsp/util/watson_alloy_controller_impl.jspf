@@ -18,11 +18,11 @@
 public static class WatsonAlloyControllerImpl extends BaseAlloyControllerImpl {
 
 	public static <T> BaseModel<T> copyBaseModelProperties(BaseModel<T> sourceBaseModel, BaseModel<T> targetBaseModel) {
-		Map<String, Object> sourceModelAttributes = sourceBaseModel.getModelAttributes();
-
 		Map<String, Object> targetModelAttributes = targetBaseModel.getModelAttributes();
 
-		String[] ignoreProperties = new String[] {"entityCacheEnabled", "finderCacheEnabled"};
+		String[] ignoreProperties = {"entityCacheEnabled", "finderCacheEnabled"};
+
+		Map<String, Object> sourceModelAttributes = sourceBaseModel.getModelAttributes();
 
 		for (Map.Entry<String, Object> attribute : sourceModelAttributes.entrySet()) {
 			if (!targetModelAttributes.containsKey(attribute.getKey())) {
