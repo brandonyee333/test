@@ -111,7 +111,7 @@
 
 	<!-- Scheduler -->
 
-	<bean class="com.liferay.lcs.messaging.scheduler.impl.MessageListenerSchedulerServiceImpl" id="com.liferay.lcs.messaging.scheduler.impl.MessageListenerSchedulerService">
+	<bean class="com.liferay.lcs.messaging.advisor.MessageBusListenerAdvisor" id="com.liferay.lcs.messaging.advisor.MessageBusListenerAdvisor">
 		<constructor-arg ref="com.liferay.lcs.platform.gateway.LCSGatewayClient" />
 	</bean>
 </beans>

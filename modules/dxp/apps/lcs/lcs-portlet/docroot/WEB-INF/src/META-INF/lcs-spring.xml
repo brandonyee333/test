@@ -41,7 +41,7 @@
 	</bean>
 	<bean class="com.liferay.lcs.command.MessageBusCommand" id="com.liferay.lcs.command.MessageBusCommand" />
 	<bean class="com.liferay.lcs.command.ScheduleMessageListenersCommand" id="com.liferay.lcs.command.ScheduleMessageListenersCommand">
-		<property name="messageListenerSchedulerService" ref="com.liferay.lcs.messaging.scheduler.impl.MessageListenerSchedulerService" />
+		<constructor-arg ref="com.liferay.lcs.messaging.advisor.MessageBusListenerAdvisor" />
 	</bean>
 	<bean class="com.liferay.lcs.command.ScheduleTasksCommand" id="com.liferay.lcs.command.ScheduleTasksCommand">
 		<property name="taskSchedulerService" ref="com.liferay.lcs.scheduler.TaskSchedulerService" />
