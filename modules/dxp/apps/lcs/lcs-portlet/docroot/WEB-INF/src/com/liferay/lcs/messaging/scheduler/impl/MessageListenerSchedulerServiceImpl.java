@@ -16,7 +16,6 @@ package com.liferay.lcs.messaging.scheduler.impl;
 
 import com.liferay.lcs.advisor.MonitoringAdvisor;
 import com.liferay.lcs.advisor.MonitoringAdvisorFactory;
-import com.liferay.lcs.messaging.scheduler.MessageListenerSchedulerService;
 import com.liferay.lcs.platform.LCSEvent;
 import com.liferay.lcs.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.platform.gateway.LCSGatewayStateListener;
@@ -26,16 +25,19 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.messaging.MessageListener;
+import com.liferay.portal.kernel.util.StringBundler;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author Ivica Cardic
  * @author Igor Beslic
  */
 public class MessageListenerSchedulerServiceImpl
-	implements LCSGatewayStateListener, MessageListenerSchedulerService {
+	implements LCSGatewayStateListener {
 
 	public MessageListenerSchedulerServiceImpl(
 		LCSGatewayClient lcsGatewayClient) {
@@ -43,34 +45,58 @@ public class MessageListenerSchedulerServiceImpl
 		lcsGatewayClient.registerLCSGatewayStateListener(this);
 	}
 
-	@Override
-	public void onLCSGatewayStateChanged(LCSEvent lcsEvent) {
-		if (lcsEvent == LCSEvent.UNAVAILABLE) {
-			unscheduleAllMessageListeners();
+	public void destroy() {
+		_unregisterAll();
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Destroyed " + this);
 		}
 	}
 
 	@Override
-	public void scheduleMessageListener(Map<String, String> schedulerContext) {
-		String destinationName = schedulerContext.get("destinationName");
-		String messageListenerName = schedulerContext.get(
-			"messageListenerName");
+	public void onLCSGatewayStateChanged(LCSEvent lcsEvent) {
+		if (_log.isTraceEnabled()) {
+			_log.trace("Notified on LCS event " + lcsEvent);
+		}
+
+		if (lcsEvent == LCSEvent.UNAVAILABLE) {
+			_unregisterAll();
+		}
+	}
+
+	public void scheduleMessageListener(Map<String, String> listenerContext) {
+		ListenerDescriptor listenerDescriptor = new ListenerDescriptor(
+			listenerContext.get("destinationName"),
+			listenerContext.get("messageListenerName"));
+
+		if (_listenerDescriptors.contains(listenerDescriptor)) {
+			if (_log.isInfoEnabled()) {
+				_log.info("Already registered " + listenerDescriptor);
+			}
+
+			return;
+		}
 
 		BeanLocator beanLocator = PortletBeanLocatorUtil.getBeanLocator(
 			"lcs-portlet");
 
-		MessageListener messageListener = (MessageListener)beanLocator.locate(
-			messageListenerName);
+		listenerDescriptor.listenerInstance =
+			(MessageListener)beanLocator.locate(
+				listenerDescriptor.listenerName);
 
 		MessageBusUtil.registerMessageListener(
-			destinationName, messageListener);
+			listenerDescriptor.destinationName,
+			listenerDescriptor.listenerInstance);
 
-		_messageListenerNamesDestinationNames.put(
-			messageListenerName, destinationName);
+		_listenerDescriptors.add(listenerDescriptor);
 
 		if (_log.isDebugEnabled()) {
-			_log.debug("Scheduled message listener " + messageListenerName);
+			_log.debug(
+				"Registered message listener " +
+					listenerDescriptor.listenerName);
 		}
+
+		MessageListener messageListener = listenerDescriptor.listenerInstance;
 
 		MonitoringAdvisor monitoringAdvisor =
 			MonitoringAdvisorFactory.getInstance(messageListener.getClass());
@@ -80,27 +106,20 @@ public class MessageListenerSchedulerServiceImpl
 		}
 	}
 
-	@Override
-	public void unscheduleAllMessageListeners() {
-		BeanLocator beanLocator = PortletBeanLocatorUtil.getBeanLocator(
-			"lcs-portlet");
-
-		if (beanLocator == null) {
-			return;
+	private void _unregisterAll() {
+		if (_log.isTraceEnabled()) {
+			_log.trace("Unregister all message listeners");
 		}
 
-		for (Map.Entry<String, String> entry :
-				_messageListenerNamesDestinationNames.entrySet()) {
-
-			String messageListenerName = entry.getKey();
-
+		for (ListenerDescriptor listenerDescriptor : _listenerDescriptors) {
 			MessageBusUtil.unregisterMessageListener(
-				entry.getValue(),
-				(MessageListener)beanLocator.locate(messageListenerName));
+				listenerDescriptor.destinationName,
+				listenerDescriptor.listenerInstance);
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(
-					"Unscheduled message listener " + messageListenerName);
+					"Unregistered message listener " +
+						listenerDescriptor.listenerName);
 			}
 		}
 	}
@@ -108,7 +127,57 @@ public class MessageListenerSchedulerServiceImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		MessageListenerSchedulerServiceImpl.class);
 
-	private final Map<String, String> _messageListenerNamesDestinationNames =
-		new HashMap<>();
+	private final List<ListenerDescriptor> _listenerDescriptors =
+		new ArrayList<>();
+
+	private class ListenerDescriptor {
+
+		public ListenerDescriptor(String destinationName, String listenerName) {
+			this.destinationName = destinationName;
+			this.listenerName = listenerName;
+		}
+
+		@Override
+		public boolean equals(Object object) {
+			if (object instanceof ListenerDescriptor) {
+				ListenerDescriptor otherListenerDescriptor =
+					(ListenerDescriptor)object;
+
+				if (destinationName.equals(
+						otherListenerDescriptor.destinationName) &&
+					listenerName.equals(otherListenerDescriptor.listenerName)) {
+
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(destinationName, listenerName);
+		}
+
+		@Override
+		public String toString() {
+			StringBundler sb = new StringBundler(7);
+
+			sb.append("ListenerDescriptor{destinationName='");
+			sb.append(destinationName);
+			sb.append("', listenerInstance=");
+			sb.append(listenerInstance);
+			sb.append(", listenerName='");
+			sb.append(listenerName);
+			sb.append("'}");
+
+			return sb.toString();
+		}
+
+		protected String destinationName;
+		protected MessageListener listenerInstance;
+		protected String listenerName;
+
+	}
 
 }

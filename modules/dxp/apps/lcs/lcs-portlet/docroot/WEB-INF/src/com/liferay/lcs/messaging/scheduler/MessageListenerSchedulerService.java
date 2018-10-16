@@ -23,6 +23,4 @@ public interface MessageListenerSchedulerService {
 
 	public void scheduleMessageListener(Map<String, String> schedulerContext);
 
-	public void unscheduleAllMessageListeners();
-
 }
