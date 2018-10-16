@@ -119,6 +119,8 @@ public class MessageBusListenerAdvisor implements LCSGatewayStateListener {
 						listenerDescriptor.listenerName);
 			}
 		}
+
+		_listenerDescriptors.clear();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

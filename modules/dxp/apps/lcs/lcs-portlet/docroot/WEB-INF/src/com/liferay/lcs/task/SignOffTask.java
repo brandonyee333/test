@@ -16,9 +16,7 @@ package com.liferay.lcs.task;
 
 import com.liferay.lcs.messaging.HandshakeMessage;
 import com.liferay.lcs.platform.gateway.LCSGatewayClient;
-import com.liferay.lcs.util.LCSUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -79,8 +77,6 @@ public class SignOffTask implements Task {
 
 		try {
 			_lcsGatewayClient.sendMessage(handshakeMessage);
-
-			LCSUtil.processLCSPortletState(LCSPortletState.NO_CONNECTION);
 
 			if (_log.isInfoEnabled()) {
 				_log.info("Signed off from LCS platform");

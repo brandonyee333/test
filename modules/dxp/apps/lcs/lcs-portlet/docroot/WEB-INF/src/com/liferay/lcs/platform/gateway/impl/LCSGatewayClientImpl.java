@@ -152,6 +152,8 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 				_available = false;
 			}
 
+			_notifyStateChangedListeners(LCSEvent.UNAVAILABLE);
+
 			return;
 		}
 	}
