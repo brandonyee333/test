@@ -100,7 +100,7 @@ public class SignOffTask implements Task {
 				taskStateListener.onTaskFail(SignOffTask.class, 0);
 			}
 			catch (Throwable t) {
-				_log.error("Failed to notify listener", t);
+				_log.error("Unable to notify listener", t);
 			}
 		}
 	}
@@ -111,7 +111,7 @@ public class SignOffTask implements Task {
 				taskStateListener.onTaskSuccess(SignOffTask.class);
 			}
 			catch (Throwable t) {
-				_log.error("Failed to notify listener", t);
+				_log.error("Unable to notify listener", t);
 			}
 		}
 	}
