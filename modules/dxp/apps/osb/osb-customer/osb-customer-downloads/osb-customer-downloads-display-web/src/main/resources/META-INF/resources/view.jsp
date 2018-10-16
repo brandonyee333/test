@@ -29,7 +29,7 @@ JSONArray productsJSONArray = downloadsDisplayContext.getProductsJSONArray();
 </h1>
 
 <c:if test="<%= ddmStructureKey.equals(DDMStructureConstants.KEY_DOWNLOAD) %>">
-	<div>
+	<div class="sub-header">
 		<liferay-ui:message key="find-the-downloads-you-need-by-filtering-the-results-with-the-drop-down-menus-below" />
 	</div>
 
@@ -46,7 +46,7 @@ JSONArray productsJSONArray = downloadsDisplayContext.getProductsJSONArray();
 			JSONArray fileTypesJSONArray = null;
 			%>
 
-			<aui:select name="product" onChange='<%= renderResponse.getNamespace() + "updateFileType(this.value);" %>'>
+			<aui:select inlinField="<%= true %>" inlineLabel="left" name="product" onChange='<%= renderResponse.getNamespace() + "updateFileType(this.value);" %>' prefix="&#58;" wrapperCssClass="filter-container">
 				<aui:option label="select-product" value="" />
 
 				<%
@@ -73,7 +73,7 @@ JSONArray productsJSONArray = downloadsDisplayContext.getProductsJSONArray();
 
 			</aui:select>
 
-			<aui:select name="fileType" onChange='<%= "if (this.value != '') {submitForm(document." + renderResponse.getNamespace() + "fm);}" %>'>
+			<aui:select inlinField="<%= true %>" inlineLabel="left" name="fileType" onChange='<%= "if (this.value != '') {submitForm(document." + renderResponse.getNamespace() + "fm);}" %>' prefix="&#58;" wrapperCssClass="filter-container">
 				<aui:option label="select-file-type" value="" />
 
 				<c:if test="<%= fileTypesJSONArray != null %>">
@@ -100,7 +100,7 @@ JSONArray productsJSONArray = downloadsDisplayContext.getProductsJSONArray();
 
 <div class="results">
 	<liferay-ui:search-container
-		emptyResultsMessage="no-downloads-were-found"
+		emptyResultsMessage="content-collection-is-empty-select-your-settings-above-to-show-details"
 		searchContainer="<%= downloadsDisplayContext.getSearchContainer() %>"
 	>
 		<liferay-ui:search-container-row
@@ -113,10 +113,14 @@ JSONArray productsJSONArray = downloadsDisplayContext.getProductsJSONArray();
 			>
 
 				<%
+				DateFormat dateFormat = DateFormatFactoryUtil.getSimpleDateFormat("yyyy-MM-dd");
+
 				Fields ddmFields = journalConverter.getDDMFields(journalArticle.getDDMStructure(), journalArticle.getContent());
+
+				Date releaseDate = dateFormat.parse(DDMFieldsUtil.getString(ddmFields, "releaseDate"));
 				%>
 
-				<%= DDMFieldsUtil.getString(ddmFields, "releaseDate") %>
+				<%= mediumDateFormatDate.format(releaseDate) %>
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-jsp

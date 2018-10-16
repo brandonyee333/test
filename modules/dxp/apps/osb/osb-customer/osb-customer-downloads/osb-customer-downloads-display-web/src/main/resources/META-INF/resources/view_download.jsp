@@ -50,8 +50,16 @@ String product = DDMFieldsUtil.getSelectOption(ddmFields, "product");
 		>
 			<liferay-ui:search-container-column-text
 				name="released"
-				value='<%= DDMFieldsUtil.getString(ddmFields, "releaseDate") %>'
-			/>
+			>
+
+				<%
+				DateFormat dateFormat = DateFormatFactoryUtil.getSimpleDateFormat("yyyy-MM-dd");
+
+				Date releaseDate = dateFormat.parse(DDMFieldsUtil.getString(ddmFields, "releaseDate"));
+				%>
+
+				<%= mediumDateFormatDate.format(releaseDate) %>
+			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-jsp
 				name="name"

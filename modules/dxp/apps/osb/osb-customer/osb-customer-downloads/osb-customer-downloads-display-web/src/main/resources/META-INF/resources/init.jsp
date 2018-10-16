@@ -42,6 +42,8 @@ page import="com.liferay.portal.kernel.json.JSONFactoryUtil" %><%@
 page import="com.liferay.portal.kernel.json.JSONObject" %><%@
 page import="com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil" %><%@
 page import="com.liferay.portal.kernel.util.Constants" %><%@
+page import="com.liferay.portal.kernel.util.DateFormatFactoryUtil" %><%@
+page import="com.liferay.portal.kernel.util.FastDateFormatFactoryUtil" %><%@
 page import="com.liferay.portal.kernel.util.GetterUtil" %><%@
 page import="com.liferay.portal.kernel.util.LocaleUtil" %><%@
 page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
@@ -50,7 +52,11 @@ page import="com.liferay.portal.kernel.util.StringPool" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %><%@
 page import="com.liferay.portal.kernel.util.WebKeys" %>
 
-<%@ page import="java.util.HashMap" %><%@
+<%@ page import="java.text.DateFormat" %><%@
+page import="java.text.Format" %>
+
+<%@ page import="java.util.Date" %><%@
+page import="java.util.HashMap" %><%@
 page import="java.util.List" %><%@
 page import="java.util.Locale" %><%@
 page import="java.util.Map" %>
@@ -65,6 +71,8 @@ page import="javax.portlet.PortletURL" %>
 <portlet:defineObjects />
 
 <%
+Format mediumDateFormatDate = FastDateFormatFactoryUtil.getDate(DateFormat.MEDIUM, LocaleUtil.US, timeZone);
+
 DownloadsDisplayContext downloadsDisplayContext = new DownloadsDisplayContext(renderRequest, renderResponse);
 
 JournalConverter journalConverter = (JournalConverter)renderRequest.getAttribute(JournalConverter.class.getName());
