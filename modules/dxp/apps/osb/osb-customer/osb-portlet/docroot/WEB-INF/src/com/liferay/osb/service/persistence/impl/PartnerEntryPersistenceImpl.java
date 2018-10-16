@@ -1486,6 +1486,7 @@ public class PartnerEntryPersistenceImpl extends BasePersistenceImpl<PartnerEntr
 		partnerEntryImpl.setParentPartnerEntryId(partnerEntry.getParentPartnerEntryId());
 		partnerEntryImpl.setDossieraAccountKey(partnerEntry.getDossieraAccountKey());
 		partnerEntryImpl.setCode(partnerEntry.getCode());
+		partnerEntryImpl.setJiraProjectKey(partnerEntry.getJiraProjectKey());
 		partnerEntryImpl.setNotes(partnerEntry.getNotes());
 		partnerEntryImpl.setStatus(partnerEntry.getStatus());
 

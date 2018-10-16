@@ -66,7 +66,7 @@ public class PartnerEntryCacheModel implements CacheModel<PartnerEntry>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(27);
+		StringBundler sb = new StringBundler(29);
 
 		sb.append("{partnerEntryId=");
 		sb.append(partnerEntryId);
@@ -90,6 +90,8 @@ public class PartnerEntryCacheModel implements CacheModel<PartnerEntry>,
 		sb.append(dossieraAccountKey);
 		sb.append(", code=");
 		sb.append(code);
+		sb.append(", jiraProjectKey=");
+		sb.append(jiraProjectKey);
 		sb.append(", notes=");
 		sb.append(notes);
 		sb.append(", status=");
@@ -153,6 +155,13 @@ public class PartnerEntryCacheModel implements CacheModel<PartnerEntry>,
 			partnerEntryImpl.setCode(code);
 		}
 
+		if (jiraProjectKey == null) {
+			partnerEntryImpl.setJiraProjectKey(StringPool.BLANK);
+		}
+		else {
+			partnerEntryImpl.setJiraProjectKey(jiraProjectKey);
+		}
+
 		if (notes == null) {
 			partnerEntryImpl.setNotes(StringPool.BLANK);
 		}
@@ -184,6 +193,7 @@ public class PartnerEntryCacheModel implements CacheModel<PartnerEntry>,
 		parentPartnerEntryId = objectInput.readLong();
 		dossieraAccountKey = objectInput.readUTF();
 		code = objectInput.readUTF();
+		jiraProjectKey = objectInput.readUTF();
 		notes = objectInput.readUTF();
 
 		status = objectInput.readInt();
@@ -234,6 +244,13 @@ public class PartnerEntryCacheModel implements CacheModel<PartnerEntry>,
 			objectOutput.writeUTF(code);
 		}
 
+		if (jiraProjectKey == null) {
+			objectOutput.writeUTF(StringPool.BLANK);
+		}
+		else {
+			objectOutput.writeUTF(jiraProjectKey);
+		}
+
 		if (notes == null) {
 			objectOutput.writeUTF(StringPool.BLANK);
 		}
@@ -255,6 +272,7 @@ public class PartnerEntryCacheModel implements CacheModel<PartnerEntry>,
 	public long parentPartnerEntryId;
 	public String dossieraAccountKey;
 	public String code;
+	public String jiraProjectKey;
 	public String notes;
 	public int status;
 }

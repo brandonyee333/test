@@ -69,6 +69,7 @@ public class PartnerEntryWrapper implements PartnerEntry,
 		attributes.put("parentPartnerEntryId", getParentPartnerEntryId());
 		attributes.put("dossieraAccountKey", getDossieraAccountKey());
 		attributes.put("code", getCode());
+		attributes.put("jiraProjectKey", getJiraProjectKey());
 		attributes.put("notes", getNotes());
 		attributes.put("status", getStatus());
 
@@ -141,6 +142,12 @@ public class PartnerEntryWrapper implements PartnerEntry,
 
 		if (code != null) {
 			setCode(code);
+		}
+
+		String jiraProjectKey = (String)attributes.get("jiraProjectKey");
+
+		if (jiraProjectKey != null) {
+			setJiraProjectKey(jiraProjectKey);
 		}
 
 		String notes = (String)attributes.get("notes");
@@ -250,6 +257,16 @@ public class PartnerEntryWrapper implements PartnerEntry,
 	@Override
 	public java.lang.String getDossieraAccountKey() {
 		return _partnerEntry.getDossieraAccountKey();
+	}
+
+	/**
+	* Returns the jira project key of this partner entry.
+	*
+	* @return the jira project key of this partner entry
+	*/
+	@Override
+	public java.lang.String getJiraProjectKey() {
+		return _partnerEntry.getJiraProjectKey();
 	}
 
 	/**
@@ -482,6 +499,16 @@ public class PartnerEntryWrapper implements PartnerEntry,
 	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_partnerEntry.setExpandoBridgeAttributes(serviceContext);
+	}
+
+	/**
+	* Sets the jira project key of this partner entry.
+	*
+	* @param jiraProjectKey the jira project key of this partner entry
+	*/
+	@Override
+	public void setJiraProjectKey(java.lang.String jiraProjectKey) {
+		_partnerEntry.setJiraProjectKey(jiraProjectKey);
 	}
 
 	/**

@@ -206,7 +206,7 @@ public class PartnerEntryLocalServiceClpInvoker {
 
 		_methodParameterTypes188 = new String[] {
 				"long", "long", "java.lang.String", "java.lang.String",
-				"java.lang.String", "long[][]"
+				"java.lang.String", "java.lang.String", "long[][]"
 			};
 
 		_methodName189 = "deletePartnerEntry";
@@ -259,7 +259,7 @@ public class PartnerEntryLocalServiceClpInvoker {
 
 		_methodParameterTypes198 = new String[] {
 				"long", "long", "java.lang.String", "java.lang.String",
-				"java.lang.String", "int", "long[][]"
+				"java.lang.String", "java.lang.String", "int", "long[][]"
 			};
 	}
 
@@ -497,7 +497,8 @@ public class PartnerEntryLocalServiceClpInvoker {
 			return PartnerEntryLocalServiceUtil.addPartnerEntry(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(java.lang.String)arguments[2], (java.lang.String)arguments[3],
-				(java.lang.String)arguments[4], (long[])arguments[5]);
+				(java.lang.String)arguments[4], (java.lang.String)arguments[5],
+				(long[])arguments[6]);
 		}
 
 		if (_methodName189.equals(name) &&
@@ -565,8 +566,8 @@ public class PartnerEntryLocalServiceClpInvoker {
 			return PartnerEntryLocalServiceUtil.updatePartnerEntry(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(java.lang.String)arguments[2], (java.lang.String)arguments[3],
-				(java.lang.String)arguments[4],
-				((Integer)arguments[5]).intValue(), (long[])arguments[6]);
+				(java.lang.String)arguments[4], (java.lang.String)arguments[5],
+				((Integer)arguments[6]).intValue(), (long[])arguments[7]);
 		}
 
 		throw new UnsupportedOperationException();

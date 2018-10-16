@@ -92,6 +92,7 @@ public class PartnerEntryClp extends BaseModelImpl<PartnerEntry>
 		attributes.put("parentPartnerEntryId", getParentPartnerEntryId());
 		attributes.put("dossieraAccountKey", getDossieraAccountKey());
 		attributes.put("code", getCode());
+		attributes.put("jiraProjectKey", getJiraProjectKey());
 		attributes.put("notes", getNotes());
 		attributes.put("status", getStatus());
 
@@ -167,6 +168,12 @@ public class PartnerEntryClp extends BaseModelImpl<PartnerEntry>
 
 		if (code != null) {
 			setCode(code);
+		}
+
+		String jiraProjectKey = (String)attributes.get("jiraProjectKey");
+
+		if (jiraProjectKey != null) {
+			setJiraProjectKey(jiraProjectKey);
 		}
 
 		String notes = (String)attributes.get("notes");
@@ -474,6 +481,30 @@ public class PartnerEntryClp extends BaseModelImpl<PartnerEntry>
 	}
 
 	@Override
+	public String getJiraProjectKey() {
+		return _jiraProjectKey;
+	}
+
+	@Override
+	public void setJiraProjectKey(String jiraProjectKey) {
+		_jiraProjectKey = jiraProjectKey;
+
+		if (_partnerEntryRemoteModel != null) {
+			try {
+				Class<?> clazz = _partnerEntryRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setJiraProjectKey",
+						String.class);
+
+				method.invoke(_partnerEntryRemoteModel, jiraProjectKey);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
 	public String getNotes() {
 		return _notes;
 	}
@@ -733,6 +764,7 @@ public class PartnerEntryClp extends BaseModelImpl<PartnerEntry>
 		clone.setParentPartnerEntryId(getParentPartnerEntryId());
 		clone.setDossieraAccountKey(getDossieraAccountKey());
 		clone.setCode(getCode());
+		clone.setJiraProjectKey(getJiraProjectKey());
 		clone.setNotes(getNotes());
 		clone.setStatus(getStatus());
 
@@ -795,7 +827,7 @@ public class PartnerEntryClp extends BaseModelImpl<PartnerEntry>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(27);
+		StringBundler sb = new StringBundler(29);
 
 		sb.append("{partnerEntryId=");
 		sb.append(getPartnerEntryId());
@@ -819,6 +851,8 @@ public class PartnerEntryClp extends BaseModelImpl<PartnerEntry>
 		sb.append(getDossieraAccountKey());
 		sb.append(", code=");
 		sb.append(getCode());
+		sb.append(", jiraProjectKey=");
+		sb.append(getJiraProjectKey());
 		sb.append(", notes=");
 		sb.append(getNotes());
 		sb.append(", status=");
@@ -830,7 +864,7 @@ public class PartnerEntryClp extends BaseModelImpl<PartnerEntry>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(43);
+		StringBundler sb = new StringBundler(46);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.PartnerEntry");
@@ -881,6 +915,10 @@ public class PartnerEntryClp extends BaseModelImpl<PartnerEntry>
 		sb.append(getCode());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>jiraProjectKey</column-name><column-value><![CDATA[");
+		sb.append(getJiraProjectKey());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>notes</column-name><column-value><![CDATA[");
 		sb.append(getNotes());
 		sb.append("]]></column-value></column>");
@@ -905,6 +943,7 @@ public class PartnerEntryClp extends BaseModelImpl<PartnerEntry>
 	private long _parentPartnerEntryId;
 	private String _dossieraAccountKey;
 	private String _code;
+	private String _jiraProjectKey;
 	private String _notes;
 	private int _status;
 	private BaseModel<?> _partnerEntryRemoteModel;

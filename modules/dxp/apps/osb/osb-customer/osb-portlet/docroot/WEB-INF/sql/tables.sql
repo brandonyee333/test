@@ -375,6 +375,7 @@ create table OSB_PartnerEntry (
 	parentPartnerEntryId LONG,
 	dossieraAccountKey VARCHAR(75) null,
 	code_ VARCHAR(255) null,
+	jiraProjectKey VARCHAR(75) null,
 	notes STRING null,
 	status INTEGER
 );

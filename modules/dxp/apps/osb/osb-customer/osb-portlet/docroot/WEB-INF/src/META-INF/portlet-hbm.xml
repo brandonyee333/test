@@ -408,6 +408,7 @@
 		<property name="parentPartnerEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="dossieraAccountKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property column="code_" name="code" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="jiraProjectKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="notes" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>

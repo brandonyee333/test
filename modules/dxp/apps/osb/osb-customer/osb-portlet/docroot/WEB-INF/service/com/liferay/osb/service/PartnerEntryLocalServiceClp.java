@@ -46,7 +46,7 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 
 		_methodParameterTypes3 = new String[] {
 				"long", "long", "java.lang.String", "java.lang.String",
-				"java.lang.String", "long[][]"
+				"java.lang.String", "java.lang.String", "long[][]"
 			};
 
 		_methodName4 = "createPartnerEntry";
@@ -89,7 +89,7 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 
 		_methodParameterTypes12 = new String[] {
 				"long", "long", "java.lang.String", "java.lang.String",
-				"java.lang.String", "int", "long[][]"
+				"java.lang.String", "java.lang.String", "int", "long[][]"
 			};
 
 		_methodName13 = "getActionableDynamicQuery";
@@ -336,7 +336,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 	@Override
 	public com.liferay.osb.model.PartnerEntry addPartnerEntry(long userId,
 		long parentPartnerEntryId, java.lang.String dossieraAccountKey,
-		java.lang.String code, java.lang.String notes, long[] supportRegionIds)
+		java.lang.String code, java.lang.String jiraProjectKey,
+		java.lang.String notes, long[] supportRegionIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
@@ -351,6 +352,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 					ClpSerializer.translateInput(dossieraAccountKey),
 						
 					ClpSerializer.translateInput(code),
+						
+					ClpSerializer.translateInput(jiraProjectKey),
 						
 					ClpSerializer.translateInput(notes),
 						
@@ -592,8 +595,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 	@Override
 	public com.liferay.osb.model.PartnerEntry updatePartnerEntry(long userId,
 		long partnerEntryId, java.lang.String dossieraAccountKey,
-		java.lang.String code, java.lang.String notes, int status,
-		long[] supportRegionIds)
+		java.lang.String code, java.lang.String jiraProjectKey,
+		java.lang.String notes, int status, long[] supportRegionIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
@@ -608,6 +611,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 					ClpSerializer.translateInput(dossieraAccountKey),
 						
 					ClpSerializer.translateInput(code),
+						
+					ClpSerializer.translateInput(jiraProjectKey),
 						
 					ClpSerializer.translateInput(notes),
 						

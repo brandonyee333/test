@@ -65,11 +65,12 @@ public class PartnerEntryLocalServiceUtil {
 	public static com.liferay.osb.model.PartnerEntry addPartnerEntry(
 		long userId, long parentPartnerEntryId,
 		java.lang.String dossieraAccountKey, java.lang.String code,
-		java.lang.String notes, long[] supportRegionIds)
+		java.lang.String jiraProjectKey, java.lang.String notes,
+		long[] supportRegionIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addPartnerEntry(userId, parentPartnerEntryId,
-			dossieraAccountKey, code, notes, supportRegionIds);
+			dossieraAccountKey, code, jiraProjectKey, notes, supportRegionIds);
 	}
 
 	/**
@@ -149,12 +150,13 @@ public class PartnerEntryLocalServiceUtil {
 
 	public static com.liferay.osb.model.PartnerEntry updatePartnerEntry(
 		long userId, long partnerEntryId, java.lang.String dossieraAccountKey,
-		java.lang.String code, java.lang.String notes, int status,
-		long[] supportRegionIds)
+		java.lang.String code, java.lang.String jiraProjectKey,
+		java.lang.String notes, int status, long[] supportRegionIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updatePartnerEntry(userId, partnerEntryId,
-			dossieraAccountKey, code, notes, status, supportRegionIds);
+			dossieraAccountKey, code, jiraProjectKey, notes, status,
+			supportRegionIds);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {

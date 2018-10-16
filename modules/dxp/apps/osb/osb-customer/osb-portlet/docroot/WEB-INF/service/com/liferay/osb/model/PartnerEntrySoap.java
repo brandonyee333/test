@@ -45,6 +45,7 @@ public class PartnerEntrySoap implements Serializable {
 		soapModel.setParentPartnerEntryId(model.getParentPartnerEntryId());
 		soapModel.setDossieraAccountKey(model.getDossieraAccountKey());
 		soapModel.setCode(model.getCode());
+		soapModel.setJiraProjectKey(model.getJiraProjectKey());
 		soapModel.setNotes(model.getNotes());
 		soapModel.setStatus(model.getStatus());
 
@@ -187,6 +188,14 @@ public class PartnerEntrySoap implements Serializable {
 		_code = code;
 	}
 
+	public String getJiraProjectKey() {
+		return _jiraProjectKey;
+	}
+
+	public void setJiraProjectKey(String jiraProjectKey) {
+		_jiraProjectKey = jiraProjectKey;
+	}
+
 	public String getNotes() {
 		return _notes;
 	}
@@ -214,6 +223,7 @@ public class PartnerEntrySoap implements Serializable {
 	private long _parentPartnerEntryId;
 	private String _dossieraAccountKey;
 	private String _code;
+	private String _jiraProjectKey;
 	private String _notes;
 	private int _status;
 }
