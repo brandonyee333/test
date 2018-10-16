@@ -16,7 +16,6 @@ package com.liferay.lcs.task;
 
 import com.liferay.lcs.messaging.HandshakeMessage;
 import com.liferay.lcs.platform.gateway.LCSGatewayClient;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -56,19 +55,14 @@ public class SignOffTask implements Task {
 			return;
 		}
 
-		try {
-			doRun();
+		if (_log.isTraceEnabled()) {
+			_log.trace("Running " + this);
 		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
+
+		doRun();
 	}
 
-	protected void doRun() throws PortalException {
-		if (_log.isTraceEnabled()) {
-			_log.trace("Running sign off task");
-		}
-
+	protected void doRun() {
 		HandshakeMessage handshakeMessage = new HandshakeMessage();
 
 		handshakeMessage.setServerManuallyShutdown(_serverManuallyShutdown);
@@ -102,13 +96,23 @@ public class SignOffTask implements Task {
 
 	private void _notifyOnTaskFailTaskStateListeners() {
 		for (TaskStateListener taskStateListener : _taskStateListeners) {
-			taskStateListener.onTaskFail(SignOffTask.class, 0);
+			try {
+				taskStateListener.onTaskFail(SignOffTask.class, 0);
+			}
+			catch (Throwable t) {
+				_log.error("Failed to notify listener", t);
+			}
 		}
 	}
 
 	private void _notifyOnTaskSuccessTaskStateListeners() {
 		for (TaskStateListener taskStateListener : _taskStateListeners) {
-			taskStateListener.onTaskSuccess(SignOffTask.class);
+			try {
+				taskStateListener.onTaskSuccess(SignOffTask.class);
+			}
+			catch (Throwable t) {
+				_log.error("Failed to notify listener", t);
+			}
 		}
 	}
 
