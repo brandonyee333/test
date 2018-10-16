@@ -36,9 +36,16 @@ public class PortalMetricsMessageListener implements MessageListener {
 
 		_lcsGatewayClient = lcsGatewayClient;
 		_portalMetricsAggregator = portalMetricsAggregator;
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Initialized " + this);
+		}
 	}
 
 	public void destroy() {
+		if (_log.isTraceEnabled()) {
+			_log.trace("Destroyed " + this);
+		}
 	}
 
 	@Override
@@ -57,6 +64,15 @@ public class PortalMetricsMessageListener implements MessageListener {
 		else {
 			_portalMetricsAggregator.push(
 				(List<DataSample>)message.getPayload());
+		}
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Finalized " + this);
 		}
 	}
 

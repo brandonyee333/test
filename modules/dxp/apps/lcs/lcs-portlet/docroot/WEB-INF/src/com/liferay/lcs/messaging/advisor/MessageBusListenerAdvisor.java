@@ -103,6 +103,15 @@ public class MessageBusListenerAdvisor implements LCSGatewayStateListener {
 		}
 	}
 
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Finalized " + this);
+		}
+	}
+
 	private void _unregisterAll() {
 		if (_log.isTraceEnabled()) {
 			_log.trace("Unregister all message listeners");
