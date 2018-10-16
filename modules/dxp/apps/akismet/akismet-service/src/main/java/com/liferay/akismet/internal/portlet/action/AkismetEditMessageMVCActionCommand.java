@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import java.io.Serializable;
 
 import java.util.HashMap;
+import java.util.List;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -119,6 +120,14 @@ public class AkismetEditMessageMVCActionCommand extends BaseMVCActionCommand {
 				themeDisplay.getUserId(), messageId,
 				WorkflowConstants.STATUS_DENIED, serviceContext,
 				new HashMap<String, Serializable>());
+
+			List<MBMessage> threadMessages = _mbMessageLocalService.getThreadMessages(message.getThreadId(), 0);
+
+			for (MBMessage threadMessage : threadMessages) {
+				if (threadMessage.getParentMessageId() == messageId) {
+					threadMessage.setParentMessageId(message.getRootMessageId());
+				}
+			}
 
 			if (AkismetServiceConfigurationUtil.isMessageBoardsEnabled()) {
 				_akismetClient.submitSpam(message);
