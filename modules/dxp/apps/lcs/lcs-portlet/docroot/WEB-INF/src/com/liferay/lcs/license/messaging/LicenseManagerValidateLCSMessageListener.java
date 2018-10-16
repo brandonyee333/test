@@ -39,7 +39,7 @@ public class LicenseManagerValidateLCSMessageListener
 
 		if (_log.isWarnEnabled()) {
 			_log.warn(
-				"Responding to LicenseManager with " +
+				"Responding to license manager with " +
 					LCSPortletState.NO_CONNECTION);
 		}
 
