@@ -15,7 +15,7 @@
 package com.liferay.lcs.command;
 
 import com.liferay.lcs.messaging.ScheduleMessageListenersCommandMessage;
-import com.liferay.lcs.messaging.scheduler.MessageListenerSchedulerService;
+import com.liferay.lcs.messaging.advisor.MessageBusListenerAdvisor;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -28,6 +28,12 @@ import java.util.Map;
  */
 public class ScheduleMessageListenersCommand
 	implements Command<ScheduleMessageListenersCommandMessage> {
+
+	public ScheduleMessageListenersCommand(
+		MessageBusListenerAdvisor messageBusListenerAdvisor) {
+
+		_messageBusListenerAdvisor = messageBusListenerAdvisor;
+	}
 
 	@Override
 	public void execute(
@@ -52,22 +58,15 @@ public class ScheduleMessageListenersCommand
 		}
 	}
 
-	public void setMessageListenerSchedulerService(
-		MessageListenerSchedulerService messageListenerSchedulerService) {
-
-		_messageListenerSchedulerService = messageListenerSchedulerService;
-	}
-
 	protected void scheduleMessageListener(
 		Map<String, String> schedulerContext) {
 
-		_messageListenerSchedulerService.scheduleMessageListener(
-			schedulerContext);
+		_messageBusListenerAdvisor.registerMessageListener(schedulerContext);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ScheduleMessageListenersCommand.class);
 
-	private MessageListenerSchedulerService _messageListenerSchedulerService;
+	private final MessageBusListenerAdvisor _messageBusListenerAdvisor;
 
 }

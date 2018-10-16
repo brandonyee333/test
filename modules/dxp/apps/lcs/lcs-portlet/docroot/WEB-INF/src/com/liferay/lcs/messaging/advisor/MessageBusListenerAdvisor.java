@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.lcs.messaging.scheduler.impl;
+package com.liferay.lcs.messaging.advisor;
 
 import com.liferay.lcs.advisor.MonitoringAdvisor;
 import com.liferay.lcs.advisor.MonitoringAdvisorFactory;
@@ -36,12 +36,9 @@ import java.util.Objects;
  * @author Ivica Cardic
  * @author Igor Beslic
  */
-public class MessageListenerSchedulerServiceImpl
-	implements LCSGatewayStateListener {
+public class MessageBusListenerAdvisor implements LCSGatewayStateListener {
 
-	public MessageListenerSchedulerServiceImpl(
-		LCSGatewayClient lcsGatewayClient) {
-
+	public MessageBusListenerAdvisor(LCSGatewayClient lcsGatewayClient) {
 		lcsGatewayClient.registerLCSGatewayStateListener(this);
 	}
 
@@ -64,7 +61,7 @@ public class MessageListenerSchedulerServiceImpl
 		}
 	}
 
-	public void scheduleMessageListener(Map<String, String> listenerContext) {
+	public void registerMessageListener(Map<String, String> listenerContext) {
 		ListenerDescriptor listenerDescriptor = new ListenerDescriptor(
 			listenerContext.get("destinationName"),
 			listenerContext.get("messageListenerName"));
@@ -125,7 +122,7 @@ public class MessageListenerSchedulerServiceImpl
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		MessageListenerSchedulerServiceImpl.class);
+		MessageBusListenerAdvisor.class);
 
 	private final List<ListenerDescriptor> _listenerDescriptors =
 		new ArrayList<>();
