@@ -22,6 +22,7 @@ input[type="submit"],
 .btn-primary {
 	background-color: $color-primary;
 	border: $btn-border-width solid;
+	border-radius: $btn-border-radius;
 	color: $color-white;
 	font-weight: $font-weight-semi-bold;
 

@@ -27,11 +27,11 @@ DDMFormValues ddmFormValues = journalConverter.getDDMFormValues(journalArticle.g
 
 Map<String, List<DDMFormFieldValue>> ddmFormFieldValuesMap = ddmFormValues.getDDMFormFieldValuesMap();
 
-String product = _getStringValue(ddmFormFieldValuesMap, "product", locale);
-String fileType = _getStringValue(ddmFormFieldValuesMap, "fileType", locale);
-String requiredAgreement = _getStringValue(ddmFormFieldValuesMap, "requiredAgreement", locale);
-String alertMessage = _getStringValue(ddmFormFieldValuesMap, "alertMessage", locale);
 String additionalNotes = _getStringValue(ddmFormFieldValuesMap, "additionalNotes", locale);
+String alertMessage = _getStringValue(ddmFormFieldValuesMap, "alertMessage", locale);
+String fileType = _getStringValue(ddmFormFieldValuesMap, "fileType", locale);
+String product = _getStringValue(ddmFormFieldValuesMap, "product", locale);
+String requiredAgreement = _getStringValue(ddmFormFieldValuesMap, "requiredAgreement", locale);
 
 Map<String, Map<String, String>> downloadDetailsMap = new HashMap<>();
 %>
@@ -40,16 +40,6 @@ Map<String, Map<String, String>> downloadDetailsMap = new HashMap<>();
 	<portlet:param name="mvcRenderCommandName" value="/view" />
 	<portlet:param name="journalArticleResourcePrimKey" value="<%= String.valueOf(journalArticle.getResourcePrimKey()) %>" />
 </portlet:renderURL>
-
-<div>
-	<a href="<%= journalArticleURL.toString() %>"><%= journalArticle.getTitle(locale) %></a>
-</div>
-
-product: <%= product %><br />
-
-filetype: <%= fileType %><br />
-
-requiredAgreement: <%= requiredAgreement %><br />
 
 <c:if test="<%= Validator.isNotNull(requiredAgreement) %>">
 
@@ -66,30 +56,40 @@ requiredAgreement: <%= requiredAgreement %><br />
 	String verifyAgreementUrl = downloadsDisplayContext.getVerifyAgreementURL(requiredAgreement, agreementVersion);
 	%>
 
-	agreementContentUrl: <%= agreementContentUrl %><br />
-	acceptAgreementURL <%= acceptAgreementURL %><br />
-	verifyAgreementUrl <%= verifyAgreementUrl %><br />
 </c:if>
 
-alertMessage: <%= alertMessage %><br />
+<div class="title">
+	<%= journalArticle.getTitle(locale) %>
+</div>
 
-additionalNotes: <%= additionalNotes %><br />
+<div class="download-links">
 
-links:
+	<%
+	List<DDMFormFieldValue> linkFieldValues = ddmFormFieldValuesMap.get("link");
 
-<%
-List<DDMFormFieldValue> linkFieldValues = ddmFormFieldValuesMap.get("link");
+	for (DDMFormFieldValue linkFieldValue : linkFieldValues) {
+	%>
 
-for (DDMFormFieldValue linkFieldValue : linkFieldValues) {
-%>
+		<a class="btn-link link" href="<%= _getStringValue(linkFieldValue.getNestedDDMFormFieldValuesMap(), "linkUrl", locale) %>"><%= _getStringValue(linkFieldValue, locale) %></a>
 
-	<a href="<%= _getStringValue(linkFieldValue.getNestedDDMFormFieldValuesMap(), "linkUrl", locale) %>"><%= _getStringValue(linkFieldValue, locale) %></a>
+	<%
+	}
+	%>
+</div>
 
-<%
-}
-%>
+<aui:alert closeable="<%= false %>" cssClass="download-alert">
+	<svg class="lexicon-icon lexicon-icon-info-circle">
+		<use xlink:href="#info-circle" />
+	</svg>
 
-<br />
+	<span class="alert-header"><liferay-ui:message key="info" />:</span>
+
+	<span class="alert-message"><%= alertMessage %></span>
+</aui:alert>
+
+<div class="additional-notes">
+	<%= additionalNotes %>
+</div>
 
 <%
 List<DDMFormFieldValue> downloadGroupFieldValues = ddmFormFieldValuesMap.get("downloadGroup");

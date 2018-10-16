@@ -205,7 +205,7 @@ textarea {
 }
 
 .secondary-font {
-	font-size: $font-size-sm;
+	font-size: $font-size-md;
 	line-height: $secondary-text-line-height;
 }
 
@@ -219,4 +219,16 @@ textarea {
 
 .small {
 	line-height: $line-height-sm;
+}
+
+.sub-header {
+	color: $secondary-text-color;
+	font-size: $font-size-md;
+	margin-bottom: 24px;
+}
+
+.title {
+	font-size: 20px;
+	font-weight: $font-weight-semi-bold;
+	line-height: 28px;
 }

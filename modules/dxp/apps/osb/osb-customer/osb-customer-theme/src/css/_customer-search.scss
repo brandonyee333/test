@@ -37,3 +37,20 @@
 		border-color: $color-divider;
 	}
 }
+
+.taglib-empty-result-message {
+	background: $color-grey;
+
+	.taglib-empty-search-result-message-header {
+		background-image: url(../images/satellite.svg);
+		height: 120px;
+		padding-top: 180px;
+		width: 120px;
+	}
+
+	.text-muted {
+		color: $secondary-text-color;
+		margin: 0 auto;
+		width: 50%;
+	}
+}

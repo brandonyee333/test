@@ -59,7 +59,8 @@ page import="java.text.Format" %>
 page import="java.util.HashMap" %><%@
 page import="java.util.List" %><%@
 page import="java.util.Locale" %><%@
-page import="java.util.Map" %>
+page import="java.util.Map" %><%@
+page import="java.util.Set" %>
 
 <%@ page import="javax.portlet.PortletPreferences" %><%@
 page import="javax.portlet.PortletURL" %>

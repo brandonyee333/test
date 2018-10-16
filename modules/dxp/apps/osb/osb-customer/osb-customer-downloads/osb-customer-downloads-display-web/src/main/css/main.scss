@@ -4,3 +4,7 @@
 
 @import "components/alerts";
 @import "components/panels";
+
+.osb-downloads-display-portlet {
+	@import "_downloads";
+}

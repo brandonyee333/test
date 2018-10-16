@@ -36,6 +36,8 @@ import org.osgi.service.component.annotations.Reference;
 	property = {
 		"com.liferay.portlet.css-class-wrapper=osb-downloads-display-portlet",
 		"com.liferay.portlet.display-category=category.osb",
+		"com.liferay.portlet.footer-portlet-javascript=/dist/main.js",
+		"com.liferay.portlet.header-portlet-css=/dist/main.css",
 		"javax.portlet.display-name=OSB Downloads Display",
 		"javax.portlet.expiration-cache=0",
 		"javax.portlet.init-param.mvc-command-names-default-views=/view",

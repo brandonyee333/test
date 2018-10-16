@@ -1,0 +1,102 @@
+.results {
+	.additional-notes {
+		color: $secondary-text-color;
+		font-size: $font-size-md;
+		line-height: 20px;
+		margin: 24px 0;
+	}
+
+	.detail-label, .detail-value {
+		color: $color-default;
+		font-size: 12px;
+
+		&.detail-label {
+			font-weight: $font-weight-semi-bold;
+		}
+
+		&.detail-value {
+			 padding-right: 16px;
+		}
+	}
+
+	.download-alert {
+		.alert-header {
+			font-weight: $font-weight-semi-bold;
+			padding-right: 4px;
+		}
+
+		.alert-message {
+			display: inline-block;
+
+			p {
+				margin: 0;
+			}
+		}
+
+		.lexicon-icon-info-circle {
+			vertical-align: sub;
+		}
+	}
+
+	.download-button {
+		margin-bottom: 24px;
+
+		a {
+			color: $color-white;
+		}
+	}
+
+	.download-dropdown {
+		height: 32px;
+	}
+
+	.download-links {
+		margin: 24px 0;
+
+		a {
+			border-right: 1px solid $color-border;
+			padding: 0 12px;
+
+			&:first-of-type {
+				padding-left: 0;
+			}
+
+			&:last-of-type {
+				border-width: 0;
+			}
+		}
+	}
+
+	.link {
+		color: $color-primary;
+		font-size: $font-size-md;
+		font-weight: $font-weight-semi-bold;
+		line-height: 20px;
+	}
+
+	.table-responsive .table {
+		thead > tr > th {
+			font-weight: $font-weight-normal;
+
+			&:first-of-type {
+				width: 9%;
+			}
+
+			&:last-of-type {
+				padding-left: 0;
+				width: 91%;
+			}
+		}
+
+		tbody > tr > td {
+			font-weight: $font-weight-normal;
+			padding: 24px 12px 24px 0;
+			vertical-align: baseline;
+
+			&:first-of-type {
+				color: $color-default;
+				font-size: 12px;
+			}
+		}
+	}
+}
