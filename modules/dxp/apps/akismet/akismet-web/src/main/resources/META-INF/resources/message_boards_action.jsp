@@ -25,18 +25,6 @@ long messageBoardsPlid = PortalUtil.getPlidFromPortletId(message.getGroupId(), M
 %>
 
 <liferay-ui:icon-menu>
-	<liferay-portlet:renderURL plid="<%= messageBoardsPlid %>" portletName="<%= MBPortletKeys.MESSAGE_BOARDS %>" var="viewURL">
-		<portlet:param name="mvcRenderCommandName" value="/message_boards/view_message" />
-		<portlet:param name="messageId" value="<%= String.valueOf(message.getMessageId()) %>" />
-	</liferay-portlet:renderURL>
-
-	<liferay-ui:icon
-		image="page"
-		message="view-in-context"
-		target="_blank"
-		url="<%= viewURL %>"
-	/>
-
 	<portlet:actionURL name="markNotSpamMBMessages" var="markAsHamURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 		<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
 		<portlet:param name="notSpamMBMessageIds" value="<%= String.valueOf(message.getMessageId()) %>" />

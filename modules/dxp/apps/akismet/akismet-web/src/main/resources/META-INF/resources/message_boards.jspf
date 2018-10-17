@@ -45,13 +45,8 @@
 					keyProperty="messageId"
 					modelVar="message"
 				>
-
-					<%
-					long messageBoardsPlid = PortalUtil.getPlidFromPortletId(message.getGroupId(), MBPortletKeys.MESSAGE_BOARDS);
-					%>
-
-					<liferay-portlet:renderURL plid="<%= messageBoardsPlid %>" portletName="<%= MBPortletKeys.MESSAGE_BOARDS %>" varImpl="rowURL">
-						<portlet:param name="mvcRenderCommandName" value="/message_boards/view_message" />
+					<liferay-portlet:renderURL varImpl="rowURL">
+						<portlet:param name="mvcPath" value="/view_thread_message.jsp" />
 						<portlet:param name="messageId" value="<%= String.valueOf(message.getMessageId()) %>" />
 					</liferay-portlet:renderURL>
 
