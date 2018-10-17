@@ -1,1 +1,1 @@
-create index IX_F0FEBEDB on OSBCustomer_TicketAttachment (zendeskTicketId);
+create index IX_27654E9A on OSBCustomer_TicketAttachment (zendeskTicketId, type_);

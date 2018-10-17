@@ -106,6 +106,11 @@ public class TicketAttachmentLocalServiceUtil {
 		return getService().deleteTicketAttachment(ticketAttachment);
 	}
 
+	public static void deleteTicketAttachments(long zendeskTicketId, int[] types)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().deleteTicketAttachments(zendeskTicketId, types);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
 	}

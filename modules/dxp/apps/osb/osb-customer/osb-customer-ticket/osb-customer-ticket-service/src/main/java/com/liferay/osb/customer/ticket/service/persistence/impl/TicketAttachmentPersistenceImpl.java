@@ -32,10 +32,12 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
@@ -43,6 +45,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -605,6 +608,839 @@ public class TicketAttachmentPersistenceImpl extends BasePersistenceImpl<TicketA
 
 	private static final String _FINDER_COLUMN_ZENDESKTICKETID_ZENDESKTICKETID_2 =
 		"ticketAttachment.zendeskTicketId = ?";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_ZTI_T = new FinderPath(TicketAttachmentModelImpl.ENTITY_CACHE_ENABLED,
+			TicketAttachmentModelImpl.FINDER_CACHE_ENABLED,
+			TicketAttachmentImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findByZTI_T",
+			new String[] {
+				Long.class.getName(), Integer.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ZTI_T = new FinderPath(TicketAttachmentModelImpl.ENTITY_CACHE_ENABLED,
+			TicketAttachmentModelImpl.FINDER_CACHE_ENABLED,
+			TicketAttachmentImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByZTI_T",
+			new String[] { Long.class.getName(), Integer.class.getName() },
+			TicketAttachmentModelImpl.ZENDESKTICKETID_COLUMN_BITMASK |
+			TicketAttachmentModelImpl.TYPE_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_ZTI_T = new FinderPath(TicketAttachmentModelImpl.ENTITY_CACHE_ENABLED,
+			TicketAttachmentModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByZTI_T",
+			new String[] { Long.class.getName(), Integer.class.getName() });
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_COUNT_BY_ZTI_T = new FinderPath(TicketAttachmentModelImpl.ENTITY_CACHE_ENABLED,
+			TicketAttachmentModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByZTI_T",
+			new String[] { Long.class.getName(), Integer.class.getName() });
+
+	/**
+	 * Returns all the ticket attachments where zendeskTicketId = &#63; and type = &#63;.
+	 *
+	 * @param zendeskTicketId the zendesk ticket ID
+	 * @param type the type
+	 * @return the matching ticket attachments
+	 */
+	@Override
+	public List<TicketAttachment> findByZTI_T(long zendeskTicketId, int type) {
+		return findByZTI_T(zendeskTicketId, type, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the ticket attachments where zendeskTicketId = &#63; and type = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TicketAttachmentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param zendeskTicketId the zendesk ticket ID
+	 * @param type the type
+	 * @param start the lower bound of the range of ticket attachments
+	 * @param end the upper bound of the range of ticket attachments (not inclusive)
+	 * @return the range of matching ticket attachments
+	 */
+	@Override
+	public List<TicketAttachment> findByZTI_T(long zendeskTicketId, int type,
+		int start, int end) {
+		return findByZTI_T(zendeskTicketId, type, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the ticket attachments where zendeskTicketId = &#63; and type = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TicketAttachmentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param zendeskTicketId the zendesk ticket ID
+	 * @param type the type
+	 * @param start the lower bound of the range of ticket attachments
+	 * @param end the upper bound of the range of ticket attachments (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching ticket attachments
+	 */
+	@Override
+	public List<TicketAttachment> findByZTI_T(long zendeskTicketId, int type,
+		int start, int end,
+		OrderByComparator<TicketAttachment> orderByComparator) {
+		return findByZTI_T(zendeskTicketId, type, start, end,
+			orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the ticket attachments where zendeskTicketId = &#63; and type = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TicketAttachmentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param zendeskTicketId the zendesk ticket ID
+	 * @param type the type
+	 * @param start the lower bound of the range of ticket attachments
+	 * @param end the upper bound of the range of ticket attachments (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @return the ordered range of matching ticket attachments
+	 */
+	@Override
+	public List<TicketAttachment> findByZTI_T(long zendeskTicketId, int type,
+		int start, int end,
+		OrderByComparator<TicketAttachment> orderByComparator,
+		boolean retrieveFromCache) {
+		boolean pagination = true;
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ZTI_T;
+			finderArgs = new Object[] { zendeskTicketId, type };
+		}
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_ZTI_T;
+			finderArgs = new Object[] {
+					zendeskTicketId, type,
+					
+					start, end, orderByComparator
+				};
+		}
+
+		List<TicketAttachment> list = null;
+
+		if (retrieveFromCache) {
+			list = (List<TicketAttachment>)finderCache.getResult(finderPath,
+					finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (TicketAttachment ticketAttachment : list) {
+					if ((zendeskTicketId != ticketAttachment.getZendeskTicketId()) ||
+							(type != ticketAttachment.getType())) {
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler query = null;
+
+			if (orderByComparator != null) {
+				query = new StringBundler(4 +
+						(orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				query = new StringBundler(4);
+			}
+
+			query.append(_SQL_SELECT_TICKETATTACHMENT_WHERE);
+
+			query.append(_FINDER_COLUMN_ZTI_T_ZENDESKTICKETID_2);
+
+			query.append(_FINDER_COLUMN_ZTI_T_TYPE_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
+			}
+			else
+			 if (pagination) {
+				query.append(TicketAttachmentModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(zendeskTicketId);
+
+				qPos.add(type);
+
+				if (!pagination) {
+					list = (List<TicketAttachment>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<TicketAttachment>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
+
+				cacheResult(list);
+
+				finderCache.putResult(finderPath, finderArgs, list);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first ticket attachment in the ordered set where zendeskTicketId = &#63; and type = &#63;.
+	 *
+	 * @param zendeskTicketId the zendesk ticket ID
+	 * @param type the type
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching ticket attachment
+	 * @throws NoSuchTicketAttachmentException if a matching ticket attachment could not be found
+	 */
+	@Override
+	public TicketAttachment findByZTI_T_First(long zendeskTicketId, int type,
+		OrderByComparator<TicketAttachment> orderByComparator)
+		throws NoSuchTicketAttachmentException {
+		TicketAttachment ticketAttachment = fetchByZTI_T_First(zendeskTicketId,
+				type, orderByComparator);
+
+		if (ticketAttachment != null) {
+			return ticketAttachment;
+		}
+
+		StringBundler msg = new StringBundler(6);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("zendeskTicketId=");
+		msg.append(zendeskTicketId);
+
+		msg.append(", type=");
+		msg.append(type);
+
+		msg.append("}");
+
+		throw new NoSuchTicketAttachmentException(msg.toString());
+	}
+
+	/**
+	 * Returns the first ticket attachment in the ordered set where zendeskTicketId = &#63; and type = &#63;.
+	 *
+	 * @param zendeskTicketId the zendesk ticket ID
+	 * @param type the type
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching ticket attachment, or <code>null</code> if a matching ticket attachment could not be found
+	 */
+	@Override
+	public TicketAttachment fetchByZTI_T_First(long zendeskTicketId, int type,
+		OrderByComparator<TicketAttachment> orderByComparator) {
+		List<TicketAttachment> list = findByZTI_T(zendeskTicketId, type, 0, 1,
+				orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last ticket attachment in the ordered set where zendeskTicketId = &#63; and type = &#63;.
+	 *
+	 * @param zendeskTicketId the zendesk ticket ID
+	 * @param type the type
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching ticket attachment
+	 * @throws NoSuchTicketAttachmentException if a matching ticket attachment could not be found
+	 */
+	@Override
+	public TicketAttachment findByZTI_T_Last(long zendeskTicketId, int type,
+		OrderByComparator<TicketAttachment> orderByComparator)
+		throws NoSuchTicketAttachmentException {
+		TicketAttachment ticketAttachment = fetchByZTI_T_Last(zendeskTicketId,
+				type, orderByComparator);
+
+		if (ticketAttachment != null) {
+			return ticketAttachment;
+		}
+
+		StringBundler msg = new StringBundler(6);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("zendeskTicketId=");
+		msg.append(zendeskTicketId);
+
+		msg.append(", type=");
+		msg.append(type);
+
+		msg.append("}");
+
+		throw new NoSuchTicketAttachmentException(msg.toString());
+	}
+
+	/**
+	 * Returns the last ticket attachment in the ordered set where zendeskTicketId = &#63; and type = &#63;.
+	 *
+	 * @param zendeskTicketId the zendesk ticket ID
+	 * @param type the type
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching ticket attachment, or <code>null</code> if a matching ticket attachment could not be found
+	 */
+	@Override
+	public TicketAttachment fetchByZTI_T_Last(long zendeskTicketId, int type,
+		OrderByComparator<TicketAttachment> orderByComparator) {
+		int count = countByZTI_T(zendeskTicketId, type);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<TicketAttachment> list = findByZTI_T(zendeskTicketId, type,
+				count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the ticket attachments before and after the current ticket attachment in the ordered set where zendeskTicketId = &#63; and type = &#63;.
+	 *
+	 * @param ticketAttachmentId the primary key of the current ticket attachment
+	 * @param zendeskTicketId the zendesk ticket ID
+	 * @param type the type
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next ticket attachment
+	 * @throws NoSuchTicketAttachmentException if a ticket attachment with the primary key could not be found
+	 */
+	@Override
+	public TicketAttachment[] findByZTI_T_PrevAndNext(long ticketAttachmentId,
+		long zendeskTicketId, int type,
+		OrderByComparator<TicketAttachment> orderByComparator)
+		throws NoSuchTicketAttachmentException {
+		TicketAttachment ticketAttachment = findByPrimaryKey(ticketAttachmentId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			TicketAttachment[] array = new TicketAttachmentImpl[3];
+
+			array[0] = getByZTI_T_PrevAndNext(session, ticketAttachment,
+					zendeskTicketId, type, orderByComparator, true);
+
+			array[1] = ticketAttachment;
+
+			array[2] = getByZTI_T_PrevAndNext(session, ticketAttachment,
+					zendeskTicketId, type, orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception e) {
+			throw processException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected TicketAttachment getByZTI_T_PrevAndNext(Session session,
+		TicketAttachment ticketAttachment, long zendeskTicketId, int type,
+		OrderByComparator<TicketAttachment> orderByComparator, boolean previous) {
+		StringBundler query = null;
+
+		if (orderByComparator != null) {
+			query = new StringBundler(5 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			query = new StringBundler(4);
+		}
+
+		query.append(_SQL_SELECT_TICKETATTACHMENT_WHERE);
+
+		query.append(_FINDER_COLUMN_ZTI_T_ZENDESKTICKETID_2);
+
+		query.append(_FINDER_COLUMN_ZTI_T_TYPE_2);
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				query.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			query.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						query.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC);
+					}
+					else {
+						query.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			query.append(TicketAttachmentModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = query.toString();
+
+		Query q = session.createQuery(sql);
+
+		q.setFirstResult(0);
+		q.setMaxResults(2);
+
+		QueryPos qPos = QueryPos.getInstance(q);
+
+		qPos.add(zendeskTicketId);
+
+		qPos.add(type);
+
+		if (orderByComparator != null) {
+			Object[] values = orderByComparator.getOrderByConditionValues(ticketAttachment);
+
+			for (Object value : values) {
+				qPos.add(value);
+			}
+		}
+
+		List<TicketAttachment> list = q.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Returns all the ticket attachments where zendeskTicketId = &#63; and type = any &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TicketAttachmentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param zendeskTicketId the zendesk ticket ID
+	 * @param types the types
+	 * @return the matching ticket attachments
+	 */
+	@Override
+	public List<TicketAttachment> findByZTI_T(long zendeskTicketId, int[] types) {
+		return findByZTI_T(zendeskTicketId, types, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the ticket attachments where zendeskTicketId = &#63; and type = any &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TicketAttachmentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param zendeskTicketId the zendesk ticket ID
+	 * @param types the types
+	 * @param start the lower bound of the range of ticket attachments
+	 * @param end the upper bound of the range of ticket attachments (not inclusive)
+	 * @return the range of matching ticket attachments
+	 */
+	@Override
+	public List<TicketAttachment> findByZTI_T(long zendeskTicketId,
+		int[] types, int start, int end) {
+		return findByZTI_T(zendeskTicketId, types, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the ticket attachments where zendeskTicketId = &#63; and type = any &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TicketAttachmentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param zendeskTicketId the zendesk ticket ID
+	 * @param types the types
+	 * @param start the lower bound of the range of ticket attachments
+	 * @param end the upper bound of the range of ticket attachments (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching ticket attachments
+	 */
+	@Override
+	public List<TicketAttachment> findByZTI_T(long zendeskTicketId,
+		int[] types, int start, int end,
+		OrderByComparator<TicketAttachment> orderByComparator) {
+		return findByZTI_T(zendeskTicketId, types, start, end,
+			orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the ticket attachments where zendeskTicketId = &#63; and type = &#63;, optionally using the finder cache.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TicketAttachmentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param zendeskTicketId the zendesk ticket ID
+	 * @param type the type
+	 * @param start the lower bound of the range of ticket attachments
+	 * @param end the upper bound of the range of ticket attachments (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @return the ordered range of matching ticket attachments
+	 */
+	@Override
+	public List<TicketAttachment> findByZTI_T(long zendeskTicketId,
+		int[] types, int start, int end,
+		OrderByComparator<TicketAttachment> orderByComparator,
+		boolean retrieveFromCache) {
+		if (types == null) {
+			types = new int[0];
+		}
+		else if (types.length > 1) {
+			types = ArrayUtil.unique(types);
+
+			Arrays.sort(types);
+		}
+
+		if (types.length == 1) {
+			return findByZTI_T(zendeskTicketId, types[0], start, end,
+				orderByComparator);
+		}
+
+		boolean pagination = true;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+				(orderByComparator == null)) {
+			pagination = false;
+			finderArgs = new Object[] { zendeskTicketId, StringUtil.merge(types) };
+		}
+		else {
+			finderArgs = new Object[] {
+					zendeskTicketId, StringUtil.merge(types),
+					
+					start, end, orderByComparator
+				};
+		}
+
+		List<TicketAttachment> list = null;
+
+		if (retrieveFromCache) {
+			list = (List<TicketAttachment>)finderCache.getResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_ZTI_T,
+					finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (TicketAttachment ticketAttachment : list) {
+					if ((zendeskTicketId != ticketAttachment.getZendeskTicketId()) ||
+							!ArrayUtil.contains(types,
+								ticketAttachment.getType())) {
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler query = new StringBundler();
+
+			query.append(_SQL_SELECT_TICKETATTACHMENT_WHERE);
+
+			query.append(_FINDER_COLUMN_ZTI_T_ZENDESKTICKETID_2);
+
+			if (types.length > 0) {
+				query.append("(");
+
+				query.append(_FINDER_COLUMN_ZTI_T_TYPE_7);
+
+				query.append(StringUtil.merge(types));
+
+				query.append(")");
+
+				query.append(")");
+			}
+
+			query.setStringAt(removeConjunction(query.stringAt(query.index() -
+						1)), query.index() - 1);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
+			}
+			else
+			 if (pagination) {
+				query.append(TicketAttachmentModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(zendeskTicketId);
+
+				if (!pagination) {
+					list = (List<TicketAttachment>)QueryUtil.list(q,
+							getDialect(), start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<TicketAttachment>)QueryUtil.list(q,
+							getDialect(), start, end);
+				}
+
+				cacheResult(list);
+
+				finderCache.putResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_ZTI_T,
+					finderArgs, list);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_WITH_PAGINATION_FIND_BY_ZTI_T,
+					finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Removes all the ticket attachments where zendeskTicketId = &#63; and type = &#63; from the database.
+	 *
+	 * @param zendeskTicketId the zendesk ticket ID
+	 * @param type the type
+	 */
+	@Override
+	public void removeByZTI_T(long zendeskTicketId, int type) {
+		for (TicketAttachment ticketAttachment : findByZTI_T(zendeskTicketId,
+				type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+			remove(ticketAttachment);
+		}
+	}
+
+	/**
+	 * Returns the number of ticket attachments where zendeskTicketId = &#63; and type = &#63;.
+	 *
+	 * @param zendeskTicketId the zendesk ticket ID
+	 * @param type the type
+	 * @return the number of matching ticket attachments
+	 */
+	@Override
+	public int countByZTI_T(long zendeskTicketId, int type) {
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_ZTI_T;
+
+		Object[] finderArgs = new Object[] { zendeskTicketId, type };
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler(3);
+
+			query.append(_SQL_COUNT_TICKETATTACHMENT_WHERE);
+
+			query.append(_FINDER_COLUMN_ZTI_T_ZENDESKTICKETID_2);
+
+			query.append(_FINDER_COLUMN_ZTI_T_TYPE_2);
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(zendeskTicketId);
+
+				qPos.add(type);
+
+				count = (Long)q.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	/**
+	 * Returns the number of ticket attachments where zendeskTicketId = &#63; and type = any &#63;.
+	 *
+	 * @param zendeskTicketId the zendesk ticket ID
+	 * @param types the types
+	 * @return the number of matching ticket attachments
+	 */
+	@Override
+	public int countByZTI_T(long zendeskTicketId, int[] types) {
+		if (types == null) {
+			types = new int[0];
+		}
+		else if (types.length > 1) {
+			types = ArrayUtil.unique(types);
+
+			Arrays.sort(types);
+		}
+
+		Object[] finderArgs = new Object[] {
+				zendeskTicketId, StringUtil.merge(types)
+			};
+
+		Long count = (Long)finderCache.getResult(FINDER_PATH_WITH_PAGINATION_COUNT_BY_ZTI_T,
+				finderArgs, this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler();
+
+			query.append(_SQL_COUNT_TICKETATTACHMENT_WHERE);
+
+			query.append(_FINDER_COLUMN_ZTI_T_ZENDESKTICKETID_2);
+
+			if (types.length > 0) {
+				query.append("(");
+
+				query.append(_FINDER_COLUMN_ZTI_T_TYPE_7);
+
+				query.append(StringUtil.merge(types));
+
+				query.append(")");
+
+				query.append(")");
+			}
+
+			query.setStringAt(removeConjunction(query.stringAt(query.index() -
+						1)), query.index() - 1);
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(zendeskTicketId);
+
+				count = (Long)q.uniqueResult();
+
+				finderCache.putResult(FINDER_PATH_WITH_PAGINATION_COUNT_BY_ZTI_T,
+					finderArgs, count);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(FINDER_PATH_WITH_PAGINATION_COUNT_BY_ZTI_T,
+					finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_ZTI_T_ZENDESKTICKETID_2 = "ticketAttachment.zendeskTicketId = ? AND ";
+	private static final String _FINDER_COLUMN_ZTI_T_TYPE_2 = "ticketAttachment.type = ?";
+	private static final String _FINDER_COLUMN_ZTI_T_TYPE_7 = "ticketAttachment.type IN (";
 
 	public TicketAttachmentPersistenceImpl() {
 		setModelClass(TicketAttachment.class);
@@ -862,6 +1698,15 @@ public class TicketAttachmentPersistenceImpl extends BasePersistenceImpl<TicketA
 			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ZENDESKTICKETID,
 				args);
 
+			args = new Object[] {
+					ticketAttachmentModelImpl.getZendeskTicketId(),
+					ticketAttachmentModelImpl.getType()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_ZTI_T, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ZTI_T,
+				args);
+
 			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
 			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
 				FINDER_ARGS_EMPTY);
@@ -886,6 +1731,27 @@ public class TicketAttachmentPersistenceImpl extends BasePersistenceImpl<TicketA
 				finderCache.removeResult(FINDER_PATH_COUNT_BY_ZENDESKTICKETID,
 					args);
 				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ZENDESKTICKETID,
+					args);
+			}
+
+			if ((ticketAttachmentModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ZTI_T.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						ticketAttachmentModelImpl.getOriginalZendeskTicketId(),
+						ticketAttachmentModelImpl.getOriginalType()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_ZTI_T, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ZTI_T,
+					args);
+
+				args = new Object[] {
+						ticketAttachmentModelImpl.getZendeskTicketId(),
+						ticketAttachmentModelImpl.getType()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_ZTI_T, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ZTI_T,
 					args);
 			}
 		}

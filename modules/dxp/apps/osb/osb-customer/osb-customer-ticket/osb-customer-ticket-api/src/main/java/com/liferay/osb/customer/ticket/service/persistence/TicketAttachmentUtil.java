@@ -287,6 +287,273 @@ public class TicketAttachmentUtil {
 	}
 
 	/**
+	* Returns all the ticket attachments where zendeskTicketId = &#63; and type = &#63;.
+	*
+	* @param zendeskTicketId the zendesk ticket ID
+	* @param type the type
+	* @return the matching ticket attachments
+	*/
+	public static List<TicketAttachment> findByZTI_T(long zendeskTicketId,
+		int type) {
+		return getPersistence().findByZTI_T(zendeskTicketId, type);
+	}
+
+	/**
+	* Returns a range of all the ticket attachments where zendeskTicketId = &#63; and type = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TicketAttachmentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param zendeskTicketId the zendesk ticket ID
+	* @param type the type
+	* @param start the lower bound of the range of ticket attachments
+	* @param end the upper bound of the range of ticket attachments (not inclusive)
+	* @return the range of matching ticket attachments
+	*/
+	public static List<TicketAttachment> findByZTI_T(long zendeskTicketId,
+		int type, int start, int end) {
+		return getPersistence().findByZTI_T(zendeskTicketId, type, start, end);
+	}
+
+	/**
+	* Returns an ordered range of all the ticket attachments where zendeskTicketId = &#63; and type = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TicketAttachmentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param zendeskTicketId the zendesk ticket ID
+	* @param type the type
+	* @param start the lower bound of the range of ticket attachments
+	* @param end the upper bound of the range of ticket attachments (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching ticket attachments
+	*/
+	public static List<TicketAttachment> findByZTI_T(long zendeskTicketId,
+		int type, int start, int end,
+		OrderByComparator<TicketAttachment> orderByComparator) {
+		return getPersistence()
+				   .findByZTI_T(zendeskTicketId, type, start, end,
+			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the ticket attachments where zendeskTicketId = &#63; and type = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TicketAttachmentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param zendeskTicketId the zendesk ticket ID
+	* @param type the type
+	* @param start the lower bound of the range of ticket attachments
+	* @param end the upper bound of the range of ticket attachments (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the ordered range of matching ticket attachments
+	*/
+	public static List<TicketAttachment> findByZTI_T(long zendeskTicketId,
+		int type, int start, int end,
+		OrderByComparator<TicketAttachment> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByZTI_T(zendeskTicketId, type, start, end,
+			orderByComparator, retrieveFromCache);
+	}
+
+	/**
+	* Returns the first ticket attachment in the ordered set where zendeskTicketId = &#63; and type = &#63;.
+	*
+	* @param zendeskTicketId the zendesk ticket ID
+	* @param type the type
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching ticket attachment
+	* @throws NoSuchTicketAttachmentException if a matching ticket attachment could not be found
+	*/
+	public static TicketAttachment findByZTI_T_First(long zendeskTicketId,
+		int type, OrderByComparator<TicketAttachment> orderByComparator)
+		throws com.liferay.osb.customer.ticket.exception.NoSuchTicketAttachmentException {
+		return getPersistence()
+				   .findByZTI_T_First(zendeskTicketId, type, orderByComparator);
+	}
+
+	/**
+	* Returns the first ticket attachment in the ordered set where zendeskTicketId = &#63; and type = &#63;.
+	*
+	* @param zendeskTicketId the zendesk ticket ID
+	* @param type the type
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching ticket attachment, or <code>null</code> if a matching ticket attachment could not be found
+	*/
+	public static TicketAttachment fetchByZTI_T_First(long zendeskTicketId,
+		int type, OrderByComparator<TicketAttachment> orderByComparator) {
+		return getPersistence()
+				   .fetchByZTI_T_First(zendeskTicketId, type, orderByComparator);
+	}
+
+	/**
+	* Returns the last ticket attachment in the ordered set where zendeskTicketId = &#63; and type = &#63;.
+	*
+	* @param zendeskTicketId the zendesk ticket ID
+	* @param type the type
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching ticket attachment
+	* @throws NoSuchTicketAttachmentException if a matching ticket attachment could not be found
+	*/
+	public static TicketAttachment findByZTI_T_Last(long zendeskTicketId,
+		int type, OrderByComparator<TicketAttachment> orderByComparator)
+		throws com.liferay.osb.customer.ticket.exception.NoSuchTicketAttachmentException {
+		return getPersistence()
+				   .findByZTI_T_Last(zendeskTicketId, type, orderByComparator);
+	}
+
+	/**
+	* Returns the last ticket attachment in the ordered set where zendeskTicketId = &#63; and type = &#63;.
+	*
+	* @param zendeskTicketId the zendesk ticket ID
+	* @param type the type
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching ticket attachment, or <code>null</code> if a matching ticket attachment could not be found
+	*/
+	public static TicketAttachment fetchByZTI_T_Last(long zendeskTicketId,
+		int type, OrderByComparator<TicketAttachment> orderByComparator) {
+		return getPersistence()
+				   .fetchByZTI_T_Last(zendeskTicketId, type, orderByComparator);
+	}
+
+	/**
+	* Returns the ticket attachments before and after the current ticket attachment in the ordered set where zendeskTicketId = &#63; and type = &#63;.
+	*
+	* @param ticketAttachmentId the primary key of the current ticket attachment
+	* @param zendeskTicketId the zendesk ticket ID
+	* @param type the type
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next ticket attachment
+	* @throws NoSuchTicketAttachmentException if a ticket attachment with the primary key could not be found
+	*/
+	public static TicketAttachment[] findByZTI_T_PrevAndNext(
+		long ticketAttachmentId, long zendeskTicketId, int type,
+		OrderByComparator<TicketAttachment> orderByComparator)
+		throws com.liferay.osb.customer.ticket.exception.NoSuchTicketAttachmentException {
+		return getPersistence()
+				   .findByZTI_T_PrevAndNext(ticketAttachmentId,
+			zendeskTicketId, type, orderByComparator);
+	}
+
+	/**
+	* Returns all the ticket attachments where zendeskTicketId = &#63; and type = any &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TicketAttachmentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param zendeskTicketId the zendesk ticket ID
+	* @param types the types
+	* @return the matching ticket attachments
+	*/
+	public static List<TicketAttachment> findByZTI_T(long zendeskTicketId,
+		int[] types) {
+		return getPersistence().findByZTI_T(zendeskTicketId, types);
+	}
+
+	/**
+	* Returns a range of all the ticket attachments where zendeskTicketId = &#63; and type = any &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TicketAttachmentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param zendeskTicketId the zendesk ticket ID
+	* @param types the types
+	* @param start the lower bound of the range of ticket attachments
+	* @param end the upper bound of the range of ticket attachments (not inclusive)
+	* @return the range of matching ticket attachments
+	*/
+	public static List<TicketAttachment> findByZTI_T(long zendeskTicketId,
+		int[] types, int start, int end) {
+		return getPersistence().findByZTI_T(zendeskTicketId, types, start, end);
+	}
+
+	/**
+	* Returns an ordered range of all the ticket attachments where zendeskTicketId = &#63; and type = any &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TicketAttachmentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param zendeskTicketId the zendesk ticket ID
+	* @param types the types
+	* @param start the lower bound of the range of ticket attachments
+	* @param end the upper bound of the range of ticket attachments (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching ticket attachments
+	*/
+	public static List<TicketAttachment> findByZTI_T(long zendeskTicketId,
+		int[] types, int start, int end,
+		OrderByComparator<TicketAttachment> orderByComparator) {
+		return getPersistence()
+				   .findByZTI_T(zendeskTicketId, types, start, end,
+			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the ticket attachments where zendeskTicketId = &#63; and type = &#63;, optionally using the finder cache.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link TicketAttachmentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param zendeskTicketId the zendesk ticket ID
+	* @param type the type
+	* @param start the lower bound of the range of ticket attachments
+	* @param end the upper bound of the range of ticket attachments (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the ordered range of matching ticket attachments
+	*/
+	public static List<TicketAttachment> findByZTI_T(long zendeskTicketId,
+		int[] types, int start, int end,
+		OrderByComparator<TicketAttachment> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByZTI_T(zendeskTicketId, types, start, end,
+			orderByComparator, retrieveFromCache);
+	}
+
+	/**
+	* Removes all the ticket attachments where zendeskTicketId = &#63; and type = &#63; from the database.
+	*
+	* @param zendeskTicketId the zendesk ticket ID
+	* @param type the type
+	*/
+	public static void removeByZTI_T(long zendeskTicketId, int type) {
+		getPersistence().removeByZTI_T(zendeskTicketId, type);
+	}
+
+	/**
+	* Returns the number of ticket attachments where zendeskTicketId = &#63; and type = &#63;.
+	*
+	* @param zendeskTicketId the zendesk ticket ID
+	* @param type the type
+	* @return the number of matching ticket attachments
+	*/
+	public static int countByZTI_T(long zendeskTicketId, int type) {
+		return getPersistence().countByZTI_T(zendeskTicketId, type);
+	}
+
+	/**
+	* Returns the number of ticket attachments where zendeskTicketId = &#63; and type = any &#63;.
+	*
+	* @param zendeskTicketId the zendesk ticket ID
+	* @param types the types
+	* @return the number of matching ticket attachments
+	*/
+	public static int countByZTI_T(long zendeskTicketId, int[] types) {
+		return getPersistence().countByZTI_T(zendeskTicketId, types);
+	}
+
+	/**
 	* Caches the ticket attachment in the entity cache if it is enabled.
 	*
 	* @param ticketAttachment the ticket attachment

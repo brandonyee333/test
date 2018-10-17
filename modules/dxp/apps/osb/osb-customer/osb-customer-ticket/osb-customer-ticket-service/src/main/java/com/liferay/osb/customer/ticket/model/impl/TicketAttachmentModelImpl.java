@@ -112,8 +112,9 @@ public class TicketAttachmentModelImpl extends BaseModelImpl<TicketAttachment>
 	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.osb.customer.ticket.service.util.ServiceProps.get(
 				"value.object.column.bitmask.enabled.com.liferay.osb.customer.ticket.model.TicketAttachment"),
 			true);
-	public static final long ZENDESKTICKETID_COLUMN_BITMASK = 1L;
-	public static final long TICKETATTACHMENTID_COLUMN_BITMASK = 2L;
+	public static final long TYPE_COLUMN_BITMASK = 1L;
+	public static final long ZENDESKTICKETID_COLUMN_BITMASK = 2L;
+	public static final long TICKETATTACHMENTID_COLUMN_BITMASK = 4L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -433,7 +434,19 @@ public class TicketAttachmentModelImpl extends BaseModelImpl<TicketAttachment>
 
 	@Override
 	public void setType(int type) {
+		_columnBitmask |= TYPE_COLUMN_BITMASK;
+
+		if (!_setOriginalType) {
+			_setOriginalType = true;
+
+			_originalType = _type;
+		}
+
 		_type = type;
+	}
+
+	public int getOriginalType() {
+		return _originalType;
 	}
 
 	public long getColumnBitmask() {
@@ -542,6 +555,10 @@ public class TicketAttachmentModelImpl extends BaseModelImpl<TicketAttachment>
 		ticketAttachmentModelImpl._originalZendeskTicketId = ticketAttachmentModelImpl._zendeskTicketId;
 
 		ticketAttachmentModelImpl._setOriginalZendeskTicketId = false;
+
+		ticketAttachmentModelImpl._originalType = ticketAttachmentModelImpl._type;
+
+		ticketAttachmentModelImpl._setOriginalType = false;
 
 		ticketAttachmentModelImpl._columnBitmask = 0;
 	}
@@ -697,6 +714,8 @@ public class TicketAttachmentModelImpl extends BaseModelImpl<TicketAttachment>
 	private String _fileName;
 	private long _fileSize;
 	private int _type;
+	private int _originalType;
+	private boolean _setOriginalType;
 	private long _columnBitmask;
 	private TicketAttachment _escapedModel;
 }

@@ -105,6 +105,13 @@ public class TicketAttachmentLocalServiceWrapper
 	}
 
 	@Override
+	public void deleteTicketAttachments(long zendeskTicketId, int[] types)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_ticketAttachmentLocalService.deleteTicketAttachments(zendeskTicketId,
+			types);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
 		return _ticketAttachmentLocalService.dynamicQuery();
 	}
