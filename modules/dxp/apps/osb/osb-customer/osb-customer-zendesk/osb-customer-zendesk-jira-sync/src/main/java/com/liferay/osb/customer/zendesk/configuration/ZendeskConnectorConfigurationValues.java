@@ -12,22 +12,16 @@
  *
  */
 
-package com.liferay.osb.customer.jira.rest.connector.configuration;
+package com.liferay.osb.customer.zendesk.configuration;
 
 import com.liferay.portal.kernel.util.GetterUtil;
 
 /**
- * @author Amos Fong
+ * @author Kyle Bischof
  */
-public class JIRARESTConnectorConfigurationValues {
+public class ZendeskConnectorConfigurationValues {
 
-	public static final String JIRA_DOMAIN_NAME = GetterUtil.getString(
-		JIRARESTConnectorConfigurationUtil.get("jira.domain.name"));
-
-	public static final String JIRA_USER_NAME = GetterUtil.getString(
-		JIRARESTConnectorConfigurationUtil.get("jira.user.name"));
-
-	public static final String JIRA_USER_PASSWORD = GetterUtil.getString(
-		JIRARESTConnectorConfigurationUtil.get("jira.user.password"));
+	public static final String ZENDESK_AUTH_USER_EMAIL = GetterUtil.getString(
+		ZendeskConnectorConfigurationUtil.get("zendesk.auth.user.email"));
 
 }

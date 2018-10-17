@@ -14,7 +14,6 @@
 
 package com.liferay.osb.customer.jira.rest.connector.service.impl;
 
-import com.liferay.osb.customer.jira.rest.connector.configuration.JIRARESTConnectorConfigurationValues;
 import com.liferay.osb.customer.jira.rest.connector.exception.JIRAResponseException;
 import com.liferay.osb.customer.jira.rest.connector.exception.JIRAResponseTicketNotFoundException;
 import com.liferay.osb.customer.jira.rest.connector.exception.JIRATicketIssueTypeException;
@@ -34,6 +33,7 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Noah Sherrill
@@ -41,16 +41,16 @@ import java.util.Map;
 public class JIRATicketLocalServiceImpl extends JIRATicketLocalServiceBaseImpl {
 
 	public JSONObject createJIRATicket(
-			String issueType, String summary, String description,
-			String assigneeName, Map<String, Object> customFields,
-			String status)
+			String projectKey, String issueType, String summary,
+			String description, String assigneeName, Set<String> labels,
+			Map<String, Object> customFields, String status)
 		throws PortalException {
 
 		validate(issueType, summary);
 
 		JIRATicket jiraTicket = new JIRATicket(
-			JIRARESTConnectorConfigurationValues.JIRA_PROJECT_KEY, issueType,
-			summary, description, assigneeName, customFields);
+			projectKey, issueType, summary, description, assigneeName, labels,
+			customFields);
 
 		JSONObject responseJSONObject = JIRAHttpUtil.post(
 			"issue", jiraTicket.toJSONObject());
@@ -83,16 +83,16 @@ public class JIRATicketLocalServiceImpl extends JIRATicketLocalServiceBaseImpl {
 	}
 
 	public JSONObject updateJIRATicket(
-			String ticketKey, String summary, String description,
-			String assigneeName, Map<String, Object> customFields,
-			String status)
+			String projectKey, String ticketKey, String summary,
+			String description, String assigneeName, Set<String> labels,
+			Map<String, Object> customFields, String status)
 		throws PortalException {
 
 		validate(ticketKey);
 
 		JIRATicket jiraTicket = new JIRATicket(
-			JIRARESTConnectorConfigurationValues.JIRA_PROJECT_KEY,
-			StringPool.BLANK, summary, description, assigneeName, customFields);
+			projectKey, StringPool.BLANK, summary, description, assigneeName,
+			labels, customFields);
 
 		JSONObject responseJSONObject = JIRAHttpUtil.put(
 			"issue/" + ticketKey, jiraTicket.toJSONObject());

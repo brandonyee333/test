@@ -20,12 +20,12 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Noah Sherrill
@@ -36,22 +36,23 @@ public class JIRATicket {
 	}
 
 	public JIRATicket(
-		String projectKey, String issueType, String summary,
-		String description) {
+		String projectKey, String issueType, String summary, String description,
+		Set<String> labels) {
 
 		_projectKey = projectKey;
 		_issueType = issueType;
 		_summary = summary;
 		_description = description;
+		_labels = labels;
 	}
 
 	public JIRATicket(
 			String projectKey, String issueType, String summary,
-			String description, String assigneeName,
+			String description, String assigneeName, Set<String> labels,
 			Map<String, Object> customFieldValues)
 		throws PortalException {
 
-		this(projectKey, issueType, summary, description);
+		this(projectKey, issueType, summary, description, labels);
 
 		_assigneeName = assigneeName;
 
@@ -96,6 +97,10 @@ public class JIRATicket {
 		return _issueType;
 	}
 
+	public Set<String> getLabels() {
+		return _labels;
+	}
+
 	public String getProjectKey() {
 		return _projectKey;
 	}
@@ -132,6 +137,10 @@ public class JIRATicket {
 
 	public void setIssueType(String issueType) {
 		_issueType = issueType;
+	}
+
+	public void setLabels(Set<String> labels) {
+		_labels = labels;
 	}
 
 	public void setProjectKey(String projectKey) {
@@ -173,6 +182,16 @@ public class JIRATicket {
 			issueTypeJSONObject.put("name", _issueType);
 
 			fieldsJSONObject.put("issuetype", issueTypeJSONObject);
+		}
+
+		if (Validator.isNotNull(_labels)) {
+			JSONArray labelsJSONArray = JSONFactoryUtil.createJSONArray();
+
+			for (String label : _labels) {
+				labelsJSONArray.put(label);
+			}
+
+			fieldsJSONObject.put("labels", labelsJSONArray);
 		}
 
 		if (Validator.isNotNull(_ticketKey)) {
@@ -239,13 +258,14 @@ public class JIRATicket {
 		}
 	}
 
-	private String _assigneeName = StringPool.BLANK;
+	private String _assigneeName;
 	private Map<String, Object> _customFieldValues = new HashMap<>();
-	private String _description = StringPool.BLANK;
-	private String _issueType = StringPool.BLANK;
-	private String _projectKey = StringPool.BLANK;
-	private String _status = StringPool.BLANK;
-	private String _summary = StringPool.BLANK;
-	private String _ticketKey = StringPool.BLANK;
+	private String _description;
+	private String _issueType;
+	private Set<String> _labels;
+	private String _projectKey;
+	private String _status;
+	private String _summary;
+	private String _ticketKey;
 
 }
