@@ -20,8 +20,6 @@
 ResultRow row = (ResultRow)request.getAttribute(WebKeys.SEARCH_CONTAINER_RESULT_ROW);
 
 MBMessage message = (MBMessage)row.getObject();
-
-long messageBoardsPlid = PortalUtil.getPlidFromPortletId(message.getGroupId(), MBPortletKeys.MESSAGE_BOARDS);
 %>
 
 <liferay-ui:icon-menu>

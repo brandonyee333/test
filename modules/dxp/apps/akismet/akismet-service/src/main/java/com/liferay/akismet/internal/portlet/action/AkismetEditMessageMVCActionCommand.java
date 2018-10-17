@@ -121,11 +121,14 @@ public class AkismetEditMessageMVCActionCommand extends BaseMVCActionCommand {
 				WorkflowConstants.STATUS_DENIED, serviceContext,
 				new HashMap<String, Serializable>());
 
-			List<MBMessage> threadMessages = _mbMessageLocalService.getThreadMessages(message.getThreadId(), 0);
+			List<MBMessage> threadMessages =
+				_mbMessageLocalService.getThreadMessages(
+					message.getThreadId(), 0);
 
 			for (MBMessage threadMessage : threadMessages) {
 				if (threadMessage.getParentMessageId() == messageId) {
-					threadMessage.setParentMessageId(message.getRootMessageId());
+					threadMessage.setParentMessageId(
+						message.getRootMessageId());
 				}
 			}
 

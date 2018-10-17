@@ -22,13 +22,16 @@ import com.liferay.akismet.service.AkismetEntryLocalService;
 import com.liferay.message.boards.kernel.model.MBMessage;
 import com.liferay.message.boards.kernel.model.MBMessageConstants;
 import com.liferay.message.boards.kernel.service.MBMessageLocalService;
-import com.liferay.message.boards.kernel.service.MBMessageLocalServiceUtil;
 import com.liferay.message.boards.kernel.service.MBMessageLocalServiceWrapper;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
-import com.liferay.portal.kernel.util.*;
+import com.liferay.portal.kernel.util.ObjectValuePair;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.io.InputStream;
@@ -60,15 +63,14 @@ public class AkismetMBMessageLocalServiceWrapper
 			List<ObjectValuePair<String, InputStream>> inputStreamOVPs,
 			boolean anonymous, double priority, boolean allowPingbacks,
 			ServiceContext serviceContext)
-			throws PortalException {
+		throws PortalException {
 
 		boolean enabled = _isCheckSpamEnabled(userId, groupId, serviceContext);
 
-
 		MBMessage message = super.addMessage(
-				userId, userName, groupId, categoryId, threadId,
-				parentMessageId, subject, body, format, inputStreamOVPs,
-				anonymous, priority, allowPingbacks, serviceContext);
+			userId, userName, groupId, categoryId, threadId, parentMessageId,
+			subject, body, format, inputStreamOVPs, anonymous, priority,
+			allowPingbacks, serviceContext);
 
 		if (!enabled) {
 			return message;
@@ -77,16 +79,14 @@ public class AkismetMBMessageLocalServiceWrapper
 		int status = _checkSpam(message.getMessageId(), serviceContext);
 
 		if (status == WorkflowConstants.STATUS_APPROVED) {
-
 			super.updateMessage(
-					userId, message.getMessageId(),
-					message.getBody(), serviceContext);
+				userId, message.getMessageId(), message.getBody(),
+				serviceContext);
 		}
-
 		else {
 			super.updateStatus(
-					userId, message.getMessageId(), status, serviceContext,
-					new HashMap<String, Serializable>());
+				userId, message.getMessageId(), status, serviceContext,
+				new HashMap<String, Serializable>());
 		}
 
 		return message;
@@ -99,17 +99,15 @@ public class AkismetMBMessageLocalServiceWrapper
 			List<ObjectValuePair<String, InputStream>> inputStreamOVPs,
 			boolean anonymous, double priority, boolean allowPingbacks,
 			ServiceContext serviceContext)
-			throws PortalException {
-
+		throws PortalException {
 
 		long threadId = 0;
 		long parentMessageId = MBMessageConstants.DEFAULT_PARENT_MESSAGE_ID;
 
 		return addMessage(
-				userId, userName, groupId, categoryId, threadId, parentMessageId,
-				subject, body, format, inputStreamOVPs, anonymous, priority,
-				allowPingbacks, serviceContext);
-
+			userId, userName, groupId, categoryId, threadId, parentMessageId,
+			subject, body, format, inputStreamOVPs, anonymous, priority,
+			allowPingbacks, serviceContext);
 	}
 
 	private int _checkSpam(long messageId, ServiceContext serviceContext)
