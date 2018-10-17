@@ -23,6 +23,7 @@ import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
 import com.liferay.osb.service.RemoteUserLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
+import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -188,6 +189,10 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 
 	@Override
 	protected void doReceive(Message message) throws Exception {
+		if (!PortletPropsValues.SYNCHRONIZE_USERS_ENABLED) {
+			return;
+		}
+
 		StringBundler sb = new StringBundler(21);
 
 		sb.append("select distinct(OSB_AccountCustomer.userId) from ");

@@ -97,4 +97,8 @@ public class PortletPropsValues {
 	public static final String SUPPORT_EMAIL_ADDRESS_FROM = PortletProps.get(
 		PortletPropsKeys.SUPPORT_EMAIL_ADDRESS_FROM);
 
+	public static final boolean SYNCHRONIZE_USERS_ENABLED =
+		GetterUtil.getBoolean(
+			PortletProps.get(PortletPropsKeys.SYNCHRONIZE_USERS_ENABLED));
+
 }

@@ -90,4 +90,7 @@ public interface PortletPropsKeys {
 	public static final String SUPPORT_EMAIL_ADDRESS_FROM =
 		"support.email.address.from";
 
+	public static final String SYNCHRONIZE_USERS_ENABLED =
+		"synchronize.users.enabled";
+
 }
