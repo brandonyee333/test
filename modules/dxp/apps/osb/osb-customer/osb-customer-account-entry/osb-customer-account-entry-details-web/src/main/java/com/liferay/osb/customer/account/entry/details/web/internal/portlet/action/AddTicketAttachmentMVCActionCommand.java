@@ -25,6 +25,8 @@ import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -49,40 +51,6 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class AddTicketAttachmentMVCActionCommand extends BaseMVCActionCommand {
 
-	protected String buildZendeskTicketCommentBody(
-		ActionResponse actionResponse, TicketAttachment ticketAttachment,
-		String comment) {
-
-		StringBundler sb = new StringBundler(7);
-
-		if (Validator.isNotNull(comment)) {
-			sb.append(comment.replace(StringPool.NEW_LINE, "<br />"));
-			sb.append("<br /><br />");
-		}
-
-		sb.append("<a href=\"");
-
-		LiferayPortletResponse liferayPortletResponse =
-			_portal.getLiferayPortletResponse(actionResponse);
-
-		LiferayPortletURL resourceURL =
-			(LiferayPortletURL)liferayPortletResponse.createResourceURL();
-
-		resourceURL.setCopyCurrentRenderParameters(false);
-		resourceURL.setParameter(
-			"ticketAttachmentId",
-			String.valueOf(ticketAttachment.getTicketAttachmentId()));
-		resourceURL.setResourceID("/ticket_attachment");
-
-		sb.append(resourceURL.toString());
-
-		sb.append("\">");
-		sb.append(ticketAttachment.getFileName());
-		sb.append("</a>");
-
-		return sb.toString();
-	}
-
 	@Override
 	protected void doProcessAction(
 			ActionRequest actionRequest, ActionResponse actionResponse)
@@ -103,19 +71,14 @@ public class AddTicketAttachmentMVCActionCommand extends BaseMVCActionCommand {
 		long accountEntryId = _zendeskMapperUtil.getAccountEntryId(
 			zendeskTicket.getZendeskOrganizationId());
 
-		TicketAttachment ticketAttachment =
-			_ticketAttachmentService.addTicketAttachment(
-				accountEntryId, zendeskTicketId, fileRepositoryId, fileName,
-				fileSize, type);
+		ServiceContext serviceContext = ServiceContextFactory.getInstance(
+			TicketAttachment.class.getName(), actionRequest);
 
-		long zendeskUserId = _zendeskMapperUtil.getZendeskUserId(
-			ticketAttachment.getUserId());
+		serviceContext.setAttribute("comment", comment);
 
-		String zendeskTicketCommentBody = buildZendeskTicketCommentBody(
-			actionResponse, ticketAttachment, comment);
-
-		_zendeskTicketCommentWebService.addZendeskTicketComment(
-			zendeskTicketId, zendeskUserId, zendeskTicketCommentBody);
+		_ticketAttachmentService.addTicketAttachment(
+			accountEntryId, zendeskTicketId, fileRepositoryId, fileName,
+			fileSize, type, serviceContext);
 	}
 
 	@Reference
@@ -126,9 +89,6 @@ public class AddTicketAttachmentMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private ZendeskMapperUtil _zendeskMapperUtil;
-
-	@Reference
-	private ZendeskTicketCommentWebService _zendeskTicketCommentWebService;
 
 	@Reference
 	private ZendeskTicketWebService _zendeskTicketWebService;

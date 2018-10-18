@@ -20,6 +20,7 @@ import com.liferay.osb.customer.ticket.service.base.TicketAttachmentServiceBaseI
 import com.liferay.osb.customer.ticket.service.permission.TicketAttachmentPermissionChecker;
 import com.liferay.osb.customer.ticket.service.permission.TicketEntryPermissionChecker;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 /**
  * @author Amos Fong
@@ -29,7 +30,8 @@ public class TicketAttachmentServiceImpl
 
 	public TicketAttachment addTicketAttachment(
 			long accountEntryId, long zendeskTicketId, String fileRepositoryId,
-			String fileName, long fileSize, int type)
+			String fileName, long fileSize, int type,
+			ServiceContext serviceContext)
 		throws PortalException {
 
 		TicketEntryPermissionChecker.check(
@@ -38,7 +40,7 @@ public class TicketAttachmentServiceImpl
 
 		return ticketAttachmentLocalService.addTicketAttachment(
 			getUserId(), accountEntryId, zendeskTicketId, fileRepositoryId,
-			fileName, fileSize, type);
+			fileName, fileSize, type, serviceContext);
 	}
 
 	public TicketAttachment getTicketAttachment(long ticketAttachmentId)

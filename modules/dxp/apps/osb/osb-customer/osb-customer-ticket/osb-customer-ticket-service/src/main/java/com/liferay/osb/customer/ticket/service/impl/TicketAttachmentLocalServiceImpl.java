@@ -17,8 +17,16 @@ package com.liferay.osb.customer.ticket.service.impl;
 import com.liferay.osb.customer.ticket.model.TicketAttachment;
 import com.liferay.osb.customer.ticket.repository.FileRepositoryWebService;
 import com.liferay.osb.customer.ticket.service.base.TicketAttachmentLocalServiceBaseImpl;
+import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
+import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketCommentWebService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.portlet.LiferayPortletURL;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.util.Date;
@@ -32,7 +40,8 @@ public class TicketAttachmentLocalServiceImpl
 
 	public TicketAttachment addTicketAttachment(
 			long userId, long accountEntryId, long zendeskTicketId,
-			String fileRepositoryId, String fileName, long fileSize, int type)
+			String fileRepositoryId, String fileName, long fileSize, int type,
+			ServiceContext serviceContext)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
@@ -58,6 +67,15 @@ public class TicketAttachmentLocalServiceImpl
 			fileRepositoryId, zendeskTicketId, fileName,
 			ticketAttachment.getFilePath());
 
+		long zendeskUserId = _zendeskMapperUtil.getZendeskUserId(
+			user.getUserId());
+
+		String zendeskTicketCommentBody = buildZendeskTicketCommentBody(
+			ticketAttachment, serviceContext);
+
+		_zendeskTicketCommentWebService.addZendeskTicketComment(
+			zendeskTicketId, zendeskUserId, zendeskTicketCommentBody);
+
 		return ticketAttachment;
 	}
 
@@ -76,7 +94,48 @@ public class TicketAttachmentLocalServiceImpl
 		}
 	}
 
+	protected String buildZendeskTicketCommentBody(
+		TicketAttachment ticketAttachment, ServiceContext serviceContext) {
+
+		StringBundler sb = new StringBundler(7);
+
+		String comment = (String)serviceContext.getAttribute("comment");
+
+		if (Validator.isNotNull(comment)) {
+			sb.append(comment.replace(StringPool.NEW_LINE, "<br />"));
+			sb.append("<br /><br />");
+		}
+
+		sb.append("<a href=\"");
+
+		LiferayPortletResponse liferayPortletResponse =
+			serviceContext.getLiferayPortletResponse();
+
+		LiferayPortletURL resourceURL =
+			(LiferayPortletURL)liferayPortletResponse.createResourceURL();
+
+		resourceURL.setCopyCurrentRenderParameters(false);
+		resourceURL.setParameter(
+			"ticketAttachmentId",
+			String.valueOf(ticketAttachment.getTicketAttachmentId()));
+		resourceURL.setResourceID("/ticket_attachment");
+
+		sb.append(resourceURL.toString());
+
+		sb.append("\">");
+		sb.append(ticketAttachment.getFileName());
+		sb.append("</a>");
+
+		return sb.toString();
+	}
+
 	@ServiceReference(type = FileRepositoryWebService.class)
 	private FileRepositoryWebService _fileRepositoryWebService;
+
+	@ServiceReference(type = ZendeskMapperUtil.class)
+	private ZendeskMapperUtil _zendeskMapperUtil;
+
+	@ServiceReference(type = ZendeskTicketCommentWebService.class)
+	private ZendeskTicketCommentWebService _zendeskTicketCommentWebService;
 
 }
