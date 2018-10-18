@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Amos Fong
@@ -58,6 +59,21 @@ public class TicketAttachmentLocalServiceImpl
 			ticketAttachment.getFilePath());
 
 		return ticketAttachment;
+	}
+
+	public void deleteTicketAttachments(long zendeskTicketId, int[] types)
+		throws PortalException {
+
+		List<TicketAttachment> ticketAttachments =
+			ticketAttachmentPersistence.findByZTI_T(zendeskTicketId, types);
+
+		for (TicketAttachment ticketAttachment : ticketAttachments) {
+			_fileRepositoryWebService.deleteFile(
+				ticketAttachment.getFileRepositoryId(),
+				ticketAttachment.getFilePath());
+
+			ticketAttachmentPersistence.remove(ticketAttachment);
+		}
 	}
 
 	@ServiceReference(type = FileRepositoryWebService.class)

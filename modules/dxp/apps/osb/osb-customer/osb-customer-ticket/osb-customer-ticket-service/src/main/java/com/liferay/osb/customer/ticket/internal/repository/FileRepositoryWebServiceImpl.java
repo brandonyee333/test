@@ -34,6 +34,18 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = FileRepositoryWebService.class)
 public class FileRepositoryWebServiceImpl implements FileRepositoryWebService {
 
+	public String deleteFile(String fileRepositoryId, String filePath)
+		throws PortalException {
+
+		String deleteURL = getFileRepositoryURL(
+			fileRepositoryId, _END_POINT_ADMIN);
+
+		deleteURL = _http.addParameter(deleteURL, "cmd", "delete");
+		deleteURL = _http.addParameter(deleteURL, "filePath", filePath);
+
+		return sendRequest(deleteURL, true);
+	}
+
 	public String getDownloadURL(String fileRepositoryId, String filePath)
 		throws PortalException {
 

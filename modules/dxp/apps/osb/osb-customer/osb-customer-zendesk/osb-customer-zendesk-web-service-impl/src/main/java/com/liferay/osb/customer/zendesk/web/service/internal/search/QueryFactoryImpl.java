@@ -12,25 +12,21 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.web.service;
+package com.liferay.osb.customer.zendesk.web.service.internal.search;
 
-import aQute.bnd.annotation.ProviderType;
-
-import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
-import com.liferay.osb.customer.zendesk.web.service.search.SearchHits;
+import com.liferay.osb.customer.zendesk.web.service.search.QueryFactory;
 import com.liferay.osb.customer.zendesk.web.service.search.TicketQuery;
-import com.liferay.portal.kernel.exception.PortalException;
+
+import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Amos Fong
  */
-@ProviderType
-public interface ZendeskTicketWebService {
+@Component(immediate = true, service = QueryFactory.class)
+public class QueryFactoryImpl implements QueryFactory {
 
-	public ZendeskTicket getZendeskTicket(long zendeskTicketId)
-		throws PortalException;
-
-	public SearchHits<ZendeskTicket> search(TicketQuery ticketQuery)
-		throws PortalException;
+	public TicketQuery createTicketQuery() {
+		return new TicketQueryImpl();
+	}
 
 }

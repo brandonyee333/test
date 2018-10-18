@@ -22,6 +22,9 @@ import com.liferay.portal.kernel.exception.PortalException;
  */
 public interface FileRepositoryWebService {
 
+	public String deleteFile(String fileRepositoryId, String filePath)
+		throws PortalException;
+
 	public String getDownloadURL(String fileRepositoryId, String filePath)
 		throws PortalException;
 

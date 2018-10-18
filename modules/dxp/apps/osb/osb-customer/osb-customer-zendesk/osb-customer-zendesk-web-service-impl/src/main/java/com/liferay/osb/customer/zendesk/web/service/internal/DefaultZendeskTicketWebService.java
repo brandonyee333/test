@@ -19,10 +19,22 @@ import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
 import com.liferay.osb.customer.zendesk.web.service.exception.NoSuchZendeskTicketException;
+import com.liferay.osb.customer.zendesk.web.service.internal.search.SearchHitsImpl;
+import com.liferay.osb.customer.zendesk.web.service.search.SearchHits;
+import com.liferay.osb.customer.zendesk.web.service.search.TicketQuery;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -49,6 +61,53 @@ public class DefaultZendeskTicketWebService implements ZendeskTicketWebService {
 		}
 	}
 
+	public SearchHits<ZendeskTicket> search(TicketQuery ticketQuery)
+		throws PortalException {
+
+		Map<String, String> parameters = new HashMap<>();
+
+		if (ticketQuery.getPage() > 0) {
+			parameters.put("page", String.valueOf(ticketQuery.getPage()));
+		}
+
+		parameters.put("query", ticketQuery.toString());
+
+		JSONObject responseJSONObject = _zendeskBaseWebService.get(
+			ZendeskRESTEndpoints.URL_API_V2 + "search.json", parameters);
+
+		return toSearchHits(responseJSONObject);
+	}
+
+	protected SearchHits<ZendeskTicket> toSearchHits(
+		JSONObject responseJSONObject) {
+
+		SearchHits<ZendeskTicket> searchHits = new SearchHitsImpl<>();
+
+		searchHits.setCount(responseJSONObject.getInt("count"));
+
+		String nextPageURL = responseJSONObject.getString("next_page");
+
+		if (Validator.isNotNull(nextPageURL)) {
+			String page = _http.getParameter(nextPageURL, "page", false);
+
+			searchHits.setNextPage(GetterUtil.getInteger(page));
+		}
+
+		List<ZendeskTicket> zendeskTickets = new ArrayList<>();
+
+		JSONArray jsonArray = responseJSONObject.getJSONArray("results");
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			zendeskTickets.add(toZendeskTicket(jsonObject));
+		}
+
+		searchHits.setResults(zendeskTickets);
+
+		return searchHits;
+	}
+
 	protected ZendeskTicket toZendeskTicket(JSONObject jsonObject) {
 		ZendeskTicket zendeskTicket = new ZendeskTicket();
 
@@ -60,6 +119,9 @@ public class DefaultZendeskTicketWebService implements ZendeskTicketWebService {
 
 		return zendeskTicket;
 	}
+
+	@Reference
+	private Http _http;
 
 	@Reference
 	private ZendeskBaseWebService _zendeskBaseWebService;
