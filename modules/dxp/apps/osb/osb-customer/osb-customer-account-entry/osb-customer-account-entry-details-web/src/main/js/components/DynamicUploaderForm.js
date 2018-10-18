@@ -10,6 +10,7 @@ import {
 	handleFileSuccess
 } from '../helpers/resumable-util';
 
+import Alert from './Alert';
 import Button from './Button';
 
 export default class DynamicUploaderForm extends React.Component {
@@ -390,9 +391,9 @@ export default class DynamicUploaderForm extends React.Component {
 						</div>
 
 						{this.state.message.type === 'error' && (
-							<div className="alert alert-danger" role="alert">
+							<Alert type="danger">
 								{this.state.message.content}
-							</div>
+							</Alert>
 						)}
 					</div>
 

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 
+import Alert from './Alert';
 import Button from './Button';
 
 const REQUIRED_SCHEMA = yup.string().required(Liferay.Language.get('this-field-is-required'));
@@ -229,9 +230,9 @@ export default class AddAccountEnvironmentForm extends React.Component {
 								</div>
 
 								{touched[`${namespace}name`] && errors[`${namespace}name`] && (
-									<div className="alert alert-danger" role="alert">
+									<Alert type="danger">
 										{errors[`${namespace}name`]}
-									</div>
+									</Alert>
 								)}
 							</div>
 
@@ -257,9 +258,9 @@ export default class AddAccountEnvironmentForm extends React.Component {
 								</div>
 
 								{touched[`${namespace}productEntryId`] && errors[`${namespace}productEntryId`] && (
-									<div className="alert alert-danger" role="alert">
+									<Alert type="danger">
 										{errors[`${namespace}productEntryId`]}
-									</div>
+									</Alert>
 								)}
 							</div>
 
@@ -285,9 +286,9 @@ export default class AddAccountEnvironmentForm extends React.Component {
 								</div>
 
 								{touched[`${namespace}envLFR`] && errors[`${namespace}envLFR`] && (
-									<div className="alert alert-danger" role="alert">
+									<Alert type="danger">
 										{errors[`${namespace}envLFR`]}
-									</div>
+									</Alert>
 								)}
 							</div>
 
@@ -313,9 +314,9 @@ export default class AddAccountEnvironmentForm extends React.Component {
 								</div>
 
 								{touched[`${namespace}envOS`] && errors[`${namespace}envOS`] && (
-									<div className="alert alert-danger" role="alert">
+									<Alert type="danger">
 										{errors[`${namespace}envOS`]}
-									</div>
+									</Alert>
 								)}
 							</div>
 
@@ -341,9 +342,9 @@ export default class AddAccountEnvironmentForm extends React.Component {
 								</div>
 
 								{touched[`${namespace}envJVM`] && errors[`${namespace}envJVM`] && (
-									<div className="alert alert-danger" role="alert">
+									<Alert type="danger">
 										{errors[`${namespace}envJVM`]}
-									</div>
+									</Alert>
 								)}
 							</div>
 
@@ -381,9 +382,9 @@ export default class AddAccountEnvironmentForm extends React.Component {
 								</div>
 
 								{touched[`${namespace}envAS`] && errors[`${namespace}envAS`] && (
-									<div className="alert alert-danger" role="alert">
+									<Alert type="danger">
 										{errors[`${namespace}envAS`]}
-									</div>
+									</Alert>
 								)}
 							</div>
 
@@ -409,9 +410,9 @@ export default class AddAccountEnvironmentForm extends React.Component {
 								</div>
 
 								{touched[`${namespace}envDB`] && errors[`${namespace}envDB`] && (
-									<div className="alert alert-danger" role="alert">
+									<Alert type="danger">
 										{errors[`${namespace}envDB`]}
-									</div>
+									</Alert>
 								)}
 							</div>
 
@@ -433,9 +434,9 @@ export default class AddAccountEnvironmentForm extends React.Component {
 								</div>
 
 								{touched[`${namespace}envBrowser`] && errors[`${namespace}envBrowser`] && (
-									<div className="alert alert-danger" role="alert">
+									<Alert type="danger">
 										{errors[`${namespace}envBrowser`]}
-									</div>
+									</Alert>
 								)}
 							</div>
 
@@ -458,9 +459,9 @@ export default class AddAccountEnvironmentForm extends React.Component {
 									</div>
 
 									{touched[`${namespace}envCS`] && errors[`${namespace}envCS`] && (
-										<div className="alert alert-danger" role="alert">
+										<Alert type="danger">
 											{errors[`${namespace}envCS`]}
-										</div>
+										</Alert>
 									)}
 								</div>
 							)}
@@ -484,9 +485,9 @@ export default class AddAccountEnvironmentForm extends React.Component {
 									</div>
 
 									{touched[`${namespace}envSearch`] && errors[`${namespace}envSearch`] && (
-										<div className="alert alert-danger" role="alert">
+										<Alert type="danger">
 											{errors[`${namespace}envSearch`]}
-										</div>
+										</Alert>
 									)}
 								</div>
 							)}
@@ -535,9 +536,9 @@ export default class AddAccountEnvironmentForm extends React.Component {
 								</div>
 
 								{touched[`${namespace}portalExt`] && errors[`${namespace}portalExt`] && (
-									<div className="alert alert-danger" role="alert">
+									<Alert type="danger">
 										{errors[`${namespace}portalExt`]}
-									</div>
+									</Alert>
 								)}
 							</div>
 
@@ -585,9 +586,9 @@ export default class AddAccountEnvironmentForm extends React.Component {
 								</div>
 
 								{touched[`${namespace}patchLevel`] && errors[`${namespace}patchLevel`] && (
-									<div className="alert alert-danger" role="alert">
+									<Alert type="danger">
 										{errors[`${namespace}patchLevel`]}
-									</div>
+									</Alert>
 								)}
 							</div>
 						</div>
