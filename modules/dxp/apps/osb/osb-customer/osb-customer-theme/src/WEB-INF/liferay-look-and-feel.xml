@@ -22,7 +22,7 @@
 			<setting configurable="true" key="footer-social-links" options="true,false" type="select" value="true" />
 			<setting configurable="true" key="site-logo-url" value="/home" />
 			<setting configurable="true" key="site-name" value="Help Center" />
-			<setting configurable="true" key="site-name-url" value="/home" />
+			<setting configurable="true" key="site-name-url" value="https://help.liferay.com" />
 			<setting configurable="true" key="social-link-one-name" value="facebook" />
 			<setting configurable="true" key="social-link-one-url" value="https://www.facebook.com/liferay" />
 			<setting configurable="true" key="social-link-three-name" value="linkedin" />
