@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Alert from './Alert';
 import DynamicUploaderForm from './DynamicUploaderForm';
 
 export default class AddTicketAttachment extends React.Component {
@@ -23,10 +24,19 @@ export default class AddTicketAttachment extends React.Component {
 		return (
 			<div className='add-ticket-attachment container-fluid-max-md'>
 				<h1>
-					{Liferay.Language.get('attach-files-to-ticket')}
+					{Liferay.Language.get('attach-file-to-ticket')}
 					{' '}
 					<a href={zendeskTicketURL}>#{zendeskTicketId}</a>
 				</h1>
+
+				<Alert type="info">
+					<span className="lead">
+						{`${Liferay.Language.get('Info')}:`}
+					</span>
+
+					{' '}
+					{Liferay.Language.get('only-one-file-can-be-attached-at-a-time')}
+				</Alert>
 
 				<DynamicUploaderForm
 					addTicketAttachmentURL={addTicketAttachmentURL}
