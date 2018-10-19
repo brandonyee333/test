@@ -184,6 +184,7 @@ page import="com.liferay.osb.service.SupportResponseLocalServiceUtil" %><%@
 page import="com.liferay.osb.service.permission.OSBAccountEntryPermission" %><%@
 page import="com.liferay.osb.service.permission.OSBLicenseKeyPermission" %><%@
 page import="com.liferay.osb.service.permission.OSBLicenseKeySetPermission" %><%@
+page import="com.liferay.osb.support.util.SupportUtil" %><%@
 page import="com.liferay.osb.util.OSBActionKeys" %><%@
 page import="com.liferay.osb.util.OSBConstants" %><%@
 page import="com.liferay.osb.util.OSBPortletKeys" %><%@

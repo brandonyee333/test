@@ -1,0 +1,22 @@
+.osb-portlet-self-provisioning {
+	.container-fluid-1280 {
+		background: #EFEFEF;
+		border-radius: 7px;
+		padding: 15px;
+
+		button {
+			background: #0B5FFF;
+			border: #136398;
+			border-radius: 7px;
+			color: #FFF;
+			cursor: pointer;
+			min-height: 35px;
+			vertical-align: middle;
+			width: 100%;
+		}
+
+		.form-group {
+			margin-bottom: 0;
+		}
+	}
+}

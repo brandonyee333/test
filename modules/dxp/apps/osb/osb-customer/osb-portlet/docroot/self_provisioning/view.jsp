@@ -17,12 +17,12 @@
 <%@ include file="/init.jsp" %>
 
 <%
-String productEntryRootName = portletPreferences.getValue("productEntryRootName", StringPool.BLANK);
-int[] productMinorVersions = StringUtil.split(portletPreferences.getValue("productMinorVersions", StringPool.BLANK), 0);
+long[] digitalEnterpriseProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(portletPreferences, request, "digitalEnterprise_productMinorVersions"), 0L);
+long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(portletPreferences, request, "portal_productMinorVersions"), 0L);
 %>
 
 <c:choose>
-	<c:when test="<%= Validator.isNull(productEntryRootName) || ArrayUtil.isEmpty(productMinorVersions) %>">
+	<c:when test="<%= ArrayUtil.isEmpty(digitalEnterpriseProductMinorVersions) || ArrayUtil.isEmpty(portalProductMinorVersions) %>">
 
 		<%
 		renderRequest.setAttribute(WebKeys.PORTLET_CONFIGURATOR_VISIBILITY, Boolean.TRUE);
@@ -38,60 +38,54 @@ int[] productMinorVersions = StringUtil.split(portletPreferences.getValue("produ
 		LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
 
 		params.put("accountCustomer", Long.valueOf(user.getUserId()));
-		params.put("primaryProductEntry", new Object[] {OfferingEntryConstants.STATUS_ACTIVE, productEntryRootName, ProductEntryConstants.TYPE_PRIMARY, ProductEntryConstants.ENVIRONMENT_DEVELOPMENT});
+		params.put("primaryProductEntry", new Object[] {OfferingEntryConstants.STATUS_ACTIVE, ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE, ProductEntryConstants.ROOT_NAME_PORTAL, ProductEntryConstants.TYPE_PRIMARY, ProductEntryConstants.ENVIRONMENT_DEVELOPMENT});
 
 		List<AccountEntry> accountEntries = AccountEntryLocalServiceUtil.search(null, params, QueryUtil.ALL_POS, QueryUtil.ALL_POS, new AccountEntryNameComparator(true));
-
-		AccountEntry accountEntry = null;
-
-		if (accountEntries.size() == 1) {
-			accountEntry = accountEntries.get(0);
-		}
 		%>
 
-		<span class="txt-b"><liferay-ui:message arguments="<%= new Object[] {ProductEntryConstants.getDisplayName(productEntryRootName)} %>" key="download-a-x-activation-key-for-your-developer-workstation" /></span>
+		<h1>
+			<liferay-ui:message key="download-a-liferay-activation-key-for-your-developer-workstation" />
+		</h1>
 
-		<div class="activation-key-container aui-helper-clearfix">
-			<div class="aui-w33 content-column">
-				<div class="activation-column content-column-content">
+		<p>
+			<liferay-ui:message key="to-obtain-a-key-select-your-subscription-project-product-liferay-version-and-click-on-the-download-button" />
+		</p>
+
+		<div class="container-fluid-1280">
+			<aui:row>
+				<aui:col width="<%= 30 %>">
 					<aui:select label="" name="accountEntryId" onChange='<%= renderResponse.getNamespace() + "selectAccountEntry(this.value);" %>'>
 						<aui:option disabled="<%= true %>" label="project" selected="<%= true %>" />
 
-						<c:choose>
-							<c:when test="<%= accountEntry != null %>">
-								<aui:option label="<%= accountEntry.getName() %>" value="<%= accountEntry.getAccountEntryId() %>" />
-							</c:when>
-							<c:otherwise>
+						<%
+						for (AccountEntry accountEntry : accountEntries) {
+						%>
 
-								<%
-								for (AccountEntry curAccountEntry : accountEntries) {
-								%>
+							<aui:option label="<%= accountEntry.getName() %>" value="<%= accountEntry.getAccountEntryId() %>" />
 
-									<aui:option label="<%= curAccountEntry.getName() %>" value="<%= curAccountEntry.getAccountEntryId() %>" />
+						<%
+						}
+						%>
 
-								<%
-								}
-								%>
-
-							</c:otherwise>
-						</c:choose>
 					</aui:select>
-				</div>
-			</div>
+				</aui:col>
 
-			<div class="aui-w33 content-column">
-				<div class="activation-column content-column-content">
+				<aui:col width="<%= 30 %>">
+					<aui:select label="" name="productEntryRootName" onChange='<%= renderResponse.getNamespace() + "selectProduct(this.value);" %>'>
+						<aui:option disabled="<%= true %>" label="product" selected="<%= true %>" value="" />
+					</aui:select>
+				</aui:col>
+
+				<aui:col width="<%= 20 %>">
 					<aui:select label="" name="productMinorVersion">
 						<aui:option disabled="<%= true %>" label="version" selected="<%= true %>" value="" />
 					</aui:select>
-				</div>
-			</div>
+				</aui:col>
 
-			<div class="aui-w33 content-column">
-				<div class="activation-column content-column-content">
-					<aui:button id="activationKeyDownloadButton" onClick='<%= renderResponse.getNamespace() + "generateLicenseKey();" %>' value="download-activation-key" />
-				</div>
-			</div>
+				<aui:col width="<%= 20 %>">
+					<aui:button id="activationKeyDownloadButton" onClick='<%= renderResponse.getNamespace() + "generateLicenseKey();" %>' value="download" />
+				</aui:col>
+			</aui:row>
 		</div>
 
 		<aui:script>
@@ -102,21 +96,35 @@ int[] productMinorVersions = StringUtil.split(portletPreferences.getValue("produ
 					var A = AUI();
 
 					var accountEntryId = A.one('#<portlet:namespace />accountEntryId');
+					var productEntryRootName = A.one('#<portlet:namespace />productEntryRootName');
 					var productMinorVersion = A.one('#<portlet:namespace />productMinorVersion');
 
-					if (accountEntryId && productMinorVersion) {
-						if (!accountEntryId.val() || !productMinorVersion.val()) {
+					if (accountEntryId && productEntryRootName && productMinorVersion) {
+						if (!accountEntryId.val() || !productEntryRootName || !productMinorVersion.val()) {
 							alert('<liferay-ui:message key="please-fill-out-all-required-fields" />');
 
 							return;
 						}
 
-						<portlet:resourceURL id="generateLicenseKey" var="generateLicenseKeyURL">
-							<portlet:param name="productEntryRootName" value="<%= productEntryRootName %>" />
-						</portlet:resourceURL>
+						<portlet:resourceURL id="generateLicenseKey" var="generateLicenseKeyURL" />
 
-						window.location.href = '<%= generateLicenseKeyURL.toString() %>&<portlet:namespace />accountEntryId=' + accountEntryId.val() + '&<portlet:namespace />productMinorVersion=' + productMinorVersion.val();
+						window.location.href = '<%= generateLicenseKeyURL.toString() %>&<portlet:namespace />accountEntryId=' + accountEntryId.val() + '&<portlet:namespace />productEntryRootName=' + productEntryRootName.val() + '&<portlet:namespace />productMinorVersion=' + productMinorVersion.val();
 					}
+				},
+				['aui-base']
+			);
+
+			Liferay.provide(
+				window,
+				'<portlet:namespace />init',
+				function(accountEntryId) {
+					var A = AUI();
+
+					var accountEntryIdSelect = A.one('#<portlet:namespace />accountEntryId');
+
+					accountEntryIdSelect.val(accountEntryId);
+
+					<portlet:namespace />selectAccountEntry(accountEntryId);
 				},
 				['aui-base']
 			);
@@ -125,6 +133,63 @@ int[] productMinorVersions = StringUtil.split(portletPreferences.getValue("produ
 				window,
 				'<portlet:namespace />selectAccountEntry',
 				function(accountEntryId) {
+					var A = AUI();
+
+					var productEntryRootNameSelect = A.one('#<portlet:namespace />productEntryRootName');
+
+					if (productEntryRootNameSelect) {
+						productEntryRootNameSelect.empty();
+
+						var productEntryRootNameOptions = [];
+
+						productEntryRootNameOptions.push('<option disabled><liferay-ui:message key="product" /></option>');
+
+						var selectedOption = '';
+
+						<%
+						for (AccountEntry accountEntry : accountEntries) {
+						%>
+
+							if (accountEntryId == '<%= accountEntry.getAccountEntryId() %>') {
+
+								<%
+								Set<String> productEntryRootNames = SupportUtil.getSelfProvisioningProducts(accountEntry.getAccountEntryId());
+
+								for (String productEntryRootName : productEntryRootNames) {
+								%>
+
+									if (selectedOption == '') {
+										selectedOption = '<%= productEntryRootName %>';
+									}
+
+									productEntryRootNameOptions.push('<option value="<%= productEntryRootName %>"><%= productEntryRootName %></option>');
+
+								<%
+								}
+								%>
+
+							}
+
+						<%
+						}
+						%>
+
+						productEntryRootNameSelect.append(productEntryRootNameOptions.join(''));
+
+						if (selectedOption != '') {
+							productEntryRootNameSelect.val(selectedOption);
+
+							<portlet:namespace />selectProduct(selectedOption);
+						}
+					}
+				},
+				['aui-base']
+			);
+
+			Liferay.provide(
+				window,
+				'<portlet:namespace />selectProduct',
+				function(productEntryRootName) {
 					var A = AUI();
 
 					var productMinorVersionSelect = A.one('#<portlet:namespace />productMinorVersion');
@@ -136,16 +201,34 @@ int[] productMinorVersions = StringUtil.split(portletPreferences.getValue("produ
 
 						productMinorVersionOptions.push('<option disabled><liferay-ui:message key="version" /></option>');
 
-						<%
-						for (int productMinorVersion : productMinorVersions) {
-							ListType productMinorVersionType = ListTypeServiceUtil.getListType(productMinorVersion);
-						%>
+						if (productEntryRootName == '<%= ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE %>') {
 
-							productMinorVersionOptions.push('<option value="<%= productMinorVersion %>"><%= LanguageUtil.get(request, productMinorVersionType.getName()) %></option>');
+							<%
+							for (long productMinorVersion : digitalEnterpriseProductMinorVersions) {
+								ListType productMinorVersionType = ListTypeServiceUtil.getListType(productMinorVersion);
+							%>
 
-						<%
+								productMinorVersionOptions.push('<option value="<%= productMinorVersion %>"><%= LanguageUtil.get(request, productMinorVersionType.getName()) %></option>');
+
+							<%
+							}
+							%>
+
 						}
-						%>
+						else if (productEntryRootName == '<%= ProductEntryConstants.ROOT_NAME_PORTAL %>') {
+
+							<%
+							for (long productMinorVersion : portalProductMinorVersions) {
+								ListType productMinorVersionType = ListTypeServiceUtil.getListType(productMinorVersion);
+							%>
+
+								productMinorVersionOptions.push('<option value="<%= productMinorVersion %>"><%= LanguageUtil.get(request, productMinorVersionType.getName()) %></option>');
+
+							<%
+							}
+							%>
+
+						}
 
 						productMinorVersionSelect.append(productMinorVersionOptions.join(''));
 					}
@@ -153,8 +236,13 @@ int[] productMinorVersions = StringUtil.split(portletPreferences.getValue("produ
 				['aui-base']
 			);
 
-			<c:if test="<%= accountEntry != null %>">
-				<portlet:namespace />selectAccountEntry(<%= accountEntry.getAccountEntryId() %>);
+			<c:if test="<%= accountEntries.size() == 1 %>">
+
+				<%
+				AccountEntry accountEntry = accountEntries.get(0);
+				%>
+
+				<portlet:namespace />init(<%= accountEntry.getAccountEntryId() %>);
 			</c:if>
 		</aui:script>
 	</c:otherwise>

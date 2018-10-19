@@ -19,8 +19,8 @@
 <%
 String redirect = ParamUtil.getString(request, "redirect");
 
-String productEntryRootName = PrefsParamUtil.getString(portletPreferences, request, "productEntryRootName");
-int[] productMinorVersions = StringUtil.split(PrefsParamUtil.getString(portletPreferences, request, "productMinorVersions"), 0);
+long[] digitalEnterpriseProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(portletPreferences, request, "digitalEnterprise_productMinorVersions"), 0L);
+long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(portletPreferences, request, "portal_productMinorVersions"), 0L);
 %>
 
 <c:if test="<%= PortletPermissionUtil.contains(permissionChecker, plid, OSBPortletKeys.OSB_SELF_PROVISIONING, OSBActionKeys.CONFIGURATION) %>">
@@ -33,82 +33,52 @@ int[] productMinorVersions = StringUtil.split(PrefsParamUtil.getString(portletPr
 	<aui:form action="<%= configurationURL %>" method="post" name="fm">
 		<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.UPDATE %>" />
 
-		<aui:select label="product" name="productEntryRootName" onChange='<%= renderResponse.getNamespace() + "selectProductEntryRootName(this.value);" %>'>
-			<aui:option value=""></aui:option>
-			<aui:option label="<%= ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE %>" selected="<%= productEntryRootName.equals(ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE) %>" value="<%= ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE %>" />
-			<aui:option label="<%= ProductEntryConstants.ROOT_NAME_PORTAL %>" selected="<%= productEntryRootName.equals(ProductEntryConstants.ROOT_NAME_PORTAL) %>" value="<%= ProductEntryConstants.ROOT_NAME_PORTAL %>" />
-		</aui:select>
+		<div class="container-fluid-1280">
+			<aui:row>
+				<aui:col width="<%= 50 %>">
+					<h2>
+						<%= ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE %>
+					</h2>
 
-		<aui:select label="product-versions" multiple="<%= true %>" name="productMinorVersions">
-		</aui:select>
+					<aui:select label="product-versions" multiple="<%= true %>" name="digitalEnterprise_productMinorVersions">
 
-		<br />
+						<%
+						for (ListType digitalEnterpriseMinorVersionType : ListTypeServiceUtil.getListTypes(ProductEntryConstants.LIST_TYPE_DIGITAL_ENTERPRISE_MINOR_VERSIONS)) {
+						%>
 
-		<aui:button type="submit" value="save" />
+							<aui:option label="<%= digitalEnterpriseMinorVersionType.getName() %>" selected="<%= ArrayUtil.contains(digitalEnterpriseProductMinorVersions, digitalEnterpriseMinorVersionType.getListTypeId()) %>" value="<%= digitalEnterpriseMinorVersionType.getListTypeId() %>" />
 
-		<aui:button onClick="location.href = '<%= HtmlUtil.escape(PortalUtil.escapeRedirect(redirect)) %>';" value="cancel" />
+						<%
+						}
+						%>
+
+					</aui:select>
+				</aui:col>
+
+				<aui:col width="<%= 50 %>">
+					<h2>
+						<%= ProductEntryConstants.ROOT_NAME_PORTAL %>
+					</h2>
+
+					<aui:select label="product-versions" multiple="<%= true %>" name="portal_productMinorVersions">
+
+						<%
+						for (ListType portalMinorVersionType : ListTypeServiceUtil.getListTypes(ProductEntryConstants.LIST_TYPE_PORTAL_MINOR_VERSIONS)) {
+						%>
+
+							<aui:option label="<%= portalMinorVersionType.getName() %>" selected="<%= ArrayUtil.contains(portalProductMinorVersions, portalMinorVersionType.getListTypeId()) %>" value="<%= portalMinorVersionType.getListTypeId() %>" />
+
+						<%
+						}
+						%>
+
+					</aui:select>
+				</aui:col>
+			</aui:row>
+
+			<aui:button type="submit" value="save" />
+
+			<aui:button onClick="location.href = '<%= HtmlUtil.escape(PortalUtil.escapeRedirect(redirect)) %>';" value="cancel" />
+		</div>
 	</aui:form>
 </c:if>
-
-<aui:script>
-	Liferay.provide(
-		window,
-		'<portlet:namespace />selectProductEntryRootName',
-		function(productEntryRootName) {
-			var A = AUI();
-
-			var productMinorVersionsSelect = A.one('#<portlet:namespace />productMinorVersions');
-
-			productMinorVersionsSelect.empty();
-
-			var productMinorVersionsOptions = [];
-
-			if (productEntryRootName == '<%= ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE %>') {
-
-				<%
-				for (ListType digitalEnterpriseMinorVersionType : ListTypeServiceUtil.getListTypes(ProductEntryConstants.LIST_TYPE_DIGITAL_ENTERPRISE_MINOR_VERSIONS)) {
-				%>
-
-					productMinorVersionsOptions.push('<option value="<%= digitalEnterpriseMinorVersionType.getListTypeId() %>"><%= LanguageUtil.get(request, digitalEnterpriseMinorVersionType.getName()) %></option>');
-
-				<%
-				}
-				%>
-
-			}
-			else {
-
-				<%
-				for (ListType portalMinorVersionType : ListTypeServiceUtil.getListTypes(ProductEntryConstants.LIST_TYPE_PORTAL_MINOR_VERSIONS)) {
-				%>
-
-					productMinorVersionsOptions.push('<option value="<%= portalMinorVersionType.getListTypeId() %>"><%= LanguageUtil.get(request, portalMinorVersionType.getName()) %></option>');
-
-				<%
-				}
-				%>
-
-			}
-
-			productMinorVersionsSelect.append(productMinorVersionsOptions.join(''));
-
-			var productMinorVersions = [<%= StringUtil.merge(productMinorVersions) %>];
-
-			productMinorVersionsSelect.all('option').each(
-				function(item, index, collection) {
-					if (productMinorVersions.indexOf(parseInt(item.val())) < 0) {
-						item.attr('selected', false);
-					}
-					else {
-						item.attr('selected', true);
-					}
-				}
-			);
-		},
-		['aui-base']
-	);
-
-	<c:if test="<%= Validator.isNotNull(productEntryRootName) %>">
-		<portlet:namespace />selectProductEntryRootName('<%= HtmlUtil.escapeJS(productEntryRootName) %>');
-	</c:if>
-</aui:script>

@@ -63,14 +63,17 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 			ActionRequest actionRequest, PortletPreferences preferences)
 		throws Exception {
 
-		String productEntryRootName = ParamUtil.getString(
-			actionRequest, "productEntryRootName");
-		int[] productMinorVersions = ParamUtil.getIntegerValues(
-			actionRequest, "productMinorVersions");
+		long[] digitalEnterpriseProductMinorVersions = ParamUtil.getLongValues(
+			actionRequest, "digitalEnterprise_productMinorVersions");
+		long[] portalProductMinorVersions = ParamUtil.getLongValues(
+			actionRequest, "portal_productMinorVersions");
 
-		preferences.setValue("productEntryRootName", productEntryRootName);
 		preferences.setValue(
-			"productMinorVersions", StringUtil.merge(productMinorVersions));
+			"digitalEnterprise_productMinorVersions",
+			StringUtil.merge(digitalEnterpriseProductMinorVersions));
+		preferences.setValue(
+			"portal_productMinorVersions",
+			StringUtil.merge(portalProductMinorVersions));
 
 		preferences.store();
 	}

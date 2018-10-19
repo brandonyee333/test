@@ -15,9 +15,15 @@
 package com.liferay.osb.support.util;
 
 import com.liferay.osb.model.OfferingEntry;
+import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.OrderEntry;
+import com.liferay.osb.model.ProductEntry;
+import com.liferay.osb.model.ProductEntryConstants;
+import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
 import com.liferay.osb.service.OrderEntryLocalServiceUtil;
 import com.liferay.petra.content.ContentUtil;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.ListType;
@@ -31,9 +37,12 @@ import com.liferay.portal.kernel.util.Validator;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.portlet.PortletPreferences;
 
@@ -147,6 +156,46 @@ public class SupportUtil {
 				accountEntryId);
 
 		return getOfferingEntriesMap(orderEntries);
+	}
+
+	public static Set<String> getSelfProvisioningProducts(long accountEntryId)
+		throws PortalException {
+
+		Set<String> selfProvisioningProducts = new TreeSet<>();
+
+		LinkedHashMap params = new LinkedHashMap();
+
+		params.put("license", StringPool.BLANK);
+		params.put("productEntry", ProductEntryConstants.TYPE_PRIMARY);
+
+		List<OfferingEntry> offeringEntries =
+			OfferingEntryLocalServiceUtil.search(
+				0, accountEntryId,
+				new int[] {OfferingEntryConstants.TYPE_REGULAR},
+				new int[] {OfferingEntryConstants.STATUS_ACTIVE}, 0, 0, 0, 0, 0,
+				0, params, true, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+
+		for (OfferingEntry offeringEntry : offeringEntries) {
+			ProductEntry productEntry = offeringEntry.getProductEntry();
+
+			if (productEntry.getEnvironment() ==
+					ProductEntryConstants.ENVIRONMENT_DEVELOPMENT) {
+
+				continue;
+			}
+
+			if (productEntry.isDigitalEnterprise()) {
+				selfProvisioningProducts.add(
+					ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE);
+			}
+
+			if (productEntry.isPortal()) {
+				selfProvisioningProducts.add(
+					ProductEntryConstants.ROOT_NAME_PORTAL);
+			}
+		}
+
+		return selfProvisioningProducts;
 	}
 
 	public static String serialize(List<OrderEntry> orderEntries) {
