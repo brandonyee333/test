@@ -82,8 +82,8 @@ AUI.add(
 					}
 
 					appendXMLAssignments(buffer, item.assignments);
-					appendXMLTransitions(buffer, item.transitions);
 					appendXMLTaskTimers(buffer, item.taskTimers);
+					appendXMLTransitions(buffer, item.transitions);
 
 					buffer.push(xmlNode.close);
 				}
