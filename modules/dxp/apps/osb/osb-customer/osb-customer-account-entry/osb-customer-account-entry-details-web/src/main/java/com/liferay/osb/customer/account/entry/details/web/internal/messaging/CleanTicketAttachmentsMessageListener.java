@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.scheduler.TimeUnit;
 import com.liferay.portal.kernel.scheduler.Trigger;
 import com.liferay.portal.kernel.scheduler.TriggerFactory;
 import com.liferay.portal.kernel.util.FastDateFormatFactory;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Time;
 
 import java.text.Format;
@@ -52,13 +53,18 @@ import org.osgi.service.component.annotations.Reference;
  * @author Amos Fong
  */
 @Component(
-	immediate = true, service = CleanTicketAttachmentsMessageListener.class
+	immediate = true, property = "days.closed=30",
+	service = CleanTicketAttachmentsMessageListener.class
 )
 public class CleanTicketAttachmentsMessageListener extends BaseMessageListener {
 
 	@Activate
 	@Modified
 	protected void activate(Map<String, Object> properties) {
+		_daysClosed = GetterUtil.getInteger(properties.get("days.closed"));
+		_simpleDateFormat = _fastDateFormatFactory.getSimpleDateFormat(
+			"yyyy-MM-dd");
+
 		Class<?> clazz = getClass();
 
 		String className = clazz.getName();
@@ -71,9 +77,6 @@ public class CleanTicketAttachmentsMessageListener extends BaseMessageListener {
 
 		_schedulerEngineHelper.register(
 			this, schedulerEntry, DestinationNames.SCHEDULER_DISPATCH);
-
-		_simpleDateFormat = _fastDateFormatFactory.getSimpleDateFormat(
-			"yyyy-MM-dd");
 	}
 
 	@Deactivate
@@ -103,8 +106,10 @@ public class CleanTicketAttachmentsMessageListener extends BaseMessageListener {
 
 		ticketQuery.addCriterion("status:closed");
 
-		Date startDate = new Date(System.currentTimeMillis() - (37 * Time.DAY));
-		Date endDate = new Date(System.currentTimeMillis() - (30 * Time.DAY));
+		Date startDate = new Date(
+			System.currentTimeMillis() - ((_daysClosed + 7) * Time.DAY));
+		Date endDate = new Date(
+			System.currentTimeMillis() - (_daysClosed * Time.DAY));
 
 		ticketQuery.addCriterion(
 			"updated>" + _simpleDateFormat.format(startDate));
@@ -127,6 +132,8 @@ public class CleanTicketAttachmentsMessageListener extends BaseMessageListener {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CleanTicketAttachmentsMessageListener.class);
+
+	private int _daysClosed;
 
 	@Reference
 	private FastDateFormatFactory _fastDateFormatFactory;
