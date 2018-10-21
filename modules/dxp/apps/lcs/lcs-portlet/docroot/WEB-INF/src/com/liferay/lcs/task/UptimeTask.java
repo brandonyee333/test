@@ -24,9 +24,9 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
  * @author Ivica Cardic
  * @author Igor Beslic
  */
-public class UptimeMonitoringTask implements Task {
+public class UptimeTask implements Task {
 
-	public UptimeMonitoringTask() {
+	public UptimeTask() {
 		BeanLocator beanLocator = PortletBeanLocatorUtil.getBeanLocator(
 			"lcs-portlet");
 
@@ -61,11 +61,9 @@ public class UptimeMonitoringTask implements Task {
 		}
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		UptimeMonitoringTask.class);
+	private static final Log _log = LogFactoryUtil.getLog(UptimeTask.class);
 
 	private final UptimeAdvisor _uptimeAdvisor;
-	private Class<?> _uptimeMonitoringAdvisorClass =
-		UptimeAdvisor.class;
+	private Class<?> _uptimeMonitoringAdvisorClass = UptimeAdvisor.class;
 
 }

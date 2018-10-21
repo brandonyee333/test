@@ -29,7 +29,7 @@ import com.liferay.lcs.task.ScheduledTask;
 import com.liferay.lcs.task.Scope;
 import com.liferay.lcs.task.SignOffTask;
 import com.liferay.lcs.task.Task;
-import com.liferay.lcs.task.UptimeMonitoringTask;
+import com.liferay.lcs.task.UptimeTask;
 import com.liferay.lcs.task.advisor.TaskAdvisor;
 import com.liferay.lcs.task.scheduler.TaskSchedulerService;
 import com.liferay.lcs.util.ClusterNodeUtil;
@@ -104,8 +104,8 @@ public class TaskSchedulerServiceImpl
 
 		_executeSignOffTask();
 
-		if (_uptimeMonitoringTaskScheduledFuture != null) {
-			_uptimeMonitoringTaskScheduledFuture.cancel(true);
+		if (_uptimeTaskScheduledFuture != null) {
+			_uptimeTaskScheduledFuture.cancel(true);
 		}
 
 		_scheduledExecutorService.shutdown();
@@ -590,14 +590,14 @@ public class TaskSchedulerServiceImpl
 			_log.error(e, e);
 		}
 
-		UptimeMonitoringTask uptimeMonitoringTask = new UptimeMonitoringTask();
+		UptimeTask uptimeTask = new UptimeTask();
 
-		_uptimeMonitoringTaskScheduledFuture =
+		_uptimeTaskScheduledFuture =
 			_scheduledExecutorService.scheduleAtFixedRate(
-				uptimeMonitoringTask, 1, 1, TimeUnit.MINUTES);
+				uptimeTask, 1, 1, TimeUnit.MINUTES);
 
 		if (_log.isTraceEnabled()) {
-			_log.trace(uptimeMonitoringTask.toString() + " scheduled");
+			_log.trace(uptimeTask.toString() + " scheduled");
 		}
 	}
 
@@ -620,6 +620,6 @@ public class TaskSchedulerServiceImpl
 	private final TaskAdvisor _taskAdvisor;
 	private final ThreadFactory _threadFactory;
 	private final UptimeAdvisor _uptimeAdvisor;
-	private ScheduledFuture<?> _uptimeMonitoringTaskScheduledFuture;
+	private ScheduledFuture<?> _uptimeTaskScheduledFuture;
 
 }
