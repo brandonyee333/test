@@ -17,7 +17,7 @@ package com.liferay.lcs.task.scheduler.impl;
 import com.liferay.lcs.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.advisor.LCSKeyAdvisor;
-import com.liferay.lcs.advisor.UptimeMonitoringAdvisor;
+import com.liferay.lcs.advisor.UptimeAdvisor;
 import com.liferay.lcs.platform.LCSEvent;
 import com.liferay.lcs.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.platform.gateway.LCSGatewayStateListener;
@@ -75,8 +75,7 @@ public class TaskSchedulerServiceImpl
 		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor,
 		LCSGatewayClient lcsGatewayClient, LCSKeyAdvisor lcsKeyAdvisor,
 		int scheduleDelayMax, TaskAdvisor taskAdvisor,
-		ThreadFactory threadFactory,
-		UptimeMonitoringAdvisor uptimeMonitoringAdvisor) {
+		ThreadFactory threadFactory, UptimeAdvisor uptimeAdvisor) {
 
 		_defaultInterval = defaultInterval;
 		_lcsAlertAdvisor = lcsAlertAdvisor;
@@ -86,7 +85,7 @@ public class TaskSchedulerServiceImpl
 		_scheduleDelayMax = scheduleDelayMax;
 		_taskAdvisor = taskAdvisor;
 		_threadFactory = threadFactory;
-		_uptimeMonitoringAdvisor = uptimeMonitoringAdvisor;
+		_uptimeAdvisor = uptimeAdvisor;
 
 		_lcsGatewayClient.registerLCSGatewayStateListener(this);
 
@@ -403,7 +402,7 @@ public class TaskSchedulerServiceImpl
 		HandshakeTask handshakeTask = new HandshakeTask(
 			_lcsClusterEntryTokenAdvisor.getLcsClusterEntryTokenId(),
 			_lcsAlertAdvisor, _lcsClusterEntryTokenAdvisor, _lcsGatewayClient,
-			_lcsKeyAdvisor, this, _threadFactory, _uptimeMonitoringAdvisor);
+			_lcsKeyAdvisor, this, _threadFactory, _uptimeAdvisor);
 
 		if (delayRun) {
 			_scheduledExecutorService.schedule(
@@ -585,7 +584,7 @@ public class TaskSchedulerServiceImpl
 
 	private void _scheduleUptimeMonitoringTask() {
 		try {
-			_uptimeMonitoringAdvisor.init();
+			_uptimeAdvisor.init();
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -620,7 +619,7 @@ public class TaskSchedulerServiceImpl
 	private volatile boolean _signOffPending;
 	private final TaskAdvisor _taskAdvisor;
 	private final ThreadFactory _threadFactory;
-	private final UptimeMonitoringAdvisor _uptimeMonitoringAdvisor;
+	private final UptimeAdvisor _uptimeAdvisor;
 	private ScheduledFuture<?> _uptimeMonitoringTaskScheduledFuture;
 
 }

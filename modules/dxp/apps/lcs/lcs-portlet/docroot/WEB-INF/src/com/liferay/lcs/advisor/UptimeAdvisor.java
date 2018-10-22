@@ -40,7 +40,7 @@ import javax.portlet.PortletPreferences;
  * @author Ivica Cardic
  * @author Igor Beslic
  */
-public class UptimeMonitoringAdvisor {
+public class UptimeAdvisor {
 
 	public List<Map<String, Long>> getUptimeEntries() throws IOException {
 		if (!_initalized) {
@@ -276,7 +276,7 @@ public class UptimeMonitoringAdvisor {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		UptimeMonitoringAdvisor.class);
+		UptimeAdvisor.class);
 
 	private static final RuntimeMXBean _runtimeMXBean =
 		ManagementFactory.getRuntimeMXBean();

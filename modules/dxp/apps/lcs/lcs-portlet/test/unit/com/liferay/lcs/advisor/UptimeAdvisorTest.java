@@ -39,7 +39,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
  */
 @PrepareForTest({ManagementFactory.class, LCSPortletPreferencesUtil.class})
 @RunWith(PowerMockRunner.class)
-public class UptimeMonitoringAdvisorTest extends PowerMockito {
+public class UptimeAdvisorTest extends PowerMockito {
 
 	@Before
 	public void setUp() throws Exception {
@@ -59,15 +59,15 @@ public class UptimeMonitoringAdvisorTest extends PowerMockito {
 			lcsKeyAdvisor
 		).getKey();
 
-		_uptimeMonitoringAdvisor.setLCSKeyAdvisor(lcsKeyAdvisor);
+		_uptimeAdvisor.setLCSKeyAdvisor(lcsKeyAdvisor);
 
-		_uptimeMonitoringAdvisor.init();
+		_uptimeAdvisor.init();
 	}
 
 	@Test
 	public void testGetUptimes() throws Exception {
 		List<Map<String, Long>> uptimeEntries =
-			_uptimeMonitoringAdvisor.getUptimeEntries();
+			_uptimeAdvisor.getUptimeEntries();
 
 		Assert.assertEquals(
 			"uptimeEntries has one uptime entry", 1, uptimeEntries.size());
@@ -87,7 +87,7 @@ public class UptimeMonitoringAdvisorTest extends PowerMockito {
 				"]");
 
 		List<Map<String, Long>> uptimeEntries =
-			_uptimeMonitoringAdvisor.getUptimeEntries();
+			_uptimeAdvisor.getUptimeEntries();
 
 		Assert.assertEquals(
 			"uptimeEntries has two uptime entries", 2, uptimeEntries.size());
@@ -111,7 +111,7 @@ public class UptimeMonitoringAdvisorTest extends PowerMockito {
 					"\"1539099992697\"}]");
 
 		List<Map<String, Long>> uptimeEntries =
-			_uptimeMonitoringAdvisor.getUptimeEntries();
+			_uptimeAdvisor.getUptimeEntries();
 
 		Assert.assertEquals(
 			"uptimes has two uptime entries", 3, uptimeEntries.size());
@@ -121,7 +121,7 @@ public class UptimeMonitoringAdvisorTest extends PowerMockito {
 		Assert.assertNotNull(
 			"current uptime end time defined", uptime.get("endTime"));
 
-		_uptimeMonitoringAdvisor.resetCurrentUptimeEndTime(uptimeEntries);
+		_uptimeAdvisor.resetCurrentUptimeEndTime(uptimeEntries);
 
 		uptime = uptimeEntries.get(2);
 
@@ -133,13 +133,13 @@ public class UptimeMonitoringAdvisorTest extends PowerMockito {
 	@Test
 	public void testUpdateCurrentUptime() throws Exception {
 		List<Map<String, Long>> uptimeEntries =
-			_uptimeMonitoringAdvisor.getUptimeEntries();
+			_uptimeAdvisor.getUptimeEntries();
 
 		Map<String, Long> uptime = uptimeEntries.get(0);
 
 		long endTimeBeforeUpdate = uptime.get("endTime");
 
-		_uptimeMonitoringAdvisor.resetUptimes();
+		_uptimeAdvisor.resetUptimes();
 
 		try {
 			Thread.sleep(300);
@@ -147,9 +147,9 @@ public class UptimeMonitoringAdvisorTest extends PowerMockito {
 		catch (InterruptedException ie) {
 		}
 
-		_uptimeMonitoringAdvisor.updateCurrentUptime();
+		_uptimeAdvisor.updateCurrentUptime();
 
-		uptimeEntries = _uptimeMonitoringAdvisor.getUptimeEntries();
+		uptimeEntries = _uptimeAdvisor.getUptimeEntries();
 
 		uptime = uptimeEntries.get(0);
 
@@ -163,7 +163,6 @@ public class UptimeMonitoringAdvisorTest extends PowerMockito {
 
 	private final PortletPreferences _portletPreferences =
 		new MockPortletPreferencesImpl();
-	private final UptimeMonitoringAdvisor _uptimeMonitoringAdvisor = spy(
-		new UptimeMonitoringAdvisor());
+	private final UptimeAdvisor _uptimeAdvisor = spy(new UptimeAdvisor());
 
 }

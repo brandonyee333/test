@@ -19,7 +19,7 @@ import com.liferay.lcs.advisor.InstallationEnvironmentAdvisorFactory;
 import com.liferay.lcs.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.advisor.LCSKeyAdvisor;
-import com.liferay.lcs.advisor.UptimeMonitoringAdvisor;
+import com.liferay.lcs.advisor.UptimeAdvisor;
 import com.liferay.lcs.exception.LCSHandshakeException;
 import com.liferay.lcs.messaging.CommandMessage;
 import com.liferay.lcs.messaging.HandshakeMessage;
@@ -78,7 +78,7 @@ public class HandshakeTask implements Task {
 		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor,
 		LCSGatewayClient lcsGatewayClient, LCSKeyAdvisor lcsKeyAdvisor,
 		TaskSchedulerService taskSchedulerService, ThreadFactory threadFactory,
-		UptimeMonitoringAdvisor uptimeMonitoringAdvisor) {
+		UptimeAdvisor uptimeAdvisor) {
 
 		_handshakeReplyReads = GetterUtil.getInteger(
 			PortletPropsValues.COMMUNICATION_HANDSHAKE_REPLY_READS, 5);
@@ -92,7 +92,7 @@ public class HandshakeTask implements Task {
 		_lcsGatewayClient = lcsGatewayClient;
 		_lcsKeyAdvisor = lcsKeyAdvisor;
 		_threadFactory = threadFactory;
-		_uptimeMonitoringAdvisor = uptimeMonitoringAdvisor;
+		_uptimeAdvisor = uptimeAdvisor;
 
 		if (_lcsKeyAdvisor.getKey() != null) {
 			_key = _lcsKeyAdvisor.getKey();
@@ -128,7 +128,7 @@ public class HandshakeTask implements Task {
 
 			_waitForHandshakeResponse();
 
-			_uptimeMonitoringAdvisor.resetUptimes();
+			_uptimeAdvisor.resetUptimes();
 
 			_notifyOnTaskSuccessTaskStateListeners();
 
@@ -310,9 +310,9 @@ public class HandshakeTask implements Task {
 	private List<Map<String, Long>> _getPortalUptimeEntries() {
 		try {
 			List<Map<String, Long>> uptimeEntries =
-				_uptimeMonitoringAdvisor.getUptimeEntries();
+				_uptimeAdvisor.getUptimeEntries();
 
-			_uptimeMonitoringAdvisor.resetCurrentUptimeEndTime(uptimeEntries);
+			_uptimeAdvisor.resetCurrentUptimeEndTime(uptimeEntries);
 
 			return uptimeEntries;
 		}
@@ -451,6 +451,6 @@ public class HandshakeTask implements Task {
 	private final List<TaskStateListener> _taskStateListeners;
 	private boolean _temporaryKey;
 	private final ThreadFactory _threadFactory;
-	private final UptimeMonitoringAdvisor _uptimeMonitoringAdvisor;
+	private final UptimeAdvisor _uptimeAdvisor;
 
 }

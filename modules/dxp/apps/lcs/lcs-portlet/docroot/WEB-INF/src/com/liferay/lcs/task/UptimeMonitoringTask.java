@@ -14,7 +14,7 @@
 
 package com.liferay.lcs.task;
 
-import com.liferay.lcs.advisor.UptimeMonitoringAdvisor;
+import com.liferay.lcs.advisor.UptimeAdvisor;
 import com.liferay.portal.kernel.bean.BeanLocator;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -30,7 +30,7 @@ public class UptimeMonitoringTask implements Task {
 		BeanLocator beanLocator = PortletBeanLocatorUtil.getBeanLocator(
 			"lcs-portlet");
 
-		_uptimeMonitoringAdvisor = (UptimeMonitoringAdvisor)beanLocator.locate(
+		_uptimeAdvisor = (UptimeAdvisor)beanLocator.locate(
 			_uptimeMonitoringAdvisorClass.getName());
 
 		if (_log.isTraceEnabled()) {
@@ -45,7 +45,7 @@ public class UptimeMonitoringTask implements Task {
 				_log.trace("Running uptime update");
 			}
 
-			_uptimeMonitoringAdvisor.updateCurrentUptime();
+			_uptimeAdvisor.updateCurrentUptime();
 		}
 		catch (Exception e) {
 			throw new RuntimeException(e);
@@ -64,8 +64,8 @@ public class UptimeMonitoringTask implements Task {
 	private static final Log _log = LogFactoryUtil.getLog(
 		UptimeMonitoringTask.class);
 
-	private final UptimeMonitoringAdvisor _uptimeMonitoringAdvisor;
+	private final UptimeAdvisor _uptimeAdvisor;
 	private Class<?> _uptimeMonitoringAdvisorClass =
-		UptimeMonitoringAdvisor.class;
+		UptimeAdvisor.class;
 
 }
