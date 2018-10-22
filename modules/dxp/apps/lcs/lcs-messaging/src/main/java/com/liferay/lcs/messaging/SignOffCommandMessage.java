@@ -44,6 +44,23 @@ public class SignOffCommandMessage extends CommandMessage {
 		_reasonCode = reasonCode;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder(super.toString());
+
+		sb.setLength(sb.length() - 1);
+
+		sb.append(", deregister=");
+		sb.append(_deregister);
+		sb.append(", invalidateToken=");
+		sb.append(_invalidateToken);
+		sb.append(", reasonCode=");
+		sb.append(_reasonCode);
+		sb.append("}");
+
+		return sb.toString();
+	}
+
 	private boolean _deregister;
 	private boolean _invalidateToken;
 	private int _reasonCode;

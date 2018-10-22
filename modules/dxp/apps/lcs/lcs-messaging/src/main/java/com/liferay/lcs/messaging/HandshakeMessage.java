@@ -230,6 +230,33 @@ public class HandshakeMessage extends Message {
 		_uptimes = uptimes;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder(super.toString());
+
+		sb.setLength(sb.length() - 1);
+
+		sb.append(", lcsPortletBuildNumber=");
+		sb.append(_lcsPortletBuildNumber);
+		sb.append(", lcsPortletVersion=");
+		sb.append(_lcsPortletVersion);
+		sb.append(", patchingToolEnabled=");
+		sb.append(_patchingToolEnabled);
+		sb.append(", patchingToolVersion=");
+		sb.append(_patchingToolVersion);
+		sb.append(", portalBuildNumber=");
+		sb.append(_portalBuildNumber);
+		sb.append(", portalEdition=");
+		sb.append(_portalEdition);
+		sb.append(", processorCoresTotal=");
+		sb.append(_processorCoresTotal);
+		sb.append(", serverManuallyShutdown=");
+		sb.append(_serverManuallyShutdown);
+		sb.append("}");
+
+		return sb.toString();
+	}
+
 	private boolean _clusterExecutorEnabled;
 	private Map<Integer, String> _companyIdsWebIds =
 		new HashMap<Integer, String>();
