@@ -36,7 +36,7 @@ public abstract class HealthMessage extends Message {
 			return _toString;
 		}
 
-		StringBuilder sb = new StringBuilder(11);
+		StringBuilder sb = new StringBuilder();
 
 		sb.append("{className=");
 

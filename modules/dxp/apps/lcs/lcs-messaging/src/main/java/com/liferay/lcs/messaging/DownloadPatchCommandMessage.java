@@ -33,7 +33,7 @@ public class DownloadPatchCommandMessage extends CommandMessage {
 
 	@Override
 	public String getSignatureString() {
-		StringBuilder sb = new StringBuilder(4);
+		StringBuilder sb = new StringBuilder();
 
 		sb.append(super.getSignatureString());
 		sb.append(_md5Sum);

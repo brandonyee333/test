@@ -275,7 +275,7 @@ public abstract class Message implements Serializable {
 			return _toString;
 		}
 
-		StringBuilder sb = new StringBuilder(11);
+		StringBuilder sb = new StringBuilder();
 
 		sb.append("{className=");
 
