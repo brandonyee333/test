@@ -1,11 +1,19 @@
 {
 	"dependencies": {
-		"clay-css": "^2.2.0"
+		"clay-css": "^2.2.0",
+		"liferay-help-center-megamenu": "github:rdai10/liferay-help-center-megamenu#v1.0.2"
 	},
 	"devDependencies": {
+		"@babel/core": "^7.1.2",
+		"@babel/preset-env": "^7.1.0",
+		"babel-loader": "^8.0.4",
 		"gulp": "3.9.1",
+		"gulp-concat": "^2.6.1",
 		"liferay-theme-deps-7.0": "8.0.0-alpha.3",
-		"liferay-theme-tasks": "8.0.0-alpha.3"
+		"liferay-theme-tasks": "^8.0.0-beta.5",
+		"webpack": "^4.22.0",
+		"webpack-cli": "^3.1.2",
+		"webpack-stream": "^5.1.1"
 	},
 	"keywords": [
 		"liferay-theme"
@@ -21,6 +29,9 @@
 	"name": "osb-customer-theme",
 	"publishConfig": {
 		"tag": "7_0_x"
+	},
+	"scripts": {
+		"webpack": "webpack --mode=production"
 	},
 	"version": "1.0.0"
 }

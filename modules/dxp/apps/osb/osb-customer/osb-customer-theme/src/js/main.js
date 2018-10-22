@@ -1,3 +1,5 @@
+import {render, MegaMenu} from 'liferay-help-center-megamenu';
+
 Liferay.Loader.require(
 	'metal-debounce/src/debounce',
 	'metal-dom/src/dom',
