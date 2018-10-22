@@ -42,7 +42,7 @@ import javax.portlet.PortletPreferences;
  */
 public class UptimeAdvisor {
 
-	public List<Map<String, Long>> getUptimeEntries() throws IOException {
+	public List<Map<String, Long>> getUptimeEntries() {
 		if (!_initalized) {
 			throw new UnsupportedOperationException("Bean is not initialized");
 		}

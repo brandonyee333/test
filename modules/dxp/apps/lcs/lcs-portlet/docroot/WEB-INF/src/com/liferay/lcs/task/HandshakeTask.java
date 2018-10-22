@@ -50,8 +50,6 @@ import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -308,22 +306,12 @@ public class HandshakeTask implements Task {
 	}
 
 	private List<Map<String, Long>> _getPortalUptimeEntries() {
-		try {
-			List<Map<String, Long>> uptimeEntries =
-				_uptimeAdvisor.getUptimeEntries();
+		List<Map<String, Long>> uptimeEntries =
+			_uptimeAdvisor.getUptimeEntries();
 
-			_uptimeAdvisor.resetCurrentUptimeEndTime(uptimeEntries);
+		_uptimeAdvisor.resetCurrentUptimeEndTime(uptimeEntries);
 
-			return uptimeEntries;
-		}
-		catch (IOException ioe) {
-			_log.error(
-				"Unable to collect portal uptime entries required for " +
-					"handshake message");
-
-			throw new LCSHandshakeException(
-				"Portal uptime entries are required", ioe);
-		}
+		return uptimeEntries;
 	}
 
 	private int _getProcessorCoresTotal() {
