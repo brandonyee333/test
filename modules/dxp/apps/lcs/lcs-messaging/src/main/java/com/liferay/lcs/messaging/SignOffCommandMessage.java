@@ -16,8 +16,13 @@ package com.liferay.lcs.messaging;
 
 /**
  * @author Ivica Cardic
+ * @author Igor Beslic
  */
 public class SignOffCommandMessage extends CommandMessage {
+
+	public int getReasonCode() {
+		return _reasonCode;
+	}
 
 	public boolean isDeregister() {
 		return _deregister;
@@ -35,7 +40,12 @@ public class SignOffCommandMessage extends CommandMessage {
 		_invalidateToken = invalidateToken;
 	}
 
+	public void setReasonCode(int reasonCode) {
+		_reasonCode = reasonCode;
+	}
+
 	private boolean _deregister;
 	private boolean _invalidateToken;
+	private int _reasonCode;
 
 }
