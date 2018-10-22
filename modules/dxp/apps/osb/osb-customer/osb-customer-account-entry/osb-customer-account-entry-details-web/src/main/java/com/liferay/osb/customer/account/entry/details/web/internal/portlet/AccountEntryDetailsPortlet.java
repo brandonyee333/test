@@ -14,26 +14,34 @@
 
 package com.liferay.osb.customer.account.entry.details.web.internal.portlet;
 
+import com.liferay.osb.customer.account.entry.details.web.configuration.AccountEntryDetailsConfiguration;
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys;
 import com.liferay.osb.customer.ticket.repository.FileRepositoryManager;
 import com.liferay.osb.customer.ticket.repository.FileRepositoryWebService;
+import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 
 import java.io.IOException;
+
+import java.util.Map;
 
 import javax.portlet.Portlet;
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.ConfigurationPolicy;
+import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
  */
 @Component(
-	immediate = true,
+	configurationPid = "com.liferay.osb.customer.account.entry.details.web.configuration.AccountEntryDetailsConfiguration",
+	configurationPolicy = ConfigurationPolicy.OPTIONAL, immediate = true,
 	property = {
 		"com.liferay.portlet.css-class-wrapper=osb-account-entry-details-portlet",
 		"com.liferay.portlet.display-category=category.osb",
@@ -58,6 +66,9 @@ public class AccountEntryDetailsPortlet extends MVCPortlet {
 		throws IOException, PortletException {
 
 		renderRequest.setAttribute(
+			AccountEntryDetailsConfiguration.class.getName(),
+			_accountEntryDetailsConfiguration);
+		renderRequest.setAttribute(
 			FileRepositoryManager.class.getName(), _fileRepositoryManager);
 		renderRequest.setAttribute(
 			FileRepositoryWebService.class.getName(),
@@ -65,6 +76,16 @@ public class AccountEntryDetailsPortlet extends MVCPortlet {
 
 		super.render(renderRequest, renderResponse);
 	}
+
+	@Activate
+	@Modified
+	protected void activate(Map<String, Object> properties) {
+		_accountEntryDetailsConfiguration = ConfigurableUtil.createConfigurable(
+			AccountEntryDetailsConfiguration.class, properties);
+	}
+
+	private volatile AccountEntryDetailsConfiguration
+		_accountEntryDetailsConfiguration;
 
 	@Reference
 	private FileRepositoryManager _fileRepositoryManager;

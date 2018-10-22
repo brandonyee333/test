@@ -16,17 +16,16 @@ export default class AddTicketAttachment extends React.Component {
 			addTicketAttachmentURL,
 			generateTokenURL,
 			uploadURL,
-			zendeskTicketId
+			zendeskTicketId,
+			zendeskTicketURL
 		} = this.props;
-
-		const zendeskURL = process.env.NODE_ENV === 'production' ? 'https://help.liferay.com/agent/tickets/' : 'https://liferaysupport1528999723.zendesk.com/agent/tickets/';
 
 		return (
 			<div className='add-ticket-attachment container-fluid-max-md'>
 				<h1>
 					{Liferay.Language.get('attach-files-to-ticket')}
 					{' '}
-					<a href={zendeskURL + zendeskTicketId}>#{zendeskTicketId}</a>
+					<a href={zendeskTicketURL}>#{zendeskTicketId}</a>
 				</h1>
 
 				<DynamicUploaderForm

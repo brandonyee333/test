@@ -25,7 +25,8 @@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %><%@
 taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
-<%@ page import="com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys" %><%@
+<%@ page import="com.liferay.osb.customer.account.entry.details.web.configuration.AccountEntryDetailsConfiguration" %><%@
+page import="com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys" %><%@
 page import="com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsWebKeys" %><%@
 page import="com.liferay.osb.customer.account.entry.details.web.internal.display.context.AccountEntryViewDisplayContext" %><%@
 page import="com.liferay.osb.customer.ticket.repository.FileRepository" %><%@
@@ -111,6 +112,7 @@ page import="java.util.List" %>
 <portlet:defineObjects />
 
 <%
+AccountEntryDetailsConfiguration accountEntryDetailsConfiguration = (AccountEntryDetailsConfiguration)renderRequest.getAttribute(AccountEntryDetailsConfiguration.class.getName());
 FileRepositoryManager fileRepositoryManager = (FileRepositoryManager)renderRequest.getAttribute(FileRepositoryManager.class.getName());
 FileRepositoryWebService fileRepositoryWebService = (FileRepositoryWebService)renderRequest.getAttribute(FileRepositoryWebService.class.getName());
 

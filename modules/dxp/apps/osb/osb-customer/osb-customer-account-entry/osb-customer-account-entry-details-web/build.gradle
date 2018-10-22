@@ -6,6 +6,7 @@ dependencies {
 	compileOnly files("../../osb-portlet/docroot/WEB-INF/lib/osb-portlet-service.jar")
 	compileOnly group: "biz.aQute.bnd", name: "biz.aQute.bndlib", version: "3.1.0"
 	compileOnly group: "com.liferay", name: "com.liferay.frontend.taglib", version: "2.0.0"
+	compileOnly group: "com.liferay", name: "com.liferay.portal.configuration.metatype", version: "2.0.0"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.50.0"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.util.taglib", version: "2.4.0"
 	compileOnly group: "javax.portlet", name: "portlet-api", version: "2.0"

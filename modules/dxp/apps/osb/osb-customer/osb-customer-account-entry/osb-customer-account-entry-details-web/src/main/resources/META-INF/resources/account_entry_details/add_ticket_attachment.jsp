@@ -34,6 +34,7 @@ String fileRepositoryId = fileRepository.getFileRepositoryId();
 </liferay-portlet:resourceURL>
 
 <portlet:actionURL name="addTicketAttachment" var="addTicketAttachmentURL">
+	<portlet:param name="redirect" value="<%= accountEntryDetailsConfiguration.zendeskTicketURL() + zendeskTicketId %>" />
 	<portlet:param name="fileRepositoryId" value="<%= fileRepositoryId %>" />
 	<portlet:param name="zendeskTicketId" value="<%= String.valueOf(zendeskTicketId) %>" />
 </portlet:actionURL>
@@ -50,7 +51,8 @@ String fileRepositoryId = fileRepository.getFileRepositoryId();
 			addTicketAttachmentURL: '<%= addTicketAttachmentURL %>',
 			generateTokenURL: '<%= generateTokenURL %>',
 			uploadURL: '<%= fileRepositoryWebService.getUploadURL(fileRepositoryId) %>',
-			zendeskTicketId: '<%= String.valueOf(zendeskTicketId) %>'
+			zendeskTicketId: '<%= String.valueOf(zendeskTicketId) %>',
+			zendeskTicketURL: '<%= accountEntryDetailsConfiguration.zendeskTicketURL() + zendeskTicketId %>'
 		},
 		document.getElementById('${renderResponse.namespace}addTicketAttachment')
 	);
