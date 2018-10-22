@@ -49,7 +49,7 @@ public class UptimeAdvisor {
 
 		List<Map<String, Long>> uptimeEntries = new ArrayList<>();
 
-		for (Uptime uptime : _getUptimes()) {
+		for (Uptime uptime : _uptimes) {
 			Map<String, Long> uptimeEntry = new HashMap<>();
 
 			uptimeEntry.put("endTime", uptime.endTime);
@@ -66,9 +66,13 @@ public class UptimeAdvisor {
 			return;
 		}
 
-		List<Uptime> uptimes = _getUptimes();
+		_uptimes = new ArrayList<>();
 
-		_checkUptime(uptimes);
+		_checkCurrentUptime();
+
+		_addPersistedUptimes(_uptimes);
+
+		_addCurrentUptime(_uptimes);
 
 		_initalized = true;
 
@@ -78,10 +82,8 @@ public class UptimeAdvisor {
 	}
 
 	public void resetCurrentUptimeEndTime(List<Map<String, Long>> uptimes) {
-		long startTime = _runtimeMXBean.getStartTime();
-
 		for (Map<String, Long> uptime : uptimes) {
-			if (startTime == uptime.get("startTime")) {
+			if (_currentUptime.startTime == uptime.get("startTime")) {
 				uptime.remove("endTime");
 
 				return;
@@ -98,21 +100,17 @@ public class UptimeAdvisor {
 			_log.trace("Reset uptimes");
 		}
 
-		List<Uptime> uptimes = _getUptimes();
-
-		Iterator<Uptime> iterator = uptimes.iterator();
+		Iterator<Uptime> iterator = _uptimes.iterator();
 
 		while (iterator.hasNext()) {
-			Uptime next = iterator.next();
+			Uptime uptime = iterator.next();
 
-			if (next.startTime != _runtimeMXBean.getStartTime()) {
+			if (uptime.startTime != _currentUptime.startTime) {
 				iterator.remove();
 			}
 		}
 
-		_storeUptimesJSONArray(uptimes);
-
-		_readyForUpdates = true;
+		_storeUptimes();
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Uptimes reset and ready for updates");
@@ -128,30 +126,29 @@ public class UptimeAdvisor {
 			throw new UnsupportedOperationException("Bean is not initialized");
 		}
 
-		if (!_readyForUpdates) {
-			return;
-		}
+		_currentUptime.endTime = System.currentTimeMillis();
 
-		List<Uptime> uptimes = _getUptimes();
+		_storeUptimes();
+	}
 
+	private void _addCurrentUptime(List<Uptime> uptimes) {
 		for (Uptime uptime : uptimes) {
-			if (uptime.startTime == _runtimeMXBean.getStartTime()) {
-				uptime.endTime =
-					_runtimeMXBean.getStartTime() + _runtimeMXBean.getUptime();
-
-				_storeUptimesJSONArray(uptimes);
-
-				if (_log.isTraceEnabled()) {
-					_log.trace("Uptimes updated to: " + uptimes);
-				}
-
+			if (_currentUptime.startTime == uptime.startTime) {
 				return;
 			}
 		}
+
+		uptimes.add(_currentUptime);
 	}
 
-	private void _addPersistedUptimes(String key, List<Uptime> uptimesList)
+	private void _addPersistedUptimes(List<Uptime> uptimesList)
 		throws IOException {
+
+		String key = _lcsKeyAdvisor.getKey();
+
+		if (key == null) {
+			return;
+		}
 
 		PortletPreferences portletPreferences =
 			LCSPortletPreferencesUtil.fetchReadOnlyJxPortletPreferences();
@@ -187,66 +184,26 @@ public class UptimeAdvisor {
 		}
 	}
 
-	private void _addTemporaryUptimes(List<Uptime> uptimes) {
-		List<Uptime> mergeableTemporaryUptimes = new ArrayList<>();
-
-		for (Uptime temporaryUptime : _temporaryUptimes) {
-			boolean mergeable = true;
-
-			for (Uptime uptime : uptimes) {
-				if (temporaryUptime.startTime == uptime.startTime) {
-					mergeable = false;
-
-					break;
-				}
-			}
-
-			if (mergeable) {
-				mergeableTemporaryUptimes.add(temporaryUptime);
-			}
-		}
-
-		uptimes.addAll(mergeableTemporaryUptimes);
-	}
-
-	private void _checkUptime(List<Uptime> uptimes) {
-		long startTime = _runtimeMXBean.getStartTime();
-
-		for (Uptime uptime : uptimes) {
-			if (startTime == uptime.startTime) {
-				return;
-			}
+	private void _checkCurrentUptime() {
+		if (_currentUptime != null) {
+			return;
 		}
 
 		Uptime uptime = new Uptime();
 
-		uptime.endTime = startTime + _runtimeMXBean.getUptime();
-		uptime.startTime = startTime;
+		uptime.endTime =
+			_runtimeMXBean.getStartTime() + _runtimeMXBean.getUptime();
 
-		_temporaryUptimes.add(uptime);
+		uptime.startTime = _runtimeMXBean.getStartTime();
+
+		_currentUptime = uptime;
 
 		if (_log.isDebugEnabled()) {
-			_log.debug("Temporary uptime created");
+			_log.debug("Updated with current uptime");
 		}
 	}
 
-	private List<Uptime> _getUptimes() throws IOException {
-		List<Uptime> uptimes = new ArrayList<>();
-
-		String key = _lcsKeyAdvisor.getKey();
-
-		if (key == null) {
-			return uptimes;
-		}
-
-		_addPersistedUptimes(key, uptimes);
-
-		_addTemporaryUptimes(uptimes);
-
-		return uptimes;
-	}
-
-	private void _storeUptimesJSONArray(List<Uptime> uptimes) {
+	private void _storeUptimes() {
 		String key = _lcsKeyAdvisor.getKey();
 
 		if (key == null) {
@@ -257,7 +214,7 @@ public class UptimeAdvisor {
 
 		ArrayNode arrayNode = objectMapper.createArrayNode();
 
-		for (Uptime uptime : uptimes) {
+		for (Uptime uptime : _uptimes) {
 			ObjectNode objectNode = objectMapper.createObjectNode();
 
 			objectNode.put("endTime", uptime.endTime);
@@ -275,16 +232,15 @@ public class UptimeAdvisor {
 		}
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		UptimeAdvisor.class);
+	private static final Log _log = LogFactoryUtil.getLog(UptimeAdvisor.class);
 
 	private static final RuntimeMXBean _runtimeMXBean =
 		ManagementFactory.getRuntimeMXBean();
 
+	private Uptime _currentUptime;
 	private boolean _initalized;
 	private LCSKeyAdvisor _lcsKeyAdvisor;
-	private boolean _readyForUpdates;
-	private final List<Uptime> _temporaryUptimes = new ArrayList();
+	private List<Uptime> _uptimes;
 
 	private class Uptime {
 
