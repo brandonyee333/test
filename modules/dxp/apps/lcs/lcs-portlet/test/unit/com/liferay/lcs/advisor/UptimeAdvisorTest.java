@@ -60,12 +60,12 @@ public class UptimeAdvisorTest extends PowerMockito {
 		).getKey();
 
 		_uptimeAdvisor.setLCSKeyAdvisor(lcsKeyAdvisor);
-
-		_uptimeAdvisor.init();
 	}
 
 	@Test
 	public void testGetUptimes() throws Exception {
+		_uptimeAdvisor.init();
+
 		List<Map<String, Long>> uptimeEntries =
 			_uptimeAdvisor.getUptimeEntries();
 
@@ -85,6 +85,8 @@ public class UptimeAdvisorTest extends PowerMockito {
 			"uptimes-lcsServerId",
 			"[{\"startTime\":\"1539092605095\",\"endTime\":\"1539098932697\"}" +
 				"]");
+
+		_uptimeAdvisor.init();
 
 		List<Map<String, Long>> uptimeEntries =
 			_uptimeAdvisor.getUptimeEntries();
@@ -110,6 +112,8 @@ public class UptimeAdvisorTest extends PowerMockito {
 				",{\"startTime\":\"1539099932697\",\"endTime\":" +
 					"\"1539099992697\"}]");
 
+		_uptimeAdvisor.init();
+
 		List<Map<String, Long>> uptimeEntries =
 			_uptimeAdvisor.getUptimeEntries();
 
@@ -132,6 +136,8 @@ public class UptimeAdvisorTest extends PowerMockito {
 
 	@Test
 	public void testUpdateCurrentUptime() throws Exception {
+		_uptimeAdvisor.init();
+
 		List<Map<String, Long>> uptimeEntries =
 			_uptimeAdvisor.getUptimeEntries();
 
