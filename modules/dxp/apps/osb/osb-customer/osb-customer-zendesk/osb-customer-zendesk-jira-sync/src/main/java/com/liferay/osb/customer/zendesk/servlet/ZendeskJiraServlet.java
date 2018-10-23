@@ -16,6 +16,7 @@ package com.liferay.osb.customer.zendesk.servlet;
 
 import com.liferay.osb.common.restful.servlet.SimpleRestfulServlet;
 import com.liferay.osb.common.restful.servlet.exception.NoResourceException;
+import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.jira.rest.connector.service.JIRATicketLocalService;
 import com.liferay.osb.customer.zendesk.configuration.ZendeskConnectorConfigurationValues;
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
@@ -65,16 +66,7 @@ public class ZendeskJiraServlet extends SimpleRestfulServlet {
 			HttpServletRequest request, HttpServletResponse response)
 		throws IOException, PortalException {
 
-		Map<String, String[]> parameterMap = request.getParameterMap();
-
-		Set<Entry<String, String[]>> entrySet = parameterMap.entrySet();
-
-		Iterator<Entry<String, String[]>> iterator = entrySet.iterator();
-
-		Map.Entry<String, String[]> entry = iterator.next();
-
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
-			entry.getKey());
+		JSONObject jsonObject = getRequestJSONObject(request);
 
 		JSONObject fieldsJSONObject = jsonObject.getJSONObject("fields");
 
@@ -83,32 +75,30 @@ public class ZendeskJiraServlet extends SimpleRestfulServlet {
 
 		String projectKey = projectJSONObject.getString("key");
 
-		String summary = fieldsJSONObject.getString("summary");
-		String description = fieldsJSONObject.getString("description");
-
 		JSONObject issueTypeJSONObject = fieldsJSONObject.getJSONObject(
 			"issuetype");
 
 		String issueType = issueTypeJSONObject.getString("name");
+
+		String summary = fieldsJSONObject.getString("summary");
+		String description = fieldsJSONObject.getString("description");
 
 		Set<String> labels = new HashSet<>();
 
 		JSONArray labelsJSONArray = fieldsJSONObject.getJSONArray("labels");
 
 		for (int i = 0; i < labelsJSONArray.length(); i++) {
-			String label = (String)labelsJSONArray.get(i);
-
-			labels.add(label);
+			labels.add(labelsJSONArray.getString(i));
 		}
 
 		long zendeskTicketId = 0;
 
 		Map<String, Object> customFields = new HashMap<>();
 
-		Iterator<String> keys = fieldsJSONObject.keys();
+		Iterator<String> iterator = fieldsJSONObject.keys();
 
-		while (keys.hasNext()) {
-			String key = keys.next();
+		while (iterator.hasNext()) {
+			String key = iterator.next();
 
 			if (key.contains("customfield")) {
 				Object customField = fieldsJSONObject.get(key);
@@ -121,10 +111,7 @@ public class ZendeskJiraServlet extends SimpleRestfulServlet {
 					}
 				}
 				else {
-					JSONObject valueJSONObject = fieldsJSONObject.getJSONObject(
-						key);
-
-					customFields.put(key, valueJSONObject);
+					customFields.put(key, fieldsJSONObject.getJSONObject(key));
 				}
 			}
 		}
@@ -137,11 +124,11 @@ public class ZendeskJiraServlet extends SimpleRestfulServlet {
 	}
 
 	protected JSONObject createZendeskJiraLink(
-			long zendeskTicketId, JSONObject jiraResponse)
+			long zendeskTicketId, JSONObject jiraJSONObject)
 		throws PortalException {
 
-		long jiraIssueId = jiraResponse.getLong("id");
-		String jiraIssueKey = jiraResponse.getString("key");
+		long jiraIssueId = jiraJSONObject.getLong("id");
+		String jiraIssueKey = jiraJSONObject.getString("key");
 
 		JSONObject linkJSONObject = JSONFactoryUtil.createJSONObject();
 
@@ -153,10 +140,22 @@ public class ZendeskJiraServlet extends SimpleRestfulServlet {
 
 		jsonObject.put("link", linkJSONObject);
 
-		JSONObject response = _zendeskBaseWebService.post(
+		return _zendeskBaseWebService.post(
 			"/api/services/jira/links", jsonObject.toString());
+	}
 
-		return response;
+	protected JSONObject getRequestJSONObject(HttpServletRequest request)
+		throws PortalException {
+
+		Map<String, String[]> parameterMap = request.getParameterMap();
+
+		Set<Entry<String, String[]>> entrySet = parameterMap.entrySet();
+
+		Iterator<Entry<String, String[]>> iterator = entrySet.iterator();
+
+		Map.Entry<String, String[]> entry = iterator.next();
+
+		return JSONFactoryUtil.createJSONObject(entry.getKey());
 	}
 
 	@Override
@@ -186,10 +185,8 @@ public class ZendeskJiraServlet extends SimpleRestfulServlet {
 		try {
 			long basicUserId = _httpAuthManager.getBasicUserId(request);
 
-			long companyId = 10157;
-
 			long userId = _userLocalService.getUserIdByEmailAddress(
-				companyId,
+				OSBCustomerConstants.COMPANY_ID,
 				ZendeskConnectorConfigurationValues.ZENDESK_AUTH_USER_EMAIL);
 
 			if (basicUserId != userId) {
