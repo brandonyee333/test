@@ -6,21 +6,21 @@ Liferay.Loader.require(
 	function(metalDebounceSrcDebounce, metalDomSrcDom) {
 		(
 			function() {
-				let debounce = metalDebounceSrcDebounce.default;
-				let dom = metalDomSrcDom.default;
+				const debounce = metalDebounceSrcDebounce.default;
+				const dom = metalDomSrcDom.default;
 
 				window.addEventListener(
 					'scroll',
 					debounce(
 						function() {
-							var header = document.querySelector('header');
+							const header = document.querySelector('header');
 
 							if (header) {
 								if (window.scrollY >= 64) {
-									dom.addClasses(header, 'has-scroll');
+									dom.addClasses(header, 'has-scroll-shadow');
 								}
 								else {
-									dom.removeClasses(header, 'has-scroll');
+									dom.removeClasses(header, 'has-scroll-shadow');
 								}
 							}
 						},
