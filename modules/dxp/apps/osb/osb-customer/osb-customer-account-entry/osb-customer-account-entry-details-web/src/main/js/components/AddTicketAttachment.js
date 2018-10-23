@@ -31,7 +31,7 @@ export default class AddTicketAttachment extends React.Component {
 
 				<Alert type="info">
 					<span className="lead">
-						{`${Liferay.Language.get('Info')}:`}
+						{`${Liferay.Language.get('info')}:`}
 					</span>
 
 					{' '}
