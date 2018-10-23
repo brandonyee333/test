@@ -60,13 +60,13 @@ page import="javax.portlet.WindowState" %>
 <portlet:defineObjects />
 
 <%
+MBGroupServiceSettings mbGroupServiceSettings = MBGroupServiceSettings.getInstance(themeDisplay.getSiteGroupId());
+
 PortletURL portletURL = renderResponse.createRenderURL();
 
 DateFormat longDateFormatDate = DateFormat.getDateInstance(DateFormat.LONG, locale);
 
 longDateFormatDate.setTimeZone(timeZone);
-
-MBGroupServiceSettings mbGroupServiceSettings = MBGroupServiceSettings.getInstance(themeDisplay.getSiteGroupId());
 
 Format dateFormatDate = FastDateFormatFactoryUtil.getDate(locale, timeZone);
 %>
