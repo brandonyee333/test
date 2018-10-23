@@ -91,7 +91,7 @@ public class UptimeAdvisor {
 		}
 	}
 
-	public synchronized void resetUptimes() throws IOException {
+	public synchronized void resetUptimes() {
 		if (!_initalized) {
 			throw new UnsupportedOperationException("Bean is not initialized");
 		}
@@ -121,7 +121,7 @@ public class UptimeAdvisor {
 		_lcsKeyAdvisor = lcsKeyAdvisor;
 	}
 
-	public synchronized void updateCurrentUptime() throws IOException {
+	public synchronized void updateCurrentUptime() {
 		if (!_initalized) {
 			throw new UnsupportedOperationException("Bean is not initialized");
 		}
