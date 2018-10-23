@@ -33,7 +33,6 @@ if (messageId > 0) {
 <a id="<portlet:namespace />message_<%= message.getMessageId() %>"></a>
 
 <div class="container-fluid-1280">
-
 	<div class="spam" style="margin: 10px;">
 		<portlet:actionURL name="markNotSpamMBMessages" var="markAsHamURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 			<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
@@ -88,16 +87,17 @@ if (messageId > 0) {
 						</c:if>
 					</h4>
 
-					<%
-					MBStatsUser statsUser = MBStatsUserLocalServiceUtil.getStatsUser(scopeGroupId, message.getUserId());
-
-					int posts = statsUser.getMessageCount();
-					String[] ranks = MBUtil.getUserRank(mbGroupServiceSettings, themeDisplay.getLanguageId(), statsUser);
-
-					User messageUser = UserLocalServiceUtil.fetchUser(message.getUserId());
-					%>
-
 					<c:if test="<%= (messageUser != null) && !messageUser.isDefaultUser() %>">
+
+						<%
+						MBStatsUser statsUser = MBStatsUserLocalServiceUtil.getStatsUser(scopeGroupId, message.getUserId());
+
+						int posts = statsUser.getMessageCount();
+						String[] ranks = MBUtil.getUserRank(mbGroupServiceSettings, themeDisplay.getLanguageId(), statsUser);
+
+						User messageUser = UserLocalServiceUtil.fetchUser(message.getUserId());
+						%>
+
 						<c:if test="<%= Validator.isNotNull(ranks[1]) %>">
 							<span class="h5 text-default" title="<%= HtmlUtil.escape(ranks[1]) %>">
 								<%= HtmlUtil.escape(ranks[1]) %>
@@ -113,6 +113,7 @@ if (messageId > 0) {
 						<span class="h5 text-default">
 							<span><liferay-ui:message key="posts" />:</span> <%= posts %>
 						</span>
+
 						<span class="h5 text-default">
 							<span><liferay-ui:message key="join-date" />:</span> <%= dateFormatDate.format(messageUser.getCreateDate()) %>
 						</span>

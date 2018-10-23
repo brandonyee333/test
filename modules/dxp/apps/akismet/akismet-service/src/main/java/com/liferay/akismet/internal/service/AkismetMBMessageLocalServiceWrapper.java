@@ -65,14 +65,12 @@ public class AkismetMBMessageLocalServiceWrapper
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		boolean enabled = _isCheckSpamEnabled(userId, groupId, serviceContext);
-
 		MBMessage message = super.addMessage(
 			userId, userName, groupId, categoryId, threadId, parentMessageId,
 			subject, body, format, inputStreamOVPs, anonymous, priority,
 			allowPingbacks, serviceContext);
 
-		if (!enabled) {
+		if (!_isCheckSpamEnabled(userId, groupId, serviceContext)) {
 			return message;
 		}
 
@@ -101,13 +99,11 @@ public class AkismetMBMessageLocalServiceWrapper
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		long threadId = 0;
-		long parentMessageId = MBMessageConstants.DEFAULT_PARENT_MESSAGE_ID;
-
 		return addMessage(
-			userId, userName, groupId, categoryId, threadId, parentMessageId,
-			subject, body, format, inputStreamOVPs, anonymous, priority,
-			allowPingbacks, serviceContext);
+			userId, userName, groupId, categoryId, 0,
+			MBMessageConstants.DEFAULT_PARENT_MESSAGE_ID, subject, body, format,
+			inputStreamOVPs, anonymous, priority, allowPingbacks,
+			serviceContext);
 	}
 
 	private int _checkSpam(long messageId, ServiceContext serviceContext)
