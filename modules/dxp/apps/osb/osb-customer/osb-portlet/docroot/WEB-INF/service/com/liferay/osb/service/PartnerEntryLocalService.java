@@ -79,9 +79,9 @@ public interface PartnerEntryLocalService extends BaseLocalService,
 	public PartnerEntry addPartnerEntry(PartnerEntry partnerEntry);
 
 	public PartnerEntry addPartnerEntry(long userId, long parentPartnerEntryId,
-		java.lang.String dossieraAccountKey, java.lang.String code,
-		java.lang.String jiraProjectKey, java.lang.String notes,
-		long[] supportRegionIds) throws PortalException;
+		java.lang.String dossieraAccountKey, java.lang.String jiraProjectKey,
+		java.lang.String code, java.lang.String notes, long[] supportRegionIds)
+		throws PortalException;
 
 	/**
 	* Creates a new partner entry with the primary key. Does not add the partner entry to the database.
@@ -142,8 +142,8 @@ public interface PartnerEntryLocalService extends BaseLocalService,
 	public PartnerEntry updatePartnerEntry(PartnerEntry partnerEntry);
 
 	public PartnerEntry updatePartnerEntry(long userId, long partnerEntryId,
-		java.lang.String dossieraAccountKey, java.lang.String code,
-		java.lang.String jiraProjectKey, java.lang.String notes, int status,
+		java.lang.String dossieraAccountKey, java.lang.String jiraProjectKey,
+		java.lang.String code, java.lang.String notes, int status,
 		long[] supportRegionIds) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

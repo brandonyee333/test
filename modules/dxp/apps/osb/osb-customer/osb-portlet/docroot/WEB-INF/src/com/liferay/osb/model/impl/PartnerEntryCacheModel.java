@@ -88,10 +88,10 @@ public class PartnerEntryCacheModel implements CacheModel<PartnerEntry>,
 		sb.append(parentPartnerEntryId);
 		sb.append(", dossieraAccountKey=");
 		sb.append(dossieraAccountKey);
-		sb.append(", code=");
-		sb.append(code);
 		sb.append(", jiraProjectKey=");
 		sb.append(jiraProjectKey);
+		sb.append(", code=");
+		sb.append(code);
 		sb.append(", notes=");
 		sb.append(notes);
 		sb.append(", status=");
@@ -148,18 +148,18 @@ public class PartnerEntryCacheModel implements CacheModel<PartnerEntry>,
 			partnerEntryImpl.setDossieraAccountKey(dossieraAccountKey);
 		}
 
-		if (code == null) {
-			partnerEntryImpl.setCode(StringPool.BLANK);
-		}
-		else {
-			partnerEntryImpl.setCode(code);
-		}
-
 		if (jiraProjectKey == null) {
 			partnerEntryImpl.setJiraProjectKey(StringPool.BLANK);
 		}
 		else {
 			partnerEntryImpl.setJiraProjectKey(jiraProjectKey);
+		}
+
+		if (code == null) {
+			partnerEntryImpl.setCode(StringPool.BLANK);
+		}
+		else {
+			partnerEntryImpl.setCode(code);
 		}
 
 		if (notes == null) {
@@ -192,8 +192,8 @@ public class PartnerEntryCacheModel implements CacheModel<PartnerEntry>,
 
 		parentPartnerEntryId = objectInput.readLong();
 		dossieraAccountKey = objectInput.readUTF();
-		code = objectInput.readUTF();
 		jiraProjectKey = objectInput.readUTF();
+		code = objectInput.readUTF();
 		notes = objectInput.readUTF();
 
 		status = objectInput.readInt();
@@ -237,18 +237,18 @@ public class PartnerEntryCacheModel implements CacheModel<PartnerEntry>,
 			objectOutput.writeUTF(dossieraAccountKey);
 		}
 
-		if (code == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
-		}
-		else {
-			objectOutput.writeUTF(code);
-		}
-
 		if (jiraProjectKey == null) {
 			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(jiraProjectKey);
+		}
+
+		if (code == null) {
+			objectOutput.writeUTF(StringPool.BLANK);
+		}
+		else {
+			objectOutput.writeUTF(code);
 		}
 
 		if (notes == null) {
@@ -271,8 +271,8 @@ public class PartnerEntryCacheModel implements CacheModel<PartnerEntry>,
 	public long modifiedDate;
 	public long parentPartnerEntryId;
 	public String dossieraAccountKey;
-	public String code;
 	public String jiraProjectKey;
+	public String code;
 	public String notes;
 	public int status;
 }

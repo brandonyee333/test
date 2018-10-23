@@ -80,8 +80,8 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 			{ "modifiedDate", Types.TIMESTAMP },
 			{ "parentPartnerEntryId", Types.BIGINT },
 			{ "dossieraAccountKey", Types.VARCHAR },
-			{ "code_", Types.VARCHAR },
 			{ "jiraProjectKey", Types.VARCHAR },
+			{ "code_", Types.VARCHAR },
 			{ "notes", Types.VARCHAR },
 			{ "status", Types.INTEGER }
 		};
@@ -98,13 +98,13 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("parentPartnerEntryId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("dossieraAccountKey", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("code_", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("jiraProjectKey", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("code_", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("notes", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSB_PartnerEntry (partnerEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,parentPartnerEntryId LONG,dossieraAccountKey VARCHAR(75) null,code_ VARCHAR(255) null,jiraProjectKey VARCHAR(75) null,notes STRING null,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table OSB_PartnerEntry (partnerEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,parentPartnerEntryId LONG,dossieraAccountKey VARCHAR(75) null,jiraProjectKey VARCHAR(75) null,code_ VARCHAR(255) null,notes STRING null,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table OSB_PartnerEntry";
 	public static final String ORDER_BY_JPQL = " ORDER BY partnerEntry.code ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY OSB_PartnerEntry.code_ ASC";
@@ -147,8 +147,8 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 		model.setModifiedDate(soapModel.getModifiedDate());
 		model.setParentPartnerEntryId(soapModel.getParentPartnerEntryId());
 		model.setDossieraAccountKey(soapModel.getDossieraAccountKey());
-		model.setCode(soapModel.getCode());
 		model.setJiraProjectKey(soapModel.getJiraProjectKey());
+		model.setCode(soapModel.getCode());
 		model.setNotes(soapModel.getNotes());
 		model.setStatus(soapModel.getStatus());
 
@@ -239,8 +239,8 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("parentPartnerEntryId", getParentPartnerEntryId());
 		attributes.put("dossieraAccountKey", getDossieraAccountKey());
-		attributes.put("code", getCode());
 		attributes.put("jiraProjectKey", getJiraProjectKey());
+		attributes.put("code", getCode());
 		attributes.put("notes", getNotes());
 		attributes.put("status", getStatus());
 
@@ -312,16 +312,16 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 			setDossieraAccountKey(dossieraAccountKey);
 		}
 
-		String code = (String)attributes.get("code");
-
-		if (code != null) {
-			setCode(code);
-		}
-
 		String jiraProjectKey = (String)attributes.get("jiraProjectKey");
 
 		if (jiraProjectKey != null) {
 			setJiraProjectKey(jiraProjectKey);
+		}
+
+		String code = (String)attributes.get("code");
+
+		if (code != null) {
+			setCode(code);
 		}
 
 		String notes = (String)attributes.get("notes");
@@ -524,6 +524,22 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 
 	@JSON
 	@Override
+	public String getJiraProjectKey() {
+		if (_jiraProjectKey == null) {
+			return StringPool.BLANK;
+		}
+		else {
+			return _jiraProjectKey;
+		}
+	}
+
+	@Override
+	public void setJiraProjectKey(String jiraProjectKey) {
+		_jiraProjectKey = jiraProjectKey;
+	}
+
+	@JSON
+	@Override
 	public String getCode() {
 		if (_code == null) {
 			return StringPool.BLANK;
@@ -546,22 +562,6 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 
 	public String getOriginalCode() {
 		return GetterUtil.getString(_originalCode);
-	}
-
-	@JSON
-	@Override
-	public String getJiraProjectKey() {
-		if (_jiraProjectKey == null) {
-			return StringPool.BLANK;
-		}
-		else {
-			return _jiraProjectKey;
-		}
-	}
-
-	@Override
-	public void setJiraProjectKey(String jiraProjectKey) {
-		_jiraProjectKey = jiraProjectKey;
 	}
 
 	@JSON
@@ -632,8 +632,8 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 		partnerEntryImpl.setModifiedDate(getModifiedDate());
 		partnerEntryImpl.setParentPartnerEntryId(getParentPartnerEntryId());
 		partnerEntryImpl.setDossieraAccountKey(getDossieraAccountKey());
-		partnerEntryImpl.setCode(getCode());
 		partnerEntryImpl.setJiraProjectKey(getJiraProjectKey());
+		partnerEntryImpl.setCode(getCode());
 		partnerEntryImpl.setNotes(getNotes());
 		partnerEntryImpl.setStatus(getStatus());
 
@@ -765,20 +765,20 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 			partnerEntryCacheModel.dossieraAccountKey = null;
 		}
 
-		partnerEntryCacheModel.code = getCode();
-
-		String code = partnerEntryCacheModel.code;
-
-		if ((code != null) && (code.length() == 0)) {
-			partnerEntryCacheModel.code = null;
-		}
-
 		partnerEntryCacheModel.jiraProjectKey = getJiraProjectKey();
 
 		String jiraProjectKey = partnerEntryCacheModel.jiraProjectKey;
 
 		if ((jiraProjectKey != null) && (jiraProjectKey.length() == 0)) {
 			partnerEntryCacheModel.jiraProjectKey = null;
+		}
+
+		partnerEntryCacheModel.code = getCode();
+
+		String code = partnerEntryCacheModel.code;
+
+		if ((code != null) && (code.length() == 0)) {
+			partnerEntryCacheModel.code = null;
 		}
 
 		partnerEntryCacheModel.notes = getNotes();
@@ -818,10 +818,10 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 		sb.append(getParentPartnerEntryId());
 		sb.append(", dossieraAccountKey=");
 		sb.append(getDossieraAccountKey());
-		sb.append(", code=");
-		sb.append(getCode());
 		sb.append(", jiraProjectKey=");
 		sb.append(getJiraProjectKey());
+		sb.append(", code=");
+		sb.append(getCode());
 		sb.append(", notes=");
 		sb.append(getNotes());
 		sb.append(", status=");
@@ -880,12 +880,12 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 		sb.append(getDossieraAccountKey());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>code</column-name><column-value><![CDATA[");
-		sb.append(getCode());
-		sb.append("]]></column-value></column>");
-		sb.append(
 			"<column><column-name>jiraProjectKey</column-name><column-value><![CDATA[");
 		sb.append(getJiraProjectKey());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>code</column-name><column-value><![CDATA[");
+		sb.append(getCode());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>notes</column-name><column-value><![CDATA[");
@@ -919,9 +919,9 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 	private boolean _setOriginalParentPartnerEntryId;
 	private String _dossieraAccountKey;
 	private String _originalDossieraAccountKey;
+	private String _jiraProjectKey;
 	private String _code;
 	private String _originalCode;
-	private String _jiraProjectKey;
 	private String _notes;
 	private int _status;
 	private long _columnBitmask;

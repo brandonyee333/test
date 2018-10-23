@@ -68,8 +68,8 @@ public class PartnerEntryWrapper implements PartnerEntry,
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("parentPartnerEntryId", getParentPartnerEntryId());
 		attributes.put("dossieraAccountKey", getDossieraAccountKey());
-		attributes.put("code", getCode());
 		attributes.put("jiraProjectKey", getJiraProjectKey());
+		attributes.put("code", getCode());
 		attributes.put("notes", getNotes());
 		attributes.put("status", getStatus());
 
@@ -138,16 +138,16 @@ public class PartnerEntryWrapper implements PartnerEntry,
 			setDossieraAccountKey(dossieraAccountKey);
 		}
 
-		String code = (String)attributes.get("code");
-
-		if (code != null) {
-			setCode(code);
-		}
-
 		String jiraProjectKey = (String)attributes.get("jiraProjectKey");
 
 		if (jiraProjectKey != null) {
 			setJiraProjectKey(jiraProjectKey);
+		}
+
+		String code = (String)attributes.get("code");
+
+		if (code != null) {
+			setCode(code);
 		}
 
 		String notes = (String)attributes.get("notes");

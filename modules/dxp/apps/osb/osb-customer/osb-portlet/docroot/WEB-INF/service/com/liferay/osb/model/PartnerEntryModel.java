@@ -249,21 +249,6 @@ public interface PartnerEntryModel extends AuditedModel, BaseModel<PartnerEntry>
 	public void setDossieraAccountKey(String dossieraAccountKey);
 
 	/**
-	 * Returns the code of this partner entry.
-	 *
-	 * @return the code of this partner entry
-	 */
-	@AutoEscape
-	public String getCode();
-
-	/**
-	 * Sets the code of this partner entry.
-	 *
-	 * @param code the code of this partner entry
-	 */
-	public void setCode(String code);
-
-	/**
 	 * Returns the jira project key of this partner entry.
 	 *
 	 * @return the jira project key of this partner entry
@@ -277,6 +262,21 @@ public interface PartnerEntryModel extends AuditedModel, BaseModel<PartnerEntry>
 	 * @param jiraProjectKey the jira project key of this partner entry
 	 */
 	public void setJiraProjectKey(String jiraProjectKey);
+
+	/**
+	 * Returns the code of this partner entry.
+	 *
+	 * @return the code of this partner entry
+	 */
+	@AutoEscape
+	public String getCode();
+
+	/**
+	 * Sets the code of this partner entry.
+	 *
+	 * @param code the code of this partner entry
+	 */
+	public void setCode(String code);
 
 	/**
 	 * Returns the notes of this partner entry.

@@ -60,11 +60,11 @@ public class PartnerEntryLocalServiceWrapper implements PartnerEntryLocalService
 	@Override
 	public com.liferay.osb.model.PartnerEntry addPartnerEntry(long userId,
 		long parentPartnerEntryId, java.lang.String dossieraAccountKey,
-		java.lang.String code, java.lang.String jiraProjectKey,
+		java.lang.String jiraProjectKey, java.lang.String code,
 		java.lang.String notes, long[] supportRegionIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _partnerEntryLocalService.addPartnerEntry(userId,
-			parentPartnerEntryId, dossieraAccountKey, code, jiraProjectKey,
+			parentPartnerEntryId, dossieraAccountKey, jiraProjectKey, code,
 			notes, supportRegionIds);
 	}
 
@@ -154,11 +154,11 @@ public class PartnerEntryLocalServiceWrapper implements PartnerEntryLocalService
 	@Override
 	public com.liferay.osb.model.PartnerEntry updatePartnerEntry(long userId,
 		long partnerEntryId, java.lang.String dossieraAccountKey,
-		java.lang.String code, java.lang.String jiraProjectKey,
+		java.lang.String jiraProjectKey, java.lang.String code,
 		java.lang.String notes, int status, long[] supportRegionIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _partnerEntryLocalService.updatePartnerEntry(userId,
-			partnerEntryId, dossieraAccountKey, code, jiraProjectKey, notes,
+			partnerEntryId, dossieraAccountKey, jiraProjectKey, code, notes,
 			status, supportRegionIds);
 	}
 

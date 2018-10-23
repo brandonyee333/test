@@ -381,10 +381,10 @@
 		<field name="modifiedDate" type="Date" />
 		<field name="parentPartnerEntryId" type="long" />
 		<field name="dossieraAccountKey" type="String" />
+		<field name="jiraProjectKey" type="String" />
 		<field name="code" type="String">
 			<hint name="max-length">255</hint>
 		</field>
-		<field name="jiraProjectKey" type="String" />
 		<field name="notes" type="String">
 			<hint-collection name="TEXTAREA" />
 		</field>

@@ -91,8 +91,8 @@ public class PartnerEntryClp extends BaseModelImpl<PartnerEntry>
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("parentPartnerEntryId", getParentPartnerEntryId());
 		attributes.put("dossieraAccountKey", getDossieraAccountKey());
-		attributes.put("code", getCode());
 		attributes.put("jiraProjectKey", getJiraProjectKey());
+		attributes.put("code", getCode());
 		attributes.put("notes", getNotes());
 		attributes.put("status", getStatus());
 
@@ -164,16 +164,16 @@ public class PartnerEntryClp extends BaseModelImpl<PartnerEntry>
 			setDossieraAccountKey(dossieraAccountKey);
 		}
 
-		String code = (String)attributes.get("code");
-
-		if (code != null) {
-			setCode(code);
-		}
-
 		String jiraProjectKey = (String)attributes.get("jiraProjectKey");
 
 		if (jiraProjectKey != null) {
 			setJiraProjectKey(jiraProjectKey);
+		}
+
+		String code = (String)attributes.get("code");
+
+		if (code != null) {
+			setCode(code);
 		}
 
 		String notes = (String)attributes.get("notes");
@@ -458,29 +458,6 @@ public class PartnerEntryClp extends BaseModelImpl<PartnerEntry>
 	}
 
 	@Override
-	public String getCode() {
-		return _code;
-	}
-
-	@Override
-	public void setCode(String code) {
-		_code = code;
-
-		if (_partnerEntryRemoteModel != null) {
-			try {
-				Class<?> clazz = _partnerEntryRemoteModel.getClass();
-
-				Method method = clazz.getMethod("setCode", String.class);
-
-				method.invoke(_partnerEntryRemoteModel, code);
-			}
-			catch (Exception e) {
-				throw new UnsupportedOperationException(e);
-			}
-		}
-	}
-
-	@Override
 	public String getJiraProjectKey() {
 		return _jiraProjectKey;
 	}
@@ -497,6 +474,29 @@ public class PartnerEntryClp extends BaseModelImpl<PartnerEntry>
 						String.class);
 
 				method.invoke(_partnerEntryRemoteModel, jiraProjectKey);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
+	public String getCode() {
+		return _code;
+	}
+
+	@Override
+	public void setCode(String code) {
+		_code = code;
+
+		if (_partnerEntryRemoteModel != null) {
+			try {
+				Class<?> clazz = _partnerEntryRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setCode", String.class);
+
+				method.invoke(_partnerEntryRemoteModel, code);
 			}
 			catch (Exception e) {
 				throw new UnsupportedOperationException(e);
@@ -763,8 +763,8 @@ public class PartnerEntryClp extends BaseModelImpl<PartnerEntry>
 		clone.setModifiedDate(getModifiedDate());
 		clone.setParentPartnerEntryId(getParentPartnerEntryId());
 		clone.setDossieraAccountKey(getDossieraAccountKey());
-		clone.setCode(getCode());
 		clone.setJiraProjectKey(getJiraProjectKey());
+		clone.setCode(getCode());
 		clone.setNotes(getNotes());
 		clone.setStatus(getStatus());
 
@@ -849,10 +849,10 @@ public class PartnerEntryClp extends BaseModelImpl<PartnerEntry>
 		sb.append(getParentPartnerEntryId());
 		sb.append(", dossieraAccountKey=");
 		sb.append(getDossieraAccountKey());
-		sb.append(", code=");
-		sb.append(getCode());
 		sb.append(", jiraProjectKey=");
 		sb.append(getJiraProjectKey());
+		sb.append(", code=");
+		sb.append(getCode());
 		sb.append(", notes=");
 		sb.append(getNotes());
 		sb.append(", status=");
@@ -911,12 +911,12 @@ public class PartnerEntryClp extends BaseModelImpl<PartnerEntry>
 		sb.append(getDossieraAccountKey());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>code</column-name><column-value><![CDATA[");
-		sb.append(getCode());
-		sb.append("]]></column-value></column>");
-		sb.append(
 			"<column><column-name>jiraProjectKey</column-name><column-value><![CDATA[");
 		sb.append(getJiraProjectKey());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>code</column-name><column-value><![CDATA[");
+		sb.append(getCode());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>notes</column-name><column-value><![CDATA[");
@@ -942,8 +942,8 @@ public class PartnerEntryClp extends BaseModelImpl<PartnerEntry>
 	private Date _modifiedDate;
 	private long _parentPartnerEntryId;
 	private String _dossieraAccountKey;
-	private String _code;
 	private String _jiraProjectKey;
+	private String _code;
 	private String _notes;
 	private int _status;
 	private BaseModel<?> _partnerEntryRemoteModel;
