@@ -951,9 +951,9 @@ public class AdminPortlet extends OSBPortlet {
 			actionRequest, "parentPartnerEntryId");
 		String dossieraAccountKey = ParamUtil.getString(
 			actionRequest, "dossieraAccountKey");
-		String code = ParamUtil.getString(actionRequest, "code");
 		String jiraProjectKey = ParamUtil.getString(
 			actionRequest, "jiraProjectKey");
+		String code = ParamUtil.getString(actionRequest, "code");
 		String notes = ParamUtil.getString(actionRequest, "notes");
 		int status = ParamUtil.getInteger(actionRequest, "status");
 		long[] supportRegionIds = ParamUtil.getLongValues(
@@ -964,13 +964,13 @@ public class AdminPortlet extends OSBPortlet {
 		if (partnerEntryId <= 0) {
 			partnerEntry = PartnerEntryLocalServiceUtil.addPartnerEntry(
 				themeDisplay.getUserId(), parentPartnerEntryId,
-				dossieraAccountKey, code, jiraProjectKey, notes,
+				dossieraAccountKey, jiraProjectKey, code, notes,
 				supportRegionIds);
 		}
 		else {
 			partnerEntry = PartnerEntryLocalServiceUtil.updatePartnerEntry(
 				themeDisplay.getUserId(), partnerEntryId, dossieraAccountKey,
-				code, jiraProjectKey, notes, status, supportRegionIds);
+				jiraProjectKey, code, notes, status, supportRegionIds);
 		}
 
 		List<Address> addresses = UsersAdminUtil.getAddresses(actionRequest);

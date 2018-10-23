@@ -483,8 +483,8 @@ public class OSBCustomerQAInfrastructureUtil {
 				new Filter(partnerEntryCodeFilter, "dossiera-account-key"));
 
 			PartnerEntryLocalServiceUtil.addPartnerEntry(
-				OSBConstants.USER_DEFAULT_USER_ID, 0, dossieraAccountKey, code,
-				StringPool.BLANK, StringPool.BLANK, supportRegionIds);
+				OSBConstants.USER_DEFAULT_USER_ID, 0, dossieraAccountKey,
+				StringPool.BLANK, code, StringPool.BLANK, supportRegionIds);
 		}
 
 		if (_log.isInfoEnabled()) {

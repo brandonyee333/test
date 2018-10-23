@@ -112,18 +112,18 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 
 		<tr>
 			<td>
-				<liferay-ui:message key="code" />
-			</td>
-			<td>
-				<aui:input label="" name="code" />
-			</td>
-		</tr>
-		<tr>
-			<td>
 				<liferay-ui:message key="jira-project-key" />
 			</td>
 			<td>
 				<aui:input label="" name="jiraProjectKey" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="code" />
+			</td>
+			<td>
+				<aui:input label="" name="code" />
 			</td>
 		</tr>
 

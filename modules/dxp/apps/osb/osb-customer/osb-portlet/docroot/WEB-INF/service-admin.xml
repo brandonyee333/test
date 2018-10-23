@@ -710,8 +710,8 @@
 
 		<column name="parentPartnerEntryId" type="long" />
 		<column name="dossieraAccountKey" type="String" />
-		<column name="code" type="String" />
 		<column name="jiraProjectKey" type="String" />
+		<column name="code" type="String" />
 		<column name="notes" type="String" />
 		<column name="status" type="int" />
 
