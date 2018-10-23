@@ -15,12 +15,11 @@
 package com.liferay.lcs.command;
 
 import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
-import com.liferay.lcs.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.messaging.SignOffCommandMessage;
+import com.liferay.lcs.messaging.SignOffReasonCode;
 import com.liferay.lcs.task.scheduler.TaskSchedulerService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 
 /**
  * @author Igor Beslic
@@ -29,36 +28,29 @@ public class SignOffCommand implements Command<SignOffCommandMessage> {
 
 	public SignOffCommand(
 		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor,
-		LCSKeyAdvisor lcsKeyAdvisor,
 		TaskSchedulerService taskSchedulerService) {
 
 		_lcsClusterEntryTokenAdvisor = lcsClusterEntryTokenAdvisor;
-		_lcsKeyAdvisor = lcsKeyAdvisor;
 		_taskSchedulerService = taskSchedulerService;
 	}
 
 	@Override
 	public void execute(SignOffCommandMessage signOffCommandMessage) {
+		SignOffReasonCode signOffReasonCode = _getSignOffReasonCode(
+			signOffCommandMessage);
+
 		if (_log.isDebugEnabled()) {
-			StringBundler sb = new StringBundler(5);
-
-			sb.append("Command message: {deregister=");
-			sb.append(signOffCommandMessage.isDeregister());
-			sb.append(", invalidateToken=");
-			sb.append(signOffCommandMessage.isInvalidateToken());
-			sb.append("}");
-
-			_log.debug(sb.toString());
+			_log.debug("Executing sign off command " + signOffCommandMessage);
 		}
 
-		if (signOffCommandMessage.isDeregister() ||
-			signOffCommandMessage.isInvalidateToken()) {
+		if (_log.isInfoEnabled()) {
+			_log.info("Sign off reason " + signOffReasonCode);
+		}
+
+		if ((signOffReasonCode == SignOffReasonCode.INVALIDATE_TOKEN) ||
+			(signOffReasonCode == SignOffReasonCode.UNREGISTER)) {
 
 			_lcsClusterEntryTokenAdvisor.deleteLCSCLusterEntryTokenFile();
-
-			if (signOffCommandMessage.isDeregister()) {
-				_lcsKeyAdvisor.clearCache();
-			}
 		}
 
 		_taskSchedulerService.restart();
@@ -68,10 +60,23 @@ public class SignOffCommand implements Command<SignOffCommandMessage> {
 		}
 	}
 
+	private SignOffReasonCode _getSignOffReasonCode(
+		SignOffCommandMessage signOffCommandMessage) {
+
+		for (SignOffReasonCode signOffReasonCode : SignOffReasonCode.values()) {
+			if (signOffCommandMessage.getReasonCode() ==
+					signOffReasonCode.getCode()) {
+
+				return signOffReasonCode;
+			}
+		}
+
+		return SignOffReasonCode.UNDEFINED;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(SignOffCommand.class);
 
 	private final LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
-	private final LCSKeyAdvisor _lcsKeyAdvisor;
 	private final TaskSchedulerService _taskSchedulerService;
 
 }
