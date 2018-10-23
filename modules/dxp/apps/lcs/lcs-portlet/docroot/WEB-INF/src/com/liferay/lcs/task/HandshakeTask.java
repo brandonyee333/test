@@ -199,13 +199,13 @@ public class HandshakeTask implements Task {
 			HandshakeResponseMessage handshakeResponseMessage =
 				(HandshakeResponseMessage)responseMessage;
 
-			if (Validator.isNotNull(
-					handshakeResponseMessage.getErrorMessage()) ||
-				(handshakeResponseMessage.getErrorStatus() != 0)) {
+			if ((handshakeResponseMessage.getErrorCode() != 0) ||
+				Validator.isNotNull(
+					handshakeResponseMessage.getErrorMessage())) {
 
 				throw new LCSHandshakeException(
 					handshakeResponseMessage.getErrorMessage(),
-					handshakeResponseMessage.getErrorStatus());
+					handshakeResponseMessage.getErrorCode());
 			}
 
 			if (handshakeResponseMessage.isHandshakeExpiredError()) {
