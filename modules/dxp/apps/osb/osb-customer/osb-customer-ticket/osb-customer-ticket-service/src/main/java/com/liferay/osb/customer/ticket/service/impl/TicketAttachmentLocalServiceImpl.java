@@ -19,18 +19,28 @@ import com.liferay.osb.customer.ticket.repository.FileRepositoryWebService;
 import com.liferay.osb.customer.ticket.service.base.TicketAttachmentLocalServiceBaseImpl;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketCommentWebService;
+import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
+import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
+import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.util.Date;
 import java.util.List;
+
+import javax.portlet.PortletRequest;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Amos Fong
@@ -95,7 +105,8 @@ public class TicketAttachmentLocalServiceImpl
 	}
 
 	protected String buildZendeskTicketCommentBody(
-		TicketAttachment ticketAttachment, ServiceContext serviceContext) {
+			TicketAttachment ticketAttachment, ServiceContext serviceContext)
+		throws PortalException {
 
 		StringBundler sb = new StringBundler(7);
 
@@ -108,11 +119,36 @@ public class TicketAttachmentLocalServiceImpl
 
 		sb.append("<a href=\"");
 
-		LiferayPortletResponse liferayPortletResponse =
-			serviceContext.getLiferayPortletResponse();
+		HttpServletRequest request = serviceContext.getRequest();
 
-		LiferayPortletURL resourceURL =
-			(LiferayPortletURL)liferayPortletResponse.createResourceURL();
+		if (request == null) {
+			return StringPool.BLANK;
+		}
+
+		String portletId =
+			"com_liferay_osb_customer_account_entry_details_web_" +
+				"AccountEntryDetailsPortlet";
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		long plid = PortalUtil.getPlidFromPortletId(
+			OSBConstants.GROUP_CUSTOMER_ID, portletId);
+
+		if (themeDisplay == null) {
+			themeDisplay = new ThemeDisplay();
+
+			Layout layout = _layoutLocalService.getLayout(plid);
+
+			themeDisplay.setLayout(layout);
+			themeDisplay.setLayoutSet(layout.getLayoutSet());
+			themeDisplay.setSiteGroupId(layout.getGroupId());
+
+			request.setAttribute(WebKeys.THEME_DISPLAY, themeDisplay);
+		}
+
+		LiferayPortletURL resourceURL = PortletURLFactoryUtil.create(
+			request, portletId, plid, PortletRequest.RESOURCE_PHASE);
 
 		resourceURL.setCopyCurrentRenderParameters(false);
 		resourceURL.setParameter(
@@ -131,6 +167,9 @@ public class TicketAttachmentLocalServiceImpl
 
 	@ServiceReference(type = FileRepositoryWebService.class)
 	private FileRepositoryWebService _fileRepositoryWebService;
+
+	@ServiceReference(type = LayoutLocalService.class)
+	private LayoutLocalService _layoutLocalService;
 
 	@ServiceReference(type = ZendeskMapperUtil.class)
 	private ZendeskMapperUtil _zendeskMapperUtil;
