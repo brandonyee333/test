@@ -13,6 +13,10 @@
 	}
 }
 
+.open .scheduler-base-views button {
+	font-size: 14px;
+}
+
 .calendar-booking-reminders .calendar-portlet-reminder-section {
 	.reminder-duration {
 		margin-bottom: 7px;
@@ -923,5 +927,14 @@
 
 	.col-md-8 {
 		@include col-md-8;
+	}
+}
+
+@media (max-width: 1279px) and (min-width: 767px) {
+	.scheduler-base-views {
+		flex: 0 0 100%;
+		max-width: 100%;
+		margin-top: 20px;
+		margin-bottom: 20px;
 	}
 }
