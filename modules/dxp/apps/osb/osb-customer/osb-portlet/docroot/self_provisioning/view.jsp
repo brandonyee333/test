@@ -43,14 +43,6 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 		List<AccountEntry> accountEntries = AccountEntryLocalServiceUtil.search(null, params, QueryUtil.ALL_POS, QueryUtil.ALL_POS, new AccountEntryNameComparator(true));
 		%>
 
-		<h1>
-			<liferay-ui:message key="download-a-liferay-activation-key-for-your-developer-workstation" />
-		</h1>
-
-		<p>
-			<liferay-ui:message key="to-obtain-a-key-select-your-subscription-project-product-liferay-version-and-click-on-the-download-button" />
-		</p>
-
 		<div class="container-fluid-1280">
 			<aui:row>
 				<aui:col width="<%= 30 %>">
