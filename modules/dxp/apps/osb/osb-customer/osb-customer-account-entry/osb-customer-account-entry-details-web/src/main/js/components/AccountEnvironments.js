@@ -8,7 +8,7 @@ import Modal from './Modal';
 
 export default class AccountEnvironments extends React.Component {
 	state = {
-		curEnvironment: null,
+		environment: null,
 		showModal: false
 	};
 
@@ -40,7 +40,7 @@ export default class AccountEnvironments extends React.Component {
 	handleDisplayEditModal = environment =>
 		this.setState(
 			{
-				curEnvironment: environment,
+				environment: environment,
 				showModal: true
 			}
 		);
@@ -48,7 +48,7 @@ export default class AccountEnvironments extends React.Component {
 	handleDisplayNewModal = () =>
 		this.setState(
 			{
-				curEnvironment: null,
+				environment: null,
 				showModal: true
 			}
 		);
@@ -61,7 +61,7 @@ export default class AccountEnvironments extends React.Component {
 			permitAdd
 		} = this.props;
 
-		const {curEnvironment, showModal} = this.state;
+		const {environment, showModal} = this.state;
 
 		const accordionItems = environments.map(
 			(environment, index) => (
@@ -169,7 +169,7 @@ export default class AccountEnvironments extends React.Component {
 			)
 		);
 
-		const modalHeader = curEnvironment ? Liferay.Language.get('edit-environment-configuration') : Liferay.Language.get('new-environment-configuration');
+		const modalHeader = environment ? Liferay.Language.get('edit-environment-configuration') : Liferay.Language.get('new-environment-configuration');
 
 		return (
 			<React.Fragment>
@@ -195,7 +195,7 @@ export default class AccountEnvironments extends React.Component {
 					>
 						<EditAccountEnvironmentForm
 							addEnvironmentURL={addEnvironmentURL}
-							curEnvironment={curEnvironment}
+							environment={environment}
 							environmentConfiguration={environmentConfiguration}
 							handleCloseModal={this.handleCloseModal}
 							namespace={window.AccountDetailsConstants.namespace}

@@ -46,46 +46,46 @@ export default class EditAccountEnvironmentForm extends React.Component {
 
 	static propTypes = {
 		addEnvironmentURL: PropTypes.string.isRequired,
-		curEnvironment: PropTypes.object,
+		environment: PropTypes.object,
 		environmentConfiguration: PropTypes.object.isRequired,
 		handleCloseModal: PropTypes.func.isRequired,
 		namespace: PropTypes.string.isRequired
 	};
 
 	componentDidMount() {
-		const {curEnvironment, environmentConfiguration} = this.props;
+		const {environment, environmentConfiguration} = this.props;
 		const {envLFRVersions, products} = environmentConfiguration;
 
 		const {configurations, selectedOptions, formValues} = this.state;
 
-		if (curEnvironment) {
-			const curEnvironmentProduct = products.find(product => product.productEntryId == curEnvironment.productEntryId);
-			const curEnvLFRValue = curEnvironmentProduct.envLFR.find(version => version.name == curEnvironment.envLFRLabel).value;
-			const curEnvironmentLFRVersion = envLFRVersions.find(version => version[curEnvLFRValue])[curEnvLFRValue];
+		if (environment) {
+			const currentProduct = products.find(product => product.productEntryId == environment.productEntryId);
+			const currentLFRValue = currentProduct.envLFR.find(version => version.name == environment.envLFRLabel).value;
+			const currentLFRVersion = envLFRVersions.find(version => version[currentLFRValue])[currentLFRValue];
 
 			this.setState(
 				{
 					configurations: {
 						...configurations,
-						enterprise: curEnvironmentProduct.enterpriseSearch
+						enterprise: currentProduct.enterpriseSearch
 					},
 					formValues: {
 						...formValues,
-						envAS: this.getValueFromLabel(curEnvironmentLFRVersion, 'envAS', curEnvironment.envASLabel),
-						envBrowser: this.getValueFromLabel(curEnvironmentLFRVersion, 'envBrowser', curEnvironment.envBrowserLabel),
-						envCS: this.getValueFromLabel(curEnvironmentLFRVersion, 'envCS', curEnvironment.envCSLabel),
-						envDB: this.getValueFromLabel(curEnvironmentLFRVersion, 'envDB', curEnvironment.envDBLabel),
-						envJVM: this.getValueFromLabel(curEnvironmentLFRVersion, 'envJVM', curEnvironment.envJVMLabel),
-						envLFR: this.getValueFromLabel(curEnvironmentLFRVersion, 'envLFR', curEnvironment.envLFRLabel),
-						envOS: this.getValueFromLabel(curEnvironmentLFRVersion, 'envOS', curEnvironment.envOSLabel),
-						envSearch: this.getSearchValues(curEnvironmentLFRVersion, curEnvironment.envSearchLabels),
-						name: curEnvironment.name,
-						productEntryId: curEnvironment.productEntryId
+						envAS: this.getValueFromLabel(currentLFRVersion, 'envAS', environment.envASLabel),
+						envBrowser: this.getValueFromLabel(currentLFRVersion, 'envBrowser', environment.envBrowserLabel),
+						envCS: this.getValueFromLabel(currentLFRVersion, 'envCS', environment.envCSLabel),
+						envDB: this.getValueFromLabel(currentLFRVersion, 'envDB', environment.envDBLabel),
+						envJVM: this.getValueFromLabel(currentLFRVersion, 'envJVM', environment.envJVMLabel),
+						envLFR: this.getValueFromLabel(currentLFRVersion, 'envLFR', environment.envLFRLabel),
+						envOS: this.getValueFromLabel(currentLFRVersion, 'envOS', environment.envOSLabel),
+						envSearch: this.getSearchValues(currentLFRVersion, environment.envSearchLabels),
+						name: environment.name,
+						productEntryId: environment.productEntryId
 					},
 					selectedOptions: {
 						...selectedOptions,
-						selectedLFRVersion: curEnvironmentLFRVersion,
-						selectedProduct: curEnvironmentProduct
+						selectedLFRVersion: currentLFRVersion,
+						selectedProduct: currentProduct
 					}
 				}
 			);
@@ -181,13 +181,13 @@ export default class EditAccountEnvironmentForm extends React.Component {
 		const {value} = options[options.selectedIndex];
 
 		if (name === `${this.props.namespace}productEntryId`) {
-			const curSelectedProduct = products.find(product => product.productEntryId === value);
+			const currentProduct = products.find(product => product.productEntryId === value);
 
 			this.setState(
 				{
 					configurations: {
 						...configurations,
-						enterprise: !!curSelectedProduct && curSelectedProduct.enterpriseSearch
+						enterprise: !!currentProduct && currentProduct.enterpriseSearch
 					},
 					formValues: {
 						...formValues,
@@ -197,13 +197,13 @@ export default class EditAccountEnvironmentForm extends React.Component {
 					selectedOptions: {
 						...selectedOptions,
 						selectedLFRVersion: null,
-						selectedProduct: curSelectedProduct
+						selectedProduct: currentProduct
 					}
 				}
 			);
 		}
 		else if (name === `${this.props.namespace}envLFR`) {
-			const curLFRVersion = envLFRVersions.find(version => version[value]);
+			const currentLFRVersion = envLFRVersions.find(version => version[value]);
 
 			this.setState(
 				{
@@ -220,7 +220,7 @@ export default class EditAccountEnvironmentForm extends React.Component {
 					},
 					selectedOptions: {
 						...selectedOptions,
-						selectedLFRVersion: curLFRVersion ? curLFRVersion[value] : null
+						selectedLFRVersion: currentLFRVersion ? currentLFRVersion[value] : null
 					}
 				}
 			);
@@ -262,18 +262,18 @@ export default class EditAccountEnvironmentForm extends React.Component {
 	handleSubmit = () => this.editEnvironmentFormRef.current.submit();
 
 	getSearchValues = (selectedLFRVersion, searchLabelsArray) => {
-		const {curEnvironment} = this.props;
+		const {environment} = this.props;
 
 		const {enterprise} = this.state.configurations;
 
 		const searchValuesArray = [];
 
 		if (selectedLFRVersion && selectedLFRVersion.envSearch) {
-			const curEnvironmentVersionName = curEnvironment.envLFRLabel;
+			const environmentVersionName = environment.envLFRLabel;
 			const searchType = selectedLFRVersion.envSearch.find(search => search[enterprise ? 'enterprise' : 'standard'])[enterprise ? 'enterprise' : 'standard'];
 			const selectedVersionName = selectedLFRVersion.envLFR.find(version => version).name;
 
-			if (selectedVersionName == curEnvironmentVersionName) {
+			if (selectedVersionName == environmentVersionName) {
 				for (var i = 0; i < searchLabelsArray.length; i++) {
 					const searchValue = searchType.find(type => type.name == searchLabelsArray[i]).value;
 
@@ -302,7 +302,7 @@ export default class EditAccountEnvironmentForm extends React.Component {
 	render() {
 		const {
 			addEnvironmentURL,
-			curEnvironment,
+			environment,
 			environmentConfiguration,
 			handleCloseModal,
 			namespace
@@ -321,7 +321,7 @@ export default class EditAccountEnvironmentForm extends React.Component {
 		const {customOS, enterprise} = configurations;
 		const {patchLevel, portalExt} = inputFileField;
 
-		const actionURL = curEnvironment ? curEnvironment.editAccountEnvironmentURL : addEnvironmentURL;
+		const actionURL = environment ? environment.editAccountEnvironmentURL : addEnvironmentURL;
 		const renderEnvCS = selectedLFRVersion && selectedLFRVersion.envCS;
 		const renderEnvOSCustom = customOS;
 		const renderEnvSearch = selectedLFRVersion && selectedProduct && 'enterpriseSearch' in selectedProduct;
@@ -658,9 +658,9 @@ export default class EditAccountEnvironmentForm extends React.Component {
 										</svg>
 
 										<div className="uploadedPortalExt">
-											{curEnvironment &&
-												<a href={curEnvironment.portalExtAccountEnvironmentAttachmentURL}>
-													{curEnvironment.portalExtAccountEnvironmentAttachmentFileName}
+											{environment &&
+												<a href={environment.portalExtAccountEnvironmentAttachmentURL}>
+													{environment.portalExtAccountEnvironmentAttachmentFileName}
 												</a>
 											}
 										</div>
@@ -716,9 +716,9 @@ export default class EditAccountEnvironmentForm extends React.Component {
 										</svg>
 
 										<div className="uploadedPatchLevel">
-											{curEnvironment &&
-												<a href={curEnvironment.patchLevelAccountEnvironmentAttachmentURL}>
-													{curEnvironment.patchLevelAccountEnvironmentAttachmentFileName}
+											{environment &&
+												<a href={environment.patchLevelAccountEnvironmentAttachmentURL}>
+													{environment.patchLevelAccountEnvironmentAttachmentFileName}
 												</a>
 											}
 										</div>
