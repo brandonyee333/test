@@ -67,10 +67,13 @@ import java.rmi.RemoteException;
 public class TicketAttachmentServiceSoap {
 	public static com.liferay.osb.customer.ticket.model.TicketAttachmentSoap addTicketAttachment(
 		long accountEntryId, long zendeskTicketId, String fileRepositoryId,
-		String fileName, long fileSize, int type) throws RemoteException {
+		String fileName, long fileSize, int type,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws RemoteException {
 		try {
 			com.liferay.osb.customer.ticket.model.TicketAttachment returnValue = TicketAttachmentServiceUtil.addTicketAttachment(accountEntryId,
-					zendeskTicketId, fileRepositoryId, fileName, fileSize, type);
+					zendeskTicketId, fileRepositoryId, fileName, fileSize,
+					type, serviceContext);
 
 			return com.liferay.osb.customer.ticket.model.TicketAttachmentSoap.toSoapModel(returnValue);
 		}

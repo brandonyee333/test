@@ -57,7 +57,8 @@ import com.liferay.portal.kernel.util.MethodKey;
 public class TicketAttachmentServiceHttp {
 	public static com.liferay.osb.customer.ticket.model.TicketAttachment addTicketAttachment(
 		HttpPrincipal httpPrincipal, long accountEntryId, long zendeskTicketId,
-		String fileRepositoryId, String fileName, long fileSize, int type)
+		String fileRepositoryId, String fileName, long fileSize, int type,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(TicketAttachmentServiceUtil.class,
@@ -65,7 +66,7 @@ public class TicketAttachmentServiceHttp {
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					accountEntryId, zendeskTicketId, fileRepositoryId,
-					fileName, fileSize, type);
+					fileName, fileSize, type, serviceContext);
 
 			Object returnObj = null;
 
@@ -124,7 +125,7 @@ public class TicketAttachmentServiceHttp {
 	private static Log _log = LogFactoryUtil.getLog(TicketAttachmentServiceHttp.class);
 	private static final Class<?>[] _addTicketAttachmentParameterTypes0 = new Class[] {
 			long.class, long.class, String.class, String.class, long.class,
-			int.class
+			int.class, com.liferay.portal.kernel.service.ServiceContext.class
 		};
 	private static final Class<?>[] _getTicketAttachmentParameterTypes1 = new Class[] {
 			long.class

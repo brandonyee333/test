@@ -36,10 +36,12 @@ public class TicketAttachmentServiceWrapper implements TicketAttachmentService,
 	@Override
 	public com.liferay.osb.customer.ticket.model.TicketAttachment addTicketAttachment(
 		long accountEntryId, long zendeskTicketId, String fileRepositoryId,
-		String fileName, long fileSize, int type)
+		String fileName, long fileSize, int type,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketAttachmentService.addTicketAttachment(accountEntryId,
-			zendeskTicketId, fileRepositoryId, fileName, fileSize, type);
+			zendeskTicketId, fileRepositoryId, fileName, fileSize, type,
+			serviceContext);
 	}
 
 	/**

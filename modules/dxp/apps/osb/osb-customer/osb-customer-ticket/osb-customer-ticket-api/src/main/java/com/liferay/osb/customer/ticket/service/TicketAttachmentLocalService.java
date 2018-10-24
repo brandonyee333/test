@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -62,7 +63,8 @@ public interface TicketAttachmentLocalService extends BaseLocalService,
 	 */
 	public TicketAttachment addTicketAttachment(long userId,
 		long accountEntryId, long zendeskTicketId, String fileRepositoryId,
-		String fileName, long fileSize, int type) throws PortalException;
+		String fileName, long fileSize, int type, ServiceContext serviceContext)
+		throws PortalException;
 
 	/**
 	* Adds the ticket attachment to the database. Also notifies the appropriate model listeners.

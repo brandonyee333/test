@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.service.BaseService;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
@@ -54,7 +55,8 @@ public interface TicketAttachmentService extends BaseService {
 	 */
 	public TicketAttachment addTicketAttachment(long accountEntryId,
 		long zendeskTicketId, String fileRepositoryId, String fileName,
-		long fileSize, int type) throws PortalException;
+		long fileSize, int type, ServiceContext serviceContext)
+		throws PortalException;
 
 	/**
 	* Returns the OSGi service identifier.

@@ -37,11 +37,12 @@ public class TicketAttachmentLocalServiceWrapper
 	@Override
 	public com.liferay.osb.customer.ticket.model.TicketAttachment addTicketAttachment(
 		long userId, long accountEntryId, long zendeskTicketId,
-		String fileRepositoryId, String fileName, long fileSize, int type)
+		String fileRepositoryId, String fileName, long fileSize, int type,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketAttachmentLocalService.addTicketAttachment(userId,
 			accountEntryId, zendeskTicketId, fileRepositoryId, fileName,
-			fileSize, type);
+			fileSize, type, serviceContext);
 	}
 
 	/**
