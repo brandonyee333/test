@@ -17,8 +17,13 @@ package com.liferay.osb.customer.ticket.service.impl;
 import com.liferay.osb.customer.ticket.model.TicketAttachment;
 import com.liferay.osb.customer.ticket.repository.FileRepositoryWebService;
 import com.liferay.osb.customer.ticket.service.base.TicketAttachmentLocalServiceBaseImpl;
+import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketCommentWebService;
+import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
+import com.liferay.osb.customer.zendesk.web.service.exception.NoSuchZendeskOrganizationException;
+import com.liferay.osb.customer.zendesk.web.service.exception.NoSuchZendeskTicketException;
+import com.liferay.osb.exception.NoSuchAccountEntryException;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Layout;
@@ -55,6 +60,8 @@ public class TicketAttachmentLocalServiceImpl
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
+
+		validate(accountEntryId, zendeskTicketId);
 
 		long ticketAttachmentId = counterLocalService.increment();
 
@@ -165,6 +172,31 @@ public class TicketAttachmentLocalServiceImpl
 		return sb.toString();
 	}
 
+	protected void validate(long accountEntryId, long zendeskTicketId)
+		throws PortalException {
+
+		if (accountEntryId <= 0) {
+			throw new NoSuchAccountEntryException();
+		}
+
+		long zendeskOrganizationId =
+			_zendeskMapperUtil.fetchZendeskOrganizationId(accountEntryId);
+
+		if (zendeskOrganizationId == 0) {
+			throw new NoSuchZendeskOrganizationException();
+		}
+
+		ZendeskTicket zendeskTicket = _zendeskTicketWebService.getZendeskTicket(
+			zendeskTicketId);
+
+		if ((zendeskTicketId <= 0) ||
+			(zendeskOrganizationId !=
+				zendeskTicket.getZendeskOrganizationId())) {
+
+			throw new NoSuchZendeskTicketException();
+		}
+	}
+
 	@ServiceReference(type = FileRepositoryWebService.class)
 	private FileRepositoryWebService _fileRepositoryWebService;
 
@@ -176,5 +208,8 @@ public class TicketAttachmentLocalServiceImpl
 
 	@ServiceReference(type = ZendeskTicketCommentWebService.class)
 	private ZendeskTicketCommentWebService _zendeskTicketCommentWebService;
+
+	@ServiceReference(type = ZendeskTicketWebService.class)
+	private ZendeskTicketWebService _zendeskTicketWebService;
 
 }
