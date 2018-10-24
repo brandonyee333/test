@@ -7,6 +7,7 @@ import * as yup from 'yup';
 import Alert from './Alert';
 import Button from './Button';
 
+const NOT_REQUIRED_SCHEMA = yup.string().notRequired();
 const REQUIRED_SCHEMA = yup.string().required(Liferay.Language.get('this-field-is-required'));
 
 const SELECT_LABEL = Liferay.Language.get('select');
@@ -32,11 +33,9 @@ export default class EditAccountEnvironmentForm extends React.Component {
 			envOS: '',
 			envSearch: [],
 			name: '',
+			patchLevel: '',
+			portalExt: '',
 			productEntryId: ''
-		},
-		inputFileField: {
-			patchLevel: null,
-			portalExt: null
 		},
 		selectedOptions: {
 			selectedLFRVersion: null,
@@ -80,6 +79,8 @@ export default class EditAccountEnvironmentForm extends React.Component {
 						envOS: this.getValueFromLabel(currentLFRVersion, 'envOS', environment.envOSLabel),
 						envSearch: this.getSearchValues(currentLFRVersion, environment.envSearchLabels),
 						name: environment.name,
+						patchLevel: environment.patchLevelAccountEnvironmentAttachmentFileName,
+						portalExt: environment.portalExtAccountEnvironmentAttachmentFileName,
 						productEntryId: environment.productEntryId
 					},
 					selectedOptions: {
@@ -93,7 +94,7 @@ export default class EditAccountEnvironmentForm extends React.Component {
 	};
 
 	handleDeleteFile = fileRef => {
-		const {inputFileField} = this.state;
+		const {formValues} = this.state;
 
 		const fileInput = fileRef.current;
 
@@ -103,8 +104,8 @@ export default class EditAccountEnvironmentForm extends React.Component {
 
 		this.setState(
 			{
-				inputFileField: {
-					...inputFileField,
+				formValues: {
+					...formValues,
 					[fieldName]: null
 				}
 			}
@@ -114,7 +115,7 @@ export default class EditAccountEnvironmentForm extends React.Component {
 	};
 
 	handleFileChange = event => {
-		const {inputFileField} = this.state;
+		const {formValues} = this.state;
 
 		const {files, name} = event.target;
 		const fieldName = this.updateFieldName(name);
@@ -122,8 +123,8 @@ export default class EditAccountEnvironmentForm extends React.Component {
 		if (files.length) {
 			this.setState(
 				{
-					inputFileField: {
-						...inputFileField,
+					formValues: {
+						...formValues,
 						[fieldName]: files[0].name
 					}
 				}
@@ -311,7 +312,6 @@ export default class EditAccountEnvironmentForm extends React.Component {
 		const {
 			configurations,
 			formValues,
-			inputFileField,
 			selectedOptions
 		} = this.state;
 
@@ -319,7 +319,7 @@ export default class EditAccountEnvironmentForm extends React.Component {
 
 		const {selectedLFRVersion, selectedProduct} = selectedOptions;
 		const {customOS, enterprise} = configurations;
-		const {patchLevel, portalExt} = inputFileField;
+		const {patchLevel, portalExt} = formValues;
 
 		const actionURL = environment ? environment.editAccountEnvironmentURL : addEnvironmentURL;
 		const renderEnvCS = selectedLFRVersion && selectedLFRVersion.envCS;
@@ -349,8 +349,8 @@ export default class EditAccountEnvironmentForm extends React.Component {
 				[`${namespace}envLFR`]: REQUIRED_SCHEMA,
 				[`${namespace}envOS`]: REQUIRED_SCHEMA,
 				[`${namespace}name`]: REQUIRED_SCHEMA,
-				[`${namespace}patchLevel`]: REQUIRED_SCHEMA,
-				[`${namespace}portalExt`]: REQUIRED_SCHEMA,
+				[`${namespace}patchLevel`]: environment ? NOT_REQUIRED_SCHEMA : REQUIRED_SCHEMA,
+				[`${namespace}portalExt`]: environment ? NOT_REQUIRED_SCHEMA : REQUIRED_SCHEMA,
 				[`${namespace}productEntryId`]: REQUIRED_SCHEMA
 			}
 		);
@@ -572,30 +572,6 @@ export default class EditAccountEnvironmentForm extends React.Component {
 								)}
 							</div>
 
-							<div className="col-md-6">
-								<div className="form-group">
-									<label className="control-label" htmlFor={`${namespace}envBrowser`}>
-										{Liferay.Language.get('browser')}
-									</label>
-
-									<select className="form-control" disabled={!selectedLFRVersion} id={`${namespace}envBrowser`} name={`${namespace}envBrowser`} onBlur={handleBlur} onChange={this.handleSelectChange} value={formValues.envBrowser}>
-										<option label={SELECT_LABEL} value="" />
-
-										{selectedLFRVersion && selectedLFRVersion.envBrowser.map(
-											(envBrowser) => (
-												<option key={envBrowser.value} id={'envBrowser-' + envBrowser.value} label={envBrowser.name} value={envBrowser.value} />
-											)
-										)}
-									</select>
-								</div>
-
-								{touched[`${namespace}envBrowser`] && errors[`${namespace}envBrowser`] && (
-									<Alert type="danger">
-										{errors[`${namespace}envBrowser`]}
-									</Alert>
-								)}
-							</div>
-
 							{renderEnvCS && (
 								<div className="col-md-6">
 									<div className="form-group">
@@ -621,6 +597,30 @@ export default class EditAccountEnvironmentForm extends React.Component {
 									)}
 								</div>
 							)}
+
+							<div className="col-md-6">
+								<div className="form-group">
+									<label className="control-label" htmlFor={`${namespace}envBrowser`}>
+										{Liferay.Language.get('browser')}
+									</label>
+
+									<select className="form-control" disabled={!selectedLFRVersion} id={`${namespace}envBrowser`} name={`${namespace}envBrowser`} onBlur={handleBlur} onChange={this.handleSelectChange} value={formValues.envBrowser}>
+										<option label={SELECT_LABEL} value="" />
+
+										{selectedLFRVersion && selectedLFRVersion.envBrowser.map(
+											(envBrowser) => (
+												<option key={envBrowser.value} id={'envBrowser-' + envBrowser.value} label={envBrowser.name} value={envBrowser.value} />
+											)
+										)}
+									</select>
+								</div>
+
+								{touched[`${namespace}envBrowser`] && errors[`${namespace}envBrowser`] && (
+									<Alert type="danger">
+										{errors[`${namespace}envBrowser`]}
+									</Alert>
+								)}
+							</div>
 
 							{renderEnvSearch && (
 								<div className="col-md-12">
@@ -656,14 +656,6 @@ export default class EditAccountEnvironmentForm extends React.Component {
 										<svg className="lexicon-icon lexicon-icon-asterisk">
 											<use xlinkHref="#asterisk" />
 										</svg>
-
-										<div className="uploadedPortalExt">
-											{environment &&
-												<a href={environment.portalExtAccountEnvironmentAttachmentURL}>
-													{environment.portalExtAccountEnvironmentAttachmentFileName}
-												</a>
-											}
-										</div>
 									</label>
 
 									<div className="upload-dropzone">
@@ -714,14 +706,6 @@ export default class EditAccountEnvironmentForm extends React.Component {
 										<svg className="lexicon-icon lexicon-icon-asterisk">
 											<use xlinkHref="#asterisk" />
 										</svg>
-
-										<div className="uploadedPatchLevel">
-											{environment &&
-												<a href={environment.patchLevelAccountEnvironmentAttachmentURL}>
-													{environment.patchLevelAccountEnvironmentAttachmentFileName}
-												</a>
-											}
-										</div>
 									</label>
 
 									<div className="upload-dropzone">
