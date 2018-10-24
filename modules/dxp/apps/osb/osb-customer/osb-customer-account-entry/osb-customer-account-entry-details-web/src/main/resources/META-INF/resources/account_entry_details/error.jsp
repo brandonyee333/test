@@ -16,4 +16,23 @@
 
 <%@ include file="/init.jsp" %>
 
-<liferay-ui:error-principal />
+<c:if test="<%= !SessionErrors.isEmpty(renderRequest) %>">
+	<div class="alert alert-danger">
+		<liferay-ui:icon
+			icon="exclamation-full"
+			markupView="lexicon"
+		/>
+
+		<c:choose>
+			<c:when test="<%= SessionErrors.contains(renderRequest, FileNotFoundException.class.getName()) %>">
+				<liferay-ui:message key="the-selected-attachment-could-not-be-found" />
+			</c:when>
+			<c:when test="<%= SessionErrors.contains(renderRequest, NoSuchTicketAttachmentException.class.getName()) %>">
+				<liferay-ui:message key="the-selected-attachment-no-longer-exists" />
+			</c:when>
+			<c:otherwise>
+				<liferay-ui:message key="your-request-failed-to-complete" />
+			</c:otherwise>
+		</c:choose>
+	</div>
+</c:if>

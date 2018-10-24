@@ -29,6 +29,7 @@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 page import="com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys" %><%@
 page import="com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsWebKeys" %><%@
 page import="com.liferay.osb.customer.account.entry.details.web.internal.display.context.AccountEntryViewDisplayContext" %><%@
+page import="com.liferay.osb.customer.ticket.exception.NoSuchTicketAttachmentException" %><%@
 page import="com.liferay.osb.customer.ticket.repository.FileRepository" %><%@
 page import="com.liferay.osb.customer.ticket.repository.FileRepositoryManager" %><%@
 page import="com.liferay.osb.customer.ticket.repository.FileRepositoryWebService" %><%@
@@ -86,6 +87,7 @@ page import="com.liferay.portal.kernel.model.ListType" %><%@
 page import="com.liferay.portal.kernel.model.Phone" %><%@
 page import="com.liferay.portal.kernel.model.User" %><%@
 page import="com.liferay.portal.kernel.service.UserLocalServiceUtil" %><%@
+page import="com.liferay.portal.kernel.servlet.SessionErrors" %><%@
 page import="com.liferay.portal.kernel.servlet.SessionMessages" %><%@
 page import="com.liferay.portal.kernel.util.ArrayUtil" %><%@
 page import="com.liferay.portal.kernel.util.CharPool" %><%@
@@ -96,6 +98,8 @@ page import="com.liferay.portal.kernel.util.PortalUtil" %><%@
 page import="com.liferay.portal.kernel.util.StringPool" %><%@
 page import="com.liferay.portal.kernel.util.StringUtil" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %>
+
+<%@ page import="java.io.FileNotFoundException" %>
 
 <%@ page import="java.text.DateFormat" %><%@
 page import="java.text.Format" %>
@@ -112,9 +116,9 @@ page import="java.util.List" %>
 <portlet:defineObjects />
 
 <%
-AccountEntryDetailsConfiguration accountEntryDetailsConfiguration = (AccountEntryDetailsConfiguration)renderRequest.getAttribute(AccountEntryDetailsConfiguration.class.getName());
-FileRepositoryManager fileRepositoryManager = (FileRepositoryManager)renderRequest.getAttribute(FileRepositoryManager.class.getName());
-FileRepositoryWebService fileRepositoryWebService = (FileRepositoryWebService)renderRequest.getAttribute(FileRepositoryWebService.class.getName());
+AccountEntryDetailsConfiguration accountEntryDetailsConfiguration = (AccountEntryDetailsConfiguration)liferayPortletRequest.getAttribute(AccountEntryDetailsConfiguration.class.getName());
+FileRepositoryManager fileRepositoryManager = (FileRepositoryManager)liferayPortletRequest.getAttribute(FileRepositoryManager.class.getName());
+FileRepositoryWebService fileRepositoryWebService = (FileRepositoryWebService)liferayPortletRequest.getAttribute(FileRepositoryWebService.class.getName());
 
 Format fullDateFormatDateTime = FastDateFormatFactoryUtil.getDateTime(DateFormat.FULL, DateFormat.FULL, locale, timeZone);
 

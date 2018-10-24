@@ -15,17 +15,22 @@
 package com.liferay.osb.customer.account.entry.details.web.internal.portlet.action;
 
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys;
+import com.liferay.osb.customer.ticket.exception.NoSuchTicketAttachmentException;
 import com.liferay.osb.customer.ticket.model.TicketAttachment;
 import com.liferay.osb.customer.ticket.repository.FileRepositoryWebService;
 import com.liferay.osb.customer.ticket.service.TicketAttachmentService;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
+import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 
 import java.io.FileNotFoundException;
 
+import javax.portlet.PortletURL;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
@@ -50,24 +55,42 @@ public class TicketAttachmentMVCResourceCommand extends BaseMVCResourceCommand {
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 		throws Exception {
 
-		long ticketAttachmentId = ParamUtil.getLong(
-			resourceRequest, "ticketAttachmentId");
+		HttpServletResponse response = _portal.getHttpServletResponse(
+			resourceResponse);
 
-		TicketAttachment ticketAttachment =
-			_ticketAttachmentService.getTicketAttachment(ticketAttachmentId);
+		try {
+			long ticketAttachmentId = ParamUtil.getLong(
+				resourceRequest, "ticketAttachmentId");
 
-		String downloadURL = _fileRepositoryWebService.getDownloadURL(
-			ticketAttachment.getFileRepositoryId(),
-			ticketAttachment.getFilePath());
+			TicketAttachment ticketAttachment =
+				_ticketAttachmentService.getTicketAttachment(
+					ticketAttachmentId);
 
-		if (downloadURL != null) {
-			HttpServletResponse response = _portal.getHttpServletResponse(
-				resourceResponse);
+			String downloadURL = _fileRepositoryWebService.getDownloadURL(
+				ticketAttachment.getFileRepositoryId(),
+				ticketAttachment.getFilePath());
 
-			response.sendRedirect(downloadURL);
+			if (downloadURL != null) {
+				response.sendRedirect(downloadURL);
+			}
+			else {
+				throw new FileNotFoundException();
+			}
 		}
-		else {
-			throw new FileNotFoundException();
+		catch (Exception e) {
+			if (!(e instanceof FileNotFoundException) &&
+				!(e instanceof NoSuchTicketAttachmentException)) {
+
+				_log.error(e, e);
+			}
+
+			SessionErrors.add(resourceRequest, e.getClass());
+
+			PortletURL portletURL = resourceResponse.createRenderURL();
+
+			portletURL.setParameter("mvcRenderCommandName", "/error");
+
+			response.sendRedirect(portletURL.toString());
 		}
 	}
 
@@ -78,6 +101,9 @@ public class TicketAttachmentMVCResourceCommand extends BaseMVCResourceCommand {
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		TicketAttachmentMVCResourceCommand.class);
 
 	@Reference
 	private FileRepositoryWebService _fileRepositoryWebService;
