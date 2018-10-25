@@ -14,6 +14,8 @@
 
 package com.liferay.osb.customer.zendesk.web.service.search;
 
+import java.util.Map;
+
 /**
  * @author Amos Fong
  */
@@ -21,8 +23,14 @@ public interface Query {
 
 	public void addCriterion(String criterion);
 
-	public int getPage();
+	public void addSideload(String sideload);
+
+	public Map<String, String> getParameters();
 
 	public void setPage(int page);
+
+	public void setSortBy(String sortBy);
+
+	public void setSortOrder(boolean asc);
 
 }

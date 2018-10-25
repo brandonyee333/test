@@ -18,7 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.web.service.search.SearchHits;
-import com.liferay.osb.customer.zendesk.web.service.search.TicketQuery;
+import com.liferay.osb.customer.zendesk.web.service.search.ZendeskTicketQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 
 /**
@@ -30,7 +30,8 @@ public interface ZendeskTicketWebService {
 	public ZendeskTicket getZendeskTicket(long zendeskTicketId)
 		throws PortalException;
 
-	public SearchHits<ZendeskTicket> search(TicketQuery ticketQuery)
+	public SearchHits<ZendeskTicket> search(
+			ZendeskTicketQuery zendeskTicketQuery)
 		throws PortalException;
 
 }

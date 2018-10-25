@@ -17,8 +17,12 @@ package com.liferay.osb.customer.zendesk.web.service.internal.search;
 import com.liferay.osb.customer.zendesk.web.service.search.Query;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -30,15 +34,54 @@ public class QueryImpl implements Query {
 		_criteria.add(criterion);
 	}
 
-	public int getPage() {
-		return _page;
+	public void addSideload(String sideload) {
+		_sideloads.add(sideload);
+	}
+
+	public Map<String, String> getParameters() {
+		Map<String, String> parameters = new HashMap<>();
+
+		if (!_sideloads.isEmpty()) {
+			parameters.put("include", StringUtil.merge(_sideloads));
+		}
+
+		if (_page > 0) {
+			parameters.put("page", String.valueOf(_page));
+		}
+
+		if (!_criteria.isEmpty()) {
+			parameters.put("query", getQuery());
+		}
+
+		if (Validator.isNotNull(_sortBy)) {
+			parameters.put("sort_by", _sortBy);
+
+			if (Validator.isNotNull(_sortOrder)) {
+				parameters.put("sort_order", _sortOrder);
+			}
+		}
+
+		return parameters;
 	}
 
 	public void setPage(int page) {
 		_page = page;
 	}
 
-	public String toString() {
+	public void setSortBy(String sortBy) {
+		_sortBy = sortBy;
+	}
+
+	public void setSortOrder(boolean asc) {
+		if (asc) {
+			_sortOrder = "asc";
+		}
+		else {
+			_sortOrder = "desc";
+		}
+	}
+
+	protected String getQuery() {
 		StringBundler sb = new StringBundler();
 
 		for (String criterion : _criteria) {
@@ -54,5 +97,8 @@ public class QueryImpl implements Query {
 
 	private final Set<String> _criteria = new HashSet<>();
 	private int _page;
+	private final Set<String> _sideloads = new HashSet<>();
+	private String _sortBy;
+	private String _sortOrder;
 
 }

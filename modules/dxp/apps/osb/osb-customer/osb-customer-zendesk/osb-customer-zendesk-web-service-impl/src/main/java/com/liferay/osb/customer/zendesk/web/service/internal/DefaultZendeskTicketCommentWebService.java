@@ -18,6 +18,7 @@ import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicketComment;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketCommentWebService;
+import com.liferay.osb.customer.zendesk.web.service.internal.util.ZendeskConverter;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -55,7 +56,7 @@ public class DefaultZendeskTicketCommentWebService
 			String type = eventJSONObject.getString("type");
 
 			if (type.equals("Comment")) {
-				return toZendeskTicketComment(eventJSONObject);
+				return zendeskConverter.toZendeskTicketComment(eventJSONObject);
 			}
 		}
 
@@ -81,16 +82,8 @@ public class DefaultZendeskTicketCommentWebService
 		return jsonObject;
 	}
 
-	protected ZendeskTicketComment toZendeskTicketComment(
-		JSONObject jsonObject) {
-
-		ZendeskTicketComment zendeskTicketComment = new ZendeskTicketComment();
-
-		zendeskTicketComment.setZendeskTicketCommentId(
-			jsonObject.getLong("id"));
-
-		return zendeskTicketComment;
-	}
+	@Reference
+	protected ZendeskConverter zendeskConverter;
 
 	@Reference
 	private ZendeskBaseWebService _zendeskBaseWebService;

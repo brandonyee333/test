@@ -20,14 +20,13 @@ import com.liferay.osb.customer.zendesk.constants.ZendeskTranslationConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskTranslation;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTranslationWebService;
 import com.liferay.osb.customer.zendesk.web.service.internal.util.MessagePublisherUtil;
+import com.liferay.osb.customer.zendesk.web.service.internal.util.ZendeskConverter;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
@@ -57,7 +56,7 @@ public class DefaultZendeskTranslationWebService
 		JSONObject responseJSONObject = zendeskBaseWebService.get(
 			endpoint, StringPool.BLANK);
 
-		return toZendeskTranslations(
+		return zendeskConverter.toZendeskTranslations(
 			responseJSONObject.getJSONArray("translations"));
 	}
 
@@ -105,38 +104,13 @@ public class DefaultZendeskTranslationWebService
 		return jsonObject;
 	}
 
-	protected ZendeskTranslation toZendeskTranslation(JSONObject jsonObject) {
-		ZendeskTranslation zendeskTranslation = new ZendeskTranslation();
-
-		zendeskTranslation.setBody(jsonObject.getString("body"));
-		zendeskTranslation.setLocale(jsonObject.getString("locale"));
-		zendeskTranslation.setSourceId(jsonObject.getLong("source_id"));
-		zendeskTranslation.setSourceType(jsonObject.getString("source_type"));
-		zendeskTranslation.setTitle(jsonObject.getString("title"));
-		zendeskTranslation.setZendeskTranslationId(jsonObject.getLong("id"));
-
-		return zendeskTranslation;
-	}
-
-	protected List<ZendeskTranslation> toZendeskTranslations(
-		JSONArray jsonArray) {
-
-		List<ZendeskTranslation> zendeskTranslations = new ArrayList<>(
-			jsonArray.length());
-
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-			zendeskTranslations.add(toZendeskTranslation(jsonObject));
-		}
-
-		return zendeskTranslations;
-	}
-
 	@Reference
 	protected MessagePublisherUtil messagePublisherUtil;
 
 	@Reference
 	protected ZendeskBaseWebService zendeskBaseWebService;
+
+	@Reference
+	protected ZendeskConverter zendeskConverter;
 
 }

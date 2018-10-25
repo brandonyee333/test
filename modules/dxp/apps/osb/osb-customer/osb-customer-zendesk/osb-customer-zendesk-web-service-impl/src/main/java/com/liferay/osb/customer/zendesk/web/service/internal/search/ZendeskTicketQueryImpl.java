@@ -12,10 +12,18 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.web.service.search;
+package com.liferay.osb.customer.zendesk.web.service.internal.search;
+
+import com.liferay.osb.customer.zendesk.web.service.search.ZendeskTicketQuery;
 
 /**
  * @author Amos Fong
  */
-public interface TicketQuery extends Query {
+public class ZendeskTicketQueryImpl
+	extends QueryImpl implements ZendeskTicketQuery {
+
+	public ZendeskTicketQueryImpl() {
+		addCriterion("type:ticket");
+	}
+
 }

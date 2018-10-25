@@ -17,10 +17,5 @@ package com.liferay.osb.customer.zendesk.web.service.search;
 /**
  * @author Amos Fong
  */
-public interface QueryFactory {
-
-	public Query createQuery();
-
-	public ZendeskTicketQuery createZendeskTicketQuery();
-
+public interface ZendeskTicketQuery extends Query {
 }

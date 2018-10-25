@@ -18,6 +18,7 @@ import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
 import com.liferay.osb.customer.zendesk.model.ZendeskOrganization;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationWebService;
+import com.liferay.osb.customer.zendesk.web.service.internal.util.ZendeskConverter;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -69,7 +70,8 @@ public class DefaultZendeskOrganizationWebService
 			return null;
 		}
 
-		return toZendeskOrganization(organizationsJSONArray.getJSONObject(0));
+		return zendeskConverter.toZendeskOrganization(
+			organizationsJSONArray.getJSONObject(0));
 	}
 
 	protected JSONObject getZendeskOrganizationJSONObject(
@@ -145,16 +147,10 @@ public class DefaultZendeskOrganizationWebService
 		return jsonObject;
 	}
 
-	protected ZendeskOrganization toZendeskOrganization(JSONObject jsonObject) {
-		ZendeskOrganization zendeskOrganization = new ZendeskOrganization();
-
-		zendeskOrganization.setZendeskOrganizationId(jsonObject.getLong("id"));
-		zendeskOrganization.setName(jsonObject.getString("name"));
-
-		return zendeskOrganization;
-	}
-
 	@Reference
 	protected ZendeskBaseWebService zendeskBaseWebService;
+
+	@Reference
+	protected ZendeskConverter zendeskConverter;
 
 }

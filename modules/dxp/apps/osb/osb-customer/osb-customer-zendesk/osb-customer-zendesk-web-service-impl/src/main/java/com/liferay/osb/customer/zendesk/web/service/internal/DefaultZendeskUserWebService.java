@@ -19,6 +19,7 @@ import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.customer.zendesk.web.service.internal.util.MessagePublisherUtil;
+import com.liferay.osb.customer.zendesk.web.service.internal.util.ZendeskConverter;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -66,7 +67,7 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 		messagePublisherUtil.sendEventNotification(
 			"zendesk.user.create.or.update", responseJSONObject);
 
-		return toZendeskUser(responseJSONObject);
+		return zendeskConverter.toZendeskUser(responseJSONObject);
 	}
 
 	public void createZendeskUserOrganizationMemberships(
@@ -135,7 +136,7 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 			return null;
 		}
 
-		return toZendeskUser(usersJSONArray.getJSONObject(0));
+		return zendeskConverter.toZendeskUser(usersJSONArray.getJSONObject(0));
 	}
 
 	protected JSONObject getZendeskUserJSONObject(
@@ -181,22 +182,13 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 		return jsonObject;
 	}
 
-	protected ZendeskUser toZendeskUser(JSONObject jsonObject) {
-		ZendeskUser zendeskUser = new ZendeskUser();
-
-		zendeskUser.setEmail(jsonObject.getString("email"));
-		zendeskUser.setExternalId(jsonObject.getString("externalId"));
-		zendeskUser.setLocale(jsonObject.getString("locale"));
-		zendeskUser.setName(jsonObject.getString("name"));
-		zendeskUser.setZendeskUserId(jsonObject.getLong("id"));
-
-		return zendeskUser;
-	}
-
 	@Reference
 	protected MessagePublisherUtil messagePublisherUtil;
 
 	@Reference
 	protected ZendeskBaseWebService zendeskBaseWebService;
+
+	@Reference
+	protected ZendeskConverter zendeskConverter;
 
 }

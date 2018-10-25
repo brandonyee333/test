@@ -14,8 +14,9 @@
 
 package com.liferay.osb.customer.zendesk.web.service.internal.search;
 
+import com.liferay.osb.customer.zendesk.web.service.search.Query;
 import com.liferay.osb.customer.zendesk.web.service.search.QueryFactory;
-import com.liferay.osb.customer.zendesk.web.service.search.TicketQuery;
+import com.liferay.osb.customer.zendesk.web.service.search.ZendeskTicketQuery;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -25,8 +26,12 @@ import org.osgi.service.component.annotations.Component;
 @Component(immediate = true, service = QueryFactory.class)
 public class QueryFactoryImpl implements QueryFactory {
 
-	public TicketQuery createTicketQuery() {
-		return new TicketQueryImpl();
+	public Query createQuery() {
+		return new QueryImpl();
+	}
+
+	public ZendeskTicketQuery createZendeskTicketQuery() {
+		return new ZendeskTicketQueryImpl();
 	}
 
 }
