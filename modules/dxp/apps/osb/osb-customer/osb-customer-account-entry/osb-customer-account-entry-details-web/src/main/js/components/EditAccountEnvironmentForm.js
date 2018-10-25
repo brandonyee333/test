@@ -55,7 +55,7 @@ export default class EditAccountEnvironmentForm extends React.Component {
 		const {environment, environmentConfiguration} = this.props;
 		const {envLFRVersions, products} = environmentConfiguration;
 
-		const {configurations, selectedOptions, formValues} = this.state;
+		const {configurations} = this.state;
 
 		if (environment) {
 			const currentProduct = products.find(product => product.productEntryId == environment.productEntryId);
@@ -69,7 +69,6 @@ export default class EditAccountEnvironmentForm extends React.Component {
 						enterprise: currentProduct.enterpriseSearch
 					},
 					formValues: {
-						...formValues,
 						envAS: this.getValueFromLabel(currentLFRVersion, 'envAS', environment.envASLabel),
 						envBrowser: this.getValueFromLabel(currentLFRVersion, 'envBrowser', environment.envBrowserLabel),
 						envCS: this.getValueFromLabel(currentLFRVersion, 'envCS', environment.envCSLabel),
@@ -84,7 +83,6 @@ export default class EditAccountEnvironmentForm extends React.Component {
 						productEntryId: environment.productEntryId
 					},
 					selectedOptions: {
-						...selectedOptions,
 						selectedLFRVersion: currentLFRVersion,
 						selectedProduct: currentProduct
 					}
@@ -349,8 +347,8 @@ export default class EditAccountEnvironmentForm extends React.Component {
 				[`${namespace}envLFR`]: REQUIRED_SCHEMA,
 				[`${namespace}envOS`]: REQUIRED_SCHEMA,
 				[`${namespace}name`]: REQUIRED_SCHEMA,
-				[`${namespace}patchLevel`]: environment ? NOT_REQUIRED_SCHEMA : REQUIRED_SCHEMA,
-				[`${namespace}portalExt`]: environment ? NOT_REQUIRED_SCHEMA : REQUIRED_SCHEMA,
+				[`${namespace}patchLevel`]: formValues.patchLevel ? NOT_REQUIRED_SCHEMA : REQUIRED_SCHEMA,
+				[`${namespace}portalExt`]: formValues.portalExt ? NOT_REQUIRED_SCHEMA : REQUIRED_SCHEMA,
 				[`${namespace}productEntryId`]: REQUIRED_SCHEMA
 			}
 		);
