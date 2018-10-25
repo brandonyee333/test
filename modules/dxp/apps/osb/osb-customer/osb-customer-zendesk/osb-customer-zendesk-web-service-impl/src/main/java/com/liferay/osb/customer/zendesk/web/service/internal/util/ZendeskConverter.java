@@ -16,6 +16,7 @@ package com.liferay.osb.customer.zendesk.web.service.internal.util;
 
 import com.liferay.osb.customer.zendesk.model.ZendeskCategory;
 import com.liferay.osb.customer.zendesk.model.ZendeskOrganization;
+import com.liferay.osb.customer.zendesk.model.ZendeskSection;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicketComment;
 import com.liferay.osb.customer.zendesk.model.ZendeskTranslation;
@@ -92,6 +93,52 @@ public class ZendeskConverter {
 		zendeskOrganization.setName(jsonObject.getString("name"));
 
 		return zendeskOrganization;
+	}
+
+	public ZendeskSection toZendeskSection(JSONObject jsonObject)
+		throws PortalException {
+
+		ZendeskSection zendeskSection = new ZendeskSection();
+
+		String createdAt = jsonObject.getString("created_at");
+
+		try {
+			Instant instant = Instant.parse(createdAt);
+
+			zendeskSection.setCreateDate(new Date(instant.toEpochMilli()));
+		}
+		catch (DateTimeParseException dtpe) {
+			throw new PortalException(dtpe);
+		}
+
+		zendeskSection.setDescription(jsonObject.getString("description"));
+		zendeskSection.setName(jsonObject.getString("name"));
+		zendeskSection.setZendeskSectionId(jsonObject.getLong("id"));
+
+		JSONArray jsonArray = jsonObject.getJSONArray("translations");
+
+		if (jsonArray != null) {
+			List<ZendeskTranslation> zendeskTranslations =
+				toZendeskTranslations(jsonArray);
+
+			zendeskSection.setZendeskTranslations(zendeskTranslations);
+		}
+
+		return zendeskSection;
+	}
+
+	public List<ZendeskSection> toZendeskSections(JSONArray jsonArray)
+		throws PortalException {
+
+		List<ZendeskSection> zendeskSections = new ArrayList<>();
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			zendeskSections.add(toZendeskSection(jsonObject));
+		}
+
+		return zendeskSections;
 	}
 
 	public ZendeskTicket toZendeskTicket(JSONObject jsonObject) {
