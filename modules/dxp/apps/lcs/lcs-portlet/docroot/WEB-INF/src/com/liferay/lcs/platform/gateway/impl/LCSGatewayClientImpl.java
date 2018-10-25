@@ -19,9 +19,6 @@ import com.liferay.lcs.internal.event.LCSEvent;
 import com.liferay.lcs.internal.event.LCSEventListener;
 import com.liferay.lcs.messaging.Message;
 import com.liferay.lcs.platform.gateway.LCSGatewayClient;
-import com.liferay.lcs.task.HandshakeTask;
-import com.liferay.lcs.task.SignOffTask;
-import com.liferay.lcs.task.Task;
 import com.liferay.lcs.util.CompressionUtil;
 import com.liferay.lcs.util.LCSUtil;
 import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
@@ -111,8 +108,8 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 	}
 
 	@Override
-	public void onTaskFail(Class<? extends Task> taskClass, int errorCode) {
-		if (taskClass.equals(HandshakeTask.class)) {
+	public void onLCSEvent(LCSEvent lcsEvent) {
+		if (lcsEvent == LCSEvent.HANDSHAKE_FAILED) {
 			synchronized (this) {
 				if (!_available) {
 					return;
@@ -121,13 +118,11 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 				_available = false;
 			}
 
-			_notifyStateChangedListeners(LCSEvent.UNAVAILABLE);
-		}
-	}
+			_lcsEventListeners(LCSEvent.LCS_GATEWAY_UNAVAILABLE);
 
-	@Override
-	public void onTaskSuccess(Class<? extends Task> taskClass) {
-		if (taskClass.equals(HandshakeTask.class)) {
+			return;
+		}
+		else if (lcsEvent == LCSEvent.HANDSHAKE_SUCCESS) {
 			synchronized (this) {
 				if (_available) {
 					return;
@@ -138,12 +133,11 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 
 			_lastHandshakeSuccess = System.currentTimeMillis();
 
-			_notifyStateChangedListeners(LCSEvent.AVAILABLE);
+			_lcsEventListeners(LCSEvent.LCS_GATEWAY_AVAILABLE);
 
 			return;
 		}
-
-		if (taskClass.equals(SignOffTask.class)) {
+		else if (lcsEvent == LCSEvent.SIGNOFF_SUCCESS) {
 			synchronized (this) {
 				if (!_available) {
 					return;
@@ -152,7 +146,7 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 				_available = false;
 			}
 
-			_notifyStateChangedListeners(LCSEvent.UNAVAILABLE);
+			_lcsEventListeners(LCSEvent.LCS_GATEWAY_UNAVAILABLE);
 
 			return;
 		}
@@ -237,7 +231,7 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 		return String.valueOf(name.hashCode());
 	}
 
-	private void _notifyStateChangedListeners(LCSEvent lcsEvent) {
+	private void _lcsEventListeners(LCSEvent lcsEvent) {
 		for (LCSEventListener lcsEventListener : _lcsEventListeners) {
 			lcsEventListener.onLCSEvent(lcsEvent);
 		}
@@ -268,7 +262,7 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 				if (_available) {
 					_available = false;
 
-					_notifyStateChangedListeners(LCSEvent.UNAVAILABLE);
+					_lcsEventListeners(LCSEvent.LCS_GATEWAY_UNAVAILABLE);
 				}
 			}
 		}

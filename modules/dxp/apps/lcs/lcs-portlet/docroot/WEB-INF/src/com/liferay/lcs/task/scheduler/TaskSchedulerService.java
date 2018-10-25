@@ -14,14 +14,14 @@
 
 package com.liferay.lcs.task.scheduler;
 
-import com.liferay.lcs.task.TaskStateListener;
+import com.liferay.lcs.internal.event.LCSEventListener;
 
 import java.util.Map;
 
 /**
  * @author Riccardo Ferrari
  */
-public interface TaskSchedulerService extends TaskStateListener {
+public interface TaskSchedulerService extends LCSEventListener {
 
 	public void restart();
 

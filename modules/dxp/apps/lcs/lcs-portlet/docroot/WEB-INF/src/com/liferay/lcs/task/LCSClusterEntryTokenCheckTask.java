@@ -16,6 +16,8 @@ package com.liferay.lcs.task;
 
 import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.exception.InvalidLCSClusterEntryTokenException;
+import com.liferay.lcs.internal.event.LCSEvent;
+import com.liferay.lcs.internal.event.LCSEventListener;
 import com.liferay.lcs.oauth.OAuthUtil;
 import com.liferay.lcs.task.scheduler.TaskSchedulerService;
 import com.liferay.lcs.util.LCSUtil;
@@ -39,9 +41,9 @@ public class LCSClusterEntryTokenCheckTask implements Task {
 
 		_lcsClusterEntryTokenAdvisor = lcsClusterEntryTokenAdvisor;
 
-		_taskStateListeners = new ArrayList<>();
+		_lcsEventListeners = new ArrayList<>();
 
-		_taskStateListeners.add(taskSchedulerService);
+		_lcsEventListeners.add(taskSchedulerService);
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Initialized " + this);
@@ -54,6 +56,9 @@ public class LCSClusterEntryTokenCheckTask implements Task {
 
 		try {
 			_checkLCSClusterEntryToken();
+
+			_notifyLCSEventListeners(
+				LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_SUCCESS);
 		}
 		catch (Throwable throwable) {
 			if (_log.isDebugEnabled()) {
@@ -75,7 +80,8 @@ public class LCSClusterEntryTokenCheckTask implements Task {
 				}
 			}
 
-			_notifyOnTaskFailTaskStateListeners();
+			_notifyLCSEventListeners(
+				LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_FAILED);
 		}
 	}
 
@@ -110,21 +116,16 @@ public class LCSClusterEntryTokenCheckTask implements Task {
 		}
 
 		LCSUtil.processLCSPortletState(LCSPortletState.NO_CONNECTION);
-
-		_notifyOnTaskSuccessTaskStateListeners();
 	}
 
-	private void _notifyOnTaskFailTaskStateListeners() {
-		for (TaskStateListener taskStateListener : _taskStateListeners) {
-			taskStateListener.onTaskFail(
-				LCSClusterEntryTokenCheckTask.class, 0);
-		}
-	}
-
-	private void _notifyOnTaskSuccessTaskStateListeners() {
-		for (TaskStateListener taskStateListener : _taskStateListeners) {
-			taskStateListener.onTaskSuccess(
-				LCSClusterEntryTokenCheckTask.class);
+	private void _notifyLCSEventListeners(LCSEvent lcsEvent) {
+		for (LCSEventListener lcsEventListener : _lcsEventListeners) {
+			try {
+				lcsEventListener.onLCSEvent(lcsEvent);
+			}
+			catch (Throwable t) {
+				_log.error("Unable to notify listener", t);
+			}
 		}
 	}
 
@@ -132,6 +133,6 @@ public class LCSClusterEntryTokenCheckTask implements Task {
 		LCSClusterEntryTokenCheckTask.class);
 
 	private final LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
-	private final List<TaskStateListener> _taskStateListeners;
+	private final List<LCSEventListener> _lcsEventListeners;
 
 }

@@ -19,7 +19,6 @@ import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.advisor.UptimeAdvisor;
 import com.liferay.lcs.internal.event.LCSEvent;
-import com.liferay.lcs.internal.event.LCSEventListener;
 import com.liferay.lcs.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.task.CommandMessageTask;
 import com.liferay.lcs.task.HandshakeTask;
@@ -28,7 +27,6 @@ import com.liferay.lcs.task.LCSClusterEntryTokenCheckTask;
 import com.liferay.lcs.task.ScheduledTask;
 import com.liferay.lcs.task.Scope;
 import com.liferay.lcs.task.SignOffTask;
-import com.liferay.lcs.task.Task;
 import com.liferay.lcs.task.UptimeTask;
 import com.liferay.lcs.task.advisor.TaskAdvisor;
 import com.liferay.lcs.task.scheduler.TaskSchedulerService;
@@ -67,8 +65,7 @@ import java.util.concurrent.TimeUnit;
  * @author Riccardo Ferrari
  * @author Igor Beslic
  */
-public class TaskSchedulerServiceImpl
-	implements LCSEventListener, TaskSchedulerService {
+public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 
 	public TaskSchedulerServiceImpl(
 		int defaultInterval, LCSAlertAdvisor lcsAlertAdvisor,
@@ -128,61 +125,36 @@ public class TaskSchedulerServiceImpl
 
 	@Override
 	public void onLCSEvent(LCSEvent lcsEvent) {
-		if (lcsEvent == LCSEvent.AVAILABLE) {
-			_onLCSGatewayServiceAvailable();
-		}
-		else if (lcsEvent == LCSEvent.UNAVAILABLE) {
-			_onLCSGatewayServiceUnavailable();
-		}
-	}
-
-	@Override
-	public void onTaskFail(Class<? extends Task> taskClass, int errorCode) {
 		if (_shutdownPending) {
 			if (_log.isTraceEnabled()) {
 				_log.trace(
-					"Shutdown pending. No action is taken for failed task " +
-						taskClass);
+					"Shutdown pending. No action is taken for LCS event " +
+						lcsEvent);
 			}
 
 			return;
 		}
 
-		if (taskClass.equals(LCSClusterEntryTokenCheckTask.class)) {
-			if (_log.isInfoEnabled()) {
-				_log.info("LCS portlet is not connected. Retry in 60 seconds.");
-			}
+		if (lcsEvent == LCSEvent.LCS_GATEWAY_AVAILABLE) {
+			_onLCSGatewayServiceAvailable();
+		}
+		else if (lcsEvent == LCSEvent.LCS_GATEWAY_UNAVAILABLE) {
+			_onLCSGatewayServiceUnavailable();
+		}
+		else if (lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_FAILED) {
+			_executeLCSClusterEntryTokenCheckTask(true);
+		}
+		else if (lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_SUCCESS) {
+			_executeHandshakeTask(false);
+		}
+		else if (lcsEvent ==
+					LCSEvent.
+						HANDSHAKE_FAILED_LCS_CLUSTER_ENTRY_TOKEN_CORRUPTED) {
 
 			_executeLCSClusterEntryTokenCheckTask(true);
 		}
-		else if (taskClass.equals(HandshakeTask.class)) {
-			if (_log.isInfoEnabled()) {
-				_log.info("LCS portlet is not connected. Retry in 60 seconds.");
-			}
-
-			if ((errorCode > 199) && (errorCode < 300)) {
-				_executeLCSClusterEntryTokenCheckTask(true);
-			}
-			else {
-				_executeHandshakeTask(true);
-			}
-		}
-	}
-
-	@Override
-	public void onTaskSuccess(Class<? extends Task> taskClass) {
-		if (_shutdownPending) {
-			if (_log.isTraceEnabled()) {
-				_log.trace(
-					"Shutdown pending. No action is taken for succeeded task " +
-						taskClass);
-			}
-
-			return;
-		}
-
-		if (taskClass.equals(LCSClusterEntryTokenCheckTask.class)) {
-			_executeHandshakeTask(false);
+		else if (lcsEvent == LCSEvent.HANDSHAKE_FAILED) {
+			_executeHandshakeTask(true);
 		}
 	}
 
@@ -399,6 +371,10 @@ public class TaskSchedulerServiceImpl
 			return;
 		}
 
+		if (_log.isInfoEnabled()) {
+			_log.info("LCS portlet is not connected. Retry in 60 seconds.");
+		}
+
 		HandshakeTask handshakeTask = new HandshakeTask(
 			_lcsClusterEntryTokenAdvisor.getLcsClusterEntryTokenId(),
 			_lcsAlertAdvisor, _lcsClusterEntryTokenAdvisor, _lcsGatewayClient,
@@ -420,6 +396,12 @@ public class TaskSchedulerServiceImpl
 			}
 
 			return;
+		}
+
+		if (delayRun) {
+			if (_log.isInfoEnabled()) {
+				_log.info("LCS portlet is not connected. Retry in 60 seconds.");
+			}
 		}
 
 		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =

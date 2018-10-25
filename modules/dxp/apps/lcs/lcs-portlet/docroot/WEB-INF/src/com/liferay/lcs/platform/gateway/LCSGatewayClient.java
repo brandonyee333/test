@@ -17,7 +17,6 @@ package com.liferay.lcs.platform.gateway;
 import com.liferay.lcs.exception.CompressionException;
 import com.liferay.lcs.internal.event.LCSEventListener;
 import com.liferay.lcs.messaging.Message;
-import com.liferay.lcs.task.TaskStateListener;
 import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 
 import java.util.List;
@@ -26,7 +25,7 @@ import java.util.List;
  * @author Ivica Cardic
  * @author Igor Beslic
  */
-public interface LCSGatewayClient extends TaskStateListener {
+public interface LCSGatewayClient extends LCSEventListener {
 
 	public void deleteMessages(String key) throws JSONWebServiceException;
 

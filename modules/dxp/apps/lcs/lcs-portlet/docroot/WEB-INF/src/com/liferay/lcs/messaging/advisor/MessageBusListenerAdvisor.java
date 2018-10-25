@@ -56,7 +56,7 @@ public class MessageBusListenerAdvisor implements LCSEventListener {
 			_log.trace("Notified on LCS event " + lcsEvent);
 		}
 
-		if (lcsEvent == LCSEvent.UNAVAILABLE) {
+		if (lcsEvent == LCSEvent.LCS_GATEWAY_UNAVAILABLE) {
 			_unregisterAll();
 		}
 	}

@@ -15,11 +15,16 @@
 package com.liferay.lcs.command;
 
 import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
+import com.liferay.lcs.internal.event.LCSEvent;
+import com.liferay.lcs.internal.event.LCSEventListener;
 import com.liferay.lcs.messaging.SignOffCommandMessage;
 import com.liferay.lcs.messaging.SignOffReasonCode;
 import com.liferay.lcs.task.scheduler.TaskSchedulerService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Igor Beslic
@@ -32,6 +37,8 @@ public class SignOffCommand implements Command<SignOffCommandMessage> {
 
 		_lcsClusterEntryTokenAdvisor = lcsClusterEntryTokenAdvisor;
 		_taskSchedulerService = taskSchedulerService;
+
+		_lcsEventListeners.add(_taskSchedulerService);
 	}
 
 	@Override
@@ -47,8 +54,12 @@ public class SignOffCommand implements Command<SignOffCommandMessage> {
 			_log.info("Sign off reason " + signOffReasonCode);
 		}
 
-		if ((signOffReasonCode == SignOffReasonCode.INVALIDATE_TOKEN) ||
-			(signOffReasonCode == SignOffReasonCode.UNREGISTER)) {
+		if (signOffReasonCode == SignOffReasonCode.INVALIDATE_TOKEN) {
+			_notifyLCSEventListeners(
+				LCSEvent.HANDSHAKE_FAILED_LCS_CLUSTER_ENTRY_TOKEN_CORRUPTED);
+		}
+		else if (signOffReasonCode == SignOffReasonCode.UNREGISTER) {
+			_notifyLCSEventListeners(LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED);
 
 			_lcsClusterEntryTokenAdvisor.deleteLCSCLusterEntryTokenFile();
 		}
@@ -74,9 +85,21 @@ public class SignOffCommand implements Command<SignOffCommandMessage> {
 		return SignOffReasonCode.UNDEFINED;
 	}
 
+	private void _notifyLCSEventListeners(LCSEvent lcsEvent) {
+		for (LCSEventListener lcsEventListener : _lcsEventListeners) {
+			try {
+				lcsEventListener.onLCSEvent(lcsEvent);
+			}
+			catch (Throwable t) {
+				_log.error("Unable to notify listener", t);
+			}
+		}
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(SignOffCommand.class);
 
 	private final LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
+	private final List<LCSEventListener> _lcsEventListeners = new ArrayList<>();
 	private final TaskSchedulerService _taskSchedulerService;
 
 }

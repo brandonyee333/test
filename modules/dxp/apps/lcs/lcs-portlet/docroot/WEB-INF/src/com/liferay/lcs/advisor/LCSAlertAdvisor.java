@@ -47,14 +47,14 @@ public class LCSAlertAdvisor implements LCSEventListener {
 
 	@Override
 	public void onLCSEvent(LCSEvent lcsEvent) {
-		if (lcsEvent == LCSEvent.AVAILABLE) {
+		if (lcsEvent == LCSEvent.LCS_GATEWAY_AVAILABLE) {
 			LCSUtil.processLCSPortletState(LCSPortletState.NO_SUBSCRIPTION);
 
 			clear();
 
 			add(LCSAlert.SUCCESS_CONNECTION_TO_LCS_VALID);
 		}
-		else if (lcsEvent == LCSEvent.UNAVAILABLE) {
+		else if (lcsEvent == LCSEvent.LCS_GATEWAY_UNAVAILABLE) {
 			LCSUtil.processLCSPortletState(LCSPortletState.NO_CONNECTION);
 
 			clear();

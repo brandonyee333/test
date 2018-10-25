@@ -14,6 +14,8 @@
 
 package com.liferay.lcs.task;
 
+import com.liferay.lcs.internal.event.LCSEvent;
+import com.liferay.lcs.internal.event.LCSEventListener;
 import com.liferay.lcs.messaging.HandshakeMessage;
 import com.liferay.lcs.platform.gateway.LCSGatewayClient;
 import com.liferay.portal.kernel.log.Log;
@@ -36,9 +38,7 @@ public class SignOffTask implements Task {
 		_lcsGatewayClient = lcsGatewayClient;
 		_serverManuallyShutdown = serverManuallyShutdown;
 
-		_taskStateListeners = new ArrayList<>();
-
-		_taskStateListeners.add(lcsGatewayClient);
+		_lcsEventListeners.add(lcsGatewayClient);
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Initialized " + this);
@@ -76,12 +76,12 @@ public class SignOffTask implements Task {
 				_log.info("Signed off from LCS platform");
 			}
 
-			_notifyOnTaskSuccessTaskStateListeners();
+			_notifyLCSEventListeners(LCSEvent.SIGNOFF_SUCCESS);
 		}
 		catch (Exception e) {
 			_log.error("Unable to send sign off message", e);
 
-			_notifyOnTaskFailTaskStateListeners();
+			_notifyLCSEventListeners(LCSEvent.SIGNOFF_FAILED);
 		}
 	}
 
@@ -94,21 +94,10 @@ public class SignOffTask implements Task {
 		}
 	}
 
-	private void _notifyOnTaskFailTaskStateListeners() {
-		for (TaskStateListener taskStateListener : _taskStateListeners) {
+	private void _notifyLCSEventListeners(LCSEvent lcsEvent) {
+		for (LCSEventListener lcsEventListener : _lcsEventListeners) {
 			try {
-				taskStateListener.onTaskFail(SignOffTask.class, 0);
-			}
-			catch (Throwable t) {
-				_log.error("Unable to notify listener", t);
-			}
-		}
-	}
-
-	private void _notifyOnTaskSuccessTaskStateListeners() {
-		for (TaskStateListener taskStateListener : _taskStateListeners) {
-			try {
-				taskStateListener.onTaskSuccess(SignOffTask.class);
+				lcsEventListener.onLCSEvent(lcsEvent);
 			}
 			catch (Throwable t) {
 				_log.error("Unable to notify listener", t);
@@ -119,8 +108,8 @@ public class SignOffTask implements Task {
 	private static final Log _log = LogFactoryUtil.getLog(SignOffTask.class);
 
 	private final String _key;
+	private final List<LCSEventListener> _lcsEventListeners = new ArrayList<>();
 	private final LCSGatewayClient _lcsGatewayClient;
 	private final boolean _serverManuallyShutdown;
-	private final List<TaskStateListener> _taskStateListeners;
 
 }

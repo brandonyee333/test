@@ -21,6 +21,8 @@ import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.advisor.UptimeAdvisor;
 import com.liferay.lcs.exception.LCSHandshakeException;
+import com.liferay.lcs.internal.event.LCSEvent;
+import com.liferay.lcs.internal.event.LCSEventListener;
 import com.liferay.lcs.messaging.CommandMessage;
 import com.liferay.lcs.messaging.HandshakeMessage;
 import com.liferay.lcs.messaging.HandshakeResponseMessage;
@@ -99,10 +101,10 @@ public class HandshakeTask implements Task {
 			_key = _createTemporaryKey();
 		}
 
-		_taskStateListeners = new ArrayList<>();
+		_lcsEventListeners = new ArrayList<>();
 
-		_taskStateListeners.add(lcsGatewayClient);
-		_taskStateListeners.add(taskSchedulerService);
+		_lcsEventListeners.add(lcsGatewayClient);
+		_lcsEventListeners.add(taskSchedulerService);
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Initialized " + this);
@@ -128,7 +130,7 @@ public class HandshakeTask implements Task {
 
 			_uptimeAdvisor.resetUptimes();
 
-			_notifyOnTaskSuccessTaskStateListeners();
+			_notifyLCSEventListeners(LCSEvent.HANDSHAKE_SUCCESS);
 
 			if (_log.isInfoEnabled()) {
 				_log.info("Established connection");
@@ -160,7 +162,16 @@ public class HandshakeTask implements Task {
 					(LCSHandshakeException)e);
 			}
 
-			_notifyOnTaskFailTaskStateListeners(lcsRESTError.getErrorCode());
+			if ((lcsRESTError.getErrorCode() < 200) ||
+				(lcsRESTError.getErrorCode() > 299)) {
+
+				_notifyLCSEventListeners(LCSEvent.HANDSHAKE_FAILED);
+
+				return;
+			}
+
+			_notifyLCSEventListeners(
+				LCSEvent.HANDSHAKE_FAILED_LCS_CLUSTER_ENTRY_TOKEN_CORRUPTED);
 		}
 	}
 
@@ -343,15 +354,14 @@ public class HandshakeTask implements Task {
 		return false;
 	}
 
-	private void _notifyOnTaskFailTaskStateListeners(int errorCode) {
-		for (TaskStateListener taskStateListener : _taskStateListeners) {
-			taskStateListener.onTaskFail(HandshakeTask.class, errorCode);
-		}
-	}
-
-	private void _notifyOnTaskSuccessTaskStateListeners() {
-		for (TaskStateListener taskStateListener : _taskStateListeners) {
-			taskStateListener.onTaskSuccess(HandshakeTask.class);
+	private void _notifyLCSEventListeners(LCSEvent lcsEvent) {
+		for (LCSEventListener lcsEventListener : _lcsEventListeners) {
+			try {
+				lcsEventListener.onLCSEvent(lcsEvent);
+			}
+			catch (Throwable t) {
+				_log.error("Unable to notify listener", t);
+			}
 		}
 	}
 
@@ -434,9 +444,9 @@ public class HandshakeTask implements Task {
 	private final LCSAlertAdvisor _lcsAlertAdvisor;
 	private final LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
 	private final long _lcsClusterEntryTokenId;
+	private final List<LCSEventListener> _lcsEventListeners;
 	private final LCSGatewayClient _lcsGatewayClient;
 	private final LCSKeyAdvisor _lcsKeyAdvisor;
-	private final List<TaskStateListener> _taskStateListeners;
 	private boolean _temporaryKey;
 	private final ThreadFactory _threadFactory;
 	private final UptimeAdvisor _uptimeAdvisor;
