@@ -22,6 +22,8 @@ import com.liferay.lcs.exception.LCSHandshakeException;
 import com.liferay.lcs.exception.LCSKeystoreException;
 import com.liferay.lcs.exception.MissingLCSClusterEntryTokenException;
 import com.liferay.lcs.exception.MultipleLCSClusterEntryTokenException;
+import com.liferay.lcs.internal.event.LCSEvent;
+import com.liferay.lcs.internal.event.LCSEventListener;
 import com.liferay.lcs.rest.client.LCSClusterEntryToken;
 import com.liferay.lcs.security.KeyStoreAdvisor;
 import com.liferay.lcs.security.KeyStoreFactory;
@@ -50,43 +52,14 @@ import javax.crypto.spec.SecretKeySpec;
 /**
  * @author Igor Beslic
  */
-public class LCSClusterEntryTokenAdvisor {
+public class LCSClusterEntryTokenAdvisor implements LCSEventListener {
 
 	public void checkLCSClusterEntryTokenError(LCSHandshakeException lcshe) {
-		if ((lcshe.getErrorCode() < 200) || (lcshe.getErrorCode() > 299)) {
-			return;
-		}
-
 		if (lcshe.getErrorCode() == 200) {
 			_lcsAlertAdvisor.add(LCSAlert.ERROR_INVALID_TOKEN);
 		}
 		else if (lcshe.getErrorCode() == 201) {
 			_lcsAlertAdvisor.add(LCSAlert.ERROR_ENVIRONMENT_MISMATCH);
-		}
-
-		deleteLCSCLusterEntryTokenFile();
-	}
-
-	public void deleteLCSCLusterEntryTokenFile() {
-		_resetAttributes();
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Deleting LCS activation token file");
-		}
-
-		try {
-			FileUtil.delete(getLCSClusterEntryTokenFileName());
-		}
-		catch (MissingLCSClusterEntryTokenException mlcscete) {
-			if (_log.isDebugEnabled()) {
-				_log.debug("LCS activation token file is not present");
-			}
-		}
-		catch (MultipleLCSClusterEntryTokenException mlcscete) {
-			_log.error(
-				"Multiple LCS activation token files detected. Please delete " +
-					"the redundant files manually.",
-				mlcscete);
 		}
 	}
 
@@ -104,6 +77,18 @@ public class LCSClusterEntryTokenAdvisor {
 
 	public String getPortalPropertiesBlacklist() {
 		return _portalPropertiesBlacklist;
+	}
+
+	@Override
+	public void onLCSEvent(LCSEvent lcsEvent) {
+		if ((lcsEvent ==
+				LCSEvent.HANDSHAKE_FAILED_LCS_CLUSTER_ENTRY_TOKEN_CORRUPTED) ||
+			(lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_FAILED) ||
+			(lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALIDATED) ||
+			(lcsEvent == LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED)) {
+
+			_deleteLCSCLusterEntryTokenFile();
+		}
 	}
 
 	public LCSClusterEntryToken processLCSClusterEntryToken(
@@ -280,7 +265,7 @@ public class LCSClusterEntryTokenAdvisor {
 			lcsClusterEntryTokenJSON = decrypt(bytes, lcsPortletBuildNumber);
 		}
 		catch (EncryptorException ee) {
-			deleteLCSCLusterEntryTokenFile();
+			_deleteLCSCLusterEntryTokenFile();
 
 			_lcsAlertAdvisor.add(LCSAlert.ERROR_INVALID_TOKEN);
 
@@ -302,6 +287,29 @@ public class LCSClusterEntryTokenAdvisor {
 			lcsClusterEntryTokenJSON, LCSClusterEntryToken.class);
 
 		return lcsClusterEntryToken;
+	}
+
+	private void _deleteLCSCLusterEntryTokenFile() {
+		_resetAttributes();
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Deleting LCS activation token file");
+		}
+
+		try {
+			FileUtil.delete(getLCSClusterEntryTokenFileName());
+		}
+		catch (MissingLCSClusterEntryTokenException mlcscete) {
+			if (_log.isDebugEnabled()) {
+				_log.debug("LCS activation token file is not present");
+			}
+		}
+		catch (MultipleLCSClusterEntryTokenException mlcscete) {
+			_log.error(
+				"Multiple LCS activation token files detected. Please delete " +
+					"the redundant files manually.",
+				mlcscete);
+		}
 	}
 
 	private Certificate _getCertificate(KeyStore keyStore, String keyName) {

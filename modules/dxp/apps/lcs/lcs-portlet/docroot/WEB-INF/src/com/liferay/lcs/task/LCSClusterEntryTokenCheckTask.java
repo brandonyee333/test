@@ -102,8 +102,6 @@ public class LCSClusterEntryTokenCheckTask implements Task {
 				_lcsClusterEntryTokenAdvisor.getLCSAccessSecret(),
 				_lcsClusterEntryTokenAdvisor.getLCSAccessToken())) {
 
-			_lcsClusterEntryTokenAdvisor.deleteLCSCLusterEntryTokenFile();
-
 			StringBundler sb = new StringBundler(5);
 
 			sb.append("The LCS activation token file contains revoked or ");
