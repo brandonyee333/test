@@ -356,13 +356,15 @@ public abstract class BaseStagedModelDataHandler<T extends StagedModel>
 					portletDataContext.getImportDataStagedModelElement(
 						stagedModel);
 
-				String userUuid = element.attributeValue("user-uuid");
+				if (element != null) {
+					String userUuid = element.attributeValue("user-uuid");
 
-				if (Validator.isNotNull(userUuid)) {
-					AuditedModel auditedModel = (AuditedModel)stagedModel;
+					if (Validator.isNotNull(userUuid)) {
+						AuditedModel auditedModel = (AuditedModel)stagedModel;
 
-					auditedModel.setUserId(
-						portletDataContext.getUserId(userUuid));
+						auditedModel.setUserId(
+							portletDataContext.getUserId(userUuid));
+					}
 				}
 			}
 
@@ -820,6 +822,10 @@ public abstract class BaseStagedModelDataHandler<T extends StagedModel>
 
 		Element stagedModelElement =
 			portletDataContext.getImportDataStagedModelElement(stagedModel);
+
+		if (stagedModelElement == null) {
+			return;
+		}
 
 		Element referencesElement = stagedModelElement.element("references");
 

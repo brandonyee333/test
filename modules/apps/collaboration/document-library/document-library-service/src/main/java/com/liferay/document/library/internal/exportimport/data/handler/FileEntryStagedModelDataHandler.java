@@ -376,10 +376,16 @@ public class FileEntryStagedModelDataHandler
 		Element fileEntryElement = portletDataContext.getImportDataElement(
 			fileEntry);
 
-		String binPath = fileEntryElement.attributeValue("bin-path");
-		String fileVersionUuid = fileEntryElement.attributeValue(
-			"fileVersionUuid");
-		String version = fileEntryElement.attributeValue("version");
+		String binPath = null;
+		String fileVersionUuid = null;
+		String version = null;
+
+		if (fileEntryElement != null) {
+			binPath = fileEntryElement.attributeValue("bin-path");
+			fileVersionUuid = fileEntryElement.attributeValue(
+				"fileVersionUuid");
+			version = fileEntryElement.attributeValue("version");
+		}
 
 		InputStream is = null;
 
@@ -476,7 +482,8 @@ public class FileEntryStagedModelDataHandler
 					boolean deleteFileEntry = false;
 					boolean updateFileEntry = false;
 
-					if (!Objects.equals(
+					if ((fileVersionUuid != null) &&
+						!Objects.equals(
 							fileVersionUuid,
 							latestExistingFileVersion.getUuid())) {
 
@@ -593,7 +600,9 @@ public class FileEntryStagedModelDataHandler
 					}
 				}
 
-				if (ExportImportThreadLocal.isStagingInProcess()) {
+				if (ExportImportThreadLocal.isStagingInProcess() &&
+					(version != null)) {
+
 					_overrideFileVersion(importedFileEntry, version);
 				}
 			}
