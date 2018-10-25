@@ -18,9 +18,9 @@ import com.liferay.lcs.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.advisor.UptimeAdvisor;
-import com.liferay.lcs.platform.LCSEvent;
+import com.liferay.lcs.internal.event.LCSEvent;
+import com.liferay.lcs.internal.event.LCSEventListener;
 import com.liferay.lcs.platform.gateway.LCSGatewayClient;
-import com.liferay.lcs.platform.gateway.LCSGatewayStateListener;
 import com.liferay.lcs.task.CommandMessageTask;
 import com.liferay.lcs.task.HandshakeTask;
 import com.liferay.lcs.task.HeartbeatTask;
@@ -68,7 +68,7 @@ import java.util.concurrent.TimeUnit;
  * @author Igor Beslic
  */
 public class TaskSchedulerServiceImpl
-	implements LCSGatewayStateListener, TaskSchedulerService {
+	implements LCSEventListener, TaskSchedulerService {
 
 	public TaskSchedulerServiceImpl(
 		int defaultInterval, LCSAlertAdvisor lcsAlertAdvisor,
@@ -87,7 +87,7 @@ public class TaskSchedulerServiceImpl
 		_threadFactory = threadFactory;
 		_uptimeAdvisor = uptimeAdvisor;
 
-		_lcsGatewayClient.registerLCSGatewayStateListener(this);
+		_lcsGatewayClient.registerLCSEventListener(this);
 
 		_scheduledExecutorService = Executors.newScheduledThreadPool(
 			10, threadFactory);
@@ -127,7 +127,7 @@ public class TaskSchedulerServiceImpl
 	}
 
 	@Override
-	public void onLCSGatewayStateChanged(LCSEvent lcsEvent) {
+	public void onLCSEvent(LCSEvent lcsEvent) {
 		if (lcsEvent == LCSEvent.AVAILABLE) {
 			_onLCSGatewayServiceAvailable();
 		}

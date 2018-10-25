@@ -15,6 +15,7 @@
 package com.liferay.lcs.platform.gateway;
 
 import com.liferay.lcs.exception.CompressionException;
+import com.liferay.lcs.internal.event.LCSEventListener;
 import com.liferay.lcs.messaging.Message;
 import com.liferay.lcs.task.TaskStateListener;
 import com.liferay.petra.json.web.service.client.JSONWebServiceException;
@@ -39,8 +40,7 @@ public interface LCSGatewayClient extends TaskStateListener {
 
 	public boolean isAvailable();
 
-	public void registerLCSGatewayStateListener(
-		LCSGatewayStateListener lcsGatewayStateListener);
+	public void registerLCSEventListener(LCSEventListener lcsEventListener);
 
 	public void sendMessage(Message message)
 		throws CompressionException, JSONWebServiceException;

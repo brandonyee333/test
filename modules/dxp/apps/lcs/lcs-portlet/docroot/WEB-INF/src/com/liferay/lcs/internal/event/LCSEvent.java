@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.lcs.platform;
+package com.liferay.lcs.internal.event;
 
 /**
  * @author Igor Beslic

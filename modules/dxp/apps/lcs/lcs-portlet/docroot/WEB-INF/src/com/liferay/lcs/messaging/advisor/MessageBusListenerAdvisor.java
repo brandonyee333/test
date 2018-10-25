@@ -16,9 +16,9 @@ package com.liferay.lcs.messaging.advisor;
 
 import com.liferay.lcs.advisor.MonitoringAdvisor;
 import com.liferay.lcs.advisor.MonitoringAdvisorFactory;
-import com.liferay.lcs.platform.LCSEvent;
+import com.liferay.lcs.internal.event.LCSEvent;
+import com.liferay.lcs.internal.event.LCSEventListener;
 import com.liferay.lcs.platform.gateway.LCSGatewayClient;
-import com.liferay.lcs.platform.gateway.LCSGatewayStateListener;
 import com.liferay.portal.kernel.bean.BeanLocator;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -36,10 +36,10 @@ import java.util.Objects;
  * @author Ivica Cardic
  * @author Igor Beslic
  */
-public class MessageBusListenerAdvisor implements LCSGatewayStateListener {
+public class MessageBusListenerAdvisor implements LCSEventListener {
 
 	public MessageBusListenerAdvisor(LCSGatewayClient lcsGatewayClient) {
-		lcsGatewayClient.registerLCSGatewayStateListener(this);
+		lcsGatewayClient.registerLCSEventListener(this);
 	}
 
 	public void destroy() {
@@ -51,7 +51,7 @@ public class MessageBusListenerAdvisor implements LCSGatewayStateListener {
 	}
 
 	@Override
-	public void onLCSGatewayStateChanged(LCSEvent lcsEvent) {
+	public void onLCSEvent(LCSEvent lcsEvent) {
 		if (_log.isTraceEnabled()) {
 			_log.trace("Notified on LCS event " + lcsEvent);
 		}

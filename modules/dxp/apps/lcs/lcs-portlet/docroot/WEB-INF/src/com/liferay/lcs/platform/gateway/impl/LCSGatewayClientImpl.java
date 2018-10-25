@@ -15,10 +15,10 @@
 package com.liferay.lcs.platform.gateway.impl;
 
 import com.liferay.lcs.exception.CompressionException;
+import com.liferay.lcs.internal.event.LCSEvent;
+import com.liferay.lcs.internal.event.LCSEventListener;
 import com.liferay.lcs.messaging.Message;
-import com.liferay.lcs.platform.LCSEvent;
 import com.liferay.lcs.platform.gateway.LCSGatewayClient;
-import com.liferay.lcs.platform.gateway.LCSGatewayStateListener;
 import com.liferay.lcs.task.HandshakeTask;
 import com.liferay.lcs.task.SignOffTask;
 import com.liferay.lcs.task.Task;
@@ -159,10 +159,8 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 	}
 
 	@Override
-	public void registerLCSGatewayStateListener(
-		LCSGatewayStateListener lcsGatewayStateListener) {
-
-		_lcsGatewayStateListeners.add(lcsGatewayStateListener);
+	public void registerLCSEventListener(LCSEventListener lcsEventListener) {
+		_lcsEventListeners.add(lcsEventListener);
 	}
 
 	@Override
@@ -240,10 +238,8 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 	}
 
 	private void _notifyStateChangedListeners(LCSEvent lcsEvent) {
-		for (LCSGatewayStateListener lcsGatewayStateListener :
-				_lcsGatewayStateListeners) {
-
-			lcsGatewayStateListener.onLCSGatewayStateChanged(lcsEvent);
+		for (LCSEventListener lcsEventListener : _lcsEventListeners) {
+			lcsEventListener.onLCSEvent(lcsEvent);
 		}
 	}
 
@@ -300,7 +296,6 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 	private long _lastHandshakeSuccess;
 	private long _lastMessageReceived;
 	private long _lastMessageSent;
-	private final List<LCSGatewayStateListener> _lcsGatewayStateListeners =
-		new ArrayList<>();
+	private final List<LCSEventListener> _lcsEventListeners = new ArrayList<>();
 
 }

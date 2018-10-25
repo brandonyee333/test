@@ -12,15 +12,13 @@
  *
  */
 
-package com.liferay.lcs.platform.gateway;
-
-import com.liferay.lcs.platform.LCSEvent;
+package com.liferay.lcs.internal.event;
 
 /**
  * @author Igor Beslic
  */
-public interface LCSGatewayStateListener {
+public interface LCSEventListener {
 
-	public void onLCSGatewayStateChanged(LCSEvent lcsEvent);
+	public void onLCSEvent(LCSEvent lcsEvent);
 
 }

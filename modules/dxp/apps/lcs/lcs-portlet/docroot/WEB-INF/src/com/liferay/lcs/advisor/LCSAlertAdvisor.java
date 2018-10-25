@@ -14,9 +14,9 @@
 
 package com.liferay.lcs.advisor;
 
-import com.liferay.lcs.platform.LCSEvent;
+import com.liferay.lcs.internal.event.LCSEvent;
+import com.liferay.lcs.internal.event.LCSEventListener;
 import com.liferay.lcs.platform.gateway.LCSGatewayClient;
-import com.liferay.lcs.platform.gateway.LCSGatewayStateListener;
 import com.liferay.lcs.util.LCSAlert;
 import com.liferay.lcs.util.LCSUtil;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
@@ -27,10 +27,10 @@ import java.util.Set;
 /**
  * @author Igor Beslic
  */
-public class LCSAlertAdvisor implements LCSGatewayStateListener {
+public class LCSAlertAdvisor implements LCSEventListener {
 
 	public LCSAlertAdvisor(LCSGatewayClient lcsGatewayClient) {
-		lcsGatewayClient.registerLCSGatewayStateListener(this);
+		lcsGatewayClient.registerLCSEventListener(this);
 	}
 
 	public boolean add(LCSAlert lcsAlert) {
@@ -46,7 +46,7 @@ public class LCSAlertAdvisor implements LCSGatewayStateListener {
 	}
 
 	@Override
-	public void onLCSGatewayStateChanged(LCSEvent lcsEvent) {
+	public void onLCSEvent(LCSEvent lcsEvent) {
 		if (lcsEvent == LCSEvent.AVAILABLE) {
 			LCSUtil.processLCSPortletState(LCSPortletState.NO_SUBSCRIPTION);
 
