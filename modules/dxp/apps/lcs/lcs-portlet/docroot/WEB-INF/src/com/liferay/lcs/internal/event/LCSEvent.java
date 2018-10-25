@@ -19,6 +19,6 @@ package com.liferay.lcs.internal.event;
  */
 public enum LCSEvent {
 
-	AVAILABLE, UNAVAILABLE
+	LCS_GATEWAY_AVAILABLE, LCS_GATEWAY_UNAVAILABLE
 
 }
