@@ -35,10 +35,8 @@ public class SignOffCommand implements Command<SignOffCommandMessage> {
 		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor,
 		TaskSchedulerService taskSchedulerService) {
 
-		_lcsClusterEntryTokenAdvisor = lcsClusterEntryTokenAdvisor;
-		_taskSchedulerService = taskSchedulerService;
-
-		_lcsEventListeners.add(_taskSchedulerService);
+		_lcsEventListeners.add(taskSchedulerService);
+		_lcsEventListeners.add(lcsClusterEntryTokenAdvisor);
 	}
 
 	@Override
@@ -56,15 +54,11 @@ public class SignOffCommand implements Command<SignOffCommandMessage> {
 
 		if (signOffReasonCode == SignOffReasonCode.INVALIDATE_TOKEN) {
 			_notifyLCSEventListeners(
-				LCSEvent.HANDSHAKE_FAILED_LCS_CLUSTER_ENTRY_TOKEN_CORRUPTED);
+				LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALIDATED);
 		}
 		else if (signOffReasonCode == SignOffReasonCode.UNREGISTER) {
 			_notifyLCSEventListeners(LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED);
-
-			_lcsClusterEntryTokenAdvisor.deleteLCSCLusterEntryTokenFile();
 		}
-
-		_taskSchedulerService.restart();
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Signed off server from LCS");
@@ -98,8 +92,6 @@ public class SignOffCommand implements Command<SignOffCommandMessage> {
 
 	private static final Log _log = LogFactoryUtil.getLog(SignOffCommand.class);
 
-	private final LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
 	private final List<LCSEventListener> _lcsEventListeners = new ArrayList<>();
-	private final TaskSchedulerService _taskSchedulerService;
 
 }
