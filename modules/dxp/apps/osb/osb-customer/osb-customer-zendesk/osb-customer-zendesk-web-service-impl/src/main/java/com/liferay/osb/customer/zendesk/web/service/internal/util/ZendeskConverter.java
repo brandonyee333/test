@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.zendesk.web.service.internal.util;
 
+import com.liferay.osb.customer.zendesk.model.ZendeskArticle;
 import com.liferay.osb.customer.zendesk.model.ZendeskCategory;
 import com.liferay.osb.customer.zendesk.model.ZendeskOrganization;
 import com.liferay.osb.customer.zendesk.model.ZendeskSection;
@@ -30,7 +31,9 @@ import java.time.format.DateTimeParseException;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -39,6 +42,66 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(immediate = true, service = ZendeskConverter.class)
 public class ZendeskConverter {
+
+	public ZendeskArticle toZendeskArticle(JSONObject jsonObject)
+		throws PortalException {
+
+		ZendeskArticle zendeskArticle = new ZendeskArticle();
+
+		zendeskArticle.setBody(jsonObject.getString("body"));
+
+		String createdAt = jsonObject.getString("created_at");
+
+		try {
+			Instant instant = Instant.parse(createdAt);
+
+			zendeskArticle.setCreateDate(new Date(instant.toEpochMilli()));
+		}
+		catch (DateTimeParseException dtpe) {
+			throw new PortalException(dtpe);
+		}
+
+		zendeskArticle.setTitle(jsonObject.getString("title"));
+		zendeskArticle.setZendeskArticleId(jsonObject.getLong("id"));
+
+		JSONArray labelNamesJSONArray = jsonObject.getJSONArray("label_names");
+
+		if (labelNamesJSONArray != null) {
+			Set<String> labelNames = new HashSet<>();
+
+			for (int i = 0; i < labelNamesJSONArray.length(); i++) {
+				labelNames.add(labelNamesJSONArray.getString(i));
+			}
+
+			zendeskArticle.setLabelNames(labelNames);
+		}
+
+		JSONArray translationsJSONArray = jsonObject.getJSONArray(
+			"translations");
+
+		if (translationsJSONArray != null) {
+			List<ZendeskTranslation> zendeskTranslations =
+				toZendeskTranslations(translationsJSONArray);
+
+			zendeskArticle.setZendeskTranslations(zendeskTranslations);
+		}
+
+		return zendeskArticle;
+	}
+
+	public List<ZendeskArticle> toZendeskArticles(JSONArray jsonArray)
+		throws PortalException {
+
+		List<ZendeskArticle> zendeskArticles = new ArrayList<>();
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			zendeskArticles.add(toZendeskArticle(jsonObject));
+		}
+
+		return zendeskArticles;
+	}
 
 	public List<ZendeskCategory> toZendeskCategories(JSONArray jsonArray)
 		throws PortalException {
