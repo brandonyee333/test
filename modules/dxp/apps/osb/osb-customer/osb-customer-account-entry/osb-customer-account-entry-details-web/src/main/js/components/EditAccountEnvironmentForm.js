@@ -8,9 +8,8 @@ import Alert from './Alert';
 import Button from './Button';
 
 const NOT_REQUIRED_SCHEMA = yup.string().notRequired();
-const REQUIRED_SCHEMA = yup
-	.string()
-	.required(Liferay.Language.get('this-field-is-required'));
+
+const REQUIRED_SCHEMA = yup.string().required(Liferay.Language.get('this-field-is-required'));
 
 const SELECT_LABEL = Liferay.Language.get('select');
 
@@ -293,7 +292,7 @@ export default class EditAccountEnvironmentForm extends React.Component {
 					}
 				}
 			);
-		};
+		}
 
 		this.formikInstanceRef.current.handleChange(event);
 	};
@@ -317,8 +316,10 @@ export default class EditAccountEnvironmentForm extends React.Component {
 			const selectedVersionName = selectedLFRVersion.envLFR.find(version => version).name;
 
 			if (selectedVersionName === environmentVersionName) {
+				let searchValue;
+
 				for (var i = 0; i < searchLabelsArray.length; i++) {
-					const searchValue = searchType.find(
+					searchValue = searchType.find(
 						type => type.name === searchLabelsArray[i]
 					).value;
 
