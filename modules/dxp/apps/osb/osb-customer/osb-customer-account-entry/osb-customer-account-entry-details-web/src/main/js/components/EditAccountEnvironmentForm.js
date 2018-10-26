@@ -8,7 +8,9 @@ import Alert from './Alert';
 import Button from './Button';
 
 const NOT_REQUIRED_SCHEMA = yup.string().notRequired();
-const REQUIRED_SCHEMA = yup.string().required(Liferay.Language.get('this-field-is-required'));
+const REQUIRED_SCHEMA = yup
+	.string()
+	.required(Liferay.Language.get('this-field-is-required'));
 
 const SELECT_LABEL = Liferay.Language.get('select');
 
@@ -55,30 +57,68 @@ export default class EditAccountEnvironmentForm extends React.Component {
 		const {environment, environmentConfiguration} = this.props;
 		const {envLFRVersions, products} = environmentConfiguration;
 
-		const {configurations} = this.state;
-
 		if (environment) {
-			const currentProduct = products.find(product => product.productEntryId == environment.productEntryId);
-			const currentLFRValue = currentProduct.envLFR.find(version => version.name == environment.envLFRLabel).value;
-			const currentLFRVersion = envLFRVersions.find(version => version[currentLFRValue])[currentLFRValue];
+			const currentProduct = products.find(
+				product => product.productEntryId === environment.productEntryId
+			);
+
+			const currentLFRValue = currentProduct.envLFR.find(
+				version => version.name === environment.envLFRLabel
+			).value;
+
+			const currentLFRVersion = envLFRVersions.find(
+				version => version[currentLFRValue]
+			)[currentLFRValue];
 
 			this.setState(
 				{
 					configurations: {
-						...configurations,
+						customOS: false,
 						enterprise: currentProduct.enterpriseSearch
 					},
 					formValues: {
-						envAS: this.getValueFromLabel(currentLFRVersion, 'envAS', environment.envASLabel),
-						envBrowser: this.getValueFromLabel(currentLFRVersion, 'envBrowser', environment.envBrowserLabel),
-						envCS: this.getValueFromLabel(currentLFRVersion, 'envCS', environment.envCSLabel),
-						envDB: this.getValueFromLabel(currentLFRVersion, 'envDB', environment.envDBLabel),
-						envJVM: this.getValueFromLabel(currentLFRVersion, 'envJVM', environment.envJVMLabel),
-						envLFR: this.getValueFromLabel(currentLFRVersion, 'envLFR', environment.envLFRLabel),
-						envOS: this.getValueFromLabel(currentLFRVersion, 'envOS', environment.envOSLabel),
-						envSearch: this.getSearchValues(currentLFRVersion, environment.envSearchLabels),
+						envAS: this.getSelectionValueFromLabel(
+							currentLFRVersion,
+							'envAS',
+							environment.envASLabel
+						),
+						envBrowser: this.getSelectionValueFromLabel(
+							currentLFRVersion,
+							'envBrowser',
+							environment.envBrowserLabel
+						),
+						envCS: this.getSelectionValueFromLabel(
+							currentLFRVersion,
+							'envCS',
+							environment.envCSLabel
+						),
+						envDB: this.getSelectionValueFromLabel(
+							currentLFRVersion,
+							'envDB',
+							environment.envDBLabel
+						),
+						envJVM: this.getSelectionValueFromLabel(
+							currentLFRVersion,
+							'envJVM',
+							environment.envJVMLabel
+						),
+						envLFR: this.getSelectionValueFromLabel(
+							currentLFRVersion,
+							'envLFR',
+							environment.envLFRLabel
+						),
+						envOS: this.getSelectionValueFromLabel(
+							currentLFRVersion,
+							'envOS',
+							environment.envOSLabel
+						),
+						envSearch: this.getSearchValues(
+							currentLFRVersion,
+							environment.envSearchLabels
+						),
 						name: environment.name,
-						patchLevel: environment.patchLevelAccountEnvironmentAttachmentFileName,
+						patchLevel:
+							environment.patchLevelAccountEnvironmentAttachmentFileName,
 						portalExt: environment.portalExtAccountEnvironmentAttachmentFileName,
 						productEntryId: environment.productEntryId
 					},
@@ -89,7 +129,7 @@ export default class EditAccountEnvironmentForm extends React.Component {
 				}
 			);
 		}
-	};
+	}
 
 	handleDeleteFile = fileRef => {
 		const {formValues} = this.state;
@@ -269,12 +309,18 @@ export default class EditAccountEnvironmentForm extends React.Component {
 
 		if (selectedLFRVersion && selectedLFRVersion.envSearch) {
 			const environmentVersionName = environment.envLFRLabel;
-			const searchType = selectedLFRVersion.envSearch.find(search => search[enterprise ? 'enterprise' : 'standard'])[enterprise ? 'enterprise' : 'standard'];
+
+			const searchType = selectedLFRVersion.envSearch.find(
+				search => search[enterprise ? 'enterprise' : 'standard']
+			)[enterprise ? 'enterprise' : 'standard'];
+
 			const selectedVersionName = selectedLFRVersion.envLFR.find(version => version).name;
 
-			if (selectedVersionName == environmentVersionName) {
+			if (selectedVersionName === environmentVersionName) {
 				for (var i = 0; i < searchLabelsArray.length; i++) {
-					const searchValue = searchType.find(type => type.name == searchLabelsArray[i]).value;
+					const searchValue = searchType.find(
+						type => type.name === searchLabelsArray[i]
+					).value;
 
 					searchValuesArray.push(searchValue);
 				}
@@ -284,9 +330,11 @@ export default class EditAccountEnvironmentForm extends React.Component {
 		return searchValuesArray;
 	};
 
-	getValueFromLabel = (selectedLFRVersion, envType, label) => {
+	getSelectionValueFromLabel = (selectedLFRVersion, envType, label) => {
 		if (selectedLFRVersion && selectedLFRVersion[envType]) {
-			const selectedVersionTypeLabel = selectedLFRVersion[envType].find(type => type.name == label);
+			const selectedVersionTypeLabel = selectedLFRVersion[envType].find(
+				type => type.name === label
+			);
 
 			return selectedVersionTypeLabel ? selectedVersionTypeLabel.value : '';
 		}
