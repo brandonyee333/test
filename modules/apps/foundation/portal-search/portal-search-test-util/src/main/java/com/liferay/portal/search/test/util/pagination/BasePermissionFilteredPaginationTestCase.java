@@ -242,7 +242,7 @@ public abstract class BasePermissionFilteredPaginationTestCase
 		throws Exception {
 
 		IdempotentRetryAssert.retryAssert(
-			3, TimeUnit.SECONDS,
+			5, TimeUnit.SECONDS,
 			() -> {
 				doAssertPagination(
 					from, to, pageSize, expectedPaginationResult);
@@ -257,7 +257,7 @@ public abstract class BasePermissionFilteredPaginationTestCase
 		throws Exception {
 
 		IdempotentRetryAssert.retryAssert(
-			3, TimeUnit.SECONDS,
+			5, TimeUnit.SECONDS,
 			() -> {
 				doAssertPaginationCounts(
 					from, to, pageSize, expectedPaginationCountsResult);
