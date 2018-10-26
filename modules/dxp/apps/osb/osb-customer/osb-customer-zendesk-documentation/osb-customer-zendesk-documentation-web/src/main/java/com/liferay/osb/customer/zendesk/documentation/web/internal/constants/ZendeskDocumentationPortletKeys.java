@@ -12,14 +12,14 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.documentation.sync.web.internal.constants;
+package com.liferay.osb.customer.zendesk.documentation.web.internal.constants;
 
 /**
  * @author Amos Fong
  */
-public class ZendeskDocumentationSyncPortletKeys {
+public class ZendeskDocumentationPortletKeys {
 
 	public static final String ADMIN =
-		"com_liferay_osb_customer_zendesk_documentation_sync_AdminPortlet";
+		"com_liferay_osb_customer_zendesk_documentation_AdminPortlet";
 
 }

@@ -12,11 +12,11 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.documentation.sync.web.internal.application.list;
+package com.liferay.osb.customer.zendesk.documentation.web.internal.application.list;
 
 import com.liferay.application.list.BasePanelApp;
 import com.liferay.application.list.PanelApp;
-import com.liferay.osb.customer.zendesk.documentation.sync.web.internal.constants.ZendeskDocumentationSyncPortletKeys;
+import com.liferay.osb.customer.zendesk.documentation.web.internal.constants.ZendeskDocumentationPortletKeys;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.util.PortletCategoryKeys;
 
@@ -38,12 +38,12 @@ public class AdminPanelApp extends BasePanelApp {
 
 	@Override
 	public String getPortletId() {
-		return ZendeskDocumentationSyncPortletKeys.ADMIN;
+		return ZendeskDocumentationPortletKeys.ADMIN;
 	}
 
 	@Override
 	@Reference(
-		target = "(javax.portlet.name=" + ZendeskDocumentationSyncPortletKeys.ADMIN + ")",
+		target = "(javax.portlet.name=" + ZendeskDocumentationPortletKeys.ADMIN + ")",
 		unbind = "-"
 	)
 	public void setPortlet(Portlet portlet) {

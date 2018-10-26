@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.documentation.sync.web.internal.portlet;
+package com.liferay.osb.customer.zendesk.documentation.web.internal.portlet;
 
 import com.liferay.osb.customer.zendesk.documentation.sync.exception.DocumentationImportException;
 import com.liferay.osb.customer.zendesk.documentation.sync.importer.DocumentationImporter;
@@ -20,7 +20,7 @@ import com.liferay.osb.customer.zendesk.documentation.sync.importer.Documentatio
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskCategoryLocalService;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskSectionLocalService;
-import com.liferay.osb.customer.zendesk.documentation.sync.web.internal.constants.ZendeskDocumentationSyncPortletKeys;
+import com.liferay.osb.customer.zendesk.documentation.web.internal.constants.ZendeskDocumentationPortletKeys;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
@@ -47,13 +47,13 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	immediate = true,
 	property = {
-		"com.liferay.portlet.css-class-wrapper=osb-documentation-sync-admin-portlet",
+		"com.liferay.portlet.css-class-wrapper=osb-documentation-admin-portlet",
 		"com.liferay.portlet.display-category=category.osb",
-		"javax.portlet.display-name=OSB Documentation Sync Admin",
+		"javax.portlet.display-name=OSB Documentation Admin",
 		"javax.portlet.expiration-cache=0",
 		"javax.portlet.init-param.template-path=/admin/",
 		"javax.portlet.init-param.view-template=/admin/view.jsp",
-		"javax.portlet.name=" + ZendeskDocumentationSyncPortletKeys.ADMIN,
+		"javax.portlet.name=" + ZendeskDocumentationPortletKeys.ADMIN,
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=administrator,guest,power-user,user"
 	},
