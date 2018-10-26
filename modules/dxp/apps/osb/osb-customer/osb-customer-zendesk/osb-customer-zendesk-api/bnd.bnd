@@ -1,4 +1,6 @@
 Bundle-Name: Liferay OSB Customer Zendesk API
 Bundle-SymbolicName: com.liferay.osb.customer.zendesk.api
 Bundle-Version: 1.0.0
-Export-Package: com.liferay.osb.customer.zendesk.model
+Export-Package:\
+	com.liferay.osb.customer.zendesk.constants,\
+	com.liferay.osb.customer.zendesk.model

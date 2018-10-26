@@ -19,6 +19,9 @@ import com.liferay.osb.customer.zendesk.model.ZendeskTranslation;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTranslationWebService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.StringPool;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -47,7 +50,16 @@ public class AsyncZendeskTranslationWebService
 
 		messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
 
+		if (_log.isInfoEnabled()) {
+			_log.info(
+				"Adding " + locale + " translation for " + sourceType +
+					StringPool.POUND + sourceId);
+		}
+
 		return null;
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		AsyncZendeskTranslationWebService.class);
 
 }

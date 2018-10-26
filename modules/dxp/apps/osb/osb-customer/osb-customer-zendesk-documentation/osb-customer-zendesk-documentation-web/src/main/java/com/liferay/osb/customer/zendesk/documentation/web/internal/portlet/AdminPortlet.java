@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.zendesk.documentation.web.internal.portlet;
 
+import com.liferay.osb.customer.zendesk.constants.ZendeskTranslationConstants;
 import com.liferay.osb.customer.zendesk.documentation.sync.exception.DocumentationImportException;
 import com.liferay.osb.customer.zendesk.documentation.sync.importer.DocumentationImporter;
 import com.liferay.osb.customer.zendesk.documentation.sync.importer.DocumentationImporterFactory;
@@ -21,6 +22,9 @@ import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory
 import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskCategoryLocalService;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskSectionLocalService;
 import com.liferay.osb.customer.zendesk.documentation.web.internal.constants.ZendeskDocumentationPortletKeys;
+import com.liferay.osb.customer.zendesk.documentation.web.internal.translator.ZendeskArticleTranslator;
+import com.liferay.osb.customer.zendesk.documentation.web.internal.translator.ZendeskCategoryTranslator;
+import com.liferay.osb.customer.zendesk.documentation.web.internal.translator.ZendeskSectionTranslator;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
@@ -60,6 +64,29 @@ import org.osgi.service.component.annotations.Reference;
 	service = Portlet.class
 )
 public class AdminPortlet extends MVCPortlet {
+
+	public void autoTranslate(
+			ActionRequest actionRequest, ActionResponse actionResponse)
+		throws Exception {
+
+		String sourceType = ParamUtil.getString(actionRequest, "sourceType");
+
+		if (sourceType.equals(
+				ZendeskTranslationConstants.SOURCE_TYPE_ARTICLE)) {
+
+			_zendeskArticleTranslator.autoTranslate(null);
+		}
+		else if (sourceType.equals(
+					ZendeskTranslationConstants.SOURCE_TYPE_CATEGORY)) {
+
+			_zendeskCategoryTranslator.autoTranslate(null);
+		}
+		else if (sourceType.equals(
+					ZendeskTranslationConstants.SOURCE_TYPE_SECTION)) {
+
+			_zendeskSectionTranslator.autoTranslate(null);
+		}
+	}
 
 	public void deleteZendeskCategory(
 			ActionRequest actionRequest, ActionResponse actionResponse)
@@ -160,9 +187,18 @@ public class AdminPortlet extends MVCPortlet {
 	private Portal _portal;
 
 	@Reference
+	private ZendeskArticleTranslator _zendeskArticleTranslator;
+
+	@Reference
 	private ZendeskCategoryLocalService _zendeskCategoryLocalService;
 
 	@Reference
+	private ZendeskCategoryTranslator _zendeskCategoryTranslator;
+
+	@Reference
 	private ZendeskSectionLocalService _zendeskSectionLocalService;
+
+	@Reference
+	private ZendeskSectionTranslator _zendeskSectionTranslator;
 
 }

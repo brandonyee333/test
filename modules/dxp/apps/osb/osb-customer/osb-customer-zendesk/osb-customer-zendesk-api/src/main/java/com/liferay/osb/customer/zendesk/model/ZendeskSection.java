@@ -14,6 +14,8 @@
 
 package com.liferay.osb.customer.zendesk.model;
 
+import com.liferay.osb.customer.zendesk.constants.ZendeskTranslationConstants;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,7 +23,7 @@ import java.util.List;
 /**
  * @author Amos Fong
  */
-public class ZendeskSection {
+public class ZendeskSection implements TranslatableModel {
 
 	public ZendeskSection() {
 	}
@@ -36,6 +38,14 @@ public class ZendeskSection {
 
 	public String getName() {
 		return _name;
+	}
+
+	public long getSourceId() {
+		return _zendeskSectionId;
+	}
+
+	public String getSourceType() {
+		return ZendeskTranslationConstants.SOURCE_TYPE_SECTION;
 	}
 
 	public long getZendeskSectionId() {

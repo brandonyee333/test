@@ -1,4 +1,5 @@
 Bundle-Name: Liferay OSB Customer Zendesk Documentation Web
 Bundle-SymbolicName: com.liferay.osb.customer.zendesk.documentation.web
 Bundle-Version: 1.0.0
+-dsannotations-options: inherit
 -includeresource: content=src/main/resources/content

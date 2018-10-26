@@ -23,7 +23,8 @@ taglib uri="http://liferay.com/tld/frontend" prefix="liferay-frontend" %><%@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
-<%@ page import="com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory" %><%@
+<%@ page import="com.liferay.osb.customer.zendesk.constants.ZendeskTranslationConstants" %><%@
+page import="com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory" %><%@
 page import="com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskCategoryLocalServiceUtil" %><%@
 page import="com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskSectionLocalServiceUtil" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@

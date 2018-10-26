@@ -14,6 +14,8 @@
 
 package com.liferay.osb.customer.zendesk.model;
 
+import com.liferay.osb.customer.zendesk.constants.ZendeskTranslationConstants;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -23,7 +25,7 @@ import java.util.Set;
 /**
  * @author Amos Fong
  */
-public class ZendeskArticle {
+public class ZendeskArticle implements TranslatableModel {
 
 	public ZendeskArticle() {
 	}
@@ -38,6 +40,14 @@ public class ZendeskArticle {
 
 	public Set<String> getLabelNames() {
 		return _labelNames;
+	}
+
+	public long getSourceId() {
+		return _zendeskArticleId;
+	}
+
+	public String getSourceType() {
+		return ZendeskTranslationConstants.SOURCE_TYPE_ARTICLE;
 	}
 
 	public String getTitle() {

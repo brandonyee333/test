@@ -38,6 +38,10 @@ public class QueryImpl implements Query {
 		_sideloads.add(sideload);
 	}
 
+	public int getPage() {
+		return _page;
+	}
+
 	public Map<String, String> getParameters() {
 		Map<String, String> parameters = new HashMap<>();
 

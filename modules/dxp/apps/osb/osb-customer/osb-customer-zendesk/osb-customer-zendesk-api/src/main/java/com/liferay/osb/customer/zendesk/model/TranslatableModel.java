@@ -12,27 +12,22 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.web.service.search;
+package com.liferay.osb.customer.zendesk.model;
 
-import java.util.Map;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Amos Fong
  */
-public interface Query {
+public interface TranslatableModel {
 
-	public void addCriterion(String criterion);
+	public Date getCreateDate();
 
-	public void addSideload(String sideload);
+	public long getSourceId();
 
-	public int getPage();
+	public String getSourceType();
 
-	public Map<String, String> getParameters();
-
-	public void setPage(int page);
-
-	public void setSortBy(String sortBy);
-
-	public void setSortOrder(boolean asc);
+	public List<ZendeskTranslation> getZendeskTranslations();
 
 }
