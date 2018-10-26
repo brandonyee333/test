@@ -150,7 +150,7 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		else if ((lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALIDATED) ||
 				 (lcsEvent == LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED)) {
 
-			restart();
+			_restart();
 		}
 		else if (lcsEvent ==
 					LCSEvent.
@@ -161,19 +161,6 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		else if (lcsEvent == LCSEvent.HANDSHAKE_FAILED) {
 			_executeHandshakeTask(true);
 		}
-	}
-
-	@Override
-	public void restart() {
-		if (_log.isDebugEnabled()) {
-			_log.debug("Reconnecting to LCS gateway");
-		}
-
-		_cancelAllTasks();
-
-		_executeSignOffTask();
-
-		_executeLCSClusterEntryTokenCheckTask(true);
 	}
 
 	@Override
@@ -509,6 +496,18 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		_cancelAllTasks();
 
 		_executeLCSClusterEntryTokenCheckTask(false);
+	}
+
+	private void _restart() {
+		if (_log.isDebugEnabled()) {
+			_log.debug("Reconnecting to LCS gateway");
+		}
+
+		_cancelAllTasks();
+
+		_executeSignOffTask();
+
+		_executeLCSClusterEntryTokenCheckTask(true);
 	}
 
 	private void _scheduleClusteredScheduledTask(

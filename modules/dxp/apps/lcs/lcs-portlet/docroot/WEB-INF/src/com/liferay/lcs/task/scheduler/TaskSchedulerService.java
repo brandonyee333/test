@@ -23,8 +23,6 @@ import java.util.Map;
  */
 public interface TaskSchedulerService extends LCSEventListener {
 
-	public void restart();
-
 	public void scheduleTask(Map<String, String> schedulerContext);
 
 	public void start();
