@@ -15,6 +15,8 @@
 package com.liferay.lcs.advisor;
 
 import com.liferay.lcs.MockPortletPreferencesImpl;
+import com.liferay.lcs.advisor.answer.LCSPortletPreferencesUtilAnswer;
+import com.liferay.lcs.internal.event.LCSEvent;
 import com.liferay.lcs.util.LCSPortletPreferencesUtil;
 
 import java.lang.management.ManagementFactory;
@@ -29,6 +31,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.mockito.Matchers;
+
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -42,7 +46,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 public class UptimeAdvisorTest extends PowerMockito {
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		mockStatic(ManagementFactory.class, LCSPortletPreferencesUtil.class);
 
 		when(
@@ -59,7 +63,7 @@ public class UptimeAdvisorTest extends PowerMockito {
 			lcsKeyAdvisor
 		).getKey();
 
-		_uptimeAdvisor.setLCSKeyAdvisor(lcsKeyAdvisor);
+		_uptimeAdvisor = spy(new UptimeAdvisor(lcsKeyAdvisor));
 	}
 
 	@Test
@@ -105,6 +109,72 @@ public class UptimeAdvisorTest extends PowerMockito {
 	}
 
 	@Test
+	public void testOnHandshakeSuccessLCSEvent() throws Exception {
+		_portletPreferences.setValue(
+			"uptimes-lcsServerId",
+			"[{\"startTime\":\"1539092605095\",\"endTime\":\"1539098932697\"}" +
+				",{\"startTime\":\"1539099932697\",\"endTime\":" +
+					"\"1539099992697\"}]");
+
+		doAnswer(
+			new LCSPortletPreferencesUtilAnswer(_portletPreferences)
+		).when(
+			LCSPortletPreferencesUtil.class, "store", Matchers.anyString(),
+			Matchers.anyString()
+		);
+
+		_uptimeAdvisor.init();
+
+		List<Map<String, Long>> uptimeEntries =
+			_uptimeAdvisor.getUptimeEntries();
+
+		Assert.assertEquals(
+			"two uptime entries before handshake", 3, uptimeEntries.size());
+
+		_uptimeAdvisor.onLCSEvent(LCSEvent.HANDSHAKE_SUCCESS);
+
+		uptimeEntries = _uptimeAdvisor.getUptimeEntries();
+
+		Map<String, Long> afterHandshake = uptimeEntries.get(0);
+
+		Assert.assertEquals(
+			"only one uptime entry after handshake", 1, uptimeEntries.size());
+
+		Assert.assertTrue(
+			"new start time equals to end time in previous session",
+			afterHandshake.get("endTime") > afterHandshake.get("startTime"));
+	}
+
+	@Test
+	public void testOnUnregisterLCSEvent() throws Exception {
+		doAnswer(
+			new LCSPortletPreferencesUtilAnswer(_portletPreferences)
+		).when(
+			LCSPortletPreferencesUtil.class, "store", Matchers.anyString(),
+			Matchers.anyString()
+		);
+
+		_uptimeAdvisor.init();
+
+		List<Map<String, Long>> uptimeEntries =
+			_uptimeAdvisor.getUptimeEntries();
+
+		Assert.assertEquals(
+			"only one uptime entry before unregister", 1, uptimeEntries.size());
+
+		_uptimeAdvisor.onLCSEvent(LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED);
+
+		uptimeEntries = _uptimeAdvisor.getUptimeEntries();
+
+		Map<String, Long> beforeUnregister = uptimeEntries.get(0);
+		Map<String, Long> afterUnregister = uptimeEntries.get(1);
+
+		Assert.assertEquals(
+			"new start time equals to end time in previous session",
+			beforeUnregister.get("endTime"), afterUnregister.get("startTime"));
+	}
+
+	@Test
 	public void testResetCurrentUptimeEndTime() throws Exception {
 		_portletPreferences.setValue(
 			"uptimes-lcsServerId",
@@ -118,19 +188,20 @@ public class UptimeAdvisorTest extends PowerMockito {
 			_uptimeAdvisor.getUptimeEntries();
 
 		Assert.assertEquals(
-			"uptimes has two uptime entries", 3, uptimeEntries.size());
+			"uptime entries expected size", 3, uptimeEntries.size());
 
 		Map<String, Long> uptime = uptimeEntries.get(2);
 
 		Assert.assertNotNull(
-			"current uptime end time defined", uptime.get("endTime"));
+			"entry with current uptime has end time defined",
+			uptime.get("endTime"));
 
 		_uptimeAdvisor.resetCurrentUptimeEndTime(uptimeEntries);
 
 		uptime = uptimeEntries.get(2);
 
 		Assert.assertNull(
-			"current uptime end time must be null after reset",
+			"entry with current uptime has end time null after reset",
 			uptime.get("endTime"));
 	}
 
@@ -144,8 +215,7 @@ public class UptimeAdvisorTest extends PowerMockito {
 		Map<String, Long> uptime = uptimeEntries.get(0);
 
 		long endTimeBeforeUpdate = uptime.get("endTime");
-
-		_uptimeAdvisor.resetUptimes();
+		long startTimeBeforeUpdate = uptime.get("startTime");
 
 		try {
 			Thread.sleep(300);
@@ -159,16 +229,19 @@ public class UptimeAdvisorTest extends PowerMockito {
 
 		uptime = uptimeEntries.get(0);
 
-		long updatedEndTime = uptime.get("endTime");
+		long endTimeAfterUpdate = uptime.get("endTime");
+		long startTimeAfterUpdate = uptime.get("startTime");
 
-		Assert.assertNotEquals(endTimeBeforeUpdate, updatedEndTime);
+		Assert.assertEquals(
+			"start time before update equals to start time after update",
+			startTimeBeforeUpdate, startTimeAfterUpdate);
 		Assert.assertTrue(
-			"updated end time greater than old end time",
-			updatedEndTime > endTimeBeforeUpdate);
+			"end time after update greater than end time before update",
+			endTimeAfterUpdate > endTimeBeforeUpdate);
 	}
 
 	private final PortletPreferences _portletPreferences =
 		new MockPortletPreferencesImpl();
-	private final UptimeAdvisor _uptimeAdvisor = spy(new UptimeAdvisor());
+	private UptimeAdvisor _uptimeAdvisor;
 
 }
