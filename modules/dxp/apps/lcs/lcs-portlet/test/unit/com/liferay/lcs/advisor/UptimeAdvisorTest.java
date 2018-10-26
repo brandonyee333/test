@@ -230,11 +230,13 @@ public class UptimeAdvisorTest extends PowerMockito {
 		uptime = uptimeEntries.get(0);
 
 		long endTimeAfterUpdate = uptime.get("endTime");
+
 		long startTimeAfterUpdate = uptime.get("startTime");
 
 		Assert.assertEquals(
 			"start time before update equals to start time after update",
 			startTimeBeforeUpdate, startTimeAfterUpdate);
+
 		Assert.assertTrue(
 			"end time after update greater than end time before update",
 			endTimeAfterUpdate > endTimeBeforeUpdate);
