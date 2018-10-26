@@ -15,6 +15,7 @@
 package com.liferay.lcs.command;
 
 import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
+import com.liferay.lcs.advisor.UptimeAdvisor;
 import com.liferay.lcs.internal.event.LCSEvent;
 import com.liferay.lcs.internal.event.LCSEventListener;
 import com.liferay.lcs.messaging.SignOffCommandMessage;
@@ -33,10 +34,12 @@ public class SignOffCommand implements Command<SignOffCommandMessage> {
 
 	public SignOffCommand(
 		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor,
-		TaskSchedulerService taskSchedulerService) {
+		TaskSchedulerService taskSchedulerService,
+		UptimeAdvisor uptimeAdvisor) {
 
 		_lcsEventListeners.add(taskSchedulerService);
 		_lcsEventListeners.add(lcsClusterEntryTokenAdvisor);
+		_lcsEventListeners.add(uptimeAdvisor);
 	}
 
 	@Override

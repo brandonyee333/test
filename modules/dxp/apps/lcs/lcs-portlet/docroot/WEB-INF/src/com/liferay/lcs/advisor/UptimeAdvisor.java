@@ -19,6 +19,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import com.liferay.lcs.internal.event.LCSEvent;
+import com.liferay.lcs.internal.event.LCSEventListener;
 import com.liferay.lcs.util.LCSPortletPreferencesUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -40,7 +42,11 @@ import javax.portlet.PortletPreferences;
  * @author Ivica Cardic
  * @author Igor Beslic
  */
-public class UptimeAdvisor {
+public class UptimeAdvisor implements LCSEventListener {
+
+	public UptimeAdvisor(LCSKeyAdvisor lcsKeyAdvisor) {
+		_lcsKeyAdvisor = lcsKeyAdvisor;
+	}
 
 	public List<Map<String, Long>> getUptimeEntries() {
 		if (!_initalized) {
@@ -81,6 +87,25 @@ public class UptimeAdvisor {
 		}
 	}
 
+	@Override
+	public synchronized void onLCSEvent(LCSEvent lcsEvent) {
+		if (!_initalized) {
+			if (_log.isDebugEnabled()) {
+				_log.debug("Object instance is not initialized");
+			}
+
+			return;
+		}
+
+		if (lcsEvent == LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED) {
+			_startNewUptimeSession();
+		}
+
+		if (lcsEvent == LCSEvent.HANDSHAKE_SUCCESS) {
+			_resetUptimes();
+		}
+	}
+
 	public void resetCurrentUptimeEndTime(List<Map<String, Long>> uptimes) {
 		for (Map<String, Long> uptime : uptimes) {
 			if (_currentUptime.startTime == uptime.get("startTime")) {
@@ -89,36 +114,6 @@ public class UptimeAdvisor {
 				return;
 			}
 		}
-	}
-
-	public synchronized void resetUptimes() {
-		if (!_initalized) {
-			throw new UnsupportedOperationException("Bean is not initialized");
-		}
-
-		if (_log.isTraceEnabled()) {
-			_log.trace("Reset uptimes");
-		}
-
-		Iterator<Uptime> iterator = _uptimes.iterator();
-
-		while (iterator.hasNext()) {
-			Uptime uptime = iterator.next();
-
-			if (uptime.startTime != _currentUptime.startTime) {
-				iterator.remove();
-			}
-		}
-
-		_storeUptimes();
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Uptimes reset and ready for updates");
-		}
-	}
-
-	public void setLCSKeyAdvisor(LCSKeyAdvisor lcsKeyAdvisor) {
-		_lcsKeyAdvisor = lcsKeyAdvisor;
 	}
 
 	public synchronized void updateCurrentUptime() {
@@ -203,6 +198,51 @@ public class UptimeAdvisor {
 		}
 	}
 
+	private void _resetUptimes() {
+		if (!_initalized) {
+			throw new UnsupportedOperationException("Bean is not initialized");
+		}
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Reset uptimes");
+		}
+
+		Iterator<Uptime> iterator = _uptimes.iterator();
+
+		while (iterator.hasNext()) {
+			Uptime uptime = iterator.next();
+
+			if (uptime.startTime != _currentUptime.startTime) {
+				iterator.remove();
+			}
+		}
+
+		_storeUptimes();
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Uptimes reset and ready for updates");
+		}
+	}
+
+	private void _startNewUptimeSession() {
+		updateCurrentUptime();
+
+		long previousEndTime = _currentUptime.endTime;
+
+		_currentUptime = new Uptime();
+
+		_currentUptime.startTime = previousEndTime;
+		_currentUptime.endTime = System.currentTimeMillis();
+
+		_uptimes.add(_currentUptime);
+
+		_storeUptimes();
+
+		if (_log.isInfoEnabled()) {
+			_log.info("New uptime session started " + _currentUptime);
+		}
+	}
+
 	private void _storeUptimes() {
 		String key = _lcsKeyAdvisor.getKey();
 
@@ -239,7 +279,7 @@ public class UptimeAdvisor {
 
 	private Uptime _currentUptime;
 	private boolean _initalized;
-	private LCSKeyAdvisor _lcsKeyAdvisor;
+	private final LCSKeyAdvisor _lcsKeyAdvisor;
 	private List<Uptime> _uptimes;
 
 	private class Uptime {

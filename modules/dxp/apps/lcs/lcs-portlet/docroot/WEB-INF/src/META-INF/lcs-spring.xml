@@ -61,6 +61,7 @@
 	<bean class="com.liferay.lcs.command.SignOffCommand" id="com.liferay.lcs.command.SignOffCommand">
 		<constructor-arg ref="com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor" />
 		<constructor-arg ref="com.liferay.lcs.scheduler.TaskSchedulerService" />
+		<constructor-arg ref="com.liferay.lcs.advisor.UptimeAdvisor" />
 	</bean>
 
 	<!-- JSON -->
@@ -230,7 +231,7 @@
 	<!-- Uptime -->
 
 	<bean class="com.liferay.lcs.advisor.UptimeAdvisor" id="com.liferay.lcs.advisor.UptimeAdvisor">
-		<property name="LCSKeyAdvisor" ref="com.liferay.lcs.advisor.LCSKeyAdvisor" />
+		<constructor-arg ref="com.liferay.lcs.advisor.LCSKeyAdvisor" />
 	</bean>
 
 	<!-- Util -->

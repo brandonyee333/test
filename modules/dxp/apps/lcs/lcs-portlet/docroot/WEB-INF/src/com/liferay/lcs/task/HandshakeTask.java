@@ -105,6 +105,7 @@ public class HandshakeTask implements Task {
 
 		_lcsEventListeners.add(lcsGatewayClient);
 		_lcsEventListeners.add(taskSchedulerService);
+		_lcsEventListeners.add(uptimeAdvisor);
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Initialized " + this);
@@ -127,8 +128,6 @@ public class HandshakeTask implements Task {
 			_lcsGatewayClient.sendMessage(handshakeMessage);
 
 			_waitForHandshakeResponse();
-
-			_uptimeAdvisor.resetUptimes();
 
 			_notifyLCSEventListeners(LCSEvent.HANDSHAKE_SUCCESS);
 
