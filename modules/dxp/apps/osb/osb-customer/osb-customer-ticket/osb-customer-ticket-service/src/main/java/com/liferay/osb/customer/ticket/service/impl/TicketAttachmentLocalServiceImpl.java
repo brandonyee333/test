@@ -124,13 +124,13 @@ public class TicketAttachmentLocalServiceImpl
 			sb.append("<br /><br />");
 		}
 
-		sb.append("<a href=\"");
-
 		HttpServletRequest request = serviceContext.getRequest();
 
 		if (request == null) {
-			return StringPool.BLANK;
+			return sb.toString();
 		}
+
+		sb.append("<a href=\"");
 
 		String portletId =
 			"com_liferay_osb_customer_account_entry_details_web_" +
@@ -186,13 +186,14 @@ public class TicketAttachmentLocalServiceImpl
 			throw new NoSuchZendeskOrganizationException();
 		}
 
+		if (zendeskTicketId <= 0) {
+			throw new NoSuchZendeskTicketException();
+		}
+
 		ZendeskTicket zendeskTicket = _zendeskTicketWebService.getZendeskTicket(
 			zendeskTicketId);
 
-		if ((zendeskTicketId <= 0) ||
-			(zendeskOrganizationId !=
-				zendeskTicket.getZendeskOrganizationId())) {
-
+		if (zendeskOrganizationId != zendeskTicket.getZendeskOrganizationId()) {
 			throw new NoSuchZendeskTicketException();
 		}
 	}
