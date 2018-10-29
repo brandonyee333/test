@@ -124,6 +124,8 @@ public class DownloadsMigrationPortlet extends MVCPortlet {
 		DDMFormValues ddmFormValues, String patchTitle, String downloadLink,
 		String fileSize, String md5) {
 
+		downloadLink = fixLink(downloadLink);
+
 		DDMFormFieldValue downloadGroupDDMFormFieldValue =
 			createDDMFormFieldValue("downloadGroup", StringPool.BLANK);
 
@@ -213,13 +215,15 @@ public class DownloadsMigrationPortlet extends MVCPortlet {
 
 			link = link.substring(22);
 		}
-		else if (link.startsWith("\"https://www.liferay.com/") ||
-				 link.startsWith("https://web.liferay.com/group/customer") ||
+		else if (link.startsWith("https://web.liferay.com/group/customer") ||
 				 link.startsWith("https://web.liferay.com/documents") ||
 				 link.startsWith("https://www.liferay.com/group/customer") ||
 				 link.startsWith("https://www.liferay.com/documents")) {
 
 			link = link.substring(23);
+		}
+		else if (link.startsWith("\"https://www.liferay.com")) {
+			link = link.substring(24);
 		}
 
 		if (link.contains("/portal/all-portal")) {
