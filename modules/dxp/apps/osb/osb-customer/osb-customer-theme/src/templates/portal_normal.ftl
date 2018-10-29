@@ -10,6 +10,10 @@
 	<meta content="initial-scale=1.0, width=device-width" name="viewport" />
 
 	<@liferay_util["include"] page=top_head_include />
+
+	<%-- Theme JavaScript --%>
+
+	<script src='${htmlUtil.escape(portalUtil.getStaticResourceURL(request, "${javascript_folder}/main.js"))}' type="text/javascript"></script>
 </head>
 
 <body class="${css_class}">

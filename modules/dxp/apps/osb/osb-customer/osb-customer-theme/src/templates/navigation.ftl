@@ -57,3 +57,146 @@
 		</div>
 	</div>
 </div>
+
+<script>
+	const helpCenterBaseURL = 'https://help.liferay.com/hc/';
+
+	const accountLinks = {
+		className: 'account-links',
+		configs: [
+			{
+				name: '<@liferay.language key="my-requests" />',
+				url: helpCenterBaseURL + 'requests'
+			},
+			{
+				name: '<@liferay.language key="project-details" />',
+				url: ''
+			}
+		]
+	};
+
+	const highlightedLinks = {
+		className: 'highlighted',
+		configs: [
+			{
+				name: '<@liferay.language key="contact-us" />',
+				svgId: '#contact',
+				url: ''
+			}
+		]
+	};
+
+	const locale = {
+		currentLocale: {
+			name: '${w3c_language_id}',
+			url: '/'
+		},
+		alternativeLocales: [
+			{
+				name: '',
+				url: '/'
+			}
+		]
+	};
+
+	theme.render(
+		theme.MegaMenu,
+		{
+			accountLinks: accountLinks,
+			cardMenuItems: {
+				className: 'card-menu',
+				configs: [
+					{
+						name: '<@liferay.language key="dxp" /> 7.1',
+						svgId: '#dxp-logo',
+						url: helpCenterBaseURL + 'categories/360000872531'
+					},
+					{
+						name: '<@liferay.language key="dxp-cloud" />',
+						svgId: '#dxp-cloud-logo',
+						url: helpCenterBaseURL + 'categories/360000813091'
+					},
+					{
+						name: '<@liferay.language key="dxp" /> 7.0',
+						svgId: '#7-0-logo',
+						url: helpCenterBaseURL + 'categories/360000867932'
+					},
+					{
+						name: '<@liferay.language key="commerce" />',
+						svgId: '#commerce-logo',
+						url: helpCenterBaseURL + 'categories/360000867952'
+					},
+					{
+						name: '<@liferay.language key="analytics-cloud" />',
+						svgId: '#analytics-cloud-logo',
+						url: helpCenterBaseURL + 'categories/360000872551'
+					},
+					{
+						name: '<@liferay.language key="portal" /> 6.2',
+						svgId: '#6-2-logo',
+						url: helpCenterBaseURL + 'categories/360000867972'
+					},
+					{
+						name: '<@liferay.language key="portal" /> 6.1',
+						svgId: '#6-1-logo',
+						url: helpCenterBaseURL + 'categories/360000872571'
+					},
+					{
+						name: '<@liferay.language key="portal" /> 6.0',
+						svgId: '#6-0-logo',
+						url: helpCenterBaseURL + 'categories/360000867992'
+					}
+				]
+			},
+			highlightedLinks: highlightedLinks,
+			locale: locale,
+			name: '<@liferay.language key="products" />'
+		},
+		document.getElementById('megaMenuProducts')
+	);
+
+	theme.render(
+		theme.MegaMenu,
+		{
+			accountLinks: accountLinks,
+			cardMenuItems: {
+				className: 'card-menu',
+				configs: []
+			},
+			highlightedLinks: highlightedLinks,
+			locale: locale,
+			name: '<@liferay.language key="resources" />'
+		},
+		document.getElementById('megaMenuResources')
+	);
+
+	theme.render(
+		theme.MegaMenu,
+		{
+			accountLinks: accountLinks,
+			cardMenuItems: {
+				className: 'card-menu',
+				configs: []
+			},
+			highlightedLinks: highlightedLinks,
+			locale: locale,
+			name: '<@liferay.language key="security" />'
+		},
+		document.getElementById('megaMenuSecurity')
+	);
+
+	theme.render(
+		theme.MegaMenu,
+		{
+			accountLinks: accountLinks,
+			cardMenuItems: {
+				className: 'card-menu',
+				configs: []
+			},
+			highlightedLinks: highlightedLinks,
+			locale: locale,
+			name: '<@liferay.language key="support" />'
+		},
+		document.getElementById('megaMenuSupport')
+	);
+</script>

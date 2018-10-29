@@ -1,4 +1,4 @@
-import {render, MegaMenu} from 'liferay-help-center-megamenu';
+export {render, MegaMenu} from 'liferay-help-center-megamenu';
 
 Liferay.Loader.require(
 	'metal-debounce/src/debounce',

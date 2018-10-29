@@ -1,5 +1,3 @@
-const path = require('path');
-
 module.exports = {
 	entry: './src/js/main.js',
 	module: {
@@ -13,6 +11,7 @@ module.exports = {
 	},
 	output: {
 		filename: 'main.js',
-		path: path.resolve('build/js')
+		library: 'theme',
+		libraryTarget: 'window'
 	}
 };
