@@ -455,7 +455,7 @@ public class OfferingEntryLocalServiceImpl
 			if (analyticsCloudBasicAccountEntry == null) {
 				accountEntryLocalService.addAnalyticsCloudBasicAccountEntry(
 					accountEntry.getDossieraAccountKey(),
-					accountEntry.getCorpEntryName(),
+					accountEntry.getCorpEntryName(), accountEntry.getName(),
 					offeringEntry.getSupportEndDate());
 			}
 			else {

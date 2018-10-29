@@ -330,10 +330,17 @@ public class AccountEntryLocalServiceImpl
 
 	public void addAnalyticsCloudBasicAccountEntry(
 			String dossieraAccountKey, String corpEntryName,
-			Date supportEndDate)
+			String accountEntryName, Date supportEndDate)
 		throws PortalException {
 
-		String name = corpEntryName + " Basic AC Tier";
+		String name = StringPool.BLANK;
+
+		if (Validator.isNotNull(corpEntryName)) {
+			name = corpEntryName + " Basic AC Tier";
+		}
+		else {
+			name = accountEntryName + " Basic AC Tier";
+		}
 
 		// Corp project
 
