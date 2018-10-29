@@ -20,7 +20,7 @@ import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
 import com.liferay.osb.customer.zendesk.web.service.search.QueryFactory;
 import com.liferay.osb.customer.zendesk.web.service.search.SearchHits;
-import com.liferay.osb.customer.zendesk.web.service.search.TicketQuery;
+import com.liferay.osb.customer.zendesk.web.service.search.ZendeskTicketQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -102,27 +102,28 @@ public class CleanTicketAttachmentsMessageListener extends BaseMessageListener {
 
 	@Override
 	protected void doReceive(Message message) throws Exception {
-		TicketQuery ticketQuery = _queryFactory.createTicketQuery();
+		ZendeskTicketQuery zendeskTicketQuery =
+			_queryFactory.createZendeskTicketQuery();
 
-		ticketQuery.addCriterion("status:closed");
+		zendeskTicketQuery.addCriterion("status:closed");
 
 		Date startDate = new Date(
 			System.currentTimeMillis() - ((_daysClosed + 7) * Time.DAY));
 		Date endDate = new Date(
 			System.currentTimeMillis() - (_daysClosed * Time.DAY));
 
-		ticketQuery.addCriterion(
+		zendeskTicketQuery.addCriterion(
 			"updated>" + _simpleDateFormat.format(startDate));
-		ticketQuery.addCriterion(
+		zendeskTicketQuery.addCriterion(
 			"updated<" + _simpleDateFormat.format(endDate));
 
 		int page = 1;
 
 		while (page > 0) {
-			ticketQuery.setPage(page);
+			zendeskTicketQuery.setPage(page);
 
 			SearchHits<ZendeskTicket> searchHits =
-				_zendeskTicketWebService.search(ticketQuery);
+				_zendeskTicketWebService.search(zendeskTicketQuery);
 
 			deleteTicketAttachments(searchHits.getResults());
 
