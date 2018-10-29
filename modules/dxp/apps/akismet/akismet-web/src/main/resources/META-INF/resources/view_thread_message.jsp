@@ -87,6 +87,10 @@ if (messageId > 0) {
 						</c:if>
 					</h4>
 
+					<%
+					User messageUser = UserLocalServiceUtil.fetchUser(message.getUserId());
+					%>
+
 					<c:if test="<%= (messageUser != null) && !messageUser.isDefaultUser() %>">
 
 						<%
@@ -94,8 +98,6 @@ if (messageId > 0) {
 
 						int posts = statsUser.getMessageCount();
 						String[] ranks = MBUtil.getUserRank(mbGroupServiceSettings, themeDisplay.getLanguageId(), statsUser);
-
-						User messageUser = UserLocalServiceUtil.fetchUser(message.getUserId());
 						%>
 
 						<c:if test="<%= Validator.isNotNull(ranks[1]) %>">
