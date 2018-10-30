@@ -103,6 +103,7 @@ public class HandshakeTask implements Task {
 
 		_lcsEventListeners = new ArrayList<>();
 
+		_lcsEventListeners.add(lcsClusterEntryTokenAdvisor);
 		_lcsEventListeners.add(lcsGatewayClient);
 		_lcsEventListeners.add(taskSchedulerService);
 		_lcsEventListeners.add(uptimeAdvisor);

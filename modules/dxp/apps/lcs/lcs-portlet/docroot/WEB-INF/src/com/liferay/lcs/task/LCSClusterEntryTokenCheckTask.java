@@ -43,6 +43,7 @@ public class LCSClusterEntryTokenCheckTask implements Task {
 
 		_lcsEventListeners = new ArrayList<>();
 
+		_lcsEventListeners.add(lcsClusterEntryTokenAdvisor);
 		_lcsEventListeners.add(taskSchedulerService);
 
 		if (_log.isTraceEnabled()) {
