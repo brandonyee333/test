@@ -56,11 +56,13 @@ import org.osgi.service.component.annotations.Reference;
 public class AccountEntrySynchronizer {
 
 	public void add(AccountEntry accountEntry) throws PortalException {
+		String jiraProjectKey = StringPool.BLANK;
 		String partnerEntryCode = StringPool.BLANK;
 
 		PartnerEntry partnerEntry = accountEntry.getPartnerEntry();
 
 		if (partnerEntry != null) {
+			jiraProjectKey = partnerEntry.getJiraProjectKey();
 			partnerEntryCode = partnerEntry.getCode();
 		}
 
@@ -85,8 +87,8 @@ public class AccountEntrySynchronizer {
 			String.valueOf(accountEntry.getAccountEntryId()),
 			accountEntry.getName(),
 			String.valueOf(accountEntry.getPartnerManagedSupport()),
-			partnerEntry.getJiraProjectKey(), partnerEntryCode,
-			supportLevelLabel, accountEntry.getStatusLabel(),
+			jiraProjectKey, partnerEntryCode, supportLevelLabel,
+			accountEntry.getStatusLabel(),
 			AccountEntryConstants.getLanguageLabel(languageIds[0]),
 			supportRegion.getName(),
 			AccountEntryConstants.getTierLabel(accountEntry.getTier()),
