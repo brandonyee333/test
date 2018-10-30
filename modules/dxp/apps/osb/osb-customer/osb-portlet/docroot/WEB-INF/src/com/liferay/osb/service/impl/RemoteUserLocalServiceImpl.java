@@ -26,8 +26,11 @@ import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Contact;
+import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.Organization;
+import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -290,6 +293,50 @@ public class RemoteUserLocalServiceImpl extends RemoteUserLocalServiceBaseImpl {
 			}
 
 			remoteUser.setOrganizations(organizations);
+		}
+
+		JSONArray phonesJSONArray = jsonObject.getJSONArray("phones");
+
+		if (phonesJSONArray != null) {
+			List<Phone> phones = new ArrayList<>();
+
+			long classNameId = classNameLocalService.getClassNameId(Contact.class);
+
+			for (int i = 0; i < phonesJSONArray.length(); i++) {
+				JSONObject phoneJSONObject = phonesJSONArray.getJSONObject(i);
+
+				long phoneId = phoneJSONObject.getLong("phoneId");
+
+				Phone phone = phoneLocalService.createPhone(phoneId);
+
+				phone.setCompanyId(OSBConstants.COMPANY_ID);
+				phone.setClassNameId(classNameId);
+				phone.setExtension(phoneJSONObject.getString("extension"));
+				phone.setNumber(phoneJSONObject.getString("number"));
+				phone.setPrimary(phoneJSONObject.getBoolean("primary"));
+
+				List<ListType> listTypes = listTypeLocalService.getListTypes(
+					"com.liferay.portal.kernel.model.Contact.phone");
+
+				for (ListType listType : listTypes) {
+					String name = LanguageUtil.get(
+						Locale.US, listType.getName());
+
+					if (name.equals("Mobile Phone")) {
+						name = "Mobile";
+					}
+
+					if (name.equals(phoneJSONObject.getString("type"))) {
+						phone.setTypeId(listType.getListTypeId());
+
+						break;
+					}
+				}
+
+				phones.add(phone);
+			}
+
+			remoteUser.setPhones(phones);
 		}
 
 		JSONArray rolesJSONArray = jsonObject.getJSONArray("roles");

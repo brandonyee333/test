@@ -19,6 +19,8 @@ package com.liferay.osb.customer.zendesk.connector.constants;
  */
 public interface ZendeskRESTEndpoints {
 
+	public static final String IDENTITIES = "/identities.json";
+
 	public static final String ORGANIZATION_MEMBERSHIPS_CREATE_MANY =
 		"organization_memberships/create_many.json";
 

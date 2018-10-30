@@ -1,6 +1,11 @@
 <?xml version="1.0"?>
 
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-init-method="afterPropertiesSet" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+<beans
+	default-init-method="afterPropertiesSet"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"
+>
 	<bean class="com.liferay.osb.service.impl.AccountAttachmentLocalServiceImpl" id="com.liferay.osb.service.AccountAttachmentLocalService" />
 	<bean class="com.liferay.osb.service.impl.AccountAttachmentServiceImpl" id="com.liferay.osb.service.AccountAttachmentService" />
 	<bean class="com.liferay.osb.service.persistence.impl.AccountAttachmentPersistenceImpl" id="com.liferay.osb.service.persistence.AccountAttachmentPersistence" parent="basePersistence" />

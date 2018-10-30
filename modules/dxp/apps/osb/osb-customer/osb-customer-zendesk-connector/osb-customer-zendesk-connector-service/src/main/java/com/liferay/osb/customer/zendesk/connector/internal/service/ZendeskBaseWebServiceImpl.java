@@ -282,8 +282,13 @@ public class ZendeskBaseWebServiceImpl
 					zendeskRequest.getEndpoint(),
 					zendeskRequest.getParameters());
 			}
-			else {
+			else if (body != null) {
 				return delete(zendeskRequest.getEndpoint(), body.toString());
+			}
+			else {
+				return delete(
+					zendeskRequest.getEndpoint(),
+					new HashMap<String, String>());
 			}
 		}
 		else {

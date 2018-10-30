@@ -16,12 +16,19 @@ package com.liferay.osb.customer.rabbitmq.processors;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.osb.service.RemoteUserLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.Contact;
+import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+import com.liferay.portal.kernel.service.PhoneLocalServiceUtil;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -69,6 +76,8 @@ public class UserUpdateMessageProcessor extends BaseMessageProcessor {
 		ExpandoBridge remoteExpandoBridge = remoteUser.getExpandoBridge();
 
 		expandoBridge.setAttributes(remoteExpandoBridge.getAttributes(), false);
+
+		updateUserPhones(contact.getContactId(), user, remoteUser);
 	}
 
 	@Reference(
@@ -77,6 +86,48 @@ public class UserUpdateMessageProcessor extends BaseMessageProcessor {
 	)
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
+	}
+
+	protected void updateUserPhones(long contactId, User user, User remoteUser)
+		throws PortalException {
+
+		Set<Long> phoneIds = new HashSet<>();
+
+		List<Phone> phones = remoteUser.getPhones();
+
+		for (Phone curPhone : phones) {
+			Phone phone = PhoneLocalServiceUtil.fetchPhone(
+				curPhone.getPhoneId());
+
+			if (phone == null) {
+				ServiceContext serviceContext = new ServiceContext();
+
+				curPhone.setUuid(serviceContext.getUuid());
+
+				curPhone.setUserId(user.getUserId());
+				curPhone.setUserName(user.getFullName());
+				curPhone.setClassPK(contactId);
+
+				curPhone = PhoneLocalServiceUtil.addPhone(curPhone);
+			}
+			else {
+				curPhone = PhoneLocalServiceUtil.updatePhone(
+					curPhone.getPhoneId(), curPhone.getNumber(),
+					curPhone.getExtension(), curPhone.getTypeId(),
+					curPhone.getPrimary());
+			}
+
+			phoneIds.add(curPhone.getPhoneId());
+		}
+
+		phones = PhoneLocalServiceUtil.getPhones(
+			user.getCompanyId(), Contact.class.getName(), contactId);
+
+		for (Phone phone : phones) {
+			if (!phoneIds.contains(phone.getPhoneId())) {
+				PhoneLocalServiceUtil.deletePhone(phone.getPhoneId());
+			}
+		}
 	}
 
 }

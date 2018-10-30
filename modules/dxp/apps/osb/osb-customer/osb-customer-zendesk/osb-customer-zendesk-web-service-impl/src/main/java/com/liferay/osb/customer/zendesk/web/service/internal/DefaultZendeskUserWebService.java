@@ -70,8 +70,22 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 		return zendeskConverter.toZendeskUser(responseJSONObject);
 	}
 
+	public void createZendeskUserIdentity(
+			long zendeskUserId, String type, String value)
+		throws PortalException {
+
+		throw new UnsupportedOperationException();
+	}
+
 	public void createZendeskUserOrganizationMemberships(
 			long zendeskUserId, long[] zendeskOrganizationIds)
+		throws PortalException {
+
+		throw new UnsupportedOperationException();
+	}
+
+	public void deleteZendeskUserIdentity(
+			long zendeskUserId, long zendeskIdentityId, String type)
 		throws PortalException {
 
 		throw new UnsupportedOperationException();
@@ -137,6 +151,13 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 		}
 
 		return zendeskConverter.toZendeskUser(usersJSONArray.getJSONObject(0));
+	}
+
+	public void updateZendeskUserIdentity(
+			long zendeskUserId, long zendeskIdentityId, String value)
+		throws PortalException {
+
+		throw new UnsupportedOperationException();
 	}
 
 	protected JSONObject getZendeskUserJSONObject(

@@ -89,6 +89,30 @@ public class AsyncZendeskUserWebService
 	}
 
 	@Override
+	public void createZendeskUserIdentity(
+			long zendeskUserId, String type, String value)
+		throws PortalException {
+
+		String endpoint =
+			ZendeskRESTEndpoints.URL_API_V2 + "users" + StringPool.SLASH +
+				zendeskUserId + ZendeskRESTEndpoints.IDENTITIES;
+
+		JSONObject identityJSONObject = JSONFactoryUtil.createJSONObject();
+
+		identityJSONObject.put("type", type);
+		identityJSONObject.put("value", value);
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("identity", identityJSONObject);
+
+		ZendeskRequest zendeskRequest = new ZendeskRequest(
+			endpoint, "post", null, jsonObject, "zendesk.identity.create");
+
+		messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
+	}
+
+	@Override
 	public void createZendeskUserOrganizationMemberships(
 			long zendeskUserId, long[] zendeskOrganizationIds)
 		throws PortalException {
@@ -117,6 +141,30 @@ public class AsyncZendeskUserWebService
 			endpoint, "post", null, jsonObject, null);
 
 		messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
+	}
+
+	@Override
+	public void deleteZendeskUserIdentity(
+			long zendeskUserId, long zendeskIdentityId, String type)
+		throws PortalException {
+
+		String endpoint =
+			ZendeskRESTEndpoints.URL_API_V2 + "users" + StringPool.SLASH +
+				zendeskUserId + StringPool.SLASH + "identities" +
+					StringPool.SLASH + zendeskIdentityId + ".json";
+
+		ZendeskRequest zendeskRequest = new ZendeskRequest(
+			endpoint, "delete", null, null, null);
+
+		messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("identityId", zendeskIdentityId);
+		jsonObject.put("type", type);
+
+		messagePublisherUtil.sendEventNotification(
+			"zendesk.identity.delete", jsonObject);
 	}
 
 	@Override
@@ -176,6 +224,30 @@ public class AsyncZendeskUserWebService
 
 		ZendeskRequest zendeskRequest = new ZendeskRequest(
 			endpoint, "delete", null, jsonObject, null);
+
+		messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
+	}
+
+	@Override
+	public void updateZendeskUserIdentity(
+			long zendeskUserId, long zendeskIdentityId, String value)
+		throws PortalException {
+
+		String endpoint =
+			ZendeskRESTEndpoints.URL_API_V2 + "users" + StringPool.SLASH +
+				zendeskUserId + StringPool.SLASH + "identities" +
+					StringPool.SLASH + zendeskIdentityId + ".json";
+
+		JSONObject identityJSONObject = JSONFactoryUtil.createJSONObject();
+
+		identityJSONObject.put("value", value);
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("identity", identityJSONObject);
+
+		ZendeskRequest zendeskRequest = new ZendeskRequest(
+			endpoint, "put", null, jsonObject, null);
 
 		messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
 	}

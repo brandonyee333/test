@@ -133,7 +133,9 @@
 
 		<!-- References -->
 
+		<reference entity="ListType" package-path="com.liferay.portal" />
 		<reference entity="Organization" package-path="com.liferay.portal" />
+		<reference entity="Phone" package-path="com.liferay.portal" />
 		<reference entity="Role" package-path="com.liferay.portal" />
 		<reference entity="User" package-path="com.liferay.portal" />
 		<reference entity="ExpandoColumn" package-path="com.liferay.portlet.expando" />
