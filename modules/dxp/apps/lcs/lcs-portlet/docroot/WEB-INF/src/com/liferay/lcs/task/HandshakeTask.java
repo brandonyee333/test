@@ -88,7 +88,6 @@ public class HandshakeTask implements Task {
 
 		_lcsClusterEntryTokenId = lcsClusterEntryTokenId;
 		_lcsAlertAdvisor = lcsAlertAdvisor;
-		_lcsClusterEntryTokenAdvisor = lcsClusterEntryTokenAdvisor;
 		_lcsGatewayClient = lcsGatewayClient;
 		_lcsKeyAdvisor = lcsKeyAdvisor;
 		_threadFactory = threadFactory;
@@ -137,41 +136,48 @@ public class HandshakeTask implements Task {
 			}
 		}
 		catch (Exception e) {
-			LCSRESTError lcsRESTError = LCSRESTError.UNDEFINED;
+			String exceptionMessage = e.getMessage();
 
-			if (Validator.isNotNull(e.getMessage())) {
-				lcsRESTError = LCSRESTError.getRESTError(e.getMessage());
-			}
+			if (e instanceof LCSHandshakeException) {
+				LCSRESTError lcsRESTError = LCSRESTError.UNDEFINED;
 
-			if (_log.isDebugEnabled()) {
-				_log.debug(e.getMessage(), e);
+				if (Validator.isNotNull(exceptionMessage)) {
+					lcsRESTError = LCSRESTError.getRESTError(e.getMessage());
+
+					if (lcsRESTError != LCSRESTError.UNDEFINED) {
+						exceptionMessage = lcsRESTError.getErrorDescription();
+					}
+				}
+
+				if (_log.isDebugEnabled()) {
+					_log.debug(exceptionMessage, e);
+				}
+				else if (_log.isWarnEnabled()) {
+					_log.warn(exceptionMessage);
+				}
+
+				if (lcsRESTError.getErrorCode() == 200) {
+					_notifyLCSEventListeners(
+						LCSEvent.
+							HANDSHAKE_FAILED_LCS_CLUSTER_ENTRY_TOKEN_INVALID);
+				}
+				else if (lcsRESTError.getErrorCode() == 201) {
+
+					_notifyLCSEventListeners(
+						LCSEvent.
+							HANDSHAKE_FAILED_LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH);
+				}
 			}
 			else {
-				if (_log.isWarnEnabled()) {
-					if (lcsRESTError == LCSRESTError.UNDEFINED) {
-						_log.warn(e.getMessage());
-					}
-					else {
-						_log.warn(lcsRESTError.getErrorDescription());
-					}
+				if (_log.isDebugEnabled()) {
+					_log.debug(exceptionMessage, e);
+				}
+				else if (_log.isWarnEnabled()) {
+					_log.warn(exceptionMessage);
 				}
 			}
 
-			if (e instanceof LCSHandshakeException) {
-				_lcsClusterEntryTokenAdvisor.checkLCSClusterEntryTokenError(
-					(LCSHandshakeException)e);
-			}
-
-			if ((lcsRESTError.getErrorCode() < 200) ||
-				(lcsRESTError.getErrorCode() > 299)) {
-
-				_notifyLCSEventListeners(LCSEvent.HANDSHAKE_FAILED);
-
-				return;
-			}
-
-			_notifyLCSEventListeners(
-				LCSEvent.HANDSHAKE_FAILED_LCS_CLUSTER_ENTRY_TOKEN_CORRUPTED);
+			_notifyLCSEventListeners(LCSEvent.HANDSHAKE_FAILED);
 		}
 	}
 
@@ -442,7 +448,6 @@ public class HandshakeTask implements Task {
 	private final long _handshakeWaitTime;
 	private final String _key;
 	private final LCSAlertAdvisor _lcsAlertAdvisor;
-	private final LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
 	private final long _lcsClusterEntryTokenId;
 	private final List<LCSEventListener> _lcsEventListeners;
 	private final LCSGatewayClient _lcsGatewayClient;

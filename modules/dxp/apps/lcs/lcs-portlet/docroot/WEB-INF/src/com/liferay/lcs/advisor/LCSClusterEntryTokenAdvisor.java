@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.lcs.activation.LCSClusterEntryTokenContentAdvisor;
 import com.liferay.lcs.exception.LCSClusterEntryTokenDecryptException;
-import com.liferay.lcs.exception.LCSHandshakeException;
 import com.liferay.lcs.exception.LCSKeystoreException;
 import com.liferay.lcs.exception.MissingLCSClusterEntryTokenException;
 import com.liferay.lcs.exception.MultipleLCSClusterEntryTokenException;
@@ -54,13 +53,8 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public class LCSClusterEntryTokenAdvisor implements LCSEventListener {
 
-	public void checkLCSClusterEntryTokenError(LCSHandshakeException lcshe) {
-		if (lcshe.getErrorCode() == 200) {
-			_lcsAlertAdvisor.add(LCSAlert.ERROR_INVALID_TOKEN);
-		}
-		else if (lcshe.getErrorCode() == 201) {
-			_lcsAlertAdvisor.add(LCSAlert.ERROR_ENVIRONMENT_MISMATCH);
-		}
+	public LCSClusterEntryTokenAdvisor(LCSAlertAdvisor lcsAlertAdvisor) {
+		_lcsAlertAdvisor = lcsAlertAdvisor;
 	}
 
 	public String getLCSAccessSecret() {
@@ -82,10 +76,25 @@ public class LCSClusterEntryTokenAdvisor implements LCSEventListener {
 	@Override
 	public void onLCSEvent(LCSEvent lcsEvent) {
 		if ((lcsEvent ==
-				LCSEvent.HANDSHAKE_FAILED_LCS_CLUSTER_ENTRY_TOKEN_CORRUPTED) ||
+				LCSEvent.HANDSHAKE_FAILED_LCS_CLUSTER_ENTRY_TOKEN_INVALID) ||
+			(lcsEvent ==
+				LCSEvent.
+					HANDSHAKE_FAILED_LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH) ||
 			(lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_FAILED) ||
 			(lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALIDATED) ||
 			(lcsEvent == LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED)) {
+
+			if (lcsEvent ==
+					LCSEvent.HANDSHAKE_FAILED_LCS_CLUSTER_ENTRY_TOKEN_INVALID) {
+
+				_lcsAlertAdvisor.add(LCSAlert.ERROR_INVALID_TOKEN);
+			}
+			else if (lcsEvent ==
+						LCSEvent.
+							HANDSHAKE_FAILED_LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH) {
+
+				_lcsAlertAdvisor.add(LCSAlert.ERROR_ENVIRONMENT_MISMATCH);
+			}
 
 			_deleteLCSCLusterEntryTokenFile();
 		}
@@ -115,10 +124,6 @@ public class LCSClusterEntryTokenAdvisor implements LCSEventListener {
 			lcsClusterEntryTokenContentAdvisor.getPortalPropertiesBlacklist();
 
 		return lcsClusterEntryToken;
-	}
-
-	public void setLCSAlertAdvisor(LCSAlertAdvisor lcsAlertAdvisor) {
-		_lcsAlertAdvisor = lcsAlertAdvisor;
 	}
 
 	protected String decrypt(byte[] bytes, int lcsPortletBuildNumber)
