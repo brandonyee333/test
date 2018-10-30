@@ -54,12 +54,20 @@ public class ZendeskArticle implements TranslatableModel {
 		return _title;
 	}
 
+	public Date getUpdateDate() {
+		return _updateDate;
+	}
+
 	public long getZendeskArticleId() {
 		return _zendeskArticleId;
 	}
 
 	public List<ZendeskTranslation> getZendeskTranslations() {
 		return _zendeskTranslations;
+	}
+
+	public boolean isDraft() {
+		return _draft;
 	}
 
 	public void setBody(String body) {
@@ -70,12 +78,20 @@ public class ZendeskArticle implements TranslatableModel {
 		_createDate = createDate;
 	}
 
+	public void setDraft(boolean draft) {
+		_draft = draft;
+	}
+
 	public void setLabelNames(Set<String> labelNames) {
 		_labelNames = labelNames;
 	}
 
 	public void setTitle(String title) {
 		_title = title;
+	}
+
+	public void setUpdateDate(Date updateDate) {
+		_updateDate = updateDate;
 	}
 
 	public void setZendeskArticleId(long zendeskArticleId) {
@@ -90,8 +106,10 @@ public class ZendeskArticle implements TranslatableModel {
 
 	private String _body;
 	private Date _createDate;
+	private boolean _draft;
 	private Set<String> _labelNames = new HashSet<>();
 	private String _title;
+	private Date _updateDate;
 	private long _zendeskArticleId;
 	private List<ZendeskTranslation> _zendeskTranslations = new ArrayList<>();
 

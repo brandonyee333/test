@@ -61,8 +61,7 @@ public class ZendeskConverter {
 			throw new PortalException(dtpe);
 		}
 
-		zendeskArticle.setTitle(jsonObject.getString("title"));
-		zendeskArticle.setZendeskArticleId(jsonObject.getLong("id"));
+		zendeskArticle.setDraft(jsonObject.getBoolean("draft"));
 
 		JSONArray labelNamesJSONArray = jsonObject.getJSONArray("label_names");
 
@@ -75,6 +74,21 @@ public class ZendeskConverter {
 
 			zendeskArticle.setLabelNames(labelNames);
 		}
+
+		zendeskArticle.setTitle(jsonObject.getString("title"));
+
+		String updatedAt = jsonObject.getString("updated_at");
+
+		try {
+			Instant instant = Instant.parse(updatedAt);
+
+			zendeskArticle.setUpdateDate(new Date(instant.toEpochMilli()));
+		}
+		catch (DateTimeParseException dtpe) {
+			throw new PortalException(dtpe);
+		}
+
+		zendeskArticle.setZendeskArticleId(jsonObject.getLong("id"));
 
 		JSONArray translationsJSONArray = jsonObject.getJSONArray(
 			"translations");

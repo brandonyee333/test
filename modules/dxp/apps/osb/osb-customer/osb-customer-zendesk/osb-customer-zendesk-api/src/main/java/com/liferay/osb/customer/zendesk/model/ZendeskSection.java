@@ -28,6 +28,10 @@ public class ZendeskSection implements TranslatableModel {
 	public ZendeskSection() {
 	}
 
+	public String getBody() {
+		return _description;
+	}
+
 	public Date getCreateDate() {
 		return _createDate;
 	}
@@ -46,6 +50,10 @@ public class ZendeskSection implements TranslatableModel {
 
 	public String getSourceType() {
 		return ZendeskTranslationConstants.SOURCE_TYPE_SECTION;
+	}
+
+	public String getTitle() {
+		return _name;
 	}
 
 	public long getZendeskSectionId() {

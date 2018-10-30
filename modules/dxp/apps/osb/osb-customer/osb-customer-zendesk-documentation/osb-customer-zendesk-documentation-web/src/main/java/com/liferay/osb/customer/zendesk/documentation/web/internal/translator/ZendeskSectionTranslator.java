@@ -20,6 +20,8 @@ import com.liferay.osb.customer.zendesk.web.service.search.Query;
 import com.liferay.osb.customer.zendesk.web.service.search.SearchHits;
 import com.liferay.portal.kernel.exception.PortalException;
 
+import java.util.Date;
+
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -28,6 +30,21 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true, service = ZendeskSectionTranslator.class)
 public class ZendeskSectionTranslator extends BaseTranslator<ZendeskSection> {
+
+	protected boolean continueTranslating(
+		ZendeskSection zendeskSection, Date stopDate) {
+
+		if (stopDate.after(zendeskSection.getCreateDate())) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+
+	protected String getSortBy() {
+		return "created_at";
+	}
 
 	protected SearchHits<ZendeskSection> search(Query query)
 		throws PortalException {

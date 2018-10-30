@@ -14,7 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.model;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,11 +21,13 @@ import java.util.List;
  */
 public interface TranslatableModel {
 
-	public Date getCreateDate();
+	public String getBody();
 
 	public long getSourceId();
 
 	public String getSourceType();
+
+	public String getTitle();
 
 	public List<ZendeskTranslation> getZendeskTranslations();
 

@@ -36,12 +36,12 @@ import org.osgi.service.component.annotations.Reference;
  */
 public abstract class BaseTranslator<T extends TranslatableModel> {
 
-	public void autoTranslate(Date createdAfterDate) throws PortalException {
+	public void autoTranslate(Date stopDate) throws PortalException {
 		Query query = queryFactory.createQuery();
 
 		query.addSideload("translations");
 		query.setPage(1);
-		query.setSortBy("created_at");
+		query.setSortBy(getSortBy());
 		query.setSortOrder(false);
 
 		while (query.getPage() > 0) {
@@ -56,17 +56,19 @@ public abstract class BaseTranslator<T extends TranslatableModel> {
 							StringPool.POUND + result.getSourceId());
 				}
 
-				checkZendeskTranslations(result.getZendeskTranslations());
+				if (isTranslate(result)) {
+					addZendeskTranslations(result);
+				}
 			}
 
-			if (createdAfterDate != null) {
+			if (stopDate != null) {
 				if (results.isEmpty()) {
 					break;
 				}
 
 				T lastResult = results.get(results.size() - 1);
 
-				if (createdAfterDate.after(lastResult.getCreateDate())) {
+				if (!continueTranslating(lastResult, stopDate)) {
 					break;
 				}
 			}
@@ -75,12 +77,28 @@ public abstract class BaseTranslator<T extends TranslatableModel> {
 		}
 	}
 
-	protected void checkZendeskTranslations(
-			List<ZendeskTranslation> zendeskTranslations)
-		throws PortalException {
+	protected void addZendeskTranslations(T result) throws PortalException {
+		for (String curLocale : ZendeskLocales.LOCALES_ENABLED) {
+			if (curLocale.equals(ZendeskLocales.US)) {
+				continue;
+			}
+
+			zendeskTranslationWebService.addZendeskTranslation(
+				result.getSourceType(), result.getSourceId(), curLocale,
+				result.getTitle(), result.getBody());
+		}
+	}
+
+	protected abstract boolean continueTranslating(T result, Date stopDate);
+
+	protected abstract String getSortBy();
+
+	protected boolean isTranslate(T result) {
+		List<ZendeskTranslation> zendeskTranslations =
+			result.getZendeskTranslations();
 
 		if (zendeskTranslations.size() != 1) {
-			return;
+			return false;
 		}
 
 		ZendeskTranslation zendeskTranslation = zendeskTranslations.get(0);
@@ -88,19 +106,10 @@ public abstract class BaseTranslator<T extends TranslatableModel> {
 		String locale = zendeskTranslation.getLocale();
 
 		if (!locale.equals(ZendeskLocales.US)) {
-			return;
+			return false;
 		}
 
-		for (String curLocale : ZendeskLocales.LOCALES_ENABLED) {
-			if (curLocale.equals(ZendeskLocales.US)) {
-				continue;
-			}
-
-			zendeskTranslationWebService.addZendeskTranslation(
-				zendeskTranslation.getSourceType(),
-				zendeskTranslation.getSourceId(), curLocale,
-				zendeskTranslation.getTitle(), zendeskTranslation.getBody());
-		}
+		return true;
 	}
 
 	protected abstract SearchHits<T> search(Query query) throws PortalException;
