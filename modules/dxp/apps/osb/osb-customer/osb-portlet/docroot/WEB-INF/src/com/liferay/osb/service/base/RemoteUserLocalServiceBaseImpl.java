@@ -64,7 +64,9 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
+import com.liferay.portal.kernel.service.persistence.ListTypePersistence;
 import com.liferay.portal.kernel.service.persistence.OrganizationPersistence;
+import com.liferay.portal.kernel.service.persistence.PhonePersistence;
 import com.liferay.portal.kernel.service.persistence.RolePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
@@ -1400,6 +1402,43 @@ public abstract class RemoteUserLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the list type local service.
+	 *
+	 * @return the list type local service
+	 */
+	public com.liferay.portal.kernel.service.ListTypeLocalService getListTypeLocalService() {
+		return listTypeLocalService;
+	}
+
+	/**
+	 * Sets the list type local service.
+	 *
+	 * @param listTypeLocalService the list type local service
+	 */
+	public void setListTypeLocalService(
+		com.liferay.portal.kernel.service.ListTypeLocalService listTypeLocalService) {
+		this.listTypeLocalService = listTypeLocalService;
+	}
+
+	/**
+	 * Returns the list type persistence.
+	 *
+	 * @return the list type persistence
+	 */
+	public ListTypePersistence getListTypePersistence() {
+		return listTypePersistence;
+	}
+
+	/**
+	 * Sets the list type persistence.
+	 *
+	 * @param listTypePersistence the list type persistence
+	 */
+	public void setListTypePersistence(ListTypePersistence listTypePersistence) {
+		this.listTypePersistence = listTypePersistence;
+	}
+
+	/**
 	 * Returns the organization local service.
 	 *
 	 * @return the organization local service
@@ -1435,6 +1474,43 @@ public abstract class RemoteUserLocalServiceBaseImpl
 	public void setOrganizationPersistence(
 		OrganizationPersistence organizationPersistence) {
 		this.organizationPersistence = organizationPersistence;
+	}
+
+	/**
+	 * Returns the phone local service.
+	 *
+	 * @return the phone local service
+	 */
+	public com.liferay.portal.kernel.service.PhoneLocalService getPhoneLocalService() {
+		return phoneLocalService;
+	}
+
+	/**
+	 * Sets the phone local service.
+	 *
+	 * @param phoneLocalService the phone local service
+	 */
+	public void setPhoneLocalService(
+		com.liferay.portal.kernel.service.PhoneLocalService phoneLocalService) {
+		this.phoneLocalService = phoneLocalService;
+	}
+
+	/**
+	 * Returns the phone persistence.
+	 *
+	 * @return the phone persistence
+	 */
+	public PhonePersistence getPhonePersistence() {
+		return phonePersistence;
+	}
+
+	/**
+	 * Sets the phone persistence.
+	 *
+	 * @param phonePersistence the phone persistence
+	 */
+	public void setPhonePersistence(PhonePersistence phonePersistence) {
+		this.phonePersistence = phonePersistence;
 	}
 
 	/**
@@ -1808,10 +1884,18 @@ public abstract class RemoteUserLocalServiceBaseImpl
 	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
 	@BeanReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
+	@BeanReference(type = com.liferay.portal.kernel.service.ListTypeLocalService.class)
+	protected com.liferay.portal.kernel.service.ListTypeLocalService listTypeLocalService;
+	@BeanReference(type = ListTypePersistence.class)
+	protected ListTypePersistence listTypePersistence;
 	@BeanReference(type = com.liferay.portal.kernel.service.OrganizationLocalService.class)
 	protected com.liferay.portal.kernel.service.OrganizationLocalService organizationLocalService;
 	@BeanReference(type = OrganizationPersistence.class)
 	protected OrganizationPersistence organizationPersistence;
+	@BeanReference(type = com.liferay.portal.kernel.service.PhoneLocalService.class)
+	protected com.liferay.portal.kernel.service.PhoneLocalService phoneLocalService;
+	@BeanReference(type = PhonePersistence.class)
+	protected PhonePersistence phonePersistence;
 	@BeanReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
 	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
 	@BeanReference(type = com.liferay.portal.kernel.service.RoleLocalService.class)
