@@ -427,7 +427,7 @@ public class AccountEnvironmentConstants {
 
 	public static final long ENV_SEARCH_SOLR = 40004;
 
-	public static final long ENV_SEARCH_SOLR_5 = 40009;
+	public static final long ENV_SEARCH_SOLR_7 = 40009;
 
 	public static final long ENV_SEARCH_SOLRCLOUD = 40005;
 
@@ -811,7 +811,7 @@ public class AccountEnvironmentConstants {
 
 	private static final long[]
 		_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_1_STANDARD =
-			{ENV_SEARCH_ELASTICSEARCH_6_X, ENV_SEARCH_SOLR_5};
+			{ENV_SEARCH_ELASTICSEARCH_6_X, ENV_SEARCH_SOLR_7};
 
 	private static final Map<String, long[]> _envDigitalEnterpriseVersion70 =
 		new HashMap<>();
