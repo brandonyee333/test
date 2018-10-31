@@ -141,6 +141,6 @@ input[type="submit"] {
 	justify-content: flex-end;
 
 	button:last-of-type {
-		margin-left: 16px;
+		margin-left: $margin-medium;
 	}
 }

@@ -75,7 +75,7 @@
 				.nav-card {
 					display: inline-block;
 					margin-bottom: 4px;
-					padding: 20px $padding-default 16px;
+					padding: 20px $padding-default $padding-medium;
 					width: 50%;
 
 					&:hover {
@@ -113,7 +113,7 @@
 					}
 
 					.available-languages {
-						padding: 0 16px;
+						padding: 0 $padding-medium;
 
 						a {
 							color: $secondary-text-color;
@@ -128,7 +128,7 @@
 				}
 
 				.account-links {
-					padding: $padding-default 16px 40px;
+					padding: $padding-default $padding-medium 40px;
 
 					.nav-card {
 						padding: 12px $padding-default;
@@ -140,12 +140,12 @@
 				}
 
 				.highlighted {
-					padding: 0 16px;
+					padding: 0 $padding-medium;
 
 					svg {
 						background-color: $color-grey;
 						border-radius: 50%;
-						margin: 16px;
+						margin: $padding-medium;
 					}
 
 					.title {
@@ -181,7 +181,7 @@
 		}
 
 		.list-item {
-			padding: 22px 16px;
+			padding: 22px $padding-medium;
 			position: relative;
 
 			&:after {
@@ -213,7 +213,7 @@
 	}
 
 	.user {
-		padding-left: 16px;
+		padding-left: $padding-medium;
 
 		.user-full-name {
 			display: none;

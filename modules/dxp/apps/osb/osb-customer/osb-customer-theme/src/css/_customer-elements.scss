@@ -85,7 +85,7 @@ code {
 pre {
 	background-color: $color-body;
 	color: $pre-text-color;
-	padding: 16px 20px;
+	padding: $padding-medium 20px;
 
 	code {
 		background-color: inherit;
