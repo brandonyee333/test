@@ -317,6 +317,12 @@ public class ExternalIdMapperLocalServiceWrapper
 	}
 
 	@Override
+	public void deleteExternalIdMappers(long classNameId, long classPK) {
+		_externalIdMapperLocalService.deleteExternalIdMappers(classNameId,
+			classPK);
+	}
+
+	@Override
 	public ExternalIdMapperLocalService getWrappedService() {
 		return _externalIdMapperLocalService;
 	}

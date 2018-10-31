@@ -254,4 +254,6 @@ public interface ExternalIdMapperLocalService extends BaseLocalService,
 		Projection projection);
 
 	public void deleteExternalIdMapper(long classNameId, long classPK, int type);
+
+	public void deleteExternalIdMappers(long classNameId, long classPK);
 }

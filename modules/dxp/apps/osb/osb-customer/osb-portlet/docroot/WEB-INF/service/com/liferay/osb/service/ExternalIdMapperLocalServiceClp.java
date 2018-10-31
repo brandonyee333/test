@@ -156,6 +156,10 @@ public class ExternalIdMapperLocalServiceClp
 		_methodName26 = "deleteExternalIdMapper";
 
 		_methodParameterTypes26 = new String[] { "long", "long", "int" };
+
+		_methodName27 = "deleteExternalIdMappers";
+
+		_methodParameterTypes27 = new String[] { "long", "long" };
 	}
 
 	@Override
@@ -869,6 +873,25 @@ public class ExternalIdMapperLocalServiceClp
 		}
 	}
 
+	@Override
+	public void deleteExternalIdMappers(long classNameId, long classPK) {
+		try {
+			_invokableLocalService.invokeMethod(_methodName27,
+				_methodParameterTypes27, new Object[] { classNameId, classPK });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+	}
+
 	private InvokableLocalService _invokableLocalService;
 	private String _methodName0;
 	private String[] _methodParameterTypes0;
@@ -922,4 +945,6 @@ public class ExternalIdMapperLocalServiceClp
 	private String[] _methodParameterTypes25;
 	private String _methodName26;
 	private String[] _methodParameterTypes26;
+	private String _methodName27;
+	private String[] _methodParameterTypes27;
 }

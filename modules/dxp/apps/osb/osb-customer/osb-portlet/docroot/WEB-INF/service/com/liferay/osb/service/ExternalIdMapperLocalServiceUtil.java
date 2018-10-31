@@ -292,6 +292,10 @@ public class ExternalIdMapperLocalServiceUtil {
 		getService().deleteExternalIdMapper(classNameId, classPK, type);
 	}
 
+	public static void deleteExternalIdMappers(long classNameId, long classPK) {
+		getService().deleteExternalIdMappers(classNameId, classPK);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}
