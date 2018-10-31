@@ -80,12 +80,6 @@ public class HandshakeTask implements Task {
 		TaskSchedulerService taskSchedulerService, ThreadFactory threadFactory,
 		UptimeAdvisor uptimeAdvisor) {
 
-		_handshakeReplyReads = GetterUtil.getInteger(
-			PortletPropsValues.COMMUNICATION_HANDSHAKE_REPLY_READS, 5);
-
-		_handshakeWaitTime = GetterUtil.getLong(
-			PortletPropsValues.COMMUNICATION_HANDSHAKE_WAIT_TIME, 60000L);
-
 		_lcsClusterEntryTokenId = lcsClusterEntryTokenId;
 		_lcsAlertAdvisor = lcsAlertAdvisor;
 		_lcsGatewayClient = lcsGatewayClient;
@@ -158,14 +152,11 @@ public class HandshakeTask implements Task {
 
 				if (lcsRESTError.getErrorCode() == 200) {
 					_notifyLCSEventListeners(
-						LCSEvent.
-							HANDSHAKE_FAILED_LCS_CLUSTER_ENTRY_TOKEN_INVALID);
+						LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID);
 				}
 				else if (lcsRESTError.getErrorCode() == 201) {
-
 					_notifyLCSEventListeners(
-						LCSEvent.
-							HANDSHAKE_FAILED_LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH);
+						LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH);
 				}
 			}
 			else {
@@ -383,23 +374,16 @@ public class HandshakeTask implements Task {
 	}
 
 	private void _waitForHandshakeResponse() throws JSONWebServiceException {
-		int attempt = 0;
+		boolean handshakeResponseReceived = false;
 		List<Message> delayedMessages = new ArrayList<>();
 		List<Message> receivedMessages = null;
 
-		while (true) {
-			if (attempt++ > _handshakeReplyReads) {
-				throw new LCSHandshakeException(
-					"Unable to establish a connection after " +
-						_handshakeReplyReads + " handshakes");
-			}
-
+		for (int i = 0; i < 12; i++) {
 			receivedMessages = _lcsGatewayClient.getMessages(_key);
 
 			if (receivedMessages.isEmpty()) {
 				try {
-					TimeUnit.MILLISECONDS.sleep(
-						_handshakeWaitTime / _handshakeReplyReads);
+					TimeUnit.SECONDS.sleep(5);
 				}
 				catch (InterruptedException ie) {
 				}
@@ -417,8 +401,15 @@ public class HandshakeTask implements Task {
 			}
 
 			if (processResponse(receivedMessages, delayedMessages)) {
+				handshakeResponseReceived = true;
+
 				break;
 			}
+		}
+
+		if (!handshakeResponseReceived) {
+			throw new LCSHandshakeException(
+				"Handshake response was not received within 1 minute");
 		}
 
 		Collections.sort(delayedMessages, new MessagePriorityComparator());
@@ -444,8 +435,6 @@ public class HandshakeTask implements Task {
 
 	private static final Log _log = LogFactoryUtil.getLog(HandshakeTask.class);
 
-	private final int _handshakeReplyReads;
-	private final long _handshakeWaitTime;
 	private final String _key;
 	private final LCSAlertAdvisor _lcsAlertAdvisor;
 	private final long _lcsClusterEntryTokenId;
