@@ -9,6 +9,10 @@
 
 	&.has-control-panel {
 		top: 64px;
+
+		.header-menu {
+			top: 128px;
+		}
 	}
 
 	&.has-scroll-shadow {
@@ -18,7 +22,7 @@
 	.header-content {
 		align-items: center;
 		display: flex;
-		height: 64px;
+		height: $navbar-height;
 
 		&.user-wrapper {
 			justify-content: flex-end;
@@ -160,7 +164,7 @@
 						padding: 15px;
 
 						svg {
-							width: 0.875rem;
+							width: 14px;
 						}
 
 						.title {

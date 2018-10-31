@@ -42,13 +42,11 @@ $grid-breakpoints: (
 
 $border-radius: 4px !default;
 
-$font-size-sm: 14px !default;
-
-$input-line-height: 1.5 !default;
-
 $font-family-base: "Source Sans Pro", "Source Serif Pro", -apple-system,
-	blinkmacsystemfont, "Segoe UI", roboto, "Helvetica Neue", arial, sans-serif,
-	"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
+blinkmacsystemfont, "Segoe UI", roboto, "Helvetica Neue", arial, sans-serif,
+"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
+
+$font-size-sm: 14px !default;
 
 $font-weight-light: 200 !default;
 $font-weight-normal: 400 !default;
@@ -64,12 +62,13 @@ $h4-font-size: $font-size-h4; // 16px
 $h5-font-size: $font-size-h5; // 14px
 $h6-font-size: $font-size-h6; // 12px
 
+$input-line-height: 1.5 !default;
+
 $line-height-sm: 1.333 !default; // 18px
 
 $alert-lead-spacer-x: 5px !default;
 
-$autofit-padded-col-padding-x: 16px !default;
-$autofit-padded-col-padding-y: 24px !default;
+$autofit-col-expand-min-width: 50px !default;
 
 $breadcrumb-active-color: null !default;
 $breadcrumb-divider-color: null !default;
@@ -111,7 +110,6 @@ $table-list-border-radius: 0 !default;
 $table-list-border-x-width: 0 !default;
 $table-responsive-margin-bottom: 48px !default;
 
-$navbar-height: 64px !default;
 $navbar-padding-x: 0 !default;
 
 /* ---------- Custom variables ---------- */
