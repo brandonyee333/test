@@ -16,14 +16,11 @@ package com.liferay.osb.customer.account.entry.details.web.internal.portlet.acti
 
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
-import com.liferay.portal.kernel.servlet.SessionMessages;
-import com.liferay.portal.kernel.util.Portal;
 
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
@@ -42,15 +39,7 @@ public class ErrorMVCRenderCommand extends BaseMVCRenderCommand {
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws Exception {
 
-		SessionMessages.add(
-			renderRequest,
-			_portal.getPortletId(renderRequest) +
-				SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE);
-
 		return "/account_entry_details/error.jsp";
 	}
-
-	@Reference
-	private Portal _portal;
 
 }

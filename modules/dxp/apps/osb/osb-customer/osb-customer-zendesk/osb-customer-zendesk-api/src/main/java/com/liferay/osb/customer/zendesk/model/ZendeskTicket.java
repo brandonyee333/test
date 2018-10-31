@@ -14,6 +14,8 @@
 
 package com.liferay.osb.customer.zendesk.model;
 
+import com.liferay.osb.customer.zendesk.constants.ZendeskTicketConstants;
+
 /**
  * @author Amos Fong
  */
@@ -38,8 +40,21 @@ public class ZendeskTicket {
 		return _zendeskTicketId;
 	}
 
+	public boolean isClosed() {
+		if (_status.equals(ZendeskTicketConstants.STATUS_CLOSED)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
 	public void setDescription(String description) {
 		_description = description;
+	}
+
+	public void setStatus(String status) {
+		_status = status;
 	}
 
 	public void setSubject(String subject) {
@@ -55,6 +70,7 @@ public class ZendeskTicket {
 	}
 
 	private String _description;
+	private String _status;
 	private String _subject;
 	private long _zendeskOrganizationId;
 	private long _zendeskTicketId;

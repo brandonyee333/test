@@ -225,6 +225,7 @@ public class ZendeskConverter {
 		zendeskTicket.setZendeskTicketId(jsonObject.getLong("id"));
 		zendeskTicket.setZendeskOrganizationId(
 			jsonObject.getLong("organization_id"));
+		zendeskTicket.setStatus(jsonObject.getString("status"));
 		zendeskTicket.setSubject(jsonObject.getString("subject"));
 
 		return zendeskTicket;

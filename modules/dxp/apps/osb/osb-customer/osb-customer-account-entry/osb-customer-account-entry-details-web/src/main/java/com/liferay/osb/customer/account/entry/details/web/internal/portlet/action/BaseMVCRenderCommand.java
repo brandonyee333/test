@@ -15,12 +15,15 @@
 package com.liferay.osb.customer.account.entry.details.web.internal.portlet.action;
 
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.zendesk.exception.ZendeskTicketClosedException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
 import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.servlet.SessionMessages;
+import com.liferay.portal.kernel.util.Portal;
 
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
@@ -42,9 +45,16 @@ public abstract class BaseMVCRenderCommand implements MVCRenderCommand {
 			return doRender(renderRequest, renderResponse);
 		}
 		catch (Exception e) {
-			_log.error(e, e);
+			if (!(e instanceof ZendeskTicketClosedException)) {
+				_log.error(e, e);
+			}
 
 			SessionErrors.add(renderRequest, e.getClass());
+
+			SessionMessages.add(
+				renderRequest,
+				portal.getPortletId(renderRequest) +
+					SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE);
 
 			return "/account_entry_details/error.jsp";
 		}
@@ -73,6 +83,9 @@ public abstract class BaseMVCRenderCommand implements MVCRenderCommand {
 	}
 
 	protected OrganizationLocalService organizationLocalService;
+
+	@Reference
+	protected Portal portal;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseMVCRenderCommand.class);

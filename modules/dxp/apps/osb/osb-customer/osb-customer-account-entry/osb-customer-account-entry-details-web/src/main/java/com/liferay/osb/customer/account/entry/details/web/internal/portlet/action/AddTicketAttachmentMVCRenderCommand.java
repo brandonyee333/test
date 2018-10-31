@@ -18,6 +18,7 @@ import com.liferay.osb.customer.account.entry.details.web.internal.constants.Acc
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsWebKeys;
 import com.liferay.osb.customer.ticket.constants.TicketActionKeys;
 import com.liferay.osb.customer.ticket.service.permission.TicketEntryPermissionChecker;
+import com.liferay.osb.customer.zendesk.exception.ZendeskTicketClosedException;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
@@ -59,6 +60,10 @@ public class AddTicketAttachmentMVCRenderCommand extends BaseMVCRenderCommand {
 
 		ZendeskTicket zendeskTicket = _zendeskTicketWebService.getZendeskTicket(
 			zendeskTicketId);
+
+		if (zendeskTicket.isClosed()) {
+			throw new ZendeskTicketClosedException();
+		}
 
 		long accountEntryId = _zendeskMapperUtil.getAccountEntryId(
 			zendeskTicket.getZendeskOrganizationId());

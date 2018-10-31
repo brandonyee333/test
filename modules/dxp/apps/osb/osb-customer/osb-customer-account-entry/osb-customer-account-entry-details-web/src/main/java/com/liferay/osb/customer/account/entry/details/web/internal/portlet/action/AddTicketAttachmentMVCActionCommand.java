@@ -17,6 +17,7 @@ package com.liferay.osb.customer.account.entry.details.web.internal.portlet.acti
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys;
 import com.liferay.osb.customer.ticket.model.TicketAttachment;
 import com.liferay.osb.customer.ticket.service.TicketAttachmentService;
+import com.liferay.osb.customer.zendesk.exception.ZendeskTicketClosedException;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
@@ -25,7 +26,6 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.Portal;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -62,6 +62,10 @@ public class AddTicketAttachmentMVCActionCommand extends BaseMVCActionCommand {
 		ZendeskTicket zendeskTicket = _zendeskTicketWebService.getZendeskTicket(
 			zendeskTicketId);
 
+		if (zendeskTicket.isClosed()) {
+			throw new ZendeskTicketClosedException();
+		}
+
 		long accountEntryId = _zendeskMapperUtil.getAccountEntryId(
 			zendeskTicket.getZendeskOrganizationId());
 
@@ -74,9 +78,6 @@ public class AddTicketAttachmentMVCActionCommand extends BaseMVCActionCommand {
 			accountEntryId, zendeskTicketId, fileRepositoryId, fileName,
 			fileSize, type, serviceContext);
 	}
-
-	@Reference
-	private Portal _portal;
 
 	@Reference
 	private TicketAttachmentService _ticketAttachmentService;

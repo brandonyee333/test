@@ -30,6 +30,9 @@
 			<c:when test="<%= SessionErrors.contains(renderRequest, NoSuchTicketAttachmentException.class.getName()) %>">
 				<liferay-ui:message key="the-selected-attachment-no-longer-exists" />
 			</c:when>
+			<c:when test="<%= SessionErrors.contains(renderRequest, ZendeskTicketClosedException.class.getName()) %>">
+				<liferay-ui:message key="this-ticket-is-closed" />
+			</c:when>
 			<c:otherwise>
 				<liferay-ui:message key="your-request-failed-to-complete" />
 			</c:otherwise>

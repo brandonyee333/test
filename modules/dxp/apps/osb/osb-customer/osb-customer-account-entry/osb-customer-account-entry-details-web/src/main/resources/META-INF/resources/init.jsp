@@ -32,6 +32,7 @@ page import="com.liferay.osb.customer.ticket.exception.NoSuchTicketAttachmentExc
 page import="com.liferay.osb.customer.ticket.repository.FileRepository" %><%@
 page import="com.liferay.osb.customer.ticket.repository.FileRepositoryManager" %><%@
 page import="com.liferay.osb.customer.ticket.repository.FileRepositoryWebService" %><%@
+page import="com.liferay.osb.customer.zendesk.exception.ZendeskTicketClosedException" %><%@
 page import="com.liferay.osb.customer.zendesk.web.service.exception.NoSuchZendeskTicketException" %><%@
 page import="com.liferay.osb.exception.NoSuchAccountEntryException" %><%@
 page import="com.liferay.osb.model.AccountEntry" %><%@
