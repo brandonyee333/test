@@ -16,6 +16,7 @@ package com.liferay.lcs.task;
 
 import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.exception.InvalidLCSClusterEntryTokenException;
+import com.liferay.lcs.exception.LCSClusterEntryTokenDecryptException;
 import com.liferay.lcs.internal.event.LCSEvent;
 import com.liferay.lcs.internal.event.LCSEventListener;
 import com.liferay.lcs.oauth.OAuthUtil;
@@ -25,7 +26,6 @@ import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,12 +65,17 @@ public class LCSClusterEntryTokenCheckTask implements Task {
 			if (_log.isDebugEnabled()) {
 				_log.debug(throwable.getMessage(), throwable);
 			}
-			else {
-				if (_log.isWarnEnabled() &&
-					Validator.isNotNull(throwable.getMessage())) {
+			else if (_log.isWarnEnabled()) {
+				_log.warn(throwable.getMessage());
+			}
 
-					_log.warn(throwable.getMessage());
-				}
+			if (throwable instanceof InvalidLCSClusterEntryTokenException ||
+				throwable instanceof LCSClusterEntryTokenDecryptException) {
+
+				_notifyLCSEventListeners(
+					LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_TOKEN_CORRUPTED);
+
+				return;
 			}
 
 			if (OAuthUtil.hasOAuthTokenRejectedException(throwable)) {
