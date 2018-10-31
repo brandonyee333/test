@@ -15,12 +15,15 @@
 package com.liferay.osb.customer.zendesk.listeners.synchronizer;
 
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
+import com.liferay.osb.customer.zendesk.listeners.exception.ZendeskIntegrationException;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.PartnerWorker;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.UserLocalService;
@@ -41,36 +44,53 @@ import org.osgi.service.component.annotations.Reference;
 public class PartnerWorkerSynchronizer {
 
 	public void add(PartnerWorker partnerWorker) throws PortalException {
-		User user = _userLocalService.getUser(partnerWorker.getUserId());
+		try {
+			User user = _userLocalService.getUser(partnerWorker.getUserId());
 
-		Set<String> tags = new HashSet<>();
+			Set<String> tags = new HashSet<>();
 
-		tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
-		tags.add(ZendeskTagConstants.OSB_PARTNER);
+			tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
+			tags.add(ZendeskTagConstants.OSB_PARTNER);
 
-		long zendeskUserId = _userSynchronizer.sync(user, null, tags);
+			long zendeskUserId = _userSynchronizer.sync(user, null, tags);
 
-		long[] zendeskOrganizationIds = getZendeskOrganizationIds(
-			partnerWorker);
+			long[] zendeskOrganizationIds = getZendeskOrganizationIds(
+				partnerWorker);
 
-		_asyncZendeskUserWebService.createZendeskUserOrganizationMemberships(
-			zendeskUserId, zendeskOrganizationIds);
+			if (zendeskOrganizationIds.length > 0) {
+				_asyncZendeskUserWebService.
+					createZendeskUserOrganizationMemberships(
+						zendeskUserId, zendeskOrganizationIds);
+			}
+		}
+		catch (Exception e) {
+			_log.error(e);
+
+			throw new ZendeskIntegrationException(e);
+		}
 	}
 
 	public void remove(PartnerWorker partnerWorker) throws PortalException {
-		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
-			partnerWorker.getUserId());
+		try {
+			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+				partnerWorker.getUserId());
 
-		long[] zendeskOrganizationIds = getZendeskOrganizationIds(
-			partnerWorker);
+			long[] zendeskOrganizationIds = getZendeskOrganizationIds(
+				partnerWorker);
 
-		if (zendeskOrganizationIds.length > 0) {
-			_asyncZendeskUserWebService.
-				deleteZendeskUserOrganizationMemberships(
-					zendeskUserId, zendeskOrganizationIds);
+			if (zendeskOrganizationIds.length > 0) {
+				_asyncZendeskUserWebService.
+					deleteZendeskUserOrganizationMemberships(
+						zendeskUserId, zendeskOrganizationIds);
+			}
+
+			_userSynchronizer.removeObsoleteTags(partnerWorker.getUserId());
 		}
+		catch (Exception e) {
+			_log.error(e);
 
-		_userSynchronizer.removeObsoleteTags(partnerWorker.getUserId());
+			throw new ZendeskIntegrationException(e);
+		}
 	}
 
 	protected long[] getZendeskOrganizationIds(PartnerWorker partnerWorker)
@@ -100,6 +120,9 @@ public class PartnerWorkerSynchronizer {
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		PartnerWorkerSynchronizer.class);
 
 	@Reference(target = "(async=true)")
 	private ZendeskUserWebService _asyncZendeskUserWebService;

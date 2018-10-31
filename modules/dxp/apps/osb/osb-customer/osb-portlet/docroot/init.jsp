@@ -203,6 +203,7 @@ page import="com.liferay.portal.kernel.dao.orm.QueryUtil" %><%@
 page import="com.liferay.portal.kernel.exception.AddressCityException" %><%@
 page import="com.liferay.portal.kernel.exception.AddressStreetException" %><%@
 page import="com.liferay.portal.kernel.exception.AddressZipException" %><%@
+page import="com.liferay.portal.kernel.exception.ModelListenerException" %><%@
 page import="com.liferay.portal.kernel.exception.NoSuchUserException" %><%@
 page import="com.liferay.portal.kernel.exception.PortalException" %><%@
 page import="com.liferay.portal.kernel.exception.RequiredFieldException" %><%@
@@ -309,3 +310,12 @@ Format shortDateFormatDate = FastDateFormatFactoryUtil.getDate(DateFormat.SHORT,
 
 Format shortDateFormatTime = FastDateFormatFactoryUtil.getTime(DateFormat.SHORT, locale, timeZone);
 %>
+
+<liferay-ui:error exception="<%= ModelListenerException.class %>">
+
+	<%
+	ModelListenerException mle = (ModelListenerException)errorException;
+	%>
+
+	<liferay-ui:message key="<%= mle.getLocalizedMessage() %>" />
+</liferay-ui:error>

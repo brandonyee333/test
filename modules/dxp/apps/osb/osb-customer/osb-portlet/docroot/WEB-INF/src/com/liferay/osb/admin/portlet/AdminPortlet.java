@@ -111,6 +111,7 @@ import com.liferay.portal.kernel.exception.AddressZipException;
 import com.liferay.portal.kernel.exception.ContactFirstNameException;
 import com.liferay.portal.kernel.exception.ContactLastNameException;
 import com.liferay.portal.kernel.exception.DuplicateUserEmailAddressException;
+import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.NoSuchListTypeException;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -1257,6 +1258,7 @@ public class AdminPortlet extends OSBPortlet {
 			cause instanceof FileNameException ||
 			cause instanceof LicenseEntryNameException ||
 			cause instanceof LicenseEntryPortalVersionException ||
+			cause instanceof ModelListenerException ||
 			cause instanceof NoSuchAccountEntryException ||
 			cause instanceof NoSuchListTypeException ||
 			cause instanceof NoSuchOfferingDefinitionException ||

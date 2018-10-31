@@ -15,6 +15,7 @@
 package com.liferay.osb.customer.zendesk.listeners.synchronizer;
 
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
+import com.liferay.osb.customer.zendesk.listeners.exception.ZendeskIntegrationException;
 import com.liferay.osb.customer.zendesk.listeners.util.ZendeskModelListenerUtil;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
@@ -28,6 +29,8 @@ import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
@@ -63,58 +66,74 @@ public class UserSynchronizer {
 	}
 
 	public void removeObsoleteTags(long userId) throws PortalException {
-		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
+		try {
+			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
 
-		List<PartnerWorker> partnerWorkers =
-			PartnerWorkerLocalServiceUtil.getUserPartnerWorkers(userId);
+			List<PartnerWorker> partnerWorkers =
+				PartnerWorkerLocalServiceUtil.getUserPartnerWorkers(userId);
 
-		for (PartnerWorker partnerWorker : partnerWorkers) {
-			if (partnerWorker.getRole() !=
-					PartnerWorkerConstants.ROLE_WATCHER) {
+			for (PartnerWorker partnerWorker : partnerWorkers) {
+				if (partnerWorker.getRole() !=
+						PartnerWorkerConstants.ROLE_WATCHER) {
 
-				return;
+					return;
+				}
 			}
+
+			Set<String> tags = new HashSet<>();
+
+			if (AccountEntryLocalServiceUtil.getUserAccountEntriesCount(
+					userId) == 0) {
+
+				tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
+			}
+
+			tags.add(ZendeskTagConstants.OSB_PARTNER);
+
+			_asyncZendeskUserWebService.deleteZendeskUserTags(
+				zendeskUserId, tags);
 		}
+		catch (Exception e) {
+			_log.error(e);
 
-		Set<String> tags = new HashSet<>();
-
-		if (AccountEntryLocalServiceUtil.getUserAccountEntriesCount(userId) ==
-				0) {
-
-			tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
+			throw new ZendeskIntegrationException(e);
 		}
-
-		tags.add(ZendeskTagConstants.OSB_PARTNER);
-
-		_asyncZendeskUserWebService.deleteZendeskUserTags(zendeskUserId, tags);
 	}
 
 	public long sync(User user, String organizationName, Set<String> tags)
 		throws PortalException {
 
-		String locale = ZendeskModelListenerUtil.convertToZendeskLocale(
-			user.getLanguageId());
+		try {
+			String locale = ZendeskModelListenerUtil.convertToZendeskLocale(
+				user.getLanguageId());
 
-		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
-			user.getUserId());
+			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+				user.getUserId());
 
-		if (zendeskUserId != 0) {
-			_asyncZendeskUserWebService.createOrUpdateZendeskUser(
-				user.getUuid(), user.getEmailAddress(), locale,
-				user.getFullName(), organizationName, null);
-
-			_asyncZendeskUserWebService.addZendeskUserTags(zendeskUserId, tags);
-		}
-		else {
-			ZendeskUser zendeskUser =
-				_zendeskUserWebService.createOrUpdateZendeskUser(
+			if (zendeskUserId != 0) {
+				_asyncZendeskUserWebService.createOrUpdateZendeskUser(
 					user.getUuid(), user.getEmailAddress(), locale,
-					user.getFullName(), organizationName, tags);
+					user.getFullName(), organizationName, null);
 
-			zendeskUserId = zendeskUser.getZendeskUserId();
+				_asyncZendeskUserWebService.addZendeskUserTags(
+					zendeskUserId, tags);
+			}
+			else {
+				ZendeskUser zendeskUser =
+					_zendeskUserWebService.createOrUpdateZendeskUser(
+						user.getUuid(), user.getEmailAddress(), locale,
+						user.getFullName(), organizationName, tags);
+
+				zendeskUserId = zendeskUser.getZendeskUserId();
+			}
+
+			return zendeskUserId;
 		}
+		catch (Exception e) {
+			_log.error(e);
 
-		return zendeskUserId;
+			throw new ZendeskIntegrationException(e);
+		}
 	}
 
 	public void updatePhone(long userId, Phone phone) throws PortalException {
@@ -141,6 +160,9 @@ public class UserSynchronizer {
 
 		return Long.valueOf(externalIdMapper.getExternalId());
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		UserSynchronizer.class);
 
 	@Reference(target = "(async=true)")
 	private ZendeskUserWebService _asyncZendeskUserWebService;
