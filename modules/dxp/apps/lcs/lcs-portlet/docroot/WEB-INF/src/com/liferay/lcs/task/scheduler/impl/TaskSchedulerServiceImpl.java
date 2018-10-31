@@ -152,9 +152,7 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 
 			_restart();
 		}
-		else if (lcsEvent ==
-					LCSEvent.HANDSHAKE_FAILED_LCS_CLUSTER_ENTRY_TOKEN_INVALID) {
-
+		else if (lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID) {
 			_executeLCSClusterEntryTokenCheckTask(true);
 		}
 		else if (lcsEvent == LCSEvent.HANDSHAKE_FAILED) {

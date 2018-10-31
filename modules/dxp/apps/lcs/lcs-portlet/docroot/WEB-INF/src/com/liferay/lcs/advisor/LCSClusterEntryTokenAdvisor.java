@@ -76,22 +76,22 @@ public class LCSClusterEntryTokenAdvisor implements LCSEventListener {
 	@Override
 	public void onLCSEvent(LCSEvent lcsEvent) {
 		if ((lcsEvent ==
-				LCSEvent.HANDSHAKE_FAILED_LCS_CLUSTER_ENTRY_TOKEN_INVALID) ||
+				LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_TOKEN_CORRUPTED) ||
 			(lcsEvent ==
-				LCSEvent.
-					HANDSHAKE_FAILED_LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH) ||
-			(lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_FAILED) ||
+				LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH) ||
+			(lcsEvent ==
+				LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID) ||
 			(lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALIDATED) ||
 			(lcsEvent == LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED)) {
 
-			if (lcsEvent ==
-					LCSEvent.HANDSHAKE_FAILED_LCS_CLUSTER_ENTRY_TOKEN_INVALID) {
+			if ((lcsEvent ==
+					LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_TOKEN_CORRUPTED) ||
+				(lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID)) {
 
 				_lcsAlertAdvisor.add(LCSAlert.ERROR_INVALID_TOKEN);
 			}
 			else if (lcsEvent ==
-						LCSEvent.
-							HANDSHAKE_FAILED_LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH) {
+						LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH) {
 
 				_lcsAlertAdvisor.add(LCSAlert.ERROR_ENVIRONMENT_MISMATCH);
 			}
@@ -367,7 +367,7 @@ public class LCSClusterEntryTokenAdvisor implements LCSEventListener {
 
 	private String _lcsAccessSecret;
 	private String _lcsAccessToken;
-	private LCSAlertAdvisor _lcsAlertAdvisor;
+	private final LCSAlertAdvisor _lcsAlertAdvisor;
 	private long _lcsClusterEntryId;
 	private long _lcsClusterEntryTokenId;
 	private String _portalPropertiesBlacklist;
