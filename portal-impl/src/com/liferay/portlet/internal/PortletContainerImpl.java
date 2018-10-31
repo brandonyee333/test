@@ -47,6 +47,7 @@ import com.liferay.portal.kernel.portlet.PortletQName;
 import com.liferay.portal.kernel.portlet.PortletQNameUtil;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.WindowStateFactory;
+import com.liferay.portal.kernel.portlet.async.PortletAsyncScopeManager;
 import com.liferay.portal.kernel.portlet.configuration.icon.PortletConfigurationIconMenu;
 import com.liferay.portal.kernel.portlet.toolbar.PortletToolbar;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
@@ -1038,6 +1039,13 @@ public class PortletContainerImpl implements PortletContainer {
 				PortletAsyncContextImpl portletAsyncContextImpl =
 					(PortletAsyncContextImpl)
 						liferayResourceRequest.getPortletAsyncContext();
+
+				if (themeDisplay.isAsync()) {
+					PortletAsyncScopeManager portletAsyncScopeManager =
+						portletAsyncContextImpl.getPortletAsyncScopeManager();
+
+					portletAsyncScopeManager.deactivateScopeContexts();
+				}
 
 				portletAsyncContextImpl.setReturnedToContainer();
 			}
