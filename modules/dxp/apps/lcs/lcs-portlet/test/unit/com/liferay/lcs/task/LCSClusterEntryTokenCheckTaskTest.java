@@ -16,7 +16,6 @@ package com.liferay.lcs.task;
 
 import com.liferay.lcs.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
-import com.liferay.lcs.exception.LCSClusterEntryTokenDecryptException;
 import com.liferay.lcs.exception.MissingLCSClusterEntryTokenException;
 import com.liferay.lcs.exception.MultipleLCSClusterEntryTokenException;
 import com.liferay.lcs.internal.event.LCSEvent;
@@ -25,6 +24,8 @@ import com.liferay.lcs.task.scheduler.TaskSchedulerService;
 import com.liferay.lcs.task.scheduler.impl.TaskSchedulerServiceImpl;
 import com.liferay.lcs.util.LCSUtil;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
+import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.util.EncryptorException;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,7 +34,6 @@ import java.net.UnknownHostException;
 
 import java.util.concurrent.ExecutionException;
 
-import com.liferay.portal.kernel.util.FileUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,12 +45,12 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import com.liferay.util.EncryptorException;
-
 /**
  * @author Igor Beslic
  */
-@PrepareForTest({FileUtil.class, LCSClusterEntryTokenAdvisor.class, LCSUtil.class})
+@PrepareForTest(
+	{FileUtil.class, LCSClusterEntryTokenAdvisor.class, LCSUtil.class}
+)
 @RunWith(PowerMockRunner.class)
 public class LCSClusterEntryTokenCheckTaskTest extends PowerMockito {
 
@@ -171,13 +171,14 @@ public class LCSClusterEntryTokenCheckTaskTest extends PowerMockito {
 		doThrow(
 			new EncryptorException("Test encryptor exception")
 		).when(
-			_lcsClusterEntryTokenAdvisor, "decrypt", Matchers.any(byte[].class), Matchers.anyInt()
+			_lcsClusterEntryTokenAdvisor, "decrypt", Matchers.any(byte[].class),
+			Matchers.anyInt()
 		);
 
 		when(
 			FileUtil.getBytes(Matchers.any(File.class))
 		).thenReturn(
-			new byte[] {}
+			new byte[0]
 		);
 
 		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =
