@@ -18,8 +18,6 @@ import com.liferay.portal.deploy.auto.ThreadSafeAutoDeployer;
 import com.liferay.portal.kernel.deploy.auto.AutoDeployListener;
 import com.liferay.portal.kernel.deploy.auto.AutoDeployer;
 import com.liferay.portal.kernel.deploy.auto.BaseAutoDeployListener;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.io.File;
 
@@ -58,8 +56,5 @@ public class OSBCustomerKnowledgeBaseAutoDeployListener
 
 		return false;
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		OSBCustomerKnowledgeBaseAutoDeployListener.class);
 
 }

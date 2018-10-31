@@ -17,8 +17,6 @@ package com.liferay.osb.customer.web.internal.upgrade.v1_0_0;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalFolder;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.SubscriptionPersistence;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.Portal;
@@ -51,9 +49,6 @@ public class UpgradeSubscription extends UpgradeProcess {
 
 		_subscriptionPersistence.clearCache();
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		UpgradeSubscription.class);
 
 	private final Portal _portal;
 	private final SubscriptionPersistence _subscriptionPersistence;

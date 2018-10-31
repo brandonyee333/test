@@ -17,8 +17,6 @@ package com.liferay.portal.kernel.workflow;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.WorkflowDefinitionLink;
 import com.liferay.portal.kernel.model.WorkflowInstanceLink;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -297,9 +295,6 @@ public class WorkflowHandlerRegistryUtil {
 			serviceRegistration.unregister();
 		}
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		WorkflowHandlerRegistryUtil.class);
 
 	private static final WorkflowHandlerRegistryUtil _instance =
 		new WorkflowHandlerRegistryUtil();

@@ -23,8 +23,6 @@ import com.liferay.osb.customer.constants.OSBCustomerPortletKeys;
 import com.liferay.osb.customer.web.internal.permission.OSBCustomerArticlePermission;
 import com.liferay.osb.customer.web.internal.search.ArticleSearchUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
@@ -57,7 +55,8 @@ import org.osgi.service.component.annotations.Reference;
  * @author Alan Zhang
  */
 @Component(
-	immediate = true, property = {
+	immediate = true,
+	property = {
 		"com.liferay.portlet.css-class-wrapper=osb-documentation-display-portlet",
 		"com.liferay.portlet.display-category=category.osb",
 		"com.liferay.portlet.header-portlet-css=/display/css/main.css",
@@ -227,8 +226,6 @@ public class DisplayPortlet extends MVCPortlet {
 			return false;
 		}
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(DisplayPortlet.class);
 
 	@Reference
 	private JournalArticleService _journalArticleService;

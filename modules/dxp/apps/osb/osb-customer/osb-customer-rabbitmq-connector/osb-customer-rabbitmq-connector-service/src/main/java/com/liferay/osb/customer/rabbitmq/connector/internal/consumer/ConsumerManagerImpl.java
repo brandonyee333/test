@@ -65,6 +65,7 @@ public class ConsumerManagerImpl implements ConsumerManager {
 		for (Map.Entry<String, Consumer> entry : _consumers.entrySet()) {
 			try {
 				String queue = entry.getKey();
+
 				Consumer consumer = entry.getValue();
 
 				Channel channel = consumer.getChannel();
@@ -155,6 +156,7 @@ public class ConsumerManagerImpl implements ConsumerManager {
 	public void resetChannels() throws Exception {
 		for (Map.Entry<String, Consumer> entry : _consumers.entrySet()) {
 			String queue = entry.getKey();
+
 			Consumer consumer = entry.getValue();
 
 			closeChannel(consumer.getChannel());

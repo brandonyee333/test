@@ -42,7 +42,7 @@ public class LPE_5_1_JIRAComponentFilter extends JIRAComponentFilter {
 			jiraComponent.setName("JavaScript");
 		}
 		else if (jiraComponentId ==
-					 JIRAConstants.COMPONENT_PORTLET_COMMUNITIES) {
+					JIRAConstants.COMPONENT_PORTLET_COMMUNITIES) {
 
 			jiraComponent.setName("Portlet - Communities");
 		}

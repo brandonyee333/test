@@ -19,12 +19,8 @@ import com.liferay.osb.customer.rabbitmq.connector.consumer.ConsumerManager;
 import com.liferay.osb.customer.rabbitmq.connector.router.MessageRouter;
 import com.liferay.osb.customer.rabbitmq.connector.router.MessageRouterRegistry;
 import com.liferay.osb.customer.rabbitmq.connector.web.internal.constants.RabbitMQPortletKeys;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
-import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortletClassInvoker;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -45,7 +41,7 @@ import org.osgi.service.component.annotations.Reference;
 		"com.liferay.portlet.preferences-unique-per-layout=false",
 		"javax.portlet.display-name=OSB RabbitMQ Connector",
 		"javax.portlet.expiration-cache=0",
-		"javax.portlet.init-param.template-path=/",
+		"javax.portlet.init-param.template-path=/META-INF/resources/",
 		"javax.portlet.init-param.view-template=/view.jsp",
 		"javax.portlet.name=" + RabbitMQPortletKeys.RABBIT_MQ,
 		"javax.portlet.resource-bundle=content.Language",
@@ -115,11 +111,8 @@ public class RabbitMQPortlet extends MVCPortlet {
 		_consumerManager.resetChannels();
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		RabbitMQPortlet.class);
-
-	private final MethodKey _activateConsumerMethodKey = new MethodKey(
-		ConsumerManager.class, "activateConsumer", String.class);
+	/*private final MethodKey _activateConsumerMethodKey = new MethodKey(
+		ConsumerManager.class, "activateConsumer", String.class);*/
 
 	@Reference
 	private ConnectionManager _connectionManager;
@@ -127,11 +120,11 @@ public class RabbitMQPortlet extends MVCPortlet {
 	@Reference
 	private ConsumerManager _consumerManager;
 
-	private final MethodKey _deactivateConsumerMethodKey = new MethodKey(
+	/*private final MethodKey _deactivateConsumerMethodKey = new MethodKey(
 		ConsumerManager.class, "deactivateConsumer", String.class);
 	private final MethodKey _invokeMethodKey = new MethodKey(
 		PortletClassInvoker.class, "invoke", boolean.class, String.class,
-		MethodKey.class, Object[].class);
+		MethodKey.class, Object[].class);*/
 
 	@Reference
 	private MessageRouterRegistry _messageRouterRegistry;

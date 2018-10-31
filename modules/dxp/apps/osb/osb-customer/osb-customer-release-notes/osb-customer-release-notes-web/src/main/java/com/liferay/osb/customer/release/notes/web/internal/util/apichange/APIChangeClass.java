@@ -16,8 +16,6 @@ package com.liferay.osb.customer.release.notes.web.internal.util.apichange;
 
 import com.liferay.osb.customer.release.notes.jira.model.JIRAIssue;
 import com.liferay.osb.customer.release.notes.web.internal.util.comparator.APIChangeMethodComparator;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.KeyValuePair;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -145,8 +143,6 @@ public class APIChangeClass extends APIChangeBase {
 			}
 		}
 	}
-
-	private static Log _log = LogFactoryUtil.getLog(APIChangeClass.class);
 
 	private Set<APIChangeMethod> _apiChangeMethods;
 	private final String _className;

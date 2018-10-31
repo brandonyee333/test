@@ -17,8 +17,6 @@ package com.liferay.osb.customer.rabbitmq.connector.internal.publisher;
 import com.liferay.osb.customer.rabbitmq.connector.connection.ConnectionManager;
 import com.liferay.osb.customer.rabbitmq.connector.publisher.MessagePublisher;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.MessageProperties;
@@ -58,9 +56,6 @@ public class MessagePublisherImpl implements MessagePublisher {
 			}
 		}
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		MessagePublisherImpl.class);
 
 	@Reference
 	private ConnectionManager _connectionManager;
