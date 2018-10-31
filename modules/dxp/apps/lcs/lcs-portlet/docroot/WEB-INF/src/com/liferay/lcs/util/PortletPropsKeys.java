@@ -35,17 +35,8 @@ public interface PortletPropsKeys {
 	public static final String COMMAND_SCHEDULE_DELAY_MAX =
 		"command.schedule.delay.max";
 
-	public static final String COMMUNICATION_HANDSHAKE_REPLY_READS =
-		"communication.handshake.reply.reads";
-
-	public static final String COMMUNICATION_HANDSHAKE_WAIT_TIME =
-		"communication.handshake.wait.time";
-
 	public static final String COMMUNICATION_HEARTBEAT_INTERVAL =
 		"communication.heartbeat.interval";
-
-	public static final String COMMUNICATION_LCS_GATEWAY_UNAVAILABLE_WAIT_TIME =
-		"communication.lcs.gateway.unavailable.wait.time";
 
 	public static final String DIGITAL_SIGNATURE_KEY_NAME =
 		"digital.signature.key.name";
@@ -86,9 +77,6 @@ public interface PortletPropsKeys {
 		"lrdcom.sales.email.address";
 
 	public static final String LRDCOM_SUPPORT_URL = "lrdcom.support.url";
-
-	public static final String METRICS_LCS_SERVICE_ENABLED =
-		"metrics.lcs.service.enabled";
 
 	public static final String OSB_LCS_GATEWAY_WEB_HOST_NAME =
 		"osb.lcs.gateway.web.host.name";
@@ -146,16 +134,6 @@ public interface PortletPropsKeys {
 
 	public static final String OSB_LCS_PORTLET_PROTOCOL =
 		"osb.lcs.portlet.protocol";
-
-	public static final String OSB_LCS_PORTLET_UPLOAD_EXCEPTIONS_URI =
-		"osb.lcs.portlet.upload.exceptions.uri";
-
-	/**
-	 * @deprecated Will be removed in next version
-	 */
-	@Deprecated
-	public static final String PORTAL_PROPERTIES_BLACKLIST =
-		"portal.properties.blacklist";
 
 	public static final String PROXY_AUTH_TYPE = "proxy.auth.type";
 

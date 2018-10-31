@@ -46,20 +46,8 @@ public class PortletPropsValues {
 	public static final String COMMAND_SCHEDULE_DELAY_MAX = PortletProps.get(
 		PortletPropsKeys.COMMAND_SCHEDULE_DELAY_MAX);
 
-	public static final String COMMUNICATION_HANDSHAKE_REPLY_READS =
-		PortletProps.get(PortletPropsKeys.COMMUNICATION_HANDSHAKE_REPLY_READS);
-
-	public static final String COMMUNICATION_HANDSHAKE_WAIT_TIME =
-		PortletProps.get(PortletPropsKeys.COMMUNICATION_HANDSHAKE_WAIT_TIME);
-
 	public static final String COMMUNICATION_HEARTBEAT_INTERVAL =
 		PortletProps.get(PortletPropsKeys.COMMUNICATION_HEARTBEAT_INTERVAL);
-
-	public static final long COMMUNICATION_LCS_GATEWAY_UNAVAILABLE_WAIT_TIME =
-		GetterUtil.getLong(
-			PortletProps.get(
-				PortletPropsKeys.
-					COMMUNICATION_LCS_GATEWAY_UNAVAILABLE_WAIT_TIME));
 
 	public static final String DIGITAL_SIGNATURE_KEY_NAME = PortletProps.get(
 		PortletPropsKeys.DIGITAL_SIGNATURE_KEY_NAME);
@@ -102,9 +90,6 @@ public class PortletPropsValues {
 
 	public static final String LRDCOM_SUPPORT_URL = PortletProps.get(
 		PortletPropsKeys.LRDCOM_SUPPORT_URL);
-
-	public static final String METRICS_LCS_SERVICE_ENABLED = PortletProps.get(
-		PortletPropsKeys.METRICS_LCS_SERVICE_ENABLED);
 
 	public static final String OSB_LCS_GATEWAY_WEB_HOST_NAME = PortletProps.get(
 		PortletPropsKeys.OSB_LCS_GATEWAY_WEB_HOST_NAME);
@@ -167,17 +152,6 @@ public class PortletPropsValues {
 
 	public static final String OSB_LCS_PORTLET_PROTOCOL = PortletProps.get(
 		PortletPropsKeys.OSB_LCS_PORTLET_PROTOCOL);
-
-	public static final String OSB_LCS_PORTLET_UPLOAD_EXCEPTIONS_URI =
-		PortletProps.get(
-			PortletPropsKeys.OSB_LCS_PORTLET_UPLOAD_EXCEPTIONS_URI);
-
-	/**
-	 * @deprecated Will be removed in next version
-	 */
-	@Deprecated
-	public static final String PORTAL_PROPERTIES_BLACKLIST = PortletProps.get(
-		PortletPropsKeys.PORTAL_PROPERTIES_BLACKLIST);
 
 	public static final String PROXY_AUTH_TYPE = PortletProps.get(
 		PortletPropsKeys.PROXY_AUTH_TYPE);
