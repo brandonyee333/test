@@ -317,5 +317,5 @@ Format shortDateFormatTime = FastDateFormatFactoryUtil.getTime(DateFormat.SHORT,
 	ModelListenerException mle = (ModelListenerException)errorException;
 	%>
 
-	<liferay-ui:message key="<%= mle.getLocalizedMessage() %>" />
+	<%= HtmlUtil.escape(mle.getLocalizedMessage()) %>
 </liferay-ui:error>
