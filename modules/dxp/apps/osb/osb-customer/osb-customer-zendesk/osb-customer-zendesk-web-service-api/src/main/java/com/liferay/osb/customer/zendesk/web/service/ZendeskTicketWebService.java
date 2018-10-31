@@ -21,17 +21,25 @@ import com.liferay.osb.customer.zendesk.web.service.search.SearchHits;
 import com.liferay.osb.customer.zendesk.web.service.search.ZendeskTicketQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 
+import java.util.List;
+
 /**
  * @author Amos Fong
  */
 @ProviderType
 public interface ZendeskTicketWebService {
 
+	public List<ZendeskTicket> getRequesterTickets(long zendeskUserId)
+		throws PortalException;
+
 	public ZendeskTicket getZendeskTicket(long zendeskTicketId)
 		throws PortalException;
 
 	public SearchHits<ZendeskTicket> search(
 			ZendeskTicketQuery zendeskTicketQuery)
+		throws PortalException;
+
+	public void updateTickets(List<ZendeskTicket> zendeskTickets)
 		throws PortalException;
 
 }

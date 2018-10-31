@@ -73,6 +73,10 @@
 		<finder name="AccountEntryId" return-type="Collection">
 			<finder-column name="accountEntryId" />
 		</finder>
+		<finder name="AEI_R" return-type="Collection">
+			<finder-column name="accountEntryId" />
+			<finder-column name="role" />
+		</finder>
 		<finder name="U_AEI" return-type="AccountCustomer">
 			<finder-column name="userId" />
 			<finder-column name="accountEntryId" />

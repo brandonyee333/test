@@ -237,6 +237,12 @@ public class AccountCustomerLocalServiceImpl
 		return accountCustomerPersistence.findByAccountEntryId(accountEntryId);
 	}
 
+	public List<AccountCustomer> getAccountCustomers(
+		long accountEntryId, int role) {
+
+		return accountCustomerPersistence.findByAEI_R(accountEntryId, role);
+	}
+
 	@Override
 	public List<AccountCustomer> getUserAccountCustomers(long userId) {
 		return accountCustomerPersistence.findByUserId(userId);

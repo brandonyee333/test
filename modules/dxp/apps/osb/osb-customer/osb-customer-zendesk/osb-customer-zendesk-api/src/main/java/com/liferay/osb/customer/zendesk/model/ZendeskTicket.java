@@ -28,6 +28,10 @@ public class ZendeskTicket {
 		return _description;
 	}
 
+	public long getRequesterId() {
+		return _requesterId;
+	}
+
 	public String getSubject() {
 		return _subject;
 	}
@@ -53,6 +57,10 @@ public class ZendeskTicket {
 		_description = description;
 	}
 
+	public void setRequesterId(long requesterId) {
+		_requesterId = requesterId;
+	}
+
 	public void setStatus(String status) {
 		_status = status;
 	}
@@ -70,6 +78,7 @@ public class ZendeskTicket {
 	}
 
 	private String _description;
+	private long _requesterId;
 	private String _status;
 	private String _subject;
 	private long _zendeskOrganizationId;

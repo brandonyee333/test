@@ -44,6 +44,27 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = ZendeskTicketWebService.class)
 public class DefaultZendeskTicketWebService implements ZendeskTicketWebService {
 
+	public List<ZendeskTicket> getRequesterTickets(long zendeskUserId)
+		throws PortalException {
+
+		JSONObject responseJSONObject = _zendeskBaseWebService.get(
+			ZendeskRESTEndpoints.URL_API_V2 + "users/" + zendeskUserId +
+				ZendeskRESTEndpoints.TICKETS_REQUESTED,
+			StringPool.BLANK);
+
+		List<ZendeskTicket> zendeskTickets = new ArrayList<>();
+
+		JSONArray ticketsJSONArray = responseJSONObject.getJSONArray("tickets");
+
+		for (int i = 0; i < ticketsJSONArray.length(); i++) {
+			JSONObject jsonObject = ticketsJSONArray.getJSONObject(i);
+
+			zendeskTickets.add(zendeskConverter.toZendeskTicket(jsonObject));
+		}
+
+		return zendeskTickets;
+	}
+
 	public ZendeskTicket getZendeskTicket(long zendeskTicketId)
 		throws PortalException {
 
@@ -70,6 +91,12 @@ public class DefaultZendeskTicketWebService implements ZendeskTicketWebService {
 			zendeskTicketQuery.getParameters());
 
 		return toSearchHits(responseJSONObject);
+	}
+
+	public void updateTickets(List<ZendeskTicket> zendeskTickets)
+		throws PortalException {
+
+		throw new UnsupportedOperationException();
 	}
 
 	protected SearchHits<ZendeskTicket> toSearchHits(
@@ -103,12 +130,12 @@ public class DefaultZendeskTicketWebService implements ZendeskTicketWebService {
 	}
 
 	@Reference
+	protected Http http;
+
+	@Reference
+	protected ZendeskBaseWebService zendeskBaseWebService;
+
+	@Reference
 	protected ZendeskConverter zendeskConverter;
-
-	@Reference
-	private Http _http;
-
-	@Reference
-	private ZendeskBaseWebService _zendeskBaseWebService;
 
 }
