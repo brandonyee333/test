@@ -30,7 +30,7 @@ import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
+import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 
 import java.util.HashSet;
@@ -46,7 +46,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = UserSynchronizer.class)
 public class UserSynchronizer {
 
-	public void createPhone(long userId, Phone phone) throws PortalException {
+	public void addPhone(long userId, Phone phone) throws PortalException {
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
 
 		_asyncZendeskUserWebService.createZendeskUserIdentity(
@@ -55,10 +55,11 @@ public class UserSynchronizer {
 
 	public void deletePhone(long userId, Phone phone) throws PortalException {
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
-		long zendeskIdentityId = getIdentityId(Phone.class, phone.getPhoneId());
+		long zendeskUserIdentityId = getExternalId(
+			Phone.class, phone.getPhoneId());
 
 		_asyncZendeskUserWebService.deleteZendeskUserIdentity(
-			zendeskUserId, zendeskIdentityId, "phone_number");
+			zendeskUserId, zendeskUserIdentityId, "phone_number");
 	}
 
 	public void removeObsoleteTags(long userId) throws PortalException {
@@ -118,14 +119,15 @@ public class UserSynchronizer {
 
 	public void updatePhone(long userId, Phone phone) throws PortalException {
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
-		long zendeskIdentityId = getIdentityId(Phone.class, phone.getPhoneId());
+		long zendeskUserIdentityId = getExternalId(
+			Phone.class, phone.getPhoneId());
 
 		_asyncZendeskUserWebService.updateZendeskUserIdentity(
-			zendeskUserId, zendeskIdentityId, phone.getNumber());
+			zendeskUserId, zendeskUserIdentityId, phone.getNumber());
 	}
 
-	protected long getIdentityId(Class<?> clazz, long classPK) {
-		long classNameId = ClassNameLocalServiceUtil.getClassNameId(clazz);
+	protected long getExternalId(Class<?> clazz, long classPK) {
+		long classNameId = _classNameLocalService.getClassNameId(clazz);
 
 		List<ExternalIdMapper> externalIdMappers =
 			ExternalIdMapperLocalServiceUtil.getExternalIdMappers(
@@ -142,6 +144,9 @@ public class UserSynchronizer {
 
 	@Reference(target = "(async=true)")
 	private ZendeskUserWebService _asyncZendeskUserWebService;
+
+	@Reference
+	private ClassNameLocalService _classNameLocalService;
 
 	@Reference
 	private UserLocalService _userLocalService;

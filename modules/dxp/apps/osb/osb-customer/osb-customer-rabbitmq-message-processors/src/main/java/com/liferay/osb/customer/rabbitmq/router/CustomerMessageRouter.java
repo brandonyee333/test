@@ -37,10 +37,9 @@ import com.liferay.osb.customer.rabbitmq.processors.RoleUnassignmentMessageProce
 import com.liferay.osb.customer.rabbitmq.processors.RoleUpdateMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.UserDeleteMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.UserUpdateMessageProcessor;
-import com.liferay.osb.customer.rabbitmq.processors.ZendeskIdentityExternalIdCreateMessageProcessor;
-import com.liferay.osb.customer.rabbitmq.processors.ZendeskIdentityExternalIdDeleteMessageProcessor;
-import com.liferay.osb.customer.rabbitmq.processors.ZendeskOrganizationExternalIdCreateMessageProcessor;
-import com.liferay.osb.customer.rabbitmq.processors.ZendeskUserExternalIdCreateMessageProcessor;
+import com.liferay.osb.customer.rabbitmq.processors.ZendeskOrganizationCreateMessageProcessor;
+import com.liferay.osb.customer.rabbitmq.processors.ZendeskUserCreateMessageProcessor;
+import com.liferay.osb.customer.rabbitmq.processors.ZendeskUserIdentityCreateMessageProcessor;
 
 import java.util.Map;
 
@@ -234,40 +233,29 @@ public class CustomerMessageRouter extends BaseMessageRouter {
 	}
 
 	@Reference(unbind = "-")
-	protected void setZendeskIdentityExternalIdCreateMessageProcessor(
-		ZendeskIdentityExternalIdCreateMessageProcessor
-			zendeskIdentityExternalIdCreateMessageProcessor,
+	protected void setZendeskOrganizationCreateMessageProcessor(
+		ZendeskOrganizationCreateMessageProcessor
+			zendeskOrganizationCreateMessageProcessor,
 		Map<String, Object> properties) {
 
-		addRoute(zendeskIdentityExternalIdCreateMessageProcessor, properties);
+		addRoute(zendeskOrganizationCreateMessageProcessor, properties);
 	}
 
 	@Reference(unbind = "-")
-	protected void setZendeskIdentityExternalIdDeleteMessageProcessor(
-		ZendeskIdentityExternalIdDeleteMessageProcessor
-			zendeskIdentityExternalIdDeleteMessageProcessor,
+	protected void setZendeskUserCreateMessageProcessor(
+		ZendeskUserCreateMessageProcessor zendeskUserCreateMessageProcessor,
 		Map<String, Object> properties) {
 
-		addRoute(zendeskIdentityExternalIdDeleteMessageProcessor, properties);
+		addRoute(zendeskUserCreateMessageProcessor, properties);
 	}
 
 	@Reference(unbind = "-")
-	protected void setZendeskOrganizationExternalIdCreateMessageProcessor(
-		ZendeskOrganizationExternalIdCreateMessageProcessor
-			zendeskOrganizationExternalIdCreateMessageProcessor,
+	protected void setZendeskUserIdentityCreateMessageProcessor(
+		ZendeskUserIdentityCreateMessageProcessor
+			zendeskUserIdentityCreateMessageProcessor,
 		Map<String, Object> properties) {
 
-		addRoute(
-			zendeskOrganizationExternalIdCreateMessageProcessor, properties);
-	}
-
-	@Reference(unbind = "-")
-	protected void setZendeskUserExternalIdCreateMessageProcessor(
-		ZendeskUserExternalIdCreateMessageProcessor
-			zendeskUserExternalIdCreateMessageProcessor,
-		Map<String, Object> properties) {
-
-		addRoute(zendeskUserExternalIdCreateMessageProcessor, properties);
+		addRoute(zendeskUserIdentityCreateMessageProcessor, properties);
 	}
 
 }

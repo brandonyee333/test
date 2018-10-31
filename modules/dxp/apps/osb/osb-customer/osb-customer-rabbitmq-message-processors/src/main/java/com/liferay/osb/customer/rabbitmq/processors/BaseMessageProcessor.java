@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
@@ -160,6 +161,13 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 	}
 
 	@Reference(unbind = "-")
+	protected void setClassNameLocalService(
+		ClassNameLocalService classNameLocalService) {
+
+		this.classNameLocalService = classNameLocalService;
+	}
+
+	@Reference(unbind = "-")
 	protected void setCompanyLocalService(
 		CompanyLocalService companyLocalService) {
 
@@ -195,6 +203,7 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 		this.userLocalService = userLocalService;
 	}
 
+	protected ClassNameLocalService classNameLocalService;
 	protected CompanyLocalService companyLocalService;
 	protected JSONFactory jsonFactory;
 	protected OrganizationLocalService organizationLocalService;

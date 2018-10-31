@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
-import com.liferay.portal.kernel.service.PhoneLocalServiceUtil;
+import com.liferay.portal.kernel.service.PhoneLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.Calendar;
@@ -71,13 +71,13 @@ public class UserUpdateMessageProcessor extends BaseMessageProcessor {
 			contact.getSkypeSn(), contact.getTwitterSn(),
 			remoteUser.getJobTitle(), null, null, null, null, null, null);
 
+		updateUserPhones(contact.getContactId(), user, remoteUser);
+
 		ExpandoBridge expandoBridge = user.getExpandoBridge();
 
 		ExpandoBridge remoteExpandoBridge = remoteUser.getExpandoBridge();
 
 		expandoBridge.setAttributes(remoteExpandoBridge.getAttributes(), false);
-
-		updateUserPhones(contact.getContactId(), user, remoteUser);
 	}
 
 	@Reference(
@@ -96,8 +96,7 @@ public class UserUpdateMessageProcessor extends BaseMessageProcessor {
 		List<Phone> phones = remoteUser.getPhones();
 
 		for (Phone curPhone : phones) {
-			Phone phone = PhoneLocalServiceUtil.fetchPhone(
-				curPhone.getPhoneId());
+			Phone phone = _phoneLocalService.fetchPhone(curPhone.getPhoneId());
 
 			if (phone == null) {
 				ServiceContext serviceContext = new ServiceContext();
@@ -108,10 +107,10 @@ public class UserUpdateMessageProcessor extends BaseMessageProcessor {
 				curPhone.setUserName(user.getFullName());
 				curPhone.setClassPK(contactId);
 
-				curPhone = PhoneLocalServiceUtil.addPhone(curPhone);
+				curPhone = _phoneLocalService.addPhone(curPhone);
 			}
 			else {
-				curPhone = PhoneLocalServiceUtil.updatePhone(
+				curPhone = _phoneLocalService.updatePhone(
 					curPhone.getPhoneId(), curPhone.getNumber(),
 					curPhone.getExtension(), curPhone.getTypeId(),
 					curPhone.getPrimary());
@@ -120,14 +119,17 @@ public class UserUpdateMessageProcessor extends BaseMessageProcessor {
 			phoneIds.add(curPhone.getPhoneId());
 		}
 
-		phones = PhoneLocalServiceUtil.getPhones(
+		phones = _phoneLocalService.getPhones(
 			user.getCompanyId(), Contact.class.getName(), contactId);
 
 		for (Phone phone : phones) {
 			if (!phoneIds.contains(phone.getPhoneId())) {
-				PhoneLocalServiceUtil.deletePhone(phone.getPhoneId());
+				_phoneLocalService.deletePhone(phone.getPhoneId());
 			}
 		}
 	}
+
+	@Reference
+	private PhoneLocalService _phoneLocalService;
 
 }

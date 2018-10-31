@@ -3,6 +3,7 @@
 <suppressions>
 	<source-check>
 		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/zendesk/listeners/AccountEntryModelListener.java" />>
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/zendesk/listeners/PhoneModelListener.java" />>
 		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/zendesk/listeners/synchronizer/AccountCustomerSynchronizer.java" />
 		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/zendesk/listeners/synchronizer/AccountEntrySynchronizer.java" />
 		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/zendesk/listeners/synchronizer/PartnerWorkerSynchronizer.java" />

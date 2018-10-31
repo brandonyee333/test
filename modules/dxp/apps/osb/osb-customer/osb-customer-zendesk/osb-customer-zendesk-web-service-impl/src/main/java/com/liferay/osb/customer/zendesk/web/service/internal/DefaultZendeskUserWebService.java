@@ -85,7 +85,7 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 	}
 
 	public void deleteZendeskUserIdentity(
-			long zendeskUserId, long zendeskIdentityId, String type)
+			long zendeskUserId, long zendeskUserIdentityId, String type)
 		throws PortalException {
 
 		throw new UnsupportedOperationException();
@@ -154,7 +154,7 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 	}
 
 	public void updateZendeskUserIdentity(
-			long zendeskUserId, long zendeskIdentityId, String value)
+			long zendeskUserId, long zendeskUserIdentityId, String value)
 		throws PortalException {
 
 		throw new UnsupportedOperationException();

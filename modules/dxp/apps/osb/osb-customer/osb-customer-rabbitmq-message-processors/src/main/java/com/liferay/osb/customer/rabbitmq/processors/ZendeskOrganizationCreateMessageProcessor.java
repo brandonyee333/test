@@ -14,14 +14,12 @@
 
 package com.liferay.osb.customer.rabbitmq.processors;
 
+import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.ExternalIdMapper;
 import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
-import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
-import com.liferay.portal.kernel.service.UserLocalService;
 
 import java.util.List;
 
@@ -32,28 +30,41 @@ import org.osgi.service.component.annotations.Reference;
  * @author Kyle Bischof
  */
 @Component(
-	immediate = true, property = "routing.key=zendesk.identity.delete",
-	service = ZendeskIdentityExternalIdDeleteMessageProcessor.class
+	immediate = true, property = "routing.key=zendesk.organization.create",
+	service = ZendeskOrganizationCreateMessageProcessor.class
 )
-public class ZendeskIdentityExternalIdDeleteMessageProcessor
+public class ZendeskOrganizationCreateMessageProcessor
 	extends BaseMessageProcessor {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
-		String identityId = jsonObject.getString("identityId");
-		String type = jsonObject.getString("type");
+		JSONObject organizationJSONObject = jsonObject.getJSONObject(
+			"organization");
 
-		if (type.equals("phone_number")) {
-			List<ExternalIdMapper> externalIdMappers =
-				ExternalIdMapperLocalServiceUtil.getExternalIdMappers(
-					ClassNameLocalServiceUtil.getClassNameId(Phone.class),
-					ExternalIdMapperConstants.TYPE_ZENDESK, identityId);
+		long accountEntryId = organizationJSONObject.getLong("external_id");
+		String zendeskOrganizationId = organizationJSONObject.getString("id");
 
-			if (externalIdMappers.isEmpty()) {
-				return;
+		long classNameId = classNameLocalService.getClassNameId(
+			AccountEntry.class);
+
+		List<ExternalIdMapper> externalIdMappers =
+			ExternalIdMapperLocalServiceUtil.getExternalIdMappers(
+				classNameId, accountEntryId,
+				ExternalIdMapperConstants.TYPE_ZENDESK);
+
+		if (externalIdMappers.isEmpty()) {
+			ExternalIdMapperLocalServiceUtil.addExternalIdMapper(
+				classNameId, accountEntryId,
+				ExternalIdMapperConstants.TYPE_ZENDESK, zendeskOrganizationId);
+		}
+		else {
+			ExternalIdMapper externalIdMapper = externalIdMappers.get(0);
+
+			if (externalIdMapper.getExternalId() != zendeskOrganizationId) {
+				ExternalIdMapperLocalServiceUtil.updateExternalIdMapper(
+					externalIdMapper.getExternalIdMapperId(), classNameId,
+					accountEntryId, ExternalIdMapperConstants.TYPE_ZENDESK,
+					zendeskOrganizationId);
 			}
-
-			ExternalIdMapperLocalServiceUtil.deleteExternalIdMapper(
-				externalIdMappers.get(0));
 		}
 	}
 
@@ -64,8 +75,5 @@ public class ZendeskIdentityExternalIdDeleteMessageProcessor
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
-
-	@Reference
-	private UserLocalService _userLocalService;
 
 }

@@ -45,7 +45,7 @@ public interface ZendeskUserWebService {
 		throws PortalException;
 
 	public void deleteZendeskUserIdentity(
-			long zendeskUserId, long zendeskIdentityId, String type)
+			long zendeskUserId, long zendeskUserIdentityId, String type)
 		throws PortalException;
 
 	public void deleteZendeskUserOrganizationMemberships(
@@ -61,7 +61,7 @@ public interface ZendeskUserWebService {
 	public ZendeskUser getZendeskUser(String externalId) throws PortalException;
 
 	public void updateZendeskUserIdentity(
-			long zendeskUserId, long zendeskIdentityId, String value)
+			long zendeskUserId, long zendeskUserIdentityId, String value)
 		throws PortalException;
 
 }

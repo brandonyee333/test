@@ -53,6 +53,10 @@ public class ExternalIdMapperLocalServiceImpl
 		externalIdMapperPersistence.removeByC_C_T(classNameId, classPK, type);
 	}
 
+	public void deleteExternalIdMappers(long classNameId, long classPK) {
+		externalIdMapperPersistence.removeByC_C(classNameId, classPK);
+	}
+
 	public List<ExternalIdMapper> getExternalIdMappers(
 		long classNameId, int type, String externalId) {
 

@@ -300,7 +300,8 @@ public class RemoteUserLocalServiceImpl extends RemoteUserLocalServiceBaseImpl {
 		if (phonesJSONArray != null) {
 			List<Phone> phones = new ArrayList<>();
 
-			long classNameId = classNameLocalService.getClassNameId(Contact.class);
+			long classNameId = classNameLocalService.getClassNameId(
+				Contact.class);
 
 			for (int i = 0; i < phonesJSONArray.length(); i++) {
 				JSONObject phoneJSONObject = phonesJSONArray.getJSONObject(i);

@@ -21,8 +21,6 @@ import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
-import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
-import com.liferay.portal.kernel.service.UserLocalService;
 
 import java.util.List;
 
@@ -34,10 +32,9 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	immediate = true, property = "routing.key=zendesk.user.create.or.update",
-	service = ZendeskUserExternalIdCreateMessageProcessor.class
+	service = ZendeskUserCreateMessageProcessor.class
 )
-public class ZendeskUserExternalIdCreateMessageProcessor
-	extends BaseMessageProcessor {
+public class ZendeskUserCreateMessageProcessor extends BaseMessageProcessor {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
 		JSONObject userJSONObject = jsonObject.getJSONObject("user");
@@ -45,9 +42,9 @@ public class ZendeskUserExternalIdCreateMessageProcessor
 		String uuid = userJSONObject.getString("external_id");
 		String zendeskUserId = userJSONObject.getString("id");
 
-		long classNameId = ClassNameLocalServiceUtil.getClassNameId(User.class);
+		long classNameId = classNameLocalService.getClassNameId(User.class);
 
-		User user = _userLocalService.getUserByUuidAndCompanyId(
+		User user = userLocalService.getUserByUuidAndCompanyId(
 			uuid, OSBConstants.COMPANY_ID);
 
 		List<ExternalIdMapper> externalIdMappers =
@@ -79,8 +76,5 @@ public class ZendeskUserExternalIdCreateMessageProcessor
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
-
-	@Reference
-	private UserLocalService _userLocalService;
 
 }

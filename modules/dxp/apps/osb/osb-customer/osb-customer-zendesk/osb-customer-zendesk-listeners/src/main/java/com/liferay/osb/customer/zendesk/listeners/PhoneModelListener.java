@@ -15,15 +15,15 @@
 package com.liferay.osb.customer.zendesk.listeners;
 
 import com.liferay.osb.customer.zendesk.listeners.synchronizer.UserSynchronizer;
+import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.Phone;
-import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.ContactLocalService;
-import com.liferay.portal.kernel.service.UserLocalService;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -40,9 +40,9 @@ public class PhoneModelListener extends BaseModelListener<Phone> {
 			String className = phone.getClassName();
 
 			if (className.equals(Contact.class.getName())) {
-				long userId = getContactUser(phone.getClassPK());
+				long userId = getContactUserId(phone.getClassPK());
 
-				_userSynchronizer.createPhone(userId, phone);
+				_userSynchronizer.addPhone(userId, phone);
 			}
 		}
 		catch (Exception e) {
@@ -56,9 +56,13 @@ public class PhoneModelListener extends BaseModelListener<Phone> {
 			String className = phone.getClassName();
 
 			if (className.equals(Contact.class.getName())) {
-				long userId = getContactUser(phone.getClassPK());
+				long userId = getContactUserId(phone.getClassPK());
 
 				_userSynchronizer.deletePhone(userId, phone);
+
+				ExternalIdMapperLocalServiceUtil.deleteExternalIdMappers(
+					_classNameLocalService.getClassNameId(Phone.class),
+					phone.getPhoneId());
 			}
 		}
 		catch (Exception e) {
@@ -72,7 +76,7 @@ public class PhoneModelListener extends BaseModelListener<Phone> {
 			String className = phone.getClassName();
 
 			if (className.equals(Contact.class.getName())) {
-				long userId = getContactUser(phone.getClassPK());
+				long userId = getContactUserId(phone.getClassPK());
 
 				_userSynchronizer.updatePhone(userId, phone);
 			}
@@ -82,19 +86,17 @@ public class PhoneModelListener extends BaseModelListener<Phone> {
 		}
 	}
 
-	protected long getContactUser(long contactId) throws PortalException {
+	protected long getContactUserId(long contactId) throws PortalException {
 		Contact contact = _contactLocalService.getContact(contactId);
 
-		User user = _userLocalService.getUser(contact.getUserId());
-
-		return user.getUserId();
+		return contact.getUserId();
 	}
 
 	@Reference
-	private ContactLocalService _contactLocalService;
+	private ClassNameLocalService _classNameLocalService;
 
 	@Reference
-	private UserLocalService _userLocalService;
+	private ContactLocalService _contactLocalService;
 
 	@Reference
 	private UserSynchronizer _userSynchronizer;

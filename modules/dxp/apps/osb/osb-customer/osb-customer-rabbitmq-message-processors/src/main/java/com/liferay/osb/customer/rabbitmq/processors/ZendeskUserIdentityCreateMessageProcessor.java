@@ -14,13 +14,13 @@
 
 package com.liferay.osb.customer.rabbitmq.processors;
 
-import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.ExternalIdMapper;
 import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.model.Phone;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
-import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 
 import java.util.List;
 
@@ -31,40 +31,65 @@ import org.osgi.service.component.annotations.Reference;
  * @author Kyle Bischof
  */
 @Component(
-	immediate = true, property = "routing.key=zendesk.organization.create",
-	service = ZendeskOrganizationExternalIdCreateMessageProcessor.class
+	immediate = true, property = "routing.key=zendesk.user.identity.create",
+	service = ZendeskUserIdentityCreateMessageProcessor.class
 )
-public class ZendeskOrganizationExternalIdCreateMessageProcessor
+public class ZendeskUserIdentityCreateMessageProcessor
 	extends BaseMessageProcessor {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
-		JSONObject organizationJSONObject = jsonObject.getJSONObject(
-			"organization");
+		JSONObject identityJSONObject = jsonObject.getJSONObject("identity");
 
-		long accountEntryId = organizationJSONObject.getLong("external_id");
-		String zendeskOrganizationId = organizationJSONObject.getString("id");
+		String id = identityJSONObject.getString("id");
+		String type = identityJSONObject.getString("type");
+		String userId = identityJSONObject.getString("user_id");
+		String value = identityJSONObject.getString("value");
 
-		long classNameId = ClassNameLocalServiceUtil.getClassNameId(
-			AccountEntry.class);
+		if (type.equals("phone_number")) {
+			processPhone(id, type, userId, value);
+		}
+	}
+
+	protected void processPhone(
+			String id, String type, String userId, String value)
+		throws Exception {
+
+		long classNameId = classNameLocalService.getClassNameId(Phone.class);
+		long classPK = 0;
+
+		List<ExternalIdMapper> userExternalIdMappers =
+			ExternalIdMapperLocalServiceUtil.getExternalIdMappers(
+				classNameLocalService.getClassNameId(User.class),
+				ExternalIdMapperConstants.TYPE_ZENDESK, userId);
+
+		ExternalIdMapper userExternalIdMapper = userExternalIdMappers.get(0);
+
+		User user = userLocalService.getUser(userExternalIdMapper.getClassPK());
+
+		for (Phone phone : user.getPhones()) {
+			if (value.equals(phone.getNumber())) {
+				classPK = phone.getPhoneId();
+
+				break;
+			}
+		}
 
 		List<ExternalIdMapper> externalIdMappers =
 			ExternalIdMapperLocalServiceUtil.getExternalIdMappers(
-				classNameId, accountEntryId,
-				ExternalIdMapperConstants.TYPE_ZENDESK);
+				classNameId, classPK, ExternalIdMapperConstants.TYPE_ZENDESK);
 
 		if (externalIdMappers.isEmpty()) {
 			ExternalIdMapperLocalServiceUtil.addExternalIdMapper(
-				classNameId, accountEntryId,
-				ExternalIdMapperConstants.TYPE_ZENDESK, zendeskOrganizationId);
+				classNameId, classPK, ExternalIdMapperConstants.TYPE_ZENDESK,
+				id);
 		}
 		else {
 			ExternalIdMapper externalIdMapper = externalIdMappers.get(0);
 
-			if (externalIdMapper.getExternalId() != zendeskOrganizationId) {
+			if (externalIdMapper.getExternalId() != id) {
 				ExternalIdMapperLocalServiceUtil.updateExternalIdMapper(
 					externalIdMapper.getExternalIdMapperId(), classNameId,
-					accountEntryId, ExternalIdMapperConstants.TYPE_ZENDESK,
-					zendeskOrganizationId);
+					classPK, ExternalIdMapperConstants.TYPE_ZENDESK, id);
 			}
 		}
 	}

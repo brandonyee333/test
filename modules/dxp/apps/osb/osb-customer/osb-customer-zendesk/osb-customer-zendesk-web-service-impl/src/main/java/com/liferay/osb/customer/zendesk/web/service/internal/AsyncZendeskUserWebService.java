@@ -47,8 +47,8 @@ public class AsyncZendeskUserWebService
 		throws PortalException {
 
 		String endpoint =
-			ZendeskRESTEndpoints.URL_API_V2 + "users" + StringPool.SLASH +
-				zendeskUserId + StringPool.SLASH + "tags.json";
+			ZendeskRESTEndpoints.URL_API_V2 + "users/" + zendeskUserId +
+				"/tags.json";
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
@@ -94,8 +94,8 @@ public class AsyncZendeskUserWebService
 		throws PortalException {
 
 		String endpoint =
-			ZendeskRESTEndpoints.URL_API_V2 + "users" + StringPool.SLASH +
-				zendeskUserId + ZendeskRESTEndpoints.IDENTITIES;
+			ZendeskRESTEndpoints.URL_API_V2 + "users/" + zendeskUserId +
+				ZendeskRESTEndpoints.IDENTITIES;
 
 		JSONObject identityJSONObject = JSONFactoryUtil.createJSONObject();
 
@@ -107,7 +107,7 @@ public class AsyncZendeskUserWebService
 		jsonObject.put("identity", identityJSONObject);
 
 		ZendeskRequest zendeskRequest = new ZendeskRequest(
-			endpoint, "post", null, jsonObject, "zendesk.identity.create");
+			endpoint, "post", null, jsonObject, "zendesk.user.identity.create");
 
 		messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
 	}
@@ -145,26 +145,17 @@ public class AsyncZendeskUserWebService
 
 	@Override
 	public void deleteZendeskUserIdentity(
-			long zendeskUserId, long zendeskIdentityId, String type)
+			long zendeskUserId, long zendeskUserIdentityId, String type)
 		throws PortalException {
 
 		String endpoint =
-			ZendeskRESTEndpoints.URL_API_V2 + "users" + StringPool.SLASH +
-				zendeskUserId + StringPool.SLASH + "identities" +
-					StringPool.SLASH + zendeskIdentityId + ".json";
+			ZendeskRESTEndpoints.URL_API_V2 + "users/" + zendeskUserId +
+				"/identities/" + zendeskUserIdentityId + ".json";
 
 		ZendeskRequest zendeskRequest = new ZendeskRequest(
 			endpoint, "delete", null, null, null);
 
 		messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
-
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-		jsonObject.put("identityId", zendeskIdentityId);
-		jsonObject.put("type", type);
-
-		messagePublisherUtil.sendEventNotification(
-			"zendesk.identity.delete", jsonObject);
 	}
 
 	@Override
@@ -219,8 +210,8 @@ public class AsyncZendeskUserWebService
 		jsonObject.put("tags", jsonArray);
 
 		String endpoint =
-			ZendeskRESTEndpoints.URL_API_V2 + "users" + StringPool.SLASH +
-				zendeskUserId + StringPool.SLASH + "tags.json";
+			ZendeskRESTEndpoints.URL_API_V2 + "users/" + zendeskUserId +
+				"/tags.json";
 
 		ZendeskRequest zendeskRequest = new ZendeskRequest(
 			endpoint, "delete", null, jsonObject, null);
@@ -230,13 +221,12 @@ public class AsyncZendeskUserWebService
 
 	@Override
 	public void updateZendeskUserIdentity(
-			long zendeskUserId, long zendeskIdentityId, String value)
+			long zendeskUserId, long zendeskUserIdentityId, String value)
 		throws PortalException {
 
 		String endpoint =
-			ZendeskRESTEndpoints.URL_API_V2 + "users" + StringPool.SLASH +
-				zendeskUserId + StringPool.SLASH + "identities" +
-					StringPool.SLASH + zendeskIdentityId + ".json";
+			ZendeskRESTEndpoints.URL_API_V2 + "users/" + zendeskUserId +
+				"/identities/" + zendeskUserIdentityId + ".json";
 
 		JSONObject identityJSONObject = JSONFactoryUtil.createJSONObject();
 
