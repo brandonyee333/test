@@ -183,6 +183,8 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 			markupView="lexicon"
 		/>
 	</liferay-ui:search-container>
+
+	<liferay-util:include page="/common/exception.jsp" servletContext="<%= application %>" />
 </aui:form>
 
 <aui:script>

@@ -706,6 +706,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 	%>
 
 	<liferay-util:include page="/admin/edit_account_entry/details_tabs.jsp" servletContext="<%= application %>" />
+	<liferay-util:include page="/common/exception.jsp" servletContext="<%= application %>" />
 </aui:form>
 
 <aui:script use="liferay-address,liferay-dynamic-select">

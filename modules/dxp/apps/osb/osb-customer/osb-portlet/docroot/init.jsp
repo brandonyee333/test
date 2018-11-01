@@ -310,12 +310,3 @@ Format shortDateFormatDate = FastDateFormatFactoryUtil.getDate(DateFormat.SHORT,
 
 Format shortDateFormatTime = FastDateFormatFactoryUtil.getTime(DateFormat.SHORT, locale, timeZone);
 %>
-
-<liferay-ui:error exception="<%= ModelListenerException.class %>">
-
-	<%
-	ModelListenerException mle = (ModelListenerException)errorException;
-	%>
-
-	<%= HtmlUtil.escape(mle.getLocalizedMessage()) %>
-</liferay-ui:error>

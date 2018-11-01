@@ -186,6 +186,8 @@ request.setAttribute("edit_account_entry_customers.jsp-portletURL", portletURL);
 			paginate="<%= false %>"
 		/>
 	</liferay-ui:search-container>
+
+	<liferay-util:include page="/common/exception.jsp" servletContext="<%= application %>" />
 </aui:form>
 
 <aui:script>

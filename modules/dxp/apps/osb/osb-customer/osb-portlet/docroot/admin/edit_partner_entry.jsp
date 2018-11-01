@@ -386,6 +386,8 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 
 		</div>
 	</c:if>
+
+	<liferay-util:include page="/common/exception.jsp" servletContext="<%= application %>" />
 </aui:form>
 
 <aui:script>

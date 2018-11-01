@@ -87,3 +87,5 @@ request.setAttribute("view.jsp-portletURL", portletURL);
 		<liferay-util:include page="/admin/accounts.jsp" servletContext="<%= application %>" />
 	</c:otherwise>
 </c:choose>
+
+<liferay-util:include page="/common/exception.jsp" servletContext="<%= application %>" />
