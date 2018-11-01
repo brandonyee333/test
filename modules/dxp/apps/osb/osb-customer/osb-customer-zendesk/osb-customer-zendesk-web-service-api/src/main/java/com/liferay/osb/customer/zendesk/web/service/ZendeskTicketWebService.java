@@ -29,7 +29,7 @@ import java.util.List;
 @ProviderType
 public interface ZendeskTicketWebService {
 
-	public List<ZendeskTicket> getRequesterTickets(long zendeskUserId)
+	public List<ZendeskTicket> getRequesterZendeskTickets(long zendeskUserId)
 		throws PortalException;
 
 	public ZendeskTicket getZendeskTicket(long zendeskTicketId)
@@ -39,7 +39,7 @@ public interface ZendeskTicketWebService {
 			ZendeskTicketQuery zendeskTicketQuery)
 		throws PortalException;
 
-	public void updateTickets(List<ZendeskTicket> zendeskTickets)
+	public void updateZendeskTickets(List<ZendeskTicket> zendeskTickets)
 		throws PortalException;
 
 }

@@ -222,12 +222,12 @@ public class ZendeskConverter {
 		ZendeskTicket zendeskTicket = new ZendeskTicket();
 
 		zendeskTicket.setDescription(jsonObject.getString("description"));
-		zendeskTicket.setZendeskTicketId(jsonObject.getLong("id"));
-		zendeskTicket.setZendeskOrganizationId(
-			jsonObject.getLong("organization_id"));
 		zendeskTicket.setRequesterId(jsonObject.getLong("requester_id"));
 		zendeskTicket.setStatus(jsonObject.getString("status"));
 		zendeskTicket.setSubject(jsonObject.getString("subject"));
+		zendeskTicket.setZendeskOrganizationId(
+			jsonObject.getLong("organization_id"));
+		zendeskTicket.setZendeskTicketId(jsonObject.getLong("id"));
 
 		return zendeskTicket;
 	}

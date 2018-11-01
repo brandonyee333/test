@@ -40,10 +40,8 @@ public class AsyncZendeskTicketWebService
 	extends DefaultZendeskTicketWebService implements ZendeskTicketWebService {
 
 	@Override
-	public void updateTickets(List<ZendeskTicket> zendeskTickets)
+	public void updateZendeskTickets(List<ZendeskTicket> zendeskTickets)
 		throws PortalException {
-
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		JSONArray ticketsJSONArray = JSONFactoryUtil.createJSONArray();
 
@@ -56,6 +54,8 @@ public class AsyncZendeskTicketWebService
 
 			ticketsJSONArray.put(ticketJSONObject);
 		}
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		jsonObject.put("tickets", ticketsJSONArray);
 

@@ -44,10 +44,10 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = ZendeskTicketWebService.class)
 public class DefaultZendeskTicketWebService implements ZendeskTicketWebService {
 
-	public List<ZendeskTicket> getRequesterTickets(long zendeskUserId)
+	public List<ZendeskTicket> getRequesterZendeskTickets(long zendeskUserId)
 		throws PortalException {
 
-		JSONObject responseJSONObject = _zendeskBaseWebService.get(
+		JSONObject responseJSONObject = zendeskBaseWebService.get(
 			ZendeskRESTEndpoints.URL_API_V2 + "users/" + zendeskUserId +
 				ZendeskRESTEndpoints.TICKETS_REQUESTED,
 			StringPool.BLANK);
@@ -69,7 +69,7 @@ public class DefaultZendeskTicketWebService implements ZendeskTicketWebService {
 		throws PortalException {
 
 		try {
-			JSONObject responseJSONObject = _zendeskBaseWebService.get(
+			JSONObject responseJSONObject = zendeskBaseWebService.get(
 				ZendeskRESTEndpoints.URL_API_V2 + "tickets/" + zendeskTicketId +
 					".json",
 				StringPool.BLANK);
@@ -86,14 +86,14 @@ public class DefaultZendeskTicketWebService implements ZendeskTicketWebService {
 			ZendeskTicketQuery zendeskTicketQuery)
 		throws PortalException {
 
-		JSONObject responseJSONObject = _zendeskBaseWebService.get(
+		JSONObject responseJSONObject = zendeskBaseWebService.get(
 			ZendeskRESTEndpoints.URL_API_V2 + "search.json",
 			zendeskTicketQuery.getParameters());
 
 		return toSearchHits(responseJSONObject);
 	}
 
-	public void updateTickets(List<ZendeskTicket> zendeskTickets)
+	public void updateZendeskTickets(List<ZendeskTicket> zendeskTickets)
 		throws PortalException {
 
 		throw new UnsupportedOperationException();
@@ -109,7 +109,7 @@ public class DefaultZendeskTicketWebService implements ZendeskTicketWebService {
 		String nextPageURL = responseJSONObject.getString("next_page");
 
 		if (Validator.isNotNull(nextPageURL)) {
-			String page = _http.getParameter(nextPageURL, "page", false);
+			String page = http.getParameter(nextPageURL, "page", false);
 
 			searchHits.setNextPage(GetterUtil.getInteger(page));
 		}
