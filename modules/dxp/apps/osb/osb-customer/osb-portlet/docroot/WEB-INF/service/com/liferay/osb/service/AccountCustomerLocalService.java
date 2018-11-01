@@ -248,6 +248,10 @@ public interface AccountCustomerLocalService extends BaseLocalService,
 	public List<AccountCustomer> getAccountCustomers(long accountEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountCustomer> getAccountCustomers(long accountEntryId,
+		int role);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountCustomer> getUserAccountCustomers(long userId);
 
 	/**

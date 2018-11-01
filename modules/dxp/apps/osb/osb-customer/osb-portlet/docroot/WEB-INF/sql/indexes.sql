@@ -1,7 +1,7 @@
 create index IX_1B961F96 on OSB_AccountAttachment (accountEntryId, accountProjectId, fileName[$COLUMN_LENGTH:75$], type_);
 create index IX_D44EEA51 on OSB_AccountAttachment (accountEntryId, accountProjectId, type_);
 
-create index IX_5D6036A4 on OSB_AccountCustomer (accountEntryId);
+create index IX_B590328E on OSB_AccountCustomer (accountEntryId, role);
 create index IX_F9BEADE on OSB_AccountCustomer (userId, accountEntryId);
 
 create index IX_E9054065 on OSB_AccountEntries_SupportRegions (accountEntryId);

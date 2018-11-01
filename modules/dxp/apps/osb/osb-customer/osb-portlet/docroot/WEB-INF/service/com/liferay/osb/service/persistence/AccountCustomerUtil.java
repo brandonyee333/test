@@ -498,6 +498,182 @@ public class AccountCustomerUtil {
 	}
 
 	/**
+	* Returns all the account customers where accountEntryId = &#63; and role = &#63;.
+	*
+	* @param accountEntryId the account entry ID
+	* @param role the role
+	* @return the matching account customers
+	*/
+	public static List<AccountCustomer> findByAEI_R(long accountEntryId,
+		int role) {
+		return getPersistence().findByAEI_R(accountEntryId, role);
+	}
+
+	/**
+	* Returns a range of all the account customers where accountEntryId = &#63; and role = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountCustomerModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param accountEntryId the account entry ID
+	* @param role the role
+	* @param start the lower bound of the range of account customers
+	* @param end the upper bound of the range of account customers (not inclusive)
+	* @return the range of matching account customers
+	*/
+	public static List<AccountCustomer> findByAEI_R(long accountEntryId,
+		int role, int start, int end) {
+		return getPersistence().findByAEI_R(accountEntryId, role, start, end);
+	}
+
+	/**
+	* Returns an ordered range of all the account customers where accountEntryId = &#63; and role = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountCustomerModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param accountEntryId the account entry ID
+	* @param role the role
+	* @param start the lower bound of the range of account customers
+	* @param end the upper bound of the range of account customers (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching account customers
+	*/
+	public static List<AccountCustomer> findByAEI_R(long accountEntryId,
+		int role, int start, int end,
+		OrderByComparator<AccountCustomer> orderByComparator) {
+		return getPersistence()
+				   .findByAEI_R(accountEntryId, role, start, end,
+			orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the account customers where accountEntryId = &#63; and role = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link AccountCustomerModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param accountEntryId the account entry ID
+	* @param role the role
+	* @param start the lower bound of the range of account customers
+	* @param end the upper bound of the range of account customers (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the ordered range of matching account customers
+	*/
+	public static List<AccountCustomer> findByAEI_R(long accountEntryId,
+		int role, int start, int end,
+		OrderByComparator<AccountCustomer> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByAEI_R(accountEntryId, role, start, end,
+			orderByComparator, retrieveFromCache);
+	}
+
+	/**
+	* Returns the first account customer in the ordered set where accountEntryId = &#63; and role = &#63;.
+	*
+	* @param accountEntryId the account entry ID
+	* @param role the role
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching account customer
+	* @throws NoSuchAccountCustomerException if a matching account customer could not be found
+	*/
+	public static AccountCustomer findByAEI_R_First(long accountEntryId,
+		int role, OrderByComparator<AccountCustomer> orderByComparator)
+		throws com.liferay.osb.exception.NoSuchAccountCustomerException {
+		return getPersistence()
+				   .findByAEI_R_First(accountEntryId, role, orderByComparator);
+	}
+
+	/**
+	* Returns the first account customer in the ordered set where accountEntryId = &#63; and role = &#63;.
+	*
+	* @param accountEntryId the account entry ID
+	* @param role the role
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching account customer, or <code>null</code> if a matching account customer could not be found
+	*/
+	public static AccountCustomer fetchByAEI_R_First(long accountEntryId,
+		int role, OrderByComparator<AccountCustomer> orderByComparator) {
+		return getPersistence()
+				   .fetchByAEI_R_First(accountEntryId, role, orderByComparator);
+	}
+
+	/**
+	* Returns the last account customer in the ordered set where accountEntryId = &#63; and role = &#63;.
+	*
+	* @param accountEntryId the account entry ID
+	* @param role the role
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching account customer
+	* @throws NoSuchAccountCustomerException if a matching account customer could not be found
+	*/
+	public static AccountCustomer findByAEI_R_Last(long accountEntryId,
+		int role, OrderByComparator<AccountCustomer> orderByComparator)
+		throws com.liferay.osb.exception.NoSuchAccountCustomerException {
+		return getPersistence()
+				   .findByAEI_R_Last(accountEntryId, role, orderByComparator);
+	}
+
+	/**
+	* Returns the last account customer in the ordered set where accountEntryId = &#63; and role = &#63;.
+	*
+	* @param accountEntryId the account entry ID
+	* @param role the role
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching account customer, or <code>null</code> if a matching account customer could not be found
+	*/
+	public static AccountCustomer fetchByAEI_R_Last(long accountEntryId,
+		int role, OrderByComparator<AccountCustomer> orderByComparator) {
+		return getPersistence()
+				   .fetchByAEI_R_Last(accountEntryId, role, orderByComparator);
+	}
+
+	/**
+	* Returns the account customers before and after the current account customer in the ordered set where accountEntryId = &#63; and role = &#63;.
+	*
+	* @param accountCustomerId the primary key of the current account customer
+	* @param accountEntryId the account entry ID
+	* @param role the role
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next account customer
+	* @throws NoSuchAccountCustomerException if a account customer with the primary key could not be found
+	*/
+	public static AccountCustomer[] findByAEI_R_PrevAndNext(
+		long accountCustomerId, long accountEntryId, int role,
+		OrderByComparator<AccountCustomer> orderByComparator)
+		throws com.liferay.osb.exception.NoSuchAccountCustomerException {
+		return getPersistence()
+				   .findByAEI_R_PrevAndNext(accountCustomerId, accountEntryId,
+			role, orderByComparator);
+	}
+
+	/**
+	* Removes all the account customers where accountEntryId = &#63; and role = &#63; from the database.
+	*
+	* @param accountEntryId the account entry ID
+	* @param role the role
+	*/
+	public static void removeByAEI_R(long accountEntryId, int role) {
+		getPersistence().removeByAEI_R(accountEntryId, role);
+	}
+
+	/**
+	* Returns the number of account customers where accountEntryId = &#63; and role = &#63;.
+	*
+	* @param accountEntryId the account entry ID
+	* @param role the role
+	* @return the number of matching account customers
+	*/
+	public static int countByAEI_R(long accountEntryId, int role) {
+		return getPersistence().countByAEI_R(accountEntryId, role);
+	}
+
+	/**
 	* Caches the account customer in the entity cache if it is enabled.
 	*
 	* @param accountCustomer the account customer

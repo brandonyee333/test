@@ -317,6 +317,13 @@ public class AccountCustomerLocalServiceWrapper
 	}
 
 	@Override
+	public java.util.List<com.liferay.osb.model.AccountCustomer> getAccountCustomers(
+		long accountEntryId, int role) {
+		return _accountCustomerLocalService.getAccountCustomers(accountEntryId,
+			role);
+	}
+
+	@Override
 	public java.util.List<com.liferay.osb.model.AccountCustomer> getUserAccountCustomers(
 		long userId) {
 		return _accountCustomerLocalService.getUserAccountCustomers(userId);

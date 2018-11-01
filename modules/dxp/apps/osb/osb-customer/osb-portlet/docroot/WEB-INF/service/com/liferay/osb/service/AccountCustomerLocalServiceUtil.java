@@ -291,6 +291,11 @@ public class AccountCustomerLocalServiceUtil {
 		return getService().getAccountCustomers(accountEntryId);
 	}
 
+	public static java.util.List<com.liferay.osb.model.AccountCustomer> getAccountCustomers(
+		long accountEntryId, int role) {
+		return getService().getAccountCustomers(accountEntryId, role);
+	}
+
 	public static java.util.List<com.liferay.osb.model.AccountCustomer> getUserAccountCustomers(
 		long userId) {
 		return getService().getUserAccountCustomers(userId);

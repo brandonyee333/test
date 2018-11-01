@@ -102,8 +102,9 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 				"value.object.column.bitmask.enabled.com.liferay.osb.model.AccountCustomer"),
 			true);
 	public static final long ACCOUNTENTRYID_COLUMN_BITMASK = 1L;
-	public static final long USERID_COLUMN_BITMASK = 2L;
-	public static final long ACCOUNTCUSTOMERID_COLUMN_BITMASK = 4L;
+	public static final long ROLE_COLUMN_BITMASK = 2L;
+	public static final long USERID_COLUMN_BITMASK = 4L;
+	public static final long ACCOUNTCUSTOMERID_COLUMN_BITMASK = 8L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -314,7 +315,19 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 
 	@Override
 	public void setRole(int role) {
+		_columnBitmask |= ROLE_COLUMN_BITMASK;
+
+		if (!_setOriginalRole) {
+			_setOriginalRole = true;
+
+			_originalRole = _role;
+		}
+
 		_role = role;
+	}
+
+	public int getOriginalRole() {
+		return _originalRole;
 	}
 
 	@JSON
@@ -434,6 +447,10 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 
 		accountCustomerModelImpl._setOriginalAccountEntryId = false;
 
+		accountCustomerModelImpl._originalRole = accountCustomerModelImpl._role;
+
+		accountCustomerModelImpl._setOriginalRole = false;
+
 		accountCustomerModelImpl._columnBitmask = 0;
 	}
 
@@ -519,6 +536,8 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 	private long _originalAccountEntryId;
 	private boolean _setOriginalAccountEntryId;
 	private int _role;
+	private int _originalRole;
+	private boolean _setOriginalRole;
 	private int _notifications;
 	private long _columnBitmask;
 	private AccountCustomer _escapedModel;

@@ -169,17 +169,21 @@ public class AccountCustomerLocalServiceClpInvoker {
 
 		_methodParameterTypes187 = new String[] { "long" };
 
-		_methodName188 = "getUserAccountCustomers";
+		_methodName188 = "getAccountCustomers";
 
-		_methodParameterTypes188 = new String[] { "long" };
+		_methodParameterTypes188 = new String[] { "long", "int" };
 
-		_methodName189 = "hasAccountCustomer";
+		_methodName189 = "getUserAccountCustomers";
 
-		_methodParameterTypes189 = new String[] { "long", "long" };
+		_methodParameterTypes189 = new String[] { "long" };
 
-		_methodName190 = "updateAccountCustomer";
+		_methodName190 = "hasAccountCustomer";
 
-		_methodParameterTypes190 = new String[] { "long", "long", "int", "int" };
+		_methodParameterTypes190 = new String[] { "long", "long" };
+
+		_methodName191 = "updateAccountCustomer";
+
+		_methodParameterTypes191 = new String[] { "long", "long", "int", "int" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -354,17 +358,23 @@ public class AccountCustomerLocalServiceClpInvoker {
 
 		if (_methodName188.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes188, parameterTypes)) {
-			return AccountCustomerLocalServiceUtil.getUserAccountCustomers(((Long)arguments[0]).longValue());
+			return AccountCustomerLocalServiceUtil.getAccountCustomers(((Long)arguments[0]).longValue(),
+				((Integer)arguments[1]).intValue());
 		}
 
 		if (_methodName189.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes189, parameterTypes)) {
-			return AccountCustomerLocalServiceUtil.hasAccountCustomer(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue());
+			return AccountCustomerLocalServiceUtil.getUserAccountCustomers(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName190.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes190, parameterTypes)) {
+			return AccountCustomerLocalServiceUtil.hasAccountCustomer(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue());
+		}
+
+		if (_methodName191.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes191, parameterTypes)) {
 			return AccountCustomerLocalServiceUtil.updateAccountCustomer(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Integer)arguments[2]).intValue(),
@@ -438,4 +448,6 @@ public class AccountCustomerLocalServiceClpInvoker {
 	private String[] _methodParameterTypes189;
 	private String _methodName190;
 	private String[] _methodParameterTypes190;
+	private String _methodName191;
+	private String[] _methodParameterTypes191;
 }
