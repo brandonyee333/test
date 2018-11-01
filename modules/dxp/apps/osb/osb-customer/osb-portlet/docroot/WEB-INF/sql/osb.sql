@@ -173,7 +173,7 @@ insert into ListType (listTypeId, name, type_) values (29004, 'ibm-jdk-7', 'com.
 insert into ListType (listTypeId, name, type_) values (29005, 'jrocket-jdk-6', 'com.liferay.osb.model.AccountEnvironment.envJVM');
 insert into ListType (listTypeId, name, type_) values (29006, 'oracle-sun-jdk-8', 'com.liferay.osb.model.AccountEnvironment.envJVM');
 insert into ListType (listTypeId, name, type_) values (29007, 'ibm-jdk-8', 'com.liferay.osb.model.AccountEnvironment.envJVM');
-insert into ListType (listTypeId, name, type_) values (29008, 'openjdk-8', 'com.liferay.osb.model.AccountEnvironment.envJVM');
+insert into ListType (listTypeId, name, type_) values (29008, 'oracle-openjdk-8', 'com.liferay.osb.model.AccountEnvironment.envJVM');
 
 insert into ListType (listTypeId, name, type_) values (30000, 'linux', 'com.liferay.osb.model.AccountEnvironment.envOS');
 insert into ListType (listTypeId, name, type_) values (30001, 'mac-os-x', 'com.liferay.osb.model.AccountEnvironment.envOS');
@@ -220,6 +220,7 @@ insert into ListType (listTypeId, name, type_) values (30041, 'debian-7', 'com.l
 insert into ListType (listTypeId, name, type_) values (30042, 'ubuntu-lts-16.04', 'com.liferay.osb.model.AccountEnvironment.envOS');
 insert into ListType (listTypeId, name, type_) values (30043, 'windows-server-2016', 'com.liferay.osb.model.AccountEnvironment.envOS');
 insert into ListType (listTypeId, name, type_) values (30044, 'debian-9', 'com.liferay.osb.model.AccountEnvironment.envOS');
+insert into ListType (listTypeId, name, type_) values (30045, 'amazon-linux-2', 'com.liferay.osb.model.AccountEnvironment.envOS');
 
 insert into ListType (listTypeId, name, type_) values (34001, 'application-server', 'com.liferay.osb.model.AuditEntry.field');
 insert into ListType (listTypeId, name, type_) values (34004, 'database', 'com.liferay.osb.model.AuditEntry.field');
