@@ -2,13 +2,15 @@
 	<div class="header-inner row">
 		<div class="col-md-3 header-content">
 			<a class="header-link" href="${site_logo_url}" title="Home">
-				<svg alt="Liferay Help Center" class="header-logo">
+				<svg alt="<@liferay.language key="liferay-help-center" />" class="header-logo">
 					<use xlink:href="#liferay-waffle" />
 				</svg>
 			</a>
 
 			<a href="${site_name_url}" title="${site_name}">
-				<h2 class="site-name">${site_name}</h2>
+				<h2 class="site-name">
+					${site_name}
+				</h2>
 			</a>
 		</div>
 
