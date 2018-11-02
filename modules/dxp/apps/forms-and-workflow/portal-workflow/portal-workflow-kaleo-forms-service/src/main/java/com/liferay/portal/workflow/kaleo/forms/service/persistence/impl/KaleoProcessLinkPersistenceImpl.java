@@ -675,6 +675,8 @@ public class KaleoProcessLinkPersistenceImpl extends BasePersistenceImpl<KaleoPr
 	@Override
 	public KaleoProcessLink fetchByKPI_WTN(long kaleoProcessId,
 		String workflowTaskName, boolean retrieveFromCache) {
+		workflowTaskName = Objects.toString(workflowTaskName, "");
+
 		Object[] finderArgs = new Object[] { kaleoProcessId, workflowTaskName };
 
 		Object result = null;
@@ -703,10 +705,7 @@ public class KaleoProcessLinkPersistenceImpl extends BasePersistenceImpl<KaleoPr
 
 			boolean bindWorkflowTaskName = false;
 
-			if (workflowTaskName == null) {
-				query.append(_FINDER_COLUMN_KPI_WTN_WORKFLOWTASKNAME_1);
-			}
-			else if (workflowTaskName.equals("")) {
+			if (workflowTaskName.isEmpty()) {
 				query.append(_FINDER_COLUMN_KPI_WTN_WORKFLOWTASKNAME_3);
 			}
 			else {
@@ -790,6 +789,8 @@ public class KaleoProcessLinkPersistenceImpl extends BasePersistenceImpl<KaleoPr
 	 */
 	@Override
 	public int countByKPI_WTN(long kaleoProcessId, String workflowTaskName) {
+		workflowTaskName = Objects.toString(workflowTaskName, "");
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_KPI_WTN;
 
 		Object[] finderArgs = new Object[] { kaleoProcessId, workflowTaskName };
@@ -805,10 +806,7 @@ public class KaleoProcessLinkPersistenceImpl extends BasePersistenceImpl<KaleoPr
 
 			boolean bindWorkflowTaskName = false;
 
-			if (workflowTaskName == null) {
-				query.append(_FINDER_COLUMN_KPI_WTN_WORKFLOWTASKNAME_1);
-			}
-			else if (workflowTaskName.equals("")) {
+			if (workflowTaskName.isEmpty()) {
 				query.append(_FINDER_COLUMN_KPI_WTN_WORKFLOWTASKNAME_3);
 			}
 			else {

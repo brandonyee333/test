@@ -700,6 +700,9 @@ public class SamlSpMessagePersistenceImpl extends BasePersistenceImpl<SamlSpMess
 	@Override
 	public SamlSpMessage fetchBySIEI_SIRK(String samlIdpEntityId,
 		String samlIdpResponseKey, boolean retrieveFromCache) {
+		samlIdpEntityId = Objects.toString(samlIdpEntityId, "");
+		samlIdpResponseKey = Objects.toString(samlIdpResponseKey, "");
+
 		Object[] finderArgs = new Object[] { samlIdpEntityId, samlIdpResponseKey };
 
 		Object result = null;
@@ -727,10 +730,7 @@ public class SamlSpMessagePersistenceImpl extends BasePersistenceImpl<SamlSpMess
 
 			boolean bindSamlIdpEntityId = false;
 
-			if (samlIdpEntityId == null) {
-				query.append(_FINDER_COLUMN_SIEI_SIRK_SAMLIDPENTITYID_1);
-			}
-			else if (samlIdpEntityId.equals("")) {
+			if (samlIdpEntityId.isEmpty()) {
 				query.append(_FINDER_COLUMN_SIEI_SIRK_SAMLIDPENTITYID_3);
 			}
 			else {
@@ -741,10 +741,7 @@ public class SamlSpMessagePersistenceImpl extends BasePersistenceImpl<SamlSpMess
 
 			boolean bindSamlIdpResponseKey = false;
 
-			if (samlIdpResponseKey == null) {
-				query.append(_FINDER_COLUMN_SIEI_SIRK_SAMLIDPRESPONSEKEY_1);
-			}
-			else if (samlIdpResponseKey.equals("")) {
+			if (samlIdpResponseKey.isEmpty()) {
 				query.append(_FINDER_COLUMN_SIEI_SIRK_SAMLIDPRESPONSEKEY_3);
 			}
 			else {
@@ -842,6 +839,9 @@ public class SamlSpMessagePersistenceImpl extends BasePersistenceImpl<SamlSpMess
 	@Override
 	public int countBySIEI_SIRK(String samlIdpEntityId,
 		String samlIdpResponseKey) {
+		samlIdpEntityId = Objects.toString(samlIdpEntityId, "");
+		samlIdpResponseKey = Objects.toString(samlIdpResponseKey, "");
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_SIEI_SIRK;
 
 		Object[] finderArgs = new Object[] { samlIdpEntityId, samlIdpResponseKey };
@@ -855,10 +855,7 @@ public class SamlSpMessagePersistenceImpl extends BasePersistenceImpl<SamlSpMess
 
 			boolean bindSamlIdpEntityId = false;
 
-			if (samlIdpEntityId == null) {
-				query.append(_FINDER_COLUMN_SIEI_SIRK_SAMLIDPENTITYID_1);
-			}
-			else if (samlIdpEntityId.equals("")) {
+			if (samlIdpEntityId.isEmpty()) {
 				query.append(_FINDER_COLUMN_SIEI_SIRK_SAMLIDPENTITYID_3);
 			}
 			else {
@@ -869,10 +866,7 @@ public class SamlSpMessagePersistenceImpl extends BasePersistenceImpl<SamlSpMess
 
 			boolean bindSamlIdpResponseKey = false;
 
-			if (samlIdpResponseKey == null) {
-				query.append(_FINDER_COLUMN_SIEI_SIRK_SAMLIDPRESPONSEKEY_1);
-			}
-			else if (samlIdpResponseKey.equals("")) {
+			if (samlIdpResponseKey.isEmpty()) {
 				query.append(_FINDER_COLUMN_SIEI_SIRK_SAMLIDPRESPONSEKEY_3);
 			}
 			else {

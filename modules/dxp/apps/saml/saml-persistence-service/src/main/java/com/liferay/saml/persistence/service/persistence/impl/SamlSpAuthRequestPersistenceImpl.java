@@ -699,6 +699,9 @@ public class SamlSpAuthRequestPersistenceImpl extends BasePersistenceImpl<SamlSp
 	@Override
 	public SamlSpAuthRequest fetchBySIEI_SSARK(String samlIdpEntityId,
 		String samlSpAuthRequestKey, boolean retrieveFromCache) {
+		samlIdpEntityId = Objects.toString(samlIdpEntityId, "");
+		samlSpAuthRequestKey = Objects.toString(samlSpAuthRequestKey, "");
+
 		Object[] finderArgs = new Object[] { samlIdpEntityId, samlSpAuthRequestKey };
 
 		Object result = null;
@@ -726,10 +729,7 @@ public class SamlSpAuthRequestPersistenceImpl extends BasePersistenceImpl<SamlSp
 
 			boolean bindSamlIdpEntityId = false;
 
-			if (samlIdpEntityId == null) {
-				query.append(_FINDER_COLUMN_SIEI_SSARK_SAMLIDPENTITYID_1);
-			}
-			else if (samlIdpEntityId.equals("")) {
+			if (samlIdpEntityId.isEmpty()) {
 				query.append(_FINDER_COLUMN_SIEI_SSARK_SAMLIDPENTITYID_3);
 			}
 			else {
@@ -740,10 +740,7 @@ public class SamlSpAuthRequestPersistenceImpl extends BasePersistenceImpl<SamlSp
 
 			boolean bindSamlSpAuthRequestKey = false;
 
-			if (samlSpAuthRequestKey == null) {
-				query.append(_FINDER_COLUMN_SIEI_SSARK_SAMLSPAUTHREQUESTKEY_1);
-			}
-			else if (samlSpAuthRequestKey.equals("")) {
+			if (samlSpAuthRequestKey.isEmpty()) {
 				query.append(_FINDER_COLUMN_SIEI_SSARK_SAMLSPAUTHREQUESTKEY_3);
 			}
 			else {
@@ -841,6 +838,9 @@ public class SamlSpAuthRequestPersistenceImpl extends BasePersistenceImpl<SamlSp
 	@Override
 	public int countBySIEI_SSARK(String samlIdpEntityId,
 		String samlSpAuthRequestKey) {
+		samlIdpEntityId = Objects.toString(samlIdpEntityId, "");
+		samlSpAuthRequestKey = Objects.toString(samlSpAuthRequestKey, "");
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_SIEI_SSARK;
 
 		Object[] finderArgs = new Object[] { samlIdpEntityId, samlSpAuthRequestKey };
@@ -854,10 +854,7 @@ public class SamlSpAuthRequestPersistenceImpl extends BasePersistenceImpl<SamlSp
 
 			boolean bindSamlIdpEntityId = false;
 
-			if (samlIdpEntityId == null) {
-				query.append(_FINDER_COLUMN_SIEI_SSARK_SAMLIDPENTITYID_1);
-			}
-			else if (samlIdpEntityId.equals("")) {
+			if (samlIdpEntityId.isEmpty()) {
 				query.append(_FINDER_COLUMN_SIEI_SSARK_SAMLIDPENTITYID_3);
 			}
 			else {
@@ -868,10 +865,7 @@ public class SamlSpAuthRequestPersistenceImpl extends BasePersistenceImpl<SamlSp
 
 			boolean bindSamlSpAuthRequestKey = false;
 
-			if (samlSpAuthRequestKey == null) {
-				query.append(_FINDER_COLUMN_SIEI_SSARK_SAMLSPAUTHREQUESTKEY_1);
-			}
-			else if (samlSpAuthRequestKey.equals("")) {
+			if (samlSpAuthRequestKey.isEmpty()) {
 				query.append(_FINDER_COLUMN_SIEI_SSARK_SAMLSPAUTHREQUESTKEY_3);
 			}
 			else {

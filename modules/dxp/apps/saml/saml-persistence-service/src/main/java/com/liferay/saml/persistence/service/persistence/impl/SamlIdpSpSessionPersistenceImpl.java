@@ -1226,6 +1226,8 @@ public class SamlIdpSpSessionPersistenceImpl extends BasePersistenceImpl<SamlIdp
 	@Override
 	public SamlIdpSpSession fetchBySISSI_SSEI(long samlIdpSsoSessionId,
 		String samlSpEntityId, boolean retrieveFromCache) {
+		samlSpEntityId = Objects.toString(samlSpEntityId, "");
+
 		Object[] finderArgs = new Object[] { samlIdpSsoSessionId, samlSpEntityId };
 
 		Object result = null;
@@ -1254,10 +1256,7 @@ public class SamlIdpSpSessionPersistenceImpl extends BasePersistenceImpl<SamlIdp
 
 			boolean bindSamlSpEntityId = false;
 
-			if (samlSpEntityId == null) {
-				query.append(_FINDER_COLUMN_SISSI_SSEI_SAMLSPENTITYID_1);
-			}
-			else if (samlSpEntityId.equals("")) {
+			if (samlSpEntityId.isEmpty()) {
 				query.append(_FINDER_COLUMN_SISSI_SSEI_SAMLSPENTITYID_3);
 			}
 			else {
@@ -1352,6 +1351,8 @@ public class SamlIdpSpSessionPersistenceImpl extends BasePersistenceImpl<SamlIdp
 	 */
 	@Override
 	public int countBySISSI_SSEI(long samlIdpSsoSessionId, String samlSpEntityId) {
+		samlSpEntityId = Objects.toString(samlSpEntityId, "");
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_SISSI_SSEI;
 
 		Object[] finderArgs = new Object[] { samlIdpSsoSessionId, samlSpEntityId };
@@ -1367,10 +1368,7 @@ public class SamlIdpSpSessionPersistenceImpl extends BasePersistenceImpl<SamlIdp
 
 			boolean bindSamlSpEntityId = false;
 
-			if (samlSpEntityId == null) {
-				query.append(_FINDER_COLUMN_SISSI_SSEI_SAMLSPENTITYID_1);
-			}
-			else if (samlSpEntityId.equals("")) {
+			if (samlSpEntityId.isEmpty()) {
 				query.append(_FINDER_COLUMN_SISSI_SSEI_SAMLSPENTITYID_3);
 			}
 			else {

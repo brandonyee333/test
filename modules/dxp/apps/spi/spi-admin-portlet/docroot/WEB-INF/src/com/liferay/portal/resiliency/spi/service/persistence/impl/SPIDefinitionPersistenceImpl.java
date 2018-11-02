@@ -1033,6 +1033,8 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 	@Override
 	public SPIDefinition fetchByC_N(long companyId, String name,
 		boolean retrieveFromCache) {
+		name = Objects.toString(name, "");
+
 		Object[] finderArgs = new Object[] { companyId, name };
 
 		Object result = null;
@@ -1060,10 +1062,7 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 
 			boolean bindName = false;
 
-			if (name == null) {
-				query.append(_FINDER_COLUMN_C_N_NAME_1);
-			}
-			else if (name.equals("")) {
+			if (name.isEmpty()) {
 				query.append(_FINDER_COLUMN_C_N_NAME_3);
 			}
 			else {
@@ -1157,6 +1156,8 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 	 */
 	@Override
 	public int countByC_N(long companyId, String name) {
+		name = Objects.toString(name, "");
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_N;
 
 		Object[] finderArgs = new Object[] { companyId, name };
@@ -1173,10 +1174,7 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 
 			boolean bindName = false;
 
-			if (name == null) {
-				query.append(_FINDER_COLUMN_C_N_NAME_1);
-			}
-			else if (name.equals("")) {
+			if (name.isEmpty()) {
 				query.append(_FINDER_COLUMN_C_N_NAME_3);
 			}
 			else {
@@ -2715,6 +2713,8 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 	@Override
 	public SPIDefinition fetchByCA_CP(String connectorAddress,
 		int connectorPort, boolean retrieveFromCache) {
+		connectorAddress = Objects.toString(connectorAddress, "");
+
 		Object[] finderArgs = new Object[] { connectorAddress, connectorPort };
 
 		Object result = null;
@@ -2741,10 +2741,7 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 
 			boolean bindConnectorAddress = false;
 
-			if (connectorAddress == null) {
-				query.append(_FINDER_COLUMN_CA_CP_CONNECTORADDRESS_1);
-			}
-			else if (connectorAddress.equals("")) {
+			if (connectorAddress.isEmpty()) {
 				query.append(_FINDER_COLUMN_CA_CP_CONNECTORADDRESS_3);
 			}
 			else {
@@ -2841,6 +2838,8 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 	 */
 	@Override
 	public int countByCA_CP(String connectorAddress, int connectorPort) {
+		connectorAddress = Objects.toString(connectorAddress, "");
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_CA_CP;
 
 		Object[] finderArgs = new Object[] { connectorAddress, connectorPort };
@@ -2855,10 +2854,7 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 
 			boolean bindConnectorAddress = false;
 
-			if (connectorAddress == null) {
-				query.append(_FINDER_COLUMN_CA_CP_CONNECTORADDRESS_1);
-			}
-			else if (connectorAddress.equals("")) {
+			if (connectorAddress.isEmpty()) {
 				query.append(_FINDER_COLUMN_CA_CP_CONNECTORADDRESS_3);
 			}
 			else {

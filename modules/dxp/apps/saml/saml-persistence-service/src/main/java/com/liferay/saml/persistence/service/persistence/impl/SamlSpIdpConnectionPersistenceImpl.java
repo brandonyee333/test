@@ -675,6 +675,8 @@ public class SamlSpIdpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	@Override
 	public SamlSpIdpConnection fetchByC_SIEI(long companyId,
 		String samlIdpEntityId, boolean retrieveFromCache) {
+		samlIdpEntityId = Objects.toString(samlIdpEntityId, "");
+
 		Object[] finderArgs = new Object[] { companyId, samlIdpEntityId };
 
 		Object result = null;
@@ -703,10 +705,7 @@ public class SamlSpIdpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 
 			boolean bindSamlIdpEntityId = false;
 
-			if (samlIdpEntityId == null) {
-				query.append(_FINDER_COLUMN_C_SIEI_SAMLIDPENTITYID_1);
-			}
-			else if (samlIdpEntityId.equals("")) {
+			if (samlIdpEntityId.isEmpty()) {
 				query.append(_FINDER_COLUMN_C_SIEI_SAMLIDPENTITYID_3);
 			}
 			else {
@@ -800,6 +799,8 @@ public class SamlSpIdpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 	 */
 	@Override
 	public int countByC_SIEI(long companyId, String samlIdpEntityId) {
+		samlIdpEntityId = Objects.toString(samlIdpEntityId, "");
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_SIEI;
 
 		Object[] finderArgs = new Object[] { companyId, samlIdpEntityId };
@@ -815,10 +816,7 @@ public class SamlSpIdpConnectionPersistenceImpl extends BasePersistenceImpl<Saml
 
 			boolean bindSamlIdpEntityId = false;
 
-			if (samlIdpEntityId == null) {
-				query.append(_FINDER_COLUMN_C_SIEI_SAMLIDPENTITYID_1);
-			}
-			else if (samlIdpEntityId.equals("")) {
+			if (samlIdpEntityId.isEmpty()) {
 				query.append(_FINDER_COLUMN_C_SIEI_SAMLIDPENTITYID_3);
 			}
 			else {

@@ -1170,6 +1170,8 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 	@Override
 	public OAuthApplication fetchByConsumerKey(String consumerKey,
 		boolean retrieveFromCache) {
+		consumerKey = Objects.toString(consumerKey, "");
+
 		Object[] finderArgs = new Object[] { consumerKey };
 
 		Object result = null;
@@ -1194,10 +1196,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 
 			boolean bindConsumerKey = false;
 
-			if (consumerKey == null) {
-				query.append(_FINDER_COLUMN_CONSUMERKEY_CONSUMERKEY_1);
-			}
-			else if (consumerKey.equals("")) {
+			if (consumerKey.isEmpty()) {
 				query.append(_FINDER_COLUMN_CONSUMERKEY_CONSUMERKEY_3);
 			}
 			else {
@@ -1276,6 +1275,8 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 	 */
 	@Override
 	public int countByConsumerKey(String consumerKey) {
+		consumerKey = Objects.toString(consumerKey, "");
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_CONSUMERKEY;
 
 		Object[] finderArgs = new Object[] { consumerKey };
@@ -1289,10 +1290,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 
 			boolean bindConsumerKey = false;
 
-			if (consumerKey == null) {
-				query.append(_FINDER_COLUMN_CONSUMERKEY_CONSUMERKEY_1);
-			}
-			else if (consumerKey.equals("")) {
+			if (consumerKey.isEmpty()) {
 				query.append(_FINDER_COLUMN_CONSUMERKEY_CONSUMERKEY_3);
 			}
 			else {
@@ -1424,6 +1422,8 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 		int start, int end,
 		OrderByComparator<OAuthApplication> orderByComparator,
 		boolean retrieveFromCache) {
+		name = Objects.toString(name, "");
+
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -1468,10 +1468,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 
 			boolean bindName = false;
 
-			if (name == null) {
-				query.append(_FINDER_COLUMN_C_N_NAME_1);
-			}
-			else if (name.equals("")) {
+			if (name.isEmpty()) {
 				query.append(_FINDER_COLUMN_C_N_NAME_3);
 			}
 			else {
@@ -1669,6 +1666,8 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 		long companyId, String name,
 		OrderByComparator<OAuthApplication> orderByComparator)
 		throws NoSuchApplicationException {
+		name = Objects.toString(name, "");
+
 		OAuthApplication oAuthApplication = findByPrimaryKey(oAuthApplicationId);
 
 		Session session = null;
@@ -1716,10 +1715,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 
 		boolean bindName = false;
 
-		if (name == null) {
-			query.append(_FINDER_COLUMN_C_N_NAME_1);
-		}
-		else if (name.equals("")) {
+		if (name.isEmpty()) {
 			query.append(_FINDER_COLUMN_C_N_NAME_3);
 		}
 		else {
@@ -1843,6 +1839,8 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 	 */
 	@Override
 	public int countByC_N(long companyId, String name) {
+		name = Objects.toString(name, "");
+
 		FinderPath finderPath = FINDER_PATH_WITH_PAGINATION_COUNT_BY_C_N;
 
 		Object[] finderArgs = new Object[] { companyId, name };
@@ -1858,10 +1856,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 
 			boolean bindName = false;
 
-			if (name == null) {
-				query.append(_FINDER_COLUMN_C_N_NAME_1);
-			}
-			else if (name.equals("")) {
+			if (name.isEmpty()) {
 				query.append(_FINDER_COLUMN_C_N_NAME_3);
 			}
 			else {
@@ -1996,6 +1991,8 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 		int start, int end,
 		OrderByComparator<OAuthApplication> orderByComparator,
 		boolean retrieveFromCache) {
+		name = Objects.toString(name, "");
+
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
@@ -2040,10 +2037,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 
 			boolean bindName = false;
 
-			if (name == null) {
-				query.append(_FINDER_COLUMN_U_N_NAME_1);
-			}
-			else if (name.equals("")) {
+			if (name.isEmpty()) {
 				query.append(_FINDER_COLUMN_U_N_NAME_3);
 			}
 			else {
@@ -2241,6 +2235,8 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 		long userId, String name,
 		OrderByComparator<OAuthApplication> orderByComparator)
 		throws NoSuchApplicationException {
+		name = Objects.toString(name, "");
+
 		OAuthApplication oAuthApplication = findByPrimaryKey(oAuthApplicationId);
 
 		Session session = null;
@@ -2288,10 +2284,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 
 		boolean bindName = false;
 
-		if (name == null) {
-			query.append(_FINDER_COLUMN_U_N_NAME_1);
-		}
-		else if (name.equals("")) {
+		if (name.isEmpty()) {
 			query.append(_FINDER_COLUMN_U_N_NAME_3);
 		}
 		else {
@@ -2415,6 +2408,8 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 	 */
 	@Override
 	public int countByU_N(long userId, String name) {
+		name = Objects.toString(name, "");
+
 		FinderPath finderPath = FINDER_PATH_WITH_PAGINATION_COUNT_BY_U_N;
 
 		Object[] finderArgs = new Object[] { userId, name };
@@ -2430,10 +2425,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 
 			boolean bindName = false;
 
-			if (name == null) {
-				query.append(_FINDER_COLUMN_U_N_NAME_1);
-			}
-			else if (name.equals("")) {
+			if (name.isEmpty()) {
 				query.append(_FINDER_COLUMN_U_N_NAME_3);
 			}
 			else {
