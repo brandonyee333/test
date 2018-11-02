@@ -132,9 +132,11 @@ public class HandshakeTask implements Task {
 		catch (Exception e) {
 			String exceptionMessage = e.getMessage();
 
-			if (e instanceof LCSHandshakeException) {
-				LCSRESTError lcsRESTError = LCSRESTError.UNDEFINED;
+			LCSEvent lcsEvent = LCSEvent.HANDSHAKE_FAILED;
 
+			LCSRESTError lcsRESTError = LCSRESTError.UNDEFINED;
+
+			if (e instanceof LCSHandshakeException) {
 				if (Validator.isNotNull(exceptionMessage)) {
 					lcsRESTError = LCSRESTError.getRESTError(e.getMessage());
 
@@ -143,37 +145,28 @@ public class HandshakeTask implements Task {
 					}
 				}
 
-				if (_log.isDebugEnabled()) {
-					_log.debug(exceptionMessage, e);
-				}
-				else if (_log.isWarnEnabled()) {
-					_log.warn(exceptionMessage);
-				}
-
 				if (lcsRESTError.getErrorCode() == 200) {
-					_notifyLCSEventListeners(
-						LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID);
+					lcsEvent = LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID;
 				}
 				else if (lcsRESTError.getErrorCode() == 201) {
-					_notifyLCSEventListeners(
-						LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH);
+					lcsEvent =
+						LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH;
 				}
 				else if (lcsRESTError.getErrorCode() == 202) {
-					_notifyLCSEventListeners(
+					lcsEvent =
 						LCSEvent.
-							LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS);
-				}
-			}
-			else {
-				if (_log.isDebugEnabled()) {
-					_log.debug(exceptionMessage, e);
-				}
-				else if (_log.isWarnEnabled()) {
-					_log.warn(exceptionMessage);
+							LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS;
 				}
 			}
 
-			_notifyLCSEventListeners(LCSEvent.HANDSHAKE_FAILED);
+			if (_log.isDebugEnabled()) {
+				_log.debug(exceptionMessage, e);
+			}
+			else if (_log.isWarnEnabled()) {
+				_log.warn(exceptionMessage);
+			}
+
+			_notifyLCSEventListeners(lcsEvent);
 		}
 	}
 
