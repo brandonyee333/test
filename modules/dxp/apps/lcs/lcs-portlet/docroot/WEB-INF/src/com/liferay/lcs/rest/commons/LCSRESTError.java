@@ -35,6 +35,11 @@ public enum LCSRESTError {
 		"AATF reference received indicates that referring environment does " +
 			"not match. Please make sure AATF is correct and try again. As " +
 				"result of this error AATF at LCS Client will be deleted."),
+	LCS_CLUSTER_ENTRY_TOKEN_ERROR_INVALID_USER_CREDENTIALS(
+		202,
+		"The credentials of the user that created the AATF are no longer " +
+			"valid. Please regenerate the token. As result of this error " +
+				"AATF at LCS Client will be deleted."),
 	LCS_CLUSTER_ENTRY_TOKEN_ERROR_NO_SUCH_TOKEN(
 		200,
 		"AATF reference received indicates that corresponding entity is " +
