@@ -29,23 +29,22 @@ JSONArray productsJSONArray = downloadsDisplayContext.getProductsJSONArray();
 </h1>
 
 <c:if test="<%= ddmStructureKey.equals(DDMStructureConstants.KEY_DOWNLOAD) %>">
-	<div class="sub-header">
+	<h5 class="secondary-text-color">
 		<liferay-ui:message key="find-the-downloads-you-need-by-filtering-the-results-with-the-drop-down-menus-below" />
-	</div>
+	</h5>
 
-	<div class="filters">
+	<%
+	PortletURL portletURL = renderResponse.createRenderURL();
+	%>
+
+	<aui:form action="<%= portletURL.toString() %>" method="get" name="fm">
+		<liferay-portlet:renderURLParams portletURL="<%= portletURL %>" />
 
 		<%
-		PortletURL portletURL = renderResponse.createRenderURL();
+		JSONArray fileTypesJSONArray = null;
 		%>
 
-		<aui:form action="<%= portletURL.toString() %>" method="get" name="fm">
-			<liferay-portlet:renderURLParams portletURL="<%= portletURL %>" />
-
-			<%
-			JSONArray fileTypesJSONArray = null;
-			%>
-
+		<div class="filters">
 			<aui:select inlinField="<%= true %>" inlineLabel="left" name="product" onChange='<%= renderResponse.getNamespace() + "updateFileType(this.value);" %>' prefix="&#58;" wrapperCssClass="filter-container">
 				<aui:option label="select-product" value="" />
 
@@ -94,8 +93,8 @@ JSONArray productsJSONArray = downloadsDisplayContext.getProductsJSONArray();
 
 				</c:if>
 			</aui:select>
-		</aui:form>
-	</div>
+		</div>
+	</aui:form>
 </c:if>
 
 <div class="results">
@@ -105,6 +104,7 @@ JSONArray productsJSONArray = downloadsDisplayContext.getProductsJSONArray();
 	>
 		<liferay-ui:search-container-row
 			className="com.liferay.journal.model.JournalArticle"
+			cssClass="journal-article-row"
 			keyProperty="resourcePrimKey"
 			modelVar="journalArticle"
 		>

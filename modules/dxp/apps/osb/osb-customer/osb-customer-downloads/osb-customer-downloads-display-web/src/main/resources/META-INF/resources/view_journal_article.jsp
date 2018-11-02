@@ -58,9 +58,9 @@ Map<String, Map<String, String>> downloadDetailsMap = new HashMap<>();
 
 </c:if>
 
-<div class="title">
+<h3 class="section-title">
 	<%= journalArticle.getTitle(locale) %>
-</div>
+</h3>
 
 <div class="download-links">
 

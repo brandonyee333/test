@@ -76,8 +76,6 @@
 
 	.table-responsive .table {
 		thead > tr > th {
-			font-weight: $font-weight-normal;
-
 			&:first-of-type {
 				width: 9%;
 			}
@@ -88,14 +86,17 @@
 			}
 		}
 
-		tbody > tr > td {
-			font-weight: $font-weight-normal;
-			padding: 24px 12px 24px 0;
-			vertical-align: baseline;
+		.journal-article-row {
+			td {
+				padding: 24px 12px 24px 0;
+			}
 
-			&:first-of-type {
+			.lfr-released-column {
 				color: $color-default;
 				font-size: 12px;
+				font-weight: $font-weight-normal;
+				padding-top: 30px;
+				vertical-align: baseline;
 			}
 		}
 	}
