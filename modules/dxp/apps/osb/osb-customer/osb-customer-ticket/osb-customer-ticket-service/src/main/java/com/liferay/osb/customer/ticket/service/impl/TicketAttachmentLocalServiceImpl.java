@@ -14,6 +14,8 @@
 
 package com.liferay.osb.customer.ticket.service.impl;
 
+import com.liferay.osb.customer.account.entry.details.constants.EventConstants;
+import com.liferay.osb.customer.account.entry.details.service.EventLocalService;
 import com.liferay.osb.customer.ticket.model.TicketAttachment;
 import com.liferay.osb.customer.ticket.repository.FileRepositoryWebService;
 import com.liferay.osb.customer.ticket.service.base.TicketAttachmentLocalServiceBaseImpl;
@@ -99,6 +101,11 @@ public class TicketAttachmentLocalServiceImpl
 	public void deleteTicketAttachments(long zendeskTicketId, int[] types)
 		throws PortalException {
 
+		long classNameId = classNameLocalService.getClassNameId(
+			ZendeskTicket.class.getName());
+		long typeClassNameId = classNameLocalService.getClassNameId(
+			TicketAttachment.class.getName());
+
 		List<TicketAttachment> ticketAttachments =
 			ticketAttachmentPersistence.findByZTI_T(zendeskTicketId, types);
 
@@ -108,6 +115,11 @@ public class TicketAttachmentLocalServiceImpl
 				ticketAttachment.getFilePath());
 
 			ticketAttachmentPersistence.remove(ticketAttachment);
+
+			_eventLocalService.deleteEvents(
+				classNameId, zendeskTicketId,
+				EventConstants.TYPE_DOWNLOAD_ATTACHMENT, typeClassNameId,
+				ticketAttachment.getTicketAttachmentId());
 		}
 	}
 
@@ -197,6 +209,9 @@ public class TicketAttachmentLocalServiceImpl
 			throw new NoSuchZendeskTicketException();
 		}
 	}
+
+	@ServiceReference(type = EventLocalService.class)
+	private EventLocalService _eventLocalService;
 
 	@ServiceReference(type = FileRepositoryWebService.class)
 	private FileRepositoryWebService _fileRepositoryWebService;

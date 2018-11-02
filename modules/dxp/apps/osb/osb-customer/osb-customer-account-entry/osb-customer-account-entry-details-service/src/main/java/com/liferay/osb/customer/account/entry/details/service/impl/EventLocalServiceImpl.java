@@ -56,4 +56,12 @@ public class EventLocalServiceImpl extends EventLocalServiceBaseImpl {
 		return eventPersistence.update(event);
 	}
 
+	public void deleteEvents(
+		long classNameId, long classPK, int type, long typeClassNameId,
+		long typeClassPK) {
+
+		eventPersistence.removeByC_C_T_TC_TC(
+			classNameId, classPK, type, typeClassNameId, typeClassPK);
+	}
+
 }
