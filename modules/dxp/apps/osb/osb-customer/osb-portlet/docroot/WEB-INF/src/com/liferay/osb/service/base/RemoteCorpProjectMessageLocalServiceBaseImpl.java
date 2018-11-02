@@ -47,7 +47,6 @@ import com.liferay.osb.service.persistence.PartnerEntryPersistence;
 import com.liferay.osb.service.persistence.PartnerWorkerPersistence;
 import com.liferay.osb.service.persistence.ProductEntryFinder;
 import com.liferay.osb.service.persistence.ProductEntryPersistence;
-import com.liferay.osb.service.persistence.SecurityPatchPersistence;
 import com.liferay.osb.service.persistence.SupportRegionPersistence;
 import com.liferay.osb.service.persistence.SupportResponseFinder;
 import com.liferay.osb.service.persistence.SupportResponsePersistence;
@@ -1205,44 +1204,6 @@ public abstract class RemoteCorpProjectMessageLocalServiceBaseImpl
 	}
 
 	/**
-	 * Returns the security patch local service.
-	 *
-	 * @return the security patch local service
-	 */
-	public com.liferay.osb.service.SecurityPatchLocalService getSecurityPatchLocalService() {
-		return securityPatchLocalService;
-	}
-
-	/**
-	 * Sets the security patch local service.
-	 *
-	 * @param securityPatchLocalService the security patch local service
-	 */
-	public void setSecurityPatchLocalService(
-		com.liferay.osb.service.SecurityPatchLocalService securityPatchLocalService) {
-		this.securityPatchLocalService = securityPatchLocalService;
-	}
-
-	/**
-	 * Returns the security patch persistence.
-	 *
-	 * @return the security patch persistence
-	 */
-	public SecurityPatchPersistence getSecurityPatchPersistence() {
-		return securityPatchPersistence;
-	}
-
-	/**
-	 * Sets the security patch persistence.
-	 *
-	 * @param securityPatchPersistence the security patch persistence
-	 */
-	public void setSecurityPatchPersistence(
-		SecurityPatchPersistence securityPatchPersistence) {
-		this.securityPatchPersistence = securityPatchPersistence;
-	}
-
-	/**
 	 * Returns the support region local service.
 	 *
 	 * @return the support region local service
@@ -1632,10 +1593,6 @@ public abstract class RemoteCorpProjectMessageLocalServiceBaseImpl
 	protected RemoteCorpProjectMessageLocalService remoteCorpProjectMessageLocalService;
 	@BeanReference(type = com.liferay.osb.service.RemoteUserLocalService.class)
 	protected com.liferay.osb.service.RemoteUserLocalService remoteUserLocalService;
-	@BeanReference(type = com.liferay.osb.service.SecurityPatchLocalService.class)
-	protected com.liferay.osb.service.SecurityPatchLocalService securityPatchLocalService;
-	@BeanReference(type = SecurityPatchPersistence.class)
-	protected SecurityPatchPersistence securityPatchPersistence;
 	@BeanReference(type = com.liferay.osb.service.SupportRegionLocalService.class)
 	protected com.liferay.osb.service.SupportRegionLocalService supportRegionLocalService;
 	@BeanReference(type = SupportRegionPersistence.class)

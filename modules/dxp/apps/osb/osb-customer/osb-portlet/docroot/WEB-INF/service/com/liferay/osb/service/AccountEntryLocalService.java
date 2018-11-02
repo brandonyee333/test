@@ -355,11 +355,6 @@ public interface AccountEntryLocalService extends BaseLocalService,
 	public List<AccountEntry> getRedirectAccountEntries(long accountEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AccountEntry> getSecurityPatchAccountEntries(
-		java.lang.String portletId,
-		LinkedHashMap<java.lang.String, java.lang.Object> params);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountEntry> getSupportRegionAccountEntries(
 		long supportRegionId);
 

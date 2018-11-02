@@ -447,12 +447,6 @@ public class AccountEntryLocalServiceUtil {
 		return getService().getRedirectAccountEntries(accountEntryId);
 	}
 
-	public static java.util.List<com.liferay.osb.model.AccountEntry> getSecurityPatchAccountEntries(
-		java.lang.String portletId,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
-		return getService().getSecurityPatchAccountEntries(portletId, params);
-	}
-
 	public static java.util.List<com.liferay.osb.model.AccountEntry> getSupportRegionAccountEntries(
 		long supportRegionId) {
 		return getService().getSupportRegionAccountEntries(supportRegionId);

@@ -27,37 +27,37 @@ import java.util.Arrays;
 @ProviderType
 public class AccountEnvironmentServiceClpInvoker {
 	public AccountEnvironmentServiceClpInvoker() {
-		_methodName208 = "getOSGiServiceIdentifier";
+		_methodName202 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes208 = new String[] {  };
+		_methodParameterTypes202 = new String[] {  };
 
-		_methodName213 = "addAccountEnvironment";
+		_methodName207 = "addAccountEnvironment";
 
-		_methodParameterTypes213 = new String[] {
+		_methodParameterTypes207 = new String[] {
 				"long", "long", "java.lang.String", "int", "java.lang.String",
 				"int", "int", "int", "int", "int", "int", "java.lang.String",
 				"java.util.List", "java.util.List"
 			};
 
-		_methodName214 = "deleteAccountEnvironment";
+		_methodName208 = "deleteAccountEnvironment";
 
-		_methodParameterTypes214 = new String[] { "long" };
+		_methodParameterTypes208 = new String[] { "long" };
 
-		_methodName215 = "getAccountEnvironment";
+		_methodName209 = "getAccountEnvironment";
 
-		_methodParameterTypes215 = new String[] { "long" };
+		_methodParameterTypes209 = new String[] { "long" };
 
-		_methodName216 = "getAccountEnvironments";
+		_methodName210 = "getAccountEnvironments";
 
-		_methodParameterTypes216 = new String[] { "long" };
+		_methodParameterTypes210 = new String[] { "long" };
 
-		_methodName217 = "getAccountEnvironmentsMap";
+		_methodName211 = "getAccountEnvironmentsMap";
 
-		_methodParameterTypes217 = new String[] { "long" };
+		_methodParameterTypes211 = new String[] { "long" };
 
-		_methodName218 = "updateAccountEnvironment";
+		_methodName212 = "updateAccountEnvironment";
 
-		_methodParameterTypes218 = new String[] {
+		_methodParameterTypes212 = new String[] {
 				"long", "long", "java.lang.String", "int", "java.lang.String",
 				"int", "int", "int", "int", "int", "int", "java.lang.String",
 				"java.util.List", "java.util.List"
@@ -66,13 +66,13 @@ public class AccountEnvironmentServiceClpInvoker {
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName208.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes208, parameterTypes)) {
+		if (_methodName202.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes202, parameterTypes)) {
 			return AccountEnvironmentServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName213.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes213, parameterTypes)) {
+		if (_methodName207.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes207, parameterTypes)) {
 			return AccountEnvironmentServiceUtil.addAccountEnvironment(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(java.lang.String)arguments[2],
@@ -89,28 +89,28 @@ public class AccountEnvironmentServiceClpInvoker {
 				(java.util.List<java.lang.Integer>)arguments[13]);
 		}
 
-		if (_methodName214.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes214, parameterTypes)) {
+		if (_methodName208.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes208, parameterTypes)) {
 			return AccountEnvironmentServiceUtil.deleteAccountEnvironment(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName215.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes215, parameterTypes)) {
+		if (_methodName209.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes209, parameterTypes)) {
 			return AccountEnvironmentServiceUtil.getAccountEnvironment(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName216.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes216, parameterTypes)) {
+		if (_methodName210.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes210, parameterTypes)) {
 			return AccountEnvironmentServiceUtil.getAccountEnvironments(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName217.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes217, parameterTypes)) {
+		if (_methodName211.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes211, parameterTypes)) {
 			return AccountEnvironmentServiceUtil.getAccountEnvironmentsMap(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName218.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes218, parameterTypes)) {
+		if (_methodName212.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes212, parameterTypes)) {
 			return AccountEnvironmentServiceUtil.updateAccountEnvironment(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(java.lang.String)arguments[2],
@@ -130,18 +130,18 @@ public class AccountEnvironmentServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
+	private String _methodName202;
+	private String[] _methodParameterTypes202;
+	private String _methodName207;
+	private String[] _methodParameterTypes207;
 	private String _methodName208;
 	private String[] _methodParameterTypes208;
-	private String _methodName213;
-	private String[] _methodParameterTypes213;
-	private String _methodName214;
-	private String[] _methodParameterTypes214;
-	private String _methodName215;
-	private String[] _methodParameterTypes215;
-	private String _methodName216;
-	private String[] _methodParameterTypes216;
-	private String _methodName217;
-	private String[] _methodParameterTypes217;
-	private String _methodName218;
-	private String[] _methodParameterTypes218;
+	private String _methodName209;
+	private String[] _methodParameterTypes209;
+	private String _methodName210;
+	private String[] _methodParameterTypes210;
+	private String _methodName211;
+	private String[] _methodParameterTypes211;
+	private String _methodName212;
+	private String[] _methodParameterTypes212;
 }

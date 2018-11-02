@@ -27,32 +27,32 @@ import java.util.Arrays;
 @ProviderType
 public class LCSSubscriptionEntryServiceClpInvoker {
 	public LCSSubscriptionEntryServiceClpInvoker() {
-		_methodName208 = "getOSGiServiceIdentifier";
+		_methodName202 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes208 = new String[] {  };
+		_methodParameterTypes202 = new String[] {  };
 
-		_methodName213 = "getLCSSubscriptionEntries";
+		_methodName207 = "getLCSSubscriptionEntries";
 
-		_methodParameterTypes213 = new String[] { "java.lang.String" };
+		_methodParameterTypes207 = new String[] { "java.lang.String" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName208.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes208, parameterTypes)) {
+		if (_methodName202.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes202, parameterTypes)) {
 			return LCSSubscriptionEntryServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName213.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes213, parameterTypes)) {
+		if (_methodName207.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes207, parameterTypes)) {
 			return LCSSubscriptionEntryServiceUtil.getLCSSubscriptionEntries((java.lang.String)arguments[0]);
 		}
 
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName208;
-	private String[] _methodParameterTypes208;
-	private String _methodName213;
-	private String[] _methodParameterTypes213;
+	private String _methodName202;
+	private String[] _methodParameterTypes202;
+	private String _methodName207;
+	private String[] _methodParameterTypes207;
 }

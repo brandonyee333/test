@@ -400,18 +400,6 @@ create table OSB_ProductEntry (
 	versionsListType VARCHAR(75) null
 );
 
-create table OSB_SecurityPatch (
-	securityPatchId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	accountEntryId LONG,
-	portletId VARCHAR(75) null,
-	envLFR INTEGER,
-	name VARCHAR(75) null,
-	fileName VARCHAR(75) null
-);
-
 create table OSB_SupportRegion (
 	supportRegionId LONG not null primary key,
 	companyId LONG,

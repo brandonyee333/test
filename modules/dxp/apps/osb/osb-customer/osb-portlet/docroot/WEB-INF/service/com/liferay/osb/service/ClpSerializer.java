@@ -40,7 +40,6 @@ import com.liferay.osb.model.OrderEntryClp;
 import com.liferay.osb.model.PartnerEntryClp;
 import com.liferay.osb.model.PartnerWorkerClp;
 import com.liferay.osb.model.ProductEntryClp;
-import com.liferay.osb.model.SecurityPatchClp;
 import com.liferay.osb.model.SupportRegionClp;
 import com.liferay.osb.model.SupportResponseClp;
 
@@ -224,10 +223,6 @@ public class ClpSerializer {
 
 		if (oldModelClassName.equals(ProductEntryClp.class.getName())) {
 			return translateInputProductEntry(oldModel);
-		}
-
-		if (oldModelClassName.equals(SecurityPatchClp.class.getName())) {
-			return translateInputSecurityPatch(oldModel);
 		}
 
 		if (oldModelClassName.equals(SupportRegionClp.class.getName())) {
@@ -490,16 +485,6 @@ public class ClpSerializer {
 		ProductEntryClp oldClpModel = (ProductEntryClp)oldModel;
 
 		BaseModel<?> newModel = oldClpModel.getProductEntryRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
-	}
-
-	public static Object translateInputSecurityPatch(BaseModel<?> oldModel) {
-		SecurityPatchClp oldClpModel = (SecurityPatchClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getSecurityPatchRemoteModel();
 
 		newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
@@ -1432,43 +1417,6 @@ public class ClpSerializer {
 		}
 
 		if (oldModelClassName.equals(
-					"com.liferay.osb.model.impl.SecurityPatchImpl")) {
-			return translateOutputSecurityPatch(oldModel);
-		}
-		else if (oldModelClassName.endsWith("Clp")) {
-			try {
-				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
-
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
-
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
-
-				Class<?> oldModelModelClass = oldModel.getModelClass();
-
-				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
-
-				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
-
-				return newModel;
-			}
-			catch (Throwable t) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Unable to translate " + oldModelClassName, t);
-				}
-			}
-		}
-
-		if (oldModelClassName.equals(
 					"com.liferay.osb.model.impl.SupportRegionImpl")) {
 			return translateOutputSupportRegion(oldModel);
 		}
@@ -2232,12 +2180,6 @@ public class ClpSerializer {
 		}
 
 		if (className.equals(
-					"com.liferay.osb.exception.NoSuchSecurityPatchException")) {
-			return new com.liferay.osb.exception.NoSuchSecurityPatchException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
 					"com.liferay.osb.exception.NoSuchSupportRegionException")) {
 			return new com.liferay.osb.exception.NoSuchSupportRegionException(throwable.getMessage(),
 				throwable.getCause());
@@ -2495,16 +2437,6 @@ public class ClpSerializer {
 		newModel.setModelAttributes(oldModel.getModelAttributes());
 
 		newModel.setProductEntryRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputSecurityPatch(BaseModel<?> oldModel) {
-		SecurityPatchClp newModel = new SecurityPatchClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setSecurityPatchRemoteModel(oldModel);
 
 		return newModel;
 	}

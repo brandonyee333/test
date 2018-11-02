@@ -69,8 +69,6 @@ import com.liferay.osb.service.RemoteCorpEntryLocalServiceUtil;
 import com.liferay.osb.service.RemoteCorpProjectLocalServiceUtil;
 import com.liferay.osb.service.RemoteCorpProjectMessageLocalServiceUtil;
 import com.liferay.osb.service.RemoteUserLocalServiceUtil;
-import com.liferay.osb.service.SecurityPatchLocalServiceUtil;
-import com.liferay.osb.service.SecurityPatchServiceUtil;
 import com.liferay.osb.service.SupportRegionLocalServiceUtil;
 import com.liferay.osb.service.SupportRegionServiceUtil;
 import com.liferay.osb.service.SupportResponseLocalServiceUtil;
@@ -176,9 +174,6 @@ public class ClpMessageListener extends BaseMessageListener {
 
 			RemoteUserLocalServiceUtil.clearService();
 
-			SecurityPatchLocalServiceUtil.clearService();
-
-			SecurityPatchServiceUtil.clearService();
 			SupportRegionLocalServiceUtil.clearService();
 
 			SupportRegionServiceUtil.clearService();

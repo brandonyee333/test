@@ -57,12 +57,6 @@ public class AccountEntryFinderUtil {
 		return getFinder().findByKeywords(keywords, params, start, end, obc);
 	}
 
-	public static java.util.List<com.liferay.osb.model.AccountEntry> findBySecurityPatch(
-		java.lang.String portletId,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
-		return getFinder().findBySecurityPatch(portletId, params);
-	}
-
 	public static java.util.List<com.liferay.osb.model.AccountEntry> findBySupportResponse(
 		long supportResponseId) {
 		return getFinder().findBySupportResponse(supportResponseId);

@@ -137,20 +137,6 @@ public class AccountEntryServiceSoap {
 		}
 	}
 
-	public static com.liferay.osb.model.AccountEntrySoap[] getSecurityPatchAccountEntries(
-		java.lang.String portletId) throws RemoteException {
-		try {
-			java.util.List<com.liferay.osb.model.AccountEntry> returnValue = AccountEntryServiceUtil.getSecurityPatchAccountEntries(portletId);
-
-			return com.liferay.osb.model.AccountEntrySoap.toSoapModels(returnValue);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new RemoteException(e.getMessage());
-		}
-	}
-
 	public static com.liferay.osb.model.AccountEntrySoap updateInstructions(
 		long accountEntryId, java.lang.String instructions)
 		throws RemoteException {

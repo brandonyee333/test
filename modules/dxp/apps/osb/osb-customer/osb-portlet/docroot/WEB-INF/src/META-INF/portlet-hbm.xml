@@ -26,7 +26,6 @@
 	<import class="com.liferay.osb.model.PartnerEntry" />
 	<import class="com.liferay.osb.model.PartnerWorker" />
 	<import class="com.liferay.osb.model.ProductEntry" />
-	<import class="com.liferay.osb.model.SecurityPatch" />
 	<import class="com.liferay.osb.model.SupportRegion" />
 	<import class="com.liferay.osb.model.SupportResponse" />
 	<class name="com.liferay.osb.model.impl.AccountAttachmentImpl" table="OSB_AccountAttachment">
@@ -433,19 +432,6 @@
 		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="environment" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="versionsListType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.SecurityPatchImpl" table="OSB_SecurityPatch">
-		<id name="securityPatchId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="accountEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="portletId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="envLFR" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="fileName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.SupportRegionImpl" table="OSB_SupportRegion">
 		<id name="supportRegionId" type="long">

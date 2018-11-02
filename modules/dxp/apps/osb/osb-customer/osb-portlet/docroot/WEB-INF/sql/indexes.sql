@@ -102,9 +102,6 @@ create index IX_F36C918F on OSB_PartnerWorker (userId, role);
 create index IX_884EBE59 on OSB_ProductEntry (environment);
 create unique index IX_190AFA9 on OSB_ProductEntry (name[$COLUMN_LENGTH:75$]);
 
-create index IX_18BFB3A4 on OSB_SecurityPatch (accountEntryId, portletId[$COLUMN_LENGTH:75$]);
-create index IX_36A4B1D8 on OSB_SecurityPatch (portletId[$COLUMN_LENGTH:75$]);
-
 create unique index IX_DC67F8E7 on OSB_SupportRegion (name[$COLUMN_LENGTH:75$]);
 
 create unique index IX_9A2345B4 on OSB_SupportResponse (name[$COLUMN_LENGTH:75$]);

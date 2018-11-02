@@ -109,10 +109,6 @@ public interface AccountEntryService extends BaseService, InvokableService {
 		long[] productEntryIds) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AccountEntry> getSecurityPatchAccountEntries(
-		java.lang.String portletId) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountEntry> search(java.lang.Long createUserId,
 		int createDateGTDay, int createDateGTMonth, int createDateGTYear,
 		int createDateLTDay, int createDateLTMonth, int createDateLTYear,

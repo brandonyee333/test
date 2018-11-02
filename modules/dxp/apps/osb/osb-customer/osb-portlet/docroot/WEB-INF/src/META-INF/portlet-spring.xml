@@ -88,9 +88,6 @@
 	<bean class="com.liferay.osb.service.impl.RemoteCorpProjectLocalServiceImpl" id="com.liferay.osb.service.RemoteCorpProjectLocalService" />
 	<bean class="com.liferay.osb.service.impl.RemoteCorpProjectMessageLocalServiceImpl" id="com.liferay.osb.service.RemoteCorpProjectMessageLocalService" />
 	<bean class="com.liferay.osb.service.impl.RemoteUserLocalServiceImpl" id="com.liferay.osb.service.RemoteUserLocalService" />
-	<bean class="com.liferay.osb.service.impl.SecurityPatchLocalServiceImpl" id="com.liferay.osb.service.SecurityPatchLocalService" />
-	<bean class="com.liferay.osb.service.impl.SecurityPatchServiceImpl" id="com.liferay.osb.service.SecurityPatchService" />
-	<bean class="com.liferay.osb.service.persistence.impl.SecurityPatchPersistenceImpl" id="com.liferay.osb.service.persistence.SecurityPatchPersistence" parent="basePersistence" />
 	<bean class="com.liferay.osb.service.impl.SupportRegionLocalServiceImpl" id="com.liferay.osb.service.SupportRegionLocalService" />
 	<bean class="com.liferay.osb.service.impl.SupportRegionServiceImpl" id="com.liferay.osb.service.SupportRegionService" />
 	<bean class="com.liferay.osb.service.persistence.impl.SupportRegionPersistenceImpl" id="com.liferay.osb.service.persistence.SupportRegionPersistence" parent="basePersistence" />

@@ -483,14 +483,6 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.model.AccountEntry> getSecurityPatchAccountEntries(
-		java.lang.String portletId,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
-		return _accountEntryLocalService.getSecurityPatchAccountEntries(portletId,
-			params);
-	}
-
-	@Override
 	public java.util.List<com.liferay.osb.model.AccountEntry> getSupportRegionAccountEntries(
 		long supportRegionId) {
 		return _accountEntryLocalService.getSupportRegionAccountEntries(supportRegionId);

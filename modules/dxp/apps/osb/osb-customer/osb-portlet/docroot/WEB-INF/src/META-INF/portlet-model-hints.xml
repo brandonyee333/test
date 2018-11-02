@@ -408,17 +408,6 @@
 		<field name="environment" type="int" />
 		<field name="versionsListType" type="String" />
 	</model>
-	<model name="com.liferay.osb.model.SecurityPatch">
-		<field name="securityPatchId" type="long" />
-		<field name="userId" type="long" />
-		<field name="userName" type="String" />
-		<field name="createDate" type="Date" />
-		<field name="accountEntryId" type="long" />
-		<field name="portletId" type="String" />
-		<field name="envLFR" type="int" />
-		<field name="name" type="String" />
-		<field name="fileName" type="String" />
-	</model>
 	<model name="com.liferay.osb.model.SupportRegion">
 		<field name="supportRegionId" type="long" />
 		<field name="companyId" type="long" />

@@ -119,13 +119,6 @@ public class AccountEntryServiceWrapper implements AccountEntryService,
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.model.AccountEntry> getSecurityPatchAccountEntries(
-		java.lang.String portletId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountEntryService.getSecurityPatchAccountEntries(portletId);
-	}
-
-	@Override
 	public java.util.List<com.liferay.osb.model.AccountEntry> search(
 		java.lang.Long createUserId, int createDateGTDay,
 		int createDateGTMonth, int createDateGTYear, int createDateLTDay,

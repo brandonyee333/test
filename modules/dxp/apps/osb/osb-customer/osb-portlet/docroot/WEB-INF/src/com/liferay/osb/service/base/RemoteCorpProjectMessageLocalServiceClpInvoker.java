@@ -27,31 +27,31 @@ import java.util.Arrays;
 @ProviderType
 public class RemoteCorpProjectMessageLocalServiceClpInvoker {
 	public RemoteCorpProjectMessageLocalServiceClpInvoker() {
-		_methodName146 = "getOSGiServiceIdentifier";
+		_methodName142 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes146 = new String[] {  };
+		_methodParameterTypes142 = new String[] {  };
 
-		_methodName149 = "addCorpProjectMessage";
+		_methodName145 = "addCorpProjectMessage";
 
-		_methodParameterTypes149 = new String[] {
+		_methodParameterTypes145 = new String[] {
 				"long", "long", "int", "int", "java.lang.String",
 				"java.lang.String", "boolean", "boolean"
 			};
 
-		_methodName150 = "deleteCorpProjectMessage";
+		_methodName146 = "deleteCorpProjectMessage";
 
-		_methodParameterTypes150 = new String[] { "long" };
+		_methodParameterTypes146 = new String[] { "long" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName146.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes146, parameterTypes)) {
+		if (_methodName142.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes142, parameterTypes)) {
 			return RemoteCorpProjectMessageLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName149.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes149, parameterTypes)) {
+		if (_methodName145.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes145, parameterTypes)) {
 			return RemoteCorpProjectMessageLocalServiceUtil.addCorpProjectMessage(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Integer)arguments[2]).intValue(),
@@ -61,8 +61,8 @@ public class RemoteCorpProjectMessageLocalServiceClpInvoker {
 				((Boolean)arguments[7]).booleanValue());
 		}
 
-		if (_methodName150.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes150, parameterTypes)) {
+		if (_methodName146.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes146, parameterTypes)) {
 			RemoteCorpProjectMessageLocalServiceUtil.deleteCorpProjectMessage(((Long)arguments[0]).longValue());
 
 			return null;
@@ -71,10 +71,10 @@ public class RemoteCorpProjectMessageLocalServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
+	private String _methodName142;
+	private String[] _methodParameterTypes142;
+	private String _methodName145;
+	private String[] _methodParameterTypes145;
 	private String _methodName146;
 	private String[] _methodParameterTypes146;
-	private String _methodName149;
-	private String[] _methodParameterTypes149;
-	private String _methodName150;
-	private String[] _methodParameterTypes150;
 }

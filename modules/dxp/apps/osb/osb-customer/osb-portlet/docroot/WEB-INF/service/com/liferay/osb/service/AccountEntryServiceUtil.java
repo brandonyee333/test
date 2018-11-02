@@ -118,12 +118,6 @@ public class AccountEntryServiceUtil {
 		return getService().getAccountEntries(userUuid, productEntryIds);
 	}
 
-	public static java.util.List<com.liferay.osb.model.AccountEntry> getSecurityPatchAccountEntries(
-		java.lang.String portletId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getSecurityPatchAccountEntries(portletId);
-	}
-
 	public static java.util.List<com.liferay.osb.model.AccountEntry> search(
 		java.lang.Long createUserId, int createDateGTDay,
 		int createDateGTMonth, int createDateGTYear, int createDateLTDay,
