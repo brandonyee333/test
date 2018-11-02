@@ -26,12 +26,12 @@ public enum LCSAlert {
 	ERROR_INVALID_ENVIRONMENT_TYPE(
 		"danger",
 		"this-server-is-registered-to-the-environment-of-the-wrong-type"),
+	ERROR_INVALID_TOKEN(
+		"danger", "the-automatic-activation-token-file-is-invalid"),
 	ERROR_INVALID_USER_CREDENTIALS(
 		"danger",
 		"the-credentials-of-the-user-that-created-the-automatic-activation-" +
 			"token-file-are-no-longer-valid"),
-	ERROR_INVALID_TOKEN(
-		"danger", "the-automatic-activation-token-file-is-invalid"),
 	ERROR_MISSING_TOKEN(
 		"danger", "the-automatic-activation-token-file-is-not-present"),
 	ERROR_MULTIPLE_TOKENS(

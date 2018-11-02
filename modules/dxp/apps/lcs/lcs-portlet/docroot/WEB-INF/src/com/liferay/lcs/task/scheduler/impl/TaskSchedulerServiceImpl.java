@@ -141,7 +141,15 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		else if (lcsEvent == LCSEvent.LCS_GATEWAY_UNAVAILABLE) {
 			_onLCSGatewayServiceUnavailable();
 		}
-		else if (lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_FAILED) {
+		else if ((lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_FAILED) ||
+				 (lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID) ||
+			(lcsEvent ==
+				LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_TOKEN_CORRUPTED) ||
+			(lcsEvent ==
+				LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH) ||
+			(lcsEvent ==
+				LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS)) {
+
 			_executeLCSClusterEntryTokenCheckTask(true);
 		}
 		else if (lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_SUCCESS) {
@@ -151,9 +159,6 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 				 (lcsEvent == LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED)) {
 
 			_restart();
-		}
-		else if (lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID) {
-			_executeLCSClusterEntryTokenCheckTask(true);
 		}
 		else if (lcsEvent == LCSEvent.HANDSHAKE_FAILED) {
 			_executeHandshakeTask(true);
