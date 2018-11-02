@@ -154,6 +154,37 @@ public class LCSClusterEntryTokenAdvisorTest extends PowerMockito {
 	}
 
 	@Test
+	public void testTokenIsDeletedIfHandshakeExceptionErrorCode202()
+		throws Exception {
+
+		_mockGetMessagesToReturnHandshakeResponseMessage(202);
+
+		_spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete();
+
+		HandshakeTask handshakeTask = _spyHandshakeTask();
+
+		handshakeTask.run();
+
+		Mockito.verify(
+			_lcsClusterEntryTokenAdvisor
+		).onLCSEvent(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS
+		);
+
+		verifyPrivate(
+			_lcsClusterEntryTokenAdvisor, Mockito.times(1)
+		).invoke(
+			"_deleteLCSCLusterEntryTokenFile"
+		);
+
+		Mockito.verify(
+			_lcsAlertAdvisor
+		).add(
+			LCSAlert.ERROR_INVALID_USER_CREDENTIALS
+		);
+	}
+
+	@Test
 	public void testTokenIsNotDeletedIfGatewayUnavailable() throws Exception {
 		_mockSendMessageToThrowJSONWebServiceException();
 
