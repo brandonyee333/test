@@ -114,45 +114,6 @@
 		</security-role-ref>
 	</portlet>
 	<portlet>
-		<portlet-name>32</portlet-name>
-		<display-name>Security Patch</display-name>
-		<portlet-class>com.liferay.osb.securitypatch.portlet.SecurityPatchPortlet</portlet-class>
-		<init-param>
-			<name>copy-request-parameters</name>
-			<value>true</value>
-		</init-param>
-		<init-param>
-			<name>template-path</name>
-			<value>/security_patch/</value>
-		</init-param>
-		<init-param>
-			<name>view-template</name>
-			<value>/security_patch/view.jsp</value>
-		</init-param>
-		<expiration-cache>0</expiration-cache>
-		<supports>
-			<mime-type>text/html</mime-type>
-		</supports>
-		<resource-bundle>content.Language</resource-bundle>
-		<portlet-info>
-			<title>Security Patch</title>
-			<short-title>Security Patch</short-title>
-			<keywords>Security Patch</keywords>
-		</portlet-info>
-		<security-role-ref>
-			<role-name>administrator</role-name>
-		</security-role-ref>
-		<security-role-ref>
-			<role-name>guest</role-name>
-		</security-role-ref>
-		<security-role-ref>
-			<role-name>power-user</role-name>
-		</security-role-ref>
-		<security-role-ref>
-			<role-name>user</role-name>
-		</security-role-ref>
-	</portlet>
-	<portlet>
 		<portlet-name>38</portlet-name>
 		<display-name>Self Provisioning Portlet</display-name>
 		<portlet-class>com.liferay.osb.selfprovisioning.portlet.SelfProvisioningPortlet</portlet-class>

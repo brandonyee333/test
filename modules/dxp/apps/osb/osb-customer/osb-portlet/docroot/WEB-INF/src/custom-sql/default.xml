@@ -69,23 +69,6 @@
 				(OSB_AccountEntry.type_ = ?)
 		]]>
 	</sql>
-	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.findBySecurityPatch">
-		<![CDATA[
-			SELECT
-				DISTINCT {OSB_AccountEntry.*}
-			FROM
-				OSB_AccountEntry
-			INNER JOIN
-				OSB_SecurityPatch ON
-					(OSB_SecurityPatch.accountEntryId = OSB_AccountEntry.accountEntryId)
-			[$JOIN$]
-			WHERE
-				[$WHERE$]
-				(OSB_SecurityPatch.portletId = ?)
-			ORDER BY
-				OSB_AccountEntry.name
-		]]>
-	</sql>
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.findByU_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z">
 		<![CDATA[
 			SELECT

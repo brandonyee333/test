@@ -954,12 +954,6 @@ public class AccountEntryLocalServiceImpl
 			accountEntryId);
 	}
 
-	public List<AccountEntry> getSecurityPatchAccountEntries(
-		String portletId, LinkedHashMap<String, Object> params) {
-
-		return accountEntryFinder.findBySecurityPatch(portletId, params);
-	}
-
 	public List<AccountEntry> getUserAccountEntries(
 		long userId, int start, int end) {
 

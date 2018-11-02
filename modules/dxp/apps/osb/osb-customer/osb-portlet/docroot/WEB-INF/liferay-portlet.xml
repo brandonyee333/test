@@ -87,15 +87,6 @@
 		<css-class-wrapper>osb-portlet-license</css-class-wrapper>
 	</portlet>
 	<portlet>
-		<portlet-name>32</portlet-name>
-		<configuration-action-class>com.liferay.osb.securitypatch.action.ConfigurationActionImpl</configuration-action-class>
-		<portlet-layout-listener-class>com.liferay.osb.securitypatch.SecurityPatchPortletLayoutListener</portlet-layout-listener-class>
-		<preferences-unique-per-layout>true</preferences-unique-per-layout>
-		<instanceable>true</instanceable>
-		<header-portlet-css>/security_patch/css/main.css</header-portlet-css>
-		<css-class-wrapper>osb-portlet-security-patch</css-class-wrapper>
-	</portlet>
-	<portlet>
 		<portlet-name>38</portlet-name>
 		<configuration-action-class>com.liferay.osb.selfprovisioning.action.ConfigurationActionImpl</configuration-action-class>
 		<preferences-unique-per-layout>true</preferences-unique-per-layout>

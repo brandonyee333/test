@@ -214,7 +214,6 @@ page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.language.UnicodeLanguageUtil" %><%@
 page import="com.liferay.portal.kernel.model.Address" %><%@
 page import="com.liferay.portal.kernel.model.ListType" %><%@
-page import="com.liferay.portal.kernel.model.ModelHintsConstants" %><%@
 page import="com.liferay.portal.kernel.model.Release" %><%@
 page import="com.liferay.portal.kernel.model.Role" %><%@
 page import="com.liferay.portal.kernel.model.User" %><%@
@@ -286,7 +285,6 @@ page import="java.util.TreeMap" %>
 
 <%@ page import="javax.portlet.PortletRequest" %><%@
 page import="javax.portlet.PortletURL" %><%@
-page import="javax.portlet.ValidatorException" %><%@
 page import="javax.portlet.WindowState" %>
 
 <liferay-theme:defineObjects />

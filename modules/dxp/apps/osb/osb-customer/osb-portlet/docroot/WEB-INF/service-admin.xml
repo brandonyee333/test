@@ -815,41 +815,6 @@
 			<finder-column name="environment" />
 		</finder>
 	</entity>
-	<entity local-service="true" name="SecurityPatch" remote-service="true">
-
-		<!-- PK fields -->
-
-		<column name="securityPatchId" primary="true" type="long" />
-
-		<!-- Audit fields -->
-
-		<column name="userId" type="long" />
-		<column name="userName" type="String" />
-		<column name="createDate" type="Date" />
-
-		<!-- Other fields -->
-
-		<column name="accountEntryId" type="long" />
-		<column name="portletId" type="String" />
-		<column name="envLFR" type="int" />
-		<column name="name" type="String" />
-		<column name="fileName" type="String" />
-
-		<!-- Finder methods -->
-
-		<finder name="PortletId" return-type="Collection">
-			<finder-column name="portletId" />
-		</finder>
-		<finder name="AEI_PI" return-type="Collection">
-			<finder-column name="accountEntryId" />
-			<finder-column name="portletId" />
-		</finder>
-
-		<!-- References -->
-
-		<reference entity="ListType" package-path="com.liferay.portal" />
-		<reference entity="Organization" package-path="com.liferay.portal" />
-	</entity>
 	<entity local-service="true" name="SupportRegion" remote-service="true">
 
 		<!-- PK fields -->

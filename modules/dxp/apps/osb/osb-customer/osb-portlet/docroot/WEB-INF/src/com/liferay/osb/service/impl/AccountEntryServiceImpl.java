@@ -98,17 +98,6 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 		return accountEntryPersistence.findByCorpProjectUuid(corpProjectUuid);
 	}
 
-	public List<AccountEntry> getSecurityPatchAccountEntries(String portletId)
-		throws PortalException {
-
-		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
-
-		addAccountMembershipParams(params);
-
-		return accountEntryLocalService.getSecurityPatchAccountEntries(
-			portletId, params);
-	}
-
 	public List<AccountEntry> search(
 			Long createUserId, int createDateGTDay, int createDateGTMonth,
 			int createDateGTYear, int createDateLTDay, int createDateLTMonth,
