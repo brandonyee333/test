@@ -38,18 +38,6 @@
 		}
 	}
 
-	.download-button {
-		margin-bottom: 24px;
-
-		a {
-			color: $color-white;
-		}
-	}
-
-	.download-dropdown {
-		height: 32px;
-	}
-
 	.download-links {
 		margin: 24px 0;
 
@@ -63,6 +51,26 @@
 
 			&:last-of-type {
 				border-width: 0;
+			}
+		}
+	}
+
+	.dropdown-row {
+		display: flex;
+		margin-bottom: 24px;
+
+		.download-dropdown {
+			height: 32px;
+			margin-right: 24px;
+		}
+
+		.download-url {
+			color: $color-white;
+
+			&:active,
+			&:focus,
+			&:hover {
+				text-decoration: none;
 			}
 		}
 	}

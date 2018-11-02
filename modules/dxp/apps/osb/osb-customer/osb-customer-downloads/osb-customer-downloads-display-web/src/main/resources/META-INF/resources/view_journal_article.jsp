@@ -48,12 +48,12 @@ Map<String, Map<String, String>> downloadDetailsMap = new HashMap<>();
 
 	PortletPreferences downloadsPortletPreferences = PortletPreferencesLocalServiceUtil.getPreferences(company.getCompanyId(), company.getCompanyId(), PortletKeys.PREFS_OWNER_TYPE_COMPANY, PortletKeys.PREFS_PLID_SHARED, "3_WAR_osbportlet", null);
 
-	String agreementUrl = GetterUtil.getString(downloadsPortletPreferences.getValue(requiredAgreement + "Url_" + languageId, StringPool.BLANK));
+	String agreementURL = GetterUtil.getString(downloadsPortletPreferences.getValue(requiredAgreement + "Url_" + languageId, StringPool.BLANK));
 	String agreementVersion = GetterUtil.getString(downloadsPortletPreferences.getValue(requiredAgreement + "Version_" + languageId, StringPool.BLANK));
 
-	String agreementContentUrl = agreementUrl + "&agreementVersion=" + agreementVersion;
+	String agreementContentURL = agreementURL + "&agreementVersion=" + agreementVersion;
 	String acceptAgreementURL = downloadsDisplayContext.getAcceptAgreementURL(requiredAgreement, agreementVersion);
-	String verifyAgreementUrl = downloadsDisplayContext.getVerifyAgreementURL(requiredAgreement, agreementVersion);
+	String verifyAgreementURL = downloadsDisplayContext.getVerifyAgreementURL(requiredAgreement, agreementVersion);
 	%>
 
 </c:if>
@@ -70,7 +70,7 @@ Map<String, Map<String, String>> downloadDetailsMap = new HashMap<>();
 	for (DDMFormFieldValue linkFieldValue : linkFieldValues) {
 	%>
 
-		<a class="btn-link link" href="<%= _getStringValue(linkFieldValue.getNestedDDMFormFieldValuesMap(), "linkUrl", locale) %>"><%= _getStringValue(linkFieldValue, locale) %></a>
+		<a class="btn-link link" href='<%= _getStringValue(linkFieldValue.getNestedDDMFormFieldValuesMap(), "linkUrl", locale) %'><%= _getStringValue(linkFieldValue, locale) %></a>
 
 	<%
 	}
@@ -91,61 +91,70 @@ Map<String, Map<String, String>> downloadDetailsMap = new HashMap<>();
 	<%= additionalNotes %>
 </div>
 
+<div class="journal-article-download" id="<portlet:namespace />journalArticleDownloads<%= journalArticle.getResourcePrimKey() %>"></div>
+
 <%
+JSONArray downloadGroupsJSONArray = JSONFactoryUtil.createJSONArray();
+
 List<DDMFormFieldValue> downloadGroupFieldValues = ddmFormFieldValuesMap.get("downloadGroup");
+
+for (DDMFormFieldValue downloadGroupFieldValue : downloadGroupFieldValues) {
+	JSONObject downloadGroupJSONObject = JSONFactoryUtil.createJSONObject();
+
+	String downloadGroupName = _getStringValue(downloadGroupFieldValue, locale);
+
+	Map<String, List<DDMFormFieldValue>> downloadGroupFieldValueMap = downloadGroupFieldValue.getNestedDDMFormFieldValuesMap();
+
+	List<DDMFormFieldValue> downloadFieldValues = downloadGroupFieldValueMap.get("download");
+
+	JSONArray downloadsJSONArray = JSONFactoryUtil.createJSONArray();
+
+	for (DDMFormFieldValue downloadFieldValue : downloadFieldValues) {
+		JSONObject downloadJSONObject = JSONFactoryUtil.createJSONObject();
+
+		Map<String, List<DDMFormFieldValue>> downloadFieldValueMap = downloadFieldValue.getNestedDDMFormFieldValuesMap();
+
+		String downloadName = _getStringValue(downloadFieldValue, locale);
+		String downloadURL = _getStringValue(downloadFieldValueMap, "downloadUrl", locale);
+
+		downloadJSONObject.put("downloadURL", downloadURL);
+		downloadJSONObject.put("downloadName", downloadName);
+
+		List<DDMFormFieldValue> downloadDetailFieldValues = downloadFieldValueMap.get("downloadDetail");
+
+		JSONObject downloadDetailsJSONObject = JSONFactoryUtil.createJSONObject();
+
+		for (DDMFormFieldValue downloadDetailDDMFormFieldValue : downloadDetailFieldValues) {
+
+			Map<String, List<DDMFormFieldValue>> downloadDetailFieldValueMap = downloadDetailDDMFormFieldValue.getNestedDDMFormFieldValuesMap();
+
+			String detailLabel = _getStringValue(downloadDetailFieldValueMap, "detailLabel", locale);
+			String detailValue = _getStringValue(downloadDetailFieldValueMap, "detailValue", locale);
+
+			downloadDetailsJSONObject.put(detailLabel, detailValue);
+		}
+
+		downloadJSONObject.put("downloadDetails", downloadDetailsJSONObject);
+
+		downloadsJSONArray.put(downloadJSONObject);
+	}
+
+	downloadGroupJSONObject.put("downloadGroupName", downloadGroupName);
+	downloadGroupJSONObject.put("downloads", downloadsJSONArray);
+
+	downloadGroupsJSONArray.put(downloadGroupJSONObject);
+}
 %>
 
-<c:if test="<%= (downloadGroupFieldValues != null) && !downloadGroupFieldValues.isEmpty() %>">
-	<select>
-
-		<%
-		for (DDMFormFieldValue downloadGroupFieldValue : downloadGroupFieldValues) {
-		%>
-
-			<c:if test="<%= downloadGroupFieldValues.size() > 1 %>">
-				<optgroup label="<%= _getStringValue(downloadGroupFieldValue, locale) %>">
-			</c:if>
-
-			<%
-			Map<String, List<DDMFormFieldValue>> downloadGroupFieldValueMap = downloadGroupFieldValue.getNestedDDMFormFieldValuesMap();
-
-			List<DDMFormFieldValue> downloadFieldValues = downloadGroupFieldValueMap.get("download");
-
-			for (DDMFormFieldValue downloadFieldValue : downloadFieldValues) {
-				Map<String, List<DDMFormFieldValue>> downloadFieldValueMap = downloadFieldValue.getNestedDDMFormFieldValuesMap();
-			%>
-
-				<option value="<%= _getStringValue(downloadFieldValueMap, "downloadUrl", locale) %>"><%= _getStringValue(downloadFieldValue, locale) %></option>
-
-			<%
-				List<DDMFormFieldValue> downloadDetailFieldValues = downloadFieldValueMap.get("downloadDetail");
-
-				Map<String, String> curDownloadDetailsMap = new HashMap<>();
-
-				for (DDMFormFieldValue downloadDetailDDMFormFieldValue : downloadDetailFieldValues) {
-					Map<String, List<DDMFormFieldValue>> downloadDetailFieldValueMap = downloadDetailDDMFormFieldValue.getNestedDDMFormFieldValuesMap();
-
-					curDownloadDetailsMap.put(_getStringValue(downloadDetailFieldValueMap, "detailLabel", locale), _getStringValue(downloadDetailFieldValueMap, "detailValue", locale));
-				}
-
-				downloadDetailsMap.put(_getStringValue(downloadFieldValue, locale), curDownloadDetailsMap);
-			}
-			%>
-
-			<c:if test="<%= downloadGroupFieldValues.size() > 1 %>">
-				</optgroup>
-			</c:if>
-
-		<%
-		}
-		%>
-
-	</select>
-</c:if>
-
-<br />
-
-downloadDetailsMap: <%= downloadDetailsMap.toString() %>
+<aui:script>
+	Downloads.render(
+		Downloads.JournalArticleDownloads,
+		{
+			downloadGroups: <%= downloadGroupsJSONArray %>
+		},
+		document.getElementById('<portlet:namespace />journalArticleDownloads<%= journalArticle.getResourcePrimKey() %>')
+	);
+</aui:script>
 
 <%!
 private String _getStringValue(Map<String, List<DDMFormFieldValue>> ddmFormFieldValuesMap, String name, Locale locale) {
