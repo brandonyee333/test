@@ -29,16 +29,17 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.http.HttpAuthManager;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.servlet.Servlet;
@@ -147,15 +148,22 @@ public class ZendeskJiraServlet extends SimpleRestfulServlet {
 	protected JSONObject getRequestJSONObject(HttpServletRequest request)
 		throws PortalException {
 
-		Map<String, String[]> parameterMap = request.getParameterMap();
+		StringBundler sb = new StringBundler();
 
-		Set<Entry<String, String[]>> entrySet = parameterMap.entrySet();
+		String line = null;
 
-		Iterator<Entry<String, String[]>> iterator = entrySet.iterator();
+		try {
+			BufferedReader bufferedReader = request.getReader();
 
-		Map.Entry<String, String[]> entry = iterator.next();
+			while ((line = bufferedReader.readLine()) != null) {
+				sb.append(line);
+			}
+		}
+		catch (Exception e) {
+			throw new PortalException(e);
+		}
 
-		return JSONFactoryUtil.createJSONObject(entry.getKey());
+		return JSONFactoryUtil.createJSONObject(sb.toString());
 	}
 
 	@Override
