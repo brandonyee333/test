@@ -1,0 +1,9 @@
+Bundle-Name: Liferay OSB Customer Account Entry Details API
+Bundle-SymbolicName: com.liferay.osb.customer.account.entry.details.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.osb.customer.account.entry.details.constants,\
+	com.liferay.osb.customer.account.entry.details.exception,\
+	com.liferay.osb.customer.account.entry.details.model,\
+	com.liferay.osb.customer.account.entry.details.service,\
+	com.liferay.osb.customer.account.entry.details.service.persistence

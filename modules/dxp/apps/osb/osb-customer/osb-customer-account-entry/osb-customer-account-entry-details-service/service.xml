@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.0.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_0_0.dtd">
+
+<service-builder package-path="com.liferay.osb.customer.account.entry.details">
+	<namespace>OSBCustomer</namespace>
+	<entity local-service="true" name="Event" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="eventId" primary="true" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="occurDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="accountEntryId" type="long" />
+		<column name="classNameId" type="long" />
+		<column name="classPK" type="long" />
+		<column name="type" type="int" />
+		<column name="typeClassNameId" type="long" />
+		<column name="typeClassPK" type="long" />
+		<column name="title" type="String" />
+		<column name="summary" type="String" />
+		<column name="additionalInfo" type="String" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="occurDate" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="A_C" return-type="Collection">
+			<finder-column name="accountEntryId" />
+			<finder-column name="classNameId" />
+		</finder>
+		<finder name="C_C" return-type="Collection">
+			<finder-column name="classNameId" />
+			<finder-column name="classPK" />
+		</finder>
+		<finder name="C_C_T" return-type="Collection">
+			<finder-column name="classNameId" />
+			<finder-column name="classPK" />
+			<finder-column arrayable-operator="OR" name="type" />
+		</finder>
+		<finder name="C_C_T_TC_TC" return-type="Collection">
+			<finder-column name="classNameId" />
+			<finder-column name="classPK" />
+			<finder-column name="type" />
+			<finder-column name="typeClassNameId" />
+			<finder-column name="typeClassPK" />
+		</finder>
+	</entity>
+</service-builder>

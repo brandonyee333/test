@@ -14,21 +14,31 @@
 
 package com.liferay.osb.customer.account.entry.details.web.internal.portlet.action;
 
+import com.liferay.osb.customer.account.entry.details.constants.EventConstants;
+import com.liferay.osb.customer.account.entry.details.service.EventLocalService;
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys;
 import com.liferay.osb.customer.ticket.exception.NoSuchTicketAttachmentException;
 import com.liferay.osb.customer.ticket.model.TicketAttachment;
 import com.liferay.osb.customer.ticket.repository.FileRepositoryWebService;
 import com.liferay.osb.customer.ticket.service.TicketAttachmentService;
+import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
+import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.WebKeys;
 
 import java.io.FileNotFoundException;
+
+import java.util.Date;
 
 import javax.portlet.PortletURL;
 import javax.portlet.ResourceRequest;
@@ -51,12 +61,31 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class TicketAttachmentMVCResourceCommand extends BaseMVCResourceCommand {
 
+	protected void addEvent(long userId, TicketAttachment ticketAttachment)
+		throws PortalException {
+
+		long classNameId = _classNameLocalService.getClassNameId(
+			ZendeskTicket.class.getName());
+		long typeClassNameId = _classNameLocalService.getClassNameId(
+			TicketAttachment.class.getName());
+
+		_eventLocalService.addEvent(
+			userId, new Date(), ticketAttachment.getAccountEntryId(),
+			classNameId, ticketAttachment.getZendeskTicketId(),
+			EventConstants.TYPE_DOWNLOAD_ATTACHMENT, typeClassNameId,
+			ticketAttachment.getTicketAttachmentId(),
+			ticketAttachment.getFileName(), StringPool.BLANK, StringPool.BLANK);
+	}
+
 	protected void doServeResource(
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 		throws Exception {
 
 		HttpServletResponse response = _portal.getHttpServletResponse(
 			resourceResponse);
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
 
 		try {
 			long ticketAttachmentId = ParamUtil.getLong(
@@ -72,6 +101,8 @@ public class TicketAttachmentMVCResourceCommand extends BaseMVCResourceCommand {
 
 			if (downloadURL != null) {
 				response.sendRedirect(downloadURL);
+
+				addEvent(themeDisplay.getUserId(), ticketAttachment);
 			}
 			else {
 				throw new FileNotFoundException();
@@ -104,6 +135,12 @@ public class TicketAttachmentMVCResourceCommand extends BaseMVCResourceCommand {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		TicketAttachmentMVCResourceCommand.class);
+
+	@Reference
+	private ClassNameLocalService _classNameLocalService;
+
+	@Reference
+	private EventLocalService _eventLocalService;
 
 	@Reference
 	private FileRepositoryWebService _fileRepositoryWebService;
