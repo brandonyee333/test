@@ -72,7 +72,7 @@
 			},
 			{
 				name: '<@liferay.language key="project-details" />',
-				url: ''
+				url: '/'
 			}
 		]
 	};
@@ -81,9 +81,14 @@
 		className: 'highlighted',
 		configs: [
 			{
+				name: 	'<@liferay.language key="submit-a-ticket" />',
+				svgId: '#ticket',
+				url: 'https://help.liferay.com/hc/requests/new'
+			},
+			{
 				name: '<@liferay.language key="contact-us" />',
 				svgId: '#contact',
-				url: ''
+				url: 'https://help.liferay.com/hc/articles/360017784212'
 			}
 		]
 	};
@@ -163,7 +168,38 @@
 			accountLinks: accountLinks,
 			cardMenuItems: {
 				className: 'card-menu',
-				configs: []
+				configs: [
+					{
+						description: '<@liferay.language key="products-service-packs-fix-packs-and-security-fixes" />',
+						name: '<@liferay.language key="downloads" />',
+						svgId: '#downloads',
+						url: 'https://customer.liferay.com/downloads'
+					},
+					{
+						description: '<@liferay.language key="articles-on-recurring-topics-issues-and-themes" />',
+						name: '<@liferay.language key="knowledge-base" />',
+						svgId: '#knowledge-base',
+						url: helpCenterBaseURL + 'categories/360000779952'
+					},
+					{
+						description: '<@liferay.language key="product-guides-tutorials-and-reference-docs" />',
+						name: '<@liferay.language key="documentation" />',
+						svgId: '#documentation',
+						url: helpCenterBaseURL + 'categories/360000868172'
+					},
+					{
+						description: '<@liferay.language key="updates-on-products-and-system-improvements" />',
+						name: '<@liferay.language key="announcements" />',
+						svgId: '#announcements',
+						url: helpCenterBaseURL + 'categories/360000892272'
+					},
+					{
+						description: '<@liferay.language key="activate-your-environments-to-start-a-project" />',
+						name: '<@liferay.language key="activation-keys" />',
+						svgId: '#server-activation',
+						url: 'https://customer.liferay.com/activation-key'
+					}
+				]
 			},
 			highlightedLinks: highlightedLinks,
 			locale: locale,
@@ -178,7 +214,32 @@
 			accountLinks: accountLinks,
 			cardMenuItems: {
 				className: 'card-menu',
-				configs: []
+				configs: [
+					{
+						description: '<@liferay.language key="how-liferay-approaches-security" />',
+						name: '<@liferay.language key="security-overview" />',
+						svgId: '#security-overview',
+						url: helpCenterBaseURL + 'articles/360016700231'
+					},
+					{
+						description: '<@liferay.language key="information-and-fixes-for-known-vulnerabilities" />',
+						name: '<@liferay.language key="security-advisories" />',
+						svgId: '#security-advisories',
+						url: helpCenterBaseURL + 'articles/360015772992'
+					},
+					{
+						description: '<@liferay.language key="process-for-reporting-security-vulnerabilities" />',
+						name: '<@liferay.language key="report-security-issues" />',
+						svgId: '#report-security-issues',
+						url: helpCenterBaseURL + 'articles/360016700231#Reporting-Security-Issues'
+					},
+					{
+						description: '<@liferay.language key="policy-for-reported-security-issues-in-liferay-products" />',
+						name: '<@liferay.language key="security-policies" />',
+						svgId: '#security-policy',
+						url: helpCenterBaseURL + 'articles/360016700231#Liferay-Security-Policy'
+					}
+				]
 			},
 			highlightedLinks: highlightedLinks,
 			locale: locale,
@@ -193,7 +254,44 @@
 			accountLinks: accountLinks,
 			cardMenuItems: {
 				className: 'card-menu',
-				configs: []
+				configs: [
+					{
+						description: '<@liferay.language key="supported-configurations-for-liferay-products" />',
+						name: '<@liferay.language key="compatibility-matrix" />',
+						svgId: '#compatibility-matrix',
+						url: helpCenterBaseURL + 'sections/360002103292'
+					},
+					{
+						description: '<@liferay.language key="overview-of-liferays-support-policies" />',
+						name: '<@liferay.language key="support-coverage" />',
+						svgId: '#support-coverage',
+						url: helpCenterBaseURL + 'articles/360018692652'
+					},
+					{
+						description: '<@liferay.language key="end-of-life-policies-for-liferay-products" />',
+						name: '<@liferay.language key="service-life" />',
+						svgId: '#end-of-life',
+						url: helpCenterBaseURL + 'sections/360002241991'
+					},
+					{
+						description: '<@liferay.language key="answers-to-common-support-related-questions" />',
+						name: '<@liferay.language key="support-faqs" />',
+						svgId: '#support-faqs',
+						url: helpCenterBaseURL + 'articles/360015994791'
+					},
+					{
+						description: '<@liferay.language key="how-liferay-delivers-software-updates" />',
+						name: '<@liferay.language key="fix-delivery-method" />',
+						svgId: '#fix-delivery-method',
+						url: helpCenterBaseURL + 'articles/360016515831'
+					},
+					{
+						description: '<@liferay.language key="benefits-included-with-each-subscription-level" />',
+						name: '<@liferay.language key="service-levels" />',
+						svgId: '#support-overview',
+						url: helpCenterBaseURL + 'articles/360016510271'
+					}
+				]
 			},
 			highlightedLinks: highlightedLinks,
 			locale: locale,
