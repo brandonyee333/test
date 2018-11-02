@@ -158,6 +158,8 @@ public class ZendeskJiraServlet extends SimpleRestfulServlet {
 			while ((line = bufferedReader.readLine()) != null) {
 				sb.append(line);
 			}
+
+			bufferedReader.close();
 		}
 		catch (Exception e) {
 			throw new PortalException(e);
