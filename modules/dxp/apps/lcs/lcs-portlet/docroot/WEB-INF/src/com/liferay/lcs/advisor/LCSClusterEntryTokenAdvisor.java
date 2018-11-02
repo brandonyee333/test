@@ -82,7 +82,9 @@ public class LCSClusterEntryTokenAdvisor implements LCSEventListener {
 			(lcsEvent ==
 				LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID) ||
 			(lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALIDATED) ||
-			(lcsEvent == LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED)) {
+			(lcsEvent == LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED) ||
+			(lcsEvent ==
+				LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS)) {
 
 			if ((lcsEvent ==
 					LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_TOKEN_CORRUPTED) ||
@@ -94,6 +96,12 @@ public class LCSClusterEntryTokenAdvisor implements LCSEventListener {
 						LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH) {
 
 				_lcsAlertAdvisor.add(LCSAlert.ERROR_ENVIRONMENT_MISMATCH);
+			}
+			else if (lcsEvent ==
+						LCSEvent.
+							LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS) {
+
+				_lcsAlertAdvisor.add(LCSAlert.ERROR_INVALID_USER_CREDENTIALS);
 			}
 
 			_deleteLCSCLusterEntryTokenFile();

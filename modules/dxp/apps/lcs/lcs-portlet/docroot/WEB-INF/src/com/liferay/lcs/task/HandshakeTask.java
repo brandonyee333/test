@@ -158,6 +158,11 @@ public class HandshakeTask implements Task {
 					_notifyLCSEventListeners(
 						LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH);
 				}
+				else if (lcsRESTError.getErrorCode() == 202) {
+					_notifyLCSEventListeners(
+						LCSEvent.
+							LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS);
+				}
 			}
 			else {
 				if (_log.isDebugEnabled()) {
