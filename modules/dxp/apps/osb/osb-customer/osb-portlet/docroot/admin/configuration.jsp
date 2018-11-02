@@ -56,173 +56,175 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 
 	<liferay-ui:error key="announcementDateInvalid" message="please-enter-a-display-date-that-comes-before-the-expiration-date" />
 
-	<liferay-ui:tabs
-		names="email-notifications,rabbitmq,trial"
-		param="tabs1"
-		url="<%= portletURL %>"
-	/>
+	<div class="container-fluid-1280">
+		<liferay-ui:tabs
+			names="email-notifications,trial"
+			param="tabs1"
+			url="<%= portletURL %>"
+		/>
 
-	<c:choose>
-		<c:when test='<%= tabs1.equals("trial") %>'>
+		<c:choose>
+			<c:when test='<%= tabs1.equals("trial") %>'>
 
-			<%
-			int maxTrialKeys = PrefsParamUtil.getInteger(portletPreferences, request, "maxTrialKeys", 0);
-			int trialLiferayVersion = PrefsParamUtil.getInteger(portletPreferences, request, "trialLiferayVersion", 0);
-			long trialProductEntryId = PrefsParamUtil.getLong(portletPreferences, request, "trialProductEntryId", 0);
-			long trialSupportResponseId = PrefsParamUtil.getLong(portletPreferences, request, "trialSupportResponseId", 0);
-			%>
+				<%
+				int maxTrialKeys = PrefsParamUtil.getInteger(portletPreferences, request, "maxTrialKeys", 0);
+				int trialLiferayVersion = PrefsParamUtil.getInteger(portletPreferences, request, "trialLiferayVersion", 0);
+				long trialProductEntryId = PrefsParamUtil.getLong(portletPreferences, request, "trialProductEntryId", 0);
+				long trialSupportResponseId = PrefsParamUtil.getLong(portletPreferences, request, "trialSupportResponseId", 0);
+				%>
 
-			<aui:fieldset>
-				<aui:input label="maximum-number-of-trial-keys" name="maxTrialKeys" value="<%= maxTrialKeys %>" />
-			</aui:fieldset>
+				<aui:fieldset>
+					<aui:input label="maximum-number-of-trial-keys" name="maxTrialKeys" value="<%= maxTrialKeys %>" />
+				</aui:fieldset>
 
-			<aui:fieldset>
-				<aui:select label="product" name="trialProductEntryId">
+				<aui:fieldset>
+					<aui:select label="product" name="trialProductEntryId">
 
-					<%
-					List<ProductEntry> productEntries = ProductEntryLocalServiceUtil.getProductEntries(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+						<%
+						List<ProductEntry> productEntries = ProductEntryLocalServiceUtil.getProductEntries(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
-					for (ProductEntry productEntry : productEntries) {
-					%>
+						for (ProductEntry productEntry : productEntries) {
+						%>
 
-						<aui:option label="<%= productEntry.getName() %>" selected="<%= productEntry.getProductEntryId() == trialProductEntryId %>" value="<%= productEntry.getProductEntryId() %>" />
+							<aui:option label="<%= productEntry.getName() %>" selected="<%= productEntry.getProductEntryId() == trialProductEntryId %>" value="<%= productEntry.getProductEntryId() %>" />
 
-					<%
-					}
-					%>
-
-				</aui:select>
-			</aui:fieldset>
-
-			<aui:fieldset>
-				<aui:select label="support" name="trialSupportResponseId">
-
-					<%
-					List<SupportResponse> supportResponses = SupportResponseLocalServiceUtil.getSupportResponses(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-
-					for (SupportResponse supportResponse : supportResponses) {
-					%>
-
-						<aui:option label="<%= supportResponse.getName() %>" selected="<%= supportResponse.getSupportResponseId() == trialSupportResponseId %>" value="<%= supportResponse.getSupportResponseId() %>" />
-
-					<%
-					}
-					%>
-
-				</aui:select>
-			</aui:fieldset>
-
-			<aui:fieldset>
-				<aui:select label="liferay-version" name="trialLiferayVersion">
-					<aui:option label="latest-version" value="0" />
-
-					<%
-					ProductEntry trialProductEntry = ProductEntryLocalServiceUtil.fetchProductEntry(trialProductEntryId);
-
-					if (trialProductEntry != null) {
-						List<ListType> envLFRTypes = trialProductEntry.getAllVersionsListTypes();
-
-						for (ListType envLFRType : envLFRTypes) {
-							if (envLFRType.getListTypeId() == ProductEntryConstants.PORTAL_VERSION_OTHER) {
-								continue;
-							}
-					%>
-
-							<aui:option label="<%= envLFRType.getName() %>" selected="<%= envLFRType.getListTypeId() == trialLiferayVersion %>" value="<%= envLFRType.getListTypeId() %>" />
-
-					<%
+						<%
 						}
-					}
-					%>
+						%>
 
-				</aui:select>
-			</aui:fieldset>
-		</c:when>
-		<c:otherwise>
+					</aui:select>
+				</aui:fieldset>
 
-			<%
-			String emailFromName = PrefsParamUtil.getString(portletPreferences, request, "emailFromName");
-			String emailFromAddress = PrefsParamUtil.getString(portletPreferences, request, "emailFromAddress");
+				<aui:fieldset>
+					<aui:select label="support" name="trialSupportResponseId">
 
-			String emailProvisioningCreateAccountSubject = PrefsParamUtil.getString(portletPreferences, request, "emailProvisioningCreateAccountSubject_" + currentLanguageId, StringPool.BLANK);
-			String emailProvisioningCreateAccountBody = PrefsParamUtil.getString(portletPreferences, request, "emailProvisioningCreateAccountBody_" + currentLanguageId, StringPool.BLANK);
-			%>
+						<%
+						List<SupportResponse> supportResponses = SupportResponseLocalServiceUtil.getSupportResponses(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
-			<liferay-ui:tabs
-				names="general,provisioning-create-account"
-				param="tabs2"
-				url="<%= portletURL %>"
-			/>
+						for (SupportResponse supportResponse : supportResponses) {
+						%>
 
-			<span class="portlet-msg-info">
-				<liferay-ui:message key="enter-custom-values-or-leave-it-blank-to-use-the-default-portal-settings" />
-			</span>
+							<aui:option label="<%= supportResponse.getName() %>" selected="<%= supportResponse.getSupportResponseId() == trialSupportResponseId %>" value="<%= supportResponse.getSupportResponseId() %>" />
 
-			<c:choose>
-				<c:when test='<%= tabs2.equals("provisioning-create-account") %>'>
-					<table class="lfr-table">
-						<tr>
-							<td>
-								<liferay-ui:message key="language" />
-							</td>
-							<td>
-								<aui:select label="" name="languageId" onChange='<%= renderResponse.getNamespace() + "updateForm();" %>'>
+						<%
+						}
+						%>
 
-									<%
-									for (int i = 0; i < locales.length; i++) {
-										String optionStyle = StringPool.BLANK;
+					</aui:select>
+				</aui:fieldset>
 
-										if (Validator.isNotNull(portletPreferences.getValue("emailProvisioningCreateAccountSubject_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK)) || Validator.isNotNull(portletPreferences.getValue("emailProvisioningCreateAccountBody_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK))) {
-											optionStyle = "style=\"font-weight: bold;\"";
+				<aui:fieldset>
+					<aui:select label="liferay-version" name="trialLiferayVersion">
+						<aui:option label="latest-version" value="0" />
+
+						<%
+						ProductEntry trialProductEntry = ProductEntryLocalServiceUtil.fetchProductEntry(trialProductEntryId);
+
+						if (trialProductEntry != null) {
+							List<ListType> envLFRTypes = trialProductEntry.getAllVersionsListTypes();
+
+							for (ListType envLFRType : envLFRTypes) {
+								if (envLFRType.getListTypeId() == ProductEntryConstants.PORTAL_VERSION_OTHER) {
+									continue;
+								}
+						%>
+
+								<aui:option label="<%= envLFRType.getName() %>" selected="<%= envLFRType.getListTypeId() == trialLiferayVersion %>" value="<%= envLFRType.getListTypeId() %>" />
+
+						<%
+							}
+						}
+						%>
+
+					</aui:select>
+				</aui:fieldset>
+			</c:when>
+			<c:otherwise>
+
+				<%
+				String emailFromName = PrefsParamUtil.getString(portletPreferences, request, "emailFromName");
+				String emailFromAddress = PrefsParamUtil.getString(portletPreferences, request, "emailFromAddress");
+
+				String emailProvisioningCreateAccountSubject = PrefsParamUtil.getString(portletPreferences, request, "emailProvisioningCreateAccountSubject_" + currentLanguageId, StringPool.BLANK);
+				String emailProvisioningCreateAccountBody = PrefsParamUtil.getString(portletPreferences, request, "emailProvisioningCreateAccountBody_" + currentLanguageId, StringPool.BLANK);
+				%>
+
+				<liferay-ui:tabs
+					names="general,provisioning-create-account"
+					param="tabs2"
+					url="<%= portletURL %>"
+				/>
+
+				<p class="portlet-msg-info">
+					<liferay-ui:message key="enter-custom-values-or-leave-it-blank-to-use-the-default-portal-settings" />
+				</p>
+
+				<c:choose>
+					<c:when test='<%= tabs2.equals("provisioning-create-account") %>'>
+						<table class="lfr-table">
+							<tr>
+								<td>
+									<liferay-ui:message key="language" />
+								</td>
+								<td>
+									<aui:select label="" name="languageId" onChange='<%= renderResponse.getNamespace() + "updateForm();" %>'>
+
+										<%
+										for (int i = 0; i < locales.length; i++) {
+											String optionStyle = StringPool.BLANK;
+
+											if (Validator.isNotNull(portletPreferences.getValue("emailProvisioningCreateAccountSubject_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK)) || Validator.isNotNull(portletPreferences.getValue("emailProvisioningCreateAccountBody_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK))) {
+												optionStyle = "style=\"font-weight: bold;\"";
+											}
+										%>
+
+											<aui:option label="<%= locales[i].getDisplayName(locale) %>" selected="<%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) %>" style="<%= optionStyle %>" value="<%= LocaleUtil.toLanguageId(locales[i]) %>" />
+
+										<%
 										}
-									%>
+										%>
 
-										<aui:option label="<%= locales[i].getDisplayName(locale) %>" selected="<%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) %>" style="<%= optionStyle %>" value="<%= LocaleUtil.toLanguageId(locales[i]) %>" />
+									</aui:select>
+								</td>
+							</tr>
+						</table>
 
-									<%
-									}
-									%>
+						<aui:fieldset>
+							<aui:input label="subject" name='<%= "emailProvisioningCreateAccountSubject_" + currentLanguageId %>' value="<%= emailProvisioningCreateAccountSubject %>" />
 
-								</aui:select>
-							</td>
-						</tr>
-					</table>
+							<aui:input label="body" name='<%= "emailProvisioningCreateAccountBody_" + currentLanguageId %>' type="textarea" value="<%= emailProvisioningCreateAccountBody %>" />
+						</aui:fieldset>
 
-					<aui:fieldset>
-						<aui:input label="subject" name='<%= "emailProvisioningCreateAccountSubject_" + currentLanguageId %>' value="<%= emailProvisioningCreateAccountSubject %>" />
+						<div class="definition-of-terms">
+							<h4>
+								<liferay-ui:message key="definition-of-terms" />
+							</h4>
 
-						<aui:input label="body" name='<%= "emailProvisioningCreateAccountBody_" + currentLanguageId %>' type="textarea" value="<%= emailProvisioningCreateAccountBody %>" />
-					</aui:fieldset>
+							<dl>
+								<dt>
+									[$ACCOUNT_ENTRY_NAME$]
+								</dt>
+								<dd>
+									The project name
+								</dd>
+							</dl>
+						</div>
+					</c:when>
+					<c:otherwise>
+						<aui:fieldset>
+							<aui:input label="name" name="emailFromName" value="<%= emailFromName %>" />
 
-					<div class="definition-of-terms">
-						<h4>
-							<liferay-ui:message key="definition-of-terms" />
-						</h4>
+							<liferay-ui:error key="emailFromAddress" message="please-enter-a-valid-email-address" />
 
-						<dl>
-							<dt>
-								[$ACCOUNT_ENTRY_NAME$]
-							</dt>
-							<dd>
-								The project name
-							</dd>
-						</dl>
-					</div>
-				</c:when>
-				<c:otherwise>
-					<aui:fieldset>
-						<aui:input label="name" name="emailFromName" value="<%= emailFromName %>" />
+							<aui:input label="address" name="emailFromAddress" value="<%= emailFromAddress %>" />
+						</aui:fieldset>
+					</c:otherwise>
+				</c:choose>
+			</c:otherwise>
+		</c:choose>
 
-						<liferay-ui:error key="emailFromAddress" message="please-enter-a-valid-email-address" />
-
-						<aui:input label="address" name="emailFromAddress" value="<%= emailFromAddress %>" />
-					</aui:fieldset>
-				</c:otherwise>
-			</c:choose>
-		</c:otherwise>
-	</c:choose>
-
-	<c:if test='<%= !tabs1.equals("support") || cmd.equals(Constants.ADD) %>'>
-		<aui:button type="submit" value="save" />
-	</c:if>
+		<c:if test='<%= !tabs1.equals("support") || cmd.equals(Constants.ADD) %>'>
+			<aui:button type="submit" value="save" />
+		</c:if>
+	</div>
 </aui:form>
