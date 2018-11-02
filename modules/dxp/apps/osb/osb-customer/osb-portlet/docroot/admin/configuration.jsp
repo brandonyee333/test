@@ -17,11 +17,8 @@
 <%@ include file="/init.jsp" %>
 
 <%
-String cmd = ParamUtil.getString(request, Constants.CMD, Constants.UPDATE);
-
 String tabs1 = ParamUtil.getString(request, "tabs1", "email-notifications");
 String tabs2 = ParamUtil.getString(request, "tabs2", "general");
-String tabs3 = ParamUtil.getString(request, "tabs3");
 
 String redirect = ParamUtil.getString(request, "redirect");
 
@@ -32,19 +29,18 @@ Set<Locale> localesSet = LanguageUtil.getAvailableLocales();
 Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 %>
 
-<script type="text/javascript">
-	function <portlet:namespace />updateForm() {
-		document.<portlet:namespace />fm.<portlet:namespace /><%= Constants.CMD %>.value = '';
-		submitForm(document.<portlet:namespace />fm);
-	}
-</script>
-
 <liferay-portlet:renderURL portletConfiguration="<%= true %>" var="portletURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 	<portlet:param name="tabs1" value="<%= tabs1 %>" />
 	<portlet:param name="tabs2" value="<%= tabs2 %>" />
-	<portlet:param name="tabs3" value="<%= tabs3 %>" />
 	<portlet:param name="redirect" value="<%= redirect %>" />
 </liferay-portlet:renderURL>
+
+<script type="text/javascript">
+	function <portlet:namespace />updateForm() {
+		document.<portlet:namespace />fm.<portlet:namespace /><%= Constants.CMD %>.value = '';
+		submitForm(document.<portlet:namespace />fm, '<%= portletURL.toString() %>');
+	}
+</script>
 
 <liferay-portlet:actionURL portletConfiguration="<%= true %>" var="configurationURL" />
 
@@ -52,9 +48,6 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 	<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.UPDATE %>" />
 	<aui:input name="tabs1" type="hidden" value="<%= tabs1 %>" />
 	<aui:input name="tabs2" type="hidden" value="<%= tabs2 %>" />
-	<aui:input name="tabs3" type="hidden" value="<%= tabs3 %>" />
-
-	<liferay-ui:error key="announcementDateInvalid" message="please-enter-a-display-date-that-comes-before-the-expiration-date" />
 
 	<div class="container-fluid-1280">
 		<liferay-ui:tabs
@@ -174,7 +167,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 											String optionStyle = StringPool.BLANK;
 
 											if (Validator.isNotNull(portletPreferences.getValue("emailProvisioningCreateAccountSubject_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK)) || Validator.isNotNull(portletPreferences.getValue("emailProvisioningCreateAccountBody_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK))) {
-												optionStyle = "style=\"font-weight: bold;\"";
+												optionStyle = "font-weight: bold;";
 											}
 										%>
 
@@ -223,8 +216,6 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 			</c:otherwise>
 		</c:choose>
 
-		<c:if test='<%= !tabs1.equals("support") || cmd.equals(Constants.ADD) %>'>
-			<aui:button type="submit" value="save" />
-		</c:if>
+		<aui:button type="submit" value="save" />
 	</div>
 </aui:form>
