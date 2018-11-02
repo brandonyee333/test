@@ -29,7 +29,7 @@ JSONArray productsJSONArray = downloadsDisplayContext.getProductsJSONArray();
 </h1>
 
 <c:if test="<%= ddmStructureKey.equals(DDMStructureConstants.KEY_DOWNLOAD) %>">
-	<h5 class="secondary-text-color">
+	<h5 class="secondary-text-color section-subtitle">
 		<liferay-ui:message key="find-the-downloads-you-need-by-filtering-the-results-with-the-drop-down-menus-below" />
 	</h5>
 
@@ -44,8 +44,8 @@ JSONArray productsJSONArray = downloadsDisplayContext.getProductsJSONArray();
 		JSONArray fileTypesJSONArray = null;
 		%>
 
-		<div class="filters">
-			<aui:select inlinField="<%= true %>" inlineLabel="left" name="product" onChange='<%= renderResponse.getNamespace() + "updateFileType(this.value);" %>' prefix="&#58;" wrapperCssClass="filter-container">
+		<div class="search-filters">
+			<aui:select inlinField="<%= true %>" inlineLabel="left" name="product" onChange='<%= renderResponse.getNamespace() + "updateFileType(this.value);" %>' prefix="&#58;" wrapperCssClass="downloads-search search-filter-container">
 				<aui:option label="select-product" value="" />
 
 				<%
@@ -72,7 +72,7 @@ JSONArray productsJSONArray = downloadsDisplayContext.getProductsJSONArray();
 
 			</aui:select>
 
-			<aui:select inlinField="<%= true %>" inlineLabel="left" name="fileType" onChange='<%= "if (this.value != '') {submitForm(document." + renderResponse.getNamespace() + "fm);}" %>' prefix="&#58;" wrapperCssClass="filter-container">
+			<aui:select inlinField="<%= true %>" inlineLabel="left" name="fileType" onChange='<%= "if (this.value != '') {submitForm(document." + renderResponse.getNamespace() + "fm);}" %>' prefix="&#58;" wrapperCssClass="downloads-search search-filter-container">
 				<aui:option label="select-file-type" value="" />
 
 				<c:if test="<%= fileTypesJSONArray != null %>">
