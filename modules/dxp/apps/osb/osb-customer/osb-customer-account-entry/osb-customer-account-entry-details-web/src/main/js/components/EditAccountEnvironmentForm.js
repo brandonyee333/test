@@ -450,11 +450,11 @@ export default class EditAccountEnvironmentForm extends React.Component {
 									</label>
 
 									<select className="form-control" id={`${namespace}accountEnvironmentProduct`} name={`${namespace}productEntryId`} onBlur={handleBlur} onChange={this.handleSelectChange} value={formValues.productEntryId}>
-										<option label={SELECT_LABEL} value="" />
+										<option label={SELECT_LABEL} value="" >{SELECT_LABEL}</option>
 
 										{products.map(
 											(product) => (
-												<option key={product.productEntryId} id={'product-' + product.productEntryId} label={product.displayName} value={product.productEntryId} />
+												<option key={product.productEntryId} id={'product-' + product.productEntryId} label={product.displayName} value={product.productEntryId}>{product.displayName}</option>
 											)
 										)}
 									</select>
@@ -478,11 +478,11 @@ export default class EditAccountEnvironmentForm extends React.Component {
 									</label>
 
 									<select className="form-control" disabled={!selectedProduct} id={`${namespace}envLFR`} name={`${namespace}envLFR`} onBlur={handleBlur} onChange={this.handleSelectChange} value={formValues.envLFR}>
-										<option label={SELECT_LABEL} value="" />
+										<option label={SELECT_LABEL} value="">{SELECT_LABEL}</option>
 
 										{selectedProduct && selectedProduct.envLFR.map(
 											(version) => (
-												<option key={version.value} id={'envLFR-' + version.value} label={version.name} value={version.value} />
+												<option key={version.value} id={'envLFR-' + version.value} label={version.name} value={version.value}>{version.name}</option>
 											)
 										)}
 									</select>
@@ -506,11 +506,11 @@ export default class EditAccountEnvironmentForm extends React.Component {
 									</label>
 
 									<select className="form-control" disabled={!selectedLFRVersion} id={`${namespace}envOS`} name={`${namespace}envOS`} onBlur={handleBlur} onChange={this.handleOSChange} value={formValues.envOS}>
-										<option label={SELECT_LABEL} value="" />
+										<option label={SELECT_LABEL} value="" >{SELECT_LABEL}</option>
 
 										{selectedLFRVersion && selectedLFRVersion.envOS.map(
 											(envOS) => (
-												<option key={envOS.value} id={'envOS-' + envOS.value} label={envOS.name} value={envOS.value} />
+												<option key={envOS.value} id={'envOS-' + envOS.value} label={envOS.name} value={envOS.value}>{envOS.name}</option>
 											)
 										)}
 									</select>
@@ -534,11 +534,11 @@ export default class EditAccountEnvironmentForm extends React.Component {
 									</label>
 
 									<select className="form-control" disabled={!selectedLFRVersion} id={`${namespace}envJVM`} name={`${namespace}envJVM`} onBlur={handleBlur} onChange={this.handleSelectChange} value={formValues.envJVM}>
-										<option label={SELECT_LABEL} value="" />
+										<option label={SELECT_LABEL} value="" >{SELECT_LABEL}</option>
 
 										{selectedLFRVersion && selectedLFRVersion.envJVM.map(
 											(envJVM) => (
-												<option key={envJVM.value} id={'envJVM-' + envJVM.value} label={envJVM.name} value={envJVM.value} />
+												<option key={envJVM.value} id={'envJVM-' + envJVM.value} label={envJVM.name} value={envJVM.value}>{envJVM.name}</option>
 											)
 										)}
 									</select>
@@ -574,11 +574,11 @@ export default class EditAccountEnvironmentForm extends React.Component {
 									</label>
 
 									<select className="form-control" disabled={!selectedLFRVersion} id={`${namespace}envAS`} name={`${namespace}envAS`} onBlur={handleBlur} onChange={this.handleSelectChange} value={formValues.envAS}>
-										<option label={SELECT_LABEL} value="" />
+										<option label={SELECT_LABEL} value="" >{SELECT_LABEL}</option>
 
 										{selectedLFRVersion && selectedLFRVersion.envAS.map(
 											(envAS) => (
-												<option key={envAS.value} id={'envAS-' + envAS.value} label={envAS.name} value={envAS.value} />
+												<option key={envAS.value} id={'envAS-' + envAS.value} label={envAS.name} value={envAS.value}>{envAS.name}</option>
 											)
 										)}
 									</select>
@@ -602,11 +602,11 @@ export default class EditAccountEnvironmentForm extends React.Component {
 									</label>
 
 									<select className="form-control" disabled={!selectedLFRVersion} id={`${namespace}envDB`} name={`${namespace}envDB`} onBlur={handleBlur} onChange={this.handleSelectChange} value={formValues.envDB}>
-										<option label={SELECT_LABEL} value="" />
+										<option label={SELECT_LABEL} value="" >{SELECT_LABEL}</option>
 
 										{selectedLFRVersion && selectedLFRVersion.envDB.map(
 											(envDB) => (
-												<option key={envDB.value} id={'envDB-' + envDB.value} label={envDB.name} value={envDB.value} />
+												<option key={envDB.value} id={'envDB-' + envDB.value} label={envDB.name} value={envDB.value}>{envDB.name}</option>
 											)
 										)}
 									</select>
@@ -627,11 +627,11 @@ export default class EditAccountEnvironmentForm extends React.Component {
 										</label>
 
 										<select className="form-control" disabled={!selectedLFRVersion} id={`${namespace}envCS`} name={`${namespace}envCS`} onBlur={handleBlur} onChange={this.handleSelectChange} value={formValues.envCS}>
-											<option label={SELECT_LABEL} value="" />
+											<option label={SELECT_LABEL} value="" >{SELECT_LABEL}</option>
 
 											{selectedLFRVersion && selectedLFRVersion.envCS.map(
 												(envCS) => (
-													<option key={envCS.value} id={'envCS-' + envCS.value} label={envCS.name} value={envCS.value} />
+													<option key={envCS.value} id={'envCS-' + envCS.value} label={envCS.name} value={envCS.value}>{envCS.name}</option>
 												)
 											)}
 										</select>
@@ -652,11 +652,11 @@ export default class EditAccountEnvironmentForm extends React.Component {
 									</label>
 
 									<select className="form-control" disabled={!selectedLFRVersion} id={`${namespace}envBrowser`} name={`${namespace}envBrowser`} onBlur={handleBlur} onChange={this.handleSelectChange} value={formValues.envBrowser}>
-										<option label={SELECT_LABEL} value="" />
+										<option label={SELECT_LABEL} value="" >{SELECT_LABEL}</option>
 
 										{selectedLFRVersion && selectedLFRVersion.envBrowser.map(
 											(envBrowser) => (
-												<option key={envBrowser.value} id={'envBrowser-' + envBrowser.value} label={envBrowser.name} value={envBrowser.value} />
+												<option key={envBrowser.value} id={'envBrowser-' + envBrowser.value} label={envBrowser.name} value={envBrowser.value}>{envBrowser.name}</option>
 											)
 										)}
 									</select>
@@ -680,7 +680,7 @@ export default class EditAccountEnvironmentForm extends React.Component {
 											{selectedLFRVersion.envSearch.find(
 												search => search[enterprise ? 'enterprise' : 'standard'])[enterprise ? 'enterprise' : 'standard'].map(
 													(envSearch) => (
-														<option key={envSearch.value} id={'envSearch-' + envSearch.value} label={envSearch.name} value={envSearch.value} />
+														<option key={envSearch.value} id={'envSearch-' + envSearch.value} label={envSearch.name} value={envSearch.value}>{envSearch.name}</option>
 													)
 												)
 											}
