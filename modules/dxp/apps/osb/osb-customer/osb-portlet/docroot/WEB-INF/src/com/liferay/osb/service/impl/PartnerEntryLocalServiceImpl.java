@@ -290,10 +290,10 @@ public class PartnerEntryLocalServiceImpl
 
 				throw new DuplicatePartnerEntryDossieraAccountKeyException();
 			}
-		}
 
-		if (!remoteCorpEntryLocalService.hasCorpEntry(dossieraAccountKey)) {
-			throw new PartnerEntryDossieraAccountKeyException();
+			if (!remoteCorpEntryLocalService.hasCorpEntry(dossieraAccountKey)) {
+				throw new PartnerEntryDossieraAccountKeyException();
+			}
 		}
 
 		if (Validator.isNull(code)) {
