@@ -62,6 +62,8 @@ public interface PartnerEntry extends PartnerEntryModel, PersistedModel {
 	public PartnerEntry getParentPartnerEntry()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
+	public java.util.List<AccountEntry> getPartnerManagedAccountEntries();
+
 	public java.util.List<PartnerWorker> getPartnerWorkers();
 
 	public java.lang.String getStatusLabel();

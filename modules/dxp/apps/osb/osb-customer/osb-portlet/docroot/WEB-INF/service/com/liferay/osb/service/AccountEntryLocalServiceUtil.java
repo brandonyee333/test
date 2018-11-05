@@ -442,6 +442,13 @@ public class AccountEntryLocalServiceUtil {
 		return getService().getPartnerAccountEntries(partnerEntryId);
 	}
 
+	public static java.util.List<com.liferay.osb.model.AccountEntry> getPartnerAccountEntries(
+		long partnerEntryId, boolean partnerManagedSupport) {
+		return getService()
+				   .getPartnerAccountEntries(partnerEntryId,
+			partnerManagedSupport);
+	}
+
 	public static java.util.List<com.liferay.osb.model.AccountEntry> getRedirectAccountEntries(
 		long accountEntryId) {
 		return getService().getRedirectAccountEntries(accountEntryId);

@@ -366,6 +366,11 @@ public class PartnerEntryWrapper implements PartnerEntry,
 	}
 
 	@Override
+	public java.util.List<AccountEntry> getPartnerManagedAccountEntries() {
+		return _partnerEntry.getPartnerManagedAccountEntries();
+	}
+
+	@Override
 	public java.util.List<PartnerWorker> getPartnerWorkers() {
 		return _partnerEntry.getPartnerWorkers();
 	}

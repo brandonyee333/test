@@ -352,6 +352,10 @@ public interface AccountEntryLocalService extends BaseLocalService,
 	public List<AccountEntry> getPartnerAccountEntries(long partnerEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountEntry> getPartnerAccountEntries(long partnerEntryId,
+		boolean partnerManagedSupport);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountEntry> getRedirectAccountEntries(long accountEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

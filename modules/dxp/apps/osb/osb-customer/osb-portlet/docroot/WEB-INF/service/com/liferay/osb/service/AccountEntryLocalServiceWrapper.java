@@ -477,6 +477,13 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	}
 
 	@Override
+	public java.util.List<com.liferay.osb.model.AccountEntry> getPartnerAccountEntries(
+		long partnerEntryId, boolean partnerManagedSupport) {
+		return _accountEntryLocalService.getPartnerAccountEntries(partnerEntryId,
+			partnerManagedSupport);
+	}
+
+	@Override
 	public java.util.List<com.liferay.osb.model.AccountEntry> getRedirectAccountEntries(
 		long accountEntryId) {
 		return _accountEntryLocalService.getRedirectAccountEntries(accountEntryId);
