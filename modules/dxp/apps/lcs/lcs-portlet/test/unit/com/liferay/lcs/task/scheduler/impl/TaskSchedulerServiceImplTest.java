@@ -262,10 +262,9 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 			new HandshakeResponseMessage();
 
 		handshakeResponseMessage.setErrorCode(errorCode);
-
 		handshakeResponseMessage.setErrorMessage(
-			String.format(_LCS_REST_ERROR_PATTERN, errorCode));
-
+			"{\"errorCode\": " + errorCode +
+				", \"errorDescription\": \"Test\", \"status\": 400}");
 		handshakeResponseMessage.setKey("mock");
 
 		return handshakeResponseMessage;
@@ -357,9 +356,6 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 			_taskSchedulerService, "_restart"
 		);
 	}
-
-	private static final String _LCS_REST_ERROR_PATTERN =
-		"{\"errorCode\": %d, \"errorDescription\": \"Test\", \"status\": 400}";
 
 	private LCSAlertAdvisor _lcsAlertAdvisor;
 	private LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
