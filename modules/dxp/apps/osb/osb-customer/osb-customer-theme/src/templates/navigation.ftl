@@ -81,7 +81,7 @@
 		className: 'highlighted',
 		configs: [
 			{
-				name: 	'<@liferay.language key="submit-a-ticket" />',
+				name: '<@liferay.language key="submit-a-ticket" />',
 				svgId: '#ticket',
 				url: 'https://help.liferay.com/hc/requests/new'
 			},
@@ -94,16 +94,16 @@
 	};
 
 	const locale = {
-		currentLocale: {
-			name: '${w3c_language_id}',
-			url: '/'
-		},
-		alternativeLocales: [
+				alternativeLocales: [
 			{
 				name: '',
 				url: '/'
 			}
-		]
+		],
+		currentLocale: {
+			name: '${w3c_language_id}',
+			url: '/'
+		}
 	};
 
 	theme.render(
