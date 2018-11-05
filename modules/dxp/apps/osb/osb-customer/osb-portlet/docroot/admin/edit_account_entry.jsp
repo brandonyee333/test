@@ -365,14 +365,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 
 				<span id="<portlet:namespace />corpProjectName">
 					<c:if test="<%= corpProject != null %>">
-						<%-- TODO
-						<liferay-portlet:renderURL portletName="<%= OSBPortletKeys.OSB_CORP_PROJECT_ADMIN %>" var="corpProjectURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
-							<portlet:param name="mvcPath" value="/corp_project_admin/view_corp_project.jsp" />
-							<portlet:param name="backURL" value="<%= currentURL %>" />
-							<portlet:param name="corpProjectId" value="<%= String.valueOf(corpProject.getCorpProjectId()) %>" />
-						</liferay-portlet:renderURL>--%>
-
-						<aui:a href="#" label="<%= corpProject.getName() %>" target="_blank" />
+						<aui:a href="<%= PortletPropsValues.CORP_PROJECT_LINK + corpProject.getCorpProjectId() %>" label="<%= corpProject.getName() %>" target="_blank" />
 					</c:if>
 				</span>
 

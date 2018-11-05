@@ -24,6 +24,8 @@ public interface PortletPropsKeys {
 	public static final String AUTOMATIC_PROVISIONING_ERROR_EMAIL_ADDRESS =
 		"automatic.provisioning.error.email.address";
 
+	public static final String CORP_PROJECT_LINK = "corp.project.link";
+
 	public static final String DEVELOPER_MODE_ENABLED =
 		"developer.mode.enabled";
 

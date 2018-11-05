@@ -28,6 +28,9 @@ public class PortletPropsValues {
 		PortletProps.get(
 			PortletPropsKeys.AUTOMATIC_PROVISIONING_ERROR_EMAIL_ADDRESS);
 
+	public static final String CORP_PROJECT_LINK = PortletProps.get(
+		PortletPropsKeys.CORP_PROJECT_LINK);
+
 	public static final boolean DEVELOPER_MODE_ENABLED = GetterUtil.getBoolean(
 		PortletProps.get(PortletPropsKeys.DEVELOPER_MODE_ENABLED));
 
