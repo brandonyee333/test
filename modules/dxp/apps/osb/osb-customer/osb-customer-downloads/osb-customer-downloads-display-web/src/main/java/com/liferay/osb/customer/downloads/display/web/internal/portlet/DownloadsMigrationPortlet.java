@@ -198,6 +198,8 @@ public class DownloadsMigrationPortlet extends MVCPortlet {
 			return StringPool.BLANK;
 		}
 
+		link = StringUtil.toLowerCase(link);
+
 		if (link.equals("https://www.liferay.com/security") ||
 			link.equals("/security")) {
 
@@ -208,6 +210,194 @@ public class DownloadsMigrationPortlet extends MVCPortlet {
 			int pos = link.indexOf("-/release_notes");
 
 			return "/group/customer/release-notes/" + link.substring(pos);
+		}
+
+		if (link.contains("/documentation/knowledge-base/-/kb/1309287")) {
+			return _ZENDESK_KB_URL + "360019039191";
+		}
+		else if (link.contains("/documentation/knowledge-base/-/kb/157955")) {
+			return _ZENDESK_KB_URL + "360019039311";
+		}
+		else if (link.contains("/documentation/knowledge-base/-/kb/762730")) {
+			return _ZENDESK_KB_URL + "360018706871";
+		}
+		else if (link.contains("/kb/-/knowledge_base/article/54143597")) {
+			return _ZENDESK_KB_URL + "360018075072";
+		}
+		else if (link.contains("/kb/-/knowledge_base/article/58124143")) {
+			return _ZENDESK_KB_URL + "360018151452";
+		}
+		else if (link.contains("/kb/-/knowledge_base/article/63457356")) {
+			return _ZENDESK_KB_URL + "360019039951";
+		}
+		else if (link.contains("/kb/-/knowledge_base/article/68302481")) {
+			return _ZENDESK_KB_URL + "360019040071";
+		}
+		else if (link.contains("/kbase/-/knowledge_base/article/23851380")) {
+			return _ZENDESK_KB_URL + "360019039591";
+		}
+		else if (link.contains("/kbase/-/knowledge_base/article/24113446")) {
+			return _ZENDESK_KB_URL + "360018728972";
+		}
+		else if (link.contains("/kbase/-/knowledge_base/article/27369860")) {
+			return _ZENDESK_KB_URL + "360019039791";
+		}
+		else if (link.contains("/kbase/-/knowledge_base/article/32070123")) {
+			return _ZENDESK_KB_URL + "360018412652";
+		}
+		else if (link.contains("/kbase/-/knowledge_base/article/32217032")) {
+			return _ZENDESK_KB_URL + "360018429111";
+		}
+		else if (link.contains("/kbase/-/knowledge_base/article/33827225")) {
+			return _ZENDESK_KB_URL + "360019039431";
+		}
+		else if (link.contains("/kbase/-/knowledge_base/article/36731251")) {
+			return _ZENDESK_KB_URL + "360018728852";
+		}
+		else if (link.contains("/kbase/-/knowledge_base/article/42019177")) {
+			return _ZENDESK_KB_URL + "360019039551";
+		}
+		else if (link.contains("/kbase/-/knowledge_base/article/46448166")) {
+			return _ZENDESK_KB_URL + "360018729012";
+		}
+		else if (link.contains("/kbase/-/knowledge_base/article/46621560")) {
+			return _ZENDESK_KB_URL + "360018418972";
+		}
+		else if (link.contains("/kbase/-/knowledge_base/article/52037352")) {
+			return _ZENDESK_KB_URL + "360018421291";
+		}
+
+		if (link.contains("cumulative-patches-for-6.0.10-and-6.0.11")) {
+			return _ZENDESK_KB_URL + "360017848011";
+		}
+		else if (link.contains("/security-vulnerability/lsv-102")) {
+			return _ZENDESK_KB_URL + "360016609791";
+		}
+		else if (link.contains("/security-vulnerability/lsv-103")) {
+			return _ZENDESK_KB_URL + "360016754751";
+		}
+		else if (link.contains("/security-vulnerability/lsv-106")) {
+			return _ZENDESK_KB_URL + "360016659671";
+		}
+		else if (link.contains("/security-vulnerability/lsv-122")) {
+			return _ZENDESK_KB_URL + "360016659711";
+		}
+		else if (link.contains("/security-vulnerability/lsv-123")) {
+			return _ZENDESK_KB_URL + "360016659271";
+		}
+		else if (link.contains("/security-vulnerability/lsv-136")) {
+			return _ZENDESK_KB_URL + "360016659351";
+		}
+		else if (link.contains("/security-vulnerability/lsv-141")) {
+			return _ZENDESK_KB_URL + "360016659371";
+		}
+		else if (link.contains("/security-vulnerability/lsv-143")) {
+			return _ZENDESK_KB_URL + "360016659411";
+		}
+		else if (link.contains("/security-vulnerability/lsv-153")) {
+			return _ZENDESK_KB_URL + "360016659391";
+		}
+		else if (link.contains("/security-vulnerability/lsv-171")) {
+			return _ZENDESK_KB_URL + "360016659431";
+		}
+		else if (link.contains("/security-vulnerability/lsv-173")) {
+			return _ZENDESK_KB_URL + "360016754011";
+		}
+		else if (link.contains("/security-vulnerability/lsv-175")) {
+			return _ZENDESK_KB_URL + "360016430672";
+		}
+		else if (link.contains("/security-vulnerability/lsv-184")) {
+			return _ZENDESK_KB_URL + "360016430692";
+		}
+		else if (link.contains("/security-vulnerability/lsv-194")) {
+			return _ZENDESK_KB_URL + "360016659451";
+		}
+		else if (link.contains("/security-vulnerability/lsv-203")) {
+			return _ZENDESK_KB_URL + "360016754091";
+		}
+		else if (link.contains("/security-vulnerability/lsv-204")) {
+			return _ZENDESK_KB_URL + "360016430772";
+		}
+		else if (link.contains("/security-vulnerability/lsv-21")) {
+			return _ZENDESK_KB_URL + "360016754671";
+		}
+		else if (link.contains("/security-vulnerability/lsv-212")) {
+			return _ZENDESK_KB_URL + "360016754051";
+		}
+		else if (link.contains("/security-vulnerability/lsv-222")) {
+			return _ZENDESK_KB_URL + "360016659591";
+		}
+		else if (link.contains("/security-vulnerability/lsv-224")) {
+			return _ZENDESK_KB_URL + "360016531772";
+		}
+		else if (link.contains("/security-vulnerability/lsv-238")) {
+			return _ZENDESK_KB_URL + "360016754111";
+		}
+		else if (link.contains("/security-vulnerability/lsv-242")) {
+			return _ZENDESK_KB_URL + "360016754131";
+		}
+		else if (link.contains("/security-vulnerability/lsv-260")) {
+			return _ZENDESK_KB_URL + "360016754251";
+		}
+		else if (link.contains("/security-vulnerability/lsv-27")) {
+			return _ZENDESK_KB_URL + "360016532632";
+		}
+		else if (link.contains("/security-vulnerability/lsv-275")) {
+			return _ZENDESK_KB_URL + "360016531752";
+		}
+		else if (link.contains("/security-vulnerability/lsv-278")) {
+			return _ZENDESK_KB_URL + "360016531792";
+		}
+		else if (link.contains("/security-vulnerability/lsv-302")) {
+			return _ZENDESK_KB_URL + "360016754351";
+		}
+		else if (link.contains("/security-vulnerability/lsv-311")) {
+			return _ZENDESK_KB_URL + "360016532612";
+		}
+		else if (link.contains("/security-vulnerability/lsv-335")) {
+			return _ZENDESK_KB_URL + "360017527332";
+		}
+		else if (link.contains("/security-vulnerability/lsv-351")) {
+			return _ZENDESK_KB_URL + "360017811131";
+		}
+		else if (link.contains("/security-vulnerability/lsv-36")) {
+			return _ZENDESK_KB_URL + "360016609291";
+		}
+		else if (link.contains("/security-vulnerability/lsv-363")) {
+			return _ZENDESK_KB_URL + "360017811151";
+		}
+		else if (link.contains("/security-vulnerability/lsv-37")) {
+			return _ZENDESK_KB_URL + "360016379932";
+		}
+		else if (link.contains("/security-vulnerability/lsv-373")) {
+			return _ZENDESK_KB_URL + "360017527532";
+		}
+		else if (link.contains("/security-vulnerability/lsv-391")) {
+			return _ZENDESK_KB_URL + "360017527612";
+		}
+		else if (link.contains("/security-vulnerability/lsv-45")) {
+			return _ZENDESK_KB_URL + "360016380092";
+		}
+		else if (link.contains("/security-vulnerability/lsv-55")) {
+			return _ZENDESK_KB_URL + "360016380272";
+		}
+		else if (link.contains("/security-vulnerability/lsv-6")) {
+			return _ZENDESK_KB_URL + "360016609051";
+		}
+		else if (link.contains("/security-vulnerability/lsv-7")) {
+			return _ZENDESK_KB_URL + "360016358432";
+		}
+		else if (link.contains("/security-vulnerability/lsv-99")) {
+			return _ZENDESK_KB_URL + "360016380092";
+		}
+
+		if (link.contains("/group/customer/knowledge/fix-pack-tutorials")) {
+			return _ZENDESK_KB_URL + "360018160771";
+		}
+		else if (link.contains(
+					"/group/customer/products/portal/security-vulnerability")) {
+
+			return _ZENDESK_KB_URL + "360016700231";
 		}
 
 		if (link.startsWith("http://www.liferay.com/group/customer") ||
@@ -476,6 +666,9 @@ public class DownloadsMigrationPortlet extends MVCPortlet {
 		"http://www.liferay.com/group/customer/knowledge/kb/-/knowledge_base" +
 			"/article/42196292"
 	};
+
+	private static final String _ZENDESK_KB_URL =
+		"https://help.liferay.com/hc/articles/";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		DownloadsMigrationPortlet.class);
