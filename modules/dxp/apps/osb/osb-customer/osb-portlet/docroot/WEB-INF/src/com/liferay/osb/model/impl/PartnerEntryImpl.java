@@ -54,6 +54,11 @@ public class PartnerEntryImpl extends PartnerEntryBaseImpl {
 			getParentPartnerEntryId());
 	}
 
+	public List<AccountEntry> getPartnerManagedAccountEntries() {
+		return AccountEntryLocalServiceUtil.getPartnerAccountEntries(
+			getPartnerEntryId(), true);
+	}
+
 	public List<PartnerWorker> getPartnerWorkers() {
 		return PartnerWorkerLocalServiceUtil.getPartnerWorkers(
 			getPartnerEntryId());

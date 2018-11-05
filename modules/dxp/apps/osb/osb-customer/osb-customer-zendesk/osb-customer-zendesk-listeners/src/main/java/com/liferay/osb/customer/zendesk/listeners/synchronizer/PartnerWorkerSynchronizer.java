@@ -100,7 +100,9 @@ public class PartnerWorkerSynchronizer {
 
 		PartnerEntry partnerEntry = partnerWorker.getPartnerEntry();
 
-		for (AccountEntry accountEntry : partnerEntry.getAccountEntries()) {
+		for (AccountEntry accountEntry :
+				partnerEntry.getPartnerManagedAccountEntries()) {
+
 			long zendeskOrganizationId =
 				_zendeskMapperUtil.fetchZendeskOrganizationId(
 					accountEntry.getAccountEntryId());

@@ -40,10 +40,10 @@ public class PartnerEntryModelListener extends BaseModelListener<PartnerEntry> {
 				return;
 			}
 
-			for (AccountEntry accountEntry : partnerEntry.getAccountEntries()) {
-				if (accountEntry.isPartnerManagedSupport()) {
-					_accountEntrySynchronizer.add(accountEntry);
-				}
+			for (AccountEntry accountEntry :
+					partnerEntry.getPartnerManagedAccountEntries()) {
+
+				_accountEntrySynchronizer.add(accountEntry);
 			}
 		}
 		catch (Exception e) {
