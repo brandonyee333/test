@@ -247,15 +247,24 @@ public class LCSUtil {
 		}
 
 		StringBundler sb = new StringBundler(
-			4 * publicRenderParameters.size() + 2);
+			4 * publicRenderParameters.size() + 1);
 
 		sb.append(layoutFullURL);
-		sb.append("?p_p_id=5_WAR_osblcsportlet");
+
+		boolean firstParameter = true;
 
 		for (Map.Entry<String, String> entry :
 				publicRenderParameters.entrySet()) {
 
-			sb.append(StringPool.AMPERSAND);
+			if (firstParameter) {
+				sb.append(StringPool.QUESTION);
+
+				firstParameter = false;
+			}
+			else {
+				sb.append(StringPool.AMPERSAND);
+			}
+
 			sb.append(entry.getKey());
 			sb.append(StringPool.EQUAL);
 			sb.append(entry.getValue());
@@ -265,11 +274,9 @@ public class LCSUtil {
 	}
 
 	protected static String getPublicRenderParameterName(String parameterName) {
-		StringBundler sb = new StringBundler(4);
+		StringBundler sb = new StringBundler(2);
 
 		sb.append(PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE);
-		sb.append("http://www.liferay.com/public-render-parameters".hashCode());
-		sb.append(StringPool.UNDERLINE);
 		sb.append(parameterName);
 
 		return sb.toString();
