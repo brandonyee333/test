@@ -162,7 +162,7 @@ for (SupportRegion supportRegion : supportRegions) {
 						<liferay-ui:search-container-column-text
 							name="status"
 						>
-							<aui:select label="" name='<%= "status_" + key %>' onChange='<%= renderResponse.getNamespace() + "updateOfferingEntry('" + key + "', '" + StringUtil.merge(offeringEntryGroup.getOfferingEntryIds()) + "', '" + offeringEntryGroup.getStatus() + "', '" + LanguageUtil.get(request, OfferingEntryConstants.getStatusLabel(offeringEntryGroup.getStatus())) + "');" %>'>
+							<aui:select label="" name='<%= "status_" + key %>' onChange='<%= renderResponse.getNamespace() + "updateOfferingEntry('" + key + "', '" + StringUtil.merge(offeringEntryGroup.getOfferingEntryIds()) + "', this.value, '" + offeringEntryGroup.getStatus() + "', '" + LanguageUtil.get(request, OfferingEntryConstants.getStatusLabel(offeringEntryGroup.getStatus())) + "');" %>'>
 
 								<%
 								for (int i = 1; i <= 4; i++) {
@@ -770,29 +770,98 @@ for (SupportRegion supportRegion : supportRegions) {
 	Liferay.provide(
 		window,
 		'<portlet:namespace />updateOfferingEntry',
-		function(key, offeringEntryIds, oldStatusValue, oldStatusLabel) {
+		function(key, offeringEntryIds, newStatusValue, oldStatusValue, oldStatusLabel) {
 			var A = AUI();
+
+			var statusElement = A.one('#<portlet:namespace />status_' + key);
 
 			var newStatusLabel = A.one('#<portlet:namespace />status_' + key + ' option:selected').html();
 
 			if (confirm(A.Lang.sub('<liferay-ui:message key="are-you-sure-you-want-to-modify-the-status-from-x-to-x" />', [oldStatusLabel, newStatusLabel.trim()]))) {
-				var form = A.one('#<portlet:namespace />fm');
+				A.io.request(
+					'<portlet:actionURL name="updateOfferingEntryStatus" />',
+					{
+						data: {
+							<portlet:namespace />offeringEntryIds: offeringEntryIds,
+							<portlet:namespace />status: newStatusValue
+						},
+						dataType: 'json',
+						method: 'post',
+						on: {
+							failure: function(event, id, obj) {
+								new Liferay.Notice(
+									{
+										animationConfig:
+										{
+											duration: 1,
+											top: '0px'
+										},
+										closeText: false,
+										content: '<liferay-ui:message key="an-unexpected-error-occurred" /><button class="close" type="button">&times;</button>',
+										noticeClass: 'osb-portlet-admin-alert error',
+										toggleText: false,
+										type: 'warning',
+										useAnimation: true
+									}
+								);
 
-				if (form) {
-					form.one('#<portlet:namespace />key').val(key);
-					form.one('#<portlet:namespace />offeringEntryIds').val(offeringEntryIds);
-					form.one('#<portlet:namespace />redirect').val('<%= portletURL.toString() %>');
+								A.later(10000, A.one('.osb-portlet-admin-alert'), 'hide');
 
-					submitForm(form, '<portlet:actionURL name="updateOfferingEntryStatus"><portlet:param name="mvcPath" value="/admin/edit_account_entry.jsp" /></portlet:actionURL>');
-				}
+								statusElement.val(oldStatusValue);
+							},
+							success: function(event, id, obj) {
+								var response = this.get('responseData');
+
+								if (response.error) {
+									new Liferay.Notice(
+										{
+											animationConfig:
+											{
+												duration: 1,
+												top: '0px'
+											},
+											closeText: false,
+											content: response.error + '<button class="close" type="button">&times;</button>',
+											noticeClass: 'osb-portlet-admin-alert error',
+											toggleText: false,
+											type: 'warning',
+											useAnimation: true
+										}
+									);
+
+									A.later(10000, A.one('.osb-portlet-admin-alert'), 'hide');
+
+									statusElement.val(oldStatusValue);
+								}
+								else {
+									new Liferay.Notice(
+										{
+											animationConfig:
+											{
+												duration: 1,
+												top: '0px'
+											},
+											closeText: false,
+											content: '<liferay-ui:message key="your-request-processed-successfully" /><button class="close" type="button">&times;</button>',
+											noticeClass: 'osb-portlet-admin-alert success',
+											toggleText: false,
+											type: 'notice',
+											useAnimation: true
+										}
+									);
+
+									A.later(5000, A.one('.osb-portlet-admin-alert'), 'hide');
+								}
+							}
+						}
+					}
+				);
 			}
 			else {
-				var statusElement = A.one('#<portlet:namespace />status_' + key);
-
 				statusElement.val(oldStatusValue);
 			}
 		},
-		['aui-base']
+		['aui-base', 'aui-io', 'liferay-notice']
 	);
 
 	Liferay.provide(

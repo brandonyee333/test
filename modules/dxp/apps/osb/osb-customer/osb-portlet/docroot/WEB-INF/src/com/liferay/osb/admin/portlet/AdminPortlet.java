@@ -821,15 +821,24 @@ public class AdminPortlet extends OSBPortlet {
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		String key = ParamUtil.getString(actionRequest, "key");
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		long[] offeringEntryIds = StringUtil.split(
-			ParamUtil.getString(actionRequest, "offeringEntryIds"), 0L);
-		int status = ParamUtil.getInteger(actionRequest, "status_" + key);
+		try {
+			long[] offeringEntryIds = StringUtil.split(
+				ParamUtil.getString(actionRequest, "offeringEntryIds"), 0L);
+			int status = ParamUtil.getInteger(actionRequest, "status");
 
-		for (long offeringEntryId : offeringEntryIds) {
-			OfferingEntryServiceUtil.updateStatus(offeringEntryId, status);
+			for (long offeringEntryId : offeringEntryIds) {
+				OfferingEntryServiceUtil.updateStatus(offeringEntryId, status);
+			}
+
+			jsonObject.put("message", "success");
 		}
+		catch (Exception e) {
+			jsonObject.put("error", e.getMessage());
+		}
+
+		writeJSON(actionRequest, actionResponse, jsonObject);
 	}
 
 	public void updateOrderEntry(

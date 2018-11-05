@@ -1,12 +1,6 @@
 $medium-gray: #909295;
 $text-color: #474A4B;
 
-#wrapper .osb-portlet-admin .addresses .w50 {
-	float: left;
-	padding: 0;
-	width: 50%;
-}
-
 .osb-portlet-admin {
 	table {
 		td {
@@ -202,6 +196,27 @@ $text-color: #474A4B;
 			height: 5px;
 			vertical-align: middle;
 			width: 5px;
+		}
+	}
+}
+
+.osb-portlet-admin-alert {
+	&.error {
+		color: #D06575;
+
+		.close {
+			color: #D06575;
+			line-height: 30px;
+		}
+	}
+
+	&.success {
+		background-color: #DDF3D5;
+		color: #97C783;
+
+		.close {
+			color: #97C783;
+			line-height: 30px;
 		}
 	}
 }
