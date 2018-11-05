@@ -94,7 +94,7 @@
 	};
 
 	const locale = {
-				alternativeLocales: [
+		alternativeLocales: [
 			{
 				name: '',
 				url: '/'
