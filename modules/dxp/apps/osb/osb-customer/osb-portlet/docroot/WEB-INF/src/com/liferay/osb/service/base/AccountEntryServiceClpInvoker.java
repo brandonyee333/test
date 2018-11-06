@@ -56,12 +56,13 @@ public class AccountEntryServiceClpInvoker {
 		_methodParameterTypes238 = new String[] {
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
-				"java.lang.String", "java.lang.String", "int[][]",
-				"java.lang.Boolean", "int[][]", "int[][]", "java.lang.String",
 				"java.lang.String", "java.lang.String", "java.lang.String",
-				"java.lang.Long", "java.lang.Long", "java.lang.String",
-				"java.lang.String", "java.util.LinkedHashMap", "boolean", "int",
-				"int", "com.liferay.portal.kernel.util.OrderByComparator"
+				"java.lang.String", "int[][]", "java.lang.Boolean", "int[][]",
+				"int[][]", "java.lang.String", "java.lang.String",
+				"java.lang.String", "java.lang.String", "java.lang.Long",
+				"java.lang.Long", "java.lang.String", "java.lang.String",
+				"java.util.LinkedHashMap", "boolean", "int", "int",
+				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
 		_methodName239 = "searchCount";
@@ -69,11 +70,12 @@ public class AccountEntryServiceClpInvoker {
 		_methodParameterTypes239 = new String[] {
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
-				"java.lang.String", "java.lang.String", "int[][]",
-				"java.lang.Boolean", "int[][]", "int[][]", "java.lang.String",
 				"java.lang.String", "java.lang.String", "java.lang.String",
-				"java.lang.Long", "java.lang.Long", "java.lang.String",
-				"java.lang.String", "java.util.LinkedHashMap", "boolean"
+				"java.lang.String", "int[][]", "java.lang.Boolean", "int[][]",
+				"int[][]", "java.lang.String", "java.lang.String",
+				"java.lang.String", "java.lang.String", "java.lang.Long",
+				"java.lang.Long", "java.lang.String", "java.lang.String",
+				"java.util.LinkedHashMap", "boolean"
 			};
 
 		_methodName240 = "updateInstructions";
@@ -131,19 +133,21 @@ public class AccountEntryServiceClpInvoker {
 				((Integer)arguments[12]).intValue(),
 				((Integer)arguments[13]).intValue(),
 				(java.lang.String)arguments[14],
-				(java.lang.String)arguments[15], (int[])arguments[16],
-				(java.lang.Boolean)arguments[17], (int[])arguments[18],
-				(int[])arguments[19], (java.lang.String)arguments[20],
-				(java.lang.String)arguments[21],
-				(java.lang.String)arguments[22],
-				(java.lang.String)arguments[23], (java.lang.Long)arguments[24],
-				(java.lang.Long)arguments[25], (java.lang.String)arguments[26],
-				(java.lang.String)arguments[27],
-				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[28],
-				((Boolean)arguments[29]).booleanValue(),
-				((Integer)arguments[30]).intValue(),
-				((Integer)arguments[31]).intValue(),
-				(com.liferay.portal.kernel.util.OrderByComparator)arguments[32]);
+				(java.lang.String)arguments[15],
+				(java.lang.String)arguments[16],
+				(java.lang.String)arguments[17], (int[])arguments[18],
+				(java.lang.Boolean)arguments[19], (int[])arguments[20],
+				(int[])arguments[21], (java.lang.String)arguments[22],
+				(java.lang.String)arguments[23],
+				(java.lang.String)arguments[24],
+				(java.lang.String)arguments[25], (java.lang.Long)arguments[26],
+				(java.lang.Long)arguments[27], (java.lang.String)arguments[28],
+				(java.lang.String)arguments[29],
+				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[30],
+				((Boolean)arguments[31]).booleanValue(),
+				((Integer)arguments[32]).intValue(),
+				((Integer)arguments[33]).intValue(),
+				(com.liferay.portal.kernel.util.OrderByComparator)arguments[34]);
 		}
 
 		if (_methodName239.equals(name) &&
@@ -163,16 +167,18 @@ public class AccountEntryServiceClpInvoker {
 				((Integer)arguments[12]).intValue(),
 				((Integer)arguments[13]).intValue(),
 				(java.lang.String)arguments[14],
-				(java.lang.String)arguments[15], (int[])arguments[16],
-				(java.lang.Boolean)arguments[17], (int[])arguments[18],
-				(int[])arguments[19], (java.lang.String)arguments[20],
-				(java.lang.String)arguments[21],
-				(java.lang.String)arguments[22],
-				(java.lang.String)arguments[23], (java.lang.Long)arguments[24],
-				(java.lang.Long)arguments[25], (java.lang.String)arguments[26],
-				(java.lang.String)arguments[27],
-				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[28],
-				((Boolean)arguments[29]).booleanValue());
+				(java.lang.String)arguments[15],
+				(java.lang.String)arguments[16],
+				(java.lang.String)arguments[17], (int[])arguments[18],
+				(java.lang.Boolean)arguments[19], (int[])arguments[20],
+				(int[])arguments[21], (java.lang.String)arguments[22],
+				(java.lang.String)arguments[23],
+				(java.lang.String)arguments[24],
+				(java.lang.String)arguments[25], (java.lang.Long)arguments[26],
+				(java.lang.Long)arguments[27], (java.lang.String)arguments[28],
+				(java.lang.String)arguments[29],
+				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[30],
+				((Boolean)arguments[31]).booleanValue());
 		}
 
 		if (_methodName240.equals(name) &&

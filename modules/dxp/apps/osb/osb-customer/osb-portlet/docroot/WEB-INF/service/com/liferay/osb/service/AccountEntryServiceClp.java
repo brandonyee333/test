@@ -52,11 +52,12 @@ public class AccountEntryServiceClp implements AccountEntryService {
 		_methodParameterTypes5 = new String[] {
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
-				"java.lang.String", "java.lang.String", "int[][]",
-				"java.lang.Boolean", "int[][]", "int[][]", "java.lang.String",
 				"java.lang.String", "java.lang.String", "java.lang.String",
-				"java.lang.Long", "java.lang.Long", "java.lang.String",
-				"java.lang.String", "java.util.LinkedHashMap", "boolean"
+				"java.lang.String", "int[][]", "java.lang.Boolean", "int[][]",
+				"int[][]", "java.lang.String", "java.lang.String",
+				"java.lang.String", "java.lang.String", "java.lang.Long",
+				"java.lang.Long", "java.lang.String", "java.lang.String",
+				"java.util.LinkedHashMap", "boolean"
 			};
 
 		_methodName7 = "getOSGiServiceIdentifier";
@@ -72,12 +73,13 @@ public class AccountEntryServiceClp implements AccountEntryService {
 		_methodParameterTypes9 = new String[] {
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
-				"java.lang.String", "java.lang.String", "int[][]",
-				"java.lang.Boolean", "int[][]", "int[][]", "java.lang.String",
 				"java.lang.String", "java.lang.String", "java.lang.String",
-				"java.lang.Long", "java.lang.Long", "java.lang.String",
-				"java.lang.String", "java.util.LinkedHashMap", "boolean", "int",
-				"int", "com.liferay.portal.kernel.util.OrderByComparator"
+				"java.lang.String", "int[][]", "java.lang.Boolean", "int[][]",
+				"int[][]", "java.lang.String", "java.lang.String",
+				"java.lang.String", "java.lang.String", "java.lang.Long",
+				"java.lang.Long", "java.lang.String", "java.lang.String",
+				"java.util.LinkedHashMap", "boolean", "int", "int",
+				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 	}
 
@@ -240,8 +242,9 @@ public class AccountEntryServiceClp implements AccountEntryService {
 		int createDateLTMonth, int createDateLTYear,
 		java.lang.Long modifiedUserId, int modifiedDateGTDay,
 		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
-		int modifiedDateLTMonth, int modifiedDateLTYear, java.lang.String name,
-		java.lang.String code, int[] industries,
+		int modifiedDateLTMonth, int modifiedDateLTYear,
+		java.lang.String dossieraAccountKey, java.lang.String corpEntryName,
+		java.lang.String name, java.lang.String code, int[] industries,
 		java.lang.Boolean partnerManagedSupport, int[] tiers, int[] statuses,
 		java.lang.String instructions, java.lang.String notes,
 		java.lang.String partnerEntryCode, java.lang.String street,
@@ -283,6 +286,10 @@ public class AccountEntryServiceClp implements AccountEntryService {
 					modifiedDateLTMonth,
 						
 					modifiedDateLTYear,
+						
+					ClpSerializer.translateInput(dossieraAccountKey),
+						
+					ClpSerializer.translateInput(corpEntryName),
 						
 					ClpSerializer.translateInput(name),
 						
@@ -407,8 +414,9 @@ public class AccountEntryServiceClp implements AccountEntryService {
 		int createDateLTMonth, int createDateLTYear,
 		java.lang.Long modifiedUserId, int modifiedDateGTDay,
 		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
-		int modifiedDateLTMonth, int modifiedDateLTYear, java.lang.String name,
-		java.lang.String code, int[] industries,
+		int modifiedDateLTMonth, int modifiedDateLTYear,
+		java.lang.String dossieraAccountKey, java.lang.String corpEntryName,
+		java.lang.String name, java.lang.String code, int[] industries,
 		java.lang.Boolean partnerManagedSupport, int[] tiers, int[] statuses,
 		java.lang.String instructions, java.lang.String notes,
 		java.lang.String partnerEntryCode, java.lang.String street,
@@ -451,6 +459,10 @@ public class AccountEntryServiceClp implements AccountEntryService {
 					modifiedDateLTMonth,
 						
 					modifiedDateLTYear,
+						
+					ClpSerializer.translateInput(dossieraAccountKey),
+						
+					ClpSerializer.translateInput(corpEntryName),
 						
 					ClpSerializer.translateInput(name),
 						

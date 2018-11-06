@@ -224,8 +224,9 @@ public class AccountEntryServiceHttp {
 		int createDateLTDay, int createDateLTMonth, int createDateLTYear,
 		java.lang.Long modifiedUserId, int modifiedDateGTDay,
 		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
-		int modifiedDateLTMonth, int modifiedDateLTYear, java.lang.String name,
-		java.lang.String code, int[] industries,
+		int modifiedDateLTMonth, int modifiedDateLTYear,
+		java.lang.String dossieraAccountKey, java.lang.String corpEntryName,
+		java.lang.String name, java.lang.String code, int[] industries,
 		java.lang.Boolean partnerManagedSupport, int[] tiers, int[] statuses,
 		java.lang.String instructions, java.lang.String notes,
 		java.lang.String partnerEntryCode, java.lang.String street,
@@ -244,10 +245,11 @@ public class AccountEntryServiceHttp {
 					createDateGTYear, createDateLTDay, createDateLTMonth,
 					createDateLTYear, modifiedUserId, modifiedDateGTDay,
 					modifiedDateGTMonth, modifiedDateGTYear, modifiedDateLTDay,
-					modifiedDateLTMonth, modifiedDateLTYear, name, code,
-					industries, partnerManagedSupport, tiers, statuses,
-					instructions, notes, partnerEntryCode, street, countryId,
-					regionId, city, zip, params, andOperator, start, end, obc);
+					modifiedDateLTMonth, modifiedDateLTYear,
+					dossieraAccountKey, corpEntryName, name, code, industries,
+					partnerManagedSupport, tiers, statuses, instructions,
+					notes, partnerEntryCode, street, countryId, regionId, city,
+					zip, params, andOperator, start, end, obc);
 
 			Object returnObj = null;
 
@@ -277,8 +279,9 @@ public class AccountEntryServiceHttp {
 		int createDateLTMonth, int createDateLTYear,
 		java.lang.Long modifiedUserId, int modifiedDateGTDay,
 		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
-		int modifiedDateLTMonth, int modifiedDateLTYear, java.lang.String name,
-		java.lang.String code, int[] industries,
+		int modifiedDateLTMonth, int modifiedDateLTYear,
+		java.lang.String dossieraAccountKey, java.lang.String corpEntryName,
+		java.lang.String name, java.lang.String code, int[] industries,
 		java.lang.Boolean partnerManagedSupport, int[] tiers, int[] statuses,
 		java.lang.String instructions, java.lang.String notes,
 		java.lang.String partnerEntryCode, java.lang.String street,
@@ -296,10 +299,11 @@ public class AccountEntryServiceHttp {
 					createDateGTYear, createDateLTDay, createDateLTMonth,
 					createDateLTYear, modifiedUserId, modifiedDateGTDay,
 					modifiedDateGTMonth, modifiedDateGTYear, modifiedDateLTDay,
-					modifiedDateLTMonth, modifiedDateLTYear, name, code,
-					industries, partnerManagedSupport, tiers, statuses,
-					instructions, notes, partnerEntryCode, street, countryId,
-					regionId, city, zip, params, andOperator);
+					modifiedDateLTMonth, modifiedDateLTYear,
+					dossieraAccountKey, corpEntryName, name, code, industries,
+					partnerManagedSupport, tiers, statuses, instructions,
+					notes, partnerEntryCode, street, countryId, regionId, city,
+					zip, params, andOperator);
 
 			Object returnObj = null;
 
@@ -375,6 +379,7 @@ public class AccountEntryServiceHttp {
 			java.lang.Long.class, int.class, int.class, int.class, int.class,
 			int.class, int.class, java.lang.Long.class, int.class, int.class,
 			int.class, int.class, int.class, int.class, java.lang.String.class,
+			java.lang.String.class, java.lang.String.class,
 			java.lang.String.class, int[].class, java.lang.Boolean.class,
 			int[].class, int[].class, java.lang.String.class,
 			java.lang.String.class, java.lang.String.class,
@@ -387,6 +392,7 @@ public class AccountEntryServiceHttp {
 			java.lang.Long.class, int.class, int.class, int.class, int.class,
 			int.class, int.class, java.lang.Long.class, int.class, int.class,
 			int.class, int.class, int.class, int.class, java.lang.String.class,
+			java.lang.String.class, java.lang.String.class,
 			java.lang.String.class, int[].class, java.lang.Boolean.class,
 			int[].class, int[].class, java.lang.String.class,
 			java.lang.String.class, java.lang.String.class,

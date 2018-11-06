@@ -325,8 +325,9 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 		int createDateLTMonth, int createDateLTYear,
 		java.lang.Long modifiedUserId, int modifiedDateGTDay,
 		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
-		int modifiedDateLTMonth, int modifiedDateLTYear, java.lang.String name,
-		java.lang.String code, int[] industries,
+		int modifiedDateLTMonth, int modifiedDateLTYear,
+		java.lang.String dossieraAccountKey, java.lang.String corpEntryName,
+		java.lang.String name, java.lang.String code, int[] industries,
 		java.lang.Boolean partnerManagedSupport, int[] tiers, int[] statuses,
 		java.lang.String instructions, java.lang.String notes,
 		java.lang.String partnerEntryCode, java.lang.String street,
@@ -339,9 +340,10 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 			createDateLTDay, createDateLTMonth, createDateLTYear,
 			modifiedUserId, modifiedDateGTDay, modifiedDateGTMonth,
 			modifiedDateGTYear, modifiedDateLTDay, modifiedDateLTMonth,
-			modifiedDateLTYear, name, code, industries, partnerManagedSupport,
-			tiers, statuses, instructions, notes, partnerEntryCode, street,
-			countryId, regionId, city, zip, params, andOperator);
+			modifiedDateLTYear, dossieraAccountKey, corpEntryName, name, code,
+			industries, partnerManagedSupport, tiers, statuses, instructions,
+			notes, partnerEntryCode, street, countryId, regionId, city, zip,
+			params, andOperator);
 	}
 
 	@Override
@@ -538,8 +540,9 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 		int createDateLTMonth, int createDateLTYear,
 		java.lang.Long modifiedUserId, int modifiedDateGTDay,
 		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
-		int modifiedDateLTMonth, int modifiedDateLTYear, java.lang.String name,
-		java.lang.String code, int[] industries,
+		int modifiedDateLTMonth, int modifiedDateLTYear,
+		java.lang.String dossieraAccountKey, java.lang.String corpEntryName,
+		java.lang.String name, java.lang.String code, int[] industries,
 		java.lang.Boolean partnerManagedSupport, int[] tiers, int[] statuses,
 		java.lang.String instructions, java.lang.String notes,
 		java.lang.String partnerEntryCode, java.lang.String street,
@@ -552,10 +555,11 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 			createDateGTMonth, createDateGTYear, createDateLTDay,
 			createDateLTMonth, createDateLTYear, modifiedUserId,
 			modifiedDateGTDay, modifiedDateGTMonth, modifiedDateGTYear,
-			modifiedDateLTDay, modifiedDateLTMonth, modifiedDateLTYear, name,
-			code, industries, partnerManagedSupport, tiers, statuses,
-			instructions, notes, partnerEntryCode, street, countryId, regionId,
-			city, zip, params, andOperator, start, end, obc);
+			modifiedDateLTDay, modifiedDateLTMonth, modifiedDateLTYear,
+			dossieraAccountKey, corpEntryName, name, code, industries,
+			partnerManagedSupport, tiers, statuses, instructions, notes,
+			partnerEntryCode, street, countryId, regionId, city, zip, params,
+			andOperator, start, end, obc);
 	}
 
 	@Override

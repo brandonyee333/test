@@ -30,10 +30,11 @@ public class AccountEntryFinderUtil {
 		return getFinder().countByKeywords(keywords, params);
 	}
 
-	public static int countByU_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
+	public static int countByU_CD_MU_MD_DAK_CEN_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
 		java.lang.Long createUserId, java.util.Date createDateGT,
 		java.util.Date createDateLT, java.lang.Long modifiedUserId,
 		java.util.Date modifiedDateGT, java.util.Date modifiedDateLT,
+		java.lang.String dossieraAccountKey, java.lang.String corpEntryName,
 		java.lang.String name, java.lang.String code, int[] industries,
 		java.lang.Boolean partnerManagedSupport, int[] tiers, int[] statuses,
 		java.lang.String instructions, java.lang.String notes,
@@ -43,11 +44,12 @@ public class AccountEntryFinderUtil {
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator) {
 		return getFinder()
-				   .countByU_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(createUserId,
+				   .countByU_CD_MU_MD_DAK_CEN_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(createUserId,
 			createDateGT, createDateLT, modifiedUserId, modifiedDateGT,
-			modifiedDateLT, name, code, industries, partnerManagedSupport,
-			tiers, statuses, instructions, notes, partnerEntryCode, street,
-			countryId, regionId, city, zip, params, andOperator);
+			modifiedDateLT, dossieraAccountKey, corpEntryName, name, code,
+			industries, partnerManagedSupport, tiers, statuses, instructions,
+			notes, partnerEntryCode, street, countryId, regionId, city, zip,
+			params, andOperator);
 	}
 
 	public static java.util.List<com.liferay.osb.model.AccountEntry> findByKeywords(
@@ -62,10 +64,11 @@ public class AccountEntryFinderUtil {
 		return getFinder().findBySupportResponse(supportResponseId);
 	}
 
-	public static java.util.List<com.liferay.osb.model.AccountEntry> findByU_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
+	public static java.util.List<com.liferay.osb.model.AccountEntry> findByU_CD_MU_MD_DAK_CEN_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
 		java.lang.Long createUserId, java.util.Date createDateGT,
 		java.util.Date createDateLT, java.lang.Long modifiedUserId,
 		java.util.Date modifiedDateGT, java.util.Date modifiedDateLT,
+		java.lang.String dossieraAccountKey, java.lang.String corpEntryName,
 		java.lang.String name, java.lang.String code, int[] industries,
 		java.lang.Boolean partnerManagedSupport, int[] tiers, int[] statuses,
 		java.lang.String instructions, java.lang.String notes,
@@ -76,11 +79,12 @@ public class AccountEntryFinderUtil {
 		boolean andOperator, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator obc) {
 		return getFinder()
-				   .findByU_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(createUserId,
+				   .findByU_CD_MU_MD_DAK_CEN_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(createUserId,
 			createDateGT, createDateLT, modifiedUserId, modifiedDateGT,
-			modifiedDateLT, name, code, industries, partnerManagedSupport,
-			tiers, statuses, instructions, notes, partnerEntryCode, street,
-			countryId, regionId, city, zip, params, andOperator, start, end, obc);
+			modifiedDateLT, dossieraAccountKey, corpEntryName, name, code,
+			industries, partnerManagedSupport, tiers, statuses, instructions,
+			notes, partnerEntryCode, street, countryId, regionId, city, zip,
+			params, andOperator, start, end, obc);
 	}
 
 	public static AccountEntryFinder getFinder() {
