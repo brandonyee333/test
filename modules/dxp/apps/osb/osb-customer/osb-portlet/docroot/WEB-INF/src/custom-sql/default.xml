@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <custom-sql>
-	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.countByU_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z">
+	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.countByU_CD_MU_MD_DAK_CEN_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z">
 		<![CDATA[
 			SELECT
 				DISTINCT OSB_AccountEntry.accountEntryId
@@ -27,6 +27,8 @@
 						(OSB_AccountEntry.modifiedUserId = ?) [$AND_OR_CONNECTOR$]
 						(OSB_AccountEntry.modifiedDate > ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
 						(OSB_AccountEntry.modifiedDate < ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+						(lower(OSB_AccountEntry.dossieraAccountKey) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+						(lower(OSB_AccountEntry.corpEntryName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
 						(lower(OSB_AccountEntry.name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
 						(lower(OSB_AccountEntry.code_) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
 						(OSB_AccountEntry.industry = ?) [$AND_OR_CONNECTOR$]
@@ -69,7 +71,7 @@
 				(OSB_AccountEntry.type_ = ?)
 		]]>
 	</sql>
-	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.findByU_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z">
+	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.findByU_CD_MU_MD_DAK_CEN_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z">
 		<![CDATA[
 			SELECT
 				DISTINCT OSB_AccountEntry.accountEntryId, OSB_AccountEntry.name AS accountEntryName, OSB_AccountEntry.code_ AS accountEntryCode
@@ -95,6 +97,8 @@
 						(OSB_AccountEntry.modifiedUserId = ?) [$AND_OR_CONNECTOR$]
 						(OSB_AccountEntry.modifiedDate > ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
 						(OSB_AccountEntry.modifiedDate < ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+						(lower(OSB_AccountEntry.dossieraAccountKey) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+						(lower(OSB_AccountEntry.corpEntryName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
 						(lower(OSB_AccountEntry.name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
 						(lower(OSB_AccountEntry.code_) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
 						(OSB_AccountEntry.industry = ?) [$AND_OR_CONNECTOR$]

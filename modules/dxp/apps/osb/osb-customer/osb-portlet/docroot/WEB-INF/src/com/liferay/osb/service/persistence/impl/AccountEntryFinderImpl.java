@@ -53,9 +53,9 @@ public class AccountEntryFinderImpl
 	extends AccountEntryFinderBaseImpl implements AccountEntryFinder {
 
 	public static final String
-		COUNT_BY_U_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z =
+		COUNT_BY_U_CD_MU_MD_DAK_CEN_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z =
 			AccountEntryFinder.class.getName() +
-				".countByU_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z";
+				".countByU_CD_MU_MD_DAK_CEN_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z";
 
 	public static final String FILTER_BY_INDUSTRY =
 		AccountEntryFinder.class.getName() + ".filterByIndustry";
@@ -70,9 +70,9 @@ public class AccountEntryFinderImpl
 		AccountEntryFinder.class.getName() + ".filterByType";
 
 	public static final String
-		FIND_BY_U_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z =
+		FIND_BY_U_CD_MU_MD_DAK_CEN_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z =
 			AccountEntryFinder.class.getName() +
-				".findByU_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z";
+				".findByU_CD_MU_MD_DAK_CEN_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z";
 
 	public static final String JOIN_BY_ACCOUNT_CUSTOMER =
 		AccountEntryFinder.class.getName() + ".joinByAccountCustomer";
@@ -134,6 +134,7 @@ public class AccountEntryFinderImpl
 	public int countByKeywords(
 		String keywords, LinkedHashMap<String, Object> params) {
 
+		String[] corpEntryNames = null;
 		String[] names = null;
 		String[] codes = null;
 		String[] instructions = null;
@@ -145,6 +146,7 @@ public class AccountEntryFinderImpl
 		boolean andOperator = false;
 
 		if (Validator.isNotNull(keywords)) {
+			corpEntryNames = OSBCustomSQLUtil.keywords(keywords);
 			names = OSBCustomSQLUtil.keywords(keywords);
 			codes = CustomSQLUtil.keywords(keywords);
 			instructions = CustomSQLUtil.keywords(keywords);
@@ -158,21 +160,26 @@ public class AccountEntryFinderImpl
 			andOperator = true;
 		}
 
-		return countByU_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
-			null, null, null, null, null, null, names, codes, new int[0], null,
-			new int[0], new int[0], instructions, notes, partnerEntryCodes,
-			streets, null, null, cities, zips, params, andOperator);
+		return countByU_CD_MU_MD_DAK_CEN_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
+			null, null, null, null, null, null, null, corpEntryNames, names,
+			codes, new int[0], null, new int[0], new int[0], instructions,
+			notes, partnerEntryCodes, streets, null, null, cities, zips, params,
+			andOperator);
 	}
 
-	public int countByU_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
+	public int countByU_CD_MU_MD_DAK_CEN_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
 		Long createUserId, Date createDateGT, Date createDateLT,
 		Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
-		String name, String code, int[] industries,
-		Boolean partnerManagedSupport, int[] tiers, int[] statuses,
-		String instructions, String notes, String partnerEntryCode,
-		String street, Long countryId, Long regionId, String city, String zip,
-		LinkedHashMap<String, Object> params, boolean andOperator) {
+		String dossieraAccountKey, String corpEntryName, String name,
+		String code, int[] industries, Boolean partnerManagedSupport,
+		int[] tiers, int[] statuses, String instructions, String notes,
+		String partnerEntryCode, String street, Long countryId, Long regionId,
+		String city, String zip, LinkedHashMap<String, Object> params,
+		boolean andOperator) {
 
+		String[] dossieraAccountKeys = OSBCustomSQLUtil.keywords(
+			dossieraAccountKey);
+		String[] corpEntryNames = OSBCustomSQLUtil.keywords(corpEntryName);
 		String[] names = OSBCustomSQLUtil.keywords(name);
 		String[] codes = CustomSQLUtil.keywords(code);
 		String[] instructionsArray = CustomSQLUtil.keywords(instructions);
@@ -182,18 +189,19 @@ public class AccountEntryFinderImpl
 		String[] cities = CustomSQLUtil.keywords(city);
 		String[] zips = CustomSQLUtil.keywords(zip);
 
-		return countByU_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
+		return countByU_CD_MU_MD_DAK_CEN_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
 			createUserId, createDateGT, createDateLT, modifiedUserId,
-			modifiedDateGT, modifiedDateLT, names, codes, industries,
-			partnerManagedSupport, tiers, statuses, instructionsArray,
-			notesArray, partnerEntryCodes, streets, countryId, regionId, cities,
-			zips, params, andOperator);
+			modifiedDateGT, modifiedDateLT, dossieraAccountKeys, corpEntryNames,
+			names, codes, industries, partnerManagedSupport, tiers, statuses,
+			instructionsArray, notesArray, partnerEntryCodes, streets,
+			countryId, regionId, cities, zips, params, andOperator);
 	}
 
 	public List<AccountEntry> findByKeywords(
 		String keywords, LinkedHashMap<String, Object> params, int start,
 		int end, OrderByComparator obc) {
 
+		String[] corpEntryNames = null;
 		String[] names = null;
 		String[] codes = null;
 		String[] instructions = null;
@@ -205,6 +213,7 @@ public class AccountEntryFinderImpl
 		boolean andOperator = false;
 
 		if (Validator.isNotNull(keywords)) {
+			corpEntryNames = OSBCustomSQLUtil.keywords(keywords);
 			names = OSBCustomSQLUtil.keywords(keywords);
 			codes = CustomSQLUtil.keywords(keywords);
 			instructions = CustomSQLUtil.keywords(keywords);
@@ -218,11 +227,11 @@ public class AccountEntryFinderImpl
 			andOperator = true;
 		}
 
-		return findByU_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
-			null, null, null, null, null, null, names, codes, new int[0], null,
-			new int[0], new int[0], instructions, notes, partnerEntryCodes,
-			streets, null, null, cities, zips, params, andOperator, start, end,
-			obc);
+		return findByU_CD_MU_MD_DAK_CEN_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
+			null, null, null, null, null, null, null, corpEntryNames, names,
+			codes, new int[0], null, new int[0], new int[0], instructions,
+			notes, partnerEntryCodes, streets, null, null, cities, zips, params,
+			andOperator, start, end, obc);
 	}
 
 	public List<AccountEntry> findBySupportResponse(long supportResponseId) {
@@ -230,23 +239,29 @@ public class AccountEntryFinderImpl
 
 		params.put("supportResponseIds", new long[] {supportResponseId});
 
-		return findByU_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
+		return findByU_CD_MU_MD_DAK_CEN_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
 			null, null, null, null, null, null, new String[0], new String[0],
-			new int[0], null, new int[0], new int[0], null, null, null,
-			new String[0], null, null, new String[0], new String[0], params,
-			true, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+			new String[0], new String[0], new int[0], null, new int[0],
+			new int[0], null, null, null, new String[0], null, null,
+			new String[0], new String[0], params, true, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
 	}
 
-	public List<AccountEntry> findByU_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
-		Long createUserId, Date createDateGT, Date createDateLT,
-		Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
-		String name, String code, int[] industries,
-		Boolean partnerManagedSupport, int[] tiers, int[] statuses,
-		String instructions, String notes, String partnerEntryCode,
-		String street, Long countryId, Long regionId, String city, String zip,
-		LinkedHashMap<String, Object> params, boolean andOperator, int start,
-		int end, OrderByComparator obc) {
+	public List<AccountEntry>
+		findByU_CD_MU_MD_DAK_CEN_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
+			Long createUserId, Date createDateGT, Date createDateLT,
+			Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+			String dossieraAccountKey, String corpEntryName, String name,
+			String code, int[] industries, Boolean partnerManagedSupport,
+			int[] tiers, int[] statuses, String instructions, String notes,
+			String partnerEntryCode, String street, Long countryId,
+			Long regionId, String city, String zip,
+			LinkedHashMap<String, Object> params, boolean andOperator,
+			int start, int end, OrderByComparator obc) {
 
+		String[] dossieraAccountKeys = OSBCustomSQLUtil.keywords(
+			dossieraAccountKey);
+		String[] corpEntryNames = OSBCustomSQLUtil.keywords(corpEntryName);
 		String[] names = OSBCustomSQLUtil.keywords(name);
 		String[] codes = CustomSQLUtil.keywords(code);
 		String[] instructionsArray = CustomSQLUtil.keywords(instructions);
@@ -256,23 +271,24 @@ public class AccountEntryFinderImpl
 		String[] cities = CustomSQLUtil.keywords(city);
 		String[] zips = CustomSQLUtil.keywords(zip);
 
-		return findByU_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
+		return findByU_CD_MU_MD_DAK_CEN_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
 			createUserId, createDateGT, createDateLT, modifiedUserId,
-			modifiedDateGT, modifiedDateLT, names, codes, industries,
-			partnerManagedSupport, tiers, statuses, instructionsArray,
-			notesArray, partnerEntryCodes, streets, countryId, regionId, cities,
-			zips, params, andOperator, start, end, obc);
+			modifiedDateGT, modifiedDateLT, dossieraAccountKeys, corpEntryNames,
+			names, codes, industries, partnerManagedSupport, tiers, statuses,
+			instructionsArray, notesArray, partnerEntryCodes, streets,
+			countryId, regionId, cities, zips, params, andOperator, start, end,
+			obc);
 	}
 
-	protected int countByU_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
+	protected int countByU_CD_MU_MD_DAK_CEN_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
 		Long createUserId, Date createDateGT, Date createDateLT,
 		Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
-		String[] names, String[] codes, int[] industries,
-		Boolean partnerManagedSupport, int[] tiers, int[] statuses,
-		String[] instructions, String[] notes, String[] partnerEntryCodes,
-		String[] streets, Long countryId, Long regionId, String[] cities,
-		String[] zips, LinkedHashMap<String, Object> params,
-		boolean andOperator) {
+		String[] dossieraAccountKeys, String[] corpEntryNames, String[] names,
+		String[] codes, int[] industries, Boolean partnerManagedSupport,
+		int[] tiers, int[] statuses, String[] instructions, String[] notes,
+		String[] partnerEntryCodes, String[] streets, Long countryId,
+		Long regionId, String[] cities, String[] zips,
+		LinkedHashMap<String, Object> params, boolean andOperator) {
 
 		if (params == null) {
 			params = new LinkedHashMap<>();
@@ -311,6 +327,8 @@ public class AccountEntryFinderImpl
 		Timestamp modifiedDateGT_TS = CalendarUtil.getTimestamp(modifiedDateGT);
 		Timestamp modifiedDateLT_TS = CalendarUtil.getTimestamp(modifiedDateLT);
 
+		dossieraAccountKeys = CustomSQLUtil.keywords(dossieraAccountKeys);
+		corpEntryNames = CustomSQLUtil.keywords(corpEntryNames);
 		names = CustomSQLUtil.keywords(names);
 		codes = CustomSQLUtil.keywords(codes);
 		instructions = CustomSQLUtil.keywords(instructions);
@@ -325,27 +343,27 @@ public class AccountEntryFinderImpl
 
 		StringBundler sb = new StringBundler(4);
 
+		String countBySQL = CustomSQLUtil.get(
+			getClass(),
+			COUNT_BY_U_CD_MU_MD_DAK_CEN_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z);
+
 		sb.append(
 			replaceSQL(
-				CustomSQLUtil.get(
-					getClass(),
-					COUNT_BY_U_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z),
-				createUserId, modifiedUserId, names, codes, industries,
-				partnerManagedSupport, tiers, statuses, instructions, notes,
-				partnerEntryCodes, streets, countryId, regionId, cities, zips,
-				params1, andOperator));
+				countBySQL, createUserId, modifiedUserId, dossieraAccountKeys,
+				corpEntryNames, names, codes, industries, partnerManagedSupport,
+				tiers, statuses, instructions, notes, partnerEntryCodes,
+				streets, countryId, regionId, cities, zips, params1,
+				andOperator));
 
 		if (userId != null) {
 			sb.append(" UNION (");
 			sb.append(
 				replaceSQL(
-					CustomSQLUtil.get(
-						getClass(),
-						COUNT_BY_U_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z),
-					createUserId, modifiedUserId, names, codes, industries,
-					partnerManagedSupport, tiers, statuses, instructions, notes,
-					partnerEntryCodes, streets, countryId, regionId, cities,
-					zips, params2, andOperator));
+					countBySQL, createUserId, modifiedUserId,
+					dossieraAccountKeys, corpEntryNames, names, codes,
+					industries, partnerManagedSupport, tiers, statuses,
+					instructions, notes, partnerEntryCodes, streets, countryId,
+					regionId, cities, zips, params2, andOperator));
 			sb.append(")");
 		}
 
@@ -364,16 +382,18 @@ public class AccountEntryFinderImpl
 
 			setJoin(
 				qPos, createUserId, createDateGT_TS, createDateLT_TS,
-				modifiedUserId, modifiedDateGT_TS, modifiedDateLT_TS, names,
-				codes, industries, partnerManagedSupport, tiers, statuses,
-				instructions, notes, partnerEntryCodes, streets, countryId,
-				regionId, cities, zips, params1);
+				modifiedUserId, modifiedDateGT_TS, modifiedDateLT_TS,
+				dossieraAccountKeys, corpEntryNames, names, codes, industries,
+				partnerManagedSupport, tiers, statuses, instructions, notes,
+				partnerEntryCodes, streets, countryId, regionId, cities, zips,
+				params1);
 
 			if (userId != null) {
 				setJoin(
 					qPos, createUserId, createDateGT_TS, createDateLT_TS,
-					modifiedUserId, modifiedDateGT_TS, modifiedDateLT_TS, names,
-					codes, industries, partnerManagedSupport, tiers, statuses,
+					modifiedUserId, modifiedDateGT_TS, modifiedDateLT_TS,
+					dossieraAccountKeys, corpEntryNames, names, codes,
+					industries, partnerManagedSupport, tiers, statuses,
 					instructions, notes, partnerEntryCodes, streets, countryId,
 					regionId, cities, zips, params2);
 			}
@@ -398,15 +418,17 @@ public class AccountEntryFinderImpl
 		}
 	}
 
-	protected List<AccountEntry> findByU_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
-		Long createUserId, Date createDateGT, Date createDateLT,
-		Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
-		String[] names, String[] codes, int[] industries,
-		Boolean partnerManagedSupport, int[] tiers, int[] statuses,
-		String[] instructions, String[] notes, String[] partnerEntryCodes,
-		String[] streets, Long countryId, Long regionId, String[] cities,
-		String[] zips, LinkedHashMap<String, Object> params,
-		boolean andOperator, int start, int end, OrderByComparator obc) {
+	protected List<AccountEntry>
+		findByU_CD_MU_MD_DAK_CEN_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
+			Long createUserId, Date createDateGT, Date createDateLT,
+			Long modifiedUserId, Date modifiedDateGT, Date modifiedDateLT,
+			String[] dossieraAccountKeys, String[] corpEntryNames,
+			String[] names, String[] codes, int[] industries,
+			Boolean partnerManagedSupport, int[] tiers, int[] statuses,
+			String[] instructions, String[] notes, String[] partnerEntryCodes,
+			String[] streets, Long countryId, Long regionId, String[] cities,
+			String[] zips, LinkedHashMap<String, Object> params,
+			boolean andOperator, int start, int end, OrderByComparator obc) {
 
 		if (params == null) {
 			params = new LinkedHashMap<>();
@@ -445,6 +467,8 @@ public class AccountEntryFinderImpl
 		Timestamp modifiedDateGT_TS = CalendarUtil.getTimestamp(modifiedDateGT);
 		Timestamp modifiedDateLT_TS = CalendarUtil.getTimestamp(modifiedDateLT);
 
+		dossieraAccountKeys = CustomSQLUtil.keywords(dossieraAccountKeys);
+		corpEntryNames = CustomSQLUtil.keywords(corpEntryNames);
 		names = CustomSQLUtil.keywords(names);
 		codes = CustomSQLUtil.keywords(codes);
 		instructions = CustomSQLUtil.keywords(instructions);
@@ -456,27 +480,27 @@ public class AccountEntryFinderImpl
 
 		StringBundler sb = new StringBundler(4);
 
+		String findBySQL = CustomSQLUtil.get(
+			getClass(),
+			FIND_BY_U_CD_MU_MD_DAK_CEN_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z);
+
 		sb.append(
 			replaceSQL(
-				CustomSQLUtil.get(
-					getClass(),
-					FIND_BY_U_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z),
-				createUserId, modifiedUserId, names, codes, industries,
-				partnerManagedSupport, tiers, statuses, instructions, notes,
-				partnerEntryCodes, streets, countryId, regionId, cities, zips,
-				params1, andOperator));
+				findBySQL, createUserId, modifiedUserId, dossieraAccountKeys,
+				corpEntryNames, names, codes, industries, partnerManagedSupport,
+				tiers, statuses, instructions, notes, partnerEntryCodes,
+				streets, countryId, regionId, cities, zips, params1,
+				andOperator));
 
 		if (userId != null) {
 			sb.append(" UNION (");
 			sb.append(
 				replaceSQL(
-					CustomSQLUtil.get(
-						getClass(),
-						FIND_BY_U_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z),
-					createUserId, modifiedUserId, names, codes, industries,
-					partnerManagedSupport, tiers, statuses, instructions, notes,
-					partnerEntryCodes, streets, countryId, regionId, cities,
-					zips, params2, andOperator));
+					findBySQL, createUserId, modifiedUserId,
+					dossieraAccountKeys, corpEntryNames, names, codes,
+					industries, partnerManagedSupport, tiers, statuses,
+					instructions, notes, partnerEntryCodes, streets, countryId,
+					regionId, cities, zips, params2, andOperator));
 			sb.append(")");
 		}
 
@@ -497,16 +521,18 @@ public class AccountEntryFinderImpl
 
 			setJoin(
 				qPos, createUserId, createDateGT_TS, createDateLT_TS,
-				modifiedUserId, modifiedDateGT_TS, modifiedDateLT_TS, names,
-				codes, industries, partnerManagedSupport, tiers, statuses,
-				instructions, notes, partnerEntryCodes, streets, countryId,
-				regionId, cities, zips, params1);
+				modifiedUserId, modifiedDateGT_TS, modifiedDateLT_TS,
+				dossieraAccountKeys, corpEntryNames, names, codes, industries,
+				partnerManagedSupport, tiers, statuses, instructions, notes,
+				partnerEntryCodes, streets, countryId, regionId, cities, zips,
+				params1);
 
 			if (userId != null) {
 				setJoin(
 					qPos, createUserId, createDateGT_TS, createDateLT_TS,
-					modifiedUserId, modifiedDateGT_TS, modifiedDateLT_TS, names,
-					codes, industries, partnerManagedSupport, tiers, statuses,
+					modifiedUserId, modifiedDateGT_TS, modifiedDateLT_TS,
+					dossieraAccountKeys, corpEntryNames, names, codes,
+					industries, partnerManagedSupport, tiers, statuses,
 					instructions, notes, partnerEntryCodes, streets, countryId,
 					regionId, cities, zips, params2);
 			}
@@ -799,7 +825,8 @@ public class AccountEntryFinderImpl
 	}
 
 	protected String replaceSQL(
-		String sql, Long createUserId, Long modifiedUserId, String[] names,
+		String sql, Long createUserId, Long modifiedUserId,
+		String[] dossieraAccountKeys, String[] corpEntryNames, String[] names,
 		String[] codes, int[] industries, Boolean partnerManagedSupport,
 		int[] tiers, int[] statuses, String[] instructions, String[] notes,
 		String[] partnerEntryCodes, String[] streets, Long countryId,
@@ -815,6 +842,12 @@ public class AccountEntryFinderImpl
 				sql, _MODIFIED_USER_ID_SQL, StringPool.BLANK);
 		}
 
+		sql = CustomSQLUtil.replaceKeywords(
+			sql, "lower(OSB_AccountEntry.dossieraAccountKey)", StringPool.LIKE,
+			false, names);
+		sql = CustomSQLUtil.replaceKeywords(
+			sql, "lower(OSB_AccountEntry.corpEntryName)", StringPool.LIKE,
+			false, names);
 		sql = CustomSQLUtil.replaceKeywords(
 			sql, "lower(OSB_AccountEntry.name)", StringPool.LIKE, false, names);
 		sql = CustomSQLUtil.replaceKeywords(
@@ -992,7 +1025,8 @@ public class AccountEntryFinderImpl
 	protected void setJoin(
 		QueryPos qPos, Long createUserId, Timestamp createDateGT,
 		Timestamp createDateLT, Long modifiedUserId, Timestamp modifiedDateGT,
-		Timestamp modifiedDateLT, String[] names, String[] codes,
+		Timestamp modifiedDateLT, String[] dossieraAccountKeys,
+		String[] corpEntryNames, String[] names, String[] codes,
 		int[] industries, Boolean partnerManagedSupport, int[] tiers,
 		int[] statuses, String[] instructions, String[] notes,
 		String[] partnerEntryCodes, String[] streets, Long countryId,
@@ -1020,6 +1054,8 @@ public class AccountEntryFinderImpl
 		qPos.add(modifiedDateGT);
 		qPos.add(modifiedDateLT);
 		qPos.add(modifiedDateLT);
+		qPos.add(dossieraAccountKeys, 2);
+		qPos.add(corpEntryNames, 2);
 		qPos.add(names, 2);
 		qPos.add(codes, 2);
 		qPos.add(industries);

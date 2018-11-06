@@ -1064,7 +1064,8 @@ public class AccountEntryLocalServiceImpl
 		int createDateGTYear, int createDateLTDay, int createDateLTMonth,
 		int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
 		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
-		int modifiedDateLTMonth, int modifiedDateLTYear, String name,
+		int modifiedDateLTMonth, int modifiedDateLTYear,
+		String dossieraAccountKey, String corpEntryName, String name,
 		String code, int[] industries, Boolean partnerManagedSupport,
 		int[] tiers, int[] statuses, String instructions, String notes,
 		String partnerEntryCode, String street, Long countryId, Long regionId,
@@ -1080,13 +1081,14 @@ public class AccountEntryLocalServiceImpl
 		Date modifiedDateLT = PortalUtil.getDate(
 			modifiedDateLTMonth, modifiedDateLTDay, modifiedDateLTYear);
 
-		return
-			accountEntryFinder.findByU_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
+		return accountEntryFinder.
+			findByU_CD_MU_MD_DAK_CEN_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
 				createUserId, createDateGT, createDateLT, modifiedUserId,
-				modifiedDateGT, modifiedDateLT, name, code, industries,
-				partnerManagedSupport, tiers, statuses, instructions, notes,
-				partnerEntryCode, street, countryId, regionId, city, zip,
-				params, andOperator, start, end, obc);
+				modifiedDateGT, modifiedDateLT, dossieraAccountKey,
+				corpEntryName, name, code, industries, partnerManagedSupport,
+				tiers, statuses, instructions, notes, partnerEntryCode, street,
+				countryId, regionId, city, zip, params, andOperator, start, end,
+				obc);
 	}
 
 	public List<AccountEntry> search(
@@ -1107,7 +1109,8 @@ public class AccountEntryLocalServiceImpl
 		int createDateGTYear, int createDateLTDay, int createDateLTMonth,
 		int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
 		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
-		int modifiedDateLTMonth, int modifiedDateLTYear, String name,
+		int modifiedDateLTMonth, int modifiedDateLTYear,
+		String dossieraAccountKey, String corpEntryName, String name,
 		String code, int[] industries, Boolean partnerManagedSupport,
 		int[] tiers, int[] statuses, String instructions, String notes,
 		String partnerEntryCode, String street, Long countryId, Long regionId,
@@ -1123,13 +1126,13 @@ public class AccountEntryLocalServiceImpl
 		Date modifiedDateLT = PortalUtil.getDate(
 			modifiedDateLTDay, modifiedDateLTMonth, modifiedDateLTYear);
 
-		return
-			accountEntryFinder.countByU_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
+		return accountEntryFinder.
+			countByU_CD_MU_MD_DAK_CEN_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
 				createUserId, createDateGT, createDateLT, modifiedUserId,
-				modifiedDateGT, modifiedDateLT, name, code, industries,
-				partnerManagedSupport, tiers, statuses, instructions, notes,
-				partnerEntryCode, street, countryId, regionId, city, zip,
-				params, andOperator);
+				modifiedDateGT, modifiedDateLT, dossieraAccountKey,
+				corpEntryName, name, code, industries, partnerManagedSupport,
+				tiers, statuses, instructions, notes, partnerEntryCode, street,
+				countryId, regionId, city, zip, params, andOperator);
 	}
 
 	public int searchCount(

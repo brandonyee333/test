@@ -104,7 +104,8 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 			int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
 			int modifiedDateGTMonth, int modifiedDateGTYear,
 			int modifiedDateLTDay, int modifiedDateLTMonth,
-			int modifiedDateLTYear, String name, String code, int[] industries,
+			int modifiedDateLTYear, String dossieraAccountKey,
+			String corpEntryName, String name, String code, int[] industries,
 			Boolean partnerManagedSupport, int[] tiers, int[] statuses,
 			String instructions, String notes, String partnerEntryCode,
 			String street, Long countryId, Long regionId, String city,
@@ -123,10 +124,10 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 			createDateLTDay, createDateLTMonth, createDateLTYear,
 			modifiedUserId, modifiedDateGTDay, modifiedDateGTMonth,
 			modifiedDateGTYear, modifiedDateLTDay, modifiedDateLTMonth,
-			modifiedDateLTYear, name, code, industries, partnerManagedSupport,
-			tiers, statuses, instructions, notes, partnerEntryCode, street,
-			countryId, regionId, city, zip, params, andOperator, start, end,
-			obc);
+			modifiedDateLTYear, dossieraAccountKey, corpEntryName, name, code,
+			industries, partnerManagedSupport, tiers, statuses, instructions,
+			notes, partnerEntryCode, street, countryId, regionId, city, zip,
+			params, andOperator, start, end, obc);
 	}
 
 	public int searchCount(
@@ -135,7 +136,8 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 			int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
 			int modifiedDateGTMonth, int modifiedDateGTYear,
 			int modifiedDateLTDay, int modifiedDateLTMonth,
-			int modifiedDateLTYear, String name, String code, int[] industries,
+			int modifiedDateLTYear, String dossieraAccountKey,
+			String corpEntryName, String name, String code, int[] industries,
 			Boolean partnerManagedSupport, int[] tiers, int[] statuses,
 			String instructions, String notes, String partnerEntryCode,
 			String street, Long countryId, Long regionId, String city,
@@ -154,9 +156,10 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 			createDateLTDay, createDateLTMonth, createDateLTYear,
 			modifiedUserId, modifiedDateGTDay, modifiedDateGTMonth,
 			modifiedDateGTYear, modifiedDateLTDay, modifiedDateLTMonth,
-			modifiedDateLTYear, name, code, industries, partnerManagedSupport,
-			tiers, statuses, instructions, notes, partnerEntryCode, street,
-			countryId, regionId, city, zip, params, andOperator);
+			modifiedDateLTYear, dossieraAccountKey, corpEntryName, name, code,
+			industries, partnerManagedSupport, tiers, statuses, instructions,
+			notes, partnerEntryCode, street, countryId, regionId, city, zip,
+			params, andOperator);
 	}
 
 	public AccountEntry updateInstructions(

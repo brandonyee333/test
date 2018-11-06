@@ -52,6 +52,8 @@ public class AccountEntryDisplayTerms extends DisplayTerms {
 
 	public static final String CODE = "code";
 
+	public static final String CORP_ENTRY_NAME = "corpEntryName";
+
 	public static final String COUNTRY_ID = "countryId";
 
 	public static final String CREATE_DATE_GT_DAY = "createDateGTDay";
@@ -69,6 +71,8 @@ public class AccountEntryDisplayTerms extends DisplayTerms {
 	public static final String CREATE_USER_ID = "createUserId";
 
 	public static final String CREATE_USER_NAME = "createUserName";
+
+	public static final String DOSSIERA_ACCOUNT_KEY = "dossieraAccountKey";
 
 	public static final String EXPIRED_SUPPORT = "expiredSupport";
 
@@ -145,6 +149,7 @@ public class AccountEntryDisplayTerms extends DisplayTerms {
 		city = ParamUtil.getString(portletRequest, CITY);
 		code = ParamUtil.getString(portletRequest, CODE);
 		countryId = ParamUtil.getLong(portletRequest, COUNTRY_ID);
+		corpEntryName = ParamUtil.getString(portletRequest, CORP_ENTRY_NAME);
 		createDateGTDay = ParamUtil.getInteger(
 			portletRequest, CREATE_DATE_GT_DAY);
 		createDateGTMonth = ParamUtil.getInteger(
@@ -159,6 +164,8 @@ public class AccountEntryDisplayTerms extends DisplayTerms {
 			portletRequest, CREATE_DATE_LT_YEAR);
 		createUserId = ParamUtil.getLong(portletRequest, CREATE_USER_ID);
 		createUserName = ParamUtil.getString(portletRequest, CREATE_USER_NAME);
+		dossieraAccountKey = ParamUtil.getString(
+			portletRequest, DOSSIERA_ACCOUNT_KEY);
 
 		String expiredSupportString = ParamUtil.getString(
 			portletRequest, EXPIRED_SUPPORT);
@@ -280,6 +287,10 @@ public class AccountEntryDisplayTerms extends DisplayTerms {
 		return code;
 	}
 
+	public String getCorpEntryName() {
+		return corpEntryName;
+	}
+
 	public long getCountryId() {
 		return countryId;
 	}
@@ -314,6 +325,10 @@ public class AccountEntryDisplayTerms extends DisplayTerms {
 
 	public String getCreateUserName() {
 		return createUserName;
+	}
+
+	public String getDossieraAccountKey() {
+		return dossieraAccountKey;
 	}
 
 	public Boolean getExpiredSupport() {
@@ -509,6 +524,7 @@ public class AccountEntryDisplayTerms extends DisplayTerms {
 	protected long accountWorkerUserId;
 	protected String city;
 	protected String code;
+	protected String corpEntryName;
 	protected long countryId;
 	protected int createDateGTDay;
 	protected int createDateGTMonth;
@@ -518,6 +534,7 @@ public class AccountEntryDisplayTerms extends DisplayTerms {
 	protected int createDateLTYear;
 	protected long createUserId;
 	protected String createUserName;
+	protected String dossieraAccountKey;
 	protected Boolean expiredSupport;
 	protected int[] industries;
 	protected String instructions;

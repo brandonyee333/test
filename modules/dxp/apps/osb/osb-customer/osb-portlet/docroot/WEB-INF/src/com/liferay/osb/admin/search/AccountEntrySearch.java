@@ -79,6 +79,9 @@ public class AccountEntrySearch extends SearchContainer<AccountEntry> {
 			AccountEntryDisplayTerms.COUNTRY_ID,
 			String.valueOf(displayTerms.getCountryId()));
 		iteratorURL.setParameter(
+			AccountEntryDisplayTerms.CORP_ENTRY_NAME,
+			displayTerms.getCorpEntryName());
+		iteratorURL.setParameter(
 			AccountEntryDisplayTerms.CREATE_DATE_GT_DAY,
 			String.valueOf(displayTerms.getCreateDateGTDay()));
 		iteratorURL.setParameter(
@@ -99,6 +102,9 @@ public class AccountEntrySearch extends SearchContainer<AccountEntry> {
 		iteratorURL.setParameter(
 			AccountEntryDisplayTerms.CREATE_USER_ID,
 			String.valueOf(displayTerms.getCreateUserId()));
+		iteratorURL.setParameter(
+			AccountEntryDisplayTerms.DOSSIERA_ACCOUNT_KEY,
+			displayTerms.getDossieraAccountKey());
 		iteratorURL.setParameter(
 			AccountEntryDisplayTerms.EXPIRED_SUPPORT,
 			String.valueOf(displayTerms.expiredSupport));

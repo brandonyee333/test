@@ -37,20 +37,24 @@ Date lastEnabledDate = calendar.getTime();
 				<table class="lfr-table">
 					<tr>
 						<td>
-							<div id="<portlet:namespace />nameContainer">
-								<aui:input label="project-name" name="<%= displayTerms.NAME %>" size="20" type="text" value="<%= displayTerms.getName() %>" />
-							</div>
+							<aui:input label="project-name" name="<%= displayTerms.NAME %>" size="20" type="text" value="<%= displayTerms.getName() %>" />
 						</td>
 						<td>
-							<div id="<portlet:namespace />codeContainer">
-								<aui:input label="code" name="<%= displayTerms.CODE %>" size="20" type="text" value="<%= displayTerms.getCode() %>" />
-							</div>
+							<aui:input label="code" name="<%= displayTerms.CODE %>" size="20" type="text" value="<%= displayTerms.getCode() %>" />
 						</td>
 						<td>
 							<aui:input label="special-instructions" name="<%= displayTerms.INSTRUCTIONS %>" size="20" type="text" value="<%= displayTerms.getInstructions() %>" />
 						</td>
 						<td>
 							<aui:input label="notes" name="<%= displayTerms.NOTES %>" size="20" type="text" value="<%= displayTerms.getNotes() %>" />
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<aui:input label="dossiera-account-key" name="<%= displayTerms.DOSSIERA_ACCOUNT_KEY %>" size="20" type="text" value="<%= displayTerms.getDossieraAccountKey() %>" />
+						</td>
+						<td colspan="2">
+							<aui:input label="dossiera-account-name" name="<%= displayTerms.CORP_ENTRY_NAME %>" size="20" type="text" value="<%= displayTerms.getCorpEntryName() %>" />
 						</td>
 					</tr>
 					<tr>
