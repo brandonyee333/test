@@ -365,7 +365,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 
 				<span id="<portlet:namespace />corpProjectName">
 					<c:if test="<%= corpProject != null %>">
-						<aui:a href="<%= PortletPropsValues.CORP_PROJECT_LINK + corpProject.getCorpProjectId() %>" label="<%= corpProject.getName() %>" target="_blank" />
+						<aui:a href="<%= PortletPropsValues.CORP_PROJECT_LINK + corpProject.getCorpProjectId() %>" label="<%= HtmlUtil.escape(corpProject.getName()) %>" target="_blank" />
 					</c:if>
 				</span>
 
@@ -741,7 +741,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 	}
 
 	function <portlet:namespace />removeCorpProject() {
-		document.<portlet:namespace />fm.<portlet:namespace />corpProjectId.value = 0;
+		document.<portlet:namespace />fm.<portlet:namespace />corpProjectUuid.value = '';
 
 		document.getElementById('<portlet:namespace />corpProjectName').innerHTML = '';
 	}
