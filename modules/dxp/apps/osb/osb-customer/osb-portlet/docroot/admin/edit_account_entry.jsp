@@ -643,7 +643,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 		<c:if test="<%= accountEntry != null %>">
 			<portlet:renderURL var="assignWorkersURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 				<portlet:param name="mvcPath" value="/admin/edit_account_entry_workers.jsp" />
-				<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+				<portlet:param name="backURL" value="<%= portletURL.toString() %>" />
 				<portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntry.getAccountEntryId()) %>" />
 			</portlet:renderURL>
 

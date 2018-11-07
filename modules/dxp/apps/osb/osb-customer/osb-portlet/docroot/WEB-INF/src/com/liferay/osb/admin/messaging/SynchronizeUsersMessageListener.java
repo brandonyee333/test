@@ -31,8 +31,10 @@ import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -84,10 +86,12 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 			while (rs.next()) {
 				long userId = rs.getLong("userId");
 
-				AccountWorkerLocalServiceUtil.addAccountWorkers(
-					OSBConstants.USER_DEFAULT_USER_ID, new long[] {userId},
-					accountEntryId, new int[] {0},
-					new int[] {AccountWorkerConstants.NOTIFICATIONS_NONE});
+				User user = UserLocalServiceUtil.getUser(userId);
+
+				AccountWorkerLocalServiceUtil.addAccountWorker(
+					OSBConstants.USER_DEFAULT_USER_ID, accountEntryId,
+					user.getEmailAddress(), 0,
+					AccountWorkerConstants.NOTIFICATIONS_NONE);
 			}
 		}
 		finally {
@@ -464,7 +468,7 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 
 			StringBundler sb = new StringBundler(6);
 
-			sb.append("select OSB_AccountWorker.userId from ");
+			sb.append("select OSB_AccountWorker.accountWorkerId from ");
 			sb.append("OSB_AccountWorker where ");
 			sb.append("OSB_AccountWorker.accountEntryId = ? and ");
 			sb.append("OSB_AccountWorker.userId not in (");
@@ -480,11 +484,10 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
-				long userId = rs.getLong("userId");
+				long accountWorkerId = rs.getLong("accountWorkerId");
 
-				AccountWorkerLocalServiceUtil.deleteAccountWorkers(
-					OSBConstants.USER_DEFAULT_USER_ID, new long[] {userId},
-					accountEntryId);
+				AccountWorkerLocalServiceUtil.deleteAccountWorker(
+					OSBConstants.USER_DEFAULT_USER_ID, accountWorkerId);
 			}
 		}
 		finally {

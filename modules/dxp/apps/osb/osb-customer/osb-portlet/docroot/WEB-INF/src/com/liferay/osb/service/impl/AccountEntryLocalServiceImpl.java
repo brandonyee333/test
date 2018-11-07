@@ -194,12 +194,12 @@ public class AccountEntryLocalServiceImpl
 		// Account worker
 
 		if (accountWorker != null) {
-			accountWorkerLocalService.addAccountWorkers(
+			User user = userLocalService.getUser(accountWorker.getUserId());
+
+			accountWorkerLocalService.addAccountWorker(
 				OSBConstants.USER_DEFAULT_USER_ID,
-				new long[] {accountWorker.getUserId()},
-				accountEntry.getAccountEntryId(),
-				new int[] {accountWorker.getRole()},
-				new int[] {accountWorker.getNotifications()});
+				accountEntry.getAccountEntryId(), user.getEmailAddress(),
+				accountWorker.getRole(), accountWorker.getNotifications());
 		}
 
 		// Order entry
@@ -1275,12 +1275,12 @@ public class AccountEntryLocalServiceImpl
 		}
 
 		if (accountWorker != null) {
-			accountWorkerLocalService.addAccountWorkers(
+			User user = userLocalService.getUser(accountWorker.getUserId());
+
+			accountWorkerLocalService.addAccountWorker(
 				OSBConstants.USER_DEFAULT_USER_ID,
-				new long[] {accountWorker.getUserId()},
-				accountEntry.getAccountEntryId(),
-				new int[] {accountWorker.getRole()},
-				new int[] {accountWorker.getNotifications()});
+				accountEntry.getAccountEntryId(), user.getEmailAddress(),
+				accountWorker.getRole(), accountWorker.getNotifications());
 		}
 
 		ArrayList<User> newUsers = new ArrayList<>();

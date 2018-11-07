@@ -316,10 +316,10 @@ public class OSBCustomerQAInfrastructureUtil {
 		if (!AccountWorkerLocalServiceUtil.hasAccountWorker(
 				userId, accountEntry.getAccountEntryId())) {
 
-			AccountWorkerLocalServiceUtil.addAccountWorkers(
-				OSBConstants.USER_DEFAULT_USER_ID, new long[] {userId},
-				accountEntry.getAccountEntryId(), new int[] {role},
-				new int[] {notifications});
+			AccountWorkerLocalServiceUtil.addAccountWorker(
+				OSBConstants.USER_DEFAULT_USER_ID,
+				accountEntry.getAccountEntryId(), emailAddress, role,
+				notifications);
 		}
 
 		if (_log.isInfoEnabled()) {

@@ -17,11 +17,7 @@
 <%@ include file="/init.jsp" %>
 
 <%
-String tabs2 = ParamUtil.getString(request, "tabs2", "current");
-
-int cur = ParamUtil.getInteger(request, "cur");
-
-String redirect = ParamUtil.getString(request, "redirect");
+String backURL = ParamUtil.getString(request, "backURL");
 
 long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 
@@ -30,118 +26,104 @@ AccountEntry accountEntry = AccountEntryLocalServiceUtil.getAccountEntry(account
 PortletURL portletURL = renderResponse.createRenderURL();
 
 portletURL.setParameter("mvcPath", "/admin/edit_account_entry_workers.jsp");
-portletURL.setParameter("tabs2", tabs2);
-portletURL.setParameter("redirect", redirect);
+portletURL.setParameter("backURL", backURL);
 portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
+
+request.setAttribute("edit_account_entry_workers.jsp-portletURL", portletURL);
 %>
 
-<aui:form action="<%= portletURL.toString() %>" method="post">
-	<aui:input name="assignmentsRedirect" type="hidden" value="" />
+<portlet:actionURL name="updateAccountWorker" var="updateAccountWorkerURL">
+	<portlet:param name="mvcPath" value="/admin/edit_account_entry_workers.jsp" />
+	<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+	<portlet:param name="backURL" value="<%= backURL %>" />
+</portlet:actionURL>
+
+<aui:form action="<%= updateAccountWorkerURL %>" method="post">
 	<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
+	<aui:input name="accountWorkerId" type="hidden" />
 
 	<liferay-ui:message arguments="<%= HtmlUtil.escape(accountEntry.getName()) %>" key="edit-workers-for-project-x" />
 
 	<br /><br />
 
 	<liferay-ui:tabs
-		backURL="<%= redirect %>"
+		backURL="<%= backURL %>"
 		names="users"
 	/>
 
 	<liferay-ui:error exception="<%= RequiredPartnerEntryException.class %>" message="this-project-must-be-assigned-a-partner-before-assigning-workers" />
 
-	<aui:input name="addUserIds" type="hidden" value="" />
-	<aui:input name="removeUserIds" type="hidden" value="" />
-
-	<liferay-ui:tabs
-		names="current,available"
-		param="tabs2"
-		url="<%= portletURL.toString() %>"
-	/>
-
-	<%@ include file="/common/user_search_inputs.jspf" %>
-
-	<%
-	LinkedHashMap userParams = new LinkedHashMap();
-
-	if (tabs2.equals("current")) {
-		userParams.put("usersAccountWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByAccountWorker"), Long.valueOf(accountEntry.getAccountEntryId())));
-	}
-	%>
-
-	<liferay-ui:search-container
-		emptyResultsMessage="no-users-were-found"
-		id="usersSearchContainer"
-		iteratorURL="<%= portletURL %>"
-		rowChecker="<%= new UserAccountWorkerChecker(renderResponse, accountEntry) %>"
-		searchContainer="<%= new UserSearch(renderRequest, portletURL) %>"
-	>
+	<liferay-ui:search-container>
 
 		<%
-		UserDisplayTerms searchTerms = (UserDisplayTerms)searchContainer.getSearchTerms();
+		List<AccountWorker> accountWorkers = ListUtil.copy(AccountWorkerLocalServiceUtil.getAccountWorkers(accountEntryId));
 
-		if (!ParamUtil.getBoolean(request, "advancedSearch")) {
-			searchContainer.setTotal(UserLocalServiceUtil.searchCount(themeDisplay.getCompanyId(), searchTerms.getKeywords(), WorkflowConstants.STATUS_ANY, userParams));
-			searchContainer.setResults(UserLocalServiceUtil.search(themeDisplay.getCompanyId(), searchTerms.getKeywords(), WorkflowConstants.STATUS_ANY, userParams, searchContainer.getStart(), searchContainer.getEnd(), new UserFirstNameComparator(true)));
-		}
-		else {
-			searchContainer.setTotal(UserLocalServiceUtil.searchCount(themeDisplay.getCompanyId(), firstName, middleName, lastName, screenName, emailAddress, WorkflowConstants.STATUS_ANY, userParams, true));
-			searchContainer.setResults(UserLocalServiceUtil.search(themeDisplay.getCompanyId(), firstName, middleName, lastName, screenName, emailAddress, WorkflowConstants.STATUS_ANY, userParams, true, searchContainer.getStart(), searchContainer.getEnd(), new UserFirstNameComparator(true)));
-		}
+		accountWorkers.add(0, new AccountWorkerImpl());
 		%>
 
+		<liferay-ui:search-container-results
+			results="<%= accountWorkers %>"
+		/>
+
 		<liferay-ui:search-container-row
-			className="com.liferay.portal.kernel.model.User"
+			className="com.liferay.osb.model.AccountWorker"
 			escapedModel="<%= true %>"
-			keyProperty="userId"
-			modelVar="curUser"
+			keyProperty="accountWorkerId"
+			modelVar="accountWorker"
 		>
 
 			<%
-			AccountWorker accountWorker = null;
+			User curUser = UserLocalServiceUtil.fetchUser(accountWorker.getUserId());
 
-			int role = 0;
-			int notifications = 0;
-
-			try {
-				accountWorker = AccountWorkerLocalServiceUtil.getAccountWorker(curUser.getUserId(), accountEntryId);
-
-				role = accountWorker.getRole();
-				notifications = accountWorker.getNotifications();
-			}
-			catch (Exception e) {
-			}
-
-			if (!curUser.isActive()) {
+			if ((accountWorker.getAccountWorkerId() > 0) && ((curUser == null) || !curUser.isActive())) {
 				row.setClassName("inactive");
 			}
 			%>
 
 			<liferay-ui:search-container-column-text
 				name="name"
-				property="fullName"
-			/>
+			>
+				<c:choose>
+					<c:when test="<%= curUser != null %>">
+						<%= HtmlUtil.escape(curUser.getFullName()) %>
+					</c:when>
+					<c:when test="<%= accountWorker.getUserId() > 0 %>">
+						<%= accountWorker.getUserId() %>
+					</c:when>
+					<c:otherwise>
+						<strong><liferay-ui:message key="new-user" /></strong>
+					</c:otherwise>
+				</c:choose>
+			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
 				name="screen-name"
-				property="screenName"
+				value='<%= (curUser != null) ? curUser.getScreenName() : "" %>'
 			/>
 
 			<liferay-ui:search-container-column-text
 				name="email-address"
-				property="emailAddress"
-			/>
+			>
+				<c:choose>
+					<c:when test="<%= curUser != null %>">
+						<%= HtmlUtil.escape(curUser.getEmailAddress()) %>
+					</c:when>
+					<c:when test="<%= accountWorker.getAccountWorkerId() <= 0 %>">
+						<aui:input label="" name="emailAddress" />
+					</c:when>
+				</c:choose>
+			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
 				name="notifications"
 			>
-				<aui:select disabled="<%= !curUser.isActive() %>" label="" name='<%= "notifications_" + curUser.getUserId() %>'>
+				<aui:select label="" name='<%= "notifications_" + accountWorker.getAccountWorkerId() %>'>
 
 					<%
 					for (int i = 1; i <= 4; i++) {
 					%>
 
-						<aui:option label="<%= AccountWorkerConstants.getNotificationsLabel(i) %>" selected="<%= notifications == i %>" value="<%= i %>" />
+						<aui:option label="<%= AccountWorkerConstants.getNotificationsLabel(i) %>" selected="<%= accountWorker.getNotifications() == i %>" value="<%= i %>" />
 
 					<%
 					}
@@ -153,7 +135,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 			<liferay-ui:search-container-column-text
 				name="role"
 			>
-				<aui:select disabled="<%= !curUser.isActive() %>" label="" name='<%= "role_" + curUser.getUserId() %>'>
+				<aui:select label="" name='<%= "role_" + accountWorker.getAccountWorkerId() %>'>
 					<aui:option />
 
 					<%
@@ -163,7 +145,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 						}
 					%>
 
-						<aui:option label="<%= AccountWorkerConstants.getRoleLabel(i) %>" selected="<%= role == i %>" value="<%= i %>" />
+						<aui:option label="<%= AccountWorkerConstants.getRoleLabel(i) %>" selected="<%= accountWorker.getRole() == i %>" value="<%= i %>" />
 
 					<%
 					}
@@ -171,13 +153,33 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 
 				</aui:select>
 			</liferay-ui:search-container-column-text>
+
+			<liferay-ui:search-container-column-text
+				name="user-status"
+			>
+				<c:choose>
+					<c:when test="<%= accountWorker.getAccountWorkerId() <= 0 %>">
+					</c:when>
+					<c:when test="<%= curUser == null %>">
+						<liferay-ui:message key="deleted" />
+					</c:when>
+					<c:when test="<%= !curUser.isActive() %>">
+						<liferay-ui:message key="inactive" />
+					</c:when>
+					<c:when test="<%= RoleLocalServiceUtil.hasUserRole(accountWorker.getUserId(), OSBConstants.ROLE_VERIFIED_USER_ID) %>">
+						<liferay-ui:message key="verified" />
+					</c:when>
+					<c:otherwise>
+						<liferay-ui:message key="unverified" />
+					</c:otherwise>
+				</c:choose>
+			</liferay-ui:search-container-column-text>
+
+			<liferay-ui:search-container-column-jsp
+				align="right"
+				path="/admin/account_worker_action.jsp"
+			/>
 		</liferay-ui:search-container-row>
-
-		<div class="separator"><!-- --></div>
-
-		<aui:button onClick='<%= renderResponse.getNamespace() + "updateAccountWorkers('" + portletURL.toString() + "&" + renderResponse.getNamespace() + "cur=" + cur + "');" %>' value="update-associations" />
-
-		<br /><br />
 
 		<liferay-ui:search-iterator
 			markupView="lexicon"
@@ -188,15 +190,11 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 </aui:form>
 
 <aui:script>
-	Liferay.provide(
-		window,
-		'<portlet:namespace />updateAccountWorkers',
-		function(assignmentsRedirect) {
-			document.<portlet:namespace />fm.<portlet:namespace />assignmentsRedirect.value = assignmentsRedirect;
-			document.<portlet:namespace />fm.<portlet:namespace />addUserIds.value = Liferay.Util.listCheckedExcept(document.<portlet:namespace />fm, '<portlet:namespace />allRowIds');
-			document.<portlet:namespace />fm.<portlet:namespace />removeUserIds.value = Liferay.Util.listUncheckedExcept(document.<portlet:namespace />fm, '<portlet:namespace />allRowIds');
-			submitForm(document.<portlet:namespace />fm, '<portlet:actionURL name="updateAccountWorkers"><portlet:param name="mvcPath" value="/admin/edit_account_entry_workers.jsp" /><portlet:param name="tabs2" value="<%= tabs2 %>" /></portlet:actionURL>');
-		},
-		['liferay-util-list-fields']
-	);
+	function <portlet:namespace />updateAccountWorker(accountWorkerId) {
+		var form = AUI.$(document.<portlet:namespace />fm);
+
+		form.fm('accountWorkerId').val(accountWorkerId);
+
+		submitForm(form);
+	}
 </aui:script>

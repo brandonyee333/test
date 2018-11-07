@@ -333,6 +333,20 @@ public class AdminPortlet extends OSBPortlet {
 		AccountEntryLocalServiceUtil.deleteAccountEntry(accountEntryId);
 	}
 
+	public void deleteAccountWorker(
+			ActionRequest actionRequest, ActionResponse actionResponse)
+		throws Exception {
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		long accountWorkerId = ParamUtil.getLong(
+			actionRequest, "accountWorkerId");
+
+		AccountWorkerLocalServiceUtil.deleteAccountWorker(
+			themeDisplay.getUserId(), accountWorkerId);
+	}
+
 	public void deleteLicenseEntry(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
@@ -700,37 +714,36 @@ public class AdminPortlet extends OSBPortlet {
 		}
 	}
 
-	public void updateAccountWorkers(
+	public void updateAccountWorker(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		long[] addUserIds = StringUtil.split(
-			ParamUtil.getString(actionRequest, "addUserIds"), 0L);
-		long[] removeUserIds = StringUtil.split(
-			ParamUtil.getString(actionRequest, "removeUserIds"), 0L);
-
 		long accountEntryId = ParamUtil.getLong(
 			actionRequest, "accountEntryId");
+		long accountWorkerId = ParamUtil.getLong(
+			actionRequest, "accountWorkerId");
 
-		int[] roles = new int[addUserIds.length];
-		int[] notifications = new int[addUserIds.length];
+		String emailAddress = ParamUtil.getString(
+			actionRequest, "emailAddress");
 
-		for (int i = 0; i < addUserIds.length; i++) {
-			long userId = addUserIds[i];
+		int role = ParamUtil.getInteger(
+			actionRequest, "role_" + accountWorkerId);
+		int notifications = ParamUtil.getInteger(
+			actionRequest, "notifications_" + accountWorkerId);
 
-			roles[i] = ParamUtil.getInteger(actionRequest, "role_" + userId);
-			notifications[i] = ParamUtil.getInteger(
-				actionRequest, "notifications_" + userId);
+		if (accountWorkerId > 0) {
+			AccountWorkerLocalServiceUtil.updateAccountWorker(
+				themeDisplay.getUserId(), accountEntryId, accountWorkerId, role,
+				notifications);
 		}
-
-		AccountWorkerLocalServiceUtil.addAccountWorkers(
-			themeDisplay.getUserId(), addUserIds, accountEntryId, roles,
-			notifications);
-		AccountWorkerLocalServiceUtil.deleteAccountWorkers(
-			themeDisplay.getUserId(), removeUserIds, accountEntryId);
+		else {
+			AccountWorkerLocalServiceUtil.addAccountWorker(
+				themeDisplay.getUserId(), accountEntryId, emailAddress, role,
+				notifications);
+		}
 	}
 
 	public void updateLicenseEntry(
