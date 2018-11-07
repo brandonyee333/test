@@ -115,7 +115,6 @@ if (messageId > 0) {
 						<span class="h5 text-default">
 							<span><liferay-ui:message key="posts" />:</span> <%= posts %>
 						</span>
-
 						<span class="h5 text-default">
 							<span><liferay-ui:message key="join-date" />:</span> <%= dateFormatDate.format(messageUser.getCreateDate()) %>
 						</span>
