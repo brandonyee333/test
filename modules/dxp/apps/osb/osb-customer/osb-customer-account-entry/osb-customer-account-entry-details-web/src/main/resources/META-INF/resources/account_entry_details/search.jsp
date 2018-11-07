@@ -47,11 +47,11 @@ PortletURL portletURL = renderResponse.createRenderURL();
 			andOperator = true;
 		}
 
-		total = AccountEntryServiceUtil.searchCount(null, 0, 0, 0, 0, 0, 0, null, 0, 0, 0, 0, 0, 0, keywords, keywords, new int[0], null, new int[0], new int[0], null, null, null, null, null, null, null, null, null, andOperator);
+		total = AccountEntryServiceUtil.searchCount(null, 0, 0, 0, 0, 0, 0, null, 0, 0, 0, 0, 0, 0, null, null, keywords, keywords, new int[0], null, new int[0], new int[0], null, null, null, null, null, null, null, null, null, andOperator);
 
 		searchContainer.setTotal(total);
 
-		results = AccountEntryServiceUtil.search(null, 0, 0, 0, 0, 0, 0, null, 0, 0, 0, 0, 0, 0, keywords, keywords, new int[0], null, new int[0], new int[0], null, null, null, null, null, null, null, null, null, andOperator, searchContainer.getStart(), searchContainer.getEnd(), new AccountEntryNameComparator(true));
+		results = AccountEntryServiceUtil.search(null, 0, 0, 0, 0, 0, 0, null, 0, 0, 0, 0, 0, 0, null, null, keywords, keywords, new int[0], null, new int[0], new int[0], null, null, null, null, null, null, null, null, null, andOperator, searchContainer.getStart(), searchContainer.getEnd(), new AccountEntryNameComparator(true));
 
 		searchContainer.setResults(results);
 		%>
