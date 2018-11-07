@@ -123,6 +123,11 @@ JSONArray productsJSONArray = downloadsDisplayContext.getProductsJSONArray();
 				<%= mediumDateFormatDate.format(releaseDate) %>
 			</liferay-ui:search-container-column-text>
 
+			<liferay-ui:search-container-column-text
+				cssClass="th-separator"
+				value=""
+			/>
+
 			<liferay-ui:search-container-column-jsp
 				name="name"
 				path="/view_journal_article.jsp"

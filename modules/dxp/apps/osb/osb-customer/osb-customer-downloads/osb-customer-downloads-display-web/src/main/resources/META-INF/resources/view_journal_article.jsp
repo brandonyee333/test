@@ -70,7 +70,7 @@ Map<String, Map<String, String>> downloadDetailsMap = new HashMap<>();
 	for (DDMFormFieldValue linkFieldValue : linkFieldValues) {
 	%>
 
-		<a class="btn-link link" href='<%= _getStringValue(linkFieldValue.getNestedDDMFormFieldValuesMap(), "linkUrl", locale) %'><%= _getStringValue(linkFieldValue, locale) %></a>
+		<a class="btn-link link" href='<%= _getStringValue(linkFieldValue.getNestedDDMFormFieldValuesMap(), "linkUrl", locale) %>'><%= _getStringValue(linkFieldValue, locale) %></a>
 
 	<%
 	}
@@ -94,7 +94,11 @@ Map<String, Map<String, String>> downloadDetailsMap = new HashMap<>();
 <div class="journal-article-download" id="<portlet:namespace />journalArticleDownloads<%= journalArticle.getResourcePrimKey() %>"></div>
 
 <%
+JSONArray allDownloadsJSONArray = JSONFactoryUtil.createJSONArray();
+
 JSONArray downloadGroupsJSONArray = JSONFactoryUtil.createJSONArray();
+
+JSONObject firstDownloadJSONObject = JSONFactoryUtil.createJSONObject();
 
 List<DDMFormFieldValue> downloadGroupFieldValues = ddmFormFieldValuesMap.get("downloadGroup");
 
@@ -125,7 +129,6 @@ for (DDMFormFieldValue downloadGroupFieldValue : downloadGroupFieldValues) {
 		JSONObject downloadDetailsJSONObject = JSONFactoryUtil.createJSONObject();
 
 		for (DDMFormFieldValue downloadDetailDDMFormFieldValue : downloadDetailFieldValues) {
-
 			Map<String, List<DDMFormFieldValue>> downloadDetailFieldValueMap = downloadDetailDDMFormFieldValue.getNestedDDMFormFieldValuesMap();
 
 			String detailLabel = _getStringValue(downloadDetailFieldValueMap, "detailLabel", locale);
@@ -135,6 +138,12 @@ for (DDMFormFieldValue downloadGroupFieldValue : downloadGroupFieldValues) {
 		}
 
 		downloadJSONObject.put("downloadDetails", downloadDetailsJSONObject);
+
+		if (downloadGroupFieldValue == downloadGroupFieldValues.get(0) && downloadFieldValue == downloadFieldValues.get(0)) {
+			firstDownloadJSONObject = downloadJSONObject;
+		}
+
+		allDownloadsJSONArray.put(downloadJSONObject);
 
 		downloadsJSONArray.put(downloadJSONObject);
 	}
@@ -150,7 +159,9 @@ for (DDMFormFieldValue downloadGroupFieldValue : downloadGroupFieldValues) {
 	Downloads.render(
 		Downloads.JournalArticleDownloads,
 		{
-			downloadGroups: <%= downloadGroupsJSONArray %>
+			allDownloads: <%= allDownloadsJSONArray %>,
+			downloadGroups: <%= downloadGroupsJSONArray %>,
+			firstDownload: <%= firstDownloadJSONObject %>
 		},
 		document.getElementById('<portlet:namespace />journalArticleDownloads<%= journalArticle.getResourcePrimKey() %>')
 	);

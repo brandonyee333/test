@@ -3,7 +3,7 @@
 		color: $secondary-text-color;
 		font-size: $font-size-md;
 		line-height: 20px;
-		margin: 24px 0;
+		margin: $margin-default;
 	}
 
 	.detail-label, .detail-value {
@@ -13,13 +13,11 @@
 		&.detail-label {
 			font-weight: $font-weight-semi-bold;
 		}
-
-		&.detail-value {
-			 padding-right: 16px;
-		}
 	}
 
 	.download-alert {
+		margin: $margin-default;
+
 		.alert-header {
 			font-weight: $font-weight-semi-bold;
 			padding-right: 4px;
@@ -39,7 +37,7 @@
 	}
 
 	.download-links {
-		margin: 24px 0;
+		margin: $margin-default;
 
 		a {
 			border-right: 1px solid $color-border;
@@ -57,11 +55,11 @@
 
 	.dropdown-row {
 		display: flex;
-		margin-bottom: 24px;
+		margin-bottom: $margin-default;
 
 		.download-dropdown {
 			height: 32px;
-			margin-right: 24px;
+			margin-right: $margin-default;
 		}
 
 		.download-url {
@@ -82,21 +80,44 @@
 		line-height: 20px;
 	}
 
+	.middot-separator {
+		font-size: 20px;
+		font-weight: $font-weight-semi-bold;
+		margin: 0 16px;
+		vertical-align: middle;
+	}
+
 	.table-responsive .table {
+		table-layout: auto;
+
 		thead > tr > th {
-			&:first-of-type {
-				width: 9%;
+			&:nth-of-type(1) {
+				padding-right: $padding-default;
 			}
 
-			&:last-of-type {
-				padding-left: 0;
-				width: 91%;
+			&:nth-of-type(2) {
+				padding: 0;
+				text-align: center;
+
+				&:after {
+					border-left: 1px solid $color-border;
+					content: '',
+				}
+			}
+
+			&:nth-of-type(3) {
+				padding-left: $padding-default;
+				width: 100%;
 			}
 		}
 
 		.journal-article-row {
-			td {
-				padding: 24px 12px 24px 0;
+			td:last-of-type {
+				padding: 0;
+			}
+
+			.journal-article-download {
+				margin: $margin-default;
 			}
 
 			.lfr-released-column {

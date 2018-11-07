@@ -5,42 +5,24 @@ import Button from './Button';
 
 export default class JournalArticleDownloads extends React.Component {
 	static propTypes = {
-		downloadGroups: PropTypes.array.isRequired
+		allDownloads: PropTypes.array.isRequired,
+		downloadGroups: PropTypes.array.isRequired,
+		firstDownload: PropTypes.object.isRequired
 	};
 
 	state = {
-		downloadName: '',
-		downloadURL: '',
+		downloadName: this.props.firstDownload.downloadName,
+		downloadURL: this.props.firstDownload.downloadURL,
 		downloadDetails: {
-			fileSize: '',
-			md5: ''
+			fileSize: this.props.firstDownload.downloadDetails["File Size"],
+			md5: this.props.firstDownload.downloadDetails["MD5"]
 		}
 	};
 
-	componentDidMount() {
-		const {downloadGroups} = this.props;
-
-		const firstDownload = downloadGroups.find(downloadGroup => downloadGroup).downloads.find(download => download);
-
-		this.setState(
-			{
-				downloadName: firstDownload.downloadName,
-				downloadURL: firstDownload.downloadURL,
-				downloadDetails: {
-					fileSize: firstDownload.downloadDetails["File Size"],
-					md5: firstDownload.downloadDetails["MD5"]
-				}
-			}
-		);
-	};
-
 	handleSelectChange = event => {
-		const {downloadGroups} = this.props;
+		const {allDownloads} = this.props;
 
-		const {options} = event.target;
-
-		const selectedDownloadGroup = downloadGroups.find(downloadGroup => downloadGroup.downloadGroupName == options[options.selectedIndex].parentNode.label);
-		const selectedDownload = selectedDownloadGroup.downloads.find(download => download.downloadName == event.target.value);
+		const selectedDownload = allDownloads.find(download => download.downloadName == event.target.value);
 
 		this.setState(
 			{
@@ -55,30 +37,28 @@ export default class JournalArticleDownloads extends React.Component {
 	}
 
 	render() {
-		const {downloadGroups} = this.props;
-		const {downloadName, downloadURL, downloadDetails} = this.state;
+		const {allDownloads, downloadGroups} = this.props;
+
+		const {downloadURL, downloadDetails} = this.state;
 
 		return (
 			<React.Fragment>
 				<div className="dropdown-row">
-					{(downloadGroups.length > 1 || downloadGroups.find(downloads => downloads).downloads.length > 1) &&
+					{allDownloads.length > 1 &&
 						<select className="download-dropdown form-control" onChange={this.handleSelectChange}>
 							{downloadGroups.map(
 								(downloadGroup) => (
-									<React.Fragment>
-										<optgroup label={downloadGroup.downloadGroupName}>
-											{downloadGroup.downloads.map(
-												(download) => (
-													<option label={download.downloadName} value={download.downloadName} />
-												)
-											)}
-										</optgroup>
-									</React.Fragment>
+									<optgroup label={downloadGroup.downloadGroupName}>
+										{downloadGroup.downloads.map(
+											(download) => (
+												<option label={download.downloadName} value={download.downloadName} />
+											)
+										)}
+									</optgroup>
 								)
 							)}
 						</select>
 					}
-
 
 					<Button
 						display="primary"
@@ -92,6 +72,8 @@ export default class JournalArticleDownloads extends React.Component {
 				</div>
 
 				<span className="detail-label">{Liferay.Language.get('file-size')}:</span> <span className="detail-value">{downloadDetails.fileSize}</span>
+
+				<span className="middot-separator">&middot;</span>
 
 				<span className="detail-label">{Liferay.Language.get('md5')}:</span> <span className="detail-value">{downloadDetails.md5}</span>
 			</React.Fragment>
