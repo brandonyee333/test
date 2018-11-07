@@ -248,7 +248,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 			<c:if test="<%= Validator.isNotNull(partnerEntry.getDossieraAccountKey()) %>">
 				<portlet:renderURL var="assignWorkersURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 					<portlet:param name="mvcPath" value="/admin/edit_partner_entry_workers.jsp" />
-					<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+					<portlet:param name="backURL" value="<%= portletURL.toString() %>" />
 					<portlet:param name="partnerEntryId" value="<%= String.valueOf(partnerEntry.getPartnerEntryId()) %>" />
 				</portlet:renderURL>
 

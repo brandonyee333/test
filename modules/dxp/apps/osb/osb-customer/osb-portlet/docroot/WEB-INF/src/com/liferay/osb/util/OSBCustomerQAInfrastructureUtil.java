@@ -507,9 +507,8 @@ public class OSBCustomerQAInfrastructureUtil {
 		if (!PartnerWorkerLocalServiceUtil.hasPartnerWorker(
 				userId, partnerEntry.getPartnerEntryId())) {
 
-			PartnerWorkerLocalServiceUtil.addPartnerWorkers(
-				new long[] {userId}, partnerEntry.getPartnerEntryId(),
-				new int[] {role}, new int[] {notifications});
+			PartnerWorkerLocalServiceUtil.addPartnerWorker(
+				userId, emailAddress, role, notifications);
 		}
 
 		if (_log.isInfoEnabled()) {

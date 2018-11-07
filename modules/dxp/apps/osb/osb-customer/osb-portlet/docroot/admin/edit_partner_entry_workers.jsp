@@ -17,11 +17,7 @@
 <%@ include file="/init.jsp" %>
 
 <%
-String tabs2 = ParamUtil.getString(request, "tabs2", "current");
-
-int cur = ParamUtil.getInteger(request, "cur");
-
-String redirect = ParamUtil.getString(request, "redirect");
+String backURL = ParamUtil.getString(request, "backURL");
 
 long partnerEntryId = ParamUtil.getLong(request, "partnerEntryId");
 
@@ -30,25 +26,27 @@ PartnerEntry partnerEntry = PartnerEntryLocalServiceUtil.getPartnerEntry(partner
 PortletURL portletURL = renderResponse.createRenderURL();
 
 portletURL.setParameter("mvcPath", "/admin/edit_partner_entry_workers.jsp");
-portletURL.setParameter("tabs2", tabs2);
-portletURL.setParameter("redirect", redirect);
+portletURL.setParameter("backURL", backURL);
 portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
+
+request.setAttribute("edit_partner_entry_workers.jsp-portletURL", portletURL);
 %>
 
-<aui:form action="<%= portletURL.toString() %>" method="post">
-	<aui:input name="assignmentsRedirect" type="hidden" value="" />
+<portlet:actionURL name="updatePartnerWorker" var="updatePartnerWorkerURL">
+	<portlet:param name="mvcPath" value="/admin/edit_partner_entry_workers.jsp" />
+	<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+	<portlet:param name="backURL" value="<%= backURL %>" />
+</portlet:actionURL>
+
+<aui:form action="<%= updatePartnerWorkerURL %>" method="post">
 	<aui:input name="partnerEntryId" type="hidden" value="<%= partnerEntryId %>" />
+	<aui:input name="partnerWorkerId" type="hidden" />
 
 	<liferay-ui:error exception="<%= PartnerEntryDossieraAccountKeyException.class %>" message="dossiera-account-key-is-required-to-assign-workers" />
 
 	<liferay-ui:message arguments="<%= partnerEntry.getCode() %>" key="edit-workers-for-partner-x" />
 
 	<br /><br />
-
-	<liferay-ui:tabs
-		backURL="<%= redirect %>"
-		names="users"
-	/>
 
 	<liferay-ui:error exception="<%= RemoteServiceException.class %>">
 
@@ -63,98 +61,82 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 		<%= rse.getMessage() %>
 	</liferay-ui:error>
 
-	<aui:input name="addUserIds" type="hidden" value="" />
-	<aui:input name="removeUserIds" type="hidden" value="" />
-
 	<liferay-ui:tabs
-		names="current,available"
-		param="tabs2"
-		url="<%= portletURL.toString() %>"
+		backURL="<%= backURL %>"
+		names="users"
 	/>
 
-	<%@ include file="/common/user_search_inputs.jspf" %>
-
-	<%
-	LinkedHashMap userParams = new LinkedHashMap();
-
-	if (tabs2.equals("current")) {
-		userParams.put("usersPartnerWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByPartnerWorker"), Long.valueOf(partnerEntry.getPartnerEntryId())));
-	}
-	%>
-
-	<liferay-ui:search-container
-		emptyResultsMessage="no-users-were-found"
-		id="usersSearchContainer"
-		iteratorURL="<%= portletURL %>"
-		rowChecker="<%= new UserPartnerWorkerChecker(renderResponse, partnerEntry) %>"
-		searchContainer="<%= new UserSearch(renderRequest, portletURL) %>"
-	>
+	<liferay-ui:search-container>
 
 		<%
-		UserDisplayTerms searchTerms = (UserDisplayTerms)searchContainer.getSearchTerms();
+		List<PartnerWorker> partnerWorkers = ListUtil.copy(PartnerWorkerLocalServiceUtil.getPartnerWorkers(partnerEntryId));
 
-		if (!searchTerms.isAdvancedSearch()) {
-			searchContainer.setTotal(UserLocalServiceUtil.searchCount(themeDisplay.getCompanyId(), searchTerms.getKeywords(), WorkflowConstants.STATUS_ANY, userParams));
-			searchContainer.setResults(UserLocalServiceUtil.search(themeDisplay.getCompanyId(), searchTerms.getKeywords(), WorkflowConstants.STATUS_ANY, userParams, searchContainer.getStart(), searchContainer.getEnd(), new UserFirstNameComparator(true)));
-		}
-		else {
-			searchContainer.setTotal(UserLocalServiceUtil.searchCount(themeDisplay.getCompanyId(), firstName, middleName, lastName, screenName, emailAddress, WorkflowConstants.STATUS_ANY, userParams, true));
-			searchContainer.setResults(UserLocalServiceUtil.search(themeDisplay.getCompanyId(), firstName, middleName, lastName, screenName, emailAddress, WorkflowConstants.STATUS_ANY, userParams, true, searchContainer.getStart(), searchContainer.getEnd(), new UserFirstNameComparator(true)));
-		}
+		partnerWorkers.add(0, new PartnerWorkerImpl());
 		%>
 
+		<liferay-ui:search-container-results
+			results="<%= partnerWorkers %>"
+		/>
+
 		<liferay-ui:search-container-row
-			className="com.liferay.portal.kernel.model.User"
+			className="com.liferay.osb.model.PartnerWorker"
 			escapedModel="<%= true %>"
-			keyProperty="userId"
-			modelVar="curUser"
+			keyProperty="partnerWorkerId"
+			modelVar="partnerWorker"
 		>
 
 			<%
-			PartnerWorker partnerWorker = null;
+			User curUser = UserLocalServiceUtil.fetchUser(partnerWorker.getUserId());
 
-			int role = 0;
-			int notifications = 0;
-
-			try {
-				partnerWorker = PartnerWorkerLocalServiceUtil.getPartnerWorker(curUser.getUserId(), partnerEntryId);
-
-				role = partnerWorker.getRole();
-				notifications = partnerWorker.getNotifications();
-			}
-			catch (Exception e) {
-			}
-
-			if (!curUser.isActive()) {
+			if ((partnerWorker.getPartnerWorkerId() > 0) && ((curUser == null) || !curUser.isActive())) {
 				row.setClassName("inactive");
 			}
 			%>
 
 			<liferay-ui:search-container-column-text
 				name="name"
-				property="fullName"
-			/>
+			>
+				<c:choose>
+					<c:when test="<%= curUser != null %>">
+						<%= HtmlUtil.escape(curUser.getFullName()) %>
+					</c:when>
+					<c:when test="<%= partnerWorker.getUserId() > 0 %>">
+						<%= partnerWorker.getUserId() %>
+					</c:when>
+					<c:otherwise>
+						<strong><liferay-ui:message key="new-user" /></strong>
+					</c:otherwise>
+				</c:choose>
+			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
 				name="screen-name"
-				property="screenName"
+				value='<%= (curUser != null) ? curUser.getScreenName() : "" %>'
 			/>
 
 			<liferay-ui:search-container-column-text
 				name="email-address"
-				property="emailAddress"
-			/>
+			>
+				<c:choose>
+					<c:when test="<%= curUser != null %>">
+						<%= HtmlUtil.escape(curUser.getEmailAddress()) %>
+					</c:when>
+					<c:when test="<%= partnerWorker.getPartnerWorkerId() <= 0 %>">
+						<aui:input label="" name="emailAddress" />
+					</c:when>
+				</c:choose>
+			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
 				name="notifications"
 			>
-				<aui:select disabled="<%= !curUser.isActive() %>" label="" name='<%= "notifications_" + curUser.getUserId() %>'>
+				<aui:select label="" name='<%= "notifications_" + partnerWorker.getPartnerWorkerId() %>'>
 
 					<%
 					for (int i = 1; i <= 2; i++) {
 					%>
 
-						<aui:option label="<%= PartnerWorkerConstants.getNotificationsLabel(i) %>" selected="<%= notifications == i %>" value="<%= i %>" />
+						<aui:option label="<%= PartnerWorkerConstants.getNotificationsLabel(i) %>" selected="<%= partnerWorker.getNotifications() == i %>" value="<%= i %>" />
 
 					<%
 					}
@@ -166,14 +148,14 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 			<liferay-ui:search-container-column-text
 				name="role"
 			>
-				<aui:select disabled="<%= !curUser.isActive() %>" label="" name='<%= "role_" + curUser.getUserId() %>'>
+				<aui:select label="" name='<%= "role_" + partnerWorker.getPartnerWorkerId() %>'>
 					<aui:option />
 
 					<%
 					for (int i = 1; i <= 3; i++) {
 					%>
 
-						<aui:option label="<%= PartnerWorkerConstants.getRoleLabel(i) %>" selected="<%= role == i %>" value="<%= i %>" />
+						<aui:option label="<%= PartnerWorkerConstants.getRoleLabel(i) %>" selected="<%= partnerWorker.getRole() == i %>" value="<%= i %>" />
 
 					<%
 					}
@@ -185,15 +167,29 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 			<liferay-ui:search-container-column-text
 				name="user-status"
 			>
-				<%= RoleLocalServiceUtil.hasUserRole(curUser.getUserId(), OSBConstants.ROLE_VERIFIED_USER_ID) ? "" : LanguageUtil.get(request, "unverified") %>
+				<c:choose>
+					<c:when test="<%= partnerWorker.getPartnerWorkerId() <= 0 %>">
+					</c:when>
+					<c:when test="<%= curUser == null %>">
+						<liferay-ui:message key="deleted" />
+					</c:when>
+					<c:when test="<%= !curUser.isActive() %>">
+						<liferay-ui:message key="inactive" />
+					</c:when>
+					<c:when test="<%= RoleLocalServiceUtil.hasUserRole(partnerWorker.getUserId(), OSBConstants.ROLE_VERIFIED_USER_ID) %>">
+						<liferay-ui:message key="verified" />
+					</c:when>
+					<c:otherwise>
+						<liferay-ui:message key="unverified" />
+					</c:otherwise>
+				</c:choose>
 			</liferay-ui:search-container-column-text>
+
+			<liferay-ui:search-container-column-jsp
+				align="right"
+				path="/admin/partner_worker_action.jsp"
+			/>
 		</liferay-ui:search-container-row>
-
-		<div class="separator"><!-- --></div>
-
-		<aui:button onClick='<%= renderResponse.getNamespace() + "updatePartnerWorkers('" + portletURL.toString() + "&" + renderResponse.getNamespace() + "cur=" + cur + "');" %>' value="update-associations" />
-
-		<br /><br />
 
 		<liferay-ui:search-iterator
 			markupView="lexicon"
@@ -204,15 +200,11 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 </aui:form>
 
 <aui:script>
-	Liferay.provide(
-		window,
-		'<portlet:namespace />updatePartnerWorkers',
-		function(assignmentsRedirect) {
-			document.<portlet:namespace />fm.<portlet:namespace />assignmentsRedirect.value = assignmentsRedirect;
-			document.<portlet:namespace />fm.<portlet:namespace />addUserIds.value = Liferay.Util.listCheckedExcept(document.<portlet:namespace />fm, '<portlet:namespace />allRowIds');
-			document.<portlet:namespace />fm.<portlet:namespace />removeUserIds.value = Liferay.Util.listUncheckedExcept(document.<portlet:namespace />fm, '<portlet:namespace />allRowIds');
-			submitForm(document.<portlet:namespace />fm, '<portlet:actionURL name="updatePartnerWorkers"><portlet:param name="mvcPath" value="/admin/edit_partner_entry_workers.jsp" /></portlet:actionURL>');
-		},
-		['liferay-util-list-fields']
-	);
+	function <portlet:namespace />updatePartnerWorker(partnerWorkerId) {
+		var form = AUI.$(document.<portlet:namespace />fm);
+
+		form.fm('partnerWorkerId').val(partnerWorkerId);
+
+		submitForm(form);
+	}
 </aui:script>

@@ -387,6 +387,16 @@ public class AdminPortlet extends OSBPortlet {
 		PartnerEntryLocalServiceUtil.deletePartnerEntry(partnerEntryId);
 	}
 
+	public void deletePartnerWorker(
+			ActionRequest actionRequest, ActionResponse actionResponse)
+		throws Exception {
+
+		long partnerWorkerId = ParamUtil.getLong(
+			actionRequest, "partnerWorkerId");
+
+		PartnerWorkerLocalServiceUtil.deletePartnerWorker(partnerWorkerId);
+	}
+
 	public void deleteProductEntry(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
@@ -996,33 +1006,31 @@ public class AdminPortlet extends OSBPortlet {
 			phones);
 	}
 
-	public void updatePartnerWorkers(
+	public void updatePartnerWorker(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		long[] addUserIds = StringUtil.split(
-			ParamUtil.getString(actionRequest, "addUserIds"), 0L);
-		long[] removeUserIds = StringUtil.split(
-			ParamUtil.getString(actionRequest, "removeUserIds"), 0L);
-
 		long partnerEntryId = ParamUtil.getLong(
 			actionRequest, "partnerEntryId");
+		long partnerWorkerId = ParamUtil.getLong(
+			actionRequest, "partnerWorkerId");
 
-		int[] roles = new int[addUserIds.length];
-		int[] notifications = new int[addUserIds.length];
+		String emailAddress = ParamUtil.getString(
+			actionRequest, "emailAddress");
 
-		for (int i = 0; i < addUserIds.length; i++) {
-			long userId = addUserIds[i];
+		int role = ParamUtil.getInteger(
+			actionRequest, "role_" + partnerWorkerId);
+		int notifications = ParamUtil.getInteger(
+			actionRequest, "notifications_" + partnerWorkerId);
 
-			roles[i] = ParamUtil.getInteger(actionRequest, "role_" + userId);
-			notifications[i] = ParamUtil.getInteger(
-				actionRequest, "notifications_" + userId);
+		if (partnerWorkerId > 0) {
+			PartnerWorkerLocalServiceUtil.updatePartnerWorker(
+				partnerEntryId, partnerWorkerId, role, notifications);
 		}
-
-		PartnerWorkerLocalServiceUtil.addPartnerWorkers(
-			addUserIds, partnerEntryId, roles, notifications);
-		PartnerWorkerLocalServiceUtil.deletePartnerWorkers(
-			removeUserIds, partnerEntryId);
+		else {
+			PartnerWorkerLocalServiceUtil.addPartnerWorker(
+				partnerEntryId, emailAddress, role, notifications);
+		}
 	}
 
 	public void updateProductEntry(

@@ -26,8 +26,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -38,48 +36,48 @@ import java.util.List;
 public class PartnerWorkerLocalServiceImpl
 	extends PartnerWorkerLocalServiceBaseImpl {
 
-	public void addPartnerWorkers(
-			long[] userIds, long partnerEntryId, int[] roles,
-			int[] notifications)
+	public void addPartnerWorker(
+			long partnerEntryId, String emailAddress, int role,
+			int notifications)
 		throws PortalException {
 
 		validateDossieraAccountKey(partnerEntryId);
 
-		List<Long> newUserIds = new ArrayList<>();
+		User user = userLocalService.fetchUserByEmailAddress(
+			OSBConstants.COMPANY_ID, emailAddress);
 
-		for (int i = 0; i < userIds.length; i++) {
-			long userId = userIds[i];
+		long partnerWorkerId = counterLocalService.increment();
 
-			PartnerWorker partnerWorker = partnerWorkerPersistence.fetchByU_PEI(
-				userId, partnerEntryId);
+		PartnerWorker partnerWorker = partnerWorkerPersistence.create(
+			partnerWorkerId);
 
-			if ((partnerWorker == null) ||
-				(partnerWorker.getRole() != roles[i])) {
+		partnerWorker.setUserId(user.getUserId());
+		partnerWorker.setPartnerEntryId(partnerEntryId);
+		partnerWorker.setRole(role);
+		partnerWorker.setNotifications(notifications);
 
-				newUserIds.add(userId);
-			}
+		partnerWorkerPersistence.update(partnerWorker);
 
-			if (partnerWorker == null) {
-				long partnerWorkerId = counterLocalService.increment();
+		assignOrganizations(user.getUserId());
 
-				partnerWorker = partnerWorkerPersistence.create(
-					partnerWorkerId);
+		assignCorpEntryOrganizations(user.getUserId(), partnerEntryId);
+	}
 
-				partnerWorker.setUserId(userId);
-				partnerWorker.setPartnerEntryId(partnerEntryId);
-			}
+	@Override
+	public PartnerWorker deletePartnerWorker(long partnerWorkerId)
+		throws PortalException {
 
-			partnerWorker.setRole(roles[i]);
-			partnerWorker.setNotifications(notifications[i]);
+		PartnerWorker partnerWorker =
+			partnerWorkerPersistence.fetchByPrimaryKey(partnerWorkerId);
 
-			partnerWorkerPersistence.update(partnerWorker);
-		}
+		validateDossieraAccountKey(partnerWorker.getPartnerEntryId());
 
-		for (long userId : userIds) {
-			assignOrganizations(userId);
-		}
+		unassignOrganizations(partnerWorker.getUserId());
 
-		assignCorpEntryOrganizations(newUserIds, partnerEntryId);
+		unassignCorpEntryOrganizations(
+			partnerWorker.getUserId(), partnerWorker.getPartnerEntryId());
+
+		return partnerWorkerPersistence.remove(partnerWorkerId);
 	}
 
 	public void deletePartnerWorkers(long userId) throws PortalException {
@@ -99,24 +97,6 @@ public class PartnerWorkerLocalServiceImpl
 			unassignOrganizations(userId);
 		}
 		catch (NoSuchPartnerWorkerException nspwe) {
-		}
-	}
-
-	public void deletePartnerWorkers(long[] userIds, long partnerEntryId)
-		throws PortalException {
-
-		validateDossieraAccountKey(partnerEntryId);
-
-		for (long userId : userIds) {
-			try {
-				partnerWorkerPersistence.removeByU_PEI(userId, partnerEntryId);
-
-				unassignCorpEntryOrganizations(userId, partnerEntryId);
-
-				unassignOrganizations(userId);
-			}
-			catch (NoSuchPartnerWorkerException nspwe) {
-			}
 		}
 	}
 
@@ -186,13 +166,36 @@ public class PartnerWorkerLocalServiceImpl
 				partnerWorker.getUserId(), oldDossieraAccountKey);
 
 			assignCorpEntryOrganizations(
-				Arrays.asList(partnerWorker.getUserId()), partnerEntryId,
+				partnerWorker.getUserId(), partnerEntryId,
 				newDossieraAccountKey);
 		}
 	}
 
+	public void updatePartnerWorker(
+			long partnerEntryId, long partnerWorkerId, int role,
+			int notifications)
+		throws PortalException {
+
+		validateDossieraAccountKey(partnerEntryId);
+
+		PartnerWorker partnerWorker =
+			partnerWorkerPersistence.fetchByPrimaryKey(partnerWorkerId);
+
+		partnerWorker.setRole(role);
+		partnerWorker.setNotifications(notifications);
+
+		partnerWorkerPersistence.update(partnerWorker);
+
+		assignOrganizations(partnerWorker.getUserId());
+
+		if (partnerWorker.getRole() != role) {
+			assignCorpEntryOrganizations(
+				partnerWorker.getUserId(), partnerEntryId);
+		}
+	}
+
 	protected void assignCorpEntryOrganizations(
-			List<Long> userIds, long partnerEntryId)
+			long userId, long partnerEntryId)
 		throws PortalException {
 
 		PartnerEntry partnerEntry = partnerEntryLocalService.fetchPartnerEntry(
@@ -203,47 +206,44 @@ public class PartnerWorkerLocalServiceImpl
 		}
 
 		assignCorpEntryOrganizations(
-			userIds, partnerEntryId, partnerEntry.getDossieraAccountKey());
+			userId, partnerEntryId, partnerEntry.getDossieraAccountKey());
 	}
 
 	protected void assignCorpEntryOrganizations(
-			List<Long> userIds, long partnerEntryId, String dossieraAccountKey)
+			long userId, long partnerEntryId, String dossieraAccountKey)
 		throws PortalException {
 
 		Role osbCorpSalesRole = roleLocalService.getRole(
 			OSBConstants.ROLE_OSB_CORP_SALES_REPRESENTATIVE_ID);
 
-		for (long userId : userIds) {
-			User user = userLocalService.getUser(userId);
+		User user = userLocalService.getUser(userId);
 
-			WebRESTWebServiceUtil.putCorpEntriesUser(
-				dossieraAccountKey, user.getUuid());
+		WebRESTWebServiceUtil.putCorpEntriesUser(
+			dossieraAccountKey, user.getUuid());
 
-			WebRESTWebServiceUtil.putCorpEntriesUserRole(
-				dossieraAccountKey, user.getUuid(), osbCorpSalesRole.getUuid());
+		WebRESTWebServiceUtil.putCorpEntriesUserRole(
+			dossieraAccountKey, user.getUuid(), osbCorpSalesRole.getUuid());
 
-			PartnerWorker partnerWorker = getPartnerWorker(
-				userId, partnerEntryId);
+		PartnerWorker partnerWorker = getPartnerWorker(userId, partnerEntryId);
 
-			long roleId = PartnerWorkerConstants.getCorpEntryRoleId(
-				partnerWorker.getRole());
+		long roleId = PartnerWorkerConstants.getCorpEntryRoleId(
+			partnerWorker.getRole());
 
-			if (roleId == 0) {
-				for (long curRoleId :
-						PartnerWorkerConstants.OSB_CORP_ENTRY_ROLE_IDS) {
+		if (roleId == 0) {
+			for (long curRoleId :
+					PartnerWorkerConstants.OSB_CORP_ENTRY_ROLE_IDS) {
 
-					Role role = roleLocalService.getRole(curRoleId);
+				Role role = roleLocalService.getRole(curRoleId);
 
-					WebRESTWebServiceUtil.deleteCorpEntriesUserRole(
-						dossieraAccountKey, user.getUuid(), role.getUuid());
-				}
-			}
-			else {
-				Role role = roleLocalService.getRole(roleId);
-
-				WebRESTWebServiceUtil.putCorpEntriesUserRole(
+				WebRESTWebServiceUtil.deleteCorpEntriesUserRole(
 					dossieraAccountKey, user.getUuid(), role.getUuid());
 			}
+		}
+		else {
+			Role role = roleLocalService.getRole(roleId);
+
+			WebRESTWebServiceUtil.putCorpEntriesUserRole(
+				dossieraAccountKey, user.getUuid(), role.getUuid());
 		}
 	}
 
