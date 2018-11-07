@@ -95,7 +95,7 @@ if (offeringBundle != null) {
 	<br />
 
 	<liferay-ui:search-container
-		headerNames="product,support,servers,,"
+		headerNames="product,product-description,sla,licenses,tickets,"
 		id="offering"
 	>
 		<liferay-ui:search-container-results
