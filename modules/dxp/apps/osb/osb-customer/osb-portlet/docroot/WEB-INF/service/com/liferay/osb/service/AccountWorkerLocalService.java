@@ -76,6 +76,14 @@ public interface AccountWorkerLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public AccountWorker addAccountWorker(AccountWorker accountWorker);
 
+	public AccountWorker addAccountWorker(long userId,
+		java.lang.String emailAddress, long accountEntryId, int role,
+		int notifications) throws PortalException;
+
+	public AccountWorker addAccountWorker(long userId, long workerUserId,
+		long accountEntryId, int role, int notifications)
+		throws PortalException;
+
 	/**
 	* Creates a new account worker with the primary key. Does not add the account worker to the database.
 	*
@@ -251,15 +259,14 @@ public interface AccountWorkerLocalService extends BaseLocalService,
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
 
-	public void addAccountWorkers(long userId, long[] userIds,
-		long accountEntryId, int[] roles, int[] notifications)
+	public void deleteAccountEntryAccountWorkers(long accountEntryId)
 		throws PortalException;
 
-	public void deleteAccountEntryAccountWorkers(long accountEntryId)
+	public void deleteAccountWorker(long userId, long accountWorkerId)
 		throws PortalException;
 
 	public void deleteAccountWorkers(long userId) throws PortalException;
 
-	public void deleteAccountWorkers(long userId, long[] userIds,
-		long accountEntryId) throws PortalException;
+	public void updateAccountWorker(long userId, long accountWorkerId,
+		int role, int notifications) throws PortalException;
 }

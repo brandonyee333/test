@@ -42,133 +42,143 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 				"com.liferay.osb.model.AccountWorker"
 			};
 
-		_methodName3 = "createAccountWorker";
+		_methodName3 = "addAccountWorker";
 
-		_methodParameterTypes3 = new String[] { "long" };
-
-		_methodName4 = "deleteAccountWorker";
-
-		_methodParameterTypes4 = new String[] {
-				"com.liferay.osb.model.AccountWorker"
+		_methodParameterTypes3 = new String[] {
+				"long", "java.lang.String", "long", "int", "int"
 			};
 
-		_methodName5 = "deleteAccountWorker";
+		_methodName4 = "addAccountWorker";
+
+		_methodParameterTypes4 = new String[] {
+				"long", "long", "long", "int", "int"
+			};
+
+		_methodName5 = "createAccountWorker";
 
 		_methodParameterTypes5 = new String[] { "long" };
 
-		_methodName6 = "fetchAccountWorker";
+		_methodName6 = "deleteAccountWorker";
 
-		_methodParameterTypes6 = new String[] { "long" };
-
-		_methodName7 = "getAccountWorker";
-
-		_methodParameterTypes7 = new String[] { "long" };
-
-		_methodName8 = "getAccountWorker";
-
-		_methodParameterTypes8 = new String[] { "long", "long" };
-
-		_methodName9 = "updateAccountWorker";
-
-		_methodParameterTypes9 = new String[] {
+		_methodParameterTypes6 = new String[] {
 				"com.liferay.osb.model.AccountWorker"
 			};
 
-		_methodName10 = "getActionableDynamicQuery";
+		_methodName7 = "deleteAccountWorker";
 
-		_methodParameterTypes10 = new String[] {  };
+		_methodParameterTypes7 = new String[] { "long" };
 
-		_methodName11 = "dynamicQuery";
+		_methodName8 = "fetchAccountWorker";
 
-		_methodParameterTypes11 = new String[] {  };
+		_methodParameterTypes8 = new String[] { "long" };
 
-		_methodName12 = "getIndexableActionableDynamicQuery";
+		_methodName9 = "getAccountWorker";
+
+		_methodParameterTypes9 = new String[] { "long" };
+
+		_methodName10 = "getAccountWorker";
+
+		_methodParameterTypes10 = new String[] { "long", "long" };
+
+		_methodName11 = "updateAccountWorker";
+
+		_methodParameterTypes11 = new String[] {
+				"com.liferay.osb.model.AccountWorker"
+			};
+
+		_methodName12 = "getActionableDynamicQuery";
 
 		_methodParameterTypes12 = new String[] {  };
 
-		_methodName13 = "deletePersistedModel";
+		_methodName13 = "dynamicQuery";
 
-		_methodParameterTypes13 = new String[] {
+		_methodParameterTypes13 = new String[] {  };
+
+		_methodName14 = "getIndexableActionableDynamicQuery";
+
+		_methodParameterTypes14 = new String[] {  };
+
+		_methodName15 = "deletePersistedModel";
+
+		_methodParameterTypes15 = new String[] {
 				"com.liferay.portal.kernel.model.PersistedModel"
 			};
 
-		_methodName14 = "getPersistedModel";
+		_methodName16 = "getPersistedModel";
 
-		_methodParameterTypes14 = new String[] { "java.io.Serializable" };
+		_methodParameterTypes16 = new String[] { "java.io.Serializable" };
 
-		_methodName15 = "getAccountWorkersCount";
-
-		_methodParameterTypes15 = new String[] {  };
-
-		_methodName17 = "getOSGiServiceIdentifier";
+		_methodName17 = "getAccountWorkersCount";
 
 		_methodParameterTypes17 = new String[] {  };
 
-		_methodName18 = "dynamicQuery";
+		_methodName19 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes18 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
-			};
-
-		_methodName19 = "dynamicQuery";
-
-		_methodParameterTypes19 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
-			};
+		_methodParameterTypes19 = new String[] {  };
 
 		_methodName20 = "dynamicQuery";
 
 		_methodParameterTypes20 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
+			};
+
+		_methodName21 = "dynamicQuery";
+
+		_methodParameterTypes21 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
+			};
+
+		_methodName22 = "dynamicQuery";
+
+		_methodParameterTypes22 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName21 = "getAccountWorkers";
-
-		_methodParameterTypes21 = new String[] { "int", "int" };
-
-		_methodName22 = "getAccountWorkers";
-
-		_methodParameterTypes22 = new String[] { "long" };
-
 		_methodName23 = "getAccountWorkers";
 
-		_methodParameterTypes23 = new String[] { "long", "int" };
+		_methodParameterTypes23 = new String[] { "int", "int" };
 
-		_methodName24 = "getUserAccountWorkers";
+		_methodName24 = "getAccountWorkers";
 
 		_methodParameterTypes24 = new String[] { "long" };
 
-		_methodName25 = "dynamicQueryCount";
+		_methodName25 = "getAccountWorkers";
 
-		_methodParameterTypes25 = new String[] {
+		_methodParameterTypes25 = new String[] { "long", "int" };
+
+		_methodName26 = "getUserAccountWorkers";
+
+		_methodParameterTypes26 = new String[] { "long" };
+
+		_methodName27 = "dynamicQueryCount";
+
+		_methodParameterTypes27 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
-		_methodName26 = "dynamicQueryCount";
+		_methodName28 = "dynamicQueryCount";
 
-		_methodParameterTypes26 = new String[] {
+		_methodParameterTypes28 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery",
 				"com.liferay.portal.kernel.dao.orm.Projection"
 			};
 
-		_methodName27 = "addAccountWorkers";
-
-		_methodParameterTypes27 = new String[] {
-				"long", "long[][]", "long", "int[][]", "int[][]"
-			};
-
-		_methodName28 = "deleteAccountEntryAccountWorkers";
-
-		_methodParameterTypes28 = new String[] { "long" };
-
-		_methodName29 = "deleteAccountWorkers";
+		_methodName29 = "deleteAccountEntryAccountWorkers";
 
 		_methodParameterTypes29 = new String[] { "long" };
 
-		_methodName30 = "deleteAccountWorkers";
+		_methodName30 = "deleteAccountWorker";
 
-		_methodParameterTypes30 = new String[] { "long", "long[][]", "long" };
+		_methodParameterTypes30 = new String[] { "long", "long" };
+
+		_methodName31 = "deleteAccountWorkers";
+
+		_methodParameterTypes31 = new String[] { "long" };
+
+		_methodName32 = "updateAccountWorker";
+
+		_methodParameterTypes32 = new String[] { "long", "long", "int", "int" };
 	}
 
 	@Override
@@ -244,13 +254,94 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 	}
 
 	@Override
+	public com.liferay.osb.model.AccountWorker addAccountWorker(long userId,
+		java.lang.String emailAddress, long accountEntryId, int role,
+		int notifications)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName3,
+					_methodParameterTypes3,
+					new Object[] {
+						userId,
+						
+					ClpSerializer.translateInput(emailAddress),
+						
+					accountEntryId,
+						
+					role,
+						
+					notifications
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.AccountWorker)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountWorker addAccountWorker(long userId,
+		long workerUserId, long accountEntryId, int role, int notifications)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName4,
+					_methodParameterTypes4,
+					new Object[] {
+						userId,
+						
+					workerUserId,
+						
+					accountEntryId,
+						
+					role,
+						
+					notifications
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.AccountWorker)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
 	public com.liferay.osb.model.AccountWorker createAccountWorker(
 		long accountWorkerId) {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName3,
-					_methodParameterTypes3, new Object[] { accountWorkerId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName5,
+					_methodParameterTypes5, new Object[] { accountWorkerId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -273,8 +364,8 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName4,
-					_methodParameterTypes4,
+			returnObj = _invokableLocalService.invokeMethod(_methodName6,
+					_methodParameterTypes6,
 					new Object[] { ClpSerializer.translateInput(accountWorker) });
 		}
 		catch (Throwable t) {
@@ -294,59 +385,6 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 
 	@Override
 	public com.liferay.osb.model.AccountWorker deleteAccountWorker(
-		long accountWorkerId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName5,
-					_methodParameterTypes5, new Object[] { accountWorkerId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (com.liferay.osb.model.AccountWorker)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public com.liferay.osb.model.AccountWorker fetchAccountWorker(
-		long accountWorkerId) {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName6,
-					_methodParameterTypes6, new Object[] { accountWorkerId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (com.liferay.osb.model.AccountWorker)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public com.liferay.osb.model.AccountWorker getAccountWorker(
 		long accountWorkerId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
@@ -375,14 +413,67 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 	}
 
 	@Override
+	public com.liferay.osb.model.AccountWorker fetchAccountWorker(
+		long accountWorkerId) {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName8,
+					_methodParameterTypes8, new Object[] { accountWorkerId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.AccountWorker)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountWorker getAccountWorker(
+		long accountWorkerId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName9,
+					_methodParameterTypes9, new Object[] { accountWorkerId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.AccountWorker)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
 	public com.liferay.osb.model.AccountWorker getAccountWorker(long userId,
 		long accountEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName8,
-					_methodParameterTypes8,
+			returnObj = _invokableLocalService.invokeMethod(_methodName10,
+					_methodParameterTypes10,
 					new Object[] { userId, accountEntryId });
 		}
 		catch (Throwable t) {
@@ -410,8 +501,8 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName9,
-					_methodParameterTypes9,
+			returnObj = _invokableLocalService.invokeMethod(_methodName11,
+					_methodParameterTypes11,
 					new Object[] { ClpSerializer.translateInput(accountWorker) });
 		}
 		catch (Throwable t) {
@@ -434,8 +525,8 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName10,
-					_methodParameterTypes10, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName12,
+					_methodParameterTypes12, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -457,8 +548,8 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName11,
-					_methodParameterTypes11, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName13,
+					_methodParameterTypes13, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -480,8 +571,8 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName12,
-					_methodParameterTypes12, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName14,
+					_methodParameterTypes14, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -505,8 +596,8 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName13,
-					_methodParameterTypes13,
+			returnObj = _invokableLocalService.invokeMethod(_methodName15,
+					_methodParameterTypes15,
 					new Object[] { ClpSerializer.translateInput(persistedModel) });
 		}
 		catch (Throwable t) {
@@ -535,8 +626,8 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName14,
-					_methodParameterTypes14,
+			returnObj = _invokableLocalService.invokeMethod(_methodName16,
+					_methodParameterTypes16,
 					new Object[] { ClpSerializer.translateInput(primaryKeyObj) });
 		}
 		catch (Throwable t) {
@@ -563,8 +654,8 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName15,
-					_methodParameterTypes15, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName17,
+					_methodParameterTypes17, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -593,8 +684,8 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName17,
-					_methodParameterTypes17, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName19,
+					_methodParameterTypes19, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -617,8 +708,8 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName18,
-					_methodParameterTypes18,
+			returnObj = _invokableLocalService.invokeMethod(_methodName20,
+					_methodParameterTypes20,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -643,8 +734,8 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName19,
-					_methodParameterTypes19,
+			returnObj = _invokableLocalService.invokeMethod(_methodName21,
+					_methodParameterTypes21,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -676,8 +767,8 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName20,
-					_methodParameterTypes20,
+			returnObj = _invokableLocalService.invokeMethod(_methodName22,
+					_methodParameterTypes22,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -709,8 +800,8 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName21,
-					_methodParameterTypes21, new Object[] { start, end });
+			returnObj = _invokableLocalService.invokeMethod(_methodName23,
+					_methodParameterTypes23, new Object[] { start, end });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -733,8 +824,8 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName22,
-					_methodParameterTypes22, new Object[] { accountEntryId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName24,
+					_methodParameterTypes24, new Object[] { accountEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -757,8 +848,8 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName23,
-					_methodParameterTypes23,
+			returnObj = _invokableLocalService.invokeMethod(_methodName25,
+					_methodParameterTypes25,
 					new Object[] { accountEntryId, role });
 		}
 		catch (Throwable t) {
@@ -782,8 +873,8 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName24,
-					_methodParameterTypes24, new Object[] { userId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName26,
+					_methodParameterTypes26, new Object[] { userId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -806,8 +897,8 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName25,
-					_methodParameterTypes25,
+			returnObj = _invokableLocalService.invokeMethod(_methodName27,
+					_methodParameterTypes27,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -832,8 +923,8 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName26,
-					_methodParameterTypes26,
+			returnObj = _invokableLocalService.invokeMethod(_methodName28,
+					_methodParameterTypes28,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -856,23 +947,11 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 	}
 
 	@Override
-	public void addAccountWorkers(long userId, long[] userIds,
-		long accountEntryId, int[] roles, int[] notifications)
+	public void deleteAccountEntryAccountWorkers(long accountEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableLocalService.invokeMethod(_methodName27,
-				_methodParameterTypes27,
-				new Object[] {
-					userId,
-					
-				ClpSerializer.translateInput(userIds),
-					
-				accountEntryId,
-					
-				ClpSerializer.translateInput(roles),
-					
-				ClpSerializer.translateInput(notifications)
-				});
+			_invokableLocalService.invokeMethod(_methodName29,
+				_methodParameterTypes29, new Object[] { accountEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -892,11 +971,12 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 	}
 
 	@Override
-	public void deleteAccountEntryAccountWorkers(long accountEntryId)
+	public void deleteAccountWorker(long userId, long accountWorkerId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableLocalService.invokeMethod(_methodName28,
-				_methodParameterTypes28, new Object[] { accountEntryId });
+			_invokableLocalService.invokeMethod(_methodName30,
+				_methodParameterTypes30,
+				new Object[] { userId, accountWorkerId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -919,8 +999,8 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 	public void deleteAccountWorkers(long userId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableLocalService.invokeMethod(_methodName29,
-				_methodParameterTypes29, new Object[] { userId });
+			_invokableLocalService.invokeMethod(_methodName31,
+				_methodParameterTypes31, new Object[] { userId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -940,19 +1020,13 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 	}
 
 	@Override
-	public void deleteAccountWorkers(long userId, long[] userIds,
-		long accountEntryId)
+	public void updateAccountWorker(long userId, long accountWorkerId,
+		int role, int notifications)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableLocalService.invokeMethod(_methodName30,
-				_methodParameterTypes30,
-				new Object[] {
-					userId,
-					
-				ClpSerializer.translateInput(userIds),
-					
-				accountEntryId
-				});
+			_invokableLocalService.invokeMethod(_methodName32,
+				_methodParameterTypes32,
+				new Object[] { userId, accountWorkerId, role, notifications });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1004,10 +1078,10 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 	private String[] _methodParameterTypes14;
 	private String _methodName15;
 	private String[] _methodParameterTypes15;
+	private String _methodName16;
+	private String[] _methodParameterTypes16;
 	private String _methodName17;
 	private String[] _methodParameterTypes17;
-	private String _methodName18;
-	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
 	private String _methodName20;
@@ -1032,4 +1106,8 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 	private String[] _methodParameterTypes29;
 	private String _methodName30;
 	private String[] _methodParameterTypes30;
+	private String _methodName31;
+	private String[] _methodParameterTypes31;
+	private String _methodName32;
+	private String[] _methodParameterTypes32;
 }

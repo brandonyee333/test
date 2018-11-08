@@ -62,6 +62,23 @@ public class PartnerWorkerLocalServiceWrapper
 		return _partnerWorkerLocalService.addPartnerWorker(partnerWorker);
 	}
 
+	@Override
+	public com.liferay.osb.model.PartnerWorker addPartnerWorker(
+		long partnerEntryId, java.lang.String emailAddress, int role,
+		int notifications)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _partnerWorkerLocalService.addPartnerWorker(partnerEntryId,
+			emailAddress, role, notifications);
+	}
+
+	@Override
+	public com.liferay.osb.model.PartnerWorker addPartnerWorker(
+		long partnerEntryId, long userId, int role, int notifications)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _partnerWorkerLocalService.addPartnerWorker(partnerEntryId,
+			userId, role, notifications);
+	}
+
 	/**
 	* Creates a new partner worker with the primary key. Does not add the partner worker to the database.
 	*
@@ -323,23 +340,9 @@ public class PartnerWorkerLocalServiceWrapper
 	}
 
 	@Override
-	public void addPartnerWorkers(long[] userIds, long partnerEntryId,
-		int[] roles, int[] notifications)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_partnerWorkerLocalService.addPartnerWorkers(userIds, partnerEntryId,
-			roles, notifications);
-	}
-
-	@Override
 	public void deletePartnerWorkers(long userId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_partnerWorkerLocalService.deletePartnerWorkers(userId);
-	}
-
-	@Override
-	public void deletePartnerWorkers(long[] userIds, long partnerEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_partnerWorkerLocalService.deletePartnerWorkers(userIds, partnerEntryId);
 	}
 
 	@Override
@@ -349,6 +352,14 @@ public class PartnerWorkerLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_partnerWorkerLocalService.syncPartnerWorkers(partnerEntryId,
 			oldDossieraAccountKey, newDossieraAccountKey);
+	}
+
+	@Override
+	public void updatePartnerWorker(long partnerWorkerId, int role,
+		int notifications)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_partnerWorkerLocalService.updatePartnerWorker(partnerWorkerId, role,
+			notifications);
 	}
 
 	@Override

@@ -79,6 +79,13 @@ public interface PartnerWorkerLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public PartnerWorker addPartnerWorker(PartnerWorker partnerWorker);
 
+	public PartnerWorker addPartnerWorker(long partnerEntryId,
+		java.lang.String emailAddress, int role, int notifications)
+		throws PortalException;
+
+	public PartnerWorker addPartnerWorker(long partnerEntryId, long userId,
+		int role, int notifications) throws PortalException;
+
 	/**
 	* Creates a new partner worker with the primary key. Does not add the partner worker to the database.
 	*
@@ -257,15 +264,12 @@ public interface PartnerWorkerLocalService extends BaseLocalService,
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
 
-	public void addPartnerWorkers(long[] userIds, long partnerEntryId,
-		int[] roles, int[] notifications) throws PortalException;
-
 	public void deletePartnerWorkers(long userId) throws PortalException;
-
-	public void deletePartnerWorkers(long[] userIds, long partnerEntryId)
-		throws PortalException;
 
 	public void syncPartnerWorkers(long partnerEntryId,
 		java.lang.String oldDossieraAccountKey,
 		java.lang.String newDossieraAccountKey) throws PortalException;
+
+	public void updatePartnerWorker(long partnerWorkerId, int role,
+		int notifications) throws PortalException;
 }

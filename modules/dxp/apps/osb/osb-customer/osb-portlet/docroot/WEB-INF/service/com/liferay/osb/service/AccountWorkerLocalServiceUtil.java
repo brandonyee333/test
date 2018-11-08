@@ -60,6 +60,24 @@ public class AccountWorkerLocalServiceUtil {
 		return getService().addAccountWorker(accountWorker);
 	}
 
+	public static com.liferay.osb.model.AccountWorker addAccountWorker(
+		long userId, java.lang.String emailAddress, long accountEntryId,
+		int role, int notifications)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .addAccountWorker(userId, emailAddress, accountEntryId,
+			role, notifications);
+	}
+
+	public static com.liferay.osb.model.AccountWorker addAccountWorker(
+		long userId, long workerUserId, long accountEntryId, int role,
+		int notifications)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .addAccountWorker(userId, workerUserId, accountEntryId,
+			role, notifications);
+	}
+
 	/**
 	* Creates a new account worker with the primary key. Does not add the account worker to the database.
 	*
@@ -286,17 +304,14 @@ public class AccountWorkerLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static void addAccountWorkers(long userId, long[] userIds,
-		long accountEntryId, int[] roles, int[] notifications)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService()
-			.addAccountWorkers(userId, userIds, accountEntryId, roles,
-			notifications);
-	}
-
 	public static void deleteAccountEntryAccountWorkers(long accountEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deleteAccountEntryAccountWorkers(accountEntryId);
+	}
+
+	public static void deleteAccountWorker(long userId, long accountWorkerId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().deleteAccountWorker(userId, accountWorkerId);
 	}
 
 	public static void deleteAccountWorkers(long userId)
@@ -304,10 +319,11 @@ public class AccountWorkerLocalServiceUtil {
 		getService().deleteAccountWorkers(userId);
 	}
 
-	public static void deleteAccountWorkers(long userId, long[] userIds,
-		long accountEntryId)
+	public static void updateAccountWorker(long userId, long accountWorkerId,
+		int role, int notifications)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteAccountWorkers(userId, userIds, accountEntryId);
+		getService()
+			.updateAccountWorker(userId, accountWorkerId, role, notifications);
 	}
 
 	public static void clearService() {

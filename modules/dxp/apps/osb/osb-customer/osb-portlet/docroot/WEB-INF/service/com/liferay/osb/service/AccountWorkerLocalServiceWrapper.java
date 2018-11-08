@@ -57,6 +57,23 @@ public class AccountWorkerLocalServiceWrapper
 		return _accountWorkerLocalService.addAccountWorker(accountWorker);
 	}
 
+	@Override
+	public com.liferay.osb.model.AccountWorker addAccountWorker(long userId,
+		java.lang.String emailAddress, long accountEntryId, int role,
+		int notifications)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountWorkerLocalService.addAccountWorker(userId,
+			emailAddress, accountEntryId, role, notifications);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountWorker addAccountWorker(long userId,
+		long workerUserId, long accountEntryId, int role, int notifications)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountWorkerLocalService.addAccountWorker(userId,
+			workerUserId, accountEntryId, role, notifications);
+	}
+
 	/**
 	* Creates a new account worker with the primary key. Does not add the account worker to the database.
 	*
@@ -311,17 +328,15 @@ public class AccountWorkerLocalServiceWrapper
 	}
 
 	@Override
-	public void addAccountWorkers(long userId, long[] userIds,
-		long accountEntryId, int[] roles, int[] notifications)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_accountWorkerLocalService.addAccountWorkers(userId, userIds,
-			accountEntryId, roles, notifications);
-	}
-
-	@Override
 	public void deleteAccountEntryAccountWorkers(long accountEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_accountWorkerLocalService.deleteAccountEntryAccountWorkers(accountEntryId);
+	}
+
+	@Override
+	public void deleteAccountWorker(long userId, long accountWorkerId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_accountWorkerLocalService.deleteAccountWorker(userId, accountWorkerId);
 	}
 
 	@Override
@@ -331,11 +346,11 @@ public class AccountWorkerLocalServiceWrapper
 	}
 
 	@Override
-	public void deleteAccountWorkers(long userId, long[] userIds,
-		long accountEntryId)
+	public void updateAccountWorker(long userId, long accountWorkerId,
+		int role, int notifications)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		_accountWorkerLocalService.deleteAccountWorkers(userId, userIds,
-			accountEntryId);
+		_accountWorkerLocalService.updateAccountWorker(userId, accountWorkerId,
+			role, notifications);
 	}
 
 	@Override

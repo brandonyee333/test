@@ -64,6 +64,22 @@ public class PartnerWorkerLocalServiceUtil {
 		return getService().addPartnerWorker(partnerWorker);
 	}
 
+	public static com.liferay.osb.model.PartnerWorker addPartnerWorker(
+		long partnerEntryId, java.lang.String emailAddress, int role,
+		int notifications)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .addPartnerWorker(partnerEntryId, emailAddress, role,
+			notifications);
+	}
+
+	public static com.liferay.osb.model.PartnerWorker addPartnerWorker(
+		long partnerEntryId, long userId, int role, int notifications)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .addPartnerWorker(partnerEntryId, userId, role, notifications);
+	}
+
 	/**
 	* Creates a new partner worker with the primary key. Does not add the partner worker to the database.
 	*
@@ -295,21 +311,9 @@ public class PartnerWorkerLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static void addPartnerWorkers(long[] userIds, long partnerEntryId,
-		int[] roles, int[] notifications)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService()
-			.addPartnerWorkers(userIds, partnerEntryId, roles, notifications);
-	}
-
 	public static void deletePartnerWorkers(long userId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deletePartnerWorkers(userId);
-	}
-
-	public static void deletePartnerWorkers(long[] userIds, long partnerEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deletePartnerWorkers(userIds, partnerEntryId);
 	}
 
 	public static void syncPartnerWorkers(long partnerEntryId,
@@ -319,6 +323,12 @@ public class PartnerWorkerLocalServiceUtil {
 		getService()
 			.syncPartnerWorkers(partnerEntryId, oldDossieraAccountKey,
 			newDossieraAccountKey);
+	}
+
+	public static void updatePartnerWorker(long partnerWorkerId, int role,
+		int notifications)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().updatePartnerWorker(partnerWorkerId, role, notifications);
 	}
 
 	public static void clearService() {
