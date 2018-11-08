@@ -109,7 +109,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 				!accountEntry.isPartnerManagedSupport()) {
 
 				_accountEntrySynchronizer.removePartnerManagedSupport(
-					accountEntry);
+					oldAccountEntry);
 			}
 		}
 		catch (Exception e) {
