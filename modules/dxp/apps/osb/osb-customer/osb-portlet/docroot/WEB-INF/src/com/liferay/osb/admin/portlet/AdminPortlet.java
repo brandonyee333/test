@@ -26,18 +26,8 @@ import com.liferay.osb.exception.AccountEntryMaximumCustomersException;
 import com.liferay.osb.exception.AccountEntryNameException;
 import com.liferay.osb.exception.AccountEntryPartnerEntryException;
 import com.liferay.osb.exception.AccountEntrySupportRegionException;
-import com.liferay.osb.exception.AccountEnvironmentAttachmentSizeException;
-import com.liferay.osb.exception.AccountEnvironmentEnvASException;
-import com.liferay.osb.exception.AccountEnvironmentEnvBrowserException;
-import com.liferay.osb.exception.AccountEnvironmentEnvCSException;
-import com.liferay.osb.exception.AccountEnvironmentEnvDBException;
-import com.liferay.osb.exception.AccountEnvironmentEnvLFRException;
-import com.liferay.osb.exception.AccountEnvironmentEnvOSException;
-import com.liferay.osb.exception.AccountEnvironmentEnvSearchException;
-import com.liferay.osb.exception.AccountEnvironmentNameException;
 import com.liferay.osb.exception.DuplicateAccountCustomerException;
 import com.liferay.osb.exception.DuplicateAccountEntryException;
-import com.liferay.osb.exception.DuplicateAccountEnvironmentException;
 import com.liferay.osb.exception.DuplicateOfferingBundleException;
 import com.liferay.osb.exception.DuplicateOfferingDefinitionException;
 import com.liferay.osb.exception.DuplicatePartnerEntryCodeException;
@@ -71,8 +61,6 @@ import com.liferay.osb.exception.SupportResponseNameException;
 import com.liferay.osb.model.AccountAttachment;
 import com.liferay.osb.model.AccountAttachmentConstants;
 import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.AccountEnvironmentAttachment;
-import com.liferay.osb.model.AccountEnvironmentAttachmentConstants;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.OrderEntry;
@@ -84,9 +72,6 @@ import com.liferay.osb.rabbitmq.RabbitMQConsumer;
 import com.liferay.osb.service.AccountAttachmentLocalServiceUtil;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
-import com.liferay.osb.service.AccountEnvironmentAttachmentLocalServiceUtil;
-import com.liferay.osb.service.AccountEnvironmentAttachmentServiceUtil;
-import com.liferay.osb.service.AccountEnvironmentLocalServiceUtil;
 import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
 import com.liferay.osb.service.LicenseEntryLocalServiceUtil;
 import com.liferay.osb.service.OfferingBundleLocalServiceUtil;
@@ -100,8 +85,6 @@ import com.liferay.osb.service.SupportRegionLocalServiceUtil;
 import com.liferay.osb.service.SupportResponseLocalServiceUtil;
 import com.liferay.osb.tools.Upgrade;
 import com.liferay.osb.util.OSBConstants;
-import com.liferay.osb.util.OSBPortletKeys;
-import com.liferay.osb.util.OSBRequestUtil;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.osb.util.mvc.OSBPortlet;
 import com.liferay.portal.kernel.bean.BeanReference;
@@ -133,7 +116,6 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.ReleaseLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
-import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
@@ -161,7 +143,6 @@ import java.text.DateFormat;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -492,17 +473,6 @@ public class AdminPortlet extends OSBPortlet {
 			else if (resourceID.equals("accountEntries")) {
 				serveAccountEntries(resourceRequest, resourceResponse);
 			}
-			else if (resourceID.equals("accountEnvironmentAttachment")) {
-				serveAccountEnvironmentAttachment(
-					resourceRequest, resourceResponse);
-			}
-			else if (resourceID.equals("accountEnvironment")) {
-				JSONObject jsonObject =
-					OSBRequestUtil.getAccountEnvironmentListTypes(
-						resourceRequest);
-
-				writeJSON(resourceRequest, resourceResponse, jsonObject);
-			}
 		}
 		catch (Exception e) {
 			throw new PortletException(e);
@@ -617,101 +587,6 @@ public class AdminPortlet extends OSBPortlet {
 		}
 
 		updateAccountAttachment(actionRequest);
-	}
-
-	public void updateAccountEnvironment(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		UploadPortletRequest uploadPortletRequest =
-			PortalUtil.getUploadPortletRequest(actionRequest);
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		long accountEnvironmentId = ParamUtil.getLong(
-			actionRequest, "accountEnvironmentId");
-
-		long productEntryId = ParamUtil.getLong(
-			actionRequest, "productEntryId");
-		String name = ParamUtil.getString(actionRequest, "name");
-		int envOS = ParamUtil.getInteger(actionRequest, "envOS");
-		String envOSCustom = ParamUtil.getString(actionRequest, "envOSCustom");
-		int envDB = ParamUtil.getInteger(actionRequest, "envDB");
-		int envJVM = ParamUtil.getInteger(actionRequest, "envJVM");
-		int envAS = ParamUtil.getInteger(actionRequest, "envAS");
-		int envLFR = ParamUtil.getInteger(actionRequest, "envLFR");
-
-		List<ObjectValuePair<String, File>> files = new ArrayList<>();
-
-		List<Integer> types = new ArrayList<>();
-
-		String[] uploadFileNames = {"patch-level", "portal-ext"};
-
-		try {
-			for (String uploadFileName : uploadFileNames) {
-				String fileName = uploadPortletRequest.getFileName(
-					uploadFileName);
-
-				if (Validator.isNull(fileName)) {
-					continue;
-				}
-
-				File file = uploadPortletRequest.getFile(uploadFileName);
-
-				if (file == null) {
-					continue;
-				}
-
-				if (file.length() <= 0) {
-					throw new AccountEnvironmentAttachmentSizeException(
-						AccountEnvironmentAttachmentSizeException.EMPTY_FILE,
-						fileName);
-				}
-
-				ObjectValuePair<String, File> ovp = new ObjectValuePair<>(
-					fileName, file);
-
-				files.add(ovp);
-
-				if (uploadFileName.equals("portal-ext")) {
-					types.add(
-						AccountEnvironmentAttachmentConstants.TYPE_PORTAL_EXT);
-				}
-				else {
-					types.add(
-						AccountEnvironmentAttachmentConstants.TYPE_PATCH_LEVEL);
-				}
-			}
-
-			if (accountEnvironmentId > 0) {
-				AccountEnvironmentLocalServiceUtil.updateAccountEnvironment(
-					themeDisplay.getUserId(), accountEnvironmentId,
-					productEntryId, name, envOS, envOSCustom, envDB, envJVM,
-					envAS, envLFR, 0, 0, null, files, types);
-
-				SessionMessages.add(
-					actionRequest,
-					OSBPortletKeys.OSB_ADMIN +
-						SessionMessages.KEY_SUFFIX_REFRESH_PORTLET,
-					OSBPortletKeys.OSB_ADMIN);
-
-				Map<String, String> refreshPortletData = new HashMap<>();
-
-				refreshPortletData.put(
-					actionResponse.getNamespace() + "productEntryId",
-					String.valueOf(productEntryId));
-
-				SessionMessages.add(
-					actionRequest,
-					OSBPortletKeys.OSB_ADMIN +
-						SessionMessages.KEY_SUFFIX_REFRESH_PORTLET_DATA,
-					refreshPortletData);
-			}
-		}
-		finally {
-			uploadPortletRequest.cleanUp();
-		}
 	}
 
 	public void updateAccountWorker(
@@ -1256,15 +1131,6 @@ public class AdminPortlet extends OSBPortlet {
 			cause instanceof AccountEntryNameException ||
 			cause instanceof AccountEntryPartnerEntryException ||
 			cause instanceof AccountEntrySupportRegionException ||
-			cause instanceof AccountEnvironmentAttachmentSizeException ||
-			cause instanceof AccountEnvironmentEnvASException ||
-			cause instanceof AccountEnvironmentEnvBrowserException ||
-			cause instanceof AccountEnvironmentEnvCSException ||
-			cause instanceof AccountEnvironmentEnvDBException ||
-			cause instanceof AccountEnvironmentEnvLFRException ||
-			cause instanceof AccountEnvironmentEnvOSException ||
-			cause instanceof AccountEnvironmentEnvSearchException ||
-			cause instanceof AccountEnvironmentNameException ||
 			cause instanceof AddressCityException ||
 			cause instanceof AddressStreetException ||
 			cause instanceof AddressZipException ||
@@ -1272,7 +1138,6 @@ public class AdminPortlet extends OSBPortlet {
 			cause instanceof ContactLastNameException ||
 			cause instanceof DuplicateAccountCustomerException ||
 			cause instanceof DuplicateAccountEntryException ||
-			cause instanceof DuplicateAccountEnvironmentException ||
 			cause instanceof DuplicateOfferingBundleException ||
 			cause instanceof DuplicateOfferingDefinitionException ||
 			cause instanceof DuplicatePartnerEntryCodeException ||
@@ -1367,28 +1232,6 @@ public class AdminPortlet extends OSBPortlet {
 		}
 
 		writeJSON(resourceRequest, resourceResponse, accountEntriesArray);
-	}
-
-	protected void serveAccountEnvironmentAttachment(
-			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
-		throws IOException, PortalException {
-
-		long accountEnvironmentAttachmentId = ParamUtil.getLong(
-			resourceRequest, "accountEnvironmentAttachmentId");
-
-		AccountEnvironmentAttachment accountEnvironmentAttachment =
-			AccountEnvironmentAttachmentServiceUtil.
-				getAccountEnvironmentAttachment(accountEnvironmentAttachmentId);
-
-		PortletResponseUtil.sendFile(
-			resourceRequest, resourceResponse,
-			accountEnvironmentAttachment.getFileName(),
-			AccountEnvironmentAttachmentLocalServiceUtil.getFileAsStream(
-				accountEnvironmentAttachment),
-			accountEnvironmentAttachment.getContentLength(),
-			MimeTypesUtil.getContentType(
-				accountEnvironmentAttachment.getFileName()),
-			HttpHeaders.CONTENT_DISPOSITION_ATTACHMENT);
 	}
 
 	protected void updateAccountAttachment(ActionRequest actionRequest)
