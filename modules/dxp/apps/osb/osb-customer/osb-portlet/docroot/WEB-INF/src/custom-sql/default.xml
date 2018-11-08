@@ -880,13 +880,4 @@
 					(OSB_OrderEntry.modifiedUserId = User_.userId)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByPartnerWorker">
-		<![CDATA[
-			INNER JOIN
-				OSB_PartnerWorker ON
-					(OSB_PartnerWorker.userId = User_.userId)
-			WHERE
-				(OSB_PartnerWorker.partnerEntryId = ?)
-		]]>
-	</sql>
 </custom-sql>
