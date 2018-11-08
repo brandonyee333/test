@@ -270,7 +270,7 @@
 					{
 						description: '<@liferay.language key="end-of-life-policies-for-liferay-products" />',
 						name: '<@liferay.language key="service-life" />',
-						svgId: '#end-of-life',
+						svgId: '#service-life',
 						url: helpCenterBaseURL + 'sections/360002241991'
 					},
 					{
@@ -288,7 +288,7 @@
 					{
 						description: '<@liferay.language key="benefits-included-with-each-subscription-level" />',
 						name: '<@liferay.language key="service-levels" />',
-						svgId: '#support-overview',
+						svgId: '#service-levels',
 						url: helpCenterBaseURL + 'articles/360016510271'
 					}
 				]
