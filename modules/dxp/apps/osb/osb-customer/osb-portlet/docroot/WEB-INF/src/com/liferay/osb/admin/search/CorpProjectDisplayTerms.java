@@ -36,6 +36,15 @@ public class CorpProjectDisplayTerms extends DisplayTerms {
 		return name;
 	}
 
+	@Override
+	public boolean isAdvancedSearch() {
+		if (super.isAdvancedSearch() || !isSearch()) {
+			return true;
+		}
+
+		return false;
+	}
+
 	protected String name;
 
 }

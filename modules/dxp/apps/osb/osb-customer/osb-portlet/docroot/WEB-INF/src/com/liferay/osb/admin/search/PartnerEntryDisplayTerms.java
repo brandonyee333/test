@@ -104,6 +104,15 @@ public class PartnerEntryDisplayTerms extends DisplayTerms {
 		}
 	}
 
+	@Override
+	public boolean isAdvancedSearch() {
+		if (super.isAdvancedSearch() || !isSearch()) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public Boolean isChildPartnerEntries() {
 		if (childPartnerEntries == null) {
 			return false;

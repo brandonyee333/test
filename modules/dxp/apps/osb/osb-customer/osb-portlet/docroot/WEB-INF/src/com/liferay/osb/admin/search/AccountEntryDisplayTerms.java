@@ -490,6 +490,15 @@ public class AccountEntryDisplayTerms extends DisplayTerms {
 		}
 	}
 
+	@Override
+	public boolean isAdvancedSearch() {
+		if (super.isAdvancedSearch() || !isSearch()) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public boolean isExpiredSupport() {
 		if (expiredSupport == null) {
 			return false;

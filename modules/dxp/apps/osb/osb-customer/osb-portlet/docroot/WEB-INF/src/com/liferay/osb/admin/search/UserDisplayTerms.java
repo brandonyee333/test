@@ -109,6 +109,15 @@ public class UserDisplayTerms extends DisplayTerms {
 		}
 	}
 
+	@Override
+	public boolean isAdvancedSearch() {
+		if (super.isAdvancedSearch() || !isSearch()) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public void setStatus(int status) {
 		this.status = status;
 	}

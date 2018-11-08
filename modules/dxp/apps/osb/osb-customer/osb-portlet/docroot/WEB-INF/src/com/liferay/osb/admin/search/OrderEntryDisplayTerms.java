@@ -322,6 +322,15 @@ public class OrderEntryDisplayTerms extends DisplayTerms {
 		}
 	}
 
+	@Override
+	public boolean isAdvancedSearch() {
+		if (super.isAdvancedSearch() || !isSearch()) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public boolean isProrated() {
 		if (prorated == null) {
 			return false;

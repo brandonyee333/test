@@ -390,6 +390,15 @@ public class LicenseKeyDisplayTerms extends DisplayTerms {
 		return active.booleanValue();
 	}
 
+	@Override
+	public boolean isAdvancedSearch() {
+		if (super.isAdvancedSearch() || !isSearch()) {
+			return true;
+		}
+
+		return false;
+	}
+
 	protected String accountEntryName;
 	protected Boolean active;
 	protected int createDateGTDay;

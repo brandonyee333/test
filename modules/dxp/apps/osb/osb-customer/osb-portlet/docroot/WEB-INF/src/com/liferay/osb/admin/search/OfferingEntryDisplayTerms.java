@@ -70,6 +70,15 @@ public class OfferingEntryDisplayTerms extends DisplayTerms {
 		return screenName;
 	}
 
+	@Override
+	public boolean isAdvancedSearch() {
+		if (super.isAdvancedSearch() || !isSearch()) {
+			return true;
+		}
+
+		return false;
+	}
+
 	protected String emailAddress;
 	protected String firstName;
 	protected String lastName;

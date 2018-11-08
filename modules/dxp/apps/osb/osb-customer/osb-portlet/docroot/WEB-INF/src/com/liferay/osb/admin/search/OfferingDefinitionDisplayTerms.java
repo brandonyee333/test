@@ -54,6 +54,15 @@ public class OfferingDefinitionDisplayTerms extends DisplayTerms {
 		return supportResponseIds;
 	}
 
+	@Override
+	public boolean isAdvancedSearch() {
+		if (super.isAdvancedSearch() || !isSearch()) {
+			return true;
+		}
+
+		return false;
+	}
+
 	protected long[] productEntryIds;
 	protected long[] supportResponseIds;
 
