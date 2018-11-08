@@ -16,6 +16,7 @@ package com.liferay.osb.customer.zendesk.documentation.sync.service.impl;
 
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints;
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
+import com.liferay.osb.customer.zendesk.documentation.sync.configuration.ZendeskDocumentationSyncConfigurationValues;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection;
@@ -271,6 +272,15 @@ public class ZendeskArticleLocalServiceImpl
 			}
 
 			articleJSONObject.put("label_names", jsonArray);
+		}
+
+		if (ZendeskDocumentationSyncConfigurationValues.
+				ZENDESK_ARTICLE_PERMISSION_GROUP_ID > 0) {
+
+			articleJSONObject.put(
+				"permission_group_id",
+				ZendeskDocumentationSyncConfigurationValues.
+					ZENDESK_ARTICLE_PERMISSION_GROUP_ID);
 		}
 
 		articleJSONObject.put("position", position);

@@ -21,6 +21,11 @@ import com.liferay.portal.kernel.util.GetterUtil;
  */
 public class ZendeskDocumentationSyncConfigurationValues {
 
+	public static final long ZENDESK_ARTICLE_PERMISSION_GROUP_ID =
+		GetterUtil.getLong(
+			ZendeskDocumentationSyncConfigurationUtil.get(
+				"zendesk.article.permission.group.id"));
+
 	public static final long ZENDESK_SECTION_USER_SEGMENT_ID =
 		GetterUtil.getLong(
 			ZendeskDocumentationSyncConfigurationUtil.get(
