@@ -741,7 +741,7 @@ public class AdminPortlet extends OSBPortlet {
 		}
 		else {
 			AccountWorkerLocalServiceUtil.addAccountWorker(
-				themeDisplay.getUserId(), accountEntryId, emailAddress, role,
+				themeDisplay.getUserId(), emailAddress, accountEntryId, role,
 				notifications);
 		}
 	}

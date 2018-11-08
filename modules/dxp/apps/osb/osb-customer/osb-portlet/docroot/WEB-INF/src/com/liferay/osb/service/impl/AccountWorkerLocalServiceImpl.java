@@ -14,6 +14,7 @@
 
 package com.liferay.osb.service.impl;
 
+import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.osb.exception.NoSuchAccountEntryException;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountWorker;
@@ -22,8 +23,10 @@ import com.liferay.osb.model.AuditEntryConstants;
 import com.liferay.osb.service.base.AccountWorkerLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.VisibilityConstants;
+import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.Date;
@@ -36,8 +39,8 @@ import java.util.List;
 public class AccountWorkerLocalServiceImpl
 	extends AccountWorkerLocalServiceBaseImpl {
 
-	public void addAccountWorker(
-			long userId, long accountEntryId, String emailAddress, int role,
+	public AccountWorker addAccountWorker(
+			long userId, long workerUserId, long accountEntryId, int role,
 			int notifications)
 		throws PortalException {
 
@@ -52,8 +55,7 @@ public class AccountWorkerLocalServiceImpl
 		long fieldClassNameId = classNameLocalService.getClassNameId(
 			AccountWorker.class.getName());
 
-		User accountWorkerUser = userLocalService.getUserByEmailAddress(
-			OSBConstants.COMPANY_ID, emailAddress);
+		User workerUser = userLocalService.getUser(workerUserId);
 
 		validate(accountEntryId);
 
@@ -62,7 +64,7 @@ public class AccountWorkerLocalServiceImpl
 		AccountWorker accountWorker = accountWorkerPersistence.create(
 			accountWorkerId);
 
-		accountWorker.setUserId(accountWorkerUser.getUserId());
+		accountWorker.setUserId(workerUser.getUserId());
 		accountWorker.setAccountEntryId(accountEntryId);
 		accountWorker.setRole(role);
 		accountWorker.setNotifications(notifications);
@@ -74,8 +76,7 @@ public class AccountWorkerLocalServiceImpl
 			auditSetId, fieldClassNameId, accountWorkerId,
 			AuditEntryConstants.ACTION_ASSIGN, AuditEntryConstants.FIELD_USER,
 			VisibilityConstants.WORKERS, StringPool.BLANK, StringPool.BLANK,
-			accountWorkerUser.getFullName(),
-			String.valueOf(accountWorkerUser.getUserId()));
+			workerUser.getFullName(), String.valueOf(workerUser.getUserId()));
 
 		auditEntryLocalService.addAuditEntry(
 			userId, user.getFullName(), now, classNameId, accountEntryId,
@@ -84,6 +85,55 @@ public class AccountWorkerLocalServiceImpl
 			VisibilityConstants.WORKERS, StringPool.BLANK, StringPool.BLANK,
 			accountWorker.getRoleLabel(),
 			String.valueOf(accountWorker.getRole()));
+
+		return accountWorker;
+	}
+
+	public AccountWorker addAccountWorker(
+			long userId, String emailAddress, long accountEntryId, int role,
+			int notifications)
+		throws PortalException {
+
+		User workerUser = userLocalService.fetchUserByEmailAddress(
+			OSBConstants.COMPANY_ID, emailAddress);
+
+		if (workerUser != null) {
+			return addAccountWorker(
+				userId, workerUser.getUserId(), accountEntryId, role,
+				notifications);
+		}
+
+		User remoteUser = remoteUserLocalService.fetchUserByEmailAddress(
+			emailAddress);
+
+		if (remoteUser == null) {
+			throw new NoSuchUserException();
+		}
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setCreateDate(remoteUser.getCreateDate());
+		serviceContext.setUuid(remoteUser.getUuid());
+
+		workerUser = userLocalService.addUser(
+			OSBConstants.USER_DEFAULT_USER_ID, OSBConstants.COMPANY_ID, true,
+			StringPool.BLANK, StringPool.BLANK, false,
+			remoteUser.getScreenName(), remoteUser.getEmailAddress(), 0,
+			StringPool.BLANK, remoteUser.getLocale(), remoteUser.getFirstName(),
+			remoteUser.getMiddleName(), remoteUser.getLastName(), 0, 0, false,
+			0, 1, 1970, StringPool.BLANK, new long[0],
+			remoteUser.getOrganizationIds(), remoteUser.getRoleIds(),
+			new long[0], false, serviceContext);
+
+		ExpandoBridge expandoBridge = workerUser.getExpandoBridge();
+
+		ExpandoBridge remoteExpandoBridge = remoteUser.getExpandoBridge();
+
+		expandoBridge.setAttributes(remoteExpandoBridge.getAttributes(), false);
+
+		return addAccountWorker(
+			userId, workerUser.getUserId(), accountEntryId, role,
+			notifications);
 	}
 
 	public void deleteAccountEntryAccountWorkers(long accountEntryId)

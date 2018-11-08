@@ -14,6 +14,7 @@
 
 package com.liferay.osb.service.impl;
 
+import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.osb.exception.NoSuchPartnerWorkerException;
 import com.liferay.osb.exception.PartnerEntryDossieraAccountKeyException;
 import com.liferay.osb.model.PartnerEntry;
@@ -22,9 +23,12 @@ import com.liferay.osb.model.PartnerWorkerConstants;
 import com.liferay.osb.remote.web.WebRESTWebServiceUtil;
 import com.liferay.osb.service.base.PartnerWorkerLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
+import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.List;
 
@@ -36,15 +40,13 @@ import java.util.List;
 public class PartnerWorkerLocalServiceImpl
 	extends PartnerWorkerLocalServiceBaseImpl {
 
-	public void addPartnerWorker(
-			long partnerEntryId, String emailAddress, int role,
-			int notifications)
+	public PartnerWorker addPartnerWorker(
+			long partnerEntryId, long workerUserId, int role, int notifications)
 		throws PortalException {
 
 		validateDossieraAccountKey(partnerEntryId);
 
-		User user = userLocalService.fetchUserByEmailAddress(
-			OSBConstants.COMPANY_ID, emailAddress);
+		User user = userLocalService.getUser(workerUserId);
 
 		long partnerWorkerId = counterLocalService.increment();
 
@@ -61,6 +63,53 @@ public class PartnerWorkerLocalServiceImpl
 		assignOrganizations(user.getUserId());
 
 		assignCorpEntryOrganizations(user.getUserId(), partnerEntryId);
+
+		return partnerWorker;
+	}
+
+	public PartnerWorker addPartnerWorker(
+			long partnerEntryId, String emailAddress, int role,
+			int notifications)
+		throws PortalException {
+
+		User workerUser = userLocalService.fetchUserByEmailAddress(
+			OSBConstants.COMPANY_ID, emailAddress);
+
+		if (workerUser != null) {
+			return addPartnerWorker(
+				partnerEntryId, workerUser.getUserId(), role, notifications);
+		}
+
+		User remoteUser = remoteUserLocalService.fetchUserByEmailAddress(
+			emailAddress);
+
+		if (remoteUser == null) {
+			throw new NoSuchUserException();
+		}
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setCreateDate(remoteUser.getCreateDate());
+		serviceContext.setUuid(remoteUser.getUuid());
+
+		workerUser = userLocalService.addUser(
+			OSBConstants.USER_DEFAULT_USER_ID, OSBConstants.COMPANY_ID, true,
+			StringPool.BLANK, StringPool.BLANK, false,
+			remoteUser.getScreenName(), remoteUser.getEmailAddress(), 0,
+			StringPool.BLANK, remoteUser.getLocale(), remoteUser.getFirstName(),
+			remoteUser.getMiddleName(), remoteUser.getLastName(), 0, 0, false,
+			0, 1, 1970, StringPool.BLANK, new long[0],
+			remoteUser.getOrganizationIds(), remoteUser.getRoleIds(),
+			new long[0], false, serviceContext);
+
+		ExpandoBridge expandoBridge = workerUser.getExpandoBridge();
+
+		ExpandoBridge remoteExpandoBridge = remoteUser.getExpandoBridge();
+
+		expandoBridge.setAttributes(remoteExpandoBridge.getAttributes(), false);
+
+		return addPartnerWorker(
+			partnerEntryId, workerUser.getUserId(), role, notifications);
 	}
 
 	@Override

@@ -89,8 +89,8 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 				User user = UserLocalServiceUtil.getUser(userId);
 
 				AccountWorkerLocalServiceUtil.addAccountWorker(
-					OSBConstants.USER_DEFAULT_USER_ID, accountEntryId,
-					user.getEmailAddress(), 0,
+					OSBConstants.USER_DEFAULT_USER_ID, user.getEmailAddress(),
+					accountEntryId, 0,
 					AccountWorkerConstants.NOTIFICATIONS_NONE);
 			}
 		}

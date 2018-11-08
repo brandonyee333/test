@@ -317,9 +317,8 @@ public class OSBCustomerQAInfrastructureUtil {
 				userId, accountEntry.getAccountEntryId())) {
 
 			AccountWorkerLocalServiceUtil.addAccountWorker(
-				OSBConstants.USER_DEFAULT_USER_ID,
-				accountEntry.getAccountEntryId(), emailAddress, role,
-				notifications);
+				OSBConstants.USER_DEFAULT_USER_ID, emailAddress,
+				accountEntry.getAccountEntryId(), role, notifications);
 		}
 
 		if (_log.isInfoEnabled()) {
