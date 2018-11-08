@@ -41,12 +41,12 @@ public class PartnerWorkerLocalServiceImpl
 	extends PartnerWorkerLocalServiceBaseImpl {
 
 	public PartnerWorker addPartnerWorker(
-			long partnerEntryId, long workerUserId, int role, int notifications)
+			long partnerEntryId, long userId, int role, int notifications)
 		throws PortalException {
 
 		validateDossieraAccountKey(partnerEntryId);
 
-		User user = userLocalService.getUser(workerUserId);
+		User user = userLocalService.getUser(userId);
 
 		long partnerWorkerId = counterLocalService.increment();
 
@@ -72,12 +72,12 @@ public class PartnerWorkerLocalServiceImpl
 			int notifications)
 		throws PortalException {
 
-		User workerUser = userLocalService.fetchUserByEmailAddress(
+		User user = userLocalService.fetchUserByEmailAddress(
 			OSBConstants.COMPANY_ID, emailAddress);
 
-		if (workerUser != null) {
+		if (user != null) {
 			return addPartnerWorker(
-				partnerEntryId, workerUser.getUserId(), role, notifications);
+				partnerEntryId, user.getUserId(), role, notifications);
 		}
 
 		User remoteUser = remoteUserLocalService.fetchUserByEmailAddress(
@@ -92,7 +92,7 @@ public class PartnerWorkerLocalServiceImpl
 		serviceContext.setCreateDate(remoteUser.getCreateDate());
 		serviceContext.setUuid(remoteUser.getUuid());
 
-		workerUser = userLocalService.addUser(
+		user = userLocalService.addUser(
 			OSBConstants.USER_DEFAULT_USER_ID, OSBConstants.COMPANY_ID, true,
 			StringPool.BLANK, StringPool.BLANK, false,
 			remoteUser.getScreenName(), remoteUser.getEmailAddress(), 0,
@@ -102,22 +102,22 @@ public class PartnerWorkerLocalServiceImpl
 			remoteUser.getOrganizationIds(), remoteUser.getRoleIds(),
 			new long[0], false, serviceContext);
 
-		ExpandoBridge expandoBridge = workerUser.getExpandoBridge();
+		ExpandoBridge expandoBridge = user.getExpandoBridge();
 
 		ExpandoBridge remoteExpandoBridge = remoteUser.getExpandoBridge();
 
 		expandoBridge.setAttributes(remoteExpandoBridge.getAttributes(), false);
 
 		return addPartnerWorker(
-			partnerEntryId, workerUser.getUserId(), role, notifications);
+			partnerEntryId, user.getUserId(), role, notifications);
 	}
 
 	@Override
 	public PartnerWorker deletePartnerWorker(long partnerWorkerId)
 		throws PortalException {
 
-		PartnerWorker partnerWorker =
-			partnerWorkerPersistence.fetchByPrimaryKey(partnerWorkerId);
+		PartnerWorker partnerWorker = partnerWorkerPersistence.findByPrimaryKey(
+			partnerWorkerId);
 
 		validateDossieraAccountKey(partnerWorker.getPartnerEntryId());
 
@@ -221,14 +221,13 @@ public class PartnerWorkerLocalServiceImpl
 	}
 
 	public void updatePartnerWorker(
-			long partnerEntryId, long partnerWorkerId, int role,
-			int notifications)
+			long partnerWorkerId, int role, int notifications)
 		throws PortalException {
 
-		validateDossieraAccountKey(partnerEntryId);
+		PartnerWorker partnerWorker = partnerWorkerPersistence.findByPrimaryKey(
+			partnerWorkerId);
 
-		PartnerWorker partnerWorker =
-			partnerWorkerPersistence.fetchByPrimaryKey(partnerWorkerId);
+		validateDossieraAccountKey(partnerWorker.getPartnerEntryId());
 
 		partnerWorker.setRole(role);
 		partnerWorker.setNotifications(notifications);
@@ -239,7 +238,7 @@ public class PartnerWorkerLocalServiceImpl
 
 		if (partnerWorker.getRole() != role) {
 			assignCorpEntryOrganizations(
-				partnerWorker.getUserId(), partnerEntryId);
+				partnerWorker.getUserId(), partnerWorker.getPartnerEntryId());
 		}
 	}
 

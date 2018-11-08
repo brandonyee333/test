@@ -721,14 +721,13 @@ public class AdminPortlet extends OSBPortlet {
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		long accountEntryId = ParamUtil.getLong(
-			actionRequest, "accountEntryId");
 		long accountWorkerId = ParamUtil.getLong(
 			actionRequest, "accountWorkerId");
 
 		String emailAddress = ParamUtil.getString(
 			actionRequest, "emailAddress");
-
+		long accountEntryId = ParamUtil.getLong(
+			actionRequest, "accountEntryId");
 		int role = ParamUtil.getInteger(
 			actionRequest, "role_" + accountWorkerId);
 		int notifications = ParamUtil.getInteger(
@@ -736,8 +735,7 @@ public class AdminPortlet extends OSBPortlet {
 
 		if (accountWorkerId > 0) {
 			AccountWorkerLocalServiceUtil.updateAccountWorker(
-				themeDisplay.getUserId(), accountEntryId, accountWorkerId, role,
-				notifications);
+				themeDisplay.getUserId(), accountWorkerId, role, notifications);
 		}
 		else {
 			AccountWorkerLocalServiceUtil.addAccountWorker(
@@ -1023,14 +1021,13 @@ public class AdminPortlet extends OSBPortlet {
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		long partnerEntryId = ParamUtil.getLong(
-			actionRequest, "partnerEntryId");
 		long partnerWorkerId = ParamUtil.getLong(
 			actionRequest, "partnerWorkerId");
 
+		long partnerEntryId = ParamUtil.getLong(
+			actionRequest, "partnerEntryId");
 		String emailAddress = ParamUtil.getString(
 			actionRequest, "emailAddress");
-
 		int role = ParamUtil.getInteger(
 			actionRequest, "role_" + partnerWorkerId);
 		int notifications = ParamUtil.getInteger(
@@ -1038,7 +1035,7 @@ public class AdminPortlet extends OSBPortlet {
 
 		if (partnerWorkerId > 0) {
 			PartnerWorkerLocalServiceUtil.updatePartnerWorker(
-				partnerEntryId, partnerWorkerId, role, notifications);
+				partnerWorkerId, role, notifications);
 		}
 		else {
 			PartnerWorkerLocalServiceUtil.addPartnerWorker(

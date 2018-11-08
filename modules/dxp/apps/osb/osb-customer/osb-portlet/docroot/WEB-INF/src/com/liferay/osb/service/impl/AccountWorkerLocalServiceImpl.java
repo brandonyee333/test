@@ -240,12 +240,11 @@ public class AccountWorkerLocalServiceImpl
 	}
 
 	public void updateAccountWorker(
-			long userId, long accountEntryId, long accountWorkerId, int role,
-			int notifications)
+			long userId, long accountWorkerId, int role, int notifications)
 		throws PortalException {
 
-		AccountWorker accountWorker =
-			accountWorkerPersistence.fetchByPrimaryKey(accountWorkerId);
+		AccountWorker accountWorker = accountWorkerPersistence.findByPrimaryKey(
+			accountWorkerId);
 
 		if ((accountWorker.getRole() == role) &&
 			(accountWorker.getNotifications() == notifications)) {
@@ -263,19 +262,17 @@ public class AccountWorkerLocalServiceImpl
 		if (oldRole != role) {
 			User user = userLocalService.getUser(userId);
 
-			Date now = new Date();
-
-			long auditSetId = auditEntryLocalService.getNextAuditSetId(
-				AccountEntry.class.getName(), accountEntryId);
-
 			long classNameId = classNameLocalService.getClassNameId(
 				AccountEntry.class.getName());
+			long auditSetId = auditEntryLocalService.getNextAuditSetId(
+				AccountEntry.class.getName(),
+				accountWorker.getAccountEntryId());
 			long fieldClassNameId = classNameLocalService.getClassNameId(
 				AccountWorker.class.getName());
 
 			auditEntryLocalService.addAuditEntry(
-				userId, user.getFullName(), now, classNameId, accountEntryId,
-				auditSetId, fieldClassNameId,
+				userId, user.getFullName(), new Date(), classNameId,
+				accountWorker.getAccountEntryId(), auditSetId, fieldClassNameId,
 				accountWorker.getAccountWorkerId(),
 				AuditEntryConstants.ACTION_UPDATE,
 				AuditEntryConstants.FIELD_ROLE, VisibilityConstants.WORKERS,
