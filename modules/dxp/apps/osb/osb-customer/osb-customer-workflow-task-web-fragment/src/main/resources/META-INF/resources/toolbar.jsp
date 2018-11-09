@@ -42,19 +42,19 @@ portletURL.setParameter("tabs1", tabs1);
 
 <aui:nav-bar cssClass="collapse-basic-search" markupView="lexicon">
 	<aui:nav cssClass="nav-bar-workflow nav-tabs nav-tabs-default">
-		<portlet:renderURL var="viewAssignedToMeURL">
-			<portlet:param name="mvcPath" value="/view.jsp" />
-			<portlet:param name="tabs1" value="assigned-to-me" />
-		</portlet:renderURL>
-
-		<aui:nav-item href="<%= viewAssignedToMeURL %>" label="assigned-to-me" selected='<%= tabs1.equals("assigned-to-me") %>' />
-
 		<portlet:renderURL var="viewAssignedToMyRolesURL">
 			<portlet:param name="mvcPath" value="/view.jsp" />
 			<portlet:param name="tabs1" value="assigned-to-my-roles" />
 		</portlet:renderURL>
 
 		<aui:nav-item href="<%= viewAssignedToMyRolesURL %>" label="assigned-to-my-roles" selected='<%= tabs1.equals("assigned-to-my-roles") %>' />
+
+		<portlet:renderURL var="viewAssignedToMeURL">
+			<portlet:param name="mvcPath" value="/view.jsp" />
+			<portlet:param name="tabs1" value="assigned-to-me" />
+		</portlet:renderURL>
+
+		<aui:nav-item href="<%= viewAssignedToMeURL %>" label="assigned-to-me" selected='<%= tabs1.equals("assigned-to-me") %>' />
 
 		<portlet:renderURL var="viewOtherAssigneesURL">
 			<portlet:param name="mvcPath" value="/other_assignees.jsp" />
