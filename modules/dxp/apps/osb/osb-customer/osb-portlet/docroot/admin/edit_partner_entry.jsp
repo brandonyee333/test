@@ -85,6 +85,19 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 	<liferay-ui:error exception="<%= PartnerEntryDossieraAccountKeyException.class %>" message="please-enter-a-valid-dossiera-account-key" />
 	<liferay-ui:error exception="<%= PartnerEntryParentPartnerEntryException.class %>" message="please-enter-a-valid-parent-partner-entry" />
 
+	<liferay-ui:error exception="<%= RemoteServiceException.class %>">
+
+		<%
+		RemoteServiceException rse = (RemoteServiceException)errorException;
+		%>
+
+		<liferay-ui:message key="unable-to-sync-to-web.liferay.com" />
+
+		<br />
+
+		<%= rse.getMessage() %>
+	</liferay-ui:error>
+
 	<aui:model-context bean="<%= partnerEntry %>" model="<%= PartnerEntry.class %>" />
 
 	<table class="lfr-table">
