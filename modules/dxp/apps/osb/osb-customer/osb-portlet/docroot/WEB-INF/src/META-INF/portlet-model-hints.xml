@@ -167,7 +167,9 @@
 		<field name="modifiedDate" type="Date" />
 		<field name="dossieraProjectKey" type="String" />
 		<field name="salesforceProjectKey" type="String" />
-		<field name="name" type="String" />
+		<field name="name" type="String">
+			<hint name="max-length">150</hint>
+		</field>
 		<field name="organizationId" type="long" />
 	</model>
 	<model name="com.liferay.osb.model.CorpProjectMessage">
@@ -180,8 +182,12 @@
 		<field name="corpProjectId" type="long" />
 		<field name="type" type="int" />
 		<field name="severityLevel" type="int" />
-		<field name="title" type="String" />
-		<field name="content" type="String" />
+		<field name="title" type="String">
+			<hint name="max-length">150</hint>
+		</field>
+		<field name="content" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
 		<field name="displayCP" type="boolean" />
 		<field name="displayLCS" type="boolean" />
 	</model>
