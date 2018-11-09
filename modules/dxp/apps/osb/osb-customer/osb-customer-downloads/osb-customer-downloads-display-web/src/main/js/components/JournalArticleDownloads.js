@@ -68,11 +68,10 @@ export default class JournalArticleDownloads extends React.Component {
 					</Button>
 				</div>
 
-				<span className="detail-label small">{Liferay.Language.get('file-size')}:</span> <span className="detail-value small">{downloadDetails.fileSize}</span>
-
-				<span className="middot-separator">&middot;</span>
-
-				<span className="detail-label small">{Liferay.Language.get('md5')}:</span> <span className="detail-value small">{downloadDetails.md5}</span>
+				<div class="download-details small">
+					<span className="detail-label"></span>:{' '}
+					<span className="detail-value"></span>
+				</div>
 			</React.Fragment>
 		);
 	}
