@@ -94,11 +94,7 @@ Map<String, Map<String, String>> downloadDetailsMap = new HashMap<>();
 <div class="downloads" id="<portlet:namespace />downloads<%= journalArticle.getResourcePrimKey() %>"></div>
 
 <%
-JSONArray allDownloadsJSONArray = JSONFactoryUtil.createJSONArray();
-
 JSONArray downloadGroupsJSONArray = JSONFactoryUtil.createJSONArray();
-
-JSONObject firstDownloadJSONObject = JSONFactoryUtil.createJSONObject();
 
 List<DDMFormFieldValue> downloadGroupFieldValues = ddmFormFieldValuesMap.get("downloadGroup");
 
@@ -138,12 +134,6 @@ for (DDMFormFieldValue downloadGroupFieldValue : downloadGroupFieldValues) {
 		}
 
 		downloadJSONObject.put("downloadDetails", downloadDetailsJSONObject);
-
-		if (downloadGroupFieldValue == downloadGroupFieldValues.get(0) && downloadFieldValue == downloadFieldValues.get(0)) {
-			firstDownloadJSONObject = downloadJSONObject;
-		}
-
-		allDownloadsJSONArray.put(downloadJSONObject);
 
 		downloadsJSONArray.put(downloadJSONObject);
 	}
@@ -193,11 +183,10 @@ private String _getStringValue(DDMFormFieldValue ddmFormFieldValue, Locale local
 
 <aui:script>
 	Downloads.render(
-		Downloads.JournalArticleDownloads,
+		Downloads.FileDownloads,
 		{
-			allDownloads: <%= allDownloadsJSONArray %>,
 			downloadGroups: <%= downloadGroupsJSONArray %>,
-			firstDownload: <%= firstDownloadJSONObject %>
+			journalArticleId: <%= journalArticle.getResourcePrimKey() %>
 		},
 		document.getElementById('<portlet:namespace />downloads<%= journalArticle.getResourcePrimKey() %>')
 	);
