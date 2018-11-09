@@ -26,8 +26,14 @@ String product = DDMFieldsUtil.getSelectOption(ddmFields, "product");
 
 <c:choose>
 	<c:when test="<%= product.equals(DDMStructureConstants.PRODUCT_COMMERCE) %>">
+		<svg class="commerce-logo-full">
+			<use xlink:href="#commerce-logo-full" />
+		</svg>
 	</c:when>
 	<c:when test="<%= product.equals(DDMStructureConstants.PRODUCT_DXP_70) || product.equals(DDMStructureConstants.PRODUCT_DXP_71) %>">
+		<svg class="dxp-logo-full">
+			<use xlink:href="#dxp-logo-full" />
+		</svg>
 	</c:when>
 </c:choose>
 
@@ -46,6 +52,7 @@ String product = DDMFieldsUtil.getSelectOption(ddmFields, "product");
 
 		<liferay-ui:search-container-row
 			className="com.liferay.journal.model.JournalArticle"
+			cssClass="journal-article-row"
 			keyProperty="resourcePrimKey"
 		>
 			<liferay-ui:search-container-column-text
@@ -59,7 +66,13 @@ String product = DDMFieldsUtil.getSelectOption(ddmFields, "product");
 				%>
 
 				<%= mediumDateFormatDate.format(releaseDate) %>
+
 			</liferay-ui:search-container-column-text>
+
+			<liferay-ui:search-container-column-text
+				cssClass="th-separator"
+				value=""
+			/>
 
 			<liferay-ui:search-container-column-jsp
 				name="name"
@@ -77,4 +90,6 @@ String product = DDMFieldsUtil.getSelectOption(ddmFields, "product");
 	<portlet:param name="mvcRenderCommandName" value="/view" />
 </portlet:renderURL>
 
-<liferay-ui:message arguments="<%= backURL %>" key="view-previous-releases-in-liferay's-archive" />
+<div class="view-previous-releases">
+	<liferay-ui:message arguments="<%= backURL %>" key="view-previous-releases-in-liferay's-archive" />
+</div>

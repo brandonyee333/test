@@ -1,140 +1,156 @@
-.osb-downloads-display-portlet .results {
-	.additional-notes {
-		color: $secondary-text-color;
-		font-size: $font-size-md;
-		line-height: 20px;
-		margin: $margin-default;
+.osb-downloads-display-portlet {
+	.commerce-logo-full, .dxp-logo-full {
+		height: 100px;
+		margin-bottom: 32px;
+		width: 300px;
 	}
 
-	.detail-label,
-	.detail-value {
-		color: $color-default;
-	}
-
-	.detail-label {
-		font-weight: $font-weight-semi-bold;
-	}
-
-	.detail-value:not(:last-child)::after {
-		content: "\B7";
-		padding: 0 12px;
-	}
-
-	.dropdown-row {
-		display: flex;
-		margin-bottom: $margin-default;
-
-		.btn-link {
-			background-color: $color-primary;
-			color: $color-white;
-
-			&:active,
-			&:focus,
-			&:hover {
-				text-decoration: none;
-			}
-
-			&:focus {
-				background-color: $color-primary-focus;
-			}
-
-			&:hover {
-				background-color: $color-primary-hover;
-				box-shadow: 0 2px 6px 0 rgba(2, 19, 51, 0.36);
-			}
-		}
-
-		.download-dropdown {
-			height: 32px;
-			margin-right: $margin-default;
-		}
-	}
-
-	.section-alert {
-		margin: $margin-default;
-
-		.alert-header {
-			font-weight: $font-weight-semi-bold;
-			padding-right: 4px;
-		}
-
-		.alert-message {
-			display: inline-block;
-
-			p {
-				margin: 0;
-			}
-		}
-
-		.lexicon-icon-info-circle {
-			vertical-align: sub;
-		}
-	}
-
-	.section-links {
-		margin: $margin-default;
-
-		a {
-			border-right: 1px solid $color-border;
-			padding: 0 12px;
-
-			&:first-of-type {
-				padding-left: 0;
-			}
-
-			&:last-of-type {
-				border-width: 0;
-			}
-		}
-
-		.link {
-			color: $color-primary;
+	.results {
+		.additional-notes {
+			color: $secondary-text-color;
 			font-size: $font-size-md;
-			font-weight: $font-weight-semi-bold;
 			line-height: 20px;
+			margin: $margin-default;
 		}
-	}
 
-	.table-responsive .table {
-		table-layout: auto;
+		.detail-label,
+		.detail-value {
+			color: $color-default;
+		}
 
-		thead > tr > th {
-			&:first-of-type {
-				padding-right: $padding-default;
+		.detail-label {
+			font-weight: $font-weight-semi-bold;
+		}
+
+		.detail-value:not(:last-child)::after {
+			content: "\B7";
+			padding: 0 12px;
+		}
+
+		.dropdown-row {
+			display: flex;
+			margin-bottom: $margin-default;
+
+			.btn-link {
+				background-color: $color-primary;
+				color: $color-white;
+
+				&:active,
+				&:focus,
+				&:hover {
+					text-decoration: none;
+				}
+
+				&:focus {
+					background-color: $color-primary-focus;
+				}
+
+				&:hover {
+					background-color: $color-primary-hover;
+					box-shadow: 0 2px 6px 0 rgba(2, 19, 51, 0.36);
+				}
 			}
 
-			&:last-of-type {
-				padding-left: $padding-default;
-				width: 100%;
+			.download-dropdown {
+				height: 32px;
+				margin-right: $margin-default;
+			}
+		}
+
+		.section-alert {
+			margin: $margin-default;
+
+			.alert-header {
+				font-weight: $font-weight-semi-bold;
+				padding-right: 4px;
 			}
 
-			&:nth-of-type(2) {
-				padding: 0;
-				text-align: center;
+			.alert-message {
+				display: inline-block;
 
-				&:after {
-					border-left: 1px solid $color-border;
-					content: "";
+				p {
+					margin: 0;
+				}
+			}
+
+			.lexicon-icon-info-circle {
+				vertical-align: sub;
+			}
+		}
+
+		.section-links {
+			margin: $margin-default;
+
+			a {
+				border-right: 1px solid $color-border;
+				padding: 0 12px;
+
+				&:first-of-type {
+					padding-left: 0;
+				}
+
+				&:last-of-type {
+					border-width: 0;
+				}
+			}
+
+			.link {
+				color: $color-primary;
+				font-size: $font-size-md;
+				font-weight: $font-weight-semi-bold;
+				line-height: 20px;
+			}
+		}
+
+		.table-responsive .table {
+			table-layout: auto;
+
+			thead > tr > th {
+				&:first-of-type {
+					padding-right: $padding-default;
+				}
+
+				&:last-of-type {
+					padding-left: $padding-default;
+					width: 100%;
+				}
+
+				&:nth-of-type(2) {
+					padding: 0;
+					text-align: center;
+
+					&:after {
+						border-left: 1px solid $color-border;
+						content: "";
+					}
+				}
+			}
+
+			.journal-article-row {
+				td:last-of-type {
+					padding: 0;
+				}
+
+				.downloads {
+					margin: $margin-default;
+				}
+
+				.lfr-released-column {
+					color: $color-default;
+					font-size: 12px;
+					font-weight: $font-weight-normal;
+					padding-top: 30px;
+					vertical-align: baseline;
 				}
 			}
 		}
+	}
 
-		.journal-article-row {
-			td:last-of-type {
-				padding: 0;
-			}
+	.view-previous-releases {
+		margin: 10px 0 60px;
 
-			.downloads {
-				margin: $margin-default;
-			}
-
-			.lfr-released-column {
-				color: $color-default;
-				font-size: 12px;
-				font-weight: $font-weight-normal;
-				padding-top: 30px;
-				vertical-align: baseline;
-			}
+		a {
+			font-weight: $font-weight-semi-bold;
 		}
 	}
 }
