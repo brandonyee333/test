@@ -155,7 +155,7 @@ create table OSB_CorpProject (
 	modifiedDate DATE null,
 	dossieraProjectKey VARCHAR(75) null,
 	salesforceProjectKey VARCHAR(75) null,
-	name VARCHAR(75) null,
+	name VARCHAR(150) null,
 	organizationId LONG
 );
 
@@ -169,8 +169,8 @@ create table OSB_CorpProjectMessage (
 	corpProjectId LONG,
 	type_ INTEGER,
 	severityLevel INTEGER,
-	title VARCHAR(75) null,
-	content VARCHAR(75) null,
+	title VARCHAR(150) null,
+	content STRING null,
 	displayCP BOOLEAN,
 	displayLCS BOOLEAN
 );

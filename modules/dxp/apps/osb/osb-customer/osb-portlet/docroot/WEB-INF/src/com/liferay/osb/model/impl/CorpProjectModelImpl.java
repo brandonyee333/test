@@ -96,7 +96,7 @@ public class CorpProjectModelImpl extends BaseModelImpl<CorpProject>
 		TABLE_COLUMNS_MAP.put("organizationId", Types.BIGINT);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSB_CorpProject (uuid_ VARCHAR(75) null,corpProjectId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,dossieraProjectKey VARCHAR(75) null,salesforceProjectKey VARCHAR(75) null,name VARCHAR(75) null,organizationId LONG)";
+	public static final String TABLE_SQL_CREATE = "create table OSB_CorpProject (uuid_ VARCHAR(75) null,corpProjectId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,dossieraProjectKey VARCHAR(75) null,salesforceProjectKey VARCHAR(75) null,name VARCHAR(150) null,organizationId LONG)";
 	public static final String TABLE_SQL_DROP = "drop table OSB_CorpProject";
 	public static final String ORDER_BY_JPQL = " ORDER BY corpProject.corpProjectId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY OSB_CorpProject.corpProjectId ASC";

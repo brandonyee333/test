@@ -102,7 +102,7 @@ public class CorpProjectMessageModelImpl extends BaseModelImpl<CorpProjectMessag
 		TABLE_COLUMNS_MAP.put("displayLCS", Types.BOOLEAN);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSB_CorpProjectMessage (uuid_ VARCHAR(75) null,corpProjectMessageId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,corpProjectId LONG,type_ INTEGER,severityLevel INTEGER,title VARCHAR(75) null,content VARCHAR(75) null,displayCP BOOLEAN,displayLCS BOOLEAN)";
+	public static final String TABLE_SQL_CREATE = "create table OSB_CorpProjectMessage (uuid_ VARCHAR(75) null,corpProjectMessageId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,corpProjectId LONG,type_ INTEGER,severityLevel INTEGER,title VARCHAR(150) null,content STRING null,displayCP BOOLEAN,displayLCS BOOLEAN)";
 	public static final String TABLE_SQL_DROP = "drop table OSB_CorpProjectMessage";
 	public static final String ORDER_BY_JPQL = " ORDER BY corpProjectMessage.corpProjectMessageId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY OSB_CorpProjectMessage.corpProjectMessageId ASC";

@@ -39,7 +39,7 @@ create index IX_558935D2 on OSB_AuditEntry (createDate, classNameId);
 create index IX_A70C3087 on OSB_AuditEntry (fieldClassNameId, fieldClassPK, field);
 
 create index IX_B1E34FE4 on OSB_CorpProject (dossieraProjectKey[$COLUMN_LENGTH:75$]);
-create index IX_C2AF513 on OSB_CorpProject (name[$COLUMN_LENGTH:75$]);
+create index IX_C2AF513 on OSB_CorpProject (name[$COLUMN_LENGTH:150$]);
 create index IX_14940FF6 on OSB_CorpProject (organizationId);
 create index IX_D682EE0 on OSB_CorpProject (uuid_[$COLUMN_LENGTH:75$]);
 
