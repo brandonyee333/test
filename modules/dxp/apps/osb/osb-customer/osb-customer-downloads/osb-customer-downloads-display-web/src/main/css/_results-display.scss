@@ -6,51 +6,13 @@
 		margin: $margin-default;
 	}
 
-	.detail-label, .detail-value {
+	.detail-label {
+		font-weight: $font-weight-semi-bold;
+	}
+
+	.detail-label,
+	.detail-value {
 		color: $color-default;
-		font-size: 12px;
-
-		&.detail-label {
-			font-weight: $font-weight-semi-bold;
-		}
-	}
-
-	.download-alert {
-		margin: $margin-default;
-
-		.alert-header {
-			font-weight: $font-weight-semi-bold;
-			padding-right: 4px;
-		}
-
-		.alert-message {
-			display: inline-block;
-
-			p {
-				margin: 0;
-			}
-		}
-
-		.lexicon-icon-info-circle {
-			vertical-align: sub;
-		}
-	}
-
-	.download-links {
-		margin: $margin-default;
-
-		a {
-			border-right: 1px solid $color-border;
-			padding: 0 12px;
-
-			&:first-of-type {
-				padding-left: 0;
-			}
-
-			&:last-of-type {
-				border-width: 0;
-			}
-		}
 	}
 
 	.dropdown-row {
@@ -73,13 +35,6 @@
 		}
 	}
 
-	.link {
-		color: $color-primary;
-		font-size: $font-size-md;
-		font-weight: $font-weight-semi-bold;
-		line-height: 20px;
-	}
-
 	.middot-separator {
 		font-size: 20px;
 		font-weight: $font-weight-semi-bold;
@@ -87,12 +42,62 @@
 		vertical-align: middle;
 	}
 
+	.section-alert {
+		margin: $margin-default;
+
+		.alert-header {
+			font-weight: $font-weight-semi-bold;
+			padding-right: 4px;
+		}
+
+		.alert-message {
+			display: inline-block;
+
+			p {
+				margin: 0;
+			}
+		}
+
+		.lexicon-icon-info-circle {
+			vertical-align: sub;
+		}
+	}
+
+	.section-links {
+		margin: $margin-default;
+
+		a {
+			border-right: 1px solid $color-border;
+			padding: 0 12px;
+
+			&:first-of-type {
+				padding-left: 0;
+			}
+
+			&:last-of-type {
+				border-width: 0;
+			}
+		}
+
+		.link {
+			color: $color-primary;
+			font-size: $font-size-md;
+			font-weight: $font-weight-semi-bold;
+			line-height: 20px;
+		}
+	}
+
 	.table-responsive .table {
 		table-layout: auto;
 
 		thead > tr > th {
-			&:nth-of-type(1) {
+			&:first-of-type {
 				padding-right: $padding-default;
+			}
+
+			&:last-of-type {
+				padding-left: $padding-default;
+				width: 100%;
 			}
 
 			&:nth-of-type(2) {
@@ -104,11 +109,6 @@
 					content: '',
 				}
 			}
-
-			&:nth-of-type(3) {
-				padding-left: $padding-default;
-				width: 100%;
-			}
 		}
 
 		.journal-article-row {
@@ -116,7 +116,7 @@
 				padding: 0;
 			}
 
-			.journal-article-download {
+			.downloads {
 				margin: $margin-default;
 			}
 

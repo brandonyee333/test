@@ -62,7 +62,7 @@ Map<String, Map<String, String>> downloadDetailsMap = new HashMap<>();
 	<%= journalArticle.getTitle(locale) %>
 </h3>
 
-<div class="download-links">
+<div class="section-links">
 
 	<%
 	List<DDMFormFieldValue> linkFieldValues = ddmFormFieldValuesMap.get("link");
@@ -70,14 +70,14 @@ Map<String, Map<String, String>> downloadDetailsMap = new HashMap<>();
 	for (DDMFormFieldValue linkFieldValue : linkFieldValues) {
 	%>
 
-		<a class="btn-link link" href='<%= _getStringValue(linkFieldValue.getNestedDDMFormFieldValuesMap(), "linkUrl", locale) %>'><%= _getStringValue(linkFieldValue, locale) %></a>
+		<a class="link" href='<%= _getStringValue(linkFieldValue.getNestedDDMFormFieldValuesMap(), "linkUrl", locale) %>'><%= _getStringValue(linkFieldValue, locale) %></a>
 
 	<%
 	}
 	%>
 </div>
 
-<aui:alert closeable="<%= false %>" cssClass="download-alert">
+<aui:alert closeable="<%= false %>" cssClass="section-alert">
 	<svg class="lexicon-icon lexicon-icon-info-circle">
 		<use xlink:href="#info-circle" />
 	</svg>
@@ -91,7 +91,7 @@ Map<String, Map<String, String>> downloadDetailsMap = new HashMap<>();
 	<%= additionalNotes %>
 </div>
 
-<div class="journal-article-download" id="<portlet:namespace />journalArticleDownloads<%= journalArticle.getResourcePrimKey() %>"></div>
+<div class="downloads" id="<portlet:namespace />downloads<%= journalArticle.getResourcePrimKey() %>"></div>
 
 <%
 JSONArray allDownloadsJSONArray = JSONFactoryUtil.createJSONArray();
@@ -155,18 +155,6 @@ for (DDMFormFieldValue downloadGroupFieldValue : downloadGroupFieldValues) {
 }
 %>
 
-<aui:script>
-	Downloads.render(
-		Downloads.JournalArticleDownloads,
-		{
-			allDownloads: <%= allDownloadsJSONArray %>,
-			downloadGroups: <%= downloadGroupsJSONArray %>,
-			firstDownload: <%= firstDownloadJSONObject %>
-		},
-		document.getElementById('<portlet:namespace />journalArticleDownloads<%= journalArticle.getResourcePrimKey() %>')
-	);
-</aui:script>
-
 <%!
 private String _getStringValue(Map<String, List<DDMFormFieldValue>> ddmFormFieldValuesMap, String name, Locale locale) {
 	List<DDMFormFieldValue> ddmFormFieldValues = ddmFormFieldValuesMap.get(name);
@@ -202,3 +190,15 @@ private String _getStringValue(DDMFormFieldValue ddmFormFieldValue, Locale local
 	return stringValue;
 }
 %>
+
+<aui:script>
+	Downloads.render(
+		Downloads.JournalArticleDownloads,
+		{
+			allDownloads: <%= allDownloadsJSONArray %>,
+			downloadGroups: <%= downloadGroupsJSONArray %>,
+			firstDownload: <%= firstDownloadJSONObject %>
+		},
+		document.getElementById('<portlet:namespace />downloads<%= journalArticle.getResourcePrimKey() %>')
+	);
+</aui:script>
