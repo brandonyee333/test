@@ -38,7 +38,6 @@ export default class JournalArticleDownloads extends React.Component {
 
 	render() {
 		const {allDownloads, downloadGroups} = this.props;
-
 		const {downloadURL, downloadDetails} = this.state;
 
 		return (
@@ -62,12 +61,10 @@ export default class JournalArticleDownloads extends React.Component {
 
 					<Button
 						display="primary"
+						href={downloadURL}
 						size="sm"
-						type="button"
 					>
-						<a className="download-url" href={downloadURL}>
-							{Liferay.Language.get('download')}
-						</a>
+						{Liferay.Language.get('download')}
 					</Button>
 				</div>
 
