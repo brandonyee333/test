@@ -77,15 +77,17 @@ Map<String, Map<String, String>> downloadDetailsMap = new HashMap<>();
 	%>
 </div>
 
-<aui:alert closeable="<%= false %>" cssClass="section-alert">
-	<svg class="lexicon-icon lexicon-icon-info-circle">
-		<use xlink:href="#info-circle" />
-	</svg>
+<c:if test="<%= Validator.isNotNull(alertMessage) %>">
+	<aui:alert closeable="<%= false %>" cssClass="section-alert">
+		<svg class="lexicon-icon lexicon-icon-info-circle">
+			<use xlink:href="#info-circle" />
+		</svg>
 
-	<span class="alert-header"><liferay-ui:message key="info" />:</span>
+		<span class="alert-header"><liferay-ui:message key="info" />:</span>
 
-	<span class="alert-message"><%= alertMessage %></span>
-</aui:alert>
+		<span class="alert-message"><%= alertMessage %></span>
+	</aui:alert>
+</c:if>
 
 <div class="additional-notes">
 	<%= additionalNotes %>
@@ -182,6 +184,8 @@ private String _getStringValue(DDMFormFieldValue ddmFormFieldValue, Locale local
 %>
 
 <aui:script>
+console.log(<%= downloadGroupsJSONArray %>);
+
 	Downloads.render(
 		Downloads.FileDownloads,
 		{
