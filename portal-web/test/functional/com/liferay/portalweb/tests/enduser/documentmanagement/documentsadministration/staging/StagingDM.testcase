@@ -52,6 +52,7 @@
 
 	<command name="PublishDocumentFromRestrictedFolder" priority="5">
 		<description message="This is a use case for LPS-79925." />
+		<property name="portal.acceptance" value="Linda" />
 
 		<execute macro="DMNavigator#gotoDocumentType" />
 
