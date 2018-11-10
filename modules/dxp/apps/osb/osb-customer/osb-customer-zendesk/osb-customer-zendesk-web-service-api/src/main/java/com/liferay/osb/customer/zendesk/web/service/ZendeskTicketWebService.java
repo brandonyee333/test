@@ -29,7 +29,8 @@ import java.util.List;
 @ProviderType
 public interface ZendeskTicketWebService {
 
-	public List<ZendeskTicket> getRequesterZendeskTickets(long zendeskUserId)
+	public List<ZendeskTicket> getRequesterOrganizationZendeskTickets(
+			long zendeskUserId, long zendeskOrganizationId)
 		throws PortalException;
 
 	public ZendeskTicket getZendeskTicket(long zendeskTicketId)

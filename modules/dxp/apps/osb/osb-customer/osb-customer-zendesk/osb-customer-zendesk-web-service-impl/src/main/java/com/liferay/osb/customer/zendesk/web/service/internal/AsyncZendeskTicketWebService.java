@@ -50,6 +50,8 @@ public class AsyncZendeskTicketWebService
 
 			ticketJSONObject.put("id", zendeskTicket.getZendeskTicketId());
 			ticketJSONObject.put(
+				"organization_id", zendeskTicket.getZendeskOrganizationId());
+			ticketJSONObject.put(
 				"requester_id", zendeskTicket.getRequesterId());
 
 			ticketsJSONArray.put(ticketJSONObject);

@@ -32,10 +32,7 @@ public interface ZendeskRESTEndpoints {
 	public static final String ORGANIZATIONS_CREATE_OR_UPDATE =
 		"organizations/create_or_update.json";
 
-	public static final String TICKETS_REQUESTED = "/tickets/requested.json";
-
-	public static final String TICKETS_UPDATE_MANY =
-		"/tickets/update_many.json";
+	public static final String TICKETS_UPDATE_MANY = "tickets/update_many.json";
 
 	public static final String URL_API_V2 = "/api/v2/";
 

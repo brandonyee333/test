@@ -21,6 +21,7 @@ import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
 import com.liferay.osb.customer.zendesk.web.service.exception.NoSuchZendeskTicketException;
 import com.liferay.osb.customer.zendesk.web.service.internal.search.SearchHitsImpl;
 import com.liferay.osb.customer.zendesk.web.service.internal.util.ZendeskConverter;
+import com.liferay.osb.customer.zendesk.web.service.search.QueryFactory;
 import com.liferay.osb.customer.zendesk.web.service.search.SearchHits;
 import com.liferay.osb.customer.zendesk.web.service.search.ZendeskTicketQuery;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
@@ -44,22 +45,29 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = ZendeskTicketWebService.class)
 public class DefaultZendeskTicketWebService implements ZendeskTicketWebService {
 
-	public List<ZendeskTicket> getRequesterZendeskTickets(long zendeskUserId)
+	public List<ZendeskTicket> getRequesterOrganizationZendeskTickets(
+			long zendeskUserId, long zendeskOrganizationId)
 		throws PortalException {
 
-		JSONObject responseJSONObject = zendeskBaseWebService.get(
-			ZendeskRESTEndpoints.URL_API_V2 + "users/" + zendeskUserId +
-				ZendeskRESTEndpoints.TICKETS_REQUESTED,
-			StringPool.BLANK);
+		ZendeskTicketQuery zendeskTicketQuery =
+			queryFactory.createZendeskTicketQuery();
+
+		zendeskTicketQuery.addCriterion("requester:" + zendeskUserId);
+		zendeskTicketQuery.addCriterion(
+			"organization:" + zendeskOrganizationId);
 
 		List<ZendeskTicket> zendeskTickets = new ArrayList<>();
 
-		JSONArray ticketsJSONArray = responseJSONObject.getJSONArray("tickets");
+		int page = 1;
 
-		for (int i = 0; i < ticketsJSONArray.length(); i++) {
-			JSONObject jsonObject = ticketsJSONArray.getJSONObject(i);
+		while (page > 0) {
+			zendeskTicketQuery.setPage(page);
 
-			zendeskTickets.add(zendeskConverter.toZendeskTicket(jsonObject));
+			SearchHits<ZendeskTicket> searchHits = search(zendeskTicketQuery);
+
+			zendeskTickets.addAll(searchHits.getResults());
+
+			page = searchHits.getNextPage();
 		}
 
 		return zendeskTickets;
@@ -131,6 +139,9 @@ public class DefaultZendeskTicketWebService implements ZendeskTicketWebService {
 
 	@Reference
 	protected Http http;
+
+	@Reference
+	protected QueryFactory queryFactory;
 
 	@Reference
 	protected ZendeskBaseWebService zendeskBaseWebService;
