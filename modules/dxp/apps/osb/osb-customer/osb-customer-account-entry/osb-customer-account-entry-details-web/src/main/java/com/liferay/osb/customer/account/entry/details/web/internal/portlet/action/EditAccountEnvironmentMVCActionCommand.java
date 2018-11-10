@@ -154,8 +154,6 @@ public class EditAccountEnvironmentMVCActionCommand
 				PortletRequest.RENDER_PHASE);
 
 			portletURL.setParameter(
-				"mvcRenderCommandName", "/edit_account_environment");
-			portletURL.setParameter(
 				"accountEnvironmentId",
 				String.valueOf(accountEnvironment.getAccountEnvironmentId()));
 			portletURL.setWindowState(LiferayWindowState.POP_UP);
@@ -164,9 +162,6 @@ public class EditAccountEnvironmentMVCActionCommand
 		}
 		catch (Exception e) {
 			SessionErrors.add(actionRequest, e.getClass());
-
-			actionResponse.setRenderParameter(
-				"mvcRenderCommandName", "/edit_account_environment");
 
 			hideDefaultSuccessMessage(actionRequest);
 		}
