@@ -84,6 +84,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>IMAGES</td>
+	<td>//ul[contains(@class,'navbar-nav')]/li/a[contains(.,'Images')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>MAIL</td>
 	<td>//ul[contains(@class,'navbar-nav')]/li/a[contains(.,'Mail')]</td>
 	<td></td>
