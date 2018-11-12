@@ -16,12 +16,9 @@ package com.liferay.osb.customer.account.entry.details.web.internal.portlet.acti
 
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys;
 import com.liferay.osb.exception.AccountEnvironmentAttachmentSizeException;
-import com.liferay.osb.model.AccountEnvironment;
 import com.liferay.osb.model.AccountEnvironmentAttachmentConstants;
 import com.liferay.osb.service.AccountEnvironmentServiceUtil;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
-import com.liferay.portal.kernel.portlet.LiferayWindowState;
-import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.servlet.SessionErrors;
@@ -40,9 +37,6 @@ import java.util.List;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
-import javax.portlet.PortletConfig;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletURL;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -130,35 +124,18 @@ public class EditAccountEnvironmentMVCActionCommand
 				}
 			}
 
-			AccountEnvironment accountEnvironment = null;
-
 			if (accountEnvironmentId > 0) {
-				accountEnvironment =
-					AccountEnvironmentServiceUtil.updateAccountEnvironment(
-						accountEnvironmentId, productEntryId, name, envOS,
-						envOSCustom, envDB, envJVM, envAS, envLFR, envBrowser,
-						envCS, envSearch, files, types);
+				AccountEnvironmentServiceUtil.updateAccountEnvironment(
+					accountEnvironmentId, productEntryId, name, envOS,
+					envOSCustom, envDB, envJVM, envAS, envLFR, envBrowser,
+					envCS, envSearch, files, types);
 			}
 			else {
-				accountEnvironment =
-					AccountEnvironmentServiceUtil.addAccountEnvironment(
-						accountEntryId, productEntryId, name, envOS,
-						envOSCustom, envDB, envJVM, envAS, envLFR, envBrowser,
-						envCS, envSearch, files, types);
+				AccountEnvironmentServiceUtil.addAccountEnvironment(
+					accountEntryId, productEntryId, name, envOS, envOSCustom,
+					envDB, envJVM, envAS, envLFR, envBrowser, envCS, envSearch,
+					files, types);
 			}
-
-			PortletConfig portletConfig = getPortletConfig(actionRequest);
-
-			PortletURL portletURL = PortletURLFactoryUtil.create(
-				actionRequest, portletConfig.getPortletName(),
-				PortletRequest.RENDER_PHASE);
-
-			portletURL.setParameter(
-				"accountEnvironmentId",
-				String.valueOf(accountEnvironment.getAccountEnvironmentId()));
-			portletURL.setWindowState(LiferayWindowState.POP_UP);
-
-			actionResponse.sendRedirect(portletURL.toString());
 		}
 		catch (Exception e) {
 			SessionErrors.add(actionRequest, e.getClass());
