@@ -65,14 +65,14 @@ public class AccountCustomerSynchronizer {
 
 	public void remove(AccountCustomer accountCustomer) throws PortalException {
 		try {
+			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+				accountCustomer.getUserId());
 			long zendeskOrganizationId =
 				_zendeskMapperUtil.fetchZendeskOrganizationId(
 					accountCustomer.getAccountEntryId());
-			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
-				accountCustomer.getUserId());
 
 			List<ZendeskTicket> zendeskTickets =
-				_zendeskTicketWebService.getRequesterOrganizationZendeskTickets(
+				_zendeskTicketWebService.getZendeskTickets(
 					zendeskUserId, zendeskOrganizationId);
 
 			if (!zendeskTickets.isEmpty()) {
@@ -92,8 +92,6 @@ public class AccountCustomerSynchronizer {
 
 				for (ZendeskTicket zendeskTicket : zendeskTickets) {
 					zendeskTicket.setRequesterId(newZendeskUserId);
-					zendeskTicket.setZendeskOrganizationId(
-						zendeskOrganizationId);
 				}
 
 				_asyncZendeskTicketWebService.updateZendeskTickets(

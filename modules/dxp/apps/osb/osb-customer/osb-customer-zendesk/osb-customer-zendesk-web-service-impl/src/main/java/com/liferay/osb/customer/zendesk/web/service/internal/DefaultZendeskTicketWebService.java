@@ -45,7 +45,24 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = ZendeskTicketWebService.class)
 public class DefaultZendeskTicketWebService implements ZendeskTicketWebService {
 
-	public List<ZendeskTicket> getRequesterOrganizationZendeskTickets(
+	public ZendeskTicket getZendeskTicket(long zendeskTicketId)
+		throws PortalException {
+
+		try {
+			JSONObject responseJSONObject = zendeskBaseWebService.get(
+				ZendeskRESTEndpoints.URL_API_V2 + "tickets/" + zendeskTicketId +
+					".json",
+				StringPool.BLANK);
+
+			return zendeskConverter.toZendeskTicket(
+				responseJSONObject.getJSONObject("ticket"));
+		}
+		catch (NoSuchModelException nsme) {
+			throw new NoSuchZendeskTicketException(nsme);
+		}
+	}
+
+	public List<ZendeskTicket> getZendeskTickets(
 			long zendeskUserId, long zendeskOrganizationId)
 		throws PortalException {
 
@@ -71,23 +88,6 @@ public class DefaultZendeskTicketWebService implements ZendeskTicketWebService {
 		}
 
 		return zendeskTickets;
-	}
-
-	public ZendeskTicket getZendeskTicket(long zendeskTicketId)
-		throws PortalException {
-
-		try {
-			JSONObject responseJSONObject = zendeskBaseWebService.get(
-				ZendeskRESTEndpoints.URL_API_V2 + "tickets/" + zendeskTicketId +
-					".json",
-				StringPool.BLANK);
-
-			return zendeskConverter.toZendeskTicket(
-				responseJSONObject.getJSONObject("ticket"));
-		}
-		catch (NoSuchModelException nsme) {
-			throw new NoSuchZendeskTicketException(nsme);
-		}
 	}
 
 	public SearchHits<ZendeskTicket> search(

@@ -29,11 +29,11 @@ import java.util.List;
 @ProviderType
 public interface ZendeskTicketWebService {
 
-	public List<ZendeskTicket> getRequesterOrganizationZendeskTickets(
-			long zendeskUserId, long zendeskOrganizationId)
+	public ZendeskTicket getZendeskTicket(long zendeskTicketId)
 		throws PortalException;
 
-	public ZendeskTicket getZendeskTicket(long zendeskTicketId)
+	public List<ZendeskTicket> getZendeskTickets(
+			long zendeskUserId, long zendeskOrganizationId)
 		throws PortalException;
 
 	public SearchHits<ZendeskTicket> search(
