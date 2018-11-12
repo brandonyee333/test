@@ -25,7 +25,6 @@ import com.liferay.blogs.kernel.exception.EntryTitleException;
 import com.liferay.blogs.kernel.model.BlogsEntry;
 import com.liferay.blogs.kernel.util.comparator.EntryDisplayDateComparator;
 import com.liferay.blogs.kernel.util.comparator.EntryIdComparator;
-import com.liferay.blogs.util.BlogsEntryAttachmentFileEntryUtil;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.portal.kernel.comment.CommentManagerUtil;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
@@ -438,11 +437,13 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 		Folder folder = addAttachmentsFolder(userId, groupId);
 
 		FileEntry originalFileEntry =
-			BlogsEntryAttachmentFileEntryUtil.
-				addBlogsEntryAttachmentFileEntry(
-					groupId, userId, entryId, folder.getFolderId(),
-					imageSelector.getImageTitle(),
-					imageSelector.getImageMimeType(), imageBytes);
+			PortletFileRepositoryUtil.addPortletFileEntry(
+				groupId, userId, BlogsEntry.class.getName(), entryId,
+				BlogsConstants.SERVICE_NAME, folder.getFolderId(), imageBytes,
+				_getUniqueFileName(
+					groupId, imageSelector.getImageTitle(),
+					folder.getFolderId()),
+				imageSelector.getImageMimeType(), true);
 
 		return originalFileEntry.getFileEntryId();
 	}
@@ -1489,9 +1490,10 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 		}
 
 		FileEntry processedImageFileEntry =
-			BlogsEntryAttachmentFileEntryUtil.
-				addBlogsEntryAttachmentFileEntry(
-					groupId, userId, entryId, folderId, title, mimeType, bytes);
+			PortletFileRepositoryUtil.addPortletFileEntry(
+				groupId, userId, BlogsEntry.class.getName(), entryId,
+				BlogsConstants.SERVICE_NAME, folderId, bytes,
+				_getUniqueFileName(groupId, title, folderId), mimeType, true);
 
 		return processedImageFileEntry.getFileEntryId();
 	}
@@ -2136,9 +2138,61 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 		}
 	}
 
+	private FileEntry _fetchPortletFileEntry(
+		long groupId, String fileName, long folderId) {
+
+		try {
+			return PortletFileRepositoryUtil.getPortletFileEntry(
+				groupId, folderId, fileName);
+		}
+		catch (PortalException pe) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(pe, pe);
+			}
+
+			return null;
+		}
+	}
+
+	private String _getUniqueFileName(
+			long groupId, String fileName, long folderId)
+		throws PortalException {
+
+		fileName = FileUtil.stripParentheticalSuffix(fileName);
+
+		FileEntry fileEntry = _fetchPortletFileEntry(
+			groupId, fileName, folderId);
+
+		if (fileEntry == null) {
+			return fileName;
+		}
+
+		int suffix = 1;
+
+		for (int i = 0; i < _UNIQUE_FILE_NAME_TRIES; i++) {
+			String curFileName = FileUtil.appendParentheticalSuffix(
+				fileName, String.valueOf(suffix));
+
+			fileEntry = _fetchPortletFileEntry(groupId, curFileName, folderId);
+
+			if (fileEntry == null) {
+				return curFileName;
+			}
+
+			suffix++;
+		}
+
+		throw new PortalException(
+			StringBundler.concat(
+				"Unable to get a unique file name for ", fileName,
+				" in folder ", String.valueOf(folderId)));
+	}
+
 	private static final String _COVER_IMAGE_FOLDER_NAME = "Cover Image";
 
 	private static final String _SMALL_IMAGE_FOLDER_NAME = "Small Image";
+
+	private static final int _UNIQUE_FILE_NAME_TRIES = 50;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		BlogsEntryLocalServiceImpl.class);
