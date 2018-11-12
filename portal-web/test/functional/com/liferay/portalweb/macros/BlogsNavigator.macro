@@ -140,6 +140,10 @@
 		<execute function="AssertClick" locator1="BlogsEntry#TITLE_LINK" value1="${entryTitle}" />
 	</command>
 
+	<command name="gotoImages">
+		<execute function="AssertClick" locator1="NavBar#IMAGES" value1="Images" />
+	</command>
+
 	<command name="gotoPG">
 		<var name="key_entryTitle" value="${entryTitle}" />
 
