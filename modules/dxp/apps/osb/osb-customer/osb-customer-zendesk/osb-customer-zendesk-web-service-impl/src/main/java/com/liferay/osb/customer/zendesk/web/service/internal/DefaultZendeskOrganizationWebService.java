@@ -43,10 +43,11 @@ public class DefaultZendeskOrganizationWebService
 	implements ZendeskOrganizationWebService {
 
 	public void createOrUpdateZendeskOrganization(
-			String externalId, String name, String partnerFirstLineSupport,
-			String partnerJiraProject, String partnerCode, String sla,
-			String status, String supportLanguage, String supportRegion,
-			String tier, Set<String> tags)
+			String details, String externalId, String name, String notes,
+			String partnerFirstLineSupport, String partnerJiraProject,
+			String partnerCode, String sla, String status,
+			String supportLanguage, String supportRegion, String tier,
+			Set<String> tags)
 		throws PortalException {
 
 		throw new UnsupportedOperationException();
@@ -75,15 +76,18 @@ public class DefaultZendeskOrganizationWebService
 	}
 
 	protected JSONObject getZendeskOrganizationJSONObject(
-		String externalId, String name, String partnerFirstLineSupport,
-		String partnerJiraProject, String partnerOrganization, String sla,
-		String status, String supportLanguage, String supportRegion,
-		String tier, Set<String> tags) {
+		String details, String externalId, String name, String notes,
+		String partnerFirstLineSupport, String partnerJiraProject,
+		String partnerOrganization, String sla, String status,
+		String supportLanguage, String supportRegion, String tier,
+		Set<String> tags) {
 
 		JSONObject organizationJSONObject = JSONFactoryUtil.createJSONObject();
 
+		organizationJSONObject.put("details", details);
 		organizationJSONObject.put("external_id", externalId);
 		organizationJSONObject.put("name", name);
+		organizationJSONObject.put("notes", notes);
 
 		JSONObject organizationFieldsJSONObject =
 			JSONFactoryUtil.createJSONObject();

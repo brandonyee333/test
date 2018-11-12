@@ -24,12 +24,20 @@ public class ZendeskOrganization {
 	public ZendeskOrganization() {
 	}
 
+	public String getDetails() {
+		return _details;
+	}
+
 	public String getExternalId() {
 		return _externalId;
 	}
 
 	public String getName() {
 		return _name;
+	}
+
+	public String getNotes() {
+		return _notes;
 	}
 
 	public String getPartnerFirstLineSupport() {
@@ -80,12 +88,20 @@ public class ZendeskOrganization {
 		return _zendeskOrganizationId;
 	}
 
+	public void setDetails(String details) {
+		_details = details;
+	}
+
 	public void setExternalId(String externalId) {
 		_externalId = externalId;
 	}
 
 	public void setName(String name) {
 		_name = name;
+	}
+
+	public void setNotes(String notes) {
+		_notes = notes;
 	}
 
 	public void setPartnerFirstLineSupport(String partnerFirstLineSupport) {
@@ -136,8 +152,10 @@ public class ZendeskOrganization {
 		_zendeskOrganizationId = zendeskOrganizationId;
 	}
 
+	private String _details;
 	private String _externalId;
 	private String _name;
+	private String _notes;
 	private String _partnerFirstLineSupport;
 	private String _partnerJiraProject;
 	private String _partnerOrganization;

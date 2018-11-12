@@ -39,10 +39,11 @@ public class AsyncZendeskOrganizationWebService
 
 	@Override
 	public void createOrUpdateZendeskOrganization(
-			String externalId, String name, String partnerFirstLineSupport,
-			String partnerJiraProject, String partnerOrganization, String sla,
-			String status, String supportLanguage, String supportRegion,
-			String tier, Set<String> tags)
+			String details, String externalId, String name, String notes,
+			String partnerFirstLineSupport, String partnerJiraProject,
+			String partnerOrganization, String sla, String status,
+			String supportLanguage, String supportRegion, String tier,
+			Set<String> tags)
 		throws PortalException {
 
 		String endpoint =
@@ -51,9 +52,9 @@ public class AsyncZendeskOrganizationWebService
 
 		JSONObject zendeskOrganizationJSONObject =
 			getZendeskOrganizationJSONObject(
-				externalId, name, partnerFirstLineSupport, partnerJiraProject,
-				partnerOrganization, sla, status, supportLanguage,
-				supportRegion, tier, tags);
+				details, externalId, name, notes, partnerFirstLineSupport,
+				partnerJiraProject, partnerOrganization, sla, status,
+				supportLanguage, supportRegion, tier, tags);
 
 		ZendeskRequest zendeskRequest = new ZendeskRequest(
 			endpoint, "post", null, zendeskOrganizationJSONObject,

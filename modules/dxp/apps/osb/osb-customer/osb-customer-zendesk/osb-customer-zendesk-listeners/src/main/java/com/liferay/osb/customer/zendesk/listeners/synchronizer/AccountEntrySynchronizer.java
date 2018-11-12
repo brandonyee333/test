@@ -89,8 +89,10 @@ public class AccountEntrySynchronizer {
 					supportRegionIds[0]);
 
 			_zendeskOrganizationWebService.createOrUpdateZendeskOrganization(
+				ZendeskModelListenerUtil.convertAddressToString(
+					accountEntry.getAddress()),
 				String.valueOf(accountEntry.getAccountEntryId()),
-				accountEntry.getName(),
+				accountEntry.getName(), accountEntry.getNotes(),
 				String.valueOf(accountEntry.getPartnerManagedSupport()),
 				jiraProjectKey, partnerEntryCode, supportLevelLabel,
 				accountEntry.getStatusLabel(),
