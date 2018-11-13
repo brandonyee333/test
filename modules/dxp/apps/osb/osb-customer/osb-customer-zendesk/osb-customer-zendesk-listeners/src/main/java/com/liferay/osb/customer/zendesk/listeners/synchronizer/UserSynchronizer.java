@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.zendesk.listeners.synchronizer;
 
+import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.listeners.exception.ZendeskIntegrationException;
 import com.liferay.osb.customer.zendesk.listeners.util.ZendeskModelListenerUtil;
@@ -34,6 +35,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
+import com.liferay.portal.kernel.service.OrganizationLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 
 import java.util.HashSet;
@@ -48,6 +50,16 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true, service = UserSynchronizer.class)
 public class UserSynchronizer {
+
+	public void addLiferayEmployee(long userId) throws PortalException {
+		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
+
+		Set<String> tags = new HashSet<>();
+
+		tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
+
+		_asyncZendeskUserWebService.addZendeskUserTags(zendeskUserId, tags);
+	}
 
 	public void addPhone(long userId, Phone phone) throws PortalException {
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
@@ -82,8 +94,10 @@ public class UserSynchronizer {
 
 			Set<String> tags = new HashSet<>();
 
-			if (AccountEntryLocalServiceUtil.getUserAccountEntriesCount(
-					userId) == 0) {
+			if (!_organizationLocalService.hasUserOrganization(
+					userId, OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID) &&
+				(AccountEntryLocalServiceUtil.getUserAccountEntriesCount(
+					userId) == 0)) {
 
 				tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
 			}
@@ -169,6 +183,9 @@ public class UserSynchronizer {
 
 	@Reference
 	private ClassNameLocalService _classNameLocalService;
+
+	@Reference
+	private OrganizationLocalService _organizationLocalService;
 
 	@Reference
 	private UserLocalService _userLocalService;
