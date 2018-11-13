@@ -66,7 +66,6 @@ String product = DDMFieldsUtil.getSelectOption(ddmFields, "product");
 				%>
 
 				<%= mediumDateFormatDate.format(releaseDate) %>
-
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
