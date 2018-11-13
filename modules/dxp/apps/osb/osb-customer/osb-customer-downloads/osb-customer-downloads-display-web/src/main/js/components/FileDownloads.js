@@ -69,13 +69,7 @@ class Downloads extends React.Component {
 		);
 	}
 
-	getMetadata = (id) => {
-		const metadata = this.props.metadata;
-
-		return metadata.find(data => data.id === id);
-	}
-
-	handleCheckboxChange = event => {
+	acceptTermsAndConditions = event => {
 		const {eula} = this.state;
 
 		this.setState(
@@ -86,6 +80,12 @@ class Downloads extends React.Component {
 				}
 			}
 		);
+	}
+
+	getMetadata = (id) => {
+		const metadata = this.props.metadata;
+
+		return metadata.find(data => data.id === id);
 	}
 
 	handleDownload = () => {
@@ -215,7 +215,7 @@ class Downloads extends React.Component {
 								</div>
 
 								<div className="eula-agree-terms">
-									<input className="eula-checkbox" name="eulaCheckbox" onChange={this.handleCheckboxChange} type="checkbox" />
+									<input className="eula-checkbox" name="eulaCheckbox" onChange={this.acceptTermsAndConditions} type="checkbox" />
 
 									<span className="eula-checkbox-label">{Liferay.Language.get('i-have-read-and-agree-with-the-above-terms-and-conditions')}</span>
 								</div>
