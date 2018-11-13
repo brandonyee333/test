@@ -81,7 +81,8 @@ public interface AccountEntryLocalService extends BaseLocalService,
 	public boolean hasValidLicenseAccountEntry(long userId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasValidSupportAccountEntry(long userId);
+	public boolean hasValidSupportAccountEntry(long userId,
+		boolean ticketSupport);
 
 	/**
 	* Adds the account entry to the database. Also notifies the appropriate model listeners.

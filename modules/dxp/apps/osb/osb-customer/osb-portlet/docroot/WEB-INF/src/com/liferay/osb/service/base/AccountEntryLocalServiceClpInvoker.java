@@ -348,7 +348,7 @@ public class AccountEntryLocalServiceClpInvoker {
 
 		_methodName236 = "hasValidSupportAccountEntry";
 
-		_methodParameterTypes236 = new String[] { "long" };
+		_methodParameterTypes236 = new String[] { "long", "boolean" };
 
 		_methodName237 = "recalculateHighestSupportResponse";
 
@@ -900,7 +900,8 @@ public class AccountEntryLocalServiceClpInvoker {
 
 		if (_methodName236.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes236, parameterTypes)) {
-			return AccountEntryLocalServiceUtil.hasValidSupportAccountEntry(((Long)arguments[0]).longValue());
+			return AccountEntryLocalServiceUtil.hasValidSupportAccountEntry(((Long)arguments[0]).longValue(),
+				((Boolean)arguments[1]).booleanValue());
 		}
 
 		if (_methodName237.equals(name) &&

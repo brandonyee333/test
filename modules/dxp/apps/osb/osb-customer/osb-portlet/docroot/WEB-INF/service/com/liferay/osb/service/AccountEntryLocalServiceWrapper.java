@@ -51,8 +51,10 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	}
 
 	@Override
-	public boolean hasValidSupportAccountEntry(long userId) {
-		return _accountEntryLocalService.hasValidSupportAccountEntry(userId);
+	public boolean hasValidSupportAccountEntry(long userId,
+		boolean ticketSupport) {
+		return _accountEntryLocalService.hasValidSupportAccountEntry(userId,
+			ticketSupport);
 	}
 
 	/**

@@ -55,8 +55,9 @@ public class AccountEntryLocalServiceUtil {
 		return getService().hasValidLicenseAccountEntry(userId);
 	}
 
-	public static boolean hasValidSupportAccountEntry(long userId) {
-		return getService().hasValidSupportAccountEntry(userId);
+	public static boolean hasValidSupportAccountEntry(long userId,
+		boolean ticketSupport) {
+		return getService().hasValidSupportAccountEntry(userId, ticketSupport);
 	}
 
 	/**

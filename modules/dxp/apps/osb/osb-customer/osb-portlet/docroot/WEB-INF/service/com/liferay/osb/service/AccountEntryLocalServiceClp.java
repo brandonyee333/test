@@ -42,7 +42,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 		_methodName3 = "hasValidSupportAccountEntry";
 
-		_methodParameterTypes3 = new String[] { "long" };
+		_methodParameterTypes3 = new String[] { "long", "boolean" };
 
 		_methodName4 = "addAccountEntry";
 
@@ -525,12 +525,14 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	}
 
 	@Override
-	public boolean hasValidSupportAccountEntry(long userId) {
+	public boolean hasValidSupportAccountEntry(long userId,
+		boolean ticketSupport) {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName3,
-					_methodParameterTypes3, new Object[] { userId });
+					_methodParameterTypes3,
+					new Object[] { userId, ticketSupport });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
