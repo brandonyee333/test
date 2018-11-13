@@ -89,6 +89,6 @@ String product = DDMFieldsUtil.getSelectOption(ddmFields, "product");
 	<portlet:param name="mvcRenderCommandName" value="/view" />
 </portlet:renderURL>
 
-<div class="view-previous-releases">
-	<liferay-ui:message arguments="<%= backURL %>" key="view-previous-releases-in-liferay's-archive" />
+<div class="view-previous">
+	<liferay-ui:message arguments="<%= backURL %>" key="view-previous-releases-in-liferays-archive" />
 </div>
