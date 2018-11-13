@@ -29,23 +29,23 @@ class Downloads extends React.Component {
 	componentDidMount() {
 		this.setState(
 			{
-				metadata: this.setMetadata(this.props.metadata[0].id)
+				metadata: this.getMetadata(this.props.metadata[0].id)
 			}
 		);
+	}
+
+	getMetadata = (id) => {
+		const metadata = this.props.metadata;
+
+		return metadata.find(data => data.id === id);
 	}
 
 	handleSelectChange = () => {
 		this.setState(
 			{
-				metadata: this.setMetadata(event.target.selectedOptions[0].id)
+				metadata: this.getMetadata(event.target.selectedOptions[0].id)
 			}
 		)
-	}
-
-	setMetadata = (id) => {
-		const metadata = this.props.metadata;
-
-		return metadata.find(data => data.id === id);
 	}
 
 	render() {

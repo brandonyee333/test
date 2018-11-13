@@ -170,8 +170,6 @@ private String _getStringValue(DDMFormFieldValue ddmFormFieldValue, Locale local
 %>
 
 <aui:script>
-console.log(<%= downloadGroupsJSONArray %>);
-
 	Downloads.render(
 		Downloads.FileDownloads,
 		{
