@@ -55,7 +55,7 @@ String requiredAgreement = _getStringValue(ddmFormFieldValuesMap, "requiredAgree
 	for (DDMFormFieldValue linkFieldValue : linkFieldValues) {
 	%>
 
-		<a class="link" href='<%= _getStringValue(linkFieldValue.getNestedDDMFormFieldValuesMap(), "linkUrl", locale) %>'><%= _getStringValue(linkFieldValue, locale) %></a>
+		<a class="link" href="<%= _getStringValue(linkFieldValue.getNestedDDMFormFieldValuesMap(), "linkUrl", locale) %>"><%= _getStringValue(linkFieldValue, locale) %></a>
 
 	<%
 	}
