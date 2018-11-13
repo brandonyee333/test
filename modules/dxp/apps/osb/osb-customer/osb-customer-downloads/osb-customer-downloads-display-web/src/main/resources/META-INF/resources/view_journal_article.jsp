@@ -32,12 +32,35 @@ String alertMessage = _getStringValue(ddmFormFieldValuesMap, "alertMessage", loc
 String fileType = _getStringValue(ddmFormFieldValuesMap, "fileType", locale);
 String product = _getStringValue(ddmFormFieldValuesMap, "product", locale);
 String requiredAgreement = _getStringValue(ddmFormFieldValuesMap, "requiredAgreement", locale);
+
+JSONObject requiredAgreementJSONObject = JSONFactoryUtil.createJSONObject();
 %>
 
 <portlet:renderURL var="journalArticleURL">
 	<portlet:param name="mvcRenderCommandName" value="/view" />
 	<portlet:param name="journalArticleResourcePrimKey" value="<%= String.valueOf(journalArticle.getResourcePrimKey()) %>" />
 </portlet:renderURL>
+
+<c:if test="<%= Validator.isNotNull(requiredAgreement) %>">
+
+	<%
+	String languageId = LocaleUtil.toLanguageId(LocaleUtil.US);
+
+	PortletPreferences downloadsPortletPreferences = PortletPreferencesLocalServiceUtil.getPreferences(company.getCompanyId(), company.getCompanyId(), PortletKeys.PREFS_OWNER_TYPE_COMPANY, PortletKeys.PREFS_PLID_SHARED, "3_WAR_osbportlet", null);
+
+	String agreementURL = GetterUtil.getString(downloadsPortletPreferences.getValue(requiredAgreement + "Url_" + languageId, StringPool.BLANK));
+	String agreementVersion = GetterUtil.getString(downloadsPortletPreferences.getValue(requiredAgreement + "Version_" + languageId, StringPool.BLANK));
+
+	String agreementContentURL = agreementURL + "&agreementVersion=" + agreementVersion;
+	String acceptAgreementURL = downloadsDisplayContext.getAcceptAgreementURL(requiredAgreement, agreementVersion);
+	String verifyAgreementURL = downloadsDisplayContext.getVerifyAgreementURL(requiredAgreement, agreementVersion);
+
+	requiredAgreementJSONObject.put("agreementContentURL", agreementContentURL);
+	requiredAgreementJSONObject.put("acceptAgreementURL", acceptAgreementURL);
+	requiredAgreementJSONObject.put("verifyAgreementURL", verifyAgreementURL);
+	%>
+
+</c:if>
 
 <h3 class="section-title">
 	<aui:a href="<%= journalArticleURL.toString() %>" label="<%= journalArticle.getTitle(locale) %>" />
@@ -121,17 +144,6 @@ for (DDMFormFieldValue downloadGroupFieldValue : downloadGroupFieldValues) {
 }
 %>
 
-<aui:script>
-	Downloads.render(
-		Downloads.FileDownloads,
-		{
-			downloadGroups: <%= downloadGroupsJSONArray %>,
-			journalArticleId: <%= journalArticle.getResourcePrimKey() %>
-		},
-		document.getElementById('<portlet:namespace />downloads<%= journalArticle.getResourcePrimKey() %>')
-	);
-</aui:script>
-
 <%!
 private String _getStringValue(DDMFormFieldValue ddmFormFieldValue, Locale locale) {
 	Value value = ddmFormFieldValue.getValue();
@@ -167,3 +179,14 @@ private String _getStringValue(Map<String, List<DDMFormFieldValue>> ddmFormField
 	return _getStringValue(ddmFormFieldValue, locale);
 }
 %>
+
+<aui:script>
+	Downloads.render(
+		Downloads.FileDownloads,
+		{
+			downloadGroups: <%= downloadGroupsJSONArray %>,
+			journalArticleId: <%= journalArticle.getResourcePrimKey() %>
+		},
+		document.getElementById('<portlet:namespace />downloads<%= journalArticle.getResourcePrimKey() %>')
+	);
+</aui:script>
