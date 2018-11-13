@@ -812,84 +812,6 @@ public class FileEntryStagedModelDataHandler
 		}
 	}
 
-	@Reference(unbind = "-")
-	protected void setDDMFormValuesExportImportContentProcessor(
-		DDMFormValuesExportImportContentProcessor
-			ddmFormValuesExportImportContentProcessor) {
-
-		_ddmFormValuesExportImportContentProcessor =
-			ddmFormValuesExportImportContentProcessor;
-	}
-
-	@Reference(unbind = "-")
-	protected void setDDMFormValuesJSONDeserializer(
-		DDMFormValuesJSONDeserializer ddmFormValuesJSONDeserializer) {
-
-		_ddmFormValuesJSONDeserializer = ddmFormValuesJSONDeserializer;
-	}
-
-	@Reference(unbind = "-")
-	protected void setDDMFormValuesJSONSerializer(
-		DDMFormValuesJSONSerializer ddmFormValuesJSONSerializer) {
-
-		_ddmFormValuesJSONSerializer = ddmFormValuesJSONSerializer;
-	}
-
-	@Reference(unbind = "-")
-	protected void setDLAppLocalService(DLAppLocalService dlAppLocalService) {
-		_dlAppLocalService = dlAppLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setDLAppService(DLAppService dlAppService) {
-		_dlAppService = dlAppService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setDLFileEntryLocalService(
-		DLFileEntryLocalService dlFileEntryLocalService) {
-
-		_dlFileEntryLocalService = dlFileEntryLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setDLFileEntryMetadataLocalService(
-		DLFileEntryMetadataLocalService dlFileEntryMetadataLocalService) {
-
-		_dlFileEntryMetadataLocalService = dlFileEntryMetadataLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setDLFileEntryTypeLocalService(
-		DLFileEntryTypeLocalService dlFileEntryTypeLocalService) {
-
-		_dlFileEntryTypeLocalService = dlFileEntryTypeLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setDLFileVersionLocalService(
-		DLFileVersionLocalService dlFileVersionLocalService) {
-
-		_dlFileVersionLocalService = dlFileVersionLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setDLTrashService(DLTrashService dlTrashService) {
-		_dlTrashService = dlTrashService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setRepositoryLocalService(
-		RepositoryLocalService repositoryLocalService) {
-
-		_repositoryLocalService = repositoryLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setStorageEngine(StorageEngine storageEngine) {
-		_storageEngine = storageEngine;
-	}
-
 	@Reference(
 		target = "(&(verify.process.name=com.liferay.document.library.service))",
 		unbind = "-"
@@ -1041,25 +963,48 @@ public class FileEntryStagedModelDataHandler
 		TransactionConfig.Factory.create(
 			Propagation.REQUIRED, new Class<?>[] {Exception.class});
 
+	@Reference
 	private DDMFormValuesExportImportContentProcessor
 		_ddmFormValuesExportImportContentProcessor;
+
+	@Reference
 	private DDMFormValuesJSONDeserializer _ddmFormValuesJSONDeserializer;
+
+	@Reference
 	private DDMFormValuesJSONSerializer _ddmFormValuesJSONSerializer;
+
+	@Reference
 	private DLAppLocalService _dlAppLocalService;
+
+	@Reference
 	private DLAppService _dlAppService;
+
+	@Reference
 	private DLFileEntryLocalService _dlFileEntryLocalService;
+
+	@Reference
 	private DLFileEntryMetadataLocalService _dlFileEntryMetadataLocalService;
+
+	@Reference
 	private DLFileEntryTypeLocalService _dlFileEntryTypeLocalService;
+
+	@Reference
 	private DLFileVersionLocalService _dlFileVersionLocalService;
+
+	@Reference
 	private DLTrashService _dlTrashService;
 
 	@Reference
 	private Portal _portal;
 
+	@Reference
 	private RepositoryLocalService _repositoryLocalService;
+
 	private ServiceTrackerList
 		<DLPluggableContentDataHandler, DLPluggableContentDataHandler>
 			_serviceTrackerList;
+
+	@Reference
 	private StorageEngine _storageEngine;
 
 }
