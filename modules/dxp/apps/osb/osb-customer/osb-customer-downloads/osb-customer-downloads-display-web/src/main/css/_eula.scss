@@ -1,0 +1,27 @@
+.agreement-content {
+	border: 1px solid $color-border;
+	border-radius: 4px;
+	color: $secondary-text-color;
+	font-size: $font-size-md;
+	height: 261px;
+	overflow-y: scroll;
+	padding: 4px 16px 16px;
+	word-break: break-word;
+}
+
+.eula-agree-terms {
+	padding: 24px 0 8px;
+
+	.eula-checkbox {
+		display: inline-block;
+		height: 16px;
+		margin-right: 8px;
+		vertical-align: top;
+		width: 16px;
+	}
+
+	.eula-checkbox-label {
+		display: inline-block;
+		font-size: $font-size-md;
+	}
+}
