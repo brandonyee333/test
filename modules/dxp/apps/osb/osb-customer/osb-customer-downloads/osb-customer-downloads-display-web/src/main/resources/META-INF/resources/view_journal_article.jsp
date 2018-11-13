@@ -32,8 +32,6 @@ String alertMessage = _getStringValue(ddmFormFieldValuesMap, "alertMessage", loc
 String fileType = _getStringValue(ddmFormFieldValuesMap, "fileType", locale);
 String product = _getStringValue(ddmFormFieldValuesMap, "product", locale);
 String requiredAgreement = _getStringValue(ddmFormFieldValuesMap, "requiredAgreement", locale);
-
-Map<String, Map<String, String>> downloadDetailsMap = new HashMap<>();
 %>
 
 <portlet:renderURL var="journalArticleURL">
@@ -42,19 +40,6 @@ Map<String, Map<String, String>> downloadDetailsMap = new HashMap<>();
 </portlet:renderURL>
 
 <c:if test="<%= Validator.isNotNull(requiredAgreement) %>">
-
-	<%
-	String languageId = LocaleUtil.toLanguageId(LocaleUtil.US);
-
-	PortletPreferences downloadsPortletPreferences = PortletPreferencesLocalServiceUtil.getPreferences(company.getCompanyId(), company.getCompanyId(), PortletKeys.PREFS_OWNER_TYPE_COMPANY, PortletKeys.PREFS_PLID_SHARED, "3_WAR_osbportlet", null);
-
-	String agreementURL = GetterUtil.getString(downloadsPortletPreferences.getValue(requiredAgreement + "Url_" + languageId, StringPool.BLANK));
-	String agreementVersion = GetterUtil.getString(downloadsPortletPreferences.getValue(requiredAgreement + "Version_" + languageId, StringPool.BLANK));
-
-	String agreementContentURL = agreementURL + "&agreementVersion=" + agreementVersion;
-	String acceptAgreementURL = downloadsDisplayContext.getAcceptAgreementURL(requiredAgreement, agreementVersion);
-	String verifyAgreementURL = downloadsDisplayContext.getVerifyAgreementURL(requiredAgreement, agreementVersion);
-	%>
 
 </c:if>
 
@@ -75,6 +60,7 @@ Map<String, Map<String, String>> downloadDetailsMap = new HashMap<>();
 	<%
 	}
 	%>
+
 </div>
 
 <c:if test="<%= Validator.isNotNull(alertMessage) %>">
@@ -119,8 +105,8 @@ for (DDMFormFieldValue downloadGroupFieldValue : downloadGroupFieldValues) {
 		String downloadName = _getStringValue(downloadFieldValue, locale);
 		String downloadURL = _getStringValue(downloadFieldValueMap, "downloadUrl", locale);
 
-		downloadJSONObject.put("downloadURL", downloadURL);
 		downloadJSONObject.put("downloadName", downloadName);
+		downloadJSONObject.put("downloadURL", downloadURL);
 
 		List<DDMFormFieldValue> downloadDetailFieldValues = downloadFieldValueMap.get("downloadDetail");
 
