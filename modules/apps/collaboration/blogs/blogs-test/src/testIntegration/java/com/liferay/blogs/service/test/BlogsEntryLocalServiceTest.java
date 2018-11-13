@@ -23,6 +23,7 @@ import com.liferay.blogs.kernel.exception.NoSuchEntryException;
 import com.liferay.blogs.kernel.model.BlogsEntry;
 import com.liferay.blogs.kernel.service.BlogsEntryLocalServiceUtil;
 import com.liferay.blogs.test.util.BlogsTestUtil;
+import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.message.boards.kernel.service.MBMessageLocalServiceUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
@@ -159,6 +160,11 @@ public class BlogsEntryLocalServiceTest {
 		FileEntry portletFileEntry =
 			PortletFileRepositoryUtil.getPortletFileEntry(
 				originalImageFileEntryId);
+
+		DLFileEntry dlFileEntry = (DLFileEntry)portletFileEntry.getModel();
+
+		Assert.assertEquals(StringPool.BLANK, dlFileEntry.getClassName());
+		Assert.assertEquals(0, dlFileEntry.getClassPK());
 
 		Folder folder = portletFileEntry.getFolder();
 
