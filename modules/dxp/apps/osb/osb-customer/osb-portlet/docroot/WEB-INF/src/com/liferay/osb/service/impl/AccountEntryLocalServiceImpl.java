@@ -1024,12 +1024,17 @@ public class AccountEntryLocalServiceImpl
 		}
 	}
 
-	public boolean hasValidSupportAccountEntry(long userId) {
+	public boolean hasValidSupportAccountEntry(
+		long userId, boolean ticketSupport) {
+
 		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
 		params.put("accountEntryMembership", Long.valueOf(userId));
 		params.put("activeSupport", true);
-		params.put("ticketSupport", true);
+
+		if (ticketSupport) {
+			params.put("ticketSupport", true);
+		}
 
 		if (accountEntryFinder.countByKeywords(null, params) > 0) {
 			return true;

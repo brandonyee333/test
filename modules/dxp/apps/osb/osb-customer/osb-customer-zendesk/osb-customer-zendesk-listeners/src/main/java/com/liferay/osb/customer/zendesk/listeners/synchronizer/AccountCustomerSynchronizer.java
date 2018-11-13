@@ -137,10 +137,15 @@ public class AccountCustomerSynchronizer {
 				}
 			}
 			else {
-				addTags.add(ZendeskTagConstants.OSB_CUSTOMER);
-
 				if (AccountEntryLocalServiceUtil.hasValidSupportAccountEntry(
-						accountCustomer.getUserId())) {
+						accountCustomer.getUserId(), true)) {
+
+					addTags.add(ZendeskTagConstants.OSB_CUSTOMER);
+					addTags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
+				}
+				else if (AccountEntryLocalServiceUtil.
+							hasValidSupportAccountEntry(
+								accountCustomer.getUserId(), false)) {
 
 					addTags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
 				}
@@ -177,11 +182,15 @@ public class AccountCustomerSynchronizer {
 			tags.add(ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
 		}
 		else {
-			tags.add(ZendeskTagConstants.OSB_CUSTOMER);
+			if (AccountEntryLocalServiceUtil.hasValidSupportAccountEntry(
+					accountCustomer.getUserId(), true)) {
+
+				tags.add(ZendeskTagConstants.OSB_CUSTOMER);
+			}
 		}
 
 		if (AccountEntryLocalServiceUtil.hasValidSupportAccountEntry(
-				accountCustomer.getUserId())) {
+				accountCustomer.getUserId(), false)) {
 
 			tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
 		}
@@ -212,7 +221,13 @@ public class AccountCustomerSynchronizer {
 			}
 			else {
 				if (!AccountEntryLocalServiceUtil.hasValidSupportAccountEntry(
-						accountCustomer.getUserId())) {
+						accountCustomer.getUserId(), true)) {
+
+					tags.add(ZendeskTagConstants.OSB_CUSTOMER);
+				}
+
+				if (!AccountEntryLocalServiceUtil.hasValidSupportAccountEntry(
+						accountCustomer.getUserId(), false)) {
 
 					tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
 				}

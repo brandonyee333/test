@@ -23,10 +23,12 @@ import com.liferay.osb.model.AccountWorker;
 import com.liferay.osb.model.ExternalIdMapper;
 import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.model.OfferingEntry;
+import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.SupportRegion;
+import com.liferay.osb.model.SupportResponse;
 import com.liferay.osb.service.AccountAttachmentLocalServiceUtil;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.osb.service.AccountEntryLanguageLocalServiceUtil;
@@ -36,6 +38,7 @@ import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
 import com.liferay.osb.service.OrderEntryLocalServiceUtil;
 import com.liferay.osb.service.PartnerEntryLocalServiceUtil;
 import com.liferay.osb.service.SupportRegionLocalServiceUtil;
+import com.liferay.osb.service.SupportResponseLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -45,6 +48,7 @@ import com.liferay.portal.kernel.service.AddressLocalServiceUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringPool;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -212,8 +216,34 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 	}
 
 	public boolean hasActiveSupportOffering() {
-		return OfferingEntryLocalServiceUtil.hasActiveSupportOfferingEntry(
-			getAccountEntryId());
+		if (OfferingEntryLocalServiceUtil.hasActiveSupportOfferingEntry(
+				getAccountEntryId())) {
+
+			return true;
+		}
+		else {
+			SupportResponse limitedSupportResponse =
+				SupportResponseLocalServiceUtil.fetchSupportResponseByName(
+					"Limited");
+
+			if (getHighestSupportResponseId() !=
+					limitedSupportResponse.getSupportResponseId()) {
+
+				return false;
+			}
+
+			int count = OfferingEntryLocalServiceUtil.searchCount(
+				0L, getAccountEntryId(),
+				new int[] {OfferingEntryConstants.TYPE_REGULAR},
+				new int[] {OfferingEntryConstants.STATUS_ACTIVE}, 0, 0, 0, 0, 0,
+				0, new LinkedHashMap(), true);
+
+			if (count > 0) {
+				return true;
+			}
+
+			return false;
+		}
 	}
 
 	public boolean hasEnterpriseSearchOffering(int productEntryEnvironment)
