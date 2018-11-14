@@ -1,6 +1,6 @@
 .agreement-content {
 	border: 1px solid $color-border;
-	border-radius: 4px;
+	border-radius: $border-radius;
 	color: $secondary-text-color;
 	font-size: $font-size-md;
 	height: 261px;
@@ -10,7 +10,7 @@
 }
 
 .eula-agree-terms {
-	padding: 24px 0 8px;
+	padding: $padding-default 0 8px;
 
 	.eula-checkbox {
 		display: inline-block;
