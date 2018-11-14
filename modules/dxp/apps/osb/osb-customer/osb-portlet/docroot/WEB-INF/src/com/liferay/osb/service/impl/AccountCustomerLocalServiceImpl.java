@@ -364,6 +364,10 @@ public class AccountCustomerLocalServiceImpl
 			return;
 		}
 
+		if (accountEntry.getCorpProjectId() <= 0) {
+			return;
+		}
+
 		List<AccountCustomer> accountCustomers =
 			accountEntry.getAccountCustomers();
 
