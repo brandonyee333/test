@@ -7,3 +7,4 @@ Bundle-Version: 1.0.0
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Customer Help Center
 Web-ContextPath: /osb-customer-help-center-web
+-includeresource: lib/osb-portlet-service.jar=osb-portlet-service.jar

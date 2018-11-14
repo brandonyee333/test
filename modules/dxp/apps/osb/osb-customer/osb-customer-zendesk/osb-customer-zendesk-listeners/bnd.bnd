@@ -1,3 +1,7 @@
+Bundle-ClassPath:\
+	.,\
+	lib/osb-portlet-service.jar
 Bundle-Name: Liferay OSB Customer Zendesk Listeners
 Bundle-SymbolicName: com.liferay.osb.customer.zendesk.listeners
 Bundle-Version: 1.0.0
+-includeresource: lib/osb-portlet-service.jar=osb-portlet-service.jar
