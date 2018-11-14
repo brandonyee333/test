@@ -20,7 +20,6 @@ import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.AccountEntryLanguage;
 import com.liferay.osb.model.AccountWorker;
-import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.model.ExternalIdMapper;
 import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.model.OfferingEntry;
@@ -34,7 +33,6 @@ import com.liferay.osb.service.AccountAttachmentLocalServiceUtil;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.osb.service.AccountEntryLanguageLocalServiceUtil;
 import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
-import com.liferay.osb.service.CorpProjectLocalServiceUtil;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
 import com.liferay.osb.service.OrderEntryLocalServiceUtil;
@@ -45,13 +43,10 @@ import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.service.AddressLocalServiceUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Validator;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -121,32 +116,6 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 		}
 
 		return null;
-	}
-
-	@Override
-	public long getCorpProjectId() {
-		long corpProjectId = super.getCorpProjectId();
-
-		if (corpProjectId > 0) {
-			return corpProjectId;
-		}
-
-		if (Validator.isNotNull(getCorpProjectUuid())) {
-			try {
-				CorpProject corpProject =
-					CorpProjectLocalServiceUtil.fetchCorpProjectByUuid(
-						getCorpProjectUuid());
-
-				if (corpProject != null) {
-					return corpProject.getCorpProjectId();
-				}
-			}
-			catch (Exception e) {
-				_log.error(e, e);
-			}
-		}
-
-		return corpProjectId;
 	}
 
 	public String getEWSADossieraProjectKey() {
@@ -306,9 +275,6 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 	public void setSupportRegionIds(long[] supportRegionIds) {
 		_supportRegionIds = supportRegionIds;
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		AccountEntryImpl.class);
 
 	private Address _address;
 	private String[] _languageIds;

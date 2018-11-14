@@ -23,6 +23,7 @@ import com.liferay.osb.model.AccountCustomerConstants;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.AuditEntryConstants;
+import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.service.base.AccountCustomerLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBCustomSQLParam;
@@ -364,7 +365,11 @@ public class AccountCustomerLocalServiceImpl
 			return;
 		}
 
-		if (accountEntry.getCorpProjectId() <= 0) {
+		CorpProject corpProject =
+			corpProjectLocalService.fetchCorpProjectByUuid(
+				accountEntry.getCorpProjectUuid());
+
+		if (corpProject == null) {
 			return;
 		}
 
@@ -373,8 +378,7 @@ public class AccountCustomerLocalServiceImpl
 
 		for (AccountCustomer accountCustomer : accountCustomers) {
 			if (corpProjectLocalService.hasUserCorpProjectRole(
-					accountCustomer.getUserId(),
-					accountEntry.getCorpProjectId(),
+					accountCustomer.getUserId(), corpProject.getCorpProjectId(),
 					OSBConstants.ROLE_OSB_CORP_ANALYTICS_CLOUD_OWNER_ID)) {
 
 				return;

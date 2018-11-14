@@ -55,6 +55,7 @@ public class RemoteCorpProjectLocalServiceImpl
 
 		CorpProject corpProject = new CorpProjectImpl();
 
+		corpProject.setCorpProjectId(jsonObject.getLong("corpProjectId"));
 		corpProject.setCreateDate(new Date(jsonObject.getLong("createDate")));
 		corpProject.setDossieraProjectKey(
 			jsonObject.getString("dossieraProjectKey"));
@@ -139,11 +140,10 @@ public class RemoteCorpProjectLocalServiceImpl
 	}
 
 	@Override
-	public void deleteCorpProject(long corpProjectId) throws PortalException {
-		CorpProject corpProject = corpProjectLocalService.getCorpProject(
-			corpProjectId);
+	public void deleteCorpProject(String corpProjectUuid)
+		throws PortalException {
 
-		WebRESTWebServiceUtil.deleteCorpProjects(corpProject.getUuid());
+		WebRESTWebServiceUtil.deleteCorpProjects(corpProjectUuid);
 	}
 
 	@Override

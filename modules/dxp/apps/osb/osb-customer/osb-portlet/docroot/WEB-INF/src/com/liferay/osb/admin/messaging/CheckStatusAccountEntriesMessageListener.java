@@ -62,7 +62,7 @@ public class CheckStatusAccountEntriesMessageListener
 				accountEntry.getAccountEntryId());
 
 			RemoteCorpProjectLocalServiceUtil.deleteCorpProject(
-				accountEntry.getCorpProjectId());
+				accountEntry.getCorpProjectUuid());
 		}
 	}
 
