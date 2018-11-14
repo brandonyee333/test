@@ -303,6 +303,8 @@
 	</command>
 
 	<command name="AssertEditWebContentStaging" priority="3">
+		<property name="test.assert.warning.exceptions" value="true" />
+
 		<execute macro="Navigator#gotoSitePage">
 			<var name="pageName" value="Staging Test Page" />
 			<var name="siteName" value="Site Name" />
