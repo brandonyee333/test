@@ -11,7 +11,7 @@
 
 	<@liferay_util["include"] page=top_head_include />
 
-	<%-- Theme JavaScript --%>
+	<#-- Theme JavaScript -->
 
 	<script src='${htmlUtil.escape(portalUtil.getStaticResourceURL(request, "${javascript_folder}/main.js"))}' type="text/javascript"></script>
 </head>
