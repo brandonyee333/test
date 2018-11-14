@@ -18,6 +18,8 @@ import com.liferay.osb.customer.account.entry.details.web.internal.constants.Acc
 import com.liferay.osb.exception.AccountEnvironmentAttachmentSizeException;
 import com.liferay.osb.model.AccountEnvironmentAttachmentConstants;
 import com.liferay.osb.service.AccountEnvironmentServiceUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
@@ -138,6 +140,10 @@ public class EditAccountEnvironmentMVCActionCommand
 			}
 		}
 		catch (Exception e) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(e, e);
+			}
+
 			SessionErrors.add(actionRequest, e.getClass());
 
 			actionResponse.setRenderParameter(
@@ -157,6 +163,9 @@ public class EditAccountEnvironmentMVCActionCommand
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		EditAccountEnvironmentMVCActionCommand.class);
 
 	@Reference
 	private Portal _portal;
