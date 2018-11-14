@@ -89,36 +89,28 @@ List<DDMFormFieldValue> downloadGroupFieldValues = ddmFormFieldValuesMap.get("do
 for (DDMFormFieldValue downloadGroupFieldValue : downloadGroupFieldValues) {
 	JSONObject downloadGroupJSONObject = JSONFactoryUtil.createJSONObject();
 
-	String downloadGroupName = _getStringValue(downloadGroupFieldValue, locale);
-
 	Map<String, List<DDMFormFieldValue>> downloadGroupFieldValueMap = downloadGroupFieldValue.getNestedDDMFormFieldValuesMap();
 
-	List<DDMFormFieldValue> downloadFieldValues = downloadGroupFieldValueMap.get("download");
-
 	JSONArray downloadsJSONArray = JSONFactoryUtil.createJSONArray();
+
+	List<DDMFormFieldValue> downloadFieldValues = downloadGroupFieldValueMap.get("download");
 
 	for (DDMFormFieldValue downloadFieldValue : downloadFieldValues) {
 		JSONObject downloadJSONObject = JSONFactoryUtil.createJSONObject();
 
 		Map<String, List<DDMFormFieldValue>> downloadFieldValueMap = downloadFieldValue.getNestedDDMFormFieldValuesMap();
 
-		String downloadName = _getStringValue(downloadFieldValue, locale);
-		String downloadURL = _getStringValue(downloadFieldValueMap, "downloadUrl", locale);
-
-		downloadJSONObject.put("downloadName", downloadName);
-		downloadJSONObject.put("downloadURL", downloadURL);
-
-		List<DDMFormFieldValue> downloadDetailFieldValues = downloadFieldValueMap.get("downloadDetail");
+		downloadJSONObject.put("downloadName", _getStringValue(downloadFieldValue, locale));
+		downloadJSONObject.put("downloadURL", _getStringValue(downloadFieldValueMap, "downloadUrl", locale));
 
 		JSONObject downloadDetailsJSONObject = JSONFactoryUtil.createJSONObject();
+
+		List<DDMFormFieldValue> downloadDetailFieldValues = downloadFieldValueMap.get("downloadDetail");
 
 		for (DDMFormFieldValue downloadDetailDDMFormFieldValue : downloadDetailFieldValues) {
 			Map<String, List<DDMFormFieldValue>> downloadDetailFieldValueMap = downloadDetailDDMFormFieldValue.getNestedDDMFormFieldValuesMap();
 
-			String detailLabel = _getStringValue(downloadDetailFieldValueMap, "detailLabel", locale);
-			String detailValue = _getStringValue(downloadDetailFieldValueMap, "detailValue", locale);
-
-			downloadDetailsJSONObject.put(detailLabel, detailValue);
+			downloadDetailsJSONObject.put(_getStringValue(downloadDetailFieldValueMap, "detailLabel", locale), _getStringValue(downloadDetailFieldValueMap, "detailValue", locale));
 		}
 
 		downloadJSONObject.put("downloadDetails", downloadDetailsJSONObject);
@@ -126,7 +118,7 @@ for (DDMFormFieldValue downloadGroupFieldValue : downloadGroupFieldValues) {
 		downloadsJSONArray.put(downloadJSONObject);
 	}
 
-	downloadGroupJSONObject.put("downloadGroupName", downloadGroupName);
+	downloadGroupJSONObject.put("downloadGroupName", _getStringValue(downloadGroupFieldValue, locale));
 	downloadGroupJSONObject.put("downloads", downloadsJSONArray);
 
 	downloadGroupsJSONArray.put(downloadGroupJSONObject);
