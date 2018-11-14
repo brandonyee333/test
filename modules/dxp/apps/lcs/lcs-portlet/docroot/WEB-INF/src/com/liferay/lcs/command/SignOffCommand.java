@@ -62,6 +62,9 @@ public class SignOffCommand implements Command<SignOffCommandMessage> {
 		else if (signOffReasonCode == SignOffReasonCode.UNREGISTER) {
 			_notifyLCSEventListeners(LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED);
 		}
+		else {
+			_notifyLCSEventListeners(LCSEvent.SIGNOFF_REQUESTED);
+		}
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Signed off server from LCS");

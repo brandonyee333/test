@@ -156,7 +156,8 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 			_executeHandshakeTask(false);
 		}
 		else if ((lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALIDATED) ||
-				 (lcsEvent == LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED)) {
+				 (lcsEvent == LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED) ||
+				 (lcsEvent == LCSEvent.SIGNOFF_REQUESTED)) {
 
 			_restart();
 		}
