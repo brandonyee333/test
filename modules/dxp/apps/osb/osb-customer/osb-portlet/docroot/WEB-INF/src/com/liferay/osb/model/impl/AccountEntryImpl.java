@@ -125,7 +125,7 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 
 	@Override
 	public long getCorpProjectId() {
-		long corpProjectId = getCorpProjectId();
+		long corpProjectId = super.getCorpProjectId();
 
 		if (corpProjectId > 0) {
 			return corpProjectId;
