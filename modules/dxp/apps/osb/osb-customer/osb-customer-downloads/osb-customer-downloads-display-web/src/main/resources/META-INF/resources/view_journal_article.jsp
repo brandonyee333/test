@@ -39,10 +39,6 @@ String requiredAgreement = _getStringValue(ddmFormFieldValuesMap, "requiredAgree
 	<portlet:param name="journalArticleResourcePrimKey" value="<%= String.valueOf(journalArticle.getResourcePrimKey()) %>" />
 </portlet:renderURL>
 
-<c:if test="<%= Validator.isNotNull(requiredAgreement) %>">
-
-</c:if>
-
 <h3 class="section-title">
 	<%= journalArticle.getTitle(locale) %>
 </h3>
@@ -107,8 +103,8 @@ for (DDMFormFieldValue downloadGroupFieldValue : downloadGroupFieldValues) {
 
 		List<DDMFormFieldValue> downloadDetailFieldValues = downloadFieldValueMap.get("downloadDetail");
 
-		for (DDMFormFieldValue downloadDetailDDMFormFieldValue : downloadDetailFieldValues) {
-			Map<String, List<DDMFormFieldValue>> downloadDetailFieldValueMap = downloadDetailDDMFormFieldValue.getNestedDDMFormFieldValuesMap();
+		for (DDMFormFieldValue downloadDetailFieldValue : downloadDetailFieldValues) {
+			Map<String, List<DDMFormFieldValue>> downloadDetailFieldValueMap = downloadDetailFieldValue.getNestedDDMFormFieldValuesMap();
 
 			downloadDetailsJSONObject.put(_getStringValue(downloadDetailFieldValueMap, "detailLabel", locale), _getStringValue(downloadDetailFieldValueMap, "detailValue", locale));
 		}
@@ -125,19 +121,18 @@ for (DDMFormFieldValue downloadGroupFieldValue : downloadGroupFieldValues) {
 }
 %>
 
+<aui:script>
+	Downloads.render(
+		Downloads.FileDownloads,
+		{
+			downloadGroups: <%= downloadGroupsJSONArray %>,
+			journalArticleId: <%= journalArticle.getResourcePrimKey() %>
+		},
+		document.getElementById('<portlet:namespace />downloads<%= journalArticle.getResourcePrimKey() %>')
+	);
+</aui:script>
+
 <%!
-private String _getStringValue(Map<String, List<DDMFormFieldValue>> ddmFormFieldValuesMap, String name, Locale locale) {
-	List<DDMFormFieldValue> ddmFormFieldValues = ddmFormFieldValuesMap.get(name);
-
-	if ((ddmFormFieldValues == null) || ddmFormFieldValues.isEmpty()) {
-		return StringPool.BLANK;
-	}
-
-	DDMFormFieldValue ddmFormFieldValue = ddmFormFieldValues.get(0);
-
-	return _getStringValue(ddmFormFieldValue, locale);
-}
-
 private String _getStringValue(DDMFormFieldValue ddmFormFieldValue, Locale locale) {
 	Value value = ddmFormFieldValue.getValue();
 
@@ -159,15 +154,16 @@ private String _getStringValue(DDMFormFieldValue ddmFormFieldValue, Locale local
 
 	return stringValue;
 }
-%>
 
-<aui:script>
-	Downloads.render(
-		Downloads.FileDownloads,
-		{
-			downloadGroups: <%= downloadGroupsJSONArray %>,
-			journalArticleId: <%= journalArticle.getResourcePrimKey() %>
-		},
-		document.getElementById('<portlet:namespace />downloads<%= journalArticle.getResourcePrimKey() %>')
-	);
-</aui:script>
+private String _getStringValue(Map<String, List<DDMFormFieldValue>> ddmFormFieldValuesMap, String name, Locale locale) {
+	List<DDMFormFieldValue> ddmFormFieldValues = ddmFormFieldValuesMap.get(name);
+
+	if ((ddmFormFieldValues == null) || ddmFormFieldValues.isEmpty()) {
+		return StringPool.BLANK;
+	}
+
+	DDMFormFieldValue ddmFormFieldValue = ddmFormFieldValues.get(0);
+
+	return _getStringValue(ddmFormFieldValue, locale);
+}
+%>

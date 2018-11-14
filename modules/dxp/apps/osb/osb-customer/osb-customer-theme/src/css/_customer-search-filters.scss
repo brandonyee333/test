@@ -1,6 +1,15 @@
 .search-filters {
 	overflow: auto;
 
+	.form-group .form-control {
+		border-color: transparent;
+		padding-right: 40px;
+
+		&:focus {
+			border-color: $color-primary-focus-border;
+		}
+	}
+
 	.search-filter-container {
 		border: 1px solid rgba(9, 16, 29, 0.11);
 		border-left-width: 0;
@@ -27,15 +36,6 @@
 			font-weight: $font-weight-semi-bold;
 			line-height: 24px;
 			vertical-align: baseline;
-		}
-	}
-
-	.form-group .form-control {
-		border-color: transparent;
-		padding-right: 40px;
-
-		&:focus {
-			border-color: $color-primary-focus-border;
 		}
 	}
 }
