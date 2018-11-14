@@ -45,7 +45,7 @@ JSONArray productsJSONArray = downloadsDisplayContext.getProductsJSONArray();
 		%>
 
 		<div class="search-filters">
-			<aui:select inlineLabel="left" inlinField="<%= true %>" name="product" onChange='<%= renderResponse.getNamespace() + "updateFileType(this.value);" %>' prefix="&#58;" wrapperCssClass="downloads-search search-filter-container">
+			<aui:select inlineField="<%= true %>" inlineLabel="left" name="product" onChange='<%= renderResponse.getNamespace() + "updateFileType(this.value);" %>' prefix="&#58;" wrapperCssClass="downloads-search search-filter-container">
 				<aui:option label="select-product" value="" />
 
 				<%
@@ -72,7 +72,7 @@ JSONArray productsJSONArray = downloadsDisplayContext.getProductsJSONArray();
 
 			</aui:select>
 
-			<aui:select inlineLabel="left" inlinField="<%= true %>" name="fileType" onChange='<%= "if (this.value != '') {submitForm(document." + renderResponse.getNamespace() + "fm);}" %>' prefix="&#58;" wrapperCssClass="downloads-search search-filter-container">
+			<aui:select inlineField="<%= true %>" inlineLabel="left" name="fileType" onChange='<%= "if (this.value != '') {submitForm(document." + renderResponse.getNamespace() + "fm);}" %>' prefix="&#58;" wrapperCssClass="downloads-search search-filter-container">
 				<aui:option label="select-file-type" value="" />
 
 				<c:if test="<%= fileTypesJSONArray != null %>">

@@ -1,4 +1,4 @@
-.results {
+.osb-downloads-display-portlet .results {
 	.additional-notes {
 		color: $secondary-text-color;
 		font-size: $font-size-md;
@@ -6,13 +6,13 @@
 		margin: $margin-default;
 	}
 
-	.detail-label {
-		font-weight: $font-weight-semi-bold;
-	}
-
 	.detail-label,
 	.detail-value {
 		color: $color-default;
+	}
+
+	.detail-label {
+		font-weight: $font-weight-semi-bold;
 	}
 
 	.detail-value:not(:last-child)::after {
@@ -114,7 +114,7 @@
 
 				&:after {
 					border-left: 1px solid $color-border;
-					content: '',
+					content: "";
 				}
 			}
 		}

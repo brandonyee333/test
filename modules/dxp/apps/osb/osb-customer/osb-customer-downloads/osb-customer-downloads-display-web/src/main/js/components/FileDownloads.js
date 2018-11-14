@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import "core-js/fn/array/flat-map";
+import 'core-js/fn/array/flat-map';
 
 import Button from './Button';
 
@@ -45,7 +45,7 @@ class Downloads extends React.Component {
 			{
 				metadata: this.getMetadata(event.target.selectedOptions[0].id)
 			}
-		)
+		);
 	}
 
 	render() {
@@ -108,10 +108,7 @@ const FileDownloads = props => {
 
 	let showDropdown = true;
 
-	if (
-		downloadGroups.length === 1 &&
-		downloadGroups.every(group => group.downloads.length === 1)
-	) {
+	if (downloadGroups.length === 1 && downloadGroups.every(group => group.downloads.length === 1)) {
 		showDropdown = false;
 	}
 
