@@ -55,8 +55,8 @@ JSONObject requiredAgreementJSONObject = JSONFactoryUtil.createJSONObject();
 	String acceptAgreementURL = downloadsDisplayContext.getAcceptAgreementURL(requiredAgreement, agreementVersion);
 	String verifyAgreementURL = downloadsDisplayContext.getVerifyAgreementURL(requiredAgreement, agreementVersion);
 
-	requiredAgreementJSONObject.put("agreementContentURL", agreementContentURL);
 	requiredAgreementJSONObject.put("acceptAgreementURL", acceptAgreementURL);
+	requiredAgreementJSONObject.put("agreementContentURL", agreementContentURL);
 	requiredAgreementJSONObject.put("verifyAgreementURL", verifyAgreementURL);
 	%>
 
