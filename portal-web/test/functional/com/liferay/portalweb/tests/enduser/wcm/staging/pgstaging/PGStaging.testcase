@@ -303,6 +303,7 @@
 	</command>
 
 	<command name="AssertEditWebContentStaging" priority="3">
+		<property name="portal.acceptance" value="jason" />
 		<property name="test.assert.warning.exceptions" value="true" />
 
 		<execute macro="Navigator#gotoSitePage">
