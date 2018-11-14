@@ -60,7 +60,7 @@ public class RemoteCorpProjectLocalServiceClp
 
 		_methodName7 = "deleteCorpProject";
 
-		_methodParameterTypes7 = new String[] { "long" };
+		_methodParameterTypes7 = new String[] { "java.lang.String" };
 
 		_methodName8 = "updateCorpProject";
 
@@ -262,11 +262,12 @@ public class RemoteCorpProjectLocalServiceClp
 	}
 
 	@Override
-	public void deleteCorpProject(long corpProjectId)
+	public void deleteCorpProject(java.lang.String corpProjectUuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName7,
-				_methodParameterTypes7, new Object[] { corpProjectId });
+				_methodParameterTypes7,
+				new Object[] { ClpSerializer.translateInput(corpProjectUuid) });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);

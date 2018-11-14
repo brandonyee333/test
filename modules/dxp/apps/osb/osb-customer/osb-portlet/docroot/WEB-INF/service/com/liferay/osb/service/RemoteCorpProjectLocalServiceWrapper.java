@@ -93,9 +93,9 @@ public class RemoteCorpProjectLocalServiceWrapper
 	}
 
 	@Override
-	public void deleteCorpProject(long corpProjectId)
+	public void deleteCorpProject(java.lang.String corpProjectUuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		_remoteCorpProjectLocalService.deleteCorpProject(corpProjectId);
+		_remoteCorpProjectLocalService.deleteCorpProject(corpProjectUuid);
 	}
 
 	@Override

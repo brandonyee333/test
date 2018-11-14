@@ -76,7 +76,8 @@ public interface RemoteCorpProjectLocalService extends BaseLocalService,
 	public void addUserCorpProjectRoles(long corpProjectId, long[] userIds,
 		long roleId) throws PortalException;
 
-	public void deleteCorpProject(long corpProjectId) throws PortalException;
+	public void deleteCorpProject(java.lang.String corpProjectUuid)
+		throws PortalException;
 
 	public void updateCorpProject(long corpProjectId, java.lang.String name)
 		throws PortalException;

@@ -89,9 +89,9 @@ public class RemoteCorpProjectLocalServiceUtil {
 		getService().addUserCorpProjectRoles(corpProjectId, userIds, roleId);
 	}
 
-	public static void deleteCorpProject(long corpProjectId)
+	public static void deleteCorpProject(java.lang.String corpProjectUuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteCorpProject(corpProjectId);
+		getService().deleteCorpProject(corpProjectUuid);
 	}
 
 	public static void updateCorpProject(long corpProjectId,

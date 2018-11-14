@@ -58,7 +58,7 @@ public class RemoteCorpProjectLocalServiceClpInvoker {
 
 		_methodName158 = "deleteCorpProject";
 
-		_methodParameterTypes158 = new String[] { "long" };
+		_methodParameterTypes158 = new String[] { "java.lang.String" };
 
 		_methodName159 = "updateCorpProject";
 
@@ -114,7 +114,7 @@ public class RemoteCorpProjectLocalServiceClpInvoker {
 
 		if (_methodName158.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes158, parameterTypes)) {
-			RemoteCorpProjectLocalServiceUtil.deleteCorpProject(((Long)arguments[0]).longValue());
+			RemoteCorpProjectLocalServiceUtil.deleteCorpProject((java.lang.String)arguments[0]);
 
 			return null;
 		}
