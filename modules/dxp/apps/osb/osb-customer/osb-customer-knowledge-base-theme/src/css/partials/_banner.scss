@@ -36,7 +36,13 @@ ul.nav-menu {
 		line-height: normal;
 		margin: 0;
 
-		&, .custom-site-text:after, .custom-site-url, .logo-border, .logo-gradient, .nav-arrow, .nav-separator {
+		&,
+		.custom-site-text:after,
+		.custom-site-url,
+		.logo-border,
+		.logo-gradient,
+		.nav-arrow,
+		.nav-separator {
 			@include transition(all 0.3s ease);
 		}
 
@@ -168,11 +174,15 @@ ul.nav-menu {
 	.site-navigation {
 		float: right;
 
-		.language-toggle .portlet-language, .nav-item .child-menu, .nav-user .drop-down-menu {
+		.language-toggle .portlet-language,
+		.nav-item .child-menu,
+		.nav-user .drop-down-menu {
 			display: none;
 		}
 
-		.language-toggle.open .portlet-language, .nav-item.open .child-menu, .nav-user.open .drop-down-menu {
+		.language-toggle.open .portlet-language,
+		.nav-item.open .child-menu,
+		.nav-user.open .drop-down-menu {
 			display: block;
 		}
 
@@ -253,7 +263,8 @@ ul.nav-menu {
 				margin: 0;
 			}
 
-			a, .language-toggle span {
+			a,
+			.language-toggle span {
 				display: block;
 				padding: 3px 5px 3px 20px;
 				white-space: nowrap;
@@ -264,12 +275,14 @@ ul.nav-menu {
 			}
 
 			.language-toggle {
-				span, .taglib-language-list-text {
+				span,
+				.taglib-language-list-text {
 					display: none;
 				}
 
 				&.open {
-					span, .taglib-language-list-text {
+					span,
+					.taglib-language-list-text {
 						display: block;
 					}
 				}
@@ -293,15 +306,18 @@ ul.nav-menu {
 			}
 		}
 
-		.nav-search, .nav-user {
+		.nav-search,
+		.nav-user {
 			height: 56px;
 		}
 
-		.nav-search-content, .nav-user {
+		.nav-search-content,
+		.nav-user {
 			border-left: 1px solid $border-color;
 		}
 
-		.nav-search, .nav-search-toggle {
+		.nav-search,
+		.nav-search-toggle {
 			width: 45px;
 		}
 
@@ -309,7 +325,8 @@ ul.nav-menu {
 			float: left;
 			position: relative;
 
-			.nav-search-content, .nav-search-toggle {
+			.nav-search-content,
+			.nav-search-toggle {
 				height: 55px;
 				position: absolute;
 			}
@@ -408,7 +425,9 @@ ul.nav-menu {
 			padding: 57px 10px 0;
 			position: relative;
 
-			&.open, .nav, .nav-user {
+			&.open,
+			.nav,
+			.nav-user {
 				display: block;
 			}
 
@@ -446,14 +465,16 @@ ul.nav-menu {
 				}
 			}
 
-			.drop-down-menu, .grand-child-menu {
+			.drop-down-menu,
+			.grand-child-menu {
 				background: transparent;
 				min-width: 0;
 				padding: 0 0 0 15px;
 				position: static;
 			}
 
-			.drop-down-menu, .nav-item {
+			.drop-down-menu,
+			.nav-item {
 				border-width: 0;
 
 				a {

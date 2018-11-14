@@ -127,7 +127,9 @@
 		}
 	}
 
-	.v-active, .v-expired, .v-inactive {
+	.v-active,
+	.v-expired,
+	.v-inactive {
 		color: #FFF;
 		padding: 5px;
 		text-align: center;

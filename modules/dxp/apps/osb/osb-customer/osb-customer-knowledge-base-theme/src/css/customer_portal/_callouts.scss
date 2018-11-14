@@ -1,50 +1,87 @@
 /* ---------- Border width & radius ---------- */
 
-.callout-a, .callout-b, .callout-c, .callout-d, .callout-d-foot, .callout-e {
+.callout-a,
+.callout-b,
+.callout-c,
+.callout-d,
+.callout-d-foot,
+.callout-e {
 	border: 1px solid;
 }
 
-.callout-a-head, .callout-b-head, .callout-c-head, .callout-d-head, .callout-e-head {
+.callout-a-head,
+.callout-b-head,
+.callout-c-head,
+.callout-d-head,
+.callout-e-head {
 	border: 1px solid;
 	border-width: 1px 1px 0;
 }
 
-.callout-c-body, .callout-d-body {
+.callout-c-body,
+.callout-d-body {
 	border: 1px solid;
 	border-width: 1px 1px 0;
 }
 
-.callout-a-foot, .callout-b-foot, .callout-c-foot, .callout-d-foot, .callout-e-foot {
+.callout-a-foot,
+.callout-b-foot,
+.callout-c-foot,
+.callout-d-foot,
+.callout-e-foot {
 	border: 1px solid;
 	border-width: 0 1px 1px;
 }
 
-.callout-c-foot, .callout-d-foot {
+.callout-c-foot,
+.callout-d-foot {
 	border-width: 1px;
 }
 
 /* ---------- Margin ---------- */
 
-.callout-a, .callout-b, .callout-c, .callout-d, .callout-e, .callout-a-foot, .callout-b-foot, .callout-c-foot, .callout-d-foot, .callout-e-foot {
+.callout-a,
+.callout-b,
+.callout-c,
+.callout-d,
+.callout-e,
+.callout-a-foot,
+.callout-b-foot,
+.callout-c-foot,
+.callout-d-foot,
+.callout-e-foot {
 	margin: 0 0 18px;
 }
 
 /* ---------- Background and border ---------- */
 
-.callout-a, .callout-a-head, .callout-a-foot {
+.callout-a,
+.callout-a-head,
+.callout-a-foot {
 	background-color: #FAFDFE;
 }
 
-.callout-c, .callout-c-head, .callout-c-foot {
+.callout-c,
+.callout-c-head,
+.callout-c-foot {
 	background-color: #949494;
 }
 
-.callout-b, .callout-b-head, .callout-b-foot {
+.callout-b,
+.callout-b-head,
+.callout-b-foot {
 	background-color: #939598;
 	border-color: #939598;
 }
 
-.callout-a, .callout-c, .callout-d, .callout-a-head, .callout-a-foot, .callout-d-head, .callout-d-body, .callout-d-foot {
+.callout-a,
+.callout-c,
+.callout-d,
+.callout-a-head,
+.callout-a-foot,
+.callout-d-head
+.callout-d-body,
+.callout-d-foot {
 	border-color: #D0D1D3;
 }
 
@@ -56,7 +93,9 @@
 	background-color: #F49B45;
 }
 
-.callout-c-head, .callout-c-body, .callout-c-foot {
+.callout-c-head,
+.callout-c-body,
+.callout-c-foot {
 	border-color: #E0E0E0;
 }
 
@@ -68,13 +107,20 @@
 	background-color: #D9D9D9;
 }
 
-.callout-e, .callout-e-head, .callout-e-foot {
+.callout-e,
+.callout-e-head,
+.callout-e-foot {
 	background-color: #FFF;
 }
 
 /* ---------- Color ---------- */
 
-.callout-b, .callout-b-head, .callout-b-foot, .callout-b a, .callout-b-head a, .callout-b-foot a a {
+.callout-b,
+.callout-b-head,
+.callout-b-foot,
+.callout-b a,
+.callout-b-head a,
+.callout-b-foot a a {
 	color: #FFF;
 	text-shadow: none;
 }
@@ -97,7 +143,11 @@
 
 /* ---------- Padding ---------- */
 
-.callout-a, .callout-b, .callout-c, .callout-d, .callout-e {
+.callout-a,
+.callout-b,
+.callout-c,
+.callout-d,
+.callout-e {
 	padding: 17px 0;
 }
 
@@ -109,7 +159,11 @@
 	padding: 9px 0;
 }
 
-.callout-a-head, .callout-b-head, .callout-d-head, .callout-d-body, .callout-e-head {
+.callout-a-head,
+.callout-b-head,
+.callout-d-head,
+.callout-d-body,
+.callout-e-head {
 	padding: 9px 0 8px;
 }
 
@@ -130,17 +184,32 @@
 	padding: 11px 0;
 }
 
-.callout-a-foot, .callout-b-foot, .callout-e-foot {
+.callout-a-foot,
+.callout-b-foot,
+.callout-e-foot {
 	padding: 8px 0 9px;
 }
 
-.callout-a, .callout-b, .callout-e, .callout-a-head, .callout-b-head, .callout-c-head, .callout-e-head, .callout-d-body, .callout-a-foot, .callout-b-foot, .callout-c-foot, .callout-d-foot, .callout-e-foot {
+.callout-a,
+.callout-b,
+.callout-e,
+.callout-a-head,
+.callout-b-head,
+.callout-c-head,
+.callout-e-head,
+.callout-d-body,
+.callout-a-foot,
+.callout-b-foot,
+.callout-c-foot,
+.callout-d-foot,
+.callout-e-foot {
 	.callout-content {
 		padding: 0 19px;
 	}
 }
 
-.callout-a .callout-content-a, .portlet .portlet-title {
+.callout-a .callout-content-a,
+.portlet .portlet-title {
 	padding: 0 19px;
 }
 
@@ -171,7 +240,12 @@
 
 /* ---------- Callout inner layout ---------- */
 
-.callout-a, .callout-b, .callout-a-head, .callout-b-head, .callout-a-foot, .callout-b-foot {
+.callout-a,
+.callout-b,
+.callout-a-head,
+.callout-b-head,
+.callout-a-foot,
+.callout-b-foot {
 	.sub-grid {
 		margin: 0 -11px;
 	}
@@ -254,7 +328,8 @@
 
 /* ---------- Callout image ---------- */
 
-.callout-image, .callout-image-heading {
+.callout-image,
+.callout-image-heading {
 	background-position: center;
 	display: inline-block;
 	vertical-align: top;
@@ -310,7 +385,12 @@
 /* ---------- IE ---------- */
 
 .ie6 {
-	.callout-a, .callout-b, .callout-a-head, .callout-b-head, .callout-a-foot, .callout-b-foot {
+	.callout-a,
+	.callout-b,
+	.callout-a-head,
+	.callout-b-head,
+	.callout-a-foot,
+	.callout-b-foot {
 		.sub-grid {
 			display: inline;
 			zoom: 1;
@@ -321,7 +401,8 @@
 		border-collapse: expression('separate', cellSpacing=0);
 	}
 
-	.callout-image, .callout-image-heading {
+	.callout-image,
+	.callout-image-heading {
 		display: inline;
 		zoom: 1;
 	}
@@ -329,23 +410,40 @@
 
 /* ---------- Extras ---------- */
 
-.callout, .callout-a, .callout-b, .callout-c, .callout-d, .callout-e {
+.callout,
+.callout-a,
+.callout-b,
+.callout-c,
+.callout-d,
+.callout-e {
 	@include border-radius(2px);
 }
 
-.callout-head, .callout-a-head, .callout-b-head, .callout-c-head, .callout-d-head, .callout-e-head {
+.callout-head,
+.callout-a-head,
+.callout-b-head,
+.callout-c-head,
+.callout-d-head,
+.callout-e-head {
 	@include border-radius(2px 2px 0 0);
 }
 
-.callout-a-foot, .callout-b-foot, .callout-c-foot, .callout-d-foot, .callout-e-foot {
+.callout-a-foot,
+.callout-b-foot,
+.callout-c-foot,
+.callout-d-foot,
+.callout-e-foot {
 	@include border-radius(0 0 2px 2px);
 }
 
-.callout-c, .callout-c-head, .callout-c-foot {
+.callout-c,
+.callout-c-head,
+.callout-c-foot {
 	@include background-image(top, #DCDCDC 0%, #FAFAFA 50%, #E0E0E0 51%, #E5E5E5 100%);
 }
 
-.callout-c-body, .callout-c-foot {
+.callout-c-body,
+.callout-c-foot {
 	@include background-image(#FFF, #F1F1F1);
 }
 
@@ -401,7 +499,8 @@
 	}
 }
 
-.callout-image, .callout-image-heading {
+.callout-image,
+.callout-image-heading {
 	@include background-size(auto 100%);
 	@include border-radius(2px);
 	@include box-shadow(rgba(0, 0, 0, 0.5) 0 1px 2px);

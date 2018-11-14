@@ -3,7 +3,9 @@
 }
 
 .aui {
-	article, .lego-article, .security-vulnerabilities {
+	article,
+	.lego-article,
+	.security-vulnerabilities {
 		ul li {
 			list-style: initial;
 		}
@@ -27,7 +29,8 @@
 	float: left;
 }
 
-.cp-callout-content, .portal-version-group {
+.cp-callout-content,
+.portal-version-group {
 	table {
 		border: none;
 		margin-bottom: 1.5em;
@@ -39,7 +42,8 @@
 	}
 }
 
-.full-screen, .full-screen-layout {
+.full-screen,
+.full-screen-layout {
 	margin: 0;
 	max-width: none !important;
 }
