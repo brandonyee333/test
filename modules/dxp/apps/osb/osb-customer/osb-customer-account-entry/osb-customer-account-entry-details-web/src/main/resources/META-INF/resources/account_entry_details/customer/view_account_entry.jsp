@@ -39,6 +39,33 @@ PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "project
 	url="<%= portletURL.toString() %>"
 />
 
+<liferay-ui:error exception="<%= AccountEnvironmentEnvASException.class %>" message="please-select-a-valid-application-server" />
+<liferay-ui:error exception="<%= AccountEnvironmentEnvBrowserException.class %>" message="please-select-a-valid-browser" />
+<liferay-ui:error exception="<%= AccountEnvironmentEnvCSException.class %>" message="please-select-a-valid-cloud-service" />
+<liferay-ui:error exception="<%= AccountEnvironmentEnvDBException.class %>" message="please-select-a-valid-database" />
+<liferay-ui:error exception="<%= AccountEnvironmentEnvLFRException.class %>" message="please-select-a-valid-liferay-version" />
+<liferay-ui:error exception="<%= AccountEnvironmentEnvOSException.class %>" message="please-select-a-valid-operating-system" />
+<liferay-ui:error exception="<%= AccountEnvironmentEnvSearchException.class %>" message="please-select-a-valid-search" />
+
+<liferay-ui:error exception="<%= AccountEnvironmentAttachmentSizeException.class %>">
+
+	<%
+	AccountEnvironmentAttachmentSizeException aease = (AccountEnvironmentAttachmentSizeException)errorException;
+	%>
+
+	<c:choose>
+		<c:when test="<%= aease.getType() == AccountEnvironmentAttachmentSizeException.EMPTY_FILE %>">
+			<liferay-ui:message arguments="<%= aease.getFileName() %>" key="x-contains-no-data-and-cannot-be-uploaded" />
+		</c:when>
+		<c:when test="<%= aease.getType() == AccountEnvironmentAttachmentSizeException.EXCEEDS_LIMIT %>">
+			<liferay-ui:message key="please-upload-a-file-less-than-100-mb" />
+		</c:when>
+	</c:choose>
+</liferay-ui:error>
+
+<liferay-ui:error exception="<%= AccountEnvironmentNameException.class %>" message="please-provide-a-unique-environment-name-for-the-product" />
+<liferay-ui:error exception="<%= DuplicateAccountEnvironmentException.class %>" message="please-provide-a-unique-environment-name" />
+
 <div class="container-fluid-max-xl">
 	<c:choose>
 		<c:when test='<%= tabs1.equals("liferay-contacts") %>'>

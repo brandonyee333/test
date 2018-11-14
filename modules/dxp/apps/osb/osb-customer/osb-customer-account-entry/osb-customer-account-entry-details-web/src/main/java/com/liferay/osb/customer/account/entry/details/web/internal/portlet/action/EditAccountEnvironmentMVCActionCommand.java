@@ -140,6 +140,9 @@ public class EditAccountEnvironmentMVCActionCommand
 		catch (Exception e) {
 			SessionErrors.add(actionRequest, e.getClass());
 
+			actionResponse.setRenderParameter(
+				"mvcRenderCommandName", "/view_account_entry");
+
 			hideDefaultSuccessMessage(actionRequest);
 		}
 		finally {
