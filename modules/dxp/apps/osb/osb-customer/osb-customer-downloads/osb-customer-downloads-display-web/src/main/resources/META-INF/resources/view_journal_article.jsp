@@ -40,7 +40,7 @@ String requiredAgreement = _getStringValue(ddmFormFieldValuesMap, "requiredAgree
 </portlet:renderURL>
 
 <h3 class="section-title">
-	<%= journalArticle.getTitle(locale) %>
+	<a href="<%= journalArticleURL.toString() %>"><%= journalArticle.getTitle(locale) %></a>
 </h3>
 
 <div class="section-links">

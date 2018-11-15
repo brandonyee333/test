@@ -52,6 +52,11 @@ h3 {
 		line-height: 28px;
 		margin: $margin-default;
 		text-transform: initial;
+
+		a {
+			color: $color-default;
+			text-decoration: none;
+		}
 	}
 }
 

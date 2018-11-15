@@ -35,6 +35,11 @@ String product = DDMFieldsUtil.getSelectOption(ddmFields, "product");
 			<use xlink:href="#dxp-logo-full" />
 		</svg>
 	</c:when>
+	<c:otherwise>
+		<h1>
+			<liferay-ui:message key="download" />
+		</h1>
+	</c:otherwise>
 </c:choose>
 
 <div class="results">
