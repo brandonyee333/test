@@ -50,7 +50,7 @@ public class TaskSchedulerReceiverMessageListener extends BaseMessageListener {
 			if (!_runningTaskNames.contains(taskName)) {
 				if (!_lcsGatewayClient.isAvailable()) {
 					if (_log.isDebugEnabled()) {
-						_log.debug("Waiting for LCS connection manager");
+						_log.debug("Waiting for LCS gateway handshake");
 					}
 
 					return;

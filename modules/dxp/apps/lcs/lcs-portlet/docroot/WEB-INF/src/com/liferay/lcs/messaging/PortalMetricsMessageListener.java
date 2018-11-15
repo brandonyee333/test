@@ -52,7 +52,7 @@ public class PortalMetricsMessageListener implements MessageListener {
 	public void receive(Message message) {
 		if (!_lcsGatewayClient.isAvailable()) {
 			if (_log.isDebugEnabled()) {
-				_log.debug("Waiting for LCS connection manager");
+				_log.debug("Waiting for LCS gateway handshake");
 			}
 
 			return;

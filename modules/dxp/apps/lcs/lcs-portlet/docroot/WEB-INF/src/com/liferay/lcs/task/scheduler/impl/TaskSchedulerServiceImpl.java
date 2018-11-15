@@ -503,7 +503,7 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 
 	private void _restart() {
 		if (_log.isDebugEnabled()) {
-			_log.debug("Reconnecting to LCS gateway");
+			_log.debug("Restarting LCS life cycle");
 		}
 
 		_cancelAllTasks();

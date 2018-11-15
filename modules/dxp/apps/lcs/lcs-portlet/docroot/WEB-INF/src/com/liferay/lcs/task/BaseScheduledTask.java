@@ -30,7 +30,7 @@ public abstract class BaseScheduledTask implements ScheduledTask {
 	public void run() {
 		if (!_lcsGatewayClient.isAvailable()) {
 			if (_log.isDebugEnabled()) {
-				_log.debug(getClass() + " waiting for LCS connection manager");
+				_log.debug(getClass() + " waiting for LCS gateway handshake");
 			}
 
 			return;
