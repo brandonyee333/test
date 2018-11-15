@@ -1,3 +1,5 @@
+const PUBLIC_PATH = '/o/osb-customer-theme/js/';
+
 module.exports = {
 	entry: './src/js/main.js',
 	module: {
@@ -12,6 +14,7 @@ module.exports = {
 	output: {
 		filename: 'main.js',
 		library: 'theme',
-		libraryTarget: 'window'
+		libraryTarget: 'window',
+		publicPath: PUBLIC_PATH
 	}
 };
