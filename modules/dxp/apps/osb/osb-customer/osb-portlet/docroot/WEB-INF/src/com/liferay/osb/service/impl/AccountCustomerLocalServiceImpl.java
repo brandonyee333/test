@@ -16,7 +16,6 @@ package com.liferay.osb.service.impl;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.osb.exception.AccountEntryMaximumCustomersException;
-import com.liferay.osb.exception.DuplicateAccountCustomerException;
 import com.liferay.osb.exception.NoSuchAccountEntryException;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountCustomerConstants;
@@ -65,9 +64,18 @@ public class AccountCustomerLocalServiceImpl
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
 			accountEntryId);
 
-		validate(customerUserId, accountEntryId);
+		validate(accountEntryId);
 
-		AccountCustomer accountCustomer = doAddAccountCustomer(
+		AccountCustomer accountCustomer = fetchAccountCustomer(
+			customerUserId, accountEntryId);
+
+		if (accountCustomer != null) {
+			return updateAccountCustomer(
+				userId, accountCustomer.getAccountCustomerId(), role,
+				notifications);
+		}
+
+		accountCustomer = doAddAccountCustomer(
 			customerUserId, accountEntryId, role, notifications);
 
 		long auditSetId = auditEntryLocalService.getNextAuditSetId(
@@ -468,15 +476,7 @@ public class AccountCustomerLocalServiceImpl
 			StringPool.BLANK);
 	}
 
-	protected void validate(long customerUserId, long accountEntryId)
-		throws PortalException {
-
-		if (accountCustomerPersistence.countByU_AEI(
-				customerUserId, accountEntryId) > 0) {
-
-			throw new DuplicateAccountCustomerException();
-		}
-
+	protected void validate(long accountEntryId) throws PortalException {
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
 			accountEntryId);
 

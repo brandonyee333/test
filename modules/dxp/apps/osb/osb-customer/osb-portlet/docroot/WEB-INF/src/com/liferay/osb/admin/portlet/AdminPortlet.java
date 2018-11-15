@@ -26,7 +26,6 @@ import com.liferay.osb.exception.AccountEntryMaximumCustomersException;
 import com.liferay.osb.exception.AccountEntryNameException;
 import com.liferay.osb.exception.AccountEntryPartnerEntryException;
 import com.liferay.osb.exception.AccountEntrySupportRegionException;
-import com.liferay.osb.exception.DuplicateAccountCustomerException;
 import com.liferay.osb.exception.DuplicateAccountEntryException;
 import com.liferay.osb.exception.DuplicateOfferingBundleException;
 import com.liferay.osb.exception.DuplicateOfferingDefinitionException;
@@ -1140,7 +1139,6 @@ public class AdminPortlet extends OSBPortlet {
 			cause instanceof AddressZipException ||
 			cause instanceof ContactFirstNameException ||
 			cause instanceof ContactLastNameException ||
-			cause instanceof DuplicateAccountCustomerException ||
 			cause instanceof DuplicateAccountEntryException ||
 			cause instanceof DuplicateOfferingBundleException ||
 			cause instanceof DuplicateOfferingDefinitionException ||

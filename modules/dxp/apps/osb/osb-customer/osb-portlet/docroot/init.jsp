@@ -54,7 +54,6 @@ page import="com.liferay.osb.exception.AccountEntryMaximumCustomersException" %>
 page import="com.liferay.osb.exception.AccountEntryNameException" %><%@
 page import="com.liferay.osb.exception.AccountEntryPartnerEntryException" %><%@
 page import="com.liferay.osb.exception.AccountEntrySupportRegionException" %><%@
-page import="com.liferay.osb.exception.DuplicateAccountCustomerException" %><%@
 page import="com.liferay.osb.exception.DuplicateAccountEntryException" %><%@
 page import="com.liferay.osb.exception.DuplicateHostNameException" %><%@
 page import="com.liferay.osb.exception.DuplicateIPAddressException" %><%@

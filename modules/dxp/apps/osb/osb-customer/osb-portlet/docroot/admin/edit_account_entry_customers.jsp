@@ -34,11 +34,11 @@ request.setAttribute("edit_account_entry_customers.jsp-portletURL", portletURL);
 
 <portlet:actionURL name="updateAccountCustomer" var="updateAccountCustomerURL">
 	<portlet:param name="mvcPath" value="/admin/edit_account_entry_customers.jsp" />
-	<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
 	<portlet:param name="backURL" value="<%= backURL %>" />
 </portlet:actionURL>
 
 <aui:form action="<%= updateAccountCustomerURL %>" method="post">
+	<aui:input name="redirect" type="hidden" value="<%= portletURL.toString() %>" />
 	<aui:input name="accountCustomerId" type="hidden" />
 	<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
 
@@ -52,7 +52,6 @@ request.setAttribute("edit_account_entry_customers.jsp-portletURL", portletURL);
 	/>
 
 	<liferay-ui:error exception="<%= AccountEntryMaximumCustomersException.class %>" message="the-number-of-contacts-has-exceeded-the-maximum-number-of-contacts" />
-	<liferay-ui:error exception="<%= DuplicateAccountCustomerException.class %>" message="the-user-is-already-a-customer" />
 	<liferay-ui:error exception="<%= NoSuchUserException.class %>" message="the-user-could-not-be-found" />
 	<liferay-ui:error exception="<%= RemoteServiceException.class %>" message="there-was-an-error-connecting-to-web.liferay.com" />
 
