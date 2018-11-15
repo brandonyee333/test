@@ -34,9 +34,11 @@ import java.util.List;
 public class JIRAComponentFinderImpl
 	extends JIRAComponentFinderBaseImpl implements JIRAComponentFinder {
 
-	public static final String COUNT_BY_JIRA_ISSUE = "countByJIRAIssue";
+	public static final String COUNT_BY_JIRA_ISSUE =
+		JIRAComponentFinder.class.getName() + ".countByJIRAIssue";
 
-	public static final String FIND_BY_JIRA_ISSUE = "findByJIRAIssue";
+	public static final String FIND_BY_JIRA_ISSUE =
+		JIRAComponentFinder.class.getName() + ".findByJIRAIssue";
 
 	public int countByJIRAIssue(long jiraIssueId) {
 		Session session = null;

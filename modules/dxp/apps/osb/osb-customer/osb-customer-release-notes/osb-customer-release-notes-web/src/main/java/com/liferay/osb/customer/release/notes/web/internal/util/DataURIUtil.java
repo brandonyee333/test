@@ -21,27 +21,27 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * @author Samuel Kong
  */
 public class DataURIUtil {
 
-	public static String encode(File file) {
+	public static String encode(InputStream inputStream, String fileName) {
 		StringBundler sb = new StringBundler(4);
 
-		if (!file.exists()) {
+		if (inputStream == null) {
 			return sb.toString();
 		}
 
 		try {
 			sb.append("data:");
-			sb.append(MimeTypesUtil.getContentType(file));
+			sb.append(MimeTypesUtil.getContentType(fileName));
 			sb.append(";base64,");
 
-			byte[] bytes = FileUtil.getBytes(file);
+			byte[] bytes = FileUtil.getBytes(inputStream);
 
 			sb.append(Base64.encode(bytes));
 		}
@@ -52,10 +52,6 @@ public class DataURIUtil {
 		}
 
 		return sb.toString();
-	}
-
-	public static String encode(String fileName) {
-		return encode(new File(fileName));
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(DataURIUtil.class);

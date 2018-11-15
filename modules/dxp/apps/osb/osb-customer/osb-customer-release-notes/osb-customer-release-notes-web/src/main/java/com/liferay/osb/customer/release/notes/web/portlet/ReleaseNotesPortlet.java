@@ -39,6 +39,11 @@ import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
+import com.liferay.portal.kernel.template.StringTemplateResource;
+import com.liferay.portal.kernel.template.Template;
+import com.liferay.portal.kernel.template.TemplateConstants;
+import com.liferay.portal.kernel.template.TemplateManagerUtil;
+import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
@@ -47,6 +52,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -57,6 +63,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -68,17 +75,12 @@ import java.util.Set;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.Portlet;
-import javax.portlet.PortletConfig;
 import javax.portlet.PortletContext;
-import javax.portlet.PortletException;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
-
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -116,15 +118,6 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 			actionRequest, "releaseNotesId");
 
 		_releaseNotesLocalService.deleteReleaseNotes(releaseNotesId);
-	}
-
-	@Override
-	public void init(PortletConfig portletConfig) throws PortletException {
-		super.init(portletConfig);
-
-		PortletContext portletContext = portletConfig.getPortletContext();
-
-		_portletContextName = portletContext.getPortletContextName();
 	}
 
 	@Override
@@ -206,7 +199,8 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 	}
 
 	protected String encodeToDataURI(String fileName) {
-		return DataURIUtil.encode(getRealPath(fileName));
+		return DataURIUtil.encode(
+			getInputStream(fileName), FileUtil.getShortFileName(fileName));
 	}
 
 	protected String getCachedReleaseNotes(
@@ -229,10 +223,10 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 		return null;
 	}
 
-	protected String getRealPath(String path) {
+	protected InputStream getInputStream(String path) {
 		PortletContext portletContext = getPortletContext();
 
-		return portletContext.getRealPath(path);
+		return portletContext.getResourceAsStream(path);
 	}
 
 	protected String getReleaseNotesByJIRALabel(
@@ -380,74 +374,19 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 		return releaseNotesString;
 	}
 
-	protected VelocityContext getVelocityContext(
-			List<JIRAIssue> jiraIssues,
-			Map<JIRAComponent, Set<JIRAIssue>> jiraComponentMap, String version)
+	protected TemplateResource getTemplateResource(String templateId)
 		throws Exception {
 
-		VelocityContext velocityContext = new VelocityContext();
+		InputStream inputStream = getInputStream(templateId);
 
-		velocityContext.put(
-			"apiChangeClasses", ReleaseNotesUtil.getAPIChanges(jiraIssues));
-		velocityContext.put(
-			"css", mergeFiles(ReleaseNotesConfigurationValues.TEMPLATE_CSS));
-		velocityContext.put(
-			"bugIcon",
-			encodeToDataURI(ReleaseNotesConfigurationValues.IMAGE_ICON_BUG));
-		velocityContext.put("htmlUtil", HtmlUtil.getHtml());
-		velocityContext.put(
-			"improvementIcon",
-			encodeToDataURI(
-				ReleaseNotesConfigurationValues.IMAGE_ICON_IMPROVEMENT));
-		velocityContext.put("jiraComponentMap", jiraComponentMap);
-		velocityContext.put("jiraIssues", jiraIssues);
-		velocityContext.put(
-			"jiraIssuesWithUpgradeNote",
-			ReleaseNotesUtil.getJIRAIssuesWithUpgradeNote(jiraIssues));
-		velocityContext.put("jiraIssueTypeBug", JIRAConstants.ISSUE_TYPE_BUG);
-		velocityContext.put(
-			"jiraIssueTypeImprovement", JIRAConstants.ISSUE_TYPE_IMPROVEMENT);
-		velocityContext.put(
-			"jiraIssueTypeNewFeature", JIRAConstants.ISSUE_TYPE_NEW_FEATURE);
-		velocityContext.put(
-			"jsBottom",
-			mergeFiles(ReleaseNotesConfigurationValues.TEMPLATE_JS_BOTTOM));
-		velocityContext.put(
-			"jsTop",
-			mergeFiles(ReleaseNotesConfigurationValues.TEMPLATE_JS_TOP));
-		velocityContext.put(
-			"logo",
-			encodeToDataURI(ReleaseNotesConfigurationValues.IMAGE_LOGO));
-		velocityContext.put(
-			"newFeatureIcon",
-			encodeToDataURI(
-				ReleaseNotesConfigurationValues.IMAGE_ICON_NEW_FEATURE));
-		velocityContext.put("newline", StringPool.NEW_LINE);
-		velocityContext.put(
-			"otherIcon",
-			encodeToDataURI(ReleaseNotesConfigurationValues.IMAGE_ICON_OTHER));
+		try {
+			String content = StringUtil.read(inputStream);
 
-		String[] versionArray = StringUtil.split(version, StringPool.DASH);
-
-		if (versionArray.length > 1) {
-			int versionNumber = GetterUtil.getInteger(
-				versionArray[versionArray.length - 2]);
-
-			if ((versionNumber - 1) > 0) {
-				versionArray[versionArray.length - 2] = String.valueOf(
-					versionNumber - 1);
-
-				velocityContext.put(
-					"previousVersion",
-					StringUtil.merge(versionArray, StringPool.DASH));
-			}
+			return new StringTemplateResource(templateId, content);
 		}
-
-		velocityContext.put("return", StringPool.RETURN);
-		velocityContext.put("stringUtil", StringUtil_IW.getInstance());
-		velocityContext.put("version", version);
-
-		return velocityContext;
+		finally {
+			StreamUtil.cleanUp(inputStream);
+		}
 	}
 
 	protected boolean hasPermission(PortletRequest portletRequest) {
@@ -498,10 +437,10 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 		StringBundler sb = new StringBundler(fileNames.length);
 
 		for (String fileName : fileNames) {
-			try {
-				fileName = getRealPath(fileName);
+			InputStream inputStream = getInputStream(fileName);
 
-				String content = FileUtil.read(fileName);
+			try {
+				String content = StringUtil.read(inputStream);
 
 				if (Validator.isNotNull(content)) {
 					sb.append(content);
@@ -509,6 +448,9 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 			}
 			catch (IOException ioe) {
 				_log.error(ioe.getMessage());
+			}
+			finally {
+				StreamUtil.cleanUp(inputStream);
 			}
 		}
 
@@ -520,21 +462,85 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 			Map<JIRAComponent, Set<JIRAIssue>> jiraComponentMap, String version)
 		throws Exception {
 
-		String velocityTemplateId =
-			_portletContextName + _SERVLET_SEPARATOR +
-				ReleaseNotesConfigurationValues.TEMPLATE_VELOCITY;
+		TemplateResource templateResource = getTemplateResource(
+			ReleaseNotesConfigurationValues.TEMPLATE_VELOCITY);
 
-		VelocityEngine velocityEngine = new VelocityEngine();
+		Template template = TemplateManagerUtil.getTemplate(
+			TemplateConstants.LANG_TYPE_VM, templateResource, false);
 
-		VelocityContext velocityContext = getVelocityContext(
-			jiraIssues, jiraComponentMap, version);
+		prepareTemplate(template, jiraIssues, jiraComponentMap, version);
 
 		Writer writer = new StringWriter();
 
-		velocityEngine.mergeTemplate(
-			velocityTemplateId, velocityContext, writer);
+		template.processTemplate(writer);
 
 		return writer.toString();
+	}
+
+	protected void prepareTemplate(
+			Template template, List<JIRAIssue> jiraIssues,
+			Map<JIRAComponent, Set<JIRAIssue>> jiraComponentMap, String version)
+		throws Exception {
+
+		template.put(
+			"apiChangeClasses", ReleaseNotesUtil.getAPIChanges(jiraIssues));
+		template.put(
+			"css", mergeFiles(ReleaseNotesConfigurationValues.TEMPLATE_CSS));
+		template.put(
+			"bugIcon",
+			encodeToDataURI(ReleaseNotesConfigurationValues.IMAGE_ICON_BUG));
+		template.put("htmlUtil", HtmlUtil.getHtml());
+		template.put(
+			"improvementIcon",
+			encodeToDataURI(
+				ReleaseNotesConfigurationValues.IMAGE_ICON_IMPROVEMENT));
+		template.put("jiraComponentMap", jiraComponentMap);
+		template.put("jiraIssues", jiraIssues);
+		template.put(
+			"jiraIssuesWithUpgradeNote",
+			ReleaseNotesUtil.getJIRAIssuesWithUpgradeNote(jiraIssues));
+		template.put("jiraIssueTypeBug", JIRAConstants.ISSUE_TYPE_BUG);
+		template.put(
+			"jiraIssueTypeImprovement", JIRAConstants.ISSUE_TYPE_IMPROVEMENT);
+		template.put(
+			"jiraIssueTypeNewFeature", JIRAConstants.ISSUE_TYPE_NEW_FEATURE);
+		template.put(
+			"jsBottom",
+			mergeFiles(ReleaseNotesConfigurationValues.TEMPLATE_JS_BOTTOM));
+		template.put(
+			"jsTop",
+			mergeFiles(ReleaseNotesConfigurationValues.TEMPLATE_JS_TOP));
+		template.put(
+			"logo",
+			encodeToDataURI(ReleaseNotesConfigurationValues.IMAGE_LOGO));
+		template.put(
+			"newFeatureIcon",
+			encodeToDataURI(
+				ReleaseNotesConfigurationValues.IMAGE_ICON_NEW_FEATURE));
+		template.put("newline", StringPool.NEW_LINE);
+		template.put(
+			"otherIcon",
+			encodeToDataURI(ReleaseNotesConfigurationValues.IMAGE_ICON_OTHER));
+
+		String[] versionArray = StringUtil.split(version, StringPool.DASH);
+
+		if (versionArray.length > 1) {
+			int versionNumber = GetterUtil.getInteger(
+				versionArray[versionArray.length - 2]);
+
+			if ((versionNumber - 1) > 0) {
+				versionArray[versionArray.length - 2] = String.valueOf(
+					versionNumber - 1);
+
+				template.put(
+					"previousVersion",
+					StringUtil.merge(versionArray, StringPool.DASH));
+			}
+		}
+
+		template.put("return", StringPool.RETURN);
+		template.put("stringUtil", StringUtil_IW.getInstance());
+		template.put("version", version);
 	}
 
 	private static final String _SERVLET_SEPARATOR = "_SERVLET_CONTEXT_";
@@ -553,8 +559,6 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 
 	@Reference
 	private Portal _portal;
-
-	private String _portletContextName;
 
 	@Reference
 	private ReleaseNotesLocalService _releaseNotesLocalService;
