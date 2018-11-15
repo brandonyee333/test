@@ -5,7 +5,7 @@
 		function(item) {
 			item.classList.remove('hide');
 		}
-	)
+	);
 
 	const helpCenterBaseURL = 'https://help.liferay.com/hc/';
 

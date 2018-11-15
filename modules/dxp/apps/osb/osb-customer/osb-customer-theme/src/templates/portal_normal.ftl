@@ -43,7 +43,6 @@
 <#if has_mega_menu>
 	<#include "${full_templates_path}/mega_menu.ftl" />
 </#if>
-
 </body>
 
 </html>
