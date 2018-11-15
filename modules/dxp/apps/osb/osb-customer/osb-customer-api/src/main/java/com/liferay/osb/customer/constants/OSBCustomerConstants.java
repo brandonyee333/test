@@ -32,6 +32,9 @@ public class OSBCustomerConstants {
 
 	public static final long GROUP_KNOWLEDGE_ID = 10738;
 
+	public static final long ORGANIZATION_CORPORATION_PROJECT_PARENT_ID =
+		3294642;
+
 	public static final long ORGANIZATION_LIFERAY_INC_ID = 1747318;
 
 	public static final String RESOURCE_NAME_KNOWLEDGE_DISPLAY =
