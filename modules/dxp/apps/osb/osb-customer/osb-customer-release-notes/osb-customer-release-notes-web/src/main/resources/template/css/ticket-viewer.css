@@ -1,0 +1,93 @@
+#ticket-viewer {
+	background: #FFF;
+	border-color: #CCC;
+	border-style: solid;
+	border-width: 1px;
+	display: none;
+	font-size: small;
+	height: 500px;
+	line-height: 22px;
+	padding: 17px;
+	position: absolute;
+	width: 800px;
+}
+
+#ticket-viewer h4, #ticket-viewer #ticket-viewer-jira-issue-key, #ticket-viewer #ticket-viewer-jira-issue-summary {
+	color: #4C4C4E;
+}
+
+#ticket-viewer button {
+	-moz-border-radius: 2px;
+	-ms-border-radius: 2px;
+	-o-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	background: #FFF;
+	border: 1px solid #F49B45;
+	border-radius: 2px;
+	color: #F49B45;
+	cursor: pointer;
+	display: inline-block;
+	font-weight: bold;
+	height: auto;
+	line-height: 1.5em;
+	padding: 5px 15px;
+	text-align: center;
+	text-decoration: none;
+	vertical-align: top;
+}
+
+#ticket-viewer button:hover {
+	background: #F49B45;
+	color: #FFF;
+}
+
+#ticket-viewer h4 {
+	color: #3C78B5;
+	font-size: 1.3em;
+	margin-top: 0;
+}
+
+#ticket-viewer table tr {
+	display: block;
+	margin: 5px 0;
+}
+
+#ticket-viewer table th {
+	color: #000;
+	font-weight: normal;
+	padding-right: 5px;
+	text-align: left;
+}
+
+#ticket-viewer-jira-issue-description {
+	height: 150px;
+	overflow: auto;
+}
+
+#ticket-viewer-jira-issue-key {
+	color: #666;
+	font-size: 2em;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+
+#ticket-viewer-jira-issue-key:after {
+	margin-right: 5px;
+}
+
+#ticket-viewer-jira-issue-summary {
+	color: #3C78B5;
+	font-size: 2em;
+	line-height: 1.333em;
+	margin-bottom: 1em;
+}
+
+#ticket-viewer-wrapper {
+	height: 420px;
+	margin: 20px;
+}
+
+.ticket-viewer-footer {
+	height: 40px;
+	text-align: center;
+}

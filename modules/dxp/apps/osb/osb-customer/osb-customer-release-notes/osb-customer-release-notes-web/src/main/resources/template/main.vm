@@ -1,0 +1,268 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+	<head>
+		<title>Release Notes - $version</title>
+		<style type="text/css">
+			$css
+
+			#change-log-wrapper .issue-type-bug {
+				background-image: url($bugIcon);
+			}
+
+			#change-log-wrapper .issue-type-improvement {
+				background-image: url($improvementIcon);
+			}
+
+			#change-log-wrapper .issue-type-new-feature {
+				background-image: url($newFeatureIcon);
+			}
+
+			#change-log-wrapper .issue-type-other {
+				background-image: url($otherIcon);
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="wrapper">
+			<div id="banner">
+				<h1>Liferay Release Notes</h1>
+
+				<h2>$version</h2>
+			</div>
+
+			<div id="navigation">
+				<ul>
+					<li class="selected" id="nav-item-change-log">
+						<a href="javascript:changePage('change-log')"><span>Change Log</span></a>
+					</li>
+
+					#if ($apiChangeClasses.size() != 0)
+						<li id="nav-item-api-changes">
+							<a href="javascript:changePage('api-changes')"><span>API Changes</span></a>
+						</li>
+					#end
+
+					#if ($jiraIssuesWithUpgradeNote.size() != 0)
+						<li id="nav-item-upgrade-notes">
+							<a href="javascript:changePage('upgrade-notes')"><span>Upgrade Notes</span></a>
+						</li>
+					#end
+				</ul>
+			</div>
+
+			<div class="page" id="page-change-log">
+				<div id="change-log-menu">
+					<h3>Components</h3>
+
+					<ul>
+						#foreach ($jiraComponent in $jiraComponentMap.keySet())
+							<li><a href="#component-$jiraComponent.getJiraComponentId()">$htmlUtil.escape($jiraComponent.getName())</a></li>
+						#end
+					</ul>
+				</div>
+
+				<div id="change-log-wrapper">
+					#foreach ($jiraComponent in $jiraComponentMap.keySet())
+						<div class="jira-component-wrapper">
+							<h3 class="jira-component-name"><a name="component-$jiraComponent.getJiraComponentId()"></a>$htmlUtil.escape($jiraComponent.getName())</h3>
+
+							#foreach ($jiraIssue in $jiraComponentMap.get($jiraComponent))
+								#if ($jiraIssue.getType() == $jiraIssueTypeBug)
+									#set ($cssClass = "issue-type-bug")
+								#elseif ($jiraIssue.getType() == $jiraIssueTypeImprovement)
+									#set ($cssClass = "issue-type-improvement")
+								#elseif ($jiraIssue.getType() == $jiraIssueTypeNewFeature)
+									#set ($cssClass = "issue-type-new-feature")
+								#else
+									#set ($cssClass = "issue-type-other")
+								#end
+
+								<div class="jira-issue-wrapper $cssClass">
+									<div class="jira-issue-key" onclick="return viewTicket($jiraIssue.getJiraIssueId())">
+										$jiraIssue.getKey()
+									</div>
+
+									<div class="jira-issue-summary">
+										$htmlUtil.escape($jiraIssue.getSummary())
+									</div>
+								</div>
+							#end
+						</div>
+					#end
+
+					#if ($previousVersion)
+						<div id="link">
+							<a href="$previousVersion">Release Notes Of The Previous Fix Pack: $previousVersion</a>
+						</div>
+					#end
+				</div>
+			</div>
+
+			<div class="page" id="page-api-changes">
+				#foreach ($apiChangeClass in $apiChangeClasses)
+					<div class="api-change-class">
+						<div class="class-name">
+							<span class="class-package">$apiChangeClass.getPackage().</span>$apiChangeClass.getName()
+						</div>
+
+						#if ($apiChangeClass.getDetailsCount() > 0)
+							<div class="class-details">
+
+								#foreach ($detail in $apiChangeClass.getDetails())
+									<span class="detail-key">$htmlUtil.escape($detail.getKey()):</span>
+
+									<span class="detail-value">$htmlUtil.escape($detail.getValue())</span>
+
+									<br />
+								#end
+
+								<span class="detail-key">See:</span>
+
+								<span class="detail-value issue-reference" onclick="return viewTicket($apiChangeClass.getJIRAIssue().getJiraIssueId())">$apiChangeClass.getJIRAIssue().getKey()</span>
+
+								<br />
+							</div>
+						#end
+
+						#if ($apiChangeClass.getAPIChangeMethodsCount() > 0)
+							#foreach ($apiChangeMethod in $apiChangeClass.getAPIChangeMethods())
+								<div class="api-change-method">
+									<span class="detail-key">Method:</span>
+
+									<span class="detail-value">$htmlUtil.escape($apiChangeMethod.getSignature())</span>
+
+									<br />
+
+									#foreach ($detail in $apiChangeMethod.getDetails())
+										<span class="detail-key">$htmlUtil.escape($detail.getKey()):</span>
+
+										<span class="detail-value">$htmlUtil.escape($detail.getValue())</span>
+
+										<br />
+									#end
+
+									<span class="detail-key">See:</span>
+
+									<span class="detail-value issue-reference" onclick="return viewTicket($apiChangeMethod.getJIRAIssue().getJiraIssueId())">$apiChangeMethod.getJIRAIssue().getKey()</span>
+
+									<br />
+								</div>
+							#end
+						#end
+					</div>
+				#end
+			</div>
+
+			<div class="page" id="page-upgrade-notes">
+				#foreach ($jiraIssue in $jiraIssuesWithUpgradeNote)
+					<div class="upgrade-note-wrapper">
+						<div class="upgrade-note-topper">
+							<div class="jira-issue-summary">
+								$jiraIssue.getSummary()
+							</div>
+
+							<div class="jira-issue-key" onclick="return viewTicket($jiraIssue.getJiraIssueId())">
+								($jiraIssue.getKey())
+							</div>
+						</div>
+
+						<div class="upgrade-note-content">
+							<pre><span class="pre-wrap">$htmlUtil.escape($jiraIssue.getUpgradeNote())</span></pre>
+						</div>
+					</div>
+				#end
+			</div>
+		</div>
+
+		<div id="ticket-viewer">
+			<div id="ticket-viewer-wrapper">
+				<div id="ticket-viewer-jira-issue-key"></div>
+
+				<h3 id="ticket-viewer-jira-issue-summary"></h3>
+
+				<h4>Details</h4>
+
+				<table cellpadding="0" cellspacing="0">
+				<tr>
+					<th>Type:</th>
+					<td id="ticket-viewer-jira-issue-type"></td>
+				</tr>
+				<tr>
+					<th>Priority:</th>
+					<td id="ticket-viewer-jira-issue-priority"></td>
+				</tr>
+				<tr>
+					<th>Components:</th>
+					<td id="ticket-viewer-jira-issue-components"></td>
+				</tr>
+				<tr>
+					<th>This issue is related to:</th>
+					<td id="ticket-viewer-jira-issue-is-related-to"></td>
+				</tr>
+				</table>
+
+				<h4>Description</h4>
+
+				<div id="ticket-viewer-jira-issue-description"></div>
+			</div>
+
+			<div class="ticket-viewer-footer">
+				<button onclick="hideTicketViewer();">Close Window</button>
+			</div>
+		</div>
+	</body>
+
+	<script type="text/javascript">
+		var jiraIssues = [
+			#foreach ($jiraIssue in $jiraIssues)
+				#set ($i = 1)
+				#set ($components = "")
+
+				#foreach ($jiraComponent in $jiraIssue.getJIRAComponents())
+					#set ($components = $components + $jiraComponent.getName())
+
+					#if ($i != $jiraIssue.getJIRAComponents().size())
+						#set ($components = $components + ", ")
+					#end
+
+					#set ($i = $i + 1)
+				#end
+
+				#set ($description = $htmlUtil.escape($jiraIssue.getDescription()))
+				#set ($description = $stringUtil.replace($description, "$return", ""))
+				#set ($description = $stringUtil.replace($description, "$newline", "<br />"))
+				#set ($description = $stringUtil.replace($description, "  ", "&nbsp; "))
+
+				#set ($i = 1)
+				#set ($isRelatedTo = "[")
+
+				#foreach ($isRelatedToJiraIssue in $jiraIssue.getIsRelatedToJiraIssues())
+					#set ($isRelatedTo = $isRelatedTo + '"' + $isRelatedToJiraIssue.getKey() + '"')
+
+					#if ($i != $jiraIssue.getIsRelatedToJiraIssues().size())
+						#set ($isRelatedTo = $isRelatedTo + ", ")
+					#end
+
+					#set ($i = $i + 1)
+				#end
+
+				#set ($isRelatedTo = $isRelatedTo + "]")
+
+				{
+					"components": "$htmlUtil.escapeJS($components)",
+					"description": "$htmlUtil.escapeJS($description)",
+					"isRelatedTo": $isRelatedTo,
+					"jiraIssueId": $jiraIssue.getJiraIssueId(),
+					"key": "$htmlUtil.escapeJS($jiraIssue.getKey())",
+					"priority": $jiraIssue.getPriority(),
+					"summary": "$htmlUtil.escapeJS($htmlUtil.escape($jiraIssue.getSummary()))",
+					"type": $jiraIssue.getType()
+				},
+			#end
+		];
+
+		$jsBottom
+	</script>
+</html>

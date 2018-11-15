@@ -1,0 +1,38 @@
+#page-upgrade-notes {
+	display: none;
+}
+
+#page-upgrade-notes .jira-issue-key {
+	color: #2DABE2;
+	cursor: pointer;
+	float: left;
+	padding: 5px 0;
+}
+
+#page-upgrade-notes .jira-issue-summary {
+	float: left;
+	padding: 5px 0.5em 5px 5px;
+}
+
+#page-upgrade-notes .pre-wrap {
+	font-family: Arial, Helvetica, Verdana, sans-serif;
+	white-space: pre-wrap;
+}
+
+#page-upgrade-notes .upgrade-note-content {
+	clear: both;
+	padding: 5px;
+}
+
+#page-upgrade-notes .upgrade-note-topper {
+	background: #D1D6DC;
+	font-size: 13px;
+	font-weight: bold;
+	overflow: hidden;
+}
+
+#page-upgrade-notes .upgrade-note-wrapper {
+	border: 1px solid #D1D6DC;
+	border-radius: 5px;
+	margin: 0 0 10px 0;
+}

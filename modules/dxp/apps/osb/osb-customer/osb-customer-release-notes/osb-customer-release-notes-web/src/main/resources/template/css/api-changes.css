@@ -1,0 +1,38 @@
+#page-api-changes {
+	display: none;
+}
+
+#page-api-changes .api-change-class {
+	border: 1px solid #D1D6DC;
+	border-radius: 5px;
+	margin: 0 0 10px 0;
+}
+
+#page-api-changes .api-change-method {
+	padding: 0 5px 1em 2em;
+}
+
+#page-api-changes .class-details {
+	padding: 0 5px 1em 5px;
+}
+
+#page-api-changes .class-name {
+	background: #D1D6DC;
+	font-size: 13px;
+	font-weight: bold;
+	margin-bottom: 0.5em;
+	padding: 5px;
+}
+
+#page-api-changes .class-package {
+	font-weight: normal;
+}
+
+#page-api-changes .detail-key {
+	font-weight: bold;
+}
+
+#page-api-changes .issue-reference {
+	color: #2DABE2;
+	cursor: pointer;
+}
