@@ -16,12 +16,12 @@
 		display: inline-block;
 		height: 16px;
 		margin-right: 8px;
-		vertical-align: top;
+		vertical-align: sub;
 		width: 16px;
 	}
 
-	.eula-checkbox-label {
-		display: inline-block;
+	.eula-label {
 		font-size: $font-size-md;
+		font-weight: $font-weight-normal;
 	}
 }

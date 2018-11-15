@@ -10,12 +10,10 @@ import Modal from './Modal';
 
 class Downloads extends React.Component {
 	state = {
-		eula: {
-			acceptTerms: false,
-			agreementContent: '',
-			skipEULA: true
-		},
+		agreementContent: '',
+		eulaAccepted: false,
 		metadata: '',
+		showEULA: false,
 		showModal: false
 	}
 
@@ -37,53 +35,43 @@ class Downloads extends React.Component {
 	};
 
 	componentDidMount() {
-		const {requiredAgreement} = this.props;
+		const {metadata, requiredAgreement} = this.props;
 
-		const {eula} = this.state;
-
-		if (
-			requiredAgreement.agreementContentURL &&
-			requiredAgreement.verifyAgreementURL
-		) {
+		if (!!Object.keys(requiredAgreement).length) {
 			axios.all(
 				[
 					axios.get(requiredAgreement.agreementContentURL),
 					axios.get(requiredAgreement.verifyAgreementURL)
 				]
-			).then(
-				response => {
+			)
+			.then(
+				(response) => {
+					const [content, verification] = response;
+
+					/* TODO: Remove type coercion once response schema updates from String to Boolean */
 					this.setState(
 						{
-							eula: {
-								...eula,
-								agreementContent: response[0].data,
-								skipEULA: response[1].data.verified === "true" ? true : false
-							}
+							agreementContent: content.data,
+							showEULA: Boolean(verification.data.verified)
 						}
 					);
+				}
+			)
+			.catch(
+				(err) => {
+					if (process.env.NODE_ENV === 'development') {
+						console.log(err);
+					}
 				}
 			);
 		}
 
 		this.setState(
 			{
-				metadata: this.getMetadata(this.props.metadata[0].id)
+				metadata: this.getMetadata(metadata[0].id)
 			}
 		);
 	}
-
-	acceptTermsAndConditions = event => {
-		const {eula} = this.state;
-
-		this.setState(
-			{
-				eula: {
-					...eula,
-					acceptTerms: event.target.checked
-				}
-			}
-		);
-	};
 
 	getMetadata = (id) => {
 		const metadata = this.props.metadata;
@@ -91,25 +79,35 @@ class Downloads extends React.Component {
 		return metadata.find(data => data.id === id);
 	};
 
+	handleAcceptEULA = () => {
+		this.setState(
+			{
+				eulaAccepted: event.target.checked
+			}
+		);
+	};
+
 	handleDownload = () => {
 		const {requiredAgreement} = this.props;
-
 		const {metadata} = this.state;
 
-		axios.post(requiredAgreement.acceptAgreementURL).then(
+		axios.post(requiredAgreement.acceptAgreementURL)
+		.then(
 			window.location = metadata.url
+		)
+		.catch(
+			(err) => {
+				if (process.env.NODE_ENV === 'development') {
+					console.log(err);
+				}
+			}
 		);
 	};
 
 	handleCloseModal = () => {
-		const {eula} = this.state;
-
 		this.setState(
 			{
-				eula: {
-					...eula,
-					acceptTerms: false
-				},
+				eulaAccepted: false,
 				showModal: false
 			}
 		);
@@ -132,7 +130,13 @@ class Downloads extends React.Component {
 
 	render() {
 		const {children, journalArticleId, showDropdown} = this.props;
-		const {eula, metadata, showModal} = this.state;
+		const {
+			agreementContent,
+			eulaAccepted,
+			metadata,
+			showEULA,
+			showModal
+		} = this.state;
 
 		const {details, name, url} = metadata;
 
@@ -149,7 +153,7 @@ class Downloads extends React.Component {
 				</Button>
 
 				<Button
-					disabled={!eula.acceptTerms}
+					disabled={!eulaAccepted}
 					display="primary"
 					onClick={this.handleDownload}
 					type="button"
@@ -180,7 +184,7 @@ class Downloads extends React.Component {
 						</select>
 					)}
 
-					{eula.skipEULA && url ? (
+					{!showEULA && url && (
 						<Button
 							display="primary"
 							href={url}
@@ -188,7 +192,9 @@ class Downloads extends React.Component {
 						>
 							{Liferay.Language.get('download')}
 						</Button>
-					) : (
+					)}
+
+					{showEULA && url && (
 						<React.Fragment>
 							<Button
 								display="primary"
@@ -214,13 +220,15 @@ class Downloads extends React.Component {
 										{Liferay.Language.get('terms-and-conditions')}
 									</h3>
 
-									{eula.agreementContent}
+									{agreementContent}
 								</div>
 
 								<div className="eula-agree-terms">
-									<input className="eula-checkbox" name="eulaCheckbox" onChange={this.acceptTermsAndConditions} type="checkbox" />
+									<label className="eula-label">
+										<input className="eula-checkbox" name="eulaCheckbox" onChange={this.handleAcceptEULA} type="checkbox" />
 
-									<span className="eula-checkbox-label">{Liferay.Language.get('i-have-read-and-agree-with-the-above-terms-and-conditions')}</span>
+										<span>{Liferay.Language.get('i-have-read-and-agree-with-the-above-terms-and-conditions')}</span>
+									</label>
 								</div>
 							</Modal>
 						</React.Fragment>
@@ -298,7 +306,13 @@ FileDownloads.propTypes = {
 		)
 	).isRequired,
 	journalArticleId: PropTypes.number.isRequired,
-	requiredAgreement: PropTypes.object.isRequired
+	requiredAgreement: PropTypes.shape(
+		{
+			acceptAgreementURL: PropTypes.string,
+			agreementContentURL: PropTypes.string,
+			verifyAgreementURL: PropTypes.string
+		}
+	).isRequired
 };
 
 export default FileDownloads;
