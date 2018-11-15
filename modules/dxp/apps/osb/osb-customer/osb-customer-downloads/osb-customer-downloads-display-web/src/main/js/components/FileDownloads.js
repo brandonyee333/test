@@ -41,7 +41,10 @@ class Downloads extends React.Component {
 
 		const {eula} = this.state;
 
-		if (requiredAgreement.agreementContentURL && requiredAgreement.verifyAgreementURL) {
+		if (
+			requiredAgreement.agreementContentURL &&
+			requiredAgreement.verifyAgreementURL
+		) {
 			axios.all(
 				[
 					axios.get(requiredAgreement.agreementContentURL),
@@ -54,7 +57,7 @@ class Downloads extends React.Component {
 							eula: {
 								...eula,
 								agreementContent: response[0].data,
-								skipEULA: response[1].data.verified == "true" ? true : false
+								skipEULA: response[1].data.verified === "true" ? true : false
 							}
 						}
 					);
@@ -80,13 +83,13 @@ class Downloads extends React.Component {
 				}
 			}
 		);
-	}
+	};
 
 	getMetadata = (id) => {
 		const metadata = this.props.metadata;
 
 		return metadata.find(data => data.id === id);
-	}
+	};
 
 	handleDownload = () => {
 		const {requiredAgreement} = this.props;
@@ -96,7 +99,7 @@ class Downloads extends React.Component {
 		axios.post(requiredAgreement.acceptAgreementURL).then(
 			window.location = metadata.url
 		);
-	}
+	};
 
 	handleCloseModal = () => {
 		const {eula} = this.state;
@@ -110,7 +113,7 @@ class Downloads extends React.Component {
 				showModal: false
 			}
 		);
-	}
+	};
 
 	handleDisplayModal = () =>
 		this.setState(
@@ -125,7 +128,7 @@ class Downloads extends React.Component {
 				metadata: this.getMetadata(event.target.selectedOptions[0].id)
 			}
 		);
-	}
+	};
 
 	render() {
 		const {children, journalArticleId, showDropdown} = this.props;
@@ -133,7 +136,7 @@ class Downloads extends React.Component {
 
 		const {details, name, url} = metadata;
 
-		const eulaHeader = Liferay.Language.get('download') + " " + name;
+		const eulaHeader = Liferay.Language.get('download') + ' ' + name;
 
 		const eulaFooter = (
 			<div className="eula-footer">

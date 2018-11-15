@@ -25,7 +25,17 @@ export default class Button extends React.Component {
 	};
 
 	render() {
-		const {children, disabled, display, href, icon, onClick, size, type, value} = this.props;
+		const {
+			children,
+			disabled,
+			display,
+			href,
+			icon,
+			onClick,
+			size,
+			type,
+			value
+		} = this.props;
 
 		const className = getCN(
 			'btn',
