@@ -185,7 +185,8 @@ private String _getStringValue(Map<String, List<DDMFormFieldValue>> ddmFormField
 		Downloads.FileDownloads,
 		{
 			downloadGroups: <%= downloadGroupsJSONArray %>,
-			journalArticleId: <%= journalArticle.getResourcePrimKey() %>
+			journalArticleId: <%= journalArticle.getResourcePrimKey() %>,
+			requiredAgreement: <%= requiredAgreementJSONObject %>
 		},
 		document.getElementById('<portlet:namespace />downloads<%= journalArticle.getResourcePrimKey() %>')
 	);
