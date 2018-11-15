@@ -1,7 +1,6 @@
 Bundle-Name: Liferay OSB Customer Release Notes Service
 Bundle-SymbolicName: com.liferay.osb.customer.release.notes.service
 Bundle-Version: 1.0.0
-Export-Package:\
-	com.liferay.osb.customer.release.notes.util
+Export-Package: com.liferay.osb.customer.release.notes.util
 Liferay-Require-SchemaVersion: 1.0.0
 Liferay-Service: true
