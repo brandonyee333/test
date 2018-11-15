@@ -295,6 +295,9 @@ public class PartnerEntryLocalServiceImpl
 				throw new PartnerEntryDossieraAccountKeyException();
 			}
 		}
+		else {
+			throw new PartnerEntryDossieraAccountKeyException();
+		}
 
 		if (Validator.isNull(code)) {
 			throw new PartnerEntryCodeException();
