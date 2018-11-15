@@ -10,10 +10,6 @@
 	<meta content="initial-scale=1.0, width=device-width" name="viewport" />
 
 	<@liferay_util["include"] page=top_head_include />
-
-	<#-- Theme JavaScript -->
-
-	<script src='${htmlUtil.escape(portalUtil.getStaticResourceURL(request, "${javascript_folder}/main.js"))}' type="text/javascript"></script>
 </head>
 
 <body class="${css_class}">
@@ -43,6 +39,10 @@
 <@liferay_util["include"] page=body_bottom_include />
 
 <@liferay_util["include"] page=bottom_include />
+
+<#if has_mega_menu>
+	<#include "${full_templates_path}/mega_menu.ftl" />
+</#if>
 
 </body>
 
