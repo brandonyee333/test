@@ -21,3 +21,5 @@ test-results/
 tmp/
 
 !/osb-portlet/docroot/WEB-INF/lib
+/osb-portlet/docroot/WEB-INF/lib/*
+!/osb-portlet/docroot/WEB-INF/lib/osb-portlet-service.jar
