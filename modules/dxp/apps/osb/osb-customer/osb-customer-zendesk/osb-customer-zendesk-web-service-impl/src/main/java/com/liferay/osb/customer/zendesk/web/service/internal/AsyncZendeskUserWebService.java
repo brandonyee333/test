@@ -144,6 +144,33 @@ public class AsyncZendeskUserWebService
 	}
 
 	@Override
+	public void createZendeskUserOrganizationSubscription(
+			long zendeskUserId, long zendeskOrganizationId)
+		throws PortalException {
+
+		String endpoint =
+			ZendeskRESTEndpoints.URL_API_V2 +
+				ZendeskRESTEndpoints.ORGANIZATION_SUBSCRIPTIONS;
+
+		JSONObject organizationSubscriptionsJSONObject =
+			JSONFactoryUtil.createJSONObject();
+
+		organizationSubscriptionsJSONObject.put(
+			"organization_id", zendeskOrganizationId);
+		organizationSubscriptionsJSONObject.put("user_id", zendeskUserId);
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put(
+			"organization_subscription", organizationSubscriptionsJSONObject);
+
+		ZendeskRequest zendeskRequest = new ZendeskRequest(
+			endpoint, "post", null, jsonObject, null);
+
+		messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
+	}
+
+	@Override
 	public void deleteZendeskUserIdentity(
 			long zendeskUserId, long zendeskUserIdentityId, String type)
 		throws PortalException {

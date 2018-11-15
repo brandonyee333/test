@@ -166,8 +166,39 @@ public class ZendeskConverter {
 	public ZendeskOrganization toZendeskOrganization(JSONObject jsonObject) {
 		ZendeskOrganization zendeskOrganization = new ZendeskOrganization();
 
-		zendeskOrganization.setZendeskOrganizationId(jsonObject.getLong("id"));
-		zendeskOrganization.setName(jsonObject.getString("name"));
+		JSONObject organizationJSONObject = jsonObject.getJSONObject(
+			"organization");
+
+		zendeskOrganization.setDetails(
+			organizationJSONObject.getString("details"));
+		zendeskOrganization.setExternalId(
+			organizationJSONObject.getString("external_id"));
+		zendeskOrganization.setName(organizationJSONObject.getString("name"));
+		zendeskOrganization.setNotes(organizationJSONObject.getString("notes"));
+
+		JSONObject organizationFieldsJSONObject =
+			organizationJSONObject.getJSONObject("organization_fields");
+
+		zendeskOrganization.setPartnerFirstLineSupport(
+			organizationFieldsJSONObject.getString(
+				"partner_first_line_support"));
+		zendeskOrganization.setPartnerJiraProject(
+			organizationFieldsJSONObject.getString("partner_jira_project"));
+		zendeskOrganization.setPartnerOrganization(
+			organizationFieldsJSONObject.getString("partner_organization"));
+		zendeskOrganization.setSLA(
+			organizationFieldsJSONObject.getString("sla"));
+		zendeskOrganization.setStatus(
+			organizationFieldsJSONObject.getString("status"));
+		zendeskOrganization.setSupportLanguage(
+			organizationFieldsJSONObject.getString("support_language"));
+		zendeskOrganization.setSupportRegion(
+			organizationFieldsJSONObject.getString("support_region"));
+		zendeskOrganization.setTier(
+			organizationFieldsJSONObject.getString("tier"));
+
+		zendeskOrganization.setZendeskOrganizationId(
+			organizationJSONObject.getLong("id"));
 
 		return zendeskOrganization;
 	}

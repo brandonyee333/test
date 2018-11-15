@@ -152,10 +152,15 @@ public class AccountEntrySynchronizer {
 				tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
 				tags.add(ZendeskTagConstants.OSB_PARTNER);
 
-				long zendeskUserId = _userSynchronizer.sync(user, null, tags);
+				long zendeskUserId = _userSynchronizer.sync(
+					user, 0, null, tags);
 
 				_zendeskUserWebService.createZendeskUserOrganizationMemberships(
 					zendeskUserId, new long[] {zendeskOrganizationId});
+
+				_zendeskUserWebService.
+					createZendeskUserOrganizationSubscription(
+						zendeskUserId, zendeskOrganizationId);
 			}
 		}
 		catch (Exception e) {
@@ -308,7 +313,7 @@ public class AccountEntrySynchronizer {
 	@Reference
 	private ZendeskMapperUtil _zendeskMapperUtil;
 
-	@Reference(target = "(async=true)")
+	@Reference
 	private ZendeskOrganizationWebService _zendeskOrganizationWebService;
 
 	@Reference(target = "(async=true)")

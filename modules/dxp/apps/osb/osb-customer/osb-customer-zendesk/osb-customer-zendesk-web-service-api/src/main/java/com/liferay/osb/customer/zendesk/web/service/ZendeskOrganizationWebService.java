@@ -27,7 +27,7 @@ import java.util.Set;
 @ProviderType
 public interface ZendeskOrganizationWebService {
 
-	public void createOrUpdateZendeskOrganization(
+	public ZendeskOrganization createOrUpdateZendeskOrganization(
 			String details, String externalId, String name, String notes,
 			String partnerFirstLineSupport, String partnerJiraProject,
 			String partnerCode, String sla, String status,

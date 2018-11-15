@@ -84,6 +84,13 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 		throw new UnsupportedOperationException();
 	}
 
+	public void createZendeskUserOrganizationSubscription(
+			long zendeskUserId, long zendeskOrganizationId)
+		throws PortalException {
+
+		throw new UnsupportedOperationException();
+	}
+
 	public void deleteZendeskUserIdentity(
 			long zendeskUserId, long zendeskUserIdentityId, String type)
 		throws PortalException {

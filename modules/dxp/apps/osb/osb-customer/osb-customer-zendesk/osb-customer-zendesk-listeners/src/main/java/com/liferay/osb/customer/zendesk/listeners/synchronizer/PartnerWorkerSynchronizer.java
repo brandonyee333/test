@@ -52,7 +52,7 @@ public class PartnerWorkerSynchronizer {
 			tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
 			tags.add(ZendeskTagConstants.OSB_PARTNER);
 
-			long zendeskUserId = _userSynchronizer.sync(user, null, tags);
+			long zendeskUserId = _userSynchronizer.sync(user, 0, null, tags);
 
 			long[] zendeskOrganizationIds = getZendeskOrganizationIds(
 				partnerWorker);
@@ -61,6 +61,12 @@ public class PartnerWorkerSynchronizer {
 				_asyncZendeskUserWebService.
 					createZendeskUserOrganizationMemberships(
 						zendeskUserId, zendeskOrganizationIds);
+
+				for (long zendeskOrganizationId : zendeskOrganizationIds) {
+					_asyncZendeskUserWebService.
+						createZendeskUserOrganizationSubscription(
+							zendeskUserId, zendeskOrganizationId);
+				}
 			}
 		}
 		catch (Exception e) {

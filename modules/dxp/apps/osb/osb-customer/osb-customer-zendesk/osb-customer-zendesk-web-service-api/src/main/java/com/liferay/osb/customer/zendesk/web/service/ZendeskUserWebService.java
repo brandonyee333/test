@@ -44,6 +44,10 @@ public interface ZendeskUserWebService {
 			long zendeskUserId, long[] zendeskOrganizationIds)
 		throws PortalException;
 
+	public void createZendeskUserOrganizationSubscription(
+			long zendeskUserId, long zendeskOrganizationId)
+		throws PortalException;
+
 	public void deleteZendeskUserIdentity(
 			long zendeskUserId, long zendeskUserIdentityId, String type)
 		throws PortalException;

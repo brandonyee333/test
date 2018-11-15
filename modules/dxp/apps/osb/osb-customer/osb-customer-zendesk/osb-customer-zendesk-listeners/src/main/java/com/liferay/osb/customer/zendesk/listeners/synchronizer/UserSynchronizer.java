@@ -20,7 +20,6 @@ import com.liferay.osb.customer.zendesk.listeners.exception.ZendeskIntegrationEx
 import com.liferay.osb.customer.zendesk.listeners.util.ZendeskModelListenerUtil;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
-import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.model.ExternalIdMapper;
 import com.liferay.osb.model.ExternalIdMapperConstants;
@@ -114,7 +113,9 @@ public class UserSynchronizer {
 		}
 	}
 
-	public long sync(User user, String organizationName, Set<String> tags)
+	public long sync(
+			User user, long accountEntryId, String organizationName,
+			Set<String> tags)
 		throws PortalException {
 
 		try {
@@ -139,6 +140,16 @@ public class UserSynchronizer {
 						user.getFullName(), organizationName, tags);
 
 				zendeskUserId = zendeskUser.getZendeskUserId();
+			}
+
+			if (accountEntryId > 0) {
+				long zendeskOrganizationId =
+					_zendeskMapperUtil.fetchZendeskOrganizationId(
+						accountEntryId);
+
+				_asyncZendeskUserWebService.
+					createZendeskUserOrganizationSubscription(
+						zendeskUserId, zendeskOrganizationId);
 			}
 
 			return zendeskUserId;
@@ -192,9 +203,6 @@ public class UserSynchronizer {
 
 	@Reference
 	private ZendeskMapperUtil _zendeskMapperUtil;
-
-	@Reference(target = "(async=true)")
-	private ZendeskOrganizationWebService _zendeskOrganizationWebService;
 
 	@Reference
 	private ZendeskUserWebService _zendeskUserWebService;

@@ -18,6 +18,7 @@ import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
 import com.liferay.osb.customer.zendesk.model.ZendeskOrganization;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationWebService;
+import com.liferay.osb.customer.zendesk.web.service.internal.util.MessagePublisherUtil;
 import com.liferay.osb.customer.zendesk.web.service.internal.util.ZendeskConverter;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -42,7 +43,7 @@ import org.osgi.service.component.annotations.Reference;
 public class DefaultZendeskOrganizationWebService
 	implements ZendeskOrganizationWebService {
 
-	public void createOrUpdateZendeskOrganization(
+	public ZendeskOrganization createOrUpdateZendeskOrganization(
 			String details, String externalId, String name, String notes,
 			String partnerFirstLineSupport, String partnerJiraProject,
 			String partnerCode, String sla, String status,
@@ -50,7 +51,23 @@ public class DefaultZendeskOrganizationWebService
 			Set<String> tags)
 		throws PortalException {
 
-		throw new UnsupportedOperationException();
+		String endpoint =
+			ZendeskRESTEndpoints.URL_API_V2 +
+				ZendeskRESTEndpoints.ORGANIZATIONS_CREATE_OR_UPDATE;
+
+		JSONObject zendeskOrganizationJSONObject =
+			getZendeskOrganizationJSONObject(
+				details, externalId, name, notes, partnerFirstLineSupport,
+				partnerJiraProject, partnerCode, sla, status, supportLanguage,
+				supportRegion, tier, tags);
+
+		JSONObject responseJSONObject = _zendeskBaseWebService.post(
+			endpoint, zendeskOrganizationJSONObject.toString());
+
+		_messagePublisherUtil.sendEventNotification(
+			"zendesk.organization.create", responseJSONObject);
+
+		return _zendeskConverter.toZendeskOrganization(responseJSONObject);
 	}
 
 	public ZendeskOrganization getZendeskOrganization(String externalId)
@@ -60,7 +77,7 @@ public class DefaultZendeskOrganizationWebService
 
 		parameters.put("external_id", externalId);
 
-		JSONObject responseJSONObject = zendeskBaseWebService.get(
+		JSONObject responseJSONObject = _zendeskBaseWebService.get(
 			ZendeskRESTEndpoints.URL_API_V2 + "organizations/search.json",
 			parameters);
 
@@ -71,7 +88,7 @@ public class DefaultZendeskOrganizationWebService
 			return null;
 		}
 
-		return zendeskConverter.toZendeskOrganization(
+		return _zendeskConverter.toZendeskOrganization(
 			organizationsJSONArray.getJSONObject(0));
 	}
 
@@ -152,9 +169,12 @@ public class DefaultZendeskOrganizationWebService
 	}
 
 	@Reference
-	protected ZendeskBaseWebService zendeskBaseWebService;
+	private MessagePublisherUtil _messagePublisherUtil;
 
 	@Reference
-	protected ZendeskConverter zendeskConverter;
+	private ZendeskBaseWebService _zendeskBaseWebService;
+
+	@Reference
+	private ZendeskConverter _zendeskConverter;
 
 }
