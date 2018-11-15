@@ -1719,12 +1719,6 @@ public class ClpSerializer {
 		}
 
 		if (className.equals(
-					"com.liferay.osb.exception.DuplicateAccountCustomerException")) {
-			return new com.liferay.osb.exception.DuplicateAccountCustomerException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
 					"com.liferay.osb.exception.DuplicateAccountEntryException")) {
 			return new com.liferay.osb.exception.DuplicateAccountEntryException(throwable.getMessage(),
 				throwable.getCause());
