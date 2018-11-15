@@ -53,10 +53,10 @@
 	</symbol>
 
 	<symbol id="compatibility-matrix" viewBox="0 0 32 32">
-		<path d="M11 7V2a2 2 0 0 1 2-2h17a2 2 0 0 1 2 2v28a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h9z" fill="#fff"/>
-		<path fill-rule="evenodd" clip-rule="evenodd" d="M31.543.728a2.01 2.01 0 0 0-.27-.271l.27.27zm.077.099L.827 31.62c.33.239.735.38 1.173.38h28a2 2 0 0 0 2-2V2a1.99 1.99 0 0 0-.38-1.173z" fill="#E8F5FC"/>
-		<path fill-rule="evenodd" clip-rule="evenodd" d="M11 2v5H2a2 2 0 0 0-2 2v21a2 2 0 0 0 2 2h28a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H13a2 2 0 0 0-2 2zm20 5h-9V1h8a1 1 0 0 1 1 1v5zM11 20v11H2a1 1 0 0 1-1-1V20h10zm0-1H1V9a1 1 0 0 1 1-1h9v11zm10 12h-9v-5h9v5zM12 8v5h9V8h-9zm0 11v-5h9v5h-9zm0 1v5h9v-5h-9zm18 11h-8v-5h9v4a1 1 0 0 1-1 1zM22 8v5h9V8h-9zm0 11v-5h9v5h-9zm0 1v5h9v-5h-9zM21 1h-8a1 1 0 0 0-1 1v5h9V1zm-6.5 9h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1 0-1zm4-6h-4a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1zm6 0h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1 0-1zm-6 12h-4a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1zm-4 6h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1 0-1zm14-12h-4a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1zm-4 6h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1 0-1zm4 6h-4a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1zm-14 6h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1 0-1zm14 0h-4a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1z" fill="#C5C9D4"/>
-		<path fill-rule="evenodd" clip-rule="evenodd" d="M7 10H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1zm0 12H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1z" fill="#1AA0E8"/>
+		<path d="M11 7V2a2 2 0 0 1 2-2h17a2 2 0 0 1 2 2v28a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h9z" fill="#fff" />
+		<path clip-rule="evenodd" d="M31.543.728a2.01 2.01 0 0 0-.27-.271l.27.27zm.077.099L.827 31.62c.33.239.735.38 1.173.38h28a2 2 0 0 0 2-2V2a1.99 1.99 0 0 0-.38-1.173z" fill="#E8F5FC" fill-rule="evenodd" />
+		<path clip-rule="evenodd" d="M11 2v5H2a2 2 0 0 0-2 2v21a2 2 0 0 0 2 2h28a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H13a2 2 0 0 0-2 2zm20 5h-9V1h8a1 1 0 0 1 1 1v5zM11 20v11H2a1 1 0 0 1-1-1V20h10zm0-1H1V9a1 1 0 0 1 1-1h9v11zm10 12h-9v-5h9v5zM12 8v5h9V8h-9zm0 11v-5h9v5h-9zm0 1v5h9v-5h-9zm18 11h-8v-5h9v4a1 1 0 0 1-1 1zM22 8v5h9V8h-9zm0 11v-5h9v5h-9zm0 1v5h9v-5h-9zM21 1h-8a1 1 0 0 0-1 1v5h9V1zm-6.5 9h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1 0-1zm4-6h-4a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1zm6 0h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1 0-1zm-6 12h-4a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1zm-4 6h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1 0-1zm14-12h-4a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1zm-4 6h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1 0-1zm4 6h-4a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1zm-14 6h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1 0-1zm14 0h-4a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1z" fill="#C5C9D4" fill-rule="evenodd" />
+		<path clip-rule="evenodd" d="M7 10H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1zm0 12H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1z" fill="#1AA0E8" fill-rule="evenodd" />
 	</symbol>
 
 	<symbol id="contact" viewBox="0 0 32 32">
