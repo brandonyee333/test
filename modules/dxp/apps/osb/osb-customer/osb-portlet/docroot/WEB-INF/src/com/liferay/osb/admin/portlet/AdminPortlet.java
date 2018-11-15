@@ -1123,6 +1123,10 @@ public class AdminPortlet extends OSBPortlet {
 
 	@Override
 	protected boolean isSessionErrorException(Throwable cause) {
+		if (_log.isDebugEnabled()) {
+			_log.debug(cause, cause);
+		}
+
 		if (cause instanceof AccountEntryCodeException ||
 			cause instanceof AccountEntryCorpProjectException ||
 			cause instanceof AccountEntryIndustryException ||
