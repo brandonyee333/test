@@ -227,10 +227,10 @@ class Downloads extends React.Component {
 				{details && (
 					<div class="download-details small">
 						{Object.entries(details).map(
-							detail => (
+							([key, value]) => (
 								<React.Fragment>
-									<span className="detail-label">{detail[0]}</span>:{' '}
-									<span className="detail-value">{detail[1]}</span>
+									<span className="detail-label">{key}</span>:{' '}
+									<span className="detail-value">{value}</span>
 								</React.Fragment>
 							)
 						)}
