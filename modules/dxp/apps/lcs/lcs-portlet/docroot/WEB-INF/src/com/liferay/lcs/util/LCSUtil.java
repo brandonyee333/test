@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import java.lang.reflect.Field;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -238,36 +239,34 @@ public class LCSUtil {
 	}
 
 	protected static String getLCSLayoutURL(
-		String friendlyURL, Map<String, String> publicRenderParameters) {
+		String friendlyURL, Map<String, String> parms) {
 
 		String layoutFullURL = getLCSPortalURL() + friendlyURL;
 
-		if (publicRenderParameters.isEmpty()) {
+		if (parms.isEmpty()) {
 			return layoutFullURL;
 		}
 
-		StringBundler sb = new StringBundler(
-			4 * publicRenderParameters.size() + 1);
+		StringBundler sb = new StringBundler(4 * parms.size() + 1);
 
 		sb.append(layoutFullURL);
+		sb.append(StringPool.QUESTION);
 
-		boolean firstParameter = true;
+		Set<String> keys = parms.keySet();
 
-		for (Map.Entry<String, String> entry :
-				publicRenderParameters.entrySet()) {
+		Iterator<String> iterator = keys.iterator();
 
-			if (firstParameter) {
-				sb.append(StringPool.QUESTION);
+		while (iterator.hasNext()) {
+			String parm = iterator.next();
 
-				firstParameter = false;
-			}
-			else {
+			sb.append(parm);
+
+			sb.append(StringPool.EQUAL);
+			sb.append(parms.get(parm));
+
+			if (iterator.hasNext()) {
 				sb.append(StringPool.AMPERSAND);
 			}
-
-			sb.append(entry.getKey());
-			sb.append(StringPool.EQUAL);
-			sb.append(entry.getValue());
 		}
 
 		return sb.toString();
