@@ -27,7 +27,7 @@ Map<Long, Long> vocabularyCategoryIds = new HashMap<Long, Long>();
 
 long[] categoryIds = StringUtil.split(ParamUtil.getString(request, "categoryId"), 0L);
 
-for (long categoryId : categoryIds)) {
+for (long categoryId : categoryIds) {
 	try {
 		AssetCategory assetCategory = AssetCategoryLocalServiceUtil.getCategory(categoryId);
 
