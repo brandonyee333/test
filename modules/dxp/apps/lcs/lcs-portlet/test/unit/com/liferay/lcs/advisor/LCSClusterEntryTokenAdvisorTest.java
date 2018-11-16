@@ -24,7 +24,6 @@ import com.liferay.lcs.runnable.LCSThreadFactory;
 import com.liferay.lcs.task.HandshakeTask;
 import com.liferay.lcs.task.scheduler.TaskSchedulerService;
 import com.liferay.lcs.task.scheduler.impl.TaskSchedulerServiceImpl;
-import com.liferay.lcs.util.LCSAlert;
 import com.liferay.lcs.util.PortletPropsValues;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
 import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
@@ -64,7 +63,6 @@ public class LCSClusterEntryTokenAdvisorTest extends PowerMockito {
 
 	@Before
 	public void setUp() {
-		_lcsAlertAdvisor = mock(LCSAlertAdvisor.class);
 		_lcsGatewayClient = mock(LCSGatewayClientImpl.class);
 
 		doReturn(
@@ -114,12 +112,6 @@ public class LCSClusterEntryTokenAdvisorTest extends PowerMockito {
 		).invoke(
 			"_deleteLCSCLusterEntryTokenFile"
 		);
-
-		Mockito.verify(
-			_lcsAlertAdvisor
-		).add(
-			LCSAlert.ERROR_INVALID_TOKEN
-		);
 	}
 
 	@Test
@@ -144,12 +136,6 @@ public class LCSClusterEntryTokenAdvisorTest extends PowerMockito {
 			_lcsClusterEntryTokenAdvisor, Mockito.times(1)
 		).invoke(
 			"_deleteLCSCLusterEntryTokenFile"
-		);
-
-		Mockito.verify(
-			_lcsAlertAdvisor
-		).add(
-			LCSAlert.ERROR_ENVIRONMENT_MISMATCH
 		);
 	}
 
@@ -176,12 +162,6 @@ public class LCSClusterEntryTokenAdvisorTest extends PowerMockito {
 		).invoke(
 			"_deleteLCSCLusterEntryTokenFile"
 		);
-
-		Mockito.verify(
-			_lcsAlertAdvisor
-		).add(
-			LCSAlert.ERROR_INVALID_USER_CREDENTIALS
-		);
 	}
 
 	@Test
@@ -204,12 +184,6 @@ public class LCSClusterEntryTokenAdvisorTest extends PowerMockito {
 			_lcsClusterEntryTokenAdvisor, Mockito.never()
 		).invoke(
 			"_deleteLCSCLusterEntryTokenFile"
-		);
-
-		Mockito.verify(
-			_lcsAlertAdvisor, Mockito.never()
-		).add(
-			Matchers.any(LCSAlert.class)
 		);
 	}
 
@@ -261,7 +235,7 @@ public class LCSClusterEntryTokenAdvisorTest extends PowerMockito {
 	private HandshakeTask _spyHandshakeTask() throws Exception {
 		HandshakeTask handshakeTask = spy(
 			new HandshakeTask(
-				1L, _lcsAlertAdvisor, _lcsClusterEntryTokenAdvisor,
+				1L, mock(LCSAlertAdvisor.class), _lcsClusterEntryTokenAdvisor,
 				_lcsGatewayClient, _lcsKeyAdvisor, _taskSchedulerService,
 				_threadFactory, _uptimeAdvisor));
 
@@ -285,7 +259,6 @@ public class LCSClusterEntryTokenAdvisorTest extends PowerMockito {
 		);
 	}
 
-	private LCSAlertAdvisor _lcsAlertAdvisor;
 	private LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
 	private LCSGatewayClient _lcsGatewayClient;
 	private LCSKeyAdvisor _lcsKeyAdvisor;
