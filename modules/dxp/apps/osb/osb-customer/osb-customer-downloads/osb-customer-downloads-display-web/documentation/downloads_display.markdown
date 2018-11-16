@@ -3,19 +3,19 @@
 ### Set up
 #### OSB Downloads Display Porlet
 
-Place _OSB Downloads Display_ portlet on the page. Click on the ellipsis inside the portlet's topbar, and open _Configuration_.
+Place the _OSB Downloads Display_ portlet on the page. Click on the ellipsis icon inside the portlet's topbar, and open _Configuration_.
 
 In the _Setup_ tab, use the _DDM Structure Key_ dropdown and select either _OSB-CUSTOMER-THEME--DOWNLOAD_ or _OSB-CUSTOMER-THEME--TRIAL-DOWNLOAD_. Save the configuration.
 
 #### Downloads Porlet
 
-There is separate portlet whose name is _Downloads_. Place it on the same page as the _OSB Downloads Display_ portlet and follow the same instructions to open _Configuration_.
+There is separate portlet named _Downloads_. Place it on the same page as the _OSB Downloads Display_ portlet and follow the same instructions to open _Configuration_.
 
 Inside the _Setup_ tab, do the following in the _ESA_, _Evaluation EULA_, and _Studio EULA_ tabs:
-1. Leave _Language_ as _English (United States)_ unless told otherwise
-2. _URL_ will be an address to the EULA's agreement content. For testing purposes, any url could work. For example: _http://localhost:8080?test=test_
-3. _Version Displayed_ should be 1.0
-4. _Required to Accept_ should be 1.0
+1. Leave _Language_ as _English (United States)_ unless told otherwise.
+2. _URL_ field will be an address to the EULA's agreement content. For testing purposes, any url could work (e.g. _http://localhost:8080?test=test_).
+3. _Version Displayed_ should be 1.0.
+4. _Required to Accept_ should be 1.0.
 
 #### Custom Fields
 
@@ -30,7 +30,9 @@ Make a custom field for each of the following:
 
 All three custom fields will have type _Group of Text Values_.
 
-Setup is complete after this step. Any _Journal Article_ created with the specified structure will appear in the _OSB Downloads Display_ portlet. See [__Add New Journal Article Downloads__](#newArticles) on how to create _Journal Articles_.
+Setup is complete after this step.
+
+Any _Journal Article_ created with the specified structure will appear in the _OSB Downloads Display_ portlet. See [__Add New Journal Article Downloads__](#newArticles) on how to create _Journal Articles_.
 
 ---
 
@@ -54,9 +56,9 @@ If there are existing _Journal Articles_, the results section will render a tabl
 
 A user will typically be taken to the _Journal Article_ housing the download for a single product via Zendesk. However, to test locally, append the following to the current URL in the browser's address bar:
 
-```?p_p_id=com_liferay_osb_customer_downloads_display_web_DownloadsDisplayPortlet&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_com_liferay_osb_customer_downloads_display_web_DownloadsDisplayPortlet_mvcRenderCommandName=%2Fview&_com_liferay_osb_customer_downloads_display_web_DownloadsDisplayPortlet_journalArticleResourcePrimKey=[primkey]```
+`?p_p_id=com_liferay_osb_customer_downloads_display_web_DownloadsDisplayPortlet&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&_com_liferay_osb_customer_downloads_display_web_DownloadsDisplayPortlet_mvcRenderCommandName=%2Fview&_com_liferay_osb_customer_downloads_display_web_DownloadsDisplayPortlet_journalArticleResourcePrimKey=[primkey]`
 
-where __[primkey]__ is the _Journal Article's_ `primarykey`. To obtain the primarykey, simply inspect the target _Journal Article_ and locate the _<div>_ with class `.downloads`. On the id attribute, copy the number after the `namespace`. 
+where __[primkey]__ is the _Journal Article's_ `primarykey`. To obtain the primarykey, simply inspect the target _Journal Article_ and locate the _<div>_ with class `.downloads`. On the id attribute, copy the number after the `namespace`.
 
 ---
 
