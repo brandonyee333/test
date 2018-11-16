@@ -77,18 +77,6 @@
 			.lexicon-icon-info-circle {
 				vertical-align: sub;
 			}
-
-			// Related to LRIS-32958. This is a temporary solution to a problem
-			// caused by adding HTML to the rich text editor in the OSB Customer
-			// Theme - Downloads structure. Support will eventually change every
-			// web content that has this class and remove it. Once they do, we
-			// will remove the CSS below as it will become obsolete.
-
-			.portlet-msg-info {
-				border-width: 0;
-				margin: 0;
-				padding: 0;
-			}
 		}
 
 		.section-links {
@@ -164,6 +152,22 @@
 
 		a {
 			font-weight: $font-weight-semi-bold;
+		}
+	}
+
+	// LRIS-32958.
+	// This is a temporary solution to a problem caused by adding HTML to
+	// the rich text editor in the OSB Customer Theme - Downloads structure.
+	// This is to be removed when support changes every web content that has
+	// this class.
+
+	.results {
+		.section-alert {
+			.portlet-msg-info {
+				border-width: 0;
+				margin: 0;
+				padding: 0;
+			}
 		}
 	}
 }
