@@ -78,7 +78,8 @@ public class LCSClusterEntryTokenCheckTaskTest extends PowerMockito {
 
 		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =
 			new LCSClusterEntryTokenCheckTask(
-				_lcsClusterEntryTokenAdvisor, _taskSchedulerService);
+				_lcsAlertAdvisor, _lcsClusterEntryTokenAdvisor,
+				_taskSchedulerService);
 
 		lcsClusterEntryTokenCheckTask.run();
 
@@ -126,7 +127,8 @@ public class LCSClusterEntryTokenCheckTaskTest extends PowerMockito {
 
 		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =
 			new LCSClusterEntryTokenCheckTask(
-				_lcsClusterEntryTokenAdvisor, _taskSchedulerService);
+				_lcsAlertAdvisor, _lcsClusterEntryTokenAdvisor,
+				_taskSchedulerService);
 
 		lcsClusterEntryTokenCheckTask.run();
 
@@ -150,7 +152,8 @@ public class LCSClusterEntryTokenCheckTaskTest extends PowerMockito {
 
 		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =
 			new LCSClusterEntryTokenCheckTask(
-				_lcsClusterEntryTokenAdvisor, _taskSchedulerService);
+				_lcsAlertAdvisor, _lcsClusterEntryTokenAdvisor,
+				_taskSchedulerService);
 
 		lcsClusterEntryTokenCheckTask.run();
 
@@ -183,7 +186,8 @@ public class LCSClusterEntryTokenCheckTaskTest extends PowerMockito {
 
 		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =
 			new LCSClusterEntryTokenCheckTask(
-				_lcsClusterEntryTokenAdvisor, _taskSchedulerService);
+				_lcsAlertAdvisor, _lcsClusterEntryTokenAdvisor,
+				_taskSchedulerService);
 
 		lcsClusterEntryTokenCheckTask.run();
 
@@ -218,8 +222,7 @@ public class LCSClusterEntryTokenCheckTaskTest extends PowerMockito {
 	private void _spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete()
 		throws Exception {
 
-		_lcsClusterEntryTokenAdvisor = spy(
-			new LCSClusterEntryTokenAdvisor(_lcsAlertAdvisor));
+		_lcsClusterEntryTokenAdvisor = spy(new LCSClusterEntryTokenAdvisor());
 
 		doNothing(
 		).when(
@@ -243,7 +246,8 @@ public class LCSClusterEntryTokenCheckTaskTest extends PowerMockito {
 
 		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =
 			new LCSClusterEntryTokenCheckTask(
-				_lcsClusterEntryTokenAdvisor, _taskSchedulerService);
+				_lcsAlertAdvisor, _lcsClusterEntryTokenAdvisor,
+				_taskSchedulerService);
 
 		lcsClusterEntryTokenCheckTask.run();
 

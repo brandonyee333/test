@@ -136,7 +136,7 @@ public class TaskAdvisorTest extends PowerMockito {
 			new HashMap<>();
 
 		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor =
-			new LCSClusterEntryTokenAdvisor(null);
+			new LCSClusterEntryTokenAdvisor();
 
 		TaskAdvisor taskAdvisor = new TaskAdvisor();
 

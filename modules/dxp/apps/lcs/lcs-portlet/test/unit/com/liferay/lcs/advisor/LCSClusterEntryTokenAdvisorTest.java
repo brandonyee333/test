@@ -277,8 +277,7 @@ public class LCSClusterEntryTokenAdvisorTest extends PowerMockito {
 	private void _spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete()
 		throws Exception {
 
-		_lcsClusterEntryTokenAdvisor = spy(
-			new LCSClusterEntryTokenAdvisor(_lcsAlertAdvisor));
+		_lcsClusterEntryTokenAdvisor = spy(new LCSClusterEntryTokenAdvisor());
 
 		doNothing(
 		).when(

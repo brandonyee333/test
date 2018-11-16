@@ -14,9 +14,12 @@
 
 package com.liferay.lcs.task;
 
+import com.liferay.lcs.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.exception.InvalidLCSClusterEntryTokenException;
 import com.liferay.lcs.exception.LCSClusterEntryTokenDecryptException;
+import com.liferay.lcs.exception.MissingLCSClusterEntryTokenException;
+import com.liferay.lcs.exception.MultipleLCSClusterEntryTokenException;
 import com.liferay.lcs.internal.event.LCSEvent;
 import com.liferay.lcs.internal.event.LCSEventListener;
 import com.liferay.lcs.oauth.OAuthUtil;
@@ -36,6 +39,7 @@ import java.util.List;
 public class LCSClusterEntryTokenCheckTask implements Task {
 
 	public LCSClusterEntryTokenCheckTask(
+		LCSAlertAdvisor lcsAlertAdvisor,
 		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor,
 		TaskSchedulerService taskSchedulerService) {
 
@@ -43,6 +47,7 @@ public class LCSClusterEntryTokenCheckTask implements Task {
 
 		_lcsEventListeners = new ArrayList<>();
 
+		_lcsEventListeners.add(lcsAlertAdvisor);
 		_lcsEventListeners.add(lcsClusterEntryTokenAdvisor);
 		_lcsEventListeners.add(taskSchedulerService);
 
@@ -74,6 +79,22 @@ public class LCSClusterEntryTokenCheckTask implements Task {
 
 				_notifyLCSEventListeners(
 					LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_TOKEN_CORRUPTED);
+
+				return;
+			}
+			else if (throwable instanceof
+						MissingLCSClusterEntryTokenException) {
+
+				_notifyLCSEventListeners(
+					LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MISSING);
+
+				return;
+			}
+			else if (throwable instanceof
+						MultipleLCSClusterEntryTokenException) {
+
+				_notifyLCSEventListeners(
+					LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MULTIPLE_TOKENS);
 
 				return;
 			}
