@@ -23,6 +23,4 @@
 
 <#if is_signed_in && serviceLocator.findService("com.liferay.osb.customer.help.center.web.util.HelpCenterThemeUtil")?? && serviceLocator.findService("com.liferay.osb.customer.help.center.web.util.HelpCenterThemeUtil").hasMegaMenu(user.getUserId())>
 	<#assign has_mega_menu = true />
-
-	<script>console.log("####");</script>
 </#if>
