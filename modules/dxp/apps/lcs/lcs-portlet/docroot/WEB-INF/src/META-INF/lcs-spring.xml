@@ -13,9 +13,7 @@
 	<bean class="com.liferay.lcs.advisor.LCSAlertAdvisor" id="com.liferay.lcs.advisor.LCSAlertAdvisor">
 		<constructor-arg ref="com.liferay.lcs.platform.gateway.LCSGatewayClient" />
 	</bean>
-	<bean class="com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor" id="com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor">
-		<constructor-arg ref="com.liferay.lcs.advisor.LCSAlertAdvisor" />
-	</bean>
+	<bean class="com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor" id="com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor" />
 	<bean class="com.liferay.lcs.advisor.LCSKeyAdvisor" id="com.liferay.lcs.advisor.LCSKeyAdvisor" />
 	<bean class="com.liferay.lcs.advisor.LCSPortletStateAdvisor" id="com.liferay.lcs.advisor.LCSPortletStateAdvisor">
 		<property name="LCSKeyAdvisor" ref="com.liferay.lcs.advisor.LCSKeyAdvisor" />

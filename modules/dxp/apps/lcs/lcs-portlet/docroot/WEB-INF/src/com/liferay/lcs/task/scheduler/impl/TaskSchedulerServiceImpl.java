@@ -401,7 +401,7 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 
 		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =
 			new LCSClusterEntryTokenCheckTask(
-				_lcsClusterEntryTokenAdvisor, this);
+				_lcsAlertAdvisor, _lcsClusterEntryTokenAdvisor, this);
 
 		if (delayRun) {
 			_scheduledExecutorService.schedule(

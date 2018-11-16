@@ -26,7 +26,6 @@ import com.liferay.lcs.internal.event.LCSEventListener;
 import com.liferay.lcs.rest.client.LCSClusterEntryToken;
 import com.liferay.lcs.security.KeyStoreAdvisor;
 import com.liferay.lcs.security.KeyStoreFactory;
-import com.liferay.lcs.util.LCSAlert;
 import com.liferay.lcs.util.PortletPropsValues;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -52,10 +51,6 @@ import javax.crypto.spec.SecretKeySpec;
  * @author Igor Beslic
  */
 public class LCSClusterEntryTokenAdvisor implements LCSEventListener {
-
-	public LCSClusterEntryTokenAdvisor(LCSAlertAdvisor lcsAlertAdvisor) {
-		_lcsAlertAdvisor = lcsAlertAdvisor;
-	}
 
 	public String getLCSAccessSecret() {
 		return _lcsAccessSecret;
@@ -85,24 +80,6 @@ public class LCSClusterEntryTokenAdvisor implements LCSEventListener {
 				LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS) ||
 			(lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALIDATED) ||
 			(lcsEvent == LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED)) {
-
-			if ((lcsEvent ==
-					LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_TOKEN_CORRUPTED) ||
-				(lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID)) {
-
-				_lcsAlertAdvisor.add(LCSAlert.ERROR_INVALID_TOKEN);
-			}
-			else if (lcsEvent ==
-						LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH) {
-
-				_lcsAlertAdvisor.add(LCSAlert.ERROR_ENVIRONMENT_MISMATCH);
-			}
-			else if (lcsEvent ==
-						LCSEvent.
-							LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS) {
-
-				_lcsAlertAdvisor.add(LCSAlert.ERROR_INVALID_USER_CREDENTIALS);
-			}
 
 			_deleteLCSCLusterEntryTokenFile();
 		}
@@ -235,15 +212,11 @@ public class LCSClusterEntryTokenAdvisor implements LCSEventListener {
 			});
 
 		if (lcsClusterEntryTokenFileNames.length == 0) {
-			_lcsAlertAdvisor.add(LCSAlert.ERROR_MISSING_TOKEN);
-
 			throw new MissingLCSClusterEntryTokenException(
 				"The LCS activation token file is missing from directory " +
 					sb.toString());
 		}
 		else if (lcsClusterEntryTokenFileNames.length > 1) {
-			_lcsAlertAdvisor.add(LCSAlert.ERROR_MULTIPLE_TOKENS);
-
 			throw new MultipleLCSClusterEntryTokenException(
 				"Only one LCS activation token file is allowed");
 		}
@@ -371,7 +344,6 @@ public class LCSClusterEntryTokenAdvisor implements LCSEventListener {
 
 	private String _lcsAccessSecret;
 	private String _lcsAccessToken;
-	private final LCSAlertAdvisor _lcsAlertAdvisor;
 	private long _lcsClusterEntryId;
 	private long _lcsClusterEntryTokenId;
 	private String _portalPropertiesBlacklist;
