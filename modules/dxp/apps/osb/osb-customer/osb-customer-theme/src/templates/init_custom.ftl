@@ -1,13 +1,12 @@
 <#assign
 	aui = taglibLiferayHash["/META-INF/liferay-aui.tld"]
 
-	help_center_theme_util = serviceLocator.findService("com.liferay.osb.customer.help.center.web.util.HelpCenterThemeUtil")
 	layout_local_service = serviceLocator.findService("com.liferay.portal.kernel.service.LayoutLocalService")
 	portal_permission = serviceLocator.findService("com.liferay.portal.kernel.service.permission.PortalPermission")
 
 	theme_display_permission_checker = theme_display.getPermissionChecker()
 
-	has_mega_menu = is_signed_in && help_center_theme_util.hasMegaMenu(user.getUserId())
+	has_mega_menu = false
 	has_view_control_panel = is_signed_in && portal_permission.contains(theme_display_permission_checker, "VIEW_CONTROL_PANEL")
 
 	site_logo_url = themeDisplay.getThemeSetting("site-logo-url")
@@ -21,3 +20,9 @@
 	social_link_two_url = themeDisplay.getThemeSetting("social-link-two-url")
 	zendesk_url = themeDisplay.getThemeSetting("zendesk-url")
 />
+
+<#if is_signed_in && serviceLocator.findService("com.liferay.osb.customer.help.center.web.util.HelpCenterThemeUtil")?? && serviceLocator.findService("com.liferay.osb.customer.help.center.web.util.HelpCenterThemeUtil").hasMegaMenu(user.getUserId())>
+	<#assign has_mega_menu = true />
+
+	<script>console.log("####");</script>
+</#if>
