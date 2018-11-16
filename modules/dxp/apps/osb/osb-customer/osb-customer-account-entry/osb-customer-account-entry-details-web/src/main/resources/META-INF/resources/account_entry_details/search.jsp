@@ -78,7 +78,7 @@ PortletURL portletURL = renderResponse.createRenderURL();
 		<liferay-ui:search-container-column-text
 			name="status"
 		>
-			<span class="label label-small label-<%= accountEntry.getStatusLabel() %>"><%= accountEntry.getStatusLabel() %></span>
+			<span class="label label-small label-<%= accountEntry.getStatusLabel() %>"><%= LanguageUtil.get(request, accountEntry.getStatusLabel()) %></span>
 		</liferay-ui:search-container-column-text>
 	</liferay-ui:search-container-row>
 
