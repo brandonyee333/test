@@ -37,33 +37,34 @@ class Downloads extends React.Component {
 	componentDidMount() {
 		const {metadata, requiredAgreement} = this.props;
 
-		if (!!Object.keys(requiredAgreement).length) {
+		if (Object.keys(requiredAgreement).length) {
 			axios.all(
 				[
 					axios.get(requiredAgreement.agreementContentURL),
 					axios.get(requiredAgreement.verifyAgreementURL)
 				]
 			)
-			.then(
-				(response) => {
-					const [content, verification] = response;
+				.then(
+					(response) => {
+						const [content, verification] = response;
 
-					/* TODO: Remove type coercion once response schema updates from String to Boolean */
-					this.setState(
-						{
-							agreementContent: content.data,
-							showEULA: Boolean(verification.data.verified)
-						}
-					);
-				}
-			)
-			.catch(
-				(err) => {
-					if (process.env.NODE_ENV === 'development') {
-						console.log(err);
+						/* TODO: Remove type coercion once response schema updates from String to Boolean */
+
+						this.setState(
+							{
+								agreementContent: content.data,
+								showEULA: Boolean(verification.data.verified)
+							}
+						);
 					}
-				}
-			);
+				)
+				.catch(
+					(err) => {
+						if (process.env.NODE_ENV === 'development') {
+							console.log(err);
+						}
+					}
+				);
 		}
 
 		this.setState(
@@ -92,16 +93,16 @@ class Downloads extends React.Component {
 		const {metadata} = this.state;
 
 		axios.post(requiredAgreement.acceptAgreementURL)
-		.then(
-			window.location = metadata.url
-		)
-		.catch(
-			(err) => {
-				if (process.env.NODE_ENV === 'development') {
-					console.log(err);
+			.then(
+				window.location = metadata.url
+			)
+			.catch(
+				(err) => {
+					if (process.env.NODE_ENV === 'development') {
+						console.log(err);
+					}
 				}
-			}
-		);
+			);
 	};
 
 	handleCloseModal = () => {
