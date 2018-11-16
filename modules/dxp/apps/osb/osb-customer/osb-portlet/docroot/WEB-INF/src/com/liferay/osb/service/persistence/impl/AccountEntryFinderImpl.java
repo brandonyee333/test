@@ -146,7 +146,7 @@ public class AccountEntryFinderImpl
 		boolean andOperator = false;
 
 		if (Validator.isNotNull(keywords)) {
-			corpEntryNames = OSBCustomSQLUtil.keywords(keywords);
+			corpEntryNames = CustomSQLUtil.keywords(keywords);
 			names = OSBCustomSQLUtil.keywords(keywords);
 			codes = CustomSQLUtil.keywords(keywords);
 			instructions = CustomSQLUtil.keywords(keywords);
@@ -177,9 +177,9 @@ public class AccountEntryFinderImpl
 		String city, String zip, LinkedHashMap<String, Object> params,
 		boolean andOperator) {
 
-		String[] dossieraAccountKeys = OSBCustomSQLUtil.keywords(
+		String[] dossieraAccountKeys = CustomSQLUtil.keywords(
 			dossieraAccountKey);
-		String[] corpEntryNames = OSBCustomSQLUtil.keywords(corpEntryName);
+		String[] corpEntryNames = CustomSQLUtil.keywords(corpEntryName);
 		String[] names = OSBCustomSQLUtil.keywords(name);
 		String[] codes = CustomSQLUtil.keywords(code);
 		String[] instructionsArray = CustomSQLUtil.keywords(instructions);
@@ -213,7 +213,7 @@ public class AccountEntryFinderImpl
 		boolean andOperator = false;
 
 		if (Validator.isNotNull(keywords)) {
-			corpEntryNames = OSBCustomSQLUtil.keywords(keywords);
+			corpEntryNames = CustomSQLUtil.keywords(keywords);
 			names = OSBCustomSQLUtil.keywords(keywords);
 			codes = CustomSQLUtil.keywords(keywords);
 			instructions = CustomSQLUtil.keywords(keywords);
@@ -259,9 +259,9 @@ public class AccountEntryFinderImpl
 			LinkedHashMap<String, Object> params, boolean andOperator,
 			int start, int end, OrderByComparator obc) {
 
-		String[] dossieraAccountKeys = OSBCustomSQLUtil.keywords(
+		String[] dossieraAccountKeys = CustomSQLUtil.keywords(
 			dossieraAccountKey);
-		String[] corpEntryNames = OSBCustomSQLUtil.keywords(corpEntryName);
+		String[] corpEntryNames = CustomSQLUtil.keywords(corpEntryName);
 		String[] names = OSBCustomSQLUtil.keywords(name);
 		String[] codes = CustomSQLUtil.keywords(code);
 		String[] instructionsArray = CustomSQLUtil.keywords(instructions);
@@ -844,10 +844,10 @@ public class AccountEntryFinderImpl
 
 		sql = CustomSQLUtil.replaceKeywords(
 			sql, "lower(OSB_AccountEntry.dossieraAccountKey)", StringPool.LIKE,
-			false, names);
+			false, dossieraAccountKeys);
 		sql = CustomSQLUtil.replaceKeywords(
 			sql, "lower(OSB_AccountEntry.corpEntryName)", StringPool.LIKE,
-			false, names);
+			false, corpEntryNames);
 		sql = CustomSQLUtil.replaceKeywords(
 			sql, "lower(OSB_AccountEntry.name)", StringPool.LIKE, false, names);
 		sql = CustomSQLUtil.replaceKeywords(
