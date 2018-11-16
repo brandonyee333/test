@@ -17,12 +17,15 @@ package com.liferay.osb.customer.zendesk.listeners.util;
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskLocales;
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.model.ProductEntry;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.Region;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
+
+import java.util.Locale;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -85,7 +88,8 @@ public class ZendeskModelListenerUtil {
 				sb2.append(StringPool.NEW_LINE);
 			}
 
-			sb2.append(country.getName());
+			sb2.append(
+				LanguageUtil.get(Locale.US, "country." + country.getName()));
 		}
 
 		sb.append(sb2);
