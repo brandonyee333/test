@@ -98,17 +98,17 @@ public class LCSClusterEntryTokenCheckTaskTest extends PowerMockito {
 
 	@Test
 	public void testLCSClusterEntryAdvisorExceptionIsThrown() throws Exception {
-		Exception[] exceptions = {
+		_testLCSClusterEntryAdvisorExceptionIsThrown(
 			new IOException("Test lcs cluster entry token file IO exception"),
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_FAILED);
+		_testLCSClusterEntryAdvisorExceptionIsThrown(
 			new MissingLCSClusterEntryTokenException(
 				"Test lcs cluster entry token file missing exception"),
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MISSING);
+		_testLCSClusterEntryAdvisorExceptionIsThrown(
 			new MultipleLCSClusterEntryTokenException(
-				"Test lcs cluster entry token file multiple token exception")
-		};
-
-		for (Exception exception : exceptions) {
-			_testLCSClusterEntryAdvisorExceptionIsThrown(exception);
-		}
+				"Test lcs cluster entry token file multiple token exception"),
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MULTIPLE_TOKENS);
 	}
 
 	@Test
@@ -231,7 +231,7 @@ public class LCSClusterEntryTokenCheckTaskTest extends PowerMockito {
 	}
 
 	private void _testLCSClusterEntryAdvisorExceptionIsThrown(
-			Exception exception)
+			Exception exception, LCSEvent expectedLCSEvent)
 		throws Exception {
 
 		_spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete();
@@ -251,8 +251,7 @@ public class LCSClusterEntryTokenCheckTaskTest extends PowerMockito {
 
 		lcsClusterEntryTokenCheckTask.run();
 
-		_verifyLCSClusterEntryTokenAdvisor(
-			1, 1, LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_FAILED, 0);
+		_verifyLCSClusterEntryTokenAdvisor(1, 1, expectedLCSEvent, 0);
 	}
 
 	private void _verifyLCSClusterEntryTokenAdvisor(
