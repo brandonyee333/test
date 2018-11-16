@@ -44,15 +44,15 @@ JSONObject requiredAgreementJSONObject = JSONFactoryUtil.createJSONObject();
 <c:if test="<%= Validator.isNotNull(requiredAgreement) %>">
 
 	<%
-	String languageId = LocaleUtil.toLanguageId(LocaleUtil.US);
-
 	PortletPreferences downloadsPortletPreferences = PortletPreferencesLocalServiceUtil.getPreferences(company.getCompanyId(), company.getCompanyId(), PortletKeys.PREFS_OWNER_TYPE_COMPANY, PortletKeys.PREFS_PLID_SHARED, "3_WAR_osbportlet", null);
+
+	String languageId = LocaleUtil.toLanguageId(Locale.US);
 
 	String agreementURL = GetterUtil.getString(downloadsPortletPreferences.getValue(requiredAgreement + "Url_" + languageId, StringPool.BLANK));
 	String agreementVersion = GetterUtil.getString(downloadsPortletPreferences.getValue(requiredAgreement + "Version_" + languageId, StringPool.BLANK));
 
-	String agreementContentURL = agreementURL + "&agreementVersion=" + agreementVersion;
 	String acceptAgreementURL = downloadsDisplayContext.getAcceptAgreementURL(requiredAgreement, agreementVersion);
+	String agreementContentURL = agreementURL + "&agreementVersion=" + agreementVersion;
 	String verifyAgreementURL = downloadsDisplayContext.getVerifyAgreementURL(requiredAgreement, agreementVersion);
 
 	requiredAgreementJSONObject.put("acceptAgreementURL", acceptAgreementURL);

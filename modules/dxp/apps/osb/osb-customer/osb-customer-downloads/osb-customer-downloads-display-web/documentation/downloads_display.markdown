@@ -1,13 +1,13 @@
 # OSB Downloads Display
 
 ### Set up
-#### OSB Downloads Display Porlet
+#### OSB Downloads Display Portlet
 
 Place the _OSB Downloads Display_ portlet on the page. Click on the ellipsis icon inside the portlet's topbar, and open _Configuration_.
 
 In the _Setup_ tab, use the _DDM Structure Key_ dropdown and select either _OSB-CUSTOMER-THEME--DOWNLOAD_ or _OSB-CUSTOMER-THEME--TRIAL-DOWNLOAD_. Save the configuration.
 
-#### Downloads Porlet
+#### Downloads Portlet
 
 There is separate portlet named _Downloads_. Place it on the same page as the _OSB Downloads Display_ portlet and follow the same instructions to open _Configuration_.
 
@@ -63,7 +63,7 @@ where __[primkey]__ is the _Journal Article's_ `primarykey`. To obtain the prima
 ---
 
 #### <a name="newArticles">Add New Journal Article Downloads</a>
-Go to _Control Panel_ > _Content_ > _Web Content_, select either _OSB Cutomer Theme - Download_ structure or _OSB Cutomer Theme - Trial Download_ structure. For both these structures, the available fields are:
+Go to _Control Panel_ > _Content_ > _Web Content_, select either _OSB Customer Theme - Download_ structure or _OSB Customer Theme - Trial Download_ structure. For both these structures, the available fields are:
 
 * Title
 * Summary
