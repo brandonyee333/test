@@ -33,6 +33,8 @@ String[] restrictedJIRAIssueKeys = null;
 if (releaseNotes != null) {
 	restrictedJIRAIssueKeys = ReleaseNotesUtil.filterJIRAIssueKeys(releaseNotes.getJiraIssueKeysArray(), false);
 }
+
+portletDisplay.setShowBackIcon(false);
 %>
 
 <portlet:actionURL name="updateReleaseNotes" var="updateReleaseNotes">
@@ -52,15 +54,9 @@ if (releaseNotes != null) {
 	<liferay-ui:error exception="<%= RequiredJIRAIssueKeysException.class %>" message="please-fill-out-the-jira-issue-keys-field" />
 	<liferay-ui:error exception="<%= RequiredNameException.class %>" message="please-fill-out-the-name-field" />
 
-	<aui:input cssClass="lfr-input-text-container" name="name" type="text" value="<%= name %>" />
+	<aui:input name="name" type="text" value="<%= name %>" />
 
-	<div class="fl">
-		<div class="txt-b txt-up">
-			<liferay-ui:message key="jira-issue-keys" />
-		</div>
-	</div>
-
-	<textarea id="<portlet:namespace />jiraIssueKeys" maxlength="<%= ModelHintsConstants.TEXTAREA_MAX_LENGTH %>" name="<portlet:namespace />jiraIssueKeys" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" style="height: 300px; width: 100%;" wrap="soft"><%= HtmlUtil.escape(jiraIssueKeys) %></textarea>
+	<aui:input label="jira-issue-keys" maxlength="<%= ModelHintsConstants.TEXTAREA_MAX_LENGTH %>" name="jiraIssueKeys" type="textarea" value="<%= jiraIssueKeys %>" />
 
 	<c:if test="<%= ArrayUtil.isNotEmpty(restrictedJIRAIssueKeys) %>">
 		<div>
@@ -74,13 +70,13 @@ if (releaseNotes != null) {
 		</div>
 	</c:if>
 
-	<input type="submit" value="<liferay-ui:message key="update-release-notes" />" />
+	<aui:button type="submit" value="update-release-notes" />
 
 	<c:if test="<%= releaseNotes != null %>">
-		<portlet:resourceURL var="viewReleaseNotesURL">
+		<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" var="viewReleaseNotesURL" windowState="<%= WindowState.NORMAL.toString() %>">
 			<portlet:param name="uuid" value="<%= releaseNotes.getUuid() %>" />
-		</portlet:resourceURL>
+		</liferay-portlet:resourceURL>
 
-		<a class="btn btn-default" href="<%= viewReleaseNotesURL %>"><liferay-ui:message key="view-release-notes" /></a>
+		<aui:button onClick="<%= viewReleaseNotesURL %>" value="view-release-notes" />
 	</c:if>
 </aui:form>

@@ -16,32 +16,36 @@
 
 <%@ include file="/init.jsp" %>
 
-<liferay-portlet:actionURL portletConfiguration="<%= true %>" var="actionURL" />
+<div class="portlet-configuration-body-content">
+	<div class="container-fluid-1280">
+		<liferay-portlet:actionURL portletConfiguration="<%= true %>" var="configurationActionURL" />
 
-<aui:form action="<%= actionURL %>" method="post" name="fm">
-	<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.UPDATE %>" />
+		<aui:form action="<%= configurationActionURL %>" method="post" name="fm">
+			<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.UPDATE %>" />
 
-	<liferay-ui:error key="jiraProjectKey" message="please-enter-a-valid-jira-project-key" />
+			<liferay-ui:error key="jiraProjectKey" message="please-enter-a-valid-jira-project-key" />
 
-	<aui:fieldset>
-		<aui:select label="jira-project-key" name="preferences--jiraProjectKey--">
+			<aui:fieldset>
+				<aui:select label="jira-project-key" name="preferences--jiraProjectKey--">
 
-			<%
-			for (String curJiraProjectKey : ReleaseNotesConfigurationValues.JIRA_PROJECT_KEYS_ALLOWED) {
-			%>
+					<%
+					for (String curJiraProjectKey : ReleaseNotesConfigurationValues.JIRA_PROJECT_KEYS_ALLOWED) {
+					%>
 
-				<aui:option label="<%= curJiraProjectKey %>" selected="<%= curJiraProjectKey.equals(jiraProjectKey) %>" value="<%= curJiraProjectKey %>" />
+						<aui:option label="<%= curJiraProjectKey %>" selected="<%= curJiraProjectKey.equals(jiraProjectKey) %>" value="<%= curJiraProjectKey %>" />
 
-			<%
-			}
-			%>
+					<%
+					}
+					%>
 
-		</aui:select>
+				</aui:select>
 
-		<aui:input cssClass="lfr-input-text-container" name="preferences--jiraProjectVersionNamePrefix--" type="text" value="<%= jiraProjectVersionNamePrefix %>" />
-	</aui:fieldset>
+				<aui:input cssClass="lfr-input-text-container" name="preferences--jiraProjectVersionNamePrefix--" type="text" value="<%= jiraProjectVersionNamePrefix %>" />
+			</aui:fieldset>
 
-	<aui:button-row>
-		<aui:button type="submit" />
-	</aui:button-row>
-</aui:form>
+			<aui:button-row>
+				<aui:button type="submit" />
+			</aui:button-row>
+		</aui:form>
+	</div>
+</div>

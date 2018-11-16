@@ -14,7 +14,7 @@
  */
 --%>
 
-<aui:form method="post" name="<portlet:namespace />fm" onSubmit="submitForm(this); return false;">
+<aui:form method="post" name="fm" onSubmit="submitForm(this); return false;">
 
 	<%
 	ReleaseNotesSearch releaseNotesSearch = new ReleaseNotesSearch(renderRequest, portletURL);
@@ -24,7 +24,6 @@
 
 	<liferay-ui:search-container
 		emptyResultsMessage="no-release-notes-were-found"
-		emptyResultsMessageCssClass="taglib-empty-result-message-header"
 		searchContainer="<%= releaseNotesSearch %>"
 		total="<%= ReleaseNotesLocalServiceUtil.searchCount(displayTerms.getName()) %>"
 	>

@@ -15,13 +15,7 @@
 --%>
 
 <div class="callout-shadowed container">
-	<div>
-		<liferay-ui:message key="name" />
-	</div>
-
-	<div>
-		<input id="<portlet:namespace /><%= displayTerms.NAME %>" name="<portlet:namespace /><%= displayTerms.NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getName()) %>" />
-	</div>
+	<aui:input id="<%= displayTerms.NAME %>" name="<%= displayTerms.NAME %>" size="20" type="text" value="<%= displayTerms.getName() %>" />
 
 	<aui:button type="submit" value="search" />
 </div>

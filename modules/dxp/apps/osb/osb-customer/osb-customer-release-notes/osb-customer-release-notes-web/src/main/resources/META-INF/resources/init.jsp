@@ -20,6 +20,7 @@
 
 <%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %><%@
 taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %><%@
+taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
 <%@ page import="com.liferay.osb.customer.release.notes.jira.exception.DuplicateJIRAIssueKeysException" %><%@
@@ -55,6 +56,8 @@ page import="com.liferay.portal.kernel.util.WebKeys" %>
 <%@ page import="javax.portlet.PortletURL" %><%@
 page import="javax.portlet.ResourceURL" %><%@
 page import="javax.portlet.WindowState" %>
+
+<liferay-theme:defineObjects />
 
 <portlet:defineObjects />
 

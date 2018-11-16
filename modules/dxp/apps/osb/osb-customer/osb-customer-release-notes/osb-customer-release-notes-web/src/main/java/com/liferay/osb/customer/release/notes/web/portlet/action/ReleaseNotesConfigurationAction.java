@@ -12,10 +12,12 @@
  *
  */
 
-package com.liferay.osb.customer.release.notes.web.action;
+package com.liferay.osb.customer.release.notes.web.portlet.action;
 
 import com.liferay.osb.customer.release.notes.jira.exception.NoSuchJIRAProjectException;
 import com.liferay.osb.customer.release.notes.jira.service.JIRAProjectLocalServiceUtil;
+import com.liferay.osb.customer.release.notes.web.internal.constants.ReleaseNotesPortletKeys;
+import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 
@@ -23,10 +25,25 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletConfig;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Samuel Kong
  */
-public class ConfigurationActionImpl extends DefaultConfigurationAction {
+@Component(
+	immediate = true,
+	property = "javax.portlet.name=" + ReleaseNotesPortletKeys.RELEASE_NOTES,
+	service = ConfigurationAction.class
+)
+public class ReleaseNotesConfigurationAction
+	extends DefaultConfigurationAction {
+
+	@Override
+	public String getJspPath(HttpServletRequest request) {
+		return "/configuration.jsp";
+	}
 
 	@Override
 	public void processAction(

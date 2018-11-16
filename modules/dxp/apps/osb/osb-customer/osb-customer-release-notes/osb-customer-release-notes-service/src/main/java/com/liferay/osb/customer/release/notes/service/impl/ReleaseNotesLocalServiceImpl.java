@@ -113,7 +113,14 @@ public class ReleaseNotesLocalServiceImpl
 	}
 
 	public int searchCount(String name) {
-		return releaseNotesPersistence.countByName(name);
+		if (Validator.isNotNull(name)) {
+			name = CustomSQLUtil.keywords(name)[0];
+
+			return releaseNotesPersistence.countByLikeName(name);
+		}
+		else {
+			return releaseNotesPersistence.countAll();
+		}
 	}
 
 	public ReleaseNotes updateReleaseNotes(
