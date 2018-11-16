@@ -48,7 +48,13 @@ public class LCSAlertAdvisor implements LCSEventListener {
 
 	@Override
 	public void onLCSEvent(LCSEvent lcsEvent) {
-		if (lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_SUCCESS) {
+		if (lcsEvent == LCSEvent.HANDSHAKE_FAILED) {
+			add(LCSAlert.WARNING_HANDSHAKE_FAILED);
+		}
+		else if (lcsEvent == LCSEvent.HANDSHAKE_SUCCESS) {
+			remove(LCSAlert.WARNING_HANDSHAKE_FAILED);
+		}
+		else if (lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_SUCCESS) {
 			add(LCSAlert.SUCCESS_VALID_TOKEN);
 		}
 		else if (lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MISSING) {

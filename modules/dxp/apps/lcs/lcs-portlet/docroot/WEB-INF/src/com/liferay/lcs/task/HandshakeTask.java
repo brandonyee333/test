@@ -32,7 +32,6 @@ import com.liferay.lcs.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.rest.commons.LCSRESTError;
 import com.liferay.lcs.runnable.LCSPortletBuildNumberCheckRunnable;
 import com.liferay.lcs.task.scheduler.TaskSchedulerService;
-import com.liferay.lcs.util.LCSAlert;
 import com.liferay.lcs.util.LCSPatcherUtil;
 import com.liferay.lcs.util.LCSUtil;
 import com.liferay.lcs.util.PortletPropsValues;
@@ -96,6 +95,7 @@ public class HandshakeTask implements Task {
 
 		_lcsEventListeners = new ArrayList<>();
 
+		_lcsEventListeners.add(lcsAlertAdvisor);
 		_lcsEventListeners.add(lcsClusterEntryTokenAdvisor);
 		_lcsEventListeners.add(lcsGatewayClient);
 		_lcsEventListeners.add(taskSchedulerService);
@@ -215,8 +215,6 @@ public class HandshakeTask implements Task {
 			}
 
 			if (handshakeResponseMessage.isHandshakeExpiredError()) {
-				_lcsAlertAdvisor.add(LCSAlert.WARNING_HANDSHAKE_EXPIRED);
-
 				throw new LCSHandshakeException(
 					"Handshake expired. Check that the server is " +
 						"synchronized with an NTP server.");

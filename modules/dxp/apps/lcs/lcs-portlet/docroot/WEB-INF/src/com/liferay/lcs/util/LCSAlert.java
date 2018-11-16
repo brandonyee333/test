@@ -39,8 +39,7 @@ public enum LCSAlert {
 	SUCCESS_CONNECTION_TO_LCS_VALID("success", "connection-to-lcs-is-valid"),
 	SUCCESS_VALID_TOKEN(
 		"success", "the-automatic-activation-token-file-is-valid"),
-	WARNING_HANDSHAKE_EXPIRED(
-		"warning", "the-connection-to-liferay-connected-services-has-expired"),
+	WARNING_HANDSHAKE_FAILED("warning", "unable-to-handshake-with-lcs-gateway"),
 	WARNING_LCS_PORTLET_NEW_VERSION_AVAILABLE(
 		"warning",
 		"please-download-and-install-the-latest-version-of-liferay-connected-" +
