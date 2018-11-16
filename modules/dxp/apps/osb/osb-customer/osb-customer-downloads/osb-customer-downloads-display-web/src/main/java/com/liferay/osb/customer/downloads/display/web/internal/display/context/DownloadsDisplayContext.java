@@ -21,11 +21,14 @@ import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalServiceUtil;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.downloads.display.web.internal.constants.DDMStructureConstants;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
@@ -36,10 +39,13 @@ import com.liferay.portal.kernel.search.QueryConfig;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
+import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
+import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -107,7 +113,7 @@ public class DownloadsDisplayContext {
 		return _ddmStructure.getStructureKey();
 	}
 
-	public JSONArray getProductsJSONArray() {
+	public JSONArray getProductsJSONArray() throws PortalException {
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
 		Set<String> products = getProducts();
@@ -242,7 +248,7 @@ public class DownloadsDisplayContext {
 		return jsonArray;
 	}
 
-	protected Set<String> getProducts() {
+	protected Set<String> getProducts() throws PortalException {
 		User user = _themeDisplay.getUser();
 
 		boolean liferayIncOrg =
@@ -250,7 +256,11 @@ public class DownloadsDisplayContext {
 				user.getUserId(),
 				OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID);
 
-		long[] roleIds = user.getRoleIds();
+		long[] roleIds = new long[0];
+
+		if (!liferayIncOrg) {
+			roleIds = getRoleIds(user.getUserId());
+		}
 
 		Set<String> products = new TreeSet<>();
 
@@ -320,6 +330,17 @@ public class DownloadsDisplayContext {
 		}
 
 		return products;
+	}
+
+	protected long[] getRoleIds(long userId) throws PortalException {
+		List<Group> userOrganizationGroups =
+			GroupLocalServiceUtil.getUserOrganizationsGroups(
+				userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+		List<Role> roles = RoleLocalServiceUtil.getUserRelatedRoles(
+			userId, userOrganizationGroups);
+
+		return ListUtil.toLongArray(roles, Role.ROLE_ID_ACCESSOR);
 	}
 
 	protected Sort[] getSorts() {
