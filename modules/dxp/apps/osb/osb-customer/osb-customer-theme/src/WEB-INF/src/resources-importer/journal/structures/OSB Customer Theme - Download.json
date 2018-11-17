@@ -135,7 +135,7 @@
 				"en_US": "File Type"
 			},
 			"localizable": true,
-			"multiple": false,
+			"multiple": true,
 			"name": "fileType",
 			"options": [
 				{
