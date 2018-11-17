@@ -1,7 +1,8 @@
 <@aui.script>
 	const menuItems = document.querySelectorAll('.header-menu-list .list-item');
 
-	Array.prototype.forEach.call(menuItems, 
+	Array.prototype.forEach.call(
+		menuItems,
 		function(item) {
 			item.classList.remove('hide');
 		}
