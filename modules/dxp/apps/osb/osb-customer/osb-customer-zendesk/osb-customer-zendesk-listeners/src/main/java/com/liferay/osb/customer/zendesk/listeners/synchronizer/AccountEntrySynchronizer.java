@@ -212,6 +212,7 @@ public class AccountEntrySynchronizer {
 		try {
 			Set<String> tags = new HashSet<>();
 
+			tags.add(ZendeskTagConstants.OSB_CUSTOMER);
 			tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
 
 			for (AccountCustomer accountCustomer :
