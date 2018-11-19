@@ -219,6 +219,64 @@
 	.user {
 		padding-left: $padding-medium;
 
+		&.open > .dropdown-menu {
+			display: table;
+		}
+
+		.dropdown-menu {
+			border-width: 1px;
+			min-width: 200px;
+			padding: 10px 0;
+
+			a {
+				color: $color-default;
+				cursor: pointer;
+				display: block;
+				font-size: $font-size-md;
+				padding: 7px 40px 7px 20px;
+				text-decoration: none;
+				white-space: nowrap;
+
+				&:hover {
+					background-color: $color-hover;
+				}
+			}
+		}
+
+		.dropdown-menu-caret {
+			margin: 10px 12px;
+
+			&:before,
+			&:after {
+				box-sizing: border-box;
+				content: "";
+				display: inline-block;
+				left: auto;
+				position: absolute;
+			}
+
+			&:before {
+				border-bottom: 7px solid $color-border;
+				border-left: 7px solid transparent;
+				border-right: 7px solid transparent;
+				right: 9px;
+				top: -7px;
+			}
+
+			&:after {
+				border-bottom: 6px solid $color-white;
+				border-left: 6px solid transparent;
+				border-right: 6px solid transparent;
+				right: 10px;
+				top: -6px;
+			}
+
+			&.dropdown-menu-end {
+				left: auto;
+				right: 0;
+			}
+		}
+
 		.user-full-name {
 			display: none;
 		}

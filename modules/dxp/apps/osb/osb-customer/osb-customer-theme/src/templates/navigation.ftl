@@ -51,7 +51,17 @@
 		<div class="col-md-4 header-content user-wrapper">
 			<div class="user">
 				<#if is_signed_in>
-					<@liferay.user_personal_bar />
+					<div class="user-personal-bar" data-toggle="dropdown">
+						<@liferay.user_personal_bar />
+					</div>
+
+					<div class="dropdown-menu dropdown-menu-caret dropdown-menu-end" id="user-dropdown">
+						<div id="user-menu" role="menu">
+							<a class="my-activities" href="https://help.liferay.com/hc/requests"><@liferay.language key="my-activities" /></a>
+
+							<a href="/c/portal/logout"><@liferay.language key="sign-out" /></a>
+						</div>
+					</div>
 				<#else>
 					<a class="btn btn-primary" href="${sign_in_url}">${sign_in_text}</a>
 				</#if>
