@@ -778,7 +778,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 											<liferay-ui:message key="mac-addresses" />
 										</h2>
 
-										<aui:input label="<%= serverIds %>" name="<portlet:namespace />serverIds" type="textarea" />
+										<aui:input label="<%= serverIds %>" name="serverIds" type="textarea" />
 									</aui:col>
 								</c:when>
 								<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_TRIAL) %>">
