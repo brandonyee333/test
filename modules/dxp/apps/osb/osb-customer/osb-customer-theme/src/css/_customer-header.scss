@@ -246,21 +246,13 @@
 		.dropdown-menu-caret {
 			margin: 10px 12px;
 
-			&:before,
-			&:after {
+			&:after,
+			&:before {
 				box-sizing: border-box;
 				content: "";
 				display: inline-block;
 				left: auto;
 				position: absolute;
-			}
-
-			&:before {
-				border-bottom: 7px solid $color-border;
-				border-left: 7px solid transparent;
-				border-right: 7px solid transparent;
-				right: 9px;
-				top: -7px;
 			}
 
 			&:after {
@@ -269,6 +261,14 @@
 				border-right: 6px solid transparent;
 				right: 10px;
 				top: -6px;
+			}
+
+			&:before {
+				border-bottom: 7px solid $color-border;
+				border-left: 7px solid transparent;
+				border-right: 7px solid transparent;
+				right: 9px;
+				top: -7px;
 			}
 
 			&.dropdown-menu-end {
