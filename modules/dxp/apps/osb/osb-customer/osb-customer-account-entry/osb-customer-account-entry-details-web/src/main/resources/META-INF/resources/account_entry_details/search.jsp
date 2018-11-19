@@ -41,17 +41,21 @@ PortletURL portletURL = renderResponse.createRenderURL();
 	<liferay-ui:search-container-results>
 
 		<%
+		LinkedHashMap params = new LinkedHashMap<>();
+
+		params.put("type", new int[] {AccountEntryConstants.TYPE_ANALYTICS_CLOUD_BASIC, AccountEntryConstants.TYPE_GROUP, AccountEntryConstants.TYPE_INDIVIDUAL, AccountEntryConstants.TYPE_INTERNAL_TEST});
+
 		boolean andOperator = false;
 
 		if (Validator.isNull(keywords)) {
 			andOperator = true;
 		}
 
-		total = AccountEntryServiceUtil.searchCount(null, 0, 0, 0, 0, 0, 0, null, 0, 0, 0, 0, 0, 0, null, null, keywords, keywords, new int[0], null, new int[0], new int[0], null, null, null, null, null, null, null, null, null, andOperator);
+		total = AccountEntryServiceUtil.searchCount(null, 0, 0, 0, 0, 0, 0, null, 0, 0, 0, 0, 0, 0, null, null, keywords, keywords, new int[0], null, new int[0], new int[0], null, null, null, null, null, null, null, null, params, andOperator);
 
 		searchContainer.setTotal(total);
 
-		results = AccountEntryServiceUtil.search(null, 0, 0, 0, 0, 0, 0, null, 0, 0, 0, 0, 0, 0, null, null, keywords, keywords, new int[0], null, new int[0], new int[0], null, null, null, null, null, null, null, null, null, andOperator, searchContainer.getStart(), searchContainer.getEnd(), new AccountEntryNameComparator(true));
+		results = AccountEntryServiceUtil.search(null, 0, 0, 0, 0, 0, 0, null, 0, 0, 0, 0, 0, 0, null, null, keywords, keywords, new int[0], null, new int[0], new int[0], null, null, null, null, null, null, null, null, params, andOperator, searchContainer.getStart(), searchContainer.getEnd(), new AccountEntryNameComparator(true));
 
 		searchContainer.setResults(results);
 		%>
