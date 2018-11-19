@@ -17,6 +17,7 @@ package com.liferay.lcs.task;
 import com.liferay.lcs.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.messaging.Message;
 import com.liferay.lcs.platform.gateway.LCSGatewayClient;
+import com.liferay.portal.kernel.cluster.ClusterMasterExecutorUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -36,8 +37,39 @@ public abstract class BaseScheduledTask implements ScheduledTask {
 			return;
 		}
 
+		if (ClusterMasterExecutorUtil.isEnabled()) {
+			if (getScope() == Scope.CLUSTER) {
+				if (!ClusterMasterExecutorUtil.isMaster()) {
+					if (_log.isDebugEnabled()) {
+						_log.debug(
+							getClass() +
+								" cluster scoped task skipped on this node");
+					}
+
+					return;
+				}
+
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						getClass() +
+							" executing cluster scoped task on master node");
+				}
+			}
+		}
+
 		try {
+			long startTimeMillis = System.currentTimeMillis();
+
 			doRun();
+
+			if (_log.isDebugEnabled()) {
+				long taskExecutionMillis =
+					System.currentTimeMillis() - startTimeMillis;
+
+				_log.debug(
+					"Executed LCS task " + getClass() + " in " +
+						taskExecutionMillis + "ms");
+			}
 		}
 		catch (Exception e) {
 			_log.error(e, e);
