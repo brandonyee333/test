@@ -144,6 +144,10 @@ public class DownloadsDisplayContext {
 		SearchContainer searchContainer = new SearchContainer(
 			_renderRequest, iteratorURL, null, null);
 
+		if (Validator.isNull(fileType) || Validator.isNull(product)) {
+			return searchContainer;
+		}
+
 		searchContainer.setSearch(true);
 
 		Indexer indexer = IndexerRegistryUtil.getIndexer(JournalArticle.class);
