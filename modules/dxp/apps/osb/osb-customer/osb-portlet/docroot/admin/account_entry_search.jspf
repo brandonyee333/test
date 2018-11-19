@@ -223,7 +223,7 @@ Date lastEnabledDate = calendar.getTime();
 					</tr>
 					<tr>
 						<td>
-							<aui:select label="type" multiple="<%= true %>" name="<portlet:namespace /><%= displayTerms.TYPES %>">
+							<aui:select label="type" multiple="<%= true %>" name="<%= displayTerms.TYPES %>">
 								<aui:option label="any" value="" />
 
 								<%
