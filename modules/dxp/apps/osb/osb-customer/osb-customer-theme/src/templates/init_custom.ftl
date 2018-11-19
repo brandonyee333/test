@@ -1,6 +1,4 @@
 <#assign
-	aui = taglibLiferayHash["/META-INF/liferay-aui.tld"]
-
 	layout_local_service = serviceLocator.findService("com.liferay.portal.kernel.service.LayoutLocalService")
 	portal_permission = serviceLocator.findService("com.liferay.portal.kernel.service.permission.PortalPermission")
 

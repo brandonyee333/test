@@ -1,4 +1,4 @@
-<@aui.script>
+<script>
 	const menuItems = document.querySelectorAll('.header-menu-list .list-item');
 
 	Array.prototype.forEach.call(
@@ -246,4 +246,4 @@
 		},
 		document.getElementById('megaMenuSupport')
 	);
-</@>
+</script>
