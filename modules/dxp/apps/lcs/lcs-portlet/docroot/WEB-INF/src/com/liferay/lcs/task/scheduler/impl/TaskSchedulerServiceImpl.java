@@ -148,7 +148,11 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 				LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH) ||
 			(lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID) ||
 			(lcsEvent ==
-				LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS)) {
+				LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS) ||
+			(lcsEvent ==
+				LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MISSING) ||
+			(lcsEvent ==
+				LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MULTIPLE_TOKENS)) {
 
 			_executeLCSClusterEntryTokenCheckTask(true);
 		}
