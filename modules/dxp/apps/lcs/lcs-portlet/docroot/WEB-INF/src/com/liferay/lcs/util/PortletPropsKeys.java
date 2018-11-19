@@ -32,9 +32,6 @@ public interface PortletPropsKeys {
 	public static final String COMMAND_SCHEDULE_DEFAULT_INTERVAL =
 		"command.schedule.default.interval";
 
-	public static final String COMMAND_SCHEDULE_DELAY_MAX =
-		"command.schedule.delay.max";
-
 	public static final String COMMUNICATION_HEARTBEAT_INTERVAL =
 		"communication.heartbeat.interval";
 

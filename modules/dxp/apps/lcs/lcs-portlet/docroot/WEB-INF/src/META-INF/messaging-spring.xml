@@ -21,9 +21,6 @@
 		<property name="workersCoreSize" value="1" />
 		<property name="workersMaxSize" value="1" />
 	</bean>
-	<bean class="com.liferay.portal.kernel.messaging.ParallelDestination" id="destination.lcs_scheduler">
-		<property name="name" value="liferay/lcs_scheduler" />
-	</bean>
 
 	<!-- Listeners -->
 
@@ -58,9 +55,6 @@
 		<constructor-arg name="lcsGatewayClient" ref="com.liferay.lcs.platform.gateway.LCSGatewayClient" />
 		<constructor-arg name="portalMetricsAggregator" ref="com.liferay.lcs.metrics.PortalMetricsAggregator" />
 	</bean>
-	<bean class="com.liferay.lcs.task.scheduler.messaging.TaskSchedulerReceiverMessageListener" id="messageListener.lcs_scheduler">
-		<constructor-arg name="lcsGatewayClient" ref="com.liferay.lcs.platform.gateway.LCSGatewayClient" />
-	</bean>
 
 	<!-- Configurator -->
 
@@ -70,7 +64,6 @@
 				<ref bean="destination.lcs_commands" />
 				<ref bean="destination.lcs_message_bus" />
 				<ref bean="destination.lcs_request" />
-				<ref bean="destination.lcs_scheduler" />
 			</list>
 		</property>
 		<property name="messageListeners">
@@ -94,11 +87,6 @@
 				<entry key="liferay/lcs_message_bus">
 					<list value-type="com.liferay.portal.kernel.messaging.MessageListener">
 						<ref bean="messageListener.lcs_message_bus" />
-					</list>
-				</entry>
-				<entry key="liferay/lcs_scheduler">
-					<list value-type="com.liferay.portal.kernel.messaging.MessageListener">
-						<ref bean="messageListener.lcs_scheduler" />
 					</list>
 				</entry>
 			</map>

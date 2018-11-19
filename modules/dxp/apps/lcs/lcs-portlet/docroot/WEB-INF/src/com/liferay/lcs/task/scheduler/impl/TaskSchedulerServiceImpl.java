@@ -25,34 +25,20 @@ import com.liferay.lcs.task.HandshakeTask;
 import com.liferay.lcs.task.HeartbeatTask;
 import com.liferay.lcs.task.LCSClusterEntryTokenCheckTask;
 import com.liferay.lcs.task.ScheduledTask;
-import com.liferay.lcs.task.Scope;
 import com.liferay.lcs.task.SignOffTask;
 import com.liferay.lcs.task.UptimeTask;
 import com.liferay.lcs.task.advisor.TaskAdvisor;
 import com.liferay.lcs.task.scheduler.TaskSchedulerService;
-import com.liferay.lcs.util.ClusterNodeUtil;
 import com.liferay.lcs.util.LCSConstants;
 import com.liferay.lcs.util.PortletPropsValues;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.bean.BeanLocator;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.scheduler.SchedulerEngineHelperUtil;
-import com.liferay.portal.kernel.scheduler.SchedulerException;
-import com.liferay.portal.kernel.scheduler.StorageType;
-import com.liferay.portal.kernel.scheduler.Trigger;
-import com.liferay.portal.kernel.scheduler.TriggerFactoryUtil;
-import com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse;
-import com.liferay.portal.kernel.security.RandomUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.StringPool;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -71,15 +57,14 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		int defaultInterval, LCSAlertAdvisor lcsAlertAdvisor,
 		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor,
 		LCSGatewayClient lcsGatewayClient, LCSKeyAdvisor lcsKeyAdvisor,
-		int scheduleDelayMax, TaskAdvisor taskAdvisor,
-		ThreadFactory threadFactory, UptimeAdvisor uptimeAdvisor) {
+		TaskAdvisor taskAdvisor, ThreadFactory threadFactory,
+		UptimeAdvisor uptimeAdvisor) {
 
 		_defaultInterval = defaultInterval;
 		_lcsAlertAdvisor = lcsAlertAdvisor;
 		_lcsClusterEntryTokenAdvisor = lcsClusterEntryTokenAdvisor;
 		_lcsGatewayClient = lcsGatewayClient;
 		_lcsKeyAdvisor = lcsKeyAdvisor;
-		_scheduleDelayMax = scheduleDelayMax;
 		_taskAdvisor = taskAdvisor;
 		_threadFactory = threadFactory;
 		_uptimeAdvisor = uptimeAdvisor;
@@ -149,10 +134,8 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 			(lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID) ||
 			(lcsEvent ==
 				LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS) ||
-			(lcsEvent ==
-				LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MISSING) ||
-			(lcsEvent ==
-				LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MULTIPLE_TOKENS)) {
+			(lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MISSING) ||
+			(lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MULTIPLE_TOKENS)) {
 
 			_executeLCSClusterEntryTokenCheckTask(true);
 		}
@@ -189,12 +172,7 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 				return;
 			}
 
-			if (scheduledTask.getScope() == Scope.CLUSTER) {
-				_scheduleClusteredScheduledTask(schedulerContext);
-			}
-			else if (scheduledTask.getScope() == Scope.NODE) {
-				scheduleLocalScheduledTask(schedulerContext);
-			}
+			scheduleLocalScheduledTask(schedulerContext);
 
 			_taskAdvisor.registerActivity(scheduledTask);
 		}
@@ -237,29 +215,6 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		return GetterUtil.getInteger(interval, _defaultInterval);
 	}
 
-	protected String getJobName(Map<String, String> schedulerContext) {
-		return schedulerContext.get("taskName");
-	}
-
-	protected List<String> getScheduledTaskJobNames() {
-		List<String> scheduledTaskJobNames = new ArrayList<>();
-
-		try {
-			List<SchedulerResponse> schedulerResponses =
-				SchedulerEngineHelperUtil.getScheduledJobs(
-					_LCS_SCHEDULE_GROUP_NAME, StorageType.MEMORY_CLUSTERED);
-
-			for (SchedulerResponse schedulerResponse : schedulerResponses) {
-				scheduledTaskJobNames.add(schedulerResponse.getJobName());
-			}
-		}
-		catch (SchedulerException se) {
-			_log.error(se, se);
-		}
-
-		return scheduledTaskJobNames;
-	}
-
 	protected void scheduleLocalScheduledTask(
 		Map<String, String> schedulerContext) {
 
@@ -286,62 +241,7 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 	private void _cancelAllTasks() {
 		_taskAdvisor.reset();
 
-		_cancelClusteredScheduledTasks();
-
 		_cancelLocalScheduledTasks();
-	}
-
-	private void _cancelClusteredScheduledTasks() {
-		try {
-			if (ClusterExecutorUtil.isEnabled()) {
-				try {
-					Thread.sleep(RandomUtil.nextInt(1000));
-				}
-				catch (InterruptedException ie) {
-					_log.error(ie, ie);
-				}
-
-				if (ClusterNodeUtil.hasAnyClusterNodeWithLCSAvailable()) {
-					if (_log.isDebugEnabled()) {
-						_log.debug("Skip clustered tasks cancellation");
-					}
-
-					return;
-				}
-
-				if (_log.isDebugEnabled()) {
-					_log.debug("Cancel clustered tasks");
-				}
-			}
-
-			List<String> scheduledTaskJobNames = getScheduledTaskJobNames();
-
-			for (String scheduledTaskJobName : scheduledTaskJobNames) {
-				SchedulerEngineHelperUtil.delete(
-					scheduledTaskJobName, _LCS_SCHEDULE_GROUP_NAME,
-					StorageType.MEMORY_CLUSTERED);
-
-				if (_log.isDebugEnabled()) {
-					_log.debug("Canceled task " + scheduledTaskJobName);
-				}
-			}
-		}
-		catch (Exception e) {
-			String message = e.getMessage();
-
-			if (message == null) {
-				message = "Detected exception without error message";
-			}
-
-			if (_log.isDebugEnabled()) {
-				_log.debug(message, e);
-			}
-			else if (_log.isWarnEnabled()) {
-				message = message + ". Switch to debug mode for stacktrace.";
-
-				_log.warn(message);
-			}
-		}
 	}
 
 	private void _cancelLocalScheduledTasks() {
@@ -517,64 +417,6 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		_executeLCSClusterEntryTokenCheckTask(true);
 	}
 
-	private void _scheduleClusteredScheduledTask(
-		Map<String, String> schedulerContext) {
-
-		try {
-			Thread.sleep(RandomUtil.nextInt(_scheduleDelayMax));
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
-
-		String jobName = getJobName(schedulerContext);
-
-		for (String scheduledTaskJobName : getScheduledTaskJobNames()) {
-			if (jobName.equals(scheduledTaskJobName)) {
-				if (_log.isDebugEnabled()) {
-					_log.debug("Already scheduled job " + jobName);
-				}
-
-				return;
-			}
-		}
-
-		try {
-			Date endDate = null;
-
-			long endTime = GetterUtil.getLong(schedulerContext.get("endTime"));
-
-			if (endTime > 0) {
-				endDate = new Date(endTime);
-			}
-
-			Date startDate = null;
-
-			long startTime = GetterUtil.getLong(
-				schedulerContext.get("startTime"));
-
-			if (startTime > 0) {
-				startDate = new Date(startTime);
-			}
-
-			Trigger trigger = TriggerFactoryUtil.createTrigger(
-				jobName, _LCS_SCHEDULE_GROUP_NAME, startDate, endDate,
-				getInterval(schedulerContext),
-				com.liferay.portal.kernel.scheduler.TimeUnit.SECOND);
-
-			SchedulerEngineHelperUtil.schedule(
-				trigger, StorageType.MEMORY_CLUSTERED, StringPool.BLANK,
-				"liferay/lcs_scheduler", schedulerContext, 0);
-
-			if (_log.isDebugEnabled()) {
-				_log.debug("Scheduled job " + jobName);
-			}
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
-	}
-
 	private void _scheduleUptimeMonitoringTask() {
 		try {
 			_uptimeAdvisor.init();
@@ -594,8 +436,6 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		}
 	}
 
-	private static final String _LCS_SCHEDULE_GROUP_NAME = "com.liferay.lcs";
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		TaskSchedulerServiceImpl.class);
 
@@ -604,7 +444,6 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 	private final LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
 	private final LCSGatewayClient _lcsGatewayClient;
 	private final LCSKeyAdvisor _lcsKeyAdvisor;
-	private final int _scheduleDelayMax;
 	private final ScheduledExecutorService _scheduledExecutorService;
 	private final Map<String, ScheduledFuture<?>> _scheduledFuturesMap =
 		new HashMap<>();

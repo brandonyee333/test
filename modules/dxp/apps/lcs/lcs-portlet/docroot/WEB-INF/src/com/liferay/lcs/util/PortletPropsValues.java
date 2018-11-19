@@ -43,9 +43,6 @@ public class PortletPropsValues {
 	public static final String COMMAND_SCHEDULE_DEFAULT_INTERVAL =
 		PortletProps.get(PortletPropsKeys.COMMAND_SCHEDULE_DEFAULT_INTERVAL);
 
-	public static final String COMMAND_SCHEDULE_DELAY_MAX = PortletProps.get(
-		PortletPropsKeys.COMMAND_SCHEDULE_DELAY_MAX);
-
 	public static final String COMMUNICATION_HEARTBEAT_INTERVAL =
 		PortletProps.get(PortletPropsKeys.COMMUNICATION_HEARTBEAT_INTERVAL);
 

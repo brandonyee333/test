@@ -322,7 +322,7 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 		_taskSchedulerService = spy(
 			new TaskSchedulerServiceImpl(
 				1000, _lcsAlertAdvisor, _lcsClusterEntryTokenAdvisor,
-				_lcsGatewayClient, _lcsKeyAdvisor, 100, null, _threadFactory,
+				_lcsGatewayClient, _lcsKeyAdvisor, null, _threadFactory,
 				_uptimeAdvisor));
 
 		doNothing(
