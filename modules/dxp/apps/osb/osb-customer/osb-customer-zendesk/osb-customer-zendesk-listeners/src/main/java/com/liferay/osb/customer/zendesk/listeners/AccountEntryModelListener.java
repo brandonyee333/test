@@ -93,15 +93,11 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 					accountEntry.getAccountEntryId());
 
 			if (oldAccountEntry.getStatus() != accountEntry.getStatus()) {
-				if (accountEntry.getStatus() ==
+				if (accountEntry.getStatus() !=
 						WorkflowConstants.STATUS_APPROVED) {
 
 					_accountEntrySynchronizer.updateAccountCustomers(
-						accountEntry, true);
-				}
-				else {
-					_accountEntrySynchronizer.updateAccountCustomers(
-						accountEntry, false);
+						accountEntry);
 				}
 			}
 

@@ -205,8 +205,7 @@ public class AccountEntrySynchronizer {
 		}
 	}
 
-	public void updateAccountCustomers(
-			AccountEntry accountEntry, boolean approved)
+	public void updateAccountCustomers(AccountEntry accountEntry)
 		throws PortalException {
 
 		try {
@@ -218,20 +217,12 @@ public class AccountEntrySynchronizer {
 			for (AccountCustomer accountCustomer :
 					accountEntry.getAccountCustomers()) {
 
-				long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
-					accountCustomer.getUserId());
+				if (!hasActiveSupportOffering(accountCustomer, accountEntry)) {
+					long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+						accountCustomer.getUserId());
 
-				if (approved) {
-					_zendeskUserWebService.addZendeskUserTags(
+					_zendeskUserWebService.deleteZendeskUserTags(
 						zendeskUserId, tags);
-				}
-				else {
-					if (!hasActiveSupportOffering(
-							accountCustomer, accountEntry)) {
-
-						_zendeskUserWebService.deleteZendeskUserTags(
-							zendeskUserId, tags);
-					}
 				}
 			}
 		}
