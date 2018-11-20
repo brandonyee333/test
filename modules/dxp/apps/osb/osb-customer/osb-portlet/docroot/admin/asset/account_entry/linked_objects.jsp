@@ -19,11 +19,6 @@
 <%
 List<User> missingAnalyticsCloudUsers = (List<User>)request.getAttribute("linked_objects.jsp-missingAnalyticsCloudUsers");
 List<User> missingUsers = (List<User>)request.getAttribute("linked_objects.jsp-missingUsers");
-
-missingUsers.addAll(missingAnalyticsCloudUsers);
-
-ListUtil.distinct(missingUsers);
-
 String salesforceOpportunityAction = (String)request.getAttribute("linked_objects.jsp-salesforceOpportunityAction");
 %>
 
@@ -35,6 +30,14 @@ String salesforceOpportunityAction = (String)request.getAttribute("linked_object
 			</h3>
 
 			<%= ListUtil.toString(missingUsers, "emailAddress", "<br />") %>
+		</c:if>
+
+		<c:if test="<%= (missingAnalyticsCloudUsers != null) && !missingAnalyticsCloudUsers.isEmpty() %>">
+			<h3>
+				<liferay-ui:message key="missing-analytics-cloud-users" />
+			</h3>
+
+			<%= ListUtil.toString(missingAnalyticsCloudUsers, "emailAddress", "<br />") %>
 		</c:if>
 
 		<%
@@ -109,6 +112,14 @@ String salesforceOpportunityAction = (String)request.getAttribute("linked_object
 			</h3>
 
 			<%= ListUtil.toString(missingUsers, "emailAddress", "<br />") %>
+		</c:if>
+
+		<c:if test="<%= (missingAnalyticsCloudUsers != null) && !missingAnalyticsCloudUsers.isEmpty() %>">
+			<h3>
+				<liferay-ui:message key="missing-analytics-cloud-users" />
+			</h3>
+
+			<%= ListUtil.toString(missingAnalyticsCloudUsers, "emailAddress", "<br />") %>
 		</c:if>
 
 		<%
