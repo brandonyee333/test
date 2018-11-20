@@ -66,6 +66,13 @@ public class OSBAccountEnvironmentPermission {
 			return true;
 		}
 
+		if (OrganizationLocalServiceUtil.hasUserOrganization(
+				permissionChecker.getUserId(),
+				OSBConstants.ORGANIZATION_LIFERAY_INC_ID)) {
+
+			return true;
+		}
+
 		AccountCustomer accountCustomer = null;
 
 		try {
@@ -120,13 +127,6 @@ public class OSBAccountEnvironmentPermission {
 		}
 
 		if (accountCustomer != null) {
-			return true;
-		}
-
-		if (OrganizationLocalServiceUtil.hasUserOrganization(
-				permissionChecker.getUserId(),
-				OSBConstants.ORGANIZATION_LIFERAY_INC_ID)) {
-
 			return true;
 		}
 
