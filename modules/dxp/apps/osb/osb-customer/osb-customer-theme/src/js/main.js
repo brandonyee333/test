@@ -1,19 +1,21 @@
 export {render, MegaMenu} from 'liferay-help-center-megamenu';
 
+'use strict';
+
 Liferay.Loader.require(
 	'metal-debounce/src/debounce',
 	'metal-dom/src/dom',
 	function(metalDebounceSrcDebounce, metalDomSrcDom) {
 		(
 			function() {
-				const debounce = metalDebounceSrcDebounce.default;
-				const dom = metalDomSrcDom.default;
+				var debounce = metalDebounceSrcDebounce.default;
+				var dom = metalDomSrcDom.default;
 
 				window.addEventListener(
 					'scroll',
 					debounce(
 						function() {
-							const header = document.querySelector('header');
+							var header = document.querySelector('header');
 
 							if (header) {
 								if (window.scrollY >= 64) {
