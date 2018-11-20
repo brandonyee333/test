@@ -17,7 +17,13 @@
 <%@ include file="/init.jsp" %>
 
 <%
+List<User> missingAnalyticsCloudUsers = (List<User>)request.getAttribute("linked_objects.jsp-missingAnalyticsCloudUsers");
 List<User> missingUsers = (List<User>)request.getAttribute("linked_objects.jsp-missingUsers");
+
+missingUsers.addAll(missingAnalyticsCloudUsers);
+
+ListUtil.distinct(missingUsers);
+
 String salesforceOpportunityAction = (String)request.getAttribute("linked_objects.jsp-salesforceOpportunityAction");
 %>
 
