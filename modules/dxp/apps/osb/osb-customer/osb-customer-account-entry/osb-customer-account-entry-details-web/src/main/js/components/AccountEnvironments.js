@@ -21,7 +21,9 @@ export default class AccountEnvironments extends React.Component {
 			}
 		).isRequired,
 		environments: PropTypes.array.isRequired,
-		permitAdd: PropTypes.bool.isRequired
+		permitAdd: PropTypes.bool.isRequired,
+		permitDelete: PropTypes.bool.isRequired,
+		permitEdit: PropTypes.bool.isRequired
 	};
 
 	handleCloseModal = () =>
@@ -58,7 +60,9 @@ export default class AccountEnvironments extends React.Component {
 			addEnvironmentURL,
 			environmentConfiguration,
 			environments,
-			permitAdd
+			permitAdd,
+			permitDelete,
+			permitEdit
 		} = this.props;
 
 		const {environment, showModal} = this.state;
@@ -126,23 +130,27 @@ export default class AccountEnvironments extends React.Component {
 							</div>
 
 							<div className="col-md-12">
-								<Button
-									display="link"
-									onClick={() => this.handleDisplayEditModal(environment)}
-									size="sm"
-									value="edit"
-								>
-									{Liferay.Language.get('edit')}
-								</Button>
+								{permitEdit && (
+									<Button
+										display="link"
+										onClick={() => this.handleDisplayEditModal(environment)}
+										size="sm"
+										value="edit"
+									>
+										{Liferay.Language.get('edit')}
+									</Button>
+								)}
 
-								<Button
-									href={environment.deleteAccountEnvironmentURL}
-									onClick={this.handleDeleteEnvironment}
-									size="sm"
-									value="delete"
-								>
-									{Liferay.Language.get('delete')}
-								</Button>
+								{permitDelete && (
+									<Button
+										href={environment.deleteAccountEnvironmentURL}
+										onClick={this.handleDeleteEnvironment}
+										size="sm"
+										value="delete"
+									>
+										{Liferay.Language.get('delete')}
+									</Button>
+								)}
 							</div>
 						</React.Fragment>
 					),

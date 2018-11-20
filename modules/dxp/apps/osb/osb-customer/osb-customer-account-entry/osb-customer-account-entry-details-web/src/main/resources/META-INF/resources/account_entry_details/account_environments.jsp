@@ -35,7 +35,9 @@ JSONObject environmentConfigurationJSONObject = accountEntryViewDisplayContext.g
 			addEnvironmentURL: '<%= addEnvironmentURL %>',
 			environmentConfiguration: <%= environmentConfigurationJSONObject %>,
 			environments: <%= accountEnvironmentsJSONArray %>,
-			permitAdd: <%= OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.ADD_ACCOUNT_ENVIRONMENT) %>
+			permitAdd: <%= OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.ADD_ACCOUNT_ENVIRONMENT) %>,
+			permitDelete: <%= OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.DELETE) %>,
+			permitEdit: <%= OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.UPDATE) %>
 		},
 		document.getElementById('<portlet:namespace />accountEnvironments')
 	);
