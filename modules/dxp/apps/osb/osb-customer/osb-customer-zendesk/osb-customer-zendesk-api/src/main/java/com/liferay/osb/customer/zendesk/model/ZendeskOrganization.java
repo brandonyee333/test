@@ -24,6 +24,10 @@ public class ZendeskOrganization {
 	public ZendeskOrganization() {
 	}
 
+	public String getAccountCode() {
+		return _accountCode;
+	}
+
 	public String getDetails() {
 		return _details;
 	}
@@ -86,6 +90,10 @@ public class ZendeskOrganization {
 
 	public long getZendeskOrganizationId() {
 		return _zendeskOrganizationId;
+	}
+
+	public void setAccountCode(String accountCode) {
+		_accountCode = accountCode;
 	}
 
 	public void setDetails(String details) {
@@ -152,6 +160,7 @@ public class ZendeskOrganization {
 		_zendeskOrganizationId = zendeskOrganizationId;
 	}
 
+	private String _accountCode;
 	private String _details;
 	private String _externalId;
 	private String _name;

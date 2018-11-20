@@ -28,12 +28,11 @@ import java.util.Set;
 public interface ZendeskOrganizationWebService {
 
 	public ZendeskOrganization createOrUpdateZendeskOrganization(
-			String details, String externalId, String name, String notes,
-			String partnerFirstLineSupport, String partnerJiraProject,
-			String partnerCode, String sla, String status,
-			String supportLanguage, String supportRegion, String tier,
-			Set<String> tags)
-		throws PortalException;
+		String accountCode, String details, String externalId, String name,
+		String notes, String partnerFirstLineSupport, String partnerJiraProject,
+		String partnerCode, String sla, String status, String supportLanguage,
+		String supportRegion, String tier,
+		Set<String> tags) throws PortalException;
 
 	public ZendeskOrganization getZendeskOrganization(String externalId)
 		throws PortalException;

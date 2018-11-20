@@ -89,6 +89,7 @@ public class AccountEntrySynchronizer {
 					supportRegionIds[0]);
 
 			_zendeskOrganizationWebService.createOrUpdateZendeskOrganization(
+				accountEntry.getCode(),
 				ZendeskModelListenerUtil.convertAddressToString(
 					accountEntry.getAddress()),
 				String.valueOf(accountEntry.getAccountEntryId()),

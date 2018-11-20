@@ -44,11 +44,11 @@ public class DefaultZendeskOrganizationWebService
 	implements ZendeskOrganizationWebService {
 
 	public ZendeskOrganization createOrUpdateZendeskOrganization(
-			String details, String externalId, String name, String notes,
-			String partnerFirstLineSupport, String partnerJiraProject,
-			String partnerCode, String sla, String status,
-			String supportLanguage, String supportRegion, String tier,
-			Set<String> tags)
+			String accountCode, String details, String externalId, String name,
+			String notes, String partnerFirstLineSupport,
+			String partnerJiraProject, String partnerCode, String sla,
+			String status, String supportLanguage, String supportRegion,
+			String tier, Set<String> tags)
 		throws PortalException {
 
 		String endpoint =
@@ -57,9 +57,9 @@ public class DefaultZendeskOrganizationWebService
 
 		JSONObject zendeskOrganizationJSONObject =
 			getZendeskOrganizationJSONObject(
-				details, externalId, name, notes, partnerFirstLineSupport,
-				partnerJiraProject, partnerCode, sla, status, supportLanguage,
-				supportRegion, tier, tags);
+				accountCode, details, externalId, name, notes,
+				partnerFirstLineSupport, partnerJiraProject, partnerCode, sla,
+				status, supportLanguage, supportRegion, tier, tags);
 
 		JSONObject responseJSONObject = _zendeskBaseWebService.post(
 			endpoint, zendeskOrganizationJSONObject.toString());
@@ -93,8 +93,8 @@ public class DefaultZendeskOrganizationWebService
 	}
 
 	protected JSONObject getZendeskOrganizationJSONObject(
-		String details, String externalId, String name, String notes,
-		String partnerFirstLineSupport, String partnerJiraProject,
+		String accountCode, String details, String externalId, String name,
+		String notes, String partnerFirstLineSupport, String partnerJiraProject,
 		String partnerOrganization, String sla, String status,
 		String supportLanguage, String supportRegion, String tier,
 		Set<String> tags) {
@@ -108,6 +108,10 @@ public class DefaultZendeskOrganizationWebService
 
 		JSONObject organizationFieldsJSONObject =
 			JSONFactoryUtil.createJSONObject();
+
+		if (Validator.isNotNull(accountCode)) {
+			organizationFieldsJSONObject.put("account_code", accountCode);
+		}
 
 		if (Validator.isNotNull(partnerFirstLineSupport)) {
 			organizationFieldsJSONObject.put(
