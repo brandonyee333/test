@@ -129,29 +129,31 @@ export default class AccountEnvironments extends React.Component {
 								/>
 							</div>
 
-							<div className="col-md-12">
-								{permitEdit && (
-									<Button
-										display="link"
-										onClick={() => this.handleDisplayEditModal(environment)}
-										size="sm"
-										value="edit"
-									>
-										{Liferay.Language.get('edit')}
-									</Button>
-								)}
+							{permitEdit || permitDelete && (
+								<div className="col-md-12">
+									{permitEdit && (
+										<Button
+											display="link"
+											onClick={() => this.handleDisplayEditModal(environment)}
+											size="sm"
+											value="edit"
+										>
+											{Liferay.Language.get('edit')}
+										</Button>
+									)}
 
-								{permitDelete && (
-									<Button
-										href={environment.deleteAccountEnvironmentURL}
-										onClick={this.handleDeleteEnvironment}
-										size="sm"
-										value="delete"
-									>
-										{Liferay.Language.get('delete')}
-									</Button>
-								)}
-							</div>
+									{permitDelete && (
+										<Button
+											href={environment.deleteAccountEnvironmentURL}
+											onClick={this.handleDeleteEnvironment}
+											size="sm"
+											value="delete"
+										>
+											{Liferay.Language.get('delete')}
+										</Button>
+									)}
+								</div>
+							)}
 						</React.Fragment>
 					),
 					title: (
