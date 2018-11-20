@@ -27,6 +27,7 @@ import com.liferay.osb.customer.zendesk.web.service.search.ZendeskTicketQuery;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Http;
@@ -104,7 +105,24 @@ public class DefaultZendeskTicketWebService implements ZendeskTicketWebService {
 	public void updateZendeskTickets(List<ZendeskTicket> zendeskTickets)
 		throws PortalException {
 
-		throw new UnsupportedOperationException();
+		for (ZendeskTicket zendeskTicket : zendeskTickets) {
+			JSONObject ticketJSONObject = JSONFactoryUtil.createJSONObject();
+
+			String endpoint =
+				ZendeskRESTEndpoints.URL_API_V2 + "tickets/" +
+					zendeskTicket.getZendeskTicketId() + ".json";
+
+			ticketJSONObject.put(
+				"organization_id", zendeskTicket.getZendeskOrganizationId());
+			ticketJSONObject.put(
+				"requester_id", zendeskTicket.getRequesterId());
+
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+			jsonObject.put("ticket", ticketJSONObject);
+
+			zendeskBaseWebService.put(endpoint, jsonObject.toString());
+		}
 	}
 
 	protected SearchHits<ZendeskTicket> toSearchHits(

@@ -96,8 +96,7 @@ public class AccountCustomerSynchronizer {
 					zendeskTicket.setRequesterId(newZendeskUserId);
 				}
 
-				_asyncZendeskTicketWebService.updateZendeskTickets(
-					zendeskTickets);
+				_zendeskTicketWebService.updateZendeskTickets(zendeskTickets);
 			}
 
 			_zendeskUserWebService.deleteZendeskUserOrganizationMemberships(
@@ -249,9 +248,6 @@ public class AccountCustomerSynchronizer {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AccountCustomerSynchronizer.class);
-
-	@Reference(target = "(async=true)")
-	private ZendeskTicketWebService _asyncZendeskTicketWebService;
 
 	@Reference
 	private UserLocalService _userLocalService;
