@@ -95,8 +95,8 @@ public class UserSynchronizer {
 
 			if (!_organizationLocalService.hasUserOrganization(
 					userId, OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID) &&
-				(AccountEntryLocalServiceUtil.getUserAccountEntriesCount(
-					userId) == 0)) {
+				!AccountEntryLocalServiceUtil.hasValidSupportAccountEntry(
+					userId, false)) {
 
 				tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
 			}
