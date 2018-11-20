@@ -19,7 +19,7 @@
 			},
 			{
 				name: '<@liferay.language key="project-details" />',
-				url: '/'
+				url: '/project-details'
 			}
 		]
 	};
@@ -42,14 +42,18 @@
 
 	const locale = {
 		alternativeLocales: [
-			{
-				name: '',
-				url: '/'
-			}
+			<#list available_locales as locale>
+				<#if locale != current_locale>
+					{
+						name: '${locale.getDisplayLanguage(locale)}',
+						url: '/${locale.getLanguage()}${theme_display.getURLCurrent()}'
+					},
+				</#if>
+			</#list>
 		],
 		currentLocale: {
-			name: '${w3c_language_id}',
-			url: '/'
+			name: '${current_locale.getDisplayLanguage(current_locale)}',
+			url: '/${current_locale.getLanguage()}${theme_display.getURLCurrent()}'
 		}
 	};
 

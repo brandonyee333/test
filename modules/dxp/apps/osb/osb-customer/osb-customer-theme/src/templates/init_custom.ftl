@@ -7,6 +7,9 @@
 	has_mega_menu = false
 	has_view_control_panel = is_signed_in && portal_permission.contains(theme_display_permission_checker, "VIEW_CONTROL_PANEL")
 
+	available_locales = languageUtil.getAvailableLocales()
+	current_locale = themeDisplay.getLocale()
+
 	site_logo_url = themeDisplay.getThemeSetting("site-logo-url")
 	site_name = themeDisplay.getThemeSetting("site-name")
 	site_name_url = themeDisplay.getThemeSetting("site-name-url")
