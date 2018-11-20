@@ -220,7 +220,7 @@ for (SupportRegion supportRegion : supportRegions) {
 						/>
 
 						<%
-						long licensePlid = PortalUtil.getPlidFromPortletId(user.getGroupId(), OSBPortletKeys.OSB_LICENSE);
+						long licensePlid = PortalUtil.getPlidFromPortletId(OSBConstants.GROUP_LICENSE_ID, OSBPortletKeys.OSB_LICENSE);
 						%>
 
 						<liferay-portlet:renderURL plid="<%= licensePlid %>" portletName="<%= OSBPortletKeys.OSB_LICENSE %>" var="viewLicensesURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
