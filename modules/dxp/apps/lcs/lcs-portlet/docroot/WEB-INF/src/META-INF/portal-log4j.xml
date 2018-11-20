@@ -12,10 +12,6 @@
 		</layout>
 	</appender>
 
-	<category name="com.liferay.lcs.task.scheduler">
-		<priority value="WARN" />
-	</category>
-
 	<logger additivity="false" name="com.liferay.lcs">
 		<level value="INFO" />
 
