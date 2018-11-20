@@ -1,5 +1,5 @@
 <script>
-	const menuItems = document.querySelectorAll('.header-menu-list .list-item');
+	var menuItems = document.querySelectorAll('.header-menu-list .list-item');
 
 	Array.prototype.forEach.call(
 		menuItems,
@@ -8,7 +8,7 @@
 		}
 	);
 
-	const accountLinks = {
+	var accountLinks = {
 		className: 'account-links',
 		configs: [
 			{
@@ -22,7 +22,7 @@
 		]
 	};
 
-	const highlightedLinks = {
+	var highlightedLinks = {
 		className: 'highlighted',
 		configs: [
 			{
@@ -38,7 +38,7 @@
 		]
 	};
 
-	const locale = {
+	var locale = {
 		alternativeLocales: [
 			<#list available_locales as locale>
 				<#if locale != current_locale>
