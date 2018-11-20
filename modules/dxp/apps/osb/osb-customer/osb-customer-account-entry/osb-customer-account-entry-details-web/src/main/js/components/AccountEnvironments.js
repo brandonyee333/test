@@ -129,7 +129,7 @@ export default class AccountEnvironments extends React.Component {
 								/>
 							</div>
 
-							{permitEdit || permitDelete && (
+							{permitDelete || permitEdit && (
 								<div className="col-md-12">
 									{permitEdit && (
 										<Button
