@@ -17,7 +17,7 @@
 <%@ include file="/init.jsp" %>
 
 <%
-String tabs1 = ParamUtil.getString(renderRequest, "tabs1", "assigned-to-me");
+String tabs1 = ParamUtil.getString(renderRequest, "tabs1", "assigned-to-my-roles");
 
 PortletURL portletURL = renderResponse.createRenderURL();
 
