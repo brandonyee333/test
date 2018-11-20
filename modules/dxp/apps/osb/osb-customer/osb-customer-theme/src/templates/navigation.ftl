@@ -57,7 +57,7 @@
 
 					<div class="dropdown-menu dropdown-menu-caret dropdown-menu-end" id="user-dropdown">
 						<div id="user-menu" role="menu">
-							<a class="my-activities" href="https://help.liferay.com/hc/requests"><@liferay.language key="my-activities" /></a>
+							<a class="my-activities" href="${zendesk_url}/hc/requests"><@liferay.language key="my-activities" /></a>
 
 							<a href="/c/portal/logout"><@liferay.language key="sign-out" /></a>
 						</div>
