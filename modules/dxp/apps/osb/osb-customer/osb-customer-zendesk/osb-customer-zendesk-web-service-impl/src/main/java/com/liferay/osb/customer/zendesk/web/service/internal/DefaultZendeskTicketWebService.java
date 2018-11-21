@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -63,16 +64,15 @@ public class DefaultZendeskTicketWebService implements ZendeskTicketWebService {
 		}
 	}
 
-	public List<ZendeskTicket> getZendeskTickets(
-			long zendeskUserId, long zendeskOrganizationId)
+	public List<ZendeskTicket> getZendeskTickets(Set<String> criteria)
 		throws PortalException {
 
 		ZendeskTicketQuery zendeskTicketQuery =
 			queryFactory.createZendeskTicketQuery();
 
-		zendeskTicketQuery.addCriterion("requester:" + zendeskUserId);
-		zendeskTicketQuery.addCriterion(
-			"organization:" + zendeskOrganizationId);
+		for (String criterion : criteria) {
+			zendeskTicketQuery.addCriterion(criterion);
+		}
 
 		List<ZendeskTicket> zendeskTickets = new ArrayList<>();
 
@@ -116,6 +116,7 @@ public class DefaultZendeskTicketWebService implements ZendeskTicketWebService {
 				"organization_id", zendeskTicket.getZendeskOrganizationId());
 			ticketJSONObject.put(
 				"requester_id", zendeskTicket.getRequesterId());
+			ticketJSONObject.put("status", zendeskTicket.getStatus());
 
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 

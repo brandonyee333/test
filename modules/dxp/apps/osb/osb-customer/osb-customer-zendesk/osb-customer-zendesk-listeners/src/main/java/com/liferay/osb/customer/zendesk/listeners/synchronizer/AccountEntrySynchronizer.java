@@ -17,8 +17,10 @@ package com.liferay.osb.customer.zendesk.listeners.synchronizer;
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.listeners.exception.ZendeskIntegrationException;
 import com.liferay.osb.customer.zendesk.listeners.util.ZendeskModelListenerUtil;
+import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationWebService;
+import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountEntry;
@@ -169,6 +171,48 @@ public class AccountEntrySynchronizer {
 		}
 	}
 
+	public void closeZendeskTickets(AccountEntry accountEntry)
+		throws PortalException {
+
+		long zendeskOrganizationId =
+			_zendeskMapperUtil.fetchZendeskOrganizationId(
+				accountEntry.getAccountEntryId());
+
+		Set<String> criteria = new HashSet<>();
+
+		criteria.add("organization:" + zendeskOrganizationId);
+		criteria.add("status<closed");
+		/*criteria.add("requester:" + user from LRIS-33776);*/
+
+		List<ZendeskTicket> zendeskTickets =
+			_zendeskTicketWebService.getZendeskTickets(criteria);
+
+		for (ZendeskTicket zendeskTicket : zendeskTickets) {
+			zendeskTicket.setStatus("closed");
+		}
+
+		if (!zendeskTickets.isEmpty()) {
+			_zendeskTicketWebService.updateZendeskTickets(zendeskTickets);
+		}
+	}
+
+	public void removeAccountCustomers(AccountEntry accountEntry)
+		throws PortalException {
+
+		try {
+			for (AccountCustomer accountCustomer :
+					accountEntry.getAccountCustomers()) {
+
+				_accountCustomerSynchronizer.remove(accountCustomer);
+			}
+		}
+		catch (Exception e) {
+			_log.error(e);
+
+			throw new ZendeskIntegrationException(e);
+		}
+	}
+
 	public void removeObsoleteTags(AccountEntry accountEntry)
 		throws PortalException {
 
@@ -275,6 +319,9 @@ public class AccountEntrySynchronizer {
 
 	@Reference
 	private ZendeskOrganizationWebService _zendeskOrganizationWebService;
+
+	@Reference
+	private ZendeskTicketWebService _zendeskTicketWebService;
 
 	@Reference(target = "(async=true)")
 	private ZendeskUserWebService _zendeskUserWebService;

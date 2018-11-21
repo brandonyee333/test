@@ -72,9 +72,14 @@ public class AccountCustomerSynchronizer {
 				_zendeskMapperUtil.fetchZendeskOrganizationId(
 					accountCustomer.getAccountEntryId());
 
+			Set<String> criteria = new HashSet<>();
+
+			criteria.add("organization:" + zendeskOrganizationId);
+			criteria.add("requester:" + zendeskUserId);
+			criteria.add("status<closed");
+
 			List<ZendeskTicket> zendeskTickets =
-				_zendeskTicketWebService.getZendeskTickets(
-					zendeskUserId, zendeskOrganizationId);
+				_zendeskTicketWebService.getZendeskTickets(criteria);
 
 			if (!zendeskTickets.isEmpty()) {
 				List<AccountCustomer> accountCustomers =
@@ -182,12 +187,12 @@ public class AccountCustomerSynchronizer {
 			tags.add(ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
 		}
 		else {
-			if (accountEntry.hasActiveTicketSupport()) {
+			if (accountEntry.getActiveTicketSupport()) {
 				tags.add(ZendeskTagConstants.OSB_CUSTOMER);
 			}
 		}
 
-		if (accountEntry.hasActiveSupport()) {
+		if (accountEntry.getActiveSupport()) {
 			tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
 		}
 

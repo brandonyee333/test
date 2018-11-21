@@ -41,7 +41,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		throws ModelListenerException {
 
 		try {
-			if (!accountEntry.hasActiveSupport()) {
+			if (!accountEntry.getActiveSupport()) {
 				return;
 			}
 
@@ -58,33 +58,33 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 
 		try {
 			if (!hasZendeskOrganization(accountEntry) &&
-				!accountEntry.hasActiveSupport()) {
+				!accountEntry.getActiveSupport()) {
 
 				return;
 			}
 
 			if (_accountEntryActiveTicketSupport.get() &&
-				!accountEntry.hasActiveTicketSupport()) {
+				!accountEntry.getActiveTicketSupport()) {
 
-				//close all tickets
+				_accountEntrySynchronizer.closeZendeskTickets(accountEntry);
 
 				_accountEntrySynchronizer.removeObsoleteTags(accountEntry);
 			}
 
 			if (_accountEntryActiveSupport.get() &&
-				!accountEntry.hasActiveSupport()) {
+				!accountEntry.getActiveSupport()) {
 
-				// remove memberships
+				_accountEntrySynchronizer.removeAccountCustomers(accountEntry);
 
 				_accountEntrySynchronizer.removeObsoleteTags(accountEntry);
 			}
 
-			if (accountEntry.hasActiveSupport()) {
+			if (accountEntry.getActiveSupport()) {
 				_accountEntrySynchronizer.add(accountEntry);
 
 				_accountEntrySynchronizer.addAccountCustomers(accountEntry);
 
-				if (accountEntry.hasActiveTicketSupport()) {
+				if (accountEntry.getActiveTicketSupport()) {
 					if (accountEntry.isPartnerManagedSupport()) {
 						_accountEntrySynchronizer.addPartnerManagedSupport(
 							accountEntry);
@@ -102,19 +102,19 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		throws ModelListenerException {
 
 		try {
-			_accountEntryActiveSupport.set(accountEntry.hasActiveSupport());
-			_accountEntryActiveTicketSupport.set(
-				accountEntry.hasActiveTicketSupport());
-
-			if (!hasZendeskOrganization(accountEntry) &&
-				!accountEntry.hasActiveTicketSupport()) {
-
-				return;
-			}
-
 			AccountEntry oldAccountEntry =
 				AccountEntryLocalServiceUtil.getAccountEntry(
 					accountEntry.getAccountEntryId());
+
+			_accountEntryActiveSupport.set(oldAccountEntry.getActiveSupport());
+			_accountEntryActiveTicketSupport.set(
+				oldAccountEntry.getActiveTicketSupport());
+
+			if (!hasZendeskOrganization(accountEntry) &&
+				!accountEntry.getActiveTicketSupport()) {
+
+				return;
+			}
 
 			if (oldAccountEntry.isPartnerManagedSupport() &&
 				!accountEntry.isPartnerManagedSupport()) {

@@ -126,6 +126,8 @@
 		<column name="instructions" type="String" />
 		<column name="notes" type="String" />
 		<column name="highestSupportResponseId" type="long" />
+		<column name="activeSupport" type="boolean" />
+		<column name="activeTicketSupport" type="boolean" />
 		<column name="lastAuditDate" type="Date" />
 		<column name="status" type="int" />
 		<column name="statusByUserId" type="long" />

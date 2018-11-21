@@ -159,7 +159,7 @@ for (SupportRegion supportRegion : supportRegions) {
 						<liferay-ui:search-container-column-text
 							name="status"
 						>
-							<aui:select label="" name='<%= "status_" + key %>' onChange='<%= renderResponse.getNamespace() + "updateOfferingEntry('" + key + "', '" + StringUtil.merge(offeringEntryGroup.getOfferingEntryIds()) + "', this.value, '" + offeringEntryGroup.getStatus() + "', '" + LanguageUtil.get(request, OfferingEntryConstants.getStatusLabel(offeringEntryGroup.getStatus())) + "');" %>'>
+							<aui:select label="" name='<%= "status_" + key %>' onChange='<%= renderResponse.getNamespace() + "updateOfferingEntry('" + key + "', '" + accountEntry.getAccountEntryId() + "', '" + StringUtil.merge(offeringEntryGroup.getOfferingEntryIds()) + "', this.value, '" + offeringEntryGroup.getStatus() + "', '" + LanguageUtil.get(request, OfferingEntryConstants.getStatusLabel(offeringEntryGroup.getStatus())) + "');" %>'>
 
 								<%
 								for (int i = 1; i <= 4; i++) {
@@ -608,7 +608,7 @@ for (SupportRegion supportRegion : supportRegions) {
 	Liferay.provide(
 		window,
 		'<portlet:namespace />updateOfferingEntry',
-		function(key, offeringEntryIds, newStatusValue, oldStatusValue, oldStatusLabel) {
+		function(key, accountEntryId, offeringEntryIds, newStatusValue, oldStatusValue, oldStatusLabel) {
 			var A = AUI();
 
 			var statusElement = A.one('#<portlet:namespace />status_' + key);
@@ -620,6 +620,7 @@ for (SupportRegion supportRegion : supportRegions) {
 					'<portlet:actionURL name="updateOfferingEntryStatus" />',
 					{
 						data: {
+							<portlet:namespace />accountEntryId: accountEntryId,
 							<portlet:namespace />offeringEntryIds: offeringEntryIds,
 							<portlet:namespace />status: newStatusValue
 						},

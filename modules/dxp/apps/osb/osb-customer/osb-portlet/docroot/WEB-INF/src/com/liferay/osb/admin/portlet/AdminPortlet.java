@@ -738,6 +738,9 @@ public class AdminPortlet extends OSBPortlet {
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		try {
+			long accountEntryId = ParamUtil.getLong(
+				actionRequest, "accountEntryId");
+
 			long[] offeringEntryIds = StringUtil.split(
 				ParamUtil.getString(actionRequest, "offeringEntryIds"), 0L);
 			int status = ParamUtil.getInteger(actionRequest, "status");
@@ -745,6 +748,8 @@ public class AdminPortlet extends OSBPortlet {
 			for (long offeringEntryId : offeringEntryIds) {
 				OfferingEntryServiceUtil.updateStatus(offeringEntryId, status);
 			}
+
+			AccountEntryLocalServiceUtil.updateActiveSupport(accountEntryId);
 
 			jsonObject.put("message", "success");
 		}

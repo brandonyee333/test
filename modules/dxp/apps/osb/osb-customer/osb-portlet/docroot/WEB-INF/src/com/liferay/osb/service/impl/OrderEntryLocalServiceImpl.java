@@ -343,6 +343,8 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 				offeringEntry.getQuantity(), offeringEntryStatus);
 		}
 
+		accountEntryLocalService.updateActiveSupport(accountEntryId);
+
 		return orderEntry;
 	}
 
@@ -475,6 +477,9 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 			orderEntry.getAccountEntryId());
 
 		accountEntryLocalService.updateStatus(orderEntry.getAccountEntryId());
+
+		accountEntryLocalService.updateActiveSupport(
+			orderEntry.getAccountEntryId());
 
 		// Audit entry
 
@@ -720,6 +725,9 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 
 		accountEntryLocalService.updateStatus(orderEntry.getAccountEntryId());
 
+		accountEntryLocalService.updateActiveSupport(
+			orderEntry.getAccountEntryId());
+
 		return orderEntry;
 	}
 
@@ -766,6 +774,9 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 				accountEntryLocalService.updateStatus(
 					userId, accountEntry.getAccountEntryId(), status,
 					serviceContext);
+
+				accountEntryLocalService.updateActiveSupport(
+					accountEntry.getAccountEntryId());
 			}
 		}
 

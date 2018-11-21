@@ -53,6 +53,7 @@ import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.model.SupportResponse;
 import com.liferay.osb.rabbitmq.ProvisioningAuditRabbitMQConsumer;
 import com.liferay.osb.remote.dossiera.DossieraRESTWebServiceUtil;
+import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
 import com.liferay.osb.service.base.AccountEntryLocalServiceBaseImpl;
 import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.osb.util.OSBConstants;
@@ -1198,6 +1199,8 @@ public class AccountEntryLocalServiceImpl
 		accountEntry.setInstructions(instructions);
 		accountEntry.setNotes(notes);
 
+		updateActiveSupport(accountEntryId);
+
 		if (addressId <= 0) {
 			addressLocalService.addAddress(
 				userId, AccountEntry.class.getName(), accountEntryId, street1,
@@ -1552,6 +1555,25 @@ public class AccountEntryLocalServiceImpl
 			OSBConstants.COMPANY_ID, OSBConstants.USER_DEFAULT_USER_ID,
 			AccountEntry.class.getName(), oldAccountEntry.getAccountEntryId(),
 			oldAccountEntry, workflowServiceContext);
+	}
+
+	public void updateActiveSupport(long accountEntryId)
+		throws PortalException {
+
+		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
+			accountEntryId);
+
+		boolean activeSupport =
+			OfferingEntryLocalServiceUtil.hasActiveSupportOfferingEntry(
+				accountEntryId, false);
+		boolean activeTicketSupport =
+			OfferingEntryLocalServiceUtil.hasActiveSupportOfferingEntry(
+				accountEntryId, true);
+
+		accountEntry.setActiveSupport(activeSupport);
+		accountEntry.setActiveTicketSupport(activeTicketSupport);
+
+		accountEntryPersistence.update(accountEntry);
 	}
 
 	public AccountEntry updateInstructions(

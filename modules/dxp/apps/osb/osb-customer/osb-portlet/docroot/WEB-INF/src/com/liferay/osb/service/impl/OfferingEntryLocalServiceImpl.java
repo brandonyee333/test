@@ -147,6 +147,9 @@ public class OfferingEntryLocalServiceImpl
 				offeringEntry.getOfferingEntryId(),
 				OfferingEntryConstants.STATUS_ON_HOLD);
 
+			accountEntryLocalService.updateActiveSupport(
+				offeringEntry.getAccountEntryId());
+
 			if (accountEntryIds.contains(offeringEntry.getAccountEntryId())) {
 				continue;
 			}

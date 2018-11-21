@@ -211,28 +211,6 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 		return AccountEntryConstants.getTypeLabel(getType());
 	}
 
-	public boolean hasActiveSupport() {
-		if (OfferingEntryLocalServiceUtil.hasActiveSupportOfferingEntry(
-				getAccountEntryId(), false)) {
-
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-	public boolean hasActiveTicketSupport() {
-		if (OfferingEntryLocalServiceUtil.hasActiveSupportOfferingEntry(
-				getAccountEntryId(), true)) {
-
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
 	public boolean hasEnterpriseSearchOffering(int productEntryEnvironment)
 		throws PortalException {
 

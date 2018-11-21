@@ -22,6 +22,7 @@ import com.liferay.osb.customer.zendesk.web.service.search.ZendeskTicketQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Amos Fong
@@ -32,8 +33,7 @@ public interface ZendeskTicketWebService {
 	public ZendeskTicket getZendeskTicket(long zendeskTicketId)
 		throws PortalException;
 
-	public List<ZendeskTicket> getZendeskTickets(
-			long zendeskUserId, long zendeskOrganizationId)
+	public List<ZendeskTicket> getZendeskTickets(Set<String> criteria)
 		throws PortalException;
 
 	public SearchHits<ZendeskTicket> search(

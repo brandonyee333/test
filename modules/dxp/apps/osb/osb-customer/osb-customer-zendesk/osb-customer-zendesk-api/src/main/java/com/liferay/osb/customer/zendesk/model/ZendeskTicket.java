@@ -32,6 +32,10 @@ public class ZendeskTicket {
 		return _requesterId;
 	}
 
+	public String getStatus() {
+		return _status;
+	}
+
 	public String getSubject() {
 		return _subject;
 	}
