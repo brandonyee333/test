@@ -41,8 +41,10 @@ public class OfferingEntryLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.OfferingEntryLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static boolean hasActiveSupportOfferingEntry(long accountEntryId) {
-		return getService().hasActiveSupportOfferingEntry(accountEntryId);
+	public static boolean hasActiveSupportOfferingEntry(long accountEntryId,
+		boolean ticketSupport) {
+		return getService()
+				   .hasActiveSupportOfferingEntry(accountEntryId, ticketSupport);
 	}
 
 	public static boolean hasActiveTrialOfferingEntry(long userId) {

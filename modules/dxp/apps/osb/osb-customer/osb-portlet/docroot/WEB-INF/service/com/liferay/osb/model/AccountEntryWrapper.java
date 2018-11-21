@@ -312,8 +312,13 @@ public class AccountEntryWrapper implements AccountEntry,
 	}
 
 	@Override
-	public boolean hasActiveSupportOffering() {
-		return _accountEntry.hasActiveSupportOffering();
+	public boolean hasActiveSupport() {
+		return _accountEntry.hasActiveSupport();
+	}
+
+	@Override
+	public boolean hasActiveTicketSupport() {
+		return _accountEntry.hasActiveTicketSupport();
 	}
 
 	@Override

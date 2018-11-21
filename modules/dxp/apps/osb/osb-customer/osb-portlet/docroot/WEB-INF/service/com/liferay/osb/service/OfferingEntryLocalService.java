@@ -64,7 +64,8 @@ public interface OfferingEntryLocalService extends BaseLocalService,
 	 * Never modify or reference this interface directly. Always use {@link OfferingEntryLocalServiceUtil} to access the offering entry local service. Add custom service methods to {@link com.liferay.osb.service.impl.OfferingEntryLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasActiveSupportOfferingEntry(long accountEntryId);
+	public boolean hasActiveSupportOfferingEntry(long accountEntryId,
+		boolean ticketSupport);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public boolean hasActiveTrialOfferingEntry(long userId);

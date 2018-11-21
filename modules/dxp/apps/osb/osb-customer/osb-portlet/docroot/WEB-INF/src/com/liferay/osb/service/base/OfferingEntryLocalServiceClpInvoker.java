@@ -163,7 +163,7 @@ public class OfferingEntryLocalServiceClpInvoker {
 
 		_methodName174 = "hasActiveSupportOfferingEntry";
 
-		_methodParameterTypes174 = new String[] { "long" };
+		_methodParameterTypes174 = new String[] { "long", "boolean" };
 
 		_methodName175 = "hasActiveTrialOfferingEntry";
 
@@ -370,7 +370,8 @@ public class OfferingEntryLocalServiceClpInvoker {
 
 		if (_methodName174.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes174, parameterTypes)) {
-			return OfferingEntryLocalServiceUtil.hasActiveSupportOfferingEntry(((Long)arguments[0]).longValue());
+			return OfferingEntryLocalServiceUtil.hasActiveSupportOfferingEntry(((Long)arguments[0]).longValue(),
+				((Boolean)arguments[1]).booleanValue());
 		}
 
 		if (_methodName175.equals(name) &&

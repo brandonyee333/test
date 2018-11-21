@@ -1356,9 +1356,28 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 	}
 
 	@Override
-	public boolean hasActiveSupportOffering() {
+	public boolean hasActiveSupport() {
 		try {
-			String methodName = "hasActiveSupportOffering";
+			String methodName = "hasActiveSupport";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			Boolean returnObj = (Boolean)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public boolean hasActiveTicketSupport() {
+		try {
+			String methodName = "hasActiveTicketSupport";
 
 			Class<?>[] parameterTypes = new Class<?>[] {  };
 

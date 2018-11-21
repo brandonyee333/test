@@ -30,7 +30,7 @@ public class OfferingEntryLocalServiceClp implements OfferingEntryLocalService {
 
 		_methodName0 = "hasActiveSupportOfferingEntry";
 
-		_methodParameterTypes0 = new String[] { "long" };
+		_methodParameterTypes0 = new String[] { "long", "boolean" };
 
 		_methodName1 = "hasActiveTrialOfferingEntry";
 
@@ -198,12 +198,14 @@ public class OfferingEntryLocalServiceClp implements OfferingEntryLocalService {
 	}
 
 	@Override
-	public boolean hasActiveSupportOfferingEntry(long accountEntryId) {
+	public boolean hasActiveSupportOfferingEntry(long accountEntryId,
+		boolean ticketSupport) {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName0,
-					_methodParameterTypes0, new Object[] { accountEntryId });
+					_methodParameterTypes0,
+					new Object[] { accountEntryId, ticketSupport });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
