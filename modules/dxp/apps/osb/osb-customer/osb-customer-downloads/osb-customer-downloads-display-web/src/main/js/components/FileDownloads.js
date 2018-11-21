@@ -221,7 +221,7 @@ class Downloads extends React.Component {
 										{Liferay.Language.get('terms-and-conditions')}
 									</h3>
 
-									{agreementContent}
+									<div dangerouslySetInnerHTML={{__html: agreementContent}} />
 								</div>
 
 								<div className="eula-agree-terms">
