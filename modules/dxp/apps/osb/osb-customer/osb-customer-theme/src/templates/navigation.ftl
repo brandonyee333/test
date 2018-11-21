@@ -52,12 +52,18 @@
 			<div class="user">
 				<#if is_signed_in>
 					<div class="user-personal-bar" data-toggle="dropdown">
-						<@liferay.user_personal_bar />
+						<img alt="${user_initials}" class="user-icon" src="${user_avatar}" />
 					</div>
 
 					<div class="dropdown-menu dropdown-menu-caret dropdown-menu-end" id="user-dropdown">
 						<div id="user-menu" role="menu">
 							<a class="my-activities" href="${zendesk_url}/hc/requests"><@liferay.language key="my-activities" /></a>
+
+							<#if liferay_employee>
+								<a href="/group/license"><@liferay.language key="license" /></a>
+
+								<a href="/group/control_panel/manage?p_p_id=1_WAR_osbportlet"><@liferay.language key="osb-admin" /></a>
+							</#if>
 
 							<a href="/c/portal/logout"><@liferay.language key="sign-out" /></a>
 						</div>

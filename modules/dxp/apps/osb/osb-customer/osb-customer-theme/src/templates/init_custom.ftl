@@ -1,6 +1,7 @@
 <#assign
 	layout_local_service = serviceLocator.findService("com.liferay.portal.kernel.service.LayoutLocalService")
 	portal_permission = serviceLocator.findService("com.liferay.portal.kernel.service.permission.PortalPermission")
+	role_local_service = serviceLocator.findService("com.liferay.portal.kernel.service.RoleLocalService")
 
 	theme_display_permission_checker = theme_display.getPermissionChecker()
 
@@ -9,6 +10,11 @@
 
 	available_locales = languageUtil.getAvailableLocales()
 	current_locale = themeDisplay.getLocale()
+
+	user_avatar = themeDisplay.getUser().getPortraitURL(themeDisplay)
+	user_initials = themeDisplay.getUser().getInitials()
+
+	liferay_employee = role_local_service.hasUserRoles(user_id, company_id, ['Liferay Employee'], true)
 
 	site_logo_url = themeDisplay.getThemeSetting("site-logo-url")
 	site_name = themeDisplay.getThemeSetting("site-name")
