@@ -28,9 +28,12 @@
 	guest_group_id = guest_group.getGroupId()
 />
 
-<#assign footer_nav_friendly_url = "/footer-navigation" />
-<#assign main_nav_friendly_url = "/main-navigation" />
-<#assign mobile_footer_nav_friendly_url = "/mobile-footer-navigation" />
+<#assign
+	footer_nav_friendly_url = "/footer-navigation"
+	main_nav_friendly_url = "/main-navigation"
+	mobile_footer_nav_friendly_url = "/mobile-footer-navigation"
+	new_help_center_url = "https://help.liferay.com/hc"
+/>
 
 <#assign nav_options = theme_settings["nav-options"] />
 
