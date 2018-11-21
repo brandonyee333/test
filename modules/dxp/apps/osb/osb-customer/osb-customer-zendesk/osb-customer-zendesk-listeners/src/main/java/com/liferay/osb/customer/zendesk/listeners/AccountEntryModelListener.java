@@ -19,13 +19,13 @@ import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
+import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
-import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -41,7 +41,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		throws ModelListenerException {
 
 		try {
-			if (!hasActiveSupportOffering(accountEntry)) {
+			if (!accountEntry.hasActiveSupport()) {
 				return;
 			}
 
@@ -58,18 +58,38 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 
 		try {
 			if (!hasZendeskOrganization(accountEntry) &&
-				!hasActiveSupportOffering(accountEntry)) {
+				!accountEntry.hasActiveSupport()) {
 
 				return;
 			}
 
-			_accountEntrySynchronizer.add(accountEntry);
+			if (_accountEntryActiveTicketSupport.get() &&
+				!accountEntry.hasActiveTicketSupport()) {
 
-			_accountEntrySynchronizer.addAccountCustomers(accountEntry);
+				//close all tickets
 
-			if (accountEntry.isPartnerManagedSupport()) {
-				_accountEntrySynchronizer.addPartnerManagedSupport(
-					accountEntry);
+				_accountEntrySynchronizer.removeObsoleteTags(accountEntry);
+			}
+
+			if (_accountEntryActiveSupport.get() &&
+				!accountEntry.hasActiveSupport()) {
+
+				// remove memberships
+
+				_accountEntrySynchronizer.removeObsoleteTags(accountEntry);
+			}
+
+			if (accountEntry.hasActiveSupport()) {
+				_accountEntrySynchronizer.add(accountEntry);
+
+				_accountEntrySynchronizer.addAccountCustomers(accountEntry);
+
+				if (accountEntry.hasActiveTicketSupport()) {
+					if (accountEntry.isPartnerManagedSupport()) {
+						_accountEntrySynchronizer.addPartnerManagedSupport(
+							accountEntry);
+					}
+				}
 			}
 		}
 		catch (Exception e) {
@@ -82,8 +102,12 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		throws ModelListenerException {
 
 		try {
+			_accountEntryActiveSupport.set(accountEntry.hasActiveSupport());
+			_accountEntryActiveTicketSupport.set(
+				accountEntry.hasActiveTicketSupport());
+
 			if (!hasZendeskOrganization(accountEntry) &&
-				!hasActiveSupportOffering(accountEntry)) {
+				!accountEntry.hasActiveTicketSupport()) {
 
 				return;
 			}
@@ -91,15 +115,6 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			AccountEntry oldAccountEntry =
 				AccountEntryLocalServiceUtil.getAccountEntry(
 					accountEntry.getAccountEntryId());
-
-			if (oldAccountEntry.getStatus() != accountEntry.getStatus()) {
-				if (accountEntry.getStatus() !=
-						WorkflowConstants.STATUS_APPROVED) {
-
-					_accountEntrySynchronizer.updateAccountCustomers(
-						accountEntry);
-				}
-			}
 
 			if (oldAccountEntry.isPartnerManagedSupport() &&
 				!accountEntry.isPartnerManagedSupport()) {
@@ -111,17 +126,6 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		catch (Exception e) {
 			throw new ModelListenerException(e);
 		}
-	}
-
-	protected boolean hasActiveSupportOffering(AccountEntry accountEntry) {
-		if ((accountEntry.getStatus() ==
-				WorkflowConstants.STATUS_APPROVED) &&
-			accountEntry.hasActiveSupportOffering()) {
-
-			return true;
-		}
-
-		return false;
 	}
 
 	protected boolean hasZendeskOrganization(AccountEntry accountEntry)
@@ -150,6 +154,14 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
+
+	private static final ThreadLocal<Boolean> _accountEntryActiveSupport =
+		new CentralizedThreadLocal<>(
+			AccountEntryModelListener.class + "._accountEntryActiveSupport");
+	private static final ThreadLocal<Boolean> _accountEntryActiveTicketSupport =
+		new CentralizedThreadLocal<>(
+			AccountEntryModelListener.class +
+				"._accountEntryActiveTicketSupport");
 
 	@Reference
 	private AccountEntrySynchronizer _accountEntrySynchronizer;

@@ -31,11 +31,9 @@ import com.liferay.osb.model.PartnerWorkerConstants;
 import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.model.SupportResponse;
-import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.osb.service.SupportRegionLocalServiceUtil;
 import com.liferay.osb.service.SupportResponseLocalServiceUtil;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -171,6 +169,24 @@ public class AccountEntrySynchronizer {
 		}
 	}
 
+	public void removeObsoleteTags(AccountEntry accountEntry)
+		throws PortalException {
+
+		try {
+			for (AccountCustomer accountCustomer :
+					accountEntry.getAccountCustomers()) {
+
+				_userSynchronizer.removeObsoleteTags(
+					accountCustomer.getUserId());
+			}
+		}
+		catch (Exception e) {
+			_log.error(e);
+
+			throw new ZendeskIntegrationException(e);
+		}
+	}
+
 	public void removePartnerManagedSupport(AccountEntry accountEntry)
 		throws PortalException {
 
@@ -206,34 +222,6 @@ public class AccountEntrySynchronizer {
 		}
 	}
 
-	public void updateAccountCustomers(AccountEntry accountEntry)
-		throws PortalException {
-
-		try {
-			Set<String> tags = new HashSet<>();
-
-			tags.add(ZendeskTagConstants.OSB_CUSTOMER);
-			tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
-
-			for (AccountCustomer accountCustomer :
-					accountEntry.getAccountCustomers()) {
-
-				if (!hasActiveSupportOffering(accountCustomer, accountEntry)) {
-					long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
-						accountCustomer.getUserId());
-
-					_zendeskUserWebService.deleteZendeskUserTags(
-						zendeskUserId, tags);
-				}
-			}
-		}
-		catch (Exception e) {
-			_log.error(e);
-
-			throw new ZendeskIntegrationException(e);
-		}
-	}
-
 	protected Set<String> getTags(AccountEntry accountEntry)
 		throws PortalException {
 
@@ -260,27 +248,6 @@ public class AccountEntrySynchronizer {
 		}
 
 		return tags;
-	}
-
-	protected boolean hasActiveSupportOffering(
-		AccountCustomer accountCustomer, AccountEntry accountEntry) {
-
-		List<AccountEntry> accountEntries =
-			AccountEntryLocalServiceUtil.getUserAccountEntries(
-				accountCustomer.getUserId(), QueryUtil.ALL_POS,
-				QueryUtil.ALL_POS);
-
-		for (AccountEntry curAccountEntry : accountEntries) {
-			if (curAccountEntry.equals(accountEntry)) {
-				continue;
-			}
-
-			if (curAccountEntry.hasActiveSupportOffering()) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	@Reference(

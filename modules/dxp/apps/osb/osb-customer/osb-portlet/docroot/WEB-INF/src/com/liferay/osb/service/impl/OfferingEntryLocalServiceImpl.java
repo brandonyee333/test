@@ -215,10 +215,14 @@ public class OfferingEntryLocalServiceImpl
 		return offeringEntryPersistence.findByOrderEntryId(orderEntryId);
 	}
 
-	public boolean hasActiveSupportOfferingEntry(long accountEntryId) {
+	public boolean hasActiveSupportOfferingEntry(
+		long accountEntryId, boolean ticketSupport) {
+
 		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
-		params.put("validTicket", StringPool.BLANK);
+		if (ticketSupport) {
+			params.put("validTicket", StringPool.BLANK);
+		}
 
 		int count = offeringEntryFinder.countByU_AEI_PEI_T_S_SED(
 			0, accountEntryId, new long[0],

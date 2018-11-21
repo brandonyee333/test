@@ -21,10 +21,14 @@ import com.liferay.osb.customer.zendesk.listeners.util.ZendeskModelListenerUtil;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
+import com.liferay.osb.model.AccountCustomer;
+import com.liferay.osb.model.AccountCustomerConstants;
+import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.ExternalIdMapper;
 import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.model.PartnerWorker;
 import com.liferay.osb.model.PartnerWorkerConstants;
+import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
@@ -80,6 +84,39 @@ public class UserSynchronizer {
 		try {
 			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
 
+			Set<String> tags = new HashSet<>();
+
+			// Customer
+
+			boolean customer = false;
+
+			List<AccountCustomer> accountCustomers =
+				AccountCustomerLocalServiceUtil.getAccountCustomers(userId);
+
+			for (AccountCustomer accountCustomer : accountCustomers) {
+				if (accountCustomer.getRole() ==
+						AccountCustomerConstants.ROLE_WATCHER) {
+
+					continue;
+				}
+
+				AccountEntry accountEntry = accountCustomer.getAccountEntry();
+
+				if (accountEntry.hasActiveTicketSupport()) {
+					customer = true;
+
+					break;
+				}
+			}
+
+			if (!customer) {
+				tags.add(ZendeskTagConstants.OSB_CUSTOMER);
+			}
+
+			// Partner
+
+			boolean partner = false;
+
 			List<PartnerWorker> partnerWorkers =
 				PartnerWorkerLocalServiceUtil.getUserPartnerWorkers(userId);
 
@@ -87,13 +124,20 @@ public class UserSynchronizer {
 				if (partnerWorker.getRole() !=
 						PartnerWorkerConstants.ROLE_WATCHER) {
 
-					return;
+					partner = true;
+
+					break;
 				}
 			}
 
-			Set<String> tags = new HashSet<>();
+			if (!partner) {
+				tags.add(ZendeskTagConstants.OSB_PARTNER);
+			}
 
-			if (!_organizationLocalService.hasUserOrganization(
+			// Knowledge base
+
+			if (!customer && !partner &&
+				!_organizationLocalService.hasUserOrganization(
 					userId, OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID) &&
 				!AccountEntryLocalServiceUtil.hasValidSupportAccountEntry(
 					userId, false)) {
@@ -101,10 +145,10 @@ public class UserSynchronizer {
 				tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
 			}
 
-			tags.add(ZendeskTagConstants.OSB_PARTNER);
-
-			_asyncZendeskUserWebService.deleteZendeskUserTags(
-				zendeskUserId, tags);
+			if (!tags.isEmpty()) {
+				_asyncZendeskUserWebService.deleteZendeskUserTags(
+					zendeskUserId, tags);
+			}
 		}
 		catch (Exception e) {
 			_log.error(e);

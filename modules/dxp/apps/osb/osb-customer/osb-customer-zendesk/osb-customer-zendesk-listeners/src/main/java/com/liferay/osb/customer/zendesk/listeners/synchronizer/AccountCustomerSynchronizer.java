@@ -25,7 +25,6 @@ import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountCustomerConstants;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
-import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -102,10 +101,7 @@ public class AccountCustomerSynchronizer {
 			_zendeskUserWebService.deleteZendeskUserOrganizationMemberships(
 				zendeskUserId, new long[] {zendeskOrganizationId});
 
-			Set<String> tags = getDeleteAccountCustomerTags(
-				accountCustomer, zendeskOrganizationId);
-
-			_zendeskUserWebService.deleteZendeskUserTags(zendeskUserId, tags);
+			removeTags(accountCustomer, zendeskOrganizationId);
 		}
 		catch (Exception e) {
 			_log.error(e);
@@ -114,51 +110,52 @@ public class AccountCustomerSynchronizer {
 		}
 	}
 
-	public void update(AccountCustomer accountCustomer) throws PortalException {
-		try {
-			long zendeskOrganizationId =
-				_zendeskMapperUtil.fetchZendeskOrganizationId(
-					accountCustomer.getAccountEntryId());
+	public void removeTags(
+			AccountCustomer accountCustomer, long zendeskOrganizationId)
+		throws PortalException {
+
+		if (accountCustomer.getRole() ==
+				AccountCustomerConstants.ROLE_WATCHER) {
+
 			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
 				accountCustomer.getUserId());
 
-			Set<String> addTags = new HashSet<>();
-			Set<String> removeTags = new HashSet<>();
+			Set<String> tags = new HashSet<>();
 
-			if (accountCustomer.getRole() ==
-					AccountCustomerConstants.ROLE_WATCHER) {
+			tags.add(ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
 
-				addTags.add(
-					ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
+			_zendeskUserWebService.deleteZendeskUserTags(zendeskUserId, tags);
+		}
 
-				if (AccountEntryLocalServiceUtil.getUserAccountEntriesCount(
-						accountCustomer.getUserId()) == 1) {
+		_userSynchronizer.removeObsoleteTags(accountCustomer.getUserId());
+	}
 
-					removeTags.add(ZendeskTagConstants.OSB_CUSTOMER);
-				}
-			}
-			else {
-				if (AccountEntryLocalServiceUtil.hasValidSupportAccountEntry(
-						accountCustomer.getUserId(), true)) {
+	public void update(AccountCustomer accountCustomer) throws PortalException {
+		try {
+			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+				accountCustomer.getUserId());
 
-					addTags.add(ZendeskTagConstants.OSB_CUSTOMER);
-					addTags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
-				}
-				else if (AccountEntryLocalServiceUtil.
-							hasValidSupportAccountEntry(
-								accountCustomer.getUserId(), false)) {
-
-					addTags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
-				}
-
-				removeTags.add(
-					ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
-			}
+			Set<String> addTags = getAddAccountCustomerTags(accountCustomer);
 
 			_zendeskUserWebService.addZendeskUserTags(zendeskUserId, addTags);
 
-			_zendeskUserWebService.deleteZendeskUserTags(
-				zendeskUserId, removeTags);
+			if (accountCustomer.getRole() !=
+					AccountCustomerConstants.ROLE_WATCHER) {
+
+				long zendeskOrganizationId =
+					_zendeskMapperUtil.fetchZendeskOrganizationId(
+						accountCustomer.getAccountEntryId());
+
+				Set<String> removeTags = new HashSet<>();
+
+				removeTags.add(
+					ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
+
+				_zendeskUserWebService.deleteZendeskUserTags(
+					zendeskUserId, removeTags);
+			}
+
+			_userSynchronizer.removeObsoleteTags(accountCustomer.getUserId());
 		}
 		catch (Exception e) {
 			_log.error(e);
@@ -170,6 +167,8 @@ public class AccountCustomerSynchronizer {
 	protected Set<String> getAddAccountCustomerTags(
 			AccountCustomer accountCustomer)
 		throws PortalException {
+
+		AccountEntry accountEntry = accountCustomer.getAccountEntry();
 
 		Set<String> tags = new HashSet<>();
 
@@ -183,56 +182,13 @@ public class AccountCustomerSynchronizer {
 			tags.add(ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
 		}
 		else {
-			if (AccountEntryLocalServiceUtil.hasValidSupportAccountEntry(
-					accountCustomer.getUserId(), true)) {
-
+			if (accountEntry.hasActiveTicketSupport()) {
 				tags.add(ZendeskTagConstants.OSB_CUSTOMER);
 			}
 		}
 
-		if (AccountEntryLocalServiceUtil.hasValidSupportAccountEntry(
-				accountCustomer.getUserId(), false)) {
-
+		if (accountEntry.hasActiveSupport()) {
 			tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
-		}
-
-		return tags;
-	}
-
-	protected Set<String> getDeleteAccountCustomerTags(
-		AccountCustomer accountCustomer, long zendeskOrganizationId) {
-
-		Set<String> tags = new HashSet<>();
-
-		int accountEntriesCount =
-			AccountEntryLocalServiceUtil.getUserAccountEntriesCount(
-				accountCustomer.getUserId());
-
-		if (accountEntriesCount == 0) {
-			tags.add(ZendeskTagConstants.OSB_CUSTOMER);
-			tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
-			tags.add(ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
-		}
-		else {
-			if (accountCustomer.getRole() ==
-					AccountCustomerConstants.ROLE_WATCHER) {
-
-				tags.add(
-					ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
-			}
-			else {
-				if (!AccountEntryLocalServiceUtil.hasValidSupportAccountEntry(
-						accountCustomer.getUserId(), true)) {
-
-					tags.add(ZendeskTagConstants.OSB_CUSTOMER);
-				}
-
-				if (!AccountEntryLocalServiceUtil.hasValidSupportAccountEntry(
-						accountCustomer.getUserId(), false)) {
-
-					tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
-				}
-			}
 		}
 
 		return tags;
