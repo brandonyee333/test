@@ -67,36 +67,23 @@ public class LCSClusterEntryTokenCheckTask implements Task {
 				LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_SUCCESS);
 		}
 		catch (Throwable throwable) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(throwable.getMessage(), throwable);
-			}
-			else if (_log.isWarnEnabled()) {
-				_log.warn(throwable.getMessage());
-			}
+			LCSEvent lcsEvent = LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_FAILED;
 
 			if (throwable instanceof InvalidLCSClusterEntryTokenException ||
 				throwable instanceof LCSClusterEntryTokenDecryptException) {
 
-				_notifyLCSEventListeners(
-					LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_TOKEN_CORRUPTED);
-
-				return;
+				lcsEvent =
+					LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_TOKEN_CORRUPTED;
 			}
 			else if (throwable instanceof
 						MissingLCSClusterEntryTokenException) {
 
-				_notifyLCSEventListeners(
-					LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MISSING);
-
-				return;
+				lcsEvent = LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MISSING;
 			}
 			else if (throwable instanceof
 						MultipleLCSClusterEntryTokenException) {
 
-				_notifyLCSEventListeners(
-					LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MULTIPLE_TOKENS);
-
-				return;
+				lcsEvent = LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MULTIPLE_TOKENS;
 			}
 
 			if (OAuthUtil.hasOAuthTokenRejectedException(throwable)) {
@@ -107,8 +94,14 @@ public class LCSClusterEntryTokenCheckTask implements Task {
 				}
 			}
 
-			_notifyLCSEventListeners(
-				LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_FAILED);
+			if (_log.isDebugEnabled()) {
+				_log.debug(throwable.getMessage(), throwable);
+			}
+			else if (_log.isWarnEnabled()) {
+				_log.warn(throwable.getMessage());
+			}
+
+			_notifyLCSEventListeners(lcsEvent);
 		}
 	}
 

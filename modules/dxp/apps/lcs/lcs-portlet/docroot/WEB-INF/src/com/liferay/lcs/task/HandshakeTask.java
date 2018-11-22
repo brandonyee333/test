@@ -129,7 +129,7 @@ public class HandshakeTask implements Task {
 				_log.info("Established connection");
 			}
 		}
-		catch (Exception e) {
+		catch (Throwable e) {
 			String exceptionMessage = e.getMessage();
 
 			LCSEvent lcsEvent = LCSEvent.HANDSHAKE_FAILED;
