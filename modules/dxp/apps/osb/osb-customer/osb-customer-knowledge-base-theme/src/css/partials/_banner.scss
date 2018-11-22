@@ -18,7 +18,6 @@ ul.nav-menu {
 .banner {
 	background: $white;
 	border-bottom: 1px solid $border-color;
-	height: 128px;
 	position: fixed;
 	top: 0;
 	width: 100%;
@@ -160,6 +159,16 @@ ul.nav-menu {
 		font-weight: $font-weight-semi-bold;
 		padding: 24px;
 		text-align: center;
+
+		@include media-query(null, $screen-md-max) {
+			font-size: 14px;
+			height: 90px;
+		}
+
+		@include media-query(null, $screen-xs-max) {
+			font-size: 12px;
+			height: 118px;
+		}
 
 		a {
 			color: $light-blue;
@@ -411,15 +420,16 @@ ul.nav-menu {
 		}
 	}
 
-	@include media-query(null, $breakpoint_tablet - 1) {
+	@include media-query(null, $screen-sm-min) {
 		left: 0;
 
 		.site-navigation-menu-toggle {
 			background: url(@theme_image_path@/custom/menu_icon.jpg) no-repeat center;
 			border-left: 1px solid $border-color;
 			cursor: pointer;
+			float: right;
 			height: 55px;
-			position: absolute;
+			position: relative;
 			right: 0;
 			top: 0;
 			width: 45px;
@@ -602,7 +612,9 @@ ul.nav-menu {
 		position: absolute;
 	}
 
-	@include media-query(null, $breakpoint_tablet - 1) {
+	@include media-query(null, $screen-md-max) {
+		margin-top: 147px;
+
 		.keyword-search-input {
 			min-width: 320px;
 		}
@@ -613,6 +625,8 @@ ul.nav-menu {
 	}
 
 	@include media-query(null, $screen-xs-max) {
+		margin-top: 175px;
+
 		.keyword-search-input {
 			min-width: auto;
 		}
