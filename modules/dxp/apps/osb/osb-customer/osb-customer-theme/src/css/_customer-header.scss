@@ -217,6 +217,7 @@
 	}
 
 	.user {
+		cursor: pointer;
 		padding-left: $padding-medium;
 
 		&.open > .dropdown-menu {
