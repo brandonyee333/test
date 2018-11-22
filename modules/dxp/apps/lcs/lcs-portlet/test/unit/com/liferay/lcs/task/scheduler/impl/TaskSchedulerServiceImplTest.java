@@ -22,6 +22,9 @@ import com.liferay.lcs.internal.event.LCSEvent;
 import com.liferay.lcs.messaging.HandshakeMessage;
 import com.liferay.lcs.messaging.HandshakeResponseMessage;
 import com.liferay.lcs.messaging.Message;
+import com.liferay.lcs.messaging.ScheduleTasksCommandMessage;
+import com.liferay.lcs.messaging.SendInstallationEnvironmentCommandMessage;
+import com.liferay.lcs.messaging.SendPortalPropertiesCommandMessage;
 import com.liferay.lcs.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.platform.gateway.impl.LCSGatewayClientImpl;
 import com.liferay.lcs.runnable.LCSThreadFactory;
@@ -94,8 +97,39 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 	}
 
 	@Test
-	public void testHandshakeReStartedIfGatewayUnavailable() throws Exception {
+	public void testHandshakeRestartedIfGatewayUnavailable() throws Exception {
 		_mockSendMessageToThrowJSONWebServiceException();
+
+		_spyTaskSchedulerServiceImplToDoNothingAfterOnEvent();
+
+		HandshakeTask handshakeTask = _spyHandshakeTask();
+
+		handshakeTask.run();
+
+		Mockito.verify(
+			_taskSchedulerService
+		).onLCSEvent(
+			LCSEvent.HANDSHAKE_FAILED
+		);
+
+		verifyPrivate(
+			_taskSchedulerService, Mockito.never()
+		).invoke(
+			"_executeLCSClusterEntryTokenCheckTask", Matchers.anyBoolean()
+		);
+
+		verifyPrivate(
+			_taskSchedulerService, Mockito.times(1)
+		).invoke(
+			"_executeHandshakeTask", Boolean.TRUE
+		);
+	}
+
+	@Test
+	public void testHandshakeRestartedIfHandshakeResponseNeverReceived()
+		throws Exception {
+
+		_mockGetMessagesToReturnCommandMessages();
 
 		_spyTaskSchedulerServiceImplToDoNothingAfterOnEvent();
 
@@ -268,6 +302,22 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 		handshakeResponseMessage.setKey("mock");
 
 		return handshakeResponseMessage;
+	}
+
+	private void _mockGetMessagesToReturnCommandMessages() throws Exception {
+		doReturn(
+			new ArrayList<Message>() {
+				{
+					add(new SendPortalPropertiesCommandMessage());
+					add(new ScheduleTasksCommandMessage());
+					add(new SendInstallationEnvironmentCommandMessage());
+				}
+			}
+		).when(
+			_lcsGatewayClient
+		).getMessages(
+			Matchers.anyString()
+		);
 	}
 
 	private void _mockGetMessagesToReturnHandshakeResponseMessage(int errorCode)
