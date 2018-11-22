@@ -16,7 +16,9 @@
 
 <@liferay_util["include"] page=body_top_include />
 
-<@liferay.control_menu />
+<#if has_view_control_panel>
+	<@liferay.control_menu />
+</#if>
 
 <div id="wrapper">
 	<#include "${full_templates_path}/icons.ftl" parse=false />
