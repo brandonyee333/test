@@ -129,16 +129,16 @@ public class HandshakeTask implements Task {
 				_log.info("Established connection");
 			}
 		}
-		catch (Throwable e) {
-			String exceptionMessage = e.getMessage();
+		catch (Throwable t) {
+			String exceptionMessage = t.getMessage();
 
 			LCSEvent lcsEvent = LCSEvent.HANDSHAKE_FAILED;
 
 			LCSRESTError lcsRESTError = LCSRESTError.UNDEFINED;
 
-			if (e instanceof LCSHandshakeException) {
+			if (t instanceof LCSHandshakeException) {
 				if (Validator.isNotNull(exceptionMessage)) {
-					lcsRESTError = LCSRESTError.getRESTError(e.getMessage());
+					lcsRESTError = LCSRESTError.getRESTError(t.getMessage());
 
 					if (lcsRESTError != LCSRESTError.UNDEFINED) {
 						exceptionMessage = lcsRESTError.getErrorDescription();
@@ -160,7 +160,7 @@ public class HandshakeTask implements Task {
 			}
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(exceptionMessage, e);
+				_log.debug(exceptionMessage, t);
 			}
 			else if (_log.isWarnEnabled()) {
 				_log.warn(exceptionMessage);
