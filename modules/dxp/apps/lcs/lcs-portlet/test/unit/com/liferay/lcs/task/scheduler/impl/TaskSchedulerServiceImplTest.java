@@ -308,9 +308,9 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 		doReturn(
 			new ArrayList<Message>() {
 				{
-					add(new SendPortalPropertiesCommandMessage());
 					add(new ScheduleTasksCommandMessage());
 					add(new SendInstallationEnvironmentCommandMessage());
+					add(new SendPortalPropertiesCommandMessage());
 				}
 			}
 		).when(
