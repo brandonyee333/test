@@ -15,6 +15,9 @@
 	user_initials = themeDisplay.getUser().getInitials()
 
 	liferay_employee = role_local_service.hasUserRoles(user_id, company_id, ['Liferay Employee'], true)
+	osb_account_admin = role_local_service.hasUserRoles(user_id, company_id, ['OSB Account Admin'], true)
+	osb_administrator = role_local_service.hasUserRoles(user_id, company_id, ['OSB Administrator'], true)
+	osb_support_admin = role_local_service.hasUserRoles(user_id, company_id, ['OSB Support Admin'], true)
 
 	site_logo_url = themeDisplay.getThemeSetting("site-logo-url")
 	site_name = themeDisplay.getThemeSetting("site-name")

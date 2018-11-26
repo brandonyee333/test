@@ -61,7 +61,7 @@
 
 							<#if liferay_employee>
 								<a href="/group/license"><@liferay.language key="license" /></a>
-
+							<#elseif osb_account_admin || osb_administrator || osb_support_admin>
 								<a href="/group/control_panel/manage?p_p_id=1_WAR_osbportlet"><@liferay.language key="osb-admin" /></a>
 							</#if>
 
