@@ -143,6 +143,12 @@
 						url: '${zendesk_url}/hc/categories/360000892272'
 					},
 					{
+						description: '<@liferay.language key="learn-more-about-designated-contacts-for-your-project" />',
+						name: '<@liferay.language key="account-support" />',
+						svgId: '#account-support',
+						url: '${zendesk_url}/hc/articles/360018414031'
+					},
+					{
 						description: '<@liferay.language key="activate-your-environments-to-start-a-project" />',
 						name: '<@liferay.language key="activation-keys" />',
 						svgId: '#server-activation',
