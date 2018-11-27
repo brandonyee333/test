@@ -74,6 +74,36 @@ public class BaseUpgradeProcess extends UpgradeProcess {
 		return false;
 	}
 
+	public boolean tableHasColumn(String tableName, String columnName)
+		throws Exception {
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			ps = connection.prepareStatement("select * from " + tableName);
+
+			rs = ps.executeQuery();
+
+			ResultSetMetaData rsmd = rs.getMetaData();
+
+			for (int i = 0; i < rsmd.getColumnCount(); i++) {
+				String curColumnName = rsmd.getColumnName(i + 1);
+
+				if (curColumnName.equals(columnName)) {
+					return true;
+				}
+			}
+		}
+		catch (Exception e) {
+		}
+		finally {
+			DataAccess.cleanUp(ps, rs);
+		}
+
+		return false;
+	}
+
 	@Override
 	public void upgrade() throws UpgradeException {
 		super.upgrade();
