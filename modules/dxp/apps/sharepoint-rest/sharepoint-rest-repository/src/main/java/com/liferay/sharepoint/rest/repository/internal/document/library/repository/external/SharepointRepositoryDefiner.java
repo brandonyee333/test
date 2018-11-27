@@ -25,9 +25,8 @@ import com.liferay.portal.kernel.repository.registry.CapabilityRegistry;
 import com.liferay.portal.kernel.repository.registry.RepositoryDefiner;
 import com.liferay.portal.kernel.repository.registry.RepositoryEventRegistry;
 import com.liferay.portal.kernel.repository.registry.RepositoryFactoryRegistry;
-import com.liferay.portal.kernel.util.CacheResourceBundleLoader;
-import com.liferay.portal.kernel.util.ClassResourceBundleLoader;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
+import com.liferay.portal.kernel.util.ResourceBundleLoaderUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.repository.capabilities.LiferayProcessorCapability;
 import com.liferay.sharepoint.rest.repository.internal.configuration.SharepointRepositoryConfiguration;
@@ -132,9 +131,8 @@ public class SharepointRepositoryDefiner implements RepositoryDefiner {
 	private SharepointRepositoryFactoryProvider _repositoryFactoryProvider;
 
 	private final ResourceBundleLoader _resourceBundleLoader =
-		new CacheResourceBundleLoader(
-			new ClassResourceBundleLoader(
-				"content.Language", SharepointRepositoryDefiner.class));
+		ResourceBundleLoaderUtil.getResourceBundleLoaderByBundleSymbolicName(
+			"com.liferay.sharepoint.rest.repository");
 	private SharepointRepositoryConfiguration
 		_sharepointRepositoryConfiguration;
 
