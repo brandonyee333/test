@@ -166,18 +166,13 @@ public class ZendeskConverter {
 	public ZendeskOrganization toZendeskOrganization(JSONObject jsonObject) {
 		ZendeskOrganization zendeskOrganization = new ZendeskOrganization();
 
-		JSONObject organizationJSONObject = jsonObject.getJSONObject(
-			"organization");
+		zendeskOrganization.setDetails(jsonObject.getString("details"));
+		zendeskOrganization.setExternalId(jsonObject.getString("external_id"));
+		zendeskOrganization.setName(jsonObject.getString("name"));
+		zendeskOrganization.setNotes(jsonObject.getString("notes"));
 
-		zendeskOrganization.setDetails(
-			organizationJSONObject.getString("details"));
-		zendeskOrganization.setExternalId(
-			organizationJSONObject.getString("external_id"));
-		zendeskOrganization.setName(organizationJSONObject.getString("name"));
-		zendeskOrganization.setNotes(organizationJSONObject.getString("notes"));
-
-		JSONObject organizationFieldsJSONObject =
-			organizationJSONObject.getJSONObject("organization_fields");
+		JSONObject organizationFieldsJSONObject = jsonObject.getJSONObject(
+			"organization_fields");
 
 		zendeskOrganization.setPartnerFirstLineSupport(
 			organizationFieldsJSONObject.getString(
@@ -197,8 +192,7 @@ public class ZendeskConverter {
 		zendeskOrganization.setTier(
 			organizationFieldsJSONObject.getString("tier"));
 
-		zendeskOrganization.setZendeskOrganizationId(
-			organizationJSONObject.getLong("id"));
+		zendeskOrganization.setZendeskOrganizationId(jsonObject.getLong("id"));
 
 		return zendeskOrganization;
 	}

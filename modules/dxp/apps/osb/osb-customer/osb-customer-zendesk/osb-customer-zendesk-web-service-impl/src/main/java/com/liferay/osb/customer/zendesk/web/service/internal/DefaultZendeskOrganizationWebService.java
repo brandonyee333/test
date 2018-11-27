@@ -67,7 +67,10 @@ public class DefaultZendeskOrganizationWebService
 		_messagePublisherUtil.sendEventNotification(
 			"zendesk.organization.create", responseJSONObject);
 
-		return _zendeskConverter.toZendeskOrganization(responseJSONObject);
+		JSONObject organizationJSONObject = responseJSONObject.getJSONObject(
+			"organization");
+
+		return _zendeskConverter.toZendeskOrganization(organizationJSONObject);
 	}
 
 	public ZendeskOrganization getZendeskOrganization(String externalId)
