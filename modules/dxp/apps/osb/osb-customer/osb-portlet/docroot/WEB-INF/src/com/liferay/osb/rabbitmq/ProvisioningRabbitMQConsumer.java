@@ -51,6 +51,7 @@ import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.osb.util.SalesforceConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -104,9 +105,20 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 		JSONObject jsonObject = null;
 
 		try {
-			jsonObject = JSONFactoryUtil.createJSONObject(message);
+			try {
+				JSONArray jsonArray = JSONFactoryUtil.createJSONArray(message);
 
-			doParse(jsonObject);
+				for (int i = 0; i < jsonArray.length(); i++) {
+					jsonObject = jsonArray.getJSONObject(i);
+
+					doParse(jsonObject);
+				}
+			}
+			catch (JSONException jsone) {
+				jsonObject = JSONFactoryUtil.createJSONObject(message);
+
+				doParse(jsonObject);
+			}
 		}
 		catch (Exception e) {
 			sendErrorNotification(routingKey, message, jsonObject, e);
@@ -1241,7 +1253,7 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 	protected void sendErrorNotification(
 		String routingKey, String message, JSONObject jsonObject, Exception e) {
 
-		StringBundler sb = new StringBundler(8);
+		StringBundler sb = new StringBundler(10);
 
 		if (e instanceof NoSuchCorpProjectException) {
 			sb.append("The corp project information is missing.");
@@ -1254,6 +1266,12 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 		sb.append(routingKey);
 		sb.append("<br />Message:<br /><pre>");
 		sb.append(message);
+
+		if (jsonObject != null) {
+			sb.append("</pre><br />Failed on:<br /><pre>");
+			sb.append(jsonObject.toString());
+		}
+
 		sb.append("</pre><br />Error:<br /><pre>");
 		sb.append(StackTraceUtil.getStackTrace(e));
 		sb.append("</pre>");
