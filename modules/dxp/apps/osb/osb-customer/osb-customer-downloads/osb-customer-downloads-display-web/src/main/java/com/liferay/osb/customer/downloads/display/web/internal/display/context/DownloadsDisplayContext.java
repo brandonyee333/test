@@ -144,7 +144,11 @@ public class DownloadsDisplayContext {
 		SearchContainer searchContainer = new SearchContainer(
 			_renderRequest, iteratorURL, null, null);
 
-		if (Validator.isNull(fileType) || Validator.isNull(product)) {
+		String ddmStructureKey = _ddmStructure.getStructureKey();
+
+		if (ddmStructureKey.equals(DDMStructureConstants.KEY_DOWNLOAD) &&
+			(Validator.isNull(fileType) || Validator.isNull(product))) {
+
 			return searchContainer;
 		}
 
