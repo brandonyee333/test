@@ -22,11 +22,9 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.AggregateResourceBundleLoader;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
-import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.security.service.access.policy.model.SAPEntry;
 import com.liferay.portal.security.service.access.policy.service.SAPEntryLocalService;
 
@@ -39,6 +37,8 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Tomas Polesovsky
@@ -73,16 +73,9 @@ public class OAuthSAPEntryActivator {
 				continue;
 			}
 
-			ResourceBundleLoader resourceBundleLoader =
-				new AggregateResourceBundleLoader(
-					ResourceBundleUtil.getResourceBundleLoader(
-						"content.Language",
-						OAuthSAPEntryActivator.class.getClassLoader()),
-					LanguageResources.RESOURCE_BUNDLE_LOADER);
-
 			Map<Locale, String> titleMap =
 				ResourceBundleUtil.getLocalizationMap(
-					resourceBundleLoader,
+					_resourceBundleLoader,
 					"service-access-policy-entry-default-title-" + name);
 
 			_sapEntryLocalService.addSAPEntry(
@@ -101,6 +94,13 @@ public class OAuthSAPEntryActivator {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		OAuthSAPEntryActivator.class);
+
+	@Reference(
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY,
+		target = "(bundle.symbolic.name=com.liferay.oauth.web)"
+	)
+	private volatile ResourceBundleLoader _resourceBundleLoader;
 
 	@Reference(unbind = "-")
 	private SAPEntryLocalService _sapEntryLocalService;
