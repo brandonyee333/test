@@ -17,6 +17,7 @@ package com.liferay.akismet.internal.lang;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 
 import java.util.Enumeration;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.osgi.service.component.annotations.Component;
@@ -38,6 +39,6 @@ public class EnUsResourceBundle extends ResourceBundle {
 	}
 
 	private final ResourceBundle _resourceBundle = ResourceBundleUtil.getBundle(
-		"content.Language", getClass());
+		Locale.getDefault(), EnUsResourceBundle.class);
 
 }

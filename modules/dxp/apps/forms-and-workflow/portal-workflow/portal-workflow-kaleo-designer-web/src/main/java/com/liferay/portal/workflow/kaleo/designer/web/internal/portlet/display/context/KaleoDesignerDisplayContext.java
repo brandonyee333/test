@@ -101,10 +101,8 @@ public class KaleoDesignerDisplayContext {
 	}
 
 	public ResourceBundle getResourceBundle(Locale locale) {
-		Class<?> clazz = getClass();
-
 		return ResourceBundleUtil.getBundle(
-			"content.Language", locale, clazz.getClassLoader());
+			locale, KaleoDesignerDisplayContext.class);
 	}
 
 	private static final String[] _DISPLAY_VIEWS = {"list"};

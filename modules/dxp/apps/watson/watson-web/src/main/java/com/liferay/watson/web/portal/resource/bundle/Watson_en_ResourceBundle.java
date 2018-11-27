@@ -42,6 +42,6 @@ public class Watson_en_ResourceBundle extends ResourceBundle {
 	}
 
 	private final ResourceBundle _resourceBundle = ResourceBundleUtil.getBundle(
-		"content.Language", LocaleUtil.fromLanguageId("en"), getClass());
+		LocaleUtil.ENGLISH, Watson_en_ResourceBundle.class);
 
 }
