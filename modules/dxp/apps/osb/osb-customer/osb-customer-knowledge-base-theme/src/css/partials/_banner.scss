@@ -160,6 +160,10 @@ ul.nav-menu {
 		padding: 24px;
 		text-align: center;
 
+		a {
+			color: $light-blue;
+		}
+
 		@include media-query(null, $screen-md-max) {
 			font-size: 14px;
 			height: 90px;
@@ -168,10 +172,6 @@ ul.nav-menu {
 		@include media-query(null, $screen-xs-max) {
 			font-size: 12px;
 			height: 118px;
-		}
-
-		a {
-			color: $light-blue;
 		}
 	}
 
