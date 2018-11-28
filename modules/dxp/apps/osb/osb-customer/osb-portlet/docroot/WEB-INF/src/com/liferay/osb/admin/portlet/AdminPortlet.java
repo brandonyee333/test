@@ -102,6 +102,7 @@ import com.liferay.portal.kernel.exception.UserEmailAddressException;
 import com.liferay.portal.kernel.io.Base64InputStream;
 import com.liferay.portal.kernel.io.ProtectedObjectInputStream;
 import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -252,7 +253,8 @@ public class AdminPortlet extends OSBPortlet {
 	}
 
 	public void debugRabbitMQ(
-		ActionRequest actionRequest, ActionResponse actionResponse) {
+			ActionRequest actionRequest, ActionResponse actionResponse)
+		throws Exception {
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -285,7 +287,24 @@ public class AdminPortlet extends OSBPortlet {
 		}
 
 		if (rabbitMQConsumer != null) {
-			rabbitMQConsumer.parse(routingKey, message, propertiesMap);
+			try {
+				JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+					message.trim());
+
+				rabbitMQConsumer.parse(
+					routingKey, jsonObject.toString(), propertiesMap);
+			}
+			catch (JSONException jsone) {
+				JSONArray jsonArray = JSONFactoryUtil.createJSONArray(
+					message.trim());
+
+				for (int i = 0; i < jsonArray.length(); i++) {
+					JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+					rabbitMQConsumer.parse(
+						routingKey, jsonObject.toString(), propertiesMap);
+				}
+			}
 		}
 	}
 
