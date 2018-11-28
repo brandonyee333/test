@@ -198,6 +198,8 @@ public class DownloadsMigrationPortlet extends MVCPortlet {
 			return StringPool.BLANK;
 		}
 
+		String originalLink = link;
+
 		link = StringUtil.toLowerCase(link);
 
 		if (link.equals("https://www.liferay.com/security") ||
@@ -207,9 +209,10 @@ public class DownloadsMigrationPortlet extends MVCPortlet {
 		}
 
 		if (link.contains("-/release_notes")) {
-			int pos = link.indexOf("-/release_notes");
+			int pos = originalLink.indexOf("-/release_notes");
 
-			return "/group/customer/release-notes/" + link.substring(pos);
+			return
+				"/group/customer/release-notes/" + originalLink.substring(pos);
 		}
 
 		if (link.contains("/documentation/knowledge-base/-/kb/1309287")) {
@@ -403,28 +406,30 @@ public class DownloadsMigrationPortlet extends MVCPortlet {
 		if (link.startsWith("http://www.liferay.com/group/customer") ||
 			link.startsWith("http://www.liferay.com/documents")) {
 
-			link = link.substring(22);
+			originalLink = originalLink.substring(22);
 		}
 		else if (link.startsWith("https://web.liferay.com/group/customer") ||
 				 link.startsWith("https://web.liferay.com/documents") ||
 				 link.startsWith("https://www.liferay.com/group/customer") ||
 				 link.startsWith("https://www.liferay.com/documents")) {
 
-			link = link.substring(23);
+			originalLink = originalLink.substring(23);
 		}
 		else if (link.startsWith("\"https://www.liferay.com")) {
-			link = link.substring(24);
+			originalLink = originalLink.substring(24);
 		}
 
 		if (link.contains("/portal/all-portal")) {
-			link = link.replace("portal/all-portal", StringPool.BLANK);
+			originalLink = originalLink.replace(
+				"portal/all-portal", StringPool.BLANK);
 		}
 
 		if (link.contains("/documents/3133562/")) {
-			link.replace("/documents/3133562/", "/documents/2700986/");
+			originalLink = originalLink.replace(
+				"/documents/3133562/", "/documents/2700986/");
 		}
 
-		return link;
+		return originalLink;
 	}
 
 	protected String fixPatchDate(
@@ -589,6 +594,10 @@ public class DownloadsMigrationPortlet extends MVCPortlet {
 
 		if (displayFixpackLink || displayPatchLink) {
 			readMoreContent += getPatchInstructions();
+		}
+
+		if (readMoreContent.contains("<style")) {
+			readMoreContent = StringPool.BLANK;
 		}
 
 		addDDMFormFieldValue(ddmFormValues, "additionalNotes", readMoreContent);
