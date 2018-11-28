@@ -112,8 +112,12 @@ public class AccountCustomerLocalServiceImpl
 				 (accountEntry.getType() !=
 					 AccountEntryConstants.TYPE_INTERNAL_TEST)) {
 
-			assignOrganizations(
-				customerUserId, OSBConstants.ORGANIZATION_CUSTOMER_ID);
+			if (roleLocalService.hasUserRole(
+					userId, OSBConstants.ROLE_VERIFIED_USER_ID)) {
+
+				assignOrganizations(
+					customerUserId, OSBConstants.ORGANIZATION_CUSTOMER_ID);
+			}
 		}
 
 		syncAnalyticsCloudBasicAccountEntry(
@@ -320,9 +324,13 @@ public class AccountCustomerLocalServiceImpl
 				 (accountEntry.getType() !=
 					 AccountEntryConstants.TYPE_INTERNAL_TEST)) {
 
-			assignOrganizations(
-				accountCustomer.getUserId(),
-				OSBConstants.ORGANIZATION_CUSTOMER_ID);
+			if (roleLocalService.hasUserRole(
+					userId, OSBConstants.ROLE_VERIFIED_USER_ID)) {
+
+				assignOrganizations(
+					accountCustomer.getUserId(),
+					OSBConstants.ORGANIZATION_CUSTOMER_ID);
+			}
 		}
 
 		return accountCustomer;
@@ -332,9 +340,7 @@ public class AccountCustomerLocalServiceImpl
 		throws PortalException {
 
 		if (!organizationLocalService.hasUserOrganization(
-				userId, organizationId) &&
-			roleLocalService.hasUserRole(
-				userId, OSBConstants.ROLE_VERIFIED_USER_ID)) {
+				userId, organizationId)) {
 
 			remoteUserLocalService.addOrganizationUsers(
 				organizationId, new long[] {userId});
