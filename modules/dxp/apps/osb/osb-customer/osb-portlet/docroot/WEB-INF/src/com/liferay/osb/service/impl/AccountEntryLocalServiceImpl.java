@@ -550,7 +550,7 @@ public class AccountEntryLocalServiceImpl
 
 		try {
 			lcsSubscriptionEntryLocalService.syncToLCS(
-				corpProject.getCorpProjectId());
+				accountEntry.getAccountEntryId());
 		}
 		catch (Exception e) {
 			_log.error(

@@ -152,12 +152,8 @@ public class OfferingEntryLocalServiceImpl
 			}
 
 			try {
-				AccountEntry accountEntry =
-					accountEntryPersistence.findByPrimaryKey(
-						offeringEntry.getAccountEntryId());
-
 				lcsSubscriptionEntryLocalService.syncToLCS(
-					accountEntry.getCorpProjectId());
+					offeringEntry.getAccountEntryId());
 			}
 			catch (Exception e) {
 				_log.error(

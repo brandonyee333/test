@@ -366,12 +366,8 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 			}
 
 			try {
-				AccountEntry accountEntry =
-					accountEntryPersistence.findByPrimaryKey(
-						orderEntry.getAccountEntryId());
-
 				lcsSubscriptionEntryLocalService.syncToLCS(
-					accountEntry.getCorpProjectId());
+					orderEntry.getAccountEntryId());
 			}
 			catch (Exception e) {
 				_log.error(
