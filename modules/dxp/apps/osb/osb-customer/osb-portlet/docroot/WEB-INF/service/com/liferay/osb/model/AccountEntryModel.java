@@ -473,6 +473,48 @@ public interface AccountEntryModel extends AuditedModel, BaseModel<AccountEntry>
 	public void setHighestSupportResponseId(long highestSupportResponseId);
 
 	/**
+	 * Returns the active support of this account entry.
+	 *
+	 * @return the active support of this account entry
+	 */
+	public boolean getActiveSupport();
+
+	/**
+	 * Returns <code>true</code> if this account entry is active support.
+	 *
+	 * @return <code>true</code> if this account entry is active support; <code>false</code> otherwise
+	 */
+	public boolean isActiveSupport();
+
+	/**
+	 * Sets whether this account entry is active support.
+	 *
+	 * @param activeSupport the active support of this account entry
+	 */
+	public void setActiveSupport(boolean activeSupport);
+
+	/**
+	 * Returns the active ticket support of this account entry.
+	 *
+	 * @return the active ticket support of this account entry
+	 */
+	public boolean getActiveTicketSupport();
+
+	/**
+	 * Returns <code>true</code> if this account entry is active ticket support.
+	 *
+	 * @return <code>true</code> if this account entry is active ticket support; <code>false</code> otherwise
+	 */
+	public boolean isActiveTicketSupport();
+
+	/**
+	 * Sets whether this account entry is active ticket support.
+	 *
+	 * @param activeTicketSupport the active ticket support of this account entry
+	 */
+	public void setActiveTicketSupport(boolean activeTicketSupport);
+
+	/**
 	 * Returns the last audit date of this account entry.
 	 *
 	 * @return the last audit date of this account entry

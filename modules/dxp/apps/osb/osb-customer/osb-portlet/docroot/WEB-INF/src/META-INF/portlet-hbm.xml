@@ -78,6 +78,8 @@
 		<property name="instructions" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="notes" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="highestSupportResponseId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="activeSupport" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="activeTicketSupport" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="lastAuditDate" type="org.hibernate.type.TimestampType" />
 		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="statusByUserId" type="com.liferay.portal.dao.orm.hibernate.LongType" />

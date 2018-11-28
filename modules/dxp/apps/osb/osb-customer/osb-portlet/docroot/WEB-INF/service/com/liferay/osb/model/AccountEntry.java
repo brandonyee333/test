@@ -85,10 +85,6 @@ public interface AccountEntry extends AccountEntryModel, PersistedModel {
 
 	public java.lang.String getTypeLabel();
 
-	public boolean hasActiveSupport();
-
-	public boolean hasActiveTicketSupport();
-
 	public boolean hasEnterpriseSearchOffering(int productEntryEnvironment)
 		throws com.liferay.portal.kernel.exception.PortalException;
 

@@ -682,6 +682,11 @@ public class AccountEntryLocalServiceUtil {
 			users, serviceContext);
 	}
 
+	public static void updateActiveSupport(long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().updateActiveSupport(accountEntryId);
+	}
+
 	public static void updateLastAuditDate(long userId, long accountEntryId,
 		java.lang.String auditLabel, java.lang.String auditValue)
 		throws com.liferay.portal.kernel.exception.PortalException {

@@ -83,6 +83,8 @@ public class AccountEntryWrapper implements AccountEntry,
 		attributes.put("instructions", getInstructions());
 		attributes.put("notes", getNotes());
 		attributes.put("highestSupportResponseId", getHighestSupportResponseId());
+		attributes.put("activeSupport", getActiveSupport());
+		attributes.put("activeTicketSupport", getActiveTicketSupport());
 		attributes.put("lastAuditDate", getLastAuditDate());
 		attributes.put("status", getStatus());
 		attributes.put("statusByUserId", getStatusByUserId());
@@ -248,6 +250,19 @@ public class AccountEntryWrapper implements AccountEntry,
 			setHighestSupportResponseId(highestSupportResponseId);
 		}
 
+		Boolean activeSupport = (Boolean)attributes.get("activeSupport");
+
+		if (activeSupport != null) {
+			setActiveSupport(activeSupport);
+		}
+
+		Boolean activeTicketSupport = (Boolean)attributes.get(
+				"activeTicketSupport");
+
+		if (activeTicketSupport != null) {
+			setActiveTicketSupport(activeTicketSupport);
+		}
+
 		Date lastAuditDate = (Date)attributes.get("lastAuditDate");
 
 		if (lastAuditDate != null) {
@@ -302,6 +317,26 @@ public class AccountEntryWrapper implements AccountEntry,
 	}
 
 	/**
+	* Returns the active support of this account entry.
+	*
+	* @return the active support of this account entry
+	*/
+	@Override
+	public boolean getActiveSupport() {
+		return _accountEntry.getActiveSupport();
+	}
+
+	/**
+	* Returns the active ticket support of this account entry.
+	*
+	* @return the active ticket support of this account entry
+	*/
+	@Override
+	public boolean getActiveTicketSupport() {
+		return _accountEntry.getActiveTicketSupport();
+	}
+
+	/**
 	* Returns the partner managed support of this account entry.
 	*
 	* @return the partner managed support of this account entry
@@ -312,19 +347,29 @@ public class AccountEntryWrapper implements AccountEntry,
 	}
 
 	@Override
-	public boolean hasActiveSupport() {
-		return _accountEntry.hasActiveSupport();
-	}
-
-	@Override
-	public boolean hasActiveTicketSupport() {
-		return _accountEntry.hasActiveTicketSupport();
-	}
-
-	@Override
 	public boolean hasEnterpriseSearchOffering(int productEntryEnvironment)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountEntry.hasEnterpriseSearchOffering(productEntryEnvironment);
+	}
+
+	/**
+	* Returns <code>true</code> if this account entry is active support.
+	*
+	* @return <code>true</code> if this account entry is active support; <code>false</code> otherwise
+	*/
+	@Override
+	public boolean isActiveSupport() {
+		return _accountEntry.isActiveSupport();
+	}
+
+	/**
+	* Returns <code>true</code> if this account entry is active ticket support.
+	*
+	* @return <code>true</code> if this account entry is active ticket support; <code>false</code> otherwise
+	*/
+	@Override
+	public boolean isActiveTicketSupport() {
+		return _accountEntry.isActiveTicketSupport();
 	}
 
 	/**
@@ -891,6 +936,26 @@ public class AccountEntryWrapper implements AccountEntry,
 	@Override
 	public void setAccountEntryId(long accountEntryId) {
 		_accountEntry.setAccountEntryId(accountEntryId);
+	}
+
+	/**
+	* Sets whether this account entry is active support.
+	*
+	* @param activeSupport the active support of this account entry
+	*/
+	@Override
+	public void setActiveSupport(boolean activeSupport) {
+		_accountEntry.setActiveSupport(activeSupport);
+	}
+
+	/**
+	* Sets whether this account entry is active ticket support.
+	*
+	* @param activeTicketSupport the active ticket support of this account entry
+	*/
+	@Override
+	public void setActiveTicketSupport(boolean activeTicketSupport) {
+		_accountEntry.setActiveTicketSupport(activeTicketSupport);
 	}
 
 	@Override

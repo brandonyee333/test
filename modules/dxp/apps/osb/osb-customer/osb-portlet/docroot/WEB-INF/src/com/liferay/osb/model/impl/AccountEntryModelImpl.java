@@ -96,6 +96,8 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 			{ "instructions", Types.VARCHAR },
 			{ "notes", Types.VARCHAR },
 			{ "highestSupportResponseId", Types.BIGINT },
+			{ "activeSupport", Types.BOOLEAN },
+			{ "activeTicketSupport", Types.BOOLEAN },
 			{ "lastAuditDate", Types.TIMESTAMP },
 			{ "status", Types.INTEGER },
 			{ "statusByUserId", Types.BIGINT },
@@ -131,6 +133,8 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		TABLE_COLUMNS_MAP.put("instructions", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("notes", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("highestSupportResponseId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("activeSupport", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("activeTicketSupport", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("lastAuditDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("statusByUserId", Types.BIGINT);
@@ -139,7 +143,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		TABLE_COLUMNS_MAP.put("statusMessage", Types.VARCHAR);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSB_AccountEntry (accountEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,corpProjectUuid VARCHAR(75) null,corpProjectId LONG,dossieraAccountKey VARCHAR(75) null,corpEntryName VARCHAR(255) null,name VARCHAR(500) null,code_ VARCHAR(75) null,redirectAccountEntryId LONG,type_ INTEGER,industry INTEGER,countryId LONG,partnerEntryId LONG,partnerManagedSupport BOOLEAN,tier INTEGER,maxCustomers INTEGER,instructions STRING null,notes STRING null,highestSupportResponseId LONG,lastAuditDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,statusMessage STRING null)";
+	public static final String TABLE_SQL_CREATE = "create table OSB_AccountEntry (accountEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,corpProjectUuid VARCHAR(75) null,corpProjectId LONG,dossieraAccountKey VARCHAR(75) null,corpEntryName VARCHAR(255) null,name VARCHAR(500) null,code_ VARCHAR(75) null,redirectAccountEntryId LONG,type_ INTEGER,industry INTEGER,countryId LONG,partnerEntryId LONG,partnerManagedSupport BOOLEAN,tier INTEGER,maxCustomers INTEGER,instructions STRING null,notes STRING null,highestSupportResponseId LONG,activeSupport BOOLEAN,activeTicketSupport BOOLEAN,lastAuditDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,statusMessage STRING null)";
 	public static final String TABLE_SQL_DROP = "drop table OSB_AccountEntry";
 	public static final String ORDER_BY_JPQL = " ORDER BY accountEntry.name ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY OSB_AccountEntry.name ASC";
@@ -205,6 +209,8 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		model.setInstructions(soapModel.getInstructions());
 		model.setNotes(soapModel.getNotes());
 		model.setHighestSupportResponseId(soapModel.getHighestSupportResponseId());
+		model.setActiveSupport(soapModel.getActiveSupport());
+		model.setActiveTicketSupport(soapModel.getActiveTicketSupport());
 		model.setLastAuditDate(soapModel.getLastAuditDate());
 		model.setStatus(soapModel.getStatus());
 		model.setStatusByUserId(soapModel.getStatusByUserId());
@@ -314,6 +320,8 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		attributes.put("instructions", getInstructions());
 		attributes.put("notes", getNotes());
 		attributes.put("highestSupportResponseId", getHighestSupportResponseId());
+		attributes.put("activeSupport", getActiveSupport());
+		attributes.put("activeTicketSupport", getActiveTicketSupport());
 		attributes.put("lastAuditDate", getLastAuditDate());
 		attributes.put("status", getStatus());
 		attributes.put("statusByUserId", getStatusByUserId());
@@ -480,6 +488,19 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 		if (highestSupportResponseId != null) {
 			setHighestSupportResponseId(highestSupportResponseId);
+		}
+
+		Boolean activeSupport = (Boolean)attributes.get("activeSupport");
+
+		if (activeSupport != null) {
+			setActiveSupport(activeSupport);
+		}
+
+		Boolean activeTicketSupport = (Boolean)attributes.get(
+				"activeTicketSupport");
+
+		if (activeTicketSupport != null) {
+			setActiveTicketSupport(activeTicketSupport);
 		}
 
 		Date lastAuditDate = (Date)attributes.get("lastAuditDate");
@@ -997,6 +1018,40 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 	@JSON
 	@Override
+	public boolean getActiveSupport() {
+		return _activeSupport;
+	}
+
+	@JSON
+	@Override
+	public boolean isActiveSupport() {
+		return _activeSupport;
+	}
+
+	@Override
+	public void setActiveSupport(boolean activeSupport) {
+		_activeSupport = activeSupport;
+	}
+
+	@JSON
+	@Override
+	public boolean getActiveTicketSupport() {
+		return _activeTicketSupport;
+	}
+
+	@JSON
+	@Override
+	public boolean isActiveTicketSupport() {
+		return _activeTicketSupport;
+	}
+
+	@Override
+	public void setActiveTicketSupport(boolean activeTicketSupport) {
+		_activeTicketSupport = activeTicketSupport;
+	}
+
+	@JSON
+	@Override
 	public Date getLastAuditDate() {
 		return _lastAuditDate;
 	}
@@ -1235,6 +1290,8 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		accountEntryImpl.setInstructions(getInstructions());
 		accountEntryImpl.setNotes(getNotes());
 		accountEntryImpl.setHighestSupportResponseId(getHighestSupportResponseId());
+		accountEntryImpl.setActiveSupport(getActiveSupport());
+		accountEntryImpl.setActiveTicketSupport(getActiveTicketSupport());
 		accountEntryImpl.setLastAuditDate(getLastAuditDate());
 		accountEntryImpl.setStatus(getStatus());
 		accountEntryImpl.setStatusByUserId(getStatusByUserId());
@@ -1464,6 +1521,10 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 		accountEntryCacheModel.highestSupportResponseId = getHighestSupportResponseId();
 
+		accountEntryCacheModel.activeSupport = getActiveSupport();
+
+		accountEntryCacheModel.activeTicketSupport = getActiveTicketSupport();
+
 		Date lastAuditDate = getLastAuditDate();
 
 		if (lastAuditDate != null) {
@@ -1507,7 +1568,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(63);
+		StringBundler sb = new StringBundler(67);
 
 		sb.append("{accountEntryId=");
 		sb.append(getAccountEntryId());
@@ -1559,6 +1620,10 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		sb.append(getNotes());
 		sb.append(", highestSupportResponseId=");
 		sb.append(getHighestSupportResponseId());
+		sb.append(", activeSupport=");
+		sb.append(getActiveSupport());
+		sb.append(", activeTicketSupport=");
+		sb.append(getActiveTicketSupport());
 		sb.append(", lastAuditDate=");
 		sb.append(getLastAuditDate());
 		sb.append(", status=");
@@ -1578,7 +1643,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(97);
+		StringBundler sb = new StringBundler(103);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.AccountEntry");
@@ -1685,6 +1750,14 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		sb.append(getHighestSupportResponseId());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>activeSupport</column-name><column-value><![CDATA[");
+		sb.append(getActiveSupport());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>activeTicketSupport</column-name><column-value><![CDATA[");
+		sb.append(getActiveTicketSupport());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>lastAuditDate</column-name><column-value><![CDATA[");
 		sb.append(getLastAuditDate());
 		sb.append("]]></column-value></column>");
@@ -1760,6 +1833,8 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 	private String _instructions;
 	private String _notes;
 	private long _highestSupportResponseId;
+	private boolean _activeSupport;
+	private boolean _activeTicketSupport;
 	private Date _lastAuditDate;
 	private int _status;
 	private int _originalStatus;

@@ -7682,6 +7682,8 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 		accountEntryImpl.setInstructions(accountEntry.getInstructions());
 		accountEntryImpl.setNotes(accountEntry.getNotes());
 		accountEntryImpl.setHighestSupportResponseId(accountEntry.getHighestSupportResponseId());
+		accountEntryImpl.setActiveSupport(accountEntry.isActiveSupport());
+		accountEntryImpl.setActiveTicketSupport(accountEntry.isActiveTicketSupport());
 		accountEntryImpl.setLastAuditDate(accountEntry.getLastAuditDate());
 		accountEntryImpl.setStatus(accountEntry.getStatus());
 		accountEntryImpl.setStatusByUserId(accountEntry.getStatusByUserId());

@@ -107,6 +107,8 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 		attributes.put("instructions", getInstructions());
 		attributes.put("notes", getNotes());
 		attributes.put("highestSupportResponseId", getHighestSupportResponseId());
+		attributes.put("activeSupport", getActiveSupport());
+		attributes.put("activeTicketSupport", getActiveTicketSupport());
 		attributes.put("lastAuditDate", getLastAuditDate());
 		attributes.put("status", getStatus());
 		attributes.put("statusByUserId", getStatusByUserId());
@@ -273,6 +275,19 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 
 		if (highestSupportResponseId != null) {
 			setHighestSupportResponseId(highestSupportResponseId);
+		}
+
+		Boolean activeSupport = (Boolean)attributes.get("activeSupport");
+
+		if (activeSupport != null) {
+			setActiveSupport(activeSupport);
+		}
+
+		Boolean activeTicketSupport = (Boolean)attributes.get(
+				"activeTicketSupport");
+
+		if (activeTicketSupport != null) {
+			setActiveTicketSupport(activeTicketSupport);
 		}
 
 		Date lastAuditDate = (Date)attributes.get("lastAuditDate");
@@ -934,6 +949,64 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 	}
 
 	@Override
+	public boolean getActiveSupport() {
+		return _activeSupport;
+	}
+
+	@Override
+	public boolean isActiveSupport() {
+		return _activeSupport;
+	}
+
+	@Override
+	public void setActiveSupport(boolean activeSupport) {
+		_activeSupport = activeSupport;
+
+		if (_accountEntryRemoteModel != null) {
+			try {
+				Class<?> clazz = _accountEntryRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setActiveSupport",
+						boolean.class);
+
+				method.invoke(_accountEntryRemoteModel, activeSupport);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
+	public boolean getActiveTicketSupport() {
+		return _activeTicketSupport;
+	}
+
+	@Override
+	public boolean isActiveTicketSupport() {
+		return _activeTicketSupport;
+	}
+
+	@Override
+	public void setActiveTicketSupport(boolean activeTicketSupport) {
+		_activeTicketSupport = activeTicketSupport;
+
+		if (_accountEntryRemoteModel != null) {
+			try {
+				Class<?> clazz = _accountEntryRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setActiveTicketSupport",
+						boolean.class);
+
+				method.invoke(_accountEntryRemoteModel, activeTicketSupport);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
 	public Date getLastAuditDate() {
 		return _lastAuditDate;
 	}
@@ -1356,44 +1429,6 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 	}
 
 	@Override
-	public boolean hasActiveSupport() {
-		try {
-			String methodName = "hasActiveSupport";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			Boolean returnObj = (Boolean)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
-	public boolean hasActiveTicketSupport() {
-		try {
-			String methodName = "hasActiveTicketSupport";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			Boolean returnObj = (Boolean)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
 	public boolean hasEnterpriseSearchOffering(int productEntryEnvironment) {
 		try {
 			String methodName = "hasEnterpriseSearchOffering";
@@ -1636,6 +1671,8 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 		clone.setInstructions(getInstructions());
 		clone.setNotes(getNotes());
 		clone.setHighestSupportResponseId(getHighestSupportResponseId());
+		clone.setActiveSupport(getActiveSupport());
+		clone.setActiveTicketSupport(getActiveTicketSupport());
 		clone.setLastAuditDate(getLastAuditDate());
 		clone.setStatus(getStatus());
 		clone.setStatusByUserId(getStatusByUserId());
@@ -1702,7 +1739,7 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(63);
+		StringBundler sb = new StringBundler(67);
 
 		sb.append("{accountEntryId=");
 		sb.append(getAccountEntryId());
@@ -1754,6 +1791,10 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 		sb.append(getNotes());
 		sb.append(", highestSupportResponseId=");
 		sb.append(getHighestSupportResponseId());
+		sb.append(", activeSupport=");
+		sb.append(getActiveSupport());
+		sb.append(", activeTicketSupport=");
+		sb.append(getActiveTicketSupport());
 		sb.append(", lastAuditDate=");
 		sb.append(getLastAuditDate());
 		sb.append(", status=");
@@ -1773,7 +1814,7 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(97);
+		StringBundler sb = new StringBundler(103);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.AccountEntry");
@@ -1880,6 +1921,14 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 		sb.append(getHighestSupportResponseId());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>activeSupport</column-name><column-value><![CDATA[");
+		sb.append(getActiveSupport());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>activeTicketSupport</column-name><column-value><![CDATA[");
+		sb.append(getActiveTicketSupport());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>lastAuditDate</column-name><column-value><![CDATA[");
 		sb.append(getLastAuditDate());
 		sb.append("]]></column-value></column>");
@@ -1934,6 +1983,8 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 	private String _instructions;
 	private String _notes;
 	private long _highestSupportResponseId;
+	private boolean _activeSupport;
+	private boolean _activeTicketSupport;
 	private Date _lastAuditDate;
 	private int _status;
 	private long _statusByUserId;

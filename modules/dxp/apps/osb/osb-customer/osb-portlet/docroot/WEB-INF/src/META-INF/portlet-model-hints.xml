@@ -57,6 +57,8 @@
 			<hint-collection name="TEXTAREA" />
 		</field>
 		<field name="highestSupportResponseId" type="long" />
+		<field name="activeSupport" type="boolean" />
+		<field name="activeTicketSupport" type="boolean" />
 		<field name="lastAuditDate" type="Date" />
 		<field name="status" type="int" />
 		<field name="statusByUserId" type="long" />

@@ -59,6 +59,8 @@ public class AccountEntrySoap implements Serializable {
 		soapModel.setInstructions(model.getInstructions());
 		soapModel.setNotes(model.getNotes());
 		soapModel.setHighestSupportResponseId(model.getHighestSupportResponseId());
+		soapModel.setActiveSupport(model.getActiveSupport());
+		soapModel.setActiveTicketSupport(model.getActiveTicketSupport());
 		soapModel.setLastAuditDate(model.getLastAuditDate());
 		soapModel.setStatus(model.getStatus());
 		soapModel.setStatusByUserId(model.getStatusByUserId());
@@ -321,6 +323,30 @@ public class AccountEntrySoap implements Serializable {
 		_highestSupportResponseId = highestSupportResponseId;
 	}
 
+	public boolean getActiveSupport() {
+		return _activeSupport;
+	}
+
+	public boolean isActiveSupport() {
+		return _activeSupport;
+	}
+
+	public void setActiveSupport(boolean activeSupport) {
+		_activeSupport = activeSupport;
+	}
+
+	public boolean getActiveTicketSupport() {
+		return _activeTicketSupport;
+	}
+
+	public boolean isActiveTicketSupport() {
+		return _activeTicketSupport;
+	}
+
+	public void setActiveTicketSupport(boolean activeTicketSupport) {
+		_activeTicketSupport = activeTicketSupport;
+	}
+
 	public Date getLastAuditDate() {
 		return _lastAuditDate;
 	}
@@ -394,6 +420,8 @@ public class AccountEntrySoap implements Serializable {
 	private String _instructions;
 	private String _notes;
 	private long _highestSupportResponseId;
+	private boolean _activeSupport;
+	private boolean _activeTicketSupport;
 	private Date _lastAuditDate;
 	private int _status;
 	private long _statusByUserId;

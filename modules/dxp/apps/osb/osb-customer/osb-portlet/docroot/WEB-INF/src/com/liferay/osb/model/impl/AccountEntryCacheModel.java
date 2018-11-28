@@ -66,7 +66,7 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(63);
+		StringBundler sb = new StringBundler(67);
 
 		sb.append("{accountEntryId=");
 		sb.append(accountEntryId);
@@ -118,6 +118,10 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 		sb.append(notes);
 		sb.append(", highestSupportResponseId=");
 		sb.append(highestSupportResponseId);
+		sb.append(", activeSupport=");
+		sb.append(activeSupport);
+		sb.append(", activeTicketSupport=");
+		sb.append(activeTicketSupport);
 		sb.append(", lastAuditDate=");
 		sb.append(lastAuditDate);
 		sb.append(", status=");
@@ -234,6 +238,8 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 		}
 
 		accountEntryImpl.setHighestSupportResponseId(highestSupportResponseId);
+		accountEntryImpl.setActiveSupport(activeSupport);
+		accountEntryImpl.setActiveTicketSupport(activeTicketSupport);
 
 		if (lastAuditDate == Long.MIN_VALUE) {
 			accountEntryImpl.setLastAuditDate(null);
@@ -311,6 +317,10 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 		notes = objectInput.readUTF();
 
 		highestSupportResponseId = objectInput.readLong();
+
+		activeSupport = objectInput.readBoolean();
+
+		activeTicketSupport = objectInput.readBoolean();
 		lastAuditDate = objectInput.readLong();
 
 		status = objectInput.readInt();
@@ -418,6 +428,10 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 		}
 
 		objectOutput.writeLong(highestSupportResponseId);
+
+		objectOutput.writeBoolean(activeSupport);
+
+		objectOutput.writeBoolean(activeTicketSupport);
 		objectOutput.writeLong(lastAuditDate);
 
 		objectOutput.writeInt(status);
@@ -466,6 +480,8 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 	public String instructions;
 	public String notes;
 	public long highestSupportResponseId;
+	public boolean activeSupport;
+	public boolean activeTicketSupport;
 	public long lastAuditDate;
 	public int status;
 	public long statusByUserId;

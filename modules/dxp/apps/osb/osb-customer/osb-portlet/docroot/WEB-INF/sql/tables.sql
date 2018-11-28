@@ -51,6 +51,8 @@ create table OSB_AccountEntry (
 	instructions STRING null,
 	notes STRING null,
 	highestSupportResponseId LONG,
+	activeSupport BOOLEAN,
+	activeTicketSupport BOOLEAN,
 	lastAuditDate DATE null,
 	status INTEGER,
 	statusByUserId LONG,
