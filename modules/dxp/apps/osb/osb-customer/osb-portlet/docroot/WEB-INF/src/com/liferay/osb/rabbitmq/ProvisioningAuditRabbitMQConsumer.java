@@ -188,7 +188,7 @@ public class ProvisioningAuditRabbitMQConsumer
 
 	@Override
 	protected void sendErrorNotification(
-		String routingKey, String message, JSONObject jsonObject, Exception e) {
+		String routingKey, String message, Exception e) {
 
 		_log.error("Unexpected error has occurred for message: " + message, e);
 	}
