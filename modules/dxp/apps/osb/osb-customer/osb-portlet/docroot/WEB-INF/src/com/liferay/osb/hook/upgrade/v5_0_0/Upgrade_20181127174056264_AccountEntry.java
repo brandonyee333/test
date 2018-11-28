@@ -12,25 +12,30 @@
  *
  */
 
-package com.liferay.osb.hook.upgrade;
+package com.liferay.osb.hook.upgrade.v5_0_0;
 
-import com.liferay.osb.hook.upgrade.v5_0_0.Upgrade_20181126135650144_AccountCustomer;
-import com.liferay.osb.hook.upgrade.v5_0_0.Upgrade_20181127174056264_AccountEntry;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
- * @author Jenny Chen
+ * @author Kyle Bischof
  */
-public class UpgradeProcess_5_0_0 extends BaseUpgradeProcess {
+public class Upgrade_20181127174056264_AccountEntry extends BaseUpgradeProcess {
 
 	@Override
-	public int getThreshold() {
-		return 500;
+	public long getTimestamp() {
+		return 20181127174056264L;
 	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		upgrade(Upgrade_20181126135650144_AccountCustomer.class);
-		upgrade(Upgrade_20181127174056264_AccountEntry.class);
+		if (!tableHasColumn("OSB_AccountEntry", "activeSupport")) {
+			runSQL(
+				"alter table OSB_AccountEntry add column activeSupport " +
+					"boolean");
+			runSQL(
+				"alter table OSB_AccountEntry add column activeTicketSupport " +
+					"boolean");
+		}
 	}
 
 }
