@@ -18,6 +18,8 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessor;
 import com.liferay.osb.service.RemoteUserLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -50,10 +52,20 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 		String routingKey, String message, Map<String, Object> properties) {
 
 		try {
-			JSONObject jsonObject = jsonFactory.createJSONObject(
-				message.trim());
+			try {
+				JSONObject jsonObject = jsonFactory.createJSONObject(
+					message.trim());
 
-			doProcess(jsonObject);
+				doProcess(jsonObject);
+			}
+			catch (JSONException jsone) {
+				JSONArray jsonArray = jsonFactory.createJSONArray(
+					message.trim());
+
+				for (int i = 0; i < jsonArray.length(); i++) {
+					doProcess(jsonArray.getJSONObject(i));
+				}
+			}
 		}
 		catch (Exception e) {
 			_log.error(message);
