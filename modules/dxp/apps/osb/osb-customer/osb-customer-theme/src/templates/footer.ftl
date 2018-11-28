@@ -1,4 +1,4 @@
-<#assign footer_navigation_layout = layout_local_service.fetchLayoutByFriendlyURL(group_id, false, "/footer-navigation")! />
+<#assign footer_navigation_layout = layout_local_service.fetchLayoutByFriendlyURL(group_id, true, "/footer-navigation")! />
 
 <div class="row">
 	<div class="col-sm-3">
