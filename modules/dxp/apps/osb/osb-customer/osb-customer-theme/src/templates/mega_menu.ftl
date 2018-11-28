@@ -8,30 +8,30 @@
 		}
 	);
 
+	function addLocaleParamToURI(locale, urn) {
+		return '${zendesk_url}/hc/' + convertToZendeskLocale(locale) + '/' + urn;
+	}
+
 	function convertToZendeskLocale(locale) {
 		var retVal = '';
 
-		if (locale === 'en_US') {
+		if (locale == 'en_US') {
 			retVal = 'en-US';
 		}
-		else if (locale === 'es_ES') {
+		else if (locale == 'es_ES') {
 			retVal = 'es';
 		}
-		else if (locale === 'ja_JP') {
+		else if (locale == 'ja_JP') {
 			retVal = 'ja';
 		}
-		else if (locale === 'pt_BR') {
+		else if (locale == 'pt_BR') {
 			retVal = 'pt';
 		}
-		else if (locale === 'zh_CN') {
+		else if (locale == 'zh_CN') {
 			retVal = 'zh-CN';
 		}
 
 		return retVal;
-	}
-
-	function addLocaleParamToURI(locale, urn) {
-		return '${zendesk_url}/hc/' + convertToZendeskLocale(locale) + '/' + urn;
 	}
 
 	var accountLinks = {
