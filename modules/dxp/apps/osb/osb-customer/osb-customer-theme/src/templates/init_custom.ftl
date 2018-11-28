@@ -10,6 +10,7 @@
 
 	available_locales = languageUtil.getAvailableLocales()
 	current_locale = themeDisplay.getLocale()
+	locale_path = theme_display.getI18nPath()!""
 
 	user_avatar = themeDisplay.getUser().getPortraitURL(themeDisplay)
 	user_initials = themeDisplay.getUser().getInitials()

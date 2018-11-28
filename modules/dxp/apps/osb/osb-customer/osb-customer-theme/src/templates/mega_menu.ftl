@@ -44,7 +44,7 @@
 				<#if locale != current_locale>
 					{
 						name: '${locale.getDisplayLanguage(locale)}',
-						url: '/${locale.getLanguage()}${theme_display.getURLCurrent()}'
+						url: '/${locale.getLanguage()}${theme_display.getURLCurrent()?remove_beginning(locale_path)}'
 					},
 				</#if>
 			</#list>
