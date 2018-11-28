@@ -88,10 +88,10 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 			<aui:input name="clusterId" type="hidden" value="<%= clusterId %>" />
 
 			<div class="pull-right">
-				<aui:button onClick="<%= backURL %>" value="back-to-previous-page" />
+				<aui:button cssClass="btn-sm" onClick="<%= backURL %>" value="back-to-previous-page" />
 			</div>
 
-			<h1 class="section-heading">
+			<h1>
 				<div id="<portlet:namespace />nameDisplay">
 					<%= HtmlUtil.escape(licenseKeySet.getName()) %>
 
@@ -219,7 +219,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 				</div>
 			</c:if>
 
-			<div>
+			<aui:button-row cssClass="pull-right">
 				<c:if test="<%= OSBAccountEntryPermission.contains(permissionChecker, licenseKeySet.getAccountEntryId(), OSBActionKeys.ADD_LICENSE) %>">
 					<portlet:renderURL var="addLicenseKeyURL">
 						<portlet:param name="mvcPath" value="/license/edit_license_key.jsp" />
@@ -227,11 +227,11 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 						<portlet:param name="licenseKeySetId" value="<%= String.valueOf(licenseKeySetId) %>" />
 					</portlet:renderURL>
 
-					<aui:button onClick="<%= addLicenseKeyURL %>" value="add-new-license-key" />
+					<aui:button onClick="<%= addLicenseKeyURL %>" primary="<%= true %>" value="add-new-license-key" />
 				</c:if>
 
 				<aui:button onClick="<%= backURL %>" value="cancel" />
-			</div>
+			</aui:button-row>
 		</aui:form>
 	</aui:row>
 </div>

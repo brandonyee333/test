@@ -132,6 +132,12 @@ textarea {
 	padding: $input-padding-y $input-padding-x;
 	width: 100%;
 
+	&[type="checkbox"] {
+		display: inline-block;
+		width: auto;
+		vertical-align: sub;
+	}
+
 	&:disabled,
 	&[readonly] {
 		background-color: $input-disabled-bg;
@@ -154,6 +160,10 @@ textarea {
 input:not([type="submit"]),
 select {
 	height: $input-height;
+
+	&[type="checkbox"] {
+		height: 16px;
+	}
 }
 
 main {

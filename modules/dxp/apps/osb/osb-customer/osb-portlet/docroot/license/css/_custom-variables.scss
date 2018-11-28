@@ -1,0 +1,45 @@
+$color-active: #F3F7FF !default;
+$color-body: #2A303E !default;
+$color-border: #CED3DE !default;
+$color-default: #09101D !default;
+$color-default-disabled: #A3A9BA !default;
+$color-disabled: #B3CDFF !default;
+$color-divider: #E9EBF0 !default;
+$color-error: #DA1414 !default;
+$color-error-background: #FEEFEF !default;
+$color-error-border: #F48989 !default;
+$color-focus: #EBF0FA !default;
+$color-hover: #F0F5FF !default;
+$color-info: #2E5AAC !default;
+$color-info-background: #EEF2FA !default;
+$color-info-border: #89A7E0 !default;
+$color-primary-focus-border: #71A2FF !default;
+$color-primary-focus: #004AD7 !default;
+$color-primary-hover: #0053F0 !default;
+$color-primary: #0B5FFF !default;
+$color-success: #287D3C !default;
+$color-warning: #B95000 !default;
+
+$color-grey: #F7F8F9 !default;
+$color-white: #FFF !default;
+
+$code-text-background-color: #FDEFF6 !default;
+$pre-text-color: #F8FAFF !default;
+$secondary-text-color: #5B6170 !default;
+
+$border-radius: 4px !default;
+
+$font-weight-light: 200 !default;
+$font-weight-normal: 400 !default;
+$font-weight-semi-bold: 600 !default;
+
+$font-size-md: 14px !default;
+
+$margin-default: 24px !default;
+$padding-default: 24px !default;
+
+// variable overrides
+
+$panel-body-padding-y: $padding-default !default;
+$panel-header-padding-x: $padding-default !default;
+$panel-header-padding-y: $padding-default !default;

@@ -37,89 +37,49 @@ Date lastEnabledDate = calendar.getTime();
 >
 	<aui:row>
 		<aui:col md="4">
-			<h2>
-				<liferay-ui:message key="project" />
-			</h2>
-
-			<aui:input label="" name="<%= displayTerms.ACCOUNT_ENTRY_NAME %>" size="20" type="text" value="<%= displayTerms.getAccountEntryName() %>" />
+			<aui:input label="project" name="<%= displayTerms.ACCOUNT_ENTRY_NAME %>" size="20" type="text" value="<%= displayTerms.getAccountEntryName() %>" />
 		</aui:col>
 
 		<aui:col md="4">
-			<h2>
-				<liferay-ui:message key="name" />
-			</h2>
-
-			<aui:input label="" name="<%= displayTerms.LICENSE_KEY_SET_NAME %>" size="20" type="text" value="<%= displayTerms.getLicenseKeySetName() %>" />
+			<aui:input label="name" name="<%= displayTerms.LICENSE_KEY_SET_NAME %>" size="20" type="text" value="<%= displayTerms.getLicenseKeySetName() %>" />
 		</aui:col>
 
 		<aui:col md="4">
-			<h2>
-				<liferay-ui:message key="owner" />
-			</h2>
-
-			<aui:input label="" name="<%= displayTerms.OWNER %>" size="20" type="text" value="<%= displayTerms.getOwner() %>" />
+			<aui:input label="owner" name="<%= displayTerms.OWNER %>" size="20" type="text" value="<%= displayTerms.getOwner() %>" />
 		</aui:col>
 	</aui:row>
 
 	<aui:row>
 		<aui:col md="4">
-			<h2>
-				<liferay-ui:message key="description" />
-			</h2>
-
-			<aui:input label="" name="<%= displayTerms.DESCRIPTION %>" size="20" type="text" value="<%= displayTerms.getDescription() %>" />
+			<aui:input label="description" name="<%= displayTerms.DESCRIPTION %>" size="20" type="text" value="<%= displayTerms.getDescription() %>" />
 		</aui:col>
 
 		<aui:col md="4">
-			<h2>
-				<liferay-ui:message key="host-name" />
-			</h2>
-
-			<aui:input label="" name="<%= displayTerms.HOST_NAME %>" size="20" type="text" value="<%= displayTerms.getHostName() %>" />
+			<aui:input label="host-name" name="<%= displayTerms.HOST_NAME %>" size="20" type="text" value="<%= displayTerms.getHostName() %>" />
 		</aui:col>
 
 		<aui:col md="4">
-			<h2>
-				<liferay-ui:message key="ip-address" />
-			</h2>
-
-			<aui:input label="" name="<%= displayTerms.IP_ADDRESS %>" size="20" type="text" value="<%= displayTerms.getIpAddress() %>" />
+			<aui:input label="ip-address" name="<%= displayTerms.IP_ADDRESS %>" size="20" type="text" value="<%= displayTerms.getIpAddress() %>" />
 		</aui:col>
 	</aui:row>
 
 	<aui:row>
 		<aui:col md="4">
-			<h2>
-				<liferay-ui:message key="mac-address" />
-			</h2>
-
-			<aui:input label="" name="<%= displayTerms.MAC_ADDRESS %>" size="20" type="text" value="<%= displayTerms.getMacAddress() %>" />
+			<aui:input label="mac-address" name="<%= displayTerms.MAC_ADDRESS %>" size="20" type="text" value="<%= displayTerms.getMacAddress() %>" />
 		</aui:col>
 
 		<aui:col md="4">
-			<h2>
-				<liferay-ui:message key="server-id" />
-			</h2>
-
-			<aui:input label="" name="<%= displayTerms.SERVER_ID %>" size="20" type="text" value="<%= displayTerms.getServerId() %>" />
+			<aui:input label="server-id" name="<%= displayTerms.SERVER_ID %>" size="20" type="text" value="<%= displayTerms.getServerId() %>" />
 		</aui:col>
 
 		<aui:col md="4">
-			<h2>
-				<liferay-ui:message key="key" />
-			</h2>
-
-			<aui:input label="" name="<%= displayTerms.KEY %>" size="20" type="text" value="<%= displayTerms.getKey() %>" />
+			<aui:input label="key" name="<%= displayTerms.KEY %>" size="20" type="text" value="<%= displayTerms.getKey() %>" />
 		</aui:col>
 	</aui:row>
 
 	<aui:row>
 		<aui:col md="4">
-			<h2>
-				<liferay-ui:message key="created-by" />
-			</h2>
-
-			<aui:select label="" name="<%= displayTerms.CREATE_USER_ID %>">
+			<aui:select label="created-by" name="<%= displayTerms.CREATE_USER_ID %>">
 				<aui:option value="" />
 				<aui:option label="me" selected="<%= user.getUserId() == displayTerms.getCreateUserId() %>" value="<%= user.getUserId() %>" />
 
@@ -140,15 +100,11 @@ Date lastEnabledDate = calendar.getTime();
 			String taglibSelectCreateUser = "var createUserWindow = window.open('" + selectCreateUserURL + "', 'create_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); createUserWindow.focus();";
 			%>
 
-			<aui:button onClick="<%= taglibSelectCreateUser %>" value="choose" />
+			<aui:button cssClass="btn-sm" onClick="<%= taglibSelectCreateUser %>" primary="<%= true %>" value="choose" />
 		</aui:col>
 
 		<aui:col md="4">
-			<h2>
-				<liferay-ui:message key="last-edited-by" />
-			</h2>
-
-			<aui:select label="" name="<%= displayTerms.MODIFIED_USER_ID %>">
+			<aui:select label="last-edited-by" name="<%= displayTerms.MODIFIED_USER_ID %>">
 				<aui:option value="" />
 				<aui:option label="me" selected="<%= user.getUserId() == displayTerms.getModifiedUserId() %>" value="<%= user.getUserId() %>" />
 
@@ -169,16 +125,12 @@ Date lastEnabledDate = calendar.getTime();
 			String taglibSelectModifiedUser = "var modifiedUserWindow = window.open('" + selectModifiedUserURL + "', 'modified_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); modifiedUserWindow.focus();";
 			%>
 
-			<aui:button onClick="<%= taglibSelectModifiedUser %>" value="choose" />
+			<aui:button cssClass="btn-sm" onClick="<%= taglibSelectModifiedUser %>" primary="<%= true %>" value="choose" />
 		</aui:col>
 
 		<c:if test="<%= licenseAdmin %>">
 			<aui:col md="4">
-				<h2>
-					<liferay-ui:message key="active" />
-				</h2>
-
-				<aui:select label="" name="<%= displayTerms.ACTIVE %>">
+				<aui:select label="active" name="<%= displayTerms.ACTIVE %>">
 					<aui:option />
 					<aui:option label="<%= Boolean.TRUE.toString() %>" selected="<%= displayTerms.hasActive() && displayTerms.isActive() %>" value="1" />
 					<aui:option label="<%= Boolean.FALSE.toString() %>" selected="<%= displayTerms.hasActive() && !displayTerms.isActive() %>" value="0" />
@@ -311,7 +263,9 @@ Date lastEnabledDate = calendar.getTime();
 				<liferay-ui:message key="created-between" />
 			</h2>
 
-			<liferay-ui:message key="begin-date" />
+			<span class="control-label">
+				<liferay-ui:message key="begin-date" />
+			</span>
 
 			<liferay-ui:input-date
 				dayParam="<%= displayTerms.CREATE_DATE_GT_DAY %>"
@@ -327,7 +281,9 @@ Date lastEnabledDate = calendar.getTime();
 				yearValue="<%= displayTerms.getCreateDateGTYear() %>"
 			/>
 
-			<liferay-ui:message key="end-date" />
+			<span class="control-label">
+				<liferay-ui:message key="end-date" />
+			</span>
 
 			<liferay-ui:input-date
 				dayParam="<%= displayTerms.CREATE_DATE_LT_DAY %>"
@@ -349,7 +305,9 @@ Date lastEnabledDate = calendar.getTime();
 				<liferay-ui:message key="modified-between" />
 			</h2>
 
-			<liferay-ui:message key="begin-date" />
+			<span class="control-label">
+				<liferay-ui:message key="begin-date" />
+			</span>
 
 			<liferay-ui:input-date
 				dayParam="<%= displayTerms.MODIFIED_DATE_GT_DAY %>"
@@ -365,7 +323,9 @@ Date lastEnabledDate = calendar.getTime();
 				yearValue="<%= displayTerms.getModifiedDateGTYear() %>"
 			/>
 
-			<liferay-ui:message key="end-date" />
+			<span class="control-label">
+				<liferay-ui:message key="end-date" />
+			</span>
 
 			<liferay-ui:input-date
 				dayParam="<%= displayTerms.MODIFIED_DATE_LT_DAY %>"
@@ -389,7 +349,9 @@ Date lastEnabledDate = calendar.getTime();
 				<liferay-ui:message key="started-between" />
 			</h2>
 
-			<liferay-ui:message key="begin-date" />
+			<span class="control-label">
+				<liferay-ui:message key="begin-date" />
+			</span>
 
 			<liferay-ui:input-date
 				dayParam="<%= displayTerms.START_DATE_GT_DAY %>"
@@ -405,7 +367,9 @@ Date lastEnabledDate = calendar.getTime();
 				yearValue="<%= displayTerms.getStartDateGTYear() %>"
 			/>
 
-			<liferay-ui:message key="end-date" />
+			<span class="control-label">
+				<liferay-ui:message key="end-date" />
+			</span>
 
 			<liferay-ui:input-date
 				dayParam="<%= displayTerms.START_DATE_LT_DAY %>"
@@ -427,7 +391,9 @@ Date lastEnabledDate = calendar.getTime();
 				<liferay-ui:message key="expires-between" />
 			</h2>
 
-			<liferay-ui:message key="begin-date" />
+			<span class="control-label">
+				<liferay-ui:message key="begin-date" />
+			</span>
 
 			<liferay-ui:input-date
 				dayParam="<%= displayTerms.EXPIRATION_DATE_GT_DAY %>"
@@ -443,7 +409,9 @@ Date lastEnabledDate = calendar.getTime();
 				yearValue="<%= displayTerms.getExpirationDateGTYear() %>"
 			/>
 
-			<liferay-ui:message key="end-date" />
+			<span class="control-label">
+				<liferay-ui:message key="end-date" />
+			</span>
 
 			<liferay-ui:input-date
 				dayParam="<%= displayTerms.EXPIRATION_DATE_LT_DAY %>"

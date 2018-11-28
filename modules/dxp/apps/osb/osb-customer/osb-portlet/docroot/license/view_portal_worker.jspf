@@ -29,7 +29,7 @@ searchURL.setParameter("tabs1", tabs1);
 pageContext.setAttribute("searchURL", searchURL);
 %>
 
-<aui:form action="<%= searchURL.toString() %>" cssClass="col-md-12" method="post" onSubmit="submitForm(this); return false;">
+<aui:form action="<%= searchURL.toString() %>" method="post" onSubmit="submitForm(this); return false;">
 	<liferay-portlet:renderURLParams varImpl="searchURL" />
 
 	<portlet:renderURL var="addLicenseKeyURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
@@ -37,7 +37,7 @@ pageContext.setAttribute("searchURL", searchURL);
 		<portlet:param name="redirect" value="<%= currentURL %>" />
 	</portlet:renderURL>
 
-	<aui:button onClick="<%= addLicenseKeyURL %>" value="generate-new-license" />
+	<aui:button cssClass="btn-generate-new-license btn-sm" onClick="<%= addLicenseKeyURL %>" primary="<%= true %>" value="generate-new-license" />
 
 	<div class="license-worker">
 		<liferay-ui:search-container
@@ -88,13 +88,13 @@ pageContext.setAttribute("searchURL", searchURL);
 				>
 
 					<%
-					String cssClass = "v-active";
+					String cssClass = "label label-info";
 
 					if (licenseKey.isExpired()) {
-						cssClass = "v-expired";
+						cssClass = "label label-danger";
 					}
 					else if (!licenseKey.isActive()) {
-						cssClass = "v-inactive";
+						cssClass = "label label-warning";
 					}
 					%>
 
@@ -104,11 +104,10 @@ pageContext.setAttribute("searchURL", searchURL);
 				</liferay-ui:search-container-column-text>
 
 				<liferay-ui:search-container-column-text
-					href="<%= rowURL %>"
 					name="Name / Description"
 				>
-					<div>
-						<strong><%= HtmlUtil.escape(licenseKeySet.getName()) %></strong>
+					<div class="semibold">
+						<%= HtmlUtil.escape(licenseKeySet.getName()) %>
 					</div>
 
 					<div class="small">
@@ -117,20 +116,17 @@ pageContext.setAttribute("searchURL", searchURL);
 				</liferay-ui:search-container-column-text>
 
 				<liferay-ui:search-container-column-text
-					href="<%= rowURL %>"
 					name="product"
 					value="<%= HtmlUtil.escape(productEntryName) + StringPool.SPACE + licenseKey.getProductVersionLabel() %>"
 				/>
 
 				<liferay-ui:search-container-column-text
-					href="<%= rowURL %>"
 					name="type"
 					translate="<%= true %>"
 					value="<%= licenseEntryType %>"
 				/>
 
 				<liferay-ui:search-container-column-text
-					href="<%= rowURL %>"
 					name="start-date"
 					orderable="<%= true %>"
 				>
@@ -144,7 +140,6 @@ pageContext.setAttribute("searchURL", searchURL);
 				</liferay-ui:search-container-column-text>
 
 				<liferay-ui:search-container-column-text
-					href="<%= rowURL %>"
 					name="expiration-date"
 					orderable="<%= true %>"
 				>
@@ -158,7 +153,9 @@ pageContext.setAttribute("searchURL", searchURL);
 				</liferay-ui:search-container-column-text>
 			</liferay-ui:search-container-row>
 
-			<liferay-ui:search-iterator />
+			<liferay-ui:search-iterator
+				markupView="lexicon"
+			/>
 		</liferay-ui:search-container>
 	</div>
 </aui:form>

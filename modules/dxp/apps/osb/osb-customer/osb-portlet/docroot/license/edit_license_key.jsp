@@ -158,7 +158,11 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 <div class="container-fluid-1280">
 	<aui:row>
-		<aui:form action="<%= updateLicenseKeyURL %>" cssClass="col-md-12" method="post">
+		<h1>
+			<liferay-ui:message key="generate-new-license" />
+		</h1>
+
+		<aui:form action="<%= updateLicenseKeyURL %>" cssClass="col-md-12" method="post" onSubmit='<%= "submitForm(document." + renderResponse.getNamespace() + "fm);" %>'>
 			<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 			<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 			<aui:input name="licenseKeySetId" type="hidden" value="<%= licenseKeySetId %>" />
@@ -167,7 +171,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 			<div class="section">
 				<div class="pull-right">
-					<aui:button onClick="<%= backURL %>" value="back-to-previous-page" />
+					<aui:button cssClass="btn-sm" onClick="<%= backURL %>" value="back-to-previous-page" />
 				</div>
 			</div>
 
@@ -188,20 +192,20 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 			<c:choose>
 				<c:when test="<%= offeringEntry == null %>">
 					<aui:col md="12">
-						<h2 class="section-heading">
+						<h2 class="control-label">
 							<liferay-ui:message key="project" />
 						</h2>
 
 						<c:choose>
 							<c:when test="<%= licenseKeySet != null %>">
-								<strong><%= HtmlUtil.escape(accountEntry.getName()) %></strong>
+								<span class="semibold"><%= HtmlUtil.escape(accountEntry.getName()) %></span>
 
 								<aui:input label="" name="accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
 							</c:when>
 							<c:when test="<%= hasUpdateAdmin %>">
-								<strong class="account-entry-name" id="<portlet:namespace />accountEntryName"><%= (accountEntry != null) ? HtmlUtil.escape(accountEntry.getName()) : "" %></strong>
+								<span class="account-entry-name semibold" id="<portlet:namespace />accountEntryName"><%= (accountEntry != null) ? HtmlUtil.escape(accountEntry.getName()) : "" %></span>
 
-								<input class="btn" onClick="var accountEntryWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/license/select_account_entry.jsp" /><portlet:param name="callback" value="selectAccountEntry" /></portlet:renderURL>', 'account-entry', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); accountEntryWindow.focus();" type="button" value="<liferay-ui:message key="select" />" />
+								<input class="btn btn-default select-account-entry" onClick="var accountEntryWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/license/select_account_entry.jsp" /><portlet:param name="callback" value="selectAccountEntry" /></portlet:renderURL>', 'account-entry', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); accountEntryWindow.focus();" type="button" value="<liferay-ui:message key="select" />" />
 
 								<aui:input name="accountEntryId" type="hidden" value="<%= (accountEntry != null) ? accountEntry.getAccountEntryId() : 0 %>" />
 							</c:when>
@@ -227,7 +231,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 										addLicensePermission = OSBAccountEntryPermission.contains(permissionChecker, accountEntryId, OSBActionKeys.ADD_LICENSE);
 										%>
 
-										<strong><%= HtmlUtil.escape(accountEntry.getName()) %></strong>
+										<span class="semibold"><%= HtmlUtil.escape(accountEntry.getName()) %></span>
 
 										<aui:input label="" name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
 									</c:when>
@@ -262,7 +266,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 					%>
 
 					<aui:col md="12">
-						<h2 class="section-heading">
+						<h2 class="control-label">
 							<liferay-ui:message key="product" />
 						</h2>
 
@@ -291,7 +295,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 					</aui:col>
 
 					<aui:col md="6">
-						<h2 class="section-heading">
+						<h2 class="control-label">
 							<liferay-ui:message key="choose-liferay-version" />
 						</h2>
 
@@ -334,7 +338,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 					</aui:col>
 
 					<aui:col md="6">
-						<h2 class="section-heading">
+						<h2 class="control-label">
 							<liferay-ui:message key="type" />
 						</h2>
 
@@ -363,7 +367,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 					</aui:col>
 
 					<aui:col md="12">
-						<h2 class="section-heading">
+						<h2 class="control-label">
 							<liferay-ui:message key="choose-license" />
 						</h2>
 
@@ -517,13 +521,13 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 				</c:when>
 				<c:otherwise>
 					<aui:col md="12">
-						<h2 class="section-heading">
+						<h2 class="control-label">
 							<liferay-ui:message key="name" />
 						</h2>
 
 						<c:choose>
 							<c:when test="<%= licenseKeySet != null %>">
-								<strong><%= HtmlUtil.escape(licenseKeySet.getName()) %></strong>
+								<span class="semibold"><%= HtmlUtil.escape(licenseKeySet.getName()) %></span>
 							</c:when>
 							<c:otherwise>
 								<aui:input bean="<%= licenseKeySet %>" label="" model="<%= LicenseKeySet.class %>" name="name" value="<%= accountEntry.getName() %>" />
@@ -532,7 +536,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 					</aui:col>
 
 					<aui:col md="6">
-						<h2 class="section-heading">
+						<h2 class="control-label">
 							<liferay-ui:message key="owner" />
 						</h2>
 
@@ -540,7 +544,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 					</aui:col>
 
 					<aui:col md="6">
-						<h2 class="section-heading">
+						<h2 class="control-label">
 							<liferay-ui:message key="description" />
 						</h2>
 
@@ -548,7 +552,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 					</aui:col>
 
 					<aui:col md="12">
-						<h2 class="section-heading">
+						<h2 class="control-label">
 							<liferay-ui:message key="license-info" />
 						</h2>
 					</aui:col>
@@ -617,7 +621,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 						<c:when test="<%= LicenseKeyConstants.getLicenseVersion(productVersion) >= 3 %>">
 							<c:if test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER) || licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER) %>">
 								<aui:col md="12">
-									<h2 class="section-heading">
+									<h2 class="control-label">
 										<liferay-ui:message key="maximum-connections" />
 									</h2>
 
@@ -643,13 +647,13 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 							<c:if test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) %>">
 								<aui:col md="12">
-									<h2 class="section-heading">
+									<h2 class="control-label">
 										<liferay-ui:message key="maximum-servers" />
 									</h2>
 
 									<c:choose>
 										<c:when test="<%= clusterId > 0 %>">
-											<strong><%= maxServers %></strong>
+											<span class="semibold"><%= maxServers %></span>
 
 											<aui:input name="maxServers" type="hidden" value="<%= maxServers %>" />
 										</c:when>
@@ -692,7 +696,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 								</c:when>
 								<c:otherwise>
 									<aui:col md="12">
-										<h2 class="section-heading">
+										<h2 class="control-label">
 											<liferay-ui:message key="server-id-fields" />
 										</h2>
 
@@ -737,7 +741,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 							<c:choose>
 								<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) || licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER) %>">
 									<aui:col md="12">
-										<h2 class="section-heading">
+										<h2 class="control-label">
 											<liferay-ui:message key="maximum-servers" />
 										</h2>
 
@@ -774,7 +778,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 								</c:when>
 								<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_PRODUCTION) %>">
 									<aui:col md="12">
-										<h2 class="section-heading">
+										<h2 class="control-label">
 											<liferay-ui:message key="mac-addresses" />
 										</h2>
 
@@ -790,7 +794,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 							<c:choose>
 								<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) || licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER) %>">
 									<aui:col md="12">
-										<h2 class="section-heading">
+										<h2 class="control-label">
 											<liferay-ui:message key="mac-addresses" />
 										</h2>
 
@@ -808,7 +812,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 								</c:when>
 								<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_PRODUCTION) %>">
 									<aui:col md="12">
-										<h2 class="section-heading">
+										<h2 class="control-label">
 											<liferay-ui:message key="server-id" />
 										</h2>
 
@@ -824,7 +828,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 					<div>
 						<aui:col md="12">
-							<aui:button type="submit" value="generate" />
+							<aui:button type="submit" primary="<%= true %>" value="generate" />
 
 							<aui:button onClick="<%= backURL %>" value="cancel" />
 						</aui:col>

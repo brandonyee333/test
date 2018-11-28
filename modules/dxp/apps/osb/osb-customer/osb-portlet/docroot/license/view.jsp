@@ -35,7 +35,7 @@ pageContext.setAttribute("portletURL", portletURL);
 
 <div class="container-fluid-1280">
 	<aui:row>
-		<h1 class="col-md-12 section-heading">
+		<h1>
 			<liferay-ui:message key="license-management" />
 		</h1>
 	</aui:row>

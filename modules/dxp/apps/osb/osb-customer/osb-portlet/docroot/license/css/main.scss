@@ -1,3 +1,5 @@
+@import "_custom-variables";
+
 .osb-portlet-license {
 	#toggle_id_license_key_searchadvanced {
 		padding-bottom: 1em;
@@ -9,14 +11,37 @@
 		}
 	}
 
+	.advanced-search {
+		.form-control.search-query {
+			background-color: $color-white;
+			border: 1px solid $color-border;
+			border-radius: $border-radius;
+		}
+
+		.input-group-btn .btn-default {
+			border-radius: $border-radius;
+			margin-left: 16px;
+		}
+	}
+
+	.btn-generate-new-license {
+		margin-bottom: $margin-default;
+	}
+
 	.cluster {
-		border: 1px solid #D0D1D3;
-		margin-bottom: 1em;
-		padding: 1em 0.5em;
+		background-color: $color-info-background;
+		border: 1px solid $color-border;
+		border-radius: $border-radius;
+		margin: $margin-default 0;
+		padding: 16px;
 
 		&.highlight-cluster {
-			border-color: #000;
+			border-color: $color-info-border;
 		}
+	}
+
+	.form-group .control-label {
+		font-weight: $font-weight-semi-bold;
 	}
 
 	.info {
@@ -44,19 +69,14 @@
 		margin-right: 10px;
 	}
 
-	.lfr-table {
-		width: auto;
+	.lfr-input-date .form-control {
+		background-color: $color-white;
+		border-color: $color-border;
+		margin-bottom: $margin-default;
 	}
 
-	.license-customer {
-		.table {
-			margin-top: 1em;
-
-			th {
-				background-color: #D1D6DC;
-				border-bottom: 1px solid #BABEC2;
-			}
-		}
+	.lfr-search-wrapper-container {
+		margin-top: 36px;
 	}
 
 	.license-duration {
@@ -70,30 +90,29 @@
 		}
 	}
 
+	.license-info-label {
+		display: block;
+		font-weight: $font-weight-semi-bold;
+		margin-top: 16px;
+	}
+
 	.license-input-heading {
-		border-bottom: 1px solid #CCC;
+		border-bottom: 1px solid $color-border;
 		margin-top: 0.5em;
 		padding-bottom: 0.25em;
 	}
 
-	.license-worker {
-		margin-top: 1em;
+	.license-key-controls {
+		margin-top: $margin-default;
 
-		.table {
-			margin-top: 1em;
-
-			a {
-				color: #474A4B;
-			}
-
-			th {
-				border-bottom: 1px solid #BABEC1;
-			}
+		.license-key-control-icon {
+			display: block;
+			margin-bottom: 16px;
 		}
 	}
 
 	.merge-license {
-		border: 1px solid #D1D6DC;
+		border: 1px solid $color-border;
 	}
 
 	.multiple-select {
@@ -104,11 +123,10 @@
 		position: relative;
 	}
 
-	.section-heading {
-		color: #3A3A3A;
-		font-size: 36px;
-		font-weight: normal;
-		padding-bottom: 1em;
+	.select-account-entry {
+		background-color: $color-white;
+		color: $secondary-text-color;
+		width: auto;
 	}
 
 	.separator {
@@ -117,7 +135,7 @@
 
 	.table-cell {
 		a {
-			color: #000;
+			color: $color-default;
 		}
 
 		&.first {
@@ -125,24 +143,11 @@
 		}
 	}
 
-	.v-active,
-	.v-expired,
-	.v-inactive {
-		color: #FFF;
-		padding: 5px;
-		text-align: center;
-	}
-
-	.v-active {
-		background: #00ADEF;
-	}
-
-	.v-expired {
-		background: #EF000B;
-	}
-
-	.v-inactive {
-		background: #F08000;
+	.taglib-search-toggle-advanced-wrapper .taglib-search-toggle-advanced {
+		background-color: $color-white;
+		border-color: $color-border;
+		border-radius: $border-radius;
+		margin-bottom: $margin-default;
 	}
 
 	.view-license-dialog {
