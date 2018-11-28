@@ -32,3 +32,39 @@ app.artifacts-1.0.0=\
 app.change.log-1.0.0=LPS-71426 LPS-74064 LPS-74544 LPS-75359 LPS-75859 LPS-75900 LPS-75974 LPS-76043 LPS-76057 LPS-76151 LPS-76221 LPS-76226 LPS-76233 LPS-76347 LPS-76528 LPS-76705 LPS-76840 LPS-76924 LPS-76940 LPS-77287 LPS-77368
 
 app.git.id-1.0.0=26cc09c3d80619556fe6637a8c7f62714c049d7c
+
+#
+# Liferay App Version 1.0.1
+#
+
+app.artifacts-1.0.1=\
+	com.liferay.adaptive.media.api-2.0.2.jar,\
+	com.liferay.adaptive.media.blogs.editor.configuration-1.0.3.jar,\
+	com.liferay.adaptive.media.blogs.item.selector.web-1.0.3.jar,\
+	com.liferay.adaptive.media.blogs.web-1.0.6.jar,\
+	com.liferay.adaptive.media.blogs.web.fragment-1.0.4.jar,\
+	com.liferay.adaptive.media.content.transformer.api-1.0.7.jar,\
+	com.liferay.adaptive.media.demo.data.creator.api-1.0.3.jar,\
+	com.liferay.adaptive.media.demo.data.creator.impl-1.0.5.jar,\
+	com.liferay.adaptive.media.document.library-1.0.6.jar,\
+	com.liferay.adaptive.media.document.library.item.selector.web-1.0.5.jar,\
+	com.liferay.adaptive.media.document.library.thumbnails-1.0.10.jar,\
+	com.liferay.adaptive.media.document.library.web-1.0.6.jar,\
+	com.liferay.adaptive.media.image.api-1.1.9.jar,\
+	com.liferay.adaptive.media.image.content.transformer-1.0.5.jar,\
+	com.liferay.adaptive.media.image.content.transformer.backwards.compatibility-1.0.5.jar,\
+	com.liferay.adaptive.media.image.impl-1.0.16.jar,\
+	com.liferay.adaptive.media.image.item.selector.api-1.0.3.jar,\
+	com.liferay.adaptive.media.image.item.selector.impl-1.0.4.jar,\
+	com.liferay.adaptive.media.image.js.web-1.0.5.jar,\
+	com.liferay.adaptive.media.image.service-1.0.13.jar,\
+	com.liferay.adaptive.media.image.taglib-1.1.0.jar,\
+	com.liferay.adaptive.media.image.web-1.0.6.jar,\
+	com.liferay.adaptive.media.item.selector.upload.web-1.0.2.jar,\
+	com.liferay.adaptive.media.journal.editor.configuration-1.0.2.jar,\
+	com.liferay.adaptive.media.journal.web-1.0.3.jar,\
+	com.liferay.adaptive.media.web-1.0.14.jar
+
+app.change.log-1.0.1=LPS-74544 LPS-75049 LPS-76893 LPS-76940 LPS-77143 LPS-77631 LPS-78152 LPS-78288 LPS-78626 LPS-78772 LPS-78901 LPS-79108 LPS-79679 LPS-79755 LPS-79799 LPS-79815 LPS-80020 LPS-80054 LPS-80064 LPS-80184 LPS-80723 LPS-81211 LPS-81704 LPS-81743 LPS-82009 LPS-82097 LPS-82261 LPS-82299 LPS-82828 LPS-83248 LPS-83705 LPS-84119 LPS-84355 LPS-85536 LPS-85849 LPS-85966 LPS-86408
+
+app.git.id-1.0.1=f828ca55c588c390592b3b72a9d549712f859c50
