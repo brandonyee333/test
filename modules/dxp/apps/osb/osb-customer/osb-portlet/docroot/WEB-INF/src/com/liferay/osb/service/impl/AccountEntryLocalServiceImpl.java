@@ -53,7 +53,6 @@ import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.model.SupportResponse;
 import com.liferay.osb.rabbitmq.ProvisioningAuditRabbitMQConsumer;
 import com.liferay.osb.remote.dossiera.DossieraRESTWebServiceUtil;
-import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
 import com.liferay.osb.service.base.AccountEntryLocalServiceBaseImpl;
 import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.osb.util.OSBConstants;
@@ -1564,10 +1563,10 @@ public class AccountEntryLocalServiceImpl
 			accountEntryId);
 
 		boolean activeSupport =
-			OfferingEntryLocalServiceUtil.hasActiveSupportOfferingEntry(
+			offeringEntryLocalService.hasActiveSupportOfferingEntry(
 				accountEntryId, false);
 		boolean activeTicketSupport =
-			OfferingEntryLocalServiceUtil.hasActiveSupportOfferingEntry(
+			offeringEntryLocalService.hasActiveSupportOfferingEntry(
 				accountEntryId, true);
 
 		accountEntry.setActiveSupport(activeSupport);
