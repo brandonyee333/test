@@ -191,13 +191,13 @@ public class AccountEntrySynchronizer {
 		Set<String> criteria = new HashSet<>();
 
 		criteria.add("organization:" + zendeskOrganizationId);
-		criteria.add("requester:" + ZendeskUserConstants.DEFAULT_USER_ID);
 		criteria.add("status<" + ZendeskTicketConstants.STATUS_CLOSED);
 
 		List<ZendeskTicket> zendeskTickets =
 			_zendeskTicketWebService.getZendeskTickets(criteria);
 
 		for (ZendeskTicket zendeskTicket : zendeskTickets) {
+			zendeskTicket.setRequesterId(ZendeskUserConstants.DEFAULT_USER_ID);
 			zendeskTicket.setStatus("closed");
 		}
 
