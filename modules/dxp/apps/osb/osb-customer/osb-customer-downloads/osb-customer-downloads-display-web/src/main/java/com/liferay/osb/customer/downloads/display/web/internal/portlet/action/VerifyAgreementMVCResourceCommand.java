@@ -102,7 +102,7 @@ public class VerifyAgreementMVCResourceCommand extends BaseMVCResourceCommand {
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		jsonObject.put("verified", String.valueOf(acceptedAgreement));
+		jsonObject.put("verified", acceptedAgreement);
 
 		JSONPortletResponseUtil.writeJSON(
 			resourceRequest, resourceResponse, jsonObject);
