@@ -295,7 +295,7 @@ public class PartnerWorkerLocalServiceImpl
 			roleLocalService.hasUserRole(
 				userId, OSBConstants.ROLE_VERIFIED_USER_ID)) {
 
-			userLocalService.addOrganizationUsers(
+			remoteUserLocalService.addOrganizationUsers(
 				OSBConstants.ORGANIZATION_PARTNER_ID, new long[] {userId});
 		}
 	}
@@ -329,7 +329,7 @@ public class PartnerWorkerLocalServiceImpl
 		if (organizationLocalService.hasUserOrganization(
 				userId, OSBConstants.ORGANIZATION_PARTNER_ID)) {
 
-			userLocalService.unsetOrganizationUsers(
+			remoteUserLocalService.unsetOrganizationUsers(
 				OSBConstants.ORGANIZATION_PARTNER_ID, new long[] {userId});
 		}
 	}
