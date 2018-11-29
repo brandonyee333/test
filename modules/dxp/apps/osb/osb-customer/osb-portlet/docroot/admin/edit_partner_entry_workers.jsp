@@ -128,24 +128,6 @@ request.setAttribute("edit_partner_entry_workers.jsp-portletURL", portletURL);
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
-				name="notifications"
-			>
-				<aui:select label="" name='<%= "notifications_" + partnerWorker.getPartnerWorkerId() %>'>
-
-					<%
-					for (int i = 1; i <= 2; i++) {
-					%>
-
-						<aui:option label="<%= PartnerWorkerConstants.getNotificationsLabel(i) %>" selected="<%= partnerWorker.getNotifications() == i %>" value="<%= i %>" />
-
-					<%
-					}
-					%>
-
-				</aui:select>
-			</liferay-ui:search-container-column-text>
-
-			<liferay-ui:search-container-column-text
 				name="role"
 			>
 				<aui:select label="" name='<%= "role_" + partnerWorker.getPartnerWorkerId() %>'>

@@ -115,24 +115,6 @@ request.setAttribute("edit_account_entry_workers.jsp-portletURL", portletURL);
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
-				name="notifications"
-			>
-				<aui:select label="" name='<%= "notifications_" + accountWorker.getAccountWorkerId() %>'>
-
-					<%
-					for (int i = 1; i <= 4; i++) {
-					%>
-
-						<aui:option label="<%= AccountWorkerConstants.getNotificationsLabel(i) %>" selected="<%= accountWorker.getNotifications() == i %>" value="<%= i %>" />
-
-					<%
-					}
-					%>
-
-				</aui:select>
-			</liferay-ui:search-container-column-text>
-
-			<liferay-ui:search-container-column-text
 				name="role"
 			>
 				<aui:select label="" name='<%= "role_" + accountWorker.getAccountWorkerId() %>'>

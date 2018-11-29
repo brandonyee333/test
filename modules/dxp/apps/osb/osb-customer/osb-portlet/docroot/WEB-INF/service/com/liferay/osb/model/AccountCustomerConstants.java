@@ -19,10 +19,6 @@ package com.liferay.osb.model;
  */
 public class AccountCustomerConstants {
 
-	public static final int NOTIFICATIONS_ALL = 1;
-
-	public static final int NOTIFICATIONS_NONE = 2;
-
 	public static final int ROLE_DEVELOPER = 2;
 
 	public static final int ROLE_MANAGER = 1;
@@ -33,18 +29,6 @@ public class AccountCustomerConstants {
 
 	public static final int[] ROLES =
 		{ROLE_DEVELOPER, ROLE_MANAGER, ROLE_SALES, ROLE_WATCHER};
-
-	public static String getNotificationsLabel(int notifications) {
-		if (notifications == NOTIFICATIONS_ALL) {
-			return "all";
-		}
-		else if (notifications == NOTIFICATIONS_NONE) {
-			return "none";
-		}
-		else {
-			return null;
-		}
-	}
 
 	public static String getRoleLabel(int role) {
 		if (role == ROLE_DEVELOPER) {

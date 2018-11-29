@@ -63,7 +63,6 @@
 
 		<column name="accountEntryId" type="long" />
 		<column name="role" type="int" />
-		<column name="notifications" type="int" />
 
 		<!-- Finder methods -->
 
@@ -382,7 +381,6 @@
 
 		<column name="accountEntryId" type="long" />
 		<column name="role" type="int" />
-		<column name="notifications" type="int" />
 
 		<!-- Finder methods -->
 
@@ -753,7 +751,6 @@
 
 		<column name="partnerEntryId" type="long" />
 		<column name="role" type="int" />
-		<column name="notifications" type="int" />
 
 		<!-- Finder methods -->
 

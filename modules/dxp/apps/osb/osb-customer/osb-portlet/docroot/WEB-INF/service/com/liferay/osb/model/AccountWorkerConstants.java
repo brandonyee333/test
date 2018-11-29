@@ -21,14 +21,6 @@ import com.liferay.portal.kernel.util.StringPool;
  */
 public class AccountWorkerConstants {
 
-	public static final int NOTIFICATIONS_ALL = 1;
-
-	public static final int NOTIFICATIONS_NONE = 2;
-
-	public static final int NOTIFICATIONS_SALES = 3;
-
-	public static final int NOTIFICATIONS_TICKETS = 4;
-
 	public static final int ROLE_ADVOCACY_SPECIALIST = 4;
 
 	public static final int ROLE_EXPERIENCE_MANAGER = 1;
@@ -44,24 +36,6 @@ public class AccountWorkerConstants {
 
 	public static String getKey(long userId, long role) {
 		return userId + StringPool.UNDERLINE + role;
-	}
-
-	public static String getNotificationsLabel(int notifications) {
-		if (notifications == NOTIFICATIONS_ALL) {
-			return "all";
-		}
-		else if (notifications == NOTIFICATIONS_NONE) {
-			return "none";
-		}
-		else if (notifications == NOTIFICATIONS_SALES) {
-			return "sales";
-		}
-		else if (notifications == NOTIFICATIONS_TICKETS) {
-			return "tickets";
-		}
-		else {
-			return null;
-		}
 	}
 
 	public static String getRoleLabel(int role) {

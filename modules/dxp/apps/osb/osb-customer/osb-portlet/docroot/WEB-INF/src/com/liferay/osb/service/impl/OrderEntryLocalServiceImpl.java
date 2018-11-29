@@ -128,8 +128,7 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 
 			accountWorkerLocalService.addAccountWorker(
 				OSBConstants.USER_DEFAULT_USER_ID, user.getEmailAddress(),
-				accountEntry.getAccountEntryId(), accountWorker.getRole(),
-				accountWorker.getNotifications());
+				accountEntry.getAccountEntryId(), accountWorker.getRole());
 		}
 
 		// Order entries

@@ -37,10 +37,6 @@ public class AccountWorkerImpl extends AccountWorkerBaseImpl {
 		return AccountWorkerConstants.getKey(getUserId(), getRole());
 	}
 
-	public String getNotificationsLabel() {
-		return AccountWorkerConstants.getNotificationsLabel(getNotifications());
-	}
-
 	public String getRoleLabel() {
 		return AccountWorkerConstants.getRoleLabel(getRole());
 	}

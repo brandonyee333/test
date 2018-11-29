@@ -21,10 +21,6 @@ import com.liferay.osb.util.OSBConstants;
  */
 public class PartnerWorkerConstants {
 
-	public static final int NOTIFICATIONS_ALL = 1;
-
-	public static final int NOTIFICATIONS_NONE = 2;
-
 	public static final long[] OSB_CORP_ENTRY_ROLE_IDS = {
 		OSBConstants.ROLE_OSB_CORP_PARTNER_MANAGER_ID,
 		OSBConstants.ROLE_OSB_CORP_PARTNER_MEMBER_ID,
@@ -49,18 +45,6 @@ public class PartnerWorkerConstants {
 		}
 		else {
 			return 0;
-		}
-	}
-
-	public static String getNotificationsLabel(int notifications) {
-		if (notifications == NOTIFICATIONS_ALL) {
-			return "all";
-		}
-		else if (notifications == NOTIFICATIONS_NONE) {
-			return "none";
-		}
-		else {
-			return null;
 		}
 	}
 

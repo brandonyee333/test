@@ -41,7 +41,7 @@ public class PartnerWorkerLocalServiceImpl
 	extends PartnerWorkerLocalServiceBaseImpl {
 
 	public PartnerWorker addPartnerWorker(
-			long partnerEntryId, long userId, int role, int notifications)
+			long partnerEntryId, long userId, int role)
 		throws PortalException {
 
 		validateDossieraAccountKey(partnerEntryId);
@@ -56,7 +56,6 @@ public class PartnerWorkerLocalServiceImpl
 		partnerWorker.setUserId(user.getUserId());
 		partnerWorker.setPartnerEntryId(partnerEntryId);
 		partnerWorker.setRole(role);
-		partnerWorker.setNotifications(notifications);
 
 		partnerWorkerPersistence.update(partnerWorker);
 
@@ -68,16 +67,14 @@ public class PartnerWorkerLocalServiceImpl
 	}
 
 	public PartnerWorker addPartnerWorker(
-			long partnerEntryId, String emailAddress, int role,
-			int notifications)
+			long partnerEntryId, String emailAddress, int role)
 		throws PortalException {
 
 		User user = userLocalService.fetchUserByEmailAddress(
 			OSBConstants.COMPANY_ID, emailAddress);
 
 		if (user != null) {
-			return addPartnerWorker(
-				partnerEntryId, user.getUserId(), role, notifications);
+			return addPartnerWorker(partnerEntryId, user.getUserId(), role);
 		}
 
 		User remoteUser = remoteUserLocalService.fetchUserByEmailAddress(
@@ -108,8 +105,7 @@ public class PartnerWorkerLocalServiceImpl
 
 		expandoBridge.setAttributes(remoteExpandoBridge.getAttributes(), false);
 
-		return addPartnerWorker(
-			partnerEntryId, user.getUserId(), role, notifications);
+		return addPartnerWorker(partnerEntryId, user.getUserId(), role);
 	}
 
 	@Override
@@ -220,8 +216,7 @@ public class PartnerWorkerLocalServiceImpl
 		}
 	}
 
-	public void updatePartnerWorker(
-			long partnerWorkerId, int role, int notifications)
+	public void updatePartnerWorker(long partnerWorkerId, int role)
 		throws PortalException {
 
 		PartnerWorker partnerWorker = partnerWorkerPersistence.findByPrimaryKey(
@@ -230,7 +225,6 @@ public class PartnerWorkerLocalServiceImpl
 		validateDossieraAccountKey(partnerWorker.getPartnerEntryId());
 
 		partnerWorker.setRole(role);
-		partnerWorker.setNotifications(notifications);
 
 		partnerWorkerPersistence.update(partnerWorker);
 

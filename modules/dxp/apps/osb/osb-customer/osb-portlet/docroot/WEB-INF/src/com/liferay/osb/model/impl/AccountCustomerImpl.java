@@ -33,11 +33,6 @@ public class AccountCustomerImpl extends AccountCustomerBaseImpl {
 			getAccountEntryId());
 	}
 
-	public String getNotificationsLabel() {
-		return AccountCustomerConstants.getNotificationsLabel(
-			getNotifications());
-	}
-
 	public String getRoleLabel() {
 		return AccountCustomerConstants.getRoleLabel(getRole());
 	}

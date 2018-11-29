@@ -54,8 +54,7 @@ public class AccountCustomerLocalServiceImpl
 
 	@Override
 	public AccountCustomer addAccountCustomer(
-			long userId, long customerUserId, long accountEntryId, int role,
-			int notifications)
+			long userId, long customerUserId, long accountEntryId, int role)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
@@ -71,12 +70,11 @@ public class AccountCustomerLocalServiceImpl
 
 		if (accountCustomer != null) {
 			return updateAccountCustomer(
-				userId, accountCustomer.getAccountCustomerId(), role,
-				notifications);
+				userId, accountCustomer.getAccountCustomerId(), role);
 		}
 
 		accountCustomer = doAddAccountCustomer(
-			customerUserId, accountEntryId, role, notifications);
+			customerUserId, accountEntryId, role);
 
 		long auditSetId = auditEntryLocalService.getNextAuditSetId(
 			AccountEntry.class.getName(), accountEntryId);
@@ -128,8 +126,7 @@ public class AccountCustomerLocalServiceImpl
 
 	@Override
 	public AccountCustomer addAccountCustomer(
-			long userId, String emailAddress, long accountEntryId, int role,
-			int notifications)
+			long userId, String emailAddress, long accountEntryId, int role)
 		throws PortalException {
 
 		User customerUser = userLocalService.fetchUserByEmailAddress(
@@ -137,8 +134,7 @@ public class AccountCustomerLocalServiceImpl
 
 		if (customerUser != null) {
 			return addAccountCustomer(
-				userId, customerUser.getUserId(), accountEntryId, role,
-				notifications);
+				userId, customerUser.getUserId(), accountEntryId, role);
 		}
 
 		User remoteUser = remoteUserLocalService.fetchUserByEmailAddress(
@@ -170,8 +166,7 @@ public class AccountCustomerLocalServiceImpl
 		expandoBridge.setAttributes(remoteExpandoBridge.getAttributes(), false);
 
 		return addAccountCustomer(
-			userId, customerUser.getUserId(), accountEntryId, role,
-			notifications);
+			userId, customerUser.getUserId(), accountEntryId, role);
 	}
 
 	@Override
@@ -276,7 +271,7 @@ public class AccountCustomerLocalServiceImpl
 
 	@Override
 	public AccountCustomer updateAccountCustomer(
-			long userId, long accountCustomerId, int role, int notifications)
+			long userId, long accountCustomerId, int role)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
@@ -288,7 +283,6 @@ public class AccountCustomerLocalServiceImpl
 		int oldRole = accountCustomer.getRole();
 
 		accountCustomer.setRole(role);
-		accountCustomer.setNotifications(notifications);
 
 		accountCustomerPersistence.update(accountCustomer);
 
@@ -348,7 +342,7 @@ public class AccountCustomerLocalServiceImpl
 	}
 
 	protected AccountCustomer doAddAccountCustomer(
-		long userId, long accountEntryId, int role, int notifications) {
+		long userId, long accountEntryId, int role) {
 
 		long accountCustomerId = counterLocalService.increment();
 
@@ -358,7 +352,6 @@ public class AccountCustomerLocalServiceImpl
 		accountCustomer.setUserId(userId);
 		accountCustomer.setAccountEntryId(accountEntryId);
 		accountCustomer.setRole(role);
-		accountCustomer.setNotifications(notifications);
 
 		return accountCustomerPersistence.update(accountCustomer);
 	}
@@ -442,8 +435,7 @@ public class AccountCustomerLocalServiceImpl
 		for (long userId : userIds) {
 			doAddAccountCustomer(
 				userId, accountEntry.getAccountEntryId(),
-				AccountCustomerConstants.ROLE_WATCHER,
-				AccountCustomerConstants.NOTIFICATIONS_NONE);
+				AccountCustomerConstants.ROLE_WATCHER);
 		}
 	}
 

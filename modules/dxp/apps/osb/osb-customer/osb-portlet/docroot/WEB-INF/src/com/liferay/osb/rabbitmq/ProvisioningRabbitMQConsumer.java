@@ -855,8 +855,6 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 
 		accountWorker.setUserId(ownerUser.getUserId());
 		accountWorker.setRole(AccountWorkerConstants.ROLE_SALES);
-		accountWorker.setNotifications(
-			AccountWorkerConstants.NOTIFICATIONS_ALL);
 
 		return accountWorker;
 	}

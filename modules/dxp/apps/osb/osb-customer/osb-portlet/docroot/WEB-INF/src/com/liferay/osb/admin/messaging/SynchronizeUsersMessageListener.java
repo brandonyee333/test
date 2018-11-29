@@ -16,7 +16,6 @@ package com.liferay.osb.admin.messaging;
 
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
-import com.liferay.osb.model.AccountWorkerConstants;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
@@ -90,8 +89,7 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 
 				AccountWorkerLocalServiceUtil.addAccountWorker(
 					OSBConstants.USER_DEFAULT_USER_ID, user.getEmailAddress(),
-					accountEntryId, 0,
-					AccountWorkerConstants.NOTIFICATIONS_NONE);
+					accountEntryId, 0);
 			}
 		}
 		finally {

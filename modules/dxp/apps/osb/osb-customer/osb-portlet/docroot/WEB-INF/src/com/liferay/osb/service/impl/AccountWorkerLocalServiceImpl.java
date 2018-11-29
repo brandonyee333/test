@@ -40,8 +40,7 @@ public class AccountWorkerLocalServiceImpl
 	extends AccountWorkerLocalServiceBaseImpl {
 
 	public AccountWorker addAccountWorker(
-			long userId, long workerUserId, long accountEntryId, int role,
-			int notifications)
+			long userId, long workerUserId, long accountEntryId, int role)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
@@ -67,7 +66,6 @@ public class AccountWorkerLocalServiceImpl
 		accountWorker.setUserId(workerUser.getUserId());
 		accountWorker.setAccountEntryId(accountEntryId);
 		accountWorker.setRole(role);
-		accountWorker.setNotifications(notifications);
 
 		accountWorkerPersistence.update(accountWorker);
 
@@ -90,8 +88,7 @@ public class AccountWorkerLocalServiceImpl
 	}
 
 	public AccountWorker addAccountWorker(
-			long userId, String emailAddress, long accountEntryId, int role,
-			int notifications)
+			long userId, String emailAddress, long accountEntryId, int role)
 		throws PortalException {
 
 		User workerUser = userLocalService.fetchUserByEmailAddress(
@@ -99,8 +96,7 @@ public class AccountWorkerLocalServiceImpl
 
 		if (workerUser != null) {
 			return addAccountWorker(
-				userId, workerUser.getUserId(), accountEntryId, role,
-				notifications);
+				userId, workerUser.getUserId(), accountEntryId, role);
 		}
 
 		User remoteUser = remoteUserLocalService.fetchUserByEmailAddress(
@@ -132,8 +128,7 @@ public class AccountWorkerLocalServiceImpl
 		expandoBridge.setAttributes(remoteExpandoBridge.getAttributes(), false);
 
 		return addAccountWorker(
-			userId, workerUser.getUserId(), accountEntryId, role,
-			notifications);
+			userId, workerUser.getUserId(), accountEntryId, role);
 	}
 
 	public void deleteAccountEntryAccountWorkers(long accountEntryId)
@@ -239,23 +234,19 @@ public class AccountWorkerLocalServiceImpl
 		}
 	}
 
-	public void updateAccountWorker(
-			long userId, long accountWorkerId, int role, int notifications)
+	public void updateAccountWorker(long userId, long accountWorkerId, int role)
 		throws PortalException {
 
 		AccountWorker accountWorker = accountWorkerPersistence.findByPrimaryKey(
 			accountWorkerId);
 
-		if ((accountWorker.getRole() == role) &&
-			(accountWorker.getNotifications() == notifications)) {
-
+		if (accountWorker.getRole() == role) {
 			return;
 		}
 
 		int oldRole = accountWorker.getRole();
 
 		accountWorker.setRole(role);
-		accountWorker.setNotifications(notifications);
 
 		accountWorkerPersistence.update(accountWorker);
 

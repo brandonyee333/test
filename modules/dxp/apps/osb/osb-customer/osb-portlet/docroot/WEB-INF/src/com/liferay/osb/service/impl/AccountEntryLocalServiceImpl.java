@@ -33,7 +33,6 @@ import com.liferay.osb.model.AccountCustomerConstants;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.AccountWorker;
-import com.liferay.osb.model.AccountWorkerConstants;
 import com.liferay.osb.model.AuditEntryConstants;
 import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.model.ExternalIdMapper;
@@ -198,8 +197,7 @@ public class AccountEntryLocalServiceImpl
 
 			accountWorkerLocalService.addAccountWorker(
 				OSBConstants.USER_DEFAULT_USER_ID, user.getEmailAddress(),
-				accountEntry.getAccountEntryId(), accountWorker.getRole(),
-				accountWorker.getNotifications());
+				accountEntry.getAccountEntryId(), accountWorker.getRole());
 		}
 
 		// Order entry
@@ -376,8 +374,7 @@ public class AccountEntryLocalServiceImpl
 					OSBConstants.USER_DEFAULT_USER_ID,
 					accountCustomer.getUserId(),
 					analyticsCloudAccountEntry.getAccountEntryId(),
-					AccountCustomerConstants.ROLE_WATCHER,
-					AccountCustomerConstants.NOTIFICATIONS_NONE);
+					AccountCustomerConstants.ROLE_WATCHER);
 			}
 		}
 
@@ -487,8 +484,7 @@ public class AccountEntryLocalServiceImpl
 
 		accountCustomerLocalService.addAccountCustomer(
 			userId, userId, accountEntry.getAccountEntryId(),
-			AccountCustomerConstants.ROLE_DEVELOPER,
-			AccountCustomerConstants.NOTIFICATIONS_NONE);
+			AccountCustomerConstants.ROLE_DEVELOPER);
 
 		// Order entry
 
@@ -696,8 +692,7 @@ public class AccountEntryLocalServiceImpl
 				accountCustomerLocalService.updateAccountCustomer(
 					OSBConstants.USER_DEFAULT_USER_ID,
 					accountCustomer.getAccountCustomerId(),
-					AccountCustomerConstants.ROLE_DEVELOPER,
-					AccountCustomerConstants.NOTIFICATIONS_NONE);
+					AccountCustomerConstants.ROLE_DEVELOPER);
 			}
 			else {
 				accountCustomerLocalService.deleteAccountCustomer(
@@ -1286,8 +1281,7 @@ public class AccountEntryLocalServiceImpl
 
 			accountWorkerLocalService.addAccountWorker(
 				OSBConstants.USER_DEFAULT_USER_ID, user.getEmailAddress(),
-				accountEntry.getAccountEntryId(), accountWorker.getRole(),
-				accountWorker.getNotifications());
+				accountEntry.getAccountEntryId(), accountWorker.getRole());
 		}
 
 		ArrayList<User> newUsers = new ArrayList<>();
@@ -1916,8 +1910,7 @@ public class AccountEntryLocalServiceImpl
 			accountCustomerLocalService.addAccountCustomer(
 				accountEntry.getUserId(), user.getUserId(),
 				accountEntry.getAccountEntryId(),
-				AccountCustomerConstants.ROLE_WATCHER,
-				AccountCustomerConstants.NOTIFICATIONS_ALL);
+				AccountCustomerConstants.ROLE_WATCHER);
 		}
 
 		return missingUsers;
@@ -2315,12 +2308,6 @@ public class AccountEntryLocalServiceImpl
 				accountEntry.getAccountEntryId());
 
 		for (AccountWorker accountWorker : accountWorkers) {
-			if (accountWorker.getNotifications() ==
-					AccountWorkerConstants.NOTIFICATIONS_NONE) {
-
-				continue;
-			}
-
 			User user = userLocalService.getUser(accountWorker.getUserId());
 
 			if (organizationLocalService.hasUserOrganization(

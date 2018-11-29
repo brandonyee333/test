@@ -27,10 +27,6 @@ public class PartnerWorkerImpl extends PartnerWorkerBaseImpl {
 	public PartnerWorkerImpl() {
 	}
 
-	public String getNotificationsLabel() {
-		return PartnerWorkerConstants.getNotificationsLabel(getNotifications());
-	}
-
 	public PartnerEntry getPartnerEntry() throws PortalException {
 		return PartnerEntryLocalServiceUtil.getPartnerEntry(
 			getPartnerEntryId());

@@ -117,27 +117,9 @@ request.setAttribute("edit_account_entry_customers.jsp-portletURL", portletURL);
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
-				name="notifications"
-			>
-				<aui:select label="" name='<%= "notifications_" + accountCustomer.getAccountCustomerId() %>'>
-
-					<%
-					for (int i = 1; i <= 2; i++) {
-					%>
-
-						<aui:option label="<%= AccountCustomerConstants.getNotificationsLabel(i) %>" selected="<%= accountCustomer.getNotifications() == i %>" value="<%= i %>" />
-
-					<%
-					}
-					%>
-
-				</aui:select>
-			</liferay-ui:search-container-column-text>
-
-			<liferay-ui:search-container-column-text
 				name="role"
 			>
-				<aui:select label="" name='<%= "role_" + accountCustomer.getAccountCustomerId() %>' onChange='<%= renderResponse.getNamespace() + "setNotifications('" + accountCustomer.getAccountCustomerId() + "', this.value);" %>'>
+				<aui:select label="" name='<%= "role_" + accountCustomer.getAccountCustomerId() %>' >
 					<aui:option value="" />
 
 					<%
@@ -190,17 +172,6 @@ request.setAttribute("edit_account_entry_customers.jsp-portletURL", portletURL);
 </aui:form>
 
 <aui:script>
-	function <portlet:namespace />setNotifications(accountCustomerId, role) {
-		var A = AUI();
-
-		if (role == <%= AccountCustomerConstants.ROLE_SALES %>) {
-			A.one('#<portlet:namespace />notifications_' + accountCustomerId).val('<%= AccountCustomerConstants.NOTIFICATIONS_NONE %>');
-		}
-		else {
-			A.one('#<portlet:namespace />notifications_' + accountCustomerId).val('<%= AccountCustomerConstants.NOTIFICATIONS_ALL %>');
-		}
-	}
-
 	function <portlet:namespace />updateAccountCustomer(accountCustomerId) {
 		var form = AUI.$(document.<portlet:namespace />fm);
 

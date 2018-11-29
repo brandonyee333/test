@@ -523,18 +523,14 @@ public class AdminPortlet extends OSBPortlet {
 			actionRequest, "accountEntryId");
 		int role = ParamUtil.getInteger(
 			actionRequest, "role_" + accountCustomerId);
-		int notifications = ParamUtil.getInteger(
-			actionRequest, "notifications_" + accountCustomerId);
 
 		if (accountCustomerId > 0) {
 			AccountCustomerLocalServiceUtil.updateAccountCustomer(
-				themeDisplay.getUserId(), accountCustomerId, role,
-				notifications);
+				themeDisplay.getUserId(), accountCustomerId, role);
 		}
 		else {
 			AccountCustomerLocalServiceUtil.addAccountCustomer(
-				themeDisplay.getUserId(), emailAddress, accountEntryId, role,
-				notifications);
+				themeDisplay.getUserId(), emailAddress, accountEntryId, role);
 		}
 
 		syncToLCS(actionRequest, actionResponse, accountEntryId);
@@ -623,17 +619,14 @@ public class AdminPortlet extends OSBPortlet {
 			actionRequest, "accountEntryId");
 		int role = ParamUtil.getInteger(
 			actionRequest, "role_" + accountWorkerId);
-		int notifications = ParamUtil.getInteger(
-			actionRequest, "notifications_" + accountWorkerId);
 
 		if (accountWorkerId > 0) {
 			AccountWorkerLocalServiceUtil.updateAccountWorker(
-				themeDisplay.getUserId(), accountWorkerId, role, notifications);
+				themeDisplay.getUserId(), accountWorkerId, role);
 		}
 		else {
 			AccountWorkerLocalServiceUtil.addAccountWorker(
-				themeDisplay.getUserId(), emailAddress, accountEntryId, role,
-				notifications);
+				themeDisplay.getUserId(), emailAddress, accountEntryId, role);
 		}
 	}
 
@@ -928,16 +921,14 @@ public class AdminPortlet extends OSBPortlet {
 			actionRequest, "emailAddress");
 		int role = ParamUtil.getInteger(
 			actionRequest, "role_" + partnerWorkerId);
-		int notifications = ParamUtil.getInteger(
-			actionRequest, "notifications_" + partnerWorkerId);
 
 		if (partnerWorkerId > 0) {
 			PartnerWorkerLocalServiceUtil.updatePartnerWorker(
-				partnerWorkerId, role, notifications);
+				partnerWorkerId, role);
 		}
 		else {
 			PartnerWorkerLocalServiceUtil.addPartnerWorker(
-				partnerEntryId, emailAddress, role, notifications);
+				partnerEntryId, emailAddress, role);
 		}
 	}
 

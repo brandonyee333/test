@@ -86,7 +86,7 @@ public class OSBCustomerQAInfrastructureUtil {
 
 	protected static void checkAccountCustomer(
 			long companyId, String emailAddress, String accountEntryCode,
-			int notifications, int role)
+			int role)
 		throws Exception {
 
 		long userId = UserLocalServiceUtil.getUserIdByEmailAddress(
@@ -101,7 +101,7 @@ public class OSBCustomerQAInfrastructureUtil {
 
 			AccountCustomerLocalServiceUtil.addAccountCustomer(
 				OSBConstants.USER_DEFAULT_USER_ID, userId,
-				accountEntry.getAccountEntryId(), role, notifications);
+				accountEntry.getAccountEntryId(), role);
 		}
 
 		if (_log.isInfoEnabled()) {
@@ -119,16 +119,12 @@ public class OSBCustomerQAInfrastructureUtil {
 			String accountEntryCode = OSBCustomerQAConfigurationUtil.get(
 				OSBCustomerQAConfigurationKeys.OSB_QA_ACCOUNT_CUSTOMER,
 				new Filter(accountCustomerEmailAddress, "account-entry-code"));
-			String notifications = OSBCustomerQAConfigurationUtil.get(
-				OSBCustomerQAConfigurationKeys.OSB_QA_ACCOUNT_CUSTOMER,
-				new Filter(accountCustomerEmailAddress, "notifications"));
 			String role = OSBCustomerQAConfigurationUtil.get(
 				OSBCustomerQAConfigurationKeys.OSB_QA_ACCOUNT_CUSTOMER,
 				new Filter(accountCustomerEmailAddress, "role"));
 
 			checkAccountCustomer(
 				companyId, accountCustomerEmailAddress, accountEntryCode,
-				GetterUtil.getInteger(notifications),
 				GetterUtil.getInteger(role));
 		}
 	}
@@ -303,7 +299,7 @@ public class OSBCustomerQAInfrastructureUtil {
 
 	protected static void checkAccountWorker(
 			long companyId, String emailAddress, String accountEntryCode,
-			int notifications, int role)
+			int role)
 		throws Exception {
 
 		long userId = UserLocalServiceUtil.getUserIdByEmailAddress(
@@ -318,7 +314,7 @@ public class OSBCustomerQAInfrastructureUtil {
 
 			AccountWorkerLocalServiceUtil.addAccountWorker(
 				OSBConstants.USER_DEFAULT_USER_ID, emailAddress,
-				accountEntry.getAccountEntryId(), role, notifications);
+				accountEntry.getAccountEntryId(), role);
 		}
 
 		if (_log.isInfoEnabled()) {
@@ -335,16 +331,12 @@ public class OSBCustomerQAInfrastructureUtil {
 			String accountEntryCode = OSBCustomerQAConfigurationUtil.get(
 				OSBCustomerQAConfigurationKeys.OSB_QA_ACCOUNT_WORKER,
 				new Filter(accountWorkerEmailAddress, "account-entry-code"));
-			String notifications = OSBCustomerQAConfigurationUtil.get(
-				OSBCustomerQAConfigurationKeys.OSB_QA_ACCOUNT_WORKER,
-				new Filter(accountWorkerEmailAddress, "notifications"));
 			String role = OSBCustomerQAConfigurationUtil.get(
 				OSBCustomerQAConfigurationKeys.OSB_QA_ACCOUNT_WORKER,
 				new Filter(accountWorkerEmailAddress, "role"));
 
 			checkAccountWorker(
 				companyId, accountWorkerEmailAddress, accountEntryCode,
-				GetterUtil.getInteger(notifications),
 				GetterUtil.getInteger(role));
 		}
 	}
@@ -493,7 +485,7 @@ public class OSBCustomerQAInfrastructureUtil {
 
 	protected static void checkPartnerWorker(
 			long companyId, String emailAddress, String partnerEntryCode,
-			int notifications, int role)
+			int role)
 		throws Exception {
 
 		long userId = UserLocalServiceUtil.getUserIdByEmailAddress(
@@ -507,7 +499,7 @@ public class OSBCustomerQAInfrastructureUtil {
 				userId, partnerEntry.getPartnerEntryId())) {
 
 			PartnerWorkerLocalServiceUtil.addPartnerWorker(
-				userId, emailAddress, role, notifications);
+				userId, emailAddress, role);
 		}
 
 		if (_log.isInfoEnabled()) {
@@ -520,9 +512,6 @@ public class OSBCustomerQAInfrastructureUtil {
 				OSBCustomerQAConfigurationValues.
 					OSB_QA_PARTNER_WORKER_EMAIL_ADDRESSES) {
 
-			String notifications = OSBCustomerQAConfigurationUtil.get(
-				OSBCustomerQAConfigurationKeys.OSB_QA_PARTNER_WORKER,
-				new Filter(partnerWorkerEmailAddress, "notifications"));
 			String partnerEntryCode = OSBCustomerQAConfigurationUtil.get(
 				OSBCustomerQAConfigurationKeys.OSB_QA_PARTNER_WORKER,
 				new Filter(partnerWorkerEmailAddress, "partner-entry-code"));
@@ -532,7 +521,6 @@ public class OSBCustomerQAInfrastructureUtil {
 
 			checkPartnerWorker(
 				companyId, partnerWorkerEmailAddress, partnerEntryCode,
-				GetterUtil.getInteger(notifications),
 				GetterUtil.getInteger(role));
 		}
 	}
