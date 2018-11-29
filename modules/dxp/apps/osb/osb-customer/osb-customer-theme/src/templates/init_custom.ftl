@@ -35,3 +35,21 @@
 <#if is_signed_in && serviceLocator.findService("com.liferay.osb.customer.help.center.web.util.HelpCenterThemeUtil")?? && serviceLocator.findService("com.liferay.osb.customer.help.center.web.util.HelpCenterThemeUtil").hasMegaMenu(user.getUserId())>
 	<#assign has_mega_menu = true />
 </#if>
+
+<#function convert_to_zendesk_locale locale>
+	<#local zendesk_locale = "" />
+
+	<#if locale == "en_US">
+		<#local zendesk_locale = "en-US" />
+	<#elseif locale == "es_ES">
+		<#local zendesk_locale = "es" />
+	<#elseif locale == "ja_JP">
+		<#local zendesk_locale = "ja" />
+	<#elseif locale == "pt_BR">
+		<#local zendesk_locale = "pt" />
+	<#elseif locale == "zh_CN">
+		<#local zendesk_locale = "zh-CN" />
+	</#if>
+
+	<#return zendesk_locale>
+</#function>

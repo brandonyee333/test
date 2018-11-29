@@ -9,29 +9,7 @@
 	);
 
 	function addLocaleParamToURI(locale, urn) {
-		return '${zendesk_url}/hc/' + convertToZendeskLocale(locale) + '/' + urn;
-	}
-
-	function convertToZendeskLocale(locale) {
-		var retVal = '';
-
-		if (locale == 'en_US') {
-			retVal = 'en-US';
-		}
-		else if (locale == 'es_ES') {
-			retVal = 'es';
-		}
-		else if (locale == 'ja_JP') {
-			retVal = 'ja';
-		}
-		else if (locale == 'pt_BR') {
-			retVal = 'pt';
-		}
-		else if (locale == 'zh_CN') {
-			retVal = 'zh-CN';
-		}
-
-		return retVal;
+		return '${zendesk_url}/hc/${convert_to_zendesk_locale(locale)}/' + urn;
 	}
 
 	var accountLinks = {
