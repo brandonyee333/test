@@ -80,11 +80,10 @@ public interface PartnerWorkerLocalService extends BaseLocalService,
 	public PartnerWorker addPartnerWorker(PartnerWorker partnerWorker);
 
 	public PartnerWorker addPartnerWorker(long partnerEntryId,
-		java.lang.String emailAddress, int role, int notifications)
-		throws PortalException;
+		java.lang.String emailAddress, int role) throws PortalException;
 
 	public PartnerWorker addPartnerWorker(long partnerEntryId, long userId,
-		int role, int notifications) throws PortalException;
+		int role) throws PortalException;
 
 	/**
 	* Creates a new partner worker with the primary key. Does not add the partner worker to the database.
@@ -270,6 +269,6 @@ public interface PartnerWorkerLocalService extends BaseLocalService,
 		java.lang.String oldDossieraAccountKey,
 		java.lang.String newDossieraAccountKey) throws PortalException;
 
-	public void updatePartnerWorker(long partnerWorkerId, int role,
-		int notifications) throws PortalException;
+	public void updatePartnerWorker(long partnerWorkerId, int role)
+		throws PortalException;
 }

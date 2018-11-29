@@ -84,7 +84,6 @@ public class AccountCustomerClp extends BaseModelImpl<AccountCustomer>
 		attributes.put("userId", getUserId());
 		attributes.put("accountEntryId", getAccountEntryId());
 		attributes.put("role", getRole());
-		attributes.put("notifications", getNotifications());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -116,12 +115,6 @@ public class AccountCustomerClp extends BaseModelImpl<AccountCustomer>
 
 		if (role != null) {
 			setRole(role);
-		}
-
-		Integer notifications = (Integer)attributes.get("notifications");
-
-		if (notifications != null) {
-			setNotifications(notifications);
 		}
 
 		_entityCacheEnabled = GetterUtil.getBoolean("entityCacheEnabled");
@@ -238,29 +231,6 @@ public class AccountCustomerClp extends BaseModelImpl<AccountCustomer>
 	}
 
 	@Override
-	public int getNotifications() {
-		return _notifications;
-	}
-
-	@Override
-	public void setNotifications(int notifications) {
-		_notifications = notifications;
-
-		if (_accountCustomerRemoteModel != null) {
-			try {
-				Class<?> clazz = _accountCustomerRemoteModel.getClass();
-
-				Method method = clazz.getMethod("setNotifications", int.class);
-
-				method.invoke(_accountCustomerRemoteModel, notifications);
-			}
-			catch (Exception e) {
-				throw new UnsupportedOperationException(e);
-			}
-		}
-	}
-
-	@Override
 	public AccountEntry getAccountEntry() {
 		try {
 			String methodName = "getAccountEntry";
@@ -270,25 +240,6 @@ public class AccountCustomerClp extends BaseModelImpl<AccountCustomer>
 			Object[] parameterValues = new Object[] {  };
 
 			AccountEntry returnObj = (AccountEntry)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
-	public java.lang.String getNotificationsLabel() {
-		try {
-			String methodName = "getNotificationsLabel";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
 					parameterTypes, parameterValues);
 
 			return returnObj;
@@ -392,7 +343,6 @@ public class AccountCustomerClp extends BaseModelImpl<AccountCustomer>
 		clone.setUserId(getUserId());
 		clone.setAccountEntryId(getAccountEntryId());
 		clone.setRole(getRole());
-		clone.setNotifications(getNotifications());
 
 		return clone;
 	}
@@ -455,7 +405,7 @@ public class AccountCustomerClp extends BaseModelImpl<AccountCustomer>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(9);
 
 		sb.append("{accountCustomerId=");
 		sb.append(getAccountCustomerId());
@@ -465,8 +415,6 @@ public class AccountCustomerClp extends BaseModelImpl<AccountCustomer>
 		sb.append(getAccountEntryId());
 		sb.append(", role=");
 		sb.append(getRole());
-		sb.append(", notifications=");
-		sb.append(getNotifications());
 		sb.append("}");
 
 		return sb.toString();
@@ -474,7 +422,7 @@ public class AccountCustomerClp extends BaseModelImpl<AccountCustomer>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(19);
+		StringBundler sb = new StringBundler(16);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.AccountCustomer");
@@ -496,10 +444,6 @@ public class AccountCustomerClp extends BaseModelImpl<AccountCustomer>
 			"<column><column-name>role</column-name><column-value><![CDATA[");
 		sb.append(getRole());
 		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>notifications</column-name><column-value><![CDATA[");
-		sb.append(getNotifications());
-		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -510,7 +454,6 @@ public class AccountCustomerClp extends BaseModelImpl<AccountCustomer>
 	private long _userId;
 	private long _accountEntryId;
 	private int _role;
-	private int _notifications;
 	private BaseModel<?> _accountCustomerRemoteModel;
 	private Class<?> _clpSerializerClass = ClpSerializer.class;
 	private boolean _entityCacheEnabled;

@@ -2827,7 +2827,6 @@ public class AccountWorkerPersistenceImpl extends BasePersistenceImpl<AccountWor
 		accountWorkerImpl.setUserId(accountWorker.getUserId());
 		accountWorkerImpl.setAccountEntryId(accountWorker.getAccountEntryId());
 		accountWorkerImpl.setRole(accountWorker.getRole());
-		accountWorkerImpl.setNotifications(accountWorker.getNotifications());
 
 		return accountWorkerImpl;
 	}

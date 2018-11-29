@@ -72,8 +72,7 @@ public class PartnerWorkerModelImpl extends BaseModelImpl<PartnerWorker>
 			{ "partnerWorkerId", Types.BIGINT },
 			{ "userId", Types.BIGINT },
 			{ "partnerEntryId", Types.BIGINT },
-			{ "role", Types.INTEGER },
-			{ "notifications", Types.INTEGER }
+			{ "role", Types.INTEGER }
 		};
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
 
@@ -82,10 +81,9 @@ public class PartnerWorkerModelImpl extends BaseModelImpl<PartnerWorker>
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("partnerEntryId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("role", Types.INTEGER);
-		TABLE_COLUMNS_MAP.put("notifications", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSB_PartnerWorker (partnerWorkerId LONG not null primary key,userId LONG,partnerEntryId LONG,role INTEGER,notifications INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table OSB_PartnerWorker (partnerWorkerId LONG not null primary key,userId LONG,partnerEntryId LONG,role INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table OSB_PartnerWorker";
 	public static final String ORDER_BY_JPQL = " ORDER BY partnerWorker.partnerWorkerId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY OSB_PartnerWorker.partnerWorkerId ASC";
@@ -123,7 +121,6 @@ public class PartnerWorkerModelImpl extends BaseModelImpl<PartnerWorker>
 		model.setUserId(soapModel.getUserId());
 		model.setPartnerEntryId(soapModel.getPartnerEntryId());
 		model.setRole(soapModel.getRole());
-		model.setNotifications(soapModel.getNotifications());
 
 		return model;
 	}
@@ -192,7 +189,6 @@ public class PartnerWorkerModelImpl extends BaseModelImpl<PartnerWorker>
 		attributes.put("userId", getUserId());
 		attributes.put("partnerEntryId", getPartnerEntryId());
 		attributes.put("role", getRole());
-		attributes.put("notifications", getNotifications());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -224,12 +220,6 @@ public class PartnerWorkerModelImpl extends BaseModelImpl<PartnerWorker>
 
 		if (role != null) {
 			setRole(role);
-		}
-
-		Integer notifications = (Integer)attributes.get("notifications");
-
-		if (notifications != null) {
-			setNotifications(notifications);
 		}
 	}
 
@@ -329,17 +319,6 @@ public class PartnerWorkerModelImpl extends BaseModelImpl<PartnerWorker>
 		return _originalRole;
 	}
 
-	@JSON
-	@Override
-	public int getNotifications() {
-		return _notifications;
-	}
-
-	@Override
-	public void setNotifications(int notifications) {
-		_notifications = notifications;
-	}
-
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -375,7 +354,6 @@ public class PartnerWorkerModelImpl extends BaseModelImpl<PartnerWorker>
 		partnerWorkerImpl.setUserId(getUserId());
 		partnerWorkerImpl.setPartnerEntryId(getPartnerEntryId());
 		partnerWorkerImpl.setRole(getRole());
-		partnerWorkerImpl.setNotifications(getNotifications());
 
 		partnerWorkerImpl.resetOriginalValues();
 
@@ -465,14 +443,12 @@ public class PartnerWorkerModelImpl extends BaseModelImpl<PartnerWorker>
 
 		partnerWorkerCacheModel.role = getRole();
 
-		partnerWorkerCacheModel.notifications = getNotifications();
-
 		return partnerWorkerCacheModel;
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(9);
 
 		sb.append("{partnerWorkerId=");
 		sb.append(getPartnerWorkerId());
@@ -482,8 +458,6 @@ public class PartnerWorkerModelImpl extends BaseModelImpl<PartnerWorker>
 		sb.append(getPartnerEntryId());
 		sb.append(", role=");
 		sb.append(getRole());
-		sb.append(", notifications=");
-		sb.append(getNotifications());
 		sb.append("}");
 
 		return sb.toString();
@@ -491,7 +465,7 @@ public class PartnerWorkerModelImpl extends BaseModelImpl<PartnerWorker>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(19);
+		StringBundler sb = new StringBundler(16);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.PartnerWorker");
@@ -513,10 +487,6 @@ public class PartnerWorkerModelImpl extends BaseModelImpl<PartnerWorker>
 			"<column><column-name>role</column-name><column-value><![CDATA[");
 		sb.append(getRole());
 		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>notifications</column-name><column-value><![CDATA[");
-		sb.append(getNotifications());
-		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -537,7 +507,6 @@ public class PartnerWorkerModelImpl extends BaseModelImpl<PartnerWorker>
 	private int _role;
 	private int _originalRole;
 	private boolean _setOriginalRole;
-	private int _notifications;
 	private long _columnBitmask;
 	private PartnerWorker _escapedModel;
 }

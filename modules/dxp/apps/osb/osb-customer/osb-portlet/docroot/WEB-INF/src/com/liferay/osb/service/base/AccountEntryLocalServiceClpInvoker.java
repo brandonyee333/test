@@ -423,21 +423,21 @@ public class AccountEntryLocalServiceClpInvoker {
 				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 
-		_methodName245 = "updateInstructions";
+		_methodName245 = "updateActiveSupport";
 
-		_methodParameterTypes245 = new String[] {
+		_methodParameterTypes245 = new String[] { "long" };
+
+		_methodName246 = "updateInstructions";
+
+		_methodParameterTypes246 = new String[] {
 				"long", "long", "java.lang.String"
 			};
 
-		_methodName246 = "updateLastAuditDate";
+		_methodName247 = "updateLastAuditDate";
 
-		_methodParameterTypes246 = new String[] {
+		_methodParameterTypes247 = new String[] {
 				"long", "long", "java.lang.String", "java.lang.String"
 			};
-
-		_methodName247 = "updateActiveSupport";
-
-		_methodParameterTypes247 = new String[] { "long" };
 
 		_methodName248 = "updateStatus";
 
@@ -1044,22 +1044,22 @@ public class AccountEntryLocalServiceClpInvoker {
 
 		if (_methodName245.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes245, parameterTypes)) {
-			return AccountEntryLocalServiceUtil.updateInstructions(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue(), (java.lang.String)arguments[2]);
-		}
-
-		if (_methodName246.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes246, parameterTypes)) {
-			AccountEntryLocalServiceUtil.updateLastAuditDate(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue(),
-				(java.lang.String)arguments[2], (java.lang.String)arguments[3]);
+			AccountEntryLocalServiceUtil.updateActiveSupport(((Long)arguments[0]).longValue());
 
 			return null;
 		}
 
+		if (_methodName246.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes246, parameterTypes)) {
+			return AccountEntryLocalServiceUtil.updateInstructions(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(), (java.lang.String)arguments[2]);
+		}
+
 		if (_methodName247.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes247, parameterTypes)) {
-			AccountEntryLocalServiceUtil.updateActiveSupport(((Long)arguments[0]).longValue());
+			AccountEntryLocalServiceUtil.updateLastAuditDate(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				(java.lang.String)arguments[2], (java.lang.String)arguments[3]);
 
 			return null;
 		}

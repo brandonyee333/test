@@ -77,12 +77,11 @@ public interface AccountWorkerLocalService extends BaseLocalService,
 	public AccountWorker addAccountWorker(AccountWorker accountWorker);
 
 	public AccountWorker addAccountWorker(long userId,
-		java.lang.String emailAddress, long accountEntryId, int role,
-		int notifications) throws PortalException;
+		java.lang.String emailAddress, long accountEntryId, int role)
+		throws PortalException;
 
 	public AccountWorker addAccountWorker(long userId, long workerUserId,
-		long accountEntryId, int role, int notifications)
-		throws PortalException;
+		long accountEntryId, int role) throws PortalException;
 
 	/**
 	* Creates a new account worker with the primary key. Does not add the account worker to the database.
@@ -267,6 +266,6 @@ public interface AccountWorkerLocalService extends BaseLocalService,
 
 	public void deleteAccountWorkers(long userId) throws PortalException;
 
-	public void updateAccountWorker(long userId, long accountWorkerId,
-		int role, int notifications) throws PortalException;
+	public void updateAccountWorker(long userId, long accountWorkerId, int role)
+		throws PortalException;
 }

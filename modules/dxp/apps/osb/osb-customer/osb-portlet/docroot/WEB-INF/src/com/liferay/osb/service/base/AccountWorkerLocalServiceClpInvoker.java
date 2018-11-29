@@ -129,14 +129,12 @@ public class AccountWorkerLocalServiceClpInvoker {
 
 		_methodName167 = "addAccountWorker";
 
-		_methodParameterTypes167 = new String[] {
-				"long", "long", "long", "int", "int"
-			};
+		_methodParameterTypes167 = new String[] { "long", "long", "long", "int" };
 
 		_methodName168 = "addAccountWorker";
 
 		_methodParameterTypes168 = new String[] {
-				"long", "java.lang.String", "long", "int", "int"
+				"long", "java.lang.String", "long", "int"
 			};
 
 		_methodName169 = "deleteAccountEntryAccountWorkers";
@@ -177,7 +175,7 @@ public class AccountWorkerLocalServiceClpInvoker {
 
 		_methodName178 = "updateAccountWorker";
 
-		_methodParameterTypes178 = new String[] { "long", "long", "int", "int" };
+		_methodParameterTypes178 = new String[] { "long", "long", "int" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -294,8 +292,7 @@ public class AccountWorkerLocalServiceClpInvoker {
 			return AccountWorkerLocalServiceUtil.addAccountWorker(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
-				((Integer)arguments[3]).intValue(),
-				((Integer)arguments[4]).intValue());
+				((Integer)arguments[3]).intValue());
 		}
 
 		if (_methodName168.equals(name) &&
@@ -303,8 +300,7 @@ public class AccountWorkerLocalServiceClpInvoker {
 			return AccountWorkerLocalServiceUtil.addAccountWorker(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1],
 				((Long)arguments[2]).longValue(),
-				((Integer)arguments[3]).intValue(),
-				((Integer)arguments[4]).intValue());
+				((Integer)arguments[3]).intValue());
 		}
 
 		if (_methodName169.equals(name) &&
@@ -367,8 +363,7 @@ public class AccountWorkerLocalServiceClpInvoker {
 				Arrays.deepEquals(_methodParameterTypes178, parameterTypes)) {
 			AccountWorkerLocalServiceUtil.updateAccountWorker(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
-				((Integer)arguments[2]).intValue(),
-				((Integer)arguments[3]).intValue());
+				((Integer)arguments[2]).intValue());
 
 			return null;
 		}

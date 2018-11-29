@@ -129,20 +129,6 @@ public interface AccountCustomerModel extends BaseModel<AccountCustomer> {
 	 */
 	public void setRole(int role);
 
-	/**
-	 * Returns the notifications of this account customer.
-	 *
-	 * @return the notifications of this account customer
-	 */
-	public int getNotifications();
-
-	/**
-	 * Sets the notifications of this account customer.
-	 *
-	 * @param notifications the notifications of this account customer
-	 */
-	public void setNotifications(int notifications);
-
 	@Override
 	public boolean isNew();
 

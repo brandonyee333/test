@@ -129,20 +129,6 @@ public interface PartnerWorkerModel extends BaseModel<PartnerWorker> {
 	 */
 	public void setRole(int role);
 
-	/**
-	 * Returns the notifications of this partner worker.
-	 *
-	 * @return the notifications of this partner worker
-	 */
-	public int getNotifications();
-
-	/**
-	 * Sets the notifications of this partner worker.
-	 *
-	 * @param notifications the notifications of this partner worker
-	 */
-	public void setNotifications(int notifications);
-
 	@Override
 	public boolean isNew();
 

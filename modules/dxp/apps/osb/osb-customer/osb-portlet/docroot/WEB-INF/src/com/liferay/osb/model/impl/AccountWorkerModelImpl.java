@@ -72,8 +72,7 @@ public class AccountWorkerModelImpl extends BaseModelImpl<AccountWorker>
 			{ "accountWorkerId", Types.BIGINT },
 			{ "userId", Types.BIGINT },
 			{ "accountEntryId", Types.BIGINT },
-			{ "role", Types.INTEGER },
-			{ "notifications", Types.INTEGER }
+			{ "role", Types.INTEGER }
 		};
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
 
@@ -82,10 +81,9 @@ public class AccountWorkerModelImpl extends BaseModelImpl<AccountWorker>
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("accountEntryId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("role", Types.INTEGER);
-		TABLE_COLUMNS_MAP.put("notifications", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSB_AccountWorker (accountWorkerId LONG not null primary key,userId LONG,accountEntryId LONG,role INTEGER,notifications INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table OSB_AccountWorker (accountWorkerId LONG not null primary key,userId LONG,accountEntryId LONG,role INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table OSB_AccountWorker";
 	public static final String ORDER_BY_JPQL = " ORDER BY accountWorker.accountWorkerId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY OSB_AccountWorker.accountWorkerId ASC";
@@ -123,7 +121,6 @@ public class AccountWorkerModelImpl extends BaseModelImpl<AccountWorker>
 		model.setUserId(soapModel.getUserId());
 		model.setAccountEntryId(soapModel.getAccountEntryId());
 		model.setRole(soapModel.getRole());
-		model.setNotifications(soapModel.getNotifications());
 
 		return model;
 	}
@@ -192,7 +189,6 @@ public class AccountWorkerModelImpl extends BaseModelImpl<AccountWorker>
 		attributes.put("userId", getUserId());
 		attributes.put("accountEntryId", getAccountEntryId());
 		attributes.put("role", getRole());
-		attributes.put("notifications", getNotifications());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -224,12 +220,6 @@ public class AccountWorkerModelImpl extends BaseModelImpl<AccountWorker>
 
 		if (role != null) {
 			setRole(role);
-		}
-
-		Integer notifications = (Integer)attributes.get("notifications");
-
-		if (notifications != null) {
-			setNotifications(notifications);
 		}
 	}
 
@@ -329,17 +319,6 @@ public class AccountWorkerModelImpl extends BaseModelImpl<AccountWorker>
 		return _originalRole;
 	}
 
-	@JSON
-	@Override
-	public int getNotifications() {
-		return _notifications;
-	}
-
-	@Override
-	public void setNotifications(int notifications) {
-		_notifications = notifications;
-	}
-
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -375,7 +354,6 @@ public class AccountWorkerModelImpl extends BaseModelImpl<AccountWorker>
 		accountWorkerImpl.setUserId(getUserId());
 		accountWorkerImpl.setAccountEntryId(getAccountEntryId());
 		accountWorkerImpl.setRole(getRole());
-		accountWorkerImpl.setNotifications(getNotifications());
 
 		accountWorkerImpl.resetOriginalValues();
 
@@ -465,14 +443,12 @@ public class AccountWorkerModelImpl extends BaseModelImpl<AccountWorker>
 
 		accountWorkerCacheModel.role = getRole();
 
-		accountWorkerCacheModel.notifications = getNotifications();
-
 		return accountWorkerCacheModel;
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(9);
 
 		sb.append("{accountWorkerId=");
 		sb.append(getAccountWorkerId());
@@ -482,8 +458,6 @@ public class AccountWorkerModelImpl extends BaseModelImpl<AccountWorker>
 		sb.append(getAccountEntryId());
 		sb.append(", role=");
 		sb.append(getRole());
-		sb.append(", notifications=");
-		sb.append(getNotifications());
 		sb.append("}");
 
 		return sb.toString();
@@ -491,7 +465,7 @@ public class AccountWorkerModelImpl extends BaseModelImpl<AccountWorker>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(19);
+		StringBundler sb = new StringBundler(16);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.AccountWorker");
@@ -513,10 +487,6 @@ public class AccountWorkerModelImpl extends BaseModelImpl<AccountWorker>
 			"<column><column-name>role</column-name><column-value><![CDATA[");
 		sb.append(getRole());
 		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>notifications</column-name><column-value><![CDATA[");
-		sb.append(getNotifications());
-		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -537,7 +507,6 @@ public class AccountWorkerModelImpl extends BaseModelImpl<AccountWorker>
 	private int _role;
 	private int _originalRole;
 	private boolean _setOriginalRole;
-	private int _notifications;
 	private long _columnBitmask;
 	private AccountWorker _escapedModel;
 }

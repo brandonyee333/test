@@ -61,7 +61,6 @@ public class PartnerWorkerWrapper implements PartnerWorker,
 		attributes.put("userId", getUserId());
 		attributes.put("partnerEntryId", getPartnerEntryId());
 		attributes.put("role", getRole());
-		attributes.put("notifications", getNotifications());
 
 		return attributes;
 	}
@@ -90,12 +89,6 @@ public class PartnerWorkerWrapper implements PartnerWorker,
 
 		if (role != null) {
 			setRole(role);
-		}
-
-		Integer notifications = (Integer)attributes.get("notifications");
-
-		if (notifications != null) {
-			setNotifications(notifications);
 		}
 	}
 
@@ -146,16 +139,6 @@ public class PartnerWorkerWrapper implements PartnerWorker,
 	}
 
 	/**
-	* Returns the notifications of this partner worker.
-	*
-	* @return the notifications of this partner worker
-	*/
-	@Override
-	public int getNotifications() {
-		return _partnerWorker.getNotifications();
-	}
-
-	/**
 	* Returns the role of this partner worker.
 	*
 	* @return the role of this partner worker
@@ -178,11 +161,6 @@ public class PartnerWorkerWrapper implements PartnerWorker,
 	@Override
 	public java.lang.Object clone() {
 		return new PartnerWorkerWrapper((PartnerWorker)_partnerWorker.clone());
-	}
-
-	@Override
-	public java.lang.String getNotificationsLabel() {
-		return _partnerWorker.getNotificationsLabel();
 	}
 
 	@Override
@@ -279,16 +257,6 @@ public class PartnerWorkerWrapper implements PartnerWorker,
 	@Override
 	public void setNew(boolean n) {
 		_partnerWorker.setNew(n);
-	}
-
-	/**
-	* Sets the notifications of this partner worker.
-	*
-	* @param notifications the notifications of this partner worker
-	*/
-	@Override
-	public void setNotifications(int notifications) {
-		_partnerWorker.setNotifications(notifications);
 	}
 
 	/**

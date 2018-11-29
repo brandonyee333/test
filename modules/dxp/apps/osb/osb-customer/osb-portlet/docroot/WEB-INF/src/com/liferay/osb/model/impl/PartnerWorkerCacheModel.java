@@ -63,7 +63,7 @@ public class PartnerWorkerCacheModel implements CacheModel<PartnerWorker>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(9);
 
 		sb.append("{partnerWorkerId=");
 		sb.append(partnerWorkerId);
@@ -73,8 +73,6 @@ public class PartnerWorkerCacheModel implements CacheModel<PartnerWorker>,
 		sb.append(partnerEntryId);
 		sb.append(", role=");
 		sb.append(role);
-		sb.append(", notifications=");
-		sb.append(notifications);
 		sb.append("}");
 
 		return sb.toString();
@@ -88,7 +86,6 @@ public class PartnerWorkerCacheModel implements CacheModel<PartnerWorker>,
 		partnerWorkerImpl.setUserId(userId);
 		partnerWorkerImpl.setPartnerEntryId(partnerEntryId);
 		partnerWorkerImpl.setRole(role);
-		partnerWorkerImpl.setNotifications(notifications);
 
 		partnerWorkerImpl.resetOriginalValues();
 
@@ -104,8 +101,6 @@ public class PartnerWorkerCacheModel implements CacheModel<PartnerWorker>,
 		partnerEntryId = objectInput.readLong();
 
 		role = objectInput.readInt();
-
-		notifications = objectInput.readInt();
 	}
 
 	@Override
@@ -118,13 +113,10 @@ public class PartnerWorkerCacheModel implements CacheModel<PartnerWorker>,
 		objectOutput.writeLong(partnerEntryId);
 
 		objectOutput.writeInt(role);
-
-		objectOutput.writeInt(notifications);
 	}
 
 	public long partnerWorkerId;
 	public long userId;
 	public long partnerEntryId;
 	public int role;
-	public int notifications;
 }

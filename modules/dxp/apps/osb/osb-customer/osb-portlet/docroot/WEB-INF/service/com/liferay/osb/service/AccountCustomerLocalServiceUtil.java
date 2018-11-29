@@ -58,20 +58,18 @@ public class AccountCustomerLocalServiceUtil {
 
 	public static com.liferay.osb.model.AccountCustomer addAccountCustomer(
 		long userId, java.lang.String emailAddress, long accountEntryId,
-		int role, int notifications)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		int role) throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addAccountCustomer(userId, emailAddress, accountEntryId,
-			role, notifications);
+			role);
 	}
 
 	public static com.liferay.osb.model.AccountCustomer addAccountCustomer(
-		long userId, long customerUserId, long accountEntryId, int role,
-		int notifications)
+		long userId, long customerUserId, long accountEntryId, int role)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addAccountCustomer(userId, customerUserId, accountEntryId,
-			role, notifications);
+			role);
 	}
 
 	/**
@@ -162,11 +160,10 @@ public class AccountCustomerLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.model.AccountCustomer updateAccountCustomer(
-		long userId, long accountCustomerId, int role, int notifications)
+		long userId, long accountCustomerId, int role)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
-				   .updateAccountCustomer(userId, accountCustomerId, role,
-			notifications);
+				   .updateAccountCustomer(userId, accountCustomerId, role);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {

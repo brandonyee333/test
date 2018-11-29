@@ -45,14 +45,12 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 		_methodName3 = "addAccountWorker";
 
 		_methodParameterTypes3 = new String[] {
-				"long", "java.lang.String", "long", "int", "int"
+				"long", "java.lang.String", "long", "int"
 			};
 
 		_methodName4 = "addAccountWorker";
 
-		_methodParameterTypes4 = new String[] {
-				"long", "long", "long", "int", "int"
-			};
+		_methodParameterTypes4 = new String[] { "long", "long", "long", "int" };
 
 		_methodName5 = "createAccountWorker";
 
@@ -178,7 +176,7 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 
 		_methodName32 = "updateAccountWorker";
 
-		_methodParameterTypes32 = new String[] { "long", "long", "int", "int" };
+		_methodParameterTypes32 = new String[] { "long", "long", "int" };
 	}
 
 	@Override
@@ -255,8 +253,7 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 
 	@Override
 	public com.liferay.osb.model.AccountWorker addAccountWorker(long userId,
-		java.lang.String emailAddress, long accountEntryId, int role,
-		int notifications)
+		java.lang.String emailAddress, long accountEntryId, int role)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
@@ -270,9 +267,7 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 						
 					accountEntryId,
 						
-					role,
-						
-					notifications
+					role
 					});
 		}
 		catch (Throwable t) {
@@ -296,24 +291,14 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 
 	@Override
 	public com.liferay.osb.model.AccountWorker addAccountWorker(long userId,
-		long workerUserId, long accountEntryId, int role, int notifications)
+		long workerUserId, long accountEntryId, int role)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName4,
 					_methodParameterTypes4,
-					new Object[] {
-						userId,
-						
-					workerUserId,
-						
-					accountEntryId,
-						
-					role,
-						
-					notifications
-					});
+					new Object[] { userId, workerUserId, accountEntryId, role });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1020,13 +1005,12 @@ public class AccountWorkerLocalServiceClp implements AccountWorkerLocalService {
 	}
 
 	@Override
-	public void updateAccountWorker(long userId, long accountWorkerId,
-		int role, int notifications)
+	public void updateAccountWorker(long userId, long accountWorkerId, int role)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName32,
 				_methodParameterTypes32,
-				new Object[] { userId, accountWorkerId, role, notifications });
+				new Object[] { userId, accountWorkerId, role });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);

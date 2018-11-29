@@ -61,7 +61,6 @@ public class AccountCustomerWrapper implements AccountCustomer,
 		attributes.put("userId", getUserId());
 		attributes.put("accountEntryId", getAccountEntryId());
 		attributes.put("role", getRole());
-		attributes.put("notifications", getNotifications());
 
 		return attributes;
 	}
@@ -90,12 +89,6 @@ public class AccountCustomerWrapper implements AccountCustomer,
 
 		if (role != null) {
 			setRole(role);
-		}
-
-		Integer notifications = (Integer)attributes.get("notifications");
-
-		if (notifications != null) {
-			setNotifications(notifications);
 		}
 	}
 
@@ -146,16 +139,6 @@ public class AccountCustomerWrapper implements AccountCustomer,
 	}
 
 	/**
-	* Returns the notifications of this account customer.
-	*
-	* @return the notifications of this account customer
-	*/
-	@Override
-	public int getNotifications() {
-		return _accountCustomer.getNotifications();
-	}
-
-	/**
 	* Returns the role of this account customer.
 	*
 	* @return the role of this account customer
@@ -178,11 +161,6 @@ public class AccountCustomerWrapper implements AccountCustomer,
 	@Override
 	public java.lang.Object clone() {
 		return new AccountCustomerWrapper((AccountCustomer)_accountCustomer.clone());
-	}
-
-	@Override
-	public java.lang.String getNotificationsLabel() {
-		return _accountCustomer.getNotificationsLabel();
 	}
 
 	@Override
@@ -299,16 +277,6 @@ public class AccountCustomerWrapper implements AccountCustomer,
 	@Override
 	public void setNew(boolean n) {
 		_accountCustomer.setNew(n);
-	}
-
-	/**
-	* Sets the notifications of this account customer.
-	*
-	* @param notifications the notifications of this account customer
-	*/
-	@Override
-	public void setNotifications(int notifications) {
-		_accountCustomer.setNotifications(notifications);
 	}
 
 	/**

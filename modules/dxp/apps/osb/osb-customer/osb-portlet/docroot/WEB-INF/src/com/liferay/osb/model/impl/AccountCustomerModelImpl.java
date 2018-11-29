@@ -72,8 +72,7 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 			{ "accountCustomerId", Types.BIGINT },
 			{ "userId", Types.BIGINT },
 			{ "accountEntryId", Types.BIGINT },
-			{ "role", Types.INTEGER },
-			{ "notifications", Types.INTEGER }
+			{ "role", Types.INTEGER }
 		};
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
 
@@ -82,10 +81,9 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("accountEntryId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("role", Types.INTEGER);
-		TABLE_COLUMNS_MAP.put("notifications", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSB_AccountCustomer (accountCustomerId LONG not null primary key,userId LONG,accountEntryId LONG,role INTEGER,notifications INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table OSB_AccountCustomer (accountCustomerId LONG not null primary key,userId LONG,accountEntryId LONG,role INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table OSB_AccountCustomer";
 	public static final String ORDER_BY_JPQL = " ORDER BY accountCustomer.accountCustomerId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY OSB_AccountCustomer.accountCustomerId ASC";
@@ -123,7 +121,6 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 		model.setUserId(soapModel.getUserId());
 		model.setAccountEntryId(soapModel.getAccountEntryId());
 		model.setRole(soapModel.getRole());
-		model.setNotifications(soapModel.getNotifications());
 
 		return model;
 	}
@@ -193,7 +190,6 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 		attributes.put("userId", getUserId());
 		attributes.put("accountEntryId", getAccountEntryId());
 		attributes.put("role", getRole());
-		attributes.put("notifications", getNotifications());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -225,12 +221,6 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 
 		if (role != null) {
 			setRole(role);
-		}
-
-		Integer notifications = (Integer)attributes.get("notifications");
-
-		if (notifications != null) {
-			setNotifications(notifications);
 		}
 	}
 
@@ -330,17 +320,6 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 		return _originalRole;
 	}
 
-	@JSON
-	@Override
-	public int getNotifications() {
-		return _notifications;
-	}
-
-	@Override
-	public void setNotifications(int notifications) {
-		_notifications = notifications;
-	}
-
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -376,7 +355,6 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 		accountCustomerImpl.setUserId(getUserId());
 		accountCustomerImpl.setAccountEntryId(getAccountEntryId());
 		accountCustomerImpl.setRole(getRole());
-		accountCustomerImpl.setNotifications(getNotifications());
 
 		accountCustomerImpl.resetOriginalValues();
 
@@ -466,14 +444,12 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 
 		accountCustomerCacheModel.role = getRole();
 
-		accountCustomerCacheModel.notifications = getNotifications();
-
 		return accountCustomerCacheModel;
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(9);
 
 		sb.append("{accountCustomerId=");
 		sb.append(getAccountCustomerId());
@@ -483,8 +459,6 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 		sb.append(getAccountEntryId());
 		sb.append(", role=");
 		sb.append(getRole());
-		sb.append(", notifications=");
-		sb.append(getNotifications());
 		sb.append("}");
 
 		return sb.toString();
@@ -492,7 +466,7 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(19);
+		StringBundler sb = new StringBundler(16);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.AccountCustomer");
@@ -514,10 +488,6 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 			"<column><column-name>role</column-name><column-value><![CDATA[");
 		sb.append(getRole());
 		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>notifications</column-name><column-value><![CDATA[");
-		sb.append(getNotifications());
-		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -538,7 +508,6 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 	private int _role;
 	private int _originalRole;
 	private boolean _setOriginalRole;
-	private int _notifications;
 	private long _columnBitmask;
 	private AccountCustomer _escapedModel;
 }

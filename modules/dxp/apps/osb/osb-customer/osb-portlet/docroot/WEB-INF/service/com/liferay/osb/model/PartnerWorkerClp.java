@@ -84,7 +84,6 @@ public class PartnerWorkerClp extends BaseModelImpl<PartnerWorker>
 		attributes.put("userId", getUserId());
 		attributes.put("partnerEntryId", getPartnerEntryId());
 		attributes.put("role", getRole());
-		attributes.put("notifications", getNotifications());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -116,12 +115,6 @@ public class PartnerWorkerClp extends BaseModelImpl<PartnerWorker>
 
 		if (role != null) {
 			setRole(role);
-		}
-
-		Integer notifications = (Integer)attributes.get("notifications");
-
-		if (notifications != null) {
-			setNotifications(notifications);
 		}
 
 		_entityCacheEnabled = GetterUtil.getBoolean("entityCacheEnabled");
@@ -237,48 +230,6 @@ public class PartnerWorkerClp extends BaseModelImpl<PartnerWorker>
 	}
 
 	@Override
-	public int getNotifications() {
-		return _notifications;
-	}
-
-	@Override
-	public void setNotifications(int notifications) {
-		_notifications = notifications;
-
-		if (_partnerWorkerRemoteModel != null) {
-			try {
-				Class<?> clazz = _partnerWorkerRemoteModel.getClass();
-
-				Method method = clazz.getMethod("setNotifications", int.class);
-
-				method.invoke(_partnerWorkerRemoteModel, notifications);
-			}
-			catch (Exception e) {
-				throw new UnsupportedOperationException(e);
-			}
-		}
-	}
-
-	@Override
-	public java.lang.String getNotificationsLabel() {
-		try {
-			String methodName = "getNotificationsLabel";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
 	public PartnerEntry getPartnerEntry() {
 		try {
 			String methodName = "getPartnerEntry";
@@ -390,7 +341,6 @@ public class PartnerWorkerClp extends BaseModelImpl<PartnerWorker>
 		clone.setUserId(getUserId());
 		clone.setPartnerEntryId(getPartnerEntryId());
 		clone.setRole(getRole());
-		clone.setNotifications(getNotifications());
 
 		return clone;
 	}
@@ -453,7 +403,7 @@ public class PartnerWorkerClp extends BaseModelImpl<PartnerWorker>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(9);
 
 		sb.append("{partnerWorkerId=");
 		sb.append(getPartnerWorkerId());
@@ -463,8 +413,6 @@ public class PartnerWorkerClp extends BaseModelImpl<PartnerWorker>
 		sb.append(getPartnerEntryId());
 		sb.append(", role=");
 		sb.append(getRole());
-		sb.append(", notifications=");
-		sb.append(getNotifications());
 		sb.append("}");
 
 		return sb.toString();
@@ -472,7 +420,7 @@ public class PartnerWorkerClp extends BaseModelImpl<PartnerWorker>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(19);
+		StringBundler sb = new StringBundler(16);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.PartnerWorker");
@@ -494,10 +442,6 @@ public class PartnerWorkerClp extends BaseModelImpl<PartnerWorker>
 			"<column><column-name>role</column-name><column-value><![CDATA[");
 		sb.append(getRole());
 		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>notifications</column-name><column-value><![CDATA[");
-		sb.append(getNotifications());
-		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -508,7 +452,6 @@ public class PartnerWorkerClp extends BaseModelImpl<PartnerWorker>
 	private long _userId;
 	private long _partnerEntryId;
 	private int _role;
-	private int _notifications;
 	private BaseModel<?> _partnerWorkerRemoteModel;
 	private Class<?> _clpSerializerClass = ClpSerializer.class;
 	private boolean _entityCacheEnabled;

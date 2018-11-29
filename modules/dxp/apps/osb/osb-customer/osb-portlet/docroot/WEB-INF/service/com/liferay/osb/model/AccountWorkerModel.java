@@ -129,20 +129,6 @@ public interface AccountWorkerModel extends BaseModel<AccountWorker> {
 	 */
 	public void setRole(int role);
 
-	/**
-	 * Returns the notifications of this account worker.
-	 *
-	 * @return the notifications of this account worker
-	 */
-	public int getNotifications();
-
-	/**
-	 * Sets the notifications of this account worker.
-	 *
-	 * @param notifications the notifications of this account worker
-	 */
-	public void setNotifications(int notifications);
-
 	@Override
 	public boolean isNew();
 

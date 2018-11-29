@@ -14,8 +14,7 @@ create table OSB_AccountCustomer (
 	accountCustomerId LONG not null primary key,
 	userId LONG,
 	accountEntryId LONG,
-	role INTEGER,
-	notifications INTEGER
+	role INTEGER
 );
 
 create table OSB_AccountEntries_SupportRegions (
@@ -123,8 +122,7 @@ create table OSB_AccountWorker (
 	accountWorkerId LONG not null primary key,
 	userId LONG,
 	accountEntryId LONG,
-	role INTEGER,
-	notifications INTEGER
+	role INTEGER
 );
 
 create table OSB_AuditEntry (
@@ -386,8 +384,7 @@ create table OSB_PartnerWorker (
 	partnerWorkerId LONG not null primary key,
 	userId LONG,
 	partnerEntryId LONG,
-	role INTEGER,
-	notifications INTEGER
+	role INTEGER
 );
 
 create table OSB_ProductEntry (

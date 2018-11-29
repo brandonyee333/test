@@ -55,8 +55,6 @@ public interface PartnerWorker extends PartnerWorkerModel, PersistedModel {
 			}
 		};
 
-	public java.lang.String getNotificationsLabel();
-
 	public PartnerEntry getPartnerEntry()
 		throws com.liferay.portal.kernel.exception.PortalException;
 

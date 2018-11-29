@@ -65,19 +65,15 @@ public class PartnerWorkerLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.model.PartnerWorker addPartnerWorker(
-		long partnerEntryId, java.lang.String emailAddress, int role,
-		int notifications)
+		long partnerEntryId, java.lang.String emailAddress, int role)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .addPartnerWorker(partnerEntryId, emailAddress, role,
-			notifications);
+		return getService().addPartnerWorker(partnerEntryId, emailAddress, role);
 	}
 
 	public static com.liferay.osb.model.PartnerWorker addPartnerWorker(
-		long partnerEntryId, long userId, int role, int notifications)
+		long partnerEntryId, long userId, int role)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .addPartnerWorker(partnerEntryId, userId, role, notifications);
+		return getService().addPartnerWorker(partnerEntryId, userId, role);
 	}
 
 	/**
@@ -325,10 +321,9 @@ public class PartnerWorkerLocalServiceUtil {
 			newDossieraAccountKey);
 	}
 
-	public static void updatePartnerWorker(long partnerWorkerId, int role,
-		int notifications)
+	public static void updatePartnerWorker(long partnerWorkerId, int role)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().updatePartnerWorker(partnerWorkerId, role, notifications);
+		getService().updatePartnerWorker(partnerWorkerId, role);
 	}
 
 	public static void clearService() {

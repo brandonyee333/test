@@ -61,7 +61,6 @@ public class AccountWorkerWrapper implements AccountWorker,
 		attributes.put("userId", getUserId());
 		attributes.put("accountEntryId", getAccountEntryId());
 		attributes.put("role", getRole());
-		attributes.put("notifications", getNotifications());
 
 		return attributes;
 	}
@@ -90,12 +89,6 @@ public class AccountWorkerWrapper implements AccountWorker,
 
 		if (role != null) {
 			setRole(role);
-		}
-
-		Integer notifications = (Integer)attributes.get("notifications");
-
-		if (notifications != null) {
-			setNotifications(notifications);
 		}
 	}
 
@@ -146,16 +139,6 @@ public class AccountWorkerWrapper implements AccountWorker,
 	}
 
 	/**
-	* Returns the notifications of this account worker.
-	*
-	* @return the notifications of this account worker
-	*/
-	@Override
-	public int getNotifications() {
-		return _accountWorker.getNotifications();
-	}
-
-	/**
 	* Returns the role of this account worker.
 	*
 	* @return the role of this account worker
@@ -183,11 +166,6 @@ public class AccountWorkerWrapper implements AccountWorker,
 	@Override
 	public java.lang.String getKey() {
 		return _accountWorker.getKey();
-	}
-
-	@Override
-	public java.lang.String getNotificationsLabel() {
-		return _accountWorker.getNotificationsLabel();
 	}
 
 	@Override
@@ -304,16 +282,6 @@ public class AccountWorkerWrapper implements AccountWorker,
 	@Override
 	public void setNew(boolean n) {
 		_accountWorker.setNew(n);
-	}
-
-	/**
-	* Sets the notifications of this account worker.
-	*
-	* @param notifications the notifications of this account worker
-	*/
-	@Override
-	public void setNotifications(int notifications) {
-		_accountWorker.setNotifications(notifications);
 	}
 
 	/**

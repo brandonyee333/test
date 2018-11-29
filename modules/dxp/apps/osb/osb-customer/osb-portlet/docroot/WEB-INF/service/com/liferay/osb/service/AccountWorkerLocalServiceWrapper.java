@@ -59,19 +59,18 @@ public class AccountWorkerLocalServiceWrapper
 
 	@Override
 	public com.liferay.osb.model.AccountWorker addAccountWorker(long userId,
-		java.lang.String emailAddress, long accountEntryId, int role,
-		int notifications)
+		java.lang.String emailAddress, long accountEntryId, int role)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountWorkerLocalService.addAccountWorker(userId,
-			emailAddress, accountEntryId, role, notifications);
+			emailAddress, accountEntryId, role);
 	}
 
 	@Override
 	public com.liferay.osb.model.AccountWorker addAccountWorker(long userId,
-		long workerUserId, long accountEntryId, int role, int notifications)
+		long workerUserId, long accountEntryId, int role)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountWorkerLocalService.addAccountWorker(userId,
-			workerUserId, accountEntryId, role, notifications);
+			workerUserId, accountEntryId, role);
 	}
 
 	/**
@@ -346,11 +345,10 @@ public class AccountWorkerLocalServiceWrapper
 	}
 
 	@Override
-	public void updateAccountWorker(long userId, long accountWorkerId,
-		int role, int notifications)
+	public void updateAccountWorker(long userId, long accountWorkerId, int role)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_accountWorkerLocalService.updateAccountWorker(userId, accountWorkerId,
-			role, notifications);
+			role);
 	}
 
 	@Override

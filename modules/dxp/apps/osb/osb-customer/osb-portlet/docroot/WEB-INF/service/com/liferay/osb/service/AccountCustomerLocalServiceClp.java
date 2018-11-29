@@ -42,14 +42,12 @@ public class AccountCustomerLocalServiceClp
 		_methodName2 = "addAccountCustomer";
 
 		_methodParameterTypes2 = new String[] {
-				"long", "java.lang.String", "long", "int", "int"
+				"long", "java.lang.String", "long", "int"
 			};
 
 		_methodName3 = "addAccountCustomer";
 
-		_methodParameterTypes3 = new String[] {
-				"long", "long", "long", "int", "int"
-			};
+		_methodParameterTypes3 = new String[] { "long", "long", "long", "int" };
 
 		_methodName4 = "createAccountCustomer";
 
@@ -99,7 +97,7 @@ public class AccountCustomerLocalServiceClp
 
 		_methodName14 = "updateAccountCustomer";
 
-		_methodParameterTypes14 = new String[] { "long", "long", "int", "int" };
+		_methodParameterTypes14 = new String[] { "long", "long", "int" };
 
 		_methodName15 = "getActionableDynamicQuery";
 
@@ -240,8 +238,7 @@ public class AccountCustomerLocalServiceClp
 	@Override
 	public com.liferay.osb.model.AccountCustomer addAccountCustomer(
 		long userId, java.lang.String emailAddress, long accountEntryId,
-		int role, int notifications)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		int role) throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -254,9 +251,7 @@ public class AccountCustomerLocalServiceClp
 						
 					accountEntryId,
 						
-					role,
-						
-					notifications
+					role
 					});
 		}
 		catch (Throwable t) {
@@ -280,25 +275,14 @@ public class AccountCustomerLocalServiceClp
 
 	@Override
 	public com.liferay.osb.model.AccountCustomer addAccountCustomer(
-		long userId, long customerUserId, long accountEntryId, int role,
-		int notifications)
+		long userId, long customerUserId, long accountEntryId, int role)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName3,
 					_methodParameterTypes3,
-					new Object[] {
-						userId,
-						
-					customerUserId,
-						
-					accountEntryId,
-						
-					role,
-						
-					notifications
-					});
+					new Object[] { userId, customerUserId, accountEntryId, role });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -596,14 +580,14 @@ public class AccountCustomerLocalServiceClp
 
 	@Override
 	public com.liferay.osb.model.AccountCustomer updateAccountCustomer(
-		long userId, long accountCustomerId, int role, int notifications)
+		long userId, long accountCustomerId, int role)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName14,
 					_methodParameterTypes14,
-					new Object[] { userId, accountCustomerId, role, notifications });
+					new Object[] { userId, accountCustomerId, role });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);

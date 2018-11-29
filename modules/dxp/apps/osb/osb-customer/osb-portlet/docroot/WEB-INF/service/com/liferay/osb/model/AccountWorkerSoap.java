@@ -37,7 +37,6 @@ public class AccountWorkerSoap implements Serializable {
 		soapModel.setUserId(model.getUserId());
 		soapModel.setAccountEntryId(model.getAccountEntryId());
 		soapModel.setRole(model.getRole());
-		soapModel.setNotifications(model.getNotifications());
 
 		return soapModel;
 	}
@@ -122,17 +121,8 @@ public class AccountWorkerSoap implements Serializable {
 		_role = role;
 	}
 
-	public int getNotifications() {
-		return _notifications;
-	}
-
-	public void setNotifications(int notifications) {
-		_notifications = notifications;
-	}
-
 	private long _accountWorkerId;
 	private long _userId;
 	private long _accountEntryId;
 	private int _role;
-	private int _notifications;
 }

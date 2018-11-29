@@ -64,19 +64,18 @@ public class PartnerWorkerLocalServiceWrapper
 
 	@Override
 	public com.liferay.osb.model.PartnerWorker addPartnerWorker(
-		long partnerEntryId, java.lang.String emailAddress, int role,
-		int notifications)
+		long partnerEntryId, java.lang.String emailAddress, int role)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _partnerWorkerLocalService.addPartnerWorker(partnerEntryId,
-			emailAddress, role, notifications);
+			emailAddress, role);
 	}
 
 	@Override
 	public com.liferay.osb.model.PartnerWorker addPartnerWorker(
-		long partnerEntryId, long userId, int role, int notifications)
+		long partnerEntryId, long userId, int role)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _partnerWorkerLocalService.addPartnerWorker(partnerEntryId,
-			userId, role, notifications);
+			userId, role);
 	}
 
 	/**
@@ -355,11 +354,9 @@ public class PartnerWorkerLocalServiceWrapper
 	}
 
 	@Override
-	public void updatePartnerWorker(long partnerWorkerId, int role,
-		int notifications)
+	public void updatePartnerWorker(long partnerWorkerId, int role)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		_partnerWorkerLocalService.updatePartnerWorker(partnerWorkerId, role,
-			notifications);
+		_partnerWorkerLocalService.updatePartnerWorker(partnerWorkerId, role);
 	}
 
 	@Override

@@ -62,20 +62,16 @@ public class AccountWorkerLocalServiceUtil {
 
 	public static com.liferay.osb.model.AccountWorker addAccountWorker(
 		long userId, java.lang.String emailAddress, long accountEntryId,
-		int role, int notifications)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		int role) throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
-				   .addAccountWorker(userId, emailAddress, accountEntryId,
-			role, notifications);
+				   .addAccountWorker(userId, emailAddress, accountEntryId, role);
 	}
 
 	public static com.liferay.osb.model.AccountWorker addAccountWorker(
-		long userId, long workerUserId, long accountEntryId, int role,
-		int notifications)
+		long userId, long workerUserId, long accountEntryId, int role)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
-				   .addAccountWorker(userId, workerUserId, accountEntryId,
-			role, notifications);
+				   .addAccountWorker(userId, workerUserId, accountEntryId, role);
 	}
 
 	/**
@@ -320,10 +316,8 @@ public class AccountWorkerLocalServiceUtil {
 	}
 
 	public static void updateAccountWorker(long userId, long accountWorkerId,
-		int role, int notifications)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService()
-			.updateAccountWorker(userId, accountWorkerId, role, notifications);
+		int role) throws com.liferay.portal.kernel.exception.PortalException {
+		getService().updateAccountWorker(userId, accountWorkerId, role);
 	}
 
 	public static void clearService() {

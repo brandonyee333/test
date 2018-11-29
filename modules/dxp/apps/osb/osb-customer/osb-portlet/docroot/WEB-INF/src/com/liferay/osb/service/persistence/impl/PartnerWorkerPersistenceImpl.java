@@ -3148,7 +3148,6 @@ public class PartnerWorkerPersistenceImpl extends BasePersistenceImpl<PartnerWor
 		partnerWorkerImpl.setUserId(partnerWorker.getUserId());
 		partnerWorkerImpl.setPartnerEntryId(partnerWorker.getPartnerEntryId());
 		partnerWorkerImpl.setRole(partnerWorker.getRole());
-		partnerWorkerImpl.setNotifications(partnerWorker.getNotifications());
 
 		return partnerWorkerImpl;
 	}

@@ -60,7 +60,5 @@ public interface AccountWorker extends AccountWorkerModel, PersistedModel {
 
 	public java.lang.String getKey();
 
-	public java.lang.String getNotificationsLabel();
-
 	public java.lang.String getRoleLabel();
 }

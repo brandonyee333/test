@@ -74,12 +74,11 @@ public interface AccountCustomerLocalService extends BaseLocalService,
 	public AccountCustomer addAccountCustomer(AccountCustomer accountCustomer);
 
 	public AccountCustomer addAccountCustomer(long userId,
-		java.lang.String emailAddress, long accountEntryId, int role,
-		int notifications) throws PortalException;
+		java.lang.String emailAddress, long accountEntryId, int role)
+		throws PortalException;
 
 	public AccountCustomer addAccountCustomer(long userId, long customerUserId,
-		long accountEntryId, int role, int notifications)
-		throws PortalException;
+		long accountEntryId, int role) throws PortalException;
 
 	/**
 	* Creates a new account customer with the primary key. Does not add the account customer to the database.
@@ -148,8 +147,7 @@ public interface AccountCustomerLocalService extends BaseLocalService,
 		AccountCustomer accountCustomer);
 
 	public AccountCustomer updateAccountCustomer(long userId,
-		long accountCustomerId, int role, int notifications)
-		throws PortalException;
+		long accountCustomerId, int role) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();

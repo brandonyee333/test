@@ -48,13 +48,11 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 
 		_methodName4 = "addPartnerWorker";
 
-		_methodParameterTypes4 = new String[] {
-				"long", "java.lang.String", "int", "int"
-			};
+		_methodParameterTypes4 = new String[] { "long", "java.lang.String", "int" };
 
 		_methodName5 = "addPartnerWorker";
 
-		_methodParameterTypes5 = new String[] { "long", "long", "int", "int" };
+		_methodParameterTypes5 = new String[] { "long", "long", "int" };
 
 		_methodName6 = "createPartnerWorker";
 
@@ -182,7 +180,7 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 
 		_methodName33 = "updatePartnerWorker";
 
-		_methodParameterTypes33 = new String[] { "long", "int", "int" };
+		_methodParameterTypes33 = new String[] { "long", "int" };
 	}
 
 	@Override
@@ -282,8 +280,7 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 
 	@Override
 	public com.liferay.osb.model.PartnerWorker addPartnerWorker(
-		long partnerEntryId, java.lang.String emailAddress, int role,
-		int notifications)
+		long partnerEntryId, java.lang.String emailAddress, int role)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
@@ -295,9 +292,7 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 						
 					ClpSerializer.translateInput(emailAddress),
 						
-					role,
-						
-					notifications
+					role
 					});
 		}
 		catch (Throwable t) {
@@ -321,14 +316,14 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 
 	@Override
 	public com.liferay.osb.model.PartnerWorker addPartnerWorker(
-		long partnerEntryId, long userId, int role, int notifications)
+		long partnerEntryId, long userId, int role)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName5,
 					_methodParameterTypes5,
-					new Object[] { partnerEntryId, userId, role, notifications });
+					new Object[] { partnerEntryId, userId, role });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1044,13 +1039,11 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 	}
 
 	@Override
-	public void updatePartnerWorker(long partnerWorkerId, int role,
-		int notifications)
+	public void updatePartnerWorker(long partnerWorkerId, int role)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName33,
-				_methodParameterTypes33,
-				new Object[] { partnerWorkerId, role, notifications });
+				_methodParameterTypes33, new Object[] { partnerWorkerId, role });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);

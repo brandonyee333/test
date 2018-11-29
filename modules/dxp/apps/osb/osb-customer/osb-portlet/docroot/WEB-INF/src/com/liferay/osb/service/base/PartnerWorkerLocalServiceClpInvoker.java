@@ -129,12 +129,12 @@ public class PartnerWorkerLocalServiceClpInvoker {
 
 		_methodName179 = "addPartnerWorker";
 
-		_methodParameterTypes179 = new String[] { "long", "long", "int", "int" };
+		_methodParameterTypes179 = new String[] { "long", "long", "int" };
 
 		_methodName180 = "addPartnerWorker";
 
 		_methodParameterTypes180 = new String[] {
-				"long", "java.lang.String", "int", "int"
+				"long", "java.lang.String", "int"
 			};
 
 		_methodName181 = "deletePartnerWorker";
@@ -185,7 +185,7 @@ public class PartnerWorkerLocalServiceClpInvoker {
 
 		_methodName192 = "updatePartnerWorker";
 
-		_methodParameterTypes192 = new String[] { "long", "int", "int" };
+		_methodParameterTypes192 = new String[] { "long", "int" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -301,16 +301,14 @@ public class PartnerWorkerLocalServiceClpInvoker {
 				Arrays.deepEquals(_methodParameterTypes179, parameterTypes)) {
 			return PartnerWorkerLocalServiceUtil.addPartnerWorker(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
-				((Integer)arguments[2]).intValue(),
-				((Integer)arguments[3]).intValue());
+				((Integer)arguments[2]).intValue());
 		}
 
 		if (_methodName180.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes180, parameterTypes)) {
 			return PartnerWorkerLocalServiceUtil.addPartnerWorker(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1],
-				((Integer)arguments[2]).intValue(),
-				((Integer)arguments[3]).intValue());
+				((Integer)arguments[2]).intValue());
 		}
 
 		if (_methodName181.equals(name) &&
@@ -381,8 +379,7 @@ public class PartnerWorkerLocalServiceClpInvoker {
 		if (_methodName192.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes192, parameterTypes)) {
 			PartnerWorkerLocalServiceUtil.updatePartnerWorker(((Long)arguments[0]).longValue(),
-				((Integer)arguments[1]).intValue(),
-				((Integer)arguments[2]).intValue());
+				((Integer)arguments[1]).intValue());
 
 			return null;
 		}

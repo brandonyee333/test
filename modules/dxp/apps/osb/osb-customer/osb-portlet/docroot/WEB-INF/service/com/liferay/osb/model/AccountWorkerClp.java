@@ -84,7 +84,6 @@ public class AccountWorkerClp extends BaseModelImpl<AccountWorker>
 		attributes.put("userId", getUserId());
 		attributes.put("accountEntryId", getAccountEntryId());
 		attributes.put("role", getRole());
-		attributes.put("notifications", getNotifications());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -116,12 +115,6 @@ public class AccountWorkerClp extends BaseModelImpl<AccountWorker>
 
 		if (role != null) {
 			setRole(role);
-		}
-
-		Integer notifications = (Integer)attributes.get("notifications");
-
-		if (notifications != null) {
-			setNotifications(notifications);
 		}
 
 		_entityCacheEnabled = GetterUtil.getBoolean("entityCacheEnabled");
@@ -237,29 +230,6 @@ public class AccountWorkerClp extends BaseModelImpl<AccountWorker>
 	}
 
 	@Override
-	public int getNotifications() {
-		return _notifications;
-	}
-
-	@Override
-	public void setNotifications(int notifications) {
-		_notifications = notifications;
-
-		if (_accountWorkerRemoteModel != null) {
-			try {
-				Class<?> clazz = _accountWorkerRemoteModel.getClass();
-
-				Method method = clazz.getMethod("setNotifications", int.class);
-
-				method.invoke(_accountWorkerRemoteModel, notifications);
-			}
-			catch (Exception e) {
-				throw new UnsupportedOperationException(e);
-			}
-		}
-	}
-
-	@Override
 	public AccountEntry getAccountEntry() {
 		try {
 			String methodName = "getAccountEntry";
@@ -282,25 +252,6 @@ public class AccountWorkerClp extends BaseModelImpl<AccountWorker>
 	public java.lang.String getKey() {
 		try {
 			String methodName = "getKey";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
-	public java.lang.String getNotificationsLabel() {
-		try {
-			String methodName = "getNotificationsLabel";
 
 			Class<?>[] parameterTypes = new Class<?>[] {  };
 
@@ -409,7 +360,6 @@ public class AccountWorkerClp extends BaseModelImpl<AccountWorker>
 		clone.setUserId(getUserId());
 		clone.setAccountEntryId(getAccountEntryId());
 		clone.setRole(getRole());
-		clone.setNotifications(getNotifications());
 
 		return clone;
 	}
@@ -472,7 +422,7 @@ public class AccountWorkerClp extends BaseModelImpl<AccountWorker>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(9);
 
 		sb.append("{accountWorkerId=");
 		sb.append(getAccountWorkerId());
@@ -482,8 +432,6 @@ public class AccountWorkerClp extends BaseModelImpl<AccountWorker>
 		sb.append(getAccountEntryId());
 		sb.append(", role=");
 		sb.append(getRole());
-		sb.append(", notifications=");
-		sb.append(getNotifications());
 		sb.append("}");
 
 		return sb.toString();
@@ -491,7 +439,7 @@ public class AccountWorkerClp extends BaseModelImpl<AccountWorker>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(19);
+		StringBundler sb = new StringBundler(16);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.AccountWorker");
@@ -513,10 +461,6 @@ public class AccountWorkerClp extends BaseModelImpl<AccountWorker>
 			"<column><column-name>role</column-name><column-value><![CDATA[");
 		sb.append(getRole());
 		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>notifications</column-name><column-value><![CDATA[");
-		sb.append(getNotifications());
-		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -527,7 +471,6 @@ public class AccountWorkerClp extends BaseModelImpl<AccountWorker>
 	private long _userId;
 	private long _accountEntryId;
 	private int _role;
-	private int _notifications;
 	private BaseModel<?> _accountWorkerRemoteModel;
 	private Class<?> _clpSerializerClass = ClpSerializer.class;
 	private boolean _entityCacheEnabled;

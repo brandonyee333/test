@@ -37,7 +37,6 @@ public class PartnerWorkerSoap implements Serializable {
 		soapModel.setUserId(model.getUserId());
 		soapModel.setPartnerEntryId(model.getPartnerEntryId());
 		soapModel.setRole(model.getRole());
-		soapModel.setNotifications(model.getNotifications());
 
 		return soapModel;
 	}
@@ -122,17 +121,8 @@ public class PartnerWorkerSoap implements Serializable {
 		_role = role;
 	}
 
-	public int getNotifications() {
-		return _notifications;
-	}
-
-	public void setNotifications(int notifications) {
-		_notifications = notifications;
-	}
-
 	private long _partnerWorkerId;
 	private long _userId;
 	private long _partnerEntryId;
 	private int _role;
-	private int _notifications;
 }

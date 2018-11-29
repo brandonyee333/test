@@ -63,7 +63,7 @@ public class AccountCustomerCacheModel implements CacheModel<AccountCustomer>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(9);
 
 		sb.append("{accountCustomerId=");
 		sb.append(accountCustomerId);
@@ -73,8 +73,6 @@ public class AccountCustomerCacheModel implements CacheModel<AccountCustomer>,
 		sb.append(accountEntryId);
 		sb.append(", role=");
 		sb.append(role);
-		sb.append(", notifications=");
-		sb.append(notifications);
 		sb.append("}");
 
 		return sb.toString();
@@ -88,7 +86,6 @@ public class AccountCustomerCacheModel implements CacheModel<AccountCustomer>,
 		accountCustomerImpl.setUserId(userId);
 		accountCustomerImpl.setAccountEntryId(accountEntryId);
 		accountCustomerImpl.setRole(role);
-		accountCustomerImpl.setNotifications(notifications);
 
 		accountCustomerImpl.resetOriginalValues();
 
@@ -104,8 +101,6 @@ public class AccountCustomerCacheModel implements CacheModel<AccountCustomer>,
 		accountEntryId = objectInput.readLong();
 
 		role = objectInput.readInt();
-
-		notifications = objectInput.readInt();
 	}
 
 	@Override
@@ -118,13 +113,10 @@ public class AccountCustomerCacheModel implements CacheModel<AccountCustomer>,
 		objectOutput.writeLong(accountEntryId);
 
 		objectOutput.writeInt(role);
-
-		objectOutput.writeInt(notifications);
 	}
 
 	public long accountCustomerId;
 	public long userId;
 	public long accountEntryId;
 	public int role;
-	public int notifications;
 }

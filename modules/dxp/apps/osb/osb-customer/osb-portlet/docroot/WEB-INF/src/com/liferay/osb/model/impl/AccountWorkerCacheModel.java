@@ -63,7 +63,7 @@ public class AccountWorkerCacheModel implements CacheModel<AccountWorker>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(9);
 
 		sb.append("{accountWorkerId=");
 		sb.append(accountWorkerId);
@@ -73,8 +73,6 @@ public class AccountWorkerCacheModel implements CacheModel<AccountWorker>,
 		sb.append(accountEntryId);
 		sb.append(", role=");
 		sb.append(role);
-		sb.append(", notifications=");
-		sb.append(notifications);
 		sb.append("}");
 
 		return sb.toString();
@@ -88,7 +86,6 @@ public class AccountWorkerCacheModel implements CacheModel<AccountWorker>,
 		accountWorkerImpl.setUserId(userId);
 		accountWorkerImpl.setAccountEntryId(accountEntryId);
 		accountWorkerImpl.setRole(role);
-		accountWorkerImpl.setNotifications(notifications);
 
 		accountWorkerImpl.resetOriginalValues();
 
@@ -104,8 +101,6 @@ public class AccountWorkerCacheModel implements CacheModel<AccountWorker>,
 		accountEntryId = objectInput.readLong();
 
 		role = objectInput.readInt();
-
-		notifications = objectInput.readInt();
 	}
 
 	@Override
@@ -118,13 +113,10 @@ public class AccountWorkerCacheModel implements CacheModel<AccountWorker>,
 		objectOutput.writeLong(accountEntryId);
 
 		objectOutput.writeInt(role);
-
-		objectOutput.writeInt(notifications);
 	}
 
 	public long accountWorkerId;
 	public long userId;
 	public long accountEntryId;
 	public int role;
-	public int notifications;
 }
