@@ -170,7 +170,7 @@ ul.nav-menu {
 		}
 	}
 
-	.new-liferay-help-center-banner {
+	.liferay-help-center-banner {
 		background-color: $dark-blue;
 		color: $white;
 		font-size: $normal-font-size;
@@ -582,7 +582,7 @@ ul.nav-menu {
 	margin-top: 56px;
 	width: 100%;
 
-	&.has-new-help-center-banner {
+	&.has-liferay-help-center-banner {
 		margin-top: 128px;
 	}
 
@@ -618,7 +618,7 @@ ul.nav-menu {
 	}
 
 	@include media-query(null, $screen-md-max) {
-		&.has-new-help-center-banner {
+		&.has-liferay-help-center-banner {
 			margin-top: 147px;
 		}
 
@@ -632,7 +632,7 @@ ul.nav-menu {
 	}
 
 	@include media-query(null, $screen-xs-max) {
-		&.has-new-help-center-banner {
+		&.has-liferay-help-center-banner {
 			margin-top: 175px;
 		}
 

@@ -66,10 +66,10 @@
 	/>
 </#if>
 
-<#assign new_liferay_help_center_banner = "" />
+<#assign liferay_help_center_banner = "" />
 
-<#if getterUtil.getBoolean(theme_settings["new-liferay-help-center-banner"])>
-	<#assign new_liferay_help_center_banner = "has-new-help-center-banner" />
+<#if getterUtil.getBoolean(theme_settings["liferay-help-center-banner"])>
+	<#assign liferay_help_center_banner = "has-liferay-help-center-banner" />
 </#if>
 
 <#assign

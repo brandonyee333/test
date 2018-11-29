@@ -86,8 +86,8 @@
 
 	<div class="container-fluid" id="wrapper">
 		<header class="banner" id="banner" role="banner">
-			<#if validator.isNotNull(new_liferay_help_center_banner)>
-				<div class="new-liferay-help-center-banner">
+			<#if validator.isNotNull(liferay_help_center_banner)>
+				<div class="liferay-help-center-banner">
 					<@liferay.language_format
 						arguments="${new_help_center_url}"
 						key="you-have-accessed-the-old-customer-portal-documentation-site-which-has-been-relocated-to-the-liferay-help-center"
@@ -114,7 +114,7 @@
 			</#if>
 		</header>
 
-		<div class="documentation-search ${new_liferay_help_center_banner}">
+		<div class="documentation-search ${liferay_help_center_banner}">
 			<#assign redirect = paramUtil.getString(request, "redirect") />
 
 			<#if validator.isNull(redirect)>
