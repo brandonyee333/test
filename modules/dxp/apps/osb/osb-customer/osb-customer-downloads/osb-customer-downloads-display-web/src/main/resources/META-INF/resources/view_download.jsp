@@ -95,5 +95,5 @@ String product = DDMFieldsUtil.getSelectOption(ddmFields, "product");
 </portlet:renderURL>
 
 <div class="view-previous">
-	<liferay-ui:message arguments="<%= backURL %>" key="view-previous-releases-in-liferays-archive" />
+	<liferay-ui:message arguments="<%= backURL %>" key="view-previous-releases-in-the-archive" />
 </div>

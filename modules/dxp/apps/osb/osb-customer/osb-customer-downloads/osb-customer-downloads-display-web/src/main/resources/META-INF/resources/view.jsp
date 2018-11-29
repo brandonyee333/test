@@ -30,7 +30,7 @@ JSONArray productsJSONArray = downloadsDisplayContext.getProductsJSONArray();
 
 <c:if test="<%= ddmStructureKey.equals(DDMStructureConstants.KEY_DOWNLOAD) %>">
 	<h5 class="secondary-text-color section-subtitle">
-		<liferay-ui:message key="find-the-downloads-you-need-by-filtering-the-results-with-the-drop-down-menus-below" />
+		<liferay-ui:message key="use-the-dropdown-menus-below-to-find-the-downloads-you-need" />
 	</h5>
 
 	<%
