@@ -345,7 +345,9 @@ public class DownloadsPortlet extends MVCPortlet {
 
 			ExpandoBridge expandoBridge = user.getExpandoBridge();
 
-			if (expandoBridge.hasAttribute("osbESA")) {
+			if (expandoBridge.hasAttribute("osbCustomerESA") ||
+				expandoBridge.hasAttribute("osbESA")) {
+
 				String[] fileNameArray = fileName.split(StringPool.SLASH);
 
 				if (fileNameArray.length >= 3) {
@@ -364,7 +366,12 @@ public class DownloadsPortlet extends MVCPortlet {
 			}
 
 			String[] osbStudioEula = (String[])expandoBridge.getAttribute(
-				"osbStudioEULA");
+				"osbCustomerStudioEULA");
+
+			if ((osbStudioEula == null) || (osbStudioEula.length < 4)) {
+				osbStudioEula = (String[])expandoBridge.getAttribute(
+					"osbCustomerStudioEULA");
+			}
 
 			if ((osbStudioEula == null) || (osbStudioEula.length < 4)) {
 				return true;
