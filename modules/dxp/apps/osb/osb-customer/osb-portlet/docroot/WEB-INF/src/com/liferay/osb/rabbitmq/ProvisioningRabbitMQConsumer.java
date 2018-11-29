@@ -318,7 +318,7 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 		}
 	}
 
-	protected String getLanguageId(JSONObject jsonObject, String countryName) {
+	protected String getLanguageId(JSONObject jsonObject, String countryA3) {
 		String soldBy = jsonObject.getString("_salesforceOpportunitySoldBy");
 
 		if (Validator.isNull(soldBy)) {
@@ -345,9 +345,7 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 			return AccountEntryConstants.LANGUAGE_ID_ENGLISH;
 		}
 		else if (soldBy.equals("Liferay Brazil")) {
-			if (Validator.isNotNull(countryName) &&
-				countryName.equals("Brazil")) {
-
+			if (Validator.isNotNull(countryA3) && countryA3.equals("BRA")) {
 				return AccountEntryConstants.LANGUAGE_ID_PORTUGUESE;
 			}
 			else {
@@ -355,9 +353,7 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 			}
 		}
 		else if (soldBy.equals("Liferay China")) {
-			if (Validator.isNotNull(countryName) &&
-				countryName.equals("China")) {
-
+			if (Validator.isNotNull(countryA3) && countryA3.equals("CHN")) {
 				return AccountEntryConstants.LANGUAGE_ID_CHINESE;
 			}
 			else {
@@ -368,10 +364,9 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 			return AccountEntryConstants.LANGUAGE_ID_JAPANESE;
 		}
 		else if (soldBy.equals("Liferay Spain")) {
-			if (Validator.isNotNull(countryName) &&
-				(countryName.equals("Cyprus") || countryName.equals("Greece") ||
-				 countryName.equals("Italy") ||
-				 countryName.equals("Portugal"))) {
+			if (Validator.isNotNull(countryA3) &&
+				(countryA3.equals("CYP") || countryA3.equals("GRC") ||
+				 countryA3.equals("ITA") || countryA3.equals("PRT"))) {
 
 				return AccountEntryConstants.LANGUAGE_ID_ENGLISH;
 			}
@@ -382,7 +377,7 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 
 		_logWarning(
 			"Unable to find matching support language for " + soldBy + " and " +
-				countryName + ". Defaulting support language to English.");
+				countryA3 + ". Defaulting support language to English.");
 
 		return AccountEntryConstants.LANGUAGE_ID_ENGLISH;
 	}
@@ -611,11 +606,11 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 	}
 
 	protected long[] getSupportRegionIds(
-		JSONObject jsonObject, String countryName) {
+		JSONObject jsonObject, String countryA3) {
 
 		String soldBy = jsonObject.getString("_salesforceOpportunitySoldBy");
 
-		String supportRegionName = getSupportRegionName(soldBy, countryName);
+		String supportRegionName = getSupportRegionName(soldBy, countryA3);
 
 		SupportRegion supportRegion =
 			SupportRegionLocalServiceUtil.fetchSupportRegionByName(
@@ -628,7 +623,7 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 		return new long[0];
 	}
 
-	protected String getSupportRegionName(String soldBy, String countryName) {
+	protected String getSupportRegionName(String soldBy, String countryA3) {
 		if (Validator.isNull(soldBy)) {
 			_logWarning(
 				"Sold by field is empty. Defaulting support region to global.");
@@ -670,9 +665,9 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 			return "Japan";
 		}
 		else if (soldBy.equals("Liferay Spain")) {
-			if (Validator.isNotNull(countryName) &&
-				(countryName.equals("Cyprus") || countryName.equals("Greece") ||
-				 countryName.equals("Italy"))) {
+			if (Validator.isNotNull(countryA3) &&
+				(countryA3.equals("CYP") || countryA3.equals("GRC") ||
+				 countryA3.equals("ITA"))) {
 
 				return "Hungary";
 			}
@@ -683,7 +678,7 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 
 		_logWarning(
 			"Unable to find matching support region for " + soldBy + " and " +
-				countryName + ". Defaulting support region to global.");
+				countryA3 + ". Defaulting support region to global.");
 
 		return "Global";
 	}
@@ -799,9 +794,9 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 
 		Country country = address.getCountry();
 
-		String languageId = getLanguageId(jsonObject, country.getName());
+		String languageId = getLanguageId(jsonObject, country.getA3());
 		long[] supportRegionIds = getSupportRegionIds(
-			jsonObject, country.getName());
+			jsonObject, country.getA3());
 
 		AccountEntry accountEntry = null;
 
