@@ -206,7 +206,7 @@
 						description: '<@liferay.language key="information-and-fixes-for-known-vulnerabilities" />',
 						name: '<@liferay.language key="security-advisories" />',
 						svgId: '#security-advisories',
-						url: addLocaleParamToURI('${current_locale}', 'articles/360015772992')
+						url: addLocaleParamToURI('${current_locale}', 'articles/360018875952')
 					},
 					{
 						description: '<@liferay.language key="process-for-reporting-security-vulnerabilities" />',
