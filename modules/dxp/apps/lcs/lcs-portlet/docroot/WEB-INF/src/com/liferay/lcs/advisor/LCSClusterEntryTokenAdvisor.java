@@ -128,7 +128,8 @@ public class LCSClusterEntryTokenAdvisor implements LCSEventListener {
 
 		try {
 			if (_log.isDebugEnabled()) {
-				_log.debug("Decrypt with default key " + keyName);
+				_log.debug(
+					"Decrypting environment token with default key " + keyName);
 			}
 
 			symmetricKeyBytes = Encryptor.decryptUnencodedAsBytes(
@@ -150,7 +151,7 @@ public class LCSClusterEntryTokenAdvisor implements LCSEventListener {
 			}
 
 			if (_log.isDebugEnabled()) {
-				_log.debug("Decrypt with key " + keyName);
+				_log.debug("Decrypting environment token with key " + keyName);
 			}
 
 			certificate = _getCertificate(keyStore, keyName);
@@ -195,12 +196,13 @@ public class LCSClusterEntryTokenAdvisor implements LCSEventListener {
 
 		if (lcsClusterEntryTokenFileNames.length == 0) {
 			throw new MissingLCSClusterEntryTokenException(
-				"The LCS activation token file is missing from directory " +
-					sb.toString());
+				"The environment token file is missing. Please download a " +
+					"token file from LCS and place it in " + sb.toString());
 		}
 		else if (lcsClusterEntryTokenFileNames.length > 1) {
 			throw new MultipleLCSClusterEntryTokenException(
-				"Only one LCS activation token file is allowed");
+				"There are multiple environment token files. Only one is " +
+					"allowed.");
 		}
 
 		sb.append(File.separatorChar);
@@ -213,22 +215,21 @@ public class LCSClusterEntryTokenAdvisor implements LCSEventListener {
 		_resetAttributes();
 
 		if (_log.isDebugEnabled()) {
-			_log.debug("Deleting LCS activation token file");
+			_log.debug("Deleting environment token file");
 		}
 
 		try {
 			FileUtil.delete(getLCSClusterEntryTokenFileName());
-		}
-		catch (MissingLCSClusterEntryTokenException mlcscete) {
-			if (_log.isDebugEnabled()) {
-				_log.debug("LCS activation token file is not present");
+
+			if (_log.isWarnEnabled()) {
+				_log.warn("Deleted environment token file");
 			}
 		}
+		catch (MissingLCSClusterEntryTokenException mlcscete) {
+			_log.error(mlcscete.getMessage());
+		}
 		catch (MultipleLCSClusterEntryTokenException mlcscete) {
-			_log.error(
-				"Multiple LCS activation token files detected. Please delete " +
-					"the redundant files manually.",
-				mlcscete);
+			_log.error(mlcscete.getMessage());
 		}
 	}
 
@@ -272,7 +273,7 @@ public class LCSClusterEntryTokenAdvisor implements LCSEventListener {
 			   MultipleLCSClusterEntryTokenException {
 
 		if (_log.isDebugEnabled()) {
-			_log.debug("Detecting LCS activation token file");
+			_log.debug("Processing the environment token file");
 		}
 
 		LCSClusterEntryToken lcsClusterEntryToken = null;
@@ -289,16 +290,10 @@ public class LCSClusterEntryTokenAdvisor implements LCSEventListener {
 			lcsClusterEntryTokenJSON = decrypt(bytes, lcsPortletBuildNumber);
 		}
 		catch (EncryptorException ee) {
-			StringBundler sb = new StringBundler(6);
-
-			sb.append("Unable to decrypt the LCS activation token file ");
-			sb.append(lcsClusterEntryTokenFileName);
-			sb.append(". The LCS activation token file will be deleted. ");
-			sb.append("Please make sure that the LCS portlet is compatible ");
-			sb.append("with the LCS platform version where the file was ");
-			sb.append("generated.");
-
-			throw new LCSClusterEntryTokenDecryptException(sb.toString(), ee);
+			throw new LCSClusterEntryTokenDecryptException(
+				"Unable to decrypt environment token file. Please " +
+					"regenerate, download, and install a new token.",
+				ee);
 		}
 
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -311,7 +306,7 @@ public class LCSClusterEntryTokenAdvisor implements LCSEventListener {
 
 	private void _resetAttributes() {
 		if (_log.isDebugEnabled()) {
-			_log.debug("Reset attributes");
+			_log.debug("Resetting the environment token attributes");
 		}
 
 		_portalPropertiesBlacklist = null;

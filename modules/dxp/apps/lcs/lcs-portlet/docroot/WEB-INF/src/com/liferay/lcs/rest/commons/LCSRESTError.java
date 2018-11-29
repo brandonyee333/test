@@ -14,6 +14,7 @@
 
 package com.liferay.lcs.rest.commons;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -23,54 +24,56 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
  */
 public enum LCSRESTError {
 
-	GENERAL_LCS_PLATFORM_ERROR(999, "General LCS platform error."),
+	GENERAL_LCS_PLATFORM_ERROR(999, "An error occurred in LCS."),
 	ILLEGAL_PARAMETER_ERROR(
 		7,
-		"An illegal request parameter is received. Please make sure " +
-			"parameter format is correct and try again."),
-	INTERNAL_LCS_PLATFORM_ERROR(
-		998, "Internal LCS platform error. Please try again later."),
+		"LCS received a message from the LCS client that contains an illegal " +
+			"parameter."),
+	INTERNAL_LCS_PLATFORM_ERROR(998, "An error occurred in LCS."),
 	LCS_CLUSTER_ENTRY_TOKEN_ERROR_INVALID_LCS_CLUSTER_ENTRY(
 		201,
-		"AATF reference received indicates that referring environment does " +
-			"not match. Please make sure AATF is correct and try again. As " +
-				"result of this error AATF at LCS Client will be deleted."),
+		"The environment token does not match the environment in which the " +
+			"server is registered. If you are moving the server to a " +
+				"different environment, please unregister the server from " +
+					"the old environment."),
 	LCS_CLUSTER_ENTRY_TOKEN_ERROR_INVALID_USER_CREDENTIALS(
 		202,
-		"The credentials of the user that created the AATF are no longer " +
-			"valid. Please regenerate the token. As result of this error " +
-				"AATF at LCS Client will be deleted."),
+		"The credentials of the user who created the environment token are " +
+			"no longer valid. Please regenerate the token."),
 	LCS_CLUSTER_ENTRY_TOKEN_ERROR_NO_SUCH_TOKEN(
 		200,
-		"AATF reference received indicates that corresponding entity is " +
-			"missing at LCS Platform. Please make sure AATF is correct and " +
-				"try again. As result of this error AATF at LCS Client will " +
-					"be deleted."),
+		"The environment token is not valid and was likely regenerated in " +
+			"LCS. Please download and install the new token."),
 	LCS_SUBSCRIPTION_ENTRY_ERROR_NO_ACTIVE_SUBSCRIPTION(
 		3,
-		"There is no active subscription on the project. Please contact " +
-			"Liferay provisioning."),
+		"There are no active subscriptions in the LCS project. Please " +
+			"contact Liferay provisioning."),
 	LCS_SUBSCRIPTION_ENTRY_ERROR_NO_FREE_ACTIVATION_KEY(
 		4,
-		"There are no available activation keys. Please unregister server to " +
-			"release an activation key. If LCS lost connection to a server " +
-				"in the environment, or a server unexpectedly shut down, LCS " +
-					"will automatically release an activation key after a " +
-						"few minutes."),
+		"Aborting Liferay instance activation. No activation keys are " +
+			"available. Please unregister a server to free an activation " +
+				"key, or contact Liferay provisioning for additional keys."),
 	LCS_SUBSCRIPTION_ENTRY_ERROR_NO_SUBSCRIPTION_TYPE(
 		5,
-		"There is no subscription on the project of a type defined in your " +
-			"environment. To extend your subscription please contact Liferay " +
-				"provisioning. If you wish to use a different subscription, " +
-					"please unregister server and register to an environment " +
-						"with an active subscription type."),
+		"Aborting Liferay instance activation. The LCS project contains no " +
+			"active subscriptions that match the environment's subscription " +
+				"type. Please contact Liferay provisioning if your " +
+					"subscription is expired."),
 	LCS_SUBSCRIPTION_ENTRY_ERROR_TOO_MANY_PROCESSOR_CORES(
 		6,
-		"Number of server processor cores exceeds maximum number of " +
-			"processor cores allowed by your subscriptions."),
-	NO_SUCH_LCS_SUBSCRIPTION_ENTRY(1, "No such subscription on the project."),
-	REQUIRED_PARAMETER_MISSING(2, "Required parameter is missing."),
-	UNDEFINED(0, "Undefined error.");
+		"Aborting Liferay instance activation. The number of processor cores" +
+			"in your server exceeds the number that your subscription " +
+				"allows. Please contact Liferay provisioning to increase " +
+					"your allowed processor cores."),
+	NO_SUCH_LCS_SUBSCRIPTION_ENTRY(
+		1,
+		"The LCS project contains no active subscriptions. Please contact " +
+			"Liferay provisioning."),
+	REQUIRED_PARAMETER_MISSING(
+		2,
+		"LCS received a message from the LCS client that is missing a " +
+			"required parameter."),
+	UNDEFINED(0, StringPool.BLANK);
 
 	public static LCSRESTError getRESTError(String message) {
 		try {
@@ -88,7 +91,10 @@ public enum LCSRESTError {
 			return toLCSClientError(errorCode);
 		}
 		catch (NumberFormatException nfe) {
-			_log.error("Unable to extract error code", nfe);
+			_log.error(
+				"Unable to read error code from recieved error message: " +
+					message,
+				nfe);
 		}
 
 		return UNDEFINED;

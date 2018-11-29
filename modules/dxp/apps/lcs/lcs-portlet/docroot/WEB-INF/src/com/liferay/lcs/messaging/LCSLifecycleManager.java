@@ -40,7 +40,7 @@ public class LCSLifecycleManager extends HotDeployMessageListener {
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
-				"LCS portlet " + PortletPropsValues.LCS_CLIENT_VERSION +
+				"LCS client " + PortletPropsValues.LCS_CLIENT_VERSION +
 					" deployed");
 		}
 	}
@@ -49,9 +49,9 @@ public class LCSLifecycleManager extends HotDeployMessageListener {
 	protected void onUndeploy(Message message) throws Exception {
 		LCSUtil.processLCSPortletState(LCSPortletState.PLUGIN_ABSENT);
 
-		if (_log.isInfoEnabled()) {
-			_log.info(
-				"LCS portlet " + PortletPropsValues.LCS_CLIENT_VERSION +
+		if (_log.isWarnEnabled()) {
+			_log.warn(
+				"LCS client " + PortletPropsValues.LCS_CLIENT_VERSION +
 					" undeployed");
 		}
 	}

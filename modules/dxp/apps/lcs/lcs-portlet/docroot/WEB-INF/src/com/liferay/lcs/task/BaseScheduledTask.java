@@ -17,6 +17,7 @@ package com.liferay.lcs.task;
 import com.liferay.lcs.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.messaging.Message;
 import com.liferay.lcs.platform.gateway.LCSGatewayClient;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.cluster.ClusterMasterExecutorUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -31,7 +32,9 @@ public abstract class BaseScheduledTask implements ScheduledTask {
 	public void run() {
 		if (!_lcsGatewayClient.isAvailable()) {
 			if (_log.isDebugEnabled()) {
-				_log.debug(getClass() + " waiting for LCS gateway handshake");
+				_log.debug(
+					"Aborting " + getClass() +
+						". LCS gateway is not available.");
 			}
 
 			return;
@@ -41,9 +44,14 @@ public abstract class BaseScheduledTask implements ScheduledTask {
 			if (getScope() == Scope.CLUSTER) {
 				if (!ClusterMasterExecutorUtil.isMaster()) {
 					if (_log.isDebugEnabled()) {
-						_log.debug(
-							getClass() +
-								" cluster scoped task skipped on this node");
+						StringBundler sb = new StringBundler(4);
+
+						sb.append("Aborting ");
+						sb.append(getClass());
+						sb.append(". It is a task with cluster scope, and ");
+						sb.append("this node is not master.");
+
+						_log.debug(sb.toString());
 					}
 
 					return;
@@ -51,8 +59,8 @@ public abstract class BaseScheduledTask implements ScheduledTask {
 
 				if (_log.isDebugEnabled()) {
 					_log.debug(
-						getClass() +
-							" executing cluster scoped task on master node");
+						"Executing cluster scoped task " + getClass() +
+							" on master node");
 				}
 			}
 		}
@@ -66,9 +74,15 @@ public abstract class BaseScheduledTask implements ScheduledTask {
 				long taskExecutionMillis =
 					System.currentTimeMillis() - startTimeMillis;
 
-				_log.debug(
-					"Executed LCS task " + getClass() + " in " +
-						taskExecutionMillis + "ms");
+				StringBundler sb = new StringBundler(5);
+
+				sb.append("Executed LCS task ");
+				sb.append(getClass());
+				sb.append(" in ");
+				sb.append(taskExecutionMillis);
+				sb.append("ms");
+
+				_log.debug(sb.toString());
 			}
 		}
 		catch (Exception e) {
@@ -94,8 +108,7 @@ public abstract class BaseScheduledTask implements ScheduledTask {
 		if (!_lcsGatewayClient.isAvailable()) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
-					getClass() + " unable to send message. Gateway became " +
-						"unavailable.");
+					"Aborting message sending. LCS gateway is not available.");
 			}
 
 			return;

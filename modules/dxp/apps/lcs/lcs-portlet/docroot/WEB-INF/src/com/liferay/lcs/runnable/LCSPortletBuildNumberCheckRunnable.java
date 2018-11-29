@@ -38,12 +38,7 @@ public class LCSPortletBuildNumberCheckRunnable implements Runnable {
 
 	@Override
 	public void run() {
-		try {
-			_checkLCSPortletBuildNumber();
-		}
-		catch (Throwable t) {
-			_log.error("Unable to check latest LCS Portlet build number", t);
-		}
+		_checkLCSPortletBuildNumber();
 	}
 
 	@Override

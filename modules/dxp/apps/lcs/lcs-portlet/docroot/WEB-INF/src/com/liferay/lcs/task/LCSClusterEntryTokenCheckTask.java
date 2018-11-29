@@ -28,7 +28,6 @@ import com.liferay.lcs.util.LCSUtil;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,31 +73,35 @@ public class LCSClusterEntryTokenCheckTask implements Task {
 
 				lcsEvent =
 					LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_TOKEN_CORRUPTED;
+
+				_log.error(throwable.getMessage());
 			}
 			else if (throwable instanceof
 						MissingLCSClusterEntryTokenException) {
 
 				lcsEvent = LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MISSING;
+
+				_log.error(throwable.getMessage());
 			}
 			else if (throwable instanceof
 						MultipleLCSClusterEntryTokenException) {
 
 				lcsEvent = LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MULTIPLE_TOKENS;
+
+				_log.error(throwable.getMessage());
+			}
+			else {
+				_log.error(throwable, throwable);
 			}
 
 			if (OAuthUtil.hasOAuthTokenRejectedException(throwable)) {
 				LCSUtil.processLCSPortletState(LCSPortletState.NO_CONNECTION);
 
-				if (_log.isWarnEnabled()) {
-					_log.warn("A new OAuth token is required");
-				}
+				_log.error("OAuth token was rejected");
 			}
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(throwable.getMessage(), throwable);
-			}
-			else if (_log.isWarnEnabled()) {
-				_log.warn(throwable.getMessage());
 			}
 
 			_notifyLCSEventListeners(lcsEvent);
@@ -122,15 +125,9 @@ public class LCSClusterEntryTokenCheckTask implements Task {
 				_lcsClusterEntryTokenAdvisor.getLCSAccessSecret(),
 				_lcsClusterEntryTokenAdvisor.getLCSAccessToken())) {
 
-			StringBundler sb = new StringBundler(5);
-
-			sb.append("The LCS activation token file contains revoked or ");
-			sb.append("invalid OAuth credentials and will be deleted. ");
-			sb.append("Regenerate the token file using the LCS platform ");
-			sb.append("dashboard, and then download the token file and ");
-			sb.append("deploy it.");
-
-			throw new InvalidLCSClusterEntryTokenException(sb.toString());
+			throw new InvalidLCSClusterEntryTokenException(
+				"The environment token is invalid. Please regenerate, " +
+					"download, and install a new token.");
 		}
 
 		LCSUtil.processLCSPortletState(LCSPortletState.NO_CONNECTION);

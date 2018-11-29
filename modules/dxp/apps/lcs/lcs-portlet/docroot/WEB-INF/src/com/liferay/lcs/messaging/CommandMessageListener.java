@@ -18,6 +18,7 @@ import com.liferay.lcs.command.Command;
 import com.liferay.lcs.messaging.security.DigitalSignature;
 import com.liferay.lcs.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.util.LCSUtil;
+import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Message;
@@ -87,9 +88,7 @@ public class CommandMessageListener implements MessageListener {
 				}
 			}
 			else {
-				errorMessage = "Unable to verify digital signature";
-
-				_log.error(errorMessage + ": " + commandMessage);
+				_log.error("Unable to verify digital signature of a message");
 			}
 		}
 		catch (Exception e) {
@@ -110,7 +109,15 @@ public class CommandMessageListener implements MessageListener {
 				_lcsGatewayClient.sendMessage(errorResponseMessage);
 			}
 			catch (Exception e) {
-				_log.error(e, e);
+				String logErrorMessage =
+					"Unable to send error response message to LCS";
+
+				if (e instanceof JSONWebServiceException) {
+					_log.error(logErrorMessage);
+				}
+				else {
+					_log.error(logErrorMessage, e);
+				}
 			}
 		}
 	}

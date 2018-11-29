@@ -26,6 +26,7 @@ import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 
 import java.io.IOException;
 
@@ -241,21 +242,19 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 			JSONWebServiceException jsonwse)
 		throws JSONWebServiceException {
 
-		if (_log.isDebugEnabled()) {
-			_log.debug(jsonwse.getMessage(), jsonwse);
+		StringBundler sb = new StringBundler(5);
+
+		sb.append("Error communicating with LCS");
+
+		if (jsonwse.getMessage() != null) {
+			sb.append(": ");
+			sb.append(jsonwse.getMessage());
 		}
 
 		if (jsonwse instanceof JSONWebServiceTransportException) {
-			if (_log.isWarnEnabled()) {
-				_log.warn("LCS gateway is unavailable");
-			}
-
 			if (jsonwse.getStatus() == HttpServletResponse.SC_UNAUTHORIZED) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(
-						"LCS portlet is not authorized to access LCS " +
-							"gateway. Will attempt to reauthorize.");
-				}
+				sb.append(". The LCS client is not authorized to access the ");
+				sb.append("LCS gateway.");
 			}
 
 			synchronized (this) {
@@ -265,6 +264,12 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 					_lcsEventListeners(LCSEvent.LCS_GATEWAY_UNAVAILABLE);
 				}
 			}
+		}
+
+		_log.error(sb.toString());
+
+		if (_log.isDebugEnabled()) {
+			_log.debug(jsonwse, jsonwse);
 		}
 
 		throw jsonwse;

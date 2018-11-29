@@ -16,6 +16,7 @@ package com.liferay.lcs.task;
 
 import com.liferay.lcs.messaging.HeartbeatMessage;
 import com.liferay.lcs.platform.gateway.LCSGatewayClient;
+import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -50,7 +51,9 @@ public class HeartbeatTask implements Task {
 
 		if (!_lcsGatewayClient.isAvailable()) {
 			if (_log.isDebugEnabled()) {
-				_log.debug("Waiting for LCS gateway handshake");
+				_log.debug(
+					"Aborting heartbeat sending. LCS gateway is not " +
+						"available.");
 			}
 
 			return;
@@ -61,7 +64,23 @@ public class HeartbeatTask implements Task {
 		heartbeatMessage.setCreateTime(System.currentTimeMillis());
 		heartbeatMessage.setKey(_key);
 
-		_lcsGatewayClient.sendMessage(heartbeatMessage);
+		if (_log.isTraceEnabled()) {
+			_log.trace("Sending message: " + heartbeatMessage);
+		}
+
+		try {
+			_lcsGatewayClient.sendMessage(heartbeatMessage);
+		}
+		catch (Exception e) {
+			String errorMessage = "Unable to send heartbeat message to LCS";
+
+			if (e instanceof JSONWebServiceException) {
+				_log.error(errorMessage);
+			}
+			else {
+				_log.error(errorMessage, e);
+			}
+		}
 	}
 
 	@Override

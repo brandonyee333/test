@@ -198,9 +198,9 @@ public class LCSUtil {
 		catch (
 			JSONWebServiceTransportException.AuthenticationFailure jsonwsteaf) {
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(jsonwsteaf.getMessage());
-			}
+			_log.error(
+				"There was an error in communication with LCS: " +
+					jsonwsteaf.getMessage());
 
 			return false;
 		}
@@ -217,14 +217,14 @@ public class LCSUtil {
 
 		MessageBusUtil.sendMessage(message.getDestinationName(), message);
 
-		if (_log.isDebugEnabled()) {
+		if (_log.isTraceEnabled()) {
 			StringBundler sb = new StringBundler(3);
 
 			sb.append("Service availability message published for LCS ");
 			sb.append("portlet state ");
 			sb.append(lcsPortletState.name());
 
-			_log.debug(sb.toString());
+			_log.trace(sb.toString());
 		}
 	}
 

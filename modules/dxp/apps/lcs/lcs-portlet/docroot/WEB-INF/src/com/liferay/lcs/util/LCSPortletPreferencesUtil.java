@@ -111,7 +111,8 @@ public class LCSPortletPreferencesUtil {
 				}
 				else {
 					_log.error(
-						"Unable to determine unique portlet preferences");
+						"Multiple entries for the LCS client's portlet " +
+							"preferences");
 
 					return null;
 				}
@@ -126,7 +127,7 @@ public class LCSPortletPreferencesUtil {
 			}
 		}
 		catch (SystemException se) {
-			_log.error("Unable to get portlet preferences", se);
+			_log.error("Unable to get LCS client's portlet preferences", se);
 		}
 
 		return portletPreferences;

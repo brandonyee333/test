@@ -67,8 +67,10 @@ public class MessageBusListenerAdvisor implements LCSEventListener {
 			listenerContext.get("messageListenerName"));
 
 		if (_listenerDescriptors.contains(listenerDescriptor)) {
-			if (_log.isInfoEnabled()) {
-				_log.info("Already registered " + listenerDescriptor);
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Aborting listener registration. The listener " +
+						listenerDescriptor + " is already registered.");
 			}
 
 			return;
@@ -113,8 +115,8 @@ public class MessageBusListenerAdvisor implements LCSEventListener {
 	}
 
 	private void _unregisterAll() {
-		if (_log.isTraceEnabled()) {
-			_log.trace("Unregister all message listeners");
+		if (_log.isDebugEnabled()) {
+			_log.debug("Unregistering all message listeners");
 		}
 
 		for (ListenerDescriptor listenerDescriptor : _listenerDescriptors) {
@@ -122,8 +124,8 @@ public class MessageBusListenerAdvisor implements LCSEventListener {
 				listenerDescriptor.destinationName,
 				listenerDescriptor.listenerInstance);
 
-			if (_log.isDebugEnabled()) {
-				_log.debug(
+			if (_log.isTraceEnabled()) {
+				_log.trace(
 					"Unregistered message listener " +
 						listenerDescriptor.listenerName);
 			}

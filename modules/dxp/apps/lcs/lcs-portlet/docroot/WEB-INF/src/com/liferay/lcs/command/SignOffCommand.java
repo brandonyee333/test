@@ -47,12 +47,17 @@ public class SignOffCommand implements Command<SignOffCommandMessage> {
 		SignOffReasonCode signOffReasonCode = _getSignOffReasonCode(
 			signOffCommandMessage);
 
-		if (_log.isDebugEnabled()) {
-			_log.debug("Executing sign off command " + signOffCommandMessage);
-		}
-
 		if (_log.isInfoEnabled()) {
-			_log.info("Sign off reason " + signOffReasonCode);
+			_log.info("Signing server out of LCS");
+
+			if (_log.isDebugEnabled()) {
+				_log.debug("Sign out reason code: " + signOffReasonCode);
+
+				if (_log.isTraceEnabled()) {
+					_log.trace(
+						"Sign out command message: " + signOffCommandMessage);
+				}
+			}
 		}
 
 		if (signOffReasonCode == SignOffReasonCode.INVALIDATE_TOKEN) {
@@ -67,7 +72,7 @@ public class SignOffCommand implements Command<SignOffCommandMessage> {
 		}
 
 		if (_log.isDebugEnabled()) {
-			_log.debug("Signed off server from LCS");
+			_log.debug("Signed server out of LCS");
 		}
 	}
 

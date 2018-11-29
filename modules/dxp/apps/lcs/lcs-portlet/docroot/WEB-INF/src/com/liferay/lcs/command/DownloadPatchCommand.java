@@ -73,7 +73,11 @@ public class DownloadPatchCommand
 		String patchURL = downloadPatchCommandMessage.getPatchURL();
 
 		if (_log.isInfoEnabled()) {
-			_log.info("Downloading remote file URL " + patchURL);
+			_log.info("Started patch download");
+
+			if (_log.isDebugEnabled()) {
+				_log.debug("Downloading remote file from URL " + patchURL);
+			}
 		}
 
 		try {
@@ -85,23 +89,53 @@ public class DownloadPatchCommand
 			_checkZipFile(localFile);
 		}
 		catch (IOException ioe) {
-			_log.error(ioe, ioe);
+			_log.error("Unable to read downloaded patch file");
 
-			_lcsGatewayClient.sendMessage(
-				_getDownloadPatchResponseMessage(
-					downloadPatchCommandMessage, patchFileName,
-					LCSConstants.PATCHES_ERROR));
+			if (_log.isDebugEnabled()) {
+				_log.debug(ioe, ioe);
+			}
+
+			try {
+				_lcsGatewayClient.sendMessage(
+					_getDownloadPatchResponseMessage(
+						downloadPatchCommandMessage, patchFileName,
+						LCSConstants.PATCHES_ERROR));
+			}
+			catch (Exception e) {
+				String errorMessage =
+					"Unable to report to LCS that patch download failed";
+
+				if (e instanceof JSONWebServiceException) {
+					_log.error(errorMessage);
+				}
+				else {
+					_log.error(errorMessage, e);
+				}
+			}
 
 			return;
 		}
 
-		_lcsGatewayClient.sendMessage(
-			_getDownloadPatchResponseMessage(
-				downloadPatchCommandMessage, patchFileName,
-				LCSConstants.PATCHES_DOWNLOADED));
+		try {
+			_lcsGatewayClient.sendMessage(
+				_getDownloadPatchResponseMessage(
+					downloadPatchCommandMessage, patchFileName,
+					LCSConstants.PATCHES_DOWNLOADED));
+		}
+		catch (Exception e) {
+			String errorMessage =
+				"Unable to report to LCS that patch download succeeded";
+
+			if (e instanceof JSONWebServiceException) {
+				_log.error(errorMessage);
+			}
+			else {
+				_log.error(errorMessage, e);
+			}
+		}
 
 		if (_log.isInfoEnabled()) {
-			_log.info("Downloaded patch " + patchFileName);
+			_log.info("Completed patch download");
 		}
 	}
 
@@ -112,11 +146,9 @@ public class DownloadPatchCommand
 		if (!LCSPatcherUtil.isConfigured() ||
 			(LCSPatcherUtil.getPatchDirectory() == null)) {
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					"Unable to execute command. Patcher util is not " +
-						"configured.");
-			}
+			_log.error(
+				"Aborting patch download. The patching tool is not " +
+					"configured.");
 
 			return;
 		}
@@ -129,19 +161,14 @@ public class DownloadPatchCommand
 			downloadPatch(downloadPatchCommandMessage);
 		}
 		catch (Exception e) {
-			StringBuilder sb = new StringBuilder(4);
+			String errorMessage = "Unable to complete patch download";
 
-			sb.append("Failed to download patches");
-
-			if (e instanceof CompressionException ||
-				e instanceof JSONWebServiceException) {
-
-				sb.append(". Unable to send download status feedback to LCS ");
-				sb.append("gateway. Please check download status at LCS ");
-				sb.append("dashboard and repeat procedure if necessary.");
+			if (e instanceof JSONWebServiceException) {
+				_log.error(errorMessage);
 			}
-
-			_log.error(sb.toString(), e);
+			else {
+				_log.error(errorMessage, e);
+			}
 		}
 	}
 
@@ -278,19 +305,13 @@ public class DownloadPatchCommand
 				}
 			}
 			catch (IOException ioe) {
-				if (_log.isDebugEnabled()) {
-					_log.debug("File transfer is broken", ioe);
-				}
+				_log.error("Unable to download file", ioe);
 
 				break;
 			}
 		}
 
 		if (transferred == remaining) {
-			if (_log.isInfoEnabled()) {
-				_log.info("File transfer is complete");
-			}
-
 			fileOutputStream.close();
 			readableByteChannel.close();
 
@@ -300,7 +321,7 @@ public class DownloadPatchCommand
 		fileOutputStream.close();
 
 		if (_log.isInfoEnabled()) {
-			_log.info("File transfer is incomplete, retrying");
+			_log.info("Download was interrupted. Trying to resume download.");
 		}
 
 		return false;

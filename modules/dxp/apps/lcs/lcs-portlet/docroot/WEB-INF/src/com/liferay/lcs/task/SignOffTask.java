@@ -18,6 +18,8 @@ import com.liferay.lcs.internal.event.LCSEvent;
 import com.liferay.lcs.internal.event.LCSEventListener;
 import com.liferay.lcs.messaging.HandshakeMessage;
 import com.liferay.lcs.platform.gateway.LCSGatewayClient;
+import com.liferay.petra.json.web.service.client.JSONWebServiceException;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -48,8 +50,10 @@ public class SignOffTask implements Task {
 	@Override
 	public void run() {
 		if (!_lcsGatewayClient.isAvailable()) {
-			if (_log.isTraceEnabled()) {
-				_log.trace("LCS gateway is unavailable, skip sign off task");
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Aborting signing out of LCS. LCS gateway is not " +
+						"available.");
 			}
 
 			return;
@@ -70,16 +74,33 @@ public class SignOffTask implements Task {
 		handshakeMessage.setKey(_key);
 
 		try {
+			if (_log.isTraceEnabled()) {
+				_log.trace("Sending sign out message: " + handshakeMessage);
+			}
+
 			_lcsGatewayClient.sendMessage(handshakeMessage);
 
-			if (_log.isInfoEnabled()) {
-				_log.info("Signed off from LCS platform");
+			if (_log.isWarnEnabled()) {
+				_log.warn("Signed out and disconnected from LCS");
 			}
 
 			_notifyLCSEventListeners(LCSEvent.SIGNOFF_SUCCESS);
 		}
 		catch (Exception e) {
-			_log.error("Unable to send sign off message", e);
+			StringBundler sb = new StringBundler(3);
+
+			sb.append("Unable to sign out of LCS. LCS will declare the ");
+			sb.append("server offline after few minutes without ");
+			sb.append("communication.");
+
+			String errorMessage = sb.toString();
+
+			if (e instanceof JSONWebServiceException) {
+				_log.error(errorMessage);
+			}
+			else {
+				_log.error(errorMessage, e);
+			}
 
 			_notifyLCSEventListeners(LCSEvent.SIGNOFF_FAILED);
 		}

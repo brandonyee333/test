@@ -20,6 +20,7 @@ import com.liferay.lcs.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.task.advisor.TaskAdvisor;
 import com.liferay.lcs.util.LCSConstants;
 import com.liferay.lcs.util.LCSPatcherUtil;
+import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Digester;
@@ -47,9 +48,9 @@ public class SendPatchesCommand implements Command<SendPatchesCommandMessage> {
 	@Override
 	public void execute(SendPatchesCommandMessage sendPatchesCommandMessage) {
 		if (!LCSPatcherUtil.isConfigured()) {
-			if (_log.isWarnEnabled()) {
-				_log.warn("Patcher is not configured. Unable to send patches.");
-			}
+			_log.error(
+				"Aborting patch information sending. The patching tool is " +
+					"not configured.");
 
 			return;
 		}
@@ -84,8 +85,10 @@ public class SendPatchesCommand implements Command<SendPatchesCommandMessage> {
 			Digester.MD5, sb.toString());
 
 		if (installedHashCode.equals(sendPatchesCommandMessage.getHashCode())) {
-			if (_log.isTraceEnabled()) {
-				_log.trace("Installed patches match available patches");
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Aborting patch information sending. Installed patch " +
+						"matches available patch.");
 			}
 
 			return;
@@ -105,7 +108,15 @@ public class SendPatchesCommand implements Command<SendPatchesCommandMessage> {
 			_lcsGatewayClient.sendMessage(sendPatchesResponseMessage);
 		}
 		catch (Exception e) {
-			_log.error("Unable to send installed patches statuses", e);
+			String errorMessage =
+				"Unable to send status of patch installation to LCS";
+
+			if (e instanceof JSONWebServiceException) {
+				_log.error(errorMessage);
+			}
+			else {
+				_log.error(errorMessage, e);
+			}
 		}
 	}
 

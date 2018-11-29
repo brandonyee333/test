@@ -76,8 +76,8 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 	}
 
 	public void destroy() {
-		if (_log.isInfoEnabled()) {
-			_log.info("Destroying " + this);
+		if (_log.isTraceEnabled()) {
+			_log.trace("Destroying " + this);
 		}
 
 		_shutdownPending = true;
@@ -111,10 +111,9 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 	@Override
 	public void onLCSEvent(LCSEvent lcsEvent) {
 		if (_shutdownPending) {
-			if (_log.isTraceEnabled()) {
-				_log.trace(
-					"Shutdown pending. No action is taken for LCS event " +
-						lcsEvent);
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Aborting event processing. Shutdown is in progress.");
 			}
 
 			return;
@@ -177,18 +176,20 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 			_taskAdvisor.registerActivity(scheduledTask);
 		}
 		catch (Exception e) {
-			StringBundler sb = new StringBundler(4);
+			StringBundler sb = new StringBundler(5);
 
-			sb.append("Unable to create ");
+			sb.append("Unable to create the scheduled task ");
 			sb.append(taskName);
-			sb.append(". This is likely because Liferay Connected Services ");
-			sb.append("does not support such task for this app server.");
+			sb.append(". This may be because LCS does not support execution ");
+			sb.append("of this task in your installation environment. Please ");
+			sb.append("see LCS documentation or contact Liferay support.");
 
-			if (_log.isDebugEnabled()) {
-				_log.debug(sb.toString(), e);
-			}
-			else if (_log.isWarnEnabled()) {
+			if (_log.isWarnEnabled()) {
 				_log.warn(sb.toString());
+
+				if (_log.isDebugEnabled()) {
+					_log.debug(e, e);
+				}
 			}
 		}
 	}
@@ -204,8 +205,8 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 	protected void finalize() throws Throwable {
 		super.finalize();
 
-		if (_log.isInfoEnabled()) {
-			_log.info("Finalized " + this);
+		if (_log.isTraceEnabled()) {
+			_log.trace("Finalized " + this);
 		}
 	}
 
@@ -263,15 +264,11 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 
 	private void _executeHandshakeTask(boolean delayRun) {
 		if (_shutdownPending) {
-			if (_log.isTraceEnabled()) {
-				_log.trace("Shutdown pending. Aborting handshake task.");
+			if (_log.isDebugEnabled()) {
+				_log.debug("Aborting handshake. Shutdown is in progress.");
 			}
 
 			return;
-		}
-
-		if (_log.isInfoEnabled()) {
-			_log.info("LCS portlet is not connected. Retry in 60 seconds.");
 		}
 
 		HandshakeTask handshakeTask = new HandshakeTask(
@@ -280,6 +277,10 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 			_lcsKeyAdvisor, this, _threadFactory, _uptimeAdvisor);
 
 		if (delayRun) {
+			if (_log.isInfoEnabled()) {
+				_log.info("Retrying connection in 60 seconds");
+			}
+
 			_scheduledExecutorService.schedule(
 				handshakeTask, 60, TimeUnit.SECONDS);
 		}
@@ -290,17 +291,13 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 
 	private void _executeLCSClusterEntryTokenCheckTask(boolean delayRun) {
 		if (_shutdownPending) {
-			if (_log.isTraceEnabled()) {
-				_log.trace("Shutdown pending. Aborting AATF check task.");
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Aborting environment token processing. Shutdown is in " +
+						"progress.");
 			}
 
 			return;
-		}
-
-		if (delayRun) {
-			if (_log.isInfoEnabled()) {
-				_log.info("LCS portlet is not connected. Retry in 60 seconds.");
-			}
 		}
 
 		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =
@@ -308,6 +305,10 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 				_lcsAlertAdvisor, _lcsClusterEntryTokenAdvisor, this);
 
 		if (delayRun) {
+			if (_log.isInfoEnabled()) {
+				_log.info("Checking environment token in 60 seconds");
+			}
+
 			_scheduledExecutorService.schedule(
 				lcsClusterEntryTokenCheckTask, 60, TimeUnit.SECONDS);
 		}
@@ -337,10 +338,7 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 				Thread.sleep(100);
 			}
 			catch (InterruptedException ie) {
-				if (_log.isWarnEnabled()) {
-					_log.warn("Interrupted while waiting for SignOff task");
-				}
-				else if (_log.isDebugEnabled()) {
+				if (_log.isDebugEnabled()) {
 					_log.debug(
 						"Interrupted while waiting for SignOff task", ie);
 				}
@@ -350,7 +348,7 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		_signOffPending = false;
 
 		if (_log.isTraceEnabled()) {
-			_log.trace("Sign off executed");
+			_log.trace("Sign out task executed");
 		}
 	}
 
@@ -390,14 +388,14 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		if (_signOffPending) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
-					"Skip connection recovery while SignOffTask is running");
+					"Aborting connection recovery. Sign-out is in progress.");
 			}
 
 			return;
 		}
 
 		if (_log.isInfoEnabled()) {
-			_log.info("LCS Gateway unavailable. Start connection recovery.");
+			_log.info("Starting connection recovery");
 		}
 
 		_cancelAllTasks();
@@ -407,7 +405,7 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 
 	private void _restart() {
 		if (_log.isDebugEnabled()) {
-			_log.debug("Restarting LCS life cycle");
+			_log.debug("Restarting LCS lifecycle");
 		}
 
 		_cancelAllTasks();

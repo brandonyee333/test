@@ -20,6 +20,7 @@ import com.liferay.lcs.platform.gateway.LCSGatewayClient;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ServerDetector;
+import com.liferay.portal.kernel.util.StringBundler;
 
 /**
  * @author Riccardo Ferrari
@@ -53,11 +54,14 @@ public class ServerMetricsTaskFactory {
 			serverMetricsTask = new WeblogicServerMetricsTask();
 		}
 		else {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					ServerDetector.getServerId() +
-						" server metrics are not supported in LCS");
-			}
+			StringBundler sb = new StringBundler(4);
+
+			sb.append("LCS does not support ");
+			sb.append(ServerDetector.getServerId());
+			sb.append("analytics. Please disable the portal analytics ");
+			sb.append("service in LCS.");
+
+			_log.error(sb.toString());
 
 			return null;
 		}

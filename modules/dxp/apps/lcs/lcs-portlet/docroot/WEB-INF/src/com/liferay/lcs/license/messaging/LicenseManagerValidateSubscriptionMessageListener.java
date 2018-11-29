@@ -37,8 +37,8 @@ public class LicenseManagerValidateSubscriptionMessageListener
 		LicenseManagerMessageType licenseManagerMessageType =
 			LicenseManagerMessageType.SUBSCRIPTION_VALID;
 
-		if (_log.isWarnEnabled()) {
-			_log.warn(
+		if (_log.isTraceEnabled()) {
+			_log.trace(
 				"Responding to license manager with " +
 					LCSPortletState.UNDEFINED);
 		}

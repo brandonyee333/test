@@ -70,9 +70,7 @@ public class PortalMetricsMonitoringAdvisor implements MonitoringAdvisor {
 			}
 		}
 		catch (Exception e) {
-			if (_log.isWarnEnabled()) {
-				_log.warn("Unable to activate monitoring", e);
-			}
+			_log.error("Unable to activate monitoring", e);
 		}
 		finally {
 			bundleContext.ungetService(serviceReference);

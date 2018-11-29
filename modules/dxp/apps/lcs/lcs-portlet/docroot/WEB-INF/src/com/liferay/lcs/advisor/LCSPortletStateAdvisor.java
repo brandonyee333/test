@@ -59,69 +59,59 @@ public class LCSPortletStateAdvisor {
 			return _lastLCSPortletState;
 		}
 		catch (JSONWebServiceInvocationException jsonwsie) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("Unable to invoke an LCS service.");
+
 			if (jsonwsie.getStatus() == HttpServletResponse.SC_UNAUTHORIZED) {
-				if (_log.isWarnEnabled()) {
-					StringBundler sb = new StringBundler(9);
-
-					sb.append("User permissions may be invalid. If user who ");
-					sb.append("generated LCS activation token file was ");
-					sb.append("removed from LCS project, or user permissions ");
-					sb.append("were degraded, LCS portlet will not be able ");
-					sb.append("to communicate to the LCS platform after the ");
-					sb.append("server is rebooted or after the LCS portlet ");
-					sb.append("is redeployed. The LCS platform returned the ");
-					sb.append("following error message: ");
-					sb.append(jsonwsie.getMessage());
-
-					_log.warn(sb.toString());
-				}
+				sb.append(" The user credentials in the environment token ");
+				sb.append("were rejected. Please regenerate, download, and ");
+				sb.append("install a new token.");
 			}
-			else {
-				if (_log.isDebugEnabled()) {
-					_log.debug("Remote service unavailable", jsonwsie);
-				}
-				else {
-					_log.error("Remote service unavailable");
-				}
+
+			if (jsonwsie.getMessage() != null) {
+				sb.append(" Caused by: ");
+				sb.append(jsonwsie.getMessage());
 			}
+
+			_log.error(sb.toString());
 		}
 		catch (JSONWebServiceSerializeException jsonwsse) {
-			if (_log.isDebugEnabled()) {
-				_log.debug("Remote service unavailable", jsonwsse);
+			StringBundler sb = new StringBundler(4);
+
+			sb.append("Error communicating with LCS. A message in an ");
+			sb.append("unexpected format caused a serialization error.");
+
+			if (jsonwsse.getMessage() != null) {
+				sb.append(" Error details: ");
+				sb.append(jsonwsse.getMessage());
 			}
-			else {
-				_log.error("Remote service unavailable");
-			}
+
+			_log.error(sb.toString());
 		}
 		catch (JSONWebServiceTransportException jsonwste) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("Unable to communicate with LCS.");
+
 			String message = jsonwste.getMessage();
 
-			if ((message != null) && message.contains("Not authorized")) {
-				if (_log.isWarnEnabled()) {
-					StringBundler sb = new StringBundler(8);
-
-					sb.append("OAuth credentials may be invalid. If ");
-					sb.append("credentials were revoked, the LCS portlet ");
-					sb.append("will not be able to communicate to the LCS ");
-					sb.append("platform after the server is rebooted or ");
-					sb.append("after the LCS portlet is redeployed. The LCS ");
-					sb.append("platform returned the following error ");
-					sb.append("message: ");
-					sb.append(message);
-
-					_log.warn(sb.toString());
+			if (message != null) {
+				if (message.contains("Not authorized")) {
+					sb.append(" The user credentials in the environment ");
+					sb.append("token were rejected. Please regenerate, ");
+					sb.append("download, and install a new token.");
 				}
+
+				sb.append(" Error details: ");
+				sb.append(message);
 			}
-			else {
-				if (_log.isDebugEnabled()) {
-					_log.debug("Remote service unavailable", jsonwste);
-				}
-				else {
-					_log.error("Remote service unavailable");
-				}
 
+			if ((message == null) || !message.contains("Not authorized")) {
 				_lastLCSPortletState = LCSPortletState.NO_CONNECTION;
 			}
+
+			_log.error(sb.toString());
 		}
 
 		return _lastLCSPortletState;

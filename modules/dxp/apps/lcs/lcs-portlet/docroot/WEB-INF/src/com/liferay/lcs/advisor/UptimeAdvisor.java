@@ -82,8 +82,8 @@ public class UptimeAdvisor implements LCSEventListener {
 
 		_initalized = true;
 
-		if (_log.isDebugEnabled()) {
-			_log.debug("Initialized");
+		if (_log.isTraceEnabled()) {
+			_log.trace("Initialized");
 		}
 	}
 
@@ -91,7 +91,9 @@ public class UptimeAdvisor implements LCSEventListener {
 	public synchronized void onLCSEvent(LCSEvent lcsEvent) {
 		if (!_initalized) {
 			if (_log.isDebugEnabled()) {
-				_log.debug("Object instance is not initialized");
+				_log.debug(
+					"Aborting event processing. Object instance is not " +
+						"initialized.");
 			}
 
 			return;
@@ -194,7 +196,7 @@ public class UptimeAdvisor implements LCSEventListener {
 		_currentUptime = uptime;
 
 		if (_log.isDebugEnabled()) {
-			_log.debug("Updated with current uptime");
+			_log.debug("Updated current uptime");
 		}
 	}
 
@@ -238,8 +240,8 @@ public class UptimeAdvisor implements LCSEventListener {
 
 		_storeUptimes();
 
-		if (_log.isInfoEnabled()) {
-			_log.info("New uptime session started " + _currentUptime);
+		if (_log.isDebugEnabled()) {
+			_log.debug("New uptime session started " + _currentUptime);
 		}
 	}
 

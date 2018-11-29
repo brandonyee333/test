@@ -53,20 +53,15 @@ public class ExecuteScriptCommand
 			executeScript(executeScriptCommandMessage);
 		}
 		catch (Exception e) {
-			StringBuilder sb = new StringBuilder(4);
+			String errorMessage =
+				"Unable to send script execution result to LCS";
 
-			sb.append("Failed to execute script");
-
-			if (e instanceof CompressionException ||
-				e instanceof JSONWebServiceException) {
-
-				sb.append(". Unable to send execution status feedback to LCS ");
-				sb.append("gateway. Please note that even script executed, ");
-				sb.append("execution result won't be registered at LCS ");
-				sb.append("dashboard");
+			if (e instanceof JSONWebServiceException) {
+				_log.error(errorMessage);
 			}
-
-			_log.error(sb.toString(), e);
+			else {
+				_log.error(errorMessage, e);
+			}
 		}
 	}
 

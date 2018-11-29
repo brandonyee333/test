@@ -110,7 +110,7 @@ public class HandshakeTask implements Task {
 	public void run() {
 		try {
 			if (_log.isInfoEnabled()) {
-				_log.info("Initiate handshake");
+				_log.info("Connecting to LCS");
 			}
 
 			if (!_temporaryKey) {
@@ -118,6 +118,10 @@ public class HandshakeTask implements Task {
 			}
 
 			HandshakeMessage handshakeMessage = _createHandshakeMessage();
+
+			if (_log.isTraceEnabled()) {
+				_log.trace("Sending handshake message: " + handshakeMessage);
+			}
 
 			_lcsGatewayClient.sendMessage(handshakeMessage);
 
@@ -130,19 +134,26 @@ public class HandshakeTask implements Task {
 			}
 		}
 		catch (Throwable t) {
-			String exceptionMessage = t.getMessage();
-
 			LCSEvent lcsEvent = LCSEvent.HANDSHAKE_FAILED;
 
-			LCSRESTError lcsRESTError = LCSRESTError.UNDEFINED;
-
 			if (t instanceof LCSHandshakeException) {
-				if (Validator.isNotNull(exceptionMessage)) {
-					lcsRESTError = LCSRESTError.getRESTError(t.getMessage());
+				StringBuilder sb = new StringBuilder();
 
-					if (lcsRESTError != LCSRESTError.UNDEFINED) {
-						exceptionMessage = lcsRESTError.getErrorDescription();
-					}
+				sb.append("LCS blocked the connection. ");
+
+				String exceptionMessage = t.getMessage();
+
+				LCSRESTError lcsRESTError = LCSRESTError.UNDEFINED;
+
+				if (Validator.isNotNull(exceptionMessage)) {
+					lcsRESTError = LCSRESTError.getRESTError(exceptionMessage);
+
+					sb.append(lcsRESTError.getErrorDescription());
+
+					sb.append(" Error details: ");
+					sb.append(exceptionMessage);
+
+					_log.error(sb.toString());
 				}
 
 				if (lcsRESTError.getErrorCode() == 200) {
@@ -158,12 +169,11 @@ public class HandshakeTask implements Task {
 							LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS;
 				}
 			}
-
-			if (_log.isDebugEnabled()) {
-				_log.debug(exceptionMessage, t);
+			else if (t instanceof JSONWebServiceException) {
+				_log.error("Unable to establish connection");
 			}
-			else if (_log.isWarnEnabled()) {
-				_log.warn(exceptionMessage);
+			else {
+				_log.error("Unable to establish connection", t);
 			}
 
 			_notifyLCSEventListeners(lcsEvent);

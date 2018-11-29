@@ -17,6 +17,7 @@ package com.liferay.lcs.task;
 import com.liferay.lcs.messaging.CommandMessage;
 import com.liferay.lcs.messaging.Message;
 import com.liferay.lcs.platform.gateway.LCSGatewayClient;
+import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
@@ -44,7 +45,14 @@ public class CommandMessageTask implements Task {
 			doRun();
 		}
 		catch (Exception e) {
-			_log.error(e, e);
+			String errorMessage = "Unable to get messages from LCS";
+
+			if (e instanceof JSONWebServiceException) {
+				_log.error(errorMessage);
+			}
+			else {
+				_log.error(errorMessage, e);
+			}
 		}
 	}
 
@@ -55,7 +63,9 @@ public class CommandMessageTask implements Task {
 
 		if (!_lcsGatewayClient.isAvailable()) {
 			if (_log.isDebugEnabled()) {
-				_log.debug("Waiting for LCS gateway service");
+				_log.debug(
+					"Aborting command messages retrieving. LCS gateway is " +
+						"not available.");
 			}
 
 			return;
