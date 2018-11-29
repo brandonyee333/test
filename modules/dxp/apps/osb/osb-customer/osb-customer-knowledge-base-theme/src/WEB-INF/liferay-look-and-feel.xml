@@ -16,6 +16,7 @@
 			<setting configurable="true" key="google-tag-manager-id" value="" />
 			<setting configurable="true" key="liferay-home-url" value="/" />
 			<setting configurable="true" key="nav-options" options="dynamic,none,static" type="select" value="dynamic"></setting>
+			<setting configurable="true" key="new-liferay-help-center-banner" options="true,false" type="select" value="true"></setting>
 			<setting configurable="true" key="open-graph-image" value=""></setting>
 			<setting configurable="true" key="open-graph-title" value=""></setting>
 			<setting configurable="true" key="open-graph-url" value=""></setting>

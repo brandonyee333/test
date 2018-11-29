@@ -66,6 +66,12 @@
 	/>
 </#if>
 
+<#assign new_liferay_help_center_banner = "" />
+
+<#if getterUtil.getBoolean(theme_settings["new-liferay-help-center-banner"])>
+	<#assign new_liferay_help_center_banner = "has-new-help-center-banner" />
+</#if>
+
 <#assign
 	customer = role_local_service.hasUserRoles(user_id, company_id, ['Customer'], true)
 

@@ -152,29 +152,6 @@ ul.nav-menu {
 		}
 	}
 
-	.help-center-notification {
-		background-color: $dark-blue;
-		color: $white;
-		font-size: $normal-font-size;
-		font-weight: $font-weight-semi-bold;
-		padding: 24px;
-		text-align: center;
-
-		a {
-			color: $light-blue;
-		}
-
-		@include media-query(null, $screen-md-max) {
-			font-size: 14px;
-			height: 90px;
-		}
-
-		@include media-query(null, $screen-xs-max) {
-			font-size: 12px;
-			height: 118px;
-		}
-	}
-
 	.logo {
 		margin: 10px;
 
@@ -190,6 +167,30 @@ ul.nav-menu {
 
 		.portlet-language {
 			padding-left: 10px;
+		}
+	}
+
+	.new-liferay-help-center-banner {
+		background-color: $dark-blue;
+		color: $white;
+		font-size: $normal-font-size;
+		font-weight: $font-weight-semi-bold;
+		height: 72px;
+		padding: 24px;
+		text-align: center;
+
+		a {
+			color: $light-blue;
+		}
+
+		@include media-query(null, $screen-md-max) {
+			font-size: 14px;
+			height: 90px;
+		}
+
+		@include media-query(null, $screen-xs-max) {
+			font-size: 12px;
+			height: 118px;
 		}
 	}
 
@@ -578,8 +579,12 @@ ul.nav-menu {
 	display: flex;
 	height: 84px;
 	justify-content: center;
-	margin-top: 128px;
+	margin-top: 56px;
 	width: 100%;
+
+	&.has-new-help-center-banner {
+		margin-top: 128px;
+	}
 
 	.doc-search-form {
 		position: relative;
@@ -613,7 +618,9 @@ ul.nav-menu {
 	}
 
 	@include media-query(null, $screen-md-max) {
-		margin-top: 147px;
+		&.has-new-help-center-banner {
+			margin-top: 147px;
+		}
 
 		.keyword-search-input {
 			min-width: 320px;
@@ -625,7 +632,9 @@ ul.nav-menu {
 	}
 
 	@include media-query(null, $screen-xs-max) {
-		margin-top: 175px;
+		&.has-new-help-center-banner {
+			margin-top: 175px;
+		}
 
 		.keyword-search-input {
 			min-width: auto;

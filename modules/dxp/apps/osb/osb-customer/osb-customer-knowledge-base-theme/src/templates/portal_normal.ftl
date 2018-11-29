@@ -86,12 +86,14 @@
 
 	<div class="container-fluid" id="wrapper">
 		<header class="banner" id="banner" role="banner">
-			<div class="help-center-notification">
-				<@liferay.language_format
-					arguments="${new_help_center_url}"
-					key="you-have-accessed-the-old-customer-portal-documentation-site-which-has-been-relocated-to-the-liferay-help-center"
-				/>
-			</div>
+			<#if validator.isNotNull(new_liferay_help_center_banner)>
+				<div class="new-liferay-help-center-banner">
+					<@liferay.language_format
+						arguments="${new_help_center_url}"
+						key="you-have-accessed-the-old-customer-portal-documentation-site-which-has-been-relocated-to-the-liferay-help-center"
+					/>
+				</div>
+			</#if>
 
 			<#if getterUtil.getBoolean(theme_settings["custom-site-nav-logo"]) && (theme_settings["custom-site-url"] != "")>
 				<div class="${logo_css_class} custom-site-nav">
@@ -112,7 +114,7 @@
 			</#if>
 		</header>
 
-		<div class="documentation-search">
+		<div class="documentation-search ${new_liferay_help_center_banner}">
 			<#assign redirect = paramUtil.getString(request, "redirect") />
 
 			<#if validator.isNull(redirect)>
