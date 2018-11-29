@@ -48,12 +48,10 @@ class Downloads extends React.Component {
 					(response) => {
 						const [content, verification] = response;
 
-						/* TODO: Remove type coercion once response schema updates from String to Boolean */
-
 						this.setState(
 							{
 								agreementContent: content.data,
-								showEULA: Boolean(verification.data.verified)
+								showEULA: !verification.data.verified
 							}
 						);
 					}
