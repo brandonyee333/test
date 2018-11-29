@@ -119,7 +119,7 @@ request.setAttribute("edit_account_entry_customers.jsp-portletURL", portletURL);
 			<liferay-ui:search-container-column-text
 				name="role"
 			>
-				<aui:select label="" name='<%= "role_" + accountCustomer.getAccountCustomerId() %>' >
+				<aui:select label="" name='<%= "role_" + accountCustomer.getAccountCustomerId() %>'>
 					<aui:option value="" />
 
 					<%
