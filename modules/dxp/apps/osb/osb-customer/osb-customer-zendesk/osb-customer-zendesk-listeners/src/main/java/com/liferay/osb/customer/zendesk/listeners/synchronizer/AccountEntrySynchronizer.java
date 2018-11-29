@@ -15,8 +15,11 @@
 package com.liferay.osb.customer.zendesk.listeners.synchronizer;
 
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
+import com.liferay.osb.customer.zendesk.constants.ZendeskTicketConstants;
+import com.liferay.osb.customer.zendesk.constants.ZendeskUserConstants;
 import com.liferay.osb.customer.zendesk.listeners.exception.ZendeskIntegrationException;
 import com.liferay.osb.customer.zendesk.listeners.util.ZendeskModelListenerUtil;
+import com.liferay.osb.customer.zendesk.model.ZendeskOrganization;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationWebService;
@@ -88,19 +91,26 @@ public class AccountEntrySynchronizer {
 				SupportRegionLocalServiceUtil.getSupportRegion(
 					supportRegionIds[0]);
 
-			_zendeskOrganizationWebService.createOrUpdateZendeskOrganization(
-				accountEntry.getCode(),
-				ZendeskModelListenerUtil.convertAddressToString(
-					accountEntry.getAddress()),
-				String.valueOf(accountEntry.getAccountEntryId()),
-				accountEntry.getName(), accountEntry.getNotes(),
-				String.valueOf(accountEntry.getPartnerManagedSupport()),
-				jiraProjectKey, partnerEntryCode, supportLevelLabel,
-				accountEntry.getStatusLabel(),
-				AccountEntryConstants.getLanguageLabel(languageIds[0]),
-				supportRegion.getName(),
-				AccountEntryConstants.getTierLabel(accountEntry.getTier()),
-				getTags(accountEntry));
+			ZendeskOrganization zendeskOrganization =
+				_zendeskOrganizationWebService.
+					createOrUpdateZendeskOrganization(
+						accountEntry.getCode(),
+						ZendeskModelListenerUtil.convertAddressToString(
+							accountEntry.getAddress()),
+						String.valueOf(accountEntry.getAccountEntryId()),
+						accountEntry.getName(), accountEntry.getNotes(),
+						String.valueOf(accountEntry.getPartnerManagedSupport()),
+						jiraProjectKey, partnerEntryCode, supportLevelLabel,
+						accountEntry.getStatusLabel(),
+						AccountEntryConstants.getLanguageLabel(languageIds[0]),
+						supportRegion.getName(),
+						AccountEntryConstants.getTierLabel(
+							accountEntry.getTier()),
+						getTags(accountEntry));
+
+			_zendeskUserWebService.createZendeskUserOrganizationMemberships(
+				ZendeskUserConstants.DEFAULT_USER_ID,
+				new long[] {zendeskOrganization.getZendeskOrganizationId()});
 		}
 		catch (Exception e) {
 			_log.error(e);
@@ -181,8 +191,8 @@ public class AccountEntrySynchronizer {
 		Set<String> criteria = new HashSet<>();
 
 		criteria.add("organization:" + zendeskOrganizationId);
-		criteria.add("status<closed");
-		/*criteria.add("requester:" + user from LRIS-33776);*/
+		criteria.add("requester:" + ZendeskUserConstants.DEFAULT_USER_ID);
+		criteria.add("status<" + ZendeskTicketConstants.STATUS_CLOSED);
 
 		List<ZendeskTicket> zendeskTickets =
 			_zendeskTicketWebService.getZendeskTickets(criteria);
