@@ -1193,8 +1193,6 @@ public class AccountEntryLocalServiceImpl
 		accountEntry.setInstructions(instructions);
 		accountEntry.setNotes(notes);
 
-		updateActiveSupport(accountEntryId);
-
 		if (addressId <= 0) {
 			addressLocalService.addAddress(
 				userId, AccountEntry.class.getName(), accountEntryId, street1,
@@ -1219,7 +1217,11 @@ public class AccountEntryLocalServiceImpl
 			user.getUserId(), user.getFullName(), oldAccountEntry,
 			accountEntry);
 
-		return accountEntryPersistence.update(accountEntry);
+		accountEntryPersistence.update(accountEntry);
+
+		updateActiveSupport(accountEntryId);
+
+		return accountEntry;
 	}
 
 	public void updateAccountEntryWithWorkflow(

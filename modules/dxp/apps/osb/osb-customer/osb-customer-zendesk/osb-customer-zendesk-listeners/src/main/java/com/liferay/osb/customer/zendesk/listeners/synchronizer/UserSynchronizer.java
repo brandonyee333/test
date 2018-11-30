@@ -91,7 +91,7 @@ public class UserSynchronizer {
 			boolean customer = false;
 
 			List<AccountCustomer> accountCustomers =
-				AccountCustomerLocalServiceUtil.getAccountCustomers(userId);
+				AccountCustomerLocalServiceUtil.getUserAccountCustomers(userId);
 
 			for (AccountCustomer accountCustomer : accountCustomers) {
 				if (accountCustomer.getRole() ==
