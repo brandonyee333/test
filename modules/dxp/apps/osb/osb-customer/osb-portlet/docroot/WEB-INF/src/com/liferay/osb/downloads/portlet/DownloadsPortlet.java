@@ -370,7 +370,7 @@ public class DownloadsPortlet extends MVCPortlet {
 
 			if ((osbStudioEula == null) || (osbStudioEula.length < 4)) {
 				osbStudioEula = (String[])expandoBridge.getAttribute(
-					"osbCustomerStudioEULA");
+					"osbStudioEULA");
 			}
 
 			if ((osbStudioEula == null) || (osbStudioEula.length < 4)) {
