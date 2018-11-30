@@ -40,7 +40,7 @@
 	<#local zendesk_locale = "" />
 
 	<#if stringUtil.equals(locale, "en_US")>
-		<#local zendesk_locale = "en-US" />
+		<#local zendesk_locale = "en-us" />
 	<#elseif stringUtil.equals(locale, "es_ES")>
 		<#local zendesk_locale = "es" />
 	<#elseif stringUtil.equals(locale, "ja_JP")>
@@ -48,7 +48,7 @@
 	<#elseif stringUtil.equals(locale, "pt_BR")>
 		<#local zendesk_locale = "pt" />
 	<#elseif stringUtil.equals(locale, "zh_CN")>
-		<#local zendesk_locale = "zh-CN" />
+		<#local zendesk_locale = "zh-cn" />
 	</#if>
 
 	<#return zendesk_locale>
