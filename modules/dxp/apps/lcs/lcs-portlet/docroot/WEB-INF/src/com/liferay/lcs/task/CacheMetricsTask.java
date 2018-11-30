@@ -19,8 +19,6 @@ import com.liferay.lcs.management.ObjectNameKeyPropertyMapKeyStrategy;
 import com.liferay.lcs.messaging.CacheMetricsMessage;
 import com.liferay.lcs.util.PortletPropsValues;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -48,10 +46,6 @@ public class CacheMetricsTask extends BaseScheduledTask {
 	}
 
 	protected void doRun() throws Exception {
-		if (_log.isTraceEnabled()) {
-			_log.trace("Running cache metrics task");
-		}
-
 		CacheMetricsMessage cacheMetricsMessage = new CacheMetricsMessage();
 
 		cacheMetricsMessage.setCreateTime(System.currentTimeMillis());
@@ -160,9 +154,6 @@ public class CacheMetricsTask extends BaseScheduledTask {
 
 		return payload;
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		CacheMetricsTask.class);
 
 	private MBeanServerService _mBeanServerService;
 

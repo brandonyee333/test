@@ -41,10 +41,6 @@ public abstract class BasePortalModelTask extends BaseScheduledTask {
 
 	@Override
 	protected void doRun() throws Exception {
-		if (_log.isTraceEnabled()) {
-			_log.trace("Running task " + getClass());
-		}
-
 		int start = 0;
 		int end = _pageSize;
 		long queryStartTime = System.currentTimeMillis();
@@ -90,7 +86,7 @@ public abstract class BasePortalModelTask extends BaseScheduledTask {
 			Thread.sleep(_pauseInterval);
 		}
 		catch (InterruptedException ie) {
-			_log.error(ie, ie);
+			_log.error("Interrupted while in sleep", ie);
 		}
 	}
 
