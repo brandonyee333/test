@@ -145,9 +145,7 @@ String message = LanguageUtil.format(request, "a-sales-representative-will-conta
 				name="start-date"
 				orderable="<%= true %>"
 			>
-				<div>
-					<%= longDateFormatDate.format(licenseKey.getStartDate()) %>
-				</div>
+				<%= longDateFormatDate.format(licenseKey.getStartDate()) %>
 
 				<div class="small">
 					<%= longDateFormatTime.format(licenseKey.getStartDate()) %>
@@ -167,9 +165,7 @@ String message = LanguageUtil.format(request, "a-sales-representative-will-conta
 						/>
 					</c:when>
 					<c:otherwise>
-						<div>
-							<%= longDateFormatDate.format(expirationDate) %>
-						</div>
+						<%= longDateFormatDate.format(expirationDate) %>
 
 						<div class="small">
 							<%= longDateFormatTime.format(expirationDate) %>

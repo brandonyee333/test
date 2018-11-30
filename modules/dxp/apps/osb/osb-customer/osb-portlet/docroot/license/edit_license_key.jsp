@@ -826,13 +826,11 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 						</c:otherwise>
 					</c:choose>
 
-					<div>
-						<aui:col md="12">
-							<aui:button primary="<%= true %>" type="submit" value="generate" />
+					<aui:col md="12">
+						<aui:button primary="<%= true %>" type="submit" value="generate" />
 
-							<aui:button onClick="<%= backURL %>" value="cancel" />
-						</aui:col>
-					</div>
+						<aui:button onClick="<%= backURL %>" value="cancel" />
+					</aui:col>
 				</c:otherwise>
 			</c:choose>
 		</aui:form>

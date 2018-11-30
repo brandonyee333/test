@@ -179,44 +179,42 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 					<portlet:param name="licenseKeySetId" value="<%= String.valueOf(licenseKeySetId) %>" />
 				</portlet:resourceURL>
 
-				<div>
-					<liferay-ui:icon
-						image="download"
-						label="<%= true %>"
-						message="download-aggregate-license-file"
-						method="get"
-						url="<%= downloadAggregateLicenseFileURL.toString() %>"
-					/>
+				<liferay-ui:icon
+					image="download"
+					label="<%= true %>"
+					message="download-aggregate-license-file"
+					method="get"
+					url="<%= downloadAggregateLicenseFileURL.toString() %>"
+				/>
 
-					<c:if test="<%= LicenseUtil.isRenewAggregate(licenseKeySetId) && OSBAccountEntryPermission.contains(permissionChecker, licenseKeySet.getAccountEntryId(), OSBActionKeys.ADD_LICENSE) %>">
-						<div class="license-duration pull-right">
-							<liferay-ui:message key="start-date" />:
+				<c:if test="<%= LicenseUtil.isRenewAggregate(licenseKeySetId) && OSBAccountEntryPermission.contains(permissionChecker, licenseKeySet.getAccountEntryId(), OSBActionKeys.ADD_LICENSE) %>">
+					<div class="license-duration pull-right">
+						<liferay-ui:message key="start-date" />:
 
-							<liferay-ui:input-date
-								dayParam="aggregateStartDay"
-								dayValue="<%= calendar.get(Calendar.DAY_OF_MONTH) %>"
-								firstEnabledDate="<%= firstEnabledDate %>"
-								lastEnabledDate="<%= lastEnabledDate %>"
-								monthParam="aggregateStartMonth"
-								monthValue="<%= calendar.get(Calendar.MONTH) %>"
-								name="startDate"
-								yearParam="aggregateStartYear"
-								yearValue="<%= calendar.get(Calendar.YEAR) %>"
-							/>
+						<liferay-ui:input-date
+							dayParam="aggregateStartDay"
+							dayValue="<%= calendar.get(Calendar.DAY_OF_MONTH) %>"
+							firstEnabledDate="<%= firstEnabledDate %>"
+							lastEnabledDate="<%= lastEnabledDate %>"
+							monthParam="aggregateStartMonth"
+							monthValue="<%= calendar.get(Calendar.MONTH) %>"
+							name="startDate"
+							yearParam="aggregateStartYear"
+							yearValue="<%= calendar.get(Calendar.YEAR) %>"
+						/>
 
-							<liferay-ui:message key="duration" />:
+						<liferay-ui:message key="duration" />:
 
-							<aui:select inlineField="<%= true %>" label="" name="aggregateRenewTime">
-								<aui:option label="2-weeks" value="14" />
-								<aui:option label="30-days" value="30" />
-								<aui:option label="60-days" value="60" />
-								<aui:option label="1-year" value="365" />
-							</aui:select>
+						<aui:select inlineField="<%= true %>" label="" name="aggregateRenewTime">
+							<aui:option label="2-weeks" value="14" />
+							<aui:option label="30-days" value="30" />
+							<aui:option label="60-days" value="60" />
+							<aui:option label="1-year" value="365" />
+						</aui:select>
 
-							<aui:button onClick='<%= renderResponse.getNamespace() + "renewLicenseKey();" %>' value="renew-aggregate" />
-						</div>
-					</c:if>
-				</div>
+						<aui:button onClick='<%= renderResponse.getNamespace() + "renewLicenseKey();" %>' value="renew-aggregate" />
+					</div>
+				</c:if>
 			</c:if>
 
 			<aui:button-row cssClass="pull-right">

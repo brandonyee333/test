@@ -152,11 +152,9 @@ while (!displayLicenseKeys.isEmpty()) {
 					<c:when test="<%= licenseKey.getLicenseVersion() == 2 %>">
 						<c:choose>
 							<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) || licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER) %>">
-								<div>
-									<span class="license-info-label"><liferay-ui:message key="maximum-servers" />:</span>
+								<span class="license-info-label"><liferay-ui:message key="maximum-servers" />:</span>
 
-									<%= licenseKey.getMaxServers() %>
-								</div>
+								<%= licenseKey.getMaxServers() %>
 
 								<br />
 							</c:when>
@@ -219,11 +217,9 @@ while (!displayLicenseKeys.isEmpty()) {
 								</table>
 							</c:when>
 							<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_PRODUCTION) %>">
-								<div>
-									<span class="license-info-label"><liferay-ui:message key="server-id" />:</span>
+								<span class="license-info-label"><liferay-ui:message key="server-id" />:</span>
 
-									<%= licenseKey.getServerId() %>
-								</div>
+								<%= licenseKey.getServerId() %>
 
 								<br />
 							</c:when>
@@ -232,13 +228,11 @@ while (!displayLicenseKeys.isEmpty()) {
 				</c:choose>
 
 				<c:if test="<%= licenseKey.getLicenseVersion() == 1 %>">
-					<div>
-						<span class="license-info-label"><liferay-ui:message key="key" />:</span>
+					<span class="license-info-label"><liferay-ui:message key="key" />:</span>
 
-						<liferay-ui:input-resource
-							url="<%= licenseKey.getKey() %>"
-						/>
-					</div>
+					<liferay-ui:input-resource
+						url="<%= licenseKey.getKey() %>"
+					/>
 				</c:if>
 
 				<div class="license-key-controls">

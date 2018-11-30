@@ -130,9 +130,7 @@ pageContext.setAttribute("searchURL", searchURL);
 					name="start-date"
 					orderable="<%= true %>"
 				>
-					<div>
-						<%= longDateFormatDate.format(licenseKey.getStartDate()) %>
-					</div>
+					<%= longDateFormatDate.format(licenseKey.getStartDate()) %>
 
 					<div class="small">
 						<%= longDateFormatTime.format(licenseKey.getStartDate()) %>
@@ -143,9 +141,7 @@ pageContext.setAttribute("searchURL", searchURL);
 					name="expiration-date"
 					orderable="<%= true %>"
 				>
-					<div>
-						<%= longDateFormatDate.format(licenseKey.getExpirationDate()) %>
-					</div>
+					<%= longDateFormatDate.format(licenseKey.getExpirationDate()) %>
 
 					<div class="small">
 						<%= longDateFormatTime.format(licenseKey.getExpirationDate()) %>
