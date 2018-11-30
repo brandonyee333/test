@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.util.Date;
@@ -159,8 +160,9 @@ public class ZendeskSectionLocalServiceImpl
 
 		sectionJSONObject.put("translations", translationsJSONArray);
 
-		if (ZendeskDocumentationSyncConfigurationValues.
-				ZENDESK_SECTION_USER_SEGMENT_ID > 0) {
+		if (!Validator.isBlank(
+				ZendeskDocumentationSyncConfigurationValues.
+					ZENDESK_SECTION_USER_SEGMENT_ID)) {
 
 			sectionJSONObject.put(
 				"user_segment_id",
@@ -187,8 +189,9 @@ public class ZendeskSectionLocalServiceImpl
 		sectionJSONObject.put("category_id", remoteCategoryId);
 		sectionJSONObject.put("position", position);
 
-		if (ZendeskDocumentationSyncConfigurationValues.
-				ZENDESK_SECTION_USER_SEGMENT_ID > 0) {
+		if (!Validator.isBlank(
+				ZendeskDocumentationSyncConfigurationValues.
+					ZENDESK_SECTION_USER_SEGMENT_ID)) {
 
 			sectionJSONObject.put(
 				"user_segment_id",

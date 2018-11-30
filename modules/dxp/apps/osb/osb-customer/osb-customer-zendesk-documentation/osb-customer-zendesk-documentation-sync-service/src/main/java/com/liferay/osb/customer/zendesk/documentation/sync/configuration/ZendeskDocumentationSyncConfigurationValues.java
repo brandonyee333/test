@@ -26,8 +26,8 @@ public class ZendeskDocumentationSyncConfigurationValues {
 			ZendeskDocumentationSyncConfigurationUtil.get(
 				"zendesk.article.permission.group.id"));
 
-	public static final long ZENDESK_SECTION_USER_SEGMENT_ID =
-		GetterUtil.getLong(
+	public static final String ZENDESK_SECTION_USER_SEGMENT_ID =
+		GetterUtil.getString(
 			ZendeskDocumentationSyncConfigurationUtil.get(
 				"zendesk.section.user.segment.id"));
 
