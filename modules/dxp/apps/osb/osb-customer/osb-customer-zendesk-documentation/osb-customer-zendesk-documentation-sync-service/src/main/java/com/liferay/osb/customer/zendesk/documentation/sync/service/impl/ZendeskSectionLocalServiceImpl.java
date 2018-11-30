@@ -174,10 +174,14 @@ public class ZendeskSectionLocalServiceImpl
 
 		jsonObject.put("section", sectionJSONObject);
 
+		String jsonObjectString = jsonObject.toString();
+
+		jsonObjectString = jsonObjectString.replace("\"null\"", "null");
+
 		return _zendeskBaseWebService.post(
 			ZendeskRESTEndpoints.URL_API_V2 + "help_center/categories/" +
 				remoteCategoryId + "/sections.json",
-			jsonObject.toString());
+			jsonObjectString);
 	}
 
 	protected JSONObject updateRemoteZendeskSection(
@@ -203,10 +207,14 @@ public class ZendeskSectionLocalServiceImpl
 
 		jsonObject.put("section", sectionJSONObject);
 
+		String jsonObjectString = jsonObject.toString();
+
+		jsonObjectString = jsonObjectString.replace("\"null\"", "null");
+
 		return _zendeskBaseWebService.put(
 			ZendeskRESTEndpoints.URL_API_V2 + "help_center/sections/" +
 				remoteId + ".json",
-			jsonObject.toString());
+			jsonObjectString);
 	}
 
 	protected void updateRemoteZendeskTranslations(
