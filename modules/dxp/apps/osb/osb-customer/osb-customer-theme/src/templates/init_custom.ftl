@@ -39,15 +39,15 @@
 <#function convert_to_zendesk_locale locale>
 	<#local zendesk_locale = "" />
 
-	<#if locale == "en_US">
+	<#if stringUtil.equals(locale, "en_US")>
 		<#local zendesk_locale = "en-US" />
-	<#elseif locale == "es_ES">
+	<#elseif stringUtil.equals(locale, "es_ES")>
 		<#local zendesk_locale = "es" />
-	<#elseif locale == "ja_JP">
+	<#elseif stringUtil.equals(locale, "ja_JP")>
 		<#local zendesk_locale = "ja" />
-	<#elseif locale == "pt_BR">
+	<#elseif stringUtil.equals(locale, "pt_BR")>
 		<#local zendesk_locale = "pt" />
-	<#elseif locale == "zh_CN">
+	<#elseif stringUtil.equals(locale, "zh_CN")>
 		<#local zendesk_locale = "zh-CN" />
 	</#if>
 
