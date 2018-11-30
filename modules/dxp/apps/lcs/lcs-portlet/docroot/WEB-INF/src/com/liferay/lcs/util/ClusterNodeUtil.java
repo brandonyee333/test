@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.util.MethodKey;
 import java.net.InetAddress;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,82 +90,9 @@ public class ClusterNodeUtil {
 		return clusterNodeInfo;
 	}
 
-	public static List<Map<String, Object>> getClusterNodeInfos()
-		throws Exception {
-
+	public static List<Map<String, Object>> getClusterNodeInfos() {
 		List<Map<String, Object>> clusterNodeInfos = new ArrayList<>();
 
-		try {
-			ClusterNode localClusterNode =
-				ClusterExecutorUtil.getLocalClusterNode();
-
-			String localClusterNodeId = localClusterNode.getClusterNodeId();
-
-			List<ClusterNode> clusterNodes =
-				ClusterExecutorUtil.getClusterNodes();
-
-			for (ClusterNode clusterNode : clusterNodes) {
-				String clusterNodeId = clusterNode.getClusterNodeId();
-
-				if (clusterNodeId.equals(localClusterNodeId)) {
-					if (_log.isTraceEnabled()) {
-						_log.trace(
-							"Skipped local cluster node id " +
-								localClusterNodeId);
-					}
-
-					continue;
-				}
-
-				Map<String, Object> clusterNodeInfo = new HashMap<>();
-
-				if (_hasClusterNodeLCSPortletServletContext(clusterNodeId)) {
-					clusterNodeInfo = _getClusterNodeInfo(clusterNodeId);
-				}
-				else {
-					clusterNodeInfo.put("lcsPortletMissing", null);
-					clusterNodeInfo.put("registered", false);
-				}
-
-				clusterNodeInfo.put("clusterNodeId", clusterNodeId);
-
-				if (_log.isTraceEnabled()) {
-					_log.trace(
-						"Obtained cluster node info " +
-							MapUtil.toString(clusterNodeInfo));
-				}
-
-				clusterNodeInfos.add(clusterNodeInfo);
-			}
-		}
-		catch (ClassNotFoundException cnfe) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(cnfe.getMessage(), cnfe);
-			}
-		}
-
-		return clusterNodeInfos;
-	}
-
-	public static List<String> getRegisteredClusterNodeKeys() throws Exception {
-		List<String> clusterNodeKeys = new ArrayList<>();
-
-		if (!ClusterExecutorUtil.isEnabled()) {
-			return clusterNodeKeys;
-		}
-
-		List<Map<String, Object>> clusterNodeInfos = getClusterNodeInfos();
-
-		for (Map<String, Object> clusterNodeInfo : clusterNodeInfos) {
-			if (GetterUtil.getBoolean(clusterNodeInfo.get("registered"))) {
-				clusterNodeKeys.add((String)clusterNodeInfo.get("key"));
-			}
-		}
-
-		return clusterNodeKeys;
-	}
-
-	public static boolean hasAnyClusterNodeWithLCSAvailable() {
 		ClusterNode localClusterNode =
 			ClusterExecutorUtil.getLocalClusterNode();
 
@@ -184,12 +112,46 @@ public class ClusterNodeUtil {
 				continue;
 			}
 
+			Map<String, Object> clusterNodeInfo = new HashMap<>();
+
 			if (_hasClusterNodeLCSPortletServletContext(clusterNodeId)) {
-				return true;
+				clusterNodeInfo = _getClusterNodeInfo(clusterNodeId);
+			}
+			else {
+				clusterNodeInfo.put("lcsPortletMissing", null);
+				clusterNodeInfo.put("registered", false);
+			}
+
+			clusterNodeInfo.put("clusterNodeId", clusterNodeId);
+
+			clusterNodeInfos.add(clusterNodeInfo);
+
+			if (_log.isTraceEnabled()) {
+				_log.trace(
+					"Added cluster node info " +
+						MapUtil.toString(clusterNodeInfo));
 			}
 		}
 
-		return false;
+		return clusterNodeInfos;
+	}
+
+	public static List<String> getRegisteredClusterNodeKeys() {
+		if (!ClusterExecutorUtil.isEnabled()) {
+			return Collections.emptyList();
+		}
+
+		List<Map<String, Object>> clusterNodeInfos = getClusterNodeInfos();
+
+		List<String> clusterNodeKeys = new ArrayList<>();
+
+		for (Map<String, Object> clusterNodeInfo : clusterNodeInfos) {
+			if (GetterUtil.getBoolean(clusterNodeInfo.get("registered"))) {
+				clusterNodeKeys.add((String)clusterNodeInfo.get("key"));
+			}
+		}
+
+		return clusterNodeKeys;
 	}
 
 	public void setLCSKeyAdvisor(LCSKeyAdvisor lcsKeyAdvisor) {
@@ -202,8 +164,8 @@ public class ClusterNodeUtil {
 		_lcsPortletStateAdvisor = lcsPortletStateAdvisor;
 	}
 
-	private static Map<String, Object> _getClusterNodeInfo(String clusterNodeId)
-		throws Exception {
+	private static Map<String, Object> _getClusterNodeInfo(
+		String clusterNodeId) {
 
 		if (_log.isTraceEnabled()) {
 			_log.trace(
@@ -217,19 +179,27 @@ public class ClusterNodeUtil {
 		FutureClusterResponses futureClusterResponses =
 			ClusterExecutorUtil.execute(clusterRequest);
 
-		ClusterNodeResponses clusterNodeResponses = futureClusterResponses.get(
-			20000, TimeUnit.MILLISECONDS);
+		Map<String, Object> result = new HashMap<>();
 
-		ClusterNodeResponse clusterNodeResponse =
-			clusterNodeResponses.getClusterResponse(clusterNodeId);
+		try {
+			ClusterNodeResponses clusterNodeResponses =
+				futureClusterResponses.get(20000, TimeUnit.MILLISECONDS);
 
-		Map<String, Object> result =
-			(Map<String, Object>)clusterNodeResponse.getResult();
+			ClusterNodeResponse clusterNodeResponse =
+				clusterNodeResponses.getClusterResponse(clusterNodeId);
 
-		if (_log.isTraceEnabled()) {
-			_log.trace(
-				"getClusterInfo method handler invocation returned " +
-					MapUtil.toString(result));
+			result = (Map<String, Object>)clusterNodeResponse.getResult();
+
+			if (_log.isTraceEnabled()) {
+				_log.trace(
+					"getClusterInfo method handler invocation returned " +
+						MapUtil.toString(result));
+			}
+		}
+		catch (Exception e) {
+			_log.error(
+				"Unable to complete cluster request for node ID " +
+					clusterNodeId);
 		}
 
 		return result;

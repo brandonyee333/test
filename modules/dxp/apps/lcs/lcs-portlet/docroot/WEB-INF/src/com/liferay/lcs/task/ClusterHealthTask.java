@@ -16,8 +16,6 @@ package com.liferay.lcs.task;
 
 import com.liferay.lcs.messaging.ClusterHealthMessage;
 import com.liferay.lcs.util.ClusterNodeUtil;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 /**
  * @author Ivica Cardic
@@ -31,32 +29,16 @@ public class ClusterHealthTask extends BaseScheduledTask {
 	}
 
 	@Override
-	protected void doRun() throws Exception {
-		if (_log.isTraceEnabled()) {
-			_log.trace("Running cluster health task");
-		}
-
+	protected void doRun() {
 		ClusterHealthMessage clusterHealthMessage = new ClusterHealthMessage();
 
 		clusterHealthMessage.setCreateTime(System.currentTimeMillis());
 		clusterHealthMessage.setKey(getKey());
 
-		try {
-			clusterHealthMessage.setSiblingKeys(
-				ClusterNodeUtil.getRegisteredClusterNodeKeys());
-		}
-		catch (ClassNotFoundException cnfe) {
-			if (_log.isTraceEnabled()) {
-				_log.error(cnfe, cnfe);
-			}
-
-			return;
-		}
+		clusterHealthMessage.setSiblingKeys(
+			ClusterNodeUtil.getRegisteredClusterNodeKeys());
 
 		sendMessage(clusterHealthMessage);
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		ClusterHealthTask.class);
 
 }
