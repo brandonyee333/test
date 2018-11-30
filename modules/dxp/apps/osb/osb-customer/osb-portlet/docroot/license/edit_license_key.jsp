@@ -162,7 +162,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 			<liferay-ui:message key="generate-new-license" />
 		</h1>
 
-		<aui:form action="<%= updateLicenseKeyURL %>" cssClass="col-md-12" method="post" onSubmit='<%= "submitForm(document." + renderResponse.getNamespace() + "fm);" %>'>
+		<aui:form action="<%= updateLicenseKeyURL %>" cssClass="col-md-12" method="post">
 			<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 			<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 			<aui:input name="licenseKeySetId" type="hidden" value="<%= licenseKeySetId %>" />
