@@ -19,7 +19,6 @@ import com.liferay.lcs.messaging.Message;
 import com.liferay.lcs.platform.gateway.LCSGatewayClient;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.cluster.ClusterMasterExecutorUtil;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -66,6 +65,10 @@ public abstract class BaseScheduledTask implements ScheduledTask {
 		}
 
 		try {
+			if (_log.isTraceEnabled()) {
+				_log.trace("Running task " + getClass());
+			}
+
 			long startTimeMillis = System.currentTimeMillis();
 
 			doRun();
@@ -104,7 +107,7 @@ public abstract class BaseScheduledTask implements ScheduledTask {
 		return _lcsKeyAdvisor.getKey();
 	}
 
-	protected void sendMessage(Message message) throws PortalException {
+	protected void sendMessage(Message message) {
 		if (!_lcsGatewayClient.isAvailable()) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
