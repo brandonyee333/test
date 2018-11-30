@@ -96,6 +96,10 @@ public class LicensePortlet extends OSBPortlet {
 			themeDisplay.getCompanyId(), themeDisplay.getUserId());
 
 		SessionMessages.add(actionRequest, "purchased");
+
+		addSuccessMessage(actionRequest, actionResponse);
+
+		sendRedirect(actionRequest, actionResponse);
 	}
 
 	public void renewLicenseKey(
@@ -200,6 +204,10 @@ public class LicensePortlet extends OSBPortlet {
 			SessionMessages.add(
 				actionRequest, "licenseKeySent", user.getEmailAddress());
 		}
+
+		addSuccessMessage(actionRequest, actionResponse);
+
+		sendRedirect(actionRequest, actionResponse);
 	}
 
 	public void resendLicenseKey(
@@ -220,6 +228,10 @@ public class LicensePortlet extends OSBPortlet {
 
 		SessionMessages.add(
 			actionRequest, "licenseKeySent", user.getEmailAddress());
+
+		addSuccessMessage(actionRequest, actionResponse);
+
+		sendRedirect(actionRequest, actionResponse);
 	}
 
 	@Override
