@@ -47,14 +47,14 @@
 			<#list available_locales as locale>
 				<#if locale != current_locale>
 					{
-						name: '${locale.getDisplayLanguage(locale)}',
+						name: '${locale.getDisplayLanguage(locale)?cap_first}',
 						url: '/${locale.getLanguage()}${theme_display.getURLCurrent()?remove_beginning(locale_path)}'
 					},
 				</#if>
 			</#list>
 		],
 		currentLocale: {
-			name: '${current_locale.getDisplayLanguage(current_locale)}',
+			name: '${current_locale.getDisplayLanguage(current_locale)?cap_first}',
 			url: '/${current_locale.getLanguage()}${theme_display.getURLCurrent()?remove_beginning(locale_path)}'
 		}
 	};
