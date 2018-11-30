@@ -64,6 +64,47 @@ public class AccountCustomerSynchronizer {
 		}
 	}
 
+	public void reassignTickets(AccountCustomer accountCustomer)
+		throws PortalException {
+
+		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+			accountCustomer.getUserId());
+		long zendeskOrganizationId =
+			_zendeskMapperUtil.fetchZendeskOrganizationId(
+				accountCustomer.getAccountEntryId());
+
+		Set<String> criteria = new HashSet<>();
+
+		criteria.add("organization:" + zendeskOrganizationId);
+		criteria.add("requester:" + zendeskUserId);
+		criteria.add("status<closed");
+
+		List<ZendeskTicket> zendeskTickets =
+			_zendeskTicketWebService.getZendeskTickets(criteria);
+
+		if (!zendeskTickets.isEmpty()) {
+			List<AccountCustomer> accountCustomers =
+				AccountCustomerLocalServiceUtil.getAccountCustomers(
+					accountCustomer.getAccountEntryId(),
+					AccountCustomerConstants.ROLE_DEVELOPER);
+
+			if (accountCustomers.isEmpty()) {
+				throw new AccountCustomerRemovalException();
+			}
+
+			AccountCustomer newAccountCustomer = accountCustomers.get(0);
+
+			long newZendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+				newAccountCustomer.getUserId());
+
+			for (ZendeskTicket zendeskTicket : zendeskTickets) {
+				zendeskTicket.setRequesterId(newZendeskUserId);
+			}
+
+			_zendeskTicketWebService.updateZendeskTickets(zendeskTickets);
+		}
+	}
+
 	public void remove(AccountCustomer accountCustomer) throws PortalException {
 		try {
 			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
@@ -71,37 +112,6 @@ public class AccountCustomerSynchronizer {
 			long zendeskOrganizationId =
 				_zendeskMapperUtil.fetchZendeskOrganizationId(
 					accountCustomer.getAccountEntryId());
-
-			Set<String> criteria = new HashSet<>();
-
-			criteria.add("organization:" + zendeskOrganizationId);
-			criteria.add("requester:" + zendeskUserId);
-			criteria.add("status<closed");
-
-			List<ZendeskTicket> zendeskTickets =
-				_zendeskTicketWebService.getZendeskTickets(criteria);
-
-			if (!zendeskTickets.isEmpty()) {
-				List<AccountCustomer> accountCustomers =
-					AccountCustomerLocalServiceUtil.getAccountCustomers(
-						accountCustomer.getAccountEntryId(),
-						AccountCustomerConstants.ROLE_DEVELOPER);
-
-				if (accountCustomers.isEmpty()) {
-					throw new AccountCustomerRemovalException();
-				}
-
-				AccountCustomer newAccountCustomer = accountCustomers.get(0);
-
-				long newZendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
-					newAccountCustomer.getUserId());
-
-				for (ZendeskTicket zendeskTicket : zendeskTickets) {
-					zendeskTicket.setRequesterId(newZendeskUserId);
-				}
-
-				_zendeskTicketWebService.updateZendeskTickets(zendeskTickets);
-			}
 
 			_zendeskUserWebService.deleteZendeskUserOrganizationMemberships(
 				zendeskUserId, new long[] {zendeskOrganizationId});

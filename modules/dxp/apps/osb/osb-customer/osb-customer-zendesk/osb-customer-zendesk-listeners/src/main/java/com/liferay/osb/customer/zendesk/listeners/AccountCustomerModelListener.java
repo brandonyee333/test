@@ -48,6 +48,8 @@ public class AccountCustomerModelListener
 		throws ModelListenerException {
 
 		try {
+			_accountCustomerSynchronizer.reassignTickets(accountCustomer);
+
 			_accountCustomerSynchronizer.remove(accountCustomer);
 		}
 		catch (Exception e) {
