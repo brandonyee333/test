@@ -66,7 +66,7 @@ export default class DynamicUploaderForm extends React.Component {
 
 					return queryParam;
 				},
-				simultaneousUploads: 10,
+				simultaneousUploads: 1,
 				target: uploadURL,
 				testChunks: true,
 				throttleProgressCallbacks: 1
