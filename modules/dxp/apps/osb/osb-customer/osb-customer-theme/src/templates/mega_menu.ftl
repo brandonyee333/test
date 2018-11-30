@@ -224,7 +224,7 @@
 						description: '<@liferay.language key="overview-of-liferays-support-policies" />',
 						name: '<@liferay.language key="support-coverage" />',
 						svgId: '#support-coverage',
-						url: addLocaleParamToURI('${current_locale}', 'articles/360018692652')
+						url: addLocaleParamToURI('${current_locale}', 'articles/360000892912')
 					},
 					{
 						description: '<@liferay.language key="end-of-life-policies-for-liferay-products" />',
