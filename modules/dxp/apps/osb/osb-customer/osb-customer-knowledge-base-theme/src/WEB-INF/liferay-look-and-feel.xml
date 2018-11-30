@@ -14,9 +14,9 @@
 			<setting configurable="true" key="custom-site-url" value="" />
 			<setting configurable="true" key="google-analytics-id" value="" />
 			<setting configurable="true" key="google-tag-manager-id" value="" />
+			<setting configurable="true" key="liferay-help-center-banner" options="true,false" type="select" value="true" />
 			<setting configurable="true" key="liferay-home-url" value="/" />
 			<setting configurable="true" key="nav-options" options="dynamic,none,static" type="select" value="dynamic" />
-			<setting configurable="true" key="liferay-help-center-banner" options="true,false" type="select" value="true" />
 			<setting configurable="true" key="open-graph-image" value="" />
 			<setting configurable="true" key="open-graph-title" value="" />
 			<setting configurable="true" key="open-graph-url" value="" />

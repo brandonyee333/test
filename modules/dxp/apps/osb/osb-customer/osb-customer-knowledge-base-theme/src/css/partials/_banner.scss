@@ -152,14 +152,6 @@ ul.nav-menu {
 		}
 	}
 
-	.logo {
-		margin: 10px;
-
-		img {
-			height: 36px;
-		}
-	}
-
 	.language-toggle {
 		.selected a:hover {
 			color: $gray;
@@ -191,6 +183,14 @@ ul.nav-menu {
 		@include media-query(null, $screen-xs-max) {
 			font-size: 12px;
 			height: 118px;
+		}
+	}
+
+	.logo {
+		margin: 10px;
+
+		img {
+			height: 36px;
 		}
 	}
 
