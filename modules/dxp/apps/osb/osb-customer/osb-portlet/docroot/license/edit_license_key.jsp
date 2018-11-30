@@ -169,11 +169,9 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 			<aui:input name="clusterId" type="hidden" value="<%= clusterId %>" />
 			<aui:input name="offeringEntryId" type="hidden" value="<%= offeringEntryId %>" />
 
-			<div class="section">
-				<div class="pull-right">
-					<aui:button cssClass="btn-sm" onClick="<%= backURL %>" value="back-to-previous-page" />
-				</div>
-			</div>
+			<aui:button-row cssClass="pull-right">
+				<aui:button cssClass="btn-sm" onClick="<%= backURL %>" value="back-to-previous-page" />
+			</aui:button-row>
 
 			<liferay-ui:error exception="<%= DuplicateHostNameException.class %>" message="you-entered-duplicate-host-names" />
 			<liferay-ui:error exception="<%= DuplicateIPAddressException.class %>" message="you-entered-duplicate-ip-addresses" />

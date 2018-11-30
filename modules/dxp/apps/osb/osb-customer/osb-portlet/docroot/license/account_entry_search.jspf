@@ -323,8 +323,6 @@ Date lastEnabledDate = calendar.getTime();
 	</table>
 </liferay-ui:search-toggle>
 
-<br />
-
 <aui:script>
 	function <portlet:namespace />selectCreateUser(value, name) {
 		document.<portlet:namespace />fm.<portlet:namespace /><%= displayTerms.CREATE_USER_ID %>.options[2] = new Option(name, value);

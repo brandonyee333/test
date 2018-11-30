@@ -18,6 +18,6 @@
 
 <liferay-ui:message key="thank-you-for-your-interest-in-liferay-dxp-a-request-to-renew-your-trial-has-been-sent-to-our-sales-team-who-will-contact-you-shortly" />
 
-<div align="right">
+<aui:button-row cssClass="pull-right">
 	<aui:button onClick='<%= renderResponse.getNamespace() + "closeDialog(0);" %>' value="close" />
-</div>
+</aui:button-row>
