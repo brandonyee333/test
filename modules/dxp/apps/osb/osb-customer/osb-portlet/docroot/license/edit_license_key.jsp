@@ -828,7 +828,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 					<div>
 						<aui:col md="12">
-							<aui:button type="submit" primary="<%= true %>" value="generate" />
+							<aui:button primary="<%= true %>" type="submit" value="generate" />
 
 							<aui:button onClick="<%= backURL %>" value="cancel" />
 						</aui:col>
