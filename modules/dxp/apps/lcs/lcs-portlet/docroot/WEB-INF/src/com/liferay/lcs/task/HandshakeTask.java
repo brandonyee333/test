@@ -29,6 +29,7 @@ import com.liferay.lcs.messaging.HandshakeResponseMessage;
 import com.liferay.lcs.messaging.Message;
 import com.liferay.lcs.messaging.ResponseMessage;
 import com.liferay.lcs.platform.gateway.LCSGatewayClient;
+import com.liferay.lcs.platform.gateway.LCSGatewayException;
 import com.liferay.lcs.rest.commons.LCSRESTError;
 import com.liferay.lcs.runnable.LCSPortletBuildNumberCheckRunnable;
 import com.liferay.lcs.task.scheduler.TaskSchedulerService;
@@ -36,7 +37,6 @@ import com.liferay.lcs.util.LCSPatcherUtil;
 import com.liferay.lcs.util.LCSUtil;
 import com.liferay.lcs.util.PortletPropsValues;
 import com.liferay.lcs.util.comparator.MessagePriorityComparator;
-import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
 import com.liferay.portal.kernel.license.util.LicenseManagerUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -134,26 +134,19 @@ public class HandshakeTask implements Task {
 			}
 		}
 		catch (Throwable t) {
+			String exceptionMessage = t.getMessage();
+
 			LCSEvent lcsEvent = LCSEvent.HANDSHAKE_FAILED;
 
+			LCSRESTError lcsRESTError = LCSRESTError.UNDEFINED;
+
 			if (t instanceof LCSHandshakeException) {
-				StringBuilder sb = new StringBuilder();
-
-				sb.append("LCS blocked the connection. ");
-
-				String exceptionMessage = t.getMessage();
-
-				LCSRESTError lcsRESTError = LCSRESTError.UNDEFINED;
-
 				if (Validator.isNotNull(exceptionMessage)) {
-					lcsRESTError = LCSRESTError.getRESTError(exceptionMessage);
+					lcsRESTError = LCSRESTError.getRESTError(t.getMessage());
 
-					sb.append(lcsRESTError.getErrorDescription());
-
-					sb.append(" Error details: ");
-					sb.append(exceptionMessage);
-
-					_log.error(sb.toString());
+					if (lcsRESTError != LCSRESTError.UNDEFINED) {
+						exceptionMessage = lcsRESTError.getErrorDescription();
+					}
 				}
 
 				if (lcsRESTError.getErrorCode() == 200) {
@@ -169,11 +162,12 @@ public class HandshakeTask implements Task {
 							LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS;
 				}
 			}
-			else if (t instanceof JSONWebServiceException) {
-				_log.error("Unable to establish connection");
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(exceptionMessage, t);
 			}
-			else {
-				_log.error("Unable to establish connection", t);
+			else if (_log.isWarnEnabled()) {
+				_log.warn(exceptionMessage);
 			}
 
 			_notifyLCSEventListeners(lcsEvent);
@@ -379,7 +373,7 @@ public class HandshakeTask implements Task {
 		thread.start();
 	}
 
-	private void _waitForHandshakeResponse() throws JSONWebServiceException {
+	private void _waitForHandshakeResponse() throws LCSGatewayException {
 		boolean handshakeResponseReceived = false;
 		List<Message> delayedMessages = new ArrayList<>();
 		List<Message> receivedMessages = null;
