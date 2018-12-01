@@ -18,7 +18,6 @@ import com.liferay.lcs.command.Command;
 import com.liferay.lcs.messaging.security.DigitalSignature;
 import com.liferay.lcs.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.util.LCSUtil;
-import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Message;
@@ -50,56 +49,51 @@ public class CommandMessageListener implements MessageListener {
 
 		CommandMessage commandMessage = (CommandMessage)message.getPayload();
 
-		String errorMessage = null;
+		String responseErrorMessage = null;
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Verifying digital signature");
 		}
 
-		try {
-			if (_digitalSignature.verifyMessage(
-					LCSUtil.getLCSPortletBuildNumber(), commandMessage)) {
+		if (_digitalSignature.verifyMessage(
+				LCSUtil.getLCSPortletBuildNumber(), commandMessage)) {
 
-				if (_log.isTraceEnabled()) {
-					_log.trace("Verified digital signature");
-				}
-
-				try {
-					Class<?> commandMessageClass = commandMessage.getClass();
-
-					Command<? extends CommandMessage> command = _commands.get(
-						commandMessageClass.getName());
-
-					if (_log.isDebugEnabled()) {
-						_log.debug(
-							"Executing command: " +
-								commandMessageClass.getName());
-					}
-
-					Command<CommandMessage> castCommand =
-						(Command<CommandMessage>)command;
-
-					castCommand.execute(commandMessage);
-				}
-				catch (Exception e) {
-					_log.error(e, e);
-
-					errorMessage = e.getMessage();
-				}
+			if (_log.isTraceEnabled()) {
+				_log.trace("Verified digital signature");
 			}
-			else {
-				_log.error("Unable to verify digital signature of a message");
+
+			try {
+				Class<?> commandMessageClass = commandMessage.getClass();
+
+				Command<? extends CommandMessage> command = _commands.get(
+					commandMessageClass.getName());
+
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						"Executing command: " + commandMessageClass.getName());
+				}
+
+				Command<CommandMessage> castCommand =
+					(Command<CommandMessage>)command;
+
+				castCommand.execute(commandMessage);
+
+				return;
+			}
+			catch (Exception e) {
+				responseErrorMessage = e.getMessage();
 			}
 		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw e;
+		else {
+			responseErrorMessage =
+				"Unable to verify digital signature of a message";
 		}
 
-		if (errorMessage != null) {
+		if (responseErrorMessage != null) {
+			_log.error(responseErrorMessage);
+
 			ErrorResponseMessage errorResponseMessage = getErrorResponseMessage(
-				commandMessage, errorMessage);
+				commandMessage, responseErrorMessage);
 
 			try {
 				if (_log.isTraceEnabled()) {
@@ -109,15 +103,7 @@ public class CommandMessageListener implements MessageListener {
 				_lcsGatewayClient.sendMessage(errorResponseMessage);
 			}
 			catch (Exception e) {
-				String logErrorMessage =
-					"Unable to send error response message to LCS";
-
-				if (e instanceof JSONWebServiceException) {
-					_log.error(logErrorMessage);
-				}
-				else {
-					_log.error(logErrorMessage, e);
-				}
+				_log.error("Unable to send error response message to LCS", e);
 			}
 		}
 	}
