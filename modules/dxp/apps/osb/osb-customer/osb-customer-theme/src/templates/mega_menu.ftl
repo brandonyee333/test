@@ -74,7 +74,7 @@
 					{
 						name: '<@liferay.language key="dxp-cloud" />',
 						svgId: '#dxp-cloud-logo',
-						url: addLocaleParamToURI('${current_locale}', 'categories/360000813091')
+						url: addLocaleParamToURI('${current_locale}', 'categories/360000868032')
 					},
 					{
 						name: '<@liferay.language key="dxp" /> 7.0',
@@ -224,7 +224,7 @@
 						description: '<@liferay.language key="overview-of-liferays-support-policies" />',
 						name: '<@liferay.language key="support-coverage" />',
 						svgId: '#support-coverage',
-						url: addLocaleParamToURI('${current_locale}', 'articles/360000892912')
+						url: addLocaleParamToURI('${current_locale}', 'categories/360000892912')
 					},
 					{
 						description: '<@liferay.language key="end-of-life-policies-for-liferay-products" />',
