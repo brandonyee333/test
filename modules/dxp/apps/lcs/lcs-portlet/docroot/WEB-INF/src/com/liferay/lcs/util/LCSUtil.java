@@ -21,7 +21,6 @@ import com.liferay.lcs.rest.client.LCSProject;
 import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 import com.liferay.portal.kernel.license.messaging.LicenseManagerMessageType;
 import com.liferay.portal.kernel.log.Log;
@@ -112,16 +111,20 @@ public class LCSUtil {
 	}
 
 	public static int getLCSPortletBuildNumber() {
-		Release release = null;
+		int lcsPortletBuildNumber = 0;
 
 		try {
-			release = ReleaseLocalServiceUtil.fetchRelease("lcs-portlet");
+			Release release = ReleaseLocalServiceUtil.fetchRelease(
+				"lcs-portlet");
+
+			lcsPortletBuildNumber = release.getBuildNumber();
 		}
-		catch (SystemException se) {
-			throw new RuntimeException(se);
+		catch (Exception e) {
+			_log.error(
+				"Unable to resolve LCS client's portlet build number", e);
 		}
 
-		return release.getBuildNumber();
+		return lcsPortletBuildNumber;
 	}
 
 	public static String getLCSProjectLayoutURL(LCSProject lcsProject) {

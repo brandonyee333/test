@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.CompanyConstants;
@@ -43,6 +42,14 @@ public class LCSPortletPreferencesUtil {
 
 		PortletPreferences portletPreferences = _fetchPortletPreferences();
 
+		if (portletPreferences == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("LCS client portlet properties missing");
+			}
+
+			return null;
+		}
+
 		try {
 			return new ImmutablePortletPreferences(
 				PortletPreferencesFactoryUtil.fromXML(
@@ -51,8 +58,8 @@ public class LCSPortletPreferencesUtil {
 					PortletKeys.MONITORING,
 					portletPreferences.getPreferences()));
 		}
-		catch (SystemException se) {
-			_log.error(se, se);
+		catch (Exception e) {
+			_log.error("Unable to create LCS client's portlet preferences", e);
 		}
 
 		return null;
@@ -84,8 +91,6 @@ public class LCSPortletPreferencesUtil {
 	}
 
 	private static PortletPreferences _fetchPortletPreferences() {
-		PortletPreferences portletPreferences = null;
-
 		try {
 			DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
 				PortletPreferences.class,
@@ -105,32 +110,25 @@ public class LCSPortletPreferencesUtil {
 			List<PortletPreferences> portletPreferencesList =
 				PortletPreferencesLocalServiceUtil.dynamicQuery(dynamicQuery);
 
-			if (!portletPreferencesList.isEmpty()) {
-				if (portletPreferencesList.size() == 1) {
-					portletPreferences = portletPreferencesList.get(0);
-				}
-				else {
-					_log.error(
-						"Multiple entries for the LCS client's portlet " +
-							"preferences");
-
-					return null;
-				}
+			if (portletPreferencesList.isEmpty()) {
+				return PortletPreferencesLocalServiceUtil.addPortletPreferences(
+					CompanyConstants.SYSTEM, CompanyConstants.SYSTEM,
+					PortletKeys.PREFS_OWNER_TYPE_COMPANY, 0,
+					PortletKeys.MONITORING, null, null);
 			}
 
-			if (portletPreferences == null) {
-				portletPreferences =
-					PortletPreferencesLocalServiceUtil.addPortletPreferences(
-						CompanyConstants.SYSTEM, CompanyConstants.SYSTEM,
-						PortletKeys.PREFS_OWNER_TYPE_COMPANY, 0,
-						PortletKeys.MONITORING, null, null);
+			if (portletPreferencesList.size() == 1) {
+				return portletPreferencesList.get(0);
 			}
+
+			_log.error(
+				"Multiple entries for the LCS client's portlet preferences");
 		}
-		catch (SystemException se) {
-			_log.error("Unable to get LCS client's portlet preferences", se);
+		catch (Exception e) {
+			_log.error("Unable to get LCS client's portlet preferences", e);
 		}
 
-		return portletPreferences;
+		return null;
 	}
 
 	private static PortletPreferencesPersistence _getPersistence() {
