@@ -94,12 +94,6 @@ public class LCSClusterEntryTokenCheckTask implements Task {
 				_log.error(throwable, throwable);
 			}
 
-			if (OAuthUtil.hasOAuthTokenRejectedException(throwable)) {
-				LCSUtil.processLCSPortletState(LCSPortletState.NO_CONNECTION);
-
-				_log.error("OAuth token was rejected");
-			}
-
 			if (_log.isDebugEnabled()) {
 				_log.debug(throwable.getMessage(), throwable);
 			}
