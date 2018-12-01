@@ -19,6 +19,7 @@ import com.liferay.lcs.internal.event.LCSEvent;
 import com.liferay.lcs.internal.event.LCSEventListener;
 import com.liferay.lcs.messaging.Message;
 import com.liferay.lcs.platform.gateway.LCSGatewayClient;
+import com.liferay.lcs.platform.gateway.LCSGatewayException;
 import com.liferay.lcs.util.CompressionUtil;
 import com.liferay.lcs.util.LCSUtil;
 import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
@@ -26,7 +27,6 @@ import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 
 import java.io.IOException;
 
@@ -36,8 +36,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * @author Ivica Cardic
  * @author Igor Beslic
@@ -45,7 +43,7 @@ import javax.servlet.http.HttpServletResponse;
 public class LCSGatewayClientImpl implements LCSGatewayClient {
 
 	@Override
-	public void deleteMessages(String key) throws JSONWebServiceException {
+	public void deleteMessages(String key) throws LCSGatewayException {
 		try {
 			_jsonWebServiceClient.doGet(
 				_URL_LCS_GATEWAY_DELETE_MESSAGES, "key", key);
@@ -68,9 +66,7 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 	}
 
 	@Override
-	public List<Message> getMessages(String key)
-		throws JSONWebServiceException {
-
+	public List<Message> getMessages(String key) throws LCSGatewayException {
 		Map<String, String> parameters = new HashMap<>();
 
 		parameters.put("key", key);
@@ -161,7 +157,7 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 	@Override
 	public void sendMessage(Message message)
 		throws CompressionException,
-			   JSONWebServiceException {
+			   LCSGatewayException {
 
 		String json = message.toJSON();
 
@@ -240,21 +236,18 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 
 	private void _processJSONWebServiceException(
 			JSONWebServiceException jsonwse)
-		throws JSONWebServiceException {
+		throws LCSGatewayException {
 
-		StringBundler sb = new StringBundler(5);
-
-		sb.append("Error communicating with LCS");
-
-		if (jsonwse.getMessage() != null) {
-			sb.append(": ");
-			sb.append(jsonwse.getMessage());
-		}
+		String message = "Error communicating with LCS";
 
 		if (jsonwse instanceof JSONWebServiceTransportException) {
-			if (jsonwse.getStatus() == HttpServletResponse.SC_UNAUTHORIZED) {
-				sb.append(". The LCS client is not authorized to access the ");
-				sb.append("LCS gateway.");
+			if (jsonwse instanceof
+					JSONWebServiceTransportException.AuthenticationFailure) {
+
+				message =
+					message +
+						". The LCS client is not authorized to access the " +
+							"LCS gateway.";
 			}
 
 			synchronized (this) {
@@ -266,13 +259,7 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 			}
 		}
 
-		_log.error(sb.toString());
-
-		if (_log.isDebugEnabled()) {
-			_log.debug(jsonwse, jsonwse);
-		}
-
-		throw jsonwse;
+		throw new LCSGatewayException(message, jsonwse);
 	}
 
 	private static final String _URL_LCS_GATEWAY = "/api/lcsgateway";

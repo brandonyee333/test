@@ -18,7 +18,7 @@ import com.liferay.lcs.exception.CompressionException;
 import com.liferay.lcs.messaging.ExecuteScriptCommandMessage;
 import com.liferay.lcs.messaging.ExecuteScriptResponseMessage;
 import com.liferay.lcs.platform.gateway.LCSGatewayClient;
-import com.liferay.petra.json.web.service.client.JSONWebServiceException;
+import com.liferay.lcs.platform.gateway.LCSGatewayException;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncPrintWriter;
 import com.liferay.portal.kernel.log.Log;
@@ -53,22 +53,14 @@ public class ExecuteScriptCommand
 			executeScript(executeScriptCommandMessage);
 		}
 		catch (Exception e) {
-			String errorMessage =
-				"Unable to send script execution result to LCS";
-
-			if (e instanceof JSONWebServiceException) {
-				_log.error(errorMessage);
-			}
-			else {
-				_log.error(errorMessage, e);
-			}
+			_log.error("Unable to send script execution result to LCS", e);
 		}
 	}
 
 	public void executeScript(
 			ExecuteScriptCommandMessage executeScriptCommandMessage)
 
-		throws CompressionException, JSONWebServiceException {
+		throws CompressionException, LCSGatewayException {
 
 		Map<String, Object> inputObjects = new HashMap<>();
 

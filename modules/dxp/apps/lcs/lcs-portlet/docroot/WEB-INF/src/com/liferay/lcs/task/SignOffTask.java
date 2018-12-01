@@ -18,7 +18,6 @@ import com.liferay.lcs.internal.event.LCSEvent;
 import com.liferay.lcs.internal.event.LCSEventListener;
 import com.liferay.lcs.messaging.HandshakeMessage;
 import com.liferay.lcs.platform.gateway.LCSGatewayClient;
-import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -93,14 +92,7 @@ public class SignOffTask implements Task {
 			sb.append("server offline after few minutes without ");
 			sb.append("communication.");
 
-			String errorMessage = sb.toString();
-
-			if (e instanceof JSONWebServiceException) {
-				_log.error(errorMessage);
-			}
-			else {
-				_log.error(errorMessage, e);
-			}
+			_log.error(sb.toString(), e);
 
 			_notifyLCSEventListeners(LCSEvent.SIGNOFF_FAILED);
 		}

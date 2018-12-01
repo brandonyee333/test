@@ -16,7 +16,6 @@ package com.liferay.lcs.task;
 
 import com.liferay.lcs.messaging.HeartbeatMessage;
 import com.liferay.lcs.platform.gateway.LCSGatewayClient;
-import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -44,7 +43,7 @@ public class HeartbeatTask implements Task {
 		}
 	}
 
-	protected void doRun() throws Exception {
+	protected void doRun() {
 		if (_log.isTraceEnabled()) {
 			_log.trace("Running heartbeat task");
 		}
@@ -72,14 +71,7 @@ public class HeartbeatTask implements Task {
 			_lcsGatewayClient.sendMessage(heartbeatMessage);
 		}
 		catch (Exception e) {
-			String errorMessage = "Unable to send heartbeat message to LCS";
-
-			if (e instanceof JSONWebServiceException) {
-				_log.error(errorMessage);
-			}
-			else {
-				_log.error(errorMessage, e);
-			}
+			_log.error("Unable to send heartbeat message to LCS", e);
 		}
 	}
 

@@ -19,7 +19,6 @@ import com.liferay.lcs.advisor.InstallationEnvironmentAdvisorFactory;
 import com.liferay.lcs.messaging.SendInstallationEnvironmentCommandMessage;
 import com.liferay.lcs.messaging.SendInstallationEnvironmentResponseMessage;
 import com.liferay.lcs.platform.gateway.LCSGatewayClient;
-import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -54,15 +53,8 @@ public class SendInstallationEnvironmentCommand
 				sendInstallationEnvironmentResponseMessage);
 		}
 		catch (Exception e) {
-			String errorMessage =
-				"Unable to send installation environment data to LCS";
-
-			if (e instanceof JSONWebServiceException) {
-				_log.error(errorMessage);
-			}
-			else {
-				_log.error(errorMessage, e);
-			}
+			_log.error(
+				"Unable to send installation environment data to LCS", e);
 		}
 	}
 

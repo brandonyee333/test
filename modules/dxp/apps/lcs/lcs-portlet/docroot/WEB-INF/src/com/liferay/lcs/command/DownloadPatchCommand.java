@@ -19,10 +19,10 @@ import com.liferay.lcs.messaging.CommandMessage;
 import com.liferay.lcs.messaging.DownloadPatchCommandMessage;
 import com.liferay.lcs.messaging.DownloadPatchResponseMessage;
 import com.liferay.lcs.platform.gateway.LCSGatewayClient;
+import com.liferay.lcs.platform.gateway.LCSGatewayException;
 import com.liferay.lcs.util.LCSConstants;
 import com.liferay.lcs.util.LCSPatcherUtil;
 import com.liferay.lcs.util.PatchUtil;
-import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
@@ -149,7 +149,7 @@ public class DownloadPatchCommand
 
 	private void _downloadPatch(
 			DownloadPatchCommandMessage downloadPatchCommandMessage)
-		throws CompressionException, JSONWebServiceException {
+		throws CompressionException, LCSGatewayException {
 
 		if (_log.isInfoEnabled()) {
 			_log.info("Executing download patches command");

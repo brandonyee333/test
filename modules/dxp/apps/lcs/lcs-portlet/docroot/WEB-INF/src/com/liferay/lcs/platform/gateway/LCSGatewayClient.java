@@ -17,7 +17,6 @@ package com.liferay.lcs.platform.gateway;
 import com.liferay.lcs.exception.CompressionException;
 import com.liferay.lcs.internal.event.LCSEventListener;
 import com.liferay.lcs.messaging.Message;
-import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 
 import java.util.List;
 
@@ -27,7 +26,7 @@ import java.util.List;
  */
 public interface LCSGatewayClient extends LCSEventListener {
 
-	public void deleteMessages(String key) throws JSONWebServiceException;
+	public void deleteMessages(String key) throws LCSGatewayException;
 
 	public long getLastHandshakeSuccess();
 
@@ -35,13 +34,13 @@ public interface LCSGatewayClient extends LCSEventListener {
 
 	public long getLastMessageSent();
 
-	public List<Message> getMessages(String key) throws JSONWebServiceException;
+	public List<Message> getMessages(String key) throws LCSGatewayException;
 
 	public boolean isAvailable();
 
 	public void registerLCSEventListener(LCSEventListener lcsEventListener);
 
 	public void sendMessage(Message message)
-		throws CompressionException, JSONWebServiceException;
+		throws CompressionException, LCSGatewayException;
 
 }

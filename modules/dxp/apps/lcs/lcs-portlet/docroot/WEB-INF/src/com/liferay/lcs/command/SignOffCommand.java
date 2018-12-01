@@ -48,15 +48,13 @@ public class SignOffCommand implements Command<SignOffCommandMessage> {
 			signOffCommandMessage);
 
 		if (_log.isInfoEnabled()) {
-			_log.info("Signing server out of LCS");
+			_log.info(
+				"Signing server out of LCS with reason code:" +
+					signOffReasonCode);
 
-			if (_log.isDebugEnabled()) {
-				_log.debug("Sign out reason code: " + signOffReasonCode);
-
-				if (_log.isTraceEnabled()) {
-					_log.trace(
-						"Sign out command message: " + signOffCommandMessage);
-				}
+			if (_log.isTraceEnabled()) {
+				_log.trace(
+					"Sign out command message: " + signOffCommandMessage);
 			}
 		}
 
