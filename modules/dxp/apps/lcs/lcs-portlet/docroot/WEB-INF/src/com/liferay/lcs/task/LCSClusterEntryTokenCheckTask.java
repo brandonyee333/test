@@ -22,7 +22,6 @@ import com.liferay.lcs.exception.MissingLCSClusterEntryTokenException;
 import com.liferay.lcs.exception.MultipleLCSClusterEntryTokenException;
 import com.liferay.lcs.internal.event.LCSEvent;
 import com.liferay.lcs.internal.event.LCSEventListener;
-import com.liferay.lcs.oauth.OAuthUtil;
 import com.liferay.lcs.task.scheduler.TaskSchedulerService;
 import com.liferay.lcs.util.LCSUtil;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
@@ -73,30 +72,20 @@ public class LCSClusterEntryTokenCheckTask implements Task {
 
 				lcsEvent =
 					LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_TOKEN_CORRUPTED;
-
-				_log.error(throwable.getMessage());
 			}
 			else if (throwable instanceof
 						MissingLCSClusterEntryTokenException) {
 
 				lcsEvent = LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MISSING;
-
-				_log.error(throwable.getMessage());
 			}
 			else if (throwable instanceof
 						MultipleLCSClusterEntryTokenException) {
 
 				lcsEvent = LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MULTIPLE_TOKENS;
-
-				_log.error(throwable.getMessage());
-			}
-			else {
-				_log.error(throwable, throwable);
 			}
 
-			if (_log.isDebugEnabled()) {
-				_log.debug(throwable.getMessage(), throwable);
-			}
+			_log.error(
+				"Unable to validate the environment token file", throwable);
 
 			_notifyLCSEventListeners(lcsEvent);
 		}
