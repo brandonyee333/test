@@ -17,6 +17,7 @@ package com.liferay.lcs.messaging.internal.security;
 import com.liferay.lcs.messaging.CommandMessage;
 import com.liferay.lcs.messaging.Message;
 import com.liferay.lcs.messaging.security.DigitalSignature;
+import com.liferay.lcs.messaging.security.exception.DigitalSignatureException;
 import com.liferay.lcs.security.KeyStoreAdvisor;
 import com.liferay.lcs.security.KeyStoreFactory;
 
@@ -178,7 +179,9 @@ public class DigitalSignatureImpl implements DigitalSignature {
 	 * @since  LCS 0.1
 	 */
 	@Override
-	public boolean verifyMessage(Message message) {
+	public boolean verifyMessage(Message message)
+		throws DigitalSignatureException {
+
 		if (!(message instanceof CommandMessage)) {
 			return true;
 		}
@@ -190,17 +193,19 @@ public class DigitalSignatureImpl implements DigitalSignature {
 				0, getBytes(commandMessage), commandMessage.getSignature());
 		}
 		catch (Exception e) {
-			throw new RuntimeException("Unable to verify message", e);
+			throw new DigitalSignatureException("Unable to verify message", e);
 		}
 	}
 
 	@Override
-	public boolean verifyValue(String value, String signature) {
+	public boolean verifyValue(String value, String signature)
+		throws DigitalSignatureException {
+
 		try {
 			return doVerifyMessage(0, value.getBytes(), signature);
 		}
 		catch (Exception e) {
-			throw new RuntimeException("Unable to verify message", e);
+			throw new DigitalSignatureException("Unable to verify message", e);
 		}
 	}
 

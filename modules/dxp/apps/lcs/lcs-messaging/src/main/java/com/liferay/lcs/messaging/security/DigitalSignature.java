@@ -15,6 +15,7 @@
 package com.liferay.lcs.messaging.security;
 
 import com.liferay.lcs.messaging.Message;
+import com.liferay.lcs.messaging.security.exception.DigitalSignatureException;
 
 /**
  * @author  Igor Beslic
@@ -31,8 +32,10 @@ public interface DigitalSignature {
 
 	public boolean verifyMessage(int buildNumber, Message message);
 
-	public boolean verifyMessage(Message message);
+	public boolean verifyMessage(Message message)
+		throws DigitalSignatureException;
 
-	public boolean verifyValue(String value, String signature);
+	public boolean verifyValue(String value, String signature)
+		throws DigitalSignatureException;
 
 }
