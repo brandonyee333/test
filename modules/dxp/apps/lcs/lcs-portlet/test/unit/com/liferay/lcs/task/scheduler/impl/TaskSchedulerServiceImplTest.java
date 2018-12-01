@@ -26,6 +26,7 @@ import com.liferay.lcs.messaging.ScheduleTasksCommandMessage;
 import com.liferay.lcs.messaging.SendInstallationEnvironmentCommandMessage;
 import com.liferay.lcs.messaging.SendPortalPropertiesCommandMessage;
 import com.liferay.lcs.platform.gateway.LCSGatewayClient;
+import com.liferay.lcs.platform.gateway.LCSGatewayException;
 import com.liferay.lcs.platform.gateway.impl.LCSGatewayClientImpl;
 import com.liferay.lcs.runnable.LCSThreadFactory;
 import com.liferay.lcs.task.HandshakeTask;
@@ -98,7 +99,7 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 
 	@Test
 	public void testHandshakeRestartedIfGatewayUnavailable() throws Exception {
-		_mockSendMessageToThrowJSONWebServiceException();
+		_mockSendMessageToThrowLCSGatewayException();
 
 		_spyTaskSchedulerServiceImplToDoNothingAfterOnEvent();
 
@@ -336,13 +337,13 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 		);
 	}
 
-	private void _mockSendMessageToThrowJSONWebServiceException()
-		throws Exception {
-
+	private void _mockSendMessageToThrowLCSGatewayException() throws Exception {
 		doThrow(
-			new JSONWebServiceTransportException.CommunicationFailure(
-				"Test gateway communication failure",
-				new ExecutionException(new UnknownHostException("Test")))
+			new LCSGatewayException(
+				"Unable to send message",
+				new JSONWebServiceTransportException.CommunicationFailure(
+					"Test gateway communication failure",
+					new ExecutionException(new UnknownHostException("Test"))))
 		).when(
 			_lcsGatewayClient
 		).sendMessage(

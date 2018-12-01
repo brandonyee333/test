@@ -19,6 +19,7 @@ import com.liferay.lcs.messaging.HandshakeMessage;
 import com.liferay.lcs.messaging.HandshakeResponseMessage;
 import com.liferay.lcs.messaging.Message;
 import com.liferay.lcs.platform.gateway.LCSGatewayClient;
+import com.liferay.lcs.platform.gateway.LCSGatewayException;
 import com.liferay.lcs.platform.gateway.impl.LCSGatewayClientImpl;
 import com.liferay.lcs.runnable.LCSThreadFactory;
 import com.liferay.lcs.task.HandshakeTask;
@@ -166,7 +167,7 @@ public class LCSClusterEntryTokenAdvisorTest extends PowerMockito {
 
 	@Test
 	public void testTokenIsNotDeletedIfGatewayUnavailable() throws Exception {
-		_mockSendMessageToThrowJSONWebServiceException();
+		_mockSendMessageToThrowLCSGatewayException();
 
 		_spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete();
 
@@ -218,13 +219,13 @@ public class LCSClusterEntryTokenAdvisorTest extends PowerMockito {
 		);
 	}
 
-	private void _mockSendMessageToThrowJSONWebServiceException()
-		throws Exception {
-
+	private void _mockSendMessageToThrowLCSGatewayException() throws Exception {
 		doThrow(
-			new JSONWebServiceTransportException.CommunicationFailure(
-				"Test gateway communication failure",
-				new ExecutionException(new UnknownHostException("Test")))
+			new LCSGatewayException(
+				"Unable to send message",
+				new JSONWebServiceTransportException.CommunicationFailure(
+					"Test gateway communication failure",
+					new ExecutionException(new UnknownHostException("Test"))))
 		).when(
 			_lcsGatewayClient
 		).sendMessage(
