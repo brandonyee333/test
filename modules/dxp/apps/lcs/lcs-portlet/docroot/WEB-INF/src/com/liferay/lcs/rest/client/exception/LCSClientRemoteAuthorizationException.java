@@ -12,19 +12,17 @@
  *
  */
 
-package com.liferay.lcs.rest.client;
-
-import com.liferay.lcs.rest.client.exception.LCSClientInternalException;
-import com.liferay.lcs.rest.client.exception.LCSClientRemoteAuthorizationException;
-import com.liferay.lcs.rest.client.exception.LCSClientRemoteException;
+package com.liferay.lcs.rest.client.exception;
 
 /**
  * @author Igor Beslic
  */
-public interface LCSSubscriptionEntryClient {
+public class LCSClientRemoteAuthorizationException extends Exception {
 
-	public LCSSubscriptionEntry fetchLCSSubscriptionEntry(String key)
-		throws LCSClientInternalException,
-			   LCSClientRemoteAuthorizationException, LCSClientRemoteException;
+	public LCSClientRemoteAuthorizationException(
+		String message, Throwable cause) {
+
+		super(message, cause);
+	}
 
 }

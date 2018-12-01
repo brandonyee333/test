@@ -16,15 +16,10 @@ package com.liferay.lcs.advisor;
 
 import com.liferay.lcs.rest.client.LCSSubscriptionEntry;
 import com.liferay.lcs.rest.client.LCSSubscriptionEntryClient;
-import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
+import com.liferay.lcs.rest.client.exception.LCSClientRemoteAuthorizationException;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.StringBundler;
-
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Igor Beslic
@@ -58,60 +53,12 @@ public class LCSPortletStateAdvisor {
 
 			return _lastLCSPortletState;
 		}
-		catch (JSONWebServiceInvocationException jsonwsie) {
-			StringBundler sb = new StringBundler(6);
-
-			sb.append("Unable to invoke an LCS service.");
-
-			if (jsonwsie.getStatus() == HttpServletResponse.SC_UNAUTHORIZED) {
-				sb.append(" The user credentials in the environment token ");
-				sb.append("were rejected. Please regenerate, download, and ");
-				sb.append("install a new token.");
-			}
-
-			if (jsonwsie.getMessage() != null) {
-				sb.append(" Caused by: ");
-				sb.append(jsonwsie.getMessage());
-			}
-
-			_log.error(sb.toString());
-		}
-		catch (JSONWebServiceSerializeException jsonwsse) {
-			StringBundler sb = new StringBundler(4);
-
-			sb.append("Error communicating with LCS. A message in an ");
-			sb.append("unexpected format caused a serialization error.");
-
-			if (jsonwsse.getMessage() != null) {
-				sb.append(" Error details: ");
-				sb.append(jsonwsse.getMessage());
-			}
-
-			_log.error(sb.toString());
-		}
-		catch (JSONWebServiceTransportException jsonwste) {
-			StringBundler sb = new StringBundler(6);
-
-			sb.append("Unable to communicate with LCS.");
-
-			String message = jsonwste.getMessage();
-
-			if (message != null) {
-				if (message.contains("Not authorized")) {
-					sb.append(" The user credentials in the environment ");
-					sb.append("token were rejected. Please regenerate, ");
-					sb.append("download, and install a new token.");
-				}
-
-				sb.append(" Error details: ");
-				sb.append(message);
-			}
-
-			if ((message == null) || !message.contains("Not authorized")) {
+		catch (Exception e) {
+			if (e instanceof LCSClientRemoteAuthorizationException) {
 				_lastLCSPortletState = LCSPortletState.NO_CONNECTION;
 			}
 
-			_log.error(sb.toString());
+			_log.error("Remote service unavailable", e);
 		}
 
 		return _lastLCSPortletState;
