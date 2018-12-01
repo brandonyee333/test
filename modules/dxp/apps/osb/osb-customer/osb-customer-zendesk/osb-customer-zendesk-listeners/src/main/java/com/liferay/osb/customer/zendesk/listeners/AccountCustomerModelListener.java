@@ -16,6 +16,7 @@ package com.liferay.osb.customer.zendesk.listeners;
 
 import com.liferay.osb.customer.zendesk.listeners.synchronizer.AccountCustomerSynchronizer;
 import com.liferay.osb.model.AccountCustomer;
+import com.liferay.osb.model.AccountEntry;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
@@ -36,7 +37,11 @@ public class AccountCustomerModelListener
 		throws ModelListenerException {
 
 		try {
-			_accountCustomerSynchronizer.add(accountCustomer);
+			AccountEntry accountEntry = accountCustomer.getAccountEntry();
+
+			if (accountEntry.getActiveSupport()) {
+				_accountCustomerSynchronizer.add(accountCustomer);
+			}
 		}
 		catch (Exception e) {
 			throw new ModelListenerException(e);
