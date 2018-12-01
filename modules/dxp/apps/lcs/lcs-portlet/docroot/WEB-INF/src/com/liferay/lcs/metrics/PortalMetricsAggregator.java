@@ -225,7 +225,7 @@ public class PortalMetricsAggregator {
 				name = URLDecoder.decode(name, "UTF-8");
 			}
 			catch (UnsupportedEncodingException uee) {
-				_log.error("UTF-8 encoding is not supported");
+				_log.error("UTF-8 encoding is not supported", uee);
 			}
 
 			if (name.startsWith("/c") || name.endsWith(".jsp") ||
