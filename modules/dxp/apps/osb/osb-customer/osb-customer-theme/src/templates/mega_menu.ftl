@@ -55,7 +55,7 @@
 		],
 		currentLocale: {
 			name: '${current_locale.getDisplayLanguage(current_locale)}',
-			url: '/${current_locale.getLanguage()}${theme_display.getURLCurrent()}'
+			url: '/${current_locale.getLanguage()}${theme_display.getURLCurrent()?remove_beginning(locale_path)}'
 		}
 	};
 
