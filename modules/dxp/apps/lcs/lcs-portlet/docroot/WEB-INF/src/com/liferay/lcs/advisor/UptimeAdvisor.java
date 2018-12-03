@@ -181,7 +181,7 @@ public class UptimeAdvisor implements LCSEventListener {
 		}
 	}
 
-	private void _checkCurrentUptime() {
+	private void _checkCurrentUptime() throws IOException {
 		if (_currentUptime != null) {
 			return;
 		}
@@ -191,13 +191,56 @@ public class UptimeAdvisor implements LCSEventListener {
 		uptime.endTime =
 			_runtimeMXBean.getStartTime() + _runtimeMXBean.getUptime();
 
-		uptime.startTime = _runtimeMXBean.getStartTime();
+		long startTime = _getStoredMaxEndTime();
+
+		startTime = Math.max(startTime, _runtimeMXBean.getStartTime());
+
+		uptime.startTime = startTime;
 
 		_currentUptime = uptime;
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Updated current uptime");
 		}
+	}
+
+	private long _getStoredMaxEndTime() throws IOException {
+		String key = _lcsKeyAdvisor.getKey();
+
+		if (key == null) {
+			return 0;
+		}
+
+		PortletPreferences portletPreferences =
+			LCSPortletPreferencesUtil.fetchReadOnlyJxPortletPreferences();
+
+		String json = portletPreferences.getValue("uptimes-" + key, null);
+
+		if (json == null) {
+			return 0;
+		}
+
+		long maxEndTime = 0;
+
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		JsonNode jsonNode = objectMapper.readTree(json);
+
+		if (jsonNode.isArray()) {
+			Iterator<JsonNode> iterator = jsonNode.iterator();
+
+			while (iterator.hasNext()) {
+				JsonNode uptimeJSONNode = iterator.next();
+
+				JsonNode endTimeJsonNode = uptimeJSONNode.get("endTime");
+
+				long endTime = endTimeJsonNode.asLong();
+
+				maxEndTime = Math.max(maxEndTime, endTime);
+			}
+		}
+
+		return maxEndTime;
 	}
 
 	private void _resetUptimes() {

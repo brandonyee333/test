@@ -67,6 +67,39 @@ public class UptimeAdvisorTest extends PowerMockito {
 	}
 
 	@Test
+	public void testCheckCurrentUptimeAfterRedeploy() throws Exception {
+		doAnswer(
+			new LCSPortletPreferencesUtilAnswer(_portletPreferences)
+		).when(
+			LCSPortletPreferencesUtil.class, "store", Matchers.anyString(),
+			Matchers.anyString()
+		);
+
+		_uptimeAdvisor.init();
+
+		_uptimeAdvisor.onLCSEvent(LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED);
+
+		List<Map<String, Long>> uptimeEntries =
+			_uptimeAdvisor.getUptimeEntries();
+
+		Map<String, Long> beforeRedeploy = uptimeEntries.get(1);
+
+		setUp();
+
+		_uptimeAdvisor.init();
+
+		uptimeEntries = _uptimeAdvisor.getUptimeEntries();
+
+		Assert.assertEquals(
+			"uptime entries expected size", 3, uptimeEntries.size());
+
+		Map<String, Long> afterRedeploy = uptimeEntries.get(2);
+
+		Assert.assertEquals(
+			beforeRedeploy.get("endTime"), afterRedeploy.get("startTime"));
+	}
+
+	@Test
 	public void testGetUptimes() throws Exception {
 		_uptimeAdvisor.init();
 
