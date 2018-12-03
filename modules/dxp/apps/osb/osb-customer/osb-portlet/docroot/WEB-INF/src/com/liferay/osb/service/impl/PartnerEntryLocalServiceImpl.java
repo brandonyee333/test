@@ -191,10 +191,12 @@ public class PartnerEntryLocalServiceImpl
 		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 
-		validate(partnerEntryId, 0, dossieraAccountKey, code, status);
-
 		PartnerEntry partnerEntry = partnerEntryPersistence.findByPrimaryKey(
 			partnerEntryId);
+
+		validate(
+			partnerEntryId, partnerEntry.getParentPartnerEntryId(),
+			dossieraAccountKey, code, status);
 
 		String oldDossieraAccountKey = partnerEntry.getDossieraAccountKey();
 		int oldStatus = partnerEntry.getStatus();
@@ -210,7 +212,9 @@ public class PartnerEntryLocalServiceImpl
 
 		partnerEntryPersistence.update(partnerEntry);
 
-		if (oldDossieraAccountKey != dossieraAccountKey) {
+		if (Validator.isNotNull(dossieraAccountKey) &&
+			!oldDossieraAccountKey.equals(dossieraAccountKey)) {
+
 			partnerWorkerLocalService.syncPartnerWorkers(
 				partnerEntryId, oldDossieraAccountKey, dossieraAccountKey);
 		}
@@ -295,7 +299,7 @@ public class PartnerEntryLocalServiceImpl
 				throw new PartnerEntryDossieraAccountKeyException();
 			}
 		}
-		else {
+		else if (parentPartnerEntryId <= 0) {
 			throw new PartnerEntryDossieraAccountKeyException();
 		}
 

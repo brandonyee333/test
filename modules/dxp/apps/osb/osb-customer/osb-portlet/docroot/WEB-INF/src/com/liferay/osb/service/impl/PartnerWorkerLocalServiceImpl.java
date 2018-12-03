@@ -243,7 +243,9 @@ public class PartnerWorkerLocalServiceImpl
 		PartnerEntry partnerEntry = partnerEntryLocalService.fetchPartnerEntry(
 			partnerEntryId);
 
-		if (partnerEntry == null) {
+		if ((partnerEntry == null) ||
+			(partnerEntry.getParentPartnerEntryId() > 0)) {
+
 			return;
 		}
 
@@ -307,7 +309,9 @@ public class PartnerWorkerLocalServiceImpl
 		PartnerEntry partnerEntry = partnerEntryLocalService.fetchPartnerEntry(
 			partnerEntryId);
 
-		if (partnerEntry == null) {
+		if ((partnerEntry == null) ||
+			(partnerEntry.getParentPartnerEntryId() > 0)) {
+
 			return;
 		}
 
