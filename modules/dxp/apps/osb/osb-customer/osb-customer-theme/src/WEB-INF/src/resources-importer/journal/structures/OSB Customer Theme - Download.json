@@ -212,7 +212,7 @@
 			},
 			"readOnly": false,
 			"repeatable": false,
-			"required": false,
+			"required": true,
 			"showLabel": true,
 			"style": {
 				"en_US": ""
