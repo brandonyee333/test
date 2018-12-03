@@ -32,7 +32,7 @@ if (workflowTask != null) {
 }
 %>
 
-<aui:script>
+<aui:script use="aui-base">
 	var A = AUI();
 
 	<c:if test="<%= updateTask %>">
