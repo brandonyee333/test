@@ -21,7 +21,7 @@
 			},
 			{
 				name: '<@liferay.language key="project-details" />',
-				url: 'project-details'
+				url: '/project-details'
 			}
 		]
 	};
