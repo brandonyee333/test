@@ -122,8 +122,12 @@ public class PortletURLUtil {
 		LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse) {
 
-		PortletURL portletURL = (PortletURL)liferayPortletRequest.getAttribute(
+		String attributeName = StringBundler.concat(
+			liferayPortletRequest.getPortletName(), StringPool.DASH,
 			WebKeys.CURRENT_PORTLET_URL);
+
+		PortletURL portletURL = (PortletURL)liferayPortletRequest.getAttribute(
+			attributeName);
 
 		if (portletURL != null) {
 			return portletURL;
@@ -155,8 +159,7 @@ public class PortletURLUtil {
 			}
 		}
 
-		liferayPortletRequest.setAttribute(
-			WebKeys.CURRENT_PORTLET_URL, portletURL);
+		liferayPortletRequest.setAttribute(attributeName, portletURL);
 
 		return portletURL;
 	}
