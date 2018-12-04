@@ -80,9 +80,7 @@ public class ZendeskBaseWebServiceImpl
 			return JSONFactoryUtil.createJSONObject(response);
 		}
 		catch (Exception e) {
-			if (response != null) {
-				_log.error("Error parsing response: " + response);
-			}
+			processError(url, parameters.toString(), response);
 
 			throw new PortalException(e);
 		}
@@ -107,9 +105,7 @@ public class ZendeskBaseWebServiceImpl
 			return JSONFactoryUtil.createJSONObject(response);
 		}
 		catch (Exception e) {
-			if (response != null) {
-				_log.error("Error parsing response: " + response);
-			}
+			processError(endpoint, json, response);
 
 			throw new PortalException(e);
 		}
@@ -126,9 +122,7 @@ public class ZendeskBaseWebServiceImpl
 			return JSONFactoryUtil.createJSONObject(response);
 		}
 		catch (Exception e) {
-			if (response != null) {
-				_log.error("Error parsing response: " + response);
-			}
+			processError(url, parameters.toString(), response);
 
 			throw new PortalException(e);
 		}
@@ -158,16 +152,14 @@ public class ZendeskBaseWebServiceImpl
 			throw new PortalException(jsonwsie);
 		}
 		catch (Exception e) {
-			if (response != null) {
-				_log.error("Error parsing response: " + response);
-			}
+			processError(endpoint, json, response);
 
 			throw new PortalException(e);
 		}
 	}
 
 	public JSONObject post(
-			String endpoint, Map<String, String> params, String fileName,
+			String endpoint, Map<String, String> parameters, String fileName,
 			byte[] bytes)
 		throws PortalException {
 
@@ -183,7 +175,7 @@ public class ZendeskBaseWebServiceImpl
 
 			MultipartEntity multipartEntity = new MultipartEntity();
 
-			for (Map.Entry<String, String> entry : params.entrySet()) {
+			for (Map.Entry<String, String> entry : parameters.entrySet()) {
 				multipartEntity.addPart(
 					entry.getKey(), new StringBody(entry.getValue()));
 			}
@@ -204,9 +196,7 @@ public class ZendeskBaseWebServiceImpl
 			return JSONFactoryUtil.createJSONObject(response);
 		}
 		catch (Exception e) {
-			if (response != null) {
-				_log.error("Error parsing response: " + response);
-			}
+			processError(endpoint, parameters.toString(), response);
 
 			throw new PortalException(e);
 		}
@@ -231,9 +221,7 @@ public class ZendeskBaseWebServiceImpl
 			return JSONFactoryUtil.createJSONObject(response);
 		}
 		catch (Exception e) {
-			if (response != null) {
-				_log.error("Error parsing response: " + response);
-			}
+			processError(endpoint, json, response);
 
 			throw new PortalException(e);
 		}
@@ -256,9 +244,7 @@ public class ZendeskBaseWebServiceImpl
 			return JSONFactoryUtil.createJSONObject(response);
 		}
 		catch (Exception e) {
-			if (response != null) {
-				_log.error("Error parsing response: " + response);
-			}
+			processError(endpoint, json, response);
 
 			throw new PortalException(e);
 		}
@@ -315,6 +301,17 @@ public class ZendeskBaseWebServiceImpl
 		stringEntity.setContentType("application/json");
 
 		return stringEntity;
+	}
+
+	protected void processError(String url, String data, String response)
+		throws PortalException {
+
+		_log.error("Request failed for " + url);
+		_log.error("Data: " + data);
+
+		if (response != null) {
+			_log.error("Error parsing response: " + response);
+		}
 	}
 
 	@Override

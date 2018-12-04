@@ -70,6 +70,8 @@ request.setAttribute("view.jsp-portletURL", portletURL);
 	url="<%= portletURL.toString() %>"
 />
 
+<liferay-util:include page="/common/exception.jsp" servletContext="<%= application %>" />
+
 <c:choose>
 	<c:when test='<%= tabs1.equals("partners") %>'>
 		<liferay-util:include page="/admin/partners.jsp" servletContext="<%= application %>" />
@@ -87,5 +89,3 @@ request.setAttribute("view.jsp-portletURL", portletURL);
 		<liferay-util:include page="/admin/accounts.jsp" servletContext="<%= application %>" />
 	</c:otherwise>
 </c:choose>
-
-<liferay-util:include page="/common/exception.jsp" servletContext="<%= application %>" />

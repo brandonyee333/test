@@ -51,6 +51,8 @@ request.setAttribute("edit_account_entry_workers.jsp-portletURL", portletURL);
 		names="users"
 	/>
 
+	<liferay-util:include page="/common/exception.jsp" servletContext="<%= application %>" />
+
 	<liferay-ui:error exception="<%= RequiredPartnerEntryException.class %>" message="this-project-must-be-assigned-a-partner-before-assigning-workers" />
 
 	<liferay-ui:search-container>
@@ -167,8 +169,6 @@ request.setAttribute("edit_account_entry_workers.jsp-portletURL", portletURL);
 			markupView="lexicon"
 		/>
 	</liferay-ui:search-container>
-
-	<liferay-util:include page="/common/exception.jsp" servletContext="<%= application %>" />
 </aui:form>
 
 <aui:script>

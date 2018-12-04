@@ -93,6 +93,8 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 		names="project"
 	/>
 
+	<liferay-util:include page="/common/exception.jsp" servletContext="<%= application %>" />
+
 	<liferay-ui:error exception="<%= AccountEntryCodeException.class %>" message="please-enter-a-valid-code" />
 
 	<liferay-ui:error exception="<%= AccountEntryCorpProjectException.class %>">
@@ -699,7 +701,6 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 	%>
 
 	<liferay-util:include page="/admin/edit_account_entry/details_tabs.jsp" servletContext="<%= application %>" />
-	<liferay-util:include page="/common/exception.jsp" servletContext="<%= application %>" />
 </aui:form>
 
 <aui:script use="liferay-address,liferay-dynamic-select">

@@ -42,6 +42,8 @@ request.setAttribute("edit_partner_entry_workers.jsp-portletURL", portletURL);
 	<aui:input name="partnerEntryId" type="hidden" value="<%= partnerEntryId %>" />
 	<aui:input name="partnerWorkerId" type="hidden" />
 
+	<liferay-util:include page="/common/exception.jsp" servletContext="<%= application %>" />
+
 	<liferay-ui:error exception="<%= NoSuchUserException.class %>" message="the-user-could-not-be-found" />
 	<liferay-ui:error exception="<%= PartnerEntryDossieraAccountKeyException.class %>" message="dossiera-account-key-is-required-to-assign-workers" />
 
@@ -178,8 +180,6 @@ request.setAttribute("edit_partner_entry_workers.jsp-portletURL", portletURL);
 			markupView="lexicon"
 		/>
 	</liferay-ui:search-container>
-
-	<liferay-util:include page="/common/exception.jsp" servletContext="<%= application %>" />
 </aui:form>
 
 <aui:script>

@@ -200,6 +200,8 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 		names="order"
 	/>
 
+	<liferay-util:include page="/common/exception.jsp" servletContext="<%= application %>" />
+
 	<liferay-ui:error exception="<%= NoSuchAccountEntryException.class %>" message="please-select-a-project" />
 	<liferay-ui:error exception="<%= OrderEntryActualStartDateException.class %>" message="the-actual-start-date-must-be-after-the-start-date" />
 	<liferay-ui:error exception="<%= RequiredOfferingEntryException.class %>" message="you-cannot-remove-offerings-that-have-generated-license-keys-or-support-tickets" />

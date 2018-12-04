@@ -79,6 +79,8 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 		names="partner"
 	/>
 
+	<liferay-util:include page="/common/exception.jsp" servletContext="<%= application %>" />
+
 	<liferay-ui:error exception="<%= DuplicatePartnerEntryCodeException.class %>" message="please-enter-a-unique-code" />
 	<liferay-ui:error exception="<%= DuplicatePartnerEntryDossieraAccountKeyException.class %>" message="please-enter-a-unique-dossiera-account-key" />
 	<liferay-ui:error exception="<%= PartnerEntryCodeException.class %>" message="please-enter-a-valid-code" />
@@ -399,8 +401,6 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 
 		</div>
 	</c:if>
-
-	<liferay-util:include page="/common/exception.jsp" servletContext="<%= application %>" />
 </aui:form>
 
 <aui:script>
