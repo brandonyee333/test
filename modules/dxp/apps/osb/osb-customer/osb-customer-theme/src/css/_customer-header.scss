@@ -66,6 +66,7 @@
 	.header-menu {
 		background-color: $color-white;
 		border-top: 1px solid $color-divider;
+		cursor: initial;
 		display: none;
 		left: 0;
 		min-height: 432px;
@@ -186,17 +187,44 @@
 		}
 
 		.list-item {
-			padding: 22px $padding-md;
+			border-radius: $border-radius;
+			padding: 8px 8px 8px 12px;
 			position: relative;
 
+			&:hover,
+			&.active {
+				.lexicon-icon-menu-caret {
+					visibility: visible;
+				}
+			}
+
 			&:hover {
+				background-color: $color-grey;
 				color: $color-body;
 				cursor: pointer;
+			}
+
+			&.active {
+
+				h5 {
+					color: $color-primary;
+				}
+
+ 				.lexicon-icon-menu-caret {
+					transform: rotate(180deg);
+				}
 
 				.header-menu {
 					box-shadow: 0 4px 15px 0 rgba(9, 16, 24, 0.03), 0 20px 40px 0 rgba(9, 16, 29, 0.09);
 					display: block;
 				}
+			}
+
+			.lexicon-icon-menu-caret {
+				height: $lexicon-icon-height;
+				margin-bottom: 1px;
+				width: $lexicon-icon-width;
+				visibility: hidden;
 			}
 		}
 	}

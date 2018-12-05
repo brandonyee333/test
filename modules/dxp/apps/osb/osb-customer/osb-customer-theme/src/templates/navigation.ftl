@@ -18,6 +18,10 @@
 			<div class="hide list-item">
 				<h5>
 					<@liferay.language key="products" />
+
+					<svg class="lexicon-icon lexicon-icon-menu-caret">
+						<use xlink:href="#menu-caret" />
+					</svg>
 				</h5>
 
 				<div class="header-menu" id="megaMenuProducts"></div>
@@ -26,6 +30,10 @@
 			<div class="hide list-item">
 				<h5>
 					<@liferay.language key="resources" />
+
+					<svg class="lexicon-icon lexicon-icon-menu-caret">
+						<use xlink:href="#menu-caret" />
+					</svg>
 				</h5>
 
 				<div class="header-menu" id="megaMenuResources"></div>
@@ -34,6 +42,10 @@
 			<div class="hide list-item">
 				<h5>
 					<@liferay.language key="security" />
+
+					<svg class="lexicon-icon lexicon-icon-menu-caret">
+						<use xlink:href="#menu-caret" />
+					</svg>
 				</h5>
 
 				<div class="header-menu" id="megaMenuSecurity"></div>
@@ -42,6 +54,10 @@
 			<div class="hide list-item">
 				<h5>
 					<@liferay.language key="support" />
+
+					<svg class="lexicon-icon lexicon-icon-menu-caret">
+						<use xlink:href="#menu-caret" />
+					</svg>
 				</h5>
 
 				<div class="header-menu" id="megaMenuSupport"></div>
