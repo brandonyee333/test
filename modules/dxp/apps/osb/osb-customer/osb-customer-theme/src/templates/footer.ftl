@@ -12,9 +12,9 @@
 	<#if footer_navigation_layout?has_content>
 		<#list footer_navigation_layout.getChildren() as footer_navigation_item>
 			<div class="col-sm-2">
-				<h5>
+				<h4>
 					${footer_navigation_item.getName(locale)}
-				</h5>
+				</h4>
 
 				<ul class="footer-links">
 					<#list footer_navigation_item.getChildren() as nav_layout>

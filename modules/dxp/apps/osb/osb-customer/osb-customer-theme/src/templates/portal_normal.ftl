@@ -33,7 +33,7 @@
 		</div>
 	</main>
 
-	<footer class="container-fluid container-fluid-max-xl footer small">
+	<footer class="container-fluid container-fluid-max-xl footer secondary-font">
 		<#include "${full_templates_path}/footer.ftl" />
 	</footer>
 </div>
