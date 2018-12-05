@@ -17,6 +17,7 @@ package com.liferay.lcs.advisor;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.liferay.lcs.internal.event.LCSEvent;
@@ -141,24 +142,7 @@ public class UptimeAdvisor implements LCSEventListener {
 	private void _addPersistedUptimes(List<Uptime> uptimesList)
 		throws IOException {
 
-		String key = _lcsKeyAdvisor.getKey();
-
-		if (key == null) {
-			return;
-		}
-
-		PortletPreferences portletPreferences =
-			LCSPortletPreferencesUtil.fetchReadOnlyJxPortletPreferences();
-
-		String json = portletPreferences.getValue("uptimes-" + key, null);
-
-		if (json == null) {
-			return;
-		}
-
-		ObjectMapper objectMapper = new ObjectMapper();
-
-		JsonNode jsonNode = objectMapper.readTree(json);
+		JsonNode jsonNode = _getPersistedUptimesJSONNode();
 
 		if (jsonNode.isArray()) {
 			Iterator<JsonNode> iterator = jsonNode.iterator();
@@ -191,7 +175,7 @@ public class UptimeAdvisor implements LCSEventListener {
 		uptime.endTime =
 			_runtimeMXBean.getStartTime() + _runtimeMXBean.getUptime();
 
-		long startTime = _getStoredMaxEndTime();
+		long startTime = _getPersistedMaxEndTime();
 
 		startTime = Math.max(startTime, _runtimeMXBean.getStartTime());
 
@@ -204,27 +188,10 @@ public class UptimeAdvisor implements LCSEventListener {
 		}
 	}
 
-	private long _getStoredMaxEndTime() throws IOException {
-		String key = _lcsKeyAdvisor.getKey();
-
-		if (key == null) {
-			return 0;
-		}
-
-		PortletPreferences portletPreferences =
-			LCSPortletPreferencesUtil.fetchReadOnlyJxPortletPreferences();
-
-		String json = portletPreferences.getValue("uptimes-" + key, null);
-
-		if (json == null) {
-			return 0;
-		}
-
+	private long _getPersistedMaxEndTime() throws IOException {
 		long maxEndTime = 0;
 
-		ObjectMapper objectMapper = new ObjectMapper();
-
-		JsonNode jsonNode = objectMapper.readTree(json);
+		JsonNode jsonNode = _getPersistedUptimesJSONNode();
 
 		if (jsonNode.isArray()) {
 			Iterator<JsonNode> iterator = jsonNode.iterator();
@@ -241,6 +208,27 @@ public class UptimeAdvisor implements LCSEventListener {
 		}
 
 		return maxEndTime;
+	}
+
+	private JsonNode _getPersistedUptimesJSONNode() throws IOException {
+		String key = _lcsKeyAdvisor.getKey();
+
+		if (key == null) {
+			return NullNode.getInstance();
+		}
+
+		PortletPreferences portletPreferences =
+			LCSPortletPreferencesUtil.fetchReadOnlyJxPortletPreferences();
+
+		String json = portletPreferences.getValue("uptimes-" + key, null);
+
+		if (json == null) {
+			return NullNode.getInstance();
+		}
+
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		return objectMapper.readTree(json);
 	}
 
 	private void _resetUptimes() {
