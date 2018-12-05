@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-
-<suppressions>
-	<source-check>
-		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/help/center/web/util/HelpCenterThemeUtil.java" />>
-	</source-check>
-</suppressions>

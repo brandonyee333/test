@@ -1,10 +1,6 @@
-Bundle-ClassPath:\
-	.,\
-	lib/osb-portlet-service.jar
 Bundle-Name: Liferay OSB Customer Help Center Web
 Bundle-SymbolicName: com.liferay.osb.customer.help.center.web
 Bundle-Version: 1.0.0
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Customer Help Center
 Web-ContextPath: /osb-customer-help-center-web
--includeresource: lib/osb-portlet-service.jar=osb-portlet-service.jar

@@ -15,21 +15,10 @@
 package com.liferay.osb.customer.help.center.web.util;
 
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
-import com.liferay.osb.model.AccountCustomer;
-import com.liferay.osb.model.AccountCustomerConstants;
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
-import com.liferay.osb.service.AccountEntryLocalServiceUtil;
-import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.SingleVMPoolUtil;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
-
-import java.util.LinkedHashMap;
-import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -61,44 +50,23 @@ public class HelpCenterThemeUtil {
 		return megaMenu;
 	}
 
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
-	}
-
 	private boolean _hasMegaMenu(long userId) throws PortalException {
+		if (_organizationLocalService.hasUserOrganization(
+				userId, OSBCustomerConstants.ORGANIZATION_CUSTOMER_ID)) {
+
+			return true;
+		}
+
 		if (_organizationLocalService.hasUserOrganization(
 				userId, OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID)) {
 
 			return true;
 		}
 
-		if (PartnerWorkerLocalServiceUtil.hasPartnerWorker(userId)) {
+		if (_organizationLocalService.hasUserOrganization(
+				userId, OSBCustomerConstants.ORGANIZATION_PARTNER_ID)) {
+
 			return true;
-		}
-
-		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
-
-		params.put("accountEntryMembership", Long.valueOf(userId));
-		params.put("activeSupport", true);
-		params.put("ticketSupport", true);
-
-		List<AccountEntry> accountEntries = AccountEntryLocalServiceUtil.search(
-			null, params, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
-
-		for (AccountEntry accountEntry : accountEntries) {
-			AccountCustomer accountCustomer =
-				AccountCustomerLocalServiceUtil.getAccountCustomer(
-					userId, accountEntry.getAccountEntryId());
-
-			if (accountCustomer.getRole() !=
-					AccountCustomerConstants.ROLE_WATCHER) {
-
-				return true;
-			}
 		}
 
 		return false;

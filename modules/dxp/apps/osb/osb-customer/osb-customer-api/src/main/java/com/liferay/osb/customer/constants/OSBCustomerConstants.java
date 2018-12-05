@@ -35,7 +35,11 @@ public class OSBCustomerConstants {
 	public static final long ORGANIZATION_CORPORATION_PROJECT_PARENT_ID =
 		3294642;
 
+	public static final long ORGANIZATION_CUSTOMER_ID = 1747330;
+
 	public static final long ORGANIZATION_LIFERAY_INC_ID = 1747318;
+
+	public static final long ORGANIZATION_PARTNER_ID = 1747324;
 
 	public static final String RESOURCE_NAME_KNOWLEDGE_DISPLAY =
 		"com.liferay.osb.documentation.display";
