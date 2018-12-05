@@ -16,12 +16,14 @@ package com.liferay.osb.customer.zendesk.rabbitmq.processors;
 
 import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessor;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.util.Map;
+
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Kyle Bischof
@@ -33,7 +35,7 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 		String routingKey, String message, Map<String, Object> properties) {
 
 		try {
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+			JSONObject jsonObject = jsonFactory.createJSONObject(
 				message.trim());
 
 			doProcess(jsonObject);
@@ -58,6 +60,13 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 			_log.error(responseJSONObject.toString());
 		}
 	}
+
+	@Reference(unbind = "-")
+	protected void setJSONFactory(JSONFactory jsonFactory) {
+		this.jsonFactory = jsonFactory;
+	}
+
+	protected JSONFactory jsonFactory;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseMessageProcessor.class);
