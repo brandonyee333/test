@@ -64,6 +64,8 @@ public interface ZendeskUserWebService {
 
 	public ZendeskUser getZendeskUser(String externalId) throws PortalException;
 
+	public long getZendeskUserId(String email) throws PortalException;
+
 	public void updateZendeskUserIdentity(
 			long zendeskUserId, long zendeskUserIdentityId, String value)
 		throws PortalException;

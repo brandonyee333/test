@@ -14,12 +14,11 @@
 
 package com.liferay.osb.customer.zendesk.listeners.synchronizer;
 
+import com.liferay.osb.customer.zendesk.connector.constants.ZendeskLocales;
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.constants.ZendeskTicketConstants;
-import com.liferay.osb.customer.zendesk.constants.ZendeskUserConstants;
 import com.liferay.osb.customer.zendesk.listeners.exception.ZendeskIntegrationException;
 import com.liferay.osb.customer.zendesk.listeners.util.ZendeskModelListenerUtil;
-import com.liferay.osb.customer.zendesk.model.ZendeskOrganization;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationWebService;
@@ -28,6 +27,7 @@ import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
+import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.PartnerEntry;
@@ -36,6 +36,7 @@ import com.liferay.osb.model.PartnerWorkerConstants;
 import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.model.SupportResponse;
+import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.osb.service.SupportRegionLocalServiceUtil;
 import com.liferay.osb.service.SupportResponseLocalServiceUtil;
@@ -44,6 +45,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
@@ -63,6 +65,14 @@ public class AccountEntrySynchronizer {
 
 	public void add(AccountEntry accountEntry) throws PortalException {
 		try {
+			long classNameId = _classNameLocalService.getClassNameId(
+				AccountEntry.class);
+
+			boolean externalIdMappers =
+				ExternalIdMapperLocalServiceUtil.hasExternalIdMappers(
+					classNameId, accountEntry.getAccountEntryId(),
+					ExternalIdMapperConstants.TYPE_ZENDESK);
+
 			String jiraProjectKey = StringPool.BLANK;
 			String partnerEntryCode = StringPool.BLANK;
 
@@ -91,26 +101,26 @@ public class AccountEntrySynchronizer {
 				SupportRegionLocalServiceUtil.getSupportRegion(
 					supportRegionIds[0]);
 
-			ZendeskOrganization zendeskOrganization =
-				_zendeskOrganizationWebService.
-					createOrUpdateZendeskOrganization(
-						accountEntry.getCode(),
-						ZendeskModelListenerUtil.convertAddressToString(
-							accountEntry.getAddress()),
-						String.valueOf(accountEntry.getAccountEntryId()),
-						accountEntry.getName(), accountEntry.getNotes(),
-						String.valueOf(accountEntry.getPartnerManagedSupport()),
-						jiraProjectKey, partnerEntryCode, supportLevelLabel,
-						accountEntry.getStatusLabel(),
-						AccountEntryConstants.getLanguageLabel(languageIds[0]),
-						supportRegion.getName(),
-						AccountEntryConstants.getTierLabel(
-							accountEntry.getTier()),
-						getTags(accountEntry));
+			_zendeskOrganizationWebService.createOrUpdateZendeskOrganization(
+				accountEntry.getCode(),
+				ZendeskModelListenerUtil.convertAddressToString(
+					accountEntry.getAddress()),
+				String.valueOf(accountEntry.getAccountEntryId()),
+				accountEntry.getName(), accountEntry.getNotes(),
+				String.valueOf(accountEntry.getPartnerManagedSupport()),
+				jiraProjectKey, partnerEntryCode, supportLevelLabel,
+				accountEntry.getStatusLabel(),
+				AccountEntryConstants.getLanguageLabel(languageIds[0]),
+				supportRegion.getName(),
+				AccountEntryConstants.getTierLabel(accountEntry.getTier()),
+				getTags(accountEntry));
 
-			_zendeskUserWebService.createZendeskUserOrganizationMemberships(
-				ZendeskUserConstants.DEFAULT_USER_ID,
-				new long[] {zendeskOrganization.getZendeskOrganizationId()});
+			if (!externalIdMappers) {
+				_asyncZendeskUserWebService.createOrUpdateZendeskUser(
+					null, getDefaultUserEmail(accountEntry.getCode()),
+					ZendeskLocales.US, accountEntry.getCode(),
+					accountEntry.getName(), null);
+			}
 		}
 		catch (Exception e) {
 			_log.error(e);
@@ -171,10 +181,11 @@ public class AccountEntrySynchronizer {
 				long zendeskUserId = _userSynchronizer.sync(
 					user, 0, null, tags);
 
-				_zendeskUserWebService.createZendeskUserOrganizationMemberships(
-					zendeskUserId, new long[] {zendeskOrganizationId});
+				_asyncZendeskUserWebService.
+					createZendeskUserOrganizationMemberships(
+						zendeskUserId, new long[] {zendeskOrganizationId});
 
-				_zendeskUserWebService.
+				_asyncZendeskUserWebService.
 					createZendeskUserOrganizationSubscription(
 						zendeskUserId, zendeskOrganizationId);
 			}
@@ -198,11 +209,14 @@ public class AccountEntrySynchronizer {
 		criteria.add("organization:" + zendeskOrganizationId);
 		criteria.add("status<" + ZendeskTicketConstants.STATUS_CLOSED);
 
+		long requesterId = _zendeskUserWebService.getZendeskUserId(
+			getDefaultUserEmail(accountEntry.getCode()));
+
 		List<ZendeskTicket> zendeskTickets =
 			_zendeskTicketWebService.getZendeskTickets(criteria);
 
 		for (ZendeskTicket zendeskTicket : zendeskTickets) {
-			zendeskTicket.setRequesterId(ZendeskUserConstants.DEFAULT_USER_ID);
+			zendeskTicket.setRequesterId(requesterId);
 			zendeskTicket.setStatus("closed");
 		}
 
@@ -268,8 +282,9 @@ public class AccountEntrySynchronizer {
 				long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
 					partnerWorker.getUserId());
 
-				_zendeskUserWebService.deleteZendeskUserOrganizationMemberships(
-					zendeskUserId, new long[] {zendeskOrganizationId});
+				_asyncZendeskUserWebService.
+					deleteZendeskUserOrganizationMemberships(
+						zendeskUserId, new long[] {zendeskOrganizationId});
 
 				_userSynchronizer.removeObsoleteTags(partnerWorker.getUserId());
 			}
@@ -279,6 +294,10 @@ public class AccountEntrySynchronizer {
 
 			throw new ZendeskIntegrationException(e);
 		}
+	}
+
+	protected String getDefaultUserEmail(String accountCode) {
+		return "no-reply@" + accountCode + ".com.broken";
 	}
 
 	protected Set<String> getTags(AccountEntry accountEntry)
@@ -323,6 +342,12 @@ public class AccountEntrySynchronizer {
 	@Reference
 	private AccountCustomerSynchronizer _accountCustomerSynchronizer;
 
+	@Reference(target = "(async=true)")
+	private ZendeskUserWebService _asyncZendeskUserWebService;
+
+	@Reference
+	private ClassNameLocalService _classNameLocalService;
+
 	@Reference
 	private UserLocalService _userLocalService;
 
@@ -338,7 +363,7 @@ public class AccountEntrySynchronizer {
 	@Reference
 	private ZendeskTicketWebService _zendeskTicketWebService;
 
-	@Reference(target = "(async=true)")
+	@Reference
 	private ZendeskUserWebService _zendeskUserWebService;
 
 }

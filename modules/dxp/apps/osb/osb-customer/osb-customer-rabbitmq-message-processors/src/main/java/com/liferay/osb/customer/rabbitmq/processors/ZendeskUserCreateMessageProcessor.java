@@ -21,6 +21,7 @@ import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
 
@@ -40,6 +41,11 @@ public class ZendeskUserCreateMessageProcessor extends BaseMessageProcessor {
 		JSONObject userJSONObject = jsonObject.getJSONObject("user");
 
 		String uuid = userJSONObject.getString("external_id");
+
+		if (Validator.isNull(uuid)) {
+			return;
+		}
+
 		String zendeskUserId = userJSONObject.getString("id");
 
 		long classNameId = classNameLocalService.getClassNameId(User.class);
