@@ -64,6 +64,22 @@ public class AccountCustomerSynchronizer {
 		}
 	}
 
+	public void addOrganizationSubscription(AccountCustomer accountCustomer)
+		throws PortalException {
+
+		long accountEntryId = accountCustomer.getAccountEntryId();
+
+		if (accountEntryId > 0) {
+			long zendeskOrganizationId =
+				_zendeskMapperUtil.fetchZendeskOrganizationId(accountEntryId);
+			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+				accountCustomer.getUserId());
+
+			_zendeskUserWebService.createZendeskUserOrganizationSubscription(
+				zendeskUserId, zendeskOrganizationId);
+		}
+	}
+
 	public void reassignTickets(AccountCustomer accountCustomer)
 		throws PortalException {
 

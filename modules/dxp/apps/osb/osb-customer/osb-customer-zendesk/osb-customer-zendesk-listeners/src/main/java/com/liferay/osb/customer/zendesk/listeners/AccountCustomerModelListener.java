@@ -41,6 +41,9 @@ public class AccountCustomerModelListener
 
 			if (accountEntry.getActiveSupport()) {
 				_accountCustomerSynchronizer.add(accountCustomer);
+
+				_accountCustomerSynchronizer.addOrganizationSubscription(
+					accountCustomer);
 			}
 		}
 		catch (Exception e) {

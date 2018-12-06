@@ -186,16 +186,6 @@ public class UserSynchronizer {
 				zendeskUserId = zendeskUser.getZendeskUserId();
 			}
 
-			if (accountEntryId > 0) {
-				long zendeskOrganizationId =
-					_zendeskMapperUtil.fetchZendeskOrganizationId(
-						accountEntryId);
-
-				_asyncZendeskUserWebService.
-					createZendeskUserOrganizationSubscription(
-						zendeskUserId, zendeskOrganizationId);
-			}
-
 			return zendeskUserId;
 		}
 		catch (Exception e) {

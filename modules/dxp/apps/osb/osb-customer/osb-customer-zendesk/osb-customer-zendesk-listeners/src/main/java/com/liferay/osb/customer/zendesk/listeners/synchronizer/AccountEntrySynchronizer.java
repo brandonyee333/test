@@ -127,6 +127,11 @@ public class AccountEntrySynchronizer {
 					accountEntry.getAccountCustomers()) {
 
 				_accountCustomerSynchronizer.add(accountCustomer);
+
+				if (accountEntry.getActiveTicketSupport()) {
+					_accountCustomerSynchronizer.addOrganizationSubscription(
+						accountCustomer);
+				}
 			}
 		}
 		catch (Exception e) {

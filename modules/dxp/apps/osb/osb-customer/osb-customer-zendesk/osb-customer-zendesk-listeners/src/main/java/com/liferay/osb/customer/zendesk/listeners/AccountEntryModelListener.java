@@ -82,7 +82,13 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			if (accountEntry.getActiveSupport()) {
 				_accountEntrySynchronizer.add(accountEntry);
 
-				_accountEntrySynchronizer.addAccountCustomers(accountEntry);
+				if ((_accountEntryActiveTicketSupport.get() !=
+						accountEntry.getActiveTicketSupport()) ||
+					(_accountEntryActiveSupport.get() !=
+						accountEntry.getActiveSupport())) {
+
+					_accountEntrySynchronizer.addAccountCustomers(accountEntry);
+				}
 
 				if (accountEntry.getActiveTicketSupport()) {
 					if (accountEntry.isPartnerManagedSupport()) {
