@@ -20,6 +20,7 @@
 	osb_support_admin = role_local_service.hasUserRoles(user_id, company_id, ['OSB Support Admin'], true)
 	liferay_employee = role_local_service.hasUserRoles(user_id, company_id, ['Liferay Employee'], true)
 
+	google_tag_manager_id = themeDisplay.getThemeSetting("google-tag-manager-id")
 	site_logo_url = themeDisplay.getThemeSetting("site-logo-url")
 	site_name = themeDisplay.getThemeSetting("site-name")
 	site_name_url = themeDisplay.getThemeSetting("site-name-url")

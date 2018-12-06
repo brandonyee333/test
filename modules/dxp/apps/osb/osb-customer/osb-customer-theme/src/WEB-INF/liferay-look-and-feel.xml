@@ -20,6 +20,7 @@
 		<settings>
 			<setting configurable="true" key="footer-logo" options="true,false" type="select" value="true" />
 			<setting configurable="true" key="footer-social-links" options="true,false" type="select" value="true" />
+			<setting configurable="true" key="google-tag-manager-id" value="" />
 			<setting configurable="true" key="site-logo-url" value="/home" />
 			<setting configurable="true" key="site-name" value="Help Center" />
 			<setting configurable="true" key="site-name-url" value="https://help.liferay.com" />

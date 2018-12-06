@@ -14,6 +14,12 @@
 
 <body class="${css_class}">
 
+<#if validator.isNotNull(google_tag_manager_id)>
+	<noscript>
+		<iframe height="0" src="//www.googletagmanager.com/ns.html?id=$google_tag_manager_id" style="display: none; visibility: hidden;" width="0"></iframe>
+	</noscript>
+</#if>
+
 <@liferay_util["include"] page=body_top_include />
 
 <#if has_view_control_panel>
