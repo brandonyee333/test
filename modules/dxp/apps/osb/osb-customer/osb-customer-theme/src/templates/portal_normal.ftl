@@ -32,7 +32,7 @@
 				j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
 
 				f.parentNode.insertBefore(j, f);
-			})(window, document, 'script', 'dataLayer', '$google_tag_manager_id');
+			})(window, document, 'script', 'dataLayer', '${google_tag_manager_id}');
 		</script>
 	</#if>
 </head>
@@ -41,7 +41,7 @@
 
 <#if validator.isNotNull(google_tag_manager_id)>
 	<noscript>
-		<iframe height="0" src="//www.googletagmanager.com/ns.html?id=$google_tag_manager_id" style="display: none; visibility: hidden;" width="0"></iframe>
+		<iframe height="0" src="//www.googletagmanager.com/ns.html?id=${google_tag_manager_id}" style="display: none; visibility: hidden;" width="0"></iframe>
 	</noscript>
 </#if>
 
