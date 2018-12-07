@@ -13,23 +13,25 @@
 
 	<#if validator.isNotNull(google_tag_manager_id)>
 		<script>
-			(function(w,d,s,l,i) {
+			(function(w, d, s, l, i) {
 				w[l] = w[l] || [];
 
 				w[l].push(
 					{
-						'gtm.start': new Date().getTime(),
-						event: 'gtm.js'
+						event: 'gtm.js',
+						'gtm.start': new Date().getTime()
 					}
 				);
 
-				var f = d.getElementsByTagName(s)[0],
-					j = d.createElement(s),
-					dl = l != 'dataLayer' ? '&l=' + l : '';
+				var dl = l != 'dataLayer' ? '&l=' + l : '';
+				var f = d.getElementsByTagName(s)[0];
+				var j = d.createElement(s);
 
 				j.async = true;
+
 				j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-				f.parentNode.insertBefore(j,f);
+
+				f.parentNode.insertBefore(j, f);
 			})(window, document, 'script', 'dataLayer', '$google_tag_manager_id');
 		</script>
 	</#if>
