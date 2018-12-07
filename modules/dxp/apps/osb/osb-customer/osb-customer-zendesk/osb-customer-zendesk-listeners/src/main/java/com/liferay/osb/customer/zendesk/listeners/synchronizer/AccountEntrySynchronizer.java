@@ -20,6 +20,7 @@ import com.liferay.osb.customer.zendesk.constants.ZendeskTicketConstants;
 import com.liferay.osb.customer.zendesk.listeners.exception.ZendeskIntegrationException;
 import com.liferay.osb.customer.zendesk.listeners.util.ZendeskModelListenerUtil;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
+import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
@@ -209,14 +210,14 @@ public class AccountEntrySynchronizer {
 		criteria.add("organization:" + zendeskOrganizationId);
 		criteria.add("status<" + ZendeskTicketConstants.STATUS_CLOSED);
 
-		long requesterId = _zendeskUserWebService.getZendeskUserId(
+		ZendeskUser zendeskUser = _zendeskUserWebService.getZendeskUserByEmail(
 			getDefaultUserEmail(accountEntry.getCode()));
 
 		List<ZendeskTicket> zendeskTickets =
 			_zendeskTicketWebService.getZendeskTickets(criteria);
 
 		for (ZendeskTicket zendeskTicket : zendeskTickets) {
-			zendeskTicket.setRequesterId(requesterId);
+			zendeskTicket.setRequesterId(zendeskUser.getZendeskUserId());
 			zendeskTicket.setStatus("closed");
 		}
 

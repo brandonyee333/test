@@ -141,7 +141,26 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 		return organizationMembershipMap;
 	}
 
-	public ZendeskUser getZendeskUser(String externalId)
+	public ZendeskUser getZendeskUserByEmail(String email)
+		throws PortalException {
+
+		Map<String, String> parameters = new HashMap<>();
+
+		parameters.put("query", email);
+
+		JSONObject responseJSONObject = zendeskBaseWebService.get(
+			ZendeskRESTEndpoints.URL_API_V2 + "users/search.json", parameters);
+
+		JSONArray usersJSONArray = responseJSONObject.getJSONArray("users");
+
+		if (usersJSONArray.length() <= 0) {
+			return null;
+		}
+
+		return zendeskConverter.toZendeskUser(usersJSONArray.getJSONObject(0));
+	}
+
+	public ZendeskUser getZendeskUserByExternalId(String externalId)
 		throws PortalException {
 
 		Map<String, String> parameters = new HashMap<>();
@@ -158,26 +177,6 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 		}
 
 		return zendeskConverter.toZendeskUser(usersJSONArray.getJSONObject(0));
-	}
-
-	public long getZendeskUserId(String email) throws PortalException {
-		Map<String, String> parameters = new HashMap<>();
-
-		parameters.put("query", email);
-
-		JSONObject responseJSONObject = zendeskBaseWebService.get(
-			ZendeskRESTEndpoints.URL_API_V2 + "users/search.json", parameters);
-
-		JSONArray usersJSONArray = responseJSONObject.getJSONArray("users");
-
-		if (usersJSONArray.length() <= 0) {
-			return 0;
-		}
-
-		ZendeskUser zendeskUser = zendeskConverter.toZendeskUser(
-			usersJSONArray.getJSONObject(0));
-
-		return zendeskUser.getZendeskUserId();
 	}
 
 	public void updateZendeskUserIdentity(

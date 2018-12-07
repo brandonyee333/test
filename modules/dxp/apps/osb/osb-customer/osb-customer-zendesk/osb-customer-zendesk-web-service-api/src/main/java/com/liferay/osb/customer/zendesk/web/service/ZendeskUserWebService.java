@@ -62,9 +62,11 @@ public interface ZendeskUserWebService {
 	public Map<Long, Long> getOrganizationMemberships(long zendeskUserId)
 		throws PortalException;
 
-	public ZendeskUser getZendeskUser(String externalId) throws PortalException;
+	public ZendeskUser getZendeskUserByEmail(String email)
+		throws PortalException;
 
-	public long getZendeskUserId(String email) throws PortalException;
+	public ZendeskUser getZendeskUserByExternalId(String externalId)
+		throws PortalException;
 
 	public void updateZendeskUserIdentity(
 			long zendeskUserId, long zendeskUserIdentityId, String value)

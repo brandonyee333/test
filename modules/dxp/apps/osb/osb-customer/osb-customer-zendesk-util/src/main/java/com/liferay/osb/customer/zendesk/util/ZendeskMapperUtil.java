@@ -90,8 +90,8 @@ public class ZendeskMapperUtil {
 
 		User user = _userLocalService.getUser(userId);
 
-		ZendeskUser zendeskUser = _zendeskUserWebService.getZendeskUser(
-			user.getUuid());
+		ZendeskUser zendeskUser =
+			_zendeskUserWebService.getZendeskUserByExternalId(user.getUuid());
 
 		if (zendeskUser == null) {
 			return 0;
@@ -139,8 +139,8 @@ public class ZendeskMapperUtil {
 
 		User user = _userLocalService.getUser(userId);
 
-		ZendeskUser zendeskUser = _zendeskUserWebService.getZendeskUser(
-			user.getUuid());
+		ZendeskUser zendeskUser =
+			_zendeskUserWebService.getZendeskUserByExternalId(user.getUuid());
 
 		if (zendeskUser == null) {
 			throw new NoSuchZendeskUserException();
