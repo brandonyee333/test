@@ -112,7 +112,16 @@ public class ZendeskJiraServlet extends SimpleRestfulServlet {
 					}
 				}
 				else {
-					customFields.put(key, fieldsJSONObject.getJSONObject(key));
+					JSONObject valueJSONObject = fieldsJSONObject.getJSONObject(
+						key);
+
+					String value = valueJSONObject.getString("value");
+
+					if (Validator.isNotNull(value) &&
+						!value.equals(StringPool.DASH)) {
+
+						customFields.put(key, valueJSONObject);
+					}
 				}
 			}
 		}
