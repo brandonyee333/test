@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import 'core-js/fn/array/flat-map';
 import 'core-js/fn/array/find';
+import 'core-js/fn/array/flat-map';
 import 'core-js/fn/object/entries';
 
 import axios from 'axios';
