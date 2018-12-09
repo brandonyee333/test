@@ -17,7 +17,6 @@ package com.liferay.lcs.advisor;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.liferay.lcs.internal.event.LCSEvent;
@@ -32,6 +31,7 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -73,11 +73,9 @@ public class UptimeAdvisor implements LCSEventListener {
 			return;
 		}
 
-		_uptimes = new ArrayList<>();
+		_uptimes = new ArrayList<>(_getPersistedUptimes());
 
 		_checkCurrentUptime();
-
-		_addPersistedUptimes(_uptimes);
 
 		_addCurrentUptime(_uptimes);
 
@@ -139,82 +137,37 @@ public class UptimeAdvisor implements LCSEventListener {
 		uptimes.add(_currentUptime);
 	}
 
-	private void _addPersistedUptimes(List<Uptime> uptimesList)
-		throws IOException {
-
-		JsonNode jsonNode = _getPersistedUptimesJSONNode();
-
-		if (jsonNode.isArray()) {
-			Iterator<JsonNode> iterator = jsonNode.iterator();
-
-			while (iterator.hasNext()) {
-				JsonNode uptimeJSONNode = iterator.next();
-
-				Uptime uptime = new Uptime();
-
-				JsonNode endTimeJSONNode = uptimeJSONNode.get("endTime");
-
-				uptime.endTime = endTimeJSONNode.asLong();
-
-				JsonNode startTimeJSONNode = uptimeJSONNode.get("startTime");
-
-				uptime.startTime = startTimeJSONNode.asLong();
-
-				uptimesList.add(uptime);
-			}
-		}
-	}
-
-	private void _checkCurrentUptime() throws IOException {
+	private void _checkCurrentUptime() {
 		if (_currentUptime != null) {
 			return;
 		}
 
-		Uptime uptime = new Uptime();
+		Uptime currentUptime = new Uptime();
 
-		uptime.endTime =
-			_runtimeMXBean.getStartTime() + _runtimeMXBean.getUptime();
+		currentUptime.endTime = System.currentTimeMillis();
 
-		long startTime = _getPersistedMaxEndTime();
+		long startTime = 0;
+
+		for (Uptime uptime : _uptimes) {
+			startTime = Math.max(startTime, uptime.endTime);
+		}
 
 		startTime = Math.max(startTime, _runtimeMXBean.getStartTime());
 
-		uptime.startTime = startTime;
+		currentUptime.startTime = startTime;
 
-		_currentUptime = uptime;
+		_currentUptime = currentUptime;
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Updated current uptime");
 		}
 	}
 
-	private long _getPersistedMaxEndTime() throws IOException {
-		long maxEndTime = 0;
-
-		JsonNode jsonNode = _getPersistedUptimesJSONNode();
-
-		if (jsonNode.isArray()) {
-			Iterator<JsonNode> iterator = jsonNode.iterator();
-
-			while (iterator.hasNext()) {
-				JsonNode uptimeJSONNode = iterator.next();
-
-				JsonNode endTimeJsonNode = uptimeJSONNode.get("endTime");
-
-				long endTime = endTimeJsonNode.asLong();
-
-				maxEndTime = Math.max(maxEndTime, endTime);
-			}
-		}
-
-		return maxEndTime;
-	}
-
-	private JsonNode _getPersistedUptimesJSONNode() throws IOException {
+	private List<Uptime> _getPersistedUptimes() throws IOException {
 		String key = _lcsKeyAdvisor.getKey();
 
 		if (key == null) {
-			return NullNode.getInstance();
+			return Collections.emptyList();
 		}
 
 		PortletPreferences portletPreferences =
@@ -223,12 +176,38 @@ public class UptimeAdvisor implements LCSEventListener {
 		String json = portletPreferences.getValue("uptimes-" + key, null);
 
 		if (json == null) {
-			return NullNode.getInstance();
+			return Collections.emptyList();
 		}
 
 		ObjectMapper objectMapper = new ObjectMapper();
 
-		return objectMapper.readTree(json);
+		JsonNode jsonNode = objectMapper.readTree(json);
+
+		if (!jsonNode.isArray()) {
+			return Collections.emptyList();
+		}
+
+		List<Uptime> uptimes = new ArrayList<>();
+
+		Iterator<JsonNode> iterator = jsonNode.iterator();
+
+		while (iterator.hasNext()) {
+			JsonNode uptimeJSONNode = iterator.next();
+
+			Uptime uptime = new Uptime();
+
+			JsonNode endTimeJSONNode = uptimeJSONNode.get("endTime");
+
+			uptime.endTime = endTimeJSONNode.asLong();
+
+			JsonNode startTimeJSONNode = uptimeJSONNode.get("startTime");
+
+			uptime.startTime = startTimeJSONNode.asLong();
+
+			uptimes.add(uptime);
+		}
+
+		return uptimes;
 	}
 
 	private void _resetUptimes() {
