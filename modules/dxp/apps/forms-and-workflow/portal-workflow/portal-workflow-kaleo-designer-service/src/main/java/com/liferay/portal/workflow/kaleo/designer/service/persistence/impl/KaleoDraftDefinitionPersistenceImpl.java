@@ -1229,7 +1229,6 @@ public class KaleoDraftDefinitionPersistenceImpl extends BasePersistenceImpl<Kal
 	}
 
 	private static final String _FINDER_COLUMN_C_N_V_COMPANYID_2 = "kaleoDraftDefinition.companyId = ? AND ";
-	private static final String _FINDER_COLUMN_C_N_V_NAME_1 = "kaleoDraftDefinition.name IS NULL AND ";
 	private static final String _FINDER_COLUMN_C_N_V_NAME_2 = "kaleoDraftDefinition.name = ? AND ";
 	private static final String _FINDER_COLUMN_C_N_V_NAME_3 = "(kaleoDraftDefinition.name IS NULL OR kaleoDraftDefinition.name = '') AND ";
 	private static final String _FINDER_COLUMN_C_N_V_VERSION_2 = "kaleoDraftDefinition.version = ?";
@@ -1529,7 +1528,6 @@ public class KaleoDraftDefinitionPersistenceImpl extends BasePersistenceImpl<Kal
 	}
 
 	private static final String _FINDER_COLUMN_C_N_V_D_COMPANYID_2 = "kaleoDraftDefinition.companyId = ? AND ";
-	private static final String _FINDER_COLUMN_C_N_V_D_NAME_1 = "kaleoDraftDefinition.name IS NULL AND ";
 	private static final String _FINDER_COLUMN_C_N_V_D_NAME_2 = "kaleoDraftDefinition.name = ? AND ";
 	private static final String _FINDER_COLUMN_C_N_V_D_NAME_3 = "(kaleoDraftDefinition.name IS NULL OR kaleoDraftDefinition.name = '') AND ";
 	private static final String _FINDER_COLUMN_C_N_V_D_VERSION_2 = "kaleoDraftDefinition.version = ? AND ";
