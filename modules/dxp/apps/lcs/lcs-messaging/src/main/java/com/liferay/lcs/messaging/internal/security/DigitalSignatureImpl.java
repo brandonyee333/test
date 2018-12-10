@@ -152,34 +152,7 @@ public class DigitalSignatureImpl implements DigitalSignature {
 	}
 
 	@Override
-	public boolean verifyMessage(int buildNumber, Message message) {
-		if (!(message instanceof CommandMessage)) {
-			return true;
-		}
-
-		CommandMessage commandMessage = (CommandMessage)message;
-
-		try {
-			return doVerifyMessage(
-				buildNumber, getBytes(commandMessage),
-				commandMessage.getSignature());
-		}
-		catch (Exception e) {
-			throw new RuntimeException("Unable to verify message", e);
-		}
-	}
-
-	/**
-	 * Returns <code>true</code> if the message's digital signature is valid and
-	 * it's a command message.
-	 *
-	 * @param  message the message
-	 * @return <code>true</code> if the message's digital signature is valid and
-	 *         it's a command message; <code>false</code> otherwise
-	 * @since  LCS 0.1
-	 */
-	@Override
-	public boolean verifyMessage(Message message)
+	public boolean verifyMessage(int buildNumber, Message message)
 		throws DigitalSignatureException {
 
 		if (!(message instanceof CommandMessage)) {
@@ -190,7 +163,8 @@ public class DigitalSignatureImpl implements DigitalSignature {
 
 		try {
 			return doVerifyMessage(
-				0, getBytes(commandMessage), commandMessage.getSignature());
+				buildNumber, getBytes(commandMessage),
+				commandMessage.getSignature());
 		}
 		catch (Exception e) {
 			throw new DigitalSignatureException("Unable to verify message", e);

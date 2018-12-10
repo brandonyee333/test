@@ -30,9 +30,7 @@ public interface DigitalSignature {
 
 	public void signMessage(Message message);
 
-	public boolean verifyMessage(int buildNumber, Message message);
-
-	public boolean verifyMessage(Message message)
+	public boolean verifyMessage(int buildNumber, Message message)
 		throws DigitalSignatureException;
 
 	public boolean verifyValue(String value, String signature)
