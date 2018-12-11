@@ -543,8 +543,6 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 		template.put("version", version);
 	}
 
-	private static final String _SERVLET_SEPARATOR = "_SERVLET_CONTEXT_";
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		ReleaseNotesPortlet.class);
 

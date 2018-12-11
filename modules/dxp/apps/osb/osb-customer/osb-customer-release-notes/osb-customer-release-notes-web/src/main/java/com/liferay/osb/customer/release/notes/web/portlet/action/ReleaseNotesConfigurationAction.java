@@ -15,7 +15,7 @@
 package com.liferay.osb.customer.release.notes.web.portlet.action;
 
 import com.liferay.osb.customer.release.notes.jira.exception.NoSuchJIRAProjectException;
-import com.liferay.osb.customer.release.notes.jira.service.JIRAProjectLocalServiceUtil;
+import com.liferay.osb.customer.release.notes.jira.service.JIRAProjectLocalService;
 import com.liferay.osb.customer.release.notes.web.internal.constants.ReleaseNotesPortletKeys;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
@@ -28,6 +28,7 @@ import javax.portlet.PortletConfig;
 import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Samuel Kong
@@ -54,7 +55,7 @@ public class ReleaseNotesConfigurationAction
 		String jiraProjectKey = getParameter(actionRequest, "jiraProjectKey");
 
 		try {
-			JIRAProjectLocalServiceUtil.getJIRAProject(jiraProjectKey);
+			_jiraProjectLocalService.getJIRAProject(jiraProjectKey);
 		}
 		catch (NoSuchJIRAProjectException nsjirape) {
 			SessionErrors.add(actionRequest, "jiraProjectKey");
@@ -62,5 +63,14 @@ public class ReleaseNotesConfigurationAction
 
 		super.processAction(portletConfig, actionRequest, actionResponse);
 	}
+
+	@Reference(unbind = "-")
+	protected void setJIRAProjectLocalService(
+		JIRAProjectLocalService jiraProjectLocalService) {
+
+		_jiraProjectLocalService = jiraProjectLocalService;
+	}
+
+	private JIRAProjectLocalService _jiraProjectLocalService;
 
 }
