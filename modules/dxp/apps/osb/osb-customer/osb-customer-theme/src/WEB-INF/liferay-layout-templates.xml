@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!DOCTYPE layout-templates PUBLIC "-//Liferay//DTD Layout Templates 7.0.0//EN" "http://www.liferay.com/dtd/liferay-layout-templates_7_0_0.dtd">
+
+<layout-templates>
+	<custom>
+		<layout-template id="osb-downloads-display-layout" name="OSB Downloads Display Layout">
+			<template-path>/layouttpl/custom/osb-downloads-display-layout-layouttpl/osb_downloads_display_layout.tpl</template-path>
+			<thumbnail-path>/layouttpl/custom/osb-downloads-display-layout-layouttpl/osb_downloads_display_layout.png</thumbnail-path>
+		</layout-template>
+	</custom>
+</layout-templates>
