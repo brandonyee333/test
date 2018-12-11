@@ -169,7 +169,7 @@ export default class DynamicUploaderForm extends React.Component {
 									...prevState.file,
 									fileName: file.fileName,
 									fileSize: file.size,
-									type: file.file.type
+									type: file.type
 								},
 								fileObj: file,
 								message: {
