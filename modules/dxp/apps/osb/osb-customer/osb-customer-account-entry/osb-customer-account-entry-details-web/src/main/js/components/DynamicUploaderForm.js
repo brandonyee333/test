@@ -314,11 +314,10 @@ export default class DynamicUploaderForm extends React.Component {
 	validateForm = () => {
 		const {
 			fileName,
-			fileSize,
-			type
+			fileSize
 		} = this.state.file;
 
-		return (fileName && fileSize && type);
+		return (fileName && fileSize);
 	}
 
 	render() {
