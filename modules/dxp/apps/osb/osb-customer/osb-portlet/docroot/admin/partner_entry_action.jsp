@@ -39,7 +39,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 	<c:if test="<%= (partnerEntry.getParentPartnerEntryId() > 0) || Validator.isNotNull(partnerEntry.getDossieraAccountKey()) %>">
 		<portlet:renderURL var="assignWorkersURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 			<portlet:param name="mvcPath" value="/admin/edit_partner_entry_workers.jsp" />
-			<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+			<portlet:param name="backURL" value="<%= portletURL.toString() %>" />
 			<portlet:param name="partnerEntryId" value="<%= String.valueOf(partnerEntry.getPartnerEntryId()) %>" />
 		</portlet:renderURL>
 
