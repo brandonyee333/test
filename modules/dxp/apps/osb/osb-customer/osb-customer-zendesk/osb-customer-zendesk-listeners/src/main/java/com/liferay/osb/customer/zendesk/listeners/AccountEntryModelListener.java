@@ -89,13 +89,6 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 
 					_accountEntrySynchronizer.addAccountCustomers(accountEntry);
 				}
-
-				if (accountEntry.getActiveTicketSupport()) {
-					if (accountEntry.isPartnerManagedSupport()) {
-						_accountEntrySynchronizer.addPartnerManagedSupport(
-							accountEntry);
-					}
-				}
 			}
 		}
 		catch (Exception e) {
@@ -122,8 +115,22 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 				return;
 			}
 
-			if (oldAccountEntry.isPartnerManagedSupport() &&
-				!accountEntry.isPartnerManagedSupport()) {
+			if (accountEntry.getActiveTicketSupport()) {
+				if (accountEntry.isPartnerManagedSupport()) {
+					if (!oldAccountEntry.isPartnerManagedSupport() ||
+						(oldAccountEntry.getPartnerEntryId() !=
+							accountEntry.getPartnerEntryId())) {
+
+						_accountEntrySynchronizer.addPartnerManagedSupport(
+							accountEntry);
+					}
+				}
+			}
+
+			if ((oldAccountEntry.isPartnerManagedSupport() &&
+				 !accountEntry.isPartnerManagedSupport()) ||
+				(oldAccountEntry.getPartnerEntryId() !=
+					accountEntry.getPartnerEntryId())) {
 
 				_accountEntrySynchronizer.removePartnerManagedSupport(
 					oldAccountEntry);
