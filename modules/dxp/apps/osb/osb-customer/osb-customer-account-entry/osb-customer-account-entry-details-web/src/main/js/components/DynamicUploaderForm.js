@@ -162,23 +162,20 @@ export default class DynamicUploaderForm extends React.Component {
 					const resumableFile = handleFileSuccess(file, message);
 
 					this.setState(
-						(prevState) => (
-							{
-								file: {
-									...prevState.file,
-									fileName: file.fileName,
-									fileSize: file.size
-								},
-								fileObj: file,
-								message: {
-									content: resumableFile.message,
-									type: 'success'
-								},
-								toolbar: {
-									visible: false
-								}
+						{
+							file: {
+								fileName: file.fileName,
+								fileSize: file.size
+							},
+							fileObj: file,
+							message: {
+								content: resumableFile.message,
+								type: 'success'
+							},
+							toolbar: {
+								visible: false
 							}
-						)
+						}
 					);
 				}
 			);
@@ -215,16 +212,13 @@ export default class DynamicUploaderForm extends React.Component {
 		this.state.resumable.removeFile(this.state.fileObj);
 
 		this.setState(
-			(prevState) => (
-				{
-					file: {
-						...prevState.file,
-						fileName: '',
-						fileSize: ''
-					},
-					fileObj: ''
-				}
-			)
+			{
+				file: {
+					fileName: '',
+					fileSize: ''
+				},
+				fileObj: ''
+			}
 		);
 	}
 
