@@ -117,7 +117,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 	<liferay-ui:error exception="<%= AddressCityException.class %>" message="please-enter-a-valid-city" />
 	<liferay-ui:error exception="<%= AddressStreetException.class %>" message="please-enter-a-valid-address-line" />
 	<liferay-ui:error exception="<%= AddressZipException.class %>" message="please-enter-a-valid-postal-code" />
-	<liferay-ui:error exception="<%= DuplicateAccountEntryException.class %>" message="please-enter-a-unique-code" />
+	<liferay-ui:error exception="<%= DuplicateAccountEntryException.class %>" message="please-enter-a-unique-code-and-name" />
 
 	<c:if test='<%= SessionMessages.contains(renderRequest, "lcsSyncFailed") %>'>
 		<div class="portlet-msg-alert">

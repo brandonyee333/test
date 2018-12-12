@@ -176,6 +176,20 @@ public class AccountEntryLocalServiceImpl
 
 		// Account entry
 
+		ArrayList<String> warningMessages =
+			(ArrayList)serviceContext.getAttribute("warningMessages");
+
+		if (accountEntryPersistence.countByName(accountEntry.getName()) > 0) {
+			warningMessages.add("Project name is already taken");
+		}
+
+		String code = getCode(
+			accountEntry.getCorpEntryName(), accountEntry.getName());
+
+		if (!StringUtil.equalsIgnoreCase(code, accountEntry.getCode())) {
+			warningMessages.add("Project code is already taken");
+		}
+
 		accountEntry = doAddAccountEntry(
 			accountEntry.getUserId(), corpProject.getUuid(),
 			accountEntry.getDossieraAccountKey(),
@@ -300,16 +314,6 @@ public class AccountEntryLocalServiceImpl
 		workflowContext.put(
 			WorkflowConstants.CONTEXT_SUPPORT_REGION_NAME,
 			supportRegion.getName());
-
-		ArrayList<String> warningMessages =
-			(ArrayList)serviceContext.getAttribute("warningMessages");
-
-		String code = getCode(
-			accountEntry.getCorpEntryName(), accountEntry.getName());
-
-		if (!StringUtil.equalsIgnoreCase(code, accountEntry.getCode())) {
-			warningMessages.add("Project code is already taken");
-		}
 
 		workflowContext.put(
 			WorkflowConstants.CONTEXT_WARNING_MESSAGES, warningMessages);
@@ -2806,6 +2810,21 @@ public class AccountEntryLocalServiceImpl
 
 			if (partnerEntry.getStatus() == WorkflowConstants.STATUS_INACTIVE) {
 				throw new AccountEntryPartnerEntryException();
+			}
+		}
+
+		if (accountEntryId <= 0) {
+			if (accountEntryPersistence.countByName(name) > 1) {
+				throw new DuplicateAccountEntryException();
+			}
+		}
+		else {
+			for (AccountEntry accountEntry :
+					accountEntryPersistence.findByName(name)) {
+
+				if (accountEntry.getAccountEntryId() != accountEntryId) {
+					throw new DuplicateAccountEntryException();
+				}
 			}
 		}
 

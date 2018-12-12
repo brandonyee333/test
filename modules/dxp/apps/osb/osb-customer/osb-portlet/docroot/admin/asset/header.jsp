@@ -58,7 +58,7 @@ Integer salesforceOpportunityType = (Integer)request.getAttribute("header.jsp-sa
 <liferay-ui:error exception="<%= AddressCityException.class %>" message="please-enter-a-valid-city" />
 <liferay-ui:error exception="<%= AddressStreetException.class %>" message="please-enter-a-valid-address-line" />
 <liferay-ui:error exception="<%= AddressZipException.class %>" message="please-enter-a-valid-postal-code" />
-<liferay-ui:error exception="<%= DuplicateAccountEntryException.class %>" message="please-enter-a-unique-code" />
+<liferay-ui:error exception="<%= DuplicateAccountEntryException.class %>" message="please-enter-a-unique-code-and-name" />
 <liferay-ui:error exception="<%= PrincipalException.class %>" message="this-task-is-assigned-to-another-user" />
 <liferay-ui:error exception="<%= RequiredFieldException.class %>" message="please-provide-a-reason-for-rejecting-this-task" />
 
