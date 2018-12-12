@@ -28,8 +28,7 @@ export default class DynamicUploaderForm extends React.Component {
 		comment: '',
 		file: {
 			fileName: '',
-			fileSize: '',
-			type: ''
+			fileSize: ''
 		},
 		message: {
 			content: '',
@@ -168,8 +167,7 @@ export default class DynamicUploaderForm extends React.Component {
 								file: {
 									...prevState.file,
 									fileName: file.fileName,
-									fileSize: file.size,
-									type: file.file.type
+									fileSize: file.size
 								},
 								fileObj: file,
 								message: {
@@ -222,8 +220,7 @@ export default class DynamicUploaderForm extends React.Component {
 					file: {
 						...prevState.file,
 						fileName: '',
-						fileSize: '',
-						type: ''
+						fileSize: ''
 					},
 					fileObj: ''
 				}
