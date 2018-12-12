@@ -3065,6 +3065,14 @@ AUI.add(
 
 		var ScriptEditor = A.Component.create(
 			{
+				ATTRS: {
+					inputFormatter: {
+						value: function(val) {
+							return val;
+						}
+					}
+				},
+
 				EXTENDS: A.BaseCellEditor,
 
 				NAME: 'script-cell-editor',
