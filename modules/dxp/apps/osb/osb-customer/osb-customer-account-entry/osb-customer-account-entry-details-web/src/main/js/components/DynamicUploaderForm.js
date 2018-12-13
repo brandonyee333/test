@@ -30,6 +30,7 @@ export default class DynamicUploaderForm extends React.Component {
 			fileName: '',
 			fileSize: ''
 		},
+		fileObj: '',
 		message: {
 			content: '',
 			type: ''
