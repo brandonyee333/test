@@ -14,42 +14,23 @@
  */
 --%>
 
-<%@ include file="/workflow_task_action.portal.jsp" %>
+<%@ include file="/init.jsp" %>
+
+<style type="text/css">
+	.task-change-status-link [id*="closetaskChangeStatusLink"] {
+		display: none;
+	}
+</style>
+
+<liferay-util:buffer
+	var="html"
+>
+	<liferay-util:include page="/workflow_task_action.portal.jsp" servletContext="<%= application %>" />
+</liferay-util:buffer>
 
 <%
-boolean updateTask = false;
-
-if (workflowTask != null) {
-	WorkflowInstance workflowInstance = WorkflowInstanceManagerUtil.getWorkflowInstance(company.getCompanyId(), workflowTask.getWorkflowInstanceId());
-
-	Map<String, Serializable> workflowContext = workflowInstance.getWorkflowContext();
-
-	String salesforceOpportunityAction = GetterUtil.getString(workflowContext.get("osbSalesforceOpportunityAction"));
-
-	if (salesforceOpportunityAction.equals(Constants.UPDATE)) {
-		updateTask = true;
-	}
-}
+html = html.replace(renderResponse.getNamespace() + "mvcPath", renderResponse.getNamespace() + "osbMVCPath");
+html = html.replace(renderResponse.getNamespace() + "workflowTaskId", renderResponse.getNamespace() + "osbWorkflowTaskId");
 %>
 
-<aui:script use="aui-base">
-	var A = AUI();
-
-	<c:if test="<%= updateTask %>">
-		var taskElement = A.one('#<%= workflowTask.getWorkflowTaskId() %>');
-
-		if (taskElement) {
-			taskElement.append('(<liferay-ui:message key="update" unicode="<%= true %>" />)');
-		}
-	</c:if>
-
-	var closeButtonElement = A.one('#<portlet:namespace /><%= randomId %>closetaskChangeStatusLink');
-
-	if (closeButtonElement) {
-		var parentElement = closeButtonElement.ancestor('li');
-
-		if (parentElement) {
-			parentElement.hide();
-		}
-	}
-</aui:script>
+<%= html %>

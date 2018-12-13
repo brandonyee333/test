@@ -115,9 +115,9 @@ portletURL.setParameter("tabs1", tabs1);
 			/>
 
 			<portlet:renderURL var="rowURL">
-				<portlet:param name="mvcPath" value="/edit_workflow_task.jsp" />
+				<portlet:param name="osbMVCPath" value="/edit_workflow_task.jsp" />
 				<portlet:param name="backURL" value="<%= currentURL %>" />
-				<portlet:param name="workflowTaskId" value="<%= String.valueOf(workflowTask.getWorkflowTaskId()) %>" />
+				<portlet:param name="osbWorkflowTaskId" value="<%= String.valueOf(workflowTask.getWorkflowTaskId()) %>" />
 			</portlet:renderURL>
 
 			<liferay-ui:search-container-column-text

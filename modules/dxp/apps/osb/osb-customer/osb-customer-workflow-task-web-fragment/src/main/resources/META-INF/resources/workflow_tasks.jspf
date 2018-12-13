@@ -35,9 +35,9 @@
 		/>
 
 		<portlet:renderURL var="rowURL">
-			<portlet:param name="mvcPath" value="/edit_workflow_task.jsp" />
+			<portlet:param name="osbMVCPath" value="/edit_workflow_task.jsp" />
 			<portlet:param name="backURL" value="<%= currentURL %>" />
-			<portlet:param name="workflowTaskId" value="<%= String.valueOf(workflowTask.getWorkflowTaskId()) %>" />
+			<portlet:param name="osbWorkflowTaskId" value="<%= String.valueOf(workflowTask.getWorkflowTaskId()) %>" />
 		</portlet:renderURL>
 
 		<c:choose>
@@ -120,6 +120,18 @@
 				>
 					<span class="task-name" id="<%= workflowTask.getWorkflowTaskId() %>">
 						<liferay-ui:message key="<%= workflowTaskDisplayContext.getTaskName(workflowTask) %>" />
+
+						<%
+						WorkflowInstance workflowInstance = WorkflowInstanceManagerUtil.getWorkflowInstance(company.getCompanyId(), workflowTask.getWorkflowInstanceId());
+
+						Map<String, Serializable> workflowContext = workflowInstance.getWorkflowContext();
+
+						String salesforceOpportunityAction = GetterUtil.getString(workflowContext.get("osbSalesforceOpportunityAction"));
+						%>
+
+						<c:if test="<%= salesforceOpportunityAction.equals(Constants.UPDATE) %>">
+							(<liferay-ui:message key="update" />)
+						</c:if>
 					</span>
 				</liferay-ui:search-container-column-text>
 

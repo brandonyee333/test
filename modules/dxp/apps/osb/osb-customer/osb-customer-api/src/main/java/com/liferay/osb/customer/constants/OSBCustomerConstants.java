@@ -66,6 +66,8 @@ public class OSBCustomerConstants {
 
 	public static final long ROLE_LIFERAY_EMPLOYEE_ID = 10946;
 
+	public static final long ROLE_OSB_ACCOUNT_ADMIN_ID = 1546563;
+
 	public static final long ROLE_PARTNER_ID = 54427;
 
 	public static final long ROLE_SITE_MEMBER_ID = 10173;

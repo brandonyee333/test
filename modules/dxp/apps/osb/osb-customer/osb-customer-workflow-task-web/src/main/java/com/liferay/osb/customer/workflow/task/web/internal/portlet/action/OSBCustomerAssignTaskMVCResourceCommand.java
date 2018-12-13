@@ -14,11 +14,15 @@
 
 package com.liferay.osb.customer.workflow.task.web.internal.portlet.action;
 
+import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
@@ -47,6 +51,18 @@ import org.osgi.service.component.annotations.Reference;
 public class OSBCustomerAssignTaskMVCResourceCommand
 	extends BaseMVCResourceCommand {
 
+	protected void checkWorkflowTaskAssignmentPermission(
+			long workflowTaskId, ThemeDisplay themeDisplay)
+		throws Exception {
+
+		if (!_roleLocalService.hasUserRole(
+				themeDisplay.getUserId(),
+				OSBCustomerConstants.ROLE_OSB_ACCOUNT_ADMIN_ID)) {
+
+			throw new PrincipalException();
+		}
+	}
+
 	@Override
 	protected void doServeResource(
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
@@ -60,20 +76,27 @@ public class OSBCustomerAssignTaskMVCResourceCommand
 			long workflowTaskId = ParamUtil.getLong(
 				resourceRequest, "workflowTaskId");
 
+			long assigneeUserId = ParamUtil.getLong(
+				resourceRequest, "assigneeUserId");
+			String comment = ParamUtil.getString(resourceRequest, "comment");
+
 			WorkflowTask workflowTask = WorkflowTaskManagerUtil.getWorkflowTask(
 				themeDisplay.getCompanyId(), workflowTaskId);
 
 			validateAssign(workflowTask);
 
-			mvcResourceCommand.serveResource(resourceRequest, resourceResponse);
+			checkWorkflowTaskAssignmentPermission(workflowTaskId, themeDisplay);
 
-			workflowTask = WorkflowTaskManagerUtil.getWorkflowTask(
-				themeDisplay.getCompanyId(), workflowTaskId);
+			workflowTask = WorkflowTaskManagerUtil.assignWorkflowTaskToUser(
+				themeDisplay.getCompanyId(), themeDisplay.getUserId(),
+				workflowTaskId, assigneeUserId, comment, null, null);
 
 			Indexer indexer = IndexerRegistryUtil.getIndexer(
 				WorkflowTask.class.getName());
 
 			indexer.reindex(workflowTask);
+
+			SessionMessages.add(resourceRequest, "requestProcessed", "");
 		}
 		catch (Exception e) {
 			if (Validator.isNotNull(e.getMessage())) {
@@ -91,9 +114,7 @@ public class OSBCustomerAssignTaskMVCResourceCommand
 		}
 	}
 
-	@Reference(
-		target = "(component.name=com.liferay.portal.workflow.task.web.internal.portlet.action.AssignTaskMVCResourceCommand)"
-	)
-	protected MVCResourceCommand mvcResourceCommand;
+	@Reference
+	private RoleLocalService _roleLocalService;
 
 }

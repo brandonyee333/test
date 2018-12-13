@@ -148,7 +148,7 @@
 
 						<#assign company = companyLocalServiceUtil.getCompany(getterUtil.getLong(companyId)) />
 
-						<#assign workflowTaskURL = portalUtil.getPortalURL(company.getVirtualHostname(), portalUtil.getPortalPort(true), true) + "/group/control_panel/manage/-/my_workflow_tasks/view/" + kaleoTaskInstanceToken.getKaleoTaskInstanceTokenId()?c + "?_com_liferay_portal_workflow_task_web_portlet_MyWorkflowTaskPortlet_mvcPath=%2Fedit_workflow_task.jsp" />
+						<#assign workflowTaskURL = portalUtil.getPortalURL(company.getVirtualHostname(), portalUtil.getPortalPort(true), true) + "/group/control_panel/manage?p_p_id=com_liferay_portal_workflow_task_web_portlet_MyWorkflowTaskPortlet&p_p_lifecycle=0&p_p_state=maximized&p_p_mode=view&_com_liferay_portal_workflow_task_web_portlet_MyWorkflowTaskPortlet_osbMVCPath=%2Fedit_workflow_task.jsp&_com_liferay_portal_workflow_task_web_portlet_MyWorkflowTaskPortlet_osbWorkflowTaskId=" + kaleoTaskInstanceToken.getKaleoTaskInstanceTokenId()?c />
 						<#assign salesforceOpportunityURL = "https://login.salesforce.com/" + osbSalesforceOpportunityKey />
 
 						Hi Reviewer,<br /><br />
