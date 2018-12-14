@@ -17,13 +17,21 @@ package com.liferay.osb.model.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.util.OSBConstants;
+import com.liferay.osb.util.WorkflowConstants;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Organization;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
+
+import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * @author Brian Wing Shun Chan
@@ -32,6 +40,26 @@ import com.liferay.portal.kernel.util.Validator;
 public class CorpProjectImpl extends CorpProjectBaseImpl {
 
 	public CorpProjectImpl() {
+	}
+
+	public List<User> getAnalyticsCloudOwners() throws PortalException {
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
+
+		Group group = getGroup();
+
+		params.put(
+			"userGroupRole",
+			new Long[] {
+				group.getGroupId(),
+				OSBConstants.ROLE_OSB_CORP_ANALYTICS_CLOUD_OWNER_ID
+			});
+
+		params.put("usersOrgs", getOrganizationId());
+
+		return UserLocalServiceUtil.search(
+			group.getCompanyId(), null, WorkflowConstants.STATUS_APPROVED,
+			params, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			(OrderByComparator)null);
 	}
 
 	public Group getGroup() throws PortalException {

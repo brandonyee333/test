@@ -21,6 +21,7 @@ import com.liferay.osb.exception.RequiredOfferingEntryException;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.AuditEntryConstants;
+import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.OrderEntry;
@@ -428,6 +429,20 @@ public class OfferingEntryLocalServiceImpl
 		AccountEntry analyticsCloudBasicAccountEntry =
 			accountEntryLocalService.fetchAnalyticsCloudBasicAccountEntry(
 				accountEntry.getDossieraAccountKey());
+
+		if (analyticsCloudBasicAccountEntry != null) {
+			CorpProject corpProject =
+				corpProjectLocalService.fetchCorpProjectByUuid(
+					analyticsCloudBasicAccountEntry.getCorpProjectUuid());
+
+			if (corpProject != null) {
+				List<User> ownerUsers = corpProject.getAnalyticsCloudOwners();
+
+				if (!ownerUsers.isEmpty()) {
+					return;
+				}
+			}
+		}
 
 		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 

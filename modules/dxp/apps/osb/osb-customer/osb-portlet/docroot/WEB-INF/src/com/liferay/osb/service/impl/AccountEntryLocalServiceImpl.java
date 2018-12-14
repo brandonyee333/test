@@ -75,7 +75,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.Country;
-import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Indexer;
@@ -96,6 +95,7 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SubscriptionSender;
+import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 import com.liferay.portal.kernel.workflow.WorkflowTask;
@@ -665,24 +665,7 @@ public class AccountEntryLocalServiceImpl
 		CorpProject corpProject = corpProjectLocalService.getCorpProjectByUuid(
 			corpProjectUuid);
 
-		Group group = corpProject.getGroup();
-
-		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
-
-		params.put(
-			"userGroupRole",
-			new Long[] {
-				group.getGroupId(),
-				OSBConstants.ROLE_OSB_CORP_ANALYTICS_CLOUD_OWNER_ID
-			});
-		params.put("usersOrgs", corpProject.getOrganizationId());
-
-		List<User> users = userLocalService.search(
-			group.getCompanyId(), null, WorkflowConstants.STATUS_APPROVED,
-			params, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			(OrderByComparator)null);
-
-		for (User user : users) {
+		for (User user : corpProject.getAnalyticsCloudOwners()) {
 			if (userId != user.getUserId()) {
 				return;
 			}
@@ -703,6 +686,15 @@ public class AccountEntryLocalServiceImpl
 				accountCustomerLocalService.deleteAccountCustomer(
 					accountCustomer);
 			}
+		}
+
+		Date supportEndDate = new Date(
+			System.currentTimeMillis() + (90 * Time.DAY));
+
+		for (OfferingEntry offeringEntry : accountEntry.getOfferingEntries()) {
+			offeringEntry.setSupportEndDate(supportEndDate);
+
+			offeringEntryPersistence.update(offeringEntry);
 		}
 	}
 
