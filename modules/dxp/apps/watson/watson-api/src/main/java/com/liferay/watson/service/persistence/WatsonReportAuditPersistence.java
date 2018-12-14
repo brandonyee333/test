@@ -21,6 +21,11 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.watson.exception.NoSuchReportAuditException;
 import com.liferay.watson.model.WatsonReportAudit;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the watson report audit service.
  *
@@ -40,6 +45,9 @@ public interface WatsonReportAuditPersistence extends BasePersistence<WatsonRepo
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonReportAuditUtil} to access the watson report audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, WatsonReportAudit> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Caches the watson report audit in the entity cache if it is enabled.
@@ -93,10 +101,6 @@ public interface WatsonReportAuditPersistence extends BasePersistence<WatsonRepo
 	* @return the watson report audit, or <code>null</code> if a watson report audit with the primary key could not be found
 	*/
 	public WatsonReportAudit fetchByPrimaryKey(long watsonReportAuditId);
-
-	@Override
-	public java.util.Map<java.io.Serializable, WatsonReportAudit> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the watson report audits.
@@ -163,5 +167,5 @@ public interface WatsonReportAuditPersistence extends BasePersistence<WatsonRepo
 	public int countAll();
 
 	@Override
-	public java.util.Set<String> getBadColumnNames();
+	public Set<String> getBadColumnNames();
 }

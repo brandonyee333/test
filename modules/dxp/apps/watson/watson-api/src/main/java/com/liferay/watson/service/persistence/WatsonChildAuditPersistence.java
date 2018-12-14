@@ -21,6 +21,11 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.watson.exception.NoSuchChildAuditException;
 import com.liferay.watson.model.WatsonChildAudit;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the watson child audit service.
  *
@@ -40,6 +45,9 @@ public interface WatsonChildAuditPersistence extends BasePersistence<WatsonChild
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonChildAuditUtil} to access the watson child audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, WatsonChildAudit> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Caches the watson child audit in the entity cache if it is enabled.
@@ -92,10 +100,6 @@ public interface WatsonChildAuditPersistence extends BasePersistence<WatsonChild
 	* @return the watson child audit, or <code>null</code> if a watson child audit with the primary key could not be found
 	*/
 	public WatsonChildAudit fetchByPrimaryKey(long watsonChildAuditId);
-
-	@Override
-	public java.util.Map<java.io.Serializable, WatsonChildAudit> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the watson child audits.

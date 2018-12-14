@@ -21,6 +21,11 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.watson.exception.NoSuchAddressException;
 import com.liferay.watson.model.WatsonAddress;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the watson address service.
  *
@@ -40,6 +45,9 @@ public interface WatsonAddressPersistence extends BasePersistence<WatsonAddress>
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonAddressUtil} to access the watson address persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, WatsonAddress> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Caches the watson address in the entity cache if it is enabled.
@@ -92,10 +100,6 @@ public interface WatsonAddressPersistence extends BasePersistence<WatsonAddress>
 	* @return the watson address, or <code>null</code> if a watson address with the primary key could not be found
 	*/
 	public WatsonAddress fetchByPrimaryKey(long watsonAddressId);
-
-	@Override
-	public java.util.Map<java.io.Serializable, WatsonAddress> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the watson addresses.
@@ -162,5 +166,5 @@ public interface WatsonAddressPersistence extends BasePersistence<WatsonAddress>
 	public int countAll();
 
 	@Override
-	public java.util.Set<String> getBadColumnNames();
+	public Set<String> getBadColumnNames();
 }

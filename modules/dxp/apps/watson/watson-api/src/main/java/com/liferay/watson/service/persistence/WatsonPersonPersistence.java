@@ -21,6 +21,11 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.watson.exception.NoSuchPersonException;
 import com.liferay.watson.model.WatsonPerson;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the watson person service.
  *
@@ -40,6 +45,9 @@ public interface WatsonPersonPersistence extends BasePersistence<WatsonPerson> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonPersonUtil} to access the watson person persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, WatsonPerson> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Caches the watson person in the entity cache if it is enabled.
@@ -92,10 +100,6 @@ public interface WatsonPersonPersistence extends BasePersistence<WatsonPerson> {
 	* @return the watson person, or <code>null</code> if a watson person with the primary key could not be found
 	*/
 	public WatsonPerson fetchByPrimaryKey(long watsonPersonId);
-
-	@Override
-	public java.util.Map<java.io.Serializable, WatsonPerson> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the watson persons.

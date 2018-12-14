@@ -21,6 +21,11 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.watson.exception.NoSuchActivityAuditException;
 import com.liferay.watson.model.WatsonActivityAudit;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the watson activity audit service.
  *
@@ -40,6 +45,9 @@ public interface WatsonActivityAuditPersistence extends BasePersistence<WatsonAc
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonActivityAuditUtil} to access the watson activity audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, WatsonActivityAudit> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Caches the watson activity audit in the entity cache if it is enabled.
@@ -94,10 +102,6 @@ public interface WatsonActivityAuditPersistence extends BasePersistence<WatsonAc
 	* @return the watson activity audit, or <code>null</code> if a watson activity audit with the primary key could not be found
 	*/
 	public WatsonActivityAudit fetchByPrimaryKey(long watsonActivityAuditId);
-
-	@Override
-	public java.util.Map<java.io.Serializable, WatsonActivityAudit> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the watson activity audits.

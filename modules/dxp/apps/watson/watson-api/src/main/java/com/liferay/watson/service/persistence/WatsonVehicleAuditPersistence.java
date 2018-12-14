@@ -21,6 +21,11 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.watson.exception.NoSuchVehicleAuditException;
 import com.liferay.watson.model.WatsonVehicleAudit;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the watson vehicle audit service.
  *
@@ -40,6 +45,9 @@ public interface WatsonVehicleAuditPersistence extends BasePersistence<WatsonVeh
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonVehicleAuditUtil} to access the watson vehicle audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, WatsonVehicleAudit> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Caches the watson vehicle audit in the entity cache if it is enabled.
@@ -93,10 +101,6 @@ public interface WatsonVehicleAuditPersistence extends BasePersistence<WatsonVeh
 	* @return the watson vehicle audit, or <code>null</code> if a watson vehicle audit with the primary key could not be found
 	*/
 	public WatsonVehicleAudit fetchByPrimaryKey(long watsonVehicleAuditId);
-
-	@Override
-	public java.util.Map<java.io.Serializable, WatsonVehicleAudit> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the watson vehicle audits.

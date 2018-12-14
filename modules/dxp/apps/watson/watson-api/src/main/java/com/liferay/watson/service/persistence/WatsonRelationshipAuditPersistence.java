@@ -21,6 +21,11 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.watson.exception.NoSuchRelationshipAuditException;
 import com.liferay.watson.model.WatsonRelationshipAudit;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the watson relationship audit service.
  *
@@ -40,6 +45,9 @@ public interface WatsonRelationshipAuditPersistence extends BasePersistence<Wats
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonRelationshipAuditUtil} to access the watson relationship audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, WatsonRelationshipAudit> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Caches the watson relationship audit in the entity cache if it is enabled.
@@ -95,10 +103,6 @@ public interface WatsonRelationshipAuditPersistence extends BasePersistence<Wats
 	*/
 	public WatsonRelationshipAudit fetchByPrimaryKey(
 		long watsonRelationshipAuditId);
-
-	@Override
-	public java.util.Map<java.io.Serializable, WatsonRelationshipAudit> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the watson relationship audits.

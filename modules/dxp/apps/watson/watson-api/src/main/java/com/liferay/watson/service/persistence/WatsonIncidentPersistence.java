@@ -21,6 +21,11 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.watson.exception.NoSuchIncidentException;
 import com.liferay.watson.model.WatsonIncident;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the watson incident service.
  *
@@ -40,6 +45,9 @@ public interface WatsonIncidentPersistence extends BasePersistence<WatsonInciden
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonIncidentUtil} to access the watson incident persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, WatsonIncident> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Caches the watson incident in the entity cache if it is enabled.
@@ -92,10 +100,6 @@ public interface WatsonIncidentPersistence extends BasePersistence<WatsonInciden
 	* @return the watson incident, or <code>null</code> if a watson incident with the primary key could not be found
 	*/
 	public WatsonIncident fetchByPrimaryKey(long watsonIncidentId);
-
-	@Override
-	public java.util.Map<java.io.Serializable, WatsonIncident> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the watson incidents.

@@ -21,6 +21,11 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.watson.exception.NoSuchChildException;
 import com.liferay.watson.model.WatsonChild;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the watson child service.
  *
@@ -40,6 +45,9 @@ public interface WatsonChildPersistence extends BasePersistence<WatsonChild> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonChildUtil} to access the watson child persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, WatsonChild> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Caches the watson child in the entity cache if it is enabled.
@@ -91,10 +99,6 @@ public interface WatsonChildPersistence extends BasePersistence<WatsonChild> {
 	* @return the watson child, or <code>null</code> if a watson child with the primary key could not be found
 	*/
 	public WatsonChild fetchByPrimaryKey(long watsonChildId);
-
-	@Override
-	public java.util.Map<java.io.Serializable, WatsonChild> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the watson childs.

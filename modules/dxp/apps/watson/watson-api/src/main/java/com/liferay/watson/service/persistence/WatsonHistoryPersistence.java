@@ -21,6 +21,11 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.watson.exception.NoSuchHistoryException;
 import com.liferay.watson.model.WatsonHistory;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the watson history service.
  *
@@ -40,6 +45,9 @@ public interface WatsonHistoryPersistence extends BasePersistence<WatsonHistory>
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonHistoryUtil} to access the watson history persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, WatsonHistory> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Caches the watson history in the entity cache if it is enabled.
@@ -92,10 +100,6 @@ public interface WatsonHistoryPersistence extends BasePersistence<WatsonHistory>
 	* @return the watson history, or <code>null</code> if a watson history with the primary key could not be found
 	*/
 	public WatsonHistory fetchByPrimaryKey(long watsonHistoryId);
-
-	@Override
-	public java.util.Map<java.io.Serializable, WatsonHistory> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the watson histories.
@@ -162,5 +166,5 @@ public interface WatsonHistoryPersistence extends BasePersistence<WatsonHistory>
 	public int countAll();
 
 	@Override
-	public java.util.Set<String> getBadColumnNames();
+	public Set<String> getBadColumnNames();
 }

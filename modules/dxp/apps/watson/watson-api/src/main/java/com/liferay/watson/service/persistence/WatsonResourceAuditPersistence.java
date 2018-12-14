@@ -21,6 +21,11 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.watson.exception.NoSuchResourceAuditException;
 import com.liferay.watson.model.WatsonResourceAudit;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the watson resource audit service.
  *
@@ -40,6 +45,9 @@ public interface WatsonResourceAuditPersistence extends BasePersistence<WatsonRe
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonResourceAuditUtil} to access the watson resource audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, WatsonResourceAudit> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Caches the watson resource audit in the entity cache if it is enabled.
@@ -94,10 +102,6 @@ public interface WatsonResourceAuditPersistence extends BasePersistence<WatsonRe
 	* @return the watson resource audit, or <code>null</code> if a watson resource audit with the primary key could not be found
 	*/
 	public WatsonResourceAudit fetchByPrimaryKey(long watsonResourceAuditId);
-
-	@Override
-	public java.util.Map<java.io.Serializable, WatsonResourceAudit> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the watson resource audits.

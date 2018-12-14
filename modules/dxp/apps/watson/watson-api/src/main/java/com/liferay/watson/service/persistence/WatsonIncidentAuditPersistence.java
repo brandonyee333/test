@@ -21,6 +21,11 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.watson.exception.NoSuchIncidentAuditException;
 import com.liferay.watson.model.WatsonIncidentAudit;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the watson incident audit service.
  *
@@ -40,6 +45,9 @@ public interface WatsonIncidentAuditPersistence extends BasePersistence<WatsonIn
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonIncidentAuditUtil} to access the watson incident audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, WatsonIncidentAudit> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Caches the watson incident audit in the entity cache if it is enabled.
@@ -94,10 +102,6 @@ public interface WatsonIncidentAuditPersistence extends BasePersistence<WatsonIn
 	* @return the watson incident audit, or <code>null</code> if a watson incident audit with the primary key could not be found
 	*/
 	public WatsonIncidentAudit fetchByPrimaryKey(long watsonIncidentAuditId);
-
-	@Override
-	public java.util.Map<java.io.Serializable, WatsonIncidentAudit> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the watson incident audits.

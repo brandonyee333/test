@@ -21,6 +21,11 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.watson.exception.NoSuchDocumentAuditException;
 import com.liferay.watson.model.WatsonDocumentAudit;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the watson document audit service.
  *
@@ -40,6 +45,9 @@ public interface WatsonDocumentAuditPersistence extends BasePersistence<WatsonDo
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonDocumentAuditUtil} to access the watson document audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, WatsonDocumentAudit> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Caches the watson document audit in the entity cache if it is enabled.
@@ -94,10 +102,6 @@ public interface WatsonDocumentAuditPersistence extends BasePersistence<WatsonDo
 	* @return the watson document audit, or <code>null</code> if a watson document audit with the primary key could not be found
 	*/
 	public WatsonDocumentAudit fetchByPrimaryKey(long watsonDocumentAuditId);
-
-	@Override
-	public java.util.Map<java.io.Serializable, WatsonDocumentAudit> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the watson document audits.

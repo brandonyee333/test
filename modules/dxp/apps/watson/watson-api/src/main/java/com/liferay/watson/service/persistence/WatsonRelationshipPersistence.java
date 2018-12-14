@@ -21,6 +21,11 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.watson.exception.NoSuchRelationshipException;
 import com.liferay.watson.model.WatsonRelationship;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the watson relationship service.
  *
@@ -40,6 +45,9 @@ public interface WatsonRelationshipPersistence extends BasePersistence<WatsonRel
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonRelationshipUtil} to access the watson relationship persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, WatsonRelationship> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Caches the watson relationship in the entity cache if it is enabled.
@@ -93,10 +101,6 @@ public interface WatsonRelationshipPersistence extends BasePersistence<WatsonRel
 	* @return the watson relationship, or <code>null</code> if a watson relationship with the primary key could not be found
 	*/
 	public WatsonRelationship fetchByPrimaryKey(long watsonRelationshipId);
-
-	@Override
-	public java.util.Map<java.io.Serializable, WatsonRelationship> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the watson relationships.

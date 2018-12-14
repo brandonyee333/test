@@ -21,6 +21,11 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.watson.exception.NoSuchResourceException;
 import com.liferay.watson.model.WatsonResource;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the watson resource service.
  *
@@ -40,6 +45,9 @@ public interface WatsonResourcePersistence extends BasePersistence<WatsonResourc
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonResourceUtil} to access the watson resource persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, WatsonResource> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Caches the watson resource in the entity cache if it is enabled.
@@ -92,10 +100,6 @@ public interface WatsonResourcePersistence extends BasePersistence<WatsonResourc
 	* @return the watson resource, or <code>null</code> if a watson resource with the primary key could not be found
 	*/
 	public WatsonResource fetchByPrimaryKey(long watsonResourceId);
-
-	@Override
-	public java.util.Map<java.io.Serializable, WatsonResource> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the watson resources.

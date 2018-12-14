@@ -21,6 +21,11 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.watson.login.exception.NoSuchEntryException;
 import com.liferay.watson.login.model.WatsonTokenAuthEntry;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the watson token auth entry service.
  *
@@ -40,6 +45,9 @@ public interface WatsonTokenAuthEntryPersistence extends BasePersistence<WatsonT
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonTokenAuthEntryUtil} to access the watson token auth entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, WatsonTokenAuthEntry> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Returns the watson token auth entry where userId = &#63; or throws a {@link NoSuchEntryException} if it could not be found.
@@ -284,10 +292,6 @@ public interface WatsonTokenAuthEntryPersistence extends BasePersistence<WatsonT
 	*/
 	public WatsonTokenAuthEntry fetchByPrimaryKey(long watsonTokenAuthEntryId);
 
-	@Override
-	public java.util.Map<java.io.Serializable, WatsonTokenAuthEntry> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
-
 	/**
 	* Returns all the watson token auth entries.
 	*
@@ -353,5 +357,5 @@ public interface WatsonTokenAuthEntryPersistence extends BasePersistence<WatsonT
 	public int countAll();
 
 	@Override
-	public java.util.Set<String> getBadColumnNames();
+	public Set<String> getBadColumnNames();
 }

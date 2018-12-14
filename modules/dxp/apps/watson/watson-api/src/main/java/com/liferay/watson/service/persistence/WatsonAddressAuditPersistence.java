@@ -21,6 +21,11 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.watson.exception.NoSuchAddressAuditException;
 import com.liferay.watson.model.WatsonAddressAudit;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the watson address audit service.
  *
@@ -40,6 +45,9 @@ public interface WatsonAddressAuditPersistence extends BasePersistence<WatsonAdd
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonAddressAuditUtil} to access the watson address audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, WatsonAddressAudit> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Caches the watson address audit in the entity cache if it is enabled.
@@ -93,10 +101,6 @@ public interface WatsonAddressAuditPersistence extends BasePersistence<WatsonAdd
 	* @return the watson address audit, or <code>null</code> if a watson address audit with the primary key could not be found
 	*/
 	public WatsonAddressAudit fetchByPrimaryKey(long watsonAddressAuditId);
-
-	@Override
-	public java.util.Map<java.io.Serializable, WatsonAddressAudit> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the watson address audits.
@@ -163,5 +167,5 @@ public interface WatsonAddressAuditPersistence extends BasePersistence<WatsonAdd
 	public int countAll();
 
 	@Override
-	public java.util.Set<String> getBadColumnNames();
+	public Set<String> getBadColumnNames();
 }

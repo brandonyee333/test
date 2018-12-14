@@ -21,7 +21,11 @@ import com.liferay.akismet.model.AkismetEntry;
 
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.io.Serializable;
+
 import java.util.Date;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * The persistence interface for the akismet entry service.
@@ -42,6 +46,9 @@ public interface AkismetEntryPersistence extends BasePersistence<AkismetEntry> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AkismetEntryUtil} to access the akismet entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, AkismetEntry> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Returns all the akismet entries where modifiedDate &lt; &#63;.
@@ -277,10 +284,6 @@ public interface AkismetEntryPersistence extends BasePersistence<AkismetEntry> {
 	*/
 	public AkismetEntry fetchByPrimaryKey(long akismetEntryId);
 
-	@Override
-	public java.util.Map<java.io.Serializable, AkismetEntry> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
-
 	/**
 	* Returns all the akismet entries.
 	*
@@ -346,5 +349,5 @@ public interface AkismetEntryPersistence extends BasePersistence<AkismetEntry> {
 	public int countAll();
 
 	@Override
-	public java.util.Set<String> getBadColumnNames();
+	public Set<String> getBadColumnNames();
 }

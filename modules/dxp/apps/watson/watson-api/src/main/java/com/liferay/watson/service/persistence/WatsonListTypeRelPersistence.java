@@ -21,6 +21,11 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.watson.exception.NoSuchListTypeRelException;
 import com.liferay.watson.model.WatsonListTypeRel;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the watson list type rel service.
  *
@@ -40,6 +45,9 @@ public interface WatsonListTypeRelPersistence extends BasePersistence<WatsonList
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonListTypeRelUtil} to access the watson list type rel persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, WatsonListTypeRel> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Caches the watson list type rel in the entity cache if it is enabled.
@@ -93,10 +101,6 @@ public interface WatsonListTypeRelPersistence extends BasePersistence<WatsonList
 	* @return the watson list type rel, or <code>null</code> if a watson list type rel with the primary key could not be found
 	*/
 	public WatsonListTypeRel fetchByPrimaryKey(long watsonListTypeRelId);
-
-	@Override
-	public java.util.Map<java.io.Serializable, WatsonListTypeRel> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the watson list type rels.
@@ -163,5 +167,5 @@ public interface WatsonListTypeRelPersistence extends BasePersistence<WatsonList
 	public int countAll();
 
 	@Override
-	public java.util.Set<String> getBadColumnNames();
+	public Set<String> getBadColumnNames();
 }

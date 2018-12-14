@@ -21,6 +21,11 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.watson.exception.NoSuchDocumentException;
 import com.liferay.watson.model.WatsonDocument;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the watson document service.
  *
@@ -40,6 +45,9 @@ public interface WatsonDocumentPersistence extends BasePersistence<WatsonDocumen
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonDocumentUtil} to access the watson document persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, WatsonDocument> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Caches the watson document in the entity cache if it is enabled.
@@ -92,10 +100,6 @@ public interface WatsonDocumentPersistence extends BasePersistence<WatsonDocumen
 	* @return the watson document, or <code>null</code> if a watson document with the primary key could not be found
 	*/
 	public WatsonDocument fetchByPrimaryKey(long watsonDocumentId);
-
-	@Override
-	public java.util.Map<java.io.Serializable, WatsonDocument> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the watson documents.

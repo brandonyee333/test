@@ -21,6 +21,11 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.watson.exception.NoSuchActivityException;
 import com.liferay.watson.model.WatsonActivity;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the watson activity service.
  *
@@ -40,6 +45,9 @@ public interface WatsonActivityPersistence extends BasePersistence<WatsonActivit
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonActivityUtil} to access the watson activity persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, WatsonActivity> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Caches the watson activity in the entity cache if it is enabled.
@@ -92,10 +100,6 @@ public interface WatsonActivityPersistence extends BasePersistence<WatsonActivit
 	* @return the watson activity, or <code>null</code> if a watson activity with the primary key could not be found
 	*/
 	public WatsonActivity fetchByPrimaryKey(long watsonActivityId);
-
-	@Override
-	public java.util.Map<java.io.Serializable, WatsonActivity> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the watson activities.

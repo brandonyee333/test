@@ -21,6 +21,11 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.watson.exception.NoSuchReportException;
 import com.liferay.watson.model.WatsonReport;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the watson report service.
  *
@@ -40,6 +45,9 @@ public interface WatsonReportPersistence extends BasePersistence<WatsonReport> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonReportUtil} to access the watson report persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, WatsonReport> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Caches the watson report in the entity cache if it is enabled.
@@ -92,10 +100,6 @@ public interface WatsonReportPersistence extends BasePersistence<WatsonReport> {
 	* @return the watson report, or <code>null</code> if a watson report with the primary key could not be found
 	*/
 	public WatsonReport fetchByPrimaryKey(long watsonReportId);
-
-	@Override
-	public java.util.Map<java.io.Serializable, WatsonReport> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the watson reports.
@@ -162,5 +166,5 @@ public interface WatsonReportPersistence extends BasePersistence<WatsonReport> {
 	public int countAll();
 
 	@Override
-	public java.util.Set<String> getBadColumnNames();
+	public Set<String> getBadColumnNames();
 }

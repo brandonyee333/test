@@ -21,6 +21,11 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.watson.exception.NoSuchListTypeRelAuditException;
 import com.liferay.watson.model.WatsonListTypeRelAudit;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the watson list type rel audit service.
  *
@@ -40,6 +45,9 @@ public interface WatsonListTypeRelAuditPersistence extends BasePersistence<Watso
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonListTypeRelAuditUtil} to access the watson list type rel audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, WatsonListTypeRelAudit> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Caches the watson list type rel audit in the entity cache if it is enabled.
@@ -95,10 +103,6 @@ public interface WatsonListTypeRelAuditPersistence extends BasePersistence<Watso
 	*/
 	public WatsonListTypeRelAudit fetchByPrimaryKey(
 		long watsonListTypeRelAuditId);
-
-	@Override
-	public java.util.Map<java.io.Serializable, WatsonListTypeRelAudit> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the watson list type rel audits.
@@ -165,5 +169,5 @@ public interface WatsonListTypeRelAuditPersistence extends BasePersistence<Watso
 	public int countAll();
 
 	@Override
-	public java.util.Set<String> getBadColumnNames();
+	public Set<String> getBadColumnNames();
 }

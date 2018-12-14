@@ -21,6 +21,11 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.watson.exception.NoSuchPersonAuditException;
 import com.liferay.watson.model.WatsonPersonAudit;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the watson person audit service.
  *
@@ -40,6 +45,9 @@ public interface WatsonPersonAuditPersistence extends BasePersistence<WatsonPers
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonPersonAuditUtil} to access the watson person audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, WatsonPersonAudit> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Caches the watson person audit in the entity cache if it is enabled.
@@ -93,10 +101,6 @@ public interface WatsonPersonAuditPersistence extends BasePersistence<WatsonPers
 	* @return the watson person audit, or <code>null</code> if a watson person audit with the primary key could not be found
 	*/
 	public WatsonPersonAudit fetchByPrimaryKey(long watsonPersonAuditId);
-
-	@Override
-	public java.util.Map<java.io.Serializable, WatsonPersonAudit> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the watson person audits.

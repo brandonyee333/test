@@ -21,6 +21,11 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.watson.exception.NoSuchListTypeException;
 import com.liferay.watson.model.WatsonListType;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the watson list type service.
  *
@@ -40,6 +45,9 @@ public interface WatsonListTypePersistence extends BasePersistence<WatsonListTyp
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonListTypeUtil} to access the watson list type persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, WatsonListType> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Caches the watson list type in the entity cache if it is enabled.
@@ -92,10 +100,6 @@ public interface WatsonListTypePersistence extends BasePersistence<WatsonListTyp
 	* @return the watson list type, or <code>null</code> if a watson list type with the primary key could not be found
 	*/
 	public WatsonListType fetchByPrimaryKey(long watsonListTypeId);
-
-	@Override
-	public java.util.Map<java.io.Serializable, WatsonListType> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the watson list types.
@@ -162,5 +166,5 @@ public interface WatsonListTypePersistence extends BasePersistence<WatsonListTyp
 	public int countAll();
 
 	@Override
-	public java.util.Set<String> getBadColumnNames();
+	public Set<String> getBadColumnNames();
 }

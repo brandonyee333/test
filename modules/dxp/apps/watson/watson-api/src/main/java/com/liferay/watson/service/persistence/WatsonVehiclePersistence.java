@@ -21,6 +21,11 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.watson.exception.NoSuchVehicleException;
 import com.liferay.watson.model.WatsonVehicle;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the watson vehicle service.
  *
@@ -40,6 +45,9 @@ public interface WatsonVehiclePersistence extends BasePersistence<WatsonVehicle>
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonVehicleUtil} to access the watson vehicle persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, WatsonVehicle> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Caches the watson vehicle in the entity cache if it is enabled.
@@ -92,10 +100,6 @@ public interface WatsonVehiclePersistence extends BasePersistence<WatsonVehicle>
 	* @return the watson vehicle, or <code>null</code> if a watson vehicle with the primary key could not be found
 	*/
 	public WatsonVehicle fetchByPrimaryKey(long watsonVehicleId);
-
-	@Override
-	public java.util.Map<java.io.Serializable, WatsonVehicle> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the watson vehicles.

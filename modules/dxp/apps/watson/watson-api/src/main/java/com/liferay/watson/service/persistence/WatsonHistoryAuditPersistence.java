@@ -21,6 +21,11 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.watson.exception.NoSuchHistoryAuditException;
 import com.liferay.watson.model.WatsonHistoryAudit;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the watson history audit service.
  *
@@ -40,6 +45,9 @@ public interface WatsonHistoryAuditPersistence extends BasePersistence<WatsonHis
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonHistoryAuditUtil} to access the watson history audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, WatsonHistoryAudit> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Caches the watson history audit in the entity cache if it is enabled.
@@ -93,10 +101,6 @@ public interface WatsonHistoryAuditPersistence extends BasePersistence<WatsonHis
 	* @return the watson history audit, or <code>null</code> if a watson history audit with the primary key could not be found
 	*/
 	public WatsonHistoryAudit fetchByPrimaryKey(long watsonHistoryAuditId);
-
-	@Override
-	public java.util.Map<java.io.Serializable, WatsonHistoryAudit> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the watson history audits.
@@ -163,5 +167,5 @@ public interface WatsonHistoryAuditPersistence extends BasePersistence<WatsonHis
 	public int countAll();
 
 	@Override
-	public java.util.Set<String> getBadColumnNames();
+	public Set<String> getBadColumnNames();
 }

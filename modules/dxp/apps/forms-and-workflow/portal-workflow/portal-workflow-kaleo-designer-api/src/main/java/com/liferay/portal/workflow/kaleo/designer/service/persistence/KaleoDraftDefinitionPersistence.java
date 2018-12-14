@@ -20,6 +20,11 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.workflow.kaleo.designer.exception.NoSuchKaleoDraftDefinitionException;
 import com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the kaleo draft definition service.
  *
@@ -39,6 +44,9 @@ public interface KaleoDraftDefinitionPersistence extends BasePersistence<KaleoDr
 	 *
 	 * Never modify or reference this interface directly. Always use {@link KaleoDraftDefinitionUtil} to access the kaleo draft definition persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, KaleoDraftDefinition> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Returns all the kaleo draft definitions where companyId = &#63;.
@@ -448,10 +456,6 @@ public interface KaleoDraftDefinitionPersistence extends BasePersistence<KaleoDr
 	* @return the kaleo draft definition, or <code>null</code> if a kaleo draft definition with the primary key could not be found
 	*/
 	public KaleoDraftDefinition fetchByPrimaryKey(long kaleoDraftDefinitionId);
-
-	@Override
-	public java.util.Map<java.io.Serializable, KaleoDraftDefinition> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the kaleo draft definitions.
