@@ -16,6 +16,15 @@
 			</trigger>
 		</scheduler-entry>
 		<scheduler-entry>
+			<scheduler-event-listener-class>com.liferay.osb.admin.messaging.CheckAnalyticsCloudBasicMessageListener</scheduler-event-listener-class>
+			<trigger>
+				<simple>
+					<simple-trigger-value>1</simple-trigger-value>
+					<time-unit>day</time-unit>
+				</simple>
+			</trigger>
+		</scheduler-entry>
+		<scheduler-entry>
 			<scheduler-event-listener-class>com.liferay.osb.admin.messaging.CheckCorpProjectsMessageListener</scheduler-event-listener-class>
 			<trigger>
 				<simple>

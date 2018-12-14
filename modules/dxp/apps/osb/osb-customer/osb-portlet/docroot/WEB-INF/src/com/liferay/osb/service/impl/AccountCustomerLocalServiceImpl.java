@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.dao.orm.CustomSQLParam;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -380,16 +381,23 @@ public class AccountCustomerLocalServiceImpl
 			return;
 		}
 
-		List<AccountCustomer> accountCustomers =
-			accountEntry.getAccountCustomers();
+		Group group = corpProject.getGroup();
 
-		for (AccountCustomer accountCustomer : accountCustomers) {
-			if (corpProjectLocalService.hasUserCorpProjectRole(
-					accountCustomer.getUserId(), corpProject.getCorpProjectId(),
-					OSBConstants.ROLE_OSB_CORP_ANALYTICS_CLOUD_OWNER_ID)) {
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
-				return;
-			}
+		params.put(
+			"userGroupRole",
+			new Long[] {
+				group.getGroupId(),
+				OSBConstants.ROLE_OSB_CORP_ANALYTICS_CLOUD_OWNER_ID
+			});
+		params.put("usersOrgs", corpProject.getOrganizationId());
+
+		if (userLocalService.searchCount(
+				group.getCompanyId(), null, WorkflowConstants.STATUS_APPROVED,
+				params) > 0) {
+
+			return;
 		}
 
 		LinkedHashMap<String, Object> userParams = new LinkedHashMap<>();
@@ -419,7 +427,9 @@ public class AccountCustomerLocalServiceImpl
 			userIds.add(user.getUserId());
 		}
 
-		for (AccountCustomer accountCustomer : accountCustomers) {
+		for (AccountCustomer accountCustomer :
+				accountEntry.getAccountCustomers()) {
+
 			if (!userIds.contains(accountCustomer.getUserId())) {
 				deleteAccountCustomer(accountCustomer);
 			}

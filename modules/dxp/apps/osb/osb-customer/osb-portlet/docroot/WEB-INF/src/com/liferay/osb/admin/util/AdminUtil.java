@@ -213,6 +213,16 @@ public class AdminUtil {
 		return map;
 	}
 
+	public static String getEmailUnlinkedAnalyticsCloudBasicBodyMap() {
+		return _getEmailTemplate(
+			"email_unlinked_analytics_cloud_basic_body.tmpl", null);
+	}
+
+	public static String getEmailUnlinkedAnalyticsCloudBasicSubjectMap() {
+		return _getEmailTemplate(
+			"email_unlinked_analytics_cloud_basic_subject.tmpl", null);
+	}
+
 	public static List<Class<?>> getManualUpgradeProcessClasses(int buildNumber)
 		throws Exception {
 

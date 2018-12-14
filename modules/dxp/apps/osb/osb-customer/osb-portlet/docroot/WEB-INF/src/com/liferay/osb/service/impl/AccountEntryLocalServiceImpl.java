@@ -92,6 +92,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SubscriptionSender;
@@ -785,6 +786,50 @@ public class AccountEntryLocalServiceImpl
 				userId, accountEntryId,
 				"there-was-an-error-auditing-this-project", StringPool.BLANK);
 		}
+	}
+
+	public void checkAnalyticsCloudBasicAccountEntries() {
+		List<AccountEntry> accountEntries =
+			accountEntryFinder.findByMissingDossieraProjectKey();
+
+		if (accountEntries.isEmpty()) {
+			return;
+		}
+
+		StringBundler sb = new StringBundler(accountEntries.size() * 10);
+
+		for (AccountEntry accountEntry : accountEntries) {
+			sb.append("<a href=\"https://customer.liferay.com/group");
+			sb.append("/control_panel/manage?p_p_id=1_WAR_osbportlet&");
+			sb.append("p_p_lifecycle=0&p_p_state=maximized&p_p_mode=view&");
+			sb.append("_1_WAR_osbportlet_mvcPath=");
+			sb.append("%2Fadmin%2Fedit_account_entry.jsp&");
+			sb.append("_1_WAR_osbportlet_accountEntryId=");
+			sb.append(accountEntry.getAccountEntryId());
+			sb.append("\">");
+			sb.append(accountEntry.getName());
+			sb.append("</a><br />");
+		}
+
+		SubscriptionSender subscriptionSender = new SubscriptionSender();
+
+		subscriptionSender.setBody(
+			AdminUtil.getEmailUnlinkedAnalyticsCloudBasicBodyMap());
+		subscriptionSender.setCompanyId(OSBConstants.COMPANY_ID);
+		subscriptionSender.setContextAttribute(
+			"[$UNLINKED_ACCOUNT_ENTRIES$]", sb.toString(), false);
+		subscriptionSender.setFrom(
+			"noreply@liferay.com", "Liferay Provisioning");
+		subscriptionSender.setHtmlFormat(true);
+		subscriptionSender.setMailId("provisioning");
+		subscriptionSender.setSubject(
+			AdminUtil.getEmailUnlinkedAnalyticsCloudBasicSubjectMap());
+
+		subscriptionSender.addRuntimeSubscribers(
+			PortletPropsValues.AUTOMATIC_PROVISIONING_ERROR_EMAIL_ADDRESS,
+			"provisioning");
+
+		subscriptionSender.flushNotificationsAsync();
 	}
 
 	@Override
