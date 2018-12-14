@@ -627,6 +627,10 @@ public class AccountEntryLocalServiceUtil {
 		getService().auditAccountEntry(userId, accountEntryId);
 	}
 
+	public static void checkAnalyticsCloudBasicAccountEntries() {
+		getService().checkAnalyticsCloudBasicAccountEntries();
+	}
+
 	public static void clearSupportRegionAccountEntries(long supportRegionId) {
 		getService().clearSupportRegionAccountEntries(supportRegionId);
 	}

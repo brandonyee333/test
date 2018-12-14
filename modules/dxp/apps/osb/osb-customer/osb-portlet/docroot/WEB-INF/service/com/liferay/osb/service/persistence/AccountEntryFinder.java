@@ -44,6 +44,8 @@ public interface AccountEntryFinder {
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc);
 
+	public java.util.List<com.liferay.osb.model.AccountEntry> findByMissingDossieraProjectKey();
+
 	public java.util.List<com.liferay.osb.model.AccountEntry> findBySupportResponse(
 		long supportResponseId);
 

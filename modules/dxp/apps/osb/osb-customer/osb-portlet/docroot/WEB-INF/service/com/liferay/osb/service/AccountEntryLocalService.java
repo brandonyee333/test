@@ -469,6 +469,8 @@ public interface AccountEntryLocalService extends BaseLocalService,
 	public void auditAccountEntry(long userId, long accountEntryId)
 		throws PortalException;
 
+	public void checkAnalyticsCloudBasicAccountEntries();
+
 	public void clearSupportRegionAccountEntries(long supportRegionId);
 
 	public void deleteSupportRegionAccountEntries(long supportRegionId,

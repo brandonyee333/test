@@ -687,6 +687,11 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	}
 
 	@Override
+	public void checkAnalyticsCloudBasicAccountEntries() {
+		_accountEntryLocalService.checkAnalyticsCloudBasicAccountEntries();
+	}
+
+	@Override
 	public void clearSupportRegionAccountEntries(long supportRegionId) {
 		_accountEntryLocalService.clearSupportRegionAccountEntries(supportRegionId);
 	}
