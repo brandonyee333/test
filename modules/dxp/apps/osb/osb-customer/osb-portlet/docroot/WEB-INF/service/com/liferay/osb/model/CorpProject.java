@@ -54,6 +54,9 @@ public interface CorpProject extends CorpProjectModel, PersistedModel {
 			}
 		};
 
+	public java.util.List<com.liferay.portal.kernel.model.User> getAnalyticsCloudOwners()
+		throws com.liferay.portal.kernel.exception.PortalException;
+
 	public com.liferay.portal.kernel.model.Group getGroup()
 		throws com.liferay.portal.kernel.exception.PortalException;
 

@@ -293,6 +293,12 @@ public class CorpProjectWrapper implements CorpProject,
 		return _corpProject.getModifiedDate();
 	}
 
+	@Override
+	public java.util.List<com.liferay.portal.kernel.model.User> getAnalyticsCloudOwners()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _corpProject.getAnalyticsCloudOwners();
+	}
+
 	/**
 	* Returns the corp project ID of this corp project.
 	*

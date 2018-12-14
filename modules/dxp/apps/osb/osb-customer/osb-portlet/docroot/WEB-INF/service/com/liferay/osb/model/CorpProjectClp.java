@@ -414,6 +414,25 @@ public class CorpProjectClp extends BaseModelImpl<CorpProject>
 	}
 
 	@Override
+	public java.util.List<User> getAnalyticsCloudOwners() {
+		try {
+			String methodName = "getAnalyticsCloudOwners";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			java.util.List<User> returnObj = (java.util.List<User>)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
 	public com.liferay.portal.kernel.model.Group getGroup() {
 		try {
 			String methodName = "getGroup";
