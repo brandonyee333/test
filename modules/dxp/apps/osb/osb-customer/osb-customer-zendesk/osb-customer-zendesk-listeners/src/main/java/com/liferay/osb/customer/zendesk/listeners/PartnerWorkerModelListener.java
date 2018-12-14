@@ -15,8 +15,11 @@
 package com.liferay.osb.customer.zendesk.listeners;
 
 import com.liferay.osb.customer.zendesk.listeners.synchronizer.PartnerWorkerSynchronizer;
+import com.liferay.osb.customer.zendesk.listeners.synchronizer.UserSynchronizer;
 import com.liferay.osb.model.PartnerWorker;
 import com.liferay.osb.model.PartnerWorkerConstants;
+import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
+import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
@@ -37,11 +40,7 @@ public class PartnerWorkerModelListener
 		throws ModelListenerException {
 
 		try {
-			if (partnerWorker.getRole() !=
-					PartnerWorkerConstants.ROLE_WATCHER) {
-
-				_partnerWorkerSynchronizer.add(partnerWorker);
-			}
+			_partnerWorkerSynchronizer.add(partnerWorker);
 		}
 		catch (Exception e) {
 			throw new ModelListenerException(e);
@@ -53,11 +52,7 @@ public class PartnerWorkerModelListener
 		throws ModelListenerException {
 
 		try {
-			if (partnerWorker.getRole() !=
-					PartnerWorkerConstants.ROLE_WATCHER) {
-
-				_partnerWorkerSynchronizer.remove(partnerWorker);
-			}
+			_partnerWorkerSynchronizer.remove(partnerWorker);
 		}
 		catch (Exception e) {
 			throw new ModelListenerException(e);
@@ -69,14 +64,31 @@ public class PartnerWorkerModelListener
 		throws ModelListenerException {
 
 		try {
-			if (partnerWorker.getRole() !=
-					PartnerWorkerConstants.ROLE_WATCHER) {
+			if (((_role.get() == PartnerWorkerConstants.ROLE_WATCHER) &&
+				 (partnerWorker.getRole() !=
+					 PartnerWorkerConstants.ROLE_WATCHER)) ||
+				((_role.get() != PartnerWorkerConstants.ROLE_WATCHER) &&
+				 (partnerWorker.getRole() ==
+					 PartnerWorkerConstants.ROLE_WATCHER))) {
 
-				_partnerWorkerSynchronizer.add(partnerWorker);
+				_partnerWorkerSynchronizer.updateRole(partnerWorker);
 			}
-			else {
-				_partnerWorkerSynchronizer.remove(partnerWorker);
-			}
+		}
+		catch (Exception e) {
+			throw new ModelListenerException(e);
+		}
+	}
+
+	@Override
+	public void onBeforeUpdate(PartnerWorker partnerWorker)
+		throws ModelListenerException {
+
+		try {
+			PartnerWorker oldPartnerWorker =
+				PartnerWorkerLocalServiceUtil.getPartnerWorker(
+					partnerWorker.getPartnerWorkerId());
+
+			_role.set(oldPartnerWorker.getRole());
 		}
 		catch (Exception e) {
 			throw new ModelListenerException(e);
@@ -91,7 +103,14 @@ public class PartnerWorkerModelListener
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
+	private static final ThreadLocal<Integer> _role =
+		new CentralizedThreadLocal<>(
+			PartnerWorkerModelListener.class + "._role");
+
 	@Reference
 	private PartnerWorkerSynchronizer _partnerWorkerSynchronizer;
+
+	@Reference
+	private UserSynchronizer _userSynchronizer;
 
 }

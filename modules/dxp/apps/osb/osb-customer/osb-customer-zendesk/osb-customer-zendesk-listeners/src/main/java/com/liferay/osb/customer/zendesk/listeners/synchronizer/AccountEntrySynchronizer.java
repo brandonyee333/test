@@ -15,7 +15,6 @@
 package com.liferay.osb.customer.zendesk.listeners.synchronizer;
 
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskLocales;
-import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.constants.ZendeskTicketConstants;
 import com.liferay.osb.customer.zendesk.listeners.exception.ZendeskIntegrationException;
 import com.liferay.osb.customer.zendesk.listeners.util.ZendeskModelListenerUtil;
@@ -33,7 +32,6 @@ import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.PartnerWorker;
-import com.liferay.osb.model.PartnerWorkerConstants;
 import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.model.SupportResponse;
@@ -44,7 +42,6 @@ import com.liferay.osb.service.SupportResponseLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
@@ -160,35 +157,9 @@ public class AccountEntrySynchronizer {
 				PartnerWorkerLocalServiceUtil.getPartnerWorkers(
 					accountEntry.getPartnerEntryId());
 
-			long zendeskOrganizationId =
-				_zendeskMapperUtil.fetchZendeskOrganizationId(
-					accountEntry.getAccountEntryId());
-
 			for (PartnerWorker partnerWorker : partnerWorkers) {
-				if (partnerWorker.getRole() ==
-						PartnerWorkerConstants.ROLE_WATCHER) {
-
-					continue;
-				}
-
-				User user = _userLocalService.getUser(
-					partnerWorker.getUserId());
-
-				Set<String> tags = new HashSet<>();
-
-				tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
-				tags.add(ZendeskTagConstants.OSB_PARTNER);
-
-				long zendeskUserId = _userSynchronizer.sync(
-					user, 0, null, tags);
-
-				_asyncZendeskUserWebService.
-					createZendeskUserOrganizationMemberships(
-						zendeskUserId, new long[] {zendeskOrganizationId});
-
-				_asyncZendeskUserWebService.
-					createZendeskUserOrganizationSubscription(
-						zendeskUserId, zendeskOrganizationId);
+				_partnerWorkerSynchronizer.add(
+					accountEntry.getAccountEntryId(), partnerWorker);
 			}
 		}
 		catch (Exception e) {
@@ -269,25 +240,9 @@ public class AccountEntrySynchronizer {
 				PartnerWorkerLocalServiceUtil.getPartnerWorkers(
 					accountEntry.getPartnerEntryId());
 
-			long zendeskOrganizationId =
-				_zendeskMapperUtil.fetchZendeskOrganizationId(
-					accountEntry.getAccountEntryId());
-
 			for (PartnerWorker partnerWorker : partnerWorkers) {
-				if (partnerWorker.getRole() ==
-						PartnerWorkerConstants.ROLE_WATCHER) {
-
-					continue;
-				}
-
-				long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
-					partnerWorker.getUserId());
-
-				_asyncZendeskUserWebService.
-					deleteZendeskUserOrganizationMemberships(
-						zendeskUserId, new long[] {zendeskOrganizationId});
-
-				_userSynchronizer.removeObsoleteTags(partnerWorker.getUserId());
+				_partnerWorkerSynchronizer.remove(
+					accountEntry.getAccountEntryId(), partnerWorker);
 			}
 		}
 		catch (Exception e) {
@@ -348,6 +303,9 @@ public class AccountEntrySynchronizer {
 
 	@Reference
 	private ClassNameLocalService _classNameLocalService;
+
+	@Reference
+	private PartnerWorkerSynchronizer _partnerWorkerSynchronizer;
 
 	@Reference
 	private UserLocalService _userLocalService;

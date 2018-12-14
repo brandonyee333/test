@@ -115,7 +115,7 @@ public class UserSynchronizer {
 
 			// Partner
 
-			boolean partner = false;
+			boolean partnerDeveloper = false;
 
 			List<PartnerWorker> partnerWorkers =
 				PartnerWorkerLocalServiceUtil.getUserPartnerWorkers(userId);
@@ -124,19 +124,19 @@ public class UserSynchronizer {
 				if (partnerWorker.getRole() !=
 						PartnerWorkerConstants.ROLE_WATCHER) {
 
-					partner = true;
+					partnerDeveloper = false;
 
 					break;
 				}
 			}
 
-			if (!partner) {
+			if (!partnerDeveloper) {
 				tags.add(ZendeskTagConstants.OSB_PARTNER);
 			}
 
 			// Knowledge base
 
-			if (!customer && !partner &&
+			if (!customer && partnerWorkers.isEmpty() &&
 				!_organizationLocalService.hasUserOrganization(
 					userId, OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID) &&
 				!AccountEntryLocalServiceUtil.hasValidSupportAccountEntry(

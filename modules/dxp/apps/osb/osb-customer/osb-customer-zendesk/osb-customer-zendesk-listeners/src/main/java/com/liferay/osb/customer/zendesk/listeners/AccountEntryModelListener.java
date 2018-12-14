@@ -82,8 +82,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 
 				if ((_activeTicketSupport.get() !=
 						accountEntry.getActiveTicketSupport()) ||
-					(_activeSupport.get() !=
-						accountEntry.getActiveSupport())) {
+					(_activeSupport.get() != accountEntry.getActiveSupport())) {
 
 					_accountEntrySynchronizer.addAccountCustomers(accountEntry);
 				}
@@ -132,8 +131,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 
 			if ((_partnerManagedSupport.get() &&
 				 !accountEntry.isPartnerManagedSupport()) ||
-				(_partnerEntryId.get() !=
-					accountEntry.getPartnerEntryId())) {
+				(_partnerEntryId.get() != accountEntry.getPartnerEntryId())) {
 
 				_accountEntrySynchronizer.removePartnerManagedSupport(
 					oldAccountEntry);
