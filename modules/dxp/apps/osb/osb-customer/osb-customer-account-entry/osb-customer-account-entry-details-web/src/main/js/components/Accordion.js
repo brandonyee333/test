@@ -36,7 +36,7 @@ class AccordionItem extends React.Component {
 		const {expanded} = this.state;
 
 		const className = getCN(
-			'btn-link panel-header panel-header-link',
+			'btn-link panel-header',
 			{
 				'expanded': expanded
 			}
