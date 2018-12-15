@@ -71,10 +71,10 @@ public class PartnerWorkerModelListener
 		throws ModelListenerException {
 
 		try {
-			if (((_role.get() == PartnerWorkerConstants.ROLE_WATCHER) &&
+			if (((_oldRole.get() == PartnerWorkerConstants.ROLE_WATCHER) &&
 				 (partnerWorker.getRole() !=
 					 PartnerWorkerConstants.ROLE_WATCHER)) ||
-				((_role.get() != PartnerWorkerConstants.ROLE_WATCHER) &&
+				((_oldRole.get() != PartnerWorkerConstants.ROLE_WATCHER) &&
 				 (partnerWorker.getRole() ==
 					 PartnerWorkerConstants.ROLE_WATCHER))) {
 
@@ -97,7 +97,7 @@ public class PartnerWorkerModelListener
 				PartnerWorkerLocalServiceUtil.getPartnerWorker(
 					partnerWorker.getPartnerWorkerId());
 
-			_role.set(oldPartnerWorker.getRole());
+			_oldRole.set(oldPartnerWorker.getRole());
 		}
 		catch (Exception e) {
 			_log.error(e);
@@ -117,9 +117,9 @@ public class PartnerWorkerModelListener
 	private static final Log _log = LogFactoryUtil.getLog(
 		PartnerWorkerModelListener.class);
 
-	private static final ThreadLocal<Integer> _role =
+	private static final ThreadLocal<Integer> _oldRole =
 		new CentralizedThreadLocal<>(
-			PartnerWorkerModelListener.class + "._role");
+			PartnerWorkerModelListener.class + "._oldRole");
 
 	@Reference
 	private PartnerWorkerSynchronizer _partnerWorkerSynchronizer;

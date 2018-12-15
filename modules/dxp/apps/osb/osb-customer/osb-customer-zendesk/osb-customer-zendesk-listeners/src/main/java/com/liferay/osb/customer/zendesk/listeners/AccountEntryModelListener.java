@@ -68,15 +68,19 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 				return;
 			}
 
-			if (_activeTicketSupport.get() &&
-				!accountEntry.getActiveTicketSupport()) {
+			AccountEntry oldAccountEntry = _oldAccountEntry.get();
+
+			if (oldAccountEntry.isActiveTicketSupport() &&
+				!accountEntry.isActiveTicketSupport()) {
 
 				_accountEntrySynchronizer.closeZendeskTickets(accountEntry);
 
 				_accountEntrySynchronizer.removeObsoleteTags(accountEntry);
 			}
 
-			if (_activeSupport.get() && !accountEntry.getActiveSupport()) {
+			if (oldAccountEntry.isActiveSupport() &&
+				!accountEntry.isActiveSupport()) {
+
 				_accountEntrySynchronizer.removeAccountCustomers(accountEntry);
 
 				_accountEntrySynchronizer.removeObsoleteTags(accountEntry);
@@ -85,9 +89,10 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			if (accountEntry.getActiveSupport()) {
 				_accountEntrySynchronizer.add(accountEntry);
 
-				if ((_activeTicketSupport.get() !=
+				if ((oldAccountEntry.isActiveTicketSupport() !=
 						accountEntry.getActiveTicketSupport()) ||
-					(_activeSupport.get() != accountEntry.getActiveSupport())) {
+					(oldAccountEntry.isActiveSupport() !=
+						accountEntry.getActiveSupport())) {
 
 					_accountEntrySynchronizer.addAccountCustomers(accountEntry);
 				}
@@ -96,8 +101,8 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 					accountEntry.isPartnerManagedSupport()) {
 
 					if (!_zendeskOrganization.get() ||
-						!_partnerManagedSupport.get() ||
-						(_partnerEntryId.get() !=
+						!oldAccountEntry.isPartnerManagedSupport() ||
+						(oldAccountEntry.getPartnerEntryId() !=
 							accountEntry.getPartnerEntryId())) {
 
 						_accountEntrySynchronizer.addPartnerManagedSupport(
@@ -122,11 +127,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 				AccountEntryLocalServiceUtil.getAccountEntry(
 					accountEntry.getAccountEntryId());
 
-			_activeSupport.set(oldAccountEntry.getActiveSupport());
-			_activeTicketSupport.set(oldAccountEntry.getActiveTicketSupport());
-			_partnerEntryId.set(oldAccountEntry.getPartnerEntryId());
-			_partnerManagedSupport.set(
-				oldAccountEntry.getPartnerManagedSupport());
+			_oldAccountEntry.set(oldAccountEntry);
 
 			_zendeskOrganization.set(hasZendeskOrganization(accountEntry));
 
@@ -136,9 +137,10 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 				return;
 			}
 
-			if ((_partnerManagedSupport.get() &&
+			if ((oldAccountEntry.isPartnerManagedSupport() &&
 				 !accountEntry.isPartnerManagedSupport()) ||
-				(_partnerEntryId.get() != accountEntry.getPartnerEntryId())) {
+				(oldAccountEntry.getPartnerEntryId() !=
+					accountEntry.getPartnerEntryId())) {
 
 				_accountEntrySynchronizer.removePartnerManagedSupport(
 					oldAccountEntry);
@@ -181,18 +183,9 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 	private static final Log _log = LogFactoryUtil.getLog(
 		AccountEntryModelListener.class);
 
-	private static final ThreadLocal<Boolean> _activeSupport =
+	private static final ThreadLocal<AccountEntry> _oldAccountEntry =
 		new CentralizedThreadLocal<>(
-			AccountEntryModelListener.class + "._activeSupport");
-	private static final ThreadLocal<Boolean> _activeTicketSupport =
-		new CentralizedThreadLocal<>(
-			AccountEntryModelListener.class + "._activeTicketSupport");
-	private static final ThreadLocal<Long> _partnerEntryId =
-		new CentralizedThreadLocal<>(
-			AccountEntryModelListener.class + "._partnerEntryId");
-	private static final ThreadLocal<Boolean> _partnerManagedSupport =
-		new CentralizedThreadLocal<>(
-			AccountEntryModelListener.class + "._partnerManagedSupport");
+			AccountEntryModelListener.class + "._oldAccountEntry");
 	private static final ThreadLocal<Boolean> _zendeskOrganization =
 		new CentralizedThreadLocal<>(
 			AccountEntryModelListener.class + "._zendeskOrganization");
