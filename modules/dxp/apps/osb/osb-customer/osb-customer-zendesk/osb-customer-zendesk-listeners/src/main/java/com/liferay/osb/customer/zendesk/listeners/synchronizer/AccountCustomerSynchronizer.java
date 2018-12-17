@@ -16,7 +16,6 @@ package com.liferay.osb.customer.zendesk.listeners.synchronizer;
 
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.listeners.exception.AccountCustomerRemovalException;
-import com.liferay.osb.customer.zendesk.listeners.exception.ZendeskIntegrationException;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
@@ -26,8 +25,6 @@ import com.liferay.osb.model.AccountCustomerConstants;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.UserLocalService;
@@ -46,22 +43,15 @@ import org.osgi.service.component.annotations.Reference;
 public class AccountCustomerSynchronizer {
 
 	public void add(AccountCustomer accountCustomer) throws PortalException {
-		try {
-			User user = _userLocalService.getUser(accountCustomer.getUserId());
+		User user = _userLocalService.getUser(accountCustomer.getUserId());
 
-			AccountEntry accountEntry = accountCustomer.getAccountEntry();
+		AccountEntry accountEntry = accountCustomer.getAccountEntry();
 
-			Set<String> tags = getAddAccountCustomerTags(accountCustomer);
+		Set<String> tags = getAddAccountCustomerTags(accountCustomer);
 
-			_userSynchronizer.sync(
-				user, accountEntry.getAccountEntryId(), accountEntry.getName(),
-				tags);
-		}
-		catch (Exception e) {
-			_log.error(e);
-
-			throw new ZendeskIntegrationException(e);
-		}
+		_userSynchronizer.sync(
+			user, accountEntry.getAccountEntryId(), accountEntry.getName(),
+			tags);
 	}
 
 	public void addOrganizationSubscription(AccountCustomer accountCustomer)
@@ -122,23 +112,16 @@ public class AccountCustomerSynchronizer {
 	}
 
 	public void remove(AccountCustomer accountCustomer) throws PortalException {
-		try {
-			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
-				accountCustomer.getUserId());
-			long zendeskOrganizationId =
-				_zendeskMapperUtil.fetchZendeskOrganizationId(
-					accountCustomer.getAccountEntryId());
+		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+			accountCustomer.getUserId());
+		long zendeskOrganizationId =
+			_zendeskMapperUtil.fetchZendeskOrganizationId(
+				accountCustomer.getAccountEntryId());
 
-			_zendeskUserWebService.deleteZendeskUserOrganizationMemberships(
-				zendeskUserId, new long[] {zendeskOrganizationId});
+		_zendeskUserWebService.deleteZendeskUserOrganizationMemberships(
+			zendeskUserId, new long[] {zendeskOrganizationId});
 
-			removeTags(accountCustomer, zendeskOrganizationId);
-		}
-		catch (Exception e) {
-			_log.error(e);
-
-			throw new ZendeskIntegrationException(e);
-		}
+		removeTags(accountCustomer, zendeskOrganizationId);
 	}
 
 	public void removeTags(
@@ -162,37 +145,30 @@ public class AccountCustomerSynchronizer {
 	}
 
 	public void update(AccountCustomer accountCustomer) throws PortalException {
-		try {
-			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
-				accountCustomer.getUserId());
+		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+			accountCustomer.getUserId());
 
-			Set<String> addTags = getAddAccountCustomerTags(accountCustomer);
+		Set<String> addTags = getAddAccountCustomerTags(accountCustomer);
 
-			_zendeskUserWebService.addZendeskUserTags(zendeskUserId, addTags);
+		_zendeskUserWebService.addZendeskUserTags(zendeskUserId, addTags);
 
-			if (accountCustomer.getRole() !=
-					AccountCustomerConstants.ROLE_WATCHER) {
+		if (accountCustomer.getRole() !=
+				AccountCustomerConstants.ROLE_WATCHER) {
 
-				long zendeskOrganizationId =
-					_zendeskMapperUtil.fetchZendeskOrganizationId(
-						accountCustomer.getAccountEntryId());
+			long zendeskOrganizationId =
+				_zendeskMapperUtil.fetchZendeskOrganizationId(
+					accountCustomer.getAccountEntryId());
 
-				Set<String> removeTags = new HashSet<>();
+			Set<String> removeTags = new HashSet<>();
 
-				removeTags.add(
-					ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
+			removeTags.add(
+				ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
 
-				_zendeskUserWebService.deleteZendeskUserTags(
-					zendeskUserId, removeTags);
-			}
-
-			_userSynchronizer.removeObsoleteTags(accountCustomer.getUserId());
+			_zendeskUserWebService.deleteZendeskUserTags(
+				zendeskUserId, removeTags);
 		}
-		catch (Exception e) {
-			_log.error(e);
 
-			throw new ZendeskIntegrationException(e);
-		}
+		_userSynchronizer.removeObsoleteTags(accountCustomer.getUserId());
 	}
 
 	protected Set<String> getAddAccountCustomerTags(
@@ -232,9 +208,6 @@ public class AccountCustomerSynchronizer {
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		AccountCustomerSynchronizer.class);
 
 	@Reference
 	private UserLocalService _userLocalService;

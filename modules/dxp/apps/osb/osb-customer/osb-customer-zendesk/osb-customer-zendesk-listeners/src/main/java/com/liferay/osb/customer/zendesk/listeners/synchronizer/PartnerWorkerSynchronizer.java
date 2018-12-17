@@ -15,7 +15,6 @@
 package com.liferay.osb.customer.zendesk.listeners.synchronizer;
 
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
-import com.liferay.osb.customer.zendesk.listeners.exception.ZendeskIntegrationException;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.model.AccountEntry;
@@ -23,8 +22,6 @@ import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.PartnerWorker;
 import com.liferay.osb.model.PartnerWorkerConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.UserLocalService;
@@ -47,123 +44,75 @@ public class PartnerWorkerSynchronizer {
 	public void add(long accountEntryId, PartnerWorker partnerWorker)
 		throws PortalException {
 
-		try {
-			long zendeskUserId = addUser(partnerWorker);
+		long zendeskUserId = addUser(partnerWorker);
 
-			if (partnerWorker.getRole() !=
-					PartnerWorkerConstants.ROLE_WATCHER) {
+		if (partnerWorker.getRole() != PartnerWorkerConstants.ROLE_WATCHER) {
+			long zendeskOrganizationId =
+				_zendeskMapperUtil.fetchZendeskOrganizationId(accountEntryId);
 
-				long zendeskOrganizationId =
-					_zendeskMapperUtil.fetchZendeskOrganizationId(
-						accountEntryId);
-
-				addOrganizationMemberships(
-					zendeskUserId, new long[] {zendeskOrganizationId});
-			}
-		}
-		catch (Exception e) {
-			_log.error(e);
-
-			throw new ZendeskIntegrationException(e);
+			addOrganizationMemberships(
+				zendeskUserId, new long[] {zendeskOrganizationId});
 		}
 	}
 
 	public void add(PartnerWorker partnerWorker) throws PortalException {
-		try {
-			long zendeskUserId = addUser(partnerWorker);
+		long zendeskUserId = addUser(partnerWorker);
 
-			if (partnerWorker.getRole() !=
-					PartnerWorkerConstants.ROLE_WATCHER) {
+		if (partnerWorker.getRole() != PartnerWorkerConstants.ROLE_WATCHER) {
+			long[] zendeskOrganizationIds = getZendeskOrganizationIds(
+				partnerWorker);
 
-				long[] zendeskOrganizationIds = getZendeskOrganizationIds(
-					partnerWorker);
-
-				addOrganizationMemberships(
-					zendeskUserId, zendeskOrganizationIds);
-			}
-		}
-		catch (Exception e) {
-			_log.error(e);
-
-			throw new ZendeskIntegrationException(e);
+			addOrganizationMemberships(zendeskUserId, zendeskOrganizationIds);
 		}
 	}
 
 	public void remove(long accountEntryId, PartnerWorker partnerWorker)
 		throws PortalException {
 
-		try {
-			if (partnerWorker.getRole() !=
-					PartnerWorkerConstants.ROLE_WATCHER) {
+		if (partnerWorker.getRole() != PartnerWorkerConstants.ROLE_WATCHER) {
+			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+				partnerWorker.getUserId());
 
-				long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
-					partnerWorker.getUserId());
+			long zendeskOrganizationId =
+				_zendeskMapperUtil.fetchZendeskOrganizationId(accountEntryId);
 
-				long zendeskOrganizationId =
-					_zendeskMapperUtil.fetchZendeskOrganizationId(
-						accountEntryId);
-
-				removeOrganizationMemberships(
-					zendeskUserId, new long[] {zendeskOrganizationId});
-			}
-
-			_userSynchronizer.removeObsoleteTags(partnerWorker.getUserId());
+			removeOrganizationMemberships(
+				zendeskUserId, new long[] {zendeskOrganizationId});
 		}
-		catch (Exception e) {
-			_log.error(e);
 
-			throw new ZendeskIntegrationException(e);
-		}
+		_userSynchronizer.removeObsoleteTags(partnerWorker.getUserId());
 	}
 
 	public void remove(PartnerWorker partnerWorker) throws PortalException {
-		try {
-			if (partnerWorker.getRole() !=
-					PartnerWorkerConstants.ROLE_WATCHER) {
+		if (partnerWorker.getRole() != PartnerWorkerConstants.ROLE_WATCHER) {
+			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+				partnerWorker.getUserId());
 
-				long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
-					partnerWorker.getUserId());
+			long[] zendeskOrganizationIds = getZendeskOrganizationIds(
+				partnerWorker);
 
-				long[] zendeskOrganizationIds = getZendeskOrganizationIds(
-					partnerWorker);
-
-				removeOrganizationMemberships(
-					zendeskUserId, zendeskOrganizationIds);
-			}
-
-			_userSynchronizer.removeObsoleteTags(partnerWorker.getUserId());
+			removeOrganizationMemberships(
+				zendeskUserId, zendeskOrganizationIds);
 		}
-		catch (Exception e) {
-			_log.error(e);
 
-			throw new ZendeskIntegrationException(e);
-		}
+		_userSynchronizer.removeObsoleteTags(partnerWorker.getUserId());
 	}
 
 	public void updateRole(PartnerWorker partnerWorker) throws PortalException {
-		try {
-			if (partnerWorker.getRole() ==
-					PartnerWorkerConstants.ROLE_WATCHER) {
+		if (partnerWorker.getRole() == PartnerWorkerConstants.ROLE_WATCHER) {
+			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+				partnerWorker.getUserId());
 
-				long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
-					partnerWorker.getUserId());
+			long[] zendeskOrganizationIds = getZendeskOrganizationIds(
+				partnerWorker);
 
-				long[] zendeskOrganizationIds = getZendeskOrganizationIds(
-					partnerWorker);
+			removeOrganizationMemberships(
+				zendeskUserId, zendeskOrganizationIds);
 
-				removeOrganizationMemberships(
-					zendeskUserId, zendeskOrganizationIds);
-
-				_userSynchronizer.removeObsoleteTags(partnerWorker.getUserId());
-			}
-			else {
-				add(partnerWorker);
-			}
+			_userSynchronizer.removeObsoleteTags(partnerWorker.getUserId());
 		}
-		catch (Exception e) {
-			_log.error(e);
-
-			throw new ZendeskIntegrationException(e);
+		else {
+			add(partnerWorker);
 		}
 	}
 
@@ -240,9 +189,6 @@ public class PartnerWorkerSynchronizer {
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		PartnerWorkerSynchronizer.class);
 
 	@Reference(target = "(async=true)")
 	private ZendeskUserWebService _asyncZendeskUserWebService;

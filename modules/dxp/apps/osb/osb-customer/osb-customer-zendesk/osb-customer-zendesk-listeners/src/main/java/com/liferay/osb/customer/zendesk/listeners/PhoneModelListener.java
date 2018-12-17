@@ -14,10 +14,13 @@
 
 package com.liferay.osb.customer.zendesk.listeners;
 
+import com.liferay.osb.customer.zendesk.listeners.exception.ZendeskIntegrationException;
 import com.liferay.osb.customer.zendesk.listeners.synchronizer.UserSynchronizer;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.ModelListener;
@@ -46,7 +49,9 @@ public class PhoneModelListener extends BaseModelListener<Phone> {
 			}
 		}
 		catch (Exception e) {
-			throw new ModelListenerException(e);
+			_log.error(e);
+
+			throw new ZendeskIntegrationException(e);
 		}
 	}
 
@@ -66,7 +71,9 @@ public class PhoneModelListener extends BaseModelListener<Phone> {
 			}
 		}
 		catch (Exception e) {
-			throw new ModelListenerException(e);
+			_log.error(e);
+
+			throw new ZendeskIntegrationException(e);
 		}
 	}
 
@@ -82,7 +89,9 @@ public class PhoneModelListener extends BaseModelListener<Phone> {
 			}
 		}
 		catch (Exception e) {
-			throw new ModelListenerException(e);
+			_log.error(e);
+
+			throw new ZendeskIntegrationException(e);
 		}
 	}
 
@@ -91,6 +100,9 @@ public class PhoneModelListener extends BaseModelListener<Phone> {
 
 		return contact.getUserId();
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		PhoneModelListener.class);
 
 	@Reference
 	private ClassNameLocalService _classNameLocalService;

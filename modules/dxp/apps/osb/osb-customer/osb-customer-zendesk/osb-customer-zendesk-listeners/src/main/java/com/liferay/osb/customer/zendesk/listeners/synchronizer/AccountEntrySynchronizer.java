@@ -16,7 +16,6 @@ package com.liferay.osb.customer.zendesk.listeners.synchronizer;
 
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskLocales;
 import com.liferay.osb.customer.zendesk.constants.ZendeskTicketConstants;
-import com.liferay.osb.customer.zendesk.listeners.exception.ZendeskIntegrationException;
 import com.liferay.osb.customer.zendesk.listeners.util.ZendeskModelListenerUtil;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
@@ -40,8 +39,6 @@ import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.osb.service.SupportRegionLocalServiceUtil;
 import com.liferay.osb.service.SupportResponseLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
@@ -62,110 +59,88 @@ import org.osgi.service.component.annotations.Reference;
 public class AccountEntrySynchronizer {
 
 	public void add(AccountEntry accountEntry) throws PortalException {
-		try {
-			long classNameId = _classNameLocalService.getClassNameId(
-				AccountEntry.class);
+		long classNameId = _classNameLocalService.getClassNameId(
+			AccountEntry.class);
 
-			boolean externalIdMappers =
-				ExternalIdMapperLocalServiceUtil.hasExternalIdMappers(
-					classNameId, accountEntry.getAccountEntryId(),
-					ExternalIdMapperConstants.TYPE_ZENDESK);
+		boolean externalIdMappers =
+			ExternalIdMapperLocalServiceUtil.hasExternalIdMappers(
+				classNameId, accountEntry.getAccountEntryId(),
+				ExternalIdMapperConstants.TYPE_ZENDESK);
 
-			String jiraProjectKey = StringPool.BLANK;
-			String partnerEntryCode = StringPool.BLANK;
+		String jiraProjectKey = StringPool.BLANK;
+		String partnerEntryCode = StringPool.BLANK;
 
-			PartnerEntry partnerEntry = accountEntry.getPartnerEntry();
+		PartnerEntry partnerEntry = accountEntry.getPartnerEntry();
 
-			if (partnerEntry != null) {
-				jiraProjectKey = partnerEntry.getJiraProjectKey();
-				partnerEntryCode = partnerEntry.getCode();
-			}
-
-			String supportLevelLabel = StringPool.BLANK;
-
-			SupportResponse supportResponse =
-				SupportResponseLocalServiceUtil.fetchSupportResponse(
-					accountEntry.getHighestSupportResponseId());
-
-			if (supportResponse != null) {
-				supportLevelLabel = supportResponse.getSupportLevelLabel();
-			}
-
-			String[] languageIds = accountEntry.getLanguageIds();
-
-			long[] supportRegionIds = accountEntry.getSupportRegionIds();
-
-			SupportRegion supportRegion =
-				SupportRegionLocalServiceUtil.getSupportRegion(
-					supportRegionIds[0]);
-
-			_zendeskOrganizationWebService.createOrUpdateZendeskOrganization(
-				accountEntry.getCode(),
-				ZendeskModelListenerUtil.convertAddressToString(
-					accountEntry.getAddress()),
-				String.valueOf(accountEntry.getAccountEntryId()),
-				accountEntry.getName(), accountEntry.getNotes(),
-				String.valueOf(accountEntry.getPartnerManagedSupport()),
-				jiraProjectKey, partnerEntryCode, supportLevelLabel,
-				accountEntry.getStatusLabel(),
-				AccountEntryConstants.getLanguageLabel(languageIds[0]),
-				supportRegion.getName(),
-				AccountEntryConstants.getTierLabel(accountEntry.getTier()),
-				getTags(accountEntry));
-
-			if (!externalIdMappers) {
-				_asyncZendeskUserWebService.createOrUpdateZendeskUser(
-					null, getDefaultUserEmail(accountEntry.getCode()),
-					ZendeskLocales.US, accountEntry.getCode(),
-					accountEntry.getName(), null);
-			}
+		if (partnerEntry != null) {
+			jiraProjectKey = partnerEntry.getJiraProjectKey();
+			partnerEntryCode = partnerEntry.getCode();
 		}
-		catch (Exception e) {
-			_log.error(e);
 
-			throw new ZendeskIntegrationException(e);
+		String supportLevelLabel = StringPool.BLANK;
+
+		SupportResponse supportResponse =
+			SupportResponseLocalServiceUtil.fetchSupportResponse(
+				accountEntry.getHighestSupportResponseId());
+
+		if (supportResponse != null) {
+			supportLevelLabel = supportResponse.getSupportLevelLabel();
+		}
+
+		String[] languageIds = accountEntry.getLanguageIds();
+
+		long[] supportRegionIds = accountEntry.getSupportRegionIds();
+
+		SupportRegion supportRegion =
+			SupportRegionLocalServiceUtil.getSupportRegion(supportRegionIds[0]);
+
+		_zendeskOrganizationWebService.createOrUpdateZendeskOrganization(
+			accountEntry.getCode(),
+			ZendeskModelListenerUtil.convertAddressToString(
+				accountEntry.getAddress()),
+			String.valueOf(accountEntry.getAccountEntryId()),
+			accountEntry.getName(), accountEntry.getNotes(),
+			String.valueOf(accountEntry.getPartnerManagedSupport()),
+			jiraProjectKey, partnerEntryCode, supportLevelLabel,
+			accountEntry.getStatusLabel(),
+			AccountEntryConstants.getLanguageLabel(languageIds[0]),
+			supportRegion.getName(),
+			AccountEntryConstants.getTierLabel(accountEntry.getTier()),
+			getTags(accountEntry));
+
+		if (!externalIdMappers) {
+			_asyncZendeskUserWebService.createOrUpdateZendeskUser(
+				null, getDefaultUserEmail(accountEntry.getCode()),
+				ZendeskLocales.US, accountEntry.getCode(),
+				accountEntry.getName(), null);
 		}
 	}
 
 	public void addAccountCustomers(AccountEntry accountEntry)
 		throws PortalException {
 
-		try {
-			for (AccountCustomer accountCustomer :
-					accountEntry.getAccountCustomers()) {
+		for (AccountCustomer accountCustomer :
+				accountEntry.getAccountCustomers()) {
 
-				_accountCustomerSynchronizer.add(accountCustomer);
+			_accountCustomerSynchronizer.add(accountCustomer);
 
-				if (accountEntry.getActiveTicketSupport()) {
-					_accountCustomerSynchronizer.addOrganizationSubscription(
-						accountCustomer);
-				}
+			if (accountEntry.getActiveTicketSupport()) {
+				_accountCustomerSynchronizer.addOrganizationSubscription(
+					accountCustomer);
 			}
-		}
-		catch (Exception e) {
-			_log.error(e);
-
-			throw new ZendeskIntegrationException(e);
 		}
 	}
 
 	public void addPartnerManagedSupport(AccountEntry accountEntry)
 		throws PortalException {
 
-		try {
-			List<PartnerWorker> partnerWorkers =
-				PartnerWorkerLocalServiceUtil.getPartnerWorkers(
-					accountEntry.getPartnerEntryId());
+		List<PartnerWorker> partnerWorkers =
+			PartnerWorkerLocalServiceUtil.getPartnerWorkers(
+				accountEntry.getPartnerEntryId());
 
-			for (PartnerWorker partnerWorker : partnerWorkers) {
-				_partnerWorkerSynchronizer.add(
-					accountEntry.getAccountEntryId(), partnerWorker);
-			}
-		}
-		catch (Exception e) {
-			_log.error(e);
-
-			throw new ZendeskIntegrationException(e);
+		for (PartnerWorker partnerWorker : partnerWorkers) {
+			_partnerWorkerSynchronizer.add(
+				accountEntry.getAccountEntryId(), partnerWorker);
 		}
 	}
 
@@ -200,55 +175,33 @@ public class AccountEntrySynchronizer {
 	public void removeAccountCustomers(AccountEntry accountEntry)
 		throws PortalException {
 
-		try {
-			for (AccountCustomer accountCustomer :
-					accountEntry.getAccountCustomers()) {
+		for (AccountCustomer accountCustomer :
+				accountEntry.getAccountCustomers()) {
 
-				_accountCustomerSynchronizer.remove(accountCustomer);
-			}
-		}
-		catch (Exception e) {
-			_log.error(e);
-
-			throw new ZendeskIntegrationException(e);
+			_accountCustomerSynchronizer.remove(accountCustomer);
 		}
 	}
 
 	public void removeObsoleteTags(AccountEntry accountEntry)
 		throws PortalException {
 
-		try {
-			for (AccountCustomer accountCustomer :
-					accountEntry.getAccountCustomers()) {
+		for (AccountCustomer accountCustomer :
+				accountEntry.getAccountCustomers()) {
 
-				_userSynchronizer.removeObsoleteTags(
-					accountCustomer.getUserId());
-			}
-		}
-		catch (Exception e) {
-			_log.error(e);
-
-			throw new ZendeskIntegrationException(e);
+			_userSynchronizer.removeObsoleteTags(accountCustomer.getUserId());
 		}
 	}
 
 	public void removePartnerManagedSupport(AccountEntry accountEntry)
 		throws PortalException {
 
-		try {
-			List<PartnerWorker> partnerWorkers =
-				PartnerWorkerLocalServiceUtil.getPartnerWorkers(
-					accountEntry.getPartnerEntryId());
+		List<PartnerWorker> partnerWorkers =
+			PartnerWorkerLocalServiceUtil.getPartnerWorkers(
+				accountEntry.getPartnerEntryId());
 
-			for (PartnerWorker partnerWorker : partnerWorkers) {
-				_partnerWorkerSynchronizer.remove(
-					accountEntry.getAccountEntryId(), partnerWorker);
-			}
-		}
-		catch (Exception e) {
-			_log.error(e);
-
-			throw new ZendeskIntegrationException(e);
+		for (PartnerWorker partnerWorker : partnerWorkers) {
+			_partnerWorkerSynchronizer.remove(
+				accountEntry.getAccountEntryId(), partnerWorker);
 		}
 	}
 
@@ -291,9 +244,6 @@ public class AccountEntrySynchronizer {
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		AccountEntrySynchronizer.class);
 
 	@Reference
 	private AccountCustomerSynchronizer _accountCustomerSynchronizer;

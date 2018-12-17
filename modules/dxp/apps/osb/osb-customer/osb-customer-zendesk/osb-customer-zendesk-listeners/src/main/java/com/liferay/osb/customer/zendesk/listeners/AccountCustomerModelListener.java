@@ -14,10 +14,13 @@
 
 package com.liferay.osb.customer.zendesk.listeners;
 
+import com.liferay.osb.customer.zendesk.listeners.exception.ZendeskIntegrationException;
 import com.liferay.osb.customer.zendesk.listeners.synchronizer.AccountCustomerSynchronizer;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.portal.kernel.exception.ModelListenerException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
@@ -47,7 +50,9 @@ public class AccountCustomerModelListener
 			}
 		}
 		catch (Exception e) {
-			throw new ModelListenerException(e);
+			_log.error(e);
+
+			throw new ZendeskIntegrationException(e);
 		}
 	}
 
@@ -61,7 +66,9 @@ public class AccountCustomerModelListener
 			_accountCustomerSynchronizer.remove(accountCustomer);
 		}
 		catch (Exception e) {
-			throw new ModelListenerException(e);
+			_log.error(e);
+
+			throw new ZendeskIntegrationException(e);
 		}
 	}
 
@@ -73,7 +80,9 @@ public class AccountCustomerModelListener
 			_accountCustomerSynchronizer.update(accountCustomer);
 		}
 		catch (Exception e) {
-			throw new ModelListenerException(e);
+			_log.error(e);
+
+			throw new ZendeskIntegrationException(e);
 		}
 	}
 
@@ -84,6 +93,9 @@ public class AccountCustomerModelListener
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		AccountCustomerModelListener.class);
 
 	@Reference
 	private AccountCustomerSynchronizer _accountCustomerSynchronizer;

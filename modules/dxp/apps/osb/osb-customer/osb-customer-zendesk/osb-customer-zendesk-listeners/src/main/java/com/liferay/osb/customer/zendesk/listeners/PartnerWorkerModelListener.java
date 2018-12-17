@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.zendesk.listeners;
 
+import com.liferay.osb.customer.zendesk.listeners.exception.ZendeskIntegrationException;
 import com.liferay.osb.customer.zendesk.listeners.synchronizer.PartnerWorkerSynchronizer;
 import com.liferay.osb.customer.zendesk.listeners.synchronizer.UserSynchronizer;
 import com.liferay.osb.model.PartnerWorker;
@@ -21,6 +22,8 @@ import com.liferay.osb.model.PartnerWorkerConstants;
 import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.portal.kernel.exception.ModelListenerException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
@@ -43,7 +46,9 @@ public class PartnerWorkerModelListener
 			_partnerWorkerSynchronizer.add(partnerWorker);
 		}
 		catch (Exception e) {
-			throw new ModelListenerException(e);
+			_log.error(e);
+
+			throw new ZendeskIntegrationException(e);
 		}
 	}
 
@@ -55,7 +60,9 @@ public class PartnerWorkerModelListener
 			_partnerWorkerSynchronizer.remove(partnerWorker);
 		}
 		catch (Exception e) {
-			throw new ModelListenerException(e);
+			_log.error(e);
+
+			throw new ZendeskIntegrationException(e);
 		}
 	}
 
@@ -75,7 +82,9 @@ public class PartnerWorkerModelListener
 			}
 		}
 		catch (Exception e) {
-			throw new ModelListenerException(e);
+			_log.error(e);
+
+			throw new ZendeskIntegrationException(e);
 		}
 	}
 
@@ -91,7 +100,9 @@ public class PartnerWorkerModelListener
 			_role.set(oldPartnerWorker.getRole());
 		}
 		catch (Exception e) {
-			throw new ModelListenerException(e);
+			_log.error(e);
+
+			throw new ZendeskIntegrationException(e);
 		}
 	}
 
@@ -102,6 +113,9 @@ public class PartnerWorkerModelListener
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		PartnerWorkerModelListener.class);
 
 	private static final ThreadLocal<Integer> _role =
 		new CentralizedThreadLocal<>(

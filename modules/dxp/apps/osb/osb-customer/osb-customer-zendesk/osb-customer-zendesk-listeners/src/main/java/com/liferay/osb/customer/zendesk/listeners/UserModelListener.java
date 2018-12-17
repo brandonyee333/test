@@ -15,8 +15,11 @@
 package com.liferay.osb.customer.zendesk.listeners;
 
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.zendesk.listeners.exception.ZendeskIntegrationException;
 import com.liferay.osb.customer.zendesk.listeners.synchronizer.UserSynchronizer;
 import com.liferay.portal.kernel.exception.ModelListenerException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.Organization;
@@ -51,7 +54,9 @@ public class UserModelListener extends BaseModelListener<User> {
 			}
 		}
 		catch (Exception e) {
-			throw new ModelListenerException(e);
+			_log.error(e);
+
+			throw new ZendeskIntegrationException(e);
 		}
 	}
 
@@ -74,9 +79,14 @@ public class UserModelListener extends BaseModelListener<User> {
 			}
 		}
 		catch (Exception e) {
-			throw new ModelListenerException(e);
+			_log.error(e);
+
+			throw new ZendeskIntegrationException(e);
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		UserModelListener.class);
 
 	@Reference
 	private UserSynchronizer _userSynchronizer;

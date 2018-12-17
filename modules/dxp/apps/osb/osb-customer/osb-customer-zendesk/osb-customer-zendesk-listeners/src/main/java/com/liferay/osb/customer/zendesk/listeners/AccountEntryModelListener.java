@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.zendesk.listeners;
 
+import com.liferay.osb.customer.zendesk.listeners.exception.ZendeskIntegrationException;
 import com.liferay.osb.customer.zendesk.listeners.synchronizer.AccountEntrySynchronizer;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.ExternalIdMapperConstants;
@@ -22,6 +23,8 @@ import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
@@ -48,7 +51,9 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			_accountEntrySynchronizer.add(accountEntry);
 		}
 		catch (Exception e) {
-			throw new ModelListenerException(e);
+			_log.error(e);
+
+			throw new ZendeskIntegrationException(e);
 		}
 	}
 
@@ -102,7 +107,9 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			}
 		}
 		catch (Exception e) {
-			throw new ModelListenerException(e);
+			_log.error(e);
+
+			throw new ZendeskIntegrationException(e);
 		}
 	}
 
@@ -138,7 +145,9 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			}
 		}
 		catch (Exception e) {
-			throw new ModelListenerException(e);
+			_log.error(e);
+
+			throw new ZendeskIntegrationException(e);
 		}
 	}
 
@@ -168,6 +177,9 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		AccountEntryModelListener.class);
 
 	private static final ThreadLocal<Boolean> _activeSupport =
 		new CentralizedThreadLocal<>(

@@ -24,3 +24,12 @@
 
 	<%= HtmlUtil.escape(mle.getLocalizedMessage()) %>
 </liferay-ui:error>
+
+<liferay-ui:error key="com.liferay.osb.customer.zendesk.listeners.exception.ZendeskIntegrationException">
+
+	<%
+	ModelListenerException mle = (ModelListenerException)errorException;
+	%>
+
+	<%= HtmlUtil.escape(mle.getLocalizedMessage()) %>
+</liferay-ui:error>
