@@ -119,6 +119,7 @@ insert into ListType (listTypeId, name, type_) values (27062, 'tcServer-4.0', 'c
 insert into ListType (listTypeId, name, type_) values (27063, 'tomcat-9.0', 'com.liferay.osb.model.AccountEnvironment.envAS');
 insert into ListType (listTypeId, name, type_) values (27064, 'websphere-9.0', 'com.liferay.osb.model.AccountEnvironment.envAS');
 insert into ListType (listTypeId, name, type_) values (27065, 'wildfly-11.0', 'com.liferay.osb.model.AccountEnvironment.envAS');
+insert into ListType (listTypeId, name, type_) values (27066, 'websphere-8.5.5-fix-pack-11+', 'com.liferay.osb.model.AccountEnvironment.envAS');
 
 insert into ListType (listTypeId, name, type_) values (28000, 'db2-8.2', 'com.liferay.osb.model.AccountEnvironment.envDB');
 insert into ListType (listTypeId, name, type_) values (28002, 'hypersonic', 'com.liferay.osb.model.AccountEnvironment.envDB');
