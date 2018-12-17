@@ -49,9 +49,7 @@ public class AccountCustomerSynchronizer {
 
 		Set<String> tags = getAddAccountCustomerTags(accountCustomer);
 
-		_userSynchronizer.sync(
-			user, accountEntry.getAccountEntryId(), accountEntry.getName(),
-			tags);
+		_userSynchronizer.sync(user, accountEntry.getName(), tags);
 	}
 
 	public void addOrganizationSubscription(AccountCustomer accountCustomer)

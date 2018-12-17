@@ -157,9 +157,7 @@ public class UserSynchronizer {
 		}
 	}
 
-	public long sync(
-			User user, long accountEntryId, String organizationName,
-			Set<String> tags)
+	public long sync(User user, String organizationName, Set<String> tags)
 		throws PortalException {
 
 		String locale = ZendeskModelListenerUtil.convertToZendeskLocale(

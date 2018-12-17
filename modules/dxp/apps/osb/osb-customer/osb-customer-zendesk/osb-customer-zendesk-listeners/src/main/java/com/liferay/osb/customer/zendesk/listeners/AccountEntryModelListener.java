@@ -65,10 +65,10 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			AccountEntry oldAccountEntry = _oldAccountEntry.get();
 
 			if (_zendeskOrganization.get() &&
-				(oldAccountEntry.isPartnerManagedSupport() &&
-				 !accountEntry.isPartnerManagedSupport()) ||
-				(oldAccountEntry.getPartnerEntryId() !=
-					accountEntry.getPartnerEntryId())) {
+				((oldAccountEntry.isPartnerManagedSupport() &&
+				  !accountEntry.isPartnerManagedSupport()) ||
+				 (oldAccountEntry.getPartnerEntryId() !=
+					 accountEntry.getPartnerEntryId()))) {
 
 				_accountEntrySynchronizer.removePartnerManagedSupport(
 					oldAccountEntry);

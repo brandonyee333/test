@@ -151,7 +151,7 @@ public class PartnerWorkerSynchronizer {
 			tags.add(ZendeskTagConstants.OSB_PARTNER);
 		}
 
-		return _userSynchronizer.sync(user, 0, null, tags);
+		return _userSynchronizer.sync(user, null, tags);
 	}
 
 	protected long[] getZendeskOrganizationIds(PartnerWorker partnerWorker)
