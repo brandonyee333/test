@@ -197,6 +197,10 @@ public class AsyncZendeskUserWebService
 		Map<Long, Long> organizationMemberships = getOrganizationMemberships(
 			zendeskUserId);
 
+		if (organizationMemberships.isEmpty()) {
+			return;
+		}
+
 		StringBundler sb = new StringBundler(
 			(organizationMemberships.size() * 2) - 1);
 

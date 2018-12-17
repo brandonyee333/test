@@ -44,24 +44,25 @@ public class PartnerWorkerSynchronizer {
 	public void add(long accountEntryId, PartnerWorker partnerWorker)
 		throws PortalException {
 
-		long zendeskUserId = addUser(partnerWorker);
+		long zendeskOrganizationId =
+			_zendeskMapperUtil.fetchZendeskOrganizationId(accountEntryId);
+
+		long zendeskUserId = addUser(
+			partnerWorker, new long[] {zendeskOrganizationId});
 
 		if (partnerWorker.getRole() != PartnerWorkerConstants.ROLE_WATCHER) {
-			long zendeskOrganizationId =
-				_zendeskMapperUtil.fetchZendeskOrganizationId(accountEntryId);
-
 			addOrganizationMemberships(
 				zendeskUserId, new long[] {zendeskOrganizationId});
 		}
 	}
 
 	public void add(PartnerWorker partnerWorker) throws PortalException {
-		long zendeskUserId = addUser(partnerWorker);
+		long[] zendeskOrganizationIds = getZendeskOrganizationIds(
+			partnerWorker);
+
+		long zendeskUserId = addUser(partnerWorker, zendeskOrganizationIds);
 
 		if (partnerWorker.getRole() != PartnerWorkerConstants.ROLE_WATCHER) {
-			long[] zendeskOrganizationIds = getZendeskOrganizationIds(
-				partnerWorker);
-
 			addOrganizationMemberships(zendeskUserId, zendeskOrganizationIds);
 		}
 	}
@@ -134,14 +135,19 @@ public class PartnerWorkerSynchronizer {
 		}
 	}
 
-	protected long addUser(PartnerWorker partnerWorker) throws PortalException {
+	protected long addUser(
+			PartnerWorker partnerWorker, long[] zendeskOrganizationIds)
+		throws PortalException {
+
 		User user = _userLocalService.getUser(partnerWorker.getUserId());
 
 		Set<String> tags = new HashSet<>();
 
 		tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
 
-		if (partnerWorker.getRole() != PartnerWorkerConstants.ROLE_WATCHER) {
+		if ((partnerWorker.getRole() != PartnerWorkerConstants.ROLE_WATCHER) &&
+			!ArrayUtil.isEmpty(zendeskOrganizationIds)) {
+
 			tags.add(ZendeskTagConstants.OSB_PARTNER);
 		}
 

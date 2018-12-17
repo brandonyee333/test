@@ -25,6 +25,7 @@ import com.liferay.osb.model.AccountCustomerConstants;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.ExternalIdMapper;
 import com.liferay.osb.model.ExternalIdMapperConstants;
+import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.PartnerWorker;
 import com.liferay.osb.model.PartnerWorkerConstants;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
@@ -111,22 +112,31 @@ public class UserSynchronizer {
 
 		// Partner
 
-		boolean partnerDeveloper = false;
+		boolean partnerManagedSupportDeveloper = false;
 
 		List<PartnerWorker> partnerWorkers =
 			PartnerWorkerLocalServiceUtil.getUserPartnerWorkers(userId);
 
 		for (PartnerWorker partnerWorker : partnerWorkers) {
+			PartnerEntry partnerEntry = partnerWorker.getPartnerEntry();
+
+			List<AccountEntry> accountEntries =
+				partnerEntry.getPartnerManagedAccountEntries();
+
+			if (accountEntries.isEmpty()) {
+				continue;
+			}
+
 			if (partnerWorker.getRole() !=
 					PartnerWorkerConstants.ROLE_WATCHER) {
 
-				partnerDeveloper = false;
+				partnerManagedSupportDeveloper = true;
 
 				break;
 			}
 		}
 
-		if (!partnerDeveloper) {
+		if (!partnerManagedSupportDeveloper) {
 			tags.add(ZendeskTagConstants.OSB_PARTNER);
 		}
 

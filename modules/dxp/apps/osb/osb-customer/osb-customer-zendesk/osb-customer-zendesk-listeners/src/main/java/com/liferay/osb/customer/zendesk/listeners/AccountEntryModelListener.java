@@ -62,13 +62,23 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		throws ModelListenerException {
 
 		try {
+			AccountEntry oldAccountEntry = _oldAccountEntry.get();
+
+			if (_zendeskOrganization.get() &&
+				(oldAccountEntry.isPartnerManagedSupport() &&
+				 !accountEntry.isPartnerManagedSupport()) ||
+				(oldAccountEntry.getPartnerEntryId() !=
+					accountEntry.getPartnerEntryId())) {
+
+				_accountEntrySynchronizer.removePartnerManagedSupport(
+					oldAccountEntry);
+			}
+
 			if (!_zendeskOrganization.get() &&
 				!accountEntry.getActiveSupport()) {
 
 				return;
 			}
-
-			AccountEntry oldAccountEntry = _oldAccountEntry.get();
 
 			if (oldAccountEntry.isActiveTicketSupport() &&
 				!accountEntry.isActiveTicketSupport()) {
@@ -135,15 +145,6 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 				!accountEntry.getActiveTicketSupport()) {
 
 				return;
-			}
-
-			if ((oldAccountEntry.isPartnerManagedSupport() &&
-				 !accountEntry.isPartnerManagedSupport()) ||
-				(oldAccountEntry.getPartnerEntryId() !=
-					accountEntry.getPartnerEntryId())) {
-
-				_accountEntrySynchronizer.removePartnerManagedSupport(
-					oldAccountEntry);
 			}
 		}
 		catch (Exception e) {
