@@ -78,6 +78,10 @@ public class ConnectionManagerImpl implements ConnectionManager {
 
 	@Override
 	public Channel createChannel(int prefetchCount) throws IOException {
+		if (!isConnected()) {
+			connect();
+		}
+
 		Channel channel = _connection.createChannel();
 
 		if (prefetchCount > 0) {
@@ -107,6 +111,14 @@ public class ConnectionManagerImpl implements ConnectionManager {
 	@Override
 	public boolean isConnected() {
 		if (_connection == null) {
+			return false;
+		}
+
+		if (!_connection.isOpen()) {
+			_log.error(
+				"Connection is unexpectedly closed.",
+				_connection.getCloseReason());
+
 			return false;
 		}
 
