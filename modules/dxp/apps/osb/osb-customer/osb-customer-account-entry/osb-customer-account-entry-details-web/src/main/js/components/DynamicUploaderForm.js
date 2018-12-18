@@ -316,7 +316,7 @@ export default class DynamicUploaderForm extends React.Component {
 		const {namespace} = this.state;
 
 		return (
-			<form method="post" onSubmit={this.handleSubmit} ref={this.formRef}>
+			<form ref={this.formRef} method="post" onSubmit={this.handleSubmit}>
 				<div className="row">
 					<div className="col-md-12">
 						<div className="form-group" id={`${namespace}uploadContainer`}>
@@ -328,8 +328,8 @@ export default class DynamicUploaderForm extends React.Component {
 								</svg>
 							</label>
 
-							<div className="form-control upload-area" id={`${namespace}uploadArea`} ref={this.uploadAreaRef}>
-								<input className="attachment" id={`${namespace}selectButton`} name={`${namespace}attachment`} ref={this.selectButtonRef} type="file" />
+							<div ref={this.uploadAreaRef} className="form-control upload-area" id={`${namespace}uploadArea`}>
+								<input ref={this.selectButtonRef} className="attachment" id={`${namespace}selectButton`} name={`${namespace}attachment`} type="file" />
 
 								<div className="upload-area-label">
 									<svg className="lexicon-icon lexicon-icon-paperclip">

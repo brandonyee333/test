@@ -407,10 +407,10 @@ export default class EditAccountEnvironmentForm extends React.Component {
 
 		return (
 			<Formik
+				ref={this.formikInstanceRef}
 				enableReinitialize={true}
 				initialValues={initialValues}
 				onSubmit={this.handleSubmit}
-				ref={this.formikInstanceRef}
 				render={({
 					errors,
 					handleBlur,
@@ -420,7 +420,7 @@ export default class EditAccountEnvironmentForm extends React.Component {
 					touched,
 					values
 				}) => (
-					<form action={actionURL} encType="multipart/form-data" method="post" onSubmit={handleSubmit} ref={this.editEnvironmentFormRef}>
+					<form ref={this.editEnvironmentFormRef} action={actionURL} encType="multipart/form-data" method="post" onSubmit={handleSubmit}>
 						<div className="row">
 							<div className="col-md-12">
 								<div className="form-group">
@@ -709,7 +709,7 @@ export default class EditAccountEnvironmentForm extends React.Component {
 									</label>
 
 									<div className="upload-dropzone">
-										<input className="form-control" id={`${namespace}portalExt`} name={`${namespace}portalExt`} onChange={this.handleFileChange} ref={this.portalExtRef} type="file" />
+										<input ref={this.portalExtRef} className="form-control" id={`${namespace}portalExt`} name={`${namespace}portalExt`} onChange={this.handleFileChange} type="file" />
 
 										<svg className="lexicon-icon lexicon-icon-paperclip">
 											<use xlinkHref="#paperclip" />
@@ -759,7 +759,7 @@ export default class EditAccountEnvironmentForm extends React.Component {
 									</label>
 
 									<div className="upload-dropzone">
-										<input className="form-control" id={`${namespace}patchLevel`} name={`${namespace}patchLevel`} onChange={this.handleFileChange} ref={this.patchLevelRef} type="file" />
+										<input ref={this.patchLevelRef} className="form-control" id={`${namespace}patchLevel`} name={`${namespace}patchLevel`} onChange={this.handleFileChange} type="file" />
 
 										<svg className="lexicon-icon lexicon-icon-paperclip">
 											<use xlinkHref="#paperclip" />

@@ -174,7 +174,7 @@ class Downloads extends React.Component {
 									<optgroup key={childIndex} label={child.downloadGroupName}>
 										{child.downloads.map(
 											(download, downloadIndex) => (
-												<option id={`${journalArticleId}-${childIndex}-${downloadIndex}`} key={downloadIndex} value={download.downloadName}>
+												<option key={downloadIndex} id={`${journalArticleId}-${childIndex}-${downloadIndex}`} value={download.downloadName}>
 													{download.downloadName}
 												</option>
 											)
