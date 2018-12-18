@@ -2851,7 +2851,7 @@ public class AccountEntryLocalServiceImpl
 		}
 
 		if (accountEntryId <= 0) {
-			if (accountEntryPersistence.countByName(name) > 1) {
+			if (accountEntryPersistence.countByName(name) >= 1) {
 				throw new DuplicateAccountEntryException();
 			}
 		}
