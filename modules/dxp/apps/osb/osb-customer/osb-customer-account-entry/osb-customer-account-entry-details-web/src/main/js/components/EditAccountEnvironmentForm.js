@@ -269,7 +269,7 @@ export default class EditAccountEnvironmentForm extends React.Component {
 		else if (name === `${this.props.namespace}envSearch`) {
 			const selectedSearchOptions = [];
 
-			for (var i = 0; i < options.length; i++) {
+			for (let i = 0; i < options.length; i++) {
 				if (options[i].selected) {
 					selectedSearchOptions.push(options[i].value);
 				}
@@ -321,7 +321,7 @@ export default class EditAccountEnvironmentForm extends React.Component {
 			if (selectedVersionName === environmentVersionName) {
 				let searchValue;
 
-				for (var i = 0; i < searchLabelsArray.length; i++) {
+				for (let i = 0; i < searchLabelsArray.length; i++) {
 					searchValue = searchType.find(
 						type => type.name === searchLabelsArray[i]
 					).value;
