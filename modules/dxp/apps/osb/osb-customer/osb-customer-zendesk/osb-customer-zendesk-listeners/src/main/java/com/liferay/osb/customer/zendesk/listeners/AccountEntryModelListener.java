@@ -143,12 +143,6 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			_oldAccountEntry.set(oldAccountEntry);
 
 			_zendeskOrganization.set(hasZendeskOrganization(accountEntry));
-
-			if (!_zendeskOrganization.get() &&
-				!accountEntry.getActiveTicketSupport()) {
-
-				return;
-			}
 		}
 		catch (Exception e) {
 			_log.error(e);
