@@ -60,7 +60,7 @@ class SubscriptionAlert extends React.Component {
 
 				<Modal
 					footer={
-						<button className="btn btn-primary pull-right" onClick={this.handleCloseModal}>
+						<button className="btn btn-primary pull-right" onClick={this.handleCloseModal} type="button">
 							{Liferay.Language.get('okay')}
 						</button>
 					}
