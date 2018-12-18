@@ -7,12 +7,19 @@
 	}
 
 	.results {
+		.additional-notes,
+		.journal-article-row .downloads,
+		.section-alert,
+		.section-links,
+		.section-title {
+			margin: $margin-default;
+			margin-left: 0;
+		}
+
 		.additional-notes {
 			color: $secondary-text-color;
 			font-size: $font-size-md;
 			line-height: 20px;
-			margin: $margin-default;
-			margin-left: 0;
 		}
 
 		.detail-label,
@@ -60,9 +67,6 @@
 		}
 
 		.section-alert {
-			margin: $margin-default;
-			margin-left: 0;
-
 			.alert-col-header {
 				padding-right: 0;
 			}
@@ -90,7 +94,7 @@
 		}
 
 		.section-links {
-			margin: $margin-default 0;
+			margin-right: 0;
 
 			a {
 				border-right: 1px solid $color-border;
@@ -111,11 +115,6 @@
 				font-weight: $font-weight-semi-bold;
 				line-height: 20px;
 			}
-		}
-
-		.section-title {
-			margin: $margin-default;
-			margin-left: 0;
 		}
 
 		.table-responsive .table {
@@ -145,11 +144,6 @@
 			.journal-article-row {
 				td:last-of-type {
 					padding: 0;
-				}
-
-				.downloads {
-					margin: $margin-default;
-					margin-left: 0;
 				}
 
 				.lfr-released-column {
