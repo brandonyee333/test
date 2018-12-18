@@ -12,6 +12,7 @@
 			font-size: $font-size-md;
 			line-height: 20px;
 			margin: $margin-default;
+			margin-left: 0;
 		}
 
 		.detail-label,
@@ -60,6 +61,15 @@
 
 		.section-alert {
 			margin: $margin-default;
+			margin-left: 0;
+
+			.alert-col-header {
+				padding-right: 0;
+			}
+
+			.alert-col-message {
+				padding-left: 0;
+			}
 
 			.alert-header {
 				font-weight: $font-weight-semi-bold;
@@ -80,11 +90,11 @@
 		}
 
 		.section-links {
-			margin: $margin-default;
+			margin: $margin-default 0;
 
 			a {
 				border-right: 1px solid $color-border;
-				padding: 0 12px;
+				padding: 0 8px;
 
 				&:first-of-type {
 					padding-left: 0;
@@ -103,6 +113,11 @@
 			}
 		}
 
+		.section-title {
+			margin: $margin-default;
+			margin-left: 0;
+		}
+
 		.table-responsive .table {
 			table-layout: auto;
 
@@ -112,13 +127,13 @@
 				}
 
 				&:last-of-type {
-					padding-left: $padding-default;
+					padding-left: 0;
 					width: 100%;
 				}
 
 				&:nth-of-type(2) {
 					padding: 0;
-					text-align: center;
+					text-align: left;
 
 					&:after {
 						border-left: 1px solid $color-border;
@@ -134,6 +149,7 @@
 
 				.downloads {
 					margin: $margin-default;
+					margin-left: 0;
 				}
 
 				.lfr-released-column {

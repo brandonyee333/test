@@ -59,13 +59,19 @@ String requiredAgreement = _getStringValue(ddmFormFieldValuesMap, "requiredAgree
 
 <c:if test="<%= Validator.isNotNull(alertMessage) %>">
 	<aui:alert closeable="<%= false %>" cssClass="section-alert">
-		<svg class="lexicon-icon lexicon-icon-info-circle">
-			<use xlink:href="#info-circle" />
-		</svg>
+		<aui:row>
+			<aui:col cssClass="alert-col-header" width="<%= 15 %>">
+				<svg class="lexicon-icon lexicon-icon-info-circle">
+					<use xlink:href="#info-circle" />
+				</svg>
 
-		<span class="alert-header"><liferay-ui:message key="info" />:</span>
+				<span class="alert-header"><liferay-ui:message key="info" />:</span>
+			</aui:col>
 
-		<span class="alert-message"><%= alertMessage %></span>
+			<aui:col cssClass="alert-col-message" width="<%= 85 %>">
+				<span class="alert-message"><%= alertMessage %></span>
+			</aui:col>
+		</aui:row>
 	</aui:alert>
 </c:if>
 
