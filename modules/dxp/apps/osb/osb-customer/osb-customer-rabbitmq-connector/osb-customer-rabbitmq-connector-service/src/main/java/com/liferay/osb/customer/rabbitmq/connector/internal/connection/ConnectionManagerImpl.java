@@ -116,7 +116,7 @@ public class ConnectionManagerImpl implements ConnectionManager {
 
 		if (!_connection.isOpen()) {
 			_log.error(
-				"Connection is unexpectedly closed.",
+				"Connection is unexpectedly closed",
 				_connection.getCloseReason());
 
 			return false;
