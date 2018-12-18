@@ -26,7 +26,6 @@ public class CheckAnalyticsCloudBasicMessageListener
 
 	@Override
 	protected void doReceive(Message message) throws Exception {
-		System.out.println("#######@##");
 		AccountEntryLocalServiceUtil.checkAnalyticsCloudBasicAccountEntries();
 	}
 
