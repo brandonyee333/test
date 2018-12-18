@@ -9,7 +9,8 @@ export default class AddTicketAttachment extends React.Component {
 		addTicketAttachmentURL: PropTypes.string.isRequired,
 		generateTokenURL: PropTypes.string.isRequired,
 		uploadURL: PropTypes.string.isRequired,
-		zendeskTicketId: PropTypes.string.isRequired
+		zendeskTicketId: PropTypes.string.isRequired,
+		zendeskTicketURL: PropTypes.string.isRequired
 	};
 
 	render() {
