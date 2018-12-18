@@ -17,6 +17,7 @@ package com.liferay.osb.customer.workflow.task.web.internal.portlet.action;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -62,12 +63,8 @@ public class OSBCustomerViewMVCRenderCommand implements MVCRenderCommand {
 					WorkflowTaskManagerUtil.getWorkflowTask(
 						themeDisplay.getCompanyId(), osbWorkflowTaskId);
 
-				if (!_roleLocalService.hasUserRole(
-						themeDisplay.getUserId(),
-						OSBCustomerConstants.ROLE_OSB_ACCOUNT_ADMIN_ID)) {
-
-					throw new PrincipalException();
-				}
+				checkWorkflowTaskAssignmentPermission(
+					osbWorkflowTaskId, themeDisplay);
 
 				renderRequest.setAttribute(WebKeys.WORKFLOW_TASK, workflowTask);
 			}
@@ -77,6 +74,34 @@ public class OSBCustomerViewMVCRenderCommand implements MVCRenderCommand {
 		}
 
 		return ParamUtil.getString(renderRequest, "osbMVCPath");
+	}
+
+	protected void checkWorkflowTaskAssignmentPermission(
+			long workflowTaskId, ThemeDisplay themeDisplay)
+		throws Exception {
+
+		PermissionChecker permissionChecker =
+			themeDisplay.getPermissionChecker();
+
+		if (permissionChecker.isCompanyAdmin()) {
+			return;
+		}
+
+		if (_roleLocalService.hasUserRole(
+				themeDisplay.getUserId(),
+				OSBCustomerConstants.ROLE_OSB_ACCOUNT_ADMIN_ID)) {
+
+			return;
+		}
+
+		if (_roleLocalService.hasUserRole(
+				themeDisplay.getUserId(),
+				OSBCustomerConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
+
+			return;
+		}
+
+		throw new PrincipalException();
 	}
 
 	@Reference

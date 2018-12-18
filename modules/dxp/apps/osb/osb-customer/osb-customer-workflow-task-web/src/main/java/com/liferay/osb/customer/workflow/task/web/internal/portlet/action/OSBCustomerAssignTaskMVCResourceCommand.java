@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
@@ -55,12 +56,28 @@ public class OSBCustomerAssignTaskMVCResourceCommand
 			long workflowTaskId, ThemeDisplay themeDisplay)
 		throws Exception {
 
-		if (!_roleLocalService.hasUserRole(
+		PermissionChecker permissionChecker =
+			themeDisplay.getPermissionChecker();
+
+		if (permissionChecker.isCompanyAdmin()) {
+			return;
+		}
+
+		if (_roleLocalService.hasUserRole(
 				themeDisplay.getUserId(),
 				OSBCustomerConstants.ROLE_OSB_ACCOUNT_ADMIN_ID)) {
 
-			throw new PrincipalException();
+			return;
 		}
+
+		if (_roleLocalService.hasUserRole(
+				themeDisplay.getUserId(),
+				OSBCustomerConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
+
+			return;
+		}
+
+		throw new PrincipalException();
 	}
 
 	@Override
