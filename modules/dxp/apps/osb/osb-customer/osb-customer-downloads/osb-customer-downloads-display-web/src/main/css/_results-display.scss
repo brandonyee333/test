@@ -8,12 +8,11 @@
 
 	.results {
 		.additional-notes,
-		.journal-article-row .downloads,
+		.downloads,
 		.section-alert,
 		.section-links,
 		.section-title {
-			margin: $margin-default;
-			margin-left: 0;
+			margin: $margin-default 0;
 		}
 
 		.additional-notes {
@@ -94,8 +93,6 @@
 		}
 
 		.section-links {
-			margin-right: 0;
-
 			a {
 				border-right: 1px solid $color-border;
 				padding: 0 8px;
