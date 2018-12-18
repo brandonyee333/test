@@ -64,6 +64,12 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		try {
 			AccountEntry oldAccountEntry = _oldAccountEntry.get();
 
+			if (!_zendeskOrganization.get() &&
+				!accountEntry.getActiveSupport()) {
+
+				return;
+			}
+
 			if (_zendeskOrganization.get() &&
 				((oldAccountEntry.isPartnerManagedSupport() &&
 				  !accountEntry.isPartnerManagedSupport()) ||
@@ -74,18 +80,15 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 					oldAccountEntry);
 			}
 
-			if (!_zendeskOrganization.get() &&
-				!accountEntry.getActiveSupport()) {
-
-				return;
-			}
-
 			if (oldAccountEntry.isActiveTicketSupport() &&
 				!accountEntry.isActiveTicketSupport()) {
 
 				_accountEntrySynchronizer.closeZendeskTickets(accountEntry);
 
 				_accountEntrySynchronizer.removeObsoleteTags(accountEntry);
+
+				_accountEntrySynchronizer.removePartnerManagedSupport(
+					oldAccountEntry);
 			}
 
 			if (oldAccountEntry.isActiveSupport() &&
