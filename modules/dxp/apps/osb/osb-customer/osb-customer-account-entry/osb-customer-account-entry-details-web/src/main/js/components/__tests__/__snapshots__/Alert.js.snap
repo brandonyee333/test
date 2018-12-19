@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders close icon correctly 1`] = `
+<div
+  className="alert alert-info alert-dismissible"
+  role="alert"
+>
+  <span
+    className="alert-indicator"
+  >
+    <svg
+      className="lexicon-icon lexicon-icon-info-circle"
+    >
+      <use
+        xlinkHref="#info-circle"
+      />
+    </svg>
+  </span>
+  Alert Info
+  <button
+    aria-label="Close"
+    className="close"
+    onClick={[Function]}
+    type="button"
+  >
+    <svg
+      className="lexicon-icon lexicon-icon-times"
+    >
+      <use
+        xlinkHref="#times"
+      />
+    </svg>
+  </button>
+</div>
+`;
+
+exports[`renders correctly 1`] = `
+<div
+  className="alert alert-danger"
+  role="alert"
+>
+  <span
+    className="alert-indicator"
+  >
+    <svg
+      className="lexicon-icon lexicon-icon-exclamation-full"
+    >
+      <use
+        xlinkHref="#exclamation-full"
+      />
+    </svg>
+  </span>
+  Alert Danger
+</div>
+`;
