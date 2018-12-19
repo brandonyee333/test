@@ -80,7 +80,7 @@ class Downloads extends React.Component {
 		return metadata.find(data => data.id === id);
 	};
 
-	handleAcceptEULA = () => {
+	handleAcceptEULA = event => {
 		this.setState(
 			{
 				eulaAccepted: event.target.checked
@@ -121,7 +121,7 @@ class Downloads extends React.Component {
 			}
 		);
 
-	handleSelectChange = () => {
+	handleSelectChange = event => {
 		this.setState(
 			{
 				metadata: this.getMetadata(event.target.selectedOptions[0].id)
