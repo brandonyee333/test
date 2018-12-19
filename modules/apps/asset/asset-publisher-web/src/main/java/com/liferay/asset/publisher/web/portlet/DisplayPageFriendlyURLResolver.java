@@ -34,6 +34,7 @@ import com.liferay.journal.exception.NoSuchArticleException;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleConstants;
 import com.liferay.journal.service.JournalArticleLocalService;
+import com.liferay.journal.service.JournalArticleService;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -91,8 +92,13 @@ public class DisplayPageFriendlyURLResolver implements FriendlyURLResolver {
 			FriendlyURLNormalizerUtil.normalizeWithEncoding(decodedUrlTitle);
 
 		JournalArticle journalArticle =
-			_journalArticleLocalService.getLatestArticleByUrlTitle(
+			_journalArticleLocalService.fetchLatestArticleByUrlTitle(
 				groupId, normalizedUrlTitle, WorkflowConstants.STATUS_APPROVED);
+
+		if (journalArticle == null) {
+			journalArticle = _journalArticleService.getLatestArticleByUrlTitle(
+				groupId, normalizedUrlTitle, WorkflowConstants.STATUS_PENDING);
+		}
 
 		Map<Locale, String> friendlyURLMap = journalArticle.getFriendlyURLMap();
 
@@ -151,8 +157,13 @@ public class DisplayPageFriendlyURLResolver implements FriendlyURLResolver {
 			FriendlyURLNormalizerUtil.normalizeWithEncoding(decodedUrlTitle);
 
 		JournalArticle journalArticle =
-			_journalArticleLocalService.getLatestArticleByUrlTitle(
+			_journalArticleLocalService.fetchLatestArticleByUrlTitle(
 				groupId, normalizedUrlTitle, WorkflowConstants.STATUS_APPROVED);
+
+		if (journalArticle == null) {
+			journalArticle = _journalArticleService.getLatestArticleByUrlTitle(
+				groupId, normalizedUrlTitle, WorkflowConstants.STATUS_PENDING);
+		}
 
 		Map<Locale, String> friendlyURLMap = journalArticle.getFriendlyURLMap();
 
@@ -416,6 +427,10 @@ public class DisplayPageFriendlyURLResolver implements FriendlyURLResolver {
 	private Http _http;
 
 	private JournalArticleLocalService _journalArticleLocalService;
+
+	@Reference
+	private JournalArticleService _journalArticleService;
+
 	private LayoutLocalService _layoutLocalService;
 
 	@Reference
