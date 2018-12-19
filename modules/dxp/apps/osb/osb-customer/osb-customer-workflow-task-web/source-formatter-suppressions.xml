@@ -2,6 +2,7 @@
 
 <suppressions>
 	<source-check>
+		<suppress checks="GradleVersionCheck" files="build.gradle" />
 		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/workflow/task/web/internal/portlet/action/OSBCustomerCompleteTaskMVCActionCommand.java" />
 	</source-check>
 </suppressions>
