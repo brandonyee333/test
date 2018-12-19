@@ -29,7 +29,7 @@ String redirect = ParamUtil.getString(request, "redirect", portletURL.toString()
 <liferay-ui:icon-menu>
 	<portlet:renderURL var="editURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 		<portlet:param name="mvcPath" value="/admin/edit_order_entry.jsp" />
-		<portlet:param name="redirect" value="<%= redirect %>" />
+		<portlet:param name="backURL" value="<%= portletURL.toString() %>" />
 		<portlet:param name="orderEntryId" value="<%= String.valueOf(orderEntry.getOrderEntryId()) %>" />
 	</portlet:renderURL>
 

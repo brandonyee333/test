@@ -27,7 +27,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 <liferay-ui:icon-menu>
 	<portlet:renderURL var="editURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 		<portlet:param name="mvcPath" value="/admin/edit_partner_entry.jsp" />
-		<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+		<portlet:param name="backURL" value="<%= portletURL.toString() %>" />
 		<portlet:param name="partnerEntryId" value="<%= String.valueOf(partnerEntry.getPartnerEntryId()) %>" />
 	</portlet:renderURL>
 

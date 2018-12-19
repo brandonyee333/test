@@ -60,7 +60,7 @@ String redirect = ParamUtil.getString(request, "redirect", searchURL.toString())
 		>
 			<liferay-portlet:renderURL varImpl="rowURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 				<portlet:param name="mvcPath" value="/admin/edit_order_entry.jsp" />
-				<portlet:param name="redirect" value="<%= redirect %>" />
+				<portlet:param name="backURL" value="<%= searchURL.toString() %>" />
 				<portlet:param name="orderEntryId" value="<%= String.valueOf(orderEntry.getOrderEntryId()) %>" />
 			</liferay-portlet:renderURL>
 
