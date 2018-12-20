@@ -83,7 +83,7 @@ export default class SupportInstructions extends React.Component {
 						</Button>
 					) : (
 						<Button 
-							icon={true}
+							icon
 							onClick={this.handleShowModal}
 							type="button"
 							value="add"

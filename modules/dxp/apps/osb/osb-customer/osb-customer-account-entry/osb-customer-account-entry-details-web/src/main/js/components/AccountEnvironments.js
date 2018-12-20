@@ -189,7 +189,7 @@ export default class AccountEnvironments extends React.Component {
 
 					{permitAdd && (
 						<Button
-							icon={true}
+							icon
 							onClick={this.handleDisplayNewModal}
 							value="add"
 						>

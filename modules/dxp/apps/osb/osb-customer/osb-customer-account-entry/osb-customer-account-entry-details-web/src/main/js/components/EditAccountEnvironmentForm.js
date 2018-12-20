@@ -408,7 +408,7 @@ export default class EditAccountEnvironmentForm extends React.Component {
 		return (
 			<Formik
 				ref={this.formikInstanceRef}
-				enableReinitialize={true}
+				enableReinitialize
 				initialValues={initialValues}
 				onSubmit={this.handleSubmit}
 				render={({
@@ -679,7 +679,7 @@ export default class EditAccountEnvironmentForm extends React.Component {
 											{Liferay.Language.get('search')}
 										</label>
 
-										<select className="form-control" disabled={!selectedLFRVersion} id={`${namespace}envSearch`} multiple={true} name={`${namespace}envSearch`} onBlur={handleBlur} onChange={this.handleSelectChange} value={formValues.envSearch}>
+										<select className="form-control" disabled={!selectedLFRVersion} id={`${namespace}envSearch`} multiple name={`${namespace}envSearch`} onBlur={handleBlur} onChange={this.handleSelectChange} value={formValues.envSearch}>
 											{selectedLFRVersion.envSearch.find(
 												search => search[enterprise ? 'enterprise' : 'standard'])[enterprise ? 'enterprise' : 'standard'].map(
 													(envSearch) => (
