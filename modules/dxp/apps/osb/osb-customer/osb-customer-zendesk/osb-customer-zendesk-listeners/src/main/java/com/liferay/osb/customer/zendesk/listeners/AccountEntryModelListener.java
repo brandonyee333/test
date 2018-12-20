@@ -114,6 +114,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 					accountEntry.isPartnerManagedSupport()) {
 
 					if (!_zendeskOrganization.get() ||
+						!oldAccountEntry.getActiveTicketSupport() ||
 						!oldAccountEntry.isPartnerManagedSupport() ||
 						(oldAccountEntry.getPartnerEntryId() !=
 							accountEntry.getPartnerEntryId())) {
