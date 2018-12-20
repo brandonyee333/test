@@ -1,5 +1,7 @@
 import React from 'react';
+
 import Alert from '../Alert';
+
 import TestRenderer from 'react-test-renderer';
 
 it('renders correctly', () => {
