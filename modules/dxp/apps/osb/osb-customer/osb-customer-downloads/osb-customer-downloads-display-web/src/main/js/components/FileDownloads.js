@@ -190,6 +190,7 @@ class Downloads extends React.Component {
 							display="primary"
 							href={url}
 							size="sm"
+							type="button"
 						>
 							{Liferay.Language.get('download')}
 						</Button>

@@ -136,6 +136,7 @@ export default class AccountEnvironments extends React.Component {
 											display="link"
 											onClick={() => this.handleDisplayEditModal(environment)}
 											size="sm"
+											type="button"
 											value="edit"
 										>
 											{Liferay.Language.get('edit')}

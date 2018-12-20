@@ -53,6 +53,7 @@ export default class SupportInstructions extends React.Component {
 					<Button
 						display="default"
 						onClick={this.handleCloseModal}
+						type="reset"
 						value="cancel"
 					>
 						{Liferay.Language.get('cancel')}
@@ -75,12 +76,18 @@ export default class SupportInstructions extends React.Component {
 							display="default"
 							onClick={this.handleShowModal}
 							size="sm"
+							type="button"
 							value="edit"
 						>
 							{Liferay.Language.get('edit')}
 						</Button>
 					) : (
-						<Button icon={true} onClick={this.handleShowModal} value="add">
+						<Button 
+							icon={true}
+							onClick={this.handleShowModal}
+							type="button"
+							value="add"
+						>
 							<svg className="lexicon-icon lexicon-icon-plus">
 								<use xlinkHref="#plus" />
 							</svg>
