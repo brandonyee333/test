@@ -1,6 +1,10 @@
 Bundle-Name: Liferay SAML Web
 Bundle-SymbolicName: com.liferay.saml.web
 Bundle-Version: 1.0.16
+Import-Package:\
+	javax.net.ssl;resolution:=optional,\
+	\
+	*
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title:
 Provide-Capability:\
