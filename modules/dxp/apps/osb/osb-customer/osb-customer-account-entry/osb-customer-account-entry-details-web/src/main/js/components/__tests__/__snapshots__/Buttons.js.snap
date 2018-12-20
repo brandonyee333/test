@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders as a certain size correctly 1`] = `
+<button
+  className="btn btn-lg btn-primary"
+  disabled={false}
+  type="button"
+>
+  Large Button
+</button>
+`;
+
+exports[`renders as a certain type correctly 1`] = `
+<button
+  className="btn btn-md btn-primary"
+  disabled={false}
+  type="submit"
+>
+  Submit Button
+</button>
+`;
+
+exports[`renders as a link correctly 1`] = `
+<a
+  className="btn btn-md btn-link"
+  href="/"
+>
+  Link
+</a>
+`;
+
+exports[`renders as an icon correctly 1`] = `
+<button
+  className="btn btn-md btn-primary btn-monospaced"
+  disabled={false}
+  type="button"
+>
+  +
+</button>
+`;
+
+exports[`renders as disabled correctly 1`] = `
+<button
+  className="btn btn-md btn-primary"
+  disabled={true}
+  type="button"
+>
+  Disabled Button
+</button>
+`;
+
+exports[`renders as primary style correctly 1`] = `
+<button
+  className="btn btn-md btn-primary"
+  disabled={false}
+  type="button"
+>
+  Primary Button
+</button>
+`;
+
+exports[`renders correctly 1`] = `
+<button
+  className="btn btn-md btn-primary"
+  disabled={false}
+  type="button"
+>
+  Button
+</button>
+`;
+
+exports[`renders with a value correctly 1`] = `
+<button
+  className="btn btn-md btn-primary"
+  disabled={false}
+  type="button"
+  value="1"
+>
+  Value of 1 Button
+</button>
+`;

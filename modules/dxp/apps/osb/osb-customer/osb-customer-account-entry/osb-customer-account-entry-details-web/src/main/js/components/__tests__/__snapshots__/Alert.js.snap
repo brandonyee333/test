@@ -1,6 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders close icon correctly 1`] = `
+exports[`renders correctly 1`] = `
+<div
+  className="alert alert-danger"
+  role="alert"
+>
+  <span
+    className="alert-indicator"
+  >
+    <svg
+      className="lexicon-icon lexicon-icon-exclamation-full"
+    >
+      <use
+        xlinkHref="#exclamation-full"
+      />
+    </svg>
+  </span>
+  Alert Danger
+</div>
+`;
+
+exports[`renders with close icon correctly 1`] = `
 <div
   className="alert alert-info alert-dismissible"
   role="alert"
@@ -31,25 +51,5 @@ exports[`renders close icon correctly 1`] = `
       />
     </svg>
   </button>
-</div>
-`;
-
-exports[`renders correctly 1`] = `
-<div
-  className="alert alert-danger"
-  role="alert"
->
-  <span
-    className="alert-indicator"
-  >
-    <svg
-      className="lexicon-icon lexicon-icon-exclamation-full"
-    >
-      <use
-        xlinkHref="#exclamation-full"
-      />
-    </svg>
-  </span>
-  Alert Danger
 </div>
 `;
