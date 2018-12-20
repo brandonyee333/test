@@ -82,7 +82,7 @@ export default class SupportInstructions extends React.Component {
 							{Liferay.Language.get('edit')}
 						</Button>
 					) : (
-						<Button 
+						<Button
 							icon
 							onClick={this.handleShowModal}
 							type="button"
