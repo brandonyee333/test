@@ -10,7 +10,7 @@ it('renders correctly', () => {
 	expect(tree).toMatchSnapshot();
 });
 
-it('renders close icon correctly', () => {
+it('renders with close icon correctly', () => {
 	const handleOnClose = () => console.log('close');
 
 	const tree = TestRenderer.create(
