@@ -756,10 +756,9 @@ public class WatsonTokenAuthEntryPersistenceImpl extends BasePersistenceImpl<Wat
 		qPos.add(userId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(watsonTokenAuthEntry);
-
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object orderByConditionValue : orderByComparator.getOrderByConditionValues(
+					watsonTokenAuthEntry)) {
+				qPos.add(orderByConditionValue);
 			}
 		}
 

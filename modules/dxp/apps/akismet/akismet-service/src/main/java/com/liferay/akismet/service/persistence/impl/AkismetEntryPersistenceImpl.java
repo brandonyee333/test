@@ -529,10 +529,9 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 		}
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(akismetEntry);
-
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object orderByConditionValue : orderByComparator.getOrderByConditionValues(
+					akismetEntry)) {
+				qPos.add(orderByConditionValue);
 			}
 		}
 
