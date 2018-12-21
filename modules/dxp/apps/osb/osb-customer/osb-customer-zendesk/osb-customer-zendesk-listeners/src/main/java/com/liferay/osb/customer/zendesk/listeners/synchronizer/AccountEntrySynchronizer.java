@@ -58,64 +58,6 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = AccountEntrySynchronizer.class)
 public class AccountEntrySynchronizer {
 
-	public void add(AccountEntry accountEntry) throws PortalException {
-		long classNameId = _classNameLocalService.getClassNameId(
-			AccountEntry.class);
-
-		boolean externalIdMappers =
-			ExternalIdMapperLocalServiceUtil.hasExternalIdMappers(
-				classNameId, accountEntry.getAccountEntryId(),
-				ExternalIdMapperConstants.TYPE_ZENDESK);
-
-		String jiraProjectKey = StringPool.BLANK;
-		String partnerEntryCode = StringPool.BLANK;
-
-		PartnerEntry partnerEntry = accountEntry.getPartnerEntry();
-
-		if (partnerEntry != null) {
-			jiraProjectKey = partnerEntry.getJiraProjectKey();
-			partnerEntryCode = partnerEntry.getCode();
-		}
-
-		String supportLevelLabel = StringPool.BLANK;
-
-		SupportResponse supportResponse =
-			SupportResponseLocalServiceUtil.fetchSupportResponse(
-				accountEntry.getHighestSupportResponseId());
-
-		if (supportResponse != null) {
-			supportLevelLabel = supportResponse.getSupportLevelLabel();
-		}
-
-		String[] languageIds = accountEntry.getLanguageIds();
-
-		long[] supportRegionIds = accountEntry.getSupportRegionIds();
-
-		SupportRegion supportRegion =
-			SupportRegionLocalServiceUtil.getSupportRegion(supportRegionIds[0]);
-
-		_zendeskOrganizationWebService.createOrUpdateZendeskOrganization(
-			accountEntry.getCode(),
-			ZendeskModelListenerUtil.convertAddressToString(
-				accountEntry.getAddress()),
-			String.valueOf(accountEntry.getAccountEntryId()),
-			accountEntry.getName(), accountEntry.getNotes(),
-			String.valueOf(accountEntry.getPartnerManagedSupport()),
-			jiraProjectKey, partnerEntryCode, supportLevelLabel,
-			accountEntry.getStatusLabel(),
-			AccountEntryConstants.getLanguageLabel(languageIds[0]),
-			supportRegion.getName(),
-			AccountEntryConstants.getTierLabel(accountEntry.getTier()),
-			getTags(accountEntry));
-
-		if (!externalIdMappers) {
-			_asyncZendeskUserWebService.createOrUpdateZendeskUser(
-				null, getDefaultUserEmail(accountEntry.getCode()),
-				ZendeskLocales.US, accountEntry.getCode(),
-				accountEntry.getName(), null);
-		}
-	}
-
 	public void addAccountCustomers(AccountEntry accountEntry)
 		throws PortalException {
 
@@ -202,6 +144,64 @@ public class AccountEntrySynchronizer {
 		for (PartnerWorker partnerWorker : partnerWorkers) {
 			_partnerWorkerSynchronizer.remove(
 				accountEntry.getAccountEntryId(), partnerWorker);
+		}
+	}
+
+	public void update(AccountEntry accountEntry) throws PortalException {
+		long classNameId = _classNameLocalService.getClassNameId(
+			AccountEntry.class);
+
+		boolean externalIdMappers =
+			ExternalIdMapperLocalServiceUtil.hasExternalIdMappers(
+				classNameId, accountEntry.getAccountEntryId(),
+				ExternalIdMapperConstants.TYPE_ZENDESK);
+
+		String jiraProjectKey = StringPool.BLANK;
+		String partnerEntryCode = StringPool.BLANK;
+
+		PartnerEntry partnerEntry = accountEntry.getPartnerEntry();
+
+		if (partnerEntry != null) {
+			jiraProjectKey = partnerEntry.getJiraProjectKey();
+			partnerEntryCode = partnerEntry.getCode();
+		}
+
+		String supportLevelLabel = StringPool.BLANK;
+
+		SupportResponse supportResponse =
+			SupportResponseLocalServiceUtil.fetchSupportResponse(
+				accountEntry.getHighestSupportResponseId());
+
+		if (supportResponse != null) {
+			supportLevelLabel = supportResponse.getSupportLevelLabel();
+		}
+
+		String[] languageIds = accountEntry.getLanguageIds();
+
+		long[] supportRegionIds = accountEntry.getSupportRegionIds();
+
+		SupportRegion supportRegion =
+			SupportRegionLocalServiceUtil.getSupportRegion(supportRegionIds[0]);
+
+		_zendeskOrganizationWebService.createOrUpdateZendeskOrganization(
+			accountEntry.getCode(),
+			ZendeskModelListenerUtil.convertAddressToString(
+				accountEntry.getAddress()),
+			String.valueOf(accountEntry.getAccountEntryId()),
+			accountEntry.getName(), accountEntry.getNotes(),
+			String.valueOf(accountEntry.getPartnerManagedSupport()),
+			jiraProjectKey, partnerEntryCode, supportLevelLabel,
+			accountEntry.getStatusLabel(),
+			AccountEntryConstants.getLanguageLabel(languageIds[0]),
+			supportRegion.getName(),
+			AccountEntryConstants.getTierLabel(accountEntry.getTier()),
+			getTags(accountEntry));
+
+		if (!externalIdMappers) {
+			_asyncZendeskUserWebService.createOrUpdateZendeskUser(
+				null, getDefaultUserEmail(accountEntry.getCode()),
+				ZendeskLocales.US, accountEntry.getCode(),
+				accountEntry.getName(), null);
 		}
 	}
 

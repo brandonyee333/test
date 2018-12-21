@@ -48,7 +48,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 				return;
 			}
 
-			_accountEntrySynchronizer.add(accountEntry);
+			_accountEntrySynchronizer.update(accountEntry);
 		}
 		catch (Exception e) {
 			_log.error(e);
@@ -94,7 +94,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			if (oldAccountEntry.isActiveSupport() &&
 				!accountEntry.isActiveSupport()) {
 
-				_accountEntrySynchronizer.add(accountEntry);
+				_accountEntrySynchronizer.update(accountEntry);
 
 				_accountEntrySynchronizer.removeAccountCustomers(accountEntry);
 
@@ -102,7 +102,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			}
 
 			if (accountEntry.getActiveSupport()) {
-				_accountEntrySynchronizer.add(accountEntry);
+				_accountEntrySynchronizer.update(accountEntry);
 
 				if ((oldAccountEntry.isActiveTicketSupport() !=
 						accountEntry.getActiveTicketSupport()) ||

@@ -46,7 +46,7 @@ public class PartnerEntryModelListener extends BaseModelListener<PartnerEntry> {
 			for (AccountEntry accountEntry :
 					partnerEntry.getPartnerManagedAccountEntries()) {
 
-				_accountEntrySynchronizer.add(accountEntry);
+				_accountEntrySynchronizer.update(accountEntry);
 			}
 		}
 		catch (Exception e) {
