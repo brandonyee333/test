@@ -16,6 +16,7 @@ package com.liferay.lcs.messaging.security;
 
 import com.liferay.lcs.messaging.SendPortalPropertiesCommandMessage;
 import com.liferay.lcs.messaging.internal.security.DigitalSignatureImpl;
+import com.liferay.lcs.messaging.security.exception.DigitalSignatureException;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -29,7 +30,7 @@ import org.junit.runners.JUnit4;
 public class DigitalSignatureTest {
 
 	@Test
-	public void test() {
+	public void test() throws DigitalSignatureException {
 		DigitalSignatureImpl digitalSignatureImpl = new DigitalSignatureImpl();
 
 		digitalSignatureImpl.setKeyName("localhost");
