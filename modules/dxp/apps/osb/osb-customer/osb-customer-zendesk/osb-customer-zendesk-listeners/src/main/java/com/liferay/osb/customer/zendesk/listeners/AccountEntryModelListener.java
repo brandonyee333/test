@@ -94,6 +94,8 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			if (oldAccountEntry.isActiveSupport() &&
 				!accountEntry.isActiveSupport()) {
 
+				_accountEntrySynchronizer.add(accountEntry);
+
 				_accountEntrySynchronizer.removeAccountCustomers(accountEntry);
 
 				_accountEntrySynchronizer.removeObsoleteTags(accountEntry);
