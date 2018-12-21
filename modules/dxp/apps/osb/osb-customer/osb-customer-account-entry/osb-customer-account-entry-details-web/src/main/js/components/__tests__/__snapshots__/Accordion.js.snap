@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Accordion renders correctly 1`] = `
+<div
+  aria-orientation="vertical"
+  className="panel-group"
+  role="tablist"
+>
+  <div
+    className="panel"
+  >
+    <button
+      className="btn-link panel-header"
+      onClick={[Function]}
+      role="tab"
+      type="button"
+    >
+      <div
+        className="panel-title"
+      >
+        Accordion Title
+      </div>
+      <svg
+        className="lexicon-icon lexicon-icon-angle-right"
+      >
+        <use
+          xlinkHref="#angle-right"
+        />
+      </svg>
+    </button>
+  </div>
+</div>
+`;
