@@ -3,7 +3,9 @@
 ### Set up
 #### OSB Downloads Display Portlet
 
-Place the _OSB Downloads Display_ portlet on the page. Click on the ellipsis icon inside the portlet's topbar, and open _Configuration_.
+Place the _OSB Downloads Display_ portlet on a page (not to be confused with _OSB Downloads_ portet). Go into the product menu and click on the ellipsis next to the current page. Choose _Configure Page_ and select _OSB Downloads Display Layout_ as the page's layout.
+
+Click on the ellipsis icon inside the portlet's topbar, and open _Configuration_.
 
 In the _Setup_ tab, use the _DDM Structure Key_ dropdown and select either _OSB-CUSTOMER-THEME--DOWNLOAD_ or _OSB-CUSTOMER-THEME--TRIAL-DOWNLOAD_. Save the configuration.
 
