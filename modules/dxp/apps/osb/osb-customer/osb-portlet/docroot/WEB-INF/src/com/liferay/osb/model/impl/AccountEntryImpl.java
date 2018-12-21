@@ -51,6 +51,7 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @author Amos Fong
  */
+@JSON(strict = true)
 public class AccountEntryImpl extends AccountEntryBaseImpl {
 
 	public AccountEntryImpl() {
