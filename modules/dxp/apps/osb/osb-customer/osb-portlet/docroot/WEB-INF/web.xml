@@ -27,6 +27,10 @@
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>OSB Secure AC JSON Filter</filter-name>
+		<url-pattern>/api/jsonws/accountentry/get-account-entry-by-code</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>OSB Secure AC JSON Filter</filter-name>
 		<url-pattern>/api/jsonws/accountentry/get-corp-project-account-entry</url-pattern>
 	</filter-mapping>
 	<filter-mapping>
@@ -48,6 +52,10 @@
 	<filter-mapping>
 		<filter-name>OSB Secure AC JSON Filter</filter-name>
 		<url-pattern>/api/secure/jsonws/accountentry/get-account-entries</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>OSB Secure AC JSON Filter</filter-name>
+		<url-pattern>/api/secure/jsonws/accountentry/get-account-entry-by-code</url-pattern>
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>OSB Secure AC JSON Filter</filter-name>
