@@ -122,9 +122,12 @@ class Downloads extends React.Component {
 		);
 
 	handleSelectChange = event => {
+		const eventTarget = event.target;
+		const selectedIndex =  eventTarget.selectedIndex;
+
 		this.setState(
 			{
-				metadata: this.getMetadata(event.target.selectedOptions[0].id)
+				metadata: this.getMetadata(eventTarget[selectedIndex].id)
 			}
 		);
 	};
