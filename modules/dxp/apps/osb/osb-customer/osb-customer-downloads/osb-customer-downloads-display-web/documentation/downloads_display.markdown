@@ -3,7 +3,7 @@
 ### Set up
 #### OSB Downloads Display Portlet
 
-Place the _OSB Downloads Display_ portlet on a page (not to be confused with _OSB Downloads_ portet). Go into the product menu and click on the ellipsis next to the current page. Choose _Configure Page_ and select _OSB Downloads Display Layout_ as the page's layout.
+Place the _OSB Downloads Display_ portlet on a page (not to be confused with _OSB Downloads_ portet). Go to the product menu and click on the ellipsis next to the current page. Choose _Configure Page_ and select _OSB Downloads Display Layout_ as the page's layout.
 
 Click on the ellipsis icon inside the portlet's topbar, and open _Configuration_.
 
