@@ -41,6 +41,16 @@ String requiredAgreement = _getStringValue(ddmFormFieldValuesMap, "requiredAgree
 	<aui:a href="<%= journalArticleURL.toString() %>" label="<%= journalArticle.getTitle(locale) %>" />
 </h3>
 
+<%
+DateFormat dateFormat = DateFormatFactoryUtil.getSimpleDateFormat("yyyy-MM-dd");
+
+Date releaseDate = dateFormat.parse(DDMFieldsUtil.getString(ddmFields, "releaseDate"));
+%>
+
+<div class="hidden-lg hidden-md">
+	<%= mediumDateFormatDate.format(releaseDate) %>
+</div>
+
 <div class="section-links">
 
 	<%
@@ -60,7 +70,7 @@ String requiredAgreement = _getStringValue(ddmFormFieldValuesMap, "requiredAgree
 <c:if test="<%= Validator.isNotNull(alertMessage) %>">
 	<aui:alert closeable="<%= false %>" cssClass="section-alert">
 		<aui:row>
-			<aui:col cssClass="alert-col-header" width="<%= 15 %>">
+			<aui:col cssClass="alert-col-header" lg="2">
 				<svg class="lexicon-icon lexicon-icon-info-circle">
 					<use xlink:href="#info-circle" />
 				</svg>
@@ -68,7 +78,7 @@ String requiredAgreement = _getStringValue(ddmFormFieldValuesMap, "requiredAgree
 				<span class="alert-header"><liferay-ui:message key="info" />:</span>
 			</aui:col>
 
-			<aui:col cssClass="alert-col-message" width="<%= 85 %>">
+			<aui:col cssClass="alert-col-message" lg="10">
 				<span class="alert-message"><%= alertMessage %></span>
 			</aui:col>
 		</aui:row>
