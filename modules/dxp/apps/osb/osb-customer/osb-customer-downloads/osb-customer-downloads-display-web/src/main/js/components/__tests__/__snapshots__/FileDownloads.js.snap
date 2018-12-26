@@ -1,0 +1,88 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FileDownloads renders multiple downloads correctly 1`] = `
+Array [
+  <div
+    className="dropdown-row"
+  >
+    <select
+      className="download-dropdown form-control"
+      onChange={[Function]}
+    >
+      <optgroup
+        label="Download Group Name 1"
+      >
+        <option
+          id="123-0-0"
+          value="Download Name 1"
+        >
+          Download Name 1
+        </option>
+      </optgroup>
+      <optgroup
+        label="Download Group Name 2"
+      >
+        <option
+          id="123-1-0"
+          value="Download Name 2"
+        >
+          Download Name 2
+        </option>
+      </optgroup>
+    </select>
+    <a
+      className="btn btn-sm btn-link"
+      href="/"
+    >
+      download
+    </a>
+  </div>,
+  <div
+    class="download-details small"
+  >
+    <span
+      className="detail-label"
+    >
+      label
+    </span>
+    :
+     
+    <span
+      className="detail-value"
+    >
+      value
+    </span>
+  </div>,
+]
+`;
+
+exports[`FileDownloads renders single download correctly 1`] = `
+Array [
+  <div
+    className="dropdown-row"
+  >
+    <a
+      className="btn btn-sm btn-link"
+      href="/"
+    >
+      download
+    </a>
+  </div>,
+  <div
+    class="download-details small"
+  >
+    <span
+      className="detail-label"
+    >
+      label
+    </span>
+    :
+     
+    <span
+      className="detail-value"
+    >
+      value
+    </span>
+  </div>,
+]
+`;
