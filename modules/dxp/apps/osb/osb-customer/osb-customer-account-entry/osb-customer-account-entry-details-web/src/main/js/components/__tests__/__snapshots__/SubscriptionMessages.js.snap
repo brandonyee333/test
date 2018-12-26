@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SubscriptionMessages renders correctly 1`] = `
+<div>
+  <div
+    id="id"
+  >
+    <div
+      className="alert alert-danger alert-dismissible"
+      role="alert"
+    >
+      <span
+        className="alert-indicator"
+      >
+        <svg
+          className="lexicon-icon lexicon-icon-exclamation-full"
+        >
+          <use
+            xlinkHref="#exclamation-full"
+          />
+        </svg>
+      </span>
+      <span
+        className="lead"
+      >
+        subscription-message:
+      </span>
+       
+      Message Title
+       
+      <a
+        className="semibold"
+        onClick={[Function]}
+      >
+        view-message
+      </a>
+      <button
+        aria-label="Close"
+        className="close"
+        onClick={[Function]}
+        type="button"
+      >
+        <svg
+          className="lexicon-icon lexicon-icon-times"
+        >
+          <use
+            xlinkHref="#times"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+`;
