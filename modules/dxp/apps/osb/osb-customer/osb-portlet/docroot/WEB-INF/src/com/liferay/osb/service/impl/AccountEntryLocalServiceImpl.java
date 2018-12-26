@@ -2850,18 +2850,21 @@ public class AccountEntryLocalServiceImpl
 			}
 		}
 
-		if (accountEntryId <= 0) {
-			if (accountEntryPersistence.countByName(name) >= 1) {
-				throw new DuplicateAccountEntryException();
-			}
-		}
-		else {
-			for (AccountEntry accountEntry :
-					accountEntryPersistence.findByName(name)) {
+		List<AccountEntry> accountEntries = accountEntryPersistence.findByName(
+			name);
 
-				if (accountEntry.getAccountEntryId() != accountEntryId) {
-					throw new DuplicateAccountEntryException();
-				}
+		for (AccountEntry accountEntry : accountEntries) {
+			if ((accountEntry.getRedirectAccountEntryId() > 0) ||
+				(accountEntry.getStatus() ==
+					WorkflowConstants.STATUS_PENDING)) {
+
+				continue;
+			}
+
+			if ((accountEntryId <= 0) ||
+				(accountEntry.getAccountEntryId() != accountEntryId)) {
+
+				throw new DuplicateAccountEntryException();
 			}
 		}
 
