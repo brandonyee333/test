@@ -55,6 +55,9 @@
 		"webpack-merge": "^4.1.3",
 		"xo": "^0.22.0"
 	},
+	"jest": {
+		"setupTestFrameworkScriptFile": "<rootDir>/src/main/js/test/setup.js"
+	},
 	"license": "UNLICENSED",
 	"name": "osb-customer-account-entry-details",
 	"repository": {
