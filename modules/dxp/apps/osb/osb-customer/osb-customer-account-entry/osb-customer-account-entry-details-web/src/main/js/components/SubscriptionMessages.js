@@ -82,7 +82,16 @@ export default class SubscriptionMessages extends React.Component {
 	};
 
 	static propTypes = {
-		messages: PropTypes.arrayOf(PropTypes.object).isRequired
+		messages: PropTypes.arrayOf(
+			PropTypes.shape(
+				{
+					content: PropTypes.string,
+					id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+					severity: PropTypes.string,
+					title: PropTypes.string
+				}
+			)
+		).isRequired
 	};
 
 	handleCloseAlert = (currentId) => {
