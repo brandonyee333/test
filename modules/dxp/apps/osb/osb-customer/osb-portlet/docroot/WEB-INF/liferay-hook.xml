@@ -17,6 +17,14 @@
 		</init-param>
 	</servlet-filter>
 	<servlet-filter>
+		<servlet-filter-name>OSB Secure Patcher JSON Filter</servlet-filter-name>
+		<servlet-filter-impl>com.liferay.osb.servlet.filters.OSBSecureJSONFilter</servlet-filter-impl>
+		<init-param>
+			<param-name>token_property</param-name>
+			<param-value>json.service.api.patcher.token</param-value>
+		</init-param>
+	</servlet-filter>
+	<servlet-filter>
 		<servlet-filter-name>OSB Secure WEB JSON Filter</servlet-filter-name>
 		<servlet-filter-impl>com.liferay.osb.servlet.filters.OSBSecureJSONFilter</servlet-filter-impl>
 		<init-param>
@@ -50,6 +58,10 @@
 		<url-pattern>/api/secure/jsonws/user/get-user-by-email-address/*</url-pattern>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>REQUEST</dispatcher>
+	</servlet-filter-mapping>
+	<servlet-filter-mapping>
+		<servlet-filter-name>OSB Secure Patcher JSON Filter</servlet-filter-name>
+		<url-pattern>/api/jsonws/osb-portlet.accountentry/get-account-entry-by-code</url-pattern>
 	</servlet-filter-mapping>
 	<servlet-filter-mapping>
 		<servlet-filter-name>OSB Secure WEB JSON Filter</servlet-filter-name>
