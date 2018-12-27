@@ -30,7 +30,7 @@
 			font-weight: $font-weight-semi-bold;
 		}
 
-		.detail-value:not(:last-child)::after {
+		.details:not(:last-child)::after {
 			content: "\B7";
 			padding: 0 12px;
 
