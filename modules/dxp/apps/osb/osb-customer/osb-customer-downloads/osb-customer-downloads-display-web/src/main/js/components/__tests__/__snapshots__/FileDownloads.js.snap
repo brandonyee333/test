@@ -41,16 +41,20 @@ Array [
     class="download-details small"
   >
     <span
-      className="detail-label"
+      className="details"
     >
-      label
-    </span>
-    :
-     
-    <span
-      className="detail-value"
-    >
-      value
+      <span
+        className="detail-label"
+      >
+        label
+      </span>
+      :
+       
+      <span
+        className="detail-value"
+      >
+        value
+      </span>
     </span>
   </div>,
 ]
@@ -72,16 +76,20 @@ Array [
     class="download-details small"
   >
     <span
-      className="detail-label"
+      className="details"
     >
-      label
-    </span>
-    :
-     
-    <span
-      className="detail-value"
-    >
-      value
+      <span
+        className="detail-label"
+      >
+        label
+      </span>
+      :
+       
+      <span
+        className="detail-value"
+      >
+        value
+      </span>
     </span>
   </div>,
 ]
