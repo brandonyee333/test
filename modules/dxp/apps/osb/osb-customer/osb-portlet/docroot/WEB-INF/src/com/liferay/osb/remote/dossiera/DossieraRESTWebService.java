@@ -16,6 +16,7 @@ package com.liferay.osb.remote.dossiera;
 
 import com.liferay.osb.exception.RemoteServiceException;
 import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONObject;
 
 /**
  * @author Amos Fong
@@ -23,6 +24,13 @@ import com.liferay.portal.kernel.json.JSONArray;
 public interface DossieraRESTWebService {
 
 	public JSONArray getOpportunitiesJSONArray(String salesforceProjectKey)
+		throws RemoteServiceException;
+
+	public JSONObject postProject(
+			String dossieraAccountKey, String recordTypeId,
+			String primaryContactEmailAddress, String primaryContactFirstName,
+			String primaryContactLastName,
+			String primaryContactMailingCountryCode, String currencyIsoCode)
 		throws RemoteServiceException;
 
 }

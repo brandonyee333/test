@@ -49,8 +49,10 @@ public class CorpProjectUpdateMessageProcessor extends BaseMessageProcessor {
 			new Date(jsonObject.getLong("modifiedDate")));
 
 		CorpProjectLocalServiceUtil.updateCorpProject(
-			corpProject.getCorpProjectId(), jsonObject.getString("name"),
-			serviceContext);
+			corpProject.getCorpProjectId(),
+			jsonObject.getString("dossieraProjectKey"),
+			jsonObject.getString("salesforceProjectKey"),
+			jsonObject.getString("name"), serviceContext);
 	}
 
 	@Reference(

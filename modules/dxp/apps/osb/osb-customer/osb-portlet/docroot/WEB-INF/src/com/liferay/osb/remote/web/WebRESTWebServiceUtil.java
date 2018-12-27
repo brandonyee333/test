@@ -124,10 +124,12 @@ public class WebRESTWebServiceUtil {
 	}
 
 	public static JSONObject putCorpProjects(
-			String corpProjectUUID, String name)
+			String corpProjectUUID, String dossieraProjectKey,
+			String salesforceProjectKey, String name)
 		throws RemoteServiceException {
 
-		return getWebRESTWebService().putCorpProjects(corpProjectUUID, name);
+		return getWebRESTWebService().putCorpProjects(
+			corpProjectUUID, dossieraProjectKey, salesforceProjectKey, name);
 	}
 
 	public static void putCorpProjectsUser(

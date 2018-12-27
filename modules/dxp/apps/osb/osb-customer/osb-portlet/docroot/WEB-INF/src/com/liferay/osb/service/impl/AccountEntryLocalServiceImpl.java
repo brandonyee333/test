@@ -52,8 +52,11 @@ import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.model.SupportResponse;
 import com.liferay.osb.rabbitmq.ProvisioningAuditRabbitMQConsumer;
 import com.liferay.osb.remote.dossiera.DossieraRESTWebServiceUtil;
+import com.liferay.osb.remote.web.WebRESTWebServiceUtil;
 import com.liferay.osb.service.base.AccountEntryLocalServiceBaseImpl;
 import com.liferay.osb.support.util.SupportUtil;
+import com.liferay.osb.util.CountryConstants;
+import com.liferay.osb.util.CurrencyConstants;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.PortletPropsKeys;
 import com.liferay.osb.util.PortletPropsValues;
@@ -671,6 +674,8 @@ public class AccountEntryLocalServiceImpl
 			}
 		}
 
+		// Account customers
+
 		List<AccountCustomer> acccountCustomers =
 			accountCustomerLocalService.getAccountCustomers(
 				accountEntry.getAccountEntryId());
@@ -688,6 +693,8 @@ public class AccountEntryLocalServiceImpl
 			}
 		}
 
+		// Offering entries
+
 		Date supportEndDate = new Date(
 			System.currentTimeMillis() + (90 * Time.DAY));
 
@@ -695,6 +702,49 @@ public class AccountEntryLocalServiceImpl
 			offeringEntry.setSupportEndDate(supportEndDate);
 
 			offeringEntryPersistence.update(offeringEntry);
+		}
+
+		// Dossiera project
+
+		if (Validator.isNull(corpProject.getDossieraProjectKey())) {
+			try {
+				User user = userLocalService.getUser(userId);
+
+				String primaryContactMailingCountryCode = StringPool.BLANK;
+
+				List<Address> addresses = user.getAddresses();
+
+				for (Address address : addresses) {
+					if (Validator.isNull(primaryContactMailingCountryCode) ||
+						address.isMailing()) {
+
+						Country country = address.getCountry();
+
+						if (Validator.isNotNull(country.getA2())) {
+							primaryContactMailingCountryCode = country.getA2();
+						}
+					}
+				}
+
+				if (Validator.isNull(primaryContactMailingCountryCode)) {
+					primaryContactMailingCountryCode =
+						CountryConstants.US_A2_CODE;
+				}
+
+				JSONObject jsonObject = DossieraRESTWebServiceUtil.postProject(
+					accountEntry.getDossieraAccountKey(),
+					SalesforceConstants.PROJECT_RECORD_TYPE_ANALYTICS_CLOUD_ID,
+					user.getEmailAddress(), user.getFirstName(),
+					user.getLastName(), primaryContactMailingCountryCode,
+					CurrencyConstants.CODE_USD);
+
+				WebRESTWebServiceUtil.putCorpProjects(
+					corpProjectUuid,
+					jsonObject.getString("_dossieraProjectKey"), null, null);
+			}
+			catch (Exception e) {
+				_log.error(e, e);
+			}
 		}
 	}
 

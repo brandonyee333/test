@@ -19,7 +19,9 @@ import com.liferay.osb.remote.BaseWebService;
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.http.HttpMessage;
@@ -37,6 +39,30 @@ public class DossieraRESTWebServiceImpl
 		return doGetToJSONArray(
 			_URL_API_REST_PURCHASED_PRODUCT + "/opportunities/" +
 				salesforceProjectKey);
+	}
+
+	@Override
+	public JSONObject postProject(
+			String dossieraAccountKey, String recordTypeId,
+			String primaryContactEmailAddress, String primaryContactFirstName,
+			String primaryContactLastName,
+			String primaryContactMailingCountryCode, String currencyIsoCode)
+		throws RemoteServiceException {
+
+		Map<String, String> parameters = new HashMap<>();
+
+		parameters.put("currencyIsoCode", currencyIsoCode);
+		parameters.put("dossieraAccountKey", dossieraAccountKey);
+		parameters.put(
+			"primaryContactEmailAddress", primaryContactEmailAddress);
+		parameters.put("primaryContactFirstName", primaryContactFirstName);
+		parameters.put("primaryContactLastName", primaryContactLastName);
+		parameters.put(
+			"primaryContactMailingCountryCode",
+			primaryContactMailingCountryCode);
+		parameters.put("recordTypeId", recordTypeId);
+
+		return doPostToJSONObject(_URL_API_REST_PROJECT, parameters);
 	}
 
 	@Override
@@ -63,7 +89,24 @@ public class DossieraRESTWebServiceImpl
 		}
 	}
 
+	protected JSONObject doPostToJSONObject(
+			String url, Map<String, String> parameters)
+		throws RemoteServiceException {
+
+		try {
+			String response = doPost(url, parameters);
+
+			return JSONFactoryUtil.createJSONObject(response);
+		}
+		catch (Exception e) {
+			throw new RemoteServiceException(e);
+		}
+	}
+
 	private static final String _URL_API_REST = "/osb-dossiera-portlet/rest";
+
+	private static final String _URL_API_REST_PROJECT =
+		_URL_API_REST + "/project";
 
 	private static final String _URL_API_REST_PURCHASED_PRODUCT =
 		_URL_API_REST + "/purchased-product";

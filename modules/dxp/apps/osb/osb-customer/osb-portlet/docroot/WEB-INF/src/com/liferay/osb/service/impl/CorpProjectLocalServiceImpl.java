@@ -159,7 +159,9 @@ public class CorpProjectLocalServiceImpl
 	}
 
 	public CorpProject updateCorpProject(
-			long corpProjectId, String name, ServiceContext serviceContext)
+			long corpProjectId, String dossieraProjectKey,
+			String salesforceProjectKey, String name,
+			ServiceContext serviceContext)
 		throws PortalException {
 
 		Date modifiedDate = serviceContext.getModifiedDate(new Date());
@@ -168,6 +170,8 @@ public class CorpProjectLocalServiceImpl
 			corpProjectId);
 
 		corpProject.setModifiedDate(modifiedDate);
+		corpProject.setDossieraProjectKey(dossieraProjectKey);
+		corpProject.setSalesforceProjectKey(salesforceProjectKey);
 		corpProject.setName(name);
 
 		return corpProjectPersistence.update(corpProject);

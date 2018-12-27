@@ -252,12 +252,24 @@ public class WebRESTWebServiceImpl
 	}
 
 	@Override
-	public JSONObject putCorpProjects(String corpProjectUUID, String name)
+	public JSONObject putCorpProjects(
+			String corpProjectUUID, String dossieraProjectKey,
+			String salesforceProjectKey, String name)
 		throws RemoteServiceException {
 
 		Map<String, String> parameters = new HashMap<>();
 
-		parameters.put("name", name);
+		if (dossieraProjectKey != null) {
+			parameters.put("dossieraProjectKey", dossieraProjectKey);
+		}
+
+		if (name != null) {
+			parameters.put("name", name);
+		}
+
+		if (salesforceProjectKey != null) {
+			parameters.put("salesforceProjectKey", salesforceProjectKey);
+		}
 
 		return doPutToJSONObject(
 			_URL_API_REST_CORP_PROJECTS + corpProjectUUID, parameters);

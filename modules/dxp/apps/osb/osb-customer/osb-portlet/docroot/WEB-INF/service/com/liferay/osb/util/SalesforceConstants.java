@@ -33,6 +33,9 @@ public class SalesforceConstants {
 
 	public static final int OPPORTUNITY_TYPE_RENEWAL = 4;
 
+	public static final String PROJECT_RECORD_TYPE_ANALYTICS_CLOUD_ID =
+		"0120g0000009u0wAAA";
+
 	public static String getOpportunityTaskName(
 		int opportunityType, String action) {
 

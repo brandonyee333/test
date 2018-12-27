@@ -153,7 +153,8 @@ public class RemoteCorpProjectLocalServiceImpl
 		CorpProject corpProject = corpProjectLocalService.getCorpProject(
 			corpProjectId);
 
-		WebRESTWebServiceUtil.putCorpProjects(corpProject.getUuid(), name);
+		WebRESTWebServiceUtil.putCorpProjects(
+			corpProject.getUuid(), null, null, name);
 	}
 
 }

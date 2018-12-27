@@ -69,7 +69,9 @@ public interface WebRESTWebService {
 			String dossieraAccountKey, String userUUID, String roleUUID)
 		throws RemoteServiceException;
 
-	public JSONObject putCorpProjects(String corpProjectUUID, String name)
+	public JSONObject putCorpProjects(
+			String corpProjectUUID, String dossieraProjectKey,
+			String salesforceProjectKey, String name)
 		throws RemoteServiceException;
 
 	public void putCorpProjectsUser(String corpProjectUUID, String userUUID)
