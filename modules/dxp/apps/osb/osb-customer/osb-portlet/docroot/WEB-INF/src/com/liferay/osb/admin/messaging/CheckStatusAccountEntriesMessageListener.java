@@ -22,10 +22,13 @@ import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
 import com.liferay.osb.service.LicenseKeyLocalServiceUtil;
 import com.liferay.osb.service.RemoteCorpProjectLocalServiceUtil;
+import com.liferay.osb.service.RemoteUserLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.comparator.LicenseKeyExpirationDateComparator;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.util.Time;
@@ -63,6 +66,9 @@ public class CheckStatusAccountEntriesMessageListener
 
 			RemoteCorpProjectLocalServiceUtil.deleteCorpProject(
 				accountEntry.getCorpProjectUuid());
+
+			RemoteUserLocalServiceUtil.updateUserExpandoValue(
+				accountEntry.getUserId(), "osbTrialEULA", new String[0]);
 		}
 	}
 
@@ -79,13 +85,23 @@ public class CheckStatusAccountEntriesMessageListener
 				continue;
 			}
 
-			AccountEntryLocalServiceUtil.updateStatus(
-				accountEntry.getAccountEntryId());
+			try {
+				AccountEntryLocalServiceUtil.updateStatus(
+					accountEntry.getAccountEntryId());
 
-			if (accountEntry.getType() == AccountEntryConstants.TYPE_TRIAL) {
-				checkTrialAccountEntry(accountEntry);
+				if (accountEntry.getType() ==
+						AccountEntryConstants.TYPE_TRIAL) {
+
+					checkTrialAccountEntry(accountEntry);
+				}
+			}
+			catch (Exception e) {
+				_log.error(e, e);
 			}
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		CheckStatusAccountEntriesMessageListener.class);
 
 }

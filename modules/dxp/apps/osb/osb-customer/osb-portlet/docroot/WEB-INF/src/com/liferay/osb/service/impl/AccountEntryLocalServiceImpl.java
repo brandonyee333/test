@@ -535,7 +535,7 @@ public class AccountEntryLocalServiceImpl
 			offeringEntry.getProductEntryId(),
 			LicenseEntryConstants.TYPE_DEVELOPER);
 
-		int productVersion = getLatestProductVersion(
+		int productVersion = AdminUtil.getLatestProductVersion(
 			portletPreferences, offeringEntry.getProductEntryId());
 
 		LicenseKey licenseKey = licenseKeyLocalService.addLicenseKey(
@@ -2108,40 +2108,6 @@ public class AccountEntryLocalServiceImpl
 		}
 
 		return StringUtil.toUpperCase(code);
-	}
-
-	protected int getLatestProductVersion(
-			PortletPreferences portletPreferences, long productEntryId)
-		throws PortalException {
-
-		int trialLiferayVersion = GetterUtil.getInteger(
-			portletPreferences.getValue("trialLiferayVersion", null));
-
-		if (trialLiferayVersion > 0) {
-			return trialLiferayVersion;
-		}
-
-		ProductEntry productEntry = productEntryLocalService.getProductEntry(
-			productEntryId);
-
-		String listType =
-			ProductEntry.class.getName() + StringPool.PERIOD +
-				productEntry.getVersionsListType();
-
-		List<ListType> productVersionTypes = listTypeLocalService.getListTypes(
-			listType);
-
-		ListType latestProductVersionType = productVersionTypes.get(
-			productVersionTypes.size() - 1);
-
-		String name = latestProductVersionType.getName();
-
-		if (name.equals("other")) {
-			latestProductVersionType = productVersionTypes.get(
-				productVersionTypes.size() - 2);
-		}
-
-		return (int)latestProductVersionType.getListTypeId();
 	}
 
 	protected ArrayList<User> getMissingUsers(List<User> users) {

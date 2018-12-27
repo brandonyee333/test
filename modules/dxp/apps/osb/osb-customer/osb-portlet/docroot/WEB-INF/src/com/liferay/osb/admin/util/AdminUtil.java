@@ -14,16 +14,22 @@
 
 package com.liferay.osb.admin.util;
 
+import com.liferay.osb.model.ProductEntry;
+import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.osb.tools.BaseUpgradeImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.petra.content.ContentUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.Country;
+import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.Region;
+import com.liferay.portal.kernel.service.ListTypeLocalServiceUtil;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.util.CharPool;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
@@ -221,6 +227,40 @@ public class AdminUtil {
 	public static String getEmailUnlinkedAnalyticsCloudBasicSubjectMap() {
 		return _getEmailTemplate(
 			"email_unlinked_analytics_cloud_basic_subject.tmpl", null);
+	}
+
+	public static int getLatestProductVersion(
+			PortletPreferences portletPreferences, long productEntryId)
+		throws PortalException {
+
+		int trialLiferayVersion = GetterUtil.getInteger(
+			portletPreferences.getValue("trialLiferayVersion", null));
+
+		if (trialLiferayVersion > 0) {
+			return trialLiferayVersion;
+		}
+
+		ProductEntry productEntry =
+			ProductEntryLocalServiceUtil.getProductEntry(productEntryId);
+
+		String listType =
+			ProductEntry.class.getName() + StringPool.PERIOD +
+				productEntry.getVersionsListType();
+
+		List<ListType> productVersionTypes =
+			ListTypeLocalServiceUtil.getListTypes(listType);
+
+		ListType latestProductVersionType = productVersionTypes.get(
+			productVersionTypes.size() - 1);
+
+		String name = latestProductVersionType.getName();
+
+		if (name.equals("other")) {
+			latestProductVersionType = productVersionTypes.get(
+				productVersionTypes.size() - 2);
+		}
+
+		return (int)latestProductVersionType.getListTypeId();
 	}
 
 	public static List<Class<?>> getManualUpgradeProcessClasses(int buildNumber)

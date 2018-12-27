@@ -14,6 +14,7 @@
 
 package com.liferay.osb.service.impl;
 
+import com.liferay.osb.admin.util.AdminUtil;
 import com.liferay.osb.admin.util.KeyGenerator;
 import com.liferay.osb.exception.DuplicateIPAddressException;
 import com.liferay.osb.exception.DuplicateMACAddressException;
@@ -62,6 +63,7 @@ import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.CountryService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CharPool;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -83,6 +85,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+
+import javax.portlet.PortletPreferences;
 
 import org.apache.commons.lang.time.DateUtils;
 
@@ -322,7 +326,9 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	}
 
 	public List<LicenseKey> getAccountEntryLicenseKeys(long accountEntryId) {
-		return licenseKeyPersistence.findByAccountEntryId(accountEntryId);
+		return licenseKeyPersistence.findByAccountEntryId(
+			accountEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			new LicenseKeyExpirationDateComparator());
 	}
 
 	public List<LicenseKey> getAssetReceiptLicenseLicenseKeys(
@@ -593,8 +599,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				accountEntry.getAccountEntryId(),
 				new LicenseKeyExpirationDateComparator(false));
 
-		validateTrialRenewal(lastLicenseKey);
-
 		LicenseKeySet licenseKeySet = licenseKeySetPersistence.findByPrimaryKey(
 			lastLicenseKey.getLicenseKeySetId());
 
@@ -605,11 +609,24 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		licenseKeyPersistence.update(lastLicenseKey);
 
+		int productVersion = lastLicenseKey.getProductVersion();
+
+		PortletPreferences portletPreferences =
+			AdminUtil.getPortletPreferences();
+
+		long productEntryId = GetterUtil.getLong(
+			portletPreferences.getValue("trialProductEntryId", null));
+
+		if (productEntryId == offeringEntry.getProductEntryId()) {
+			productVersion = AdminUtil.getLatestProductVersion(
+				portletPreferences, offeringEntry.getProductEntryId());
+		}
+
 		LicenseKey licenseKey = addLicenseKey(
 			userId, licenseKeySet, "Trial Licenses", offeringEntry,
-			lastLicenseKey.getLicenseEntry(), null,
-			lastLicenseKey.getProductVersion(), 0, user.getFullName(), 1, 5,
-			"30-Day Trial License", new String[0], new String[0], new String[0],
+			lastLicenseKey.getLicenseEntry(), null, productVersion, 0,
+			user.getFullName(), 1, 5, "30-Day Trial License", new String[0],
+			new String[0], new String[0],
 			new String[] {LicenseKeyConstants.SERVER_ID_DEVELOPER}, new Date(),
 			null, StringPool.BLANK, false, true);
 
@@ -1747,18 +1764,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			else if (!Validator.isDigit(c) && !Validator.isChar(c)) {
 				throw new LicenseKeyServerIdException();
 			}
-		}
-	}
-
-	protected void validateTrialRenewal(LicenseKey lastLicenseKey)
-		throws PortalException {
-
-		Date lastExpirationDate = lastLicenseKey.getExpirationDate();
-
-		if (lastExpirationDate.getTime() >
-				(System.currentTimeMillis() + (7 * Time.DAY))) {
-
-			throw new PrincipalException();
 		}
 	}
 

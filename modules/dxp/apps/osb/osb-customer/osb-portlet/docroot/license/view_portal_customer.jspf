@@ -18,23 +18,12 @@
 boolean osbTrialPurchased = ExpandoValueLocalServiceUtil.getData(themeDisplay.getCompanyId(), User.class.getName(), "OSB", "osbTrialPurchased", user.getUserId(), false);
 %>
 
-<c:if test='<%= SessionMessages.contains(request, "licenseKeySent") %>'>
-	<div class="portlet-msg-success">
-		<%= LanguageUtil.format(request, "your-license-key-was-sent-to-x", SessionMessages.get(request, "licenseKeySent")) %>
-	</div>
+<c:if test='<%= SessionMessages.contains(renderRequest, "licenseKeySent") %>'>
+	<liferay-ui:success key="licenseKeySent" message='<%= LanguageUtil.format(request, "your-license-key-was-sent-to-x", SessionMessages.get(renderRequest, "licenseKeySent")) %>' translateMessage="<%= false %>" />
 </c:if>
 
-<c:if test='<%= SessionMessages.contains(request, "salesNotified") %>'>
-	<liferay-util:include page="/common/dialog.jsp" servletContext="<%= application %>">
-		<liferay-util:param name="border" value="<%= Boolean.TRUE.toString() %>" />
-		<liferay-util:param name="centered" value="<%= Boolean.TRUE.toString() %>" />
-		<liferay-util:param name="close" value="<%= Boolean.FALSE.toString() %>" />
-		<liferay-util:param name="cssClass" value="view-license-dialog" />
-		<liferay-util:param name="dialogMVCPath" value="/license/view_trial_license_dialog.jsp" />
-		<liferay-util:param name="draggable" value="<%= Boolean.FALSE.toString() %>" />
-		<liferay-util:param name="modal" value="<%= Boolean.TRUE.toString() %>" />
-		<liferay-util:param name="visible" value="<%= Boolean.TRUE.toString() %>" />
-	</liferay-util:include>
+<c:if test='<%= SessionMessages.contains(renderRequest, "salesNotified") %>'>
+	<liferay-ui:success key="salesNotified" message="thank-you-for-your-interest-in-liferay-dxp-a-request-to-renew-your-trial-has-been-sent-to-our-sales-team-who-will-contact-you-shortly" />
 </c:if>
 
 <%
@@ -118,8 +107,6 @@ String message = LanguageUtil.format(request, "a-sales-representative-will-conta
 		>
 
 			<%
-			Date now = new Date();
-
 			Date expirationDate = licenseKey.getExpirationDate();
 
 			LicenseKey latestLicenseKey = LicenseKeyLocalServiceUtil.getFirstLicenseKey(licenseKey.getAccountEntryId(), new LicenseKeyExpirationDateComparator());
@@ -175,23 +162,20 @@ String message = LanguageUtil.format(request, "a-sales-representative-will-conta
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text>
-				<c:choose>
-					<c:when test="<%= (latestLicenseKey.getLicenseKeyId() == licenseKey.getLicenseKeyId()) && (expirationDate.getTime() <= (now.getTime() + (7 * Time.DAY))) %>">
-						<portlet:actionURL name="renewTrialLicenseKey" var="renewURL">
-							<portlet:param name="redirect" value="<%= currentURL %>" />
-						</portlet:actionURL>
+				<c:if test="<%= latestLicenseKey.getLicenseKeyId() == licenseKey.getLicenseKeyId() %>">
+					<portlet:actionURL name="resendLicenseKey" var="resendURL">
+						<portlet:param name="redirect" value="<%= currentURL %>" />
+						<portlet:param name="licenseKeyId" value="<%= String.valueOf(licenseKey.getLicenseKeyId()) %>" />
+					</portlet:actionURL>
 
-						<aui:button onClick="<%= renewURL.toString() %>" value="renew" />
-					</c:when>
-					<c:when test="<%= !licenseKey.isExpired() %>">
-						<portlet:actionURL name="resendLicenseKey" var="resendURL">
-							<portlet:param name="redirect" value="<%= currentURL %>" />
-							<portlet:param name="licenseKeyId" value="<%= String.valueOf(licenseKey.getLicenseKeyId()) %>" />
-						</portlet:actionURL>
+					<aui:button onClick="<%= resendURL.toString() %>" value="resend-key" />
 
-						<aui:button onClick="<%= resendURL.toString() %>" value="resend-key" />
-					</c:when>
-				</c:choose>
+					<portlet:actionURL name="renewTrialLicenseKey" var="renewURL">
+						<portlet:param name="redirect" value="<%= currentURL %>" />
+					</portlet:actionURL>
+
+					<aui:button onClick="<%= renewURL.toString() %>" value="renew" />
+				</c:if>
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 

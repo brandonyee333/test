@@ -71,8 +71,8 @@ public interface PortletPropsKeys {
 	public static final String REMOTE_REST_SERVICE_API_DOSSIERA_TOKEN =
 		"remote.rest.service.api.dossiera.token";
 
-	public static final String REMOTE_REST_SERVICE_API_WEB_ENABLED =
-		"remote.rest.service.api.web.enabled";
+	public static final String REMOTE_REST_SERVICE_API_WEB_ERROR_EMAIL_ADDRESS =
+		"remote.rest.service.api.web.error.email.address";
 
 	public static final String REMOTE_REST_SERVICE_API_WEB_HOST =
 		"remote.rest.service.api.web.host";
@@ -85,9 +85,6 @@ public interface PortletPropsKeys {
 
 	public static final String REMOTE_REST_SERVICE_API_WEB_TOKEN =
 		"remote.rest.service.api.web.token";
-
-	public static final String REMOVE_REST_SERVICE_API_WEB_ERROR_EMAIL_ADDRESS =
-		"remote.rest.service.api.web.error.email.address";
 
 	public static final String SUPPORT_EMAIL_ADDRESS_FROM =
 		"support.email.address.from";
