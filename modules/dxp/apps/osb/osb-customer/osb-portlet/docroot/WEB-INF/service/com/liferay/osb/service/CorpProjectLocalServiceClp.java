@@ -89,7 +89,8 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 		_methodName12 = "updateCorpProject";
 
 		_methodParameterTypes12 = new String[] {
-				"long", "java.lang.String",
+				"long", "java.lang.String", "java.lang.String",
+				"java.lang.String",
 				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 
@@ -519,7 +520,8 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 
 	@Override
 	public com.liferay.osb.model.CorpProject updateCorpProject(
-		long corpProjectId, java.lang.String name,
+		long corpProjectId, java.lang.String dossieraProjectKey,
+		java.lang.String salesforceProjectKey, java.lang.String name,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
@@ -529,6 +531,10 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 					_methodParameterTypes12,
 					new Object[] {
 						corpProjectId,
+						
+					ClpSerializer.translateInput(dossieraProjectKey),
+						
+					ClpSerializer.translateInput(salesforceProjectKey),
 						
 					ClpSerializer.translateInput(name),
 						

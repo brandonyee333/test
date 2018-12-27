@@ -175,7 +175,8 @@ public class CorpProjectLocalServiceClpInvoker {
 		_methodName188 = "updateCorpProject";
 
 		_methodParameterTypes188 = new String[] {
-				"long", "java.lang.String",
+				"long", "java.lang.String", "java.lang.String",
+				"java.lang.String",
 				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 	}
@@ -346,8 +347,9 @@ public class CorpProjectLocalServiceClpInvoker {
 		if (_methodName188.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes188, parameterTypes)) {
 			return CorpProjectLocalServiceUtil.updateCorpProject(((Long)arguments[0]).longValue(),
-				(java.lang.String)arguments[1],
-				(com.liferay.portal.kernel.service.ServiceContext)arguments[2]);
+				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
+				(java.lang.String)arguments[3],
+				(com.liferay.portal.kernel.service.ServiceContext)arguments[4]);
 		}
 
 		throw new UnsupportedOperationException();

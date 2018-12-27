@@ -153,11 +153,13 @@ public class CorpProjectLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.model.CorpProject updateCorpProject(
-		long corpProjectId, java.lang.String name,
+		long corpProjectId, java.lang.String dossieraProjectKey,
+		java.lang.String salesforceProjectKey, java.lang.String name,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
-				   .updateCorpProject(corpProjectId, name, serviceContext);
+				   .updateCorpProject(corpProjectId, dossieraProjectKey,
+			salesforceProjectKey, name, serviceContext);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {

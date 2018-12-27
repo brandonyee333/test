@@ -157,11 +157,12 @@ public class CorpProjectLocalServiceWrapper implements CorpProjectLocalService,
 
 	@Override
 	public com.liferay.osb.model.CorpProject updateCorpProject(
-		long corpProjectId, java.lang.String name,
+		long corpProjectId, java.lang.String dossieraProjectKey,
+		java.lang.String salesforceProjectKey, java.lang.String name,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _corpProjectLocalService.updateCorpProject(corpProjectId, name,
-			serviceContext);
+		return _corpProjectLocalService.updateCorpProject(corpProjectId,
+			dossieraProjectKey, salesforceProjectKey, name, serviceContext);
 	}
 
 	@Override

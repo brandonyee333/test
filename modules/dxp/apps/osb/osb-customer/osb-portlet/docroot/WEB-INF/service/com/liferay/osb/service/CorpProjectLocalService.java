@@ -146,8 +146,9 @@ public interface CorpProjectLocalService extends BaseLocalService,
 	public CorpProject updateCorpProject(CorpProject corpProject);
 
 	public CorpProject updateCorpProject(long corpProjectId,
-		java.lang.String name, ServiceContext serviceContext)
-		throws PortalException;
+		java.lang.String dossieraProjectKey,
+		java.lang.String salesforceProjectKey, java.lang.String name,
+		ServiceContext serviceContext) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
