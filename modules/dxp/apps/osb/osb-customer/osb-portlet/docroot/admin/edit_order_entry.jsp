@@ -317,7 +317,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 
 						<portlet:renderURL var="editAccountEntryURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 							<portlet:param name="mvcPath" value="/admin/edit_account_entry.jsp" />
-							<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+							<portlet:param name="backURL" value="<%= portletURL.toString() %>" />
 							<portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntryId) %>" />
 						</portlet:renderURL>
 
