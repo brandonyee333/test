@@ -65,16 +65,13 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 			catch (Exception e) {
 				_log.error(e, e);
 
-				errorCount += 1;
+				errorCount++;
 
 				if (errorCount ==
 						MetricsProcessorConfigurationValues.
 							ERROR_NOTIFY_ATTEMPT_THRESHOLD) {
 
-					sendEmail(
-						StringUtil.replace(
-							StackTraceUtil.getStackTrace(e), CharPool.NEW_LINE,
-							"<br />"));
+					sendEmail(StackTraceUtil.getStackTrace(e));
 
 					errorCount = 0;
 				}
@@ -91,7 +88,7 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 	}
 
 	public void runSQL(String sql) throws IOException, SQLException {
-		String DATASOURCE_CONTEXT =
+		String dataSourceContext =
 			"java:comp/env/jdbc/" +
 				MetricsProcessorConfigurationValues.DATABASE_SCHEMA_NAME;
 
@@ -100,11 +97,11 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 		try {
 			Context initialContext = new InitialContext();
 
-			DataSource datasource = (DataSource)initialContext.lookup(
-				DATASOURCE_CONTEXT);
+			DataSource dataSource = (DataSource)initialContext.lookup(
+				dataSourceContext);
 
-			if (datasource != null) {
-				connection = datasource.getConnection();
+			if (dataSource != null) {
+				connection = dataSource.getConnection();
 
 				Statement statement = connection.createStatement();
 
@@ -115,17 +112,19 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 				connection.close();
 			}
 			else {
-				_log.error("Failed to lookup datasource");
+				_log.error("Failed to lookup data source");
 			}
 		}
 		catch (Exception e) {
-			_log.error("Cannot get connection: " + e);
+			_log.error("Unable to connect to data source", e);
 		}
 	}
 
 	protected abstract void doProcess(JSONObject jsonObject) throws Exception;
 
 	protected void sendEmail(String mailBody) {
+		mailBody = StringUtil.replace(mailBody, CharPool.NEW_LINE, "<br />");
+
 		try {
 			InternetAddress from = new InternetAddress("noreply@liferay.com");
 			InternetAddress to = new InternetAddress(
