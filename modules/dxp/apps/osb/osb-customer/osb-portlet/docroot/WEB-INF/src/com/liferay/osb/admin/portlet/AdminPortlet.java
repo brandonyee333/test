@@ -84,6 +84,7 @@ import com.liferay.osb.service.SupportRegionLocalServiceUtil;
 import com.liferay.osb.service.SupportResponseLocalServiceUtil;
 import com.liferay.osb.tools.Upgrade;
 import com.liferay.osb.util.OSBConstants;
+import com.liferay.osb.util.OSBWebKeys;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.osb.util.mvc.OSBPortlet;
 import com.liferay.portal.kernel.bean.BeanReference;
@@ -151,6 +152,8 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
 import javax.portlet.PortletRequest;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
@@ -439,6 +442,27 @@ public class AdminPortlet extends OSBPortlet {
 
 		SupportResponseLocalServiceUtil.deleteSupportResponse(
 			supportResponseId);
+	}
+
+	@Override
+	public void render(
+			RenderRequest renderRequest, RenderResponse renderResponse)
+		throws IOException, PortletException {
+
+		long accountEntryId = ParamUtil.getLong(
+			renderRequest, "accountEntryId");
+
+		if (accountEntryId > 0) {
+			AccountEntry accountEntry =
+				AccountEntryLocalServiceUtil.fetchAccountEntry(accountEntryId);
+
+			if (accountEntry != null) {
+				renderRequest.setAttribute(
+					OSBWebKeys.ACCOUNT_ENTRY, accountEntry);
+			}
+		}
+
+		super.render(renderRequest, renderResponse);
 	}
 
 	public void renewOrderEntry(

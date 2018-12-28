@@ -175,6 +175,7 @@ page import="com.liferay.osb.support.util.SupportUtil" %><%@
 page import="com.liferay.osb.util.OSBActionKeys" %><%@
 page import="com.liferay.osb.util.OSBConstants" %><%@
 page import="com.liferay.osb.util.OSBPortletKeys" %><%@
+page import="com.liferay.osb.util.OSBWebKeys" %><%@
 page import="com.liferay.osb.util.PortletPropsValues" %><%@
 page import="com.liferay.osb.util.SalesforceConstants" %><%@
 page import="com.liferay.osb.util.VisibilityConstants" %><%@

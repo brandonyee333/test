@@ -17,6 +17,8 @@
 <%@ include file="/init.jsp" %>
 
 <%
+AccountEntry accountEntry = (AccountEntry)request.getAttribute(OSBWebKeys.ACCOUNT_ENTRY);
+
 String detailTab = ParamUtil.getString(request, "detailTab");
 
 String redirect = ParamUtil.getString(request, "redirect");
@@ -31,16 +33,7 @@ if (Validator.isNull(backURL)) {
 	backURL = portletURL.toString();
 }
 
-long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
-
-AccountEntry accountEntry = null;
-
-try {
-	accountEntry = AccountEntryLocalServiceUtil.getAccountEntry(accountEntryId);
-}
-catch (NoSuchAccountEntryException nsaee) {
-}
-
+long accountEntryId = BeanParamUtil.getLong(accountEntry, request, "accountEntryId");
 String corpProjectUuid = BeanParamUtil.getString(accountEntry, request, "corpProjectUuid");
 int type = BeanParamUtil.getInteger(accountEntry, request, "type", AccountEntryConstants.TYPE_GROUP);
 int industry = BeanParamUtil.getInteger(accountEntry, request, "industry");
@@ -695,7 +688,6 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 	<br />
 
 	<%
-	request.setAttribute("edit_account_entry.jsp-accountEntry", accountEntry);
 	request.setAttribute("edit_account_entry.jsp-detailTab", detailTab);
 	request.setAttribute("edit_account_entry.jsp-portletURL", portletURL);
 	%>

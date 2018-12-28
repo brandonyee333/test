@@ -17,7 +17,7 @@
 <%@ include file="/init.jsp" %>
 
 <%
-AccountEntry accountEntry = (AccountEntry)request.getAttribute("edit_account_entry.jsp-accountEntry");
+AccountEntry accountEntry = (AccountEntry)request.getAttribute(OSBWebKeys.ACCOUNT_ENTRY);
 String detailTab = (String)request.getAttribute("edit_account_entry.jsp-detailTab");
 PortletURL portletURL = (PortletURL)request.getAttribute("edit_account_entry.jsp-portletURL");
 
@@ -68,8 +68,11 @@ for (SupportRegion supportRegion : supportRegions) {
 <div class="account details tab-view">
 	<ul class="lfr-nav nav nav-tabs">
 		<c:if test="<%= accountEntry != null %>">
+			<li class="tab" data-content="<portlet:namespace />activeOfferingsContent" id="<portlet:namespace />activeOfferings">
+				<aui:a href='<%= "javascript:" + renderResponse.getNamespace() + "revealTab('activeOfferings');" %>' label="active-offerings" />
+			</li>
 			<li class="tab" data-content="<portlet:namespace />offeringsContent" id="<portlet:namespace />offerings">
-				<aui:a href='<%= "javascript:" + renderResponse.getNamespace() + "revealTab('offerings');" %>' label="offerings" />
+				<aui:a href='<%= "javascript:" + renderResponse.getNamespace() + "revealTab('offerings');" %>' label="all-offerings" />
 			</li>
 			<li class="tab" data-content="<portlet:namespace />projectMessagesContent" id="<portlet:namespace />projectMessages">
 				<aui:a href='<%= "javascript:" + renderResponse.getNamespace() + "revealTab('projectMessages');" %>' label="project-messages" />
@@ -92,164 +95,12 @@ for (SupportRegion supportRegion : supportRegions) {
 
 	<div class="tab-content">
 		<c:if test="<%= accountEntry != null %>">
+			<div class="hide tab-content-tab" id="<portlet:namespace />activeOfferingsContent">
+				<liferay-util:include page="/admin/edit_account_entry/active_offerings.jsp" servletContext="<%= application %>" />
+			</div>
+
 			<div class="hide tab-content-tab" id="<portlet:namespace />offeringsContent">
-				<liferay-ui:search-container
-					deltaParam="offeringEntryDelta"
-					searchContainer="<%= new OfferingEntrySearch(renderRequest, portletURL) %>"
-				>
-
-					<%
-					OfferingEntryDisplayTerms displayTerms = (OfferingEntryDisplayTerms)searchContainer.getDisplayTerms();
-					%>
-
-					<c:if test="<%= accountEntry.getType() == AccountEntryConstants.TYPE_INDIVIDUAL %>">
-						<%@ include file="/admin/offering_entry_search.jspf" %>
-					</c:if>
-
-					<liferay-ui:search-container-results>
-
-						<%
-						LinkedHashMap params = new LinkedHashMap();
-
-						if (accountEntry.getType() == AccountEntryConstants.TYPE_INDIVIDUAL) {
-							params.put("user", new String[] {displayTerms.getFirstName(), displayTerms.getMiddleName(), displayTerms.getLastName(), displayTerms.getScreenName(), displayTerms.getEmailAddress()});
-
-							results = OfferingEntryGroupFactoryUtil.createOfferingEntryGroups(0, accountEntry.getAccountEntryId(), new int[0], new int[0], 0, 0, 0, 0, 0, 0, params, true, searchContainer.getStart(), searchContainer.getEnd());
-							total = OfferingEntryLocalServiceUtil.searchCount(0, accountEntry.getAccountEntryId(), new int[0], new int[0], 0, 0, 0, 0, 0, 0, params, true);
-						}
-						else {
-							List<OfferingEntryGroup> offeringEntryGroups = OfferingEntryGroupFactoryUtil.createOfferingEntryGroups(0, accountEntry.getAccountEntryId(), new int[0], new int[0], 0, 0, 0, 0, 0, 0, params, true, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-
-							results = ListUtil.subList(offeringEntryGroups, searchContainer.getStart(), searchContainer.getEnd());
-							total = offeringEntryGroups.size();
-						}
-
-						searchContainer.setResults(results);
-						searchContainer.setTotal(total);
-						%>
-
-					</liferay-ui:search-container-results>
-
-					<liferay-ui:search-container-row
-						className="com.liferay.osb.model.OfferingEntryGroup"
-						modelVar="offeringEntryGroup"
-					>
-
-						<%
-						String userName = StringPool.BLANK;
-
-						try {
-							User curUser = UserLocalServiceUtil.getUser(offeringEntryGroup.getUserId());
-
-							userName = curUser.getEmailAddress();
-						}
-						catch (Exception e) {
-							userName = offeringEntryGroup.getUserName();
-						}
-
-						ProductEntry productEntry = offeringEntryGroup.getProductEntry();
-						SupportResponse supportResponse = offeringEntryGroup.getSupportResponse();
-
-						String key = offeringEntryGroup.getKey();
-
-						key = StringUtil.replace(key, CharPool.COMMA, CharPool.UNDERLINE);
-						key = StringUtil.replace(key, CharPool.EQUAL, CharPool.UNDERLINE);
-						%>
-
-						<liferay-ui:search-container-column-text
-							name="status"
-						>
-							<aui:select label="" name='<%= "status_" + key %>' onChange='<%= renderResponse.getNamespace() + "updateOfferingEntry('" + key + "', '" + accountEntry.getAccountEntryId() + "', '" + StringUtil.merge(offeringEntryGroup.getOfferingEntryIds()) + "', this.value, '" + offeringEntryGroup.getStatus() + "', '" + LanguageUtil.get(request, OfferingEntryConstants.getStatusLabel(offeringEntryGroup.getStatus())) + "');" %>'>
-
-								<%
-								for (int i = 1; i <= 4; i++) {
-								%>
-
-									<aui:option label="<%= OfferingEntryConstants.getStatusLabel(i) %>" selected="<%= offeringEntryGroup.getStatus() == i %>" value="<%= i %>" />
-
-								<%
-								}
-								%>
-
-							</aui:select>
-						</liferay-ui:search-container-column-text>
-
-						<liferay-ui:search-container-column-text
-							name="type"
-							value="<%= LanguageUtil.get(request, OfferingEntryConstants.getTypeLabel(offeringEntryGroup.getType())) %>"
-						/>
-
-						<c:choose>
-							<c:when test="<%= accountEntry.getType() == AccountEntryConstants.TYPE_INDIVIDUAL %>">
-								<liferay-ui:search-container-column-text
-									name="owner"
-									value="<%= HtmlUtil.escape(userName) %>"
-								/>
-							</c:when>
-							<c:otherwise>
-								<liferay-ui:search-container-column-text
-									name="product"
-									value="<%= productEntry.getName() %>"
-								/>
-							</c:otherwise>
-						</c:choose>
-
-						<liferay-ui:search-container-column-text
-							name="sla"
-							value="<%= supportResponse.getName() %>"
-						/>
-
-						<liferay-ui:search-container-column-text
-							name="start-date"
-							value="<%= longDateFormatDate.format((offeringEntryGroup.getActualStartDate() != null) ? offeringEntryGroup.getActualStartDate() : offeringEntryGroup.getStartDate()) %>"
-						/>
-
-						<liferay-ui:search-container-column-text
-							name="support-end-date"
-							value="<%= longDateFormatDate.format(offeringEntryGroup.getSupportEndDate()) %>"
-						/>
-
-						<liferay-ui:search-container-column-text
-							name="version"
-							value="<%= OfferingEntryConstants.getVersionLabel(offeringEntryGroup.getVersion()) %>"
-						/>
-
-						<liferay-ui:search-container-column-text
-							name="instance-size"
-							value="<%= LanguageUtil.get(request, offeringEntryGroup.getSizingLabel()) %>"
-						/>
-
-						<%
-						long licensePlid = PortalUtil.getPlidFromPortletId(OSBConstants.GROUP_LICENSE_ID, OSBPortletKeys.OSB_LICENSE);
-						%>
-
-						<liferay-portlet:renderURL plid="<%= licensePlid %>" portletName="<%= OSBPortletKeys.OSB_LICENSE %>" var="viewLicensesURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
-							<liferay-portlet:param name="mvcPath" value="/license/view.jsp" />
-							<liferay-portlet:param name="tabs1" value="portal" />
-							<liferay-portlet:param name="redirect" value="<%= portletURL.toString() %>" />
-							<liferay-portlet:param name="offeringEntryIds" value="<%= StringUtil.merge(offeringEntryGroup.getOfferingEntryIds()) %>" />
-						</liferay-portlet:renderURL>
-
-						<liferay-ui:search-container-column-text
-							href="<%= viewLicensesURL %>"
-							name="licenses"
-						>
-							<%= offeringEntryGroup.getLicenseKeysCount() %> / <%= offeringEntryGroup.getQuantity() %>
-						</liferay-ui:search-container-column-text>
-
-						<liferay-ui:search-container-column-text
-							name="tickets"
-						>
-							<%= offeringEntryGroup.isSupportTickets() ? LanguageUtil.get(request, "unlimited") : "0" %>
-						</liferay-ui:search-container-column-text>
-					</liferay-ui:search-container-row>
-
-					<div class="table-report">
-						<liferay-ui:search-iterator
-							markupView="lexicon"
-						/>
-					</div>
-				</liferay-ui:search-container>
+				<liferay-util:include page="/admin/edit_account_entry/all_offerings.jsp" servletContext="<%= application %>" />
 			</div>
 
 			<div class="hide tab-content-tab" id="<portlet:namespace />projectMessagesContent">
@@ -690,6 +541,9 @@ for (SupportRegion supportRegion : supportRegions) {
 									);
 
 									A.later(5000, A.one('.osb-portlet-admin-alert'), 'hide');
+
+									<portlet:namespace />refreshTab('activeOfferingsContent', '/admin/edit_account_entry/active_offerings.jsp');
+									<portlet:namespace />refreshTab('offeringsContent', '/admin/edit_account_entry/all_offerings.jsp');
 								}
 							}
 						}
@@ -701,6 +555,35 @@ for (SupportRegion supportRegion : supportRegions) {
 			}
 		},
 		['aui-base', 'aui-io', 'liferay-notice']
+	);
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />refreshTab',
+		function(tabId, mvcPath) {
+			var A = AUI();
+
+			A.io.request(
+				'<portlet:renderURL windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>"><portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntry.getAccountEntryId()) %>" /></portlet:renderURL>',
+				{
+					data: {
+						<portlet:namespace />mvcPath: mvcPath
+					},
+					dataType: 'json',
+					method: 'get',
+					on: {
+						success: function(event, id, obj) {
+							var response = this.get('responseData');
+
+							var tabElement = A.one('#<portlet:namespace />' + tabId);
+
+							tabElement.html(response);
+						}
+					}
+				}
+			);
+		},
+		['aui-base', 'aui-io']
 	);
 
 	Liferay.provide(
