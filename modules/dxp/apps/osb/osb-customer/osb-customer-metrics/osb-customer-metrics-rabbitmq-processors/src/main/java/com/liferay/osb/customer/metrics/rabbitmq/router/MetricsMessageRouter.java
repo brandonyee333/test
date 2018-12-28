@@ -1,0 +1,70 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.customer.metrics.rabbitmq.router;
+
+import com.liferay.osb.customer.metrics.rabbitmq.processors.MetricsDropMessageProcessor;
+import com.liferay.osb.customer.metrics.rabbitmq.processors.MetricsRemoveMessageProcessor;
+import com.liferay.osb.customer.metrics.rabbitmq.processors.MetricsUpdateMessageProcessor;
+import com.liferay.osb.customer.metrics.rabbitmq.processors.MetricsUpgradeMessageProcessor;
+import com.liferay.osb.customer.rabbitmq.connector.router.BaseMessageRouter;
+import com.liferay.osb.customer.rabbitmq.connector.router.MessageRouter;
+
+import java.util.Map;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
+/**
+ * @author Kyle Bischof
+ */
+@Component(
+	immediate = true, property = "queue=is_metrics_queue",
+	service = MessageRouter.class
+)
+public class MetricsMessageRouter extends BaseMessageRouter {
+
+	@Reference(unbind = "-")
+	protected void setMetricsDropMessageProcessor(
+		MetricsDropMessageProcessor metricsDropMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(metricsDropMessageProcessor, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setMetricsRemoveMessageProcessor(
+		MetricsRemoveMessageProcessor metricsRemoveMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(metricsRemoveMessageProcessor, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setMetricsUpdateMessageProcessor(
+		MetricsUpdateMessageProcessor metricsUpdateMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(metricsUpdateMessageProcessor, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setMetricsUpgradeMessageProcessor(
+		MetricsUpgradeMessageProcessor metricsUpgradeMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(metricsUpgradeMessageProcessor, properties);
+	}
+
+}
