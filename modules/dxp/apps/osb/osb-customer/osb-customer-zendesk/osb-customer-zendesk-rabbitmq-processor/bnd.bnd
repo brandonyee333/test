@@ -1,0 +1,4 @@
+Bundle-Name: Liferay OSB Customer Zendesk RabbitMQ Processor
+Bundle-SymbolicName: com.liferay.osb.customer.zendesk.rabbitmq.processor
+Bundle-Version: 1.0.0
+-dsannotations-options: inherit

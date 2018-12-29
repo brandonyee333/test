@@ -1,8 +1,0 @@
-Bundle-ClassPath:\
-	.,\
-	lib/osb-portlet-service.jar
-Bundle-Name: Liferay OSB Customer RabbitMQ Message Processors
-Bundle-SymbolicName: com.liferay.osb.customer.rabbitmq.message.processors
-Bundle-Version: 1.0.0
--dsannotations-options: inherit
--includeresource: lib/osb-portlet-service.jar=osb-portlet-service.jar

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<suppressions>
+	<source-check>
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/rabbitmq/processor/CorpProjectAddMessageProcessor.java" />
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/rabbitmq/processor/CorpProjectAssignedMessageProcessor.java" />
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/rabbitmq/processor/CorpProjectDeleteMessageProcessor.java" />
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/rabbitmq/processor/CorpProjectMessageAddMessageProcessor.java" />
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/rabbitmq/processor/CorpProjectMessageDeleteMessageProcessor.java" />
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/rabbitmq/processor/CorpProjectMessageUpdateMessageProcessor.java" />
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/rabbitmq/processor/CorpProjectRoleAssignedMessageProcessor.java" />
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/rabbitmq/processor/CorpProjectRoleUnassignedMessageProcessor.java" />
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/rabbitmq/processor/CorpProjectUnassignedMessageProcessor.java" />
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/rabbitmq/processor/CorpProjectUpdateMessageProcessor.java" />
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/rabbitmq/processor/ProvisioningCreateMessageProcessor.java" />
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/rabbitmq/processor/ProvisioningTrialCreateMessageProcessor.java" />
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/rabbitmq/processor/ProvisioningUpdateMessageProcessor.java" />
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/rabbitmq/processor/UserUpdateMessageProcessor.java" />
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/rabbitmq/processor/ZendeskOrganizationCreateMessageProcessor.java" />
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/rabbitmq/processor/ZendeskUserCreateMessageProcessor.java" />
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/rabbitmq/processor/ZendeskUserIdentityCreateMessageProcessor.java" />
+	</source-check>
+</suppressions>
