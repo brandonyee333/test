@@ -94,7 +94,9 @@ class Downloads extends React.Component {
 
 		axios.post(requiredAgreement.acceptAgreementURL)
 			.then(
-				window.location = metadata.url
+				() => {
+					window.location = metadata.url
+				}
 			)
 			.catch(
 				(err) => {
