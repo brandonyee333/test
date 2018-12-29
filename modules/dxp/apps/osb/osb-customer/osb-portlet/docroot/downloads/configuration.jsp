@@ -169,79 +169,62 @@ String redirect = ParamUtil.getString(request, "redirect");
 				</aui:fieldset>
 			</c:when>
 			<c:when test='<%= tabs1.equals("studio-eula") %>'>
-				<liferay-ui:tabs
-					names="general,requirements"
-					param="tabs2"
-					url="<%= portletURL %>"
-				/>
+				<table class="lfr-table">
+					<tr>
+						<td>
+							<liferay-ui:message key="language" />
+						</td>
+						<td>
+							<aui:select label="" name="languageId" onChange='<%= renderResponse.getNamespace() + "updateLanguage(this);" %>'>
 
-				<c:choose>
-					<c:when test='<%= tabs2.equals("requirements") %>'>
-						<table class="lfr-table">
-							<tr>
-								<td>
-									<liferay-ui:message key="language" />
-								</td>
-								<td>
-									<aui:select label="" name="languageId" onChange='<%= renderResponse.getNamespace() + "updateLanguage(this);" %>'>
+								<%
+								for (int i = 0; i < locales.length; i++) {
+									String optionStyle = StringPool.BLANK;
 
-										<%
-										for (int i = 0; i < locales.length; i++) {
-											String optionStyle = StringPool.BLANK;
+									if (Validator.isNotNull(portletPreferences.getValue("studioEulaUrl_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK))) {
+										optionStyle = "font-weight: bold;";
+									}
+								%>
 
-											if (Validator.isNotNull(portletPreferences.getValue("studioEulaUrl_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK))) {
-												optionStyle = "font-weight: bold;";
-											}
-										%>
+									<aui:option label="<%= locales[i].getDisplayName(locale) %>" selected="<%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) %>" style="<%= optionStyle %>" value="<%= LocaleUtil.toLanguageId(locales[i]) %>" />
 
-											<aui:option label="<%= locales[i].getDisplayName(locale) %>" selected="<%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) %>" style="<%= optionStyle %>" value="<%= LocaleUtil.toLanguageId(locales[i]) %>" />
+								<%
+								}
+								%>
 
-										<%
-										}
-										%>
-
-									</aui:select>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									<br />
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<liferay-ui:message key="studio-eula-url" />
-								</td>
-								<td>
-									<aui:input label="" name='<%= "studioEulaUrl_" + currentLanguageId %>' value="<%= studioEulaUrl %>" />
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<liferay-ui:message key="eula-version-displayed" />
-								</td>
-								<td>
-									<aui:input label="" name='<%= "studioEulaVersion_" + currentLanguageId %>' value="<%= studioEulaVersion %>" />
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<liferay-ui:message key="eula-version-required-to-accept" />
-								</td>
-								<td>
-									<aui:input label="" name='<%= "studioEulaVersionRequired_" + currentLanguageId %>' value="<%= studioEulaVersionRequired %>" />
-								</td>
-							</tr>
-						</table>
-					</c:when>
-					<c:otherwise>
-						<aui:fieldset>
-							<aui:input cssClass="lfr-input-text-container" label="protected-file-directory" name="fileDirectory" value="<%= fileDirectory %>" />
-
-							<aui:input cssClass="lfr-input-text-container" label="download-page" name="downloadPage" value="<%= downloadPage %>" />
-						</aui:fieldset>
-					</c:otherwise>
-				</c:choose>
+							</aui:select>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<br />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<liferay-ui:message key="studio-eula-url" />
+						</td>
+						<td>
+							<aui:input label="" name='<%= "studioEulaUrl_" + currentLanguageId %>' value="<%= studioEulaUrl %>" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<liferay-ui:message key="eula-version-displayed" />
+						</td>
+						<td>
+							<aui:input label="" name='<%= "studioEulaVersion_" + currentLanguageId %>' value="<%= studioEulaVersion %>" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<liferay-ui:message key="eula-version-required-to-accept" />
+						</td>
+						<td>
+							<aui:input label="" name='<%= "studioEulaVersionRequired_" + currentLanguageId %>' value="<%= studioEulaVersionRequired %>" />
+						</td>
+					</tr>
+				</table>
 			</c:when>
 			<c:when test='<%= tabs1.equals("trial") %>'>
 				<aui:fieldset>

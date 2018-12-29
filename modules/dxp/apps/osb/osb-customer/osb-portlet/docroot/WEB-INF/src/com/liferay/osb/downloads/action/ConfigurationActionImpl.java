@@ -70,7 +70,7 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 			updateTrial(actionRequest, preferences);
 		}
 		else {
-			updateStudio(actionRequest, preferences);
+			updateStudioEULA(actionRequest, preferences);
 		}
 
 		if (SessionErrors.isEmpty(actionRequest)) {
@@ -147,19 +147,6 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 		}
 	}
 
-	protected void updateGeneral(
-			ActionRequest actionRequest, PortletPreferences preferences)
-		throws Exception {
-
-		String fileDirectory = ParamUtil.getString(
-			actionRequest, "fileDirectory");
-		String downloadPage = ParamUtil.getString(
-			actionRequest, "downloadPage");
-
-		preferences.setValue("fileDirectory", fileDirectory);
-		preferences.setValue("downloadPage", downloadPage);
-	}
-
 	protected void updateGuestAccess(
 			ActionRequest actionRequest, PortletPreferences preferences)
 		throws Exception {
@@ -170,7 +157,7 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 		preferences.setValue("guestAccessPattern", guestAccessPattern);
 	}
 
-	protected void updateRequirements(
+	protected void updateStudioEULA(
 			ActionRequest actionRequest, PortletPreferences preferences)
 		throws Exception {
 
@@ -194,20 +181,6 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 			preferences.setValue(
 				"studioEulaVersionRequired_" + languageId,
 				String.valueOf(studioEulaVersionRequired));
-		}
-	}
-
-	protected void updateStudio(
-			ActionRequest actionRequest, PortletPreferences preferences)
-		throws Exception {
-
-		String tabs2 = ParamUtil.getString(actionRequest, "tabs2");
-
-		if (tabs2.equals("requirements")) {
-			updateRequirements(actionRequest, preferences);
-		}
-		else {
-			updateGeneral(actionRequest, preferences);
 		}
 	}
 

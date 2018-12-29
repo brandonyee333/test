@@ -14,7 +14,6 @@
 
 package com.liferay.osb.downloads.portlet;
 
-import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.osb.downloads.util.DownloadsUtil;
 import com.liferay.osb.util.AgreementUtil;
 import com.liferay.osb.util.OSBConstants;
@@ -26,7 +25,6 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -35,7 +33,6 @@ import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.Digester;
 import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -73,50 +70,21 @@ public class DownloadsPortlet extends MVCPortlet {
 
 		String fileName = ParamUtil.getString(actionRequest, "fileName");
 
-		if (requiresStudioEULA(actionRequest, fileName)) {
-			String downloadPage = getDownloadPage(actionRequest);
+		String url = _URL_PREFIX + fileName;
 
-			actionResponse.sendRedirect(downloadPage);
-		}
-		else {
-			String url = _URL_PREFIX + fileName;
+		String key = HttpUtil.URLtoString(url, true);
 
-			String key = HttpUtil.URLtoString(url, true);
+		url = _URL_PREFIX + StringPool.SLASH + key;
 
-			url = _URL_PREFIX + StringPool.SLASH + key;
+		actionResponse.sendRedirect(url);
 
-			actionResponse.sendRedirect(url);
-
-			sendAudit(actionRequest, fileName);
-		}
+		sendAudit(actionRequest, fileName);
 	}
 
 	protected String generateCode(String fileName) {
 		String shortFileName = FileUtil.getShortFileName(fileName);
 
 		return DigesterUtil.digestHex(Digester.MD5, shortFileName + _CODE_SALT);
-	}
-
-	protected String getDownloadPage(ActionRequest actionRequest) {
-		String downloadPage = StringPool.BLANK;
-
-		try {
-			PortletPreferences preferences = actionRequest.getPreferences();
-
-			String portletResource = ParamUtil.getString(
-				actionRequest, "portletResource");
-
-			if (Validator.isNotNull(portletResource)) {
-				preferences = PortletPreferencesFactoryUtil.getPortletSetup(
-					actionRequest, portletResource);
-			}
-
-			downloadPage = preferences.getValue("downloadPage", null);
-		}
-		catch (Exception e) {
-		}
-
-		return downloadPage;
 	}
 
 	protected boolean isCustomerAccess(
@@ -316,81 +284,6 @@ public class DownloadsPortlet extends MVCPortlet {
 		}
 
 		return false;
-	}
-
-	protected boolean requiresStudioEULA(
-		ActionRequest actionRequest, String fileName) {
-
-		try {
-			ThemeDisplay themeDisplay =
-				(ThemeDisplay)actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
-
-			PortletPreferences preferences = actionRequest.getPreferences();
-
-			String portletResource = ParamUtil.getString(
-				actionRequest, "portletResource");
-
-			if (Validator.isNotNull(portletResource)) {
-				preferences = PortletPreferencesFactoryUtil.getPortletSetup(
-					actionRequest, portletResource);
-			}
-
-			String fileDirectory = preferences.getValue("fileDirectory", null);
-
-			if (!fileName.startsWith(fileDirectory)) {
-				return false;
-			}
-
-			User user = themeDisplay.getUser();
-
-			ExpandoBridge expandoBridge = user.getExpandoBridge();
-
-			if (expandoBridge.hasAttribute("osbCustomerESA") ||
-				expandoBridge.hasAttribute("osbESA")) {
-
-				String[] fileNameArray = fileName.split(StringPool.SLASH);
-
-				if (fileNameArray.length >= 3) {
-					int osbStudioMajorVersion = GetterUtil.getInteger(
-						fileNameArray[2].substring(0, 1));
-
-					if ((osbStudioMajorVersion >= 3) &&
-						(fileNameArray[3].startsWith(
-							"LiferayDeveloperStudio") ||
-						 fileNameArray[3].startsWith(
-							 "liferay-developer-studio"))) {
-
-						return false;
-					}
-				}
-			}
-
-			String[] osbStudioEula = (String[])expandoBridge.getAttribute(
-				"osbCustomerStudioEULA");
-
-			if ((osbStudioEula == null) || (osbStudioEula.length < 4)) {
-				osbStudioEula = (String[])expandoBridge.getAttribute(
-					"osbStudioEULA");
-			}
-
-			if ((osbStudioEula == null) || (osbStudioEula.length < 4)) {
-				return true;
-			}
-
-			double osbStudioEulaVersionAccepted = GetterUtil.getDouble(
-				osbStudioEula[3]);
-			double osbStudioEulaVersionRequired = GetterUtil.getDouble(
-				preferences.getValue(
-					"studioEulaVersionRequired_" + osbStudioEula[2], null));
-
-			if (osbStudioEulaVersionAccepted >= osbStudioEulaVersionRequired) {
-				return false;
-			}
-		}
-		catch (Exception e) {
-		}
-
-		return true;
 	}
 
 	protected void sendAudit(ActionRequest actionRequest, String fileName) {
