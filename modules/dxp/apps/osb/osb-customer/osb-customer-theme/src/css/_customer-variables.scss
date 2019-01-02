@@ -44,14 +44,13 @@ $border-radius: 4px !default;
 
 $font-family-base: "Source Sans Pro", "Source Serif Pro", -apple-system, blinkmacsystemfont, "Segoe UI", roboto, "Helvetica Neue", arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
 
+$font-size-default: 16px !default;
 $font-size-md: 14px !default;
+$font-size-sm: 12px !default;
 
 $font-weight-light: 200 !default;
 $font-weight-normal: 400 !default;
 $font-weight-semi-bold: 600 !default;
-
-$normal-font-size: 16px !default;
-$small-font-size: 12px !default;
 
 $h1-font-size: $font-size-h1; // 32px
 $h2-font-size: $font-size-h2; // 24px
@@ -126,10 +125,10 @@ $label-sm: (
 $secondary-text-line-height: 1.429 !default;
 
 $margin-default: 24px !default;
-$margin-medium: 16px !default;
+$margin-md: 16px !default;
 
 $padding-default: 24px !default;
-$padding-medium: 16px !default;
+$padding-md: 16px !default;
 
 $alert-fluid-border-width: 0 0 1px 0 !default;
 

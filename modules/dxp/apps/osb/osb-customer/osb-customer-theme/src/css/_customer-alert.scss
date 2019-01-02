@@ -5,7 +5,7 @@
 .portlet-msg-info,
 .portlet-msg-progress,
 .portlet-msg-success {
-	padding: $padding-medium;
+	padding: $padding-md;
 	text-transform: initial;
 
 	.close {
@@ -42,7 +42,7 @@
 
 	.container,
 	.container-fluid {
-		padding: $padding-medium;
+		padding: $padding-md;
 	}
 }
 

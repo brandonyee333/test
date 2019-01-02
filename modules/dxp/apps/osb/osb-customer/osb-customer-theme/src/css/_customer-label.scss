@@ -1,6 +1,6 @@
 .label {
 	border-radius: 2px;
-	font-size: $small-font-size;
+	font-size: $font-size-sm;
 	font-weight: $font-weight-semi-bold;
 	line-height: 16px;
 	padding: 4px 8px 2px;
@@ -41,7 +41,7 @@
 		color: $label-danger-color;
 	}
 
-	&.label-small {
+	&.label-sm {
 		font-size: 10px;
 		padding: 2px 4px 1px;
 	}

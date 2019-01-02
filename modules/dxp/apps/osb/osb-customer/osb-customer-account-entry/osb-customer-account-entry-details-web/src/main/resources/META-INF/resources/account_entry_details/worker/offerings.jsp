@@ -99,7 +99,7 @@ PortletURL portletURL = renderResponse.createRenderURL();
 			String offeringStatus = OfferingEntryConstants.getStatusLabel(offeringEntryGroup.getStatus());
 			%>
 
-			<span class="label label-small label-<%= offeringStatus %>"><%= offeringStatus %></span>
+			<span class="label label-sm label-<%= offeringStatus %>"><%= offeringStatus %></span>
 		</liferay-ui:search-container-column-text>
 	</liferay-ui:search-container-row>
 
