@@ -91,12 +91,12 @@ public class AccountWorkerLocalServiceImpl
 			long userId, String emailAddress, long accountEntryId, int role)
 		throws PortalException {
 
-		User workerUser = userLocalService.fetchUserByEmailAddress(
+		User user = userLocalService.fetchUserByEmailAddress(
 			OSBConstants.COMPANY_ID, emailAddress);
 
-		if (workerUser != null) {
+		if (user != null) {
 			return addAccountWorker(
-				userId, workerUser.getUserId(), accountEntryId, role);
+				userId, user.getUserId(), accountEntryId, role);
 		}
 
 		User remoteUser = remoteUserLocalService.fetchUserByEmailAddress(
@@ -111,7 +111,7 @@ public class AccountWorkerLocalServiceImpl
 		serviceContext.setCreateDate(remoteUser.getCreateDate());
 		serviceContext.setUuid(remoteUser.getUuid());
 
-		workerUser = userLocalService.addUser(
+		user = userLocalService.addUser(
 			OSBConstants.USER_DEFAULT_USER_ID, OSBConstants.COMPANY_ID, true,
 			StringPool.BLANK, StringPool.BLANK, false,
 			remoteUser.getScreenName(), remoteUser.getEmailAddress(), 0,
@@ -121,14 +121,13 @@ public class AccountWorkerLocalServiceImpl
 			remoteUser.getOrganizationIds(), remoteUser.getRoleIds(),
 			new long[0], false, serviceContext);
 
-		ExpandoBridge expandoBridge = workerUser.getExpandoBridge();
+		ExpandoBridge expandoBridge = user.getExpandoBridge();
 
 		ExpandoBridge remoteExpandoBridge = remoteUser.getExpandoBridge();
 
 		expandoBridge.setAttributes(remoteExpandoBridge.getAttributes(), false);
 
-		return addAccountWorker(
-			userId, workerUser.getUserId(), accountEntryId, role);
+		return addAccountWorker(userId, user.getUserId(), accountEntryId, role);
 	}
 
 	public void deleteAccountEntryAccountWorkers(long accountEntryId)
