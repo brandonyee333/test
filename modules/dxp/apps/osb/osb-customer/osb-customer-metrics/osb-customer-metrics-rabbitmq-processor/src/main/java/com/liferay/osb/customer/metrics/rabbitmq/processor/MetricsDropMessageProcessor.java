@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.metrics.rabbitmq.processor;
 
+import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
 
 import org.osgi.service.component.annotations.Component;
@@ -28,6 +29,21 @@ import org.osgi.service.component.annotations.Component;
 public class MetricsDropMessageProcessor extends BaseMessageProcessor {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
+		String table = jsonObject.getString("table");
+
+		runSQL("truncate table OSB_Metrics" + table);
+
+		JSONArray mappingJSONArray = jsonObject.getJSONArray("mapping");
+
+		if (mappingJSONArray != null) {
+			for (int i = 0; i < mappingJSONArray.length(); i++) {
+				String mappingTable = (String)mappingJSONArray.get(i);
+
+				runSQL(
+					"truncate table " +
+						getMappingTableName(table, mappingTable));
+			}
+		}
 	}
 
 }

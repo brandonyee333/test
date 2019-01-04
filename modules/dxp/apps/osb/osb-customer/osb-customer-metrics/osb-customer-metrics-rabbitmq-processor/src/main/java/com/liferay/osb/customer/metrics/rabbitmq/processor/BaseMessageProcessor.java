@@ -18,17 +18,22 @@ import com.liferay.mail.kernel.model.MailMessage;
 import com.liferay.mail.kernel.service.MailServiceUtil;
 import com.liferay.osb.customer.metrics.rabbitmq.configuration.MetricsProcessorConfigurationValues;
 import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessor;
+import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.StackTraceUtil;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.TextFormatter;
 
 import java.io.IOException;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -41,6 +46,8 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 
 import javax.sql.DataSource;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author Kyle Bischof
@@ -87,40 +94,78 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 		}
 	}
 
-	public void runSQL(String sql) throws IOException, SQLException {
-		String dataSourceContext =
-			"java:comp/env/jdbc/" +
-				MetricsProcessorConfigurationValues.DATABASE_SCHEMA_NAME;
+	protected abstract void doProcess(JSONObject jsonObject) throws Exception;
+
+	protected String getColumnValue(String sql)
+		throws IOException, SQLException {
 
 		Connection connection = null;
+		Statement statement = null;
 
 		try {
 			Context initialContext = new InitialContext();
 
 			DataSource dataSource = (DataSource)initialContext.lookup(
-				dataSourceContext);
+				_DATA_SOURCE_CONTEXT);
 
-			if (dataSource != null) {
-				connection = dataSource.getConnection();
+			connection = dataSource.getConnection();
 
-				Statement statement = connection.createStatement();
+			statement = connection.createStatement();
 
-				statement.execute(sql);
+			ResultSet rs = statement.executeQuery(sql);
 
-				statement.close();
+			while (rs.next()) {
+				String column = StringUtils.substringBetween(
+					sql, "select ", " from");
 
-				connection.close();
-			}
-			else {
-				_log.error("Failed to lookup data source");
+				return rs.getString(column);
 			}
 		}
 		catch (Exception e) {
 			_log.error("Unable to connect to data source", e);
 		}
+		finally {
+			DataAccess.cleanUp(connection, statement);
+		}
+
+		return null;
 	}
 
-	protected abstract void doProcess(JSONObject jsonObject) throws Exception;
+	protected String getMappingTableName(String table, String mappingTable) {
+		StringBundler sb = new StringBundler(5);
+
+		sb.append("OSB_Metrics");
+		sb.append(TextFormatter.formatPlural(table));
+		sb.append(StringPool.UNDERLINE);
+		sb.append("Metrics");
+		sb.append(TextFormatter.formatPlural(mappingTable));
+
+		return sb.toString();
+	}
+
+	protected void runSQL(String sql) throws IOException, SQLException {
+		Connection connection = null;
+		Statement statement = null;
+
+		try {
+			Context initialContext = new InitialContext();
+
+			DataSource dataSource = (DataSource)initialContext.lookup(
+				_DATA_SOURCE_CONTEXT);
+
+			connection = dataSource.getConnection();
+
+			statement = connection.createStatement();
+
+			statement.execute(sql);
+		}
+		catch (Exception e) {
+			_log.error("Unable to connect to data source", e);
+		}
+		finally {
+			DataAccess.cleanUp(connection, statement);
+		}
+	}
 
 	protected void sendEmail(String mailBody) {
 		mailBody = StringUtil.replace(mailBody, CharPool.NEW_LINE, "<br />");
@@ -141,6 +186,10 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 			_log.error(ae, ae);
 		}
 	}
+
+	private static final String _DATA_SOURCE_CONTEXT =
+		"java:comp/env/jdbc/" +
+			MetricsProcessorConfigurationValues.DATABASE_SCHEMA_NAME;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseMessageProcessor.class);
