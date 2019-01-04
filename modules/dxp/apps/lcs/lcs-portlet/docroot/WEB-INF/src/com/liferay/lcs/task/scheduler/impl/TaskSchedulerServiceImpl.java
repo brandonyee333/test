@@ -210,16 +210,12 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		}
 	}
 
-	protected int getInterval(Map<String, String> schedulerContext) {
-		String interval = schedulerContext.get("interval");
-
-		return GetterUtil.getInteger(interval, _defaultInterval);
-	}
-
 	protected void scheduleLocalScheduledTask(
 		Map<String, String> schedulerContext) {
 
-		int interval = getInterval(schedulerContext);
+		int initialDelay = _getInitialDelay(schedulerContext);
+
+		int interval = _getInterval(schedulerContext);
 
 		String taskName = schedulerContext.get("taskName");
 
@@ -232,7 +228,7 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		_scheduledFuturesMap.put(
 			taskName,
 			_scheduledExecutorService.scheduleAtFixedRate(
-				scheduledTask, interval, interval, TimeUnit.SECONDS));
+				scheduledTask, initialDelay, interval, TimeUnit.SECONDS));
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Scheduled task " + taskName);
@@ -350,6 +346,18 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		if (_log.isTraceEnabled()) {
 			_log.trace("Sign out task executed");
 		}
+	}
+
+	private int _getInitialDelay(Map<String, String> schedulerContext) {
+		String initialDelay = schedulerContext.get("initialDelay");
+
+		return GetterUtil.getInteger(initialDelay);
+	}
+
+	private int _getInterval(Map<String, String> schedulerContext) {
+		String interval = schedulerContext.get("interval");
+
+		return GetterUtil.getInteger(interval, _defaultInterval);
 	}
 
 	private void _onLCSGatewayServiceAvailable() {
