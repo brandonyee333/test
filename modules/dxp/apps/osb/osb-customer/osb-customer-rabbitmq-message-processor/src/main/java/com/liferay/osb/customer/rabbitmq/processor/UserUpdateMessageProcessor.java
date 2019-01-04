@@ -60,7 +60,7 @@ public class UserUpdateMessageProcessor extends BaseMessageProcessor {
 		user = userLocalService.updateUser(
 			user.getUserId(), null, null, null, false, null, null,
 			remoteUser.getScreenName(), remoteUser.getEmailAddress(),
-			user.getFacebookId(), user.getOpenId(), false, null,
+			user.getFacebookId(), user.getOpenId(), true, null,
 			remoteUser.getLanguageId(), remoteUser.getTimeZoneId(),
 			user.getGreeting(), user.getComments(), remoteUser.getFirstName(),
 			remoteUser.getMiddleName(), remoteUser.getLastName(),
