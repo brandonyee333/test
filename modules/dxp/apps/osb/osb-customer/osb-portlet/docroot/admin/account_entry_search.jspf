@@ -554,71 +554,69 @@ Date lastEnabledDate = calendar.getTime();
 <aui:script use="autocomplete">
 	var code = A.one('#<portlet:namespace />code');
 
-	code.on(
-		'keyup',
-		function() {
-			AUI.$.ajax(
-				'<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="accountEntries" />',
-				{
-					data: {
-						<portlet:namespace />code: code.val()
-					},
-					success: function(responseData) {
-						new A.AutoComplete(
-							{
-								activateFirstItem: true,
-								inputNode: code,
-								maxResults: 10,
-								minQueryLength: 2,
-								on: {
-									itemSelect: function(event) {
-										if (event != null) {
-											document.getElementById('<portlet:namespace />code').value = '"' + event.details[1].code + '"';
+	if (code) {
+		code.on(
+			'keyup',
+			function() {
+				AUI.$.ajax(
+					'<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="accountEntries" />',
+					{
+						data: {
+							<portlet:namespace />code: code.val()
+						},
+						success: function(responseData) {
+							code.plug(
+								A.Plugin.AutoComplete,
+								{
+									after: {
+										select: function(event) {
+											code.val('"' + event.result.display + '"');
 										}
-									}
-								},
-								source: responseData
-							}
-						).render();
+									},
+									maxResults: 10,
+									minQueryLength: 2,
+									source: responseData
+								}
+							);
+						}
 					}
-				}
-			);
-		}
-	);
+				);
+			}
+		);
+	}
 
 	var name = A.one('#<portlet:namespace />name');
 
-	name.on(
-		'keyup',
-		function() {
-			AUI.$.ajax(
-				'<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="accountEntries" />',
-				{
-					data: {
-						<portlet:namespace />name: name.val()
-					},
-					success: function(responseData) {
-						new A.AutoComplete(
-							{
-								activateFirstItem: true,
-								inputNode: name,
-								maxResults: 10,
-								minQueryLength: 2,
-								on: {
-									itemSelect: function(event) {
-										if (event != null) {
-											document.getElementById('<portlet:namespace />name').value = '"' + event.details[1].name + '"';
+	if (name) {
+		name.on(
+			'keyup',
+			function() {
+				AUI.$.ajax(
+					'<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="accountEntries" />',
+					{
+						data: {
+							<portlet:namespace />name: name.val()
+						},
+						success: function(responseData) {
+							name.plug(
+								A.Plugin.AutoComplete,
+								{
+									after: {
+										select: function(event) {
+											name.val('"' + event.result.display + '"');
 										}
-									}
-								},
-								source: responseData
-							}
-						).render();
+									},
+									maxResults: 10,
+									minQueryLength: 2,
+									source: responseData
+								}
+							);
+						}
 					}
-				}
-			);
-		}
-	);
+				);
+			}
+		);
+	}
 </aui:script>
 
 <aui:script use="liferay-address,liferay-dynamic-select">
