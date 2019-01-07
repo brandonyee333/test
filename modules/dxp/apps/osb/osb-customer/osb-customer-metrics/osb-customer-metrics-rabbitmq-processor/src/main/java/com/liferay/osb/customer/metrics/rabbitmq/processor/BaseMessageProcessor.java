@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.StackTraceUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TextFormatter;
 
@@ -37,6 +36,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.mail.internet.AddressException;
@@ -96,6 +97,20 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 
 	protected abstract void doProcess(JSONObject jsonObject) throws Exception;
 
+	protected Map<String, String> getColumnMap(JSONObject jsonObject) {
+		Map<String, String> columnMap = new HashMap<>();
+
+		Iterator<String> keysIterator = jsonObject.keys();
+
+		while (keysIterator.hasNext())	 {
+			String columnName = keysIterator.next();
+
+			columnMap.put(columnName, jsonObject.getString(columnName));
+		}
+
+		return columnMap;
+	}
+
 	protected String getColumnValue(String sql)
 		throws IOException, SQLException {
 
@@ -132,12 +147,11 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 	}
 
 	protected String getMappingTableName(String table, String mappingTable) {
-		StringBundler sb = new StringBundler(5);
+		StringBundler sb = new StringBundler(4);
 
 		sb.append("OSB_Metrics");
 		sb.append(TextFormatter.formatPlural(table));
-		sb.append(StringPool.UNDERLINE);
-		sb.append("Metrics");
+		sb.append("_Metrics");
 		sb.append(TextFormatter.formatPlural(mappingTable));
 
 		return sb.toString();

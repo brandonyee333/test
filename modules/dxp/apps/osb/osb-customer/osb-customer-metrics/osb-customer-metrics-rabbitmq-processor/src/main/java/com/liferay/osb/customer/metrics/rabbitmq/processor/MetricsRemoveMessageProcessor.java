@@ -19,9 +19,10 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -34,25 +35,29 @@ import org.osgi.service.component.annotations.Component;
 )
 public class MetricsRemoveMessageProcessor extends BaseMessageProcessor {
 
-	protected String buildSql(
-		String table, List<String> columns, List<String> values) {
-
-		StringBundler sb = new StringBundler(3 + ((6 * columns.size()) - 1));
+	protected String buildSql(String tableName, Map<String, String> columnMap) {
+		StringBundler sb = new StringBundler(3 + ((6 * columnMap.size()) - 1));
 
 		sb.append("delete from ");
-		sb.append(table);
+		sb.append(tableName);
 		sb.append(" where ");
 
-		for (int i = 0; i < columns.size(); i++) {
-			if (i > 0) {
+		Set<Entry<String, String>> entrySet = columnMap.entrySet();
+
+		Iterator<Entry<String, String>> iterator = entrySet.iterator();
+
+		while (iterator.hasNext()) {
+			Entry<String, String> entry = iterator.next();
+
+			sb.append(entry.getKey());
+
+			sb.append(" = '");
+			sb.append(entry.getValue());
+			sb.append(StringPool.APOSTROPHE);
+
+			if (iterator.hasNext()) {
 				sb.append(" and ");
 			}
-
-			sb.append(columns.get(i));
-			sb.append(" = ");
-			sb.append(StringPool.APOSTROPHE);
-			sb.append(values.get(i));
-			sb.append(StringPool.APOSTROPHE);
 		}
 
 		return sb.toString();
@@ -65,21 +70,11 @@ public class MetricsRemoveMessageProcessor extends BaseMessageProcessor {
 
 		String table = tableNamesJSONArray.getString(0);
 
-		List<String> columns = new ArrayList<>();
-		List<String> values = new ArrayList<>();
-
 		JSONObject modelJSONObject = tableJSONObject.getJSONObject(table);
 
-		Iterator<String> keysIterator = modelJSONObject.keys();
+		Map<String, String> columnMap = getColumnMap(modelJSONObject);
 
-		while (keysIterator.hasNext()) {
-			String key = keysIterator.next();
-
-			columns.add(key);
-			values.add(modelJSONObject.getString(key));
-		}
-
-		String sql = buildSql("OSB_Metrics" + table, columns, values);
+		String sql = buildSql("OSB_Metrics" + table, columnMap);
 
 		runSQL(sql);
 
@@ -92,7 +87,7 @@ public class MetricsRemoveMessageProcessor extends BaseMessageProcessor {
 				String mappingTableName = getMappingTableName(
 					table, mappingTable);
 
-				sql = buildSql(mappingTableName, columns, values);
+				sql = buildSql(mappingTableName, columnMap);
 
 				runSQL(sql);
 			}

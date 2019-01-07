@@ -23,9 +23,10 @@ import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -39,42 +40,47 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 
-	protected String buildSql(
-		String table, Map<String, String> columnValuePair) {
-
+	protected String buildSql(String tableName, Map<String, String> columnMap) {
 		StringBundler sb = new StringBundler(6);
-		StringBundler columnSB = new StringBundler(2 * columnValuePair.size());
-		StringBundler valueSB = new StringBundler(4 * columnValuePair.size());
 
 		sb.append("replace into ");
-		sb.append(table);
+		sb.append(tableName);
 		sb.append(StringPool.SPACE);
 
-		columnSB.append(StringPool.OPEN_PARENTHESIS);
+		StringBundler columnNamesSB = new StringBundler(2 * columnMap.size());
+		StringBundler columnValueSB = new StringBundler(4 * columnMap.size());
 
-		valueSB.append(StringPool.OPEN_PARENTHESIS);
+		columnNamesSB.append(StringPool.OPEN_PARENTHESIS);
 
-		for (Map.Entry<String, String> entrySet : columnValuePair.entrySet()) {
-			columnSB.append(entrySet.getKey());
+		columnValueSB.append(StringPool.OPEN_PARENTHESIS);
 
-			valueSB.append(StringPool.APOSTROPHE);
-			valueSB.append(entrySet.getValue());
-			valueSB.append(StringPool.APOSTROPHE);
+		Set<Entry<String, String>> entrySet = columnMap.entrySet();
 
-			if (columnSB.index() < (columnSB.capacity() - 1)) {
-				columnSB.append(StringPool.COMMA);
+		Iterator<Entry<String, String>> iterator = entrySet.iterator();
 
-				valueSB.append(StringPool.COMMA);
+		while (iterator.hasNext()) {
+			Entry<String, String> entry = iterator.next();
+
+			columnNamesSB.append(entry.getKey());
+
+			columnValueSB.append(StringPool.APOSTROPHE);
+			columnValueSB.append(entry.getValue());
+			columnValueSB.append(StringPool.APOSTROPHE);
+
+			if (iterator.hasNext()) {
+				columnNamesSB.append(StringPool.COMMA);
+
+				columnValueSB.append(StringPool.COMMA);
 			}
 		}
 
-		columnSB.append(StringPool.CLOSE_PARENTHESIS);
+		columnNamesSB.append(StringPool.CLOSE_PARENTHESIS);
 
-		valueSB.append(StringPool.CLOSE_PARENTHESIS);
+		columnValueSB.append(StringPool.CLOSE_PARENTHESIS);
 
-		sb.append(columnSB.toString());
+		sb.append(columnNamesSB.toString());
 		sb.append(" values ");
-		sb.append(valueSB.toString());
+		sb.append(columnValueSB.toString());
 
 		return sb.toString();
 	}
@@ -93,22 +99,6 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 		if (mappingJSONObject != null) {
 			updateMappingTables(mappingJSONObject, table);
 		}
-	}
-
-	protected Map<String, String> getColumnValuePairs(JSONObject jsonObject) {
-		Map<String, String> columnValuePairs = new HashMap<>();
-
-		Iterator<String> keysIterator = jsonObject.keys();
-
-		while (keysIterator.hasNext())	 {
-			String column = keysIterator.next();
-
-			String value = jsonObject.getString(column);
-
-			columnValuePairs.put(column, value);
-		}
-
-		return columnValuePairs;
 	}
 
 	protected JSONObject reconcile(JSONObject jsonObject) throws Exception {
@@ -164,7 +154,7 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 		return jsonObject;
 	}
 
-	protected void updateMappingTables(JSONObject jsonObject, String table)
+	protected void updateMappingTables(JSONObject jsonObject, String tableName)
 		throws Exception {
 
 		Iterator<String> keysIterator = jsonObject.keys();
@@ -179,21 +169,22 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 					mappingTableJSONArray.getJSONObject(i));
 
 				String sql = buildSql(
-					getMappingTableName(table, key),
-					getColumnValuePairs(mappingTableJSONObject));
+					getMappingTableName(tableName, key),
+					getColumnMap(mappingTableJSONObject));
 
 				runSQL(sql);
 			}
 		}
 	}
 
-	protected void updateTable(JSONObject jsonObject, String table)
+	protected void updateTable(JSONObject jsonObject, String tableName)
 		throws Exception {
 
-		JSONObject tableJSONObject = reconcile(jsonObject.getJSONObject(table));
+		JSONObject tableJSONObject = reconcile(
+			jsonObject.getJSONObject(tableName));
 
 		String sql = buildSql(
-			"OSB_Metrics" + table, getColumnValuePairs(tableJSONObject));
+			"OSB_Metrics" + tableName, getColumnMap(tableJSONObject));
 
 		runSQL(sql);
 	}
