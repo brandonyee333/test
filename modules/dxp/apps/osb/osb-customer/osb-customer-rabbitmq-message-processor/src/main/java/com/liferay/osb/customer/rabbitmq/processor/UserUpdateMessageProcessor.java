@@ -78,6 +78,11 @@ public class UserUpdateMessageProcessor extends BaseMessageProcessor {
 		ExpandoBridge remoteExpandoBridge = remoteUser.getExpandoBridge();
 
 		expandoBridge.setAttributes(remoteExpandoBridge.getAttributes(), false);
+
+		if (remoteUser.getStatus() != user.getStatus()) {
+			userLocalService.updateStatus(
+				user.getUserId(), remoteUser.getStatus(), new ServiceContext());
+		}
 	}
 
 	@Reference(

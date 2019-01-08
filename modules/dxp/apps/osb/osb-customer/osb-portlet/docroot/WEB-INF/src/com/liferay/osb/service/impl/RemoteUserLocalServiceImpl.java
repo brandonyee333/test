@@ -360,6 +360,7 @@ public class RemoteUserLocalServiceImpl extends RemoteUserLocalServiceBaseImpl {
 		}
 
 		remoteUser.setScreenName(jsonObject.getString("screenName"));
+		remoteUser.setStatus(jsonObject.getInt("status"));
 		remoteUser.setUuid(jsonObject.getString("uuid"));
 
 		return remoteUser;
