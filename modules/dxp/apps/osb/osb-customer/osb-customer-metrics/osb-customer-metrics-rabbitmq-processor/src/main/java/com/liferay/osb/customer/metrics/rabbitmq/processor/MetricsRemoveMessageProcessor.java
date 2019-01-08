@@ -66,23 +66,24 @@ public class MetricsRemoveMessageProcessor extends BaseMessageProcessor {
 	protected void doProcess(JSONObject jsonObject) throws Exception {
 		JSONObject tableJSONObject = jsonObject.getJSONObject("table");
 
-		JSONArray tableNamesJSONArray = tableJSONObject.names();
+		String table = tableJSONObject.getString("name");
 
-		String table = tableNamesJSONArray.getString(0);
+		JSONObject valuesJSONObject = tableJSONObject.getJSONObject("values");
 
-		JSONObject modelJSONObject = tableJSONObject.getJSONObject(table);
-
-		Map<String, String> columnMap = getColumnMap(modelJSONObject);
+		Map<String, String> columnMap = getColumnMap(valuesJSONObject);
 
 		String sql = buildSql("OSB_Metrics" + table, columnMap);
 
 		runSQL(sql);
 
-		JSONArray mappingJSONArray = jsonObject.getJSONArray("mapping");
+		JSONObject mappingJSONObject = jsonObject.getJSONObject("mapping");
 
-		if (mappingJSONArray != null) {
-			for (int i = 0; i < mappingJSONArray.length(); i++) {
-				String mappingTable = (String)mappingJSONArray.get(i);
+		if (mappingJSONObject != null) {
+			JSONArray mappingNamesJSONArray = mappingJSONObject.getJSONArray(
+				"names");
+
+			for (int i = 0; i < mappingNamesJSONArray.length(); i++) {
+				String mappingTable = (String)mappingNamesJSONArray.get(i);
 
 				String mappingTableName = getMappingTableName(
 					table, mappingTable);

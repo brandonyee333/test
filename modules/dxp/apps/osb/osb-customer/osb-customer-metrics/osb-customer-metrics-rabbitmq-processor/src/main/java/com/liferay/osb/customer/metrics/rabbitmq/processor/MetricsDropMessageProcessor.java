@@ -29,15 +29,20 @@ import org.osgi.service.component.annotations.Component;
 public class MetricsDropMessageProcessor extends BaseMessageProcessor {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
-		String table = jsonObject.getString("table");
+		JSONObject tableJSONObject = jsonObject.getJSONObject("table");
+
+		String table = tableJSONObject.getString("name");
 
 		runSQL("truncate table OSB_Metrics" + table);
 
-		JSONArray mappingJSONArray = jsonObject.getJSONArray("mapping");
+		JSONObject mappingJSONObject = jsonObject.getJSONObject("mapping");
 
-		if (mappingJSONArray != null) {
-			for (int i = 0; i < mappingJSONArray.length(); i++) {
-				String mappingTable = (String)mappingJSONArray.get(i);
+		if (mappingJSONObject != null) {
+			JSONArray mappingNamesJSONArray = mappingJSONObject.getJSONArray(
+				"names");
+
+			for (int i = 0; i < mappingNamesJSONArray.length(); i++) {
+				String mappingTable = (String)mappingNamesJSONArray.get(i);
 
 				runSQL(
 					"truncate table " +

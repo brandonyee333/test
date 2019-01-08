@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.metrics.rabbitmq.processor;
 
+import com.liferay.portal.kernel.exception.NoSuchClassNameException;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -88,16 +89,14 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 	protected void doProcess(JSONObject jsonObject) throws Exception {
 		JSONObject tableJSONObject = jsonObject.getJSONObject("table");
 
-		JSONArray tableNamesJSONArray = tableJSONObject.names();
-
-		String table = tableNamesJSONArray.getString(0);
+		String table = tableJSONObject.getString("name");
 
 		updateTable(tableJSONObject, table);
 
-		JSONObject mappingJSONObject = jsonObject.getJSONObject("mapping");
+		JSONArray mappingJSONArray = jsonObject.getJSONArray("mapping");
 
-		if (mappingJSONObject != null) {
-			updateMappingTables(mappingJSONObject, table);
+		if (mappingJSONArray != null) {
+			updateMappingTables(mappingJSONArray, table);
 		}
 	}
 
@@ -112,6 +111,9 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 
 			if (classNameId != null) {
 				jsonObject.put("classNameId", classNameId);
+			}
+			else {
+				throw new NoSuchClassNameException();
 			}
 		}
 
@@ -154,23 +156,23 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 		return jsonObject;
 	}
 
-	protected void updateMappingTables(JSONObject jsonObject, String tableName)
+	protected void updateMappingTables(JSONArray jsonArray, String tableName)
 		throws Exception {
 
-		Iterator<String> keysIterator = jsonObject.keys();
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = (JSONObject)jsonArray.get(i);
 
-		while (keysIterator.hasNext()) {
-			String key = keysIterator.next();
+			String mappingTable = jsonObject.getString("name");
 
-			JSONArray mappingTableJSONArray = jsonObject.getJSONArray(key);
+			JSONArray valuesJSONArray = jsonObject.getJSONArray("values");
 
-			for (int i = 0; i < mappingTableJSONArray.length(); i++) {
-				JSONObject mappingTableJSONObject = reconcile(
-					mappingTableJSONArray.getJSONObject(i));
+			for (int j = 0; j < valuesJSONArray.length(); j++) {
+				JSONObject valueJSONObject = reconcile(
+					(JSONObject)valuesJSONArray.get(j));
 
 				String sql = buildSql(
-					getMappingTableName(tableName, key),
-					getColumnMap(mappingTableJSONObject));
+					getMappingTableName(tableName, mappingTable),
+					getColumnMap(valueJSONObject));
 
 				runSQL(sql);
 			}
@@ -180,11 +182,11 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 	protected void updateTable(JSONObject jsonObject, String tableName)
 		throws Exception {
 
-		JSONObject tableJSONObject = reconcile(
-			jsonObject.getJSONObject(tableName));
+		JSONObject valuesJSONObject = reconcile(
+			jsonObject.getJSONObject("values"));
 
 		String sql = buildSql(
-			"OSB_Metrics" + tableName, getColumnMap(tableJSONObject));
+			"OSB_Metrics" + tableName, getColumnMap(valuesJSONObject));
 
 		runSQL(sql);
 	}
