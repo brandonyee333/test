@@ -103,6 +103,7 @@ public class AccountCustomerSynchronizer {
 
 			for (ZendeskTicket zendeskTicket : zendeskTickets) {
 				zendeskTicket.setRequesterId(newZendeskUserId);
+				zendeskTicket.setZendeskOrganizationId(zendeskOrganizationId);
 			}
 
 			_zendeskTicketWebService.updateZendeskTickets(zendeskTickets);
