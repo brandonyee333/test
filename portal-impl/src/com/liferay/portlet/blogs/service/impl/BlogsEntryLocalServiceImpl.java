@@ -25,6 +25,7 @@ import com.liferay.blogs.kernel.exception.EntryTitleException;
 import com.liferay.blogs.kernel.model.BlogsEntry;
 import com.liferay.blogs.kernel.util.comparator.EntryDisplayDateComparator;
 import com.liferay.blogs.kernel.util.comparator.EntryIdComparator;
+import com.liferay.blogs.util.BlogsEntryAttachmentFileEntryUtil;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.portal.kernel.comment.CommentManagerUtil;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
@@ -83,7 +84,6 @@ import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 import com.liferay.portal.util.LayoutURLUtil;
 import com.liferay.portal.util.PrefsPropsUtil;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.portlet.blogs.BlogsEntryAttachmentFileEntryHelper;
 import com.liferay.portlet.blogs.BlogsGroupServiceSettings;
 import com.liferay.portlet.blogs.constants.BlogsConstants;
 import com.liferay.portlet.blogs.service.base.BlogsEntryLocalServiceBaseImpl;
@@ -435,14 +435,10 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 			return 0;
 		}
 
-		BlogsEntryAttachmentFileEntryHelper
-			blogsEntryAttachmentFileEntryHelper =
-				new BlogsEntryAttachmentFileEntryHelper();
-
 		Folder folder = addAttachmentsFolder(userId, groupId);
 
 		FileEntry originalFileEntry =
-			blogsEntryAttachmentFileEntryHelper.
+			BlogsEntryAttachmentFileEntryUtil.
 				addBlogsEntryAttachmentFileEntry(
 					groupId, userId, entryId, folder.getFolderId(),
 					imageSelector.getImageTitle(),
@@ -1492,12 +1488,8 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 			title = StringUtil.randomString() + "_processedImage_" + entryId;
 		}
 
-		BlogsEntryAttachmentFileEntryHelper
-			blogsEntryAttachmentFileEntryHelper =
-				new BlogsEntryAttachmentFileEntryHelper();
-
 		FileEntry processedImageFileEntry =
-			blogsEntryAttachmentFileEntryHelper.
+			BlogsEntryAttachmentFileEntryUtil.
 				addBlogsEntryAttachmentFileEntry(
 					groupId, userId, entryId, folderId, title, mimeType, bytes);
 
