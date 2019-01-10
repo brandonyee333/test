@@ -87,18 +87,9 @@ public class MetricsRemoveMessageProcessor extends BaseMessageProcessor {
 				String mappingTableName = getMappingTableName(
 					modelName, mappingName);
 
-				JSONArray mappingValuesJSONArray = jsonObject.getJSONArray(
-					"values");
+				String mappingSql = buildSql(mappingTableName, columnMap);
 
-				for (int j = 0; j < mappingValuesJSONArray.length(); j++) {
-					Map<String, String> mappingColumnMap = getColumnMap(
-						mappingValuesJSONArray.getJSONObject(j));
-
-					String mappingSql = buildSql(
-						mappingTableName, mappingColumnMap);
-
-					runSQL(mappingSql);
-				}
+				runSQL(mappingSql);
 			}
 		}
 	}
