@@ -16,7 +16,7 @@ package com.liferay.osb.util;
 
 /**
  * @author Amos Fong
- * @author Mate Thurzo
+ * @author Máté Thurzó
  * @author Haote Chou
  */
 public class OSBConstants {

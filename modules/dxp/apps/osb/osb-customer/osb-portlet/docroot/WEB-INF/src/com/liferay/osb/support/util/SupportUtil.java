@@ -48,7 +48,7 @@ import javax.portlet.PortletPreferences;
 
 /**
  * @author Amos Fong
- * @author Mate Thurzo
+ * @author Máté Thurzó
  */
 public class SupportUtil {
 

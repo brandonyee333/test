@@ -3,6 +3,7 @@
 <html>
 	<head>
 		<title>Release Notes - $version</title>
+
 		<style type="text/css">
 			$css
 
