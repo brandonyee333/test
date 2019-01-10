@@ -64,33 +64,41 @@ public class MetricsRemoveMessageProcessor extends BaseMessageProcessor {
 	}
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
-		JSONObject tableJSONObject = jsonObject.getJSONObject("table");
+		JSONObject modelJSONObject = jsonObject.getJSONObject("model");
 
-		String table = tableJSONObject.getString("name");
+		String modelName = modelJSONObject.getString("name");
 
-		JSONObject valuesJSONObject = tableJSONObject.getJSONObject("values");
+		Map<String, String> columnMap = getColumnMap(
+			modelJSONObject.getJSONObject("values"));
 
-		Map<String, String> columnMap = getColumnMap(valuesJSONObject);
-
-		String sql = buildSql("OSB_Metrics" + table, columnMap);
+		String sql = buildSql(getTableName(modelName), columnMap);
 
 		runSQL(sql);
 
-		JSONObject mappingJSONObject = jsonObject.getJSONObject("mapping");
+		JSONArray mappingsJSONArray = jsonObject.getJSONArray("mappings");
 
-		if (mappingJSONObject != null) {
-			JSONArray mappingNamesJSONArray = mappingJSONObject.getJSONArray(
-				"names");
+		if (mappingsJSONArray != null) {
+			for (int i = 0; i < mappingsJSONArray.length(); i++) {
+				JSONObject mappingJSONObject = mappingsJSONArray.getJSONObject(
+					i);
 
-			for (int i = 0; i < mappingNamesJSONArray.length(); i++) {
-				String mappingTable = (String)mappingNamesJSONArray.get(i);
+				String mappingName = mappingJSONObject.getString("name");
 
 				String mappingTableName = getMappingTableName(
-					table, mappingTable);
+					modelName, mappingName);
 
-				sql = buildSql(mappingTableName, columnMap);
+				JSONArray mappingValuesJSONArray = jsonObject.getJSONArray(
+					"values");
 
-				runSQL(sql);
+				for (int j = 0; j < mappingValuesJSONArray.length(); j++) {
+					Map<String, String> mappingColumnMap = getColumnMap(
+						mappingValuesJSONArray.getJSONObject(j));
+
+					String mappingSql = buildSql(
+						mappingTableName, mappingColumnMap);
+
+					runSQL(mappingSql);
+				}
 			}
 		}
 	}

@@ -146,15 +146,19 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 		return null;
 	}
 
-	protected String getMappingTableName(String table, String mappingTable) {
+	protected String getMappingTableName(String modelName, String mappingName) {
 		StringBundler sb = new StringBundler(4);
 
 		sb.append("OSB_Metrics");
-		sb.append(TextFormatter.formatPlural(table));
+		sb.append(TextFormatter.formatPlural(modelName));
 		sb.append("_Metrics");
-		sb.append(TextFormatter.formatPlural(mappingTable));
+		sb.append(TextFormatter.formatPlural(mappingName));
 
 		return sb.toString();
+	}
+
+	protected String getTableName(String modelName) {
+		return "OSB_Metrics" + modelName;
 	}
 
 	protected void runSQL(String sql) throws IOException, SQLException {

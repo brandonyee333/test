@@ -87,16 +87,16 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 	}
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
-		JSONObject tableJSONObject = jsonObject.getJSONObject("table");
+		JSONObject modelJSONObject = jsonObject.getJSONObject("model");
 
-		String table = tableJSONObject.getString("name");
+		String modelName = modelJSONObject.getString("name");
 
-		updateTable(tableJSONObject, table);
+		updateTable(modelJSONObject, modelName);
 
-		JSONArray mappingJSONArray = jsonObject.getJSONArray("mapping");
+		JSONArray mappingsJSONArray = jsonObject.getJSONArray("mappings");
 
-		if (mappingJSONArray != null) {
-			updateMappingTables(mappingJSONArray, table);
+		if (mappingsJSONArray != null) {
+			updateMappingTables(mappingsJSONArray, modelName);
 		}
 	}
 
@@ -156,37 +156,38 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 		return jsonObject;
 	}
 
-	protected void updateMappingTables(JSONArray jsonArray, String tableName)
+	protected void updateMappingTables(JSONArray jsonArray, String modelName)
 		throws Exception {
 
 		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = (JSONObject)jsonArray.get(i);
+			JSONObject mappingJSONObject = jsonArray.getJSONObject(i);
 
-			String mappingTable = jsonObject.getString("name");
+			String mappingName = mappingJSONObject.getString("name");
 
-			JSONArray valuesJSONArray = jsonObject.getJSONArray("values");
+			JSONArray mappingValuesJSONArray = mappingJSONObject.getJSONArray(
+				"values");
 
-			for (int j = 0; j < valuesJSONArray.length(); j++) {
-				JSONObject valueJSONObject = reconcile(
-					(JSONObject)valuesJSONArray.get(j));
+			for (int j = 0; j < mappingValuesJSONArray.length(); j++) {
+				JSONObject mappingValuesJSONObject = reconcile(
+					mappingValuesJSONArray.getJSONObject(j));
 
 				String sql = buildSql(
-					getMappingTableName(tableName, mappingTable),
-					getColumnMap(valueJSONObject));
+					getMappingTableName(modelName, mappingName),
+					getColumnMap(mappingValuesJSONObject));
 
 				runSQL(sql);
 			}
 		}
 	}
 
-	protected void updateTable(JSONObject jsonObject, String tableName)
+	protected void updateTable(JSONObject jsonObject, String modelName)
 		throws Exception {
 
 		JSONObject valuesJSONObject = reconcile(
 			jsonObject.getJSONObject("values"));
 
 		String sql = buildSql(
-			"OSB_Metrics" + tableName, getColumnMap(valuesJSONObject));
+			getTableName(modelName), getColumnMap(valuesJSONObject));
 
 		runSQL(sql);
 	}
