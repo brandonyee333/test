@@ -824,6 +824,8 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 			accountEntry.setSupportRegionIds(supportRegionIds);
 		}
 		else {
+			accountEntry = (AccountEntry)accountEntry.clone();
+
 			accountEntry.setDossieraAccountKey(
 				accountJSONObject.getString("_dossieraAccountKey"));
 			accountEntry.setCorpEntryName(accountJSONObject.getString("_name"));
@@ -942,6 +944,8 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 			corpProject.setName(name);
 		}
 		else {
+			corpProject = (CorpProject)corpProject.clone();
+
 			if ((salesforceOpportunityType ==
 					SalesforceConstants.OPPORTUNITY_TYPE_NEW_BUSINESS) ||
 				(salesforceOpportunityType ==
