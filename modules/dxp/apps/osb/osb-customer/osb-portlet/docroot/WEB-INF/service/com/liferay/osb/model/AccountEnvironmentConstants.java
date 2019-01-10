@@ -317,6 +317,8 @@ public class AccountEnvironmentConstants {
 
 	public static final long ENV_JVM_ORACLE_OPENJDK_8 = 29008;
 
+	public static final long ENV_JVM_ORACLE_OPENJDK_11 = 29008;
+
 	public static final long ENV_JVM_ORACLE_SUN_JDK_5 = 29000;
 
 	public static final long ENV_JVM_ORACLE_SUN_JDK_6 = 29001;
@@ -713,8 +715,10 @@ public class AccountEnvironmentConstants {
 	private static final long[] _ENV_JVM_DIGITAL_ENTERPRISE_VERSION_7_0 =
 		{ENV_JVM_IBM_JDK_8, ENV_JVM_ORACLE_SUN_JDK_8, ENV_JVM_ORACLE_OPENJDK_8};
 
-	private static final long[] _ENV_JVM_DIGITAL_ENTERPRISE_VERSION_7_1 =
-		{ENV_JVM_IBM_JDK_8, ENV_JVM_ORACLE_SUN_JDK_8, ENV_JVM_ORACLE_OPENJDK_8};
+	private static final long[] _ENV_JVM_DIGITAL_ENTERPRISE_VERSION_7_1 = {
+		ENV_JVM_IBM_JDK_8, ENV_JVM_ORACLE_SUN_JDK_8, ENV_JVM_ORACLE_OPENJDK_8,
+		ENV_JVM_ORACLE_OPENJDK_11
+	};
 
 	private static final long[] _ENV_JVM_PORTAL_VERSION_6_1 = {
 		ENV_JVM_ORACLE_SUN_JDK_5, ENV_JVM_ORACLE_SUN_JDK_6,

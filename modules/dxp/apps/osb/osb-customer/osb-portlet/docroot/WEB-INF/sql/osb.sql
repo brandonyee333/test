@@ -175,6 +175,7 @@ insert into ListType (listTypeId, name, type_) values (29005, 'jrocket-jdk-6', '
 insert into ListType (listTypeId, name, type_) values (29006, 'oracle-sun-jdk-8', 'com.liferay.osb.model.AccountEnvironment.envJVM');
 insert into ListType (listTypeId, name, type_) values (29007, 'ibm-jdk-8', 'com.liferay.osb.model.AccountEnvironment.envJVM');
 insert into ListType (listTypeId, name, type_) values (29008, 'oracle-openjdk-8', 'com.liferay.osb.model.AccountEnvironment.envJVM');
+insert into ListType (listTypeId, name, type_) values (29009, 'oracle-openjdk-11', 'com.liferay.osb.model.AccountEnvironment.envJVM');
 
 insert into ListType (listTypeId, name, type_) values (30000, 'linux', 'com.liferay.osb.model.AccountEnvironment.envOS');
 insert into ListType (listTypeId, name, type_) values (30001, 'mac-os-x', 'com.liferay.osb.model.AccountEnvironment.envOS');
