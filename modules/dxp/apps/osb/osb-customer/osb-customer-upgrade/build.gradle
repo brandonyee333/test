@@ -1,0 +1,5 @@
+dependencies {
+	compileOnly group: "biz.aQute.bnd", name: "biz.aQute.bndlib", version: "3.1.0"
+	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.6.0"
+	compileOnly project(":private:apps:osb-customer:osb-customer-rabbitmq-connector:osb-customer-rabbitmq-connector-api")
+}
