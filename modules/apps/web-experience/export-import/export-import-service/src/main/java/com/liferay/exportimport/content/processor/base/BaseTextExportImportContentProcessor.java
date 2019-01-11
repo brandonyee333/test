@@ -208,12 +208,20 @@ public class BaseTextExportImportContentProcessor
 				return map;
 			}
 
-			map.put("groupId", new String[] {pathArray[2]});
+			if ("portlet_file_entry".equals(pathArray[2])) {
+				map.put("groupId", new String[] {pathArray[3]});
+				map.put("title", new String[] {HttpUtil.decodeURL(pathArray[4])});
+				map.put("uuid", new String[] {pathArray[5]});
+			}
+			else {
+				map.put("groupId", new String[] {pathArray[2]});
 
-			if (pathArray.length == 5) {
-				map.put("folderId", new String[] {pathArray[3]});
-				map.put(
-					"title", new String[] {HttpUtil.decodeURL(pathArray[4])});
+				if (pathArray.length == 5) {
+					map.put("folderId", new String[] {pathArray[3]});
+					map.put(
+						"title",
+						new String[] {HttpUtil.decodeURL(pathArray[4])});
+				}
 			}
 
 			String uuid = _getUuid(dlReference);
