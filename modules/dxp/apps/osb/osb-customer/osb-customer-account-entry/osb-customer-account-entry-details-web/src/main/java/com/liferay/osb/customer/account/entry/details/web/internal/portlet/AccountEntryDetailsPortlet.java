@@ -27,6 +27,8 @@ import java.util.Map;
 
 import javax.portlet.Portlet;
 import javax.portlet.PortletException;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
@@ -82,6 +84,14 @@ public class AccountEntryDetailsPortlet extends MVCPortlet {
 	protected void activate(Map<String, Object> properties) {
 		_accountEntryDetailsConfiguration = ConfigurableUtil.createConfigurable(
 			AccountEntryDetailsConfiguration.class, properties);
+	}
+
+	@Override
+	protected String getPath(
+		PortletRequest portletRequest, PortletResponse portletResponse) {
+
+		return (String)portletRequest.getAttribute(
+			getMVCPathAttributeName(portletResponse.getNamespace()));
 	}
 
 	private volatile AccountEntryDetailsConfiguration
