@@ -1599,6 +1599,12 @@ public class AccountEntryLocalServiceImpl
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
 			accountEntryId);
 
+		if ((accountEntry.getStatus() == WorkflowConstants.STATUS_PENDING) ||
+			(accountEntry.getStatus() == WorkflowConstants.STATUS_REJECTED)) {
+
+			return;
+		}
+
 		boolean activeSupport =
 			offeringEntryLocalService.hasActiveSupportOfferingEntry(
 				accountEntryId, false);
