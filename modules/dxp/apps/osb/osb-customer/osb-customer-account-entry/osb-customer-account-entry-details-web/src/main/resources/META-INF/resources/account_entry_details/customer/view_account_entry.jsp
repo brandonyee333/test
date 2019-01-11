@@ -34,8 +34,16 @@ PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "project
 	<%= HtmlUtil.escape(accountEntry.getName()) %>
 </h1>
 
+<%
+String[] tabNames = {"overview", "team-members", "liferay-contacts"};
+
+if (accountEntryViewDisplayContext.isPartnerManagedSupportWorker()) {
+	tabNames = ArrayUtil.append(tabNames, "offerings");
+}
+%>
+
 <liferay-ui:tabs
-	names="overview,team-members,liferay-contacts"
+	names="<%= StringUtil.merge(tabNames) %>"
 	url="<%= portletURL.toString() %>"
 />
 
@@ -70,6 +78,9 @@ PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "project
 	<c:choose>
 		<c:when test='<%= tabs1.equals("liferay-contacts") %>'>
 			<liferay-util:include page="/account_entry_details/liferay_contacts.jsp" servletContext="<%= application %>" />
+		</c:when>
+		<c:when test='<%= tabs1.equals("offerings") && accountEntryViewDisplayContext.isPartnerManagedSupportWorker() %>'>
+			<liferay-util:include page="/account_entry_details/offerings.jsp" servletContext="<%= application %>" />
 		</c:when>
 		<c:when test='<%= tabs1.equals("team-members") %>'>
 			<liferay-util:include page="/account_entry_details/team_members.jsp" servletContext="<%= application %>" />

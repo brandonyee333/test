@@ -27,6 +27,7 @@ import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.service.AccountEntryServiceUtil;
 import com.liferay.osb.service.AccountEnvironmentAttachmentLocalServiceUtil;
 import com.liferay.osb.service.AccountEnvironmentLocalServiceUtil;
+import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.osb.service.permission.OSBAccountEntryPermission;
 import com.liferay.osb.service.permission.OSBAccountEnvironmentPermission;
@@ -181,6 +182,20 @@ public class AccountEntryViewDisplayContext {
 		jsonObject.put("products", productsJSONArray);
 
 		return jsonObject;
+	}
+
+	public boolean isPartnerManagedSupportWorker() {
+		if (!_accountEntry.isPartnerManagedSupport()) {
+			return false;
+		}
+
+		if (PartnerWorkerLocalServiceUtil.hasPartnerWorker(
+				_themeDisplay.getUserId(), _accountEntry.getPartnerEntryId())) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	protected String getAccountEnvironmentAttachmentURL(
