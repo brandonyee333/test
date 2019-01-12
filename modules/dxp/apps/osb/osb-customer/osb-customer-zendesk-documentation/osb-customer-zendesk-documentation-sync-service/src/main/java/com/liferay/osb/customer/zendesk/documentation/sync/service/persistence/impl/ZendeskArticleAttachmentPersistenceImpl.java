@@ -530,10 +530,9 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 		qPos.add(zendeskArticleId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(zendeskArticleAttachment);
-
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object orderByConditionValue : orderByComparator.getOrderByConditionValues(
+					zendeskArticleAttachment)) {
+				qPos.add(orderByConditionValue);
 			}
 		}
 
@@ -686,6 +685,8 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	@Override
 	public ZendeskArticleAttachment fetchByZAI_FP(long zendeskArticleId,
 		String filePath, boolean retrieveFromCache) {
+		filePath = Objects.toString(filePath, "");
+
 		Object[] finderArgs = new Object[] { zendeskArticleId, filePath };
 
 		Object result = null;
@@ -714,10 +715,7 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 
 			boolean bindFilePath = false;
 
-			if (filePath == null) {
-				query.append(_FINDER_COLUMN_ZAI_FP_FILEPATH_1);
-			}
-			else if (filePath.equals("")) {
+			if (filePath.isEmpty()) {
 				query.append(_FINDER_COLUMN_ZAI_FP_FILEPATH_3);
 			}
 			else {
@@ -811,6 +809,8 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	 */
 	@Override
 	public int countByZAI_FP(long zendeskArticleId, String filePath) {
+		filePath = Objects.toString(filePath, "");
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_ZAI_FP;
 
 		Object[] finderArgs = new Object[] { zendeskArticleId, filePath };
@@ -826,10 +826,7 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 
 			boolean bindFilePath = false;
 
-			if (filePath == null) {
-				query.append(_FINDER_COLUMN_ZAI_FP_FILEPATH_1);
-			}
-			else if (filePath.equals("")) {
+			if (filePath.isEmpty()) {
 				query.append(_FINDER_COLUMN_ZAI_FP_FILEPATH_3);
 			}
 			else {
@@ -873,7 +870,6 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	}
 
 	private static final String _FINDER_COLUMN_ZAI_FP_ZENDESKARTICLEID_2 = "zendeskArticleAttachment.zendeskArticleId = ? AND ";
-	private static final String _FINDER_COLUMN_ZAI_FP_FILEPATH_1 = "zendeskArticleAttachment.filePath IS NULL";
 	private static final String _FINDER_COLUMN_ZAI_FP_FILEPATH_2 = "zendeskArticleAttachment.filePath = ?";
 	private static final String _FINDER_COLUMN_ZAI_FP_FILEPATH_3 = "(zendeskArticleAttachment.filePath IS NULL OR zendeskArticleAttachment.filePath = '')";
 

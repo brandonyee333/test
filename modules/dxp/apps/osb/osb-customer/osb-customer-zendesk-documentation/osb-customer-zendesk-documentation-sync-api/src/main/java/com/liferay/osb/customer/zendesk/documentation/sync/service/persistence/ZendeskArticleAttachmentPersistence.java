@@ -21,6 +21,11 @@ import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleA
 
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the zendesk article attachment service.
  *
@@ -40,6 +45,9 @@ public interface ZendeskArticleAttachmentPersistence extends BasePersistence<Zen
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ZendeskArticleAttachmentUtil} to access the zendesk article attachment persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, ZendeskArticleAttachment> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Returns all the zendesk article attachments where zendeskArticleId = &#63;.
@@ -284,10 +292,6 @@ public interface ZendeskArticleAttachmentPersistence extends BasePersistence<Zen
 	*/
 	public ZendeskArticleAttachment fetchByPrimaryKey(
 		long zendeskArticleAttachmentId);
-
-	@Override
-	public java.util.Map<java.io.Serializable, ZendeskArticleAttachment> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the zendesk article attachments.

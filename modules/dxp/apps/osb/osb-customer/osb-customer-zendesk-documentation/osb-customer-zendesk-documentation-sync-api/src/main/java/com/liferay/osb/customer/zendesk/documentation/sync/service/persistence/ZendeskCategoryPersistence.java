@@ -21,6 +21,11 @@ import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory
 
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the zendesk category service.
  *
@@ -40,6 +45,9 @@ public interface ZendeskCategoryPersistence extends BasePersistence<ZendeskCateg
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ZendeskCategoryUtil} to access the zendesk category persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, ZendeskCategory> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Returns the zendesk category where documentationKey = &#63; or throws a {@link NoSuchZendeskCategoryException} if it could not be found.
@@ -137,10 +145,6 @@ public interface ZendeskCategoryPersistence extends BasePersistence<ZendeskCateg
 	* @return the zendesk category, or <code>null</code> if a zendesk category with the primary key could not be found
 	*/
 	public ZendeskCategory fetchByPrimaryKey(long zendeskCategoryId);
-
-	@Override
-	public java.util.Map<java.io.Serializable, ZendeskCategory> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the zendesk categories.

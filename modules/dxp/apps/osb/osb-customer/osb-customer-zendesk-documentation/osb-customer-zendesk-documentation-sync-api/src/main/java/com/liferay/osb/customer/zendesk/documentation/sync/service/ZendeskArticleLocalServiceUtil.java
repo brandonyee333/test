@@ -278,14 +278,15 @@ public class ZendeskArticleLocalServiceUtil {
 
 	public static com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle updateZendeskArticle(
 		long zendeskArticleId, long zendeskSectionId, String documentationKey,
+		String documentationOriginalURL,
 		java.util.Map<String, String> titleMap,
 		java.util.Map<String, String> bodyMap, int position,
 		String[] labelNames, java.util.Map<String, byte[]> attachments)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateZendeskArticle(zendeskArticleId, zendeskSectionId,
-			documentationKey, titleMap, bodyMap, position, labelNames,
-			attachments);
+			documentationKey, documentationOriginalURL, titleMap, bodyMap,
+			position, labelNames, attachments);
 	}
 
 	/**

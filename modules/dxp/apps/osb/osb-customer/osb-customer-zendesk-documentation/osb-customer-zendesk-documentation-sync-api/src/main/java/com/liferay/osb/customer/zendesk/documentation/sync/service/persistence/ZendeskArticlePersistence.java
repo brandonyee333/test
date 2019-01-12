@@ -21,6 +21,11 @@ import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle;
 
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the zendesk article service.
  *
@@ -40,6 +45,9 @@ public interface ZendeskArticlePersistence extends BasePersistence<ZendeskArticl
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ZendeskArticleUtil} to access the zendesk article persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, ZendeskArticle> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Returns all the zendesk articles where zendeskCategoryId = &#63;.
@@ -458,10 +466,6 @@ public interface ZendeskArticlePersistence extends BasePersistence<ZendeskArticl
 	* @return the zendesk article, or <code>null</code> if a zendesk article with the primary key could not be found
 	*/
 	public ZendeskArticle fetchByPrimaryKey(long zendeskArticleId);
-
-	@Override
-	public java.util.Map<java.io.Serializable, ZendeskArticle> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the zendesk articles.

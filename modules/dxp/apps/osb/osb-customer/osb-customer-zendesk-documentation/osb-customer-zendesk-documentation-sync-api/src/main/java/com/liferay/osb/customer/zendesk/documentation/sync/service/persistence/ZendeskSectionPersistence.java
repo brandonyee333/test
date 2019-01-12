@@ -21,6 +21,11 @@ import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection;
 
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.io.Serializable;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The persistence interface for the zendesk section service.
  *
@@ -40,6 +45,9 @@ public interface ZendeskSectionPersistence extends BasePersistence<ZendeskSectio
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ZendeskSectionUtil} to access the zendesk section persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	@Override
+	public Map<Serializable, ZendeskSection> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys);
 
 	/**
 	* Returns all the zendesk sections where zendeskCategoryId = &#63;.
@@ -279,10 +287,6 @@ public interface ZendeskSectionPersistence extends BasePersistence<ZendeskSectio
 	* @return the zendesk section, or <code>null</code> if a zendesk section with the primary key could not be found
 	*/
 	public ZendeskSection fetchByPrimaryKey(long zendeskSectionId);
-
-	@Override
-	public java.util.Map<java.io.Serializable, ZendeskSection> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys);
 
 	/**
 	* Returns all the zendesk sections.

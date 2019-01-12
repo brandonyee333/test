@@ -150,6 +150,8 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 	@Override
 	public ZendeskCategory fetchByDocumentationKey(String documentationKey,
 		boolean retrieveFromCache) {
+		documentationKey = Objects.toString(documentationKey, "");
+
 		Object[] finderArgs = new Object[] { documentationKey };
 
 		Object result = null;
@@ -175,10 +177,7 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 
 			boolean bindDocumentationKey = false;
 
-			if (documentationKey == null) {
-				query.append(_FINDER_COLUMN_DOCUMENTATIONKEY_DOCUMENTATIONKEY_1);
-			}
-			else if (documentationKey.equals("")) {
+			if (documentationKey.isEmpty()) {
 				query.append(_FINDER_COLUMN_DOCUMENTATIONKEY_DOCUMENTATIONKEY_3);
 			}
 			else {
@@ -268,6 +267,8 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 	 */
 	@Override
 	public int countByDocumentationKey(String documentationKey) {
+		documentationKey = Objects.toString(documentationKey, "");
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_DOCUMENTATIONKEY;
 
 		Object[] finderArgs = new Object[] { documentationKey };
@@ -281,10 +282,7 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 
 			boolean bindDocumentationKey = false;
 
-			if (documentationKey == null) {
-				query.append(_FINDER_COLUMN_DOCUMENTATIONKEY_DOCUMENTATIONKEY_1);
-			}
-			else if (documentationKey.equals("")) {
+			if (documentationKey.isEmpty()) {
 				query.append(_FINDER_COLUMN_DOCUMENTATIONKEY_DOCUMENTATIONKEY_3);
 			}
 			else {
@@ -325,8 +323,6 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_DOCUMENTATIONKEY_DOCUMENTATIONKEY_1 =
-		"zendeskCategory.documentationKey IS NULL";
 	private static final String _FINDER_COLUMN_DOCUMENTATIONKEY_DOCUMENTATIONKEY_2 =
 		"zendeskCategory.documentationKey = ?";
 	private static final String _FINDER_COLUMN_DOCUMENTATIONKEY_DOCUMENTATIONKEY_3 =

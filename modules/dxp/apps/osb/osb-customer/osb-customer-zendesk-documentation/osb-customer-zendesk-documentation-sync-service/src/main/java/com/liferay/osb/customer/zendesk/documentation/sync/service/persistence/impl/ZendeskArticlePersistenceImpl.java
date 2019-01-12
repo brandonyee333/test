@@ -524,10 +524,9 @@ public class ZendeskArticlePersistenceImpl extends BasePersistenceImpl<ZendeskAr
 		qPos.add(zendeskCategoryId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(zendeskArticle);
-
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object orderByConditionValue : orderByComparator.getOrderByConditionValues(
+					zendeskArticle)) {
+				qPos.add(orderByConditionValue);
 			}
 		}
 
@@ -1040,10 +1039,9 @@ public class ZendeskArticlePersistenceImpl extends BasePersistenceImpl<ZendeskAr
 		qPos.add(zendeskSectionId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(zendeskArticle);
-
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object orderByConditionValue : orderByComparator.getOrderByConditionValues(
+					zendeskArticle)) {
+				qPos.add(orderByConditionValue);
 			}
 		}
 
@@ -1191,6 +1189,8 @@ public class ZendeskArticlePersistenceImpl extends BasePersistenceImpl<ZendeskAr
 	@Override
 	public ZendeskArticle fetchByDocumentationOriginalURL(
 		String documentationOriginalURL, boolean retrieveFromCache) {
+		documentationOriginalURL = Objects.toString(documentationOriginalURL, "");
+
 		Object[] finderArgs = new Object[] { documentationOriginalURL };
 
 		Object result = null;
@@ -1216,10 +1216,7 @@ public class ZendeskArticlePersistenceImpl extends BasePersistenceImpl<ZendeskAr
 
 			boolean bindDocumentationOriginalURL = false;
 
-			if (documentationOriginalURL == null) {
-				query.append(_FINDER_COLUMN_DOCUMENTATIONORIGINALURL_DOCUMENTATIONORIGINALURL_1);
-			}
-			else if (documentationOriginalURL.equals("")) {
+			if (documentationOriginalURL.isEmpty()) {
 				query.append(_FINDER_COLUMN_DOCUMENTATIONORIGINALURL_DOCUMENTATIONORIGINALURL_3);
 			}
 			else {
@@ -1309,6 +1306,8 @@ public class ZendeskArticlePersistenceImpl extends BasePersistenceImpl<ZendeskAr
 	 */
 	@Override
 	public int countByDocumentationOriginalURL(String documentationOriginalURL) {
+		documentationOriginalURL = Objects.toString(documentationOriginalURL, "");
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_DOCUMENTATIONORIGINALURL;
 
 		Object[] finderArgs = new Object[] { documentationOriginalURL };
@@ -1322,10 +1321,7 @@ public class ZendeskArticlePersistenceImpl extends BasePersistenceImpl<ZendeskAr
 
 			boolean bindDocumentationOriginalURL = false;
 
-			if (documentationOriginalURL == null) {
-				query.append(_FINDER_COLUMN_DOCUMENTATIONORIGINALURL_DOCUMENTATIONORIGINALURL_1);
-			}
-			else if (documentationOriginalURL.equals("")) {
+			if (documentationOriginalURL.isEmpty()) {
 				query.append(_FINDER_COLUMN_DOCUMENTATIONORIGINALURL_DOCUMENTATIONORIGINALURL_3);
 			}
 			else {
@@ -1366,8 +1362,6 @@ public class ZendeskArticlePersistenceImpl extends BasePersistenceImpl<ZendeskAr
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_DOCUMENTATIONORIGINALURL_DOCUMENTATIONORIGINALURL_1 =
-		"zendeskArticle.documentationOriginalURL IS NULL";
 	private static final String _FINDER_COLUMN_DOCUMENTATIONORIGINALURL_DOCUMENTATIONORIGINALURL_2 =
 		"zendeskArticle.documentationOriginalURL = ?";
 	private static final String _FINDER_COLUMN_DOCUMENTATIONORIGINALURL_DOCUMENTATIONORIGINALURL_3 =
@@ -1445,6 +1439,8 @@ public class ZendeskArticlePersistenceImpl extends BasePersistenceImpl<ZendeskAr
 	@Override
 	public ZendeskArticle fetchByZCI_DK(long zendeskCategoryId,
 		String documentationKey, boolean retrieveFromCache) {
+		documentationKey = Objects.toString(documentationKey, "");
+
 		Object[] finderArgs = new Object[] { zendeskCategoryId, documentationKey };
 
 		Object result = null;
@@ -1473,10 +1469,7 @@ public class ZendeskArticlePersistenceImpl extends BasePersistenceImpl<ZendeskAr
 
 			boolean bindDocumentationKey = false;
 
-			if (documentationKey == null) {
-				query.append(_FINDER_COLUMN_ZCI_DK_DOCUMENTATIONKEY_1);
-			}
-			else if (documentationKey.equals("")) {
+			if (documentationKey.isEmpty()) {
 				query.append(_FINDER_COLUMN_ZCI_DK_DOCUMENTATIONKEY_3);
 			}
 			else {
@@ -1570,6 +1563,8 @@ public class ZendeskArticlePersistenceImpl extends BasePersistenceImpl<ZendeskAr
 	 */
 	@Override
 	public int countByZCI_DK(long zendeskCategoryId, String documentationKey) {
+		documentationKey = Objects.toString(documentationKey, "");
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_ZCI_DK;
 
 		Object[] finderArgs = new Object[] { zendeskCategoryId, documentationKey };
@@ -1585,10 +1580,7 @@ public class ZendeskArticlePersistenceImpl extends BasePersistenceImpl<ZendeskAr
 
 			boolean bindDocumentationKey = false;
 
-			if (documentationKey == null) {
-				query.append(_FINDER_COLUMN_ZCI_DK_DOCUMENTATIONKEY_1);
-			}
-			else if (documentationKey.equals("")) {
+			if (documentationKey.isEmpty()) {
 				query.append(_FINDER_COLUMN_ZCI_DK_DOCUMENTATIONKEY_3);
 			}
 			else {
@@ -1632,7 +1624,6 @@ public class ZendeskArticlePersistenceImpl extends BasePersistenceImpl<ZendeskAr
 	}
 
 	private static final String _FINDER_COLUMN_ZCI_DK_ZENDESKCATEGORYID_2 = "zendeskArticle.zendeskCategoryId = ? AND ";
-	private static final String _FINDER_COLUMN_ZCI_DK_DOCUMENTATIONKEY_1 = "zendeskArticle.documentationKey IS NULL";
 	private static final String _FINDER_COLUMN_ZCI_DK_DOCUMENTATIONKEY_2 = "zendeskArticle.documentationKey = ?";
 	private static final String _FINDER_COLUMN_ZCI_DK_DOCUMENTATIONKEY_3 = "(zendeskArticle.documentationKey IS NULL OR zendeskArticle.documentationKey = '')";
 

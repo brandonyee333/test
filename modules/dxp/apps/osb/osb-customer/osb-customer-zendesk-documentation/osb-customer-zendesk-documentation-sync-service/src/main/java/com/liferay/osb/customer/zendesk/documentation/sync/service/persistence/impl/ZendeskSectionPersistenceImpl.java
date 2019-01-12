@@ -524,10 +524,9 @@ public class ZendeskSectionPersistenceImpl extends BasePersistenceImpl<ZendeskSe
 		qPos.add(zendeskCategoryId);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(zendeskSection);
-
-			for (Object value : values) {
-				qPos.add(value);
+			for (Object orderByConditionValue : orderByComparator.getOrderByConditionValues(
+					zendeskSection)) {
+				qPos.add(orderByConditionValue);
 			}
 		}
 
@@ -680,6 +679,8 @@ public class ZendeskSectionPersistenceImpl extends BasePersistenceImpl<ZendeskSe
 	@Override
 	public ZendeskSection fetchByZCI_DK(long zendeskCategoryId,
 		String documentationKey, boolean retrieveFromCache) {
+		documentationKey = Objects.toString(documentationKey, "");
+
 		Object[] finderArgs = new Object[] { zendeskCategoryId, documentationKey };
 
 		Object result = null;
@@ -708,10 +709,7 @@ public class ZendeskSectionPersistenceImpl extends BasePersistenceImpl<ZendeskSe
 
 			boolean bindDocumentationKey = false;
 
-			if (documentationKey == null) {
-				query.append(_FINDER_COLUMN_ZCI_DK_DOCUMENTATIONKEY_1);
-			}
-			else if (documentationKey.equals("")) {
+			if (documentationKey.isEmpty()) {
 				query.append(_FINDER_COLUMN_ZCI_DK_DOCUMENTATIONKEY_3);
 			}
 			else {
@@ -805,6 +803,8 @@ public class ZendeskSectionPersistenceImpl extends BasePersistenceImpl<ZendeskSe
 	 */
 	@Override
 	public int countByZCI_DK(long zendeskCategoryId, String documentationKey) {
+		documentationKey = Objects.toString(documentationKey, "");
+
 		FinderPath finderPath = FINDER_PATH_COUNT_BY_ZCI_DK;
 
 		Object[] finderArgs = new Object[] { zendeskCategoryId, documentationKey };
@@ -820,10 +820,7 @@ public class ZendeskSectionPersistenceImpl extends BasePersistenceImpl<ZendeskSe
 
 			boolean bindDocumentationKey = false;
 
-			if (documentationKey == null) {
-				query.append(_FINDER_COLUMN_ZCI_DK_DOCUMENTATIONKEY_1);
-			}
-			else if (documentationKey.equals("")) {
+			if (documentationKey.isEmpty()) {
 				query.append(_FINDER_COLUMN_ZCI_DK_DOCUMENTATIONKEY_3);
 			}
 			else {
@@ -867,7 +864,6 @@ public class ZendeskSectionPersistenceImpl extends BasePersistenceImpl<ZendeskSe
 	}
 
 	private static final String _FINDER_COLUMN_ZCI_DK_ZENDESKCATEGORYID_2 = "zendeskSection.zendeskCategoryId = ? AND ";
-	private static final String _FINDER_COLUMN_ZCI_DK_DOCUMENTATIONKEY_1 = "zendeskSection.documentationKey IS NULL";
 	private static final String _FINDER_COLUMN_ZCI_DK_DOCUMENTATIONKEY_2 = "zendeskSection.documentationKey = ?";
 	private static final String _FINDER_COLUMN_ZCI_DK_DOCUMENTATIONKEY_3 = "(zendeskSection.documentationKey IS NULL OR zendeskSection.documentationKey = '')";
 
