@@ -241,17 +241,17 @@ public class DocumentationArchiveImporter implements DocumentationImporter {
 			bodyMap.put(locale, curBody);
 		}
 
+		String documentationOriginalURL =
+			_zendeskCategory.getDocumentationOriginalURL();
+
+		if (documentationOriginalURL.endsWith(StringPool.SLASH)) {
+			documentationOriginalURL = documentationOriginalURL.substring(
+				0, documentationOriginalURL.length() - 1);
+		}
+
+		documentationOriginalURL += urlTitle;
+
 		if (zendeskArticle == null) {
-			String documentationOriginalURL =
-				_zendeskCategory.getDocumentationOriginalURL();
-
-			if (documentationOriginalURL.endsWith(StringPool.SLASH)) {
-				documentationOriginalURL = documentationOriginalURL.substring(
-					0, documentationOriginalURL.length() - 1);
-			}
-
-			documentationOriginalURL += urlTitle;
-
 			zendeskArticle = ZendeskArticleLocalServiceUtil.addZendeskArticle(
 				_currentZendeskSection.getZendeskSectionId(), documentationKey,
 				documentationOriginalURL, titleMap, bodyMap,
@@ -263,8 +263,8 @@ public class DocumentationArchiveImporter implements DocumentationImporter {
 				ZendeskArticleLocalServiceUtil.updateZendeskArticle(
 					zendeskArticle.getZendeskArticleId(),
 					_currentZendeskSection.getZendeskSectionId(),
-					documentationKey, titleMap, bodyMap,
-					_zendeskArticlePosition,
+					documentationKey, documentationOriginalURL, titleMap,
+					bodyMap, _zendeskArticlePosition,
 					_zendeskCategory.getRemoteLabelNames(), attachments);
 		}
 

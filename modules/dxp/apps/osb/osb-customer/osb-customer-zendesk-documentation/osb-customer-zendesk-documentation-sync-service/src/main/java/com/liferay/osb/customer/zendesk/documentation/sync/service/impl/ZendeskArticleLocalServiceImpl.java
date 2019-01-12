@@ -142,9 +142,9 @@ public class ZendeskArticleLocalServiceImpl
 
 	public ZendeskArticle updateZendeskArticle(
 			long zendeskArticleId, long zendeskSectionId,
-			String documentationKey, Map<String, String> titleMap,
-			Map<String, String> bodyMap, int position, String[] labelNames,
-			Map<String, byte[]> attachments)
+			String documentationKey, String documentationOriginalURL,
+			Map<String, String> titleMap, Map<String, String> bodyMap,
+			int position, String[] labelNames, Map<String, byte[]> attachments)
 		throws PortalException {
 
 		// Zendesk article
@@ -196,6 +196,7 @@ public class ZendeskArticleLocalServiceImpl
 
 		zendeskArticle.setModifiedDate(new Date());
 		zendeskArticle.setZendeskSectionId(zendeskSectionId);
+		zendeskArticle.setDocumentationOriginalURL(documentationOriginalURL);
 
 		return zendeskArticlePersistence.update(zendeskArticle);
 	}
