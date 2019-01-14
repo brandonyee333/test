@@ -455,54 +455,31 @@ for (SupportRegion supportRegion : supportRegions) {
 	</div>
 </div>
 
-<aui:script>
-	Liferay.provide(
-		window,
-		'<portlet:namespace />updateOfferingEntry',
-		function(key, accountEntryId, offeringEntryIds, newStatusValue, oldStatusValue, oldStatusLabel) {
-			var A = AUI();
+<c:if test="<%= accountEntry != null %>">
+	<aui:script>
+		Liferay.provide(
+			window,
+			'<portlet:namespace />updateOfferingEntry',
+			function(key, accountEntryId, offeringEntryIds, newStatusValue, oldStatusValue, oldStatusLabel) {
+				var A = AUI();
 
-			var statusElement = A.one('#<portlet:namespace />status_' + key);
+				var statusElement = A.one('#<portlet:namespace />status_' + key);
 
-			var newStatusLabel = A.one('#<portlet:namespace />status_' + key + ' option:selected').html();
+				var newStatusLabel = A.one('#<portlet:namespace />status_' + key + ' option:selected').html();
 
-			if (confirm(A.Lang.sub('<liferay-ui:message key="are-you-sure-you-want-to-modify-the-status-from-x-to-x" />', [oldStatusLabel, newStatusLabel.trim()]))) {
-				A.io.request(
-					'<portlet:actionURL name="updateOfferingEntryStatus" />',
-					{
-						data: {
-							<portlet:namespace />accountEntryId: accountEntryId,
-							<portlet:namespace />offeringEntryIds: offeringEntryIds,
-							<portlet:namespace />status: newStatusValue
-						},
-						dataType: 'json',
-						method: 'post',
-						on: {
-							failure: function(event, id, obj) {
-								new Liferay.Notice(
-									{
-										animationConfig:
-										{
-											duration: 1,
-											top: '0px'
-										},
-										closeText: false,
-										content: '<liferay-ui:message key="an-unexpected-error-occurred" /><button class="close" type="button">&times;</button>',
-										noticeClass: 'osb-portlet-admin-alert error',
-										toggleText: false,
-										type: 'warning',
-										useAnimation: true
-									}
-								);
-
-								A.later(10000, A.one('.osb-portlet-admin-alert'), 'hide');
-
-								statusElement.val(oldStatusValue);
+				if (confirm(A.Lang.sub('<liferay-ui:message key="are-you-sure-you-want-to-modify-the-status-from-x-to-x" />', [oldStatusLabel, newStatusLabel.trim()]))) {
+					A.io.request(
+						'<portlet:actionURL name="updateOfferingEntryStatus" />',
+						{
+							data: {
+								<portlet:namespace />accountEntryId: accountEntryId,
+								<portlet:namespace />offeringEntryIds: offeringEntryIds,
+								<portlet:namespace />status: newStatusValue
 							},
-							success: function(event, id, obj) {
-								var response = this.get('responseData');
-
-								if (response.error) {
+							dataType: 'json',
+							method: 'post',
+							on: {
+								failure: function(event, id, obj) {
 									new Liferay.Notice(
 										{
 											animationConfig:
@@ -511,7 +488,7 @@ for (SupportRegion supportRegion : supportRegions) {
 												top: '0px'
 											},
 											closeText: false,
-											content: response.error + '<button class="close" type="button">&times;</button>',
+											content: '<liferay-ui:message key="an-unexpected-error-occurred" /><button class="close" type="button">&times;</button>',
 											noticeClass: 'osb-portlet-admin-alert error',
 											toggleText: false,
 											type: 'warning',
@@ -522,70 +499,97 @@ for (SupportRegion supportRegion : supportRegions) {
 									A.later(10000, A.one('.osb-portlet-admin-alert'), 'hide');
 
 									statusElement.val(oldStatusValue);
-								}
-								else {
-									new Liferay.Notice(
-										{
-											animationConfig:
+								},
+								success: function(event, id, obj) {
+									var response = this.get('responseData');
+
+									if (response.error) {
+										new Liferay.Notice(
 											{
-												duration: 1,
-												top: '0px'
-											},
-											closeText: false,
-											content: '<liferay-ui:message key="your-request-processed-successfully" /><button class="close" type="button">&times;</button>',
-											noticeClass: 'osb-portlet-admin-alert success',
-											toggleText: false,
-											type: 'notice',
-											useAnimation: true
-										}
-									);
+												animationConfig:
+												{
+													duration: 1,
+													top: '0px'
+												},
+												closeText: false,
+												content: response.error + '<button class="close" type="button">&times;</button>',
+												noticeClass: 'osb-portlet-admin-alert error',
+												toggleText: false,
+												type: 'warning',
+												useAnimation: true
+											}
+										);
 
-									A.later(5000, A.one('.osb-portlet-admin-alert'), 'hide');
+										A.later(10000, A.one('.osb-portlet-admin-alert'), 'hide');
 
-									<portlet:namespace />refreshTab('activeOfferingsContent', '/admin/edit_account_entry/active_offerings.jsp');
-									<portlet:namespace />refreshTab('offeringsContent', '/admin/edit_account_entry/all_offerings.jsp');
+										statusElement.val(oldStatusValue);
+									}
+									else {
+										new Liferay.Notice(
+											{
+												animationConfig:
+												{
+													duration: 1,
+													top: '0px'
+												},
+												closeText: false,
+												content: '<liferay-ui:message key="your-request-processed-successfully" /><button class="close" type="button">&times;</button>',
+												noticeClass: 'osb-portlet-admin-alert success',
+												toggleText: false,
+												type: 'notice',
+												useAnimation: true
+											}
+										);
+
+										A.later(5000, A.one('.osb-portlet-admin-alert'), 'hide');
+
+										<portlet:namespace />refreshTab('activeOfferingsContent', '/admin/edit_account_entry/active_offerings.jsp');
+										<portlet:namespace />refreshTab('offeringsContent', '/admin/edit_account_entry/all_offerings.jsp');
+									}
 								}
+							}
+						}
+					);
+				}
+				else {
+					statusElement.val(oldStatusValue);
+				}
+			},
+			['aui-base', 'aui-io', 'liferay-notice']
+		);
+
+		Liferay.provide(
+			window,
+			'<portlet:namespace />refreshTab',
+			function(tabId, mvcPath) {
+				var A = AUI();
+
+				A.io.request(
+					'<portlet:renderURL windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>"><portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntry.getAccountEntryId()) %>" /></portlet:renderURL>',
+					{
+						data: {
+							<portlet:namespace />mvcPath: mvcPath
+						},
+						dataType: 'json',
+						method: 'get',
+						on: {
+							success: function(event, id, obj) {
+								var response = this.get('responseData');
+
+								var tabElement = A.one('#<portlet:namespace />' + tabId);
+
+								tabElement.html(response);
 							}
 						}
 					}
 				);
-			}
-			else {
-				statusElement.val(oldStatusValue);
-			}
-		},
-		['aui-base', 'aui-io', 'liferay-notice']
-	);
+			},
+			['aui-base', 'aui-io']
+		);
+	</aui:script>
+</c:if>
 
-	Liferay.provide(
-		window,
-		'<portlet:namespace />refreshTab',
-		function(tabId, mvcPath) {
-			var A = AUI();
-
-			A.io.request(
-				'<portlet:renderURL windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>"><portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntry.getAccountEntryId()) %>" /></portlet:renderURL>',
-				{
-					data: {
-						<portlet:namespace />mvcPath: mvcPath
-					},
-					dataType: 'json',
-					method: 'get',
-					on: {
-						success: function(event, id, obj) {
-							var response = this.get('responseData');
-
-							var tabElement = A.one('#<portlet:namespace />' + tabId);
-
-							tabElement.html(response);
-						}
-					}
-				}
-			);
-		},
-		['aui-base', 'aui-io']
-	);
-
+<aui:script>
 	Liferay.provide(
 		window,
 		'<portlet:namespace />reveal',
