@@ -317,7 +317,7 @@ public class AccountEnvironmentConstants {
 
 	public static final long ENV_JVM_ORACLE_OPENJDK_8 = 29008;
 
-	public static final long ENV_JVM_ORACLE_OPENJDK_11 = 29008;
+	public static final long ENV_JVM_ORACLE_OPENJDK_11 = 29009;
 
 	public static final long ENV_JVM_ORACLE_SUN_JDK_5 = 29000;
 
