@@ -44,9 +44,7 @@ $border-radius: 4px !default;
 
 $font-family-base: "Source Sans Pro", "Source Serif Pro", -apple-system, blinkmacsystemfont, "Segoe UI", roboto, "Helvetica Neue", arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
 
-$font-size-default: 16px !default;
-$font-size-md: 14px !default;
-$font-size-sm: 12px !default;
+$small-font-size: 12px !default;
 
 $font-weight-light: 200 !default;
 $font-weight-normal: 400 !default;
@@ -110,6 +108,9 @@ $table-responsive-margin-bottom: 48px !default;
 $navbar-padding-x: 0 !default;
 
 /* ---------- Custom variables ---------- */
+
+$font-size-default: 16px !default;
+$font-size-md: 14px !default;
 
 $h1-display-font-size: 48px !default;
 
