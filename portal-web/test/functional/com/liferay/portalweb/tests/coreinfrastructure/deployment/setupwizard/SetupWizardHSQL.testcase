@@ -128,6 +128,7 @@ definition {
 
 	@priority = "4"
 	test HSQLtoMariaDBSampleDataEnabled {
+		property databases.size = "1";
 		property database.types = "mariadb";
 		property test.name.skip.portal.instance = "SetupWizardHSQL#HSQLtoMariaDBSampleDataEnabled";
 		property portal.acceptance = "summer";
@@ -179,6 +180,7 @@ definition {
 
 	@priority = "4"
 	test HSQLtoMySQLSampleDataEnabled {
+		property databases.size = "1";
 		property database.types = "mysql";
 		property test.name.skip.portal.instance = "SetupWizardHSQL#HSQLtoMySQLSampleDataEnabled";
 		property portal.acceptance = "summer";
@@ -251,6 +253,7 @@ definition {
 
 	@priority = "4"
 	test HSQLtoPostgreSQLSampleDataEnabled {
+		property databases.size = "1";
 		property database.types = "postgresql";
 		property test.name.skip.portal.instance = "SetupWizardHSQL#HSQLtoPostgreSQLSampleDataEnabled";
 		property portal.acceptance = "summer";
