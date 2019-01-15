@@ -81,6 +81,7 @@ public interface AccountEntry extends AccountEntryModel, PersistedModel {
 
 	public long[] getSupportRegionIds();
 
+	@com.liferay.portal.kernel.json.JSON()
 	public java.util.List<SupportRegion> getSupportRegions();
 
 	public java.lang.String getTypeLabel();
