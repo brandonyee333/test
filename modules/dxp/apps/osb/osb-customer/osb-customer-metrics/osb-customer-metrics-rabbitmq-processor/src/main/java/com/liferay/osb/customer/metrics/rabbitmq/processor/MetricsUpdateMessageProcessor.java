@@ -101,22 +101,6 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 	}
 
 	protected JSONObject reconcile(JSONObject jsonObject) throws Exception {
-		if (jsonObject.has("classNameId")) {
-			ClassName className = _classNameLocalService.getClassName(
-				jsonObject.getLong("classNameId"));
-
-			String classNameId = getColumnValue(
-				"select classNameId from OSB_MetricsClassName where value = '" +
-					className.getValue() + "'");
-
-			if (classNameId != null) {
-				jsonObject.put("classNameId", classNameId);
-			}
-			else {
-				throw new NoSuchClassNameException();
-			}
-		}
-
 		if (jsonObject.has("classPK")) {
 			long classNameId = _classNameLocalService.getClassNameId(
 				User.class.getName());
@@ -138,18 +122,36 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 			}
 		}
 
-		if (jsonObject.has("userId")) {
-			JSONObject columnJSONObject = jsonObject.getJSONObject("userId");
+		if (jsonObject.has("classNameId")) {
+			ClassName className = _classNameLocalService.getClassName(
+				jsonObject.getLong("classNameId"));
 
-			String userId = getColumnValue(
-				"select userId from OSB_MetricsUser where uuid_ = '" +
-					columnJSONObject.getString("uuid_") + "'");
+			String classNameId = getColumnValue(
+				"select classNameId from OSB_MetricsClassName where value = '" +
+					className.getValue() + "'");
 
-			if (userId != null) {
-				jsonObject.put("userId", userId);
+			if (classNameId != null) {
+				jsonObject.put("classNameId", classNameId);
 			}
 			else {
-				throw new NoSuchUserException();
+				throw new NoSuchClassNameException();
+			}
+		}
+
+		for (String field : _USER_ID_FIELDS) {
+			if (jsonObject.has(field)) {
+				JSONObject columnJSONObject = jsonObject.getJSONObject(field);
+
+				String userId = getColumnValue(
+					"select userId from OSB_MetricsUser where uuid_ = " +
+						"'" + columnJSONObject.getString("uuid_") + "'");
+
+				if (userId != null) {
+					jsonObject.put(field, userId);
+				}
+				else {
+					throw new NoSuchUserException();
+				}
 			}
 		}
 
@@ -191,6 +193,10 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 
 		runSQL(sql);
 	}
+
+	private static final String[] _USER_ID_FIELDS = {
+		"managerUserId", "modifiedUserId", "statusByUserId", "userId"
+	};
 
 	@Reference
 	private ClassNameLocalService _classNameLocalService;
