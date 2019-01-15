@@ -28,6 +28,9 @@ import org.osgi.service.component.annotations.Component;
 public class MetricsUpgradeMessageProcessor extends BaseMessageProcessor {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
+		String sql = jsonObject.getString("sql");
+
+		runSQL(sql);
 	}
 
 }
