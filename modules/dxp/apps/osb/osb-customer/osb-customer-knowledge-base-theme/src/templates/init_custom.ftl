@@ -86,6 +86,13 @@
 	<#assign show_lesa = true />
 </#if>
 
+<#if !sign_out_url??>
+	<#assign
+		sign_out_text = languageUtil.get(locale, "sign-out")
+		sign_out_url = htmlUtil.escape(theme_display.getURLSignOut())
+	/>
+</#if>
+
 <#macro print_navigation layout_friendly_url>
 	<#assign
 		layoutGroup = layout.getGroup()
