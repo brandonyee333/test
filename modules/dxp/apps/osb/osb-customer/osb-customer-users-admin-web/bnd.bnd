@@ -1,0 +1,8 @@
+Bundle-ClassPath:\
+	.,\
+	lib/osb-portlet-service.jar
+Bundle-Name: Liferay OSB Customer Users Admin Web
+Bundle-SymbolicName: com.liferay.osb.customer.users.admin.web
+Bundle-Version: 1.0.0
+Web-ContextPath: /osb-customer-users-admin-web
+-includeresource: content=src/main/resources/content
