@@ -203,6 +203,7 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 		return supportRegionIds;
 	}
 
+	@JSON
 	public List<SupportRegion> getSupportRegions() {
 		return SupportRegionLocalServiceUtil.getAccountEntrySupportRegions(
 			getAccountEntryId());
