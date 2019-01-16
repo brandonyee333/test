@@ -14,12 +14,19 @@
 
 package com.liferay.osb.customer.users.admin.web.servlet.taglib.ui;
 
+import com.liferay.admin.kernel.util.PortalMyAccountApplicationType;
 import com.liferay.osb.customer.users.admin.web.constants.UserCategoryKeys;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.portlet.PortletProvider;
+import com.liferay.portal.kernel.portlet.PortletProviderUtil;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.servlet.taglib.ui.BaseJSPFormNavigatorEntry;
 import com.liferay.portal.kernel.servlet.taglib.ui.FormNavigatorConstants;
 import com.liferay.portal.kernel.servlet.taglib.ui.FormNavigatorEntry;
+import com.liferay.portal.kernel.theme.PortletDisplay;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 
 import java.util.Locale;
 
@@ -61,6 +68,23 @@ public class UserPartnerEntriesFormNavigatorEntry
 	@Override
 	public boolean isVisible(User user, User selUser) {
 		if (selUser == null) {
+			return false;
+		}
+
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
+
+		ThemeDisplay themeDisplay = serviceContext.getThemeDisplay();
+
+		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
+
+		String portletId = PortletProviderUtil.getPortletId(
+			PortalMyAccountApplicationType.MyAccount.CLASS_NAME,
+			PortletProvider.Action.VIEW);
+
+		if ((selUser != null) &&
+			portletId.equals(portletDisplay.getPortletName())) {
+
 			return false;
 		}
 
