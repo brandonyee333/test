@@ -14,15 +14,16 @@
 
 package com.liferay.osb.customer.metrics.rabbitmq.processor;
 
+import com.liferay.osb.customer.metrics.rabbitmq.configuration.MetricsProcessorConfigurationValues;
 import com.liferay.portal.kernel.exception.NoSuchClassNameException;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -101,56 +102,65 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 	}
 
 	protected JSONObject reconcile(JSONObject jsonObject) throws Exception {
-		if (jsonObject.has("classPK")) {
-			long classNameId = _classNameLocalService.getClassNameId(
-				User.class.getName());
+		Iterator<String> keysIterator = jsonObject.keys();
 
-			if (classNameId == jsonObject.getLong("classNameId")) {
-				JSONObject columnJSONObject = jsonObject.getJSONObject(
-					"classPK");
+		while (keysIterator.hasNext()) {
+			String key = keysIterator.next();
 
-				String classPK = getColumnValue(
-					"select userId from OSB_MetricsUser where uuid_ = '" +
-						columnJSONObject.getString("uuid_") + "'");
+			String lowercaseKey = StringUtil.toLowerCase(key);
 
-				if (classPK != null) {
-					jsonObject.put("classPK", classPK);
+			if (lowercaseKey.contains("userid")) {
+				Object value = jsonObject.get(key);
+
+				if (value instanceof JSONObject) {
+					JSONObject columnJSONObject = (JSONObject)value;
+
+					String userId = getColumnValue(
+						"select userId from OSB_MetricsUser where uuid_ = '" +
+							columnJSONObject.getString("uuid_") + "'");
+
+					if (userId != null) {
+						jsonObject.put(key, userId);
+					}
+					else {
+						throw new NoSuchUserException();
+					}
+				}
+			}
+			else if (lowercaseKey.contains("classnameid")) {
+				JSONObject valueJSONObject = jsonObject.getJSONObject(key);
+
+				String classNameValue = valueJSONObject.getString("value");
+
+				String classNameId = _getClassNameId(classNameValue);
+
+				if (classNameId != null) {
+					jsonObject.put(key, classNameId);
 				}
 				else {
-					throw new NoSuchUserException();
+					throw new NoSuchClassNameException();
 				}
-			}
-		}
 
-		if (jsonObject.has("classNameId")) {
-			ClassName className = _classNameLocalService.getClassName(
-				jsonObject.getLong("classNameId"));
+				String prefix = key.substring(0, key.length() - 6);
 
-			String classNameId = getColumnValue(
-				"select classNameId from OSB_MetricsClassName where value = '" +
-					className.getValue() + "'");
+				if (classNameValue.equals(User.class.getName())) {
+					Object value = jsonObject.get(prefix + "PK");
 
-			if (classNameId != null) {
-				jsonObject.put("classNameId", classNameId);
-			}
-			else {
-				throw new NoSuchClassNameException();
-			}
-		}
+					if (value instanceof JSONObject) {
+						JSONObject columnJSONObject = (JSONObject)value;
 
-		for (String field : _USER_ID_FIELDS) {
-			if (jsonObject.has(field)) {
-				JSONObject columnJSONObject = jsonObject.getJSONObject(field);
+						String classPK = getColumnValue(
+							"select userId from OSB_MetricsUser where uuid_ " +
+								"= '" + columnJSONObject.getString("uuid_") +
+									"'");
 
-				String userId = getColumnValue(
-					"select userId from OSB_MetricsUser where uuid_ = " +
-						"'" + columnJSONObject.getString("uuid_") + "'");
-
-				if (userId != null) {
-					jsonObject.put(field, userId);
-				}
-				else {
-					throw new NoSuchUserException();
+						if (classPK != null) {
+							jsonObject.put(prefix + "PK", classPK);
+						}
+						else {
+							throw new NoSuchUserException();
+						}
+					}
 				}
 			}
 		}
@@ -194,9 +204,32 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 		runSQL(sql);
 	}
 
-	private static final String[] _USER_ID_FIELDS = {
-		"managerUserId", "modifiedUserId", "statusByUserId", "userId"
-	};
+	private String _getClassNameId(String value) throws Exception {
+		String classNameId = getColumnValue(
+			"select classNameId from OSB_MetricsClassName where value = '" +
+				value + "'");
+
+		if (classNameId == null) {
+			String[] classNameMappings =
+				MetricsProcessorConfigurationValues.CLASSNAME_MAPPINGS;
+
+			for (String mapping : classNameMappings) {
+				if (mapping.contains(value)) {
+					int pos = mapping.indexOf(StringPool.COLON) + 1;
+
+					return _getClassNameId(mapping.substring(pos));
+				}
+			}
+
+			if (value.contains(".kernel")) {
+				value = value.replace(".kernel", StringPool.BLANK);
+
+				classNameId = _getClassNameId(value);
+			}
+		}
+
+		return classNameId;
+	}
 
 	@Reference
 	private ClassNameLocalService _classNameLocalService;

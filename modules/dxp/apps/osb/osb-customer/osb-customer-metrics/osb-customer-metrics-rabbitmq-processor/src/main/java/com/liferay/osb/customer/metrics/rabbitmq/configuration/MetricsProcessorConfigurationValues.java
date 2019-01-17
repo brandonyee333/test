@@ -21,6 +21,9 @@ import com.liferay.portal.kernel.util.GetterUtil;
  */
 public class MetricsProcessorConfigurationValues {
 
+	public static final String[] CLASSNAME_MAPPINGS =
+		MetricsProcessorConfigurationUtil.getArray("classname.mappings");
+
 	public static final String DATABASE_SCHEMA_NAME = GetterUtil.getString(
 		MetricsProcessorConfigurationUtil.get("database.schema.name"));
 
