@@ -138,6 +138,9 @@ public interface AccountWorkerLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public AccountWorker updateAccountWorker(AccountWorker accountWorker);
 
+	public AccountWorker updateAccountWorker(long userId, long accountWorkerId,
+		int role) throws PortalException;
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
@@ -265,7 +268,4 @@ public interface AccountWorkerLocalService extends BaseLocalService,
 		throws PortalException;
 
 	public void deleteAccountWorkers(long userId) throws PortalException;
-
-	public void updateAccountWorker(long userId, long accountWorkerId, int role)
-		throws PortalException;
 }

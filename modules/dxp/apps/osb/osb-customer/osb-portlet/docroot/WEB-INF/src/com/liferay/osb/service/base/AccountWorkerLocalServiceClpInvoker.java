@@ -361,11 +361,9 @@ public class AccountWorkerLocalServiceClpInvoker {
 
 		if (_methodName178.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes178, parameterTypes)) {
-			AccountWorkerLocalServiceUtil.updateAccountWorker(((Long)arguments[0]).longValue(),
+			return AccountWorkerLocalServiceUtil.updateAccountWorker(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Integer)arguments[2]).intValue());
-
-			return null;
 		}
 
 		throw new UnsupportedOperationException();

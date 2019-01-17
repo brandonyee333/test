@@ -144,6 +144,12 @@ public class AccountWorkerLocalServiceUtil {
 		return getService().updateAccountWorker(accountWorker);
 	}
 
+	public static com.liferay.osb.model.AccountWorker updateAccountWorker(
+		long userId, long accountWorkerId, int role)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().updateAccountWorker(userId, accountWorkerId, role);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		return getService().getActionableDynamicQuery();
 	}
@@ -313,11 +319,6 @@ public class AccountWorkerLocalServiceUtil {
 	public static void deleteAccountWorkers(long userId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deleteAccountWorkers(userId);
-	}
-
-	public static void updateAccountWorker(long userId, long accountWorkerId,
-		int role) throws com.liferay.portal.kernel.exception.PortalException {
-		getService().updateAccountWorker(userId, accountWorkerId, role);
 	}
 
 	public static void clearService() {

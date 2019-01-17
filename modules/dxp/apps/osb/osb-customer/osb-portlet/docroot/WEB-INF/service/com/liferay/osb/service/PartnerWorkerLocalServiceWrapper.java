@@ -164,6 +164,14 @@ public class PartnerWorkerLocalServiceWrapper
 	}
 
 	@Override
+	public com.liferay.osb.model.PartnerWorker updatePartnerWorker(
+		long partnerWorkerId, int role)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _partnerWorkerLocalService.updatePartnerWorker(partnerWorkerId,
+			role);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		return _partnerWorkerLocalService.getActionableDynamicQuery();
 	}
@@ -351,12 +359,6 @@ public class PartnerWorkerLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_partnerWorkerLocalService.syncPartnerWorkers(partnerEntryId,
 			oldDossieraAccountKey, newDossieraAccountKey);
-	}
-
-	@Override
-	public void updatePartnerWorker(long partnerWorkerId, int role)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_partnerWorkerLocalService.updatePartnerWorker(partnerWorkerId, role);
 	}
 
 	@Override

@@ -143,6 +143,9 @@ public interface PartnerWorkerLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public PartnerWorker updatePartnerWorker(PartnerWorker partnerWorker);
 
+	public PartnerWorker updatePartnerWorker(long partnerWorkerId, int role)
+		throws PortalException;
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
@@ -268,7 +271,4 @@ public interface PartnerWorkerLocalService extends BaseLocalService,
 	public void syncPartnerWorkers(long partnerEntryId,
 		java.lang.String oldDossieraAccountKey,
 		java.lang.String newDossieraAccountKey) throws PortalException;
-
-	public void updatePartnerWorker(long partnerWorkerId, int role)
-		throws PortalException;
 }

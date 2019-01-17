@@ -151,6 +151,12 @@ public class PartnerWorkerLocalServiceUtil {
 		return getService().updatePartnerWorker(partnerWorker);
 	}
 
+	public static com.liferay.osb.model.PartnerWorker updatePartnerWorker(
+		long partnerWorkerId, int role)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().updatePartnerWorker(partnerWorkerId, role);
+	}
+
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		return getService().getActionableDynamicQuery();
 	}
@@ -319,11 +325,6 @@ public class PartnerWorkerLocalServiceUtil {
 		getService()
 			.syncPartnerWorkers(partnerEntryId, oldDossieraAccountKey,
 			newDossieraAccountKey);
-	}
-
-	public static void updatePartnerWorker(long partnerWorkerId, int role)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().updatePartnerWorker(partnerWorkerId, role);
 	}
 
 	public static void clearService() {

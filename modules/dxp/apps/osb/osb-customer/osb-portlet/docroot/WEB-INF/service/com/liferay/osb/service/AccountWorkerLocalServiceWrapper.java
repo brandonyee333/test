@@ -152,6 +152,14 @@ public class AccountWorkerLocalServiceWrapper
 	}
 
 	@Override
+	public com.liferay.osb.model.AccountWorker updateAccountWorker(
+		long userId, long accountWorkerId, int role)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountWorkerLocalService.updateAccountWorker(userId,
+			accountWorkerId, role);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		return _accountWorkerLocalService.getActionableDynamicQuery();
 	}
@@ -342,13 +350,6 @@ public class AccountWorkerLocalServiceWrapper
 	public void deleteAccountWorkers(long userId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_accountWorkerLocalService.deleteAccountWorkers(userId);
-	}
-
-	@Override
-	public void updateAccountWorker(long userId, long accountWorkerId, int role)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_accountWorkerLocalService.updateAccountWorker(userId, accountWorkerId,
-			role);
 	}
 
 	@Override

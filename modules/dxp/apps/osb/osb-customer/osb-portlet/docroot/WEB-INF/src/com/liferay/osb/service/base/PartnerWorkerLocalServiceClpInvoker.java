@@ -378,10 +378,8 @@ public class PartnerWorkerLocalServiceClpInvoker {
 
 		if (_methodName192.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes192, parameterTypes)) {
-			PartnerWorkerLocalServiceUtil.updatePartnerWorker(((Long)arguments[0]).longValue(),
+			return PartnerWorkerLocalServiceUtil.updatePartnerWorker(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue());
-
-			return null;
 		}
 
 		throw new UnsupportedOperationException();
