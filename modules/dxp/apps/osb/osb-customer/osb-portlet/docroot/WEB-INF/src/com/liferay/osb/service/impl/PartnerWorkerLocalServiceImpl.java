@@ -48,10 +48,17 @@ public class PartnerWorkerLocalServiceImpl
 
 		User user = userLocalService.getUser(userId);
 
+		PartnerWorker partnerWorker = partnerWorkerPersistence.fetchByU_PEI(
+			userId, partnerEntryId);
+
+		if (partnerWorker != null) {
+			return updatePartnerWorker(
+				partnerWorker.getPartnerWorkerId(), role);
+		}
+
 		long partnerWorkerId = counterLocalService.increment();
 
-		PartnerWorker partnerWorker = partnerWorkerPersistence.create(
-			partnerWorkerId);
+		partnerWorker = partnerWorkerPersistence.create(partnerWorkerId);
 
 		partnerWorker.setUserId(user.getUserId());
 		partnerWorker.setPartnerEntryId(partnerEntryId);
@@ -216,7 +223,7 @@ public class PartnerWorkerLocalServiceImpl
 		}
 	}
 
-	public void updatePartnerWorker(long partnerWorkerId, int role)
+	public PartnerWorker updatePartnerWorker(long partnerWorkerId, int role)
 		throws PortalException {
 
 		PartnerWorker partnerWorker = partnerWorkerPersistence.findByPrimaryKey(
@@ -234,6 +241,8 @@ public class PartnerWorkerLocalServiceImpl
 			assignCorpEntryOrganizations(
 				partnerWorker.getUserId(), partnerWorker.getPartnerEntryId());
 		}
+
+		return partnerWorker;
 	}
 
 	protected void assignCorpEntryOrganizations(

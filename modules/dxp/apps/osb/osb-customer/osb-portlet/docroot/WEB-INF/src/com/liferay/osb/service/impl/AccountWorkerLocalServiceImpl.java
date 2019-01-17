@@ -58,10 +58,17 @@ public class AccountWorkerLocalServiceImpl
 
 		validate(accountEntryId);
 
+		AccountWorker accountWorker = accountWorkerPersistence.fetchByU_AEI(
+			workerUserId, accountEntryId);
+
+		if (accountWorker != null) {
+			return updateAccountWorker(
+				userId, accountWorker.getAccountWorkerId(), role);
+		}
+
 		long accountWorkerId = counterLocalService.increment();
 
-		AccountWorker accountWorker = accountWorkerPersistence.create(
-			accountWorkerId);
+		accountWorker = accountWorkerPersistence.create(accountWorkerId);
 
 		accountWorker.setUserId(workerUser.getUserId());
 		accountWorker.setAccountEntryId(accountEntryId);
@@ -233,14 +240,15 @@ public class AccountWorkerLocalServiceImpl
 		}
 	}
 
-	public void updateAccountWorker(long userId, long accountWorkerId, int role)
+	public AccountWorker updateAccountWorker(
+			long userId, long accountWorkerId, int role)
 		throws PortalException {
 
 		AccountWorker accountWorker = accountWorkerPersistence.findByPrimaryKey(
 			accountWorkerId);
 
 		if (accountWorker.getRole() == role) {
-			return;
+			return accountWorker;
 		}
 
 		int oldRole = accountWorker.getRole();
@@ -270,6 +278,8 @@ public class AccountWorkerLocalServiceImpl
 				String.valueOf(oldRole), accountWorker.getRoleLabel(),
 				String.valueOf(accountWorker.getRole()));
 		}
+
+		return accountWorker;
 	}
 
 	protected void validate(long accountEntryId) throws PortalException {
