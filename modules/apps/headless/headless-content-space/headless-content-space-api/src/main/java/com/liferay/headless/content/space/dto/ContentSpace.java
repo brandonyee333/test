@@ -16,6 +16,7 @@ package com.liferay.headless.content.space.dto;
 
 import com.liferay.apio.architect.annotation.Id;
 import com.liferay.apio.architect.annotation.Vocabulary;
+import com.liferay.apio.architect.annotation.Vocabulary.Type;
 import com.liferay.apio.architect.identifier.Identifier;
 import com.liferay.headless.person.dto.Person;
 
@@ -27,7 +28,7 @@ import java.util.Locale;
  * @author Cristina González
  * @generated
  */
-@Vocabulary.Type("ContentSpace")
+@Type("ContentSpace")
 public interface ContentSpace extends Identifier<Long> {
 
 	@Vocabulary.Field("availableLanguages")
