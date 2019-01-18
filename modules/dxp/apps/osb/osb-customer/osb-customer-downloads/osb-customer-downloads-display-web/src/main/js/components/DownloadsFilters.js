@@ -9,13 +9,16 @@ export default class DownloadsFilters extends React.Component {
 	state = {
 		availableFileTypes: [],
 		selected: {
-			fileType: "",
-			product: ""
+			fileType: this.props.currentFileType,
+			product: this.props.currentProduct
 		}
 	};
 
 	static propTypes = {
 		actionURL: PropTypes.string.isRequired,
+		currentFileType: PropTypes.string.isRequired,
+		currentProduct: PropTypes.string.isRequired,
+		portletId: PropTypes.string.isRequired,
 		productsJSONArray: PropTypes.array.isRequired
 	};
 
@@ -68,13 +71,15 @@ export default class DownloadsFilters extends React.Component {
 	render() {
 		const {namespace} = window.DownloadsConstants;
 
-		const {actionURL, productsJSONArray} = this.props;
+		const {actionURL, portletId, productsJSONArray} = this.props;
 
 		const {availableFileTypes} = this.state;
 		const {fileType, product} = this.state.selected;
 
 		return (
 			<form action={actionURL} method="get" ref={this.searchDownloadsFormRef}>
+				<input name="p_p_id" type="hidden" value={portletId} />
+
 				<div className="search-filters">
 					<Filter
 						id={`${namespace}product`}

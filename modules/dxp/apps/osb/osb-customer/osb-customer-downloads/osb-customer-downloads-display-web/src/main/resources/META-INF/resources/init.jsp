@@ -33,6 +33,7 @@ page import="com.liferay.dynamic.data.mapping.storage.Fields" %><%@
 page import="com.liferay.journal.model.JournalArticle" %><%@
 page import="com.liferay.journal.util.JournalConverter" %><%@
 page import="com.liferay.osb.customer.downloads.display.web.internal.constants.DDMStructureConstants" %><%@
+page import="com.liferay.osb.customer.downloads.display.web.internal.constants.DownloadsDisplayPortletKeys" %><%@
 page import="com.liferay.osb.customer.downloads.display.web.internal.constants.DownloadsDisplayWebKeys" %><%@
 page import="com.liferay.osb.customer.downloads.display.web.internal.display.context.DownloadsDisplayContext" %><%@
 page import="com.liferay.osb.customer.downloads.display.web.internal.util.DDMFieldsUtil" %><%@

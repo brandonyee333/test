@@ -88,6 +88,9 @@ PortletURL portletURL = renderResponse.createRenderURL();
 			Downloads.DownloadsFilters,
 			{
 				actionURL: '<%= portletURL.toString() %>',
+				currentFileType: '<%= ParamUtil.getString(request, "fileType") %>',
+				currentProduct: '<%= ParamUtil.getString(request, "product") %>',
+				portletId: '<%= DownloadsDisplayPortletKeys.DOWNLOADS_DISPLAY %>',
 				productsJSONArray: <%= productsJSONArray %>
 			},
 			document.getElementById('osbDownloadsFilters')
