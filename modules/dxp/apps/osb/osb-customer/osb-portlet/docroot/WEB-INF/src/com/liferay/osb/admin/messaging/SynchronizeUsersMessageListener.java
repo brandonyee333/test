@@ -195,7 +195,6 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 			return;
 		}
 
-System.out.println("AASASDSDADASASDASD");
 		StringBundler sb = new StringBundler(21);
 
 		sb.append("select distinct(OSB_AccountCustomer.userId) from ");
