@@ -81,7 +81,6 @@ PortletURL portletURL = renderResponse.createRenderURL();
 	</liferay-ui:search-container>
 </div>
 
-
 <c:if test="<%= ddmStructureKey.equals(DDMStructureConstants.KEY_DOWNLOAD) %>">
 	<aui:script>
 		Downloads.render(
