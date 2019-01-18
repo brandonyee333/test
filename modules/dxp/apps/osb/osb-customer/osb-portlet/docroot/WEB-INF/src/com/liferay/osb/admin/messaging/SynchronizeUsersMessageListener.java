@@ -195,6 +195,7 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 			return;
 		}
 
+System.out.println("AASASDSDADASASDASD");
 		StringBundler sb = new StringBundler(21);
 
 		sb.append("select distinct(OSB_AccountCustomer.userId) from ");
@@ -437,7 +438,7 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 		sb.append(AccountEntryConstants.TYPE_TRIAL);
 		sb.append("') and (OSB_OfferingEntry.status = ");
 		sb.append(OfferingEntryConstants.STATUS_ACTIVE);
-		sb.append(") and (OSB_OfferingEntry.supportEndDate > now())");
+		sb.append(")");
 
 		updateOrganizationUserIds(
 			OSBConstants.ORGANIZATION_TRIAL_ID, sb.toString(),
