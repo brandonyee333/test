@@ -92,26 +92,26 @@ class Downloads extends React.Component {
 		const {requiredAgreement} = this.props;
 		const {metadata} = this.state;
 
-		this.setState(
-			{
-				showEULA: false
-			},
-			() => {
-				axios.post(requiredAgreement.acceptAgreementURL)
-					.then(
+		axios.post(requiredAgreement.acceptAgreementURL)
+			.then(
+				() => {
+					this.setState(
+						{
+							showEULA: false
+						},
 						() => {
 							window.location = metadata.url
 						}
-					)
-					.catch(
-						(err) => {
-							if (process.env.NODE_ENV === 'development') {
-								console.log(err);
-							}
-						}
 					);
-			}
-		);
+				}
+			)
+			.catch(
+				(err) => {
+					if (process.env.NODE_ENV === 'development') {
+						console.log(err);
+					}
+				}
+			);
 	};
 
 	handleCloseModal = () => {
