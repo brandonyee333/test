@@ -100,7 +100,7 @@ class Downloads extends React.Component {
 							showEULA: false
 						},
 						() => {
-							window.location = metadata.url
+							window.location = metadata.url;
 						}
 					);
 				}
@@ -133,7 +133,7 @@ class Downloads extends React.Component {
 	handleSelectChange = event => {
 		const eventTarget = event.target;
 
-		const selectedIndex =  eventTarget.selectedIndex;
+		const selectedIndex = eventTarget.selectedIndex;
 
 		this.setState(
 			{
