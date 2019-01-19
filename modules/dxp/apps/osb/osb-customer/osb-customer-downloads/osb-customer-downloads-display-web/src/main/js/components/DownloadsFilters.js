@@ -19,11 +19,15 @@ export default class DownloadsFilters extends React.Component {
 		productsJSONArray: PropTypes.array.isRequired
 	};
 
-	componentDidUpdate() {
-		const {fileType, product} = this.state;
+	componentDidMount() {
+		const {currentProduct, productsJSONArray} = this.props;
 
-		if (!product || (fileType && product)) {
-			this.handleSubmit();
+		if (currentProduct) {
+			this.setState(
+				{
+					availableFileTypes: productsJSONArray.find(product => product.value == currentProduct).fileTypes
+				}
+			);
 		}
 	}
 
@@ -31,6 +35,9 @@ export default class DownloadsFilters extends React.Component {
 		this.setState(
 			{
 				fileType: event.target.value
+			},
+			() => {
+				this.handleUpdate();
 			}
 		);
 
@@ -53,8 +60,19 @@ export default class DownloadsFilters extends React.Component {
 				availableFileTypes: fileTypes,
 				fileType: autoSelectFileType ? fileTypes[0].value : '',
 				product: event.target.value
+			},
+			() => {
+				this.handleUpdate();
 			}
 		);
+	};
+
+	handleUpdate = () => {
+		const {fileType, product} = this.state;
+
+		if (!product || (fileType && product)) {
+			this.handleSubmit();
+		}
 	};
 
 	handleSubmit = () => this.searchDownloadsFormRef.current.submit();
