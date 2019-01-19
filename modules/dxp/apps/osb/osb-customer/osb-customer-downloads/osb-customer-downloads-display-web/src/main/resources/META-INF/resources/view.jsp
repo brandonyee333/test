@@ -35,7 +35,7 @@ PortletURL portletURL = renderResponse.createRenderURL();
 		<liferay-ui:message key="use-the-dropdown-menus-below-to-find-the-downloads-you-need" />
 	</h5>
 
-	<div id="osbDownloadsFilters"></div>
+	<div id="osbDownloadsDisplayFilters"></div>
 </c:if>
 
 <div class="results">
@@ -89,10 +89,9 @@ PortletURL portletURL = renderResponse.createRenderURL();
 				actionURL: '<%= portletURL.toString() %>',
 				currentFileType: '<%= ParamUtil.getString(request, "fileType") %>',
 				currentProduct: '<%= ParamUtil.getString(request, "product") %>',
-				portletId: '<%= DownloadsDisplayPortletKeys.DOWNLOADS_DISPLAY %>',
 				productsJSONArray: <%= productsJSONArray %>
 			},
-			document.getElementById('osbDownloadsFilters')
+			document.getElementById('osbDownloadsDisplayFilters')
 		);
 	</aui:script>
 </c:if>

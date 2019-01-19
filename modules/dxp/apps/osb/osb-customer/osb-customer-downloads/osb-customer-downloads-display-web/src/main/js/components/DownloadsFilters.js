@@ -1,47 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const SELECT_LABEL = Liferay.Language.get('select');
+const portletId = "com_liferay_osb_customer_downloads_display_web_DownloadsDisplayPortlet";
 
 export default class DownloadsFilters extends React.Component {
 	searchDownloadsFormRef = React.createRef();
 
 	state = {
 		availableFileTypes: [],
-		selected: {
-			fileType: this.props.currentFileType,
-			product: this.props.currentProduct
-		}
+		fileType: this.props.currentFileType,
+		product: this.props.currentProduct
 	};
 
 	static propTypes = {
 		actionURL: PropTypes.string.isRequired,
 		currentFileType: PropTypes.string.isRequired,
 		currentProduct: PropTypes.string.isRequired,
-		portletId: PropTypes.string.isRequired,
 		productsJSONArray: PropTypes.array.isRequired
 	};
 
 	componentDidUpdate() {
-		const {fileType, product} = this.state.selected;
+		const {fileType, product} = this.state;
 
 		if (!product || (fileType && product)) {
 			this.handleSubmit();
 		}
 	}
 
-	handleFileTypeChange = event => {
-		const {selected} = this.state;
-
+	handleFileTypeChange = event =>
 		this.setState(
 			{
-				selected: {
-					...selected,
-					fileType: event.target.value
-				}
+				fileType: event.target.value
 			}
 		);
-	};
 
 	handleProductChange = event => {
 		const {productsJSONArray} = this.props;
@@ -52,16 +43,16 @@ export default class DownloadsFilters extends React.Component {
 		if (event.target.value) {
 			fileTypes = productsJSONArray.find(product => product.value == event.target.value).fileTypes;
 
-			autoSelectFileType = fileTypes.length == 1;
+			if (fileTypes.length == 1) {
+				autoSelectFileType = true;
+			}
 		}
 
 		this.setState(
 			{
 				availableFileTypes: fileTypes,
-				selected: {
-					fileType: autoSelectFileType ? fileTypes[0].value : "",
-					product: event.target.value
-				}
+				fileType: autoSelectFileType ? fileTypes[0].value : '',
+				product: event.target.value
 			}
 		);
 	};
@@ -71,10 +62,9 @@ export default class DownloadsFilters extends React.Component {
 	render() {
 		const {namespace} = window.DownloadsConstants;
 
-		const {actionURL, portletId, productsJSONArray} = this.props;
+		const {actionURL, productsJSONArray} = this.props;
 
-		const {availableFileTypes} = this.state;
-		const {fileType, product} = this.state.selected;
+		const {availableFileTypes, fileType, product} = this.state;
 
 		return (
 			<form action={actionURL} method="get" ref={this.searchDownloadsFormRef}>
