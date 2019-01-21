@@ -56,6 +56,7 @@ definition {
 	@priority = "4"
 	test HSQLtoDB2SampleDataEnabled {
 		property database.types = "db2";
+		property test.prepare.bundle.properties = "true";
 		property test.name.skip.portal.instance = "SetupWizardHSQL#HSQLtoDB2SampleDataEnabled";
 		property portal.acceptance = "summer";
 
@@ -64,7 +65,7 @@ definition {
 			administratorEmail = "test@liferay.com",
 			administratorFirstName = "Test",
 			administratorLastName = "Test",
-			databaseName = "lportal1",
+			databaseName = "lportal",
 			databasePassword = PropsUtil.get("database.db2.password"),
 			databaseType = "DB2",
 			databaseUserName = PropsUtil.get("database.db2.username"),
@@ -128,6 +129,7 @@ definition {
 	@priority = "4"
 	test HSQLtoOracleSampleDataEnabled {
 		property database.types = "oracle";
+		property test.prepare.bundle.properties = "true";
 		property test.name.skip.portal.instance = "SetupWizardHSQL#HSQLtoOracleSampleDataEnabled";
 		property portal.acceptance = "summer";
 
@@ -136,7 +138,7 @@ definition {
 			administratorEmail = "test@liferay.com",
 			administratorFirstName = "Test",
 			administratorLastName = "Test",
-			databaseName = "lportal1",
+			databaseName = "lportal",
 			databasePassword = PropsUtil.get("database.oracle.password"),
 			databaseType = "Oracle",
 			databaseUserName = PropsUtil.get("database.oracle.username"),
@@ -200,6 +202,7 @@ definition {
 	@priority = "4"
 	test HSQLtoSybaseSampleDataEnabled {
 		property database.types = "sybase";
+		property test.prepare.bundle.properties = "true";
 		property test.name.skip.portal.instance = "SetupWizardHSQL#HSQLtoSybaseSampleDataEnabled";
 		property portal.acceptance = "summer";
 
@@ -208,7 +211,7 @@ definition {
 			administratorEmail = "test@liferay.com",
 			administratorFirstName = "Test",
 			administratorLastName = "Test",
-			databaseName = "lportal1",
+			databaseName = "lportal",
 			databasePassword = PropsUtil.get("database.sybase.password"),
 			databaseType = "Sybase",
 			databaseUserName = PropsUtil.get("database.sybase.username"),
