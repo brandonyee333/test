@@ -1,8 +1,9 @@
 .search-filters {
 	overflow: auto;
 
-	.form-group .form-control {
+	.form-control {
 		border-color: transparent;
+		display: inline-block;
 		padding-right: 40px;
 
 		&:focus {
@@ -19,6 +20,7 @@
 		border-left-width: 0;
 		box-shadow: 0 6px 15px -7px rgba(9, 16, 29, 0.05);
 		float: left;
+		margin-bottom: $margin-default;
 		padding: 12px 10px 12px 24px;
 		width: 50%;
 

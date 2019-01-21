@@ -36,34 +36,30 @@ export default class DownloadsFilters extends React.Component {
 			{
 				fileType: event.target.value
 			},
-			() => {
-				this.handleUpdate();
-			}
+			() => this.handleUpdate()
 		);
 
 	handleProductChange = event => {
 		const {productsJSONArray} = this.props;
 
 		let autoSelectFileType = false;
-		let fileTypes = [];
+		let selectedProductFileTypes = [];
 
 		if (event.target.value) {
-			fileTypes = productsJSONArray.find(product => product.value == event.target.value).fileTypes;
+			selectedProductFileTypes = productsJSONArray.find(product => product.value == event.target.value).fileTypes;
 
-			if (fileTypes.length == 1) {
+			if (selectedProductFileTypes.length == 1) {
 				autoSelectFileType = true;
 			}
 		}
 
 		this.setState(
 			{
-				availableFileTypes: fileTypes,
-				fileType: autoSelectFileType ? fileTypes[0].value : '',
+				availableFileTypes: selectedProductFileTypes,
+				fileType: autoSelectFileType ? selectedProductFileTypes[0].value : '',
 				product: event.target.value
 			},
-			() => {
-				this.handleUpdate();
-			}
+			() => this.handleUpdate()
 		);
 	};
 
@@ -78,14 +74,14 @@ export default class DownloadsFilters extends React.Component {
 	handleSubmit = () => this.searchDownloadsFormRef.current.submit();
 
 	render() {
-		const {namespace} = window.DownloadsConstants;
-
 		const {actionURL, productsJSONArray} = this.props;
 
 		const {availableFileTypes, fileType, product} = this.state;
 
+		const {namespace} = window.DownloadsConstants;
+
 		return (
-			<form action={actionURL} method="get" ref={this.searchDownloadsFormRef}>
+			<form ref={this.searchDownloadsFormRef} action={actionURL} method="get">
 				<input name="p_p_id" type="hidden" value={portletId} />
 
 				<div className="search-filters">
@@ -111,8 +107,8 @@ export default class DownloadsFilters extends React.Component {
 };
 
 const Filter = props => (
-	<div className="downloads-search form-group form-group-inline form-inline input-select-wrapper search-filter-container">
-		<label for={props.id} className="control-label">
+	<div className="search-filter-container">
+		<label className="control-label" for={props.id}>
 			{props.label}
 		</label>
 
