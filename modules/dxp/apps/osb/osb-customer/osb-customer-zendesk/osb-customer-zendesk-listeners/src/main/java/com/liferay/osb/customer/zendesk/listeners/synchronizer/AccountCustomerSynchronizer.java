@@ -63,64 +63,72 @@ public class AccountCustomerSynchronizer {
 			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
 				accountCustomer.getUserId());
 
-			_zendeskUserWebService.createZendeskUserOrganizationSubscription(
-				zendeskUserId, zendeskOrganizationId);
+			if ((zendeskOrganizationId > 0) && (zendeskUserId > 0)) {
+				_zendeskUserWebService.
+					createZendeskUserOrganizationSubscription(
+						zendeskUserId, zendeskOrganizationId);
+			}
 		}
 	}
 
 	public void reassignTickets(AccountCustomer accountCustomer)
 		throws PortalException {
 
-		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
-			accountCustomer.getUserId());
 		long zendeskOrganizationId =
 			_zendeskMapperUtil.fetchZendeskOrganizationId(
 				accountCustomer.getAccountEntryId());
+		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+			accountCustomer.getUserId());
 
-		Set<String> criteria = new HashSet<>();
+		if ((zendeskOrganizationId > 0) && (zendeskUserId > 0)) {
+			Set<String> criteria = new HashSet<>();
 
-		criteria.add("organization:" + zendeskOrganizationId);
-		criteria.add("requester:" + zendeskUserId);
-		criteria.add("status<closed");
+			criteria.add("organization:" + zendeskOrganizationId);
+			criteria.add("requester:" + zendeskUserId);
+			criteria.add("status<closed");
 
-		List<ZendeskTicket> zendeskTickets =
-			_zendeskTicketWebService.getZendeskTickets(criteria);
+			List<ZendeskTicket> zendeskTickets =
+				_zendeskTicketWebService.getZendeskTickets(criteria);
 
-		if (!zendeskTickets.isEmpty()) {
-			List<AccountCustomer> accountCustomers =
-				AccountCustomerLocalServiceUtil.getAccountCustomers(
-					accountCustomer.getAccountEntryId(),
-					AccountCustomerConstants.ROLE_DEVELOPER);
+			if (!zendeskTickets.isEmpty()) {
+				List<AccountCustomer> accountCustomers =
+					AccountCustomerLocalServiceUtil.getAccountCustomers(
+						accountCustomer.getAccountEntryId(),
+						AccountCustomerConstants.ROLE_DEVELOPER);
 
-			if (accountCustomers.isEmpty()) {
-				throw new AccountCustomerRemovalException();
+				if (accountCustomers.isEmpty()) {
+					throw new AccountCustomerRemovalException();
+				}
+
+				AccountCustomer newAccountCustomer = accountCustomers.get(0);
+
+				long newZendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+					newAccountCustomer.getUserId());
+
+				for (ZendeskTicket zendeskTicket : zendeskTickets) {
+					zendeskTicket.setRequesterId(newZendeskUserId);
+					zendeskTicket.setZendeskOrganizationId(
+						zendeskOrganizationId);
+				}
+
+				_zendeskTicketWebService.updateZendeskTickets(zendeskTickets);
 			}
-
-			AccountCustomer newAccountCustomer = accountCustomers.get(0);
-
-			long newZendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
-				newAccountCustomer.getUserId());
-
-			for (ZendeskTicket zendeskTicket : zendeskTickets) {
-				zendeskTicket.setRequesterId(newZendeskUserId);
-				zendeskTicket.setZendeskOrganizationId(zendeskOrganizationId);
-			}
-
-			_zendeskTicketWebService.updateZendeskTickets(zendeskTickets);
 		}
 	}
 
 	public void remove(AccountCustomer accountCustomer) throws PortalException {
-		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
-			accountCustomer.getUserId());
 		long zendeskOrganizationId =
 			_zendeskMapperUtil.fetchZendeskOrganizationId(
 				accountCustomer.getAccountEntryId());
+		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+			accountCustomer.getUserId());
 
-		_zendeskUserWebService.deleteZendeskUserOrganizationMemberships(
-			zendeskUserId, new long[] {zendeskOrganizationId});
+		if ((zendeskOrganizationId > 0) && (zendeskUserId > 0)) {
+			_zendeskUserWebService.deleteZendeskUserOrganizationMemberships(
+				zendeskUserId, new long[] {zendeskOrganizationId});
 
-		removeTags(accountCustomer, zendeskOrganizationId);
+			removeTags(accountCustomer, zendeskOrganizationId);
+		}
 	}
 
 	public void removeTags(
@@ -147,27 +155,32 @@ public class AccountCustomerSynchronizer {
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
 			accountCustomer.getUserId());
 
-		Set<String> addTags = getAddAccountCustomerTags(accountCustomer);
+		if (zendeskUserId > 0) {
+			Set<String> addTags = getAddAccountCustomerTags(accountCustomer);
 
-		_zendeskUserWebService.addZendeskUserTags(zendeskUserId, addTags);
+			_zendeskUserWebService.addZendeskUserTags(zendeskUserId, addTags);
 
-		if (accountCustomer.getRole() !=
-				AccountCustomerConstants.ROLE_WATCHER) {
+			if (accountCustomer.getRole() !=
+					AccountCustomerConstants.ROLE_WATCHER) {
 
-			long zendeskOrganizationId =
-				_zendeskMapperUtil.fetchZendeskOrganizationId(
-					accountCustomer.getAccountEntryId());
+				long zendeskOrganizationId =
+					_zendeskMapperUtil.fetchZendeskOrganizationId(
+						accountCustomer.getAccountEntryId());
 
-			Set<String> removeTags = new HashSet<>();
+				if (zendeskOrganizationId > 0) {
+					Set<String> removeTags = new HashSet<>();
 
-			removeTags.add(
-				ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
+					removeTags.add(
+						ZendeskTagConstants.getWatcherTag(
+							zendeskOrganizationId));
 
-			_zendeskUserWebService.deleteZendeskUserTags(
-				zendeskUserId, removeTags);
+					_zendeskUserWebService.deleteZendeskUserTags(
+						zendeskUserId, removeTags);
+				}
+			}
+
+			_userSynchronizer.removeObsoleteTags(accountCustomer.getUserId());
 		}
-
-		_userSynchronizer.removeObsoleteTags(accountCustomer.getUserId());
 	}
 
 	protected Set<String> getAddAccountCustomerTags(
@@ -185,7 +198,10 @@ public class AccountCustomerSynchronizer {
 				_zendeskMapperUtil.fetchZendeskOrganizationId(
 					accountCustomer.getAccountEntryId());
 
-			tags.add(ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
+			if (zendeskOrganizationId > 0) {
+				tags.add(
+					ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
+			}
 		}
 		else {
 			if (accountEntry.getActiveTicketSupport()) {
