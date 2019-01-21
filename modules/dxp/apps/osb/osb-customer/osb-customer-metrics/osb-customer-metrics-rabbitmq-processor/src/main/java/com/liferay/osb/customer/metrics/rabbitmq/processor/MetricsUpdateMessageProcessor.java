@@ -102,32 +102,14 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 	}
 
 	protected JSONObject reconcile(JSONObject jsonObject) throws Exception {
-		Iterator<String> keysIterator = jsonObject.keys();
+		Iterator<String> iterator = jsonObject.keys();
 
-		while (keysIterator.hasNext()) {
-			String key = keysIterator.next();
+		while (iterator.hasNext()) {
+			String key = iterator.next();
 
 			String lowercaseKey = StringUtil.toLowerCase(key);
 
-			if (lowercaseKey.contains("userid")) {
-				Object value = jsonObject.get(key);
-
-				if (value instanceof JSONObject) {
-					JSONObject columnJSONObject = (JSONObject)value;
-
-					String userId = getColumnValue(
-						"select userId from OSB_MetricsUser where uuid_ = '" +
-							columnJSONObject.getString("uuid_") + "'");
-
-					if (userId != null) {
-						jsonObject.put(key, userId);
-					}
-					else {
-						throw new NoSuchUserException();
-					}
-				}
-			}
-			else if (lowercaseKey.contains("classnameid")) {
+			if (lowercaseKey.contains("classnameid")) {
 				JSONObject valueJSONObject = jsonObject.getJSONObject(key);
 
 				String classNameValue = valueJSONObject.getString("value");
@@ -160,6 +142,24 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 						else {
 							throw new NoSuchUserException();
 						}
+					}
+				}
+			}
+			else if (lowercaseKey.contains("userid")) {
+				Object value = jsonObject.get(key);
+
+				if (value instanceof JSONObject) {
+					JSONObject columnJSONObject = (JSONObject)value;
+
+					String userId = getColumnValue(
+						"select userId from OSB_MetricsUser where uuid_ = '" +
+							columnJSONObject.getString("uuid_") + "'");
+
+					if (userId != null) {
+						jsonObject.put(key, userId);
+					}
+					else {
+						throw new NoSuchUserException();
 					}
 				}
 			}
