@@ -16,7 +16,6 @@ package com.liferay.portlet.documentlibrary.util;
 
 import com.liferay.document.library.kernel.exception.NoSuchFileEntryException;
 import com.liferay.document.library.kernel.model.DLProcessorConstants;
-import com.liferay.document.library.kernel.service.DLFileEntryPreviewHandler;
 import com.liferay.document.library.kernel.service.DLFileEntryPreviewHandlerUtil;
 import com.liferay.document.library.kernel.store.DLStoreUtil;
 import com.liferay.document.library.kernel.util.DLPreviewableProcessor;
@@ -676,15 +675,6 @@ public class PDFProcessorImpl
 
 		File decryptedFile = getDecryptedTempFile(tempFileId);
 		File thumbnailFile = getThumbnailTempFile(tempFileId);
-
-		long fileEntryPreviewId =
-			DLFileEntryPreviewHandlerUtil.getDLFileEntryPreviewId(
-				fileVersion.getFileEntryId(), fileVersion.getFileVersionId(),
-				DLFileEntryPreviewHandler.DLFileEntryPreviewType.FAIL);
-
-		if (fileEntryPreviewId > 0) {
-			return;
-		}
 
 		int previewFilesCount = _getPreviewFilesCount(file, decryptedFile);
 
