@@ -4813,14 +4813,7 @@ war.path=${app.server.portal.dir}/</echo>
 				<if>
 					<and>
 						<isset property="databases.size" />
-						<or>
-							<equals arg1="${database.type}" arg2="db2" />
-							<equals arg1="${database.type}" arg2="mariadb" />
-							<equals arg1="${database.type}" arg2="mysql" />
-							<equals arg1="${database.type}" arg2="oracle" />
-							<equals arg1="${database.type}" arg2="postgresql" />
-							<equals arg1="${database.type}" arg2="sybase" />
-						</or>
+						<equals arg1="${database.type}" arg2="mysql,mariadb,postgresql,db2,oracle,sybase" />
 					</and>
 					<then>
 						<var name="database.index" value="1" />
