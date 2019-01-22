@@ -34,6 +34,7 @@ Date lastEnabledDate = calendar.getTime();
 	buttonLabel="search"
 	displayTerms="<%= displayTerms %>"
 	id="toggle_id_license_key_search"
+	markupView="lexicon"
 >
 	<aui:row>
 		<aui:col md="4">

@@ -1,8 +1,9 @@
+@import "_breakpoints";
 @import "_custom-variables";
 
 .osb-portlet-license {
 	#toggle_id_license_key_searchadvanced {
-		padding-bottom: 1em;
+		padding-bottom: $padding-default;
 	}
 
 	#toggle_id_license_key_searchsimple {
@@ -11,16 +12,21 @@
 		}
 	}
 
-	.advanced-search {
-		.form-control.search-query {
-			background-color: $color-white;
-			border: 1px solid $color-border;
-			border-radius: $border-radius;
-		}
+	.advanced-search.input-group, .basic-search.input-group {
+		max-width: none;
 
-		.input-group-btn .btn-default {
-			border-radius: $border-radius;
-			margin-left: 16px;
+		@include media-breakpoint-down(sm) {
+			.basic-search-slider {
+				left: auto;
+
+				.basic-search-close {
+					display: none;
+				}
+			}
+
+			.input-group-button {
+				padding-top: 6px;
+			}
 		}
 	}
 
@@ -33,7 +39,7 @@
 		border: 1px solid $color-border;
 		border-radius: $border-radius;
 		margin: $margin-default 0;
-		padding: 16px;
+		padding: $padding-md;
 
 		&.highlight-cluster {
 			border-color: $color-info-border;
@@ -59,8 +65,8 @@
 	}
 
 	.large-btn {
-		margin-top: 1em;
-		padding: 5px 15px;
+		margin-top: $margin-md;
+		padding: 5px $padding-md;
 		text-decoration: none;
 	}
 
@@ -97,13 +103,13 @@
 	.license-info-label {
 		display: block;
 		font-weight: $font-weight-semi-bold;
-		margin-top: 16px;
+		margin-top: $margin-md;
 	}
 
 	.license-input-heading {
 		border-bottom: 1px solid $color-border;
-		margin-top: 0.5em;
-		padding-bottom: 0.25em;
+		margin-top: 8px;
+		padding-bottom: 4px;
 	}
 
 	.license-key-controls {
@@ -111,7 +117,7 @@
 
 		.license-key-control-icon {
 			display: block;
-			margin-bottom: 16px;
+			margin-bottom: $margin-md;
 		}
 	}
 
@@ -127,6 +133,10 @@
 		position: relative;
 	}
 
+	.searchcontainer-content .table-responsive .table {
+		display: block;
+	}
+
 	.select-account-entry {
 		background-color: $color-white;
 		color: $secondary-text-color;
@@ -134,7 +144,7 @@
 	}
 
 	.separator {
-		margin: 15px;
+		margin: $margin-md;
 	}
 
 	.table-cell {

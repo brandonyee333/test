@@ -1,5 +1,5 @@
-$medium-gray: #909295;
-$text-color: #474A4B;
+@import "_breakpoints";
+@import "_customer-variables";
 
 .osb-portlet-admin {
 	table {
@@ -7,8 +7,14 @@ $text-color: #474A4B;
 			vertical-align: top;
 		}
 
+		&.lfr-table {
+			display: block;
+			overflow-x: auto;
+			white-space: nowrap;
+		}
+
 		.inactive td {
-			background-color: #FCC;
+			background-color: $color-error-border;
 		}
 
 		.lfr-role-column {
@@ -18,8 +24,8 @@ $text-color: #474A4B;
 
 	.account-environment {
 		.environment-detail {
-			background: #F8F8F8;
-			border: 1px solid #CCC;
+			background: $color-grey;
+			border: 1px solid $color-border;
 			display: inline-block;
 			margin: 0;
 			vertical-align: top;
@@ -30,12 +36,12 @@ $text-color: #474A4B;
 				padding: 0;
 
 				li {
-					border-bottom: 1px solid #CCC;
+					border-bottom: 1px solid $color-border;
 					list-style: none;
 					padding: 1em;
 
 					&:hover {
-						background-color: #CCC;
+						background-color: $color-border;
 					}
 
 					&:last-child {
@@ -43,7 +49,7 @@ $text-color: #474A4B;
 					}
 
 					.data {
-						font-weight: bold;
+						font-weight: $font-weight-semi-bold;
 						text-transform: uppercase;
 						width: 100%;
 					}
@@ -53,7 +59,7 @@ $text-color: #474A4B;
 					}
 
 					.field {
-						font-weight: normal;
+						font-weight: $font-weight-normal;
 						padding-left: 3px;
 						text-transform: none;
 					}
@@ -62,15 +68,15 @@ $text-color: #474A4B;
 
 			.subheader {
 				background: url(@theme_image_path@/application/subheader_bg.png) 0 0 repeat-x;
-				color: #154B75;
-				font-weight: bold;
+				color: $color-primary;
+				font-weight: $font-weight-semi-bold;
 				padding: 7px;
 			}
 		}
 
 		.popup {
 			.label {
-				font-weight: bold;
+				font-weight: $font-weight-semi-bold;
 				text-transform: uppercase;
 			}
 		}
@@ -86,6 +92,24 @@ $text-color: #474A4B;
 
 	.auto-complete-container #trigger {
 		display: none;
+	}
+
+	.advanced-search.input-group, .basic-search.input-group {
+		max-width: none;
+
+		@include media-breakpoint-down(sm) {
+			.basic-search-slider {
+				left: auto;
+
+				.basic-search-close {
+					display: none;
+				}
+			}
+
+			.search-query {
+				margin-top: 4px;
+			}
+		}
 	}
 
 	.child-partners .col-2 {
@@ -119,12 +143,12 @@ $text-color: #474A4B;
 			}
 
 			.create-date {
-				color: #AAA;
+				color: $secondary-text-color;
 				float: right;
 			}
 
 			.header {
-				border-bottom: 1px solid #D3D3D3;
+				border-bottom: 1px solid $color-border;
 				font-size: 15px;
 
 				span {
@@ -137,7 +161,7 @@ $text-color: #474A4B;
 			}
 
 			.txt-sb {
-				font-weight: bold;
+				font-weight: $font-weight-semi-bold;
 			}
 
 			.user-display {
@@ -173,7 +197,7 @@ $text-color: #474A4B;
 
 	.sub-header {
 		.segment {
-			color: $medium-gray;
+			color: $secondary-text-color;
 			margin: 0 10px;
 
 			&.first {
@@ -185,12 +209,12 @@ $text-color: #474A4B;
 			}
 
 			.txt-sb {
-				color: $text-color;
+				color: $color-body;
 			}
 		}
 
 		.spacer {
-			background: $medium-gray;
+			background: $secondary-text-color;
 			border-radius: 2.5px;
 			display: inline-block;
 			height: 5px;
@@ -202,20 +226,19 @@ $text-color: #474A4B;
 
 .osb-portlet-admin-alert {
 	&.error {
-		color: #D06575;
+		color: $color-error;
 
 		.close {
-			color: #D06575;
+			color: $color-error;
 			line-height: 30px;
 		}
 	}
 
 	&.success {
-		background-color: #DDF3D5;
-		color: #97C783;
+		color: $color-success;
 
 		.close {
-			color: #97C783;
+			color: $color-success;
 			line-height: 30px;
 		}
 	}

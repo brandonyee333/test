@@ -22,6 +22,7 @@ String mvcPath = ParamUtil.getString(renderRequest, "mvcPath");
 	buttonLabel="search"
 	displayTerms="<%= displayTerms %>"
 	id="toggle_id_partner_entry_search"
+	markupView="lexicon"
 >
 	<table class="lfr-table">
 		<tr>
