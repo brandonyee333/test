@@ -206,11 +206,14 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 			userJSONObject.put("locale", locale);
 		}
 
-		JSONObject organizationJSONObject = JSONFactoryUtil.createJSONObject();
+		if (Validator.isNotNull(organizationName)) {
+			JSONObject organizationJSONObject =
+				JSONFactoryUtil.createJSONObject();
 
-		organizationJSONObject.put("name", organizationName);
+			organizationJSONObject.put("name", organizationName);
 
-		userJSONObject.put("organization", organizationJSONObject);
+			userJSONObject.put("organization", organizationJSONObject);
+		}
 
 		JSONArray tagsJSONArray = JSONFactoryUtil.createJSONArray();
 

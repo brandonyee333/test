@@ -53,13 +53,13 @@ import org.osgi.service.component.annotations.Reference;
 public class UserSynchronizer {
 
 	public void addLiferayEmployee(long userId) throws PortalException {
-		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
+		User user = _userLocalService.getUser(userId);
 
 		Set<String> tags = new HashSet<>();
 
 		tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
 
-		_asyncZendeskUserWebService.addZendeskUserTags(zendeskUserId, tags);
+		sync(user, null, tags);
 	}
 
 	public void addPhone(long userId, Phone phone) throws PortalException {
