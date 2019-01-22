@@ -26,6 +26,7 @@ import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
+import com.liferay.osb.model.ExternalIdMapper;
 import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
@@ -43,7 +44,6 @@ import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Validator;
 
 import java.util.HashSet;
 import java.util.List;
@@ -226,11 +226,18 @@ public class AccountEntrySynchronizer {
 
 			ProductEntry productEntry = offeringEntry.getProductEntry();
 
-			String zendeskTag = ZendeskModelListenerUtil.convertToTag(
-				productEntry);
+			long classNameId = _classNameLocalService.getClassNameId(
+				ProductEntry.class);
 
-			if (Validator.isNotNull(zendeskTag)) {
-				tags.add(zendeskTag);
+			List<ExternalIdMapper> externalIdMappers =
+				ExternalIdMapperLocalServiceUtil.getExternalIdMappers(
+					classNameId, productEntry.getProductEntryId(),
+					ExternalIdMapperConstants.TYPE_ZENDESK);
+
+			if (!externalIdMappers.isEmpty()) {
+				ExternalIdMapper externalIdMapper = externalIdMappers.get(0);
+
+				tags.add(externalIdMapper.getExternalId());
 			}
 		}
 

@@ -936,5 +936,6 @@
 		<exception>RequiredSupportRegion</exception>
 		<exception>SupportRegionName</exception>
 		<exception>SupportResponseName</exception>
+		<exception>ZendeskTag</exception>
 	</exceptions>
 </service-builder>

@@ -102,6 +102,7 @@ page import="com.liferay.osb.exception.RequiredProductEntryException" %><%@
 page import="com.liferay.osb.exception.RequiredSupportRegionException" %><%@
 page import="com.liferay.osb.exception.RequiredSupportResponseException" %><%@
 page import="com.liferay.osb.exception.SupportResponseNameException" %><%@
+page import="com.liferay.osb.exception.ZendeskTagException" %><%@
 page import="com.liferay.osb.license.search.LicenseKeyDisplayTerms" %><%@
 page import="com.liferay.osb.license.search.LicenseKeySearch" %><%@
 page import="com.liferay.osb.license.search.LicenseKeySearchTerms" %><%@

@@ -57,6 +57,7 @@ import com.liferay.osb.exception.RequiredSupportRegionException;
 import com.liferay.osb.exception.RequiredSupportResponseException;
 import com.liferay.osb.exception.SupportRegionNameException;
 import com.liferay.osb.exception.SupportResponseNameException;
+import com.liferay.osb.exception.ZendeskTagException;
 import com.liferay.osb.model.AccountAttachment;
 import com.liferay.osb.model.AccountAttachmentConstants;
 import com.liferay.osb.model.AccountEntry;
@@ -974,16 +975,17 @@ public class AdminPortlet extends OSBPortlet {
 		String[] dossieraIdMappings = StringUtil.split(
 			ParamUtil.getString(actionRequest, "dossieraIdMappings"),
 			StringPool.NEW_LINE);
+		String zendeskTag = ParamUtil.getString(actionRequest, "zendeskTag");
 
 		if (productEntryId <= 0) {
 			ProductEntryLocalServiceUtil.addProductEntry(
 				themeDisplay.getUserId(), name, type, environment,
-				versionsListType, dossieraIdMappings);
+				versionsListType, dossieraIdMappings, zendeskTag);
 		}
 		else {
 			ProductEntryLocalServiceUtil.updateProductEntry(
 				productEntryId, name, type, environment, versionsListType,
-				dossieraIdMappings);
+				dossieraIdMappings, zendeskTag);
 		}
 	}
 
@@ -1216,7 +1218,8 @@ public class AdminPortlet extends OSBPortlet {
 			cause instanceof ReservedUserEmailAddressException ||
 			cause instanceof SupportRegionNameException ||
 			cause instanceof SupportResponseNameException ||
-			cause instanceof UserEmailAddressException) {
+			cause instanceof UserEmailAddressException ||
+			cause instanceof ZendeskTagException) {
 
 			return true;
 		}

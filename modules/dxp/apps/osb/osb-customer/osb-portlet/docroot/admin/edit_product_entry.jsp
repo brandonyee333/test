@@ -29,9 +29,16 @@ int type = BeanParamUtil.getInteger(productEntry, request, "type");
 int environment = BeanParamUtil.getInteger(productEntry, request, "environment");
 String versionsListType = BeanParamUtil.getString(productEntry, request, "versionsListType");
 String dossieraIdMappings = ParamUtil.getString(request, "dossieraIdMappings");
+String zendeskTag = ParamUtil.getString(request, "zendeskTag");
 
-if ((productEntry != null) && Validator.isNull(dossieraIdMappings)) {
-	dossieraIdMappings = StringUtil.merge(productEntry.getDossieraIdMappings(), StringPool.NEW_LINE);
+if (productEntry != null) {
+	if (Validator.isNull(dossieraIdMappings)) {
+		dossieraIdMappings = StringUtil.merge(productEntry.getDossieraIdMappings(), StringPool.NEW_LINE);
+	}
+
+	if (Validator.isNull(zendeskTag)) {
+		zendeskTag = productEntry.getZendeskTag();
+	}
 }
 %>
 
@@ -52,6 +59,7 @@ if ((productEntry != null) && Validator.isNull(dossieraIdMappings)) {
 	<liferay-ui:error exception="<%= DuplicateProductEntryException.class %>" message="please-enter-a-unique-name" />
 	<liferay-ui:error exception="<%= ProductEntryEnvironmentException.class %>" message="please-enter-a-valid-environment" />
 	<liferay-ui:error exception="<%= ProductEntryNameException.class %>" message="please-enter-a-valid-name" />
+	<liferay-ui:error exception="<%= ZendeskTagException.class %>" message="please-enter-a-valid-zendesk-tag" />
 
 	<table class="lfr-table">
 		<tr>
@@ -135,6 +143,16 @@ if ((productEntry != null) && Validator.isNull(dossieraIdMappings)) {
 			<td>
 				<aui:fieldset>
 					<aui:input label="" name="dossieraIdMappings" style="width: 500px;" type="textarea" value="<%= dossieraIdMappings %>" />
+				</aui:fieldset>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="zendesk-tag" />
+			</td>
+			<td>
+				<aui:fieldset>
+					<aui:input label="" name="zendeskTag" style="width: 500px;" type="text" value="<%= zendeskTag %>" />
 				</aui:fieldset>
 			</td>
 		</tr>

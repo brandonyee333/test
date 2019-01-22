@@ -118,7 +118,7 @@ public class Upgrade_20160930103105564_ProductEntry extends BaseUpgradeProcess {
 			productEntry = ProductEntryLocalServiceUtil.addProductEntry(
 				OSBConstants.USER_AMOS_FONG_USER_ID, name,
 				ProductEntryConstants.TYPE_REGULAR, environment,
-				"digitalEnterpriseMajorVersions", new String[0]);
+				"digitalEnterpriseMajorVersions", new String[0], null);
 		}
 
 		return productEntry.getProductEntryId();

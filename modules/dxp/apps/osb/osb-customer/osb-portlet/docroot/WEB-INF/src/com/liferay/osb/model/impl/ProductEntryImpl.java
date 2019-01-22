@@ -115,6 +115,24 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		return ListTypeServiceUtil.getListTypes(listType);
 	}
 
+	public String getZendeskTag() {
+		long classNameId = PortalUtil.getClassNameId(
+			ProductEntry.class.getName());
+
+		List<ExternalIdMapper> externalIdMappers =
+			ExternalIdMapperLocalServiceUtil.getExternalIdMappers(
+				classNameId, getProductEntryId(),
+				ExternalIdMapperConstants.TYPE_ZENDESK);
+
+		if (!externalIdMappers.isEmpty()) {
+			ExternalIdMapper externalIdMapper = externalIdMappers.get(0);
+
+			return externalIdMapper.getExternalId();
+		}
+
+		return StringPool.BLANK;
+	}
+
 	public boolean isAnalyticsCloud() {
 		String name = getName();
 
@@ -185,6 +203,17 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		String name = getName();
 
 		if (name.contains(ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	public boolean isDXPCloud() {
+		String name = getName();
+
+		if (name.contains("DXP Cloud")) {
 			return true;
 		}
 		else {

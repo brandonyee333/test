@@ -18,6 +18,7 @@ import com.liferay.osb.exception.DuplicateProductEntryException;
 import com.liferay.osb.exception.ProductEntryEnvironmentException;
 import com.liferay.osb.exception.ProductEntryNameException;
 import com.liferay.osb.exception.RequiredProductEntryException;
+import com.liferay.osb.exception.ZendeskTagException;
 import com.liferay.osb.model.ExternalIdMapper;
 import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.model.ProductEntry;
@@ -41,13 +42,14 @@ public class ProductEntryLocalServiceImpl
 
 	public ProductEntry addProductEntry(
 			long userId, String name, int type, int environment,
-			String versionsListType, String[] dossieraIdMappings)
+			String versionsListType, String[] dossieraIdMappings,
+			String zendeskTag)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 
-		validate(0, name, environment);
+		validate(0, name, environment, zendeskTag);
 
 		long productEntryId = counterLocalService.increment();
 
@@ -72,6 +74,12 @@ public class ProductEntryLocalServiceImpl
 			externalIdMapperLocalService.addExternalIdMapper(
 				classNameId, productEntryId,
 				ExternalIdMapperConstants.TYPE_DOSSIERA, dossieraIdMapping);
+		}
+
+		if (Validator.isNotNull(zendeskTag)) {
+			externalIdMapperLocalService.addExternalIdMapper(
+				classNameId, productEntryId,
+				ExternalIdMapperConstants.TYPE_ZENDESK, zendeskTag);
 		}
 
 		return productEntry;
@@ -133,10 +141,11 @@ public class ProductEntryLocalServiceImpl
 
 	public ProductEntry updateProductEntry(
 			long productEntryId, String name, int type, int environment,
-			String versionsListType, String[] dossieraIdMappings)
+			String versionsListType, String[] dossieraIdMappings,
+			String zendeskTag)
 		throws PortalException {
 
-		validate(productEntryId, name, environment);
+		validate(productEntryId, name, environment, zendeskTag);
 
 		ProductEntry productEntry = productEntryPersistence.findByPrimaryKey(
 			productEntryId);
@@ -176,10 +185,25 @@ public class ProductEntryLocalServiceImpl
 				ExternalIdMapperConstants.TYPE_DOSSIERA, dossieraIdMapping);
 		}
 
+		externalIdMappers = externalIdMapperLocalService.getExternalIdMappers(
+			classNameId, productEntryId,
+			ExternalIdMapperConstants.TYPE_ZENDESK);
+
+		if (!externalIdMappers.isEmpty()) {
+			ExternalIdMapper externalIdMapper = externalIdMappers.get(0);
+
+			externalIdMapperLocalService.updateExternalIdMapper(
+				externalIdMapper.getExternalIdMapperId(), classNameId,
+				productEntryId, ExternalIdMapperConstants.TYPE_ZENDESK,
+				zendeskTag);
+		}
+
 		return productEntry;
 	}
 
-	protected void validate(long productEntryId, String name, int environment)
+	protected void validate(
+			long productEntryId, String name, int environment,
+			String zendeskTag)
 		throws PortalException {
 
 		if (Validator.isNull(name)) {
@@ -196,6 +220,12 @@ public class ProductEntryLocalServiceImpl
 
 		if (environment <= 0) {
 			throw new ProductEntryEnvironmentException();
+		}
+
+		if (Validator.isNotNull(zendeskTag)) {
+			if (!zendeskTag.matches("^[a-z0-9_-]*$")) {
+				throw new ZendeskTagException();
+			}
 		}
 	}
 

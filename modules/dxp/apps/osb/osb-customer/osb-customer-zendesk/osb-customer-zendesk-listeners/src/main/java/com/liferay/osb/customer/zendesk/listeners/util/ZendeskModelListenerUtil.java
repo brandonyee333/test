@@ -15,8 +15,6 @@
 package com.liferay.osb.customer.zendesk.listeners.util;
 
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskLocales;
-import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
-import com.liferay.osb.model.ProductEntry;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.Country;
@@ -95,45 +93,6 @@ public class ZendeskModelListenerUtil {
 		sb.append(sb2);
 
 		return sb.toString();
-	}
-
-	public static String convertToTag(ProductEntry productEntry) {
-		if (productEntry.isAnalyticsCloud()) {
-			return ZendeskTagConstants.LIFERAY_ANALYTICS_CLOUD;
-		}
-		else if (productEntry.isCommerce()) {
-			return ZendeskTagConstants.LIFERAY_COMMERCE;
-		}
-		else if (productEntry.isDeveloperTools()) {
-			return ZendeskTagConstants.DEVELOPER_TOOLS;
-		}
-		else if (productEntry.isDeviceDetection()) {
-			return ZendeskTagConstants.MOBILE_DEVICE_DETECTION;
-		}
-		else if (productEntry.isDigitalEnterprise()) {
-			return ZendeskTagConstants.LIFERAY_DXP;
-		}
-		else if (productEntry.isEnterpriseSearch()) {
-			return ZendeskTagConstants.ENTERPRISE_SEARCH;
-		}
-		else if (productEntry.isManagementTools()) {
-			return ZendeskTagConstants.MANAGEMENT_TOOLS_LCS;
-		}
-		else if (productEntry.isMobileExperience()) {
-			return ZendeskTagConstants.MOBILE_EXPERIENCE;
-		}
-		else if (productEntry.isPortal()) {
-			return ZendeskTagConstants.LIFERAY_PORTAL;
-		}
-		else if (productEntry.isProductivityTools()) {
-			return ZendeskTagConstants.PRODUCTIVITY_TOOLS_SYNC;
-		}
-		else if (productEntry.isSocialOffice()) {
-			return ZendeskTagConstants.SOCIAL_OFFICE;
-		}
-		else {
-			return StringPool.BLANK;
-		}
 	}
 
 	public static String convertToZendeskLocale(String locale) {
