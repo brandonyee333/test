@@ -38,7 +38,7 @@ public class ProductEntryLocalServiceClp implements ProductEntryLocalService {
 
 		_methodParameterTypes1 = new String[] {
 				"long", "java.lang.String", "int", "int", "java.lang.String",
-				"java.lang.String[][]"
+				"java.lang.String[][]", "java.lang.String"
 			};
 
 		_methodName2 = "createProductEntry";
@@ -81,7 +81,7 @@ public class ProductEntryLocalServiceClp implements ProductEntryLocalService {
 
 		_methodParameterTypes10 = new String[] {
 				"long", "java.lang.String", "int", "int", "java.lang.String",
-				"java.lang.String[][]"
+				"java.lang.String[][]", "java.lang.String"
 			};
 
 		_methodName11 = "getActionableDynamicQuery";
@@ -195,7 +195,8 @@ public class ProductEntryLocalServiceClp implements ProductEntryLocalService {
 	@Override
 	public com.liferay.osb.model.ProductEntry addProductEntry(long userId,
 		java.lang.String name, int type, int environment,
-		java.lang.String versionsListType, java.lang.String[] dossieraIdMappings)
+		java.lang.String versionsListType,
+		java.lang.String[] dossieraIdMappings, java.lang.String zendeskTag)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
@@ -213,7 +214,9 @@ public class ProductEntryLocalServiceClp implements ProductEntryLocalService {
 						
 					ClpSerializer.translateInput(versionsListType),
 						
-					ClpSerializer.translateInput(dossieraIdMappings)
+					ClpSerializer.translateInput(dossieraIdMappings),
+						
+					ClpSerializer.translateInput(zendeskTag)
 					});
 		}
 		catch (Throwable t) {
@@ -449,7 +452,8 @@ public class ProductEntryLocalServiceClp implements ProductEntryLocalService {
 	@Override
 	public com.liferay.osb.model.ProductEntry updateProductEntry(
 		long productEntryId, java.lang.String name, int type, int environment,
-		java.lang.String versionsListType, java.lang.String[] dossieraIdMappings)
+		java.lang.String versionsListType,
+		java.lang.String[] dossieraIdMappings, java.lang.String zendeskTag)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
@@ -467,7 +471,9 @@ public class ProductEntryLocalServiceClp implements ProductEntryLocalService {
 						
 					ClpSerializer.translateInput(versionsListType),
 						
-					ClpSerializer.translateInput(dossieraIdMappings)
+					ClpSerializer.translateInput(dossieraIdMappings),
+						
+					ClpSerializer.translateInput(zendeskTag)
 					});
 		}
 		catch (Throwable t) {

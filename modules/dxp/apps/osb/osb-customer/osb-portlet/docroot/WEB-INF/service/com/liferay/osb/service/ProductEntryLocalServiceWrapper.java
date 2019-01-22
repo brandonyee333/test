@@ -48,10 +48,11 @@ public class ProductEntryLocalServiceWrapper implements ProductEntryLocalService
 	@Override
 	public com.liferay.osb.model.ProductEntry addProductEntry(long userId,
 		java.lang.String name, int type, int environment,
-		java.lang.String versionsListType, java.lang.String[] dossieraIdMappings)
+		java.lang.String versionsListType,
+		java.lang.String[] dossieraIdMappings, java.lang.String zendeskTag)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _productEntryLocalService.addProductEntry(userId, name, type,
-			environment, versionsListType, dossieraIdMappings);
+			environment, versionsListType, dossieraIdMappings, zendeskTag);
 	}
 
 	/**
@@ -140,10 +141,12 @@ public class ProductEntryLocalServiceWrapper implements ProductEntryLocalService
 	@Override
 	public com.liferay.osb.model.ProductEntry updateProductEntry(
 		long productEntryId, java.lang.String name, int type, int environment,
-		java.lang.String versionsListType, java.lang.String[] dossieraIdMappings)
+		java.lang.String versionsListType,
+		java.lang.String[] dossieraIdMappings, java.lang.String zendeskTag)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _productEntryLocalService.updateProductEntry(productEntryId,
-			name, type, environment, versionsListType, dossieraIdMappings);
+			name, type, environment, versionsListType, dossieraIdMappings,
+			zendeskTag);
 	}
 
 	@Override

@@ -69,6 +69,8 @@ public interface ProductEntry extends ProductEntryModel, PersistedModel {
 
 	public java.util.List<com.liferay.portal.kernel.model.ListType> getVersionsListTypes();
 
+	public java.lang.String getZendeskTag();
+
 	public boolean isAnalyticsCloud();
 
 	public boolean isAnalyticsCloudBusiness();
@@ -82,6 +84,8 @@ public interface ProductEntry extends ProductEntryModel, PersistedModel {
 	public boolean isDeviceDetection();
 
 	public boolean isDigitalEnterprise();
+
+	public boolean isDXPCloud();
 
 	public boolean isEnterpriseSearch();
 

@@ -164,6 +164,11 @@ public class ProductEntryWrapper implements ProductEntry,
 	}
 
 	@Override
+	public boolean isDXPCloud() {
+		return _productEntry.isDXPCloud();
+	}
+
+	@Override
 	public boolean isDeveloperTools() {
 		return _productEntry.isDeveloperTools();
 	}
@@ -341,6 +346,11 @@ public class ProductEntryWrapper implements ProductEntry,
 	@Override
 	public java.lang.String getVersionsListType() {
 		return _productEntry.getVersionsListType();
+	}
+
+	@Override
+	public java.lang.String getZendeskTag() {
+		return _productEntry.getZendeskTag();
 	}
 
 	@Override

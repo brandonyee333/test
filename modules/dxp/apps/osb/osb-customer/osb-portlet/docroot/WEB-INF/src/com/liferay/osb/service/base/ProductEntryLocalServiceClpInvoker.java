@@ -131,7 +131,7 @@ public class ProductEntryLocalServiceClpInvoker {
 
 		_methodParameterTypes167 = new String[] {
 				"long", "java.lang.String", "int", "int", "java.lang.String",
-				"java.lang.String[][]"
+				"java.lang.String[][]", "java.lang.String"
 			};
 
 		_methodName168 = "deleteProductEntry";
@@ -166,7 +166,7 @@ public class ProductEntryLocalServiceClpInvoker {
 
 		_methodParameterTypes174 = new String[] {
 				"long", "java.lang.String", "int", "int", "java.lang.String",
-				"java.lang.String[][]"
+				"java.lang.String[][]", "java.lang.String"
 			};
 	}
 
@@ -285,7 +285,8 @@ public class ProductEntryLocalServiceClpInvoker {
 				(java.lang.String)arguments[1],
 				((Integer)arguments[2]).intValue(),
 				((Integer)arguments[3]).intValue(),
-				(java.lang.String)arguments[4], (java.lang.String[])arguments[5]);
+				(java.lang.String)arguments[4],
+				(java.lang.String[])arguments[5], (java.lang.String)arguments[6]);
 		}
 
 		if (_methodName168.equals(name) &&
@@ -328,7 +329,8 @@ public class ProductEntryLocalServiceClpInvoker {
 				(java.lang.String)arguments[1],
 				((Integer)arguments[2]).intValue(),
 				((Integer)arguments[3]).intValue(),
-				(java.lang.String)arguments[4], (java.lang.String[])arguments[5]);
+				(java.lang.String)arguments[4],
+				(java.lang.String[])arguments[5], (java.lang.String)arguments[6]);
 		}
 
 		throw new UnsupportedOperationException();

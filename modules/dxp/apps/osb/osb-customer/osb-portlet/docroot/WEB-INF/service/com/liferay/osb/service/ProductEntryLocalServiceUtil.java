@@ -55,11 +55,12 @@ public class ProductEntryLocalServiceUtil {
 
 	public static com.liferay.osb.model.ProductEntry addProductEntry(
 		long userId, java.lang.String name, int type, int environment,
-		java.lang.String versionsListType, java.lang.String[] dossieraIdMappings)
+		java.lang.String versionsListType,
+		java.lang.String[] dossieraIdMappings, java.lang.String zendeskTag)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addProductEntry(userId, name, type, environment,
-			versionsListType, dossieraIdMappings);
+			versionsListType, dossieraIdMappings, zendeskTag);
 	}
 
 	/**
@@ -139,11 +140,12 @@ public class ProductEntryLocalServiceUtil {
 
 	public static com.liferay.osb.model.ProductEntry updateProductEntry(
 		long productEntryId, java.lang.String name, int type, int environment,
-		java.lang.String versionsListType, java.lang.String[] dossieraIdMappings)
+		java.lang.String versionsListType,
+		java.lang.String[] dossieraIdMappings, java.lang.String zendeskTag)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateProductEntry(productEntryId, name, type, environment,
-			versionsListType, dossieraIdMappings);
+			versionsListType, dossieraIdMappings, zendeskTag);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {

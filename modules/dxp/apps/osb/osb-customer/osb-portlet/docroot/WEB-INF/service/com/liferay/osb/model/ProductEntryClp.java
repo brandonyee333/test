@@ -515,6 +515,25 @@ public class ProductEntryClp extends BaseModelImpl<ProductEntry>
 	}
 
 	@Override
+	public java.lang.String getZendeskTag() {
+		try {
+			String methodName = "getZendeskTag";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
 	public boolean isAnalyticsCloud() {
 		try {
 			String methodName = "isAnalyticsCloud";
@@ -632,6 +651,25 @@ public class ProductEntryClp extends BaseModelImpl<ProductEntry>
 	public boolean isDigitalEnterprise() {
 		try {
 			String methodName = "isDigitalEnterprise";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			Boolean returnObj = (Boolean)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public boolean isDXPCloud() {
+		try {
+			String methodName = "isDXPCloud";
 
 			Class<?>[] parameterTypes = new Class<?>[] {  };
 

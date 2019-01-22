@@ -74,7 +74,8 @@ public interface ProductEntryLocalService extends BaseLocalService,
 
 	public ProductEntry addProductEntry(long userId, java.lang.String name,
 		int type, int environment, java.lang.String versionsListType,
-		java.lang.String[] dossieraIdMappings) throws PortalException;
+		java.lang.String[] dossieraIdMappings, java.lang.String zendeskTag)
+		throws PortalException;
 
 	/**
 	* Creates a new product entry with the primary key. Does not add the product entry to the database.
@@ -136,7 +137,8 @@ public interface ProductEntryLocalService extends BaseLocalService,
 
 	public ProductEntry updateProductEntry(long productEntryId,
 		java.lang.String name, int type, int environment,
-		java.lang.String versionsListType, java.lang.String[] dossieraIdMappings)
+		java.lang.String versionsListType,
+		java.lang.String[] dossieraIdMappings, java.lang.String zendeskTag)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
