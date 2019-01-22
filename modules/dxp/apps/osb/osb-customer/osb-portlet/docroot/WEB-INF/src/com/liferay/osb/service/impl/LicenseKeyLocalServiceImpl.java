@@ -1678,10 +1678,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			throw new LicenseKeyDescriptionException();
 		}
 
-		if (Validator.isNull(hostName)) {
-			throw new LicenseKeyHostNameException();
-		}
-
 		Set<String> distinctIpAddresses = new HashSet<>();
 
 		String[] curIpAddresses = StringUtil.split(ipAddresses);
@@ -1710,7 +1706,9 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			distinctMacAddresses.add(macAddress);
 		}
 
-		if (distinctIpAddresses.isEmpty() && distinctMacAddresses.isEmpty()) {
+		if (Validator.isNull(hostName) && distinctIpAddresses.isEmpty() &&
+			distinctMacAddresses.isEmpty()) {
+
 			throw new LicenseKeyServerInfoException();
 		}
 	}
