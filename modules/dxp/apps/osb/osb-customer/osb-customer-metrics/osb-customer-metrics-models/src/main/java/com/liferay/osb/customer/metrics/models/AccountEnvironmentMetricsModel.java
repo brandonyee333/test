@@ -29,16 +29,14 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Jenny Chen
  */
-@Component(
-	immediate = true,
-	property = {
-		"model.class.name=com.liferay.osb.model.AccountEnvironment",
-		"servlet.context.name=osb-portlet"
-	},
-	service = MetricsModel.class
-)
+@Component(immediate = true, service = MetricsModel.class)
 public class AccountEnvironmentMetricsModel
 	extends BaseMetricsModel<AccountEnvironment> {
+
+	@Override
+	public Class getModelClass() {
+		return AccountEnvironment.class;
+	}
 
 	@Override
 	public Map<String, Object> transformAttributes(

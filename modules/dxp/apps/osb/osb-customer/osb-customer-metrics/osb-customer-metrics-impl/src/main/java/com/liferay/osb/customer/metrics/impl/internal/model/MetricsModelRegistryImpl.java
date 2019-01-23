@@ -16,9 +16,6 @@ package com.liferay.osb.customer.metrics.impl.internal.model;
 
 import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.api.model.MetricsModelRegistry;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -45,59 +42,30 @@ public class MetricsModelRegistryImpl implements MetricsModelRegistry {
 		return _metricsModelsMap;
 	}
 
-	@Override
-	public String getServletContextName(String modelClassName) {
-		return _servletContextNamesMap.get(modelClassName);
-	}
-
-	@Override
-	public Map<String, String> getServletContextNamesMap() {
-		return _servletContextNamesMap;
-	}
-
 	@Reference(
 		cardinality = ReferenceCardinality.MULTIPLE,
 		policy = ReferencePolicy.DYNAMIC,
 		policyOption = ReferencePolicyOption.GREEDY,
 		unbind = "unregisterMetricsModel"
 	)
-	protected synchronized void registerMetricsModel(
+	protected void registerMetricsModel(
 			MetricsModel<?> metricsModel, Map<String, Object> properties)
 		throws Exception {
 
-		String modelClassName = GetterUtil.getString(
-			properties.get("model.class.name"));
+		Class<?> clazz = metricsModel.getModelClass();
 
-		String servletContextName = GetterUtil.getString(
-			properties.get("servlet.context.name"));
-
-		if (Validator.isNotNull(modelClassName)) {
-			_metricsModelsMap.put(modelClassName, metricsModel);
-
-			if (Validator.isNotNull(servletContextName)) {
-				_servletContextNamesMap.put(modelClassName, servletContextName);
-			}
-			else {
-				_servletContextNamesMap.put(modelClassName, StringPool.BLANK);
-			}
-		}
+		_metricsModelsMap.put(clazz.getName(), metricsModel);
 	}
 
-	protected synchronized void unregisterMetricsModel(
+	protected void unregisterMetricsModel(
 		MetricsModel<?> metricsModel, Map<String, Object> properties) {
 
-		String modelClassName = GetterUtil.getString(
-			properties.get("model.class.name"));
+		Class<?> clazz = metricsModel.getModelClass();
 
-		if (Validator.isNotNull(modelClassName)) {
-			_metricsModelsMap.remove(modelClassName);
-			_servletContextNamesMap.remove(modelClassName);
-		}
+		_metricsModelsMap.remove(clazz.getName());
 	}
 
 	private final Map<String, MetricsModel<?>> _metricsModelsMap =
-		new ConcurrentHashMap<>();
-	private final Map<String, String> _servletContextNamesMap =
 		new ConcurrentHashMap<>();
 
 }

@@ -25,8 +25,4 @@ public interface MetricsModelRegistry {
 
 	public Map<String, MetricsModel<?>> getMetricsModelsMap();
 
-	public String getServletContextName(String modelClassName);
-
-	public Map<String, String> getServletContextNamesMap();
-
 }

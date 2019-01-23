@@ -24,16 +24,17 @@ import java.util.Map;
  */
 public interface MetricsModel<T> {
 
-	public void deleteAll(String modelClassName) throws Exception;
+	public void deleteAll() throws Exception;
 
-	public Map<String, String> getMappingTables(BaseModel<T> model)
-		throws Exception;
+	public Map<String, String> getMappingTables() throws Exception;
 
 	public List<String> getMappingValues(BaseModel<T> model);
 
+	public Class<T> getModelClass();
+
 	public boolean hasMapping();
 
-	public void resyncAll(String modelClassName) throws Exception;
+	public void resyncAll() throws Exception;
 
 	public Map<String, Object> transformAttributes(BaseModel<T> model);
 

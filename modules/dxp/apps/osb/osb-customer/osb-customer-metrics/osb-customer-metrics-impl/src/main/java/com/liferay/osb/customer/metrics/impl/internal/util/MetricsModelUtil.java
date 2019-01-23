@@ -14,11 +14,10 @@
 
 package com.liferay.osb.customer.metrics.impl.internal.util;
 
-import com.liferay.osb.customer.metrics.api.model.MetricsModelRegistry;
+import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.util.CharPool;
-import com.liferay.portal.kernel.util.ClassLoaderPool;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -30,7 +29,6 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Jenny Chen
@@ -38,59 +36,50 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = MetricsModelUtil.class)
 public class MetricsModelUtil {
 
-	public BaseModel<?> getBaseModel(String modelClassName) throws Exception {
-		String servletContextName = getServletContextName(modelClassName);
-
-		ClassLoader classLoader = ClassLoaderPool.getClassLoader(
-			servletContextName);
-
-		String modelImplClassName = _getModelImplClassName(modelClassName);
-
-		_modelImplClass = Class.forName(modelImplClassName, false, classLoader);
-
-		BaseModel<?> baseModel = (BaseModel<?>)_modelImplClass.newInstance();
-
-		return baseModel;
-	}
-
-	public Class getModelImplClass(BaseModel model) throws Exception {
-		String modelClassName = model.getModelClassName();
-
-		String servletContextName = getServletContextName(modelClassName);
-
-		ClassLoader classLoader = ClassLoaderPool.getClassLoader(
-			servletContextName);
-
-		String modelImplClassName = _getModelImplClassName(modelClassName);
-
-		return Class.forName(modelImplClassName, false, classLoader);
-	}
-
-	public <T> List<BaseModel<?>> getModelList(BaseModel<?> model)
-		throws Exception {
-
-		String servletContextName = getServletContextName(
-			model.getModelClassName());
-
-		ClassLoader classLoader = ClassLoaderPool.getClassLoader(
-			servletContextName);
+	public Class getModelImplClass(MetricsModel metricsModel) throws Exception {
+		Class<?> clazz = metricsModel.getModelClass();
 
 		String localServiceUtilClassName = _getLocalServiceUtilClassName(
-			model.getModelClassName());
+			clazz.getName());
 
-		_localServiceUtilClass = Class.forName(
-			localServiceUtilClassName, false, classLoader);
+		Class<?> localServiceUtilClass = Class.forName(
+			localServiceUtilClassName, false, clazz.getClassLoader());
 
-		String modelName = getModelName(model.getModelClassName());
+		String modelName = getModelName(clazz.getName());
+
+		String methodName = "create" + modelName;
+
+		MethodKey methodKey = new MethodKey(
+			localServiceUtilClass, methodName, new Class<?>[] {long.class});
+
+		MethodHandler updateMethodHandler = new MethodHandler(methodKey, 0);
+
+		BaseModel<?> baseModel = (BaseModel<?>)updateMethodHandler.invoke();
+
+		return baseModel.getClass();
+	}
+
+	public <T> List<BaseModel<?>> getModelList(MetricsModel metricsModel)
+		throws Exception {
+
+		Class<?> clazz = metricsModel.getModelClass();
+
+		String localServiceUtilClassName = _getLocalServiceUtilClassName(
+			clazz.getName());
+
+		Class<?> localServiceUtilClass = Class.forName(
+			localServiceUtilClassName, false, clazz.getClassLoader());
+
+		String modelName = getModelName(clazz.getName());
 
 		String methodName = "get" + TextFormatter.formatPlural(modelName);
 
-		_methodKey = new MethodKey(
-			_localServiceUtilClass, methodName,
+		MethodKey methodKey = new MethodKey(
+			localServiceUtilClass, methodName,
 			new Class<?>[] {int.class, int.class});
 
 		MethodHandler updateMethodHandler = new MethodHandler(
-			_methodKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+			methodKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
 		return (List<BaseModel<?>>)updateMethodHandler.invoke();
 	}
@@ -98,13 +87,13 @@ public class MetricsModelUtil {
 	public String getModelName(String modelClassName) {
 		int pos = modelClassName.lastIndexOf(CharPool.PERIOD);
 
-		String modelName = modelClassName.substring(pos + 1);
-
-		return modelName;
+		return modelClassName.substring(pos + 1);
 	}
 
-	public String getModelPrimaryKeyName(BaseModel model) throws Exception {
-		Class<?> modelImplClass = getModelImplClass(model);
+	public String getModelPrimaryKeyName(MetricsModel metricsModel)
+		throws Exception {
+
+		Class<?> modelImplClass = getModelImplClass(metricsModel);
 
 		Field field = modelImplClass.getField("TABLE_SQL_CREATE");
 
@@ -121,7 +110,7 @@ public class MetricsModelUtil {
 
 			int z = createTableSQL.indexOf(StringPool.CLOSE_PARENTHESIS, y);
 
-			_modelPrimaryKeyName = createTableSQL.substring(y, z + 1);
+			return createTableSQL.substring(y, z + 1);
 		}
 		else {
 			int y = createTableSQL.lastIndexOf(StringPool.COMMA, x);
@@ -132,17 +121,8 @@ public class MetricsModelUtil {
 
 			int z = createTableSQL.indexOf(StringPool.SPACE, y);
 
-			_modelPrimaryKeyName = createTableSQL.substring(y + 1, z);
+			return createTableSQL.substring(y + 1, z);
 		}
-
-		return _modelPrimaryKeyName;
-	}
-
-	public String getServletContextName(String modelClassName) {
-		String servletContextName = _metricsModelRegistry.getServletContextName(
-			modelClassName);
-
-		return servletContextName;
 	}
 
 	private String _getLocalServiceUtilClassName(String modelClassName) {
@@ -161,27 +141,5 @@ public class MetricsModelUtil {
 
 		return sb.toString();
 	}
-
-	private String _getModelImplClassName(String modelClassName) {
-		int pos = modelClassName.lastIndexOf(CharPool.PERIOD);
-
-		StringBundler sb = new StringBundler(4);
-
-		sb.append(modelClassName.substring(0, pos + 1));
-		sb.append("impl.");
-		sb.append(modelClassName.substring(pos + 1));
-		sb.append("Impl");
-
-		return sb.toString();
-	}
-
-	private Class<?> _localServiceUtilClass;
-	private MethodKey _methodKey;
-
-	@Reference
-	private MetricsModelRegistry _metricsModelRegistry;
-
-	private Class<?> _modelImplClass;
-	private String _modelPrimaryKeyName;
 
 }

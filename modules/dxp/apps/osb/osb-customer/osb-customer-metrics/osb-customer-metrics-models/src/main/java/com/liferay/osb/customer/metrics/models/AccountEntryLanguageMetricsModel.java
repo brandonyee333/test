@@ -29,16 +29,14 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Jenny Chen
  */
-@Component(
-	immediate = true,
-	property = {
-		"model.class.name=com.liferay.osb.model.AccountEntryLanguage",
-		"servlet.context.name=osb-portlet"
-	},
-	service = MetricsModel.class
-)
+@Component(immediate = true, service = MetricsModel.class)
 public class AccountEntryLanguageMetricsModel
 	extends BaseMetricsModel<AccountEntryLanguage> {
+
+	@Override
+	public Class getModelClass() {
+		return AccountEntryLanguage.class;
+	}
 
 	@Override
 	public Map<String, Object> transformAttributes(

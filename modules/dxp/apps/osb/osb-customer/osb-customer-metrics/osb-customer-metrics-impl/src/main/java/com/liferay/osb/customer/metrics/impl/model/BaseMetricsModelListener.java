@@ -15,124 +15,87 @@
 package com.liferay.osb.customer.metrics.impl.model;
 
 import com.liferay.osb.customer.metrics.api.constants.MetricsConstants;
-import com.liferay.osb.customer.metrics.api.model.MetricsModelListener;
-import com.liferay.osb.customer.metrics.impl.internal.util.MessagePublisherUtil;
-import com.liferay.osb.customer.metrics.impl.internal.util.ModelJSONUtil;
+import com.liferay.osb.customer.metrics.impl.internal.rabbitmq.MessageFactory;
+import com.liferay.osb.customer.metrics.impl.internal.rabbitmq.MessagePublisherUtil;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.BaseModelListener;
 
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Jenny Chen
  */
-public abstract class BaseMetricsModelListener<T extends BaseModel<T>>
-	implements MetricsModelListener<T> {
-
-	@Override
-	public boolean ignoreAssociation(
-			Object classPK, String associationClassName,
-			Object associationClassPK)
-		throws ModelListenerException {
-
-		return false;
-	}
-
-	@Override
-	public boolean ignoreUpdate(T model) throws ModelListenerException {
-		return false;
-	}
-
-	@Override
-	public void onAfterAddAssociation(
-			Object classPK, String associationClassName,
-			Object associationClassPK)
-		throws ModelListenerException {
-	}
+public class BaseMetricsModelListener<T extends BaseModel<T>>
+	extends BaseModelListener<T> {
 
 	@Override
 	public void onAfterCreate(T model) throws ModelListenerException {
 		if (!ignoreUpdate(model)) {
-			sendMetricsMessage(model, MetricsConstants.ACTION_UPDATE);
+			sendUpdateMetricsMessage(model);
 		}
 	}
 
 	@Override
 	public void onAfterRemove(T model) throws ModelListenerException {
 		if (!ignoreUpdate(model)) {
-			sendMetricsMessage(model, MetricsConstants.ACTION_REMOVE);
+			sendRemoveMetricsMessage(model);
 		}
-	}
-
-	@Override
-	public void onAfterRemoveAssociation(
-			Object classPK, String associationClassName,
-			Object associationClassPK)
-		throws ModelListenerException {
 	}
 
 	@Override
 	public void onAfterUpdate(T model) throws ModelListenerException {
 		if (!ignoreUpdate(model)) {
-			sendMetricsMessage(model, MetricsConstants.ACTION_UPDATE);
+			sendUpdateMetricsMessage(model);
 		}
 	}
 
-	@Override
-	public void onBeforeAddAssociation(
+	protected boolean ignoreAssociation(
 			Object classPK, String associationClassName,
 			Object associationClassPK)
 		throws ModelListenerException {
+
+		return false;
 	}
 
-	@Override
-	public void onBeforeCreate(T model) throws ModelListenerException {
+	protected boolean ignoreUpdate(T model) throws ModelListenerException {
+		return false;
 	}
 
-	@Override
-	public void onBeforeRemove(T model) throws ModelListenerException {
-	}
-
-	@Override
-	public void onBeforeRemoveAssociation(
-			Object classPK, String associationClassName,
-			Object associationClassPK)
-		throws ModelListenerException {
-	}
-
-	@Override
-	public void onBeforeUpdate(T model) throws ModelListenerException {
-	}
-
-	protected void sendMetricsMessage(BaseModel<T> model, String routingKey) {
+	protected void sendRemoveMetricsMessage(BaseModel<T> model) {
 		try {
-			JSONObject jsonObject = modelJSONUtil.getMetricsJSONObject(
-				model, routingKey);
+			JSONObject jsonObject = messageFactory.createRemoveJSONObject(
+				model);
 
-			messagePublisherUtil.sendEventNotification(routingKey, jsonObject);
+			messagePublisherUtil.sendMessage(
+				MetricsConstants.ACTION_REMOVE, jsonObject);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
 		}
 	}
 
-	@Reference(unbind = "-")
-	protected void setMessagePublisherUtil(
-		MessagePublisherUtil messagePublisherUtil) {
+	protected void sendUpdateMetricsMessage(BaseModel<T> model) {
+		try {
+			JSONObject jsonObject = messageFactory.createUpdateJSONObject(
+				model);
 
-		this.messagePublisherUtil = messagePublisherUtil;
+			messagePublisherUtil.sendMessage(
+				MetricsConstants.ACTION_UPDATE, jsonObject);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+		}
 	}
 
-	@Reference(unbind = "-")
-	protected void setModelJSONUtil(ModelJSONUtil modelJSONUtil) {
-		this.modelJSONUtil = modelJSONUtil;
-	}
+	@Reference
+	protected MessageFactory messageFactory;
 
+	@Reference
 	protected MessagePublisherUtil messagePublisherUtil;
-	protected ModelJSONUtil modelJSONUtil;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseMetricsModelListener.class);

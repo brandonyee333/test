@@ -16,9 +16,9 @@ package com.liferay.osb.customer.metrics.impl.model;
 
 import com.liferay.osb.customer.metrics.api.constants.MetricsConstants;
 import com.liferay.osb.customer.metrics.api.model.MetricsModel;
-import com.liferay.osb.customer.metrics.impl.internal.util.MessagePublisherUtil;
+import com.liferay.osb.customer.metrics.impl.internal.rabbitmq.MessageFactory;
+import com.liferay.osb.customer.metrics.impl.internal.rabbitmq.MessagePublisherUtil;
 import com.liferay.osb.customer.metrics.impl.internal.util.MetricsModelUtil;
-import com.liferay.osb.customer.metrics.impl.internal.util.ModelJSONUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -38,32 +38,20 @@ import org.osgi.service.component.annotations.Reference;
 public abstract class BaseMetricsModel<T extends BaseModel<T>>
 	implements MetricsModel<T> {
 
-	public void deleteAll(String modelClassName) throws Exception {
-		BaseModel<?> model = metricsModelUtil.getBaseModel(modelClassName);
+	public void deleteAll() throws Exception {
+		Class<T> modelClass = getModelClass();
 
-		JSONObject jsonObject = modelJSONUtil.getMetricsJSONObject(
-			model, MetricsConstants.ACTION_DROP);
+		JSONObject jsonObject = messageFactory.createDropJSONObject(
+			modelClass.getName());
 
-		messagePublisherUtil.sendEventNotification(
+		messagePublisherUtil.sendMessage(
 			MetricsConstants.ACTION_DROP, jsonObject);
-
-		List<BaseModel<?>> models = metricsModelUtil.getModelList(model);
-
-		for (BaseModel<?> baseModel : models) {
-			jsonObject = modelJSONUtil.getMetricsJSONObject(
-				baseModel, MetricsConstants.ACTION_UPDATE);
-
-			messagePublisherUtil.sendEventNotification(
-				MetricsConstants.ACTION_UPDATE, jsonObject);
-		}
 	}
 
-	public Map<String, String> getMappingTables(BaseModel<T> model)
-		throws Exception {
-
+	public Map<String, String> getMappingTables() throws Exception {
 		List<String> mappingTableNames = new ArrayList<>();
 
-		Class<T> modelImplClass = metricsModelUtil.getModelImplClass(model);
+		Class<T> modelImplClass = metricsModelUtil.getModelImplClass(this);
 
 		for (Field field : modelImplClass.getFields()) {
 			String name = field.getName();
@@ -84,7 +72,7 @@ public abstract class BaseMetricsModel<T extends BaseModel<T>>
 				String columnName = (String)column[0];
 
 				if (!columnName.equals(
-						metricsModelUtil.getModelPrimaryKeyName(model)) &&
+						metricsModelUtil.getModelPrimaryKeyName(this)) &&
 					!columnName.equals("companyId")) {
 
 					_mappingTables.put(mappingTableName, columnName);
@@ -99,20 +87,20 @@ public abstract class BaseMetricsModel<T extends BaseModel<T>>
 		return _mappingValues;
 	}
 
+	public abstract Class<T> getModelClass();
+
 	public boolean hasMapping() {
 		return false;
 	}
 
-	public void resyncAll(String modelClassName) throws Exception {
-		BaseModel<?> model = metricsModelUtil.getBaseModel(modelClassName);
+	public void resyncAll() throws Exception {
+		List<BaseModel<?>> models = metricsModelUtil.getModelList(this);
 
-		List<BaseModel<?>> models = metricsModelUtil.getModelList(model);
+		for (BaseModel<?> model : models) {
+			JSONObject jsonObject = messageFactory.createUpdateJSONObject(
+				model);
 
-		for (BaseModel<?> baseModel : models) {
-			JSONObject jsonObject = modelJSONUtil.getMetricsJSONObject(
-				baseModel, MetricsConstants.ACTION_UPDATE);
-
-			messagePublisherUtil.sendEventNotification(
+			messagePublisherUtil.sendMessage(
 				MetricsConstants.ACTION_UPDATE, jsonObject);
 		}
 	}
@@ -121,26 +109,14 @@ public abstract class BaseMetricsModel<T extends BaseModel<T>>
 		return model.getModelAttributes();
 	}
 
-	@Reference(unbind = "-")
-	protected void setMessagePublisherUtil(
-		MessagePublisherUtil messagePublisherUtil) {
+	@Reference
+	protected MessageFactory messageFactory;
 
-		this.messagePublisherUtil = messagePublisherUtil;
-	}
-
-	@Reference(unbind = "-")
-	protected void setMetricsModelUtil(MetricsModelUtil metricsModelUtil) {
-		this.metricsModelUtil = metricsModelUtil;
-	}
-
-	@Reference(unbind = "-")
-	protected void setModelJSONUtil(ModelJSONUtil modelJSONUtil) {
-		this.modelJSONUtil = modelJSONUtil;
-	}
-
+	@Reference
 	protected MessagePublisherUtil messagePublisherUtil;
+
+	@Reference
 	protected MetricsModelUtil metricsModelUtil;
-	protected ModelJSONUtil modelJSONUtil;
 
 	private final Map<String, String> _mappingTables = new HashMap<>();
 	private final List<String> _mappingValues = new ArrayList<>();

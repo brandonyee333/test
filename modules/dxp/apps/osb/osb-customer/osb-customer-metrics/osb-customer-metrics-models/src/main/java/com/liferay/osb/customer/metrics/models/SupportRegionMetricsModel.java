@@ -25,15 +25,13 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Jenny Chen
  */
-@Component(
-	immediate = true,
-	property = {
-		"model.class.name=com.liferay.osb.model.SupportRegion",
-		"servlet.context.name=osb-portlet"
-	},
-	service = MetricsModel.class
-)
+@Component(immediate = true, service = MetricsModel.class)
 public class SupportRegionMetricsModel extends BaseMetricsModel<SupportRegion> {
+
+	@Override
+	public Class getModelClass() {
+		return SupportRegion.class;
+	}
 
 	@Reference(
 		target = "(module.service.lifecycle=osb.portlet.initialized)",

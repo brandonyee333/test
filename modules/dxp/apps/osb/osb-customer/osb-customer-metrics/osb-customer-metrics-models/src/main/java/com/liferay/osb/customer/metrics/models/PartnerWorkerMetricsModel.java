@@ -29,15 +29,13 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Jenny Chen
  */
-@Component(
-	immediate = true,
-	property = {
-		"model.class.name=com.liferay.osb.model.PartnerWorker",
-		"servlet.context.name=osb-portlet"
-	},
-	service = MetricsModel.class
-)
+@Component(immediate = true, service = MetricsModel.class)
 public class PartnerWorkerMetricsModel extends BaseMetricsModel<PartnerWorker> {
+
+	@Override
+	public Class getModelClass() {
+		return PartnerWorker.class;
+	}
 
 	@Override
 	public Map<String, Object> transformAttributes(

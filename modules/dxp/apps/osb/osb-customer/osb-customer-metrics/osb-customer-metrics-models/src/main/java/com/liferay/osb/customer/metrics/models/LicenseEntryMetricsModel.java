@@ -25,15 +25,13 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Jenny Chen
  */
-@Component(
-	immediate = true,
-	property = {
-		"model.class.name=com.liferay.osb.model.LicenseEntry",
-		"servlet.context.name=osb-portlet"
-	},
-	service = MetricsModel.class
-)
+@Component(immediate = true, service = MetricsModel.class)
 public class LicenseEntryMetricsModel extends BaseMetricsModel<LicenseEntry> {
+
+	@Override
+	public Class getModelClass() {
+		return LicenseEntry.class;
+	}
 
 	@Reference(
 		target = "(module.service.lifecycle=osb.portlet.initialized)",

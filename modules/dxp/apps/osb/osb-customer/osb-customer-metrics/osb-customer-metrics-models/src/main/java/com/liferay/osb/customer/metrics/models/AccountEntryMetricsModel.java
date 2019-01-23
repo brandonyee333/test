@@ -36,14 +36,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Jenny Chen
  */
-@Component(
-	immediate = true,
-	property = {
-		"model.class.name=com.liferay.osb.model.AccountEntry",
-		"servlet.context.name=osb-portlet"
-	},
-	service = MetricsModel.class
-)
+@Component(immediate = true, service = MetricsModel.class)
 public class AccountEntryMetricsModel extends BaseMetricsModel<AccountEntry> {
 
 	@Override
@@ -65,6 +58,11 @@ public class AccountEntryMetricsModel extends BaseMetricsModel<AccountEntry> {
 		}
 
 		return mappingValues;
+	}
+
+	@Override
+	public Class getModelClass() {
+		return AccountEntry.class;
 	}
 
 	@Override

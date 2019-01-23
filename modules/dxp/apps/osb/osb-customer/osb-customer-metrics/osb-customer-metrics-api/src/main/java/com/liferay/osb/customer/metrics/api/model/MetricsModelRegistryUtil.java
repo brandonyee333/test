@@ -39,20 +39,6 @@ public class MetricsModelRegistryUtil {
 		return metricsModelRegistry.getMetricsModelsMap();
 	}
 
-	public static String getServletContextName(String modelClassName) {
-		MetricsModelRegistry metricsModelRegistry =
-			_serviceTracker.getService();
-
-		return metricsModelRegistry.getServletContextName(modelClassName);
-	}
-
-	public static Map<String, String> getServletContextNamesMap() {
-		MetricsModelRegistry metricsModelRegistry =
-			_serviceTracker.getService();
-
-		return metricsModelRegistry.getServletContextNamesMap();
-	}
-
 	private static final
 		ServiceTracker<?, MetricsModelRegistry> _serviceTracker =
 			ServiceTrackerFactory.open(MetricsModelRegistry.class);

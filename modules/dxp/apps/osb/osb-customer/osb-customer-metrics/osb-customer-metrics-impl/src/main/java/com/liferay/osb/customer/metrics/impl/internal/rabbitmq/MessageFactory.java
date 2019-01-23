@@ -12,11 +12,11 @@
  *
  */
 
-package com.liferay.osb.customer.metrics.impl.internal.util;
+package com.liferay.osb.customer.metrics.impl.internal.rabbitmq;
 
-import com.liferay.osb.customer.metrics.api.constants.MetricsConstants;
 import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.api.model.MetricsModelRegistry;
+import com.liferay.osb.customer.metrics.impl.internal.util.MetricsModelUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -34,67 +34,30 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Jenny Chen
  */
-@Component(immediate = true, service = ModelJSONUtil.class)
-public class ModelJSONUtil {
+@Component(immediate = true, service = MessageFactory.class)
+public class MessageFactory {
 
-	public String formatSingular(String s) {
-		if (Validator.isNull(s)) {
-			return s;
-		}
-
-		if (s.endsWith("ses")) {
-			s = s.substring(0, s.length() - 3) + "s";
-		}
-		else if (s.endsWith("ies")) {
-			s = s.substring(0, s.length() - 3) + "y";
-		}
-		else {
-			s = s.substring(0, s.length() - 1);
-		}
-
-		return s;
-	}
-
-	public JSONObject getMetricsJSONObject(
-			BaseModel<?> model, String routingKey)
+	public JSONObject createDropJSONObject(String modelClassName)
 		throws Exception {
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		if (routingKey.equals(MetricsConstants.ACTION_DROP)) {
-			jsonObject = _getDropJSONObject(model);
-		}
-		else if (routingKey.equals(MetricsConstants.ACTION_REMOVE)) {
-			jsonObject = _getRemoveJSONObject(model);
-		}
-		else if (routingKey.equals(MetricsConstants.ACTION_UPDATE)) {
-			jsonObject = _getUpdateJSONObject(model);
-		}
-
-		return jsonObject;
-	}
-
-	private JSONObject _getDropJSONObject(BaseModel<?> model) throws Exception {
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
 		JSONObject modelJSONObject = JSONFactoryUtil.createJSONObject();
 
-		String modelName = _metricsModelUtil.getModelName(
-			model.getModelClassName());
+		String modelName = _metricsModelUtil.getModelName(modelClassName);
 
 		modelJSONObject.put("name", modelName);
 
 		jsonObject.put("model", modelJSONObject);
 
 		MetricsModel metricsModel = _metricsModelRegistry.getMetricsModel(
-			model.getModelClassName());
+			modelClassName);
 
 		if ((metricsModel != null) && metricsModel.hasMapping()) {
 			JSONArray mappingTablesJSONArray =
 				JSONFactoryUtil.createJSONArray();
 
-			Map<String, String> mappingTables = metricsModel.getMappingTables(
-				model);
+			Map<String, String> mappingTables = metricsModel.getMappingTables();
 
 			for (Map.Entry<String, String> entry : mappingTables.entrySet()) {
 				String key = entry.getKey();
@@ -118,7 +81,7 @@ public class ModelJSONUtil {
 		return jsonObject;
 	}
 
-	private JSONObject _getRemoveJSONObject(BaseModel<?> model)
+	public JSONObject createRemoveJSONObject(BaseModel<?> model)
 		throws Exception {
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
@@ -134,8 +97,11 @@ public class ModelJSONUtil {
 
 		Map<String, Object> attributes = model.getModelAttributes();
 
+		MetricsModel metricsModel = _metricsModelRegistry.getMetricsModel(
+			model.getModelClassName());
+
 		String modelPrimaryKeyName = _metricsModelUtil.getModelPrimaryKeyName(
-			model);
+			metricsModel);
 
 		attributesJSONObject.put(
 			modelPrimaryKeyName,
@@ -145,15 +111,11 @@ public class ModelJSONUtil {
 
 		jsonObject.put("model", modelJSONObject);
 
-		MetricsModel metricsModel = _metricsModelRegistry.getMetricsModel(
-			model.getModelClassName());
-
 		if ((metricsModel != null) && metricsModel.hasMapping()) {
 			JSONArray mappingTablesJSONArray =
 				JSONFactoryUtil.createJSONArray();
 
-			Map<String, String> mappingTables = metricsModel.getMappingTables(
-				model);
+			Map<String, String> mappingTables = metricsModel.getMappingTables();
 
 			for (Map.Entry<String, String> entry : mappingTables.entrySet()) {
 				String key = entry.getKey();
@@ -177,7 +139,7 @@ public class ModelJSONUtil {
 		return jsonObject;
 	}
 
-	private JSONObject _getUpdateJSONObject(BaseModel<?> model)
+	public JSONObject createUpdateJSONObject(BaseModel<?> model)
 		throws Exception {
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
@@ -234,11 +196,10 @@ public class ModelJSONUtil {
 			JSONArray mappingTablesJSONArray =
 				JSONFactoryUtil.createJSONArray();
 
-			Map<String, String> mappingTables = metricsModel.getMappingTables(
-				model);
+			Map<String, String> mappingTables = metricsModel.getMappingTables();
 
 			String modelPrimaryKeyName =
-				_metricsModelUtil.getModelPrimaryKeyName(model);
+				_metricsModelUtil.getModelPrimaryKeyName(metricsModel);
 
 			for (Map.Entry<String, String> entry : mappingTables.entrySet()) {
 				String key = entry.getKey();
@@ -286,6 +247,24 @@ public class ModelJSONUtil {
 		}
 
 		return jsonObject;
+	}
+
+	protected String formatSingular(String s) {
+		if (Validator.isNull(s)) {
+			return s;
+		}
+
+		if (s.endsWith("ses")) {
+			s = s.substring(0, s.length() - 3) + "s";
+		}
+		else if (s.endsWith("ies")) {
+			s = s.substring(0, s.length() - 3) + "y";
+		}
+		else {
+			s = s.substring(0, s.length() - 1);
+		}
+
+		return s;
 	}
 
 	@Reference
