@@ -3,14 +3,14 @@
 
 .osb-portlet-admin {
 	table {
-		td {
-			vertical-align: top;
-		}
-
 		&.lfr-table {
 			display: block;
 			overflow-x: auto;
 			white-space: nowrap;
+		}
+
+		td {
+			vertical-align: top;
 		}
 
 		.inactive td {
@@ -94,7 +94,8 @@
 		display: none;
 	}
 
-	.advanced-search.input-group, .basic-search.input-group {
+	.advanced-search.input-group,
+	.basic-search.input-group {
 		max-width: none;
 
 		@include media-breakpoint-down(sm) {

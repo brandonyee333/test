@@ -12,7 +12,8 @@
 		}
 	}
 
-	.advanced-search.input-group, .basic-search.input-group {
+	.advanced-search.input-group,
+	.basic-search.input-group {
 		max-width: none;
 
 		@include media-breakpoint-down(sm) {
