@@ -1,13 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const portletId = "com_liferay_osb_customer_downloads_display_web_DownloadsDisplayPortlet";
+import 'core-js/fn/array/find';
+
+const PORTLET_ID = "com_liferay_osb_customer_downloads_display_web_DownloadsDisplayPortlet";
 
 export default class SearchFilters extends React.Component {
 	searchDownloadsFormRef = React.createRef();
 
+	_getFileTypes = (comparator) => {
+		const {productsJSONArray} = this.props;
+
+		const productEntry = productsJSONArray.find(
+			product => product.value === comparator
+		);
+
+		return productEntry ? productEntry.fileTypes : []
+	};
+
 	state = {
-		availableFileTypes: [],
+		availableFileTypes: this._getFileTypes(this.props.currentProduct),
 		fileType: this.props.currentFileType,
 		product: this.props.currentProduct
 	};
@@ -16,20 +28,15 @@ export default class SearchFilters extends React.Component {
 		actionURL: PropTypes.string.isRequired,
 		currentFileType: PropTypes.string.isRequired,
 		currentProduct: PropTypes.string.isRequired,
-		productsJSONArray: PropTypes.array.isRequired
-	};
-
-	componentDidMount() {
-		const {currentProduct, productsJSONArray} = this.props;
-
-		if (currentProduct) {
-			this.setState(
+		productsJSONArray: PropTypes.arrayOf(
+			PropTypes.shape(
 				{
-					availableFileTypes: productsJSONArray.find(product => product.value == currentProduct).fileTypes
+					name: PropTypes.string,
+					value: PropTypes.string
 				}
-			);
-		}
-	}
+			)
+		).isRequired,
+	};
 
 	handleFileTypeChange = event =>
 		this.setState(
@@ -40,23 +47,12 @@ export default class SearchFilters extends React.Component {
 		);
 
 	handleProductChange = event => {
-		const {productsJSONArray} = this.props;
-
-		let autoSelectFileType = false;
-		let selectedProductFileTypes = [];
-
-		if (event.target.value) {
-			selectedProductFileTypes = productsJSONArray.find(product => product.value == event.target.value).fileTypes;
-
-			if (selectedProductFileTypes.length == 1) {
-				autoSelectFileType = true;
-			}
-		}
+		const fileTypes = this._getFileTypes(event.target.value);
 
 		this.setState(
 			{
-				availableFileTypes: selectedProductFileTypes,
-				fileType: autoSelectFileType ? selectedProductFileTypes[0].value : '',
+				availableFileTypes: fileTypes,
+				fileType: fileTypes.length === 1 ? fileTypes[0].value : '',
 				product: event.target.value
 			},
 			() => this.handleUpdate()
@@ -75,14 +71,13 @@ export default class SearchFilters extends React.Component {
 
 	render() {
 		const {actionURL, productsJSONArray} = this.props;
-
 		const {availableFileTypes, fileType, product} = this.state;
 
 		const {namespace} = window.DownloadsConstants;
 
 		return (
 			<form ref={this.searchDownloadsFormRef} action={actionURL} method="get">
-				<input name="p_p_id" type="hidden" value={portletId} />
+				<input name="p_p_id" type="hidden" value={PORTLET_ID} />
 
 				<div className="search-filters">
 					<Filter
@@ -108,19 +103,17 @@ export default class SearchFilters extends React.Component {
 
 const Filter = props => (
 	<div className="search-filter-container">
-		<label className="control-label" for={props.id}>
-			{props.label}
+		<label className="control-label" htmlFor={props.id}>
+			{`${props.label}:`}
 		</label>
 
-		<span className="prefix">&#58;</span>
-
 		<select className="form-control" id={props.id} name={props.id} onChange={props.onSelectChange} value={props.selectedOption}>
-			<option value="">{Liferay.Language.get('select') + ' ' + props.label}</option>
+			<option value="">{`${Liferay.Language.get('select')} ${props.label}`}</option>
 
 			{props.options.map(
 				(option) => {
 					return (
-						<option key={option.value} id={'product-' + option.value} label={option.name} value={option.value}>{option.name}</option>
+						<option key={option.value} label={option.name} value={option.value}>{option.name}</option>
 					);
 				}
 			)}
