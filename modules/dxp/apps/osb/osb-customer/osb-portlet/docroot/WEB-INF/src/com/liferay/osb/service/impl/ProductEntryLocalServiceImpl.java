@@ -189,13 +189,26 @@ public class ProductEntryLocalServiceImpl
 			classNameId, productEntryId,
 			ExternalIdMapperConstants.TYPE_ZENDESK);
 
-		if (!externalIdMappers.isEmpty()) {
+		if (Validator.isNotNull(zendeskTag)) {
+			if (!externalIdMappers.isEmpty()) {
+				ExternalIdMapper externalIdMapper = externalIdMappers.get(0);
+
+				externalIdMapperLocalService.updateExternalIdMapper(
+					externalIdMapper.getExternalIdMapperId(), classNameId,
+					productEntryId, ExternalIdMapperConstants.TYPE_ZENDESK,
+					zendeskTag);
+			}
+			else {
+				externalIdMapperLocalService.addExternalIdMapper(
+					classNameId, productEntryId,
+					ExternalIdMapperConstants.TYPE_ZENDESK, zendeskTag);
+			}
+		}
+		else if (!externalIdMappers.isEmpty()) {
 			ExternalIdMapper externalIdMapper = externalIdMappers.get(0);
 
-			externalIdMapperLocalService.updateExternalIdMapper(
-				externalIdMapper.getExternalIdMapperId(), classNameId,
-				productEntryId, ExternalIdMapperConstants.TYPE_ZENDESK,
-				zendeskTag);
+			externalIdMapperLocalService.deleteExternalIdMapper(
+				externalIdMapper.getExternalIdMapperId());
 		}
 
 		return productEntry;
