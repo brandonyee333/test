@@ -1,0 +1,169 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SearchFilter renders correctly with no selection 1`] = `
+<form
+  action="/"
+  method="get"
+>
+  <input
+    name="p_p_id"
+    type="hidden"
+    value="com_liferay_osb_customer_downloads_display_web_DownloadsDisplayPortlet"
+  />
+  <div
+    className="search-filters"
+  >
+    <div
+      className="search-filter-container"
+    >
+      <label
+        className="control-label"
+        htmlFor="namespaceproduct"
+      >
+        product:
+      </label>
+      <select
+        className="form-control"
+        id="namespaceproduct"
+        name="namespaceproduct"
+        onChange={[Function]}
+        value=""
+      >
+        <option
+          value=""
+        >
+          select product
+        </option>
+        <option
+          label="Commerce"
+          value="commerce"
+        >
+          Commerce
+        </option>
+        <option
+          label="DXP 7.0"
+          value="dxp_70"
+        >
+          DXP 7.0
+        </option>
+      </select>
+    </div>
+    <div
+      className="search-filter-container"
+    >
+      <label
+        className="control-label"
+        htmlFor="namespacefileType"
+      >
+        file-type:
+      </label>
+      <select
+        className="form-control"
+        id="namespacefileType"
+        name="namespacefileType"
+        onChange={[Function]}
+        value=""
+      >
+        <option
+          value=""
+        >
+          select file-type
+        </option>
+      </select>
+    </div>
+  </div>
+</form>
+`;
+
+exports[`SearchFilter renders correctly with preselection 1`] = `
+<form
+  action="/"
+  method="get"
+>
+  <input
+    name="p_p_id"
+    type="hidden"
+    value="com_liferay_osb_customer_downloads_display_web_DownloadsDisplayPortlet"
+  />
+  <div
+    className="search-filters"
+  >
+    <div
+      className="search-filter-container"
+    >
+      <label
+        className="control-label"
+        htmlFor="namespaceproduct"
+      >
+        product:
+      </label>
+      <select
+        className="form-control"
+        id="namespaceproduct"
+        name="namespaceproduct"
+        onChange={[Function]}
+        value="dxp_70"
+      >
+        <option
+          value=""
+        >
+          select product
+        </option>
+        <option
+          label="Commerce"
+          value="commerce"
+        >
+          Commerce
+        </option>
+        <option
+          label="DXP 7.0"
+          value="dxp_70"
+        >
+          DXP 7.0
+        </option>
+      </select>
+    </div>
+    <div
+      className="search-filter-container"
+    >
+      <label
+        className="control-label"
+        htmlFor="namespacefileType"
+      >
+        file-type:
+      </label>
+      <select
+        className="form-control"
+        id="namespacefileType"
+        name="namespacefileType"
+        onChange={[Function]}
+        value="security"
+      >
+        <option
+          value=""
+        >
+          select file-type
+        </option>
+        <option
+          label="Product"
+          value="product"
+        >
+          Product
+        </option>
+        <option
+          label="Fix Packs"
+          value="fixPacks"
+        >
+          Fix Packs
+        </option>
+        <option
+          label="Security"
+          value="security"
+        >
+          Security
+        </option>
+      </select>
+    </div>
+  </div>
+</form>
+`;
