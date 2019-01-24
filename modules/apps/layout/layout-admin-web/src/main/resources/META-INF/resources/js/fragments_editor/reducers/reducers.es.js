@@ -32,6 +32,7 @@ import {
 	updateHighlightMappingReducer,
 	updateHoveredItemReducer
 } from './placeholders.es';
+import {switchToSegment} from './segments.es';
 
 /**
  * List of reducers
@@ -52,6 +53,7 @@ const reducers = [
 	removeSectionReducer,
 	saveChangesReducer,
 	selectMappeableTypeReducer,
+	switchToSegment,
 	toggleFragmentsEditorSidebarReducer,
 	translationStatusReducer,
 	updateActiveItemReducer,
