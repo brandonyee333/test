@@ -72,6 +72,7 @@ public class AccountEnvironmentWrapper implements AccountEnvironment,
 		attributes.put("envJVM", getEnvJVM());
 		attributes.put("envAS", getEnvAS());
 		attributes.put("envLFR", getEnvLFR());
+		attributes.put("envCommerce", getEnvCommerce());
 		attributes.put("envBrowser", getEnvBrowser());
 		attributes.put("envCS", getEnvCS());
 		attributes.put("envSearch", getEnvSearch());
@@ -165,6 +166,12 @@ public class AccountEnvironmentWrapper implements AccountEnvironment,
 			setEnvLFR(envLFR);
 		}
 
+		Integer envCommerce = (Integer)attributes.get("envCommerce");
+
+		if (envCommerce != null) {
+			setEnvCommerce(envCommerce);
+		}
+
 		Integer envBrowser = (Integer)attributes.get("envBrowser");
 
 		if (envBrowser != null) {
@@ -252,6 +259,16 @@ public class AccountEnvironmentWrapper implements AccountEnvironment,
 	@Override
 	public int getEnvCS() {
 		return _accountEnvironment.getEnvCS();
+	}
+
+	/**
+	* Returns the env commerce of this account environment.
+	*
+	* @return the env commerce of this account environment
+	*/
+	@Override
+	public int getEnvCommerce() {
+		return _accountEnvironment.getEnvCommerce();
 	}
 
 	/**
@@ -552,6 +569,16 @@ public class AccountEnvironmentWrapper implements AccountEnvironment,
 	@Override
 	public void setEnvCS(int envCS) {
 		_accountEnvironment.setEnvCS(envCS);
+	}
+
+	/**
+	* Sets the env commerce of this account environment.
+	*
+	* @param envCommerce the env commerce of this account environment
+	*/
+	@Override
+	public void setEnvCommerce(int envCommerce) {
+		_accountEnvironment.setEnvCommerce(envCommerce);
 	}
 
 	/**

@@ -40,7 +40,7 @@ public class AccountEnvironmentLocalServiceClp
 		_methodParameterTypes1 = new String[] {
 				"long", "long", "long", "java.lang.String", "int",
 				"java.lang.String", "int", "int", "int", "int", "int", "int",
-				"java.lang.String", "java.util.List", "java.util.List"
+				"int", "java.lang.String", "java.util.List", "java.util.List"
 			};
 
 		_methodName2 = "createAccountEnvironment";
@@ -80,7 +80,7 @@ public class AccountEnvironmentLocalServiceClp
 		_methodParameterTypes9 = new String[] {
 				"long", "long", "long", "java.lang.String", "int",
 				"java.lang.String", "int", "int", "int", "int", "int", "int",
-				"java.lang.String", "java.util.List", "java.util.List"
+				"int", "java.lang.String", "java.util.List", "java.util.List"
 			};
 
 		_methodName10 = "getActionableDynamicQuery";
@@ -193,8 +193,8 @@ public class AccountEnvironmentLocalServiceClp
 	public com.liferay.osb.model.AccountEnvironment addAccountEnvironment(
 		long userId, long accountEntryId, long productEntryId,
 		java.lang.String name, int envOS, java.lang.String envOSCustom,
-		int envDB, int envJVM, int envAS, int envLFR, int envBrowser,
-		int envCS, java.lang.String envSearch,
+		int envDB, int envJVM, int envAS, int envLFR, int envCommerce,
+		int envBrowser, int envCS, java.lang.String envSearch,
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
 		java.util.List<java.lang.Integer> types)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -223,6 +223,8 @@ public class AccountEnvironmentLocalServiceClp
 					envAS,
 						
 					envLFR,
+						
+					envCommerce,
 						
 					envBrowser,
 						
@@ -453,8 +455,8 @@ public class AccountEnvironmentLocalServiceClp
 	public com.liferay.osb.model.AccountEnvironment updateAccountEnvironment(
 		long userId, long accountEnvironmentId, long productEntryId,
 		java.lang.String name, int envOS, java.lang.String envOSCustom,
-		int envDB, int envJVM, int envAS, int envLFR, int envBrowser,
-		int envCS, java.lang.String envSearch,
+		int envDB, int envJVM, int envAS, int envLFR, int envCommerce,
+		int envBrowser, int envCS, java.lang.String envSearch,
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
 		java.util.List<java.lang.Integer> types)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -483,6 +485,8 @@ public class AccountEnvironmentLocalServiceClp
 					envAS,
 						
 					envLFR,
+						
+					envCommerce,
 						
 					envBrowser,
 						

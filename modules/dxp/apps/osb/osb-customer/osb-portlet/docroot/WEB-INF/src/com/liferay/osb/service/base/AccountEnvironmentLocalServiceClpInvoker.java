@@ -132,7 +132,7 @@ public class AccountEnvironmentLocalServiceClpInvoker {
 		_methodParameterTypes171 = new String[] {
 				"long", "long", "long", "java.lang.String", "int",
 				"java.lang.String", "int", "int", "int", "int", "int", "int",
-				"java.lang.String", "java.util.List", "java.util.List"
+				"int", "java.lang.String", "java.util.List", "java.util.List"
 			};
 
 		_methodName172 = "deleteAccountEnvironment";
@@ -162,7 +162,7 @@ public class AccountEnvironmentLocalServiceClpInvoker {
 		_methodParameterTypes177 = new String[] {
 				"long", "long", "long", "java.lang.String", "int",
 				"java.lang.String", "int", "int", "int", "int", "int", "int",
-				"java.lang.String", "java.util.List", "java.util.List"
+				"int", "java.lang.String", "java.util.List", "java.util.List"
 			};
 	}
 
@@ -289,9 +289,10 @@ public class AccountEnvironmentLocalServiceClpInvoker {
 				((Integer)arguments[9]).intValue(),
 				((Integer)arguments[10]).intValue(),
 				((Integer)arguments[11]).intValue(),
-				(java.lang.String)arguments[12],
-				(java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>>)arguments[13],
-				(java.util.List<java.lang.Integer>)arguments[14]);
+				((Integer)arguments[12]).intValue(),
+				(java.lang.String)arguments[13],
+				(java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>>)arguments[14],
+				(java.util.List<java.lang.Integer>)arguments[15]);
 		}
 
 		if (_methodName172.equals(name) &&
@@ -335,9 +336,10 @@ public class AccountEnvironmentLocalServiceClpInvoker {
 				((Integer)arguments[9]).intValue(),
 				((Integer)arguments[10]).intValue(),
 				((Integer)arguments[11]).intValue(),
-				(java.lang.String)arguments[12],
-				(java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>>)arguments[13],
-				(java.util.List<java.lang.Integer>)arguments[14]);
+				((Integer)arguments[12]).intValue(),
+				(java.lang.String)arguments[13],
+				(java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>>)arguments[14],
+				(java.util.List<java.lang.Integer>)arguments[15]);
 		}
 
 		throw new UnsupportedOperationException();

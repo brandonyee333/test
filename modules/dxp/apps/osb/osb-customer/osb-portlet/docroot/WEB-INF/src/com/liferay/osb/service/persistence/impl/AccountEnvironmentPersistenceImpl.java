@@ -1864,6 +1864,7 @@ public class AccountEnvironmentPersistenceImpl extends BasePersistenceImpl<Accou
 		accountEnvironmentImpl.setEnvJVM(accountEnvironment.getEnvJVM());
 		accountEnvironmentImpl.setEnvAS(accountEnvironment.getEnvAS());
 		accountEnvironmentImpl.setEnvLFR(accountEnvironment.getEnvLFR());
+		accountEnvironmentImpl.setEnvCommerce(accountEnvironment.getEnvCommerce());
 		accountEnvironmentImpl.setEnvBrowser(accountEnvironment.getEnvBrowser());
 		accountEnvironmentImpl.setEnvCS(accountEnvironment.getEnvCS());
 		accountEnvironmentImpl.setEnvSearch(accountEnvironment.getEnvSearch());

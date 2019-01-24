@@ -84,6 +84,7 @@ public class AccountEnvironmentModelImpl extends BaseModelImpl<AccountEnvironmen
 			{ "envJVM", Types.INTEGER },
 			{ "envAS", Types.INTEGER },
 			{ "envLFR", Types.INTEGER },
+			{ "envCommerce", Types.INTEGER },
 			{ "envBrowser", Types.INTEGER },
 			{ "envCS", Types.INTEGER },
 			{ "envSearch", Types.VARCHAR }
@@ -105,12 +106,13 @@ public class AccountEnvironmentModelImpl extends BaseModelImpl<AccountEnvironmen
 		TABLE_COLUMNS_MAP.put("envJVM", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("envAS", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("envLFR", Types.INTEGER);
+		TABLE_COLUMNS_MAP.put("envCommerce", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("envBrowser", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("envCS", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("envSearch", Types.VARCHAR);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSB_AccountEnvironment (accountEnvironmentId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,accountEntryId LONG,productEntryId LONG,name VARCHAR(75) null,envOS INTEGER,envOSCustom VARCHAR(150) null,envDB INTEGER,envJVM INTEGER,envAS INTEGER,envLFR INTEGER,envBrowser INTEGER,envCS INTEGER,envSearch VARCHAR(75) null)";
+	public static final String TABLE_SQL_CREATE = "create table OSB_AccountEnvironment (accountEnvironmentId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,accountEntryId LONG,productEntryId LONG,name VARCHAR(75) null,envOS INTEGER,envOSCustom VARCHAR(150) null,envDB INTEGER,envJVM INTEGER,envAS INTEGER,envLFR INTEGER,envCommerce INTEGER,envBrowser INTEGER,envCS INTEGER,envSearch VARCHAR(75) null)";
 	public static final String TABLE_SQL_DROP = "drop table OSB_AccountEnvironment";
 	public static final String ORDER_BY_JPQL = " ORDER BY accountEnvironment.name ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY OSB_AccountEnvironment.name ASC";
@@ -157,6 +159,7 @@ public class AccountEnvironmentModelImpl extends BaseModelImpl<AccountEnvironmen
 		model.setEnvJVM(soapModel.getEnvJVM());
 		model.setEnvAS(soapModel.getEnvAS());
 		model.setEnvLFR(soapModel.getEnvLFR());
+		model.setEnvCommerce(soapModel.getEnvCommerce());
 		model.setEnvBrowser(soapModel.getEnvBrowser());
 		model.setEnvCS(soapModel.getEnvCS());
 		model.setEnvSearch(soapModel.getEnvSearch());
@@ -239,6 +242,7 @@ public class AccountEnvironmentModelImpl extends BaseModelImpl<AccountEnvironmen
 		attributes.put("envJVM", getEnvJVM());
 		attributes.put("envAS", getEnvAS());
 		attributes.put("envLFR", getEnvLFR());
+		attributes.put("envCommerce", getEnvCommerce());
 		attributes.put("envBrowser", getEnvBrowser());
 		attributes.put("envCS", getEnvCS());
 		attributes.put("envSearch", getEnvSearch());
@@ -333,6 +337,12 @@ public class AccountEnvironmentModelImpl extends BaseModelImpl<AccountEnvironmen
 
 		if (envLFR != null) {
 			setEnvLFR(envLFR);
+		}
+
+		Integer envCommerce = (Integer)attributes.get("envCommerce");
+
+		if (envCommerce != null) {
+			setEnvCommerce(envCommerce);
 		}
 
 		Integer envBrowser = (Integer)attributes.get("envBrowser");
@@ -581,6 +591,17 @@ public class AccountEnvironmentModelImpl extends BaseModelImpl<AccountEnvironmen
 
 	@JSON
 	@Override
+	public int getEnvCommerce() {
+		return _envCommerce;
+	}
+
+	@Override
+	public void setEnvCommerce(int envCommerce) {
+		_envCommerce = envCommerce;
+	}
+
+	@JSON
+	@Override
 	public int getEnvBrowser() {
 		return _envBrowser;
 	}
@@ -662,6 +683,7 @@ public class AccountEnvironmentModelImpl extends BaseModelImpl<AccountEnvironmen
 		accountEnvironmentImpl.setEnvJVM(getEnvJVM());
 		accountEnvironmentImpl.setEnvAS(getEnvAS());
 		accountEnvironmentImpl.setEnvLFR(getEnvLFR());
+		accountEnvironmentImpl.setEnvCommerce(getEnvCommerce());
 		accountEnvironmentImpl.setEnvBrowser(getEnvBrowser());
 		accountEnvironmentImpl.setEnvCS(getEnvCS());
 		accountEnvironmentImpl.setEnvSearch(getEnvSearch());
@@ -804,6 +826,8 @@ public class AccountEnvironmentModelImpl extends BaseModelImpl<AccountEnvironmen
 
 		accountEnvironmentCacheModel.envLFR = getEnvLFR();
 
+		accountEnvironmentCacheModel.envCommerce = getEnvCommerce();
+
 		accountEnvironmentCacheModel.envBrowser = getEnvBrowser();
 
 		accountEnvironmentCacheModel.envCS = getEnvCS();
@@ -821,7 +845,7 @@ public class AccountEnvironmentModelImpl extends BaseModelImpl<AccountEnvironmen
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(35);
+		StringBundler sb = new StringBundler(37);
 
 		sb.append("{accountEnvironmentId=");
 		sb.append(getAccountEnvironmentId());
@@ -851,6 +875,8 @@ public class AccountEnvironmentModelImpl extends BaseModelImpl<AccountEnvironmen
 		sb.append(getEnvAS());
 		sb.append(", envLFR=");
 		sb.append(getEnvLFR());
+		sb.append(", envCommerce=");
+		sb.append(getEnvCommerce());
 		sb.append(", envBrowser=");
 		sb.append(getEnvBrowser());
 		sb.append(", envCS=");
@@ -864,7 +890,7 @@ public class AccountEnvironmentModelImpl extends BaseModelImpl<AccountEnvironmen
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(55);
+		StringBundler sb = new StringBundler(58);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.AccountEnvironment");
@@ -927,6 +953,10 @@ public class AccountEnvironmentModelImpl extends BaseModelImpl<AccountEnvironmen
 		sb.append(getEnvLFR());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>envCommerce</column-name><column-value><![CDATA[");
+		sb.append(getEnvCommerce());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>envBrowser</column-name><column-value><![CDATA[");
 		sb.append(getEnvBrowser());
 		sb.append("]]></column-value></column>");
@@ -968,6 +998,7 @@ public class AccountEnvironmentModelImpl extends BaseModelImpl<AccountEnvironmen
 	private int _envJVM;
 	private int _envAS;
 	private int _envLFR;
+	private int _envCommerce;
 	private int _envBrowser;
 	private int _envCS;
 	private String _envSearch;

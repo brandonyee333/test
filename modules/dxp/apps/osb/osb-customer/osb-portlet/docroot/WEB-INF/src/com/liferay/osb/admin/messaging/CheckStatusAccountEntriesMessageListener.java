@@ -74,6 +74,10 @@ public class CheckStatusAccountEntriesMessageListener
 
 	@Override
 	protected void doReceive(Message message) throws Exception {
+		if (true) {
+			return;
+		}
+
 		List<AccountEntry> accountEntries =
 			AccountEntryLocalServiceUtil.getAccountEntries(
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS);

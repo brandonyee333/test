@@ -95,6 +95,7 @@ public class AccountEnvironmentClp extends BaseModelImpl<AccountEnvironment>
 		attributes.put("envJVM", getEnvJVM());
 		attributes.put("envAS", getEnvAS());
 		attributes.put("envLFR", getEnvLFR());
+		attributes.put("envCommerce", getEnvCommerce());
 		attributes.put("envBrowser", getEnvBrowser());
 		attributes.put("envCS", getEnvCS());
 		attributes.put("envSearch", getEnvSearch());
@@ -189,6 +190,12 @@ public class AccountEnvironmentClp extends BaseModelImpl<AccountEnvironment>
 
 		if (envLFR != null) {
 			setEnvLFR(envLFR);
+		}
+
+		Integer envCommerce = (Integer)attributes.get("envCommerce");
+
+		if (envCommerce != null) {
+			setEnvCommerce(envCommerce);
 		}
 
 		Integer envBrowser = (Integer)attributes.get("envBrowser");
@@ -554,6 +561,29 @@ public class AccountEnvironmentClp extends BaseModelImpl<AccountEnvironment>
 	}
 
 	@Override
+	public int getEnvCommerce() {
+		return _envCommerce;
+	}
+
+	@Override
+	public void setEnvCommerce(int envCommerce) {
+		_envCommerce = envCommerce;
+
+		if (_accountEnvironmentRemoteModel != null) {
+			try {
+				Class<?> clazz = _accountEnvironmentRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setEnvCommerce", int.class);
+
+				method.invoke(_accountEnvironmentRemoteModel, envCommerce);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
 	public int getEnvBrowser() {
 		return _envBrowser;
 	}
@@ -878,6 +908,7 @@ public class AccountEnvironmentClp extends BaseModelImpl<AccountEnvironment>
 		clone.setEnvJVM(getEnvJVM());
 		clone.setEnvAS(getEnvAS());
 		clone.setEnvLFR(getEnvLFR());
+		clone.setEnvCommerce(getEnvCommerce());
 		clone.setEnvBrowser(getEnvBrowser());
 		clone.setEnvCS(getEnvCS());
 		clone.setEnvSearch(getEnvSearch());
@@ -941,7 +972,7 @@ public class AccountEnvironmentClp extends BaseModelImpl<AccountEnvironment>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(35);
+		StringBundler sb = new StringBundler(37);
 
 		sb.append("{accountEnvironmentId=");
 		sb.append(getAccountEnvironmentId());
@@ -971,6 +1002,8 @@ public class AccountEnvironmentClp extends BaseModelImpl<AccountEnvironment>
 		sb.append(getEnvAS());
 		sb.append(", envLFR=");
 		sb.append(getEnvLFR());
+		sb.append(", envCommerce=");
+		sb.append(getEnvCommerce());
 		sb.append(", envBrowser=");
 		sb.append(getEnvBrowser());
 		sb.append(", envCS=");
@@ -984,7 +1017,7 @@ public class AccountEnvironmentClp extends BaseModelImpl<AccountEnvironment>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(55);
+		StringBundler sb = new StringBundler(58);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.AccountEnvironment");
@@ -1047,6 +1080,10 @@ public class AccountEnvironmentClp extends BaseModelImpl<AccountEnvironment>
 		sb.append(getEnvLFR());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>envCommerce</column-name><column-value><![CDATA[");
+		sb.append(getEnvCommerce());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>envBrowser</column-name><column-value><![CDATA[");
 		sb.append(getEnvBrowser());
 		sb.append("]]></column-value></column>");
@@ -1078,6 +1115,7 @@ public class AccountEnvironmentClp extends BaseModelImpl<AccountEnvironment>
 	private int _envJVM;
 	private int _envAS;
 	private int _envLFR;
+	private int _envCommerce;
 	private int _envBrowser;
 	private int _envCS;
 	private String _envSearch;

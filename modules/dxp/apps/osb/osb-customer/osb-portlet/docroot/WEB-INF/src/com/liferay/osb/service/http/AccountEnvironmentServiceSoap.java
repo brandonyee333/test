@@ -68,14 +68,15 @@ public class AccountEnvironmentServiceSoap {
 	public static com.liferay.osb.model.AccountEnvironmentSoap addAccountEnvironment(
 		long accountEntryId, long productEntryId, java.lang.String name,
 		int envOS, java.lang.String envOSCustom, int envDB, int envJVM,
-		int envAS, int envLFR, int envBrowser, int envCS,
+		int envAS, int envLFR, int envCommerce, int envBrowser, int envCS,
 		java.lang.String envSearch,
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
 		java.util.List<java.lang.Integer> types) throws RemoteException {
 		try {
 			com.liferay.osb.model.AccountEnvironment returnValue = AccountEnvironmentServiceUtil.addAccountEnvironment(accountEntryId,
 					productEntryId, name, envOS, envOSCustom, envDB, envJVM,
-					envAS, envLFR, envBrowser, envCS, envSearch, files, types);
+					envAS, envLFR, envCommerce, envBrowser, envCS, envSearch,
+					files, types);
 
 			return com.liferay.osb.model.AccountEnvironmentSoap.toSoapModel(returnValue);
 		}
@@ -132,14 +133,15 @@ public class AccountEnvironmentServiceSoap {
 	public static com.liferay.osb.model.AccountEnvironmentSoap updateAccountEnvironment(
 		long accountEnvironmentId, long productEntryId, java.lang.String name,
 		int envOS, java.lang.String envOSCustom, int envDB, int envJVM,
-		int envAS, int envLFR, int envBrowser, int envCS,
+		int envAS, int envLFR, int envCommerce, int envBrowser, int envCS,
 		java.lang.String envSearch,
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
 		java.util.List<java.lang.Integer> types) throws RemoteException {
 		try {
 			com.liferay.osb.model.AccountEnvironment returnValue = AccountEnvironmentServiceUtil.updateAccountEnvironment(accountEnvironmentId,
 					productEntryId, name, envOS, envOSCustom, envDB, envJVM,
-					envAS, envLFR, envBrowser, envCS, envSearch, files, types);
+					envAS, envLFR, envCommerce, envBrowser, envCS, envSearch,
+					files, types);
 
 			return com.liferay.osb.model.AccountEnvironmentSoap.toSoapModel(returnValue);
 		}

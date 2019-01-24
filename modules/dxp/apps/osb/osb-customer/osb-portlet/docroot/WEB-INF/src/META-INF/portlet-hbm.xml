@@ -110,6 +110,7 @@
 		<property name="envJVM" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="envAS" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="envLFR" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="envCommerce" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="envBrowser" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="envCS" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="envSearch" type="com.liferay.portal.dao.orm.hibernate.StringType" />

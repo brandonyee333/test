@@ -1677,6 +1677,12 @@ public class ClpSerializer {
 		}
 
 		if (className.equals(
+					"com.liferay.osb.exception.AccountEnvironmentEnvCommerceException")) {
+			return new com.liferay.osb.exception.AccountEnvironmentEnvCommerceException(throwable.getMessage(),
+				throwable.getCause());
+		}
+
+		if (className.equals(
 					"com.liferay.osb.exception.AccountEnvironmentEnvDBException")) {
 			return new com.liferay.osb.exception.AccountEnvironmentEnvDBException(throwable.getMessage(),
 				throwable.getCause());

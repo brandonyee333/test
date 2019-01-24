@@ -48,6 +48,7 @@ public class AccountEnvironmentSoap implements Serializable {
 		soapModel.setEnvJVM(model.getEnvJVM());
 		soapModel.setEnvAS(model.getEnvAS());
 		soapModel.setEnvLFR(model.getEnvLFR());
+		soapModel.setEnvCommerce(model.getEnvCommerce());
 		soapModel.setEnvBrowser(model.getEnvBrowser());
 		soapModel.setEnvCS(model.getEnvCS());
 		soapModel.setEnvSearch(model.getEnvSearch());
@@ -218,6 +219,14 @@ public class AccountEnvironmentSoap implements Serializable {
 		_envLFR = envLFR;
 	}
 
+	public int getEnvCommerce() {
+		return _envCommerce;
+	}
+
+	public void setEnvCommerce(int envCommerce) {
+		_envCommerce = envCommerce;
+	}
+
 	public int getEnvBrowser() {
 		return _envBrowser;
 	}
@@ -256,6 +265,7 @@ public class AccountEnvironmentSoap implements Serializable {
 	private int _envJVM;
 	private int _envAS;
 	private int _envLFR;
+	private int _envCommerce;
 	private int _envBrowser;
 	private int _envCS;
 	private String _envSearch;

@@ -44,15 +44,15 @@ public class AccountEnvironmentServiceUtil {
 	public static com.liferay.osb.model.AccountEnvironment addAccountEnvironment(
 		long accountEntryId, long productEntryId, java.lang.String name,
 		int envOS, java.lang.String envOSCustom, int envDB, int envJVM,
-		int envAS, int envLFR, int envBrowser, int envCS,
+		int envAS, int envLFR, int envCommerce, int envBrowser, int envCS,
 		java.lang.String envSearch,
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
 		java.util.List<java.lang.Integer> types)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addAccountEnvironment(accountEntryId, productEntryId, name,
-			envOS, envOSCustom, envDB, envJVM, envAS, envLFR, envBrowser,
-			envCS, envSearch, files, types);
+			envOS, envOSCustom, envDB, envJVM, envAS, envLFR, envCommerce,
+			envBrowser, envCS, envSearch, files, types);
 	}
 
 	public static com.liferay.osb.model.AccountEnvironment deleteAccountEnvironment(
@@ -70,7 +70,7 @@ public class AccountEnvironmentServiceUtil {
 	public static com.liferay.osb.model.AccountEnvironment updateAccountEnvironment(
 		long accountEnvironmentId, long productEntryId, java.lang.String name,
 		int envOS, java.lang.String envOSCustom, int envDB, int envJVM,
-		int envAS, int envLFR, int envBrowser, int envCS,
+		int envAS, int envLFR, int envCommerce, int envBrowser, int envCS,
 		java.lang.String envSearch,
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
 		java.util.List<java.lang.Integer> types)
@@ -78,7 +78,7 @@ public class AccountEnvironmentServiceUtil {
 		return getService()
 				   .updateAccountEnvironment(accountEnvironmentId,
 			productEntryId, name, envOS, envOSCustom, envDB, envJVM, envAS,
-			envLFR, envBrowser, envCS, envSearch, files, types);
+			envLFR, envCommerce, envBrowser, envCS, envSearch, files, types);
 	}
 
 	public static java.lang.Object invokeMethod(java.lang.String name,

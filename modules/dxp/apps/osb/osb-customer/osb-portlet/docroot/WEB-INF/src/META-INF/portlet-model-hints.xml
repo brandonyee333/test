@@ -89,6 +89,7 @@
 		<field name="envJVM" type="int" />
 		<field name="envAS" type="int" />
 		<field name="envLFR" type="int" />
+		<field name="envCommerce" type="int" />
 		<field name="envBrowser" type="int" />
 		<field name="envCS" type="int" />
 		<field name="envSearch" type="String" />

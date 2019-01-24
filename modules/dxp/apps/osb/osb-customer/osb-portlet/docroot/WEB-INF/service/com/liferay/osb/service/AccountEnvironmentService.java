@@ -59,7 +59,8 @@ public interface AccountEnvironmentService extends BaseService, InvokableService
 	public AccountEnvironment addAccountEnvironment(long accountEntryId,
 		long productEntryId, java.lang.String name, int envOS,
 		java.lang.String envOSCustom, int envDB, int envJVM, int envAS,
-		int envLFR, int envBrowser, int envCS, java.lang.String envSearch,
+		int envLFR, int envCommerce, int envBrowser, int envCS,
+		java.lang.String envSearch,
 		List<ObjectValuePair<java.lang.String, File>> files,
 		List<java.lang.Integer> types) throws PortalException;
 
@@ -73,7 +74,7 @@ public interface AccountEnvironmentService extends BaseService, InvokableService
 	public AccountEnvironment updateAccountEnvironment(
 		long accountEnvironmentId, long productEntryId, java.lang.String name,
 		int envOS, java.lang.String envOSCustom, int envDB, int envJVM,
-		int envAS, int envLFR, int envBrowser, int envCS,
+		int envAS, int envLFR, int envCommerce, int envBrowser, int envCS,
 		java.lang.String envSearch,
 		List<ObjectValuePair<java.lang.String, File>> files,
 		List<java.lang.Integer> types) throws PortalException;

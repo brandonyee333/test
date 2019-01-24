@@ -276,6 +276,20 @@ public interface AccountEnvironmentModel extends BaseModel<AccountEnvironment> {
 	public void setEnvLFR(int envLFR);
 
 	/**
+	 * Returns the env commerce of this account environment.
+	 *
+	 * @return the env commerce of this account environment
+	 */
+	public int getEnvCommerce();
+
+	/**
+	 * Sets the env commerce of this account environment.
+	 *
+	 * @param envCommerce the env commerce of this account environment
+	 */
+	public void setEnvCommerce(int envCommerce);
+
+	/**
 	 * Returns the env browser of this account environment.
 	 *
 	 * @return the env browser of this account environment

@@ -81,6 +81,7 @@ create table OSB_AccountEnvironment (
 	envJVM INTEGER,
 	envAS INTEGER,
 	envLFR INTEGER,
+	envCommerce INTEGER,
 	envBrowser INTEGER,
 	envCS INTEGER,
 	envSearch VARCHAR(75) null
