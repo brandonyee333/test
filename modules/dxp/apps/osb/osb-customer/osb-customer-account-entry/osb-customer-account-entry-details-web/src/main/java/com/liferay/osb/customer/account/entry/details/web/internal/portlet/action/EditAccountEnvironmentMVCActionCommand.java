@@ -78,6 +78,7 @@ public class EditAccountEnvironmentMVCActionCommand
 		int envJVM = ParamUtil.getInteger(actionRequest, "envJVM");
 		int envAS = ParamUtil.getInteger(actionRequest, "envAS");
 		int envLFR = ParamUtil.getInteger(actionRequest, "envLFR");
+		int envCommerce = ParamUtil.getInteger(actionRequest, "envCommerce");
 		int envBrowser = ParamUtil.getInteger(actionRequest, "envBrowser");
 		int envCS = ParamUtil.getInteger(actionRequest, "envCS");
 		String envSearch = StringUtil.merge(
@@ -129,14 +130,14 @@ public class EditAccountEnvironmentMVCActionCommand
 			if (accountEnvironmentId > 0) {
 				AccountEnvironmentServiceUtil.updateAccountEnvironment(
 					accountEnvironmentId, productEntryId, name, envOS,
-					envOSCustom, envDB, envJVM, envAS, envLFR, envBrowser,
-					envCS, envSearch, files, types);
+					envOSCustom, envDB, envJVM, envAS, envLFR, envCommerce,
+					envBrowser, envCS, envSearch, files, types);
 			}
 			else {
 				AccountEnvironmentServiceUtil.addAccountEnvironment(
 					accountEntryId, productEntryId, name, envOS, envOSCustom,
-					envDB, envJVM, envAS, envLFR, envBrowser, envCS, envSearch,
-					files, types);
+					envDB, envJVM, envAS, envLFR, envCommerce, envBrowser,
+					envCS, envSearch, files, types);
 			}
 		}
 		catch (Exception e) {

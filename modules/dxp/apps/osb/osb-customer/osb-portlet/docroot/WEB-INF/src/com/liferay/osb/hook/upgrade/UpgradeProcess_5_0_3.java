@@ -16,7 +16,9 @@ package com.liferay.osb.hook.upgrade;
 
 import com.liferay.osb.hook.upgrade.v5_0_3.Upgrade_20190117102736593_PartnerWorker;
 import com.liferay.osb.hook.upgrade.v5_0_3.Upgrade_20190117102807158_AccountWorker;
+import com.liferay.osb.hook.upgrade.v5_0_3.Upgrade_20190122115519440_ListType;
 import com.liferay.osb.hook.upgrade.v5_0_3.Upgrade_20190122121242433_ProductEntry;
+import com.liferay.osb.hook.upgrade.v5_0_3.Upgrade_20190124135600134_AccountEnvironment;
 
 /**
  * @author Kyle Bischof
@@ -32,7 +34,9 @@ public class UpgradeProcess_5_0_3 extends BaseUpgradeProcess {
 	protected void doUpgrade() throws Exception {
 		upgrade(Upgrade_20190117102807158_AccountWorker.class);
 		upgrade(Upgrade_20190117102736593_PartnerWorker.class);
+		upgrade(Upgrade_20190122115519440_ListType.class);
 		upgrade(Upgrade_20190122121242433_ProductEntry.class);
+		upgrade(Upgrade_20190124135600134_AccountEnvironment.class);
 	}
 
 }

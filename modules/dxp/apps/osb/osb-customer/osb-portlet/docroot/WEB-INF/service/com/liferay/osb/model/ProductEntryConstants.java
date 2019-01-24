@@ -26,6 +26,10 @@ import java.util.Date;
  */
 public class ProductEntryConstants {
 
+	public static final int COMMERCE_VERSION_1_0 = 44000;
+
+	public static final int COMMERCE_VERSION_OTHER = 44999;
+
 	public static final int DIGITAL_ENTERPRISE_MAJOR_VERSION_7 = 42000;
 
 	public static final int DIGITAL_ENTERPRISE_MINOR_VERSION_7_0 = 43000;
@@ -64,6 +68,12 @@ public class ProductEntryConstants {
 
 	public static final Date EOPS_DATE_PORTAL_VERSION_6_2 = PortalUtil.getDate(
 		Calendar.DECEMBER, 2, 2017);
+
+	public static final String LIST_TYPE_COMMERCE_ALL_VERSIONS =
+		ProductEntry.class.getName() + ".commerceAllVersions";
+
+	public static final String LIST_TYPE_COMMERCE_MAJOR_VERSIONS =
+		ProductEntry.class.getName() + ".commerceMajorVersions";
 
 	public static final String LIST_TYPE_DIGITAL_ENTERPRISE_ALL_VERSIONS =
 		ProductEntry.class.getName() + ".digitalEnterpriseAllVersions";
@@ -207,7 +217,10 @@ public class ProductEntryConstants {
 	public static final int[] TYPES = {TYPE_ADD_ON, TYPE_PRIMARY, TYPE_REGULAR};
 
 	public static String getAllListType(String majorListType) {
-		if (majorListType.equals(LIST_TYPE_PORTAL_MAJOR_VERSIONS)) {
+		if (majorListType.equals(LIST_TYPE_COMMERCE_MAJOR_VERSIONS)) {
+			return LIST_TYPE_COMMERCE_ALL_VERSIONS;
+		}
+		else if (majorListType.equals(LIST_TYPE_PORTAL_MAJOR_VERSIONS)) {
 			return LIST_TYPE_PORTAL_ALL_VERSIONS;
 		}
 		else if (majorListType.equals(
@@ -344,6 +357,17 @@ public class ProductEntryConstants {
 		}
 		else {
 			return "regular";
+		}
+	}
+
+	public static boolean isCommerce(long listTypeId) {
+		if ((listTypeId >= COMMERCE_VERSION_1_0) &&
+			(listTypeId < COMMERCE_VERSION_OTHER)) {
+
+			return true;
+		}
+		else {
+			return false;
 		}
 	}
 

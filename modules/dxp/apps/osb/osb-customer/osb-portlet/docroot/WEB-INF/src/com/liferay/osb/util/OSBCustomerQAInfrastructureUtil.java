@@ -196,7 +196,7 @@ public class OSBCustomerQAInfrastructureUtil {
 	protected static void checkAccountEnvironment(
 			long accountEntryId, long productEntryId, String name, int envOS,
 			String envOSCustom, int envDB, int envJVM, int envAS, int envLFR,
-			int envBrowser, int envCS, String envSearch)
+			int envCommerce, int envBrowser, int envCS, String envSearch)
 		throws Exception {
 
 		AccountEnvironment accountEnvironment =
@@ -232,7 +232,8 @@ public class OSBCustomerQAInfrastructureUtil {
 			AccountEnvironmentLocalServiceUtil.addAccountEnvironment(
 				OSBConstants.USER_DEFAULT_USER_ID, accountEntryId,
 				productEntryId, name, envOS, envOSCustom, envDB, envJVM, envAS,
-				envLFR, envBrowser, envCS, envSearch, files, types);
+				envLFR, envCommerce, envBrowser, envCS, envSearch, files,
+				types);
 		}
 
 		if (_log.isInfoEnabled()) {
@@ -257,6 +258,9 @@ public class OSBCustomerQAInfrastructureUtil {
 			String envBrowser = OSBCustomerQAConfigurationUtil.get(
 				OSBCustomerQAConfigurationKeys.OSB_QA_ACCOUNT_ENVIRONMENT,
 				new Filter(accountEnvironmentNameFilter, "envBrowser"));
+			String envCommerce = OSBCustomerQAConfigurationUtil.get(
+				OSBCustomerQAConfigurationKeys.OSB_QA_ACCOUNT_ENVIRONMENT,
+				new Filter(accountEnvironmentNameFilter, "envCommerce"));
 			String envCS = OSBCustomerQAConfigurationUtil.get(
 				OSBCustomerQAConfigurationKeys.OSB_QA_ACCOUNT_ENVIRONMENT,
 				new Filter(accountEnvironmentNameFilter, "envCS"));
@@ -292,6 +296,7 @@ public class OSBCustomerQAInfrastructureUtil {
 				GetterUtil.getInteger(envOS), envOSCustom,
 				GetterUtil.getInteger(envDB), GetterUtil.getInteger(envJVM),
 				GetterUtil.getInteger(envAS), GetterUtil.getInteger(envLFR),
+				GetterUtil.getInteger(envCommerce),
 				GetterUtil.getInteger(envBrowser), GetterUtil.getInteger(envCS),
 				GetterUtil.getString(envSearch));
 		}

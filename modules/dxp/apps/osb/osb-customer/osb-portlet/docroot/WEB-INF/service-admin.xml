@@ -246,6 +246,7 @@
 		<column name="envJVM" type="int" />
 		<column name="envAS" type="int" />
 		<column name="envLFR" type="int" />
+		<column name="envCommerce" type="int" />
 		<column name="envBrowser" type="int" />
 		<column name="envCS" type="int" />
 		<column name="envSearch" type="String" />
@@ -903,6 +904,7 @@
 		<exception>AccountEnvironmentAttachmentSize</exception>
 		<exception>AccountEnvironmentEnvAS</exception>
 		<exception>AccountEnvironmentEnvBrowser</exception>
+		<exception>AccountEnvironmentEnvCommerce</exception>
 		<exception>AccountEnvironmentEnvCS</exception>
 		<exception>AccountEnvironmentEnvDB</exception>
 		<exception>AccountEnvironmentEnvLFR</exception>

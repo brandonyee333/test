@@ -40,33 +40,29 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 	}
 
 	public List<ListType> getAllVersionsListTypes() {
+		if (isPortal()) {
+			return ListTypeServiceUtil.getListTypes(
+				ProductEntryConstants.LIST_TYPE_PORTAL_ALL_VERSIONS);
+		}
+
 		if (isSocialOffice()) {
 			return ListTypeServiceUtil.getListTypes(
 				ProductEntryConstants.LIST_TYPE_SOCIAL_OFFICE_ALL_VERSIONS);
 		}
 
-		if (isDeveloperTools() || isEnterpriseSearchPremium() ||
-			isEnterpriseSearchStandard() || isManagementTools() ||
-			isMobileExperience() || isProductivityTools()) {
-
-			return ListTypeServiceUtil.getListTypes(
-				ProductEntryConstants.
-					LIST_TYPE_DIGITAL_ENTERPRISE_ALL_VERSIONS);
-		}
-
-		String listType =
+		String majorListType =
 			ProductEntry.class.getName() + StringPool.PERIOD +
 				getVersionsListType();
 
 		String allVersionsListType = ProductEntryConstants.getAllListType(
-			listType);
+			majorListType);
 
 		if (Validator.isNotNull(allVersionsListType)) {
 			return ListTypeServiceUtil.getListTypes(allVersionsListType);
 		}
 
 		return ListTypeServiceUtil.getListTypes(
-			ProductEntryConstants.LIST_TYPE_PORTAL_ALL_VERSIONS);
+			ProductEntryConstants.LIST_TYPE_DIGITAL_ENTERPRISE_ALL_VERSIONS);
 	}
 
 	public String getDisplayName() {

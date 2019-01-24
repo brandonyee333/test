@@ -153,29 +153,87 @@ public class AccountEntryViewDisplayContext {
 		return jsonArray;
 	}
 
+	public JSONObject getEnvCommerceJSONObject(
+			Set<ListType> envCommerceVersions)
+		throws Exception {
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		Set<ListType> envLFRVersions = new HashSet<>();
+
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+		for (ListType listType : envCommerceVersions) {
+			List<ListType> envLFRListTypes =
+				AccountEnvironmentConstants.getEnvListTypes(
+					listType.getListTypeId(),
+					ProductEntryConstants.
+						LIST_TYPE_DIGITAL_ENTERPRISE_ALL_VERSIONS);
+
+			envLFRVersions.addAll(envLFRListTypes);
+
+			JSONObject envCommerceVersionJSONObject =
+				JSONFactoryUtil.createJSONObject();
+
+			JSONObject envCommerceVersionEnvironmentsJSONObject =
+				JSONFactoryUtil.createJSONObject();
+
+			envCommerceVersionEnvironmentsJSONObject.put(
+				"envLFR", toJSONArray(envLFRListTypes));
+
+			envCommerceVersionJSONObject.put(
+				String.valueOf(listType.getListTypeId()),
+				envCommerceVersionEnvironmentsJSONObject);
+
+			jsonArray.put(envCommerceVersionJSONObject);
+		}
+
+		jsonObject.put("envCommerceVersions", jsonArray);
+
+		jsonObject.put(
+			"envLFRVersions",
+			getEnvLFRVersionsJSONArray(envLFRVersions, "commerce"));
+
+		return jsonObject;
+	}
+
 	public JSONObject getEnvironmentConfigurationJSONObject() throws Exception {
 		List<String> productEntryDisplayNames = new ArrayList<>();
 
 		JSONArray productsJSONArray = JSONFactoryUtil.createJSONArray();
 
+		Set<ListType> envCommerceVersions = new HashSet<>();
 		Set<ListType> envLFRVersions = new HashSet<>();
 
 		for (OfferingEntry offeringEntry : _accountEntry.getOfferingEntries()) {
 			ProductEntry productEntry = offeringEntry.getProductEntry();
 
-			if (!productEntryDisplayNames.contains(
+			if (productEntryDisplayNames.contains(
 					productEntry.getDisplayName())) {
 
-				productEntryDisplayNames.add(productEntry.getDisplayName());
+				continue;
+			}
 
+			productEntryDisplayNames.add(productEntry.getDisplayName());
+
+			productsJSONArray.put(getProductJSONObject(productEntry));
+
+			if (productEntry.isCommerce()) {
+				envCommerceVersions.addAll(
+					getCurrentVersionsListTypes(productEntry));
+			}
+			else {
 				envLFRVersions.addAll(
 					getCurrentVersionsListTypes(productEntry));
-
-				productsJSONArray.put(getProductJSONObject(productEntry));
 			}
 		}
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		if (!envCommerceVersions.isEmpty()) {
+			jsonObject.put(
+				"envCommerce", getEnvCommerceJSONObject(envCommerceVersions));
+		}
 
 		jsonObject.put(
 			"envLFRVersions", getEnvLFRVersionsJSONArray(envLFRVersions));
@@ -249,7 +307,7 @@ public class AccountEntryViewDisplayContext {
 	protected List<ListType> getCurrentVersionsListTypes(
 		ProductEntry productEntry) {
 
-		List<ListType> envLFRTypes = new ArrayList<>();
+		List<ListType> productVersionListTypes = new ArrayList<>();
 
 		IntStream intStream = Arrays.stream(
 			ProductEntryConstants.LIST_TYPES_DEPRECATED);
@@ -266,10 +324,10 @@ public class AccountEntryViewDisplayContext {
 				continue;
 			}
 
-			envLFRTypes.add(listType);
+			productVersionListTypes.add(listType);
 		}
 
-		return envLFRTypes;
+		return productVersionListTypes;
 	}
 
 	protected JSONObject getDisplayJSONObject(
@@ -377,7 +435,8 @@ public class AccountEntryViewDisplayContext {
 		return jsonObject;
 	}
 
-	protected JSONObject getEnvLFRJSONObject(ListType listType)
+	protected JSONObject getEnvLFRJSONObject(
+			ListType listType, String... sublistType)
 		throws Exception {
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
@@ -387,14 +446,16 @@ public class AccountEntryViewDisplayContext {
 		jsonObject.put("envLFR", toJSONArray(Arrays.asList(listType)));
 
 		List<ListType> envASListTypes =
-			AccountEnvironmentConstants.getPortalEnvListTypes(
-				listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_AS);
+			AccountEnvironmentConstants.getEnvListTypes(
+				listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_AS,
+				sublistType);
 
 		jsonObject.put("envAS", toJSONArray(envASListTypes));
 
 		List<ListType> envBrowserListTypes =
-			AccountEnvironmentConstants.getPortalEnvListTypes(
-				listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_BROWSER);
+			AccountEnvironmentConstants.getEnvListTypes(
+				listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_BROWSER,
+				sublistType);
 
 		jsonObject.put("envBrowser", toJSONArray(envBrowserListTypes));
 
@@ -403,27 +464,31 @@ public class AccountEntryViewDisplayContext {
 			ProductEntryConstants.isDigitalEnterpriseVersion7_1(listTypeId)) {
 
 			List<ListType> envCSListTypes =
-				AccountEnvironmentConstants.getPortalEnvListTypes(
-					listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_CS);
+				AccountEnvironmentConstants.getEnvListTypes(
+					listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_CS,
+					sublistType);
 
 			jsonObject.put("envCS", toJSONArray(envCSListTypes));
 		}
 
 		List<ListType> envDBListTypes =
-			AccountEnvironmentConstants.getPortalEnvListTypes(
-				listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_DB);
+			AccountEnvironmentConstants.getEnvListTypes(
+				listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_DB,
+				sublistType);
 
 		jsonObject.put("envDB", toJSONArray(envDBListTypes));
 
 		List<ListType> envJVMListTypes =
-			AccountEnvironmentConstants.getPortalEnvListTypes(
-				listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_JVM);
+			AccountEnvironmentConstants.getEnvListTypes(
+				listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_JVM,
+				sublistType);
 
 		jsonObject.put("envJVM", toJSONArray(envJVMListTypes));
 
 		List<ListType> envOSListTypes =
-			AccountEnvironmentConstants.getPortalEnvListTypes(
-				listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_OS);
+			AccountEnvironmentConstants.getEnvListTypes(
+				listTypeId, AccountEnvironmentConstants.LIST_TYPE_ENV_OS,
+				sublistType);
 
 		jsonObject.put("envOS", toJSONArray(envOSListTypes));
 
@@ -436,10 +501,10 @@ public class AccountEntryViewDisplayContext {
 				JSONFactoryUtil.createJSONObject();
 
 			List<ListType> envSearchEnterpriseListTypes =
-				AccountEnvironmentConstants.getPortalEnvListTypes(
+				AccountEnvironmentConstants.getEnvListTypes(
 					listTypeId,
 					AccountEnvironmentConstants.LIST_TYPE_ENV_SEARCH,
-					"enterprise");
+					ArrayUtil.append(new String[] {"enterprise"}, sublistType));
 
 			envSearchEnterpriseJSONObject.put(
 				"enterprise", toJSONArray(envSearchEnterpriseListTypes));
@@ -450,10 +515,10 @@ public class AccountEntryViewDisplayContext {
 				JSONFactoryUtil.createJSONObject();
 
 			List<ListType> envSearchStandardListTypes =
-				AccountEnvironmentConstants.getPortalEnvListTypes(
+				AccountEnvironmentConstants.getEnvListTypes(
 					listTypeId,
 					AccountEnvironmentConstants.LIST_TYPE_ENV_SEARCH,
-					"standard");
+					ArrayUtil.append(new String[] {"standard"}, sublistType));
 
 			envSearchStandardJSONObject.put(
 				"standard", toJSONArray(envSearchStandardListTypes));
@@ -466,7 +531,8 @@ public class AccountEntryViewDisplayContext {
 		return jsonObject;
 	}
 
-	protected JSONArray getEnvLFRVersionsJSONArray(Set<ListType> envLFRVersions)
+	protected JSONArray getEnvLFRVersionsJSONArray(
+			Set<ListType> envLFRVersions, String... sublistType)
 		throws Exception {
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
@@ -476,7 +542,7 @@ public class AccountEntryViewDisplayContext {
 
 			jsonObject.put(
 				String.valueOf(listType.getListTypeId()),
-				getEnvLFRJSONObject(listType));
+				getEnvLFRJSONObject(listType, sublistType));
 
 			jsonArray.put(jsonObject);
 		}
@@ -500,9 +566,18 @@ public class AccountEntryViewDisplayContext {
 		}
 
 		jsonObject.put(
-			"envLFR", toJSONArray(getCurrentVersionsListTypes(productEntry)));
-		jsonObject.put(
 			"productEntryId", String.valueOf(productEntry.getProductEntryId()));
+
+		if (productEntry.isCommerce()) {
+			jsonObject.put(
+				"envCommerce",
+				toJSONArray(getCurrentVersionsListTypes(productEntry)));
+		}
+		else {
+			jsonObject.put(
+				"envLFR",
+				toJSONArray(getCurrentVersionsListTypes(productEntry)));
+		}
 
 		return jsonObject;
 	}

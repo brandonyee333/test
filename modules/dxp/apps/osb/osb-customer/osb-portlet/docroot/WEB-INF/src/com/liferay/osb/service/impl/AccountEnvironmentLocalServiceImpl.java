@@ -18,6 +18,7 @@ import com.liferay.osb.exception.AccountEnvironmentAttachmentException;
 import com.liferay.osb.exception.AccountEnvironmentEnvASException;
 import com.liferay.osb.exception.AccountEnvironmentEnvBrowserException;
 import com.liferay.osb.exception.AccountEnvironmentEnvCSException;
+import com.liferay.osb.exception.AccountEnvironmentEnvCommerceException;
 import com.liferay.osb.exception.AccountEnvironmentEnvDBException;
 import com.liferay.osb.exception.AccountEnvironmentEnvLFRException;
 import com.liferay.osb.exception.AccountEnvironmentEnvOSException;
@@ -55,8 +56,9 @@ public class AccountEnvironmentLocalServiceImpl
 	public AccountEnvironment addAccountEnvironment(
 			long userId, long accountEntryId, long productEntryId, String name,
 			int envOS, String envOSCustom, int envDB, int envJVM, int envAS,
-			int envLFR, int envBrowser, int envCS, String envSearch,
-			List<ObjectValuePair<String, File>> files, List<Integer> types)
+			int envLFR, int envCommerce, int envBrowser, int envCS,
+			String envSearch, List<ObjectValuePair<String, File>> files,
+			List<Integer> types)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
@@ -64,7 +66,7 @@ public class AccountEnvironmentLocalServiceImpl
 
 		validate(
 			0, accountEntryId, productEntryId, name, envOS, envDB, envAS,
-			envLFR, envBrowser, envCS, envSearch, files);
+			envLFR, envCommerce, envBrowser, envCS, envSearch, files);
 
 		long accountEnvironmentId = counterLocalService.increment();
 
@@ -84,6 +86,7 @@ public class AccountEnvironmentLocalServiceImpl
 		accountEnvironment.setEnvJVM(envJVM);
 		accountEnvironment.setEnvAS(envAS);
 		accountEnvironment.setEnvLFR(envLFR);
+		accountEnvironment.setEnvCommerce(envCommerce);
 		accountEnvironment.setEnvBrowser(envBrowser);
 		accountEnvironment.setEnvCS(envCS);
 		accountEnvironment.setEnvSearch(envSearch);
@@ -179,8 +182,9 @@ public class AccountEnvironmentLocalServiceImpl
 	public AccountEnvironment updateAccountEnvironment(
 			long userId, long accountEnvironmentId, long productEntryId,
 			String name, int envOS, String envOSCustom, int envDB, int envJVM,
-			int envAS, int envLFR, int envBrowser, int envCS, String envSearch,
-			List<ObjectValuePair<String, File>> files, List<Integer> types)
+			int envAS, int envLFR, int envCommerce, int envBrowser, int envCS,
+			String envSearch, List<ObjectValuePair<String, File>> files,
+			List<Integer> types)
 		throws PortalException {
 
 		AccountEnvironment accountEnvironment =
@@ -189,8 +193,8 @@ public class AccountEnvironmentLocalServiceImpl
 
 		validate(
 			accountEnvironmentId, accountEnvironment.getAccountEntryId(),
-			productEntryId, name, envOS, envDB, envAS, envLFR, envBrowser,
-			envCS, envSearch, files);
+			productEntryId, name, envOS, envDB, envAS, envLFR, envCommerce,
+			envBrowser, envCS, envSearch, files);
 
 		accountEnvironment.setModifiedDate(new Date());
 		accountEnvironment.setProductEntryId(productEntryId);
@@ -201,6 +205,7 @@ public class AccountEnvironmentLocalServiceImpl
 		accountEnvironment.setEnvJVM(envJVM);
 		accountEnvironment.setEnvAS(envAS);
 		accountEnvironment.setEnvLFR(envLFR);
+		accountEnvironment.setEnvCommerce(envCommerce);
 		accountEnvironment.setEnvBrowser(envBrowser);
 		accountEnvironment.setEnvCS(envCS);
 		accountEnvironment.setEnvSearch(envSearch);
@@ -237,7 +242,7 @@ public class AccountEnvironmentLocalServiceImpl
 	protected void validate(
 			long accountEnvironmentId, long accountEntryId, long productEntryId,
 			String name, int envOS, int envDB, int envAS, int envLFR,
-			int envBrowser, int envCS, String envSearch,
+			int envCommerce, int envBrowser, int envCS, String envSearch,
 			List<ObjectValuePair<String, File>> files)
 		throws PortalException {
 
@@ -316,6 +321,15 @@ public class AccountEnvironmentLocalServiceImpl
 						LIST_TYPE_DIGITAL_ENTERPRISE_ALL_VERSIONS)) {
 
 				throw new AccountEnvironmentEnvLFRException();
+			}
+		}
+
+		if (envCommerce > 0) {
+			if (!isValidListType(
+					envCommerce,
+					ProductEntryConstants.LIST_TYPE_COMMERCE_ALL_VERSIONS)) {
+
+				throw new AccountEnvironmentEnvCommerceException();
 			}
 		}
 

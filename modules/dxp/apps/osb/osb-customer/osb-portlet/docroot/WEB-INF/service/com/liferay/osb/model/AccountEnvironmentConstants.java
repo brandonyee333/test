@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.service.ListTypeServiceUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.HashMap;
@@ -473,64 +474,32 @@ public class AccountEnvironmentConstants {
 		}
 	}
 
-	public static long[] getEnvListTypeIds(long envLFR, String envListType) {
-		if (ProductEntryConstants.isPortalVersion5_2(envLFR)) {
-			return _envPortalVersion52.get(envListType);
-		}
-		else if (ProductEntryConstants.isPortalVersion6_0(envLFR)) {
-			return _envPortalVersion60.get(envListType);
-		}
-		else if (ProductEntryConstants.isPortalVersion6_1(envLFR)) {
-			return _envPortalVersion61.get(envListType);
-		}
-		else if (ProductEntryConstants.isPortalVersion6_2(envLFR)) {
-			return _envPortalVersion62.get(envListType);
-		}
-		else if (ProductEntryConstants.isDigitalEnterpriseVersion7_0(envLFR)) {
-			return _envDigitalEnterpriseVersion70.get(envListType);
-		}
-		else if (ProductEntryConstants.isDigitalEnterpriseVersion7_1(envLFR)) {
-			return _envDigitalEnterpriseVersion71.get(envListType);
-		}
-		else if ((envLFR >=
-					ProductEntryConstants.SOCIAL_OFFICE_VERSION_2_0_3) &&
-				 (envLFR <=
-					 ProductEntryConstants.SOCIAL_OFFICE_VERSION_2_1_0)) {
+	public static List<ListType> getEnvListTypes(
+		long envLFR, String envListType, String... sublistTypes) {
 
-			return _envSocialOfficeVersion2.get(envListType);
+		long[] listTypeIds = null;
+
+		for (int i = sublistTypes.length; i >= 0; i--) {
+			String[] sublistTypeArray = ArrayUtil.subset(sublistTypes, 0, i);
+
+			String sublistType = StringUtil.merge(
+				sublistTypeArray, StringPool.PERIOD);
+
+			if (Validator.isNotNull(sublistType)) {
+				sublistType = StringPool.PERIOD + sublistType;
+			}
+
+			listTypeIds = getEnvListTypeIds(envLFR, envListType + sublistType);
+
+			if (!ArrayUtil.isEmpty(listTypeIds)) {
+				break;
+			}
 		}
-		else if ((envLFR >=
-					ProductEntryConstants.SOCIAL_OFFICE_VERSION_3_0_0) &&
-				 (envLFR <=
-					 ProductEntryConstants.SOCIAL_OFFICE_VERSION_3_1_1)) {
-
-			return _envSocialOfficeVersion3.get(envListType);
-		}
-		else {
-			return _envPortalVersionOther.get(envListType);
-		}
-	}
-
-	public static List<ListType> getPortalEnvListTypes(
-		long envLFR, String envListType) {
-
-		return getPortalEnvListTypes(envLFR, envListType, StringPool.BLANK);
-	}
-
-	public static List<ListType> getPortalEnvListTypes(
-		long envLFR, String envListType, String sublistType) {
 
 		List<ListType> listTypes = ListTypeServiceUtil.getListTypes(
 			envListType);
 
 		listTypes = ListUtil.copy(listTypes);
-
-		if (Validator.isNotNull(sublistType)) {
-			sublistType = StringPool.PERIOD + sublistType;
-		}
-
-		long[] listTypeIds = getEnvListTypeIds(
-			envLFR, envListType + sublistType);
 
 		Iterator<ListType> itr = listTypes.iterator();
 
@@ -543,6 +512,53 @@ public class AccountEnvironmentConstants {
 		}
 
 		return listTypes;
+	}
+
+	protected static long[] getEnvListTypeIds(
+		long listTypeId, String envListType) {
+
+		if (ProductEntryConstants.isCommerce(listTypeId)) {
+			return _envCommerce.get(envListType);
+		}
+		else if (ProductEntryConstants.isPortalVersion5_2(listTypeId)) {
+			return _envPortalVersion52.get(envListType);
+		}
+		else if (ProductEntryConstants.isPortalVersion6_0(listTypeId)) {
+			return _envPortalVersion60.get(envListType);
+		}
+		else if (ProductEntryConstants.isPortalVersion6_1(listTypeId)) {
+			return _envPortalVersion61.get(envListType);
+		}
+		else if (ProductEntryConstants.isPortalVersion6_2(listTypeId)) {
+			return _envPortalVersion62.get(envListType);
+		}
+		else if (ProductEntryConstants.isDigitalEnterpriseVersion7_0(
+					listTypeId)) {
+
+			return _envDigitalEnterpriseVersion70.get(envListType);
+		}
+		else if (ProductEntryConstants.isDigitalEnterpriseVersion7_1(
+					listTypeId)) {
+
+			return _envDigitalEnterpriseVersion71.get(envListType);
+		}
+		else if ((listTypeId >=
+					ProductEntryConstants.SOCIAL_OFFICE_VERSION_2_0_3) &&
+				 (listTypeId <=
+					 ProductEntryConstants.SOCIAL_OFFICE_VERSION_2_1_0)) {
+
+			return _envSocialOfficeVersion2.get(envListType);
+		}
+		else if ((listTypeId >=
+					ProductEntryConstants.SOCIAL_OFFICE_VERSION_3_0_0) &&
+				 (listTypeId <=
+					 ProductEntryConstants.SOCIAL_OFFICE_VERSION_3_1_1)) {
+
+			return _envSocialOfficeVersion3.get(envListType);
+		}
+		else {
+			return _envPortalVersionOther.get(envListType);
+		}
 	}
 
 	private static final long[] _ENV_AS_DIGITAL_ENTERPRISE_VERSION_7_0 = {
@@ -737,6 +753,10 @@ public class AccountEnvironmentConstants {
 		ENV_JVM_ORACLE_SUN_JDK_7
 	};
 
+	private static final long[] _ENV_LFR_COMMERCE = {
+		ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7_1_10
+	};
+
 	private static final long[] _ENV_OS_DIGITAL_ENTERPRISE_VERSION_7_0 = {
 		ENV_OS_AIX_7_1, ENV_OS_AMAZON_LINUX_2, ENV_OS_CENTOS_6, ENV_OS_CENTOS_7,
 		ENV_OS_DEBIAN_7, ENV_OS_DEBIAN_8, ENV_OS_DEBIAN_9,
@@ -825,6 +845,11 @@ public class AccountEnvironmentConstants {
 		_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_1_STANDARD =
 			{ENV_SEARCH_ELASTICSEARCH_6_X, ENV_SEARCH_SOLR_7};
 
+	private static final long[]
+		_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_1_STANDARD_COMMERCE =
+			{ENV_SEARCH_ELASTICSEARCH_6_X};
+
+	private static final Map<String, long[]> _envCommerce = new HashMap<>();
 	private static final Map<String, long[]> _envDigitalEnterpriseVersion70 =
 		new HashMap<>();
 	private static final Map<String, long[]> _envDigitalEnterpriseVersion71 =
@@ -845,6 +870,10 @@ public class AccountEnvironmentConstants {
 		new HashMap<>();
 
 	static {
+		_envCommerce.put(
+			ProductEntryConstants.LIST_TYPE_DIGITAL_ENTERPRISE_ALL_VERSIONS,
+			_ENV_LFR_COMMERCE);
+
 		_envPortalVersion52.put(LIST_TYPE_ENV_AS, _ENV_AS_PORTAL_VERSION_5_2);
 		_envPortalVersion52.put(
 			LIST_TYPE_ENV_BROWSER, _ENV_BROWSER_PORTAL_VERSION_OTHER);
@@ -913,6 +942,9 @@ public class AccountEnvironmentConstants {
 		_envDigitalEnterpriseVersion71.put(
 			LIST_TYPE_ENV_SEARCH + ".standard",
 			_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_1_STANDARD);
+		_envDigitalEnterpriseVersion71.put(
+			LIST_TYPE_ENV_SEARCH + ".standard.commerce",
+			_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_1_STANDARD_COMMERCE);
 
 		_envPortalVersionOther.put(
 			LIST_TYPE_ENV_AS, _ENV_AS_PORTAL_VERSION_OTHER);
