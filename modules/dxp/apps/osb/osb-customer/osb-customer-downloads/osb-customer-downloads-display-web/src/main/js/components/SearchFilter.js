@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const portletId = "com_liferay_osb_customer_downloads_display_web_DownloadsDisplayPortlet";
 
-export default class DownloadsFilters extends React.Component {
+export default class SearchFilters extends React.Component {
 	searchDownloadsFormRef = React.createRef();
 
 	state = {

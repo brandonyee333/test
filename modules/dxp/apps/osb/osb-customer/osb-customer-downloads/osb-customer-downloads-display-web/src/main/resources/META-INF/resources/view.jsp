@@ -84,7 +84,7 @@ PortletURL portletURL = renderResponse.createRenderURL();
 <c:if test="<%= ddmStructureKey.equals(DDMStructureConstants.KEY_DOWNLOAD) %>">
 	<aui:script>
 		Downloads.render(
-			Downloads.DownloadsFilters,
+			Downloads.SearchFilter,
 			{
 				actionURL: '<%= portletURL.toString() %>',
 				currentFileType: '<%= ParamUtil.getString(request, "fileType") %>',
