@@ -303,7 +303,9 @@ liferay.home=${liferay.home}</echo>
 
 								<ant dir="${plugin.path}" inheritAll="false" target="build-service" />
 
-								<ant dir="${plugin.path}" inheritAll="false" target="deploy" />
+								<ant dir="${plugin.path}" inheritAll="false" target="deploy">
+									<property name="lp.version" value="${lp.version}" />
+								</ant>
 							</else>
 						</if>
 
