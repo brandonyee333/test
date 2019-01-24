@@ -29,7 +29,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Jenny Chen
  */
-public class BaseMetricsModelListener<T extends BaseModel<T>>
+public abstract class BaseMetricsModelListener<T extends BaseModel<T>>
 	extends BaseModelListener<T> {
 
 	@Override
@@ -91,10 +91,19 @@ public class BaseMetricsModelListener<T extends BaseModel<T>>
 		}
 	}
 
-	@Reference
-	protected MessageFactory messageFactory;
+	@Reference(unbind = "-")
+	protected void setMessageFactory(MessageFactory messageFactory) {
+		this.messageFactory = messageFactory;
+	}
 
-	@Reference
+	@Reference(unbind = "-")
+	protected void setMessagePublisherUtil(
+		MessagePublisherUtil messagePublisherUtil) {
+
+		this.messagePublisherUtil = messagePublisherUtil;
+	}
+
+	protected MessageFactory messageFactory;
 	protected MessagePublisherUtil messagePublisherUtil;
 
 	private static final Log _log = LogFactoryUtil.getLog(

@@ -61,7 +61,8 @@ public class MetricsPortlet extends MVCPortlet {
 		MetricsModel<?> model = _metricsModelRegistry.getMetricsModel(
 			modelClassName);
 
-		model.deleteAll(modelClassName);
+		model.deleteAll();
+		model.resyncAll();
 	}
 
 	public void syncModel(
@@ -74,7 +75,7 @@ public class MetricsPortlet extends MVCPortlet {
 		MetricsModel<?> model = _metricsModelRegistry.getMetricsModel(
 			modelClassName);
 
-		model.resyncAll(modelClassName);
+		model.resyncAll();
 	}
 
 	@Reference

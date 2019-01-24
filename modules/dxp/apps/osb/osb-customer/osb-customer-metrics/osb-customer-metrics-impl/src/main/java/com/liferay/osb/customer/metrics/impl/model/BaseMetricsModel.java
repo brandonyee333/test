@@ -109,13 +109,25 @@ public abstract class BaseMetricsModel<T extends BaseModel<T>>
 		return model.getModelAttributes();
 	}
 
-	@Reference
+	@Reference(unbind = "-")
+	protected void setMessageFactory(MessageFactory messageFactory) {
+		this.messageFactory = messageFactory;
+	}
+
+	@Reference(unbind = "-")
+	protected void setMessagePublisherUtil(
+		MessagePublisherUtil messagePublisherUtil) {
+
+		this.messagePublisherUtil = messagePublisherUtil;
+	}
+
+	@Reference(unbind = "-")
+	protected void setMetricsModelUtil(MetricsModelUtil metricsModelUtil) {
+		this.metricsModelUtil = metricsModelUtil;
+	}
+
 	protected MessageFactory messageFactory;
-
-	@Reference
 	protected MessagePublisherUtil messagePublisherUtil;
-
-	@Reference
 	protected MetricsModelUtil metricsModelUtil;
 
 	private final Map<String, String> _mappingTables = new HashMap<>();
