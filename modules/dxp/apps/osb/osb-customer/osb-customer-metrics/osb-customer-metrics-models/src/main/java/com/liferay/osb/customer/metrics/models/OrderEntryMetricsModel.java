@@ -16,6 +16,7 @@ package com.liferay.osb.customer.metrics.models;
 
 import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModel;
+import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -41,7 +42,9 @@ public class OrderEntryMetricsModel extends BaseMetricsModel<OrderEntry> {
 	public Map<String, Object> transformAttributes(
 		BaseModel<OrderEntry> model) {
 
-		Map<String, Object> attributes = model.getModelAttributes();
+		Map<String, Object> attributes =
+			_metricsTransformationUtil.transformSharedAttributes(
+				model.getModelAttributes());
 
 		Integer status = (Integer)attributes.get("status");
 
@@ -59,5 +62,8 @@ public class OrderEntryMetricsModel extends BaseMetricsModel<OrderEntry> {
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
+
+	@Reference
+	private MetricsTransformationUtil _metricsTransformationUtil;
 
 }

@@ -16,8 +16,16 @@ package com.liferay.osb.customer.metrics.models;
 
 import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModel;
+import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.OfferingBundle;
+import com.liferay.osb.model.OfferingDefinition;
+import com.liferay.osb.service.OfferingBundleLocalServiceUtil;
+import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -30,8 +38,47 @@ public class OfferingBundleMetricsModel
 	extends BaseMetricsModel<OfferingBundle> {
 
 	@Override
+	public List<String> getMappingValues(BaseModel<OfferingBundle> model) {
+		Map<String, Object> attributes = model.getModelAttributes();
+
+		Long offeringBundleId = (Long)attributes.get("offeringBundleId");
+
+		OfferingBundle offeringBundle =
+			OfferingBundleLocalServiceUtil.fetchOfferingBundle(
+				offeringBundleId);
+
+		List<OfferingDefinition> offeringDefinitions =
+			offeringBundle.getOfferingDefinitions();
+
+		List<String> mappingValues = new ArrayList<>();
+
+		for (OfferingDefinition offeringDefinition : offeringDefinitions) {
+			mappingValues.add(
+				String.valueOf(offeringDefinition.getOfferingDefinitionId()));
+		}
+
+		return mappingValues;
+	}
+
+	@Override
 	public Class getModelClass() {
 		return OfferingBundle.class;
+	}
+
+	@Override
+	public boolean hasMapping() {
+		return true;
+	}
+
+	@Override
+	public Map<String, Object> transformAttributes(
+		BaseModel<OfferingBundle> model) {
+
+		Map<String, Object> attributes =
+			_metricsTransformationUtil.transformSharedAttributes(
+				model.getModelAttributes());
+
+		return attributes;
 	}
 
 	@Reference(
@@ -41,5 +88,8 @@ public class OfferingBundleMetricsModel
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
+
+	@Reference
+	private MetricsTransformationUtil _metricsTransformationUtil;
 
 }

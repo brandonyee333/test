@@ -17,10 +17,10 @@ package com.liferay.osb.customer.metrics.models;
 import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModel;
 import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
-import com.liferay.osb.model.AccountAttachment;
-import com.liferay.osb.model.AccountAttachmentConstants;
 import com.liferay.portal.kernel.model.BaseModel;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.security.audit.storage.model.AuditEvent;
 
 import java.util.Map;
 
@@ -31,41 +31,50 @@ import org.osgi.service.component.annotations.Reference;
  * @author Jenny Chen
  */
 @Component(immediate = true, service = MetricsModel.class)
-public class AccountAttachmentMetricsModel
-	extends BaseMetricsModel<AccountAttachment> {
+public class AuditEventMetricsModel extends BaseMetricsModel<AuditEvent> {
 
 	@Override
 	public Class getModelClass() {
-		return AccountAttachment.class;
+		return AuditEvent.class;
 	}
 
 	@Override
 	public Map<String, Object> transformAttributes(
-		BaseModel<AccountAttachment> model) {
+		BaseModel<AuditEvent> model) {
 
 		Map<String, Object> attributes =
 			_metricsTransformationUtil.transformSharedAttributes(
 				model.getModelAttributes());
 
-		Integer type = (Integer)attributes.get("type");
+		Long auditEventId = (Long)attributes.get("auditEventId");
 
-		if (type != null) {
-			attributes.put(
-				"type", AccountAttachmentConstants.getTypeLabel(type));
+		if (auditEventId != null) {
+			attributes.put("auditEventId", -auditEventId);
+		}
+
+		String className = (String)attributes.get("className");
+		String classPK = (String)attributes.get("classPK");
+
+		if ((className != null) && (classPK != null)) {
+			if (className.equals(User.class.getName())) {
+				User user = _userLocalService.fetchUser(Long.valueOf(classPK));
+
+				if (user != null) {
+					attributes.put("classPK", user.getUuid());
+				}
+				else {
+					attributes.put("classPK", Long.valueOf(classPK));
+				}
+			}
 		}
 
 		return attributes;
 	}
 
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
-	}
-
 	@Reference
 	private MetricsTransformationUtil _metricsTransformationUtil;
+
+	@Reference
+	private UserLocalService _userLocalService;
 
 }

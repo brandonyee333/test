@@ -16,6 +16,7 @@ package com.liferay.osb.customer.metrics.models;
 
 import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModel;
+import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.SupportResponse;
 import com.liferay.osb.model.SupportResponseConstants;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -42,7 +43,9 @@ public class SupportResponseMetricsModel
 	public Map<String, Object> transformAttributes(
 		BaseModel<SupportResponse> model) {
 
-		Map<String, Object> attributes = model.getModelAttributes();
+		Map<String, Object> attributes =
+			_metricsTransformationUtil.transformSharedAttributes(
+				model.getModelAttributes());
 
 		Integer supportLevel = (Integer)attributes.get("supportLevel");
 
@@ -62,5 +65,8 @@ public class SupportResponseMetricsModel
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
+
+	@Reference
+	private MetricsTransformationUtil _metricsTransformationUtil;
 
 }

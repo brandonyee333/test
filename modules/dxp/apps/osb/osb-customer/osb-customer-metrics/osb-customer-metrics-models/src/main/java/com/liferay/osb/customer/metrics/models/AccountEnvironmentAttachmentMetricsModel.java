@@ -16,6 +16,7 @@ package com.liferay.osb.customer.metrics.models;
 
 import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModel;
+import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.AccountEnvironmentAttachment;
 import com.liferay.osb.model.AccountEnvironmentAttachmentConstants;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -42,7 +43,9 @@ public class AccountEnvironmentAttachmentMetricsModel
 	public Map<String, Object> transformAttributes(
 		BaseModel<AccountEnvironmentAttachment> model) {
 
-		Map<String, Object> attributes = model.getModelAttributes();
+		Map<String, Object> attributes =
+			_metricsTransformationUtil.transformSharedAttributes(
+				model.getModelAttributes());
 
 		Integer type = (Integer)attributes.get("type");
 
@@ -62,5 +65,8 @@ public class AccountEnvironmentAttachmentMetricsModel
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
+
+	@Reference
+	private MetricsTransformationUtil _metricsTransformationUtil;
 
 }

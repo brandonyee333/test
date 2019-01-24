@@ -17,8 +17,7 @@ package com.liferay.osb.customer.metrics.models;
 import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModel;
 import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
-import com.liferay.osb.model.AccountAttachment;
-import com.liferay.osb.model.AccountAttachmentConstants;
+import com.liferay.osb.model.ExternalIdMapper;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
@@ -31,27 +30,26 @@ import org.osgi.service.component.annotations.Reference;
  * @author Jenny Chen
  */
 @Component(immediate = true, service = MetricsModel.class)
-public class AccountAttachmentMetricsModel
-	extends BaseMetricsModel<AccountAttachment> {
+public class ExternalIdMapperMetricsModel
+	extends BaseMetricsModel<ExternalIdMapper> {
 
 	@Override
 	public Class getModelClass() {
-		return AccountAttachment.class;
+		return ExternalIdMapper.class;
 	}
 
 	@Override
 	public Map<String, Object> transformAttributes(
-		BaseModel<AccountAttachment> model) {
+		BaseModel<ExternalIdMapper> model) {
 
 		Map<String, Object> attributes =
 			_metricsTransformationUtil.transformSharedAttributes(
 				model.getModelAttributes());
 
-		Integer type = (Integer)attributes.get("type");
+		Long externalIdMapperId = (Long)attributes.get("externalIdMapperId");
 
-		if (type != null) {
-			attributes.put(
-				"type", AccountAttachmentConstants.getTypeLabel(type));
+		if (externalIdMapperId != null) {
+			attributes.put("externalIdMapperId", -externalIdMapperId);
 		}
 
 		return attributes;

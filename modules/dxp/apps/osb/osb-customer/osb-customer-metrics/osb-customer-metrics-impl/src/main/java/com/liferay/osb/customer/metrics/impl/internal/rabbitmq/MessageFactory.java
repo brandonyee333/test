@@ -165,22 +165,26 @@ public class MessageFactory {
 		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			String lowerCaseKey = StringUtil.lowerCase(entry.getKey());
 
-			if (lowerCaseKey.endsWith(StringUtil.lowerCase("userId")) &&
+			if (lowerCaseKey.endsWith(StringUtil.lowerCase("classNameId")) &&
 				(metricsModel != null)) {
 
-				if (entry.getValue() instanceof Long) {
-					attributesJSONObject.put(
-						entry.getKey(), String.valueOf(entry.getValue()));
-				}
-				else {
-					JSONObject uuidJSONObject =
-						JSONFactoryUtil.createJSONObject();
+				JSONObject classNameJSONObject =
+					JSONFactoryUtil.createJSONObject();
 
-					uuidJSONObject.put(
-						"uuid_", String.valueOf(entry.getValue()));
+				classNameJSONObject.put("value", entry.getValue());
 
-					attributesJSONObject.put(entry.getKey(), uuidJSONObject);
-				}
+				attributesJSONObject.put(entry.getKey(), classNameJSONObject);
+			}
+			else if ((lowerCaseKey.endsWith(StringUtil.lowerCase("classPK")) ||
+					  lowerCaseKey.endsWith(StringUtil.lowerCase("userId"))) &&
+					 !(entry.getValue() instanceof Long) &&
+					 (metricsModel != null)) {
+
+				JSONObject uuidJSONObject = JSONFactoryUtil.createJSONObject();
+
+				uuidJSONObject.put("uuid_", String.valueOf(entry.getValue()));
+
+				attributesJSONObject.put(entry.getKey(), uuidJSONObject);
 			}
 			else {
 				attributesJSONObject.put(

@@ -16,8 +16,12 @@ package com.liferay.osb.customer.metrics.models;
 
 import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModel;
+import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.SupportRegion;
+import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+
+import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -33,6 +37,17 @@ public class SupportRegionMetricsModel extends BaseMetricsModel<SupportRegion> {
 		return SupportRegion.class;
 	}
 
+	@Override
+	public Map<String, Object> transformAttributes(
+		BaseModel<SupportRegion> model) {
+
+		Map<String, Object> attributes =
+			_metricsTransformationUtil.transformSharedAttributes(
+				model.getModelAttributes());
+
+		return attributes;
+	}
+
 	@Reference(
 		target = "(module.service.lifecycle=osb.portlet.initialized)",
 		unbind = "-"
@@ -40,5 +55,8 @@ public class SupportRegionMetricsModel extends BaseMetricsModel<SupportRegion> {
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
+
+	@Reference
+	private MetricsTransformationUtil _metricsTransformationUtil;
 
 }

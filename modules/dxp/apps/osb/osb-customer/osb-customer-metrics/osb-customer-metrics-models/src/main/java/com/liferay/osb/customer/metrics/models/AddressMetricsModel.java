@@ -17,10 +17,8 @@ package com.liferay.osb.customer.metrics.models;
 import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModel;
 import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
-import com.liferay.osb.model.AccountAttachment;
-import com.liferay.osb.model.AccountAttachmentConstants;
+import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.BaseModel;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import java.util.Map;
 
@@ -31,38 +29,28 @@ import org.osgi.service.component.annotations.Reference;
  * @author Jenny Chen
  */
 @Component(immediate = true, service = MetricsModel.class)
-public class AccountAttachmentMetricsModel
-	extends BaseMetricsModel<AccountAttachment> {
+public class AddressMetricsModel extends BaseMetricsModel<Address> {
 
 	@Override
 	public Class getModelClass() {
-		return AccountAttachment.class;
+		return Address.class;
 	}
 
 	@Override
-	public Map<String, Object> transformAttributes(
-		BaseModel<AccountAttachment> model) {
-
+	public Map<String, Object> transformAttributes(BaseModel<Address> model) {
 		Map<String, Object> attributes =
 			_metricsTransformationUtil.transformSharedAttributes(
 				model.getModelAttributes());
 
-		Integer type = (Integer)attributes.get("type");
+		attributes.remove("uuid");
 
-		if (type != null) {
-			attributes.put(
-				"type", AccountAttachmentConstants.getTypeLabel(type));
+		Long addressId = (Long)attributes.get("addressId");
+
+		if (addressId != null) {
+			attributes.put("addressId", -addressId);
 		}
 
 		return attributes;
-	}
-
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
 	@Reference

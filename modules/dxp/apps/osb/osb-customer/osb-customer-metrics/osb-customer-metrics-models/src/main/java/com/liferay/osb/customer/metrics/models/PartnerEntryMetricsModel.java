@@ -16,11 +16,16 @@ package com.liferay.osb.customer.metrics.models;
 
 import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModel;
+import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.PartnerEntry;
+import com.liferay.osb.model.SupportRegion;
+import com.liferay.osb.service.PartnerEntryLocalServiceUtil;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
@@ -33,15 +38,40 @@ import org.osgi.service.component.annotations.Reference;
 public class PartnerEntryMetricsModel extends BaseMetricsModel<PartnerEntry> {
 
 	@Override
+	public List<String> getMappingValues(BaseModel<PartnerEntry> model) {
+		Map<String, Object> attributes = model.getModelAttributes();
+
+		Long partnerEntryId = (Long)attributes.get("partnerEntryId");
+
+		PartnerEntry partnerEntry =
+			PartnerEntryLocalServiceUtil.fetchPartnerEntry(partnerEntryId);
+
+		SupportRegion supportRegion = partnerEntry.getSupportRegion();
+
+		List<String> mappingValues = new ArrayList<>();
+
+		mappingValues.add(String.valueOf(supportRegion.getSupportRegionId()));
+
+		return mappingValues;
+	}
+
+	@Override
 	public Class getModelClass() {
 		return PartnerEntry.class;
+	}
+
+	@Override
+	public boolean hasMapping() {
+		return true;
 	}
 
 	@Override
 	public Map<String, Object> transformAttributes(
 		BaseModel<PartnerEntry> model) {
 
-		Map<String, Object> attributes = model.getModelAttributes();
+		Map<String, Object> attributes =
+			_metricsTransformationUtil.transformSharedAttributes(
+				model.getModelAttributes());
 
 		Integer status = (Integer)attributes.get("status");
 
@@ -59,5 +89,8 @@ public class PartnerEntryMetricsModel extends BaseMetricsModel<PartnerEntry> {
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
+
+	@Reference
+	private MetricsTransformationUtil _metricsTransformationUtil;
 
 }

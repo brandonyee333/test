@@ -16,6 +16,7 @@ package com.liferay.osb.customer.metrics.models;
 
 import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModel;
+import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.AccountWorker;
 import com.liferay.osb.model.AccountWorkerConstants;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -41,7 +42,9 @@ public class AccountWorkerMetricsModel extends BaseMetricsModel<AccountWorker> {
 	public Map<String, Object> transformAttributes(
 		BaseModel<AccountWorker> model) {
 
-		Map<String, Object> attributes = model.getModelAttributes();
+		Map<String, Object> attributes =
+			_metricsTransformationUtil.transformSharedAttributes(
+				model.getModelAttributes());
 
 		Integer role = (Integer)attributes.get("role");
 
@@ -59,5 +62,8 @@ public class AccountWorkerMetricsModel extends BaseMetricsModel<AccountWorker> {
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
+
+	@Reference
+	private MetricsTransformationUtil _metricsTransformationUtil;
 
 }

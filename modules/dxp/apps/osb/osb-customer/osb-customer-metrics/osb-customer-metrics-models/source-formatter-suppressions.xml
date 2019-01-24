@@ -3,5 +3,7 @@
 <suppressions>
 	<source-check>
 		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/metrics/models/AccountEntryMetricsModel.java" />>
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/metrics/models/OfferingBundleMetricsModel.java" />>
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/metrics/models/PartnerEntryMetricsModel.java" />>
 	</source-check>
 </suppressions>

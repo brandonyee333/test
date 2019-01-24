@@ -16,15 +16,14 @@ package com.liferay.osb.customer.metrics.models;
 
 import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModel;
+import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.model.BaseModel;
-import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
-import com.liferay.portal.kernel.service.UserLocalService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,23 +73,9 @@ public class AccountEntryMetricsModel extends BaseMetricsModel<AccountEntry> {
 	public Map<String, Object> transformAttributes(
 		BaseModel<AccountEntry> model) {
 
-		Map<String, Object> attributes = model.getModelAttributes();
-
-		Long userId = (Long)attributes.get("userId");
-
-		User user = _userLocalService.fetchUser(userId);
-
-		if (user != null) {
-			attributes.put("userId", user.getUuid());
-		}
-
-		Long modifiedUserId = (Long)attributes.get("modifiedUserId");
-
-		User modifiedUser = _userLocalService.fetchUser(modifiedUserId);
-
-		if (modifiedUser != null) {
-			attributes.put("modifiedUserId", modifiedUser.getUuid());
-		}
+		Map<String, Object> attributes =
+			_metricsTransformationUtil.transformSharedAttributes(
+				model.getModelAttributes());
 
 		Integer type = (Integer)attributes.get("type");
 
@@ -129,6 +114,6 @@ public class AccountEntryMetricsModel extends BaseMetricsModel<AccountEntry> {
 	}
 
 	@Reference
-	private UserLocalService _userLocalService;
+	private MetricsTransformationUtil _metricsTransformationUtil;
 
 }
