@@ -9,3 +9,15 @@ app.artifacts-1.0.0=\
 app.change.log-1.0.0=LPS-77358 LPS-77429 LPS-77699 LPS-78232 LPS-78265 LPS-78268 LPS-78485 LPS-78640 LPS-78887
 
 app.git.id-1.0.0=43518c6d86eb6694e4b604bbd089878a5042b31a
+
+#
+# Liferay App Version 1.0.1
+#
+
+app.artifacts-1.0.1=\
+	com.liferay.portal.search.elasticsearch6.api-1.0.4.jar,\
+	com.liferay.portal.search.elasticsearch6.impl-1.0.20.jar
+
+app.change.log-1.0.1=LPS-77358 LPS-77429 LPS-77699 LPS-78232 LPS-78265 LPS-78268 LPS-78485 LPS-78640 LPS-78887 
+
+app.git.id-1.0.1=d49061d1cf6fb8a1040e16da1314dd67565c17bc
