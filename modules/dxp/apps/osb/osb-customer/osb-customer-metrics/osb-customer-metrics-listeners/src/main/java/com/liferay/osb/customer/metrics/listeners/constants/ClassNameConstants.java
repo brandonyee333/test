@@ -17,7 +17,7 @@ package com.liferay.osb.customer.metrics.listeners.constants;
 /**
  * @author Jenny Chen
  */
-public class MetricsListenerConstants {
+public class ClassNameConstants {
 
 	public static final long ACCOUNT_ENTRY_CLASS_NAME_ID = 1400963;
 

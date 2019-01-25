@@ -15,14 +15,12 @@
 package com.liferay.osb.customer.metrics.listeners;
 
 import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModelListener;
-import com.liferay.osb.customer.metrics.listeners.constants.MetricsListenerConstants;
+import com.liferay.osb.customer.metrics.listeners.constants.ClassNameConstants;
 import com.liferay.osb.model.ExternalIdMapper;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.util.ArrayUtil;
-
-import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -38,15 +36,13 @@ public class ExternalIdMapperModelListener
 	public boolean ignoreUpdate(ExternalIdMapper externalIdMapper)
 		throws ModelListenerException {
 
-		Map<String, Object> attributes = externalIdMapper.getModelAttributes();
+		if (ArrayUtil.contains(
+				_OSB_CLASS_NAME_IDS, externalIdMapper.getClassNameId())) {
 
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (!ArrayUtil.contains(_OSB_CLASS_NAME_IDS, classNameId)) {
-			return true;
+			return false;
 		}
 
-		return false;
+		return true;
 	}
 
 	@Reference(
@@ -58,8 +54,8 @@ public class ExternalIdMapperModelListener
 	}
 
 	private static final long[] _OSB_CLASS_NAME_IDS = {
-		MetricsListenerConstants.ACCOUNT_ENTRY_CLASS_NAME_ID,
-		MetricsListenerConstants.PARTNER_ENTRY_CLASS_NAME_ID
+		ClassNameConstants.ACCOUNT_ENTRY_CLASS_NAME_ID,
+		ClassNameConstants.PARTNER_ENTRY_CLASS_NAME_ID
 	};
 
 }

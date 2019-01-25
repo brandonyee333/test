@@ -15,13 +15,11 @@
 package com.liferay.osb.customer.metrics.listeners;
 
 import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModelListener;
-import com.liferay.osb.customer.metrics.listeners.constants.MetricsListenerConstants;
+import com.liferay.osb.customer.metrics.listeners.constants.ClassNameConstants;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.security.audit.storage.model.AuditEvent;
-
-import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -36,19 +34,17 @@ public class AuditEventModelListener
 	public boolean ignoreUpdate(AuditEvent auditEvent)
 		throws ModelListenerException {
 
-		Map<String, Object> attributes = auditEvent.getModelAttributes();
+		if (ArrayUtil.contains(
+				_AUDIT_EVENT_CLASS_NAMES, auditEvent.getClassName())) {
 
-		String className = (String)attributes.get("className");
-
-		if (!ArrayUtil.contains(_AUDIT_EVENT_CLASS_NAMES, className)) {
-			return true;
+			return false;
 		}
 
-		return false;
+		return true;
 	}
 
 	private static final String[] _AUDIT_EVENT_CLASS_NAMES = {
-		MetricsListenerConstants.DOWNLOAD_PORTLET_CLASS_NAME
+		ClassNameConstants.DOWNLOAD_PORTLET_CLASS_NAME
 	};
 
 }

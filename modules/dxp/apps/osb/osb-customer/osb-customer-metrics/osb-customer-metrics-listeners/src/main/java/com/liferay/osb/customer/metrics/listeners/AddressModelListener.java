@@ -15,13 +15,11 @@
 package com.liferay.osb.customer.metrics.listeners;
 
 import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModelListener;
-import com.liferay.osb.customer.metrics.listeners.constants.MetricsListenerConstants;
+import com.liferay.osb.customer.metrics.listeners.constants.ClassNameConstants;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.util.ArrayUtil;
-
-import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -33,20 +31,16 @@ public class AddressModelListener extends BaseMetricsModelListener<Address> {
 
 	@Override
 	public boolean ignoreUpdate(Address address) throws ModelListenerException {
-		Map<String, Object> attributes = address.getModelAttributes();
-
-		Long classNameId = (Long)attributes.get("classNameId");
-
-		if (!ArrayUtil.contains(_OSB_CLASS_NAME_IDS, classNameId)) {
-			return true;
+		if (ArrayUtil.contains(_OSB_CLASS_NAME_IDS, address.getClassNameId())) {
+			return false;
 		}
 
-		return false;
+		return true;
 	}
 
 	private static final long[] _OSB_CLASS_NAME_IDS = {
-		MetricsListenerConstants.ACCOUNT_ENTRY_CLASS_NAME_ID,
-		MetricsListenerConstants.PARTNER_ENTRY_CLASS_NAME_ID
+		ClassNameConstants.ACCOUNT_ENTRY_CLASS_NAME_ID,
+		ClassNameConstants.PARTNER_ENTRY_CLASS_NAME_ID
 	};
 
 }
