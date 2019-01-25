@@ -29,7 +29,13 @@
 
 	<%
 	ModelListenerException mle = (ModelListenerException)errorException;
+
+	String message = mle.getLocalizedMessage();
+
+	if (message.contains("Server returned status 429")) {
+		message = LanguageUtil.get(request, "zendesk-rate-limit-exceeded");
+	}
 	%>
 
-	<%= HtmlUtil.escape(mle.getLocalizedMessage()) %>
+	<%= HtmlUtil.escape(message) %>
 </liferay-ui:error>
