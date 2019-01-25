@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,7 +39,18 @@ public class OfferingBundleMetricsModel
 	extends BaseMetricsModel<OfferingBundle> {
 
 	@Override
-	public List<String> getMappingValues(BaseModel<OfferingBundle> model) {
+	public Map<String, String> getMappingTables() throws Exception {
+		Map<String, String> mappingTablesMap = new HashMap<>();
+
+		mappingTablesMap.put("OfferingDefinition", "offeringDefinitionId");
+
+		return mappingTablesMap;
+	}
+
+	@Override
+	public Map<String, List<String>> getMappingValues(
+		BaseModel<OfferingBundle> model) {
+
 		Map<String, Object> attributes = model.getModelAttributes();
 
 		Long offeringBundleId = (Long)attributes.get("offeringBundleId");
@@ -50,12 +62,16 @@ public class OfferingBundleMetricsModel
 		List<OfferingDefinition> offeringDefinitions =
 			offeringBundle.getOfferingDefinitions();
 
-		List<String> mappingValues = new ArrayList<>();
+		List<String> offeringDefinitionsValues = new ArrayList<>();
 
 		for (OfferingDefinition offeringDefinition : offeringDefinitions) {
-			mappingValues.add(
+			offeringDefinitionsValues.add(
 				String.valueOf(offeringDefinition.getOfferingDefinitionId()));
 		}
+
+		Map<String, List<String>> mappingValues = new HashMap<>();
+
+		mappingValues.put("offeringBundleId", offeringDefinitionsValues);
 
 		return mappingValues;
 	}

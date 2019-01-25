@@ -21,11 +21,7 @@ import com.liferay.osb.customer.metrics.impl.internal.rabbitmq.MessagePublisherU
 import com.liferay.osb.customer.metrics.impl.internal.util.MetricsModelUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.BaseModel;
-import com.liferay.portal.kernel.util.StringUtil;
 
-import java.lang.reflect.Field;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,41 +45,10 @@ public abstract class BaseMetricsModel<T extends BaseModel<T>>
 	}
 
 	public Map<String, String> getMappingTables() throws Exception {
-		List<String> mappingTableNames = new ArrayList<>();
-
-		Class<T> modelImplClass = metricsModelUtil.getModelImplClass(this);
-
-		for (Field field : modelImplClass.getFields()) {
-			String name = field.getName();
-
-			if (name.startsWith("MAPPING_TABLE") && name.endsWith("NAME")) {
-				mappingTableNames.add((String)field.get(null));
-			}
-		}
-
-		for (String mappingTableName : mappingTableNames) {
-			Field field = modelImplClass.getField(
-				"MAPPING_TABLE_" + StringUtil.toUpperCase(mappingTableName) +
-					"_COLUMNS");
-
-			Object[][] columns = (Object[][])field.get(null);
-
-			for (Object[] column : columns) {
-				String columnName = (String)column[0];
-
-				if (!columnName.equals(
-						metricsModelUtil.getModelPrimaryKeyName(this)) &&
-					!columnName.equals("companyId")) {
-
-					_mappingTables.put(mappingTableName, columnName);
-				}
-			}
-		}
-
 		return _mappingTables;
 	}
 
-	public List<String> getMappingValues(BaseModel<T> model) {
+	public Map<String, List<String>> getMappingValues(BaseModel<T> model) {
 		return _mappingValues;
 	}
 
@@ -131,6 +96,6 @@ public abstract class BaseMetricsModel<T extends BaseModel<T>>
 	protected MetricsModelUtil metricsModelUtil;
 
 	private final Map<String, String> _mappingTables = new HashMap<>();
-	private final List<String> _mappingValues = new ArrayList<>();
+	private final Map<String, List<String>> _mappingValues = new HashMap<>();
 
 }

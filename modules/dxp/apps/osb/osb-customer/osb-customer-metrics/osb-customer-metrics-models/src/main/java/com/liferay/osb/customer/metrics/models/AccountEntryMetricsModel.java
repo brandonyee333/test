@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +40,18 @@ import org.osgi.service.component.annotations.Reference;
 public class AccountEntryMetricsModel extends BaseMetricsModel<AccountEntry> {
 
 	@Override
-	public List<String> getMappingValues(BaseModel<AccountEntry> model) {
+	public Map<String, String> getMappingTables() throws Exception {
+		Map<String, String> mappingTablesMap = new HashMap<>();
+
+		mappingTablesMap.put("SupportRegion", "supportRegionId");
+
+		return mappingTablesMap;
+	}
+
+	@Override
+	public Map<String, List<String>> getMappingValues(
+		BaseModel<AccountEntry> model) {
+
 		Map<String, Object> attributes = model.getModelAttributes();
 
 		Long accountEntryId = (Long)attributes.get("accountEntryId");
@@ -49,12 +61,16 @@ public class AccountEntryMetricsModel extends BaseMetricsModel<AccountEntry> {
 
 		List<SupportRegion> supportRegions = accountEntry.getSupportRegions();
 
-		List<String> mappingValues = new ArrayList<>();
+		List<String> supportRegionValues = new ArrayList<>();
 
 		for (SupportRegion supportRegion : supportRegions) {
-			mappingValues.add(
+			supportRegionValues.add(
 				String.valueOf(supportRegion.getSupportRegionId()));
 		}
+
+		Map<String, List<String>> mappingValues = new HashMap<>();
+
+		mappingValues.put("accountEntryId", supportRegionValues);
 
 		return mappingValues;
 	}

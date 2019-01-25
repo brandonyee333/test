@@ -90,10 +90,10 @@ public class MetricsModelUtil {
 		return modelClassName.substring(pos + 1);
 	}
 
-	public String getModelPrimaryKeyName(MetricsModel metricsModel)
+	public String getModelPrimaryKeyName(BaseModel<?> model)
 		throws Exception {
 
-		Class<?> modelImplClass = getModelImplClass(metricsModel);
+		Class<?> modelImplClass = model.getClass();
 
 		Field field = modelImplClass.getField("TABLE_SQL_CREATE");
 

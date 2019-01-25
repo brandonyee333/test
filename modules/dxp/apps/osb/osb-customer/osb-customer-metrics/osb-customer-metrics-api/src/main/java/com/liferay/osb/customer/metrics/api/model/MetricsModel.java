@@ -28,7 +28,7 @@ public interface MetricsModel<T> {
 
 	public Map<String, String> getMappingTables() throws Exception;
 
-	public List<String> getMappingValues(BaseModel<T> model);
+	public Map<String, List<String>> getMappingValues(BaseModel<T> model);
 
 	public Class<T> getModelClass();
 
