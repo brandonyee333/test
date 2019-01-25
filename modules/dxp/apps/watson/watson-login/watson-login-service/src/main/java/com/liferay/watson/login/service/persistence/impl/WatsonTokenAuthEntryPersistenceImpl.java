@@ -79,23 +79,23 @@ public class WatsonTokenAuthEntryPersistenceImpl extends BasePersistenceImpl<Wat
 		".List1";
 	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
 		".List2";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+	private final FinderPath _finderPathWithPaginationFindAll = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
 			WatsonTokenAuthEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+	private final FinderPath _finderPathWithoutPaginationFindAll = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
 			WatsonTokenAuthEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+	private final FinderPath _finderPathCountAll = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
-	public static final FinderPath FINDER_PATH_FETCH_BY_USERID = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+	private final FinderPath _finderPathFetchByUserId = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
 			WatsonTokenAuthEntryImpl.class, FINDER_CLASS_NAME_ENTITY,
 			"fetchByUserId", new String[] { Long.class.getName() },
 			WatsonTokenAuthEntryModelImpl.USERID_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_USERID = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+	private final FinderPath _finderPathCountByUserId = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUserId",
 			new String[] { Long.class.getName() });
@@ -158,7 +158,7 @@ public class WatsonTokenAuthEntryPersistenceImpl extends BasePersistenceImpl<Wat
 		Object result = null;
 
 		if (retrieveFromCache) {
-			result = finderCache.getResult(FINDER_PATH_FETCH_BY_USERID,
+			result = finderCache.getResult(_finderPathFetchByUserId,
 					finderArgs, this);
 		}
 
@@ -193,8 +193,8 @@ public class WatsonTokenAuthEntryPersistenceImpl extends BasePersistenceImpl<Wat
 				List<WatsonTokenAuthEntry> list = q.list();
 
 				if (list.isEmpty()) {
-					finderCache.putResult(FINDER_PATH_FETCH_BY_USERID,
-						finderArgs, list);
+					finderCache.putResult(_finderPathFetchByUserId, finderArgs,
+						list);
 				}
 				else {
 					if (list.size() > 1) {
@@ -216,7 +216,7 @@ public class WatsonTokenAuthEntryPersistenceImpl extends BasePersistenceImpl<Wat
 				}
 			}
 			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_FETCH_BY_USERID, finderArgs);
+				finderCache.removeResult(_finderPathFetchByUserId, finderArgs);
 
 				throw processException(e);
 			}
@@ -255,7 +255,7 @@ public class WatsonTokenAuthEntryPersistenceImpl extends BasePersistenceImpl<Wat
 	 */
 	@Override
 	public int countByUserId(long userId) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_USERID;
+		FinderPath finderPath = _finderPathCountByUserId;
 
 		Object[] finderArgs = new Object[] { userId };
 
@@ -299,7 +299,7 @@ public class WatsonTokenAuthEntryPersistenceImpl extends BasePersistenceImpl<Wat
 	}
 
 	private static final String _FINDER_COLUMN_USERID_USERID_2 = "watsonTokenAuthEntry.userId = ?";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_C_U = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+	private final FinderPath _finderPathWithPaginationFindByC_U = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
 			WatsonTokenAuthEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_U",
@@ -309,14 +309,14 @@ public class WatsonTokenAuthEntryPersistenceImpl extends BasePersistenceImpl<Wat
 			Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_U = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+	private final FinderPath _finderPathWithoutPaginationFindByC_U = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
 			WatsonTokenAuthEntryImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_U",
 			new String[] { Long.class.getName(), Long.class.getName() },
 			WatsonTokenAuthEntryModelImpl.COMPANYID_COLUMN_BITMASK |
 			WatsonTokenAuthEntryModelImpl.USERID_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_C_U = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+	private final FinderPath _finderPathCountByC_U = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_U",
 			new String[] { Long.class.getName(), Long.class.getName() });
@@ -401,11 +401,11 @@ public class WatsonTokenAuthEntryPersistenceImpl extends BasePersistenceImpl<Wat
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 				(orderByComparator == null)) {
 			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_U;
+			finderPath = _finderPathWithoutPaginationFindByC_U;
 			finderArgs = new Object[] { companyId, userId };
 		}
 		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_C_U;
+			finderPath = _finderPathWithPaginationFindByC_U;
 			finderArgs = new Object[] {
 					companyId, userId,
 					
@@ -795,7 +795,7 @@ public class WatsonTokenAuthEntryPersistenceImpl extends BasePersistenceImpl<Wat
 	 */
 	@Override
 	public int countByC_U(long companyId, long userId) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_C_U;
+		FinderPath finderPath = _finderPathCountByC_U;
 
 		Object[] finderArgs = new Object[] { companyId, userId };
 
@@ -878,7 +878,7 @@ public class WatsonTokenAuthEntryPersistenceImpl extends BasePersistenceImpl<Wat
 			WatsonTokenAuthEntryImpl.class,
 			watsonTokenAuthEntry.getPrimaryKey(), watsonTokenAuthEntry);
 
-		finderCache.putResult(FINDER_PATH_FETCH_BY_USERID,
+		finderCache.putResult(_finderPathFetchByUserId,
 			new Object[] { watsonTokenAuthEntry.getUserId() },
 			watsonTokenAuthEntry);
 
@@ -959,9 +959,9 @@ public class WatsonTokenAuthEntryPersistenceImpl extends BasePersistenceImpl<Wat
 		WatsonTokenAuthEntryModelImpl watsonTokenAuthEntryModelImpl) {
 		Object[] args = new Object[] { watsonTokenAuthEntryModelImpl.getUserId() };
 
-		finderCache.putResult(FINDER_PATH_COUNT_BY_USERID, args,
-			Long.valueOf(1), false);
-		finderCache.putResult(FINDER_PATH_FETCH_BY_USERID, args,
+		finderCache.putResult(_finderPathCountByUserId, args, Long.valueOf(1),
+			false);
+		finderCache.putResult(_finderPathFetchByUserId, args,
 			watsonTokenAuthEntryModelImpl, false);
 	}
 
@@ -973,18 +973,18 @@ public class WatsonTokenAuthEntryPersistenceImpl extends BasePersistenceImpl<Wat
 					watsonTokenAuthEntryModelImpl.getUserId()
 				};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_USERID, args);
+			finderCache.removeResult(_finderPathCountByUserId, args);
+			finderCache.removeResult(_finderPathFetchByUserId, args);
 		}
 
 		if ((watsonTokenAuthEntryModelImpl.getColumnBitmask() &
-				FINDER_PATH_FETCH_BY_USERID.getColumnBitmask()) != 0) {
+				_finderPathFetchByUserId.getColumnBitmask()) != 0) {
 			Object[] args = new Object[] {
 					watsonTokenAuthEntryModelImpl.getOriginalUserId()
 				};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_USERID, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_USERID, args);
+			finderCache.removeResult(_finderPathCountByUserId, args);
+			finderCache.removeResult(_finderPathFetchByUserId, args);
 		}
 	}
 
@@ -1146,25 +1146,24 @@ public class WatsonTokenAuthEntryPersistenceImpl extends BasePersistenceImpl<Wat
 					watsonTokenAuthEntryModelImpl.getUserId()
 				};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_C_U, args);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_U,
-				args);
+			finderCache.removeResult(_finderPathCountByC_U, args);
+			finderCache.removeResult(_finderPathWithoutPaginationFindByC_U, args);
 
-			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
+			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(_finderPathWithoutPaginationFindAll,
 				FINDER_ARGS_EMPTY);
 		}
 
 		else {
 			if ((watsonTokenAuthEntryModelImpl.getColumnBitmask() &
-					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_U.getColumnBitmask()) != 0) {
+					_finderPathWithoutPaginationFindByC_U.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
 						watsonTokenAuthEntryModelImpl.getOriginalCompanyId(),
 						watsonTokenAuthEntryModelImpl.getOriginalUserId()
 					};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_C_U, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_U,
+				finderCache.removeResult(_finderPathCountByC_U, args);
+				finderCache.removeResult(_finderPathWithoutPaginationFindByC_U,
 					args);
 
 				args = new Object[] {
@@ -1172,8 +1171,8 @@ public class WatsonTokenAuthEntryPersistenceImpl extends BasePersistenceImpl<Wat
 						watsonTokenAuthEntryModelImpl.getUserId()
 					};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_C_U, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_C_U,
+				finderCache.removeResult(_finderPathCountByC_U, args);
+				finderCache.removeResult(_finderPathWithoutPaginationFindByC_U,
 					args);
 			}
 		}
@@ -1449,11 +1448,11 @@ public class WatsonTokenAuthEntryPersistenceImpl extends BasePersistenceImpl<Wat
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 				(orderByComparator == null)) {
 			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+			finderPath = _finderPathWithoutPaginationFindAll;
 			finderArgs = FINDER_ARGS_EMPTY;
 		}
 		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
+			finderPath = _finderPathWithPaginationFindAll;
 			finderArgs = new Object[] { start, end, orderByComparator };
 		}
 
@@ -1542,7 +1541,7 @@ public class WatsonTokenAuthEntryPersistenceImpl extends BasePersistenceImpl<Wat
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
+		Long count = (Long)finderCache.getResult(_finderPathCountAll,
 				FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
@@ -1555,12 +1554,11 @@ public class WatsonTokenAuthEntryPersistenceImpl extends BasePersistenceImpl<Wat
 
 				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
+				finderCache.putResult(_finderPathCountAll, FINDER_ARGS_EMPTY,
 					count);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
-					FINDER_ARGS_EMPTY);
+				finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
 
 				throw processException(e);
 			}
