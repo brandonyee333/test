@@ -37,5 +37,15 @@ $grid-breakpoints: (
 	xl: 1280px
 ) !default;
 
+$border-radius: 4px !default;
+
 $font-weight-normal: 400 !default;
 $font-weight-semi-bold: 600 !default;
+
+/* ---------- Custom variables ---------- */
+
+$margin-default: 24px !default;
+$margin-md: 16px !default;
+
+$padding-default: 24px !default;
+$padding-md: 16px !default;

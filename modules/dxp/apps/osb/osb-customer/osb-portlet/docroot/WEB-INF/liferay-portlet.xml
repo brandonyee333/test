@@ -75,7 +75,7 @@
 		<workflow-handler>com.liferay.osb.admin.workflow.OrderEntryWorkflowHandler</workflow-handler>
 		<preferences-company-wide>true</preferences-company-wide>
 		<preferences-unique-per-layout>false</preferences-unique-per-layout>
-		<header-portlet-css>/admin/css/main.css</header-portlet-css>
+		<header-portlet-css>/css/main.css</header-portlet-css>
 		<css-class-wrapper>osb-portlet-admin</css-class-wrapper>
 	</portlet>
 	<portlet>
@@ -83,7 +83,7 @@
 		<configuration-action-class>com.liferay.osb.downloads.action.ConfigurationActionImpl</configuration-action-class>
 		<preferences-company-wide>true</preferences-company-wide>
 		<preferences-unique-per-layout>false</preferences-unique-per-layout>
-		<header-portlet-css>/downloads/css/main.css</header-portlet-css>
+		<header-portlet-css>/css/main.css</header-portlet-css>
 		<css-class-wrapper>osb-portlet-downloads</css-class-wrapper>
 		<add-default-resource>true</add-default-resource>
 	</portlet>
@@ -92,14 +92,14 @@
 		<friendly-url-mapper-class>com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper</friendly-url-mapper-class>
 		<friendly-url-mapping>license</friendly-url-mapping>
 		<friendly-url-routes>com/liferay/osb/license/portlet/license-friendly-url-routes.xml</friendly-url-routes>
-		<header-portlet-css>/license/css/main.css</header-portlet-css>
+		<header-portlet-css>/css/main.css</header-portlet-css>
 		<css-class-wrapper>osb-portlet-license</css-class-wrapper>
 	</portlet>
 	<portlet>
 		<portlet-name>38</portlet-name>
 		<configuration-action-class>com.liferay.osb.selfprovisioning.action.ConfigurationActionImpl</configuration-action-class>
 		<preferences-unique-per-layout>true</preferences-unique-per-layout>
-		<header-portlet-css>/self_provisioning/css/main.css</header-portlet-css>
+		<header-portlet-css>/css/main.css</header-portlet-css>
 		<css-class-wrapper>osb-portlet-self-provisioning</css-class-wrapper>
 	</portlet>
 	<role-mapper>
