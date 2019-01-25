@@ -18,13 +18,9 @@ import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -38,64 +34,51 @@ public class MetricsTransformationUtil {
 	public Map<String, Object> transformSharedAttributes(
 		Map<String, Object> attributes) {
 
-		Set<Map.Entry<String, Object>> entrySet = attributes.entrySet();
+		for (String dxpAttributeKeys : _OSB_DXP_ATTRIBUTES) {
+			attributes.remove(dxpAttributeKeys);
+		}
 
-		Iterator iterator = entrySet.iterator();
-
-		while (iterator.hasNext()) {
-			Map.Entry<String, Object> entry =
-				(Map.Entry<String, Object>)iterator.next();
-
-			if (ArrayUtil.contains(_OSB_DXP_ATTRIBUTES, entry.getKey())) {
-				iterator.remove();
-			}
-
+		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			String lowerCaseKey = StringUtil.lowerCase(entry.getKey());
 
-			if (lowerCaseKey.endsWith(StringUtil.lowerCase("userId"))) {
-				Long userId = (Long)attributes.get(entry.getKey());
-
-				User user = _userLocalService.fetchUser(userId);
-
-				if (user != null) {
-					attributes.put(entry.getKey(), user.getUuid());
-				}
-			}
-
-			if (lowerCaseKey.endsWith(StringUtil.lowerCase("classNameId"))) {
-				Long classNameId = (Long)attributes.get(entry.getKey());
+			if (lowerCaseKey.endsWith("classnameid")) {
+				Long classNameId = (Long)entry.getValue();
 
 				ClassName className = _classNameLocalService.fetchClassName(
 					classNameId);
 
 				if (className != null) {
+					entry.setValue(className);
+
 					String classNameValue = className.getValue();
 
-					attributes.put(entry.getKey(), classNameValue);
-
-					int pos = lowerCaseKey.lastIndexOf("class");
-
-					StringBundler sb = new StringBundler(2);
-
-					String entryKey = entry.getKey();
-
-					sb.append(entryKey.substring(0, pos + 1));
-
-					sb.append("lassPK");
-
 					if (classNameValue.equals(User.class.getName())) {
-						Long classPK = (Long)attributes.get(sb.toString());
+						int pos = lowerCaseKey.lastIndexOf("class");
+
+						String entryKey = entry.getKey();
+
+						String classPKKey =
+							entryKey.substring(0, pos + 1) + "lassPK";
+
+						Long classPK = (Long)attributes.get(classPKKey);
 
 						if (classPK != null) {
-							User classPKUser = _userLocalService.fetchUser(
-								classPK);
+							User user = _userLocalService.fetchUser(classPK);
 
-							if (classPKUser != null) {
-								attributes.put(
-									sb.toString(), classPKUser.getUuid());
+							if (user != null) {
+								attributes.put(classPKKey, user);
 							}
 						}
 					}
+				}
+			}
+			else if (lowerCaseKey.endsWith("userid")) {
+				Long userId = (Long)entry.getValue();
+
+				User user = _userLocalService.fetchUser(userId);
+
+				if (user != null) {
+					entry.setValue(user);
 				}
 			}
 		}
@@ -104,7 +87,7 @@ public class MetricsTransformationUtil {
 	}
 
 	private static final String[] _OSB_DXP_ATTRIBUTES = {
-		"finderCacheEnabled", "entityCacheEnabled", "mvccVersion"
+		"entityCacheEnabled", "finderCacheEnabled", "mvccVersion"
 	};
 
 	@Reference

@@ -19,7 +19,8 @@ import com.liferay.osb.customer.metrics.api.model.MetricsModelRegistry;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.model.ClassName;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
@@ -131,29 +132,29 @@ public class MessageFactory {
 		Map<String, Object> attributes = metricsModel.getAttributes(model);
 
 		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
-			String lowerCaseKey = StringUtil.lowerCase(entry.getKey());
+			Object obj = entry.getValue();
 
-			if (lowerCaseKey.endsWith("classnameid")) {
+			if (obj instanceof ClassName) {
+				ClassName className = (ClassName)obj;
+
 				JSONObject classNameJSONObject =
 					JSONFactoryUtil.createJSONObject();
 
-				classNameJSONObject.put("value", entry.getValue());
+				classNameJSONObject.put("value", className.getValue());
 
 				attributesJSONObject.put(entry.getKey(), classNameJSONObject);
 			}
-			else if ((lowerCaseKey.endsWith("classpk") ||
-					  lowerCaseKey.endsWith("userid")) &&
-					 !(entry.getValue() instanceof Long)) {
+			else if (obj instanceof User) {
+				User user = (User)obj;
 
-				JSONObject uuidJSONObject = JSONFactoryUtil.createJSONObject();
+				JSONObject userJSONObject = JSONFactoryUtil.createJSONObject();
 
-				uuidJSONObject.put("uuid_", String.valueOf(entry.getValue()));
+				userJSONObject.put("uuid_", user.getUuid());
 
-				attributesJSONObject.put(entry.getKey(), uuidJSONObject);
+				attributesJSONObject.put(entry.getKey(), userJSONObject);
 			}
 			else {
-				attributesJSONObject.put(
-					entry.getKey(), String.valueOf(entry.getValue()));
+				attributesJSONObject.put(entry.getKey(), String.valueOf(obj));
 			}
 		}
 
@@ -205,24 +206,6 @@ public class MessageFactory {
 		}
 
 		return jsonObject;
-	}
-
-	protected String formatSingular(String s) {
-		if (Validator.isNull(s)) {
-			return s;
-		}
-
-		if (s.endsWith("ses")) {
-			s = s.substring(0, s.length() - 3) + "s";
-		}
-		else if (s.endsWith("ies")) {
-			s = s.substring(0, s.length() - 3) + "y";
-		}
-		else {
-			s = s.substring(0, s.length() - 1);
-		}
-
-		return s;
 	}
 
 	@Reference
