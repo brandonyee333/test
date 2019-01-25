@@ -16,11 +16,9 @@ package com.liferay.osb.customer.metrics.impl.internal.rabbitmq;
 
 import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.api.model.MetricsModelRegistry;
-import com.liferay.osb.customer.metrics.impl.internal.util.MetricsModelUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -39,20 +37,18 @@ public class MessageFactory {
 	public JSONObject createDropJSONObject(String modelClassName)
 		throws Exception {
 
+		MetricsModel metricsModel = _metricsModelRegistry.getMetricsModel(
+			modelClassName);
+
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		JSONObject modelJSONObject = JSONFactoryUtil.createJSONObject();
 
-		String modelName = _metricsModelUtil.getModelName(modelClassName);
-
-		modelJSONObject.put("name", modelName);
+		modelJSONObject.put("name", metricsModel.getModelName());
 
 		jsonObject.put("model", modelJSONObject);
 
-		MetricsModel metricsModel = _metricsModelRegistry.getMetricsModel(
-			modelClassName);
-
-		if ((metricsModel != null) && metricsModel.hasMapping()) {
+		if (metricsModel.hasMapping()) {
 			JSONArray mappingTablesJSONArray =
 				JSONFactoryUtil.createJSONArray();
 
@@ -71,27 +67,24 @@ public class MessageFactory {
 		return jsonObject;
 	}
 
-	public JSONObject createRemoveJSONObject(BaseModel<?> model)
+	public JSONObject createRemoveJSONObject(
+			String modelClassName, Object model)
 		throws Exception {
+
+		MetricsModel metricsModel = _metricsModelRegistry.getMetricsModel(
+			modelClassName);
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		JSONObject modelJSONObject = JSONFactoryUtil.createJSONObject();
 
-		String modelName = _metricsModelUtil.getModelName(
-			model.getModelClassName());
-
-		modelJSONObject.put("name", modelName);
+		modelJSONObject.put("name", metricsModel.getModelName());
 
 		JSONObject attributesJSONObject = JSONFactoryUtil.createJSONObject();
 
-		Map<String, Object> attributes = model.getModelAttributes();
+		String modelPrimaryKeyName = metricsModel.getModelPrimaryKeyName();
 
-		MetricsModel metricsModel = _metricsModelRegistry.getMetricsModel(
-			model.getModelClassName());
-
-		String modelPrimaryKeyName = _metricsModelUtil.getModelPrimaryKeyName(
-			model);
+		Map<String, Object> attributes = metricsModel.getAttributes(model);
 
 		attributesJSONObject.put(
 			modelPrimaryKeyName,
@@ -101,7 +94,7 @@ public class MessageFactory {
 
 		jsonObject.put("model", modelJSONObject);
 
-		if ((metricsModel != null) && metricsModel.hasMapping()) {
+		if (metricsModel.hasMapping()) {
 			JSONArray mappingTablesJSONArray =
 				JSONFactoryUtil.createJSONArray();
 
@@ -120,31 +113,27 @@ public class MessageFactory {
 		return jsonObject;
 	}
 
-	public JSONObject createUpdateJSONObject(BaseModel<?> model)
+	public JSONObject createUpdateJSONObject(
+			String modelClassName, Object model)
 		throws Exception {
+
+		MetricsModel metricsModel = _metricsModelRegistry.getMetricsModel(
+			modelClassName);
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		JSONObject modelJSONObject = JSONFactoryUtil.createJSONObject();
 
-		String modelName = _metricsModelUtil.getModelName(
-			model.getModelClassName());
-
-		modelJSONObject.put("name", modelName);
+		modelJSONObject.put("name", metricsModel.getModelName());
 
 		JSONObject attributesJSONObject = JSONFactoryUtil.createJSONObject();
-
-		MetricsModel metricsModel = _metricsModelRegistry.getMetricsModel(
-			model.getModelClassName());
 
 		Map<String, Object> attributes = metricsModel.getAttributes(model);
 
 		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			String lowerCaseKey = StringUtil.lowerCase(entry.getKey());
 
-			if (lowerCaseKey.endsWith(StringUtil.lowerCase("classNameId")) &&
-				(metricsModel != null)) {
-
+			if (lowerCaseKey.endsWith("classnameid")) {
 				JSONObject classNameJSONObject =
 					JSONFactoryUtil.createJSONObject();
 
@@ -152,10 +141,9 @@ public class MessageFactory {
 
 				attributesJSONObject.put(entry.getKey(), classNameJSONObject);
 			}
-			else if ((lowerCaseKey.endsWith(StringUtil.lowerCase("classPK")) ||
-					  lowerCaseKey.endsWith(StringUtil.lowerCase("userId"))) &&
-					 !(entry.getValue() instanceof Long) &&
-					 (metricsModel != null)) {
+			else if ((lowerCaseKey.endsWith("classpk") ||
+					  lowerCaseKey.endsWith("userid")) &&
+					 !(entry.getValue() instanceof Long)) {
 
 				JSONObject uuidJSONObject = JSONFactoryUtil.createJSONObject();
 
@@ -173,7 +161,7 @@ public class MessageFactory {
 
 		jsonObject.put("model", modelJSONObject);
 
-		if ((metricsModel != null) && metricsModel.hasMapping()) {
+		if (metricsModel.hasMapping()) {
 			JSONArray mappingTablesJSONArray =
 				JSONFactoryUtil.createJSONArray();
 
@@ -239,8 +227,5 @@ public class MessageFactory {
 
 	@Reference
 	private MetricsModelRegistry _metricsModelRegistry;
-
-	@Reference
-	private MetricsModelUtil _metricsModelUtil;
 
 }

@@ -15,7 +15,7 @@
 package com.liferay.osb.customer.metrics.models;
 
 import com.liferay.osb.customer.metrics.api.model.MetricsModel;
-import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModel;
+import com.liferay.osb.customer.metrics.impl.model.BaseModelMetricsModel;
 import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
@@ -35,7 +35,8 @@ import org.osgi.service.component.annotations.Reference;
  * @author Jenny Chen
  */
 @Component(immediate = true, service = MetricsModel.class)
-public class AccountEntryMetricsModel extends BaseMetricsModel<AccountEntry> {
+public class AccountEntryMetricsModel
+	extends BaseModelMetricsModel<AccountEntry> {
 
 	@Override
 	public Map<String, Object> getAttributes(AccountEntry accountEntry) {

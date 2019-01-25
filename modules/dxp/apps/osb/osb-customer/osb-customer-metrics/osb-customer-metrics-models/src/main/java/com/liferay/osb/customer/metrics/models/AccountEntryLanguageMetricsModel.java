@@ -15,7 +15,7 @@
 package com.liferay.osb.customer.metrics.models;
 
 import com.liferay.osb.customer.metrics.api.model.MetricsModel;
-import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModel;
+import com.liferay.osb.customer.metrics.impl.model.BaseModelMetricsModel;
 import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.AccountEntryLanguage;
@@ -31,7 +31,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true, service = MetricsModel.class)
 public class AccountEntryLanguageMetricsModel
-	extends BaseMetricsModel<AccountEntryLanguage> {
+	extends BaseModelMetricsModel<AccountEntryLanguage> {
 
 	@Override
 	public Map<String, Object> getAttributes(

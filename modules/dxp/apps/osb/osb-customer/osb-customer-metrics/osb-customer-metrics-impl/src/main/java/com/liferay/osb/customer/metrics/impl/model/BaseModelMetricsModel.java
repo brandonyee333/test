@@ -18,9 +18,11 @@ import com.liferay.osb.customer.metrics.api.constants.MetricsConstants;
 import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.impl.internal.rabbitmq.MessageFactory;
 import com.liferay.osb.customer.metrics.impl.internal.rabbitmq.MessagePublisherUtil;
-import com.liferay.osb.customer.metrics.impl.internal.util.MetricsModelUtil;
+import com.liferay.osb.customer.metrics.impl.internal.util.MetricsBaseModelUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.util.CharPool;
 
 import java.util.List;
 import java.util.Map;
@@ -30,7 +32,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Jenny Chen
  */
-public abstract class BaseMetricsModel<T extends BaseModel<T>>
+public abstract class BaseModelMetricsModel<T extends BaseModel<T>>
 	implements MetricsModel<T> {
 
 	public void deleteAll() throws Exception {
@@ -59,16 +61,35 @@ public abstract class BaseMetricsModel<T extends BaseModel<T>>
 
 	public abstract Class<T> getModelClass();
 
+	public String getModelName() {
+		Class<T> clazz = getModelClass();
+
+		String modelClassName = clazz.getName();
+
+		int pos = modelClassName.lastIndexOf(CharPool.PERIOD);
+
+		return modelClassName.substring(pos + 1);
+	}
+
+	public String getModelPrimaryKeyName() {
+		try {
+			return metricsBaseModelUtil.getModelPrimaryKeyName(this);
+		}
+		catch (Exception e) {
+			throw new SystemException(e);
+		}
+	}
+
 	public boolean hasMapping() {
 		return false;
 	}
 
 	public void resyncAll() throws Exception {
-		List<BaseModel<?>> models = metricsModelUtil.getModelList(this);
+		List<BaseModel<?>> models = metricsBaseModelUtil.getModelList(this);
 
 		for (BaseModel<?> model : models) {
 			JSONObject jsonObject = messageFactory.createUpdateJSONObject(
-				model);
+				model.getModelClassName(), model);
 
 			messagePublisherUtil.sendMessage(
 				MetricsConstants.ACTION_UPDATE, jsonObject);
@@ -88,12 +109,14 @@ public abstract class BaseMetricsModel<T extends BaseModel<T>>
 	}
 
 	@Reference(unbind = "-")
-	protected void setMetricsModelUtil(MetricsModelUtil metricsModelUtil) {
-		this.metricsModelUtil = metricsModelUtil;
+	protected void setMetricsBaseModelUtil(
+		MetricsBaseModelUtil metricsBaseModelUtil) {
+
+		this.metricsBaseModelUtil = metricsBaseModelUtil;
 	}
 
 	protected MessageFactory messageFactory;
 	protected MessagePublisherUtil messagePublisherUtil;
-	protected MetricsModelUtil metricsModelUtil;
+	protected MetricsBaseModelUtil metricsBaseModelUtil;
 
 }

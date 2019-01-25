@@ -33,8 +33,8 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Jenny Chen
  */
-@Component(immediate = true, service = MetricsModelUtil.class)
-public class MetricsModelUtil {
+@Component(immediate = true, service = MetricsBaseModelUtil.class)
+public class MetricsBaseModelUtil {
 
 	public <T> List<BaseModel<?>> getModelList(MetricsModel metricsModel)
 		throws Exception {
@@ -47,9 +47,8 @@ public class MetricsModelUtil {
 		Class<?> localServiceUtilClass = Class.forName(
 			localServiceUtilClassName, false, clazz.getClassLoader());
 
-		String modelName = getModelName(clazz.getName());
-
-		String methodName = "get" + TextFormatter.formatPlural(modelName);
+		String methodName =
+			"get" + TextFormatter.formatPlural(metricsModel.getModelName());
 
 		MethodKey methodKey = new MethodKey(
 			localServiceUtilClass, methodName,
@@ -61,14 +60,10 @@ public class MetricsModelUtil {
 		return (List<BaseModel<?>>)updateMethodHandler.invoke();
 	}
 
-	public String getModelName(String modelClassName) {
-		int pos = modelClassName.lastIndexOf(CharPool.PERIOD);
+	public String getModelPrimaryKeyName(MetricsModel metricsModel)
+		throws Exception {
 
-		return modelClassName.substring(pos + 1);
-	}
-
-	public String getModelPrimaryKeyName(BaseModel<?> model) throws Exception {
-		Class<?> modelImplClass = model.getClass();
+		Class<?> modelImplClass = getModelImplClass(metricsModel);
 
 		Field field = modelImplClass.getField("TABLE_SQL_CREATE");
 
@@ -98,6 +93,29 @@ public class MetricsModelUtil {
 
 			return createTableSQL.substring(y + 1, z);
 		}
+	}
+
+	protected Class getModelImplClass(MetricsModel metricsModel)
+		throws Exception {
+
+		Class<?> clazz = metricsModel.getModelClass();
+
+		String localServiceUtilClassName = _getLocalServiceUtilClassName(
+			clazz.getName());
+
+		Class<?> localServiceUtilClass = Class.forName(
+			localServiceUtilClassName, false, clazz.getClassLoader());
+
+		String methodName = "create" + metricsModel.getModelName();
+
+		MethodKey methodKey = new MethodKey(
+			localServiceUtilClass, methodName, new Class<?>[] {long.class});
+
+		MethodHandler updateMethodHandler = new MethodHandler(methodKey, 0);
+
+		BaseModel<?> baseModel = (BaseModel<?>)updateMethodHandler.invoke();
+
+		return baseModel.getClass();
 	}
 
 	private String _getLocalServiceUtilClassName(String modelClassName) {

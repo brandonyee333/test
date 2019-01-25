@@ -22,6 +22,10 @@ import java.util.Map;
  */
 public interface MetricsModel<T> {
 
+	public String getModelName();
+	
+	public String getModelPrimaryKeyName();
+
 	public void deleteAll() throws Exception;
 
 	public Map<String, Object> getAttributes(T model);

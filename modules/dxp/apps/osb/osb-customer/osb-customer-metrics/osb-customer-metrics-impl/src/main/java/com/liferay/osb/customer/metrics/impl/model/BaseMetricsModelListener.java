@@ -68,7 +68,7 @@ public abstract class BaseMetricsModelListener<T extends BaseModel<T>>
 	protected void sendRemoveMetricsMessage(BaseModel<T> model) {
 		try {
 			JSONObject jsonObject = messageFactory.createRemoveJSONObject(
-				model);
+				model.getModelClassName(), model);
 
 			messagePublisherUtil.sendMessage(
 				MetricsConstants.ACTION_REMOVE, jsonObject);
@@ -81,7 +81,7 @@ public abstract class BaseMetricsModelListener<T extends BaseModel<T>>
 	protected void sendUpdateMetricsMessage(BaseModel<T> model) {
 		try {
 			JSONObject jsonObject = messageFactory.createUpdateJSONObject(
-				model);
+				model.getModelClassName(), model);
 
 			messagePublisherUtil.sendMessage(
 				MetricsConstants.ACTION_UPDATE, jsonObject);

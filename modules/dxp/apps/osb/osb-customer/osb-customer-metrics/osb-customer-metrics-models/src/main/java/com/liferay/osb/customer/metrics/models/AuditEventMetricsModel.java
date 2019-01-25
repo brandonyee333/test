@@ -15,7 +15,7 @@
 package com.liferay.osb.customer.metrics.models;
 
 import com.liferay.osb.customer.metrics.api.model.MetricsModel;
-import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModel;
+import com.liferay.osb.customer.metrics.impl.model.BaseModelMetricsModel;
 import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
@@ -30,7 +30,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Jenny Chen
  */
 @Component(immediate = true, service = MetricsModel.class)
-public class AuditEventMetricsModel extends BaseMetricsModel<AuditEvent> {
+public class AuditEventMetricsModel extends BaseModelMetricsModel<AuditEvent> {
 
 	@Override
 	public Map<String, Object> getAttributes(AuditEvent auditEvent) {

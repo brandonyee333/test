@@ -15,7 +15,7 @@
 package com.liferay.osb.customer.metrics.models;
 
 import com.liferay.osb.customer.metrics.api.model.MetricsModel;
-import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModel;
+import com.liferay.osb.customer.metrics.impl.model.BaseModelMetricsModel;
 import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.portal.kernel.model.Address;
 
@@ -28,7 +28,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Jenny Chen
  */
 @Component(immediate = true, service = MetricsModel.class)
-public class AddressMetricsModel extends BaseMetricsModel<Address> {
+public class AddressMetricsModel extends BaseModelMetricsModel<Address> {
 
 	@Override
 	public Map<String, Object> getAttributes(Address address) {
