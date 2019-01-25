@@ -22,7 +22,6 @@ import com.liferay.osb.customer.metrics.impl.internal.util.MetricsModelUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.BaseModel;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,12 +43,18 @@ public abstract class BaseMetricsModel<T extends BaseModel<T>>
 			MetricsConstants.ACTION_DROP, jsonObject);
 	}
 
-	public Map<String, String> getMappingTables() throws Exception {
-		return _mappingTables;
+	public Map<String, Object> getAttributes(BaseModel<T> model) {
+		return model.getModelAttributes();
 	}
 
-	public Map<String, List<String>> getMappingValues(BaseModel<T> model) {
-		return _mappingValues;
+	public String[] getMappingTables() {
+		throw new UnsupportedOperationException();
+	}
+
+	public List<Map<String, String>> getMappingValues(
+		T model, String mappingTable) {
+
+		throw new UnsupportedOperationException();
 	}
 
 	public abstract Class<T> getModelClass();
@@ -68,10 +73,6 @@ public abstract class BaseMetricsModel<T extends BaseModel<T>>
 			messagePublisherUtil.sendMessage(
 				MetricsConstants.ACTION_UPDATE, jsonObject);
 		}
-	}
-
-	public Map<String, Object> transformAttributes(BaseModel<T> model) {
-		return model.getModelAttributes();
 	}
 
 	@Reference(unbind = "-")
@@ -94,8 +95,5 @@ public abstract class BaseMetricsModel<T extends BaseModel<T>>
 	protected MessageFactory messageFactory;
 	protected MessagePublisherUtil messagePublisherUtil;
 	protected MetricsModelUtil metricsModelUtil;
-
-	private final Map<String, String> _mappingTables = new HashMap<>();
-	private final Map<String, List<String>> _mappingValues = new HashMap<>();
 
 }

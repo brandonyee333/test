@@ -36,29 +36,6 @@ import org.osgi.service.component.annotations.Component;
 @Component(immediate = true, service = MetricsModelUtil.class)
 public class MetricsModelUtil {
 
-	public Class getModelImplClass(MetricsModel metricsModel) throws Exception {
-		Class<?> clazz = metricsModel.getModelClass();
-
-		String localServiceUtilClassName = _getLocalServiceUtilClassName(
-			clazz.getName());
-
-		Class<?> localServiceUtilClass = Class.forName(
-			localServiceUtilClassName, false, clazz.getClassLoader());
-
-		String modelName = getModelName(clazz.getName());
-
-		String methodName = "create" + modelName;
-
-		MethodKey methodKey = new MethodKey(
-			localServiceUtilClass, methodName, new Class<?>[] {long.class});
-
-		MethodHandler updateMethodHandler = new MethodHandler(methodKey, 0);
-
-		BaseModel<?> baseModel = (BaseModel<?>)updateMethodHandler.invoke();
-
-		return baseModel.getClass();
-	}
-
 	public <T> List<BaseModel<?>> getModelList(MetricsModel metricsModel)
 		throws Exception {
 
@@ -90,9 +67,7 @@ public class MetricsModelUtil {
 		return modelClassName.substring(pos + 1);
 	}
 
-	public String getModelPrimaryKeyName(BaseModel<?> model)
-		throws Exception {
-
+	public String getModelPrimaryKeyName(BaseModel<?> model) throws Exception {
 		Class<?> modelImplClass = model.getClass();
 
 		Field field = modelImplClass.getField("TABLE_SQL_CREATE");

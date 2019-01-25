@@ -19,7 +19,6 @@ import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModel;
 import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
-import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import java.util.Map;
@@ -34,17 +33,10 @@ import org.osgi.service.component.annotations.Reference;
 public class OfferingEntryMetricsModel extends BaseMetricsModel<OfferingEntry> {
 
 	@Override
-	public Class getModelClass() {
-		return OfferingEntry.class;
-	}
-
-	@Override
-	public Map<String, Object> transformAttributes(
-		BaseModel<OfferingEntry> model) {
-
+	public Map<String, Object> getAttributes(OfferingEntry offeringEntry) {
 		Map<String, Object> attributes =
 			_metricsTransformationUtil.transformSharedAttributes(
-				model.getModelAttributes());
+				offeringEntry.getModelAttributes());
 
 		Integer type = (Integer)attributes.get("type");
 
@@ -60,6 +52,11 @@ public class OfferingEntryMetricsModel extends BaseMetricsModel<OfferingEntry> {
 		}
 
 		return attributes;
+	}
+
+	@Override
+	public Class getModelClass() {
+		return OfferingEntry.class;
 	}
 
 	@Reference(

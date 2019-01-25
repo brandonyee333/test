@@ -19,7 +19,6 @@ import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModel;
 import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.SupportResponse;
 import com.liferay.osb.model.SupportResponseConstants;
-import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import java.util.Map;
@@ -35,17 +34,10 @@ public class SupportResponseMetricsModel
 	extends BaseMetricsModel<SupportResponse> {
 
 	@Override
-	public Class getModelClass() {
-		return SupportResponse.class;
-	}
-
-	@Override
-	public Map<String, Object> transformAttributes(
-		BaseModel<SupportResponse> model) {
-
+	public Map<String, Object> getAttributes(SupportResponse supportResponse) {
 		Map<String, Object> attributes =
 			_metricsTransformationUtil.transformSharedAttributes(
-				model.getModelAttributes());
+				supportResponse.getModelAttributes());
 
 		Integer supportLevel = (Integer)attributes.get("supportLevel");
 
@@ -56,6 +48,11 @@ public class SupportResponseMetricsModel
 		}
 
 		return attributes;
+	}
+
+	@Override
+	public Class getModelClass() {
+		return SupportResponse.class;
 	}
 
 	@Reference(

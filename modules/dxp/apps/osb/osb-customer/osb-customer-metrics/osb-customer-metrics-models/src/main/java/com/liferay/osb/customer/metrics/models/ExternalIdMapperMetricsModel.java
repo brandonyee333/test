@@ -18,7 +18,6 @@ import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModel;
 import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.ExternalIdMapper;
-import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import java.util.Map;
@@ -34,17 +33,12 @@ public class ExternalIdMapperMetricsModel
 	extends BaseMetricsModel<ExternalIdMapper> {
 
 	@Override
-	public Class getModelClass() {
-		return ExternalIdMapper.class;
-	}
-
-	@Override
-	public Map<String, Object> transformAttributes(
-		BaseModel<ExternalIdMapper> model) {
+	public Map<String, Object> getAttributes(
+		ExternalIdMapper externalIdMapper) {
 
 		Map<String, Object> attributes =
 			_metricsTransformationUtil.transformSharedAttributes(
-				model.getModelAttributes());
+				externalIdMapper.getModelAttributes());
 
 		Long externalIdMapperId = (Long)attributes.get("externalIdMapperId");
 
@@ -53,6 +47,11 @@ public class ExternalIdMapperMetricsModel
 		}
 
 		return attributes;
+	}
+
+	@Override
+	public Class getModelClass() {
+		return ExternalIdMapper.class;
 	}
 
 	@Reference(

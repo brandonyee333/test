@@ -18,7 +18,6 @@ import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModel;
 import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.LicenseKey;
-import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import java.util.Map;
@@ -33,19 +32,17 @@ import org.osgi.service.component.annotations.Reference;
 public class LicenseKeyMetricsModel extends BaseMetricsModel<LicenseKey> {
 
 	@Override
-	public Class getModelClass() {
-		return LicenseKey.class;
+	public Map<String, Object> getAttributes(LicenseKey licenseKey) {
+		Map<String, Object> attributes =
+			_metricsTransformationUtil.transformSharedAttributes(
+				licenseKey.getModelAttributes());
+
+		return attributes;
 	}
 
 	@Override
-	public Map<String, Object> transformAttributes(
-		BaseModel<LicenseKey> model) {
-
-		Map<String, Object> attributes =
-			_metricsTransformationUtil.transformSharedAttributes(
-				model.getModelAttributes());
-
-		return attributes;
+	public Class getModelClass() {
+		return LicenseKey.class;
 	}
 
 	@Reference(

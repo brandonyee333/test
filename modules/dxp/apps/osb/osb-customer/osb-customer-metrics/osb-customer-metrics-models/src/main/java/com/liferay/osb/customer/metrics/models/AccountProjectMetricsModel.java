@@ -18,7 +18,6 @@ import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModel;
 import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.AccountProject;
-import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import java.util.Map;
@@ -34,19 +33,17 @@ public class AccountProjectMetricsModel
 	extends BaseMetricsModel<AccountProject> {
 
 	@Override
-	public Class getModelClass() {
-		return AccountProject.class;
+	public Map<String, Object> getAttributes(AccountProject accountProject) {
+		Map<String, Object> attributes =
+			_metricsTransformationUtil.transformSharedAttributes(
+				accountProject.getModelAttributes());
+
+		return attributes;
 	}
 
 	@Override
-	public Map<String, Object> transformAttributes(
-		BaseModel<AccountProject> model) {
-
-		Map<String, Object> attributes =
-			_metricsTransformationUtil.transformSharedAttributes(
-				model.getModelAttributes());
-
-		return attributes;
+	public Class getModelClass() {
+		return AccountProject.class;
 	}
 
 	@Reference(

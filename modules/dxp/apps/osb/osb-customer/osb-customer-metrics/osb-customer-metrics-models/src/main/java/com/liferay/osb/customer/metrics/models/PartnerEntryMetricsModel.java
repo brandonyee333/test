@@ -19,8 +19,6 @@ import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModel;
 import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.SupportRegion;
-import com.liferay.osb.service.PartnerEntryLocalServiceUtil;
-import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
@@ -39,35 +37,42 @@ import org.osgi.service.component.annotations.Reference;
 public class PartnerEntryMetricsModel extends BaseMetricsModel<PartnerEntry> {
 
 	@Override
-	public Map<String, String> getMappingTables() throws Exception {
-		Map<String, String> mappingTablesMap = new HashMap<>();
+	public Map<String, Object> getAttributes(PartnerEntry partnerEntry) {
+		Map<String, Object> attributes =
+			_metricsTransformationUtil.transformSharedAttributes(
+				partnerEntry.getModelAttributes());
 
-		mappingTablesMap.put("SupportRegion", "supportRegionId");
+		Integer status = (Integer)attributes.get("status");
 
-		return mappingTablesMap;
+		if (status != null) {
+			attributes.put("status", WorkflowConstants.getStatusLabel(status));
+		}
+
+		return attributes;
 	}
 
 	@Override
-	public Map<String, List<String>> getMappingValues(
-		BaseModel<PartnerEntry> model) {
+	public String[] getMappingTables() {
+		return _MAPPING_TABLES;
+	}
 
-		Map<String, Object> attributes = model.getModelAttributes();
+	@Override
+	public List<Map<String, String>> getMappingValues(
+		PartnerEntry partnerEntry, String mappingTable) {
 
-		Long partnerEntryId = (Long)attributes.get("partnerEntryId");
-
-		PartnerEntry partnerEntry =
-			PartnerEntryLocalServiceUtil.fetchPartnerEntry(partnerEntryId);
+		List<Map<String, String>> mappingValues = new ArrayList<>();
 
 		SupportRegion supportRegion = partnerEntry.getSupportRegion();
 
-		List<String> supportRegionValues = new ArrayList<>();
+		Map<String, String> mappingValue = new HashMap<>();
 
-		supportRegionValues.add(
+		mappingValue.put(
+			"partnerEntryId", String.valueOf(partnerEntry.getPartnerEntryId()));
+		mappingValue.put(
+			"supportRegionId",
 			String.valueOf(supportRegion.getSupportRegionId()));
 
-		Map<String, List<String>> mappingValues = new HashMap<>();
-
-		mappingValues.put("partnerEntryId", supportRegionValues);
+		mappingValues.add(mappingValue);
 
 		return mappingValues;
 	}
@@ -82,23 +87,6 @@ public class PartnerEntryMetricsModel extends BaseMetricsModel<PartnerEntry> {
 		return true;
 	}
 
-	@Override
-	public Map<String, Object> transformAttributes(
-		BaseModel<PartnerEntry> model) {
-
-		Map<String, Object> attributes =
-			_metricsTransformationUtil.transformSharedAttributes(
-				model.getModelAttributes());
-
-		Integer status = (Integer)attributes.get("status");
-
-		if (status != null) {
-			attributes.put("status", WorkflowConstants.getStatusLabel(status));
-		}
-
-		return attributes;
-	}
-
 	@Reference(
 		target = "(module.service.lifecycle=osb.portlet.initialized)",
 		unbind = "-"
@@ -106,6 +94,8 @@ public class PartnerEntryMetricsModel extends BaseMetricsModel<PartnerEntry> {
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
+
+	private static final String[] _MAPPING_TABLES = {"SupportRegion"};
 
 	@Reference
 	private MetricsTransformationUtil _metricsTransformationUtil;

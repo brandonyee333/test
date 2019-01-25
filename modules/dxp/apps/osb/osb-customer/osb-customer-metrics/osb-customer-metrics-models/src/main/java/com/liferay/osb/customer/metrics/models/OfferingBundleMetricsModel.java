@@ -19,8 +19,6 @@ import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModel;
 import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.OfferingBundle;
 import com.liferay.osb.model.OfferingDefinition;
-import com.liferay.osb.service.OfferingBundleLocalServiceUtil;
-import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import java.util.ArrayList;
@@ -39,39 +37,40 @@ public class OfferingBundleMetricsModel
 	extends BaseMetricsModel<OfferingBundle> {
 
 	@Override
-	public Map<String, String> getMappingTables() throws Exception {
-		Map<String, String> mappingTablesMap = new HashMap<>();
+	public Map<String, Object> getAttributes(OfferingBundle offeringBundle) {
+		Map<String, Object> attributes =
+			_metricsTransformationUtil.transformSharedAttributes(
+				offeringBundle.getModelAttributes());
 
-		mappingTablesMap.put("OfferingDefinition", "offeringDefinitionId");
-
-		return mappingTablesMap;
+		return attributes;
 	}
 
 	@Override
-	public Map<String, List<String>> getMappingValues(
-		BaseModel<OfferingBundle> model) {
+	public String[] getMappingTables() {
+		return _MAPPING_TABLES;
+	}
 
-		Map<String, Object> attributes = model.getModelAttributes();
+	@Override
+	public List<Map<String, String>> getMappingValues(
+		OfferingBundle offeringBundle, String mappingTable) {
 
-		Long offeringBundleId = (Long)attributes.get("offeringBundleId");
-
-		OfferingBundle offeringBundle =
-			OfferingBundleLocalServiceUtil.fetchOfferingBundle(
-				offeringBundleId);
+		List<Map<String, String>> mappingValues = new ArrayList<>();
 
 		List<OfferingDefinition> offeringDefinitions =
 			offeringBundle.getOfferingDefinitions();
 
-		List<String> offeringDefinitionsValues = new ArrayList<>();
-
 		for (OfferingDefinition offeringDefinition : offeringDefinitions) {
-			offeringDefinitionsValues.add(
+			Map<String, String> mappingValue = new HashMap<>();
+
+			mappingValue.put(
+				"offeringBundleId",
+				String.valueOf(offeringBundle.getOfferingBundleId()));
+			mappingValue.put(
+				"offeringDefinitionId",
 				String.valueOf(offeringDefinition.getOfferingDefinitionId()));
+
+			mappingValues.add(mappingValue);
 		}
-
-		Map<String, List<String>> mappingValues = new HashMap<>();
-
-		mappingValues.put("offeringBundleId", offeringDefinitionsValues);
 
 		return mappingValues;
 	}
@@ -86,17 +85,6 @@ public class OfferingBundleMetricsModel
 		return true;
 	}
 
-	@Override
-	public Map<String, Object> transformAttributes(
-		BaseModel<OfferingBundle> model) {
-
-		Map<String, Object> attributes =
-			_metricsTransformationUtil.transformSharedAttributes(
-				model.getModelAttributes());
-
-		return attributes;
-	}
-
 	@Reference(
 		target = "(module.service.lifecycle=osb.portlet.initialized)",
 		unbind = "-"
@@ -104,6 +92,8 @@ public class OfferingBundleMetricsModel
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
+
+	private static final String[] _MAPPING_TABLES = {"OfferingDefinition"};
 
 	@Reference
 	private MetricsTransformationUtil _metricsTransformationUtil;

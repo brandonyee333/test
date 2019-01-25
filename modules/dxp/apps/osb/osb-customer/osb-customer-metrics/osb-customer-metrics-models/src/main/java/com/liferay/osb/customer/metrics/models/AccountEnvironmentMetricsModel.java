@@ -19,7 +19,6 @@ import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModel;
 import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.AccountEnvironment;
 import com.liferay.osb.model.AccountEnvironmentConstants;
-import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import java.util.Map;
@@ -35,17 +34,12 @@ public class AccountEnvironmentMetricsModel
 	extends BaseMetricsModel<AccountEnvironment> {
 
 	@Override
-	public Class getModelClass() {
-		return AccountEnvironment.class;
-	}
-
-	@Override
-	public Map<String, Object> transformAttributes(
-		BaseModel<AccountEnvironment> model) {
+	public Map<String, Object> getAttributes(
+		AccountEnvironment accountEnvironment) {
 
 		Map<String, Object> attributes =
 			_metricsTransformationUtil.transformSharedAttributes(
-				model.getModelAttributes());
+				accountEnvironment.getModelAttributes());
 
 		Integer envOS = (Integer)attributes.get("envOS");
 
@@ -98,6 +92,11 @@ public class AccountEnvironmentMetricsModel
 		}
 
 		return attributes;
+	}
+
+	@Override
+	public Class getModelClass() {
+		return AccountEnvironment.class;
 	}
 
 	@Reference(

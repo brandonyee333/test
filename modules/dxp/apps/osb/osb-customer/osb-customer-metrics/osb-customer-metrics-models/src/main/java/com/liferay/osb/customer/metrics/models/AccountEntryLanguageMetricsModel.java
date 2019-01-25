@@ -19,7 +19,6 @@ import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModel;
 import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.AccountEntryLanguage;
-import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import java.util.Map;
@@ -35,17 +34,12 @@ public class AccountEntryLanguageMetricsModel
 	extends BaseMetricsModel<AccountEntryLanguage> {
 
 	@Override
-	public Class getModelClass() {
-		return AccountEntryLanguage.class;
-	}
-
-	@Override
-	public Map<String, Object> transformAttributes(
-		BaseModel<AccountEntryLanguage> model) {
+	public Map<String, Object> getAttributes(
+		AccountEntryLanguage accountEntryLanguage) {
 
 		Map<String, Object> attributes =
 			_metricsTransformationUtil.transformSharedAttributes(
-				model.getModelAttributes());
+				accountEntryLanguage.getModelAttributes());
 
 		String languageId = (String)attributes.get("languageId");
 
@@ -56,6 +50,11 @@ public class AccountEntryLanguageMetricsModel
 		}
 
 		return attributes;
+	}
+
+	@Override
+	public Class getModelClass() {
+		return AccountEntryLanguage.class;
 	}
 
 	@Reference(

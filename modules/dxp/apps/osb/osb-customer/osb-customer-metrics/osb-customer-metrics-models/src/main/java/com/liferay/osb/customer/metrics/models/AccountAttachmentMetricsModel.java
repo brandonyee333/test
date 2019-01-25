@@ -19,7 +19,6 @@ import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModel;
 import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.AccountAttachment;
 import com.liferay.osb.model.AccountAttachmentConstants;
-import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import java.util.Map;
@@ -35,17 +34,12 @@ public class AccountAttachmentMetricsModel
 	extends BaseMetricsModel<AccountAttachment> {
 
 	@Override
-	public Class getModelClass() {
-		return AccountAttachment.class;
-	}
-
-	@Override
-	public Map<String, Object> transformAttributes(
-		BaseModel<AccountAttachment> model) {
+	public Map<String, Object> getAttributes(
+		AccountAttachment accountAttachment) {
 
 		Map<String, Object> attributes =
 			_metricsTransformationUtil.transformSharedAttributes(
-				model.getModelAttributes());
+				accountAttachment.getModelAttributes());
 
 		Integer type = (Integer)attributes.get("type");
 
@@ -55,6 +49,11 @@ public class AccountAttachmentMetricsModel
 		}
 
 		return attributes;
+	}
+
+	@Override
+	public Class getModelClass() {
+		return AccountAttachment.class;
 	}
 
 	@Reference(

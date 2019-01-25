@@ -20,9 +20,7 @@ import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.SupportRegion;
-import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.util.WorkflowConstants;
-import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import java.util.ArrayList;
@@ -40,58 +38,10 @@ import org.osgi.service.component.annotations.Reference;
 public class AccountEntryMetricsModel extends BaseMetricsModel<AccountEntry> {
 
 	@Override
-	public Map<String, String> getMappingTables() throws Exception {
-		Map<String, String> mappingTablesMap = new HashMap<>();
-
-		mappingTablesMap.put("SupportRegion", "supportRegionId");
-
-		return mappingTablesMap;
-	}
-
-	@Override
-	public Map<String, List<String>> getMappingValues(
-		BaseModel<AccountEntry> model) {
-
-		Map<String, Object> attributes = model.getModelAttributes();
-
-		Long accountEntryId = (Long)attributes.get("accountEntryId");
-
-		AccountEntry accountEntry =
-			AccountEntryLocalServiceUtil.fetchAccountEntry(accountEntryId);
-
-		List<SupportRegion> supportRegions = accountEntry.getSupportRegions();
-
-		List<String> supportRegionValues = new ArrayList<>();
-
-		for (SupportRegion supportRegion : supportRegions) {
-			supportRegionValues.add(
-				String.valueOf(supportRegion.getSupportRegionId()));
-		}
-
-		Map<String, List<String>> mappingValues = new HashMap<>();
-
-		mappingValues.put("accountEntryId", supportRegionValues);
-
-		return mappingValues;
-	}
-
-	@Override
-	public Class getModelClass() {
-		return AccountEntry.class;
-	}
-
-	@Override
-	public boolean hasMapping() {
-		return true;
-	}
-
-	@Override
-	public Map<String, Object> transformAttributes(
-		BaseModel<AccountEntry> model) {
-
+	public Map<String, Object> getAttributes(AccountEntry accountEntry) {
 		Map<String, Object> attributes =
 			_metricsTransformationUtil.transformSharedAttributes(
-				model.getModelAttributes());
+				accountEntry.getModelAttributes());
 
 		Integer type = (Integer)attributes.get("type");
 
@@ -121,6 +71,45 @@ public class AccountEntryMetricsModel extends BaseMetricsModel<AccountEntry> {
 		return attributes;
 	}
 
+	@Override
+	public String[] getMappingTables() {
+		return _MAPPING_TABLES;
+	}
+
+	@Override
+	public List<Map<String, String>> getMappingValues(
+		AccountEntry accountEntry, String mappingTable) {
+
+		List<Map<String, String>> mappingValues = new ArrayList<>();
+
+		List<SupportRegion> supportRegions = accountEntry.getSupportRegions();
+
+		for (SupportRegion supportRegion : supportRegions) {
+			Map<String, String> mappingValue = new HashMap<>();
+
+			mappingValue.put(
+				"accountEntryId",
+				String.valueOf(accountEntry.getAccountEntryId()));
+			mappingValue.put(
+				"supportRegionId",
+				String.valueOf(supportRegion.getSupportRegionId()));
+
+			mappingValues.add(mappingValue);
+		}
+
+		return mappingValues;
+	}
+
+	@Override
+	public Class getModelClass() {
+		return AccountEntry.class;
+	}
+
+	@Override
+	public boolean hasMapping() {
+		return true;
+	}
+
 	@Reference(
 		target = "(module.service.lifecycle=osb.portlet.initialized)",
 		unbind = "-"
@@ -128,6 +117,8 @@ public class AccountEntryMetricsModel extends BaseMetricsModel<AccountEntry> {
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
+
+	private static final String[] _MAPPING_TABLES = {"SupportRegion"};
 
 	@Reference
 	private MetricsTransformationUtil _metricsTransformationUtil;

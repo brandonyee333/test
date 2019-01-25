@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.metrics.api.model;
 
-import com.liferay.portal.kernel.model.BaseModel;
-
 import java.util.List;
 import java.util.Map;
 
@@ -26,16 +24,17 @@ public interface MetricsModel<T> {
 
 	public void deleteAll() throws Exception;
 
-	public Map<String, String> getMappingTables() throws Exception;
+	public Map<String, Object> getAttributes(T model);
 
-	public Map<String, List<String>> getMappingValues(BaseModel<T> model);
+	public String[] getMappingTables();
+
+	public List<Map<String, String>> getMappingValues(
+		T model, String mappingTable);
 
 	public Class<T> getModelClass();
 
 	public boolean hasMapping();
 
 	public void resyncAll() throws Exception;
-
-	public Map<String, Object> transformAttributes(BaseModel<T> model);
 
 }

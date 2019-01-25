@@ -19,7 +19,6 @@ import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModel;
 import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.util.WorkflowConstants;
-import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import java.util.Map;
@@ -34,17 +33,10 @@ import org.osgi.service.component.annotations.Reference;
 public class OrderEntryMetricsModel extends BaseMetricsModel<OrderEntry> {
 
 	@Override
-	public Class getModelClass() {
-		return OrderEntry.class;
-	}
-
-	@Override
-	public Map<String, Object> transformAttributes(
-		BaseModel<OrderEntry> model) {
-
+	public Map<String, Object> getAttributes(OrderEntry orderEntry) {
 		Map<String, Object> attributes =
 			_metricsTransformationUtil.transformSharedAttributes(
-				model.getModelAttributes());
+				orderEntry.getModelAttributes());
 
 		Integer status = (Integer)attributes.get("status");
 
@@ -53,6 +45,11 @@ public class OrderEntryMetricsModel extends BaseMetricsModel<OrderEntry> {
 		}
 
 		return attributes;
+	}
+
+	@Override
+	public Class getModelClass() {
+		return OrderEntry.class;
 	}
 
 	@Reference(

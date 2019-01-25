@@ -21,13 +21,11 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.BaseModel;
-import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -58,13 +56,11 @@ public class MessageFactory {
 			JSONArray mappingTablesJSONArray =
 				JSONFactoryUtil.createJSONArray();
 
-			Map<String, String> mappingTables = metricsModel.getMappingTables();
-
-			for (Map.Entry<String, String> entry : mappingTables.entrySet()) {
+			for (String mappingTable : metricsModel.getMappingTables()) {
 				JSONObject mappingTableJSONObject =
 					JSONFactoryUtil.createJSONObject();
 
-				mappingTableJSONObject.put("name", entry.getKey());
+				mappingTableJSONObject.put("name", mappingTable);
 
 				mappingTablesJSONArray.put(mappingTableJSONObject);
 			}
@@ -109,13 +105,11 @@ public class MessageFactory {
 			JSONArray mappingTablesJSONArray =
 				JSONFactoryUtil.createJSONArray();
 
-			Map<String, String> mappingTables = metricsModel.getMappingTables();
-
-			for (Map.Entry<String, String> entry : mappingTables.entrySet()) {
+			for (String mappingTable : metricsModel.getMappingTables()) {
 				JSONObject mappingTableJSONObject =
 					JSONFactoryUtil.createJSONObject();
 
-				mappingTableJSONObject.put("name", entry.getKey());
+				mappingTableJSONObject.put("name", mappingTable);
 
 				mappingTablesJSONArray.put(mappingTableJSONObject);
 			}
@@ -140,14 +134,10 @@ public class MessageFactory {
 
 		JSONObject attributesJSONObject = JSONFactoryUtil.createJSONObject();
 
-		Map<String, Object> attributes = model.getModelAttributes();
-
 		MetricsModel metricsModel = _metricsModelRegistry.getMetricsModel(
 			model.getModelClassName());
 
-		if (metricsModel != null) {
-			attributes = metricsModel.transformAttributes(model);
-		}
+		Map<String, Object> attributes = metricsModel.getAttributes(model);
 
 		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			String lowerCaseKey = StringUtil.lowerCase(entry.getKey());
@@ -187,42 +177,34 @@ public class MessageFactory {
 			JSONArray mappingTablesJSONArray =
 				JSONFactoryUtil.createJSONArray();
 
-			Map<String, String> mappingTables = metricsModel.getMappingTables();
-
-			for (Map.Entry<String, String> entry : mappingTables.entrySet()) {
+			for (String mappingTable : metricsModel.getMappingTables()) {
 				JSONObject mappingTableJSONObject =
 					JSONFactoryUtil.createJSONObject();
 
-				mappingTableJSONObject.put("name", entry.getKey());
+				mappingTableJSONObject.put("name", mappingTable);
 
 				JSONArray mappingTableValuesJSONArray =
 					JSONFactoryUtil.createJSONArray();
 
-				String mappingColumnName = entry.getValue();
+				List<Map<String, String>> mappingTableValues =
+					metricsModel.getMappingValues(model, mappingTable);
 
-				Map<String, List<String>> mappingTableValues =
-					metricsModel.getMappingValues(model);
+				for (Map<String, String> mappingTableValue :
+						mappingTableValues) {
 
-				for (Map.Entry<String, List<String>> listEntry :
-						mappingTableValues.entrySet()) {
+					JSONObject mappingTableValueJSONObject =
+						JSONFactoryUtil.createJSONObject();
 
-					String primaryKey = listEntry.getKey();
-					List<String> mappingValues = listEntry.getValue();
-
-					for (String mappingTableValue : mappingValues) {
-						JSONObject mappingTableValueJSONObject =
-							JSONFactoryUtil.createJSONObject();
+					for (Map.Entry<String, String> mappingTableValueEntry :
+							mappingTableValue.entrySet()) {
 
 						mappingTableValueJSONObject.put(
-							mappingColumnName, mappingTableValue);
-
-						mappingTableValueJSONObject.put(
-							primaryKey,
-							String.valueOf(attributes.get(primaryKey)));
-
-						mappingTableValuesJSONArray.put(
-							mappingTableValueJSONObject);
+							mappingTableValueEntry.getKey(),
+							mappingTableValueEntry.getValue());
 					}
+
+					mappingTableValuesJSONArray.put(
+						mappingTableValueJSONObject);
 				}
 
 				mappingTableJSONObject.put(

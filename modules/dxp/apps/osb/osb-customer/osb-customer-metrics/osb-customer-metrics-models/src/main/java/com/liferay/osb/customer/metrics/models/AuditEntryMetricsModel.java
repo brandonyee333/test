@@ -18,7 +18,6 @@ import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModel;
 import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.AuditEntry;
-import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import java.util.Map;
@@ -33,17 +32,10 @@ import org.osgi.service.component.annotations.Reference;
 public class AuditEntryMetricsModel extends BaseMetricsModel<AuditEntry> {
 
 	@Override
-	public Class getModelClass() {
-		return AuditEntry.class;
-	}
-
-	@Override
-	public Map<String, Object> transformAttributes(
-		BaseModel<AuditEntry> model) {
-
+	public Map<String, Object> getAttributes(AuditEntry auditEntry) {
 		Map<String, Object> attributes =
 			_metricsTransformationUtil.transformSharedAttributes(
-				model.getModelAttributes());
+				auditEntry.getModelAttributes());
 
 		Long auditEntryId = (Long)attributes.get("auditEntryId");
 
@@ -52,6 +44,11 @@ public class AuditEntryMetricsModel extends BaseMetricsModel<AuditEntry> {
 		}
 
 		return attributes;
+	}
+
+	@Override
+	public Class getModelClass() {
+		return AuditEntry.class;
 	}
 
 	@Reference(

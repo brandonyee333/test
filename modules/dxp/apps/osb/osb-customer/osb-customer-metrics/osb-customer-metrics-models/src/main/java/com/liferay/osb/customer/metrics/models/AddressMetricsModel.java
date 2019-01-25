@@ -18,7 +18,6 @@ import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModel;
 import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.portal.kernel.model.Address;
-import com.liferay.portal.kernel.model.BaseModel;
 
 import java.util.Map;
 
@@ -32,15 +31,10 @@ import org.osgi.service.component.annotations.Reference;
 public class AddressMetricsModel extends BaseMetricsModel<Address> {
 
 	@Override
-	public Class getModelClass() {
-		return Address.class;
-	}
-
-	@Override
-	public Map<String, Object> transformAttributes(BaseModel<Address> model) {
+	public Map<String, Object> getAttributes(Address address) {
 		Map<String, Object> attributes =
 			_metricsTransformationUtil.transformSharedAttributes(
-				model.getModelAttributes());
+				address.getModelAttributes());
 
 		attributes.remove("uuid");
 
@@ -51,6 +45,11 @@ public class AddressMetricsModel extends BaseMetricsModel<Address> {
 		}
 
 		return attributes;
+	}
+
+	@Override
+	public Class getModelClass() {
+		return Address.class;
 	}
 
 	@Reference

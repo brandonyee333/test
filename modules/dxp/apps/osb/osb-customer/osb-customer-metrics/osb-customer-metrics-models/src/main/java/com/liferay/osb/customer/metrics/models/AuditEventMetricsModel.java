@@ -17,7 +17,6 @@ package com.liferay.osb.customer.metrics.models;
 import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModel;
 import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
-import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.security.audit.storage.model.AuditEvent;
@@ -34,17 +33,10 @@ import org.osgi.service.component.annotations.Reference;
 public class AuditEventMetricsModel extends BaseMetricsModel<AuditEvent> {
 
 	@Override
-	public Class getModelClass() {
-		return AuditEvent.class;
-	}
-
-	@Override
-	public Map<String, Object> transformAttributes(
-		BaseModel<AuditEvent> model) {
-
+	public Map<String, Object> getAttributes(AuditEvent auditEvent) {
 		Map<String, Object> attributes =
 			_metricsTransformationUtil.transformSharedAttributes(
-				model.getModelAttributes());
+				auditEvent.getModelAttributes());
 
 		Long auditEventId = (Long)attributes.get("auditEventId");
 
@@ -69,6 +61,11 @@ public class AuditEventMetricsModel extends BaseMetricsModel<AuditEvent> {
 		}
 
 		return attributes;
+	}
+
+	@Override
+	public Class getModelClass() {
+		return AuditEvent.class;
 	}
 
 	@Reference

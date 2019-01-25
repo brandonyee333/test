@@ -19,7 +19,6 @@ import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModel;
 import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountCustomerConstants;
-import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import java.util.Map;
@@ -35,17 +34,10 @@ public class AccountCustomerMetricsModel
 	extends BaseMetricsModel<AccountCustomer> {
 
 	@Override
-	public Class getModelClass() {
-		return AccountCustomer.class;
-	}
-
-	@Override
-	public Map<String, Object> transformAttributes(
-		BaseModel<AccountCustomer> model) {
-
+	public Map<String, Object> getAttributes(AccountCustomer accountCustomer) {
 		Map<String, Object> attributes =
 			_metricsTransformationUtil.transformSharedAttributes(
-				model.getModelAttributes());
+				accountCustomer.getModelAttributes());
 
 		Integer role = (Integer)attributes.get("role");
 
@@ -54,6 +46,11 @@ public class AccountCustomerMetricsModel
 		}
 
 		return attributes;
+	}
+
+	@Override
+	public Class getModelClass() {
+		return AccountCustomer.class;
 	}
 
 	@Reference(

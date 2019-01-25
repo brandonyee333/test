@@ -19,7 +19,6 @@ import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModel;
 import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.PartnerWorker;
 import com.liferay.osb.model.PartnerWorkerConstants;
-import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import java.util.Map;
@@ -34,17 +33,10 @@ import org.osgi.service.component.annotations.Reference;
 public class PartnerWorkerMetricsModel extends BaseMetricsModel<PartnerWorker> {
 
 	@Override
-	public Class getModelClass() {
-		return PartnerWorker.class;
-	}
-
-	@Override
-	public Map<String, Object> transformAttributes(
-		BaseModel<PartnerWorker> model) {
-
+	public Map<String, Object> getAttributes(PartnerWorker partnerWorker) {
 		Map<String, Object> attributes =
 			_metricsTransformationUtil.transformSharedAttributes(
-				model.getModelAttributes());
+				partnerWorker.getModelAttributes());
 
 		Integer role = (Integer)attributes.get("role");
 
@@ -53,6 +45,11 @@ public class PartnerWorkerMetricsModel extends BaseMetricsModel<PartnerWorker> {
 		}
 
 		return attributes;
+	}
+
+	@Override
+	public Class getModelClass() {
+		return PartnerWorker.class;
 	}
 
 	@Reference(
