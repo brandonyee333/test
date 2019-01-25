@@ -9,3 +9,13 @@ window.Liferay = {
 		get: lang
 	}
 }
+
+beforeEach(() => {
+	jest.spyOn(console, 'error');
+
+	console.error.mockImplementation(() => {});
+});
+
+afterEach(() => {
+	console.error.mockRestore();
+});
