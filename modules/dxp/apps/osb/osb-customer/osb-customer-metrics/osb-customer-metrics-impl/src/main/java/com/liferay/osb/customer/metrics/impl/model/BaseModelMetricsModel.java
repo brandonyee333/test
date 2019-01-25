@@ -72,11 +72,16 @@ public abstract class BaseModelMetricsModel<T extends BaseModel<T>>
 
 	public String getModelPrimaryKeyName() {
 		try {
-			return metricsBaseModelUtil.getModelPrimaryKeyName(this);
+			if (modelPrimaryKeyName == null) {
+				modelPrimaryKeyName =
+					metricsBaseModelUtil.getModelPrimaryKeyName(this);
+			}
 		}
 		catch (Exception e) {
 			throw new SystemException(e);
 		}
+
+		return modelPrimaryKeyName;
 	}
 
 	public boolean hasMapping() {
@@ -115,5 +120,6 @@ public abstract class BaseModelMetricsModel<T extends BaseModel<T>>
 	protected MessageFactory messageFactory;
 	protected MessagePublisher messagePublisher;
 	protected MetricsBaseModelUtil metricsBaseModelUtil;
+	protected String modelPrimaryKeyName;
 
 }
