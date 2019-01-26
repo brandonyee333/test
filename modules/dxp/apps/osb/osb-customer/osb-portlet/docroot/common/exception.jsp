@@ -33,7 +33,7 @@
 	String message = mle.getLocalizedMessage();
 
 	if (message.contains("Server returned status 429")) {
-		message = LanguageUtil.get(request, "zendesk-rate-limit-exceeded");
+		message = LanguageUtil.get(request, "zendesk-api-rate-limit-exceeded");
 	}
 	%>
 

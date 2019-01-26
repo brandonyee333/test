@@ -47,13 +47,7 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 
 			_log.error(e, e);
 
-			String detailMessage = e.getMessage();
-
-			int statusCode = Integer.valueOf(
-				detailMessage.substring(
-					detailMessage.indexOf("Server returned status") + 23));
-
-			if ((statusCode == 429) || _isStatus5XX(statusCode)) {
+			if (_isRetryRequest(e)) {
 				try {
 					Thread.sleep(90000);
 				}
@@ -87,8 +81,19 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 
 	protected JSONFactory jsonFactory;
 
-	private boolean _isStatus5XX(int statusCode) {
-		if ((statusCode == HttpServletResponse.SC_INTERNAL_SERVER_ERROR) ||
+	private boolean _isRetryRequest(Exception e) {
+		String detailMessage = e.getMessage();
+
+		int pos = detailMessage.indexOf("Server returned status");
+
+		if (pos <= 0) {
+			return false;
+		}
+
+		int statusCode = Integer.valueOf(detailMessage.substring(pos + 23));
+
+		if ((statusCode == 429) ||
+			(statusCode == HttpServletResponse.SC_INTERNAL_SERVER_ERROR) ||
 			(statusCode == HttpServletResponse.SC_SERVICE_UNAVAILABLE)) {
 
 			return true;
