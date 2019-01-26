@@ -14,9 +14,9 @@
 
 package com.liferay.osb.customer.metrics.impl.model;
 
-import com.liferay.osb.customer.metrics.api.constants.MetricsConstants;
-import com.liferay.osb.customer.metrics.impl.internal.rabbitmq.MessageFactory;
-import com.liferay.osb.customer.metrics.impl.internal.rabbitmq.MessagePublisherUtil;
+import com.liferay.osb.customer.metrics.api.rabbitmq.MessageFactory;
+import com.liferay.osb.customer.metrics.api.rabbitmq.MessagePublisher;
+import com.liferay.osb.customer.metrics.api.rabbitmq.constants.RoutingKeys;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -70,8 +70,8 @@ public abstract class BaseMetricsModelListener<T extends BaseModel<T>>
 			JSONObject jsonObject = messageFactory.createRemoveJSONObject(
 				model.getModelClassName(), model);
 
-			messagePublisherUtil.sendMessage(
-				MetricsConstants.ACTION_REMOVE, jsonObject);
+			messagePublisher.sendMessage(
+				RoutingKeys.METRICS_REMOVE, jsonObject);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -83,8 +83,8 @@ public abstract class BaseMetricsModelListener<T extends BaseModel<T>>
 			JSONObject jsonObject = messageFactory.createUpdateJSONObject(
 				model.getModelClassName(), model);
 
-			messagePublisherUtil.sendMessage(
-				MetricsConstants.ACTION_UPDATE, jsonObject);
+			messagePublisher.sendMessage(
+				RoutingKeys.METRICS_UPDATE, jsonObject);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -97,14 +97,12 @@ public abstract class BaseMetricsModelListener<T extends BaseModel<T>>
 	}
 
 	@Reference(unbind = "-")
-	protected void setMessagePublisherUtil(
-		MessagePublisherUtil messagePublisherUtil) {
-
-		this.messagePublisherUtil = messagePublisherUtil;
+	protected void setMessagePublisher(MessagePublisher messagePublisher) {
+		this.messagePublisher = messagePublisher;
 	}
 
 	protected MessageFactory messageFactory;
-	protected MessagePublisherUtil messagePublisherUtil;
+	protected MessagePublisher messagePublisher;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseMetricsModelListener.class);

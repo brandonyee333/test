@@ -83,9 +83,7 @@ public class AccountEntryMetricsModel
 
 		List<Map<String, String>> mappingValues = new ArrayList<>();
 
-		List<SupportRegion> supportRegions = accountEntry.getSupportRegions();
-
-		for (SupportRegion supportRegion : supportRegions) {
+		for (SupportRegion supportRegion : accountEntry.getSupportRegions()) {
 			Map<String, String> mappingValue = new HashMap<>();
 
 			mappingValue.put(

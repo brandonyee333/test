@@ -58,11 +58,12 @@ public class MetricsPortlet extends MVCPortlet {
 		String modelClassName = ParamUtil.getString(
 			actionRequest, "modelClassName");
 
-		MetricsModel<?> model = _metricsModelRegistry.getMetricsModel(
+		MetricsModel<?> metricsModel = _metricsModelRegistry.getMetricsModel(
 			modelClassName);
 
-		model.deleteAll();
-		model.resyncAll();
+		metricsModel.deleteAll();
+
+		metricsModel.resyncAll();
 	}
 
 	public void syncModel(
@@ -72,10 +73,10 @@ public class MetricsPortlet extends MVCPortlet {
 		String modelClassName = ParamUtil.getString(
 			actionRequest, "modelClassName");
 
-		MetricsModel<?> model = _metricsModelRegistry.getMetricsModel(
+		MetricsModel<?> metricsModel = _metricsModelRegistry.getMetricsModel(
 			modelClassName);
 
-		model.resyncAll();
+		metricsModel.resyncAll();
 	}
 
 	@Reference

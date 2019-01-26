@@ -16,12 +16,12 @@ package com.liferay.osb.customer.metrics.impl.internal.rabbitmq;
 
 import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.api.model.MetricsModelRegistry;
+import com.liferay.osb.customer.metrics.api.rabbitmq.MessageFactory;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
 import java.util.Map;
@@ -33,7 +33,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Jenny Chen
  */
 @Component(immediate = true, service = MessageFactory.class)
-public class MessageFactory {
+public class MessageFactoryImpl implements MessageFactory {
 
 	public JSONObject createDropJSONObject(String modelClassName)
 		throws Exception {

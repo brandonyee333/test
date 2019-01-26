@@ -14,13 +14,13 @@
 
 package com.liferay.osb.customer.metrics.impl.model;
 
-import com.liferay.osb.customer.metrics.api.constants.MetricsConstants;
 import com.liferay.osb.customer.metrics.api.model.MetricsModel;
-import com.liferay.osb.customer.metrics.impl.internal.rabbitmq.MessageFactory;
-import com.liferay.osb.customer.metrics.impl.internal.rabbitmq.MessagePublisherUtil;
+import com.liferay.osb.customer.metrics.api.rabbitmq.MessageFactory;
+import com.liferay.osb.customer.metrics.api.rabbitmq.MessagePublisher;
+import com.liferay.osb.customer.metrics.api.rabbitmq.constants.RoutingKeys;
 import com.liferay.osb.customer.metrics.impl.internal.util.MetricsBaseModelUtil;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.util.CharPool;
 
@@ -41,8 +41,7 @@ public abstract class BaseModelMetricsModel<T extends BaseModel<T>>
 		JSONObject jsonObject = messageFactory.createDropJSONObject(
 			modelClass.getName());
 
-		messagePublisherUtil.sendMessage(
-			MetricsConstants.ACTION_DROP, jsonObject);
+		messagePublisher.sendMessage(RoutingKeys.METRICS_DROP, jsonObject);
 	}
 
 	public Map<String, Object> getAttributes(BaseModel<T> model) {
@@ -91,8 +90,8 @@ public abstract class BaseModelMetricsModel<T extends BaseModel<T>>
 			JSONObject jsonObject = messageFactory.createUpdateJSONObject(
 				model.getModelClassName(), model);
 
-			messagePublisherUtil.sendMessage(
-				MetricsConstants.ACTION_UPDATE, jsonObject);
+			messagePublisher.sendMessage(
+				RoutingKeys.METRICS_UPDATE, jsonObject);
 		}
 	}
 
@@ -102,10 +101,8 @@ public abstract class BaseModelMetricsModel<T extends BaseModel<T>>
 	}
 
 	@Reference(unbind = "-")
-	protected void setMessagePublisherUtil(
-		MessagePublisherUtil messagePublisherUtil) {
-
-		this.messagePublisherUtil = messagePublisherUtil;
+	protected void setMessagePublisher(MessagePublisher messagePublisher) {
+		this.messagePublisher = messagePublisher;
 	}
 
 	@Reference(unbind = "-")
@@ -116,7 +113,7 @@ public abstract class BaseModelMetricsModel<T extends BaseModel<T>>
 	}
 
 	protected MessageFactory messageFactory;
-	protected MessagePublisherUtil messagePublisherUtil;
+	protected MessagePublisher messagePublisher;
 	protected MetricsBaseModelUtil metricsBaseModelUtil;
 
 }

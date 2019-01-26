@@ -12,33 +12,17 @@
  *
  */
 
-package com.liferay.osb.customer.metrics.api.model;
+package com.liferay.osb.customer.metrics.api.rabbitmq;
 
-import java.util.List;
-import java.util.Map;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONObject;
 
 /**
  * @author Jenny Chen
  */
-public interface MetricsModel<T> {
+public interface MessagePublisher {
 
-	public void deleteAll() throws Exception;
-
-	public Map<String, Object> getAttributes(T model);
-
-	public String[] getMappingTables();
-
-	public List<Map<String, String>> getMappingValues(
-		T model, String mappingTable);
-
-	public Class<T> getModelClass();
-
-	public String getModelName();
-
-	public String getModelPrimaryKeyName();
-
-	public boolean hasMapping();
-
-	public void resyncAll() throws Exception;
+	public void sendMessage(String routingKey, JSONObject jsonObject)
+		throws PortalException;
 
 }

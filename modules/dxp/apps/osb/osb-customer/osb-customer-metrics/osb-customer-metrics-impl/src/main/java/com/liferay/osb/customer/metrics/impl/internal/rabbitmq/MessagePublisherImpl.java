@@ -14,8 +14,8 @@
 
 package com.liferay.osb.customer.metrics.impl.internal.rabbitmq;
 
+import com.liferay.osb.customer.metrics.api.rabbitmq.MessagePublisher;
 import com.liferay.osb.customer.metrics.impl.configuration.MetricsConfigurationValues;
-import com.liferay.osb.customer.rabbitmq.connector.publisher.MessagePublisher;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 
@@ -25,8 +25,8 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Jenny Chen
  */
-@Component(immediate = true, service = MessagePublisherUtil.class)
-public class MessagePublisherUtil {
+@Component(immediate = true, service = MessagePublisher.class)
+public class MessagePublisherImpl implements MessagePublisher {
 
 	public void sendMessage(String routingKey, JSONObject jsonObject)
 		throws PortalException {
@@ -42,6 +42,7 @@ public class MessagePublisherUtil {
 	}
 
 	@Reference
-	private MessagePublisher _messagePublisher;
+	private com.liferay.osb.customer.rabbitmq.connector.publisher.
+		MessagePublisher _messagePublisher;
 
 }

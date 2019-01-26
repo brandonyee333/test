@@ -12,33 +12,19 @@
  *
  */
 
-package com.liferay.osb.customer.metrics.api.model;
-
-import java.util.List;
-import java.util.Map;
+package com.liferay.osb.customer.metrics.api.rabbitmq.constants;
 
 /**
  * @author Jenny Chen
  */
-public interface MetricsModel<T> {
+public class RoutingKeys {
 
-	public void deleteAll() throws Exception;
+	public static final String METRICS_DROP = "metrics.drop";
 
-	public Map<String, Object> getAttributes(T model);
+	public static final String METRICS_REMOVE = "metrics.remove";
 
-	public String[] getMappingTables();
+	public static final String METRICS_UPDATE = "metrics.update";
 
-	public List<Map<String, String>> getMappingValues(
-		T model, String mappingTable);
-
-	public Class<T> getModelClass();
-
-	public String getModelName();
-
-	public String getModelPrimaryKeyName();
-
-	public boolean hasMapping();
-
-	public void resyncAll() throws Exception;
+	public static final String METRICS_UPGRADE = "metrics.upgrade";
 
 }

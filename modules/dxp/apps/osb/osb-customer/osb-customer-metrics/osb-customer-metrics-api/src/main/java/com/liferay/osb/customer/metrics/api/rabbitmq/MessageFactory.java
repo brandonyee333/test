@@ -12,19 +12,24 @@
  *
  */
 
-package com.liferay.osb.customer.metrics.api.constants;
+package com.liferay.osb.customer.metrics.api.rabbitmq;
+
+import com.liferay.portal.kernel.json.JSONObject;
 
 /**
  * @author Jenny Chen
  */
-public class MetricsConstants {
+public interface MessageFactory {
 
-	public static final String ACTION_DROP = "metrics.drop";
+	public JSONObject createDropJSONObject(String modelClassName)
+		throws Exception;
 
-	public static final String ACTION_REMOVE = "metrics.remove";
+	public JSONObject createRemoveJSONObject(
+			String modelClassName, Object model)
+		throws Exception;
 
-	public static final String ACTION_UPDATE = "metrics.update";
-
-	public static final String ACTION_UPGRADE = "metrics.upgrade";
+	public JSONObject createUpdateJSONObject(
+			String modelClassName, Object model)
+		throws Exception;
 
 }

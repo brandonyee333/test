@@ -63,12 +63,13 @@ public class PartnerEntryMetricsModel
 
 		List<Map<String, String>> mappingValues = new ArrayList<>();
 
-		SupportRegion supportRegion = partnerEntry.getSupportRegion();
-
 		Map<String, String> mappingValue = new HashMap<>();
 
 		mappingValue.put(
 			"partnerEntryId", String.valueOf(partnerEntry.getPartnerEntryId()));
+
+		SupportRegion supportRegion = partnerEntry.getSupportRegion();
+
 		mappingValue.put(
 			"supportRegionId",
 			String.valueOf(supportRegion.getSupportRegionId()));

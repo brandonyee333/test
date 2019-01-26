@@ -56,10 +56,9 @@ public class OfferingBundleMetricsModel
 
 		List<Map<String, String>> mappingValues = new ArrayList<>();
 
-		List<OfferingDefinition> offeringDefinitions =
-			offeringBundle.getOfferingDefinitions();
+		for (OfferingDefinition offeringDefinition :
+				offeringBundle.getOfferingDefinitions()) {
 
-		for (OfferingDefinition offeringDefinition : offeringDefinitions) {
 			Map<String, String> mappingValue = new HashMap<>();
 
 			mappingValue.put(
