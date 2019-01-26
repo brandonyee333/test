@@ -37,11 +37,7 @@ public class AuditEntryMetricsModel extends BaseModelMetricsModel<AuditEntry> {
 			_metricsTransformationUtil.transformSharedAttributes(
 				auditEntry.getModelAttributes());
 
-		Long auditEntryId = (Long)attributes.get("auditEntryId");
-
-		if (auditEntryId != null) {
-			attributes.put("auditEntryId", -auditEntryId);
-		}
+		attributes.put("auditEntryId", -1 * auditEntry.getAuditEntryId());
 
 		return attributes;
 	}

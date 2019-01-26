@@ -18,7 +18,6 @@ import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.impl.model.BaseModelMetricsModel;
 import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.OrderEntry;
-import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import java.util.Map;
@@ -38,11 +37,7 @@ public class OrderEntryMetricsModel extends BaseModelMetricsModel<OrderEntry> {
 			_metricsTransformationUtil.transformSharedAttributes(
 				orderEntry.getModelAttributes());
 
-		Integer status = (Integer)attributes.get("status");
-
-		if (status != null) {
-			attributes.put("status", WorkflowConstants.getStatusLabel(status));
-		}
+		attributes.put("status", orderEntry.getStatusLabel());
 
 		return attributes;
 	}

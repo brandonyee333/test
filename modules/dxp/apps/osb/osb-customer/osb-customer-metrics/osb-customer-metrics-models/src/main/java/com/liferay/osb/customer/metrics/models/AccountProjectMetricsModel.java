@@ -34,11 +34,8 @@ public class AccountProjectMetricsModel
 
 	@Override
 	public Map<String, Object> getAttributes(AccountProject accountProject) {
-		Map<String, Object> attributes =
-			_metricsTransformationUtil.transformSharedAttributes(
-				accountProject.getModelAttributes());
-
-		return attributes;
+		return _metricsTransformationUtil.transformSharedAttributes(
+			accountProject.getModelAttributes());
 	}
 
 	@Override

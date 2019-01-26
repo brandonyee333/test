@@ -34,11 +34,8 @@ public class SupportRegionMetricsModel
 
 	@Override
 	public Map<String, Object> getAttributes(SupportRegion supportRegion) {
-		Map<String, Object> attributes =
-			_metricsTransformationUtil.transformSharedAttributes(
-				supportRegion.getModelAttributes());
-
-		return attributes;
+		return _metricsTransformationUtil.transformSharedAttributes(
+			supportRegion.getModelAttributes());
 	}
 
 	@Override

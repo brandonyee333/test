@@ -34,11 +34,8 @@ public class LicenseEntryMetricsModel
 
 	@Override
 	public Map<String, Object> getAttributes(LicenseEntry licenseEntry) {
-		Map<String, Object> attributes =
-			_metricsTransformationUtil.transformSharedAttributes(
-				licenseEntry.getModelAttributes());
-
-		return attributes;
+		return _metricsTransformationUtil.transformSharedAttributes(
+			licenseEntry.getModelAttributes());
 	}
 
 	@Override

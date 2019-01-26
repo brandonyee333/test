@@ -18,7 +18,6 @@ import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.impl.model.BaseModelMetricsModel;
 import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.ProductEntry;
-import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import java.util.Map;
@@ -39,19 +38,8 @@ public class ProductEntryMetricsModel
 			_metricsTransformationUtil.transformSharedAttributes(
 				productEntry.getModelAttributes());
 
-		Integer type = (Integer)attributes.get("type");
-
-		if (type != null) {
-			attributes.put("type", ProductEntryConstants.getTypeLabel(type));
-		}
-
-		Integer environment = (Integer)attributes.get("environment");
-
-		if (environment != null) {
-			attributes.put(
-				"environment",
-				ProductEntryConstants.getEnvironmentLabel(environment));
-		}
+		attributes.put("environment", productEntry.getEnvironmentLabel());
+		attributes.put("type", productEntry.getTypeLabel());
 
 		return attributes;
 	}

@@ -41,13 +41,10 @@ public class AccountEntryLanguageMetricsModel
 			_metricsTransformationUtil.transformSharedAttributes(
 				accountEntryLanguage.getModelAttributes());
 
-		String languageId = (String)attributes.get("languageId");
-
-		if (languageId != null) {
-			attributes.put(
-				"languageId",
-				AccountEntryConstants.getLanguageLabel(languageId));
-		}
+		attributes.put(
+			"languageId",
+			AccountEntryConstants.getLanguageLabel(
+				accountEntryLanguage.getLanguageId()));
 
 		return attributes;
 	}

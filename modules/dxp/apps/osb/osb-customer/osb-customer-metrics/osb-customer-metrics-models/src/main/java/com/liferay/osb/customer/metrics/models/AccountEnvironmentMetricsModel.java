@@ -18,7 +18,6 @@ import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.impl.model.BaseModelMetricsModel;
 import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.AccountEnvironment;
-import com.liferay.osb.model.AccountEnvironmentConstants;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import java.util.Map;
@@ -41,55 +40,13 @@ public class AccountEnvironmentMetricsModel
 			_metricsTransformationUtil.transformSharedAttributes(
 				accountEnvironment.getModelAttributes());
 
-		Integer envOS = (Integer)attributes.get("envOS");
-
-		if (envOS != null) {
-			attributes.put(
-				"envOS", AccountEnvironmentConstants.getEnvLabel(envOS));
-		}
-
-		Integer envDB = (Integer)attributes.get("envDB");
-
-		if (envDB != null) {
-			attributes.put(
-				"envDB", AccountEnvironmentConstants.getEnvLabel(envDB));
-		}
-
-		Integer envJVM = (Integer)attributes.get("envJVM");
-
-		if (envJVM != null) {
-			attributes.put(
-				"envJVM", AccountEnvironmentConstants.getEnvLabel(envJVM));
-		}
-
-		Integer envAS = (Integer)attributes.get("envAS");
-
-		if (envAS != null) {
-			attributes.put(
-				"envAS", AccountEnvironmentConstants.getEnvLabel(envAS));
-		}
-
-		Integer envLFR = (Integer)attributes.get("envLFR");
-
-		if (envLFR != null) {
-			attributes.put(
-				"envLFR", AccountEnvironmentConstants.getEnvLabel(envLFR));
-		}
-
-		Integer envBrowser = (Integer)attributes.get("envBrowser");
-
-		if (envBrowser != null) {
-			attributes.put(
-				"envBrowser",
-				AccountEnvironmentConstants.getEnvLabel(envBrowser));
-		}
-
-		Integer envCS = (Integer)attributes.get("envCS");
-
-		if (envCS != null) {
-			attributes.put(
-				"envCS", AccountEnvironmentConstants.getEnvLabel(envCS));
-		}
+		attributes.put("envAS", accountEnvironment.getEnvASLabel());
+		attributes.put("envBrowser", accountEnvironment.getEnvBrowserLabel());
+		attributes.put("envCS", accountEnvironment.getEnvCSLabel());
+		attributes.put("envDB", accountEnvironment.getEnvDBLabel());
+		attributes.put("envJVM", accountEnvironment.getEnvJVMLabel());
+		attributes.put("envLFR", accountEnvironment.getEnvLFRLabel());
+		attributes.put("envOS", accountEnvironment.getEnvOSLabel());
 
 		return attributes;
 	}

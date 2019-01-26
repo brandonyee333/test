@@ -41,13 +41,10 @@ public class AccountEnvironmentAttachmentMetricsModel
 			_metricsTransformationUtil.transformSharedAttributes(
 				accountEnvironmentAttachment.getModelAttributes());
 
-		Integer type = (Integer)attributes.get("type");
-
-		if (type != null) {
-			attributes.put(
-				"type",
-				AccountEnvironmentAttachmentConstants.getTypeLabel(type));
-		}
+		attributes.put(
+			"type",
+			AccountEnvironmentAttachmentConstants.getTypeLabel(
+				accountEnvironmentAttachment.getType()));
 
 		return attributes;
 	}

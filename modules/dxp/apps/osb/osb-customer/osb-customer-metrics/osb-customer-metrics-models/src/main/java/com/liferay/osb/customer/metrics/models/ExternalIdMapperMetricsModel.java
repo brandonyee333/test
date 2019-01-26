@@ -40,11 +40,9 @@ public class ExternalIdMapperMetricsModel
 			_metricsTransformationUtil.transformSharedAttributes(
 				externalIdMapper.getModelAttributes());
 
-		Long externalIdMapperId = (Long)attributes.get("externalIdMapperId");
-
-		if (externalIdMapperId != null) {
-			attributes.put("externalIdMapperId", -externalIdMapperId);
-		}
+		attributes.put(
+			"externalIdMapperId",
+			-1 * externalIdMapper.getExternalIdMapperId());
 
 		return attributes;
 	}

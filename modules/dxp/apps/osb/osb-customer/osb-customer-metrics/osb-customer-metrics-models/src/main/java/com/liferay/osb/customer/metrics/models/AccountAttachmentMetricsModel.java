@@ -18,7 +18,6 @@ import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.impl.model.BaseModelMetricsModel;
 import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.AccountAttachment;
-import com.liferay.osb.model.AccountAttachmentConstants;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import java.util.Map;
@@ -41,12 +40,7 @@ public class AccountAttachmentMetricsModel
 			_metricsTransformationUtil.transformSharedAttributes(
 				accountAttachment.getModelAttributes());
 
-		Integer type = (Integer)attributes.get("type");
-
-		if (type != null) {
-			attributes.put(
-				"type", AccountAttachmentConstants.getTypeLabel(type));
-		}
+		attributes.put("type", accountAttachment.getTypeLabel());
 
 		return attributes;
 	}

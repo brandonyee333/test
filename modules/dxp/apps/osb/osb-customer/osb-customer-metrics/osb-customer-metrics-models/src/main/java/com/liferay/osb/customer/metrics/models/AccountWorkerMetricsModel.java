@@ -18,7 +18,6 @@ import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.impl.model.BaseModelMetricsModel;
 import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.AccountWorker;
-import com.liferay.osb.model.AccountWorkerConstants;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import java.util.Map;
@@ -39,11 +38,7 @@ public class AccountWorkerMetricsModel
 			_metricsTransformationUtil.transformSharedAttributes(
 				accountWorker.getModelAttributes());
 
-		Integer role = (Integer)attributes.get("role");
-
-		if (role != null) {
-			attributes.put("role", AccountWorkerConstants.getRoleLabel(role));
-		}
+		attributes.put("role", accountWorker.getRoleLabel());
 
 		return attributes;
 	}

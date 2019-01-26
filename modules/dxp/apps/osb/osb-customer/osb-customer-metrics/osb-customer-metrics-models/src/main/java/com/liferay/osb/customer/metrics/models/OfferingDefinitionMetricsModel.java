@@ -36,11 +36,8 @@ public class OfferingDefinitionMetricsModel
 	public Map<String, Object> getAttributes(
 		OfferingDefinition offeringDefinition) {
 
-		Map<String, Object> attributes =
-			_metricsTransformationUtil.transformSharedAttributes(
-				offeringDefinition.getModelAttributes());
-
-		return attributes;
+		return _metricsTransformationUtil.transformSharedAttributes(
+			offeringDefinition.getModelAttributes());
 	}
 
 	@Override

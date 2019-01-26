@@ -18,7 +18,6 @@ import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.impl.model.BaseModelMetricsModel;
 import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.OfferingEntry;
-import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import java.util.Map;
@@ -39,18 +38,8 @@ public class OfferingEntryMetricsModel
 			_metricsTransformationUtil.transformSharedAttributes(
 				offeringEntry.getModelAttributes());
 
-		Integer type = (Integer)attributes.get("type");
-
-		if (type != null) {
-			attributes.put("type", OfferingEntryConstants.getTypeLabel(type));
-		}
-
-		Integer status = (Integer)attributes.get("status");
-
-		if (status != null) {
-			attributes.put(
-				"status", OfferingEntryConstants.getStatusLabel(status));
-		}
+		attributes.put("status", offeringEntry.getStatusLabel());
+		attributes.put("type", offeringEntry.getTypeLabel());
 
 		return attributes;
 	}

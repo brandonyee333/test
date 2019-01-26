@@ -18,7 +18,6 @@ import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.impl.model.BaseModelMetricsModel;
 import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.SupportResponse;
-import com.liferay.osb.model.SupportResponseConstants;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import java.util.Map;
@@ -39,13 +38,7 @@ public class SupportResponseMetricsModel
 			_metricsTransformationUtil.transformSharedAttributes(
 				supportResponse.getModelAttributes());
 
-		Integer supportLevel = (Integer)attributes.get("supportLevel");
-
-		if (supportLevel != null) {
-			attributes.put(
-				"supportLevel",
-				SupportResponseConstants.getSupportLevelLabel(supportLevel));
-		}
+		attributes.put("supportLevel", supportResponse.getSupportLevelLabel());
 
 		return attributes;
 	}

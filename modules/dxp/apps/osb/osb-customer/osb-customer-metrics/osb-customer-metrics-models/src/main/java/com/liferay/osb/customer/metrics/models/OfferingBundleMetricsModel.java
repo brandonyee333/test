@@ -38,11 +38,8 @@ public class OfferingBundleMetricsModel
 
 	@Override
 	public Map<String, Object> getAttributes(OfferingBundle offeringBundle) {
-		Map<String, Object> attributes =
-			_metricsTransformationUtil.transformSharedAttributes(
-				offeringBundle.getModelAttributes());
-
-		return attributes;
+		return _metricsTransformationUtil.transformSharedAttributes(
+			offeringBundle.getModelAttributes());
 	}
 
 	@Override

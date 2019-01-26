@@ -20,7 +20,6 @@ import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.SupportRegion;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
-import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,11 +42,7 @@ public class PartnerEntryMetricsModel
 			_metricsTransformationUtil.transformSharedAttributes(
 				partnerEntry.getModelAttributes());
 
-		Integer status = (Integer)attributes.get("status");
-
-		if (status != null) {
-			attributes.put("status", WorkflowConstants.getStatusLabel(status));
-		}
+		attributes.put("status", partnerEntry.getStatusLabel());
 
 		return attributes;
 	}

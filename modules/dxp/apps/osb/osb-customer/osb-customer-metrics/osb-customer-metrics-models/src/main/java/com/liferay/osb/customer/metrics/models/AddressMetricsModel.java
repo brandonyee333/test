@@ -36,13 +36,9 @@ public class AddressMetricsModel extends BaseModelMetricsModel<Address> {
 			_metricsTransformationUtil.transformSharedAttributes(
 				address.getModelAttributes());
 
+		attributes.put("addressId", -1 * address.getAddressId());
+
 		attributes.remove("uuid");
-
-		Long addressId = (Long)attributes.get("addressId");
-
-		if (addressId != null) {
-			attributes.put("addressId", -addressId);
-		}
 
 		return attributes;
 	}

@@ -20,7 +20,6 @@ import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.SupportRegion;
-import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import java.util.ArrayList;
@@ -44,30 +43,11 @@ public class AccountEntryMetricsModel
 			_metricsTransformationUtil.transformSharedAttributes(
 				accountEntry.getModelAttributes());
 
-		Integer type = (Integer)attributes.get("type");
-
-		if (type != null) {
-			attributes.put("type", AccountEntryConstants.getTypeLabel(type));
-		}
-
-		Integer industry = (Integer)attributes.get("industry");
-
-		if (industry != null) {
-			attributes.put(
-				"industry", AccountEntryConstants.getIndustryLabel(industry));
-		}
-
-		Integer tier = (Integer)attributes.get("tier");
-
-		if (tier != null) {
-			attributes.put("tier", AccountEntryConstants.getTierLabel(tier));
-		}
-
-		Integer status = (Integer)attributes.get("status");
-
-		if (status != null) {
-			attributes.put("status", WorkflowConstants.getStatusLabel(status));
-		}
+		attributes.put("industry", accountEntry.getIndustryLabel());
+		attributes.put("status", accountEntry.getStatusLabel());
+		attributes.put(
+			"tier", AccountEntryConstants.getTierLabel(accountEntry.getTier()));
+		attributes.put("type", accountEntry.getTypeLabel());
 
 		return attributes;
 	}
