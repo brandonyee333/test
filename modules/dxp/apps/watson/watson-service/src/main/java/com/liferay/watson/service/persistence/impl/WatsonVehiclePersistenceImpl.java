@@ -78,17 +78,9 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 		".List1";
 	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
 		".List2";
-	private final FinderPath _finderPathWithPaginationFindAll = new FinderPath(WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonVehicleModelImpl.FINDER_CACHE_ENABLED,
-			WatsonVehicleImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findAll", new String[0]);
-	private final FinderPath _finderPathWithoutPaginationFindAll = new FinderPath(WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonVehicleModelImpl.FINDER_CACHE_ENABLED,
-			WatsonVehicleImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findAll", new String[0]);
-	private final FinderPath _finderPathCountAll = new FinderPath(WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonVehicleModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+	private FinderPath _finderPathWithPaginationFindAll;
+	private FinderPath _finderPathWithoutPaginationFindAll;
+	private FinderPath _finderPathCountAll;
 
 	public WatsonVehiclePersistenceImpl() {
 		setModelClass(WatsonVehicle.class);
@@ -743,6 +735,21 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 	 * Initializes the watson vehicle persistence.
 	 */
 	public void afterPropertiesSet() {
+		_finderPathWithPaginationFindAll = new FinderPath(WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonVehicleModelImpl.FINDER_CACHE_ENABLED,
+				WatsonVehicleImpl.class,
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+
+		_finderPathWithoutPaginationFindAll = new FinderPath(WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonVehicleModelImpl.FINDER_CACHE_ENABLED,
+				WatsonVehicleImpl.class,
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+				new String[0]);
+
+		_finderPathCountAll = new FinderPath(WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonVehicleModelImpl.FINDER_CACHE_ENABLED, Long.class,
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+				new String[0]);
 	}
 
 	public void destroy() {

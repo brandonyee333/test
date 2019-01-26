@@ -78,17 +78,9 @@ public class WatsonActivityPersistenceImpl extends BasePersistenceImpl<WatsonAct
 		".List1";
 	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
 		".List2";
-	private final FinderPath _finderPathWithPaginationFindAll = new FinderPath(WatsonActivityModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonActivityModelImpl.FINDER_CACHE_ENABLED,
-			WatsonActivityImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findAll", new String[0]);
-	private final FinderPath _finderPathWithoutPaginationFindAll = new FinderPath(WatsonActivityModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonActivityModelImpl.FINDER_CACHE_ENABLED,
-			WatsonActivityImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-	private final FinderPath _finderPathCountAll = new FinderPath(WatsonActivityModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonActivityModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+	private FinderPath _finderPathWithPaginationFindAll;
+	private FinderPath _finderPathWithoutPaginationFindAll;
+	private FinderPath _finderPathCountAll;
 
 	public WatsonActivityPersistenceImpl() {
 		setModelClass(WatsonActivity.class);
@@ -743,6 +735,21 @@ public class WatsonActivityPersistenceImpl extends BasePersistenceImpl<WatsonAct
 	 * Initializes the watson activity persistence.
 	 */
 	public void afterPropertiesSet() {
+		_finderPathWithPaginationFindAll = new FinderPath(WatsonActivityModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonActivityModelImpl.FINDER_CACHE_ENABLED,
+				WatsonActivityImpl.class,
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+
+		_finderPathWithoutPaginationFindAll = new FinderPath(WatsonActivityModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonActivityModelImpl.FINDER_CACHE_ENABLED,
+				WatsonActivityImpl.class,
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+				new String[0]);
+
+		_finderPathCountAll = new FinderPath(WatsonActivityModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonActivityModelImpl.FINDER_CACHE_ENABLED, Long.class,
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+				new String[0]);
 	}
 
 	public void destroy() {

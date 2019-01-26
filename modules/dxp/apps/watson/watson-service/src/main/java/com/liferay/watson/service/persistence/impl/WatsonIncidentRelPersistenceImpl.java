@@ -80,17 +80,9 @@ public class WatsonIncidentRelPersistenceImpl extends BasePersistenceImpl<Watson
 		".List1";
 	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
 		".List2";
-	private final FinderPath _finderPathWithPaginationFindAll = new FinderPath(WatsonIncidentRelModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonIncidentRelModelImpl.FINDER_CACHE_ENABLED,
-			WatsonIncidentRelImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-	private final FinderPath _finderPathWithoutPaginationFindAll = new FinderPath(WatsonIncidentRelModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonIncidentRelModelImpl.FINDER_CACHE_ENABLED,
-			WatsonIncidentRelImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-	private final FinderPath _finderPathCountAll = new FinderPath(WatsonIncidentRelModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonIncidentRelModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+	private FinderPath _finderPathWithPaginationFindAll;
+	private FinderPath _finderPathWithoutPaginationFindAll;
+	private FinderPath _finderPathCountAll;
 
 	public WatsonIncidentRelPersistenceImpl() {
 		setModelClass(WatsonIncidentRel.class);
@@ -770,6 +762,21 @@ public class WatsonIncidentRelPersistenceImpl extends BasePersistenceImpl<Watson
 	 * Initializes the watson incident rel persistence.
 	 */
 	public void afterPropertiesSet() {
+		_finderPathWithPaginationFindAll = new FinderPath(WatsonIncidentRelModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonIncidentRelModelImpl.FINDER_CACHE_ENABLED,
+				WatsonIncidentRelImpl.class,
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+
+		_finderPathWithoutPaginationFindAll = new FinderPath(WatsonIncidentRelModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonIncidentRelModelImpl.FINDER_CACHE_ENABLED,
+				WatsonIncidentRelImpl.class,
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+				new String[0]);
+
+		_finderPathCountAll = new FinderPath(WatsonIncidentRelModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonIncidentRelModelImpl.FINDER_CACHE_ENABLED, Long.class,
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+				new String[0]);
 	}
 
 	public void destroy() {

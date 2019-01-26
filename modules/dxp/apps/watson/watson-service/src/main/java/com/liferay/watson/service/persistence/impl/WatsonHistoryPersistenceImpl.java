@@ -80,17 +80,9 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 		".List1";
 	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
 		".List2";
-	private final FinderPath _finderPathWithPaginationFindAll = new FinderPath(WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonHistoryModelImpl.FINDER_CACHE_ENABLED,
-			WatsonHistoryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findAll", new String[0]);
-	private final FinderPath _finderPathWithoutPaginationFindAll = new FinderPath(WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonHistoryModelImpl.FINDER_CACHE_ENABLED,
-			WatsonHistoryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findAll", new String[0]);
-	private final FinderPath _finderPathCountAll = new FinderPath(WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonHistoryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+	private FinderPath _finderPathWithPaginationFindAll;
+	private FinderPath _finderPathWithoutPaginationFindAll;
+	private FinderPath _finderPathCountAll;
 
 	public WatsonHistoryPersistenceImpl() {
 		setModelClass(WatsonHistory.class);
@@ -768,6 +760,21 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 	 * Initializes the watson history persistence.
 	 */
 	public void afterPropertiesSet() {
+		_finderPathWithPaginationFindAll = new FinderPath(WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonHistoryModelImpl.FINDER_CACHE_ENABLED,
+				WatsonHistoryImpl.class,
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+
+		_finderPathWithoutPaginationFindAll = new FinderPath(WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonHistoryModelImpl.FINDER_CACHE_ENABLED,
+				WatsonHistoryImpl.class,
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+				new String[0]);
+
+		_finderPathCountAll = new FinderPath(WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonHistoryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+				new String[0]);
 	}
 
 	public void destroy() {

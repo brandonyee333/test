@@ -80,28 +80,11 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 		".List1";
 	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
 		".List2";
-	private final FinderPath _finderPathWithPaginationFindAll = new FinderPath(AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AkismetEntryModelImpl.FINDER_CACHE_ENABLED, AkismetEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-	private final FinderPath _finderPathWithoutPaginationFindAll = new FinderPath(AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AkismetEntryModelImpl.FINDER_CACHE_ENABLED, AkismetEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-	private final FinderPath _finderPathCountAll = new FinderPath(AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AkismetEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
-	private final FinderPath _finderPathWithPaginationFindByLtModifiedDate = new FinderPath(AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AkismetEntryModelImpl.FINDER_CACHE_ENABLED, AkismetEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByLtModifiedDate",
-			new String[] {
-				Date.class.getName(),
-				
-			Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-	private final FinderPath _finderPathWithPaginationCountByLtModifiedDate = new FinderPath(AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AkismetEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByLtModifiedDate",
-			new String[] { Date.class.getName() });
+	private FinderPath _finderPathWithPaginationFindAll;
+	private FinderPath _finderPathWithoutPaginationFindAll;
+	private FinderPath _finderPathCountAll;
+	private FinderPath _finderPathWithPaginationFindByLtModifiedDate;
+	private FinderPath _finderPathWithPaginationCountByLtModifiedDate;
 
 	/**
 	 * Returns all the akismet entries where modifiedDate &lt; &#63;.
@@ -620,16 +603,8 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 
 	private static final String _FINDER_COLUMN_LTMODIFIEDDATE_MODIFIEDDATE_1 = "akismetEntry.modifiedDate IS NULL";
 	private static final String _FINDER_COLUMN_LTMODIFIEDDATE_MODIFIEDDATE_2 = "akismetEntry.modifiedDate < ?";
-	private final FinderPath _finderPathFetchByC_C = new FinderPath(AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AkismetEntryModelImpl.FINDER_CACHE_ENABLED, AkismetEntryImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByC_C",
-			new String[] { Long.class.getName(), Long.class.getName() },
-			AkismetEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			AkismetEntryModelImpl.CLASSPK_COLUMN_BITMASK);
-	private final FinderPath _finderPathCountByC_C = new FinderPath(AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AkismetEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",
-			new String[] { Long.class.getName(), Long.class.getName() });
+	private FinderPath _finderPathFetchByC_C;
+	private FinderPath _finderPathCountByC_C;
 
 	/**
 	 * Returns the akismet entry where classNameId = &#63; and classPK = &#63; or throws a {@link NoSuchAkismetEntryException} if it could not be found.
@@ -1552,6 +1527,49 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 	 * Initializes the akismet entry persistence.
 	 */
 	public void afterPropertiesSet() {
+		_finderPathWithPaginationFindAll = new FinderPath(AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
+				AkismetEntryModelImpl.FINDER_CACHE_ENABLED,
+				AkismetEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+				"findAll", new String[0]);
+
+		_finderPathWithoutPaginationFindAll = new FinderPath(AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
+				AkismetEntryModelImpl.FINDER_CACHE_ENABLED,
+				AkismetEntryImpl.class,
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+				new String[0]);
+
+		_finderPathCountAll = new FinderPath(AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
+				AkismetEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+				new String[0]);
+
+		_finderPathWithPaginationFindByLtModifiedDate = new FinderPath(AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
+				AkismetEntryModelImpl.FINDER_CACHE_ENABLED,
+				AkismetEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+				"findByLtModifiedDate",
+				new String[] {
+					Date.class.getName(),
+					
+				Integer.class.getName(), Integer.class.getName(),
+					OrderByComparator.class.getName()
+				});
+
+		_finderPathWithPaginationCountByLtModifiedDate = new FinderPath(AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
+				AkismetEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+				"countByLtModifiedDate", new String[] { Date.class.getName() });
+
+		_finderPathFetchByC_C = new FinderPath(AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
+				AkismetEntryModelImpl.FINDER_CACHE_ENABLED,
+				AkismetEntryImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByC_C",
+				new String[] { Long.class.getName(), Long.class.getName() },
+				AkismetEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+				AkismetEntryModelImpl.CLASSPK_COLUMN_BITMASK);
+
+		_finderPathCountByC_C = new FinderPath(AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
+				AkismetEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",
+				new String[] { Long.class.getName(), Long.class.getName() });
 	}
 
 	public void destroy() {

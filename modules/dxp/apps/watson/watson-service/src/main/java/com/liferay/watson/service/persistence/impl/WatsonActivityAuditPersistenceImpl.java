@@ -78,17 +78,9 @@ public class WatsonActivityAuditPersistenceImpl extends BasePersistenceImpl<Wats
 		".List1";
 	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
 		".List2";
-	private final FinderPath _finderPathWithPaginationFindAll = new FinderPath(WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonActivityAuditModelImpl.FINDER_CACHE_ENABLED,
-			WatsonActivityAuditImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-	private final FinderPath _finderPathWithoutPaginationFindAll = new FinderPath(WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonActivityAuditModelImpl.FINDER_CACHE_ENABLED,
-			WatsonActivityAuditImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-	private final FinderPath _finderPathCountAll = new FinderPath(WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonActivityAuditModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+	private FinderPath _finderPathWithPaginationFindAll;
+	private FinderPath _finderPathWithoutPaginationFindAll;
+	private FinderPath _finderPathCountAll;
 
 	public WatsonActivityAuditPersistenceImpl() {
 		setModelClass(WatsonActivityAudit.class);
@@ -749,6 +741,21 @@ public class WatsonActivityAuditPersistenceImpl extends BasePersistenceImpl<Wats
 	 * Initializes the watson activity audit persistence.
 	 */
 	public void afterPropertiesSet() {
+		_finderPathWithPaginationFindAll = new FinderPath(WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonActivityAuditModelImpl.FINDER_CACHE_ENABLED,
+				WatsonActivityAuditImpl.class,
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+
+		_finderPathWithoutPaginationFindAll = new FinderPath(WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonActivityAuditModelImpl.FINDER_CACHE_ENABLED,
+				WatsonActivityAuditImpl.class,
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+				new String[0]);
+
+		_finderPathCountAll = new FinderPath(WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonActivityAuditModelImpl.FINDER_CACHE_ENABLED, Long.class,
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+				new String[0]);
 	}
 
 	public void destroy() {

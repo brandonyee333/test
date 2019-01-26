@@ -79,38 +79,12 @@ public class KaleoDraftDefinitionPersistenceImpl extends BasePersistenceImpl<Kal
 		".List1";
 	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
 		".List2";
-	private final FinderPath _finderPathWithPaginationFindAll = new FinderPath(KaleoDraftDefinitionModelImpl.ENTITY_CACHE_ENABLED,
-			KaleoDraftDefinitionModelImpl.FINDER_CACHE_ENABLED,
-			KaleoDraftDefinitionImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-	private final FinderPath _finderPathWithoutPaginationFindAll = new FinderPath(KaleoDraftDefinitionModelImpl.ENTITY_CACHE_ENABLED,
-			KaleoDraftDefinitionModelImpl.FINDER_CACHE_ENABLED,
-			KaleoDraftDefinitionImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-	private final FinderPath _finderPathCountAll = new FinderPath(KaleoDraftDefinitionModelImpl.ENTITY_CACHE_ENABLED,
-			KaleoDraftDefinitionModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
-	private final FinderPath _finderPathWithPaginationFindByCompanyId = new FinderPath(KaleoDraftDefinitionModelImpl.ENTITY_CACHE_ENABLED,
-			KaleoDraftDefinitionModelImpl.FINDER_CACHE_ENABLED,
-			KaleoDraftDefinitionImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCompanyId",
-			new String[] {
-				Long.class.getName(),
-				
-			Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-	private final FinderPath _finderPathWithoutPaginationFindByCompanyId = new FinderPath(KaleoDraftDefinitionModelImpl.ENTITY_CACHE_ENABLED,
-			KaleoDraftDefinitionModelImpl.FINDER_CACHE_ENABLED,
-			KaleoDraftDefinitionImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
-			new String[] { Long.class.getName() },
-			KaleoDraftDefinitionModelImpl.COMPANYID_COLUMN_BITMASK |
-			KaleoDraftDefinitionModelImpl.DRAFTVERSION_COLUMN_BITMASK);
-	private final FinderPath _finderPathCountByCompanyId = new FinderPath(KaleoDraftDefinitionModelImpl.ENTITY_CACHE_ENABLED,
-			KaleoDraftDefinitionModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
-			new String[] { Long.class.getName() });
+	private FinderPath _finderPathWithPaginationFindAll;
+	private FinderPath _finderPathWithoutPaginationFindAll;
+	private FinderPath _finderPathCountAll;
+	private FinderPath _finderPathWithPaginationFindByCompanyId;
+	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+	private FinderPath _finderPathCountByCompanyId;
 
 	/**
 	 * Returns all the kaleo draft definitions where companyId = &#63;.
@@ -600,36 +574,9 @@ public class KaleoDraftDefinitionPersistenceImpl extends BasePersistenceImpl<Kal
 	}
 
 	private static final String _FINDER_COLUMN_COMPANYID_COMPANYID_2 = "kaleoDraftDefinition.companyId = ?";
-	private final FinderPath _finderPathWithPaginationFindByC_N_V = new FinderPath(KaleoDraftDefinitionModelImpl.ENTITY_CACHE_ENABLED,
-			KaleoDraftDefinitionModelImpl.FINDER_CACHE_ENABLED,
-			KaleoDraftDefinitionImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_N_V",
-			new String[] {
-				Long.class.getName(), String.class.getName(),
-				Integer.class.getName(),
-				
-			Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-	private final FinderPath _finderPathWithoutPaginationFindByC_N_V = new FinderPath(KaleoDraftDefinitionModelImpl.ENTITY_CACHE_ENABLED,
-			KaleoDraftDefinitionModelImpl.FINDER_CACHE_ENABLED,
-			KaleoDraftDefinitionImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_N_V",
-			new String[] {
-				Long.class.getName(), String.class.getName(),
-				Integer.class.getName()
-			},
-			KaleoDraftDefinitionModelImpl.COMPANYID_COLUMN_BITMASK |
-			KaleoDraftDefinitionModelImpl.NAME_COLUMN_BITMASK |
-			KaleoDraftDefinitionModelImpl.VERSION_COLUMN_BITMASK |
-			KaleoDraftDefinitionModelImpl.DRAFTVERSION_COLUMN_BITMASK);
-	private final FinderPath _finderPathCountByC_N_V = new FinderPath(KaleoDraftDefinitionModelImpl.ENTITY_CACHE_ENABLED,
-			KaleoDraftDefinitionModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_N_V",
-			new String[] {
-				Long.class.getName(), String.class.getName(),
-				Integer.class.getName()
-			});
+	private FinderPath _finderPathWithPaginationFindByC_N_V;
+	private FinderPath _finderPathWithoutPaginationFindByC_N_V;
+	private FinderPath _finderPathCountByC_N_V;
 
 	/**
 	 * Returns all the kaleo draft definitions where companyId = &#63; and name = &#63; and version = &#63;.
@@ -1228,25 +1175,8 @@ public class KaleoDraftDefinitionPersistenceImpl extends BasePersistenceImpl<Kal
 	private static final String _FINDER_COLUMN_C_N_V_NAME_2 = "kaleoDraftDefinition.name = ? AND ";
 	private static final String _FINDER_COLUMN_C_N_V_NAME_3 = "(kaleoDraftDefinition.name IS NULL OR kaleoDraftDefinition.name = '') AND ";
 	private static final String _FINDER_COLUMN_C_N_V_VERSION_2 = "kaleoDraftDefinition.version = ?";
-	private final FinderPath _finderPathFetchByC_N_V_D = new FinderPath(KaleoDraftDefinitionModelImpl.ENTITY_CACHE_ENABLED,
-			KaleoDraftDefinitionModelImpl.FINDER_CACHE_ENABLED,
-			KaleoDraftDefinitionImpl.class, FINDER_CLASS_NAME_ENTITY,
-			"fetchByC_N_V_D",
-			new String[] {
-				Long.class.getName(), String.class.getName(),
-				Integer.class.getName(), Integer.class.getName()
-			},
-			KaleoDraftDefinitionModelImpl.COMPANYID_COLUMN_BITMASK |
-			KaleoDraftDefinitionModelImpl.NAME_COLUMN_BITMASK |
-			KaleoDraftDefinitionModelImpl.VERSION_COLUMN_BITMASK |
-			KaleoDraftDefinitionModelImpl.DRAFTVERSION_COLUMN_BITMASK);
-	private final FinderPath _finderPathCountByC_N_V_D = new FinderPath(KaleoDraftDefinitionModelImpl.ENTITY_CACHE_ENABLED,
-			KaleoDraftDefinitionModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_N_V_D",
-			new String[] {
-				Long.class.getName(), String.class.getName(),
-				Integer.class.getName(), Integer.class.getName()
-			});
+	private FinderPath _finderPathFetchByC_N_V_D;
+	private FinderPath _finderPathCountByC_N_V_D;
 
 	/**
 	 * Returns the kaleo draft definition where companyId = &#63; and name = &#63; and version = &#63; and draftVersion = &#63; or throws a {@link NoSuchKaleoDraftDefinitionException} if it could not be found.
@@ -2312,6 +2242,99 @@ public class KaleoDraftDefinitionPersistenceImpl extends BasePersistenceImpl<Kal
 	 * Initializes the kaleo draft definition persistence.
 	 */
 	public void afterPropertiesSet() {
+		_finderPathWithPaginationFindAll = new FinderPath(KaleoDraftDefinitionModelImpl.ENTITY_CACHE_ENABLED,
+				KaleoDraftDefinitionModelImpl.FINDER_CACHE_ENABLED,
+				KaleoDraftDefinitionImpl.class,
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+
+		_finderPathWithoutPaginationFindAll = new FinderPath(KaleoDraftDefinitionModelImpl.ENTITY_CACHE_ENABLED,
+				KaleoDraftDefinitionModelImpl.FINDER_CACHE_ENABLED,
+				KaleoDraftDefinitionImpl.class,
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+				new String[0]);
+
+		_finderPathCountAll = new FinderPath(KaleoDraftDefinitionModelImpl.ENTITY_CACHE_ENABLED,
+				KaleoDraftDefinitionModelImpl.FINDER_CACHE_ENABLED, Long.class,
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+				new String[0]);
+
+		_finderPathWithPaginationFindByCompanyId = new FinderPath(KaleoDraftDefinitionModelImpl.ENTITY_CACHE_ENABLED,
+				KaleoDraftDefinitionModelImpl.FINDER_CACHE_ENABLED,
+				KaleoDraftDefinitionImpl.class,
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCompanyId",
+				new String[] {
+					Long.class.getName(),
+					
+				Integer.class.getName(), Integer.class.getName(),
+					OrderByComparator.class.getName()
+				});
+
+		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(KaleoDraftDefinitionModelImpl.ENTITY_CACHE_ENABLED,
+				KaleoDraftDefinitionModelImpl.FINDER_CACHE_ENABLED,
+				KaleoDraftDefinitionImpl.class,
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
+				new String[] { Long.class.getName() },
+				KaleoDraftDefinitionModelImpl.COMPANYID_COLUMN_BITMASK |
+				KaleoDraftDefinitionModelImpl.DRAFTVERSION_COLUMN_BITMASK);
+
+		_finderPathCountByCompanyId = new FinderPath(KaleoDraftDefinitionModelImpl.ENTITY_CACHE_ENABLED,
+				KaleoDraftDefinitionModelImpl.FINDER_CACHE_ENABLED, Long.class,
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
+				new String[] { Long.class.getName() });
+
+		_finderPathWithPaginationFindByC_N_V = new FinderPath(KaleoDraftDefinitionModelImpl.ENTITY_CACHE_ENABLED,
+				KaleoDraftDefinitionModelImpl.FINDER_CACHE_ENABLED,
+				KaleoDraftDefinitionImpl.class,
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_N_V",
+				new String[] {
+					Long.class.getName(), String.class.getName(),
+					Integer.class.getName(),
+					
+				Integer.class.getName(), Integer.class.getName(),
+					OrderByComparator.class.getName()
+				});
+
+		_finderPathWithoutPaginationFindByC_N_V = new FinderPath(KaleoDraftDefinitionModelImpl.ENTITY_CACHE_ENABLED,
+				KaleoDraftDefinitionModelImpl.FINDER_CACHE_ENABLED,
+				KaleoDraftDefinitionImpl.class,
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_N_V",
+				new String[] {
+					Long.class.getName(), String.class.getName(),
+					Integer.class.getName()
+				},
+				KaleoDraftDefinitionModelImpl.COMPANYID_COLUMN_BITMASK |
+				KaleoDraftDefinitionModelImpl.NAME_COLUMN_BITMASK |
+				KaleoDraftDefinitionModelImpl.VERSION_COLUMN_BITMASK |
+				KaleoDraftDefinitionModelImpl.DRAFTVERSION_COLUMN_BITMASK);
+
+		_finderPathCountByC_N_V = new FinderPath(KaleoDraftDefinitionModelImpl.ENTITY_CACHE_ENABLED,
+				KaleoDraftDefinitionModelImpl.FINDER_CACHE_ENABLED, Long.class,
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_N_V",
+				new String[] {
+					Long.class.getName(), String.class.getName(),
+					Integer.class.getName()
+				});
+
+		_finderPathFetchByC_N_V_D = new FinderPath(KaleoDraftDefinitionModelImpl.ENTITY_CACHE_ENABLED,
+				KaleoDraftDefinitionModelImpl.FINDER_CACHE_ENABLED,
+				KaleoDraftDefinitionImpl.class, FINDER_CLASS_NAME_ENTITY,
+				"fetchByC_N_V_D",
+				new String[] {
+					Long.class.getName(), String.class.getName(),
+					Integer.class.getName(), Integer.class.getName()
+				},
+				KaleoDraftDefinitionModelImpl.COMPANYID_COLUMN_BITMASK |
+				KaleoDraftDefinitionModelImpl.NAME_COLUMN_BITMASK |
+				KaleoDraftDefinitionModelImpl.VERSION_COLUMN_BITMASK |
+				KaleoDraftDefinitionModelImpl.DRAFTVERSION_COLUMN_BITMASK);
+
+		_finderPathCountByC_N_V_D = new FinderPath(KaleoDraftDefinitionModelImpl.ENTITY_CACHE_ENABLED,
+				KaleoDraftDefinitionModelImpl.FINDER_CACHE_ENABLED, Long.class,
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_N_V_D",
+				new String[] {
+					Long.class.getName(), String.class.getName(),
+					Integer.class.getName(), Integer.class.getName()
+				});
 	}
 
 	public void destroy() {

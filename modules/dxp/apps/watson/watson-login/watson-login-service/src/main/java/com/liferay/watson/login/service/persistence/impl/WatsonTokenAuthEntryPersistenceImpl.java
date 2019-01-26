@@ -79,26 +79,11 @@ public class WatsonTokenAuthEntryPersistenceImpl extends BasePersistenceImpl<Wat
 		".List1";
 	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
 		".List2";
-	private final FinderPath _finderPathWithPaginationFindAll = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
-			WatsonTokenAuthEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-	private final FinderPath _finderPathWithoutPaginationFindAll = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
-			WatsonTokenAuthEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-	private final FinderPath _finderPathCountAll = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
-	private final FinderPath _finderPathFetchByUserId = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
-			WatsonTokenAuthEntryImpl.class, FINDER_CLASS_NAME_ENTITY,
-			"fetchByUserId", new String[] { Long.class.getName() },
-			WatsonTokenAuthEntryModelImpl.USERID_COLUMN_BITMASK);
-	private final FinderPath _finderPathCountByUserId = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUserId",
-			new String[] { Long.class.getName() });
+	private FinderPath _finderPathWithPaginationFindAll;
+	private FinderPath _finderPathWithoutPaginationFindAll;
+	private FinderPath _finderPathCountAll;
+	private FinderPath _finderPathFetchByUserId;
+	private FinderPath _finderPathCountByUserId;
 
 	/**
 	 * Returns the watson token auth entry where userId = &#63; or throws a {@link NoSuchEntryException} if it could not be found.
@@ -299,27 +284,9 @@ public class WatsonTokenAuthEntryPersistenceImpl extends BasePersistenceImpl<Wat
 	}
 
 	private static final String _FINDER_COLUMN_USERID_USERID_2 = "watsonTokenAuthEntry.userId = ?";
-	private final FinderPath _finderPathWithPaginationFindByC_U = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
-			WatsonTokenAuthEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_U",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				
-			Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-	private final FinderPath _finderPathWithoutPaginationFindByC_U = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
-			WatsonTokenAuthEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_U",
-			new String[] { Long.class.getName(), Long.class.getName() },
-			WatsonTokenAuthEntryModelImpl.COMPANYID_COLUMN_BITMASK |
-			WatsonTokenAuthEntryModelImpl.USERID_COLUMN_BITMASK);
-	private final FinderPath _finderPathCountByC_U = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
-			WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_U",
-			new String[] { Long.class.getName(), Long.class.getName() });
+	private FinderPath _finderPathWithPaginationFindByC_U;
+	private FinderPath _finderPathWithoutPaginationFindByC_U;
+	private FinderPath _finderPathCountByC_U;
 
 	/**
 	 * Returns all the watson token auth entries where companyId = &#63; and userId = &#63;.
@@ -1584,6 +1551,56 @@ public class WatsonTokenAuthEntryPersistenceImpl extends BasePersistenceImpl<Wat
 	 * Initializes the watson token auth entry persistence.
 	 */
 	public void afterPropertiesSet() {
+		_finderPathWithPaginationFindAll = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
+				WatsonTokenAuthEntryImpl.class,
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+
+		_finderPathWithoutPaginationFindAll = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
+				WatsonTokenAuthEntryImpl.class,
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+				new String[0]);
+
+		_finderPathCountAll = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+				new String[0]);
+
+		_finderPathFetchByUserId = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
+				WatsonTokenAuthEntryImpl.class, FINDER_CLASS_NAME_ENTITY,
+				"fetchByUserId", new String[] { Long.class.getName() },
+				WatsonTokenAuthEntryModelImpl.USERID_COLUMN_BITMASK);
+
+		_finderPathCountByUserId = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUserId",
+				new String[] { Long.class.getName() });
+
+		_finderPathWithPaginationFindByC_U = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
+				WatsonTokenAuthEntryImpl.class,
+				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_U",
+				new String[] {
+					Long.class.getName(), Long.class.getName(),
+					
+				Integer.class.getName(), Integer.class.getName(),
+					OrderByComparator.class.getName()
+				});
+
+		_finderPathWithoutPaginationFindByC_U = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED,
+				WatsonTokenAuthEntryImpl.class,
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_U",
+				new String[] { Long.class.getName(), Long.class.getName() },
+				WatsonTokenAuthEntryModelImpl.COMPANYID_COLUMN_BITMASK |
+				WatsonTokenAuthEntryModelImpl.USERID_COLUMN_BITMASK);
+
+		_finderPathCountByC_U = new FinderPath(WatsonTokenAuthEntryModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonTokenAuthEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_U",
+				new String[] { Long.class.getName(), Long.class.getName() });
 	}
 
 	public void destroy() {
