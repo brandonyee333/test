@@ -24,3 +24,9 @@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %>
 <liferay-theme:defineObjects />
 
 <portlet:defineObjects />
+
+<aui:script>
+	window.ReleaseTool = {
+		namespace: '${renderResponse.namespace}'
+	};
+</aui:script>
