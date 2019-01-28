@@ -17,6 +17,7 @@ package com.liferay.osb.customer.metrics.models;
 import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.impl.model.BaseModelMetricsModel;
 import com.liferay.osb.customer.metrics.models.util.MetricsTransformationUtil;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.security.audit.storage.model.AuditEvent;
 
@@ -38,6 +39,17 @@ public class AuditEventMetricsModel extends BaseModelMetricsModel<AuditEvent> {
 				auditEvent.getModelAttributes());
 
 		attributes.put("auditEventId", -1 * auditEvent.getAuditEventId());
+
+		String className = auditEvent.getClassName();
+		String classPK = auditEvent.getClassPK();
+
+		if (className.equals(User.class.getName())) {
+			User user = _userLocalService.fetchUser(Long.valueOf(classPK));
+
+			if (user != null) {
+				attributes.put("classPK", user);
+			}
+		}
 
 		return attributes;
 	}
