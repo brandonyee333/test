@@ -41,9 +41,10 @@ public class AuditEventMetricsModel extends BaseModelMetricsModel<AuditEvent> {
 		attributes.put("auditEventId", -1 * auditEvent.getAuditEventId());
 
 		String className = auditEvent.getClassName();
-		String classPK = auditEvent.getClassPK();
 
 		if (className.equals(User.class.getName())) {
+			String classPK = auditEvent.getClassPK();
+
 			User user = _userLocalService.fetchUser(Long.valueOf(classPK));
 
 			if (user != null) {
