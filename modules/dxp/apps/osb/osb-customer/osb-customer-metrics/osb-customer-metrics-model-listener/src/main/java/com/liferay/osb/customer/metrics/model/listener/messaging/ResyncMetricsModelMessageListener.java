@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.Region;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.scheduler.SchedulerEngineHelper;
 import com.liferay.portal.kernel.scheduler.SchedulerEntry;
 import com.liferay.portal.kernel.scheduler.SchedulerEntryImpl;
@@ -42,8 +41,8 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Jenny Chen
  */
-@Component(immediate = true, service = MetricsModelMessageListener.class)
-public class MetricsModelMessageListener extends BaseMessageListener {
+@Component(immediate = true, service = ResyncMetricsModelMessageListener.class)
+public class ResyncMetricsModelMessageListener extends BaseMessageListener {
 
 	@Activate
 	@Modified
@@ -69,33 +68,17 @@ public class MetricsModelMessageListener extends BaseMessageListener {
 
 	@Override
 	protected void doReceive(Message message) throws Exception {
-		MetricsModel<?> metricsModel = _metricsModelRegistry.getMetricsModel(
-			ClassName.class.getName());
-
-		metricsModel.resyncAll();
-
-		metricsModel = _metricsModelRegistry.getMetricsModel(
-			Country.class.getName());
-
-		metricsModel.resyncAll();
-
-		metricsModel = _metricsModelRegistry.getMetricsModel(
-			ListType.class.getName());
-
-		metricsModel.resyncAll();
-
-		metricsModel = _metricsModelRegistry.getMetricsModel(
-			Region.class.getName());
-
-		metricsModel.resyncAll();
+		resyncAll(ClassName.class.getName());
+		resyncAll(Country.class.getName());
+		resyncAll(ListType.class.getName());
+		resyncAll(Region.class.getName());
 	}
 
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
+	protected void resyncAll(String modelName) throws Exception {
+		MetricsModel<?> metricsModel = _metricsModelRegistry.getMetricsModel(
+			modelName);
+
+		metricsModel.resyncAll();
 	}
 
 	@Reference

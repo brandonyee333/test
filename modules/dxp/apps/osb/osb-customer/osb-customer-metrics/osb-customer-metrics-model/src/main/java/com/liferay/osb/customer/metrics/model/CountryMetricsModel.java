@@ -36,11 +36,8 @@ public class CountryMetricsModel extends BaseModelMetricsModel<Country> {
 
 	@Override
 	public Map<String, Object> getAttributes(Country country) {
-		Map<String, Object> attributes =
-			_metricsTransformationUtil.transformSharedAttributes(
-				country.getModelAttributes());
-
-		return attributes;
+		return _metricsTransformationUtil.transformSharedAttributes(
+			country.getModelAttributes());
 	}
 
 	@Override

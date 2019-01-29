@@ -37,11 +37,8 @@ public class ClassNameMetricsModel extends BaseModelMetricsModel<ClassName> {
 
 	@Override
 	public Map<String, Object> getAttributes(ClassName className) {
-		Map<String, Object> attributes =
-			_metricsTransformationUtil.transformSharedAttributes(
-				className.getModelAttributes());
-
-		return attributes;
+		return _metricsTransformationUtil.transformSharedAttributes(
+			className.getModelAttributes());
 	}
 
 	@Override

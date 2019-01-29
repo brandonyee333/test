@@ -32,11 +32,8 @@ public class ListTypeMetricsModel extends BaseModelMetricsModel<ListType> {
 
 	@Override
 	public Map<String, Object> getAttributes(ListType listType) {
-		Map<String, Object> attributes =
-			_metricsTransformationUtil.transformSharedAttributes(
-				listType.getModelAttributes());
-
-		return attributes;
+		return _metricsTransformationUtil.transformSharedAttributes(
+			listType.getModelAttributes());
 	}
 
 	@Override
