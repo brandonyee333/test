@@ -27,8 +27,8 @@ import com.liferay.lcs.task.LCSClusterEntryTokenCheckTask;
 import com.liferay.lcs.task.scheduler.impl.TaskSchedulerServiceImpl;
 import com.liferay.lcs.util.LCSAlert;
 import com.liferay.lcs.util.LCSUtil;
+import com.liferay.petra.encryptor.EncryptorException;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.util.EncryptorException;
 
 import java.io.File;
 import java.io.IOException;

@@ -27,14 +27,14 @@ import com.liferay.lcs.rest.client.LCSClusterEntryToken;
 import com.liferay.lcs.security.KeyStoreAdvisor;
 import com.liferay.lcs.security.KeyStoreFactory;
 import com.liferay.lcs.util.PortletPropsValues;
+import com.liferay.petra.encryptor.Encryptor;
+import com.liferay.petra.encryptor.EncryptorException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.util.Encryptor;
-import com.liferay.util.EncryptorException;
 
 import java.io.File;
 import java.io.FilenameFilter;
