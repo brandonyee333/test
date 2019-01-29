@@ -16,6 +16,7 @@
 		<dependency name="com.liferay.lcs.security" org="com.liferay" rev="1.0.2" />
 		<dependency name="com.liferay.petra.encryptor" org="com.liferay" rev="1.0.5" />
 		<dependency name="com.liferay.petra.json.web.service.client" org="com.liferay" rev="7.2.2" />
+		<dependency name="com.liferay.petra.lang" org="com.liferay" rev="1.1.0" />
 		<dependency name="httpasyncclient" org="org.apache.httpcomponents" rev="4.1.3" />
 		<dependency name="httpclient" org="org.apache.httpcomponents" rev="4.5.3" />
 		<dependency name="jackson-annotations" org="com.fasterxml.jackson.core" rev="2.6.7" />

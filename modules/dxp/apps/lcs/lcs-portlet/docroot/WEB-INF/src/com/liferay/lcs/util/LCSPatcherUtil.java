@@ -14,12 +14,13 @@
 
 package com.liferay.lcs.util;
 
+import com.liferay.petra.lang.ClassResolverUtil;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.patcher.PatcherUtil;
 import com.liferay.portal.kernel.plugin.Version;
-import com.liferay.portal.kernel.util.ClassResolverUtil;
+import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 
 import java.io.File;
 
@@ -77,8 +78,9 @@ public class LCSPatcherUtil {
 		}
 
 		try {
-			Class<?> clazz = ClassResolverUtil.resolveByPortalClassLoader(
-				"com.liferay.portal.patcher.PatcherImpl");
+			Class<?> clazz = ClassResolverUtil.resolve(
+				"com.liferay.portal.patcher.PatcherImpl",
+				PortalClassLoaderUtil.getClassLoader());
 
 			ProtectionDomain protectionDomain = clazz.getProtectionDomain();
 
