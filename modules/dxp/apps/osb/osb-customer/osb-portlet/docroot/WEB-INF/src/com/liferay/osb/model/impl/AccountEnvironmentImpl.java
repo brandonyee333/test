@@ -35,6 +35,10 @@ public class AccountEnvironmentImpl extends AccountEnvironmentBaseImpl {
 		return AccountEnvironmentConstants.getEnvLabel(getEnvBrowser());
 	}
 
+	public String getEnvCommerceLabel() {
+		return AccountEnvironmentConstants.getEnvLabel(getEnvCommerce());
+	}
+
 	public String getEnvCSLabel() {
 		return AccountEnvironmentConstants.getEnvLabel(getEnvCS());
 	}
