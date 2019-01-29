@@ -12,30 +12,30 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.listeners.exception;
+package com.liferay.osb.customer.zendesk.model.listener.exception;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.ModelListenerException;
 
 /**
- * @author Kyle Bischof
+ * @author Jenny Chen
  */
 @ProviderType
-public class AccountCustomerRemovalException extends PortalException {
+public class ZendeskIntegrationException extends ModelListenerException {
 
-	public AccountCustomerRemovalException() {
+	public ZendeskIntegrationException() {
 	}
 
-	public AccountCustomerRemovalException(String msg) {
+	public ZendeskIntegrationException(String msg) {
 		super(msg);
 	}
 
-	public AccountCustomerRemovalException(String msg, Throwable cause) {
+	public ZendeskIntegrationException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
 
-	public AccountCustomerRemovalException(Throwable cause) {
+	public ZendeskIntegrationException(Throwable cause) {
 		super(cause);
 	}
 

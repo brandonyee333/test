@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.listeners.util;
+package com.liferay.osb.customer.zendesk.model.listener.util;
 
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskLocales;
 import com.liferay.portal.kernel.language.LanguageUtil;

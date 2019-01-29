@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.listeners.synchronizer;
+package com.liferay.osb.customer.zendesk.model.listener.synchronizer;
 
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;

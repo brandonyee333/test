@@ -12,11 +12,11 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.listeners;
+package com.liferay.osb.customer.zendesk.model.listener;
 
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
-import com.liferay.osb.customer.zendesk.listeners.exception.ZendeskIntegrationException;
-import com.liferay.osb.customer.zendesk.listeners.synchronizer.UserSynchronizer;
+import com.liferay.osb.customer.zendesk.model.listener.exception.ZendeskIntegrationException;
+import com.liferay.osb.customer.zendesk.model.listener.synchronizer.UserSynchronizer;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;

@@ -1,0 +1,3 @@
+Bundle-Name: Liferay OSB Customer Zendesk Model Listener
+Bundle-SymbolicName: com.liferay.osb.customer.zendesk.model.listener
+Bundle-Version: 1.0.0
