@@ -366,6 +366,10 @@ public class AccountEntryViewDisplayContext {
 			LanguageUtil.get(
 				_request, accountEnvironment.getEnvBrowserLabel()));
 		jsonObject.put(
+			"envCommerceLabel",
+			LanguageUtil.get(
+				_request, accountEnvironment.getEnvCommerceLabel()));
+		jsonObject.put(
 			"envCSLabel",
 			LanguageUtil.get(_request, accountEnvironment.getEnvCSLabel()));
 		jsonObject.put(
