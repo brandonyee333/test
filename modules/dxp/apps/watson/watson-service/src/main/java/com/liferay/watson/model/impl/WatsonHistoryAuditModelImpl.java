@@ -40,9 +40,13 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the WatsonHistoryAudit service. Represents a row in the &quot;WatsonHistoryAudit&quot; database table, with each column mapped to a property of this class.
@@ -153,19 +157,16 @@ public class WatsonHistoryAuditModelImpl extends BaseModelImpl<WatsonHistoryAudi
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("watsonHistoryAuditId", getWatsonHistoryAuditId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("watsonHistoryId", getWatsonHistoryId());
-		attributes.put("watsonParentId", getWatsonParentId());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("type", getType());
-		attributes.put("status", getStatus());
+		Map<String, Function<WatsonHistoryAudit, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
+
+		for (Map.Entry<String, Function<WatsonHistoryAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonHistoryAudit, Object> attributeGetterFunction = entry.getValue();
+
+			attributes.put(attributeName,
+				attributeGetterFunction.apply((WatsonHistoryAudit)this));
+		}
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -175,83 +176,303 @@ public class WatsonHistoryAuditModelImpl extends BaseModelImpl<WatsonHistoryAudi
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long watsonHistoryAuditId = (Long)attributes.get("watsonHistoryAuditId");
+		Map<String, BiConsumer<WatsonHistoryAudit, Object>> attributeSetterBiConsumers =
+			getAttributeSetterBiConsumers();
 
-		if (watsonHistoryAuditId != null) {
-			setWatsonHistoryAuditId(watsonHistoryAuditId);
+		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
+			String attributeName = entry.getKey();
+
+			BiConsumer<WatsonHistoryAudit, Object> attributeSetterBiConsumer = attributeSetterBiConsumers.get(attributeName);
+
+			if (attributeSetterBiConsumer != null) {
+				attributeSetterBiConsumer.accept((WatsonHistoryAudit)this,
+					entry.getValue());
+			}
 		}
+	}
 
-		Long groupId = (Long)attributes.get("groupId");
+	public Map<String, Function<WatsonHistoryAudit, Object>> getAttributeGetterFunctions() {
+		return _attributeGetterFunctions;
+	}
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+	public Map<String, BiConsumer<WatsonHistoryAudit, Object>> getAttributeSetterBiConsumers() {
+		return _attributeSetterBiConsumers;
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	private static final Map<String, Function<WatsonHistoryAudit, Object>> _attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonHistoryAudit, Object>> _attributeSetterBiConsumers;
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+	static {
+		Map<String, Function<WatsonHistoryAudit, Object>> attributeGetterFunctions =
+			new LinkedHashMap<String, Function<WatsonHistoryAudit, Object>>();
+		Map<String, BiConsumer<WatsonHistoryAudit, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<WatsonHistoryAudit, ?>>();
 
-		Long userId = (Long)attributes.get("userId");
 
-		if (userId != null) {
-			setUserId(userId);
-		}
+		attributeGetterFunctions.put(
+			"watsonHistoryAuditId",
+			new Function<WatsonHistoryAudit, Object>() {
 
-		String userName = (String)attributes.get("userName");
+				@Override
+				public Object apply(WatsonHistoryAudit watsonHistoryAudit) {
+					return watsonHistoryAudit.getWatsonHistoryAuditId();
+				}
 
-		if (userName != null) {
-			setUserName(userName);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"watsonHistoryAuditId",
+			new BiConsumer<WatsonHistoryAudit, Object>() {
 
-		Date createDate = (Date)attributes.get("createDate");
+				@Override
+				public void accept(WatsonHistoryAudit watsonHistoryAudit, Object watsonHistoryAuditId) {
+					watsonHistoryAudit.setWatsonHistoryAuditId((Long)watsonHistoryAuditId);
+				}
 
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
+			});
+		attributeGetterFunctions.put(
+			"groupId",
+			new Function<WatsonHistoryAudit, Object>() {
 
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
+				@Override
+				public Object apply(WatsonHistoryAudit watsonHistoryAudit) {
+					return watsonHistoryAudit.getGroupId();
+				}
 
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"groupId",
+			new BiConsumer<WatsonHistoryAudit, Object>() {
 
-		Long watsonHistoryId = (Long)attributes.get("watsonHistoryId");
+				@Override
+				public void accept(WatsonHistoryAudit watsonHistoryAudit, Object groupId) {
+					watsonHistoryAudit.setGroupId((Long)groupId);
+				}
 
-		if (watsonHistoryId != null) {
-			setWatsonHistoryId(watsonHistoryId);
-		}
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<WatsonHistoryAudit, Object>() {
 
-		Long watsonParentId = (Long)attributes.get("watsonParentId");
+				@Override
+				public Object apply(WatsonHistoryAudit watsonHistoryAudit) {
+					return watsonHistoryAudit.getCompanyId();
+				}
 
-		if (watsonParentId != null) {
-			setWatsonParentId(watsonParentId);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"companyId",
+			new BiConsumer<WatsonHistoryAudit, Object>() {
 
-		Long classNameId = (Long)attributes.get("classNameId");
+				@Override
+				public void accept(WatsonHistoryAudit watsonHistoryAudit, Object companyId) {
+					watsonHistoryAudit.setCompanyId((Long)companyId);
+				}
 
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<WatsonHistoryAudit, Object>() {
 
-		Long classPK = (Long)attributes.get("classPK");
+				@Override
+				public Object apply(WatsonHistoryAudit watsonHistoryAudit) {
+					return watsonHistoryAudit.getUserId();
+				}
 
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"userId",
+			new BiConsumer<WatsonHistoryAudit, Object>() {
 
-		Integer type = (Integer)attributes.get("type");
+				@Override
+				public void accept(WatsonHistoryAudit watsonHistoryAudit, Object userId) {
+					watsonHistoryAudit.setUserId((Long)userId);
+				}
 
-		if (type != null) {
-			setType(type);
-		}
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<WatsonHistoryAudit, Object>() {
 
-		Integer status = (Integer)attributes.get("status");
+				@Override
+				public Object apply(WatsonHistoryAudit watsonHistoryAudit) {
+					return watsonHistoryAudit.getUserName();
+				}
 
-		if (status != null) {
-			setStatus(status);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"userName",
+			new BiConsumer<WatsonHistoryAudit, Object>() {
+
+				@Override
+				public void accept(WatsonHistoryAudit watsonHistoryAudit, Object userName) {
+					watsonHistoryAudit.setUserName((String)userName);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<WatsonHistoryAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonHistoryAudit watsonHistoryAudit) {
+					return watsonHistoryAudit.getCreateDate();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"createDate",
+			new BiConsumer<WatsonHistoryAudit, Object>() {
+
+				@Override
+				public void accept(WatsonHistoryAudit watsonHistoryAudit, Object createDate) {
+					watsonHistoryAudit.setCreateDate((Date)createDate);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<WatsonHistoryAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonHistoryAudit watsonHistoryAudit) {
+					return watsonHistoryAudit.getModifiedDate();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"modifiedDate",
+			new BiConsumer<WatsonHistoryAudit, Object>() {
+
+				@Override
+				public void accept(WatsonHistoryAudit watsonHistoryAudit, Object modifiedDate) {
+					watsonHistoryAudit.setModifiedDate((Date)modifiedDate);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"watsonHistoryId",
+			new Function<WatsonHistoryAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonHistoryAudit watsonHistoryAudit) {
+					return watsonHistoryAudit.getWatsonHistoryId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"watsonHistoryId",
+			new BiConsumer<WatsonHistoryAudit, Object>() {
+
+				@Override
+				public void accept(WatsonHistoryAudit watsonHistoryAudit, Object watsonHistoryId) {
+					watsonHistoryAudit.setWatsonHistoryId((Long)watsonHistoryId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"watsonParentId",
+			new Function<WatsonHistoryAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonHistoryAudit watsonHistoryAudit) {
+					return watsonHistoryAudit.getWatsonParentId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"watsonParentId",
+			new BiConsumer<WatsonHistoryAudit, Object>() {
+
+				@Override
+				public void accept(WatsonHistoryAudit watsonHistoryAudit, Object watsonParentId) {
+					watsonHistoryAudit.setWatsonParentId((Long)watsonParentId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classNameId",
+			new Function<WatsonHistoryAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonHistoryAudit watsonHistoryAudit) {
+					return watsonHistoryAudit.getClassNameId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"classNameId",
+			new BiConsumer<WatsonHistoryAudit, Object>() {
+
+				@Override
+				public void accept(WatsonHistoryAudit watsonHistoryAudit, Object classNameId) {
+					watsonHistoryAudit.setClassNameId((Long)classNameId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classPK",
+			new Function<WatsonHistoryAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonHistoryAudit watsonHistoryAudit) {
+					return watsonHistoryAudit.getClassPK();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"classPK",
+			new BiConsumer<WatsonHistoryAudit, Object>() {
+
+				@Override
+				public void accept(WatsonHistoryAudit watsonHistoryAudit, Object classPK) {
+					watsonHistoryAudit.setClassPK((Long)classPK);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"type",
+			new Function<WatsonHistoryAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonHistoryAudit watsonHistoryAudit) {
+					return watsonHistoryAudit.getType();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"type",
+			new BiConsumer<WatsonHistoryAudit, Object>() {
+
+				@Override
+				public void accept(WatsonHistoryAudit watsonHistoryAudit, Object type) {
+					watsonHistoryAudit.setType((Integer)type);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"status",
+			new Function<WatsonHistoryAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonHistoryAudit watsonHistoryAudit) {
+					return watsonHistoryAudit.getStatus();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"status",
+			new BiConsumer<WatsonHistoryAudit, Object>() {
+
+				@Override
+				public void accept(WatsonHistoryAudit watsonHistoryAudit, Object status) {
+					watsonHistoryAudit.setStatus((Integer)status);
+				}
+
+			});
+
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -591,34 +812,28 @@ public class WatsonHistoryAuditModelImpl extends BaseModelImpl<WatsonHistoryAudi
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(27);
+		Map<String, Function<WatsonHistoryAudit, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		sb.append("{watsonHistoryAuditId=");
-		sb.append(getWatsonHistoryAuditId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", watsonHistoryId=");
-		sb.append(getWatsonHistoryId());
-		sb.append(", watsonParentId=");
-		sb.append(getWatsonParentId());
-		sb.append(", classNameId=");
-		sb.append(getClassNameId());
-		sb.append(", classPK=");
-		sb.append(getClassPK());
-		sb.append(", type=");
-		sb.append(getType());
-		sb.append(", status=");
-		sb.append(getStatus());
+		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
+				2);
+
+		sb.append("{");
+
+		for (Map.Entry<String, Function<WatsonHistoryAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonHistoryAudit, Object> attributeGetterFunction = entry.getValue();
+
+			sb.append(attributeName);
+			sb.append("=");
+			sb.append(attributeGetterFunction.apply((WatsonHistoryAudit)this));
+			sb.append(", ");
+		}
+
+		if (sb.index() > 1) {
+			sb.setIndex(sb.index() - 1);
+		}
+
 		sb.append("}");
 
 		return sb.toString();
@@ -626,64 +841,26 @@ public class WatsonHistoryAuditModelImpl extends BaseModelImpl<WatsonHistoryAudi
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(43);
+		Map<String, Function<WatsonHistoryAudit, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
+
+		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
+				4);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.watson.model.WatsonHistoryAudit");
+		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		sb.append(
-			"<column><column-name>watsonHistoryAuditId</column-name><column-value><![CDATA[");
-		sb.append(getWatsonHistoryAuditId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>watsonHistoryId</column-name><column-value><![CDATA[");
-		sb.append(getWatsonHistoryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>watsonParentId</column-name><column-value><![CDATA[");
-		sb.append(getWatsonParentId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classNameId</column-name><column-value><![CDATA[");
-		sb.append(getClassNameId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classPK</column-name><column-value><![CDATA[");
-		sb.append(getClassPK());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>type</column-name><column-value><![CDATA[");
-		sb.append(getType());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>status</column-name><column-value><![CDATA[");
-		sb.append(getStatus());
-		sb.append("]]></column-value></column>");
+		for (Map.Entry<String, Function<WatsonHistoryAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonHistoryAudit, Object> attributeGetterFunction = entry.getValue();
+
+			sb.append("<column><column-name>");
+			sb.append(attributeName);
+			sb.append("</column-name><column-value><![CDATA[");
+			sb.append(attributeGetterFunction.apply((WatsonHistoryAudit)this));
+			sb.append("]]></column-value></column>");
+		}
 
 		sb.append("</model>");
 

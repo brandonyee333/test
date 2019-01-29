@@ -43,12 +43,16 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the WatsonResource service. Represents a row in the &quot;WatsonResource&quot; database table, with each column mapped to a property of this class.
@@ -161,20 +165,15 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("watsonResourceId", getWatsonResourceId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("originalWatsonResourceId", getOriginalWatsonResourceId());
-		attributes.put("typeWatsonListTypeId", getTypeWatsonListTypeId());
-		attributes.put("watsonIncidentId", getWatsonIncidentId());
-		attributes.put("name", getName());
-		attributes.put("description", getDescription());
-		attributes.put("imagePayload", getImagePayload());
-		attributes.put("status", getStatus());
+		Map<String, Function<WatsonResource, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+
+		for (Map.Entry<String, Function<WatsonResource, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonResource, Object> attributeGetterFunction = entry.getValue();
+
+			attributes.put(attributeName,
+				attributeGetterFunction.apply((WatsonResource)this));
+		}
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -184,90 +183,321 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long watsonResourceId = (Long)attributes.get("watsonResourceId");
+		Map<String, BiConsumer<WatsonResource, Object>> attributeSetterBiConsumers =
+			getAttributeSetterBiConsumers();
 
-		if (watsonResourceId != null) {
-			setWatsonResourceId(watsonResourceId);
+		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
+			String attributeName = entry.getKey();
+
+			BiConsumer<WatsonResource, Object> attributeSetterBiConsumer = attributeSetterBiConsumers.get(attributeName);
+
+			if (attributeSetterBiConsumer != null) {
+				attributeSetterBiConsumer.accept((WatsonResource)this,
+					entry.getValue());
+			}
 		}
+	}
 
-		Long groupId = (Long)attributes.get("groupId");
+	public Map<String, Function<WatsonResource, Object>> getAttributeGetterFunctions() {
+		return _attributeGetterFunctions;
+	}
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+	public Map<String, BiConsumer<WatsonResource, Object>> getAttributeSetterBiConsumers() {
+		return _attributeSetterBiConsumers;
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	private static final Map<String, Function<WatsonResource, Object>> _attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonResource, Object>> _attributeSetterBiConsumers;
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+	static {
+		Map<String, Function<WatsonResource, Object>> attributeGetterFunctions = new LinkedHashMap<String, Function<WatsonResource, Object>>();
+		Map<String, BiConsumer<WatsonResource, ?>> attributeSetterBiConsumers = new LinkedHashMap<String, BiConsumer<WatsonResource, ?>>();
 
-		Long userId = (Long)attributes.get("userId");
 
-		if (userId != null) {
-			setUserId(userId);
-		}
+		attributeGetterFunctions.put(
+			"watsonResourceId",
+			new Function<WatsonResource, Object>() {
 
-		String userName = (String)attributes.get("userName");
+				@Override
+				public Object apply(WatsonResource watsonResource) {
+					return watsonResource.getWatsonResourceId();
+				}
 
-		if (userName != null) {
-			setUserName(userName);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"watsonResourceId",
+			new BiConsumer<WatsonResource, Object>() {
 
-		Date createDate = (Date)attributes.get("createDate");
+				@Override
+				public void accept(WatsonResource watsonResource, Object watsonResourceId) {
+					watsonResource.setWatsonResourceId((Long)watsonResourceId);
+				}
 
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
+			});
+		attributeGetterFunctions.put(
+			"groupId",
+			new Function<WatsonResource, Object>() {
 
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
+				@Override
+				public Object apply(WatsonResource watsonResource) {
+					return watsonResource.getGroupId();
+				}
 
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"groupId",
+			new BiConsumer<WatsonResource, Object>() {
 
-		Long originalWatsonResourceId = (Long)attributes.get(
-				"originalWatsonResourceId");
+				@Override
+				public void accept(WatsonResource watsonResource, Object groupId) {
+					watsonResource.setGroupId((Long)groupId);
+				}
 
-		if (originalWatsonResourceId != null) {
-			setOriginalWatsonResourceId(originalWatsonResourceId);
-		}
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<WatsonResource, Object>() {
 
-		Long typeWatsonListTypeId = (Long)attributes.get("typeWatsonListTypeId");
+				@Override
+				public Object apply(WatsonResource watsonResource) {
+					return watsonResource.getCompanyId();
+				}
 
-		if (typeWatsonListTypeId != null) {
-			setTypeWatsonListTypeId(typeWatsonListTypeId);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"companyId",
+			new BiConsumer<WatsonResource, Object>() {
 
-		Long watsonIncidentId = (Long)attributes.get("watsonIncidentId");
+				@Override
+				public void accept(WatsonResource watsonResource, Object companyId) {
+					watsonResource.setCompanyId((Long)companyId);
+				}
 
-		if (watsonIncidentId != null) {
-			setWatsonIncidentId(watsonIncidentId);
-		}
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<WatsonResource, Object>() {
 
-		String name = (String)attributes.get("name");
+				@Override
+				public Object apply(WatsonResource watsonResource) {
+					return watsonResource.getUserId();
+				}
 
-		if (name != null) {
-			setName(name);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"userId",
+			new BiConsumer<WatsonResource, Object>() {
 
-		String description = (String)attributes.get("description");
+				@Override
+				public void accept(WatsonResource watsonResource, Object userId) {
+					watsonResource.setUserId((Long)userId);
+				}
 
-		if (description != null) {
-			setDescription(description);
-		}
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<WatsonResource, Object>() {
 
-		String imagePayload = (String)attributes.get("imagePayload");
+				@Override
+				public Object apply(WatsonResource watsonResource) {
+					return watsonResource.getUserName();
+				}
 
-		if (imagePayload != null) {
-			setImagePayload(imagePayload);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"userName",
+			new BiConsumer<WatsonResource, Object>() {
 
-		Integer status = (Integer)attributes.get("status");
+				@Override
+				public void accept(WatsonResource watsonResource, Object userName) {
+					watsonResource.setUserName((String)userName);
+				}
 
-		if (status != null) {
-			setStatus(status);
-		}
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<WatsonResource, Object>() {
+
+				@Override
+				public Object apply(WatsonResource watsonResource) {
+					return watsonResource.getCreateDate();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"createDate",
+			new BiConsumer<WatsonResource, Object>() {
+
+				@Override
+				public void accept(WatsonResource watsonResource, Object createDate) {
+					watsonResource.setCreateDate((Date)createDate);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<WatsonResource, Object>() {
+
+				@Override
+				public Object apply(WatsonResource watsonResource) {
+					return watsonResource.getModifiedDate();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"modifiedDate",
+			new BiConsumer<WatsonResource, Object>() {
+
+				@Override
+				public void accept(WatsonResource watsonResource, Object modifiedDate) {
+					watsonResource.setModifiedDate((Date)modifiedDate);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"originalWatsonResourceId",
+			new Function<WatsonResource, Object>() {
+
+				@Override
+				public Object apply(WatsonResource watsonResource) {
+					return watsonResource.getOriginalWatsonResourceId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"originalWatsonResourceId",
+			new BiConsumer<WatsonResource, Object>() {
+
+				@Override
+				public void accept(WatsonResource watsonResource, Object originalWatsonResourceId) {
+					watsonResource.setOriginalWatsonResourceId((Long)originalWatsonResourceId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"typeWatsonListTypeId",
+			new Function<WatsonResource, Object>() {
+
+				@Override
+				public Object apply(WatsonResource watsonResource) {
+					return watsonResource.getTypeWatsonListTypeId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"typeWatsonListTypeId",
+			new BiConsumer<WatsonResource, Object>() {
+
+				@Override
+				public void accept(WatsonResource watsonResource, Object typeWatsonListTypeId) {
+					watsonResource.setTypeWatsonListTypeId((Long)typeWatsonListTypeId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"watsonIncidentId",
+			new Function<WatsonResource, Object>() {
+
+				@Override
+				public Object apply(WatsonResource watsonResource) {
+					return watsonResource.getWatsonIncidentId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"watsonIncidentId",
+			new BiConsumer<WatsonResource, Object>() {
+
+				@Override
+				public void accept(WatsonResource watsonResource, Object watsonIncidentId) {
+					watsonResource.setWatsonIncidentId((Long)watsonIncidentId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<WatsonResource, Object>() {
+
+				@Override
+				public Object apply(WatsonResource watsonResource) {
+					return watsonResource.getName();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"name",
+			new BiConsumer<WatsonResource, Object>() {
+
+				@Override
+				public void accept(WatsonResource watsonResource, Object name) {
+					watsonResource.setName((String)name);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"description",
+			new Function<WatsonResource, Object>() {
+
+				@Override
+				public Object apply(WatsonResource watsonResource) {
+					return watsonResource.getDescription();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"description",
+			new BiConsumer<WatsonResource, Object>() {
+
+				@Override
+				public void accept(WatsonResource watsonResource, Object description) {
+					watsonResource.setDescription((String)description);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"imagePayload",
+			new Function<WatsonResource, Object>() {
+
+				@Override
+				public Object apply(WatsonResource watsonResource) {
+					return watsonResource.getImagePayload();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"imagePayload",
+			new BiConsumer<WatsonResource, Object>() {
+
+				@Override
+				public void accept(WatsonResource watsonResource, Object imagePayload) {
+					watsonResource.setImagePayload((String)imagePayload);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"status",
+			new Function<WatsonResource, Object>() {
+
+				@Override
+				public Object apply(WatsonResource watsonResource) {
+					return watsonResource.getStatus();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"status",
+			new BiConsumer<WatsonResource, Object>() {
+
+				@Override
+				public void accept(WatsonResource watsonResource, Object status) {
+					watsonResource.setStatus((Integer)status);
+				}
+
+			});
+
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -885,36 +1115,27 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(29);
+		Map<String, Function<WatsonResource, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
 
-		sb.append("{watsonResourceId=");
-		sb.append(getWatsonResourceId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", originalWatsonResourceId=");
-		sb.append(getOriginalWatsonResourceId());
-		sb.append(", typeWatsonListTypeId=");
-		sb.append(getTypeWatsonListTypeId());
-		sb.append(", watsonIncidentId=");
-		sb.append(getWatsonIncidentId());
-		sb.append(", name=");
-		sb.append(getName());
-		sb.append(", description=");
-		sb.append(getDescription());
-		sb.append(", imagePayload=");
-		sb.append(getImagePayload());
-		sb.append(", status=");
-		sb.append(getStatus());
+		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
+				2);
+
+		sb.append("{");
+
+		for (Map.Entry<String, Function<WatsonResource, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonResource, Object> attributeGetterFunction = entry.getValue();
+
+			sb.append(attributeName);
+			sb.append("=");
+			sb.append(attributeGetterFunction.apply((WatsonResource)this));
+			sb.append(", ");
+		}
+
+		if (sb.index() > 1) {
+			sb.setIndex(sb.index() - 1);
+		}
+
 		sb.append("}");
 
 		return sb.toString();
@@ -922,68 +1143,25 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(46);
+		Map<String, Function<WatsonResource, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+
+		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
+				4);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.watson.model.WatsonResource");
+		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		sb.append(
-			"<column><column-name>watsonResourceId</column-name><column-value><![CDATA[");
-		sb.append(getWatsonResourceId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>originalWatsonResourceId</column-name><column-value><![CDATA[");
-		sb.append(getOriginalWatsonResourceId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>typeWatsonListTypeId</column-name><column-value><![CDATA[");
-		sb.append(getTypeWatsonListTypeId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>watsonIncidentId</column-name><column-value><![CDATA[");
-		sb.append(getWatsonIncidentId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(getName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(getDescription());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>imagePayload</column-name><column-value><![CDATA[");
-		sb.append(getImagePayload());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>status</column-name><column-value><![CDATA[");
-		sb.append(getStatus());
-		sb.append("]]></column-value></column>");
+		for (Map.Entry<String, Function<WatsonResource, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonResource, Object> attributeGetterFunction = entry.getValue();
+
+			sb.append("<column><column-name>");
+			sb.append(attributeName);
+			sb.append("</column-name><column-value><![CDATA[");
+			sb.append(attributeGetterFunction.apply((WatsonResource)this));
+			sb.append("]]></column-value></column>");
+		}
 
 		sb.append("</model>");
 

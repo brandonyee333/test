@@ -43,12 +43,16 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the WatsonVehicle service. Represents a row in the &quot;WatsonVehicle&quot; database table, with each column mapped to a property of this class.
@@ -171,25 +175,15 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("watsonVehicleId", getWatsonVehicleId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("colorWatsonListTypeId", getColorWatsonListTypeId());
-		attributes.put("makeWatsonListTypeId", getMakeWatsonListTypeId());
-		attributes.put("modelWatsonListTypeId", getModelWatsonListTypeId());
-		attributes.put("originalWatsonVehicleId", getOriginalWatsonVehicleId());
-		attributes.put("typeWatsonListTypeId", getTypeWatsonListTypeId());
-		attributes.put("yearWatsonListTypeId", getYearWatsonListTypeId());
-		attributes.put("watsonIncidentId", getWatsonIncidentId());
-		attributes.put("year", getYear());
-		attributes.put("description", getDescription());
-		attributes.put("imagePayload", getImagePayload());
-		attributes.put("licensePlate", getLicensePlate());
-		attributes.put("status", getStatus());
+		Map<String, Function<WatsonVehicle, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+
+		for (Map.Entry<String, Function<WatsonVehicle, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonVehicle, Object> attributeGetterFunction = entry.getValue();
+
+			attributes.put(attributeName,
+				attributeGetterFunction.apply((WatsonVehicle)this));
+		}
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -199,122 +193,421 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long watsonVehicleId = (Long)attributes.get("watsonVehicleId");
+		Map<String, BiConsumer<WatsonVehicle, Object>> attributeSetterBiConsumers =
+			getAttributeSetterBiConsumers();
 
-		if (watsonVehicleId != null) {
-			setWatsonVehicleId(watsonVehicleId);
+		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
+			String attributeName = entry.getKey();
+
+			BiConsumer<WatsonVehicle, Object> attributeSetterBiConsumer = attributeSetterBiConsumers.get(attributeName);
+
+			if (attributeSetterBiConsumer != null) {
+				attributeSetterBiConsumer.accept((WatsonVehicle)this,
+					entry.getValue());
+			}
 		}
+	}
 
-		Long groupId = (Long)attributes.get("groupId");
+	public Map<String, Function<WatsonVehicle, Object>> getAttributeGetterFunctions() {
+		return _attributeGetterFunctions;
+	}
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+	public Map<String, BiConsumer<WatsonVehicle, Object>> getAttributeSetterBiConsumers() {
+		return _attributeSetterBiConsumers;
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	private static final Map<String, Function<WatsonVehicle, Object>> _attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonVehicle, Object>> _attributeSetterBiConsumers;
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+	static {
+		Map<String, Function<WatsonVehicle, Object>> attributeGetterFunctions = new LinkedHashMap<String, Function<WatsonVehicle, Object>>();
+		Map<String, BiConsumer<WatsonVehicle, ?>> attributeSetterBiConsumers = new LinkedHashMap<String, BiConsumer<WatsonVehicle, ?>>();
 
-		Long userId = (Long)attributes.get("userId");
 
-		if (userId != null) {
-			setUserId(userId);
-		}
+		attributeGetterFunctions.put(
+			"watsonVehicleId",
+			new Function<WatsonVehicle, Object>() {
 
-		String userName = (String)attributes.get("userName");
+				@Override
+				public Object apply(WatsonVehicle watsonVehicle) {
+					return watsonVehicle.getWatsonVehicleId();
+				}
 
-		if (userName != null) {
-			setUserName(userName);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"watsonVehicleId",
+			new BiConsumer<WatsonVehicle, Object>() {
 
-		Date createDate = (Date)attributes.get("createDate");
+				@Override
+				public void accept(WatsonVehicle watsonVehicle, Object watsonVehicleId) {
+					watsonVehicle.setWatsonVehicleId((Long)watsonVehicleId);
+				}
 
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
+			});
+		attributeGetterFunctions.put(
+			"groupId",
+			new Function<WatsonVehicle, Object>() {
 
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
+				@Override
+				public Object apply(WatsonVehicle watsonVehicle) {
+					return watsonVehicle.getGroupId();
+				}
 
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"groupId",
+			new BiConsumer<WatsonVehicle, Object>() {
 
-		Long colorWatsonListTypeId = (Long)attributes.get(
-				"colorWatsonListTypeId");
+				@Override
+				public void accept(WatsonVehicle watsonVehicle, Object groupId) {
+					watsonVehicle.setGroupId((Long)groupId);
+				}
 
-		if (colorWatsonListTypeId != null) {
-			setColorWatsonListTypeId(colorWatsonListTypeId);
-		}
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<WatsonVehicle, Object>() {
 
-		Long makeWatsonListTypeId = (Long)attributes.get("makeWatsonListTypeId");
+				@Override
+				public Object apply(WatsonVehicle watsonVehicle) {
+					return watsonVehicle.getCompanyId();
+				}
 
-		if (makeWatsonListTypeId != null) {
-			setMakeWatsonListTypeId(makeWatsonListTypeId);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"companyId",
+			new BiConsumer<WatsonVehicle, Object>() {
 
-		Long modelWatsonListTypeId = (Long)attributes.get(
-				"modelWatsonListTypeId");
+				@Override
+				public void accept(WatsonVehicle watsonVehicle, Object companyId) {
+					watsonVehicle.setCompanyId((Long)companyId);
+				}
 
-		if (modelWatsonListTypeId != null) {
-			setModelWatsonListTypeId(modelWatsonListTypeId);
-		}
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<WatsonVehicle, Object>() {
 
-		Long originalWatsonVehicleId = (Long)attributes.get(
-				"originalWatsonVehicleId");
+				@Override
+				public Object apply(WatsonVehicle watsonVehicle) {
+					return watsonVehicle.getUserId();
+				}
 
-		if (originalWatsonVehicleId != null) {
-			setOriginalWatsonVehicleId(originalWatsonVehicleId);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"userId",
+			new BiConsumer<WatsonVehicle, Object>() {
 
-		Long typeWatsonListTypeId = (Long)attributes.get("typeWatsonListTypeId");
+				@Override
+				public void accept(WatsonVehicle watsonVehicle, Object userId) {
+					watsonVehicle.setUserId((Long)userId);
+				}
 
-		if (typeWatsonListTypeId != null) {
-			setTypeWatsonListTypeId(typeWatsonListTypeId);
-		}
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<WatsonVehicle, Object>() {
 
-		Long yearWatsonListTypeId = (Long)attributes.get("yearWatsonListTypeId");
+				@Override
+				public Object apply(WatsonVehicle watsonVehicle) {
+					return watsonVehicle.getUserName();
+				}
 
-		if (yearWatsonListTypeId != null) {
-			setYearWatsonListTypeId(yearWatsonListTypeId);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"userName",
+			new BiConsumer<WatsonVehicle, Object>() {
 
-		Long watsonIncidentId = (Long)attributes.get("watsonIncidentId");
+				@Override
+				public void accept(WatsonVehicle watsonVehicle, Object userName) {
+					watsonVehicle.setUserName((String)userName);
+				}
 
-		if (watsonIncidentId != null) {
-			setWatsonIncidentId(watsonIncidentId);
-		}
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<WatsonVehicle, Object>() {
 
-		Integer year = (Integer)attributes.get("year");
+				@Override
+				public Object apply(WatsonVehicle watsonVehicle) {
+					return watsonVehicle.getCreateDate();
+				}
 
-		if (year != null) {
-			setYear(year);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"createDate",
+			new BiConsumer<WatsonVehicle, Object>() {
 
-		String description = (String)attributes.get("description");
+				@Override
+				public void accept(WatsonVehicle watsonVehicle, Object createDate) {
+					watsonVehicle.setCreateDate((Date)createDate);
+				}
 
-		if (description != null) {
-			setDescription(description);
-		}
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<WatsonVehicle, Object>() {
 
-		String imagePayload = (String)attributes.get("imagePayload");
+				@Override
+				public Object apply(WatsonVehicle watsonVehicle) {
+					return watsonVehicle.getModifiedDate();
+				}
 
-		if (imagePayload != null) {
-			setImagePayload(imagePayload);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"modifiedDate",
+			new BiConsumer<WatsonVehicle, Object>() {
 
-		String licensePlate = (String)attributes.get("licensePlate");
+				@Override
+				public void accept(WatsonVehicle watsonVehicle, Object modifiedDate) {
+					watsonVehicle.setModifiedDate((Date)modifiedDate);
+				}
 
-		if (licensePlate != null) {
-			setLicensePlate(licensePlate);
-		}
+			});
+		attributeGetterFunctions.put(
+			"colorWatsonListTypeId",
+			new Function<WatsonVehicle, Object>() {
 
-		Integer status = (Integer)attributes.get("status");
+				@Override
+				public Object apply(WatsonVehicle watsonVehicle) {
+					return watsonVehicle.getColorWatsonListTypeId();
+				}
 
-		if (status != null) {
-			setStatus(status);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"colorWatsonListTypeId",
+			new BiConsumer<WatsonVehicle, Object>() {
+
+				@Override
+				public void accept(WatsonVehicle watsonVehicle, Object colorWatsonListTypeId) {
+					watsonVehicle.setColorWatsonListTypeId((Long)colorWatsonListTypeId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"makeWatsonListTypeId",
+			new Function<WatsonVehicle, Object>() {
+
+				@Override
+				public Object apply(WatsonVehicle watsonVehicle) {
+					return watsonVehicle.getMakeWatsonListTypeId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"makeWatsonListTypeId",
+			new BiConsumer<WatsonVehicle, Object>() {
+
+				@Override
+				public void accept(WatsonVehicle watsonVehicle, Object makeWatsonListTypeId) {
+					watsonVehicle.setMakeWatsonListTypeId((Long)makeWatsonListTypeId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modelWatsonListTypeId",
+			new Function<WatsonVehicle, Object>() {
+
+				@Override
+				public Object apply(WatsonVehicle watsonVehicle) {
+					return watsonVehicle.getModelWatsonListTypeId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"modelWatsonListTypeId",
+			new BiConsumer<WatsonVehicle, Object>() {
+
+				@Override
+				public void accept(WatsonVehicle watsonVehicle, Object modelWatsonListTypeId) {
+					watsonVehicle.setModelWatsonListTypeId((Long)modelWatsonListTypeId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"originalWatsonVehicleId",
+			new Function<WatsonVehicle, Object>() {
+
+				@Override
+				public Object apply(WatsonVehicle watsonVehicle) {
+					return watsonVehicle.getOriginalWatsonVehicleId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"originalWatsonVehicleId",
+			new BiConsumer<WatsonVehicle, Object>() {
+
+				@Override
+				public void accept(WatsonVehicle watsonVehicle, Object originalWatsonVehicleId) {
+					watsonVehicle.setOriginalWatsonVehicleId((Long)originalWatsonVehicleId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"typeWatsonListTypeId",
+			new Function<WatsonVehicle, Object>() {
+
+				@Override
+				public Object apply(WatsonVehicle watsonVehicle) {
+					return watsonVehicle.getTypeWatsonListTypeId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"typeWatsonListTypeId",
+			new BiConsumer<WatsonVehicle, Object>() {
+
+				@Override
+				public void accept(WatsonVehicle watsonVehicle, Object typeWatsonListTypeId) {
+					watsonVehicle.setTypeWatsonListTypeId((Long)typeWatsonListTypeId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"yearWatsonListTypeId",
+			new Function<WatsonVehicle, Object>() {
+
+				@Override
+				public Object apply(WatsonVehicle watsonVehicle) {
+					return watsonVehicle.getYearWatsonListTypeId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"yearWatsonListTypeId",
+			new BiConsumer<WatsonVehicle, Object>() {
+
+				@Override
+				public void accept(WatsonVehicle watsonVehicle, Object yearWatsonListTypeId) {
+					watsonVehicle.setYearWatsonListTypeId((Long)yearWatsonListTypeId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"watsonIncidentId",
+			new Function<WatsonVehicle, Object>() {
+
+				@Override
+				public Object apply(WatsonVehicle watsonVehicle) {
+					return watsonVehicle.getWatsonIncidentId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"watsonIncidentId",
+			new BiConsumer<WatsonVehicle, Object>() {
+
+				@Override
+				public void accept(WatsonVehicle watsonVehicle, Object watsonIncidentId) {
+					watsonVehicle.setWatsonIncidentId((Long)watsonIncidentId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"year",
+			new Function<WatsonVehicle, Object>() {
+
+				@Override
+				public Object apply(WatsonVehicle watsonVehicle) {
+					return watsonVehicle.getYear();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"year",
+			new BiConsumer<WatsonVehicle, Object>() {
+
+				@Override
+				public void accept(WatsonVehicle watsonVehicle, Object year) {
+					watsonVehicle.setYear((Integer)year);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"description",
+			new Function<WatsonVehicle, Object>() {
+
+				@Override
+				public Object apply(WatsonVehicle watsonVehicle) {
+					return watsonVehicle.getDescription();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"description",
+			new BiConsumer<WatsonVehicle, Object>() {
+
+				@Override
+				public void accept(WatsonVehicle watsonVehicle, Object description) {
+					watsonVehicle.setDescription((String)description);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"imagePayload",
+			new Function<WatsonVehicle, Object>() {
+
+				@Override
+				public Object apply(WatsonVehicle watsonVehicle) {
+					return watsonVehicle.getImagePayload();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"imagePayload",
+			new BiConsumer<WatsonVehicle, Object>() {
+
+				@Override
+				public void accept(WatsonVehicle watsonVehicle, Object imagePayload) {
+					watsonVehicle.setImagePayload((String)imagePayload);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"licensePlate",
+			new Function<WatsonVehicle, Object>() {
+
+				@Override
+				public Object apply(WatsonVehicle watsonVehicle) {
+					return watsonVehicle.getLicensePlate();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"licensePlate",
+			new BiConsumer<WatsonVehicle, Object>() {
+
+				@Override
+				public void accept(WatsonVehicle watsonVehicle, Object licensePlate) {
+					watsonVehicle.setLicensePlate((String)licensePlate);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"status",
+			new Function<WatsonVehicle, Object>() {
+
+				@Override
+				public Object apply(WatsonVehicle watsonVehicle) {
+					return watsonVehicle.getStatus();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"status",
+			new BiConsumer<WatsonVehicle, Object>() {
+
+				@Override
+				public void accept(WatsonVehicle watsonVehicle, Object status) {
+					watsonVehicle.setStatus((Integer)status);
+				}
+
+			});
+
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -894,46 +1187,27 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(39);
+		Map<String, Function<WatsonVehicle, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
 
-		sb.append("{watsonVehicleId=");
-		sb.append(getWatsonVehicleId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", colorWatsonListTypeId=");
-		sb.append(getColorWatsonListTypeId());
-		sb.append(", makeWatsonListTypeId=");
-		sb.append(getMakeWatsonListTypeId());
-		sb.append(", modelWatsonListTypeId=");
-		sb.append(getModelWatsonListTypeId());
-		sb.append(", originalWatsonVehicleId=");
-		sb.append(getOriginalWatsonVehicleId());
-		sb.append(", typeWatsonListTypeId=");
-		sb.append(getTypeWatsonListTypeId());
-		sb.append(", yearWatsonListTypeId=");
-		sb.append(getYearWatsonListTypeId());
-		sb.append(", watsonIncidentId=");
-		sb.append(getWatsonIncidentId());
-		sb.append(", year=");
-		sb.append(getYear());
-		sb.append(", description=");
-		sb.append(getDescription());
-		sb.append(", imagePayload=");
-		sb.append(getImagePayload());
-		sb.append(", licensePlate=");
-		sb.append(getLicensePlate());
-		sb.append(", status=");
-		sb.append(getStatus());
+		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
+				2);
+
+		sb.append("{");
+
+		for (Map.Entry<String, Function<WatsonVehicle, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonVehicle, Object> attributeGetterFunction = entry.getValue();
+
+			sb.append(attributeName);
+			sb.append("=");
+			sb.append(attributeGetterFunction.apply((WatsonVehicle)this));
+			sb.append(", ");
+		}
+
+		if (sb.index() > 1) {
+			sb.setIndex(sb.index() - 1);
+		}
+
 		sb.append("}");
 
 		return sb.toString();
@@ -941,88 +1215,25 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(61);
+		Map<String, Function<WatsonVehicle, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+
+		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
+				4);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.watson.model.WatsonVehicle");
+		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		sb.append(
-			"<column><column-name>watsonVehicleId</column-name><column-value><![CDATA[");
-		sb.append(getWatsonVehicleId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>colorWatsonListTypeId</column-name><column-value><![CDATA[");
-		sb.append(getColorWatsonListTypeId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>makeWatsonListTypeId</column-name><column-value><![CDATA[");
-		sb.append(getMakeWatsonListTypeId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modelWatsonListTypeId</column-name><column-value><![CDATA[");
-		sb.append(getModelWatsonListTypeId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>originalWatsonVehicleId</column-name><column-value><![CDATA[");
-		sb.append(getOriginalWatsonVehicleId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>typeWatsonListTypeId</column-name><column-value><![CDATA[");
-		sb.append(getTypeWatsonListTypeId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>yearWatsonListTypeId</column-name><column-value><![CDATA[");
-		sb.append(getYearWatsonListTypeId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>watsonIncidentId</column-name><column-value><![CDATA[");
-		sb.append(getWatsonIncidentId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>year</column-name><column-value><![CDATA[");
-		sb.append(getYear());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(getDescription());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>imagePayload</column-name><column-value><![CDATA[");
-		sb.append(getImagePayload());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>licensePlate</column-name><column-value><![CDATA[");
-		sb.append(getLicensePlate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>status</column-name><column-value><![CDATA[");
-		sb.append(getStatus());
-		sb.append("]]></column-value></column>");
+		for (Map.Entry<String, Function<WatsonVehicle, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonVehicle, Object> attributeGetterFunction = entry.getValue();
+
+			sb.append("<column><column-name>");
+			sb.append(attributeName);
+			sb.append("</column-name><column-value><![CDATA[");
+			sb.append(attributeGetterFunction.apply((WatsonVehicle)this));
+			sb.append("]]></column-value></column>");
+		}
 
 		sb.append("</model>");
 

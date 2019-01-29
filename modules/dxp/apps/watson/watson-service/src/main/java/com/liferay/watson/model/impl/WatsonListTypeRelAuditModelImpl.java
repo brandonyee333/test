@@ -44,12 +44,16 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the WatsonListTypeRelAudit service. Represents a row in the &quot;WatsonListTypeRelAudit&quot; database table, with each column mapped to a property of this class.
@@ -164,21 +168,16 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("watsonListTypeRelAuditId", getWatsonListTypeRelAuditId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("watsonListTypeId", getWatsonListTypeId());
-		attributes.put("watsonListTypeRelId", getWatsonListTypeRelId());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("primary", isPrimary());
-		attributes.put("value", getValue());
-		attributes.put("type", getType());
-		attributes.put("status", getStatus());
+		Map<String, Function<WatsonListTypeRelAudit, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
+
+		for (Map.Entry<String, Function<WatsonListTypeRelAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonListTypeRelAudit, Object> attributeGetterFunction = entry.getValue();
+
+			attributes.put(attributeName,
+				attributeGetterFunction.apply((WatsonListTypeRelAudit)this));
+		}
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -188,96 +187,344 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long watsonListTypeRelAuditId = (Long)attributes.get(
-				"watsonListTypeRelAuditId");
+		Map<String, BiConsumer<WatsonListTypeRelAudit, Object>> attributeSetterBiConsumers =
+			getAttributeSetterBiConsumers();
 
-		if (watsonListTypeRelAuditId != null) {
-			setWatsonListTypeRelAuditId(watsonListTypeRelAuditId);
+		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
+			String attributeName = entry.getKey();
+
+			BiConsumer<WatsonListTypeRelAudit, Object> attributeSetterBiConsumer =
+				attributeSetterBiConsumers.get(attributeName);
+
+			if (attributeSetterBiConsumer != null) {
+				attributeSetterBiConsumer.accept((WatsonListTypeRelAudit)this,
+					entry.getValue());
+			}
 		}
+	}
 
-		Long groupId = (Long)attributes.get("groupId");
+	public Map<String, Function<WatsonListTypeRelAudit, Object>> getAttributeGetterFunctions() {
+		return _attributeGetterFunctions;
+	}
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+	public Map<String, BiConsumer<WatsonListTypeRelAudit, Object>> getAttributeSetterBiConsumers() {
+		return _attributeSetterBiConsumers;
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	private static final Map<String, Function<WatsonListTypeRelAudit, Object>> _attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonListTypeRelAudit, Object>> _attributeSetterBiConsumers;
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+	static {
+		Map<String, Function<WatsonListTypeRelAudit, Object>> attributeGetterFunctions =
+			new LinkedHashMap<String, Function<WatsonListTypeRelAudit, Object>>();
+		Map<String, BiConsumer<WatsonListTypeRelAudit, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<WatsonListTypeRelAudit, ?>>();
 
-		Long userId = (Long)attributes.get("userId");
 
-		if (userId != null) {
-			setUserId(userId);
-		}
+		attributeGetterFunctions.put(
+			"watsonListTypeRelAuditId",
+			new Function<WatsonListTypeRelAudit, Object>() {
 
-		String userName = (String)attributes.get("userName");
+				@Override
+				public Object apply(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+					return watsonListTypeRelAudit.getWatsonListTypeRelAuditId();
+				}
 
-		if (userName != null) {
-			setUserName(userName);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"watsonListTypeRelAuditId",
+			new BiConsumer<WatsonListTypeRelAudit, Object>() {
 
-		Date createDate = (Date)attributes.get("createDate");
+				@Override
+				public void accept(WatsonListTypeRelAudit watsonListTypeRelAudit, Object watsonListTypeRelAuditId) {
+					watsonListTypeRelAudit.setWatsonListTypeRelAuditId((Long)watsonListTypeRelAuditId);
+				}
 
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
+			});
+		attributeGetterFunctions.put(
+			"groupId",
+			new Function<WatsonListTypeRelAudit, Object>() {
 
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
+				@Override
+				public Object apply(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+					return watsonListTypeRelAudit.getGroupId();
+				}
 
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"groupId",
+			new BiConsumer<WatsonListTypeRelAudit, Object>() {
 
-		Long watsonListTypeId = (Long)attributes.get("watsonListTypeId");
+				@Override
+				public void accept(WatsonListTypeRelAudit watsonListTypeRelAudit, Object groupId) {
+					watsonListTypeRelAudit.setGroupId((Long)groupId);
+				}
 
-		if (watsonListTypeId != null) {
-			setWatsonListTypeId(watsonListTypeId);
-		}
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<WatsonListTypeRelAudit, Object>() {
 
-		Long watsonListTypeRelId = (Long)attributes.get("watsonListTypeRelId");
+				@Override
+				public Object apply(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+					return watsonListTypeRelAudit.getCompanyId();
+				}
 
-		if (watsonListTypeRelId != null) {
-			setWatsonListTypeRelId(watsonListTypeRelId);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"companyId",
+			new BiConsumer<WatsonListTypeRelAudit, Object>() {
 
-		Long classNameId = (Long)attributes.get("classNameId");
+				@Override
+				public void accept(WatsonListTypeRelAudit watsonListTypeRelAudit, Object companyId) {
+					watsonListTypeRelAudit.setCompanyId((Long)companyId);
+				}
 
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<WatsonListTypeRelAudit, Object>() {
 
-		Long classPK = (Long)attributes.get("classPK");
+				@Override
+				public Object apply(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+					return watsonListTypeRelAudit.getUserId();
+				}
 
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"userId",
+			new BiConsumer<WatsonListTypeRelAudit, Object>() {
 
-		Boolean primary = (Boolean)attributes.get("primary");
+				@Override
+				public void accept(WatsonListTypeRelAudit watsonListTypeRelAudit, Object userId) {
+					watsonListTypeRelAudit.setUserId((Long)userId);
+				}
 
-		if (primary != null) {
-			setPrimary(primary);
-		}
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<WatsonListTypeRelAudit, Object>() {
 
-		String value = (String)attributes.get("value");
+				@Override
+				public Object apply(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+					return watsonListTypeRelAudit.getUserName();
+				}
 
-		if (value != null) {
-			setValue(value);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"userName",
+			new BiConsumer<WatsonListTypeRelAudit, Object>() {
 
-		String type = (String)attributes.get("type");
+				@Override
+				public void accept(WatsonListTypeRelAudit watsonListTypeRelAudit, Object userName) {
+					watsonListTypeRelAudit.setUserName((String)userName);
+				}
 
-		if (type != null) {
-			setType(type);
-		}
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<WatsonListTypeRelAudit, Object>() {
 
-		Integer status = (Integer)attributes.get("status");
+				@Override
+				public Object apply(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+					return watsonListTypeRelAudit.getCreateDate();
+				}
 
-		if (status != null) {
-			setStatus(status);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"createDate",
+			new BiConsumer<WatsonListTypeRelAudit, Object>() {
+
+				@Override
+				public void accept(WatsonListTypeRelAudit watsonListTypeRelAudit, Object createDate) {
+					watsonListTypeRelAudit.setCreateDate((Date)createDate);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<WatsonListTypeRelAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+					return watsonListTypeRelAudit.getModifiedDate();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"modifiedDate",
+			new BiConsumer<WatsonListTypeRelAudit, Object>() {
+
+				@Override
+				public void accept(WatsonListTypeRelAudit watsonListTypeRelAudit, Object modifiedDate) {
+					watsonListTypeRelAudit.setModifiedDate((Date)modifiedDate);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"watsonListTypeId",
+			new Function<WatsonListTypeRelAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+					return watsonListTypeRelAudit.getWatsonListTypeId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"watsonListTypeId",
+			new BiConsumer<WatsonListTypeRelAudit, Object>() {
+
+				@Override
+				public void accept(WatsonListTypeRelAudit watsonListTypeRelAudit, Object watsonListTypeId) {
+					watsonListTypeRelAudit.setWatsonListTypeId((Long)watsonListTypeId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"watsonListTypeRelId",
+			new Function<WatsonListTypeRelAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+					return watsonListTypeRelAudit.getWatsonListTypeRelId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"watsonListTypeRelId",
+			new BiConsumer<WatsonListTypeRelAudit, Object>() {
+
+				@Override
+				public void accept(WatsonListTypeRelAudit watsonListTypeRelAudit, Object watsonListTypeRelId) {
+					watsonListTypeRelAudit.setWatsonListTypeRelId((Long)watsonListTypeRelId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classNameId",
+			new Function<WatsonListTypeRelAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+					return watsonListTypeRelAudit.getClassNameId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"classNameId",
+			new BiConsumer<WatsonListTypeRelAudit, Object>() {
+
+				@Override
+				public void accept(WatsonListTypeRelAudit watsonListTypeRelAudit, Object classNameId) {
+					watsonListTypeRelAudit.setClassNameId((Long)classNameId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classPK",
+			new Function<WatsonListTypeRelAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+					return watsonListTypeRelAudit.getClassPK();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"classPK",
+			new BiConsumer<WatsonListTypeRelAudit, Object>() {
+
+				@Override
+				public void accept(WatsonListTypeRelAudit watsonListTypeRelAudit, Object classPK) {
+					watsonListTypeRelAudit.setClassPK((Long)classPK);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"primary",
+			new Function<WatsonListTypeRelAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+					return watsonListTypeRelAudit.getPrimary();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"primary",
+			new BiConsumer<WatsonListTypeRelAudit, Object>() {
+
+				@Override
+				public void accept(WatsonListTypeRelAudit watsonListTypeRelAudit, Object primary) {
+					watsonListTypeRelAudit.setPrimary((Boolean)primary);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"value",
+			new Function<WatsonListTypeRelAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+					return watsonListTypeRelAudit.getValue();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"value",
+			new BiConsumer<WatsonListTypeRelAudit, Object>() {
+
+				@Override
+				public void accept(WatsonListTypeRelAudit watsonListTypeRelAudit, Object value) {
+					watsonListTypeRelAudit.setValue((String)value);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"type",
+			new Function<WatsonListTypeRelAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+					return watsonListTypeRelAudit.getType();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"type",
+			new BiConsumer<WatsonListTypeRelAudit, Object>() {
+
+				@Override
+				public void accept(WatsonListTypeRelAudit watsonListTypeRelAudit, Object type) {
+					watsonListTypeRelAudit.setType((String)type);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"status",
+			new Function<WatsonListTypeRelAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+					return watsonListTypeRelAudit.getStatus();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"status",
+			new BiConsumer<WatsonListTypeRelAudit, Object>() {
+
+				@Override
+				public void accept(WatsonListTypeRelAudit watsonListTypeRelAudit, Object status) {
+					watsonListTypeRelAudit.setStatus((Integer)status);
+				}
+
+			});
+
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -814,38 +1061,29 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(31);
+		Map<String, Function<WatsonListTypeRelAudit, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		sb.append("{watsonListTypeRelAuditId=");
-		sb.append(getWatsonListTypeRelAuditId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", watsonListTypeId=");
-		sb.append(getWatsonListTypeId());
-		sb.append(", watsonListTypeRelId=");
-		sb.append(getWatsonListTypeRelId());
-		sb.append(", classNameId=");
-		sb.append(getClassNameId());
-		sb.append(", classPK=");
-		sb.append(getClassPK());
-		sb.append(", primary=");
-		sb.append(isPrimary());
-		sb.append(", value=");
-		sb.append(getValue());
-		sb.append(", type=");
-		sb.append(getType());
-		sb.append(", status=");
-		sb.append(getStatus());
+		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
+				2);
+
+		sb.append("{");
+
+		for (Map.Entry<String, Function<WatsonListTypeRelAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonListTypeRelAudit, Object> attributeGetterFunction = entry.getValue();
+
+			sb.append(attributeName);
+			sb.append("=");
+			sb.append(attributeGetterFunction.apply(
+					(WatsonListTypeRelAudit)this));
+			sb.append(", ");
+		}
+
+		if (sb.index() > 1) {
+			sb.setIndex(sb.index() - 1);
+		}
+
 		sb.append("}");
 
 		return sb.toString();
@@ -853,72 +1091,27 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(49);
+		Map<String, Function<WatsonListTypeRelAudit, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
+
+		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
+				4);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.watson.model.WatsonListTypeRelAudit");
+		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		sb.append(
-			"<column><column-name>watsonListTypeRelAuditId</column-name><column-value><![CDATA[");
-		sb.append(getWatsonListTypeRelAuditId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>watsonListTypeId</column-name><column-value><![CDATA[");
-		sb.append(getWatsonListTypeId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>watsonListTypeRelId</column-name><column-value><![CDATA[");
-		sb.append(getWatsonListTypeRelId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classNameId</column-name><column-value><![CDATA[");
-		sb.append(getClassNameId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classPK</column-name><column-value><![CDATA[");
-		sb.append(getClassPK());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>primary</column-name><column-value><![CDATA[");
-		sb.append(isPrimary());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>value</column-name><column-value><![CDATA[");
-		sb.append(getValue());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>type</column-name><column-value><![CDATA[");
-		sb.append(getType());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>status</column-name><column-value><![CDATA[");
-		sb.append(getStatus());
-		sb.append("]]></column-value></column>");
+		for (Map.Entry<String, Function<WatsonListTypeRelAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonListTypeRelAudit, Object> attributeGetterFunction = entry.getValue();
+
+			sb.append("<column><column-name>");
+			sb.append(attributeName);
+			sb.append("</column-name><column-value><![CDATA[");
+			sb.append(attributeGetterFunction.apply(
+					(WatsonListTypeRelAudit)this));
+			sb.append("]]></column-value></column>");
+		}
 
 		sb.append("</model>");
 

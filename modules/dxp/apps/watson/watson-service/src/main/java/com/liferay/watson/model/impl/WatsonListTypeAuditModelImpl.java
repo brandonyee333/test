@@ -43,12 +43,16 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the WatsonListTypeAudit service. Represents a row in the &quot;WatsonListTypeAudit&quot; database table, with each column mapped to a property of this class.
@@ -157,18 +161,16 @@ public class WatsonListTypeAuditModelImpl extends BaseModelImpl<WatsonListTypeAu
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("watsonListTypeAuditId", getWatsonListTypeAuditId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("parentWatsonListTypeId", getParentWatsonListTypeId());
-		attributes.put("watsonListTypeId", getWatsonListTypeId());
-		attributes.put("name", getName());
-		attributes.put("type", getType());
-		attributes.put("status", getStatus());
+		Map<String, Function<WatsonListTypeAudit, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
+
+		for (Map.Entry<String, Function<WatsonListTypeAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonListTypeAudit, Object> attributeGetterFunction = entry.getValue();
+
+			attributes.put(attributeName,
+				attributeGetterFunction.apply((WatsonListTypeAudit)this));
+		}
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -178,79 +180,283 @@ public class WatsonListTypeAuditModelImpl extends BaseModelImpl<WatsonListTypeAu
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long watsonListTypeAuditId = (Long)attributes.get(
-				"watsonListTypeAuditId");
+		Map<String, BiConsumer<WatsonListTypeAudit, Object>> attributeSetterBiConsumers =
+			getAttributeSetterBiConsumers();
 
-		if (watsonListTypeAuditId != null) {
-			setWatsonListTypeAuditId(watsonListTypeAuditId);
+		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
+			String attributeName = entry.getKey();
+
+			BiConsumer<WatsonListTypeAudit, Object> attributeSetterBiConsumer = attributeSetterBiConsumers.get(attributeName);
+
+			if (attributeSetterBiConsumer != null) {
+				attributeSetterBiConsumer.accept((WatsonListTypeAudit)this,
+					entry.getValue());
+			}
 		}
+	}
 
-		Long groupId = (Long)attributes.get("groupId");
+	public Map<String, Function<WatsonListTypeAudit, Object>> getAttributeGetterFunctions() {
+		return _attributeGetterFunctions;
+	}
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+	public Map<String, BiConsumer<WatsonListTypeAudit, Object>> getAttributeSetterBiConsumers() {
+		return _attributeSetterBiConsumers;
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	private static final Map<String, Function<WatsonListTypeAudit, Object>> _attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonListTypeAudit, Object>> _attributeSetterBiConsumers;
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+	static {
+		Map<String, Function<WatsonListTypeAudit, Object>> attributeGetterFunctions =
+			new LinkedHashMap<String, Function<WatsonListTypeAudit, Object>>();
+		Map<String, BiConsumer<WatsonListTypeAudit, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<WatsonListTypeAudit, ?>>();
 
-		Long userId = (Long)attributes.get("userId");
 
-		if (userId != null) {
-			setUserId(userId);
-		}
+		attributeGetterFunctions.put(
+			"watsonListTypeAuditId",
+			new Function<WatsonListTypeAudit, Object>() {
 
-		String userName = (String)attributes.get("userName");
+				@Override
+				public Object apply(WatsonListTypeAudit watsonListTypeAudit) {
+					return watsonListTypeAudit.getWatsonListTypeAuditId();
+				}
 
-		if (userName != null) {
-			setUserName(userName);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"watsonListTypeAuditId",
+			new BiConsumer<WatsonListTypeAudit, Object>() {
 
-		Date createDate = (Date)attributes.get("createDate");
+				@Override
+				public void accept(WatsonListTypeAudit watsonListTypeAudit, Object watsonListTypeAuditId) {
+					watsonListTypeAudit.setWatsonListTypeAuditId((Long)watsonListTypeAuditId);
+				}
 
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
+			});
+		attributeGetterFunctions.put(
+			"groupId",
+			new Function<WatsonListTypeAudit, Object>() {
 
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
+				@Override
+				public Object apply(WatsonListTypeAudit watsonListTypeAudit) {
+					return watsonListTypeAudit.getGroupId();
+				}
 
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"groupId",
+			new BiConsumer<WatsonListTypeAudit, Object>() {
 
-		Long parentWatsonListTypeId = (Long)attributes.get(
-				"parentWatsonListTypeId");
+				@Override
+				public void accept(WatsonListTypeAudit watsonListTypeAudit, Object groupId) {
+					watsonListTypeAudit.setGroupId((Long)groupId);
+				}
 
-		if (parentWatsonListTypeId != null) {
-			setParentWatsonListTypeId(parentWatsonListTypeId);
-		}
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<WatsonListTypeAudit, Object>() {
 
-		Long watsonListTypeId = (Long)attributes.get("watsonListTypeId");
+				@Override
+				public Object apply(WatsonListTypeAudit watsonListTypeAudit) {
+					return watsonListTypeAudit.getCompanyId();
+				}
 
-		if (watsonListTypeId != null) {
-			setWatsonListTypeId(watsonListTypeId);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"companyId",
+			new BiConsumer<WatsonListTypeAudit, Object>() {
 
-		String name = (String)attributes.get("name");
+				@Override
+				public void accept(WatsonListTypeAudit watsonListTypeAudit, Object companyId) {
+					watsonListTypeAudit.setCompanyId((Long)companyId);
+				}
 
-		if (name != null) {
-			setName(name);
-		}
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<WatsonListTypeAudit, Object>() {
 
-		String type = (String)attributes.get("type");
+				@Override
+				public Object apply(WatsonListTypeAudit watsonListTypeAudit) {
+					return watsonListTypeAudit.getUserId();
+				}
 
-		if (type != null) {
-			setType(type);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"userId",
+			new BiConsumer<WatsonListTypeAudit, Object>() {
 
-		Integer status = (Integer)attributes.get("status");
+				@Override
+				public void accept(WatsonListTypeAudit watsonListTypeAudit, Object userId) {
+					watsonListTypeAudit.setUserId((Long)userId);
+				}
 
-		if (status != null) {
-			setStatus(status);
-		}
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<WatsonListTypeAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonListTypeAudit watsonListTypeAudit) {
+					return watsonListTypeAudit.getUserName();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"userName",
+			new BiConsumer<WatsonListTypeAudit, Object>() {
+
+				@Override
+				public void accept(WatsonListTypeAudit watsonListTypeAudit, Object userName) {
+					watsonListTypeAudit.setUserName((String)userName);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<WatsonListTypeAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonListTypeAudit watsonListTypeAudit) {
+					return watsonListTypeAudit.getCreateDate();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"createDate",
+			new BiConsumer<WatsonListTypeAudit, Object>() {
+
+				@Override
+				public void accept(WatsonListTypeAudit watsonListTypeAudit, Object createDate) {
+					watsonListTypeAudit.setCreateDate((Date)createDate);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<WatsonListTypeAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonListTypeAudit watsonListTypeAudit) {
+					return watsonListTypeAudit.getModifiedDate();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"modifiedDate",
+			new BiConsumer<WatsonListTypeAudit, Object>() {
+
+				@Override
+				public void accept(WatsonListTypeAudit watsonListTypeAudit, Object modifiedDate) {
+					watsonListTypeAudit.setModifiedDate((Date)modifiedDate);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"parentWatsonListTypeId",
+			new Function<WatsonListTypeAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonListTypeAudit watsonListTypeAudit) {
+					return watsonListTypeAudit.getParentWatsonListTypeId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"parentWatsonListTypeId",
+			new BiConsumer<WatsonListTypeAudit, Object>() {
+
+				@Override
+				public void accept(WatsonListTypeAudit watsonListTypeAudit, Object parentWatsonListTypeId) {
+					watsonListTypeAudit.setParentWatsonListTypeId((Long)parentWatsonListTypeId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"watsonListTypeId",
+			new Function<WatsonListTypeAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonListTypeAudit watsonListTypeAudit) {
+					return watsonListTypeAudit.getWatsonListTypeId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"watsonListTypeId",
+			new BiConsumer<WatsonListTypeAudit, Object>() {
+
+				@Override
+				public void accept(WatsonListTypeAudit watsonListTypeAudit, Object watsonListTypeId) {
+					watsonListTypeAudit.setWatsonListTypeId((Long)watsonListTypeId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<WatsonListTypeAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonListTypeAudit watsonListTypeAudit) {
+					return watsonListTypeAudit.getName();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"name",
+			new BiConsumer<WatsonListTypeAudit, Object>() {
+
+				@Override
+				public void accept(WatsonListTypeAudit watsonListTypeAudit, Object name) {
+					watsonListTypeAudit.setName((String)name);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"type",
+			new Function<WatsonListTypeAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonListTypeAudit watsonListTypeAudit) {
+					return watsonListTypeAudit.getType();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"type",
+			new BiConsumer<WatsonListTypeAudit, Object>() {
+
+				@Override
+				public void accept(WatsonListTypeAudit watsonListTypeAudit, Object type) {
+					watsonListTypeAudit.setType((String)type);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"status",
+			new Function<WatsonListTypeAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonListTypeAudit watsonListTypeAudit) {
+					return watsonListTypeAudit.getStatus();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"status",
+			new BiConsumer<WatsonListTypeAudit, Object>() {
+
+				@Override
+				public void accept(WatsonListTypeAudit watsonListTypeAudit, Object status) {
+					watsonListTypeAudit.setStatus((Integer)status);
+				}
+
+			});
+
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -723,32 +929,28 @@ public class WatsonListTypeAuditModelImpl extends BaseModelImpl<WatsonListTypeAu
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(25);
+		Map<String, Function<WatsonListTypeAudit, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		sb.append("{watsonListTypeAuditId=");
-		sb.append(getWatsonListTypeAuditId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", parentWatsonListTypeId=");
-		sb.append(getParentWatsonListTypeId());
-		sb.append(", watsonListTypeId=");
-		sb.append(getWatsonListTypeId());
-		sb.append(", name=");
-		sb.append(getName());
-		sb.append(", type=");
-		sb.append(getType());
-		sb.append(", status=");
-		sb.append(getStatus());
+		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
+				2);
+
+		sb.append("{");
+
+		for (Map.Entry<String, Function<WatsonListTypeAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonListTypeAudit, Object> attributeGetterFunction = entry.getValue();
+
+			sb.append(attributeName);
+			sb.append("=");
+			sb.append(attributeGetterFunction.apply((WatsonListTypeAudit)this));
+			sb.append(", ");
+		}
+
+		if (sb.index() > 1) {
+			sb.setIndex(sb.index() - 1);
+		}
+
 		sb.append("}");
 
 		return sb.toString();
@@ -756,60 +958,26 @@ public class WatsonListTypeAuditModelImpl extends BaseModelImpl<WatsonListTypeAu
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(40);
+		Map<String, Function<WatsonListTypeAudit, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
+
+		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
+				4);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.watson.model.WatsonListTypeAudit");
+		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		sb.append(
-			"<column><column-name>watsonListTypeAuditId</column-name><column-value><![CDATA[");
-		sb.append(getWatsonListTypeAuditId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>parentWatsonListTypeId</column-name><column-value><![CDATA[");
-		sb.append(getParentWatsonListTypeId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>watsonListTypeId</column-name><column-value><![CDATA[");
-		sb.append(getWatsonListTypeId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(getName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>type</column-name><column-value><![CDATA[");
-		sb.append(getType());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>status</column-name><column-value><![CDATA[");
-		sb.append(getStatus());
-		sb.append("]]></column-value></column>");
+		for (Map.Entry<String, Function<WatsonListTypeAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonListTypeAudit, Object> attributeGetterFunction = entry.getValue();
+
+			sb.append("<column><column-name>");
+			sb.append(attributeName);
+			sb.append("</column-name><column-value><![CDATA[");
+			sb.append(attributeGetterFunction.apply((WatsonListTypeAudit)this));
+			sb.append("]]></column-value></column>");
+		}
 
 		sb.append("</model>");
 

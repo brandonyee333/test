@@ -44,12 +44,16 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the WatsonListTypeRel service. Represents a row in the &quot;WatsonListTypeRel&quot; database table, with each column mapped to a property of this class.
@@ -162,20 +166,16 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("watsonListTypeRelId", getWatsonListTypeRelId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("watsonListTypeId", getWatsonListTypeId());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("primary", isPrimary());
-		attributes.put("value", getValue());
-		attributes.put("type", getType());
-		attributes.put("status", getStatus());
+		Map<String, Function<WatsonListTypeRel, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
+
+		for (Map.Entry<String, Function<WatsonListTypeRel, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonListTypeRel, Object> attributeGetterFunction = entry.getValue();
+
+			attributes.put(attributeName,
+				attributeGetterFunction.apply((WatsonListTypeRel)this));
+		}
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -185,89 +185,323 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long watsonListTypeRelId = (Long)attributes.get("watsonListTypeRelId");
+		Map<String, BiConsumer<WatsonListTypeRel, Object>> attributeSetterBiConsumers =
+			getAttributeSetterBiConsumers();
 
-		if (watsonListTypeRelId != null) {
-			setWatsonListTypeRelId(watsonListTypeRelId);
+		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
+			String attributeName = entry.getKey();
+
+			BiConsumer<WatsonListTypeRel, Object> attributeSetterBiConsumer = attributeSetterBiConsumers.get(attributeName);
+
+			if (attributeSetterBiConsumer != null) {
+				attributeSetterBiConsumer.accept((WatsonListTypeRel)this,
+					entry.getValue());
+			}
 		}
+	}
 
-		Long groupId = (Long)attributes.get("groupId");
+	public Map<String, Function<WatsonListTypeRel, Object>> getAttributeGetterFunctions() {
+		return _attributeGetterFunctions;
+	}
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+	public Map<String, BiConsumer<WatsonListTypeRel, Object>> getAttributeSetterBiConsumers() {
+		return _attributeSetterBiConsumers;
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	private static final Map<String, Function<WatsonListTypeRel, Object>> _attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonListTypeRel, Object>> _attributeSetterBiConsumers;
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+	static {
+		Map<String, Function<WatsonListTypeRel, Object>> attributeGetterFunctions =
+			new LinkedHashMap<String, Function<WatsonListTypeRel, Object>>();
+		Map<String, BiConsumer<WatsonListTypeRel, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<WatsonListTypeRel, ?>>();
 
-		Long userId = (Long)attributes.get("userId");
 
-		if (userId != null) {
-			setUserId(userId);
-		}
+		attributeGetterFunctions.put(
+			"watsonListTypeRelId",
+			new Function<WatsonListTypeRel, Object>() {
 
-		String userName = (String)attributes.get("userName");
+				@Override
+				public Object apply(WatsonListTypeRel watsonListTypeRel) {
+					return watsonListTypeRel.getWatsonListTypeRelId();
+				}
 
-		if (userName != null) {
-			setUserName(userName);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"watsonListTypeRelId",
+			new BiConsumer<WatsonListTypeRel, Object>() {
 
-		Date createDate = (Date)attributes.get("createDate");
+				@Override
+				public void accept(WatsonListTypeRel watsonListTypeRel, Object watsonListTypeRelId) {
+					watsonListTypeRel.setWatsonListTypeRelId((Long)watsonListTypeRelId);
+				}
 
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
+			});
+		attributeGetterFunctions.put(
+			"groupId",
+			new Function<WatsonListTypeRel, Object>() {
 
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
+				@Override
+				public Object apply(WatsonListTypeRel watsonListTypeRel) {
+					return watsonListTypeRel.getGroupId();
+				}
 
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"groupId",
+			new BiConsumer<WatsonListTypeRel, Object>() {
 
-		Long watsonListTypeId = (Long)attributes.get("watsonListTypeId");
+				@Override
+				public void accept(WatsonListTypeRel watsonListTypeRel, Object groupId) {
+					watsonListTypeRel.setGroupId((Long)groupId);
+				}
 
-		if (watsonListTypeId != null) {
-			setWatsonListTypeId(watsonListTypeId);
-		}
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<WatsonListTypeRel, Object>() {
 
-		Long classNameId = (Long)attributes.get("classNameId");
+				@Override
+				public Object apply(WatsonListTypeRel watsonListTypeRel) {
+					return watsonListTypeRel.getCompanyId();
+				}
 
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"companyId",
+			new BiConsumer<WatsonListTypeRel, Object>() {
 
-		Long classPK = (Long)attributes.get("classPK");
+				@Override
+				public void accept(WatsonListTypeRel watsonListTypeRel, Object companyId) {
+					watsonListTypeRel.setCompanyId((Long)companyId);
+				}
 
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<WatsonListTypeRel, Object>() {
 
-		Boolean primary = (Boolean)attributes.get("primary");
+				@Override
+				public Object apply(WatsonListTypeRel watsonListTypeRel) {
+					return watsonListTypeRel.getUserId();
+				}
 
-		if (primary != null) {
-			setPrimary(primary);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"userId",
+			new BiConsumer<WatsonListTypeRel, Object>() {
 
-		String value = (String)attributes.get("value");
+				@Override
+				public void accept(WatsonListTypeRel watsonListTypeRel, Object userId) {
+					watsonListTypeRel.setUserId((Long)userId);
+				}
 
-		if (value != null) {
-			setValue(value);
-		}
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<WatsonListTypeRel, Object>() {
 
-		String type = (String)attributes.get("type");
+				@Override
+				public Object apply(WatsonListTypeRel watsonListTypeRel) {
+					return watsonListTypeRel.getUserName();
+				}
 
-		if (type != null) {
-			setType(type);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"userName",
+			new BiConsumer<WatsonListTypeRel, Object>() {
 
-		Integer status = (Integer)attributes.get("status");
+				@Override
+				public void accept(WatsonListTypeRel watsonListTypeRel, Object userName) {
+					watsonListTypeRel.setUserName((String)userName);
+				}
 
-		if (status != null) {
-			setStatus(status);
-		}
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<WatsonListTypeRel, Object>() {
+
+				@Override
+				public Object apply(WatsonListTypeRel watsonListTypeRel) {
+					return watsonListTypeRel.getCreateDate();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"createDate",
+			new BiConsumer<WatsonListTypeRel, Object>() {
+
+				@Override
+				public void accept(WatsonListTypeRel watsonListTypeRel, Object createDate) {
+					watsonListTypeRel.setCreateDate((Date)createDate);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<WatsonListTypeRel, Object>() {
+
+				@Override
+				public Object apply(WatsonListTypeRel watsonListTypeRel) {
+					return watsonListTypeRel.getModifiedDate();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"modifiedDate",
+			new BiConsumer<WatsonListTypeRel, Object>() {
+
+				@Override
+				public void accept(WatsonListTypeRel watsonListTypeRel, Object modifiedDate) {
+					watsonListTypeRel.setModifiedDate((Date)modifiedDate);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"watsonListTypeId",
+			new Function<WatsonListTypeRel, Object>() {
+
+				@Override
+				public Object apply(WatsonListTypeRel watsonListTypeRel) {
+					return watsonListTypeRel.getWatsonListTypeId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"watsonListTypeId",
+			new BiConsumer<WatsonListTypeRel, Object>() {
+
+				@Override
+				public void accept(WatsonListTypeRel watsonListTypeRel, Object watsonListTypeId) {
+					watsonListTypeRel.setWatsonListTypeId((Long)watsonListTypeId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classNameId",
+			new Function<WatsonListTypeRel, Object>() {
+
+				@Override
+				public Object apply(WatsonListTypeRel watsonListTypeRel) {
+					return watsonListTypeRel.getClassNameId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"classNameId",
+			new BiConsumer<WatsonListTypeRel, Object>() {
+
+				@Override
+				public void accept(WatsonListTypeRel watsonListTypeRel, Object classNameId) {
+					watsonListTypeRel.setClassNameId((Long)classNameId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classPK",
+			new Function<WatsonListTypeRel, Object>() {
+
+				@Override
+				public Object apply(WatsonListTypeRel watsonListTypeRel) {
+					return watsonListTypeRel.getClassPK();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"classPK",
+			new BiConsumer<WatsonListTypeRel, Object>() {
+
+				@Override
+				public void accept(WatsonListTypeRel watsonListTypeRel, Object classPK) {
+					watsonListTypeRel.setClassPK((Long)classPK);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"primary",
+			new Function<WatsonListTypeRel, Object>() {
+
+				@Override
+				public Object apply(WatsonListTypeRel watsonListTypeRel) {
+					return watsonListTypeRel.getPrimary();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"primary",
+			new BiConsumer<WatsonListTypeRel, Object>() {
+
+				@Override
+				public void accept(WatsonListTypeRel watsonListTypeRel, Object primary) {
+					watsonListTypeRel.setPrimary((Boolean)primary);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"value",
+			new Function<WatsonListTypeRel, Object>() {
+
+				@Override
+				public Object apply(WatsonListTypeRel watsonListTypeRel) {
+					return watsonListTypeRel.getValue();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"value",
+			new BiConsumer<WatsonListTypeRel, Object>() {
+
+				@Override
+				public void accept(WatsonListTypeRel watsonListTypeRel, Object value) {
+					watsonListTypeRel.setValue((String)value);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"type",
+			new Function<WatsonListTypeRel, Object>() {
+
+				@Override
+				public Object apply(WatsonListTypeRel watsonListTypeRel) {
+					return watsonListTypeRel.getType();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"type",
+			new BiConsumer<WatsonListTypeRel, Object>() {
+
+				@Override
+				public void accept(WatsonListTypeRel watsonListTypeRel, Object type) {
+					watsonListTypeRel.setType((String)type);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"status",
+			new Function<WatsonListTypeRel, Object>() {
+
+				@Override
+				public Object apply(WatsonListTypeRel watsonListTypeRel) {
+					return watsonListTypeRel.getStatus();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"status",
+			new BiConsumer<WatsonListTypeRel, Object>() {
+
+				@Override
+				public void accept(WatsonListTypeRel watsonListTypeRel, Object status) {
+					watsonListTypeRel.setStatus((Integer)status);
+				}
+
+			});
+
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -791,36 +1025,28 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(29);
+		Map<String, Function<WatsonListTypeRel, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		sb.append("{watsonListTypeRelId=");
-		sb.append(getWatsonListTypeRelId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", watsonListTypeId=");
-		sb.append(getWatsonListTypeId());
-		sb.append(", classNameId=");
-		sb.append(getClassNameId());
-		sb.append(", classPK=");
-		sb.append(getClassPK());
-		sb.append(", primary=");
-		sb.append(isPrimary());
-		sb.append(", value=");
-		sb.append(getValue());
-		sb.append(", type=");
-		sb.append(getType());
-		sb.append(", status=");
-		sb.append(getStatus());
+		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
+				2);
+
+		sb.append("{");
+
+		for (Map.Entry<String, Function<WatsonListTypeRel, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonListTypeRel, Object> attributeGetterFunction = entry.getValue();
+
+			sb.append(attributeName);
+			sb.append("=");
+			sb.append(attributeGetterFunction.apply((WatsonListTypeRel)this));
+			sb.append(", ");
+		}
+
+		if (sb.index() > 1) {
+			sb.setIndex(sb.index() - 1);
+		}
+
 		sb.append("}");
 
 		return sb.toString();
@@ -828,68 +1054,26 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(46);
+		Map<String, Function<WatsonListTypeRel, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
+
+		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
+				4);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.watson.model.WatsonListTypeRel");
+		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		sb.append(
-			"<column><column-name>watsonListTypeRelId</column-name><column-value><![CDATA[");
-		sb.append(getWatsonListTypeRelId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>watsonListTypeId</column-name><column-value><![CDATA[");
-		sb.append(getWatsonListTypeId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classNameId</column-name><column-value><![CDATA[");
-		sb.append(getClassNameId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classPK</column-name><column-value><![CDATA[");
-		sb.append(getClassPK());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>primary</column-name><column-value><![CDATA[");
-		sb.append(isPrimary());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>value</column-name><column-value><![CDATA[");
-		sb.append(getValue());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>type</column-name><column-value><![CDATA[");
-		sb.append(getType());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>status</column-name><column-value><![CDATA[");
-		sb.append(getStatus());
-		sb.append("]]></column-value></column>");
+		for (Map.Entry<String, Function<WatsonListTypeRel, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonListTypeRel, Object> attributeGetterFunction = entry.getValue();
+
+			sb.append("<column><column-name>");
+			sb.append(attributeName);
+			sb.append("</column-name><column-value><![CDATA[");
+			sb.append(attributeGetterFunction.apply((WatsonListTypeRel)this));
+			sb.append("]]></column-value></column>");
+		}
 
 		sb.append("</model>");
 

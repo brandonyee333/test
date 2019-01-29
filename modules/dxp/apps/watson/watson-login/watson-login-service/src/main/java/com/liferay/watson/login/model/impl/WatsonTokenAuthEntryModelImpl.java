@@ -41,10 +41,14 @@ import java.io.Serializable;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the WatsonTokenAuthEntry service. Represents a row in the &quot;WatsonTokenAuthEntry&quot; database table, with each column mapped to a property of this class.
@@ -208,17 +212,16 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("watsonTokenAuthEntryId", getWatsonTokenAuthEntryId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("active", isActive());
-		attributes.put("loginIP", getLoginIP());
-		attributes.put("token", getToken());
-		attributes.put("expirationDate", getExpirationDate());
-		attributes.put("loginDate", getLoginDate());
-		attributes.put("status", getStatus());
+		Map<String, Function<WatsonTokenAuthEntry, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
+
+		for (Map.Entry<String, Function<WatsonTokenAuthEntry, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonTokenAuthEntry, Object> attributeGetterFunction = entry.getValue();
+
+			attributes.put(attributeName,
+				attributeGetterFunction.apply((WatsonTokenAuthEntry)this));
+		}
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -228,72 +231,263 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long watsonTokenAuthEntryId = (Long)attributes.get(
-				"watsonTokenAuthEntryId");
+		Map<String, BiConsumer<WatsonTokenAuthEntry, Object>> attributeSetterBiConsumers =
+			getAttributeSetterBiConsumers();
 
-		if (watsonTokenAuthEntryId != null) {
-			setWatsonTokenAuthEntryId(watsonTokenAuthEntryId);
+		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
+			String attributeName = entry.getKey();
+
+			BiConsumer<WatsonTokenAuthEntry, Object> attributeSetterBiConsumer = attributeSetterBiConsumers.get(attributeName);
+
+			if (attributeSetterBiConsumer != null) {
+				attributeSetterBiConsumer.accept((WatsonTokenAuthEntry)this,
+					entry.getValue());
+			}
 		}
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	public Map<String, Function<WatsonTokenAuthEntry, Object>> getAttributeGetterFunctions() {
+		return _attributeGetterFunctions;
+	}
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+	public Map<String, BiConsumer<WatsonTokenAuthEntry, Object>> getAttributeSetterBiConsumers() {
+		return _attributeSetterBiConsumers;
+	}
 
-		Long userId = (Long)attributes.get("userId");
+	private static final Map<String, Function<WatsonTokenAuthEntry, Object>> _attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonTokenAuthEntry, Object>> _attributeSetterBiConsumers;
 
-		if (userId != null) {
-			setUserId(userId);
-		}
+	static {
+		Map<String, Function<WatsonTokenAuthEntry, Object>> attributeGetterFunctions =
+			new LinkedHashMap<String, Function<WatsonTokenAuthEntry, Object>>();
+		Map<String, BiConsumer<WatsonTokenAuthEntry, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<WatsonTokenAuthEntry, ?>>();
 
-		String userName = (String)attributes.get("userName");
 
-		if (userName != null) {
-			setUserName(userName);
-		}
+		attributeGetterFunctions.put(
+			"watsonTokenAuthEntryId",
+			new Function<WatsonTokenAuthEntry, Object>() {
 
-		Date createDate = (Date)attributes.get("createDate");
+				@Override
+				public Object apply(WatsonTokenAuthEntry watsonTokenAuthEntry) {
+					return watsonTokenAuthEntry.getWatsonTokenAuthEntryId();
+				}
 
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"watsonTokenAuthEntryId",
+			new BiConsumer<WatsonTokenAuthEntry, Object>() {
 
-		Boolean active = (Boolean)attributes.get("active");
+				@Override
+				public void accept(WatsonTokenAuthEntry watsonTokenAuthEntry, Object watsonTokenAuthEntryId) {
+					watsonTokenAuthEntry.setWatsonTokenAuthEntryId((Long)watsonTokenAuthEntryId);
+				}
 
-		if (active != null) {
-			setActive(active);
-		}
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<WatsonTokenAuthEntry, Object>() {
 
-		String loginIP = (String)attributes.get("loginIP");
+				@Override
+				public Object apply(WatsonTokenAuthEntry watsonTokenAuthEntry) {
+					return watsonTokenAuthEntry.getCompanyId();
+				}
 
-		if (loginIP != null) {
-			setLoginIP(loginIP);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"companyId",
+			new BiConsumer<WatsonTokenAuthEntry, Object>() {
 
-		String token = (String)attributes.get("token");
+				@Override
+				public void accept(WatsonTokenAuthEntry watsonTokenAuthEntry, Object companyId) {
+					watsonTokenAuthEntry.setCompanyId((Long)companyId);
+				}
 
-		if (token != null) {
-			setToken(token);
-		}
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<WatsonTokenAuthEntry, Object>() {
 
-		Date expirationDate = (Date)attributes.get("expirationDate");
+				@Override
+				public Object apply(WatsonTokenAuthEntry watsonTokenAuthEntry) {
+					return watsonTokenAuthEntry.getUserId();
+				}
 
-		if (expirationDate != null) {
-			setExpirationDate(expirationDate);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"userId",
+			new BiConsumer<WatsonTokenAuthEntry, Object>() {
 
-		Date loginDate = (Date)attributes.get("loginDate");
+				@Override
+				public void accept(WatsonTokenAuthEntry watsonTokenAuthEntry, Object userId) {
+					watsonTokenAuthEntry.setUserId((Long)userId);
+				}
 
-		if (loginDate != null) {
-			setLoginDate(loginDate);
-		}
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<WatsonTokenAuthEntry, Object>() {
 
-		Integer status = (Integer)attributes.get("status");
+				@Override
+				public Object apply(WatsonTokenAuthEntry watsonTokenAuthEntry) {
+					return watsonTokenAuthEntry.getUserName();
+				}
 
-		if (status != null) {
-			setStatus(status);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"userName",
+			new BiConsumer<WatsonTokenAuthEntry, Object>() {
+
+				@Override
+				public void accept(WatsonTokenAuthEntry watsonTokenAuthEntry, Object userName) {
+					watsonTokenAuthEntry.setUserName((String)userName);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<WatsonTokenAuthEntry, Object>() {
+
+				@Override
+				public Object apply(WatsonTokenAuthEntry watsonTokenAuthEntry) {
+					return watsonTokenAuthEntry.getCreateDate();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"createDate",
+			new BiConsumer<WatsonTokenAuthEntry, Object>() {
+
+				@Override
+				public void accept(WatsonTokenAuthEntry watsonTokenAuthEntry, Object createDate) {
+					watsonTokenAuthEntry.setCreateDate((Date)createDate);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"active",
+			new Function<WatsonTokenAuthEntry, Object>() {
+
+				@Override
+				public Object apply(WatsonTokenAuthEntry watsonTokenAuthEntry) {
+					return watsonTokenAuthEntry.getActive();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"active",
+			new BiConsumer<WatsonTokenAuthEntry, Object>() {
+
+				@Override
+				public void accept(WatsonTokenAuthEntry watsonTokenAuthEntry, Object active) {
+					watsonTokenAuthEntry.setActive((Boolean)active);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"loginIP",
+			new Function<WatsonTokenAuthEntry, Object>() {
+
+				@Override
+				public Object apply(WatsonTokenAuthEntry watsonTokenAuthEntry) {
+					return watsonTokenAuthEntry.getLoginIP();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"loginIP",
+			new BiConsumer<WatsonTokenAuthEntry, Object>() {
+
+				@Override
+				public void accept(WatsonTokenAuthEntry watsonTokenAuthEntry, Object loginIP) {
+					watsonTokenAuthEntry.setLoginIP((String)loginIP);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"token",
+			new Function<WatsonTokenAuthEntry, Object>() {
+
+				@Override
+				public Object apply(WatsonTokenAuthEntry watsonTokenAuthEntry) {
+					return watsonTokenAuthEntry.getToken();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"token",
+			new BiConsumer<WatsonTokenAuthEntry, Object>() {
+
+				@Override
+				public void accept(WatsonTokenAuthEntry watsonTokenAuthEntry, Object token) {
+					watsonTokenAuthEntry.setToken((String)token);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"expirationDate",
+			new Function<WatsonTokenAuthEntry, Object>() {
+
+				@Override
+				public Object apply(WatsonTokenAuthEntry watsonTokenAuthEntry) {
+					return watsonTokenAuthEntry.getExpirationDate();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"expirationDate",
+			new BiConsumer<WatsonTokenAuthEntry, Object>() {
+
+				@Override
+				public void accept(WatsonTokenAuthEntry watsonTokenAuthEntry, Object expirationDate) {
+					watsonTokenAuthEntry.setExpirationDate((Date)expirationDate);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"loginDate",
+			new Function<WatsonTokenAuthEntry, Object>() {
+
+				@Override
+				public Object apply(WatsonTokenAuthEntry watsonTokenAuthEntry) {
+					return watsonTokenAuthEntry.getLoginDate();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"loginDate",
+			new BiConsumer<WatsonTokenAuthEntry, Object>() {
+
+				@Override
+				public void accept(WatsonTokenAuthEntry watsonTokenAuthEntry, Object loginDate) {
+					watsonTokenAuthEntry.setLoginDate((Date)loginDate);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"status",
+			new Function<WatsonTokenAuthEntry, Object>() {
+
+				@Override
+				public Object apply(WatsonTokenAuthEntry watsonTokenAuthEntry) {
+					return watsonTokenAuthEntry.getStatus();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"status",
+			new BiConsumer<WatsonTokenAuthEntry, Object>() {
+
+				@Override
+				public void accept(WatsonTokenAuthEntry watsonTokenAuthEntry, Object status) {
+					watsonTokenAuthEntry.setStatus((Integer)status);
+				}
+
+			});
+
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
 	}
 
 	@JSON
@@ -663,30 +857,28 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(23);
+		Map<String, Function<WatsonTokenAuthEntry, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		sb.append("{watsonTokenAuthEntryId=");
-		sb.append(getWatsonTokenAuthEntryId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", active=");
-		sb.append(isActive());
-		sb.append(", loginIP=");
-		sb.append(getLoginIP());
-		sb.append(", token=");
-		sb.append(getToken());
-		sb.append(", expirationDate=");
-		sb.append(getExpirationDate());
-		sb.append(", loginDate=");
-		sb.append(getLoginDate());
-		sb.append(", status=");
-		sb.append(getStatus());
+		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
+				2);
+
+		sb.append("{");
+
+		for (Map.Entry<String, Function<WatsonTokenAuthEntry, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonTokenAuthEntry, Object> attributeGetterFunction = entry.getValue();
+
+			sb.append(attributeName);
+			sb.append("=");
+			sb.append(attributeGetterFunction.apply((WatsonTokenAuthEntry)this));
+			sb.append(", ");
+		}
+
+		if (sb.index() > 1) {
+			sb.setIndex(sb.index() - 1);
+		}
+
 		sb.append("}");
 
 		return sb.toString();
@@ -694,56 +886,26 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(37);
+		Map<String, Function<WatsonTokenAuthEntry, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
+
+		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
+				4);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.watson.login.model.WatsonTokenAuthEntry");
+		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		sb.append(
-			"<column><column-name>watsonTokenAuthEntryId</column-name><column-value><![CDATA[");
-		sb.append(getWatsonTokenAuthEntryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>active</column-name><column-value><![CDATA[");
-		sb.append(isActive());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>loginIP</column-name><column-value><![CDATA[");
-		sb.append(getLoginIP());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>token</column-name><column-value><![CDATA[");
-		sb.append(getToken());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>expirationDate</column-name><column-value><![CDATA[");
-		sb.append(getExpirationDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>loginDate</column-name><column-value><![CDATA[");
-		sb.append(getLoginDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>status</column-name><column-value><![CDATA[");
-		sb.append(getStatus());
-		sb.append("]]></column-value></column>");
+		for (Map.Entry<String, Function<WatsonTokenAuthEntry, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonTokenAuthEntry, Object> attributeGetterFunction = entry.getValue();
+
+			sb.append("<column><column-name>");
+			sb.append(attributeName);
+			sb.append("</column-name><column-value><![CDATA[");
+			sb.append(attributeGetterFunction.apply((WatsonTokenAuthEntry)this));
+			sb.append("]]></column-value></column>");
+		}
 
 		sb.append("</model>");
 

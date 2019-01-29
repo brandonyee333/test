@@ -43,12 +43,16 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the WatsonReport service. Represents a row in the &quot;WatsonReport&quot; database table, with each column mapped to a property of this class.
@@ -171,25 +175,15 @@ public class WatsonReportModelImpl extends BaseModelImpl<WatsonReport>
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("watsonReportId", getWatsonReportId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("originalWatsonReportId", getOriginalWatsonReportId());
-		attributes.put("typeWatsonListTypeId", getTypeWatsonListTypeId());
-		attributes.put("watsonChildId", getWatsonChildId());
-		attributes.put("name", getName());
-		attributes.put("description", getDescription());
-		attributes.put("fullReport", getFullReport());
-		attributes.put("imagePayload", getImagePayload());
-		attributes.put("timeSpent", getTimeSpent());
-		attributes.put("reportedUser", getReportedUser());
-		attributes.put("reportDate", getReportDate());
-		attributes.put("key", getKey());
-		attributes.put("status", getStatus());
+		Map<String, Function<WatsonReport, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+
+		for (Map.Entry<String, Function<WatsonReport, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonReport, Object> attributeGetterFunction = entry.getValue();
+
+			attributes.put(attributeName,
+				attributeGetterFunction.apply((WatsonReport)this));
+		}
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -199,120 +193,421 @@ public class WatsonReportModelImpl extends BaseModelImpl<WatsonReport>
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long watsonReportId = (Long)attributes.get("watsonReportId");
+		Map<String, BiConsumer<WatsonReport, Object>> attributeSetterBiConsumers =
+			getAttributeSetterBiConsumers();
 
-		if (watsonReportId != null) {
-			setWatsonReportId(watsonReportId);
+		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
+			String attributeName = entry.getKey();
+
+			BiConsumer<WatsonReport, Object> attributeSetterBiConsumer = attributeSetterBiConsumers.get(attributeName);
+
+			if (attributeSetterBiConsumer != null) {
+				attributeSetterBiConsumer.accept((WatsonReport)this,
+					entry.getValue());
+			}
 		}
+	}
 
-		Long groupId = (Long)attributes.get("groupId");
+	public Map<String, Function<WatsonReport, Object>> getAttributeGetterFunctions() {
+		return _attributeGetterFunctions;
+	}
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+	public Map<String, BiConsumer<WatsonReport, Object>> getAttributeSetterBiConsumers() {
+		return _attributeSetterBiConsumers;
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	private static final Map<String, Function<WatsonReport, Object>> _attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonReport, Object>> _attributeSetterBiConsumers;
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+	static {
+		Map<String, Function<WatsonReport, Object>> attributeGetterFunctions = new LinkedHashMap<String, Function<WatsonReport, Object>>();
+		Map<String, BiConsumer<WatsonReport, ?>> attributeSetterBiConsumers = new LinkedHashMap<String, BiConsumer<WatsonReport, ?>>();
 
-		Long userId = (Long)attributes.get("userId");
 
-		if (userId != null) {
-			setUserId(userId);
-		}
+		attributeGetterFunctions.put(
+			"watsonReportId",
+			new Function<WatsonReport, Object>() {
 
-		String userName = (String)attributes.get("userName");
+				@Override
+				public Object apply(WatsonReport watsonReport) {
+					return watsonReport.getWatsonReportId();
+				}
 
-		if (userName != null) {
-			setUserName(userName);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"watsonReportId",
+			new BiConsumer<WatsonReport, Object>() {
 
-		Date createDate = (Date)attributes.get("createDate");
+				@Override
+				public void accept(WatsonReport watsonReport, Object watsonReportId) {
+					watsonReport.setWatsonReportId((Long)watsonReportId);
+				}
 
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
+			});
+		attributeGetterFunctions.put(
+			"groupId",
+			new Function<WatsonReport, Object>() {
 
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
+				@Override
+				public Object apply(WatsonReport watsonReport) {
+					return watsonReport.getGroupId();
+				}
 
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"groupId",
+			new BiConsumer<WatsonReport, Object>() {
 
-		Long originalWatsonReportId = (Long)attributes.get(
-				"originalWatsonReportId");
+				@Override
+				public void accept(WatsonReport watsonReport, Object groupId) {
+					watsonReport.setGroupId((Long)groupId);
+				}
 
-		if (originalWatsonReportId != null) {
-			setOriginalWatsonReportId(originalWatsonReportId);
-		}
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<WatsonReport, Object>() {
 
-		Long typeWatsonListTypeId = (Long)attributes.get("typeWatsonListTypeId");
+				@Override
+				public Object apply(WatsonReport watsonReport) {
+					return watsonReport.getCompanyId();
+				}
 
-		if (typeWatsonListTypeId != null) {
-			setTypeWatsonListTypeId(typeWatsonListTypeId);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"companyId",
+			new BiConsumer<WatsonReport, Object>() {
 
-		Long watsonChildId = (Long)attributes.get("watsonChildId");
+				@Override
+				public void accept(WatsonReport watsonReport, Object companyId) {
+					watsonReport.setCompanyId((Long)companyId);
+				}
 
-		if (watsonChildId != null) {
-			setWatsonChildId(watsonChildId);
-		}
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<WatsonReport, Object>() {
 
-		String name = (String)attributes.get("name");
+				@Override
+				public Object apply(WatsonReport watsonReport) {
+					return watsonReport.getUserId();
+				}
 
-		if (name != null) {
-			setName(name);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"userId",
+			new BiConsumer<WatsonReport, Object>() {
 
-		String description = (String)attributes.get("description");
+				@Override
+				public void accept(WatsonReport watsonReport, Object userId) {
+					watsonReport.setUserId((Long)userId);
+				}
 
-		if (description != null) {
-			setDescription(description);
-		}
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<WatsonReport, Object>() {
 
-		String fullReport = (String)attributes.get("fullReport");
+				@Override
+				public Object apply(WatsonReport watsonReport) {
+					return watsonReport.getUserName();
+				}
 
-		if (fullReport != null) {
-			setFullReport(fullReport);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"userName",
+			new BiConsumer<WatsonReport, Object>() {
 
-		String imagePayload = (String)attributes.get("imagePayload");
+				@Override
+				public void accept(WatsonReport watsonReport, Object userName) {
+					watsonReport.setUserName((String)userName);
+				}
 
-		if (imagePayload != null) {
-			setImagePayload(imagePayload);
-		}
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<WatsonReport, Object>() {
 
-		String timeSpent = (String)attributes.get("timeSpent");
+				@Override
+				public Object apply(WatsonReport watsonReport) {
+					return watsonReport.getCreateDate();
+				}
 
-		if (timeSpent != null) {
-			setTimeSpent(timeSpent);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"createDate",
+			new BiConsumer<WatsonReport, Object>() {
 
-		String reportedUser = (String)attributes.get("reportedUser");
+				@Override
+				public void accept(WatsonReport watsonReport, Object createDate) {
+					watsonReport.setCreateDate((Date)createDate);
+				}
 
-		if (reportedUser != null) {
-			setReportedUser(reportedUser);
-		}
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<WatsonReport, Object>() {
 
-		Date reportDate = (Date)attributes.get("reportDate");
+				@Override
+				public Object apply(WatsonReport watsonReport) {
+					return watsonReport.getModifiedDate();
+				}
 
-		if (reportDate != null) {
-			setReportDate(reportDate);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"modifiedDate",
+			new BiConsumer<WatsonReport, Object>() {
 
-		Integer key = (Integer)attributes.get("key");
+				@Override
+				public void accept(WatsonReport watsonReport, Object modifiedDate) {
+					watsonReport.setModifiedDate((Date)modifiedDate);
+				}
 
-		if (key != null) {
-			setKey(key);
-		}
+			});
+		attributeGetterFunctions.put(
+			"originalWatsonReportId",
+			new Function<WatsonReport, Object>() {
 
-		Integer status = (Integer)attributes.get("status");
+				@Override
+				public Object apply(WatsonReport watsonReport) {
+					return watsonReport.getOriginalWatsonReportId();
+				}
 
-		if (status != null) {
-			setStatus(status);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"originalWatsonReportId",
+			new BiConsumer<WatsonReport, Object>() {
+
+				@Override
+				public void accept(WatsonReport watsonReport, Object originalWatsonReportId) {
+					watsonReport.setOriginalWatsonReportId((Long)originalWatsonReportId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"typeWatsonListTypeId",
+			new Function<WatsonReport, Object>() {
+
+				@Override
+				public Object apply(WatsonReport watsonReport) {
+					return watsonReport.getTypeWatsonListTypeId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"typeWatsonListTypeId",
+			new BiConsumer<WatsonReport, Object>() {
+
+				@Override
+				public void accept(WatsonReport watsonReport, Object typeWatsonListTypeId) {
+					watsonReport.setTypeWatsonListTypeId((Long)typeWatsonListTypeId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"watsonChildId",
+			new Function<WatsonReport, Object>() {
+
+				@Override
+				public Object apply(WatsonReport watsonReport) {
+					return watsonReport.getWatsonChildId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"watsonChildId",
+			new BiConsumer<WatsonReport, Object>() {
+
+				@Override
+				public void accept(WatsonReport watsonReport, Object watsonChildId) {
+					watsonReport.setWatsonChildId((Long)watsonChildId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<WatsonReport, Object>() {
+
+				@Override
+				public Object apply(WatsonReport watsonReport) {
+					return watsonReport.getName();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"name",
+			new BiConsumer<WatsonReport, Object>() {
+
+				@Override
+				public void accept(WatsonReport watsonReport, Object name) {
+					watsonReport.setName((String)name);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"description",
+			new Function<WatsonReport, Object>() {
+
+				@Override
+				public Object apply(WatsonReport watsonReport) {
+					return watsonReport.getDescription();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"description",
+			new BiConsumer<WatsonReport, Object>() {
+
+				@Override
+				public void accept(WatsonReport watsonReport, Object description) {
+					watsonReport.setDescription((String)description);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"fullReport",
+			new Function<WatsonReport, Object>() {
+
+				@Override
+				public Object apply(WatsonReport watsonReport) {
+					return watsonReport.getFullReport();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"fullReport",
+			new BiConsumer<WatsonReport, Object>() {
+
+				@Override
+				public void accept(WatsonReport watsonReport, Object fullReport) {
+					watsonReport.setFullReport((String)fullReport);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"imagePayload",
+			new Function<WatsonReport, Object>() {
+
+				@Override
+				public Object apply(WatsonReport watsonReport) {
+					return watsonReport.getImagePayload();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"imagePayload",
+			new BiConsumer<WatsonReport, Object>() {
+
+				@Override
+				public void accept(WatsonReport watsonReport, Object imagePayload) {
+					watsonReport.setImagePayload((String)imagePayload);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"timeSpent",
+			new Function<WatsonReport, Object>() {
+
+				@Override
+				public Object apply(WatsonReport watsonReport) {
+					return watsonReport.getTimeSpent();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"timeSpent",
+			new BiConsumer<WatsonReport, Object>() {
+
+				@Override
+				public void accept(WatsonReport watsonReport, Object timeSpent) {
+					watsonReport.setTimeSpent((String)timeSpent);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"reportedUser",
+			new Function<WatsonReport, Object>() {
+
+				@Override
+				public Object apply(WatsonReport watsonReport) {
+					return watsonReport.getReportedUser();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"reportedUser",
+			new BiConsumer<WatsonReport, Object>() {
+
+				@Override
+				public void accept(WatsonReport watsonReport, Object reportedUser) {
+					watsonReport.setReportedUser((String)reportedUser);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"reportDate",
+			new Function<WatsonReport, Object>() {
+
+				@Override
+				public Object apply(WatsonReport watsonReport) {
+					return watsonReport.getReportDate();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"reportDate",
+			new BiConsumer<WatsonReport, Object>() {
+
+				@Override
+				public void accept(WatsonReport watsonReport, Object reportDate) {
+					watsonReport.setReportDate((Date)reportDate);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"key",
+			new Function<WatsonReport, Object>() {
+
+				@Override
+				public Object apply(WatsonReport watsonReport) {
+					return watsonReport.getKey();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"key",
+			new BiConsumer<WatsonReport, Object>() {
+
+				@Override
+				public void accept(WatsonReport watsonReport, Object key) {
+					watsonReport.setKey((Integer)key);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"status",
+			new Function<WatsonReport, Object>() {
+
+				@Override
+				public Object apply(WatsonReport watsonReport) {
+					return watsonReport.getStatus();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"status",
+			new BiConsumer<WatsonReport, Object>() {
+
+				@Override
+				public void accept(WatsonReport watsonReport, Object status) {
+					watsonReport.setStatus((Integer)status);
+				}
+
+			});
+
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -1251,46 +1546,27 @@ public class WatsonReportModelImpl extends BaseModelImpl<WatsonReport>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(39);
+		Map<String, Function<WatsonReport, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
 
-		sb.append("{watsonReportId=");
-		sb.append(getWatsonReportId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", originalWatsonReportId=");
-		sb.append(getOriginalWatsonReportId());
-		sb.append(", typeWatsonListTypeId=");
-		sb.append(getTypeWatsonListTypeId());
-		sb.append(", watsonChildId=");
-		sb.append(getWatsonChildId());
-		sb.append(", name=");
-		sb.append(getName());
-		sb.append(", description=");
-		sb.append(getDescription());
-		sb.append(", fullReport=");
-		sb.append(getFullReport());
-		sb.append(", imagePayload=");
-		sb.append(getImagePayload());
-		sb.append(", timeSpent=");
-		sb.append(getTimeSpent());
-		sb.append(", reportedUser=");
-		sb.append(getReportedUser());
-		sb.append(", reportDate=");
-		sb.append(getReportDate());
-		sb.append(", key=");
-		sb.append(getKey());
-		sb.append(", status=");
-		sb.append(getStatus());
+		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
+				2);
+
+		sb.append("{");
+
+		for (Map.Entry<String, Function<WatsonReport, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonReport, Object> attributeGetterFunction = entry.getValue();
+
+			sb.append(attributeName);
+			sb.append("=");
+			sb.append(attributeGetterFunction.apply((WatsonReport)this));
+			sb.append(", ");
+		}
+
+		if (sb.index() > 1) {
+			sb.setIndex(sb.index() - 1);
+		}
+
 		sb.append("}");
 
 		return sb.toString();
@@ -1298,88 +1574,25 @@ public class WatsonReportModelImpl extends BaseModelImpl<WatsonReport>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(61);
+		Map<String, Function<WatsonReport, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+
+		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
+				4);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.watson.model.WatsonReport");
+		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		sb.append(
-			"<column><column-name>watsonReportId</column-name><column-value><![CDATA[");
-		sb.append(getWatsonReportId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>originalWatsonReportId</column-name><column-value><![CDATA[");
-		sb.append(getOriginalWatsonReportId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>typeWatsonListTypeId</column-name><column-value><![CDATA[");
-		sb.append(getTypeWatsonListTypeId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>watsonChildId</column-name><column-value><![CDATA[");
-		sb.append(getWatsonChildId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(getName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(getDescription());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>fullReport</column-name><column-value><![CDATA[");
-		sb.append(getFullReport());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>imagePayload</column-name><column-value><![CDATA[");
-		sb.append(getImagePayload());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>timeSpent</column-name><column-value><![CDATA[");
-		sb.append(getTimeSpent());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>reportedUser</column-name><column-value><![CDATA[");
-		sb.append(getReportedUser());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>reportDate</column-name><column-value><![CDATA[");
-		sb.append(getReportDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>key</column-name><column-value><![CDATA[");
-		sb.append(getKey());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>status</column-name><column-value><![CDATA[");
-		sb.append(getStatus());
-		sb.append("]]></column-value></column>");
+		for (Map.Entry<String, Function<WatsonReport, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonReport, Object> attributeGetterFunction = entry.getValue();
+
+			sb.append("<column><column-name>");
+			sb.append(attributeName);
+			sb.append("</column-name><column-value><![CDATA[");
+			sb.append(attributeGetterFunction.apply((WatsonReport)this));
+			sb.append("]]></column-value></column>");
+		}
 
 		sb.append("</model>");
 

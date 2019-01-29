@@ -40,9 +40,13 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the WatsonHistory service. Represents a row in the &quot;WatsonHistory&quot; database table, with each column mapped to a property of this class.
@@ -151,18 +155,15 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("watsonHistoryId", getWatsonHistoryId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("watsonParentId", getWatsonParentId());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("type", getType());
-		attributes.put("status", getStatus());
+		Map<String, Function<WatsonHistory, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+
+		for (Map.Entry<String, Function<WatsonHistory, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonHistory, Object> attributeGetterFunction = entry.getValue();
+
+			attributes.put(attributeName,
+				attributeGetterFunction.apply((WatsonHistory)this));
+		}
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -172,77 +173,281 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long watsonHistoryId = (Long)attributes.get("watsonHistoryId");
+		Map<String, BiConsumer<WatsonHistory, Object>> attributeSetterBiConsumers =
+			getAttributeSetterBiConsumers();
 
-		if (watsonHistoryId != null) {
-			setWatsonHistoryId(watsonHistoryId);
+		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
+			String attributeName = entry.getKey();
+
+			BiConsumer<WatsonHistory, Object> attributeSetterBiConsumer = attributeSetterBiConsumers.get(attributeName);
+
+			if (attributeSetterBiConsumer != null) {
+				attributeSetterBiConsumer.accept((WatsonHistory)this,
+					entry.getValue());
+			}
 		}
+	}
 
-		Long groupId = (Long)attributes.get("groupId");
+	public Map<String, Function<WatsonHistory, Object>> getAttributeGetterFunctions() {
+		return _attributeGetterFunctions;
+	}
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+	public Map<String, BiConsumer<WatsonHistory, Object>> getAttributeSetterBiConsumers() {
+		return _attributeSetterBiConsumers;
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	private static final Map<String, Function<WatsonHistory, Object>> _attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonHistory, Object>> _attributeSetterBiConsumers;
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+	static {
+		Map<String, Function<WatsonHistory, Object>> attributeGetterFunctions = new LinkedHashMap<String, Function<WatsonHistory, Object>>();
+		Map<String, BiConsumer<WatsonHistory, ?>> attributeSetterBiConsumers = new LinkedHashMap<String, BiConsumer<WatsonHistory, ?>>();
 
-		Long userId = (Long)attributes.get("userId");
 
-		if (userId != null) {
-			setUserId(userId);
-		}
+		attributeGetterFunctions.put(
+			"watsonHistoryId",
+			new Function<WatsonHistory, Object>() {
 
-		String userName = (String)attributes.get("userName");
+				@Override
+				public Object apply(WatsonHistory watsonHistory) {
+					return watsonHistory.getWatsonHistoryId();
+				}
 
-		if (userName != null) {
-			setUserName(userName);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"watsonHistoryId",
+			new BiConsumer<WatsonHistory, Object>() {
 
-		Date createDate = (Date)attributes.get("createDate");
+				@Override
+				public void accept(WatsonHistory watsonHistory, Object watsonHistoryId) {
+					watsonHistory.setWatsonHistoryId((Long)watsonHistoryId);
+				}
 
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
+			});
+		attributeGetterFunctions.put(
+			"groupId",
+			new Function<WatsonHistory, Object>() {
 
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
+				@Override
+				public Object apply(WatsonHistory watsonHistory) {
+					return watsonHistory.getGroupId();
+				}
 
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"groupId",
+			new BiConsumer<WatsonHistory, Object>() {
 
-		Long watsonParentId = (Long)attributes.get("watsonParentId");
+				@Override
+				public void accept(WatsonHistory watsonHistory, Object groupId) {
+					watsonHistory.setGroupId((Long)groupId);
+				}
 
-		if (watsonParentId != null) {
-			setWatsonParentId(watsonParentId);
-		}
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<WatsonHistory, Object>() {
 
-		Long classNameId = (Long)attributes.get("classNameId");
+				@Override
+				public Object apply(WatsonHistory watsonHistory) {
+					return watsonHistory.getCompanyId();
+				}
 
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"companyId",
+			new BiConsumer<WatsonHistory, Object>() {
 
-		Long classPK = (Long)attributes.get("classPK");
+				@Override
+				public void accept(WatsonHistory watsonHistory, Object companyId) {
+					watsonHistory.setCompanyId((Long)companyId);
+				}
 
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<WatsonHistory, Object>() {
 
-		Integer type = (Integer)attributes.get("type");
+				@Override
+				public Object apply(WatsonHistory watsonHistory) {
+					return watsonHistory.getUserId();
+				}
 
-		if (type != null) {
-			setType(type);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"userId",
+			new BiConsumer<WatsonHistory, Object>() {
 
-		Integer status = (Integer)attributes.get("status");
+				@Override
+				public void accept(WatsonHistory watsonHistory, Object userId) {
+					watsonHistory.setUserId((Long)userId);
+				}
 
-		if (status != null) {
-			setStatus(status);
-		}
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<WatsonHistory, Object>() {
+
+				@Override
+				public Object apply(WatsonHistory watsonHistory) {
+					return watsonHistory.getUserName();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"userName",
+			new BiConsumer<WatsonHistory, Object>() {
+
+				@Override
+				public void accept(WatsonHistory watsonHistory, Object userName) {
+					watsonHistory.setUserName((String)userName);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<WatsonHistory, Object>() {
+
+				@Override
+				public Object apply(WatsonHistory watsonHistory) {
+					return watsonHistory.getCreateDate();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"createDate",
+			new BiConsumer<WatsonHistory, Object>() {
+
+				@Override
+				public void accept(WatsonHistory watsonHistory, Object createDate) {
+					watsonHistory.setCreateDate((Date)createDate);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<WatsonHistory, Object>() {
+
+				@Override
+				public Object apply(WatsonHistory watsonHistory) {
+					return watsonHistory.getModifiedDate();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"modifiedDate",
+			new BiConsumer<WatsonHistory, Object>() {
+
+				@Override
+				public void accept(WatsonHistory watsonHistory, Object modifiedDate) {
+					watsonHistory.setModifiedDate((Date)modifiedDate);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"watsonParentId",
+			new Function<WatsonHistory, Object>() {
+
+				@Override
+				public Object apply(WatsonHistory watsonHistory) {
+					return watsonHistory.getWatsonParentId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"watsonParentId",
+			new BiConsumer<WatsonHistory, Object>() {
+
+				@Override
+				public void accept(WatsonHistory watsonHistory, Object watsonParentId) {
+					watsonHistory.setWatsonParentId((Long)watsonParentId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classNameId",
+			new Function<WatsonHistory, Object>() {
+
+				@Override
+				public Object apply(WatsonHistory watsonHistory) {
+					return watsonHistory.getClassNameId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"classNameId",
+			new BiConsumer<WatsonHistory, Object>() {
+
+				@Override
+				public void accept(WatsonHistory watsonHistory, Object classNameId) {
+					watsonHistory.setClassNameId((Long)classNameId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classPK",
+			new Function<WatsonHistory, Object>() {
+
+				@Override
+				public Object apply(WatsonHistory watsonHistory) {
+					return watsonHistory.getClassPK();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"classPK",
+			new BiConsumer<WatsonHistory, Object>() {
+
+				@Override
+				public void accept(WatsonHistory watsonHistory, Object classPK) {
+					watsonHistory.setClassPK((Long)classPK);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"type",
+			new Function<WatsonHistory, Object>() {
+
+				@Override
+				public Object apply(WatsonHistory watsonHistory) {
+					return watsonHistory.getType();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"type",
+			new BiConsumer<WatsonHistory, Object>() {
+
+				@Override
+				public void accept(WatsonHistory watsonHistory, Object type) {
+					watsonHistory.setType((Integer)type);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"status",
+			new Function<WatsonHistory, Object>() {
+
+				@Override
+				public Object apply(WatsonHistory watsonHistory) {
+					return watsonHistory.getStatus();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"status",
+			new BiConsumer<WatsonHistory, Object>() {
+
+				@Override
+				public void accept(WatsonHistory watsonHistory, Object status) {
+					watsonHistory.setStatus((Integer)status);
+				}
+
+			});
+
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -569,32 +774,27 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(25);
+		Map<String, Function<WatsonHistory, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
 
-		sb.append("{watsonHistoryId=");
-		sb.append(getWatsonHistoryId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", watsonParentId=");
-		sb.append(getWatsonParentId());
-		sb.append(", classNameId=");
-		sb.append(getClassNameId());
-		sb.append(", classPK=");
-		sb.append(getClassPK());
-		sb.append(", type=");
-		sb.append(getType());
-		sb.append(", status=");
-		sb.append(getStatus());
+		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
+				2);
+
+		sb.append("{");
+
+		for (Map.Entry<String, Function<WatsonHistory, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonHistory, Object> attributeGetterFunction = entry.getValue();
+
+			sb.append(attributeName);
+			sb.append("=");
+			sb.append(attributeGetterFunction.apply((WatsonHistory)this));
+			sb.append(", ");
+		}
+
+		if (sb.index() > 1) {
+			sb.setIndex(sb.index() - 1);
+		}
+
 		sb.append("}");
 
 		return sb.toString();
@@ -602,60 +802,25 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(40);
+		Map<String, Function<WatsonHistory, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+
+		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
+				4);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.watson.model.WatsonHistory");
+		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		sb.append(
-			"<column><column-name>watsonHistoryId</column-name><column-value><![CDATA[");
-		sb.append(getWatsonHistoryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>watsonParentId</column-name><column-value><![CDATA[");
-		sb.append(getWatsonParentId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classNameId</column-name><column-value><![CDATA[");
-		sb.append(getClassNameId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classPK</column-name><column-value><![CDATA[");
-		sb.append(getClassPK());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>type</column-name><column-value><![CDATA[");
-		sb.append(getType());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>status</column-name><column-value><![CDATA[");
-		sb.append(getStatus());
-		sb.append("]]></column-value></column>");
+		for (Map.Entry<String, Function<WatsonHistory, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonHistory, Object> attributeGetterFunction = entry.getValue();
+
+			sb.append("<column><column-name>");
+			sb.append(attributeName);
+			sb.append("</column-name><column-value><![CDATA[");
+			sb.append(attributeGetterFunction.apply((WatsonHistory)this));
+			sb.append("]]></column-value></column>");
+		}
 
 		sb.append("</model>");
 

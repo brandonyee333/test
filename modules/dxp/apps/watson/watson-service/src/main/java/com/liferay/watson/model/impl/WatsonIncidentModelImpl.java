@@ -43,12 +43,16 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the WatsonIncident service. Represents a row in the &quot;WatsonIncident&quot; database table, with each column mapped to a property of this class.
@@ -181,31 +185,15 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("watsonIncidentId", getWatsonIncidentId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("externalCaseWatsonListTypeId",
-			getExternalCaseWatsonListTypeId());
-		attributes.put("sourceWatsonListTypeId", getSourceWatsonListTypeId());
-		attributes.put("typeWatsonListTypeId", getTypeWatsonListTypeId());
-		attributes.put("subtypeWatsonListTypeId", getSubtypeWatsonListTypeId());
-		attributes.put("audienceAdultCount", getAudienceAdultCount());
-		attributes.put("audienceChildCount", getAudienceChildCount());
-		attributes.put("victimAdultCount", getVictimAdultCount());
-		attributes.put("victimChildCount", getVictimChildCount());
-		attributes.put("name", getName());
-		attributes.put("description", getDescription());
-		attributes.put("externalCaseId", getExternalCaseId());
-		attributes.put("reportDate", getReportDate());
-		attributes.put("startDate", getStartDate());
-		attributes.put("endDate", getEndDate());
-		attributes.put("expenses", getExpenses());
-		attributes.put("incidentStatus", getIncidentStatus());
-		attributes.put("status", getStatus());
+		Map<String, Function<WatsonIncident, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+
+		for (Map.Entry<String, Function<WatsonIncident, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonIncident, Object> attributeGetterFunction = entry.getValue();
+
+			attributes.put(attributeName,
+				attributeGetterFunction.apply((WatsonIncident)this));
+		}
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -215,152 +203,521 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long watsonIncidentId = (Long)attributes.get("watsonIncidentId");
+		Map<String, BiConsumer<WatsonIncident, Object>> attributeSetterBiConsumers =
+			getAttributeSetterBiConsumers();
 
-		if (watsonIncidentId != null) {
-			setWatsonIncidentId(watsonIncidentId);
+		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
+			String attributeName = entry.getKey();
+
+			BiConsumer<WatsonIncident, Object> attributeSetterBiConsumer = attributeSetterBiConsumers.get(attributeName);
+
+			if (attributeSetterBiConsumer != null) {
+				attributeSetterBiConsumer.accept((WatsonIncident)this,
+					entry.getValue());
+			}
 		}
+	}
 
-		Long groupId = (Long)attributes.get("groupId");
+	public Map<String, Function<WatsonIncident, Object>> getAttributeGetterFunctions() {
+		return _attributeGetterFunctions;
+	}
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+	public Map<String, BiConsumer<WatsonIncident, Object>> getAttributeSetterBiConsumers() {
+		return _attributeSetterBiConsumers;
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	private static final Map<String, Function<WatsonIncident, Object>> _attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonIncident, Object>> _attributeSetterBiConsumers;
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+	static {
+		Map<String, Function<WatsonIncident, Object>> attributeGetterFunctions = new LinkedHashMap<String, Function<WatsonIncident, Object>>();
+		Map<String, BiConsumer<WatsonIncident, ?>> attributeSetterBiConsumers = new LinkedHashMap<String, BiConsumer<WatsonIncident, ?>>();
 
-		Long userId = (Long)attributes.get("userId");
 
-		if (userId != null) {
-			setUserId(userId);
-		}
+		attributeGetterFunctions.put(
+			"watsonIncidentId",
+			new Function<WatsonIncident, Object>() {
 
-		String userName = (String)attributes.get("userName");
+				@Override
+				public Object apply(WatsonIncident watsonIncident) {
+					return watsonIncident.getWatsonIncidentId();
+				}
 
-		if (userName != null) {
-			setUserName(userName);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"watsonIncidentId",
+			new BiConsumer<WatsonIncident, Object>() {
 
-		Date createDate = (Date)attributes.get("createDate");
+				@Override
+				public void accept(WatsonIncident watsonIncident, Object watsonIncidentId) {
+					watsonIncident.setWatsonIncidentId((Long)watsonIncidentId);
+				}
 
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
+			});
+		attributeGetterFunctions.put(
+			"groupId",
+			new Function<WatsonIncident, Object>() {
 
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
+				@Override
+				public Object apply(WatsonIncident watsonIncident) {
+					return watsonIncident.getGroupId();
+				}
 
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"groupId",
+			new BiConsumer<WatsonIncident, Object>() {
 
-		Long externalCaseWatsonListTypeId = (Long)attributes.get(
-				"externalCaseWatsonListTypeId");
+				@Override
+				public void accept(WatsonIncident watsonIncident, Object groupId) {
+					watsonIncident.setGroupId((Long)groupId);
+				}
 
-		if (externalCaseWatsonListTypeId != null) {
-			setExternalCaseWatsonListTypeId(externalCaseWatsonListTypeId);
-		}
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<WatsonIncident, Object>() {
 
-		Long sourceWatsonListTypeId = (Long)attributes.get(
-				"sourceWatsonListTypeId");
+				@Override
+				public Object apply(WatsonIncident watsonIncident) {
+					return watsonIncident.getCompanyId();
+				}
 
-		if (sourceWatsonListTypeId != null) {
-			setSourceWatsonListTypeId(sourceWatsonListTypeId);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"companyId",
+			new BiConsumer<WatsonIncident, Object>() {
 
-		Long typeWatsonListTypeId = (Long)attributes.get("typeWatsonListTypeId");
+				@Override
+				public void accept(WatsonIncident watsonIncident, Object companyId) {
+					watsonIncident.setCompanyId((Long)companyId);
+				}
 
-		if (typeWatsonListTypeId != null) {
-			setTypeWatsonListTypeId(typeWatsonListTypeId);
-		}
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<WatsonIncident, Object>() {
 
-		Long subtypeWatsonListTypeId = (Long)attributes.get(
-				"subtypeWatsonListTypeId");
+				@Override
+				public Object apply(WatsonIncident watsonIncident) {
+					return watsonIncident.getUserId();
+				}
 
-		if (subtypeWatsonListTypeId != null) {
-			setSubtypeWatsonListTypeId(subtypeWatsonListTypeId);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"userId",
+			new BiConsumer<WatsonIncident, Object>() {
 
-		Long audienceAdultCount = (Long)attributes.get("audienceAdultCount");
+				@Override
+				public void accept(WatsonIncident watsonIncident, Object userId) {
+					watsonIncident.setUserId((Long)userId);
+				}
 
-		if (audienceAdultCount != null) {
-			setAudienceAdultCount(audienceAdultCount);
-		}
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<WatsonIncident, Object>() {
 
-		Long audienceChildCount = (Long)attributes.get("audienceChildCount");
+				@Override
+				public Object apply(WatsonIncident watsonIncident) {
+					return watsonIncident.getUserName();
+				}
 
-		if (audienceChildCount != null) {
-			setAudienceChildCount(audienceChildCount);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"userName",
+			new BiConsumer<WatsonIncident, Object>() {
 
-		Long victimAdultCount = (Long)attributes.get("victimAdultCount");
+				@Override
+				public void accept(WatsonIncident watsonIncident, Object userName) {
+					watsonIncident.setUserName((String)userName);
+				}
 
-		if (victimAdultCount != null) {
-			setVictimAdultCount(victimAdultCount);
-		}
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<WatsonIncident, Object>() {
 
-		Long victimChildCount = (Long)attributes.get("victimChildCount");
+				@Override
+				public Object apply(WatsonIncident watsonIncident) {
+					return watsonIncident.getCreateDate();
+				}
 
-		if (victimChildCount != null) {
-			setVictimChildCount(victimChildCount);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"createDate",
+			new BiConsumer<WatsonIncident, Object>() {
 
-		String name = (String)attributes.get("name");
+				@Override
+				public void accept(WatsonIncident watsonIncident, Object createDate) {
+					watsonIncident.setCreateDate((Date)createDate);
+				}
 
-		if (name != null) {
-			setName(name);
-		}
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<WatsonIncident, Object>() {
 
-		String description = (String)attributes.get("description");
+				@Override
+				public Object apply(WatsonIncident watsonIncident) {
+					return watsonIncident.getModifiedDate();
+				}
 
-		if (description != null) {
-			setDescription(description);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"modifiedDate",
+			new BiConsumer<WatsonIncident, Object>() {
 
-		String externalCaseId = (String)attributes.get("externalCaseId");
+				@Override
+				public void accept(WatsonIncident watsonIncident, Object modifiedDate) {
+					watsonIncident.setModifiedDate((Date)modifiedDate);
+				}
 
-		if (externalCaseId != null) {
-			setExternalCaseId(externalCaseId);
-		}
+			});
+		attributeGetterFunctions.put(
+			"externalCaseWatsonListTypeId",
+			new Function<WatsonIncident, Object>() {
 
-		Date reportDate = (Date)attributes.get("reportDate");
+				@Override
+				public Object apply(WatsonIncident watsonIncident) {
+					return watsonIncident.getExternalCaseWatsonListTypeId();
+				}
 
-		if (reportDate != null) {
-			setReportDate(reportDate);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"externalCaseWatsonListTypeId",
+			new BiConsumer<WatsonIncident, Object>() {
 
-		Date startDate = (Date)attributes.get("startDate");
+				@Override
+				public void accept(WatsonIncident watsonIncident, Object externalCaseWatsonListTypeId) {
+					watsonIncident.setExternalCaseWatsonListTypeId((Long)externalCaseWatsonListTypeId);
+				}
 
-		if (startDate != null) {
-			setStartDate(startDate);
-		}
+			});
+		attributeGetterFunctions.put(
+			"sourceWatsonListTypeId",
+			new Function<WatsonIncident, Object>() {
 
-		Date endDate = (Date)attributes.get("endDate");
+				@Override
+				public Object apply(WatsonIncident watsonIncident) {
+					return watsonIncident.getSourceWatsonListTypeId();
+				}
 
-		if (endDate != null) {
-			setEndDate(endDate);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"sourceWatsonListTypeId",
+			new BiConsumer<WatsonIncident, Object>() {
 
-		Double expenses = (Double)attributes.get("expenses");
+				@Override
+				public void accept(WatsonIncident watsonIncident, Object sourceWatsonListTypeId) {
+					watsonIncident.setSourceWatsonListTypeId((Long)sourceWatsonListTypeId);
+				}
 
-		if (expenses != null) {
-			setExpenses(expenses);
-		}
+			});
+		attributeGetterFunctions.put(
+			"typeWatsonListTypeId",
+			new Function<WatsonIncident, Object>() {
 
-		Integer incidentStatus = (Integer)attributes.get("incidentStatus");
+				@Override
+				public Object apply(WatsonIncident watsonIncident) {
+					return watsonIncident.getTypeWatsonListTypeId();
+				}
 
-		if (incidentStatus != null) {
-			setIncidentStatus(incidentStatus);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"typeWatsonListTypeId",
+			new BiConsumer<WatsonIncident, Object>() {
 
-		Integer status = (Integer)attributes.get("status");
+				@Override
+				public void accept(WatsonIncident watsonIncident, Object typeWatsonListTypeId) {
+					watsonIncident.setTypeWatsonListTypeId((Long)typeWatsonListTypeId);
+				}
 
-		if (status != null) {
-			setStatus(status);
-		}
+			});
+		attributeGetterFunctions.put(
+			"subtypeWatsonListTypeId",
+			new Function<WatsonIncident, Object>() {
+
+				@Override
+				public Object apply(WatsonIncident watsonIncident) {
+					return watsonIncident.getSubtypeWatsonListTypeId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"subtypeWatsonListTypeId",
+			new BiConsumer<WatsonIncident, Object>() {
+
+				@Override
+				public void accept(WatsonIncident watsonIncident, Object subtypeWatsonListTypeId) {
+					watsonIncident.setSubtypeWatsonListTypeId((Long)subtypeWatsonListTypeId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"audienceAdultCount",
+			new Function<WatsonIncident, Object>() {
+
+				@Override
+				public Object apply(WatsonIncident watsonIncident) {
+					return watsonIncident.getAudienceAdultCount();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"audienceAdultCount",
+			new BiConsumer<WatsonIncident, Object>() {
+
+				@Override
+				public void accept(WatsonIncident watsonIncident, Object audienceAdultCount) {
+					watsonIncident.setAudienceAdultCount((Long)audienceAdultCount);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"audienceChildCount",
+			new Function<WatsonIncident, Object>() {
+
+				@Override
+				public Object apply(WatsonIncident watsonIncident) {
+					return watsonIncident.getAudienceChildCount();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"audienceChildCount",
+			new BiConsumer<WatsonIncident, Object>() {
+
+				@Override
+				public void accept(WatsonIncident watsonIncident, Object audienceChildCount) {
+					watsonIncident.setAudienceChildCount((Long)audienceChildCount);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"victimAdultCount",
+			new Function<WatsonIncident, Object>() {
+
+				@Override
+				public Object apply(WatsonIncident watsonIncident) {
+					return watsonIncident.getVictimAdultCount();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"victimAdultCount",
+			new BiConsumer<WatsonIncident, Object>() {
+
+				@Override
+				public void accept(WatsonIncident watsonIncident, Object victimAdultCount) {
+					watsonIncident.setVictimAdultCount((Long)victimAdultCount);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"victimChildCount",
+			new Function<WatsonIncident, Object>() {
+
+				@Override
+				public Object apply(WatsonIncident watsonIncident) {
+					return watsonIncident.getVictimChildCount();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"victimChildCount",
+			new BiConsumer<WatsonIncident, Object>() {
+
+				@Override
+				public void accept(WatsonIncident watsonIncident, Object victimChildCount) {
+					watsonIncident.setVictimChildCount((Long)victimChildCount);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<WatsonIncident, Object>() {
+
+				@Override
+				public Object apply(WatsonIncident watsonIncident) {
+					return watsonIncident.getName();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"name",
+			new BiConsumer<WatsonIncident, Object>() {
+
+				@Override
+				public void accept(WatsonIncident watsonIncident, Object name) {
+					watsonIncident.setName((String)name);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"description",
+			new Function<WatsonIncident, Object>() {
+
+				@Override
+				public Object apply(WatsonIncident watsonIncident) {
+					return watsonIncident.getDescription();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"description",
+			new BiConsumer<WatsonIncident, Object>() {
+
+				@Override
+				public void accept(WatsonIncident watsonIncident, Object description) {
+					watsonIncident.setDescription((String)description);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"externalCaseId",
+			new Function<WatsonIncident, Object>() {
+
+				@Override
+				public Object apply(WatsonIncident watsonIncident) {
+					return watsonIncident.getExternalCaseId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"externalCaseId",
+			new BiConsumer<WatsonIncident, Object>() {
+
+				@Override
+				public void accept(WatsonIncident watsonIncident, Object externalCaseId) {
+					watsonIncident.setExternalCaseId((String)externalCaseId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"reportDate",
+			new Function<WatsonIncident, Object>() {
+
+				@Override
+				public Object apply(WatsonIncident watsonIncident) {
+					return watsonIncident.getReportDate();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"reportDate",
+			new BiConsumer<WatsonIncident, Object>() {
+
+				@Override
+				public void accept(WatsonIncident watsonIncident, Object reportDate) {
+					watsonIncident.setReportDate((Date)reportDate);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"startDate",
+			new Function<WatsonIncident, Object>() {
+
+				@Override
+				public Object apply(WatsonIncident watsonIncident) {
+					return watsonIncident.getStartDate();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"startDate",
+			new BiConsumer<WatsonIncident, Object>() {
+
+				@Override
+				public void accept(WatsonIncident watsonIncident, Object startDate) {
+					watsonIncident.setStartDate((Date)startDate);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"endDate",
+			new Function<WatsonIncident, Object>() {
+
+				@Override
+				public Object apply(WatsonIncident watsonIncident) {
+					return watsonIncident.getEndDate();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"endDate",
+			new BiConsumer<WatsonIncident, Object>() {
+
+				@Override
+				public void accept(WatsonIncident watsonIncident, Object endDate) {
+					watsonIncident.setEndDate((Date)endDate);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"expenses",
+			new Function<WatsonIncident, Object>() {
+
+				@Override
+				public Object apply(WatsonIncident watsonIncident) {
+					return watsonIncident.getExpenses();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"expenses",
+			new BiConsumer<WatsonIncident, Object>() {
+
+				@Override
+				public void accept(WatsonIncident watsonIncident, Object expenses) {
+					watsonIncident.setExpenses((Double)expenses);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"incidentStatus",
+			new Function<WatsonIncident, Object>() {
+
+				@Override
+				public Object apply(WatsonIncident watsonIncident) {
+					return watsonIncident.getIncidentStatus();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"incidentStatus",
+			new BiConsumer<WatsonIncident, Object>() {
+
+				@Override
+				public void accept(WatsonIncident watsonIncident, Object incidentStatus) {
+					watsonIncident.setIncidentStatus((Integer)incidentStatus);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"status",
+			new Function<WatsonIncident, Object>() {
+
+				@Override
+				public Object apply(WatsonIncident watsonIncident) {
+					return watsonIncident.getStatus();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"status",
+			new BiConsumer<WatsonIncident, Object>() {
+
+				@Override
+				public void accept(WatsonIncident watsonIncident, Object status) {
+					watsonIncident.setStatus((Integer)status);
+				}
+
+			});
+
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -1027,56 +1384,27 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(49);
+		Map<String, Function<WatsonIncident, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
 
-		sb.append("{watsonIncidentId=");
-		sb.append(getWatsonIncidentId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", externalCaseWatsonListTypeId=");
-		sb.append(getExternalCaseWatsonListTypeId());
-		sb.append(", sourceWatsonListTypeId=");
-		sb.append(getSourceWatsonListTypeId());
-		sb.append(", typeWatsonListTypeId=");
-		sb.append(getTypeWatsonListTypeId());
-		sb.append(", subtypeWatsonListTypeId=");
-		sb.append(getSubtypeWatsonListTypeId());
-		sb.append(", audienceAdultCount=");
-		sb.append(getAudienceAdultCount());
-		sb.append(", audienceChildCount=");
-		sb.append(getAudienceChildCount());
-		sb.append(", victimAdultCount=");
-		sb.append(getVictimAdultCount());
-		sb.append(", victimChildCount=");
-		sb.append(getVictimChildCount());
-		sb.append(", name=");
-		sb.append(getName());
-		sb.append(", description=");
-		sb.append(getDescription());
-		sb.append(", externalCaseId=");
-		sb.append(getExternalCaseId());
-		sb.append(", reportDate=");
-		sb.append(getReportDate());
-		sb.append(", startDate=");
-		sb.append(getStartDate());
-		sb.append(", endDate=");
-		sb.append(getEndDate());
-		sb.append(", expenses=");
-		sb.append(getExpenses());
-		sb.append(", incidentStatus=");
-		sb.append(getIncidentStatus());
-		sb.append(", status=");
-		sb.append(getStatus());
+		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
+				2);
+
+		sb.append("{");
+
+		for (Map.Entry<String, Function<WatsonIncident, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonIncident, Object> attributeGetterFunction = entry.getValue();
+
+			sb.append(attributeName);
+			sb.append("=");
+			sb.append(attributeGetterFunction.apply((WatsonIncident)this));
+			sb.append(", ");
+		}
+
+		if (sb.index() > 1) {
+			sb.setIndex(sb.index() - 1);
+		}
+
 		sb.append("}");
 
 		return sb.toString();
@@ -1084,108 +1412,25 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(76);
+		Map<String, Function<WatsonIncident, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+
+		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
+				4);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.watson.model.WatsonIncident");
+		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		sb.append(
-			"<column><column-name>watsonIncidentId</column-name><column-value><![CDATA[");
-		sb.append(getWatsonIncidentId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>externalCaseWatsonListTypeId</column-name><column-value><![CDATA[");
-		sb.append(getExternalCaseWatsonListTypeId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>sourceWatsonListTypeId</column-name><column-value><![CDATA[");
-		sb.append(getSourceWatsonListTypeId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>typeWatsonListTypeId</column-name><column-value><![CDATA[");
-		sb.append(getTypeWatsonListTypeId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>subtypeWatsonListTypeId</column-name><column-value><![CDATA[");
-		sb.append(getSubtypeWatsonListTypeId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>audienceAdultCount</column-name><column-value><![CDATA[");
-		sb.append(getAudienceAdultCount());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>audienceChildCount</column-name><column-value><![CDATA[");
-		sb.append(getAudienceChildCount());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>victimAdultCount</column-name><column-value><![CDATA[");
-		sb.append(getVictimAdultCount());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>victimChildCount</column-name><column-value><![CDATA[");
-		sb.append(getVictimChildCount());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(getName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(getDescription());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>externalCaseId</column-name><column-value><![CDATA[");
-		sb.append(getExternalCaseId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>reportDate</column-name><column-value><![CDATA[");
-		sb.append(getReportDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>startDate</column-name><column-value><![CDATA[");
-		sb.append(getStartDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>endDate</column-name><column-value><![CDATA[");
-		sb.append(getEndDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>expenses</column-name><column-value><![CDATA[");
-		sb.append(getExpenses());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>incidentStatus</column-name><column-value><![CDATA[");
-		sb.append(getIncidentStatus());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>status</column-name><column-value><![CDATA[");
-		sb.append(getStatus());
-		sb.append("]]></column-value></column>");
+		for (Map.Entry<String, Function<WatsonIncident, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonIncident, Object> attributeGetterFunction = entry.getValue();
+
+			sb.append("<column><column-name>");
+			sb.append(attributeName);
+			sb.append("</column-name><column-value><![CDATA[");
+			sb.append(attributeGetterFunction.apply((WatsonIncident)this));
+			sb.append("]]></column-value></column>");
+		}
 
 		sb.append("</model>");
 

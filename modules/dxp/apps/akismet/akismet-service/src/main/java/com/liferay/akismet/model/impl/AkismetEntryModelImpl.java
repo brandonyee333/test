@@ -37,9 +37,13 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the AkismetEntry service. Represents a row in the &quot;OSBCommunity_AkismetEntry&quot; database table, with each column mapped to a property of this class.
@@ -150,16 +154,15 @@ public class AkismetEntryModelImpl extends BaseModelImpl<AkismetEntry>
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("akismetEntryId", getAkismetEntryId());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("classNameId", getClassNameId());
-		attributes.put("classPK", getClassPK());
-		attributes.put("type", getType());
-		attributes.put("permalink", getPermalink());
-		attributes.put("referrer", getReferrer());
-		attributes.put("userAgent", getUserAgent());
-		attributes.put("userIP", getUserIP());
-		attributes.put("userURL", getUserURL());
+		Map<String, Function<AkismetEntry, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+
+		for (Map.Entry<String, Function<AkismetEntry, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<AkismetEntry, Object> attributeGetterFunction = entry.getValue();
+
+			attributes.put(attributeName,
+				attributeGetterFunction.apply((AkismetEntry)this));
+		}
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -169,65 +172,241 @@ public class AkismetEntryModelImpl extends BaseModelImpl<AkismetEntry>
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long akismetEntryId = (Long)attributes.get("akismetEntryId");
+		Map<String, BiConsumer<AkismetEntry, Object>> attributeSetterBiConsumers =
+			getAttributeSetterBiConsumers();
 
-		if (akismetEntryId != null) {
-			setAkismetEntryId(akismetEntryId);
+		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
+			String attributeName = entry.getKey();
+
+			BiConsumer<AkismetEntry, Object> attributeSetterBiConsumer = attributeSetterBiConsumers.get(attributeName);
+
+			if (attributeSetterBiConsumer != null) {
+				attributeSetterBiConsumer.accept((AkismetEntry)this,
+					entry.getValue());
+			}
 		}
+	}
 
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
+	public Map<String, Function<AkismetEntry, Object>> getAttributeGetterFunctions() {
+		return _attributeGetterFunctions;
+	}
 
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
+	public Map<String, BiConsumer<AkismetEntry, Object>> getAttributeSetterBiConsumers() {
+		return _attributeSetterBiConsumers;
+	}
 
-		Long classNameId = (Long)attributes.get("classNameId");
+	private static final Map<String, Function<AkismetEntry, Object>> _attributeGetterFunctions;
+	private static final Map<String, BiConsumer<AkismetEntry, Object>> _attributeSetterBiConsumers;
 
-		if (classNameId != null) {
-			setClassNameId(classNameId);
-		}
+	static {
+		Map<String, Function<AkismetEntry, Object>> attributeGetterFunctions = new LinkedHashMap<String, Function<AkismetEntry, Object>>();
+		Map<String, BiConsumer<AkismetEntry, ?>> attributeSetterBiConsumers = new LinkedHashMap<String, BiConsumer<AkismetEntry, ?>>();
 
-		Long classPK = (Long)attributes.get("classPK");
 
-		if (classPK != null) {
-			setClassPK(classPK);
-		}
+		attributeGetterFunctions.put(
+			"akismetEntryId",
+			new Function<AkismetEntry, Object>() {
 
-		String type = (String)attributes.get("type");
+				@Override
+				public Object apply(AkismetEntry akismetEntry) {
+					return akismetEntry.getAkismetEntryId();
+				}
 
-		if (type != null) {
-			setType(type);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"akismetEntryId",
+			new BiConsumer<AkismetEntry, Object>() {
 
-		String permalink = (String)attributes.get("permalink");
+				@Override
+				public void accept(AkismetEntry akismetEntry, Object akismetEntryId) {
+					akismetEntry.setAkismetEntryId((Long)akismetEntryId);
+				}
 
-		if (permalink != null) {
-			setPermalink(permalink);
-		}
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<AkismetEntry, Object>() {
 
-		String referrer = (String)attributes.get("referrer");
+				@Override
+				public Object apply(AkismetEntry akismetEntry) {
+					return akismetEntry.getModifiedDate();
+				}
 
-		if (referrer != null) {
-			setReferrer(referrer);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"modifiedDate",
+			new BiConsumer<AkismetEntry, Object>() {
 
-		String userAgent = (String)attributes.get("userAgent");
+				@Override
+				public void accept(AkismetEntry akismetEntry, Object modifiedDate) {
+					akismetEntry.setModifiedDate((Date)modifiedDate);
+				}
 
-		if (userAgent != null) {
-			setUserAgent(userAgent);
-		}
+			});
+		attributeGetterFunctions.put(
+			"classNameId",
+			new Function<AkismetEntry, Object>() {
 
-		String userIP = (String)attributes.get("userIP");
+				@Override
+				public Object apply(AkismetEntry akismetEntry) {
+					return akismetEntry.getClassNameId();
+				}
 
-		if (userIP != null) {
-			setUserIP(userIP);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"classNameId",
+			new BiConsumer<AkismetEntry, Object>() {
 
-		String userURL = (String)attributes.get("userURL");
+				@Override
+				public void accept(AkismetEntry akismetEntry, Object classNameId) {
+					akismetEntry.setClassNameId((Long)classNameId);
+				}
 
-		if (userURL != null) {
-			setUserURL(userURL);
-		}
+			});
+		attributeGetterFunctions.put(
+			"classPK",
+			new Function<AkismetEntry, Object>() {
+
+				@Override
+				public Object apply(AkismetEntry akismetEntry) {
+					return akismetEntry.getClassPK();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"classPK",
+			new BiConsumer<AkismetEntry, Object>() {
+
+				@Override
+				public void accept(AkismetEntry akismetEntry, Object classPK) {
+					akismetEntry.setClassPK((Long)classPK);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"type",
+			new Function<AkismetEntry, Object>() {
+
+				@Override
+				public Object apply(AkismetEntry akismetEntry) {
+					return akismetEntry.getType();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"type",
+			new BiConsumer<AkismetEntry, Object>() {
+
+				@Override
+				public void accept(AkismetEntry akismetEntry, Object type) {
+					akismetEntry.setType((String)type);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"permalink",
+			new Function<AkismetEntry, Object>() {
+
+				@Override
+				public Object apply(AkismetEntry akismetEntry) {
+					return akismetEntry.getPermalink();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"permalink",
+			new BiConsumer<AkismetEntry, Object>() {
+
+				@Override
+				public void accept(AkismetEntry akismetEntry, Object permalink) {
+					akismetEntry.setPermalink((String)permalink);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"referrer",
+			new Function<AkismetEntry, Object>() {
+
+				@Override
+				public Object apply(AkismetEntry akismetEntry) {
+					return akismetEntry.getReferrer();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"referrer",
+			new BiConsumer<AkismetEntry, Object>() {
+
+				@Override
+				public void accept(AkismetEntry akismetEntry, Object referrer) {
+					akismetEntry.setReferrer((String)referrer);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userAgent",
+			new Function<AkismetEntry, Object>() {
+
+				@Override
+				public Object apply(AkismetEntry akismetEntry) {
+					return akismetEntry.getUserAgent();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"userAgent",
+			new BiConsumer<AkismetEntry, Object>() {
+
+				@Override
+				public void accept(AkismetEntry akismetEntry, Object userAgent) {
+					akismetEntry.setUserAgent((String)userAgent);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userIP",
+			new Function<AkismetEntry, Object>() {
+
+				@Override
+				public Object apply(AkismetEntry akismetEntry) {
+					return akismetEntry.getUserIP();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"userIP",
+			new BiConsumer<AkismetEntry, Object>() {
+
+				@Override
+				public void accept(AkismetEntry akismetEntry, Object userIP) {
+					akismetEntry.setUserIP((String)userIP);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userURL",
+			new Function<AkismetEntry, Object>() {
+
+				@Override
+				public Object apply(AkismetEntry akismetEntry) {
+					return akismetEntry.getUserURL();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"userURL",
+			new BiConsumer<AkismetEntry, Object>() {
+
+				@Override
+				public void accept(AkismetEntry akismetEntry, Object userURL) {
+					akismetEntry.setUserURL((String)userURL);
+				}
+
+			});
+
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -602,28 +781,27 @@ public class AkismetEntryModelImpl extends BaseModelImpl<AkismetEntry>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(21);
+		Map<String, Function<AkismetEntry, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
 
-		sb.append("{akismetEntryId=");
-		sb.append(getAkismetEntryId());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", classNameId=");
-		sb.append(getClassNameId());
-		sb.append(", classPK=");
-		sb.append(getClassPK());
-		sb.append(", type=");
-		sb.append(getType());
-		sb.append(", permalink=");
-		sb.append(getPermalink());
-		sb.append(", referrer=");
-		sb.append(getReferrer());
-		sb.append(", userAgent=");
-		sb.append(getUserAgent());
-		sb.append(", userIP=");
-		sb.append(getUserIP());
-		sb.append(", userURL=");
-		sb.append(getUserURL());
+		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
+				2);
+
+		sb.append("{");
+
+		for (Map.Entry<String, Function<AkismetEntry, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<AkismetEntry, Object> attributeGetterFunction = entry.getValue();
+
+			sb.append(attributeName);
+			sb.append("=");
+			sb.append(attributeGetterFunction.apply((AkismetEntry)this));
+			sb.append(", ");
+		}
+
+		if (sb.index() > 1) {
+			sb.setIndex(sb.index() - 1);
+		}
+
 		sb.append("}");
 
 		return sb.toString();
@@ -631,52 +809,25 @@ public class AkismetEntryModelImpl extends BaseModelImpl<AkismetEntry>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(34);
+		Map<String, Function<AkismetEntry, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+
+		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
+				4);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.akismet.model.AkismetEntry");
+		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		sb.append(
-			"<column><column-name>akismetEntryId</column-name><column-value><![CDATA[");
-		sb.append(getAkismetEntryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classNameId</column-name><column-value><![CDATA[");
-		sb.append(getClassNameId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classPK</column-name><column-value><![CDATA[");
-		sb.append(getClassPK());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>type</column-name><column-value><![CDATA[");
-		sb.append(getType());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>permalink</column-name><column-value><![CDATA[");
-		sb.append(getPermalink());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>referrer</column-name><column-value><![CDATA[");
-		sb.append(getReferrer());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userAgent</column-name><column-value><![CDATA[");
-		sb.append(getUserAgent());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userIP</column-name><column-value><![CDATA[");
-		sb.append(getUserIP());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userURL</column-name><column-value><![CDATA[");
-		sb.append(getUserURL());
-		sb.append("]]></column-value></column>");
+		for (Map.Entry<String, Function<AkismetEntry, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<AkismetEntry, Object> attributeGetterFunction = entry.getValue();
+
+			sb.append("<column><column-name>");
+			sb.append(attributeName);
+			sb.append("</column-name><column-value><![CDATA[");
+			sb.append(attributeGetterFunction.apply((AkismetEntry)this));
+			sb.append("]]></column-value></column>");
+		}
 
 		sb.append("</model>");
 

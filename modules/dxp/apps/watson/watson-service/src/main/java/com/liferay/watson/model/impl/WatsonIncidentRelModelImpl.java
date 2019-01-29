@@ -38,9 +38,13 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the WatsonIncidentRel service. Represents a row in the &quot;WatsonIncidentRel&quot; database table, with each column mapped to a property of this class.
@@ -147,17 +151,16 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("watsonIncidentRelId", getWatsonIncidentRelId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("watsonIncidentId1", getWatsonIncidentId1());
-		attributes.put("watsonIncidentId2", getWatsonIncidentId2());
-		attributes.put("type", getType());
-		attributes.put("status", getStatus());
+		Map<String, Function<WatsonIncidentRel, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
+
+		for (Map.Entry<String, Function<WatsonIncidentRel, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonIncidentRel, Object> attributeGetterFunction = entry.getValue();
+
+			attributes.put(attributeName,
+				attributeGetterFunction.apply((WatsonIncidentRel)this));
+		}
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -167,71 +170,263 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long watsonIncidentRelId = (Long)attributes.get("watsonIncidentRelId");
+		Map<String, BiConsumer<WatsonIncidentRel, Object>> attributeSetterBiConsumers =
+			getAttributeSetterBiConsumers();
 
-		if (watsonIncidentRelId != null) {
-			setWatsonIncidentRelId(watsonIncidentRelId);
+		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
+			String attributeName = entry.getKey();
+
+			BiConsumer<WatsonIncidentRel, Object> attributeSetterBiConsumer = attributeSetterBiConsumers.get(attributeName);
+
+			if (attributeSetterBiConsumer != null) {
+				attributeSetterBiConsumer.accept((WatsonIncidentRel)this,
+					entry.getValue());
+			}
 		}
+	}
 
-		Long groupId = (Long)attributes.get("groupId");
+	public Map<String, Function<WatsonIncidentRel, Object>> getAttributeGetterFunctions() {
+		return _attributeGetterFunctions;
+	}
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+	public Map<String, BiConsumer<WatsonIncidentRel, Object>> getAttributeSetterBiConsumers() {
+		return _attributeSetterBiConsumers;
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	private static final Map<String, Function<WatsonIncidentRel, Object>> _attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonIncidentRel, Object>> _attributeSetterBiConsumers;
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+	static {
+		Map<String, Function<WatsonIncidentRel, Object>> attributeGetterFunctions =
+			new LinkedHashMap<String, Function<WatsonIncidentRel, Object>>();
+		Map<String, BiConsumer<WatsonIncidentRel, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<WatsonIncidentRel, ?>>();
 
-		Long userId = (Long)attributes.get("userId");
 
-		if (userId != null) {
-			setUserId(userId);
-		}
+		attributeGetterFunctions.put(
+			"watsonIncidentRelId",
+			new Function<WatsonIncidentRel, Object>() {
 
-		String userName = (String)attributes.get("userName");
+				@Override
+				public Object apply(WatsonIncidentRel watsonIncidentRel) {
+					return watsonIncidentRel.getWatsonIncidentRelId();
+				}
 
-		if (userName != null) {
-			setUserName(userName);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"watsonIncidentRelId",
+			new BiConsumer<WatsonIncidentRel, Object>() {
 
-		Date createDate = (Date)attributes.get("createDate");
+				@Override
+				public void accept(WatsonIncidentRel watsonIncidentRel, Object watsonIncidentRelId) {
+					watsonIncidentRel.setWatsonIncidentRelId((Long)watsonIncidentRelId);
+				}
 
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
+			});
+		attributeGetterFunctions.put(
+			"groupId",
+			new Function<WatsonIncidentRel, Object>() {
 
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
+				@Override
+				public Object apply(WatsonIncidentRel watsonIncidentRel) {
+					return watsonIncidentRel.getGroupId();
+				}
 
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"groupId",
+			new BiConsumer<WatsonIncidentRel, Object>() {
 
-		Long watsonIncidentId1 = (Long)attributes.get("watsonIncidentId1");
+				@Override
+				public void accept(WatsonIncidentRel watsonIncidentRel, Object groupId) {
+					watsonIncidentRel.setGroupId((Long)groupId);
+				}
 
-		if (watsonIncidentId1 != null) {
-			setWatsonIncidentId1(watsonIncidentId1);
-		}
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<WatsonIncidentRel, Object>() {
 
-		Long watsonIncidentId2 = (Long)attributes.get("watsonIncidentId2");
+				@Override
+				public Object apply(WatsonIncidentRel watsonIncidentRel) {
+					return watsonIncidentRel.getCompanyId();
+				}
 
-		if (watsonIncidentId2 != null) {
-			setWatsonIncidentId2(watsonIncidentId2);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"companyId",
+			new BiConsumer<WatsonIncidentRel, Object>() {
 
-		String type = (String)attributes.get("type");
+				@Override
+				public void accept(WatsonIncidentRel watsonIncidentRel, Object companyId) {
+					watsonIncidentRel.setCompanyId((Long)companyId);
+				}
 
-		if (type != null) {
-			setType(type);
-		}
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<WatsonIncidentRel, Object>() {
 
-		Integer status = (Integer)attributes.get("status");
+				@Override
+				public Object apply(WatsonIncidentRel watsonIncidentRel) {
+					return watsonIncidentRel.getUserId();
+				}
 
-		if (status != null) {
-			setStatus(status);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"userId",
+			new BiConsumer<WatsonIncidentRel, Object>() {
+
+				@Override
+				public void accept(WatsonIncidentRel watsonIncidentRel, Object userId) {
+					watsonIncidentRel.setUserId((Long)userId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<WatsonIncidentRel, Object>() {
+
+				@Override
+				public Object apply(WatsonIncidentRel watsonIncidentRel) {
+					return watsonIncidentRel.getUserName();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"userName",
+			new BiConsumer<WatsonIncidentRel, Object>() {
+
+				@Override
+				public void accept(WatsonIncidentRel watsonIncidentRel, Object userName) {
+					watsonIncidentRel.setUserName((String)userName);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<WatsonIncidentRel, Object>() {
+
+				@Override
+				public Object apply(WatsonIncidentRel watsonIncidentRel) {
+					return watsonIncidentRel.getCreateDate();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"createDate",
+			new BiConsumer<WatsonIncidentRel, Object>() {
+
+				@Override
+				public void accept(WatsonIncidentRel watsonIncidentRel, Object createDate) {
+					watsonIncidentRel.setCreateDate((Date)createDate);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<WatsonIncidentRel, Object>() {
+
+				@Override
+				public Object apply(WatsonIncidentRel watsonIncidentRel) {
+					return watsonIncidentRel.getModifiedDate();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"modifiedDate",
+			new BiConsumer<WatsonIncidentRel, Object>() {
+
+				@Override
+				public void accept(WatsonIncidentRel watsonIncidentRel, Object modifiedDate) {
+					watsonIncidentRel.setModifiedDate((Date)modifiedDate);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"watsonIncidentId1",
+			new Function<WatsonIncidentRel, Object>() {
+
+				@Override
+				public Object apply(WatsonIncidentRel watsonIncidentRel) {
+					return watsonIncidentRel.getWatsonIncidentId1();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"watsonIncidentId1",
+			new BiConsumer<WatsonIncidentRel, Object>() {
+
+				@Override
+				public void accept(WatsonIncidentRel watsonIncidentRel, Object watsonIncidentId1) {
+					watsonIncidentRel.setWatsonIncidentId1((Long)watsonIncidentId1);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"watsonIncidentId2",
+			new Function<WatsonIncidentRel, Object>() {
+
+				@Override
+				public Object apply(WatsonIncidentRel watsonIncidentRel) {
+					return watsonIncidentRel.getWatsonIncidentId2();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"watsonIncidentId2",
+			new BiConsumer<WatsonIncidentRel, Object>() {
+
+				@Override
+				public void accept(WatsonIncidentRel watsonIncidentRel, Object watsonIncidentId2) {
+					watsonIncidentRel.setWatsonIncidentId2((Long)watsonIncidentId2);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"type",
+			new Function<WatsonIncidentRel, Object>() {
+
+				@Override
+				public Object apply(WatsonIncidentRel watsonIncidentRel) {
+					return watsonIncidentRel.getType();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"type",
+			new BiConsumer<WatsonIncidentRel, Object>() {
+
+				@Override
+				public void accept(WatsonIncidentRel watsonIncidentRel, Object type) {
+					watsonIncidentRel.setType((String)type);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"status",
+			new Function<WatsonIncidentRel, Object>() {
+
+				@Override
+				public Object apply(WatsonIncidentRel watsonIncidentRel) {
+					return watsonIncidentRel.getStatus();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"status",
+			new BiConsumer<WatsonIncidentRel, Object>() {
+
+				@Override
+				public void accept(WatsonIncidentRel watsonIncidentRel, Object status) {
+					watsonIncidentRel.setStatus((Integer)status);
+				}
+
+			});
+
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -536,30 +731,28 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(23);
+		Map<String, Function<WatsonIncidentRel, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		sb.append("{watsonIncidentRelId=");
-		sb.append(getWatsonIncidentRelId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", watsonIncidentId1=");
-		sb.append(getWatsonIncidentId1());
-		sb.append(", watsonIncidentId2=");
-		sb.append(getWatsonIncidentId2());
-		sb.append(", type=");
-		sb.append(getType());
-		sb.append(", status=");
-		sb.append(getStatus());
+		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
+				2);
+
+		sb.append("{");
+
+		for (Map.Entry<String, Function<WatsonIncidentRel, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonIncidentRel, Object> attributeGetterFunction = entry.getValue();
+
+			sb.append(attributeName);
+			sb.append("=");
+			sb.append(attributeGetterFunction.apply((WatsonIncidentRel)this));
+			sb.append(", ");
+		}
+
+		if (sb.index() > 1) {
+			sb.setIndex(sb.index() - 1);
+		}
+
 		sb.append("}");
 
 		return sb.toString();
@@ -567,56 +760,26 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(37);
+		Map<String, Function<WatsonIncidentRel, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
+
+		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
+				4);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.watson.model.WatsonIncidentRel");
+		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		sb.append(
-			"<column><column-name>watsonIncidentRelId</column-name><column-value><![CDATA[");
-		sb.append(getWatsonIncidentRelId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>watsonIncidentId1</column-name><column-value><![CDATA[");
-		sb.append(getWatsonIncidentId1());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>watsonIncidentId2</column-name><column-value><![CDATA[");
-		sb.append(getWatsonIncidentId2());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>type</column-name><column-value><![CDATA[");
-		sb.append(getType());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>status</column-name><column-value><![CDATA[");
-		sb.append(getStatus());
-		sb.append("]]></column-value></column>");
+		for (Map.Entry<String, Function<WatsonIncidentRel, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonIncidentRel, Object> attributeGetterFunction = entry.getValue();
+
+			sb.append("<column><column-name>");
+			sb.append(attributeName);
+			sb.append("</column-name><column-value><![CDATA[");
+			sb.append(attributeGetterFunction.apply((WatsonIncidentRel)this));
+			sb.append("]]></column-value></column>");
+		}
 
 		sb.append("</model>");
 

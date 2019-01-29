@@ -38,9 +38,13 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the WatsonRelationshipAudit service. Represents a row in the &quot;WatsonRelationshipAudit&quot; database table, with each column mapped to a property of this class.
@@ -157,23 +161,16 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("watsonRelationshipAuditId",
-			getWatsonRelationshipAuditId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("watsonIncidentId", getWatsonIncidentId());
-		attributes.put("watsonRelationshipId", getWatsonRelationshipId());
-		attributes.put("typeWatsonListTypeId", getTypeWatsonListTypeId());
-		attributes.put("classNameId1", getClassNameId1());
-		attributes.put("classPK1", getClassPK1());
-		attributes.put("classNameId2", getClassNameId2());
-		attributes.put("classPK2", getClassPK2());
-		attributes.put("description", getDescription());
-		attributes.put("status", getStatus());
+		Map<String, Function<WatsonRelationshipAudit, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
+
+		for (Map.Entry<String, Function<WatsonRelationshipAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonRelationshipAudit, Object> attributeGetterFunction = entry.getValue();
+
+			attributes.put(attributeName,
+				attributeGetterFunction.apply((WatsonRelationshipAudit)this));
+		}
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -183,102 +180,364 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long watsonRelationshipAuditId = (Long)attributes.get(
-				"watsonRelationshipAuditId");
+		Map<String, BiConsumer<WatsonRelationshipAudit, Object>> attributeSetterBiConsumers =
+			getAttributeSetterBiConsumers();
 
-		if (watsonRelationshipAuditId != null) {
-			setWatsonRelationshipAuditId(watsonRelationshipAuditId);
+		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
+			String attributeName = entry.getKey();
+
+			BiConsumer<WatsonRelationshipAudit, Object> attributeSetterBiConsumer =
+				attributeSetterBiConsumers.get(attributeName);
+
+			if (attributeSetterBiConsumer != null) {
+				attributeSetterBiConsumer.accept((WatsonRelationshipAudit)this,
+					entry.getValue());
+			}
 		}
+	}
 
-		Long groupId = (Long)attributes.get("groupId");
+	public Map<String, Function<WatsonRelationshipAudit, Object>> getAttributeGetterFunctions() {
+		return _attributeGetterFunctions;
+	}
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+	public Map<String, BiConsumer<WatsonRelationshipAudit, Object>> getAttributeSetterBiConsumers() {
+		return _attributeSetterBiConsumers;
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	private static final Map<String, Function<WatsonRelationshipAudit, Object>> _attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonRelationshipAudit, Object>> _attributeSetterBiConsumers;
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+	static {
+		Map<String, Function<WatsonRelationshipAudit, Object>> attributeGetterFunctions =
+			new LinkedHashMap<String, Function<WatsonRelationshipAudit, Object>>();
+		Map<String, BiConsumer<WatsonRelationshipAudit, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<WatsonRelationshipAudit, ?>>();
 
-		Long userId = (Long)attributes.get("userId");
 
-		if (userId != null) {
-			setUserId(userId);
-		}
+		attributeGetterFunctions.put(
+			"watsonRelationshipAuditId",
+			new Function<WatsonRelationshipAudit, Object>() {
 
-		String userName = (String)attributes.get("userName");
+				@Override
+				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
+					return watsonRelationshipAudit.getWatsonRelationshipAuditId();
+				}
 
-		if (userName != null) {
-			setUserName(userName);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"watsonRelationshipAuditId",
+			new BiConsumer<WatsonRelationshipAudit, Object>() {
 
-		Date createDate = (Date)attributes.get("createDate");
+				@Override
+				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object watsonRelationshipAuditId) {
+					watsonRelationshipAudit.setWatsonRelationshipAuditId((Long)watsonRelationshipAuditId);
+				}
 
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
+			});
+		attributeGetterFunctions.put(
+			"groupId",
+			new Function<WatsonRelationshipAudit, Object>() {
 
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
+				@Override
+				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
+					return watsonRelationshipAudit.getGroupId();
+				}
 
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"groupId",
+			new BiConsumer<WatsonRelationshipAudit, Object>() {
 
-		Long watsonIncidentId = (Long)attributes.get("watsonIncidentId");
+				@Override
+				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object groupId) {
+					watsonRelationshipAudit.setGroupId((Long)groupId);
+				}
 
-		if (watsonIncidentId != null) {
-			setWatsonIncidentId(watsonIncidentId);
-		}
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<WatsonRelationshipAudit, Object>() {
 
-		Long watsonRelationshipId = (Long)attributes.get("watsonRelationshipId");
+				@Override
+				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
+					return watsonRelationshipAudit.getCompanyId();
+				}
 
-		if (watsonRelationshipId != null) {
-			setWatsonRelationshipId(watsonRelationshipId);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"companyId",
+			new BiConsumer<WatsonRelationshipAudit, Object>() {
 
-		Long typeWatsonListTypeId = (Long)attributes.get("typeWatsonListTypeId");
+				@Override
+				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object companyId) {
+					watsonRelationshipAudit.setCompanyId((Long)companyId);
+				}
 
-		if (typeWatsonListTypeId != null) {
-			setTypeWatsonListTypeId(typeWatsonListTypeId);
-		}
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<WatsonRelationshipAudit, Object>() {
 
-		Long classNameId1 = (Long)attributes.get("classNameId1");
+				@Override
+				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
+					return watsonRelationshipAudit.getUserId();
+				}
 
-		if (classNameId1 != null) {
-			setClassNameId1(classNameId1);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"userId",
+			new BiConsumer<WatsonRelationshipAudit, Object>() {
 
-		Long classPK1 = (Long)attributes.get("classPK1");
+				@Override
+				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object userId) {
+					watsonRelationshipAudit.setUserId((Long)userId);
+				}
 
-		if (classPK1 != null) {
-			setClassPK1(classPK1);
-		}
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<WatsonRelationshipAudit, Object>() {
 
-		Long classNameId2 = (Long)attributes.get("classNameId2");
+				@Override
+				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
+					return watsonRelationshipAudit.getUserName();
+				}
 
-		if (classNameId2 != null) {
-			setClassNameId2(classNameId2);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"userName",
+			new BiConsumer<WatsonRelationshipAudit, Object>() {
 
-		Long classPK2 = (Long)attributes.get("classPK2");
+				@Override
+				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object userName) {
+					watsonRelationshipAudit.setUserName((String)userName);
+				}
 
-		if (classPK2 != null) {
-			setClassPK2(classPK2);
-		}
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<WatsonRelationshipAudit, Object>() {
 
-		String description = (String)attributes.get("description");
+				@Override
+				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
+					return watsonRelationshipAudit.getCreateDate();
+				}
 
-		if (description != null) {
-			setDescription(description);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"createDate",
+			new BiConsumer<WatsonRelationshipAudit, Object>() {
 
-		Integer status = (Integer)attributes.get("status");
+				@Override
+				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object createDate) {
+					watsonRelationshipAudit.setCreateDate((Date)createDate);
+				}
 
-		if (status != null) {
-			setStatus(status);
-		}
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<WatsonRelationshipAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
+					return watsonRelationshipAudit.getModifiedDate();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"modifiedDate",
+			new BiConsumer<WatsonRelationshipAudit, Object>() {
+
+				@Override
+				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object modifiedDate) {
+					watsonRelationshipAudit.setModifiedDate((Date)modifiedDate);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"watsonIncidentId",
+			new Function<WatsonRelationshipAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
+					return watsonRelationshipAudit.getWatsonIncidentId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"watsonIncidentId",
+			new BiConsumer<WatsonRelationshipAudit, Object>() {
+
+				@Override
+				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object watsonIncidentId) {
+					watsonRelationshipAudit.setWatsonIncidentId((Long)watsonIncidentId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"watsonRelationshipId",
+			new Function<WatsonRelationshipAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
+					return watsonRelationshipAudit.getWatsonRelationshipId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"watsonRelationshipId",
+			new BiConsumer<WatsonRelationshipAudit, Object>() {
+
+				@Override
+				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object watsonRelationshipId) {
+					watsonRelationshipAudit.setWatsonRelationshipId((Long)watsonRelationshipId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"typeWatsonListTypeId",
+			new Function<WatsonRelationshipAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
+					return watsonRelationshipAudit.getTypeWatsonListTypeId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"typeWatsonListTypeId",
+			new BiConsumer<WatsonRelationshipAudit, Object>() {
+
+				@Override
+				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object typeWatsonListTypeId) {
+					watsonRelationshipAudit.setTypeWatsonListTypeId((Long)typeWatsonListTypeId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classNameId1",
+			new Function<WatsonRelationshipAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
+					return watsonRelationshipAudit.getClassNameId1();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"classNameId1",
+			new BiConsumer<WatsonRelationshipAudit, Object>() {
+
+				@Override
+				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object classNameId1) {
+					watsonRelationshipAudit.setClassNameId1((Long)classNameId1);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classPK1",
+			new Function<WatsonRelationshipAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
+					return watsonRelationshipAudit.getClassPK1();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"classPK1",
+			new BiConsumer<WatsonRelationshipAudit, Object>() {
+
+				@Override
+				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object classPK1) {
+					watsonRelationshipAudit.setClassPK1((Long)classPK1);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classNameId2",
+			new Function<WatsonRelationshipAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
+					return watsonRelationshipAudit.getClassNameId2();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"classNameId2",
+			new BiConsumer<WatsonRelationshipAudit, Object>() {
+
+				@Override
+				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object classNameId2) {
+					watsonRelationshipAudit.setClassNameId2((Long)classNameId2);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classPK2",
+			new Function<WatsonRelationshipAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
+					return watsonRelationshipAudit.getClassPK2();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"classPK2",
+			new BiConsumer<WatsonRelationshipAudit, Object>() {
+
+				@Override
+				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object classPK2) {
+					watsonRelationshipAudit.setClassPK2((Long)classPK2);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"description",
+			new Function<WatsonRelationshipAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
+					return watsonRelationshipAudit.getDescription();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"description",
+			new BiConsumer<WatsonRelationshipAudit, Object>() {
+
+				@Override
+				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object description) {
+					watsonRelationshipAudit.setDescription((String)description);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"status",
+			new Function<WatsonRelationshipAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
+					return watsonRelationshipAudit.getStatus();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"status",
+			new BiConsumer<WatsonRelationshipAudit, Object>() {
+
+				@Override
+				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object status) {
+					watsonRelationshipAudit.setStatus((Integer)status);
+				}
+
+			});
+
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -648,40 +907,29 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(33);
+		Map<String, Function<WatsonRelationshipAudit, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		sb.append("{watsonRelationshipAuditId=");
-		sb.append(getWatsonRelationshipAuditId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", watsonIncidentId=");
-		sb.append(getWatsonIncidentId());
-		sb.append(", watsonRelationshipId=");
-		sb.append(getWatsonRelationshipId());
-		sb.append(", typeWatsonListTypeId=");
-		sb.append(getTypeWatsonListTypeId());
-		sb.append(", classNameId1=");
-		sb.append(getClassNameId1());
-		sb.append(", classPK1=");
-		sb.append(getClassPK1());
-		sb.append(", classNameId2=");
-		sb.append(getClassNameId2());
-		sb.append(", classPK2=");
-		sb.append(getClassPK2());
-		sb.append(", description=");
-		sb.append(getDescription());
-		sb.append(", status=");
-		sb.append(getStatus());
+		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
+				2);
+
+		sb.append("{");
+
+		for (Map.Entry<String, Function<WatsonRelationshipAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonRelationshipAudit, Object> attributeGetterFunction = entry.getValue();
+
+			sb.append(attributeName);
+			sb.append("=");
+			sb.append(attributeGetterFunction.apply(
+					(WatsonRelationshipAudit)this));
+			sb.append(", ");
+		}
+
+		if (sb.index() > 1) {
+			sb.setIndex(sb.index() - 1);
+		}
+
 		sb.append("}");
 
 		return sb.toString();
@@ -689,76 +937,27 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(52);
+		Map<String, Function<WatsonRelationshipAudit, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
+
+		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
+				4);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.watson.model.WatsonRelationshipAudit");
+		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		sb.append(
-			"<column><column-name>watsonRelationshipAuditId</column-name><column-value><![CDATA[");
-		sb.append(getWatsonRelationshipAuditId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>watsonIncidentId</column-name><column-value><![CDATA[");
-		sb.append(getWatsonIncidentId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>watsonRelationshipId</column-name><column-value><![CDATA[");
-		sb.append(getWatsonRelationshipId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>typeWatsonListTypeId</column-name><column-value><![CDATA[");
-		sb.append(getTypeWatsonListTypeId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classNameId1</column-name><column-value><![CDATA[");
-		sb.append(getClassNameId1());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classPK1</column-name><column-value><![CDATA[");
-		sb.append(getClassPK1());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classNameId2</column-name><column-value><![CDATA[");
-		sb.append(getClassNameId2());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>classPK2</column-name><column-value><![CDATA[");
-		sb.append(getClassPK2());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(getDescription());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>status</column-name><column-value><![CDATA[");
-		sb.append(getStatus());
-		sb.append("]]></column-value></column>");
+		for (Map.Entry<String, Function<WatsonRelationshipAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonRelationshipAudit, Object> attributeGetterFunction = entry.getValue();
+
+			sb.append("<column><column-name>");
+			sb.append(attributeName);
+			sb.append("</column-name><column-value><![CDATA[");
+			sb.append(attributeGetterFunction.apply(
+					(WatsonRelationshipAudit)this));
+			sb.append("]]></column-value></column>");
+		}
 
 		sb.append("</model>");
 

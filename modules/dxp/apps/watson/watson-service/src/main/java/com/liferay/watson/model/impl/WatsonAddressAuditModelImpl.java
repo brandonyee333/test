@@ -43,12 +43,16 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the WatsonAddressAudit service. Represents a row in the &quot;WatsonAddressAudit&quot; database table, with each column mapped to a property of this class.
@@ -193,37 +197,16 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("watsonAddressAuditId", getWatsonAddressAuditId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("countryId", getCountryId());
-		attributes.put("districtWatsonListTypeId", getDistrictWatsonListTypeId());
-		attributes.put("originalWatsonAddressId", getOriginalWatsonAddressId());
-		attributes.put("provinceWatsonListTypeId", getProvinceWatsonListTypeId());
-		attributes.put("subDistrictWatsonListTypeId",
-			getSubDistrictWatsonListTypeId());
-		attributes.put("typeWatsonListTypeId", getTypeWatsonListTypeId());
-		attributes.put("watsonAddressId", getWatsonAddressId());
-		attributes.put("watsonIncidentId", getWatsonIncidentId());
-		attributes.put("name", getName());
-		attributes.put("postalCode", getPostalCode());
-		attributes.put("region", getRegion());
-		attributes.put("street", getStreet());
-		attributes.put("number", getNumber());
-		attributes.put("building", getBuilding());
-		attributes.put("floor", getFloor());
-		attributes.put("room", getRoom());
-		attributes.put("description", getDescription());
-		attributes.put("imagePayload", getImagePayload());
-		attributes.put("otherType", getOtherType());
-		attributes.put("lastSeenDate", getLastSeenDate());
-		attributes.put("latitude", getLatitude());
-		attributes.put("longitude", getLongitude());
-		attributes.put("status", getStatus());
+		Map<String, Function<WatsonAddressAudit, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
+
+		for (Map.Entry<String, Function<WatsonAddressAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonAddressAudit, Object> attributeGetterFunction = entry.getValue();
+
+			attributes.put(attributeName,
+				attributeGetterFunction.apply((WatsonAddressAudit)this));
+		}
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -233,189 +216,643 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long watsonAddressAuditId = (Long)attributes.get("watsonAddressAuditId");
+		Map<String, BiConsumer<WatsonAddressAudit, Object>> attributeSetterBiConsumers =
+			getAttributeSetterBiConsumers();
 
-		if (watsonAddressAuditId != null) {
-			setWatsonAddressAuditId(watsonAddressAuditId);
+		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
+			String attributeName = entry.getKey();
+
+			BiConsumer<WatsonAddressAudit, Object> attributeSetterBiConsumer = attributeSetterBiConsumers.get(attributeName);
+
+			if (attributeSetterBiConsumer != null) {
+				attributeSetterBiConsumer.accept((WatsonAddressAudit)this,
+					entry.getValue());
+			}
 		}
+	}
 
-		Long groupId = (Long)attributes.get("groupId");
+	public Map<String, Function<WatsonAddressAudit, Object>> getAttributeGetterFunctions() {
+		return _attributeGetterFunctions;
+	}
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+	public Map<String, BiConsumer<WatsonAddressAudit, Object>> getAttributeSetterBiConsumers() {
+		return _attributeSetterBiConsumers;
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	private static final Map<String, Function<WatsonAddressAudit, Object>> _attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonAddressAudit, Object>> _attributeSetterBiConsumers;
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+	static {
+		Map<String, Function<WatsonAddressAudit, Object>> attributeGetterFunctions =
+			new LinkedHashMap<String, Function<WatsonAddressAudit, Object>>();
+		Map<String, BiConsumer<WatsonAddressAudit, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<WatsonAddressAudit, ?>>();
 
-		Long userId = (Long)attributes.get("userId");
 
-		if (userId != null) {
-			setUserId(userId);
-		}
+		attributeGetterFunctions.put(
+			"watsonAddressAuditId",
+			new Function<WatsonAddressAudit, Object>() {
 
-		String userName = (String)attributes.get("userName");
+				@Override
+				public Object apply(WatsonAddressAudit watsonAddressAudit) {
+					return watsonAddressAudit.getWatsonAddressAuditId();
+				}
 
-		if (userName != null) {
-			setUserName(userName);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"watsonAddressAuditId",
+			new BiConsumer<WatsonAddressAudit, Object>() {
 
-		Date createDate = (Date)attributes.get("createDate");
+				@Override
+				public void accept(WatsonAddressAudit watsonAddressAudit, Object watsonAddressAuditId) {
+					watsonAddressAudit.setWatsonAddressAuditId((Long)watsonAddressAuditId);
+				}
 
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
+			});
+		attributeGetterFunctions.put(
+			"groupId",
+			new Function<WatsonAddressAudit, Object>() {
 
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
+				@Override
+				public Object apply(WatsonAddressAudit watsonAddressAudit) {
+					return watsonAddressAudit.getGroupId();
+				}
 
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"groupId",
+			new BiConsumer<WatsonAddressAudit, Object>() {
 
-		Long countryId = (Long)attributes.get("countryId");
+				@Override
+				public void accept(WatsonAddressAudit watsonAddressAudit, Object groupId) {
+					watsonAddressAudit.setGroupId((Long)groupId);
+				}
 
-		if (countryId != null) {
-			setCountryId(countryId);
-		}
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<WatsonAddressAudit, Object>() {
 
-		Long districtWatsonListTypeId = (Long)attributes.get(
-				"districtWatsonListTypeId");
+				@Override
+				public Object apply(WatsonAddressAudit watsonAddressAudit) {
+					return watsonAddressAudit.getCompanyId();
+				}
 
-		if (districtWatsonListTypeId != null) {
-			setDistrictWatsonListTypeId(districtWatsonListTypeId);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"companyId",
+			new BiConsumer<WatsonAddressAudit, Object>() {
 
-		Long originalWatsonAddressId = (Long)attributes.get(
-				"originalWatsonAddressId");
+				@Override
+				public void accept(WatsonAddressAudit watsonAddressAudit, Object companyId) {
+					watsonAddressAudit.setCompanyId((Long)companyId);
+				}
 
-		if (originalWatsonAddressId != null) {
-			setOriginalWatsonAddressId(originalWatsonAddressId);
-		}
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<WatsonAddressAudit, Object>() {
 
-		Long provinceWatsonListTypeId = (Long)attributes.get(
-				"provinceWatsonListTypeId");
+				@Override
+				public Object apply(WatsonAddressAudit watsonAddressAudit) {
+					return watsonAddressAudit.getUserId();
+				}
 
-		if (provinceWatsonListTypeId != null) {
-			setProvinceWatsonListTypeId(provinceWatsonListTypeId);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"userId",
+			new BiConsumer<WatsonAddressAudit, Object>() {
 
-		Long subDistrictWatsonListTypeId = (Long)attributes.get(
-				"subDistrictWatsonListTypeId");
+				@Override
+				public void accept(WatsonAddressAudit watsonAddressAudit, Object userId) {
+					watsonAddressAudit.setUserId((Long)userId);
+				}
 
-		if (subDistrictWatsonListTypeId != null) {
-			setSubDistrictWatsonListTypeId(subDistrictWatsonListTypeId);
-		}
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<WatsonAddressAudit, Object>() {
 
-		Long typeWatsonListTypeId = (Long)attributes.get("typeWatsonListTypeId");
+				@Override
+				public Object apply(WatsonAddressAudit watsonAddressAudit) {
+					return watsonAddressAudit.getUserName();
+				}
 
-		if (typeWatsonListTypeId != null) {
-			setTypeWatsonListTypeId(typeWatsonListTypeId);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"userName",
+			new BiConsumer<WatsonAddressAudit, Object>() {
 
-		Long watsonAddressId = (Long)attributes.get("watsonAddressId");
+				@Override
+				public void accept(WatsonAddressAudit watsonAddressAudit, Object userName) {
+					watsonAddressAudit.setUserName((String)userName);
+				}
 
-		if (watsonAddressId != null) {
-			setWatsonAddressId(watsonAddressId);
-		}
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<WatsonAddressAudit, Object>() {
 
-		Long watsonIncidentId = (Long)attributes.get("watsonIncidentId");
+				@Override
+				public Object apply(WatsonAddressAudit watsonAddressAudit) {
+					return watsonAddressAudit.getCreateDate();
+				}
 
-		if (watsonIncidentId != null) {
-			setWatsonIncidentId(watsonIncidentId);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"createDate",
+			new BiConsumer<WatsonAddressAudit, Object>() {
 
-		String name = (String)attributes.get("name");
+				@Override
+				public void accept(WatsonAddressAudit watsonAddressAudit, Object createDate) {
+					watsonAddressAudit.setCreateDate((Date)createDate);
+				}
 
-		if (name != null) {
-			setName(name);
-		}
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<WatsonAddressAudit, Object>() {
 
-		String postalCode = (String)attributes.get("postalCode");
+				@Override
+				public Object apply(WatsonAddressAudit watsonAddressAudit) {
+					return watsonAddressAudit.getModifiedDate();
+				}
 
-		if (postalCode != null) {
-			setPostalCode(postalCode);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"modifiedDate",
+			new BiConsumer<WatsonAddressAudit, Object>() {
 
-		String region = (String)attributes.get("region");
+				@Override
+				public void accept(WatsonAddressAudit watsonAddressAudit, Object modifiedDate) {
+					watsonAddressAudit.setModifiedDate((Date)modifiedDate);
+				}
 
-		if (region != null) {
-			setRegion(region);
-		}
+			});
+		attributeGetterFunctions.put(
+			"countryId",
+			new Function<WatsonAddressAudit, Object>() {
 
-		String street = (String)attributes.get("street");
+				@Override
+				public Object apply(WatsonAddressAudit watsonAddressAudit) {
+					return watsonAddressAudit.getCountryId();
+				}
 
-		if (street != null) {
-			setStreet(street);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"countryId",
+			new BiConsumer<WatsonAddressAudit, Object>() {
 
-		String number = (String)attributes.get("number");
+				@Override
+				public void accept(WatsonAddressAudit watsonAddressAudit, Object countryId) {
+					watsonAddressAudit.setCountryId((Long)countryId);
+				}
 
-		if (number != null) {
-			setNumber(number);
-		}
+			});
+		attributeGetterFunctions.put(
+			"districtWatsonListTypeId",
+			new Function<WatsonAddressAudit, Object>() {
 
-		String building = (String)attributes.get("building");
+				@Override
+				public Object apply(WatsonAddressAudit watsonAddressAudit) {
+					return watsonAddressAudit.getDistrictWatsonListTypeId();
+				}
 
-		if (building != null) {
-			setBuilding(building);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"districtWatsonListTypeId",
+			new BiConsumer<WatsonAddressAudit, Object>() {
 
-		String floor = (String)attributes.get("floor");
+				@Override
+				public void accept(WatsonAddressAudit watsonAddressAudit, Object districtWatsonListTypeId) {
+					watsonAddressAudit.setDistrictWatsonListTypeId((Long)districtWatsonListTypeId);
+				}
 
-		if (floor != null) {
-			setFloor(floor);
-		}
+			});
+		attributeGetterFunctions.put(
+			"originalWatsonAddressId",
+			new Function<WatsonAddressAudit, Object>() {
 
-		String room = (String)attributes.get("room");
+				@Override
+				public Object apply(WatsonAddressAudit watsonAddressAudit) {
+					return watsonAddressAudit.getOriginalWatsonAddressId();
+				}
 
-		if (room != null) {
-			setRoom(room);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"originalWatsonAddressId",
+			new BiConsumer<WatsonAddressAudit, Object>() {
 
-		String description = (String)attributes.get("description");
+				@Override
+				public void accept(WatsonAddressAudit watsonAddressAudit, Object originalWatsonAddressId) {
+					watsonAddressAudit.setOriginalWatsonAddressId((Long)originalWatsonAddressId);
+				}
 
-		if (description != null) {
-			setDescription(description);
-		}
+			});
+		attributeGetterFunctions.put(
+			"provinceWatsonListTypeId",
+			new Function<WatsonAddressAudit, Object>() {
 
-		String imagePayload = (String)attributes.get("imagePayload");
+				@Override
+				public Object apply(WatsonAddressAudit watsonAddressAudit) {
+					return watsonAddressAudit.getProvinceWatsonListTypeId();
+				}
 
-		if (imagePayload != null) {
-			setImagePayload(imagePayload);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"provinceWatsonListTypeId",
+			new BiConsumer<WatsonAddressAudit, Object>() {
 
-		String otherType = (String)attributes.get("otherType");
+				@Override
+				public void accept(WatsonAddressAudit watsonAddressAudit, Object provinceWatsonListTypeId) {
+					watsonAddressAudit.setProvinceWatsonListTypeId((Long)provinceWatsonListTypeId);
+				}
 
-		if (otherType != null) {
-			setOtherType(otherType);
-		}
+			});
+		attributeGetterFunctions.put(
+			"subDistrictWatsonListTypeId",
+			new Function<WatsonAddressAudit, Object>() {
 
-		Date lastSeenDate = (Date)attributes.get("lastSeenDate");
+				@Override
+				public Object apply(WatsonAddressAudit watsonAddressAudit) {
+					return watsonAddressAudit.getSubDistrictWatsonListTypeId();
+				}
 
-		if (lastSeenDate != null) {
-			setLastSeenDate(lastSeenDate);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"subDistrictWatsonListTypeId",
+			new BiConsumer<WatsonAddressAudit, Object>() {
 
-		Double latitude = (Double)attributes.get("latitude");
+				@Override
+				public void accept(WatsonAddressAudit watsonAddressAudit, Object subDistrictWatsonListTypeId) {
+					watsonAddressAudit.setSubDistrictWatsonListTypeId((Long)subDistrictWatsonListTypeId);
+				}
 
-		if (latitude != null) {
-			setLatitude(latitude);
-		}
+			});
+		attributeGetterFunctions.put(
+			"typeWatsonListTypeId",
+			new Function<WatsonAddressAudit, Object>() {
 
-		Double longitude = (Double)attributes.get("longitude");
+				@Override
+				public Object apply(WatsonAddressAudit watsonAddressAudit) {
+					return watsonAddressAudit.getTypeWatsonListTypeId();
+				}
 
-		if (longitude != null) {
-			setLongitude(longitude);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"typeWatsonListTypeId",
+			new BiConsumer<WatsonAddressAudit, Object>() {
 
-		Integer status = (Integer)attributes.get("status");
+				@Override
+				public void accept(WatsonAddressAudit watsonAddressAudit, Object typeWatsonListTypeId) {
+					watsonAddressAudit.setTypeWatsonListTypeId((Long)typeWatsonListTypeId);
+				}
 
-		if (status != null) {
-			setStatus(status);
-		}
+			});
+		attributeGetterFunctions.put(
+			"watsonAddressId",
+			new Function<WatsonAddressAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonAddressAudit watsonAddressAudit) {
+					return watsonAddressAudit.getWatsonAddressId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"watsonAddressId",
+			new BiConsumer<WatsonAddressAudit, Object>() {
+
+				@Override
+				public void accept(WatsonAddressAudit watsonAddressAudit, Object watsonAddressId) {
+					watsonAddressAudit.setWatsonAddressId((Long)watsonAddressId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"watsonIncidentId",
+			new Function<WatsonAddressAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonAddressAudit watsonAddressAudit) {
+					return watsonAddressAudit.getWatsonIncidentId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"watsonIncidentId",
+			new BiConsumer<WatsonAddressAudit, Object>() {
+
+				@Override
+				public void accept(WatsonAddressAudit watsonAddressAudit, Object watsonIncidentId) {
+					watsonAddressAudit.setWatsonIncidentId((Long)watsonIncidentId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<WatsonAddressAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonAddressAudit watsonAddressAudit) {
+					return watsonAddressAudit.getName();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"name",
+			new BiConsumer<WatsonAddressAudit, Object>() {
+
+				@Override
+				public void accept(WatsonAddressAudit watsonAddressAudit, Object name) {
+					watsonAddressAudit.setName((String)name);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"postalCode",
+			new Function<WatsonAddressAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonAddressAudit watsonAddressAudit) {
+					return watsonAddressAudit.getPostalCode();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"postalCode",
+			new BiConsumer<WatsonAddressAudit, Object>() {
+
+				@Override
+				public void accept(WatsonAddressAudit watsonAddressAudit, Object postalCode) {
+					watsonAddressAudit.setPostalCode((String)postalCode);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"region",
+			new Function<WatsonAddressAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonAddressAudit watsonAddressAudit) {
+					return watsonAddressAudit.getRegion();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"region",
+			new BiConsumer<WatsonAddressAudit, Object>() {
+
+				@Override
+				public void accept(WatsonAddressAudit watsonAddressAudit, Object region) {
+					watsonAddressAudit.setRegion((String)region);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"street",
+			new Function<WatsonAddressAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonAddressAudit watsonAddressAudit) {
+					return watsonAddressAudit.getStreet();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"street",
+			new BiConsumer<WatsonAddressAudit, Object>() {
+
+				@Override
+				public void accept(WatsonAddressAudit watsonAddressAudit, Object street) {
+					watsonAddressAudit.setStreet((String)street);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"number",
+			new Function<WatsonAddressAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonAddressAudit watsonAddressAudit) {
+					return watsonAddressAudit.getNumber();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"number",
+			new BiConsumer<WatsonAddressAudit, Object>() {
+
+				@Override
+				public void accept(WatsonAddressAudit watsonAddressAudit, Object number) {
+					watsonAddressAudit.setNumber((String)number);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"building",
+			new Function<WatsonAddressAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonAddressAudit watsonAddressAudit) {
+					return watsonAddressAudit.getBuilding();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"building",
+			new BiConsumer<WatsonAddressAudit, Object>() {
+
+				@Override
+				public void accept(WatsonAddressAudit watsonAddressAudit, Object building) {
+					watsonAddressAudit.setBuilding((String)building);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"floor",
+			new Function<WatsonAddressAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonAddressAudit watsonAddressAudit) {
+					return watsonAddressAudit.getFloor();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"floor",
+			new BiConsumer<WatsonAddressAudit, Object>() {
+
+				@Override
+				public void accept(WatsonAddressAudit watsonAddressAudit, Object floor) {
+					watsonAddressAudit.setFloor((String)floor);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"room",
+			new Function<WatsonAddressAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonAddressAudit watsonAddressAudit) {
+					return watsonAddressAudit.getRoom();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"room",
+			new BiConsumer<WatsonAddressAudit, Object>() {
+
+				@Override
+				public void accept(WatsonAddressAudit watsonAddressAudit, Object room) {
+					watsonAddressAudit.setRoom((String)room);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"description",
+			new Function<WatsonAddressAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonAddressAudit watsonAddressAudit) {
+					return watsonAddressAudit.getDescription();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"description",
+			new BiConsumer<WatsonAddressAudit, Object>() {
+
+				@Override
+				public void accept(WatsonAddressAudit watsonAddressAudit, Object description) {
+					watsonAddressAudit.setDescription((String)description);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"imagePayload",
+			new Function<WatsonAddressAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonAddressAudit watsonAddressAudit) {
+					return watsonAddressAudit.getImagePayload();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"imagePayload",
+			new BiConsumer<WatsonAddressAudit, Object>() {
+
+				@Override
+				public void accept(WatsonAddressAudit watsonAddressAudit, Object imagePayload) {
+					watsonAddressAudit.setImagePayload((String)imagePayload);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"otherType",
+			new Function<WatsonAddressAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonAddressAudit watsonAddressAudit) {
+					return watsonAddressAudit.getOtherType();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"otherType",
+			new BiConsumer<WatsonAddressAudit, Object>() {
+
+				@Override
+				public void accept(WatsonAddressAudit watsonAddressAudit, Object otherType) {
+					watsonAddressAudit.setOtherType((String)otherType);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"lastSeenDate",
+			new Function<WatsonAddressAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonAddressAudit watsonAddressAudit) {
+					return watsonAddressAudit.getLastSeenDate();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"lastSeenDate",
+			new BiConsumer<WatsonAddressAudit, Object>() {
+
+				@Override
+				public void accept(WatsonAddressAudit watsonAddressAudit, Object lastSeenDate) {
+					watsonAddressAudit.setLastSeenDate((Date)lastSeenDate);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"latitude",
+			new Function<WatsonAddressAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonAddressAudit watsonAddressAudit) {
+					return watsonAddressAudit.getLatitude();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"latitude",
+			new BiConsumer<WatsonAddressAudit, Object>() {
+
+				@Override
+				public void accept(WatsonAddressAudit watsonAddressAudit, Object latitude) {
+					watsonAddressAudit.setLatitude((Double)latitude);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"longitude",
+			new Function<WatsonAddressAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonAddressAudit watsonAddressAudit) {
+					return watsonAddressAudit.getLongitude();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"longitude",
+			new BiConsumer<WatsonAddressAudit, Object>() {
+
+				@Override
+				public void accept(WatsonAddressAudit watsonAddressAudit, Object longitude) {
+					watsonAddressAudit.setLongitude((Double)longitude);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"status",
+			new Function<WatsonAddressAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonAddressAudit watsonAddressAudit) {
+					return watsonAddressAudit.getStatus();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"status",
+			new BiConsumer<WatsonAddressAudit, Object>() {
+
+				@Override
+				public void accept(WatsonAddressAudit watsonAddressAudit, Object status) {
+					watsonAddressAudit.setStatus((Integer)status);
+				}
+
+			});
+
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -1441,68 +1878,28 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(61);
+		Map<String, Function<WatsonAddressAudit, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		sb.append("{watsonAddressAuditId=");
-		sb.append(getWatsonAddressAuditId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", countryId=");
-		sb.append(getCountryId());
-		sb.append(", districtWatsonListTypeId=");
-		sb.append(getDistrictWatsonListTypeId());
-		sb.append(", originalWatsonAddressId=");
-		sb.append(getOriginalWatsonAddressId());
-		sb.append(", provinceWatsonListTypeId=");
-		sb.append(getProvinceWatsonListTypeId());
-		sb.append(", subDistrictWatsonListTypeId=");
-		sb.append(getSubDistrictWatsonListTypeId());
-		sb.append(", typeWatsonListTypeId=");
-		sb.append(getTypeWatsonListTypeId());
-		sb.append(", watsonAddressId=");
-		sb.append(getWatsonAddressId());
-		sb.append(", watsonIncidentId=");
-		sb.append(getWatsonIncidentId());
-		sb.append(", name=");
-		sb.append(getName());
-		sb.append(", postalCode=");
-		sb.append(getPostalCode());
-		sb.append(", region=");
-		sb.append(getRegion());
-		sb.append(", street=");
-		sb.append(getStreet());
-		sb.append(", number=");
-		sb.append(getNumber());
-		sb.append(", building=");
-		sb.append(getBuilding());
-		sb.append(", floor=");
-		sb.append(getFloor());
-		sb.append(", room=");
-		sb.append(getRoom());
-		sb.append(", description=");
-		sb.append(getDescription());
-		sb.append(", imagePayload=");
-		sb.append(getImagePayload());
-		sb.append(", otherType=");
-		sb.append(getOtherType());
-		sb.append(", lastSeenDate=");
-		sb.append(getLastSeenDate());
-		sb.append(", latitude=");
-		sb.append(getLatitude());
-		sb.append(", longitude=");
-		sb.append(getLongitude());
-		sb.append(", status=");
-		sb.append(getStatus());
+		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
+				2);
+
+		sb.append("{");
+
+		for (Map.Entry<String, Function<WatsonAddressAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonAddressAudit, Object> attributeGetterFunction = entry.getValue();
+
+			sb.append(attributeName);
+			sb.append("=");
+			sb.append(attributeGetterFunction.apply((WatsonAddressAudit)this));
+			sb.append(", ");
+		}
+
+		if (sb.index() > 1) {
+			sb.setIndex(sb.index() - 1);
+		}
+
 		sb.append("}");
 
 		return sb.toString();
@@ -1510,132 +1907,26 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(94);
+		Map<String, Function<WatsonAddressAudit, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
+
+		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
+				4);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.watson.model.WatsonAddressAudit");
+		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		sb.append(
-			"<column><column-name>watsonAddressAuditId</column-name><column-value><![CDATA[");
-		sb.append(getWatsonAddressAuditId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>countryId</column-name><column-value><![CDATA[");
-		sb.append(getCountryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>districtWatsonListTypeId</column-name><column-value><![CDATA[");
-		sb.append(getDistrictWatsonListTypeId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>originalWatsonAddressId</column-name><column-value><![CDATA[");
-		sb.append(getOriginalWatsonAddressId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>provinceWatsonListTypeId</column-name><column-value><![CDATA[");
-		sb.append(getProvinceWatsonListTypeId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>subDistrictWatsonListTypeId</column-name><column-value><![CDATA[");
-		sb.append(getSubDistrictWatsonListTypeId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>typeWatsonListTypeId</column-name><column-value><![CDATA[");
-		sb.append(getTypeWatsonListTypeId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>watsonAddressId</column-name><column-value><![CDATA[");
-		sb.append(getWatsonAddressId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>watsonIncidentId</column-name><column-value><![CDATA[");
-		sb.append(getWatsonIncidentId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(getName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>postalCode</column-name><column-value><![CDATA[");
-		sb.append(getPostalCode());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>region</column-name><column-value><![CDATA[");
-		sb.append(getRegion());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>street</column-name><column-value><![CDATA[");
-		sb.append(getStreet());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>number</column-name><column-value><![CDATA[");
-		sb.append(getNumber());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>building</column-name><column-value><![CDATA[");
-		sb.append(getBuilding());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>floor</column-name><column-value><![CDATA[");
-		sb.append(getFloor());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>room</column-name><column-value><![CDATA[");
-		sb.append(getRoom());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(getDescription());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>imagePayload</column-name><column-value><![CDATA[");
-		sb.append(getImagePayload());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>otherType</column-name><column-value><![CDATA[");
-		sb.append(getOtherType());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>lastSeenDate</column-name><column-value><![CDATA[");
-		sb.append(getLastSeenDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>latitude</column-name><column-value><![CDATA[");
-		sb.append(getLatitude());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>longitude</column-name><column-value><![CDATA[");
-		sb.append(getLongitude());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>status</column-name><column-value><![CDATA[");
-		sb.append(getStatus());
-		sb.append("]]></column-value></column>");
+		for (Map.Entry<String, Function<WatsonAddressAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonAddressAudit, Object> attributeGetterFunction = entry.getValue();
+
+			sb.append("<column><column-name>");
+			sb.append(attributeName);
+			sb.append("</column-name><column-value><![CDATA[");
+			sb.append(attributeGetterFunction.apply((WatsonAddressAudit)this));
+			sb.append("]]></column-value></column>");
+		}
 
 		sb.append("</model>");
 

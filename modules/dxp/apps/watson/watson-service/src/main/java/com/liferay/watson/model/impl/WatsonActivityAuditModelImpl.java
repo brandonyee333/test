@@ -43,12 +43,16 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * The base model implementation for the WatsonActivityAudit service. Represents a row in the &quot;WatsonActivityAudit&quot; database table, with each column mapped to a property of this class.
@@ -163,21 +167,16 @@ public class WatsonActivityAuditModelImpl extends BaseModelImpl<WatsonActivityAu
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("watsonActivityAuditId", getWatsonActivityAuditId());
-		attributes.put("groupId", getGroupId());
-		attributes.put("companyId", getCompanyId());
-		attributes.put("userId", getUserId());
-		attributes.put("userName", getUserName());
-		attributes.put("createDate", getCreateDate());
-		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("watsonActivityId", getWatsonActivityId());
-		attributes.put("typeWatsonListTypeId", getTypeWatsonListTypeId());
-		attributes.put("subtypeWatsonListTypeId", getSubtypeWatsonListTypeId());
-		attributes.put("watsonIncidentId", getWatsonIncidentId());
-		attributes.put("narrative", getNarrative());
-		attributes.put("reportDate", getReportDate());
-		attributes.put("startDate", getStartDate());
-		attributes.put("status", getStatus());
+		Map<String, Function<WatsonActivityAudit, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
+
+		for (Map.Entry<String, Function<WatsonActivityAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonActivityAudit, Object> attributeGetterFunction = entry.getValue();
+
+			attributes.put(attributeName,
+				attributeGetterFunction.apply((WatsonActivityAudit)this));
+		}
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -187,97 +186,343 @@ public class WatsonActivityAuditModelImpl extends BaseModelImpl<WatsonActivityAu
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long watsonActivityAuditId = (Long)attributes.get(
-				"watsonActivityAuditId");
+		Map<String, BiConsumer<WatsonActivityAudit, Object>> attributeSetterBiConsumers =
+			getAttributeSetterBiConsumers();
 
-		if (watsonActivityAuditId != null) {
-			setWatsonActivityAuditId(watsonActivityAuditId);
+		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
+			String attributeName = entry.getKey();
+
+			BiConsumer<WatsonActivityAudit, Object> attributeSetterBiConsumer = attributeSetterBiConsumers.get(attributeName);
+
+			if (attributeSetterBiConsumer != null) {
+				attributeSetterBiConsumer.accept((WatsonActivityAudit)this,
+					entry.getValue());
+			}
 		}
+	}
 
-		Long groupId = (Long)attributes.get("groupId");
+	public Map<String, Function<WatsonActivityAudit, Object>> getAttributeGetterFunctions() {
+		return _attributeGetterFunctions;
+	}
 
-		if (groupId != null) {
-			setGroupId(groupId);
-		}
+	public Map<String, BiConsumer<WatsonActivityAudit, Object>> getAttributeSetterBiConsumers() {
+		return _attributeSetterBiConsumers;
+	}
 
-		Long companyId = (Long)attributes.get("companyId");
+	private static final Map<String, Function<WatsonActivityAudit, Object>> _attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonActivityAudit, Object>> _attributeSetterBiConsumers;
 
-		if (companyId != null) {
-			setCompanyId(companyId);
-		}
+	static {
+		Map<String, Function<WatsonActivityAudit, Object>> attributeGetterFunctions =
+			new LinkedHashMap<String, Function<WatsonActivityAudit, Object>>();
+		Map<String, BiConsumer<WatsonActivityAudit, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<WatsonActivityAudit, ?>>();
 
-		Long userId = (Long)attributes.get("userId");
 
-		if (userId != null) {
-			setUserId(userId);
-		}
+		attributeGetterFunctions.put(
+			"watsonActivityAuditId",
+			new Function<WatsonActivityAudit, Object>() {
 
-		String userName = (String)attributes.get("userName");
+				@Override
+				public Object apply(WatsonActivityAudit watsonActivityAudit) {
+					return watsonActivityAudit.getWatsonActivityAuditId();
+				}
 
-		if (userName != null) {
-			setUserName(userName);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"watsonActivityAuditId",
+			new BiConsumer<WatsonActivityAudit, Object>() {
 
-		Date createDate = (Date)attributes.get("createDate");
+				@Override
+				public void accept(WatsonActivityAudit watsonActivityAudit, Object watsonActivityAuditId) {
+					watsonActivityAudit.setWatsonActivityAuditId((Long)watsonActivityAuditId);
+				}
 
-		if (createDate != null) {
-			setCreateDate(createDate);
-		}
+			});
+		attributeGetterFunctions.put(
+			"groupId",
+			new Function<WatsonActivityAudit, Object>() {
 
-		Date modifiedDate = (Date)attributes.get("modifiedDate");
+				@Override
+				public Object apply(WatsonActivityAudit watsonActivityAudit) {
+					return watsonActivityAudit.getGroupId();
+				}
 
-		if (modifiedDate != null) {
-			setModifiedDate(modifiedDate);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"groupId",
+			new BiConsumer<WatsonActivityAudit, Object>() {
 
-		Long watsonActivityId = (Long)attributes.get("watsonActivityId");
+				@Override
+				public void accept(WatsonActivityAudit watsonActivityAudit, Object groupId) {
+					watsonActivityAudit.setGroupId((Long)groupId);
+				}
 
-		if (watsonActivityId != null) {
-			setWatsonActivityId(watsonActivityId);
-		}
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<WatsonActivityAudit, Object>() {
 
-		Long typeWatsonListTypeId = (Long)attributes.get("typeWatsonListTypeId");
+				@Override
+				public Object apply(WatsonActivityAudit watsonActivityAudit) {
+					return watsonActivityAudit.getCompanyId();
+				}
 
-		if (typeWatsonListTypeId != null) {
-			setTypeWatsonListTypeId(typeWatsonListTypeId);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"companyId",
+			new BiConsumer<WatsonActivityAudit, Object>() {
 
-		Long subtypeWatsonListTypeId = (Long)attributes.get(
-				"subtypeWatsonListTypeId");
+				@Override
+				public void accept(WatsonActivityAudit watsonActivityAudit, Object companyId) {
+					watsonActivityAudit.setCompanyId((Long)companyId);
+				}
 
-		if (subtypeWatsonListTypeId != null) {
-			setSubtypeWatsonListTypeId(subtypeWatsonListTypeId);
-		}
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<WatsonActivityAudit, Object>() {
 
-		Long watsonIncidentId = (Long)attributes.get("watsonIncidentId");
+				@Override
+				public Object apply(WatsonActivityAudit watsonActivityAudit) {
+					return watsonActivityAudit.getUserId();
+				}
 
-		if (watsonIncidentId != null) {
-			setWatsonIncidentId(watsonIncidentId);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"userId",
+			new BiConsumer<WatsonActivityAudit, Object>() {
 
-		String narrative = (String)attributes.get("narrative");
+				@Override
+				public void accept(WatsonActivityAudit watsonActivityAudit, Object userId) {
+					watsonActivityAudit.setUserId((Long)userId);
+				}
 
-		if (narrative != null) {
-			setNarrative(narrative);
-		}
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<WatsonActivityAudit, Object>() {
 
-		Date reportDate = (Date)attributes.get("reportDate");
+				@Override
+				public Object apply(WatsonActivityAudit watsonActivityAudit) {
+					return watsonActivityAudit.getUserName();
+				}
 
-		if (reportDate != null) {
-			setReportDate(reportDate);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"userName",
+			new BiConsumer<WatsonActivityAudit, Object>() {
 
-		Date startDate = (Date)attributes.get("startDate");
+				@Override
+				public void accept(WatsonActivityAudit watsonActivityAudit, Object userName) {
+					watsonActivityAudit.setUserName((String)userName);
+				}
 
-		if (startDate != null) {
-			setStartDate(startDate);
-		}
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<WatsonActivityAudit, Object>() {
 
-		Integer status = (Integer)attributes.get("status");
+				@Override
+				public Object apply(WatsonActivityAudit watsonActivityAudit) {
+					return watsonActivityAudit.getCreateDate();
+				}
 
-		if (status != null) {
-			setStatus(status);
-		}
+			});
+		attributeSetterBiConsumers.put(
+			"createDate",
+			new BiConsumer<WatsonActivityAudit, Object>() {
+
+				@Override
+				public void accept(WatsonActivityAudit watsonActivityAudit, Object createDate) {
+					watsonActivityAudit.setCreateDate((Date)createDate);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<WatsonActivityAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonActivityAudit watsonActivityAudit) {
+					return watsonActivityAudit.getModifiedDate();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"modifiedDate",
+			new BiConsumer<WatsonActivityAudit, Object>() {
+
+				@Override
+				public void accept(WatsonActivityAudit watsonActivityAudit, Object modifiedDate) {
+					watsonActivityAudit.setModifiedDate((Date)modifiedDate);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"watsonActivityId",
+			new Function<WatsonActivityAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonActivityAudit watsonActivityAudit) {
+					return watsonActivityAudit.getWatsonActivityId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"watsonActivityId",
+			new BiConsumer<WatsonActivityAudit, Object>() {
+
+				@Override
+				public void accept(WatsonActivityAudit watsonActivityAudit, Object watsonActivityId) {
+					watsonActivityAudit.setWatsonActivityId((Long)watsonActivityId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"typeWatsonListTypeId",
+			new Function<WatsonActivityAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonActivityAudit watsonActivityAudit) {
+					return watsonActivityAudit.getTypeWatsonListTypeId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"typeWatsonListTypeId",
+			new BiConsumer<WatsonActivityAudit, Object>() {
+
+				@Override
+				public void accept(WatsonActivityAudit watsonActivityAudit, Object typeWatsonListTypeId) {
+					watsonActivityAudit.setTypeWatsonListTypeId((Long)typeWatsonListTypeId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"subtypeWatsonListTypeId",
+			new Function<WatsonActivityAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonActivityAudit watsonActivityAudit) {
+					return watsonActivityAudit.getSubtypeWatsonListTypeId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"subtypeWatsonListTypeId",
+			new BiConsumer<WatsonActivityAudit, Object>() {
+
+				@Override
+				public void accept(WatsonActivityAudit watsonActivityAudit, Object subtypeWatsonListTypeId) {
+					watsonActivityAudit.setSubtypeWatsonListTypeId((Long)subtypeWatsonListTypeId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"watsonIncidentId",
+			new Function<WatsonActivityAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonActivityAudit watsonActivityAudit) {
+					return watsonActivityAudit.getWatsonIncidentId();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"watsonIncidentId",
+			new BiConsumer<WatsonActivityAudit, Object>() {
+
+				@Override
+				public void accept(WatsonActivityAudit watsonActivityAudit, Object watsonIncidentId) {
+					watsonActivityAudit.setWatsonIncidentId((Long)watsonIncidentId);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"narrative",
+			new Function<WatsonActivityAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonActivityAudit watsonActivityAudit) {
+					return watsonActivityAudit.getNarrative();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"narrative",
+			new BiConsumer<WatsonActivityAudit, Object>() {
+
+				@Override
+				public void accept(WatsonActivityAudit watsonActivityAudit, Object narrative) {
+					watsonActivityAudit.setNarrative((String)narrative);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"reportDate",
+			new Function<WatsonActivityAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonActivityAudit watsonActivityAudit) {
+					return watsonActivityAudit.getReportDate();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"reportDate",
+			new BiConsumer<WatsonActivityAudit, Object>() {
+
+				@Override
+				public void accept(WatsonActivityAudit watsonActivityAudit, Object reportDate) {
+					watsonActivityAudit.setReportDate((Date)reportDate);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"startDate",
+			new Function<WatsonActivityAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonActivityAudit watsonActivityAudit) {
+					return watsonActivityAudit.getStartDate();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"startDate",
+			new BiConsumer<WatsonActivityAudit, Object>() {
+
+				@Override
+				public void accept(WatsonActivityAudit watsonActivityAudit, Object startDate) {
+					watsonActivityAudit.setStartDate((Date)startDate);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"status",
+			new Function<WatsonActivityAudit, Object>() {
+
+				@Override
+				public Object apply(WatsonActivityAudit watsonActivityAudit) {
+					return watsonActivityAudit.getStatus();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"status",
+			new BiConsumer<WatsonActivityAudit, Object>() {
+
+				@Override
+				public void accept(WatsonActivityAudit watsonActivityAudit, Object status) {
+					watsonActivityAudit.setStatus((Integer)status);
+				}
+
+			});
+
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -796,38 +1041,28 @@ public class WatsonActivityAuditModelImpl extends BaseModelImpl<WatsonActivityAu
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(31);
+		Map<String, Function<WatsonActivityAudit, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		sb.append("{watsonActivityAuditId=");
-		sb.append(getWatsonActivityAuditId());
-		sb.append(", groupId=");
-		sb.append(getGroupId());
-		sb.append(", companyId=");
-		sb.append(getCompanyId());
-		sb.append(", userId=");
-		sb.append(getUserId());
-		sb.append(", userName=");
-		sb.append(getUserName());
-		sb.append(", createDate=");
-		sb.append(getCreateDate());
-		sb.append(", modifiedDate=");
-		sb.append(getModifiedDate());
-		sb.append(", watsonActivityId=");
-		sb.append(getWatsonActivityId());
-		sb.append(", typeWatsonListTypeId=");
-		sb.append(getTypeWatsonListTypeId());
-		sb.append(", subtypeWatsonListTypeId=");
-		sb.append(getSubtypeWatsonListTypeId());
-		sb.append(", watsonIncidentId=");
-		sb.append(getWatsonIncidentId());
-		sb.append(", narrative=");
-		sb.append(getNarrative());
-		sb.append(", reportDate=");
-		sb.append(getReportDate());
-		sb.append(", startDate=");
-		sb.append(getStartDate());
-		sb.append(", status=");
-		sb.append(getStatus());
+		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
+				2);
+
+		sb.append("{");
+
+		for (Map.Entry<String, Function<WatsonActivityAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonActivityAudit, Object> attributeGetterFunction = entry.getValue();
+
+			sb.append(attributeName);
+			sb.append("=");
+			sb.append(attributeGetterFunction.apply((WatsonActivityAudit)this));
+			sb.append(", ");
+		}
+
+		if (sb.index() > 1) {
+			sb.setIndex(sb.index() - 1);
+		}
+
 		sb.append("}");
 
 		return sb.toString();
@@ -835,72 +1070,26 @@ public class WatsonActivityAuditModelImpl extends BaseModelImpl<WatsonActivityAu
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(49);
+		Map<String, Function<WatsonActivityAudit, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
+
+		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
+				4);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.watson.model.WatsonActivityAudit");
+		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		sb.append(
-			"<column><column-name>watsonActivityAuditId</column-name><column-value><![CDATA[");
-		sb.append(getWatsonActivityAuditId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>groupId</column-name><column-value><![CDATA[");
-		sb.append(getGroupId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>companyId</column-name><column-value><![CDATA[");
-		sb.append(getCompanyId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(getUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(getUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>createDate</column-name><column-value><![CDATA[");
-		sb.append(getCreateDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
-		sb.append(getModifiedDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>watsonActivityId</column-name><column-value><![CDATA[");
-		sb.append(getWatsonActivityId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>typeWatsonListTypeId</column-name><column-value><![CDATA[");
-		sb.append(getTypeWatsonListTypeId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>subtypeWatsonListTypeId</column-name><column-value><![CDATA[");
-		sb.append(getSubtypeWatsonListTypeId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>watsonIncidentId</column-name><column-value><![CDATA[");
-		sb.append(getWatsonIncidentId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>narrative</column-name><column-value><![CDATA[");
-		sb.append(getNarrative());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>reportDate</column-name><column-value><![CDATA[");
-		sb.append(getReportDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>startDate</column-name><column-value><![CDATA[");
-		sb.append(getStartDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>status</column-name><column-value><![CDATA[");
-		sb.append(getStatus());
-		sb.append("]]></column-value></column>");
+		for (Map.Entry<String, Function<WatsonActivityAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+			String attributeName = entry.getKey();
+			Function<WatsonActivityAudit, Object> attributeGetterFunction = entry.getValue();
+
+			sb.append("<column><column-name>");
+			sb.append(attributeName);
+			sb.append("</column-name><column-value><![CDATA[");
+			sb.append(attributeGetterFunction.apply((WatsonActivityAudit)this));
+			sb.append("]]></column-value></column>");
+		}
 
 		sb.append("</model>");
 
