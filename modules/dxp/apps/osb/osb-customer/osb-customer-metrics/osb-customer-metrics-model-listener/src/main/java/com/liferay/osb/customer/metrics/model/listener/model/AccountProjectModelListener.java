@@ -12,15 +12,12 @@
  *
  */
 
-package com.liferay.osb.customer.metrics.model.listener;
+package com.liferay.osb.customer.metrics.model.listener.model;
 
 import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModelListener;
-import com.liferay.osb.customer.metrics.model.listener.constants.ClassNameConstants;
-import com.liferay.osb.model.ExternalIdMapper;
-import com.liferay.portal.kernel.exception.ModelListenerException;
+import com.liferay.osb.model.AccountProject;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
-import com.liferay.portal.kernel.util.ArrayUtil;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -29,21 +26,8 @@ import org.osgi.service.component.annotations.Reference;
  * @author Jenny Chen
  */
 @Component(immediate = true, service = ModelListener.class)
-public class ExternalIdMapperModelListener
-	extends BaseMetricsModelListener<ExternalIdMapper> {
-
-	@Override
-	public boolean ignoreUpdate(ExternalIdMapper externalIdMapper)
-		throws ModelListenerException {
-
-		if (ArrayUtil.contains(
-				_OSB_CLASS_NAME_IDS, externalIdMapper.getClassNameId())) {
-
-			return false;
-		}
-
-		return true;
-	}
+public class AccountProjectModelListener
+	extends BaseMetricsModelListener<AccountProject> {
 
 	@Reference(
 		target = "(module.service.lifecycle=osb.portlet.initialized)",
@@ -52,10 +36,5 @@ public class ExternalIdMapperModelListener
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
-
-	private static final long[] _OSB_CLASS_NAME_IDS = {
-		ClassNameConstants.ACCOUNT_ENTRY_CLASS_NAME_ID,
-		ClassNameConstants.PARTNER_ENTRY_CLASS_NAME_ID
-	};
 
 }

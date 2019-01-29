@@ -12,15 +12,12 @@
  *
  */
 
-package com.liferay.osb.customer.metrics.model.listener;
+package com.liferay.osb.customer.metrics.model.listener.model;
 
 import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModelListener;
-import com.liferay.osb.customer.metrics.model.listener.constants.ClassNameConstants;
-import com.liferay.osb.model.AuditEntry;
-import com.liferay.portal.kernel.exception.ModelListenerException;
+import com.liferay.osb.model.AccountEntry;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
-import com.liferay.portal.kernel.util.ArrayUtil;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -29,21 +26,8 @@ import org.osgi.service.component.annotations.Reference;
  * @author Jenny Chen
  */
 @Component(immediate = true, service = ModelListener.class)
-public class AuditEntryModelListener
-	extends BaseMetricsModelListener<AuditEntry> {
-
-	@Override
-	public boolean ignoreUpdate(AuditEntry auditEntry)
-		throws ModelListenerException {
-
-		if (ArrayUtil.contains(
-				_OSB_CLASS_NAME_IDS, auditEntry.getClassNameId())) {
-
-			return false;
-		}
-
-		return true;
-	}
+public class AccountEntryModelListener
+	extends BaseMetricsModelListener<AccountEntry> {
 
 	@Reference(
 		target = "(module.service.lifecycle=osb.portlet.initialized)",
@@ -52,10 +36,5 @@ public class AuditEntryModelListener
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
-
-	private static final long[] _OSB_CLASS_NAME_IDS = {
-		ClassNameConstants.ACCOUNT_ENTRY_CLASS_NAME_ID,
-		ClassNameConstants.PARTNER_ENTRY_CLASS_NAME_ID
-	};
 
 }

@@ -12,10 +12,10 @@
  *
  */
 
-package com.liferay.osb.customer.metrics.model.listener;
+package com.liferay.osb.customer.metrics.model.listener.model;
 
 import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModelListener;
-import com.liferay.osb.model.PartnerEntry;
+import com.liferay.osb.model.PartnerWorker;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
@@ -26,8 +26,8 @@ import org.osgi.service.component.annotations.Reference;
  * @author Jenny Chen
  */
 @Component(immediate = true, service = ModelListener.class)
-public class PartnerEntryModelListener
-	extends BaseMetricsModelListener<PartnerEntry> {
+public class PartnerWorkerModelListener
+	extends BaseMetricsModelListener<PartnerWorker> {
 
 	@Reference(
 		target = "(module.service.lifecycle=osb.portlet.initialized)",
