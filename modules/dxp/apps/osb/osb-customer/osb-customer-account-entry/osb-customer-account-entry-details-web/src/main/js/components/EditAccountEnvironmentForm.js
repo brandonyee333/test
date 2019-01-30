@@ -24,12 +24,14 @@ export default class EditAccountEnvironmentForm extends React.Component {
 
 	state = {
 		configurations: {
+			commerceProduct: false,
 			customOS: false,
 			enterprise: false
 		},
 		formValues: {
 			envAS: '',
 			envBrowser: '',
+			envCommerce: '',
 			envCS: '',
 			envDB: '',
 			envJVM: '',
@@ -42,6 +44,7 @@ export default class EditAccountEnvironmentForm extends React.Component {
 			productEntryId: ''
 		},
 		selectedOptions: {
+			selectedCommerceVersion: null,
 			selectedLFRVersion: null,
 			selectedProduct: null
 		}
@@ -57,24 +60,49 @@ export default class EditAccountEnvironmentForm extends React.Component {
 
 	componentDidMount() {
 		const {environment, environmentConfiguration} = this.props;
-		const {envLFRVersions, products} = environmentConfiguration;
+		const {envCommerce, envLFRVersions, products} = environmentConfiguration;
 
 		if (environment) {
 			const currentProduct = products.find(
 				product => product.productEntryId === environment.productEntryId
 			);
 
-			const currentLFRValue = currentProduct.envLFR.find(
-				version => version.name === environment.envLFRLabel
-			).value;
+			let currentCommerceValue,
+				currentCommerceVersion,
+				currentLFRValue,
+				currentLFRVersion;
 
-			const currentLFRVersion = envLFRVersions.find(
-				version => version[currentLFRValue]
-			)[currentLFRValue];
+			if (currentProduct.envCommerce) {
+				currentCommerceValue = currentProduct.envCommerce.find(
+					version => version.name === environment.envCommerceLabel
+				).value;
+
+				currentCommerceVersion = envCommerce.envCommerceVersions.find(
+					version => version[currentCommerceValue]
+				)[currentCommerceValue];
+
+				currentLFRValue = currentCommerceVersion.envLFR.find(
+					version => version.name === environment.envLFRLabel
+				).value;
+
+				currentLFRVersion = envCommerce.envLFRVersions.find(
+					version => version[currentLFRValue]
+				)[currentLFRValue];
+			}
+			else {
+				currentLFRValue = currentProduct.envLFR.find(
+					version => version.name === environment.envLFRLabel
+				).value;
+
+				currentLFRVersion = envLFRVersions.find(
+					version => version[currentLFRValue]
+				)[currentLFRValue];
+			}
 
 			this.setState(
 				{
 					configurations: {
+						commerceProduct: !!currentProduct.envCommerce,
 						customOS: false,
 						enterprise: currentProduct.enterpriseSearch
 					},
@@ -89,6 +117,7 @@ export default class EditAccountEnvironmentForm extends React.Component {
 							'envBrowser',
 							environment.envBrowserLabel
 						),
+						envCommerce: currentCommerceValue,
 						envCS: this.getSelectionValueFromLabel(
 							currentLFRVersion,
 							'envCS',
@@ -125,6 +154,7 @@ export default class EditAccountEnvironmentForm extends React.Component {
 						productEntryId: environment.productEntryId
 					},
 					selectedOptions: {
+						selectedCommerceVersion: currentCommerceVersion,
 						selectedLFRVersion: currentLFRVersion,
 						selectedProduct: currentProduct
 					}
@@ -214,7 +244,7 @@ export default class EditAccountEnvironmentForm extends React.Component {
 	};
 
 	handleSelectChange = event => {
-		const {envLFRVersions, products} = this.props.environmentConfiguration;
+		const {envCommerce, envLFRVersions, products} = this.props.environmentConfiguration;
 
 		const {configurations, formValues, selectedOptions} = this.state;
 
@@ -228,23 +258,58 @@ export default class EditAccountEnvironmentForm extends React.Component {
 				{
 					configurations: {
 						...configurations,
-						enterprise: !!currentProduct && currentProduct.enterpriseSearch
+						commerceProduct: !!(currentProduct && currentProduct.envCommerce),
+						enterprise: !!(currentProduct && currentProduct.enterpriseSearch)
 					},
 					formValues: {
 						...formValues,
+						envCommerce: '',
 						envLFR: '',
 						productEntryId: event.target.value
 					},
 					selectedOptions: {
-						...selectedOptions,
+						selectedCommerceVersion: null,
 						selectedLFRVersion: null,
 						selectedProduct: currentProduct
 					}
 				}
 			);
 		}
+		else if (name === `${this.props.namespace}envCommerce`) {
+			const currentCommerceVersion = envCommerce.envCommerceVersions.find(version => version[value]);
+
+			this.setState(
+				{
+					formValues: {
+						...formValues,
+						envAS: '',
+						envBrowser: '',
+						envCommerce: event.target.value,
+						envCS: '',
+						envDB: '',
+						envJVM: '',
+						envLFR: '',
+						envOS: '',
+						envSearch: []
+					},
+					selectedOptions: {
+						...selectedOptions,
+						selectedCommerceVersion: currentCommerceVersion ? currentCommerceVersion[value] : null
+					}
+				}
+			);
+		}
 		else if (name === `${this.props.namespace}envLFR`) {
-			const currentLFRVersion = envLFRVersions.find(version => version[value]);
+			const {commerceProduct} = configurations;
+
+			let currentLFRVersion;
+
+			if (commerceProduct) {
+				currentLFRVersion = envCommerce.envLFRVersions.find(version => version[value]);
+			}
+			else {
+				currentLFRVersion = envLFRVersions.find(version => version[value]);
+			}
 
 			this.setState(
 				{
@@ -367,18 +432,21 @@ export default class EditAccountEnvironmentForm extends React.Component {
 
 		const {products} = environmentConfiguration;
 
-		const {selectedLFRVersion, selectedProduct} = selectedOptions;
-		const {customOS, enterprise} = configurations;
+		const {selectedCommerceVersion, selectedLFRVersion, selectedProduct} = selectedOptions;
+		const {commerceProduct, customOS, enterprise} = configurations;
 		const {patchLevel, portalExt} = formValues;
 
 		const actionURL = environment ? environment.editAccountEnvironmentURL : addEnvironmentURL;
+		const renderEnvCommerceVersion = commerceProduct;
 		const renderEnvCS = selectedLFRVersion && selectedLFRVersion.envCS;
 		const renderEnvOSCustom = customOS;
 		const renderEnvSearch = selectedLFRVersion && selectedProduct && 'enterpriseSearch' in selectedProduct;
+		const selectedLRProduct = commerceProduct ? selectedCommerceVersion : selectedProduct;
 
 		const initialValues = {
 			[`${namespace}envAS`]: formValues.envAS,
 			[`${namespace}envBrowser`]: formValues.envBrowser,
+			[`${namespace}envCommerce`]: formValues.envCommerce,
 			[`${namespace}envCS`]: formValues.envCS,
 			[`${namespace}envDB`]: formValues.envDB,
 			[`${namespace}envJVM`]: formValues.envJVM,
@@ -394,6 +462,7 @@ export default class EditAccountEnvironmentForm extends React.Component {
 		const validationSchema = yup.object().shape(
 			{
 				[`${namespace}envAS`]: REQUIRED_SCHEMA,
+				[`${namespace}envCommerce`]: renderEnvCommerceVersion ? REQUIRED_SCHEMA : NOT_REQUIRED_SCHEMA,
 				[`${namespace}envDB`]: REQUIRED_SCHEMA,
 				[`${namespace}envJVM`]: REQUIRED_SCHEMA,
 				[`${namespace}envLFR`]: REQUIRED_SCHEMA,
@@ -442,7 +511,7 @@ export default class EditAccountEnvironmentForm extends React.Component {
 								)}
 							</div>
 
-							<div className="col-md-9">
+							<div className={commerceProduct ? 'col-md-12' : 'col-md-9'}>
 								<div className="form-group">
 									<label className="control-label" htmlFor={`${namespace}accountEnvironmentProduct`}>
 										{Liferay.Language.get('product')}
@@ -470,7 +539,37 @@ export default class EditAccountEnvironmentForm extends React.Component {
 								)}
 							</div>
 
-							<div className="col-md-3">
+							{renderEnvCommerceVersion && (
+								<div className="col-md-6">
+									<div className="form-group">
+										<label className="control-label" htmlFor={`${namespace}envCommerce`}>
+											{Liferay.Language.get('commerce-version')}
+
+											<svg className="lexicon-icon lexicon-icon-asterisk">
+												<use xlinkHref="#asterisk" />
+											</svg>
+										</label>
+
+										<select className="form-control" disabled={!selectedProduct} id={`${namespace}envCommerce`} name={`${namespace}envCommerce`} onBlur={handleBlur} onChange={this.handleSelectChange} value={formValues.envCommerce}>
+											<option label={SELECT_LABEL} value="">{SELECT_LABEL}</option>
+
+											{selectedProduct && selectedProduct.envCommerce.map(
+												(version) => (
+													<option key={version.value} id={'envCommerce-' + version.value} label={version.name} value={version.value}>{version.name}</option>
+												)
+											)}
+										</select>
+									</div>
+
+									{touched[`${namespace}envCommerce`] && errors[`${namespace}envCommerce`] && (
+										<Alert type="danger">
+											{errors[`${namespace}envCommerce`]}
+										</Alert>
+									)}
+								</div>
+							)}
+
+							<div className={commerceProduct ? 'col-md-6' : 'col-md-3'}>
 								<div className="form-group">
 									<label className="control-label" htmlFor={`${namespace}envLFR`}>
 										{Liferay.Language.get('liferay-version')}
@@ -480,10 +579,10 @@ export default class EditAccountEnvironmentForm extends React.Component {
 										</svg>
 									</label>
 
-									<select className="form-control" disabled={!selectedProduct} id={`${namespace}envLFR`} name={`${namespace}envLFR`} onBlur={handleBlur} onChange={this.handleSelectChange} value={formValues.envLFR}>
+									<select className="form-control" disabled={!selectedLRProduct} id={`${namespace}envLFR`} name={`${namespace}envLFR`} onBlur={handleBlur} onChange={this.handleSelectChange} value={formValues.envLFR}>
 										<option label={SELECT_LABEL} value="">{SELECT_LABEL}</option>
 
-										{selectedProduct && selectedProduct.envLFR.map(
+										{selectedLRProduct && selectedLRProduct.envLFR.map(
 											(version) => (
 												<option key={version.value} id={'envLFR-' + version.value} label={version.name} value={version.value}>{version.name}</option>
 											)
