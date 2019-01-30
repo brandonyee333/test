@@ -234,7 +234,7 @@ request.setAttribute("edit_article.jsp-changeStructure", changeStructure);
 			</liferay-frontend:info-bar>
 		</c:if>
 
-		<aui:translation-manager availableLocales="<%= availableLocalesSet.toArray(new Locale[0]) %>" changeableDefaultLanguage="<%= changeableDefaultLanguage %>" defaultLanguageId="<%= defaultLanguageId %>" id="translationManager" />
+		<aui:translation-manager availableLocales="<%= availableLocalesSet.toArray(new Locale[0]) %>" changeableDefaultLanguage="<%= changeableDefaultLanguage %>" defaultLanguageId="<%= defaultLanguageId %>" groupId="<%= groupId %>" id="translationManager" />
 
 		<%
 		boolean approved = false;
