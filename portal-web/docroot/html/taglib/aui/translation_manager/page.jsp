@@ -34,7 +34,7 @@
 		<select class="hide lfr-translation-manager-default-locale">
 
 			<%
-			Set<Locale> locales = LanguageUtil.getAvailableLocales(themeDisplay.getSiteGroupId());
+			Set<Locale> locales = LanguageUtil.getAvailableLocales(groupId);
 
 			for (Locale curLocale : locales) {
 			%>
