@@ -8,7 +8,7 @@ window.Liferay = {
 	Language: {
 		get: lang
 	}
-}
+};
 
 // Mock console.error to suppress jsdom console warning instead of setting omitJSDOMErrors to true
 

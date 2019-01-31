@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import 'core-js/fn/array/find';
 
-const PORTLET_ID = "com_liferay_osb_customer_downloads_display_web_DownloadsDisplayPortlet";
+const PORTLET_ID = 'com_liferay_osb_customer_downloads_display_web_DownloadsDisplayPortlet';
 
 export default class SearchFilters extends React.Component {
 	searchDownloadsFormRef = React.createRef();
@@ -15,7 +15,7 @@ export default class SearchFilters extends React.Component {
 			product => product.value === comparator
 		);
 
-		return productEntry ? productEntry.fileTypes : []
+		return productEntry ? productEntry.fileTypes : [];
 	};
 
 	state = {
@@ -35,7 +35,7 @@ export default class SearchFilters extends React.Component {
 					value: PropTypes.string
 				}
 			)
-		).isRequired,
+		).isRequired
 	};
 
 	handleFileTypeChange = event =>
@@ -99,7 +99,7 @@ export default class SearchFilters extends React.Component {
 			</form>
 		);
 	}
-};
+}
 
 const Filter = props => (
 	<div className="search-filter-container">

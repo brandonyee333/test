@@ -9,15 +9,29 @@ describe('SearchFilter', () => {
 		{
 			name: 'Product One',
 			value: 'product_one',
-			fileTypes: [{name: 'One', value: 'one'}]
+			fileTypes: [
+				{
+					name: 'One',
+					value: 'one'
+				}
+			]
 		},
 		{
 			name: 'Product Two',
 			value: 'product_two',
 			fileTypes: [
-				{name: 'One', value: 'one'},
-				{name: 'Two', value: 'two'},
-				{name: 'Three', value: 'three'}
+				{
+					name: 'One',
+					value: 'one'
+				},
+				{
+					name: 'Two',
+					value: 'two'
+				},
+				{
+					name: 'Three',
+					value: 'three'
+				}
 			]
 		}
 	];
@@ -60,11 +74,25 @@ describe('SearchFilter', () => {
 
 		const productInput = getByLabelText('product:');
 
-		fireEvent.change(productInput, {target: {value: 'product_two'}});
+		fireEvent.change(
+			productInput,
+			{
+				target: {
+					value: 'product_two'
+				}
+			}
+		);
 
 		const fileTypeInput = getByLabelText('file-type:');
 
-		fireEvent.change(fileTypeInput, {target: {value: 'three'}});
+		fireEvent.change(
+			fileTypeInput,
+			{
+				target: {
+					value: 'three'
+				}
+			}
+		);
 
 		expect(fileTypeInput.value).toBe('three');
 	});
@@ -81,7 +109,14 @@ describe('SearchFilter', () => {
 
 		const productInput = getByLabelText('product:');
 
-		fireEvent.change(productInput, {target: {value: 'product_one'}});
+		fireEvent.change(
+			productInput,
+			{
+				target: {
+					value: 'product_one'
+				}
+			}
+		);
 
 		const fileTypeInput = getByLabelText('file-type:');
 
