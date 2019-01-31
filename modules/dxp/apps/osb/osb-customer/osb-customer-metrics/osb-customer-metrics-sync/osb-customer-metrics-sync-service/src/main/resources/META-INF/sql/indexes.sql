@@ -1,0 +1,1 @@
+create index IX_A44A2B80 on OSBCustomer_SyncState (model[$COLUMN_LENGTH:75$]);

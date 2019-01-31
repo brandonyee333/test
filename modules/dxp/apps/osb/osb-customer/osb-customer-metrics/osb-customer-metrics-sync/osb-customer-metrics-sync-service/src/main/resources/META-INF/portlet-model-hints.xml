@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="com.liferay.osb.customer.metrics.sync.model.SyncState">
+		<field name="syncStateId" type="long" />
+		<field name="model" type="String" />
+		<field name="lastRunTime" type="long" />
+	</model>
+</model-hints>
