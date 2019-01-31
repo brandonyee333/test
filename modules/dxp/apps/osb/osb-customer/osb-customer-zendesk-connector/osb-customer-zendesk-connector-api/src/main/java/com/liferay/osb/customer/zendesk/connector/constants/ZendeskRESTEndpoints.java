@@ -21,6 +21,16 @@ public interface ZendeskRESTEndpoints {
 
 	public static final String IDENTITIES = "/identities.json";
 
+	public static final String INCREMENTAL_ARTICLES =
+		"help_center/incremental/articles.json";
+
+	public static final String INCREMENTAL_ORGANIZATIONS =
+		"incremental/organizations.json";
+
+	public static final String INCREMENTAL_TICKETS = "incremental/tickets.json";
+
+	public static final String INCREMENTAL_USERS = "incremental/users.json";
+
 	public static final String ORGANIZATION_MEMBERSHIPS_CREATE_MANY =
 		"organization_memberships/create_many.json";
 

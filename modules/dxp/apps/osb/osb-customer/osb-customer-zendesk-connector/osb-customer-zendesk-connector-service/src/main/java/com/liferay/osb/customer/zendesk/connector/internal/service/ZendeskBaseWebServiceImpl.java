@@ -256,13 +256,7 @@ public class ZendeskBaseWebServiceImpl
 		String method = zendeskRequest.getMethod();
 		JSONObject body = zendeskRequest.getBody();
 
-		if (method.equals("post")) {
-			return post(zendeskRequest.getEndpoint(), body.toString());
-		}
-		else if (method.equals("put")) {
-			return put(zendeskRequest.getEndpoint(), body.toString());
-		}
-		else if (method.equals("delete")) {
+		if (method.equals("delete")) {
 			if (zendeskRequest.hasParameters()) {
 				return delete(
 					zendeskRequest.getEndpoint(),
@@ -276,6 +270,16 @@ public class ZendeskBaseWebServiceImpl
 					zendeskRequest.getEndpoint(),
 					new HashMap<String, String>());
 			}
+		}
+		else if (method.equals("get")) {
+			return get(
+				zendeskRequest.getEndpoint(), zendeskRequest.getParameters());
+		}
+		else if (method.equals("post")) {
+			return post(zendeskRequest.getEndpoint(), body.toString());
+		}
+		else if (method.equals("put")) {
+			return put(zendeskRequest.getEndpoint(), body.toString());
 		}
 		else {
 			throw new PortalException("Invalid Zendesk Request");
