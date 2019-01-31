@@ -553,6 +553,7 @@ Date lastEnabledDate = calendar.getTime();
 
 <aui:script use="aui-debounce,autocomplete,autocomplete-highlighters">
 	var autoCompleteConfig = {
+		activateFirstItem: true,
 		maxResults: 10,
 		minQueryLength: 2,
 		render: false,
@@ -609,6 +610,8 @@ Date lastEnabledDate = calendar.getTime();
 									'select',
 									function(event) {
 										name.val('"' + event.result.text + '"');
+
+										name.ac.set('source', []);
 									}
 								);
 
