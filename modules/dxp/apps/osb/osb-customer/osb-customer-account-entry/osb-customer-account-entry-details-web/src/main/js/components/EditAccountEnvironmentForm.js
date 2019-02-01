@@ -24,7 +24,6 @@ export default class EditAccountEnvironmentForm extends React.Component {
 
 	state = {
 		configurations: {
-			commerceProduct: false,
 			customOS: false,
 			enterprise: false
 		},
@@ -102,7 +101,6 @@ export default class EditAccountEnvironmentForm extends React.Component {
 			this.setState(
 				{
 					configurations: {
-						commerceProduct: !!currentProduct.envCommerce,
 						customOS: false,
 						enterprise: currentProduct.enterpriseSearch
 					},
@@ -258,7 +256,6 @@ export default class EditAccountEnvironmentForm extends React.Component {
 				{
 					configurations: {
 						...configurations,
-						commerceProduct: !!(currentProduct && currentProduct.envCommerce),
 						enterprise: !!(currentProduct && currentProduct.enterpriseSearch)
 					},
 					formValues: {
@@ -300,11 +297,11 @@ export default class EditAccountEnvironmentForm extends React.Component {
 			);
 		}
 		else if (name === `${this.props.namespace}envLFR`) {
-			const {commerceProduct} = configurations;
+			const {selectedProduct} = selectedOptions;
 
 			let currentLFRVersion;
 
-			if (commerceProduct) {
+			if (selectedProduct.envCommerce) {
 				currentLFRVersion = envCommerce.envLFRVersions.find(version => version[value]);
 			}
 			else {
@@ -433,11 +430,11 @@ export default class EditAccountEnvironmentForm extends React.Component {
 		const {products} = environmentConfiguration;
 
 		const {selectedCommerceVersion, selectedLFRVersion, selectedProduct} = selectedOptions;
-		const {commerceProduct, customOS, enterprise} = configurations;
+		const {customOS, enterprise} = configurations;
 		const {patchLevel, portalExt} = formValues;
 
 		const actionURL = environment ? environment.editAccountEnvironmentURL : addEnvironmentURL;
-		const renderEnvCommerceVersion = commerceProduct;
+		const commerceProduct = selectedProduct && selectedProduct.envCommerce;
 		const renderEnvCS = selectedLFRVersion && selectedLFRVersion.envCS;
 		const renderEnvOSCustom = customOS;
 		const renderEnvSearch = selectedLFRVersion && selectedProduct && 'enterpriseSearch' in selectedProduct;
@@ -462,7 +459,7 @@ export default class EditAccountEnvironmentForm extends React.Component {
 		const validationSchema = yup.object().shape(
 			{
 				[`${namespace}envAS`]: REQUIRED_SCHEMA,
-				[`${namespace}envCommerce`]: renderEnvCommerceVersion ? REQUIRED_SCHEMA : NOT_REQUIRED_SCHEMA,
+				[`${namespace}envCommerce`]: commerceProduct ? REQUIRED_SCHEMA : NOT_REQUIRED_SCHEMA,
 				[`${namespace}envDB`]: REQUIRED_SCHEMA,
 				[`${namespace}envJVM`]: REQUIRED_SCHEMA,
 				[`${namespace}envLFR`]: REQUIRED_SCHEMA,
@@ -539,7 +536,7 @@ export default class EditAccountEnvironmentForm extends React.Component {
 								)}
 							</div>
 
-							{renderEnvCommerceVersion && (
+							{commerceProduct && (
 								<div className="col-md-6">
 									<div className="form-group">
 										<label className="control-label" htmlFor={`${namespace}envCommerce`}>
@@ -553,7 +550,7 @@ export default class EditAccountEnvironmentForm extends React.Component {
 										<select className="form-control" disabled={!selectedProduct} id={`${namespace}envCommerce`} name={`${namespace}envCommerce`} onBlur={handleBlur} onChange={this.handleSelectChange} value={formValues.envCommerce}>
 											<option label={SELECT_LABEL} value="">{SELECT_LABEL}</option>
 
-											{selectedProduct && selectedProduct.envCommerce.map(
+											{commerceProduct.map(
 												(version) => (
 													<option key={version.value} id={'envCommerce-' + version.value} label={version.name} value={version.value}>{version.name}</option>
 												)
