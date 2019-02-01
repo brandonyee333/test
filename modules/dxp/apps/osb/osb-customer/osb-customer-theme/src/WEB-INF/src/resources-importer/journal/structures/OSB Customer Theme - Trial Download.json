@@ -176,6 +176,12 @@
 				},
 				{
 					"label": {
+						"en_US": "Project SDK"
+					},
+					"value": "projectSDK"
+				},
+				{
+					"label": {
 						"en_US": "Security"
 					},
 					"value": "security"
