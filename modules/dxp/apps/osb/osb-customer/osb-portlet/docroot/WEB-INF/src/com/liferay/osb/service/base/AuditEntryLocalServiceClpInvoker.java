@@ -128,7 +128,8 @@ public class AuditEntryLocalServiceClpInvoker {
 		_methodParameterTypes167 = new String[] {
 				"long", "java.lang.String", "java.util.Date", "long", "long",
 				"long", "long", "long", "int", "int", "int", "java.lang.String",
-				"java.lang.String", "java.lang.String", "java.lang.String"
+				"java.lang.String", "java.lang.String", "java.lang.String",
+				"java.lang.String"
 			};
 
 		_methodName168 = "addAuditEntry";
@@ -137,7 +138,7 @@ public class AuditEntryLocalServiceClpInvoker {
 				"long", "java.lang.String", "java.util.Date", "long", "long",
 				"long", "long", "long", "int", "int", "int", "java.lang.String",
 				"java.lang.String", "java.lang.String", "java.lang.String",
-				"boolean", "boolean"
+				"java.lang.String", "boolean", "boolean"
 			};
 
 		_methodName169 = "getAuditEntries";
@@ -292,7 +293,8 @@ public class AuditEntryLocalServiceClpInvoker {
 				((Integer)arguments[10]).intValue(),
 				(java.lang.String)arguments[11],
 				(java.lang.String)arguments[12],
-				(java.lang.String)arguments[13], (java.lang.String)arguments[14]);
+				(java.lang.String)arguments[13],
+				(java.lang.String)arguments[14], (java.lang.String)arguments[15]);
 		}
 
 		if (_methodName168.equals(name) &&
@@ -311,8 +313,9 @@ public class AuditEntryLocalServiceClpInvoker {
 				(java.lang.String)arguments[12],
 				(java.lang.String)arguments[13],
 				(java.lang.String)arguments[14],
-				((Boolean)arguments[15]).booleanValue(),
-				((Boolean)arguments[16]).booleanValue());
+				(java.lang.String)arguments[15],
+				((Boolean)arguments[16]).booleanValue(),
+				((Boolean)arguments[17]).booleanValue());
 		}
 
 		if (_methodName169.equals(name) &&

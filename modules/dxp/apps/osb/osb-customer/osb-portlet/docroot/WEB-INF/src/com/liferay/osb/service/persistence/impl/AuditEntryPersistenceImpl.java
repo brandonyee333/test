@@ -3123,6 +3123,7 @@ public class AuditEntryPersistenceImpl extends BasePersistenceImpl<AuditEntry>
 		auditEntryImpl.setOldValue(auditEntry.getOldValue());
 		auditEntryImpl.setNewLabel(auditEntry.getNewLabel());
 		auditEntryImpl.setNewValue(auditEntry.getNewValue());
+		auditEntryImpl.setDescription(auditEntry.getDescription());
 		auditEntryImpl.setI18n(auditEntry.isI18n());
 
 		return auditEntryImpl;

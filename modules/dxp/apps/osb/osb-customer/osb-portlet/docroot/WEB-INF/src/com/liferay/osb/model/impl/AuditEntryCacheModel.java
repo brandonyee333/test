@@ -66,7 +66,7 @@ public class AuditEntryCacheModel implements CacheModel<AuditEntry>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(37);
+		StringBundler sb = new StringBundler(39);
 
 		sb.append("{auditEntryId=");
 		sb.append(auditEntryId);
@@ -102,6 +102,8 @@ public class AuditEntryCacheModel implements CacheModel<AuditEntry>,
 		sb.append(newLabel);
 		sb.append(", newValue=");
 		sb.append(newValue);
+		sb.append(", description=");
+		sb.append(description);
 		sb.append(", i18n=");
 		sb.append(i18n);
 		sb.append("}");
@@ -168,6 +170,13 @@ public class AuditEntryCacheModel implements CacheModel<AuditEntry>,
 			auditEntryImpl.setNewValue(newValue);
 		}
 
+		if (description == null) {
+			auditEntryImpl.setDescription(StringPool.BLANK);
+		}
+		else {
+			auditEntryImpl.setDescription(description);
+		}
+
 		auditEntryImpl.setI18n(i18n);
 
 		auditEntryImpl.resetOriginalValues();
@@ -204,6 +213,7 @@ public class AuditEntryCacheModel implements CacheModel<AuditEntry>,
 		oldValue = objectInput.readUTF();
 		newLabel = objectInput.readUTF();
 		newValue = objectInput.readUTF();
+		description = objectInput.readUTF();
 
 		i18n = objectInput.readBoolean();
 	}
@@ -270,6 +280,13 @@ public class AuditEntryCacheModel implements CacheModel<AuditEntry>,
 			objectOutput.writeUTF(newValue);
 		}
 
+		if (description == null) {
+			objectOutput.writeUTF(StringPool.BLANK);
+		}
+		else {
+			objectOutput.writeUTF(description);
+		}
+
 		objectOutput.writeBoolean(i18n);
 	}
 
@@ -290,5 +307,6 @@ public class AuditEntryCacheModel implements CacheModel<AuditEntry>,
 	public String oldValue;
 	public String newLabel;
 	public String newValue;
+	public String description;
 	public boolean i18n;
 }

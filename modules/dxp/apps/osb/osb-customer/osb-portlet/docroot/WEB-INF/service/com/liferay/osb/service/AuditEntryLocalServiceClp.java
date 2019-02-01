@@ -37,7 +37,8 @@ public class AuditEntryLocalServiceClp implements AuditEntryLocalService {
 		_methodParameterTypes1 = new String[] {
 				"long", "java.lang.String", "java.util.Date", "long", "long",
 				"long", "long", "long", "int", "int", "int", "java.lang.String",
-				"java.lang.String", "java.lang.String", "java.lang.String"
+				"java.lang.String", "java.lang.String", "java.lang.String",
+				"java.lang.String"
 			};
 
 		_methodName2 = "addAuditEntry";
@@ -46,7 +47,7 @@ public class AuditEntryLocalServiceClp implements AuditEntryLocalService {
 				"long", "java.lang.String", "java.util.Date", "long", "long",
 				"long", "long", "long", "int", "int", "int", "java.lang.String",
 				"java.lang.String", "java.lang.String", "java.lang.String",
-				"boolean", "boolean"
+				"java.lang.String", "boolean", "boolean"
 			};
 
 		_methodName3 = "createAuditEntry";
@@ -201,7 +202,8 @@ public class AuditEntryLocalServiceClp implements AuditEntryLocalService {
 		long classPK, long auditSetId, long fieldClassNameId,
 		long fieldClassPK, int action, int field, int visibility,
 		java.lang.String oldLabel, java.lang.String oldValue,
-		java.lang.String newLabel, java.lang.String newValue)
+		java.lang.String newLabel, java.lang.String newValue,
+		java.lang.String description)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
@@ -237,7 +239,9 @@ public class AuditEntryLocalServiceClp implements AuditEntryLocalService {
 						
 					ClpSerializer.translateInput(newLabel),
 						
-					ClpSerializer.translateInput(newValue)
+					ClpSerializer.translateInput(newValue),
+						
+					ClpSerializer.translateInput(description)
 					});
 		}
 		catch (Throwable t) {
@@ -265,8 +269,8 @@ public class AuditEntryLocalServiceClp implements AuditEntryLocalService {
 		long classPK, long auditSetId, long fieldClassNameId,
 		long fieldClassPK, int action, int field, int visibility,
 		java.lang.String oldLabel, java.lang.String oldValue,
-		java.lang.String newLabel, java.lang.String newValue, boolean i18n,
-		boolean trackChange)
+		java.lang.String newLabel, java.lang.String newValue,
+		java.lang.String description, boolean i18n, boolean trackChange)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
@@ -303,6 +307,8 @@ public class AuditEntryLocalServiceClp implements AuditEntryLocalService {
 					ClpSerializer.translateInput(newLabel),
 						
 					ClpSerializer.translateInput(newValue),
+						
+					ClpSerializer.translateInput(description),
 						
 					i18n,
 						

@@ -74,6 +74,7 @@ public class AuditEntryWrapper implements AuditEntry, ModelWrapper<AuditEntry> {
 		attributes.put("oldValue", getOldValue());
 		attributes.put("newLabel", getNewLabel());
 		attributes.put("newValue", getNewValue());
+		attributes.put("description", getDescription());
 		attributes.put("i18n", getI18n());
 
 		return attributes;
@@ -181,6 +182,12 @@ public class AuditEntryWrapper implements AuditEntry, ModelWrapper<AuditEntry> {
 
 		if (newValue != null) {
 			setNewValue(newValue);
+		}
+
+		String description = (String)attributes.get("description");
+
+		if (description != null) {
+			setDescription(description);
 		}
 
 		Boolean i18n = (Boolean)attributes.get("i18n");
@@ -308,6 +315,16 @@ public class AuditEntryWrapper implements AuditEntry, ModelWrapper<AuditEntry> {
 	@Override
 	public java.lang.String getClassName() {
 		return _auditEntry.getClassName();
+	}
+
+	/**
+	* Returns the description of this audit entry.
+	*
+	* @return the description of this audit entry
+	*/
+	@Override
+	public java.lang.String getDescription() {
+		return _auditEntry.getDescription();
 	}
 
 	@Override
@@ -568,6 +585,16 @@ public class AuditEntryWrapper implements AuditEntry, ModelWrapper<AuditEntry> {
 	@Override
 	public void setCreateDate(Date createDate) {
 		_auditEntry.setCreateDate(createDate);
+	}
+
+	/**
+	* Sets the description of this audit entry.
+	*
+	* @param description the description of this audit entry
+	*/
+	@Override
+	public void setDescription(java.lang.String description) {
+		_auditEntry.setDescription(description);
 	}
 
 	@Override

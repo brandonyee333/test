@@ -101,6 +101,7 @@ public class AuditEntryClp extends BaseModelImpl<AuditEntry>
 		attributes.put("oldValue", getOldValue());
 		attributes.put("newLabel", getNewLabel());
 		attributes.put("newValue", getNewValue());
+		attributes.put("description", getDescription());
 		attributes.put("i18n", getI18n());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
@@ -211,6 +212,12 @@ public class AuditEntryClp extends BaseModelImpl<AuditEntry>
 
 		if (newValue != null) {
 			setNewValue(newValue);
+		}
+
+		String description = (String)attributes.get("description");
+
+		if (description != null) {
+			setDescription(description);
 		}
 
 		Boolean i18n = (Boolean)attributes.get("i18n");
@@ -653,6 +660,29 @@ public class AuditEntryClp extends BaseModelImpl<AuditEntry>
 	}
 
 	@Override
+	public String getDescription() {
+		return _description;
+	}
+
+	@Override
+	public void setDescription(String description) {
+		_description = description;
+
+		if (_auditEntryRemoteModel != null) {
+			try {
+				Class<?> clazz = _auditEntryRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setDescription", String.class);
+
+				method.invoke(_auditEntryRemoteModel, description);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
 	public boolean getI18n() {
 		return _i18n;
 	}
@@ -842,6 +872,7 @@ public class AuditEntryClp extends BaseModelImpl<AuditEntry>
 		clone.setOldValue(getOldValue());
 		clone.setNewLabel(getNewLabel());
 		clone.setNewValue(getNewValue());
+		clone.setDescription(getDescription());
 		clone.setI18n(getI18n());
 
 		return clone;
@@ -903,7 +934,7 @@ public class AuditEntryClp extends BaseModelImpl<AuditEntry>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(37);
+		StringBundler sb = new StringBundler(39);
 
 		sb.append("{auditEntryId=");
 		sb.append(getAuditEntryId());
@@ -939,6 +970,8 @@ public class AuditEntryClp extends BaseModelImpl<AuditEntry>
 		sb.append(getNewLabel());
 		sb.append(", newValue=");
 		sb.append(getNewValue());
+		sb.append(", description=");
+		sb.append(getDescription());
 		sb.append(", i18n=");
 		sb.append(getI18n());
 		sb.append("}");
@@ -948,7 +981,7 @@ public class AuditEntryClp extends BaseModelImpl<AuditEntry>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(58);
+		StringBundler sb = new StringBundler(61);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.AuditEntry");
@@ -1023,6 +1056,10 @@ public class AuditEntryClp extends BaseModelImpl<AuditEntry>
 		sb.append(getNewValue());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>description</column-name><column-value><![CDATA[");
+		sb.append(getDescription());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>i18n</column-name><column-value><![CDATA[");
 		sb.append(getI18n());
 		sb.append("]]></column-value></column>");
@@ -1049,6 +1086,7 @@ public class AuditEntryClp extends BaseModelImpl<AuditEntry>
 	private String _oldValue;
 	private String _newLabel;
 	private String _newValue;
+	private String _description;
 	private boolean _i18n;
 	private BaseModel<?> _auditEntryRemoteModel;
 	private Class<?> _clpSerializerClass = ClpSerializer.class;

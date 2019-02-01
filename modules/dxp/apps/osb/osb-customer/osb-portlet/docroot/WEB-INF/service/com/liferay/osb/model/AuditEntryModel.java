@@ -335,6 +335,21 @@ public interface AuditEntryModel extends AttachedModel, BaseModel<AuditEntry> {
 	public void setNewValue(String newValue);
 
 	/**
+	 * Returns the description of this audit entry.
+	 *
+	 * @return the description of this audit entry
+	 */
+	@AutoEscape
+	public String getDescription();
+
+	/**
+	 * Sets the description of this audit entry.
+	 *
+	 * @param description the description of this audit entry
+	 */
+	public void setDescription(String description);
+
+	/**
 	 * Returns the i18n of this audit entry.
 	 *
 	 * @return the i18n of this audit entry

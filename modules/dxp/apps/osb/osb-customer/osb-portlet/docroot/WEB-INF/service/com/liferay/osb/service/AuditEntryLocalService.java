@@ -76,15 +76,16 @@ public interface AuditEntryLocalService extends BaseLocalService,
 		Date createDate, long classNameId, long classPK, long auditSetId,
 		long fieldClassNameId, long fieldClassPK, int action, int field,
 		int visibility, java.lang.String oldLabel, java.lang.String oldValue,
-		java.lang.String newLabel, java.lang.String newValue)
-		throws PortalException;
+		java.lang.String newLabel, java.lang.String newValue,
+		java.lang.String description) throws PortalException;
 
 	public AuditEntry addAuditEntry(long userId, java.lang.String userName,
 		Date createDate, long classNameId, long classPK, long auditSetId,
 		long fieldClassNameId, long fieldClassPK, int action, int field,
 		int visibility, java.lang.String oldLabel, java.lang.String oldValue,
-		java.lang.String newLabel, java.lang.String newValue, boolean i18n,
-		boolean trackChange) throws PortalException;
+		java.lang.String newLabel, java.lang.String newValue,
+		java.lang.String description, boolean i18n, boolean trackChange)
+		throws PortalException;
 
 	/**
 	* Creates a new audit entry with the primary key. Does not add the audit entry to the database.

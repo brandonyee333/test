@@ -177,6 +177,7 @@
 		<property name="oldValue" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="newLabel" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="newValue" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="i18n" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.CorpProjectImpl" table="OSB_CorpProject">

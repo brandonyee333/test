@@ -90,6 +90,7 @@ public class AuditEntryModelImpl extends BaseModelImpl<AuditEntry>
 			{ "oldValue", Types.VARCHAR },
 			{ "newLabel", Types.VARCHAR },
 			{ "newValue", Types.VARCHAR },
+			{ "description", Types.VARCHAR },
 			{ "i18n", Types.BOOLEAN }
 		};
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
@@ -112,10 +113,11 @@ public class AuditEntryModelImpl extends BaseModelImpl<AuditEntry>
 		TABLE_COLUMNS_MAP.put("oldValue", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("newLabel", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("newValue", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("i18n", Types.BOOLEAN);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSB_AuditEntry (auditEntryId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,classNameId LONG,classPK LONG,previousAuditEntryId LONG,auditSetId LONG,fieldClassNameId LONG,fieldClassPK LONG,action INTEGER,field INTEGER,visibility INTEGER,oldLabel VARCHAR(255) null,oldValue STRING null,newLabel VARCHAR(255) null,newValue STRING null,i18n BOOLEAN)";
+	public static final String TABLE_SQL_CREATE = "create table OSB_AuditEntry (auditEntryId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,classNameId LONG,classPK LONG,previousAuditEntryId LONG,auditSetId LONG,fieldClassNameId LONG,fieldClassPK LONG,action INTEGER,field INTEGER,visibility INTEGER,oldLabel VARCHAR(255) null,oldValue STRING null,newLabel VARCHAR(255) null,newValue STRING null,description STRING null,i18n BOOLEAN)";
 	public static final String TABLE_SQL_DROP = "drop table OSB_AuditEntry";
 	public static final String ORDER_BY_JPQL = " ORDER BY auditEntry.createDate ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY OSB_AuditEntry.createDate ASC";
@@ -170,6 +172,7 @@ public class AuditEntryModelImpl extends BaseModelImpl<AuditEntry>
 		model.setOldValue(soapModel.getOldValue());
 		model.setNewLabel(soapModel.getNewLabel());
 		model.setNewValue(soapModel.getNewValue());
+		model.setDescription(soapModel.getDescription());
 		model.setI18n(soapModel.getI18n());
 
 		return model;
@@ -252,6 +255,7 @@ public class AuditEntryModelImpl extends BaseModelImpl<AuditEntry>
 		attributes.put("oldValue", getOldValue());
 		attributes.put("newLabel", getNewLabel());
 		attributes.put("newValue", getNewValue());
+		attributes.put("description", getDescription());
 		attributes.put("i18n", getI18n());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
@@ -362,6 +366,12 @@ public class AuditEntryModelImpl extends BaseModelImpl<AuditEntry>
 
 		if (newValue != null) {
 			setNewValue(newValue);
+		}
+
+		String description = (String)attributes.get("description");
+
+		if (description != null) {
+			setDescription(description);
 		}
 
 		Boolean i18n = (Boolean)attributes.get("i18n");
@@ -715,6 +725,22 @@ public class AuditEntryModelImpl extends BaseModelImpl<AuditEntry>
 
 	@JSON
 	@Override
+	public String getDescription() {
+		if (_description == null) {
+			return StringPool.BLANK;
+		}
+		else {
+			return _description;
+		}
+	}
+
+	@Override
+	public void setDescription(String description) {
+		_description = description;
+	}
+
+	@JSON
+	@Override
 	public boolean getI18n() {
 		return _i18n;
 	}
@@ -778,6 +804,7 @@ public class AuditEntryModelImpl extends BaseModelImpl<AuditEntry>
 		auditEntryImpl.setOldValue(getOldValue());
 		auditEntryImpl.setNewLabel(getNewLabel());
 		auditEntryImpl.setNewValue(getNewValue());
+		auditEntryImpl.setDescription(getDescription());
 		auditEntryImpl.setI18n(getI18n());
 
 		auditEntryImpl.resetOriginalValues();
@@ -947,6 +974,14 @@ public class AuditEntryModelImpl extends BaseModelImpl<AuditEntry>
 			auditEntryCacheModel.newValue = null;
 		}
 
+		auditEntryCacheModel.description = getDescription();
+
+		String description = auditEntryCacheModel.description;
+
+		if ((description != null) && (description.length() == 0)) {
+			auditEntryCacheModel.description = null;
+		}
+
 		auditEntryCacheModel.i18n = getI18n();
 
 		return auditEntryCacheModel;
@@ -954,7 +989,7 @@ public class AuditEntryModelImpl extends BaseModelImpl<AuditEntry>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(37);
+		StringBundler sb = new StringBundler(39);
 
 		sb.append("{auditEntryId=");
 		sb.append(getAuditEntryId());
@@ -990,6 +1025,8 @@ public class AuditEntryModelImpl extends BaseModelImpl<AuditEntry>
 		sb.append(getNewLabel());
 		sb.append(", newValue=");
 		sb.append(getNewValue());
+		sb.append(", description=");
+		sb.append(getDescription());
 		sb.append(", i18n=");
 		sb.append(getI18n());
 		sb.append("}");
@@ -999,7 +1036,7 @@ public class AuditEntryModelImpl extends BaseModelImpl<AuditEntry>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(58);
+		StringBundler sb = new StringBundler(61);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.AuditEntry");
@@ -1074,6 +1111,10 @@ public class AuditEntryModelImpl extends BaseModelImpl<AuditEntry>
 		sb.append(getNewValue());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>description</column-name><column-value><![CDATA[");
+		sb.append(getDescription());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>i18n</column-name><column-value><![CDATA[");
 		sb.append(getI18n());
 		sb.append("]]></column-value></column>");
@@ -1119,6 +1160,7 @@ public class AuditEntryModelImpl extends BaseModelImpl<AuditEntry>
 	private String _oldValue;
 	private String _newLabel;
 	private String _newValue;
+	private String _description;
 	private boolean _i18n;
 	private long _columnBitmask;
 	private AuditEntry _escapedModel;

@@ -143,6 +143,7 @@ create table OSB_AuditEntry (
 	oldValue STRING null,
 	newLabel VARCHAR(255) null,
 	newValue STRING null,
+	description STRING null,
 	i18n BOOLEAN
 );
 

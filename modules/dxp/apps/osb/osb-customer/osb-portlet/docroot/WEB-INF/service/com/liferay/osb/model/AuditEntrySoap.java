@@ -51,6 +51,7 @@ public class AuditEntrySoap implements Serializable {
 		soapModel.setOldValue(model.getOldValue());
 		soapModel.setNewLabel(model.getNewLabel());
 		soapModel.setNewValue(model.getNewValue());
+		soapModel.setDescription(model.getDescription());
 		soapModel.setI18n(model.getI18n());
 
 		return soapModel;
@@ -240,6 +241,14 @@ public class AuditEntrySoap implements Serializable {
 		_newValue = newValue;
 	}
 
+	public String getDescription() {
+		return _description;
+	}
+
+	public void setDescription(String description) {
+		_description = description;
+	}
+
 	public boolean getI18n() {
 		return _i18n;
 	}
@@ -269,5 +278,6 @@ public class AuditEntrySoap implements Serializable {
 	private String _oldValue;
 	private String _newLabel;
 	private String _newValue;
+	private String _description;
 	private boolean _i18n;
 }

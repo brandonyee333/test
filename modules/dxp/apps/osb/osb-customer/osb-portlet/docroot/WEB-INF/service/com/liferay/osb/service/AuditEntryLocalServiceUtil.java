@@ -58,12 +58,13 @@ public class AuditEntryLocalServiceUtil {
 		long classPK, long auditSetId, long fieldClassNameId,
 		long fieldClassPK, int action, int field, int visibility,
 		java.lang.String oldLabel, java.lang.String oldValue,
-		java.lang.String newLabel, java.lang.String newValue)
+		java.lang.String newLabel, java.lang.String newValue,
+		java.lang.String description)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addAuditEntry(userId, userName, createDate, classNameId,
 			classPK, auditSetId, fieldClassNameId, fieldClassPK, action, field,
-			visibility, oldLabel, oldValue, newLabel, newValue);
+			visibility, oldLabel, oldValue, newLabel, newValue, description);
 	}
 
 	public static com.liferay.osb.model.AuditEntry addAuditEntry(long userId,
@@ -71,14 +72,14 @@ public class AuditEntryLocalServiceUtil {
 		long classPK, long auditSetId, long fieldClassNameId,
 		long fieldClassPK, int action, int field, int visibility,
 		java.lang.String oldLabel, java.lang.String oldValue,
-		java.lang.String newLabel, java.lang.String newValue, boolean i18n,
-		boolean trackChange)
+		java.lang.String newLabel, java.lang.String newValue,
+		java.lang.String description, boolean i18n, boolean trackChange)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addAuditEntry(userId, userName, createDate, classNameId,
 			classPK, auditSetId, fieldClassNameId, fieldClassPK, action, field,
-			visibility, oldLabel, oldValue, newLabel, newValue, i18n,
-			trackChange);
+			visibility, oldLabel, oldValue, newLabel, newValue, description,
+			i18n, trackChange);
 	}
 
 	/**
