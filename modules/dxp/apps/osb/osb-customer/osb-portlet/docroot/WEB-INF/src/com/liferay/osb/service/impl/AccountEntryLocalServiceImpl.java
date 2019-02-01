@@ -1712,8 +1712,8 @@ public class AccountEntryLocalServiceImpl
 			userId, user.getFullName(), now, classNameId, accountEntryId, 0,
 			classNameId, accountEntryId, AuditEntryConstants.ACTION_AUDIT,
 			AuditEntryConstants.FIELD_NOT_APPLICABLE, VisibilityConstants.ADMIN,
-			auditLabel, auditValue, StringPool.BLANK, StringPool.BLANK, true,
-			false);
+			auditLabel, auditValue, StringPool.BLANK, StringPool.BLANK,
+			StringPool.BLANK, true, false);
 	}
 
 	public void updateStatus(long accountEntryId) throws PortalException {
@@ -1745,7 +1745,7 @@ public class AccountEntryLocalServiceImpl
 				AuditEntryConstants.FIELD_STATUS, VisibilityConstants.ADMIN,
 				WorkflowConstants.getStatusLabel(oldStatus),
 				String.valueOf(oldStatus), accountEntry.getStatusLabel(),
-				String.valueOf(accountEntry.getStatus()));
+				String.valueOf(accountEntry.getStatus()), StringPool.BLANK);
 		}
 	}
 
@@ -2511,7 +2511,8 @@ public class AccountEntryLocalServiceImpl
 				VisibilityConstants.LIFERAY_INC, oldCorpProjectString,
 				String.valueOf(oldAccountEntry.getCorpProjectId()),
 				corpProjectString,
-				String.valueOf(accountEntry.getCorpProjectId()));
+				String.valueOf(accountEntry.getCorpProjectId()),
+				StringPool.BLANK);
 		}
 
 		String oldDossieraAccountKey = oldAccountEntry.getDossieraAccountKey();
@@ -2525,7 +2526,7 @@ public class AccountEntryLocalServiceImpl
 				AuditEntryConstants.FIELD_DOSSIERA_ACCOUNT_KEY,
 				VisibilityConstants.LIFERAY_INC, StringPool.BLANK,
 				oldDossieraAccountKey, StringPool.BLANK,
-				accountEntry.getDossieraAccountKey());
+				accountEntry.getDossieraAccountKey(), StringPool.BLANK);
 		}
 
 		String oldCorpEntryName = oldAccountEntry.getCorpEntryName();
@@ -2537,7 +2538,7 @@ public class AccountEntryLocalServiceImpl
 				AuditEntryConstants.FIELD_CORP_ENTRY_NAME,
 				VisibilityConstants.LIFERAY_INC, StringPool.BLANK,
 				oldCorpEntryName, StringPool.BLANK,
-				accountEntry.getCorpEntryName());
+				accountEntry.getCorpEntryName(), StringPool.BLANK);
 		}
 
 		String oldName = oldAccountEntry.getName();
@@ -2548,7 +2549,7 @@ public class AccountEntryLocalServiceImpl
 				classNameId, classPK, auditAction,
 				AuditEntryConstants.FIELD_NAME, VisibilityConstants.LIFERAY_INC,
 				StringPool.BLANK, oldName, StringPool.BLANK,
-				accountEntry.getName());
+				accountEntry.getName(), StringPool.BLANK);
 		}
 
 		String oldCode = oldAccountEntry.getCode();
@@ -2559,7 +2560,7 @@ public class AccountEntryLocalServiceImpl
 				classNameId, classPK, auditAction,
 				AuditEntryConstants.FIELD_CODE, VisibilityConstants.LIFERAY_INC,
 				StringPool.BLANK, oldCode, StringPool.BLANK,
-				accountEntry.getCode());
+				accountEntry.getCode(), StringPool.BLANK);
 		}
 
 		if (oldAccountEntry.getType() != accountEntry.getType()) {
@@ -2570,7 +2571,7 @@ public class AccountEntryLocalServiceImpl
 				oldAccountEntry.getTypeLabel(),
 				String.valueOf(oldAccountEntry.getType()),
 				accountEntry.getTypeLabel(),
-				String.valueOf(accountEntry.getType()));
+				String.valueOf(accountEntry.getType()), StringPool.BLANK);
 		}
 
 		if (oldAccountEntry.getIndustry() != accountEntry.getIndustry()) {
@@ -2582,7 +2583,7 @@ public class AccountEntryLocalServiceImpl
 				oldAccountEntry.getIndustryLabel(),
 				String.valueOf(oldAccountEntry.getIndustry()),
 				accountEntry.getIndustryLabel(),
-				String.valueOf(accountEntry.getIndustry()));
+				String.valueOf(accountEntry.getIndustry()), StringPool.BLANK);
 		}
 
 		if (oldAccountEntry.getPartnerEntryId() !=
@@ -2613,7 +2614,8 @@ public class AccountEntryLocalServiceImpl
 				VisibilityConstants.LIFERAY_INC, oldPartnerEntryCode,
 				String.valueOf(oldAccountEntry.getPartnerEntryId()),
 				partnerEntryCode,
-				String.valueOf(accountEntry.getPartnerEntryId()));
+				String.valueOf(accountEntry.getPartnerEntryId()),
+				StringPool.BLANK);
 		}
 
 		if (oldAccountEntry.getPartnerManagedSupport() !=
@@ -2626,7 +2628,8 @@ public class AccountEntryLocalServiceImpl
 				VisibilityConstants.LIFERAY_INC, StringPool.BLANK,
 				String.valueOf(oldAccountEntry.getPartnerManagedSupport()),
 				StringPool.BLANK,
-				String.valueOf(accountEntry.getPartnerManagedSupport()));
+				String.valueOf(accountEntry.getPartnerManagedSupport()),
+				StringPool.BLANK);
 		}
 
 		if (oldAccountEntry.getTier() != accountEntry.getTier()) {
@@ -2639,7 +2642,7 @@ public class AccountEntryLocalServiceImpl
 				AccountEntryConstants.getTierLabel(oldAccountEntry.getTier()),
 				String.valueOf(oldAccountEntry.getTier()),
 				AccountEntryConstants.getTierLabel(accountEntry.getTier()),
-				String.valueOf(accountEntry.getTier()));
+				String.valueOf(accountEntry.getTier()), StringPool.BLANK);
 		}
 
 		String oldInstructions = oldAccountEntry.getInstructions();
@@ -2651,7 +2654,7 @@ public class AccountEntryLocalServiceImpl
 				AuditEntryConstants.FIELD_INSTRUCTIONS,
 				VisibilityConstants.LIFERAY_INC, StringPool.BLANK,
 				oldInstructions, StringPool.BLANK,
-				accountEntry.getInstructions());
+				accountEntry.getInstructions(), StringPool.BLANK);
 		}
 
 		String oldNotes = oldAccountEntry.getNotes();
@@ -2662,7 +2665,7 @@ public class AccountEntryLocalServiceImpl
 				classNameId, classPK, auditAction,
 				AuditEntryConstants.FIELD_NOTES,
 				VisibilityConstants.LIFERAY_INC, StringPool.BLANK, oldNotes,
-				StringPool.BLANK, accountEntry.getNotes());
+				StringPool.BLANK, accountEntry.getNotes(), StringPool.BLANK);
 		}
 
 		if (oldAccountEntry.getStatus() != accountEntry.getStatus()) {
@@ -2677,7 +2680,7 @@ public class AccountEntryLocalServiceImpl
 				oldAccountEntry.getStatusLabel(),
 				String.valueOf(oldAccountEntry.getStatus()),
 				accountEntry.getStatusLabel(),
-				String.valueOf(accountEntry.getStatus()));
+				String.valueOf(accountEntry.getStatus()), StringPool.BLANK);
 
 			auditEntryLocalService.addAuditEntry(
 				statusByUser.getUserId(), statusByUser.getFullName(),
@@ -2685,7 +2688,7 @@ public class AccountEntryLocalServiceImpl
 				classPK, auditAction, AuditEntryConstants.FIELD_STATUS_MESSAGE,
 				VisibilityConstants.LIFERAY_INC, StringPool.BLANK,
 				oldAccountEntry.getStatusMessage(), StringPool.BLANK,
-				accountEntry.getStatusMessage());
+				accountEntry.getStatusMessage(), StringPool.BLANK);
 		}
 
 		Address oldAddress = oldAccountEntry.getAddress();
@@ -2712,7 +2715,7 @@ public class AccountEntryLocalServiceImpl
 				AuditEntryConstants.FIELD_ADDRESS,
 				VisibilityConstants.LIFERAY_INC, oldAddressString,
 				String.valueOf(oldAddressId), addressString,
-				String.valueOf(addressId));
+				String.valueOf(addressId), StringPool.BLANK);
 		}
 
 		String[] oldLanguageIds = oldAccountEntry.getLanguageIds();
@@ -2731,7 +2734,7 @@ public class AccountEntryLocalServiceImpl
 				AuditEntryConstants.FIELD_LANGUAGES,
 				VisibilityConstants.LIFERAY_INC, oldLanguageIdsString,
 				StringUtil.merge(oldLanguageIds), languageIdsString,
-				StringUtil.merge(languageIds));
+				StringUtil.merge(languageIds), StringPool.BLANK);
 		}
 
 		long[] oldSupportRegionIds = oldAccountEntry.getSupportRegionIds();
@@ -2752,7 +2755,7 @@ public class AccountEntryLocalServiceImpl
 				AuditEntryConstants.FIELD_SUPPORT_REGIONS,
 				VisibilityConstants.LIFERAY_INC, oldSupportRegionIdsString,
 				StringUtil.merge(oldSupportRegionIds), sSupportRegionIdsString,
-				StringUtil.merge(supportRegionIds));
+				StringUtil.merge(supportRegionIds), StringPool.BLANK);
 		}
 	}
 

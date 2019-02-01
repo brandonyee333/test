@@ -89,7 +89,8 @@ public class AccountCustomerLocalServiceImpl
 			accountCustomer.getAccountCustomerId(),
 			AuditEntryConstants.ACTION_ASSIGN, AuditEntryConstants.FIELD_USER,
 			VisibilityConstants.WORKERS, StringPool.BLANK, StringPool.BLANK,
-			customerUser.getFullName(), String.valueOf(customerUserId));
+			customerUser.getFullName(), String.valueOf(customerUserId),
+			StringPool.BLANK);
 
 		auditEntryLocalService.addAuditEntry(
 			userId, user.getFullName(), now, classNameId, accountEntryId,
@@ -98,7 +99,7 @@ public class AccountCustomerLocalServiceImpl
 			AuditEntryConstants.ACTION_ASSIGN, AuditEntryConstants.FIELD_ROLE,
 			VisibilityConstants.WORKERS, StringPool.BLANK, StringPool.BLANK,
 			accountCustomer.getRoleLabel(),
-			String.valueOf(accountCustomer.getRole()));
+			String.valueOf(accountCustomer.getRole()), StringPool.BLANK);
 
 		if (accountEntry.getType() == AccountEntryConstants.TYPE_TRIAL) {
 			assignOrganizations(
@@ -303,7 +304,7 @@ public class AccountCustomerLocalServiceImpl
 				AuditEntryConstants.FIELD_ROLE, VisibilityConstants.WORKERS,
 				AccountCustomerConstants.getRoleLabel(oldRole),
 				String.valueOf(oldRole), accountCustomer.getRoleLabel(),
-				String.valueOf(accountCustomer.getRole()));
+				String.valueOf(accountCustomer.getRole()), StringPool.BLANK);
 		}
 
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
@@ -458,7 +459,7 @@ public class AccountCustomerLocalServiceImpl
 			AuditEntryConstants.ACTION_UNASSIGN, AuditEntryConstants.FIELD_USER,
 			VisibilityConstants.WORKERS, accountCustomerUser.getFullName(),
 			String.valueOf(accountCustomer.getUserId()), StringPool.BLANK,
-			StringPool.BLANK);
+			StringPool.BLANK, StringPool.BLANK);
 
 		auditEntryLocalService.addAuditEntry(
 			userId, user.getFullName(), now, classNameId,
@@ -467,7 +468,7 @@ public class AccountCustomerLocalServiceImpl
 			AuditEntryConstants.ACTION_UNASSIGN, AuditEntryConstants.FIELD_ROLE,
 			VisibilityConstants.WORKERS, accountCustomer.getRoleLabel(),
 			String.valueOf(accountCustomer.getRole()), StringPool.BLANK,
-			StringPool.BLANK);
+			StringPool.BLANK, StringPool.BLANK);
 	}
 
 	protected void validate(long accountEntryId) throws PortalException {

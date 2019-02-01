@@ -71,7 +71,7 @@ public class UpgradeAuditEntry extends UpgradeProcess {
 					AuditEntryConstants.ACTION_ASSIGN,
 					AuditEntryConstants.FIELD_USER, VisibilityConstants.WORKERS,
 					StringPool.BLANK, StringPool.BLANK, user.getFullName(),
-					String.valueOf(user.getUserId()));
+					String.valueOf(user.getUserId()), StringPool.BLANK);
 
 				AuditEntryLocalServiceUtil.addAuditEntry(
 					OSBConstants.USER_DEFAULT_USER_ID, StringPool.BLANK, now,
@@ -81,7 +81,7 @@ public class UpgradeAuditEntry extends UpgradeProcess {
 					AuditEntryConstants.FIELD_ROLE, VisibilityConstants.WORKERS,
 					StringPool.BLANK, StringPool.BLANK,
 					accountWorker.getRoleLabel(),
-					String.valueOf(accountWorker.getRole()));
+					String.valueOf(accountWorker.getRole()), StringPool.BLANK);
 			}
 		}
 	}

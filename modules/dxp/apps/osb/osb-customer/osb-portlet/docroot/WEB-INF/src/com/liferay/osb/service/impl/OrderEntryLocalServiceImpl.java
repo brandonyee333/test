@@ -496,7 +496,7 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 			orderEntryId, AuditEntryConstants.ACTION_RENEW,
 			AuditEntryConstants.FIELD_RENEW_COUNT, VisibilityConstants.ADMIN,
 			StringPool.BLANK, StringPool.BLANK, StringPool.BLANK,
-			String.valueOf(renewCount));
+			String.valueOf(renewCount), StringPool.BLANK);
 
 		return orderEntry;
 	}

@@ -81,7 +81,8 @@ public class AccountWorkerLocalServiceImpl
 			auditSetId, fieldClassNameId, accountWorkerId,
 			AuditEntryConstants.ACTION_ASSIGN, AuditEntryConstants.FIELD_USER,
 			VisibilityConstants.WORKERS, StringPool.BLANK, StringPool.BLANK,
-			workerUser.getFullName(), String.valueOf(workerUser.getUserId()));
+			workerUser.getFullName(), String.valueOf(workerUser.getUserId()),
+			StringPool.BLANK);
 
 		auditEntryLocalService.addAuditEntry(
 			userId, user.getFullName(), now, classNameId, accountEntryId,
@@ -89,7 +90,7 @@ public class AccountWorkerLocalServiceImpl
 			AuditEntryConstants.ACTION_ASSIGN, AuditEntryConstants.FIELD_ROLE,
 			VisibilityConstants.WORKERS, StringPool.BLANK, StringPool.BLANK,
 			accountWorker.getRoleLabel(),
-			String.valueOf(accountWorker.getRole()));
+			String.valueOf(accountWorker.getRole()), StringPool.BLANK);
 
 		return accountWorker;
 	}
@@ -175,7 +176,7 @@ public class AccountWorkerLocalServiceImpl
 			AuditEntryConstants.ACTION_UNASSIGN, AuditEntryConstants.FIELD_USER,
 			VisibilityConstants.WORKERS, accountWorkerUser.getFullName(),
 			String.valueOf(accountWorkerUser.getUserId()), StringPool.BLANK,
-			StringPool.BLANK);
+			StringPool.BLANK, StringPool.BLANK);
 
 		auditEntryLocalService.addAuditEntry(
 			userId, user.getFullName(), now, classNameId,
@@ -184,7 +185,7 @@ public class AccountWorkerLocalServiceImpl
 			AuditEntryConstants.ACTION_UNASSIGN, AuditEntryConstants.FIELD_ROLE,
 			VisibilityConstants.WORKERS, accountWorker.getRoleLabel(),
 			String.valueOf(accountWorker.getRole()), StringPool.BLANK,
-			StringPool.BLANK);
+			StringPool.BLANK, StringPool.BLANK);
 	}
 
 	public void deleteAccountWorkers(long userId) throws PortalException {
@@ -276,7 +277,7 @@ public class AccountWorkerLocalServiceImpl
 				AuditEntryConstants.FIELD_ROLE, VisibilityConstants.WORKERS,
 				AccountWorkerConstants.getRoleLabel(oldRole),
 				String.valueOf(oldRole), accountWorker.getRoleLabel(),
-				String.valueOf(accountWorker.getRole()));
+				String.valueOf(accountWorker.getRole()), StringPool.BLANK);
 		}
 
 		return accountWorker;

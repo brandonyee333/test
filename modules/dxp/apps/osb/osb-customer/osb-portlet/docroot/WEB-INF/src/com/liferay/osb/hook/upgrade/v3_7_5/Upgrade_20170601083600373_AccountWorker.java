@@ -82,7 +82,8 @@ public class Upgrade_20170601083600373_AccountWorker
 				AuditEntryConstants.ACTION_ASSIGN,
 				AuditEntryConstants.FIELD_USER, VisibilityConstants.WORKERS,
 				user.getFullName(), String.valueOf(user.getUserId()),
-				user.getFullName(), String.valueOf(user.getUserId()));
+				user.getFullName(), String.valueOf(user.getUserId()),
+				StringPool.BLANK);
 
 			AuditEntryLocalServiceUtil.addAuditEntry(
 				OSBConstants.USER_DEFAULT_USER_ID, StringPool.BLANK, new Date(),
@@ -92,7 +93,7 @@ public class Upgrade_20170601083600373_AccountWorker
 				AuditEntryConstants.FIELD_ROLE, VisibilityConstants.WORKERS,
 				AccountWorkerConstants.getRoleLabel(oldRole),
 				String.valueOf(oldRole), accountWorker.getRoleLabel(),
-				String.valueOf(accountWorker.getRole()));
+				String.valueOf(accountWorker.getRole()), StringPool.BLANK);
 		}
 	}
 
