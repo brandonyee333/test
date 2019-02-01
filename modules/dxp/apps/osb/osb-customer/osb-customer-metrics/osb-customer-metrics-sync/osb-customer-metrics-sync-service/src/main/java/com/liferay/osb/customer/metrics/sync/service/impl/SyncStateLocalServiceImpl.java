@@ -14,36 +14,34 @@
 
 package com.liferay.osb.customer.metrics.sync.service.impl;
 
-import com.liferay.osb.customer.metrics.sync.exception.NoSuchSyncStateException;
 import com.liferay.osb.customer.metrics.sync.model.SyncState;
 import com.liferay.osb.customer.metrics.sync.service.base.SyncStateLocalServiceBaseImpl;
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * @author Kyle Bischof
  */
 public class SyncStateLocalServiceImpl extends SyncStateLocalServiceBaseImpl {
 
-	public SyncState addSyncState(String model) {
+	public SyncState addSyncState(String modelName) {
 		long syncStateId = counterLocalService.increment();
 
 		SyncState syncState = syncStatePersistence.create(syncStateId);
 
 		syncState.setLastRunTime(0);
-		syncState.setModel(model);
+		syncState.setModelNamw(modelName);
 
 		return syncStatePersistence.update(syncState);
 	}
 
-	public SyncState fetchSyncState(String model)
-		throws NoSuchSyncStateException {
-
-		return syncStatePersistence.fetchByModel(model);
+	public SyncState fetchSyncState(String modelName) {
+		return syncStatePersistence.fetchByModelName(modelName);
 	}
 
-	public SyncState updateSyncState(String model, long lastRunTime)
-		throws NoSuchSyncStateException {
+	public SyncState updateSyncState(String modelName, long lastRunTime)
+		throws PortalException {
 
-		SyncState syncState = syncStatePersistence.findByModel(model);
+		SyncState syncState = syncStatePersistence.findByModelName(modelName);
 
 		syncState.setLastRunTime(lastRunTime);
 

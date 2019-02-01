@@ -11,13 +11,13 @@
 
 		<!-- Other fields -->
 
-		<column name="model" type="String" />
+		<column name="modelName" type="String" />
 		<column name="lastRunTime" type="long" />
 
 		<!-- Finder methods -->
 
-		<finder name="Model" return-type="SyncState">
-			<finder-column name="model" />
+		<finder name="ModelName" return-type="SyncState">
+			<finder-column name="modelName" />
 		</finder>
 	</entity>
 </service-builder>
