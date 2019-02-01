@@ -26,7 +26,6 @@ import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.model.ProductEntry;
-import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.osb.service.base.OfferingEntryLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.VisibilityConstants;
@@ -402,15 +401,12 @@ public class OfferingEntryLocalServiceImpl
 
 		sb.append("ID: ");
 		sb.append(offeringEntryId);
+		sb.append(", Name: ");
 
-		ProductEntry productEntry =
-			ProductEntryLocalServiceUtil.fetchProductEntry(
-				offeringEntry.getProductEntryId());
+		ProductEntry productEntry = productEntryLocalService.getProductEntry(
+			offeringEntry.getProductEntryId());
 
-		if (productEntry != null) {
-			sb.append(", Name: ");
-			sb.append(productEntry.getName());
-		}
+		sb.append(productEntry.getName());
 
 		sb.append(", Start Date: ");
 

@@ -317,15 +317,11 @@ for (SupportRegion supportRegion : supportRegions) {
 							<span class="summary">
 								<liferay-ui:message key="<%= auditEntry.getActionLabel() %>" />
 
-								<%
-								String fieldClassNameIdLabel = auditEntry.getFieldClassNameIdLabel();
-								%>
+								<liferay-ui:message key="<%= auditEntry.getFieldClassNameIdLabel() %>" />
 
-								<liferay-ui:message key="<%= fieldClassNameIdLabel %>" />
-
-								<c:if test="<%= fieldClassNameIdLabel.equals("offering") %>">
+								<c:if test="<%= (auditEntry.getFieldClassNameId() == PortalUtil.getClassNameId(OfferingEntry.class)) && Validator.isNotNull(auditEntry.getDescription()) %>">
 									<span>
-										<%= HtmlUtil.escape(auditEntry.getDescription()) %>
+										(<%= HtmlUtil.escape(auditEntry.getDescription()) %>)
 									</span>
 								</c:if>
 							</span>

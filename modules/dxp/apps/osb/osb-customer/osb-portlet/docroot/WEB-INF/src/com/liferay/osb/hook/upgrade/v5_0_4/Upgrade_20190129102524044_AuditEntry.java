@@ -40,8 +40,8 @@ public class Upgrade_20190129102524044_AuditEntry extends BaseUpgradeProcess {
 	protected void doUpgrade() throws Exception {
 		if (!tableHasColumn("OSB_AuditEntry", "description")) {
 			runSQL(
-				"alter table OSB_AuditEntry add column description " +
-					"VARCHAR(255) null");
+				"alter table OSB_AuditEntry add column description longtext " +
+					"null");
 		}
 
 		updateAuditEntries();
@@ -75,16 +75,12 @@ public class Upgrade_20190129102524044_AuditEntry extends BaseUpgradeProcess {
 			while (rs.next()) {
 				long auditEntryId = rs.getLong("auditEntryId");
 				long offeringEntryId = rs.getLong("offeringEntryId");
-
 				String productEntryName = rs.getString("name");
-
 				Timestamp timestamp = rs.getTimestamp("startDate");
 
-				String startDate = _dateFormat.format(timestamp);
-
 				String description =
-					"ID: " + String.valueOf(offeringEntryId) + ", Name: " +
-						productEntryName + ", Start Date: " + startDate;
+					"ID: " + offeringEntryId + ", Name: " + productEntryName +
+						", Start Date: " + _dateFormat.format(timestamp);
 
 				runSQL(
 					"update OSB_AuditEntry set description = '" + description +
