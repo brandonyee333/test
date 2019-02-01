@@ -342,6 +342,11 @@ public class AccountEnvironmentWrapper implements AccountEnvironment,
 	}
 
 	@Override
+	public java.lang.String getEnvCommerceLabel() {
+		return _accountEnvironment.getEnvCommerceLabel();
+	}
+
+	@Override
 	public java.lang.String getEnvDBLabel() {
 		return _accountEnvironment.getEnvDBLabel();
 	}

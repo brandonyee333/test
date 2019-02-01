@@ -60,6 +60,8 @@ public interface AccountEnvironment extends AccountEnvironmentModel,
 
 	public java.lang.String getEnvBrowserLabel();
 
+	public java.lang.String getEnvCommerceLabel();
+
 	public java.lang.String getEnvCSLabel();
 
 	public java.lang.String getEnvDBLabel();

@@ -691,6 +691,25 @@ public class AccountEnvironmentClp extends BaseModelImpl<AccountEnvironment>
 	}
 
 	@Override
+	public java.lang.String getEnvCommerceLabel() {
+		try {
+			String methodName = "getEnvCommerceLabel";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
 	public java.lang.String getEnvCSLabel() {
 		try {
 			String methodName = "getEnvCSLabel";
