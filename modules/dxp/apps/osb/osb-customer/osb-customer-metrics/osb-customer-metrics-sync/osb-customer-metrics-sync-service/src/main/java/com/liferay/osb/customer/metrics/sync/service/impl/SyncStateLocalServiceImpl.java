@@ -29,7 +29,7 @@ public class SyncStateLocalServiceImpl extends SyncStateLocalServiceBaseImpl {
 		SyncState syncState = syncStatePersistence.create(syncStateId);
 
 		syncState.setLastRunTime(0);
-		syncState.setModelNamw(modelName);
+		syncState.setModelName(modelName);
 
 		return syncStatePersistence.update(syncState);
 	}
