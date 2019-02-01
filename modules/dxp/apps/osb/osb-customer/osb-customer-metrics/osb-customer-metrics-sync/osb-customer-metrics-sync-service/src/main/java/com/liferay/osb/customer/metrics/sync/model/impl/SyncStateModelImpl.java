@@ -66,18 +66,18 @@ public class SyncStateModelImpl extends BaseModelImpl<SyncState>
 	public static final String TABLE_NAME = "OSBCustomer_SyncState";
 	public static final Object[][] TABLE_COLUMNS = {
 			{ "syncStateId", Types.BIGINT },
-			{ "model", Types.VARCHAR },
+			{ "modelName", Types.VARCHAR },
 			{ "lastRunTime", Types.BIGINT }
 		};
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
 
 	static {
 		TABLE_COLUMNS_MAP.put("syncStateId", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("model", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("modelName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("lastRunTime", Types.BIGINT);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSBCustomer_SyncState (syncStateId LONG not null primary key,model VARCHAR(75) null,lastRunTime LONG)";
+	public static final String TABLE_SQL_CREATE = "create table OSBCustomer_SyncState (syncStateId LONG not null primary key,modelName VARCHAR(75) null,lastRunTime LONG)";
 	public static final String TABLE_SQL_DROP = "drop table OSBCustomer_SyncState";
 	public static final String ORDER_BY_JPQL = " ORDER BY syncState.syncStateId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY OSBCustomer_SyncState.syncStateId ASC";
@@ -93,7 +93,7 @@ public class SyncStateModelImpl extends BaseModelImpl<SyncState>
 	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.osb.customer.metrics.sync.service.util.ServiceProps.get(
 				"value.object.column.bitmask.enabled.com.liferay.osb.customer.metrics.sync.model.SyncState"),
 			true);
-	public static final long MODEL_COLUMN_BITMASK = 1L;
+	public static final long MODELNAME_COLUMN_BITMASK = 1L;
 	public static final long SYNCSTATEID_COLUMN_BITMASK = 2L;
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.osb.customer.metrics.sync.service.util.ServiceProps.get(
 				"lock.expiration.time.com.liferay.osb.customer.metrics.sync.model.SyncState"));
@@ -204,22 +204,22 @@ public class SyncStateModelImpl extends BaseModelImpl<SyncState>
 
 			});
 		attributeGetterFunctions.put(
-			"model",
+			"modelName",
 			new Function<SyncState, Object>() {
 
 				@Override
 				public Object apply(SyncState syncState) {
-					return syncState.getModel();
+					return syncState.getModelName();
 				}
 
 			});
 		attributeSetterBiConsumers.put(
-			"model",
+			"modelName",
 			new BiConsumer<SyncState, Object>() {
 
 				@Override
-				public void accept(SyncState syncState, Object model) {
-					syncState.setModel((String)model);
+				public void accept(SyncState syncState, Object modelName) {
+					syncState.setModelName((String)modelName);
 				}
 
 			});
@@ -260,28 +260,28 @@ public class SyncStateModelImpl extends BaseModelImpl<SyncState>
 	}
 
 	@Override
-	public String getModel() {
-		if (_model == null) {
+	public String getModelName() {
+		if (_modelName == null) {
 			return "";
 		}
 		else {
-			return _model;
+			return _modelName;
 		}
 	}
 
 	@Override
-	public void setModel(String model) {
-		_columnBitmask |= MODEL_COLUMN_BITMASK;
+	public void setModelName(String modelName) {
+		_columnBitmask |= MODELNAME_COLUMN_BITMASK;
 
-		if (_originalModel == null) {
-			_originalModel = _model;
+		if (_originalModelName == null) {
+			_originalModelName = _modelName;
 		}
 
-		_model = model;
+		_modelName = modelName;
 	}
 
-	public String getOriginalModel() {
-		return GetterUtil.getString(_originalModel);
+	public String getOriginalModelName() {
+		return GetterUtil.getString(_originalModelName);
 	}
 
 	@Override
@@ -326,7 +326,7 @@ public class SyncStateModelImpl extends BaseModelImpl<SyncState>
 		SyncStateImpl syncStateImpl = new SyncStateImpl();
 
 		syncStateImpl.setSyncStateId(getSyncStateId());
-		syncStateImpl.setModel(getModel());
+		syncStateImpl.setModelName(getModelName());
 		syncStateImpl.setLastRunTime(getLastRunTime());
 
 		syncStateImpl.resetOriginalValues();
@@ -390,7 +390,7 @@ public class SyncStateModelImpl extends BaseModelImpl<SyncState>
 	public void resetOriginalValues() {
 		SyncStateModelImpl syncStateModelImpl = this;
 
-		syncStateModelImpl._originalModel = syncStateModelImpl._model;
+		syncStateModelImpl._originalModelName = syncStateModelImpl._modelName;
 
 		syncStateModelImpl._columnBitmask = 0;
 	}
@@ -401,12 +401,12 @@ public class SyncStateModelImpl extends BaseModelImpl<SyncState>
 
 		syncStateCacheModel.syncStateId = getSyncStateId();
 
-		syncStateCacheModel.model = getModel();
+		syncStateCacheModel.modelName = getModelName();
 
-		String model = syncStateCacheModel.model;
+		String modelName = syncStateCacheModel.modelName;
 
-		if ((model != null) && (model.length() == 0)) {
-			syncStateCacheModel.model = null;
+		if ((modelName != null) && (modelName.length() == 0)) {
+			syncStateCacheModel.modelName = null;
 		}
 
 		syncStateCacheModel.lastRunTime = getLastRunTime();
@@ -474,8 +474,8 @@ public class SyncStateModelImpl extends BaseModelImpl<SyncState>
 			SyncState.class, ModelWrapper.class
 		};
 	private long _syncStateId;
-	private String _model;
-	private String _originalModel;
+	private String _modelName;
+	private String _originalModelName;
 	private long _lastRunTime;
 	private long _columnBitmask;
 	private SyncState _escapedModel;

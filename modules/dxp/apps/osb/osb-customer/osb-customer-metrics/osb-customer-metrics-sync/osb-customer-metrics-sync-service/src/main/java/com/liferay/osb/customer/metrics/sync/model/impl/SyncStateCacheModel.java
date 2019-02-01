@@ -67,8 +67,8 @@ public class SyncStateCacheModel implements CacheModel<SyncState>,
 
 		sb.append("{syncStateId=");
 		sb.append(syncStateId);
-		sb.append(", model=");
-		sb.append(model);
+		sb.append(", modelName=");
+		sb.append(modelName);
 		sb.append(", lastRunTime=");
 		sb.append(lastRunTime);
 		sb.append("}");
@@ -82,11 +82,11 @@ public class SyncStateCacheModel implements CacheModel<SyncState>,
 
 		syncStateImpl.setSyncStateId(syncStateId);
 
-		if (model == null) {
-			syncStateImpl.setModel("");
+		if (modelName == null) {
+			syncStateImpl.setModelName("");
 		}
 		else {
-			syncStateImpl.setModel(model);
+			syncStateImpl.setModelName(modelName);
 		}
 
 		syncStateImpl.setLastRunTime(lastRunTime);
@@ -99,7 +99,7 @@ public class SyncStateCacheModel implements CacheModel<SyncState>,
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		syncStateId = objectInput.readLong();
-		model = objectInput.readUTF();
+		modelName = objectInput.readUTF();
 
 		lastRunTime = objectInput.readLong();
 	}
@@ -109,17 +109,17 @@ public class SyncStateCacheModel implements CacheModel<SyncState>,
 		throws IOException {
 		objectOutput.writeLong(syncStateId);
 
-		if (model == null) {
+		if (modelName == null) {
 			objectOutput.writeUTF("");
 		}
 		else {
-			objectOutput.writeUTF(model);
+			objectOutput.writeUTF(modelName);
 		}
 
 		objectOutput.writeLong(lastRunTime);
 	}
 
 	public long syncStateId;
-	public String model;
+	public String modelName;
 	public long lastRunTime;
 }

@@ -125,57 +125,58 @@ public class SyncStateUtil {
 	}
 
 	/**
-	* Returns the sync state where model = &#63; or throws a {@link NoSuchSyncStateException} if it could not be found.
+	* Returns the sync state where modelName = &#63; or throws a {@link NoSuchSyncStateException} if it could not be found.
 	*
-	* @param model the model
+	* @param modelName the model name
 	* @return the matching sync state
 	* @throws NoSuchSyncStateException if a matching sync state could not be found
 	*/
-	public static SyncState findByModel(String model)
+	public static SyncState findByModelName(String modelName)
 		throws com.liferay.osb.customer.metrics.sync.exception.NoSuchSyncStateException {
-		return getPersistence().findByModel(model);
+		return getPersistence().findByModelName(modelName);
 	}
 
 	/**
-	* Returns the sync state where model = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	* Returns the sync state where modelName = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
 	*
-	* @param model the model
+	* @param modelName the model name
 	* @return the matching sync state, or <code>null</code> if a matching sync state could not be found
 	*/
-	public static SyncState fetchByModel(String model) {
-		return getPersistence().fetchByModel(model);
+	public static SyncState fetchByModelName(String modelName) {
+		return getPersistence().fetchByModelName(modelName);
 	}
 
 	/**
-	* Returns the sync state where model = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	* Returns the sync state where modelName = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	*
-	* @param model the model
+	* @param modelName the model name
 	* @param retrieveFromCache whether to retrieve from the finder cache
 	* @return the matching sync state, or <code>null</code> if a matching sync state could not be found
 	*/
-	public static SyncState fetchByModel(String model, boolean retrieveFromCache) {
-		return getPersistence().fetchByModel(model, retrieveFromCache);
+	public static SyncState fetchByModelName(String modelName,
+		boolean retrieveFromCache) {
+		return getPersistence().fetchByModelName(modelName, retrieveFromCache);
 	}
 
 	/**
-	* Removes the sync state where model = &#63; from the database.
+	* Removes the sync state where modelName = &#63; from the database.
 	*
-	* @param model the model
+	* @param modelName the model name
 	* @return the sync state that was removed
 	*/
-	public static SyncState removeByModel(String model)
+	public static SyncState removeByModelName(String modelName)
 		throws com.liferay.osb.customer.metrics.sync.exception.NoSuchSyncStateException {
-		return getPersistence().removeByModel(model);
+		return getPersistence().removeByModelName(modelName);
 	}
 
 	/**
-	* Returns the number of sync states where model = &#63;.
+	* Returns the number of sync states where modelName = &#63;.
 	*
-	* @param model the model
+	* @param modelName the model name
 	* @return the number of matching sync states
 	*/
-	public static int countByModel(String model) {
-		return getPersistence().countByModel(model);
+	public static int countByModelName(String modelName) {
+		return getPersistence().countByModelName(modelName);
 	}
 
 	/**

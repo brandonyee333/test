@@ -50,47 +50,49 @@ public interface SyncStatePersistence extends BasePersistence<SyncState> {
 		Set<Serializable> primaryKeys);
 
 	/**
-	* Returns the sync state where model = &#63; or throws a {@link NoSuchSyncStateException} if it could not be found.
+	* Returns the sync state where modelName = &#63; or throws a {@link NoSuchSyncStateException} if it could not be found.
 	*
-	* @param model the model
+	* @param modelName the model name
 	* @return the matching sync state
 	* @throws NoSuchSyncStateException if a matching sync state could not be found
 	*/
-	public SyncState findByModel(String model) throws NoSuchSyncStateException;
-
-	/**
-	* Returns the sync state where model = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-	*
-	* @param model the model
-	* @return the matching sync state, or <code>null</code> if a matching sync state could not be found
-	*/
-	public SyncState fetchByModel(String model);
-
-	/**
-	* Returns the sync state where model = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-	*
-	* @param model the model
-	* @param retrieveFromCache whether to retrieve from the finder cache
-	* @return the matching sync state, or <code>null</code> if a matching sync state could not be found
-	*/
-	public SyncState fetchByModel(String model, boolean retrieveFromCache);
-
-	/**
-	* Removes the sync state where model = &#63; from the database.
-	*
-	* @param model the model
-	* @return the sync state that was removed
-	*/
-	public SyncState removeByModel(String model)
+	public SyncState findByModelName(String modelName)
 		throws NoSuchSyncStateException;
 
 	/**
-	* Returns the number of sync states where model = &#63;.
+	* Returns the sync state where modelName = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
 	*
-	* @param model the model
+	* @param modelName the model name
+	* @return the matching sync state, or <code>null</code> if a matching sync state could not be found
+	*/
+	public SyncState fetchByModelName(String modelName);
+
+	/**
+	* Returns the sync state where modelName = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	*
+	* @param modelName the model name
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the matching sync state, or <code>null</code> if a matching sync state could not be found
+	*/
+	public SyncState fetchByModelName(String modelName,
+		boolean retrieveFromCache);
+
+	/**
+	* Removes the sync state where modelName = &#63; from the database.
+	*
+	* @param modelName the model name
+	* @return the sync state that was removed
+	*/
+	public SyncState removeByModelName(String modelName)
+		throws NoSuchSyncStateException;
+
+	/**
+	* Returns the number of sync states where modelName = &#63;.
+	*
+	* @param modelName the model name
 	* @return the number of matching sync states
 	*/
-	public int countByModel(String model);
+	public int countByModelName(String modelName);
 
 	/**
 	* Caches the sync state in the entity cache if it is enabled.

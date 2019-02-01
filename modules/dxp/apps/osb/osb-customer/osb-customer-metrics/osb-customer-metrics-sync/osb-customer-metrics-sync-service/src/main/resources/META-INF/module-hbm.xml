@@ -7,7 +7,7 @@
 		<id name="syncStateId" type="long">
 			<generator class="assigned" />
 		</id>
-		<property name="model" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="modelName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="lastRunTime" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
 </hibernate-mapping>

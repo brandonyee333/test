@@ -57,7 +57,7 @@ public class SyncStateWrapper implements SyncState, ModelWrapper<SyncState> {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("syncStateId", getSyncStateId());
-		attributes.put("model", getModel());
+		attributes.put("modelName", getModelName());
 		attributes.put("lastRunTime", getLastRunTime());
 
 		return attributes;
@@ -71,10 +71,10 @@ public class SyncStateWrapper implements SyncState, ModelWrapper<SyncState> {
 			setSyncStateId(syncStateId);
 		}
 
-		String model = (String)attributes.get("model");
+		String modelName = (String)attributes.get("modelName");
 
-		if (model != null) {
-			setModel(model);
+		if (modelName != null) {
+			setModelName(modelName);
 		}
 
 		Long lastRunTime = (Long)attributes.get("lastRunTime");
@@ -110,13 +110,13 @@ public class SyncStateWrapper implements SyncState, ModelWrapper<SyncState> {
 	}
 
 	/**
-	* Returns the model of this sync state.
+	* Returns the model name of this sync state.
 	*
-	* @return the model of this sync state
+	* @return the model name of this sync state
 	*/
 	@Override
-	public String getModel() {
-		return _syncState.getModel();
+	public String getModelName() {
+		return _syncState.getModelName();
 	}
 
 	/**
@@ -201,13 +201,13 @@ public class SyncStateWrapper implements SyncState, ModelWrapper<SyncState> {
 	}
 
 	/**
-	* Sets the model of this sync state.
+	* Sets the model name of this sync state.
 	*
-	* @param model the model of this sync state
+	* @param modelName the model name of this sync state
 	*/
 	@Override
-	public void setModel(String model) {
-		_syncState.setModel(model);
+	public void setModelName(String modelName) {
+		_syncState.setModelName(modelName);
 	}
 
 	@Override

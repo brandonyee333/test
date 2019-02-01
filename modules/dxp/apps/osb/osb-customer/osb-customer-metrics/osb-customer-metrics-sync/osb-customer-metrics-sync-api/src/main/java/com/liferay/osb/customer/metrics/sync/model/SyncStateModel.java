@@ -75,19 +75,19 @@ public interface SyncStateModel extends BaseModel<SyncState> {
 	public void setSyncStateId(long syncStateId);
 
 	/**
-	 * Returns the model of this sync state.
+	 * Returns the model name of this sync state.
 	 *
-	 * @return the model of this sync state
+	 * @return the model name of this sync state
 	 */
 	@AutoEscape
-	public String getModel();
+	public String getModelName();
 
 	/**
-	 * Sets the model of this sync state.
+	 * Sets the model name of this sync state.
 	 *
-	 * @param model the model of this sync state
+	 * @param modelName the model name of this sync state
 	 */
-	public void setModel(String model);
+	public void setModelName(String modelName);
 
 	/**
 	 * Returns the last run time of this sync state.

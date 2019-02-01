@@ -35,8 +35,8 @@ public class SyncStateLocalServiceWrapper implements SyncStateLocalService,
 
 	@Override
 	public com.liferay.osb.customer.metrics.sync.model.SyncState addSyncState(
-		String model) {
-		return _syncStateLocalService.addSyncState(model);
+		String modelName) {
+		return _syncStateLocalService.addSyncState(modelName);
 	}
 
 	/**
@@ -191,9 +191,8 @@ public class SyncStateLocalServiceWrapper implements SyncStateLocalService,
 
 	@Override
 	public com.liferay.osb.customer.metrics.sync.model.SyncState fetchSyncState(
-		String model)
-		throws com.liferay.osb.customer.metrics.sync.exception.NoSuchSyncStateException {
-		return _syncStateLocalService.fetchSyncState(model);
+		String modelName) {
+		return _syncStateLocalService.fetchSyncState(modelName);
 	}
 
 	@Override
@@ -266,9 +265,9 @@ public class SyncStateLocalServiceWrapper implements SyncStateLocalService,
 
 	@Override
 	public com.liferay.osb.customer.metrics.sync.model.SyncState updateSyncState(
-		String model, long lastRunTime)
-		throws com.liferay.osb.customer.metrics.sync.exception.NoSuchSyncStateException {
-		return _syncStateLocalService.updateSyncState(model, lastRunTime);
+		String modelName, long lastRunTime)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _syncStateLocalService.updateSyncState(modelName, lastRunTime);
 	}
 
 	/**

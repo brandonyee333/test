@@ -43,8 +43,8 @@ public class SyncStateLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.customer.metrics.sync.service.impl.SyncStateLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.osb.customer.metrics.sync.model.SyncState addSyncState(
-		String model) {
-		return getService().addSyncState(model);
+		String modelName) {
+		return getService().addSyncState(modelName);
 	}
 
 	/**
@@ -186,9 +186,8 @@ public class SyncStateLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.customer.metrics.sync.model.SyncState fetchSyncState(
-		String model)
-		throws com.liferay.osb.customer.metrics.sync.exception.NoSuchSyncStateException {
-		return getService().fetchSyncState(model);
+		String modelName) {
+		return getService().fetchSyncState(modelName);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
@@ -253,9 +252,9 @@ public class SyncStateLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.customer.metrics.sync.model.SyncState updateSyncState(
-		String model, long lastRunTime)
-		throws com.liferay.osb.customer.metrics.sync.exception.NoSuchSyncStateException {
-		return getService().updateSyncState(model, lastRunTime);
+		String modelName, long lastRunTime)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().updateSyncState(modelName, lastRunTime);
 	}
 
 	/**

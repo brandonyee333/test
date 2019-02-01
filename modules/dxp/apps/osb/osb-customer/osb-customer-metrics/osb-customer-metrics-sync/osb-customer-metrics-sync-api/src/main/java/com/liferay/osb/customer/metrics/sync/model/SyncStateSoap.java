@@ -33,7 +33,7 @@ public class SyncStateSoap implements Serializable {
 		SyncStateSoap soapModel = new SyncStateSoap();
 
 		soapModel.setSyncStateId(model.getSyncStateId());
-		soapModel.setModel(model.getModel());
+		soapModel.setModelName(model.getModelName());
 		soapModel.setLastRunTime(model.getLastRunTime());
 
 		return soapModel;
@@ -95,12 +95,12 @@ public class SyncStateSoap implements Serializable {
 		_syncStateId = syncStateId;
 	}
 
-	public String getModel() {
-		return _model;
+	public String getModelName() {
+		return _modelName;
 	}
 
-	public void setModel(String model) {
-		_model = model;
+	public void setModelName(String modelName) {
+		_modelName = modelName;
 	}
 
 	public long getLastRunTime() {
@@ -112,6 +112,6 @@ public class SyncStateSoap implements Serializable {
 	}
 
 	private long _syncStateId;
-	private String _model;
+	private String _modelName;
 	private long _lastRunTime;
 }

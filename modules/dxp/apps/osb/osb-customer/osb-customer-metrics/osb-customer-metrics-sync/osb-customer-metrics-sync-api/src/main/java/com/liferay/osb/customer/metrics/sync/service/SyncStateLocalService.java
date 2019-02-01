@@ -16,7 +16,6 @@ package com.liferay.osb.customer.metrics.sync.service;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osb.customer.metrics.sync.exception.NoSuchSyncStateException;
 import com.liferay.osb.customer.metrics.sync.model.SyncState;
 
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
@@ -61,7 +60,7 @@ public interface SyncStateLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link SyncStateLocalServiceUtil} to access the sync state local service. Add custom service methods to {@link com.liferay.osb.customer.metrics.sync.service.impl.SyncStateLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public SyncState addSyncState(String model);
+	public SyncState addSyncState(String modelName);
 
 	/**
 	* Adds the sync state to the database. Also notifies the appropriate model listeners.
@@ -177,8 +176,7 @@ public interface SyncStateLocalService extends BaseLocalService,
 	public SyncState fetchSyncState(long syncStateId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public SyncState fetchSyncState(String model)
-		throws NoSuchSyncStateException;
+	public SyncState fetchSyncState(String modelName);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -230,8 +228,8 @@ public interface SyncStateLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getSyncStatesCount();
 
-	public SyncState updateSyncState(String model, long lastRunTime)
-		throws NoSuchSyncStateException;
+	public SyncState updateSyncState(String modelName, long lastRunTime)
+		throws PortalException;
 
 	/**
 	* Updates the sync state in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

@@ -79,27 +79,28 @@ public class SyncStatePersistenceImpl extends BasePersistenceImpl<SyncState>
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
-	private FinderPath _finderPathFetchByModel;
-	private FinderPath _finderPathCountByModel;
+	private FinderPath _finderPathFetchByModelName;
+	private FinderPath _finderPathCountByModelName;
 
 	/**
-	 * Returns the sync state where model = &#63; or throws a {@link NoSuchSyncStateException} if it could not be found.
+	 * Returns the sync state where modelName = &#63; or throws a {@link NoSuchSyncStateException} if it could not be found.
 	 *
-	 * @param model the model
+	 * @param modelName the model name
 	 * @return the matching sync state
 	 * @throws NoSuchSyncStateException if a matching sync state could not be found
 	 */
 	@Override
-	public SyncState findByModel(String model) throws NoSuchSyncStateException {
-		SyncState syncState = fetchByModel(model);
+	public SyncState findByModelName(String modelName)
+		throws NoSuchSyncStateException {
+		SyncState syncState = fetchByModelName(modelName);
 
 		if (syncState == null) {
 			StringBundler msg = new StringBundler(4);
 
 			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			msg.append("model=");
-			msg.append(model);
+			msg.append("modelName=");
+			msg.append(modelName);
 
 			msg.append("}");
 
@@ -114,40 +115,41 @@ public class SyncStatePersistenceImpl extends BasePersistenceImpl<SyncState>
 	}
 
 	/**
-	 * Returns the sync state where model = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 * Returns the sync state where modelName = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
 	 *
-	 * @param model the model
+	 * @param modelName the model name
 	 * @return the matching sync state, or <code>null</code> if a matching sync state could not be found
 	 */
 	@Override
-	public SyncState fetchByModel(String model) {
-		return fetchByModel(model, true);
+	public SyncState fetchByModelName(String modelName) {
+		return fetchByModelName(modelName, true);
 	}
 
 	/**
-	 * Returns the sync state where model = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 * Returns the sync state where modelName = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
-	 * @param model the model
+	 * @param modelName the model name
 	 * @param retrieveFromCache whether to retrieve from the finder cache
 	 * @return the matching sync state, or <code>null</code> if a matching sync state could not be found
 	 */
 	@Override
-	public SyncState fetchByModel(String model, boolean retrieveFromCache) {
-		model = Objects.toString(model, "");
+	public SyncState fetchByModelName(String modelName,
+		boolean retrieveFromCache) {
+		modelName = Objects.toString(modelName, "");
 
-		Object[] finderArgs = new Object[] { model };
+		Object[] finderArgs = new Object[] { modelName };
 
 		Object result = null;
 
 		if (retrieveFromCache) {
-			result = finderCache.getResult(_finderPathFetchByModel, finderArgs,
-					this);
+			result = finderCache.getResult(_finderPathFetchByModelName,
+					finderArgs, this);
 		}
 
 		if (result instanceof SyncState) {
 			SyncState syncState = (SyncState)result;
 
-			if (!Objects.equals(model, syncState.getModel())) {
+			if (!Objects.equals(modelName, syncState.getModelName())) {
 				result = null;
 			}
 		}
@@ -157,15 +159,15 @@ public class SyncStatePersistenceImpl extends BasePersistenceImpl<SyncState>
 
 			query.append(_SQL_SELECT_SYNCSTATE_WHERE);
 
-			boolean bindModel = false;
+			boolean bindModelName = false;
 
-			if (model.isEmpty()) {
-				query.append(_FINDER_COLUMN_MODEL_MODEL_3);
+			if (modelName.isEmpty()) {
+				query.append(_FINDER_COLUMN_MODELNAME_MODELNAME_3);
 			}
 			else {
-				bindModel = true;
+				bindModelName = true;
 
-				query.append(_FINDER_COLUMN_MODEL_MODEL_2);
+				query.append(_FINDER_COLUMN_MODELNAME_MODELNAME_2);
 			}
 
 			String sql = query.toString();
@@ -179,15 +181,15 @@ public class SyncStatePersistenceImpl extends BasePersistenceImpl<SyncState>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (bindModel) {
-					qPos.add(model);
+				if (bindModelName) {
+					qPos.add(modelName);
 				}
 
 				List<SyncState> list = q.list();
 
 				if (list.isEmpty()) {
-					finderCache.putResult(_finderPathFetchByModel, finderArgs,
-						list);
+					finderCache.putResult(_finderPathFetchByModelName,
+						finderArgs, list);
 				}
 				else {
 					if (list.size() > 1) {
@@ -195,7 +197,7 @@ public class SyncStatePersistenceImpl extends BasePersistenceImpl<SyncState>
 
 						if (_log.isWarnEnabled()) {
 							_log.warn(
-								"SyncStatePersistenceImpl.fetchByModel(String, boolean) with parameters (" +
+								"SyncStatePersistenceImpl.fetchByModelName(String, boolean) with parameters (" +
 								StringUtil.merge(finderArgs) +
 								") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
 						}
@@ -209,7 +211,7 @@ public class SyncStatePersistenceImpl extends BasePersistenceImpl<SyncState>
 				}
 			}
 			catch (Exception e) {
-				finderCache.removeResult(_finderPathFetchByModel, finderArgs);
+				finderCache.removeResult(_finderPathFetchByModelName, finderArgs);
 
 				throw processException(e);
 			}
@@ -227,32 +229,32 @@ public class SyncStatePersistenceImpl extends BasePersistenceImpl<SyncState>
 	}
 
 	/**
-	 * Removes the sync state where model = &#63; from the database.
+	 * Removes the sync state where modelName = &#63; from the database.
 	 *
-	 * @param model the model
+	 * @param modelName the model name
 	 * @return the sync state that was removed
 	 */
 	@Override
-	public SyncState removeByModel(String model)
+	public SyncState removeByModelName(String modelName)
 		throws NoSuchSyncStateException {
-		SyncState syncState = findByModel(model);
+		SyncState syncState = findByModelName(modelName);
 
 		return remove(syncState);
 	}
 
 	/**
-	 * Returns the number of sync states where model = &#63;.
+	 * Returns the number of sync states where modelName = &#63;.
 	 *
-	 * @param model the model
+	 * @param modelName the model name
 	 * @return the number of matching sync states
 	 */
 	@Override
-	public int countByModel(String model) {
-		model = Objects.toString(model, "");
+	public int countByModelName(String modelName) {
+		modelName = Objects.toString(modelName, "");
 
-		FinderPath finderPath = _finderPathCountByModel;
+		FinderPath finderPath = _finderPathCountByModelName;
 
-		Object[] finderArgs = new Object[] { model };
+		Object[] finderArgs = new Object[] { modelName };
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
@@ -261,15 +263,15 @@ public class SyncStatePersistenceImpl extends BasePersistenceImpl<SyncState>
 
 			query.append(_SQL_COUNT_SYNCSTATE_WHERE);
 
-			boolean bindModel = false;
+			boolean bindModelName = false;
 
-			if (model.isEmpty()) {
-				query.append(_FINDER_COLUMN_MODEL_MODEL_3);
+			if (modelName.isEmpty()) {
+				query.append(_FINDER_COLUMN_MODELNAME_MODELNAME_3);
 			}
 			else {
-				bindModel = true;
+				bindModelName = true;
 
-				query.append(_FINDER_COLUMN_MODEL_MODEL_2);
+				query.append(_FINDER_COLUMN_MODELNAME_MODELNAME_2);
 			}
 
 			String sql = query.toString();
@@ -283,8 +285,8 @@ public class SyncStatePersistenceImpl extends BasePersistenceImpl<SyncState>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				if (bindModel) {
-					qPos.add(model);
+				if (bindModelName) {
+					qPos.add(modelName);
 				}
 
 				count = (Long)q.uniqueResult();
@@ -304,8 +306,8 @@ public class SyncStatePersistenceImpl extends BasePersistenceImpl<SyncState>
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_MODEL_MODEL_2 = "syncState.model = ?";
-	private static final String _FINDER_COLUMN_MODEL_MODEL_3 = "(syncState.model IS NULL OR syncState.model = '')";
+	private static final String _FINDER_COLUMN_MODELNAME_MODELNAME_2 = "syncState.modelName = ?";
+	private static final String _FINDER_COLUMN_MODELNAME_MODELNAME_3 = "(syncState.modelName IS NULL OR syncState.modelName = '')";
 
 	public SyncStatePersistenceImpl() {
 		setModelClass(SyncState.class);
@@ -321,8 +323,8 @@ public class SyncStatePersistenceImpl extends BasePersistenceImpl<SyncState>
 		entityCache.putResult(SyncStateModelImpl.ENTITY_CACHE_ENABLED,
 			SyncStateImpl.class, syncState.getPrimaryKey(), syncState);
 
-		finderCache.putResult(_finderPathFetchByModel,
-			new Object[] { syncState.getModel() }, syncState);
+		finderCache.putResult(_finderPathFetchByModelName,
+			new Object[] { syncState.getModelName() }, syncState);
 
 		syncState.resetOriginalValues();
 	}
@@ -394,29 +396,31 @@ public class SyncStatePersistenceImpl extends BasePersistenceImpl<SyncState>
 
 	protected void cacheUniqueFindersCache(
 		SyncStateModelImpl syncStateModelImpl) {
-		Object[] args = new Object[] { syncStateModelImpl.getModel() };
+		Object[] args = new Object[] { syncStateModelImpl.getModelName() };
 
-		finderCache.putResult(_finderPathCountByModel, args, Long.valueOf(1),
-			false);
-		finderCache.putResult(_finderPathFetchByModel, args,
+		finderCache.putResult(_finderPathCountByModelName, args,
+			Long.valueOf(1), false);
+		finderCache.putResult(_finderPathFetchByModelName, args,
 			syncStateModelImpl, false);
 	}
 
 	protected void clearUniqueFindersCache(
 		SyncStateModelImpl syncStateModelImpl, boolean clearCurrent) {
 		if (clearCurrent) {
-			Object[] args = new Object[] { syncStateModelImpl.getModel() };
+			Object[] args = new Object[] { syncStateModelImpl.getModelName() };
 
-			finderCache.removeResult(_finderPathCountByModel, args);
-			finderCache.removeResult(_finderPathFetchByModel, args);
+			finderCache.removeResult(_finderPathCountByModelName, args);
+			finderCache.removeResult(_finderPathFetchByModelName, args);
 		}
 
 		if ((syncStateModelImpl.getColumnBitmask() &
-				_finderPathFetchByModel.getColumnBitmask()) != 0) {
-			Object[] args = new Object[] { syncStateModelImpl.getOriginalModel() };
+				_finderPathFetchByModelName.getColumnBitmask()) != 0) {
+			Object[] args = new Object[] {
+					syncStateModelImpl.getOriginalModelName()
+				};
 
-			finderCache.removeResult(_finderPathCountByModel, args);
-			finderCache.removeResult(_finderPathFetchByModel, args);
+			finderCache.removeResult(_finderPathCountByModelName, args);
+			finderCache.removeResult(_finderPathFetchByModelName, args);
 		}
 	}
 
@@ -987,15 +991,15 @@ public class SyncStatePersistenceImpl extends BasePersistenceImpl<SyncState>
 				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 				new String[0]);
 
-		_finderPathFetchByModel = new FinderPath(SyncStateModelImpl.ENTITY_CACHE_ENABLED,
+		_finderPathFetchByModelName = new FinderPath(SyncStateModelImpl.ENTITY_CACHE_ENABLED,
 				SyncStateModelImpl.FINDER_CACHE_ENABLED, SyncStateImpl.class,
-				FINDER_CLASS_NAME_ENTITY, "fetchByModel",
+				FINDER_CLASS_NAME_ENTITY, "fetchByModelName",
 				new String[] { String.class.getName() },
-				SyncStateModelImpl.MODEL_COLUMN_BITMASK);
+				SyncStateModelImpl.MODELNAME_COLUMN_BITMASK);
 
-		_finderPathCountByModel = new FinderPath(SyncStateModelImpl.ENTITY_CACHE_ENABLED,
+		_finderPathCountByModelName = new FinderPath(SyncStateModelImpl.ENTITY_CACHE_ENABLED,
 				SyncStateModelImpl.FINDER_CACHE_ENABLED, Long.class,
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByModel",
+				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByModelName",
 				new String[] { String.class.getName() });
 	}
 
