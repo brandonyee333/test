@@ -63,7 +63,7 @@ public class OSBConstants {
 
 	public static long ORGANIZATION_TRIAL_ID = 2844857;
 
-	public static final int OSB_PORTLET_RELEASE_ID = 20572075;
+	public static final long OSB_PORTLET_RELEASE_ID = 6552366;
 
 	public static long ROLE_LIFERAY_EMPLOYEE_ID = 10946;
 
