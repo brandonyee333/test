@@ -26,6 +26,7 @@ import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.model.ProductEntry;
+import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.osb.service.base.OfferingEntryLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.VisibilityConstants;
@@ -36,11 +37,15 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
+
+import java.text.Format;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -393,6 +398,26 @@ public class OfferingEntryLocalServiceImpl
 		long fieldClassNameId = classNameLocalService.getClassNameId(
 			OfferingEntry.class.getName());
 
+		StringBundler sb = new StringBundler(6);
+
+		sb.append("ID: ");
+		sb.append(offeringEntryId);
+
+		ProductEntry productEntry =
+			ProductEntryLocalServiceUtil.fetchProductEntry(
+				offeringEntry.getProductEntryId());
+
+		if (productEntry != null) {
+			sb.append(", Name: ");
+			sb.append(productEntry.getName());
+		}
+
+		sb.append(", Start Date: ");
+
+		String startDate = _dateFormat.format(offeringEntry.getStartDate());
+
+		sb.append(startDate);
+
 		auditEntryLocalService.addAuditEntry(
 			userId, user.getFullName(), now, classNameId,
 			offeringEntry.getAccountEntryId(), 0, fieldClassNameId,
@@ -400,7 +425,7 @@ public class OfferingEntryLocalServiceImpl
 			AuditEntryConstants.FIELD_STATUS, VisibilityConstants.WORKERS,
 			StringPool.BLANK, StringPool.BLANK,
 			OfferingEntryConstants.getStatusLabel(status),
-			String.valueOf(status));
+			String.valueOf(status), sb.toString());
 
 		return offeringEntry;
 	}
@@ -545,5 +570,8 @@ public class OfferingEntryLocalServiceImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		OfferingEntryLocalServiceImpl.class);
+
+	private final Format _dateFormat =
+		FastDateFormatFactoryUtil.getSimpleDateFormat("yyyy-MM-dd");
 
 }

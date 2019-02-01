@@ -14,9 +14,9 @@
 
 package com.liferay.osb.admin.util;
 
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.service.ProductEntryLocalServiceUtil;
-import com.liferay.osb.tools.BaseUpgradeImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.petra.content.ContentUtil;
@@ -28,22 +28,20 @@ import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.Region;
 import com.liferay.portal.kernel.service.ListTypeLocalServiceUtil;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
+import com.liferay.portal.kernel.util.MethodHandler;
+import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-
-import java.io.File;
 
 import java.net.URL;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -263,47 +261,30 @@ public class AdminUtil {
 		return (int)latestProductVersionType.getListTypeId();
 	}
 
-	public static List<Class<?>> getManualUpgradeProcessClasses(int buildNumber)
+	public static List<UpgradeProcess> getManualUpgradeProcessClasses(
+			int buildNumber)
 		throws Exception {
 
-		String manualUpgradeProcessPackage = _getManualUpgradeProcessPackage(
-			buildNumber);
+		String manualUpgradeProcessClassPath =
+			_getManualUpgradeProcessClassPath(buildNumber);
 
-		String manualUpgradeProcessDirPath = StringUtil.replace(
-			manualUpgradeProcessPackage, CharPool.PERIOD, CharPool.SLASH);
+		ClassLoader classLoader = BaseUpgradeProcess.class.getClassLoader();
 
-		ClassLoader classLoader = BaseUpgradeImpl.class.getClassLoader();
+		Class<?> manualUpgradeProcessClass = Class.forName(
+			manualUpgradeProcessClassPath, false, classLoader);
 
-		URL manualUpgradeProcessURL = classLoader.getResource(
-			manualUpgradeProcessDirPath);
+		try {
+			MethodKey methodKey = new MethodKey(
+				manualUpgradeProcessClass, "getManualUpgradeProcessClasses");
 
-		if (manualUpgradeProcessURL == null) {
-			return Collections.emptyList();
+			MethodHandler getMethodHandler = new MethodHandler(methodKey);
+
+			return (List<UpgradeProcess>)getMethodHandler.invoke();
+		}
+		catch (NoSuchMethodException nsme) {
 		}
 
-		List<Class<?>> manualUpgradeProcessClasses = new ArrayList<>();
-
-		File manualUpgradeProcessDir = new File(
-			manualUpgradeProcessURL.getFile());
-
-		String[] fileNames = manualUpgradeProcessDir.list();
-
-		Arrays.sort(fileNames);
-
-		for (String fileName : fileNames) {
-			if (!fileName.endsWith(".class")) {
-				continue;
-			}
-
-			String className = fileName.substring(0, fileName.length() - 6);
-
-			Class<?> manualUpgradeProcessClass = classLoader.loadClass(
-				manualUpgradeProcessPackage + StringPool.PERIOD + className);
-
-			manualUpgradeProcessClasses.add(manualUpgradeProcessClass);
-		}
-
-		return manualUpgradeProcessClasses;
+		return Collections.emptyList();
 	}
 
 	public static PortletPreferences getPortletPreferences() {
@@ -340,12 +321,12 @@ public class AdminUtil {
 		}
 	}
 
-	private static String _getManualUpgradeProcessPackage(int buildNumber) {
+	private static String _getManualUpgradeProcessClassPath(int buildNumber) {
 		String buildNumberString = String.valueOf(buildNumber);
 
 		StringBundler sb = new StringBundler(buildNumberString.length() * 2);
 
-		sb.append("com.liferay.osb.hook.upgrade.v");
+		sb.append("com.liferay.osb.hook.upgrade.UpgradeProcess_");
 
 		for (int i = 0; i < buildNumberString.length(); i++) {
 			char c = buildNumberString.charAt(i);
@@ -356,8 +337,6 @@ public class AdminUtil {
 				sb.append(CharPool.UNDERLINE);
 			}
 		}
-
-		sb.append(".manual");
 
 		return sb.toString();
 	}

@@ -156,6 +156,9 @@
 		<field name="newValue" type="String">
 			<hint-collection name="TEXTAREA" />
 		</field>
+		<field name="description" type="String">
+			<hint name="max-length">255</hint>
+		</field>
 		<field name="i18n" type="boolean" />
 	</model>
 	<model name="com.liferay.osb.model.CorpProject">

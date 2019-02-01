@@ -430,6 +430,7 @@
 		<column name="oldValue" type="String" />
 		<column name="newLabel" type="String" />
 		<column name="newValue" type="String" />
+		<column name="description" type="String" />
 		<column name="i18n" type="boolean" />
 
 		<!-- Order -->

@@ -39,7 +39,8 @@ public class AuditEntryLocalServiceImpl extends AuditEntryLocalServiceBaseImpl {
 			long userId, String userName, Date createDate, long classNameId,
 			long classPK, long auditSetId, long fieldClassNameId,
 			long fieldClassPK, int action, int field, int visibility,
-			String oldLabel, String oldValue, String newLabel, String newValue)
+			String oldLabel, String oldValue, String newLabel, String newValue,
+			String description)
 		throws PortalException {
 
 		boolean i18n = isI18n(field);
@@ -47,7 +48,7 @@ public class AuditEntryLocalServiceImpl extends AuditEntryLocalServiceBaseImpl {
 		return addAuditEntry(
 			userId, userName, createDate, classNameId, classPK, auditSetId,
 			fieldClassNameId, fieldClassPK, action, field, visibility, oldLabel,
-			oldValue, newLabel, newValue, i18n, true);
+			oldValue, newLabel, newValue, description, i18n, true);
 	}
 
 	public AuditEntry addAuditEntry(
@@ -55,7 +56,7 @@ public class AuditEntryLocalServiceImpl extends AuditEntryLocalServiceBaseImpl {
 			long classPK, long auditSetId, long fieldClassNameId,
 			long fieldClassPK, int action, int field, int visibility,
 			String oldLabel, String oldValue, String newLabel, String newValue,
-			boolean i18n, boolean trackChange)
+			String description, boolean i18n, boolean trackChange)
 		throws PortalException {
 
 		long previousAuditEntryId = 0;
@@ -98,6 +99,7 @@ public class AuditEntryLocalServiceImpl extends AuditEntryLocalServiceBaseImpl {
 		auditEntry.setOldValue(oldValue);
 		auditEntry.setNewLabel(newLabel);
 		auditEntry.setNewValue(newValue);
+		auditEntry.setDescription(description);
 		auditEntry.setI18n(i18n);
 
 		return auditEntryPersistence.update(auditEntry);

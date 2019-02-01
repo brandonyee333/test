@@ -317,7 +317,17 @@ for (SupportRegion supportRegion : supportRegions) {
 							<span class="summary">
 								<liferay-ui:message key="<%= auditEntry.getActionLabel() %>" />
 
-								<liferay-ui:message key="<%= auditEntry.getFieldClassNameIdLabel() %>" />
+								<%
+								String fieldClassNameIdLabel = auditEntry.getFieldClassNameIdLabel();
+								%>
+
+								<liferay-ui:message key="<%= fieldClassNameIdLabel %>" />
+
+								<c:if test="<%= fieldClassNameIdLabel.equals("offering") %>">
+									<span>
+										<%= HtmlUtil.escape(auditEntry.getDescription()) %>
+									</span>
+								</c:if>
 							</span>
 
 							<div class="create-date">

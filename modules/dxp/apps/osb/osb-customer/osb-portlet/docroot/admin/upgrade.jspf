@@ -17,9 +17,10 @@
 <%
 Release release = ReleaseLocalServiceUtil.getRelease(OSBConstants.OSB_PORTLET_RELEASE_ID);
 
-List<Class<?>> upgradeProcessClasses = AdminUtil.getManualUpgradeProcessClasses(release.getBuildNumber());
+List<UpgradeProcess> upgradeProcesses = AdminUtil.getManualUpgradeProcessClasses(release.getBuildNumber());
 
-for (Class<?> upgradeProcessClass : upgradeProcessClasses) {
+for (UpgradeProcess upgradeProcess : upgradeProcesses) {
+	Class<?> upgradeProcessClass = upgradeProcess.getClass();
 %>
 
 	<%= upgradeProcessClass.getName() %>

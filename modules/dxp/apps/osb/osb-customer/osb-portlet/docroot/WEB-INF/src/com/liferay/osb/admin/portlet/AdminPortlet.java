@@ -491,13 +491,10 @@ public class AdminPortlet extends OSBPortlet {
 		Release release = ReleaseLocalServiceUtil.getRelease(
 			OSBConstants.OSB_PORTLET_RELEASE_ID);
 
-		List<Class<?>> upgradeProcessClasses =
+		List<UpgradeProcess> upgradeProcesses =
 			AdminUtil.getManualUpgradeProcessClasses(release.getBuildNumber());
 
-		for (Class<?> upgradeProcessClass : upgradeProcessClasses) {
-			UpgradeProcess upgradeProcess =
-				(UpgradeProcess)upgradeProcessClass.newInstance();
-
+		for (UpgradeProcess upgradeProcess : upgradeProcesses) {
 			upgradeProcess.upgrade();
 		}
 	}
