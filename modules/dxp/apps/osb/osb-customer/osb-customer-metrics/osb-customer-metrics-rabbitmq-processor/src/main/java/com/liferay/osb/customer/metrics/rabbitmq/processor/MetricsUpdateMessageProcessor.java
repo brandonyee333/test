@@ -120,9 +120,8 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 					jsonObject.put(key, classNameId);
 				}
 				else {
-					String errorMessage = "className value: " + classNameValue;
-
-					throw new NoSuchClassNameException(errorMessage);
+					throw new NoSuchClassNameException(
+						"{value=" + classNameValue + "}");
 				}
 
 				String prefix = key.substring(0, key.length() - 6);
@@ -133,19 +132,18 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 					if (value instanceof JSONObject) {
 						JSONObject columnJSONObject = (JSONObject)value;
 
-						String uuid_ = columnJSONObject.getString("uuid_");
+						String uuid = columnJSONObject.getString("uuid_");
 
 						String classPK = getColumnValue(
 							"select userId from OSB_MetricsUser where uuid_ " +
-								"= '" + uuid_ + "'");
+								"= '" + uuid + "'");
 
 						if (classPK != null) {
 							jsonObject.put(prefix + "PK", classPK);
 						}
 						else {
-							String errorMessage = "uuid_: " + uuid_;
-
-							throw new NoSuchUserException(errorMessage);
+							throw new NoSuchUserException(
+								"{uuid=" + uuid + "}");
 						}
 					}
 				}
@@ -156,19 +154,17 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 				if (value instanceof JSONObject) {
 					JSONObject columnJSONObject = (JSONObject)value;
 
-					String uuid_ = columnJSONObject.getString("uuid_");
+					String uuid = columnJSONObject.getString("uuid_");
 
 					String userId = getColumnValue(
 						"select userId from OSB_MetricsUser where uuid_ = '" +
-							uuid_ + "'");
+							uuid + "'");
 
 					if (userId != null) {
 						jsonObject.put(key, userId);
 					}
 					else {
-						String errorMessage = "uuid_: " + uuid_;
-
-						throw new NoSuchUserException(errorMessage);
+						throw new NoSuchUserException("{uuid=" + uuid + "}");
 					}
 				}
 			}
