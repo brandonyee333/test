@@ -21,6 +21,10 @@ import com.liferay.portal.kernel.util.GetterUtil;
  */
 public class ZendeskSyncConfigurationValues {
 
+	public static final String METRICS_RABBITMQ_EXCHANGE_NAME =
+		GetterUtil.getString(
+			ZendeskSyncConfigurationUtil.get("metrics.rabbitmq.exchange.name"));
+
 	public static final String ZENDESK_SERVICE_RABBITMQ_EXCHANGE_NAME =
 		GetterUtil.getString(
 			ZendeskSyncConfigurationUtil.get(

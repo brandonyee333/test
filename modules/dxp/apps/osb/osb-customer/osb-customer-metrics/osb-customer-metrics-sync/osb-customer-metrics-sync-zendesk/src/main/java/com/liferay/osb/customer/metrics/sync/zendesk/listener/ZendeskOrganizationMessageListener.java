@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.scheduler.SchedulerEntryImpl;
 import com.liferay.portal.kernel.scheduler.TimeUnit;
 import com.liferay.portal.kernel.scheduler.Trigger;
 import com.liferay.portal.kernel.scheduler.TriggerFactory;
+import com.liferay.portal.kernel.util.Time;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -78,25 +79,37 @@ public class ZendeskOrganizationMessageListener extends BaseMessageListener {
 				ZendeskOrganization.class.getName());
 		}
 
+		Date now = new Date();
+
+		long nowSeconds = now.getTime() / Time.SECOND;
+
+		if (!_sync(nowSeconds, syncState.getLastRunTime())) {
+			return;
+		}
+
 		String endpoint =
 			ZendeskRESTEndpoints.URL_API_V2 +
 				ZendeskRESTEndpoints.INCREMENTAL_ORGANIZATIONS;
 
-		Date now = new Date();
-
 		Map<String, String> parameters = new HashMap<>();
 
-		parameters.put("end_time", String.valueOf(now.getTime()));
+		parameters.put("end_time", String.valueOf(nowSeconds));
 		parameters.put(
 			"start_time", String.valueOf(syncState.getLastRunTime()));
 
 		ZendeskRequest zendeskRequest = new ZendeskRequest(
-			endpoint, "get", parameters, null, null);
+			endpoint, "get", parameters, null,
+			"zendesk.metrics.organization.update");
 
-		_messagePublisherUtil.sendMessage(zendeskRequest);
+		_messagePublisherUtil.sendZendeskMessage(zendeskRequest);
+	}
 
-		_syncStateLocalService.updateSyncState(
-			ZendeskOrganization.class.getName(), now.getTime());
+	private boolean _sync(long nowSeconds, long lastRunTime) {
+		if (lastRunTime < (nowSeconds - Time.MINUTE)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	@Reference

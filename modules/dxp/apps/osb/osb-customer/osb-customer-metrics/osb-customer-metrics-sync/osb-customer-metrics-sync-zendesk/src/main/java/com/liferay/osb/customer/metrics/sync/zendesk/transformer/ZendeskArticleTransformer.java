@@ -1,0 +1,105 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.customer.metrics.sync.zendesk.transformer;
+
+import com.liferay.osb.customer.metrics.sync.service.SyncStateLocalService;
+import com.liferay.osb.customer.metrics.sync.zendesk.util.MessagePublisherUtil;
+import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints;
+import com.liferay.osb.customer.zendesk.connector.service.ZendeskRequest;
+import com.liferay.osb.customer.zendesk.model.ZendeskArticle;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
+/**
+ * @author Kyle Bischof
+ */
+@Component(
+	immediate = true, property = "routing.key=zendesk.metrics.article.update",
+	service = ZendeskArticleTransformer.class
+)
+public class ZendeskArticleTransformer extends BaseTransformer {
+
+	protected void doProcess(JSONObject jsonObject) throws Exception {
+		Map<String, String> columnMap = new HashMap<>();
+
+		JSONArray jsonArray = jsonObject.getJSONArray("articles");
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject articleJSONObject = jsonArray.getJSONObject(i);
+
+			Iterator<String> iterator = articleJSONObject.keys();
+
+			while (iterator.hasNext()) {
+				String key = iterator.next();
+
+				columnMap.put(key, articleJSONObject.getString(key));
+			}
+
+			JSONObject metricsJSONObject = buildMetricsJSONObject(
+				"ZendeskArticle", columnMap);
+
+			_messagePublisherUtil.sendMetricsMessage(metricsJSONObject);
+		}
+
+		_syncStateLocalService.updateSyncState(
+			ZendeskArticle.class.getName(), jsonObject.getLong("end_time"));
+
+		String nextPage = jsonObject.getString("next_page");
+
+		if (Validator.isNotNull(nextPage)) {
+			_getNextPage(nextPage);
+		}
+	}
+
+	private void _getNextPage(String nextPage) throws PortalException {
+		String endTime = nextPage.substring(
+			nextPage.indexOf("end_time") + 9,
+			nextPage.indexOf(StringPool.AMPERSAND));
+		String startTime = nextPage.substring(
+			nextPage.indexOf("start_time") + 11);
+
+		String endpoint =
+			ZendeskRESTEndpoints.URL_API_V2 +
+				ZendeskRESTEndpoints.INCREMENTAL_ARTICLES;
+
+		Map<String, String> parameters = new HashMap<>();
+
+		parameters.put("end_time", endTime);
+		parameters.put("start_time", startTime);
+
+		ZendeskRequest zendeskRequest = new ZendeskRequest(
+			endpoint, "get", parameters, null,
+			"zendesk.metrics.article.update");
+
+		_messagePublisherUtil.sendZendeskMessage(zendeskRequest);
+	}
+
+	@Reference
+	private MessagePublisherUtil _messagePublisherUtil;
+
+	@Reference
+	private SyncStateLocalService _syncStateLocalService;
+
+}
