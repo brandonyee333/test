@@ -74,6 +74,7 @@ public class Upgrade_20190129102524044_AuditEntry extends BaseUpgradeProcess {
 
 			while (rs.next()) {
 				long auditEntryId = rs.getLong("auditEntryId");
+
 				long offeringEntryId = rs.getLong("offeringEntryId");
 				String productEntryName = rs.getString("name");
 				Timestamp timestamp = rs.getTimestamp("startDate");
