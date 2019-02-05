@@ -146,7 +146,7 @@ public class FileEntryStagedModelDataHandler
 		List<DLFileEntry> dlFileEntries =
 			_dlFileEntryLocalService.getDLFileEntriesByUuidAndCompanyId(
 				uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-				new StagedModelModifiedDateComparator<DLFileEntry>());
+				new StagedModelModifiedDateComparator<>());
 
 		List<FileEntry> fileEntries = new ArrayList<>();
 
