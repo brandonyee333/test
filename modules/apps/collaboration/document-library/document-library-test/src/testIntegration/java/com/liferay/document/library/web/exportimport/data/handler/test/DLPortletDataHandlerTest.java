@@ -92,9 +92,6 @@ public class DLPortletDataHandlerTest extends BasePortletDataHandlerTestCase {
 		ServiceTestUtil.setUser(TestPropsValues.getUser());
 
 		super.setUp();
-
-		_registerService(
-			new CountingDLExportableRepositoryPublisher(_atomicInteger));
 	}
 
 	@After
@@ -195,23 +192,33 @@ public class DLPortletDataHandlerTest extends BasePortletDataHandlerTestCase {
 	public void testDLExportableRepositoryPublisherIsInvokedWhenExporting()
 		throws Exception {
 
+		AtomicInteger atomicInteger = new AtomicInteger(0);
+
+		_registerService(
+			new CountingDLExportableRepositoryPublisher(atomicInteger));
+
 		initContext();
 
 		portletDataHandler.exportData(
 			portletDataContext, DLPortletKeys.DOCUMENT_LIBRARY, null);
 
-		Assert.assertTrue(_atomicInteger.get() >= 1);
+		Assert.assertTrue(atomicInteger.get() >= 1);
 	}
 
 	@Test
 	public void testDLExportableRepositoryPublisherIsInvokedWhenPreparingSummary()
 		throws Exception {
 
+		AtomicInteger atomicInteger = new AtomicInteger(0);
+
+		_registerService(
+			new CountingDLExportableRepositoryPublisher(atomicInteger));
+
 		initContext();
 
 		portletDataHandler.prepareManifestSummary(portletDataContext);
 
-		Assert.assertTrue(_atomicInteger.get() >= 1);
+		Assert.assertTrue(atomicInteger.get() >= 1);
 	}
 
 	@Override
