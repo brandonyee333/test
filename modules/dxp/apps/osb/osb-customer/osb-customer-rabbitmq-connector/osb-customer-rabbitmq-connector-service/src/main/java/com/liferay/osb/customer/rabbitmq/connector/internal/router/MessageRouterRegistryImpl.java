@@ -17,6 +17,7 @@ package com.liferay.osb.customer.rabbitmq.connector.internal.router;
 import com.liferay.osb.customer.rabbitmq.connector.consumer.ConsumerManager;
 import com.liferay.osb.customer.rabbitmq.connector.router.MessageRouter;
 import com.liferay.osb.customer.rabbitmq.connector.router.MessageRouterRegistry;
+import com.liferay.portal.kernel.cluster.ClusterMasterExecutorUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -59,6 +60,12 @@ public class MessageRouterRegistryImpl implements MessageRouterRegistry {
 
 		if (Validator.isNull(queue)) {
 			throw new Exception("Queue is empty");
+		}
+
+		boolean master = GetterUtil.getBoolean(properties.get("master"));
+
+		if (master && !ClusterMasterExecutorUtil.isMaster()) {
+			return;
 		}
 
 		_consumerManager.addConsumer(queue, messageRouter);

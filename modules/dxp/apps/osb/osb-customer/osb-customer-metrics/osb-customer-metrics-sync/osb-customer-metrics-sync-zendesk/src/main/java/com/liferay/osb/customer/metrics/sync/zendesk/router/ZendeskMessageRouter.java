@@ -30,7 +30,8 @@ import org.osgi.service.component.annotations.Reference;
  * @author Kyle Bischof
  */
 @Component(
-	immediate = true, property = "queue=is_zendesk_metrics_queue",
+	immediate = true,
+	property = {"master=true", "queue=is_zendesk_metrics_queue"},
 	service = MessageRouter.class
 )
 public class ZendeskMessageRouter extends BaseMessageRouter {
