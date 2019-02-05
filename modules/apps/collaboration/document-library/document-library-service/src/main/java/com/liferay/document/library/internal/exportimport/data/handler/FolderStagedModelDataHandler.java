@@ -192,9 +192,8 @@ public class FolderStagedModelDataHandler
 
 	@Override
 	protected void doImportMissingReference(
-			PortletDataContext portletDataContext, String uuid, long groupId,
-			long folderId)
-		throws Exception {
+		PortletDataContext portletDataContext, String uuid, long groupId,
+		long folderId) {
 
 		Folder existingFolder = fetchMissingReference(uuid, groupId);
 
@@ -393,9 +392,8 @@ public class FolderStagedModelDataHandler
 	}
 
 	protected String getFolderName(
-			String uuid, long groupId, long parentFolderId, String name,
-			int count)
-		throws Exception {
+		String uuid, long groupId, long parentFolderId, String name,
+		int count) {
 
 		DLFolder dlFolder = _dlFolderLocalService.fetchFolder(
 			groupId, parentFolderId, name);
@@ -418,9 +416,8 @@ public class FolderStagedModelDataHandler
 	}
 
 	protected void importFolderFileEntryTypes(
-			PortletDataContext portletDataContext, Element folderElement,
-			Folder folder, Folder importedFolder, ServiceContext serviceContext)
-		throws Exception {
+		PortletDataContext portletDataContext, Element folderElement,
+		Folder folder, Folder importedFolder, ServiceContext serviceContext) {
 
 		if (!folder.isDefaultRepository()) {
 			return;
