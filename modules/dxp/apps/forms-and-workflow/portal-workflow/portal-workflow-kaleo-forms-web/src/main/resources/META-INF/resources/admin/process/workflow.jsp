@@ -166,19 +166,8 @@ if (Validator.isNotNull(workflowDefinition)) {
 			</liferay-ui:search-container-row>
 		</c:when>
 		<c:otherwise>
-
-			<%
-			List<KaleoDraftDefinition> latestKaleoDraftDefinitions = KaleoDraftDefinitionServiceUtil.getLatestKaleoDraftDefinitions(company.getCompanyId(), 0, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
-
-			searchContainer.setTotal(latestKaleoDraftDefinitions.size());
-			%>
-
 			<liferay-ui:search-container-results
-				results="<%= ListUtil.subList(latestKaleoDraftDefinitions, searchContainer.getStart(), searchContainer.getEnd()) %>"
-			/>
-
-			<liferay-ui:search-container-results
-				results="<%= KaleoDraftDefinitionServiceUtil.getLatestKaleoDraftDefinitions(company.getCompanyId(), 0, searchContainer.getStart(), searchContainer.getEnd(), null) %>"
+				results="<%= kaleoFormsAdminDisplayContext.getSearchContainerResults(searchContainer, WorkflowConstants.STATUS_DRAFT) %>"
 			/>
 
 			<liferay-ui:search-container-row

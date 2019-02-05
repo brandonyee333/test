@@ -97,6 +97,7 @@ import com.liferay.portal.workflow.kaleo.forms.service.KaleoProcessService;
 import com.liferay.portal.workflow.kaleo.forms.service.permission.KaleoProcessPermission;
 import com.liferay.portal.workflow.kaleo.forms.web.configuration.KaleoFormsWebConfiguration;
 import com.liferay.portal.workflow.kaleo.forms.web.internal.display.context.KaleoFormsAdminDisplayContext;
+import com.liferay.portal.workflow.kaleo.service.KaleoDefinitionLocalService;
 
 import java.io.IOException;
 
@@ -915,6 +916,7 @@ public class KaleoFormsAdminPortlet extends MVCPortlet {
 		KaleoFormsAdminDisplayContext kaleoFormsAdminDisplayContext =
 			new KaleoFormsAdminDisplayContext(
 				renderRequest, renderResponse, _ddmDisplayRegistry,
+				_kaleoDefinitionLocalService, _kaleoDraftDefinitionService,
 				_kaleoFormsWebConfiguration, storageEngine);
 
 		renderRequest.setAttribute(
@@ -1072,7 +1074,13 @@ public class KaleoFormsAdminPortlet extends MVCPortlet {
 	private DDMDisplayRegistry _ddmDisplayRegistry;
 	private DDMFormJSONDeserializer _ddmFormJSONDeserializer;
 	private DDMFormValuesMerger _ddmFormValuesMerger;
+
+	@Reference
+	private KaleoDefinitionLocalService _kaleoDefinitionLocalService;
+
+	@Reference
 	private KaleoDraftDefinitionService _kaleoDraftDefinitionService;
+
 	private volatile KaleoFormsWebConfiguration _kaleoFormsWebConfiguration;
 	private KaleoProcessService _kaleoProcessService;
 
