@@ -194,7 +194,7 @@ public class DLPortletDataHandler extends BasePortletDataHandler {
 
 	@Override
 	protected String doExportData(
-			final PortletDataContext portletDataContext, String portletId,
+			PortletDataContext portletDataContext, String portletId,
 			PortletPreferences portletPreferences)
 		throws Exception {
 
@@ -324,7 +324,7 @@ public class DLPortletDataHandler extends BasePortletDataHandler {
 
 	@Override
 	protected void doPrepareManifestSummary(
-			final PortletDataContext portletDataContext,
+			PortletDataContext portletDataContext,
 			PortletPreferences portletPreferences)
 		throws Exception {
 
@@ -355,7 +355,7 @@ public class DLPortletDataHandler extends BasePortletDataHandler {
 	}
 
 	protected ActionableDynamicQuery getDLFileEntryTypeActionableDynamicQuery(
-		final PortletDataContext portletDataContext) {
+		PortletDataContext portletDataContext) {
 
 		ActionableDynamicQuery actionableDynamicQuery =
 			_dlFileEntryTypeLocalService.getExportActionableDynamicQuery(
@@ -387,13 +387,13 @@ public class DLPortletDataHandler extends BasePortletDataHandler {
 	}
 
 	protected ActionableDynamicQuery getDLFileShortcutActionableDynamicQuery(
-		final PortletDataContext portletDataContext) {
+		PortletDataContext portletDataContext) {
 
-		final ExportActionableDynamicQuery exportActionableDynamicQuery =
+		ExportActionableDynamicQuery exportActionableDynamicQuery =
 			_dlFileShortcutLocalService.getExportActionableDynamicQuery(
 				portletDataContext);
 
-		final ActionableDynamicQuery.AddCriteriaMethod addCriteriaMethod =
+		ActionableDynamicQuery.AddCriteriaMethod addCriteriaMethod =
 			exportActionableDynamicQuery.getAddCriteriaMethod();
 
 		exportActionableDynamicQuery.setAddCriteriaMethod(
@@ -420,12 +420,12 @@ public class DLPortletDataHandler extends BasePortletDataHandler {
 	}
 
 	protected ActionableDynamicQuery getFileEntryActionableDynamicQuery(
-		final PortletDataContext portletDataContext) {
+		PortletDataContext portletDataContext) {
 
 		Collection<Long> exportableRepositoryIds = _getExportableRepositoryIds(
 			portletDataContext);
 
-		final ExportActionableDynamicQuery exportActionableDynamicQuery =
+		ExportActionableDynamicQuery exportActionableDynamicQuery =
 			_dlFileEntryLocalService.getExportActionableDynamicQuery(
 				portletDataContext);
 
@@ -507,7 +507,7 @@ public class DLPortletDataHandler extends BasePortletDataHandler {
 	}
 
 	protected ActionableDynamicQuery getFolderActionableDynamicQuery(
-		final PortletDataContext portletDataContext) {
+		PortletDataContext portletDataContext) {
 
 		Collection<Long> exportableRepositoryIds = _getExportableRepositoryIds(
 			portletDataContext);
@@ -516,7 +516,7 @@ public class DLPortletDataHandler extends BasePortletDataHandler {
 			_dlFolderLocalService.getExportActionableDynamicQuery(
 				portletDataContext);
 
-		final ActionableDynamicQuery.AddCriteriaMethod addCriteriaMethod =
+		ActionableDynamicQuery.AddCriteriaMethod addCriteriaMethod =
 			exportActionableDynamicQuery.getAddCriteriaMethod();
 
 		exportActionableDynamicQuery.setAddCriteriaMethod(
@@ -547,7 +547,7 @@ public class DLPortletDataHandler extends BasePortletDataHandler {
 	}
 
 	protected ActionableDynamicQuery getRepositoryActionableDynamicQuery(
-		final PortletDataContext portletDataContext) {
+		PortletDataContext portletDataContext) {
 
 		Collection<Long> exportableRepositoryIds = _getExportableRepositoryIds(
 			portletDataContext);
@@ -556,7 +556,7 @@ public class DLPortletDataHandler extends BasePortletDataHandler {
 			_repositoryLocalService.getExportActionableDynamicQuery(
 				portletDataContext);
 
-		final ActionableDynamicQuery.AddCriteriaMethod addCriteriaMethod =
+		ActionableDynamicQuery.AddCriteriaMethod addCriteriaMethod =
 			exportActionableDynamicQuery.getAddCriteriaMethod();
 
 		exportActionableDynamicQuery.setAddCriteriaMethod(
