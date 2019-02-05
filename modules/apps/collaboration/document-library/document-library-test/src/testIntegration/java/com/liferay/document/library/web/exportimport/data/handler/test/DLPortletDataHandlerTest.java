@@ -93,13 +93,8 @@ public class DLPortletDataHandlerTest extends BasePortletDataHandlerTestCase {
 
 		super.setUp();
 
-		Registry registry = RegistryUtil.getRegistry();
-
-		_serviceRegistrations.add(
-			registry.registerService(
-				DLExportableRepositoryPublisher.class,
-				new CountingDLExportableRepositoryPublisher(_atomicInteger),
-				new HashMap<>()));
+		_registerService(
+			new CountingDLExportableRepositoryPublisher(_atomicInteger));
 	}
 
 	@After
@@ -296,6 +291,17 @@ public class DLPortletDataHandlerTest extends BasePortletDataHandlerTestCase {
 	@Override
 	protected String getPortletId() {
 		return DLPortletKeys.DOCUMENT_LIBRARY;
+	}
+
+	private void _registerService(
+		DLExportableRepositoryPublisher dlExportableRepositoryPublisher) {
+
+		Registry registry = RegistryUtil.getRegistry();
+
+		_serviceRegistrations.add(
+			registry.registerService(
+				DLExportableRepositoryPublisher.class,
+				dlExportableRepositoryPublisher, new HashMap<>()));
 	}
 
 	private final AtomicInteger _atomicInteger = new AtomicInteger(0);
