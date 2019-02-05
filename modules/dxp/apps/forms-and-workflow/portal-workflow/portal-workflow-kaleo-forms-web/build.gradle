@@ -13,6 +13,7 @@ dependencies {
 	compileOnly group: "com.liferay", name: "com.liferay.petra.string", version: "1.0.0"
 	compileOnly group: "com.liferay", name: "com.liferay.portal.configuration.metatype", version: "2.0.0"
 	compileOnly group: "com.liferay", name: "com.liferay.portal.upgrade", version: "2.0.0"
+	compileOnly group: "com.liferay", name: "com.liferay.portal.workflow.kaleo.api", version: "2.0.0"
 	compileOnly group: "com.liferay", name: "com.liferay.portal.workflow.kaleo.designer.api", version: "1.0.0"
 	compileOnly group: "com.liferay", name: "com.liferay.portal.workflow.kaleo.designer.web", version: "1.0.0"
 	compileOnly group: "com.liferay", name: "com.liferay.portal.workflow.kaleo.forms.api", version: "1.1.0"
