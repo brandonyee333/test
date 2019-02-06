@@ -133,7 +133,7 @@ public class DLPortletDataHandlerTest extends BasePortletDataHandlerTestCase {
 	public void testCustomRepositoryEntriesPrepareManifestSummary()
 		throws Exception {
 
-		initContext();
+		initExport();
 
 		addRepositoryEntries();
 
@@ -197,7 +197,7 @@ public class DLPortletDataHandlerTest extends BasePortletDataHandlerTestCase {
 		_registerService(
 			new CountingDLExportableRepositoryPublisher(atomicInteger));
 
-		initContext();
+		initExport();
 
 		portletDataHandler.exportData(
 			portletDataContext, DLPortletKeys.DOCUMENT_LIBRARY, null);
@@ -214,7 +214,7 @@ public class DLPortletDataHandlerTest extends BasePortletDataHandlerTestCase {
 		_registerService(
 			new CountingDLExportableRepositoryPublisher(atomicInteger));
 
-		initContext();
+		initExport();
 
 		portletDataHandler.prepareManifestSummary(portletDataContext);
 
@@ -228,7 +228,7 @@ public class DLPortletDataHandlerTest extends BasePortletDataHandlerTestCase {
 		_registerService(
 			new ConstantDLExportableRepositoryPublisher(repositoryId));
 
-		initContext();
+		initExport();
 
 		portletDataContext.setEndDate(getEndDate());
 
@@ -261,7 +261,7 @@ public class DLPortletDataHandlerTest extends BasePortletDataHandlerTestCase {
 		_registerService(
 			new ConstantDLExportableRepositoryPublisher(repositoryId));
 
-		initContext();
+		initExport();
 
 		portletDataContext.setEndDate(getEndDate());
 
