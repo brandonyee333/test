@@ -85,7 +85,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.Callable;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -907,45 +906,39 @@ public class FileEntryStagedModelDataHandler
 		try {
 			TransactionInvokerUtil.invoke(
 				_transactionConfig,
-				new Callable<Void>() {
+				() -> {
+					DLFileEntry dlFileEntry =
+						(DLFileEntry)importedFileEntry.getModel();
 
-					@Override
-					public Void call() throws Exception {
-						DLFileEntry dlFileEntry =
-							(DLFileEntry)importedFileEntry.getModel();
-
-						if (version.equals(dlFileEntry.getVersion())) {
-							return null;
-						}
-
-						DLFileVersion dlFileVersion =
-							dlFileEntry.getFileVersion();
-
-						String oldVersion = dlFileVersion.getVersion();
-
-						dlFileVersion.setVersion(version);
-
-						_dlFileVersionLocalService.updateDLFileVersion(
-							dlFileVersion);
-
-						dlFileEntry.setVersion(version);
-
-						_dlFileEntryLocalService.updateDLFileEntry(dlFileEntry);
-
-						if (DLStoreUtil.hasFile(
-								dlFileEntry.getCompanyId(),
-								dlFileEntry.getDataRepositoryId(),
-								dlFileEntry.getName(), oldVersion)) {
-
-							DLStoreUtil.updateFileVersion(
-								dlFileEntry.getCompanyId(),
-								dlFileEntry.getDataRepositoryId(),
-								dlFileEntry.getName(), oldVersion, version);
-						}
-
+					if (version.equals(dlFileEntry.getVersion())) {
 						return null;
 					}
 
+					DLFileVersion dlFileVersion = dlFileEntry.getFileVersion();
+
+					String oldVersion = dlFileVersion.getVersion();
+
+					dlFileVersion.setVersion(version);
+
+					_dlFileVersionLocalService.updateDLFileVersion(
+						dlFileVersion);
+
+					dlFileEntry.setVersion(version);
+
+					_dlFileEntryLocalService.updateDLFileEntry(dlFileEntry);
+
+					if (DLStoreUtil.hasFile(
+							dlFileEntry.getCompanyId(),
+							dlFileEntry.getDataRepositoryId(),
+							dlFileEntry.getName(), oldVersion)) {
+
+						DLStoreUtil.updateFileVersion(
+							dlFileEntry.getCompanyId(),
+							dlFileEntry.getDataRepositoryId(),
+							dlFileEntry.getName(), oldVersion, version);
+					}
+
+					return null;
 				});
 		}
 		catch (PortalException | SystemException e) {
