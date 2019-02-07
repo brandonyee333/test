@@ -24,8 +24,10 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.CharPool;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StackTraceUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TextFormatter;
 
@@ -37,8 +39,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -63,6 +67,10 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 
 		while (true) {
 			try {
+				if (SetUtil.isEmpty(_badColumnNames)) {
+					_badColumnNames = _readLines(_BAD_COLUMN_FILE);
+				}
+
 				JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
 					message.trim());
 
@@ -97,13 +105,19 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 
 	protected abstract void doProcess(JSONObject jsonObject) throws Exception;
 
-	protected Map<String, String> getColumnMap(JSONObject jsonObject) {
+	protected Map<String, String> getColumnMap(JSONObject jsonObject)
+		throws Exception {
+
 		Map<String, String> columnMap = new HashMap<>();
 
 		Iterator<String> keysIterator = jsonObject.keys();
 
 		while (keysIterator.hasNext())	 {
 			String columnName = keysIterator.next();
+
+			if (_badColumnNames.contains(columnName)) {
+				columnName += StringPool.UNDERLINE;
+			}
 
 			columnMap.put(columnName, jsonObject.getString(columnName));
 		}
@@ -205,11 +219,25 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 		}
 	}
 
+	private Set<String> _readLines(String fileName) throws Exception {
+		Set<String> lines = new HashSet<>();
+
+		StringUtil.readLines(getClass().getResourceAsStream(fileName), lines);
+
+		return lines;
+	}
+
+	private static final String _BAD_COLUMN_FILE =
+		"/com/liferay/portal/tools/service/builder/dependencies" +
+			"/bad_column_names.txt";
+
 	private static final String _DATA_SOURCE_CONTEXT =
 		"java:comp/env/jdbc/" +
 			MetricsProcessorConfigurationValues.DATABASE_SCHEMA_NAME;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseMessageProcessor.class);
+
+	private static Set<String> _badColumnNames;
 
 }
