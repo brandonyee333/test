@@ -33,6 +33,8 @@ public class DDMStructureConstants {
 
 	public static final String FILE_TYPE_PRODUCT = "product";
 
+	public static final String FILE_TYPE_PROJECT_SDK = "projectSDK";
+
 	public static final String FILE_TYPE_SECURITY = "security";
 
 	public static final String KEY_DOWNLOAD = "OSB-CUSTOMER-THEME---DOWNLOAD";
@@ -103,6 +105,9 @@ public class DDMStructureConstants {
 		}
 		else if (fileType.equals(FILE_TYPE_PRODUCT)) {
 			return "Product";
+		}
+		else if (fileType.equals(FILE_TYPE_PROJECT_SDK)) {
+			return "Project SDK";
 		}
 		else if (fileType.equals(FILE_TYPE_SECURITY)) {
 			return "Security";
@@ -189,8 +194,10 @@ public class DDMStructureConstants {
 
 	private static final String[] _FILE_TYPES_DEFAULT = {FILE_TYPE_PRODUCT};
 
-	private static final String[] _FILE_TYPES_DEVELOPER_TOOLS =
-		{FILE_TYPE_DEVELOPER_STUDIO, FILE_TYPE_FACES, FILE_TYPE_PLUGINS_SDK};
+	private static final String[] _FILE_TYPES_DEVELOPER_TOOLS = {
+		FILE_TYPE_DEVELOPER_STUDIO, FILE_TYPE_FACES, FILE_TYPE_PLUGINS_SDK,
+		FILE_TYPE_PROJECT_SDK
+	};
 
 	private static final String[] _FILE_TYPES_DXP =
 		{FILE_TYPE_PRODUCT, FILE_TYPE_FIX_PACKS, FILE_TYPE_SECURITY};
