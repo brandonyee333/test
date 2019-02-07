@@ -86,7 +86,7 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 
 		int pos = detailMessage.indexOf("Server returned status");
 
-		if (pos <= 0) {
+		if (pos < 0) {
 			return false;
 		}
 
