@@ -107,14 +107,16 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 
 		Iterator<String> keysIterator = jsonObject.keys();
 
-		while (keysIterator.hasNext())	 {
+		while (keysIterator.hasNext()) {
 			String columnName = keysIterator.next();
+
+			String columnValue = jsonObject.getString(columnName);
 
 			if (_badColumnNames.contains(columnName)) {
 				columnName += StringPool.UNDERLINE;
 			}
 
-			columnMap.put(columnName, jsonObject.getString(columnName));
+			columnMap.put(columnName, columnValue);
 		}
 
 		return columnMap;
