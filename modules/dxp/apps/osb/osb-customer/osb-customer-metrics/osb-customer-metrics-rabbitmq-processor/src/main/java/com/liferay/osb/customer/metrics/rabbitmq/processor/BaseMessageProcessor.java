@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.CharPool;
-import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StackTraceUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -67,10 +66,6 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 
 		while (true) {
 			try {
-				if (SetUtil.isEmpty(_badColumnNames)) {
-					_badColumnNames = _readLines(_BAD_COLUMN_FILE);
-				}
-
 				JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
 					message.trim());
 
@@ -219,14 +214,6 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 		}
 	}
 
-	private Set<String> _readLines(String fileName) throws Exception {
-		Set<String> lines = new HashSet<>();
-
-		StringUtil.readLines(getClass().getResourceAsStream(fileName), lines);
-
-		return lines;
-	}
-
 	private static final String _BAD_COLUMN_FILE =
 		"/com/liferay/portal/tools/service/builder/dependencies" +
 			"/bad_column_names.txt";
@@ -238,6 +225,20 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseMessageProcessor.class);
 
-	private static Set<String> _badColumnNames;
+	private static final Set<String> _badColumnNames = new HashSet<>();
+
+	static {
+		try {
+			StringUtil.readLines(
+				BaseMessageProcessor.class.getResourceAsStream(
+					_BAD_COLUMN_FILE),
+				_badColumnNames);
+
+			System.out.println(StringUtil.merge(_badColumnNames));
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+		}
+	}
 
 }
