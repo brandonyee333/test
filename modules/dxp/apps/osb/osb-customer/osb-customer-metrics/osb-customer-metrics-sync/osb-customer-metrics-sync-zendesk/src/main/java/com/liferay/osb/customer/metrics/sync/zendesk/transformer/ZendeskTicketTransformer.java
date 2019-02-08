@@ -133,7 +133,9 @@ public class ZendeskTicketTransformer extends BaseTransformer {
 	private String _getTicketFieldName(long id) throws PortalException {
 		String name = _ticketFields.get(id);
 
-		name = name.replace(StringPool.SPACE, StringPool.UNDERLINE);
+		name = StringUtil.replace(
+			name, new String[] {StringPool.SPACE, StringPool.DASH},
+			new String[] {StringPool.UNDERLINE, StringPool.UNDERLINE});
 
 		return StringUtil.toLowerCase(name);
 	}
