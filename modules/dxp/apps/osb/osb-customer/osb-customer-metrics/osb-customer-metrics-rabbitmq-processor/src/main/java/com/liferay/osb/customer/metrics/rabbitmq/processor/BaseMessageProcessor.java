@@ -235,8 +235,6 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 				BaseMessageProcessor.class.getResourceAsStream(
 					_BAD_COLUMN_FILE),
 				_badColumnNames);
-
-			System.out.println(StringUtil.merge(_badColumnNames));
 		}
 		catch (Exception e) {
 			_log.error(e, e);
