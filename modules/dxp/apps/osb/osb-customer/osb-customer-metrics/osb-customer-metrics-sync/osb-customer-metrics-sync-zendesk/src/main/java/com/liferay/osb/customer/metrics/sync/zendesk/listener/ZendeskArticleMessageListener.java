@@ -105,7 +105,7 @@ public class ZendeskArticleMessageListener extends BaseMessageListener {
 	}
 
 	private boolean _sync(long nowSeconds, long lastRunTime) {
-		if (lastRunTime < (nowSeconds - Time.MINUTE)) {
+		if ((nowSeconds - lastRunTime) > 60) {
 			return true;
 		}
 

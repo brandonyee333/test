@@ -66,19 +66,13 @@ public class ZendeskArticleTransformer extends BaseTransformer {
 		_syncStateLocalService.updateSyncState(
 			ZendeskArticle.class.getName(), jsonObject.getLong("end_time"));
 
-		String nextPage = jsonObject.getString("next_page");
-
-		if (Validator.isNotNull(nextPage)) {
-			_getNextPage(nextPage);
-		}
+		_processNextPage(jsonObject.getString("next_page"));
 	}
 
-	private void _getNextPage(String nextPage) throws PortalException {
-		String endTime = nextPage.substring(
-			nextPage.indexOf("end_time") + 9,
-			nextPage.indexOf(StringPool.AMPERSAND));
-		String startTime = nextPage.substring(
-			nextPage.indexOf("start_time") + 11);
+	private void _processNextPage(String nextPage) throws PortalException {
+		if (Validator.isNull(nextPage)) {
+			return;
+		}
 
 		String endpoint =
 			ZendeskRESTEndpoints.URL_API_V2 +
@@ -86,7 +80,15 @@ public class ZendeskArticleTransformer extends BaseTransformer {
 
 		Map<String, String> parameters = new HashMap<>();
 
+		String endTime = nextPage.substring(
+			nextPage.indexOf("end_time") + 9,
+			nextPage.indexOf(StringPool.AMPERSAND));
+
 		parameters.put("end_time", endTime);
+
+		String startTime = nextPage.substring(
+			nextPage.indexOf("start_time") + 11);
+
 		parameters.put("start_time", startTime);
 
 		ZendeskRequest zendeskRequest = new ZendeskRequest(

@@ -20,10 +20,8 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 /**
  * @author Kyle Bischof
@@ -50,13 +48,7 @@ public abstract class BaseTransformer implements MessageProcessor {
 
 		JSONObject valuesJSONObject = JSONFactoryUtil.createJSONObject();
 
-		Set<Entry<String, String>> entrySet = columnMap.entrySet();
-
-		Iterator<Entry<String, String>> iterator = entrySet.iterator();
-
-		while (iterator.hasNext()) {
-			Entry<String, String> entry = iterator.next();
-
+		for (Map.Entry<String, String> entry : columnMap.entrySet()) {
 			valuesJSONObject.put(entry.getKey(), entry.getValue());
 		}
 

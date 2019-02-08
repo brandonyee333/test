@@ -35,7 +35,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -46,6 +48,30 @@ import org.osgi.service.component.annotations.Reference;
 	service = ZendeskTicketTransformer.class
 )
 public class ZendeskTicketTransformer extends BaseTransformer {
+
+	@Activate
+	@Modified
+	protected void activate(Map<String, Object> properties)
+		throws PortalException {
+
+		String endpoint =
+			ZendeskRESTEndpoints.URL_API_V2 +
+				ZendeskRESTEndpoints.TICKET_FIELDS;
+
+		JSONObject response = _zendeskBaseWebService.get(
+			endpoint, StringPool.BLANK);
+
+		JSONArray jsonArray = response.getJSONArray("ticket_fields");
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject ticketFieldJSONObject = jsonArray.getJSONObject(i);
+
+			long id = ticketFieldJSONObject.getLong("id");
+			String title = ticketFieldJSONObject.getString("title");
+
+			_ticketFields.put(id, title);
+		}
+	}
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
 		Map<String, String> columnMap = new HashMap<>();
@@ -84,7 +110,7 @@ public class ZendeskTicketTransformer extends BaseTransformer {
 						long id = fieldJSONObject.getLong("id");
 						String value = fieldJSONObject.getString("value");
 
-						columnMap.put(getTicketFieldName(id), value);
+						columnMap.put(_getTicketFieldName(id), value);
 					}
 				}
 				else {
@@ -101,18 +127,10 @@ public class ZendeskTicketTransformer extends BaseTransformer {
 		_syncStateLocalService.updateSyncState(
 			ZendeskTicket.class.getName(), jsonObject.getLong("end_time"));
 
-		String nextPage = jsonObject.getString("next_page");
-
-		if (Validator.isNotNull(nextPage)) {
-			_getNextPage(nextPage);
-		}
+		_processNextPage(jsonObject.getString("next_page"));
 	}
 
-	protected String getTicketFieldName(long id) throws PortalException {
-		if (_ticketFields.isEmpty()) {
-			_setTicketFields();
-		}
-
+	private String _getTicketFieldName(long id) throws PortalException {
 		String name = _ticketFields.get(id);
 
 		name = name.replace(StringPool.SPACE, StringPool.UNDERLINE);
@@ -120,18 +138,31 @@ public class ZendeskTicketTransformer extends BaseTransformer {
 		return StringUtil.toLowerCase(name);
 	}
 
-	@Reference
-	protected ZendeskBaseWebService zendeskBaseWebService;
+	private boolean _isSystemUpdate(long startTime, String updatedAt)
+		throws Exception {
 
-	private void _getNextPage(String nextPage) throws PortalException {
-		String startTime = nextPage.substring(
-			nextPage.indexOf("start_time") + 11);
+		Instant instant = Instant.parse(updatedAt);
+
+		if (instant.getEpochSecond() < startTime) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private void _processNextPage(String nextPage) throws PortalException {
+		if (Validator.isNull(nextPage)) {
+			return;
+		}
 
 		String endpoint =
 			ZendeskRESTEndpoints.URL_API_V2 +
 				ZendeskRESTEndpoints.INCREMENTAL_TICKETS;
 
 		Map<String, String> parameters = new HashMap<>();
+
+		String startTime = nextPage.substring(
+			nextPage.indexOf("start_time") + 11);
 
 		parameters.put("start_time", startTime);
 
@@ -149,40 +180,6 @@ public class ZendeskTicketTransformer extends BaseTransformer {
 		_messagePublisherUtil.sendZendeskMessage(zendeskRequest);
 	}
 
-	private boolean _isSystemUpdate(long startTime, String updatedAt)
-		throws Exception {
-
-		Instant instant = Instant.parse(updatedAt);
-
-		if (instant.getEpochSecond() < startTime) {
-			return true;
-		}
-
-		return false;
-	}
-
-	private Map<Long, String> _setTicketFields() throws PortalException {
-		String endpoint =
-			ZendeskRESTEndpoints.URL_API_V2 +
-				ZendeskRESTEndpoints.TICKET_FIELDS;
-
-		JSONObject response = zendeskBaseWebService.get(
-			endpoint, StringPool.BLANK);
-
-		JSONArray jsonArray = response.getJSONArray("ticket_fields");
-
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject ticketFieldJSONObject = jsonArray.getJSONObject(i);
-
-			long id = ticketFieldJSONObject.getLong("id");
-			String title = ticketFieldJSONObject.getString("title");
-
-			_ticketFields.put(id, title);
-		}
-
-		return _ticketFields;
-	}
-
 	private static final String[] _EXCLUDED_FIELDS = {"fields"};
 
 	@Reference
@@ -192,5 +189,8 @@ public class ZendeskTicketTransformer extends BaseTransformer {
 	private SyncStateLocalService _syncStateLocalService;
 
 	private final Map<Long, String> _ticketFields = new HashMap<>();
+
+	@Reference
+	private ZendeskBaseWebService _zendeskBaseWebService;
 
 }
