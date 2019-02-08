@@ -132,7 +132,7 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 			Context initialContext = new InitialContext();
 
 			DataSource dataSource = (DataSource)initialContext.lookup(
-				_DATA_SOURCE_CONTEXT);
+				DATA_SOURCE_CONTEXT);
 
 			connection = dataSource.getConnection();
 
@@ -180,7 +180,7 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 			Context initialContext = new InitialContext();
 
 			DataSource dataSource = (DataSource)initialContext.lookup(
-				_DATA_SOURCE_CONTEXT);
+				DATA_SOURCE_CONTEXT);
 
 			connection = dataSource.getConnection();
 
@@ -216,13 +216,13 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 		}
 	}
 
+	protected static final String DATA_SOURCE_CONTEXT =
+		"java:comp/env/jdbc/" +
+			MetricsProcessorConfigurationValues.DATABASE_SCHEMA_NAME;
+
 	private static final String _BAD_COLUMN_FILE =
 		"/com/liferay/portal/tools/service/builder/dependencies" +
 			"/bad_column_names.txt";
-
-	private static final String _DATA_SOURCE_CONTEXT =
-		"java:comp/env/jdbc/" +
-			MetricsProcessorConfigurationValues.DATABASE_SCHEMA_NAME;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseMessageProcessor.class);
