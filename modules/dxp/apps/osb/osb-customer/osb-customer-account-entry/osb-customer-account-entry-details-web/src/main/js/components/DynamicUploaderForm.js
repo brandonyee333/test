@@ -294,11 +294,11 @@ export default class DynamicUploaderForm extends React.Component {
 
 		formFields.forEach(
 			key => {
-				actionUrl += `&${namespace}${key}=${this.state.file[key]}`;
+				actionUrl += `&${namespace}${key}=${encodeURIComponent(this.state.file[key])}`;
 			}
 		);
 
-		actionUrl += `&${namespace}comment=${this.state.comment}`;
+		actionUrl += `&${namespace}comment=${encodeURIComponent(this.state.comment)}`;
 
 		this.formRef.current.action = actionUrl;
 	}
