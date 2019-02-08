@@ -147,30 +147,37 @@ public class OfferingEntryLocalServiceImpl
 				}
 			}
 
-			updateStatus(
-				OSBConstants.USER_DEFAULT_USER_ID,
-				offeringEntry.getOfferingEntryId(),
-				OfferingEntryConstants.STATUS_ON_HOLD);
-
-			accountEntryLocalService.updateActiveSupport(
-				offeringEntry.getAccountEntryId());
-
-			if (accountEntryIds.contains(offeringEntry.getAccountEntryId())) {
-				continue;
-			}
-
 			try {
-				lcsSubscriptionEntryLocalService.syncToLCS(
+				updateStatus(
+					OSBConstants.USER_DEFAULT_USER_ID,
+					offeringEntry.getOfferingEntryId(),
+					OfferingEntryConstants.STATUS_ON_HOLD);
+
+				accountEntryLocalService.updateActiveSupport(
 					offeringEntry.getAccountEntryId());
+
+				if (accountEntryIds.contains(
+						offeringEntry.getAccountEntryId())) {
+
+					continue;
+				}
+
+				try {
+					lcsSubscriptionEntryLocalService.syncToLCS(
+						offeringEntry.getAccountEntryId());
+				}
+				catch (Exception e) {
+					_log.error(
+						"Unable to sync account entry " +
+							offeringEntry.getAccountEntryId() + " to LCS",
+						e);
+				}
+
+				accountEntryIds.add(offeringEntry.getAccountEntryId());
 			}
 			catch (Exception e) {
-				_log.error(
-					"Unable to sync account entry " +
-						offeringEntry.getAccountEntryId() + " to LCS",
-					e);
+				_log.error(e, e);
 			}
-
-			accountEntryIds.add(offeringEntry.getAccountEntryId());
 		}
 	}
 
