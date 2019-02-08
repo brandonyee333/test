@@ -14,8 +14,9 @@
 
 package com.liferay.portal.vulcan.internal.feature;
 
-import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.vulcan.context.AcceptLanguage;
+import com.liferay.portal.vulcan.internal.context.provider.CompanyContextProvider;
 import com.liferay.portal.vulcan.internal.context.provider.PaginationContextProvider;
 import com.liferay.portal.vulcan.internal.exception.mapper.NoSuchModelExceptionMapper;
 import com.liferay.portal.vulcan.internal.exception.mapper.PortalExceptionMapper;
@@ -59,8 +60,10 @@ public class VulcanFeature implements Feature {
 		featureContext.register(PortalExceptionMapper.class);
 		featureContext.register(PrincipalExceptionMapper.class);
 
+		featureContext.register(
+			new CompanyContextProvider(_portal::getCompany));
+
 		featureContext.register(_acceptLanguageContextProvider);
-		featureContext.register(_companyContextProvider);
 
 		return false;
 	}
@@ -70,9 +73,7 @@ public class VulcanFeature implements Feature {
 	)
 	private ContextProvider<AcceptLanguage> _acceptLanguageContextProvider;
 
-	@Reference(
-		target = "(osgi.jaxrs.name=Liferay.Vulcan.CompanyContextProvider)"
-	)
-	private ContextProvider<Company> _companyContextProvider;
+	@Reference
+	private Portal _portal;
 
 }

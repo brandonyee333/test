@@ -14,47 +14,48 @@
 
 package com.liferay.portal.vulcan.internal.context.provider;
 
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Company;
-import com.liferay.portal.kernel.util.Portal;
 
-import javax.ws.rs.ServerErrorException;
+import io.vavr.CheckedFunction1;
+
+import java.util.function.Function;
+
+import javax.servlet.http.HttpServletRequest;
+
 import javax.ws.rs.ext.Provider;
 
 import org.apache.cxf.jaxrs.ext.ContextProvider;
 import org.apache.cxf.message.Message;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ServiceScope;
-import org.osgi.service.jaxrs.whiteboard.JaxrsWhiteboardConstants;
-
 /**
+ * Allows JAX-RS resources to provide {@link Company} objects in method
+ * parameters, fields or setters by annotating them with {@code
+ * javax.ws.rs.core.Context}.
+ *
+ * @author Alejandro Hernández
  * @author Cristina González
+ * @review
  */
-@Component(
-	property = {
-		JaxrsWhiteboardConstants.JAX_RS_APPLICATION_SELECT + "=(osgi.jaxrs.extension.select=\\(osgi.jaxrs.name=Liferay.Vulcan.CompanyContextProvider\\))",
-		JaxrsWhiteboardConstants.JAX_RS_EXTENSION + "=true",
-		JaxrsWhiteboardConstants.JAX_RS_NAME + "=Liferay.Vulcan.CompanyContextProvider"
-	},
-	scope = ServiceScope.PROTOTYPE, service = ContextProvider.class
-)
 @Provider
 public class CompanyContextProvider implements ContextProvider<Company> {
 
-	@Override
-	public Company createContext(Message message) {
-		try {
-			return _portal.getCompany(
-				ContextProviderUtil.getHttpServletRequest(message));
-		}
-		catch (PortalException pe) {
-			throw new ServerErrorException(500, pe);
-		}
+	public CompanyContextProvider(
+		CheckedFunction1<HttpServletRequest, Company>
+			companyProviderCheckedFunction1) {
+
+		_companyProviderFunction = companyProviderCheckedFunction1.unchecked();
 	}
 
-	@Reference
-	private Portal _portal;
+	@Override
+	public Company createContext(Message message) {
+		return _companyProviderFunction.compose(
+			ContextProviderUtil::getHttpServletRequest
+		).apply(
+			message
+		);
+	}
+
+	private final Function<HttpServletRequest, Company>
+		_companyProviderFunction;
 
 }
