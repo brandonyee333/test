@@ -3,7 +3,6 @@ apply plugin: "com.liferay.lang.merger"
 dependencies {
 	compileOnly files("../../osb-portlet/docroot/WEB-INF/lib/osb-portlet-service.jar")
 	compileOnly group: "biz.aQute.bnd", name: "biz.aQute.bndlib", version: "3.1.0"
-	compileOnly group: "com.liferay", name: "com.liferay.application.list.api", version: "2.0.0"
 	compileOnly group: "com.liferay", name: "com.liferay.dynamic.data.mapping.api", version: "3.0.0"
 	compileOnly group: "com.liferay", name: "com.liferay.frontend.taglib", version: "2.0.0"
 	compileOnly group: "com.liferay", name: "com.liferay.journal.api", version: "2.12.0"

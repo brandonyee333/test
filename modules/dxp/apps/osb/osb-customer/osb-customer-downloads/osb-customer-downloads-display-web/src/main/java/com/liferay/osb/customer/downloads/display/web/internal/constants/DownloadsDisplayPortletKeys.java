@@ -23,8 +23,4 @@ public class DownloadsDisplayPortletKeys {
 		"com_liferay_osb_customer_downloads_display_web_" +
 			"DownloadsDisplayPortlet";
 
-	public static final String DOWNLOADS_MIGRATION =
-		"com_liferay_osb_customer_downloads_display_web_" +
-			"DownloadsMigrationPortlet";
-
 }
