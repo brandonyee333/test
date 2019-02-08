@@ -15,6 +15,7 @@
 package com.liferay.portal.vulcan.internal.context.provider;
 
 import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.vulcan.internal.context.provider.base.BaseContextProvider;
 
 import io.vavr.CheckedFunction1;
 
@@ -23,9 +24,6 @@ import java.util.function.Function;
 import javax.servlet.http.HttpServletRequest;
 
 import javax.ws.rs.ext.Provider;
-
-import org.apache.cxf.jaxrs.ext.ContextProvider;
-import org.apache.cxf.message.Message;
 
 /**
  * Allows JAX-RS resources to provide {@link Company} objects in method
@@ -37,7 +35,7 @@ import org.apache.cxf.message.Message;
  * @review
  */
 @Provider
-public class CompanyContextProvider implements ContextProvider<Company> {
+public class CompanyContextProvider extends BaseContextProvider<Company> {
 
 	public CompanyContextProvider(
 		CheckedFunction1<HttpServletRequest, Company>
@@ -47,12 +45,8 @@ public class CompanyContextProvider implements ContextProvider<Company> {
 	}
 
 	@Override
-	public Company createContext(Message message) {
-		return _companyProviderFunction.compose(
-			ContextProviderUtil::getHttpServletRequest
-		).apply(
-			message
-		);
+	public Company createContext(HttpServletRequest request) {
+		return _companyProviderFunction.apply(request);
 	}
 
 	private final Function<HttpServletRequest, Company>

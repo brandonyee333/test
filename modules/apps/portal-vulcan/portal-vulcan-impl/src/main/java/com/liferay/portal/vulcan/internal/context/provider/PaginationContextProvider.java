@@ -16,28 +16,22 @@ package com.liferay.portal.vulcan.internal.context.provider;
 
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.vulcan.context.Pagination;
+import com.liferay.portal.vulcan.internal.context.provider.base.BaseContextProvider;
 
 import javax.servlet.http.HttpServletRequest;
 
 import javax.ws.rs.ext.Provider;
 
-import org.apache.cxf.jaxrs.ext.ContextProvider;
-import org.apache.cxf.message.Message;
-
 /**
  * @author Zoltán Takács
  */
 @Provider
-public class PaginationContextProvider implements ContextProvider<Pagination> {
+public class PaginationContextProvider extends BaseContextProvider<Pagination> {
 
 	@Override
-	public Pagination createContext(Message message) {
-		HttpServletRequest httpServletRequest =
-			ContextProviderUtil.getHttpServletRequest(message);
-
-		int itemsPerPage = ParamUtil.getInteger(
-			httpServletRequest, "pageSize", 20);
-		int pageNumber = ParamUtil.getInteger(httpServletRequest, "page", 1);
+	public Pagination createContext(HttpServletRequest request) {
+		int itemsPerPage = ParamUtil.getInteger(request, "pageSize", 20);
+		int pageNumber = ParamUtil.getInteger(request, "page", 1);
 
 		return Pagination.of(itemsPerPage, pageNumber);
 	}

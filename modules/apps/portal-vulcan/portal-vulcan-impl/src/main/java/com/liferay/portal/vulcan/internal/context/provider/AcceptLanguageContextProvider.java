@@ -17,6 +17,7 @@ package com.liferay.portal.vulcan.internal.context.provider;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.vulcan.context.AcceptLanguage;
 import com.liferay.portal.vulcan.internal.context.AcceptLanguageImpl;
+import com.liferay.portal.vulcan.internal.context.provider.base.BaseContextProvider;
 
 import io.vavr.CheckedFunction1;
 
@@ -24,15 +25,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import javax.ws.rs.ext.Provider;
 
-import org.apache.cxf.jaxrs.ext.ContextProvider;
-import org.apache.cxf.message.Message;
-
 /**
  * @author Cristina González
  */
 @Provider
 public class AcceptLanguageContextProvider
-	implements ContextProvider<AcceptLanguage> {
+	extends BaseContextProvider<AcceptLanguage> {
 
 	public AcceptLanguageContextProvider(
 		CheckedFunction1<HttpServletRequest, User> userCheckedFunction1) {
@@ -41,13 +39,9 @@ public class AcceptLanguageContextProvider
 	}
 
 	@Override
-	public AcceptLanguage createContext(Message message) {
-		HttpServletRequest httpServletRequest =
-			ContextProviderUtil.getHttpServletRequest(message);
-
+	public AcceptLanguage createContext(HttpServletRequest request) {
 		return new AcceptLanguageImpl(
-			httpServletRequest,
-			() -> _userCheckedFunction1.apply(httpServletRequest));
+			request, () -> _userCheckedFunction1.apply(request));
 	}
 
 	private final CheckedFunction1<HttpServletRequest, User>

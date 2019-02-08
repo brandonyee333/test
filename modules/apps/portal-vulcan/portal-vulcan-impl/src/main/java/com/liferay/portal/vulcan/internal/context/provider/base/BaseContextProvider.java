@@ -12,20 +12,29 @@
  * details.
  */
 
-package com.liferay.portal.vulcan.internal.context.provider;
+package com.liferay.portal.vulcan.internal.context.provider.base;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.cxf.jaxrs.ext.ContextProvider;
 import org.apache.cxf.message.Message;
 
 /**
- * @author Víctor Galán
+ * Base class for those Vulcan's {@code ContextProvider} that only need the HTTP
+ * request.
+ *
+ * @author Alejandro Hernández
+ * @review
  */
-public class ContextProviderUtil {
+public abstract class BaseContextProvider<T> implements ContextProvider<T> {
 
-	public static HttpServletRequest getHttpServletRequest(Message message) {
-		return (HttpServletRequest)message.getContextualProperty(
-			"HTTP.REQUEST");
+	@Override
+	public T createContext(Message message) {
+		Object request = message.getContextualProperty("HTTP.REQUEST");
+
+		return createContext((HttpServletRequest)request);
 	}
+
+	protected abstract T createContext(HttpServletRequest request);
 
 }
