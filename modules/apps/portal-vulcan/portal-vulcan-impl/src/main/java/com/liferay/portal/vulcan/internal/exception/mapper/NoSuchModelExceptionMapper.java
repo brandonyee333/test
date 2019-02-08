@@ -16,7 +16,7 @@ package com.liferay.portal.vulcan.internal.exception.mapper;
 
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 
-import javax.ws.rs.NotFoundException;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
@@ -31,7 +31,13 @@ public class NoSuchModelExceptionMapper
 
 	@Override
 	public Response toResponse(NoSuchModelException nsme) {
-		throw new NotFoundException(nsme);
+		return Response.status(
+			Response.Status.NOT_FOUND
+		).type(
+			MediaType.TEXT_PLAIN
+		).entity(
+			nsme.getMessage()
+		).build();
 	}
 
 }

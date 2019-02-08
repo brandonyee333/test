@@ -16,7 +16,7 @@ package com.liferay.portal.vulcan.internal.exception.mapper;
 
 import com.liferay.portal.kernel.exception.PortalException;
 
-import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
@@ -30,7 +30,13 @@ public class PortalExceptionMapper implements ExceptionMapper<PortalException> {
 
 	@Override
 	public Response toResponse(PortalException pe) {
-		throw new InternalServerErrorException(pe);
+		return Response.status(
+			Response.Status.INTERNAL_SERVER_ERROR
+		).type(
+			MediaType.TEXT_PLAIN
+		).entity(
+			pe.getMessage()
+		).build();
 	}
 
 }

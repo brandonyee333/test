@@ -16,7 +16,7 @@ package com.liferay.portal.vulcan.internal.exception.mapper;
 
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 
-import javax.ws.rs.NotAuthorizedException;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
@@ -31,7 +31,13 @@ public class PrincipalExceptionMapper
 
 	@Override
 	public Response toResponse(PrincipalException pe) {
-		throw new NotAuthorizedException(pe);
+		return Response.status(
+			Response.Status.UNAUTHORIZED
+		).type(
+			MediaType.TEXT_PLAIN
+		).entity(
+			pe.getMessage()
+		).build();
 	}
 
 }
