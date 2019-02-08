@@ -71,14 +71,15 @@ public class PartnerWorkerSynchronizer {
 		throws PortalException {
 
 		if (partnerWorker.getRole() != PartnerWorkerConstants.ROLE_WATCHER) {
+			long zendeskOrganizationId =
+				_zendeskMapperUtil.fetchZendeskOrganizationId(accountEntryId);
 			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
 				partnerWorker.getUserId());
 
-			long zendeskOrganizationId =
-				_zendeskMapperUtil.fetchZendeskOrganizationId(accountEntryId);
-
-			removeOrganizationMemberships(
-				zendeskUserId, new long[] {zendeskOrganizationId});
+			if ((zendeskOrganizationId > 0) && (zendeskUserId > 0)) {
+				removeOrganizationMemberships(
+					zendeskUserId, new long[] {zendeskOrganizationId});
+			}
 		}
 
 		_userSynchronizer.removeObsoleteTags(partnerWorker.getUserId());
@@ -86,14 +87,15 @@ public class PartnerWorkerSynchronizer {
 
 	public void remove(PartnerWorker partnerWorker) throws PortalException {
 		if (partnerWorker.getRole() != PartnerWorkerConstants.ROLE_WATCHER) {
+			long[] zendeskOrganizationIds = getZendeskOrganizationIds(
+				partnerWorker);
 			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
 				partnerWorker.getUserId());
 
-			long[] zendeskOrganizationIds = getZendeskOrganizationIds(
-				partnerWorker);
-
-			removeOrganizationMemberships(
-				zendeskUserId, zendeskOrganizationIds);
+			if (zendeskUserId > 0) {
+				removeOrganizationMemberships(
+					zendeskUserId, zendeskOrganizationIds);
+			}
 		}
 
 		_userSynchronizer.removeObsoleteTags(partnerWorker.getUserId());
@@ -101,14 +103,15 @@ public class PartnerWorkerSynchronizer {
 
 	public void updateRole(PartnerWorker partnerWorker) throws PortalException {
 		if (partnerWorker.getRole() == PartnerWorkerConstants.ROLE_WATCHER) {
+			long[] zendeskOrganizationIds = getZendeskOrganizationIds(
+				partnerWorker);
 			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
 				partnerWorker.getUserId());
 
-			long[] zendeskOrganizationIds = getZendeskOrganizationIds(
-				partnerWorker);
-
-			removeOrganizationMemberships(
-				zendeskUserId, zendeskOrganizationIds);
+			if (zendeskUserId > 0) {
+				removeOrganizationMemberships(
+					zendeskUserId, zendeskOrganizationIds);
+			}
 
 			_userSynchronizer.removeObsoleteTags(partnerWorker.getUserId());
 		}
