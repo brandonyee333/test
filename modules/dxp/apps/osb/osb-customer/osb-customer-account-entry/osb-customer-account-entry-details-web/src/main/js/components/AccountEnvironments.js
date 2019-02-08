@@ -12,6 +12,12 @@ export default class AccountEnvironments extends React.Component {
 		showModal: false
 	};
 
+	static defaultProps = {
+		permitAdd: false,
+		permitDelete: false,
+		permitEdit: false
+	};
+
 	static propTypes = {
 		addEnvironmentURL: PropTypes.string.isRequired,
 		environmentConfiguration: PropTypes.shape(
