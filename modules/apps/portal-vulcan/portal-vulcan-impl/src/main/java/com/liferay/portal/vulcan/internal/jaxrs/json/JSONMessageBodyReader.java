@@ -30,21 +30,9 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.Provider;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.ServiceScope;
-import org.osgi.service.jaxrs.whiteboard.JaxrsWhiteboardConstants;
-
 /**
  * @author Ivica Cardic
  */
-@Component(
-	property = {
-		JaxrsWhiteboardConstants.JAX_RS_APPLICATION_SELECT + "=(osgi.jaxrs.extension.select=\\(osgi.jaxrs.name=Liferay.Vulcan.JSONMessageBodyReader\\))",
-		JaxrsWhiteboardConstants.JAX_RS_EXTENSION + "=true",
-		JaxrsWhiteboardConstants.JAX_RS_NAME + "=Liferay.Vulcan.JSONMessageBodyReader"
-	},
-	scope = ServiceScope.PROTOTYPE, service = MessageBodyReader.class
-)
 @Consumes(MediaType.APPLICATION_JSON)
 @Provider
 public class JSONMessageBodyReader implements MessageBodyReader<Object> {

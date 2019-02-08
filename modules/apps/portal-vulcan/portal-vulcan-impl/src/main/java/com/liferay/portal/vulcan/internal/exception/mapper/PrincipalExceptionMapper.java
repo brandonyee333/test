@@ -20,24 +20,12 @@ import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.ServiceScope;
-import org.osgi.service.jaxrs.whiteboard.JaxrsWhiteboardConstants;
-
 /**
  * Converts any {@code PrincipalException} to a {@code 401} error.
  *
  * @author Brian Wing Shun Chan
  * @review
  */
-@Component(
-	property = {
-		JaxrsWhiteboardConstants.JAX_RS_APPLICATION_SELECT + "=(osgi.jaxrs.extension.select=\\(osgi.jaxrs.name=Liferay.Vulcan.PrincipalExceptionMapper\\))",
-		JaxrsWhiteboardConstants.JAX_RS_EXTENSION + "=true",
-		JaxrsWhiteboardConstants.JAX_RS_NAME + "=Liferay.Vulcan.PrincipalExceptionMapper"
-	},
-	scope = ServiceScope.PROTOTYPE, service = ExceptionMapper.class
-)
 public class PrincipalExceptionMapper
 	implements ExceptionMapper<PrincipalException> {
 
