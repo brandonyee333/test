@@ -16,12 +16,11 @@ package com.liferay.portal.vulcan.internal.exception.mapper;
 
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
 /**
- * Converts any {@code PrincipalException} to a {@code 401} error.
+ * Converts any {@code PrincipalException} to a {@code 404} error.
  *
  * @author Brian Wing Shun Chan
  * @review
@@ -32,11 +31,7 @@ public class PrincipalExceptionMapper
 	@Override
 	public Response toResponse(PrincipalException pe) {
 		return Response.status(
-			Response.Status.UNAUTHORIZED
-		).type(
-			MediaType.TEXT_PLAIN
-		).entity(
-			pe.getMessage()
+			Response.Status.NOT_FOUND
 		).build();
 	}
 
