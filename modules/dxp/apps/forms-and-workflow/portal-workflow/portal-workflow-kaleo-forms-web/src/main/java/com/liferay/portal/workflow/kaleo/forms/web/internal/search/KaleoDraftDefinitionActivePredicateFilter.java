@@ -63,10 +63,10 @@ public class KaleoDraftDefinitionActivePredicateFilter
 			}
 
 			if (_status == WorkflowConstants.STATUS_DRAFT) {
-				return false;
+				return true;
 			}
 			else {
-				return true;
+				return false;
 			}
 		}
 	}
