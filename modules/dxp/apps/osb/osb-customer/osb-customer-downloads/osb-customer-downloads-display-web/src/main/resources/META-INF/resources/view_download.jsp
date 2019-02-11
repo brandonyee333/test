@@ -18,21 +18,15 @@
 
 <%
 JournalArticle journalArticle = (JournalArticle)renderRequest.getAttribute(DownloadsDisplayWebKeys.JOURNAL_ARTICLE);
+AssetCategory productAssetCategory = (AssetCategory)renderRequest.getAttribute(DownloadsDisplayWebKeys.ASSET_CATEGORY_PRODUCT);
 
-Fields ddmFields = journalConverter.getDDMFields(journalArticle.getDDMStructure(), journalArticle.getContent());
-
-String product = DDMFieldsUtil.getSelectOption(ddmFields, "product");
+String logo = downloadsAssetCategoryUtil.getPropertyValue(productAssetCategory.getCategoryId(), DownloadsAssetCategoryConstants.PROPERTY_LOGO);
 %>
 
 <c:choose>
-	<c:when test="<%= product.equals(DDMStructureConstants.PRODUCT_COMMERCE) %>">
-		<svg class="commerce-logo-full">
-			<use xlink:href="#commerce-logo-full" />
-		</svg>
-	</c:when>
-	<c:when test="<%= product.equals(DDMStructureConstants.PRODUCT_DXP_70) || product.equals(DDMStructureConstants.PRODUCT_DXP_71) %>">
-		<svg class="dxp-logo-full">
-			<use xlink:href="#dxp-logo-full" />
+	<c:when test="<%= Validator.isNotNull(logo) %>">
+		<svg class="<%= logo %>">
+			<use xlink:href="<%= StringPool.POUND + logo %>" />
 		</svg>
 	</c:when>
 	<c:otherwise>
@@ -65,6 +59,8 @@ String product = DDMFieldsUtil.getSelectOption(ddmFields, "product");
 			>
 
 				<%
+				Fields ddmFields = journalConverter.getDDMFields(journalArticle.getDDMStructure(), journalArticle.getContent());
+
 				DateFormat dateFormat = DateFormatFactoryUtil.getSimpleDateFormat("yyyy-MM-dd");
 
 				Date releaseDate = dateFormat.parse(DDMFieldsUtil.getString(ddmFields, "releaseDate"));

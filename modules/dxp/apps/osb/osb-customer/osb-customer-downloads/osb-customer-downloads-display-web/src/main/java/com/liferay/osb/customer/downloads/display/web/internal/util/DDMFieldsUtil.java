@@ -18,6 +18,7 @@ import com.liferay.dynamic.data.mapping.storage.Field;
 import com.liferay.dynamic.data.mapping.storage.Fields;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 
 /**
  * @author Amos Fong
@@ -40,6 +41,18 @@ public class DDMFieldsUtil {
 		String value = GetterUtil.getString(ddmField.getValue());
 
 		return value.substring(2, value.length() - 2);
+	}
+
+	public static String[] getSelectOptions(
+		Fields ddmFields, String fieldName) {
+
+		Field ddmField = ddmFields.get(fieldName);
+
+		String value = GetterUtil.getString(ddmField.getValue());
+
+		value = value.substring(2, value.length() - 2);
+
+		return StringUtil.split(value, "\",\"");
 	}
 
 	public static String getString(Fields ddmFields, String fieldName) {

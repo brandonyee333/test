@@ -14,10 +14,14 @@
 
 package com.liferay.osb.customer.downloads.display.web.internal.portlet.action;
 
+import com.liferay.asset.kernel.model.AssetCategory;
+import com.liferay.asset.kernel.model.AssetCategoryConstants;
+import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleService;
 import com.liferay.osb.customer.downloads.display.web.internal.constants.DownloadsDisplayPortletKeys;
 import com.liferay.osb.customer.downloads.display.web.internal.constants.DownloadsDisplayWebKeys;
+import com.liferay.osb.customer.downloads.display.web.internal.util.DownloadsAssetCategoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.servlet.SessionErrors;
@@ -88,11 +92,85 @@ public class ViewMVCRenderCommand implements MVCRenderCommand {
 			renderRequest.setAttribute(
 				DownloadsDisplayWebKeys.JOURNAL_ARTICLE, journalArticle);
 
+			renderRequest.setAttribute(
+				DownloadsDisplayWebKeys.ASSET_CATEGORY_PRODUCT,
+				_downloadsAssetCategoryUtil.getProductAssetCategory(
+					journalArticleResourcePrimKey));
+
 			return "/view_download.jsp";
 		}
+		else {
+			AssetCategory productAssetCategory = getProductAssetCategory(
+				renderRequest);
 
-		return "/view.jsp";
+			if (productAssetCategory != null) {
+				renderRequest.setAttribute(
+					DownloadsDisplayWebKeys.ASSET_CATEGORY_PRODUCT,
+					productAssetCategory);
+
+				AssetCategory fileTypeAssetCategory = getFileTypeAssetCategory(
+					renderRequest, productAssetCategory.getCategoryId());
+
+				if (fileTypeAssetCategory != null) {
+					renderRequest.setAttribute(
+						DownloadsDisplayWebKeys.ASSET_CATEGORY_FILE_TYPE,
+						fileTypeAssetCategory);
+				}
+			}
+
+			return "/view.jsp";
+		}
 	}
+
+	protected AssetCategory getFileTypeAssetCategory(
+		RenderRequest renderRequest, long productAssetCategoryId) {
+
+		long fileTypeAssetCategoryId = ParamUtil.getLong(
+			renderRequest, "fileTypeAssetCategoryId");
+		String fileType = ParamUtil.getString(renderRequest, "fileType");
+
+		AssetCategory assetCategory = null;
+
+		if (fileTypeAssetCategoryId > 0) {
+			assetCategory = _assetCategoryLocalService.fetchAssetCategory(
+				fileTypeAssetCategoryId);
+		}
+
+		if ((assetCategory == null) && Validator.isNotNull(fileType)) {
+			assetCategory = _downloadsAssetCategoryUtil.getAssetCategory(
+				productAssetCategoryId, fileType);
+		}
+
+		return assetCategory;
+	}
+
+	protected AssetCategory getProductAssetCategory(
+		RenderRequest renderRequest) {
+
+		long productAssetCategoryId = ParamUtil.getLong(
+			renderRequest, "productAssetCategoryId");
+		String product = ParamUtil.getString(renderRequest, "product");
+
+		AssetCategory assetCategory = null;
+
+		if (productAssetCategoryId > 0) {
+			assetCategory = _assetCategoryLocalService.fetchAssetCategory(
+				productAssetCategoryId);
+		}
+
+		if ((assetCategory == null) && Validator.isNotNull(product)) {
+			assetCategory = _downloadsAssetCategoryUtil.getAssetCategory(
+				AssetCategoryConstants.DEFAULT_PARENT_CATEGORY_ID, product);
+		}
+
+		return assetCategory;
+	}
+
+	@Reference
+	private AssetCategoryLocalService _assetCategoryLocalService;
+
+	@Reference
+	private DownloadsAssetCategoryUtil _downloadsAssetCategoryUtil;
 
 	@Reference
 	private JournalArticleService _journalArticleService;

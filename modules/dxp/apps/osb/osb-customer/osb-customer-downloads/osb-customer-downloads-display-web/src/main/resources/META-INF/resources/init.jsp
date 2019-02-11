@@ -25,7 +25,8 @@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %><%@
 taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
-<%@ page import="com.liferay.dynamic.data.mapping.model.DDMFormFieldType" %><%@
+<%@ page import="com.liferay.asset.kernel.model.AssetCategory" %><%@
+page import="com.liferay.dynamic.data.mapping.model.DDMFormFieldType" %><%@
 page import="com.liferay.dynamic.data.mapping.model.Value" %><%@
 page import="com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue" %><%@
 page import="com.liferay.dynamic.data.mapping.storage.DDMFormValues" %><%@
@@ -33,9 +34,11 @@ page import="com.liferay.dynamic.data.mapping.storage.Fields" %><%@
 page import="com.liferay.journal.model.JournalArticle" %><%@
 page import="com.liferay.journal.util.JournalConverter" %><%@
 page import="com.liferay.osb.customer.downloads.display.web.internal.constants.DDMStructureConstants" %><%@
+page import="com.liferay.osb.customer.downloads.display.web.internal.constants.DownloadsAssetCategoryConstants" %><%@
 page import="com.liferay.osb.customer.downloads.display.web.internal.constants.DownloadsDisplayWebKeys" %><%@
 page import="com.liferay.osb.customer.downloads.display.web.internal.display.context.DownloadsDisplayContext" %><%@
 page import="com.liferay.osb.customer.downloads.display.web.internal.util.DDMFieldsUtil" %><%@
+page import="com.liferay.osb.customer.downloads.display.web.internal.util.DownloadsAssetCategoryUtil" %><%@
 page import="com.liferay.portal.kernel.dao.search.ResultRow" %><%@
 page import="com.liferay.portal.kernel.json.JSONArray" %><%@
 page import="com.liferay.portal.kernel.json.JSONFactoryUtil" %><%@
@@ -46,7 +49,6 @@ page import="com.liferay.portal.kernel.util.DateFormatFactoryUtil" %><%@
 page import="com.liferay.portal.kernel.util.FastDateFormatFactoryUtil" %><%@
 page import="com.liferay.portal.kernel.util.GetterUtil" %><%@
 page import="com.liferay.portal.kernel.util.LocaleUtil" %><%@
-page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
 page import="com.liferay.portal.kernel.util.PortletKeys" %><%@
 page import="com.liferay.portal.kernel.util.StringPool" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %><%@
@@ -74,6 +76,7 @@ Format mediumDateFormatDate = FastDateFormatFactoryUtil.getDate(DateFormat.MEDIU
 
 DownloadsDisplayContext downloadsDisplayContext = new DownloadsDisplayContext(renderRequest, renderResponse);
 
+DownloadsAssetCategoryUtil downloadsAssetCategoryUtil = (DownloadsAssetCategoryUtil)renderRequest.getAttribute(DownloadsAssetCategoryUtil.class.getName());
 JournalConverter journalConverter = (JournalConverter)renderRequest.getAttribute(JournalConverter.class.getName());
 %>
 

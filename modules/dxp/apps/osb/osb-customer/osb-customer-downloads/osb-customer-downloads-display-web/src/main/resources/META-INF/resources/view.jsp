@@ -17,13 +17,10 @@
 <%@ include file="/init.jsp" %>
 
 <%
-String product = ParamUtil.getString(request, "product");
-String fileType = ParamUtil.getString(request, "fileType");
+AssetCategory fileTypeAssetCategory = (AssetCategory)renderRequest.getAttribute(DownloadsDisplayWebKeys.ASSET_CATEGORY_FILE_TYPE);
+AssetCategory productAssetCategory = (AssetCategory)renderRequest.getAttribute(DownloadsDisplayWebKeys.ASSET_CATEGORY_PRODUCT);
 
 String ddmStructureKey = downloadsDisplayContext.getDDMStructureKey();
-JSONArray productsJSONArray = downloadsDisplayContext.getProductsJSONArray();
-
-PortletURL portletURL = renderResponse.createRenderURL();
 %>
 
 <h1>
@@ -82,14 +79,19 @@ PortletURL portletURL = renderResponse.createRenderURL();
 </div>
 
 <c:if test="<%= ddmStructureKey.equals(DDMStructureConstants.KEY_DOWNLOAD) %>">
+
+	<%
+	PortletURL portletURL = renderResponse.createRenderURL();
+	%>
+
 	<aui:script>
 		Downloads.render(
 			Downloads.SearchFilter,
 			{
 				actionURL: '<%= portletURL.toString() %>',
-				currentFileType: '<%= ParamUtil.getString(request, "fileType") %>',
-				currentProduct: '<%= ParamUtil.getString(request, "product") %>',
-				productsJSONArray: <%= productsJSONArray %>
+				currentFileTypeAssetCategoryId: '<%= (fileTypeAssetCategory != null) ? fileTypeAssetCategory.getCategoryId() : "" %>',
+				currentProductAssetCategoryId: '<%= (productAssetCategory != null) ? productAssetCategory.getCategoryId() : "" %>',
+				productsJSONArray: <%= downloadsDisplayContext.getProductsJSONArray() %>
 			},
 			document.getElementById('osbDownloadsDisplayFilters')
 		);

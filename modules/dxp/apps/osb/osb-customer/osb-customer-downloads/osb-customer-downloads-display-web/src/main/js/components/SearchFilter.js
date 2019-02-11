@@ -12,22 +12,22 @@ export default class SearchFilters extends React.Component {
 		const {productsJSONArray} = this.props;
 
 		const productEntry = productsJSONArray.find(
-			product => product.value === comparator
+			productAssetCategoryId => productAssetCategoryId.value === comparator
 		);
 
 		return productEntry ? productEntry.fileTypes : [];
 	};
 
 	state = {
-		availableFileTypes: this._getFileTypes(this.props.currentProduct),
-		fileType: this.props.currentFileType,
-		product: this.props.currentProduct
+		availableFileTypes: this._getFileTypes(this.props.currentProductAssetCategoryId),
+		fileTypeAssetCategoryId: this.props.currentFileTypeAssetCategoryId,
+		productAssetCategoryId: this.props.currentProductAssetCategoryId
 	};
 
 	static propTypes = {
 		actionURL: PropTypes.string.isRequired,
-		currentFileType: PropTypes.string.isRequired,
-		currentProduct: PropTypes.string.isRequired,
+		currentFileTypeAssetCategoryId: PropTypes.string.isRequired,
+		currentProductAssetCategoryId: PropTypes.string.isRequired,
 		productsJSONArray: PropTypes.arrayOf(
 			PropTypes.shape(
 				{
@@ -41,7 +41,7 @@ export default class SearchFilters extends React.Component {
 	handleFileTypeChange = event =>
 		this.setState(
 			{
-				fileType: event.target.value
+				fileTypeAssetCategoryId: event.target.value
 			},
 			() => this.handleUpdate()
 		);
@@ -52,17 +52,17 @@ export default class SearchFilters extends React.Component {
 		this.setState(
 			{
 				availableFileTypes: fileTypes,
-				fileType: fileTypes.length === 1 ? fileTypes[0].value : '',
-				product: event.target.value
+				fileTypeAssetCategoryId: fileTypes.length === 1 ? fileTypes[0].value : '',
+				productAssetCategoryId: event.target.value
 			},
 			() => this.handleUpdate()
 		);
 	};
 
 	handleUpdate = () => {
-		const {fileType, product} = this.state;
+		const {fileTypeAssetCategoryId, productAssetCategoryId} = this.state;
 
-		if (!product || (fileType && product)) {
+		if (!productAssetCategoryId || (fileTypeAssetCategoryId && productAssetCategoryId)) {
 			this.handleSubmit();
 		}
 	};
@@ -71,7 +71,7 @@ export default class SearchFilters extends React.Component {
 
 	render() {
 		const {actionURL, productsJSONArray} = this.props;
-		const {availableFileTypes, fileType, product} = this.state;
+		const {availableFileTypes, fileTypeAssetCategoryId, productAssetCategoryId} = this.state;
 
 		const {namespace} = window.DownloadsConstants;
 
@@ -81,19 +81,19 @@ export default class SearchFilters extends React.Component {
 
 				<div className="search-filters">
 					<Filter
-						id={`${namespace}product`}
+						id={`${namespace}productAssetCategoryId`}
 						label={Liferay.Language.get('product')}
 						onSelectChange={this.handleProductChange}
 						options={productsJSONArray}
-						selectedOption={product}
+						selectedOption={productAssetCategoryId}
 					/>
 
 					<Filter
-						id={`${namespace}fileType`}
+						id={`${namespace}fileTypeAssetCategoryId`}
 						label={Liferay.Language.get('file-type')}
 						onSelectChange={this.handleFileTypeChange}
 						options={availableFileTypes}
-						selectedOption={fileType}
+						selectedOption={fileTypeAssetCategoryId}
 					/>
 				</div>
 			</form>

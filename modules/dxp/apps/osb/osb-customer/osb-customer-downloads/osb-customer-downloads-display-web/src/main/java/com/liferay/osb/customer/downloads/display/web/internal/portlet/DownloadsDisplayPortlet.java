@@ -17,6 +17,7 @@ package com.liferay.osb.customer.downloads.display.web.internal.portlet;
 import com.liferay.dynamic.data.mapping.util.DDMIndexer;
 import com.liferay.journal.util.JournalConverter;
 import com.liferay.osb.customer.downloads.display.web.internal.constants.DownloadsDisplayPortletKeys;
+import com.liferay.osb.customer.downloads.display.web.internal.util.DownloadsAssetCategoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 
 import java.io.IOException;
@@ -56,6 +57,9 @@ public class DownloadsDisplayPortlet extends MVCPortlet {
 
 		renderRequest.setAttribute(DDMIndexer.class.getName(), _ddmIndexer);
 		renderRequest.setAttribute(
+			DownloadsAssetCategoryUtil.class.getName(),
+			_downloadsAssetCategoryUtil);
+		renderRequest.setAttribute(
 			JournalConverter.class.getName(), _journalConverter);
 
 		super.render(renderRequest, renderResponse);
@@ -63,6 +67,9 @@ public class DownloadsDisplayPortlet extends MVCPortlet {
 
 	@Reference
 	private DDMIndexer _ddmIndexer;
+
+	@Reference
+	private DownloadsAssetCategoryUtil _downloadsAssetCategoryUtil;
 
 	@Reference
 	private JournalConverter _journalConverter;

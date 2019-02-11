@@ -14,16 +14,13 @@
 
 package com.liferay.osb.customer.downloads.display.web.internal.indexer;
 
-import com.liferay.dynamic.data.mapping.util.DDMIndexer;
 import com.liferay.portal.kernel.search.BaseIndexerPostProcessor;
+import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.IndexerPostProcessor;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.Validator;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
@@ -41,29 +38,15 @@ public class JournalArticleIndexerPostProcessor
 			BooleanFilter booleanFilter, SearchContext searchContext)
 		throws Exception {
 
-		long ddmStructureId = GetterUtil.getLong(
-			searchContext.getAttribute("ddmStructureId"));
+		long[] assetCategoryIds = (long[])searchContext.getAttribute(
+			Field.ASSET_CATEGORY_IDS);
 
-		String fileType = (String)searchContext.getAttribute("fileType");
-
-		if (Validator.isNotNull(fileType)) {
-			String fieldName = _ddmIndexer.encodeName(
-				ddmStructureId, "fileType", searchContext.getLocale());
-
-			booleanFilter.addRequiredTerm(fieldName, fileType);
-		}
-
-		String product = (String)searchContext.getAttribute("product");
-
-		if (Validator.isNotNull(product)) {
-			String fieldName = _ddmIndexer.encodeName(
-				ddmStructureId, "product", searchContext.getLocale());
-
-			booleanFilter.addRequiredTerm(fieldName, product);
+		if (assetCategoryIds != null) {
+			for (long assetCategoryId : assetCategoryIds) {
+				booleanFilter.addRequiredTerm(
+					Field.ASSET_CATEGORY_IDS, assetCategoryId);
+			}
 		}
 	}
-
-	@Reference
-	private DDMIndexer _ddmIndexer;
 
 }

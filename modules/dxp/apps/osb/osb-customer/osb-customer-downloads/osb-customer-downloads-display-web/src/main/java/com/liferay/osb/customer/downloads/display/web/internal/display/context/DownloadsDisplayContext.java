@@ -14,22 +14,23 @@
 
 package com.liferay.osb.customer.downloads.display.web.internal.display.context;
 
+import com.liferay.asset.kernel.model.AssetCategory;
+import com.liferay.asset.kernel.model.AssetCategoryConstants;
+import com.liferay.asset.kernel.service.AssetCategoryServiceUtil;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalServiceUtil;
 import com.liferay.dynamic.data.mapping.util.DDMIndexer;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalServiceUtil;
-import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.downloads.display.web.internal.constants.DDMStructureConstants;
+import com.liferay.osb.customer.downloads.display.web.internal.constants.DownloadsDisplayWebKeys;
+import com.liferay.osb.customer.downloads.display.web.internal.util.DownloadsAssetCategoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.model.Role;
-import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
@@ -39,22 +40,15 @@ import com.liferay.portal.kernel.search.QueryConfig;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
-import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
-import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
-import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.MimeResponse;
@@ -77,6 +71,9 @@ public class DownloadsDisplayContext {
 
 		_ddmIndexer = (DDMIndexer)_renderRequest.getAttribute(
 			DDMIndexer.class.getName());
+		_downloadsAssetCategoryUtil =
+			(DownloadsAssetCategoryUtil)_renderRequest.getAttribute(
+				DownloadsAssetCategoryUtil.class.getName());
 		_themeDisplay = (ThemeDisplay)_renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
@@ -116,15 +113,20 @@ public class DownloadsDisplayContext {
 	public JSONArray getProductsJSONArray() throws PortalException {
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-		Set<String> products = getProducts();
+		List<AssetCategory> assetCategories =
+			AssetCategoryServiceUtil.getVocabularyCategories(
+				AssetCategoryConstants.DEFAULT_PARENT_CATEGORY_ID,
+				_downloadsAssetCategoryUtil.getProductAssetVocabularyId(),
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 
-		for (String product : products) {
+		for (AssetCategory assetCategory : assetCategories) {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-			jsonObject.put("fileTypes", getFileTypesJSONArray(product));
 			jsonObject.put(
-				"name", DDMStructureConstants.getProductLabel(product));
-			jsonObject.put("value", product);
+				"fileTypes",
+				getFileTypesJSONArray(assetCategory.getCategoryId()));
+			jsonObject.put("name", assetCategory.getName());
+			jsonObject.put("value", assetCategory.getCategoryId());
 
 			jsonArray.put(jsonObject);
 		}
@@ -133,13 +135,26 @@ public class DownloadsDisplayContext {
 	}
 
 	public SearchContainer getSearchContainer() throws PortalException {
-		String fileType = ParamUtil.getString(_renderRequest, "fileType");
-		String product = ParamUtil.getString(_renderRequest, "product");
+		AssetCategory fileTypeAssetCategory =
+			(AssetCategory)_renderRequest.getAttribute(
+				DownloadsDisplayWebKeys.ASSET_CATEGORY_FILE_TYPE);
+		AssetCategory productAssetCategory =
+			(AssetCategory)_renderRequest.getAttribute(
+				DownloadsDisplayWebKeys.ASSET_CATEGORY_PRODUCT);
 
 		PortletURL iteratorURL = _mimeResponse.createRenderURL();
 
-		iteratorURL.setParameter("product", product);
-		iteratorURL.setParameter("fileType", fileType);
+		if (fileTypeAssetCategory != null) {
+			iteratorURL.setParameter(
+				"fileTypeAssetCategoryId",
+				String.valueOf(fileTypeAssetCategory.getCategoryId()));
+		}
+
+		if (productAssetCategory != null) {
+			iteratorURL.setParameter(
+				"productAssetCategoryId",
+				String.valueOf(productAssetCategory.getCategoryId()));
+		}
 
 		SearchContainer searchContainer = new SearchContainer(
 			_renderRequest, iteratorURL, null, null);
@@ -147,7 +162,8 @@ public class DownloadsDisplayContext {
 		String ddmStructureKey = _ddmStructure.getStructureKey();
 
 		if (ddmStructureKey.equals(DDMStructureConstants.KEY_DOWNLOAD) &&
-			(Validator.isNull(fileType) || Validator.isNull(product))) {
+			((fileTypeAssetCategory == null) ||
+			 (productAssetCategory == null))) {
 
 			return searchContainer;
 		}
@@ -157,8 +173,8 @@ public class DownloadsDisplayContext {
 		Indexer indexer = IndexerRegistryUtil.getIndexer(JournalArticle.class);
 
 		SearchContext searchContext = buildSearchContext(
-			fileType, product, searchContainer.getStart(),
-			searchContainer.getEnd());
+			fileTypeAssetCategory, productAssetCategory,
+			searchContainer.getStart(), searchContainer.getEnd());
 
 		Hits hits = indexer.search(searchContext);
 
@@ -193,11 +209,29 @@ public class DownloadsDisplayContext {
 	}
 
 	protected SearchContext buildSearchContext(
-		String fileType, String product, int start, int end) {
+		AssetCategory fileTypeAssetCategory, AssetCategory productAssetCategory,
+		int start, int end) {
 
 		SearchContext searchContext = new SearchContext();
 
 		searchContext.setAndSearch(true);
+
+		long[] assetCategoryIds = new long[0];
+
+		if (fileTypeAssetCategory != null) {
+			assetCategoryIds = ArrayUtil.append(
+				assetCategoryIds, fileTypeAssetCategory.getCategoryId());
+		}
+
+		if (productAssetCategory != null) {
+			assetCategoryIds = ArrayUtil.append(
+				assetCategoryIds, productAssetCategory.getCategoryId());
+		}
+
+		if (!ArrayUtil.isEmpty(assetCategoryIds)) {
+			searchContext.setAttribute(
+				Field.ASSET_CATEGORY_IDS, assetCategoryIds);
+		}
 
 		searchContext.setAttribute(
 			Field.ENTRY_CLASS_NAME, JournalArticle.class.getName());
@@ -208,17 +242,8 @@ public class DownloadsDisplayContext {
 			"ddmStructureId", _ddmStructure.getStructureId());
 		searchContext.setAttribute(
 			"ddmStructureKey", _ddmStructure.getStructureKey());
-
-		if (Validator.isNotNull(fileType)) {
-			searchContext.setAttribute("fileType", fileType);
-		}
-
 		searchContext.setAttribute("head", Boolean.TRUE);
 		searchContext.setAttribute("latest", Boolean.TRUE);
-
-		if (Validator.isNotNull(product)) {
-			searchContext.setAttribute("product", product);
-		}
 
 		searchContext.setCompanyId(_themeDisplay.getCompanyId());
 		searchContext.setEnd(end);
@@ -238,117 +263,24 @@ public class DownloadsDisplayContext {
 		return searchContext;
 	}
 
-	protected JSONArray getFileTypesJSONArray(String product) {
+	protected JSONArray getFileTypesJSONArray(long assetCategoryId)
+		throws PortalException {
+
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-		String[] fileTypes = DDMStructureConstants.getFileTypes(product);
+		List<AssetCategory> assetCategories =
+			AssetCategoryServiceUtil.getChildCategories(assetCategoryId);
 
-		for (String fileType : fileTypes) {
+		for (AssetCategory assetCategory : assetCategories) {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-			jsonObject.put(
-				"name", DDMStructureConstants.getFileTypeLabel(fileType));
-			jsonObject.put("value", fileType);
+			jsonObject.put("name", assetCategory.getName());
+			jsonObject.put("value", assetCategory.getCategoryId());
 
 			jsonArray.put(jsonObject);
 		}
 
 		return jsonArray;
-	}
-
-	protected Set<String> getProducts() throws PortalException {
-		User user = _themeDisplay.getUser();
-
-		boolean liferayIncOrg =
-			OrganizationLocalServiceUtil.hasUserOrganization(
-				user.getUserId(),
-				OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID);
-
-		long[] roleIds = new long[0];
-
-		if (!liferayIncOrg) {
-			roleIds = getRoleIds(user.getUserId());
-		}
-
-		Set<String> products = new TreeSet<>();
-
-		if (liferayIncOrg ||
-			ArrayUtil.contains(
-				roleIds, OSBCustomerConstants.ROLE_CUSTOMER_COMMERCE_ID)) {
-
-			products.add(DDMStructureConstants.PRODUCT_COMMERCE);
-		}
-
-		if (liferayIncOrg ||
-			ArrayUtil.contains(
-				roleIds,
-				OSBCustomerConstants.ROLE_CUSTOMER_COMMERCE_CONNECTORS_ID)) {
-
-			products.add(DDMStructureConstants.PRODUCT_COMMERCE_CONNECTORS);
-		}
-
-		if (liferayIncOrg ||
-			ArrayUtil.contains(
-				roleIds, OSBCustomerConstants.ROLE_CUSTOMER_DXP_ID)) {
-
-			products.add(DDMStructureConstants.PRODUCT_CONNECTED_SERVICES);
-			products.add(DDMStructureConstants.PRODUCT_DEVELOPER_TOOLS);
-			products.add(DDMStructureConstants.PRODUCT_DXP_70);
-			products.add(DDMStructureConstants.PRODUCT_DXP_71);
-			products.add(
-				DDMStructureConstants.PRODUCT_MOBILE_EXPERIENCE_PLATFORM);
-			products.add(DDMStructureConstants.PRODUCT_PATCHING_TOOL);
-			products.add(DDMStructureConstants.PRODUCT_SYNC);
-		}
-
-		if (liferayIncOrg ||
-			ArrayUtil.contains(
-				roleIds,
-				OSBCustomerConstants.
-					ROLE_CUSTOMER_ENTERPRISE_SEARCH_PREMIUM_ID)) {
-
-			products.add(
-				DDMStructureConstants.PRODUCT_ENTERPRISE_SEARCH_PREMIUM);
-		}
-
-		if (liferayIncOrg ||
-			ArrayUtil.contains(
-				roleIds,
-				OSBCustomerConstants.
-					ROLE_CUSTOMER_ENTERPRISE_SEARCH_STANDARD_ID)) {
-
-			products.add(
-				DDMStructureConstants.PRODUCT_ENTERPRISE_SEARCH_STANDARD);
-		}
-
-		if (liferayIncOrg ||
-			ArrayUtil.contains(
-				roleIds, OSBCustomerConstants.ROLE_CUSTOMER_PORTAL_ID)) {
-
-			products.add(DDMStructureConstants.PRODUCT_CONNECTED_SERVICES);
-			products.add(DDMStructureConstants.PRODUCT_DEVELOPER_TOOLS);
-			products.add(
-				DDMStructureConstants.PRODUCT_MOBILE_EXPERIENCE_PLATFORM);
-			products.add(DDMStructureConstants.PRODUCT_PATCHING_TOOL);
-			products.add(DDMStructureConstants.PRODUCT_PORTAL_52);
-			products.add(DDMStructureConstants.PRODUCT_PORTAL_60);
-			products.add(DDMStructureConstants.PRODUCT_PORTAL_61);
-			products.add(DDMStructureConstants.PRODUCT_PORTAL_62);
-			products.add(DDMStructureConstants.PRODUCT_SYNC);
-		}
-
-		return products;
-	}
-
-	protected long[] getRoleIds(long userId) throws PortalException {
-		List<Group> userOrganizationGroups =
-			GroupLocalServiceUtil.getUserOrganizationsGroups(
-				userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-
-		List<Role> roles = RoleLocalServiceUtil.getUserRelatedRoles(
-			userId, userOrganizationGroups);
-
-		return ListUtil.toLongArray(roles, Role.ROLE_ID_ACCESSOR);
 	}
 
 	protected Sort[] getSorts() {
@@ -375,6 +307,7 @@ public class DownloadsDisplayContext {
 
 	private final DDMIndexer _ddmIndexer;
 	private final DDMStructure _ddmStructure;
+	private final DownloadsAssetCategoryUtil _downloadsAssetCategoryUtil;
 	private final MimeResponse _mimeResponse;
 	private final RenderRequest _renderRequest;
 	private final ThemeDisplay _themeDisplay;
