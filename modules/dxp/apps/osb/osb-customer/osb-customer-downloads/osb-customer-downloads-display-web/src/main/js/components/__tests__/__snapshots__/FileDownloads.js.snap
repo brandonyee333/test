@@ -1,13 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`FileDownloads renders multiple downloads correctly 1`] = `
-Array [
+<div>
   <div
-    className="dropdown-row"
+    class="dropdown-row"
   >
     <select
-      className="download-dropdown form-control"
-      onChange={[Function]}
+      class="download-dropdown form-control"
     >
       <optgroup
         label="Download Group Name 1"
@@ -31,66 +30,66 @@ Array [
       </optgroup>
     </select>
     <a
-      className="btn btn-sm btn-link"
+      class="btn btn-sm btn-link"
       href="/"
     >
       download
     </a>
-  </div>,
+  </div>
   <div
     class="download-details small"
   >
     <span
-      className="details"
+      class="details"
     >
       <span
-        className="detail-label"
+        class="detail-label"
       >
         label
       </span>
       :
        
       <span
-        className="detail-value"
+        class="detail-value"
       >
         value
       </span>
     </span>
-  </div>,
-]
+  </div>
+</div>
 `;
 
 exports[`FileDownloads renders single download correctly 1`] = `
-Array [
+<div>
   <div
-    className="dropdown-row"
+    class="dropdown-row"
   >
     <a
-      className="btn btn-sm btn-link"
+      class="btn btn-sm btn-link"
       href="/"
     >
       download
     </a>
-  </div>,
+  </div>
   <div
     class="download-details small"
   >
     <span
-      className="details"
+      class="details"
     >
       <span
-        className="detail-label"
+        class="detail-label"
       >
         label
       </span>
       :
        
       <span
-        className="detail-value"
+        class="detail-value"
       >
         value
       </span>
     </span>
-  </div>,
-]
+  </div>
+</div>
 `;

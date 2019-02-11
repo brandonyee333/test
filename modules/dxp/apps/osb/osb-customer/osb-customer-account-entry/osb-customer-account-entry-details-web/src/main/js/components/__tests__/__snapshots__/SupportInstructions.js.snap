@@ -1,31 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SupportInstructions renders correctly 1`] = `
-Array [
+<div>
   <h3
-    className="card-header"
+    class="card-header"
   >
     support-instructions
     <button
-      className="btn btn-sm btn-default"
-      disabled={false}
-      onClick={[Function]}
+      class="btn btn-sm btn-default"
       type="button"
       value="edit"
     >
       edit
     </button>
-  </h3>,
+  </h3>
   <div
-    className="card-body"
+    class="card-body"
   >
-    <div
-      dangerouslySetInnerHTML={
-        Object {
-          "__html": "instructions",
-        }
-      }
-    />
-  </div>,
-]
+    <div>
+      instructions
+    </div>
+  </div>
+</div>
 `;

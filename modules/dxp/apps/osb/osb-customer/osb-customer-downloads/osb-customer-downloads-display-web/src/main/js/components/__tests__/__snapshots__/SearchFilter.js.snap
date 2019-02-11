@@ -1,169 +1,147 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SearchFilter renders correctly with both filters preselected 1`] = `
-<form
-  action="/"
-  method="get"
->
-  <input
-    name="p_p_id"
-    type="hidden"
-    value="com_liferay_osb_customer_downloads_display_web_DownloadsDisplayPortlet"
-  />
-  <div
-    className="search-filters"
+<div>
+  <form
+    action="/"
+    method="get"
   >
+    <input
+      name="p_p_id"
+      type="hidden"
+      value="com_liferay_osb_customer_downloads_display_web_DownloadsDisplayPortlet"
+    />
     <div
-      className="search-filter-container"
+      class="search-filters"
     >
-      <label
-        className="control-label"
-        htmlFor="namespaceproduct"
+      <div
+        class="search-filter-container"
       >
-        product:
-      </label>
-      <select
-        className="form-control"
-        id="namespaceproduct"
-        name="namespaceproduct"
-        onChange={[Function]}
-        value="product_two"
+        <label
+          class="control-label"
+          for="namespaceproductAssetCategoryId"
+        >
+          product:
+        </label>
+        <select
+          class="form-control"
+          id="namespaceproductAssetCategoryId"
+          name="namespaceproductAssetCategoryId"
+        >
+          <option
+            value=""
+          >
+            select product
+          </option>
+          <option
+            label="Product One"
+            value="product_one"
+          >
+            Product One
+          </option>
+          <option
+            label="Product Two"
+            value="product_two"
+          >
+            Product Two
+          </option>
+        </select>
+      </div>
+      <div
+        class="search-filter-container"
       >
-        <option
-          value=""
+        <label
+          class="control-label"
+          for="namespacefileTypeAssetCategoryId"
         >
-          select product
-        </option>
-        <option
-          label="Product One"
-          value="product_one"
+          file-type:
+        </label>
+        <select
+          class="form-control"
+          id="namespacefileTypeAssetCategoryId"
+          name="namespacefileTypeAssetCategoryId"
         >
-          Product One
-        </option>
-        <option
-          label="Product Two"
-          value="product_two"
-        >
-          Product Two
-        </option>
-      </select>
+          <option
+            value=""
+          >
+            select file-type
+          </option>
+        </select>
+      </div>
     </div>
-    <div
-      className="search-filter-container"
-    >
-      <label
-        className="control-label"
-        htmlFor="namespacefileType"
-      >
-        file-type:
-      </label>
-      <select
-        className="form-control"
-        id="namespacefileType"
-        name="namespacefileType"
-        onChange={[Function]}
-        value="two"
-      >
-        <option
-          value=""
-        >
-          select file-type
-        </option>
-        <option
-          label="One"
-          value="one"
-        >
-          One
-        </option>
-        <option
-          label="Two"
-          value="two"
-        >
-          Two
-        </option>
-        <option
-          label="Three"
-          value="three"
-        >
-          Three
-        </option>
-      </select>
-    </div>
-  </div>
-</form>
+  </form>
+</div>
 `;
 
 exports[`SearchFilter renders correctly with no selection 1`] = `
-<form
-  action="/"
-  method="get"
->
-  <input
-    name="p_p_id"
-    type="hidden"
-    value="com_liferay_osb_customer_downloads_display_web_DownloadsDisplayPortlet"
-  />
-  <div
-    className="search-filters"
+<div>
+  <form
+    action="/"
+    method="get"
   >
+    <input
+      name="p_p_id"
+      type="hidden"
+      value="com_liferay_osb_customer_downloads_display_web_DownloadsDisplayPortlet"
+    />
     <div
-      className="search-filter-container"
+      class="search-filters"
     >
-      <label
-        className="control-label"
-        htmlFor="namespaceproduct"
+      <div
+        class="search-filter-container"
       >
-        product:
-      </label>
-      <select
-        className="form-control"
-        id="namespaceproduct"
-        name="namespaceproduct"
-        onChange={[Function]}
-        value=""
+        <label
+          class="control-label"
+          for="namespaceproductAssetCategoryId"
+        >
+          product:
+        </label>
+        <select
+          class="form-control"
+          id="namespaceproductAssetCategoryId"
+          name="namespaceproductAssetCategoryId"
+        >
+          <option
+            value=""
+          >
+            select product
+          </option>
+          <option
+            label="Product One"
+            value="product_one"
+          >
+            Product One
+          </option>
+          <option
+            label="Product Two"
+            value="product_two"
+          >
+            Product Two
+          </option>
+        </select>
+      </div>
+      <div
+        class="search-filter-container"
       >
-        <option
-          value=""
+        <label
+          class="control-label"
+          for="namespacefileTypeAssetCategoryId"
         >
-          select product
-        </option>
-        <option
-          label="Product One"
-          value="product_one"
+          file-type:
+        </label>
+        <select
+          class="form-control"
+          id="namespacefileTypeAssetCategoryId"
+          name="namespacefileTypeAssetCategoryId"
         >
-          Product One
-        </option>
-        <option
-          label="Product Two"
-          value="product_two"
-        >
-          Product Two
-        </option>
-      </select>
+          <option
+            value=""
+          >
+            select file-type
+          </option>
+        </select>
+      </div>
     </div>
-    <div
-      className="search-filter-container"
-    >
-      <label
-        className="control-label"
-        htmlFor="namespacefileType"
-      >
-        file-type:
-      </label>
-      <select
-        className="form-control"
-        id="namespacefileType"
-        name="namespacefileType"
-        onChange={[Function]}
-        value=""
-      >
-        <option
-          value=""
-        >
-          select file-type
-        </option>
-      </select>
-    </div>
-  </div>
-</form>
+  </form>
+</div>
 `;

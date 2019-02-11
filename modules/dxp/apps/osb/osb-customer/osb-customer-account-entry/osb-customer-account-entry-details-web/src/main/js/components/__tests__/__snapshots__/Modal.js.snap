@@ -1,21 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Modal renders correctly 1`] = `
-<div
-  className="modal show"
-  role="dialog"
-  tabIndex="-1"
->
+<div>
   <div
-    className="modal-dialog"
+    class="modal show"
+    role="dialog"
+    tabindex="-1"
   >
     <div
-      className="modal-content"
+      class="modal-dialog"
     >
       <div
-        className="modal-body"
+        class="modal-content"
       >
-        Modal
+        <div
+          class="modal-body"
+        >
+          Modal
+        </div>
       </div>
     </div>
   </div>
@@ -23,21 +25,23 @@ exports[`Modal renders correctly 1`] = `
 `;
 
 exports[`Modal renders with a certain size correctly 1`] = `
-<div
-  className="modal show"
-  role="dialog"
-  tabIndex="-1"
->
+<div>
   <div
-    className="modal-dialog modal-lg"
+    class="modal show"
+    role="dialog"
+    tabindex="-1"
   >
     <div
-      className="modal-content"
+      class="modal-dialog modal-lg"
     >
       <div
-        className="modal-body"
+        class="modal-content"
       >
-        Large Modal
+        <div
+          class="modal-body"
+        >
+          Large Modal
+        </div>
       </div>
     </div>
   </div>
@@ -45,26 +49,28 @@ exports[`Modal renders with a certain size correctly 1`] = `
 `;
 
 exports[`Modal renders with a footer correctly 1`] = `
-<div
-  className="modal show"
-  role="dialog"
-  tabIndex="-1"
->
+<div>
   <div
-    className="modal-dialog"
+    class="modal show"
+    role="dialog"
+    tabindex="-1"
   >
     <div
-      className="modal-content"
+      class="modal-dialog"
     >
       <div
-        className="modal-body"
+        class="modal-content"
       >
-        Modal with Footer
-      </div>
-      <div
-        className="modal-footer"
-      >
-        footer
+        <div
+          class="modal-body"
+        >
+          Modal with Footer
+        </div>
+        <div
+          class="modal-footer"
+        >
+          footer
+        </div>
       </div>
     </div>
   </div>
@@ -72,44 +78,45 @@ exports[`Modal renders with a footer correctly 1`] = `
 `;
 
 exports[`Modal renders with a header correctly 1`] = `
-<div
-  className="modal show"
-  role="dialog"
-  tabIndex="-1"
->
+<div>
   <div
-    className="modal-dialog"
+    class="modal show"
+    role="dialog"
+    tabindex="-1"
   >
     <div
-      className="modal-content"
+      class="modal-dialog"
     >
       <div
-        className="modal-header"
+        class="modal-content"
       >
         <div
-          className="modal-title"
+          class="modal-header"
         >
-          header
-        </div>
-        <button
-          aria-label="Close"
-          className="close"
-          onClick={[Function]}
-          type="button"
-        >
-          <svg
-            className="lexicon-icon lexicon-icon-times"
+          <div
+            class="modal-title"
           >
-            <use
-              xlinkHref="#times"
-            />
-          </svg>
-        </button>
-      </div>
-      <div
-        className="modal-body"
-      >
-        Modal with Header
+            header
+          </div>
+          <button
+            aria-label="Close"
+            class="close"
+            type="button"
+          >
+            <svg
+              class="lexicon-icon lexicon-icon-times"
+            >
+              <use
+                xlink:href="#times"
+              />
+            </svg>
+          </button>
+        </div>
+        <div
+          class="modal-body"
+        >
+          Modal with Header
+        </div>
       </div>
     </div>
   </div>

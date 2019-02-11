@@ -1,55 +1,58 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Alert renders correctly 1`] = `
-<div
-  className="alert alert-danger"
-  role="alert"
->
-  <span
-    className="alert-indicator"
+<div>
+  <div
+    class="alert alert-danger"
+    role="alert"
   >
-    <svg
-      className="lexicon-icon lexicon-icon-exclamation-full"
+    <span
+      class="alert-indicator"
     >
-      <use
-        xlinkHref="#exclamation-full"
-      />
-    </svg>
-  </span>
-  Alert Danger
+      <svg
+        class="lexicon-icon lexicon-icon-exclamation-full"
+      >
+        <use
+          xlink:href="#exclamation-full"
+        />
+      </svg>
+    </span>
+    Alert Danger
+  </div>
 </div>
 `;
 
 exports[`Alert renders with close icon correctly 1`] = `
-<div
-  className="alert alert-info alert-dismissible"
-  role="alert"
->
-  <span
-    className="alert-indicator"
+<div>
+  <div
+    class="alert alert-info alert-dismissible"
+    role="alert"
   >
-    <svg
-      className="lexicon-icon lexicon-icon-info-circle"
+    <span
+      class="alert-indicator"
     >
-      <use
-        xlinkHref="#info-circle"
-      />
-    </svg>
-  </span>
-  Alert Info
-  <button
-    aria-label="Close"
-    className="close"
-    onClick={[Function]}
-    type="button"
-  >
-    <svg
-      className="lexicon-icon lexicon-icon-times"
+      <svg
+        class="lexicon-icon lexicon-icon-info-circle"
+      >
+        <use
+          xlink:href="#info-circle"
+        />
+      </svg>
+    </span>
+    Alert Info
+    <button
+      aria-label="Close"
+      class="close"
+      type="button"
     >
-      <use
-        xlinkHref="#times"
-      />
-    </svg>
-  </button>
+      <svg
+        class="lexicon-icon lexicon-icon-times"
+      >
+        <use
+          xlink:href="#times"
+        />
+      </svg>
+    </button>
+  </div>
 </div>
 `;

@@ -2,52 +2,52 @@
 
 exports[`SubscriptionMessages renders correctly 1`] = `
 <div>
-  <div
-    id="id"
-  >
+  <div>
     <div
-      className="alert alert-danger alert-dismissible"
-      role="alert"
+      id="id"
     >
-      <span
-        className="alert-indicator"
+      <div
+        class="alert alert-danger alert-dismissible"
+        role="alert"
       >
-        <svg
-          className="lexicon-icon lexicon-icon-exclamation-full"
+        <span
+          class="alert-indicator"
         >
-          <use
-            xlinkHref="#exclamation-full"
-          />
-        </svg>
-      </span>
-      <span
-        className="lead"
-      >
-        subscription-message:
-      </span>
-       
-      Message Title
-       
-      <a
-        className="semibold"
-        onClick={[Function]}
-      >
-        view-message
-      </a>
-      <button
-        aria-label="Close"
-        className="close"
-        onClick={[Function]}
-        type="button"
-      >
-        <svg
-          className="lexicon-icon lexicon-icon-times"
+          <svg
+            class="lexicon-icon lexicon-icon-exclamation-full"
+          >
+            <use
+              xlink:href="#exclamation-full"
+            />
+          </svg>
+        </span>
+        <span
+          class="lead"
         >
-          <use
-            xlinkHref="#times"
-          />
-        </svg>
-      </button>
+          subscription-message:
+        </span>
+         
+        Message Title
+         
+        <a
+          class="semibold"
+        >
+          view-message
+        </a>
+        <button
+          aria-label="Close"
+          class="close"
+          type="button"
+        >
+          <svg
+            class="lexicon-icon lexicon-icon-times"
+          >
+            <use
+              xlink:href="#times"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
 </div>

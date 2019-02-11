@@ -1,0 +1,206 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AccountEnvironments renders correctly 1`] = `
+<div>
+  <h3
+    class="card-header"
+  >
+    environment-configurations
+    <button
+      class="btn btn-md btn-primary btn-monospaced"
+      type="button"
+      value="add"
+    >
+      <svg
+        class="lexicon-icon lexicon-icon-plus"
+      >
+        <use
+          xlink:href="#plus"
+        />
+      </svg>
+    </button>
+  </h3>
+  <div
+    aria-orientation="vertical"
+    class="panel-group"
+    role="tablist"
+  >
+    <div
+      class="panel"
+    >
+      <button
+        class="btn-link panel-header"
+        role="tab"
+        type="button"
+      >
+        <div
+          class="panel-title"
+        >
+          <h4>
+            All Selections
+          </h4>
+          <div
+            class="panel-subtitle"
+          >
+            <span>
+              product
+            </span>
+            :
+             
+            Liferay DXP Production
+          </div>
+          <div
+            class="panel-subtitle"
+          >
+            <span>
+              LR
+            </span>
+            :
+             
+            7.1
+          </div>
+        </div>
+        <svg
+          class="lexicon-icon lexicon-icon-angle-right"
+        >
+          <use
+            xlink:href="#angle-right"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="panel"
+    >
+      <button
+        class="btn-link panel-header"
+        role="tab"
+        type="button"
+      >
+        <div
+          class="panel-title"
+        >
+          <h4>
+            No Search Selection
+          </h4>
+          <div
+            class="panel-subtitle"
+          >
+            <span>
+              product
+            </span>
+            :
+             
+            Liferay DXP Production
+          </div>
+          <div
+            class="panel-subtitle"
+          >
+            <span>
+              LR
+            </span>
+            :
+             
+            7.1
+          </div>
+        </div>
+        <svg
+          class="lexicon-icon lexicon-icon-angle-right"
+        >
+          <use
+            xlink:href="#angle-right"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="panel"
+    >
+      <button
+        class="btn-link panel-header"
+        role="tab"
+        type="button"
+      >
+        <div
+          class="panel-title"
+        >
+          <h4>
+            No Commerce Selection
+          </h4>
+          <div
+            class="panel-subtitle"
+          >
+            <span>
+              product
+            </span>
+            :
+             
+            Liferay DXP Production
+          </div>
+          <div
+            class="panel-subtitle"
+          >
+            <span>
+              LR
+            </span>
+            :
+             
+            7.1
+          </div>
+        </div>
+        <svg
+          class="lexicon-icon lexicon-icon-angle-right"
+        >
+          <use
+            xlink:href="#angle-right"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="panel"
+    >
+      <button
+        class="btn-link panel-header"
+        role="tab"
+        type="button"
+      >
+        <div
+          class="panel-title"
+        >
+          <h4>
+            No Cloud Services Selection
+          </h4>
+          <div
+            class="panel-subtitle"
+          >
+            <span>
+              product
+            </span>
+            :
+             
+            Liferay DXP Production
+          </div>
+          <div
+            class="panel-subtitle"
+          >
+            <span>
+              LR
+            </span>
+            :
+             
+            7.1
+          </div>
+        </div>
+        <svg
+          class="lexicon-icon lexicon-icon-angle-right"
+        >
+          <use
+            xlink:href="#angle-right"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+`;
