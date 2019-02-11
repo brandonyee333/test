@@ -1,6 +1,5 @@
 import React from 'react';
 import {fireEvent, render} from 'react-testing-library';
-import TestRenderer from 'react-test-renderer';
 
 import SearchFilter from '../SearchFilter';
 
@@ -37,29 +36,29 @@ describe('SearchFilter', () => {
 	];
 
 	it('renders correctly with no selection', () => {
-		const tree = TestRenderer.create(
+		const {container} = render(
 			<SearchFilter
 				actionURL="/"
 				currentFileType=""
 				currentProduct=""
 				productsJSONArray={productsJsonArray}
 			/>
-		).toJSON();
+		);
 
-		expect(tree).toMatchSnapshot();
+		expect(container).toMatchSnapshot();
 	});
 
 	it('renders correctly with both filters preselected', () => {
-		const tree = TestRenderer.create(
+		const {container} = render(
 			<SearchFilter
 				actionURL="/"
 				currentFileType="two"
 				currentProduct="product_two"
 				productsJSONArray={productsJsonArray}
 			/>
-		).toJSON();
+		);
 
-		expect(tree).toMatchSnapshot();
+		expect(container).toMatchSnapshot();
 	});
 
 	it('populates file type select field with option values when a product is selected', () => {
@@ -74,25 +73,19 @@ describe('SearchFilter', () => {
 
 		const productInput = getByLabelText('product:');
 
-		fireEvent.change(
-			productInput,
-			{
-				target: {
-					value: 'product_two'
-				}
+		fireEvent.change(productInput, {
+			target: {
+				value: 'product_two'
 			}
-		);
+		});
 
 		const fileTypeInput = getByLabelText('file-type:');
 
-		fireEvent.change(
-			fileTypeInput,
-			{
-				target: {
-					value: 'three'
-				}
+		fireEvent.change(fileTypeInput, {
+			target: {
+				value: 'three'
 			}
-		);
+		});
 
 		expect(fileTypeInput.value).toBe('three');
 	});
@@ -109,14 +102,11 @@ describe('SearchFilter', () => {
 
 		const productInput = getByLabelText('product:');
 
-		fireEvent.change(
-			productInput,
-			{
-				target: {
-					value: 'product_one'
-				}
+		fireEvent.change(productInput, {
+			target: {
+				value: 'product_one'
 			}
-		);
+		});
 
 		const fileTypeInput = getByLabelText('file-type:');
 

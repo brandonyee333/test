@@ -1,64 +1,54 @@
 import React from 'react';
-import TestRenderer from 'react-test-renderer';
+import {render} from 'react-testing-library';
 
 import Button from '../Button';
 
 describe('Button', () => {
 	it('renders correctly', () => {
-		const tree = TestRenderer.create(<Button>Button</Button>).toJSON();
+		const {container} = render(<Button>Button</Button>);
 
-		expect(tree).toMatchSnapshot();
+		expect(container).toMatchSnapshot();
 	});
 
 	it('renders as disabled correctly', () => {
-		const tree = TestRenderer.create(
-			<Button disabled>Disabled Button</Button>
-		).toJSON();
+		const {container} = render(<Button disabled>Disabled Button</Button>);
 
-		expect(tree).toMatchSnapshot();
+		expect(container).toMatchSnapshot();
 	});
 
 	it('renders as primary style correctly', () => {
-		const tree = TestRenderer.create(
-			<Button display="primary">Primary Button</Button>
-		).toJSON();
+		const {container} = render(<Button display="primary">Primary Button</Button>);
 
-		expect(tree).toMatchSnapshot();
+		expect(container).toMatchSnapshot();
 	});
 
 	it('renders as a link correctly', () => {
-		const tree = TestRenderer.create(<Button href="/">Link</Button>).toJSON();
+		const {container} = render(<Button href="/">Link</Button>);
 
-		expect(tree).toMatchSnapshot();
+		expect(container).toMatchSnapshot();
 	});
 
 	it('renders as an icon correctly', () => {
-		const tree = TestRenderer.create(<Button icon>+</Button>).toJSON();
+		const {container} = render(<Button icon>+</Button>);
 
-		expect(tree).toMatchSnapshot();
+		expect(container).toMatchSnapshot();
 	});
 
 	it('renders as a certain size correctly', () => {
-		const tree = TestRenderer.create(
-			<Button size="lg">Large Button</Button>
-		).toJSON();
+		const {container} = render(<Button size="lg">Large Button</Button>);
 
-		expect(tree).toMatchSnapshot();
+		expect(container).toMatchSnapshot();
 	});
 
 	it('renders as a certain type correctly', () => {
-		const tree = TestRenderer.create(
-			<Button type="submit">Submit Button</Button>
-		).toJSON();
+		const {container} = render(<Button type="submit">Submit Button</Button>);
 
-		expect(tree).toMatchSnapshot();
+		expect(container).toMatchSnapshot();
 	});
 
 	it('renders with a value correctly', () => {
-		const tree = TestRenderer.create(
-			<Button value="1">Value of 1 Button</Button>
-		).toJSON();
+		const {container} = render(<Button value="1">Value of 1 Button</Button>);
 
-		expect(tree).toMatchSnapshot();
+		expect(container).toMatchSnapshot();
 	});
 });

@@ -1,26 +1,24 @@
 import React from 'react';
-import TestRenderer from 'react-test-renderer';
+import {render} from 'react-testing-library';
 
 import Alert from '../Alert';
 
 describe('Alert', () => {
 	it('renders correctly', () => {
-		const tree = TestRenderer.create(
-			<Alert type="danger">Alert Danger</Alert>
-		).toJSON();
+		const {container} = render(<Alert type="danger">Alert Danger</Alert>);
 
-		expect(tree).toMatchSnapshot();
+		expect(container).toMatchSnapshot();
 	});
 
 	it('renders with close icon correctly', () => {
 		const handleOnClose = () => console.log('close');
 
-		const tree = TestRenderer.create(
+		const {container} = render(
 			<Alert onClose={handleOnClose} type="info">
 				Alert Info
 			</Alert>
-		).toJSON();
+		);
 
-		expect(tree).toMatchSnapshot();
+		expect(container).toMatchSnapshot();
 	});
 });

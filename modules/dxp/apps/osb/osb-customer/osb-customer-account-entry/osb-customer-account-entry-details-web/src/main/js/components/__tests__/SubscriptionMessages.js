@@ -1,5 +1,5 @@
 import React from 'react';
-import TestRenderer from 'react-test-renderer';
+import {render} from 'react-testing-library';
 
 import SubscriptionMessages from '../SubscriptionMessages';
 
@@ -14,10 +14,8 @@ describe('SubscriptionMessages', () => {
 	];
 
 	it('renders correctly', () => {
-		const tree = TestRenderer.create(
-			<SubscriptionMessages messages={messages} />
-		).toJSON();
+		const {container} = render(<SubscriptionMessages messages={messages} />);
 
-		expect(tree).toMatchSnapshot();
+		expect(container).toMatchSnapshot();
 	});
 });

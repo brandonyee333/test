@@ -1,5 +1,5 @@
 import React from 'react';
-import TestRenderer from 'react-test-renderer';
+import {render} from 'react-testing-library';
 
 import FileDownloads from '../FileDownloads';
 
@@ -8,73 +8,73 @@ describe('FileDownloads', () => {
 
 	const multipleDownloadGroups = [
 		{
-			'downloadGroupName': 'Download Group Name 1',
-			'downloads': [
+			downloadGroupName: 'Download Group Name 1',
+			downloads: [
 				{
-					'downloadDetails': {
-						'label': 'value'
+					downloadDetails: {
+						label: 'value'
 					},
-					'downloadName': 'Download Name 1',
-					'downloadURL': url
+					downloadName: 'Download Name 1',
+					downloadURL: url
 				}
 			]
 		},
 		{
-			'downloadGroupName': 'Download Group Name 2',
-			'downloads': [
+			downloadGroupName: 'Download Group Name 2',
+			downloads: [
 				{
-					'downloadDetails': {
-						'label': 'value'
+					downloadDetails: {
+						label: 'value'
 					},
-					'downloadName': 'Download Name 2',
-					'downloadURL': url
+					downloadName: 'Download Name 2',
+					downloadURL: url
 				}
 			]
 		}
-	]
+	];
 
 	const requiredAgreement = {
-		'acceptAgreementURL': url,
-		'agreementContentURL': url,
-		'verifyAgreementURL': url
+		acceptAgreementURL: url,
+		agreementContentURL: url,
+		verifyAgreementURL: url
 	};
 
 	const singleDownloadGroups = [
 		{
-			'downloadGroupName': 'Download Group Name',
-			'downloads': [
+			downloadGroupName: 'Download Group Name',
+			downloads: [
 				{
-					'downloadDetails': {
-						'label': 'value'
+					downloadDetails: {
+						label: 'value'
 					},
-					'downloadName': 'Download Name',
-					'downloadURL': url
+					downloadName: 'Download Name',
+					downloadURL: url
 				}
 			]
 		}
 	];
 
 	it('renders single download correctly', () => {
-		const tree = TestRenderer.create(
+		const {container} = render(
 			<FileDownloads
 				downloadGroups={singleDownloadGroups}
 				journalArticleId={123}
 				requiredAgreement={requiredAgreement}
 			/>
-		).toJSON();
+		);
 
-		expect(tree).toMatchSnapshot();
+		expect(container).toMatchSnapshot();
 	});
 
 	it('renders multiple downloads correctly', () => {
-		const tree = TestRenderer.create(
+		const {container} = render(
 			<FileDownloads
 				downloadGroups={multipleDownloadGroups}
 				journalArticleId={123}
 				requiredAgreement={requiredAgreement}
 			/>
-		).toJSON();
+		);
 
-		expect(tree).toMatchSnapshot();
+		expect(container).toMatchSnapshot();
 	});
 });

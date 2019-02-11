@@ -1,6 +1,6 @@
 import lang from './lang';
 
-window.AccountDetailsConstants = {
+window.ReleaseTool = {
 	namespace: 'namespace'
 };
 

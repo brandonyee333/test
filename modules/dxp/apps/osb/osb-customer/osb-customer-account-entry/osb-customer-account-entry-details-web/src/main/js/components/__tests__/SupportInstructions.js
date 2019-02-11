@@ -1,18 +1,18 @@
 import React from 'react';
-import TestRenderer from 'react-test-renderer';
+import {render} from 'react-testing-library';
 
 import SupportInstructions from '../SupportInstructions';
 
 describe('SupportInstructions', () => {
 	it('renders correctly', () => {
-		const tree = TestRenderer.create(
+		const {container} = render(
 			<SupportInstructions
 				accountEntryId="accountEntryId"
 				editInstructionsURL="/"
 				instructions="instructions"
 			/>
-		).toJSON();
+		);
 
-		expect(tree).toMatchSnapshot();
+		expect(container).toMatchSnapshot();
 	});
 });

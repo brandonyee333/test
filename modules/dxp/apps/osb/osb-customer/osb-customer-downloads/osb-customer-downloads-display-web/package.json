@@ -41,7 +41,6 @@
 		"optimize-css-assets-webpack-plugin": "^5.0.0",
 		"postcss-loader": "^2.1.6",
 		"prop-types": "^15.6.2",
-		"react-test-renderer": "^16.7.0",
 		"react-testing-library": "^5.4.4",
 		"sass-loader": "^7.1.0",
 		"uglifyjs-webpack-plugin": "^1.2.7",
