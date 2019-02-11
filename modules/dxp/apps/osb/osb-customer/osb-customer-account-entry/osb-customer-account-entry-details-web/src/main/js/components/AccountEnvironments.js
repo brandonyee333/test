@@ -81,10 +81,12 @@ export default class AccountEnvironments extends React.Component {
 							key={index}
 						>
 							<div className="col-sm-6">
-								<EnvironmentDetail
-									label={Liferay.Language.get('commerce-version')}
-									value={environment.envCommerceLabel}
-								/>
+								{(environment.envCommerceLabel !== 'N/A') && (
+									<EnvironmentDetail
+										label={Liferay.Language.get('commerce-version')}
+										value={environment.envCommerceLabel}
+									/>
+								)}
 
 								<EnvironmentDetail
 									label={Liferay.Language.get('operating-system')}
