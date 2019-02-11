@@ -1,19 +1,41 @@
 import React from 'react';
-import TestRenderer from 'react-test-renderer';
+import {fireEvent, render} from 'react-testing-library';
 
 import Accordion from '../Accordion';
 
 describe('Accordion', () => {
 	const items = [
 		{
-			body: 'Accordion Body',
-			title: 'Accordion Title'
+			body: 'Accordion Body 1',
+			title: 'Accordion Title 1'
+		},
+		{
+			body: 'Accordion Body 2',
+			title: 'Accordion Title 2'
 		}
 	];
 
 	it('renders correctly', () => {
-		const tree = TestRenderer.create(<Accordion items={items} />).toJSON();
+		const {container} = render(<Accordion items={items} />);
 
-		expect(tree).toMatchSnapshot();
+		expect(container).toMatchSnapshot();
+	})
+
+	it('does not show panel body on initial load', () => {
+		const {queryByText} = render(<Accordion items={items} />);
+
+		const accordionBody = queryByText('Accordion Body 1');
+
+		expect(accordionBody).toBeNull();
+	})
+
+	it('expands panel body when clicking on panel title ', () => {
+		const {getByText, queryByText} = render(<Accordion items={items} />);
+
+		fireEvent.click(getByText('Accordion Title 1'));
+		
+		const accordionBody = queryByText('Accordion Body 1');
+
+		expect(accordionBody).toBeDefined();
 	});
 });
