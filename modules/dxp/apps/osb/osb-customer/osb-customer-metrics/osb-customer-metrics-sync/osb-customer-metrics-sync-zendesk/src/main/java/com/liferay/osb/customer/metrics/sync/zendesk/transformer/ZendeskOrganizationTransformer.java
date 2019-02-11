@@ -83,7 +83,9 @@ public class ZendeskOrganizationTransformer extends BaseTransformer {
 			ZendeskOrganization.class.getName(),
 			jsonObject.getLong("end_time"));
 
-		_processNextPage(jsonObject.getString("next_page"));
+		if (jsonObject.getInt("count") >= 1000) {
+			_processNextPage(jsonObject.getString("next_page"));
+		}
 	}
 
 	private void _processNextPage(String nextPage) throws PortalException {
