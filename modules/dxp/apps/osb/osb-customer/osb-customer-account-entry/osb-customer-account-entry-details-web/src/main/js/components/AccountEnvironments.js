@@ -23,10 +23,16 @@ export default class AccountEnvironments extends React.Component {
 		environmentConfiguration: PropTypes.shape(
 			{
 				envLFRVersions: PropTypes.arrayOf(PropTypes.object),
+				envCommerce: PropTypes.shape(
+					{
+						envLFRVersions: PropTypes.arrayOf(PropTypes.object),
+						envCommerceVersions: PropTypes.arrayOf(PropTypes.object)
+					}
+				),
 				products: PropTypes.arrayOf(PropTypes.object)
 			}
 		).isRequired,
-		environments: PropTypes.array.isRequired,
+		environments: PropTypes.arrayOf(PropTypes.object).isRequired,
 		permitAdd: PropTypes.bool.isRequired,
 		permitDelete: PropTypes.bool.isRequired,
 		permitEdit: PropTypes.bool.isRequired
