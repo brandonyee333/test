@@ -45,6 +45,8 @@ public class UpgradeJournalArticles extends UpgradeProcess {
 
 	public static final String FILE_TYPE_PRODUCT = "product";
 
+	public static final String FILE_TYPE_PROJECT_SDK = "projectSDK";
+
 	public static final String FILE_TYPE_SECURITY = "security";
 
 	public static final String PRODUCT_ANALYTICS_CLOUD = "analyticsCloud";
@@ -189,6 +191,10 @@ public class UpgradeJournalArticles extends UpgradeProcess {
 
 			if (ArrayUtil.contains(fileTypes, FILE_TYPE_PLUGINS_SDK)) {
 				assetCategoryIds.add(118191042L);
+			}
+
+			if (ArrayUtil.contains(fileTypes, FILE_TYPE_PROJECT_SDK)) {
+				assetCategoryIds.add(118204722L);
 			}
 		}
 		else if (product.equals(PRODUCT_DXP_70)) {
