@@ -6,6 +6,7 @@
 By default all of the following fields show up when a user is looking at a particular environment configuration, even if no value is present for that field:
 * Environment name
 * Product
+* (Commerce Version)
 * Liferay version
 * Operating Systems
 * Java Version
@@ -17,6 +18,7 @@ By default all of the following fields show up when a user is looking at a parti
 
 #### Special Cases
 * _Commerce_ products will include a new _Commerce Version_ field.
+  * _Commerce_ products can contain different environment configuration dropdown options than other products.
 * Only product version _6.2_ and above will have the _Cloud Services_ field.
 * Only _DXP_ products will have the _Search_ field.
 _Special fields are only displayed when there is value in it's associated field._
@@ -30,6 +32,7 @@ By default the user will be able to fill in the environment _Name_ and choose a 
 The available fields for adding a new environment configuration are:
 * Environment name
 * Product
+* (Commerce version)
 * Liferay version
 * Operating Systems
 * Java Version
@@ -67,7 +70,7 @@ This field is not required.
 The required fields for adding a new environment configuration are:
 * Environment name
 * Product
-* Commerce version (if Product is a commerce product)
+* Commerce version (if _Product_ selected is a commerce product)
 * Liferay version
 * Operating Systems
 * Java Version
