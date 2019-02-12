@@ -40,12 +40,20 @@ public class ZendeskCategory implements TranslatableModel {
 		return _description;
 	}
 
+	public String getHtmlUrl() {
+		return _htmlUrl;
+	}
+
 	public String getName() {
 		return _name;
 	}
 
 	public long getSourceId() {
 		return _zendeskCategoryId;
+	}
+
+	public String getSourceLocale() {
+		return _sourceLocale;
 	}
 
 	public String getSourceType() {
@@ -72,8 +80,16 @@ public class ZendeskCategory implements TranslatableModel {
 		_description = description;
 	}
 
+	public void setHtmlUrl(String htmlUrl) {
+		_htmlUrl = htmlUrl;
+	}
+
 	public void setName(String name) {
 		_name = name;
+	}
+
+	public void setSourceLocale(String sourceLocale) {
+		_sourceLocale = sourceLocale;
 	}
 
 	public void setZendeskCategoryId(long zendeskCategoryId) {
@@ -88,7 +104,9 @@ public class ZendeskCategory implements TranslatableModel {
 
 	private Date _createDate;
 	private String _description;
+	private String _htmlUrl;
 	private String _name;
+	private String _sourceLocale;
 	private long _zendeskCategoryId;
 	private List<ZendeskTranslation> _zendeskTranslations = new ArrayList<>();
 

@@ -38,12 +38,20 @@ public class ZendeskArticle implements TranslatableModel {
 		return _createDate;
 	}
 
+	public String getHtmlUrl() {
+		return _htmlUrl;
+	}
+
 	public Set<String> getLabelNames() {
 		return _labelNames;
 	}
 
 	public long getSourceId() {
 		return _zendeskArticleId;
+	}
+
+	public String getSourceLocale() {
+		return _sourceLocale;
 	}
 
 	public String getSourceType() {
@@ -82,8 +90,16 @@ public class ZendeskArticle implements TranslatableModel {
 		_draft = draft;
 	}
 
+	public void setHtmlUrl(String htmlUrl) {
+		_htmlUrl = htmlUrl;
+	}
+
 	public void setLabelNames(Set<String> labelNames) {
 		_labelNames = labelNames;
+	}
+
+	public void setSourceLocale(String sourceLocale) {
+		_sourceLocale = sourceLocale;
 	}
 
 	public void setTitle(String title) {
@@ -107,7 +123,9 @@ public class ZendeskArticle implements TranslatableModel {
 	private String _body;
 	private Date _createDate;
 	private boolean _draft;
+	private String _htmlUrl;
 	private Set<String> _labelNames = new HashSet<>();
+	private String _sourceLocale;
 	private String _title;
 	private Date _updateDate;
 	private long _zendeskArticleId;

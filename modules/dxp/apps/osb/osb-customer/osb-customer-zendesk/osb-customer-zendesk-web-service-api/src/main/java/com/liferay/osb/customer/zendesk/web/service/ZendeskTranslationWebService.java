@@ -36,4 +36,9 @@ public interface ZendeskTranslationWebService {
 			String sourceType, long sourceId)
 		throws PortalException;
 
+	public ZendeskTranslation updateZendeskTranslation(
+			String sourceType, long sourceId, String locale, String title,
+			String body)
+		throws PortalException;
+
 }

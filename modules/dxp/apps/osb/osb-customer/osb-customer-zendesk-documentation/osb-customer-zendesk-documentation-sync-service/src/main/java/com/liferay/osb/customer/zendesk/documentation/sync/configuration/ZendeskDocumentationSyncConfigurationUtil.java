@@ -16,6 +16,7 @@ package com.liferay.osb.customer.zendesk.documentation.sync.configuration;
 
 import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
+import com.liferay.portal.kernel.configuration.Filter;
 
 /**
  * @author Wesley Gong
@@ -24,6 +25,10 @@ public class ZendeskDocumentationSyncConfigurationUtil {
 
 	public static String get(String key) {
 		return _configuration.get(key);
+	}
+
+	public static String get(String key, Filter filter) {
+		return _configuration.get(key, filter);
 	}
 
 	private static final Configuration _configuration =

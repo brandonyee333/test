@@ -40,19 +40,44 @@ public class AsyncZendeskTranslationWebService
 			String body)
 		throws PortalException {
 
-		String endpoint = getEndpoint(sourceType, sourceId);
+		String endpoint = getBaseEndpoint(sourceType, sourceId);
 
 		JSONObject jsonObject = getZendeskTranslationJSONObject(
 			locale, title, body);
 
 		ZendeskRequest zendeskRequest = new ZendeskRequest(
-			endpoint, "post", null, jsonObject, null);
+			endpoint + "/translations.json", "post", null, jsonObject, null);
 
 		messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
 				"Adding " + locale + " translation for " + sourceType +
+					StringPool.POUND + sourceId);
+		}
+
+		return null;
+	}
+
+	public ZendeskTranslation updateZendeskTranslation(
+			String sourceType, long sourceId, String locale, String title,
+			String body)
+		throws PortalException {
+
+		String endpoint = getBaseEndpoint(sourceType, sourceId);
+
+		JSONObject jsonObject = getZendeskTranslationJSONObject(
+			null, title, body);
+
+		ZendeskRequest zendeskRequest = new ZendeskRequest(
+			endpoint + "/translations/" + locale + ".json", "put", null,
+			jsonObject, null);
+
+		messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
+
+		if (_log.isInfoEnabled()) {
+			_log.info(
+				"Updating " + locale + " translation for " + sourceType +
 					StringPool.POUND + sourceId);
 		}
 

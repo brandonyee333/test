@@ -62,6 +62,7 @@ public class ZendeskConverter {
 		}
 
 		zendeskArticle.setDraft(jsonObject.getBoolean("draft"));
+		zendeskArticle.setHtmlUrl(jsonObject.getString("html_url"));
 
 		JSONArray labelNamesJSONArray = jsonObject.getJSONArray("label_names");
 
@@ -75,6 +76,7 @@ public class ZendeskConverter {
 			zendeskArticle.setLabelNames(labelNames);
 		}
 
+		zendeskArticle.setSourceLocale(jsonObject.getString("source_locale"));
 		zendeskArticle.setTitle(jsonObject.getString("title"));
 
 		String updatedAt = jsonObject.getString("updated_at");
@@ -148,7 +150,9 @@ public class ZendeskConverter {
 		}
 
 		zendeskCategory.setDescription(jsonObject.getString("description"));
+		zendeskCategory.setHtmlUrl(jsonObject.getString("html_url"));
 		zendeskCategory.setName(jsonObject.getString("name"));
+		zendeskCategory.setSourceLocale(jsonObject.getString("source_locale"));
 		zendeskCategory.setZendeskCategoryId(jsonObject.getLong("id"));
 
 		JSONArray jsonArray = jsonObject.getJSONArray("translations");
@@ -214,7 +218,9 @@ public class ZendeskConverter {
 		}
 
 		zendeskSection.setDescription(jsonObject.getString("description"));
+		zendeskSection.setHtmlUrl(jsonObject.getString("html_url"));
 		zendeskSection.setName(jsonObject.getString("name"));
+		zendeskSection.setSourceLocale(jsonObject.getString("source_locale"));
 		zendeskSection.setZendeskSectionId(jsonObject.getLong("id"));
 
 		JSONArray jsonArray = jsonObject.getJSONArray("translations");

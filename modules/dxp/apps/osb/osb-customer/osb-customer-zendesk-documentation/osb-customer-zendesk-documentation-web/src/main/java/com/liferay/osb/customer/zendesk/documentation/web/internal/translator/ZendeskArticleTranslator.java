@@ -14,13 +14,17 @@
 
 package com.liferay.osb.customer.zendesk.documentation.web.internal.translator;
 
+import com.liferay.osb.customer.zendesk.connector.constants.ZendeskLocales;
 import com.liferay.osb.customer.zendesk.model.ZendeskArticle;
+import com.liferay.osb.customer.zendesk.model.ZendeskTranslation;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskArticleWebService;
 import com.liferay.osb.customer.zendesk.web.service.search.Query;
 import com.liferay.osb.customer.zendesk.web.service.search.SearchHits;
 import com.liferay.portal.kernel.exception.PortalException;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -47,12 +51,45 @@ public class ZendeskArticleTranslator extends BaseTranslator<ZendeskArticle> {
 	}
 
 	@Override
-	protected boolean isTranslate(ZendeskArticle zendeskArticle) {
+	protected boolean isAdd(ZendeskArticle zendeskArticle) {
 		if (zendeskArticle.isDraft()) {
 			return false;
 		}
 
-		return super.isTranslate(zendeskArticle);
+		return super.isAdd(zendeskArticle);
+	}
+
+	protected boolean isManualTranslation(
+		ZendeskArticle zendeskArticle, String locale) {
+
+		Set<String> labelNames = zendeskArticle.getLabelNames();
+
+		if (labelNames.contains(locale)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	protected boolean isUpdate(ZendeskArticle zendeskArticle) {
+		if (zendeskArticle.isDraft()) {
+			return false;
+		}
+
+		List<ZendeskTranslation> zendeskTranslations =
+			zendeskArticle.getZendeskTranslations();
+
+		if (zendeskTranslations.size() == 1) {
+			return false;
+		}
+
+		String sourceLocale = zendeskArticle.getSourceLocale();
+
+		if (!sourceLocale.equals(ZendeskLocales.US)) {
+			return false;
+		}
+
+		return true;
 	}
 
 	protected SearchHits<ZendeskArticle> search(Query query)

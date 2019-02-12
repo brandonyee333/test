@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
 
@@ -51,17 +52,25 @@ public class DefaultZendeskTranslationWebService
 			String sourceType, long sourceId)
 		throws PortalException {
 
-		String endpoint = getEndpoint(sourceType, sourceId);
+		String endpoint = getBaseEndpoint(sourceType, sourceId);
 
 		JSONObject responseJSONObject = zendeskBaseWebService.get(
-			endpoint, StringPool.BLANK);
+			endpoint + "/translations.json", StringPool.BLANK);
 
 		return zendeskConverter.toZendeskTranslations(
 			responseJSONObject.getJSONArray("translations"));
 	}
 
-	protected String getEndpoint(String sourceType, long sourceId) {
-		StringBundler sb = new StringBundler(5);
+	public ZendeskTranslation updateZendeskTranslation(
+			String sourceType, long sourceId, String locale, String title,
+			String body)
+		throws PortalException {
+
+		throw new UnsupportedOperationException();
+	}
+
+	protected String getBaseEndpoint(String sourceType, long sourceId) {
+		StringBundler sb = new StringBundler(4);
 
 		sb.append(ZendeskRESTEndpoints.URL_API_V2);
 		sb.append("help_center/");
@@ -83,7 +92,6 @@ public class DefaultZendeskTranslationWebService
 		}
 
 		sb.append(sourceId);
-		sb.append("/translations.json");
 
 		return sb.toString();
 	}
@@ -94,7 +102,11 @@ public class DefaultZendeskTranslationWebService
 		JSONObject translationJSONObject = JSONFactoryUtil.createJSONObject();
 
 		translationJSONObject.put("body", body);
-		translationJSONObject.put("locale", locale);
+
+		if (Validator.isNotNull(locale)) {
+			translationJSONObject.put("locale", locale);
+		}
+
 		translationJSONObject.put("title", title);
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();

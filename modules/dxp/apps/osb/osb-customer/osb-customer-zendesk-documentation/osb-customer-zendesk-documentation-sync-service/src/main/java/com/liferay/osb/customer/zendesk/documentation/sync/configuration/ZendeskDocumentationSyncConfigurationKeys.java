@@ -12,27 +12,14 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.model;
-
-import java.util.List;
+package com.liferay.osb.customer.zendesk.documentation.sync.configuration;
 
 /**
  * @author Amos Fong
  */
-public interface TranslatableModel {
+public class ZendeskDocumentationSyncConfigurationKeys {
 
-	public String getBody();
-
-	public String getHtmlUrl();
-
-	public long getSourceId();
-
-	public String getSourceLocale();
-
-	public String getSourceType();
-
-	public String getTitle();
-
-	public List<ZendeskTranslation> getZendeskTranslations();
+	public static final String ZENDESK_DOCUMENTATION_TRANSLATOR =
+		"zendesk.documentation.translator";
 
 }
