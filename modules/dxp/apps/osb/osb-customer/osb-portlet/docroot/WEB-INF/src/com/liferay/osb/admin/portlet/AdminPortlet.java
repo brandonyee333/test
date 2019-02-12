@@ -766,6 +766,8 @@ public class AdminPortlet extends OSBPortlet {
 
 			AccountEntryLocalServiceUtil.updateActiveSupport(accountEntryId);
 
+			syncToLCS(actionRequest, actionResponse, accountEntryId);
+
 			jsonObject.put("message", "success");
 		}
 		catch (Exception e) {
