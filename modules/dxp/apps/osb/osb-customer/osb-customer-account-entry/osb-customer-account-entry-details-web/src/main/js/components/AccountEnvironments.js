@@ -33,9 +33,9 @@ export default class AccountEnvironments extends React.Component {
 			}
 		).isRequired,
 		environments: PropTypes.arrayOf(PropTypes.object).isRequired,
-		permitAdd: PropTypes.bool.isRequired,
-		permitDelete: PropTypes.bool.isRequired,
-		permitEdit: PropTypes.bool.isRequired
+		permitAdd: PropTypes.bool,
+		permitDelete: PropTypes.bool,
+		permitEdit: PropTypes.bool
 	};
 
 	handleCloseModal = () =>

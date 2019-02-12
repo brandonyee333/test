@@ -51,7 +51,7 @@ export default class EditAccountEnvironmentForm extends React.Component {
 
 	static propTypes = {
 		addEnvironmentURL: PropTypes.string.isRequired,
-		environment: PropTypes.object,
+		environment: PropTypes.object.isRequired,
 		environmentConfiguration: PropTypes.object.isRequired,
 		handleCloseModal: PropTypes.func.isRequired,
 		namespace: PropTypes.string.isRequired
@@ -66,10 +66,10 @@ export default class EditAccountEnvironmentForm extends React.Component {
 				product => product.productEntryId === environment.productEntryId
 			);
 
-			let currentCommerceValue,
-				currentCommerceVersion,
-				currentLFRValue,
-				currentLFRVersion;
+			let currentCommerceValue = '';
+			let currentCommerceVersion = '';
+			let currentLFRValue = '';
+			let currentLFRVersion = '';
 
 			if (currentProduct.envCommerce) {
 				currentCommerceValue = currentProduct.envCommerce.find(
