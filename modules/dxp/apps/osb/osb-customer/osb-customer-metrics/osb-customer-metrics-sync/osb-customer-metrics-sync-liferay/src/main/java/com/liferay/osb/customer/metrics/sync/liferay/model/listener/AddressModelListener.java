@@ -12,45 +12,30 @@
  *
  */
 
-package com.liferay.osb.customer.metrics.sync.liferay.listener;
+package com.liferay.osb.customer.metrics.sync.liferay.model.listener;
 
 import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModelListener;
 import com.liferay.osb.customer.metrics.sync.liferay.constants.ClassNameConstants;
-import com.liferay.osb.model.ExternalIdMapper;
 import com.liferay.portal.kernel.exception.ModelListenerException;
+import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.ModelListener;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.util.ArrayUtil;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Jenny Chen
  */
 @Component(immediate = true, service = ModelListener.class)
-public class ExternalIdMapperModelListener
-	extends BaseMetricsModelListener<ExternalIdMapper> {
+public class AddressModelListener extends BaseMetricsModelListener<Address> {
 
 	@Override
-	public boolean ignoreUpdate(ExternalIdMapper externalIdMapper)
-		throws ModelListenerException {
-
-		if (ArrayUtil.contains(
-				_OSB_CLASS_NAME_IDS, externalIdMapper.getClassNameId())) {
-
+	public boolean ignoreUpdate(Address address) throws ModelListenerException {
+		if (ArrayUtil.contains(_OSB_CLASS_NAME_IDS, address.getClassNameId())) {
 			return false;
 		}
 
 		return true;
-	}
-
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
 	private static final long[] _OSB_CLASS_NAME_IDS = {

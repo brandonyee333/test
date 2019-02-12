@@ -12,29 +12,39 @@
  *
  */
 
-package com.liferay.osb.customer.metrics.sync.liferay.listener;
+package com.liferay.osb.customer.metrics.sync.liferay.model.listener;
 
 import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModelListener;
-import com.liferay.osb.model.AccountEnvironmentAttachment;
+import com.liferay.osb.customer.metrics.sync.liferay.constants.ClassNameConstants;
+import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.model.ModelListener;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.security.audit.storage.model.AuditEvent;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Jenny Chen
  */
 @Component(immediate = true, service = ModelListener.class)
-public class AccountEnvironmentAttachmentModelListener
-	extends BaseMetricsModelListener<AccountEnvironmentAttachment> {
+public class AuditEventModelListener
+	extends BaseMetricsModelListener<AuditEvent> {
 
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
+	@Override
+	public boolean ignoreUpdate(AuditEvent auditEvent)
+		throws ModelListenerException {
+
+		if (ArrayUtil.contains(
+				_AUDIT_EVENT_CLASS_NAMES, auditEvent.getClassName())) {
+
+			return false;
+		}
+
+		return true;
 	}
+
+	private static final String[] _AUDIT_EVENT_CLASS_NAMES = {
+		ClassNameConstants.DOWNLOAD_PORTLET_CLASS_NAME
+	};
 
 }
