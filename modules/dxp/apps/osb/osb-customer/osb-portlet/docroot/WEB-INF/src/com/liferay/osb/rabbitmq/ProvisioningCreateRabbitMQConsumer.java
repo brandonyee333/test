@@ -138,11 +138,17 @@ public class ProvisioningCreateRabbitMQConsumer
 		String salesforceOpportunityStageName, int salesforceOpportunityType) {
 
 		if (salesforceOpportunityStageName.equals(
-				SalesforceConstants.OPPORTUNITY_STAGE_CLOSED_WON) ||
-			(salesforceOpportunityStageName.equals(
 				SalesforceConstants.OPPORTUNITY_STAGE_CLOSED_LOST) &&
-			 (salesforceOpportunityType ==
-				 SalesforceConstants.OPPORTUNITY_TYPE_RENEWAL))) {
+			(salesforceOpportunityType ==
+				SalesforceConstants.OPPORTUNITY_TYPE_RENEWAL)) {
+
+			return true;
+		}
+
+		if (salesforceOpportunityStageName.equals(
+				SalesforceConstants.OPPORTUNITY_STAGE_CLOSED_WON) &&
+			(salesforceOpportunityType !=
+				SalesforceConstants.OPPORTUNITY_TYPE_RENEWAL)) {
 
 			return true;
 		}
