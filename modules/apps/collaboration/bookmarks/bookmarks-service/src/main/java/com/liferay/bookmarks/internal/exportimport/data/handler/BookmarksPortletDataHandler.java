@@ -79,6 +79,9 @@ public class BookmarksPortletDataHandler extends BasePortletDataHandler {
 			new StagedModelType(BookmarksFolder.class));
 		setExportControls(
 			new PortletDataHandlerBoolean(
+				NAMESPACE, "folders", true, false, null,
+				BookmarksFolder.class.getName()),
+			new PortletDataHandlerBoolean(
 				NAMESPACE, "entries", true, false, null,
 				BookmarksEntry.class.getName()));
 		setImportControls(getExportControls());
