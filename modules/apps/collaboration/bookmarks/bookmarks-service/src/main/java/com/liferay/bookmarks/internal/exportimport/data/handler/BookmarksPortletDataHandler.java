@@ -175,7 +175,7 @@ public class BookmarksPortletDataHandler extends BasePortletDataHandler {
 			}
 		}
 
-		return null;
+		return portletPreferences;
 	}
 
 	@Override
