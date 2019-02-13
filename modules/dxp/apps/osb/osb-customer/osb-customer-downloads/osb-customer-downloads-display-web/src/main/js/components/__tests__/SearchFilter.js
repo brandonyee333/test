@@ -6,18 +6,16 @@ import SearchFilter from '../SearchFilter';
 describe('SearchFilter', () => {
 	const productsJsonArray = [
 		{
-			name: 'Product One',
-			value: 'product_one',
 			fileTypes: [
 				{
 					name: 'One',
 					value: 'one'
 				}
-			]
+			],
+			name: 'Product One',
+			value: 'product_one'
 		},
 		{
-			name: 'Product Two',
-			value: 'product_two',
 			fileTypes: [
 				{
 					name: 'One',
@@ -31,7 +29,9 @@ describe('SearchFilter', () => {
 					name: 'Three',
 					value: 'three'
 				}
-			]
+			],
+			name: 'Product Two',
+			value: 'product_two'
 		}
 	];
 
@@ -73,19 +73,25 @@ describe('SearchFilter', () => {
 
 		const productInput = getByLabelText('product:');
 
-		fireEvent.change(productInput, {
-			target: {
-				value: 'product_two'
+		fireEvent.change(
+			productInput,
+			{
+				target: {
+					value: 'product_two'
+				}
 			}
-		});
+		);
 
 		const fileTypeInput = getByLabelText('file-type:');
 
-		fireEvent.change(fileTypeInput, {
-			target: {
-				value: 'three'
+		fireEvent.change(
+			fileTypeInput,
+			{
+				target: {
+					value: 'three'
+				}
 			}
-		});
+		);
 
 		expect(fileTypeInput.value).toBe('three');
 	});
@@ -102,11 +108,14 @@ describe('SearchFilter', () => {
 
 		const productInput = getByLabelText('product:');
 
-		fireEvent.change(productInput, {
-			target: {
-				value: 'product_one'
+		fireEvent.change(
+			productInput,
+			{
+				target: {
+					value: 'product_one'
+				}
 			}
-		});
+		);
 
 		const fileTypeInput = getByLabelText('file-type:');
 

@@ -22,13 +22,13 @@ export default class AccountEnvironments extends React.Component {
 		addEnvironmentURL: PropTypes.string.isRequired,
 		environmentConfiguration: PropTypes.shape(
 			{
-				envLFRVersions: PropTypes.arrayOf(PropTypes.object),
 				envCommerce: PropTypes.shape(
 					{
-						envLFRVersions: PropTypes.arrayOf(PropTypes.object),
-						envCommerceVersions: PropTypes.arrayOf(PropTypes.object)
+						envCommerceVersions: PropTypes.arrayOf(PropTypes.object),
+						envLFRVersions: PropTypes.arrayOf(PropTypes.object)
 					}
 				),
+				envLFRVersions: PropTypes.arrayOf(PropTypes.object),
 				products: PropTypes.arrayOf(PropTypes.object)
 			}
 		).isRequired,

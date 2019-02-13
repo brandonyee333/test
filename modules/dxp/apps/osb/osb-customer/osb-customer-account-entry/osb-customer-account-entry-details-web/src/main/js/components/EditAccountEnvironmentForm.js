@@ -299,13 +299,10 @@ export default class EditAccountEnvironmentForm extends React.Component {
 		else if (name === `${this.props.namespace}envLFR`) {
 			const {selectedProduct} = selectedOptions;
 
-			let currentLFRVersion;
+			let currentLFRVersion = envLFRVersions.find(version => version[value]);
 
 			if (selectedProduct.envCommerce) {
 				currentLFRVersion = envCommerce.envLFRVersions.find(version => version[value]);
-			}
-			else {
-				currentLFRVersion = envLFRVersions.find(version => version[value]);
 			}
 
 			this.setState(

@@ -19,7 +19,7 @@ describe('Accordion', () => {
 		const {container} = render(<Accordion items={items} />);
 
 		expect(container).toMatchSnapshot();
-	})
+	});
 
 	it('does not show panel body on initial load', () => {
 		const {queryByText} = render(<Accordion items={items} />);
@@ -27,13 +27,13 @@ describe('Accordion', () => {
 		const accordionBody = queryByText('Accordion Body 1');
 
 		expect(accordionBody).toBeNull();
-	})
+	});
 
 	it('expands panel body when clicking on panel title ', () => {
 		const {getByText, queryByText} = render(<Accordion items={items} />);
 
 		fireEvent.click(getByText('Accordion Title 1'));
-		
+
 		const accordionBody = queryByText('Accordion Body 1');
 
 		expect(accordionBody).toBeDefined();
