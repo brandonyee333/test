@@ -8,7 +8,9 @@ const PORTLET_ID = 'com_liferay_osb_customer_downloads_display_web_DownloadsDisp
 export default class SearchFilters extends React.Component {
 	searchDownloadsFormRef = React.createRef();
 
-	_getFileTypes = (comparator) => {
+	// getFileTypes method needs to be defined before state
+
+	getFileTypes = (comparator) => {
 		const {productsJSONArray} = this.props;
 
 		const productEntry = productsJSONArray.find(
@@ -19,7 +21,7 @@ export default class SearchFilters extends React.Component {
 	};
 
 	state = {
-		availableFileTypes: this._getFileTypes(this.props.currentProductAssetCategoryId),
+		availableFileTypes: this.getFileTypes(this.props.currentProductAssetCategoryId),
 		fileTypeAssetCategoryId: this.props.currentFileTypeAssetCategoryId,
 		productAssetCategoryId: this.props.currentProductAssetCategoryId
 	};
@@ -47,7 +49,7 @@ export default class SearchFilters extends React.Component {
 		);
 
 	handleProductChange = event => {
-		const fileTypes = this._getFileTypes(event.target.value);
+		const fileTypes = this.getFileTypes(event.target.value);
 
 		this.setState(
 			{
