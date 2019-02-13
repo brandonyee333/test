@@ -147,6 +147,13 @@ public class MessageFactoryImpl implements MessageFactory {
 
 				attributesJSONObject.put(entry.getKey(), classNameJSONObject);
 			}
+			else if (obj instanceof Date) {
+				Date date = (Date)obj;
+
+				Timestamp timestamp = new Timestamp(date.getTime());
+
+				attributesJSONObject.put(entry.getKey(), timestamp.toString());
+			}
 			else if (obj instanceof User) {
 				User user = (User)obj;
 
@@ -155,13 +162,6 @@ public class MessageFactoryImpl implements MessageFactory {
 				userJSONObject.put("uuid_", user.getUuid());
 
 				attributesJSONObject.put(entry.getKey(), userJSONObject);
-			}
-			else if (obj instanceof Date) {
-				Date date = (Date)obj;
-
-				Timestamp timestamp = new Timestamp(date.getTime());
-
-				attributesJSONObject.put(entry.getKey(), timestamp.toString());
 			}
 			else {
 				attributesJSONObject.put(entry.getKey(), String.valueOf(obj));
