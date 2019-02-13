@@ -14,6 +14,8 @@
 
 package com.liferay.osb.hook.upgrade;
 
+import com.liferay.osb.hook.upgrade.v5_0_4.Upgrade_20190122115519440_ListType;
+import com.liferay.osb.hook.upgrade.v5_0_4.Upgrade_20190124135600134_AccountEnvironment;
 import com.liferay.osb.hook.upgrade.v5_0_4.Upgrade_20190129102524044_AuditEntry;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
@@ -40,6 +42,8 @@ public class UpgradeProcess_5_0_4 extends BaseUpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		upgrade(Upgrade_20190122115519440_ListType.class);
+		upgrade(Upgrade_20190124135600134_AccountEnvironment.class);
 	}
 
 }
