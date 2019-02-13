@@ -23,6 +23,9 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.model.User;
 
+import java.sql.Timestamp;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -152,6 +155,13 @@ public class MessageFactoryImpl implements MessageFactory {
 				userJSONObject.put("uuid_", user.getUuid());
 
 				attributesJSONObject.put(entry.getKey(), userJSONObject);
+			}
+			else if (obj instanceof Date) {
+				Date date = (Date)obj;
+
+				Timestamp timestamp = new Timestamp(date.getTime());
+
+				attributesJSONObject.put(entry.getKey(), timestamp.toString());
 			}
 			else {
 				attributesJSONObject.put(entry.getKey(), String.valueOf(obj));
