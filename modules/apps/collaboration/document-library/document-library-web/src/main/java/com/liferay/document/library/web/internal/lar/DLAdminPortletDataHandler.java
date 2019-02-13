@@ -44,6 +44,7 @@ import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.documentlibrary.constants.DLConstants;
+import com.liferay.portlet.documentlibrary.service.permission.DLPermission;
 
 import java.util.List;
 import java.util.Map;
@@ -169,7 +170,7 @@ public class DLAdminPortletDataHandler extends BasePortletDataHandler {
 			PortletPreferences portletPreferences)
 		throws Exception {
 
-		portletDataContext.addPortletPermissions(DLConstants.RESOURCE_NAME);
+		portletDataContext.addPortletPermissions(DLPermission.RESOURCE_NAME);
 
 		Element rootElement = addExportDataRootElement(portletDataContext);
 
@@ -247,7 +248,7 @@ public class DLAdminPortletDataHandler extends BasePortletDataHandler {
 			PortletPreferences portletPreferences, String data)
 		throws Exception {
 
-		portletDataContext.importPortletPermissions(DLConstants.RESOURCE_NAME);
+		portletDataContext.importPortletPermissions(DLPermission.RESOURCE_NAME);
 
 		if (portletDataContext.getBooleanParameter(NAMESPACE, "folders")) {
 			Element foldersElement =
