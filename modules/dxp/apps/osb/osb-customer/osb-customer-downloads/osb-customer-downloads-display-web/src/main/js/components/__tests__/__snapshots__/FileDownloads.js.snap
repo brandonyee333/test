@@ -17,21 +17,27 @@ exports[`FileDownloads renders multiple downloads correctly 1`] = `
         >
           Download Name 1
         </option>
+        <option
+          id="123-0-1"
+          value="Download Name 2"
+        >
+          Download Name 2
+        </option>
       </optgroup>
       <optgroup
         label="Download Group Name 2"
       >
         <option
           id="123-1-0"
-          value="Download Name 2"
+          value="Download Name 3"
         >
-          Download Name 2
+          Download Name 3
         </option>
       </optgroup>
     </select>
     <a
       class="btn btn-sm btn-link"
-      href="/"
+      href="group1/link1"
     >
       download
     </a>
@@ -45,14 +51,30 @@ exports[`FileDownloads renders multiple downloads correctly 1`] = `
       <span
         class="detail-label"
       >
-        label
+        fileSize
       </span>
       :
        
       <span
         class="detail-value"
       >
-        value
+        100kb
+      </span>
+    </span>
+    <span
+      class="details"
+    >
+      <span
+        class="detail-label"
+      >
+        md5
+      </span>
+      :
+       
+      <span
+        class="detail-value"
+      >
+        ABC
       </span>
     </span>
   </div>
@@ -80,14 +102,14 @@ exports[`FileDownloads renders single download correctly 1`] = `
       <span
         class="detail-label"
       >
-        label
+        fileSize
       </span>
       :
        
       <span
         class="detail-value"
       >
-        value
+        100kb
       </span>
     </span>
   </div>
