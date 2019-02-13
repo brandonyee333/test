@@ -129,7 +129,6 @@ public class DLAdminPortletDataHandler extends BasePortletDataHandler {
 				DLFileShortcutConstants.getClassName()));
 		setPublishToLiveByDefault(PropsValues.DL_PUBLISH_TO_LIVE_BY_DEFAULT);
 		setRank(90);
-		setStagingControls(getExportControls());
 	}
 
 	@Override

@@ -91,7 +91,7 @@ public class BookmarksAdminPortletDataHandler extends BasePortletDataHandler {
 			new PortletDataHandlerBoolean(
 				NAMESPACE, "entries", true, false, null,
 				BookmarksEntry.class.getName()));
-		setStagingControls(getExportControls());
+		setImportControls(getExportControls());
 	}
 
 	@Override
