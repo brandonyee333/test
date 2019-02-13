@@ -195,3 +195,14 @@ app.artifacts-3.0.20=\
 app.change.log-3.0.20=LPS-88094 
 
 app.git.id-3.0.20=825199c17ac4d9c4363e8f763420cd2110976eb0
+
+#
+# Liferay App Version 3.0.21
+#
+
+app.artifacts-3.0.21=\
+	com.liferay.portal.mobile.device.detection.fiftyonedegrees.enterprise-1.0.25.jar
+
+app.change.log-3.0.21=LPS-88902 LPS-90151
+
+app.git.id-3.0.21=a22b858283ad198e91c997f122722dc1c44d964d
