@@ -65,11 +65,11 @@ public class ZendeskOrganizationTransformer extends BaseTransformer {
 						String fieldKey = fieldIterator.next();
 
 						columnMap.put(
-							fieldKey, fieldsJSONObject.getString(fieldKey));
+							fieldKey, fieldsJSONObject.getString(fieldKey, "null"));
 					}
 				}
 				else {
-					columnMap.put(key, organizationJSONObject.getString(key));
+					columnMap.put(key, organizationJSONObject.getString(key, "null"));
 				}
 			}
 
