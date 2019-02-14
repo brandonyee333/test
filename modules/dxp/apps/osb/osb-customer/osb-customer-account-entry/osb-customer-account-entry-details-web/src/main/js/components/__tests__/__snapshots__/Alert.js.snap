@@ -22,10 +22,10 @@ exports[`Alert renders correctly 1`] = `
 </div>
 `;
 
-exports[`Alert renders with close icon correctly 1`] = `
+exports[`Alert renders info alert correctly 1`] = `
 <div>
   <div
-    class="alert alert-info alert-dismissible"
+    class="alert alert-info"
     role="alert"
   >
     <span
@@ -40,6 +40,28 @@ exports[`Alert renders with close icon correctly 1`] = `
       </svg>
     </span>
     Alert Info
+  </div>
+</div>
+`;
+
+exports[`Alert renders with close button correctly 1`] = `
+<div>
+  <div
+    class="alert alert-warning alert-dismissible"
+    role="alert"
+  >
+    <span
+      class="alert-indicator"
+    >
+      <svg
+        class="lexicon-icon lexicon-icon-warning-full"
+      >
+        <use
+          xlink:href="#warning-full"
+        />
+      </svg>
+    </span>
+    Alert Warning
     <button
       aria-label="Close"
       class="close"

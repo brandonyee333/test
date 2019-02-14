@@ -81,7 +81,7 @@ exports[`AccountEnvironments renders correctly 1`] = `
           class="panel-title"
         >
           <h4>
-            No Search Selection
+            No Search, Commerce, Cloud Services Selection
           </h4>
           <div
             class="panel-subtitle"
@@ -112,6 +112,208 @@ exports[`AccountEnvironments renders correctly 1`] = `
           />
         </svg>
       </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AccountEnvironments renders details when an environment is clicked 1`] = `
+<div>
+  <h3
+    class="card-header"
+  >
+    environment-configurations
+  </h3>
+  <div
+    aria-orientation="vertical"
+    class="panel-group"
+    role="tablist"
+  >
+    <div
+      class="panel"
+    >
+      <button
+        class="btn-link panel-header expanded"
+        role="tab"
+        type="button"
+      >
+        <div
+          class="panel-title"
+        >
+          <h4>
+            All Selections
+          </h4>
+          <div
+            class="panel-subtitle"
+          >
+            <span>
+              product
+            </span>
+            :
+             
+            Liferay DXP Production
+          </div>
+          <div
+            class="panel-subtitle"
+          >
+            <span>
+              LR
+            </span>
+            :
+             
+            7.1
+          </div>
+        </div>
+        <svg
+          class="lexicon-icon lexicon-icon-angle-right"
+        >
+          <use
+            xlink:href="#angle-right"
+          />
+        </svg>
+      </button>
+      <div
+        role="tabpanel"
+      >
+        <div
+          class="panel-body"
+        >
+          <div
+            class="col-sm-6"
+          >
+            <div
+              class="environment-detail"
+            >
+              <div
+                class="environment-label"
+              >
+                commerce-version
+              </div>
+              <div>
+                1.0
+              </div>
+            </div>
+            <div
+              class="environment-detail"
+            >
+              <div
+                class="environment-label"
+              >
+                operating-system
+              </div>
+              <div>
+                CentOS 7
+              </div>
+            </div>
+            <div
+              class="environment-detail"
+            >
+              <div
+                class="environment-label"
+              >
+                application-server
+              </div>
+              <div>
+                Tomcat 9.0
+              </div>
+            </div>
+            <div
+              class="environment-detail"
+            >
+              <div
+                class="environment-label"
+              >
+                search
+              </div>
+              <div>
+                Elasticsearch 6.x, solr-5
+              </div>
+            </div>
+            <div
+              class="environment-detail"
+            >
+              <div
+                class="environment-label"
+              >
+                cloud-services
+              </div>
+              <div>
+                AWS S3
+              </div>
+            </div>
+            <div
+              class="environment-detail"
+            >
+              <div
+                class="environment-label"
+              >
+                portal-ext
+              </div>
+              <a
+                href="/portal-ext/attachment/url"
+                target="blank"
+              >
+                Portal Ext File
+              </a>
+            </div>
+          </div>
+          <div
+            class="col-sm-6"
+          >
+            <div
+              class="environment-detail"
+            >
+              <div
+                class="environment-label"
+              >
+                java-version
+              </div>
+              <div>
+                IBM JDK 8
+              </div>
+            </div>
+            <div
+              class="environment-detail"
+            >
+              <div
+                class="environment-label"
+              >
+                database
+              </div>
+              <div>
+                MariaDB 10.2
+              </div>
+            </div>
+            <div
+              class="environment-detail"
+            >
+              <div
+                class="environment-label"
+              >
+                browser
+              </div>
+              <div>
+                Chrome
+              </div>
+            </div>
+            <div
+              class="environment-detail"
+            >
+              <div
+                class="environment-label"
+              >
+                patch-info
+              </div>
+              <a
+                href="/patch/attachment/url"
+                target="blank"
+              >
+                Patch File
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div
       class="panel"
@@ -125,7 +327,7 @@ exports[`AccountEnvironments renders correctly 1`] = `
           class="panel-title"
         >
           <h4>
-            No Commerce Selection
+            No Search, Commerce, Cloud Services Selection
           </h4>
           <div
             class="panel-subtitle"
@@ -157,50 +359,21 @@ exports[`AccountEnvironments renders correctly 1`] = `
         </svg>
       </button>
     </div>
-    <div
-      class="panel"
-    >
-      <button
-        class="btn-link panel-header"
-        role="tab"
-        type="button"
-      >
-        <div
-          class="panel-title"
-        >
-          <h4>
-            No Cloud Services Selection
-          </h4>
-          <div
-            class="panel-subtitle"
-          >
-            <span>
-              product
-            </span>
-            :
-             
-            Liferay DXP Production
-          </div>
-          <div
-            class="panel-subtitle"
-          >
-            <span>
-              LR
-            </span>
-            :
-             
-            7.1
-          </div>
-        </div>
-        <svg
-          class="lexicon-icon lexicon-icon-angle-right"
-        >
-          <use
-            xlink:href="#angle-right"
-          />
-        </svg>
-      </button>
-    </div>
+  </div>
+</div>
+`;
+
+exports[`AccountEnvironments renders no results message when there is no existing environment 1`] = `
+<div>
+  <h3
+    class="card-header"
+  >
+    environment-configurations
+  </h3>
+  <div
+    class="no-results"
+  >
+    no-environment-details
   </div>
 </div>
 `;

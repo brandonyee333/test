@@ -4,7 +4,7 @@ exports[`SubscriptionMessages renders correctly 1`] = `
 <div>
   <div>
     <div
-      id="id"
+      id="001"
     >
       <div
         class="alert alert-danger alert-dismissible"
@@ -27,7 +27,99 @@ exports[`SubscriptionMessages renders correctly 1`] = `
           subscription-message:
         </span>
          
-        Message Title
+        Message Title 1
+         
+        <a
+          class="semibold"
+        >
+          view-message
+        </a>
+        <button
+          aria-label="Close"
+          class="close"
+          type="button"
+        >
+          <svg
+            class="lexicon-icon lexicon-icon-times"
+          >
+            <use
+              xlink:href="#times"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div
+      id="002"
+    >
+      <div
+        class="alert alert-info alert-dismissible"
+        role="alert"
+      >
+        <span
+          class="alert-indicator"
+        >
+          <svg
+            class="lexicon-icon lexicon-icon-info-circle"
+          >
+            <use
+              xlink:href="#info-circle"
+            />
+          </svg>
+        </span>
+        <span
+          class="lead"
+        >
+          subscription-message:
+        </span>
+         
+        Message Title 2
+         
+        <a
+          class="semibold"
+        >
+          view-message
+        </a>
+        <button
+          aria-label="Close"
+          class="close"
+          type="button"
+        >
+          <svg
+            class="lexicon-icon lexicon-icon-times"
+          >
+            <use
+              xlink:href="#times"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div
+      id="003"
+    >
+      <div
+        class="alert alert-warning alert-dismissible"
+        role="alert"
+      >
+        <span
+          class="alert-indicator"
+        >
+          <svg
+            class="lexicon-icon lexicon-icon-warning-full"
+          >
+            <use
+              xlink:href="#warning-full"
+            />
+          </svg>
+        </span>
+        <span
+          class="lead"
+        >
+          subscription-message:
+        </span>
+         
+        Message Title 3
          
         <a
           class="semibold"

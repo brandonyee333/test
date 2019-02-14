@@ -1,0 +1,135 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddTicketAttachment renders correctly 1`] = `
+<div>
+  <div
+    class="add-ticket-attachment container-fluid-max-md"
+  >
+    <h1>
+      attach-file-to-ticket
+       
+      <a
+        href="/"
+      >
+        #
+        123
+      </a>
+    </h1>
+    <div
+      class="alert alert-info"
+      role="alert"
+    >
+      <span
+        class="alert-indicator"
+      >
+        <svg
+          class="lexicon-icon lexicon-icon-info-circle"
+        >
+          <use
+            xlink:href="#info-circle"
+          />
+        </svg>
+      </span>
+      <span
+        class="lead"
+      >
+        info:
+      </span>
+       
+      only-one-file-can-be-attached-at-a-time
+    </div>
+    <form
+      method="post"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col-md-12"
+        >
+          <div
+            class="form-group"
+            id="namespaceuploadContainer"
+          >
+            <label
+              class="control-label"
+            >
+              attachment
+              <svg
+                class="lexicon-icon lexicon-icon-asterisk"
+              >
+                <use
+                  xlink:href="#asterisk"
+                />
+              </svg>
+            </label>
+            <div
+              class="form-control upload-area"
+              id="namespaceuploadArea"
+            >
+              <input
+                class="attachment"
+                id="namespaceselectButton"
+                name="namespaceattachment"
+                type="file"
+              />
+              <div
+                class="upload-area-label"
+              >
+                <svg
+                  class="lexicon-icon lexicon-icon-paperclip"
+                >
+                  <use
+                    xlink:href="#paperclip"
+                  />
+                </svg>
+                add-file-or-drop-file-here
+              </div>
+            </div>
+            <div
+              class="toolbar"
+              id="namespacetoolbar"
+            >
+              
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-md-12"
+        >
+          <div
+            class="form-group"
+          >
+            <label
+              class="control-label"
+            >
+              leave-a-comment
+            </label>
+            <textarea
+              class="form-control"
+              id="namespacecomment"
+              name="namespacecomment"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        class="btn-row"
+      >
+        <button
+          class="btn btn-md btn-primary"
+          type="submit"
+        >
+          submit
+        </button>
+        <button
+          class="btn btn-md btn-outline"
+          type="button"
+        >
+          clear
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+`;

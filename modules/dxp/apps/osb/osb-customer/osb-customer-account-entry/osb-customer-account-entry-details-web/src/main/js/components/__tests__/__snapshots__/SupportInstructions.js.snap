@@ -23,3 +23,31 @@ exports[`SupportInstructions renders correctly 1`] = `
   </div>
 </div>
 `;
+
+exports[`SupportInstructions renders no results message when there is no existing instruction 1`] = `
+<div>
+  <h3
+    class="card-header"
+  >
+    support-instructions
+    <button
+      class="btn btn-md btn-primary btn-monospaced"
+      type="button"
+      value="add"
+    >
+      <svg
+        class="lexicon-icon lexicon-icon-plus"
+      >
+        <use
+          xlink:href="#plus"
+        />
+      </svg>
+    </button>
+  </h3>
+  <div
+    class="no-results"
+  >
+    no-support-instructions
+  </div>
+</div>
+`;
