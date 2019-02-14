@@ -108,7 +108,8 @@ public class ZendeskTicketTransformer extends BaseTransformer {
 							fieldsJSONArray.getJSONObject(j);
 
 						long id = fieldJSONObject.getLong("id");
-						String value = fieldJSONObject.getString("value", "null");
+						String value = fieldJSONObject.getString(
+							"value", "null");
 
 						columnMap.put(_getTicketFieldName(id), value);
 					}
