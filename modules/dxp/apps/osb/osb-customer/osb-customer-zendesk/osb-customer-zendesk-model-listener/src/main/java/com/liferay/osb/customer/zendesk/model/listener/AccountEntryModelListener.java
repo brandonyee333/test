@@ -20,6 +20,7 @@ import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
+import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -101,7 +102,12 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 				_accountEntrySynchronizer.removeObsoleteTags(accountEntry);
 			}
 
-			if (accountEntry.getActiveSupport()) {
+			boolean closedAccountEntryNameUpdate =
+				hasClosedAccountEntryNameUpdate(oldAccountEntry, accountEntry);
+
+			if (accountEntry.getActiveSupport() ||
+				closedAccountEntryNameUpdate) {
+
 				_accountEntrySynchronizer.update(accountEntry);
 
 				if ((oldAccountEntry.isActiveTicketSupport() !=
@@ -151,6 +157,23 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			_log.error(e);
 
 			throw new ZendeskIntegrationException(e);
+		}
+	}
+
+	protected boolean hasClosedAccountEntryNameUpdate(
+		AccountEntry oldAccountEntry, AccountEntry newAccountEntry) {
+
+		String oldAccountEntryCode = oldAccountEntry.getCode();
+		String oldAccountEntryName = oldAccountEntry.getName();
+
+		if ((newAccountEntry.getStatus() == WorkflowConstants.STATUS_CLOSED) &&
+			(!oldAccountEntryCode.equals(newAccountEntry.getCode()) ||
+			 !oldAccountEntryName.equals(newAccountEntry.getName()))) {
+
+			return true;
+		}
+		else {
+			return false;
 		}
 	}
 
