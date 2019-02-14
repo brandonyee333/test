@@ -20,7 +20,6 @@ import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
-import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -66,9 +65,13 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			AccountEntry oldAccountEntry = _oldAccountEntry.get();
 
 			if (!_zendeskOrganization.get() &&
-				!accountEntry.getActiveSupport()) {
+				!accountEntry.isActiveSupport()) {
 
 				return;
+			}
+
+			if (isUpdateAccountEntry(oldAccountEntry, accountEntry)) {
+				_accountEntrySynchronizer.update(accountEntry);
 			}
 
 			if (_zendeskOrganization.get() &&
@@ -95,34 +98,25 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			if (oldAccountEntry.isActiveSupport() &&
 				!accountEntry.isActiveSupport()) {
 
-				_accountEntrySynchronizer.update(accountEntry);
-
 				_accountEntrySynchronizer.removeAccountCustomers(accountEntry);
 
 				_accountEntrySynchronizer.removeObsoleteTags(accountEntry);
 			}
 
-			boolean closedAccountEntryNameUpdate =
-				hasClosedAccountEntryNameUpdate(oldAccountEntry, accountEntry);
-
-			if (accountEntry.getActiveSupport() ||
-				closedAccountEntryNameUpdate) {
-
-				_accountEntrySynchronizer.update(accountEntry);
-
+			if (accountEntry.isActiveSupport()) {
 				if ((oldAccountEntry.isActiveTicketSupport() !=
-						accountEntry.getActiveTicketSupport()) ||
+						accountEntry.isActiveTicketSupport()) ||
 					(oldAccountEntry.isActiveSupport() !=
-						accountEntry.getActiveSupport())) {
+						accountEntry.isActiveSupport())) {
 
 					_accountEntrySynchronizer.addAccountCustomers(accountEntry);
 				}
 
-				if (accountEntry.getActiveTicketSupport() &&
+				if (accountEntry.isActiveTicketSupport() &&
 					accountEntry.isPartnerManagedSupport()) {
 
 					if (!_zendeskOrganization.get() ||
-						!oldAccountEntry.getActiveTicketSupport() ||
+						!oldAccountEntry.isActiveTicketSupport() ||
 						!oldAccountEntry.isPartnerManagedSupport() ||
 						(oldAccountEntry.getPartnerEntryId() !=
 							accountEntry.getPartnerEntryId())) {
@@ -160,23 +154,6 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		}
 	}
 
-	protected boolean hasClosedAccountEntryNameUpdate(
-		AccountEntry oldAccountEntry, AccountEntry newAccountEntry) {
-
-		String oldAccountEntryCode = oldAccountEntry.getCode();
-		String oldAccountEntryName = oldAccountEntry.getName();
-
-		if ((newAccountEntry.getStatus() == WorkflowConstants.STATUS_CLOSED) &&
-			(!oldAccountEntryCode.equals(newAccountEntry.getCode()) ||
-			 !oldAccountEntryName.equals(newAccountEntry.getName()))) {
-
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
 	protected boolean hasZendeskOrganization(AccountEntry accountEntry)
 		throws PortalException {
 
@@ -194,6 +171,31 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		else {
 			return false;
 		}
+	}
+
+	protected boolean isUpdateAccountEntry(
+		AccountEntry oldAccountEntry, AccountEntry accountEntry) {
+
+		if (accountEntry.isActiveSupport()) {
+			return true;
+		}
+
+		if (oldAccountEntry.isActiveSupport() &&
+			!accountEntry.isActiveSupport()) {
+
+			return true;
+		}
+
+		String oldAccountEntryCode = oldAccountEntry.getCode();
+		String oldAccountEntryName = oldAccountEntry.getName();
+
+		if (!oldAccountEntryCode.equals(accountEntry.getCode()) ||
+			!oldAccountEntryName.equals(accountEntry.getName())) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	@Reference(
