@@ -18,12 +18,17 @@ import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
+import com.liferay.osb.customer.zendesk.web.service.internal.search.SearchHitsImpl;
 import com.liferay.osb.customer.zendesk.web.service.internal.util.MessagePublisherUtil;
 import com.liferay.osb.customer.zendesk.web.service.internal.util.ZendeskConverter;
+import com.liferay.osb.customer.zendesk.web.service.search.Query;
+import com.liferay.osb.customer.zendesk.web.service.search.SearchHits;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -179,6 +184,16 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 		return zendeskConverter.toZendeskUser(usersJSONArray.getJSONObject(0));
 	}
 
+	public SearchHits<ZendeskUser> getZendeskUsers(Query query)
+		throws PortalException {
+
+		JSONObject responseJSONObject = zendeskBaseWebService.get(
+			ZendeskRESTEndpoints.URL_API_V2 + "users/search.json",
+			query.getParameters());
+
+		return toSearchHits(responseJSONObject);
+	}
+
 	public void updateZendeskUserIdentity(
 			long zendeskUserId, long zendeskUserIdentityId, String value)
 		throws PortalException {
@@ -231,6 +246,32 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 
 		return jsonObject;
 	}
+
+	protected SearchHits<ZendeskUser> toSearchHits(
+			JSONObject responseJSONObject)
+		throws PortalException {
+
+		SearchHits<ZendeskUser> searchHits = new SearchHitsImpl<>();
+
+		searchHits.setCount(responseJSONObject.getInt("count"));
+
+		String nextPageURL = responseJSONObject.getString("next_page");
+
+		if (Validator.isNotNull(nextPageURL)) {
+			String page = http.getParameter(nextPageURL, "page", false);
+
+			searchHits.setNextPage(GetterUtil.getInteger(page));
+		}
+
+		JSONArray jsonArray = responseJSONObject.getJSONArray("users");
+
+		searchHits.setResults(zendeskConverter.toZendeskUsers(jsonArray));
+
+		return searchHits;
+	}
+
+	@Reference
+	protected Http http;
 
 	@Reference
 	protected MessagePublisherUtil messagePublisherUtil;

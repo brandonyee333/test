@@ -17,6 +17,8 @@ package com.liferay.osb.customer.zendesk.web.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
+import com.liferay.osb.customer.zendesk.web.service.search.Query;
+import com.liferay.osb.customer.zendesk.web.service.search.SearchHits;
 import com.liferay.portal.kernel.exception.PortalException;
 
 import java.util.Map;
@@ -66,6 +68,9 @@ public interface ZendeskUserWebService {
 		throws PortalException;
 
 	public ZendeskUser getZendeskUserByExternalId(String externalId)
+		throws PortalException;
+
+	public SearchHits<ZendeskUser> getZendeskUsers(Query query)
 		throws PortalException;
 
 	public void updateZendeskUserIdentity(

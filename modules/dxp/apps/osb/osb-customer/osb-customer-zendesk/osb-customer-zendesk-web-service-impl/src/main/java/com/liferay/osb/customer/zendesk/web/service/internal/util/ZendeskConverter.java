@@ -310,4 +310,18 @@ public class ZendeskConverter {
 		return zendeskUser;
 	}
 
+	public List<ZendeskUser> toZendeskUsers(JSONArray jsonArray)
+		throws PortalException {
+
+		List<ZendeskUser> zendeskUsers = new ArrayList<>();
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			zendeskUsers.add(toZendeskUser(jsonObject));
+		}
+
+		return zendeskUsers;
+	}
+
 }
