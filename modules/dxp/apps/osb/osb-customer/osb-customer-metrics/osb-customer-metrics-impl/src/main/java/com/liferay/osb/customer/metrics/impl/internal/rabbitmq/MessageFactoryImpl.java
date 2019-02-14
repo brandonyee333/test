@@ -137,7 +137,11 @@ public class MessageFactoryImpl implements MessageFactory {
 		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			Object obj = entry.getValue();
 
-			if (obj instanceof ClassName) {
+			if (obj == null) {
+				attributesJSONObject.put(
+					entry.getKey(), org.json.JSONObject.NULL);
+			}
+			else if (obj instanceof ClassName) {
 				ClassName className = (ClassName)obj;
 
 				JSONObject classNameJSONObject =
@@ -164,7 +168,7 @@ public class MessageFactoryImpl implements MessageFactory {
 				attributesJSONObject.put(entry.getKey(), userJSONObject);
 			}
 			else {
-				attributesJSONObject.put(entry.getKey(), String.valueOf(obj));
+				attributesJSONObject.put(entry.getKey(), obj);
 			}
 		}
 
@@ -185,16 +189,16 @@ public class MessageFactoryImpl implements MessageFactory {
 				JSONArray mappingTableValuesJSONArray =
 					JSONFactoryUtil.createJSONArray();
 
-				List<Map<String, String>> mappingTableValues =
-					metricsModel.getMappingValues(model, mappingTable);
+				List<Map<String, Object>> mappingTableValues =
+					metricsModel.getMappingValues(model);
 
-				for (Map<String, String> mappingTableValue :
+				for (Map<String, Object> mappingTableValue :
 						mappingTableValues) {
 
 					JSONObject mappingTableValueJSONObject =
 						JSONFactoryUtil.createJSONObject();
 
-					for (Map.Entry<String, String> mappingTableValueEntry :
+					for (Map.Entry<String, Object> mappingTableValueEntry :
 							mappingTableValue.entrySet()) {
 
 						mappingTableValueJSONObject.put(

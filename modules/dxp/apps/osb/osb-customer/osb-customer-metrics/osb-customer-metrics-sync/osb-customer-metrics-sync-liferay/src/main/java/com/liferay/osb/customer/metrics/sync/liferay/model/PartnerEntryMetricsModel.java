@@ -53,21 +53,18 @@ public class PartnerEntryMetricsModel
 	}
 
 	@Override
-	public List<Map<String, String>> getMappingValues(
-		PartnerEntry partnerEntry, String mappingTable) {
+	public List<Map<String, Object>> getMappingValues(
+		PartnerEntry partnerEntry) {
 
-		List<Map<String, String>> mappingValues = new ArrayList<>();
+		List<Map<String, Object>> mappingValues = new ArrayList<>();
 
-		Map<String, String> mappingValue = new HashMap<>();
+		Map<String, Object> mappingValue = new HashMap<>();
 
-		mappingValue.put(
-			"partnerEntryId", String.valueOf(partnerEntry.getPartnerEntryId()));
+		mappingValue.put("partnerEntryId", partnerEntry.getPartnerEntryId());
 
 		SupportRegion supportRegion = partnerEntry.getSupportRegion();
 
-		mappingValue.put(
-			"supportRegionId",
-			String.valueOf(supportRegion.getSupportRegionId()));
+		mappingValue.put("supportRegionId", supportRegion.getSupportRegionId());
 
 		mappingValues.add(mappingValue);
 

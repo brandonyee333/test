@@ -58,20 +58,18 @@ public class AccountEntryMetricsModel
 	}
 
 	@Override
-	public List<Map<String, String>> getMappingValues(
-		AccountEntry accountEntry, String mappingTable) {
+	public List<Map<String, Object>> getMappingValues(
+		AccountEntry accountEntry) {
 
-		List<Map<String, String>> mappingValues = new ArrayList<>();
+		List<Map<String, Object>> mappingValues = new ArrayList<>();
 
 		for (SupportRegion supportRegion : accountEntry.getSupportRegions()) {
-			Map<String, String> mappingValue = new HashMap<>();
+			Map<String, Object> mappingValue = new HashMap<>();
 
 			mappingValue.put(
-				"accountEntryId",
-				String.valueOf(accountEntry.getAccountEntryId()));
+				"accountEntryId", accountEntry.getAccountEntryId());
 			mappingValue.put(
-				"supportRegionId",
-				String.valueOf(supportRegion.getSupportRegionId()));
+				"supportRegionId", supportRegion.getSupportRegionId());
 
 			mappingValues.add(mappingValue);
 		}

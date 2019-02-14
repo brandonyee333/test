@@ -52,9 +52,7 @@ public abstract class BaseModelMetricsModel<T extends BaseModel<T>>
 		throw new UnsupportedOperationException();
 	}
 
-	public List<Map<String, String>> getMappingValues(
-		T model, String mappingTable) {
-
+	public List<Map<String, Object>> getMappingValues(T model) {
 		throw new UnsupportedOperationException();
 	}
 

@@ -28,8 +28,7 @@ public interface MetricsModel<T> {
 
 	public String[] getMappingTables();
 
-	public List<Map<String, String>> getMappingValues(
-		T model, String mappingTable);
+	public List<Map<String, Object>> getMappingValues(T model);
 
 	public Class<T> getModelClass();
 
