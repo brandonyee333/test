@@ -51,7 +51,7 @@ export default class EditAccountEnvironmentForm extends React.Component {
 
 	static propTypes = {
 		addEnvironmentURL: PropTypes.string.isRequired,
-		environment: PropTypes.object.isRequired,
+		environment: PropTypes.object,
 		environmentConfiguration: PropTypes.object.isRequired,
 		handleCloseModal: PropTypes.func.isRequired,
 		namespace: PropTypes.string.isRequired
