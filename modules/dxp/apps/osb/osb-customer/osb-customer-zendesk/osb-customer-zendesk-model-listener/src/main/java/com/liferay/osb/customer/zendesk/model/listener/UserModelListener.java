@@ -17,6 +17,8 @@ package com.liferay.osb.customer.zendesk.model.listener;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.zendesk.model.listener.exception.ZendeskIntegrationException;
 import com.liferay.osb.customer.zendesk.model.listener.synchronizer.UserSynchronizer;
+import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
+import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -24,6 +26,7 @@ import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 
 import org.osgi.service.component.annotations.Component;
@@ -85,10 +88,59 @@ public class UserModelListener extends BaseModelListener<User> {
 		}
 	}
 
+	@Override
+	public void onAfterUpdate(User user) throws ModelListenerException {
+		try {
+			User oldUser = _oldUser.get();
+
+			String oldEmailAddress = oldUser.getEmailAddress();
+			String oldFirstName = oldUser.getFirstName();
+			String oldLastName = oldUser.getLastName();
+
+			if (!oldEmailAddress.equals(user.getEmailAddress()) ||
+				!oldFirstName.equals(user.getFirstName()) ||
+				!oldLastName.equals(user.getLastName())) {
+
+				long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+					user.getUserId());
+
+				if (zendeskUserId > 0) {
+					_userSynchronizer.sync(user, null, null);
+				}
+			}
+		}
+		catch (Exception e) {
+			_log.error(e);
+
+			throw new ZendeskIntegrationException(e);
+		}
+	}
+
+	@Override
+	public void onBeforeUpdate(User user) throws ModelListenerException {
+		try {
+			_oldUser.set(_userLocalService.getUser(user.getUserId()));
+		}
+		catch (Exception e) {
+			_log.error(e);
+
+			throw new ZendeskIntegrationException(e);
+		}
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		UserModelListener.class);
 
+	private static final ThreadLocal<User> _oldUser =
+		new CentralizedThreadLocal<>(UserModelListener.class + "._oldUser");
+
+	@Reference
+	private UserLocalService _userLocalService;
+
 	@Reference
 	private UserSynchronizer _userSynchronizer;
+
+	@Reference
+	private ZendeskMapperUtil _zendeskMapperUtil;
 
 }

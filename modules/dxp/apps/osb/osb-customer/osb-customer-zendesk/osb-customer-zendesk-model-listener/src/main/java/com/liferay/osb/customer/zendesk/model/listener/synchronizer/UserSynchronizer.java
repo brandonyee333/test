@@ -171,7 +171,10 @@ public class UserSynchronizer {
 				user.getUuid(), user.getEmailAddress(), locale,
 				user.getFullName(), organizationName, null);
 
-			_asyncZendeskUserWebService.addZendeskUserTags(zendeskUserId, tags);
+			if ((tags != null) && !tags.isEmpty()) {
+				_asyncZendeskUserWebService.addZendeskUserTags(
+					zendeskUserId, tags);
+			}
 		}
 		else {
 			ZendeskUser zendeskUser =
