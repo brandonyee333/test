@@ -115,7 +115,13 @@ public class ZendeskTicketTransformer extends BaseTransformer {
 					}
 				}
 				else {
-					columnMap.put(key, ticketJSONObject.getString(key, "null"));
+					String value = ticketJSONObject.getString(key, "null");
+
+					if (isDate(key)) {
+						value = formatDate(value);
+					}
+
+					columnMap.put(key, value);
 				}
 			}
 

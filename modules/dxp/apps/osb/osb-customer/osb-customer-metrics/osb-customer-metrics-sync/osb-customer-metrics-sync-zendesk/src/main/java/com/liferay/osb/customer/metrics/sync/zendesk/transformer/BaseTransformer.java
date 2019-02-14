@@ -19,6 +19,10 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import java.util.Map;
 import java.util.Map.Entry;
@@ -65,6 +69,27 @@ public abstract class BaseTransformer implements MessageProcessor {
 	}
 
 	protected abstract void doProcess(JSONObject jsonObject) throws Exception;
+
+	protected String formatDate(String value) throws ParseException {
+		SimpleDateFormat sourceFormat = new SimpleDateFormat(
+			"yyyy-MM-dd'T'HH:mm:ss'Z'");
+		SimpleDateFormat targetFormat = new SimpleDateFormat(
+			"yyyy-MM-dd HH:mm:ss");
+
+		return targetFormat.format(sourceFormat.parse(value));
+	}
+
+	protected boolean isDate(String key) {
+		if (ArrayUtil.contains(_DATE_FIELDS, key)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private static final String[] _DATE_FIELDS = {
+		"created_at", "edited_at", "last_login_at", "updated_at"
+	};
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseTransformer.class);

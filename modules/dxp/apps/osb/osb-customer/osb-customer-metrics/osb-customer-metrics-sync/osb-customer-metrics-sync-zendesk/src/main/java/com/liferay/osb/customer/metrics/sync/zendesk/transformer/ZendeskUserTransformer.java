@@ -54,7 +54,13 @@ public class ZendeskUserTransformer extends BaseTransformer {
 			while (iterator.hasNext()) {
 				String key = iterator.next();
 
-				columnMap.put(key, userJSONObject.getString(key, "null"));
+				String value = userJSONObject.getString(key, "null");
+
+				if (isDate(key)) {
+					value = formatDate(value);
+				}
+
+				columnMap.put(key, value);
 			}
 
 			JSONObject metricsJSONObject = buildMetricsJSONObject(

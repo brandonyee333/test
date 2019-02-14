@@ -70,8 +70,14 @@ public class ZendeskOrganizationTransformer extends BaseTransformer {
 					}
 				}
 				else {
-					columnMap.put(
-						key, organizationJSONObject.getString(key, "null"));
+					String value = organizationJSONObject.getString(
+						key, "null");
+
+					if (isDate(key)) {
+						value = formatDate(value);
+					}
+
+					columnMap.put(key, value);
 				}
 			}
 
