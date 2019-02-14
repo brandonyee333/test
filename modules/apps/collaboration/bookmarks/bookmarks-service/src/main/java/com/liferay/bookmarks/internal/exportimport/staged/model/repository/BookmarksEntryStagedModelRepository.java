@@ -187,13 +187,7 @@ public class BookmarksEntryStagedModelRepository
 			serviceContext);
 	}
 
-	@Reference(unbind = "-")
-	protected void setBookmarksEntryLocalService(
-		BookmarksEntryLocalService bookmarksEntryLocalService) {
-
-		_bookmarksEntryLocalService = bookmarksEntryLocalService;
-	}
-
+	@Reference
 	private BookmarksEntryLocalService _bookmarksEntryLocalService;
 
 }
