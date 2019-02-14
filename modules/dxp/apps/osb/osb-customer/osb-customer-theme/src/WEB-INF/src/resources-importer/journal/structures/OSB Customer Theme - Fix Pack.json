@@ -1,0 +1,154 @@
+{
+	"availableLanguageIds": [
+		"en_US"
+	],
+	"defaultLanguageId": "en_US",
+	"fields": [
+		{
+			"dataType": "date",
+			"fieldNamespace": "ddm",
+			"indexType": "keyword",
+			"label": {
+				"en_US": "Release Date"
+			},
+			"localizable": true,
+			"name": "releaseDate",
+			"predefinedValue": {
+				"en_US": ""
+			},
+			"readOnly": false,
+			"repeatable": false,
+			"required": true,
+			"showLabel": true,
+			"style": {
+				"en_US": ""
+			},
+			"tip": {
+				"en_US": ""
+			},
+			"type": "ddm-date"
+		},
+		{
+			"dataType": "",
+			"fieldNamespace": "ddm",
+			"indexType": "keyword",
+			"label": {
+				"en_US": "Highlights"
+			},
+			"localizable": true,
+			"name": "highlights",
+			"nestedFields": [
+				{
+					"dataType": "html",
+					"fieldNamespace": "ddm",
+					"indexType": "text",
+					"label": {
+						"en_US": "Key Highlights"
+					},
+					"localizable": true,
+					"name": "keyHighlights",
+					"predefinedValue": {
+						"en_US": ""
+					},
+					"readOnly": false,
+					"repeatable": false,
+					"required": false,
+					"showLabel": true,
+					"style": {
+						"en_US": ""
+					},
+					"tip": {
+						"en_US": ""
+					},
+					"type": "ddm-text-html"
+				},
+				{
+					"dataType": "html",
+					"fieldNamespace": "ddm",
+					"indexType": "text",
+					"label": {
+						"en_US": "Important Changes"
+					},
+					"localizable": true,
+					"name": "importantChanges",
+					"predefinedValue": {
+						"en_US": ""
+					},
+					"readOnly": false,
+					"repeatable": false,
+					"required": false,
+					"showLabel": true,
+					"style": {
+						"en_US": ""
+					},
+					"tip": {
+						"en_US": ""
+					},
+					"type": "ddm-text-html"
+				},
+				{
+					"dataType": "html",
+					"fieldNamespace": "ddm",
+					"indexType": "text",
+					"label": {
+						"en_US": "Known Issues"
+					},
+					"localizable": true,
+					"name": "knownIssues",
+					"predefinedValue": {
+						"en_US": ""
+					},
+					"readOnly": false,
+					"repeatable": false,
+					"required": false,
+					"showLabel": true,
+					"style": {
+						"en_US": ""
+					},
+					"tip": {
+						"en_US": ""
+					},
+					"type": "ddm-text-html"
+				},
+				{
+					"dataType": "html",
+					"fieldNamespace": "ddm",
+					"indexType": "text",
+					"label": {
+						"en_US": "Security"
+					},
+					"localizable": true,
+					"name": "security",
+					"predefinedValue": {
+						"en_US": ""
+					},
+					"readOnly": false,
+					"repeatable": false,
+					"required": false,
+					"showLabel": true,
+					"style": {
+						"en_US": ""
+					},
+					"tip": {
+						"en_US": ""
+					},
+					"type": "ddm-text-html"
+				}
+			],
+			"predefinedValue": {
+				"en_US": ""
+			},
+			"readOnly": false,
+			"repeatable": false,
+			"required": false,
+			"showLabel": true,
+			"style": {
+				"en_US": ""
+			},
+			"tip": {
+				"en_US": ""
+			},
+			"type": "ddm-separator"
+		}
+	]
+}
