@@ -1,6 +1,8 @@
 import React from 'react';
 import {
 	fireEvent,
+	queryAllByRole,
+	queryByRole,
 	queryByText,
 	queryByValue,
 	render
@@ -37,62 +39,20 @@ describe('AccountEnvironments', () => {
 			editAccountEnvironmentURL: '/edit/env/url',
 			envASLabel: 'Tomcat 9.0',
 			envBrowserLabel: 'Chrome',
-			envCommerceLabel: '1.0',
-			envCSLabel: 'AWS S3',
+			envCommerceLabel: 'N/A',
+			envCSLabel: 'N/A',
 			envDBLabel: 'MariaDB 10.2',
 			envJVMLabel: 'IBM JDK 8',
 			envLFRLabel: '7.1',
 			envOSLabel: 'CentOS 7',
 			envSearchLabels: [],
-			name: 'No Search Selection',
+			name: 'No Search, Commerce, Cloud Services Selection',
 			patchLevelAccountEnvironmentAttachmentFileName: 'Patch File',
 			patchLevelAccountEnvironmentAttachmentURL: '/patch/attachment/url',
 			portalExtAccountEnvironmentAttachmentFileName: 'Portal Ext File',
 			portalExtAccountEnvironmentAttachmentURL: '/portal-ext/attachment/url',
 			productEntryDisplayName: 'Liferay DXP Production',
 			productEntryId: '222'
-		},
-		{
-			accountEnvironmentId: '777',
-			deleteAccountEnvironmentURL: '/delete/env/url',
-			editAccountEnvironmentURL: '/edit/env/url',
-			envASLabel: 'Tomcat 9.0',
-			envBrowserLabel: 'Chrome',
-			envCommerceLabel: 'N/A',
-			envCSLabel: 'AWS S3',
-			envDBLabel: 'MariaDB 10.2',
-			envJVMLabel: 'IBM JDK 8',
-			envLFRLabel: '7.1',
-			envOSLabel: 'CentOS 7',
-			envSearchLabels: ['Elasticsearch 6.x', 'solr-5'],
-			name: 'No Commerce Selection',
-			patchLevelAccountEnvironmentAttachmentFileName: 'Patch File',
-			patchLevelAccountEnvironmentAttachmentURL: '/patch/attachment/url',
-			portalExtAccountEnvironmentAttachmentFileName: 'Portal Ext File',
-			portalExtAccountEnvironmentAttachmentURL: '/portal-ext/attachment/url',
-			productEntryDisplayName: 'Liferay DXP Production',
-			productEntryId: '333'
-		},
-		{
-			accountEnvironmentId: '666',
-			deleteAccountEnvironmentURL: '/delete/env/url',
-			editAccountEnvironmentURL: '/edit/env/url',
-			envASLabel: 'Tomcat 9.0',
-			envBrowserLabel: 'Chrome',
-			envCommerceLabel: '1.0',
-			envCSLabel: 'N/A',
-			envDBLabel: 'MariaDB 10.2',
-			envJVMLabel: 'IBM JDK 8',
-			envLFRLabel: '7.1',
-			envOSLabel: 'CentOS 7',
-			envSearchLabels: ['Elasticsearch 6.x', 'solr-5'],
-			name: 'No Cloud Services Selection',
-			patchLevelAccountEnvironmentAttachmentFileName: 'Patch File',
-			patchLevelAccountEnvironmentAttachmentURL: '/patch/attachment/url',
-			portalExtAccountEnvironmentAttachmentFileName: 'Portal Ext File',
-			portalExtAccountEnvironmentAttachmentURL: '/portal-ext/attachment/url',
-			productEntryDisplayName: 'Liferay DXP Production',
-			productEntryId: '444'
 		}
 	];
 
@@ -136,6 +96,35 @@ describe('AccountEnvironments', () => {
 		expect(container).toMatchSnapshot();
 	});
 
+	it('renders no results message when there is no existing environment', () => {
+		const {container} = render(
+			<AccountEnvironments
+				addEnvironmentURL="/url"
+				environmentConfiguration={environmentConfigJSON}
+				environments={[]}
+			/>
+		);
+
+		const noResultsMsgs = queryByText(container, 'no-environment-details');
+
+		expect(noResultsMsgs).toBeTruthy();
+		expect(container).toMatchSnapshot();
+	});
+
+	it('renders details when an environment is clicked', () => {
+		const {container} = render(
+			<AccountEnvironments
+				addEnvironmentURL="/url"
+				environmentConfiguration={environmentConfigJSON}
+				environments={accountEnvironmentsJSON}
+			/>
+		);
+
+		fireEvent.click(queryByRole(container, 'tab'));
+
+		expect(container).toMatchSnapshot();
+	});
+
 	it('does not show add button when user does not have permission for it', () => {
 		const {container} = render(
 			<AccountEnvironments
@@ -162,11 +151,11 @@ describe('AccountEnvironments', () => {
 
 		const addButton = queryByValue(container, 'add');
 
-		expect(addButton).toBeDefined();
+		expect(addButton).toBeTruthy();
 	});
 
 	it('does not show edit button when user has no edit environment permission', () => {
-		const {container, getByText} = render(
+		const {container} = render(
 			<AccountEnvironments
 				addEnvironmentURL="/url"
 				environmentConfiguration={environmentConfigJSON}
@@ -174,7 +163,7 @@ describe('AccountEnvironments', () => {
 			/>
 		);
 
-		fireEvent.click(getByText('All Selections'));
+		fireEvent.click(queryByRole(container, 'tab'));
 
 		const editButton = queryByValue(container, 'edit');
 
@@ -182,7 +171,7 @@ describe('AccountEnvironments', () => {
 	});
 
 	it('shows edit button when user has edit environment permission', () => {
-		const {container, getByText} = render(
+		const {container} = render(
 			<AccountEnvironments
 				addEnvironmentURL="/url"
 				environmentConfiguration={environmentConfigJSON}
@@ -191,15 +180,15 @@ describe('AccountEnvironments', () => {
 			/>
 		);
 
-		fireEvent.click(getByText('All Selections'));
+		fireEvent.click(queryByRole(container, 'tab'));
 
 		const editButton = queryByValue(container, 'edit');
 
-		expect(editButton).toBeDefined();
+		expect(editButton).toBeTruthy();
 	});
 
-	it('does not show delete button when user has no delete environment permission', () => {
-		const {container, getByText} = render(
+	it('does not show delete link when user has no delete environment permission', () => {
+		const {container} = render(
 			<AccountEnvironments
 				addEnvironmentURL="/url"
 				environmentConfiguration={environmentConfigJSON}
@@ -207,15 +196,15 @@ describe('AccountEnvironments', () => {
 			/>
 		);
 
-		fireEvent.click(getByText('All Selections'));
+		fireEvent.click(queryByRole(container, 'tab'));
 
-		const editButton = queryByValue(container, 'delete');
+		const deleteLink = queryByText(container, 'delete');
 
-		expect(editButton).toBeNull();
+		expect(deleteLink).toBeNull();
 	});
 
-	it('shows delete button when user has delete environment permission', () => {
-		const {container, getByText} = render(
+	it('shows delete link when user has delete environment permission', () => {
+		const {container} = render(
 			<AccountEnvironments
 				addEnvironmentURL="/url"
 				environmentConfiguration={environmentConfigJSON}
@@ -224,15 +213,15 @@ describe('AccountEnvironments', () => {
 			/>
 		);
 
-		fireEvent.click(getByText('All Selections'));
+		fireEvent.click(queryByRole(container, 'tab'));
 
-		const editButton = queryByValue(container, 'delete');
+		const deleteLink = queryByText(container, 'delete');
 
-		expect(editButton).toBeDefined();
+		expect(deleteLink).toBeTruthy();
 	});
 
 	it('shows all configurations for environments containing all options', () => {
-		const {container, getByText} = render(
+		const {container} = render(
 			<AccountEnvironments
 				addEnvironmentURL="/url"
 				environmentConfiguration={environmentConfigJSON}
@@ -240,19 +229,29 @@ describe('AccountEnvironments', () => {
 			/>
 		);
 
-		fireEvent.click(getByText('All Selections'));
+		const tabs = queryAllByRole(container, 'tab');
+		const heading = queryByText(container, 'All Selections');
+		let allSelectionTab;
 
-		const cloudServices = queryByText(container, 'Cloud Services');
-		const commerceVersion = queryByText(container, 'Commerce Version');
-		const search = queryByText(container, 'Search');
+		tabs.forEach(tab => {
+			if (tab.contains(heading)) {
+				allSelectionTab = tab;
+			}
+		});
 
-		expect(cloudServices).toBeDefined();
-		expect(commerceVersion).toBeDefined();
-		expect(search).toBeDefined();
+		fireEvent.click(allSelectionTab);
+
+		const cloudServices = queryByText(container, 'cloud-services');
+		const commerceVersion = queryByText(container, 'commerce-version');
+		const search = queryByText(container, 'search');
+
+		expect(cloudServices).toBeTruthy();
+		expect(commerceVersion).toBeTruthy();
+		expect(search).toBeTruthy();
 	});
 
-	it('does not show commerce configuration for environments containing no commerce selection', () => {
-		const {container, getByText} = render(
+	it('does not show cloud services, commerce, and search configuration for environments containing these selections', () => {
+		const {container} = render(
 			<AccountEnvironments
 				addEnvironmentURL="/url"
 				environmentConfiguration={environmentConfigJSON}
@@ -260,42 +259,46 @@ describe('AccountEnvironments', () => {
 			/>
 		);
 
-		fireEvent.click(getByText('No Commerce Selection'));
-
-		const commerceVersion = queryByText(container, 'Commerce Version');
-
-		expect(commerceVersion).toBeNull();
-	});
-
-	it('does not show cloud services configuration for environments containing no cloud services selection', () => {
-		const {container, getByText} = render(
-			<AccountEnvironments
-				addEnvironmentURL="/url"
-				environmentConfiguration={environmentConfigJSON}
-				environments={accountEnvironmentsJSON}
-			/>
+		const tabs = queryAllByRole(container, 'tab');
+		const heading = queryByText(
+			container,
+			'No Search, Commerce, Cloud Services Selection'
 		);
+		let noSelectionTab;
 
-		fireEvent.click(getByText('No Cloud Services Selection'));
+		tabs.forEach(tab => {
+			if (tab.contains(heading)) {
+				noSelectionTab = tab;
+			}
+		});
 
-		const cloudServices = queryByText(container, 'Cloud Services');
+		fireEvent.click(noSelectionTab);
+
+		const cloudServices = queryByText(container, 'cloud-services');
+		const commerceVersion = queryByText(container, 'commerce-version');
+		const search = queryByText(container, 'search');
 
 		expect(cloudServices).toBeNull();
+		expect(commerceVersion).toBeNull();
+		expect(search).toBeNull();
 	});
 
-	it('does not show search configuration for environments containing no search selection', () => {
-		const {container, getByText} = render(
+	it('opens a modal when add button is clicked', () => {
+		const {container} = render(
 			<AccountEnvironments
 				addEnvironmentURL="/url"
 				environmentConfiguration={environmentConfigJSON}
 				environments={accountEnvironmentsJSON}
+				permitAdd
 			/>
 		);
 
-		fireEvent.click(getByText('No Search Selection'));
+		const addButton = queryByValue(container, 'add');
 
-		const search = queryByText(container, 'Search');
+		fireEvent.click(addButton);
 
-		expect(search).toBeNull();
+		const modal = queryByRole(container, 'dialog');
+
+		expect(modal).toBeDefined();
 	});
 });

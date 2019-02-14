@@ -13,6 +13,7 @@ export default class AccountEnvironments extends React.Component {
 	};
 
 	static defaultProps = {
+		environments: [],
 		permitAdd: false,
 		permitDelete: false,
 		permitEdit: false
