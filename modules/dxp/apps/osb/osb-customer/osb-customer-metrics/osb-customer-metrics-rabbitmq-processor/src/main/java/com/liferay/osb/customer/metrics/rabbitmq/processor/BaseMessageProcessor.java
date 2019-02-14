@@ -100,17 +100,21 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 
 	protected abstract void doProcess(JSONObject jsonObject) throws Exception;
 
-	protected Map<String, String> getColumnMap(JSONObject jsonObject)
+	protected Map<String, Object> getColumnMap(JSONObject jsonObject)
 		throws Exception {
 
-		Map<String, String> columnMap = new HashMap<>();
+		Map<String, Object> columnMap = new HashMap<>();
 
 		Iterator<String> keysIterator = jsonObject.keys();
 
 		while (keysIterator.hasNext()) {
 			String columnName = keysIterator.next();
 
-			String columnValue = jsonObject.getString(columnName);
+			Object columnValue = null;
+
+			if (!jsonObject.isNull(columnName)) {
+				columnValue = jsonObject.get(columnName);
+			}
 
 			if (_badColumnNames.contains(columnName)) {
 				columnName += StringPool.UNDERLINE;

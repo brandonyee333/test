@@ -35,19 +35,19 @@ import org.osgi.service.component.annotations.Component;
 )
 public class MetricsRemoveMessageProcessor extends BaseMessageProcessor {
 
-	protected String buildSql(String tableName, Map<String, String> columnMap) {
+	protected String buildSql(String tableName, Map<String, Object> columnMap) {
 		StringBundler sb = new StringBundler(3 + ((6 * columnMap.size()) - 1));
 
 		sb.append("delete from ");
 		sb.append(tableName);
 		sb.append(" where ");
 
-		Set<Entry<String, String>> entrySet = columnMap.entrySet();
+		Set<Entry<String, Object>> entrySet = columnMap.entrySet();
 
-		Iterator<Entry<String, String>> iterator = entrySet.iterator();
+		Iterator<Entry<String, Object>> iterator = entrySet.iterator();
 
 		while (iterator.hasNext()) {
-			Entry<String, String> entry = iterator.next();
+			Entry<String, Object> entry = iterator.next();
 
 			sb.append(entry.getKey());
 
@@ -68,7 +68,7 @@ public class MetricsRemoveMessageProcessor extends BaseMessageProcessor {
 
 		String modelName = modelJSONObject.getString("name");
 
-		Map<String, String> columnMap = getColumnMap(
+		Map<String, Object> columnMap = getColumnMap(
 			modelJSONObject.getJSONObject("values"));
 
 		String sql = buildSql(getTableName(modelName), columnMap);

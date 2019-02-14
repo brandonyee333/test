@@ -20,19 +20,14 @@ import com.liferay.portal.kernel.exception.NoSuchClassNameException;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
-import java.io.IOException;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -56,7 +51,7 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 
-	protected String buildSql(String tableName, Map<String, String> columnMap) {
+	protected String buildSql(String tableName, Map<String, Object> columnMap) {
 		StringBundler sb = new StringBundler(6);
 
 		sb.append("replace into ");
@@ -70,12 +65,12 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 
 		columnValueSB.append(StringPool.OPEN_PARENTHESIS);
 
-		Set<Entry<String, String>> entrySet = columnMap.entrySet();
+		Set<Entry<String, Object>> entrySet = columnMap.entrySet();
 
-		Iterator<Entry<String, String>> iterator = entrySet.iterator();
+		Iterator<Entry<String, Object>> iterator = entrySet.iterator();
 
 		while (iterator.hasNext()) {
-			Entry<String, String> entry = iterator.next();
+			Entry<String, Object> entry = iterator.next();
 
 			columnNamesSB.append(entry.getKey());
 
@@ -185,8 +180,8 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 		return jsonObject;
 	}
 
-	protected void runSQL(String sql, Map<String, String> columnMap)
-		throws IOException, SQLException {
+	protected void runSQL(String sql, Map<String, Object> columnMap)
+		throws Exception {
 
 		Connection connection = null;
 		PreparedStatement ps = null;
@@ -201,31 +196,23 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 
 			ps = connection.prepareStatement(sql);
 
-			Set<Entry<String, String>> entrySet = columnMap.entrySet();
+			Set<Entry<String, Object>> entrySet = columnMap.entrySet();
 
-			Iterator<Entry<String, String>> iterator = entrySet.iterator();
+			Iterator<Entry<String, Object>> iterator = entrySet.iterator();
 
 			int i = 1;
 
 			while (iterator.hasNext()) {
-				Entry<String, String> entry = iterator.next();
+				Entry<String, Object> entry = iterator.next();
 
-				String columnValue = entry.getValue();
+				Object columnValue = entry.getValue();
 
-				if (columnValue.equals("null")) {
-					ps.setObject(i, null);
-				}
-				else {
-					ps.setString(i, columnValue);
-				}
+				ps.setObject(i, columnValue);
 
 				i++;
 			}
 
 			ps.executeQuery();
-		}
-		catch (Exception e) {
-			_log.error("Unable to connect to data source", e);
 		}
 		finally {
 			DataAccess.cleanUp(connection, ps);
@@ -247,7 +234,7 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 				JSONObject mappingValuesJSONObject = reconcile(
 					mappingValuesJSONArray.getJSONObject(j));
 
-				Map<String, String> columnMap = getColumnMap(
+				Map<String, Object> columnMap = getColumnMap(
 					mappingValuesJSONObject);
 
 				String sql = buildSql(
@@ -264,7 +251,7 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 		JSONObject valuesJSONObject = reconcile(
 			jsonObject.getJSONObject("values"));
 
-		Map<String, String> columnMap = getColumnMap(valuesJSONObject);
+		Map<String, Object> columnMap = getColumnMap(valuesJSONObject);
 
 		String sql = buildSql(getTableName(modelName), columnMap);
 
@@ -297,9 +284,6 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 
 		return classNameId;
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		MetricsUpdateMessageProcessor.class);
 
 	@Reference
 	private ClassNameLocalService _classNameLocalService;
