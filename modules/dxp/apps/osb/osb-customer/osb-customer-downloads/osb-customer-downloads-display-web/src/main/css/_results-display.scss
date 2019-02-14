@@ -86,6 +86,10 @@
 		.section-alert {
 			.alert-col-header {
 				padding-right: 0;
+
+				@include media-breakpoint-up(xl) {
+					width: 12%;
+				}
 			}
 
 			.alert-col-message {
