@@ -23,16 +23,14 @@ import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * Provides the remote service utility for WatsonTokenAuthEntry. This utility wraps
- * {@link com.liferay.watson.login.service.impl.WatsonTokenAuthEntryServiceImpl} and is the
- * primary access point for service operations in application layer code running
- * on a remote server. Methods of this service are expected to have security
- * checks based on the propagated JAAS credentials because this service can be
+ * <code>com.liferay.watson.login.service.impl.WatsonTokenAuthEntryServiceImpl</code> and is an
+ * access point for service operations in application layer code running on a
+ * remote server. Methods of this service are expected to have security checks
+ * based on the propagated JAAS credentials because this service can be
  * accessed remotely.
  *
  * @author Steven Smith
  * @see WatsonTokenAuthEntryService
- * @see com.liferay.watson.login.service.base.WatsonTokenAuthEntryServiceBaseImpl
- * @see com.liferay.watson.login.service.impl.WatsonTokenAuthEntryServiceImpl
  * @generated
  */
 @ProviderType
@@ -40,7 +38,7 @@ public class WatsonTokenAuthEntryServiceUtil {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this class directly. Add custom service methods to {@link com.liferay.watson.login.service.impl.WatsonTokenAuthEntryServiceImpl} and rerun ServiceBuilder to regenerate this class.
+	 * Never modify this class directly. Add custom service methods to <code>com.liferay.watson.login.service.impl.WatsonTokenAuthEntryServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 
 	/**

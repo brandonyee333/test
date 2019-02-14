@@ -42,7 +42,6 @@ import javax.sql.DataSource;
  *
  * @author Steven Smith
  * @see com.liferay.watson.login.service.impl.WatsonTokenAuthEntryServiceImpl
- * @see com.liferay.watson.login.service.WatsonTokenAuthEntryServiceUtil
  * @generated
  */
 public abstract class WatsonTokenAuthEntryServiceBaseImpl
@@ -51,7 +50,7 @@ public abstract class WatsonTokenAuthEntryServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link com.liferay.watson.login.service.WatsonTokenAuthEntryServiceUtil} to access the watson token auth entry remote service.
+	 * Never modify or reference this class directly. Use <code>WatsonTokenAuthEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.watson.login.service.WatsonTokenAuthEntryServiceUtil</code>.
 	 */
 
 	/**

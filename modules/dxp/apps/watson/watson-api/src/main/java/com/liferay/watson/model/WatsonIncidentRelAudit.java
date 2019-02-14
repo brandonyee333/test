@@ -25,8 +25,6 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Steven Smith
  * @see WatsonIncidentRelAuditModel
- * @see com.liferay.watson.model.impl.WatsonIncidentRelAuditImpl
- * @see com.liferay.watson.model.impl.WatsonIncidentRelAuditModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonIncidentRelAuditImpl")
@@ -36,7 +34,7 @@ public interface WatsonIncidentRelAudit extends WatsonIncidentRelAuditModel,
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.watson.model.impl.WatsonIncidentRelAuditImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonIncidentRelAuditImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public static final Accessor<WatsonIncidentRelAudit, Long> WATSON_INCIDENT_REL_AUDIT_ID_ACCESSOR =
 		new Accessor<WatsonIncidentRelAudit, Long>() {

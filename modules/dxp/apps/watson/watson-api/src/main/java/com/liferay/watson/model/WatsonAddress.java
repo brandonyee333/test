@@ -25,8 +25,6 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Steven Smith
  * @see WatsonAddressModel
- * @see com.liferay.watson.model.impl.WatsonAddressImpl
- * @see com.liferay.watson.model.impl.WatsonAddressModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonAddressImpl")
@@ -35,7 +33,7 @@ public interface WatsonAddress extends WatsonAddressModel, PersistedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.watson.model.impl.WatsonAddressImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonAddressImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public static final Accessor<WatsonAddress, Long> WATSON_ADDRESS_ID_ACCESSOR =
 		new Accessor<WatsonAddress, Long>() {

@@ -25,8 +25,6 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Steven Smith
  * @see WatsonActivityAuditModel
- * @see com.liferay.watson.model.impl.WatsonActivityAuditImpl
- * @see com.liferay.watson.model.impl.WatsonActivityAuditModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonActivityAuditImpl")
@@ -36,7 +34,7 @@ public interface WatsonActivityAudit extends WatsonActivityAuditModel,
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.watson.model.impl.WatsonActivityAuditImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonActivityAuditImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public static final Accessor<WatsonActivityAudit, Long> WATSON_ACTIVITY_AUDIT_ID_ACCESSOR =
 		new Accessor<WatsonActivityAudit, Long>() {

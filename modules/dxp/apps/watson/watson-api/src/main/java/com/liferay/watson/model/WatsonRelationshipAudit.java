@@ -25,8 +25,6 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Steven Smith
  * @see WatsonRelationshipAuditModel
- * @see com.liferay.watson.model.impl.WatsonRelationshipAuditImpl
- * @see com.liferay.watson.model.impl.WatsonRelationshipAuditModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonRelationshipAuditImpl")
@@ -36,7 +34,7 @@ public interface WatsonRelationshipAudit extends WatsonRelationshipAuditModel,
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.watson.model.impl.WatsonRelationshipAuditImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonRelationshipAuditImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public static final Accessor<WatsonRelationshipAudit, Long> WATSON_RELATIONSHIP_AUDIT_ID_ACCESSOR =
 		new Accessor<WatsonRelationshipAudit, Long>() {

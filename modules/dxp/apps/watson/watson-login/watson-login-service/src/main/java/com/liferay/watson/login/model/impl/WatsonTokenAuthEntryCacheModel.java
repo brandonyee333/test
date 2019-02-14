@@ -33,7 +33,6 @@ import java.util.Date;
  * The cache model class for representing WatsonTokenAuthEntry in entity cache.
  *
  * @author Steven Smith
- * @see WatsonTokenAuthEntry
  * @generated
  */
 @ProviderType

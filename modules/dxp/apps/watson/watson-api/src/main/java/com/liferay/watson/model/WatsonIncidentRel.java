@@ -25,8 +25,6 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Steven Smith
  * @see WatsonIncidentRelModel
- * @see com.liferay.watson.model.impl.WatsonIncidentRelImpl
- * @see com.liferay.watson.model.impl.WatsonIncidentRelModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonIncidentRelImpl")
@@ -35,7 +33,7 @@ public interface WatsonIncidentRel extends WatsonIncidentRelModel, PersistedMode
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.watson.model.impl.WatsonIncidentRelImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonIncidentRelImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public static final Accessor<WatsonIncidentRel, Long> WATSON_INCIDENT_REL_ID_ACCESSOR =
 		new Accessor<WatsonIncidentRel, Long>() {

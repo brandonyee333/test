@@ -25,8 +25,6 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Steven Smith
  * @see WatsonListTypeRelAuditModel
- * @see com.liferay.watson.model.impl.WatsonListTypeRelAuditImpl
- * @see com.liferay.watson.model.impl.WatsonListTypeRelAuditModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonListTypeRelAuditImpl")
@@ -36,7 +34,7 @@ public interface WatsonListTypeRelAudit extends WatsonListTypeRelAuditModel,
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.watson.model.impl.WatsonListTypeRelAuditImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonListTypeRelAuditImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public static final Accessor<WatsonListTypeRelAudit, Long> WATSON_LIST_TYPE_REL_AUDIT_ID_ACCESSOR =
 		new Accessor<WatsonListTypeRelAudit, Long>() {

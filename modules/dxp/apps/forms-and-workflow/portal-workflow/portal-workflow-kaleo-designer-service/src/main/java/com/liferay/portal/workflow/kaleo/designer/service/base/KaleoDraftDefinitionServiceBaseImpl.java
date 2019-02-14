@@ -41,7 +41,6 @@ import javax.sql.DataSource;
  *
  * @author Eduardo Lundgren
  * @see com.liferay.portal.workflow.kaleo.designer.service.impl.KaleoDraftDefinitionServiceImpl
- * @see com.liferay.portal.workflow.kaleo.designer.service.KaleoDraftDefinitionServiceUtil
  * @generated
  */
 public abstract class KaleoDraftDefinitionServiceBaseImpl
@@ -50,7 +49,7 @@ public abstract class KaleoDraftDefinitionServiceBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link com.liferay.portal.workflow.kaleo.designer.service.KaleoDraftDefinitionServiceUtil} to access the kaleo draft definition remote service.
+	 * Never modify or reference this class directly. Use <code>KaleoDraftDefinitionService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.portal.workflow.kaleo.designer.service.KaleoDraftDefinitionServiceUtil</code>.
 	 */
 
 	/**

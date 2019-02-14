@@ -37,7 +37,7 @@ public abstract class WatsonTokenAuthEntryBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a watson token auth entry model instance should use the {@link WatsonTokenAuthEntry} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a watson token auth entry model instance should use the <code>WatsonTokenAuthEntry</code> interface instead.
 	 */
 	@Override
 	public void persist() {

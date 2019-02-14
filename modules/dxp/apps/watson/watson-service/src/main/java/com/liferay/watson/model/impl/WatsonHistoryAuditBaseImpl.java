@@ -37,7 +37,7 @@ public abstract class WatsonHistoryAuditBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a watson history audit model instance should use the {@link WatsonHistoryAudit} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a watson history audit model instance should use the <code>WatsonHistoryAudit</code> interface instead.
 	 */
 	@Override
 	public void persist() {

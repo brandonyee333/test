@@ -37,7 +37,7 @@ public abstract class WatsonChildBaseImpl extends WatsonChildModelImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a watson child model instance should use the {@link WatsonChild} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a watson child model instance should use the <code>WatsonChild</code> interface instead.
 	 */
 	@Override
 	public void persist() {

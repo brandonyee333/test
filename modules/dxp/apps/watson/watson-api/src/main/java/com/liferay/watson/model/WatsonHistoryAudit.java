@@ -25,8 +25,6 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Steven Smith
  * @see WatsonHistoryAuditModel
- * @see com.liferay.watson.model.impl.WatsonHistoryAuditImpl
- * @see com.liferay.watson.model.impl.WatsonHistoryAuditModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonHistoryAuditImpl")
@@ -36,7 +34,7 @@ public interface WatsonHistoryAudit extends WatsonHistoryAuditModel,
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.watson.model.impl.WatsonHistoryAuditImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonHistoryAuditImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public static final Accessor<WatsonHistoryAudit, Long> WATSON_HISTORY_AUDIT_ID_ACCESSOR =
 		new Accessor<WatsonHistoryAudit, Long>() {

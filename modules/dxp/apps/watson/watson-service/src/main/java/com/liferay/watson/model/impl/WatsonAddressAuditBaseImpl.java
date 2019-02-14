@@ -37,7 +37,7 @@ public abstract class WatsonAddressAuditBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a watson address audit model instance should use the {@link WatsonAddressAudit} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a watson address audit model instance should use the <code>WatsonAddressAudit</code> interface instead.
 	 */
 	@Override
 	public void persist() {

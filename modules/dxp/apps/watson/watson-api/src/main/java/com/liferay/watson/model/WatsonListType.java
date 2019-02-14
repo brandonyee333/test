@@ -25,8 +25,6 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Steven Smith
  * @see WatsonListTypeModel
- * @see com.liferay.watson.model.impl.WatsonListTypeImpl
- * @see com.liferay.watson.model.impl.WatsonListTypeModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonListTypeImpl")
@@ -35,7 +33,7 @@ public interface WatsonListType extends WatsonListTypeModel, PersistedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.watson.model.impl.WatsonListTypeImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonListTypeImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public static final Accessor<WatsonListType, Long> WATSON_LIST_TYPE_ID_ACCESSOR =
 		new Accessor<WatsonListType, Long>() {

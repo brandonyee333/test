@@ -37,7 +37,7 @@ public abstract class WatsonResourceBaseImpl extends WatsonResourceModelImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a watson resource model instance should use the {@link WatsonResource} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a watson resource model instance should use the <code>WatsonResource</code> interface instead.
 	 */
 	@Override
 	public void persist() {

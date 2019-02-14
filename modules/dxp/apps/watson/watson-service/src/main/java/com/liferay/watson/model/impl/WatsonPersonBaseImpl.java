@@ -37,7 +37,7 @@ public abstract class WatsonPersonBaseImpl extends WatsonPersonModelImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a watson person model instance should use the {@link WatsonPerson} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a watson person model instance should use the <code>WatsonPerson</code> interface instead.
 	 */
 	@Override
 	public void persist() {

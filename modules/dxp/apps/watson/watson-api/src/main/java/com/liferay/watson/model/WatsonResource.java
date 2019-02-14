@@ -25,8 +25,6 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Steven Smith
  * @see WatsonResourceModel
- * @see com.liferay.watson.model.impl.WatsonResourceImpl
- * @see com.liferay.watson.model.impl.WatsonResourceModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonResourceImpl")
@@ -35,7 +33,7 @@ public interface WatsonResource extends WatsonResourceModel, PersistedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.watson.model.impl.WatsonResourceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonResourceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public static final Accessor<WatsonResource, Long> WATSON_RESOURCE_ID_ACCESSOR =
 		new Accessor<WatsonResource, Long>() {

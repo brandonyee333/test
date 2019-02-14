@@ -32,8 +32,6 @@ import com.liferay.portal.kernel.transaction.Transactional;
  *
  * @author Steven Smith
  * @see WatsonTokenAuthEntryServiceUtil
- * @see com.liferay.watson.login.service.base.WatsonTokenAuthEntryServiceBaseImpl
- * @see com.liferay.watson.login.service.impl.WatsonTokenAuthEntryServiceImpl
  * @generated
  */
 @AccessControlled
@@ -47,7 +45,7 @@ public interface WatsonTokenAuthEntryService extends BaseService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link WatsonTokenAuthEntryServiceUtil} to access the watson token auth entry remote service. Add custom service methods to {@link com.liferay.watson.login.service.impl.WatsonTokenAuthEntryServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify or reference this interface directly. Always use {@link WatsonTokenAuthEntryServiceUtil} to access the watson token auth entry remote service. Add custom service methods to <code>com.liferay.watson.login.service.impl.WatsonTokenAuthEntryServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 
 	/**

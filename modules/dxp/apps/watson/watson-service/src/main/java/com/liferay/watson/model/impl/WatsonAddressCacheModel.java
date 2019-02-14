@@ -33,7 +33,6 @@ import java.util.Date;
  * The cache model class for representing WatsonAddress in entity cache.
  *
  * @author Steven Smith
- * @see WatsonAddress
  * @generated
  */
 @ProviderType

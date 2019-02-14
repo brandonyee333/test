@@ -37,7 +37,7 @@ public abstract class WatsonAddressBaseImpl extends WatsonAddressModelImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a watson address model instance should use the {@link WatsonAddress} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a watson address model instance should use the <code>WatsonAddress</code> interface instead.
 	 */
 	@Override
 	public void persist() {

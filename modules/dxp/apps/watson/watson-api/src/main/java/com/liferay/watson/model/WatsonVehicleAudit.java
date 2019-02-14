@@ -25,8 +25,6 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Steven Smith
  * @see WatsonVehicleAuditModel
- * @see com.liferay.watson.model.impl.WatsonVehicleAuditImpl
- * @see com.liferay.watson.model.impl.WatsonVehicleAuditModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonVehicleAuditImpl")
@@ -36,7 +34,7 @@ public interface WatsonVehicleAudit extends WatsonVehicleAuditModel,
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.watson.model.impl.WatsonVehicleAuditImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonVehicleAuditImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public static final Accessor<WatsonVehicleAudit, Long> WATSON_VEHICLE_AUDIT_ID_ACCESSOR =
 		new Accessor<WatsonVehicleAudit, Long>() {

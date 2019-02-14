@@ -25,8 +25,6 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Steven Smith
  * @see WatsonRelationshipModel
- * @see com.liferay.watson.model.impl.WatsonRelationshipImpl
- * @see com.liferay.watson.model.impl.WatsonRelationshipModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonRelationshipImpl")
@@ -36,7 +34,7 @@ public interface WatsonRelationship extends WatsonRelationshipModel,
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.watson.model.impl.WatsonRelationshipImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonRelationshipImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public static final Accessor<WatsonRelationship, Long> WATSON_RELATIONSHIP_ID_ACCESSOR =
 		new Accessor<WatsonRelationship, Long>() {

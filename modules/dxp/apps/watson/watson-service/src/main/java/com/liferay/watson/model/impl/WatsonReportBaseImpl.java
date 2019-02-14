@@ -37,7 +37,7 @@ public abstract class WatsonReportBaseImpl extends WatsonReportModelImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a watson report model instance should use the {@link WatsonReport} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a watson report model instance should use the <code>WatsonReport</code> interface instead.
 	 */
 	@Override
 	public void persist() {

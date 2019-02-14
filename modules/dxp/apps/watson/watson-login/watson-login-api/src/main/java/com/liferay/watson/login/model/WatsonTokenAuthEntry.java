@@ -25,8 +25,6 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Steven Smith
  * @see WatsonTokenAuthEntryModel
- * @see com.liferay.watson.login.model.impl.WatsonTokenAuthEntryImpl
- * @see com.liferay.watson.login.model.impl.WatsonTokenAuthEntryModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.watson.login.model.impl.WatsonTokenAuthEntryImpl")
@@ -36,7 +34,7 @@ public interface WatsonTokenAuthEntry extends WatsonTokenAuthEntryModel,
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.watson.login.model.impl.WatsonTokenAuthEntryImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.login.model.impl.WatsonTokenAuthEntryImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public static final Accessor<WatsonTokenAuthEntry, Long> WATSON_TOKEN_AUTH_ENTRY_ID_ACCESSOR =
 		new Accessor<WatsonTokenAuthEntry, Long>() {

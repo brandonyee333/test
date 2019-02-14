@@ -37,7 +37,7 @@ public abstract class WatsonVehicleAuditBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a watson vehicle audit model instance should use the {@link WatsonVehicleAudit} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a watson vehicle audit model instance should use the <code>WatsonVehicleAudit</code> interface instead.
 	 */
 	@Override
 	public void persist() {

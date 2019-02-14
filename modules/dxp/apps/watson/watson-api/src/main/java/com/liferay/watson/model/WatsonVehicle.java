@@ -25,8 +25,6 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Steven Smith
  * @see WatsonVehicleModel
- * @see com.liferay.watson.model.impl.WatsonVehicleImpl
- * @see com.liferay.watson.model.impl.WatsonVehicleModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonVehicleImpl")
@@ -35,7 +33,7 @@ public interface WatsonVehicle extends WatsonVehicleModel, PersistedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.watson.model.impl.WatsonVehicleImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonVehicleImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public static final Accessor<WatsonVehicle, Long> WATSON_VEHICLE_ID_ACCESSOR =
 		new Accessor<WatsonVehicle, Long>() {

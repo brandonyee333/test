@@ -37,7 +37,7 @@ public abstract class AkismetEntryBaseImpl extends AkismetEntryModelImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a akismet entry model instance should use the {@link AkismetEntry} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a akismet entry model instance should use the <code>AkismetEntry</code> interface instead.
 	 */
 	@Override
 	public void persist() {

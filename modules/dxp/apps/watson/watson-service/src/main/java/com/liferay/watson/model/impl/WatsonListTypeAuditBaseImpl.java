@@ -37,7 +37,7 @@ public abstract class WatsonListTypeAuditBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a watson list type audit model instance should use the {@link WatsonListTypeAudit} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a watson list type audit model instance should use the <code>WatsonListTypeAudit</code> interface instead.
 	 */
 	@Override
 	public void persist() {

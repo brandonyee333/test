@@ -26,7 +26,6 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.watson.login.service.http.WatsonTokenAuthEntryServiceSoap}.
  *
  * @author Steven Smith
- * @see com.liferay.watson.login.service.http.WatsonTokenAuthEntryServiceSoap
  * @generated
  */
 @ProviderType

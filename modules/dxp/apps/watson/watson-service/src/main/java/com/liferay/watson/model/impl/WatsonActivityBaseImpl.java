@@ -37,7 +37,7 @@ public abstract class WatsonActivityBaseImpl extends WatsonActivityModelImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a watson activity model instance should use the {@link WatsonActivity} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a watson activity model instance should use the <code>WatsonActivity</code> interface instead.
 	 */
 	@Override
 	public void persist() {

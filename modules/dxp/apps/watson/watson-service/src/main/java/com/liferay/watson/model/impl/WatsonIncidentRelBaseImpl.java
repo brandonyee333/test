@@ -37,7 +37,7 @@ public abstract class WatsonIncidentRelBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a watson incident rel model instance should use the {@link WatsonIncidentRel} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a watson incident rel model instance should use the <code>WatsonIncidentRel</code> interface instead.
 	 */
 	@Override
 	public void persist() {

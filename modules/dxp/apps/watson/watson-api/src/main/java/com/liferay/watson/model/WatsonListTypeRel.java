@@ -25,8 +25,6 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Steven Smith
  * @see WatsonListTypeRelModel
- * @see com.liferay.watson.model.impl.WatsonListTypeRelImpl
- * @see com.liferay.watson.model.impl.WatsonListTypeRelModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonListTypeRelImpl")
@@ -35,7 +33,7 @@ public interface WatsonListTypeRel extends WatsonListTypeRelModel, PersistedMode
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.watson.model.impl.WatsonListTypeRelImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonListTypeRelImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public static final Accessor<WatsonListTypeRel, Long> WATSON_LIST_TYPE_REL_ID_ACCESSOR =
 		new Accessor<WatsonListTypeRel, Long>() {

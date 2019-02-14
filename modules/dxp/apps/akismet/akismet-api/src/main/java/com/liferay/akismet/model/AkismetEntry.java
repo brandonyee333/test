@@ -25,8 +25,6 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Jamie Sammons
  * @see AkismetEntryModel
- * @see com.liferay.akismet.model.impl.AkismetEntryImpl
- * @see com.liferay.akismet.model.impl.AkismetEntryModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.akismet.model.impl.AkismetEntryImpl")
@@ -35,7 +33,7 @@ public interface AkismetEntry extends AkismetEntryModel, PersistedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.akismet.model.impl.AkismetEntryImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.akismet.model.impl.AkismetEntryImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public static final Accessor<AkismetEntry, Long> AKISMET_ENTRY_ID_ACCESSOR = new Accessor<AkismetEntry, Long>() {
 			@Override

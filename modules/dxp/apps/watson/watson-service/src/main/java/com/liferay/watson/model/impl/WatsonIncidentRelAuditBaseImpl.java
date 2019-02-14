@@ -37,7 +37,7 @@ public abstract class WatsonIncidentRelAuditBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a watson incident rel audit model instance should use the {@link WatsonIncidentRelAudit} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a watson incident rel audit model instance should use the <code>WatsonIncidentRelAudit</code> interface instead.
 	 */
 	@Override
 	public void persist() {

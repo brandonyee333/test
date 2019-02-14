@@ -25,8 +25,6 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Steven Smith
  * @see WatsonDocumentAuditModel
- * @see com.liferay.watson.model.impl.WatsonDocumentAuditImpl
- * @see com.liferay.watson.model.impl.WatsonDocumentAuditModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonDocumentAuditImpl")
@@ -36,7 +34,7 @@ public interface WatsonDocumentAudit extends WatsonDocumentAuditModel,
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.watson.model.impl.WatsonDocumentAuditImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonDocumentAuditImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public static final Accessor<WatsonDocumentAudit, Long> WATSON_DOCUMENT_AUDIT_ID_ACCESSOR =
 		new Accessor<WatsonDocumentAudit, Long>() {

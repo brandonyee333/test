@@ -33,7 +33,6 @@ import java.util.Date;
  * The cache model class for representing AkismetEntry in entity cache.
  *
  * @author Jamie Sammons
- * @see AkismetEntry
  * @generated
  */
 @ProviderType

@@ -37,7 +37,7 @@ public abstract class WatsonListTypeBaseImpl extends WatsonListTypeModelImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a watson list type model instance should use the {@link WatsonListType} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a watson list type model instance should use the <code>WatsonListType</code> interface instead.
 	 */
 	@Override
 	public void persist() {

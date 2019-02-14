@@ -25,8 +25,6 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Steven Smith
  * @see WatsonHistoryModel
- * @see com.liferay.watson.model.impl.WatsonHistoryImpl
- * @see com.liferay.watson.model.impl.WatsonHistoryModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonHistoryImpl")
@@ -35,7 +33,7 @@ public interface WatsonHistory extends WatsonHistoryModel, PersistedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.watson.model.impl.WatsonHistoryImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonHistoryImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public static final Accessor<WatsonHistory, Long> WATSON_HISTORY_ID_ACCESSOR =
 		new Accessor<WatsonHistory, Long>() {

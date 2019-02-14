@@ -25,8 +25,6 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Steven Smith
  * @see WatsonReportModel
- * @see com.liferay.watson.model.impl.WatsonReportImpl
- * @see com.liferay.watson.model.impl.WatsonReportModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonReportImpl")
@@ -35,7 +33,7 @@ public interface WatsonReport extends WatsonReportModel, PersistedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.watson.model.impl.WatsonReportImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonReportImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public static final Accessor<WatsonReport, Long> WATSON_REPORT_ID_ACCESSOR = new Accessor<WatsonReport, Long>() {
 			@Override

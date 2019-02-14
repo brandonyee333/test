@@ -25,8 +25,6 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Steven Smith
  * @see WatsonPersonAuditModel
- * @see com.liferay.watson.model.impl.WatsonPersonAuditImpl
- * @see com.liferay.watson.model.impl.WatsonPersonAuditModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonPersonAuditImpl")
@@ -35,7 +33,7 @@ public interface WatsonPersonAudit extends WatsonPersonAuditModel, PersistedMode
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.watson.model.impl.WatsonPersonAuditImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonPersonAuditImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public static final Accessor<WatsonPersonAudit, Long> WATSON_PERSON_AUDIT_ID_ACCESSOR =
 		new Accessor<WatsonPersonAudit, Long>() {

@@ -25,8 +25,6 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Steven Smith
  * @see WatsonActivityModel
- * @see com.liferay.watson.model.impl.WatsonActivityImpl
- * @see com.liferay.watson.model.impl.WatsonActivityModelImpl
  * @generated
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonActivityImpl")
@@ -35,7 +33,7 @@ public interface WatsonActivity extends WatsonActivityModel, PersistedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.watson.model.impl.WatsonActivityImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonActivityImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public static final Accessor<WatsonActivity, Long> WATSON_ACTIVITY_ID_ACCESSOR =
 		new Accessor<WatsonActivity, Long>() {

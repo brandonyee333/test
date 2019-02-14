@@ -37,7 +37,7 @@ public abstract class WatsonRelationshipBaseImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a watson relationship model instance should use the {@link WatsonRelationship} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a watson relationship model instance should use the <code>WatsonRelationship</code> interface instead.
 	 */
 	@Override
 	public void persist() {

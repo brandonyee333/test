@@ -33,7 +33,6 @@ import java.util.Date;
  * The cache model class for representing WatsonRelationship in entity cache.
  *
  * @author Steven Smith
- * @see WatsonRelationship
  * @generated
  */
 @ProviderType

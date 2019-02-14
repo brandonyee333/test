@@ -33,7 +33,6 @@ import java.util.Date;
  * The cache model class for representing WatsonVehicleAudit in entity cache.
  *
  * @author Steven Smith
- * @see WatsonVehicleAudit
  * @generated
  */
 @ProviderType

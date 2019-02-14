@@ -26,7 +26,6 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.portal.workflow.kaleo.designer.service.http.KaleoDraftDefinitionServiceSoap}.
  *
  * @author Eduardo Lundgren
- * @see com.liferay.portal.workflow.kaleo.designer.service.http.KaleoDraftDefinitionServiceSoap
  * @generated
  */
 @ProviderType
