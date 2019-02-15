@@ -22,8 +22,6 @@ import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.asset.kernel.service.AssetCategoryPropertyLocalService;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
 import com.liferay.journal.model.JournalArticle;
-import com.liferay.journal.model.JournalArticleResource;
-import com.liferay.journal.service.JournalArticleResourceLocalService;
 import com.liferay.osb.customer.downloads.display.web.internal.constants.DownloadsAssetCategoryConstants;
 import com.liferay.portal.instances.service.PortalInstancesLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -70,14 +68,9 @@ public class DownloadsAssetCategoryUtil {
 			long journalArticleResourcePrimKey)
 		throws PortalException {
 
-		JournalArticleResource journalArticleResource =
-			_journalArticleResourceLocalService.getArticleResource(
-				journalArticleResourcePrimKey);
-
 		List<AssetCategory> assetCategories =
 			_assetCategoryLocalService.getCategories(
-				JournalArticle.class.getName(),
-				journalArticleResource.getResourcePrimKey());
+				JournalArticle.class.getName(), journalArticleResourcePrimKey);
 
 		for (AssetCategory assetCategory : assetCategories) {
 			if ((assetCategory.getVocabularyId() ==
@@ -143,10 +136,6 @@ public class DownloadsAssetCategoryUtil {
 
 	@Reference
 	private GroupLocalService _groupLocalService;
-
-	@Reference
-	private JournalArticleResourceLocalService
-		_journalArticleResourceLocalService;
 
 	@Reference
 	private PortalInstancesLocalService _portalInstancesLocalService;

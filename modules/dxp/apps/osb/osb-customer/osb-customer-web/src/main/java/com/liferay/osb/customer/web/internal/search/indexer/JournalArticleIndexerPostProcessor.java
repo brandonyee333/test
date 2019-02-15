@@ -15,15 +15,10 @@
 package com.liferay.osb.customer.web.internal.search.indexer;
 
 import com.liferay.journal.model.JournalArticle;
-import com.liferay.portal.kernel.search.BooleanQuery;
+import com.liferay.portal.kernel.search.BaseIndexerPostProcessor;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.IndexerPostProcessor;
-import com.liferay.portal.kernel.search.SearchContext;
-import com.liferay.portal.kernel.search.Summary;
-import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.util.LocalizationUtil;
-
-import java.util.Locale;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -36,19 +31,7 @@ import org.osgi.service.component.annotations.Component;
 	service = IndexerPostProcessor.class
 )
 public class JournalArticleIndexerPostProcessor
-	implements IndexerPostProcessor {
-
-	@Override
-	public void postProcessContextBooleanFilter(
-			BooleanFilter booleanFilter, SearchContext searchContext)
-		throws Exception {
-	}
-
-	@Override
-	public void postProcessContextQuery(
-			BooleanQuery contextQuery, SearchContext searchContext)
-		throws Exception {
-	}
+	extends BaseIndexerPostProcessor {
 
 	@Override
 	public void postProcessDocument(Document document, Object obj)
@@ -60,30 +43,6 @@ public class JournalArticleIndexerPostProcessor
 			journalArticle.getDocument());
 
 		document.addText("availableLanguageIds", languageIds);
-	}
-
-	@Override
-	public void postProcessFullQuery(
-			BooleanQuery fullQuery, SearchContext searchContext)
-		throws Exception {
-	}
-
-	@Override
-	public void postProcessSearchQuery(
-			BooleanQuery searchQuery, BooleanFilter booleanFilter,
-			SearchContext searchContext)
-		throws Exception {
-	}
-
-	@Override
-	public void postProcessSearchQuery(
-			BooleanQuery searchQuery, SearchContext searchContext)
-		throws Exception {
-	}
-
-	@Override
-	public void postProcessSummary(
-		Summary summary, Document document, Locale locale, String snippet) {
 	}
 
 }
