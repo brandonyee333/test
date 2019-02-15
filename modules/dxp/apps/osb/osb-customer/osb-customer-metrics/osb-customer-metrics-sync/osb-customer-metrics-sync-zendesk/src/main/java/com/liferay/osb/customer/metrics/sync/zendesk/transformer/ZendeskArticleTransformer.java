@@ -42,7 +42,7 @@ import org.osgi.service.component.annotations.Reference;
 public class ZendeskArticleTransformer extends BaseTransformer {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
-		Map<String, String> columnMap = new HashMap<>();
+		Map<String, Object> columnMap = new HashMap<>();
 
 		JSONArray jsonArray = jsonObject.getJSONArray("articles");
 
@@ -54,10 +54,10 @@ public class ZendeskArticleTransformer extends BaseTransformer {
 			while (iterator.hasNext()) {
 				String key = iterator.next();
 
-				String value = articleJSONObject.getString(key, "null");
+				Object value = articleJSONObject.get(key);
 
-				if (isDate(key)) {
-					value = formatDate(value);
+				if (isDate(key) && !articleJSONObject.isNull(key)) {
+					value = formatDate(String.valueOf(value));
 				}
 
 				columnMap.put(key, value);

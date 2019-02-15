@@ -43,7 +43,7 @@ import org.osgi.service.component.annotations.Reference;
 public class ZendeskOrganizationTransformer extends BaseTransformer {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
-		Map<String, String> columnMap = new HashMap<>();
+		Map<String, Object> columnMap = new HashMap<>();
 
 		JSONArray jsonArray = jsonObject.getJSONArray("organizations");
 
@@ -64,17 +64,14 @@ public class ZendeskOrganizationTransformer extends BaseTransformer {
 					while (fieldIterator.hasNext()) {
 						String fieldKey = fieldIterator.next();
 
-						columnMap.put(
-							fieldKey,
-							fieldsJSONObject.getString(fieldKey, "null"));
+						columnMap.put(fieldKey, fieldsJSONObject.get(fieldKey));
 					}
 				}
 				else {
-					String value = organizationJSONObject.getString(
-						key, "null");
+					Object value = organizationJSONObject.get(key);
 
-					if (isDate(key)) {
-						value = formatDate(value);
+					if (isDate(key) && !organizationJSONObject.isNull(key)) {
+						value = formatDate(String.valueOf(value));
 					}
 
 					columnMap.put(key, value);

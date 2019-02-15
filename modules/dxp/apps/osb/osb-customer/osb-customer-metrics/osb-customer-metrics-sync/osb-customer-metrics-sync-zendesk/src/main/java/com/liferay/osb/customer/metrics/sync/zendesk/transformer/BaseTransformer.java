@@ -48,11 +48,11 @@ public abstract class BaseTransformer implements MessageProcessor {
 	}
 
 	protected JSONObject buildMetricsJSONObject(
-		String modelName, Map<String, String> columnMap) {
+		String modelName, Map<String, Object> columnMap) {
 
 		JSONObject valuesJSONObject = JSONFactoryUtil.createJSONObject();
 
-		for (Map.Entry<String, String> entry : columnMap.entrySet()) {
+		for (Map.Entry<String, Object> entry : columnMap.entrySet()) {
 			valuesJSONObject.put(entry.getKey(), entry.getValue());
 		}
 

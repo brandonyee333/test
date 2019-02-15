@@ -74,7 +74,7 @@ public class ZendeskTicketTransformer extends BaseTransformer {
 	}
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
-		Map<String, String> columnMap = new HashMap<>();
+		Map<String, Object> columnMap = new HashMap<>();
 
 		SyncState syncState = _syncStateLocalService.fetchSyncState(
 			ZendeskTicket.class.getName());
@@ -108,17 +108,16 @@ public class ZendeskTicketTransformer extends BaseTransformer {
 							fieldsJSONArray.getJSONObject(j);
 
 						long id = fieldJSONObject.getLong("id");
-						String value = fieldJSONObject.getString(
-							"value", "null");
+						Object value = fieldJSONObject.get("value");
 
 						columnMap.put(_getTicketFieldName(id), value);
 					}
 				}
 				else {
-					String value = ticketJSONObject.getString(key, "null");
+					Object value = ticketJSONObject.get(key);
 
-					if (isDate(key)) {
-						value = formatDate(value);
+					if (isDate(key) && !ticketJSONObject.isNull(key)) {
+						value = formatDate(String.valueOf(value));
 					}
 
 					columnMap.put(key, value);
