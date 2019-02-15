@@ -1,4 +1,3 @@
-<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -12,8 +11,16 @@
  *
  *
  */
---%>
 
-<%@ include file="/init.jsp" %>
+package com.liferay.osb.customer.release.tool.web.internal.constants;
 
-<%= releaseToolDisplayContext.getHightlightsFiltersJSONArray() %>
+/**
+ * @author Amos Fong
+ */
+public class DDMStructureConstants {
+
+	public static final String FIELD_HIGHLIGHTS = "highlights";
+
+	public static final String KEY_FIX_PACK = "OSB-CUSTOMER-THEME---FIX-PACK";
+
+}

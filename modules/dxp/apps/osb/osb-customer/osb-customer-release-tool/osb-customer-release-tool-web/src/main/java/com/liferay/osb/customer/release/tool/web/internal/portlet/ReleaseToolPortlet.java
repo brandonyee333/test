@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.release.tool.web.portlet;
+package com.liferay.osb.customer.release.tool.web.internal.portlet;
 
 import com.liferay.osb.customer.release.tool.web.internal.constants.ReleaseToolPortletKeys;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
