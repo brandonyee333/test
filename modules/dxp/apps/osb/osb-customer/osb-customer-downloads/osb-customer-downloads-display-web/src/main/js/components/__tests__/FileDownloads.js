@@ -175,8 +175,8 @@ describe('FileDownloads', () => {
 		);
 
 		const anchor = queryByText(container, 'download');
-		const initialURL = anchor.href;
 		const downloadSelect = container.querySelector('select');
+		const initialURL = anchor.href;
 
 		downloadSelect.value = 'Download Name 2';
 

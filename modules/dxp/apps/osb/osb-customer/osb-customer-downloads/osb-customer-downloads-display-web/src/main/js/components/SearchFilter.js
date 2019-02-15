@@ -8,8 +8,6 @@ const PORTLET_ID = 'com_liferay_osb_customer_downloads_display_web_DownloadsDisp
 export default class SearchFilters extends React.Component {
 	searchDownloadsFormRef = React.createRef();
 
-	// getFileTypes method needs to be defined before state
-
 	getFileTypes = (comparator) => {
 		const {productsJSONArray} = this.props;
 
