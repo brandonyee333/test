@@ -57,23 +57,23 @@ describe('AccountEnvironments', () => {
 	];
 
 	const environmentConfigJSON = {
-		envLFRVersions: [
-			{
-				version: 'version'
-			}
-		],
 		envCommerce: {
-			envLFRVersions: [
+			envCommerceVersions: [
 				{
 					version: 'version'
 				}
 			],
-			envCommerceVersions: [
+			envLFRVersions: [
 				{
 					version: 'version'
 				}
 			]
 		},
+		envLFRVersions: [
+			{
+				version: 'version'
+			}
+		],
 		products: [
 			{
 				data: 'data'
@@ -229,15 +229,18 @@ describe('AccountEnvironments', () => {
 			/>
 		);
 
-		const tabs = queryAllByRole(container, 'tab');
 		const heading = queryByText(container, 'All Selections');
+		const tabs = queryAllByRole(container, 'tab');
+
 		let allSelectionTab;
 
-		tabs.forEach(tab => {
-			if (tab.contains(heading)) {
-				allSelectionTab = tab;
+		tabs.forEach(
+			tab => {
+				if (tab.contains(heading)) {
+					allSelectionTab = tab;
+				}
 			}
-		});
+		);
 
 		fireEvent.click(allSelectionTab);
 
@@ -259,18 +262,21 @@ describe('AccountEnvironments', () => {
 			/>
 		);
 
-		const tabs = queryAllByRole(container, 'tab');
 		const heading = queryByText(
 			container,
 			'No Search, Commerce, Cloud Services Selection'
 		);
+		const tabs = queryAllByRole(container, 'tab');
+
 		let noSelectionTab;
 
-		tabs.forEach(tab => {
-			if (tab.contains(heading)) {
-				noSelectionTab = tab;
+		tabs.forEach(
+			tab => {
+				if (tab.contains(heading)) {
+					noSelectionTab = tab;
+				}
 			}
-		});
+		);
 
 		fireEvent.click(noSelectionTab);
 
