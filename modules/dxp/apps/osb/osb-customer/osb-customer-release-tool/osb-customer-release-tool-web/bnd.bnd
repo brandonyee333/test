@@ -1,6 +1,5 @@
 Bundle-Name: Liferay OSB Customer Release Tool Web
 Bundle-SymbolicName: com.liferay.osb.customer.release.tool.web
 Bundle-Version: 1.0.0
-Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: OSB Customer Release Tool
 Web-ContextPath: /osb-customer-release-tool-web
