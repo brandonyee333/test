@@ -6,7 +6,6 @@ Import-Package:\
 	com.liferay.portal.workflow.kaleo.forms.util.comparator,\
 	\
 	*
-Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Kaleo Forms
 Liferay-Require-SchemaVersion: 1.1.0
 Liferay-Service: true

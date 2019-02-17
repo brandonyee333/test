@@ -7,5 +7,3 @@ Export-Package:\
 	com.liferay.fabrica.core.distribution,\
 	com.liferay.fabrica.core.distribution.client,\
 	com.liferay.fabrica.core.distribution.server
-Liferay-Releng-Module-Group-Description:
-Liferay-Releng-Module-Group-Title:

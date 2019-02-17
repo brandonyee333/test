@@ -5,5 +5,4 @@ Export-Package:\
 	com.liferay.lcs,\
 	com.liferay.lcs.activation,\
 	com.liferay.lcs.util
-Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: LCS
