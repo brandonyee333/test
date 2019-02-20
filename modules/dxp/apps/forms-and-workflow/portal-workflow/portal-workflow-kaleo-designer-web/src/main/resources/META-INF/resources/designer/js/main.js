@@ -74,7 +74,7 @@ AUI.add(
 					initializer: function(config) {
 						var instance = this;
 
-						instance.definitionController = new DefinitionDiagramController(config.definition, instance.canvas);
+						instance.definitionController = new DefinitionDiagramController(encodeURIComponent(config.definition), instance.canvas);
 
 						instance.after('render', instance._afterRenderKaleoDesigner);
 
@@ -245,7 +245,7 @@ AUI.add(
 					_setDefinition: function(val) {
 						var instance = this;
 
-						instance.definitionController = new DefinitionDiagramController(val, instance.canvas);
+						instance.definitionController = new DefinitionDiagramController(encodeURIComponent(val), instance.canvas);
 
 						return val;
 					},
