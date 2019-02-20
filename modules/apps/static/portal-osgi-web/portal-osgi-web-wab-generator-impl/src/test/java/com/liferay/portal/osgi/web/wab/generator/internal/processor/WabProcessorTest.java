@@ -108,8 +108,6 @@ public class WabProcessorTest {
 	public void testClassicThemeWab() throws Exception {
 		File file = getFile("classic-theme.autodeployed.war");
 
-		Assert.assertNotNull(file);
-
 		try (Jar jar = new Jar(file)) {
 			Assert.assertNull(jar.getBsn());
 
@@ -223,8 +221,6 @@ public class WabProcessorTest {
 	@Test
 	public void testFatCDIWabOptsOutOfOSGiCDIIntegration() throws Exception {
 		File file = getFile("jsf.cdi.applicant.portlet.war");
-
-		Assert.assertNotNull(file);
 
 		Map<String, String[]> parameters = new HashMap<>();
 
@@ -497,8 +493,6 @@ public class WabProcessorTest {
 	public void testSkinnyCDIWabGainsOSGiCDIIntegration() throws Exception {
 		File file = getFile("PortletV3AnnotatedDemo.war");
 
-		Assert.assertNotNull(file);
-
 		Map<String, String[]> parameters = new HashMap<>();
 
 		parameters.put(
@@ -620,8 +614,6 @@ public class WabProcessorTest {
 	@Test
 	public void testThatEmbeddedLibsAreHandledProperly() throws Exception {
 		File file = getFile("tck-V3URLTests.wab.war");
-
-		Assert.assertNotNull(file);
 
 		Map<String, String[]> parameters = new HashMap<>();
 
@@ -776,9 +768,8 @@ public class WabProcessorTest {
 
 		URL url = classLoader.getResource(fileName);
 
-		if (!"file".equals(url.getProtocol())) {
-			return null;
-		}
+		Assert.assertEquals(
+			url + "is not file protocol", "file", url.getProtocol());
 
 		Path path = Paths.get(url.toURI());
 
