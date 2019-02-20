@@ -17,3 +17,13 @@
 <%@ include file="/init.jsp" %>
 
 <%= releaseToolDisplayContext.getHightlightsFiltersJSONArray() %>
+
+<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/fix_packs" var="fixPacksURL">
+	<liferay-portlet:param name="fromFixPackAssetCategoryId" value="1" />
+	<liferay-portlet:param name="orderByCol" value="releaseDate" />
+	<liferay-portlet:param name="orderByType" value="desc" />
+	<liferay-portlet:param name="productAssetCategoryId" value="1" />
+	<liferay-portlet:param name="toFixPackAssetCategoryId" value="2" />
+</liferay-portlet:resourceURL>
+
+<%= fixPacksURL %>
