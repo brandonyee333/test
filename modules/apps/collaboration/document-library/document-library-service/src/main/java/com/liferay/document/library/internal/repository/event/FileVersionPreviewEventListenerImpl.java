@@ -82,19 +82,19 @@ public class FileVersionPreviewEventListenerImpl
 		FileVersion fileVersion, int previewType) {
 
 		try {
-			DLFileVersionPreview fileVersionPreview =
+			DLFileVersionPreview dlFileVersionPreview =
 				_dlFileVersionPreviewLocalService.fetchDLFileVersionPreview(
 					fileVersion.getFileEntryId(),
 					fileVersion.getFileVersionId());
 
-			if (fileVersionPreview == null) {
+			if (dlFileVersionPreview == null) {
 				_dlFileVersionPreviewLocalService.addDLFileVersionPreview(
 					fileVersion.getFileEntryId(),
 					fileVersion.getFileVersionId(), previewType);
 			}
 			else {
 				_dlFileVersionPreviewLocalService.updateDLFileVersionPreview(
-					fileVersionPreview.getDlFileVersionPreviewId(),
+					dlFileVersionPreview.getDlFileVersionPreviewId(),
 					previewType);
 			}
 		}
