@@ -1,7 +1,6 @@
 Bundle-Name: Liferay OSB Customer RabbitMQ Connector Web
 Bundle-SymbolicName: com.liferay.osb.customer.rabbitmq.connector.web
 Bundle-Version: 1.0.0
-Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: RabbitMQ
 Web-ContextPath: /osb-customer-rabbitmq-connector-web
 -includeresource: content=src/main/resources/content
