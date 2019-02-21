@@ -19,6 +19,7 @@ import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.model.listener.util.ZendeskModelListenerUtil;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
+import com.liferay.osb.customer.zendesk.web.service.ZendeskUserIdentityWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountCustomerConstants;
@@ -65,7 +66,7 @@ public class UserSynchronizer {
 	public void addPhone(long userId, Phone phone) throws PortalException {
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
 
-		_asyncZendeskUserWebService.createZendeskUserIdentity(
+		_asyncZendeskUserIdentityWebService.createZendeskUserIdentity(
 			zendeskUserId, "phone_number", phone.getNumber());
 	}
 
@@ -74,7 +75,7 @@ public class UserSynchronizer {
 		long zendeskUserIdentityId = getExternalId(
 			Phone.class, phone.getPhoneId());
 
-		_asyncZendeskUserWebService.deleteZendeskUserIdentity(
+		_asyncZendeskUserIdentityWebService.deleteZendeskUserIdentity(
 			zendeskUserId, zendeskUserIdentityId, "phone_number");
 	}
 
@@ -193,7 +194,7 @@ public class UserSynchronizer {
 		long zendeskUserIdentityId = getExternalId(
 			Phone.class, phone.getPhoneId());
 
-		_asyncZendeskUserWebService.updateZendeskUserIdentity(
+		_asyncZendeskUserIdentityWebService.updateZendeskUserIdentity(
 			zendeskUserId, zendeskUserIdentityId, phone.getNumber());
 	}
 
@@ -212,6 +213,9 @@ public class UserSynchronizer {
 
 		return Long.valueOf(externalIdMapper.getExternalId());
 	}
+
+	@Reference(target = "(async=true)")
+	private ZendeskUserIdentityWebService _asyncZendeskUserIdentityWebService;
 
 	@Reference(target = "(async=true)")
 	private ZendeskUserWebService _asyncZendeskUserWebService;

@@ -38,20 +38,12 @@ public interface ZendeskUserWebService {
 			String organizationName, Set<String> tags)
 		throws PortalException;
 
-	public void createZendeskUserIdentity(
-			long zendeskUserId, String type, String value)
-		throws PortalException;
-
 	public void createZendeskUserOrganizationMemberships(
 			long zendeskUserId, long[] zendeskOrganizationIds)
 		throws PortalException;
 
 	public void createZendeskUserOrganizationSubscription(
 			long zendeskUserId, long zendeskOrganizationId)
-		throws PortalException;
-
-	public void deleteZendeskUserIdentity(
-			long zendeskUserId, long zendeskUserIdentityId, String type)
 		throws PortalException;
 
 	public void deleteZendeskUserOrganizationMemberships(
@@ -71,10 +63,6 @@ public interface ZendeskUserWebService {
 		throws PortalException;
 
 	public SearchHits<ZendeskUser> getZendeskUsers(Query query)
-		throws PortalException;
-
-	public void updateZendeskUserIdentity(
-			long zendeskUserId, long zendeskUserIdentityId, String value)
 		throws PortalException;
 
 }
