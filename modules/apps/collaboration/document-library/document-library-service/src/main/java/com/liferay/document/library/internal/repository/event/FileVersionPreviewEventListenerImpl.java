@@ -79,7 +79,7 @@ public class FileVersionPreviewEventListenerImpl
 	}
 
 	private void _addDLFileEntryPreview(
-		FileVersion fileVersion, int previewType) {
+		FileVersion fileVersion, int previewStatus) {
 
 		try {
 			DLFileVersionPreview dlFileVersionPreview =
@@ -90,12 +90,12 @@ public class FileVersionPreviewEventListenerImpl
 			if (dlFileVersionPreview == null) {
 				_dlFileVersionPreviewLocalService.addDLFileVersionPreview(
 					fileVersion.getFileEntryId(),
-					fileVersion.getFileVersionId(), previewType);
+					fileVersion.getFileVersionId(), previewStatus);
 			}
 			else {
 				_dlFileVersionPreviewLocalService.updateDLFileVersionPreview(
 					dlFileVersionPreview.getDlFileVersionPreviewId(),
-					previewType);
+					previewStatus);
 			}
 		}
 		catch (PortalException pe) {
