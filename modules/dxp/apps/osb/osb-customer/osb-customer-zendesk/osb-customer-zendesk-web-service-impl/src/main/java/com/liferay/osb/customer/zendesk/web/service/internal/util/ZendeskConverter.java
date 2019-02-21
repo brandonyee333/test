@@ -22,6 +22,7 @@ import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicketComment;
 import com.liferay.osb.customer.zendesk.model.ZendeskTranslation;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
+import com.liferay.osb.customer.zendesk.model.ZendeskUserIdentity;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -308,6 +309,33 @@ public class ZendeskConverter {
 		zendeskUser.setZendeskUserId(jsonObject.getLong("id"));
 
 		return zendeskUser;
+	}
+
+	public List<ZendeskUserIdentity> toZendeskUserIdentities(
+			JSONArray jsonArray)
+		throws PortalException {
+
+		List<ZendeskUserIdentity> zendeskUserIdentities = new ArrayList<>();
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			zendeskUserIdentities.add(toZendeskUserIdentity(jsonObject));
+		}
+
+		return zendeskUserIdentities;
+	}
+
+	public ZendeskUserIdentity toZendeskUserIdentity(JSONObject jsonObject) {
+		ZendeskUserIdentity zendeskUserIdentity = new ZendeskUserIdentity();
+
+		zendeskUserIdentity.setPrimary(jsonObject.getBoolean("primary"));
+		zendeskUserIdentity.setType(jsonObject.getString("type"));
+		zendeskUserIdentity.setValue(jsonObject.getString("value"));
+		zendeskUserIdentity.setZendeskUserId(jsonObject.getLong("user_id"));
+		zendeskUserIdentity.setZendeskUserIdentityId(jsonObject.getLong("id"));
+
+		return zendeskUserIdentity;
 	}
 
 	public List<ZendeskUser> toZendeskUsers(JSONArray jsonArray)

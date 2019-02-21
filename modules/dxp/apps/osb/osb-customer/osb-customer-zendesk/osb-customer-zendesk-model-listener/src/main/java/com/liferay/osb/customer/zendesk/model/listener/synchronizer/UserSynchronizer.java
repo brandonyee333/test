@@ -16,7 +16,9 @@ package com.liferay.osb.customer.zendesk.model.listener.synchronizer;
 
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
+import com.liferay.osb.customer.zendesk.constants.ZendeskUserIdentityConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
+import com.liferay.osb.customer.zendesk.model.ZendeskUserIdentity;
 import com.liferay.osb.customer.zendesk.model.listener.util.ZendeskModelListenerUtil;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserIdentityWebService;
@@ -189,6 +191,35 @@ public class UserSynchronizer {
 		return zendeskUserId;
 	}
 
+	public void updateEmailAddress(long userId, String emailAddress)
+		throws PortalException {
+
+		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
+
+		if (zendeskUserId <= 0) {
+			return;
+		}
+
+		List<ZendeskUserIdentity> zendeskUserIdentities =
+			_zendeskUserIdentityWebService.getZendeskUserIdentities(
+				zendeskUserId);
+
+		for (ZendeskUserIdentity zendeskUserIdentity : zendeskUserIdentities) {
+			String type = zendeskUserIdentity.getType();
+
+			if (type.equals(ZendeskUserIdentityConstants.TYPE_EMAIL) &&
+				zendeskUserIdentity.isPrimary()) {
+
+				_asyncZendeskUserIdentityWebService.updateZendeskUserIdentity(
+					zendeskUserId,
+					zendeskUserIdentity.getZendeskUserIdentityId(),
+					emailAddress);
+
+				break;
+			}
+		}
+	}
+
 	public void updatePhone(long userId, Phone phone) throws PortalException {
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
 		long zendeskUserIdentityId = getExternalId(
@@ -231,6 +262,9 @@ public class UserSynchronizer {
 
 	@Reference
 	private ZendeskMapperUtil _zendeskMapperUtil;
+
+	@Reference
+	private ZendeskUserIdentityWebService _zendeskUserIdentityWebService;
 
 	@Reference
 	private ZendeskUserWebService _zendeskUserWebService;

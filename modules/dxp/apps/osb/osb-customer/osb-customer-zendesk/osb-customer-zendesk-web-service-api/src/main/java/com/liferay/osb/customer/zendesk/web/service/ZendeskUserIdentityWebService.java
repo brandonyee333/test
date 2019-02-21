@@ -16,7 +16,10 @@ package com.liferay.osb.customer.zendesk.web.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.customer.zendesk.model.ZendeskUserIdentity;
 import com.liferay.portal.kernel.exception.PortalException;
+
+import java.util.List;
 
 /**
  * @author Amos Fong
@@ -30,6 +33,10 @@ public interface ZendeskUserIdentityWebService {
 
 	public void deleteZendeskUserIdentity(
 			long zendeskUserId, long zendeskUserIdentityId, String type)
+		throws PortalException;
+
+	public List<ZendeskUserIdentity> getZendeskUserIdentities(
+			long zendeskUserId)
 		throws PortalException;
 
 	public void updateZendeskUserIdentity(

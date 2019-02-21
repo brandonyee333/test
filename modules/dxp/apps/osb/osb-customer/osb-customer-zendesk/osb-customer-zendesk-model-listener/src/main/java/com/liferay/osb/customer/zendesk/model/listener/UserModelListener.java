@@ -94,19 +94,19 @@ public class UserModelListener extends BaseModelListener<User> {
 			User oldUser = _oldUser.get();
 
 			String oldEmailAddress = oldUser.getEmailAddress();
+
+			if (!oldEmailAddress.equals(user.getEmailAddress())) {
+				_userSynchronizer.updateEmailAddress(
+					user.getUserId(), user.getEmailAddress());
+			}
+
 			String oldFirstName = oldUser.getFirstName();
 			String oldLastName = oldUser.getLastName();
 
-			if (!oldEmailAddress.equals(user.getEmailAddress()) ||
-				!oldFirstName.equals(user.getFirstName()) ||
+			if (!oldFirstName.equals(user.getFirstName()) ||
 				!oldLastName.equals(user.getLastName())) {
 
-				long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
-					user.getUserId());
-
-				if (zendeskUserId > 0) {
-					_userSynchronizer.sync(user, null, null);
-				}
+				_userSynchronizer.sync(user, null, null);
 			}
 		}
 		catch (Exception e) {

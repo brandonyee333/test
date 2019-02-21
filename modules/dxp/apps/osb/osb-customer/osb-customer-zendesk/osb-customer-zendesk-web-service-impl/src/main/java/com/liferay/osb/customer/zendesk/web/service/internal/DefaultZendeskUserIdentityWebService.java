@@ -14,10 +14,18 @@
 
 package com.liferay.osb.customer.zendesk.web.service.internal;
 
+import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints;
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
+import com.liferay.osb.customer.zendesk.model.ZendeskUserIdentity;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserIdentityWebService;
 import com.liferay.osb.customer.zendesk.web.service.internal.util.MessagePublisherUtil;
+import com.liferay.osb.customer.zendesk.web.service.internal.util.ZendeskConverter;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.util.StringPool;
+
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -46,6 +54,23 @@ public class DefaultZendeskUserIdentityWebService
 		throw new UnsupportedOperationException();
 	}
 
+	public List<ZendeskUserIdentity> getZendeskUserIdentities(
+			long zendeskUserId)
+		throws PortalException {
+
+		String endpoint =
+			ZendeskRESTEndpoints.URL_API_V2 + "users/" + zendeskUserId +
+				ZendeskRESTEndpoints.IDENTITIES;
+
+		JSONObject responseJSONObject = zendeskBaseWebService.get(
+			endpoint, StringPool.BLANK);
+
+		JSONArray identitiesJSONArray = responseJSONObject.getJSONArray(
+			"identities");
+
+		return zendeskConverter.toZendeskUserIdentities(identitiesJSONArray);
+	}
+
 	public void updateZendeskUserIdentity(
 			long zendeskUserId, long zendeskUserIdentityId, String value)
 		throws PortalException {
@@ -58,5 +83,8 @@ public class DefaultZendeskUserIdentityWebService
 
 	@Reference
 	protected ZendeskBaseWebService zendeskBaseWebService;
+
+	@Reference
+	protected ZendeskConverter zendeskConverter;
 
 }
