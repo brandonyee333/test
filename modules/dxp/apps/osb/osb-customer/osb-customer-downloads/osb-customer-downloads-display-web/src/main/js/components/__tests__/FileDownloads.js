@@ -107,7 +107,7 @@ describe('FileDownloads', () => {
 		expect(dropdown).toBeNull();
 	});
 
-	it('renders a dropdown dropdown and a download link if the record contains more than one downloadable asset', () => {
+	it('renders a dropdown and a download link if the record contains more than one downloadable asset', () => {
 		const {container} = render(
 			<FileDownloads
 				downloadGroups={multipleDownloadGroups}
