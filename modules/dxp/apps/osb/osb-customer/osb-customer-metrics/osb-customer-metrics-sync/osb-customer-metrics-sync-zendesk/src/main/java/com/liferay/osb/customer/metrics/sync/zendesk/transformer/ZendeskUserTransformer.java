@@ -59,8 +59,14 @@ public class ZendeskUserTransformer extends BaseTransformer {
 				if (isDate(key) && !userJSONObject.isNull(key)) {
 					value = formatDate(String.valueOf(value));
 				}
+				else if (value instanceof JSONArray ||
+						 value instanceof JSONObject) {
 
-				columnMap.put(key, value);
+					columnMap.put(key, String.valueOf(value));
+				}
+				else {
+					columnMap.put(key, value);
+				}
 			}
 
 			JSONObject metricsJSONObject = buildMetricsJSONObject(
