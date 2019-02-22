@@ -110,23 +110,16 @@ public class ZendeskTicketTransformer extends BaseTransformer {
 						long id = fieldJSONObject.getLong("id");
 						Object value = fieldJSONObject.get("value");
 
-						columnMap.put(_getTicketFieldName(id), value);
+						columnMap = insertColumnMapValue(
+							columnMap, fieldJSONObject, _getTicketFieldName(id),
+							value);
 					}
 				}
 				else {
 					Object value = ticketJSONObject.get(key);
 
-					if (isDate(key) && !ticketJSONObject.isNull(key)) {
-						value = formatDate(String.valueOf(value));
-					}
-					else if (value instanceof JSONArray ||
-							 value instanceof JSONObject) {
-
-						columnMap.put(key, String.valueOf(value));
-					}
-					else {
-						columnMap.put(key, value);
-					}
+					columnMap = insertColumnMapValue(
+						columnMap, ticketJSONObject, key, value);
 				}
 			}
 

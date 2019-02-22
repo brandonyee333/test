@@ -64,23 +64,16 @@ public class ZendeskOrganizationTransformer extends BaseTransformer {
 					while (fieldIterator.hasNext()) {
 						String fieldKey = fieldIterator.next();
 
-						columnMap.put(fieldKey, fieldsJSONObject.get(fieldKey));
+						columnMap = insertColumnMapValue(
+							columnMap, fieldsJSONObject, fieldKey,
+							fieldsJSONObject.get(fieldKey));
 					}
 				}
 				else {
 					Object value = organizationJSONObject.get(key);
 
-					if (isDate(key) && !organizationJSONObject.isNull(key)) {
-						value = formatDate(String.valueOf(value));
-					}
-					else if (value instanceof JSONArray ||
-							 value instanceof JSONObject) {
-
-						columnMap.put(key, String.valueOf(value));
-					}
-					else {
-						columnMap.put(key, value);
-					}
+					columnMap = insertColumnMapValue(
+						columnMap, organizationJSONObject, key, value);
 				}
 			}
 

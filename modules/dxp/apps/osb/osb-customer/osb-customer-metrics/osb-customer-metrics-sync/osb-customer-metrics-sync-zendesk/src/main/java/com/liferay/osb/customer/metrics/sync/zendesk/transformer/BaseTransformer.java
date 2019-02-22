@@ -15,6 +15,7 @@
 package com.liferay.osb.customer.metrics.sync.zendesk.transformer;
 
 import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessor;
+import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -70,7 +71,26 @@ public abstract class BaseTransformer implements MessageProcessor {
 
 	protected abstract void doProcess(JSONObject jsonObject) throws Exception;
 
-	protected String formatDate(String value) throws ParseException {
+	protected Map<String, Object> insertColumnMapValue(
+			Map<String, Object> columnMap, JSONObject jsonObject, String key,
+			Object value)
+		throws ParseException {
+
+		if (value instanceof JSONArray || value instanceof JSONObject) {
+			columnMap.put(key, String.valueOf(value));
+		}
+		else {
+			if (_isDate(key) && !jsonObject.isNull(key)) {
+				value = _formatDate(String.valueOf(value));
+			}
+
+			columnMap.put(key, value);
+		}
+
+		return columnMap;
+	}
+
+	private String _formatDate(String value) throws ParseException {
 		SimpleDateFormat sourceFormat = new SimpleDateFormat(
 			"yyyy-MM-dd'T'HH:mm:ss'Z'");
 		SimpleDateFormat targetFormat = new SimpleDateFormat(
@@ -79,7 +99,7 @@ public abstract class BaseTransformer implements MessageProcessor {
 		return targetFormat.format(sourceFormat.parse(value));
 	}
 
-	protected boolean isDate(String key) {
+	private boolean _isDate(String key) {
 		if (ArrayUtil.contains(_DATE_FIELDS, key)) {
 			return true;
 		}

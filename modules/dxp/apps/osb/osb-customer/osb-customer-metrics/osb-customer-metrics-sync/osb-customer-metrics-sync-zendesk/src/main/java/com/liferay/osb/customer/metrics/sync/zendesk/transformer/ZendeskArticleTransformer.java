@@ -56,17 +56,8 @@ public class ZendeskArticleTransformer extends BaseTransformer {
 
 				Object value = articleJSONObject.get(key);
 
-				if (isDate(key) && !articleJSONObject.isNull(key)) {
-					value = formatDate(String.valueOf(value));
-				}
-				else if (value instanceof JSONArray ||
-						 value instanceof JSONObject) {
-
-					columnMap.put(key, String.valueOf(value));
-				}
-				else {
-					columnMap.put(key, value);
-				}
+				columnMap = insertColumnMapValue(
+					columnMap, articleJSONObject, key, value);
 			}
 
 			JSONObject metricsJSONObject = buildMetricsJSONObject(
