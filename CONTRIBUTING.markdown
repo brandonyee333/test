@@ -112,7 +112,7 @@ Submit your custom changes to Github using the following process:
 
 * Create a topic branch to hold your changes based on upstream/master:
 
-      git fetch upstream
+      git fetch --depth 1 upstream
       git checkout -b my-custom-change upstream/master
 
 * Commit logical units of work including a reference to your ticket in JIRA. For
