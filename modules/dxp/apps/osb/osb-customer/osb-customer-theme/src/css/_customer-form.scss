@@ -3,6 +3,7 @@ select.form-control {
 
 	&,
 	&:active,
+	&:disabled,
 	&:focus {
 		background-color: $color-white;
 	}

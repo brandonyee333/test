@@ -20,37 +20,27 @@
 String tabs1 = ParamUtil.getString(request, "tabs1");
 
 String product = ParamUtil.getString(request, "product");
-double toProductVersion = ParamUtil.getDouble(request, "toProductVersion");
+
+double fromFixPackVersion = ParamUtil.getDouble(request, "fromFixPackVersion");
+double fromProductVersion = ParamUtil.getDouble(request, "fromProductVersion");
 double toFixPackVersion = ParamUtil.getDouble(request, "toFixPackVersion");
+double toProductVersion = ParamUtil.getDouble(request, "toProductVersion");
 
 PortletURL portletURL = renderResponse.createRenderURL();
 
 portletURL.setParameter("tabs1", tabs1);
 %>
 
-<h1>
-	<liferay-ui:message key="liferay-dxp-release-notes-tool" />
-</h1>
-
-<strong>Fix Pack Filters:</strong> <%= releaseToolDisplayContext.getFixPackFiltersJSONArray() %>
-
-<br />
-
 <liferay-portlet:renderURL var="fixPacksURL">
-	<portlet:param name="tabs1" value="<%= tabs1 %>" />
-	<portlet:param name="fromFixPackVersion" value="2.0" />
-	<portlet:param name="fromProductVersion" value="7.0" />
-	<portlet:param name="orderByType" value="desc" />
-	<portlet:param name="product" value="dxp" />
-	<portlet:param name="toFixPackVersion" value="1.0" />
-	<portlet:param name="toProductVersion" value="7.1" />
 </liferay-portlet:renderURL>
 
-<strong>Fix Pack Filter Form URL:</strong> <%= fixPacksURL %>
+<div class="main-heading">
+	<h1>
+		<liferay-ui:message key="liferay-dxp-release-notes-tool" />
+	</h1>
+</div>
 
-<br />
-
-<strong>DownloadURL:</strong> <%= releaseToolDisplayContext.getFixPackDownloadURL(product, toProductVersion, toFixPackVersion) %>
+<div class="fixpack-filters" id="<portlet:namespace />fixpackFilters"></div>
 
 <liferay-ui:tabs
 	names='<%= "highlights,changelog,module-changes" %>'
@@ -68,3 +58,19 @@ portletURL.setParameter("tabs1", tabs1);
 		<liferay-util:include page="/highlights.jsp" servletContext="<%= application %>" />
 	</c:otherwise>
 </c:choose>
+
+<aui:script>
+	ReleaseTool.render(
+		ReleaseTool.FixpackFilters,
+		{
+			actionURL: '<%= fixPacksURL %>',
+			filtersJSON: <%= releaseToolDisplayContext.getFixPackFiltersJSONArray() %>,
+			fixpackURL: '<%= releaseToolDisplayContext.getFixPackDownloadURL(product, toProductVersion, toFixPackVersion) %>',
+			fromProductVersion: '<%= String.valueOf(fromProductVersion) %>',
+			fromFixPackVersion: '<%= String.valueOf(fromFixPackVersion) %>',
+			toProductVersion: '<%= String.valueOf(toProductVersion) %>',
+			toFixPackVersion: '<%= String.valueOf(toFixPackVersion) %>'
+		},
+		document.getElementById('<portlet:namespace />fixpackFilters')
+	);
+</aui:script>

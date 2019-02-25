@@ -1,0 +1,91 @@
+.filter {
+	width: 50%;
+
+	&:last-child {
+		border-left: 1px solid rgba(9, 16, 29, 0.11);
+	}
+}
+
+.fixpack-filters {
+	margin-bottom: $margin-default;
+	margin-top: -32px;
+
+	form {
+		width: 80%;
+	}
+
+	form,
+	.btn-lg {
+		display: inline-block;
+		vertical-align: middle;
+	}
+
+	.btn-lg {
+		background-color: $color-white;
+		border: 1px solid rgba(9, 16, 29, 0.11);
+		font-size: $font-size-md;
+		margin-left: $margin-md;
+		padding: 21px $margin-default;
+
+		svg {
+			height: 10px;
+			width: 10px;
+		}
+	}
+}
+
+.search-filters {
+	margin-bottom: 0;
+
+	.search-filter-container {
+		background-color: $color-white;
+		display: flex;
+	}
+}
+
+@include media-breakpoint-down(lg) {
+	.search-filters .search-filter-container {
+		border-left-width: 0;
+
+		&:last-child {
+			margin-top: $margin-md;
+		}
+	}
+}
+
+@include media-breakpoint-down(md) {
+	.filter,
+	.fixpack-filters form {
+		width: 100%;
+	}
+
+	.fixpack-filters {
+		form,
+		.btn-lg {
+			display: block;
+		}
+
+		.btn-lg {
+			margin-left: 0;
+			margin-top: $margin-md;
+		}
+	}
+
+	.search-filters .search-filter-container {
+		border-left-width: 1px;
+		width: 100%;
+	}
+}
+
+@include media-breakpoint-down(sm) {
+	.filter {
+		&:last-child {
+			border-left-width: 0;
+			border-top: 1px solid rgba(9, 16, 29, 0.11);
+		}
+	}
+
+	.search-filters .search-filter-container {
+		display: block;
+	}
+}

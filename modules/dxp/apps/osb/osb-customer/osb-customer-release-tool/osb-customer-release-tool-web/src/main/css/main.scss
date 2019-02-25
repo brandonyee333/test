@@ -3,5 +3,11 @@
 @import "base-variables";
 
 .osb-release-tool-portlet {
+	@import "_fixpack-filters";
 	@import "_highlights";
+
+	.main-heading {
+		background-color: $color-grey;
+		padding: 80px 0 84px;
+	}
 }
