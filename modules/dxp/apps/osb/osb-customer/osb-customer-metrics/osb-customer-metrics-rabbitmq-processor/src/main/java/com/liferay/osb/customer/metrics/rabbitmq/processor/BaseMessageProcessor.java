@@ -30,11 +30,8 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TextFormatter;
 
-import java.io.IOException;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 
 import java.util.HashMap;
@@ -126,9 +123,7 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 		return columnMap;
 	}
 
-	protected String getColumnValue(String sql)
-		throws IOException, SQLException {
-
+	protected String getColumnValue(String sql) throws Exception {
 		Connection connection = null;
 		Statement statement = null;
 
@@ -150,9 +145,6 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 
 				return rs.getString(column);
 			}
-		}
-		catch (Exception e) {
-			_log.error("Unable to connect to data source", e);
 		}
 		finally {
 			DataAccess.cleanUp(connection, statement);
@@ -176,7 +168,7 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 		return "OSB_Metrics" + modelName;
 	}
 
-	protected void runSQL(String sql) throws IOException, SQLException {
+	protected void runSQL(String sql) throws Exception {
 		Connection connection = null;
 		Statement statement = null;
 
@@ -191,9 +183,6 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 			statement = connection.createStatement();
 
 			statement.execute(sql);
-		}
-		catch (Exception e) {
-			_log.error("Unable to connect to data source", e);
 		}
 		finally {
 			DataAccess.cleanUp(connection, statement);
