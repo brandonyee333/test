@@ -55,7 +55,7 @@ String moduleChangesJournalArticleId = portletPreferences.getValue("moduleChange
 %>
 
 <aui:script>
-	window.ReleaseTool = {
+	window.ReleaseToolConstants = {
 		namespace: '${renderResponse.namespace}'
 	};
 </aui:script>
