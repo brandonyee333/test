@@ -19,6 +19,7 @@ import com.liferay.osb.customer.metrics.impl.model.BaseModelMetricsModel;
 import com.liferay.osb.customer.metrics.sync.liferay.model.util.MetricsTransformationUtil;
 import com.liferay.osb.model.AccountEnvironment;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.Map;
 
@@ -47,6 +48,13 @@ public class AccountEnvironmentMetricsModel
 		attributes.put("envJVM", accountEnvironment.getEnvJVMLabel());
 		attributes.put("envLFR", accountEnvironment.getEnvLFRLabel());
 		attributes.put("envOS", accountEnvironment.getEnvOSLabel());
+
+		String envSearchLabels = String.join(
+			StringPool.COMMA, accountEnvironment.getEnvSearchLabels());
+
+		attributes.put("envSearch", envSearchLabels);
+
+		attributes.put("envCommerce", accountEnvironment.getEnvCommerceLabel());
 
 		return attributes;
 	}
