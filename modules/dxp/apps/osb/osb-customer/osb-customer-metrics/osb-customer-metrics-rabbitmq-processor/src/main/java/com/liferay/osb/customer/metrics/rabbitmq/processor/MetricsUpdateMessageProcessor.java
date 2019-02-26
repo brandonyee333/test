@@ -116,22 +116,31 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 
 			String lowercaseKey = StringUtil.toLowerCase(key);
 
-			if (lowercaseKey.contains("classnameid")) {
-				JSONObject valueJSONObject = jsonObject.getJSONObject(key);
-
-				String classNameValue = valueJSONObject.getString("value");
-
-				String classNameId = _getClassNameId(classNameValue);
-
-				if (classNameId != null) {
-					jsonObject.put(key, classNameId);
-				}
-				else {
-					throw new NoSuchClassNameException(
-						"{value=" + classNameValue + "}");
-				}
+			if (lowercaseKey.contains("classname")) {
+				String classNameValue = null;
 
 				String prefix = key.substring(0, key.length() - 6);
+
+				if (key.equals("className")) {
+					classNameValue = jsonObject.getString(key);
+
+					prefix = key.substring(0, key.length() - 4);
+				}
+				else {
+					JSONObject valueJSONObject = jsonObject.getJSONObject(key);
+
+					classNameValue = valueJSONObject.getString("value");
+
+					String classNameId = _getClassNameId(classNameValue);
+
+					if (classNameId != null) {
+						jsonObject.put(key, classNameId);
+					}
+					else {
+						throw new NoSuchClassNameException(
+							"{value=" + classNameValue + "}");
+					}
+				}
 
 				if (classNameValue.equals(User.class.getName())) {
 					Object value = jsonObject.get(prefix + "PK");
