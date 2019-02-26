@@ -1,0 +1,42 @@
+.osb-release-tool-portlet {
+	.fix-pack-details {
+		margin-bottom: $margin-default;
+
+		.fix-pack-version {
+			font-size: 20px;
+			font-weight: $font-weight-semi-bold;
+			line-height: 28px;
+			margin: 0;
+			text-transform: initial;
+		}
+	}
+
+	.highlights-section {
+		font-size: $font-size-default;
+		margin: 8px 0 $margin-default;
+	}
+
+	.highlights-section-title {
+		margin: 0;
+	}
+
+	.lfr-details-column {
+		padding-top: 24px;
+	}
+
+	.lfr-released-column {
+		padding-top: 24px;
+		vertical-align: top;
+	}
+
+	.table {
+		> thead > tr > th {
+			font-weight: $font-weight-semi-bold;
+		}
+
+		> tbody > tr > td:first-child {
+			font-size: $small-font-size;
+			font-weight: $font-weight-normal;
+		}
+	}
+}
