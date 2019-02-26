@@ -38,6 +38,7 @@ exports[`FileDownloads renders multiple downloads correctly 1`] = `
     <a
       class="btn btn-sm btn-link"
       href="group1/link1"
+      role="link"
     >
       download
     </a>
@@ -89,6 +90,7 @@ exports[`FileDownloads renders single download correctly 1`] = `
     <a
       class="btn btn-sm btn-link"
       href="/"
+      role="link"
     >
       download
     </a>

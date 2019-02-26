@@ -27,6 +27,7 @@ exports[`Button renders as a link correctly 1`] = `
   <a
     class="btn btn-md btn-link"
     href="/"
+    role="link"
   >
     Link
   </a>
