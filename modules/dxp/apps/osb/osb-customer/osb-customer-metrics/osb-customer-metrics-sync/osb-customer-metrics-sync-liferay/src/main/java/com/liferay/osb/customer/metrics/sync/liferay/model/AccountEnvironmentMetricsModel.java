@@ -43,6 +43,7 @@ public class AccountEnvironmentMetricsModel
 
 		attributes.put("envAS", accountEnvironment.getEnvASLabel());
 		attributes.put("envBrowser", accountEnvironment.getEnvBrowserLabel());
+		attributes.put("envCommerce", accountEnvironment.getEnvCommerceLabel());
 		attributes.put("envCS", accountEnvironment.getEnvCSLabel());
 		attributes.put("envDB", accountEnvironment.getEnvDBLabel());
 		attributes.put("envJVM", accountEnvironment.getEnvJVMLabel());
@@ -53,8 +54,6 @@ public class AccountEnvironmentMetricsModel
 			StringPool.COMMA, accountEnvironment.getEnvSearchLabels());
 
 		attributes.put("envSearch", envSearchLabels);
-
-		attributes.put("envCommerce", accountEnvironment.getEnvCommerceLabel());
 
 		return attributes;
 	}
