@@ -30,8 +30,8 @@ public class Upgrade_20190226150319201_ExternalIdMapper
 	@Override
 	protected void doUpgrade() throws Exception {
 		runSQL(
-			"delete from OSB_ExternalIdMapper where type_ = 2 or type_ = 4 " +
-				"or type_ = 6");
+			"delete from OSB_ExternalIdMapper where (type_ = 2) or (type_ = " +
+				"4) or (type_ = 6");
 	}
 
 }
