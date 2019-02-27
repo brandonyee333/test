@@ -1,11 +1,22 @@
-<#assign releaseDate_Data = getterUtil.getString(releaseDate.getData())>
+<#assign
+	journalArticleLocalService = serviceLocator.findService("com.liferay.journal.service.JournalArticleLocalService")
+	fixPacksAssetCategoryUtil = serviceLocator.findService("com.liferay.osb.customer.release.tool.web.internal.util.FixPacksAssetCategoryUtil")
+
+	releaseDateData = getterUtil.getString(releaseDate.getData())
+
+	journalArticle = journalArticleLocalService.getArticle(scopeGroupId, .vars['reserved-article-id'].getData())
+
+	fixPackAssetCategory = fixPacksAssetCategoryUtil.fetchFixPackAssetCategory(journalArticle.getResourcePrimKey())
+
+	productAssetCategory = fixPackAssetCategory.getParentCategory()
+/>
 
 <tr class="journal-article-row">
 	<td class="lfr-released-column">
-		<#if validator.isNotNull(releaseDate_Data)>
-			<#assign releaseDate_DateObj = dateUtil.parseDate("yyyy-MM-dd", releaseDate_Data, locale)>
+		<#if validator.isNotNull(releaseDateData)>
+			<#assign releaseDateDateObj = dateUtil.parseDate("yyyy-MM-dd", releaseDateData, locale) />
 
-			${dateUtil.getDate(releaseDate_DateObj, "MMM d, yyyy", locale)}
+			${dateUtil.getDate(releaseDateDateObj, "MMM d, yyyy", locale)}
 		</#if>
 	</td>
 	<td class="lfr-details-column">
@@ -14,8 +25,9 @@
 				${.vars['reserved-article-title'].getData()}
 			</h3>
 
-			<#-- Liferay version goes under here -->
-			<span class="secondary-text-color">ADD JAVA CODE FOR LIFERAY VERSION HERE</span>
+			<span class="secondary-text-color">
+				${productAssetCategory.getTitle(locale)}
+			</span>
 		</div>
 
 		<#if validator.isNull(highlights)>

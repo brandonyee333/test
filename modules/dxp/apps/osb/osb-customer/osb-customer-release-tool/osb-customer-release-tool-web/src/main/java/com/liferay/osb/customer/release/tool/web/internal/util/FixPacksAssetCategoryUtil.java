@@ -15,11 +15,13 @@
 package com.liferay.osb.customer.release.tool.web.internal.util;
 
 import com.liferay.asset.kernel.exception.NoSuchCategoryPropertyException;
+import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetCategoryProperty;
 import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.asset.kernel.service.AssetCategoryPropertyLocalService;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
+import com.liferay.journal.model.JournalArticle;
 import com.liferay.osb.customer.release.tool.web.internal.constants.FixPackAssetCategoryConstants;
 import com.liferay.portal.instances.service.PortalInstancesLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -28,6 +30,7 @@ import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.util.StringPool;
 
+import java.util.List;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Activate;
@@ -41,8 +44,23 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = FixPacksAssetCategoryUtil.class)
 public class FixPacksAssetCategoryUtil {
 
-	public long getFixPacksAssetVocabularyId() {
-		return _fixPacksAssetVocabulary.getVocabularyId();
+	public AssetCategory fetchFixPackAssetCategory(
+			long journalArticleResourcePrimKey)
+		throws PortalException {
+
+		List<AssetCategory> assetCategories =
+			_assetCategoryLocalService.getCategories(
+				JournalArticle.class.getName(), journalArticleResourcePrimKey);
+
+		for (AssetCategory assetCategory : assetCategories) {
+			if (assetCategory.getVocabularyId() ==
+					_fixPacksAssetVocabulary.getVocabularyId()) {
+
+				return assetCategory;
+			}
+		}
+
+		return null;
 	}
 
 	public String getPropertyValue(long assetCategoryId, String key)

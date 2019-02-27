@@ -26,8 +26,6 @@ import com.liferay.portal.kernel.search.IndexerPostProcessor;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.util.List;
-
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -48,23 +46,16 @@ public class JournalArticleIndexerPostProcessor
 
 		JournalArticle journalArticle = (JournalArticle)obj;
 
-		List<AssetCategory> assetCategories =
-			_assetCategoryLocalService.getCategories(
-				JournalArticle.class.getName(),
+		AssetCategory assetCategory =
+			_fixPacksAssetCategoryUtil.fetchFixPackAssetCategory(
 				journalArticle.getResourcePrimKey());
 
-		for (AssetCategory assetCategory : assetCategories) {
-			if (assetCategory.getVocabularyId() ==
-					_fixPacksAssetCategoryUtil.getFixPacksAssetVocabularyId()) {
+		if (assetCategory != null) {
+			String version = _fixPacksAssetCategoryUtil.getPropertyValue(
+				assetCategory.getCategoryId(),
+				FixPackAssetCategoryConstants.PROPERTY_VERSION);
 
-				String version = _fixPacksAssetCategoryUtil.getPropertyValue(
-					assetCategory.getCategoryId(),
-					FixPackAssetCategoryConstants.PROPERTY_VERSION);
-
-				if (Validator.isNull(version)) {
-					continue;
-				}
-
+			if (Validator.isNotNull(version)) {
 				document.addNumber(
 					FixPackField.FIX_PACK_VERSION,
 					GetterUtil.getDouble(version));
