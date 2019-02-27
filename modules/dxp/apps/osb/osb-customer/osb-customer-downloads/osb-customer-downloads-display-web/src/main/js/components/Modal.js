@@ -3,7 +3,16 @@ import PropTypes from 'prop-types';
 
 import getCN from 'classnames';
 
-const Modal = ({children, footer, header, onClose, show, size}) => {
+Modal.propTypes = {
+	children: PropTypes.node.isRequired,
+	footer: PropTypes.node,
+	header: PropTypes.node,
+	onClose: PropTypes.func.isRequired,
+	show: PropTypes.bool.isRequired,
+	size: PropTypes.oneOf(['full-screen', 'lg', 'sm'])
+};
+
+export default function Modal({children, footer, header, onClose, show, size}) {
 	const className = getCN(
 		'modal-dialog',
 		`${size ? `modal-${size}` : ''}`
@@ -41,14 +50,3 @@ const Modal = ({children, footer, header, onClose, show, size}) => {
 		</div>
 	);
 };
-
-Modal.propTypes = {
-	children: PropTypes.node.isRequired,
-	footer: PropTypes.node,
-	header: PropTypes.node,
-	onClose: PropTypes.func.isRequired,
-	show: PropTypes.bool.isRequired,
-	size: PropTypes.oneOf(['full-screen', 'lg', 'sm'])
-};
-
-export default Modal;

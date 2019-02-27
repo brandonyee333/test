@@ -7,11 +7,6 @@ import Button from './Button';
 import Modal from './Modal';
 
 export default class AccountEnvironments extends React.Component {
-	state = {
-		environment: null,
-		showModal: false
-	};
-
 	static defaultProps = {
 		environments: [],
 		permitAdd: false,
@@ -37,6 +32,11 @@ export default class AccountEnvironments extends React.Component {
 		permitAdd: PropTypes.bool,
 		permitDelete: PropTypes.bool,
 		permitEdit: PropTypes.bool
+	};
+
+	state = {
+		environment: null,
+		showModal: false
 	};
 
 	handleCloseModal = () =>
@@ -246,24 +246,24 @@ export default class AccountEnvironments extends React.Component {
 	}
 }
 
-const EnvironmentDetail = props => (
-	<div className="environment-detail">
-		<div className="environment-label">{props.label}</div>
-
-		{props.value && props.href ? (
-			<a href={props.href} target="blank">
-				{props.value}
-			</a>
-		) : (
-			<div>
-				{props.value}
-			</div>
-		)}
-	</div>
-);
-
 EnvironmentDetail.propTypes = {
 	href: PropTypes.string,
 	label: PropTypes.string.isRequired,
 	value: PropTypes.string
 };
+
+function EnvironmentDetail(props) {
+	return (
+		<div className="environment-detail">
+			<div className="environment-label">{props.label}</div>
+
+			{props.value && props.href ? (
+				<a href={props.href} target="blank">
+					{props.value}
+				</a>
+			) : (
+				<div>{props.value}</div>
+			)}
+		</div>
+	);
+}

@@ -77,10 +77,6 @@ class SubscriptionAlert extends React.Component {
 }
 
 export default class SubscriptionMessages extends React.Component {
-	state = {
-		messages: this.props.messages
-	};
-
 	static propTypes = {
 		messages: PropTypes.arrayOf(
 			PropTypes.shape(
@@ -92,6 +88,10 @@ export default class SubscriptionMessages extends React.Component {
 				}
 			)
 		).isRequired
+	};
+
+	state = {
+		messages: this.props.messages
 	};
 
 	handleCloseAlert = (currentId) => {

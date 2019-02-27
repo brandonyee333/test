@@ -11,14 +11,6 @@ import Button from './Button';
 import Modal from './Modal';
 
 class Downloads extends React.Component {
-	state = {
-		agreementContent: '',
-		eulaAccepted: false,
-		metadata: '',
-		showEULA: false,
-		showModal: false
-	}
-
 	static propTypes = {
 		children: PropTypes.array.isRequired,
 		journalArticleId: PropTypes.number.isRequired,
@@ -35,6 +27,14 @@ class Downloads extends React.Component {
 		requiredAgreement: PropTypes.object.isRequired,
 		showDropdown: PropTypes.bool.isRequired
 	};
+
+	state = {
+		agreementContent: '',
+		eulaAccepted: false,
+		metadata: '',
+		showEULA: false,
+		showModal: false
+	}
 
 	componentDidMount() {
 		const {metadata, requiredAgreement} = this.props;
@@ -269,7 +269,34 @@ class Downloads extends React.Component {
 	}
 }
 
-const FileDownloads = props => {
+FileDownloads.propTypes = {
+	downloadGroups: PropTypes.arrayOf(
+		PropTypes.shape(
+			{
+				downloadGroupName: PropTypes.string,
+				downloads: PropTypes.arrayOf(
+					PropTypes.shape(
+						{
+							downloadDetails: PropTypes.object,
+							downloadName: PropTypes.string,
+							downloadURL: PropTypes.string
+						}
+					)
+				)
+			}
+		)
+	).isRequired,
+	journalArticleId: PropTypes.number.isRequired,
+	requiredAgreement: PropTypes.shape(
+		{
+			acceptAgreementURL: PropTypes.string,
+			agreementContentURL: PropTypes.string,
+			verifyAgreementURL: PropTypes.string
+		}
+	).isRequired
+};
+
+export default function FileDownloads(props) {
 	const {downloadGroups, journalArticleId, requiredAgreement} = props;
 
 	let showDropdown = true;
@@ -304,32 +331,3 @@ const FileDownloads = props => {
 		</Downloads>
 	);
 };
-
-FileDownloads.propTypes = {
-	downloadGroups: PropTypes.arrayOf(
-		PropTypes.shape(
-			{
-				downloadGroupName: PropTypes.string,
-				downloads: PropTypes.arrayOf(
-					PropTypes.shape(
-						{
-							downloadDetails: PropTypes.object,
-							downloadName: PropTypes.string,
-							downloadURL: PropTypes.string
-						}
-					)
-				)
-			}
-		)
-	).isRequired,
-	journalArticleId: PropTypes.number.isRequired,
-	requiredAgreement: PropTypes.shape(
-		{
-			acceptAgreementURL: PropTypes.string,
-			agreementContentURL: PropTypes.string,
-			verifyAgreementURL: PropTypes.string
-		}
-	).isRequired
-};
-
-export default FileDownloads;

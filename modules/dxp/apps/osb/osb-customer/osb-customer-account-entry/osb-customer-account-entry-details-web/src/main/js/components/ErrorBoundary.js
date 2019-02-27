@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export default class ErrorBoundary extends React.Component {
+	static propTypes = {
+		children: PropTypes.any
+	};
+
 	state = {
 		error: '',
 		hasError: false,
 		info: ''
-	};
-
-	static propTypes = {
-		children: PropTypes.any
 	};
 
 	componentDidCatch(error, info) {

@@ -3,28 +3,28 @@ import PropTypes from 'prop-types';
 
 import getCN from 'classnames';
 
-const Accordion = props => (
-	<div aria-orientation="vertical" className="panel-group" role="tablist">
-		{props.items.map(
-			(item, index) => (
-				<AccordionItem key={index} body={item.body} title={item.title} />
-			)
-		)}
-	</div>
-);
-
 Accordion.propTypes = {
 	items: PropTypes.array.isRequired
 };
 
-class AccordionItem extends React.Component {
-	state = {
-		expanded: false
-	};
+function Accordion(props) {
+	return (
+		<div aria-orientation="vertical" className="panel-group" role="tablist">
+			{props.items.map((item, index) => (
+				<AccordionItem key={index} body={item.body} title={item.title} />
+			))}
+		</div>
+	);
+}
 
+class AccordionItem extends React.Component {
 	static propTypes = {
 		body: PropTypes.node.isRequired,
 		title: PropTypes.node.isRequired
+	};
+
+	state = {
+		expanded: false
 	};
 
 	handleClick = () => {

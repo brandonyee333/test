@@ -8,6 +8,20 @@ const PORTLET_ID = 'com_liferay_osb_customer_downloads_display_web_DownloadsDisp
 export default class SearchFilters extends React.Component {
 	searchDownloadsFormRef = React.createRef();
 
+	static propTypes = {
+		actionURL: PropTypes.string.isRequired,
+		currentFileTypeAssetCategoryId: PropTypes.string.isRequired,
+		currentProductAssetCategoryId: PropTypes.string.isRequired,
+		productsJSONArray: PropTypes.arrayOf(
+			PropTypes.shape(
+				{
+					name: PropTypes.string,
+					value: PropTypes.string
+				}
+			)
+		).isRequired
+	};
+
 	getFileTypes = (comparator) => {
 		const {productsJSONArray} = this.props;
 
@@ -22,20 +36,6 @@ export default class SearchFilters extends React.Component {
 		availableFileTypes: this.getFileTypes(this.props.currentProductAssetCategoryId),
 		fileTypeAssetCategoryId: this.props.currentFileTypeAssetCategoryId,
 		productAssetCategoryId: this.props.currentProductAssetCategoryId
-	};
-
-	static propTypes = {
-		actionURL: PropTypes.string.isRequired,
-		currentFileTypeAssetCategoryId: PropTypes.string.isRequired,
-		currentProductAssetCategoryId: PropTypes.string.isRequired,
-		productsJSONArray: PropTypes.arrayOf(
-			PropTypes.shape(
-				{
-					name: PropTypes.string,
-					value: PropTypes.string
-				}
-			)
-		).isRequired
 	};
 
 	handleFileTypeChange = event =>
@@ -101,26 +101,6 @@ export default class SearchFilters extends React.Component {
 	}
 }
 
-const Filter = props => (
-	<div className="search-filter-container">
-		<label className="control-label" htmlFor={props.id}>
-			{`${props.label}:`}
-		</label>
-
-		<select className="form-control" id={props.id} name={props.id} onChange={props.onSelectChange} value={props.selectedOption}>
-			<option value="">{`${Liferay.Language.get('select')} ${props.label}`}</option>
-
-			{props.options.map(
-				(option) => {
-					return (
-						<option key={option.value} label={option.name} value={option.value}>{option.name}</option>
-					);
-				}
-			)}
-		</select>
-	</div>
-);
-
 Filter.propTypes = {
 	id: PropTypes.string.isRequired,
 	label: PropTypes.string.isRequired,
@@ -128,3 +108,27 @@ Filter.propTypes = {
 	options: PropTypes.array.isRequired,
 	selectedOption: PropTypes.string.isRequired
 };
+
+function Filter(props) {
+	return (
+		<div className="search-filter-container">
+			<label className="control-label" htmlFor={props.id}>
+				{`${props.label}:`}
+			</label>
+
+			<select className="form-control" id={props.id} name={props.id} onChange={props.onSelectChange} value={props.selectedOption}>
+				<option value="">{`${Liferay.Language.get('select')} ${
+					props.label
+				}`}</option>
+
+				{props.options.map(option => {
+					return (
+						<option key={option.value} label={option.name} value={option.value}>
+							{option.name}
+						</option>
+					);
+				})}
+			</select>
+		</div>
+	);
+}

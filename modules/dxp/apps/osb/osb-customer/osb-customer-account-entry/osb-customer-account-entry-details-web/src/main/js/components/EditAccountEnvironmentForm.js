@@ -22,6 +22,14 @@ export default class EditAccountEnvironmentForm extends React.Component {
 	patchLevelRef = React.createRef();
 	portalExtRef = React.createRef();
 
+	static propTypes = {
+		addEnvironmentURL: PropTypes.string.isRequired,
+		environment: PropTypes.object,
+		environmentConfiguration: PropTypes.object.isRequired,
+		handleCloseModal: PropTypes.func.isRequired,
+		namespace: PropTypes.string.isRequired
+	};
+
 	state = {
 		configurations: {
 			customOS: false,
@@ -47,14 +55,6 @@ export default class EditAccountEnvironmentForm extends React.Component {
 			selectedLFRVersion: null,
 			selectedProduct: null
 		}
-	};
-
-	static propTypes = {
-		addEnvironmentURL: PropTypes.string.isRequired,
-		environment: PropTypes.object,
-		environmentConfiguration: PropTypes.object.isRequired,
-		handleCloseModal: PropTypes.func.isRequired,
-		namespace: PropTypes.string.isRequired
 	};
 
 	componentDidMount() {
