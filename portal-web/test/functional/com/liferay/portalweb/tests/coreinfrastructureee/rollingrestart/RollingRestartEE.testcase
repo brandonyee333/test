@@ -732,7 +732,7 @@ definition {
 			);
 		}
 
-		// Take down cluster2, revert the latest FP and install FP3
+		// Take down cluster2, revert the latest FP and install FP5
 
 		Portlet.shutdownSpecificServer(nodePort = "9080");
 
@@ -740,7 +740,7 @@ definition {
 
 		PatchingTool.installPatchOnSpecificServer(
 			nodePort = "9080",
-			patchFileZipURL = "https://files.liferay.com/private/ee/fix-packs/7.1.10/dxp/liferay-fix-pack-dxp-3-7110.zip"
+			patchFileZipURL = "https://files.liferay.com/private/ee/fix-packs/7.1.10/dxp/liferay-fix-pack-dxp-5-7110.zip"
 		);
 
 		Portlet.startSpecificServer(
@@ -816,7 +816,7 @@ definition {
 			);
 		}
 
-		// Take down cluster1, revert the latest FP and install FP3
+		// Take down cluster1, revert the latest FP and install FP5
 
 		Portlet.shutdownSpecificServer(nodePort = "8080");
 
@@ -824,7 +824,7 @@ definition {
 
 		PatchingTool.installPatchOnSpecificServer(
 			nodePort = "8080",
-			patchFileZipURL = "https://files.liferay.com/private/ee/fix-packs/7.1.10/dxp/liferay-fix-pack-dxp-3-7110.zip"
+			patchFileZipURL = "https://files.liferay.com/private/ee/fix-packs/7.1.10/dxp/liferay-fix-pack-dxp-5-7110.zip"
 		);
 
 		Portlet.startSpecificServer(
@@ -904,7 +904,7 @@ definition {
 			);
 		}
 
-		// Take down cluster3, revert the latest FP and install FP3
+		// Take down cluster3, revert the latest FP and install FP5
 
 		Portlet.shutdownSpecificServer(nodePort = "10080");
 
@@ -912,7 +912,7 @@ definition {
 
 		PatchingTool.installPatchOnSpecificServer(
 			nodePort = "10080",
-			patchFileZipURL = "https://files.liferay.com/private/ee/fix-packs/7.1.10/dxp/liferay-fix-pack-dxp-3-7110.zip"
+			patchFileZipURL = "https://files.liferay.com/private/ee/fix-packs/7.1.10/dxp/liferay-fix-pack-dxp-5-7110.zip"
 		);
 
 		Portlet.startSpecificServer(
