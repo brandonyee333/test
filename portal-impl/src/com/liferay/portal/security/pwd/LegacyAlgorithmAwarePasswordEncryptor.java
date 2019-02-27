@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.exception.PwdEncryptorException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.pwd.PasswordEncryptor;
+import com.liferay.portal.kernel.security.pwd.PasswordEncryptorUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.util.PropsValues;
@@ -91,6 +92,9 @@ public class LegacyAlgorithmAwarePasswordEncryptor
 						"Upgraded password to use algorithm " + algorithm);
 				}
 			}
+		}
+		else if (algorithm.equals(PasswordEncryptorUtil.TYPE_NONE)) {
+			prependAlgorithm = false;
 		}
 
 		String newEncryptedPassword = _parentPasswordEncryptor.encrypt(
