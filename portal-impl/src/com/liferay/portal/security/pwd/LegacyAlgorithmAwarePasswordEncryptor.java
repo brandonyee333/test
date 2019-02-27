@@ -66,30 +66,30 @@ public class LegacyAlgorithmAwarePasswordEncryptor
 
 		boolean prependAlgorithm = true;
 
-		if (Validator.isNotNull(encryptedPassword) &&
-			(encryptedPassword.charAt(0) != CharPool.OPEN_CURLY_BRACE)) {
+		if (Validator.isNotNull(encryptedPassword)) {
+			if (encryptedPassword.charAt(0) != CharPool.OPEN_CURLY_BRACE) {
+				algorithm = PropsValues.PASSWORDS_ENCRYPTION_ALGORITHM_LEGACY;
 
-			algorithm = PropsValues.PASSWORDS_ENCRYPTION_ALGORITHM_LEGACY;
+				prependAlgorithm = false;
 
-			prependAlgorithm = false;
-
-			if (_log.isDebugEnabled()) {
-				_log.debug("Using legacy algorithm " + algorithm);
+				if (_log.isDebugEnabled()) {
+					_log.debug("Using legacy algorithm " + algorithm);
+				}
 			}
-		}
-		else if (Validator.isNotNull(encryptedPassword) &&
-				 (encryptedPassword.charAt(0) == CharPool.OPEN_CURLY_BRACE)) {
+			else {
+				int index = encryptedPassword.indexOf(
+					CharPool.CLOSE_CURLY_BRACE);
 
-			int index = encryptedPassword.indexOf(CharPool.CLOSE_CURLY_BRACE);
+				if (index > 0) {
+					algorithm = encryptedPassword.substring(1, index);
 
-			if (index > 0) {
-				algorithm = encryptedPassword.substring(1, index);
+					encryptedPassword = encryptedPassword.substring(index + 1);
+				}
 
-				encryptedPassword = encryptedPassword.substring(index + 1);
-			}
-
-			if (_log.isDebugEnabled()) {
-				_log.debug("Upgraded password to use algorithm " + algorithm);
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						"Upgraded password to use algorithm " + algorithm);
+				}
 			}
 		}
 
