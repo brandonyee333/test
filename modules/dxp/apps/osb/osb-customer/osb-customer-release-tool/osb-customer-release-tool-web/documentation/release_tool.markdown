@@ -41,8 +41,3 @@ _Fix Packs_ depend on markup that is written in a Freemarker template. To view t
 * Liferay version associated with the fix pack
 * If no highlights, a "No hilights for this release." message
 	* Otherwise, a header and body for _Key Highlights_, _Important Changes_, _Known Issues_, and _Security_ (whichever ones have been filled out when creating the _Fix Pack_ web content)
-
----
-
-#### How Template Works with React
-The template only renders part of the markup for the _Highlights_ tab of the _OSB Release Tool Portlet_. The rest of the markup will be rendered in React. More specifically, React will be used to create a two-column table (_Released_ and _Details_ columns) that will be sortable by _Released Date_. The _Details_ column will host the markup that is rendered by the _OSB Customer Theme - Fix Pack_ template. That is, the markup will reside in the table's _td_ of the second column.
