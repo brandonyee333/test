@@ -166,6 +166,9 @@ public class DownloadsJournalArticleLocalServiceWrapper
 	private DownloadsAssetCategoryUtil _downloadsAssetCategoryUtil;
 
 	@Reference
+	private JournalArticleLocalService _journalArticleLocalService;
+
+	@Reference
 	private ResourcePermissionLocalService _resourcePermissionLocalService;
 
 }
