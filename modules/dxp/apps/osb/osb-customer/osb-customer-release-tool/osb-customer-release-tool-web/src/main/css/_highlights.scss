@@ -1,4 +1,13 @@
 .osb-release-tool-portlet {
+	.detail-body {
+		font-size: $font-size-default;
+		margin: 8px 0 $margin-default;
+	}
+
+	.detail-title {
+		margin: 0;
+	}
+
 	.fix-pack-details {
 		margin-bottom: $margin-default;
 
@@ -11,29 +20,9 @@
 		}
 	}
 
-	.lfr-details-column {
-		padding-top: $padding-default;
-	}
-
-	.lfr-released-column {
-		padding-top: $padding-default;
-		vertical-align: top;
-	}
-
 	.no-highlights {
 		font-size: $font-size-default;
 		font-style: italic;
 		margin-bottom: $margin-default;
-	}
-
-	.table {
-		> thead > tr > th {
-			font-weight: $font-weight-semi-bold;
-		}
-
-		> tbody > tr > td:first-child {
-			font-size: $small-font-size;
-			font-weight: $font-weight-normal;
-		}
 	}
 }
