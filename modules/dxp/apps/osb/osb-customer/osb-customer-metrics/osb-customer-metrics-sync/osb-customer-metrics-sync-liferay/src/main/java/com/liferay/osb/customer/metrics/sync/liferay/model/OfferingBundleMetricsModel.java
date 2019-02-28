@@ -58,6 +58,7 @@ public class OfferingBundleMetricsModel
 
 			Map<String, Object> mappingValue = new HashMap<>();
 
+			mappingValue.put("companyId", offeringBundle.getCompanyId());
 			mappingValue.put(
 				"offeringBundleId", offeringBundle.getOfferingBundleId());
 			mappingValue.put(

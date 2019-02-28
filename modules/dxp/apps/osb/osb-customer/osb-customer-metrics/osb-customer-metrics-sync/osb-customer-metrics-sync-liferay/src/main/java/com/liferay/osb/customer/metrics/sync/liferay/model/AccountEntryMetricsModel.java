@@ -68,6 +68,7 @@ public class AccountEntryMetricsModel
 
 			mappingValue.put(
 				"accountEntryId", accountEntry.getAccountEntryId());
+			mappingValue.put("companyId", accountEntry.getCompanyId());
 			mappingValue.put(
 				"supportRegionId", supportRegion.getSupportRegionId());
 

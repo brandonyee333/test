@@ -60,13 +60,17 @@ public class PartnerEntryMetricsModel
 
 		Map<String, Object> mappingValue = new HashMap<>();
 
-		mappingValue.put("partnerEntryId", partnerEntry.getPartnerEntryId());
-
 		SupportRegion supportRegion = partnerEntry.getSupportRegion();
 
-		mappingValue.put("supportRegionId", supportRegion.getSupportRegionId());
+		if (supportRegion != null) {
+			mappingValue.put("companyId", partnerEntry.getCompanyId());
+			mappingValue.put(
+				"partnerEntryId", partnerEntry.getPartnerEntryId());
+			mappingValue.put(
+				"supportRegionId", supportRegion.getSupportRegionId());
 
-		mappingValues.add(mappingValue);
+			mappingValues.add(mappingValue);
+		}
 
 		return mappingValues;
 	}

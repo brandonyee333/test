@@ -181,16 +181,15 @@ public class MessageFactoryImpl implements MessageFactory {
 				JSONFactoryUtil.createJSONArray();
 
 			for (String mappingTable : metricsModel.getMappingTables()) {
-				JSONObject mappingTableJSONObject =
-					JSONFactoryUtil.createJSONObject();
+				List<Map<String, Object>> mappingTableValues =
+					metricsModel.getMappingValues(model);
 
-				mappingTableJSONObject.put("name", mappingTable);
+				if (mappingTableValues.isEmpty()) {
+					continue;
+				}
 
 				JSONArray mappingTableValuesJSONArray =
 					JSONFactoryUtil.createJSONArray();
-
-				List<Map<String, Object>> mappingTableValues =
-					metricsModel.getMappingValues(model);
 
 				for (Map<String, Object> mappingTableValue :
 						mappingTableValues) {
@@ -209,6 +208,11 @@ public class MessageFactoryImpl implements MessageFactory {
 					mappingTableValuesJSONArray.put(
 						mappingTableValueJSONObject);
 				}
+
+				JSONObject mappingTableJSONObject =
+					JSONFactoryUtil.createJSONObject();
+
+				mappingTableJSONObject.put("name", mappingTable);
 
 				mappingTableJSONObject.put(
 					"values", mappingTableValuesJSONArray);
