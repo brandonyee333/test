@@ -13,12 +13,12 @@ When logged in as an admin, go to _Control Panel_ and click _Go to Other Site_. 
 * Name
 * Key/Value pair
 
-The name should starts with 'Fix Pack ' followed by a number (e.g., _Fix Pack 45_). Only one key/value pair should be entered. _Key_ should be 'version' and _Value_ should be the number of the _Fix Pack_ (following the previous example, '45'). Save the _subcategory_ and continue following the instructions under _Fix Pack Creation_.
+The name should start with 'Fix Pack ' followed by a number (e.g., _Fix Pack 45_). Only one key/value pair should be entered. _Key_ should be 'version' and _Value_ should be the number of the _Fix Pack_ (following the previous example, '45'). Save the _subcategory_ and continue following the instructions under _Fix Pack Creation_.
 
 ---
 
 #### Fix Pack Creation
-Go to _Control Panel_ > _Content_ > _Web Content_. Create a web content using the _OSB Customer Theme - Fix Pack_ structure. The available fields are:
+Go to _Control Panel_ > _Content_ > _Web Content_ on the site where the _OSB Release Tool Portlet_ is. Create a web content using the _OSB Customer Theme - Fix Pack_ structure. The available fields are:
 
 * Title (should be the name of the fix pack)
 * Release Date
@@ -28,16 +28,6 @@ Go to _Control Panel_ > _Content_ > _Web Content_. Create a web content using th
 	* Known Issues
 	* Security
 
-In addition to these fields, there is an option to select a _Fix Pack Subcategory_. Please look at the _Creating a Fix Pack Subcategory_ section of the documentation before proceeding. Under the _Metadata_ section (the section may need to be uncollapsed), click the _Select_ under _Fix Packs (Global)_. This will trigger a popup that shows a folder structure. Expand the folder of whichever _Liferay Version_ the _Fix Pack_ is meant to be associated with, then select the _Fix Pack Version_ (which should match the _Title_ of the web content).
+In addition to these fields, there is an option to select a _Fix Pack Subcategory_. Please look at the [_Creating a Fix Pack Subcategory_](#creating-fix-pack-subcategory) section of the documentation before proceeding. Under the _Metadata_ section (the section may need to be uncollapsed), click the _Select_ under _Fix Packs (Global)_. This will trigger a popup that shows a folder structure. Expand the folder of whichever _Liferay Version_ the _Fix Pack_ is meant to be associated with, then select the _Fix Pack Version_ (which should match the _Title_ of the web content).
 
 After creating a _Fix Pack_, the user should be able to see it in the _OSB Release Tool_ portlet.
-
----
-
-#### OSB Customer Theme - Fix Pack.ftl
-_Fix Packs_ depend on markup that is written in a Freemarker template. To view the template, go to _Control Panel_ > _Content_ > _Web Content_. Click on the ellipsis on top right corner of the page to trigger the dropdown. Click on _Templates_ and searfch for _OSB Customer Theme - Fix Pack_. The markup includes:
-
-* Fix Pack version
-* Liferay version associated with the fix pack
-* If no highlights, a "No hilights for this release." message
-	* Otherwise, a header and body for _Key Highlights_, _Important Changes_, _Known Issues_, and _Security_ (whichever ones have been filled out when creating the _Fix Pack_ web content)
