@@ -29,27 +29,33 @@ import com.liferay.portal.kernel.util.Accessor;
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonIncidentRelImpl")
 @ProviderType
-public interface WatsonIncidentRel extends WatsonIncidentRelModel, PersistedModel {
+public interface WatsonIncidentRel
+	extends WatsonIncidentRelModel, PersistedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonIncidentRelImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<WatsonIncidentRel, Long> WATSON_INCIDENT_REL_ID_ACCESSOR =
-		new Accessor<WatsonIncidentRel, Long>() {
-			@Override
-			public Long get(WatsonIncidentRel watsonIncidentRel) {
-				return watsonIncidentRel.getWatsonIncidentRelId();
-			}
+	public static final Accessor<WatsonIncidentRel, Long>
+		WATSON_INCIDENT_REL_ID_ACCESSOR =
+			new Accessor<WatsonIncidentRel, Long>() {
 
-			@Override
-			public Class<Long> getAttributeClass() {
-				return Long.class;
-			}
+				@Override
+				public Long get(WatsonIncidentRel watsonIncidentRel) {
+					return watsonIncidentRel.getWatsonIncidentRelId();
+				}
 
-			@Override
-			public Class<WatsonIncidentRel> getTypeClass() {
-				return WatsonIncidentRel.class;
-			}
-		};
+				@Override
+				public Class<Long> getAttributeClass() {
+					return Long.class;
+				}
+
+				@Override
+				public Class<WatsonIncidentRel> getTypeClass() {
+					return WatsonIncidentRel.class;
+				}
+
+			};
+
 }

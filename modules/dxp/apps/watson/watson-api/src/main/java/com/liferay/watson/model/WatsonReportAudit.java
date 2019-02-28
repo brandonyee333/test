@@ -29,27 +29,33 @@ import com.liferay.portal.kernel.util.Accessor;
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonReportAuditImpl")
 @ProviderType
-public interface WatsonReportAudit extends WatsonReportAuditModel, PersistedModel {
+public interface WatsonReportAudit
+	extends WatsonReportAuditModel, PersistedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonReportAuditImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<WatsonReportAudit, Long> WATSON_REPORT_AUDIT_ID_ACCESSOR =
-		new Accessor<WatsonReportAudit, Long>() {
-			@Override
-			public Long get(WatsonReportAudit watsonReportAudit) {
-				return watsonReportAudit.getWatsonReportAuditId();
-			}
+	public static final Accessor<WatsonReportAudit, Long>
+		WATSON_REPORT_AUDIT_ID_ACCESSOR =
+			new Accessor<WatsonReportAudit, Long>() {
 
-			@Override
-			public Class<Long> getAttributeClass() {
-				return Long.class;
-			}
+				@Override
+				public Long get(WatsonReportAudit watsonReportAudit) {
+					return watsonReportAudit.getWatsonReportAuditId();
+				}
 
-			@Override
-			public Class<WatsonReportAudit> getTypeClass() {
-				return WatsonReportAudit.class;
-			}
-		};
+				@Override
+				public Class<Long> getAttributeClass() {
+					return Long.class;
+				}
+
+				@Override
+				public Class<WatsonReportAudit> getTypeClass() {
+					return WatsonReportAudit.class;
+				}
+
+			};
+
 }

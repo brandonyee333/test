@@ -34,6 +34,7 @@ import com.liferay.watson.service.WatsonListTypeRelAuditLocalServiceUtil;
 @ProviderType
 public abstract class WatsonListTypeRelAuditBaseImpl
 	extends WatsonListTypeRelAuditModelImpl implements WatsonListTypeRelAudit {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -42,10 +43,13 @@ public abstract class WatsonListTypeRelAuditBaseImpl
 	@Override
 	public void persist() {
 		if (this.isNew()) {
-			WatsonListTypeRelAuditLocalServiceUtil.addWatsonListTypeRelAudit(this);
+			WatsonListTypeRelAuditLocalServiceUtil.addWatsonListTypeRelAudit(
+				this);
 		}
 		else {
-			WatsonListTypeRelAuditLocalServiceUtil.updateWatsonListTypeRelAudit(this);
+			WatsonListTypeRelAuditLocalServiceUtil.updateWatsonListTypeRelAudit(
+				this);
 		}
 	}
+
 }

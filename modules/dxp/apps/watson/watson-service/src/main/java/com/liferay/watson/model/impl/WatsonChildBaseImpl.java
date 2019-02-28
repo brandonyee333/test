@@ -32,8 +32,9 @@ import com.liferay.watson.service.WatsonChildLocalServiceUtil;
  * @generated
  */
 @ProviderType
-public abstract class WatsonChildBaseImpl extends WatsonChildModelImpl
-	implements WatsonChild {
+public abstract class WatsonChildBaseImpl
+	extends WatsonChildModelImpl implements WatsonChild {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -48,4 +49,5 @@ public abstract class WatsonChildBaseImpl extends WatsonChildModelImpl
 			WatsonChildLocalServiceUtil.updateWatsonChild(this);
 		}
 	}
+
 }

@@ -17,7 +17,6 @@ package com.liferay.portal.workflow.kaleo.designer.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -45,8 +44,10 @@ import java.util.Map;
  * @generated
  */
 @ProviderType
-public interface KaleoDraftDefinitionModel extends BaseModel<KaleoDraftDefinition>,
-	GroupedModel, LocalizedModel, ShardedModel {
+public interface KaleoDraftDefinitionModel
+	extends BaseModel<KaleoDraftDefinition>, GroupedModel, LocalizedModel,
+			ShardedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -420,4 +421,5 @@ public interface KaleoDraftDefinitionModel extends BaseModel<KaleoDraftDefinitio
 
 	@Override
 	public String toXmlString();
+
 }

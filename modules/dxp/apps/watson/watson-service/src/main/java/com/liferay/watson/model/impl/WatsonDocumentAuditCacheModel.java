@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.model.WatsonDocumentAudit;
 
 import java.io.Externalizable;
@@ -36,8 +35,9 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public class WatsonDocumentAuditCacheModel implements CacheModel<WatsonDocumentAudit>,
-	Externalizable {
+public class WatsonDocumentAuditCacheModel
+	implements CacheModel<WatsonDocumentAudit>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,9 +48,12 @@ public class WatsonDocumentAuditCacheModel implements CacheModel<WatsonDocumentA
 			return false;
 		}
 
-		WatsonDocumentAuditCacheModel watsonDocumentAuditCacheModel = (WatsonDocumentAuditCacheModel)obj;
+		WatsonDocumentAuditCacheModel watsonDocumentAuditCacheModel =
+			(WatsonDocumentAuditCacheModel)obj;
 
-		if (watsonDocumentAuditId == watsonDocumentAuditCacheModel.watsonDocumentAuditId) {
+		if (watsonDocumentAuditId ==
+				watsonDocumentAuditCacheModel.watsonDocumentAuditId) {
+
 			return true;
 		}
 
@@ -105,7 +108,8 @@ public class WatsonDocumentAuditCacheModel implements CacheModel<WatsonDocumentA
 
 	@Override
 	public WatsonDocumentAudit toEntityModel() {
-		WatsonDocumentAuditImpl watsonDocumentAuditImpl = new WatsonDocumentAuditImpl();
+		WatsonDocumentAuditImpl watsonDocumentAuditImpl =
+			new WatsonDocumentAuditImpl();
 
 		watsonDocumentAuditImpl.setWatsonDocumentAuditId(watsonDocumentAuditId);
 		watsonDocumentAuditImpl.setGroupId(groupId);
@@ -133,8 +137,10 @@ public class WatsonDocumentAuditCacheModel implements CacheModel<WatsonDocumentA
 			watsonDocumentAuditImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
-		watsonDocumentAuditImpl.setParentTypeWatsonListTypeId(parentTypeWatsonListTypeId);
-		watsonDocumentAuditImpl.setSubtypeWatsonListTypeId(subtypeWatsonListTypeId);
+		watsonDocumentAuditImpl.setParentTypeWatsonListTypeId(
+			parentTypeWatsonListTypeId);
+		watsonDocumentAuditImpl.setSubtypeWatsonListTypeId(
+			subtypeWatsonListTypeId);
 		watsonDocumentAuditImpl.setTypeWatsonListTypeId(typeWatsonListTypeId);
 		watsonDocumentAuditImpl.setWatsonChildId(watsonChildId);
 		watsonDocumentAuditImpl.setWatsonDocumentId(watsonDocumentId);
@@ -192,8 +198,7 @@ public class WatsonDocumentAuditCacheModel implements CacheModel<WatsonDocumentA
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonDocumentAuditId);
 
 		objectOutput.writeLong(groupId);
@@ -251,4 +256,5 @@ public class WatsonDocumentAuditCacheModel implements CacheModel<WatsonDocumentA
 	public long receivedDate;
 	public String imagePayload;
 	public int status;
+
 }

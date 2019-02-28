@@ -17,7 +17,6 @@ package com.liferay.watson.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -45,8 +44,10 @@ import java.util.Map;
  * @generated
  */
 @ProviderType
-public interface WatsonIncidentAuditModel extends BaseModel<WatsonIncidentAudit>,
-	GroupedModel, LocalizedModel, ShardedModel {
+public interface WatsonIncidentAuditModel
+	extends BaseModel<WatsonIncidentAudit>, GroupedModel, LocalizedModel,
+			ShardedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -416,8 +417,8 @@ public interface WatsonIncidentAuditModel extends BaseModel<WatsonIncidentAudit>
 	 * @param locale the locale of the language
 	 * @param defaultLocale the default locale
 	 */
-	public void setDescription(String description, Locale locale,
-		Locale defaultLocale);
+	public void setDescription(
+		String description, Locale locale, Locale defaultLocale);
 
 	public void setDescriptionCurrentLanguageId(String languageId);
 
@@ -434,8 +435,8 @@ public interface WatsonIncidentAuditModel extends BaseModel<WatsonIncidentAudit>
 	 * @param descriptionMap the locales and localized descriptions of this watson incident audit
 	 * @param defaultLocale the default locale
 	 */
-	public void setDescriptionMap(Map<Locale, String> descriptionMap,
-		Locale defaultLocale);
+	public void setDescriptionMap(
+		Map<Locale, String> descriptionMap, Locale defaultLocale);
 
 	/**
 	 * Returns the external case ID of this watson incident audit.
@@ -605,4 +606,5 @@ public interface WatsonIncidentAuditModel extends BaseModel<WatsonIncidentAudit>
 
 	@Override
 	public String toXmlString();
+
 }

@@ -32,8 +32,9 @@ import com.liferay.watson.service.WatsonReportLocalServiceUtil;
  * @generated
  */
 @ProviderType
-public abstract class WatsonReportBaseImpl extends WatsonReportModelImpl
-	implements WatsonReport {
+public abstract class WatsonReportBaseImpl
+	extends WatsonReportModelImpl implements WatsonReport {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -48,4 +49,5 @@ public abstract class WatsonReportBaseImpl extends WatsonReportModelImpl
 			WatsonReportLocalServiceUtil.updateWatsonReport(this);
 		}
 	}
+
 }

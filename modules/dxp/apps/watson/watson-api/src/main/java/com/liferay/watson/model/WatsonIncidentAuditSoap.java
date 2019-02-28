@@ -30,7 +30,10 @@ import java.util.List;
  */
 @ProviderType
 public class WatsonIncidentAuditSoap implements Serializable {
-	public static WatsonIncidentAuditSoap toSoapModel(WatsonIncidentAudit model) {
+
+	public static WatsonIncidentAuditSoap toSoapModel(
+		WatsonIncidentAudit model) {
+
 		WatsonIncidentAuditSoap soapModel = new WatsonIncidentAuditSoap();
 
 		soapModel.setWatsonIncidentAuditId(model.getWatsonIncidentAuditId());
@@ -40,10 +43,12 @@ public class WatsonIncidentAuditSoap implements Serializable {
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
-		soapModel.setExternalCaseWatsonListTypeId(model.getExternalCaseWatsonListTypeId());
+		soapModel.setExternalCaseWatsonListTypeId(
+			model.getExternalCaseWatsonListTypeId());
 		soapModel.setSourceWatsonListTypeId(model.getSourceWatsonListTypeId());
 		soapModel.setTypeWatsonListTypeId(model.getTypeWatsonListTypeId());
-		soapModel.setSubtypeWatsonListTypeId(model.getSubtypeWatsonListTypeId());
+		soapModel.setSubtypeWatsonListTypeId(
+			model.getSubtypeWatsonListTypeId());
 		soapModel.setAudienceAdultCount(model.getAudienceAdultCount());
 		soapModel.setAudienceChildCount(model.getAudienceChildCount());
 		soapModel.setVictimAdultCount(model.getVictimAdultCount());
@@ -64,7 +69,9 @@ public class WatsonIncidentAuditSoap implements Serializable {
 
 	public static WatsonIncidentAuditSoap[] toSoapModels(
 		WatsonIncidentAudit[] models) {
-		WatsonIncidentAuditSoap[] soapModels = new WatsonIncidentAuditSoap[models.length];
+
+		WatsonIncidentAuditSoap[] soapModels =
+			new WatsonIncidentAuditSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -75,10 +82,12 @@ public class WatsonIncidentAuditSoap implements Serializable {
 
 	public static WatsonIncidentAuditSoap[][] toSoapModels(
 		WatsonIncidentAudit[][] models) {
+
 		WatsonIncidentAuditSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new WatsonIncidentAuditSoap[models.length][models[0].length];
+			soapModels =
+				new WatsonIncidentAuditSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new WatsonIncidentAuditSoap[0][0];
@@ -93,13 +102,16 @@ public class WatsonIncidentAuditSoap implements Serializable {
 
 	public static WatsonIncidentAuditSoap[] toSoapModels(
 		List<WatsonIncidentAudit> models) {
-		List<WatsonIncidentAuditSoap> soapModels = new ArrayList<WatsonIncidentAuditSoap>(models.size());
+
+		List<WatsonIncidentAuditSoap> soapModels =
+			new ArrayList<WatsonIncidentAuditSoap>(models.size());
 
 		for (WatsonIncidentAudit model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(new WatsonIncidentAuditSoap[soapModels.size()]);
+		return soapModels.toArray(
+			new WatsonIncidentAuditSoap[soapModels.size()]);
 	}
 
 	public WatsonIncidentAuditSoap() {
@@ -175,6 +187,7 @@ public class WatsonIncidentAuditSoap implements Serializable {
 
 	public void setExternalCaseWatsonListTypeId(
 		long externalCaseWatsonListTypeId) {
+
 		_externalCaseWatsonListTypeId = externalCaseWatsonListTypeId;
 	}
 
@@ -339,4 +352,5 @@ public class WatsonIncidentAuditSoap implements Serializable {
 	private double _expenses;
 	private int _incidentStatus;
 	private int _status;
+
 }

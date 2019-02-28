@@ -21,7 +21,6 @@ import com.liferay.akismet.model.AkismetEntry;
 import com.liferay.akismet.model.impl.AkismetEntryImpl;
 import com.liferay.akismet.model.impl.AkismetEntryModelImpl;
 import com.liferay.akismet.service.persistence.AkismetEntryPersistence;
-
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -66,18 +65,24 @@ import java.util.Set;
  * @generated
  */
 @ProviderType
-public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntry>
+public class AkismetEntryPersistenceImpl
+	extends BasePersistenceImpl<AkismetEntry>
 	implements AkismetEntryPersistence {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>AkismetEntryUtil</code> to access the akismet entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY = AkismetEntryImpl.class.getName();
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List1";
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List2";
+	public static final String FINDER_CLASS_NAME_ENTITY =
+		AkismetEntryImpl.class.getName();
+
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List1";
+
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List2";
+
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
@@ -92,8 +97,8 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 	 */
 	@Override
 	public List<AkismetEntry> findByLtModifiedDate(Date modifiedDate) {
-		return findByLtModifiedDate(modifiedDate, QueryUtil.ALL_POS,
-			QueryUtil.ALL_POS, null);
+		return findByLtModifiedDate(
+			modifiedDate, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
@@ -109,8 +114,9 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 	 * @return the range of matching akismet entries
 	 */
 	@Override
-	public List<AkismetEntry> findByLtModifiedDate(Date modifiedDate,
-		int start, int end) {
+	public List<AkismetEntry> findByLtModifiedDate(
+		Date modifiedDate, int start, int end) {
+
 		return findByLtModifiedDate(modifiedDate, start, end, null);
 	}
 
@@ -128,10 +134,12 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 	 * @return the ordered range of matching akismet entries
 	 */
 	@Override
-	public List<AkismetEntry> findByLtModifiedDate(Date modifiedDate,
-		int start, int end, OrderByComparator<AkismetEntry> orderByComparator) {
-		return findByLtModifiedDate(modifiedDate, start, end,
-			orderByComparator, true);
+	public List<AkismetEntry> findByLtModifiedDate(
+		Date modifiedDate, int start, int end,
+		OrderByComparator<AkismetEntry> orderByComparator) {
+
+		return findByLtModifiedDate(
+			modifiedDate, start, end, orderByComparator, true);
 	}
 
 	/**
@@ -149,30 +157,31 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 	 * @return the ordered range of matching akismet entries
 	 */
 	@Override
-	public List<AkismetEntry> findByLtModifiedDate(Date modifiedDate,
-		int start, int end, OrderByComparator<AkismetEntry> orderByComparator,
+	public List<AkismetEntry> findByLtModifiedDate(
+		Date modifiedDate, int start, int end,
+		OrderByComparator<AkismetEntry> orderByComparator,
 		boolean retrieveFromCache) {
+
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		finderPath = _finderPathWithPaginationFindByLtModifiedDate;
 		finderArgs = new Object[] {
-				_getTime(modifiedDate),
-				
-				start, end, orderByComparator
-			};
+			_getTime(modifiedDate), start, end, orderByComparator
+		};
 
 		List<AkismetEntry> list = null;
 
 		if (retrieveFromCache) {
-			list = (List<AkismetEntry>)finderCache.getResult(finderPath,
-					finderArgs, this);
+			list = (List<AkismetEntry>)finderCache.getResult(
+				finderPath, finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (AkismetEntry akismetEntry : list) {
-					if ((modifiedDate.getTime() <= akismetEntry.getModifiedDate()
-																   .getTime())) {
+					if ((modifiedDate.getTime() <=
+							akismetEntry.getModifiedDate().getTime())) {
+
 						list = null;
 
 						break;
@@ -185,8 +194,8 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 			StringBundler query = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(3 +
-						(orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(
+					3 + (orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
 				query = new StringBundler(3);
@@ -206,11 +215,10 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 			}
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else
-			 if (pagination) {
+			else if (pagination) {
 				query.append(AkismetEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -230,16 +238,16 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 				}
 
 				if (!pagination) {
-					list = (List<AkismetEntry>)QueryUtil.list(q, getDialect(),
-							start, end, false);
+					list = (List<AkismetEntry>)QueryUtil.list(
+						q, getDialect(), start, end, false);
 
 					Collections.sort(list);
 
 					list = Collections.unmodifiableList(list);
 				}
 				else {
-					list = (List<AkismetEntry>)QueryUtil.list(q, getDialect(),
-							start, end);
+					list = (List<AkismetEntry>)QueryUtil.list(
+						q, getDialect(), start, end);
 				}
 
 				cacheResult(list);
@@ -268,11 +276,13 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 	 * @throws NoSuchAkismetEntryException if a matching akismet entry could not be found
 	 */
 	@Override
-	public AkismetEntry findByLtModifiedDate_First(Date modifiedDate,
-		OrderByComparator<AkismetEntry> orderByComparator)
+	public AkismetEntry findByLtModifiedDate_First(
+			Date modifiedDate,
+			OrderByComparator<AkismetEntry> orderByComparator)
 		throws NoSuchAkismetEntryException {
-		AkismetEntry akismetEntry = fetchByLtModifiedDate_First(modifiedDate,
-				orderByComparator);
+
+		AkismetEntry akismetEntry = fetchByLtModifiedDate_First(
+			modifiedDate, orderByComparator);
 
 		if (akismetEntry != null) {
 			return akismetEntry;
@@ -298,10 +308,11 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 	 * @return the first matching akismet entry, or <code>null</code> if a matching akismet entry could not be found
 	 */
 	@Override
-	public AkismetEntry fetchByLtModifiedDate_First(Date modifiedDate,
-		OrderByComparator<AkismetEntry> orderByComparator) {
-		List<AkismetEntry> list = findByLtModifiedDate(modifiedDate, 0, 1,
-				orderByComparator);
+	public AkismetEntry fetchByLtModifiedDate_First(
+		Date modifiedDate, OrderByComparator<AkismetEntry> orderByComparator) {
+
+		List<AkismetEntry> list = findByLtModifiedDate(
+			modifiedDate, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -319,11 +330,13 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 	 * @throws NoSuchAkismetEntryException if a matching akismet entry could not be found
 	 */
 	@Override
-	public AkismetEntry findByLtModifiedDate_Last(Date modifiedDate,
-		OrderByComparator<AkismetEntry> orderByComparator)
+	public AkismetEntry findByLtModifiedDate_Last(
+			Date modifiedDate,
+			OrderByComparator<AkismetEntry> orderByComparator)
 		throws NoSuchAkismetEntryException {
-		AkismetEntry akismetEntry = fetchByLtModifiedDate_Last(modifiedDate,
-				orderByComparator);
+
+		AkismetEntry akismetEntry = fetchByLtModifiedDate_Last(
+			modifiedDate, orderByComparator);
 
 		if (akismetEntry != null) {
 			return akismetEntry;
@@ -349,16 +362,17 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 	 * @return the last matching akismet entry, or <code>null</code> if a matching akismet entry could not be found
 	 */
 	@Override
-	public AkismetEntry fetchByLtModifiedDate_Last(Date modifiedDate,
-		OrderByComparator<AkismetEntry> orderByComparator) {
+	public AkismetEntry fetchByLtModifiedDate_Last(
+		Date modifiedDate, OrderByComparator<AkismetEntry> orderByComparator) {
+
 		int count = countByLtModifiedDate(modifiedDate);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<AkismetEntry> list = findByLtModifiedDate(modifiedDate, count - 1,
-				count, orderByComparator);
+		List<AkismetEntry> list = findByLtModifiedDate(
+			modifiedDate, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -378,9 +392,10 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 	 */
 	@Override
 	public AkismetEntry[] findByLtModifiedDate_PrevAndNext(
-		long akismetEntryId, Date modifiedDate,
-		OrderByComparator<AkismetEntry> orderByComparator)
+			long akismetEntryId, Date modifiedDate,
+			OrderByComparator<AkismetEntry> orderByComparator)
 		throws NoSuchAkismetEntryException {
+
 		AkismetEntry akismetEntry = findByPrimaryKey(akismetEntryId);
 
 		Session session = null;
@@ -390,13 +405,13 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 
 			AkismetEntry[] array = new AkismetEntryImpl[3];
 
-			array[0] = getByLtModifiedDate_PrevAndNext(session, akismetEntry,
-					modifiedDate, orderByComparator, true);
+			array[0] = getByLtModifiedDate_PrevAndNext(
+				session, akismetEntry, modifiedDate, orderByComparator, true);
 
 			array[1] = akismetEntry;
 
-			array[2] = getByLtModifiedDate_PrevAndNext(session, akismetEntry,
-					modifiedDate, orderByComparator, false);
+			array[2] = getByLtModifiedDate_PrevAndNext(
+				session, akismetEntry, modifiedDate, orderByComparator, false);
 
 			return array;
 		}
@@ -408,14 +423,15 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 		}
 	}
 
-	protected AkismetEntry getByLtModifiedDate_PrevAndNext(Session session,
-		AkismetEntry akismetEntry, Date modifiedDate,
+	protected AkismetEntry getByLtModifiedDate_PrevAndNext(
+		Session session, AkismetEntry akismetEntry, Date modifiedDate,
 		OrderByComparator<AkismetEntry> orderByComparator, boolean previous) {
+
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
-			query = new StringBundler(4 +
-					(orderByComparator.getOrderByConditionFields().length * 3) +
+			query = new StringBundler(
+				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
@@ -436,7 +452,8 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 		}
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
 				query.append(WHERE_AND);
@@ -508,8 +525,9 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 		}
 
 		if (orderByComparator != null) {
-			for (Object orderByConditionValue : orderByComparator.getOrderByConditionValues(
-					akismetEntry)) {
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(akismetEntry)) {
+
 				qPos.add(orderByConditionValue);
 			}
 		}
@@ -531,8 +549,10 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 	 */
 	@Override
 	public void removeByLtModifiedDate(Date modifiedDate) {
-		for (AkismetEntry akismetEntry : findByLtModifiedDate(modifiedDate,
-				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+		for (AkismetEntry akismetEntry :
+				findByLtModifiedDate(
+					modifiedDate, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+
 			remove(akismetEntry);
 		}
 	}
@@ -547,7 +567,7 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 	public int countByLtModifiedDate(Date modifiedDate) {
 		FinderPath finderPath = _finderPathWithPaginationCountByLtModifiedDate;
 
-		Object[] finderArgs = new Object[] { _getTime(modifiedDate) };
+		Object[] finderArgs = new Object[] {_getTime(modifiedDate)};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
@@ -599,8 +619,12 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_LTMODIFIEDDATE_MODIFIEDDATE_1 = "akismetEntry.modifiedDate IS NULL";
-	private static final String _FINDER_COLUMN_LTMODIFIEDDATE_MODIFIEDDATE_2 = "akismetEntry.modifiedDate < ?";
+	private static final String _FINDER_COLUMN_LTMODIFIEDDATE_MODIFIEDDATE_1 =
+		"akismetEntry.modifiedDate IS NULL";
+
+	private static final String _FINDER_COLUMN_LTMODIFIEDDATE_MODIFIEDDATE_2 =
+		"akismetEntry.modifiedDate < ?";
+
 	private FinderPath _finderPathFetchByC_C;
 	private FinderPath _finderPathCountByC_C;
 
@@ -615,6 +639,7 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 	@Override
 	public AkismetEntry findByC_C(long classNameId, long classPK)
 		throws NoSuchAkismetEntryException {
+
 		AkismetEntry akismetEntry = fetchByC_C(classNameId, classPK);
 
 		if (akismetEntry == null) {
@@ -661,22 +686,24 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 	 * @return the matching akismet entry, or <code>null</code> if a matching akismet entry could not be found
 	 */
 	@Override
-	public AkismetEntry fetchByC_C(long classNameId, long classPK,
-		boolean retrieveFromCache) {
-		Object[] finderArgs = new Object[] { classNameId, classPK };
+	public AkismetEntry fetchByC_C(
+		long classNameId, long classPK, boolean retrieveFromCache) {
+
+		Object[] finderArgs = new Object[] {classNameId, classPK};
 
 		Object result = null;
 
 		if (retrieveFromCache) {
-			result = finderCache.getResult(_finderPathFetchByC_C, finderArgs,
-					this);
+			result = finderCache.getResult(
+				_finderPathFetchByC_C, finderArgs, this);
 		}
 
 		if (result instanceof AkismetEntry) {
 			AkismetEntry akismetEntry = (AkismetEntry)result;
 
 			if ((classNameId != akismetEntry.getClassNameId()) ||
-					(classPK != akismetEntry.getClassPK())) {
+				(classPK != akismetEntry.getClassPK())) {
+
 				result = null;
 			}
 		}
@@ -708,8 +735,8 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 				List<AkismetEntry> list = q.list();
 
 				if (list.isEmpty()) {
-					finderCache.putResult(_finderPathFetchByC_C, finderArgs,
-						list);
+					finderCache.putResult(
+						_finderPathFetchByC_C, finderArgs, list);
 				}
 				else {
 					if (list.size() > 1) {
@@ -718,8 +745,8 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 						if (_log.isWarnEnabled()) {
 							_log.warn(
 								"AkismetEntryPersistenceImpl.fetchByC_C(long, long, boolean) with parameters (" +
-								StringUtil.merge(finderArgs) +
-								") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+									StringUtil.merge(finderArgs) +
+										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
 						}
 					}
 
@@ -758,6 +785,7 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 	@Override
 	public AkismetEntry removeByC_C(long classNameId, long classPK)
 		throws NoSuchAkismetEntryException {
+
 		AkismetEntry akismetEntry = findByC_C(classNameId, classPK);
 
 		return remove(akismetEntry);
@@ -774,7 +802,7 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 	public int countByC_C(long classNameId, long classPK) {
 		FinderPath finderPath = _finderPathCountByC_C;
 
-		Object[] finderArgs = new Object[] { classNameId, classPK };
+		Object[] finderArgs = new Object[] {classNameId, classPK};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
@@ -819,15 +847,18 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_C_C_CLASSNAMEID_2 = "akismetEntry.classNameId = ? AND ";
-	private static final String _FINDER_COLUMN_C_C_CLASSPK_2 = "akismetEntry.classPK = ?";
+	private static final String _FINDER_COLUMN_C_C_CLASSNAMEID_2 =
+		"akismetEntry.classNameId = ? AND ";
+
+	private static final String _FINDER_COLUMN_C_C_CLASSPK_2 =
+		"akismetEntry.classPK = ?";
 
 	public AkismetEntryPersistenceImpl() {
 		setModelClass(AkismetEntry.class);
 
 		try {
 			Field field = BasePersistenceImpl.class.getDeclaredField(
-					"_dbColumnNames");
+				"_dbColumnNames");
 
 			field.setAccessible(true);
 
@@ -851,13 +882,16 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 	 */
 	@Override
 	public void cacheResult(AkismetEntry akismetEntry) {
-		entityCache.putResult(AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AkismetEntryImpl.class, akismetEntry.getPrimaryKey(), akismetEntry);
+		entityCache.putResult(
+			AkismetEntryModelImpl.ENTITY_CACHE_ENABLED, AkismetEntryImpl.class,
+			akismetEntry.getPrimaryKey(), akismetEntry);
 
-		finderCache.putResult(_finderPathFetchByC_C,
+		finderCache.putResult(
+			_finderPathFetchByC_C,
 			new Object[] {
 				akismetEntry.getClassNameId(), akismetEntry.getClassPK()
-			}, akismetEntry);
+			},
+			akismetEntry);
 
 		akismetEntry.resetOriginalValues();
 	}
@@ -871,8 +905,10 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 	public void cacheResult(List<AkismetEntry> akismetEntries) {
 		for (AkismetEntry akismetEntry : akismetEntries) {
 			if (entityCache.getResult(
-						AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
-						AkismetEntryImpl.class, akismetEntry.getPrimaryKey()) == null) {
+					AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
+					AkismetEntryImpl.class, akismetEntry.getPrimaryKey()) ==
+						null) {
+
 				cacheResult(akismetEntry);
 			}
 			else {
@@ -906,8 +942,9 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 	 */
 	@Override
 	public void clearCache(AkismetEntry akismetEntry) {
-		entityCache.removeResult(AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AkismetEntryImpl.class, akismetEntry.getPrimaryKey());
+		entityCache.removeResult(
+			AkismetEntryModelImpl.ENTITY_CACHE_ENABLED, AkismetEntryImpl.class,
+			akismetEntry.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -921,7 +958,8 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (AkismetEntry akismetEntry : akismetEntries) {
-			entityCache.removeResult(AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
+			entityCache.removeResult(
+				AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
 				AkismetEntryImpl.class, akismetEntry.getPrimaryKey());
 
 			clearUniqueFindersCache((AkismetEntryModelImpl)akismetEntry, true);
@@ -930,35 +968,38 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 
 	protected void cacheUniqueFindersCache(
 		AkismetEntryModelImpl akismetEntryModelImpl) {
-		Object[] args = new Object[] {
-				akismetEntryModelImpl.getClassNameId(),
-				akismetEntryModelImpl.getClassPK()
-			};
 
-		finderCache.putResult(_finderPathCountByC_C, args, Long.valueOf(1),
-			false);
-		finderCache.putResult(_finderPathFetchByC_C, args,
-			akismetEntryModelImpl, false);
+		Object[] args = new Object[] {
+			akismetEntryModelImpl.getClassNameId(),
+			akismetEntryModelImpl.getClassPK()
+		};
+
+		finderCache.putResult(
+			_finderPathCountByC_C, args, Long.valueOf(1), false);
+		finderCache.putResult(
+			_finderPathFetchByC_C, args, akismetEntryModelImpl, false);
 	}
 
 	protected void clearUniqueFindersCache(
 		AkismetEntryModelImpl akismetEntryModelImpl, boolean clearCurrent) {
+
 		if (clearCurrent) {
 			Object[] args = new Object[] {
-					akismetEntryModelImpl.getClassNameId(),
-					akismetEntryModelImpl.getClassPK()
-				};
+				akismetEntryModelImpl.getClassNameId(),
+				akismetEntryModelImpl.getClassPK()
+			};
 
 			finderCache.removeResult(_finderPathCountByC_C, args);
 			finderCache.removeResult(_finderPathFetchByC_C, args);
 		}
 
 		if ((akismetEntryModelImpl.getColumnBitmask() &
-				_finderPathFetchByC_C.getColumnBitmask()) != 0) {
+			 _finderPathFetchByC_C.getColumnBitmask()) != 0) {
+
 			Object[] args = new Object[] {
-					akismetEntryModelImpl.getOriginalClassNameId(),
-					akismetEntryModelImpl.getOriginalClassPK()
-				};
+				akismetEntryModelImpl.getOriginalClassNameId(),
+				akismetEntryModelImpl.getOriginalClassPK()
+			};
 
 			finderCache.removeResult(_finderPathCountByC_C, args);
 			finderCache.removeResult(_finderPathFetchByC_C, args);
@@ -991,6 +1032,7 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 	@Override
 	public AkismetEntry remove(long akismetEntryId)
 		throws NoSuchAkismetEntryException {
+
 		return remove((Serializable)akismetEntryId);
 	}
 
@@ -1004,21 +1046,22 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 	@Override
 	public AkismetEntry remove(Serializable primaryKey)
 		throws NoSuchAkismetEntryException {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			AkismetEntry akismetEntry = (AkismetEntry)session.get(AkismetEntryImpl.class,
-					primaryKey);
+			AkismetEntry akismetEntry = (AkismetEntry)session.get(
+				AkismetEntryImpl.class, primaryKey);
 
 			if (akismetEntry == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchAkismetEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					primaryKey);
+				throw new NoSuchAkismetEntryException(
+					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			return remove(akismetEntry);
@@ -1042,8 +1085,8 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 			session = openSession();
 
 			if (!session.contains(akismetEntry)) {
-				akismetEntry = (AkismetEntry)session.get(AkismetEntryImpl.class,
-						akismetEntry.getPrimaryKeyObj());
+				akismetEntry = (AkismetEntry)session.get(
+					AkismetEntryImpl.class, akismetEntry.getPrimaryKeyObj());
 			}
 
 			if (akismetEntry != null) {
@@ -1072,19 +1115,21 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 			InvocationHandler invocationHandler = null;
 
 			if (ProxyUtil.isProxyClass(akismetEntry.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(akismetEntry);
+				invocationHandler = ProxyUtil.getInvocationHandler(
+					akismetEntry);
 
 				throw new IllegalArgumentException(
 					"Implement ModelWrapper in akismetEntry proxy " +
-					invocationHandler.getClass());
+						invocationHandler.getClass());
 			}
 
 			throw new IllegalArgumentException(
 				"Implement ModelWrapper in custom AkismetEntry implementation " +
-				akismetEntry.getClass());
+					akismetEntry.getClass());
 		}
 
-		AkismetEntryModelImpl akismetEntryModelImpl = (AkismetEntryModelImpl)akismetEntry;
+		AkismetEntryModelImpl akismetEntryModelImpl =
+			(AkismetEntryModelImpl)akismetEntry;
 
 		Session session = null;
 
@@ -1112,16 +1157,15 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 		if (!AkismetEntryModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
-		else
-		 if (isNew) {
+		else if (isNew) {
 			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(_finderPathWithoutPaginationFindAll,
-				FINDER_ARGS_EMPTY);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
-			AkismetEntryImpl.class, akismetEntry.getPrimaryKey(), akismetEntry,
-			false);
+		entityCache.putResult(
+			AkismetEntryModelImpl.ENTITY_CACHE_ENABLED, AkismetEntryImpl.class,
+			akismetEntry.getPrimaryKey(), akismetEntry, false);
 
 		clearUniqueFindersCache(akismetEntryModelImpl, false);
 		cacheUniqueFindersCache(akismetEntryModelImpl);
@@ -1141,6 +1185,7 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 	@Override
 	public AkismetEntry findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchAkismetEntryException {
+
 		AkismetEntry akismetEntry = fetchByPrimaryKey(primaryKey);
 
 		if (akismetEntry == null) {
@@ -1148,8 +1193,8 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchAkismetEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				primaryKey);
+			throw new NoSuchAkismetEntryException(
+				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 		}
 
 		return akismetEntry;
@@ -1165,6 +1210,7 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 	@Override
 	public AkismetEntry findByPrimaryKey(long akismetEntryId)
 		throws NoSuchAkismetEntryException {
+
 		return findByPrimaryKey((Serializable)akismetEntryId);
 	}
 
@@ -1176,8 +1222,9 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 	 */
 	@Override
 	public AkismetEntry fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
-				AkismetEntryImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(
+			AkismetEntryModelImpl.ENTITY_CACHE_ENABLED, AkismetEntryImpl.class,
+			primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -1191,19 +1238,21 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 			try {
 				session = openSession();
 
-				akismetEntry = (AkismetEntry)session.get(AkismetEntryImpl.class,
-						primaryKey);
+				akismetEntry = (AkismetEntry)session.get(
+					AkismetEntryImpl.class, primaryKey);
 
 				if (akismetEntry != null) {
 					cacheResult(akismetEntry);
 				}
 				else {
-					entityCache.putResult(AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(
+						AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
 						AkismetEntryImpl.class, primaryKey, nullModel);
 				}
 			}
 			catch (Exception e) {
-				entityCache.removeResult(AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.removeResult(
+					AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
 					AkismetEntryImpl.class, primaryKey);
 
 				throw processException(e);
@@ -1230,11 +1279,13 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 	@Override
 	public Map<Serializable, AkismetEntry> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, AkismetEntry> map = new HashMap<Serializable, AkismetEntry>();
+		Map<Serializable, AkismetEntry> map =
+			new HashMap<Serializable, AkismetEntry>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
@@ -1253,8 +1304,9 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
-					AkismetEntryImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(
+				AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
+				AkismetEntryImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -1274,8 +1326,8 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 			return map;
 		}
 
-		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
-				1);
+		StringBundler query = new StringBundler(
+			uncachedPrimaryKeys.size() * 2 + 1);
 
 		query.append(_SQL_SELECT_AKISMETENTRY_WHERE_PKS_IN);
 
@@ -1307,7 +1359,8 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(
+					AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
 					AkismetEntryImpl.class, primaryKey, nullModel);
 			}
 		}
@@ -1360,8 +1413,9 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 	 * @return the ordered range of akismet entries
 	 */
 	@Override
-	public List<AkismetEntry> findAll(int start, int end,
-		OrderByComparator<AkismetEntry> orderByComparator) {
+	public List<AkismetEntry> findAll(
+		int start, int end, OrderByComparator<AkismetEntry> orderByComparator) {
+
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -1379,29 +1433,31 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 	 * @return the ordered range of akismet entries
 	 */
 	@Override
-	public List<AkismetEntry> findAll(int start, int end,
-		OrderByComparator<AkismetEntry> orderByComparator,
+	public List<AkismetEntry> findAll(
+		int start, int end, OrderByComparator<AkismetEntry> orderByComparator,
 		boolean retrieveFromCache) {
+
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
+			(orderByComparator == null)) {
+
 			pagination = false;
 			finderPath = _finderPathWithoutPaginationFindAll;
 			finderArgs = FINDER_ARGS_EMPTY;
 		}
 		else {
 			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] { start, end, orderByComparator };
+			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<AkismetEntry> list = null;
 
 		if (retrieveFromCache) {
-			list = (List<AkismetEntry>)finderCache.getResult(finderPath,
-					finderArgs, this);
+			list = (List<AkismetEntry>)finderCache.getResult(
+				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
@@ -1409,13 +1465,13 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(2 +
-						(orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(
+					2 + (orderByComparator.getOrderByFields().length * 2));
 
 				query.append(_SQL_SELECT_AKISMETENTRY);
 
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
 				sql = query.toString();
 			}
@@ -1435,16 +1491,16 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 				Query q = session.createQuery(sql);
 
 				if (!pagination) {
-					list = (List<AkismetEntry>)QueryUtil.list(q, getDialect(),
-							start, end, false);
+					list = (List<AkismetEntry>)QueryUtil.list(
+						q, getDialect(), start, end, false);
 
 					Collections.sort(list);
 
 					list = Collections.unmodifiableList(list);
 				}
 				else {
-					list = (List<AkismetEntry>)QueryUtil.list(q, getDialect(),
-							start, end);
+					list = (List<AkismetEntry>)QueryUtil.list(
+						q, getDialect(), start, end);
 				}
 
 				cacheResult(list);
@@ -1482,8 +1538,8 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(_finderPathCountAll,
-				FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(
+			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -1495,11 +1551,12 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 
 				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(_finderPathCountAll, FINDER_ARGS_EMPTY,
-					count);
+				finderCache.putResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
+				finderCache.removeResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
 				throw processException(e);
 			}
@@ -1525,49 +1582,51 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 	 * Initializes the akismet entry persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
-				AkismetEntryModelImpl.FINDER_CACHE_ENABLED,
-				AkismetEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-				"findAll", new String[0]);
+		_finderPathWithPaginationFindAll = new FinderPath(
+			AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
+			AkismetEntryModelImpl.FINDER_CACHE_ENABLED, AkismetEntryImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
-				AkismetEntryModelImpl.FINDER_CACHE_ENABLED,
-				AkismetEntryImpl.class,
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-				new String[0]);
+		_finderPathWithoutPaginationFindAll = new FinderPath(
+			AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
+			AkismetEntryModelImpl.FINDER_CACHE_ENABLED, AkismetEntryImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+			new String[0]);
 
-		_finderPathCountAll = new FinderPath(AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
-				AkismetEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-				new String[0]);
+		_finderPathCountAll = new FinderPath(
+			AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
+			AkismetEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+			new String[0]);
 
-		_finderPathWithPaginationFindByLtModifiedDate = new FinderPath(AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
-				AkismetEntryModelImpl.FINDER_CACHE_ENABLED,
-				AkismetEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-				"findByLtModifiedDate",
-				new String[] {
-					Date.class.getName(),
-					
-				Integer.class.getName(), Integer.class.getName(),
-					OrderByComparator.class.getName()
-				});
+		_finderPathWithPaginationFindByLtModifiedDate = new FinderPath(
+			AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
+			AkismetEntryModelImpl.FINDER_CACHE_ENABLED, AkismetEntryImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByLtModifiedDate",
+			new String[] {
+				Date.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			});
 
-		_finderPathWithPaginationCountByLtModifiedDate = new FinderPath(AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
-				AkismetEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-				FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-				"countByLtModifiedDate", new String[] { Date.class.getName() });
+		_finderPathWithPaginationCountByLtModifiedDate = new FinderPath(
+			AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
+			AkismetEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByLtModifiedDate",
+			new String[] {Date.class.getName()});
 
-		_finderPathFetchByC_C = new FinderPath(AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
-				AkismetEntryModelImpl.FINDER_CACHE_ENABLED,
-				AkismetEntryImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByC_C",
-				new String[] { Long.class.getName(), Long.class.getName() },
-				AkismetEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-				AkismetEntryModelImpl.CLASSPK_COLUMN_BITMASK);
+		_finderPathFetchByC_C = new FinderPath(
+			AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
+			AkismetEntryModelImpl.FINDER_CACHE_ENABLED, AkismetEntryImpl.class,
+			FINDER_CLASS_NAME_ENTITY, "fetchByC_C",
+			new String[] {Long.class.getName(), Long.class.getName()},
+			AkismetEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+			AkismetEntryModelImpl.CLASSPK_COLUMN_BITMASK);
 
-		_finderPathCountByC_C = new FinderPath(AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
-				AkismetEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",
-				new String[] { Long.class.getName(), Long.class.getName() });
+		_finderPathCountByC_C = new FinderPath(
+			AkismetEntryModelImpl.ENTITY_CACHE_ENABLED,
+			AkismetEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",
+			new String[] {Long.class.getName(), Long.class.getName()});
 	}
 
 	public void destroy() {
@@ -1579,6 +1638,7 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
+
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
 
@@ -1590,16 +1650,33 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 		return date.getTime();
 	}
 
-	private static final String _SQL_SELECT_AKISMETENTRY = "SELECT akismetEntry FROM AkismetEntry akismetEntry";
-	private static final String _SQL_SELECT_AKISMETENTRY_WHERE_PKS_IN = "SELECT akismetEntry FROM AkismetEntry akismetEntry WHERE akismetEntryId IN (";
-	private static final String _SQL_SELECT_AKISMETENTRY_WHERE = "SELECT akismetEntry FROM AkismetEntry akismetEntry WHERE ";
-	private static final String _SQL_COUNT_AKISMETENTRY = "SELECT COUNT(akismetEntry) FROM AkismetEntry akismetEntry";
-	private static final String _SQL_COUNT_AKISMETENTRY_WHERE = "SELECT COUNT(akismetEntry) FROM AkismetEntry akismetEntry WHERE ";
+	private static final String _SQL_SELECT_AKISMETENTRY =
+		"SELECT akismetEntry FROM AkismetEntry akismetEntry";
+
+	private static final String _SQL_SELECT_AKISMETENTRY_WHERE_PKS_IN =
+		"SELECT akismetEntry FROM AkismetEntry akismetEntry WHERE akismetEntryId IN (";
+
+	private static final String _SQL_SELECT_AKISMETENTRY_WHERE =
+		"SELECT akismetEntry FROM AkismetEntry akismetEntry WHERE ";
+
+	private static final String _SQL_COUNT_AKISMETENTRY =
+		"SELECT COUNT(akismetEntry) FROM AkismetEntry akismetEntry";
+
+	private static final String _SQL_COUNT_AKISMETENTRY_WHERE =
+		"SELECT COUNT(akismetEntry) FROM AkismetEntry akismetEntry WHERE ";
+
 	private static final String _ORDER_BY_ENTITY_ALIAS = "akismetEntry.";
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No AkismetEntry exists with the primary key ";
-	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No AkismetEntry exists with the key {";
-	private static final Log _log = LogFactoryUtil.getLog(AkismetEntryPersistenceImpl.class);
-	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
-				"type"
-			});
+
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
+		"No AkismetEntry exists with the primary key ";
+
+	private static final String _NO_SUCH_ENTITY_WITH_KEY =
+		"No AkismetEntry exists with the key {";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		AkismetEntryPersistenceImpl.class);
+
+	private static final Set<String> _badColumnNames = SetUtil.fromArray(
+		new String[] {"type"});
+
 }

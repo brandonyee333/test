@@ -17,7 +17,6 @@ package com.liferay.watson.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -38,8 +37,9 @@ import java.util.Objects;
  * @generated
  */
 @ProviderType
-public class WatsonRelationshipWrapper implements WatsonRelationship,
-	ModelWrapper<WatsonRelationship> {
+public class WatsonRelationshipWrapper
+	implements WatsonRelationship, ModelWrapper<WatsonRelationship> {
+
 	public WatsonRelationshipWrapper(WatsonRelationship watsonRelationship) {
 		_watsonRelationship = watsonRelationship;
 	}
@@ -79,7 +79,8 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Long watsonRelationshipId = (Long)attributes.get("watsonRelationshipId");
+		Long watsonRelationshipId = (Long)attributes.get(
+			"watsonRelationshipId");
 
 		if (watsonRelationshipId != null) {
 			setWatsonRelationshipId(watsonRelationshipId);
@@ -127,7 +128,8 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 			setWatsonIncidentId(watsonIncidentId);
 		}
 
-		Long typeWatsonListTypeId = (Long)attributes.get("typeWatsonListTypeId");
+		Long typeWatsonListTypeId = (Long)attributes.get(
+			"typeWatsonListTypeId");
 
 		if (typeWatsonListTypeId != null) {
 			setTypeWatsonListTypeId(typeWatsonListTypeId);
@@ -172,7 +174,8 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 
 	@Override
 	public Object clone() {
-		return new WatsonRelationshipWrapper((WatsonRelationship)_watsonRelationship.clone());
+		return new WatsonRelationshipWrapper(
+			(WatsonRelationship)_watsonRelationship.clone());
 	}
 
 	@Override
@@ -181,70 +184,70 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 	}
 
 	/**
-	* Returns the class name id1 of this watson relationship.
-	*
-	* @return the class name id1 of this watson relationship
-	*/
+	 * Returns the class name id1 of this watson relationship.
+	 *
+	 * @return the class name id1 of this watson relationship
+	 */
 	@Override
 	public long getClassNameId1() {
 		return _watsonRelationship.getClassNameId1();
 	}
 
 	/**
-	* Returns the class name id2 of this watson relationship.
-	*
-	* @return the class name id2 of this watson relationship
-	*/
+	 * Returns the class name id2 of this watson relationship.
+	 *
+	 * @return the class name id2 of this watson relationship
+	 */
 	@Override
 	public long getClassNameId2() {
 		return _watsonRelationship.getClassNameId2();
 	}
 
 	/**
-	* Returns the class pk1 of this watson relationship.
-	*
-	* @return the class pk1 of this watson relationship
-	*/
+	 * Returns the class pk1 of this watson relationship.
+	 *
+	 * @return the class pk1 of this watson relationship
+	 */
 	@Override
 	public long getClassPK1() {
 		return _watsonRelationship.getClassPK1();
 	}
 
 	/**
-	* Returns the class pk2 of this watson relationship.
-	*
-	* @return the class pk2 of this watson relationship
-	*/
+	 * Returns the class pk2 of this watson relationship.
+	 *
+	 * @return the class pk2 of this watson relationship
+	 */
 	@Override
 	public long getClassPK2() {
 		return _watsonRelationship.getClassPK2();
 	}
 
 	/**
-	* Returns the company ID of this watson relationship.
-	*
-	* @return the company ID of this watson relationship
-	*/
+	 * Returns the company ID of this watson relationship.
+	 *
+	 * @return the company ID of this watson relationship
+	 */
 	@Override
 	public long getCompanyId() {
 		return _watsonRelationship.getCompanyId();
 	}
 
 	/**
-	* Returns the create date of this watson relationship.
-	*
-	* @return the create date of this watson relationship
-	*/
+	 * Returns the create date of this watson relationship.
+	 *
+	 * @return the create date of this watson relationship
+	 */
 	@Override
 	public Date getCreateDate() {
 		return _watsonRelationship.getCreateDate();
 	}
 
 	/**
-	* Returns the description of this watson relationship.
-	*
-	* @return the description of this watson relationship
-	*/
+	 * Returns the description of this watson relationship.
+	 *
+	 * @return the description of this watson relationship
+	 */
 	@Override
 	public String getDescription() {
 		return _watsonRelationship.getDescription();
@@ -256,30 +259,30 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 	}
 
 	/**
-	* Returns the group ID of this watson relationship.
-	*
-	* @return the group ID of this watson relationship
-	*/
+	 * Returns the group ID of this watson relationship.
+	 *
+	 * @return the group ID of this watson relationship
+	 */
 	@Override
 	public long getGroupId() {
 		return _watsonRelationship.getGroupId();
 	}
 
 	/**
-	* Returns the modified date of this watson relationship.
-	*
-	* @return the modified date of this watson relationship
-	*/
+	 * Returns the modified date of this watson relationship.
+	 *
+	 * @return the modified date of this watson relationship
+	 */
 	@Override
 	public Date getModifiedDate() {
 		return _watsonRelationship.getModifiedDate();
 	}
 
 	/**
-	* Returns the primary key of this watson relationship.
-	*
-	* @return the primary key of this watson relationship
-	*/
+	 * Returns the primary key of this watson relationship.
+	 *
+	 * @return the primary key of this watson relationship
+	 */
 	@Override
 	public long getPrimaryKey() {
 		return _watsonRelationship.getPrimaryKey();
@@ -291,70 +294,70 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 	}
 
 	/**
-	* Returns the status of this watson relationship.
-	*
-	* @return the status of this watson relationship
-	*/
+	 * Returns the status of this watson relationship.
+	 *
+	 * @return the status of this watson relationship
+	 */
 	@Override
 	public int getStatus() {
 		return _watsonRelationship.getStatus();
 	}
 
 	/**
-	* Returns the type watson list type ID of this watson relationship.
-	*
-	* @return the type watson list type ID of this watson relationship
-	*/
+	 * Returns the type watson list type ID of this watson relationship.
+	 *
+	 * @return the type watson list type ID of this watson relationship
+	 */
 	@Override
 	public long getTypeWatsonListTypeId() {
 		return _watsonRelationship.getTypeWatsonListTypeId();
 	}
 
 	/**
-	* Returns the user ID of this watson relationship.
-	*
-	* @return the user ID of this watson relationship
-	*/
+	 * Returns the user ID of this watson relationship.
+	 *
+	 * @return the user ID of this watson relationship
+	 */
 	@Override
 	public long getUserId() {
 		return _watsonRelationship.getUserId();
 	}
 
 	/**
-	* Returns the user name of this watson relationship.
-	*
-	* @return the user name of this watson relationship
-	*/
+	 * Returns the user name of this watson relationship.
+	 *
+	 * @return the user name of this watson relationship
+	 */
 	@Override
 	public String getUserName() {
 		return _watsonRelationship.getUserName();
 	}
 
 	/**
-	* Returns the user uuid of this watson relationship.
-	*
-	* @return the user uuid of this watson relationship
-	*/
+	 * Returns the user uuid of this watson relationship.
+	 *
+	 * @return the user uuid of this watson relationship
+	 */
 	@Override
 	public String getUserUuid() {
 		return _watsonRelationship.getUserUuid();
 	}
 
 	/**
-	* Returns the watson incident ID of this watson relationship.
-	*
-	* @return the watson incident ID of this watson relationship
-	*/
+	 * Returns the watson incident ID of this watson relationship.
+	 *
+	 * @return the watson incident ID of this watson relationship
+	 */
 	@Override
 	public long getWatsonIncidentId() {
 		return _watsonRelationship.getWatsonIncidentId();
 	}
 
 	/**
-	* Returns the watson relationship ID of this watson relationship.
-	*
-	* @return the watson relationship ID of this watson relationship
-	*/
+	 * Returns the watson relationship ID of this watson relationship.
+	 *
+	 * @return the watson relationship ID of this watson relationship
+	 */
 	@Override
 	public long getWatsonRelationshipId() {
 		return _watsonRelationship.getWatsonRelationshipId();
@@ -391,70 +394,70 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 	}
 
 	/**
-	* Sets the class name id1 of this watson relationship.
-	*
-	* @param classNameId1 the class name id1 of this watson relationship
-	*/
+	 * Sets the class name id1 of this watson relationship.
+	 *
+	 * @param classNameId1 the class name id1 of this watson relationship
+	 */
 	@Override
 	public void setClassNameId1(long classNameId1) {
 		_watsonRelationship.setClassNameId1(classNameId1);
 	}
 
 	/**
-	* Sets the class name id2 of this watson relationship.
-	*
-	* @param classNameId2 the class name id2 of this watson relationship
-	*/
+	 * Sets the class name id2 of this watson relationship.
+	 *
+	 * @param classNameId2 the class name id2 of this watson relationship
+	 */
 	@Override
 	public void setClassNameId2(long classNameId2) {
 		_watsonRelationship.setClassNameId2(classNameId2);
 	}
 
 	/**
-	* Sets the class pk1 of this watson relationship.
-	*
-	* @param classPK1 the class pk1 of this watson relationship
-	*/
+	 * Sets the class pk1 of this watson relationship.
+	 *
+	 * @param classPK1 the class pk1 of this watson relationship
+	 */
 	@Override
 	public void setClassPK1(long classPK1) {
 		_watsonRelationship.setClassPK1(classPK1);
 	}
 
 	/**
-	* Sets the class pk2 of this watson relationship.
-	*
-	* @param classPK2 the class pk2 of this watson relationship
-	*/
+	 * Sets the class pk2 of this watson relationship.
+	 *
+	 * @param classPK2 the class pk2 of this watson relationship
+	 */
 	@Override
 	public void setClassPK2(long classPK2) {
 		_watsonRelationship.setClassPK2(classPK2);
 	}
 
 	/**
-	* Sets the company ID of this watson relationship.
-	*
-	* @param companyId the company ID of this watson relationship
-	*/
+	 * Sets the company ID of this watson relationship.
+	 *
+	 * @param companyId the company ID of this watson relationship
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_watsonRelationship.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create date of this watson relationship.
-	*
-	* @param createDate the create date of this watson relationship
-	*/
+	 * Sets the create date of this watson relationship.
+	 *
+	 * @param createDate the create date of this watson relationship
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_watsonRelationship.setCreateDate(createDate);
 	}
 
 	/**
-	* Sets the description of this watson relationship.
-	*
-	* @param description the description of this watson relationship
-	*/
+	 * Sets the description of this watson relationship.
+	 *
+	 * @param description the description of this watson relationship
+	 */
 	@Override
 	public void setDescription(String description) {
 		_watsonRelationship.setDescription(description);
@@ -463,6 +466,7 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
 		_watsonRelationship.setExpandoBridgeAttributes(baseModel);
 	}
 
@@ -477,20 +481,20 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 	}
 
 	/**
-	* Sets the group ID of this watson relationship.
-	*
-	* @param groupId the group ID of this watson relationship
-	*/
+	 * Sets the group ID of this watson relationship.
+	 *
+	 * @param groupId the group ID of this watson relationship
+	 */
 	@Override
 	public void setGroupId(long groupId) {
 		_watsonRelationship.setGroupId(groupId);
 	}
 
 	/**
-	* Sets the modified date of this watson relationship.
-	*
-	* @param modifiedDate the modified date of this watson relationship
-	*/
+	 * Sets the modified date of this watson relationship.
+	 *
+	 * @param modifiedDate the modified date of this watson relationship
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_watsonRelationship.setModifiedDate(modifiedDate);
@@ -502,10 +506,10 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 	}
 
 	/**
-	* Sets the primary key of this watson relationship.
-	*
-	* @param primaryKey the primary key of this watson relationship
-	*/
+	 * Sets the primary key of this watson relationship.
+	 *
+	 * @param primaryKey the primary key of this watson relationship
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_watsonRelationship.setPrimaryKey(primaryKey);
@@ -517,83 +521,86 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 	}
 
 	/**
-	* Sets the status of this watson relationship.
-	*
-	* @param status the status of this watson relationship
-	*/
+	 * Sets the status of this watson relationship.
+	 *
+	 * @param status the status of this watson relationship
+	 */
 	@Override
 	public void setStatus(int status) {
 		_watsonRelationship.setStatus(status);
 	}
 
 	/**
-	* Sets the type watson list type ID of this watson relationship.
-	*
-	* @param typeWatsonListTypeId the type watson list type ID of this watson relationship
-	*/
+	 * Sets the type watson list type ID of this watson relationship.
+	 *
+	 * @param typeWatsonListTypeId the type watson list type ID of this watson relationship
+	 */
 	@Override
 	public void setTypeWatsonListTypeId(long typeWatsonListTypeId) {
 		_watsonRelationship.setTypeWatsonListTypeId(typeWatsonListTypeId);
 	}
 
 	/**
-	* Sets the user ID of this watson relationship.
-	*
-	* @param userId the user ID of this watson relationship
-	*/
+	 * Sets the user ID of this watson relationship.
+	 *
+	 * @param userId the user ID of this watson relationship
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_watsonRelationship.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this watson relationship.
-	*
-	* @param userName the user name of this watson relationship
-	*/
+	 * Sets the user name of this watson relationship.
+	 *
+	 * @param userName the user name of this watson relationship
+	 */
 	@Override
 	public void setUserName(String userName) {
 		_watsonRelationship.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this watson relationship.
-	*
-	* @param userUuid the user uuid of this watson relationship
-	*/
+	 * Sets the user uuid of this watson relationship.
+	 *
+	 * @param userUuid the user uuid of this watson relationship
+	 */
 	@Override
 	public void setUserUuid(String userUuid) {
 		_watsonRelationship.setUserUuid(userUuid);
 	}
 
 	/**
-	* Sets the watson incident ID of this watson relationship.
-	*
-	* @param watsonIncidentId the watson incident ID of this watson relationship
-	*/
+	 * Sets the watson incident ID of this watson relationship.
+	 *
+	 * @param watsonIncidentId the watson incident ID of this watson relationship
+	 */
 	@Override
 	public void setWatsonIncidentId(long watsonIncidentId) {
 		_watsonRelationship.setWatsonIncidentId(watsonIncidentId);
 	}
 
 	/**
-	* Sets the watson relationship ID of this watson relationship.
-	*
-	* @param watsonRelationshipId the watson relationship ID of this watson relationship
-	*/
+	 * Sets the watson relationship ID of this watson relationship.
+	 *
+	 * @param watsonRelationshipId the watson relationship ID of this watson relationship
+	 */
 	@Override
 	public void setWatsonRelationshipId(long watsonRelationshipId) {
 		_watsonRelationship.setWatsonRelationshipId(watsonRelationshipId);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<WatsonRelationship> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<WatsonRelationship>
+		toCacheModel() {
+
 		return _watsonRelationship.toCacheModel();
 	}
 
 	@Override
 	public WatsonRelationship toEscapedModel() {
-		return new WatsonRelationshipWrapper(_watsonRelationship.toEscapedModel());
+		return new WatsonRelationshipWrapper(
+			_watsonRelationship.toEscapedModel());
 	}
 
 	@Override
@@ -603,7 +610,8 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 
 	@Override
 	public WatsonRelationship toUnescapedModel() {
-		return new WatsonRelationshipWrapper(_watsonRelationship.toUnescapedModel());
+		return new WatsonRelationshipWrapper(
+			_watsonRelationship.toUnescapedModel());
 	}
 
 	@Override
@@ -621,10 +629,13 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 			return false;
 		}
 
-		WatsonRelationshipWrapper watsonRelationshipWrapper = (WatsonRelationshipWrapper)obj;
+		WatsonRelationshipWrapper watsonRelationshipWrapper =
+			(WatsonRelationshipWrapper)obj;
 
-		if (Objects.equals(_watsonRelationship,
-					watsonRelationshipWrapper._watsonRelationship)) {
+		if (Objects.equals(
+				_watsonRelationship,
+				watsonRelationshipWrapper._watsonRelationship)) {
+
 			return true;
 		}
 
@@ -652,4 +663,5 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 	}
 
 	private final WatsonRelationship _watsonRelationship;
+
 }

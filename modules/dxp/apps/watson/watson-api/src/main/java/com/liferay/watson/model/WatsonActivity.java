@@ -30,13 +30,15 @@ import com.liferay.portal.kernel.util.Accessor;
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonActivityImpl")
 @ProviderType
 public interface WatsonActivity extends WatsonActivityModel, PersistedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonActivityImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<WatsonActivity, Long> WATSON_ACTIVITY_ID_ACCESSOR =
-		new Accessor<WatsonActivity, Long>() {
+	public static final Accessor<WatsonActivity, Long>
+		WATSON_ACTIVITY_ID_ACCESSOR = new Accessor<WatsonActivity, Long>() {
+
 			@Override
 			public Long get(WatsonActivity watsonActivity) {
 				return watsonActivity.getWatsonActivityId();
@@ -51,5 +53,7 @@ public interface WatsonActivity extends WatsonActivityModel, PersistedModel {
 			public Class<WatsonActivity> getTypeClass() {
 				return WatsonActivity.class;
 			}
+
 		};
+
 }

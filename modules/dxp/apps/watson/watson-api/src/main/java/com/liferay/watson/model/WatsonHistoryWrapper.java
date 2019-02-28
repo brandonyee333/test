@@ -17,7 +17,6 @@ package com.liferay.watson.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -38,8 +37,9 @@ import java.util.Objects;
  * @generated
  */
 @ProviderType
-public class WatsonHistoryWrapper implements WatsonHistory,
-	ModelWrapper<WatsonHistory> {
+public class WatsonHistoryWrapper
+	implements WatsonHistory, ModelWrapper<WatsonHistory> {
+
 	public WatsonHistoryWrapper(WatsonHistory watsonHistory) {
 		_watsonHistory = watsonHistory;
 	}
@@ -160,50 +160,50 @@ public class WatsonHistoryWrapper implements WatsonHistory,
 	}
 
 	/**
-	* Returns the fully qualified class name of this watson history.
-	*
-	* @return the fully qualified class name of this watson history
-	*/
+	 * Returns the fully qualified class name of this watson history.
+	 *
+	 * @return the fully qualified class name of this watson history
+	 */
 	@Override
 	public String getClassName() {
 		return _watsonHistory.getClassName();
 	}
 
 	/**
-	* Returns the class name ID of this watson history.
-	*
-	* @return the class name ID of this watson history
-	*/
+	 * Returns the class name ID of this watson history.
+	 *
+	 * @return the class name ID of this watson history
+	 */
 	@Override
 	public long getClassNameId() {
 		return _watsonHistory.getClassNameId();
 	}
 
 	/**
-	* Returns the class pk of this watson history.
-	*
-	* @return the class pk of this watson history
-	*/
+	 * Returns the class pk of this watson history.
+	 *
+	 * @return the class pk of this watson history
+	 */
 	@Override
 	public long getClassPK() {
 		return _watsonHistory.getClassPK();
 	}
 
 	/**
-	* Returns the company ID of this watson history.
-	*
-	* @return the company ID of this watson history
-	*/
+	 * Returns the company ID of this watson history.
+	 *
+	 * @return the company ID of this watson history
+	 */
 	@Override
 	public long getCompanyId() {
 		return _watsonHistory.getCompanyId();
 	}
 
 	/**
-	* Returns the create date of this watson history.
-	*
-	* @return the create date of this watson history
-	*/
+	 * Returns the create date of this watson history.
+	 *
+	 * @return the create date of this watson history
+	 */
 	@Override
 	public Date getCreateDate() {
 		return _watsonHistory.getCreateDate();
@@ -215,30 +215,30 @@ public class WatsonHistoryWrapper implements WatsonHistory,
 	}
 
 	/**
-	* Returns the group ID of this watson history.
-	*
-	* @return the group ID of this watson history
-	*/
+	 * Returns the group ID of this watson history.
+	 *
+	 * @return the group ID of this watson history
+	 */
 	@Override
 	public long getGroupId() {
 		return _watsonHistory.getGroupId();
 	}
 
 	/**
-	* Returns the modified date of this watson history.
-	*
-	* @return the modified date of this watson history
-	*/
+	 * Returns the modified date of this watson history.
+	 *
+	 * @return the modified date of this watson history
+	 */
 	@Override
 	public Date getModifiedDate() {
 		return _watsonHistory.getModifiedDate();
 	}
 
 	/**
-	* Returns the primary key of this watson history.
-	*
-	* @return the primary key of this watson history
-	*/
+	 * Returns the primary key of this watson history.
+	 *
+	 * @return the primary key of this watson history
+	 */
 	@Override
 	public long getPrimaryKey() {
 		return _watsonHistory.getPrimaryKey();
@@ -250,70 +250,70 @@ public class WatsonHistoryWrapper implements WatsonHistory,
 	}
 
 	/**
-	* Returns the status of this watson history.
-	*
-	* @return the status of this watson history
-	*/
+	 * Returns the status of this watson history.
+	 *
+	 * @return the status of this watson history
+	 */
 	@Override
 	public int getStatus() {
 		return _watsonHistory.getStatus();
 	}
 
 	/**
-	* Returns the type of this watson history.
-	*
-	* @return the type of this watson history
-	*/
+	 * Returns the type of this watson history.
+	 *
+	 * @return the type of this watson history
+	 */
 	@Override
 	public int getType() {
 		return _watsonHistory.getType();
 	}
 
 	/**
-	* Returns the user ID of this watson history.
-	*
-	* @return the user ID of this watson history
-	*/
+	 * Returns the user ID of this watson history.
+	 *
+	 * @return the user ID of this watson history
+	 */
 	@Override
 	public long getUserId() {
 		return _watsonHistory.getUserId();
 	}
 
 	/**
-	* Returns the user name of this watson history.
-	*
-	* @return the user name of this watson history
-	*/
+	 * Returns the user name of this watson history.
+	 *
+	 * @return the user name of this watson history
+	 */
 	@Override
 	public String getUserName() {
 		return _watsonHistory.getUserName();
 	}
 
 	/**
-	* Returns the user uuid of this watson history.
-	*
-	* @return the user uuid of this watson history
-	*/
+	 * Returns the user uuid of this watson history.
+	 *
+	 * @return the user uuid of this watson history
+	 */
 	@Override
 	public String getUserUuid() {
 		return _watsonHistory.getUserUuid();
 	}
 
 	/**
-	* Returns the watson history ID of this watson history.
-	*
-	* @return the watson history ID of this watson history
-	*/
+	 * Returns the watson history ID of this watson history.
+	 *
+	 * @return the watson history ID of this watson history
+	 */
 	@Override
 	public long getWatsonHistoryId() {
 		return _watsonHistory.getWatsonHistoryId();
 	}
 
 	/**
-	* Returns the watson parent ID of this watson history.
-	*
-	* @return the watson parent ID of this watson history
-	*/
+	 * Returns the watson parent ID of this watson history.
+	 *
+	 * @return the watson parent ID of this watson history
+	 */
 	@Override
 	public long getWatsonParentId() {
 		return _watsonHistory.getWatsonParentId();
@@ -355,40 +355,40 @@ public class WatsonHistoryWrapper implements WatsonHistory,
 	}
 
 	/**
-	* Sets the class name ID of this watson history.
-	*
-	* @param classNameId the class name ID of this watson history
-	*/
+	 * Sets the class name ID of this watson history.
+	 *
+	 * @param classNameId the class name ID of this watson history
+	 */
 	@Override
 	public void setClassNameId(long classNameId) {
 		_watsonHistory.setClassNameId(classNameId);
 	}
 
 	/**
-	* Sets the class pk of this watson history.
-	*
-	* @param classPK the class pk of this watson history
-	*/
+	 * Sets the class pk of this watson history.
+	 *
+	 * @param classPK the class pk of this watson history
+	 */
 	@Override
 	public void setClassPK(long classPK) {
 		_watsonHistory.setClassPK(classPK);
 	}
 
 	/**
-	* Sets the company ID of this watson history.
-	*
-	* @param companyId the company ID of this watson history
-	*/
+	 * Sets the company ID of this watson history.
+	 *
+	 * @param companyId the company ID of this watson history
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_watsonHistory.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create date of this watson history.
-	*
-	* @param createDate the create date of this watson history
-	*/
+	 * Sets the create date of this watson history.
+	 *
+	 * @param createDate the create date of this watson history
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_watsonHistory.setCreateDate(createDate);
@@ -397,6 +397,7 @@ public class WatsonHistoryWrapper implements WatsonHistory,
 	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
 		_watsonHistory.setExpandoBridgeAttributes(baseModel);
 	}
 
@@ -411,20 +412,20 @@ public class WatsonHistoryWrapper implements WatsonHistory,
 	}
 
 	/**
-	* Sets the group ID of this watson history.
-	*
-	* @param groupId the group ID of this watson history
-	*/
+	 * Sets the group ID of this watson history.
+	 *
+	 * @param groupId the group ID of this watson history
+	 */
 	@Override
 	public void setGroupId(long groupId) {
 		_watsonHistory.setGroupId(groupId);
 	}
 
 	/**
-	* Sets the modified date of this watson history.
-	*
-	* @param modifiedDate the modified date of this watson history
-	*/
+	 * Sets the modified date of this watson history.
+	 *
+	 * @param modifiedDate the modified date of this watson history
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_watsonHistory.setModifiedDate(modifiedDate);
@@ -436,10 +437,10 @@ public class WatsonHistoryWrapper implements WatsonHistory,
 	}
 
 	/**
-	* Sets the primary key of this watson history.
-	*
-	* @param primaryKey the primary key of this watson history
-	*/
+	 * Sets the primary key of this watson history.
+	 *
+	 * @param primaryKey the primary key of this watson history
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_watsonHistory.setPrimaryKey(primaryKey);
@@ -451,77 +452,79 @@ public class WatsonHistoryWrapper implements WatsonHistory,
 	}
 
 	/**
-	* Sets the status of this watson history.
-	*
-	* @param status the status of this watson history
-	*/
+	 * Sets the status of this watson history.
+	 *
+	 * @param status the status of this watson history
+	 */
 	@Override
 	public void setStatus(int status) {
 		_watsonHistory.setStatus(status);
 	}
 
 	/**
-	* Sets the type of this watson history.
-	*
-	* @param type the type of this watson history
-	*/
+	 * Sets the type of this watson history.
+	 *
+	 * @param type the type of this watson history
+	 */
 	@Override
 	public void setType(int type) {
 		_watsonHistory.setType(type);
 	}
 
 	/**
-	* Sets the user ID of this watson history.
-	*
-	* @param userId the user ID of this watson history
-	*/
+	 * Sets the user ID of this watson history.
+	 *
+	 * @param userId the user ID of this watson history
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_watsonHistory.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this watson history.
-	*
-	* @param userName the user name of this watson history
-	*/
+	 * Sets the user name of this watson history.
+	 *
+	 * @param userName the user name of this watson history
+	 */
 	@Override
 	public void setUserName(String userName) {
 		_watsonHistory.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this watson history.
-	*
-	* @param userUuid the user uuid of this watson history
-	*/
+	 * Sets the user uuid of this watson history.
+	 *
+	 * @param userUuid the user uuid of this watson history
+	 */
 	@Override
 	public void setUserUuid(String userUuid) {
 		_watsonHistory.setUserUuid(userUuid);
 	}
 
 	/**
-	* Sets the watson history ID of this watson history.
-	*
-	* @param watsonHistoryId the watson history ID of this watson history
-	*/
+	 * Sets the watson history ID of this watson history.
+	 *
+	 * @param watsonHistoryId the watson history ID of this watson history
+	 */
 	@Override
 	public void setWatsonHistoryId(long watsonHistoryId) {
 		_watsonHistory.setWatsonHistoryId(watsonHistoryId);
 	}
 
 	/**
-	* Sets the watson parent ID of this watson history.
-	*
-	* @param watsonParentId the watson parent ID of this watson history
-	*/
+	 * Sets the watson parent ID of this watson history.
+	 *
+	 * @param watsonParentId the watson parent ID of this watson history
+	 */
 	@Override
 	public void setWatsonParentId(long watsonParentId) {
 		_watsonHistory.setWatsonParentId(watsonParentId);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<WatsonHistory> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<WatsonHistory>
+		toCacheModel() {
+
 		return _watsonHistory.toCacheModel();
 	}
 
@@ -557,7 +560,9 @@ public class WatsonHistoryWrapper implements WatsonHistory,
 
 		WatsonHistoryWrapper watsonHistoryWrapper = (WatsonHistoryWrapper)obj;
 
-		if (Objects.equals(_watsonHistory, watsonHistoryWrapper._watsonHistory)) {
+		if (Objects.equals(
+				_watsonHistory, watsonHistoryWrapper._watsonHistory)) {
+
 			return true;
 		}
 
@@ -585,4 +590,5 @@ public class WatsonHistoryWrapper implements WatsonHistory,
 	}
 
 	private final WatsonHistory _watsonHistory;
+
 }

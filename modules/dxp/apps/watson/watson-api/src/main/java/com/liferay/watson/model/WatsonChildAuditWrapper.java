@@ -17,7 +17,6 @@ package com.liferay.watson.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -38,8 +37,9 @@ import java.util.Objects;
  * @generated
  */
 @ProviderType
-public class WatsonChildAuditWrapper implements WatsonChildAudit,
-	ModelWrapper<WatsonChildAudit> {
+public class WatsonChildAuditWrapper
+	implements WatsonChildAudit, ModelWrapper<WatsonChildAudit> {
+
 	public WatsonChildAuditWrapper(WatsonChildAudit watsonChildAudit) {
 		_watsonChildAudit = watsonChildAudit;
 	}
@@ -66,16 +66,17 @@ public class WatsonChildAuditWrapper implements WatsonChildAudit,
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("birthCountryId", getBirthCountryId());
-		attributes.put("citizenshipWatsonListTypeId",
-			getCitizenshipWatsonListTypeId());
+		attributes.put(
+			"citizenshipWatsonListTypeId", getCitizenshipWatsonListTypeId());
 		attributes.put("countryWatsonListTypeId", getCountryWatsonListTypeId());
-		attributes.put("dischargeWatsonListTypeId",
-			getDischargeWatsonListTypeId());
-		attributes.put("ethnicityWatsonListTypeId",
-			getEthnicityWatsonListTypeId());
+		attributes.put(
+			"dischargeWatsonListTypeId", getDischargeWatsonListTypeId());
+		attributes.put(
+			"ethnicityWatsonListTypeId", getEthnicityWatsonListTypeId());
 		attributes.put("originalWatsonPersonId", getOriginalWatsonPersonId());
 		attributes.put("sexWatsonListTypeId", getSexWatsonListTypeId());
-		attributes.put("sourceSubtypeWatsonListTypeId",
+		attributes.put(
+			"sourceSubtypeWatsonListTypeId",
 			getSourceSubtypeWatsonListTypeId());
 		attributes.put("sourceWatsonListTypeId", getSourceWatsonListTypeId());
 		attributes.put("typeWatsonListTypeId", getTypeWatsonListTypeId());
@@ -140,35 +141,35 @@ public class WatsonChildAuditWrapper implements WatsonChildAudit,
 		}
 
 		Long citizenshipWatsonListTypeId = (Long)attributes.get(
-				"citizenshipWatsonListTypeId");
+			"citizenshipWatsonListTypeId");
 
 		if (citizenshipWatsonListTypeId != null) {
 			setCitizenshipWatsonListTypeId(citizenshipWatsonListTypeId);
 		}
 
 		Long countryWatsonListTypeId = (Long)attributes.get(
-				"countryWatsonListTypeId");
+			"countryWatsonListTypeId");
 
 		if (countryWatsonListTypeId != null) {
 			setCountryWatsonListTypeId(countryWatsonListTypeId);
 		}
 
 		Long dischargeWatsonListTypeId = (Long)attributes.get(
-				"dischargeWatsonListTypeId");
+			"dischargeWatsonListTypeId");
 
 		if (dischargeWatsonListTypeId != null) {
 			setDischargeWatsonListTypeId(dischargeWatsonListTypeId);
 		}
 
 		Long ethnicityWatsonListTypeId = (Long)attributes.get(
-				"ethnicityWatsonListTypeId");
+			"ethnicityWatsonListTypeId");
 
 		if (ethnicityWatsonListTypeId != null) {
 			setEthnicityWatsonListTypeId(ethnicityWatsonListTypeId);
 		}
 
 		Long originalWatsonPersonId = (Long)attributes.get(
-				"originalWatsonPersonId");
+			"originalWatsonPersonId");
 
 		if (originalWatsonPersonId != null) {
 			setOriginalWatsonPersonId(originalWatsonPersonId);
@@ -181,20 +182,21 @@ public class WatsonChildAuditWrapper implements WatsonChildAudit,
 		}
 
 		Long sourceSubtypeWatsonListTypeId = (Long)attributes.get(
-				"sourceSubtypeWatsonListTypeId");
+			"sourceSubtypeWatsonListTypeId");
 
 		if (sourceSubtypeWatsonListTypeId != null) {
 			setSourceSubtypeWatsonListTypeId(sourceSubtypeWatsonListTypeId);
 		}
 
 		Long sourceWatsonListTypeId = (Long)attributes.get(
-				"sourceWatsonListTypeId");
+			"sourceWatsonListTypeId");
 
 		if (sourceWatsonListTypeId != null) {
 			setSourceWatsonListTypeId(sourceWatsonListTypeId);
 		}
 
-		Long typeWatsonListTypeId = (Long)attributes.get("typeWatsonListTypeId");
+		Long typeWatsonListTypeId = (Long)attributes.get(
+			"typeWatsonListTypeId");
 
 		if (typeWatsonListTypeId != null) {
 			setTypeWatsonListTypeId(typeWatsonListTypeId);
@@ -239,7 +241,8 @@ public class WatsonChildAuditWrapper implements WatsonChildAudit,
 
 	@Override
 	public Object clone() {
-		return new WatsonChildAuditWrapper((WatsonChildAudit)_watsonChildAudit.clone());
+		return new WatsonChildAuditWrapper(
+			(WatsonChildAudit)_watsonChildAudit.clone());
 	}
 
 	@Override
@@ -248,100 +251,100 @@ public class WatsonChildAuditWrapper implements WatsonChildAudit,
 	}
 
 	/**
-	* Returns the birth country ID of this watson child audit.
-	*
-	* @return the birth country ID of this watson child audit
-	*/
+	 * Returns the birth country ID of this watson child audit.
+	 *
+	 * @return the birth country ID of this watson child audit
+	 */
 	@Override
 	public long getBirthCountryId() {
 		return _watsonChildAudit.getBirthCountryId();
 	}
 
 	/**
-	* Returns the citizenship watson list type ID of this watson child audit.
-	*
-	* @return the citizenship watson list type ID of this watson child audit
-	*/
+	 * Returns the citizenship watson list type ID of this watson child audit.
+	 *
+	 * @return the citizenship watson list type ID of this watson child audit
+	 */
 	@Override
 	public long getCitizenshipWatsonListTypeId() {
 		return _watsonChildAudit.getCitizenshipWatsonListTypeId();
 	}
 
 	/**
-	* Returns the company ID of this watson child audit.
-	*
-	* @return the company ID of this watson child audit
-	*/
+	 * Returns the company ID of this watson child audit.
+	 *
+	 * @return the company ID of this watson child audit
+	 */
 	@Override
 	public long getCompanyId() {
 		return _watsonChildAudit.getCompanyId();
 	}
 
 	/**
-	* Returns the country watson list type ID of this watson child audit.
-	*
-	* @return the country watson list type ID of this watson child audit
-	*/
+	 * Returns the country watson list type ID of this watson child audit.
+	 *
+	 * @return the country watson list type ID of this watson child audit
+	 */
 	@Override
 	public long getCountryWatsonListTypeId() {
 		return _watsonChildAudit.getCountryWatsonListTypeId();
 	}
 
 	/**
-	* Returns the create date of this watson child audit.
-	*
-	* @return the create date of this watson child audit
-	*/
+	 * Returns the create date of this watson child audit.
+	 *
+	 * @return the create date of this watson child audit
+	 */
 	@Override
 	public Date getCreateDate() {
 		return _watsonChildAudit.getCreateDate();
 	}
 
 	/**
-	* Returns the date accepted of this watson child audit.
-	*
-	* @return the date accepted of this watson child audit
-	*/
+	 * Returns the date accepted of this watson child audit.
+	 *
+	 * @return the date accepted of this watson child audit
+	 */
 	@Override
 	public Date getDateAccepted() {
 		return _watsonChildAudit.getDateAccepted();
 	}
 
 	/**
-	* Returns the date discharged of this watson child audit.
-	*
-	* @return the date discharged of this watson child audit
-	*/
+	 * Returns the date discharged of this watson child audit.
+	 *
+	 * @return the date discharged of this watson child audit
+	 */
 	@Override
 	public Date getDateDischarged() {
 		return _watsonChildAudit.getDateDischarged();
 	}
 
 	/**
-	* Returns the date follow up of this watson child audit.
-	*
-	* @return the date follow up of this watson child audit
-	*/
+	 * Returns the date follow up of this watson child audit.
+	 *
+	 * @return the date follow up of this watson child audit
+	 */
 	@Override
 	public Date getDateFollowUp() {
 		return _watsonChildAudit.getDateFollowUp();
 	}
 
 	/**
-	* Returns the discharge watson list type ID of this watson child audit.
-	*
-	* @return the discharge watson list type ID of this watson child audit
-	*/
+	 * Returns the discharge watson list type ID of this watson child audit.
+	 *
+	 * @return the discharge watson list type ID of this watson child audit
+	 */
 	@Override
 	public long getDischargeWatsonListTypeId() {
 		return _watsonChildAudit.getDischargeWatsonListTypeId();
 	}
 
 	/**
-	* Returns the ethnicity watson list type ID of this watson child audit.
-	*
-	* @return the ethnicity watson list type ID of this watson child audit
-	*/
+	 * Returns the ethnicity watson list type ID of this watson child audit.
+	 *
+	 * @return the ethnicity watson list type ID of this watson child audit
+	 */
 	@Override
 	public long getEthnicityWatsonListTypeId() {
 		return _watsonChildAudit.getEthnicityWatsonListTypeId();
@@ -353,40 +356,40 @@ public class WatsonChildAuditWrapper implements WatsonChildAudit,
 	}
 
 	/**
-	* Returns the group ID of this watson child audit.
-	*
-	* @return the group ID of this watson child audit
-	*/
+	 * Returns the group ID of this watson child audit.
+	 *
+	 * @return the group ID of this watson child audit
+	 */
 	@Override
 	public long getGroupId() {
 		return _watsonChildAudit.getGroupId();
 	}
 
 	/**
-	* Returns the modified date of this watson child audit.
-	*
-	* @return the modified date of this watson child audit
-	*/
+	 * Returns the modified date of this watson child audit.
+	 *
+	 * @return the modified date of this watson child audit
+	 */
 	@Override
 	public Date getModifiedDate() {
 		return _watsonChildAudit.getModifiedDate();
 	}
 
 	/**
-	* Returns the original watson person ID of this watson child audit.
-	*
-	* @return the original watson person ID of this watson child audit
-	*/
+	 * Returns the original watson person ID of this watson child audit.
+	 *
+	 * @return the original watson person ID of this watson child audit
+	 */
 	@Override
 	public long getOriginalWatsonPersonId() {
 		return _watsonChildAudit.getOriginalWatsonPersonId();
 	}
 
 	/**
-	* Returns the primary key of this watson child audit.
-	*
-	* @return the primary key of this watson child audit
-	*/
+	 * Returns the primary key of this watson child audit.
+	 *
+	 * @return the primary key of this watson child audit
+	 */
 	@Override
 	public long getPrimaryKey() {
 		return _watsonChildAudit.getPrimaryKey();
@@ -398,110 +401,110 @@ public class WatsonChildAuditWrapper implements WatsonChildAudit,
 	}
 
 	/**
-	* Returns the sex watson list type ID of this watson child audit.
-	*
-	* @return the sex watson list type ID of this watson child audit
-	*/
+	 * Returns the sex watson list type ID of this watson child audit.
+	 *
+	 * @return the sex watson list type ID of this watson child audit
+	 */
 	@Override
 	public long getSexWatsonListTypeId() {
 		return _watsonChildAudit.getSexWatsonListTypeId();
 	}
 
 	/**
-	* Returns the source of this watson child audit.
-	*
-	* @return the source of this watson child audit
-	*/
+	 * Returns the source of this watson child audit.
+	 *
+	 * @return the source of this watson child audit
+	 */
 	@Override
 	public String getSource() {
 		return _watsonChildAudit.getSource();
 	}
 
 	/**
-	* Returns the source subtype watson list type ID of this watson child audit.
-	*
-	* @return the source subtype watson list type ID of this watson child audit
-	*/
+	 * Returns the source subtype watson list type ID of this watson child audit.
+	 *
+	 * @return the source subtype watson list type ID of this watson child audit
+	 */
 	@Override
 	public long getSourceSubtypeWatsonListTypeId() {
 		return _watsonChildAudit.getSourceSubtypeWatsonListTypeId();
 	}
 
 	/**
-	* Returns the source watson list type ID of this watson child audit.
-	*
-	* @return the source watson list type ID of this watson child audit
-	*/
+	 * Returns the source watson list type ID of this watson child audit.
+	 *
+	 * @return the source watson list type ID of this watson child audit
+	 */
 	@Override
 	public long getSourceWatsonListTypeId() {
 		return _watsonChildAudit.getSourceWatsonListTypeId();
 	}
 
 	/**
-	* Returns the status of this watson child audit.
-	*
-	* @return the status of this watson child audit
-	*/
+	 * Returns the status of this watson child audit.
+	 *
+	 * @return the status of this watson child audit
+	 */
 	@Override
 	public int getStatus() {
 		return _watsonChildAudit.getStatus();
 	}
 
 	/**
-	* Returns the type watson list type ID of this watson child audit.
-	*
-	* @return the type watson list type ID of this watson child audit
-	*/
+	 * Returns the type watson list type ID of this watson child audit.
+	 *
+	 * @return the type watson list type ID of this watson child audit
+	 */
 	@Override
 	public long getTypeWatsonListTypeId() {
 		return _watsonChildAudit.getTypeWatsonListTypeId();
 	}
 
 	/**
-	* Returns the user ID of this watson child audit.
-	*
-	* @return the user ID of this watson child audit
-	*/
+	 * Returns the user ID of this watson child audit.
+	 *
+	 * @return the user ID of this watson child audit
+	 */
 	@Override
 	public long getUserId() {
 		return _watsonChildAudit.getUserId();
 	}
 
 	/**
-	* Returns the user name of this watson child audit.
-	*
-	* @return the user name of this watson child audit
-	*/
+	 * Returns the user name of this watson child audit.
+	 *
+	 * @return the user name of this watson child audit
+	 */
 	@Override
 	public String getUserName() {
 		return _watsonChildAudit.getUserName();
 	}
 
 	/**
-	* Returns the user uuid of this watson child audit.
-	*
-	* @return the user uuid of this watson child audit
-	*/
+	 * Returns the user uuid of this watson child audit.
+	 *
+	 * @return the user uuid of this watson child audit
+	 */
 	@Override
 	public String getUserUuid() {
 		return _watsonChildAudit.getUserUuid();
 	}
 
 	/**
-	* Returns the watson child audit ID of this watson child audit.
-	*
-	* @return the watson child audit ID of this watson child audit
-	*/
+	 * Returns the watson child audit ID of this watson child audit.
+	 *
+	 * @return the watson child audit ID of this watson child audit
+	 */
 	@Override
 	public long getWatsonChildAuditId() {
 		return _watsonChildAudit.getWatsonChildAuditId();
 	}
 
 	/**
-	* Returns the watson child ID of this watson child audit.
-	*
-	* @return the watson child ID of this watson child audit
-	*/
+	 * Returns the watson child ID of this watson child audit.
+	 *
+	 * @return the watson child ID of this watson child audit
+	 */
 	@Override
 	public long getWatsonChildId() {
 		return _watsonChildAudit.getWatsonChildId();
@@ -533,10 +536,10 @@ public class WatsonChildAuditWrapper implements WatsonChildAudit,
 	}
 
 	/**
-	* Sets the birth country ID of this watson child audit.
-	*
-	* @param birthCountryId the birth country ID of this watson child audit
-	*/
+	 * Sets the birth country ID of this watson child audit.
+	 *
+	 * @param birthCountryId the birth country ID of this watson child audit
+	 */
 	@Override
 	public void setBirthCountryId(long birthCountryId) {
 		_watsonChildAudit.setBirthCountryId(birthCountryId);
@@ -548,98 +551,104 @@ public class WatsonChildAuditWrapper implements WatsonChildAudit,
 	}
 
 	/**
-	* Sets the citizenship watson list type ID of this watson child audit.
-	*
-	* @param citizenshipWatsonListTypeId the citizenship watson list type ID of this watson child audit
-	*/
+	 * Sets the citizenship watson list type ID of this watson child audit.
+	 *
+	 * @param citizenshipWatsonListTypeId the citizenship watson list type ID of this watson child audit
+	 */
 	@Override
-	public void setCitizenshipWatsonListTypeId(long citizenshipWatsonListTypeId) {
-		_watsonChildAudit.setCitizenshipWatsonListTypeId(citizenshipWatsonListTypeId);
+	public void setCitizenshipWatsonListTypeId(
+		long citizenshipWatsonListTypeId) {
+
+		_watsonChildAudit.setCitizenshipWatsonListTypeId(
+			citizenshipWatsonListTypeId);
 	}
 
 	/**
-	* Sets the company ID of this watson child audit.
-	*
-	* @param companyId the company ID of this watson child audit
-	*/
+	 * Sets the company ID of this watson child audit.
+	 *
+	 * @param companyId the company ID of this watson child audit
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_watsonChildAudit.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the country watson list type ID of this watson child audit.
-	*
-	* @param countryWatsonListTypeId the country watson list type ID of this watson child audit
-	*/
+	 * Sets the country watson list type ID of this watson child audit.
+	 *
+	 * @param countryWatsonListTypeId the country watson list type ID of this watson child audit
+	 */
 	@Override
 	public void setCountryWatsonListTypeId(long countryWatsonListTypeId) {
 		_watsonChildAudit.setCountryWatsonListTypeId(countryWatsonListTypeId);
 	}
 
 	/**
-	* Sets the create date of this watson child audit.
-	*
-	* @param createDate the create date of this watson child audit
-	*/
+	 * Sets the create date of this watson child audit.
+	 *
+	 * @param createDate the create date of this watson child audit
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_watsonChildAudit.setCreateDate(createDate);
 	}
 
 	/**
-	* Sets the date accepted of this watson child audit.
-	*
-	* @param dateAccepted the date accepted of this watson child audit
-	*/
+	 * Sets the date accepted of this watson child audit.
+	 *
+	 * @param dateAccepted the date accepted of this watson child audit
+	 */
 	@Override
 	public void setDateAccepted(Date dateAccepted) {
 		_watsonChildAudit.setDateAccepted(dateAccepted);
 	}
 
 	/**
-	* Sets the date discharged of this watson child audit.
-	*
-	* @param dateDischarged the date discharged of this watson child audit
-	*/
+	 * Sets the date discharged of this watson child audit.
+	 *
+	 * @param dateDischarged the date discharged of this watson child audit
+	 */
 	@Override
 	public void setDateDischarged(Date dateDischarged) {
 		_watsonChildAudit.setDateDischarged(dateDischarged);
 	}
 
 	/**
-	* Sets the date follow up of this watson child audit.
-	*
-	* @param dateFollowUp the date follow up of this watson child audit
-	*/
+	 * Sets the date follow up of this watson child audit.
+	 *
+	 * @param dateFollowUp the date follow up of this watson child audit
+	 */
 	@Override
 	public void setDateFollowUp(Date dateFollowUp) {
 		_watsonChildAudit.setDateFollowUp(dateFollowUp);
 	}
 
 	/**
-	* Sets the discharge watson list type ID of this watson child audit.
-	*
-	* @param dischargeWatsonListTypeId the discharge watson list type ID of this watson child audit
-	*/
+	 * Sets the discharge watson list type ID of this watson child audit.
+	 *
+	 * @param dischargeWatsonListTypeId the discharge watson list type ID of this watson child audit
+	 */
 	@Override
 	public void setDischargeWatsonListTypeId(long dischargeWatsonListTypeId) {
-		_watsonChildAudit.setDischargeWatsonListTypeId(dischargeWatsonListTypeId);
+		_watsonChildAudit.setDischargeWatsonListTypeId(
+			dischargeWatsonListTypeId);
 	}
 
 	/**
-	* Sets the ethnicity watson list type ID of this watson child audit.
-	*
-	* @param ethnicityWatsonListTypeId the ethnicity watson list type ID of this watson child audit
-	*/
+	 * Sets the ethnicity watson list type ID of this watson child audit.
+	 *
+	 * @param ethnicityWatsonListTypeId the ethnicity watson list type ID of this watson child audit
+	 */
 	@Override
 	public void setEthnicityWatsonListTypeId(long ethnicityWatsonListTypeId) {
-		_watsonChildAudit.setEthnicityWatsonListTypeId(ethnicityWatsonListTypeId);
+		_watsonChildAudit.setEthnicityWatsonListTypeId(
+			ethnicityWatsonListTypeId);
 	}
 
 	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
 		_watsonChildAudit.setExpandoBridgeAttributes(baseModel);
 	}
 
@@ -654,20 +663,20 @@ public class WatsonChildAuditWrapper implements WatsonChildAudit,
 	}
 
 	/**
-	* Sets the group ID of this watson child audit.
-	*
-	* @param groupId the group ID of this watson child audit
-	*/
+	 * Sets the group ID of this watson child audit.
+	 *
+	 * @param groupId the group ID of this watson child audit
+	 */
 	@Override
 	public void setGroupId(long groupId) {
 		_watsonChildAudit.setGroupId(groupId);
 	}
 
 	/**
-	* Sets the modified date of this watson child audit.
-	*
-	* @param modifiedDate the modified date of this watson child audit
-	*/
+	 * Sets the modified date of this watson child audit.
+	 *
+	 * @param modifiedDate the modified date of this watson child audit
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_watsonChildAudit.setModifiedDate(modifiedDate);
@@ -679,20 +688,20 @@ public class WatsonChildAuditWrapper implements WatsonChildAudit,
 	}
 
 	/**
-	* Sets the original watson person ID of this watson child audit.
-	*
-	* @param originalWatsonPersonId the original watson person ID of this watson child audit
-	*/
+	 * Sets the original watson person ID of this watson child audit.
+	 *
+	 * @param originalWatsonPersonId the original watson person ID of this watson child audit
+	 */
 	@Override
 	public void setOriginalWatsonPersonId(long originalWatsonPersonId) {
 		_watsonChildAudit.setOriginalWatsonPersonId(originalWatsonPersonId);
 	}
 
 	/**
-	* Sets the primary key of this watson child audit.
-	*
-	* @param primaryKey the primary key of this watson child audit
-	*/
+	 * Sets the primary key of this watson child audit.
+	 *
+	 * @param primaryKey the primary key of this watson child audit
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_watsonChildAudit.setPrimaryKey(primaryKey);
@@ -704,118 +713,122 @@ public class WatsonChildAuditWrapper implements WatsonChildAudit,
 	}
 
 	/**
-	* Sets the sex watson list type ID of this watson child audit.
-	*
-	* @param sexWatsonListTypeId the sex watson list type ID of this watson child audit
-	*/
+	 * Sets the sex watson list type ID of this watson child audit.
+	 *
+	 * @param sexWatsonListTypeId the sex watson list type ID of this watson child audit
+	 */
 	@Override
 	public void setSexWatsonListTypeId(long sexWatsonListTypeId) {
 		_watsonChildAudit.setSexWatsonListTypeId(sexWatsonListTypeId);
 	}
 
 	/**
-	* Sets the source of this watson child audit.
-	*
-	* @param source the source of this watson child audit
-	*/
+	 * Sets the source of this watson child audit.
+	 *
+	 * @param source the source of this watson child audit
+	 */
 	@Override
 	public void setSource(String source) {
 		_watsonChildAudit.setSource(source);
 	}
 
 	/**
-	* Sets the source subtype watson list type ID of this watson child audit.
-	*
-	* @param sourceSubtypeWatsonListTypeId the source subtype watson list type ID of this watson child audit
-	*/
+	 * Sets the source subtype watson list type ID of this watson child audit.
+	 *
+	 * @param sourceSubtypeWatsonListTypeId the source subtype watson list type ID of this watson child audit
+	 */
 	@Override
 	public void setSourceSubtypeWatsonListTypeId(
 		long sourceSubtypeWatsonListTypeId) {
-		_watsonChildAudit.setSourceSubtypeWatsonListTypeId(sourceSubtypeWatsonListTypeId);
+
+		_watsonChildAudit.setSourceSubtypeWatsonListTypeId(
+			sourceSubtypeWatsonListTypeId);
 	}
 
 	/**
-	* Sets the source watson list type ID of this watson child audit.
-	*
-	* @param sourceWatsonListTypeId the source watson list type ID of this watson child audit
-	*/
+	 * Sets the source watson list type ID of this watson child audit.
+	 *
+	 * @param sourceWatsonListTypeId the source watson list type ID of this watson child audit
+	 */
 	@Override
 	public void setSourceWatsonListTypeId(long sourceWatsonListTypeId) {
 		_watsonChildAudit.setSourceWatsonListTypeId(sourceWatsonListTypeId);
 	}
 
 	/**
-	* Sets the status of this watson child audit.
-	*
-	* @param status the status of this watson child audit
-	*/
+	 * Sets the status of this watson child audit.
+	 *
+	 * @param status the status of this watson child audit
+	 */
 	@Override
 	public void setStatus(int status) {
 		_watsonChildAudit.setStatus(status);
 	}
 
 	/**
-	* Sets the type watson list type ID of this watson child audit.
-	*
-	* @param typeWatsonListTypeId the type watson list type ID of this watson child audit
-	*/
+	 * Sets the type watson list type ID of this watson child audit.
+	 *
+	 * @param typeWatsonListTypeId the type watson list type ID of this watson child audit
+	 */
 	@Override
 	public void setTypeWatsonListTypeId(long typeWatsonListTypeId) {
 		_watsonChildAudit.setTypeWatsonListTypeId(typeWatsonListTypeId);
 	}
 
 	/**
-	* Sets the user ID of this watson child audit.
-	*
-	* @param userId the user ID of this watson child audit
-	*/
+	 * Sets the user ID of this watson child audit.
+	 *
+	 * @param userId the user ID of this watson child audit
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_watsonChildAudit.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this watson child audit.
-	*
-	* @param userName the user name of this watson child audit
-	*/
+	 * Sets the user name of this watson child audit.
+	 *
+	 * @param userName the user name of this watson child audit
+	 */
 	@Override
 	public void setUserName(String userName) {
 		_watsonChildAudit.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this watson child audit.
-	*
-	* @param userUuid the user uuid of this watson child audit
-	*/
+	 * Sets the user uuid of this watson child audit.
+	 *
+	 * @param userUuid the user uuid of this watson child audit
+	 */
 	@Override
 	public void setUserUuid(String userUuid) {
 		_watsonChildAudit.setUserUuid(userUuid);
 	}
 
 	/**
-	* Sets the watson child audit ID of this watson child audit.
-	*
-	* @param watsonChildAuditId the watson child audit ID of this watson child audit
-	*/
+	 * Sets the watson child audit ID of this watson child audit.
+	 *
+	 * @param watsonChildAuditId the watson child audit ID of this watson child audit
+	 */
 	@Override
 	public void setWatsonChildAuditId(long watsonChildAuditId) {
 		_watsonChildAudit.setWatsonChildAuditId(watsonChildAuditId);
 	}
 
 	/**
-	* Sets the watson child ID of this watson child audit.
-	*
-	* @param watsonChildId the watson child ID of this watson child audit
-	*/
+	 * Sets the watson child ID of this watson child audit.
+	 *
+	 * @param watsonChildId the watson child ID of this watson child audit
+	 */
 	@Override
 	public void setWatsonChildId(long watsonChildId) {
 		_watsonChildAudit.setWatsonChildId(watsonChildId);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<WatsonChildAudit> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<WatsonChildAudit>
+		toCacheModel() {
+
 		return _watsonChildAudit.toCacheModel();
 	}
 
@@ -831,7 +844,8 @@ public class WatsonChildAuditWrapper implements WatsonChildAudit,
 
 	@Override
 	public WatsonChildAudit toUnescapedModel() {
-		return new WatsonChildAuditWrapper(_watsonChildAudit.toUnescapedModel());
+		return new WatsonChildAuditWrapper(
+			_watsonChildAudit.toUnescapedModel());
 	}
 
 	@Override
@@ -849,10 +863,12 @@ public class WatsonChildAuditWrapper implements WatsonChildAudit,
 			return false;
 		}
 
-		WatsonChildAuditWrapper watsonChildAuditWrapper = (WatsonChildAuditWrapper)obj;
+		WatsonChildAuditWrapper watsonChildAuditWrapper =
+			(WatsonChildAuditWrapper)obj;
 
-		if (Objects.equals(_watsonChildAudit,
-					watsonChildAuditWrapper._watsonChildAudit)) {
+		if (Objects.equals(
+				_watsonChildAudit, watsonChildAuditWrapper._watsonChildAudit)) {
+
 			return true;
 		}
 
@@ -880,4 +896,5 @@ public class WatsonChildAuditWrapper implements WatsonChildAudit,
 	}
 
 	private final WatsonChildAudit _watsonChildAudit;
+
 }

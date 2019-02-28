@@ -18,7 +18,6 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -35,7 +34,6 @@ import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
-
 import com.liferay.watson.model.WatsonActivity;
 import com.liferay.watson.model.WatsonActivityModel;
 
@@ -66,31 +64,30 @@ import java.util.function.Function;
  * @generated
  */
 @ProviderType
-public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
-	implements WatsonActivityModel {
+public class WatsonActivityModelImpl
+	extends BaseModelImpl<WatsonActivity> implements WatsonActivityModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson activity model instance should use the <code>WatsonActivity</code> interface instead.
 	 */
 	public static final String TABLE_NAME = "WatsonActivity";
+
 	public static final Object[][] TABLE_COLUMNS = {
-			{ "watsonActivityId", Types.BIGINT },
-			{ "groupId", Types.BIGINT },
-			{ "companyId", Types.BIGINT },
-			{ "userId", Types.BIGINT },
-			{ "userName", Types.VARCHAR },
-			{ "createDate", Types.TIMESTAMP },
-			{ "modifiedDate", Types.TIMESTAMP },
-			{ "typeWatsonListTypeId", Types.BIGINT },
-			{ "subtypeWatsonListTypeId", Types.BIGINT },
-			{ "watsonIncidentId", Types.BIGINT },
-			{ "narrative", Types.VARCHAR },
-			{ "reportDate", Types.TIMESTAMP },
-			{ "startDate", Types.TIMESTAMP },
-			{ "status", Types.INTEGER }
-		};
-	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
+		{"watsonActivityId", Types.BIGINT}, {"groupId", Types.BIGINT},
+		{"companyId", Types.BIGINT}, {"userId", Types.BIGINT},
+		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
+		{"modifiedDate", Types.TIMESTAMP},
+		{"typeWatsonListTypeId", Types.BIGINT},
+		{"subtypeWatsonListTypeId", Types.BIGINT},
+		{"watsonIncidentId", Types.BIGINT}, {"narrative", Types.VARCHAR},
+		{"reportDate", Types.TIMESTAMP}, {"startDate", Types.TIMESTAMP},
+		{"status", Types.INTEGER}
+	};
+
+	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
+		new HashMap<String, Integer>();
 
 	static {
 		TABLE_COLUMNS_MAP.put("watsonActivityId", Types.BIGINT);
@@ -109,22 +106,38 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonActivity (watsonActivityId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,typeWatsonListTypeId LONG,subtypeWatsonListTypeId LONG,watsonIncidentId LONG,narrative STRING null,reportDate DATE null,startDate DATE null,status INTEGER)";
+	public static final String TABLE_SQL_CREATE =
+		"create table WatsonActivity (watsonActivityId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,typeWatsonListTypeId LONG,subtypeWatsonListTypeId LONG,watsonIncidentId LONG,narrative STRING null,reportDate DATE null,startDate DATE null,status INTEGER)";
+
 	public static final String TABLE_SQL_DROP = "drop table WatsonActivity";
-	public static final String ORDER_BY_JPQL = " ORDER BY watsonActivity.watsonActivityId ASC";
-	public static final String ORDER_BY_SQL = " ORDER BY WatsonActivity.watsonActivityId ASC";
+
+	public static final String ORDER_BY_JPQL =
+		" ORDER BY watsonActivity.watsonActivityId ASC";
+
+	public static final String ORDER_BY_SQL =
+		" ORDER BY WatsonActivity.watsonActivityId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
+
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
+
 	public static final String TX_MANAGER = "liferayTransactionManager";
-	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonActivity"),
-			true);
-	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonActivity"),
-			true);
+
+	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonActivity"),
+		true);
+
+	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonActivity"),
+		true);
+
 	public static final boolean COLUMN_BITMASK_ENABLED = false;
-	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.watson.service.util.ServiceProps.get(
-				"lock.expiration.time.com.liferay.watson.model.WatsonActivity"));
+
+	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"lock.expiration.time.com.liferay.watson.model.WatsonActivity"));
 
 	public WatsonActivityModelImpl() {
 	}
@@ -163,13 +176,18 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		Map<String, Function<WatsonActivity, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+		Map<String, Function<WatsonActivity, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		for (Map.Entry<String, Function<WatsonActivity, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonActivity, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonActivity, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonActivity, Object> attributeGetterFunction =
+				entry.getValue();
 
-			attributes.put(attributeName,
+			attributes.put(
+				attributeName,
 				attributeGetterFunction.apply((WatsonActivity)this));
 		}
 
@@ -181,36 +199,44 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Map<String, BiConsumer<WatsonActivity, Object>> attributeSetterBiConsumers =
-			getAttributeSetterBiConsumers();
+		Map<String, BiConsumer<WatsonActivity, Object>>
+			attributeSetterBiConsumers = getAttributeSetterBiConsumers();
 
 		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			String attributeName = entry.getKey();
 
-			BiConsumer<WatsonActivity, Object> attributeSetterBiConsumer = attributeSetterBiConsumers.get(attributeName);
+			BiConsumer<WatsonActivity, Object> attributeSetterBiConsumer =
+				attributeSetterBiConsumers.get(attributeName);
 
 			if (attributeSetterBiConsumer != null) {
-				attributeSetterBiConsumer.accept((WatsonActivity)this,
-					entry.getValue());
+				attributeSetterBiConsumer.accept(
+					(WatsonActivity)this, entry.getValue());
 			}
 		}
 	}
 
-	public Map<String, Function<WatsonActivity, Object>> getAttributeGetterFunctions() {
+	public Map<String, Function<WatsonActivity, Object>>
+		getAttributeGetterFunctions() {
+
 		return _attributeGetterFunctions;
 	}
 
-	public Map<String, BiConsumer<WatsonActivity, Object>> getAttributeSetterBiConsumers() {
+	public Map<String, BiConsumer<WatsonActivity, Object>>
+		getAttributeSetterBiConsumers() {
+
 		return _attributeSetterBiConsumers;
 	}
 
-	private static final Map<String, Function<WatsonActivity, Object>> _attributeGetterFunctions;
-	private static final Map<String, BiConsumer<WatsonActivity, Object>> _attributeSetterBiConsumers;
+	private static final Map<String, Function<WatsonActivity, Object>>
+		_attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonActivity, Object>>
+		_attributeSetterBiConsumers;
 
 	static {
-		Map<String, Function<WatsonActivity, Object>> attributeGetterFunctions = new LinkedHashMap<String, Function<WatsonActivity, Object>>();
-		Map<String, BiConsumer<WatsonActivity, ?>> attributeSetterBiConsumers = new LinkedHashMap<String, BiConsumer<WatsonActivity, ?>>();
-
+		Map<String, Function<WatsonActivity, Object>> attributeGetterFunctions =
+			new LinkedHashMap<String, Function<WatsonActivity, Object>>();
+		Map<String, BiConsumer<WatsonActivity, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<WatsonActivity, ?>>();
 
 		attributeGetterFunctions.put(
 			"watsonActivityId",
@@ -227,7 +253,9 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 			new BiConsumer<WatsonActivity, Object>() {
 
 				@Override
-				public void accept(WatsonActivity watsonActivity, Object watsonActivityId) {
+				public void accept(
+					WatsonActivity watsonActivity, Object watsonActivityId) {
+
 					watsonActivity.setWatsonActivityId((Long)watsonActivityId);
 				}
 
@@ -247,7 +275,9 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 			new BiConsumer<WatsonActivity, Object>() {
 
 				@Override
-				public void accept(WatsonActivity watsonActivity, Object groupId) {
+				public void accept(
+					WatsonActivity watsonActivity, Object groupId) {
+
 					watsonActivity.setGroupId((Long)groupId);
 				}
 
@@ -267,7 +297,9 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 			new BiConsumer<WatsonActivity, Object>() {
 
 				@Override
-				public void accept(WatsonActivity watsonActivity, Object companyId) {
+				public void accept(
+					WatsonActivity watsonActivity, Object companyId) {
+
 					watsonActivity.setCompanyId((Long)companyId);
 				}
 
@@ -287,7 +319,9 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 			new BiConsumer<WatsonActivity, Object>() {
 
 				@Override
-				public void accept(WatsonActivity watsonActivity, Object userId) {
+				public void accept(
+					WatsonActivity watsonActivity, Object userId) {
+
 					watsonActivity.setUserId((Long)userId);
 				}
 
@@ -307,7 +341,9 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 			new BiConsumer<WatsonActivity, Object>() {
 
 				@Override
-				public void accept(WatsonActivity watsonActivity, Object userName) {
+				public void accept(
+					WatsonActivity watsonActivity, Object userName) {
+
 					watsonActivity.setUserName((String)userName);
 				}
 
@@ -327,7 +363,9 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 			new BiConsumer<WatsonActivity, Object>() {
 
 				@Override
-				public void accept(WatsonActivity watsonActivity, Object createDate) {
+				public void accept(
+					WatsonActivity watsonActivity, Object createDate) {
+
 					watsonActivity.setCreateDate((Date)createDate);
 				}
 
@@ -347,7 +385,9 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 			new BiConsumer<WatsonActivity, Object>() {
 
 				@Override
-				public void accept(WatsonActivity watsonActivity, Object modifiedDate) {
+				public void accept(
+					WatsonActivity watsonActivity, Object modifiedDate) {
+
 					watsonActivity.setModifiedDate((Date)modifiedDate);
 				}
 
@@ -367,8 +407,12 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 			new BiConsumer<WatsonActivity, Object>() {
 
 				@Override
-				public void accept(WatsonActivity watsonActivity, Object typeWatsonListTypeId) {
-					watsonActivity.setTypeWatsonListTypeId((Long)typeWatsonListTypeId);
+				public void accept(
+					WatsonActivity watsonActivity,
+					Object typeWatsonListTypeId) {
+
+					watsonActivity.setTypeWatsonListTypeId(
+						(Long)typeWatsonListTypeId);
 				}
 
 			});
@@ -387,8 +431,12 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 			new BiConsumer<WatsonActivity, Object>() {
 
 				@Override
-				public void accept(WatsonActivity watsonActivity, Object subtypeWatsonListTypeId) {
-					watsonActivity.setSubtypeWatsonListTypeId((Long)subtypeWatsonListTypeId);
+				public void accept(
+					WatsonActivity watsonActivity,
+					Object subtypeWatsonListTypeId) {
+
+					watsonActivity.setSubtypeWatsonListTypeId(
+						(Long)subtypeWatsonListTypeId);
 				}
 
 			});
@@ -407,7 +455,9 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 			new BiConsumer<WatsonActivity, Object>() {
 
 				@Override
-				public void accept(WatsonActivity watsonActivity, Object watsonIncidentId) {
+				public void accept(
+					WatsonActivity watsonActivity, Object watsonIncidentId) {
+
 					watsonActivity.setWatsonIncidentId((Long)watsonIncidentId);
 				}
 
@@ -427,7 +477,9 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 			new BiConsumer<WatsonActivity, Object>() {
 
 				@Override
-				public void accept(WatsonActivity watsonActivity, Object narrative) {
+				public void accept(
+					WatsonActivity watsonActivity, Object narrative) {
+
 					watsonActivity.setNarrative((String)narrative);
 				}
 
@@ -447,7 +499,9 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 			new BiConsumer<WatsonActivity, Object>() {
 
 				@Override
-				public void accept(WatsonActivity watsonActivity, Object reportDate) {
+				public void accept(
+					WatsonActivity watsonActivity, Object reportDate) {
+
 					watsonActivity.setReportDate((Date)reportDate);
 				}
 
@@ -467,7 +521,9 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 			new BiConsumer<WatsonActivity, Object>() {
 
 				@Override
-				public void accept(WatsonActivity watsonActivity, Object startDate) {
+				public void accept(
+					WatsonActivity watsonActivity, Object startDate) {
+
 					watsonActivity.setStartDate((Date)startDate);
 				}
 
@@ -487,15 +543,18 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 			new BiConsumer<WatsonActivity, Object>() {
 
 				@Override
-				public void accept(WatsonActivity watsonActivity, Object status) {
+				public void accept(
+					WatsonActivity watsonActivity, Object status) {
+
 					watsonActivity.setStatus((Integer)status);
 				}
 
 			});
 
-
-		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap(
+			(Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -656,8 +715,8 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 
 	@Override
 	public String getNarrative(String languageId, boolean useDefault) {
-		return LocalizationUtil.getLocalization(getNarrative(), languageId,
-			useDefault);
+		return LocalizationUtil.getLocalization(
+			getNarrative(), languageId, useDefault);
 	}
 
 	@Override
@@ -689,18 +748,22 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 	}
 
 	@Override
-	public void setNarrative(String narrative, Locale locale,
-		Locale defaultLocale) {
+	public void setNarrative(
+		String narrative, Locale locale, Locale defaultLocale) {
+
 		String languageId = LocaleUtil.toLanguageId(locale);
 		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
 
 		if (Validator.isNotNull(narrative)) {
-			setNarrative(LocalizationUtil.updateLocalization(getNarrative(),
-					"Narrative", narrative, languageId, defaultLanguageId));
+			setNarrative(
+				LocalizationUtil.updateLocalization(
+					getNarrative(), "Narrative", narrative, languageId,
+					defaultLanguageId));
 		}
 		else {
-			setNarrative(LocalizationUtil.removeLocalization(getNarrative(),
-					"Narrative", languageId));
+			setNarrative(
+				LocalizationUtil.removeLocalization(
+					getNarrative(), "Narrative", languageId));
 		}
 	}
 
@@ -715,14 +778,16 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 	}
 
 	@Override
-	public void setNarrativeMap(Map<Locale, String> narrativeMap,
-		Locale defaultLocale) {
+	public void setNarrativeMap(
+		Map<Locale, String> narrativeMap, Locale defaultLocale) {
+
 		if (narrativeMap == null) {
 			return;
 		}
 
-		setNarrative(LocalizationUtil.updateLocalization(narrativeMap,
-				getNarrative(), "Narrative",
+		setNarrative(
+			LocalizationUtil.updateLocalization(
+				narrativeMap, getNarrative(), "Narrative",
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
@@ -758,8 +823,8 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 
 	@Override
 	public ExpandoBridge getExpandoBridge() {
-		return ExpandoBridgeFactoryUtil.getExpandoBridge(getCompanyId(),
-			WatsonActivity.class.getName(), getPrimaryKey());
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(
+			getCompanyId(), WatsonActivity.class.getName(), getPrimaryKey());
 	}
 
 	@Override
@@ -784,7 +849,8 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 			}
 		}
 
-		return availableLanguageIds.toArray(new String[availableLanguageIds.size()]);
+		return availableLanguageIds.toArray(
+			new String[availableLanguageIds.size()]);
 	}
 
 	@Override
@@ -802,12 +868,15 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 
 	@Override
 	public void prepareLocalizedFieldsForImport() throws LocaleException {
-		Locale defaultLocale = LocaleUtil.fromLanguageId(getDefaultLanguageId());
+		Locale defaultLocale = LocaleUtil.fromLanguageId(
+			getDefaultLanguageId());
 
-		Locale[] availableLocales = LocaleUtil.fromLanguageIds(getAvailableLanguageIds());
+		Locale[] availableLocales = LocaleUtil.fromLanguageIds(
+			getAvailableLanguageIds());
 
-		Locale defaultImportLocale = LocalizationUtil.getDefaultImportLocale(WatsonActivity.class.getName(),
-				getPrimaryKey(), defaultLocale, availableLocales);
+		Locale defaultImportLocale = LocalizationUtil.getDefaultImportLocale(
+			WatsonActivity.class.getName(), getPrimaryKey(), defaultLocale,
+			availableLocales);
 
 		prepareLocalizedFieldsForImport(defaultImportLocale);
 	}
@@ -816,6 +885,7 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 	@SuppressWarnings("unused")
 	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
 		throws LocaleException {
+
 		Locale defaultLocale = LocaleUtil.getSiteDefault();
 
 		String modelDefaultLanguageId = getDefaultLanguageId();
@@ -826,16 +896,17 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 			setNarrative(getNarrative(modelDefaultLanguageId), defaultLocale);
 		}
 		else {
-			setNarrative(getNarrative(defaultLocale), defaultLocale,
-				defaultLocale);
+			setNarrative(
+				getNarrative(defaultLocale), defaultLocale, defaultLocale);
 		}
 	}
 
 	@Override
 	public WatsonActivity toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonActivity)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+			_escapedModel = (WatsonActivity)ProxyUtil.newProxyInstance(
+				_classLoader, _escapedModelInterfaces,
+				new AutoEscapeBeanHandler(this));
 		}
 
 		return _escapedModel;
@@ -853,7 +924,8 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 		watsonActivityImpl.setCreateDate(getCreateDate());
 		watsonActivityImpl.setModifiedDate(getModifiedDate());
 		watsonActivityImpl.setTypeWatsonListTypeId(getTypeWatsonListTypeId());
-		watsonActivityImpl.setSubtypeWatsonListTypeId(getSubtypeWatsonListTypeId());
+		watsonActivityImpl.setSubtypeWatsonListTypeId(
+			getSubtypeWatsonListTypeId());
 		watsonActivityImpl.setWatsonIncidentId(getWatsonIncidentId());
 		watsonActivityImpl.setNarrative(getNarrative());
 		watsonActivityImpl.setReportDate(getReportDate());
@@ -926,7 +998,8 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 
 	@Override
 	public CacheModel<WatsonActivity> toCacheModel() {
-		WatsonActivityCacheModel watsonActivityCacheModel = new WatsonActivityCacheModel();
+		WatsonActivityCacheModel watsonActivityCacheModel =
+			new WatsonActivityCacheModel();
 
 		watsonActivityCacheModel.watsonActivityId = getWatsonActivityId();
 
@@ -962,9 +1035,11 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 			watsonActivityCacheModel.modifiedDate = Long.MIN_VALUE;
 		}
 
-		watsonActivityCacheModel.typeWatsonListTypeId = getTypeWatsonListTypeId();
+		watsonActivityCacheModel.typeWatsonListTypeId =
+			getTypeWatsonListTypeId();
 
-		watsonActivityCacheModel.subtypeWatsonListTypeId = getSubtypeWatsonListTypeId();
+		watsonActivityCacheModel.subtypeWatsonListTypeId =
+			getSubtypeWatsonListTypeId();
 
 		watsonActivityCacheModel.watsonIncidentId = getWatsonIncidentId();
 
@@ -1001,16 +1076,20 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 
 	@Override
 	public String toString() {
-		Map<String, Function<WatsonActivity, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+		Map<String, Function<WatsonActivity, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
-				2);
+		StringBundler sb = new StringBundler(
+			4 * attributeGetterFunctions.size() + 2);
 
 		sb.append("{");
 
-		for (Map.Entry<String, Function<WatsonActivity, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonActivity, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonActivity, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonActivity, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append(attributeName);
 			sb.append("=");
@@ -1029,18 +1108,22 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 
 	@Override
 	public String toXmlString() {
-		Map<String, Function<WatsonActivity, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+		Map<String, Function<WatsonActivity, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
-				4);
+		StringBundler sb = new StringBundler(
+			5 * attributeGetterFunctions.size() + 4);
 
 		sb.append("<model><model-name>");
 		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		for (Map.Entry<String, Function<WatsonActivity, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonActivity, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonActivity, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonActivity, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append("<column><column-name>");
 			sb.append(attributeName);
@@ -1054,10 +1137,12 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader = WatsonActivity.class.getClassLoader();
+	private static final ClassLoader _classLoader =
+		WatsonActivity.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			WatsonActivity.class, ModelWrapper.class
-		};
+		WatsonActivity.class, ModelWrapper.class
+	};
+
 	private long _watsonActivityId;
 	private long _groupId;
 	private long _companyId;
@@ -1075,4 +1160,5 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 	private Date _startDate;
 	private int _status;
 	private WatsonActivity _escapedModel;
+
 }

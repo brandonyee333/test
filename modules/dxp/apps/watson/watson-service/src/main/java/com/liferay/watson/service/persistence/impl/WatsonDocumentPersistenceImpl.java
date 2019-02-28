@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
-
 import com.liferay.watson.exception.NoSuchDocumentException;
 import com.liferay.watson.model.WatsonDocument;
 import com.liferay.watson.model.impl.WatsonDocumentImpl;
@@ -64,18 +63,24 @@ import java.util.Set;
  * @generated
  */
 @ProviderType
-public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDocument>
+public class WatsonDocumentPersistenceImpl
+	extends BasePersistenceImpl<WatsonDocument>
 	implements WatsonDocumentPersistence {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonDocumentUtil</code> to access the watson document persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY = WatsonDocumentImpl.class.getName();
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List1";
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List2";
+	public static final String FINDER_CLASS_NAME_ENTITY =
+		WatsonDocumentImpl.class.getName();
+
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List1";
+
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List2";
+
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
@@ -91,7 +96,8 @@ public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDoc
 	 */
 	@Override
 	public void cacheResult(WatsonDocument watsonDocument) {
-		entityCache.putResult(WatsonDocumentModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			WatsonDocumentModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonDocumentImpl.class, watsonDocument.getPrimaryKey(),
 			watsonDocument);
 
@@ -107,8 +113,10 @@ public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDoc
 	public void cacheResult(List<WatsonDocument> watsonDocuments) {
 		for (WatsonDocument watsonDocument : watsonDocuments) {
 			if (entityCache.getResult(
-						WatsonDocumentModelImpl.ENTITY_CACHE_ENABLED,
-						WatsonDocumentImpl.class, watsonDocument.getPrimaryKey()) == null) {
+					WatsonDocumentModelImpl.ENTITY_CACHE_ENABLED,
+					WatsonDocumentImpl.class, watsonDocument.getPrimaryKey()) ==
+						null) {
+
 				cacheResult(watsonDocument);
 			}
 			else {
@@ -142,7 +150,8 @@ public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDoc
 	 */
 	@Override
 	public void clearCache(WatsonDocument watsonDocument) {
-		entityCache.removeResult(WatsonDocumentModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.removeResult(
+			WatsonDocumentModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonDocumentImpl.class, watsonDocument.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -155,7 +164,8 @@ public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDoc
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (WatsonDocument watsonDocument : watsonDocuments) {
-			entityCache.removeResult(WatsonDocumentModelImpl.ENTITY_CACHE_ENABLED,
+			entityCache.removeResult(
+				WatsonDocumentModelImpl.ENTITY_CACHE_ENABLED,
 				WatsonDocumentImpl.class, watsonDocument.getPrimaryKey());
 		}
 	}
@@ -188,6 +198,7 @@ public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDoc
 	@Override
 	public WatsonDocument remove(long watsonDocumentId)
 		throws NoSuchDocumentException {
+
 		return remove((Serializable)watsonDocumentId);
 	}
 
@@ -201,21 +212,22 @@ public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDoc
 	@Override
 	public WatsonDocument remove(Serializable primaryKey)
 		throws NoSuchDocumentException {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			WatsonDocument watsonDocument = (WatsonDocument)session.get(WatsonDocumentImpl.class,
-					primaryKey);
+			WatsonDocument watsonDocument = (WatsonDocument)session.get(
+				WatsonDocumentImpl.class, primaryKey);
 
 			if (watsonDocument == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchDocumentException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					primaryKey);
+				throw new NoSuchDocumentException(
+					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			return remove(watsonDocument);
@@ -239,8 +251,9 @@ public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDoc
 			session = openSession();
 
 			if (!session.contains(watsonDocument)) {
-				watsonDocument = (WatsonDocument)session.get(WatsonDocumentImpl.class,
-						watsonDocument.getPrimaryKeyObj());
+				watsonDocument = (WatsonDocument)session.get(
+					WatsonDocumentImpl.class,
+					watsonDocument.getPrimaryKeyObj());
 			}
 
 			if (watsonDocument != null) {
@@ -269,21 +282,24 @@ public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDoc
 			InvocationHandler invocationHandler = null;
 
 			if (ProxyUtil.isProxyClass(watsonDocument.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(watsonDocument);
+				invocationHandler = ProxyUtil.getInvocationHandler(
+					watsonDocument);
 
 				throw new IllegalArgumentException(
 					"Implement ModelWrapper in watsonDocument proxy " +
-					invocationHandler.getClass());
+						invocationHandler.getClass());
 			}
 
 			throw new IllegalArgumentException(
 				"Implement ModelWrapper in custom WatsonDocument implementation " +
-				watsonDocument.getClass());
+					watsonDocument.getClass());
 		}
 
-		WatsonDocumentModelImpl watsonDocumentModelImpl = (WatsonDocumentModelImpl)watsonDocument;
+		WatsonDocumentModelImpl watsonDocumentModelImpl =
+			(WatsonDocumentModelImpl)watsonDocument;
 
-		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
 
 		Date now = new Date();
 
@@ -301,8 +317,8 @@ public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDoc
 				watsonDocument.setModifiedDate(now);
 			}
 			else {
-				watsonDocument.setModifiedDate(serviceContext.getModifiedDate(
-						now));
+				watsonDocument.setModifiedDate(
+					serviceContext.getModifiedDate(now));
 			}
 		}
 
@@ -331,11 +347,12 @@ public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDoc
 
 		if (isNew) {
 			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(_finderPathWithoutPaginationFindAll,
-				FINDER_ARGS_EMPTY);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(WatsonDocumentModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			WatsonDocumentModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonDocumentImpl.class, watsonDocument.getPrimaryKey(),
 			watsonDocument, false);
 
@@ -354,6 +371,7 @@ public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDoc
 	@Override
 	public WatsonDocument findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchDocumentException {
+
 		WatsonDocument watsonDocument = fetchByPrimaryKey(primaryKey);
 
 		if (watsonDocument == null) {
@@ -361,8 +379,8 @@ public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDoc
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchDocumentException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				primaryKey);
+			throw new NoSuchDocumentException(
+				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 		}
 
 		return watsonDocument;
@@ -378,6 +396,7 @@ public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDoc
 	@Override
 	public WatsonDocument findByPrimaryKey(long watsonDocumentId)
 		throws NoSuchDocumentException {
+
 		return findByPrimaryKey((Serializable)watsonDocumentId);
 	}
 
@@ -389,8 +408,9 @@ public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDoc
 	 */
 	@Override
 	public WatsonDocument fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(WatsonDocumentModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonDocumentImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(
+			WatsonDocumentModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonDocumentImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -404,19 +424,21 @@ public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDoc
 			try {
 				session = openSession();
 
-				watsonDocument = (WatsonDocument)session.get(WatsonDocumentImpl.class,
-						primaryKey);
+				watsonDocument = (WatsonDocument)session.get(
+					WatsonDocumentImpl.class, primaryKey);
 
 				if (watsonDocument != null) {
 					cacheResult(watsonDocument);
 				}
 				else {
-					entityCache.putResult(WatsonDocumentModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(
+						WatsonDocumentModelImpl.ENTITY_CACHE_ENABLED,
 						WatsonDocumentImpl.class, primaryKey, nullModel);
 				}
 			}
 			catch (Exception e) {
-				entityCache.removeResult(WatsonDocumentModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.removeResult(
+					WatsonDocumentModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonDocumentImpl.class, primaryKey);
 
 				throw processException(e);
@@ -443,11 +465,13 @@ public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDoc
 	@Override
 	public Map<Serializable, WatsonDocument> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, WatsonDocument> map = new HashMap<Serializable, WatsonDocument>();
+		Map<Serializable, WatsonDocument> map =
+			new HashMap<Serializable, WatsonDocument>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
@@ -466,8 +490,9 @@ public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDoc
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(WatsonDocumentModelImpl.ENTITY_CACHE_ENABLED,
-					WatsonDocumentImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(
+				WatsonDocumentModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonDocumentImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -487,8 +512,8 @@ public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDoc
 			return map;
 		}
 
-		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
-				1);
+		StringBundler query = new StringBundler(
+			uncachedPrimaryKeys.size() * 2 + 1);
 
 		query.append(_SQL_SELECT_WATSONDOCUMENT_WHERE_PKS_IN);
 
@@ -511,7 +536,9 @@ public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDoc
 
 			Query q = session.createQuery(sql);
 
-			for (WatsonDocument watsonDocument : (List<WatsonDocument>)q.list()) {
+			for (WatsonDocument watsonDocument :
+					(List<WatsonDocument>)q.list()) {
+
 				map.put(watsonDocument.getPrimaryKeyObj(), watsonDocument);
 
 				cacheResult(watsonDocument);
@@ -520,7 +547,8 @@ public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDoc
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(WatsonDocumentModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(
+					WatsonDocumentModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonDocumentImpl.class, primaryKey, nullModel);
 			}
 		}
@@ -573,8 +601,10 @@ public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDoc
 	 * @return the ordered range of watson documents
 	 */
 	@Override
-	public List<WatsonDocument> findAll(int start, int end,
+	public List<WatsonDocument> findAll(
+		int start, int end,
 		OrderByComparator<WatsonDocument> orderByComparator) {
+
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -592,29 +622,31 @@ public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDoc
 	 * @return the ordered range of watson documents
 	 */
 	@Override
-	public List<WatsonDocument> findAll(int start, int end,
-		OrderByComparator<WatsonDocument> orderByComparator,
+	public List<WatsonDocument> findAll(
+		int start, int end, OrderByComparator<WatsonDocument> orderByComparator,
 		boolean retrieveFromCache) {
+
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
+			(orderByComparator == null)) {
+
 			pagination = false;
 			finderPath = _finderPathWithoutPaginationFindAll;
 			finderArgs = FINDER_ARGS_EMPTY;
 		}
 		else {
 			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] { start, end, orderByComparator };
+			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<WatsonDocument> list = null;
 
 		if (retrieveFromCache) {
-			list = (List<WatsonDocument>)finderCache.getResult(finderPath,
-					finderArgs, this);
+			list = (List<WatsonDocument>)finderCache.getResult(
+				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
@@ -622,13 +654,13 @@ public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDoc
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(2 +
-						(orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(
+					2 + (orderByComparator.getOrderByFields().length * 2));
 
 				query.append(_SQL_SELECT_WATSONDOCUMENT);
 
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
 				sql = query.toString();
 			}
@@ -648,16 +680,16 @@ public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDoc
 				Query q = session.createQuery(sql);
 
 				if (!pagination) {
-					list = (List<WatsonDocument>)QueryUtil.list(q,
-							getDialect(), start, end, false);
+					list = (List<WatsonDocument>)QueryUtil.list(
+						q, getDialect(), start, end, false);
 
 					Collections.sort(list);
 
 					list = Collections.unmodifiableList(list);
 				}
 				else {
-					list = (List<WatsonDocument>)QueryUtil.list(q,
-							getDialect(), start, end);
+					list = (List<WatsonDocument>)QueryUtil.list(
+						q, getDialect(), start, end);
 				}
 
 				cacheResult(list);
@@ -695,8 +727,8 @@ public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDoc
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(_finderPathCountAll,
-				FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(
+			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -708,11 +740,12 @@ public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDoc
 
 				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(_finderPathCountAll, FINDER_ARGS_EMPTY,
-					count);
+				finderCache.putResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
+				finderCache.removeResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
 				throw processException(e);
 			}
@@ -733,21 +766,23 @@ public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDoc
 	 * Initializes the watson document persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(WatsonDocumentModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonDocumentModelImpl.FINDER_CACHE_ENABLED,
-				WatsonDocumentImpl.class,
-				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+		_finderPathWithPaginationFindAll = new FinderPath(
+			WatsonDocumentModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonDocumentModelImpl.FINDER_CACHE_ENABLED,
+			WatsonDocumentImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(WatsonDocumentModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonDocumentModelImpl.FINDER_CACHE_ENABLED,
-				WatsonDocumentImpl.class,
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-				new String[0]);
+		_finderPathWithoutPaginationFindAll = new FinderPath(
+			WatsonDocumentModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonDocumentModelImpl.FINDER_CACHE_ENABLED,
+			WatsonDocumentImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"findAll", new String[0]);
 
-		_finderPathCountAll = new FinderPath(WatsonDocumentModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonDocumentModelImpl.FINDER_CACHE_ENABLED, Long.class,
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-				new String[0]);
+		_finderPathCountAll = new FinderPath(
+			WatsonDocumentModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonDocumentModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+			new String[0]);
 	}
 
 	public void destroy() {
@@ -759,14 +794,28 @@ public class WatsonDocumentPersistenceImpl extends BasePersistenceImpl<WatsonDoc
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
+
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
+
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-	private static final String _SQL_SELECT_WATSONDOCUMENT = "SELECT watsonDocument FROM WatsonDocument watsonDocument";
-	private static final String _SQL_SELECT_WATSONDOCUMENT_WHERE_PKS_IN = "SELECT watsonDocument FROM WatsonDocument watsonDocument WHERE watsonDocumentId IN (";
-	private static final String _SQL_COUNT_WATSONDOCUMENT = "SELECT COUNT(watsonDocument) FROM WatsonDocument watsonDocument";
+
+	private static final String _SQL_SELECT_WATSONDOCUMENT =
+		"SELECT watsonDocument FROM WatsonDocument watsonDocument";
+
+	private static final String _SQL_SELECT_WATSONDOCUMENT_WHERE_PKS_IN =
+		"SELECT watsonDocument FROM WatsonDocument watsonDocument WHERE watsonDocumentId IN (";
+
+	private static final String _SQL_COUNT_WATSONDOCUMENT =
+		"SELECT COUNT(watsonDocument) FROM WatsonDocument watsonDocument";
+
 	private static final String _ORDER_BY_ENTITY_ALIAS = "watsonDocument.";
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No WatsonDocument exists with the primary key ";
-	private static final Log _log = LogFactoryUtil.getLog(WatsonDocumentPersistenceImpl.class);
+
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
+		"No WatsonDocument exists with the primary key ";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		WatsonDocumentPersistenceImpl.class);
+
 }

@@ -18,7 +18,6 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -30,7 +29,6 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.model.WatsonRelationshipAudit;
 import com.liferay.watson.model.WatsonRelationshipAuditModel;
 
@@ -58,33 +56,31 @@ import java.util.function.Function;
  * @generated
  */
 @ProviderType
-public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelationshipAudit>
+public class WatsonRelationshipAuditModelImpl
+	extends BaseModelImpl<WatsonRelationshipAudit>
 	implements WatsonRelationshipAuditModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson relationship audit model instance should use the <code>WatsonRelationshipAudit</code> interface instead.
 	 */
 	public static final String TABLE_NAME = "WatsonRelationshipAudit";
+
 	public static final Object[][] TABLE_COLUMNS = {
-			{ "watsonRelationshipAuditId", Types.BIGINT },
-			{ "groupId", Types.BIGINT },
-			{ "companyId", Types.BIGINT },
-			{ "userId", Types.BIGINT },
-			{ "userName", Types.VARCHAR },
-			{ "createDate", Types.TIMESTAMP },
-			{ "modifiedDate", Types.TIMESTAMP },
-			{ "watsonIncidentId", Types.BIGINT },
-			{ "watsonRelationshipId", Types.BIGINT },
-			{ "typeWatsonListTypeId", Types.BIGINT },
-			{ "classNameId1", Types.BIGINT },
-			{ "classPK1", Types.BIGINT },
-			{ "classNameId2", Types.BIGINT },
-			{ "classPK2", Types.BIGINT },
-			{ "description", Types.VARCHAR },
-			{ "status", Types.INTEGER }
-		};
-	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
+		{"watsonRelationshipAuditId", Types.BIGINT}, {"groupId", Types.BIGINT},
+		{"companyId", Types.BIGINT}, {"userId", Types.BIGINT},
+		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
+		{"modifiedDate", Types.TIMESTAMP}, {"watsonIncidentId", Types.BIGINT},
+		{"watsonRelationshipId", Types.BIGINT},
+		{"typeWatsonListTypeId", Types.BIGINT}, {"classNameId1", Types.BIGINT},
+		{"classPK1", Types.BIGINT}, {"classNameId2", Types.BIGINT},
+		{"classPK2", Types.BIGINT}, {"description", Types.VARCHAR},
+		{"status", Types.INTEGER}
+	};
+
+	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
+		new HashMap<String, Integer>();
 
 	static {
 		TABLE_COLUMNS_MAP.put("watsonRelationshipAuditId", Types.BIGINT);
@@ -105,22 +101,39 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonRelationshipAudit (watsonRelationshipAuditId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,watsonIncidentId LONG,watsonRelationshipId LONG,typeWatsonListTypeId LONG,classNameId1 LONG,classPK1 LONG,classNameId2 LONG,classPK2 LONG,description STRING null,status INTEGER)";
-	public static final String TABLE_SQL_DROP = "drop table WatsonRelationshipAudit";
-	public static final String ORDER_BY_JPQL = " ORDER BY watsonRelationshipAudit.watsonRelationshipAuditId ASC";
-	public static final String ORDER_BY_SQL = " ORDER BY WatsonRelationshipAudit.watsonRelationshipAuditId ASC";
+	public static final String TABLE_SQL_CREATE =
+		"create table WatsonRelationshipAudit (watsonRelationshipAuditId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,watsonIncidentId LONG,watsonRelationshipId LONG,typeWatsonListTypeId LONG,classNameId1 LONG,classPK1 LONG,classNameId2 LONG,classPK2 LONG,description STRING null,status INTEGER)";
+
+	public static final String TABLE_SQL_DROP =
+		"drop table WatsonRelationshipAudit";
+
+	public static final String ORDER_BY_JPQL =
+		" ORDER BY watsonRelationshipAudit.watsonRelationshipAuditId ASC";
+
+	public static final String ORDER_BY_SQL =
+		" ORDER BY WatsonRelationshipAudit.watsonRelationshipAuditId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
+
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
+
 	public static final String TX_MANAGER = "liferayTransactionManager";
-	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonRelationshipAudit"),
-			true);
-	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonRelationshipAudit"),
-			true);
+
+	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonRelationshipAudit"),
+		true);
+
+	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonRelationshipAudit"),
+		true);
+
 	public static final boolean COLUMN_BITMASK_ENABLED = false;
-	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.watson.service.util.ServiceProps.get(
-				"lock.expiration.time.com.liferay.watson.model.WatsonRelationshipAudit"));
+
+	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"lock.expiration.time.com.liferay.watson.model.WatsonRelationshipAudit"));
 
 	public WatsonRelationshipAuditModelImpl() {
 	}
@@ -159,14 +172,18 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		Map<String, Function<WatsonRelationshipAudit, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonRelationshipAudit, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		for (Map.Entry<String, Function<WatsonRelationshipAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonRelationshipAudit, Object>>
+				entry : attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonRelationshipAudit, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonRelationshipAudit, Object> attributeGetterFunction =
+				entry.getValue();
 
-			attributes.put(attributeName,
+			attributes.put(
+				attributeName,
 				attributeGetterFunction.apply((WatsonRelationshipAudit)this));
 		}
 
@@ -178,47 +195,61 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Map<String, BiConsumer<WatsonRelationshipAudit, Object>> attributeSetterBiConsumers =
-			getAttributeSetterBiConsumers();
+		Map<String, BiConsumer<WatsonRelationshipAudit, Object>>
+			attributeSetterBiConsumers = getAttributeSetterBiConsumers();
 
 		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			String attributeName = entry.getKey();
 
-			BiConsumer<WatsonRelationshipAudit, Object> attributeSetterBiConsumer =
-				attributeSetterBiConsumers.get(attributeName);
+			BiConsumer<WatsonRelationshipAudit, Object>
+				attributeSetterBiConsumer = attributeSetterBiConsumers.get(
+					attributeName);
 
 			if (attributeSetterBiConsumer != null) {
-				attributeSetterBiConsumer.accept((WatsonRelationshipAudit)this,
-					entry.getValue());
+				attributeSetterBiConsumer.accept(
+					(WatsonRelationshipAudit)this, entry.getValue());
 			}
 		}
 	}
 
-	public Map<String, Function<WatsonRelationshipAudit, Object>> getAttributeGetterFunctions() {
+	public Map<String, Function<WatsonRelationshipAudit, Object>>
+		getAttributeGetterFunctions() {
+
 		return _attributeGetterFunctions;
 	}
 
-	public Map<String, BiConsumer<WatsonRelationshipAudit, Object>> getAttributeSetterBiConsumers() {
+	public Map<String, BiConsumer<WatsonRelationshipAudit, Object>>
+		getAttributeSetterBiConsumers() {
+
 		return _attributeSetterBiConsumers;
 	}
 
-	private static final Map<String, Function<WatsonRelationshipAudit, Object>> _attributeGetterFunctions;
-	private static final Map<String, BiConsumer<WatsonRelationshipAudit, Object>> _attributeSetterBiConsumers;
+	private static final Map<String, Function<WatsonRelationshipAudit, Object>>
+		_attributeGetterFunctions;
+	private static final Map
+		<String, BiConsumer<WatsonRelationshipAudit, Object>>
+			_attributeSetterBiConsumers;
 
 	static {
-		Map<String, Function<WatsonRelationshipAudit, Object>> attributeGetterFunctions =
-			new LinkedHashMap<String, Function<WatsonRelationshipAudit, Object>>();
-		Map<String, BiConsumer<WatsonRelationshipAudit, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<WatsonRelationshipAudit, ?>>();
-
+		Map<String, Function<WatsonRelationshipAudit, Object>>
+			attributeGetterFunctions =
+				new LinkedHashMap
+					<String, Function<WatsonRelationshipAudit, Object>>();
+		Map<String, BiConsumer<WatsonRelationshipAudit, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap
+					<String, BiConsumer<WatsonRelationshipAudit, ?>>();
 
 		attributeGetterFunctions.put(
 			"watsonRelationshipAuditId",
 			new Function<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
-					return watsonRelationshipAudit.getWatsonRelationshipAuditId();
+				public Object apply(
+					WatsonRelationshipAudit watsonRelationshipAudit) {
+
+					return watsonRelationshipAudit.
+						getWatsonRelationshipAuditId();
 				}
 
 			});
@@ -227,8 +258,12 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			new BiConsumer<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object watsonRelationshipAuditId) {
-					watsonRelationshipAudit.setWatsonRelationshipAuditId((Long)watsonRelationshipAuditId);
+				public void accept(
+					WatsonRelationshipAudit watsonRelationshipAudit,
+					Object watsonRelationshipAuditId) {
+
+					watsonRelationshipAudit.setWatsonRelationshipAuditId(
+						(Long)watsonRelationshipAuditId);
 				}
 
 			});
@@ -237,7 +272,9 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			new Function<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
+				public Object apply(
+					WatsonRelationshipAudit watsonRelationshipAudit) {
+
 					return watsonRelationshipAudit.getGroupId();
 				}
 
@@ -247,7 +284,10 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			new BiConsumer<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object groupId) {
+				public void accept(
+					WatsonRelationshipAudit watsonRelationshipAudit,
+					Object groupId) {
+
 					watsonRelationshipAudit.setGroupId((Long)groupId);
 				}
 
@@ -257,7 +297,9 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			new Function<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
+				public Object apply(
+					WatsonRelationshipAudit watsonRelationshipAudit) {
+
 					return watsonRelationshipAudit.getCompanyId();
 				}
 
@@ -267,7 +309,10 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			new BiConsumer<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object companyId) {
+				public void accept(
+					WatsonRelationshipAudit watsonRelationshipAudit,
+					Object companyId) {
+
 					watsonRelationshipAudit.setCompanyId((Long)companyId);
 				}
 
@@ -277,7 +322,9 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			new Function<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
+				public Object apply(
+					WatsonRelationshipAudit watsonRelationshipAudit) {
+
 					return watsonRelationshipAudit.getUserId();
 				}
 
@@ -287,7 +334,10 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			new BiConsumer<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object userId) {
+				public void accept(
+					WatsonRelationshipAudit watsonRelationshipAudit,
+					Object userId) {
+
 					watsonRelationshipAudit.setUserId((Long)userId);
 				}
 
@@ -297,7 +347,9 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			new Function<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
+				public Object apply(
+					WatsonRelationshipAudit watsonRelationshipAudit) {
+
 					return watsonRelationshipAudit.getUserName();
 				}
 
@@ -307,7 +359,10 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			new BiConsumer<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object userName) {
+				public void accept(
+					WatsonRelationshipAudit watsonRelationshipAudit,
+					Object userName) {
+
 					watsonRelationshipAudit.setUserName((String)userName);
 				}
 
@@ -317,7 +372,9 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			new Function<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
+				public Object apply(
+					WatsonRelationshipAudit watsonRelationshipAudit) {
+
 					return watsonRelationshipAudit.getCreateDate();
 				}
 
@@ -327,7 +384,10 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			new BiConsumer<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object createDate) {
+				public void accept(
+					WatsonRelationshipAudit watsonRelationshipAudit,
+					Object createDate) {
+
 					watsonRelationshipAudit.setCreateDate((Date)createDate);
 				}
 
@@ -337,7 +397,9 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			new Function<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
+				public Object apply(
+					WatsonRelationshipAudit watsonRelationshipAudit) {
+
 					return watsonRelationshipAudit.getModifiedDate();
 				}
 
@@ -347,7 +409,10 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			new BiConsumer<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object modifiedDate) {
+				public void accept(
+					WatsonRelationshipAudit watsonRelationshipAudit,
+					Object modifiedDate) {
+
 					watsonRelationshipAudit.setModifiedDate((Date)modifiedDate);
 				}
 
@@ -357,7 +422,9 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			new Function<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
+				public Object apply(
+					WatsonRelationshipAudit watsonRelationshipAudit) {
+
 					return watsonRelationshipAudit.getWatsonIncidentId();
 				}
 
@@ -367,8 +434,12 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			new BiConsumer<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object watsonIncidentId) {
-					watsonRelationshipAudit.setWatsonIncidentId((Long)watsonIncidentId);
+				public void accept(
+					WatsonRelationshipAudit watsonRelationshipAudit,
+					Object watsonIncidentId) {
+
+					watsonRelationshipAudit.setWatsonIncidentId(
+						(Long)watsonIncidentId);
 				}
 
 			});
@@ -377,7 +448,9 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			new Function<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
+				public Object apply(
+					WatsonRelationshipAudit watsonRelationshipAudit) {
+
 					return watsonRelationshipAudit.getWatsonRelationshipId();
 				}
 
@@ -387,8 +460,12 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			new BiConsumer<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object watsonRelationshipId) {
-					watsonRelationshipAudit.setWatsonRelationshipId((Long)watsonRelationshipId);
+				public void accept(
+					WatsonRelationshipAudit watsonRelationshipAudit,
+					Object watsonRelationshipId) {
+
+					watsonRelationshipAudit.setWatsonRelationshipId(
+						(Long)watsonRelationshipId);
 				}
 
 			});
@@ -397,7 +474,9 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			new Function<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
+				public Object apply(
+					WatsonRelationshipAudit watsonRelationshipAudit) {
+
 					return watsonRelationshipAudit.getTypeWatsonListTypeId();
 				}
 
@@ -407,8 +486,12 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			new BiConsumer<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object typeWatsonListTypeId) {
-					watsonRelationshipAudit.setTypeWatsonListTypeId((Long)typeWatsonListTypeId);
+				public void accept(
+					WatsonRelationshipAudit watsonRelationshipAudit,
+					Object typeWatsonListTypeId) {
+
+					watsonRelationshipAudit.setTypeWatsonListTypeId(
+						(Long)typeWatsonListTypeId);
 				}
 
 			});
@@ -417,7 +500,9 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			new Function<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
+				public Object apply(
+					WatsonRelationshipAudit watsonRelationshipAudit) {
+
 					return watsonRelationshipAudit.getClassNameId1();
 				}
 
@@ -427,7 +512,10 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			new BiConsumer<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object classNameId1) {
+				public void accept(
+					WatsonRelationshipAudit watsonRelationshipAudit,
+					Object classNameId1) {
+
 					watsonRelationshipAudit.setClassNameId1((Long)classNameId1);
 				}
 
@@ -437,7 +525,9 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			new Function<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
+				public Object apply(
+					WatsonRelationshipAudit watsonRelationshipAudit) {
+
 					return watsonRelationshipAudit.getClassPK1();
 				}
 
@@ -447,7 +537,10 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			new BiConsumer<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object classPK1) {
+				public void accept(
+					WatsonRelationshipAudit watsonRelationshipAudit,
+					Object classPK1) {
+
 					watsonRelationshipAudit.setClassPK1((Long)classPK1);
 				}
 
@@ -457,7 +550,9 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			new Function<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
+				public Object apply(
+					WatsonRelationshipAudit watsonRelationshipAudit) {
+
 					return watsonRelationshipAudit.getClassNameId2();
 				}
 
@@ -467,7 +562,10 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			new BiConsumer<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object classNameId2) {
+				public void accept(
+					WatsonRelationshipAudit watsonRelationshipAudit,
+					Object classNameId2) {
+
 					watsonRelationshipAudit.setClassNameId2((Long)classNameId2);
 				}
 
@@ -477,7 +575,9 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			new Function<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
+				public Object apply(
+					WatsonRelationshipAudit watsonRelationshipAudit) {
+
 					return watsonRelationshipAudit.getClassPK2();
 				}
 
@@ -487,7 +587,10 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			new BiConsumer<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object classPK2) {
+				public void accept(
+					WatsonRelationshipAudit watsonRelationshipAudit,
+					Object classPK2) {
+
 					watsonRelationshipAudit.setClassPK2((Long)classPK2);
 				}
 
@@ -497,7 +600,9 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			new Function<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
+				public Object apply(
+					WatsonRelationshipAudit watsonRelationshipAudit) {
+
 					return watsonRelationshipAudit.getDescription();
 				}
 
@@ -507,7 +612,10 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			new BiConsumer<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object description) {
+				public void accept(
+					WatsonRelationshipAudit watsonRelationshipAudit,
+					Object description) {
+
 					watsonRelationshipAudit.setDescription((String)description);
 				}
 
@@ -517,7 +625,9 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			new Function<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonRelationshipAudit watsonRelationshipAudit) {
+				public Object apply(
+					WatsonRelationshipAudit watsonRelationshipAudit) {
+
 					return watsonRelationshipAudit.getStatus();
 				}
 
@@ -527,15 +637,19 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			new BiConsumer<WatsonRelationshipAudit, Object>() {
 
 				@Override
-				public void accept(WatsonRelationshipAudit watsonRelationshipAudit, Object status) {
+				public void accept(
+					WatsonRelationshipAudit watsonRelationshipAudit,
+					Object status) {
+
 					watsonRelationshipAudit.setStatus((Integer)status);
 				}
 
 			});
 
-
-		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap(
+			(Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -732,8 +846,9 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 
 	@Override
 	public ExpandoBridge getExpandoBridge() {
-		return ExpandoBridgeFactoryUtil.getExpandoBridge(getCompanyId(),
-			WatsonRelationshipAudit.class.getName(), getPrimaryKey());
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(
+			getCompanyId(), WatsonRelationshipAudit.class.getName(),
+			getPrimaryKey());
 	}
 
 	@Override
@@ -746,8 +861,9 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 	@Override
 	public WatsonRelationshipAudit toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonRelationshipAudit)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+			_escapedModel = (WatsonRelationshipAudit)ProxyUtil.newProxyInstance(
+				_classLoader, _escapedModelInterfaces,
+				new AutoEscapeBeanHandler(this));
 		}
 
 		return _escapedModel;
@@ -755,9 +871,11 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 
 	@Override
 	public Object clone() {
-		WatsonRelationshipAuditImpl watsonRelationshipAuditImpl = new WatsonRelationshipAuditImpl();
+		WatsonRelationshipAuditImpl watsonRelationshipAuditImpl =
+			new WatsonRelationshipAuditImpl();
 
-		watsonRelationshipAuditImpl.setWatsonRelationshipAuditId(getWatsonRelationshipAuditId());
+		watsonRelationshipAuditImpl.setWatsonRelationshipAuditId(
+			getWatsonRelationshipAuditId());
 		watsonRelationshipAuditImpl.setGroupId(getGroupId());
 		watsonRelationshipAuditImpl.setCompanyId(getCompanyId());
 		watsonRelationshipAuditImpl.setUserId(getUserId());
@@ -765,8 +883,10 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 		watsonRelationshipAuditImpl.setCreateDate(getCreateDate());
 		watsonRelationshipAuditImpl.setModifiedDate(getModifiedDate());
 		watsonRelationshipAuditImpl.setWatsonIncidentId(getWatsonIncidentId());
-		watsonRelationshipAuditImpl.setWatsonRelationshipId(getWatsonRelationshipId());
-		watsonRelationshipAuditImpl.setTypeWatsonListTypeId(getTypeWatsonListTypeId());
+		watsonRelationshipAuditImpl.setWatsonRelationshipId(
+			getWatsonRelationshipId());
+		watsonRelationshipAuditImpl.setTypeWatsonListTypeId(
+			getTypeWatsonListTypeId());
 		watsonRelationshipAuditImpl.setClassNameId1(getClassNameId1());
 		watsonRelationshipAuditImpl.setClassPK1(getClassPK1());
 		watsonRelationshipAuditImpl.setClassNameId2(getClassNameId2());
@@ -804,7 +924,8 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 			return false;
 		}
 
-		WatsonRelationshipAudit watsonRelationshipAudit = (WatsonRelationshipAudit)obj;
+		WatsonRelationshipAudit watsonRelationshipAudit =
+			(WatsonRelationshipAudit)obj;
 
 		long primaryKey = watsonRelationshipAudit.getPrimaryKey();
 
@@ -833,16 +954,19 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 
 	@Override
 	public void resetOriginalValues() {
-		WatsonRelationshipAuditModelImpl watsonRelationshipAuditModelImpl = this;
+		WatsonRelationshipAuditModelImpl watsonRelationshipAuditModelImpl =
+			this;
 
 		watsonRelationshipAuditModelImpl._setModifiedDate = false;
 	}
 
 	@Override
 	public CacheModel<WatsonRelationshipAudit> toCacheModel() {
-		WatsonRelationshipAuditCacheModel watsonRelationshipAuditCacheModel = new WatsonRelationshipAuditCacheModel();
+		WatsonRelationshipAuditCacheModel watsonRelationshipAuditCacheModel =
+			new WatsonRelationshipAuditCacheModel();
 
-		watsonRelationshipAuditCacheModel.watsonRelationshipAuditId = getWatsonRelationshipAuditId();
+		watsonRelationshipAuditCacheModel.watsonRelationshipAuditId =
+			getWatsonRelationshipAuditId();
 
 		watsonRelationshipAuditCacheModel.groupId = getGroupId();
 
@@ -870,17 +994,21 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 		Date modifiedDate = getModifiedDate();
 
 		if (modifiedDate != null) {
-			watsonRelationshipAuditCacheModel.modifiedDate = modifiedDate.getTime();
+			watsonRelationshipAuditCacheModel.modifiedDate =
+				modifiedDate.getTime();
 		}
 		else {
 			watsonRelationshipAuditCacheModel.modifiedDate = Long.MIN_VALUE;
 		}
 
-		watsonRelationshipAuditCacheModel.watsonIncidentId = getWatsonIncidentId();
+		watsonRelationshipAuditCacheModel.watsonIncidentId =
+			getWatsonIncidentId();
 
-		watsonRelationshipAuditCacheModel.watsonRelationshipId = getWatsonRelationshipId();
+		watsonRelationshipAuditCacheModel.watsonRelationshipId =
+			getWatsonRelationshipId();
 
-		watsonRelationshipAuditCacheModel.typeWatsonListTypeId = getTypeWatsonListTypeId();
+		watsonRelationshipAuditCacheModel.typeWatsonListTypeId =
+			getTypeWatsonListTypeId();
 
 		watsonRelationshipAuditCacheModel.classNameId1 = getClassNameId1();
 
@@ -905,22 +1033,25 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 
 	@Override
 	public String toString() {
-		Map<String, Function<WatsonRelationshipAudit, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonRelationshipAudit, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
-				2);
+		StringBundler sb = new StringBundler(
+			4 * attributeGetterFunctions.size() + 2);
 
 		sb.append("{");
 
-		for (Map.Entry<String, Function<WatsonRelationshipAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonRelationshipAudit, Object>>
+				entry : attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonRelationshipAudit, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonRelationshipAudit, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append(attributeName);
 			sb.append("=");
-			sb.append(attributeGetterFunction.apply(
-					(WatsonRelationshipAudit)this));
+			sb.append(
+				attributeGetterFunction.apply((WatsonRelationshipAudit)this));
 			sb.append(", ");
 		}
 
@@ -935,25 +1066,28 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 
 	@Override
 	public String toXmlString() {
-		Map<String, Function<WatsonRelationshipAudit, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonRelationshipAudit, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
-				4);
+		StringBundler sb = new StringBundler(
+			5 * attributeGetterFunctions.size() + 4);
 
 		sb.append("<model><model-name>");
 		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		for (Map.Entry<String, Function<WatsonRelationshipAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonRelationshipAudit, Object>>
+				entry : attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonRelationshipAudit, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonRelationshipAudit, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append("<column><column-name>");
 			sb.append(attributeName);
 			sb.append("</column-name><column-value><![CDATA[");
-			sb.append(attributeGetterFunction.apply(
-					(WatsonRelationshipAudit)this));
+			sb.append(
+				attributeGetterFunction.apply((WatsonRelationshipAudit)this));
 			sb.append("]]></column-value></column>");
 		}
 
@@ -962,10 +1096,12 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader = WatsonRelationshipAudit.class.getClassLoader();
+	private static final ClassLoader _classLoader =
+		WatsonRelationshipAudit.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			WatsonRelationshipAudit.class, ModelWrapper.class
-		};
+		WatsonRelationshipAudit.class, ModelWrapper.class
+	};
+
 	private long _watsonRelationshipAuditId;
 	private long _groupId;
 	private long _companyId;
@@ -984,4 +1120,5 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 	private String _description;
 	private int _status;
 	private WatsonRelationshipAudit _escapedModel;
+
 }

@@ -17,7 +17,6 @@ package com.liferay.watson.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.model.AttachedModel;
@@ -46,8 +45,10 @@ import java.util.Map;
  * @generated
  */
 @ProviderType
-public interface WatsonListTypeRelModel extends AttachedModel,
-	BaseModel<WatsonListTypeRel>, GroupedModel, LocalizedModel, ShardedModel {
+public interface WatsonListTypeRelModel
+	extends AttachedModel, BaseModel<WatsonListTypeRel>, GroupedModel,
+			LocalizedModel, ShardedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -469,4 +470,5 @@ public interface WatsonListTypeRelModel extends AttachedModel,
 
 	@Override
 	public String toXmlString();
+
 }

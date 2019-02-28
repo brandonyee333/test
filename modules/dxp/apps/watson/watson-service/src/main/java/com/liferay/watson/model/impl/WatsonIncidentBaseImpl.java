@@ -32,8 +32,9 @@ import com.liferay.watson.service.WatsonIncidentLocalServiceUtil;
  * @generated
  */
 @ProviderType
-public abstract class WatsonIncidentBaseImpl extends WatsonIncidentModelImpl
-	implements WatsonIncident {
+public abstract class WatsonIncidentBaseImpl
+	extends WatsonIncidentModelImpl implements WatsonIncident {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -48,4 +49,5 @@ public abstract class WatsonIncidentBaseImpl extends WatsonIncidentModelImpl
 			WatsonIncidentLocalServiceUtil.updateWatsonIncident(this);
 		}
 	}
+
 }

@@ -34,6 +34,7 @@ import com.liferay.watson.service.WatsonIncidentRelAuditLocalServiceUtil;
 @ProviderType
 public abstract class WatsonIncidentRelAuditBaseImpl
 	extends WatsonIncidentRelAuditModelImpl implements WatsonIncidentRelAudit {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -42,10 +43,13 @@ public abstract class WatsonIncidentRelAuditBaseImpl
 	@Override
 	public void persist() {
 		if (this.isNew()) {
-			WatsonIncidentRelAuditLocalServiceUtil.addWatsonIncidentRelAudit(this);
+			WatsonIncidentRelAuditLocalServiceUtil.addWatsonIncidentRelAudit(
+				this);
 		}
 		else {
-			WatsonIncidentRelAuditLocalServiceUtil.updateWatsonIncidentRelAudit(this);
+			WatsonIncidentRelAuditLocalServiceUtil.updateWatsonIncidentRelAudit(
+				this);
 		}
 	}
+
 }

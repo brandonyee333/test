@@ -30,6 +30,7 @@ import java.util.List;
  */
 @ProviderType
 public class WatsonPersonSoap implements Serializable {
+
 	public static WatsonPersonSoap toSoapModel(WatsonPerson model) {
 		WatsonPersonSoap soapModel = new WatsonPersonSoap();
 
@@ -41,9 +42,12 @@ public class WatsonPersonSoap implements Serializable {
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
 		soapModel.setBirthCountryId(model.getBirthCountryId());
-		soapModel.setCitizenshipWatsonListTypeId(model.getCitizenshipWatsonListTypeId());
-		soapModel.setCountryWatsonListTypeId(model.getCountryWatsonListTypeId());
-		soapModel.setEthnicityWatsonListTypeId(model.getEthnicityWatsonListTypeId());
+		soapModel.setCitizenshipWatsonListTypeId(
+			model.getCitizenshipWatsonListTypeId());
+		soapModel.setCountryWatsonListTypeId(
+			model.getCountryWatsonListTypeId());
+		soapModel.setEthnicityWatsonListTypeId(
+			model.getEthnicityWatsonListTypeId());
 		soapModel.setEyesWatsonListTypeId(model.getEyesWatsonListTypeId());
 		soapModel.setHairWatsonListTypeId(model.getHairWatsonListTypeId());
 		soapModel.setOriginalWatsonPersonId(model.getOriginalWatsonPersonId());
@@ -95,7 +99,8 @@ public class WatsonPersonSoap implements Serializable {
 	}
 
 	public static WatsonPersonSoap[] toSoapModels(List<WatsonPerson> models) {
-		List<WatsonPersonSoap> soapModels = new ArrayList<WatsonPersonSoap>(models.size());
+		List<WatsonPersonSoap> soapModels = new ArrayList<WatsonPersonSoap>(
+			models.size());
 
 		for (WatsonPerson model : models) {
 			soapModels.add(toSoapModel(model));
@@ -183,7 +188,9 @@ public class WatsonPersonSoap implements Serializable {
 		return _citizenshipWatsonListTypeId;
 	}
 
-	public void setCitizenshipWatsonListTypeId(long citizenshipWatsonListTypeId) {
+	public void setCitizenshipWatsonListTypeId(
+		long citizenshipWatsonListTypeId) {
+
 		_citizenshipWatsonListTypeId = citizenshipWatsonListTypeId;
 	}
 
@@ -393,4 +400,5 @@ public class WatsonPersonSoap implements Serializable {
 	private boolean _accepted;
 	private boolean _rescued;
 	private int _status;
+
 }

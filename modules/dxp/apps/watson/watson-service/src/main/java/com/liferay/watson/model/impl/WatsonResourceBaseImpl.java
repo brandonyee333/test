@@ -32,8 +32,9 @@ import com.liferay.watson.service.WatsonResourceLocalServiceUtil;
  * @generated
  */
 @ProviderType
-public abstract class WatsonResourceBaseImpl extends WatsonResourceModelImpl
-	implements WatsonResource {
+public abstract class WatsonResourceBaseImpl
+	extends WatsonResourceModelImpl implements WatsonResource {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -48,4 +49,5 @@ public abstract class WatsonResourceBaseImpl extends WatsonResourceModelImpl
 			WatsonResourceLocalServiceUtil.updateWatsonResource(this);
 		}
 	}
+
 }

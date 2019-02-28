@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.model.WatsonChild;
 
 import java.io.Externalizable;
@@ -36,8 +35,9 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public class WatsonChildCacheModel implements CacheModel<WatsonChild>,
-	Externalizable {
+public class WatsonChildCacheModel
+	implements CacheModel<WatsonChild>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,7 +48,8 @@ public class WatsonChildCacheModel implements CacheModel<WatsonChild>,
 			return false;
 		}
 
-		WatsonChildCacheModel watsonChildCacheModel = (WatsonChildCacheModel)obj;
+		WatsonChildCacheModel watsonChildCacheModel =
+			(WatsonChildCacheModel)obj;
 
 		if (watsonChildId == watsonChildCacheModel.watsonChildId) {
 			return true;
@@ -146,13 +147,15 @@ public class WatsonChildCacheModel implements CacheModel<WatsonChild>,
 		}
 
 		watsonChildImpl.setBirthCountryId(birthCountryId);
-		watsonChildImpl.setCitizenshipWatsonListTypeId(citizenshipWatsonListTypeId);
+		watsonChildImpl.setCitizenshipWatsonListTypeId(
+			citizenshipWatsonListTypeId);
 		watsonChildImpl.setCountryWatsonListTypeId(countryWatsonListTypeId);
 		watsonChildImpl.setDischargeWatsonListTypeId(dischargeWatsonListTypeId);
 		watsonChildImpl.setEthnicityWatsonListTypeId(ethnicityWatsonListTypeId);
 		watsonChildImpl.setOriginalWatsonPersonId(originalWatsonPersonId);
 		watsonChildImpl.setSexWatsonListTypeId(sexWatsonListTypeId);
-		watsonChildImpl.setSourceSubtypeWatsonListTypeId(sourceSubtypeWatsonListTypeId);
+		watsonChildImpl.setSourceSubtypeWatsonListTypeId(
+			sourceSubtypeWatsonListTypeId);
 		watsonChildImpl.setSourceWatsonListTypeId(sourceWatsonListTypeId);
 		watsonChildImpl.setTypeWatsonListTypeId(typeWatsonListTypeId);
 
@@ -232,8 +235,7 @@ public class WatsonChildCacheModel implements CacheModel<WatsonChild>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonChildId);
 
 		objectOutput.writeLong(groupId);
@@ -307,4 +309,5 @@ public class WatsonChildCacheModel implements CacheModel<WatsonChild>,
 	public long dateFollowUp;
 	public String source;
 	public int status;
+
 }

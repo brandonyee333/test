@@ -18,10 +18,8 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.akismet.model.AkismetEntry;
 import com.liferay.akismet.model.AkismetEntryModel;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
@@ -57,27 +55,26 @@ import java.util.function.Function;
  * @generated
  */
 @ProviderType
-public class AkismetEntryModelImpl extends BaseModelImpl<AkismetEntry>
-	implements AkismetEntryModel {
+public class AkismetEntryModelImpl
+	extends BaseModelImpl<AkismetEntry> implements AkismetEntryModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a akismet entry model instance should use the <code>AkismetEntry</code> interface instead.
 	 */
 	public static final String TABLE_NAME = "OSBCommunity_AkismetEntry";
+
 	public static final Object[][] TABLE_COLUMNS = {
-			{ "akismetEntryId", Types.BIGINT },
-			{ "modifiedDate", Types.TIMESTAMP },
-			{ "classNameId", Types.BIGINT },
-			{ "classPK", Types.BIGINT },
-			{ "type_", Types.VARCHAR },
-			{ "permalink", Types.VARCHAR },
-			{ "referrer", Types.VARCHAR },
-			{ "userAgent", Types.VARCHAR },
-			{ "userIP", Types.VARCHAR },
-			{ "userURL", Types.VARCHAR }
-		};
-	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
+		{"akismetEntryId", Types.BIGINT}, {"modifiedDate", Types.TIMESTAMP},
+		{"classNameId", Types.BIGINT}, {"classPK", Types.BIGINT},
+		{"type_", Types.VARCHAR}, {"permalink", Types.VARCHAR},
+		{"referrer", Types.VARCHAR}, {"userAgent", Types.VARCHAR},
+		{"userIP", Types.VARCHAR}, {"userURL", Types.VARCHAR}
+	};
+
+	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
+		new HashMap<String, Integer>();
 
 	static {
 		TABLE_COLUMNS_MAP.put("akismetEntryId", Types.BIGINT);
@@ -92,28 +89,50 @@ public class AkismetEntryModelImpl extends BaseModelImpl<AkismetEntry>
 		TABLE_COLUMNS_MAP.put("userURL", Types.VARCHAR);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSBCommunity_AkismetEntry (akismetEntryId LONG not null primary key,modifiedDate DATE null,classNameId LONG,classPK LONG,type_ VARCHAR(75) null,permalink STRING null,referrer STRING null,userAgent STRING null,userIP VARCHAR(75) null,userURL STRING null)";
-	public static final String TABLE_SQL_DROP = "drop table OSBCommunity_AkismetEntry";
-	public static final String ORDER_BY_JPQL = " ORDER BY akismetEntry.akismetEntryId ASC";
-	public static final String ORDER_BY_SQL = " ORDER BY OSBCommunity_AkismetEntry.akismetEntryId ASC";
+	public static final String TABLE_SQL_CREATE =
+		"create table OSBCommunity_AkismetEntry (akismetEntryId LONG not null primary key,modifiedDate DATE null,classNameId LONG,classPK LONG,type_ VARCHAR(75) null,permalink STRING null,referrer STRING null,userAgent STRING null,userIP VARCHAR(75) null,userURL STRING null)";
+
+	public static final String TABLE_SQL_DROP =
+		"drop table OSBCommunity_AkismetEntry";
+
+	public static final String ORDER_BY_JPQL =
+		" ORDER BY akismetEntry.akismetEntryId ASC";
+
+	public static final String ORDER_BY_SQL =
+		" ORDER BY OSBCommunity_AkismetEntry.akismetEntryId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
+
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
+
 	public static final String TX_MANAGER = "liferayTransactionManager";
-	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.akismet.service.util.ServiceProps.get(
-				"value.object.entity.cache.enabled.com.liferay.akismet.model.AkismetEntry"),
-			true);
-	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.akismet.service.util.ServiceProps.get(
-				"value.object.finder.cache.enabled.com.liferay.akismet.model.AkismetEntry"),
-			true);
-	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.akismet.service.util.ServiceProps.get(
-				"value.object.column.bitmask.enabled.com.liferay.akismet.model.AkismetEntry"),
-			true);
+
+	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.akismet.service.util.ServiceProps.get(
+			"value.object.entity.cache.enabled.com.liferay.akismet.model.AkismetEntry"),
+		true);
+
+	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.akismet.service.util.ServiceProps.get(
+			"value.object.finder.cache.enabled.com.liferay.akismet.model.AkismetEntry"),
+		true);
+
+	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(
+		com.liferay.akismet.service.util.ServiceProps.get(
+			"value.object.column.bitmask.enabled.com.liferay.akismet.model.AkismetEntry"),
+		true);
+
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
+
 	public static final long CLASSPK_COLUMN_BITMASK = 2L;
+
 	public static final long MODIFIEDDATE_COLUMN_BITMASK = 4L;
+
 	public static final long AKISMETENTRYID_COLUMN_BITMASK = 8L;
-	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.akismet.service.util.ServiceProps.get(
-				"lock.expiration.time.com.liferay.akismet.model.AkismetEntry"));
+
+	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
+		com.liferay.akismet.service.util.ServiceProps.get(
+			"lock.expiration.time.com.liferay.akismet.model.AkismetEntry"));
 
 	public AkismetEntryModelImpl() {
 	}
@@ -152,13 +171,18 @@ public class AkismetEntryModelImpl extends BaseModelImpl<AkismetEntry>
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		Map<String, Function<AkismetEntry, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+		Map<String, Function<AkismetEntry, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		for (Map.Entry<String, Function<AkismetEntry, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<AkismetEntry, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<AkismetEntry, Object> attributeGetterFunction = entry.getValue();
+			Function<AkismetEntry, Object> attributeGetterFunction =
+				entry.getValue();
 
-			attributes.put(attributeName,
+			attributes.put(
+				attributeName,
 				attributeGetterFunction.apply((AkismetEntry)this));
 		}
 
@@ -170,36 +194,44 @@ public class AkismetEntryModelImpl extends BaseModelImpl<AkismetEntry>
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Map<String, BiConsumer<AkismetEntry, Object>> attributeSetterBiConsumers =
-			getAttributeSetterBiConsumers();
+		Map<String, BiConsumer<AkismetEntry, Object>>
+			attributeSetterBiConsumers = getAttributeSetterBiConsumers();
 
 		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			String attributeName = entry.getKey();
 
-			BiConsumer<AkismetEntry, Object> attributeSetterBiConsumer = attributeSetterBiConsumers.get(attributeName);
+			BiConsumer<AkismetEntry, Object> attributeSetterBiConsumer =
+				attributeSetterBiConsumers.get(attributeName);
 
 			if (attributeSetterBiConsumer != null) {
-				attributeSetterBiConsumer.accept((AkismetEntry)this,
-					entry.getValue());
+				attributeSetterBiConsumer.accept(
+					(AkismetEntry)this, entry.getValue());
 			}
 		}
 	}
 
-	public Map<String, Function<AkismetEntry, Object>> getAttributeGetterFunctions() {
+	public Map<String, Function<AkismetEntry, Object>>
+		getAttributeGetterFunctions() {
+
 		return _attributeGetterFunctions;
 	}
 
-	public Map<String, BiConsumer<AkismetEntry, Object>> getAttributeSetterBiConsumers() {
+	public Map<String, BiConsumer<AkismetEntry, Object>>
+		getAttributeSetterBiConsumers() {
+
 		return _attributeSetterBiConsumers;
 	}
 
-	private static final Map<String, Function<AkismetEntry, Object>> _attributeGetterFunctions;
-	private static final Map<String, BiConsumer<AkismetEntry, Object>> _attributeSetterBiConsumers;
+	private static final Map<String, Function<AkismetEntry, Object>>
+		_attributeGetterFunctions;
+	private static final Map<String, BiConsumer<AkismetEntry, Object>>
+		_attributeSetterBiConsumers;
 
 	static {
-		Map<String, Function<AkismetEntry, Object>> attributeGetterFunctions = new LinkedHashMap<String, Function<AkismetEntry, Object>>();
-		Map<String, BiConsumer<AkismetEntry, ?>> attributeSetterBiConsumers = new LinkedHashMap<String, BiConsumer<AkismetEntry, ?>>();
-
+		Map<String, Function<AkismetEntry, Object>> attributeGetterFunctions =
+			new LinkedHashMap<String, Function<AkismetEntry, Object>>();
+		Map<String, BiConsumer<AkismetEntry, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<AkismetEntry, ?>>();
 
 		attributeGetterFunctions.put(
 			"akismetEntryId",
@@ -216,7 +248,9 @@ public class AkismetEntryModelImpl extends BaseModelImpl<AkismetEntry>
 			new BiConsumer<AkismetEntry, Object>() {
 
 				@Override
-				public void accept(AkismetEntry akismetEntry, Object akismetEntryId) {
+				public void accept(
+					AkismetEntry akismetEntry, Object akismetEntryId) {
+
 					akismetEntry.setAkismetEntryId((Long)akismetEntryId);
 				}
 
@@ -236,7 +270,9 @@ public class AkismetEntryModelImpl extends BaseModelImpl<AkismetEntry>
 			new BiConsumer<AkismetEntry, Object>() {
 
 				@Override
-				public void accept(AkismetEntry akismetEntry, Object modifiedDate) {
+				public void accept(
+					AkismetEntry akismetEntry, Object modifiedDate) {
+
 					akismetEntry.setModifiedDate((Date)modifiedDate);
 				}
 
@@ -256,7 +292,9 @@ public class AkismetEntryModelImpl extends BaseModelImpl<AkismetEntry>
 			new BiConsumer<AkismetEntry, Object>() {
 
 				@Override
-				public void accept(AkismetEntry akismetEntry, Object classNameId) {
+				public void accept(
+					AkismetEntry akismetEntry, Object classNameId) {
+
 					akismetEntry.setClassNameId((Long)classNameId);
 				}
 
@@ -316,7 +354,9 @@ public class AkismetEntryModelImpl extends BaseModelImpl<AkismetEntry>
 			new BiConsumer<AkismetEntry, Object>() {
 
 				@Override
-				public void accept(AkismetEntry akismetEntry, Object permalink) {
+				public void accept(
+					AkismetEntry akismetEntry, Object permalink) {
+
 					akismetEntry.setPermalink((String)permalink);
 				}
 
@@ -356,7 +396,9 @@ public class AkismetEntryModelImpl extends BaseModelImpl<AkismetEntry>
 			new BiConsumer<AkismetEntry, Object>() {
 
 				@Override
-				public void accept(AkismetEntry akismetEntry, Object userAgent) {
+				public void accept(
+					AkismetEntry akismetEntry, Object userAgent) {
+
 					akismetEntry.setUserAgent((String)userAgent);
 				}
 
@@ -402,9 +444,10 @@ public class AkismetEntryModelImpl extends BaseModelImpl<AkismetEntry>
 
 			});
 
-
-		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap(
+			(Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -597,8 +640,8 @@ public class AkismetEntryModelImpl extends BaseModelImpl<AkismetEntry>
 
 	@Override
 	public ExpandoBridge getExpandoBridge() {
-		return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
-			AkismetEntry.class.getName(), getPrimaryKey());
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(
+			0, AkismetEntry.class.getName(), getPrimaryKey());
 	}
 
 	@Override
@@ -611,8 +654,9 @@ public class AkismetEntryModelImpl extends BaseModelImpl<AkismetEntry>
 	@Override
 	public AkismetEntry toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (AkismetEntry)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+			_escapedModel = (AkismetEntry)ProxyUtil.newProxyInstance(
+				_classLoader, _escapedModelInterfaces,
+				new AutoEscapeBeanHandler(this));
 		}
 
 		return _escapedModel;
@@ -694,9 +738,11 @@ public class AkismetEntryModelImpl extends BaseModelImpl<AkismetEntry>
 	public void resetOriginalValues() {
 		AkismetEntryModelImpl akismetEntryModelImpl = this;
 
-		akismetEntryModelImpl._originalModifiedDate = akismetEntryModelImpl._modifiedDate;
+		akismetEntryModelImpl._originalModifiedDate =
+			akismetEntryModelImpl._modifiedDate;
 
-		akismetEntryModelImpl._originalClassNameId = akismetEntryModelImpl._classNameId;
+		akismetEntryModelImpl._originalClassNameId =
+			akismetEntryModelImpl._classNameId;
 
 		akismetEntryModelImpl._setOriginalClassNameId = false;
 
@@ -709,7 +755,8 @@ public class AkismetEntryModelImpl extends BaseModelImpl<AkismetEntry>
 
 	@Override
 	public CacheModel<AkismetEntry> toCacheModel() {
-		AkismetEntryCacheModel akismetEntryCacheModel = new AkismetEntryCacheModel();
+		AkismetEntryCacheModel akismetEntryCacheModel =
+			new AkismetEntryCacheModel();
 
 		akismetEntryCacheModel.akismetEntryId = getAkismetEntryId();
 
@@ -779,16 +826,20 @@ public class AkismetEntryModelImpl extends BaseModelImpl<AkismetEntry>
 
 	@Override
 	public String toString() {
-		Map<String, Function<AkismetEntry, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+		Map<String, Function<AkismetEntry, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
-				2);
+		StringBundler sb = new StringBundler(
+			4 * attributeGetterFunctions.size() + 2);
 
 		sb.append("{");
 
-		for (Map.Entry<String, Function<AkismetEntry, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<AkismetEntry, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<AkismetEntry, Object> attributeGetterFunction = entry.getValue();
+			Function<AkismetEntry, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append(attributeName);
 			sb.append("=");
@@ -807,18 +858,22 @@ public class AkismetEntryModelImpl extends BaseModelImpl<AkismetEntry>
 
 	@Override
 	public String toXmlString() {
-		Map<String, Function<AkismetEntry, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+		Map<String, Function<AkismetEntry, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
-				4);
+		StringBundler sb = new StringBundler(
+			5 * attributeGetterFunctions.size() + 4);
 
 		sb.append("<model><model-name>");
 		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		for (Map.Entry<String, Function<AkismetEntry, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<AkismetEntry, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<AkismetEntry, Object> attributeGetterFunction = entry.getValue();
+			Function<AkismetEntry, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append("<column><column-name>");
 			sb.append(attributeName);
@@ -832,10 +887,12 @@ public class AkismetEntryModelImpl extends BaseModelImpl<AkismetEntry>
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader = AkismetEntry.class.getClassLoader();
+	private static final ClassLoader _classLoader =
+		AkismetEntry.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			AkismetEntry.class, ModelWrapper.class
-		};
+		AkismetEntry.class, ModelWrapper.class
+	};
+
 	private long _akismetEntryId;
 	private Date _modifiedDate;
 	private Date _originalModifiedDate;
@@ -853,4 +910,5 @@ public class AkismetEntryModelImpl extends BaseModelImpl<AkismetEntry>
 	private String _userURL;
 	private long _columnBitmask;
 	private AkismetEntry _escapedModel;
+
 }

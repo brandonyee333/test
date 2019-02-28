@@ -17,7 +17,6 @@ package com.liferay.watson.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -45,8 +44,10 @@ import java.util.Map;
  * @generated
  */
 @ProviderType
-public interface WatsonResourceModel extends BaseModel<WatsonResource>,
-	GroupedModel, LocalizedModel, ShardedModel {
+public interface WatsonResourceModel
+	extends BaseModel<WatsonResource>, GroupedModel, LocalizedModel,
+			ShardedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -415,8 +416,8 @@ public interface WatsonResourceModel extends BaseModel<WatsonResource>,
 	 * @param locale the locale of the language
 	 * @param defaultLocale the default locale
 	 */
-	public void setDescription(String description, Locale locale,
-		Locale defaultLocale);
+	public void setDescription(
+		String description, Locale locale, Locale defaultLocale);
 
 	public void setDescriptionCurrentLanguageId(String languageId);
 
@@ -433,8 +434,8 @@ public interface WatsonResourceModel extends BaseModel<WatsonResource>,
 	 * @param descriptionMap the locales and localized descriptions of this watson resource
 	 * @param defaultLocale the default locale
 	 */
-	public void setDescriptionMap(Map<Locale, String> descriptionMap,
-		Locale defaultLocale);
+	public void setDescriptionMap(
+		Map<Locale, String> descriptionMap, Locale defaultLocale);
 
 	/**
 	 * Returns the image payload of this watson resource.
@@ -534,4 +535,5 @@ public interface WatsonResourceModel extends BaseModel<WatsonResource>,
 
 	@Override
 	public String toXmlString();
+
 }

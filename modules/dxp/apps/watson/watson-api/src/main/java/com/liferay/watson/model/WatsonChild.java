@@ -30,12 +30,15 @@ import com.liferay.portal.kernel.util.Accessor;
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonChildImpl")
 @ProviderType
 public interface WatsonChild extends WatsonChildModel, PersistedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonChildImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<WatsonChild, Long> WATSON_CHILD_ID_ACCESSOR = new Accessor<WatsonChild, Long>() {
+	public static final Accessor<WatsonChild, Long> WATSON_CHILD_ID_ACCESSOR =
+		new Accessor<WatsonChild, Long>() {
+
 			@Override
 			public Long get(WatsonChild watsonChild) {
 				return watsonChild.getWatsonChildId();
@@ -50,5 +53,7 @@ public interface WatsonChild extends WatsonChildModel, PersistedModel {
 			public Class<WatsonChild> getTypeClass() {
 				return WatsonChild.class;
 			}
+
 		};
+
 }

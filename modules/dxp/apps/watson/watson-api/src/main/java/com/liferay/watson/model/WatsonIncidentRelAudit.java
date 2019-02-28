@@ -27,30 +27,37 @@ import com.liferay.portal.kernel.util.Accessor;
  * @see WatsonIncidentRelAuditModel
  * @generated
  */
-@ImplementationClassName("com.liferay.watson.model.impl.WatsonIncidentRelAuditImpl")
+@ImplementationClassName(
+	"com.liferay.watson.model.impl.WatsonIncidentRelAuditImpl"
+)
 @ProviderType
-public interface WatsonIncidentRelAudit extends WatsonIncidentRelAuditModel,
-	PersistedModel {
+public interface WatsonIncidentRelAudit
+	extends WatsonIncidentRelAuditModel, PersistedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonIncidentRelAuditImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<WatsonIncidentRelAudit, Long> WATSON_INCIDENT_REL_AUDIT_ID_ACCESSOR =
-		new Accessor<WatsonIncidentRelAudit, Long>() {
-			@Override
-			public Long get(WatsonIncidentRelAudit watsonIncidentRelAudit) {
-				return watsonIncidentRelAudit.getWatsonIncidentRelAuditId();
-			}
+	public static final Accessor<WatsonIncidentRelAudit, Long>
+		WATSON_INCIDENT_REL_AUDIT_ID_ACCESSOR =
+			new Accessor<WatsonIncidentRelAudit, Long>() {
 
-			@Override
-			public Class<Long> getAttributeClass() {
-				return Long.class;
-			}
+				@Override
+				public Long get(WatsonIncidentRelAudit watsonIncidentRelAudit) {
+					return watsonIncidentRelAudit.getWatsonIncidentRelAuditId();
+				}
 
-			@Override
-			public Class<WatsonIncidentRelAudit> getTypeClass() {
-				return WatsonIncidentRelAudit.class;
-			}
-		};
+				@Override
+				public Class<Long> getAttributeClass() {
+					return Long.class;
+				}
+
+				@Override
+				public Class<WatsonIncidentRelAudit> getTypeClass() {
+					return WatsonIncidentRelAudit.class;
+				}
+
+			};
+
 }

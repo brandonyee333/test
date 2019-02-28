@@ -34,6 +34,7 @@ import com.liferay.watson.service.WatsonPersonAuditLocalServiceUtil;
 @ProviderType
 public abstract class WatsonPersonAuditBaseImpl
 	extends WatsonPersonAuditModelImpl implements WatsonPersonAudit {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -48,4 +49,5 @@ public abstract class WatsonPersonAuditBaseImpl
 			WatsonPersonAuditLocalServiceUtil.updateWatsonPersonAudit(this);
 		}
 	}
+
 }

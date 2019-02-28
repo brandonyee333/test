@@ -28,17 +28,19 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
 @ProviderType
 public class WatsonTokenAuthEntryServiceWrapper
 	implements WatsonTokenAuthEntryService,
-		ServiceWrapper<WatsonTokenAuthEntryService> {
+			   ServiceWrapper<WatsonTokenAuthEntryService> {
+
 	public WatsonTokenAuthEntryServiceWrapper(
 		WatsonTokenAuthEntryService watsonTokenAuthEntryService) {
+
 		_watsonTokenAuthEntryService = watsonTokenAuthEntryService;
 	}
 
 	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
 	@Override
 	public String getOSGiServiceIdentifier() {
 		return _watsonTokenAuthEntryService.getOSGiServiceIdentifier();
@@ -52,8 +54,10 @@ public class WatsonTokenAuthEntryServiceWrapper
 	@Override
 	public void setWrappedService(
 		WatsonTokenAuthEntryService watsonTokenAuthEntryService) {
+
 		_watsonTokenAuthEntryService = watsonTokenAuthEntryService;
 	}
 
 	private WatsonTokenAuthEntryService _watsonTokenAuthEntryService;
+
 }

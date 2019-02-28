@@ -30,7 +30,10 @@ import java.util.List;
  */
 @ProviderType
 public class WatsonDocumentAuditSoap implements Serializable {
-	public static WatsonDocumentAuditSoap toSoapModel(WatsonDocumentAudit model) {
+
+	public static WatsonDocumentAuditSoap toSoapModel(
+		WatsonDocumentAudit model) {
+
 		WatsonDocumentAuditSoap soapModel = new WatsonDocumentAuditSoap();
 
 		soapModel.setWatsonDocumentAuditId(model.getWatsonDocumentAuditId());
@@ -40,8 +43,10 @@ public class WatsonDocumentAuditSoap implements Serializable {
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
-		soapModel.setParentTypeWatsonListTypeId(model.getParentTypeWatsonListTypeId());
-		soapModel.setSubtypeWatsonListTypeId(model.getSubtypeWatsonListTypeId());
+		soapModel.setParentTypeWatsonListTypeId(
+			model.getParentTypeWatsonListTypeId());
+		soapModel.setSubtypeWatsonListTypeId(
+			model.getSubtypeWatsonListTypeId());
 		soapModel.setTypeWatsonListTypeId(model.getTypeWatsonListTypeId());
 		soapModel.setWatsonChildId(model.getWatsonChildId());
 		soapModel.setWatsonDocumentId(model.getWatsonDocumentId());
@@ -55,7 +60,9 @@ public class WatsonDocumentAuditSoap implements Serializable {
 
 	public static WatsonDocumentAuditSoap[] toSoapModels(
 		WatsonDocumentAudit[] models) {
-		WatsonDocumentAuditSoap[] soapModels = new WatsonDocumentAuditSoap[models.length];
+
+		WatsonDocumentAuditSoap[] soapModels =
+			new WatsonDocumentAuditSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -66,10 +73,12 @@ public class WatsonDocumentAuditSoap implements Serializable {
 
 	public static WatsonDocumentAuditSoap[][] toSoapModels(
 		WatsonDocumentAudit[][] models) {
+
 		WatsonDocumentAuditSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new WatsonDocumentAuditSoap[models.length][models[0].length];
+			soapModels =
+				new WatsonDocumentAuditSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new WatsonDocumentAuditSoap[0][0];
@@ -84,13 +93,16 @@ public class WatsonDocumentAuditSoap implements Serializable {
 
 	public static WatsonDocumentAuditSoap[] toSoapModels(
 		List<WatsonDocumentAudit> models) {
-		List<WatsonDocumentAuditSoap> soapModels = new ArrayList<WatsonDocumentAuditSoap>(models.size());
+
+		List<WatsonDocumentAuditSoap> soapModels =
+			new ArrayList<WatsonDocumentAuditSoap>(models.size());
 
 		for (WatsonDocumentAudit model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(new WatsonDocumentAuditSoap[soapModels.size()]);
+		return soapModels.toArray(
+			new WatsonDocumentAuditSoap[soapModels.size()]);
 	}
 
 	public WatsonDocumentAuditSoap() {
@@ -252,4 +264,5 @@ public class WatsonDocumentAuditSoap implements Serializable {
 	private Date _receivedDate;
 	private String _imagePayload;
 	private int _status;
+
 }

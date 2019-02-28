@@ -17,7 +17,6 @@ package com.liferay.watson.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -41,8 +40,9 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public interface WatsonChildModel extends BaseModel<WatsonChild>, GroupedModel,
-	ShardedModel {
+public interface WatsonChildModel
+	extends BaseModel<WatsonChild>, GroupedModel, ShardedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -216,7 +216,8 @@ public interface WatsonChildModel extends BaseModel<WatsonChild>, GroupedModel,
 	 *
 	 * @param citizenshipWatsonListTypeId the citizenship watson list type ID of this watson child
 	 */
-	public void setCitizenshipWatsonListTypeId(long citizenshipWatsonListTypeId);
+	public void setCitizenshipWatsonListTypeId(
+		long citizenshipWatsonListTypeId);
 
 	/**
 	 * Returns the country watson list type ID of this watson child.
@@ -458,4 +459,5 @@ public interface WatsonChildModel extends BaseModel<WatsonChild>, GroupedModel,
 
 	@Override
 	public String toXmlString();
+
 }

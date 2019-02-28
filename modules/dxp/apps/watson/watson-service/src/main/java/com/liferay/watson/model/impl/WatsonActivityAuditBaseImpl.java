@@ -34,6 +34,7 @@ import com.liferay.watson.service.WatsonActivityAuditLocalServiceUtil;
 @ProviderType
 public abstract class WatsonActivityAuditBaseImpl
 	extends WatsonActivityAuditModelImpl implements WatsonActivityAudit {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -48,4 +49,5 @@ public abstract class WatsonActivityAuditBaseImpl
 			WatsonActivityAuditLocalServiceUtil.updateWatsonActivityAudit(this);
 		}
 	}
+
 }

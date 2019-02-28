@@ -18,7 +18,6 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -35,7 +34,6 @@ import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
-
 import com.liferay.watson.model.WatsonVehicle;
 import com.liferay.watson.model.WatsonVehicleModel;
 
@@ -66,36 +64,34 @@ import java.util.function.Function;
  * @generated
  */
 @ProviderType
-public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
-	implements WatsonVehicleModel {
+public class WatsonVehicleModelImpl
+	extends BaseModelImpl<WatsonVehicle> implements WatsonVehicleModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson vehicle model instance should use the <code>WatsonVehicle</code> interface instead.
 	 */
 	public static final String TABLE_NAME = "WatsonVehicle";
+
 	public static final Object[][] TABLE_COLUMNS = {
-			{ "watsonVehicleId", Types.BIGINT },
-			{ "groupId", Types.BIGINT },
-			{ "companyId", Types.BIGINT },
-			{ "userId", Types.BIGINT },
-			{ "userName", Types.VARCHAR },
-			{ "createDate", Types.TIMESTAMP },
-			{ "modifiedDate", Types.TIMESTAMP },
-			{ "colorWatsonListTypeId", Types.BIGINT },
-			{ "makeWatsonListTypeId", Types.BIGINT },
-			{ "modelWatsonListTypeId", Types.BIGINT },
-			{ "originalWatsonVehicleId", Types.BIGINT },
-			{ "typeWatsonListTypeId", Types.BIGINT },
-			{ "yearWatsonListTypeId", Types.BIGINT },
-			{ "watsonIncidentId", Types.BIGINT },
-			{ "year", Types.INTEGER },
-			{ "description", Types.VARCHAR },
-			{ "imagePayload", Types.CLOB },
-			{ "licensePlate", Types.VARCHAR },
-			{ "status", Types.INTEGER }
-		};
-	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
+		{"watsonVehicleId", Types.BIGINT}, {"groupId", Types.BIGINT},
+		{"companyId", Types.BIGINT}, {"userId", Types.BIGINT},
+		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
+		{"modifiedDate", Types.TIMESTAMP},
+		{"colorWatsonListTypeId", Types.BIGINT},
+		{"makeWatsonListTypeId", Types.BIGINT},
+		{"modelWatsonListTypeId", Types.BIGINT},
+		{"originalWatsonVehicleId", Types.BIGINT},
+		{"typeWatsonListTypeId", Types.BIGINT},
+		{"yearWatsonListTypeId", Types.BIGINT},
+		{"watsonIncidentId", Types.BIGINT}, {"year", Types.INTEGER},
+		{"description", Types.VARCHAR}, {"imagePayload", Types.CLOB},
+		{"licensePlate", Types.VARCHAR}, {"status", Types.INTEGER}
+	};
+
+	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
+		new HashMap<String, Integer>();
 
 	static {
 		TABLE_COLUMNS_MAP.put("watsonVehicleId", Types.BIGINT);
@@ -119,22 +115,38 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonVehicle (watsonVehicleId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,colorWatsonListTypeId LONG,makeWatsonListTypeId LONG,modelWatsonListTypeId LONG,originalWatsonVehicleId LONG,typeWatsonListTypeId LONG,yearWatsonListTypeId LONG,watsonIncidentId LONG,year INTEGER,description STRING null,imagePayload TEXT null,licensePlate VARCHAR(75) null,status INTEGER)";
+	public static final String TABLE_SQL_CREATE =
+		"create table WatsonVehicle (watsonVehicleId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,colorWatsonListTypeId LONG,makeWatsonListTypeId LONG,modelWatsonListTypeId LONG,originalWatsonVehicleId LONG,typeWatsonListTypeId LONG,yearWatsonListTypeId LONG,watsonIncidentId LONG,year INTEGER,description STRING null,imagePayload TEXT null,licensePlate VARCHAR(75) null,status INTEGER)";
+
 	public static final String TABLE_SQL_DROP = "drop table WatsonVehicle";
-	public static final String ORDER_BY_JPQL = " ORDER BY watsonVehicle.watsonVehicleId ASC";
-	public static final String ORDER_BY_SQL = " ORDER BY WatsonVehicle.watsonVehicleId ASC";
+
+	public static final String ORDER_BY_JPQL =
+		" ORDER BY watsonVehicle.watsonVehicleId ASC";
+
+	public static final String ORDER_BY_SQL =
+		" ORDER BY WatsonVehicle.watsonVehicleId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
+
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
+
 	public static final String TX_MANAGER = "liferayTransactionManager";
-	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonVehicle"),
-			true);
-	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonVehicle"),
-			true);
+
+	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonVehicle"),
+		true);
+
+	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonVehicle"),
+		true);
+
 	public static final boolean COLUMN_BITMASK_ENABLED = false;
-	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.watson.service.util.ServiceProps.get(
-				"lock.expiration.time.com.liferay.watson.model.WatsonVehicle"));
+
+	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"lock.expiration.time.com.liferay.watson.model.WatsonVehicle"));
 
 	public WatsonVehicleModelImpl() {
 	}
@@ -173,13 +185,18 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		Map<String, Function<WatsonVehicle, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+		Map<String, Function<WatsonVehicle, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		for (Map.Entry<String, Function<WatsonVehicle, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonVehicle, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonVehicle, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonVehicle, Object> attributeGetterFunction =
+				entry.getValue();
 
-			attributes.put(attributeName,
+			attributes.put(
+				attributeName,
 				attributeGetterFunction.apply((WatsonVehicle)this));
 		}
 
@@ -191,36 +208,44 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Map<String, BiConsumer<WatsonVehicle, Object>> attributeSetterBiConsumers =
-			getAttributeSetterBiConsumers();
+		Map<String, BiConsumer<WatsonVehicle, Object>>
+			attributeSetterBiConsumers = getAttributeSetterBiConsumers();
 
 		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			String attributeName = entry.getKey();
 
-			BiConsumer<WatsonVehicle, Object> attributeSetterBiConsumer = attributeSetterBiConsumers.get(attributeName);
+			BiConsumer<WatsonVehicle, Object> attributeSetterBiConsumer =
+				attributeSetterBiConsumers.get(attributeName);
 
 			if (attributeSetterBiConsumer != null) {
-				attributeSetterBiConsumer.accept((WatsonVehicle)this,
-					entry.getValue());
+				attributeSetterBiConsumer.accept(
+					(WatsonVehicle)this, entry.getValue());
 			}
 		}
 	}
 
-	public Map<String, Function<WatsonVehicle, Object>> getAttributeGetterFunctions() {
+	public Map<String, Function<WatsonVehicle, Object>>
+		getAttributeGetterFunctions() {
+
 		return _attributeGetterFunctions;
 	}
 
-	public Map<String, BiConsumer<WatsonVehicle, Object>> getAttributeSetterBiConsumers() {
+	public Map<String, BiConsumer<WatsonVehicle, Object>>
+		getAttributeSetterBiConsumers() {
+
 		return _attributeSetterBiConsumers;
 	}
 
-	private static final Map<String, Function<WatsonVehicle, Object>> _attributeGetterFunctions;
-	private static final Map<String, BiConsumer<WatsonVehicle, Object>> _attributeSetterBiConsumers;
+	private static final Map<String, Function<WatsonVehicle, Object>>
+		_attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonVehicle, Object>>
+		_attributeSetterBiConsumers;
 
 	static {
-		Map<String, Function<WatsonVehicle, Object>> attributeGetterFunctions = new LinkedHashMap<String, Function<WatsonVehicle, Object>>();
-		Map<String, BiConsumer<WatsonVehicle, ?>> attributeSetterBiConsumers = new LinkedHashMap<String, BiConsumer<WatsonVehicle, ?>>();
-
+		Map<String, Function<WatsonVehicle, Object>> attributeGetterFunctions =
+			new LinkedHashMap<String, Function<WatsonVehicle, Object>>();
+		Map<String, BiConsumer<WatsonVehicle, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<WatsonVehicle, ?>>();
 
 		attributeGetterFunctions.put(
 			"watsonVehicleId",
@@ -237,7 +262,9 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 			new BiConsumer<WatsonVehicle, Object>() {
 
 				@Override
-				public void accept(WatsonVehicle watsonVehicle, Object watsonVehicleId) {
+				public void accept(
+					WatsonVehicle watsonVehicle, Object watsonVehicleId) {
+
 					watsonVehicle.setWatsonVehicleId((Long)watsonVehicleId);
 				}
 
@@ -257,7 +284,9 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 			new BiConsumer<WatsonVehicle, Object>() {
 
 				@Override
-				public void accept(WatsonVehicle watsonVehicle, Object groupId) {
+				public void accept(
+					WatsonVehicle watsonVehicle, Object groupId) {
+
 					watsonVehicle.setGroupId((Long)groupId);
 				}
 
@@ -277,7 +306,9 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 			new BiConsumer<WatsonVehicle, Object>() {
 
 				@Override
-				public void accept(WatsonVehicle watsonVehicle, Object companyId) {
+				public void accept(
+					WatsonVehicle watsonVehicle, Object companyId) {
+
 					watsonVehicle.setCompanyId((Long)companyId);
 				}
 
@@ -317,7 +348,9 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 			new BiConsumer<WatsonVehicle, Object>() {
 
 				@Override
-				public void accept(WatsonVehicle watsonVehicle, Object userName) {
+				public void accept(
+					WatsonVehicle watsonVehicle, Object userName) {
+
 					watsonVehicle.setUserName((String)userName);
 				}
 
@@ -337,7 +370,9 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 			new BiConsumer<WatsonVehicle, Object>() {
 
 				@Override
-				public void accept(WatsonVehicle watsonVehicle, Object createDate) {
+				public void accept(
+					WatsonVehicle watsonVehicle, Object createDate) {
+
 					watsonVehicle.setCreateDate((Date)createDate);
 				}
 
@@ -357,7 +392,9 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 			new BiConsumer<WatsonVehicle, Object>() {
 
 				@Override
-				public void accept(WatsonVehicle watsonVehicle, Object modifiedDate) {
+				public void accept(
+					WatsonVehicle watsonVehicle, Object modifiedDate) {
+
 					watsonVehicle.setModifiedDate((Date)modifiedDate);
 				}
 
@@ -377,8 +414,11 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 			new BiConsumer<WatsonVehicle, Object>() {
 
 				@Override
-				public void accept(WatsonVehicle watsonVehicle, Object colorWatsonListTypeId) {
-					watsonVehicle.setColorWatsonListTypeId((Long)colorWatsonListTypeId);
+				public void accept(
+					WatsonVehicle watsonVehicle, Object colorWatsonListTypeId) {
+
+					watsonVehicle.setColorWatsonListTypeId(
+						(Long)colorWatsonListTypeId);
 				}
 
 			});
@@ -397,8 +437,11 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 			new BiConsumer<WatsonVehicle, Object>() {
 
 				@Override
-				public void accept(WatsonVehicle watsonVehicle, Object makeWatsonListTypeId) {
-					watsonVehicle.setMakeWatsonListTypeId((Long)makeWatsonListTypeId);
+				public void accept(
+					WatsonVehicle watsonVehicle, Object makeWatsonListTypeId) {
+
+					watsonVehicle.setMakeWatsonListTypeId(
+						(Long)makeWatsonListTypeId);
 				}
 
 			});
@@ -417,8 +460,11 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 			new BiConsumer<WatsonVehicle, Object>() {
 
 				@Override
-				public void accept(WatsonVehicle watsonVehicle, Object modelWatsonListTypeId) {
-					watsonVehicle.setModelWatsonListTypeId((Long)modelWatsonListTypeId);
+				public void accept(
+					WatsonVehicle watsonVehicle, Object modelWatsonListTypeId) {
+
+					watsonVehicle.setModelWatsonListTypeId(
+						(Long)modelWatsonListTypeId);
 				}
 
 			});
@@ -437,8 +483,12 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 			new BiConsumer<WatsonVehicle, Object>() {
 
 				@Override
-				public void accept(WatsonVehicle watsonVehicle, Object originalWatsonVehicleId) {
-					watsonVehicle.setOriginalWatsonVehicleId((Long)originalWatsonVehicleId);
+				public void accept(
+					WatsonVehicle watsonVehicle,
+					Object originalWatsonVehicleId) {
+
+					watsonVehicle.setOriginalWatsonVehicleId(
+						(Long)originalWatsonVehicleId);
 				}
 
 			});
@@ -457,8 +507,11 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 			new BiConsumer<WatsonVehicle, Object>() {
 
 				@Override
-				public void accept(WatsonVehicle watsonVehicle, Object typeWatsonListTypeId) {
-					watsonVehicle.setTypeWatsonListTypeId((Long)typeWatsonListTypeId);
+				public void accept(
+					WatsonVehicle watsonVehicle, Object typeWatsonListTypeId) {
+
+					watsonVehicle.setTypeWatsonListTypeId(
+						(Long)typeWatsonListTypeId);
 				}
 
 			});
@@ -477,8 +530,11 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 			new BiConsumer<WatsonVehicle, Object>() {
 
 				@Override
-				public void accept(WatsonVehicle watsonVehicle, Object yearWatsonListTypeId) {
-					watsonVehicle.setYearWatsonListTypeId((Long)yearWatsonListTypeId);
+				public void accept(
+					WatsonVehicle watsonVehicle, Object yearWatsonListTypeId) {
+
+					watsonVehicle.setYearWatsonListTypeId(
+						(Long)yearWatsonListTypeId);
 				}
 
 			});
@@ -497,7 +553,9 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 			new BiConsumer<WatsonVehicle, Object>() {
 
 				@Override
-				public void accept(WatsonVehicle watsonVehicle, Object watsonIncidentId) {
+				public void accept(
+					WatsonVehicle watsonVehicle, Object watsonIncidentId) {
+
 					watsonVehicle.setWatsonIncidentId((Long)watsonIncidentId);
 				}
 
@@ -537,7 +595,9 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 			new BiConsumer<WatsonVehicle, Object>() {
 
 				@Override
-				public void accept(WatsonVehicle watsonVehicle, Object description) {
+				public void accept(
+					WatsonVehicle watsonVehicle, Object description) {
+
 					watsonVehicle.setDescription((String)description);
 				}
 
@@ -557,7 +617,9 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 			new BiConsumer<WatsonVehicle, Object>() {
 
 				@Override
-				public void accept(WatsonVehicle watsonVehicle, Object imagePayload) {
+				public void accept(
+					WatsonVehicle watsonVehicle, Object imagePayload) {
+
 					watsonVehicle.setImagePayload((String)imagePayload);
 				}
 
@@ -577,7 +639,9 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 			new BiConsumer<WatsonVehicle, Object>() {
 
 				@Override
-				public void accept(WatsonVehicle watsonVehicle, Object licensePlate) {
+				public void accept(
+					WatsonVehicle watsonVehicle, Object licensePlate) {
+
 					watsonVehicle.setLicensePlate((String)licensePlate);
 				}
 
@@ -603,9 +667,10 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 
 			});
 
-
-		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap(
+			(Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -816,8 +881,8 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 
 	@Override
 	public String getDescription(String languageId, boolean useDefault) {
-		return LocalizationUtil.getLocalization(getDescription(), languageId,
-			useDefault);
+		return LocalizationUtil.getLocalization(
+			getDescription(), languageId, useDefault);
 	}
 
 	@Override
@@ -849,18 +914,21 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 	}
 
 	@Override
-	public void setDescription(String description, Locale locale,
-		Locale defaultLocale) {
+	public void setDescription(
+		String description, Locale locale, Locale defaultLocale) {
+
 		String languageId = LocaleUtil.toLanguageId(locale);
 		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
 
 		if (Validator.isNotNull(description)) {
-			setDescription(LocalizationUtil.updateLocalization(
+			setDescription(
+				LocalizationUtil.updateLocalization(
 					getDescription(), "Description", description, languageId,
 					defaultLanguageId));
 		}
 		else {
-			setDescription(LocalizationUtil.removeLocalization(
+			setDescription(
+				LocalizationUtil.removeLocalization(
 					getDescription(), "Description", languageId));
 		}
 	}
@@ -876,14 +944,16 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 	}
 
 	@Override
-	public void setDescriptionMap(Map<Locale, String> descriptionMap,
-		Locale defaultLocale) {
+	public void setDescriptionMap(
+		Map<Locale, String> descriptionMap, Locale defaultLocale) {
+
 		if (descriptionMap == null) {
 			return;
 		}
 
-		setDescription(LocalizationUtil.updateLocalization(descriptionMap,
-				getDescription(), "Description",
+		setDescription(
+			LocalizationUtil.updateLocalization(
+				descriptionMap, getDescription(), "Description",
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
@@ -929,8 +999,8 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 
 	@Override
 	public ExpandoBridge getExpandoBridge() {
-		return ExpandoBridgeFactoryUtil.getExpandoBridge(getCompanyId(),
-			WatsonVehicle.class.getName(), getPrimaryKey());
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(
+			getCompanyId(), WatsonVehicle.class.getName(), getPrimaryKey());
 	}
 
 	@Override
@@ -955,7 +1025,8 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 			}
 		}
 
-		return availableLanguageIds.toArray(new String[availableLanguageIds.size()]);
+		return availableLanguageIds.toArray(
+			new String[availableLanguageIds.size()]);
 	}
 
 	@Override
@@ -973,12 +1044,15 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 
 	@Override
 	public void prepareLocalizedFieldsForImport() throws LocaleException {
-		Locale defaultLocale = LocaleUtil.fromLanguageId(getDefaultLanguageId());
+		Locale defaultLocale = LocaleUtil.fromLanguageId(
+			getDefaultLanguageId());
 
-		Locale[] availableLocales = LocaleUtil.fromLanguageIds(getAvailableLanguageIds());
+		Locale[] availableLocales = LocaleUtil.fromLanguageIds(
+			getAvailableLanguageIds());
 
-		Locale defaultImportLocale = LocalizationUtil.getDefaultImportLocale(WatsonVehicle.class.getName(),
-				getPrimaryKey(), defaultLocale, availableLocales);
+		Locale defaultImportLocale = LocalizationUtil.getDefaultImportLocale(
+			WatsonVehicle.class.getName(), getPrimaryKey(), defaultLocale,
+			availableLocales);
 
 		prepareLocalizedFieldsForImport(defaultImportLocale);
 	}
@@ -987,6 +1061,7 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 	@SuppressWarnings("unused")
 	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
 		throws LocaleException {
+
 		Locale defaultLocale = LocaleUtil.getSiteDefault();
 
 		String modelDefaultLanguageId = getDefaultLanguageId();
@@ -994,19 +1069,21 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 		String description = getDescription(defaultLocale);
 
 		if (Validator.isNull(description)) {
-			setDescription(getDescription(modelDefaultLanguageId), defaultLocale);
+			setDescription(
+				getDescription(modelDefaultLanguageId), defaultLocale);
 		}
 		else {
-			setDescription(getDescription(defaultLocale), defaultLocale,
-				defaultLocale);
+			setDescription(
+				getDescription(defaultLocale), defaultLocale, defaultLocale);
 		}
 	}
 
 	@Override
 	public WatsonVehicle toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonVehicle)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+			_escapedModel = (WatsonVehicle)ProxyUtil.newProxyInstance(
+				_classLoader, _escapedModelInterfaces,
+				new AutoEscapeBeanHandler(this));
 		}
 
 		return _escapedModel;
@@ -1026,7 +1103,8 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 		watsonVehicleImpl.setColorWatsonListTypeId(getColorWatsonListTypeId());
 		watsonVehicleImpl.setMakeWatsonListTypeId(getMakeWatsonListTypeId());
 		watsonVehicleImpl.setModelWatsonListTypeId(getModelWatsonListTypeId());
-		watsonVehicleImpl.setOriginalWatsonVehicleId(getOriginalWatsonVehicleId());
+		watsonVehicleImpl.setOriginalWatsonVehicleId(
+			getOriginalWatsonVehicleId());
 		watsonVehicleImpl.setTypeWatsonListTypeId(getTypeWatsonListTypeId());
 		watsonVehicleImpl.setYearWatsonListTypeId(getYearWatsonListTypeId());
 		watsonVehicleImpl.setWatsonIncidentId(getWatsonIncidentId());
@@ -1102,7 +1180,8 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 
 	@Override
 	public CacheModel<WatsonVehicle> toCacheModel() {
-		WatsonVehicleCacheModel watsonVehicleCacheModel = new WatsonVehicleCacheModel();
+		WatsonVehicleCacheModel watsonVehicleCacheModel =
+			new WatsonVehicleCacheModel();
 
 		watsonVehicleCacheModel.watsonVehicleId = getWatsonVehicleId();
 
@@ -1138,17 +1217,23 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 			watsonVehicleCacheModel.modifiedDate = Long.MIN_VALUE;
 		}
 
-		watsonVehicleCacheModel.colorWatsonListTypeId = getColorWatsonListTypeId();
+		watsonVehicleCacheModel.colorWatsonListTypeId =
+			getColorWatsonListTypeId();
 
-		watsonVehicleCacheModel.makeWatsonListTypeId = getMakeWatsonListTypeId();
+		watsonVehicleCacheModel.makeWatsonListTypeId =
+			getMakeWatsonListTypeId();
 
-		watsonVehicleCacheModel.modelWatsonListTypeId = getModelWatsonListTypeId();
+		watsonVehicleCacheModel.modelWatsonListTypeId =
+			getModelWatsonListTypeId();
 
-		watsonVehicleCacheModel.originalWatsonVehicleId = getOriginalWatsonVehicleId();
+		watsonVehicleCacheModel.originalWatsonVehicleId =
+			getOriginalWatsonVehicleId();
 
-		watsonVehicleCacheModel.typeWatsonListTypeId = getTypeWatsonListTypeId();
+		watsonVehicleCacheModel.typeWatsonListTypeId =
+			getTypeWatsonListTypeId();
 
-		watsonVehicleCacheModel.yearWatsonListTypeId = getYearWatsonListTypeId();
+		watsonVehicleCacheModel.yearWatsonListTypeId =
+			getYearWatsonListTypeId();
 
 		watsonVehicleCacheModel.watsonIncidentId = getWatsonIncidentId();
 
@@ -1185,16 +1270,20 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 
 	@Override
 	public String toString() {
-		Map<String, Function<WatsonVehicle, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+		Map<String, Function<WatsonVehicle, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
-				2);
+		StringBundler sb = new StringBundler(
+			4 * attributeGetterFunctions.size() + 2);
 
 		sb.append("{");
 
-		for (Map.Entry<String, Function<WatsonVehicle, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonVehicle, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonVehicle, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonVehicle, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append(attributeName);
 			sb.append("=");
@@ -1213,18 +1302,22 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 
 	@Override
 	public String toXmlString() {
-		Map<String, Function<WatsonVehicle, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+		Map<String, Function<WatsonVehicle, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
-				4);
+		StringBundler sb = new StringBundler(
+			5 * attributeGetterFunctions.size() + 4);
 
 		sb.append("<model><model-name>");
 		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		for (Map.Entry<String, Function<WatsonVehicle, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonVehicle, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonVehicle, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonVehicle, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append("<column><column-name>");
 			sb.append(attributeName);
@@ -1238,10 +1331,12 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader = WatsonVehicle.class.getClassLoader();
+	private static final ClassLoader _classLoader =
+		WatsonVehicle.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			WatsonVehicle.class, ModelWrapper.class
-		};
+		WatsonVehicle.class, ModelWrapper.class
+	};
+
 	private long _watsonVehicleId;
 	private long _groupId;
 	private long _companyId;
@@ -1264,4 +1359,5 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 	private String _licensePlate;
 	private int _status;
 	private WatsonVehicle _escapedModel;
+
 }

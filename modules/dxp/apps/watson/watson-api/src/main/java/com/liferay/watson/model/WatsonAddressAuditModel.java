@@ -17,7 +17,6 @@ package com.liferay.watson.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -45,8 +44,10 @@ import java.util.Map;
  * @generated
  */
 @ProviderType
-public interface WatsonAddressAuditModel extends BaseModel<WatsonAddressAudit>,
-	GroupedModel, LocalizedModel, ShardedModel {
+public interface WatsonAddressAuditModel
+	extends BaseModel<WatsonAddressAudit>, GroupedModel, LocalizedModel,
+			ShardedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -262,7 +263,8 @@ public interface WatsonAddressAuditModel extends BaseModel<WatsonAddressAudit>,
 	 *
 	 * @param subDistrictWatsonListTypeId the sub district watson list type ID of this watson address audit
 	 */
-	public void setSubDistrictWatsonListTypeId(long subDistrictWatsonListTypeId);
+	public void setSubDistrictWatsonListTypeId(
+		long subDistrictWatsonListTypeId);
 
 	/**
 	 * Returns the type watson list type ID of this watson address audit.
@@ -545,7 +547,8 @@ public interface WatsonAddressAuditModel extends BaseModel<WatsonAddressAudit>,
 	 * @param locale the locale of the language
 	 * @param defaultLocale the default locale
 	 */
-	public void setBuilding(String building, Locale locale, Locale defaultLocale);
+	public void setBuilding(
+		String building, Locale locale, Locale defaultLocale);
 
 	public void setBuildingCurrentLanguageId(String languageId);
 
@@ -562,8 +565,8 @@ public interface WatsonAddressAuditModel extends BaseModel<WatsonAddressAudit>,
 	 * @param buildingMap the locales and localized buildings of this watson address audit
 	 * @param defaultLocale the default locale
 	 */
-	public void setBuildingMap(Map<Locale, String> buildingMap,
-		Locale defaultLocale);
+	public void setBuildingMap(
+		Map<Locale, String> buildingMap, Locale defaultLocale);
 
 	/**
 	 * Returns the floor of this watson address audit.
@@ -675,8 +678,8 @@ public interface WatsonAddressAuditModel extends BaseModel<WatsonAddressAudit>,
 	 * @param locale the locale of the language
 	 * @param defaultLocale the default locale
 	 */
-	public void setDescription(String description, Locale locale,
-		Locale defaultLocale);
+	public void setDescription(
+		String description, Locale locale, Locale defaultLocale);
 
 	public void setDescriptionCurrentLanguageId(String languageId);
 
@@ -693,8 +696,8 @@ public interface WatsonAddressAuditModel extends BaseModel<WatsonAddressAudit>,
 	 * @param descriptionMap the locales and localized descriptions of this watson address audit
 	 * @param defaultLocale the default locale
 	 */
-	public void setDescriptionMap(Map<Locale, String> descriptionMap,
-		Locale defaultLocale);
+	public void setDescriptionMap(
+		Map<Locale, String> descriptionMap, Locale defaultLocale);
 
 	/**
 	 * Returns the image payload of this watson address audit.
@@ -851,4 +854,5 @@ public interface WatsonAddressAuditModel extends BaseModel<WatsonAddressAudit>,
 
 	@Override
 	public String toXmlString();
+
 }

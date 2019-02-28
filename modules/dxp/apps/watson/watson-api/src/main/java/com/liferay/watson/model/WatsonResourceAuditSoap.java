@@ -30,7 +30,10 @@ import java.util.List;
  */
 @ProviderType
 public class WatsonResourceAuditSoap implements Serializable {
-	public static WatsonResourceAuditSoap toSoapModel(WatsonResourceAudit model) {
+
+	public static WatsonResourceAuditSoap toSoapModel(
+		WatsonResourceAudit model) {
+
 		WatsonResourceAuditSoap soapModel = new WatsonResourceAuditSoap();
 
 		soapModel.setWatsonResourceAuditId(model.getWatsonResourceAuditId());
@@ -40,7 +43,8 @@ public class WatsonResourceAuditSoap implements Serializable {
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
-		soapModel.setOriginalWatsonResourceId(model.getOriginalWatsonResourceId());
+		soapModel.setOriginalWatsonResourceId(
+			model.getOriginalWatsonResourceId());
 		soapModel.setTypeWatsonListTypeId(model.getTypeWatsonListTypeId());
 		soapModel.setWatsonIncidentId(model.getWatsonIncidentId());
 		soapModel.setWatsonResourceId(model.getWatsonResourceId());
@@ -54,7 +58,9 @@ public class WatsonResourceAuditSoap implements Serializable {
 
 	public static WatsonResourceAuditSoap[] toSoapModels(
 		WatsonResourceAudit[] models) {
-		WatsonResourceAuditSoap[] soapModels = new WatsonResourceAuditSoap[models.length];
+
+		WatsonResourceAuditSoap[] soapModels =
+			new WatsonResourceAuditSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -65,10 +71,12 @@ public class WatsonResourceAuditSoap implements Serializable {
 
 	public static WatsonResourceAuditSoap[][] toSoapModels(
 		WatsonResourceAudit[][] models) {
+
 		WatsonResourceAuditSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new WatsonResourceAuditSoap[models.length][models[0].length];
+			soapModels =
+				new WatsonResourceAuditSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new WatsonResourceAuditSoap[0][0];
@@ -83,13 +91,16 @@ public class WatsonResourceAuditSoap implements Serializable {
 
 	public static WatsonResourceAuditSoap[] toSoapModels(
 		List<WatsonResourceAudit> models) {
-		List<WatsonResourceAuditSoap> soapModels = new ArrayList<WatsonResourceAuditSoap>(models.size());
+
+		List<WatsonResourceAuditSoap> soapModels =
+			new ArrayList<WatsonResourceAuditSoap>(models.size());
 
 		for (WatsonResourceAudit model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(new WatsonResourceAuditSoap[soapModels.size()]);
+		return soapModels.toArray(
+			new WatsonResourceAuditSoap[soapModels.size()]);
 	}
 
 	public WatsonResourceAuditSoap() {
@@ -238,4 +249,5 @@ public class WatsonResourceAuditSoap implements Serializable {
 	private String _description;
 	private String _imagePayload;
 	private int _status;
+
 }

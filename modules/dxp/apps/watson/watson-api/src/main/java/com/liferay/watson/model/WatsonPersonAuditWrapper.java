@@ -17,7 +17,6 @@ package com.liferay.watson.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -38,8 +37,9 @@ import java.util.Objects;
  * @generated
  */
 @ProviderType
-public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
-	ModelWrapper<WatsonPersonAudit> {
+public class WatsonPersonAuditWrapper
+	implements WatsonPersonAudit, ModelWrapper<WatsonPersonAudit> {
+
 	public WatsonPersonAuditWrapper(WatsonPersonAudit watsonPersonAudit) {
 		_watsonPersonAudit = watsonPersonAudit;
 	}
@@ -66,11 +66,11 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("birthCountryId", getBirthCountryId());
-		attributes.put("citizenshipWatsonListTypeId",
-			getCitizenshipWatsonListTypeId());
+		attributes.put(
+			"citizenshipWatsonListTypeId", getCitizenshipWatsonListTypeId());
 		attributes.put("countryWatsonListTypeId", getCountryWatsonListTypeId());
-		attributes.put("ethnicityWatsonListTypeId",
-			getEthnicityWatsonListTypeId());
+		attributes.put(
+			"ethnicityWatsonListTypeId", getEthnicityWatsonListTypeId());
 		attributes.put("eyesWatsonListTypeId", getEyesWatsonListTypeId());
 		attributes.put("hairWatsonListTypeId", getHairWatsonListTypeId());
 		attributes.put("originalWatsonPersonId", getOriginalWatsonPersonId());
@@ -146,40 +146,42 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 		}
 
 		Long citizenshipWatsonListTypeId = (Long)attributes.get(
-				"citizenshipWatsonListTypeId");
+			"citizenshipWatsonListTypeId");
 
 		if (citizenshipWatsonListTypeId != null) {
 			setCitizenshipWatsonListTypeId(citizenshipWatsonListTypeId);
 		}
 
 		Long countryWatsonListTypeId = (Long)attributes.get(
-				"countryWatsonListTypeId");
+			"countryWatsonListTypeId");
 
 		if (countryWatsonListTypeId != null) {
 			setCountryWatsonListTypeId(countryWatsonListTypeId);
 		}
 
 		Long ethnicityWatsonListTypeId = (Long)attributes.get(
-				"ethnicityWatsonListTypeId");
+			"ethnicityWatsonListTypeId");
 
 		if (ethnicityWatsonListTypeId != null) {
 			setEthnicityWatsonListTypeId(ethnicityWatsonListTypeId);
 		}
 
-		Long eyesWatsonListTypeId = (Long)attributes.get("eyesWatsonListTypeId");
+		Long eyesWatsonListTypeId = (Long)attributes.get(
+			"eyesWatsonListTypeId");
 
 		if (eyesWatsonListTypeId != null) {
 			setEyesWatsonListTypeId(eyesWatsonListTypeId);
 		}
 
-		Long hairWatsonListTypeId = (Long)attributes.get("hairWatsonListTypeId");
+		Long hairWatsonListTypeId = (Long)attributes.get(
+			"hairWatsonListTypeId");
 
 		if (hairWatsonListTypeId != null) {
 			setHairWatsonListTypeId(hairWatsonListTypeId);
 		}
 
 		Long originalWatsonPersonId = (Long)attributes.get(
-				"originalWatsonPersonId");
+			"originalWatsonPersonId");
 
 		if (originalWatsonPersonId != null) {
 			setOriginalWatsonPersonId(originalWatsonPersonId);
@@ -191,7 +193,8 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 			setSexWatsonListTypeId(sexWatsonListTypeId);
 		}
 
-		Long typeWatsonListTypeId = (Long)attributes.get("typeWatsonListTypeId");
+		Long typeWatsonListTypeId = (Long)attributes.get(
+			"typeWatsonListTypeId");
 
 		if (typeWatsonListTypeId != null) {
 			setTypeWatsonListTypeId(typeWatsonListTypeId);
@@ -290,7 +293,8 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 
 	@Override
 	public Object clone() {
-		return new WatsonPersonAuditWrapper((WatsonPersonAudit)_watsonPersonAudit.clone());
+		return new WatsonPersonAuditWrapper(
+			(WatsonPersonAudit)_watsonPersonAudit.clone());
 	}
 
 	@Override
@@ -299,10 +303,10 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	}
 
 	/**
-	* Returns the accepted of this watson person audit.
-	*
-	* @return the accepted of this watson person audit
-	*/
+	 * Returns the accepted of this watson person audit.
+	 *
+	 * @return the accepted of this watson person audit
+	 */
 	@Override
 	public boolean getAccepted() {
 		return _watsonPersonAudit.getAccepted();
@@ -314,80 +318,80 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	}
 
 	/**
-	* Returns the birth country ID of this watson person audit.
-	*
-	* @return the birth country ID of this watson person audit
-	*/
+	 * Returns the birth country ID of this watson person audit.
+	 *
+	 * @return the birth country ID of this watson person audit
+	 */
 	@Override
 	public long getBirthCountryId() {
 		return _watsonPersonAudit.getBirthCountryId();
 	}
 
 	/**
-	* Returns the birth date of this watson person audit.
-	*
-	* @return the birth date of this watson person audit
-	*/
+	 * Returns the birth date of this watson person audit.
+	 *
+	 * @return the birth date of this watson person audit
+	 */
 	@Override
 	public Date getBirthDate() {
 		return _watsonPersonAudit.getBirthDate();
 	}
 
 	/**
-	* Returns the citizenship watson list type ID of this watson person audit.
-	*
-	* @return the citizenship watson list type ID of this watson person audit
-	*/
+	 * Returns the citizenship watson list type ID of this watson person audit.
+	 *
+	 * @return the citizenship watson list type ID of this watson person audit
+	 */
 	@Override
 	public long getCitizenshipWatsonListTypeId() {
 		return _watsonPersonAudit.getCitizenshipWatsonListTypeId();
 	}
 
 	/**
-	* Returns the company ID of this watson person audit.
-	*
-	* @return the company ID of this watson person audit
-	*/
+	 * Returns the company ID of this watson person audit.
+	 *
+	 * @return the company ID of this watson person audit
+	 */
 	@Override
 	public long getCompanyId() {
 		return _watsonPersonAudit.getCompanyId();
 	}
 
 	/**
-	* Returns the country watson list type ID of this watson person audit.
-	*
-	* @return the country watson list type ID of this watson person audit
-	*/
+	 * Returns the country watson list type ID of this watson person audit.
+	 *
+	 * @return the country watson list type ID of this watson person audit
+	 */
 	@Override
 	public long getCountryWatsonListTypeId() {
 		return _watsonPersonAudit.getCountryWatsonListTypeId();
 	}
 
 	/**
-	* Returns the create date of this watson person audit.
-	*
-	* @return the create date of this watson person audit
-	*/
+	 * Returns the create date of this watson person audit.
+	 *
+	 * @return the create date of this watson person audit
+	 */
 	@Override
 	public Date getCreateDate() {
 		return _watsonPersonAudit.getCreateDate();
 	}
 
 	/**
-	* Returns the date accepted of this watson person audit.
-	*
-	* @return the date accepted of this watson person audit
-	*/
+	 * Returns the date accepted of this watson person audit.
+	 *
+	 * @return the date accepted of this watson person audit
+	 */
 	@Override
 	public Date getDateAccepted() {
 		return _watsonPersonAudit.getDateAccepted();
 	}
 
 	/**
-	* Returns the date rescued of this watson person audit.
-	*
-	* @return the date rescued of this watson person audit
-	*/
+	 * Returns the date rescued of this watson person audit.
+	 *
+	 * @return the date rescued of this watson person audit
+	 */
 	@Override
 	public Date getDateRescued() {
 		return _watsonPersonAudit.getDateRescued();
@@ -399,56 +403,56 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	}
 
 	/**
-	* Returns the description of this watson person audit.
-	*
-	* @return the description of this watson person audit
-	*/
+	 * Returns the description of this watson person audit.
+	 *
+	 * @return the description of this watson person audit
+	 */
 	@Override
 	public String getDescription() {
 		return _watsonPersonAudit.getDescription();
 	}
 
 	/**
-	* Returns the localized description of this watson person audit in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param locale the locale of the language
-	* @return the localized description of this watson person audit
-	*/
+	 * Returns the localized description of this watson person audit in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the locale of the language
+	 * @return the localized description of this watson person audit
+	 */
 	@Override
 	public String getDescription(java.util.Locale locale) {
 		return _watsonPersonAudit.getDescription(locale);
 	}
 
 	/**
-	* Returns the localized description of this watson person audit in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param locale the local of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized description of this watson person audit. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
-	*/
+	 * Returns the localized description of this watson person audit in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the local of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized description of this watson person audit. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+	 */
 	@Override
 	public String getDescription(java.util.Locale locale, boolean useDefault) {
 		return _watsonPersonAudit.getDescription(locale, useDefault);
 	}
 
 	/**
-	* Returns the localized description of this watson person audit in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @return the localized description of this watson person audit
-	*/
+	 * Returns the localized description of this watson person audit in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @return the localized description of this watson person audit
+	 */
 	@Override
 	public String getDescription(String languageId) {
 		return _watsonPersonAudit.getDescription(languageId);
 	}
 
 	/**
-	* Returns the localized description of this watson person audit in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized description of this watson person audit
-	*/
+	 * Returns the localized description of this watson person audit in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized description of this watson person audit
+	 */
 	@Override
 	public String getDescription(String languageId, boolean useDefault) {
 		return _watsonPersonAudit.getDescription(languageId, useDefault);
@@ -465,30 +469,30 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	}
 
 	/**
-	* Returns a map of the locales and localized descriptions of this watson person audit.
-	*
-	* @return the locales and localized descriptions of this watson person audit
-	*/
+	 * Returns a map of the locales and localized descriptions of this watson person audit.
+	 *
+	 * @return the locales and localized descriptions of this watson person audit
+	 */
 	@Override
 	public Map<java.util.Locale, String> getDescriptionMap() {
 		return _watsonPersonAudit.getDescriptionMap();
 	}
 
 	/**
-	* Returns the end age of this watson person audit.
-	*
-	* @return the end age of this watson person audit
-	*/
+	 * Returns the end age of this watson person audit.
+	 *
+	 * @return the end age of this watson person audit
+	 */
 	@Override
 	public String getEndAge() {
 		return _watsonPersonAudit.getEndAge();
 	}
 
 	/**
-	* Returns the ethnicity watson list type ID of this watson person audit.
-	*
-	* @return the ethnicity watson list type ID of this watson person audit
-	*/
+	 * Returns the ethnicity watson list type ID of this watson person audit.
+	 *
+	 * @return the ethnicity watson list type ID of this watson person audit
+	 */
 	@Override
 	public long getEthnicityWatsonListTypeId() {
 		return _watsonPersonAudit.getEthnicityWatsonListTypeId();
@@ -500,116 +504,116 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	}
 
 	/**
-	* Returns the eyes watson list type ID of this watson person audit.
-	*
-	* @return the eyes watson list type ID of this watson person audit
-	*/
+	 * Returns the eyes watson list type ID of this watson person audit.
+	 *
+	 * @return the eyes watson list type ID of this watson person audit
+	 */
 	@Override
 	public long getEyesWatsonListTypeId() {
 		return _watsonPersonAudit.getEyesWatsonListTypeId();
 	}
 
 	/**
-	* Returns the group ID of this watson person audit.
-	*
-	* @return the group ID of this watson person audit
-	*/
+	 * Returns the group ID of this watson person audit.
+	 *
+	 * @return the group ID of this watson person audit
+	 */
 	@Override
 	public long getGroupId() {
 		return _watsonPersonAudit.getGroupId();
 	}
 
 	/**
-	* Returns the hair watson list type ID of this watson person audit.
-	*
-	* @return the hair watson list type ID of this watson person audit
-	*/
+	 * Returns the hair watson list type ID of this watson person audit.
+	 *
+	 * @return the hair watson list type ID of this watson person audit
+	 */
 	@Override
 	public long getHairWatsonListTypeId() {
 		return _watsonPersonAudit.getHairWatsonListTypeId();
 	}
 
 	/**
-	* Returns the height of this watson person audit.
-	*
-	* @return the height of this watson person audit
-	*/
+	 * Returns the height of this watson person audit.
+	 *
+	 * @return the height of this watson person audit
+	 */
 	@Override
 	public String getHeight() {
 		return _watsonPersonAudit.getHeight();
 	}
 
 	/**
-	* Returns the image payload of this watson person audit.
-	*
-	* @return the image payload of this watson person audit
-	*/
+	 * Returns the image payload of this watson person audit.
+	 *
+	 * @return the image payload of this watson person audit
+	 */
 	@Override
 	public String getImagePayload() {
 		return _watsonPersonAudit.getImagePayload();
 	}
 
 	/**
-	* Returns the modified date of this watson person audit.
-	*
-	* @return the modified date of this watson person audit
-	*/
+	 * Returns the modified date of this watson person audit.
+	 *
+	 * @return the modified date of this watson person audit
+	 */
 	@Override
 	public Date getModifiedDate() {
 		return _watsonPersonAudit.getModifiedDate();
 	}
 
 	/**
-	* Returns the occupation of this watson person audit.
-	*
-	* @return the occupation of this watson person audit
-	*/
+	 * Returns the occupation of this watson person audit.
+	 *
+	 * @return the occupation of this watson person audit
+	 */
 	@Override
 	public String getOccupation() {
 		return _watsonPersonAudit.getOccupation();
 	}
 
 	/**
-	* Returns the localized occupation of this watson person audit in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param locale the locale of the language
-	* @return the localized occupation of this watson person audit
-	*/
+	 * Returns the localized occupation of this watson person audit in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the locale of the language
+	 * @return the localized occupation of this watson person audit
+	 */
 	@Override
 	public String getOccupation(java.util.Locale locale) {
 		return _watsonPersonAudit.getOccupation(locale);
 	}
 
 	/**
-	* Returns the localized occupation of this watson person audit in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param locale the local of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized occupation of this watson person audit. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
-	*/
+	 * Returns the localized occupation of this watson person audit in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the local of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized occupation of this watson person audit. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+	 */
 	@Override
 	public String getOccupation(java.util.Locale locale, boolean useDefault) {
 		return _watsonPersonAudit.getOccupation(locale, useDefault);
 	}
 
 	/**
-	* Returns the localized occupation of this watson person audit in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @return the localized occupation of this watson person audit
-	*/
+	 * Returns the localized occupation of this watson person audit in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @return the localized occupation of this watson person audit
+	 */
 	@Override
 	public String getOccupation(String languageId) {
 		return _watsonPersonAudit.getOccupation(languageId);
 	}
 
 	/**
-	* Returns the localized occupation of this watson person audit in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized occupation of this watson person audit
-	*/
+	 * Returns the localized occupation of this watson person audit in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized occupation of this watson person audit
+	 */
 	@Override
 	public String getOccupation(String languageId, boolean useDefault) {
 		return _watsonPersonAudit.getOccupation(languageId, useDefault);
@@ -626,30 +630,30 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	}
 
 	/**
-	* Returns a map of the locales and localized occupations of this watson person audit.
-	*
-	* @return the locales and localized occupations of this watson person audit
-	*/
+	 * Returns a map of the locales and localized occupations of this watson person audit.
+	 *
+	 * @return the locales and localized occupations of this watson person audit
+	 */
 	@Override
 	public Map<java.util.Locale, String> getOccupationMap() {
 		return _watsonPersonAudit.getOccupationMap();
 	}
 
 	/**
-	* Returns the original watson person ID of this watson person audit.
-	*
-	* @return the original watson person ID of this watson person audit
-	*/
+	 * Returns the original watson person ID of this watson person audit.
+	 *
+	 * @return the original watson person ID of this watson person audit
+	 */
 	@Override
 	public long getOriginalWatsonPersonId() {
 		return _watsonPersonAudit.getOriginalWatsonPersonId();
 	}
 
 	/**
-	* Returns the primary key of this watson person audit.
-	*
-	* @return the primary key of this watson person audit
-	*/
+	 * Returns the primary key of this watson person audit.
+	 *
+	 * @return the primary key of this watson person audit
+	 */
 	@Override
 	public long getPrimaryKey() {
 		return _watsonPersonAudit.getPrimaryKey();
@@ -661,120 +665,120 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	}
 
 	/**
-	* Returns the rescued of this watson person audit.
-	*
-	* @return the rescued of this watson person audit
-	*/
+	 * Returns the rescued of this watson person audit.
+	 *
+	 * @return the rescued of this watson person audit
+	 */
 	@Override
 	public boolean getRescued() {
 		return _watsonPersonAudit.getRescued();
 	}
 
 	/**
-	* Returns the sex watson list type ID of this watson person audit.
-	*
-	* @return the sex watson list type ID of this watson person audit
-	*/
+	 * Returns the sex watson list type ID of this watson person audit.
+	 *
+	 * @return the sex watson list type ID of this watson person audit
+	 */
 	@Override
 	public long getSexWatsonListTypeId() {
 		return _watsonPersonAudit.getSexWatsonListTypeId();
 	}
 
 	/**
-	* Returns the start age of this watson person audit.
-	*
-	* @return the start age of this watson person audit
-	*/
+	 * Returns the start age of this watson person audit.
+	 *
+	 * @return the start age of this watson person audit
+	 */
 	@Override
 	public String getStartAge() {
 		return _watsonPersonAudit.getStartAge();
 	}
 
 	/**
-	* Returns the status of this watson person audit.
-	*
-	* @return the status of this watson person audit
-	*/
+	 * Returns the status of this watson person audit.
+	 *
+	 * @return the status of this watson person audit
+	 */
 	@Override
 	public int getStatus() {
 		return _watsonPersonAudit.getStatus();
 	}
 
 	/**
-	* Returns the type watson list type ID of this watson person audit.
-	*
-	* @return the type watson list type ID of this watson person audit
-	*/
+	 * Returns the type watson list type ID of this watson person audit.
+	 *
+	 * @return the type watson list type ID of this watson person audit
+	 */
 	@Override
 	public long getTypeWatsonListTypeId() {
 		return _watsonPersonAudit.getTypeWatsonListTypeId();
 	}
 
 	/**
-	* Returns the user ID of this watson person audit.
-	*
-	* @return the user ID of this watson person audit
-	*/
+	 * Returns the user ID of this watson person audit.
+	 *
+	 * @return the user ID of this watson person audit
+	 */
 	@Override
 	public long getUserId() {
 		return _watsonPersonAudit.getUserId();
 	}
 
 	/**
-	* Returns the user name of this watson person audit.
-	*
-	* @return the user name of this watson person audit
-	*/
+	 * Returns the user name of this watson person audit.
+	 *
+	 * @return the user name of this watson person audit
+	 */
 	@Override
 	public String getUserName() {
 		return _watsonPersonAudit.getUserName();
 	}
 
 	/**
-	* Returns the user uuid of this watson person audit.
-	*
-	* @return the user uuid of this watson person audit
-	*/
+	 * Returns the user uuid of this watson person audit.
+	 *
+	 * @return the user uuid of this watson person audit
+	 */
 	@Override
 	public String getUserUuid() {
 		return _watsonPersonAudit.getUserUuid();
 	}
 
 	/**
-	* Returns the watson incident ID of this watson person audit.
-	*
-	* @return the watson incident ID of this watson person audit
-	*/
+	 * Returns the watson incident ID of this watson person audit.
+	 *
+	 * @return the watson incident ID of this watson person audit
+	 */
 	@Override
 	public long getWatsonIncidentId() {
 		return _watsonPersonAudit.getWatsonIncidentId();
 	}
 
 	/**
-	* Returns the watson person audit ID of this watson person audit.
-	*
-	* @return the watson person audit ID of this watson person audit
-	*/
+	 * Returns the watson person audit ID of this watson person audit.
+	 *
+	 * @return the watson person audit ID of this watson person audit
+	 */
 	@Override
 	public long getWatsonPersonAuditId() {
 		return _watsonPersonAudit.getWatsonPersonAuditId();
 	}
 
 	/**
-	* Returns the watson person ID of this watson person audit.
-	*
-	* @return the watson person ID of this watson person audit
-	*/
+	 * Returns the watson person ID of this watson person audit.
+	 *
+	 * @return the watson person ID of this watson person audit
+	 */
 	@Override
 	public long getWatsonPersonId() {
 		return _watsonPersonAudit.getWatsonPersonId();
 	}
 
 	/**
-	* Returns the weight of this watson person audit.
-	*
-	* @return the weight of this watson person audit
-	*/
+	 * Returns the weight of this watson person audit.
+	 *
+	 * @return the weight of this watson person audit
+	 */
 	@Override
 	public String getWeight() {
 		return _watsonPersonAudit.getWeight();
@@ -786,10 +790,10 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	}
 
 	/**
-	* Returns <code>true</code> if this watson person audit is accepted.
-	*
-	* @return <code>true</code> if this watson person audit is accepted; <code>false</code> otherwise
-	*/
+	 * Returns <code>true</code> if this watson person audit is accepted.
+	 *
+	 * @return <code>true</code> if this watson person audit is accepted; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isAccepted() {
 		return _watsonPersonAudit.isAccepted();
@@ -811,10 +815,10 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	}
 
 	/**
-	* Returns <code>true</code> if this watson person audit is rescued.
-	*
-	* @return <code>true</code> if this watson person audit is rescued; <code>false</code> otherwise
-	*/
+	 * Returns <code>true</code> if this watson person audit is rescued.
+	 *
+	 * @return <code>true</code> if this watson person audit is rescued; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isRescued() {
 		return _watsonPersonAudit.isRescued();
@@ -828,41 +832,43 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	@Override
 	public void prepareLocalizedFieldsForImport()
 		throws com.liferay.portal.kernel.exception.LocaleException {
+
 		_watsonPersonAudit.prepareLocalizedFieldsForImport();
 	}
 
 	@Override
 	public void prepareLocalizedFieldsForImport(
-		java.util.Locale defaultImportLocale)
+			java.util.Locale defaultImportLocale)
 		throws com.liferay.portal.kernel.exception.LocaleException {
+
 		_watsonPersonAudit.prepareLocalizedFieldsForImport(defaultImportLocale);
 	}
 
 	/**
-	* Sets whether this watson person audit is accepted.
-	*
-	* @param accepted the accepted of this watson person audit
-	*/
+	 * Sets whether this watson person audit is accepted.
+	 *
+	 * @param accepted the accepted of this watson person audit
+	 */
 	@Override
 	public void setAccepted(boolean accepted) {
 		_watsonPersonAudit.setAccepted(accepted);
 	}
 
 	/**
-	* Sets the birth country ID of this watson person audit.
-	*
-	* @param birthCountryId the birth country ID of this watson person audit
-	*/
+	 * Sets the birth country ID of this watson person audit.
+	 *
+	 * @param birthCountryId the birth country ID of this watson person audit
+	 */
 	@Override
 	public void setBirthCountryId(long birthCountryId) {
 		_watsonPersonAudit.setBirthCountryId(birthCountryId);
 	}
 
 	/**
-	* Sets the birth date of this watson person audit.
-	*
-	* @param birthDate the birth date of this watson person audit
-	*/
+	 * Sets the birth date of this watson person audit.
+	 *
+	 * @param birthDate the birth date of this watson person audit
+	 */
 	@Override
 	public void setBirthDate(Date birthDate) {
 		_watsonPersonAudit.setBirthDate(birthDate);
@@ -874,96 +880,101 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	}
 
 	/**
-	* Sets the citizenship watson list type ID of this watson person audit.
-	*
-	* @param citizenshipWatsonListTypeId the citizenship watson list type ID of this watson person audit
-	*/
+	 * Sets the citizenship watson list type ID of this watson person audit.
+	 *
+	 * @param citizenshipWatsonListTypeId the citizenship watson list type ID of this watson person audit
+	 */
 	@Override
-	public void setCitizenshipWatsonListTypeId(long citizenshipWatsonListTypeId) {
-		_watsonPersonAudit.setCitizenshipWatsonListTypeId(citizenshipWatsonListTypeId);
+	public void setCitizenshipWatsonListTypeId(
+		long citizenshipWatsonListTypeId) {
+
+		_watsonPersonAudit.setCitizenshipWatsonListTypeId(
+			citizenshipWatsonListTypeId);
 	}
 
 	/**
-	* Sets the company ID of this watson person audit.
-	*
-	* @param companyId the company ID of this watson person audit
-	*/
+	 * Sets the company ID of this watson person audit.
+	 *
+	 * @param companyId the company ID of this watson person audit
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_watsonPersonAudit.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the country watson list type ID of this watson person audit.
-	*
-	* @param countryWatsonListTypeId the country watson list type ID of this watson person audit
-	*/
+	 * Sets the country watson list type ID of this watson person audit.
+	 *
+	 * @param countryWatsonListTypeId the country watson list type ID of this watson person audit
+	 */
 	@Override
 	public void setCountryWatsonListTypeId(long countryWatsonListTypeId) {
 		_watsonPersonAudit.setCountryWatsonListTypeId(countryWatsonListTypeId);
 	}
 
 	/**
-	* Sets the create date of this watson person audit.
-	*
-	* @param createDate the create date of this watson person audit
-	*/
+	 * Sets the create date of this watson person audit.
+	 *
+	 * @param createDate the create date of this watson person audit
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_watsonPersonAudit.setCreateDate(createDate);
 	}
 
 	/**
-	* Sets the date accepted of this watson person audit.
-	*
-	* @param dateAccepted the date accepted of this watson person audit
-	*/
+	 * Sets the date accepted of this watson person audit.
+	 *
+	 * @param dateAccepted the date accepted of this watson person audit
+	 */
 	@Override
 	public void setDateAccepted(Date dateAccepted) {
 		_watsonPersonAudit.setDateAccepted(dateAccepted);
 	}
 
 	/**
-	* Sets the date rescued of this watson person audit.
-	*
-	* @param dateRescued the date rescued of this watson person audit
-	*/
+	 * Sets the date rescued of this watson person audit.
+	 *
+	 * @param dateRescued the date rescued of this watson person audit
+	 */
 	@Override
 	public void setDateRescued(Date dateRescued) {
 		_watsonPersonAudit.setDateRescued(dateRescued);
 	}
 
 	/**
-	* Sets the description of this watson person audit.
-	*
-	* @param description the description of this watson person audit
-	*/
+	 * Sets the description of this watson person audit.
+	 *
+	 * @param description the description of this watson person audit
+	 */
 	@Override
 	public void setDescription(String description) {
 		_watsonPersonAudit.setDescription(description);
 	}
 
 	/**
-	* Sets the localized description of this watson person audit in the language.
-	*
-	* @param description the localized description of this watson person audit
-	* @param locale the locale of the language
-	*/
+	 * Sets the localized description of this watson person audit in the language.
+	 *
+	 * @param description the localized description of this watson person audit
+	 * @param locale the locale of the language
+	 */
 	@Override
 	public void setDescription(String description, java.util.Locale locale) {
 		_watsonPersonAudit.setDescription(description, locale);
 	}
 
 	/**
-	* Sets the localized description of this watson person audit in the language, and sets the default locale.
-	*
-	* @param description the localized description of this watson person audit
-	* @param locale the locale of the language
-	* @param defaultLocale the default locale
-	*/
+	 * Sets the localized description of this watson person audit in the language, and sets the default locale.
+	 *
+	 * @param description the localized description of this watson person audit
+	 * @param locale the locale of the language
+	 * @param defaultLocale the default locale
+	 */
 	@Override
-	public void setDescription(String description, java.util.Locale locale,
+	public void setDescription(
+		String description, java.util.Locale locale,
 		java.util.Locale defaultLocale) {
+
 		_watsonPersonAudit.setDescription(description, locale, defaultLocale);
 	}
 
@@ -973,51 +984,56 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	}
 
 	/**
-	* Sets the localized descriptions of this watson person audit from the map of locales and localized descriptions.
-	*
-	* @param descriptionMap the locales and localized descriptions of this watson person audit
-	*/
+	 * Sets the localized descriptions of this watson person audit from the map of locales and localized descriptions.
+	 *
+	 * @param descriptionMap the locales and localized descriptions of this watson person audit
+	 */
 	@Override
-	public void setDescriptionMap(Map<java.util.Locale, String> descriptionMap) {
+	public void setDescriptionMap(
+		Map<java.util.Locale, String> descriptionMap) {
+
 		_watsonPersonAudit.setDescriptionMap(descriptionMap);
 	}
 
 	/**
-	* Sets the localized descriptions of this watson person audit from the map of locales and localized descriptions, and sets the default locale.
-	*
-	* @param descriptionMap the locales and localized descriptions of this watson person audit
-	* @param defaultLocale the default locale
-	*/
+	 * Sets the localized descriptions of this watson person audit from the map of locales and localized descriptions, and sets the default locale.
+	 *
+	 * @param descriptionMap the locales and localized descriptions of this watson person audit
+	 * @param defaultLocale the default locale
+	 */
 	@Override
 	public void setDescriptionMap(
 		Map<java.util.Locale, String> descriptionMap,
 		java.util.Locale defaultLocale) {
+
 		_watsonPersonAudit.setDescriptionMap(descriptionMap, defaultLocale);
 	}
 
 	/**
-	* Sets the end age of this watson person audit.
-	*
-	* @param endAge the end age of this watson person audit
-	*/
+	 * Sets the end age of this watson person audit.
+	 *
+	 * @param endAge the end age of this watson person audit
+	 */
 	@Override
 	public void setEndAge(String endAge) {
 		_watsonPersonAudit.setEndAge(endAge);
 	}
 
 	/**
-	* Sets the ethnicity watson list type ID of this watson person audit.
-	*
-	* @param ethnicityWatsonListTypeId the ethnicity watson list type ID of this watson person audit
-	*/
+	 * Sets the ethnicity watson list type ID of this watson person audit.
+	 *
+	 * @param ethnicityWatsonListTypeId the ethnicity watson list type ID of this watson person audit
+	 */
 	@Override
 	public void setEthnicityWatsonListTypeId(long ethnicityWatsonListTypeId) {
-		_watsonPersonAudit.setEthnicityWatsonListTypeId(ethnicityWatsonListTypeId);
+		_watsonPersonAudit.setEthnicityWatsonListTypeId(
+			ethnicityWatsonListTypeId);
 	}
 
 	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
 		_watsonPersonAudit.setExpandoBridgeAttributes(baseModel);
 	}
 
@@ -1032,60 +1048,60 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	}
 
 	/**
-	* Sets the eyes watson list type ID of this watson person audit.
-	*
-	* @param eyesWatsonListTypeId the eyes watson list type ID of this watson person audit
-	*/
+	 * Sets the eyes watson list type ID of this watson person audit.
+	 *
+	 * @param eyesWatsonListTypeId the eyes watson list type ID of this watson person audit
+	 */
 	@Override
 	public void setEyesWatsonListTypeId(long eyesWatsonListTypeId) {
 		_watsonPersonAudit.setEyesWatsonListTypeId(eyesWatsonListTypeId);
 	}
 
 	/**
-	* Sets the group ID of this watson person audit.
-	*
-	* @param groupId the group ID of this watson person audit
-	*/
+	 * Sets the group ID of this watson person audit.
+	 *
+	 * @param groupId the group ID of this watson person audit
+	 */
 	@Override
 	public void setGroupId(long groupId) {
 		_watsonPersonAudit.setGroupId(groupId);
 	}
 
 	/**
-	* Sets the hair watson list type ID of this watson person audit.
-	*
-	* @param hairWatsonListTypeId the hair watson list type ID of this watson person audit
-	*/
+	 * Sets the hair watson list type ID of this watson person audit.
+	 *
+	 * @param hairWatsonListTypeId the hair watson list type ID of this watson person audit
+	 */
 	@Override
 	public void setHairWatsonListTypeId(long hairWatsonListTypeId) {
 		_watsonPersonAudit.setHairWatsonListTypeId(hairWatsonListTypeId);
 	}
 
 	/**
-	* Sets the height of this watson person audit.
-	*
-	* @param height the height of this watson person audit
-	*/
+	 * Sets the height of this watson person audit.
+	 *
+	 * @param height the height of this watson person audit
+	 */
 	@Override
 	public void setHeight(String height) {
 		_watsonPersonAudit.setHeight(height);
 	}
 
 	/**
-	* Sets the image payload of this watson person audit.
-	*
-	* @param imagePayload the image payload of this watson person audit
-	*/
+	 * Sets the image payload of this watson person audit.
+	 *
+	 * @param imagePayload the image payload of this watson person audit
+	 */
 	@Override
 	public void setImagePayload(String imagePayload) {
 		_watsonPersonAudit.setImagePayload(imagePayload);
 	}
 
 	/**
-	* Sets the modified date of this watson person audit.
-	*
-	* @param modifiedDate the modified date of this watson person audit
-	*/
+	 * Sets the modified date of this watson person audit.
+	 *
+	 * @param modifiedDate the modified date of this watson person audit
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_watsonPersonAudit.setModifiedDate(modifiedDate);
@@ -1097,36 +1113,38 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	}
 
 	/**
-	* Sets the occupation of this watson person audit.
-	*
-	* @param occupation the occupation of this watson person audit
-	*/
+	 * Sets the occupation of this watson person audit.
+	 *
+	 * @param occupation the occupation of this watson person audit
+	 */
 	@Override
 	public void setOccupation(String occupation) {
 		_watsonPersonAudit.setOccupation(occupation);
 	}
 
 	/**
-	* Sets the localized occupation of this watson person audit in the language.
-	*
-	* @param occupation the localized occupation of this watson person audit
-	* @param locale the locale of the language
-	*/
+	 * Sets the localized occupation of this watson person audit in the language.
+	 *
+	 * @param occupation the localized occupation of this watson person audit
+	 * @param locale the locale of the language
+	 */
 	@Override
 	public void setOccupation(String occupation, java.util.Locale locale) {
 		_watsonPersonAudit.setOccupation(occupation, locale);
 	}
 
 	/**
-	* Sets the localized occupation of this watson person audit in the language, and sets the default locale.
-	*
-	* @param occupation the localized occupation of this watson person audit
-	* @param locale the locale of the language
-	* @param defaultLocale the default locale
-	*/
+	 * Sets the localized occupation of this watson person audit in the language, and sets the default locale.
+	 *
+	 * @param occupation the localized occupation of this watson person audit
+	 * @param locale the locale of the language
+	 * @param defaultLocale the default locale
+	 */
 	@Override
-	public void setOccupation(String occupation, java.util.Locale locale,
+	public void setOccupation(
+		String occupation, java.util.Locale locale,
 		java.util.Locale defaultLocale) {
+
 		_watsonPersonAudit.setOccupation(occupation, locale, defaultLocale);
 	}
 
@@ -1136,42 +1154,44 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	}
 
 	/**
-	* Sets the localized occupations of this watson person audit from the map of locales and localized occupations.
-	*
-	* @param occupationMap the locales and localized occupations of this watson person audit
-	*/
+	 * Sets the localized occupations of this watson person audit from the map of locales and localized occupations.
+	 *
+	 * @param occupationMap the locales and localized occupations of this watson person audit
+	 */
 	@Override
 	public void setOccupationMap(Map<java.util.Locale, String> occupationMap) {
 		_watsonPersonAudit.setOccupationMap(occupationMap);
 	}
 
 	/**
-	* Sets the localized occupations of this watson person audit from the map of locales and localized occupations, and sets the default locale.
-	*
-	* @param occupationMap the locales and localized occupations of this watson person audit
-	* @param defaultLocale the default locale
-	*/
+	 * Sets the localized occupations of this watson person audit from the map of locales and localized occupations, and sets the default locale.
+	 *
+	 * @param occupationMap the locales and localized occupations of this watson person audit
+	 * @param defaultLocale the default locale
+	 */
 	@Override
-	public void setOccupationMap(Map<java.util.Locale, String> occupationMap,
+	public void setOccupationMap(
+		Map<java.util.Locale, String> occupationMap,
 		java.util.Locale defaultLocale) {
+
 		_watsonPersonAudit.setOccupationMap(occupationMap, defaultLocale);
 	}
 
 	/**
-	* Sets the original watson person ID of this watson person audit.
-	*
-	* @param originalWatsonPersonId the original watson person ID of this watson person audit
-	*/
+	 * Sets the original watson person ID of this watson person audit.
+	 *
+	 * @param originalWatsonPersonId the original watson person ID of this watson person audit
+	 */
 	@Override
 	public void setOriginalWatsonPersonId(long originalWatsonPersonId) {
 		_watsonPersonAudit.setOriginalWatsonPersonId(originalWatsonPersonId);
 	}
 
 	/**
-	* Sets the primary key of this watson person audit.
-	*
-	* @param primaryKey the primary key of this watson person audit
-	*/
+	 * Sets the primary key of this watson person audit.
+	 *
+	 * @param primaryKey the primary key of this watson person audit
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_watsonPersonAudit.setPrimaryKey(primaryKey);
@@ -1183,133 +1203,136 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	}
 
 	/**
-	* Sets whether this watson person audit is rescued.
-	*
-	* @param rescued the rescued of this watson person audit
-	*/
+	 * Sets whether this watson person audit is rescued.
+	 *
+	 * @param rescued the rescued of this watson person audit
+	 */
 	@Override
 	public void setRescued(boolean rescued) {
 		_watsonPersonAudit.setRescued(rescued);
 	}
 
 	/**
-	* Sets the sex watson list type ID of this watson person audit.
-	*
-	* @param sexWatsonListTypeId the sex watson list type ID of this watson person audit
-	*/
+	 * Sets the sex watson list type ID of this watson person audit.
+	 *
+	 * @param sexWatsonListTypeId the sex watson list type ID of this watson person audit
+	 */
 	@Override
 	public void setSexWatsonListTypeId(long sexWatsonListTypeId) {
 		_watsonPersonAudit.setSexWatsonListTypeId(sexWatsonListTypeId);
 	}
 
 	/**
-	* Sets the start age of this watson person audit.
-	*
-	* @param startAge the start age of this watson person audit
-	*/
+	 * Sets the start age of this watson person audit.
+	 *
+	 * @param startAge the start age of this watson person audit
+	 */
 	@Override
 	public void setStartAge(String startAge) {
 		_watsonPersonAudit.setStartAge(startAge);
 	}
 
 	/**
-	* Sets the status of this watson person audit.
-	*
-	* @param status the status of this watson person audit
-	*/
+	 * Sets the status of this watson person audit.
+	 *
+	 * @param status the status of this watson person audit
+	 */
 	@Override
 	public void setStatus(int status) {
 		_watsonPersonAudit.setStatus(status);
 	}
 
 	/**
-	* Sets the type watson list type ID of this watson person audit.
-	*
-	* @param typeWatsonListTypeId the type watson list type ID of this watson person audit
-	*/
+	 * Sets the type watson list type ID of this watson person audit.
+	 *
+	 * @param typeWatsonListTypeId the type watson list type ID of this watson person audit
+	 */
 	@Override
 	public void setTypeWatsonListTypeId(long typeWatsonListTypeId) {
 		_watsonPersonAudit.setTypeWatsonListTypeId(typeWatsonListTypeId);
 	}
 
 	/**
-	* Sets the user ID of this watson person audit.
-	*
-	* @param userId the user ID of this watson person audit
-	*/
+	 * Sets the user ID of this watson person audit.
+	 *
+	 * @param userId the user ID of this watson person audit
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_watsonPersonAudit.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this watson person audit.
-	*
-	* @param userName the user name of this watson person audit
-	*/
+	 * Sets the user name of this watson person audit.
+	 *
+	 * @param userName the user name of this watson person audit
+	 */
 	@Override
 	public void setUserName(String userName) {
 		_watsonPersonAudit.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this watson person audit.
-	*
-	* @param userUuid the user uuid of this watson person audit
-	*/
+	 * Sets the user uuid of this watson person audit.
+	 *
+	 * @param userUuid the user uuid of this watson person audit
+	 */
 	@Override
 	public void setUserUuid(String userUuid) {
 		_watsonPersonAudit.setUserUuid(userUuid);
 	}
 
 	/**
-	* Sets the watson incident ID of this watson person audit.
-	*
-	* @param watsonIncidentId the watson incident ID of this watson person audit
-	*/
+	 * Sets the watson incident ID of this watson person audit.
+	 *
+	 * @param watsonIncidentId the watson incident ID of this watson person audit
+	 */
 	@Override
 	public void setWatsonIncidentId(long watsonIncidentId) {
 		_watsonPersonAudit.setWatsonIncidentId(watsonIncidentId);
 	}
 
 	/**
-	* Sets the watson person audit ID of this watson person audit.
-	*
-	* @param watsonPersonAuditId the watson person audit ID of this watson person audit
-	*/
+	 * Sets the watson person audit ID of this watson person audit.
+	 *
+	 * @param watsonPersonAuditId the watson person audit ID of this watson person audit
+	 */
 	@Override
 	public void setWatsonPersonAuditId(long watsonPersonAuditId) {
 		_watsonPersonAudit.setWatsonPersonAuditId(watsonPersonAuditId);
 	}
 
 	/**
-	* Sets the watson person ID of this watson person audit.
-	*
-	* @param watsonPersonId the watson person ID of this watson person audit
-	*/
+	 * Sets the watson person ID of this watson person audit.
+	 *
+	 * @param watsonPersonId the watson person ID of this watson person audit
+	 */
 	@Override
 	public void setWatsonPersonId(long watsonPersonId) {
 		_watsonPersonAudit.setWatsonPersonId(watsonPersonId);
 	}
 
 	/**
-	* Sets the weight of this watson person audit.
-	*
-	* @param weight the weight of this watson person audit
-	*/
+	 * Sets the weight of this watson person audit.
+	 *
+	 * @param weight the weight of this watson person audit
+	 */
 	@Override
 	public void setWeight(String weight) {
 		_watsonPersonAudit.setWeight(weight);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<WatsonPersonAudit> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<WatsonPersonAudit>
+		toCacheModel() {
+
 		return _watsonPersonAudit.toCacheModel();
 	}
 
 	@Override
 	public WatsonPersonAudit toEscapedModel() {
-		return new WatsonPersonAuditWrapper(_watsonPersonAudit.toEscapedModel());
+		return new WatsonPersonAuditWrapper(
+			_watsonPersonAudit.toEscapedModel());
 	}
 
 	@Override
@@ -1319,7 +1342,8 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 
 	@Override
 	public WatsonPersonAudit toUnescapedModel() {
-		return new WatsonPersonAuditWrapper(_watsonPersonAudit.toUnescapedModel());
+		return new WatsonPersonAuditWrapper(
+			_watsonPersonAudit.toUnescapedModel());
 	}
 
 	@Override
@@ -1337,10 +1361,13 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 			return false;
 		}
 
-		WatsonPersonAuditWrapper watsonPersonAuditWrapper = (WatsonPersonAuditWrapper)obj;
+		WatsonPersonAuditWrapper watsonPersonAuditWrapper =
+			(WatsonPersonAuditWrapper)obj;
 
-		if (Objects.equals(_watsonPersonAudit,
-					watsonPersonAuditWrapper._watsonPersonAudit)) {
+		if (Objects.equals(
+				_watsonPersonAudit,
+				watsonPersonAuditWrapper._watsonPersonAudit)) {
+
 			return true;
 		}
 
@@ -1368,4 +1395,5 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 	}
 
 	private final WatsonPersonAudit _watsonPersonAudit;
+
 }

@@ -53,20 +53,27 @@ import com.liferay.portal.workflow.kaleo.designer.service.KaleoDraftDefinitionSe
  */
 @ProviderType
 public class KaleoDraftDefinitionServiceHttp {
-	public static com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition addKaleoDraftDefinition(
-		HttpPrincipal httpPrincipal, long userId, long groupId, String name,
-		java.util.Map<java.util.Locale, String> titleMap, String content,
-		int version, int draftVersion,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(KaleoDraftDefinitionServiceUtil.class,
-					"addKaleoDraftDefinition",
-					_addKaleoDraftDefinitionParameterTypes0);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey, userId,
-					groupId, name, titleMap, content, version, draftVersion,
-					serviceContext);
+	public static
+		com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition
+				addKaleoDraftDefinition(
+					HttpPrincipal httpPrincipal, long userId, long groupId,
+					String name,
+					java.util.Map<java.util.Locale, String> titleMap,
+					String content, int version, int draftVersion,
+					com.liferay.portal.kernel.service.ServiceContext
+						serviceContext)
+			throws com.liferay.portal.kernel.exception.PortalException {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				KaleoDraftDefinitionServiceUtil.class,
+				"addKaleoDraftDefinition",
+				_addKaleoDraftDefinitionParameterTypes0);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, userId, groupId, name, titleMap, content, version,
+				draftVersion, serviceContext);
 
 			Object returnObj = null;
 
@@ -74,14 +81,19 @@ public class KaleoDraftDefinitionServiceHttp {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
 			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+				if (e instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					e);
 			}
 
-			return (com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition)returnObj;
+			return (com.liferay.portal.workflow.kaleo.designer.model.
+				KaleoDraftDefinition)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -91,26 +103,32 @@ public class KaleoDraftDefinitionServiceHttp {
 	}
 
 	public static void deleteKaleoDraftDefinitions(
-		HttpPrincipal httpPrincipal, String name, int version,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+			HttpPrincipal httpPrincipal, String name, int version,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(KaleoDraftDefinitionServiceUtil.class,
-					"deleteKaleoDraftDefinitions",
-					_deleteKaleoDraftDefinitionsParameterTypes1);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey, name,
-					version, serviceContext);
+		try {
+			MethodKey methodKey = new MethodKey(
+				KaleoDraftDefinitionServiceUtil.class,
+				"deleteKaleoDraftDefinitions",
+				_deleteKaleoDraftDefinitionsParameterTypes1);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, name, version, serviceContext);
 
 			try {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
 			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+				if (e instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					e);
 			}
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
@@ -120,18 +138,23 @@ public class KaleoDraftDefinitionServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition getKaleoDraftDefinition(
-		HttpPrincipal httpPrincipal, String name, int version,
-		int draftVersion,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(KaleoDraftDefinitionServiceUtil.class,
-					"getKaleoDraftDefinition",
-					_getKaleoDraftDefinitionParameterTypes2);
+	public static
+		com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition
+				getKaleoDraftDefinition(
+					HttpPrincipal httpPrincipal, String name, int version,
+					int draftVersion,
+					com.liferay.portal.kernel.service.ServiceContext
+						serviceContext)
+			throws com.liferay.portal.kernel.exception.PortalException {
 
-			MethodHandler methodHandler = new MethodHandler(methodKey, name,
-					version, draftVersion, serviceContext);
+		try {
+			MethodKey methodKey = new MethodKey(
+				KaleoDraftDefinitionServiceUtil.class,
+				"getKaleoDraftDefinition",
+				_getKaleoDraftDefinitionParameterTypes2);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, name, version, draftVersion, serviceContext);
 
 			Object returnObj = null;
 
@@ -139,14 +162,19 @@ public class KaleoDraftDefinitionServiceHttp {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
 			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+				if (e instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					e);
 			}
 
-			return (com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition)returnObj;
+			return (com.liferay.portal.workflow.kaleo.designer.model.
+				KaleoDraftDefinition)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -155,13 +183,16 @@ public class KaleoDraftDefinitionServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition> getKaleoDraftDefinitions(
-		HttpPrincipal httpPrincipal)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public static java.util.List
+		<com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition>
+				getKaleoDraftDefinitions(HttpPrincipal httpPrincipal)
+			throws com.liferay.portal.kernel.exception.PortalException {
+
 		try {
-			MethodKey methodKey = new MethodKey(KaleoDraftDefinitionServiceUtil.class,
-					"getKaleoDraftDefinitions",
-					_getKaleoDraftDefinitionsParameterTypes3);
+			MethodKey methodKey = new MethodKey(
+				KaleoDraftDefinitionServiceUtil.class,
+				"getKaleoDraftDefinitions",
+				_getKaleoDraftDefinitionsParameterTypes3);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey);
 
@@ -171,14 +202,20 @@ public class KaleoDraftDefinitionServiceHttp {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
 			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+				if (e instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					e);
 			}
 
-			return (java.util.List<com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition>)returnObj;
+			return (java.util.List
+				<com.liferay.portal.workflow.kaleo.designer.model.
+					KaleoDraftDefinition>)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -187,17 +224,22 @@ public class KaleoDraftDefinitionServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition getLatestKaleoDraftDefinition(
-		HttpPrincipal httpPrincipal, String name, int version,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(KaleoDraftDefinitionServiceUtil.class,
-					"getLatestKaleoDraftDefinition",
-					_getLatestKaleoDraftDefinitionParameterTypes4);
+	public static
+		com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition
+				getLatestKaleoDraftDefinition(
+					HttpPrincipal httpPrincipal, String name, int version,
+					com.liferay.portal.kernel.service.ServiceContext
+						serviceContext)
+			throws com.liferay.portal.kernel.exception.PortalException {
 
-			MethodHandler methodHandler = new MethodHandler(methodKey, name,
-					version, serviceContext);
+		try {
+			MethodKey methodKey = new MethodKey(
+				KaleoDraftDefinitionServiceUtil.class,
+				"getLatestKaleoDraftDefinition",
+				_getLatestKaleoDraftDefinitionParameterTypes4);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, name, version, serviceContext);
 
 			Object returnObj = null;
 
@@ -205,14 +247,19 @@ public class KaleoDraftDefinitionServiceHttp {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
 			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+				if (e instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					e);
 			}
 
-			return (com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition)returnObj;
+			return (com.liferay.portal.workflow.kaleo.designer.model.
+				KaleoDraftDefinition)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -221,18 +268,23 @@ public class KaleoDraftDefinitionServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition> getLatestKaleoDraftDefinitions(
-		HttpPrincipal httpPrincipal, long companyId, int version, int start,
-		int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(KaleoDraftDefinitionServiceUtil.class,
-					"getLatestKaleoDraftDefinitions",
-					_getLatestKaleoDraftDefinitionsParameterTypes5);
+	public static java.util.List
+		<com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition>
+				getLatestKaleoDraftDefinitions(
+					HttpPrincipal httpPrincipal, long companyId, int version,
+					int start, int end,
+					com.liferay.portal.kernel.util.OrderByComparator
+						orderByComparator)
+			throws com.liferay.portal.kernel.exception.PortalException {
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					companyId, version, start, end, orderByComparator);
+		try {
+			MethodKey methodKey = new MethodKey(
+				KaleoDraftDefinitionServiceUtil.class,
+				"getLatestKaleoDraftDefinitions",
+				_getLatestKaleoDraftDefinitionsParameterTypes5);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, companyId, version, start, end, orderByComparator);
 
 			Object returnObj = null;
 
@@ -240,14 +292,20 @@ public class KaleoDraftDefinitionServiceHttp {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
 			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+				if (e instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					e);
 			}
 
-			return (java.util.List<com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition>)returnObj;
+			return (java.util.List
+				<com.liferay.portal.workflow.kaleo.designer.model.
+					KaleoDraftDefinition>)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -256,18 +314,24 @@ public class KaleoDraftDefinitionServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition> getLatestKaleoDraftDefinitions(
-		HttpPrincipal httpPrincipal, long companyId, String keywords,
-		int version, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(KaleoDraftDefinitionServiceUtil.class,
-					"getLatestKaleoDraftDefinitions",
-					_getLatestKaleoDraftDefinitionsParameterTypes6);
+	public static java.util.List
+		<com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition>
+				getLatestKaleoDraftDefinitions(
+					HttpPrincipal httpPrincipal, long companyId,
+					String keywords, int version, int start, int end,
+					com.liferay.portal.kernel.util.OrderByComparator
+						orderByComparator)
+			throws com.liferay.portal.kernel.exception.PortalException {
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					companyId, keywords, version, start, end, orderByComparator);
+		try {
+			MethodKey methodKey = new MethodKey(
+				KaleoDraftDefinitionServiceUtil.class,
+				"getLatestKaleoDraftDefinitions",
+				_getLatestKaleoDraftDefinitionsParameterTypes6);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, companyId, keywords, version, start, end,
+				orderByComparator);
 
 			Object returnObj = null;
 
@@ -275,14 +339,20 @@ public class KaleoDraftDefinitionServiceHttp {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
 			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+				if (e instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					e);
 			}
 
-			return (java.util.List<com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition>)returnObj;
+			return (java.util.List
+				<com.liferay.portal.workflow.kaleo.designer.model.
+					KaleoDraftDefinition>)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -291,18 +361,26 @@ public class KaleoDraftDefinitionServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition publishKaleoDraftDefinition(
-		HttpPrincipal httpPrincipal, long userId, long groupId, String name,
-		java.util.Map<java.util.Locale, String> titleMap, String content,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(KaleoDraftDefinitionServiceUtil.class,
-					"publishKaleoDraftDefinition",
-					_publishKaleoDraftDefinitionParameterTypes7);
+	public static
+		com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition
+				publishKaleoDraftDefinition(
+					HttpPrincipal httpPrincipal, long userId, long groupId,
+					String name,
+					java.util.Map<java.util.Locale, String> titleMap,
+					String content,
+					com.liferay.portal.kernel.service.ServiceContext
+						serviceContext)
+			throws com.liferay.portal.kernel.exception.PortalException {
 
-			MethodHandler methodHandler = new MethodHandler(methodKey, userId,
-					groupId, name, titleMap, content, serviceContext);
+		try {
+			MethodKey methodKey = new MethodKey(
+				KaleoDraftDefinitionServiceUtil.class,
+				"publishKaleoDraftDefinition",
+				_publishKaleoDraftDefinitionParameterTypes7);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, userId, groupId, name, titleMap, content,
+				serviceContext);
 
 			Object returnObj = null;
 
@@ -310,14 +388,19 @@ public class KaleoDraftDefinitionServiceHttp {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
 			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+				if (e instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					e);
 			}
 
-			return (com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition)returnObj;
+			return (com.liferay.portal.workflow.kaleo.designer.model.
+				KaleoDraftDefinition)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -326,19 +409,25 @@ public class KaleoDraftDefinitionServiceHttp {
 		}
 	}
 
-	public static com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition updateKaleoDraftDefinition(
-		HttpPrincipal httpPrincipal, long userId, String name,
-		java.util.Map<java.util.Locale, String> titleMap, String content,
-		int version,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(KaleoDraftDefinitionServiceUtil.class,
-					"updateKaleoDraftDefinition",
-					_updateKaleoDraftDefinitionParameterTypes8);
+	public static
+		com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition
+				updateKaleoDraftDefinition(
+					HttpPrincipal httpPrincipal, long userId, String name,
+					java.util.Map<java.util.Locale, String> titleMap,
+					String content, int version,
+					com.liferay.portal.kernel.service.ServiceContext
+						serviceContext)
+			throws com.liferay.portal.kernel.exception.PortalException {
 
-			MethodHandler methodHandler = new MethodHandler(methodKey, userId,
-					name, titleMap, content, version, serviceContext);
+		try {
+			MethodKey methodKey = new MethodKey(
+				KaleoDraftDefinitionServiceUtil.class,
+				"updateKaleoDraftDefinition",
+				_updateKaleoDraftDefinitionParameterTypes8);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, userId, name, titleMap, content, version,
+				serviceContext);
 
 			Object returnObj = null;
 
@@ -346,14 +435,19 @@ public class KaleoDraftDefinitionServiceHttp {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
 			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+				if (e instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						e;
 				}
 
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					e);
 			}
 
-			return (com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition)returnObj;
+			return (com.liferay.portal.workflow.kaleo.designer.model.
+				KaleoDraftDefinition)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -362,44 +456,51 @@ public class KaleoDraftDefinitionServiceHttp {
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(KaleoDraftDefinitionServiceHttp.class);
-	private static final Class<?>[] _addKaleoDraftDefinitionParameterTypes0 = new Class[] {
+	private static Log _log = LogFactoryUtil.getLog(
+		KaleoDraftDefinitionServiceHttp.class);
+
+	private static final Class<?>[] _addKaleoDraftDefinitionParameterTypes0 =
+		new Class[] {
 			long.class, long.class, String.class, java.util.Map.class,
 			String.class, int.class, int.class,
 			com.liferay.portal.kernel.service.ServiceContext.class
 		};
-	private static final Class<?>[] _deleteKaleoDraftDefinitionsParameterTypes1 = new Class[] {
+	private static final Class<?>[]
+		_deleteKaleoDraftDefinitionsParameterTypes1 = new Class[] {
 			String.class, int.class,
 			com.liferay.portal.kernel.service.ServiceContext.class
 		};
-	private static final Class<?>[] _getKaleoDraftDefinitionParameterTypes2 = new Class[] {
+	private static final Class<?>[] _getKaleoDraftDefinitionParameterTypes2 =
+		new Class[] {
 			String.class, int.class, int.class,
 			com.liferay.portal.kernel.service.ServiceContext.class
 		};
-	private static final Class<?>[] _getKaleoDraftDefinitionsParameterTypes3 = new Class[] {
-			
-		};
-	private static final Class<?>[] _getLatestKaleoDraftDefinitionParameterTypes4 =
-		new Class[] {
+	private static final Class<?>[] _getKaleoDraftDefinitionsParameterTypes3 =
+		new Class[] {};
+	private static final Class<?>[]
+		_getLatestKaleoDraftDefinitionParameterTypes4 = new Class[] {
 			String.class, int.class,
 			com.liferay.portal.kernel.service.ServiceContext.class
 		};
-	private static final Class<?>[] _getLatestKaleoDraftDefinitionsParameterTypes5 =
-		new Class[] {
+	private static final Class<?>[]
+		_getLatestKaleoDraftDefinitionsParameterTypes5 = new Class[] {
 			long.class, int.class, int.class, int.class,
 			com.liferay.portal.kernel.util.OrderByComparator.class
 		};
-	private static final Class<?>[] _getLatestKaleoDraftDefinitionsParameterTypes6 =
-		new Class[] {
+	private static final Class<?>[]
+		_getLatestKaleoDraftDefinitionsParameterTypes6 = new Class[] {
 			long.class, String.class, int.class, int.class, int.class,
 			com.liferay.portal.kernel.util.OrderByComparator.class
 		};
-	private static final Class<?>[] _publishKaleoDraftDefinitionParameterTypes7 = new Class[] {
+	private static final Class<?>[]
+		_publishKaleoDraftDefinitionParameterTypes7 = new Class[] {
 			long.class, long.class, String.class, java.util.Map.class,
 			String.class, com.liferay.portal.kernel.service.ServiceContext.class
 		};
-	private static final Class<?>[] _updateKaleoDraftDefinitionParameterTypes8 = new Class[] {
+	private static final Class<?>[] _updateKaleoDraftDefinitionParameterTypes8 =
+		new Class[] {
 			long.class, String.class, java.util.Map.class, String.class,
 			int.class, com.liferay.portal.kernel.service.ServiceContext.class
 		};
+
 }

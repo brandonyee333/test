@@ -18,7 +18,6 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -35,7 +34,6 @@ import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
-
 import com.liferay.watson.model.WatsonResource;
 import com.liferay.watson.model.WatsonResourceModel;
 
@@ -66,31 +64,30 @@ import java.util.function.Function;
  * @generated
  */
 @ProviderType
-public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
-	implements WatsonResourceModel {
+public class WatsonResourceModelImpl
+	extends BaseModelImpl<WatsonResource> implements WatsonResourceModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson resource model instance should use the <code>WatsonResource</code> interface instead.
 	 */
 	public static final String TABLE_NAME = "WatsonResource";
+
 	public static final Object[][] TABLE_COLUMNS = {
-			{ "watsonResourceId", Types.BIGINT },
-			{ "groupId", Types.BIGINT },
-			{ "companyId", Types.BIGINT },
-			{ "userId", Types.BIGINT },
-			{ "userName", Types.VARCHAR },
-			{ "createDate", Types.TIMESTAMP },
-			{ "modifiedDate", Types.TIMESTAMP },
-			{ "originalWatsonResourceId", Types.BIGINT },
-			{ "typeWatsonListTypeId", Types.BIGINT },
-			{ "watsonIncidentId", Types.BIGINT },
-			{ "name", Types.VARCHAR },
-			{ "description", Types.VARCHAR },
-			{ "imagePayload", Types.CLOB },
-			{ "status", Types.INTEGER }
-		};
-	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
+		{"watsonResourceId", Types.BIGINT}, {"groupId", Types.BIGINT},
+		{"companyId", Types.BIGINT}, {"userId", Types.BIGINT},
+		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
+		{"modifiedDate", Types.TIMESTAMP},
+		{"originalWatsonResourceId", Types.BIGINT},
+		{"typeWatsonListTypeId", Types.BIGINT},
+		{"watsonIncidentId", Types.BIGINT}, {"name", Types.VARCHAR},
+		{"description", Types.VARCHAR}, {"imagePayload", Types.CLOB},
+		{"status", Types.INTEGER}
+	};
+
+	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
+		new HashMap<String, Integer>();
 
 	static {
 		TABLE_COLUMNS_MAP.put("watsonResourceId", Types.BIGINT);
@@ -109,22 +106,38 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonResource (watsonResourceId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,originalWatsonResourceId LONG,typeWatsonListTypeId LONG,watsonIncidentId LONG,name STRING null,description STRING null,imagePayload TEXT null,status INTEGER)";
+	public static final String TABLE_SQL_CREATE =
+		"create table WatsonResource (watsonResourceId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,originalWatsonResourceId LONG,typeWatsonListTypeId LONG,watsonIncidentId LONG,name STRING null,description STRING null,imagePayload TEXT null,status INTEGER)";
+
 	public static final String TABLE_SQL_DROP = "drop table WatsonResource";
-	public static final String ORDER_BY_JPQL = " ORDER BY watsonResource.watsonResourceId ASC";
-	public static final String ORDER_BY_SQL = " ORDER BY WatsonResource.watsonResourceId ASC";
+
+	public static final String ORDER_BY_JPQL =
+		" ORDER BY watsonResource.watsonResourceId ASC";
+
+	public static final String ORDER_BY_SQL =
+		" ORDER BY WatsonResource.watsonResourceId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
+
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
+
 	public static final String TX_MANAGER = "liferayTransactionManager";
-	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonResource"),
-			true);
-	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonResource"),
-			true);
+
+	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonResource"),
+		true);
+
+	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonResource"),
+		true);
+
 	public static final boolean COLUMN_BITMASK_ENABLED = false;
-	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.watson.service.util.ServiceProps.get(
-				"lock.expiration.time.com.liferay.watson.model.WatsonResource"));
+
+	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"lock.expiration.time.com.liferay.watson.model.WatsonResource"));
 
 	public WatsonResourceModelImpl() {
 	}
@@ -163,13 +176,18 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		Map<String, Function<WatsonResource, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+		Map<String, Function<WatsonResource, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		for (Map.Entry<String, Function<WatsonResource, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonResource, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonResource, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonResource, Object> attributeGetterFunction =
+				entry.getValue();
 
-			attributes.put(attributeName,
+			attributes.put(
+				attributeName,
 				attributeGetterFunction.apply((WatsonResource)this));
 		}
 
@@ -181,36 +199,44 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Map<String, BiConsumer<WatsonResource, Object>> attributeSetterBiConsumers =
-			getAttributeSetterBiConsumers();
+		Map<String, BiConsumer<WatsonResource, Object>>
+			attributeSetterBiConsumers = getAttributeSetterBiConsumers();
 
 		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			String attributeName = entry.getKey();
 
-			BiConsumer<WatsonResource, Object> attributeSetterBiConsumer = attributeSetterBiConsumers.get(attributeName);
+			BiConsumer<WatsonResource, Object> attributeSetterBiConsumer =
+				attributeSetterBiConsumers.get(attributeName);
 
 			if (attributeSetterBiConsumer != null) {
-				attributeSetterBiConsumer.accept((WatsonResource)this,
-					entry.getValue());
+				attributeSetterBiConsumer.accept(
+					(WatsonResource)this, entry.getValue());
 			}
 		}
 	}
 
-	public Map<String, Function<WatsonResource, Object>> getAttributeGetterFunctions() {
+	public Map<String, Function<WatsonResource, Object>>
+		getAttributeGetterFunctions() {
+
 		return _attributeGetterFunctions;
 	}
 
-	public Map<String, BiConsumer<WatsonResource, Object>> getAttributeSetterBiConsumers() {
+	public Map<String, BiConsumer<WatsonResource, Object>>
+		getAttributeSetterBiConsumers() {
+
 		return _attributeSetterBiConsumers;
 	}
 
-	private static final Map<String, Function<WatsonResource, Object>> _attributeGetterFunctions;
-	private static final Map<String, BiConsumer<WatsonResource, Object>> _attributeSetterBiConsumers;
+	private static final Map<String, Function<WatsonResource, Object>>
+		_attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonResource, Object>>
+		_attributeSetterBiConsumers;
 
 	static {
-		Map<String, Function<WatsonResource, Object>> attributeGetterFunctions = new LinkedHashMap<String, Function<WatsonResource, Object>>();
-		Map<String, BiConsumer<WatsonResource, ?>> attributeSetterBiConsumers = new LinkedHashMap<String, BiConsumer<WatsonResource, ?>>();
-
+		Map<String, Function<WatsonResource, Object>> attributeGetterFunctions =
+			new LinkedHashMap<String, Function<WatsonResource, Object>>();
+		Map<String, BiConsumer<WatsonResource, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<WatsonResource, ?>>();
 
 		attributeGetterFunctions.put(
 			"watsonResourceId",
@@ -227,7 +253,9 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 			new BiConsumer<WatsonResource, Object>() {
 
 				@Override
-				public void accept(WatsonResource watsonResource, Object watsonResourceId) {
+				public void accept(
+					WatsonResource watsonResource, Object watsonResourceId) {
+
 					watsonResource.setWatsonResourceId((Long)watsonResourceId);
 				}
 
@@ -247,7 +275,9 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 			new BiConsumer<WatsonResource, Object>() {
 
 				@Override
-				public void accept(WatsonResource watsonResource, Object groupId) {
+				public void accept(
+					WatsonResource watsonResource, Object groupId) {
+
 					watsonResource.setGroupId((Long)groupId);
 				}
 
@@ -267,7 +297,9 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 			new BiConsumer<WatsonResource, Object>() {
 
 				@Override
-				public void accept(WatsonResource watsonResource, Object companyId) {
+				public void accept(
+					WatsonResource watsonResource, Object companyId) {
+
 					watsonResource.setCompanyId((Long)companyId);
 				}
 
@@ -287,7 +319,9 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 			new BiConsumer<WatsonResource, Object>() {
 
 				@Override
-				public void accept(WatsonResource watsonResource, Object userId) {
+				public void accept(
+					WatsonResource watsonResource, Object userId) {
+
 					watsonResource.setUserId((Long)userId);
 				}
 
@@ -307,7 +341,9 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 			new BiConsumer<WatsonResource, Object>() {
 
 				@Override
-				public void accept(WatsonResource watsonResource, Object userName) {
+				public void accept(
+					WatsonResource watsonResource, Object userName) {
+
 					watsonResource.setUserName((String)userName);
 				}
 
@@ -327,7 +363,9 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 			new BiConsumer<WatsonResource, Object>() {
 
 				@Override
-				public void accept(WatsonResource watsonResource, Object createDate) {
+				public void accept(
+					WatsonResource watsonResource, Object createDate) {
+
 					watsonResource.setCreateDate((Date)createDate);
 				}
 
@@ -347,7 +385,9 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 			new BiConsumer<WatsonResource, Object>() {
 
 				@Override
-				public void accept(WatsonResource watsonResource, Object modifiedDate) {
+				public void accept(
+					WatsonResource watsonResource, Object modifiedDate) {
+
 					watsonResource.setModifiedDate((Date)modifiedDate);
 				}
 
@@ -367,8 +407,12 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 			new BiConsumer<WatsonResource, Object>() {
 
 				@Override
-				public void accept(WatsonResource watsonResource, Object originalWatsonResourceId) {
-					watsonResource.setOriginalWatsonResourceId((Long)originalWatsonResourceId);
+				public void accept(
+					WatsonResource watsonResource,
+					Object originalWatsonResourceId) {
+
+					watsonResource.setOriginalWatsonResourceId(
+						(Long)originalWatsonResourceId);
 				}
 
 			});
@@ -387,8 +431,12 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 			new BiConsumer<WatsonResource, Object>() {
 
 				@Override
-				public void accept(WatsonResource watsonResource, Object typeWatsonListTypeId) {
-					watsonResource.setTypeWatsonListTypeId((Long)typeWatsonListTypeId);
+				public void accept(
+					WatsonResource watsonResource,
+					Object typeWatsonListTypeId) {
+
+					watsonResource.setTypeWatsonListTypeId(
+						(Long)typeWatsonListTypeId);
 				}
 
 			});
@@ -407,7 +455,9 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 			new BiConsumer<WatsonResource, Object>() {
 
 				@Override
-				public void accept(WatsonResource watsonResource, Object watsonIncidentId) {
+				public void accept(
+					WatsonResource watsonResource, Object watsonIncidentId) {
+
 					watsonResource.setWatsonIncidentId((Long)watsonIncidentId);
 				}
 
@@ -447,7 +497,9 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 			new BiConsumer<WatsonResource, Object>() {
 
 				@Override
-				public void accept(WatsonResource watsonResource, Object description) {
+				public void accept(
+					WatsonResource watsonResource, Object description) {
+
 					watsonResource.setDescription((String)description);
 				}
 
@@ -467,7 +519,9 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 			new BiConsumer<WatsonResource, Object>() {
 
 				@Override
-				public void accept(WatsonResource watsonResource, Object imagePayload) {
+				public void accept(
+					WatsonResource watsonResource, Object imagePayload) {
+
 					watsonResource.setImagePayload((String)imagePayload);
 				}
 
@@ -487,15 +541,18 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 			new BiConsumer<WatsonResource, Object>() {
 
 				@Override
-				public void accept(WatsonResource watsonResource, Object status) {
+				public void accept(
+					WatsonResource watsonResource, Object status) {
+
 					watsonResource.setStatus((Integer)status);
 				}
 
 			});
 
-
-		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap(
+			(Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -656,8 +713,8 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 
 	@Override
 	public String getName(String languageId, boolean useDefault) {
-		return LocalizationUtil.getLocalization(getName(), languageId,
-			useDefault);
+		return LocalizationUtil.getLocalization(
+			getName(), languageId, useDefault);
 	}
 
 	@Override
@@ -694,12 +751,14 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
 
 		if (Validator.isNotNull(name)) {
-			setName(LocalizationUtil.updateLocalization(getName(), "Name",
-					name, languageId, defaultLanguageId));
+			setName(
+				LocalizationUtil.updateLocalization(
+					getName(), "Name", name, languageId, defaultLanguageId));
 		}
 		else {
-			setName(LocalizationUtil.removeLocalization(getName(), "Name",
-					languageId));
+			setName(
+				LocalizationUtil.removeLocalization(
+					getName(), "Name", languageId));
 		}
 	}
 
@@ -719,7 +778,9 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 			return;
 		}
 
-		setName(LocalizationUtil.updateLocalization(nameMap, getName(), "Name",
+		setName(
+			LocalizationUtil.updateLocalization(
+				nameMap, getName(), "Name",
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
@@ -754,8 +815,8 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 
 	@Override
 	public String getDescription(String languageId, boolean useDefault) {
-		return LocalizationUtil.getLocalization(getDescription(), languageId,
-			useDefault);
+		return LocalizationUtil.getLocalization(
+			getDescription(), languageId, useDefault);
 	}
 
 	@Override
@@ -787,18 +848,21 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 	}
 
 	@Override
-	public void setDescription(String description, Locale locale,
-		Locale defaultLocale) {
+	public void setDescription(
+		String description, Locale locale, Locale defaultLocale) {
+
 		String languageId = LocaleUtil.toLanguageId(locale);
 		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
 
 		if (Validator.isNotNull(description)) {
-			setDescription(LocalizationUtil.updateLocalization(
+			setDescription(
+				LocalizationUtil.updateLocalization(
 					getDescription(), "Description", description, languageId,
 					defaultLanguageId));
 		}
 		else {
-			setDescription(LocalizationUtil.removeLocalization(
+			setDescription(
+				LocalizationUtil.removeLocalization(
 					getDescription(), "Description", languageId));
 		}
 	}
@@ -814,14 +878,16 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 	}
 
 	@Override
-	public void setDescriptionMap(Map<Locale, String> descriptionMap,
-		Locale defaultLocale) {
+	public void setDescriptionMap(
+		Map<Locale, String> descriptionMap, Locale defaultLocale) {
+
 		if (descriptionMap == null) {
 			return;
 		}
 
-		setDescription(LocalizationUtil.updateLocalization(descriptionMap,
-				getDescription(), "Description",
+		setDescription(
+			LocalizationUtil.updateLocalization(
+				descriptionMap, getDescription(), "Description",
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
@@ -852,8 +918,8 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 
 	@Override
 	public ExpandoBridge getExpandoBridge() {
-		return ExpandoBridgeFactoryUtil.getExpandoBridge(getCompanyId(),
-			WatsonResource.class.getName(), getPrimaryKey());
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(
+			getCompanyId(), WatsonResource.class.getName(), getPrimaryKey());
 	}
 
 	@Override
@@ -889,7 +955,8 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 			}
 		}
 
-		return availableLanguageIds.toArray(new String[availableLanguageIds.size()]);
+		return availableLanguageIds.toArray(
+			new String[availableLanguageIds.size()]);
 	}
 
 	@Override
@@ -907,12 +974,15 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 
 	@Override
 	public void prepareLocalizedFieldsForImport() throws LocaleException {
-		Locale defaultLocale = LocaleUtil.fromLanguageId(getDefaultLanguageId());
+		Locale defaultLocale = LocaleUtil.fromLanguageId(
+			getDefaultLanguageId());
 
-		Locale[] availableLocales = LocaleUtil.fromLanguageIds(getAvailableLanguageIds());
+		Locale[] availableLocales = LocaleUtil.fromLanguageIds(
+			getAvailableLanguageIds());
 
-		Locale defaultImportLocale = LocalizationUtil.getDefaultImportLocale(WatsonResource.class.getName(),
-				getPrimaryKey(), defaultLocale, availableLocales);
+		Locale defaultImportLocale = LocalizationUtil.getDefaultImportLocale(
+			WatsonResource.class.getName(), getPrimaryKey(), defaultLocale,
+			availableLocales);
 
 		prepareLocalizedFieldsForImport(defaultImportLocale);
 	}
@@ -921,6 +991,7 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 	@SuppressWarnings("unused")
 	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
 		throws LocaleException {
+
 		Locale defaultLocale = LocaleUtil.getSiteDefault();
 
 		String modelDefaultLanguageId = getDefaultLanguageId();
@@ -937,19 +1008,21 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 		String description = getDescription(defaultLocale);
 
 		if (Validator.isNull(description)) {
-			setDescription(getDescription(modelDefaultLanguageId), defaultLocale);
+			setDescription(
+				getDescription(modelDefaultLanguageId), defaultLocale);
 		}
 		else {
-			setDescription(getDescription(defaultLocale), defaultLocale,
-				defaultLocale);
+			setDescription(
+				getDescription(defaultLocale), defaultLocale, defaultLocale);
 		}
 	}
 
 	@Override
 	public WatsonResource toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonResource)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+			_escapedModel = (WatsonResource)ProxyUtil.newProxyInstance(
+				_classLoader, _escapedModelInterfaces,
+				new AutoEscapeBeanHandler(this));
 		}
 
 		return _escapedModel;
@@ -966,7 +1039,8 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 		watsonResourceImpl.setUserName(getUserName());
 		watsonResourceImpl.setCreateDate(getCreateDate());
 		watsonResourceImpl.setModifiedDate(getModifiedDate());
-		watsonResourceImpl.setOriginalWatsonResourceId(getOriginalWatsonResourceId());
+		watsonResourceImpl.setOriginalWatsonResourceId(
+			getOriginalWatsonResourceId());
 		watsonResourceImpl.setTypeWatsonListTypeId(getTypeWatsonListTypeId());
 		watsonResourceImpl.setWatsonIncidentId(getWatsonIncidentId());
 		watsonResourceImpl.setName(getName());
@@ -1040,7 +1114,8 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 
 	@Override
 	public CacheModel<WatsonResource> toCacheModel() {
-		WatsonResourceCacheModel watsonResourceCacheModel = new WatsonResourceCacheModel();
+		WatsonResourceCacheModel watsonResourceCacheModel =
+			new WatsonResourceCacheModel();
 
 		watsonResourceCacheModel.watsonResourceId = getWatsonResourceId();
 
@@ -1076,9 +1151,11 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 			watsonResourceCacheModel.modifiedDate = Long.MIN_VALUE;
 		}
 
-		watsonResourceCacheModel.originalWatsonResourceId = getOriginalWatsonResourceId();
+		watsonResourceCacheModel.originalWatsonResourceId =
+			getOriginalWatsonResourceId();
 
-		watsonResourceCacheModel.typeWatsonListTypeId = getTypeWatsonListTypeId();
+		watsonResourceCacheModel.typeWatsonListTypeId =
+			getTypeWatsonListTypeId();
 
 		watsonResourceCacheModel.watsonIncidentId = getWatsonIncidentId();
 
@@ -1113,16 +1190,20 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 
 	@Override
 	public String toString() {
-		Map<String, Function<WatsonResource, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+		Map<String, Function<WatsonResource, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
-				2);
+		StringBundler sb = new StringBundler(
+			4 * attributeGetterFunctions.size() + 2);
 
 		sb.append("{");
 
-		for (Map.Entry<String, Function<WatsonResource, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonResource, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonResource, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonResource, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append(attributeName);
 			sb.append("=");
@@ -1141,18 +1222,22 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 
 	@Override
 	public String toXmlString() {
-		Map<String, Function<WatsonResource, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+		Map<String, Function<WatsonResource, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
-				4);
+		StringBundler sb = new StringBundler(
+			5 * attributeGetterFunctions.size() + 4);
 
 		sb.append("<model><model-name>");
 		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		for (Map.Entry<String, Function<WatsonResource, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonResource, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonResource, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonResource, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append("<column><column-name>");
 			sb.append(attributeName);
@@ -1166,10 +1251,12 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader = WatsonResource.class.getClassLoader();
+	private static final ClassLoader _classLoader =
+		WatsonResource.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			WatsonResource.class, ModelWrapper.class
-		};
+		WatsonResource.class, ModelWrapper.class
+	};
+
 	private long _watsonResourceId;
 	private long _groupId;
 	private long _companyId;
@@ -1188,4 +1275,5 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 	private String _imagePayload;
 	private int _status;
 	private WatsonResource _escapedModel;
+
 }

@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
-
 import com.liferay.watson.exception.NoSuchResourceException;
 import com.liferay.watson.model.WatsonResource;
 import com.liferay.watson.model.impl.WatsonResourceImpl;
@@ -64,18 +63,24 @@ import java.util.Set;
  * @generated
  */
 @ProviderType
-public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonResource>
+public class WatsonResourcePersistenceImpl
+	extends BasePersistenceImpl<WatsonResource>
 	implements WatsonResourcePersistence {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonResourceUtil</code> to access the watson resource persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY = WatsonResourceImpl.class.getName();
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List1";
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List2";
+	public static final String FINDER_CLASS_NAME_ENTITY =
+		WatsonResourceImpl.class.getName();
+
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List1";
+
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List2";
+
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
@@ -91,7 +96,8 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 	 */
 	@Override
 	public void cacheResult(WatsonResource watsonResource) {
-		entityCache.putResult(WatsonResourceModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			WatsonResourceModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonResourceImpl.class, watsonResource.getPrimaryKey(),
 			watsonResource);
 
@@ -107,8 +113,10 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 	public void cacheResult(List<WatsonResource> watsonResources) {
 		for (WatsonResource watsonResource : watsonResources) {
 			if (entityCache.getResult(
-						WatsonResourceModelImpl.ENTITY_CACHE_ENABLED,
-						WatsonResourceImpl.class, watsonResource.getPrimaryKey()) == null) {
+					WatsonResourceModelImpl.ENTITY_CACHE_ENABLED,
+					WatsonResourceImpl.class, watsonResource.getPrimaryKey()) ==
+						null) {
+
 				cacheResult(watsonResource);
 			}
 			else {
@@ -142,7 +150,8 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 	 */
 	@Override
 	public void clearCache(WatsonResource watsonResource) {
-		entityCache.removeResult(WatsonResourceModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.removeResult(
+			WatsonResourceModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonResourceImpl.class, watsonResource.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -155,7 +164,8 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (WatsonResource watsonResource : watsonResources) {
-			entityCache.removeResult(WatsonResourceModelImpl.ENTITY_CACHE_ENABLED,
+			entityCache.removeResult(
+				WatsonResourceModelImpl.ENTITY_CACHE_ENABLED,
 				WatsonResourceImpl.class, watsonResource.getPrimaryKey());
 		}
 	}
@@ -188,6 +198,7 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 	@Override
 	public WatsonResource remove(long watsonResourceId)
 		throws NoSuchResourceException {
+
 		return remove((Serializable)watsonResourceId);
 	}
 
@@ -201,21 +212,22 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 	@Override
 	public WatsonResource remove(Serializable primaryKey)
 		throws NoSuchResourceException {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			WatsonResource watsonResource = (WatsonResource)session.get(WatsonResourceImpl.class,
-					primaryKey);
+			WatsonResource watsonResource = (WatsonResource)session.get(
+				WatsonResourceImpl.class, primaryKey);
 
 			if (watsonResource == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchResourceException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					primaryKey);
+				throw new NoSuchResourceException(
+					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			return remove(watsonResource);
@@ -239,8 +251,9 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 			session = openSession();
 
 			if (!session.contains(watsonResource)) {
-				watsonResource = (WatsonResource)session.get(WatsonResourceImpl.class,
-						watsonResource.getPrimaryKeyObj());
+				watsonResource = (WatsonResource)session.get(
+					WatsonResourceImpl.class,
+					watsonResource.getPrimaryKeyObj());
 			}
 
 			if (watsonResource != null) {
@@ -269,21 +282,24 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 			InvocationHandler invocationHandler = null;
 
 			if (ProxyUtil.isProxyClass(watsonResource.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(watsonResource);
+				invocationHandler = ProxyUtil.getInvocationHandler(
+					watsonResource);
 
 				throw new IllegalArgumentException(
 					"Implement ModelWrapper in watsonResource proxy " +
-					invocationHandler.getClass());
+						invocationHandler.getClass());
 			}
 
 			throw new IllegalArgumentException(
 				"Implement ModelWrapper in custom WatsonResource implementation " +
-				watsonResource.getClass());
+					watsonResource.getClass());
 		}
 
-		WatsonResourceModelImpl watsonResourceModelImpl = (WatsonResourceModelImpl)watsonResource;
+		WatsonResourceModelImpl watsonResourceModelImpl =
+			(WatsonResourceModelImpl)watsonResource;
 
-		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
 
 		Date now = new Date();
 
@@ -301,8 +317,8 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 				watsonResource.setModifiedDate(now);
 			}
 			else {
-				watsonResource.setModifiedDate(serviceContext.getModifiedDate(
-						now));
+				watsonResource.setModifiedDate(
+					serviceContext.getModifiedDate(now));
 			}
 		}
 
@@ -331,11 +347,12 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 
 		if (isNew) {
 			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(_finderPathWithoutPaginationFindAll,
-				FINDER_ARGS_EMPTY);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(WatsonResourceModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			WatsonResourceModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonResourceImpl.class, watsonResource.getPrimaryKey(),
 			watsonResource, false);
 
@@ -354,6 +371,7 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 	@Override
 	public WatsonResource findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchResourceException {
+
 		WatsonResource watsonResource = fetchByPrimaryKey(primaryKey);
 
 		if (watsonResource == null) {
@@ -361,8 +379,8 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchResourceException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				primaryKey);
+			throw new NoSuchResourceException(
+				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 		}
 
 		return watsonResource;
@@ -378,6 +396,7 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 	@Override
 	public WatsonResource findByPrimaryKey(long watsonResourceId)
 		throws NoSuchResourceException {
+
 		return findByPrimaryKey((Serializable)watsonResourceId);
 	}
 
@@ -389,8 +408,9 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 	 */
 	@Override
 	public WatsonResource fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(WatsonResourceModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonResourceImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(
+			WatsonResourceModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonResourceImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -404,19 +424,21 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 			try {
 				session = openSession();
 
-				watsonResource = (WatsonResource)session.get(WatsonResourceImpl.class,
-						primaryKey);
+				watsonResource = (WatsonResource)session.get(
+					WatsonResourceImpl.class, primaryKey);
 
 				if (watsonResource != null) {
 					cacheResult(watsonResource);
 				}
 				else {
-					entityCache.putResult(WatsonResourceModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(
+						WatsonResourceModelImpl.ENTITY_CACHE_ENABLED,
 						WatsonResourceImpl.class, primaryKey, nullModel);
 				}
 			}
 			catch (Exception e) {
-				entityCache.removeResult(WatsonResourceModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.removeResult(
+					WatsonResourceModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonResourceImpl.class, primaryKey);
 
 				throw processException(e);
@@ -443,11 +465,13 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 	@Override
 	public Map<Serializable, WatsonResource> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, WatsonResource> map = new HashMap<Serializable, WatsonResource>();
+		Map<Serializable, WatsonResource> map =
+			new HashMap<Serializable, WatsonResource>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
@@ -466,8 +490,9 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(WatsonResourceModelImpl.ENTITY_CACHE_ENABLED,
-					WatsonResourceImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(
+				WatsonResourceModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonResourceImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -487,8 +512,8 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 			return map;
 		}
 
-		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
-				1);
+		StringBundler query = new StringBundler(
+			uncachedPrimaryKeys.size() * 2 + 1);
 
 		query.append(_SQL_SELECT_WATSONRESOURCE_WHERE_PKS_IN);
 
@@ -511,7 +536,9 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 
 			Query q = session.createQuery(sql);
 
-			for (WatsonResource watsonResource : (List<WatsonResource>)q.list()) {
+			for (WatsonResource watsonResource :
+					(List<WatsonResource>)q.list()) {
+
 				map.put(watsonResource.getPrimaryKeyObj(), watsonResource);
 
 				cacheResult(watsonResource);
@@ -520,7 +547,8 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(WatsonResourceModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(
+					WatsonResourceModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonResourceImpl.class, primaryKey, nullModel);
 			}
 		}
@@ -573,8 +601,10 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 	 * @return the ordered range of watson resources
 	 */
 	@Override
-	public List<WatsonResource> findAll(int start, int end,
+	public List<WatsonResource> findAll(
+		int start, int end,
 		OrderByComparator<WatsonResource> orderByComparator) {
+
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -592,29 +622,31 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 	 * @return the ordered range of watson resources
 	 */
 	@Override
-	public List<WatsonResource> findAll(int start, int end,
-		OrderByComparator<WatsonResource> orderByComparator,
+	public List<WatsonResource> findAll(
+		int start, int end, OrderByComparator<WatsonResource> orderByComparator,
 		boolean retrieveFromCache) {
+
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
+			(orderByComparator == null)) {
+
 			pagination = false;
 			finderPath = _finderPathWithoutPaginationFindAll;
 			finderArgs = FINDER_ARGS_EMPTY;
 		}
 		else {
 			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] { start, end, orderByComparator };
+			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<WatsonResource> list = null;
 
 		if (retrieveFromCache) {
-			list = (List<WatsonResource>)finderCache.getResult(finderPath,
-					finderArgs, this);
+			list = (List<WatsonResource>)finderCache.getResult(
+				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
@@ -622,13 +654,13 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(2 +
-						(orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(
+					2 + (orderByComparator.getOrderByFields().length * 2));
 
 				query.append(_SQL_SELECT_WATSONRESOURCE);
 
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
 				sql = query.toString();
 			}
@@ -648,16 +680,16 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 				Query q = session.createQuery(sql);
 
 				if (!pagination) {
-					list = (List<WatsonResource>)QueryUtil.list(q,
-							getDialect(), start, end, false);
+					list = (List<WatsonResource>)QueryUtil.list(
+						q, getDialect(), start, end, false);
 
 					Collections.sort(list);
 
 					list = Collections.unmodifiableList(list);
 				}
 				else {
-					list = (List<WatsonResource>)QueryUtil.list(q,
-							getDialect(), start, end);
+					list = (List<WatsonResource>)QueryUtil.list(
+						q, getDialect(), start, end);
 				}
 
 				cacheResult(list);
@@ -695,8 +727,8 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(_finderPathCountAll,
-				FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(
+			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -708,11 +740,12 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 
 				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(_finderPathCountAll, FINDER_ARGS_EMPTY,
-					count);
+				finderCache.putResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
+				finderCache.removeResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
 				throw processException(e);
 			}
@@ -733,21 +766,23 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 	 * Initializes the watson resource persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(WatsonResourceModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonResourceModelImpl.FINDER_CACHE_ENABLED,
-				WatsonResourceImpl.class,
-				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+		_finderPathWithPaginationFindAll = new FinderPath(
+			WatsonResourceModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonResourceModelImpl.FINDER_CACHE_ENABLED,
+			WatsonResourceImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(WatsonResourceModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonResourceModelImpl.FINDER_CACHE_ENABLED,
-				WatsonResourceImpl.class,
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-				new String[0]);
+		_finderPathWithoutPaginationFindAll = new FinderPath(
+			WatsonResourceModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonResourceModelImpl.FINDER_CACHE_ENABLED,
+			WatsonResourceImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"findAll", new String[0]);
 
-		_finderPathCountAll = new FinderPath(WatsonResourceModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonResourceModelImpl.FINDER_CACHE_ENABLED, Long.class,
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-				new String[0]);
+		_finderPathCountAll = new FinderPath(
+			WatsonResourceModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonResourceModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+			new String[0]);
 	}
 
 	public void destroy() {
@@ -759,14 +794,28 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
+
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
+
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-	private static final String _SQL_SELECT_WATSONRESOURCE = "SELECT watsonResource FROM WatsonResource watsonResource";
-	private static final String _SQL_SELECT_WATSONRESOURCE_WHERE_PKS_IN = "SELECT watsonResource FROM WatsonResource watsonResource WHERE watsonResourceId IN (";
-	private static final String _SQL_COUNT_WATSONRESOURCE = "SELECT COUNT(watsonResource) FROM WatsonResource watsonResource";
+
+	private static final String _SQL_SELECT_WATSONRESOURCE =
+		"SELECT watsonResource FROM WatsonResource watsonResource";
+
+	private static final String _SQL_SELECT_WATSONRESOURCE_WHERE_PKS_IN =
+		"SELECT watsonResource FROM WatsonResource watsonResource WHERE watsonResourceId IN (";
+
+	private static final String _SQL_COUNT_WATSONRESOURCE =
+		"SELECT COUNT(watsonResource) FROM WatsonResource watsonResource";
+
 	private static final String _ORDER_BY_ENTITY_ALIAS = "watsonResource.";
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No WatsonResource exists with the primary key ";
-	private static final Log _log = LogFactoryUtil.getLog(WatsonResourcePersistenceImpl.class);
+
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
+		"No WatsonResource exists with the primary key ";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		WatsonResourcePersistenceImpl.class);
+
 }

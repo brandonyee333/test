@@ -18,7 +18,6 @@ import aQute.bnd.annotation.ProviderType;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
-
 import org.osgi.util.tracker.ServiceTracker;
 
 /**
@@ -35,6 +34,7 @@ import org.osgi.util.tracker.ServiceTracker;
  */
 @ProviderType
 public class WatsonAddressLocalServiceUtil {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -42,212 +42,235 @@ public class WatsonAddressLocalServiceUtil {
 	 */
 
 	/**
-	* Adds the watson address to the database. Also notifies the appropriate model listeners.
-	*
-	* @param watsonAddress the watson address
-	* @return the watson address that was added
-	*/
+	 * Adds the watson address to the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param watsonAddress the watson address
+	 * @return the watson address that was added
+	 */
 	public static com.liferay.watson.model.WatsonAddress addWatsonAddress(
 		com.liferay.watson.model.WatsonAddress watsonAddress) {
+
 		return getService().addWatsonAddress(watsonAddress);
 	}
 
 	/**
-	* Creates a new watson address with the primary key. Does not add the watson address to the database.
-	*
-	* @param watsonAddressId the primary key for the new watson address
-	* @return the new watson address
-	*/
+	 * Creates a new watson address with the primary key. Does not add the watson address to the database.
+	 *
+	 * @param watsonAddressId the primary key for the new watson address
+	 * @return the new watson address
+	 */
 	public static com.liferay.watson.model.WatsonAddress createWatsonAddress(
 		long watsonAddressId) {
+
 		return getService().createWatsonAddress(watsonAddressId);
 	}
 
 	/**
-	* @throws PortalException
-	*/
-	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+	 * @throws PortalException
+	 */
+	public static com.liferay.portal.kernel.model.PersistedModel
+			deletePersistedModel(
+				com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
+
 		return getService().deletePersistedModel(persistedModel);
 	}
 
 	/**
-	* Deletes the watson address with the primary key from the database. Also notifies the appropriate model listeners.
-	*
-	* @param watsonAddressId the primary key of the watson address
-	* @return the watson address that was removed
-	* @throws PortalException if a watson address with the primary key could not be found
-	*/
+	 * Deletes the watson address with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param watsonAddressId the primary key of the watson address
+	 * @return the watson address that was removed
+	 * @throws PortalException if a watson address with the primary key could not be found
+	 */
 	public static com.liferay.watson.model.WatsonAddress deleteWatsonAddress(
-		long watsonAddressId)
+			long watsonAddressId)
 		throws com.liferay.portal.kernel.exception.PortalException {
+
 		return getService().deleteWatsonAddress(watsonAddressId);
 	}
 
 	/**
-	* Deletes the watson address from the database. Also notifies the appropriate model listeners.
-	*
-	* @param watsonAddress the watson address
-	* @return the watson address that was removed
-	*/
+	 * Deletes the watson address from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param watsonAddress the watson address
+	 * @return the watson address that was removed
+	 */
 	public static com.liferay.watson.model.WatsonAddress deleteWatsonAddress(
 		com.liferay.watson.model.WatsonAddress watsonAddress) {
+
 		return getService().deleteWatsonAddress(watsonAddress);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
+		dynamicQuery() {
+
 		return getService().dynamicQuery();
 	}
 
 	/**
-	* Performs a dynamic query on the database and returns the matching rows.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the matching rows
-	*/
+	 * Performs a dynamic query on the database and returns the matching rows.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @return the matching rows
+	 */
 	public static <T> java.util.List<T> dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
 	/**
-	* Performs a dynamic query on the database and returns a range of the matching rows.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.watson.model.impl.WatsonAddressModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param dynamicQuery the dynamic query
-	* @param start the lower bound of the range of model instances
-	* @param end the upper bound of the range of model instances (not inclusive)
-	* @return the range of matching rows
-	*/
+	 * Performs a dynamic query on the database and returns a range of the matching rows.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.watson.model.impl.WatsonAddressModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param start the lower bound of the range of model instances
+	 * @param end the upper bound of the range of model instances (not inclusive)
+	 * @return the range of matching rows
+	 */
 	public static <T> java.util.List<T> dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
 		int end) {
+
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
 
 	/**
-	* Performs a dynamic query on the database and returns an ordered range of the matching rows.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.watson.model.impl.WatsonAddressModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param dynamicQuery the dynamic query
-	* @param start the lower bound of the range of model instances
-	* @param end the upper bound of the range of model instances (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of matching rows
-	*/
+	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.watson.model.impl.WatsonAddressModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param start the lower bound of the range of model instances
+	 * @param end the upper bound of the range of model instances (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching rows
+	 */
 	public static <T> java.util.List<T> dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
 		int end,
 		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
-		return getService()
-				   .dynamicQuery(dynamicQuery, start, end, orderByComparator);
+
+		return getService().dynamicQuery(
+			dynamicQuery, start, end, orderByComparator);
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
+	 * Returns the number of rows matching the dynamic query.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @return the number of rows matching the dynamic query
+	 */
 	public static long dynamicQueryCount(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
+	 * Returns the number of rows matching the dynamic query.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param projection the projection to apply to the query
+	 * @return the number of rows matching the dynamic query
+	 */
 	public static long dynamicQueryCount(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
+
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
 	public static com.liferay.watson.model.WatsonAddress fetchWatsonAddress(
 		long watsonAddressId) {
+
 		return getService().fetchWatsonAddress(watsonAddressId);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
+		getActionableDynamicQuery() {
+
 		return getService().getActionableDynamicQuery();
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+	public static
+		com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery
+			getIndexableActionableDynamicQuery() {
+
 		return getService().getIndexableActionableDynamicQuery();
 	}
 
 	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
 	public static String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
+	public static com.liferay.portal.kernel.model.PersistedModel
+			getPersistedModel(java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
+
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
 	/**
-	* Returns the watson address with the primary key.
-	*
-	* @param watsonAddressId the primary key of the watson address
-	* @return the watson address
-	* @throws PortalException if a watson address with the primary key could not be found
-	*/
+	 * Returns the watson address with the primary key.
+	 *
+	 * @param watsonAddressId the primary key of the watson address
+	 * @return the watson address
+	 * @throws PortalException if a watson address with the primary key could not be found
+	 */
 	public static com.liferay.watson.model.WatsonAddress getWatsonAddress(
-		long watsonAddressId)
+			long watsonAddressId)
 		throws com.liferay.portal.kernel.exception.PortalException {
+
 		return getService().getWatsonAddress(watsonAddressId);
 	}
 
 	/**
-	* Returns a range of all the watson addresses.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.watson.model.impl.WatsonAddressModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of watson addresses
-	* @param end the upper bound of the range of watson addresses (not inclusive)
-	* @return the range of watson addresses
-	*/
-	public static java.util.List<com.liferay.watson.model.WatsonAddress> getWatsonAddresses(
-		int start, int end) {
+	 * Returns a range of all the watson addresses.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.watson.model.impl.WatsonAddressModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of watson addresses
+	 * @param end the upper bound of the range of watson addresses (not inclusive)
+	 * @return the range of watson addresses
+	 */
+	public static java.util.List<com.liferay.watson.model.WatsonAddress>
+		getWatsonAddresses(int start, int end) {
+
 		return getService().getWatsonAddresses(start, end);
 	}
 
 	/**
-	* Returns the number of watson addresses.
-	*
-	* @return the number of watson addresses
-	*/
+	 * Returns the number of watson addresses.
+	 *
+	 * @return the number of watson addresses
+	 */
 	public static int getWatsonAddressesCount() {
 		return getService().getWatsonAddressesCount();
 	}
 
 	/**
-	* Updates the watson address in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param watsonAddress the watson address
-	* @return the watson address that was updated
-	*/
+	 * Updates the watson address in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * @param watsonAddress the watson address
+	 * @return the watson address that was updated
+	 */
 	public static com.liferay.watson.model.WatsonAddress updateWatsonAddress(
 		com.liferay.watson.model.WatsonAddress watsonAddress) {
+
 		return getService().updateWatsonAddress(watsonAddress);
 	}
 
@@ -255,17 +278,23 @@ public class WatsonAddressLocalServiceUtil {
 		return _serviceTracker.getService();
 	}
 
-	private static ServiceTracker<WatsonAddressLocalService, WatsonAddressLocalService> _serviceTracker;
+	private static ServiceTracker
+		<WatsonAddressLocalService, WatsonAddressLocalService> _serviceTracker;
 
 	static {
-		Bundle bundle = FrameworkUtil.getBundle(WatsonAddressLocalService.class);
+		Bundle bundle = FrameworkUtil.getBundle(
+			WatsonAddressLocalService.class);
 
-		ServiceTracker<WatsonAddressLocalService, WatsonAddressLocalService> serviceTracker =
-			new ServiceTracker<WatsonAddressLocalService, WatsonAddressLocalService>(bundle.getBundleContext(),
-				WatsonAddressLocalService.class, null);
+		ServiceTracker<WatsonAddressLocalService, WatsonAddressLocalService>
+			serviceTracker =
+				new ServiceTracker
+					<WatsonAddressLocalService, WatsonAddressLocalService>(
+						bundle.getBundleContext(),
+						WatsonAddressLocalService.class, null);
 
 		serviceTracker.open();
 
 		_serviceTracker = serviceTracker;
 	}
+
 }

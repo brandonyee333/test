@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.model.WatsonVehicleAudit;
 
 import java.io.Externalizable;
@@ -36,8 +35,9 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public class WatsonVehicleAuditCacheModel implements CacheModel<WatsonVehicleAudit>,
-	Externalizable {
+public class WatsonVehicleAuditCacheModel
+	implements CacheModel<WatsonVehicleAudit>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,9 +48,12 @@ public class WatsonVehicleAuditCacheModel implements CacheModel<WatsonVehicleAud
 			return false;
 		}
 
-		WatsonVehicleAuditCacheModel watsonVehicleAuditCacheModel = (WatsonVehicleAuditCacheModel)obj;
+		WatsonVehicleAuditCacheModel watsonVehicleAuditCacheModel =
+			(WatsonVehicleAuditCacheModel)obj;
 
-		if (watsonVehicleAuditId == watsonVehicleAuditCacheModel.watsonVehicleAuditId) {
+		if (watsonVehicleAuditId ==
+				watsonVehicleAuditCacheModel.watsonVehicleAuditId) {
+
 			return true;
 		}
 
@@ -113,7 +116,8 @@ public class WatsonVehicleAuditCacheModel implements CacheModel<WatsonVehicleAud
 
 	@Override
 	public WatsonVehicleAudit toEntityModel() {
-		WatsonVehicleAuditImpl watsonVehicleAuditImpl = new WatsonVehicleAuditImpl();
+		WatsonVehicleAuditImpl watsonVehicleAuditImpl =
+			new WatsonVehicleAuditImpl();
 
 		watsonVehicleAuditImpl.setWatsonVehicleAuditId(watsonVehicleAuditId);
 		watsonVehicleAuditImpl.setGroupId(groupId);
@@ -144,7 +148,8 @@ public class WatsonVehicleAuditCacheModel implements CacheModel<WatsonVehicleAud
 		watsonVehicleAuditImpl.setColorWatsonListTypeId(colorWatsonListTypeId);
 		watsonVehicleAuditImpl.setMakeWatsonListTypeId(makeWatsonListTypeId);
 		watsonVehicleAuditImpl.setModelWatsonListTypeId(modelWatsonListTypeId);
-		watsonVehicleAuditImpl.setOriginalWatsonVehicleId(originalWatsonVehicleId);
+		watsonVehicleAuditImpl.setOriginalWatsonVehicleId(
+			originalWatsonVehicleId);
 		watsonVehicleAuditImpl.setTypeWatsonListTypeId(typeWatsonListTypeId);
 		watsonVehicleAuditImpl.setYearWatsonListTypeId(yearWatsonListTypeId);
 		watsonVehicleAuditImpl.setWatsonIncidentId(watsonIncidentId);
@@ -217,8 +222,7 @@ public class WatsonVehicleAuditCacheModel implements CacheModel<WatsonVehicleAud
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonVehicleAuditId);
 
 		objectOutput.writeLong(groupId);
@@ -299,4 +303,5 @@ public class WatsonVehicleAuditCacheModel implements CacheModel<WatsonVehicleAud
 	public String imagePayload;
 	public String licensePlate;
 	public int status;
+
 }

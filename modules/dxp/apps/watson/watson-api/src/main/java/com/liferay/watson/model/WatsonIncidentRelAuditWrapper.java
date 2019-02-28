@@ -17,7 +17,6 @@ package com.liferay.watson.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -38,10 +37,12 @@ import java.util.Objects;
  * @generated
  */
 @ProviderType
-public class WatsonIncidentRelAuditWrapper implements WatsonIncidentRelAudit,
-	ModelWrapper<WatsonIncidentRelAudit> {
+public class WatsonIncidentRelAuditWrapper
+	implements WatsonIncidentRelAudit, ModelWrapper<WatsonIncidentRelAudit> {
+
 	public WatsonIncidentRelAuditWrapper(
 		WatsonIncidentRelAudit watsonIncidentRelAudit) {
+
 		_watsonIncidentRelAudit = watsonIncidentRelAudit;
 	}
 
@@ -59,7 +60,8 @@ public class WatsonIncidentRelAuditWrapper implements WatsonIncidentRelAudit,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("watsonIncidentRelAuditId", getWatsonIncidentRelAuditId());
+		attributes.put(
+			"watsonIncidentRelAuditId", getWatsonIncidentRelAuditId());
 		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
@@ -78,7 +80,7 @@ public class WatsonIncidentRelAuditWrapper implements WatsonIncidentRelAudit,
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
 		Long watsonIncidentRelAuditId = (Long)attributes.get(
-				"watsonIncidentRelAuditId");
+			"watsonIncidentRelAuditId");
 
 		if (watsonIncidentRelAuditId != null) {
 			setWatsonIncidentRelAuditId(watsonIncidentRelAuditId);
@@ -153,7 +155,8 @@ public class WatsonIncidentRelAuditWrapper implements WatsonIncidentRelAudit,
 
 	@Override
 	public Object clone() {
-		return new WatsonIncidentRelAuditWrapper((WatsonIncidentRelAudit)_watsonIncidentRelAudit.clone());
+		return new WatsonIncidentRelAuditWrapper(
+			(WatsonIncidentRelAudit)_watsonIncidentRelAudit.clone());
 	}
 
 	@Override
@@ -162,20 +165,20 @@ public class WatsonIncidentRelAuditWrapper implements WatsonIncidentRelAudit,
 	}
 
 	/**
-	* Returns the company ID of this watson incident rel audit.
-	*
-	* @return the company ID of this watson incident rel audit
-	*/
+	 * Returns the company ID of this watson incident rel audit.
+	 *
+	 * @return the company ID of this watson incident rel audit
+	 */
 	@Override
 	public long getCompanyId() {
 		return _watsonIncidentRelAudit.getCompanyId();
 	}
 
 	/**
-	* Returns the create date of this watson incident rel audit.
-	*
-	* @return the create date of this watson incident rel audit
-	*/
+	 * Returns the create date of this watson incident rel audit.
+	 *
+	 * @return the create date of this watson incident rel audit
+	 */
 	@Override
 	public Date getCreateDate() {
 		return _watsonIncidentRelAudit.getCreateDate();
@@ -187,30 +190,30 @@ public class WatsonIncidentRelAuditWrapper implements WatsonIncidentRelAudit,
 	}
 
 	/**
-	* Returns the group ID of this watson incident rel audit.
-	*
-	* @return the group ID of this watson incident rel audit
-	*/
+	 * Returns the group ID of this watson incident rel audit.
+	 *
+	 * @return the group ID of this watson incident rel audit
+	 */
 	@Override
 	public long getGroupId() {
 		return _watsonIncidentRelAudit.getGroupId();
 	}
 
 	/**
-	* Returns the modified date of this watson incident rel audit.
-	*
-	* @return the modified date of this watson incident rel audit
-	*/
+	 * Returns the modified date of this watson incident rel audit.
+	 *
+	 * @return the modified date of this watson incident rel audit
+	 */
 	@Override
 	public Date getModifiedDate() {
 		return _watsonIncidentRelAudit.getModifiedDate();
 	}
 
 	/**
-	* Returns the primary key of this watson incident rel audit.
-	*
-	* @return the primary key of this watson incident rel audit
-	*/
+	 * Returns the primary key of this watson incident rel audit.
+	 *
+	 * @return the primary key of this watson incident rel audit
+	 */
 	@Override
 	public long getPrimaryKey() {
 		return _watsonIncidentRelAudit.getPrimaryKey();
@@ -222,90 +225,90 @@ public class WatsonIncidentRelAuditWrapper implements WatsonIncidentRelAudit,
 	}
 
 	/**
-	* Returns the status of this watson incident rel audit.
-	*
-	* @return the status of this watson incident rel audit
-	*/
+	 * Returns the status of this watson incident rel audit.
+	 *
+	 * @return the status of this watson incident rel audit
+	 */
 	@Override
 	public int getStatus() {
 		return _watsonIncidentRelAudit.getStatus();
 	}
 
 	/**
-	* Returns the type of this watson incident rel audit.
-	*
-	* @return the type of this watson incident rel audit
-	*/
+	 * Returns the type of this watson incident rel audit.
+	 *
+	 * @return the type of this watson incident rel audit
+	 */
 	@Override
 	public String getType() {
 		return _watsonIncidentRelAudit.getType();
 	}
 
 	/**
-	* Returns the user ID of this watson incident rel audit.
-	*
-	* @return the user ID of this watson incident rel audit
-	*/
+	 * Returns the user ID of this watson incident rel audit.
+	 *
+	 * @return the user ID of this watson incident rel audit
+	 */
 	@Override
 	public long getUserId() {
 		return _watsonIncidentRelAudit.getUserId();
 	}
 
 	/**
-	* Returns the user name of this watson incident rel audit.
-	*
-	* @return the user name of this watson incident rel audit
-	*/
+	 * Returns the user name of this watson incident rel audit.
+	 *
+	 * @return the user name of this watson incident rel audit
+	 */
 	@Override
 	public String getUserName() {
 		return _watsonIncidentRelAudit.getUserName();
 	}
 
 	/**
-	* Returns the user uuid of this watson incident rel audit.
-	*
-	* @return the user uuid of this watson incident rel audit
-	*/
+	 * Returns the user uuid of this watson incident rel audit.
+	 *
+	 * @return the user uuid of this watson incident rel audit
+	 */
 	@Override
 	public String getUserUuid() {
 		return _watsonIncidentRelAudit.getUserUuid();
 	}
 
 	/**
-	* Returns the watson incident id1 of this watson incident rel audit.
-	*
-	* @return the watson incident id1 of this watson incident rel audit
-	*/
+	 * Returns the watson incident id1 of this watson incident rel audit.
+	 *
+	 * @return the watson incident id1 of this watson incident rel audit
+	 */
 	@Override
 	public long getWatsonIncidentId1() {
 		return _watsonIncidentRelAudit.getWatsonIncidentId1();
 	}
 
 	/**
-	* Returns the watson incident id2 of this watson incident rel audit.
-	*
-	* @return the watson incident id2 of this watson incident rel audit
-	*/
+	 * Returns the watson incident id2 of this watson incident rel audit.
+	 *
+	 * @return the watson incident id2 of this watson incident rel audit
+	 */
 	@Override
 	public long getWatsonIncidentId2() {
 		return _watsonIncidentRelAudit.getWatsonIncidentId2();
 	}
 
 	/**
-	* Returns the watson incident rel audit ID of this watson incident rel audit.
-	*
-	* @return the watson incident rel audit ID of this watson incident rel audit
-	*/
+	 * Returns the watson incident rel audit ID of this watson incident rel audit.
+	 *
+	 * @return the watson incident rel audit ID of this watson incident rel audit
+	 */
 	@Override
 	public long getWatsonIncidentRelAuditId() {
 		return _watsonIncidentRelAudit.getWatsonIncidentRelAuditId();
 	}
 
 	/**
-	* Returns the watson incident rel ID of this watson incident rel audit.
-	*
-	* @return the watson incident rel ID of this watson incident rel audit
-	*/
+	 * Returns the watson incident rel ID of this watson incident rel audit.
+	 *
+	 * @return the watson incident rel ID of this watson incident rel audit
+	 */
 	@Override
 	public long getWatsonIncidentRelId() {
 		return _watsonIncidentRelAudit.getWatsonIncidentRelId();
@@ -342,20 +345,20 @@ public class WatsonIncidentRelAuditWrapper implements WatsonIncidentRelAudit,
 	}
 
 	/**
-	* Sets the company ID of this watson incident rel audit.
-	*
-	* @param companyId the company ID of this watson incident rel audit
-	*/
+	 * Sets the company ID of this watson incident rel audit.
+	 *
+	 * @param companyId the company ID of this watson incident rel audit
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_watsonIncidentRelAudit.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create date of this watson incident rel audit.
-	*
-	* @param createDate the create date of this watson incident rel audit
-	*/
+	 * Sets the create date of this watson incident rel audit.
+	 *
+	 * @param createDate the create date of this watson incident rel audit
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_watsonIncidentRelAudit.setCreateDate(createDate);
@@ -364,6 +367,7 @@ public class WatsonIncidentRelAuditWrapper implements WatsonIncidentRelAudit,
 	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
 		_watsonIncidentRelAudit.setExpandoBridgeAttributes(baseModel);
 	}
 
@@ -378,20 +382,20 @@ public class WatsonIncidentRelAuditWrapper implements WatsonIncidentRelAudit,
 	}
 
 	/**
-	* Sets the group ID of this watson incident rel audit.
-	*
-	* @param groupId the group ID of this watson incident rel audit
-	*/
+	 * Sets the group ID of this watson incident rel audit.
+	 *
+	 * @param groupId the group ID of this watson incident rel audit
+	 */
 	@Override
 	public void setGroupId(long groupId) {
 		_watsonIncidentRelAudit.setGroupId(groupId);
 	}
 
 	/**
-	* Sets the modified date of this watson incident rel audit.
-	*
-	* @param modifiedDate the modified date of this watson incident rel audit
-	*/
+	 * Sets the modified date of this watson incident rel audit.
+	 *
+	 * @param modifiedDate the modified date of this watson incident rel audit
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_watsonIncidentRelAudit.setModifiedDate(modifiedDate);
@@ -403,10 +407,10 @@ public class WatsonIncidentRelAuditWrapper implements WatsonIncidentRelAudit,
 	}
 
 	/**
-	* Sets the primary key of this watson incident rel audit.
-	*
-	* @param primaryKey the primary key of this watson incident rel audit
-	*/
+	 * Sets the primary key of this watson incident rel audit.
+	 *
+	 * @param primaryKey the primary key of this watson incident rel audit
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_watsonIncidentRelAudit.setPrimaryKey(primaryKey);
@@ -418,103 +422,107 @@ public class WatsonIncidentRelAuditWrapper implements WatsonIncidentRelAudit,
 	}
 
 	/**
-	* Sets the status of this watson incident rel audit.
-	*
-	* @param status the status of this watson incident rel audit
-	*/
+	 * Sets the status of this watson incident rel audit.
+	 *
+	 * @param status the status of this watson incident rel audit
+	 */
 	@Override
 	public void setStatus(int status) {
 		_watsonIncidentRelAudit.setStatus(status);
 	}
 
 	/**
-	* Sets the type of this watson incident rel audit.
-	*
-	* @param type the type of this watson incident rel audit
-	*/
+	 * Sets the type of this watson incident rel audit.
+	 *
+	 * @param type the type of this watson incident rel audit
+	 */
 	@Override
 	public void setType(String type) {
 		_watsonIncidentRelAudit.setType(type);
 	}
 
 	/**
-	* Sets the user ID of this watson incident rel audit.
-	*
-	* @param userId the user ID of this watson incident rel audit
-	*/
+	 * Sets the user ID of this watson incident rel audit.
+	 *
+	 * @param userId the user ID of this watson incident rel audit
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_watsonIncidentRelAudit.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this watson incident rel audit.
-	*
-	* @param userName the user name of this watson incident rel audit
-	*/
+	 * Sets the user name of this watson incident rel audit.
+	 *
+	 * @param userName the user name of this watson incident rel audit
+	 */
 	@Override
 	public void setUserName(String userName) {
 		_watsonIncidentRelAudit.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this watson incident rel audit.
-	*
-	* @param userUuid the user uuid of this watson incident rel audit
-	*/
+	 * Sets the user uuid of this watson incident rel audit.
+	 *
+	 * @param userUuid the user uuid of this watson incident rel audit
+	 */
 	@Override
 	public void setUserUuid(String userUuid) {
 		_watsonIncidentRelAudit.setUserUuid(userUuid);
 	}
 
 	/**
-	* Sets the watson incident id1 of this watson incident rel audit.
-	*
-	* @param watsonIncidentId1 the watson incident id1 of this watson incident rel audit
-	*/
+	 * Sets the watson incident id1 of this watson incident rel audit.
+	 *
+	 * @param watsonIncidentId1 the watson incident id1 of this watson incident rel audit
+	 */
 	@Override
 	public void setWatsonIncidentId1(long watsonIncidentId1) {
 		_watsonIncidentRelAudit.setWatsonIncidentId1(watsonIncidentId1);
 	}
 
 	/**
-	* Sets the watson incident id2 of this watson incident rel audit.
-	*
-	* @param watsonIncidentId2 the watson incident id2 of this watson incident rel audit
-	*/
+	 * Sets the watson incident id2 of this watson incident rel audit.
+	 *
+	 * @param watsonIncidentId2 the watson incident id2 of this watson incident rel audit
+	 */
 	@Override
 	public void setWatsonIncidentId2(long watsonIncidentId2) {
 		_watsonIncidentRelAudit.setWatsonIncidentId2(watsonIncidentId2);
 	}
 
 	/**
-	* Sets the watson incident rel audit ID of this watson incident rel audit.
-	*
-	* @param watsonIncidentRelAuditId the watson incident rel audit ID of this watson incident rel audit
-	*/
+	 * Sets the watson incident rel audit ID of this watson incident rel audit.
+	 *
+	 * @param watsonIncidentRelAuditId the watson incident rel audit ID of this watson incident rel audit
+	 */
 	@Override
 	public void setWatsonIncidentRelAuditId(long watsonIncidentRelAuditId) {
-		_watsonIncidentRelAudit.setWatsonIncidentRelAuditId(watsonIncidentRelAuditId);
+		_watsonIncidentRelAudit.setWatsonIncidentRelAuditId(
+			watsonIncidentRelAuditId);
 	}
 
 	/**
-	* Sets the watson incident rel ID of this watson incident rel audit.
-	*
-	* @param watsonIncidentRelId the watson incident rel ID of this watson incident rel audit
-	*/
+	 * Sets the watson incident rel ID of this watson incident rel audit.
+	 *
+	 * @param watsonIncidentRelId the watson incident rel ID of this watson incident rel audit
+	 */
 	@Override
 	public void setWatsonIncidentRelId(long watsonIncidentRelId) {
 		_watsonIncidentRelAudit.setWatsonIncidentRelId(watsonIncidentRelId);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<WatsonIncidentRelAudit> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<WatsonIncidentRelAudit>
+		toCacheModel() {
+
 		return _watsonIncidentRelAudit.toCacheModel();
 	}
 
 	@Override
 	public WatsonIncidentRelAudit toEscapedModel() {
-		return new WatsonIncidentRelAuditWrapper(_watsonIncidentRelAudit.toEscapedModel());
+		return new WatsonIncidentRelAuditWrapper(
+			_watsonIncidentRelAudit.toEscapedModel());
 	}
 
 	@Override
@@ -524,7 +532,8 @@ public class WatsonIncidentRelAuditWrapper implements WatsonIncidentRelAudit,
 
 	@Override
 	public WatsonIncidentRelAudit toUnescapedModel() {
-		return new WatsonIncidentRelAuditWrapper(_watsonIncidentRelAudit.toUnescapedModel());
+		return new WatsonIncidentRelAuditWrapper(
+			_watsonIncidentRelAudit.toUnescapedModel());
 	}
 
 	@Override
@@ -542,10 +551,13 @@ public class WatsonIncidentRelAuditWrapper implements WatsonIncidentRelAudit,
 			return false;
 		}
 
-		WatsonIncidentRelAuditWrapper watsonIncidentRelAuditWrapper = (WatsonIncidentRelAuditWrapper)obj;
+		WatsonIncidentRelAuditWrapper watsonIncidentRelAuditWrapper =
+			(WatsonIncidentRelAuditWrapper)obj;
 
-		if (Objects.equals(_watsonIncidentRelAudit,
-					watsonIncidentRelAuditWrapper._watsonIncidentRelAudit)) {
+		if (Objects.equals(
+				_watsonIncidentRelAudit,
+				watsonIncidentRelAuditWrapper._watsonIncidentRelAudit)) {
+
 			return true;
 		}
 
@@ -573,4 +585,5 @@ public class WatsonIncidentRelAuditWrapper implements WatsonIncidentRelAudit,
 	}
 
 	private final WatsonIncidentRelAudit _watsonIncidentRelAudit;
+
 }

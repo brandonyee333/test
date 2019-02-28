@@ -18,7 +18,6 @@ import aQute.bnd.annotation.ProviderType;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
-
 import org.osgi.util.tracker.ServiceTracker;
 
 /**
@@ -35,6 +34,7 @@ import org.osgi.util.tracker.ServiceTracker;
  */
 @ProviderType
 public class WatsonTokenAuthEntryServiceUtil {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -42,10 +42,10 @@ public class WatsonTokenAuthEntryServiceUtil {
 	 */
 
 	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
 	public static String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
@@ -54,17 +54,24 @@ public class WatsonTokenAuthEntryServiceUtil {
 		return _serviceTracker.getService();
 	}
 
-	private static ServiceTracker<WatsonTokenAuthEntryService, WatsonTokenAuthEntryService> _serviceTracker;
+	private static ServiceTracker
+		<WatsonTokenAuthEntryService, WatsonTokenAuthEntryService>
+			_serviceTracker;
 
 	static {
-		Bundle bundle = FrameworkUtil.getBundle(WatsonTokenAuthEntryService.class);
+		Bundle bundle = FrameworkUtil.getBundle(
+			WatsonTokenAuthEntryService.class);
 
-		ServiceTracker<WatsonTokenAuthEntryService, WatsonTokenAuthEntryService> serviceTracker =
-			new ServiceTracker<WatsonTokenAuthEntryService, WatsonTokenAuthEntryService>(bundle.getBundleContext(),
-				WatsonTokenAuthEntryService.class, null);
+		ServiceTracker<WatsonTokenAuthEntryService, WatsonTokenAuthEntryService>
+			serviceTracker =
+				new ServiceTracker
+					<WatsonTokenAuthEntryService, WatsonTokenAuthEntryService>(
+						bundle.getBundleContext(),
+						WatsonTokenAuthEntryService.class, null);
 
 		serviceTracker.open();
 
 		_serviceTracker = serviceTracker;
 	}
+
 }

@@ -17,7 +17,6 @@ package com.liferay.watson.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -41,8 +40,9 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public interface WatsonIncidentRelModel extends BaseModel<WatsonIncidentRel>,
-	GroupedModel, ShardedModel {
+public interface WatsonIncidentRelModel
+	extends BaseModel<WatsonIncidentRel>, GroupedModel, ShardedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -303,4 +303,5 @@ public interface WatsonIncidentRelModel extends BaseModel<WatsonIncidentRel>,
 
 	@Override
 	public String toXmlString();
+
 }

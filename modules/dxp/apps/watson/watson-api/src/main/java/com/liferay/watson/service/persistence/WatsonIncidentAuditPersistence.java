@@ -17,7 +17,6 @@ package com.liferay.watson.service.persistence;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
-
 import com.liferay.watson.exception.NoSuchIncidentAuditException;
 import com.liferay.watson.model.WatsonIncidentAudit;
 
@@ -38,7 +37,9 @@ import java.util.Set;
  * @generated
  */
 @ProviderType
-public interface WatsonIncidentAuditPersistence extends BasePersistence<WatsonIncidentAudit> {
+public interface WatsonIncidentAuditPersistence
+	extends BasePersistence<WatsonIncidentAudit> {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -49,35 +50,35 @@ public interface WatsonIncidentAuditPersistence extends BasePersistence<WatsonIn
 		Set<Serializable> primaryKeys);
 
 	/**
-	* Caches the watson incident audit in the entity cache if it is enabled.
-	*
-	* @param watsonIncidentAudit the watson incident audit
-	*/
+	 * Caches the watson incident audit in the entity cache if it is enabled.
+	 *
+	 * @param watsonIncidentAudit the watson incident audit
+	 */
 	public void cacheResult(WatsonIncidentAudit watsonIncidentAudit);
 
 	/**
-	* Caches the watson incident audits in the entity cache if it is enabled.
-	*
-	* @param watsonIncidentAudits the watson incident audits
-	*/
+	 * Caches the watson incident audits in the entity cache if it is enabled.
+	 *
+	 * @param watsonIncidentAudits the watson incident audits
+	 */
 	public void cacheResult(
 		java.util.List<WatsonIncidentAudit> watsonIncidentAudits);
 
 	/**
-	* Creates a new watson incident audit with the primary key. Does not add the watson incident audit to the database.
-	*
-	* @param watsonIncidentAuditId the primary key for the new watson incident audit
-	* @return the new watson incident audit
-	*/
+	 * Creates a new watson incident audit with the primary key. Does not add the watson incident audit to the database.
+	 *
+	 * @param watsonIncidentAuditId the primary key for the new watson incident audit
+	 * @return the new watson incident audit
+	 */
 	public WatsonIncidentAudit create(long watsonIncidentAuditId);
 
 	/**
-	* Removes the watson incident audit with the primary key from the database. Also notifies the appropriate model listeners.
-	*
-	* @param watsonIncidentAuditId the primary key of the watson incident audit
-	* @return the watson incident audit that was removed
-	* @throws NoSuchIncidentAuditException if a watson incident audit with the primary key could not be found
-	*/
+	 * Removes the watson incident audit with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param watsonIncidentAuditId the primary key of the watson incident audit
+	 * @return the watson incident audit that was removed
+	 * @throws NoSuchIncidentAuditException if a watson incident audit with the primary key could not be found
+	 */
 	public WatsonIncidentAudit remove(long watsonIncidentAuditId)
 		throws NoSuchIncidentAuditException;
 
@@ -85,84 +86,89 @@ public interface WatsonIncidentAuditPersistence extends BasePersistence<WatsonIn
 		WatsonIncidentAudit watsonIncidentAudit);
 
 	/**
-	* Returns the watson incident audit with the primary key or throws a <code>NoSuchIncidentAuditException</code> if it could not be found.
-	*
-	* @param watsonIncidentAuditId the primary key of the watson incident audit
-	* @return the watson incident audit
-	* @throws NoSuchIncidentAuditException if a watson incident audit with the primary key could not be found
-	*/
+	 * Returns the watson incident audit with the primary key or throws a <code>NoSuchIncidentAuditException</code> if it could not be found.
+	 *
+	 * @param watsonIncidentAuditId the primary key of the watson incident audit
+	 * @return the watson incident audit
+	 * @throws NoSuchIncidentAuditException if a watson incident audit with the primary key could not be found
+	 */
 	public WatsonIncidentAudit findByPrimaryKey(long watsonIncidentAuditId)
 		throws NoSuchIncidentAuditException;
 
 	/**
-	* Returns the watson incident audit with the primary key or returns <code>null</code> if it could not be found.
-	*
-	* @param watsonIncidentAuditId the primary key of the watson incident audit
-	* @return the watson incident audit, or <code>null</code> if a watson incident audit with the primary key could not be found
-	*/
+	 * Returns the watson incident audit with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param watsonIncidentAuditId the primary key of the watson incident audit
+	 * @return the watson incident audit, or <code>null</code> if a watson incident audit with the primary key could not be found
+	 */
 	public WatsonIncidentAudit fetchByPrimaryKey(long watsonIncidentAuditId);
 
 	/**
-	* Returns all the watson incident audits.
-	*
-	* @return the watson incident audits
-	*/
+	 * Returns all the watson incident audits.
+	 *
+	 * @return the watson incident audits
+	 */
 	public java.util.List<WatsonIncidentAudit> findAll();
 
 	/**
-	* Returns a range of all the watson incident audits.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonIncidentAuditModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of watson incident audits
-	* @param end the upper bound of the range of watson incident audits (not inclusive)
-	* @return the range of watson incident audits
-	*/
+	 * Returns a range of all the watson incident audits.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonIncidentAuditModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of watson incident audits
+	 * @param end the upper bound of the range of watson incident audits (not inclusive)
+	 * @return the range of watson incident audits
+	 */
 	public java.util.List<WatsonIncidentAudit> findAll(int start, int end);
 
 	/**
-	* Returns an ordered range of all the watson incident audits.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonIncidentAuditModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of watson incident audits
-	* @param end the upper bound of the range of watson incident audits (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of watson incident audits
-	*/
-	public java.util.List<WatsonIncidentAudit> findAll(int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<WatsonIncidentAudit> orderByComparator);
+	 * Returns an ordered range of all the watson incident audits.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonIncidentAuditModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of watson incident audits
+	 * @param end the upper bound of the range of watson incident audits (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of watson incident audits
+	 */
+	public java.util.List<WatsonIncidentAudit> findAll(
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<WatsonIncidentAudit>
+			orderByComparator);
 
 	/**
-	* Returns an ordered range of all the watson incident audits.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonIncidentAuditModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of watson incident audits
-	* @param end the upper bound of the range of watson incident audits (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @param retrieveFromCache whether to retrieve from the finder cache
-	* @return the ordered range of watson incident audits
-	*/
-	public java.util.List<WatsonIncidentAudit> findAll(int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<WatsonIncidentAudit> orderByComparator,
+	 * Returns an ordered range of all the watson incident audits.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonIncidentAuditModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of watson incident audits
+	 * @param end the upper bound of the range of watson incident audits (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @return the ordered range of watson incident audits
+	 */
+	public java.util.List<WatsonIncidentAudit> findAll(
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<WatsonIncidentAudit>
+			orderByComparator,
 		boolean retrieveFromCache);
 
 	/**
-	* Removes all the watson incident audits from the database.
-	*/
+	 * Removes all the watson incident audits from the database.
+	 */
 	public void removeAll();
 
 	/**
-	* Returns the number of watson incident audits.
-	*
-	* @return the number of watson incident audits
-	*/
+	 * Returns the number of watson incident audits.
+	 *
+	 * @return the number of watson incident audits
+	 */
 	public int countAll();
+
 }

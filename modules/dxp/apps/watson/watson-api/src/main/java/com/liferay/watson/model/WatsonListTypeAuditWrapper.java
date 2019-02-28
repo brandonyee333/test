@@ -17,7 +17,6 @@ package com.liferay.watson.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -38,8 +37,9 @@ import java.util.Objects;
  * @generated
  */
 @ProviderType
-public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
-	ModelWrapper<WatsonListTypeAudit> {
+public class WatsonListTypeAuditWrapper
+	implements WatsonListTypeAudit, ModelWrapper<WatsonListTypeAudit> {
+
 	public WatsonListTypeAuditWrapper(WatsonListTypeAudit watsonListTypeAudit) {
 		_watsonListTypeAudit = watsonListTypeAudit;
 	}
@@ -77,7 +77,7 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
 		Long watsonListTypeAuditId = (Long)attributes.get(
-				"watsonListTypeAuditId");
+			"watsonListTypeAuditId");
 
 		if (watsonListTypeAuditId != null) {
 			setWatsonListTypeAuditId(watsonListTypeAuditId);
@@ -120,7 +120,7 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 		}
 
 		Long parentWatsonListTypeId = (Long)attributes.get(
-				"parentWatsonListTypeId");
+			"parentWatsonListTypeId");
 
 		if (parentWatsonListTypeId != null) {
 			setParentWatsonListTypeId(parentWatsonListTypeId);
@@ -153,7 +153,8 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 
 	@Override
 	public Object clone() {
-		return new WatsonListTypeAuditWrapper((WatsonListTypeAudit)_watsonListTypeAudit.clone());
+		return new WatsonListTypeAuditWrapper(
+			(WatsonListTypeAudit)_watsonListTypeAudit.clone());
 	}
 
 	@Override
@@ -167,20 +168,20 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	}
 
 	/**
-	* Returns the company ID of this watson list type audit.
-	*
-	* @return the company ID of this watson list type audit
-	*/
+	 * Returns the company ID of this watson list type audit.
+	 *
+	 * @return the company ID of this watson list type audit
+	 */
 	@Override
 	public long getCompanyId() {
 		return _watsonListTypeAudit.getCompanyId();
 	}
 
 	/**
-	* Returns the create date of this watson list type audit.
-	*
-	* @return the create date of this watson list type audit
-	*/
+	 * Returns the create date of this watson list type audit.
+	 *
+	 * @return the create date of this watson list type audit
+	 */
 	@Override
 	public Date getCreateDate() {
 		return _watsonListTypeAudit.getCreateDate();
@@ -197,76 +198,76 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	}
 
 	/**
-	* Returns the group ID of this watson list type audit.
-	*
-	* @return the group ID of this watson list type audit
-	*/
+	 * Returns the group ID of this watson list type audit.
+	 *
+	 * @return the group ID of this watson list type audit
+	 */
 	@Override
 	public long getGroupId() {
 		return _watsonListTypeAudit.getGroupId();
 	}
 
 	/**
-	* Returns the modified date of this watson list type audit.
-	*
-	* @return the modified date of this watson list type audit
-	*/
+	 * Returns the modified date of this watson list type audit.
+	 *
+	 * @return the modified date of this watson list type audit
+	 */
 	@Override
 	public Date getModifiedDate() {
 		return _watsonListTypeAudit.getModifiedDate();
 	}
 
 	/**
-	* Returns the name of this watson list type audit.
-	*
-	* @return the name of this watson list type audit
-	*/
+	 * Returns the name of this watson list type audit.
+	 *
+	 * @return the name of this watson list type audit
+	 */
 	@Override
 	public String getName() {
 		return _watsonListTypeAudit.getName();
 	}
 
 	/**
-	* Returns the localized name of this watson list type audit in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param locale the locale of the language
-	* @return the localized name of this watson list type audit
-	*/
+	 * Returns the localized name of this watson list type audit in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the locale of the language
+	 * @return the localized name of this watson list type audit
+	 */
 	@Override
 	public String getName(java.util.Locale locale) {
 		return _watsonListTypeAudit.getName(locale);
 	}
 
 	/**
-	* Returns the localized name of this watson list type audit in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param locale the local of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized name of this watson list type audit. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
-	*/
+	 * Returns the localized name of this watson list type audit in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the local of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized name of this watson list type audit. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+	 */
 	@Override
 	public String getName(java.util.Locale locale, boolean useDefault) {
 		return _watsonListTypeAudit.getName(locale, useDefault);
 	}
 
 	/**
-	* Returns the localized name of this watson list type audit in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @return the localized name of this watson list type audit
-	*/
+	 * Returns the localized name of this watson list type audit in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @return the localized name of this watson list type audit
+	 */
 	@Override
 	public String getName(String languageId) {
 		return _watsonListTypeAudit.getName(languageId);
 	}
 
 	/**
-	* Returns the localized name of this watson list type audit in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized name of this watson list type audit
-	*/
+	 * Returns the localized name of this watson list type audit in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized name of this watson list type audit
+	 */
 	@Override
 	public String getName(String languageId, boolean useDefault) {
 		return _watsonListTypeAudit.getName(languageId, useDefault);
@@ -283,30 +284,30 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	}
 
 	/**
-	* Returns a map of the locales and localized names of this watson list type audit.
-	*
-	* @return the locales and localized names of this watson list type audit
-	*/
+	 * Returns a map of the locales and localized names of this watson list type audit.
+	 *
+	 * @return the locales and localized names of this watson list type audit
+	 */
 	@Override
 	public Map<java.util.Locale, String> getNameMap() {
 		return _watsonListTypeAudit.getNameMap();
 	}
 
 	/**
-	* Returns the parent watson list type ID of this watson list type audit.
-	*
-	* @return the parent watson list type ID of this watson list type audit
-	*/
+	 * Returns the parent watson list type ID of this watson list type audit.
+	 *
+	 * @return the parent watson list type ID of this watson list type audit
+	 */
 	@Override
 	public long getParentWatsonListTypeId() {
 		return _watsonListTypeAudit.getParentWatsonListTypeId();
 	}
 
 	/**
-	* Returns the primary key of this watson list type audit.
-	*
-	* @return the primary key of this watson list type audit
-	*/
+	 * Returns the primary key of this watson list type audit.
+	 *
+	 * @return the primary key of this watson list type audit
+	 */
 	@Override
 	public long getPrimaryKey() {
 		return _watsonListTypeAudit.getPrimaryKey();
@@ -318,70 +319,70 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	}
 
 	/**
-	* Returns the status of this watson list type audit.
-	*
-	* @return the status of this watson list type audit
-	*/
+	 * Returns the status of this watson list type audit.
+	 *
+	 * @return the status of this watson list type audit
+	 */
 	@Override
 	public int getStatus() {
 		return _watsonListTypeAudit.getStatus();
 	}
 
 	/**
-	* Returns the type of this watson list type audit.
-	*
-	* @return the type of this watson list type audit
-	*/
+	 * Returns the type of this watson list type audit.
+	 *
+	 * @return the type of this watson list type audit
+	 */
 	@Override
 	public String getType() {
 		return _watsonListTypeAudit.getType();
 	}
 
 	/**
-	* Returns the user ID of this watson list type audit.
-	*
-	* @return the user ID of this watson list type audit
-	*/
+	 * Returns the user ID of this watson list type audit.
+	 *
+	 * @return the user ID of this watson list type audit
+	 */
 	@Override
 	public long getUserId() {
 		return _watsonListTypeAudit.getUserId();
 	}
 
 	/**
-	* Returns the user name of this watson list type audit.
-	*
-	* @return the user name of this watson list type audit
-	*/
+	 * Returns the user name of this watson list type audit.
+	 *
+	 * @return the user name of this watson list type audit
+	 */
 	@Override
 	public String getUserName() {
 		return _watsonListTypeAudit.getUserName();
 	}
 
 	/**
-	* Returns the user uuid of this watson list type audit.
-	*
-	* @return the user uuid of this watson list type audit
-	*/
+	 * Returns the user uuid of this watson list type audit.
+	 *
+	 * @return the user uuid of this watson list type audit
+	 */
 	@Override
 	public String getUserUuid() {
 		return _watsonListTypeAudit.getUserUuid();
 	}
 
 	/**
-	* Returns the watson list type audit ID of this watson list type audit.
-	*
-	* @return the watson list type audit ID of this watson list type audit
-	*/
+	 * Returns the watson list type audit ID of this watson list type audit.
+	 *
+	 * @return the watson list type audit ID of this watson list type audit
+	 */
 	@Override
 	public long getWatsonListTypeAuditId() {
 		return _watsonListTypeAudit.getWatsonListTypeAuditId();
 	}
 
 	/**
-	* Returns the watson list type ID of this watson list type audit.
-	*
-	* @return the watson list type ID of this watson list type audit
-	*/
+	 * Returns the watson list type ID of this watson list type audit.
+	 *
+	 * @return the watson list type ID of this watson list type audit
+	 */
 	@Override
 	public long getWatsonListTypeId() {
 		return _watsonListTypeAudit.getWatsonListTypeId();
@@ -415,14 +416,17 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	@Override
 	public void prepareLocalizedFieldsForImport()
 		throws com.liferay.portal.kernel.exception.LocaleException {
+
 		_watsonListTypeAudit.prepareLocalizedFieldsForImport();
 	}
 
 	@Override
 	public void prepareLocalizedFieldsForImport(
-		java.util.Locale defaultImportLocale)
+			java.util.Locale defaultImportLocale)
 		throws com.liferay.portal.kernel.exception.LocaleException {
-		_watsonListTypeAudit.prepareLocalizedFieldsForImport(defaultImportLocale);
+
+		_watsonListTypeAudit.prepareLocalizedFieldsForImport(
+			defaultImportLocale);
 	}
 
 	@Override
@@ -431,20 +435,20 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	}
 
 	/**
-	* Sets the company ID of this watson list type audit.
-	*
-	* @param companyId the company ID of this watson list type audit
-	*/
+	 * Sets the company ID of this watson list type audit.
+	 *
+	 * @param companyId the company ID of this watson list type audit
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_watsonListTypeAudit.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create date of this watson list type audit.
-	*
-	* @param createDate the create date of this watson list type audit
-	*/
+	 * Sets the create date of this watson list type audit.
+	 *
+	 * @param createDate the create date of this watson list type audit
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_watsonListTypeAudit.setCreateDate(createDate);
@@ -453,6 +457,7 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
 		_watsonListTypeAudit.setExpandoBridgeAttributes(baseModel);
 	}
 
@@ -467,56 +472,57 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	}
 
 	/**
-	* Sets the group ID of this watson list type audit.
-	*
-	* @param groupId the group ID of this watson list type audit
-	*/
+	 * Sets the group ID of this watson list type audit.
+	 *
+	 * @param groupId the group ID of this watson list type audit
+	 */
 	@Override
 	public void setGroupId(long groupId) {
 		_watsonListTypeAudit.setGroupId(groupId);
 	}
 
 	/**
-	* Sets the modified date of this watson list type audit.
-	*
-	* @param modifiedDate the modified date of this watson list type audit
-	*/
+	 * Sets the modified date of this watson list type audit.
+	 *
+	 * @param modifiedDate the modified date of this watson list type audit
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_watsonListTypeAudit.setModifiedDate(modifiedDate);
 	}
 
 	/**
-	* Sets the name of this watson list type audit.
-	*
-	* @param name the name of this watson list type audit
-	*/
+	 * Sets the name of this watson list type audit.
+	 *
+	 * @param name the name of this watson list type audit
+	 */
 	@Override
 	public void setName(String name) {
 		_watsonListTypeAudit.setName(name);
 	}
 
 	/**
-	* Sets the localized name of this watson list type audit in the language.
-	*
-	* @param name the localized name of this watson list type audit
-	* @param locale the locale of the language
-	*/
+	 * Sets the localized name of this watson list type audit in the language.
+	 *
+	 * @param name the localized name of this watson list type audit
+	 * @param locale the locale of the language
+	 */
 	@Override
 	public void setName(String name, java.util.Locale locale) {
 		_watsonListTypeAudit.setName(name, locale);
 	}
 
 	/**
-	* Sets the localized name of this watson list type audit in the language, and sets the default locale.
-	*
-	* @param name the localized name of this watson list type audit
-	* @param locale the locale of the language
-	* @param defaultLocale the default locale
-	*/
+	 * Sets the localized name of this watson list type audit in the language, and sets the default locale.
+	 *
+	 * @param name the localized name of this watson list type audit
+	 * @param locale the locale of the language
+	 * @param defaultLocale the default locale
+	 */
 	@Override
-	public void setName(String name, java.util.Locale locale,
-		java.util.Locale defaultLocale) {
+	public void setName(
+		String name, java.util.Locale locale, java.util.Locale defaultLocale) {
+
 		_watsonListTypeAudit.setName(name, locale, defaultLocale);
 	}
 
@@ -526,24 +532,25 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	}
 
 	/**
-	* Sets the localized names of this watson list type audit from the map of locales and localized names.
-	*
-	* @param nameMap the locales and localized names of this watson list type audit
-	*/
+	 * Sets the localized names of this watson list type audit from the map of locales and localized names.
+	 *
+	 * @param nameMap the locales and localized names of this watson list type audit
+	 */
 	@Override
 	public void setNameMap(Map<java.util.Locale, String> nameMap) {
 		_watsonListTypeAudit.setNameMap(nameMap);
 	}
 
 	/**
-	* Sets the localized names of this watson list type audit from the map of locales and localized names, and sets the default locale.
-	*
-	* @param nameMap the locales and localized names of this watson list type audit
-	* @param defaultLocale the default locale
-	*/
+	 * Sets the localized names of this watson list type audit from the map of locales and localized names, and sets the default locale.
+	 *
+	 * @param nameMap the locales and localized names of this watson list type audit
+	 * @param defaultLocale the default locale
+	 */
 	@Override
-	public void setNameMap(Map<java.util.Locale, String> nameMap,
-		java.util.Locale defaultLocale) {
+	public void setNameMap(
+		Map<java.util.Locale, String> nameMap, java.util.Locale defaultLocale) {
+
 		_watsonListTypeAudit.setNameMap(nameMap, defaultLocale);
 	}
 
@@ -553,20 +560,20 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	}
 
 	/**
-	* Sets the parent watson list type ID of this watson list type audit.
-	*
-	* @param parentWatsonListTypeId the parent watson list type ID of this watson list type audit
-	*/
+	 * Sets the parent watson list type ID of this watson list type audit.
+	 *
+	 * @param parentWatsonListTypeId the parent watson list type ID of this watson list type audit
+	 */
 	@Override
 	public void setParentWatsonListTypeId(long parentWatsonListTypeId) {
 		_watsonListTypeAudit.setParentWatsonListTypeId(parentWatsonListTypeId);
 	}
 
 	/**
-	* Sets the primary key of this watson list type audit.
-	*
-	* @param primaryKey the primary key of this watson list type audit
-	*/
+	 * Sets the primary key of this watson list type audit.
+	 *
+	 * @param primaryKey the primary key of this watson list type audit
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_watsonListTypeAudit.setPrimaryKey(primaryKey);
@@ -578,83 +585,86 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	}
 
 	/**
-	* Sets the status of this watson list type audit.
-	*
-	* @param status the status of this watson list type audit
-	*/
+	 * Sets the status of this watson list type audit.
+	 *
+	 * @param status the status of this watson list type audit
+	 */
 	@Override
 	public void setStatus(int status) {
 		_watsonListTypeAudit.setStatus(status);
 	}
 
 	/**
-	* Sets the type of this watson list type audit.
-	*
-	* @param type the type of this watson list type audit
-	*/
+	 * Sets the type of this watson list type audit.
+	 *
+	 * @param type the type of this watson list type audit
+	 */
 	@Override
 	public void setType(String type) {
 		_watsonListTypeAudit.setType(type);
 	}
 
 	/**
-	* Sets the user ID of this watson list type audit.
-	*
-	* @param userId the user ID of this watson list type audit
-	*/
+	 * Sets the user ID of this watson list type audit.
+	 *
+	 * @param userId the user ID of this watson list type audit
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_watsonListTypeAudit.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this watson list type audit.
-	*
-	* @param userName the user name of this watson list type audit
-	*/
+	 * Sets the user name of this watson list type audit.
+	 *
+	 * @param userName the user name of this watson list type audit
+	 */
 	@Override
 	public void setUserName(String userName) {
 		_watsonListTypeAudit.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this watson list type audit.
-	*
-	* @param userUuid the user uuid of this watson list type audit
-	*/
+	 * Sets the user uuid of this watson list type audit.
+	 *
+	 * @param userUuid the user uuid of this watson list type audit
+	 */
 	@Override
 	public void setUserUuid(String userUuid) {
 		_watsonListTypeAudit.setUserUuid(userUuid);
 	}
 
 	/**
-	* Sets the watson list type audit ID of this watson list type audit.
-	*
-	* @param watsonListTypeAuditId the watson list type audit ID of this watson list type audit
-	*/
+	 * Sets the watson list type audit ID of this watson list type audit.
+	 *
+	 * @param watsonListTypeAuditId the watson list type audit ID of this watson list type audit
+	 */
 	@Override
 	public void setWatsonListTypeAuditId(long watsonListTypeAuditId) {
 		_watsonListTypeAudit.setWatsonListTypeAuditId(watsonListTypeAuditId);
 	}
 
 	/**
-	* Sets the watson list type ID of this watson list type audit.
-	*
-	* @param watsonListTypeId the watson list type ID of this watson list type audit
-	*/
+	 * Sets the watson list type ID of this watson list type audit.
+	 *
+	 * @param watsonListTypeId the watson list type ID of this watson list type audit
+	 */
 	@Override
 	public void setWatsonListTypeId(long watsonListTypeId) {
 		_watsonListTypeAudit.setWatsonListTypeId(watsonListTypeId);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<WatsonListTypeAudit> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<WatsonListTypeAudit>
+		toCacheModel() {
+
 		return _watsonListTypeAudit.toCacheModel();
 	}
 
 	@Override
 	public WatsonListTypeAudit toEscapedModel() {
-		return new WatsonListTypeAuditWrapper(_watsonListTypeAudit.toEscapedModel());
+		return new WatsonListTypeAuditWrapper(
+			_watsonListTypeAudit.toEscapedModel());
 	}
 
 	@Override
@@ -664,7 +674,8 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 
 	@Override
 	public WatsonListTypeAudit toUnescapedModel() {
-		return new WatsonListTypeAuditWrapper(_watsonListTypeAudit.toUnescapedModel());
+		return new WatsonListTypeAuditWrapper(
+			_watsonListTypeAudit.toUnescapedModel());
 	}
 
 	@Override
@@ -682,10 +693,13 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 			return false;
 		}
 
-		WatsonListTypeAuditWrapper watsonListTypeAuditWrapper = (WatsonListTypeAuditWrapper)obj;
+		WatsonListTypeAuditWrapper watsonListTypeAuditWrapper =
+			(WatsonListTypeAuditWrapper)obj;
 
-		if (Objects.equals(_watsonListTypeAudit,
-					watsonListTypeAuditWrapper._watsonListTypeAudit)) {
+		if (Objects.equals(
+				_watsonListTypeAudit,
+				watsonListTypeAuditWrapper._watsonListTypeAudit)) {
+
 			return true;
 		}
 
@@ -713,4 +727,5 @@ public class WatsonListTypeAuditWrapper implements WatsonListTypeAudit,
 	}
 
 	private final WatsonListTypeAudit _watsonListTypeAudit;
+
 }

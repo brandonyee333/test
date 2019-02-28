@@ -44,12 +44,20 @@ import java.util.Map;
  */
 @AccessControlled
 @JSONWebService
-@OSGiBeanProperties(property =  {
-	"json.web.service.context.name=kaleodesigner", "json.web.service.context.path=KaleoDraftDefinition"}, service = KaleoDraftDefinitionService.class)
+@OSGiBeanProperties(
+	property = {
+		"json.web.service.context.name=kaleodesigner",
+		"json.web.service.context.path=KaleoDraftDefinition"
+	},
+	service = KaleoDraftDefinitionService.class
+)
 @ProviderType
-@Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
-	PortalException.class, SystemException.class})
+@Transactional(
+	isolation = Isolation.PORTAL,
+	rollbackFor = {PortalException.class, SystemException.class}
+)
 public interface KaleoDraftDefinitionService extends BaseService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -57,185 +65,194 @@ public interface KaleoDraftDefinitionService extends BaseService {
 	 */
 
 	/**
-	* Adds a Kaleo draft definition.
-	*
-	* @param userId the primary key of the Kaleo draft definition's
-	creator/owner
-	* @param groupId the primary key of the Kaleo draft definition's group
-	* @param name the Kaleo draft definition's name
-	* @param titleMap the Kaleo draft definition's locales and localized
-	titles
-	* @param content the content wrapped in XML
-	* @param version the Kaleo draft definition's published version
-	* @param draftVersion the Kaleo draft definition's draft version
-	* @param serviceContext the service context to be applied. This can set
-	guest permissions and group permissions for the Kaleo draft
-	definition.
-	* @return the Kaleo draft definition
-	* @throws PortalException if the user did not have the required permissions
-	to create the Kaleo draft definition or if a portal exception
-	occurred
-	*/
-	public KaleoDraftDefinition addKaleoDraftDefinition(long userId,
-		long groupId, String name, Map<Locale, String> titleMap,
-		String content, int version, int draftVersion,
-		ServiceContext serviceContext) throws PortalException;
-
-	/**
-	* Deletes the Kaleo draft definition and its resources.
-	*
-	* @param name the Kaleo draft definition's name
-	* @param version the Kaleo draft definition's published version
-	* @param serviceContext the service context to be applied. This can set
-	guest permissions and group permissions for the Kaleo draft
-	definition.
-	* @throws PortalException if the user did not have the required permissions
-	to delete the Kaleo draft definition or if a portal exception
-	occurred
-	*/
-	public void deleteKaleoDraftDefinitions(String name, int version,
-		ServiceContext serviceContext) throws PortalException;
-
-	/**
-	* Returns the Kaleo draft definition matching the name, published version,
-	* and draft version.
-	*
-	* @param name the Kaleo draft definition's name
-	* @param version the Kaleo draft definition's published version
-	* @param draftVersion the Kaleo draft definition's draft version
-	* @param serviceContext the service context to be applied. This can set
-	guest permissions and group permissions for the Kaleo draft
-	definition.
-	* @return the matching Kaleo draft definition
-	* @throws PortalException if the user did not have the required permissions
-	to access the Kaleo draft definition or if a portal exception
-	occurred
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public KaleoDraftDefinition getKaleoDraftDefinition(String name,
-		int version, int draftVersion, ServiceContext serviceContext)
+	 * Adds a Kaleo draft definition.
+	 *
+	 * @param userId the primary key of the Kaleo draft definition's
+	 creator/owner
+	 * @param groupId the primary key of the Kaleo draft definition's group
+	 * @param name the Kaleo draft definition's name
+	 * @param titleMap the Kaleo draft definition's locales and localized
+	 titles
+	 * @param content the content wrapped in XML
+	 * @param version the Kaleo draft definition's published version
+	 * @param draftVersion the Kaleo draft definition's draft version
+	 * @param serviceContext the service context to be applied. This can set
+	 guest permissions and group permissions for the Kaleo draft
+	 definition.
+	 * @return the Kaleo draft definition
+	 * @throws PortalException if the user did not have the required permissions
+	 to create the Kaleo draft definition or if a portal exception
+	 occurred
+	 */
+	public KaleoDraftDefinition addKaleoDraftDefinition(
+			long userId, long groupId, String name,
+			Map<Locale, String> titleMap, String content, int version,
+			int draftVersion, ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
-	* Returns the Kaleo draft definitions.
-	*
-	* @return the Kaleo draft definitions
-	* @throws PortalException if a portal exception occurred
-	*/
+	 * Deletes the Kaleo draft definition and its resources.
+	 *
+	 * @param name the Kaleo draft definition's name
+	 * @param version the Kaleo draft definition's published version
+	 * @param serviceContext the service context to be applied. This can set
+	 guest permissions and group permissions for the Kaleo draft
+	 definition.
+	 * @throws PortalException if the user did not have the required permissions
+	 to delete the Kaleo draft definition or if a portal exception
+	 occurred
+	 */
+	public void deleteKaleoDraftDefinitions(
+			String name, int version, ServiceContext serviceContext)
+		throws PortalException;
+
+	/**
+	 * Returns the Kaleo draft definition matching the name, published version,
+	 * and draft version.
+	 *
+	 * @param name the Kaleo draft definition's name
+	 * @param version the Kaleo draft definition's published version
+	 * @param draftVersion the Kaleo draft definition's draft version
+	 * @param serviceContext the service context to be applied. This can set
+	 guest permissions and group permissions for the Kaleo draft
+	 definition.
+	 * @return the matching Kaleo draft definition
+	 * @throws PortalException if the user did not have the required permissions
+	 to access the Kaleo draft definition or if a portal exception
+	 occurred
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public KaleoDraftDefinition getKaleoDraftDefinition(
+			String name, int version, int draftVersion,
+			ServiceContext serviceContext)
+		throws PortalException;
+
+	/**
+	 * Returns the Kaleo draft definitions.
+	 *
+	 * @return the Kaleo draft definitions
+	 * @throws PortalException if a portal exception occurred
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<KaleoDraftDefinition> getKaleoDraftDefinitions()
 		throws PortalException;
 
 	/**
-	* Returns the latest Kaleo draft definition matching the name and version.
-	*
-	* @param name the Kaleo draft definition's name
-	* @param version the Kaleo draft definition's published version
-	* @param serviceContext the service context to be applied. This can set
-	guest permissions and group permissions for the Kaleo draft
-	definition.
-	* @return the latest matching Kaleo draft definition
-	* @throws PortalException if a matching kaleo draft definition could not be
-	found or if the user did not have the required permissions to
-	access the Kaleo draft definition
-	*/
+	 * Returns the latest Kaleo draft definition matching the name and version.
+	 *
+	 * @param name the Kaleo draft definition's name
+	 * @param version the Kaleo draft definition's published version
+	 * @param serviceContext the service context to be applied. This can set
+	 guest permissions and group permissions for the Kaleo draft
+	 definition.
+	 * @return the latest matching Kaleo draft definition
+	 * @throws PortalException if a matching kaleo draft definition could not be
+	 found or if the user did not have the required permissions to
+	 access the Kaleo draft definition
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public KaleoDraftDefinition getLatestKaleoDraftDefinition(String name,
-		int version, ServiceContext serviceContext) throws PortalException;
-
-	/**
-	* Returns an ordered range of the latest Kaleo draft definitions matching
-	* the company and version.
-	*
-	* @param companyId the primary key of the Kaleo draft definition's company
-	* @param version the Kaleo draft definition's published version
-	* @param start the lower bound of the range of Kaleo draft definitions to
-	return
-	* @param end the upper bound of the range of Kkaleo draft definitions to
-	return (not inclusive)
-	* @param orderByComparator the comparator to order the Kaleo draft
-	definitions
-	* @return the range of matching Kaleo draft definitions ordered by the
-	comparator
-	* @throws PortalException if a portal exception occurred
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<KaleoDraftDefinition> getLatestKaleoDraftDefinitions(
-		long companyId, int version, int start, int end,
-		OrderByComparator orderByComparator) throws PortalException;
-
-	/**
-	* Returns an ordered range of the latest Kaleo draft definitions matching
-	* the company, version, and keywords.
-	*
-	* @param companyId the primary key of the Kaleo draft definition's company
-	* @param keywords the Kaleo draft definition's name or title
-	* @param version the Kaleo draft definition's published version
-	* @param start the lower bound of the range of Kaleo draft definitions to
-	return
-	* @param end the upper bound of the range of Kaleo draft definitions to
-	return (not inclusive)
-	* @param orderByComparator the comparator to order the Kaleo draft
-	definitions
-	* @return the range of matching Kaleo draft definitions ordered by the
-	comparator
-	* @throws PortalException if a portal exception occurred
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<KaleoDraftDefinition> getLatestKaleoDraftDefinitions(
-		long companyId, String keywords, int version, int start, int end,
-		OrderByComparator orderByComparator) throws PortalException;
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public String getOSGiServiceIdentifier();
-
-	/**
-	* Publishes the Kaleo draft definition.
-	*
-	* @param userId the primary key of the Kaleo draft definition's
-	creator/owner
-	* @param groupId the primary key of the Kaleo draft definition's group
-	* @param name the Kaleo draft definition's name
-	* @param titleMap the Kaleo draft definition's locales and localized
-	titles
-	* @param content the content wrapped in XML
-	* @param serviceContext the service context to be applied. This can set
-	guest permissions and group permissions for the Kkaleo draft
-	definition.
-	* @return the published Kaleo draft definition
-	* @throws PortalException if the user did not have the required permissions
-	to publish the Kaleo draft definition or if a portal exception
-	occurred
-	*/
-	public KaleoDraftDefinition publishKaleoDraftDefinition(long userId,
-		long groupId, String name, Map<Locale, String> titleMap,
-		String content, ServiceContext serviceContext)
+	public KaleoDraftDefinition getLatestKaleoDraftDefinition(
+			String name, int version, ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
-	* Updates the Kaleo draft definition by replacing its content and title and
-	* incrementing the draft version.
-	*
-	* @param userId the primary key of the Kaleo draft definition's
-	creator/owner
-	* @param name the Kaleo draft definition's name
-	* @param titleMap the Kaleo draft definition's locales and localized
-	titles
-	* @param content the content wrapped in XML
-	* @param version the Kaleo draft definition's published version
-	* @param serviceContext the service context to be applied. This can set
-	guest permissions and group permissions for the Kaleo draft
-	definition.
-	* @return the updated Kaleo draft definition
-	* @throws PortalException if the user did not have the required permissions
-	to update the Kaleo draft definition or if a portal exception
-	occurred
-	*/
-	public KaleoDraftDefinition updateKaleoDraftDefinition(long userId,
-		String name, Map<Locale, String> titleMap, String content, int version,
-		ServiceContext serviceContext) throws PortalException;
+	 * Returns an ordered range of the latest Kaleo draft definitions matching
+	 * the company and version.
+	 *
+	 * @param companyId the primary key of the Kaleo draft definition's company
+	 * @param version the Kaleo draft definition's published version
+	 * @param start the lower bound of the range of Kaleo draft definitions to
+	 return
+	 * @param end the upper bound of the range of Kkaleo draft definitions to
+	 return (not inclusive)
+	 * @param orderByComparator the comparator to order the Kaleo draft
+	 definitions
+	 * @return the range of matching Kaleo draft definitions ordered by the
+	 comparator
+	 * @throws PortalException if a portal exception occurred
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<KaleoDraftDefinition> getLatestKaleoDraftDefinitions(
+			long companyId, int version, int start, int end,
+			OrderByComparator orderByComparator)
+		throws PortalException;
+
+	/**
+	 * Returns an ordered range of the latest Kaleo draft definitions matching
+	 * the company, version, and keywords.
+	 *
+	 * @param companyId the primary key of the Kaleo draft definition's company
+	 * @param keywords the Kaleo draft definition's name or title
+	 * @param version the Kaleo draft definition's published version
+	 * @param start the lower bound of the range of Kaleo draft definitions to
+	 return
+	 * @param end the upper bound of the range of Kaleo draft definitions to
+	 return (not inclusive)
+	 * @param orderByComparator the comparator to order the Kaleo draft
+	 definitions
+	 * @return the range of matching Kaleo draft definitions ordered by the
+	 comparator
+	 * @throws PortalException if a portal exception occurred
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<KaleoDraftDefinition> getLatestKaleoDraftDefinitions(
+			long companyId, String keywords, int version, int start, int end,
+			OrderByComparator orderByComparator)
+		throws PortalException;
+
+	/**
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
+	public String getOSGiServiceIdentifier();
+
+	/**
+	 * Publishes the Kaleo draft definition.
+	 *
+	 * @param userId the primary key of the Kaleo draft definition's
+	 creator/owner
+	 * @param groupId the primary key of the Kaleo draft definition's group
+	 * @param name the Kaleo draft definition's name
+	 * @param titleMap the Kaleo draft definition's locales and localized
+	 titles
+	 * @param content the content wrapped in XML
+	 * @param serviceContext the service context to be applied. This can set
+	 guest permissions and group permissions for the Kkaleo draft
+	 definition.
+	 * @return the published Kaleo draft definition
+	 * @throws PortalException if the user did not have the required permissions
+	 to publish the Kaleo draft definition or if a portal exception
+	 occurred
+	 */
+	public KaleoDraftDefinition publishKaleoDraftDefinition(
+			long userId, long groupId, String name,
+			Map<Locale, String> titleMap, String content,
+			ServiceContext serviceContext)
+		throws PortalException;
+
+	/**
+	 * Updates the Kaleo draft definition by replacing its content and title and
+	 * incrementing the draft version.
+	 *
+	 * @param userId the primary key of the Kaleo draft definition's
+	 creator/owner
+	 * @param name the Kaleo draft definition's name
+	 * @param titleMap the Kaleo draft definition's locales and localized
+	 titles
+	 * @param content the content wrapped in XML
+	 * @param version the Kaleo draft definition's published version
+	 * @param serviceContext the service context to be applied. This can set
+	 guest permissions and group permissions for the Kaleo draft
+	 definition.
+	 * @return the updated Kaleo draft definition
+	 * @throws PortalException if the user did not have the required permissions
+	 to update the Kaleo draft definition or if a portal exception
+	 occurred
+	 */
+	public KaleoDraftDefinition updateKaleoDraftDefinition(
+			long userId, String name, Map<Locale, String> titleMap,
+			String content, int version, ServiceContext serviceContext)
+		throws PortalException;
+
 }

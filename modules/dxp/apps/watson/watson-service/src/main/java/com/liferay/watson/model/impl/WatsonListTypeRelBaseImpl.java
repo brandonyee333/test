@@ -34,6 +34,7 @@ import com.liferay.watson.service.WatsonListTypeRelLocalServiceUtil;
 @ProviderType
 public abstract class WatsonListTypeRelBaseImpl
 	extends WatsonListTypeRelModelImpl implements WatsonListTypeRel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -48,4 +49,5 @@ public abstract class WatsonListTypeRelBaseImpl
 			WatsonListTypeRelLocalServiceUtil.updateWatsonListTypeRel(this);
 		}
 	}
+
 }

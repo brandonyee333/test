@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.model.WatsonAddress;
 
 import java.io.Externalizable;
@@ -36,8 +35,9 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public class WatsonAddressCacheModel implements CacheModel<WatsonAddress>,
-	Externalizable {
+public class WatsonAddressCacheModel
+	implements CacheModel<WatsonAddress>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,7 +48,8 @@ public class WatsonAddressCacheModel implements CacheModel<WatsonAddress>,
 			return false;
 		}
 
-		WatsonAddressCacheModel watsonAddressCacheModel = (WatsonAddressCacheModel)obj;
+		WatsonAddressCacheModel watsonAddressCacheModel =
+			(WatsonAddressCacheModel)obj;
 
 		if (watsonAddressId == watsonAddressCacheModel.watsonAddressId) {
 			return true;
@@ -163,7 +164,8 @@ public class WatsonAddressCacheModel implements CacheModel<WatsonAddress>,
 		watsonAddressImpl.setDistrictWatsonListTypeId(districtWatsonListTypeId);
 		watsonAddressImpl.setOriginalWatsonAddressId(originalWatsonAddressId);
 		watsonAddressImpl.setProvinceWatsonListTypeId(provinceWatsonListTypeId);
-		watsonAddressImpl.setSubDistrictWatsonListTypeId(subDistrictWatsonListTypeId);
+		watsonAddressImpl.setSubDistrictWatsonListTypeId(
+			subDistrictWatsonListTypeId);
 		watsonAddressImpl.setTypeWatsonListTypeId(typeWatsonListTypeId);
 		watsonAddressImpl.setWatsonIncidentId(watsonIncidentId);
 
@@ -307,8 +309,7 @@ public class WatsonAddressCacheModel implements CacheModel<WatsonAddress>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonAddressId);
 
 		objectOutput.writeLong(groupId);
@@ -456,4 +457,5 @@ public class WatsonAddressCacheModel implements CacheModel<WatsonAddress>,
 	public double latitude;
 	public double longitude;
 	public int status;
+
 }

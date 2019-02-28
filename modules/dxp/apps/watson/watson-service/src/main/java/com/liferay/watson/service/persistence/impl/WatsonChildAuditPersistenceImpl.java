@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
-
 import com.liferay.watson.exception.NoSuchChildAuditException;
 import com.liferay.watson.model.WatsonChildAudit;
 import com.liferay.watson.model.impl.WatsonChildAuditImpl;
@@ -64,18 +63,24 @@ import java.util.Set;
  * @generated
  */
 @ProviderType
-public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonChildAudit>
+public class WatsonChildAuditPersistenceImpl
+	extends BasePersistenceImpl<WatsonChildAudit>
 	implements WatsonChildAuditPersistence {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonChildAuditUtil</code> to access the watson child audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY = WatsonChildAuditImpl.class.getName();
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List1";
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List2";
+	public static final String FINDER_CLASS_NAME_ENTITY =
+		WatsonChildAuditImpl.class.getName();
+
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List1";
+
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List2";
+
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
@@ -91,7 +96,8 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 	 */
 	@Override
 	public void cacheResult(WatsonChildAudit watsonChildAudit) {
-		entityCache.putResult(WatsonChildAuditModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			WatsonChildAuditModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonChildAuditImpl.class, watsonChildAudit.getPrimaryKey(),
 			watsonChildAudit);
 
@@ -107,9 +113,10 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 	public void cacheResult(List<WatsonChildAudit> watsonChildAudits) {
 		for (WatsonChildAudit watsonChildAudit : watsonChildAudits) {
 			if (entityCache.getResult(
-						WatsonChildAuditModelImpl.ENTITY_CACHE_ENABLED,
-						WatsonChildAuditImpl.class,
-						watsonChildAudit.getPrimaryKey()) == null) {
+					WatsonChildAuditModelImpl.ENTITY_CACHE_ENABLED,
+					WatsonChildAuditImpl.class,
+					watsonChildAudit.getPrimaryKey()) == null) {
+
 				cacheResult(watsonChildAudit);
 			}
 			else {
@@ -143,7 +150,8 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 	 */
 	@Override
 	public void clearCache(WatsonChildAudit watsonChildAudit) {
-		entityCache.removeResult(WatsonChildAuditModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.removeResult(
+			WatsonChildAuditModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonChildAuditImpl.class, watsonChildAudit.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -156,7 +164,8 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (WatsonChildAudit watsonChildAudit : watsonChildAudits) {
-			entityCache.removeResult(WatsonChildAuditModelImpl.ENTITY_CACHE_ENABLED,
+			entityCache.removeResult(
+				WatsonChildAuditModelImpl.ENTITY_CACHE_ENABLED,
 				WatsonChildAuditImpl.class, watsonChildAudit.getPrimaryKey());
 		}
 	}
@@ -189,6 +198,7 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 	@Override
 	public WatsonChildAudit remove(long watsonChildAuditId)
 		throws NoSuchChildAuditException {
+
 		return remove((Serializable)watsonChildAuditId);
 	}
 
@@ -202,21 +212,22 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 	@Override
 	public WatsonChildAudit remove(Serializable primaryKey)
 		throws NoSuchChildAuditException {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			WatsonChildAudit watsonChildAudit = (WatsonChildAudit)session.get(WatsonChildAuditImpl.class,
-					primaryKey);
+			WatsonChildAudit watsonChildAudit = (WatsonChildAudit)session.get(
+				WatsonChildAuditImpl.class, primaryKey);
 
 			if (watsonChildAudit == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchChildAuditException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					primaryKey);
+				throw new NoSuchChildAuditException(
+					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			return remove(watsonChildAudit);
@@ -240,8 +251,9 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 			session = openSession();
 
 			if (!session.contains(watsonChildAudit)) {
-				watsonChildAudit = (WatsonChildAudit)session.get(WatsonChildAuditImpl.class,
-						watsonChildAudit.getPrimaryKeyObj());
+				watsonChildAudit = (WatsonChildAudit)session.get(
+					WatsonChildAuditImpl.class,
+					watsonChildAudit.getPrimaryKeyObj());
 			}
 
 			if (watsonChildAudit != null) {
@@ -270,21 +282,24 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 			InvocationHandler invocationHandler = null;
 
 			if (ProxyUtil.isProxyClass(watsonChildAudit.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(watsonChildAudit);
+				invocationHandler = ProxyUtil.getInvocationHandler(
+					watsonChildAudit);
 
 				throw new IllegalArgumentException(
 					"Implement ModelWrapper in watsonChildAudit proxy " +
-					invocationHandler.getClass());
+						invocationHandler.getClass());
 			}
 
 			throw new IllegalArgumentException(
 				"Implement ModelWrapper in custom WatsonChildAudit implementation " +
-				watsonChildAudit.getClass());
+					watsonChildAudit.getClass());
 		}
 
-		WatsonChildAuditModelImpl watsonChildAuditModelImpl = (WatsonChildAuditModelImpl)watsonChildAudit;
+		WatsonChildAuditModelImpl watsonChildAuditModelImpl =
+			(WatsonChildAuditModelImpl)watsonChildAudit;
 
-		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
 
 		Date now = new Date();
 
@@ -293,7 +308,8 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 				watsonChildAudit.setCreateDate(now);
 			}
 			else {
-				watsonChildAudit.setCreateDate(serviceContext.getCreateDate(now));
+				watsonChildAudit.setCreateDate(
+					serviceContext.getCreateDate(now));
 			}
 		}
 
@@ -302,8 +318,8 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 				watsonChildAudit.setModifiedDate(now);
 			}
 			else {
-				watsonChildAudit.setModifiedDate(serviceContext.getModifiedDate(
-						now));
+				watsonChildAudit.setModifiedDate(
+					serviceContext.getModifiedDate(now));
 			}
 		}
 
@@ -318,7 +334,8 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 				watsonChildAudit.setNew(false);
 			}
 			else {
-				watsonChildAudit = (WatsonChildAudit)session.merge(watsonChildAudit);
+				watsonChildAudit = (WatsonChildAudit)session.merge(
+					watsonChildAudit);
 			}
 		}
 		catch (Exception e) {
@@ -332,11 +349,12 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 
 		if (isNew) {
 			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(_finderPathWithoutPaginationFindAll,
-				FINDER_ARGS_EMPTY);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(WatsonChildAuditModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			WatsonChildAuditModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonChildAuditImpl.class, watsonChildAudit.getPrimaryKey(),
 			watsonChildAudit, false);
 
@@ -355,6 +373,7 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 	@Override
 	public WatsonChildAudit findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchChildAuditException {
+
 		WatsonChildAudit watsonChildAudit = fetchByPrimaryKey(primaryKey);
 
 		if (watsonChildAudit == null) {
@@ -362,8 +381,8 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchChildAuditException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				primaryKey);
+			throw new NoSuchChildAuditException(
+				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 		}
 
 		return watsonChildAudit;
@@ -379,6 +398,7 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 	@Override
 	public WatsonChildAudit findByPrimaryKey(long watsonChildAuditId)
 		throws NoSuchChildAuditException {
+
 		return findByPrimaryKey((Serializable)watsonChildAuditId);
 	}
 
@@ -390,8 +410,9 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 	 */
 	@Override
 	public WatsonChildAudit fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(WatsonChildAuditModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonChildAuditImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(
+			WatsonChildAuditModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonChildAuditImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -405,19 +426,21 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 			try {
 				session = openSession();
 
-				watsonChildAudit = (WatsonChildAudit)session.get(WatsonChildAuditImpl.class,
-						primaryKey);
+				watsonChildAudit = (WatsonChildAudit)session.get(
+					WatsonChildAuditImpl.class, primaryKey);
 
 				if (watsonChildAudit != null) {
 					cacheResult(watsonChildAudit);
 				}
 				else {
-					entityCache.putResult(WatsonChildAuditModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(
+						WatsonChildAuditModelImpl.ENTITY_CACHE_ENABLED,
 						WatsonChildAuditImpl.class, primaryKey, nullModel);
 				}
 			}
 			catch (Exception e) {
-				entityCache.removeResult(WatsonChildAuditModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.removeResult(
+					WatsonChildAuditModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonChildAuditImpl.class, primaryKey);
 
 				throw processException(e);
@@ -444,11 +467,13 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 	@Override
 	public Map<Serializable, WatsonChildAudit> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, WatsonChildAudit> map = new HashMap<Serializable, WatsonChildAudit>();
+		Map<Serializable, WatsonChildAudit> map =
+			new HashMap<Serializable, WatsonChildAudit>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
@@ -467,8 +492,9 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(WatsonChildAuditModelImpl.ENTITY_CACHE_ENABLED,
-					WatsonChildAuditImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(
+				WatsonChildAuditModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonChildAuditImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -488,8 +514,8 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 			return map;
 		}
 
-		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
-				1);
+		StringBundler query = new StringBundler(
+			uncachedPrimaryKeys.size() * 2 + 1);
 
 		query.append(_SQL_SELECT_WATSONCHILDAUDIT_WHERE_PKS_IN);
 
@@ -512,7 +538,9 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 
 			Query q = session.createQuery(sql);
 
-			for (WatsonChildAudit watsonChildAudit : (List<WatsonChildAudit>)q.list()) {
+			for (WatsonChildAudit watsonChildAudit :
+					(List<WatsonChildAudit>)q.list()) {
+
 				map.put(watsonChildAudit.getPrimaryKeyObj(), watsonChildAudit);
 
 				cacheResult(watsonChildAudit);
@@ -521,7 +549,8 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(WatsonChildAuditModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(
+					WatsonChildAuditModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonChildAuditImpl.class, primaryKey, nullModel);
 			}
 		}
@@ -574,8 +603,10 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 	 * @return the ordered range of watson child audits
 	 */
 	@Override
-	public List<WatsonChildAudit> findAll(int start, int end,
+	public List<WatsonChildAudit> findAll(
+		int start, int end,
 		OrderByComparator<WatsonChildAudit> orderByComparator) {
+
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -593,29 +624,32 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 	 * @return the ordered range of watson child audits
 	 */
 	@Override
-	public List<WatsonChildAudit> findAll(int start, int end,
+	public List<WatsonChildAudit> findAll(
+		int start, int end,
 		OrderByComparator<WatsonChildAudit> orderByComparator,
 		boolean retrieveFromCache) {
+
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
+			(orderByComparator == null)) {
+
 			pagination = false;
 			finderPath = _finderPathWithoutPaginationFindAll;
 			finderArgs = FINDER_ARGS_EMPTY;
 		}
 		else {
 			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] { start, end, orderByComparator };
+			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<WatsonChildAudit> list = null;
 
 		if (retrieveFromCache) {
-			list = (List<WatsonChildAudit>)finderCache.getResult(finderPath,
-					finderArgs, this);
+			list = (List<WatsonChildAudit>)finderCache.getResult(
+				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
@@ -623,13 +657,13 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(2 +
-						(orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(
+					2 + (orderByComparator.getOrderByFields().length * 2));
 
 				query.append(_SQL_SELECT_WATSONCHILDAUDIT);
 
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
 				sql = query.toString();
 			}
@@ -649,16 +683,16 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 				Query q = session.createQuery(sql);
 
 				if (!pagination) {
-					list = (List<WatsonChildAudit>)QueryUtil.list(q,
-							getDialect(), start, end, false);
+					list = (List<WatsonChildAudit>)QueryUtil.list(
+						q, getDialect(), start, end, false);
 
 					Collections.sort(list);
 
 					list = Collections.unmodifiableList(list);
 				}
 				else {
-					list = (List<WatsonChildAudit>)QueryUtil.list(q,
-							getDialect(), start, end);
+					list = (List<WatsonChildAudit>)QueryUtil.list(
+						q, getDialect(), start, end);
 				}
 
 				cacheResult(list);
@@ -696,8 +730,8 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(_finderPathCountAll,
-				FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(
+			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -709,11 +743,12 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 
 				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(_finderPathCountAll, FINDER_ARGS_EMPTY,
-					count);
+				finderCache.putResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
+				finderCache.removeResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
 				throw processException(e);
 			}
@@ -734,21 +769,24 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 	 * Initializes the watson child audit persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(WatsonChildAuditModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonChildAuditModelImpl.FINDER_CACHE_ENABLED,
-				WatsonChildAuditImpl.class,
-				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+		_finderPathWithPaginationFindAll = new FinderPath(
+			WatsonChildAuditModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonChildAuditModelImpl.FINDER_CACHE_ENABLED,
+			WatsonChildAuditImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(WatsonChildAuditModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonChildAuditModelImpl.FINDER_CACHE_ENABLED,
-				WatsonChildAuditImpl.class,
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-				new String[0]);
+		_finderPathWithoutPaginationFindAll = new FinderPath(
+			WatsonChildAuditModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonChildAuditModelImpl.FINDER_CACHE_ENABLED,
+			WatsonChildAuditImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+			new String[0]);
 
-		_finderPathCountAll = new FinderPath(WatsonChildAuditModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonChildAuditModelImpl.FINDER_CACHE_ENABLED, Long.class,
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-				new String[0]);
+		_finderPathCountAll = new FinderPath(
+			WatsonChildAuditModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonChildAuditModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+			new String[0]);
 	}
 
 	public void destroy() {
@@ -760,14 +798,28 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
+
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
+
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-	private static final String _SQL_SELECT_WATSONCHILDAUDIT = "SELECT watsonChildAudit FROM WatsonChildAudit watsonChildAudit";
-	private static final String _SQL_SELECT_WATSONCHILDAUDIT_WHERE_PKS_IN = "SELECT watsonChildAudit FROM WatsonChildAudit watsonChildAudit WHERE watsonChildAuditId IN (";
-	private static final String _SQL_COUNT_WATSONCHILDAUDIT = "SELECT COUNT(watsonChildAudit) FROM WatsonChildAudit watsonChildAudit";
+
+	private static final String _SQL_SELECT_WATSONCHILDAUDIT =
+		"SELECT watsonChildAudit FROM WatsonChildAudit watsonChildAudit";
+
+	private static final String _SQL_SELECT_WATSONCHILDAUDIT_WHERE_PKS_IN =
+		"SELECT watsonChildAudit FROM WatsonChildAudit watsonChildAudit WHERE watsonChildAuditId IN (";
+
+	private static final String _SQL_COUNT_WATSONCHILDAUDIT =
+		"SELECT COUNT(watsonChildAudit) FROM WatsonChildAudit watsonChildAudit";
+
 	private static final String _ORDER_BY_ENTITY_ALIAS = "watsonChildAudit.";
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No WatsonChildAudit exists with the primary key ";
-	private static final Log _log = LogFactoryUtil.getLog(WatsonChildAuditPersistenceImpl.class);
+
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
+		"No WatsonChildAudit exists with the primary key ";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		WatsonChildAuditPersistenceImpl.class);
+
 }

@@ -41,7 +41,6 @@ import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
-
 import com.liferay.watson.login.model.WatsonTokenAuthEntry;
 import com.liferay.watson.login.service.WatsonTokenAuthEntryLocalService;
 import com.liferay.watson.login.service.persistence.WatsonTokenAuthEntryPersistence;
@@ -65,8 +64,9 @@ import javax.sql.DataSource;
  */
 @ProviderType
 public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
-	extends BaseLocalServiceImpl implements WatsonTokenAuthEntryLocalService,
-		IdentifiableOSGiService {
+	extends BaseLocalServiceImpl
+	implements WatsonTokenAuthEntryLocalService, IdentifiableOSGiService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -83,6 +83,7 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 	@Override
 	public WatsonTokenAuthEntry addWatsonTokenAuthEntry(
 		WatsonTokenAuthEntry watsonTokenAuthEntry) {
+
 		watsonTokenAuthEntry.setNew(true);
 
 		return watsonTokenAuthEntryPersistence.update(watsonTokenAuthEntry);
@@ -98,6 +99,7 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 	@Transactional(enabled = false)
 	public WatsonTokenAuthEntry createWatsonTokenAuthEntry(
 		long watsonTokenAuthEntryId) {
+
 		return watsonTokenAuthEntryPersistence.create(watsonTokenAuthEntryId);
 	}
 
@@ -111,7 +113,9 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public WatsonTokenAuthEntry deleteWatsonTokenAuthEntry(
-		long watsonTokenAuthEntryId) throws PortalException {
+			long watsonTokenAuthEntryId)
+		throws PortalException {
+
 		return watsonTokenAuthEntryPersistence.remove(watsonTokenAuthEntryId);
 	}
 
@@ -125,6 +129,7 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 	@Override
 	public WatsonTokenAuthEntry deleteWatsonTokenAuthEntry(
 		WatsonTokenAuthEntry watsonTokenAuthEntry) {
+
 		return watsonTokenAuthEntryPersistence.remove(watsonTokenAuthEntry);
 	}
 
@@ -132,8 +137,8 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 	public DynamicQuery dynamicQuery() {
 		Class<?> clazz = getClass();
 
-		return DynamicQueryFactoryUtil.forClass(WatsonTokenAuthEntry.class,
-			clazz.getClassLoader());
+		return DynamicQueryFactoryUtil.forClass(
+			WatsonTokenAuthEntry.class, clazz.getClassLoader());
 	}
 
 	/**
@@ -144,7 +149,8 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 	 */
 	@Override
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
-		return watsonTokenAuthEntryPersistence.findWithDynamicQuery(dynamicQuery);
+		return watsonTokenAuthEntryPersistence.findWithDynamicQuery(
+			dynamicQuery);
 	}
 
 	/**
@@ -160,10 +166,11 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end) {
-		return watsonTokenAuthEntryPersistence.findWithDynamicQuery(dynamicQuery,
-			start, end);
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
+
+		return watsonTokenAuthEntryPersistence.findWithDynamicQuery(
+			dynamicQuery, start, end);
 	}
 
 	/**
@@ -180,10 +187,12 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end, OrderByComparator<T> orderByComparator) {
-		return watsonTokenAuthEntryPersistence.findWithDynamicQuery(dynamicQuery,
-			start, end, orderByComparator);
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
+
+		return watsonTokenAuthEntryPersistence.findWithDynamicQuery(
+			dynamicQuery, start, end, orderByComparator);
 	}
 
 	/**
@@ -194,7 +203,8 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 	 */
 	@Override
 	public long dynamicQueryCount(DynamicQuery dynamicQuery) {
-		return watsonTokenAuthEntryPersistence.countWithDynamicQuery(dynamicQuery);
+		return watsonTokenAuthEntryPersistence.countWithDynamicQuery(
+			dynamicQuery);
 	}
 
 	/**
@@ -205,16 +215,19 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection) {
-		return watsonTokenAuthEntryPersistence.countWithDynamicQuery(dynamicQuery,
-			projection);
+	public long dynamicQueryCount(
+		DynamicQuery dynamicQuery, Projection projection) {
+
+		return watsonTokenAuthEntryPersistence.countWithDynamicQuery(
+			dynamicQuery, projection);
 	}
 
 	@Override
 	public WatsonTokenAuthEntry fetchWatsonTokenAuthEntry(
 		long watsonTokenAuthEntryId) {
-		return watsonTokenAuthEntryPersistence.fetchByPrimaryKey(watsonTokenAuthEntryId);
+
+		return watsonTokenAuthEntryPersistence.fetchByPrimaryKey(
+			watsonTokenAuthEntryId);
 	}
 
 	/**
@@ -226,15 +239,20 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 	 */
 	@Override
 	public WatsonTokenAuthEntry getWatsonTokenAuthEntry(
-		long watsonTokenAuthEntryId) throws PortalException {
-		return watsonTokenAuthEntryPersistence.findByPrimaryKey(watsonTokenAuthEntryId);
+			long watsonTokenAuthEntryId)
+		throws PortalException {
+
+		return watsonTokenAuthEntryPersistence.findByPrimaryKey(
+			watsonTokenAuthEntryId);
 	}
 
 	@Override
 	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery =
+			new DefaultActionableDynamicQuery();
 
-		actionableDynamicQuery.setBaseLocalService(watsonTokenAuthEntryLocalService);
+		actionableDynamicQuery.setBaseLocalService(
+			watsonTokenAuthEntryLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(WatsonTokenAuthEntry.class);
 
@@ -245,12 +263,17 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 	}
 
 	@Override
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
+	public IndexableActionableDynamicQuery
+		getIndexableActionableDynamicQuery() {
 
-		indexableActionableDynamicQuery.setBaseLocalService(watsonTokenAuthEntryLocalService);
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
+			new IndexableActionableDynamicQuery();
+
+		indexableActionableDynamicQuery.setBaseLocalService(
+			watsonTokenAuthEntryLocalService);
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
-		indexableActionableDynamicQuery.setModelClass(WatsonTokenAuthEntry.class);
+		indexableActionableDynamicQuery.setModelClass(
+			WatsonTokenAuthEntry.class);
 
 		indexableActionableDynamicQuery.setPrimaryKeyPropertyName(
 			"watsonTokenAuthEntryId");
@@ -260,7 +283,9 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
-		actionableDynamicQuery.setBaseLocalService(watsonTokenAuthEntryLocalService);
+
+		actionableDynamicQuery.setBaseLocalService(
+			watsonTokenAuthEntryLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(WatsonTokenAuthEntry.class);
 
@@ -274,12 +299,15 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
-		return watsonTokenAuthEntryLocalService.deleteWatsonTokenAuthEntry((WatsonTokenAuthEntry)persistedModel);
+
+		return watsonTokenAuthEntryLocalService.deleteWatsonTokenAuthEntry(
+			(WatsonTokenAuthEntry)persistedModel);
 	}
 
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
+
 		return watsonTokenAuthEntryPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -295,8 +323,9 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 	 * @return the range of watson token auth entries
 	 */
 	@Override
-	public List<WatsonTokenAuthEntry> getWatsonTokenAuthEntries(int start,
-		int end) {
+	public List<WatsonTokenAuthEntry> getWatsonTokenAuthEntries(
+		int start, int end) {
+
 		return watsonTokenAuthEntryPersistence.findAll(start, end);
 	}
 
@@ -320,6 +349,7 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 	@Override
 	public WatsonTokenAuthEntry updateWatsonTokenAuthEntry(
 		WatsonTokenAuthEntry watsonTokenAuthEntry) {
+
 		return watsonTokenAuthEntryPersistence.update(watsonTokenAuthEntry);
 	}
 
@@ -328,7 +358,9 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 	 *
 	 * @return the watson token auth entry local service
 	 */
-	public WatsonTokenAuthEntryLocalService getWatsonTokenAuthEntryLocalService() {
+	public WatsonTokenAuthEntryLocalService
+		getWatsonTokenAuthEntryLocalService() {
+
 		return watsonTokenAuthEntryLocalService;
 	}
 
@@ -339,7 +371,9 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 	 */
 	public void setWatsonTokenAuthEntryLocalService(
 		WatsonTokenAuthEntryLocalService watsonTokenAuthEntryLocalService) {
-		this.watsonTokenAuthEntryLocalService = watsonTokenAuthEntryLocalService;
+
+		this.watsonTokenAuthEntryLocalService =
+			watsonTokenAuthEntryLocalService;
 	}
 
 	/**
@@ -347,7 +381,9 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 	 *
 	 * @return the watson token auth entry persistence
 	 */
-	public WatsonTokenAuthEntryPersistence getWatsonTokenAuthEntryPersistence() {
+	public WatsonTokenAuthEntryPersistence
+		getWatsonTokenAuthEntryPersistence() {
+
 		return watsonTokenAuthEntryPersistence;
 	}
 
@@ -358,6 +394,7 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 	 */
 	public void setWatsonTokenAuthEntryPersistence(
 		WatsonTokenAuthEntryPersistence watsonTokenAuthEntryPersistence) {
+
 		this.watsonTokenAuthEntryPersistence = watsonTokenAuthEntryPersistence;
 	}
 
@@ -366,7 +403,9 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
+	public com.liferay.counter.kernel.service.CounterLocalService
+		getCounterLocalService() {
+
 		return counterLocalService;
 	}
 
@@ -376,7 +415,9 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
+		com.liferay.counter.kernel.service.CounterLocalService
+			counterLocalService) {
+
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -385,7 +426,9 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 	 *
 	 * @return the class name local service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameLocalService getClassNameLocalService() {
+	public com.liferay.portal.kernel.service.ClassNameLocalService
+		getClassNameLocalService() {
+
 		return classNameLocalService;
 	}
 
@@ -395,7 +438,9 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 	 * @param classNameLocalService the class name local service
 	 */
 	public void setClassNameLocalService(
-		com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService) {
+		com.liferay.portal.kernel.service.ClassNameLocalService
+			classNameLocalService) {
+
 		this.classNameLocalService = classNameLocalService;
 	}
 
@@ -415,6 +460,7 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 	 */
 	public void setClassNamePersistence(
 		ClassNamePersistence classNamePersistence) {
+
 		this.classNamePersistence = classNamePersistence;
 	}
 
@@ -423,7 +469,9 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 	 *
 	 * @return the resource local service
 	 */
-	public com.liferay.portal.kernel.service.ResourceLocalService getResourceLocalService() {
+	public com.liferay.portal.kernel.service.ResourceLocalService
+		getResourceLocalService() {
+
 		return resourceLocalService;
 	}
 
@@ -433,7 +481,9 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService) {
+		com.liferay.portal.kernel.service.ResourceLocalService
+			resourceLocalService) {
+
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -442,7 +492,9 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
+	public com.liferay.portal.kernel.service.UserLocalService
+		getUserLocalService() {
+
 		return userLocalService;
 	}
 
@@ -453,6 +505,7 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 	 */
 	public void setUserLocalService(
 		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
+
 		this.userLocalService = userLocalService;
 	}
 
@@ -475,7 +528,8 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register("com.liferay.watson.login.model.WatsonTokenAuthEntry",
+		persistedModelLocalServiceRegistry.register(
+			"com.liferay.watson.login.model.WatsonTokenAuthEntry",
 			watsonTokenAuthEntryLocalService);
 	}
 
@@ -509,15 +563,16 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 	 */
 	protected void runSQL(String sql) {
 		try {
-			DataSource dataSource = watsonTokenAuthEntryPersistence.getDataSource();
+			DataSource dataSource =
+				watsonTokenAuthEntryPersistence.getDataSource();
 
 			DB db = DBManagerUtil.getDB();
 
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
-					sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
+				dataSource, sql);
 
 			sqlUpdate.update();
 		}
@@ -528,20 +583,42 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 
 	@BeanReference(type = WatsonTokenAuthEntryLocalService.class)
 	protected WatsonTokenAuthEntryLocalService watsonTokenAuthEntryLocalService;
+
 	@BeanReference(type = WatsonTokenAuthEntryPersistence.class)
 	protected WatsonTokenAuthEntryPersistence watsonTokenAuthEntryPersistence;
-	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
-	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameLocalService.class)
-	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
+
+	@ServiceReference(
+		type = com.liferay.counter.kernel.service.CounterLocalService.class
+	)
+	protected com.liferay.counter.kernel.service.CounterLocalService
+		counterLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.ClassNameLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.ClassNameLocalService
+		classNameLocalService;
+
 	@ServiceReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
-	@ServiceReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
-	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
-	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.ResourceLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.ResourceLocalService
+		resourceLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.UserLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.UserLocalService
+		userLocalService;
+
 	@ServiceReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
+
 	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
-	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
+	protected PersistedModelLocalServiceRegistry
+		persistedModelLocalServiceRegistry;
+
 }

@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.model.WatsonIncident;
 
 import java.io.Externalizable;
@@ -36,8 +35,9 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
-	Externalizable {
+public class WatsonIncidentCacheModel
+	implements CacheModel<WatsonIncident>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,7 +48,8 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 			return false;
 		}
 
-		WatsonIncidentCacheModel watsonIncidentCacheModel = (WatsonIncidentCacheModel)obj;
+		WatsonIncidentCacheModel watsonIncidentCacheModel =
+			(WatsonIncidentCacheModel)obj;
 
 		if (watsonIncidentId == watsonIncidentCacheModel.watsonIncidentId) {
 			return true;
@@ -149,7 +150,8 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 			watsonIncidentImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
-		watsonIncidentImpl.setExternalCaseWatsonListTypeId(externalCaseWatsonListTypeId);
+		watsonIncidentImpl.setExternalCaseWatsonListTypeId(
+			externalCaseWatsonListTypeId);
 		watsonIncidentImpl.setSourceWatsonListTypeId(sourceWatsonListTypeId);
 		watsonIncidentImpl.setTypeWatsonListTypeId(typeWatsonListTypeId);
 		watsonIncidentImpl.setSubtypeWatsonListTypeId(subtypeWatsonListTypeId);
@@ -252,8 +254,7 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonIncidentId);
 
 		objectOutput.writeLong(groupId);
@@ -344,4 +345,5 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 	public double expenses;
 	public int incidentStatus;
 	public int status;
+
 }

@@ -18,7 +18,6 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -30,7 +29,6 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.model.WatsonIncidentRelAudit;
 import com.liferay.watson.model.WatsonIncidentRelAuditModel;
 
@@ -58,29 +56,29 @@ import java.util.function.Function;
  * @generated
  */
 @ProviderType
-public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonIncidentRelAudit>
+public class WatsonIncidentRelAuditModelImpl
+	extends BaseModelImpl<WatsonIncidentRelAudit>
 	implements WatsonIncidentRelAuditModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson incident rel audit model instance should use the <code>WatsonIncidentRelAudit</code> interface instead.
 	 */
 	public static final String TABLE_NAME = "WatsonIncidentRelAudit";
+
 	public static final Object[][] TABLE_COLUMNS = {
-			{ "watsonIncidentRelAuditId", Types.BIGINT },
-			{ "groupId", Types.BIGINT },
-			{ "companyId", Types.BIGINT },
-			{ "userId", Types.BIGINT },
-			{ "userName", Types.VARCHAR },
-			{ "createDate", Types.TIMESTAMP },
-			{ "modifiedDate", Types.TIMESTAMP },
-			{ "watsonIncidentId1", Types.BIGINT },
-			{ "watsonIncidentId2", Types.BIGINT },
-			{ "watsonIncidentRelId", Types.BIGINT },
-			{ "type_", Types.VARCHAR },
-			{ "status", Types.INTEGER }
-		};
-	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
+		{"watsonIncidentRelAuditId", Types.BIGINT}, {"groupId", Types.BIGINT},
+		{"companyId", Types.BIGINT}, {"userId", Types.BIGINT},
+		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
+		{"modifiedDate", Types.TIMESTAMP}, {"watsonIncidentId1", Types.BIGINT},
+		{"watsonIncidentId2", Types.BIGINT},
+		{"watsonIncidentRelId", Types.BIGINT}, {"type_", Types.VARCHAR},
+		{"status", Types.INTEGER}
+	};
+
+	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
+		new HashMap<String, Integer>();
 
 	static {
 		TABLE_COLUMNS_MAP.put("watsonIncidentRelAuditId", Types.BIGINT);
@@ -97,22 +95,39 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonIncidentRelAudit (watsonIncidentRelAuditId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,watsonIncidentId1 LONG,watsonIncidentId2 LONG,watsonIncidentRelId LONG,type_ VARCHAR(75) null,status INTEGER)";
-	public static final String TABLE_SQL_DROP = "drop table WatsonIncidentRelAudit";
-	public static final String ORDER_BY_JPQL = " ORDER BY watsonIncidentRelAudit.watsonIncidentRelAuditId ASC";
-	public static final String ORDER_BY_SQL = " ORDER BY WatsonIncidentRelAudit.watsonIncidentRelAuditId ASC";
+	public static final String TABLE_SQL_CREATE =
+		"create table WatsonIncidentRelAudit (watsonIncidentRelAuditId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,watsonIncidentId1 LONG,watsonIncidentId2 LONG,watsonIncidentRelId LONG,type_ VARCHAR(75) null,status INTEGER)";
+
+	public static final String TABLE_SQL_DROP =
+		"drop table WatsonIncidentRelAudit";
+
+	public static final String ORDER_BY_JPQL =
+		" ORDER BY watsonIncidentRelAudit.watsonIncidentRelAuditId ASC";
+
+	public static final String ORDER_BY_SQL =
+		" ORDER BY WatsonIncidentRelAudit.watsonIncidentRelAuditId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
+
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
+
 	public static final String TX_MANAGER = "liferayTransactionManager";
-	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonIncidentRelAudit"),
-			true);
-	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonIncidentRelAudit"),
-			true);
+
+	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonIncidentRelAudit"),
+		true);
+
+	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonIncidentRelAudit"),
+		true);
+
 	public static final boolean COLUMN_BITMASK_ENABLED = false;
-	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.watson.service.util.ServiceProps.get(
-				"lock.expiration.time.com.liferay.watson.model.WatsonIncidentRelAudit"));
+
+	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"lock.expiration.time.com.liferay.watson.model.WatsonIncidentRelAudit"));
 
 	public WatsonIncidentRelAuditModelImpl() {
 	}
@@ -151,14 +166,18 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		Map<String, Function<WatsonIncidentRelAudit, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonIncidentRelAudit, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		for (Map.Entry<String, Function<WatsonIncidentRelAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonIncidentRelAudit, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonIncidentRelAudit, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonIncidentRelAudit, Object> attributeGetterFunction =
+				entry.getValue();
 
-			attributes.put(attributeName,
+			attributes.put(
+				attributeName,
 				attributeGetterFunction.apply((WatsonIncidentRelAudit)this));
 		}
 
@@ -170,46 +189,58 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Map<String, BiConsumer<WatsonIncidentRelAudit, Object>> attributeSetterBiConsumers =
-			getAttributeSetterBiConsumers();
+		Map<String, BiConsumer<WatsonIncidentRelAudit, Object>>
+			attributeSetterBiConsumers = getAttributeSetterBiConsumers();
 
 		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			String attributeName = entry.getKey();
 
-			BiConsumer<WatsonIncidentRelAudit, Object> attributeSetterBiConsumer =
-				attributeSetterBiConsumers.get(attributeName);
+			BiConsumer<WatsonIncidentRelAudit, Object>
+				attributeSetterBiConsumer = attributeSetterBiConsumers.get(
+					attributeName);
 
 			if (attributeSetterBiConsumer != null) {
-				attributeSetterBiConsumer.accept((WatsonIncidentRelAudit)this,
-					entry.getValue());
+				attributeSetterBiConsumer.accept(
+					(WatsonIncidentRelAudit)this, entry.getValue());
 			}
 		}
 	}
 
-	public Map<String, Function<WatsonIncidentRelAudit, Object>> getAttributeGetterFunctions() {
+	public Map<String, Function<WatsonIncidentRelAudit, Object>>
+		getAttributeGetterFunctions() {
+
 		return _attributeGetterFunctions;
 	}
 
-	public Map<String, BiConsumer<WatsonIncidentRelAudit, Object>> getAttributeSetterBiConsumers() {
+	public Map<String, BiConsumer<WatsonIncidentRelAudit, Object>>
+		getAttributeSetterBiConsumers() {
+
 		return _attributeSetterBiConsumers;
 	}
 
-	private static final Map<String, Function<WatsonIncidentRelAudit, Object>> _attributeGetterFunctions;
-	private static final Map<String, BiConsumer<WatsonIncidentRelAudit, Object>> _attributeSetterBiConsumers;
+	private static final Map<String, Function<WatsonIncidentRelAudit, Object>>
+		_attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonIncidentRelAudit, Object>>
+		_attributeSetterBiConsumers;
 
 	static {
-		Map<String, Function<WatsonIncidentRelAudit, Object>> attributeGetterFunctions =
-			new LinkedHashMap<String, Function<WatsonIncidentRelAudit, Object>>();
-		Map<String, BiConsumer<WatsonIncidentRelAudit, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<WatsonIncidentRelAudit, ?>>();
-
+		Map<String, Function<WatsonIncidentRelAudit, Object>>
+			attributeGetterFunctions =
+				new LinkedHashMap
+					<String, Function<WatsonIncidentRelAudit, Object>>();
+		Map<String, BiConsumer<WatsonIncidentRelAudit, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap
+					<String, BiConsumer<WatsonIncidentRelAudit, ?>>();
 
 		attributeGetterFunctions.put(
 			"watsonIncidentRelAuditId",
 			new Function<WatsonIncidentRelAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonIncidentRelAudit watsonIncidentRelAudit) {
+				public Object apply(
+					WatsonIncidentRelAudit watsonIncidentRelAudit) {
+
 					return watsonIncidentRelAudit.getWatsonIncidentRelAuditId();
 				}
 
@@ -219,8 +250,12 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 			new BiConsumer<WatsonIncidentRelAudit, Object>() {
 
 				@Override
-				public void accept(WatsonIncidentRelAudit watsonIncidentRelAudit, Object watsonIncidentRelAuditId) {
-					watsonIncidentRelAudit.setWatsonIncidentRelAuditId((Long)watsonIncidentRelAuditId);
+				public void accept(
+					WatsonIncidentRelAudit watsonIncidentRelAudit,
+					Object watsonIncidentRelAuditId) {
+
+					watsonIncidentRelAudit.setWatsonIncidentRelAuditId(
+						(Long)watsonIncidentRelAuditId);
 				}
 
 			});
@@ -229,7 +264,9 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 			new Function<WatsonIncidentRelAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonIncidentRelAudit watsonIncidentRelAudit) {
+				public Object apply(
+					WatsonIncidentRelAudit watsonIncidentRelAudit) {
+
 					return watsonIncidentRelAudit.getGroupId();
 				}
 
@@ -239,7 +276,10 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 			new BiConsumer<WatsonIncidentRelAudit, Object>() {
 
 				@Override
-				public void accept(WatsonIncidentRelAudit watsonIncidentRelAudit, Object groupId) {
+				public void accept(
+					WatsonIncidentRelAudit watsonIncidentRelAudit,
+					Object groupId) {
+
 					watsonIncidentRelAudit.setGroupId((Long)groupId);
 				}
 
@@ -249,7 +289,9 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 			new Function<WatsonIncidentRelAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonIncidentRelAudit watsonIncidentRelAudit) {
+				public Object apply(
+					WatsonIncidentRelAudit watsonIncidentRelAudit) {
+
 					return watsonIncidentRelAudit.getCompanyId();
 				}
 
@@ -259,7 +301,10 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 			new BiConsumer<WatsonIncidentRelAudit, Object>() {
 
 				@Override
-				public void accept(WatsonIncidentRelAudit watsonIncidentRelAudit, Object companyId) {
+				public void accept(
+					WatsonIncidentRelAudit watsonIncidentRelAudit,
+					Object companyId) {
+
 					watsonIncidentRelAudit.setCompanyId((Long)companyId);
 				}
 
@@ -269,7 +314,9 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 			new Function<WatsonIncidentRelAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonIncidentRelAudit watsonIncidentRelAudit) {
+				public Object apply(
+					WatsonIncidentRelAudit watsonIncidentRelAudit) {
+
 					return watsonIncidentRelAudit.getUserId();
 				}
 
@@ -279,7 +326,10 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 			new BiConsumer<WatsonIncidentRelAudit, Object>() {
 
 				@Override
-				public void accept(WatsonIncidentRelAudit watsonIncidentRelAudit, Object userId) {
+				public void accept(
+					WatsonIncidentRelAudit watsonIncidentRelAudit,
+					Object userId) {
+
 					watsonIncidentRelAudit.setUserId((Long)userId);
 				}
 
@@ -289,7 +339,9 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 			new Function<WatsonIncidentRelAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonIncidentRelAudit watsonIncidentRelAudit) {
+				public Object apply(
+					WatsonIncidentRelAudit watsonIncidentRelAudit) {
+
 					return watsonIncidentRelAudit.getUserName();
 				}
 
@@ -299,7 +351,10 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 			new BiConsumer<WatsonIncidentRelAudit, Object>() {
 
 				@Override
-				public void accept(WatsonIncidentRelAudit watsonIncidentRelAudit, Object userName) {
+				public void accept(
+					WatsonIncidentRelAudit watsonIncidentRelAudit,
+					Object userName) {
+
 					watsonIncidentRelAudit.setUserName((String)userName);
 				}
 
@@ -309,7 +364,9 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 			new Function<WatsonIncidentRelAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonIncidentRelAudit watsonIncidentRelAudit) {
+				public Object apply(
+					WatsonIncidentRelAudit watsonIncidentRelAudit) {
+
 					return watsonIncidentRelAudit.getCreateDate();
 				}
 
@@ -319,7 +376,10 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 			new BiConsumer<WatsonIncidentRelAudit, Object>() {
 
 				@Override
-				public void accept(WatsonIncidentRelAudit watsonIncidentRelAudit, Object createDate) {
+				public void accept(
+					WatsonIncidentRelAudit watsonIncidentRelAudit,
+					Object createDate) {
+
 					watsonIncidentRelAudit.setCreateDate((Date)createDate);
 				}
 
@@ -329,7 +389,9 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 			new Function<WatsonIncidentRelAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonIncidentRelAudit watsonIncidentRelAudit) {
+				public Object apply(
+					WatsonIncidentRelAudit watsonIncidentRelAudit) {
+
 					return watsonIncidentRelAudit.getModifiedDate();
 				}
 
@@ -339,7 +401,10 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 			new BiConsumer<WatsonIncidentRelAudit, Object>() {
 
 				@Override
-				public void accept(WatsonIncidentRelAudit watsonIncidentRelAudit, Object modifiedDate) {
+				public void accept(
+					WatsonIncidentRelAudit watsonIncidentRelAudit,
+					Object modifiedDate) {
+
 					watsonIncidentRelAudit.setModifiedDate((Date)modifiedDate);
 				}
 
@@ -349,7 +414,9 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 			new Function<WatsonIncidentRelAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonIncidentRelAudit watsonIncidentRelAudit) {
+				public Object apply(
+					WatsonIncidentRelAudit watsonIncidentRelAudit) {
+
 					return watsonIncidentRelAudit.getWatsonIncidentId1();
 				}
 
@@ -359,8 +426,12 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 			new BiConsumer<WatsonIncidentRelAudit, Object>() {
 
 				@Override
-				public void accept(WatsonIncidentRelAudit watsonIncidentRelAudit, Object watsonIncidentId1) {
-					watsonIncidentRelAudit.setWatsonIncidentId1((Long)watsonIncidentId1);
+				public void accept(
+					WatsonIncidentRelAudit watsonIncidentRelAudit,
+					Object watsonIncidentId1) {
+
+					watsonIncidentRelAudit.setWatsonIncidentId1(
+						(Long)watsonIncidentId1);
 				}
 
 			});
@@ -369,7 +440,9 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 			new Function<WatsonIncidentRelAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonIncidentRelAudit watsonIncidentRelAudit) {
+				public Object apply(
+					WatsonIncidentRelAudit watsonIncidentRelAudit) {
+
 					return watsonIncidentRelAudit.getWatsonIncidentId2();
 				}
 
@@ -379,8 +452,12 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 			new BiConsumer<WatsonIncidentRelAudit, Object>() {
 
 				@Override
-				public void accept(WatsonIncidentRelAudit watsonIncidentRelAudit, Object watsonIncidentId2) {
-					watsonIncidentRelAudit.setWatsonIncidentId2((Long)watsonIncidentId2);
+				public void accept(
+					WatsonIncidentRelAudit watsonIncidentRelAudit,
+					Object watsonIncidentId2) {
+
+					watsonIncidentRelAudit.setWatsonIncidentId2(
+						(Long)watsonIncidentId2);
 				}
 
 			});
@@ -389,7 +466,9 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 			new Function<WatsonIncidentRelAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonIncidentRelAudit watsonIncidentRelAudit) {
+				public Object apply(
+					WatsonIncidentRelAudit watsonIncidentRelAudit) {
+
 					return watsonIncidentRelAudit.getWatsonIncidentRelId();
 				}
 
@@ -399,8 +478,12 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 			new BiConsumer<WatsonIncidentRelAudit, Object>() {
 
 				@Override
-				public void accept(WatsonIncidentRelAudit watsonIncidentRelAudit, Object watsonIncidentRelId) {
-					watsonIncidentRelAudit.setWatsonIncidentRelId((Long)watsonIncidentRelId);
+				public void accept(
+					WatsonIncidentRelAudit watsonIncidentRelAudit,
+					Object watsonIncidentRelId) {
+
+					watsonIncidentRelAudit.setWatsonIncidentRelId(
+						(Long)watsonIncidentRelId);
 				}
 
 			});
@@ -409,7 +492,9 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 			new Function<WatsonIncidentRelAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonIncidentRelAudit watsonIncidentRelAudit) {
+				public Object apply(
+					WatsonIncidentRelAudit watsonIncidentRelAudit) {
+
 					return watsonIncidentRelAudit.getType();
 				}
 
@@ -419,7 +504,10 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 			new BiConsumer<WatsonIncidentRelAudit, Object>() {
 
 				@Override
-				public void accept(WatsonIncidentRelAudit watsonIncidentRelAudit, Object type) {
+				public void accept(
+					WatsonIncidentRelAudit watsonIncidentRelAudit,
+					Object type) {
+
 					watsonIncidentRelAudit.setType((String)type);
 				}
 
@@ -429,7 +517,9 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 			new Function<WatsonIncidentRelAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonIncidentRelAudit watsonIncidentRelAudit) {
+				public Object apply(
+					WatsonIncidentRelAudit watsonIncidentRelAudit) {
+
 					return watsonIncidentRelAudit.getStatus();
 				}
 
@@ -439,15 +529,19 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 			new BiConsumer<WatsonIncidentRelAudit, Object>() {
 
 				@Override
-				public void accept(WatsonIncidentRelAudit watsonIncidentRelAudit, Object status) {
+				public void accept(
+					WatsonIncidentRelAudit watsonIncidentRelAudit,
+					Object status) {
+
 					watsonIncidentRelAudit.setStatus((Integer)status);
 				}
 
 			});
 
-
-		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap(
+			(Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -604,8 +698,9 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 
 	@Override
 	public ExpandoBridge getExpandoBridge() {
-		return ExpandoBridgeFactoryUtil.getExpandoBridge(getCompanyId(),
-			WatsonIncidentRelAudit.class.getName(), getPrimaryKey());
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(
+			getCompanyId(), WatsonIncidentRelAudit.class.getName(),
+			getPrimaryKey());
 	}
 
 	@Override
@@ -618,8 +713,9 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 	@Override
 	public WatsonIncidentRelAudit toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonIncidentRelAudit)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+			_escapedModel = (WatsonIncidentRelAudit)ProxyUtil.newProxyInstance(
+				_classLoader, _escapedModelInterfaces,
+				new AutoEscapeBeanHandler(this));
 		}
 
 		return _escapedModel;
@@ -627,9 +723,11 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 
 	@Override
 	public Object clone() {
-		WatsonIncidentRelAuditImpl watsonIncidentRelAuditImpl = new WatsonIncidentRelAuditImpl();
+		WatsonIncidentRelAuditImpl watsonIncidentRelAuditImpl =
+			new WatsonIncidentRelAuditImpl();
 
-		watsonIncidentRelAuditImpl.setWatsonIncidentRelAuditId(getWatsonIncidentRelAuditId());
+		watsonIncidentRelAuditImpl.setWatsonIncidentRelAuditId(
+			getWatsonIncidentRelAuditId());
 		watsonIncidentRelAuditImpl.setGroupId(getGroupId());
 		watsonIncidentRelAuditImpl.setCompanyId(getCompanyId());
 		watsonIncidentRelAuditImpl.setUserId(getUserId());
@@ -638,7 +736,8 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 		watsonIncidentRelAuditImpl.setModifiedDate(getModifiedDate());
 		watsonIncidentRelAuditImpl.setWatsonIncidentId1(getWatsonIncidentId1());
 		watsonIncidentRelAuditImpl.setWatsonIncidentId2(getWatsonIncidentId2());
-		watsonIncidentRelAuditImpl.setWatsonIncidentRelId(getWatsonIncidentRelId());
+		watsonIncidentRelAuditImpl.setWatsonIncidentRelId(
+			getWatsonIncidentRelId());
 		watsonIncidentRelAuditImpl.setType(getType());
 		watsonIncidentRelAuditImpl.setStatus(getStatus());
 
@@ -672,7 +771,8 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 			return false;
 		}
 
-		WatsonIncidentRelAudit watsonIncidentRelAudit = (WatsonIncidentRelAudit)obj;
+		WatsonIncidentRelAudit watsonIncidentRelAudit =
+			(WatsonIncidentRelAudit)obj;
 
 		long primaryKey = watsonIncidentRelAudit.getPrimaryKey();
 
@@ -708,9 +808,11 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 
 	@Override
 	public CacheModel<WatsonIncidentRelAudit> toCacheModel() {
-		WatsonIncidentRelAuditCacheModel watsonIncidentRelAuditCacheModel = new WatsonIncidentRelAuditCacheModel();
+		WatsonIncidentRelAuditCacheModel watsonIncidentRelAuditCacheModel =
+			new WatsonIncidentRelAuditCacheModel();
 
-		watsonIncidentRelAuditCacheModel.watsonIncidentRelAuditId = getWatsonIncidentRelAuditId();
+		watsonIncidentRelAuditCacheModel.watsonIncidentRelAuditId =
+			getWatsonIncidentRelAuditId();
 
 		watsonIncidentRelAuditCacheModel.groupId = getGroupId();
 
@@ -738,17 +840,21 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 		Date modifiedDate = getModifiedDate();
 
 		if (modifiedDate != null) {
-			watsonIncidentRelAuditCacheModel.modifiedDate = modifiedDate.getTime();
+			watsonIncidentRelAuditCacheModel.modifiedDate =
+				modifiedDate.getTime();
 		}
 		else {
 			watsonIncidentRelAuditCacheModel.modifiedDate = Long.MIN_VALUE;
 		}
 
-		watsonIncidentRelAuditCacheModel.watsonIncidentId1 = getWatsonIncidentId1();
+		watsonIncidentRelAuditCacheModel.watsonIncidentId1 =
+			getWatsonIncidentId1();
 
-		watsonIncidentRelAuditCacheModel.watsonIncidentId2 = getWatsonIncidentId2();
+		watsonIncidentRelAuditCacheModel.watsonIncidentId2 =
+			getWatsonIncidentId2();
 
-		watsonIncidentRelAuditCacheModel.watsonIncidentRelId = getWatsonIncidentRelId();
+		watsonIncidentRelAuditCacheModel.watsonIncidentRelId =
+			getWatsonIncidentRelId();
 
 		watsonIncidentRelAuditCacheModel.type = getType();
 
@@ -765,22 +871,25 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 
 	@Override
 	public String toString() {
-		Map<String, Function<WatsonIncidentRelAudit, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonIncidentRelAudit, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
-				2);
+		StringBundler sb = new StringBundler(
+			4 * attributeGetterFunctions.size() + 2);
 
 		sb.append("{");
 
-		for (Map.Entry<String, Function<WatsonIncidentRelAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonIncidentRelAudit, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonIncidentRelAudit, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonIncidentRelAudit, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append(attributeName);
 			sb.append("=");
-			sb.append(attributeGetterFunction.apply(
-					(WatsonIncidentRelAudit)this));
+			sb.append(
+				attributeGetterFunction.apply((WatsonIncidentRelAudit)this));
 			sb.append(", ");
 		}
 
@@ -795,25 +904,28 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 
 	@Override
 	public String toXmlString() {
-		Map<String, Function<WatsonIncidentRelAudit, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonIncidentRelAudit, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
-				4);
+		StringBundler sb = new StringBundler(
+			5 * attributeGetterFunctions.size() + 4);
 
 		sb.append("<model><model-name>");
 		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		for (Map.Entry<String, Function<WatsonIncidentRelAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonIncidentRelAudit, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonIncidentRelAudit, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonIncidentRelAudit, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append("<column><column-name>");
 			sb.append(attributeName);
 			sb.append("</column-name><column-value><![CDATA[");
-			sb.append(attributeGetterFunction.apply(
-					(WatsonIncidentRelAudit)this));
+			sb.append(
+				attributeGetterFunction.apply((WatsonIncidentRelAudit)this));
 			sb.append("]]></column-value></column>");
 		}
 
@@ -822,10 +934,12 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader = WatsonIncidentRelAudit.class.getClassLoader();
+	private static final ClassLoader _classLoader =
+		WatsonIncidentRelAudit.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			WatsonIncidentRelAudit.class, ModelWrapper.class
-		};
+		WatsonIncidentRelAudit.class, ModelWrapper.class
+	};
+
 	private long _watsonIncidentRelAuditId;
 	private long _groupId;
 	private long _companyId;
@@ -840,4 +954,5 @@ public class WatsonIncidentRelAuditModelImpl extends BaseModelImpl<WatsonInciden
 	private String _type;
 	private int _status;
 	private WatsonIncidentRelAudit _escapedModel;
+
 }

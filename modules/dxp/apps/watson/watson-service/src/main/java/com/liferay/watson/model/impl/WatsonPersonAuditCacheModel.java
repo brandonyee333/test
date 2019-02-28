@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.model.WatsonPersonAudit;
 
 import java.io.Externalizable;
@@ -36,8 +35,9 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public class WatsonPersonAuditCacheModel implements CacheModel<WatsonPersonAudit>,
-	Externalizable {
+public class WatsonPersonAuditCacheModel
+	implements CacheModel<WatsonPersonAudit>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,9 +48,12 @@ public class WatsonPersonAuditCacheModel implements CacheModel<WatsonPersonAudit
 			return false;
 		}
 
-		WatsonPersonAuditCacheModel watsonPersonAuditCacheModel = (WatsonPersonAuditCacheModel)obj;
+		WatsonPersonAuditCacheModel watsonPersonAuditCacheModel =
+			(WatsonPersonAuditCacheModel)obj;
 
-		if (watsonPersonAuditId == watsonPersonAuditCacheModel.watsonPersonAuditId) {
+		if (watsonPersonAuditId ==
+				watsonPersonAuditCacheModel.watsonPersonAuditId) {
+
 			return true;
 		}
 
@@ -135,7 +138,8 @@ public class WatsonPersonAuditCacheModel implements CacheModel<WatsonPersonAudit
 
 	@Override
 	public WatsonPersonAudit toEntityModel() {
-		WatsonPersonAuditImpl watsonPersonAuditImpl = new WatsonPersonAuditImpl();
+		WatsonPersonAuditImpl watsonPersonAuditImpl =
+			new WatsonPersonAuditImpl();
 
 		watsonPersonAuditImpl.setWatsonPersonAuditId(watsonPersonAuditId);
 		watsonPersonAuditImpl.setGroupId(groupId);
@@ -164,9 +168,12 @@ public class WatsonPersonAuditCacheModel implements CacheModel<WatsonPersonAudit
 		}
 
 		watsonPersonAuditImpl.setBirthCountryId(birthCountryId);
-		watsonPersonAuditImpl.setCitizenshipWatsonListTypeId(citizenshipWatsonListTypeId);
-		watsonPersonAuditImpl.setCountryWatsonListTypeId(countryWatsonListTypeId);
-		watsonPersonAuditImpl.setEthnicityWatsonListTypeId(ethnicityWatsonListTypeId);
+		watsonPersonAuditImpl.setCitizenshipWatsonListTypeId(
+			citizenshipWatsonListTypeId);
+		watsonPersonAuditImpl.setCountryWatsonListTypeId(
+			countryWatsonListTypeId);
+		watsonPersonAuditImpl.setEthnicityWatsonListTypeId(
+			ethnicityWatsonListTypeId);
 		watsonPersonAuditImpl.setEyesWatsonListTypeId(eyesWatsonListTypeId);
 		watsonPersonAuditImpl.setHairWatsonListTypeId(hairWatsonListTypeId);
 		watsonPersonAuditImpl.setOriginalWatsonPersonId(originalWatsonPersonId);
@@ -307,8 +314,7 @@ public class WatsonPersonAuditCacheModel implements CacheModel<WatsonPersonAudit
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonPersonAuditId);
 
 		objectOutput.writeLong(groupId);
@@ -440,4 +446,5 @@ public class WatsonPersonAuditCacheModel implements CacheModel<WatsonPersonAudit
 	public boolean accepted;
 	public boolean rescued;
 	public int status;
+
 }

@@ -29,27 +29,33 @@ import com.liferay.portal.kernel.util.Accessor;
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonChildAuditImpl")
 @ProviderType
-public interface WatsonChildAudit extends WatsonChildAuditModel, PersistedModel {
+public interface WatsonChildAudit
+	extends WatsonChildAuditModel, PersistedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonChildAuditImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<WatsonChildAudit, Long> WATSON_CHILD_AUDIT_ID_ACCESSOR =
-		new Accessor<WatsonChildAudit, Long>() {
-			@Override
-			public Long get(WatsonChildAudit watsonChildAudit) {
-				return watsonChildAudit.getWatsonChildAuditId();
-			}
+	public static final Accessor<WatsonChildAudit, Long>
+		WATSON_CHILD_AUDIT_ID_ACCESSOR =
+			new Accessor<WatsonChildAudit, Long>() {
 
-			@Override
-			public Class<Long> getAttributeClass() {
-				return Long.class;
-			}
+				@Override
+				public Long get(WatsonChildAudit watsonChildAudit) {
+					return watsonChildAudit.getWatsonChildAuditId();
+				}
 
-			@Override
-			public Class<WatsonChildAudit> getTypeClass() {
-				return WatsonChildAudit.class;
-			}
-		};
+				@Override
+				public Class<Long> getAttributeClass() {
+					return Long.class;
+				}
+
+				@Override
+				public Class<WatsonChildAudit> getTypeClass() {
+					return WatsonChildAudit.class;
+				}
+
+			};
+
 }

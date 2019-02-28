@@ -34,6 +34,7 @@ import com.liferay.watson.service.WatsonAddressAuditLocalServiceUtil;
 @ProviderType
 public abstract class WatsonAddressAuditBaseImpl
 	extends WatsonAddressAuditModelImpl implements WatsonAddressAudit {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -48,4 +49,5 @@ public abstract class WatsonAddressAuditBaseImpl
 			WatsonAddressAuditLocalServiceUtil.updateWatsonAddressAudit(this);
 		}
 	}
+
 }

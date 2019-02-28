@@ -17,7 +17,6 @@ package com.liferay.watson.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -45,8 +44,10 @@ import java.util.Map;
  * @generated
  */
 @ProviderType
-public interface WatsonActivityAuditModel extends BaseModel<WatsonActivityAudit>,
-	GroupedModel, LocalizedModel, ShardedModel {
+public interface WatsonActivityAuditModel
+	extends BaseModel<WatsonActivityAudit>, GroupedModel, LocalizedModel,
+			ShardedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -330,8 +331,8 @@ public interface WatsonActivityAuditModel extends BaseModel<WatsonActivityAudit>
 	 * @param locale the locale of the language
 	 * @param defaultLocale the default locale
 	 */
-	public void setNarrative(String narrative, Locale locale,
-		Locale defaultLocale);
+	public void setNarrative(
+		String narrative, Locale locale, Locale defaultLocale);
 
 	public void setNarrativeCurrentLanguageId(String languageId);
 
@@ -348,8 +349,8 @@ public interface WatsonActivityAuditModel extends BaseModel<WatsonActivityAudit>
 	 * @param narrativeMap the locales and localized narratives of this watson activity audit
 	 * @param defaultLocale the default locale
 	 */
-	public void setNarrativeMap(Map<Locale, String> narrativeMap,
-		Locale defaultLocale);
+	public void setNarrativeMap(
+		Map<Locale, String> narrativeMap, Locale defaultLocale);
 
 	/**
 	 * Returns the report date of this watson activity audit.
@@ -462,4 +463,5 @@ public interface WatsonActivityAuditModel extends BaseModel<WatsonActivityAudit>
 
 	@Override
 	public String toXmlString();
+
 }

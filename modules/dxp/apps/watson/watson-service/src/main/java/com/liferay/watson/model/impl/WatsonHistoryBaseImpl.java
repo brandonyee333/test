@@ -32,8 +32,9 @@ import com.liferay.watson.service.WatsonHistoryLocalServiceUtil;
  * @generated
  */
 @ProviderType
-public abstract class WatsonHistoryBaseImpl extends WatsonHistoryModelImpl
-	implements WatsonHistory {
+public abstract class WatsonHistoryBaseImpl
+	extends WatsonHistoryModelImpl implements WatsonHistory {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -48,4 +49,5 @@ public abstract class WatsonHistoryBaseImpl extends WatsonHistoryModelImpl
 			WatsonHistoryLocalServiceUtil.updateWatsonHistory(this);
 		}
 	}
+
 }

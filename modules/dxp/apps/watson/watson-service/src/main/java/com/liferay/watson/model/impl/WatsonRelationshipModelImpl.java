@@ -18,7 +18,6 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -30,7 +29,6 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.model.WatsonRelationship;
 import com.liferay.watson.model.WatsonRelationshipModel;
 
@@ -58,32 +56,30 @@ import java.util.function.Function;
  * @generated
  */
 @ProviderType
-public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationship>
+public class WatsonRelationshipModelImpl
+	extends BaseModelImpl<WatsonRelationship>
 	implements WatsonRelationshipModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson relationship model instance should use the <code>WatsonRelationship</code> interface instead.
 	 */
 	public static final String TABLE_NAME = "WatsonRelationship";
+
 	public static final Object[][] TABLE_COLUMNS = {
-			{ "watsonRelationshipId", Types.BIGINT },
-			{ "groupId", Types.BIGINT },
-			{ "companyId", Types.BIGINT },
-			{ "userId", Types.BIGINT },
-			{ "userName", Types.VARCHAR },
-			{ "createDate", Types.TIMESTAMP },
-			{ "modifiedDate", Types.TIMESTAMP },
-			{ "watsonIncidentId", Types.BIGINT },
-			{ "typeWatsonListTypeId", Types.BIGINT },
-			{ "classNameId1", Types.BIGINT },
-			{ "classPK1", Types.BIGINT },
-			{ "classNameId2", Types.BIGINT },
-			{ "classPK2", Types.BIGINT },
-			{ "description", Types.VARCHAR },
-			{ "status", Types.INTEGER }
-		};
-	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
+		{"watsonRelationshipId", Types.BIGINT}, {"groupId", Types.BIGINT},
+		{"companyId", Types.BIGINT}, {"userId", Types.BIGINT},
+		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
+		{"modifiedDate", Types.TIMESTAMP}, {"watsonIncidentId", Types.BIGINT},
+		{"typeWatsonListTypeId", Types.BIGINT}, {"classNameId1", Types.BIGINT},
+		{"classPK1", Types.BIGINT}, {"classNameId2", Types.BIGINT},
+		{"classPK2", Types.BIGINT}, {"description", Types.VARCHAR},
+		{"status", Types.INTEGER}
+	};
+
+	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
+		new HashMap<String, Integer>();
 
 	static {
 		TABLE_COLUMNS_MAP.put("watsonRelationshipId", Types.BIGINT);
@@ -103,22 +99,38 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonRelationship (watsonRelationshipId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,watsonIncidentId LONG,typeWatsonListTypeId LONG,classNameId1 LONG,classPK1 LONG,classNameId2 LONG,classPK2 LONG,description STRING null,status INTEGER)";
+	public static final String TABLE_SQL_CREATE =
+		"create table WatsonRelationship (watsonRelationshipId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,watsonIncidentId LONG,typeWatsonListTypeId LONG,classNameId1 LONG,classPK1 LONG,classNameId2 LONG,classPK2 LONG,description STRING null,status INTEGER)";
+
 	public static final String TABLE_SQL_DROP = "drop table WatsonRelationship";
-	public static final String ORDER_BY_JPQL = " ORDER BY watsonRelationship.watsonRelationshipId ASC";
-	public static final String ORDER_BY_SQL = " ORDER BY WatsonRelationship.watsonRelationshipId ASC";
+
+	public static final String ORDER_BY_JPQL =
+		" ORDER BY watsonRelationship.watsonRelationshipId ASC";
+
+	public static final String ORDER_BY_SQL =
+		" ORDER BY WatsonRelationship.watsonRelationshipId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
+
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
+
 	public static final String TX_MANAGER = "liferayTransactionManager";
-	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonRelationship"),
-			true);
-	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonRelationship"),
-			true);
+
+	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonRelationship"),
+		true);
+
+	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonRelationship"),
+		true);
+
 	public static final boolean COLUMN_BITMASK_ENABLED = false;
-	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.watson.service.util.ServiceProps.get(
-				"lock.expiration.time.com.liferay.watson.model.WatsonRelationship"));
+
+	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"lock.expiration.time.com.liferay.watson.model.WatsonRelationship"));
 
 	public WatsonRelationshipModelImpl() {
 	}
@@ -157,14 +169,18 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		Map<String, Function<WatsonRelationship, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonRelationship, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		for (Map.Entry<String, Function<WatsonRelationship, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonRelationship, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonRelationship, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonRelationship, Object> attributeGetterFunction =
+				entry.getValue();
 
-			attributes.put(attributeName,
+			attributes.put(
+				attributeName,
 				attributeGetterFunction.apply((WatsonRelationship)this));
 		}
 
@@ -176,38 +192,47 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Map<String, BiConsumer<WatsonRelationship, Object>> attributeSetterBiConsumers =
-			getAttributeSetterBiConsumers();
+		Map<String, BiConsumer<WatsonRelationship, Object>>
+			attributeSetterBiConsumers = getAttributeSetterBiConsumers();
 
 		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			String attributeName = entry.getKey();
 
-			BiConsumer<WatsonRelationship, Object> attributeSetterBiConsumer = attributeSetterBiConsumers.get(attributeName);
+			BiConsumer<WatsonRelationship, Object> attributeSetterBiConsumer =
+				attributeSetterBiConsumers.get(attributeName);
 
 			if (attributeSetterBiConsumer != null) {
-				attributeSetterBiConsumer.accept((WatsonRelationship)this,
-					entry.getValue());
+				attributeSetterBiConsumer.accept(
+					(WatsonRelationship)this, entry.getValue());
 			}
 		}
 	}
 
-	public Map<String, Function<WatsonRelationship, Object>> getAttributeGetterFunctions() {
+	public Map<String, Function<WatsonRelationship, Object>>
+		getAttributeGetterFunctions() {
+
 		return _attributeGetterFunctions;
 	}
 
-	public Map<String, BiConsumer<WatsonRelationship, Object>> getAttributeSetterBiConsumers() {
+	public Map<String, BiConsumer<WatsonRelationship, Object>>
+		getAttributeSetterBiConsumers() {
+
 		return _attributeSetterBiConsumers;
 	}
 
-	private static final Map<String, Function<WatsonRelationship, Object>> _attributeGetterFunctions;
-	private static final Map<String, BiConsumer<WatsonRelationship, Object>> _attributeSetterBiConsumers;
+	private static final Map<String, Function<WatsonRelationship, Object>>
+		_attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonRelationship, Object>>
+		_attributeSetterBiConsumers;
 
 	static {
-		Map<String, Function<WatsonRelationship, Object>> attributeGetterFunctions =
-			new LinkedHashMap<String, Function<WatsonRelationship, Object>>();
-		Map<String, BiConsumer<WatsonRelationship, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<WatsonRelationship, ?>>();
-
+		Map<String, Function<WatsonRelationship, Object>>
+			attributeGetterFunctions =
+				new LinkedHashMap
+					<String, Function<WatsonRelationship, Object>>();
+		Map<String, BiConsumer<WatsonRelationship, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap<String, BiConsumer<WatsonRelationship, ?>>();
 
 		attributeGetterFunctions.put(
 			"watsonRelationshipId",
@@ -224,8 +249,12 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 			new BiConsumer<WatsonRelationship, Object>() {
 
 				@Override
-				public void accept(WatsonRelationship watsonRelationship, Object watsonRelationshipId) {
-					watsonRelationship.setWatsonRelationshipId((Long)watsonRelationshipId);
+				public void accept(
+					WatsonRelationship watsonRelationship,
+					Object watsonRelationshipId) {
+
+					watsonRelationship.setWatsonRelationshipId(
+						(Long)watsonRelationshipId);
 				}
 
 			});
@@ -244,7 +273,9 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 			new BiConsumer<WatsonRelationship, Object>() {
 
 				@Override
-				public void accept(WatsonRelationship watsonRelationship, Object groupId) {
+				public void accept(
+					WatsonRelationship watsonRelationship, Object groupId) {
+
 					watsonRelationship.setGroupId((Long)groupId);
 				}
 
@@ -264,7 +295,9 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 			new BiConsumer<WatsonRelationship, Object>() {
 
 				@Override
-				public void accept(WatsonRelationship watsonRelationship, Object companyId) {
+				public void accept(
+					WatsonRelationship watsonRelationship, Object companyId) {
+
 					watsonRelationship.setCompanyId((Long)companyId);
 				}
 
@@ -284,7 +317,9 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 			new BiConsumer<WatsonRelationship, Object>() {
 
 				@Override
-				public void accept(WatsonRelationship watsonRelationship, Object userId) {
+				public void accept(
+					WatsonRelationship watsonRelationship, Object userId) {
+
 					watsonRelationship.setUserId((Long)userId);
 				}
 
@@ -304,7 +339,9 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 			new BiConsumer<WatsonRelationship, Object>() {
 
 				@Override
-				public void accept(WatsonRelationship watsonRelationship, Object userName) {
+				public void accept(
+					WatsonRelationship watsonRelationship, Object userName) {
+
 					watsonRelationship.setUserName((String)userName);
 				}
 
@@ -324,7 +361,9 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 			new BiConsumer<WatsonRelationship, Object>() {
 
 				@Override
-				public void accept(WatsonRelationship watsonRelationship, Object createDate) {
+				public void accept(
+					WatsonRelationship watsonRelationship, Object createDate) {
+
 					watsonRelationship.setCreateDate((Date)createDate);
 				}
 
@@ -344,7 +383,10 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 			new BiConsumer<WatsonRelationship, Object>() {
 
 				@Override
-				public void accept(WatsonRelationship watsonRelationship, Object modifiedDate) {
+				public void accept(
+					WatsonRelationship watsonRelationship,
+					Object modifiedDate) {
+
 					watsonRelationship.setModifiedDate((Date)modifiedDate);
 				}
 
@@ -364,8 +406,12 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 			new BiConsumer<WatsonRelationship, Object>() {
 
 				@Override
-				public void accept(WatsonRelationship watsonRelationship, Object watsonIncidentId) {
-					watsonRelationship.setWatsonIncidentId((Long)watsonIncidentId);
+				public void accept(
+					WatsonRelationship watsonRelationship,
+					Object watsonIncidentId) {
+
+					watsonRelationship.setWatsonIncidentId(
+						(Long)watsonIncidentId);
 				}
 
 			});
@@ -384,8 +430,12 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 			new BiConsumer<WatsonRelationship, Object>() {
 
 				@Override
-				public void accept(WatsonRelationship watsonRelationship, Object typeWatsonListTypeId) {
-					watsonRelationship.setTypeWatsonListTypeId((Long)typeWatsonListTypeId);
+				public void accept(
+					WatsonRelationship watsonRelationship,
+					Object typeWatsonListTypeId) {
+
+					watsonRelationship.setTypeWatsonListTypeId(
+						(Long)typeWatsonListTypeId);
 				}
 
 			});
@@ -404,7 +454,10 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 			new BiConsumer<WatsonRelationship, Object>() {
 
 				@Override
-				public void accept(WatsonRelationship watsonRelationship, Object classNameId1) {
+				public void accept(
+					WatsonRelationship watsonRelationship,
+					Object classNameId1) {
+
 					watsonRelationship.setClassNameId1((Long)classNameId1);
 				}
 
@@ -424,7 +477,9 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 			new BiConsumer<WatsonRelationship, Object>() {
 
 				@Override
-				public void accept(WatsonRelationship watsonRelationship, Object classPK1) {
+				public void accept(
+					WatsonRelationship watsonRelationship, Object classPK1) {
+
 					watsonRelationship.setClassPK1((Long)classPK1);
 				}
 
@@ -444,7 +499,10 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 			new BiConsumer<WatsonRelationship, Object>() {
 
 				@Override
-				public void accept(WatsonRelationship watsonRelationship, Object classNameId2) {
+				public void accept(
+					WatsonRelationship watsonRelationship,
+					Object classNameId2) {
+
 					watsonRelationship.setClassNameId2((Long)classNameId2);
 				}
 
@@ -464,7 +522,9 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 			new BiConsumer<WatsonRelationship, Object>() {
 
 				@Override
-				public void accept(WatsonRelationship watsonRelationship, Object classPK2) {
+				public void accept(
+					WatsonRelationship watsonRelationship, Object classPK2) {
+
 					watsonRelationship.setClassPK2((Long)classPK2);
 				}
 
@@ -484,7 +544,9 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 			new BiConsumer<WatsonRelationship, Object>() {
 
 				@Override
-				public void accept(WatsonRelationship watsonRelationship, Object description) {
+				public void accept(
+					WatsonRelationship watsonRelationship, Object description) {
+
 					watsonRelationship.setDescription((String)description);
 				}
 
@@ -504,15 +566,18 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 			new BiConsumer<WatsonRelationship, Object>() {
 
 				@Override
-				public void accept(WatsonRelationship watsonRelationship, Object status) {
+				public void accept(
+					WatsonRelationship watsonRelationship, Object status) {
+
 					watsonRelationship.setStatus((Integer)status);
 				}
 
 			});
 
-
-		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap(
+			(Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -699,8 +764,9 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 
 	@Override
 	public ExpandoBridge getExpandoBridge() {
-		return ExpandoBridgeFactoryUtil.getExpandoBridge(getCompanyId(),
-			WatsonRelationship.class.getName(), getPrimaryKey());
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(
+			getCompanyId(), WatsonRelationship.class.getName(),
+			getPrimaryKey());
 	}
 
 	@Override
@@ -713,8 +779,9 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 	@Override
 	public WatsonRelationship toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonRelationship)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+			_escapedModel = (WatsonRelationship)ProxyUtil.newProxyInstance(
+				_classLoader, _escapedModelInterfaces,
+				new AutoEscapeBeanHandler(this));
 		}
 
 		return _escapedModel;
@@ -722,9 +789,11 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 
 	@Override
 	public Object clone() {
-		WatsonRelationshipImpl watsonRelationshipImpl = new WatsonRelationshipImpl();
+		WatsonRelationshipImpl watsonRelationshipImpl =
+			new WatsonRelationshipImpl();
 
-		watsonRelationshipImpl.setWatsonRelationshipId(getWatsonRelationshipId());
+		watsonRelationshipImpl.setWatsonRelationshipId(
+			getWatsonRelationshipId());
 		watsonRelationshipImpl.setGroupId(getGroupId());
 		watsonRelationshipImpl.setCompanyId(getCompanyId());
 		watsonRelationshipImpl.setUserId(getUserId());
@@ -732,7 +801,8 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 		watsonRelationshipImpl.setCreateDate(getCreateDate());
 		watsonRelationshipImpl.setModifiedDate(getModifiedDate());
 		watsonRelationshipImpl.setWatsonIncidentId(getWatsonIncidentId());
-		watsonRelationshipImpl.setTypeWatsonListTypeId(getTypeWatsonListTypeId());
+		watsonRelationshipImpl.setTypeWatsonListTypeId(
+			getTypeWatsonListTypeId());
 		watsonRelationshipImpl.setClassNameId1(getClassNameId1());
 		watsonRelationshipImpl.setClassPK1(getClassPK1());
 		watsonRelationshipImpl.setClassNameId2(getClassNameId2());
@@ -806,9 +876,11 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 
 	@Override
 	public CacheModel<WatsonRelationship> toCacheModel() {
-		WatsonRelationshipCacheModel watsonRelationshipCacheModel = new WatsonRelationshipCacheModel();
+		WatsonRelationshipCacheModel watsonRelationshipCacheModel =
+			new WatsonRelationshipCacheModel();
 
-		watsonRelationshipCacheModel.watsonRelationshipId = getWatsonRelationshipId();
+		watsonRelationshipCacheModel.watsonRelationshipId =
+			getWatsonRelationshipId();
 
 		watsonRelationshipCacheModel.groupId = getGroupId();
 
@@ -844,7 +916,8 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 
 		watsonRelationshipCacheModel.watsonIncidentId = getWatsonIncidentId();
 
-		watsonRelationshipCacheModel.typeWatsonListTypeId = getTypeWatsonListTypeId();
+		watsonRelationshipCacheModel.typeWatsonListTypeId =
+			getTypeWatsonListTypeId();
 
 		watsonRelationshipCacheModel.classNameId1 = getClassNameId1();
 
@@ -869,17 +942,20 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 
 	@Override
 	public String toString() {
-		Map<String, Function<WatsonRelationship, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonRelationship, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
-				2);
+		StringBundler sb = new StringBundler(
+			4 * attributeGetterFunctions.size() + 2);
 
 		sb.append("{");
 
-		for (Map.Entry<String, Function<WatsonRelationship, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonRelationship, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonRelationship, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonRelationship, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append(attributeName);
 			sb.append("=");
@@ -898,19 +974,22 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 
 	@Override
 	public String toXmlString() {
-		Map<String, Function<WatsonRelationship, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonRelationship, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
-				4);
+		StringBundler sb = new StringBundler(
+			5 * attributeGetterFunctions.size() + 4);
 
 		sb.append("<model><model-name>");
 		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		for (Map.Entry<String, Function<WatsonRelationship, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonRelationship, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonRelationship, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonRelationship, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append("<column><column-name>");
 			sb.append(attributeName);
@@ -924,10 +1003,12 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader = WatsonRelationship.class.getClassLoader();
+	private static final ClassLoader _classLoader =
+		WatsonRelationship.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			WatsonRelationship.class, ModelWrapper.class
-		};
+		WatsonRelationship.class, ModelWrapper.class
+	};
+
 	private long _watsonRelationshipId;
 	private long _groupId;
 	private long _companyId;
@@ -945,4 +1026,5 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 	private String _description;
 	private int _status;
 	private WatsonRelationship _escapedModel;
+
 }

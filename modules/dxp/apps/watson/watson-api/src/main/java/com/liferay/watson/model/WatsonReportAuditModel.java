@@ -17,7 +17,6 @@ package com.liferay.watson.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -45,8 +44,10 @@ import java.util.Map;
  * @generated
  */
 @ProviderType
-public interface WatsonReportAuditModel extends BaseModel<WatsonReportAudit>,
-	GroupedModel, LocalizedModel, ShardedModel {
+public interface WatsonReportAuditModel
+	extends BaseModel<WatsonReportAudit>, GroupedModel, LocalizedModel,
+			ShardedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -429,8 +430,8 @@ public interface WatsonReportAuditModel extends BaseModel<WatsonReportAudit>,
 	 * @param locale the locale of the language
 	 * @param defaultLocale the default locale
 	 */
-	public void setDescription(String description, Locale locale,
-		Locale defaultLocale);
+	public void setDescription(
+		String description, Locale locale, Locale defaultLocale);
 
 	public void setDescriptionCurrentLanguageId(String languageId);
 
@@ -447,8 +448,8 @@ public interface WatsonReportAuditModel extends BaseModel<WatsonReportAudit>,
 	 * @param descriptionMap the locales and localized descriptions of this watson report audit
 	 * @param defaultLocale the default locale
 	 */
-	public void setDescriptionMap(Map<Locale, String> descriptionMap,
-		Locale defaultLocale);
+	public void setDescriptionMap(
+		Map<Locale, String> descriptionMap, Locale defaultLocale);
 
 	/**
 	 * Returns the full report of this watson report audit.
@@ -530,8 +531,8 @@ public interface WatsonReportAuditModel extends BaseModel<WatsonReportAudit>,
 	 * @param locale the locale of the language
 	 * @param defaultLocale the default locale
 	 */
-	public void setFullReport(String fullReport, Locale locale,
-		Locale defaultLocale);
+	public void setFullReport(
+		String fullReport, Locale locale, Locale defaultLocale);
 
 	public void setFullReportCurrentLanguageId(String languageId);
 
@@ -548,8 +549,8 @@ public interface WatsonReportAuditModel extends BaseModel<WatsonReportAudit>,
 	 * @param fullReportMap the locales and localized full reports of this watson report audit
 	 * @param defaultLocale the default locale
 	 */
-	public void setFullReportMap(Map<Locale, String> fullReportMap,
-		Locale defaultLocale);
+	public void setFullReportMap(
+		Map<Locale, String> fullReportMap, Locale defaultLocale);
 
 	/**
 	 * Returns the image payload of this watson report audit.
@@ -661,8 +662,8 @@ public interface WatsonReportAuditModel extends BaseModel<WatsonReportAudit>,
 	 * @param locale the locale of the language
 	 * @param defaultLocale the default locale
 	 */
-	public void setReportedUser(String reportedUser, Locale locale,
-		Locale defaultLocale);
+	public void setReportedUser(
+		String reportedUser, Locale locale, Locale defaultLocale);
 
 	public void setReportedUserCurrentLanguageId(String languageId);
 
@@ -679,8 +680,8 @@ public interface WatsonReportAuditModel extends BaseModel<WatsonReportAudit>,
 	 * @param reportedUserMap the locales and localized reported users of this watson report audit
 	 * @param defaultLocale the default locale
 	 */
-	public void setReportedUserMap(Map<Locale, String> reportedUserMap,
-		Locale defaultLocale);
+	public void setReportedUserMap(
+		Map<Locale, String> reportedUserMap, Locale defaultLocale);
 
 	/**
 	 * Returns the report date of this watson report audit.
@@ -793,4 +794,5 @@ public interface WatsonReportAuditModel extends BaseModel<WatsonReportAudit>,
 
 	@Override
 	public String toXmlString();
+
 }

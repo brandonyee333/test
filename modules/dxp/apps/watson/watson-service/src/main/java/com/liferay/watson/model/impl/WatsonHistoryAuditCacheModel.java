@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.model.WatsonHistoryAudit;
 
 import java.io.Externalizable;
@@ -36,8 +35,9 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public class WatsonHistoryAuditCacheModel implements CacheModel<WatsonHistoryAudit>,
-	Externalizable {
+public class WatsonHistoryAuditCacheModel
+	implements CacheModel<WatsonHistoryAudit>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,9 +48,12 @@ public class WatsonHistoryAuditCacheModel implements CacheModel<WatsonHistoryAud
 			return false;
 		}
 
-		WatsonHistoryAuditCacheModel watsonHistoryAuditCacheModel = (WatsonHistoryAuditCacheModel)obj;
+		WatsonHistoryAuditCacheModel watsonHistoryAuditCacheModel =
+			(WatsonHistoryAuditCacheModel)obj;
 
-		if (watsonHistoryAuditId == watsonHistoryAuditCacheModel.watsonHistoryAuditId) {
+		if (watsonHistoryAuditId ==
+				watsonHistoryAuditCacheModel.watsonHistoryAuditId) {
+
 			return true;
 		}
 
@@ -99,7 +102,8 @@ public class WatsonHistoryAuditCacheModel implements CacheModel<WatsonHistoryAud
 
 	@Override
 	public WatsonHistoryAudit toEntityModel() {
-		WatsonHistoryAuditImpl watsonHistoryAuditImpl = new WatsonHistoryAuditImpl();
+		WatsonHistoryAuditImpl watsonHistoryAuditImpl =
+			new WatsonHistoryAuditImpl();
 
 		watsonHistoryAuditImpl.setWatsonHistoryAuditId(watsonHistoryAuditId);
 		watsonHistoryAuditImpl.setGroupId(groupId);
@@ -166,8 +170,7 @@ public class WatsonHistoryAuditCacheModel implements CacheModel<WatsonHistoryAud
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonHistoryAuditId);
 
 		objectOutput.writeLong(groupId);
@@ -212,4 +215,5 @@ public class WatsonHistoryAuditCacheModel implements CacheModel<WatsonHistoryAud
 	public long classPK;
 	public int type;
 	public int status;
+
 }

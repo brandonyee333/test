@@ -34,6 +34,7 @@ import com.liferay.watson.service.WatsonIncidentAuditLocalServiceUtil;
 @ProviderType
 public abstract class WatsonIncidentAuditBaseImpl
 	extends WatsonIncidentAuditModelImpl implements WatsonIncidentAudit {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -48,4 +49,5 @@ public abstract class WatsonIncidentAuditBaseImpl
 			WatsonIncidentAuditLocalServiceUtil.updateWatsonIncidentAudit(this);
 		}
 	}
+
 }

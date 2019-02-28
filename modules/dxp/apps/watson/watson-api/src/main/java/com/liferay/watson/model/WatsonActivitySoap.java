@@ -30,6 +30,7 @@ import java.util.List;
  */
 @ProviderType
 public class WatsonActivitySoap implements Serializable {
+
 	public static WatsonActivitySoap toSoapModel(WatsonActivity model) {
 		WatsonActivitySoap soapModel = new WatsonActivitySoap();
 
@@ -41,7 +42,8 @@ public class WatsonActivitySoap implements Serializable {
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
 		soapModel.setTypeWatsonListTypeId(model.getTypeWatsonListTypeId());
-		soapModel.setSubtypeWatsonListTypeId(model.getSubtypeWatsonListTypeId());
+		soapModel.setSubtypeWatsonListTypeId(
+			model.getSubtypeWatsonListTypeId());
 		soapModel.setWatsonIncidentId(model.getWatsonIncidentId());
 		soapModel.setNarrative(model.getNarrative());
 		soapModel.setReportDate(model.getReportDate());
@@ -61,11 +63,14 @@ public class WatsonActivitySoap implements Serializable {
 		return soapModels;
 	}
 
-	public static WatsonActivitySoap[][] toSoapModels(WatsonActivity[][] models) {
+	public static WatsonActivitySoap[][] toSoapModels(
+		WatsonActivity[][] models) {
+
 		WatsonActivitySoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new WatsonActivitySoap[models.length][models[0].length];
+			soapModels =
+				new WatsonActivitySoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new WatsonActivitySoap[0][0];
@@ -78,8 +83,11 @@ public class WatsonActivitySoap implements Serializable {
 		return soapModels;
 	}
 
-	public static WatsonActivitySoap[] toSoapModels(List<WatsonActivity> models) {
-		List<WatsonActivitySoap> soapModels = new ArrayList<WatsonActivitySoap>(models.size());
+	public static WatsonActivitySoap[] toSoapModels(
+		List<WatsonActivity> models) {
+
+		List<WatsonActivitySoap> soapModels = new ArrayList<WatsonActivitySoap>(
+			models.size());
 
 		for (WatsonActivity model : models) {
 			soapModels.add(toSoapModel(model));
@@ -225,4 +233,5 @@ public class WatsonActivitySoap implements Serializable {
 	private Date _reportDate;
 	private Date _startDate;
 	private int _status;
+
 }

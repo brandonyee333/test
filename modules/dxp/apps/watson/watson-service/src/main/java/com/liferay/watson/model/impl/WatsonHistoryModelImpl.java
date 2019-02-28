@@ -18,7 +18,6 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -32,7 +31,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
-
 import com.liferay.watson.model.WatsonHistory;
 import com.liferay.watson.model.WatsonHistoryModel;
 
@@ -60,29 +58,27 @@ import java.util.function.Function;
  * @generated
  */
 @ProviderType
-public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
-	implements WatsonHistoryModel {
+public class WatsonHistoryModelImpl
+	extends BaseModelImpl<WatsonHistory> implements WatsonHistoryModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson history model instance should use the <code>WatsonHistory</code> interface instead.
 	 */
 	public static final String TABLE_NAME = "WatsonHistory";
+
 	public static final Object[][] TABLE_COLUMNS = {
-			{ "watsonHistoryId", Types.BIGINT },
-			{ "groupId", Types.BIGINT },
-			{ "companyId", Types.BIGINT },
-			{ "userId", Types.BIGINT },
-			{ "userName", Types.VARCHAR },
-			{ "createDate", Types.TIMESTAMP },
-			{ "modifiedDate", Types.TIMESTAMP },
-			{ "watsonParentId", Types.BIGINT },
-			{ "classNameId", Types.BIGINT },
-			{ "classPK", Types.BIGINT },
-			{ "type_", Types.INTEGER },
-			{ "status", Types.INTEGER }
-		};
-	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
+		{"watsonHistoryId", Types.BIGINT}, {"groupId", Types.BIGINT},
+		{"companyId", Types.BIGINT}, {"userId", Types.BIGINT},
+		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
+		{"modifiedDate", Types.TIMESTAMP}, {"watsonParentId", Types.BIGINT},
+		{"classNameId", Types.BIGINT}, {"classPK", Types.BIGINT},
+		{"type_", Types.INTEGER}, {"status", Types.INTEGER}
+	};
+
+	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
+		new HashMap<String, Integer>();
 
 	static {
 		TABLE_COLUMNS_MAP.put("watsonHistoryId", Types.BIGINT);
@@ -99,22 +95,38 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonHistory (watsonHistoryId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,watsonParentId LONG,classNameId LONG,classPK LONG,type_ INTEGER,status INTEGER)";
+	public static final String TABLE_SQL_CREATE =
+		"create table WatsonHistory (watsonHistoryId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,watsonParentId LONG,classNameId LONG,classPK LONG,type_ INTEGER,status INTEGER)";
+
 	public static final String TABLE_SQL_DROP = "drop table WatsonHistory";
-	public static final String ORDER_BY_JPQL = " ORDER BY watsonHistory.watsonHistoryId ASC";
-	public static final String ORDER_BY_SQL = " ORDER BY WatsonHistory.watsonHistoryId ASC";
+
+	public static final String ORDER_BY_JPQL =
+		" ORDER BY watsonHistory.watsonHistoryId ASC";
+
+	public static final String ORDER_BY_SQL =
+		" ORDER BY WatsonHistory.watsonHistoryId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
+
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
+
 	public static final String TX_MANAGER = "liferayTransactionManager";
-	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonHistory"),
-			true);
-	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonHistory"),
-			true);
+
+	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonHistory"),
+		true);
+
+	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonHistory"),
+		true);
+
 	public static final boolean COLUMN_BITMASK_ENABLED = false;
-	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.watson.service.util.ServiceProps.get(
-				"lock.expiration.time.com.liferay.watson.model.WatsonHistory"));
+
+	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"lock.expiration.time.com.liferay.watson.model.WatsonHistory"));
 
 	public WatsonHistoryModelImpl() {
 	}
@@ -153,13 +165,18 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		Map<String, Function<WatsonHistory, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+		Map<String, Function<WatsonHistory, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		for (Map.Entry<String, Function<WatsonHistory, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonHistory, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonHistory, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonHistory, Object> attributeGetterFunction =
+				entry.getValue();
 
-			attributes.put(attributeName,
+			attributes.put(
+				attributeName,
 				attributeGetterFunction.apply((WatsonHistory)this));
 		}
 
@@ -171,36 +188,44 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Map<String, BiConsumer<WatsonHistory, Object>> attributeSetterBiConsumers =
-			getAttributeSetterBiConsumers();
+		Map<String, BiConsumer<WatsonHistory, Object>>
+			attributeSetterBiConsumers = getAttributeSetterBiConsumers();
 
 		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			String attributeName = entry.getKey();
 
-			BiConsumer<WatsonHistory, Object> attributeSetterBiConsumer = attributeSetterBiConsumers.get(attributeName);
+			BiConsumer<WatsonHistory, Object> attributeSetterBiConsumer =
+				attributeSetterBiConsumers.get(attributeName);
 
 			if (attributeSetterBiConsumer != null) {
-				attributeSetterBiConsumer.accept((WatsonHistory)this,
-					entry.getValue());
+				attributeSetterBiConsumer.accept(
+					(WatsonHistory)this, entry.getValue());
 			}
 		}
 	}
 
-	public Map<String, Function<WatsonHistory, Object>> getAttributeGetterFunctions() {
+	public Map<String, Function<WatsonHistory, Object>>
+		getAttributeGetterFunctions() {
+
 		return _attributeGetterFunctions;
 	}
 
-	public Map<String, BiConsumer<WatsonHistory, Object>> getAttributeSetterBiConsumers() {
+	public Map<String, BiConsumer<WatsonHistory, Object>>
+		getAttributeSetterBiConsumers() {
+
 		return _attributeSetterBiConsumers;
 	}
 
-	private static final Map<String, Function<WatsonHistory, Object>> _attributeGetterFunctions;
-	private static final Map<String, BiConsumer<WatsonHistory, Object>> _attributeSetterBiConsumers;
+	private static final Map<String, Function<WatsonHistory, Object>>
+		_attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonHistory, Object>>
+		_attributeSetterBiConsumers;
 
 	static {
-		Map<String, Function<WatsonHistory, Object>> attributeGetterFunctions = new LinkedHashMap<String, Function<WatsonHistory, Object>>();
-		Map<String, BiConsumer<WatsonHistory, ?>> attributeSetterBiConsumers = new LinkedHashMap<String, BiConsumer<WatsonHistory, ?>>();
-
+		Map<String, Function<WatsonHistory, Object>> attributeGetterFunctions =
+			new LinkedHashMap<String, Function<WatsonHistory, Object>>();
+		Map<String, BiConsumer<WatsonHistory, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<WatsonHistory, ?>>();
 
 		attributeGetterFunctions.put(
 			"watsonHistoryId",
@@ -217,7 +242,9 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 			new BiConsumer<WatsonHistory, Object>() {
 
 				@Override
-				public void accept(WatsonHistory watsonHistory, Object watsonHistoryId) {
+				public void accept(
+					WatsonHistory watsonHistory, Object watsonHistoryId) {
+
 					watsonHistory.setWatsonHistoryId((Long)watsonHistoryId);
 				}
 
@@ -237,7 +264,9 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 			new BiConsumer<WatsonHistory, Object>() {
 
 				@Override
-				public void accept(WatsonHistory watsonHistory, Object groupId) {
+				public void accept(
+					WatsonHistory watsonHistory, Object groupId) {
+
 					watsonHistory.setGroupId((Long)groupId);
 				}
 
@@ -257,7 +286,9 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 			new BiConsumer<WatsonHistory, Object>() {
 
 				@Override
-				public void accept(WatsonHistory watsonHistory, Object companyId) {
+				public void accept(
+					WatsonHistory watsonHistory, Object companyId) {
+
 					watsonHistory.setCompanyId((Long)companyId);
 				}
 
@@ -297,7 +328,9 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 			new BiConsumer<WatsonHistory, Object>() {
 
 				@Override
-				public void accept(WatsonHistory watsonHistory, Object userName) {
+				public void accept(
+					WatsonHistory watsonHistory, Object userName) {
+
 					watsonHistory.setUserName((String)userName);
 				}
 
@@ -317,7 +350,9 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 			new BiConsumer<WatsonHistory, Object>() {
 
 				@Override
-				public void accept(WatsonHistory watsonHistory, Object createDate) {
+				public void accept(
+					WatsonHistory watsonHistory, Object createDate) {
+
 					watsonHistory.setCreateDate((Date)createDate);
 				}
 
@@ -337,7 +372,9 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 			new BiConsumer<WatsonHistory, Object>() {
 
 				@Override
-				public void accept(WatsonHistory watsonHistory, Object modifiedDate) {
+				public void accept(
+					WatsonHistory watsonHistory, Object modifiedDate) {
+
 					watsonHistory.setModifiedDate((Date)modifiedDate);
 				}
 
@@ -357,7 +394,9 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 			new BiConsumer<WatsonHistory, Object>() {
 
 				@Override
-				public void accept(WatsonHistory watsonHistory, Object watsonParentId) {
+				public void accept(
+					WatsonHistory watsonHistory, Object watsonParentId) {
+
 					watsonHistory.setWatsonParentId((Long)watsonParentId);
 				}
 
@@ -377,7 +416,9 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 			new BiConsumer<WatsonHistory, Object>() {
 
 				@Override
-				public void accept(WatsonHistory watsonHistory, Object classNameId) {
+				public void accept(
+					WatsonHistory watsonHistory, Object classNameId) {
+
 					watsonHistory.setClassNameId((Long)classNameId);
 				}
 
@@ -397,7 +438,9 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 			new BiConsumer<WatsonHistory, Object>() {
 
 				@Override
-				public void accept(WatsonHistory watsonHistory, Object classPK) {
+				public void accept(
+					WatsonHistory watsonHistory, Object classPK) {
+
 					watsonHistory.setClassPK((Long)classPK);
 				}
 
@@ -443,9 +486,10 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 
 			});
 
-
-		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap(
+			(Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -617,8 +661,8 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 
 	@Override
 	public ExpandoBridge getExpandoBridge() {
-		return ExpandoBridgeFactoryUtil.getExpandoBridge(getCompanyId(),
-			WatsonHistory.class.getName(), getPrimaryKey());
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(
+			getCompanyId(), WatsonHistory.class.getName(), getPrimaryKey());
 	}
 
 	@Override
@@ -631,8 +675,9 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 	@Override
 	public WatsonHistory toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonHistory)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+			_escapedModel = (WatsonHistory)ProxyUtil.newProxyInstance(
+				_classLoader, _escapedModelInterfaces,
+				new AutoEscapeBeanHandler(this));
 		}
 
 		return _escapedModel;
@@ -721,7 +766,8 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 
 	@Override
 	public CacheModel<WatsonHistory> toCacheModel() {
-		WatsonHistoryCacheModel watsonHistoryCacheModel = new WatsonHistoryCacheModel();
+		WatsonHistoryCacheModel watsonHistoryCacheModel =
+			new WatsonHistoryCacheModel();
 
 		watsonHistoryCacheModel.watsonHistoryId = getWatsonHistoryId();
 
@@ -772,16 +818,20 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 
 	@Override
 	public String toString() {
-		Map<String, Function<WatsonHistory, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+		Map<String, Function<WatsonHistory, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
-				2);
+		StringBundler sb = new StringBundler(
+			4 * attributeGetterFunctions.size() + 2);
 
 		sb.append("{");
 
-		for (Map.Entry<String, Function<WatsonHistory, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonHistory, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonHistory, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonHistory, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append(attributeName);
 			sb.append("=");
@@ -800,18 +850,22 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 
 	@Override
 	public String toXmlString() {
-		Map<String, Function<WatsonHistory, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+		Map<String, Function<WatsonHistory, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
-				4);
+		StringBundler sb = new StringBundler(
+			5 * attributeGetterFunctions.size() + 4);
 
 		sb.append("<model><model-name>");
 		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		for (Map.Entry<String, Function<WatsonHistory, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonHistory, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonHistory, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonHistory, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append("<column><column-name>");
 			sb.append(attributeName);
@@ -825,10 +879,12 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader = WatsonHistory.class.getClassLoader();
+	private static final ClassLoader _classLoader =
+		WatsonHistory.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			WatsonHistory.class, ModelWrapper.class
-		};
+		WatsonHistory.class, ModelWrapper.class
+	};
+
 	private long _watsonHistoryId;
 	private long _groupId;
 	private long _companyId;
@@ -843,4 +899,5 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 	private int _type;
 	private int _status;
 	private WatsonHistory _escapedModel;
+
 }

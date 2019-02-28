@@ -33,7 +33,9 @@ import com.liferay.watson.service.WatsonRelationshipAuditLocalServiceUtil;
  */
 @ProviderType
 public abstract class WatsonRelationshipAuditBaseImpl
-	extends WatsonRelationshipAuditModelImpl implements WatsonRelationshipAudit {
+	extends WatsonRelationshipAuditModelImpl
+	implements WatsonRelationshipAudit {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -42,10 +44,13 @@ public abstract class WatsonRelationshipAuditBaseImpl
 	@Override
 	public void persist() {
 		if (this.isNew()) {
-			WatsonRelationshipAuditLocalServiceUtil.addWatsonRelationshipAudit(this);
+			WatsonRelationshipAuditLocalServiceUtil.addWatsonRelationshipAudit(
+				this);
 		}
 		else {
-			WatsonRelationshipAuditLocalServiceUtil.updateWatsonRelationshipAudit(this);
+			WatsonRelationshipAuditLocalServiceUtil.
+				updateWatsonRelationshipAudit(this);
 		}
 	}
+
 }

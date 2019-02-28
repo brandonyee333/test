@@ -34,6 +34,7 @@ import com.liferay.watson.service.WatsonListTypeAuditLocalServiceUtil;
 @ProviderType
 public abstract class WatsonListTypeAuditBaseImpl
 	extends WatsonListTypeAuditModelImpl implements WatsonListTypeAudit {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -48,4 +49,5 @@ public abstract class WatsonListTypeAuditBaseImpl
 			WatsonListTypeAuditLocalServiceUtil.updateWatsonListTypeAudit(this);
 		}
 	}
+
 }

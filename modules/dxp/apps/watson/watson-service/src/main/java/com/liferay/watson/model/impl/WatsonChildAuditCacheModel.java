@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.model.WatsonChildAudit;
 
 import java.io.Externalizable;
@@ -36,8 +35,9 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public class WatsonChildAuditCacheModel implements CacheModel<WatsonChildAudit>,
-	Externalizable {
+public class WatsonChildAuditCacheModel
+	implements CacheModel<WatsonChildAudit>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,9 +48,12 @@ public class WatsonChildAuditCacheModel implements CacheModel<WatsonChildAudit>,
 			return false;
 		}
 
-		WatsonChildAuditCacheModel watsonChildAuditCacheModel = (WatsonChildAuditCacheModel)obj;
+		WatsonChildAuditCacheModel watsonChildAuditCacheModel =
+			(WatsonChildAuditCacheModel)obj;
 
-		if (watsonChildAuditId == watsonChildAuditCacheModel.watsonChildAuditId) {
+		if (watsonChildAuditId ==
+				watsonChildAuditCacheModel.watsonChildAuditId) {
+
 			return true;
 		}
 
@@ -148,13 +151,18 @@ public class WatsonChildAuditCacheModel implements CacheModel<WatsonChildAudit>,
 		}
 
 		watsonChildAuditImpl.setBirthCountryId(birthCountryId);
-		watsonChildAuditImpl.setCitizenshipWatsonListTypeId(citizenshipWatsonListTypeId);
-		watsonChildAuditImpl.setCountryWatsonListTypeId(countryWatsonListTypeId);
-		watsonChildAuditImpl.setDischargeWatsonListTypeId(dischargeWatsonListTypeId);
-		watsonChildAuditImpl.setEthnicityWatsonListTypeId(ethnicityWatsonListTypeId);
+		watsonChildAuditImpl.setCitizenshipWatsonListTypeId(
+			citizenshipWatsonListTypeId);
+		watsonChildAuditImpl.setCountryWatsonListTypeId(
+			countryWatsonListTypeId);
+		watsonChildAuditImpl.setDischargeWatsonListTypeId(
+			dischargeWatsonListTypeId);
+		watsonChildAuditImpl.setEthnicityWatsonListTypeId(
+			ethnicityWatsonListTypeId);
 		watsonChildAuditImpl.setOriginalWatsonPersonId(originalWatsonPersonId);
 		watsonChildAuditImpl.setSexWatsonListTypeId(sexWatsonListTypeId);
-		watsonChildAuditImpl.setSourceSubtypeWatsonListTypeId(sourceSubtypeWatsonListTypeId);
+		watsonChildAuditImpl.setSourceSubtypeWatsonListTypeId(
+			sourceSubtypeWatsonListTypeId);
 		watsonChildAuditImpl.setSourceWatsonListTypeId(sourceWatsonListTypeId);
 		watsonChildAuditImpl.setTypeWatsonListTypeId(typeWatsonListTypeId);
 		watsonChildAuditImpl.setWatsonChildId(watsonChildId);
@@ -237,8 +245,7 @@ public class WatsonChildAuditCacheModel implements CacheModel<WatsonChildAudit>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonChildAuditId);
 
 		objectOutput.writeLong(groupId);
@@ -315,4 +322,5 @@ public class WatsonChildAuditCacheModel implements CacheModel<WatsonChildAudit>,
 	public long dateFollowUp;
 	public String source;
 	public int status;
+
 }

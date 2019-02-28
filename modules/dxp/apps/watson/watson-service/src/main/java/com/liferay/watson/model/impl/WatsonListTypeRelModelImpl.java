@@ -18,7 +18,6 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -36,7 +35,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
-
 import com.liferay.watson.model.WatsonListTypeRel;
 import com.liferay.watson.model.WatsonListTypeRelModel;
 
@@ -67,31 +65,28 @@ import java.util.function.Function;
  * @generated
  */
 @ProviderType
-public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
-	implements WatsonListTypeRelModel {
+public class WatsonListTypeRelModelImpl
+	extends BaseModelImpl<WatsonListTypeRel> implements WatsonListTypeRelModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson list type rel model instance should use the <code>WatsonListTypeRel</code> interface instead.
 	 */
 	public static final String TABLE_NAME = "WatsonListTypeRel";
+
 	public static final Object[][] TABLE_COLUMNS = {
-			{ "watsonListTypeRelId", Types.BIGINT },
-			{ "groupId", Types.BIGINT },
-			{ "companyId", Types.BIGINT },
-			{ "userId", Types.BIGINT },
-			{ "userName", Types.VARCHAR },
-			{ "createDate", Types.TIMESTAMP },
-			{ "modifiedDate", Types.TIMESTAMP },
-			{ "watsonListTypeId", Types.BIGINT },
-			{ "classNameId", Types.BIGINT },
-			{ "classPK", Types.BIGINT },
-			{ "primary_", Types.BOOLEAN },
-			{ "value", Types.VARCHAR },
-			{ "type_", Types.VARCHAR },
-			{ "status", Types.INTEGER }
-		};
-	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
+		{"watsonListTypeRelId", Types.BIGINT}, {"groupId", Types.BIGINT},
+		{"companyId", Types.BIGINT}, {"userId", Types.BIGINT},
+		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
+		{"modifiedDate", Types.TIMESTAMP}, {"watsonListTypeId", Types.BIGINT},
+		{"classNameId", Types.BIGINT}, {"classPK", Types.BIGINT},
+		{"primary_", Types.BOOLEAN}, {"value", Types.VARCHAR},
+		{"type_", Types.VARCHAR}, {"status", Types.INTEGER}
+	};
+
+	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
+		new HashMap<String, Integer>();
 
 	static {
 		TABLE_COLUMNS_MAP.put("watsonListTypeRelId", Types.BIGINT);
@@ -110,22 +105,38 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonListTypeRel (watsonListTypeRelId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,watsonListTypeId LONG,classNameId LONG,classPK LONG,primary_ BOOLEAN,value STRING null,type_ VARCHAR(75) null,status INTEGER)";
+	public static final String TABLE_SQL_CREATE =
+		"create table WatsonListTypeRel (watsonListTypeRelId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,watsonListTypeId LONG,classNameId LONG,classPK LONG,primary_ BOOLEAN,value STRING null,type_ VARCHAR(75) null,status INTEGER)";
+
 	public static final String TABLE_SQL_DROP = "drop table WatsonListTypeRel";
-	public static final String ORDER_BY_JPQL = " ORDER BY watsonListTypeRel.watsonListTypeRelId ASC";
-	public static final String ORDER_BY_SQL = " ORDER BY WatsonListTypeRel.watsonListTypeRelId ASC";
+
+	public static final String ORDER_BY_JPQL =
+		" ORDER BY watsonListTypeRel.watsonListTypeRelId ASC";
+
+	public static final String ORDER_BY_SQL =
+		" ORDER BY WatsonListTypeRel.watsonListTypeRelId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
+
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
+
 	public static final String TX_MANAGER = "liferayTransactionManager";
-	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonListTypeRel"),
-			true);
-	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonListTypeRel"),
-			true);
+
+	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonListTypeRel"),
+		true);
+
+	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonListTypeRel"),
+		true);
+
 	public static final boolean COLUMN_BITMASK_ENABLED = false;
-	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.watson.service.util.ServiceProps.get(
-				"lock.expiration.time.com.liferay.watson.model.WatsonListTypeRel"));
+
+	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"lock.expiration.time.com.liferay.watson.model.WatsonListTypeRel"));
 
 	public WatsonListTypeRelModelImpl() {
 	}
@@ -164,14 +175,18 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		Map<String, Function<WatsonListTypeRel, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonListTypeRel, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		for (Map.Entry<String, Function<WatsonListTypeRel, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonListTypeRel, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonListTypeRel, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonListTypeRel, Object> attributeGetterFunction =
+				entry.getValue();
 
-			attributes.put(attributeName,
+			attributes.put(
+				attributeName,
 				attributeGetterFunction.apply((WatsonListTypeRel)this));
 		}
 
@@ -183,38 +198,47 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Map<String, BiConsumer<WatsonListTypeRel, Object>> attributeSetterBiConsumers =
-			getAttributeSetterBiConsumers();
+		Map<String, BiConsumer<WatsonListTypeRel, Object>>
+			attributeSetterBiConsumers = getAttributeSetterBiConsumers();
 
 		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			String attributeName = entry.getKey();
 
-			BiConsumer<WatsonListTypeRel, Object> attributeSetterBiConsumer = attributeSetterBiConsumers.get(attributeName);
+			BiConsumer<WatsonListTypeRel, Object> attributeSetterBiConsumer =
+				attributeSetterBiConsumers.get(attributeName);
 
 			if (attributeSetterBiConsumer != null) {
-				attributeSetterBiConsumer.accept((WatsonListTypeRel)this,
-					entry.getValue());
+				attributeSetterBiConsumer.accept(
+					(WatsonListTypeRel)this, entry.getValue());
 			}
 		}
 	}
 
-	public Map<String, Function<WatsonListTypeRel, Object>> getAttributeGetterFunctions() {
+	public Map<String, Function<WatsonListTypeRel, Object>>
+		getAttributeGetterFunctions() {
+
 		return _attributeGetterFunctions;
 	}
 
-	public Map<String, BiConsumer<WatsonListTypeRel, Object>> getAttributeSetterBiConsumers() {
+	public Map<String, BiConsumer<WatsonListTypeRel, Object>>
+		getAttributeSetterBiConsumers() {
+
 		return _attributeSetterBiConsumers;
 	}
 
-	private static final Map<String, Function<WatsonListTypeRel, Object>> _attributeGetterFunctions;
-	private static final Map<String, BiConsumer<WatsonListTypeRel, Object>> _attributeSetterBiConsumers;
+	private static final Map<String, Function<WatsonListTypeRel, Object>>
+		_attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonListTypeRel, Object>>
+		_attributeSetterBiConsumers;
 
 	static {
-		Map<String, Function<WatsonListTypeRel, Object>> attributeGetterFunctions =
-			new LinkedHashMap<String, Function<WatsonListTypeRel, Object>>();
-		Map<String, BiConsumer<WatsonListTypeRel, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<WatsonListTypeRel, ?>>();
-
+		Map<String, Function<WatsonListTypeRel, Object>>
+			attributeGetterFunctions =
+				new LinkedHashMap
+					<String, Function<WatsonListTypeRel, Object>>();
+		Map<String, BiConsumer<WatsonListTypeRel, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap<String, BiConsumer<WatsonListTypeRel, ?>>();
 
 		attributeGetterFunctions.put(
 			"watsonListTypeRelId",
@@ -231,8 +255,12 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 			new BiConsumer<WatsonListTypeRel, Object>() {
 
 				@Override
-				public void accept(WatsonListTypeRel watsonListTypeRel, Object watsonListTypeRelId) {
-					watsonListTypeRel.setWatsonListTypeRelId((Long)watsonListTypeRelId);
+				public void accept(
+					WatsonListTypeRel watsonListTypeRel,
+					Object watsonListTypeRelId) {
+
+					watsonListTypeRel.setWatsonListTypeRelId(
+						(Long)watsonListTypeRelId);
 				}
 
 			});
@@ -251,7 +279,9 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 			new BiConsumer<WatsonListTypeRel, Object>() {
 
 				@Override
-				public void accept(WatsonListTypeRel watsonListTypeRel, Object groupId) {
+				public void accept(
+					WatsonListTypeRel watsonListTypeRel, Object groupId) {
+
 					watsonListTypeRel.setGroupId((Long)groupId);
 				}
 
@@ -271,7 +301,9 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 			new BiConsumer<WatsonListTypeRel, Object>() {
 
 				@Override
-				public void accept(WatsonListTypeRel watsonListTypeRel, Object companyId) {
+				public void accept(
+					WatsonListTypeRel watsonListTypeRel, Object companyId) {
+
 					watsonListTypeRel.setCompanyId((Long)companyId);
 				}
 
@@ -291,7 +323,9 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 			new BiConsumer<WatsonListTypeRel, Object>() {
 
 				@Override
-				public void accept(WatsonListTypeRel watsonListTypeRel, Object userId) {
+				public void accept(
+					WatsonListTypeRel watsonListTypeRel, Object userId) {
+
 					watsonListTypeRel.setUserId((Long)userId);
 				}
 
@@ -311,7 +345,9 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 			new BiConsumer<WatsonListTypeRel, Object>() {
 
 				@Override
-				public void accept(WatsonListTypeRel watsonListTypeRel, Object userName) {
+				public void accept(
+					WatsonListTypeRel watsonListTypeRel, Object userName) {
+
 					watsonListTypeRel.setUserName((String)userName);
 				}
 
@@ -331,7 +367,9 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 			new BiConsumer<WatsonListTypeRel, Object>() {
 
 				@Override
-				public void accept(WatsonListTypeRel watsonListTypeRel, Object createDate) {
+				public void accept(
+					WatsonListTypeRel watsonListTypeRel, Object createDate) {
+
 					watsonListTypeRel.setCreateDate((Date)createDate);
 				}
 
@@ -351,7 +389,9 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 			new BiConsumer<WatsonListTypeRel, Object>() {
 
 				@Override
-				public void accept(WatsonListTypeRel watsonListTypeRel, Object modifiedDate) {
+				public void accept(
+					WatsonListTypeRel watsonListTypeRel, Object modifiedDate) {
+
 					watsonListTypeRel.setModifiedDate((Date)modifiedDate);
 				}
 
@@ -371,8 +411,12 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 			new BiConsumer<WatsonListTypeRel, Object>() {
 
 				@Override
-				public void accept(WatsonListTypeRel watsonListTypeRel, Object watsonListTypeId) {
-					watsonListTypeRel.setWatsonListTypeId((Long)watsonListTypeId);
+				public void accept(
+					WatsonListTypeRel watsonListTypeRel,
+					Object watsonListTypeId) {
+
+					watsonListTypeRel.setWatsonListTypeId(
+						(Long)watsonListTypeId);
 				}
 
 			});
@@ -391,7 +435,9 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 			new BiConsumer<WatsonListTypeRel, Object>() {
 
 				@Override
-				public void accept(WatsonListTypeRel watsonListTypeRel, Object classNameId) {
+				public void accept(
+					WatsonListTypeRel watsonListTypeRel, Object classNameId) {
+
 					watsonListTypeRel.setClassNameId((Long)classNameId);
 				}
 
@@ -411,7 +457,9 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 			new BiConsumer<WatsonListTypeRel, Object>() {
 
 				@Override
-				public void accept(WatsonListTypeRel watsonListTypeRel, Object classPK) {
+				public void accept(
+					WatsonListTypeRel watsonListTypeRel, Object classPK) {
+
 					watsonListTypeRel.setClassPK((Long)classPK);
 				}
 
@@ -431,7 +479,9 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 			new BiConsumer<WatsonListTypeRel, Object>() {
 
 				@Override
-				public void accept(WatsonListTypeRel watsonListTypeRel, Object primary) {
+				public void accept(
+					WatsonListTypeRel watsonListTypeRel, Object primary) {
+
 					watsonListTypeRel.setPrimary((Boolean)primary);
 				}
 
@@ -451,7 +501,9 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 			new BiConsumer<WatsonListTypeRel, Object>() {
 
 				@Override
-				public void accept(WatsonListTypeRel watsonListTypeRel, Object value) {
+				public void accept(
+					WatsonListTypeRel watsonListTypeRel, Object value) {
+
 					watsonListTypeRel.setValue((String)value);
 				}
 
@@ -471,7 +523,9 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 			new BiConsumer<WatsonListTypeRel, Object>() {
 
 				@Override
-				public void accept(WatsonListTypeRel watsonListTypeRel, Object type) {
+				public void accept(
+					WatsonListTypeRel watsonListTypeRel, Object type) {
+
 					watsonListTypeRel.setType((String)type);
 				}
 
@@ -491,15 +545,18 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 			new BiConsumer<WatsonListTypeRel, Object>() {
 
 				@Override
-				public void accept(WatsonListTypeRel watsonListTypeRel, Object status) {
+				public void accept(
+					WatsonListTypeRel watsonListTypeRel, Object status) {
+
 					watsonListTypeRel.setStatus((Integer)status);
 				}
 
 			});
 
-
-		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap(
+			(Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -695,8 +752,8 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 
 	@Override
 	public String getValue(String languageId, boolean useDefault) {
-		return LocalizationUtil.getLocalization(getValue(), languageId,
-			useDefault);
+		return LocalizationUtil.getLocalization(
+			getValue(), languageId, useDefault);
 	}
 
 	@Override
@@ -733,12 +790,14 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
 
 		if (Validator.isNotNull(value)) {
-			setValue(LocalizationUtil.updateLocalization(getValue(), "Value",
-					value, languageId, defaultLanguageId));
+			setValue(
+				LocalizationUtil.updateLocalization(
+					getValue(), "Value", value, languageId, defaultLanguageId));
 		}
 		else {
-			setValue(LocalizationUtil.removeLocalization(getValue(), "Value",
-					languageId));
+			setValue(
+				LocalizationUtil.removeLocalization(
+					getValue(), "Value", languageId));
 		}
 	}
 
@@ -753,13 +812,17 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 	}
 
 	@Override
-	public void setValueMap(Map<Locale, String> valueMap, Locale defaultLocale) {
+	public void setValueMap(
+		Map<Locale, String> valueMap, Locale defaultLocale) {
+
 		if (valueMap == null) {
 			return;
 		}
 
-		setValue(LocalizationUtil.updateLocalization(valueMap, getValue(),
-				"Value", LocaleUtil.toLanguageId(defaultLocale)));
+		setValue(
+			LocalizationUtil.updateLocalization(
+				valueMap, getValue(), "Value",
+				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
 	@Override
@@ -789,8 +852,8 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 
 	@Override
 	public ExpandoBridge getExpandoBridge() {
-		return ExpandoBridgeFactoryUtil.getExpandoBridge(getCompanyId(),
-			WatsonListTypeRel.class.getName(), getPrimaryKey());
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(
+			getCompanyId(), WatsonListTypeRel.class.getName(), getPrimaryKey());
 	}
 
 	@Override
@@ -815,7 +878,8 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 			}
 		}
 
-		return availableLanguageIds.toArray(new String[availableLanguageIds.size()]);
+		return availableLanguageIds.toArray(
+			new String[availableLanguageIds.size()]);
 	}
 
 	@Override
@@ -833,12 +897,15 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 
 	@Override
 	public void prepareLocalizedFieldsForImport() throws LocaleException {
-		Locale defaultLocale = LocaleUtil.fromLanguageId(getDefaultLanguageId());
+		Locale defaultLocale = LocaleUtil.fromLanguageId(
+			getDefaultLanguageId());
 
-		Locale[] availableLocales = LocaleUtil.fromLanguageIds(getAvailableLanguageIds());
+		Locale[] availableLocales = LocaleUtil.fromLanguageIds(
+			getAvailableLanguageIds());
 
-		Locale defaultImportLocale = LocalizationUtil.getDefaultImportLocale(WatsonListTypeRel.class.getName(),
-				getPrimaryKey(), defaultLocale, availableLocales);
+		Locale defaultImportLocale = LocalizationUtil.getDefaultImportLocale(
+			WatsonListTypeRel.class.getName(), getPrimaryKey(), defaultLocale,
+			availableLocales);
 
 		prepareLocalizedFieldsForImport(defaultImportLocale);
 	}
@@ -847,6 +914,7 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 	@SuppressWarnings("unused")
 	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
 		throws LocaleException {
+
 		Locale defaultLocale = LocaleUtil.getSiteDefault();
 
 		String modelDefaultLanguageId = getDefaultLanguageId();
@@ -864,8 +932,9 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 	@Override
 	public WatsonListTypeRel toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonListTypeRel)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+			_escapedModel = (WatsonListTypeRel)ProxyUtil.newProxyInstance(
+				_classLoader, _escapedModelInterfaces,
+				new AutoEscapeBeanHandler(this));
 		}
 
 		return _escapedModel;
@@ -873,7 +942,8 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 
 	@Override
 	public Object clone() {
-		WatsonListTypeRelImpl watsonListTypeRelImpl = new WatsonListTypeRelImpl();
+		WatsonListTypeRelImpl watsonListTypeRelImpl =
+			new WatsonListTypeRelImpl();
 
 		watsonListTypeRelImpl.setWatsonListTypeRelId(getWatsonListTypeRelId());
 		watsonListTypeRelImpl.setGroupId(getGroupId());
@@ -956,9 +1026,11 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 
 	@Override
 	public CacheModel<WatsonListTypeRel> toCacheModel() {
-		WatsonListTypeRelCacheModel watsonListTypeRelCacheModel = new WatsonListTypeRelCacheModel();
+		WatsonListTypeRelCacheModel watsonListTypeRelCacheModel =
+			new WatsonListTypeRelCacheModel();
 
-		watsonListTypeRelCacheModel.watsonListTypeRelId = getWatsonListTypeRelId();
+		watsonListTypeRelCacheModel.watsonListTypeRelId =
+			getWatsonListTypeRelId();
 
 		watsonListTypeRelCacheModel.groupId = getGroupId();
 
@@ -1023,17 +1095,20 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 
 	@Override
 	public String toString() {
-		Map<String, Function<WatsonListTypeRel, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonListTypeRel, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
-				2);
+		StringBundler sb = new StringBundler(
+			4 * attributeGetterFunctions.size() + 2);
 
 		sb.append("{");
 
-		for (Map.Entry<String, Function<WatsonListTypeRel, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonListTypeRel, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonListTypeRel, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonListTypeRel, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append(attributeName);
 			sb.append("=");
@@ -1052,19 +1127,22 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 
 	@Override
 	public String toXmlString() {
-		Map<String, Function<WatsonListTypeRel, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonListTypeRel, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
-				4);
+		StringBundler sb = new StringBundler(
+			5 * attributeGetterFunctions.size() + 4);
 
 		sb.append("<model><model-name>");
 		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		for (Map.Entry<String, Function<WatsonListTypeRel, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonListTypeRel, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonListTypeRel, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonListTypeRel, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append("<column><column-name>");
 			sb.append(attributeName);
@@ -1078,10 +1156,12 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader = WatsonListTypeRel.class.getClassLoader();
+	private static final ClassLoader _classLoader =
+		WatsonListTypeRel.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			WatsonListTypeRel.class, ModelWrapper.class
-		};
+		WatsonListTypeRel.class, ModelWrapper.class
+	};
+
 	private long _watsonListTypeRelId;
 	private long _groupId;
 	private long _companyId;
@@ -1099,4 +1179,5 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 	private String _type;
 	private int _status;
 	private WatsonListTypeRel _escapedModel;
+
 }

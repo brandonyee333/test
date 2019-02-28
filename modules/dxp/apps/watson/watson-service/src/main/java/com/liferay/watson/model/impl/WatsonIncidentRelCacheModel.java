@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.model.WatsonIncidentRel;
 
 import java.io.Externalizable;
@@ -36,8 +35,9 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public class WatsonIncidentRelCacheModel implements CacheModel<WatsonIncidentRel>,
-	Externalizable {
+public class WatsonIncidentRelCacheModel
+	implements CacheModel<WatsonIncidentRel>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,9 +48,12 @@ public class WatsonIncidentRelCacheModel implements CacheModel<WatsonIncidentRel
 			return false;
 		}
 
-		WatsonIncidentRelCacheModel watsonIncidentRelCacheModel = (WatsonIncidentRelCacheModel)obj;
+		WatsonIncidentRelCacheModel watsonIncidentRelCacheModel =
+			(WatsonIncidentRelCacheModel)obj;
 
-		if (watsonIncidentRelId == watsonIncidentRelCacheModel.watsonIncidentRelId) {
+		if (watsonIncidentRelId ==
+				watsonIncidentRelCacheModel.watsonIncidentRelId) {
+
 			return true;
 		}
 
@@ -95,7 +98,8 @@ public class WatsonIncidentRelCacheModel implements CacheModel<WatsonIncidentRel
 
 	@Override
 	public WatsonIncidentRel toEntityModel() {
-		WatsonIncidentRelImpl watsonIncidentRelImpl = new WatsonIncidentRelImpl();
+		WatsonIncidentRelImpl watsonIncidentRelImpl =
+			new WatsonIncidentRelImpl();
 
 		watsonIncidentRelImpl.setWatsonIncidentRelId(watsonIncidentRelId);
 		watsonIncidentRelImpl.setGroupId(groupId);
@@ -162,8 +166,7 @@ public class WatsonIncidentRelCacheModel implements CacheModel<WatsonIncidentRel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonIncidentRelId);
 
 		objectOutput.writeLong(groupId);
@@ -207,4 +210,5 @@ public class WatsonIncidentRelCacheModel implements CacheModel<WatsonIncidentRel
 	public long watsonIncidentId2;
 	public String type;
 	public int status;
+
 }

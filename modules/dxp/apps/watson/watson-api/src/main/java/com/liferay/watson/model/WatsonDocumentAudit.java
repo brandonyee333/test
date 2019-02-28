@@ -27,30 +27,37 @@ import com.liferay.portal.kernel.util.Accessor;
  * @see WatsonDocumentAuditModel
  * @generated
  */
-@ImplementationClassName("com.liferay.watson.model.impl.WatsonDocumentAuditImpl")
+@ImplementationClassName(
+	"com.liferay.watson.model.impl.WatsonDocumentAuditImpl"
+)
 @ProviderType
-public interface WatsonDocumentAudit extends WatsonDocumentAuditModel,
-	PersistedModel {
+public interface WatsonDocumentAudit
+	extends WatsonDocumentAuditModel, PersistedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonDocumentAuditImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<WatsonDocumentAudit, Long> WATSON_DOCUMENT_AUDIT_ID_ACCESSOR =
-		new Accessor<WatsonDocumentAudit, Long>() {
-			@Override
-			public Long get(WatsonDocumentAudit watsonDocumentAudit) {
-				return watsonDocumentAudit.getWatsonDocumentAuditId();
-			}
+	public static final Accessor<WatsonDocumentAudit, Long>
+		WATSON_DOCUMENT_AUDIT_ID_ACCESSOR =
+			new Accessor<WatsonDocumentAudit, Long>() {
 
-			@Override
-			public Class<Long> getAttributeClass() {
-				return Long.class;
-			}
+				@Override
+				public Long get(WatsonDocumentAudit watsonDocumentAudit) {
+					return watsonDocumentAudit.getWatsonDocumentAuditId();
+				}
 
-			@Override
-			public Class<WatsonDocumentAudit> getTypeClass() {
-				return WatsonDocumentAudit.class;
-			}
-		};
+				@Override
+				public Class<Long> getAttributeClass() {
+					return Long.class;
+				}
+
+				@Override
+				public Class<WatsonDocumentAudit> getTypeClass() {
+					return WatsonDocumentAudit.class;
+				}
+
+			};
+
 }

@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.model.WatsonReportAudit;
 
 import java.io.Externalizable;
@@ -36,8 +35,9 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public class WatsonReportAuditCacheModel implements CacheModel<WatsonReportAudit>,
-	Externalizable {
+public class WatsonReportAuditCacheModel
+	implements CacheModel<WatsonReportAudit>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,9 +48,12 @@ public class WatsonReportAuditCacheModel implements CacheModel<WatsonReportAudit
 			return false;
 		}
 
-		WatsonReportAuditCacheModel watsonReportAuditCacheModel = (WatsonReportAuditCacheModel)obj;
+		WatsonReportAuditCacheModel watsonReportAuditCacheModel =
+			(WatsonReportAuditCacheModel)obj;
 
-		if (watsonReportAuditId == watsonReportAuditCacheModel.watsonReportAuditId) {
+		if (watsonReportAuditId ==
+				watsonReportAuditCacheModel.watsonReportAuditId) {
+
 			return true;
 		}
 
@@ -113,7 +116,8 @@ public class WatsonReportAuditCacheModel implements CacheModel<WatsonReportAudit
 
 	@Override
 	public WatsonReportAudit toEntityModel() {
-		WatsonReportAuditImpl watsonReportAuditImpl = new WatsonReportAuditImpl();
+		WatsonReportAuditImpl watsonReportAuditImpl =
+			new WatsonReportAuditImpl();
 
 		watsonReportAuditImpl.setWatsonReportAuditId(watsonReportAuditId);
 		watsonReportAuditImpl.setGroupId(groupId);
@@ -237,8 +241,7 @@ public class WatsonReportAuditCacheModel implements CacheModel<WatsonReportAudit
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonReportAuditId);
 
 		objectOutput.writeLong(groupId);
@@ -334,4 +337,5 @@ public class WatsonReportAuditCacheModel implements CacheModel<WatsonReportAudit
 	public long reportDate;
 	public int key;
 	public int status;
+
 }

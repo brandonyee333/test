@@ -30,13 +30,15 @@ import com.liferay.portal.kernel.util.Accessor;
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonVehicleImpl")
 @ProviderType
 public interface WatsonVehicle extends WatsonVehicleModel, PersistedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonVehicleImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<WatsonVehicle, Long> WATSON_VEHICLE_ID_ACCESSOR =
-		new Accessor<WatsonVehicle, Long>() {
+	public static final Accessor<WatsonVehicle, Long>
+		WATSON_VEHICLE_ID_ACCESSOR = new Accessor<WatsonVehicle, Long>() {
+
 			@Override
 			public Long get(WatsonVehicle watsonVehicle) {
 				return watsonVehicle.getWatsonVehicleId();
@@ -51,5 +53,7 @@ public interface WatsonVehicle extends WatsonVehicleModel, PersistedModel {
 			public Class<WatsonVehicle> getTypeClass() {
 				return WatsonVehicle.class;
 			}
+
 		};
+
 }

@@ -30,11 +30,15 @@ import java.util.List;
  */
 @ProviderType
 public class WatsonRelationshipAuditSoap implements Serializable {
+
 	public static WatsonRelationshipAuditSoap toSoapModel(
 		WatsonRelationshipAudit model) {
-		WatsonRelationshipAuditSoap soapModel = new WatsonRelationshipAuditSoap();
 
-		soapModel.setWatsonRelationshipAuditId(model.getWatsonRelationshipAuditId());
+		WatsonRelationshipAuditSoap soapModel =
+			new WatsonRelationshipAuditSoap();
+
+		soapModel.setWatsonRelationshipAuditId(
+			model.getWatsonRelationshipAuditId());
 		soapModel.setGroupId(model.getGroupId());
 		soapModel.setCompanyId(model.getCompanyId());
 		soapModel.setUserId(model.getUserId());
@@ -56,7 +60,9 @@ public class WatsonRelationshipAuditSoap implements Serializable {
 
 	public static WatsonRelationshipAuditSoap[] toSoapModels(
 		WatsonRelationshipAudit[] models) {
-		WatsonRelationshipAuditSoap[] soapModels = new WatsonRelationshipAuditSoap[models.length];
+
+		WatsonRelationshipAuditSoap[] soapModels =
+			new WatsonRelationshipAuditSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -67,10 +73,13 @@ public class WatsonRelationshipAuditSoap implements Serializable {
 
 	public static WatsonRelationshipAuditSoap[][] toSoapModels(
 		WatsonRelationshipAudit[][] models) {
+
 		WatsonRelationshipAuditSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new WatsonRelationshipAuditSoap[models.length][models[0].length];
+			soapModels =
+				new WatsonRelationshipAuditSoap
+					[models.length][models[0].length];
 		}
 		else {
 			soapModels = new WatsonRelationshipAuditSoap[0][0];
@@ -85,13 +94,16 @@ public class WatsonRelationshipAuditSoap implements Serializable {
 
 	public static WatsonRelationshipAuditSoap[] toSoapModels(
 		List<WatsonRelationshipAudit> models) {
-		List<WatsonRelationshipAuditSoap> soapModels = new ArrayList<WatsonRelationshipAuditSoap>(models.size());
+
+		List<WatsonRelationshipAuditSoap> soapModels =
+			new ArrayList<WatsonRelationshipAuditSoap>(models.size());
 
 		for (WatsonRelationshipAudit model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(new WatsonRelationshipAuditSoap[soapModels.size()]);
+		return soapModels.toArray(
+			new WatsonRelationshipAuditSoap[soapModels.size()]);
 	}
 
 	public WatsonRelationshipAuditSoap() {
@@ -249,4 +261,5 @@ public class WatsonRelationshipAuditSoap implements Serializable {
 	private long _classPK2;
 	private String _description;
 	private int _status;
+
 }

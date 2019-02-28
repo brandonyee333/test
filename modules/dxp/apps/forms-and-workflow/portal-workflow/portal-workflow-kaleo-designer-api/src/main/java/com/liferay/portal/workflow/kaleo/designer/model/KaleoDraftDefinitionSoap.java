@@ -30,8 +30,10 @@ import java.util.List;
  */
 @ProviderType
 public class KaleoDraftDefinitionSoap implements Serializable {
+
 	public static KaleoDraftDefinitionSoap toSoapModel(
 		KaleoDraftDefinition model) {
+
 		KaleoDraftDefinitionSoap soapModel = new KaleoDraftDefinitionSoap();
 
 		soapModel.setKaleoDraftDefinitionId(model.getKaleoDraftDefinitionId());
@@ -52,7 +54,9 @@ public class KaleoDraftDefinitionSoap implements Serializable {
 
 	public static KaleoDraftDefinitionSoap[] toSoapModels(
 		KaleoDraftDefinition[] models) {
-		KaleoDraftDefinitionSoap[] soapModels = new KaleoDraftDefinitionSoap[models.length];
+
+		KaleoDraftDefinitionSoap[] soapModels =
+			new KaleoDraftDefinitionSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -63,10 +67,12 @@ public class KaleoDraftDefinitionSoap implements Serializable {
 
 	public static KaleoDraftDefinitionSoap[][] toSoapModels(
 		KaleoDraftDefinition[][] models) {
+
 		KaleoDraftDefinitionSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new KaleoDraftDefinitionSoap[models.length][models[0].length];
+			soapModels =
+				new KaleoDraftDefinitionSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new KaleoDraftDefinitionSoap[0][0];
@@ -81,13 +87,16 @@ public class KaleoDraftDefinitionSoap implements Serializable {
 
 	public static KaleoDraftDefinitionSoap[] toSoapModels(
 		List<KaleoDraftDefinition> models) {
-		List<KaleoDraftDefinitionSoap> soapModels = new ArrayList<KaleoDraftDefinitionSoap>(models.size());
+
+		List<KaleoDraftDefinitionSoap> soapModels =
+			new ArrayList<KaleoDraftDefinitionSoap>(models.size());
 
 		for (KaleoDraftDefinition model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(new KaleoDraftDefinitionSoap[soapModels.size()]);
+		return soapModels.toArray(
+			new KaleoDraftDefinitionSoap[soapModels.size()]);
 	}
 
 	public KaleoDraftDefinitionSoap() {
@@ -209,4 +218,5 @@ public class KaleoDraftDefinitionSoap implements Serializable {
 	private String _content;
 	private int _version;
 	private int _draftVersion;
+
 }

@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
-
 import com.liferay.watson.exception.NoSuchIncidentRelAuditException;
 import com.liferay.watson.model.WatsonIncidentRelAudit;
 import com.liferay.watson.model.impl.WatsonIncidentRelAuditImpl;
@@ -66,18 +65,24 @@ import java.util.Set;
  * @generated
  */
 @ProviderType
-public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<WatsonIncidentRelAudit>
+public class WatsonIncidentRelAuditPersistenceImpl
+	extends BasePersistenceImpl<WatsonIncidentRelAudit>
 	implements WatsonIncidentRelAuditPersistence {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonIncidentRelAuditUtil</code> to access the watson incident rel audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY = WatsonIncidentRelAuditImpl.class.getName();
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List1";
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List2";
+	public static final String FINDER_CLASS_NAME_ENTITY =
+		WatsonIncidentRelAuditImpl.class.getName();
+
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List1";
+
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List2";
+
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
@@ -87,7 +92,7 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 
 		try {
 			Field field = BasePersistenceImpl.class.getDeclaredField(
-					"_dbColumnNames");
+				"_dbColumnNames");
 
 			field.setAccessible(true);
 
@@ -111,7 +116,8 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 	 */
 	@Override
 	public void cacheResult(WatsonIncidentRelAudit watsonIncidentRelAudit) {
-		entityCache.putResult(WatsonIncidentRelAuditModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			WatsonIncidentRelAuditModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonIncidentRelAuditImpl.class,
 			watsonIncidentRelAudit.getPrimaryKey(), watsonIncidentRelAudit);
 
@@ -126,11 +132,15 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 	@Override
 	public void cacheResult(
 		List<WatsonIncidentRelAudit> watsonIncidentRelAudits) {
-		for (WatsonIncidentRelAudit watsonIncidentRelAudit : watsonIncidentRelAudits) {
+
+		for (WatsonIncidentRelAudit watsonIncidentRelAudit :
+				watsonIncidentRelAudits) {
+
 			if (entityCache.getResult(
-						WatsonIncidentRelAuditModelImpl.ENTITY_CACHE_ENABLED,
-						WatsonIncidentRelAuditImpl.class,
-						watsonIncidentRelAudit.getPrimaryKey()) == null) {
+					WatsonIncidentRelAuditModelImpl.ENTITY_CACHE_ENABLED,
+					WatsonIncidentRelAuditImpl.class,
+					watsonIncidentRelAudit.getPrimaryKey()) == null) {
+
 				cacheResult(watsonIncidentRelAudit);
 			}
 			else {
@@ -164,7 +174,8 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 	 */
 	@Override
 	public void clearCache(WatsonIncidentRelAudit watsonIncidentRelAudit) {
-		entityCache.removeResult(WatsonIncidentRelAuditModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.removeResult(
+			WatsonIncidentRelAuditModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonIncidentRelAuditImpl.class,
 			watsonIncidentRelAudit.getPrimaryKey());
 
@@ -173,12 +184,17 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 	}
 
 	@Override
-	public void clearCache(List<WatsonIncidentRelAudit> watsonIncidentRelAudits) {
+	public void clearCache(
+		List<WatsonIncidentRelAudit> watsonIncidentRelAudits) {
+
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
-		for (WatsonIncidentRelAudit watsonIncidentRelAudit : watsonIncidentRelAudits) {
-			entityCache.removeResult(WatsonIncidentRelAuditModelImpl.ENTITY_CACHE_ENABLED,
+		for (WatsonIncidentRelAudit watsonIncidentRelAudit :
+				watsonIncidentRelAudits) {
+
+			entityCache.removeResult(
+				WatsonIncidentRelAuditModelImpl.ENTITY_CACHE_ENABLED,
 				WatsonIncidentRelAuditImpl.class,
 				watsonIncidentRelAudit.getPrimaryKey());
 		}
@@ -192,7 +208,8 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 	 */
 	@Override
 	public WatsonIncidentRelAudit create(long watsonIncidentRelAuditId) {
-		WatsonIncidentRelAudit watsonIncidentRelAudit = new WatsonIncidentRelAuditImpl();
+		WatsonIncidentRelAudit watsonIncidentRelAudit =
+			new WatsonIncidentRelAuditImpl();
 
 		watsonIncidentRelAudit.setNew(true);
 		watsonIncidentRelAudit.setPrimaryKey(watsonIncidentRelAuditId);
@@ -212,6 +229,7 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 	@Override
 	public WatsonIncidentRelAudit remove(long watsonIncidentRelAuditId)
 		throws NoSuchIncidentRelAuditException {
+
 		return remove((Serializable)watsonIncidentRelAuditId);
 	}
 
@@ -225,21 +243,23 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 	@Override
 	public WatsonIncidentRelAudit remove(Serializable primaryKey)
 		throws NoSuchIncidentRelAuditException {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			WatsonIncidentRelAudit watsonIncidentRelAudit = (WatsonIncidentRelAudit)session.get(WatsonIncidentRelAuditImpl.class,
-					primaryKey);
+			WatsonIncidentRelAudit watsonIncidentRelAudit =
+				(WatsonIncidentRelAudit)session.get(
+					WatsonIncidentRelAuditImpl.class, primaryKey);
 
 			if (watsonIncidentRelAudit == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchIncidentRelAuditException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					primaryKey);
+				throw new NoSuchIncidentRelAuditException(
+					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			return remove(watsonIncidentRelAudit);
@@ -258,14 +278,16 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 	@Override
 	protected WatsonIncidentRelAudit removeImpl(
 		WatsonIncidentRelAudit watsonIncidentRelAudit) {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
 			if (!session.contains(watsonIncidentRelAudit)) {
-				watsonIncidentRelAudit = (WatsonIncidentRelAudit)session.get(WatsonIncidentRelAuditImpl.class,
-						watsonIncidentRelAudit.getPrimaryKeyObj());
+				watsonIncidentRelAudit = (WatsonIncidentRelAudit)session.get(
+					WatsonIncidentRelAuditImpl.class,
+					watsonIncidentRelAudit.getPrimaryKeyObj());
 			}
 
 			if (watsonIncidentRelAudit != null) {
@@ -289,27 +311,33 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 	@Override
 	public WatsonIncidentRelAudit updateImpl(
 		WatsonIncidentRelAudit watsonIncidentRelAudit) {
+
 		boolean isNew = watsonIncidentRelAudit.isNew();
 
-		if (!(watsonIncidentRelAudit instanceof WatsonIncidentRelAuditModelImpl)) {
+		if (!(watsonIncidentRelAudit instanceof
+				WatsonIncidentRelAuditModelImpl)) {
+
 			InvocationHandler invocationHandler = null;
 
 			if (ProxyUtil.isProxyClass(watsonIncidentRelAudit.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(watsonIncidentRelAudit);
+				invocationHandler = ProxyUtil.getInvocationHandler(
+					watsonIncidentRelAudit);
 
 				throw new IllegalArgumentException(
 					"Implement ModelWrapper in watsonIncidentRelAudit proxy " +
-					invocationHandler.getClass());
+						invocationHandler.getClass());
 			}
 
 			throw new IllegalArgumentException(
 				"Implement ModelWrapper in custom WatsonIncidentRelAudit implementation " +
-				watsonIncidentRelAudit.getClass());
+					watsonIncidentRelAudit.getClass());
 		}
 
-		WatsonIncidentRelAuditModelImpl watsonIncidentRelAuditModelImpl = (WatsonIncidentRelAuditModelImpl)watsonIncidentRelAudit;
+		WatsonIncidentRelAuditModelImpl watsonIncidentRelAuditModelImpl =
+			(WatsonIncidentRelAuditModelImpl)watsonIncidentRelAudit;
 
-		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
 
 		Date now = new Date();
 
@@ -318,8 +346,8 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 				watsonIncidentRelAudit.setCreateDate(now);
 			}
 			else {
-				watsonIncidentRelAudit.setCreateDate(serviceContext.getCreateDate(
-						now));
+				watsonIncidentRelAudit.setCreateDate(
+					serviceContext.getCreateDate(now));
 			}
 		}
 
@@ -328,8 +356,8 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 				watsonIncidentRelAudit.setModifiedDate(now);
 			}
 			else {
-				watsonIncidentRelAudit.setModifiedDate(serviceContext.getModifiedDate(
-						now));
+				watsonIncidentRelAudit.setModifiedDate(
+					serviceContext.getModifiedDate(now));
 			}
 		}
 
@@ -344,7 +372,8 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 				watsonIncidentRelAudit.setNew(false);
 			}
 			else {
-				watsonIncidentRelAudit = (WatsonIncidentRelAudit)session.merge(watsonIncidentRelAudit);
+				watsonIncidentRelAudit = (WatsonIncidentRelAudit)session.merge(
+					watsonIncidentRelAudit);
 			}
 		}
 		catch (Exception e) {
@@ -358,11 +387,12 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 
 		if (isNew) {
 			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(_finderPathWithoutPaginationFindAll,
-				FINDER_ARGS_EMPTY);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(WatsonIncidentRelAuditModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			WatsonIncidentRelAuditModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonIncidentRelAuditImpl.class,
 			watsonIncidentRelAudit.getPrimaryKey(), watsonIncidentRelAudit,
 			false);
@@ -382,15 +412,17 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 	@Override
 	public WatsonIncidentRelAudit findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchIncidentRelAuditException {
-		WatsonIncidentRelAudit watsonIncidentRelAudit = fetchByPrimaryKey(primaryKey);
+
+		WatsonIncidentRelAudit watsonIncidentRelAudit = fetchByPrimaryKey(
+			primaryKey);
 
 		if (watsonIncidentRelAudit == null) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchIncidentRelAuditException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				primaryKey);
+			throw new NoSuchIncidentRelAuditException(
+				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 		}
 
 		return watsonIncidentRelAudit;
@@ -405,7 +437,9 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 	 */
 	@Override
 	public WatsonIncidentRelAudit findByPrimaryKey(
-		long watsonIncidentRelAuditId) throws NoSuchIncidentRelAuditException {
+			long watsonIncidentRelAuditId)
+		throws NoSuchIncidentRelAuditException {
+
 		return findByPrimaryKey((Serializable)watsonIncidentRelAuditId);
 	}
 
@@ -417,14 +451,16 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 	 */
 	@Override
 	public WatsonIncidentRelAudit fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(WatsonIncidentRelAuditModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonIncidentRelAuditImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(
+			WatsonIncidentRelAuditModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonIncidentRelAuditImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
 		}
 
-		WatsonIncidentRelAudit watsonIncidentRelAudit = (WatsonIncidentRelAudit)serializable;
+		WatsonIncidentRelAudit watsonIncidentRelAudit =
+			(WatsonIncidentRelAudit)serializable;
 
 		if (watsonIncidentRelAudit == null) {
 			Session session = null;
@@ -432,19 +468,22 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 			try {
 				session = openSession();
 
-				watsonIncidentRelAudit = (WatsonIncidentRelAudit)session.get(WatsonIncidentRelAuditImpl.class,
-						primaryKey);
+				watsonIncidentRelAudit = (WatsonIncidentRelAudit)session.get(
+					WatsonIncidentRelAuditImpl.class, primaryKey);
 
 				if (watsonIncidentRelAudit != null) {
 					cacheResult(watsonIncidentRelAudit);
 				}
 				else {
-					entityCache.putResult(WatsonIncidentRelAuditModelImpl.ENTITY_CACHE_ENABLED,
-						WatsonIncidentRelAuditImpl.class, primaryKey, nullModel);
+					entityCache.putResult(
+						WatsonIncidentRelAuditModelImpl.ENTITY_CACHE_ENABLED,
+						WatsonIncidentRelAuditImpl.class, primaryKey,
+						nullModel);
 				}
 			}
 			catch (Exception e) {
-				entityCache.removeResult(WatsonIncidentRelAuditModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.removeResult(
+					WatsonIncidentRelAuditModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonIncidentRelAuditImpl.class, primaryKey);
 
 				throw processException(e);
@@ -466,24 +505,28 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 	@Override
 	public WatsonIncidentRelAudit fetchByPrimaryKey(
 		long watsonIncidentRelAuditId) {
+
 		return fetchByPrimaryKey((Serializable)watsonIncidentRelAuditId);
 	}
 
 	@Override
 	public Map<Serializable, WatsonIncidentRelAudit> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, WatsonIncidentRelAudit> map = new HashMap<Serializable, WatsonIncidentRelAudit>();
+		Map<Serializable, WatsonIncidentRelAudit> map =
+			new HashMap<Serializable, WatsonIncidentRelAudit>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
 
 			Serializable primaryKey = iterator.next();
 
-			WatsonIncidentRelAudit watsonIncidentRelAudit = fetchByPrimaryKey(primaryKey);
+			WatsonIncidentRelAudit watsonIncidentRelAudit = fetchByPrimaryKey(
+				primaryKey);
 
 			if (watsonIncidentRelAudit != null) {
 				map.put(primaryKey, watsonIncidentRelAudit);
@@ -495,8 +538,9 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(WatsonIncidentRelAuditModelImpl.ENTITY_CACHE_ENABLED,
-					WatsonIncidentRelAuditImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(
+				WatsonIncidentRelAuditModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonIncidentRelAuditImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -516,8 +560,8 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 			return map;
 		}
 
-		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
-				1);
+		StringBundler query = new StringBundler(
+			uncachedPrimaryKeys.size() * 2 + 1);
 
 		query.append(_SQL_SELECT_WATSONINCIDENTRELAUDIT_WHERE_PKS_IN);
 
@@ -540,17 +584,22 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 
 			Query q = session.createQuery(sql);
 
-			for (WatsonIncidentRelAudit watsonIncidentRelAudit : (List<WatsonIncidentRelAudit>)q.list()) {
-				map.put(watsonIncidentRelAudit.getPrimaryKeyObj(),
+			for (WatsonIncidentRelAudit watsonIncidentRelAudit :
+					(List<WatsonIncidentRelAudit>)q.list()) {
+
+				map.put(
+					watsonIncidentRelAudit.getPrimaryKeyObj(),
 					watsonIncidentRelAudit);
 
 				cacheResult(watsonIncidentRelAudit);
 
-				uncachedPrimaryKeys.remove(watsonIncidentRelAudit.getPrimaryKeyObj());
+				uncachedPrimaryKeys.remove(
+					watsonIncidentRelAudit.getPrimaryKeyObj());
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(WatsonIncidentRelAuditModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(
+					WatsonIncidentRelAuditModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonIncidentRelAuditImpl.class, primaryKey, nullModel);
 			}
 		}
@@ -603,8 +652,10 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 	 * @return the ordered range of watson incident rel audits
 	 */
 	@Override
-	public List<WatsonIncidentRelAudit> findAll(int start, int end,
+	public List<WatsonIncidentRelAudit> findAll(
+		int start, int end,
 		OrderByComparator<WatsonIncidentRelAudit> orderByComparator) {
+
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -622,29 +673,32 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 	 * @return the ordered range of watson incident rel audits
 	 */
 	@Override
-	public List<WatsonIncidentRelAudit> findAll(int start, int end,
+	public List<WatsonIncidentRelAudit> findAll(
+		int start, int end,
 		OrderByComparator<WatsonIncidentRelAudit> orderByComparator,
 		boolean retrieveFromCache) {
+
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
+			(orderByComparator == null)) {
+
 			pagination = false;
 			finderPath = _finderPathWithoutPaginationFindAll;
 			finderArgs = FINDER_ARGS_EMPTY;
 		}
 		else {
 			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] { start, end, orderByComparator };
+			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<WatsonIncidentRelAudit> list = null;
 
 		if (retrieveFromCache) {
-			list = (List<WatsonIncidentRelAudit>)finderCache.getResult(finderPath,
-					finderArgs, this);
+			list = (List<WatsonIncidentRelAudit>)finderCache.getResult(
+				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
@@ -652,13 +706,13 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(2 +
-						(orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(
+					2 + (orderByComparator.getOrderByFields().length * 2));
 
 				query.append(_SQL_SELECT_WATSONINCIDENTRELAUDIT);
 
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
 				sql = query.toString();
 			}
@@ -666,7 +720,8 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 				sql = _SQL_SELECT_WATSONINCIDENTRELAUDIT;
 
 				if (pagination) {
-					sql = sql.concat(WatsonIncidentRelAuditModelImpl.ORDER_BY_JPQL);
+					sql = sql.concat(
+						WatsonIncidentRelAuditModelImpl.ORDER_BY_JPQL);
 				}
 			}
 
@@ -678,16 +733,16 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 				Query q = session.createQuery(sql);
 
 				if (!pagination) {
-					list = (List<WatsonIncidentRelAudit>)QueryUtil.list(q,
-							getDialect(), start, end, false);
+					list = (List<WatsonIncidentRelAudit>)QueryUtil.list(
+						q, getDialect(), start, end, false);
 
 					Collections.sort(list);
 
 					list = Collections.unmodifiableList(list);
 				}
 				else {
-					list = (List<WatsonIncidentRelAudit>)QueryUtil.list(q,
-							getDialect(), start, end);
+					list = (List<WatsonIncidentRelAudit>)QueryUtil.list(
+						q, getDialect(), start, end);
 				}
 
 				cacheResult(list);
@@ -725,8 +780,8 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(_finderPathCountAll,
-				FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(
+			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -734,15 +789,17 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(_SQL_COUNT_WATSONINCIDENTRELAUDIT);
+				Query q = session.createQuery(
+					_SQL_COUNT_WATSONINCIDENTRELAUDIT);
 
 				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(_finderPathCountAll, FINDER_ARGS_EMPTY,
-					count);
+				finderCache.putResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
+				finderCache.removeResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
 				throw processException(e);
 			}
@@ -768,21 +825,24 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 	 * Initializes the watson incident rel audit persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(WatsonIncidentRelAuditModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonIncidentRelAuditModelImpl.FINDER_CACHE_ENABLED,
-				WatsonIncidentRelAuditImpl.class,
-				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+		_finderPathWithPaginationFindAll = new FinderPath(
+			WatsonIncidentRelAuditModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonIncidentRelAuditModelImpl.FINDER_CACHE_ENABLED,
+			WatsonIncidentRelAuditImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(WatsonIncidentRelAuditModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonIncidentRelAuditModelImpl.FINDER_CACHE_ENABLED,
-				WatsonIncidentRelAuditImpl.class,
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-				new String[0]);
+		_finderPathWithoutPaginationFindAll = new FinderPath(
+			WatsonIncidentRelAuditModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonIncidentRelAuditModelImpl.FINDER_CACHE_ENABLED,
+			WatsonIncidentRelAuditImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+			new String[0]);
 
-		_finderPathCountAll = new FinderPath(WatsonIncidentRelAuditModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonIncidentRelAuditModelImpl.FINDER_CACHE_ENABLED,
-				Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-				"countAll", new String[0]);
+		_finderPathCountAll = new FinderPath(
+			WatsonIncidentRelAuditModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonIncidentRelAuditModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+			new String[0]);
 	}
 
 	public void destroy() {
@@ -794,17 +854,33 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
+
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
+
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-	private static final String _SQL_SELECT_WATSONINCIDENTRELAUDIT = "SELECT watsonIncidentRelAudit FROM WatsonIncidentRelAudit watsonIncidentRelAudit";
-	private static final String _SQL_SELECT_WATSONINCIDENTRELAUDIT_WHERE_PKS_IN = "SELECT watsonIncidentRelAudit FROM WatsonIncidentRelAudit watsonIncidentRelAudit WHERE watsonIncidentRelAuditId IN (";
-	private static final String _SQL_COUNT_WATSONINCIDENTRELAUDIT = "SELECT COUNT(watsonIncidentRelAudit) FROM WatsonIncidentRelAudit watsonIncidentRelAudit";
-	private static final String _ORDER_BY_ENTITY_ALIAS = "watsonIncidentRelAudit.";
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No WatsonIncidentRelAudit exists with the primary key ";
-	private static final Log _log = LogFactoryUtil.getLog(WatsonIncidentRelAuditPersistenceImpl.class);
-	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
-				"type"
-			});
+
+	private static final String _SQL_SELECT_WATSONINCIDENTRELAUDIT =
+		"SELECT watsonIncidentRelAudit FROM WatsonIncidentRelAudit watsonIncidentRelAudit";
+
+	private static final String
+		_SQL_SELECT_WATSONINCIDENTRELAUDIT_WHERE_PKS_IN =
+			"SELECT watsonIncidentRelAudit FROM WatsonIncidentRelAudit watsonIncidentRelAudit WHERE watsonIncidentRelAuditId IN (";
+
+	private static final String _SQL_COUNT_WATSONINCIDENTRELAUDIT =
+		"SELECT COUNT(watsonIncidentRelAudit) FROM WatsonIncidentRelAudit watsonIncidentRelAudit";
+
+	private static final String _ORDER_BY_ENTITY_ALIAS =
+		"watsonIncidentRelAudit.";
+
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
+		"No WatsonIncidentRelAudit exists with the primary key ";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		WatsonIncidentRelAuditPersistenceImpl.class);
+
+	private static final Set<String> _badColumnNames = SetUtil.fromArray(
+		new String[] {"type"});
+
 }

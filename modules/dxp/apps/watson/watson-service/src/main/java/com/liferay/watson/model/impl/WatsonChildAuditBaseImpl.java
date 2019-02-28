@@ -32,8 +32,9 @@ import com.liferay.watson.service.WatsonChildAuditLocalServiceUtil;
  * @generated
  */
 @ProviderType
-public abstract class WatsonChildAuditBaseImpl extends WatsonChildAuditModelImpl
-	implements WatsonChildAudit {
+public abstract class WatsonChildAuditBaseImpl
+	extends WatsonChildAuditModelImpl implements WatsonChildAudit {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -48,4 +49,5 @@ public abstract class WatsonChildAuditBaseImpl extends WatsonChildAuditModelImpl
 			WatsonChildAuditLocalServiceUtil.updateWatsonChildAudit(this);
 		}
 	}
+
 }

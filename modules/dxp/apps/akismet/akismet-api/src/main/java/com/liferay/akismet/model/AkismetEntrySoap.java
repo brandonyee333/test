@@ -30,6 +30,7 @@ import java.util.List;
  */
 @ProviderType
 public class AkismetEntrySoap implements Serializable {
+
 	public static AkismetEntrySoap toSoapModel(AkismetEntry model) {
 		AkismetEntrySoap soapModel = new AkismetEntrySoap();
 
@@ -75,7 +76,8 @@ public class AkismetEntrySoap implements Serializable {
 	}
 
 	public static AkismetEntrySoap[] toSoapModels(List<AkismetEntry> models) {
-		List<AkismetEntrySoap> soapModels = new ArrayList<AkismetEntrySoap>(models.size());
+		List<AkismetEntrySoap> soapModels = new ArrayList<AkismetEntrySoap>(
+			models.size());
 
 		for (AkismetEntry model : models) {
 			soapModels.add(toSoapModel(model));
@@ -185,4 +187,5 @@ public class AkismetEntrySoap implements Serializable {
 	private String _userAgent;
 	private String _userIP;
 	private String _userURL;
+
 }

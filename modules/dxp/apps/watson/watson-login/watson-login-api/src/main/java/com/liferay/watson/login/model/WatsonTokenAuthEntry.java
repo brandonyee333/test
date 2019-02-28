@@ -27,32 +27,39 @@ import com.liferay.portal.kernel.util.Accessor;
  * @see WatsonTokenAuthEntryModel
  * @generated
  */
-@ImplementationClassName("com.liferay.watson.login.model.impl.WatsonTokenAuthEntryImpl")
+@ImplementationClassName(
+	"com.liferay.watson.login.model.impl.WatsonTokenAuthEntryImpl"
+)
 @ProviderType
-public interface WatsonTokenAuthEntry extends WatsonTokenAuthEntryModel,
-	PersistedModel {
+public interface WatsonTokenAuthEntry
+	extends WatsonTokenAuthEntryModel, PersistedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.login.model.impl.WatsonTokenAuthEntryImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<WatsonTokenAuthEntry, Long> WATSON_TOKEN_AUTH_ENTRY_ID_ACCESSOR =
-		new Accessor<WatsonTokenAuthEntry, Long>() {
-			@Override
-			public Long get(WatsonTokenAuthEntry watsonTokenAuthEntry) {
-				return watsonTokenAuthEntry.getWatsonTokenAuthEntryId();
-			}
+	public static final Accessor<WatsonTokenAuthEntry, Long>
+		WATSON_TOKEN_AUTH_ENTRY_ID_ACCESSOR =
+			new Accessor<WatsonTokenAuthEntry, Long>() {
 
-			@Override
-			public Class<Long> getAttributeClass() {
-				return Long.class;
-			}
+				@Override
+				public Long get(WatsonTokenAuthEntry watsonTokenAuthEntry) {
+					return watsonTokenAuthEntry.getWatsonTokenAuthEntryId();
+				}
 
-			@Override
-			public Class<WatsonTokenAuthEntry> getTypeClass() {
-				return WatsonTokenAuthEntry.class;
-			}
-		};
+				@Override
+				public Class<Long> getAttributeClass() {
+					return Long.class;
+				}
+
+				@Override
+				public Class<WatsonTokenAuthEntry> getTypeClass() {
+					return WatsonTokenAuthEntry.class;
+				}
+
+			};
 
 	public boolean isExpired();
+
 }

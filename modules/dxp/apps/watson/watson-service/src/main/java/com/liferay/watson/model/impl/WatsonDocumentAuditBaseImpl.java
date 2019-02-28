@@ -34,6 +34,7 @@ import com.liferay.watson.service.WatsonDocumentAuditLocalServiceUtil;
 @ProviderType
 public abstract class WatsonDocumentAuditBaseImpl
 	extends WatsonDocumentAuditModelImpl implements WatsonDocumentAudit {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -48,4 +49,5 @@ public abstract class WatsonDocumentAuditBaseImpl
 			WatsonDocumentAuditLocalServiceUtil.updateWatsonDocumentAudit(this);
 		}
 	}
+
 }

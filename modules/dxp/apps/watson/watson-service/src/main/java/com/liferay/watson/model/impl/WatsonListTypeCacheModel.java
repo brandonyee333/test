@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.model.WatsonListType;
 
 import java.io.Externalizable;
@@ -36,8 +35,9 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public class WatsonListTypeCacheModel implements CacheModel<WatsonListType>,
-	Externalizable {
+public class WatsonListTypeCacheModel
+	implements CacheModel<WatsonListType>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,7 +48,8 @@ public class WatsonListTypeCacheModel implements CacheModel<WatsonListType>,
 			return false;
 		}
 
-		WatsonListTypeCacheModel watsonListTypeCacheModel = (WatsonListTypeCacheModel)obj;
+		WatsonListTypeCacheModel watsonListTypeCacheModel =
+			(WatsonListTypeCacheModel)obj;
 
 		if (watsonListTypeId == watsonListTypeCacheModel.watsonListTypeId) {
 			return true;
@@ -167,8 +168,7 @@ public class WatsonListTypeCacheModel implements CacheModel<WatsonListType>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonListTypeId);
 
 		objectOutput.writeLong(groupId);
@@ -217,4 +217,5 @@ public class WatsonListTypeCacheModel implements CacheModel<WatsonListType>,
 	public String name;
 	public String type;
 	public int status;
+
 }

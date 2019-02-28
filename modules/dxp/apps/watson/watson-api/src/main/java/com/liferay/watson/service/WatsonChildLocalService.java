@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
-
 import com.liferay.watson.model.WatsonChild;
 
 import java.io.Serializable;
@@ -49,10 +48,13 @@ import java.util.List;
  * @generated
  */
 @ProviderType
-@Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
-	PortalException.class, SystemException.class})
-public interface WatsonChildLocalService extends BaseLocalService,
-	PersistedModelLocalService {
+@Transactional(
+	isolation = Isolation.PORTAL,
+	rollbackFor = {PortalException.class, SystemException.class}
+)
+public interface WatsonChildLocalService
+	extends BaseLocalService, PersistedModelLocalService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -60,47 +62,47 @@ public interface WatsonChildLocalService extends BaseLocalService,
 	 */
 
 	/**
-	* Adds the watson child to the database. Also notifies the appropriate model listeners.
-	*
-	* @param watsonChild the watson child
-	* @return the watson child that was added
-	*/
+	 * Adds the watson child to the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param watsonChild the watson child
+	 * @return the watson child that was added
+	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public WatsonChild addWatsonChild(WatsonChild watsonChild);
 
 	/**
-	* Creates a new watson child with the primary key. Does not add the watson child to the database.
-	*
-	* @param watsonChildId the primary key for the new watson child
-	* @return the new watson child
-	*/
+	 * Creates a new watson child with the primary key. Does not add the watson child to the database.
+	 *
+	 * @param watsonChildId the primary key for the new watson child
+	 * @return the new watson child
+	 */
 	@Transactional(enabled = false)
 	public WatsonChild createWatsonChild(long watsonChildId);
 
 	/**
-	* @throws PortalException
-	*/
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
 	/**
-	* Deletes the watson child with the primary key from the database. Also notifies the appropriate model listeners.
-	*
-	* @param watsonChildId the primary key of the watson child
-	* @return the watson child that was removed
-	* @throws PortalException if a watson child with the primary key could not be found
-	*/
+	 * Deletes the watson child with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param watsonChildId the primary key of the watson child
+	 * @return the watson child that was removed
+	 * @throws PortalException if a watson child with the primary key could not be found
+	 */
 	@Indexable(type = IndexableType.DELETE)
 	public WatsonChild deleteWatsonChild(long watsonChildId)
 		throws PortalException;
 
 	/**
-	* Deletes the watson child from the database. Also notifies the appropriate model listeners.
-	*
-	* @param watsonChild the watson child
-	* @return the watson child that was removed
-	*/
+	 * Deletes the watson child from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param watsonChild the watson child
+	 * @return the watson child that was removed
+	 */
 	@Indexable(type = IndexableType.DELETE)
 	public WatsonChild deleteWatsonChild(WatsonChild watsonChild);
 
@@ -108,66 +110,67 @@ public interface WatsonChildLocalService extends BaseLocalService,
 	public DynamicQuery dynamicQuery();
 
 	/**
-	* Performs a dynamic query on the database and returns the matching rows.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the matching rows
-	*/
+	 * Performs a dynamic query on the database and returns the matching rows.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @return the matching rows
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery);
 
 	/**
-	* Performs a dynamic query on the database and returns a range of the matching rows.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.watson.model.impl.WatsonChildModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param dynamicQuery the dynamic query
-	* @param start the lower bound of the range of model instances
-	* @param end the upper bound of the range of model instances (not inclusive)
-	* @return the range of matching rows
-	*/
+	 * Performs a dynamic query on the database and returns a range of the matching rows.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.watson.model.impl.WatsonChildModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param start the lower bound of the range of model instances
+	 * @param end the upper bound of the range of model instances (not inclusive)
+	 * @return the range of matching rows
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end);
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end);
 
 	/**
-	* Performs a dynamic query on the database and returns an ordered range of the matching rows.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.watson.model.impl.WatsonChildModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param dynamicQuery the dynamic query
-	* @param start the lower bound of the range of model instances
-	* @param end the upper bound of the range of model instances (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of matching rows
-	*/
+	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.watson.model.impl.WatsonChildModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param start the lower bound of the range of model instances
+	 * @param end the upper bound of the range of model instances (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching rows
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end, OrderByComparator<T> orderByComparator);
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
+	 * Returns the number of rows matching the dynamic query.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @return the number of rows matching the dynamic query
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public long dynamicQueryCount(DynamicQuery dynamicQuery);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
+	 * Returns the number of rows matching the dynamic query.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param projection the projection to apply to the query
+	 * @return the number of rows matching the dynamic query
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
+	public long dynamicQueryCount(
+		DynamicQuery dynamicQuery, Projection projection);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public WatsonChild fetchWatsonChild(long watsonChildId);
@@ -179,10 +182,10 @@ public interface WatsonChildLocalService extends BaseLocalService,
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
 	public String getOSGiServiceIdentifier();
 
 	@Override
@@ -191,44 +194,45 @@ public interface WatsonChildLocalService extends BaseLocalService,
 		throws PortalException;
 
 	/**
-	* Returns the watson child with the primary key.
-	*
-	* @param watsonChildId the primary key of the watson child
-	* @return the watson child
-	* @throws PortalException if a watson child with the primary key could not be found
-	*/
+	 * Returns the watson child with the primary key.
+	 *
+	 * @param watsonChildId the primary key of the watson child
+	 * @return the watson child
+	 * @throws PortalException if a watson child with the primary key could not be found
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public WatsonChild getWatsonChild(long watsonChildId)
 		throws PortalException;
 
 	/**
-	* Returns a range of all the watson childs.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.watson.model.impl.WatsonChildModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of watson childs
-	* @param end the upper bound of the range of watson childs (not inclusive)
-	* @return the range of watson childs
-	*/
+	 * Returns a range of all the watson childs.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.watson.model.impl.WatsonChildModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of watson childs
+	 * @param end the upper bound of the range of watson childs (not inclusive)
+	 * @return the range of watson childs
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<WatsonChild> getWatsonChilds(int start, int end);
 
 	/**
-	* Returns the number of watson childs.
-	*
-	* @return the number of watson childs
-	*/
+	 * Returns the number of watson childs.
+	 *
+	 * @return the number of watson childs
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getWatsonChildsCount();
 
 	/**
-	* Updates the watson child in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param watsonChild the watson child
-	* @return the watson child that was updated
-	*/
+	 * Updates the watson child in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * @param watsonChild the watson child
+	 * @return the watson child that was updated
+	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public WatsonChild updateWatsonChild(WatsonChild watsonChild);
+
 }

@@ -32,8 +32,9 @@ import com.liferay.watson.service.WatsonVehicleLocalServiceUtil;
  * @generated
  */
 @ProviderType
-public abstract class WatsonVehicleBaseImpl extends WatsonVehicleModelImpl
-	implements WatsonVehicle {
+public abstract class WatsonVehicleBaseImpl
+	extends WatsonVehicleModelImpl implements WatsonVehicle {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -48,4 +49,5 @@ public abstract class WatsonVehicleBaseImpl extends WatsonVehicleModelImpl
 			WatsonVehicleLocalServiceUtil.updateWatsonVehicle(this);
 		}
 	}
+
 }

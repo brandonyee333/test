@@ -30,6 +30,7 @@ import java.util.List;
  */
 @ProviderType
 public class WatsonVehicleSoap implements Serializable {
+
 	public static WatsonVehicleSoap toSoapModel(WatsonVehicle model) {
 		WatsonVehicleSoap soapModel = new WatsonVehicleSoap();
 
@@ -43,7 +44,8 @@ public class WatsonVehicleSoap implements Serializable {
 		soapModel.setColorWatsonListTypeId(model.getColorWatsonListTypeId());
 		soapModel.setMakeWatsonListTypeId(model.getMakeWatsonListTypeId());
 		soapModel.setModelWatsonListTypeId(model.getModelWatsonListTypeId());
-		soapModel.setOriginalWatsonVehicleId(model.getOriginalWatsonVehicleId());
+		soapModel.setOriginalWatsonVehicleId(
+			model.getOriginalWatsonVehicleId());
 		soapModel.setTypeWatsonListTypeId(model.getTypeWatsonListTypeId());
 		soapModel.setYearWatsonListTypeId(model.getYearWatsonListTypeId());
 		soapModel.setWatsonIncidentId(model.getWatsonIncidentId());
@@ -84,7 +86,8 @@ public class WatsonVehicleSoap implements Serializable {
 	}
 
 	public static WatsonVehicleSoap[] toSoapModels(List<WatsonVehicle> models) {
-		List<WatsonVehicleSoap> soapModels = new ArrayList<WatsonVehicleSoap>(models.size());
+		List<WatsonVehicleSoap> soapModels = new ArrayList<WatsonVehicleSoap>(
+			models.size());
 
 		for (WatsonVehicle model : models) {
 			soapModels.add(toSoapModel(model));
@@ -275,4 +278,5 @@ public class WatsonVehicleSoap implements Serializable {
 	private String _imagePayload;
 	private String _licensePlate;
 	private int _status;
+
 }

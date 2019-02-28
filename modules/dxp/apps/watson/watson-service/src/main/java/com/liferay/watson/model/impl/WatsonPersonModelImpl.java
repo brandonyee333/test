@@ -18,7 +18,6 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -35,7 +34,6 @@ import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
-
 import com.liferay.watson.model.WatsonPerson;
 import com.liferay.watson.model.WatsonPersonModel;
 
@@ -66,47 +64,40 @@ import java.util.function.Function;
  * @generated
  */
 @ProviderType
-public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
-	implements WatsonPersonModel {
+public class WatsonPersonModelImpl
+	extends BaseModelImpl<WatsonPerson> implements WatsonPersonModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson person model instance should use the <code>WatsonPerson</code> interface instead.
 	 */
 	public static final String TABLE_NAME = "WatsonPerson";
+
 	public static final Object[][] TABLE_COLUMNS = {
-			{ "watsonPersonId", Types.BIGINT },
-			{ "groupId", Types.BIGINT },
-			{ "companyId", Types.BIGINT },
-			{ "userId", Types.BIGINT },
-			{ "userName", Types.VARCHAR },
-			{ "createDate", Types.TIMESTAMP },
-			{ "modifiedDate", Types.TIMESTAMP },
-			{ "birthCountryId", Types.BIGINT },
-			{ "citizenshipWatsonListTypeId", Types.BIGINT },
-			{ "countryWatsonListTypeId", Types.BIGINT },
-			{ "ethnicityWatsonListTypeId", Types.BIGINT },
-			{ "eyesWatsonListTypeId", Types.BIGINT },
-			{ "hairWatsonListTypeId", Types.BIGINT },
-			{ "originalWatsonPersonId", Types.BIGINT },
-			{ "sexWatsonListTypeId", Types.BIGINT },
-			{ "typeWatsonListTypeId", Types.BIGINT },
-			{ "watsonIncidentId", Types.BIGINT },
-			{ "description", Types.VARCHAR },
-			{ "imagePayload", Types.CLOB },
-			{ "birthDate", Types.TIMESTAMP },
-			{ "dateAccepted", Types.TIMESTAMP },
-			{ "dateRescued", Types.TIMESTAMP },
-			{ "startAge", Types.VARCHAR },
-			{ "endAge", Types.VARCHAR },
-			{ "occupation", Types.VARCHAR },
-			{ "height", Types.VARCHAR },
-			{ "weight", Types.VARCHAR },
-			{ "accepted", Types.BOOLEAN },
-			{ "rescued", Types.BOOLEAN },
-			{ "status", Types.INTEGER }
-		};
-	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
+		{"watsonPersonId", Types.BIGINT}, {"groupId", Types.BIGINT},
+		{"companyId", Types.BIGINT}, {"userId", Types.BIGINT},
+		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
+		{"modifiedDate", Types.TIMESTAMP}, {"birthCountryId", Types.BIGINT},
+		{"citizenshipWatsonListTypeId", Types.BIGINT},
+		{"countryWatsonListTypeId", Types.BIGINT},
+		{"ethnicityWatsonListTypeId", Types.BIGINT},
+		{"eyesWatsonListTypeId", Types.BIGINT},
+		{"hairWatsonListTypeId", Types.BIGINT},
+		{"originalWatsonPersonId", Types.BIGINT},
+		{"sexWatsonListTypeId", Types.BIGINT},
+		{"typeWatsonListTypeId", Types.BIGINT},
+		{"watsonIncidentId", Types.BIGINT}, {"description", Types.VARCHAR},
+		{"imagePayload", Types.CLOB}, {"birthDate", Types.TIMESTAMP},
+		{"dateAccepted", Types.TIMESTAMP}, {"dateRescued", Types.TIMESTAMP},
+		{"startAge", Types.VARCHAR}, {"endAge", Types.VARCHAR},
+		{"occupation", Types.VARCHAR}, {"height", Types.VARCHAR},
+		{"weight", Types.VARCHAR}, {"accepted", Types.BOOLEAN},
+		{"rescued", Types.BOOLEAN}, {"status", Types.INTEGER}
+	};
+
+	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
+		new HashMap<String, Integer>();
 
 	static {
 		TABLE_COLUMNS_MAP.put("watsonPersonId", Types.BIGINT);
@@ -141,22 +132,38 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonPerson (watsonPersonId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,birthCountryId LONG,citizenshipWatsonListTypeId LONG,countryWatsonListTypeId LONG,ethnicityWatsonListTypeId LONG,eyesWatsonListTypeId LONG,hairWatsonListTypeId LONG,originalWatsonPersonId LONG,sexWatsonListTypeId LONG,typeWatsonListTypeId LONG,watsonIncidentId LONG,description STRING null,imagePayload TEXT null,birthDate DATE null,dateAccepted DATE null,dateRescued DATE null,startAge VARCHAR(75) null,endAge VARCHAR(75) null,occupation STRING null,height VARCHAR(75) null,weight VARCHAR(75) null,accepted BOOLEAN,rescued BOOLEAN,status INTEGER)";
+	public static final String TABLE_SQL_CREATE =
+		"create table WatsonPerson (watsonPersonId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,birthCountryId LONG,citizenshipWatsonListTypeId LONG,countryWatsonListTypeId LONG,ethnicityWatsonListTypeId LONG,eyesWatsonListTypeId LONG,hairWatsonListTypeId LONG,originalWatsonPersonId LONG,sexWatsonListTypeId LONG,typeWatsonListTypeId LONG,watsonIncidentId LONG,description STRING null,imagePayload TEXT null,birthDate DATE null,dateAccepted DATE null,dateRescued DATE null,startAge VARCHAR(75) null,endAge VARCHAR(75) null,occupation STRING null,height VARCHAR(75) null,weight VARCHAR(75) null,accepted BOOLEAN,rescued BOOLEAN,status INTEGER)";
+
 	public static final String TABLE_SQL_DROP = "drop table WatsonPerson";
-	public static final String ORDER_BY_JPQL = " ORDER BY watsonPerson.watsonPersonId ASC";
-	public static final String ORDER_BY_SQL = " ORDER BY WatsonPerson.watsonPersonId ASC";
+
+	public static final String ORDER_BY_JPQL =
+		" ORDER BY watsonPerson.watsonPersonId ASC";
+
+	public static final String ORDER_BY_SQL =
+		" ORDER BY WatsonPerson.watsonPersonId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
+
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
+
 	public static final String TX_MANAGER = "liferayTransactionManager";
-	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonPerson"),
-			true);
-	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonPerson"),
-			true);
+
+	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonPerson"),
+		true);
+
+	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonPerson"),
+		true);
+
 	public static final boolean COLUMN_BITMASK_ENABLED = false;
-	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.watson.service.util.ServiceProps.get(
-				"lock.expiration.time.com.liferay.watson.model.WatsonPerson"));
+
+	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"lock.expiration.time.com.liferay.watson.model.WatsonPerson"));
 
 	public WatsonPersonModelImpl() {
 	}
@@ -195,13 +202,18 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		Map<String, Function<WatsonPerson, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+		Map<String, Function<WatsonPerson, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		for (Map.Entry<String, Function<WatsonPerson, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonPerson, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonPerson, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonPerson, Object> attributeGetterFunction =
+				entry.getValue();
 
-			attributes.put(attributeName,
+			attributes.put(
+				attributeName,
 				attributeGetterFunction.apply((WatsonPerson)this));
 		}
 
@@ -213,36 +225,44 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Map<String, BiConsumer<WatsonPerson, Object>> attributeSetterBiConsumers =
-			getAttributeSetterBiConsumers();
+		Map<String, BiConsumer<WatsonPerson, Object>>
+			attributeSetterBiConsumers = getAttributeSetterBiConsumers();
 
 		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			String attributeName = entry.getKey();
 
-			BiConsumer<WatsonPerson, Object> attributeSetterBiConsumer = attributeSetterBiConsumers.get(attributeName);
+			BiConsumer<WatsonPerson, Object> attributeSetterBiConsumer =
+				attributeSetterBiConsumers.get(attributeName);
 
 			if (attributeSetterBiConsumer != null) {
-				attributeSetterBiConsumer.accept((WatsonPerson)this,
-					entry.getValue());
+				attributeSetterBiConsumer.accept(
+					(WatsonPerson)this, entry.getValue());
 			}
 		}
 	}
 
-	public Map<String, Function<WatsonPerson, Object>> getAttributeGetterFunctions() {
+	public Map<String, Function<WatsonPerson, Object>>
+		getAttributeGetterFunctions() {
+
 		return _attributeGetterFunctions;
 	}
 
-	public Map<String, BiConsumer<WatsonPerson, Object>> getAttributeSetterBiConsumers() {
+	public Map<String, BiConsumer<WatsonPerson, Object>>
+		getAttributeSetterBiConsumers() {
+
 		return _attributeSetterBiConsumers;
 	}
 
-	private static final Map<String, Function<WatsonPerson, Object>> _attributeGetterFunctions;
-	private static final Map<String, BiConsumer<WatsonPerson, Object>> _attributeSetterBiConsumers;
+	private static final Map<String, Function<WatsonPerson, Object>>
+		_attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonPerson, Object>>
+		_attributeSetterBiConsumers;
 
 	static {
-		Map<String, Function<WatsonPerson, Object>> attributeGetterFunctions = new LinkedHashMap<String, Function<WatsonPerson, Object>>();
-		Map<String, BiConsumer<WatsonPerson, ?>> attributeSetterBiConsumers = new LinkedHashMap<String, BiConsumer<WatsonPerson, ?>>();
-
+		Map<String, Function<WatsonPerson, Object>> attributeGetterFunctions =
+			new LinkedHashMap<String, Function<WatsonPerson, Object>>();
+		Map<String, BiConsumer<WatsonPerson, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<WatsonPerson, ?>>();
 
 		attributeGetterFunctions.put(
 			"watsonPersonId",
@@ -259,7 +279,9 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 			new BiConsumer<WatsonPerson, Object>() {
 
 				@Override
-				public void accept(WatsonPerson watsonPerson, Object watsonPersonId) {
+				public void accept(
+					WatsonPerson watsonPerson, Object watsonPersonId) {
+
 					watsonPerson.setWatsonPersonId((Long)watsonPersonId);
 				}
 
@@ -299,7 +321,9 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 			new BiConsumer<WatsonPerson, Object>() {
 
 				@Override
-				public void accept(WatsonPerson watsonPerson, Object companyId) {
+				public void accept(
+					WatsonPerson watsonPerson, Object companyId) {
+
 					watsonPerson.setCompanyId((Long)companyId);
 				}
 
@@ -359,7 +383,9 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 			new BiConsumer<WatsonPerson, Object>() {
 
 				@Override
-				public void accept(WatsonPerson watsonPerson, Object createDate) {
+				public void accept(
+					WatsonPerson watsonPerson, Object createDate) {
+
 					watsonPerson.setCreateDate((Date)createDate);
 				}
 
@@ -379,7 +405,9 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 			new BiConsumer<WatsonPerson, Object>() {
 
 				@Override
-				public void accept(WatsonPerson watsonPerson, Object modifiedDate) {
+				public void accept(
+					WatsonPerson watsonPerson, Object modifiedDate) {
+
 					watsonPerson.setModifiedDate((Date)modifiedDate);
 				}
 
@@ -399,7 +427,9 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 			new BiConsumer<WatsonPerson, Object>() {
 
 				@Override
-				public void accept(WatsonPerson watsonPerson, Object birthCountryId) {
+				public void accept(
+					WatsonPerson watsonPerson, Object birthCountryId) {
+
 					watsonPerson.setBirthCountryId((Long)birthCountryId);
 				}
 
@@ -419,8 +449,12 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 			new BiConsumer<WatsonPerson, Object>() {
 
 				@Override
-				public void accept(WatsonPerson watsonPerson, Object citizenshipWatsonListTypeId) {
-					watsonPerson.setCitizenshipWatsonListTypeId((Long)citizenshipWatsonListTypeId);
+				public void accept(
+					WatsonPerson watsonPerson,
+					Object citizenshipWatsonListTypeId) {
+
+					watsonPerson.setCitizenshipWatsonListTypeId(
+						(Long)citizenshipWatsonListTypeId);
 				}
 
 			});
@@ -439,8 +473,11 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 			new BiConsumer<WatsonPerson, Object>() {
 
 				@Override
-				public void accept(WatsonPerson watsonPerson, Object countryWatsonListTypeId) {
-					watsonPerson.setCountryWatsonListTypeId((Long)countryWatsonListTypeId);
+				public void accept(
+					WatsonPerson watsonPerson, Object countryWatsonListTypeId) {
+
+					watsonPerson.setCountryWatsonListTypeId(
+						(Long)countryWatsonListTypeId);
 				}
 
 			});
@@ -459,8 +496,12 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 			new BiConsumer<WatsonPerson, Object>() {
 
 				@Override
-				public void accept(WatsonPerson watsonPerson, Object ethnicityWatsonListTypeId) {
-					watsonPerson.setEthnicityWatsonListTypeId((Long)ethnicityWatsonListTypeId);
+				public void accept(
+					WatsonPerson watsonPerson,
+					Object ethnicityWatsonListTypeId) {
+
+					watsonPerson.setEthnicityWatsonListTypeId(
+						(Long)ethnicityWatsonListTypeId);
 				}
 
 			});
@@ -479,8 +520,11 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 			new BiConsumer<WatsonPerson, Object>() {
 
 				@Override
-				public void accept(WatsonPerson watsonPerson, Object eyesWatsonListTypeId) {
-					watsonPerson.setEyesWatsonListTypeId((Long)eyesWatsonListTypeId);
+				public void accept(
+					WatsonPerson watsonPerson, Object eyesWatsonListTypeId) {
+
+					watsonPerson.setEyesWatsonListTypeId(
+						(Long)eyesWatsonListTypeId);
 				}
 
 			});
@@ -499,8 +543,11 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 			new BiConsumer<WatsonPerson, Object>() {
 
 				@Override
-				public void accept(WatsonPerson watsonPerson, Object hairWatsonListTypeId) {
-					watsonPerson.setHairWatsonListTypeId((Long)hairWatsonListTypeId);
+				public void accept(
+					WatsonPerson watsonPerson, Object hairWatsonListTypeId) {
+
+					watsonPerson.setHairWatsonListTypeId(
+						(Long)hairWatsonListTypeId);
 				}
 
 			});
@@ -519,8 +566,11 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 			new BiConsumer<WatsonPerson, Object>() {
 
 				@Override
-				public void accept(WatsonPerson watsonPerson, Object originalWatsonPersonId) {
-					watsonPerson.setOriginalWatsonPersonId((Long)originalWatsonPersonId);
+				public void accept(
+					WatsonPerson watsonPerson, Object originalWatsonPersonId) {
+
+					watsonPerson.setOriginalWatsonPersonId(
+						(Long)originalWatsonPersonId);
 				}
 
 			});
@@ -539,8 +589,11 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 			new BiConsumer<WatsonPerson, Object>() {
 
 				@Override
-				public void accept(WatsonPerson watsonPerson, Object sexWatsonListTypeId) {
-					watsonPerson.setSexWatsonListTypeId((Long)sexWatsonListTypeId);
+				public void accept(
+					WatsonPerson watsonPerson, Object sexWatsonListTypeId) {
+
+					watsonPerson.setSexWatsonListTypeId(
+						(Long)sexWatsonListTypeId);
 				}
 
 			});
@@ -559,8 +612,11 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 			new BiConsumer<WatsonPerson, Object>() {
 
 				@Override
-				public void accept(WatsonPerson watsonPerson, Object typeWatsonListTypeId) {
-					watsonPerson.setTypeWatsonListTypeId((Long)typeWatsonListTypeId);
+				public void accept(
+					WatsonPerson watsonPerson, Object typeWatsonListTypeId) {
+
+					watsonPerson.setTypeWatsonListTypeId(
+						(Long)typeWatsonListTypeId);
 				}
 
 			});
@@ -579,7 +635,9 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 			new BiConsumer<WatsonPerson, Object>() {
 
 				@Override
-				public void accept(WatsonPerson watsonPerson, Object watsonIncidentId) {
+				public void accept(
+					WatsonPerson watsonPerson, Object watsonIncidentId) {
+
 					watsonPerson.setWatsonIncidentId((Long)watsonIncidentId);
 				}
 
@@ -599,7 +657,9 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 			new BiConsumer<WatsonPerson, Object>() {
 
 				@Override
-				public void accept(WatsonPerson watsonPerson, Object description) {
+				public void accept(
+					WatsonPerson watsonPerson, Object description) {
+
 					watsonPerson.setDescription((String)description);
 				}
 
@@ -619,7 +679,9 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 			new BiConsumer<WatsonPerson, Object>() {
 
 				@Override
-				public void accept(WatsonPerson watsonPerson, Object imagePayload) {
+				public void accept(
+					WatsonPerson watsonPerson, Object imagePayload) {
+
 					watsonPerson.setImagePayload((String)imagePayload);
 				}
 
@@ -639,7 +701,9 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 			new BiConsumer<WatsonPerson, Object>() {
 
 				@Override
-				public void accept(WatsonPerson watsonPerson, Object birthDate) {
+				public void accept(
+					WatsonPerson watsonPerson, Object birthDate) {
+
 					watsonPerson.setBirthDate((Date)birthDate);
 				}
 
@@ -659,7 +723,9 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 			new BiConsumer<WatsonPerson, Object>() {
 
 				@Override
-				public void accept(WatsonPerson watsonPerson, Object dateAccepted) {
+				public void accept(
+					WatsonPerson watsonPerson, Object dateAccepted) {
+
 					watsonPerson.setDateAccepted((Date)dateAccepted);
 				}
 
@@ -679,7 +745,9 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 			new BiConsumer<WatsonPerson, Object>() {
 
 				@Override
-				public void accept(WatsonPerson watsonPerson, Object dateRescued) {
+				public void accept(
+					WatsonPerson watsonPerson, Object dateRescued) {
+
 					watsonPerson.setDateRescued((Date)dateRescued);
 				}
 
@@ -739,7 +807,9 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 			new BiConsumer<WatsonPerson, Object>() {
 
 				@Override
-				public void accept(WatsonPerson watsonPerson, Object occupation) {
+				public void accept(
+					WatsonPerson watsonPerson, Object occupation) {
+
 					watsonPerson.setOccupation((String)occupation);
 				}
 
@@ -845,9 +915,10 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 
 			});
 
-
-		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap(
+			(Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -963,7 +1034,9 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 	}
 
 	@Override
-	public void setCitizenshipWatsonListTypeId(long citizenshipWatsonListTypeId) {
+	public void setCitizenshipWatsonListTypeId(
+		long citizenshipWatsonListTypeId) {
+
 		_citizenshipWatsonListTypeId = citizenshipWatsonListTypeId;
 	}
 
@@ -1078,8 +1151,8 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 
 	@Override
 	public String getDescription(String languageId, boolean useDefault) {
-		return LocalizationUtil.getLocalization(getDescription(), languageId,
-			useDefault);
+		return LocalizationUtil.getLocalization(
+			getDescription(), languageId, useDefault);
 	}
 
 	@Override
@@ -1111,18 +1184,21 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 	}
 
 	@Override
-	public void setDescription(String description, Locale locale,
-		Locale defaultLocale) {
+	public void setDescription(
+		String description, Locale locale, Locale defaultLocale) {
+
 		String languageId = LocaleUtil.toLanguageId(locale);
 		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
 
 		if (Validator.isNotNull(description)) {
-			setDescription(LocalizationUtil.updateLocalization(
+			setDescription(
+				LocalizationUtil.updateLocalization(
 					getDescription(), "Description", description, languageId,
 					defaultLanguageId));
 		}
 		else {
-			setDescription(LocalizationUtil.removeLocalization(
+			setDescription(
+				LocalizationUtil.removeLocalization(
 					getDescription(), "Description", languageId));
 		}
 	}
@@ -1138,14 +1214,16 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 	}
 
 	@Override
-	public void setDescriptionMap(Map<Locale, String> descriptionMap,
-		Locale defaultLocale) {
+	public void setDescriptionMap(
+		Map<Locale, String> descriptionMap, Locale defaultLocale) {
+
 		if (descriptionMap == null) {
 			return;
 		}
 
-		setDescription(LocalizationUtil.updateLocalization(descriptionMap,
-				getDescription(), "Description",
+		setDescription(
+			LocalizationUtil.updateLocalization(
+				descriptionMap, getDescription(), "Description",
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
@@ -1255,8 +1333,8 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 
 	@Override
 	public String getOccupation(String languageId, boolean useDefault) {
-		return LocalizationUtil.getLocalization(getOccupation(), languageId,
-			useDefault);
+		return LocalizationUtil.getLocalization(
+			getOccupation(), languageId, useDefault);
 	}
 
 	@Override
@@ -1288,18 +1366,22 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 	}
 
 	@Override
-	public void setOccupation(String occupation, Locale locale,
-		Locale defaultLocale) {
+	public void setOccupation(
+		String occupation, Locale locale, Locale defaultLocale) {
+
 		String languageId = LocaleUtil.toLanguageId(locale);
 		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
 
 		if (Validator.isNotNull(occupation)) {
-			setOccupation(LocalizationUtil.updateLocalization(getOccupation(),
-					"Occupation", occupation, languageId, defaultLanguageId));
+			setOccupation(
+				LocalizationUtil.updateLocalization(
+					getOccupation(), "Occupation", occupation, languageId,
+					defaultLanguageId));
 		}
 		else {
-			setOccupation(LocalizationUtil.removeLocalization(getOccupation(),
-					"Occupation", languageId));
+			setOccupation(
+				LocalizationUtil.removeLocalization(
+					getOccupation(), "Occupation", languageId));
 		}
 	}
 
@@ -1314,14 +1396,16 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 	}
 
 	@Override
-	public void setOccupationMap(Map<Locale, String> occupationMap,
-		Locale defaultLocale) {
+	public void setOccupationMap(
+		Map<Locale, String> occupationMap, Locale defaultLocale) {
+
 		if (occupationMap == null) {
 			return;
 		}
 
-		setOccupation(LocalizationUtil.updateLocalization(occupationMap,
-				getOccupation(), "Occupation",
+		setOccupation(
+			LocalizationUtil.updateLocalization(
+				occupationMap, getOccupation(), "Occupation",
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
@@ -1397,8 +1481,8 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 
 	@Override
 	public ExpandoBridge getExpandoBridge() {
-		return ExpandoBridgeFactoryUtil.getExpandoBridge(getCompanyId(),
-			WatsonPerson.class.getName(), getPrimaryKey());
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(
+			getCompanyId(), WatsonPerson.class.getName(), getPrimaryKey());
 	}
 
 	@Override
@@ -1434,7 +1518,8 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 			}
 		}
 
-		return availableLanguageIds.toArray(new String[availableLanguageIds.size()]);
+		return availableLanguageIds.toArray(
+			new String[availableLanguageIds.size()]);
 	}
 
 	@Override
@@ -1452,12 +1537,15 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 
 	@Override
 	public void prepareLocalizedFieldsForImport() throws LocaleException {
-		Locale defaultLocale = LocaleUtil.fromLanguageId(getDefaultLanguageId());
+		Locale defaultLocale = LocaleUtil.fromLanguageId(
+			getDefaultLanguageId());
 
-		Locale[] availableLocales = LocaleUtil.fromLanguageIds(getAvailableLanguageIds());
+		Locale[] availableLocales = LocaleUtil.fromLanguageIds(
+			getAvailableLanguageIds());
 
-		Locale defaultImportLocale = LocalizationUtil.getDefaultImportLocale(WatsonPerson.class.getName(),
-				getPrimaryKey(), defaultLocale, availableLocales);
+		Locale defaultImportLocale = LocalizationUtil.getDefaultImportLocale(
+			WatsonPerson.class.getName(), getPrimaryKey(), defaultLocale,
+			availableLocales);
 
 		prepareLocalizedFieldsForImport(defaultImportLocale);
 	}
@@ -1466,6 +1554,7 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 	@SuppressWarnings("unused")
 	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
 		throws LocaleException {
+
 		Locale defaultLocale = LocaleUtil.getSiteDefault();
 
 		String modelDefaultLanguageId = getDefaultLanguageId();
@@ -1473,11 +1562,12 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 		String description = getDescription(defaultLocale);
 
 		if (Validator.isNull(description)) {
-			setDescription(getDescription(modelDefaultLanguageId), defaultLocale);
+			setDescription(
+				getDescription(modelDefaultLanguageId), defaultLocale);
 		}
 		else {
-			setDescription(getDescription(defaultLocale), defaultLocale,
-				defaultLocale);
+			setDescription(
+				getDescription(defaultLocale), defaultLocale, defaultLocale);
 		}
 
 		String occupation = getOccupation(defaultLocale);
@@ -1486,16 +1576,17 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 			setOccupation(getOccupation(modelDefaultLanguageId), defaultLocale);
 		}
 		else {
-			setOccupation(getOccupation(defaultLocale), defaultLocale,
-				defaultLocale);
+			setOccupation(
+				getOccupation(defaultLocale), defaultLocale, defaultLocale);
 		}
 	}
 
 	@Override
 	public WatsonPerson toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonPerson)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+			_escapedModel = (WatsonPerson)ProxyUtil.newProxyInstance(
+				_classLoader, _escapedModelInterfaces,
+				new AutoEscapeBeanHandler(this));
 		}
 
 		return _escapedModel;
@@ -1513,9 +1604,12 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 		watsonPersonImpl.setCreateDate(getCreateDate());
 		watsonPersonImpl.setModifiedDate(getModifiedDate());
 		watsonPersonImpl.setBirthCountryId(getBirthCountryId());
-		watsonPersonImpl.setCitizenshipWatsonListTypeId(getCitizenshipWatsonListTypeId());
-		watsonPersonImpl.setCountryWatsonListTypeId(getCountryWatsonListTypeId());
-		watsonPersonImpl.setEthnicityWatsonListTypeId(getEthnicityWatsonListTypeId());
+		watsonPersonImpl.setCitizenshipWatsonListTypeId(
+			getCitizenshipWatsonListTypeId());
+		watsonPersonImpl.setCountryWatsonListTypeId(
+			getCountryWatsonListTypeId());
+		watsonPersonImpl.setEthnicityWatsonListTypeId(
+			getEthnicityWatsonListTypeId());
 		watsonPersonImpl.setEyesWatsonListTypeId(getEyesWatsonListTypeId());
 		watsonPersonImpl.setHairWatsonListTypeId(getHairWatsonListTypeId());
 		watsonPersonImpl.setOriginalWatsonPersonId(getOriginalWatsonPersonId());
@@ -1602,7 +1696,8 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 
 	@Override
 	public CacheModel<WatsonPerson> toCacheModel() {
-		WatsonPersonCacheModel watsonPersonCacheModel = new WatsonPersonCacheModel();
+		WatsonPersonCacheModel watsonPersonCacheModel =
+			new WatsonPersonCacheModel();
 
 		watsonPersonCacheModel.watsonPersonId = getWatsonPersonId();
 
@@ -1640,17 +1735,21 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 
 		watsonPersonCacheModel.birthCountryId = getBirthCountryId();
 
-		watsonPersonCacheModel.citizenshipWatsonListTypeId = getCitizenshipWatsonListTypeId();
+		watsonPersonCacheModel.citizenshipWatsonListTypeId =
+			getCitizenshipWatsonListTypeId();
 
-		watsonPersonCacheModel.countryWatsonListTypeId = getCountryWatsonListTypeId();
+		watsonPersonCacheModel.countryWatsonListTypeId =
+			getCountryWatsonListTypeId();
 
-		watsonPersonCacheModel.ethnicityWatsonListTypeId = getEthnicityWatsonListTypeId();
+		watsonPersonCacheModel.ethnicityWatsonListTypeId =
+			getEthnicityWatsonListTypeId();
 
 		watsonPersonCacheModel.eyesWatsonListTypeId = getEyesWatsonListTypeId();
 
 		watsonPersonCacheModel.hairWatsonListTypeId = getHairWatsonListTypeId();
 
-		watsonPersonCacheModel.originalWatsonPersonId = getOriginalWatsonPersonId();
+		watsonPersonCacheModel.originalWatsonPersonId =
+			getOriginalWatsonPersonId();
 
 		watsonPersonCacheModel.sexWatsonListTypeId = getSexWatsonListTypeId();
 
@@ -1752,16 +1851,20 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 
 	@Override
 	public String toString() {
-		Map<String, Function<WatsonPerson, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+		Map<String, Function<WatsonPerson, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
-				2);
+		StringBundler sb = new StringBundler(
+			4 * attributeGetterFunctions.size() + 2);
 
 		sb.append("{");
 
-		for (Map.Entry<String, Function<WatsonPerson, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonPerson, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonPerson, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonPerson, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append(attributeName);
 			sb.append("=");
@@ -1780,18 +1883,22 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 
 	@Override
 	public String toXmlString() {
-		Map<String, Function<WatsonPerson, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+		Map<String, Function<WatsonPerson, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
-				4);
+		StringBundler sb = new StringBundler(
+			5 * attributeGetterFunctions.size() + 4);
 
 		sb.append("<model><model-name>");
 		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		for (Map.Entry<String, Function<WatsonPerson, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonPerson, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonPerson, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonPerson, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append("<column><column-name>");
 			sb.append(attributeName);
@@ -1805,10 +1912,12 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader = WatsonPerson.class.getClassLoader();
+	private static final ClassLoader _classLoader =
+		WatsonPerson.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			WatsonPerson.class, ModelWrapper.class
-		};
+		WatsonPerson.class, ModelWrapper.class
+	};
+
 	private long _watsonPersonId;
 	private long _groupId;
 	private long _companyId;
@@ -1843,4 +1952,5 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 	private boolean _rescued;
 	private int _status;
 	private WatsonPerson _escapedModel;
+
 }

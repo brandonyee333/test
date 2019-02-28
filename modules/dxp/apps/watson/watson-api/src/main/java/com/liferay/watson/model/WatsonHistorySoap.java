@@ -30,6 +30,7 @@ import java.util.List;
  */
 @ProviderType
 public class WatsonHistorySoap implements Serializable {
+
 	public static WatsonHistorySoap toSoapModel(WatsonHistory model) {
 		WatsonHistorySoap soapModel = new WatsonHistorySoap();
 
@@ -77,7 +78,8 @@ public class WatsonHistorySoap implements Serializable {
 	}
 
 	public static WatsonHistorySoap[] toSoapModels(List<WatsonHistory> models) {
-		List<WatsonHistorySoap> soapModels = new ArrayList<WatsonHistorySoap>(models.size());
+		List<WatsonHistorySoap> soapModels = new ArrayList<WatsonHistorySoap>(
+			models.size());
 
 		for (WatsonHistory model : models) {
 			soapModels.add(toSoapModel(model));
@@ -205,4 +207,5 @@ public class WatsonHistorySoap implements Serializable {
 	private long _classPK;
 	private int _type;
 	private int _status;
+
 }

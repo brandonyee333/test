@@ -17,7 +17,6 @@ package com.liferay.akismet.model.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.akismet.model.AkismetEntry;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -36,8 +35,9 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public class AkismetEntryCacheModel implements CacheModel<AkismetEntry>,
-	Externalizable {
+public class AkismetEntryCacheModel
+	implements CacheModel<AkismetEntry>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,7 +48,8 @@ public class AkismetEntryCacheModel implements CacheModel<AkismetEntry>,
 			return false;
 		}
 
-		AkismetEntryCacheModel akismetEntryCacheModel = (AkismetEntryCacheModel)obj;
+		AkismetEntryCacheModel akismetEntryCacheModel =
+			(AkismetEntryCacheModel)obj;
 
 		if (akismetEntryId == akismetEntryCacheModel.akismetEntryId) {
 			return true;
@@ -171,8 +172,7 @@ public class AkismetEntryCacheModel implements CacheModel<AkismetEntry>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(akismetEntryId);
 		objectOutput.writeLong(modifiedDate);
 
@@ -233,4 +233,5 @@ public class AkismetEntryCacheModel implements CacheModel<AkismetEntry>,
 	public String userAgent;
 	public String userIP;
 	public String userURL;
+
 }

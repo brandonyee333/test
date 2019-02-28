@@ -30,6 +30,7 @@ import java.util.List;
  */
 @ProviderType
 public class WatsonIncidentSoap implements Serializable {
+
 	public static WatsonIncidentSoap toSoapModel(WatsonIncident model) {
 		WatsonIncidentSoap soapModel = new WatsonIncidentSoap();
 
@@ -40,10 +41,12 @@ public class WatsonIncidentSoap implements Serializable {
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
-		soapModel.setExternalCaseWatsonListTypeId(model.getExternalCaseWatsonListTypeId());
+		soapModel.setExternalCaseWatsonListTypeId(
+			model.getExternalCaseWatsonListTypeId());
 		soapModel.setSourceWatsonListTypeId(model.getSourceWatsonListTypeId());
 		soapModel.setTypeWatsonListTypeId(model.getTypeWatsonListTypeId());
-		soapModel.setSubtypeWatsonListTypeId(model.getSubtypeWatsonListTypeId());
+		soapModel.setSubtypeWatsonListTypeId(
+			model.getSubtypeWatsonListTypeId());
 		soapModel.setAudienceAdultCount(model.getAudienceAdultCount());
 		soapModel.setAudienceChildCount(model.getAudienceChildCount());
 		soapModel.setVictimAdultCount(model.getVictimAdultCount());
@@ -71,11 +74,14 @@ public class WatsonIncidentSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static WatsonIncidentSoap[][] toSoapModels(WatsonIncident[][] models) {
+	public static WatsonIncidentSoap[][] toSoapModels(
+		WatsonIncident[][] models) {
+
 		WatsonIncidentSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new WatsonIncidentSoap[models.length][models[0].length];
+			soapModels =
+				new WatsonIncidentSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new WatsonIncidentSoap[0][0];
@@ -88,8 +94,11 @@ public class WatsonIncidentSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static WatsonIncidentSoap[] toSoapModels(List<WatsonIncident> models) {
-		List<WatsonIncidentSoap> soapModels = new ArrayList<WatsonIncidentSoap>(models.size());
+	public static WatsonIncidentSoap[] toSoapModels(
+		List<WatsonIncident> models) {
+
+		List<WatsonIncidentSoap> soapModels = new ArrayList<WatsonIncidentSoap>(
+			models.size());
 
 		for (WatsonIncident model : models) {
 			soapModels.add(toSoapModel(model));
@@ -171,6 +180,7 @@ public class WatsonIncidentSoap implements Serializable {
 
 	public void setExternalCaseWatsonListTypeId(
 		long externalCaseWatsonListTypeId) {
+
 		_externalCaseWatsonListTypeId = externalCaseWatsonListTypeId;
 	}
 
@@ -326,4 +336,5 @@ public class WatsonIncidentSoap implements Serializable {
 	private double _expenses;
 	private int _incidentStatus;
 	private int _status;
+
 }

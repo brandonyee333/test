@@ -30,13 +30,15 @@ import com.liferay.portal.kernel.util.Accessor;
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonResourceImpl")
 @ProviderType
 public interface WatsonResource extends WatsonResourceModel, PersistedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonResourceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<WatsonResource, Long> WATSON_RESOURCE_ID_ACCESSOR =
-		new Accessor<WatsonResource, Long>() {
+	public static final Accessor<WatsonResource, Long>
+		WATSON_RESOURCE_ID_ACCESSOR = new Accessor<WatsonResource, Long>() {
+
 			@Override
 			public Long get(WatsonResource watsonResource) {
 				return watsonResource.getWatsonResourceId();
@@ -51,5 +53,7 @@ public interface WatsonResource extends WatsonResourceModel, PersistedModel {
 			public Class<WatsonResource> getTypeClass() {
 				return WatsonResource.class;
 			}
+
 		};
+
 }

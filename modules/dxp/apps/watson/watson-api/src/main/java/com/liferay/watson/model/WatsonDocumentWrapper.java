@@ -17,7 +17,6 @@ package com.liferay.watson.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -38,8 +37,9 @@ import java.util.Objects;
  * @generated
  */
 @ProviderType
-public class WatsonDocumentWrapper implements WatsonDocument,
-	ModelWrapper<WatsonDocument> {
+public class WatsonDocumentWrapper
+	implements WatsonDocument, ModelWrapper<WatsonDocument> {
+
 	public WatsonDocumentWrapper(WatsonDocument watsonDocument) {
 		_watsonDocument = watsonDocument;
 	}
@@ -65,8 +65,8 @@ public class WatsonDocumentWrapper implements WatsonDocument,
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("parentTypeWatsonListTypeId",
-			getParentTypeWatsonListTypeId());
+		attributes.put(
+			"parentTypeWatsonListTypeId", getParentTypeWatsonListTypeId());
 		attributes.put("subtypeWatsonListTypeId", getSubtypeWatsonListTypeId());
 		attributes.put("typeWatsonListTypeId", getTypeWatsonListTypeId());
 		attributes.put("watsonChildId", getWatsonChildId());
@@ -123,20 +123,21 @@ public class WatsonDocumentWrapper implements WatsonDocument,
 		}
 
 		Long parentTypeWatsonListTypeId = (Long)attributes.get(
-				"parentTypeWatsonListTypeId");
+			"parentTypeWatsonListTypeId");
 
 		if (parentTypeWatsonListTypeId != null) {
 			setParentTypeWatsonListTypeId(parentTypeWatsonListTypeId);
 		}
 
 		Long subtypeWatsonListTypeId = (Long)attributes.get(
-				"subtypeWatsonListTypeId");
+			"subtypeWatsonListTypeId");
 
 		if (subtypeWatsonListTypeId != null) {
 			setSubtypeWatsonListTypeId(subtypeWatsonListTypeId);
 		}
 
-		Long typeWatsonListTypeId = (Long)attributes.get("typeWatsonListTypeId");
+		Long typeWatsonListTypeId = (Long)attributes.get(
+			"typeWatsonListTypeId");
 
 		if (typeWatsonListTypeId != null) {
 			setTypeWatsonListTypeId(typeWatsonListTypeId);
@@ -175,7 +176,8 @@ public class WatsonDocumentWrapper implements WatsonDocument,
 
 	@Override
 	public Object clone() {
-		return new WatsonDocumentWrapper((WatsonDocument)_watsonDocument.clone());
+		return new WatsonDocumentWrapper(
+			(WatsonDocument)_watsonDocument.clone());
 	}
 
 	@Override
@@ -184,20 +186,20 @@ public class WatsonDocumentWrapper implements WatsonDocument,
 	}
 
 	/**
-	* Returns the company ID of this watson document.
-	*
-	* @return the company ID of this watson document
-	*/
+	 * Returns the company ID of this watson document.
+	 *
+	 * @return the company ID of this watson document
+	 */
 	@Override
 	public long getCompanyId() {
 		return _watsonDocument.getCompanyId();
 	}
 
 	/**
-	* Returns the create date of this watson document.
-	*
-	* @return the create date of this watson document
-	*/
+	 * Returns the create date of this watson document.
+	 *
+	 * @return the create date of this watson document
+	 */
 	@Override
 	public Date getCreateDate() {
 		return _watsonDocument.getCreateDate();
@@ -209,60 +211,60 @@ public class WatsonDocumentWrapper implements WatsonDocument,
 	}
 
 	/**
-	* Returns the group ID of this watson document.
-	*
-	* @return the group ID of this watson document
-	*/
+	 * Returns the group ID of this watson document.
+	 *
+	 * @return the group ID of this watson document
+	 */
 	@Override
 	public long getGroupId() {
 		return _watsonDocument.getGroupId();
 	}
 
 	/**
-	* Returns the image payload of this watson document.
-	*
-	* @return the image payload of this watson document
-	*/
+	 * Returns the image payload of this watson document.
+	 *
+	 * @return the image payload of this watson document
+	 */
 	@Override
 	public String getImagePayload() {
 		return _watsonDocument.getImagePayload();
 	}
 
 	/**
-	* Returns the modified date of this watson document.
-	*
-	* @return the modified date of this watson document
-	*/
+	 * Returns the modified date of this watson document.
+	 *
+	 * @return the modified date of this watson document
+	 */
 	@Override
 	public Date getModifiedDate() {
 		return _watsonDocument.getModifiedDate();
 	}
 
 	/**
-	* Returns the original document of this watson document.
-	*
-	* @return the original document of this watson document
-	*/
+	 * Returns the original document of this watson document.
+	 *
+	 * @return the original document of this watson document
+	 */
 	@Override
 	public boolean getOriginalDocument() {
 		return _watsonDocument.getOriginalDocument();
 	}
 
 	/**
-	* Returns the parent type watson list type ID of this watson document.
-	*
-	* @return the parent type watson list type ID of this watson document
-	*/
+	 * Returns the parent type watson list type ID of this watson document.
+	 *
+	 * @return the parent type watson list type ID of this watson document
+	 */
 	@Override
 	public long getParentTypeWatsonListTypeId() {
 		return _watsonDocument.getParentTypeWatsonListTypeId();
 	}
 
 	/**
-	* Returns the primary key of this watson document.
-	*
-	* @return the primary key of this watson document
-	*/
+	 * Returns the primary key of this watson document.
+	 *
+	 * @return the primary key of this watson document
+	 */
 	@Override
 	public long getPrimaryKey() {
 		return _watsonDocument.getPrimaryKey();
@@ -274,90 +276,90 @@ public class WatsonDocumentWrapper implements WatsonDocument,
 	}
 
 	/**
-	* Returns the received date of this watson document.
-	*
-	* @return the received date of this watson document
-	*/
+	 * Returns the received date of this watson document.
+	 *
+	 * @return the received date of this watson document
+	 */
 	@Override
 	public Date getReceivedDate() {
 		return _watsonDocument.getReceivedDate();
 	}
 
 	/**
-	* Returns the status of this watson document.
-	*
-	* @return the status of this watson document
-	*/
+	 * Returns the status of this watson document.
+	 *
+	 * @return the status of this watson document
+	 */
 	@Override
 	public int getStatus() {
 		return _watsonDocument.getStatus();
 	}
 
 	/**
-	* Returns the subtype watson list type ID of this watson document.
-	*
-	* @return the subtype watson list type ID of this watson document
-	*/
+	 * Returns the subtype watson list type ID of this watson document.
+	 *
+	 * @return the subtype watson list type ID of this watson document
+	 */
 	@Override
 	public long getSubtypeWatsonListTypeId() {
 		return _watsonDocument.getSubtypeWatsonListTypeId();
 	}
 
 	/**
-	* Returns the type watson list type ID of this watson document.
-	*
-	* @return the type watson list type ID of this watson document
-	*/
+	 * Returns the type watson list type ID of this watson document.
+	 *
+	 * @return the type watson list type ID of this watson document
+	 */
 	@Override
 	public long getTypeWatsonListTypeId() {
 		return _watsonDocument.getTypeWatsonListTypeId();
 	}
 
 	/**
-	* Returns the user ID of this watson document.
-	*
-	* @return the user ID of this watson document
-	*/
+	 * Returns the user ID of this watson document.
+	 *
+	 * @return the user ID of this watson document
+	 */
 	@Override
 	public long getUserId() {
 		return _watsonDocument.getUserId();
 	}
 
 	/**
-	* Returns the user name of this watson document.
-	*
-	* @return the user name of this watson document
-	*/
+	 * Returns the user name of this watson document.
+	 *
+	 * @return the user name of this watson document
+	 */
 	@Override
 	public String getUserName() {
 		return _watsonDocument.getUserName();
 	}
 
 	/**
-	* Returns the user uuid of this watson document.
-	*
-	* @return the user uuid of this watson document
-	*/
+	 * Returns the user uuid of this watson document.
+	 *
+	 * @return the user uuid of this watson document
+	 */
 	@Override
 	public String getUserUuid() {
 		return _watsonDocument.getUserUuid();
 	}
 
 	/**
-	* Returns the watson child ID of this watson document.
-	*
-	* @return the watson child ID of this watson document
-	*/
+	 * Returns the watson child ID of this watson document.
+	 *
+	 * @return the watson child ID of this watson document
+	 */
 	@Override
 	public long getWatsonChildId() {
 		return _watsonDocument.getWatsonChildId();
 	}
 
 	/**
-	* Returns the watson document ID of this watson document.
-	*
-	* @return the watson document ID of this watson document
-	*/
+	 * Returns the watson document ID of this watson document.
+	 *
+	 * @return the watson document ID of this watson document
+	 */
 	@Override
 	public long getWatsonDocumentId() {
 		return _watsonDocument.getWatsonDocumentId();
@@ -384,10 +386,10 @@ public class WatsonDocumentWrapper implements WatsonDocument,
 	}
 
 	/**
-	* Returns <code>true</code> if this watson document is original document.
-	*
-	* @return <code>true</code> if this watson document is original document; <code>false</code> otherwise
-	*/
+	 * Returns <code>true</code> if this watson document is original document.
+	 *
+	 * @return <code>true</code> if this watson document is original document; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isOriginalDocument() {
 		return _watsonDocument.isOriginalDocument();
@@ -404,20 +406,20 @@ public class WatsonDocumentWrapper implements WatsonDocument,
 	}
 
 	/**
-	* Sets the company ID of this watson document.
-	*
-	* @param companyId the company ID of this watson document
-	*/
+	 * Sets the company ID of this watson document.
+	 *
+	 * @param companyId the company ID of this watson document
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_watsonDocument.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create date of this watson document.
-	*
-	* @param createDate the create date of this watson document
-	*/
+	 * Sets the create date of this watson document.
+	 *
+	 * @param createDate the create date of this watson document
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_watsonDocument.setCreateDate(createDate);
@@ -426,6 +428,7 @@ public class WatsonDocumentWrapper implements WatsonDocument,
 	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
 		_watsonDocument.setExpandoBridgeAttributes(baseModel);
 	}
 
@@ -440,30 +443,30 @@ public class WatsonDocumentWrapper implements WatsonDocument,
 	}
 
 	/**
-	* Sets the group ID of this watson document.
-	*
-	* @param groupId the group ID of this watson document
-	*/
+	 * Sets the group ID of this watson document.
+	 *
+	 * @param groupId the group ID of this watson document
+	 */
 	@Override
 	public void setGroupId(long groupId) {
 		_watsonDocument.setGroupId(groupId);
 	}
 
 	/**
-	* Sets the image payload of this watson document.
-	*
-	* @param imagePayload the image payload of this watson document
-	*/
+	 * Sets the image payload of this watson document.
+	 *
+	 * @param imagePayload the image payload of this watson document
+	 */
 	@Override
 	public void setImagePayload(String imagePayload) {
 		_watsonDocument.setImagePayload(imagePayload);
 	}
 
 	/**
-	* Sets the modified date of this watson document.
-	*
-	* @param modifiedDate the modified date of this watson document
-	*/
+	 * Sets the modified date of this watson document.
+	 *
+	 * @param modifiedDate the modified date of this watson document
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_watsonDocument.setModifiedDate(modifiedDate);
@@ -475,30 +478,31 @@ public class WatsonDocumentWrapper implements WatsonDocument,
 	}
 
 	/**
-	* Sets whether this watson document is original document.
-	*
-	* @param originalDocument the original document of this watson document
-	*/
+	 * Sets whether this watson document is original document.
+	 *
+	 * @param originalDocument the original document of this watson document
+	 */
 	@Override
 	public void setOriginalDocument(boolean originalDocument) {
 		_watsonDocument.setOriginalDocument(originalDocument);
 	}
 
 	/**
-	* Sets the parent type watson list type ID of this watson document.
-	*
-	* @param parentTypeWatsonListTypeId the parent type watson list type ID of this watson document
-	*/
+	 * Sets the parent type watson list type ID of this watson document.
+	 *
+	 * @param parentTypeWatsonListTypeId the parent type watson list type ID of this watson document
+	 */
 	@Override
 	public void setParentTypeWatsonListTypeId(long parentTypeWatsonListTypeId) {
-		_watsonDocument.setParentTypeWatsonListTypeId(parentTypeWatsonListTypeId);
+		_watsonDocument.setParentTypeWatsonListTypeId(
+			parentTypeWatsonListTypeId);
 	}
 
 	/**
-	* Sets the primary key of this watson document.
-	*
-	* @param primaryKey the primary key of this watson document
-	*/
+	 * Sets the primary key of this watson document.
+	 *
+	 * @param primaryKey the primary key of this watson document
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_watsonDocument.setPrimaryKey(primaryKey);
@@ -510,97 +514,99 @@ public class WatsonDocumentWrapper implements WatsonDocument,
 	}
 
 	/**
-	* Sets the received date of this watson document.
-	*
-	* @param receivedDate the received date of this watson document
-	*/
+	 * Sets the received date of this watson document.
+	 *
+	 * @param receivedDate the received date of this watson document
+	 */
 	@Override
 	public void setReceivedDate(Date receivedDate) {
 		_watsonDocument.setReceivedDate(receivedDate);
 	}
 
 	/**
-	* Sets the status of this watson document.
-	*
-	* @param status the status of this watson document
-	*/
+	 * Sets the status of this watson document.
+	 *
+	 * @param status the status of this watson document
+	 */
 	@Override
 	public void setStatus(int status) {
 		_watsonDocument.setStatus(status);
 	}
 
 	/**
-	* Sets the subtype watson list type ID of this watson document.
-	*
-	* @param subtypeWatsonListTypeId the subtype watson list type ID of this watson document
-	*/
+	 * Sets the subtype watson list type ID of this watson document.
+	 *
+	 * @param subtypeWatsonListTypeId the subtype watson list type ID of this watson document
+	 */
 	@Override
 	public void setSubtypeWatsonListTypeId(long subtypeWatsonListTypeId) {
 		_watsonDocument.setSubtypeWatsonListTypeId(subtypeWatsonListTypeId);
 	}
 
 	/**
-	* Sets the type watson list type ID of this watson document.
-	*
-	* @param typeWatsonListTypeId the type watson list type ID of this watson document
-	*/
+	 * Sets the type watson list type ID of this watson document.
+	 *
+	 * @param typeWatsonListTypeId the type watson list type ID of this watson document
+	 */
 	@Override
 	public void setTypeWatsonListTypeId(long typeWatsonListTypeId) {
 		_watsonDocument.setTypeWatsonListTypeId(typeWatsonListTypeId);
 	}
 
 	/**
-	* Sets the user ID of this watson document.
-	*
-	* @param userId the user ID of this watson document
-	*/
+	 * Sets the user ID of this watson document.
+	 *
+	 * @param userId the user ID of this watson document
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_watsonDocument.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this watson document.
-	*
-	* @param userName the user name of this watson document
-	*/
+	 * Sets the user name of this watson document.
+	 *
+	 * @param userName the user name of this watson document
+	 */
 	@Override
 	public void setUserName(String userName) {
 		_watsonDocument.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this watson document.
-	*
-	* @param userUuid the user uuid of this watson document
-	*/
+	 * Sets the user uuid of this watson document.
+	 *
+	 * @param userUuid the user uuid of this watson document
+	 */
 	@Override
 	public void setUserUuid(String userUuid) {
 		_watsonDocument.setUserUuid(userUuid);
 	}
 
 	/**
-	* Sets the watson child ID of this watson document.
-	*
-	* @param watsonChildId the watson child ID of this watson document
-	*/
+	 * Sets the watson child ID of this watson document.
+	 *
+	 * @param watsonChildId the watson child ID of this watson document
+	 */
 	@Override
 	public void setWatsonChildId(long watsonChildId) {
 		_watsonDocument.setWatsonChildId(watsonChildId);
 	}
 
 	/**
-	* Sets the watson document ID of this watson document.
-	*
-	* @param watsonDocumentId the watson document ID of this watson document
-	*/
+	 * Sets the watson document ID of this watson document.
+	 *
+	 * @param watsonDocumentId the watson document ID of this watson document
+	 */
 	@Override
 	public void setWatsonDocumentId(long watsonDocumentId) {
 		_watsonDocument.setWatsonDocumentId(watsonDocumentId);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<WatsonDocument> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<WatsonDocument>
+		toCacheModel() {
+
 		return _watsonDocument.toCacheModel();
 	}
 
@@ -634,10 +640,12 @@ public class WatsonDocumentWrapper implements WatsonDocument,
 			return false;
 		}
 
-		WatsonDocumentWrapper watsonDocumentWrapper = (WatsonDocumentWrapper)obj;
+		WatsonDocumentWrapper watsonDocumentWrapper =
+			(WatsonDocumentWrapper)obj;
 
-		if (Objects.equals(_watsonDocument,
-					watsonDocumentWrapper._watsonDocument)) {
+		if (Objects.equals(
+				_watsonDocument, watsonDocumentWrapper._watsonDocument)) {
+
 			return true;
 		}
 
@@ -665,4 +673,5 @@ public class WatsonDocumentWrapper implements WatsonDocument,
 	}
 
 	private final WatsonDocument _watsonDocument;
+
 }

@@ -34,6 +34,7 @@ import com.liferay.watson.service.WatsonRelationshipLocalServiceUtil;
 @ProviderType
 public abstract class WatsonRelationshipBaseImpl
 	extends WatsonRelationshipModelImpl implements WatsonRelationship {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -48,4 +49,5 @@ public abstract class WatsonRelationshipBaseImpl
 			WatsonRelationshipLocalServiceUtil.updateWatsonRelationship(this);
 		}
 	}
+
 }

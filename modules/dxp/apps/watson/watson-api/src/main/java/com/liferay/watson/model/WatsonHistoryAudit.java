@@ -29,28 +29,33 @@ import com.liferay.portal.kernel.util.Accessor;
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonHistoryAuditImpl")
 @ProviderType
-public interface WatsonHistoryAudit extends WatsonHistoryAuditModel,
-	PersistedModel {
+public interface WatsonHistoryAudit
+	extends WatsonHistoryAuditModel, PersistedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonHistoryAuditImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<WatsonHistoryAudit, Long> WATSON_HISTORY_AUDIT_ID_ACCESSOR =
-		new Accessor<WatsonHistoryAudit, Long>() {
-			@Override
-			public Long get(WatsonHistoryAudit watsonHistoryAudit) {
-				return watsonHistoryAudit.getWatsonHistoryAuditId();
-			}
+	public static final Accessor<WatsonHistoryAudit, Long>
+		WATSON_HISTORY_AUDIT_ID_ACCESSOR =
+			new Accessor<WatsonHistoryAudit, Long>() {
 
-			@Override
-			public Class<Long> getAttributeClass() {
-				return Long.class;
-			}
+				@Override
+				public Long get(WatsonHistoryAudit watsonHistoryAudit) {
+					return watsonHistoryAudit.getWatsonHistoryAuditId();
+				}
 
-			@Override
-			public Class<WatsonHistoryAudit> getTypeClass() {
-				return WatsonHistoryAudit.class;
-			}
-		};
+				@Override
+				public Class<Long> getAttributeClass() {
+					return Long.class;
+				}
+
+				@Override
+				public Class<WatsonHistoryAudit> getTypeClass() {
+					return WatsonHistoryAudit.class;
+				}
+
+			};
+
 }

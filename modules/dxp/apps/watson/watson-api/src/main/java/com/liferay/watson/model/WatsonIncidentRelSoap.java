@@ -30,6 +30,7 @@ import java.util.List;
  */
 @ProviderType
 public class WatsonIncidentRelSoap implements Serializable {
+
 	public static WatsonIncidentRelSoap toSoapModel(WatsonIncidentRel model) {
 		WatsonIncidentRelSoap soapModel = new WatsonIncidentRelSoap();
 
@@ -50,7 +51,9 @@ public class WatsonIncidentRelSoap implements Serializable {
 
 	public static WatsonIncidentRelSoap[] toSoapModels(
 		WatsonIncidentRel[] models) {
-		WatsonIncidentRelSoap[] soapModels = new WatsonIncidentRelSoap[models.length];
+
+		WatsonIncidentRelSoap[] soapModels =
+			new WatsonIncidentRelSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -61,10 +64,12 @@ public class WatsonIncidentRelSoap implements Serializable {
 
 	public static WatsonIncidentRelSoap[][] toSoapModels(
 		WatsonIncidentRel[][] models) {
+
 		WatsonIncidentRelSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new WatsonIncidentRelSoap[models.length][models[0].length];
+			soapModels =
+				new WatsonIncidentRelSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new WatsonIncidentRelSoap[0][0];
@@ -79,7 +84,9 @@ public class WatsonIncidentRelSoap implements Serializable {
 
 	public static WatsonIncidentRelSoap[] toSoapModels(
 		List<WatsonIncidentRel> models) {
-		List<WatsonIncidentRelSoap> soapModels = new ArrayList<WatsonIncidentRelSoap>(models.size());
+
+		List<WatsonIncidentRelSoap> soapModels =
+			new ArrayList<WatsonIncidentRelSoap>(models.size());
 
 		for (WatsonIncidentRel model : models) {
 			soapModels.add(toSoapModel(model));
@@ -198,4 +205,5 @@ public class WatsonIncidentRelSoap implements Serializable {
 	private long _watsonIncidentId2;
 	private String _type;
 	private int _status;
+
 }

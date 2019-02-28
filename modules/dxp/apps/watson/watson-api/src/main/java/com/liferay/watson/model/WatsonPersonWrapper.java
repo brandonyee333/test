@@ -17,7 +17,6 @@ package com.liferay.watson.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -38,8 +37,9 @@ import java.util.Objects;
  * @generated
  */
 @ProviderType
-public class WatsonPersonWrapper implements WatsonPerson,
-	ModelWrapper<WatsonPerson> {
+public class WatsonPersonWrapper
+	implements WatsonPerson, ModelWrapper<WatsonPerson> {
+
 	public WatsonPersonWrapper(WatsonPerson watsonPerson) {
 		_watsonPerson = watsonPerson;
 	}
@@ -66,11 +66,11 @@ public class WatsonPersonWrapper implements WatsonPerson,
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("birthCountryId", getBirthCountryId());
-		attributes.put("citizenshipWatsonListTypeId",
-			getCitizenshipWatsonListTypeId());
+		attributes.put(
+			"citizenshipWatsonListTypeId", getCitizenshipWatsonListTypeId());
 		attributes.put("countryWatsonListTypeId", getCountryWatsonListTypeId());
-		attributes.put("ethnicityWatsonListTypeId",
-			getEthnicityWatsonListTypeId());
+		attributes.put(
+			"ethnicityWatsonListTypeId", getEthnicityWatsonListTypeId());
 		attributes.put("eyesWatsonListTypeId", getEyesWatsonListTypeId());
 		attributes.put("hairWatsonListTypeId", getHairWatsonListTypeId());
 		attributes.put("originalWatsonPersonId", getOriginalWatsonPersonId());
@@ -145,40 +145,42 @@ public class WatsonPersonWrapper implements WatsonPerson,
 		}
 
 		Long citizenshipWatsonListTypeId = (Long)attributes.get(
-				"citizenshipWatsonListTypeId");
+			"citizenshipWatsonListTypeId");
 
 		if (citizenshipWatsonListTypeId != null) {
 			setCitizenshipWatsonListTypeId(citizenshipWatsonListTypeId);
 		}
 
 		Long countryWatsonListTypeId = (Long)attributes.get(
-				"countryWatsonListTypeId");
+			"countryWatsonListTypeId");
 
 		if (countryWatsonListTypeId != null) {
 			setCountryWatsonListTypeId(countryWatsonListTypeId);
 		}
 
 		Long ethnicityWatsonListTypeId = (Long)attributes.get(
-				"ethnicityWatsonListTypeId");
+			"ethnicityWatsonListTypeId");
 
 		if (ethnicityWatsonListTypeId != null) {
 			setEthnicityWatsonListTypeId(ethnicityWatsonListTypeId);
 		}
 
-		Long eyesWatsonListTypeId = (Long)attributes.get("eyesWatsonListTypeId");
+		Long eyesWatsonListTypeId = (Long)attributes.get(
+			"eyesWatsonListTypeId");
 
 		if (eyesWatsonListTypeId != null) {
 			setEyesWatsonListTypeId(eyesWatsonListTypeId);
 		}
 
-		Long hairWatsonListTypeId = (Long)attributes.get("hairWatsonListTypeId");
+		Long hairWatsonListTypeId = (Long)attributes.get(
+			"hairWatsonListTypeId");
 
 		if (hairWatsonListTypeId != null) {
 			setHairWatsonListTypeId(hairWatsonListTypeId);
 		}
 
 		Long originalWatsonPersonId = (Long)attributes.get(
-				"originalWatsonPersonId");
+			"originalWatsonPersonId");
 
 		if (originalWatsonPersonId != null) {
 			setOriginalWatsonPersonId(originalWatsonPersonId);
@@ -190,7 +192,8 @@ public class WatsonPersonWrapper implements WatsonPerson,
 			setSexWatsonListTypeId(sexWatsonListTypeId);
 		}
 
-		Long typeWatsonListTypeId = (Long)attributes.get("typeWatsonListTypeId");
+		Long typeWatsonListTypeId = (Long)attributes.get(
+			"typeWatsonListTypeId");
 
 		if (typeWatsonListTypeId != null) {
 			setTypeWatsonListTypeId(typeWatsonListTypeId);
@@ -292,10 +295,10 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	}
 
 	/**
-	* Returns the accepted of this watson person.
-	*
-	* @return the accepted of this watson person
-	*/
+	 * Returns the accepted of this watson person.
+	 *
+	 * @return the accepted of this watson person
+	 */
 	@Override
 	public boolean getAccepted() {
 		return _watsonPerson.getAccepted();
@@ -307,80 +310,80 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	}
 
 	/**
-	* Returns the birth country ID of this watson person.
-	*
-	* @return the birth country ID of this watson person
-	*/
+	 * Returns the birth country ID of this watson person.
+	 *
+	 * @return the birth country ID of this watson person
+	 */
 	@Override
 	public long getBirthCountryId() {
 		return _watsonPerson.getBirthCountryId();
 	}
 
 	/**
-	* Returns the birth date of this watson person.
-	*
-	* @return the birth date of this watson person
-	*/
+	 * Returns the birth date of this watson person.
+	 *
+	 * @return the birth date of this watson person
+	 */
 	@Override
 	public Date getBirthDate() {
 		return _watsonPerson.getBirthDate();
 	}
 
 	/**
-	* Returns the citizenship watson list type ID of this watson person.
-	*
-	* @return the citizenship watson list type ID of this watson person
-	*/
+	 * Returns the citizenship watson list type ID of this watson person.
+	 *
+	 * @return the citizenship watson list type ID of this watson person
+	 */
 	@Override
 	public long getCitizenshipWatsonListTypeId() {
 		return _watsonPerson.getCitizenshipWatsonListTypeId();
 	}
 
 	/**
-	* Returns the company ID of this watson person.
-	*
-	* @return the company ID of this watson person
-	*/
+	 * Returns the company ID of this watson person.
+	 *
+	 * @return the company ID of this watson person
+	 */
 	@Override
 	public long getCompanyId() {
 		return _watsonPerson.getCompanyId();
 	}
 
 	/**
-	* Returns the country watson list type ID of this watson person.
-	*
-	* @return the country watson list type ID of this watson person
-	*/
+	 * Returns the country watson list type ID of this watson person.
+	 *
+	 * @return the country watson list type ID of this watson person
+	 */
 	@Override
 	public long getCountryWatsonListTypeId() {
 		return _watsonPerson.getCountryWatsonListTypeId();
 	}
 
 	/**
-	* Returns the create date of this watson person.
-	*
-	* @return the create date of this watson person
-	*/
+	 * Returns the create date of this watson person.
+	 *
+	 * @return the create date of this watson person
+	 */
 	@Override
 	public Date getCreateDate() {
 		return _watsonPerson.getCreateDate();
 	}
 
 	/**
-	* Returns the date accepted of this watson person.
-	*
-	* @return the date accepted of this watson person
-	*/
+	 * Returns the date accepted of this watson person.
+	 *
+	 * @return the date accepted of this watson person
+	 */
 	@Override
 	public Date getDateAccepted() {
 		return _watsonPerson.getDateAccepted();
 	}
 
 	/**
-	* Returns the date rescued of this watson person.
-	*
-	* @return the date rescued of this watson person
-	*/
+	 * Returns the date rescued of this watson person.
+	 *
+	 * @return the date rescued of this watson person
+	 */
 	@Override
 	public Date getDateRescued() {
 		return _watsonPerson.getDateRescued();
@@ -392,56 +395,56 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	}
 
 	/**
-	* Returns the description of this watson person.
-	*
-	* @return the description of this watson person
-	*/
+	 * Returns the description of this watson person.
+	 *
+	 * @return the description of this watson person
+	 */
 	@Override
 	public String getDescription() {
 		return _watsonPerson.getDescription();
 	}
 
 	/**
-	* Returns the localized description of this watson person in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param locale the locale of the language
-	* @return the localized description of this watson person
-	*/
+	 * Returns the localized description of this watson person in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the locale of the language
+	 * @return the localized description of this watson person
+	 */
 	@Override
 	public String getDescription(java.util.Locale locale) {
 		return _watsonPerson.getDescription(locale);
 	}
 
 	/**
-	* Returns the localized description of this watson person in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param locale the local of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized description of this watson person. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
-	*/
+	 * Returns the localized description of this watson person in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the local of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized description of this watson person. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+	 */
 	@Override
 	public String getDescription(java.util.Locale locale, boolean useDefault) {
 		return _watsonPerson.getDescription(locale, useDefault);
 	}
 
 	/**
-	* Returns the localized description of this watson person in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @return the localized description of this watson person
-	*/
+	 * Returns the localized description of this watson person in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @return the localized description of this watson person
+	 */
 	@Override
 	public String getDescription(String languageId) {
 		return _watsonPerson.getDescription(languageId);
 	}
 
 	/**
-	* Returns the localized description of this watson person in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized description of this watson person
-	*/
+	 * Returns the localized description of this watson person in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized description of this watson person
+	 */
 	@Override
 	public String getDescription(String languageId, boolean useDefault) {
 		return _watsonPerson.getDescription(languageId, useDefault);
@@ -458,30 +461,30 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	}
 
 	/**
-	* Returns a map of the locales and localized descriptions of this watson person.
-	*
-	* @return the locales and localized descriptions of this watson person
-	*/
+	 * Returns a map of the locales and localized descriptions of this watson person.
+	 *
+	 * @return the locales and localized descriptions of this watson person
+	 */
 	@Override
 	public Map<java.util.Locale, String> getDescriptionMap() {
 		return _watsonPerson.getDescriptionMap();
 	}
 
 	/**
-	* Returns the end age of this watson person.
-	*
-	* @return the end age of this watson person
-	*/
+	 * Returns the end age of this watson person.
+	 *
+	 * @return the end age of this watson person
+	 */
 	@Override
 	public String getEndAge() {
 		return _watsonPerson.getEndAge();
 	}
 
 	/**
-	* Returns the ethnicity watson list type ID of this watson person.
-	*
-	* @return the ethnicity watson list type ID of this watson person
-	*/
+	 * Returns the ethnicity watson list type ID of this watson person.
+	 *
+	 * @return the ethnicity watson list type ID of this watson person
+	 */
 	@Override
 	public long getEthnicityWatsonListTypeId() {
 		return _watsonPerson.getEthnicityWatsonListTypeId();
@@ -493,116 +496,116 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	}
 
 	/**
-	* Returns the eyes watson list type ID of this watson person.
-	*
-	* @return the eyes watson list type ID of this watson person
-	*/
+	 * Returns the eyes watson list type ID of this watson person.
+	 *
+	 * @return the eyes watson list type ID of this watson person
+	 */
 	@Override
 	public long getEyesWatsonListTypeId() {
 		return _watsonPerson.getEyesWatsonListTypeId();
 	}
 
 	/**
-	* Returns the group ID of this watson person.
-	*
-	* @return the group ID of this watson person
-	*/
+	 * Returns the group ID of this watson person.
+	 *
+	 * @return the group ID of this watson person
+	 */
 	@Override
 	public long getGroupId() {
 		return _watsonPerson.getGroupId();
 	}
 
 	/**
-	* Returns the hair watson list type ID of this watson person.
-	*
-	* @return the hair watson list type ID of this watson person
-	*/
+	 * Returns the hair watson list type ID of this watson person.
+	 *
+	 * @return the hair watson list type ID of this watson person
+	 */
 	@Override
 	public long getHairWatsonListTypeId() {
 		return _watsonPerson.getHairWatsonListTypeId();
 	}
 
 	/**
-	* Returns the height of this watson person.
-	*
-	* @return the height of this watson person
-	*/
+	 * Returns the height of this watson person.
+	 *
+	 * @return the height of this watson person
+	 */
 	@Override
 	public String getHeight() {
 		return _watsonPerson.getHeight();
 	}
 
 	/**
-	* Returns the image payload of this watson person.
-	*
-	* @return the image payload of this watson person
-	*/
+	 * Returns the image payload of this watson person.
+	 *
+	 * @return the image payload of this watson person
+	 */
 	@Override
 	public String getImagePayload() {
 		return _watsonPerson.getImagePayload();
 	}
 
 	/**
-	* Returns the modified date of this watson person.
-	*
-	* @return the modified date of this watson person
-	*/
+	 * Returns the modified date of this watson person.
+	 *
+	 * @return the modified date of this watson person
+	 */
 	@Override
 	public Date getModifiedDate() {
 		return _watsonPerson.getModifiedDate();
 	}
 
 	/**
-	* Returns the occupation of this watson person.
-	*
-	* @return the occupation of this watson person
-	*/
+	 * Returns the occupation of this watson person.
+	 *
+	 * @return the occupation of this watson person
+	 */
 	@Override
 	public String getOccupation() {
 		return _watsonPerson.getOccupation();
 	}
 
 	/**
-	* Returns the localized occupation of this watson person in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param locale the locale of the language
-	* @return the localized occupation of this watson person
-	*/
+	 * Returns the localized occupation of this watson person in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the locale of the language
+	 * @return the localized occupation of this watson person
+	 */
 	@Override
 	public String getOccupation(java.util.Locale locale) {
 		return _watsonPerson.getOccupation(locale);
 	}
 
 	/**
-	* Returns the localized occupation of this watson person in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param locale the local of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized occupation of this watson person. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
-	*/
+	 * Returns the localized occupation of this watson person in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the local of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized occupation of this watson person. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+	 */
 	@Override
 	public String getOccupation(java.util.Locale locale, boolean useDefault) {
 		return _watsonPerson.getOccupation(locale, useDefault);
 	}
 
 	/**
-	* Returns the localized occupation of this watson person in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @return the localized occupation of this watson person
-	*/
+	 * Returns the localized occupation of this watson person in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @return the localized occupation of this watson person
+	 */
 	@Override
 	public String getOccupation(String languageId) {
 		return _watsonPerson.getOccupation(languageId);
 	}
 
 	/**
-	* Returns the localized occupation of this watson person in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized occupation of this watson person
-	*/
+	 * Returns the localized occupation of this watson person in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized occupation of this watson person
+	 */
 	@Override
 	public String getOccupation(String languageId, boolean useDefault) {
 		return _watsonPerson.getOccupation(languageId, useDefault);
@@ -619,30 +622,30 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	}
 
 	/**
-	* Returns a map of the locales and localized occupations of this watson person.
-	*
-	* @return the locales and localized occupations of this watson person
-	*/
+	 * Returns a map of the locales and localized occupations of this watson person.
+	 *
+	 * @return the locales and localized occupations of this watson person
+	 */
 	@Override
 	public Map<java.util.Locale, String> getOccupationMap() {
 		return _watsonPerson.getOccupationMap();
 	}
 
 	/**
-	* Returns the original watson person ID of this watson person.
-	*
-	* @return the original watson person ID of this watson person
-	*/
+	 * Returns the original watson person ID of this watson person.
+	 *
+	 * @return the original watson person ID of this watson person
+	 */
 	@Override
 	public long getOriginalWatsonPersonId() {
 		return _watsonPerson.getOriginalWatsonPersonId();
 	}
 
 	/**
-	* Returns the primary key of this watson person.
-	*
-	* @return the primary key of this watson person
-	*/
+	 * Returns the primary key of this watson person.
+	 *
+	 * @return the primary key of this watson person
+	 */
 	@Override
 	public long getPrimaryKey() {
 		return _watsonPerson.getPrimaryKey();
@@ -654,110 +657,110 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	}
 
 	/**
-	* Returns the rescued of this watson person.
-	*
-	* @return the rescued of this watson person
-	*/
+	 * Returns the rescued of this watson person.
+	 *
+	 * @return the rescued of this watson person
+	 */
 	@Override
 	public boolean getRescued() {
 		return _watsonPerson.getRescued();
 	}
 
 	/**
-	* Returns the sex watson list type ID of this watson person.
-	*
-	* @return the sex watson list type ID of this watson person
-	*/
+	 * Returns the sex watson list type ID of this watson person.
+	 *
+	 * @return the sex watson list type ID of this watson person
+	 */
 	@Override
 	public long getSexWatsonListTypeId() {
 		return _watsonPerson.getSexWatsonListTypeId();
 	}
 
 	/**
-	* Returns the start age of this watson person.
-	*
-	* @return the start age of this watson person
-	*/
+	 * Returns the start age of this watson person.
+	 *
+	 * @return the start age of this watson person
+	 */
 	@Override
 	public String getStartAge() {
 		return _watsonPerson.getStartAge();
 	}
 
 	/**
-	* Returns the status of this watson person.
-	*
-	* @return the status of this watson person
-	*/
+	 * Returns the status of this watson person.
+	 *
+	 * @return the status of this watson person
+	 */
 	@Override
 	public int getStatus() {
 		return _watsonPerson.getStatus();
 	}
 
 	/**
-	* Returns the type watson list type ID of this watson person.
-	*
-	* @return the type watson list type ID of this watson person
-	*/
+	 * Returns the type watson list type ID of this watson person.
+	 *
+	 * @return the type watson list type ID of this watson person
+	 */
 	@Override
 	public long getTypeWatsonListTypeId() {
 		return _watsonPerson.getTypeWatsonListTypeId();
 	}
 
 	/**
-	* Returns the user ID of this watson person.
-	*
-	* @return the user ID of this watson person
-	*/
+	 * Returns the user ID of this watson person.
+	 *
+	 * @return the user ID of this watson person
+	 */
 	@Override
 	public long getUserId() {
 		return _watsonPerson.getUserId();
 	}
 
 	/**
-	* Returns the user name of this watson person.
-	*
-	* @return the user name of this watson person
-	*/
+	 * Returns the user name of this watson person.
+	 *
+	 * @return the user name of this watson person
+	 */
 	@Override
 	public String getUserName() {
 		return _watsonPerson.getUserName();
 	}
 
 	/**
-	* Returns the user uuid of this watson person.
-	*
-	* @return the user uuid of this watson person
-	*/
+	 * Returns the user uuid of this watson person.
+	 *
+	 * @return the user uuid of this watson person
+	 */
 	@Override
 	public String getUserUuid() {
 		return _watsonPerson.getUserUuid();
 	}
 
 	/**
-	* Returns the watson incident ID of this watson person.
-	*
-	* @return the watson incident ID of this watson person
-	*/
+	 * Returns the watson incident ID of this watson person.
+	 *
+	 * @return the watson incident ID of this watson person
+	 */
 	@Override
 	public long getWatsonIncidentId() {
 		return _watsonPerson.getWatsonIncidentId();
 	}
 
 	/**
-	* Returns the watson person ID of this watson person.
-	*
-	* @return the watson person ID of this watson person
-	*/
+	 * Returns the watson person ID of this watson person.
+	 *
+	 * @return the watson person ID of this watson person
+	 */
 	@Override
 	public long getWatsonPersonId() {
 		return _watsonPerson.getWatsonPersonId();
 	}
 
 	/**
-	* Returns the weight of this watson person.
-	*
-	* @return the weight of this watson person
-	*/
+	 * Returns the weight of this watson person.
+	 *
+	 * @return the weight of this watson person
+	 */
 	@Override
 	public String getWeight() {
 		return _watsonPerson.getWeight();
@@ -769,10 +772,10 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	}
 
 	/**
-	* Returns <code>true</code> if this watson person is accepted.
-	*
-	* @return <code>true</code> if this watson person is accepted; <code>false</code> otherwise
-	*/
+	 * Returns <code>true</code> if this watson person is accepted.
+	 *
+	 * @return <code>true</code> if this watson person is accepted; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isAccepted() {
 		return _watsonPerson.isAccepted();
@@ -794,10 +797,10 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	}
 
 	/**
-	* Returns <code>true</code> if this watson person is rescued.
-	*
-	* @return <code>true</code> if this watson person is rescued; <code>false</code> otherwise
-	*/
+	 * Returns <code>true</code> if this watson person is rescued.
+	 *
+	 * @return <code>true</code> if this watson person is rescued; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isRescued() {
 		return _watsonPerson.isRescued();
@@ -811,41 +814,43 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	@Override
 	public void prepareLocalizedFieldsForImport()
 		throws com.liferay.portal.kernel.exception.LocaleException {
+
 		_watsonPerson.prepareLocalizedFieldsForImport();
 	}
 
 	@Override
 	public void prepareLocalizedFieldsForImport(
-		java.util.Locale defaultImportLocale)
+			java.util.Locale defaultImportLocale)
 		throws com.liferay.portal.kernel.exception.LocaleException {
+
 		_watsonPerson.prepareLocalizedFieldsForImport(defaultImportLocale);
 	}
 
 	/**
-	* Sets whether this watson person is accepted.
-	*
-	* @param accepted the accepted of this watson person
-	*/
+	 * Sets whether this watson person is accepted.
+	 *
+	 * @param accepted the accepted of this watson person
+	 */
 	@Override
 	public void setAccepted(boolean accepted) {
 		_watsonPerson.setAccepted(accepted);
 	}
 
 	/**
-	* Sets the birth country ID of this watson person.
-	*
-	* @param birthCountryId the birth country ID of this watson person
-	*/
+	 * Sets the birth country ID of this watson person.
+	 *
+	 * @param birthCountryId the birth country ID of this watson person
+	 */
 	@Override
 	public void setBirthCountryId(long birthCountryId) {
 		_watsonPerson.setBirthCountryId(birthCountryId);
 	}
 
 	/**
-	* Sets the birth date of this watson person.
-	*
-	* @param birthDate the birth date of this watson person
-	*/
+	 * Sets the birth date of this watson person.
+	 *
+	 * @param birthDate the birth date of this watson person
+	 */
 	@Override
 	public void setBirthDate(Date birthDate) {
 		_watsonPerson.setBirthDate(birthDate);
@@ -857,96 +862,101 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	}
 
 	/**
-	* Sets the citizenship watson list type ID of this watson person.
-	*
-	* @param citizenshipWatsonListTypeId the citizenship watson list type ID of this watson person
-	*/
+	 * Sets the citizenship watson list type ID of this watson person.
+	 *
+	 * @param citizenshipWatsonListTypeId the citizenship watson list type ID of this watson person
+	 */
 	@Override
-	public void setCitizenshipWatsonListTypeId(long citizenshipWatsonListTypeId) {
-		_watsonPerson.setCitizenshipWatsonListTypeId(citizenshipWatsonListTypeId);
+	public void setCitizenshipWatsonListTypeId(
+		long citizenshipWatsonListTypeId) {
+
+		_watsonPerson.setCitizenshipWatsonListTypeId(
+			citizenshipWatsonListTypeId);
 	}
 
 	/**
-	* Sets the company ID of this watson person.
-	*
-	* @param companyId the company ID of this watson person
-	*/
+	 * Sets the company ID of this watson person.
+	 *
+	 * @param companyId the company ID of this watson person
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_watsonPerson.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the country watson list type ID of this watson person.
-	*
-	* @param countryWatsonListTypeId the country watson list type ID of this watson person
-	*/
+	 * Sets the country watson list type ID of this watson person.
+	 *
+	 * @param countryWatsonListTypeId the country watson list type ID of this watson person
+	 */
 	@Override
 	public void setCountryWatsonListTypeId(long countryWatsonListTypeId) {
 		_watsonPerson.setCountryWatsonListTypeId(countryWatsonListTypeId);
 	}
 
 	/**
-	* Sets the create date of this watson person.
-	*
-	* @param createDate the create date of this watson person
-	*/
+	 * Sets the create date of this watson person.
+	 *
+	 * @param createDate the create date of this watson person
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_watsonPerson.setCreateDate(createDate);
 	}
 
 	/**
-	* Sets the date accepted of this watson person.
-	*
-	* @param dateAccepted the date accepted of this watson person
-	*/
+	 * Sets the date accepted of this watson person.
+	 *
+	 * @param dateAccepted the date accepted of this watson person
+	 */
 	@Override
 	public void setDateAccepted(Date dateAccepted) {
 		_watsonPerson.setDateAccepted(dateAccepted);
 	}
 
 	/**
-	* Sets the date rescued of this watson person.
-	*
-	* @param dateRescued the date rescued of this watson person
-	*/
+	 * Sets the date rescued of this watson person.
+	 *
+	 * @param dateRescued the date rescued of this watson person
+	 */
 	@Override
 	public void setDateRescued(Date dateRescued) {
 		_watsonPerson.setDateRescued(dateRescued);
 	}
 
 	/**
-	* Sets the description of this watson person.
-	*
-	* @param description the description of this watson person
-	*/
+	 * Sets the description of this watson person.
+	 *
+	 * @param description the description of this watson person
+	 */
 	@Override
 	public void setDescription(String description) {
 		_watsonPerson.setDescription(description);
 	}
 
 	/**
-	* Sets the localized description of this watson person in the language.
-	*
-	* @param description the localized description of this watson person
-	* @param locale the locale of the language
-	*/
+	 * Sets the localized description of this watson person in the language.
+	 *
+	 * @param description the localized description of this watson person
+	 * @param locale the locale of the language
+	 */
 	@Override
 	public void setDescription(String description, java.util.Locale locale) {
 		_watsonPerson.setDescription(description, locale);
 	}
 
 	/**
-	* Sets the localized description of this watson person in the language, and sets the default locale.
-	*
-	* @param description the localized description of this watson person
-	* @param locale the locale of the language
-	* @param defaultLocale the default locale
-	*/
+	 * Sets the localized description of this watson person in the language, and sets the default locale.
+	 *
+	 * @param description the localized description of this watson person
+	 * @param locale the locale of the language
+	 * @param defaultLocale the default locale
+	 */
 	@Override
-	public void setDescription(String description, java.util.Locale locale,
+	public void setDescription(
+		String description, java.util.Locale locale,
 		java.util.Locale defaultLocale) {
+
 		_watsonPerson.setDescription(description, locale, defaultLocale);
 	}
 
@@ -956,43 +966,46 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	}
 
 	/**
-	* Sets the localized descriptions of this watson person from the map of locales and localized descriptions.
-	*
-	* @param descriptionMap the locales and localized descriptions of this watson person
-	*/
+	 * Sets the localized descriptions of this watson person from the map of locales and localized descriptions.
+	 *
+	 * @param descriptionMap the locales and localized descriptions of this watson person
+	 */
 	@Override
-	public void setDescriptionMap(Map<java.util.Locale, String> descriptionMap) {
+	public void setDescriptionMap(
+		Map<java.util.Locale, String> descriptionMap) {
+
 		_watsonPerson.setDescriptionMap(descriptionMap);
 	}
 
 	/**
-	* Sets the localized descriptions of this watson person from the map of locales and localized descriptions, and sets the default locale.
-	*
-	* @param descriptionMap the locales and localized descriptions of this watson person
-	* @param defaultLocale the default locale
-	*/
+	 * Sets the localized descriptions of this watson person from the map of locales and localized descriptions, and sets the default locale.
+	 *
+	 * @param descriptionMap the locales and localized descriptions of this watson person
+	 * @param defaultLocale the default locale
+	 */
 	@Override
 	public void setDescriptionMap(
 		Map<java.util.Locale, String> descriptionMap,
 		java.util.Locale defaultLocale) {
+
 		_watsonPerson.setDescriptionMap(descriptionMap, defaultLocale);
 	}
 
 	/**
-	* Sets the end age of this watson person.
-	*
-	* @param endAge the end age of this watson person
-	*/
+	 * Sets the end age of this watson person.
+	 *
+	 * @param endAge the end age of this watson person
+	 */
 	@Override
 	public void setEndAge(String endAge) {
 		_watsonPerson.setEndAge(endAge);
 	}
 
 	/**
-	* Sets the ethnicity watson list type ID of this watson person.
-	*
-	* @param ethnicityWatsonListTypeId the ethnicity watson list type ID of this watson person
-	*/
+	 * Sets the ethnicity watson list type ID of this watson person.
+	 *
+	 * @param ethnicityWatsonListTypeId the ethnicity watson list type ID of this watson person
+	 */
 	@Override
 	public void setEthnicityWatsonListTypeId(long ethnicityWatsonListTypeId) {
 		_watsonPerson.setEthnicityWatsonListTypeId(ethnicityWatsonListTypeId);
@@ -1001,6 +1014,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
 		_watsonPerson.setExpandoBridgeAttributes(baseModel);
 	}
 
@@ -1015,60 +1029,60 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	}
 
 	/**
-	* Sets the eyes watson list type ID of this watson person.
-	*
-	* @param eyesWatsonListTypeId the eyes watson list type ID of this watson person
-	*/
+	 * Sets the eyes watson list type ID of this watson person.
+	 *
+	 * @param eyesWatsonListTypeId the eyes watson list type ID of this watson person
+	 */
 	@Override
 	public void setEyesWatsonListTypeId(long eyesWatsonListTypeId) {
 		_watsonPerson.setEyesWatsonListTypeId(eyesWatsonListTypeId);
 	}
 
 	/**
-	* Sets the group ID of this watson person.
-	*
-	* @param groupId the group ID of this watson person
-	*/
+	 * Sets the group ID of this watson person.
+	 *
+	 * @param groupId the group ID of this watson person
+	 */
 	@Override
 	public void setGroupId(long groupId) {
 		_watsonPerson.setGroupId(groupId);
 	}
 
 	/**
-	* Sets the hair watson list type ID of this watson person.
-	*
-	* @param hairWatsonListTypeId the hair watson list type ID of this watson person
-	*/
+	 * Sets the hair watson list type ID of this watson person.
+	 *
+	 * @param hairWatsonListTypeId the hair watson list type ID of this watson person
+	 */
 	@Override
 	public void setHairWatsonListTypeId(long hairWatsonListTypeId) {
 		_watsonPerson.setHairWatsonListTypeId(hairWatsonListTypeId);
 	}
 
 	/**
-	* Sets the height of this watson person.
-	*
-	* @param height the height of this watson person
-	*/
+	 * Sets the height of this watson person.
+	 *
+	 * @param height the height of this watson person
+	 */
 	@Override
 	public void setHeight(String height) {
 		_watsonPerson.setHeight(height);
 	}
 
 	/**
-	* Sets the image payload of this watson person.
-	*
-	* @param imagePayload the image payload of this watson person
-	*/
+	 * Sets the image payload of this watson person.
+	 *
+	 * @param imagePayload the image payload of this watson person
+	 */
 	@Override
 	public void setImagePayload(String imagePayload) {
 		_watsonPerson.setImagePayload(imagePayload);
 	}
 
 	/**
-	* Sets the modified date of this watson person.
-	*
-	* @param modifiedDate the modified date of this watson person
-	*/
+	 * Sets the modified date of this watson person.
+	 *
+	 * @param modifiedDate the modified date of this watson person
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_watsonPerson.setModifiedDate(modifiedDate);
@@ -1080,36 +1094,38 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	}
 
 	/**
-	* Sets the occupation of this watson person.
-	*
-	* @param occupation the occupation of this watson person
-	*/
+	 * Sets the occupation of this watson person.
+	 *
+	 * @param occupation the occupation of this watson person
+	 */
 	@Override
 	public void setOccupation(String occupation) {
 		_watsonPerson.setOccupation(occupation);
 	}
 
 	/**
-	* Sets the localized occupation of this watson person in the language.
-	*
-	* @param occupation the localized occupation of this watson person
-	* @param locale the locale of the language
-	*/
+	 * Sets the localized occupation of this watson person in the language.
+	 *
+	 * @param occupation the localized occupation of this watson person
+	 * @param locale the locale of the language
+	 */
 	@Override
 	public void setOccupation(String occupation, java.util.Locale locale) {
 		_watsonPerson.setOccupation(occupation, locale);
 	}
 
 	/**
-	* Sets the localized occupation of this watson person in the language, and sets the default locale.
-	*
-	* @param occupation the localized occupation of this watson person
-	* @param locale the locale of the language
-	* @param defaultLocale the default locale
-	*/
+	 * Sets the localized occupation of this watson person in the language, and sets the default locale.
+	 *
+	 * @param occupation the localized occupation of this watson person
+	 * @param locale the locale of the language
+	 * @param defaultLocale the default locale
+	 */
 	@Override
-	public void setOccupation(String occupation, java.util.Locale locale,
+	public void setOccupation(
+		String occupation, java.util.Locale locale,
 		java.util.Locale defaultLocale) {
+
 		_watsonPerson.setOccupation(occupation, locale, defaultLocale);
 	}
 
@@ -1119,42 +1135,44 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	}
 
 	/**
-	* Sets the localized occupations of this watson person from the map of locales and localized occupations.
-	*
-	* @param occupationMap the locales and localized occupations of this watson person
-	*/
+	 * Sets the localized occupations of this watson person from the map of locales and localized occupations.
+	 *
+	 * @param occupationMap the locales and localized occupations of this watson person
+	 */
 	@Override
 	public void setOccupationMap(Map<java.util.Locale, String> occupationMap) {
 		_watsonPerson.setOccupationMap(occupationMap);
 	}
 
 	/**
-	* Sets the localized occupations of this watson person from the map of locales and localized occupations, and sets the default locale.
-	*
-	* @param occupationMap the locales and localized occupations of this watson person
-	* @param defaultLocale the default locale
-	*/
+	 * Sets the localized occupations of this watson person from the map of locales and localized occupations, and sets the default locale.
+	 *
+	 * @param occupationMap the locales and localized occupations of this watson person
+	 * @param defaultLocale the default locale
+	 */
 	@Override
-	public void setOccupationMap(Map<java.util.Locale, String> occupationMap,
+	public void setOccupationMap(
+		Map<java.util.Locale, String> occupationMap,
 		java.util.Locale defaultLocale) {
+
 		_watsonPerson.setOccupationMap(occupationMap, defaultLocale);
 	}
 
 	/**
-	* Sets the original watson person ID of this watson person.
-	*
-	* @param originalWatsonPersonId the original watson person ID of this watson person
-	*/
+	 * Sets the original watson person ID of this watson person.
+	 *
+	 * @param originalWatsonPersonId the original watson person ID of this watson person
+	 */
 	@Override
 	public void setOriginalWatsonPersonId(long originalWatsonPersonId) {
 		_watsonPerson.setOriginalWatsonPersonId(originalWatsonPersonId);
 	}
 
 	/**
-	* Sets the primary key of this watson person.
-	*
-	* @param primaryKey the primary key of this watson person
-	*/
+	 * Sets the primary key of this watson person.
+	 *
+	 * @param primaryKey the primary key of this watson person
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_watsonPerson.setPrimaryKey(primaryKey);
@@ -1166,117 +1184,119 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	}
 
 	/**
-	* Sets whether this watson person is rescued.
-	*
-	* @param rescued the rescued of this watson person
-	*/
+	 * Sets whether this watson person is rescued.
+	 *
+	 * @param rescued the rescued of this watson person
+	 */
 	@Override
 	public void setRescued(boolean rescued) {
 		_watsonPerson.setRescued(rescued);
 	}
 
 	/**
-	* Sets the sex watson list type ID of this watson person.
-	*
-	* @param sexWatsonListTypeId the sex watson list type ID of this watson person
-	*/
+	 * Sets the sex watson list type ID of this watson person.
+	 *
+	 * @param sexWatsonListTypeId the sex watson list type ID of this watson person
+	 */
 	@Override
 	public void setSexWatsonListTypeId(long sexWatsonListTypeId) {
 		_watsonPerson.setSexWatsonListTypeId(sexWatsonListTypeId);
 	}
 
 	/**
-	* Sets the start age of this watson person.
-	*
-	* @param startAge the start age of this watson person
-	*/
+	 * Sets the start age of this watson person.
+	 *
+	 * @param startAge the start age of this watson person
+	 */
 	@Override
 	public void setStartAge(String startAge) {
 		_watsonPerson.setStartAge(startAge);
 	}
 
 	/**
-	* Sets the status of this watson person.
-	*
-	* @param status the status of this watson person
-	*/
+	 * Sets the status of this watson person.
+	 *
+	 * @param status the status of this watson person
+	 */
 	@Override
 	public void setStatus(int status) {
 		_watsonPerson.setStatus(status);
 	}
 
 	/**
-	* Sets the type watson list type ID of this watson person.
-	*
-	* @param typeWatsonListTypeId the type watson list type ID of this watson person
-	*/
+	 * Sets the type watson list type ID of this watson person.
+	 *
+	 * @param typeWatsonListTypeId the type watson list type ID of this watson person
+	 */
 	@Override
 	public void setTypeWatsonListTypeId(long typeWatsonListTypeId) {
 		_watsonPerson.setTypeWatsonListTypeId(typeWatsonListTypeId);
 	}
 
 	/**
-	* Sets the user ID of this watson person.
-	*
-	* @param userId the user ID of this watson person
-	*/
+	 * Sets the user ID of this watson person.
+	 *
+	 * @param userId the user ID of this watson person
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_watsonPerson.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this watson person.
-	*
-	* @param userName the user name of this watson person
-	*/
+	 * Sets the user name of this watson person.
+	 *
+	 * @param userName the user name of this watson person
+	 */
 	@Override
 	public void setUserName(String userName) {
 		_watsonPerson.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this watson person.
-	*
-	* @param userUuid the user uuid of this watson person
-	*/
+	 * Sets the user uuid of this watson person.
+	 *
+	 * @param userUuid the user uuid of this watson person
+	 */
 	@Override
 	public void setUserUuid(String userUuid) {
 		_watsonPerson.setUserUuid(userUuid);
 	}
 
 	/**
-	* Sets the watson incident ID of this watson person.
-	*
-	* @param watsonIncidentId the watson incident ID of this watson person
-	*/
+	 * Sets the watson incident ID of this watson person.
+	 *
+	 * @param watsonIncidentId the watson incident ID of this watson person
+	 */
 	@Override
 	public void setWatsonIncidentId(long watsonIncidentId) {
 		_watsonPerson.setWatsonIncidentId(watsonIncidentId);
 	}
 
 	/**
-	* Sets the watson person ID of this watson person.
-	*
-	* @param watsonPersonId the watson person ID of this watson person
-	*/
+	 * Sets the watson person ID of this watson person.
+	 *
+	 * @param watsonPersonId the watson person ID of this watson person
+	 */
 	@Override
 	public void setWatsonPersonId(long watsonPersonId) {
 		_watsonPerson.setWatsonPersonId(watsonPersonId);
 	}
 
 	/**
-	* Sets the weight of this watson person.
-	*
-	* @param weight the weight of this watson person
-	*/
+	 * Sets the weight of this watson person.
+	 *
+	 * @param weight the weight of this watson person
+	 */
 	@Override
 	public void setWeight(String weight) {
 		_watsonPerson.setWeight(weight);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<WatsonPerson> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<WatsonPerson>
+		toCacheModel() {
+
 		return _watsonPerson.toCacheModel();
 	}
 
@@ -1340,4 +1360,5 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	}
 
 	private final WatsonPerson _watsonPerson;
+
 }

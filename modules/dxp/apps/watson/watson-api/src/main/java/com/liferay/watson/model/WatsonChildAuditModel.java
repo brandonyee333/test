@@ -17,7 +17,6 @@ package com.liferay.watson.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -41,8 +40,9 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public interface WatsonChildAuditModel extends BaseModel<WatsonChildAudit>,
-	GroupedModel, ShardedModel {
+public interface WatsonChildAuditModel
+	extends BaseModel<WatsonChildAudit>, GroupedModel, ShardedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -216,7 +216,8 @@ public interface WatsonChildAuditModel extends BaseModel<WatsonChildAudit>,
 	 *
 	 * @param citizenshipWatsonListTypeId the citizenship watson list type ID of this watson child audit
 	 */
-	public void setCitizenshipWatsonListTypeId(long citizenshipWatsonListTypeId);
+	public void setCitizenshipWatsonListTypeId(
+		long citizenshipWatsonListTypeId);
 
 	/**
 	 * Returns the country watson list type ID of this watson child audit.
@@ -472,4 +473,5 @@ public interface WatsonChildAuditModel extends BaseModel<WatsonChildAudit>,
 
 	@Override
 	public String toXmlString();
+
 }

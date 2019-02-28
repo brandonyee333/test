@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.model.WatsonVehicle;
 
 import java.io.Externalizable;
@@ -36,8 +35,9 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public class WatsonVehicleCacheModel implements CacheModel<WatsonVehicle>,
-	Externalizable {
+public class WatsonVehicleCacheModel
+	implements CacheModel<WatsonVehicle>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,7 +48,8 @@ public class WatsonVehicleCacheModel implements CacheModel<WatsonVehicle>,
 			return false;
 		}
 
-		WatsonVehicleCacheModel watsonVehicleCacheModel = (WatsonVehicleCacheModel)obj;
+		WatsonVehicleCacheModel watsonVehicleCacheModel =
+			(WatsonVehicleCacheModel)obj;
 
 		if (watsonVehicleId == watsonVehicleCacheModel.watsonVehicleId) {
 			return true;
@@ -212,8 +213,7 @@ public class WatsonVehicleCacheModel implements CacheModel<WatsonVehicle>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonVehicleId);
 
 		objectOutput.writeLong(groupId);
@@ -291,4 +291,5 @@ public class WatsonVehicleCacheModel implements CacheModel<WatsonVehicle>,
 	public String imagePayload;
 	public String licensePlate;
 	public int status;
+
 }

@@ -18,7 +18,6 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -35,7 +34,6 @@ import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
-
 import com.liferay.watson.model.WatsonIncident;
 import com.liferay.watson.model.WatsonIncidentModel;
 
@@ -66,41 +64,37 @@ import java.util.function.Function;
  * @generated
  */
 @ProviderType
-public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
-	implements WatsonIncidentModel {
+public class WatsonIncidentModelImpl
+	extends BaseModelImpl<WatsonIncident> implements WatsonIncidentModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson incident model instance should use the <code>WatsonIncident</code> interface instead.
 	 */
 	public static final String TABLE_NAME = "WatsonIncident";
+
 	public static final Object[][] TABLE_COLUMNS = {
-			{ "watsonIncidentId", Types.BIGINT },
-			{ "groupId", Types.BIGINT },
-			{ "companyId", Types.BIGINT },
-			{ "userId", Types.BIGINT },
-			{ "userName", Types.VARCHAR },
-			{ "createDate", Types.TIMESTAMP },
-			{ "modifiedDate", Types.TIMESTAMP },
-			{ "externalCaseWatsonListTypeId", Types.BIGINT },
-			{ "sourceWatsonListTypeId", Types.BIGINT },
-			{ "typeWatsonListTypeId", Types.BIGINT },
-			{ "subtypeWatsonListTypeId", Types.BIGINT },
-			{ "audienceAdultCount", Types.BIGINT },
-			{ "audienceChildCount", Types.BIGINT },
-			{ "victimAdultCount", Types.BIGINT },
-			{ "victimChildCount", Types.BIGINT },
-			{ "name", Types.VARCHAR },
-			{ "description", Types.VARCHAR },
-			{ "externalCaseId", Types.VARCHAR },
-			{ "reportDate", Types.TIMESTAMP },
-			{ "startDate", Types.TIMESTAMP },
-			{ "endDate", Types.TIMESTAMP },
-			{ "expenses", Types.DOUBLE },
-			{ "incidentStatus", Types.INTEGER },
-			{ "status", Types.INTEGER }
-		};
-	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
+		{"watsonIncidentId", Types.BIGINT}, {"groupId", Types.BIGINT},
+		{"companyId", Types.BIGINT}, {"userId", Types.BIGINT},
+		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
+		{"modifiedDate", Types.TIMESTAMP},
+		{"externalCaseWatsonListTypeId", Types.BIGINT},
+		{"sourceWatsonListTypeId", Types.BIGINT},
+		{"typeWatsonListTypeId", Types.BIGINT},
+		{"subtypeWatsonListTypeId", Types.BIGINT},
+		{"audienceAdultCount", Types.BIGINT},
+		{"audienceChildCount", Types.BIGINT},
+		{"victimAdultCount", Types.BIGINT}, {"victimChildCount", Types.BIGINT},
+		{"name", Types.VARCHAR}, {"description", Types.VARCHAR},
+		{"externalCaseId", Types.VARCHAR}, {"reportDate", Types.TIMESTAMP},
+		{"startDate", Types.TIMESTAMP}, {"endDate", Types.TIMESTAMP},
+		{"expenses", Types.DOUBLE}, {"incidentStatus", Types.INTEGER},
+		{"status", Types.INTEGER}
+	};
+
+	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
+		new HashMap<String, Integer>();
 
 	static {
 		TABLE_COLUMNS_MAP.put("watsonIncidentId", Types.BIGINT);
@@ -129,22 +123,38 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonIncident (watsonIncidentId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,externalCaseWatsonListTypeId LONG,sourceWatsonListTypeId LONG,typeWatsonListTypeId LONG,subtypeWatsonListTypeId LONG,audienceAdultCount LONG,audienceChildCount LONG,victimAdultCount LONG,victimChildCount LONG,name VARCHAR(75) null,description STRING null,externalCaseId VARCHAR(75) null,reportDate DATE null,startDate DATE null,endDate DATE null,expenses DOUBLE,incidentStatus INTEGER,status INTEGER)";
+	public static final String TABLE_SQL_CREATE =
+		"create table WatsonIncident (watsonIncidentId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,externalCaseWatsonListTypeId LONG,sourceWatsonListTypeId LONG,typeWatsonListTypeId LONG,subtypeWatsonListTypeId LONG,audienceAdultCount LONG,audienceChildCount LONG,victimAdultCount LONG,victimChildCount LONG,name VARCHAR(75) null,description STRING null,externalCaseId VARCHAR(75) null,reportDate DATE null,startDate DATE null,endDate DATE null,expenses DOUBLE,incidentStatus INTEGER,status INTEGER)";
+
 	public static final String TABLE_SQL_DROP = "drop table WatsonIncident";
-	public static final String ORDER_BY_JPQL = " ORDER BY watsonIncident.watsonIncidentId ASC";
-	public static final String ORDER_BY_SQL = " ORDER BY WatsonIncident.watsonIncidentId ASC";
+
+	public static final String ORDER_BY_JPQL =
+		" ORDER BY watsonIncident.watsonIncidentId ASC";
+
+	public static final String ORDER_BY_SQL =
+		" ORDER BY WatsonIncident.watsonIncidentId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
+
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
+
 	public static final String TX_MANAGER = "liferayTransactionManager";
-	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonIncident"),
-			true);
-	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonIncident"),
-			true);
+
+	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonIncident"),
+		true);
+
+	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonIncident"),
+		true);
+
 	public static final boolean COLUMN_BITMASK_ENABLED = false;
-	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.watson.service.util.ServiceProps.get(
-				"lock.expiration.time.com.liferay.watson.model.WatsonIncident"));
+
+	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"lock.expiration.time.com.liferay.watson.model.WatsonIncident"));
 
 	public WatsonIncidentModelImpl() {
 	}
@@ -183,13 +193,18 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		Map<String, Function<WatsonIncident, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+		Map<String, Function<WatsonIncident, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		for (Map.Entry<String, Function<WatsonIncident, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonIncident, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonIncident, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonIncident, Object> attributeGetterFunction =
+				entry.getValue();
 
-			attributes.put(attributeName,
+			attributes.put(
+				attributeName,
 				attributeGetterFunction.apply((WatsonIncident)this));
 		}
 
@@ -201,36 +216,44 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Map<String, BiConsumer<WatsonIncident, Object>> attributeSetterBiConsumers =
-			getAttributeSetterBiConsumers();
+		Map<String, BiConsumer<WatsonIncident, Object>>
+			attributeSetterBiConsumers = getAttributeSetterBiConsumers();
 
 		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			String attributeName = entry.getKey();
 
-			BiConsumer<WatsonIncident, Object> attributeSetterBiConsumer = attributeSetterBiConsumers.get(attributeName);
+			BiConsumer<WatsonIncident, Object> attributeSetterBiConsumer =
+				attributeSetterBiConsumers.get(attributeName);
 
 			if (attributeSetterBiConsumer != null) {
-				attributeSetterBiConsumer.accept((WatsonIncident)this,
-					entry.getValue());
+				attributeSetterBiConsumer.accept(
+					(WatsonIncident)this, entry.getValue());
 			}
 		}
 	}
 
-	public Map<String, Function<WatsonIncident, Object>> getAttributeGetterFunctions() {
+	public Map<String, Function<WatsonIncident, Object>>
+		getAttributeGetterFunctions() {
+
 		return _attributeGetterFunctions;
 	}
 
-	public Map<String, BiConsumer<WatsonIncident, Object>> getAttributeSetterBiConsumers() {
+	public Map<String, BiConsumer<WatsonIncident, Object>>
+		getAttributeSetterBiConsumers() {
+
 		return _attributeSetterBiConsumers;
 	}
 
-	private static final Map<String, Function<WatsonIncident, Object>> _attributeGetterFunctions;
-	private static final Map<String, BiConsumer<WatsonIncident, Object>> _attributeSetterBiConsumers;
+	private static final Map<String, Function<WatsonIncident, Object>>
+		_attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonIncident, Object>>
+		_attributeSetterBiConsumers;
 
 	static {
-		Map<String, Function<WatsonIncident, Object>> attributeGetterFunctions = new LinkedHashMap<String, Function<WatsonIncident, Object>>();
-		Map<String, BiConsumer<WatsonIncident, ?>> attributeSetterBiConsumers = new LinkedHashMap<String, BiConsumer<WatsonIncident, ?>>();
-
+		Map<String, Function<WatsonIncident, Object>> attributeGetterFunctions =
+			new LinkedHashMap<String, Function<WatsonIncident, Object>>();
+		Map<String, BiConsumer<WatsonIncident, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<WatsonIncident, ?>>();
 
 		attributeGetterFunctions.put(
 			"watsonIncidentId",
@@ -247,7 +270,9 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 			new BiConsumer<WatsonIncident, Object>() {
 
 				@Override
-				public void accept(WatsonIncident watsonIncident, Object watsonIncidentId) {
+				public void accept(
+					WatsonIncident watsonIncident, Object watsonIncidentId) {
+
 					watsonIncident.setWatsonIncidentId((Long)watsonIncidentId);
 				}
 
@@ -267,7 +292,9 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 			new BiConsumer<WatsonIncident, Object>() {
 
 				@Override
-				public void accept(WatsonIncident watsonIncident, Object groupId) {
+				public void accept(
+					WatsonIncident watsonIncident, Object groupId) {
+
 					watsonIncident.setGroupId((Long)groupId);
 				}
 
@@ -287,7 +314,9 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 			new BiConsumer<WatsonIncident, Object>() {
 
 				@Override
-				public void accept(WatsonIncident watsonIncident, Object companyId) {
+				public void accept(
+					WatsonIncident watsonIncident, Object companyId) {
+
 					watsonIncident.setCompanyId((Long)companyId);
 				}
 
@@ -307,7 +336,9 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 			new BiConsumer<WatsonIncident, Object>() {
 
 				@Override
-				public void accept(WatsonIncident watsonIncident, Object userId) {
+				public void accept(
+					WatsonIncident watsonIncident, Object userId) {
+
 					watsonIncident.setUserId((Long)userId);
 				}
 
@@ -327,7 +358,9 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 			new BiConsumer<WatsonIncident, Object>() {
 
 				@Override
-				public void accept(WatsonIncident watsonIncident, Object userName) {
+				public void accept(
+					WatsonIncident watsonIncident, Object userName) {
+
 					watsonIncident.setUserName((String)userName);
 				}
 
@@ -347,7 +380,9 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 			new BiConsumer<WatsonIncident, Object>() {
 
 				@Override
-				public void accept(WatsonIncident watsonIncident, Object createDate) {
+				public void accept(
+					WatsonIncident watsonIncident, Object createDate) {
+
 					watsonIncident.setCreateDate((Date)createDate);
 				}
 
@@ -367,7 +402,9 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 			new BiConsumer<WatsonIncident, Object>() {
 
 				@Override
-				public void accept(WatsonIncident watsonIncident, Object modifiedDate) {
+				public void accept(
+					WatsonIncident watsonIncident, Object modifiedDate) {
+
 					watsonIncident.setModifiedDate((Date)modifiedDate);
 				}
 
@@ -387,8 +424,12 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 			new BiConsumer<WatsonIncident, Object>() {
 
 				@Override
-				public void accept(WatsonIncident watsonIncident, Object externalCaseWatsonListTypeId) {
-					watsonIncident.setExternalCaseWatsonListTypeId((Long)externalCaseWatsonListTypeId);
+				public void accept(
+					WatsonIncident watsonIncident,
+					Object externalCaseWatsonListTypeId) {
+
+					watsonIncident.setExternalCaseWatsonListTypeId(
+						(Long)externalCaseWatsonListTypeId);
 				}
 
 			});
@@ -407,8 +448,12 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 			new BiConsumer<WatsonIncident, Object>() {
 
 				@Override
-				public void accept(WatsonIncident watsonIncident, Object sourceWatsonListTypeId) {
-					watsonIncident.setSourceWatsonListTypeId((Long)sourceWatsonListTypeId);
+				public void accept(
+					WatsonIncident watsonIncident,
+					Object sourceWatsonListTypeId) {
+
+					watsonIncident.setSourceWatsonListTypeId(
+						(Long)sourceWatsonListTypeId);
 				}
 
 			});
@@ -427,8 +472,12 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 			new BiConsumer<WatsonIncident, Object>() {
 
 				@Override
-				public void accept(WatsonIncident watsonIncident, Object typeWatsonListTypeId) {
-					watsonIncident.setTypeWatsonListTypeId((Long)typeWatsonListTypeId);
+				public void accept(
+					WatsonIncident watsonIncident,
+					Object typeWatsonListTypeId) {
+
+					watsonIncident.setTypeWatsonListTypeId(
+						(Long)typeWatsonListTypeId);
 				}
 
 			});
@@ -447,8 +496,12 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 			new BiConsumer<WatsonIncident, Object>() {
 
 				@Override
-				public void accept(WatsonIncident watsonIncident, Object subtypeWatsonListTypeId) {
-					watsonIncident.setSubtypeWatsonListTypeId((Long)subtypeWatsonListTypeId);
+				public void accept(
+					WatsonIncident watsonIncident,
+					Object subtypeWatsonListTypeId) {
+
+					watsonIncident.setSubtypeWatsonListTypeId(
+						(Long)subtypeWatsonListTypeId);
 				}
 
 			});
@@ -467,8 +520,11 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 			new BiConsumer<WatsonIncident, Object>() {
 
 				@Override
-				public void accept(WatsonIncident watsonIncident, Object audienceAdultCount) {
-					watsonIncident.setAudienceAdultCount((Long)audienceAdultCount);
+				public void accept(
+					WatsonIncident watsonIncident, Object audienceAdultCount) {
+
+					watsonIncident.setAudienceAdultCount(
+						(Long)audienceAdultCount);
 				}
 
 			});
@@ -487,8 +543,11 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 			new BiConsumer<WatsonIncident, Object>() {
 
 				@Override
-				public void accept(WatsonIncident watsonIncident, Object audienceChildCount) {
-					watsonIncident.setAudienceChildCount((Long)audienceChildCount);
+				public void accept(
+					WatsonIncident watsonIncident, Object audienceChildCount) {
+
+					watsonIncident.setAudienceChildCount(
+						(Long)audienceChildCount);
 				}
 
 			});
@@ -507,7 +566,9 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 			new BiConsumer<WatsonIncident, Object>() {
 
 				@Override
-				public void accept(WatsonIncident watsonIncident, Object victimAdultCount) {
+				public void accept(
+					WatsonIncident watsonIncident, Object victimAdultCount) {
+
 					watsonIncident.setVictimAdultCount((Long)victimAdultCount);
 				}
 
@@ -527,7 +588,9 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 			new BiConsumer<WatsonIncident, Object>() {
 
 				@Override
-				public void accept(WatsonIncident watsonIncident, Object victimChildCount) {
+				public void accept(
+					WatsonIncident watsonIncident, Object victimChildCount) {
+
 					watsonIncident.setVictimChildCount((Long)victimChildCount);
 				}
 
@@ -567,7 +630,9 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 			new BiConsumer<WatsonIncident, Object>() {
 
 				@Override
-				public void accept(WatsonIncident watsonIncident, Object description) {
+				public void accept(
+					WatsonIncident watsonIncident, Object description) {
+
 					watsonIncident.setDescription((String)description);
 				}
 
@@ -587,7 +652,9 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 			new BiConsumer<WatsonIncident, Object>() {
 
 				@Override
-				public void accept(WatsonIncident watsonIncident, Object externalCaseId) {
+				public void accept(
+					WatsonIncident watsonIncident, Object externalCaseId) {
+
 					watsonIncident.setExternalCaseId((String)externalCaseId);
 				}
 
@@ -607,7 +674,9 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 			new BiConsumer<WatsonIncident, Object>() {
 
 				@Override
-				public void accept(WatsonIncident watsonIncident, Object reportDate) {
+				public void accept(
+					WatsonIncident watsonIncident, Object reportDate) {
+
 					watsonIncident.setReportDate((Date)reportDate);
 				}
 
@@ -627,7 +696,9 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 			new BiConsumer<WatsonIncident, Object>() {
 
 				@Override
-				public void accept(WatsonIncident watsonIncident, Object startDate) {
+				public void accept(
+					WatsonIncident watsonIncident, Object startDate) {
+
 					watsonIncident.setStartDate((Date)startDate);
 				}
 
@@ -647,7 +718,9 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 			new BiConsumer<WatsonIncident, Object>() {
 
 				@Override
-				public void accept(WatsonIncident watsonIncident, Object endDate) {
+				public void accept(
+					WatsonIncident watsonIncident, Object endDate) {
+
 					watsonIncident.setEndDate((Date)endDate);
 				}
 
@@ -667,7 +740,9 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 			new BiConsumer<WatsonIncident, Object>() {
 
 				@Override
-				public void accept(WatsonIncident watsonIncident, Object expenses) {
+				public void accept(
+					WatsonIncident watsonIncident, Object expenses) {
+
 					watsonIncident.setExpenses((Double)expenses);
 				}
 
@@ -687,7 +762,9 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 			new BiConsumer<WatsonIncident, Object>() {
 
 				@Override
-				public void accept(WatsonIncident watsonIncident, Object incidentStatus) {
+				public void accept(
+					WatsonIncident watsonIncident, Object incidentStatus) {
+
 					watsonIncident.setIncidentStatus((Integer)incidentStatus);
 				}
 
@@ -707,15 +784,18 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 			new BiConsumer<WatsonIncident, Object>() {
 
 				@Override
-				public void accept(WatsonIncident watsonIncident, Object status) {
+				public void accept(
+					WatsonIncident watsonIncident, Object status) {
+
 					watsonIncident.setStatus((Integer)status);
 				}
 
 			});
 
-
-		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap(
+			(Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -823,6 +903,7 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 	@Override
 	public void setExternalCaseWatsonListTypeId(
 		long externalCaseWatsonListTypeId) {
+
 		_externalCaseWatsonListTypeId = externalCaseWatsonListTypeId;
 	}
 
@@ -942,8 +1023,8 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 
 	@Override
 	public String getDescription(String languageId, boolean useDefault) {
-		return LocalizationUtil.getLocalization(getDescription(), languageId,
-			useDefault);
+		return LocalizationUtil.getLocalization(
+			getDescription(), languageId, useDefault);
 	}
 
 	@Override
@@ -975,18 +1056,21 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 	}
 
 	@Override
-	public void setDescription(String description, Locale locale,
-		Locale defaultLocale) {
+	public void setDescription(
+		String description, Locale locale, Locale defaultLocale) {
+
 		String languageId = LocaleUtil.toLanguageId(locale);
 		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
 
 		if (Validator.isNotNull(description)) {
-			setDescription(LocalizationUtil.updateLocalization(
+			setDescription(
+				LocalizationUtil.updateLocalization(
 					getDescription(), "Description", description, languageId,
 					defaultLanguageId));
 		}
 		else {
-			setDescription(LocalizationUtil.removeLocalization(
+			setDescription(
+				LocalizationUtil.removeLocalization(
 					getDescription(), "Description", languageId));
 		}
 	}
@@ -1002,14 +1086,16 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 	}
 
 	@Override
-	public void setDescriptionMap(Map<Locale, String> descriptionMap,
-		Locale defaultLocale) {
+	public void setDescriptionMap(
+		Map<Locale, String> descriptionMap, Locale defaultLocale) {
+
 		if (descriptionMap == null) {
 			return;
 		}
 
-		setDescription(LocalizationUtil.updateLocalization(descriptionMap,
-				getDescription(), "Description",
+		setDescription(
+			LocalizationUtil.updateLocalization(
+				descriptionMap, getDescription(), "Description",
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
@@ -1090,8 +1176,8 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 
 	@Override
 	public ExpandoBridge getExpandoBridge() {
-		return ExpandoBridgeFactoryUtil.getExpandoBridge(getCompanyId(),
-			WatsonIncident.class.getName(), getPrimaryKey());
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(
+			getCompanyId(), WatsonIncident.class.getName(), getPrimaryKey());
 	}
 
 	@Override
@@ -1116,7 +1202,8 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 			}
 		}
 
-		return availableLanguageIds.toArray(new String[availableLanguageIds.size()]);
+		return availableLanguageIds.toArray(
+			new String[availableLanguageIds.size()]);
 	}
 
 	@Override
@@ -1134,12 +1221,15 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 
 	@Override
 	public void prepareLocalizedFieldsForImport() throws LocaleException {
-		Locale defaultLocale = LocaleUtil.fromLanguageId(getDefaultLanguageId());
+		Locale defaultLocale = LocaleUtil.fromLanguageId(
+			getDefaultLanguageId());
 
-		Locale[] availableLocales = LocaleUtil.fromLanguageIds(getAvailableLanguageIds());
+		Locale[] availableLocales = LocaleUtil.fromLanguageIds(
+			getAvailableLanguageIds());
 
-		Locale defaultImportLocale = LocalizationUtil.getDefaultImportLocale(WatsonIncident.class.getName(),
-				getPrimaryKey(), defaultLocale, availableLocales);
+		Locale defaultImportLocale = LocalizationUtil.getDefaultImportLocale(
+			WatsonIncident.class.getName(), getPrimaryKey(), defaultLocale,
+			availableLocales);
 
 		prepareLocalizedFieldsForImport(defaultImportLocale);
 	}
@@ -1148,6 +1238,7 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 	@SuppressWarnings("unused")
 	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
 		throws LocaleException {
+
 		Locale defaultLocale = LocaleUtil.getSiteDefault();
 
 		String modelDefaultLanguageId = getDefaultLanguageId();
@@ -1155,19 +1246,21 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 		String description = getDescription(defaultLocale);
 
 		if (Validator.isNull(description)) {
-			setDescription(getDescription(modelDefaultLanguageId), defaultLocale);
+			setDescription(
+				getDescription(modelDefaultLanguageId), defaultLocale);
 		}
 		else {
-			setDescription(getDescription(defaultLocale), defaultLocale,
-				defaultLocale);
+			setDescription(
+				getDescription(defaultLocale), defaultLocale, defaultLocale);
 		}
 	}
 
 	@Override
 	public WatsonIncident toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonIncident)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+			_escapedModel = (WatsonIncident)ProxyUtil.newProxyInstance(
+				_classLoader, _escapedModelInterfaces,
+				new AutoEscapeBeanHandler(this));
 		}
 
 		return _escapedModel;
@@ -1184,10 +1277,13 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 		watsonIncidentImpl.setUserName(getUserName());
 		watsonIncidentImpl.setCreateDate(getCreateDate());
 		watsonIncidentImpl.setModifiedDate(getModifiedDate());
-		watsonIncidentImpl.setExternalCaseWatsonListTypeId(getExternalCaseWatsonListTypeId());
-		watsonIncidentImpl.setSourceWatsonListTypeId(getSourceWatsonListTypeId());
+		watsonIncidentImpl.setExternalCaseWatsonListTypeId(
+			getExternalCaseWatsonListTypeId());
+		watsonIncidentImpl.setSourceWatsonListTypeId(
+			getSourceWatsonListTypeId());
 		watsonIncidentImpl.setTypeWatsonListTypeId(getTypeWatsonListTypeId());
-		watsonIncidentImpl.setSubtypeWatsonListTypeId(getSubtypeWatsonListTypeId());
+		watsonIncidentImpl.setSubtypeWatsonListTypeId(
+			getSubtypeWatsonListTypeId());
 		watsonIncidentImpl.setAudienceAdultCount(getAudienceAdultCount());
 		watsonIncidentImpl.setAudienceChildCount(getAudienceChildCount());
 		watsonIncidentImpl.setVictimAdultCount(getVictimAdultCount());
@@ -1268,7 +1364,8 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 
 	@Override
 	public CacheModel<WatsonIncident> toCacheModel() {
-		WatsonIncidentCacheModel watsonIncidentCacheModel = new WatsonIncidentCacheModel();
+		WatsonIncidentCacheModel watsonIncidentCacheModel =
+			new WatsonIncidentCacheModel();
 
 		watsonIncidentCacheModel.watsonIncidentId = getWatsonIncidentId();
 
@@ -1304,13 +1401,17 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 			watsonIncidentCacheModel.modifiedDate = Long.MIN_VALUE;
 		}
 
-		watsonIncidentCacheModel.externalCaseWatsonListTypeId = getExternalCaseWatsonListTypeId();
+		watsonIncidentCacheModel.externalCaseWatsonListTypeId =
+			getExternalCaseWatsonListTypeId();
 
-		watsonIncidentCacheModel.sourceWatsonListTypeId = getSourceWatsonListTypeId();
+		watsonIncidentCacheModel.sourceWatsonListTypeId =
+			getSourceWatsonListTypeId();
 
-		watsonIncidentCacheModel.typeWatsonListTypeId = getTypeWatsonListTypeId();
+		watsonIncidentCacheModel.typeWatsonListTypeId =
+			getTypeWatsonListTypeId();
 
-		watsonIncidentCacheModel.subtypeWatsonListTypeId = getSubtypeWatsonListTypeId();
+		watsonIncidentCacheModel.subtypeWatsonListTypeId =
+			getSubtypeWatsonListTypeId();
 
 		watsonIncidentCacheModel.audienceAdultCount = getAudienceAdultCount();
 
@@ -1382,16 +1483,20 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 
 	@Override
 	public String toString() {
-		Map<String, Function<WatsonIncident, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+		Map<String, Function<WatsonIncident, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
-				2);
+		StringBundler sb = new StringBundler(
+			4 * attributeGetterFunctions.size() + 2);
 
 		sb.append("{");
 
-		for (Map.Entry<String, Function<WatsonIncident, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonIncident, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonIncident, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonIncident, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append(attributeName);
 			sb.append("=");
@@ -1410,18 +1515,22 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 
 	@Override
 	public String toXmlString() {
-		Map<String, Function<WatsonIncident, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+		Map<String, Function<WatsonIncident, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
-				4);
+		StringBundler sb = new StringBundler(
+			5 * attributeGetterFunctions.size() + 4);
 
 		sb.append("<model><model-name>");
 		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		for (Map.Entry<String, Function<WatsonIncident, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonIncident, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonIncident, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonIncident, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append("<column><column-name>");
 			sb.append(attributeName);
@@ -1435,10 +1544,12 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader = WatsonIncident.class.getClassLoader();
+	private static final ClassLoader _classLoader =
+		WatsonIncident.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			WatsonIncident.class, ModelWrapper.class
-		};
+		WatsonIncident.class, ModelWrapper.class
+	};
+
 	private long _watsonIncidentId;
 	private long _groupId;
 	private long _companyId;
@@ -1466,4 +1577,5 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 	private int _incidentStatus;
 	private int _status;
 	private WatsonIncident _escapedModel;
+
 }

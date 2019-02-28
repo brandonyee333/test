@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.model.WatsonResource;
 
 import java.io.Externalizable;
@@ -36,8 +35,9 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public class WatsonResourceCacheModel implements CacheModel<WatsonResource>,
-	Externalizable {
+public class WatsonResourceCacheModel
+	implements CacheModel<WatsonResource>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,7 +48,8 @@ public class WatsonResourceCacheModel implements CacheModel<WatsonResource>,
 			return false;
 		}
 
-		WatsonResourceCacheModel watsonResourceCacheModel = (WatsonResourceCacheModel)obj;
+		WatsonResourceCacheModel watsonResourceCacheModel =
+			(WatsonResourceCacheModel)obj;
 
 		if (watsonResourceId == watsonResourceCacheModel.watsonResourceId) {
 			return true;
@@ -129,7 +130,8 @@ public class WatsonResourceCacheModel implements CacheModel<WatsonResource>,
 			watsonResourceImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
-		watsonResourceImpl.setOriginalWatsonResourceId(originalWatsonResourceId);
+		watsonResourceImpl.setOriginalWatsonResourceId(
+			originalWatsonResourceId);
 		watsonResourceImpl.setTypeWatsonListTypeId(typeWatsonListTypeId);
 		watsonResourceImpl.setWatsonIncidentId(watsonIncidentId);
 
@@ -187,8 +189,7 @@ public class WatsonResourceCacheModel implements CacheModel<WatsonResource>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonResourceId);
 
 		objectOutput.writeLong(groupId);
@@ -251,4 +252,5 @@ public class WatsonResourceCacheModel implements CacheModel<WatsonResource>,
 	public String description;
 	public String imagePayload;
 	public int status;
+
 }

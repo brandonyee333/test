@@ -17,7 +17,6 @@ package com.liferay.watson.login.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -38,10 +37,12 @@ import java.util.Objects;
  * @generated
  */
 @ProviderType
-public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
-	ModelWrapper<WatsonTokenAuthEntry> {
+public class WatsonTokenAuthEntryWrapper
+	implements WatsonTokenAuthEntry, ModelWrapper<WatsonTokenAuthEntry> {
+
 	public WatsonTokenAuthEntryWrapper(
 		WatsonTokenAuthEntry watsonTokenAuthEntry) {
+
 		_watsonTokenAuthEntry = watsonTokenAuthEntry;
 	}
 
@@ -77,7 +78,7 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
 		Long watsonTokenAuthEntryId = (Long)attributes.get(
-				"watsonTokenAuthEntryId");
+			"watsonTokenAuthEntryId");
 
 		if (watsonTokenAuthEntryId != null) {
 			setWatsonTokenAuthEntryId(watsonTokenAuthEntryId);
@@ -146,7 +147,8 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 
 	@Override
 	public Object clone() {
-		return new WatsonTokenAuthEntryWrapper((WatsonTokenAuthEntry)_watsonTokenAuthEntry.clone());
+		return new WatsonTokenAuthEntryWrapper(
+			(WatsonTokenAuthEntry)_watsonTokenAuthEntry.clone());
 	}
 
 	@Override
@@ -155,30 +157,30 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 	}
 
 	/**
-	* Returns the active of this watson token auth entry.
-	*
-	* @return the active of this watson token auth entry
-	*/
+	 * Returns the active of this watson token auth entry.
+	 *
+	 * @return the active of this watson token auth entry
+	 */
 	@Override
 	public boolean getActive() {
 		return _watsonTokenAuthEntry.getActive();
 	}
 
 	/**
-	* Returns the company ID of this watson token auth entry.
-	*
-	* @return the company ID of this watson token auth entry
-	*/
+	 * Returns the company ID of this watson token auth entry.
+	 *
+	 * @return the company ID of this watson token auth entry
+	 */
 	@Override
 	public long getCompanyId() {
 		return _watsonTokenAuthEntry.getCompanyId();
 	}
 
 	/**
-	* Returns the create date of this watson token auth entry.
-	*
-	* @return the create date of this watson token auth entry
-	*/
+	 * Returns the create date of this watson token auth entry.
+	 *
+	 * @return the create date of this watson token auth entry
+	 */
 	@Override
 	public Date getCreateDate() {
 		return _watsonTokenAuthEntry.getCreateDate();
@@ -190,40 +192,40 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 	}
 
 	/**
-	* Returns the expiration date of this watson token auth entry.
-	*
-	* @return the expiration date of this watson token auth entry
-	*/
+	 * Returns the expiration date of this watson token auth entry.
+	 *
+	 * @return the expiration date of this watson token auth entry
+	 */
 	@Override
 	public Date getExpirationDate() {
 		return _watsonTokenAuthEntry.getExpirationDate();
 	}
 
 	/**
-	* Returns the login date of this watson token auth entry.
-	*
-	* @return the login date of this watson token auth entry
-	*/
+	 * Returns the login date of this watson token auth entry.
+	 *
+	 * @return the login date of this watson token auth entry
+	 */
 	@Override
 	public Date getLoginDate() {
 		return _watsonTokenAuthEntry.getLoginDate();
 	}
 
 	/**
-	* Returns the login ip of this watson token auth entry.
-	*
-	* @return the login ip of this watson token auth entry
-	*/
+	 * Returns the login ip of this watson token auth entry.
+	 *
+	 * @return the login ip of this watson token auth entry
+	 */
 	@Override
 	public String getLoginIP() {
 		return _watsonTokenAuthEntry.getLoginIP();
 	}
 
 	/**
-	* Returns the primary key of this watson token auth entry.
-	*
-	* @return the primary key of this watson token auth entry
-	*/
+	 * Returns the primary key of this watson token auth entry.
+	 *
+	 * @return the primary key of this watson token auth entry
+	 */
 	@Override
 	public long getPrimaryKey() {
 		return _watsonTokenAuthEntry.getPrimaryKey();
@@ -235,60 +237,60 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 	}
 
 	/**
-	* Returns the status of this watson token auth entry.
-	*
-	* @return the status of this watson token auth entry
-	*/
+	 * Returns the status of this watson token auth entry.
+	 *
+	 * @return the status of this watson token auth entry
+	 */
 	@Override
 	public int getStatus() {
 		return _watsonTokenAuthEntry.getStatus();
 	}
 
 	/**
-	* Returns the token of this watson token auth entry.
-	*
-	* @return the token of this watson token auth entry
-	*/
+	 * Returns the token of this watson token auth entry.
+	 *
+	 * @return the token of this watson token auth entry
+	 */
 	@Override
 	public String getToken() {
 		return _watsonTokenAuthEntry.getToken();
 	}
 
 	/**
-	* Returns the user ID of this watson token auth entry.
-	*
-	* @return the user ID of this watson token auth entry
-	*/
+	 * Returns the user ID of this watson token auth entry.
+	 *
+	 * @return the user ID of this watson token auth entry
+	 */
 	@Override
 	public long getUserId() {
 		return _watsonTokenAuthEntry.getUserId();
 	}
 
 	/**
-	* Returns the user name of this watson token auth entry.
-	*
-	* @return the user name of this watson token auth entry
-	*/
+	 * Returns the user name of this watson token auth entry.
+	 *
+	 * @return the user name of this watson token auth entry
+	 */
 	@Override
 	public String getUserName() {
 		return _watsonTokenAuthEntry.getUserName();
 	}
 
 	/**
-	* Returns the user uuid of this watson token auth entry.
-	*
-	* @return the user uuid of this watson token auth entry
-	*/
+	 * Returns the user uuid of this watson token auth entry.
+	 *
+	 * @return the user uuid of this watson token auth entry
+	 */
 	@Override
 	public String getUserUuid() {
 		return _watsonTokenAuthEntry.getUserUuid();
 	}
 
 	/**
-	* Returns the watson token auth entry ID of this watson token auth entry.
-	*
-	* @return the watson token auth entry ID of this watson token auth entry
-	*/
+	 * Returns the watson token auth entry ID of this watson token auth entry.
+	 *
+	 * @return the watson token auth entry ID of this watson token auth entry
+	 */
 	@Override
 	public long getWatsonTokenAuthEntryId() {
 		return _watsonTokenAuthEntry.getWatsonTokenAuthEntryId();
@@ -300,10 +302,10 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 	}
 
 	/**
-	* Returns <code>true</code> if this watson token auth entry is active.
-	*
-	* @return <code>true</code> if this watson token auth entry is active; <code>false</code> otherwise
-	*/
+	 * Returns <code>true</code> if this watson token auth entry is active.
+	 *
+	 * @return <code>true</code> if this watson token auth entry is active; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isActive() {
 		return _watsonTokenAuthEntry.isActive();
@@ -335,10 +337,10 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 	}
 
 	/**
-	* Sets whether this watson token auth entry is active.
-	*
-	* @param active the active of this watson token auth entry
-	*/
+	 * Sets whether this watson token auth entry is active.
+	 *
+	 * @param active the active of this watson token auth entry
+	 */
 	@Override
 	public void setActive(boolean active) {
 		_watsonTokenAuthEntry.setActive(active);
@@ -350,20 +352,20 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 	}
 
 	/**
-	* Sets the company ID of this watson token auth entry.
-	*
-	* @param companyId the company ID of this watson token auth entry
-	*/
+	 * Sets the company ID of this watson token auth entry.
+	 *
+	 * @param companyId the company ID of this watson token auth entry
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_watsonTokenAuthEntry.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create date of this watson token auth entry.
-	*
-	* @param createDate the create date of this watson token auth entry
-	*/
+	 * Sets the create date of this watson token auth entry.
+	 *
+	 * @param createDate the create date of this watson token auth entry
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_watsonTokenAuthEntry.setCreateDate(createDate);
@@ -372,6 +374,7 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
 		_watsonTokenAuthEntry.setExpandoBridgeAttributes(baseModel);
 	}
 
@@ -386,30 +389,30 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 	}
 
 	/**
-	* Sets the expiration date of this watson token auth entry.
-	*
-	* @param expirationDate the expiration date of this watson token auth entry
-	*/
+	 * Sets the expiration date of this watson token auth entry.
+	 *
+	 * @param expirationDate the expiration date of this watson token auth entry
+	 */
 	@Override
 	public void setExpirationDate(Date expirationDate) {
 		_watsonTokenAuthEntry.setExpirationDate(expirationDate);
 	}
 
 	/**
-	* Sets the login date of this watson token auth entry.
-	*
-	* @param loginDate the login date of this watson token auth entry
-	*/
+	 * Sets the login date of this watson token auth entry.
+	 *
+	 * @param loginDate the login date of this watson token auth entry
+	 */
 	@Override
 	public void setLoginDate(Date loginDate) {
 		_watsonTokenAuthEntry.setLoginDate(loginDate);
 	}
 
 	/**
-	* Sets the login ip of this watson token auth entry.
-	*
-	* @param loginIP the login ip of this watson token auth entry
-	*/
+	 * Sets the login ip of this watson token auth entry.
+	 *
+	 * @param loginIP the login ip of this watson token auth entry
+	 */
 	@Override
 	public void setLoginIP(String loginIP) {
 		_watsonTokenAuthEntry.setLoginIP(loginIP);
@@ -421,10 +424,10 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 	}
 
 	/**
-	* Sets the primary key of this watson token auth entry.
-	*
-	* @param primaryKey the primary key of this watson token auth entry
-	*/
+	 * Sets the primary key of this watson token auth entry.
+	 *
+	 * @param primaryKey the primary key of this watson token auth entry
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_watsonTokenAuthEntry.setPrimaryKey(primaryKey);
@@ -436,73 +439,76 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 	}
 
 	/**
-	* Sets the status of this watson token auth entry.
-	*
-	* @param status the status of this watson token auth entry
-	*/
+	 * Sets the status of this watson token auth entry.
+	 *
+	 * @param status the status of this watson token auth entry
+	 */
 	@Override
 	public void setStatus(int status) {
 		_watsonTokenAuthEntry.setStatus(status);
 	}
 
 	/**
-	* Sets the token of this watson token auth entry.
-	*
-	* @param token the token of this watson token auth entry
-	*/
+	 * Sets the token of this watson token auth entry.
+	 *
+	 * @param token the token of this watson token auth entry
+	 */
 	@Override
 	public void setToken(String token) {
 		_watsonTokenAuthEntry.setToken(token);
 	}
 
 	/**
-	* Sets the user ID of this watson token auth entry.
-	*
-	* @param userId the user ID of this watson token auth entry
-	*/
+	 * Sets the user ID of this watson token auth entry.
+	 *
+	 * @param userId the user ID of this watson token auth entry
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_watsonTokenAuthEntry.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this watson token auth entry.
-	*
-	* @param userName the user name of this watson token auth entry
-	*/
+	 * Sets the user name of this watson token auth entry.
+	 *
+	 * @param userName the user name of this watson token auth entry
+	 */
 	@Override
 	public void setUserName(String userName) {
 		_watsonTokenAuthEntry.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this watson token auth entry.
-	*
-	* @param userUuid the user uuid of this watson token auth entry
-	*/
+	 * Sets the user uuid of this watson token auth entry.
+	 *
+	 * @param userUuid the user uuid of this watson token auth entry
+	 */
 	@Override
 	public void setUserUuid(String userUuid) {
 		_watsonTokenAuthEntry.setUserUuid(userUuid);
 	}
 
 	/**
-	* Sets the watson token auth entry ID of this watson token auth entry.
-	*
-	* @param watsonTokenAuthEntryId the watson token auth entry ID of this watson token auth entry
-	*/
+	 * Sets the watson token auth entry ID of this watson token auth entry.
+	 *
+	 * @param watsonTokenAuthEntryId the watson token auth entry ID of this watson token auth entry
+	 */
 	@Override
 	public void setWatsonTokenAuthEntryId(long watsonTokenAuthEntryId) {
 		_watsonTokenAuthEntry.setWatsonTokenAuthEntryId(watsonTokenAuthEntryId);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<WatsonTokenAuthEntry> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<WatsonTokenAuthEntry>
+		toCacheModel() {
+
 		return _watsonTokenAuthEntry.toCacheModel();
 	}
 
 	@Override
 	public WatsonTokenAuthEntry toEscapedModel() {
-		return new WatsonTokenAuthEntryWrapper(_watsonTokenAuthEntry.toEscapedModel());
+		return new WatsonTokenAuthEntryWrapper(
+			_watsonTokenAuthEntry.toEscapedModel());
 	}
 
 	@Override
@@ -512,7 +518,8 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 
 	@Override
 	public WatsonTokenAuthEntry toUnescapedModel() {
-		return new WatsonTokenAuthEntryWrapper(_watsonTokenAuthEntry.toUnescapedModel());
+		return new WatsonTokenAuthEntryWrapper(
+			_watsonTokenAuthEntry.toUnescapedModel());
 	}
 
 	@Override
@@ -530,10 +537,13 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 			return false;
 		}
 
-		WatsonTokenAuthEntryWrapper watsonTokenAuthEntryWrapper = (WatsonTokenAuthEntryWrapper)obj;
+		WatsonTokenAuthEntryWrapper watsonTokenAuthEntryWrapper =
+			(WatsonTokenAuthEntryWrapper)obj;
 
-		if (Objects.equals(_watsonTokenAuthEntry,
-					watsonTokenAuthEntryWrapper._watsonTokenAuthEntry)) {
+		if (Objects.equals(
+				_watsonTokenAuthEntry,
+				watsonTokenAuthEntryWrapper._watsonTokenAuthEntry)) {
+
 			return true;
 		}
 
@@ -561,4 +571,5 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 	}
 
 	private final WatsonTokenAuthEntry _watsonTokenAuthEntry;
+
 }

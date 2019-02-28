@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
-
 import com.liferay.watson.exception.NoSuchRelationshipException;
 import com.liferay.watson.model.WatsonRelationship;
 import com.liferay.watson.model.impl.WatsonRelationshipImpl;
@@ -64,18 +63,24 @@ import java.util.Set;
  * @generated
  */
 @ProviderType
-public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<WatsonRelationship>
+public class WatsonRelationshipPersistenceImpl
+	extends BasePersistenceImpl<WatsonRelationship>
 	implements WatsonRelationshipPersistence {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonRelationshipUtil</code> to access the watson relationship persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY = WatsonRelationshipImpl.class.getName();
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List1";
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List2";
+	public static final String FINDER_CLASS_NAME_ENTITY =
+		WatsonRelationshipImpl.class.getName();
+
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List1";
+
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List2";
+
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
@@ -91,7 +96,8 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 	 */
 	@Override
 	public void cacheResult(WatsonRelationship watsonRelationship) {
-		entityCache.putResult(WatsonRelationshipModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			WatsonRelationshipModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonRelationshipImpl.class, watsonRelationship.getPrimaryKey(),
 			watsonRelationship);
 
@@ -107,9 +113,10 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 	public void cacheResult(List<WatsonRelationship> watsonRelationships) {
 		for (WatsonRelationship watsonRelationship : watsonRelationships) {
 			if (entityCache.getResult(
-						WatsonRelationshipModelImpl.ENTITY_CACHE_ENABLED,
-						WatsonRelationshipImpl.class,
-						watsonRelationship.getPrimaryKey()) == null) {
+					WatsonRelationshipModelImpl.ENTITY_CACHE_ENABLED,
+					WatsonRelationshipImpl.class,
+					watsonRelationship.getPrimaryKey()) == null) {
+
 				cacheResult(watsonRelationship);
 			}
 			else {
@@ -143,7 +150,8 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 	 */
 	@Override
 	public void clearCache(WatsonRelationship watsonRelationship) {
-		entityCache.removeResult(WatsonRelationshipModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.removeResult(
+			WatsonRelationshipModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonRelationshipImpl.class, watsonRelationship.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -156,8 +164,10 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (WatsonRelationship watsonRelationship : watsonRelationships) {
-			entityCache.removeResult(WatsonRelationshipModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonRelationshipImpl.class, watsonRelationship.getPrimaryKey());
+			entityCache.removeResult(
+				WatsonRelationshipModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonRelationshipImpl.class,
+				watsonRelationship.getPrimaryKey());
 		}
 	}
 
@@ -189,6 +199,7 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 	@Override
 	public WatsonRelationship remove(long watsonRelationshipId)
 		throws NoSuchRelationshipException {
+
 		return remove((Serializable)watsonRelationshipId);
 	}
 
@@ -202,21 +213,23 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 	@Override
 	public WatsonRelationship remove(Serializable primaryKey)
 		throws NoSuchRelationshipException {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			WatsonRelationship watsonRelationship = (WatsonRelationship)session.get(WatsonRelationshipImpl.class,
-					primaryKey);
+			WatsonRelationship watsonRelationship =
+				(WatsonRelationship)session.get(
+					WatsonRelationshipImpl.class, primaryKey);
 
 			if (watsonRelationship == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchRelationshipException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					primaryKey);
+				throw new NoSuchRelationshipException(
+					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			return remove(watsonRelationship);
@@ -235,14 +248,16 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 	@Override
 	protected WatsonRelationship removeImpl(
 		WatsonRelationship watsonRelationship) {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
 			if (!session.contains(watsonRelationship)) {
-				watsonRelationship = (WatsonRelationship)session.get(WatsonRelationshipImpl.class,
-						watsonRelationship.getPrimaryKeyObj());
+				watsonRelationship = (WatsonRelationship)session.get(
+					WatsonRelationshipImpl.class,
+					watsonRelationship.getPrimaryKeyObj());
 			}
 
 			if (watsonRelationship != null) {
@@ -264,28 +279,33 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 	}
 
 	@Override
-	public WatsonRelationship updateImpl(WatsonRelationship watsonRelationship) {
+	public WatsonRelationship updateImpl(
+		WatsonRelationship watsonRelationship) {
+
 		boolean isNew = watsonRelationship.isNew();
 
 		if (!(watsonRelationship instanceof WatsonRelationshipModelImpl)) {
 			InvocationHandler invocationHandler = null;
 
 			if (ProxyUtil.isProxyClass(watsonRelationship.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(watsonRelationship);
+				invocationHandler = ProxyUtil.getInvocationHandler(
+					watsonRelationship);
 
 				throw new IllegalArgumentException(
 					"Implement ModelWrapper in watsonRelationship proxy " +
-					invocationHandler.getClass());
+						invocationHandler.getClass());
 			}
 
 			throw new IllegalArgumentException(
 				"Implement ModelWrapper in custom WatsonRelationship implementation " +
-				watsonRelationship.getClass());
+					watsonRelationship.getClass());
 		}
 
-		WatsonRelationshipModelImpl watsonRelationshipModelImpl = (WatsonRelationshipModelImpl)watsonRelationship;
+		WatsonRelationshipModelImpl watsonRelationshipModelImpl =
+			(WatsonRelationshipModelImpl)watsonRelationship;
 
-		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
 
 		Date now = new Date();
 
@@ -294,8 +314,8 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 				watsonRelationship.setCreateDate(now);
 			}
 			else {
-				watsonRelationship.setCreateDate(serviceContext.getCreateDate(
-						now));
+				watsonRelationship.setCreateDate(
+					serviceContext.getCreateDate(now));
 			}
 		}
 
@@ -304,8 +324,8 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 				watsonRelationship.setModifiedDate(now);
 			}
 			else {
-				watsonRelationship.setModifiedDate(serviceContext.getModifiedDate(
-						now));
+				watsonRelationship.setModifiedDate(
+					serviceContext.getModifiedDate(now));
 			}
 		}
 
@@ -320,7 +340,8 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 				watsonRelationship.setNew(false);
 			}
 			else {
-				watsonRelationship = (WatsonRelationship)session.merge(watsonRelationship);
+				watsonRelationship = (WatsonRelationship)session.merge(
+					watsonRelationship);
 			}
 		}
 		catch (Exception e) {
@@ -334,11 +355,12 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 
 		if (isNew) {
 			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(_finderPathWithoutPaginationFindAll,
-				FINDER_ARGS_EMPTY);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(WatsonRelationshipModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			WatsonRelationshipModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonRelationshipImpl.class, watsonRelationship.getPrimaryKey(),
 			watsonRelationship, false);
 
@@ -357,6 +379,7 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 	@Override
 	public WatsonRelationship findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchRelationshipException {
+
 		WatsonRelationship watsonRelationship = fetchByPrimaryKey(primaryKey);
 
 		if (watsonRelationship == null) {
@@ -364,8 +387,8 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchRelationshipException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				primaryKey);
+			throw new NoSuchRelationshipException(
+				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 		}
 
 		return watsonRelationship;
@@ -381,6 +404,7 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 	@Override
 	public WatsonRelationship findByPrimaryKey(long watsonRelationshipId)
 		throws NoSuchRelationshipException {
+
 		return findByPrimaryKey((Serializable)watsonRelationshipId);
 	}
 
@@ -392,14 +416,16 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 	 */
 	@Override
 	public WatsonRelationship fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(WatsonRelationshipModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonRelationshipImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(
+			WatsonRelationshipModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonRelationshipImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
 		}
 
-		WatsonRelationship watsonRelationship = (WatsonRelationship)serializable;
+		WatsonRelationship watsonRelationship =
+			(WatsonRelationship)serializable;
 
 		if (watsonRelationship == null) {
 			Session session = null;
@@ -407,19 +433,21 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 			try {
 				session = openSession();
 
-				watsonRelationship = (WatsonRelationship)session.get(WatsonRelationshipImpl.class,
-						primaryKey);
+				watsonRelationship = (WatsonRelationship)session.get(
+					WatsonRelationshipImpl.class, primaryKey);
 
 				if (watsonRelationship != null) {
 					cacheResult(watsonRelationship);
 				}
 				else {
-					entityCache.putResult(WatsonRelationshipModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(
+						WatsonRelationshipModelImpl.ENTITY_CACHE_ENABLED,
 						WatsonRelationshipImpl.class, primaryKey, nullModel);
 				}
 			}
 			catch (Exception e) {
-				entityCache.removeResult(WatsonRelationshipModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.removeResult(
+					WatsonRelationshipModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonRelationshipImpl.class, primaryKey);
 
 				throw processException(e);
@@ -446,18 +474,21 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 	@Override
 	public Map<Serializable, WatsonRelationship> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, WatsonRelationship> map = new HashMap<Serializable, WatsonRelationship>();
+		Map<Serializable, WatsonRelationship> map =
+			new HashMap<Serializable, WatsonRelationship>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
 
 			Serializable primaryKey = iterator.next();
 
-			WatsonRelationship watsonRelationship = fetchByPrimaryKey(primaryKey);
+			WatsonRelationship watsonRelationship = fetchByPrimaryKey(
+				primaryKey);
 
 			if (watsonRelationship != null) {
 				map.put(primaryKey, watsonRelationship);
@@ -469,8 +500,9 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(WatsonRelationshipModelImpl.ENTITY_CACHE_ENABLED,
-					WatsonRelationshipImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(
+				WatsonRelationshipModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonRelationshipImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -490,8 +522,8 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 			return map;
 		}
 
-		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
-				1);
+		StringBundler query = new StringBundler(
+			uncachedPrimaryKeys.size() * 2 + 1);
 
 		query.append(_SQL_SELECT_WATSONRELATIONSHIP_WHERE_PKS_IN);
 
@@ -514,17 +546,21 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 
 			Query q = session.createQuery(sql);
 
-			for (WatsonRelationship watsonRelationship : (List<WatsonRelationship>)q.list()) {
-				map.put(watsonRelationship.getPrimaryKeyObj(),
-					watsonRelationship);
+			for (WatsonRelationship watsonRelationship :
+					(List<WatsonRelationship>)q.list()) {
+
+				map.put(
+					watsonRelationship.getPrimaryKeyObj(), watsonRelationship);
 
 				cacheResult(watsonRelationship);
 
-				uncachedPrimaryKeys.remove(watsonRelationship.getPrimaryKeyObj());
+				uncachedPrimaryKeys.remove(
+					watsonRelationship.getPrimaryKeyObj());
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(WatsonRelationshipModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(
+					WatsonRelationshipModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonRelationshipImpl.class, primaryKey, nullModel);
 			}
 		}
@@ -577,8 +613,10 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 	 * @return the ordered range of watson relationships
 	 */
 	@Override
-	public List<WatsonRelationship> findAll(int start, int end,
+	public List<WatsonRelationship> findAll(
+		int start, int end,
 		OrderByComparator<WatsonRelationship> orderByComparator) {
+
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -596,29 +634,32 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 	 * @return the ordered range of watson relationships
 	 */
 	@Override
-	public List<WatsonRelationship> findAll(int start, int end,
+	public List<WatsonRelationship> findAll(
+		int start, int end,
 		OrderByComparator<WatsonRelationship> orderByComparator,
 		boolean retrieveFromCache) {
+
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
+			(orderByComparator == null)) {
+
 			pagination = false;
 			finderPath = _finderPathWithoutPaginationFindAll;
 			finderArgs = FINDER_ARGS_EMPTY;
 		}
 		else {
 			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] { start, end, orderByComparator };
+			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<WatsonRelationship> list = null;
 
 		if (retrieveFromCache) {
-			list = (List<WatsonRelationship>)finderCache.getResult(finderPath,
-					finderArgs, this);
+			list = (List<WatsonRelationship>)finderCache.getResult(
+				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
@@ -626,13 +667,13 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(2 +
-						(orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(
+					2 + (orderByComparator.getOrderByFields().length * 2));
 
 				query.append(_SQL_SELECT_WATSONRELATIONSHIP);
 
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
 				sql = query.toString();
 			}
@@ -652,16 +693,16 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 				Query q = session.createQuery(sql);
 
 				if (!pagination) {
-					list = (List<WatsonRelationship>)QueryUtil.list(q,
-							getDialect(), start, end, false);
+					list = (List<WatsonRelationship>)QueryUtil.list(
+						q, getDialect(), start, end, false);
 
 					Collections.sort(list);
 
 					list = Collections.unmodifiableList(list);
 				}
 				else {
-					list = (List<WatsonRelationship>)QueryUtil.list(q,
-							getDialect(), start, end);
+					list = (List<WatsonRelationship>)QueryUtil.list(
+						q, getDialect(), start, end);
 				}
 
 				cacheResult(list);
@@ -699,8 +740,8 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(_finderPathCountAll,
-				FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(
+			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -712,11 +753,12 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 
 				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(_finderPathCountAll, FINDER_ARGS_EMPTY,
-					count);
+				finderCache.putResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
+				finderCache.removeResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
 				throw processException(e);
 			}
@@ -737,21 +779,24 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 	 * Initializes the watson relationship persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(WatsonRelationshipModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonRelationshipModelImpl.FINDER_CACHE_ENABLED,
-				WatsonRelationshipImpl.class,
-				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+		_finderPathWithPaginationFindAll = new FinderPath(
+			WatsonRelationshipModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonRelationshipModelImpl.FINDER_CACHE_ENABLED,
+			WatsonRelationshipImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(WatsonRelationshipModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonRelationshipModelImpl.FINDER_CACHE_ENABLED,
-				WatsonRelationshipImpl.class,
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-				new String[0]);
+		_finderPathWithoutPaginationFindAll = new FinderPath(
+			WatsonRelationshipModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonRelationshipModelImpl.FINDER_CACHE_ENABLED,
+			WatsonRelationshipImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+			new String[0]);
 
-		_finderPathCountAll = new FinderPath(WatsonRelationshipModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonRelationshipModelImpl.FINDER_CACHE_ENABLED, Long.class,
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-				new String[0]);
+		_finderPathCountAll = new FinderPath(
+			WatsonRelationshipModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonRelationshipModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+			new String[0]);
 	}
 
 	public void destroy() {
@@ -763,14 +808,28 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
+
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
+
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-	private static final String _SQL_SELECT_WATSONRELATIONSHIP = "SELECT watsonRelationship FROM WatsonRelationship watsonRelationship";
-	private static final String _SQL_SELECT_WATSONRELATIONSHIP_WHERE_PKS_IN = "SELECT watsonRelationship FROM WatsonRelationship watsonRelationship WHERE watsonRelationshipId IN (";
-	private static final String _SQL_COUNT_WATSONRELATIONSHIP = "SELECT COUNT(watsonRelationship) FROM WatsonRelationship watsonRelationship";
+
+	private static final String _SQL_SELECT_WATSONRELATIONSHIP =
+		"SELECT watsonRelationship FROM WatsonRelationship watsonRelationship";
+
+	private static final String _SQL_SELECT_WATSONRELATIONSHIP_WHERE_PKS_IN =
+		"SELECT watsonRelationship FROM WatsonRelationship watsonRelationship WHERE watsonRelationshipId IN (";
+
+	private static final String _SQL_COUNT_WATSONRELATIONSHIP =
+		"SELECT COUNT(watsonRelationship) FROM WatsonRelationship watsonRelationship";
+
 	private static final String _ORDER_BY_ENTITY_ALIAS = "watsonRelationship.";
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No WatsonRelationship exists with the primary key ";
-	private static final Log _log = LogFactoryUtil.getLog(WatsonRelationshipPersistenceImpl.class);
+
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
+		"No WatsonRelationship exists with the primary key ";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		WatsonRelationshipPersistenceImpl.class);
+
 }

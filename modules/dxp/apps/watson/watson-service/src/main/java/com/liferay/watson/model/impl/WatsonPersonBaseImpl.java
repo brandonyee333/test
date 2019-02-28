@@ -32,8 +32,9 @@ import com.liferay.watson.service.WatsonPersonLocalServiceUtil;
  * @generated
  */
 @ProviderType
-public abstract class WatsonPersonBaseImpl extends WatsonPersonModelImpl
-	implements WatsonPerson {
+public abstract class WatsonPersonBaseImpl
+	extends WatsonPersonModelImpl implements WatsonPerson {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -48,4 +49,5 @@ public abstract class WatsonPersonBaseImpl extends WatsonPersonModelImpl
 			WatsonPersonLocalServiceUtil.updateWatsonPerson(this);
 		}
 	}
+
 }

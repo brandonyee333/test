@@ -18,7 +18,6 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -30,7 +29,6 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.model.WatsonChildAudit;
 import com.liferay.watson.model.WatsonChildAuditModel;
 
@@ -58,40 +56,37 @@ import java.util.function.Function;
  * @generated
  */
 @ProviderType
-public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
-	implements WatsonChildAuditModel {
+public class WatsonChildAuditModelImpl
+	extends BaseModelImpl<WatsonChildAudit> implements WatsonChildAuditModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson child audit model instance should use the <code>WatsonChildAudit</code> interface instead.
 	 */
 	public static final String TABLE_NAME = "WatsonChildAudit";
+
 	public static final Object[][] TABLE_COLUMNS = {
-			{ "watsonChildAuditId", Types.BIGINT },
-			{ "groupId", Types.BIGINT },
-			{ "companyId", Types.BIGINT },
-			{ "userId", Types.BIGINT },
-			{ "userName", Types.VARCHAR },
-			{ "createDate", Types.TIMESTAMP },
-			{ "modifiedDate", Types.TIMESTAMP },
-			{ "birthCountryId", Types.BIGINT },
-			{ "citizenshipWatsonListTypeId", Types.BIGINT },
-			{ "countryWatsonListTypeId", Types.BIGINT },
-			{ "dischargeWatsonListTypeId", Types.BIGINT },
-			{ "ethnicityWatsonListTypeId", Types.BIGINT },
-			{ "originalWatsonPersonId", Types.BIGINT },
-			{ "sexWatsonListTypeId", Types.BIGINT },
-			{ "sourceSubtypeWatsonListTypeId", Types.BIGINT },
-			{ "sourceWatsonListTypeId", Types.BIGINT },
-			{ "typeWatsonListTypeId", Types.BIGINT },
-			{ "watsonChildId", Types.BIGINT },
-			{ "dateAccepted", Types.TIMESTAMP },
-			{ "dateDischarged", Types.TIMESTAMP },
-			{ "dateFollowUp", Types.TIMESTAMP },
-			{ "source", Types.VARCHAR },
-			{ "status", Types.INTEGER }
-		};
-	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
+		{"watsonChildAuditId", Types.BIGINT}, {"groupId", Types.BIGINT},
+		{"companyId", Types.BIGINT}, {"userId", Types.BIGINT},
+		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
+		{"modifiedDate", Types.TIMESTAMP}, {"birthCountryId", Types.BIGINT},
+		{"citizenshipWatsonListTypeId", Types.BIGINT},
+		{"countryWatsonListTypeId", Types.BIGINT},
+		{"dischargeWatsonListTypeId", Types.BIGINT},
+		{"ethnicityWatsonListTypeId", Types.BIGINT},
+		{"originalWatsonPersonId", Types.BIGINT},
+		{"sexWatsonListTypeId", Types.BIGINT},
+		{"sourceSubtypeWatsonListTypeId", Types.BIGINT},
+		{"sourceWatsonListTypeId", Types.BIGINT},
+		{"typeWatsonListTypeId", Types.BIGINT}, {"watsonChildId", Types.BIGINT},
+		{"dateAccepted", Types.TIMESTAMP}, {"dateDischarged", Types.TIMESTAMP},
+		{"dateFollowUp", Types.TIMESTAMP}, {"source", Types.VARCHAR},
+		{"status", Types.INTEGER}
+	};
+
+	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
+		new HashMap<String, Integer>();
 
 	static {
 		TABLE_COLUMNS_MAP.put("watsonChildAuditId", Types.BIGINT);
@@ -119,22 +114,38 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonChildAudit (watsonChildAuditId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,birthCountryId LONG,citizenshipWatsonListTypeId LONG,countryWatsonListTypeId LONG,dischargeWatsonListTypeId LONG,ethnicityWatsonListTypeId LONG,originalWatsonPersonId LONG,sexWatsonListTypeId LONG,sourceSubtypeWatsonListTypeId LONG,sourceWatsonListTypeId LONG,typeWatsonListTypeId LONG,watsonChildId LONG,dateAccepted DATE null,dateDischarged DATE null,dateFollowUp DATE null,source VARCHAR(75) null,status INTEGER)";
+	public static final String TABLE_SQL_CREATE =
+		"create table WatsonChildAudit (watsonChildAuditId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,birthCountryId LONG,citizenshipWatsonListTypeId LONG,countryWatsonListTypeId LONG,dischargeWatsonListTypeId LONG,ethnicityWatsonListTypeId LONG,originalWatsonPersonId LONG,sexWatsonListTypeId LONG,sourceSubtypeWatsonListTypeId LONG,sourceWatsonListTypeId LONG,typeWatsonListTypeId LONG,watsonChildId LONG,dateAccepted DATE null,dateDischarged DATE null,dateFollowUp DATE null,source VARCHAR(75) null,status INTEGER)";
+
 	public static final String TABLE_SQL_DROP = "drop table WatsonChildAudit";
-	public static final String ORDER_BY_JPQL = " ORDER BY watsonChildAudit.watsonChildAuditId ASC";
-	public static final String ORDER_BY_SQL = " ORDER BY WatsonChildAudit.watsonChildAuditId ASC";
+
+	public static final String ORDER_BY_JPQL =
+		" ORDER BY watsonChildAudit.watsonChildAuditId ASC";
+
+	public static final String ORDER_BY_SQL =
+		" ORDER BY WatsonChildAudit.watsonChildAuditId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
+
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
+
 	public static final String TX_MANAGER = "liferayTransactionManager";
-	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonChildAudit"),
-			true);
-	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonChildAudit"),
-			true);
+
+	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonChildAudit"),
+		true);
+
+	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonChildAudit"),
+		true);
+
 	public static final boolean COLUMN_BITMASK_ENABLED = false;
-	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.watson.service.util.ServiceProps.get(
-				"lock.expiration.time.com.liferay.watson.model.WatsonChildAudit"));
+
+	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"lock.expiration.time.com.liferay.watson.model.WatsonChildAudit"));
 
 	public WatsonChildAuditModelImpl() {
 	}
@@ -173,14 +184,18 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		Map<String, Function<WatsonChildAudit, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonChildAudit, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		for (Map.Entry<String, Function<WatsonChildAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonChildAudit, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonChildAudit, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonChildAudit, Object> attributeGetterFunction =
+				entry.getValue();
 
-			attributes.put(attributeName,
+			attributes.put(
+				attributeName,
 				attributeGetterFunction.apply((WatsonChildAudit)this));
 		}
 
@@ -192,37 +207,46 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Map<String, BiConsumer<WatsonChildAudit, Object>> attributeSetterBiConsumers =
-			getAttributeSetterBiConsumers();
+		Map<String, BiConsumer<WatsonChildAudit, Object>>
+			attributeSetterBiConsumers = getAttributeSetterBiConsumers();
 
 		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			String attributeName = entry.getKey();
 
-			BiConsumer<WatsonChildAudit, Object> attributeSetterBiConsumer = attributeSetterBiConsumers.get(attributeName);
+			BiConsumer<WatsonChildAudit, Object> attributeSetterBiConsumer =
+				attributeSetterBiConsumers.get(attributeName);
 
 			if (attributeSetterBiConsumer != null) {
-				attributeSetterBiConsumer.accept((WatsonChildAudit)this,
-					entry.getValue());
+				attributeSetterBiConsumer.accept(
+					(WatsonChildAudit)this, entry.getValue());
 			}
 		}
 	}
 
-	public Map<String, Function<WatsonChildAudit, Object>> getAttributeGetterFunctions() {
+	public Map<String, Function<WatsonChildAudit, Object>>
+		getAttributeGetterFunctions() {
+
 		return _attributeGetterFunctions;
 	}
 
-	public Map<String, BiConsumer<WatsonChildAudit, Object>> getAttributeSetterBiConsumers() {
+	public Map<String, BiConsumer<WatsonChildAudit, Object>>
+		getAttributeSetterBiConsumers() {
+
 		return _attributeSetterBiConsumers;
 	}
 
-	private static final Map<String, Function<WatsonChildAudit, Object>> _attributeGetterFunctions;
-	private static final Map<String, BiConsumer<WatsonChildAudit, Object>> _attributeSetterBiConsumers;
+	private static final Map<String, Function<WatsonChildAudit, Object>>
+		_attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonChildAudit, Object>>
+		_attributeSetterBiConsumers;
 
 	static {
-		Map<String, Function<WatsonChildAudit, Object>> attributeGetterFunctions =
-			new LinkedHashMap<String, Function<WatsonChildAudit, Object>>();
-		Map<String, BiConsumer<WatsonChildAudit, ?>> attributeSetterBiConsumers = new LinkedHashMap<String, BiConsumer<WatsonChildAudit, ?>>();
-
+		Map<String, Function<WatsonChildAudit, Object>>
+			attributeGetterFunctions =
+				new LinkedHashMap<String, Function<WatsonChildAudit, Object>>();
+		Map<String, BiConsumer<WatsonChildAudit, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap<String, BiConsumer<WatsonChildAudit, ?>>();
 
 		attributeGetterFunctions.put(
 			"watsonChildAuditId",
@@ -239,8 +263,12 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 			new BiConsumer<WatsonChildAudit, Object>() {
 
 				@Override
-				public void accept(WatsonChildAudit watsonChildAudit, Object watsonChildAuditId) {
-					watsonChildAudit.setWatsonChildAuditId((Long)watsonChildAuditId);
+				public void accept(
+					WatsonChildAudit watsonChildAudit,
+					Object watsonChildAuditId) {
+
+					watsonChildAudit.setWatsonChildAuditId(
+						(Long)watsonChildAuditId);
 				}
 
 			});
@@ -259,7 +287,9 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 			new BiConsumer<WatsonChildAudit, Object>() {
 
 				@Override
-				public void accept(WatsonChildAudit watsonChildAudit, Object groupId) {
+				public void accept(
+					WatsonChildAudit watsonChildAudit, Object groupId) {
+
 					watsonChildAudit.setGroupId((Long)groupId);
 				}
 
@@ -279,7 +309,9 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 			new BiConsumer<WatsonChildAudit, Object>() {
 
 				@Override
-				public void accept(WatsonChildAudit watsonChildAudit, Object companyId) {
+				public void accept(
+					WatsonChildAudit watsonChildAudit, Object companyId) {
+
 					watsonChildAudit.setCompanyId((Long)companyId);
 				}
 
@@ -299,7 +331,9 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 			new BiConsumer<WatsonChildAudit, Object>() {
 
 				@Override
-				public void accept(WatsonChildAudit watsonChildAudit, Object userId) {
+				public void accept(
+					WatsonChildAudit watsonChildAudit, Object userId) {
+
 					watsonChildAudit.setUserId((Long)userId);
 				}
 
@@ -319,7 +353,9 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 			new BiConsumer<WatsonChildAudit, Object>() {
 
 				@Override
-				public void accept(WatsonChildAudit watsonChildAudit, Object userName) {
+				public void accept(
+					WatsonChildAudit watsonChildAudit, Object userName) {
+
 					watsonChildAudit.setUserName((String)userName);
 				}
 
@@ -339,7 +375,9 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 			new BiConsumer<WatsonChildAudit, Object>() {
 
 				@Override
-				public void accept(WatsonChildAudit watsonChildAudit, Object createDate) {
+				public void accept(
+					WatsonChildAudit watsonChildAudit, Object createDate) {
+
 					watsonChildAudit.setCreateDate((Date)createDate);
 				}
 
@@ -359,7 +397,9 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 			new BiConsumer<WatsonChildAudit, Object>() {
 
 				@Override
-				public void accept(WatsonChildAudit watsonChildAudit, Object modifiedDate) {
+				public void accept(
+					WatsonChildAudit watsonChildAudit, Object modifiedDate) {
+
 					watsonChildAudit.setModifiedDate((Date)modifiedDate);
 				}
 
@@ -379,7 +419,9 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 			new BiConsumer<WatsonChildAudit, Object>() {
 
 				@Override
-				public void accept(WatsonChildAudit watsonChildAudit, Object birthCountryId) {
+				public void accept(
+					WatsonChildAudit watsonChildAudit, Object birthCountryId) {
+
 					watsonChildAudit.setBirthCountryId((Long)birthCountryId);
 				}
 
@@ -399,8 +441,12 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 			new BiConsumer<WatsonChildAudit, Object>() {
 
 				@Override
-				public void accept(WatsonChildAudit watsonChildAudit, Object citizenshipWatsonListTypeId) {
-					watsonChildAudit.setCitizenshipWatsonListTypeId((Long)citizenshipWatsonListTypeId);
+				public void accept(
+					WatsonChildAudit watsonChildAudit,
+					Object citizenshipWatsonListTypeId) {
+
+					watsonChildAudit.setCitizenshipWatsonListTypeId(
+						(Long)citizenshipWatsonListTypeId);
 				}
 
 			});
@@ -419,8 +465,12 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 			new BiConsumer<WatsonChildAudit, Object>() {
 
 				@Override
-				public void accept(WatsonChildAudit watsonChildAudit, Object countryWatsonListTypeId) {
-					watsonChildAudit.setCountryWatsonListTypeId((Long)countryWatsonListTypeId);
+				public void accept(
+					WatsonChildAudit watsonChildAudit,
+					Object countryWatsonListTypeId) {
+
+					watsonChildAudit.setCountryWatsonListTypeId(
+						(Long)countryWatsonListTypeId);
 				}
 
 			});
@@ -439,8 +489,12 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 			new BiConsumer<WatsonChildAudit, Object>() {
 
 				@Override
-				public void accept(WatsonChildAudit watsonChildAudit, Object dischargeWatsonListTypeId) {
-					watsonChildAudit.setDischargeWatsonListTypeId((Long)dischargeWatsonListTypeId);
+				public void accept(
+					WatsonChildAudit watsonChildAudit,
+					Object dischargeWatsonListTypeId) {
+
+					watsonChildAudit.setDischargeWatsonListTypeId(
+						(Long)dischargeWatsonListTypeId);
 				}
 
 			});
@@ -459,8 +513,12 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 			new BiConsumer<WatsonChildAudit, Object>() {
 
 				@Override
-				public void accept(WatsonChildAudit watsonChildAudit, Object ethnicityWatsonListTypeId) {
-					watsonChildAudit.setEthnicityWatsonListTypeId((Long)ethnicityWatsonListTypeId);
+				public void accept(
+					WatsonChildAudit watsonChildAudit,
+					Object ethnicityWatsonListTypeId) {
+
+					watsonChildAudit.setEthnicityWatsonListTypeId(
+						(Long)ethnicityWatsonListTypeId);
 				}
 
 			});
@@ -479,8 +537,12 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 			new BiConsumer<WatsonChildAudit, Object>() {
 
 				@Override
-				public void accept(WatsonChildAudit watsonChildAudit, Object originalWatsonPersonId) {
-					watsonChildAudit.setOriginalWatsonPersonId((Long)originalWatsonPersonId);
+				public void accept(
+					WatsonChildAudit watsonChildAudit,
+					Object originalWatsonPersonId) {
+
+					watsonChildAudit.setOriginalWatsonPersonId(
+						(Long)originalWatsonPersonId);
 				}
 
 			});
@@ -499,8 +561,12 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 			new BiConsumer<WatsonChildAudit, Object>() {
 
 				@Override
-				public void accept(WatsonChildAudit watsonChildAudit, Object sexWatsonListTypeId) {
-					watsonChildAudit.setSexWatsonListTypeId((Long)sexWatsonListTypeId);
+				public void accept(
+					WatsonChildAudit watsonChildAudit,
+					Object sexWatsonListTypeId) {
+
+					watsonChildAudit.setSexWatsonListTypeId(
+						(Long)sexWatsonListTypeId);
 				}
 
 			});
@@ -519,8 +585,12 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 			new BiConsumer<WatsonChildAudit, Object>() {
 
 				@Override
-				public void accept(WatsonChildAudit watsonChildAudit, Object sourceSubtypeWatsonListTypeId) {
-					watsonChildAudit.setSourceSubtypeWatsonListTypeId((Long)sourceSubtypeWatsonListTypeId);
+				public void accept(
+					WatsonChildAudit watsonChildAudit,
+					Object sourceSubtypeWatsonListTypeId) {
+
+					watsonChildAudit.setSourceSubtypeWatsonListTypeId(
+						(Long)sourceSubtypeWatsonListTypeId);
 				}
 
 			});
@@ -539,8 +609,12 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 			new BiConsumer<WatsonChildAudit, Object>() {
 
 				@Override
-				public void accept(WatsonChildAudit watsonChildAudit, Object sourceWatsonListTypeId) {
-					watsonChildAudit.setSourceWatsonListTypeId((Long)sourceWatsonListTypeId);
+				public void accept(
+					WatsonChildAudit watsonChildAudit,
+					Object sourceWatsonListTypeId) {
+
+					watsonChildAudit.setSourceWatsonListTypeId(
+						(Long)sourceWatsonListTypeId);
 				}
 
 			});
@@ -559,8 +633,12 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 			new BiConsumer<WatsonChildAudit, Object>() {
 
 				@Override
-				public void accept(WatsonChildAudit watsonChildAudit, Object typeWatsonListTypeId) {
-					watsonChildAudit.setTypeWatsonListTypeId((Long)typeWatsonListTypeId);
+				public void accept(
+					WatsonChildAudit watsonChildAudit,
+					Object typeWatsonListTypeId) {
+
+					watsonChildAudit.setTypeWatsonListTypeId(
+						(Long)typeWatsonListTypeId);
 				}
 
 			});
@@ -579,7 +657,9 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 			new BiConsumer<WatsonChildAudit, Object>() {
 
 				@Override
-				public void accept(WatsonChildAudit watsonChildAudit, Object watsonChildId) {
+				public void accept(
+					WatsonChildAudit watsonChildAudit, Object watsonChildId) {
+
 					watsonChildAudit.setWatsonChildId((Long)watsonChildId);
 				}
 
@@ -599,7 +679,9 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 			new BiConsumer<WatsonChildAudit, Object>() {
 
 				@Override
-				public void accept(WatsonChildAudit watsonChildAudit, Object dateAccepted) {
+				public void accept(
+					WatsonChildAudit watsonChildAudit, Object dateAccepted) {
+
 					watsonChildAudit.setDateAccepted((Date)dateAccepted);
 				}
 
@@ -619,7 +701,9 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 			new BiConsumer<WatsonChildAudit, Object>() {
 
 				@Override
-				public void accept(WatsonChildAudit watsonChildAudit, Object dateDischarged) {
+				public void accept(
+					WatsonChildAudit watsonChildAudit, Object dateDischarged) {
+
 					watsonChildAudit.setDateDischarged((Date)dateDischarged);
 				}
 
@@ -639,7 +723,9 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 			new BiConsumer<WatsonChildAudit, Object>() {
 
 				@Override
-				public void accept(WatsonChildAudit watsonChildAudit, Object dateFollowUp) {
+				public void accept(
+					WatsonChildAudit watsonChildAudit, Object dateFollowUp) {
+
 					watsonChildAudit.setDateFollowUp((Date)dateFollowUp);
 				}
 
@@ -659,7 +745,9 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 			new BiConsumer<WatsonChildAudit, Object>() {
 
 				@Override
-				public void accept(WatsonChildAudit watsonChildAudit, Object source) {
+				public void accept(
+					WatsonChildAudit watsonChildAudit, Object source) {
+
 					watsonChildAudit.setSource((String)source);
 				}
 
@@ -679,15 +767,18 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 			new BiConsumer<WatsonChildAudit, Object>() {
 
 				@Override
-				public void accept(WatsonChildAudit watsonChildAudit, Object status) {
+				public void accept(
+					WatsonChildAudit watsonChildAudit, Object status) {
+
 					watsonChildAudit.setStatus((Integer)status);
 				}
 
 			});
 
-
-		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap(
+			(Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -803,7 +894,9 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 	}
 
 	@Override
-	public void setCitizenshipWatsonListTypeId(long citizenshipWatsonListTypeId) {
+	public void setCitizenshipWatsonListTypeId(
+		long citizenshipWatsonListTypeId) {
+
 		_citizenshipWatsonListTypeId = citizenshipWatsonListTypeId;
 	}
 
@@ -865,6 +958,7 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 	@Override
 	public void setSourceSubtypeWatsonListTypeId(
 		long sourceSubtypeWatsonListTypeId) {
+
 		_sourceSubtypeWatsonListTypeId = sourceSubtypeWatsonListTypeId;
 	}
 
@@ -955,8 +1049,8 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 
 	@Override
 	public ExpandoBridge getExpandoBridge() {
-		return ExpandoBridgeFactoryUtil.getExpandoBridge(getCompanyId(),
-			WatsonChildAudit.class.getName(), getPrimaryKey());
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(
+			getCompanyId(), WatsonChildAudit.class.getName(), getPrimaryKey());
 	}
 
 	@Override
@@ -969,8 +1063,9 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 	@Override
 	public WatsonChildAudit toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonChildAudit)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+			_escapedModel = (WatsonChildAudit)ProxyUtil.newProxyInstance(
+				_classLoader, _escapedModelInterfaces,
+				new AutoEscapeBeanHandler(this));
 		}
 
 		return _escapedModel;
@@ -988,14 +1083,21 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 		watsonChildAuditImpl.setCreateDate(getCreateDate());
 		watsonChildAuditImpl.setModifiedDate(getModifiedDate());
 		watsonChildAuditImpl.setBirthCountryId(getBirthCountryId());
-		watsonChildAuditImpl.setCitizenshipWatsonListTypeId(getCitizenshipWatsonListTypeId());
-		watsonChildAuditImpl.setCountryWatsonListTypeId(getCountryWatsonListTypeId());
-		watsonChildAuditImpl.setDischargeWatsonListTypeId(getDischargeWatsonListTypeId());
-		watsonChildAuditImpl.setEthnicityWatsonListTypeId(getEthnicityWatsonListTypeId());
-		watsonChildAuditImpl.setOriginalWatsonPersonId(getOriginalWatsonPersonId());
+		watsonChildAuditImpl.setCitizenshipWatsonListTypeId(
+			getCitizenshipWatsonListTypeId());
+		watsonChildAuditImpl.setCountryWatsonListTypeId(
+			getCountryWatsonListTypeId());
+		watsonChildAuditImpl.setDischargeWatsonListTypeId(
+			getDischargeWatsonListTypeId());
+		watsonChildAuditImpl.setEthnicityWatsonListTypeId(
+			getEthnicityWatsonListTypeId());
+		watsonChildAuditImpl.setOriginalWatsonPersonId(
+			getOriginalWatsonPersonId());
 		watsonChildAuditImpl.setSexWatsonListTypeId(getSexWatsonListTypeId());
-		watsonChildAuditImpl.setSourceSubtypeWatsonListTypeId(getSourceSubtypeWatsonListTypeId());
-		watsonChildAuditImpl.setSourceWatsonListTypeId(getSourceWatsonListTypeId());
+		watsonChildAuditImpl.setSourceSubtypeWatsonListTypeId(
+			getSourceSubtypeWatsonListTypeId());
+		watsonChildAuditImpl.setSourceWatsonListTypeId(
+			getSourceWatsonListTypeId());
 		watsonChildAuditImpl.setTypeWatsonListTypeId(getTypeWatsonListTypeId());
 		watsonChildAuditImpl.setWatsonChildId(getWatsonChildId());
 		watsonChildAuditImpl.setDateAccepted(getDateAccepted());
@@ -1070,7 +1172,8 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 
 	@Override
 	public CacheModel<WatsonChildAudit> toCacheModel() {
-		WatsonChildAuditCacheModel watsonChildAuditCacheModel = new WatsonChildAuditCacheModel();
+		WatsonChildAuditCacheModel watsonChildAuditCacheModel =
+			new WatsonChildAuditCacheModel();
 
 		watsonChildAuditCacheModel.watsonChildAuditId = getWatsonChildAuditId();
 
@@ -1108,23 +1211,32 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 
 		watsonChildAuditCacheModel.birthCountryId = getBirthCountryId();
 
-		watsonChildAuditCacheModel.citizenshipWatsonListTypeId = getCitizenshipWatsonListTypeId();
+		watsonChildAuditCacheModel.citizenshipWatsonListTypeId =
+			getCitizenshipWatsonListTypeId();
 
-		watsonChildAuditCacheModel.countryWatsonListTypeId = getCountryWatsonListTypeId();
+		watsonChildAuditCacheModel.countryWatsonListTypeId =
+			getCountryWatsonListTypeId();
 
-		watsonChildAuditCacheModel.dischargeWatsonListTypeId = getDischargeWatsonListTypeId();
+		watsonChildAuditCacheModel.dischargeWatsonListTypeId =
+			getDischargeWatsonListTypeId();
 
-		watsonChildAuditCacheModel.ethnicityWatsonListTypeId = getEthnicityWatsonListTypeId();
+		watsonChildAuditCacheModel.ethnicityWatsonListTypeId =
+			getEthnicityWatsonListTypeId();
 
-		watsonChildAuditCacheModel.originalWatsonPersonId = getOriginalWatsonPersonId();
+		watsonChildAuditCacheModel.originalWatsonPersonId =
+			getOriginalWatsonPersonId();
 
-		watsonChildAuditCacheModel.sexWatsonListTypeId = getSexWatsonListTypeId();
+		watsonChildAuditCacheModel.sexWatsonListTypeId =
+			getSexWatsonListTypeId();
 
-		watsonChildAuditCacheModel.sourceSubtypeWatsonListTypeId = getSourceSubtypeWatsonListTypeId();
+		watsonChildAuditCacheModel.sourceSubtypeWatsonListTypeId =
+			getSourceSubtypeWatsonListTypeId();
 
-		watsonChildAuditCacheModel.sourceWatsonListTypeId = getSourceWatsonListTypeId();
+		watsonChildAuditCacheModel.sourceWatsonListTypeId =
+			getSourceWatsonListTypeId();
 
-		watsonChildAuditCacheModel.typeWatsonListTypeId = getTypeWatsonListTypeId();
+		watsonChildAuditCacheModel.typeWatsonListTypeId =
+			getTypeWatsonListTypeId();
 
 		watsonChildAuditCacheModel.watsonChildId = getWatsonChildId();
 
@@ -1140,7 +1252,8 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 		Date dateDischarged = getDateDischarged();
 
 		if (dateDischarged != null) {
-			watsonChildAuditCacheModel.dateDischarged = dateDischarged.getTime();
+			watsonChildAuditCacheModel.dateDischarged =
+				dateDischarged.getTime();
 		}
 		else {
 			watsonChildAuditCacheModel.dateDischarged = Long.MIN_VALUE;
@@ -1170,17 +1283,20 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 
 	@Override
 	public String toString() {
-		Map<String, Function<WatsonChildAudit, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonChildAudit, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
-				2);
+		StringBundler sb = new StringBundler(
+			4 * attributeGetterFunctions.size() + 2);
 
 		sb.append("{");
 
-		for (Map.Entry<String, Function<WatsonChildAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonChildAudit, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonChildAudit, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonChildAudit, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append(attributeName);
 			sb.append("=");
@@ -1199,19 +1315,22 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 
 	@Override
 	public String toXmlString() {
-		Map<String, Function<WatsonChildAudit, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonChildAudit, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
-				4);
+		StringBundler sb = new StringBundler(
+			5 * attributeGetterFunctions.size() + 4);
 
 		sb.append("<model><model-name>");
 		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		for (Map.Entry<String, Function<WatsonChildAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonChildAudit, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonChildAudit, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonChildAudit, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append("<column><column-name>");
 			sb.append(attributeName);
@@ -1225,10 +1344,12 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader = WatsonChildAudit.class.getClassLoader();
+	private static final ClassLoader _classLoader =
+		WatsonChildAudit.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			WatsonChildAudit.class, ModelWrapper.class
-		};
+		WatsonChildAudit.class, ModelWrapper.class
+	};
+
 	private long _watsonChildAuditId;
 	private long _groupId;
 	private long _companyId;
@@ -1254,4 +1375,5 @@ public class WatsonChildAuditModelImpl extends BaseModelImpl<WatsonChildAudit>
 	private String _source;
 	private int _status;
 	private WatsonChildAudit _escapedModel;
+
 }

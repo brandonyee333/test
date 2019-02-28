@@ -18,7 +18,6 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -30,7 +29,6 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.model.WatsonIncidentRel;
 import com.liferay.watson.model.WatsonIncidentRelModel;
 
@@ -58,28 +56,27 @@ import java.util.function.Function;
  * @generated
  */
 @ProviderType
-public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
-	implements WatsonIncidentRelModel {
+public class WatsonIncidentRelModelImpl
+	extends BaseModelImpl<WatsonIncidentRel> implements WatsonIncidentRelModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson incident rel model instance should use the <code>WatsonIncidentRel</code> interface instead.
 	 */
 	public static final String TABLE_NAME = "WatsonIncidentRel";
+
 	public static final Object[][] TABLE_COLUMNS = {
-			{ "watsonIncidentRelId", Types.BIGINT },
-			{ "groupId", Types.BIGINT },
-			{ "companyId", Types.BIGINT },
-			{ "userId", Types.BIGINT },
-			{ "userName", Types.VARCHAR },
-			{ "createDate", Types.TIMESTAMP },
-			{ "modifiedDate", Types.TIMESTAMP },
-			{ "watsonIncidentId1", Types.BIGINT },
-			{ "watsonIncidentId2", Types.BIGINT },
-			{ "type_", Types.VARCHAR },
-			{ "status", Types.INTEGER }
-		};
-	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
+		{"watsonIncidentRelId", Types.BIGINT}, {"groupId", Types.BIGINT},
+		{"companyId", Types.BIGINT}, {"userId", Types.BIGINT},
+		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
+		{"modifiedDate", Types.TIMESTAMP}, {"watsonIncidentId1", Types.BIGINT},
+		{"watsonIncidentId2", Types.BIGINT}, {"type_", Types.VARCHAR},
+		{"status", Types.INTEGER}
+	};
+
+	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
+		new HashMap<String, Integer>();
 
 	static {
 		TABLE_COLUMNS_MAP.put("watsonIncidentRelId", Types.BIGINT);
@@ -95,22 +92,38 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonIncidentRel (watsonIncidentRelId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,watsonIncidentId1 LONG,watsonIncidentId2 LONG,type_ VARCHAR(75) null,status INTEGER)";
+	public static final String TABLE_SQL_CREATE =
+		"create table WatsonIncidentRel (watsonIncidentRelId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,watsonIncidentId1 LONG,watsonIncidentId2 LONG,type_ VARCHAR(75) null,status INTEGER)";
+
 	public static final String TABLE_SQL_DROP = "drop table WatsonIncidentRel";
-	public static final String ORDER_BY_JPQL = " ORDER BY watsonIncidentRel.watsonIncidentRelId ASC";
-	public static final String ORDER_BY_SQL = " ORDER BY WatsonIncidentRel.watsonIncidentRelId ASC";
+
+	public static final String ORDER_BY_JPQL =
+		" ORDER BY watsonIncidentRel.watsonIncidentRelId ASC";
+
+	public static final String ORDER_BY_SQL =
+		" ORDER BY WatsonIncidentRel.watsonIncidentRelId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
+
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
+
 	public static final String TX_MANAGER = "liferayTransactionManager";
-	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonIncidentRel"),
-			true);
-	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonIncidentRel"),
-			true);
+
+	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonIncidentRel"),
+		true);
+
+	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonIncidentRel"),
+		true);
+
 	public static final boolean COLUMN_BITMASK_ENABLED = false;
-	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.watson.service.util.ServiceProps.get(
-				"lock.expiration.time.com.liferay.watson.model.WatsonIncidentRel"));
+
+	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"lock.expiration.time.com.liferay.watson.model.WatsonIncidentRel"));
 
 	public WatsonIncidentRelModelImpl() {
 	}
@@ -149,14 +162,18 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		Map<String, Function<WatsonIncidentRel, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonIncidentRel, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		for (Map.Entry<String, Function<WatsonIncidentRel, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonIncidentRel, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonIncidentRel, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonIncidentRel, Object> attributeGetterFunction =
+				entry.getValue();
 
-			attributes.put(attributeName,
+			attributes.put(
+				attributeName,
 				attributeGetterFunction.apply((WatsonIncidentRel)this));
 		}
 
@@ -168,38 +185,47 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Map<String, BiConsumer<WatsonIncidentRel, Object>> attributeSetterBiConsumers =
-			getAttributeSetterBiConsumers();
+		Map<String, BiConsumer<WatsonIncidentRel, Object>>
+			attributeSetterBiConsumers = getAttributeSetterBiConsumers();
 
 		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			String attributeName = entry.getKey();
 
-			BiConsumer<WatsonIncidentRel, Object> attributeSetterBiConsumer = attributeSetterBiConsumers.get(attributeName);
+			BiConsumer<WatsonIncidentRel, Object> attributeSetterBiConsumer =
+				attributeSetterBiConsumers.get(attributeName);
 
 			if (attributeSetterBiConsumer != null) {
-				attributeSetterBiConsumer.accept((WatsonIncidentRel)this,
-					entry.getValue());
+				attributeSetterBiConsumer.accept(
+					(WatsonIncidentRel)this, entry.getValue());
 			}
 		}
 	}
 
-	public Map<String, Function<WatsonIncidentRel, Object>> getAttributeGetterFunctions() {
+	public Map<String, Function<WatsonIncidentRel, Object>>
+		getAttributeGetterFunctions() {
+
 		return _attributeGetterFunctions;
 	}
 
-	public Map<String, BiConsumer<WatsonIncidentRel, Object>> getAttributeSetterBiConsumers() {
+	public Map<String, BiConsumer<WatsonIncidentRel, Object>>
+		getAttributeSetterBiConsumers() {
+
 		return _attributeSetterBiConsumers;
 	}
 
-	private static final Map<String, Function<WatsonIncidentRel, Object>> _attributeGetterFunctions;
-	private static final Map<String, BiConsumer<WatsonIncidentRel, Object>> _attributeSetterBiConsumers;
+	private static final Map<String, Function<WatsonIncidentRel, Object>>
+		_attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonIncidentRel, Object>>
+		_attributeSetterBiConsumers;
 
 	static {
-		Map<String, Function<WatsonIncidentRel, Object>> attributeGetterFunctions =
-			new LinkedHashMap<String, Function<WatsonIncidentRel, Object>>();
-		Map<String, BiConsumer<WatsonIncidentRel, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<WatsonIncidentRel, ?>>();
-
+		Map<String, Function<WatsonIncidentRel, Object>>
+			attributeGetterFunctions =
+				new LinkedHashMap
+					<String, Function<WatsonIncidentRel, Object>>();
+		Map<String, BiConsumer<WatsonIncidentRel, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap<String, BiConsumer<WatsonIncidentRel, ?>>();
 
 		attributeGetterFunctions.put(
 			"watsonIncidentRelId",
@@ -216,8 +242,12 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 			new BiConsumer<WatsonIncidentRel, Object>() {
 
 				@Override
-				public void accept(WatsonIncidentRel watsonIncidentRel, Object watsonIncidentRelId) {
-					watsonIncidentRel.setWatsonIncidentRelId((Long)watsonIncidentRelId);
+				public void accept(
+					WatsonIncidentRel watsonIncidentRel,
+					Object watsonIncidentRelId) {
+
+					watsonIncidentRel.setWatsonIncidentRelId(
+						(Long)watsonIncidentRelId);
 				}
 
 			});
@@ -236,7 +266,9 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 			new BiConsumer<WatsonIncidentRel, Object>() {
 
 				@Override
-				public void accept(WatsonIncidentRel watsonIncidentRel, Object groupId) {
+				public void accept(
+					WatsonIncidentRel watsonIncidentRel, Object groupId) {
+
 					watsonIncidentRel.setGroupId((Long)groupId);
 				}
 
@@ -256,7 +288,9 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 			new BiConsumer<WatsonIncidentRel, Object>() {
 
 				@Override
-				public void accept(WatsonIncidentRel watsonIncidentRel, Object companyId) {
+				public void accept(
+					WatsonIncidentRel watsonIncidentRel, Object companyId) {
+
 					watsonIncidentRel.setCompanyId((Long)companyId);
 				}
 
@@ -276,7 +310,9 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 			new BiConsumer<WatsonIncidentRel, Object>() {
 
 				@Override
-				public void accept(WatsonIncidentRel watsonIncidentRel, Object userId) {
+				public void accept(
+					WatsonIncidentRel watsonIncidentRel, Object userId) {
+
 					watsonIncidentRel.setUserId((Long)userId);
 				}
 
@@ -296,7 +332,9 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 			new BiConsumer<WatsonIncidentRel, Object>() {
 
 				@Override
-				public void accept(WatsonIncidentRel watsonIncidentRel, Object userName) {
+				public void accept(
+					WatsonIncidentRel watsonIncidentRel, Object userName) {
+
 					watsonIncidentRel.setUserName((String)userName);
 				}
 
@@ -316,7 +354,9 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 			new BiConsumer<WatsonIncidentRel, Object>() {
 
 				@Override
-				public void accept(WatsonIncidentRel watsonIncidentRel, Object createDate) {
+				public void accept(
+					WatsonIncidentRel watsonIncidentRel, Object createDate) {
+
 					watsonIncidentRel.setCreateDate((Date)createDate);
 				}
 
@@ -336,7 +376,9 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 			new BiConsumer<WatsonIncidentRel, Object>() {
 
 				@Override
-				public void accept(WatsonIncidentRel watsonIncidentRel, Object modifiedDate) {
+				public void accept(
+					WatsonIncidentRel watsonIncidentRel, Object modifiedDate) {
+
 					watsonIncidentRel.setModifiedDate((Date)modifiedDate);
 				}
 
@@ -356,8 +398,12 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 			new BiConsumer<WatsonIncidentRel, Object>() {
 
 				@Override
-				public void accept(WatsonIncidentRel watsonIncidentRel, Object watsonIncidentId1) {
-					watsonIncidentRel.setWatsonIncidentId1((Long)watsonIncidentId1);
+				public void accept(
+					WatsonIncidentRel watsonIncidentRel,
+					Object watsonIncidentId1) {
+
+					watsonIncidentRel.setWatsonIncidentId1(
+						(Long)watsonIncidentId1);
 				}
 
 			});
@@ -376,8 +422,12 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 			new BiConsumer<WatsonIncidentRel, Object>() {
 
 				@Override
-				public void accept(WatsonIncidentRel watsonIncidentRel, Object watsonIncidentId2) {
-					watsonIncidentRel.setWatsonIncidentId2((Long)watsonIncidentId2);
+				public void accept(
+					WatsonIncidentRel watsonIncidentRel,
+					Object watsonIncidentId2) {
+
+					watsonIncidentRel.setWatsonIncidentId2(
+						(Long)watsonIncidentId2);
 				}
 
 			});
@@ -396,7 +446,9 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 			new BiConsumer<WatsonIncidentRel, Object>() {
 
 				@Override
-				public void accept(WatsonIncidentRel watsonIncidentRel, Object type) {
+				public void accept(
+					WatsonIncidentRel watsonIncidentRel, Object type) {
+
 					watsonIncidentRel.setType((String)type);
 				}
 
@@ -416,15 +468,18 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 			new BiConsumer<WatsonIncidentRel, Object>() {
 
 				@Override
-				public void accept(WatsonIncidentRel watsonIncidentRel, Object status) {
+				public void accept(
+					WatsonIncidentRel watsonIncidentRel, Object status) {
+
 					watsonIncidentRel.setStatus((Integer)status);
 				}
 
 			});
 
-
-		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap(
+			(Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -571,8 +626,8 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 
 	@Override
 	public ExpandoBridge getExpandoBridge() {
-		return ExpandoBridgeFactoryUtil.getExpandoBridge(getCompanyId(),
-			WatsonIncidentRel.class.getName(), getPrimaryKey());
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(
+			getCompanyId(), WatsonIncidentRel.class.getName(), getPrimaryKey());
 	}
 
 	@Override
@@ -585,8 +640,9 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 	@Override
 	public WatsonIncidentRel toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonIncidentRel)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+			_escapedModel = (WatsonIncidentRel)ProxyUtil.newProxyInstance(
+				_classLoader, _escapedModelInterfaces,
+				new AutoEscapeBeanHandler(this));
 		}
 
 		return _escapedModel;
@@ -594,7 +650,8 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 
 	@Override
 	public Object clone() {
-		WatsonIncidentRelImpl watsonIncidentRelImpl = new WatsonIncidentRelImpl();
+		WatsonIncidentRelImpl watsonIncidentRelImpl =
+			new WatsonIncidentRelImpl();
 
 		watsonIncidentRelImpl.setWatsonIncidentRelId(getWatsonIncidentRelId());
 		watsonIncidentRelImpl.setGroupId(getGroupId());
@@ -674,9 +731,11 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 
 	@Override
 	public CacheModel<WatsonIncidentRel> toCacheModel() {
-		WatsonIncidentRelCacheModel watsonIncidentRelCacheModel = new WatsonIncidentRelCacheModel();
+		WatsonIncidentRelCacheModel watsonIncidentRelCacheModel =
+			new WatsonIncidentRelCacheModel();
 
-		watsonIncidentRelCacheModel.watsonIncidentRelId = getWatsonIncidentRelId();
+		watsonIncidentRelCacheModel.watsonIncidentRelId =
+			getWatsonIncidentRelId();
 
 		watsonIncidentRelCacheModel.groupId = getGroupId();
 
@@ -729,17 +788,20 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 
 	@Override
 	public String toString() {
-		Map<String, Function<WatsonIncidentRel, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonIncidentRel, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
-				2);
+		StringBundler sb = new StringBundler(
+			4 * attributeGetterFunctions.size() + 2);
 
 		sb.append("{");
 
-		for (Map.Entry<String, Function<WatsonIncidentRel, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonIncidentRel, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonIncidentRel, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonIncidentRel, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append(attributeName);
 			sb.append("=");
@@ -758,19 +820,22 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 
 	@Override
 	public String toXmlString() {
-		Map<String, Function<WatsonIncidentRel, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonIncidentRel, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
-				4);
+		StringBundler sb = new StringBundler(
+			5 * attributeGetterFunctions.size() + 4);
 
 		sb.append("<model><model-name>");
 		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		for (Map.Entry<String, Function<WatsonIncidentRel, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonIncidentRel, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonIncidentRel, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonIncidentRel, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append("<column><column-name>");
 			sb.append(attributeName);
@@ -784,10 +849,12 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader = WatsonIncidentRel.class.getClassLoader();
+	private static final ClassLoader _classLoader =
+		WatsonIncidentRel.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			WatsonIncidentRel.class, ModelWrapper.class
-		};
+		WatsonIncidentRel.class, ModelWrapper.class
+	};
+
 	private long _watsonIncidentRelId;
 	private long _groupId;
 	private long _companyId;
@@ -801,4 +868,5 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 	private String _type;
 	private int _status;
 	private WatsonIncidentRel _escapedModel;
+
 }

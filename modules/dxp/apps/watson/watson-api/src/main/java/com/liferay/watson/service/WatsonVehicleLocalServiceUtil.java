@@ -18,7 +18,6 @@ import aQute.bnd.annotation.ProviderType;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
-
 import org.osgi.util.tracker.ServiceTracker;
 
 /**
@@ -35,6 +34,7 @@ import org.osgi.util.tracker.ServiceTracker;
  */
 @ProviderType
 public class WatsonVehicleLocalServiceUtil {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -42,212 +42,235 @@ public class WatsonVehicleLocalServiceUtil {
 	 */
 
 	/**
-	* Adds the watson vehicle to the database. Also notifies the appropriate model listeners.
-	*
-	* @param watsonVehicle the watson vehicle
-	* @return the watson vehicle that was added
-	*/
+	 * Adds the watson vehicle to the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param watsonVehicle the watson vehicle
+	 * @return the watson vehicle that was added
+	 */
 	public static com.liferay.watson.model.WatsonVehicle addWatsonVehicle(
 		com.liferay.watson.model.WatsonVehicle watsonVehicle) {
+
 		return getService().addWatsonVehicle(watsonVehicle);
 	}
 
 	/**
-	* Creates a new watson vehicle with the primary key. Does not add the watson vehicle to the database.
-	*
-	* @param watsonVehicleId the primary key for the new watson vehicle
-	* @return the new watson vehicle
-	*/
+	 * Creates a new watson vehicle with the primary key. Does not add the watson vehicle to the database.
+	 *
+	 * @param watsonVehicleId the primary key for the new watson vehicle
+	 * @return the new watson vehicle
+	 */
 	public static com.liferay.watson.model.WatsonVehicle createWatsonVehicle(
 		long watsonVehicleId) {
+
 		return getService().createWatsonVehicle(watsonVehicleId);
 	}
 
 	/**
-	* @throws PortalException
-	*/
-	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+	 * @throws PortalException
+	 */
+	public static com.liferay.portal.kernel.model.PersistedModel
+			deletePersistedModel(
+				com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
+
 		return getService().deletePersistedModel(persistedModel);
 	}
 
 	/**
-	* Deletes the watson vehicle with the primary key from the database. Also notifies the appropriate model listeners.
-	*
-	* @param watsonVehicleId the primary key of the watson vehicle
-	* @return the watson vehicle that was removed
-	* @throws PortalException if a watson vehicle with the primary key could not be found
-	*/
+	 * Deletes the watson vehicle with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param watsonVehicleId the primary key of the watson vehicle
+	 * @return the watson vehicle that was removed
+	 * @throws PortalException if a watson vehicle with the primary key could not be found
+	 */
 	public static com.liferay.watson.model.WatsonVehicle deleteWatsonVehicle(
-		long watsonVehicleId)
+			long watsonVehicleId)
 		throws com.liferay.portal.kernel.exception.PortalException {
+
 		return getService().deleteWatsonVehicle(watsonVehicleId);
 	}
 
 	/**
-	* Deletes the watson vehicle from the database. Also notifies the appropriate model listeners.
-	*
-	* @param watsonVehicle the watson vehicle
-	* @return the watson vehicle that was removed
-	*/
+	 * Deletes the watson vehicle from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param watsonVehicle the watson vehicle
+	 * @return the watson vehicle that was removed
+	 */
 	public static com.liferay.watson.model.WatsonVehicle deleteWatsonVehicle(
 		com.liferay.watson.model.WatsonVehicle watsonVehicle) {
+
 		return getService().deleteWatsonVehicle(watsonVehicle);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
+		dynamicQuery() {
+
 		return getService().dynamicQuery();
 	}
 
 	/**
-	* Performs a dynamic query on the database and returns the matching rows.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the matching rows
-	*/
+	 * Performs a dynamic query on the database and returns the matching rows.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @return the matching rows
+	 */
 	public static <T> java.util.List<T> dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+
 		return getService().dynamicQuery(dynamicQuery);
 	}
 
 	/**
-	* Performs a dynamic query on the database and returns a range of the matching rows.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.watson.model.impl.WatsonVehicleModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param dynamicQuery the dynamic query
-	* @param start the lower bound of the range of model instances
-	* @param end the upper bound of the range of model instances (not inclusive)
-	* @return the range of matching rows
-	*/
+	 * Performs a dynamic query on the database and returns a range of the matching rows.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.watson.model.impl.WatsonVehicleModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param start the lower bound of the range of model instances
+	 * @param end the upper bound of the range of model instances (not inclusive)
+	 * @return the range of matching rows
+	 */
 	public static <T> java.util.List<T> dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
 		int end) {
+
 		return getService().dynamicQuery(dynamicQuery, start, end);
 	}
 
 	/**
-	* Performs a dynamic query on the database and returns an ordered range of the matching rows.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.watson.model.impl.WatsonVehicleModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param dynamicQuery the dynamic query
-	* @param start the lower bound of the range of model instances
-	* @param end the upper bound of the range of model instances (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of matching rows
-	*/
+	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.watson.model.impl.WatsonVehicleModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param start the lower bound of the range of model instances
+	 * @param end the upper bound of the range of model instances (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching rows
+	 */
 	public static <T> java.util.List<T> dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
 		int end,
 		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
-		return getService()
-				   .dynamicQuery(dynamicQuery, start, end, orderByComparator);
+
+		return getService().dynamicQuery(
+			dynamicQuery, start, end, orderByComparator);
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
+	 * Returns the number of rows matching the dynamic query.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @return the number of rows matching the dynamic query
+	 */
 	public static long dynamicQueryCount(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+
 		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
+	 * Returns the number of rows matching the dynamic query.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param projection the projection to apply to the query
+	 * @return the number of rows matching the dynamic query
+	 */
 	public static long dynamicQueryCount(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
+
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
 	public static com.liferay.watson.model.WatsonVehicle fetchWatsonVehicle(
 		long watsonVehicleId) {
+
 		return getService().fetchWatsonVehicle(watsonVehicleId);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
+		getActionableDynamicQuery() {
+
 		return getService().getActionableDynamicQuery();
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+	public static
+		com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery
+			getIndexableActionableDynamicQuery() {
+
 		return getService().getIndexableActionableDynamicQuery();
 	}
 
 	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
 	public static String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
+	public static com.liferay.portal.kernel.model.PersistedModel
+			getPersistedModel(java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
+
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
 	/**
-	* Returns the watson vehicle with the primary key.
-	*
-	* @param watsonVehicleId the primary key of the watson vehicle
-	* @return the watson vehicle
-	* @throws PortalException if a watson vehicle with the primary key could not be found
-	*/
+	 * Returns the watson vehicle with the primary key.
+	 *
+	 * @param watsonVehicleId the primary key of the watson vehicle
+	 * @return the watson vehicle
+	 * @throws PortalException if a watson vehicle with the primary key could not be found
+	 */
 	public static com.liferay.watson.model.WatsonVehicle getWatsonVehicle(
-		long watsonVehicleId)
+			long watsonVehicleId)
 		throws com.liferay.portal.kernel.exception.PortalException {
+
 		return getService().getWatsonVehicle(watsonVehicleId);
 	}
 
 	/**
-	* Returns a range of all the watson vehicles.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.watson.model.impl.WatsonVehicleModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of watson vehicles
-	* @param end the upper bound of the range of watson vehicles (not inclusive)
-	* @return the range of watson vehicles
-	*/
-	public static java.util.List<com.liferay.watson.model.WatsonVehicle> getWatsonVehicles(
-		int start, int end) {
+	 * Returns a range of all the watson vehicles.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.watson.model.impl.WatsonVehicleModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of watson vehicles
+	 * @param end the upper bound of the range of watson vehicles (not inclusive)
+	 * @return the range of watson vehicles
+	 */
+	public static java.util.List<com.liferay.watson.model.WatsonVehicle>
+		getWatsonVehicles(int start, int end) {
+
 		return getService().getWatsonVehicles(start, end);
 	}
 
 	/**
-	* Returns the number of watson vehicles.
-	*
-	* @return the number of watson vehicles
-	*/
+	 * Returns the number of watson vehicles.
+	 *
+	 * @return the number of watson vehicles
+	 */
 	public static int getWatsonVehiclesCount() {
 		return getService().getWatsonVehiclesCount();
 	}
 
 	/**
-	* Updates the watson vehicle in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param watsonVehicle the watson vehicle
-	* @return the watson vehicle that was updated
-	*/
+	 * Updates the watson vehicle in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * @param watsonVehicle the watson vehicle
+	 * @return the watson vehicle that was updated
+	 */
 	public static com.liferay.watson.model.WatsonVehicle updateWatsonVehicle(
 		com.liferay.watson.model.WatsonVehicle watsonVehicle) {
+
 		return getService().updateWatsonVehicle(watsonVehicle);
 	}
 
@@ -255,17 +278,23 @@ public class WatsonVehicleLocalServiceUtil {
 		return _serviceTracker.getService();
 	}
 
-	private static ServiceTracker<WatsonVehicleLocalService, WatsonVehicleLocalService> _serviceTracker;
+	private static ServiceTracker
+		<WatsonVehicleLocalService, WatsonVehicleLocalService> _serviceTracker;
 
 	static {
-		Bundle bundle = FrameworkUtil.getBundle(WatsonVehicleLocalService.class);
+		Bundle bundle = FrameworkUtil.getBundle(
+			WatsonVehicleLocalService.class);
 
-		ServiceTracker<WatsonVehicleLocalService, WatsonVehicleLocalService> serviceTracker =
-			new ServiceTracker<WatsonVehicleLocalService, WatsonVehicleLocalService>(bundle.getBundleContext(),
-				WatsonVehicleLocalService.class, null);
+		ServiceTracker<WatsonVehicleLocalService, WatsonVehicleLocalService>
+			serviceTracker =
+				new ServiceTracker
+					<WatsonVehicleLocalService, WatsonVehicleLocalService>(
+						bundle.getBundleContext(),
+						WatsonVehicleLocalService.class, null);
 
 		serviceTracker.open();
 
 		_serviceTracker = serviceTracker;
 	}
+
 }

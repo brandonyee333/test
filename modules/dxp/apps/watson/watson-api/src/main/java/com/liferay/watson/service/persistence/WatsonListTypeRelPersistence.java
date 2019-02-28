@@ -17,7 +17,6 @@ package com.liferay.watson.service.persistence;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
-
 import com.liferay.watson.exception.NoSuchListTypeRelException;
 import com.liferay.watson.model.WatsonListTypeRel;
 
@@ -38,7 +37,9 @@ import java.util.Set;
  * @generated
  */
 @ProviderType
-public interface WatsonListTypeRelPersistence extends BasePersistence<WatsonListTypeRel> {
+public interface WatsonListTypeRelPersistence
+	extends BasePersistence<WatsonListTypeRel> {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -49,122 +50,127 @@ public interface WatsonListTypeRelPersistence extends BasePersistence<WatsonList
 		Set<Serializable> primaryKeys);
 
 	/**
-	* Caches the watson list type rel in the entity cache if it is enabled.
-	*
-	* @param watsonListTypeRel the watson list type rel
-	*/
+	 * Caches the watson list type rel in the entity cache if it is enabled.
+	 *
+	 * @param watsonListTypeRel the watson list type rel
+	 */
 	public void cacheResult(WatsonListTypeRel watsonListTypeRel);
 
 	/**
-	* Caches the watson list type rels in the entity cache if it is enabled.
-	*
-	* @param watsonListTypeRels the watson list type rels
-	*/
+	 * Caches the watson list type rels in the entity cache if it is enabled.
+	 *
+	 * @param watsonListTypeRels the watson list type rels
+	 */
 	public void cacheResult(
 		java.util.List<WatsonListTypeRel> watsonListTypeRels);
 
 	/**
-	* Creates a new watson list type rel with the primary key. Does not add the watson list type rel to the database.
-	*
-	* @param watsonListTypeRelId the primary key for the new watson list type rel
-	* @return the new watson list type rel
-	*/
+	 * Creates a new watson list type rel with the primary key. Does not add the watson list type rel to the database.
+	 *
+	 * @param watsonListTypeRelId the primary key for the new watson list type rel
+	 * @return the new watson list type rel
+	 */
 	public WatsonListTypeRel create(long watsonListTypeRelId);
 
 	/**
-	* Removes the watson list type rel with the primary key from the database. Also notifies the appropriate model listeners.
-	*
-	* @param watsonListTypeRelId the primary key of the watson list type rel
-	* @return the watson list type rel that was removed
-	* @throws NoSuchListTypeRelException if a watson list type rel with the primary key could not be found
-	*/
+	 * Removes the watson list type rel with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param watsonListTypeRelId the primary key of the watson list type rel
+	 * @return the watson list type rel that was removed
+	 * @throws NoSuchListTypeRelException if a watson list type rel with the primary key could not be found
+	 */
 	public WatsonListTypeRel remove(long watsonListTypeRelId)
 		throws NoSuchListTypeRelException;
 
 	public WatsonListTypeRel updateImpl(WatsonListTypeRel watsonListTypeRel);
 
 	/**
-	* Returns the watson list type rel with the primary key or throws a <code>NoSuchListTypeRelException</code> if it could not be found.
-	*
-	* @param watsonListTypeRelId the primary key of the watson list type rel
-	* @return the watson list type rel
-	* @throws NoSuchListTypeRelException if a watson list type rel with the primary key could not be found
-	*/
+	 * Returns the watson list type rel with the primary key or throws a <code>NoSuchListTypeRelException</code> if it could not be found.
+	 *
+	 * @param watsonListTypeRelId the primary key of the watson list type rel
+	 * @return the watson list type rel
+	 * @throws NoSuchListTypeRelException if a watson list type rel with the primary key could not be found
+	 */
 	public WatsonListTypeRel findByPrimaryKey(long watsonListTypeRelId)
 		throws NoSuchListTypeRelException;
 
 	/**
-	* Returns the watson list type rel with the primary key or returns <code>null</code> if it could not be found.
-	*
-	* @param watsonListTypeRelId the primary key of the watson list type rel
-	* @return the watson list type rel, or <code>null</code> if a watson list type rel with the primary key could not be found
-	*/
+	 * Returns the watson list type rel with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param watsonListTypeRelId the primary key of the watson list type rel
+	 * @return the watson list type rel, or <code>null</code> if a watson list type rel with the primary key could not be found
+	 */
 	public WatsonListTypeRel fetchByPrimaryKey(long watsonListTypeRelId);
 
 	/**
-	* Returns all the watson list type rels.
-	*
-	* @return the watson list type rels
-	*/
+	 * Returns all the watson list type rels.
+	 *
+	 * @return the watson list type rels
+	 */
 	public java.util.List<WatsonListTypeRel> findAll();
 
 	/**
-	* Returns a range of all the watson list type rels.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonListTypeRelModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of watson list type rels
-	* @param end the upper bound of the range of watson list type rels (not inclusive)
-	* @return the range of watson list type rels
-	*/
+	 * Returns a range of all the watson list type rels.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonListTypeRelModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of watson list type rels
+	 * @param end the upper bound of the range of watson list type rels (not inclusive)
+	 * @return the range of watson list type rels
+	 */
 	public java.util.List<WatsonListTypeRel> findAll(int start, int end);
 
 	/**
-	* Returns an ordered range of all the watson list type rels.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonListTypeRelModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of watson list type rels
-	* @param end the upper bound of the range of watson list type rels (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of watson list type rels
-	*/
-	public java.util.List<WatsonListTypeRel> findAll(int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<WatsonListTypeRel> orderByComparator);
+	 * Returns an ordered range of all the watson list type rels.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonListTypeRelModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of watson list type rels
+	 * @param end the upper bound of the range of watson list type rels (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of watson list type rels
+	 */
+	public java.util.List<WatsonListTypeRel> findAll(
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<WatsonListTypeRel>
+			orderByComparator);
 
 	/**
-	* Returns an ordered range of all the watson list type rels.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonListTypeRelModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of watson list type rels
-	* @param end the upper bound of the range of watson list type rels (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @param retrieveFromCache whether to retrieve from the finder cache
-	* @return the ordered range of watson list type rels
-	*/
-	public java.util.List<WatsonListTypeRel> findAll(int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<WatsonListTypeRel> orderByComparator,
+	 * Returns an ordered range of all the watson list type rels.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonListTypeRelModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of watson list type rels
+	 * @param end the upper bound of the range of watson list type rels (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @return the ordered range of watson list type rels
+	 */
+	public java.util.List<WatsonListTypeRel> findAll(
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<WatsonListTypeRel>
+			orderByComparator,
 		boolean retrieveFromCache);
 
 	/**
-	* Removes all the watson list type rels from the database.
-	*/
+	 * Removes all the watson list type rels from the database.
+	 */
 	public void removeAll();
 
 	/**
-	* Returns the number of watson list type rels.
-	*
-	* @return the number of watson list type rels
-	*/
+	 * Returns the number of watson list type rels.
+	 *
+	 * @return the number of watson list type rels
+	 */
 	public int countAll();
 
 	@Override
 	public Set<String> getBadColumnNames();
+
 }

@@ -32,8 +32,9 @@ import com.liferay.akismet.service.AkismetEntryLocalServiceUtil;
  * @generated
  */
 @ProviderType
-public abstract class AkismetEntryBaseImpl extends AkismetEntryModelImpl
-	implements AkismetEntry {
+public abstract class AkismetEntryBaseImpl
+	extends AkismetEntryModelImpl implements AkismetEntry {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -48,4 +49,5 @@ public abstract class AkismetEntryBaseImpl extends AkismetEntryModelImpl
 			AkismetEntryLocalServiceUtil.updateAkismetEntry(this);
 		}
 	}
+
 }

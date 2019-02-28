@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
-
 import com.liferay.watson.exception.NoSuchHistoryException;
 import com.liferay.watson.model.WatsonHistory;
 import com.liferay.watson.model.impl.WatsonHistoryImpl;
@@ -66,18 +65,24 @@ import java.util.Set;
  * @generated
  */
 @ProviderType
-public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHistory>
+public class WatsonHistoryPersistenceImpl
+	extends BasePersistenceImpl<WatsonHistory>
 	implements WatsonHistoryPersistence {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonHistoryUtil</code> to access the watson history persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY = WatsonHistoryImpl.class.getName();
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List1";
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List2";
+	public static final String FINDER_CLASS_NAME_ENTITY =
+		WatsonHistoryImpl.class.getName();
+
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List1";
+
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List2";
+
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
@@ -87,7 +92,7 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 
 		try {
 			Field field = BasePersistenceImpl.class.getDeclaredField(
-					"_dbColumnNames");
+				"_dbColumnNames");
 
 			field.setAccessible(true);
 
@@ -111,7 +116,8 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 	 */
 	@Override
 	public void cacheResult(WatsonHistory watsonHistory) {
-		entityCache.putResult(WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonHistoryImpl.class, watsonHistory.getPrimaryKey(),
 			watsonHistory);
 
@@ -127,8 +133,10 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 	public void cacheResult(List<WatsonHistory> watsonHistories) {
 		for (WatsonHistory watsonHistory : watsonHistories) {
 			if (entityCache.getResult(
-						WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
-						WatsonHistoryImpl.class, watsonHistory.getPrimaryKey()) == null) {
+					WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
+					WatsonHistoryImpl.class, watsonHistory.getPrimaryKey()) ==
+						null) {
+
 				cacheResult(watsonHistory);
 			}
 			else {
@@ -162,7 +170,8 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 	 */
 	@Override
 	public void clearCache(WatsonHistory watsonHistory) {
-		entityCache.removeResult(WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.removeResult(
+			WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonHistoryImpl.class, watsonHistory.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -175,7 +184,8 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (WatsonHistory watsonHistory : watsonHistories) {
-			entityCache.removeResult(WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
+			entityCache.removeResult(
+				WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
 				WatsonHistoryImpl.class, watsonHistory.getPrimaryKey());
 		}
 	}
@@ -208,6 +218,7 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 	@Override
 	public WatsonHistory remove(long watsonHistoryId)
 		throws NoSuchHistoryException {
+
 		return remove((Serializable)watsonHistoryId);
 	}
 
@@ -221,21 +232,22 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 	@Override
 	public WatsonHistory remove(Serializable primaryKey)
 		throws NoSuchHistoryException {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			WatsonHistory watsonHistory = (WatsonHistory)session.get(WatsonHistoryImpl.class,
-					primaryKey);
+			WatsonHistory watsonHistory = (WatsonHistory)session.get(
+				WatsonHistoryImpl.class, primaryKey);
 
 			if (watsonHistory == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchHistoryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					primaryKey);
+				throw new NoSuchHistoryException(
+					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			return remove(watsonHistory);
@@ -259,8 +271,8 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 			session = openSession();
 
 			if (!session.contains(watsonHistory)) {
-				watsonHistory = (WatsonHistory)session.get(WatsonHistoryImpl.class,
-						watsonHistory.getPrimaryKeyObj());
+				watsonHistory = (WatsonHistory)session.get(
+					WatsonHistoryImpl.class, watsonHistory.getPrimaryKeyObj());
 			}
 
 			if (watsonHistory != null) {
@@ -289,21 +301,24 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 			InvocationHandler invocationHandler = null;
 
 			if (ProxyUtil.isProxyClass(watsonHistory.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(watsonHistory);
+				invocationHandler = ProxyUtil.getInvocationHandler(
+					watsonHistory);
 
 				throw new IllegalArgumentException(
 					"Implement ModelWrapper in watsonHistory proxy " +
-					invocationHandler.getClass());
+						invocationHandler.getClass());
 			}
 
 			throw new IllegalArgumentException(
 				"Implement ModelWrapper in custom WatsonHistory implementation " +
-				watsonHistory.getClass());
+					watsonHistory.getClass());
 		}
 
-		WatsonHistoryModelImpl watsonHistoryModelImpl = (WatsonHistoryModelImpl)watsonHistory;
+		WatsonHistoryModelImpl watsonHistoryModelImpl =
+			(WatsonHistoryModelImpl)watsonHistory;
 
-		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
 
 		Date now = new Date();
 
@@ -321,8 +336,8 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 				watsonHistory.setModifiedDate(now);
 			}
 			else {
-				watsonHistory.setModifiedDate(serviceContext.getModifiedDate(
-						now));
+				watsonHistory.setModifiedDate(
+					serviceContext.getModifiedDate(now));
 			}
 		}
 
@@ -351,11 +366,12 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 
 		if (isNew) {
 			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(_finderPathWithoutPaginationFindAll,
-				FINDER_ARGS_EMPTY);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonHistoryImpl.class, watsonHistory.getPrimaryKey(),
 			watsonHistory, false);
 
@@ -374,6 +390,7 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 	@Override
 	public WatsonHistory findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchHistoryException {
+
 		WatsonHistory watsonHistory = fetchByPrimaryKey(primaryKey);
 
 		if (watsonHistory == null) {
@@ -381,8 +398,8 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchHistoryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				primaryKey);
+			throw new NoSuchHistoryException(
+				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 		}
 
 		return watsonHistory;
@@ -398,6 +415,7 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 	@Override
 	public WatsonHistory findByPrimaryKey(long watsonHistoryId)
 		throws NoSuchHistoryException {
+
 		return findByPrimaryKey((Serializable)watsonHistoryId);
 	}
 
@@ -409,8 +427,9 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 	 */
 	@Override
 	public WatsonHistory fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonHistoryImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(
+			WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonHistoryImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -424,19 +443,21 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 			try {
 				session = openSession();
 
-				watsonHistory = (WatsonHistory)session.get(WatsonHistoryImpl.class,
-						primaryKey);
+				watsonHistory = (WatsonHistory)session.get(
+					WatsonHistoryImpl.class, primaryKey);
 
 				if (watsonHistory != null) {
 					cacheResult(watsonHistory);
 				}
 				else {
-					entityCache.putResult(WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(
+						WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
 						WatsonHistoryImpl.class, primaryKey, nullModel);
 				}
 			}
 			catch (Exception e) {
-				entityCache.removeResult(WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.removeResult(
+					WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonHistoryImpl.class, primaryKey);
 
 				throw processException(e);
@@ -463,11 +484,13 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 	@Override
 	public Map<Serializable, WatsonHistory> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, WatsonHistory> map = new HashMap<Serializable, WatsonHistory>();
+		Map<Serializable, WatsonHistory> map =
+			new HashMap<Serializable, WatsonHistory>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
@@ -486,8 +509,9 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
-					WatsonHistoryImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(
+				WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonHistoryImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -507,8 +531,8 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 			return map;
 		}
 
-		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
-				1);
+		StringBundler query = new StringBundler(
+			uncachedPrimaryKeys.size() * 2 + 1);
 
 		query.append(_SQL_SELECT_WATSONHISTORY_WHERE_PKS_IN);
 
@@ -540,7 +564,8 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(
+					WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonHistoryImpl.class, primaryKey, nullModel);
 			}
 		}
@@ -593,8 +618,10 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 	 * @return the ordered range of watson histories
 	 */
 	@Override
-	public List<WatsonHistory> findAll(int start, int end,
+	public List<WatsonHistory> findAll(
+		int start, int end,
 		OrderByComparator<WatsonHistory> orderByComparator) {
+
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -612,29 +639,31 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 	 * @return the ordered range of watson histories
 	 */
 	@Override
-	public List<WatsonHistory> findAll(int start, int end,
-		OrderByComparator<WatsonHistory> orderByComparator,
+	public List<WatsonHistory> findAll(
+		int start, int end, OrderByComparator<WatsonHistory> orderByComparator,
 		boolean retrieveFromCache) {
+
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
+			(orderByComparator == null)) {
+
 			pagination = false;
 			finderPath = _finderPathWithoutPaginationFindAll;
 			finderArgs = FINDER_ARGS_EMPTY;
 		}
 		else {
 			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] { start, end, orderByComparator };
+			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<WatsonHistory> list = null;
 
 		if (retrieveFromCache) {
-			list = (List<WatsonHistory>)finderCache.getResult(finderPath,
-					finderArgs, this);
+			list = (List<WatsonHistory>)finderCache.getResult(
+				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
@@ -642,13 +671,13 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(2 +
-						(orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(
+					2 + (orderByComparator.getOrderByFields().length * 2));
 
 				query.append(_SQL_SELECT_WATSONHISTORY);
 
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
 				sql = query.toString();
 			}
@@ -668,16 +697,16 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 				Query q = session.createQuery(sql);
 
 				if (!pagination) {
-					list = (List<WatsonHistory>)QueryUtil.list(q, getDialect(),
-							start, end, false);
+					list = (List<WatsonHistory>)QueryUtil.list(
+						q, getDialect(), start, end, false);
 
 					Collections.sort(list);
 
 					list = Collections.unmodifiableList(list);
 				}
 				else {
-					list = (List<WatsonHistory>)QueryUtil.list(q, getDialect(),
-							start, end);
+					list = (List<WatsonHistory>)QueryUtil.list(
+						q, getDialect(), start, end);
 				}
 
 				cacheResult(list);
@@ -715,8 +744,8 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(_finderPathCountAll,
-				FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(
+			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -728,11 +757,12 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 
 				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(_finderPathCountAll, FINDER_ARGS_EMPTY,
-					count);
+				finderCache.putResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
+				finderCache.removeResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
 				throw processException(e);
 			}
@@ -758,21 +788,23 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 	 * Initializes the watson history persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonHistoryModelImpl.FINDER_CACHE_ENABLED,
-				WatsonHistoryImpl.class,
-				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+		_finderPathWithPaginationFindAll = new FinderPath(
+			WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonHistoryModelImpl.FINDER_CACHE_ENABLED,
+			WatsonHistoryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonHistoryModelImpl.FINDER_CACHE_ENABLED,
-				WatsonHistoryImpl.class,
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-				new String[0]);
+		_finderPathWithoutPaginationFindAll = new FinderPath(
+			WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonHistoryModelImpl.FINDER_CACHE_ENABLED,
+			WatsonHistoryImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"findAll", new String[0]);
 
-		_finderPathCountAll = new FinderPath(WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonHistoryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-				new String[0]);
+		_finderPathCountAll = new FinderPath(
+			WatsonHistoryModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonHistoryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+			new String[0]);
 	}
 
 	public void destroy() {
@@ -784,17 +816,31 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
+
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
+
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-	private static final String _SQL_SELECT_WATSONHISTORY = "SELECT watsonHistory FROM WatsonHistory watsonHistory";
-	private static final String _SQL_SELECT_WATSONHISTORY_WHERE_PKS_IN = "SELECT watsonHistory FROM WatsonHistory watsonHistory WHERE watsonHistoryId IN (";
-	private static final String _SQL_COUNT_WATSONHISTORY = "SELECT COUNT(watsonHistory) FROM WatsonHistory watsonHistory";
+
+	private static final String _SQL_SELECT_WATSONHISTORY =
+		"SELECT watsonHistory FROM WatsonHistory watsonHistory";
+
+	private static final String _SQL_SELECT_WATSONHISTORY_WHERE_PKS_IN =
+		"SELECT watsonHistory FROM WatsonHistory watsonHistory WHERE watsonHistoryId IN (";
+
+	private static final String _SQL_COUNT_WATSONHISTORY =
+		"SELECT COUNT(watsonHistory) FROM WatsonHistory watsonHistory";
+
 	private static final String _ORDER_BY_ENTITY_ALIAS = "watsonHistory.";
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No WatsonHistory exists with the primary key ";
-	private static final Log _log = LogFactoryUtil.getLog(WatsonHistoryPersistenceImpl.class);
-	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
-				"type"
-			});
+
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
+		"No WatsonHistory exists with the primary key ";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		WatsonHistoryPersistenceImpl.class);
+
+	private static final Set<String> _badColumnNames = SetUtil.fromArray(
+		new String[] {"type"});
+
 }

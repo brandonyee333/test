@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
-
 import com.liferay.watson.exception.NoSuchListTypeRelException;
 import com.liferay.watson.model.WatsonListTypeRel;
 import com.liferay.watson.model.impl.WatsonListTypeRelImpl;
@@ -66,18 +65,24 @@ import java.util.Set;
  * @generated
  */
 @ProviderType
-public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<WatsonListTypeRel>
+public class WatsonListTypeRelPersistenceImpl
+	extends BasePersistenceImpl<WatsonListTypeRel>
 	implements WatsonListTypeRelPersistence {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonListTypeRelUtil</code> to access the watson list type rel persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY = WatsonListTypeRelImpl.class.getName();
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List1";
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List2";
+	public static final String FINDER_CLASS_NAME_ENTITY =
+		WatsonListTypeRelImpl.class.getName();
+
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List1";
+
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List2";
+
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
@@ -87,7 +92,7 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 
 		try {
 			Field field = BasePersistenceImpl.class.getDeclaredField(
-					"_dbColumnNames");
+				"_dbColumnNames");
 
 			field.setAccessible(true);
 
@@ -112,7 +117,8 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 	 */
 	@Override
 	public void cacheResult(WatsonListTypeRel watsonListTypeRel) {
-		entityCache.putResult(WatsonListTypeRelModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			WatsonListTypeRelModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonListTypeRelImpl.class, watsonListTypeRel.getPrimaryKey(),
 			watsonListTypeRel);
 
@@ -128,9 +134,10 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 	public void cacheResult(List<WatsonListTypeRel> watsonListTypeRels) {
 		for (WatsonListTypeRel watsonListTypeRel : watsonListTypeRels) {
 			if (entityCache.getResult(
-						WatsonListTypeRelModelImpl.ENTITY_CACHE_ENABLED,
-						WatsonListTypeRelImpl.class,
-						watsonListTypeRel.getPrimaryKey()) == null) {
+					WatsonListTypeRelModelImpl.ENTITY_CACHE_ENABLED,
+					WatsonListTypeRelImpl.class,
+					watsonListTypeRel.getPrimaryKey()) == null) {
+
 				cacheResult(watsonListTypeRel);
 			}
 			else {
@@ -164,7 +171,8 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 	 */
 	@Override
 	public void clearCache(WatsonListTypeRel watsonListTypeRel) {
-		entityCache.removeResult(WatsonListTypeRelModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.removeResult(
+			WatsonListTypeRelModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonListTypeRelImpl.class, watsonListTypeRel.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -177,7 +185,8 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (WatsonListTypeRel watsonListTypeRel : watsonListTypeRels) {
-			entityCache.removeResult(WatsonListTypeRelModelImpl.ENTITY_CACHE_ENABLED,
+			entityCache.removeResult(
+				WatsonListTypeRelModelImpl.ENTITY_CACHE_ENABLED,
 				WatsonListTypeRelImpl.class, watsonListTypeRel.getPrimaryKey());
 		}
 	}
@@ -210,6 +219,7 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 	@Override
 	public WatsonListTypeRel remove(long watsonListTypeRelId)
 		throws NoSuchListTypeRelException {
+
 		return remove((Serializable)watsonListTypeRelId);
 	}
 
@@ -223,21 +233,23 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 	@Override
 	public WatsonListTypeRel remove(Serializable primaryKey)
 		throws NoSuchListTypeRelException {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			WatsonListTypeRel watsonListTypeRel = (WatsonListTypeRel)session.get(WatsonListTypeRelImpl.class,
-					primaryKey);
+			WatsonListTypeRel watsonListTypeRel =
+				(WatsonListTypeRel)session.get(
+					WatsonListTypeRelImpl.class, primaryKey);
 
 			if (watsonListTypeRel == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchListTypeRelException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					primaryKey);
+				throw new NoSuchListTypeRelException(
+					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			return remove(watsonListTypeRel);
@@ -254,15 +266,18 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 	}
 
 	@Override
-	protected WatsonListTypeRel removeImpl(WatsonListTypeRel watsonListTypeRel) {
+	protected WatsonListTypeRel removeImpl(
+		WatsonListTypeRel watsonListTypeRel) {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
 			if (!session.contains(watsonListTypeRel)) {
-				watsonListTypeRel = (WatsonListTypeRel)session.get(WatsonListTypeRelImpl.class,
-						watsonListTypeRel.getPrimaryKeyObj());
+				watsonListTypeRel = (WatsonListTypeRel)session.get(
+					WatsonListTypeRelImpl.class,
+					watsonListTypeRel.getPrimaryKeyObj());
 			}
 
 			if (watsonListTypeRel != null) {
@@ -291,21 +306,24 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 			InvocationHandler invocationHandler = null;
 
 			if (ProxyUtil.isProxyClass(watsonListTypeRel.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(watsonListTypeRel);
+				invocationHandler = ProxyUtil.getInvocationHandler(
+					watsonListTypeRel);
 
 				throw new IllegalArgumentException(
 					"Implement ModelWrapper in watsonListTypeRel proxy " +
-					invocationHandler.getClass());
+						invocationHandler.getClass());
 			}
 
 			throw new IllegalArgumentException(
 				"Implement ModelWrapper in custom WatsonListTypeRel implementation " +
-				watsonListTypeRel.getClass());
+					watsonListTypeRel.getClass());
 		}
 
-		WatsonListTypeRelModelImpl watsonListTypeRelModelImpl = (WatsonListTypeRelModelImpl)watsonListTypeRel;
+		WatsonListTypeRelModelImpl watsonListTypeRelModelImpl =
+			(WatsonListTypeRelModelImpl)watsonListTypeRel;
 
-		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
 
 		Date now = new Date();
 
@@ -314,8 +332,8 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 				watsonListTypeRel.setCreateDate(now);
 			}
 			else {
-				watsonListTypeRel.setCreateDate(serviceContext.getCreateDate(
-						now));
+				watsonListTypeRel.setCreateDate(
+					serviceContext.getCreateDate(now));
 			}
 		}
 
@@ -324,8 +342,8 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 				watsonListTypeRel.setModifiedDate(now);
 			}
 			else {
-				watsonListTypeRel.setModifiedDate(serviceContext.getModifiedDate(
-						now));
+				watsonListTypeRel.setModifiedDate(
+					serviceContext.getModifiedDate(now));
 			}
 		}
 
@@ -340,7 +358,8 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 				watsonListTypeRel.setNew(false);
 			}
 			else {
-				watsonListTypeRel = (WatsonListTypeRel)session.merge(watsonListTypeRel);
+				watsonListTypeRel = (WatsonListTypeRel)session.merge(
+					watsonListTypeRel);
 			}
 		}
 		catch (Exception e) {
@@ -354,11 +373,12 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 
 		if (isNew) {
 			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(_finderPathWithoutPaginationFindAll,
-				FINDER_ARGS_EMPTY);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(WatsonListTypeRelModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			WatsonListTypeRelModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonListTypeRelImpl.class, watsonListTypeRel.getPrimaryKey(),
 			watsonListTypeRel, false);
 
@@ -377,6 +397,7 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 	@Override
 	public WatsonListTypeRel findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchListTypeRelException {
+
 		WatsonListTypeRel watsonListTypeRel = fetchByPrimaryKey(primaryKey);
 
 		if (watsonListTypeRel == null) {
@@ -384,8 +405,8 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchListTypeRelException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				primaryKey);
+			throw new NoSuchListTypeRelException(
+				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 		}
 
 		return watsonListTypeRel;
@@ -401,6 +422,7 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 	@Override
 	public WatsonListTypeRel findByPrimaryKey(long watsonListTypeRelId)
 		throws NoSuchListTypeRelException {
+
 		return findByPrimaryKey((Serializable)watsonListTypeRelId);
 	}
 
@@ -412,8 +434,9 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 	 */
 	@Override
 	public WatsonListTypeRel fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(WatsonListTypeRelModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonListTypeRelImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(
+			WatsonListTypeRelModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonListTypeRelImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -427,19 +450,21 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 			try {
 				session = openSession();
 
-				watsonListTypeRel = (WatsonListTypeRel)session.get(WatsonListTypeRelImpl.class,
-						primaryKey);
+				watsonListTypeRel = (WatsonListTypeRel)session.get(
+					WatsonListTypeRelImpl.class, primaryKey);
 
 				if (watsonListTypeRel != null) {
 					cacheResult(watsonListTypeRel);
 				}
 				else {
-					entityCache.putResult(WatsonListTypeRelModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(
+						WatsonListTypeRelModelImpl.ENTITY_CACHE_ENABLED,
 						WatsonListTypeRelImpl.class, primaryKey, nullModel);
 				}
 			}
 			catch (Exception e) {
-				entityCache.removeResult(WatsonListTypeRelModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.removeResult(
+					WatsonListTypeRelModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonListTypeRelImpl.class, primaryKey);
 
 				throw processException(e);
@@ -466,11 +491,13 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 	@Override
 	public Map<Serializable, WatsonListTypeRel> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, WatsonListTypeRel> map = new HashMap<Serializable, WatsonListTypeRel>();
+		Map<Serializable, WatsonListTypeRel> map =
+			new HashMap<Serializable, WatsonListTypeRel>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
@@ -489,8 +516,9 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(WatsonListTypeRelModelImpl.ENTITY_CACHE_ENABLED,
-					WatsonListTypeRelImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(
+				WatsonListTypeRelModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonListTypeRelImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -510,8 +538,8 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 			return map;
 		}
 
-		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
-				1);
+		StringBundler query = new StringBundler(
+			uncachedPrimaryKeys.size() * 2 + 1);
 
 		query.append(_SQL_SELECT_WATSONLISTTYPEREL_WHERE_PKS_IN);
 
@@ -534,16 +562,21 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 
 			Query q = session.createQuery(sql);
 
-			for (WatsonListTypeRel watsonListTypeRel : (List<WatsonListTypeRel>)q.list()) {
-				map.put(watsonListTypeRel.getPrimaryKeyObj(), watsonListTypeRel);
+			for (WatsonListTypeRel watsonListTypeRel :
+					(List<WatsonListTypeRel>)q.list()) {
+
+				map.put(
+					watsonListTypeRel.getPrimaryKeyObj(), watsonListTypeRel);
 
 				cacheResult(watsonListTypeRel);
 
-				uncachedPrimaryKeys.remove(watsonListTypeRel.getPrimaryKeyObj());
+				uncachedPrimaryKeys.remove(
+					watsonListTypeRel.getPrimaryKeyObj());
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(WatsonListTypeRelModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(
+					WatsonListTypeRelModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonListTypeRelImpl.class, primaryKey, nullModel);
 			}
 		}
@@ -596,8 +629,10 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 	 * @return the ordered range of watson list type rels
 	 */
 	@Override
-	public List<WatsonListTypeRel> findAll(int start, int end,
+	public List<WatsonListTypeRel> findAll(
+		int start, int end,
 		OrderByComparator<WatsonListTypeRel> orderByComparator) {
+
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -615,29 +650,32 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 	 * @return the ordered range of watson list type rels
 	 */
 	@Override
-	public List<WatsonListTypeRel> findAll(int start, int end,
+	public List<WatsonListTypeRel> findAll(
+		int start, int end,
 		OrderByComparator<WatsonListTypeRel> orderByComparator,
 		boolean retrieveFromCache) {
+
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
+			(orderByComparator == null)) {
+
 			pagination = false;
 			finderPath = _finderPathWithoutPaginationFindAll;
 			finderArgs = FINDER_ARGS_EMPTY;
 		}
 		else {
 			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] { start, end, orderByComparator };
+			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<WatsonListTypeRel> list = null;
 
 		if (retrieveFromCache) {
-			list = (List<WatsonListTypeRel>)finderCache.getResult(finderPath,
-					finderArgs, this);
+			list = (List<WatsonListTypeRel>)finderCache.getResult(
+				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
@@ -645,13 +683,13 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(2 +
-						(orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(
+					2 + (orderByComparator.getOrderByFields().length * 2));
 
 				query.append(_SQL_SELECT_WATSONLISTTYPEREL);
 
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
 				sql = query.toString();
 			}
@@ -671,16 +709,16 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 				Query q = session.createQuery(sql);
 
 				if (!pagination) {
-					list = (List<WatsonListTypeRel>)QueryUtil.list(q,
-							getDialect(), start, end, false);
+					list = (List<WatsonListTypeRel>)QueryUtil.list(
+						q, getDialect(), start, end, false);
 
 					Collections.sort(list);
 
 					list = Collections.unmodifiableList(list);
 				}
 				else {
-					list = (List<WatsonListTypeRel>)QueryUtil.list(q,
-							getDialect(), start, end);
+					list = (List<WatsonListTypeRel>)QueryUtil.list(
+						q, getDialect(), start, end);
 				}
 
 				cacheResult(list);
@@ -718,8 +756,8 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(_finderPathCountAll,
-				FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(
+			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -731,11 +769,12 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 
 				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(_finderPathCountAll, FINDER_ARGS_EMPTY,
-					count);
+				finderCache.putResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
+				finderCache.removeResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
 				throw processException(e);
 			}
@@ -761,21 +800,24 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 	 * Initializes the watson list type rel persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(WatsonListTypeRelModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonListTypeRelModelImpl.FINDER_CACHE_ENABLED,
-				WatsonListTypeRelImpl.class,
-				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+		_finderPathWithPaginationFindAll = new FinderPath(
+			WatsonListTypeRelModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonListTypeRelModelImpl.FINDER_CACHE_ENABLED,
+			WatsonListTypeRelImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(WatsonListTypeRelModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonListTypeRelModelImpl.FINDER_CACHE_ENABLED,
-				WatsonListTypeRelImpl.class,
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-				new String[0]);
+		_finderPathWithoutPaginationFindAll = new FinderPath(
+			WatsonListTypeRelModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonListTypeRelModelImpl.FINDER_CACHE_ENABLED,
+			WatsonListTypeRelImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+			new String[0]);
 
-		_finderPathCountAll = new FinderPath(WatsonListTypeRelModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonListTypeRelModelImpl.FINDER_CACHE_ENABLED, Long.class,
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-				new String[0]);
+		_finderPathCountAll = new FinderPath(
+			WatsonListTypeRelModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonListTypeRelModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+			new String[0]);
 	}
 
 	public void destroy() {
@@ -787,17 +829,31 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
+
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
+
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-	private static final String _SQL_SELECT_WATSONLISTTYPEREL = "SELECT watsonListTypeRel FROM WatsonListTypeRel watsonListTypeRel";
-	private static final String _SQL_SELECT_WATSONLISTTYPEREL_WHERE_PKS_IN = "SELECT watsonListTypeRel FROM WatsonListTypeRel watsonListTypeRel WHERE watsonListTypeRelId IN (";
-	private static final String _SQL_COUNT_WATSONLISTTYPEREL = "SELECT COUNT(watsonListTypeRel) FROM WatsonListTypeRel watsonListTypeRel";
+
+	private static final String _SQL_SELECT_WATSONLISTTYPEREL =
+		"SELECT watsonListTypeRel FROM WatsonListTypeRel watsonListTypeRel";
+
+	private static final String _SQL_SELECT_WATSONLISTTYPEREL_WHERE_PKS_IN =
+		"SELECT watsonListTypeRel FROM WatsonListTypeRel watsonListTypeRel WHERE watsonListTypeRelId IN (";
+
+	private static final String _SQL_COUNT_WATSONLISTTYPEREL =
+		"SELECT COUNT(watsonListTypeRel) FROM WatsonListTypeRel watsonListTypeRel";
+
 	private static final String _ORDER_BY_ENTITY_ALIAS = "watsonListTypeRel.";
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No WatsonListTypeRel exists with the primary key ";
-	private static final Log _log = LogFactoryUtil.getLog(WatsonListTypeRelPersistenceImpl.class);
-	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
-				"primary", "type"
-			});
+
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
+		"No WatsonListTypeRel exists with the primary key ";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		WatsonListTypeRelPersistenceImpl.class);
+
+	private static final Set<String> _badColumnNames = SetUtil.fromArray(
+		new String[] {"primary", "type"});
+
 }

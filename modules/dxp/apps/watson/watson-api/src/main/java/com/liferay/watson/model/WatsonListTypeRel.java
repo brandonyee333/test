@@ -29,27 +29,33 @@ import com.liferay.portal.kernel.util.Accessor;
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonListTypeRelImpl")
 @ProviderType
-public interface WatsonListTypeRel extends WatsonListTypeRelModel, PersistedModel {
+public interface WatsonListTypeRel
+	extends WatsonListTypeRelModel, PersistedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonListTypeRelImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<WatsonListTypeRel, Long> WATSON_LIST_TYPE_REL_ID_ACCESSOR =
-		new Accessor<WatsonListTypeRel, Long>() {
-			@Override
-			public Long get(WatsonListTypeRel watsonListTypeRel) {
-				return watsonListTypeRel.getWatsonListTypeRelId();
-			}
+	public static final Accessor<WatsonListTypeRel, Long>
+		WATSON_LIST_TYPE_REL_ID_ACCESSOR =
+			new Accessor<WatsonListTypeRel, Long>() {
 
-			@Override
-			public Class<Long> getAttributeClass() {
-				return Long.class;
-			}
+				@Override
+				public Long get(WatsonListTypeRel watsonListTypeRel) {
+					return watsonListTypeRel.getWatsonListTypeRelId();
+				}
 
-			@Override
-			public Class<WatsonListTypeRel> getTypeClass() {
-				return WatsonListTypeRel.class;
-			}
-		};
+				@Override
+				public Class<Long> getAttributeClass() {
+					return Long.class;
+				}
+
+				@Override
+				public Class<WatsonListTypeRel> getTypeClass() {
+					return WatsonListTypeRel.class;
+				}
+
+			};
+
 }

@@ -30,6 +30,7 @@ import java.util.List;
  */
 @ProviderType
 public class WatsonAddressSoap implements Serializable {
+
 	public static WatsonAddressSoap toSoapModel(WatsonAddress model) {
 		WatsonAddressSoap soapModel = new WatsonAddressSoap();
 
@@ -41,10 +42,14 @@ public class WatsonAddressSoap implements Serializable {
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
 		soapModel.setCountryId(model.getCountryId());
-		soapModel.setDistrictWatsonListTypeId(model.getDistrictWatsonListTypeId());
-		soapModel.setOriginalWatsonAddressId(model.getOriginalWatsonAddressId());
-		soapModel.setProvinceWatsonListTypeId(model.getProvinceWatsonListTypeId());
-		soapModel.setSubDistrictWatsonListTypeId(model.getSubDistrictWatsonListTypeId());
+		soapModel.setDistrictWatsonListTypeId(
+			model.getDistrictWatsonListTypeId());
+		soapModel.setOriginalWatsonAddressId(
+			model.getOriginalWatsonAddressId());
+		soapModel.setProvinceWatsonListTypeId(
+			model.getProvinceWatsonListTypeId());
+		soapModel.setSubDistrictWatsonListTypeId(
+			model.getSubDistrictWatsonListTypeId());
 		soapModel.setTypeWatsonListTypeId(model.getTypeWatsonListTypeId());
 		soapModel.setWatsonIncidentId(model.getWatsonIncidentId());
 		soapModel.setName(model.getName());
@@ -94,7 +99,8 @@ public class WatsonAddressSoap implements Serializable {
 	}
 
 	public static WatsonAddressSoap[] toSoapModels(List<WatsonAddress> models) {
-		List<WatsonAddressSoap> soapModels = new ArrayList<WatsonAddressSoap>(models.size());
+		List<WatsonAddressSoap> soapModels = new ArrayList<WatsonAddressSoap>(
+			models.size());
 
 		for (WatsonAddress model : models) {
 			soapModels.add(toSoapModel(model));
@@ -206,7 +212,9 @@ public class WatsonAddressSoap implements Serializable {
 		return _subDistrictWatsonListTypeId;
 	}
 
-	public void setSubDistrictWatsonListTypeId(long subDistrictWatsonListTypeId) {
+	public void setSubDistrictWatsonListTypeId(
+		long subDistrictWatsonListTypeId) {
+
 		_subDistrictWatsonListTypeId = subDistrictWatsonListTypeId;
 	}
 
@@ -375,4 +383,5 @@ public class WatsonAddressSoap implements Serializable {
 	private double _latitude;
 	private double _longitude;
 	private int _status;
+
 }

@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.model.WatsonAddressAudit;
 
 import java.io.Externalizable;
@@ -36,8 +35,9 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public class WatsonAddressAuditCacheModel implements CacheModel<WatsonAddressAudit>,
-	Externalizable {
+public class WatsonAddressAuditCacheModel
+	implements CacheModel<WatsonAddressAudit>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,9 +48,12 @@ public class WatsonAddressAuditCacheModel implements CacheModel<WatsonAddressAud
 			return false;
 		}
 
-		WatsonAddressAuditCacheModel watsonAddressAuditCacheModel = (WatsonAddressAuditCacheModel)obj;
+		WatsonAddressAuditCacheModel watsonAddressAuditCacheModel =
+			(WatsonAddressAuditCacheModel)obj;
 
-		if (watsonAddressAuditId == watsonAddressAuditCacheModel.watsonAddressAuditId) {
+		if (watsonAddressAuditId ==
+				watsonAddressAuditCacheModel.watsonAddressAuditId) {
+
 			return true;
 		}
 
@@ -133,7 +136,8 @@ public class WatsonAddressAuditCacheModel implements CacheModel<WatsonAddressAud
 
 	@Override
 	public WatsonAddressAudit toEntityModel() {
-		WatsonAddressAuditImpl watsonAddressAuditImpl = new WatsonAddressAuditImpl();
+		WatsonAddressAuditImpl watsonAddressAuditImpl =
+			new WatsonAddressAuditImpl();
 
 		watsonAddressAuditImpl.setWatsonAddressAuditId(watsonAddressAuditId);
 		watsonAddressAuditImpl.setGroupId(groupId);
@@ -162,10 +166,14 @@ public class WatsonAddressAuditCacheModel implements CacheModel<WatsonAddressAud
 		}
 
 		watsonAddressAuditImpl.setCountryId(countryId);
-		watsonAddressAuditImpl.setDistrictWatsonListTypeId(districtWatsonListTypeId);
-		watsonAddressAuditImpl.setOriginalWatsonAddressId(originalWatsonAddressId);
-		watsonAddressAuditImpl.setProvinceWatsonListTypeId(provinceWatsonListTypeId);
-		watsonAddressAuditImpl.setSubDistrictWatsonListTypeId(subDistrictWatsonListTypeId);
+		watsonAddressAuditImpl.setDistrictWatsonListTypeId(
+			districtWatsonListTypeId);
+		watsonAddressAuditImpl.setOriginalWatsonAddressId(
+			originalWatsonAddressId);
+		watsonAddressAuditImpl.setProvinceWatsonListTypeId(
+			provinceWatsonListTypeId);
+		watsonAddressAuditImpl.setSubDistrictWatsonListTypeId(
+			subDistrictWatsonListTypeId);
 		watsonAddressAuditImpl.setTypeWatsonListTypeId(typeWatsonListTypeId);
 		watsonAddressAuditImpl.setWatsonAddressId(watsonAddressId);
 		watsonAddressAuditImpl.setWatsonIncidentId(watsonIncidentId);
@@ -312,8 +320,7 @@ public class WatsonAddressAuditCacheModel implements CacheModel<WatsonAddressAud
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonAddressAuditId);
 
 		objectOutput.writeLong(groupId);
@@ -464,4 +471,5 @@ public class WatsonAddressAuditCacheModel implements CacheModel<WatsonAddressAud
 	public double latitude;
 	public double longitude;
 	public int status;
+
 }

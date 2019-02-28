@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.model.WatsonIncidentRelAudit;
 
 import java.io.Externalizable;
@@ -36,8 +35,9 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public class WatsonIncidentRelAuditCacheModel implements CacheModel<WatsonIncidentRelAudit>,
-	Externalizable {
+public class WatsonIncidentRelAuditCacheModel
+	implements CacheModel<WatsonIncidentRelAudit>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,9 +48,12 @@ public class WatsonIncidentRelAuditCacheModel implements CacheModel<WatsonIncide
 			return false;
 		}
 
-		WatsonIncidentRelAuditCacheModel watsonIncidentRelAuditCacheModel = (WatsonIncidentRelAuditCacheModel)obj;
+		WatsonIncidentRelAuditCacheModel watsonIncidentRelAuditCacheModel =
+			(WatsonIncidentRelAuditCacheModel)obj;
 
-		if (watsonIncidentRelAuditId == watsonIncidentRelAuditCacheModel.watsonIncidentRelAuditId) {
+		if (watsonIncidentRelAuditId ==
+				watsonIncidentRelAuditCacheModel.watsonIncidentRelAuditId) {
+
 			return true;
 		}
 
@@ -97,9 +100,11 @@ public class WatsonIncidentRelAuditCacheModel implements CacheModel<WatsonIncide
 
 	@Override
 	public WatsonIncidentRelAudit toEntityModel() {
-		WatsonIncidentRelAuditImpl watsonIncidentRelAuditImpl = new WatsonIncidentRelAuditImpl();
+		WatsonIncidentRelAuditImpl watsonIncidentRelAuditImpl =
+			new WatsonIncidentRelAuditImpl();
 
-		watsonIncidentRelAuditImpl.setWatsonIncidentRelAuditId(watsonIncidentRelAuditId);
+		watsonIncidentRelAuditImpl.setWatsonIncidentRelAuditId(
+			watsonIncidentRelAuditId);
 		watsonIncidentRelAuditImpl.setGroupId(groupId);
 		watsonIncidentRelAuditImpl.setCompanyId(companyId);
 		watsonIncidentRelAuditImpl.setUserId(userId);
@@ -167,8 +172,7 @@ public class WatsonIncidentRelAuditCacheModel implements CacheModel<WatsonIncide
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonIncidentRelAuditId);
 
 		objectOutput.writeLong(groupId);
@@ -215,4 +219,5 @@ public class WatsonIncidentRelAuditCacheModel implements CacheModel<WatsonIncide
 	public long watsonIncidentRelId;
 	public String type;
 	public int status;
+
 }

@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
-
 import com.liferay.watson.model.WatsonActivityAudit;
 
 import java.io.Serializable;
@@ -49,10 +48,13 @@ import java.util.List;
  * @generated
  */
 @ProviderType
-@Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
-	PortalException.class, SystemException.class})
-public interface WatsonActivityAuditLocalService extends BaseLocalService,
-	PersistedModelLocalService {
+@Transactional(
+	isolation = Isolation.PORTAL,
+	rollbackFor = {PortalException.class, SystemException.class}
+)
+public interface WatsonActivityAuditLocalService
+	extends BaseLocalService, PersistedModelLocalService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -60,49 +62,50 @@ public interface WatsonActivityAuditLocalService extends BaseLocalService,
 	 */
 
 	/**
-	* Adds the watson activity audit to the database. Also notifies the appropriate model listeners.
-	*
-	* @param watsonActivityAudit the watson activity audit
-	* @return the watson activity audit that was added
-	*/
+	 * Adds the watson activity audit to the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param watsonActivityAudit the watson activity audit
+	 * @return the watson activity audit that was added
+	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public WatsonActivityAudit addWatsonActivityAudit(
 		WatsonActivityAudit watsonActivityAudit);
 
 	/**
-	* Creates a new watson activity audit with the primary key. Does not add the watson activity audit to the database.
-	*
-	* @param watsonActivityAuditId the primary key for the new watson activity audit
-	* @return the new watson activity audit
-	*/
+	 * Creates a new watson activity audit with the primary key. Does not add the watson activity audit to the database.
+	 *
+	 * @param watsonActivityAuditId the primary key for the new watson activity audit
+	 * @return the new watson activity audit
+	 */
 	@Transactional(enabled = false)
 	public WatsonActivityAudit createWatsonActivityAudit(
 		long watsonActivityAuditId);
 
 	/**
-	* @throws PortalException
-	*/
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
 	/**
-	* Deletes the watson activity audit with the primary key from the database. Also notifies the appropriate model listeners.
-	*
-	* @param watsonActivityAuditId the primary key of the watson activity audit
-	* @return the watson activity audit that was removed
-	* @throws PortalException if a watson activity audit with the primary key could not be found
-	*/
+	 * Deletes the watson activity audit with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param watsonActivityAuditId the primary key of the watson activity audit
+	 * @return the watson activity audit that was removed
+	 * @throws PortalException if a watson activity audit with the primary key could not be found
+	 */
 	@Indexable(type = IndexableType.DELETE)
 	public WatsonActivityAudit deleteWatsonActivityAudit(
-		long watsonActivityAuditId) throws PortalException;
+			long watsonActivityAuditId)
+		throws PortalException;
 
 	/**
-	* Deletes the watson activity audit from the database. Also notifies the appropriate model listeners.
-	*
-	* @param watsonActivityAudit the watson activity audit
-	* @return the watson activity audit that was removed
-	*/
+	 * Deletes the watson activity audit from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param watsonActivityAudit the watson activity audit
+	 * @return the watson activity audit that was removed
+	 */
 	@Indexable(type = IndexableType.DELETE)
 	public WatsonActivityAudit deleteWatsonActivityAudit(
 		WatsonActivityAudit watsonActivityAudit);
@@ -111,66 +114,67 @@ public interface WatsonActivityAuditLocalService extends BaseLocalService,
 	public DynamicQuery dynamicQuery();
 
 	/**
-	* Performs a dynamic query on the database and returns the matching rows.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the matching rows
-	*/
+	 * Performs a dynamic query on the database and returns the matching rows.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @return the matching rows
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery);
 
 	/**
-	* Performs a dynamic query on the database and returns a range of the matching rows.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.watson.model.impl.WatsonActivityAuditModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param dynamicQuery the dynamic query
-	* @param start the lower bound of the range of model instances
-	* @param end the upper bound of the range of model instances (not inclusive)
-	* @return the range of matching rows
-	*/
+	 * Performs a dynamic query on the database and returns a range of the matching rows.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.watson.model.impl.WatsonActivityAuditModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param start the lower bound of the range of model instances
+	 * @param end the upper bound of the range of model instances (not inclusive)
+	 * @return the range of matching rows
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end);
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end);
 
 	/**
-	* Performs a dynamic query on the database and returns an ordered range of the matching rows.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.watson.model.impl.WatsonActivityAuditModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param dynamicQuery the dynamic query
-	* @param start the lower bound of the range of model instances
-	* @param end the upper bound of the range of model instances (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of matching rows
-	*/
+	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.watson.model.impl.WatsonActivityAuditModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param start the lower bound of the range of model instances
+	 * @param end the upper bound of the range of model instances (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching rows
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end, OrderByComparator<T> orderByComparator);
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
+	 * Returns the number of rows matching the dynamic query.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @return the number of rows matching the dynamic query
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public long dynamicQueryCount(DynamicQuery dynamicQuery);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
+	 * Returns the number of rows matching the dynamic query.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param projection the projection to apply to the query
+	 * @return the number of rows matching the dynamic query
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
+	public long dynamicQueryCount(
+		DynamicQuery dynamicQuery, Projection projection);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public WatsonActivityAudit fetchWatsonActivityAudit(
@@ -183,10 +187,10 @@ public interface WatsonActivityAuditLocalService extends BaseLocalService,
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
 	public String getOSGiServiceIdentifier();
 
 	@Override
@@ -195,45 +199,48 @@ public interface WatsonActivityAuditLocalService extends BaseLocalService,
 		throws PortalException;
 
 	/**
-	* Returns the watson activity audit with the primary key.
-	*
-	* @param watsonActivityAuditId the primary key of the watson activity audit
-	* @return the watson activity audit
-	* @throws PortalException if a watson activity audit with the primary key could not be found
-	*/
+	 * Returns the watson activity audit with the primary key.
+	 *
+	 * @param watsonActivityAuditId the primary key of the watson activity audit
+	 * @return the watson activity audit
+	 * @throws PortalException if a watson activity audit with the primary key could not be found
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public WatsonActivityAudit getWatsonActivityAudit(
-		long watsonActivityAuditId) throws PortalException;
+			long watsonActivityAuditId)
+		throws PortalException;
 
 	/**
-	* Returns a range of all the watson activity audits.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.watson.model.impl.WatsonActivityAuditModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of watson activity audits
-	* @param end the upper bound of the range of watson activity audits (not inclusive)
-	* @return the range of watson activity audits
-	*/
+	 * Returns a range of all the watson activity audits.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.watson.model.impl.WatsonActivityAuditModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of watson activity audits
+	 * @param end the upper bound of the range of watson activity audits (not inclusive)
+	 * @return the range of watson activity audits
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<WatsonActivityAudit> getWatsonActivityAudits(int start, int end);
+	public List<WatsonActivityAudit> getWatsonActivityAudits(
+		int start, int end);
 
 	/**
-	* Returns the number of watson activity audits.
-	*
-	* @return the number of watson activity audits
-	*/
+	 * Returns the number of watson activity audits.
+	 *
+	 * @return the number of watson activity audits
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getWatsonActivityAuditsCount();
 
 	/**
-	* Updates the watson activity audit in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param watsonActivityAudit the watson activity audit
-	* @return the watson activity audit that was updated
-	*/
+	 * Updates the watson activity audit in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * @param watsonActivityAudit the watson activity audit
+	 * @return the watson activity audit that was updated
+	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public WatsonActivityAudit updateWatsonActivityAudit(
 		WatsonActivityAudit watsonActivityAudit);
+
 }

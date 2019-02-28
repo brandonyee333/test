@@ -19,19 +19,17 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
-
 import com.liferay.watson.model.WatsonPerson;
-
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-
-import org.osgi.util.tracker.ServiceTracker;
 
 import java.io.Serializable;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * The persistence utility for the watson person service. This utility wraps <code>com.liferay.watson.service.persistence.impl.WatsonPersonPersistenceImpl</code> and provides direct access to the database for CRUD operations. This utility should only be used by the service layer, as it must operate within a transaction. Never access this utility in a JSP, controller, model, or other front-end class.
@@ -46,6 +44,7 @@ import java.util.Set;
  */
 @ProviderType
 public class WatsonPersonUtil {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -78,6 +77,7 @@ public class WatsonPersonUtil {
 	 */
 	public static Map<Serializable, WatsonPerson> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		return getPersistence().fetchByPrimaryKeys(primaryKeys);
 	}
 
@@ -86,6 +86,7 @@ public class WatsonPersonUtil {
 	 */
 	public static List<WatsonPerson> findWithDynamicQuery(
 		DynamicQuery dynamicQuery) {
+
 		return getPersistence().findWithDynamicQuery(dynamicQuery);
 	}
 
@@ -94,6 +95,7 @@ public class WatsonPersonUtil {
 	 */
 	public static List<WatsonPerson> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
+
 		return getPersistence().findWithDynamicQuery(dynamicQuery, start, end);
 	}
 
@@ -103,9 +105,9 @@ public class WatsonPersonUtil {
 	public static List<WatsonPerson> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
 		OrderByComparator<WatsonPerson> orderByComparator) {
-		return getPersistence()
-				   .findWithDynamicQuery(dynamicQuery, start, end,
-			orderByComparator);
+
+		return getPersistence().findWithDynamicQuery(
+			dynamicQuery, start, end, orderByComparator);
 	}
 
 	/**
@@ -118,48 +120,50 @@ public class WatsonPersonUtil {
 	/**
 	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
-	public static WatsonPerson update(WatsonPerson watsonPerson,
-		ServiceContext serviceContext) {
+	public static WatsonPerson update(
+		WatsonPerson watsonPerson, ServiceContext serviceContext) {
+
 		return getPersistence().update(watsonPerson, serviceContext);
 	}
 
 	/**
-	* Caches the watson person in the entity cache if it is enabled.
-	*
-	* @param watsonPerson the watson person
-	*/
+	 * Caches the watson person in the entity cache if it is enabled.
+	 *
+	 * @param watsonPerson the watson person
+	 */
 	public static void cacheResult(WatsonPerson watsonPerson) {
 		getPersistence().cacheResult(watsonPerson);
 	}
 
 	/**
-	* Caches the watson persons in the entity cache if it is enabled.
-	*
-	* @param watsonPersons the watson persons
-	*/
+	 * Caches the watson persons in the entity cache if it is enabled.
+	 *
+	 * @param watsonPersons the watson persons
+	 */
 	public static void cacheResult(List<WatsonPerson> watsonPersons) {
 		getPersistence().cacheResult(watsonPersons);
 	}
 
 	/**
-	* Creates a new watson person with the primary key. Does not add the watson person to the database.
-	*
-	* @param watsonPersonId the primary key for the new watson person
-	* @return the new watson person
-	*/
+	 * Creates a new watson person with the primary key. Does not add the watson person to the database.
+	 *
+	 * @param watsonPersonId the primary key for the new watson person
+	 * @return the new watson person
+	 */
 	public static WatsonPerson create(long watsonPersonId) {
 		return getPersistence().create(watsonPersonId);
 	}
 
 	/**
-	* Removes the watson person with the primary key from the database. Also notifies the appropriate model listeners.
-	*
-	* @param watsonPersonId the primary key of the watson person
-	* @return the watson person that was removed
-	* @throws NoSuchPersonException if a watson person with the primary key could not be found
-	*/
+	 * Removes the watson person with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param watsonPersonId the primary key of the watson person
+	 * @return the watson person that was removed
+	 * @throws NoSuchPersonException if a watson person with the primary key could not be found
+	 */
 	public static WatsonPerson remove(long watsonPersonId)
 		throws com.liferay.watson.exception.NoSuchPersonException {
+
 		return getPersistence().remove(watsonPersonId);
 	}
 
@@ -168,100 +172,103 @@ public class WatsonPersonUtil {
 	}
 
 	/**
-	* Returns the watson person with the primary key or throws a <code>NoSuchPersonException</code> if it could not be found.
-	*
-	* @param watsonPersonId the primary key of the watson person
-	* @return the watson person
-	* @throws NoSuchPersonException if a watson person with the primary key could not be found
-	*/
+	 * Returns the watson person with the primary key or throws a <code>NoSuchPersonException</code> if it could not be found.
+	 *
+	 * @param watsonPersonId the primary key of the watson person
+	 * @return the watson person
+	 * @throws NoSuchPersonException if a watson person with the primary key could not be found
+	 */
 	public static WatsonPerson findByPrimaryKey(long watsonPersonId)
 		throws com.liferay.watson.exception.NoSuchPersonException {
+
 		return getPersistence().findByPrimaryKey(watsonPersonId);
 	}
 
 	/**
-	* Returns the watson person with the primary key or returns <code>null</code> if it could not be found.
-	*
-	* @param watsonPersonId the primary key of the watson person
-	* @return the watson person, or <code>null</code> if a watson person with the primary key could not be found
-	*/
+	 * Returns the watson person with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param watsonPersonId the primary key of the watson person
+	 * @return the watson person, or <code>null</code> if a watson person with the primary key could not be found
+	 */
 	public static WatsonPerson fetchByPrimaryKey(long watsonPersonId) {
 		return getPersistence().fetchByPrimaryKey(watsonPersonId);
 	}
 
 	/**
-	* Returns all the watson persons.
-	*
-	* @return the watson persons
-	*/
+	 * Returns all the watson persons.
+	 *
+	 * @return the watson persons
+	 */
 	public static List<WatsonPerson> findAll() {
 		return getPersistence().findAll();
 	}
 
 	/**
-	* Returns a range of all the watson persons.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonPersonModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of watson persons
-	* @param end the upper bound of the range of watson persons (not inclusive)
-	* @return the range of watson persons
-	*/
+	 * Returns a range of all the watson persons.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonPersonModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of watson persons
+	 * @param end the upper bound of the range of watson persons (not inclusive)
+	 * @return the range of watson persons
+	 */
 	public static List<WatsonPerson> findAll(int start, int end) {
 		return getPersistence().findAll(start, end);
 	}
 
 	/**
-	* Returns an ordered range of all the watson persons.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonPersonModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of watson persons
-	* @param end the upper bound of the range of watson persons (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of watson persons
-	*/
-	public static List<WatsonPerson> findAll(int start, int end,
-		OrderByComparator<WatsonPerson> orderByComparator) {
+	 * Returns an ordered range of all the watson persons.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonPersonModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of watson persons
+	 * @param end the upper bound of the range of watson persons (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of watson persons
+	 */
+	public static List<WatsonPerson> findAll(
+		int start, int end, OrderByComparator<WatsonPerson> orderByComparator) {
+
 		return getPersistence().findAll(start, end, orderByComparator);
 	}
 
 	/**
-	* Returns an ordered range of all the watson persons.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonPersonModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of watson persons
-	* @param end the upper bound of the range of watson persons (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @param retrieveFromCache whether to retrieve from the finder cache
-	* @return the ordered range of watson persons
-	*/
-	public static List<WatsonPerson> findAll(int start, int end,
-		OrderByComparator<WatsonPerson> orderByComparator,
+	 * Returns an ordered range of all the watson persons.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonPersonModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of watson persons
+	 * @param end the upper bound of the range of watson persons (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @return the ordered range of watson persons
+	 */
+	public static List<WatsonPerson> findAll(
+		int start, int end, OrderByComparator<WatsonPerson> orderByComparator,
 		boolean retrieveFromCache) {
-		return getPersistence()
-				   .findAll(start, end, orderByComparator, retrieveFromCache);
+
+		return getPersistence().findAll(
+			start, end, orderByComparator, retrieveFromCache);
 	}
 
 	/**
-	* Removes all the watson persons from the database.
-	*/
+	 * Removes all the watson persons from the database.
+	 */
 	public static void removeAll() {
 		getPersistence().removeAll();
 	}
 
 	/**
-	* Returns the number of watson persons.
-	*
-	* @return the number of watson persons
-	*/
+	 * Returns the number of watson persons.
+	 *
+	 * @return the number of watson persons
+	 */
 	public static int countAll() {
 		return getPersistence().countAll();
 	}
@@ -270,17 +277,22 @@ public class WatsonPersonUtil {
 		return _serviceTracker.getService();
 	}
 
-	private static ServiceTracker<WatsonPersonPersistence, WatsonPersonPersistence> _serviceTracker;
+	private static ServiceTracker
+		<WatsonPersonPersistence, WatsonPersonPersistence> _serviceTracker;
 
 	static {
 		Bundle bundle = FrameworkUtil.getBundle(WatsonPersonPersistence.class);
 
-		ServiceTracker<WatsonPersonPersistence, WatsonPersonPersistence> serviceTracker =
-			new ServiceTracker<WatsonPersonPersistence, WatsonPersonPersistence>(bundle.getBundleContext(),
-				WatsonPersonPersistence.class, null);
+		ServiceTracker<WatsonPersonPersistence, WatsonPersonPersistence>
+			serviceTracker =
+				new ServiceTracker
+					<WatsonPersonPersistence, WatsonPersonPersistence>(
+						bundle.getBundleContext(),
+						WatsonPersonPersistence.class, null);
 
 		serviceTracker.open();
 
 		_serviceTracker = serviceTracker;
 	}
+
 }

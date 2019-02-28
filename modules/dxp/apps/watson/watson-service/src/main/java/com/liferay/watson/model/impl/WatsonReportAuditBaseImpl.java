@@ -34,6 +34,7 @@ import com.liferay.watson.service.WatsonReportAuditLocalServiceUtil;
 @ProviderType
 public abstract class WatsonReportAuditBaseImpl
 	extends WatsonReportAuditModelImpl implements WatsonReportAudit {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -48,4 +49,5 @@ public abstract class WatsonReportAuditBaseImpl
 			WatsonReportAuditLocalServiceUtil.updateWatsonReportAudit(this);
 		}
 	}
+
 }

@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.model.WatsonIncidentAudit;
 
 import java.io.Externalizable;
@@ -36,8 +35,9 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public class WatsonIncidentAuditCacheModel implements CacheModel<WatsonIncidentAudit>,
-	Externalizable {
+public class WatsonIncidentAuditCacheModel
+	implements CacheModel<WatsonIncidentAudit>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,9 +48,12 @@ public class WatsonIncidentAuditCacheModel implements CacheModel<WatsonIncidentA
 			return false;
 		}
 
-		WatsonIncidentAuditCacheModel watsonIncidentAuditCacheModel = (WatsonIncidentAuditCacheModel)obj;
+		WatsonIncidentAuditCacheModel watsonIncidentAuditCacheModel =
+			(WatsonIncidentAuditCacheModel)obj;
 
-		if (watsonIncidentAuditId == watsonIncidentAuditCacheModel.watsonIncidentAuditId) {
+		if (watsonIncidentAuditId ==
+				watsonIncidentAuditCacheModel.watsonIncidentAuditId) {
+
 			return true;
 		}
 
@@ -123,7 +126,8 @@ public class WatsonIncidentAuditCacheModel implements CacheModel<WatsonIncidentA
 
 	@Override
 	public WatsonIncidentAudit toEntityModel() {
-		WatsonIncidentAuditImpl watsonIncidentAuditImpl = new WatsonIncidentAuditImpl();
+		WatsonIncidentAuditImpl watsonIncidentAuditImpl =
+			new WatsonIncidentAuditImpl();
 
 		watsonIncidentAuditImpl.setWatsonIncidentAuditId(watsonIncidentAuditId);
 		watsonIncidentAuditImpl.setGroupId(groupId);
@@ -151,10 +155,13 @@ public class WatsonIncidentAuditCacheModel implements CacheModel<WatsonIncidentA
 			watsonIncidentAuditImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
-		watsonIncidentAuditImpl.setExternalCaseWatsonListTypeId(externalCaseWatsonListTypeId);
-		watsonIncidentAuditImpl.setSourceWatsonListTypeId(sourceWatsonListTypeId);
+		watsonIncidentAuditImpl.setExternalCaseWatsonListTypeId(
+			externalCaseWatsonListTypeId);
+		watsonIncidentAuditImpl.setSourceWatsonListTypeId(
+			sourceWatsonListTypeId);
 		watsonIncidentAuditImpl.setTypeWatsonListTypeId(typeWatsonListTypeId);
-		watsonIncidentAuditImpl.setSubtypeWatsonListTypeId(subtypeWatsonListTypeId);
+		watsonIncidentAuditImpl.setSubtypeWatsonListTypeId(
+			subtypeWatsonListTypeId);
 		watsonIncidentAuditImpl.setAudienceAdultCount(audienceAdultCount);
 		watsonIncidentAuditImpl.setAudienceChildCount(audienceChildCount);
 		watsonIncidentAuditImpl.setVictimAdultCount(victimAdultCount);
@@ -257,8 +264,7 @@ public class WatsonIncidentAuditCacheModel implements CacheModel<WatsonIncidentA
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonIncidentAuditId);
 
 		objectOutput.writeLong(groupId);
@@ -352,4 +358,5 @@ public class WatsonIncidentAuditCacheModel implements CacheModel<WatsonIncidentA
 	public double expenses;
 	public int incidentStatus;
 	public int status;
+
 }

@@ -36,12 +36,20 @@ import com.liferay.portal.kernel.transaction.Transactional;
  */
 @AccessControlled
 @JSONWebService
-@OSGiBeanProperties(property =  {
-	"json.web.service.context.name=watsontokenauth", "json.web.service.context.path=WatsonTokenAuthEntry"}, service = WatsonTokenAuthEntryService.class)
+@OSGiBeanProperties(
+	property = {
+		"json.web.service.context.name=watsontokenauth",
+		"json.web.service.context.path=WatsonTokenAuthEntry"
+	},
+	service = WatsonTokenAuthEntryService.class
+)
 @ProviderType
-@Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
-	PortalException.class, SystemException.class})
+@Transactional(
+	isolation = Isolation.PORTAL,
+	rollbackFor = {PortalException.class, SystemException.class}
+)
 public interface WatsonTokenAuthEntryService extends BaseService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -49,9 +57,10 @@ public interface WatsonTokenAuthEntryService extends BaseService {
 	 */
 
 	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
 	public String getOSGiServiceIdentifier();
+
 }

@@ -19,19 +19,17 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
-
 import com.liferay.watson.model.WatsonResource;
-
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-
-import org.osgi.util.tracker.ServiceTracker;
 
 import java.io.Serializable;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * The persistence utility for the watson resource service. This utility wraps <code>com.liferay.watson.service.persistence.impl.WatsonResourcePersistenceImpl</code> and provides direct access to the database for CRUD operations. This utility should only be used by the service layer, as it must operate within a transaction. Never access this utility in a JSP, controller, model, or other front-end class.
@@ -46,6 +44,7 @@ import java.util.Set;
  */
 @ProviderType
 public class WatsonResourceUtil {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -78,6 +77,7 @@ public class WatsonResourceUtil {
 	 */
 	public static Map<Serializable, WatsonResource> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		return getPersistence().fetchByPrimaryKeys(primaryKeys);
 	}
 
@@ -86,6 +86,7 @@ public class WatsonResourceUtil {
 	 */
 	public static List<WatsonResource> findWithDynamicQuery(
 		DynamicQuery dynamicQuery) {
+
 		return getPersistence().findWithDynamicQuery(dynamicQuery);
 	}
 
@@ -94,6 +95,7 @@ public class WatsonResourceUtil {
 	 */
 	public static List<WatsonResource> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
+
 		return getPersistence().findWithDynamicQuery(dynamicQuery, start, end);
 	}
 
@@ -103,9 +105,9 @@ public class WatsonResourceUtil {
 	public static List<WatsonResource> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
 		OrderByComparator<WatsonResource> orderByComparator) {
-		return getPersistence()
-				   .findWithDynamicQuery(dynamicQuery, start, end,
-			orderByComparator);
+
+		return getPersistence().findWithDynamicQuery(
+			dynamicQuery, start, end, orderByComparator);
 	}
 
 	/**
@@ -118,48 +120,50 @@ public class WatsonResourceUtil {
 	/**
 	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
-	public static WatsonResource update(WatsonResource watsonResource,
-		ServiceContext serviceContext) {
+	public static WatsonResource update(
+		WatsonResource watsonResource, ServiceContext serviceContext) {
+
 		return getPersistence().update(watsonResource, serviceContext);
 	}
 
 	/**
-	* Caches the watson resource in the entity cache if it is enabled.
-	*
-	* @param watsonResource the watson resource
-	*/
+	 * Caches the watson resource in the entity cache if it is enabled.
+	 *
+	 * @param watsonResource the watson resource
+	 */
 	public static void cacheResult(WatsonResource watsonResource) {
 		getPersistence().cacheResult(watsonResource);
 	}
 
 	/**
-	* Caches the watson resources in the entity cache if it is enabled.
-	*
-	* @param watsonResources the watson resources
-	*/
+	 * Caches the watson resources in the entity cache if it is enabled.
+	 *
+	 * @param watsonResources the watson resources
+	 */
 	public static void cacheResult(List<WatsonResource> watsonResources) {
 		getPersistence().cacheResult(watsonResources);
 	}
 
 	/**
-	* Creates a new watson resource with the primary key. Does not add the watson resource to the database.
-	*
-	* @param watsonResourceId the primary key for the new watson resource
-	* @return the new watson resource
-	*/
+	 * Creates a new watson resource with the primary key. Does not add the watson resource to the database.
+	 *
+	 * @param watsonResourceId the primary key for the new watson resource
+	 * @return the new watson resource
+	 */
 	public static WatsonResource create(long watsonResourceId) {
 		return getPersistence().create(watsonResourceId);
 	}
 
 	/**
-	* Removes the watson resource with the primary key from the database. Also notifies the appropriate model listeners.
-	*
-	* @param watsonResourceId the primary key of the watson resource
-	* @return the watson resource that was removed
-	* @throws NoSuchResourceException if a watson resource with the primary key could not be found
-	*/
+	 * Removes the watson resource with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param watsonResourceId the primary key of the watson resource
+	 * @return the watson resource that was removed
+	 * @throws NoSuchResourceException if a watson resource with the primary key could not be found
+	 */
 	public static WatsonResource remove(long watsonResourceId)
 		throws com.liferay.watson.exception.NoSuchResourceException {
+
 		return getPersistence().remove(watsonResourceId);
 	}
 
@@ -168,100 +172,104 @@ public class WatsonResourceUtil {
 	}
 
 	/**
-	* Returns the watson resource with the primary key or throws a <code>NoSuchResourceException</code> if it could not be found.
-	*
-	* @param watsonResourceId the primary key of the watson resource
-	* @return the watson resource
-	* @throws NoSuchResourceException if a watson resource with the primary key could not be found
-	*/
+	 * Returns the watson resource with the primary key or throws a <code>NoSuchResourceException</code> if it could not be found.
+	 *
+	 * @param watsonResourceId the primary key of the watson resource
+	 * @return the watson resource
+	 * @throws NoSuchResourceException if a watson resource with the primary key could not be found
+	 */
 	public static WatsonResource findByPrimaryKey(long watsonResourceId)
 		throws com.liferay.watson.exception.NoSuchResourceException {
+
 		return getPersistence().findByPrimaryKey(watsonResourceId);
 	}
 
 	/**
-	* Returns the watson resource with the primary key or returns <code>null</code> if it could not be found.
-	*
-	* @param watsonResourceId the primary key of the watson resource
-	* @return the watson resource, or <code>null</code> if a watson resource with the primary key could not be found
-	*/
+	 * Returns the watson resource with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param watsonResourceId the primary key of the watson resource
+	 * @return the watson resource, or <code>null</code> if a watson resource with the primary key could not be found
+	 */
 	public static WatsonResource fetchByPrimaryKey(long watsonResourceId) {
 		return getPersistence().fetchByPrimaryKey(watsonResourceId);
 	}
 
 	/**
-	* Returns all the watson resources.
-	*
-	* @return the watson resources
-	*/
+	 * Returns all the watson resources.
+	 *
+	 * @return the watson resources
+	 */
 	public static List<WatsonResource> findAll() {
 		return getPersistence().findAll();
 	}
 
 	/**
-	* Returns a range of all the watson resources.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonResourceModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of watson resources
-	* @param end the upper bound of the range of watson resources (not inclusive)
-	* @return the range of watson resources
-	*/
+	 * Returns a range of all the watson resources.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonResourceModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of watson resources
+	 * @param end the upper bound of the range of watson resources (not inclusive)
+	 * @return the range of watson resources
+	 */
 	public static List<WatsonResource> findAll(int start, int end) {
 		return getPersistence().findAll(start, end);
 	}
 
 	/**
-	* Returns an ordered range of all the watson resources.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonResourceModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of watson resources
-	* @param end the upper bound of the range of watson resources (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of watson resources
-	*/
-	public static List<WatsonResource> findAll(int start, int end,
+	 * Returns an ordered range of all the watson resources.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonResourceModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of watson resources
+	 * @param end the upper bound of the range of watson resources (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of watson resources
+	 */
+	public static List<WatsonResource> findAll(
+		int start, int end,
 		OrderByComparator<WatsonResource> orderByComparator) {
+
 		return getPersistence().findAll(start, end, orderByComparator);
 	}
 
 	/**
-	* Returns an ordered range of all the watson resources.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonResourceModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of watson resources
-	* @param end the upper bound of the range of watson resources (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @param retrieveFromCache whether to retrieve from the finder cache
-	* @return the ordered range of watson resources
-	*/
-	public static List<WatsonResource> findAll(int start, int end,
-		OrderByComparator<WatsonResource> orderByComparator,
+	 * Returns an ordered range of all the watson resources.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonResourceModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of watson resources
+	 * @param end the upper bound of the range of watson resources (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @return the ordered range of watson resources
+	 */
+	public static List<WatsonResource> findAll(
+		int start, int end, OrderByComparator<WatsonResource> orderByComparator,
 		boolean retrieveFromCache) {
-		return getPersistence()
-				   .findAll(start, end, orderByComparator, retrieveFromCache);
+
+		return getPersistence().findAll(
+			start, end, orderByComparator, retrieveFromCache);
 	}
 
 	/**
-	* Removes all the watson resources from the database.
-	*/
+	 * Removes all the watson resources from the database.
+	 */
 	public static void removeAll() {
 		getPersistence().removeAll();
 	}
 
 	/**
-	* Returns the number of watson resources.
-	*
-	* @return the number of watson resources
-	*/
+	 * Returns the number of watson resources.
+	 *
+	 * @return the number of watson resources
+	 */
 	public static int countAll() {
 		return getPersistence().countAll();
 	}
@@ -270,17 +278,23 @@ public class WatsonResourceUtil {
 		return _serviceTracker.getService();
 	}
 
-	private static ServiceTracker<WatsonResourcePersistence, WatsonResourcePersistence> _serviceTracker;
+	private static ServiceTracker
+		<WatsonResourcePersistence, WatsonResourcePersistence> _serviceTracker;
 
 	static {
-		Bundle bundle = FrameworkUtil.getBundle(WatsonResourcePersistence.class);
+		Bundle bundle = FrameworkUtil.getBundle(
+			WatsonResourcePersistence.class);
 
-		ServiceTracker<WatsonResourcePersistence, WatsonResourcePersistence> serviceTracker =
-			new ServiceTracker<WatsonResourcePersistence, WatsonResourcePersistence>(bundle.getBundleContext(),
-				WatsonResourcePersistence.class, null);
+		ServiceTracker<WatsonResourcePersistence, WatsonResourcePersistence>
+			serviceTracker =
+				new ServiceTracker
+					<WatsonResourcePersistence, WatsonResourcePersistence>(
+						bundle.getBundleContext(),
+						WatsonResourcePersistence.class, null);
 
 		serviceTracker.open();
 
 		_serviceTracker = serviceTracker;
 	}
+
 }

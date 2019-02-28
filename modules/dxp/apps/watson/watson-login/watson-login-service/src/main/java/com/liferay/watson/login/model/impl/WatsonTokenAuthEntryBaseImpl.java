@@ -34,6 +34,7 @@ import com.liferay.watson.login.service.WatsonTokenAuthEntryLocalServiceUtil;
 @ProviderType
 public abstract class WatsonTokenAuthEntryBaseImpl
 	extends WatsonTokenAuthEntryModelImpl implements WatsonTokenAuthEntry {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -45,7 +46,9 @@ public abstract class WatsonTokenAuthEntryBaseImpl
 			WatsonTokenAuthEntryLocalServiceUtil.addWatsonTokenAuthEntry(this);
 		}
 		else {
-			WatsonTokenAuthEntryLocalServiceUtil.updateWatsonTokenAuthEntry(this);
+			WatsonTokenAuthEntryLocalServiceUtil.updateWatsonTokenAuthEntry(
+				this);
 		}
 	}
+
 }

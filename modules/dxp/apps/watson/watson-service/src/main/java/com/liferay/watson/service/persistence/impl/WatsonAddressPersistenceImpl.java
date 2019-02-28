@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
-
 import com.liferay.watson.exception.NoSuchAddressException;
 import com.liferay.watson.model.WatsonAddress;
 import com.liferay.watson.model.impl.WatsonAddressImpl;
@@ -66,18 +65,24 @@ import java.util.Set;
  * @generated
  */
 @ProviderType
-public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddress>
+public class WatsonAddressPersistenceImpl
+	extends BasePersistenceImpl<WatsonAddress>
 	implements WatsonAddressPersistence {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonAddressUtil</code> to access the watson address persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY = WatsonAddressImpl.class.getName();
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List1";
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List2";
+	public static final String FINDER_CLASS_NAME_ENTITY =
+		WatsonAddressImpl.class.getName();
+
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List1";
+
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List2";
+
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
@@ -87,7 +92,7 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 
 		try {
 			Field field = BasePersistenceImpl.class.getDeclaredField(
-					"_dbColumnNames");
+				"_dbColumnNames");
 
 			field.setAccessible(true);
 
@@ -111,7 +116,8 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 	 */
 	@Override
 	public void cacheResult(WatsonAddress watsonAddress) {
-		entityCache.putResult(WatsonAddressModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			WatsonAddressModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonAddressImpl.class, watsonAddress.getPrimaryKey(),
 			watsonAddress);
 
@@ -127,8 +133,10 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 	public void cacheResult(List<WatsonAddress> watsonAddresses) {
 		for (WatsonAddress watsonAddress : watsonAddresses) {
 			if (entityCache.getResult(
-						WatsonAddressModelImpl.ENTITY_CACHE_ENABLED,
-						WatsonAddressImpl.class, watsonAddress.getPrimaryKey()) == null) {
+					WatsonAddressModelImpl.ENTITY_CACHE_ENABLED,
+					WatsonAddressImpl.class, watsonAddress.getPrimaryKey()) ==
+						null) {
+
 				cacheResult(watsonAddress);
 			}
 			else {
@@ -162,7 +170,8 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 	 */
 	@Override
 	public void clearCache(WatsonAddress watsonAddress) {
-		entityCache.removeResult(WatsonAddressModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.removeResult(
+			WatsonAddressModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonAddressImpl.class, watsonAddress.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -175,7 +184,8 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (WatsonAddress watsonAddress : watsonAddresses) {
-			entityCache.removeResult(WatsonAddressModelImpl.ENTITY_CACHE_ENABLED,
+			entityCache.removeResult(
+				WatsonAddressModelImpl.ENTITY_CACHE_ENABLED,
 				WatsonAddressImpl.class, watsonAddress.getPrimaryKey());
 		}
 	}
@@ -208,6 +218,7 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 	@Override
 	public WatsonAddress remove(long watsonAddressId)
 		throws NoSuchAddressException {
+
 		return remove((Serializable)watsonAddressId);
 	}
 
@@ -221,21 +232,22 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 	@Override
 	public WatsonAddress remove(Serializable primaryKey)
 		throws NoSuchAddressException {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			WatsonAddress watsonAddress = (WatsonAddress)session.get(WatsonAddressImpl.class,
-					primaryKey);
+			WatsonAddress watsonAddress = (WatsonAddress)session.get(
+				WatsonAddressImpl.class, primaryKey);
 
 			if (watsonAddress == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchAddressException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					primaryKey);
+				throw new NoSuchAddressException(
+					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			return remove(watsonAddress);
@@ -259,8 +271,8 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 			session = openSession();
 
 			if (!session.contains(watsonAddress)) {
-				watsonAddress = (WatsonAddress)session.get(WatsonAddressImpl.class,
-						watsonAddress.getPrimaryKeyObj());
+				watsonAddress = (WatsonAddress)session.get(
+					WatsonAddressImpl.class, watsonAddress.getPrimaryKeyObj());
 			}
 
 			if (watsonAddress != null) {
@@ -289,21 +301,24 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 			InvocationHandler invocationHandler = null;
 
 			if (ProxyUtil.isProxyClass(watsonAddress.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(watsonAddress);
+				invocationHandler = ProxyUtil.getInvocationHandler(
+					watsonAddress);
 
 				throw new IllegalArgumentException(
 					"Implement ModelWrapper in watsonAddress proxy " +
-					invocationHandler.getClass());
+						invocationHandler.getClass());
 			}
 
 			throw new IllegalArgumentException(
 				"Implement ModelWrapper in custom WatsonAddress implementation " +
-				watsonAddress.getClass());
+					watsonAddress.getClass());
 		}
 
-		WatsonAddressModelImpl watsonAddressModelImpl = (WatsonAddressModelImpl)watsonAddress;
+		WatsonAddressModelImpl watsonAddressModelImpl =
+			(WatsonAddressModelImpl)watsonAddress;
 
-		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
 
 		Date now = new Date();
 
@@ -321,8 +336,8 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 				watsonAddress.setModifiedDate(now);
 			}
 			else {
-				watsonAddress.setModifiedDate(serviceContext.getModifiedDate(
-						now));
+				watsonAddress.setModifiedDate(
+					serviceContext.getModifiedDate(now));
 			}
 		}
 
@@ -351,11 +366,12 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 
 		if (isNew) {
 			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(_finderPathWithoutPaginationFindAll,
-				FINDER_ARGS_EMPTY);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(WatsonAddressModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			WatsonAddressModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonAddressImpl.class, watsonAddress.getPrimaryKey(),
 			watsonAddress, false);
 
@@ -374,6 +390,7 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 	@Override
 	public WatsonAddress findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchAddressException {
+
 		WatsonAddress watsonAddress = fetchByPrimaryKey(primaryKey);
 
 		if (watsonAddress == null) {
@@ -381,8 +398,8 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchAddressException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				primaryKey);
+			throw new NoSuchAddressException(
+				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 		}
 
 		return watsonAddress;
@@ -398,6 +415,7 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 	@Override
 	public WatsonAddress findByPrimaryKey(long watsonAddressId)
 		throws NoSuchAddressException {
+
 		return findByPrimaryKey((Serializable)watsonAddressId);
 	}
 
@@ -409,8 +427,9 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 	 */
 	@Override
 	public WatsonAddress fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(WatsonAddressModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonAddressImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(
+			WatsonAddressModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonAddressImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -424,19 +443,21 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 			try {
 				session = openSession();
 
-				watsonAddress = (WatsonAddress)session.get(WatsonAddressImpl.class,
-						primaryKey);
+				watsonAddress = (WatsonAddress)session.get(
+					WatsonAddressImpl.class, primaryKey);
 
 				if (watsonAddress != null) {
 					cacheResult(watsonAddress);
 				}
 				else {
-					entityCache.putResult(WatsonAddressModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(
+						WatsonAddressModelImpl.ENTITY_CACHE_ENABLED,
 						WatsonAddressImpl.class, primaryKey, nullModel);
 				}
 			}
 			catch (Exception e) {
-				entityCache.removeResult(WatsonAddressModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.removeResult(
+					WatsonAddressModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonAddressImpl.class, primaryKey);
 
 				throw processException(e);
@@ -463,11 +484,13 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 	@Override
 	public Map<Serializable, WatsonAddress> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, WatsonAddress> map = new HashMap<Serializable, WatsonAddress>();
+		Map<Serializable, WatsonAddress> map =
+			new HashMap<Serializable, WatsonAddress>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
@@ -486,8 +509,9 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(WatsonAddressModelImpl.ENTITY_CACHE_ENABLED,
-					WatsonAddressImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(
+				WatsonAddressModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonAddressImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -507,8 +531,8 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 			return map;
 		}
 
-		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
-				1);
+		StringBundler query = new StringBundler(
+			uncachedPrimaryKeys.size() * 2 + 1);
 
 		query.append(_SQL_SELECT_WATSONADDRESS_WHERE_PKS_IN);
 
@@ -540,7 +564,8 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(WatsonAddressModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(
+					WatsonAddressModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonAddressImpl.class, primaryKey, nullModel);
 			}
 		}
@@ -593,8 +618,10 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 	 * @return the ordered range of watson addresses
 	 */
 	@Override
-	public List<WatsonAddress> findAll(int start, int end,
+	public List<WatsonAddress> findAll(
+		int start, int end,
 		OrderByComparator<WatsonAddress> orderByComparator) {
+
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -612,29 +639,31 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 	 * @return the ordered range of watson addresses
 	 */
 	@Override
-	public List<WatsonAddress> findAll(int start, int end,
-		OrderByComparator<WatsonAddress> orderByComparator,
+	public List<WatsonAddress> findAll(
+		int start, int end, OrderByComparator<WatsonAddress> orderByComparator,
 		boolean retrieveFromCache) {
+
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
+			(orderByComparator == null)) {
+
 			pagination = false;
 			finderPath = _finderPathWithoutPaginationFindAll;
 			finderArgs = FINDER_ARGS_EMPTY;
 		}
 		else {
 			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] { start, end, orderByComparator };
+			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<WatsonAddress> list = null;
 
 		if (retrieveFromCache) {
-			list = (List<WatsonAddress>)finderCache.getResult(finderPath,
-					finderArgs, this);
+			list = (List<WatsonAddress>)finderCache.getResult(
+				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
@@ -642,13 +671,13 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(2 +
-						(orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(
+					2 + (orderByComparator.getOrderByFields().length * 2));
 
 				query.append(_SQL_SELECT_WATSONADDRESS);
 
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
 				sql = query.toString();
 			}
@@ -668,16 +697,16 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 				Query q = session.createQuery(sql);
 
 				if (!pagination) {
-					list = (List<WatsonAddress>)QueryUtil.list(q, getDialect(),
-							start, end, false);
+					list = (List<WatsonAddress>)QueryUtil.list(
+						q, getDialect(), start, end, false);
 
 					Collections.sort(list);
 
 					list = Collections.unmodifiableList(list);
 				}
 				else {
-					list = (List<WatsonAddress>)QueryUtil.list(q, getDialect(),
-							start, end);
+					list = (List<WatsonAddress>)QueryUtil.list(
+						q, getDialect(), start, end);
 				}
 
 				cacheResult(list);
@@ -715,8 +744,8 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(_finderPathCountAll,
-				FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(
+			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -728,11 +757,12 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 
 				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(_finderPathCountAll, FINDER_ARGS_EMPTY,
-					count);
+				finderCache.putResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
+				finderCache.removeResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
 				throw processException(e);
 			}
@@ -758,21 +788,23 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 	 * Initializes the watson address persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(WatsonAddressModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonAddressModelImpl.FINDER_CACHE_ENABLED,
-				WatsonAddressImpl.class,
-				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+		_finderPathWithPaginationFindAll = new FinderPath(
+			WatsonAddressModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonAddressModelImpl.FINDER_CACHE_ENABLED,
+			WatsonAddressImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(WatsonAddressModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonAddressModelImpl.FINDER_CACHE_ENABLED,
-				WatsonAddressImpl.class,
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-				new String[0]);
+		_finderPathWithoutPaginationFindAll = new FinderPath(
+			WatsonAddressModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonAddressModelImpl.FINDER_CACHE_ENABLED,
+			WatsonAddressImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"findAll", new String[0]);
 
-		_finderPathCountAll = new FinderPath(WatsonAddressModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonAddressModelImpl.FINDER_CACHE_ENABLED, Long.class,
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-				new String[0]);
+		_finderPathCountAll = new FinderPath(
+			WatsonAddressModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonAddressModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+			new String[0]);
 	}
 
 	public void destroy() {
@@ -784,17 +816,31 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
+
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
+
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-	private static final String _SQL_SELECT_WATSONADDRESS = "SELECT watsonAddress FROM WatsonAddress watsonAddress";
-	private static final String _SQL_SELECT_WATSONADDRESS_WHERE_PKS_IN = "SELECT watsonAddress FROM WatsonAddress watsonAddress WHERE watsonAddressId IN (";
-	private static final String _SQL_COUNT_WATSONADDRESS = "SELECT COUNT(watsonAddress) FROM WatsonAddress watsonAddress";
+
+	private static final String _SQL_SELECT_WATSONADDRESS =
+		"SELECT watsonAddress FROM WatsonAddress watsonAddress";
+
+	private static final String _SQL_SELECT_WATSONADDRESS_WHERE_PKS_IN =
+		"SELECT watsonAddress FROM WatsonAddress watsonAddress WHERE watsonAddressId IN (";
+
+	private static final String _SQL_COUNT_WATSONADDRESS =
+		"SELECT COUNT(watsonAddress) FROM WatsonAddress watsonAddress";
+
 	private static final String _ORDER_BY_ENTITY_ALIAS = "watsonAddress.";
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No WatsonAddress exists with the primary key ";
-	private static final Log _log = LogFactoryUtil.getLog(WatsonAddressPersistenceImpl.class);
-	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
-				"number"
-			});
+
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
+		"No WatsonAddress exists with the primary key ";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		WatsonAddressPersistenceImpl.class);
+
+	private static final Set<String> _badColumnNames = SetUtil.fromArray(
+		new String[] {"number"});
+
 }

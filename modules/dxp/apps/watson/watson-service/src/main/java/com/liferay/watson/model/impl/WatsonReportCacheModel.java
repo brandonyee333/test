@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.model.WatsonReport;
 
 import java.io.Externalizable;
@@ -36,8 +35,9 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public class WatsonReportCacheModel implements CacheModel<WatsonReport>,
-	Externalizable {
+public class WatsonReportCacheModel
+	implements CacheModel<WatsonReport>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,7 +48,8 @@ public class WatsonReportCacheModel implements CacheModel<WatsonReport>,
 			return false;
 		}
 
-		WatsonReportCacheModel watsonReportCacheModel = (WatsonReportCacheModel)obj;
+		WatsonReportCacheModel watsonReportCacheModel =
+			(WatsonReportCacheModel)obj;
 
 		if (watsonReportId == watsonReportCacheModel.watsonReportId) {
 			return true;
@@ -232,8 +233,7 @@ public class WatsonReportCacheModel implements CacheModel<WatsonReport>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonReportId);
 
 		objectOutput.writeLong(groupId);
@@ -326,4 +326,5 @@ public class WatsonReportCacheModel implements CacheModel<WatsonReport>,
 	public long reportDate;
 	public int key;
 	public int status;
+
 }

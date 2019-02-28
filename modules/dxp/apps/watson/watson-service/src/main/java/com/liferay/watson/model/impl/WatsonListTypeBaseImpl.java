@@ -32,8 +32,9 @@ import com.liferay.watson.service.WatsonListTypeLocalServiceUtil;
  * @generated
  */
 @ProviderType
-public abstract class WatsonListTypeBaseImpl extends WatsonListTypeModelImpl
-	implements WatsonListType {
+public abstract class WatsonListTypeBaseImpl
+	extends WatsonListTypeModelImpl implements WatsonListType {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -48,4 +49,5 @@ public abstract class WatsonListTypeBaseImpl extends WatsonListTypeModelImpl
 			WatsonListTypeLocalServiceUtil.updateWatsonListType(this);
 		}
 	}
+
 }

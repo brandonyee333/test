@@ -51,10 +51,13 @@ import java.util.Map;
  * @generated
  */
 @ProviderType
-@Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
-	PortalException.class, SystemException.class})
-public interface KaleoDraftDefinitionLocalService extends BaseLocalService,
-	PersistedModelLocalService {
+@Transactional(
+	isolation = Isolation.PORTAL,
+	rollbackFor = {PortalException.class, SystemException.class}
+)
+public interface KaleoDraftDefinitionLocalService
+	extends BaseLocalService, PersistedModelLocalService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -62,104 +65,109 @@ public interface KaleoDraftDefinitionLocalService extends BaseLocalService,
 	 */
 
 	/**
-	* Adds the kaleo draft definition to the database. Also notifies the appropriate model listeners.
-	*
-	* @param kaleoDraftDefinition the kaleo draft definition
-	* @return the kaleo draft definition that was added
-	*/
+	 * Adds the kaleo draft definition to the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param kaleoDraftDefinition the kaleo draft definition
+	 * @return the kaleo draft definition that was added
+	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public KaleoDraftDefinition addKaleoDraftDefinition(
 		KaleoDraftDefinition kaleoDraftDefinition);
 
 	/**
-	* Adds a Kaleo draft definition.
-	*
-	* @param userId the primary key of the Kaleo draft definition's
-	creator/owner
-	* @param groupId the primary key of the Kaleo draft definition's group
-	* @param name the Kaleo draft definition's name
-	* @param titleMap the Kaleo draft definition's locales and localized
-	titles
-	* @param content the content wrapped in XML
-	* @param version the Kaleo draft definition's published version
-	* @param draftVersion the Kaleo draft definition's draft version
-	* @param serviceContext the service context to be applied. This can set
-	guest permissions and group permissions for the Kaleo draft
-	definition.
-	* @return the Kaleo draft definition
-	* @throws PortalException if a portal exception occurred
-	*/
-	public KaleoDraftDefinition addKaleoDraftDefinition(long userId,
-		long groupId, String name, Map<Locale, String> titleMap,
-		String content, int version, int draftVersion,
-		ServiceContext serviceContext) throws PortalException;
+	 * Adds a Kaleo draft definition.
+	 *
+	 * @param userId the primary key of the Kaleo draft definition's
+	 creator/owner
+	 * @param groupId the primary key of the Kaleo draft definition's group
+	 * @param name the Kaleo draft definition's name
+	 * @param titleMap the Kaleo draft definition's locales and localized
+	 titles
+	 * @param content the content wrapped in XML
+	 * @param version the Kaleo draft definition's published version
+	 * @param draftVersion the Kaleo draft definition's draft version
+	 * @param serviceContext the service context to be applied. This can set
+	 guest permissions and group permissions for the Kaleo draft
+	 definition.
+	 * @return the Kaleo draft definition
+	 * @throws PortalException if a portal exception occurred
+	 */
+	public KaleoDraftDefinition addKaleoDraftDefinition(
+			long userId, long groupId, String name,
+			Map<Locale, String> titleMap, String content, int version,
+			int draftVersion, ServiceContext serviceContext)
+		throws PortalException;
 
 	/**
-	* Creates a new kaleo draft definition with the primary key. Does not add the kaleo draft definition to the database.
-	*
-	* @param kaleoDraftDefinitionId the primary key for the new kaleo draft definition
-	* @return the new kaleo draft definition
-	*/
+	 * Creates a new kaleo draft definition with the primary key. Does not add the kaleo draft definition to the database.
+	 *
+	 * @param kaleoDraftDefinitionId the primary key for the new kaleo draft definition
+	 * @return the new kaleo draft definition
+	 */
 	@Transactional(enabled = false)
 	public KaleoDraftDefinition createKaleoDraftDefinition(
 		long kaleoDraftDefinitionId);
 
 	/**
-	* Deletes the kaleo draft definition from the database. Also notifies the appropriate model listeners.
-	*
-	* @param kaleoDraftDefinition the kaleo draft definition
-	* @return the kaleo draft definition that was removed
-	* @throws PortalException
-	*/
+	 * Deletes the kaleo draft definition from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param kaleoDraftDefinition the kaleo draft definition
+	 * @return the kaleo draft definition that was removed
+	 * @throws PortalException
+	 */
 	@Indexable(type = IndexableType.DELETE)
 	public KaleoDraftDefinition deleteKaleoDraftDefinition(
-		KaleoDraftDefinition kaleoDraftDefinition) throws PortalException;
-
-	/**
-	* Deletes the kaleo draft definition with the primary key from the database. Also notifies the appropriate model listeners.
-	*
-	* @param kaleoDraftDefinitionId the primary key of the kaleo draft definition
-	* @return the kaleo draft definition that was removed
-	* @throws PortalException if a kaleo draft definition with the primary key could not be found
-	*/
-	@Indexable(type = IndexableType.DELETE)
-	public KaleoDraftDefinition deleteKaleoDraftDefinition(
-		long kaleoDraftDefinitionId) throws PortalException;
-
-	/**
-	* Deletes the Kaleo draft definition and its resources matching the name,
-	* published version, and draft version.
-	*
-	* @param name the Kaleo draft definition's name
-	* @param version the Kaleo draft definition's published version
-	* @param draftVersion the Kaleo draft definition's draft version
-	* @param serviceContext the service context to be applied. This can set
-	guest permissions and group permissions for the Kaleo draft
-	definition.
-	* @return the deleted Kaleo draft definition
-	* @throws PortalException if a portal exception occurred
-	*/
-	public KaleoDraftDefinition deleteKaleoDraftDefinition(String name,
-		int version, int draftVersion, ServiceContext serviceContext)
+			KaleoDraftDefinition kaleoDraftDefinition)
 		throws PortalException;
 
 	/**
-	* Deletes the kaleo draft definition and its resources matching the name
-	* and version.
-	*
-	* @param name the Kaleo draft definition's name
-	* @param version the Kaleo draft definition's published version
-	* @param serviceContext the service context to be applied. This can set
-	guest permissions and group permissions for the Kaleo draft
-	definition.
-	* @throws PortalException if a portal exception occurred
-	*/
-	public void deleteKaleoDraftDefinitions(String name, int version,
-		ServiceContext serviceContext) throws PortalException;
+	 * Deletes the kaleo draft definition with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param kaleoDraftDefinitionId the primary key of the kaleo draft definition
+	 * @return the kaleo draft definition that was removed
+	 * @throws PortalException if a kaleo draft definition with the primary key could not be found
+	 */
+	@Indexable(type = IndexableType.DELETE)
+	public KaleoDraftDefinition deleteKaleoDraftDefinition(
+			long kaleoDraftDefinitionId)
+		throws PortalException;
 
 	/**
-	* @throws PortalException
-	*/
+	 * Deletes the Kaleo draft definition and its resources matching the name,
+	 * published version, and draft version.
+	 *
+	 * @param name the Kaleo draft definition's name
+	 * @param version the Kaleo draft definition's published version
+	 * @param draftVersion the Kaleo draft definition's draft version
+	 * @param serviceContext the service context to be applied. This can set
+	 guest permissions and group permissions for the Kaleo draft
+	 definition.
+	 * @return the deleted Kaleo draft definition
+	 * @throws PortalException if a portal exception occurred
+	 */
+	public KaleoDraftDefinition deleteKaleoDraftDefinition(
+			String name, int version, int draftVersion,
+			ServiceContext serviceContext)
+		throws PortalException;
+
+	/**
+	 * Deletes the kaleo draft definition and its resources matching the name
+	 * and version.
+	 *
+	 * @param name the Kaleo draft definition's name
+	 * @param version the Kaleo draft definition's published version
+	 * @param serviceContext the service context to be applied. This can set
+	 guest permissions and group permissions for the Kaleo draft
+	 definition.
+	 * @throws PortalException if a portal exception occurred
+	 */
+	public void deleteKaleoDraftDefinitions(
+			String name, int version, ServiceContext serviceContext)
+		throws PortalException;
+
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
@@ -168,66 +176,67 @@ public interface KaleoDraftDefinitionLocalService extends BaseLocalService,
 	public DynamicQuery dynamicQuery();
 
 	/**
-	* Performs a dynamic query on the database and returns the matching rows.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the matching rows
-	*/
+	 * Performs a dynamic query on the database and returns the matching rows.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @return the matching rows
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery);
 
 	/**
-	* Performs a dynamic query on the database and returns a range of the matching rows.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.portal.workflow.kaleo.designer.model.impl.KaleoDraftDefinitionModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param dynamicQuery the dynamic query
-	* @param start the lower bound of the range of model instances
-	* @param end the upper bound of the range of model instances (not inclusive)
-	* @return the range of matching rows
-	*/
+	 * Performs a dynamic query on the database and returns a range of the matching rows.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.portal.workflow.kaleo.designer.model.impl.KaleoDraftDefinitionModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param start the lower bound of the range of model instances
+	 * @param end the upper bound of the range of model instances (not inclusive)
+	 * @return the range of matching rows
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end);
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end);
 
 	/**
-	* Performs a dynamic query on the database and returns an ordered range of the matching rows.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.portal.workflow.kaleo.designer.model.impl.KaleoDraftDefinitionModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param dynamicQuery the dynamic query
-	* @param start the lower bound of the range of model instances
-	* @param end the upper bound of the range of model instances (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of matching rows
-	*/
+	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.portal.workflow.kaleo.designer.model.impl.KaleoDraftDefinitionModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param start the lower bound of the range of model instances
+	 * @param end the upper bound of the range of model instances (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching rows
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end, OrderByComparator<T> orderByComparator);
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
+	 * Returns the number of rows matching the dynamic query.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @return the number of rows matching the dynamic query
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public long dynamicQueryCount(DynamicQuery dynamicQuery);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
+	 * Returns the number of rows matching the dynamic query.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param projection the projection to apply to the query
+	 * @return the number of rows matching the dynamic query
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
+	public long dynamicQueryCount(
+		DynamicQuery dynamicQuery, Projection projection);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public KaleoDraftDefinition fetchKaleoDraftDefinition(
@@ -240,181 +249,184 @@ public interface KaleoDraftDefinitionLocalService extends BaseLocalService,
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	/**
-	* Returns the kaleo draft definition with the primary key.
-	*
-	* @param kaleoDraftDefinitionId the primary key of the kaleo draft definition
-	* @return the kaleo draft definition
-	* @throws PortalException if a kaleo draft definition with the primary key could not be found
-	*/
+	 * Returns the kaleo draft definition with the primary key.
+	 *
+	 * @param kaleoDraftDefinitionId the primary key of the kaleo draft definition
+	 * @return the kaleo draft definition
+	 * @throws PortalException if a kaleo draft definition with the primary key could not be found
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public KaleoDraftDefinition getKaleoDraftDefinition(
-		long kaleoDraftDefinitionId) throws PortalException;
-
-	/**
-	* Returns the Kaleo draft definition matching the name, published version,
-	* and draft version.
-	*
-	* @param name the Kaleo draft definition's name
-	* @param version the Kaleo draft definition's published version
-	* @param draftVersion the Kaleo draft definition's draft version
-	* @param serviceContext the service context to be applied. This can set
-	guest permissions and group permissions for the Kaleo draft
-	definition.
-	* @return the matching Kaleo draft definition
-	* @throws PortalException if a portal exception occurred
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public KaleoDraftDefinition getKaleoDraftDefinition(String name,
-		int version, int draftVersion, ServiceContext serviceContext)
+			long kaleoDraftDefinitionId)
 		throws PortalException;
 
 	/**
-	* Returns a range of all the kaleo draft definitions.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.portal.workflow.kaleo.designer.model.impl.KaleoDraftDefinitionModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of kaleo draft definitions
-	* @param end the upper bound of the range of kaleo draft definitions (not inclusive)
-	* @return the range of kaleo draft definitions
-	*/
+	 * Returns the Kaleo draft definition matching the name, published version,
+	 * and draft version.
+	 *
+	 * @param name the Kaleo draft definition's name
+	 * @param version the Kaleo draft definition's published version
+	 * @param draftVersion the Kaleo draft definition's draft version
+	 * @param serviceContext the service context to be applied. This can set
+	 guest permissions and group permissions for the Kaleo draft
+	 definition.
+	 * @return the matching Kaleo draft definition
+	 * @throws PortalException if a portal exception occurred
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<KaleoDraftDefinition> getKaleoDraftDefinitions(int start,
-		int end);
+	public KaleoDraftDefinition getKaleoDraftDefinition(
+			String name, int version, int draftVersion,
+			ServiceContext serviceContext)
+		throws PortalException;
 
 	/**
-	* Returns an ordered range of the Kaleo draft definitions matching the name
-	* and version.
-	*
-	* @param name the Kaleo draft definition's name
-	* @param version the Kaleo draft definition's published version
-	* @param start the lower bound of the range of Kaleo draft definitions to
-	return
-	* @param end the upper bound of the range of Kaleo draft definitions to
-	return (not inclusive)
-	* @param orderByComparator the comparator to order the Kaleo draft
-	definitions
-	* @param serviceContext the service context to be applied. This can set
-	guest permissions and group permissions for the Kaleo draft
-	definition.
-	* @return the range of matching Kaleo draft definitions ordered by the
-	comparator
-	*/
+	 * Returns a range of all the kaleo draft definitions.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.portal.workflow.kaleo.designer.model.impl.KaleoDraftDefinitionModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of kaleo draft definitions
+	 * @param end the upper bound of the range of kaleo draft definitions (not inclusive)
+	 * @return the range of kaleo draft definitions
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<KaleoDraftDefinition> getKaleoDraftDefinitions(String name,
-		int version, int start, int end, OrderByComparator orderByComparator,
-		ServiceContext serviceContext);
+	public List<KaleoDraftDefinition> getKaleoDraftDefinitions(
+		int start, int end);
 
 	/**
-	* Returns the number of kaleo draft definitions.
-	*
-	* @return the number of kaleo draft definitions
-	*/
+	 * Returns an ordered range of the Kaleo draft definitions matching the name
+	 * and version.
+	 *
+	 * @param name the Kaleo draft definition's name
+	 * @param version the Kaleo draft definition's published version
+	 * @param start the lower bound of the range of Kaleo draft definitions to
+	 return
+	 * @param end the upper bound of the range of Kaleo draft definitions to
+	 return (not inclusive)
+	 * @param orderByComparator the comparator to order the Kaleo draft
+	 definitions
+	 * @param serviceContext the service context to be applied. This can set
+	 guest permissions and group permissions for the Kaleo draft
+	 definition.
+	 * @return the range of matching Kaleo draft definitions ordered by the
+	 comparator
+	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<KaleoDraftDefinition> getKaleoDraftDefinitions(
+		String name, int version, int start, int end,
+		OrderByComparator orderByComparator, ServiceContext serviceContext);
+
+	/**
+	 * Returns the number of kaleo draft definitions.
+	 *
+	 * @return the number of kaleo draft definitions
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getKaleoDraftDefinitionsCount();
 
 	/**
-	* Returns the number of Kaleo draft definition matching the name and
-	* version.
-	*
-	* @param name the Kaleo draft definition's name
-	* @param version the Kaleo draft definition's published version
-	* @param serviceContext the service context to be applied. This can set
-	guest permissions and group permissions for the Kaleo draft
-	definition.
-	* @return the number of matching Kaleo draft definitions
-	*/
+	 * Returns the number of Kaleo draft definition matching the name and
+	 * version.
+	 *
+	 * @param name the Kaleo draft definition's name
+	 * @param version the Kaleo draft definition's published version
+	 * @param serviceContext the service context to be applied. This can set
+	 guest permissions and group permissions for the Kaleo draft
+	 definition.
+	 * @return the number of matching Kaleo draft definitions
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getKaleoDraftDefinitionsCount(String name, int version,
-		ServiceContext serviceContext);
+	public int getKaleoDraftDefinitionsCount(
+		String name, int version, ServiceContext serviceContext);
 
 	/**
-	* Returns the latest Kaleo draft definition matching the name and version.
-	*
-	* @param name the Kaleo draft definition's name
-	* @param version the Kaleo draft definition's published version
-	* @param serviceContext the service context to be applied. This can set
-	guest permissions and group permissions for the Kaleo draft
-	definition.
-	* @return the latest matching Kaleo draft definition
-	* @throws PortalException if a matching Kaleo draft definition could not be
-	found
-	*/
+	 * Returns the latest Kaleo draft definition matching the name and version.
+	 *
+	 * @param name the Kaleo draft definition's name
+	 * @param version the Kaleo draft definition's published version
+	 * @param serviceContext the service context to be applied. This can set
+	 guest permissions and group permissions for the Kaleo draft
+	 definition.
+	 * @return the latest matching Kaleo draft definition
+	 * @throws PortalException if a matching Kaleo draft definition could not be
+	 found
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public KaleoDraftDefinition getLatestKaleoDraftDefinition(String name,
-		int version, ServiceContext serviceContext) throws PortalException;
+	public KaleoDraftDefinition getLatestKaleoDraftDefinition(
+			String name, int version, ServiceContext serviceContext)
+		throws PortalException;
 
 	/**
-	* Returns an ordered range of the latest Kaleo draft definitions matching
-	* the company and version.
-	*
-	* @param companyId the primary key of the Kaleo draft definition's company
-	* @param version the Kaleo draft definition's published version
-	* @param start the lower bound of the range of Kaleo draft definitions to
-	return
-	* @param end the upper bound of the range of Kaleo draft definitions to
-	return (not inclusive)
-	* @param orderByComparator the comparator to order the Kaleo draft
-	definitions
-	* @return the range of matching Kaleo draft definitions ordered by the
-	comparator
-	*/
+	 * Returns an ordered range of the latest Kaleo draft definitions matching
+	 * the company and version.
+	 *
+	 * @param companyId the primary key of the Kaleo draft definition's company
+	 * @param version the Kaleo draft definition's published version
+	 * @param start the lower bound of the range of Kaleo draft definitions to
+	 return
+	 * @param end the upper bound of the range of Kaleo draft definitions to
+	 return (not inclusive)
+	 * @param orderByComparator the comparator to order the Kaleo draft
+	 definitions
+	 * @return the range of matching Kaleo draft definitions ordered by the
+	 comparator
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<KaleoDraftDefinition> getLatestKaleoDraftDefinitions(
 		long companyId, int version, int start, int end,
 		OrderByComparator orderByComparator);
 
 	/**
-	* Returns an ordered range of the latest Kaleo draft definitions matching
-	* the company, keywords, and version.
-	*
-	* @param companyId the primary key of the Kaleo draft definition's company
-	* @param keywords the Kaleo draft definition's name or title
-	* @param version the Kaleo draft definition's published version
-	* @param start the lower bound of the range of Kaleo draft definitions to
-	return
-	* @param end the upper bound of the range of Kaleo draft definitions to
-	return (not inclusive)
-	* @param orderByComparator the comparator to order the Kaleo draft
-	definitions
-	* @return the range of matching Kaleo draft definitions ordered by the
-	comparator
-	*/
+	 * Returns an ordered range of the latest Kaleo draft definitions matching
+	 * the company, keywords, and version.
+	 *
+	 * @param companyId the primary key of the Kaleo draft definition's company
+	 * @param keywords the Kaleo draft definition's name or title
+	 * @param version the Kaleo draft definition's published version
+	 * @param start the lower bound of the range of Kaleo draft definitions to
+	 return
+	 * @param end the upper bound of the range of Kaleo draft definitions to
+	 return (not inclusive)
+	 * @param orderByComparator the comparator to order the Kaleo draft
+	 definitions
+	 * @return the range of matching Kaleo draft definitions ordered by the
+	 comparator
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<KaleoDraftDefinition> getLatestKaleoDraftDefinitions(
 		long companyId, String keywords, int version, int start, int end,
 		OrderByComparator orderByComparator);
 
 	/**
-	* Returns the number of Kaleo draft definitions matching the company and
-	* version.
-	*
-	* @param companyId the primary key of the Kaleo draft definition's company
-	* @param version the Kaleo draft definition's published version
-	* @return the number of matching Kaleo draft definitions
-	*/
+	 * Returns the number of Kaleo draft definitions matching the company and
+	 * version.
+	 *
+	 * @param companyId the primary key of the Kaleo draft definition's company
+	 * @param version the Kaleo draft definition's published version
+	 * @return the number of matching Kaleo draft definitions
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getLatestKaleoDraftDefinitionsCount(long companyId, int version);
 
 	/**
-	* Returns the number of Kaleo draft definitions matching the company,
-	* keywords, and version.
-	*
-	* @param companyId the primary key of the Kaleo draft definition's company
-	* @param keywords the Kaleo draft definition's name or title
-	* @param version the Kaleo draft definition's published version
-	* @return the number of matching Kaleo draft definitions
-	*/
+	 * Returns the number of Kaleo draft definitions matching the company,
+	 * keywords, and version.
+	 *
+	 * @param companyId the primary key of the Kaleo draft definition's company
+	 * @param keywords the Kaleo draft definition's name or title
+	 * @param version the Kaleo draft definition's published version
+	 * @return the number of matching Kaleo draft definitions
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getLatestKaleoDraftDefinitionsCount(long companyId,
-		String keywords, int version);
+	public int getLatestKaleoDraftDefinitionsCount(
+		long companyId, String keywords, int version);
 
 	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
 	public String getOSGiServiceIdentifier();
 
 	@Override
@@ -423,75 +435,79 @@ public interface KaleoDraftDefinitionLocalService extends BaseLocalService,
 		throws PortalException;
 
 	/**
-	* Adds a Kaleo draft definition with a draft version increment.
-	*
-	* @param userId the primary key of the Kaleo draft definition's
-	creator/owner
-	* @param name the Kaleo draft definition's name
-	* @param version the Kaleo draft definition's published version
-	* @param serviceContext the service context to be applied. This can set
-	guest permissions and group permissions for the Kaleo draft
-	deifnition.
-	* @return the Kaleo draft definition
-	* @throws PortalException if a portal exception occurred
-	*/
+	 * Adds a Kaleo draft definition with a draft version increment.
+	 *
+	 * @param userId the primary key of the Kaleo draft definition's
+	 creator/owner
+	 * @param name the Kaleo draft definition's name
+	 * @param version the Kaleo draft definition's published version
+	 * @param serviceContext the service context to be applied. This can set
+	 guest permissions and group permissions for the Kaleo draft
+	 deifnition.
+	 * @return the Kaleo draft definition
+	 * @throws PortalException if a portal exception occurred
+	 */
 	public KaleoDraftDefinition incrementKaleoDraftDefinitionDraftVersion(
-		long userId, String name, int version, ServiceContext serviceContext)
+			long userId, String name, int version,
+			ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
-	* Publishes the Kaleo draft definition.
-	*
-	* @param userId the primary key of the Kaleo draft definition's
-	creator/owner
-	* @param groupId the primary key of the Kaleo draft definition's group
-	* @param name the Kaleo draft definition's name
-	* @param titleMap the Kaleo draft definition's locales and localized
-	titles
-	* @param content the content wrapped in XML
-	* @param serviceContext the service context to be applied. This can set
-	guest permissions and group permissions for the Kaleo draft
-	definition.
-	* @return the published Kaleo draft definition
-	* @throws PortalException if the user did not have the required permissions
-	to publish the Kaleo draft definition or if a portal exception
-	occurred
-	*/
-	public KaleoDraftDefinition publishKaleoDraftDefinition(long userId,
-		long groupId, String name, Map<Locale, String> titleMap,
-		String content, ServiceContext serviceContext)
+	 * Publishes the Kaleo draft definition.
+	 *
+	 * @param userId the primary key of the Kaleo draft definition's
+	 creator/owner
+	 * @param groupId the primary key of the Kaleo draft definition's group
+	 * @param name the Kaleo draft definition's name
+	 * @param titleMap the Kaleo draft definition's locales and localized
+	 titles
+	 * @param content the content wrapped in XML
+	 * @param serviceContext the service context to be applied. This can set
+	 guest permissions and group permissions for the Kaleo draft
+	 definition.
+	 * @return the published Kaleo draft definition
+	 * @throws PortalException if the user did not have the required permissions
+	 to publish the Kaleo draft definition or if a portal exception
+	 occurred
+	 */
+	public KaleoDraftDefinition publishKaleoDraftDefinition(
+			long userId, long groupId, String name,
+			Map<Locale, String> titleMap, String content,
+			ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
-	* Updates the kaleo draft definition in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param kaleoDraftDefinition the kaleo draft definition
-	* @return the kaleo draft definition that was updated
-	*/
+	 * Updates the kaleo draft definition in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * @param kaleoDraftDefinition the kaleo draft definition
+	 * @return the kaleo draft definition that was updated
+	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public KaleoDraftDefinition updateKaleoDraftDefinition(
 		KaleoDraftDefinition kaleoDraftDefinition);
 
 	/**
-	* Updates the Kaleo draft definition by replacing its content and title and
-	* incrementing the draft version.
-	*
-	* @param userId the primary key of the Kaleo draft definition's
-	creator/owner
-	* @param name the Kaleo draft definition's name
-	* @param titleMap the Kaleo draft definition's locales and localized
-	titles
-	* @param content the content wrapped in XML
-	* @param version the Kaleo draft definition's published version
-	* @param serviceContext the service context to be applied. This can set
-	guest permissions and group permissions for the Kaleo draft
-	definition.
-	* @return the updated Kaleo draft definition
-	* @throws PortalException if the user did not have the required permissions
-	to update the Kaleo draft definition or if a portal exception
-	occurred
-	*/
-	public KaleoDraftDefinition updateKaleoDraftDefinition(long userId,
-		String name, Map<Locale, String> titleMap, String content, int version,
-		ServiceContext serviceContext) throws PortalException;
+	 * Updates the Kaleo draft definition by replacing its content and title and
+	 * incrementing the draft version.
+	 *
+	 * @param userId the primary key of the Kaleo draft definition's
+	 creator/owner
+	 * @param name the Kaleo draft definition's name
+	 * @param titleMap the Kaleo draft definition's locales and localized
+	 titles
+	 * @param content the content wrapped in XML
+	 * @param version the Kaleo draft definition's published version
+	 * @param serviceContext the service context to be applied. This can set
+	 guest permissions and group permissions for the Kaleo draft
+	 definition.
+	 * @return the updated Kaleo draft definition
+	 * @throws PortalException if the user did not have the required permissions
+	 to update the Kaleo draft definition or if a portal exception
+	 occurred
+	 */
+	public KaleoDraftDefinition updateKaleoDraftDefinition(
+			long userId, String name, Map<Locale, String> titleMap,
+			String content, int version, ServiceContext serviceContext)
+		throws PortalException;
+
 }

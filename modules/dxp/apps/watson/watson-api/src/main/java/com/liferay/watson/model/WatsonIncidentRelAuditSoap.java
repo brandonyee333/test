@@ -30,11 +30,14 @@ import java.util.List;
  */
 @ProviderType
 public class WatsonIncidentRelAuditSoap implements Serializable {
+
 	public static WatsonIncidentRelAuditSoap toSoapModel(
 		WatsonIncidentRelAudit model) {
+
 		WatsonIncidentRelAuditSoap soapModel = new WatsonIncidentRelAuditSoap();
 
-		soapModel.setWatsonIncidentRelAuditId(model.getWatsonIncidentRelAuditId());
+		soapModel.setWatsonIncidentRelAuditId(
+			model.getWatsonIncidentRelAuditId());
 		soapModel.setGroupId(model.getGroupId());
 		soapModel.setCompanyId(model.getCompanyId());
 		soapModel.setUserId(model.getUserId());
@@ -52,7 +55,9 @@ public class WatsonIncidentRelAuditSoap implements Serializable {
 
 	public static WatsonIncidentRelAuditSoap[] toSoapModels(
 		WatsonIncidentRelAudit[] models) {
-		WatsonIncidentRelAuditSoap[] soapModels = new WatsonIncidentRelAuditSoap[models.length];
+
+		WatsonIncidentRelAuditSoap[] soapModels =
+			new WatsonIncidentRelAuditSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -63,10 +68,12 @@ public class WatsonIncidentRelAuditSoap implements Serializable {
 
 	public static WatsonIncidentRelAuditSoap[][] toSoapModels(
 		WatsonIncidentRelAudit[][] models) {
+
 		WatsonIncidentRelAuditSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new WatsonIncidentRelAuditSoap[models.length][models[0].length];
+			soapModels =
+				new WatsonIncidentRelAuditSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new WatsonIncidentRelAuditSoap[0][0];
@@ -81,13 +88,16 @@ public class WatsonIncidentRelAuditSoap implements Serializable {
 
 	public static WatsonIncidentRelAuditSoap[] toSoapModels(
 		List<WatsonIncidentRelAudit> models) {
-		List<WatsonIncidentRelAuditSoap> soapModels = new ArrayList<WatsonIncidentRelAuditSoap>(models.size());
+
+		List<WatsonIncidentRelAuditSoap> soapModels =
+			new ArrayList<WatsonIncidentRelAuditSoap>(models.size());
 
 		for (WatsonIncidentRelAudit model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(new WatsonIncidentRelAuditSoap[soapModels.size()]);
+		return soapModels.toArray(
+			new WatsonIncidentRelAuditSoap[soapModels.size()]);
 	}
 
 	public WatsonIncidentRelAuditSoap() {
@@ -209,4 +219,5 @@ public class WatsonIncidentRelAuditSoap implements Serializable {
 	private long _watsonIncidentRelId;
 	private String _type;
 	private int _status;
+
 }

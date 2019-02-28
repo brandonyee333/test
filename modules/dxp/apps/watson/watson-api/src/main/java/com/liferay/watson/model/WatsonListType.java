@@ -30,13 +30,15 @@ import com.liferay.portal.kernel.util.Accessor;
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonListTypeImpl")
 @ProviderType
 public interface WatsonListType extends WatsonListTypeModel, PersistedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonListTypeImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<WatsonListType, Long> WATSON_LIST_TYPE_ID_ACCESSOR =
-		new Accessor<WatsonListType, Long>() {
+	public static final Accessor<WatsonListType, Long>
+		WATSON_LIST_TYPE_ID_ACCESSOR = new Accessor<WatsonListType, Long>() {
+
 			@Override
 			public Long get(WatsonListType watsonListType) {
 				return watsonListType.getWatsonListTypeId();
@@ -51,5 +53,7 @@ public interface WatsonListType extends WatsonListTypeModel, PersistedModel {
 			public Class<WatsonListType> getTypeClass() {
 				return WatsonListType.class;
 			}
+
 		};
+
 }

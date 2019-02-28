@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
-
 import com.liferay.watson.exception.NoSuchRelationshipAuditException;
 import com.liferay.watson.model.WatsonRelationshipAudit;
 import com.liferay.watson.model.impl.WatsonRelationshipAuditImpl;
@@ -64,18 +63,24 @@ import java.util.Set;
  * @generated
  */
 @ProviderType
-public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<WatsonRelationshipAudit>
+public class WatsonRelationshipAuditPersistenceImpl
+	extends BasePersistenceImpl<WatsonRelationshipAudit>
 	implements WatsonRelationshipAuditPersistence {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonRelationshipAuditUtil</code> to access the watson relationship audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY = WatsonRelationshipAuditImpl.class.getName();
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List1";
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List2";
+	public static final String FINDER_CLASS_NAME_ENTITY =
+		WatsonRelationshipAuditImpl.class.getName();
+
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List1";
+
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List2";
+
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
@@ -91,7 +96,8 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 	 */
 	@Override
 	public void cacheResult(WatsonRelationshipAudit watsonRelationshipAudit) {
-		entityCache.putResult(WatsonRelationshipAuditModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			WatsonRelationshipAuditModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonRelationshipAuditImpl.class,
 			watsonRelationshipAudit.getPrimaryKey(), watsonRelationshipAudit);
 
@@ -106,11 +112,15 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 	@Override
 	public void cacheResult(
 		List<WatsonRelationshipAudit> watsonRelationshipAudits) {
-		for (WatsonRelationshipAudit watsonRelationshipAudit : watsonRelationshipAudits) {
+
+		for (WatsonRelationshipAudit watsonRelationshipAudit :
+				watsonRelationshipAudits) {
+
 			if (entityCache.getResult(
-						WatsonRelationshipAuditModelImpl.ENTITY_CACHE_ENABLED,
-						WatsonRelationshipAuditImpl.class,
-						watsonRelationshipAudit.getPrimaryKey()) == null) {
+					WatsonRelationshipAuditModelImpl.ENTITY_CACHE_ENABLED,
+					WatsonRelationshipAuditImpl.class,
+					watsonRelationshipAudit.getPrimaryKey()) == null) {
+
 				cacheResult(watsonRelationshipAudit);
 			}
 			else {
@@ -144,7 +154,8 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 	 */
 	@Override
 	public void clearCache(WatsonRelationshipAudit watsonRelationshipAudit) {
-		entityCache.removeResult(WatsonRelationshipAuditModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.removeResult(
+			WatsonRelationshipAuditModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonRelationshipAuditImpl.class,
 			watsonRelationshipAudit.getPrimaryKey());
 
@@ -155,11 +166,15 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 	@Override
 	public void clearCache(
 		List<WatsonRelationshipAudit> watsonRelationshipAudits) {
+
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
-		for (WatsonRelationshipAudit watsonRelationshipAudit : watsonRelationshipAudits) {
-			entityCache.removeResult(WatsonRelationshipAuditModelImpl.ENTITY_CACHE_ENABLED,
+		for (WatsonRelationshipAudit watsonRelationshipAudit :
+				watsonRelationshipAudits) {
+
+			entityCache.removeResult(
+				WatsonRelationshipAuditModelImpl.ENTITY_CACHE_ENABLED,
 				WatsonRelationshipAuditImpl.class,
 				watsonRelationshipAudit.getPrimaryKey());
 		}
@@ -173,7 +188,8 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 	 */
 	@Override
 	public WatsonRelationshipAudit create(long watsonRelationshipAuditId) {
-		WatsonRelationshipAudit watsonRelationshipAudit = new WatsonRelationshipAuditImpl();
+		WatsonRelationshipAudit watsonRelationshipAudit =
+			new WatsonRelationshipAuditImpl();
 
 		watsonRelationshipAudit.setNew(true);
 		watsonRelationshipAudit.setPrimaryKey(watsonRelationshipAuditId);
@@ -193,6 +209,7 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 	@Override
 	public WatsonRelationshipAudit remove(long watsonRelationshipAuditId)
 		throws NoSuchRelationshipAuditException {
+
 		return remove((Serializable)watsonRelationshipAuditId);
 	}
 
@@ -206,21 +223,23 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 	@Override
 	public WatsonRelationshipAudit remove(Serializable primaryKey)
 		throws NoSuchRelationshipAuditException {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			WatsonRelationshipAudit watsonRelationshipAudit = (WatsonRelationshipAudit)session.get(WatsonRelationshipAuditImpl.class,
-					primaryKey);
+			WatsonRelationshipAudit watsonRelationshipAudit =
+				(WatsonRelationshipAudit)session.get(
+					WatsonRelationshipAuditImpl.class, primaryKey);
 
 			if (watsonRelationshipAudit == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchRelationshipAuditException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					primaryKey);
+				throw new NoSuchRelationshipAuditException(
+					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			return remove(watsonRelationshipAudit);
@@ -239,14 +258,16 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 	@Override
 	protected WatsonRelationshipAudit removeImpl(
 		WatsonRelationshipAudit watsonRelationshipAudit) {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
 			if (!session.contains(watsonRelationshipAudit)) {
-				watsonRelationshipAudit = (WatsonRelationshipAudit)session.get(WatsonRelationshipAuditImpl.class,
-						watsonRelationshipAudit.getPrimaryKeyObj());
+				watsonRelationshipAudit = (WatsonRelationshipAudit)session.get(
+					WatsonRelationshipAuditImpl.class,
+					watsonRelationshipAudit.getPrimaryKeyObj());
 			}
 
 			if (watsonRelationshipAudit != null) {
@@ -270,27 +291,33 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 	@Override
 	public WatsonRelationshipAudit updateImpl(
 		WatsonRelationshipAudit watsonRelationshipAudit) {
+
 		boolean isNew = watsonRelationshipAudit.isNew();
 
-		if (!(watsonRelationshipAudit instanceof WatsonRelationshipAuditModelImpl)) {
+		if (!(watsonRelationshipAudit instanceof
+				WatsonRelationshipAuditModelImpl)) {
+
 			InvocationHandler invocationHandler = null;
 
 			if (ProxyUtil.isProxyClass(watsonRelationshipAudit.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(watsonRelationshipAudit);
+				invocationHandler = ProxyUtil.getInvocationHandler(
+					watsonRelationshipAudit);
 
 				throw new IllegalArgumentException(
 					"Implement ModelWrapper in watsonRelationshipAudit proxy " +
-					invocationHandler.getClass());
+						invocationHandler.getClass());
 			}
 
 			throw new IllegalArgumentException(
 				"Implement ModelWrapper in custom WatsonRelationshipAudit implementation " +
-				watsonRelationshipAudit.getClass());
+					watsonRelationshipAudit.getClass());
 		}
 
-		WatsonRelationshipAuditModelImpl watsonRelationshipAuditModelImpl = (WatsonRelationshipAuditModelImpl)watsonRelationshipAudit;
+		WatsonRelationshipAuditModelImpl watsonRelationshipAuditModelImpl =
+			(WatsonRelationshipAuditModelImpl)watsonRelationshipAudit;
 
-		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
 
 		Date now = new Date();
 
@@ -299,8 +326,8 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 				watsonRelationshipAudit.setCreateDate(now);
 			}
 			else {
-				watsonRelationshipAudit.setCreateDate(serviceContext.getCreateDate(
-						now));
+				watsonRelationshipAudit.setCreateDate(
+					serviceContext.getCreateDate(now));
 			}
 		}
 
@@ -309,8 +336,8 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 				watsonRelationshipAudit.setModifiedDate(now);
 			}
 			else {
-				watsonRelationshipAudit.setModifiedDate(serviceContext.getModifiedDate(
-						now));
+				watsonRelationshipAudit.setModifiedDate(
+					serviceContext.getModifiedDate(now));
 			}
 		}
 
@@ -325,7 +352,9 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 				watsonRelationshipAudit.setNew(false);
 			}
 			else {
-				watsonRelationshipAudit = (WatsonRelationshipAudit)session.merge(watsonRelationshipAudit);
+				watsonRelationshipAudit =
+					(WatsonRelationshipAudit)session.merge(
+						watsonRelationshipAudit);
 			}
 		}
 		catch (Exception e) {
@@ -339,11 +368,12 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 
 		if (isNew) {
 			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(_finderPathWithoutPaginationFindAll,
-				FINDER_ARGS_EMPTY);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(WatsonRelationshipAuditModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			WatsonRelationshipAuditModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonRelationshipAuditImpl.class,
 			watsonRelationshipAudit.getPrimaryKey(), watsonRelationshipAudit,
 			false);
@@ -363,15 +393,17 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 	@Override
 	public WatsonRelationshipAudit findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchRelationshipAuditException {
-		WatsonRelationshipAudit watsonRelationshipAudit = fetchByPrimaryKey(primaryKey);
+
+		WatsonRelationshipAudit watsonRelationshipAudit = fetchByPrimaryKey(
+			primaryKey);
 
 		if (watsonRelationshipAudit == null) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchRelationshipAuditException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				primaryKey);
+			throw new NoSuchRelationshipAuditException(
+				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 		}
 
 		return watsonRelationshipAudit;
@@ -386,7 +418,9 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 	 */
 	@Override
 	public WatsonRelationshipAudit findByPrimaryKey(
-		long watsonRelationshipAuditId) throws NoSuchRelationshipAuditException {
+			long watsonRelationshipAuditId)
+		throws NoSuchRelationshipAuditException {
+
 		return findByPrimaryKey((Serializable)watsonRelationshipAuditId);
 	}
 
@@ -398,14 +432,16 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 	 */
 	@Override
 	public WatsonRelationshipAudit fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(WatsonRelationshipAuditModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonRelationshipAuditImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(
+			WatsonRelationshipAuditModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonRelationshipAuditImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
 		}
 
-		WatsonRelationshipAudit watsonRelationshipAudit = (WatsonRelationshipAudit)serializable;
+		WatsonRelationshipAudit watsonRelationshipAudit =
+			(WatsonRelationshipAudit)serializable;
 
 		if (watsonRelationshipAudit == null) {
 			Session session = null;
@@ -413,19 +449,22 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 			try {
 				session = openSession();
 
-				watsonRelationshipAudit = (WatsonRelationshipAudit)session.get(WatsonRelationshipAuditImpl.class,
-						primaryKey);
+				watsonRelationshipAudit = (WatsonRelationshipAudit)session.get(
+					WatsonRelationshipAuditImpl.class, primaryKey);
 
 				if (watsonRelationshipAudit != null) {
 					cacheResult(watsonRelationshipAudit);
 				}
 				else {
-					entityCache.putResult(WatsonRelationshipAuditModelImpl.ENTITY_CACHE_ENABLED,
-						WatsonRelationshipAuditImpl.class, primaryKey, nullModel);
+					entityCache.putResult(
+						WatsonRelationshipAuditModelImpl.ENTITY_CACHE_ENABLED,
+						WatsonRelationshipAuditImpl.class, primaryKey,
+						nullModel);
 				}
 			}
 			catch (Exception e) {
-				entityCache.removeResult(WatsonRelationshipAuditModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.removeResult(
+					WatsonRelationshipAuditModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonRelationshipAuditImpl.class, primaryKey);
 
 				throw processException(e);
@@ -447,24 +486,28 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 	@Override
 	public WatsonRelationshipAudit fetchByPrimaryKey(
 		long watsonRelationshipAuditId) {
+
 		return fetchByPrimaryKey((Serializable)watsonRelationshipAuditId);
 	}
 
 	@Override
 	public Map<Serializable, WatsonRelationshipAudit> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, WatsonRelationshipAudit> map = new HashMap<Serializable, WatsonRelationshipAudit>();
+		Map<Serializable, WatsonRelationshipAudit> map =
+			new HashMap<Serializable, WatsonRelationshipAudit>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
 
 			Serializable primaryKey = iterator.next();
 
-			WatsonRelationshipAudit watsonRelationshipAudit = fetchByPrimaryKey(primaryKey);
+			WatsonRelationshipAudit watsonRelationshipAudit = fetchByPrimaryKey(
+				primaryKey);
 
 			if (watsonRelationshipAudit != null) {
 				map.put(primaryKey, watsonRelationshipAudit);
@@ -476,8 +519,9 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(WatsonRelationshipAuditModelImpl.ENTITY_CACHE_ENABLED,
-					WatsonRelationshipAuditImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(
+				WatsonRelationshipAuditModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonRelationshipAuditImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -497,8 +541,8 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 			return map;
 		}
 
-		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
-				1);
+		StringBundler query = new StringBundler(
+			uncachedPrimaryKeys.size() * 2 + 1);
 
 		query.append(_SQL_SELECT_WATSONRELATIONSHIPAUDIT_WHERE_PKS_IN);
 
@@ -521,17 +565,22 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 
 			Query q = session.createQuery(sql);
 
-			for (WatsonRelationshipAudit watsonRelationshipAudit : (List<WatsonRelationshipAudit>)q.list()) {
-				map.put(watsonRelationshipAudit.getPrimaryKeyObj(),
+			for (WatsonRelationshipAudit watsonRelationshipAudit :
+					(List<WatsonRelationshipAudit>)q.list()) {
+
+				map.put(
+					watsonRelationshipAudit.getPrimaryKeyObj(),
 					watsonRelationshipAudit);
 
 				cacheResult(watsonRelationshipAudit);
 
-				uncachedPrimaryKeys.remove(watsonRelationshipAudit.getPrimaryKeyObj());
+				uncachedPrimaryKeys.remove(
+					watsonRelationshipAudit.getPrimaryKeyObj());
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(WatsonRelationshipAuditModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(
+					WatsonRelationshipAuditModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonRelationshipAuditImpl.class, primaryKey, nullModel);
 			}
 		}
@@ -584,8 +633,10 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 	 * @return the ordered range of watson relationship audits
 	 */
 	@Override
-	public List<WatsonRelationshipAudit> findAll(int start, int end,
+	public List<WatsonRelationshipAudit> findAll(
+		int start, int end,
 		OrderByComparator<WatsonRelationshipAudit> orderByComparator) {
+
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -603,29 +654,32 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 	 * @return the ordered range of watson relationship audits
 	 */
 	@Override
-	public List<WatsonRelationshipAudit> findAll(int start, int end,
+	public List<WatsonRelationshipAudit> findAll(
+		int start, int end,
 		OrderByComparator<WatsonRelationshipAudit> orderByComparator,
 		boolean retrieveFromCache) {
+
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
+			(orderByComparator == null)) {
+
 			pagination = false;
 			finderPath = _finderPathWithoutPaginationFindAll;
 			finderArgs = FINDER_ARGS_EMPTY;
 		}
 		else {
 			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] { start, end, orderByComparator };
+			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<WatsonRelationshipAudit> list = null;
 
 		if (retrieveFromCache) {
-			list = (List<WatsonRelationshipAudit>)finderCache.getResult(finderPath,
-					finderArgs, this);
+			list = (List<WatsonRelationshipAudit>)finderCache.getResult(
+				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
@@ -633,13 +687,13 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(2 +
-						(orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(
+					2 + (orderByComparator.getOrderByFields().length * 2));
 
 				query.append(_SQL_SELECT_WATSONRELATIONSHIPAUDIT);
 
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
 				sql = query.toString();
 			}
@@ -647,7 +701,8 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 				sql = _SQL_SELECT_WATSONRELATIONSHIPAUDIT;
 
 				if (pagination) {
-					sql = sql.concat(WatsonRelationshipAuditModelImpl.ORDER_BY_JPQL);
+					sql = sql.concat(
+						WatsonRelationshipAuditModelImpl.ORDER_BY_JPQL);
 				}
 			}
 
@@ -659,16 +714,16 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 				Query q = session.createQuery(sql);
 
 				if (!pagination) {
-					list = (List<WatsonRelationshipAudit>)QueryUtil.list(q,
-							getDialect(), start, end, false);
+					list = (List<WatsonRelationshipAudit>)QueryUtil.list(
+						q, getDialect(), start, end, false);
 
 					Collections.sort(list);
 
 					list = Collections.unmodifiableList(list);
 				}
 				else {
-					list = (List<WatsonRelationshipAudit>)QueryUtil.list(q,
-							getDialect(), start, end);
+					list = (List<WatsonRelationshipAudit>)QueryUtil.list(
+						q, getDialect(), start, end);
 				}
 
 				cacheResult(list);
@@ -706,8 +761,8 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(_finderPathCountAll,
-				FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(
+			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -715,15 +770,17 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(_SQL_COUNT_WATSONRELATIONSHIPAUDIT);
+				Query q = session.createQuery(
+					_SQL_COUNT_WATSONRELATIONSHIPAUDIT);
 
 				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(_finderPathCountAll, FINDER_ARGS_EMPTY,
-					count);
+				finderCache.putResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
+				finderCache.removeResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
 				throw processException(e);
 			}
@@ -744,21 +801,24 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 	 * Initializes the watson relationship audit persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(WatsonRelationshipAuditModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonRelationshipAuditModelImpl.FINDER_CACHE_ENABLED,
-				WatsonRelationshipAuditImpl.class,
-				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+		_finderPathWithPaginationFindAll = new FinderPath(
+			WatsonRelationshipAuditModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonRelationshipAuditModelImpl.FINDER_CACHE_ENABLED,
+			WatsonRelationshipAuditImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(WatsonRelationshipAuditModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonRelationshipAuditModelImpl.FINDER_CACHE_ENABLED,
-				WatsonRelationshipAuditImpl.class,
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-				new String[0]);
+		_finderPathWithoutPaginationFindAll = new FinderPath(
+			WatsonRelationshipAuditModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonRelationshipAuditModelImpl.FINDER_CACHE_ENABLED,
+			WatsonRelationshipAuditImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+			new String[0]);
 
-		_finderPathCountAll = new FinderPath(WatsonRelationshipAuditModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonRelationshipAuditModelImpl.FINDER_CACHE_ENABLED,
-				Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-				"countAll", new String[0]);
+		_finderPathCountAll = new FinderPath(
+			WatsonRelationshipAuditModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonRelationshipAuditModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+			new String[0]);
 	}
 
 	public void destroy() {
@@ -770,15 +830,30 @@ public class WatsonRelationshipAuditPersistenceImpl extends BasePersistenceImpl<
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
+
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
+
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-	private static final String _SQL_SELECT_WATSONRELATIONSHIPAUDIT = "SELECT watsonRelationshipAudit FROM WatsonRelationshipAudit watsonRelationshipAudit";
-	private static final String _SQL_SELECT_WATSONRELATIONSHIPAUDIT_WHERE_PKS_IN =
-		"SELECT watsonRelationshipAudit FROM WatsonRelationshipAudit watsonRelationshipAudit WHERE watsonRelationshipAuditId IN (";
-	private static final String _SQL_COUNT_WATSONRELATIONSHIPAUDIT = "SELECT COUNT(watsonRelationshipAudit) FROM WatsonRelationshipAudit watsonRelationshipAudit";
-	private static final String _ORDER_BY_ENTITY_ALIAS = "watsonRelationshipAudit.";
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No WatsonRelationshipAudit exists with the primary key ";
-	private static final Log _log = LogFactoryUtil.getLog(WatsonRelationshipAuditPersistenceImpl.class);
+
+	private static final String _SQL_SELECT_WATSONRELATIONSHIPAUDIT =
+		"SELECT watsonRelationshipAudit FROM WatsonRelationshipAudit watsonRelationshipAudit";
+
+	private static final String
+		_SQL_SELECT_WATSONRELATIONSHIPAUDIT_WHERE_PKS_IN =
+			"SELECT watsonRelationshipAudit FROM WatsonRelationshipAudit watsonRelationshipAudit WHERE watsonRelationshipAuditId IN (";
+
+	private static final String _SQL_COUNT_WATSONRELATIONSHIPAUDIT =
+		"SELECT COUNT(watsonRelationshipAudit) FROM WatsonRelationshipAudit watsonRelationshipAudit";
+
+	private static final String _ORDER_BY_ENTITY_ALIAS =
+		"watsonRelationshipAudit.";
+
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
+		"No WatsonRelationshipAudit exists with the primary key ";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		WatsonRelationshipAuditPersistenceImpl.class);
+
 }

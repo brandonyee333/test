@@ -17,7 +17,6 @@ package com.liferay.watson.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -45,8 +44,10 @@ import java.util.Map;
  * @generated
  */
 @ProviderType
-public interface WatsonPersonAuditModel extends BaseModel<WatsonPersonAudit>,
-	GroupedModel, LocalizedModel, ShardedModel {
+public interface WatsonPersonAuditModel
+	extends BaseModel<WatsonPersonAudit>, GroupedModel, LocalizedModel,
+			ShardedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -220,7 +221,8 @@ public interface WatsonPersonAuditModel extends BaseModel<WatsonPersonAudit>,
 	 *
 	 * @param citizenshipWatsonListTypeId the citizenship watson list type ID of this watson person audit
 	 */
-	public void setCitizenshipWatsonListTypeId(long citizenshipWatsonListTypeId);
+	public void setCitizenshipWatsonListTypeId(
+		long citizenshipWatsonListTypeId);
 
 	/**
 	 * Returns the country watson list type ID of this watson person audit.
@@ -428,8 +430,8 @@ public interface WatsonPersonAuditModel extends BaseModel<WatsonPersonAudit>,
 	 * @param locale the locale of the language
 	 * @param defaultLocale the default locale
 	 */
-	public void setDescription(String description, Locale locale,
-		Locale defaultLocale);
+	public void setDescription(
+		String description, Locale locale, Locale defaultLocale);
 
 	public void setDescriptionCurrentLanguageId(String languageId);
 
@@ -446,8 +448,8 @@ public interface WatsonPersonAuditModel extends BaseModel<WatsonPersonAudit>,
 	 * @param descriptionMap the locales and localized descriptions of this watson person audit
 	 * @param defaultLocale the default locale
 	 */
-	public void setDescriptionMap(Map<Locale, String> descriptionMap,
-		Locale defaultLocale);
+	public void setDescriptionMap(
+		Map<Locale, String> descriptionMap, Locale defaultLocale);
 
 	/**
 	 * Returns the image payload of this watson person audit.
@@ -616,8 +618,8 @@ public interface WatsonPersonAuditModel extends BaseModel<WatsonPersonAudit>,
 	 * @param locale the locale of the language
 	 * @param defaultLocale the default locale
 	 */
-	public void setOccupation(String occupation, Locale locale,
-		Locale defaultLocale);
+	public void setOccupation(
+		String occupation, Locale locale, Locale defaultLocale);
 
 	public void setOccupationCurrentLanguageId(String languageId);
 
@@ -634,8 +636,8 @@ public interface WatsonPersonAuditModel extends BaseModel<WatsonPersonAudit>,
 	 * @param occupationMap the locales and localized occupations of this watson person audit
 	 * @param defaultLocale the default locale
 	 */
-	public void setOccupationMap(Map<Locale, String> occupationMap,
-		Locale defaultLocale);
+	public void setOccupationMap(
+		Map<Locale, String> occupationMap, Locale defaultLocale);
 
 	/**
 	 * Returns the height of this watson person audit.
@@ -792,4 +794,5 @@ public interface WatsonPersonAuditModel extends BaseModel<WatsonPersonAudit>,
 
 	@Override
 	public String toXmlString();
+
 }

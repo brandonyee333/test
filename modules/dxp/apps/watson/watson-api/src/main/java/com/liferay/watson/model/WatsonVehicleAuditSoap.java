@@ -30,6 +30,7 @@ import java.util.List;
  */
 @ProviderType
 public class WatsonVehicleAuditSoap implements Serializable {
+
 	public static WatsonVehicleAuditSoap toSoapModel(WatsonVehicleAudit model) {
 		WatsonVehicleAuditSoap soapModel = new WatsonVehicleAuditSoap();
 
@@ -43,7 +44,8 @@ public class WatsonVehicleAuditSoap implements Serializable {
 		soapModel.setColorWatsonListTypeId(model.getColorWatsonListTypeId());
 		soapModel.setMakeWatsonListTypeId(model.getMakeWatsonListTypeId());
 		soapModel.setModelWatsonListTypeId(model.getModelWatsonListTypeId());
-		soapModel.setOriginalWatsonVehicleId(model.getOriginalWatsonVehicleId());
+		soapModel.setOriginalWatsonVehicleId(
+			model.getOriginalWatsonVehicleId());
 		soapModel.setTypeWatsonListTypeId(model.getTypeWatsonListTypeId());
 		soapModel.setYearWatsonListTypeId(model.getYearWatsonListTypeId());
 		soapModel.setWatsonIncidentId(model.getWatsonIncidentId());
@@ -59,7 +61,9 @@ public class WatsonVehicleAuditSoap implements Serializable {
 
 	public static WatsonVehicleAuditSoap[] toSoapModels(
 		WatsonVehicleAudit[] models) {
-		WatsonVehicleAuditSoap[] soapModels = new WatsonVehicleAuditSoap[models.length];
+
+		WatsonVehicleAuditSoap[] soapModels =
+			new WatsonVehicleAuditSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -70,10 +74,12 @@ public class WatsonVehicleAuditSoap implements Serializable {
 
 	public static WatsonVehicleAuditSoap[][] toSoapModels(
 		WatsonVehicleAudit[][] models) {
+
 		WatsonVehicleAuditSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new WatsonVehicleAuditSoap[models.length][models[0].length];
+			soapModels =
+				new WatsonVehicleAuditSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new WatsonVehicleAuditSoap[0][0];
@@ -88,13 +94,16 @@ public class WatsonVehicleAuditSoap implements Serializable {
 
 	public static WatsonVehicleAuditSoap[] toSoapModels(
 		List<WatsonVehicleAudit> models) {
-		List<WatsonVehicleAuditSoap> soapModels = new ArrayList<WatsonVehicleAuditSoap>(models.size());
+
+		List<WatsonVehicleAuditSoap> soapModels =
+			new ArrayList<WatsonVehicleAuditSoap>(models.size());
 
 		for (WatsonVehicleAudit model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(new WatsonVehicleAuditSoap[soapModels.size()]);
+		return soapModels.toArray(
+			new WatsonVehicleAuditSoap[soapModels.size()]);
 	}
 
 	public WatsonVehicleAuditSoap() {
@@ -288,4 +297,5 @@ public class WatsonVehicleAuditSoap implements Serializable {
 	private String _imagePayload;
 	private String _licensePlate;
 	private int _status;
+
 }

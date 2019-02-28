@@ -18,7 +18,6 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -35,7 +34,6 @@ import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
-
 import com.liferay.watson.model.WatsonAddressAudit;
 import com.liferay.watson.model.WatsonAddressAuditModel;
 
@@ -66,47 +64,40 @@ import java.util.function.Function;
  * @generated
  */
 @ProviderType
-public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudit>
+public class WatsonAddressAuditModelImpl
+	extends BaseModelImpl<WatsonAddressAudit>
 	implements WatsonAddressAuditModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson address audit model instance should use the <code>WatsonAddressAudit</code> interface instead.
 	 */
 	public static final String TABLE_NAME = "WatsonAddressAudit";
+
 	public static final Object[][] TABLE_COLUMNS = {
-			{ "watsonAddressAuditId", Types.BIGINT },
-			{ "groupId", Types.BIGINT },
-			{ "companyId", Types.BIGINT },
-			{ "userId", Types.BIGINT },
-			{ "userName", Types.VARCHAR },
-			{ "createDate", Types.TIMESTAMP },
-			{ "modifiedDate", Types.TIMESTAMP },
-			{ "countryId", Types.BIGINT },
-			{ "districtWatsonListTypeId", Types.BIGINT },
-			{ "originalWatsonAddressId", Types.BIGINT },
-			{ "provinceWatsonListTypeId", Types.BIGINT },
-			{ "subDistrictWatsonListTypeId", Types.BIGINT },
-			{ "typeWatsonListTypeId", Types.BIGINT },
-			{ "watsonAddressId", Types.BIGINT },
-			{ "watsonIncidentId", Types.BIGINT },
-			{ "name", Types.VARCHAR },
-			{ "postalCode", Types.VARCHAR },
-			{ "region", Types.VARCHAR },
-			{ "street", Types.VARCHAR },
-			{ "number_", Types.VARCHAR },
-			{ "building", Types.VARCHAR },
-			{ "floor", Types.VARCHAR },
-			{ "room", Types.VARCHAR },
-			{ "description", Types.VARCHAR },
-			{ "imagePayload", Types.CLOB },
-			{ "otherType", Types.VARCHAR },
-			{ "lastSeenDate", Types.TIMESTAMP },
-			{ "latitude", Types.DOUBLE },
-			{ "longitude", Types.DOUBLE },
-			{ "status", Types.INTEGER }
-		};
-	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
+		{"watsonAddressAuditId", Types.BIGINT}, {"groupId", Types.BIGINT},
+		{"companyId", Types.BIGINT}, {"userId", Types.BIGINT},
+		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
+		{"modifiedDate", Types.TIMESTAMP}, {"countryId", Types.BIGINT},
+		{"districtWatsonListTypeId", Types.BIGINT},
+		{"originalWatsonAddressId", Types.BIGINT},
+		{"provinceWatsonListTypeId", Types.BIGINT},
+		{"subDistrictWatsonListTypeId", Types.BIGINT},
+		{"typeWatsonListTypeId", Types.BIGINT},
+		{"watsonAddressId", Types.BIGINT}, {"watsonIncidentId", Types.BIGINT},
+		{"name", Types.VARCHAR}, {"postalCode", Types.VARCHAR},
+		{"region", Types.VARCHAR}, {"street", Types.VARCHAR},
+		{"number_", Types.VARCHAR}, {"building", Types.VARCHAR},
+		{"floor", Types.VARCHAR}, {"room", Types.VARCHAR},
+		{"description", Types.VARCHAR}, {"imagePayload", Types.CLOB},
+		{"otherType", Types.VARCHAR}, {"lastSeenDate", Types.TIMESTAMP},
+		{"latitude", Types.DOUBLE}, {"longitude", Types.DOUBLE},
+		{"status", Types.INTEGER}
+	};
+
+	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
+		new HashMap<String, Integer>();
 
 	static {
 		TABLE_COLUMNS_MAP.put("watsonAddressAuditId", Types.BIGINT);
@@ -141,22 +132,38 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonAddressAudit (watsonAddressAuditId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,countryId LONG,districtWatsonListTypeId LONG,originalWatsonAddressId LONG,provinceWatsonListTypeId LONG,subDistrictWatsonListTypeId LONG,typeWatsonListTypeId LONG,watsonAddressId LONG,watsonIncidentId LONG,name STRING null,postalCode VARCHAR(75) null,region VARCHAR(75) null,street VARCHAR(75) null,number_ VARCHAR(75) null,building STRING null,floor VARCHAR(75) null,room VARCHAR(75) null,description STRING null,imagePayload TEXT null,otherType VARCHAR(75) null,lastSeenDate DATE null,latitude DOUBLE,longitude DOUBLE,status INTEGER)";
+	public static final String TABLE_SQL_CREATE =
+		"create table WatsonAddressAudit (watsonAddressAuditId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,countryId LONG,districtWatsonListTypeId LONG,originalWatsonAddressId LONG,provinceWatsonListTypeId LONG,subDistrictWatsonListTypeId LONG,typeWatsonListTypeId LONG,watsonAddressId LONG,watsonIncidentId LONG,name STRING null,postalCode VARCHAR(75) null,region VARCHAR(75) null,street VARCHAR(75) null,number_ VARCHAR(75) null,building STRING null,floor VARCHAR(75) null,room VARCHAR(75) null,description STRING null,imagePayload TEXT null,otherType VARCHAR(75) null,lastSeenDate DATE null,latitude DOUBLE,longitude DOUBLE,status INTEGER)";
+
 	public static final String TABLE_SQL_DROP = "drop table WatsonAddressAudit";
-	public static final String ORDER_BY_JPQL = " ORDER BY watsonAddressAudit.watsonAddressAuditId ASC";
-	public static final String ORDER_BY_SQL = " ORDER BY WatsonAddressAudit.watsonAddressAuditId ASC";
+
+	public static final String ORDER_BY_JPQL =
+		" ORDER BY watsonAddressAudit.watsonAddressAuditId ASC";
+
+	public static final String ORDER_BY_SQL =
+		" ORDER BY WatsonAddressAudit.watsonAddressAuditId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
+
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
+
 	public static final String TX_MANAGER = "liferayTransactionManager";
-	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonAddressAudit"),
-			true);
-	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonAddressAudit"),
-			true);
+
+	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonAddressAudit"),
+		true);
+
+	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonAddressAudit"),
+		true);
+
 	public static final boolean COLUMN_BITMASK_ENABLED = false;
-	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.watson.service.util.ServiceProps.get(
-				"lock.expiration.time.com.liferay.watson.model.WatsonAddressAudit"));
+
+	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"lock.expiration.time.com.liferay.watson.model.WatsonAddressAudit"));
 
 	public WatsonAddressAuditModelImpl() {
 	}
@@ -195,14 +202,18 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		Map<String, Function<WatsonAddressAudit, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonAddressAudit, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		for (Map.Entry<String, Function<WatsonAddressAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonAddressAudit, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonAddressAudit, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonAddressAudit, Object> attributeGetterFunction =
+				entry.getValue();
 
-			attributes.put(attributeName,
+			attributes.put(
+				attributeName,
 				attributeGetterFunction.apply((WatsonAddressAudit)this));
 		}
 
@@ -214,38 +225,47 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Map<String, BiConsumer<WatsonAddressAudit, Object>> attributeSetterBiConsumers =
-			getAttributeSetterBiConsumers();
+		Map<String, BiConsumer<WatsonAddressAudit, Object>>
+			attributeSetterBiConsumers = getAttributeSetterBiConsumers();
 
 		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			String attributeName = entry.getKey();
 
-			BiConsumer<WatsonAddressAudit, Object> attributeSetterBiConsumer = attributeSetterBiConsumers.get(attributeName);
+			BiConsumer<WatsonAddressAudit, Object> attributeSetterBiConsumer =
+				attributeSetterBiConsumers.get(attributeName);
 
 			if (attributeSetterBiConsumer != null) {
-				attributeSetterBiConsumer.accept((WatsonAddressAudit)this,
-					entry.getValue());
+				attributeSetterBiConsumer.accept(
+					(WatsonAddressAudit)this, entry.getValue());
 			}
 		}
 	}
 
-	public Map<String, Function<WatsonAddressAudit, Object>> getAttributeGetterFunctions() {
+	public Map<String, Function<WatsonAddressAudit, Object>>
+		getAttributeGetterFunctions() {
+
 		return _attributeGetterFunctions;
 	}
 
-	public Map<String, BiConsumer<WatsonAddressAudit, Object>> getAttributeSetterBiConsumers() {
+	public Map<String, BiConsumer<WatsonAddressAudit, Object>>
+		getAttributeSetterBiConsumers() {
+
 		return _attributeSetterBiConsumers;
 	}
 
-	private static final Map<String, Function<WatsonAddressAudit, Object>> _attributeGetterFunctions;
-	private static final Map<String, BiConsumer<WatsonAddressAudit, Object>> _attributeSetterBiConsumers;
+	private static final Map<String, Function<WatsonAddressAudit, Object>>
+		_attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonAddressAudit, Object>>
+		_attributeSetterBiConsumers;
 
 	static {
-		Map<String, Function<WatsonAddressAudit, Object>> attributeGetterFunctions =
-			new LinkedHashMap<String, Function<WatsonAddressAudit, Object>>();
-		Map<String, BiConsumer<WatsonAddressAudit, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<WatsonAddressAudit, ?>>();
-
+		Map<String, Function<WatsonAddressAudit, Object>>
+			attributeGetterFunctions =
+				new LinkedHashMap
+					<String, Function<WatsonAddressAudit, Object>>();
+		Map<String, BiConsumer<WatsonAddressAudit, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap<String, BiConsumer<WatsonAddressAudit, ?>>();
 
 		attributeGetterFunctions.put(
 			"watsonAddressAuditId",
@@ -262,8 +282,12 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			new BiConsumer<WatsonAddressAudit, Object>() {
 
 				@Override
-				public void accept(WatsonAddressAudit watsonAddressAudit, Object watsonAddressAuditId) {
-					watsonAddressAudit.setWatsonAddressAuditId((Long)watsonAddressAuditId);
+				public void accept(
+					WatsonAddressAudit watsonAddressAudit,
+					Object watsonAddressAuditId) {
+
+					watsonAddressAudit.setWatsonAddressAuditId(
+						(Long)watsonAddressAuditId);
 				}
 
 			});
@@ -282,7 +306,9 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			new BiConsumer<WatsonAddressAudit, Object>() {
 
 				@Override
-				public void accept(WatsonAddressAudit watsonAddressAudit, Object groupId) {
+				public void accept(
+					WatsonAddressAudit watsonAddressAudit, Object groupId) {
+
 					watsonAddressAudit.setGroupId((Long)groupId);
 				}
 
@@ -302,7 +328,9 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			new BiConsumer<WatsonAddressAudit, Object>() {
 
 				@Override
-				public void accept(WatsonAddressAudit watsonAddressAudit, Object companyId) {
+				public void accept(
+					WatsonAddressAudit watsonAddressAudit, Object companyId) {
+
 					watsonAddressAudit.setCompanyId((Long)companyId);
 				}
 
@@ -322,7 +350,9 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			new BiConsumer<WatsonAddressAudit, Object>() {
 
 				@Override
-				public void accept(WatsonAddressAudit watsonAddressAudit, Object userId) {
+				public void accept(
+					WatsonAddressAudit watsonAddressAudit, Object userId) {
+
 					watsonAddressAudit.setUserId((Long)userId);
 				}
 
@@ -342,7 +372,9 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			new BiConsumer<WatsonAddressAudit, Object>() {
 
 				@Override
-				public void accept(WatsonAddressAudit watsonAddressAudit, Object userName) {
+				public void accept(
+					WatsonAddressAudit watsonAddressAudit, Object userName) {
+
 					watsonAddressAudit.setUserName((String)userName);
 				}
 
@@ -362,7 +394,9 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			new BiConsumer<WatsonAddressAudit, Object>() {
 
 				@Override
-				public void accept(WatsonAddressAudit watsonAddressAudit, Object createDate) {
+				public void accept(
+					WatsonAddressAudit watsonAddressAudit, Object createDate) {
+
 					watsonAddressAudit.setCreateDate((Date)createDate);
 				}
 
@@ -382,7 +416,10 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			new BiConsumer<WatsonAddressAudit, Object>() {
 
 				@Override
-				public void accept(WatsonAddressAudit watsonAddressAudit, Object modifiedDate) {
+				public void accept(
+					WatsonAddressAudit watsonAddressAudit,
+					Object modifiedDate) {
+
 					watsonAddressAudit.setModifiedDate((Date)modifiedDate);
 				}
 
@@ -402,7 +439,9 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			new BiConsumer<WatsonAddressAudit, Object>() {
 
 				@Override
-				public void accept(WatsonAddressAudit watsonAddressAudit, Object countryId) {
+				public void accept(
+					WatsonAddressAudit watsonAddressAudit, Object countryId) {
+
 					watsonAddressAudit.setCountryId((Long)countryId);
 				}
 
@@ -422,8 +461,12 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			new BiConsumer<WatsonAddressAudit, Object>() {
 
 				@Override
-				public void accept(WatsonAddressAudit watsonAddressAudit, Object districtWatsonListTypeId) {
-					watsonAddressAudit.setDistrictWatsonListTypeId((Long)districtWatsonListTypeId);
+				public void accept(
+					WatsonAddressAudit watsonAddressAudit,
+					Object districtWatsonListTypeId) {
+
+					watsonAddressAudit.setDistrictWatsonListTypeId(
+						(Long)districtWatsonListTypeId);
 				}
 
 			});
@@ -442,8 +485,12 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			new BiConsumer<WatsonAddressAudit, Object>() {
 
 				@Override
-				public void accept(WatsonAddressAudit watsonAddressAudit, Object originalWatsonAddressId) {
-					watsonAddressAudit.setOriginalWatsonAddressId((Long)originalWatsonAddressId);
+				public void accept(
+					WatsonAddressAudit watsonAddressAudit,
+					Object originalWatsonAddressId) {
+
+					watsonAddressAudit.setOriginalWatsonAddressId(
+						(Long)originalWatsonAddressId);
 				}
 
 			});
@@ -462,8 +509,12 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			new BiConsumer<WatsonAddressAudit, Object>() {
 
 				@Override
-				public void accept(WatsonAddressAudit watsonAddressAudit, Object provinceWatsonListTypeId) {
-					watsonAddressAudit.setProvinceWatsonListTypeId((Long)provinceWatsonListTypeId);
+				public void accept(
+					WatsonAddressAudit watsonAddressAudit,
+					Object provinceWatsonListTypeId) {
+
+					watsonAddressAudit.setProvinceWatsonListTypeId(
+						(Long)provinceWatsonListTypeId);
 				}
 
 			});
@@ -482,8 +533,12 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			new BiConsumer<WatsonAddressAudit, Object>() {
 
 				@Override
-				public void accept(WatsonAddressAudit watsonAddressAudit, Object subDistrictWatsonListTypeId) {
-					watsonAddressAudit.setSubDistrictWatsonListTypeId((Long)subDistrictWatsonListTypeId);
+				public void accept(
+					WatsonAddressAudit watsonAddressAudit,
+					Object subDistrictWatsonListTypeId) {
+
+					watsonAddressAudit.setSubDistrictWatsonListTypeId(
+						(Long)subDistrictWatsonListTypeId);
 				}
 
 			});
@@ -502,8 +557,12 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			new BiConsumer<WatsonAddressAudit, Object>() {
 
 				@Override
-				public void accept(WatsonAddressAudit watsonAddressAudit, Object typeWatsonListTypeId) {
-					watsonAddressAudit.setTypeWatsonListTypeId((Long)typeWatsonListTypeId);
+				public void accept(
+					WatsonAddressAudit watsonAddressAudit,
+					Object typeWatsonListTypeId) {
+
+					watsonAddressAudit.setTypeWatsonListTypeId(
+						(Long)typeWatsonListTypeId);
 				}
 
 			});
@@ -522,8 +581,12 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			new BiConsumer<WatsonAddressAudit, Object>() {
 
 				@Override
-				public void accept(WatsonAddressAudit watsonAddressAudit, Object watsonAddressId) {
-					watsonAddressAudit.setWatsonAddressId((Long)watsonAddressId);
+				public void accept(
+					WatsonAddressAudit watsonAddressAudit,
+					Object watsonAddressId) {
+
+					watsonAddressAudit.setWatsonAddressId(
+						(Long)watsonAddressId);
 				}
 
 			});
@@ -542,8 +605,12 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			new BiConsumer<WatsonAddressAudit, Object>() {
 
 				@Override
-				public void accept(WatsonAddressAudit watsonAddressAudit, Object watsonIncidentId) {
-					watsonAddressAudit.setWatsonIncidentId((Long)watsonIncidentId);
+				public void accept(
+					WatsonAddressAudit watsonAddressAudit,
+					Object watsonIncidentId) {
+
+					watsonAddressAudit.setWatsonIncidentId(
+						(Long)watsonIncidentId);
 				}
 
 			});
@@ -562,7 +629,9 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			new BiConsumer<WatsonAddressAudit, Object>() {
 
 				@Override
-				public void accept(WatsonAddressAudit watsonAddressAudit, Object name) {
+				public void accept(
+					WatsonAddressAudit watsonAddressAudit, Object name) {
+
 					watsonAddressAudit.setName((String)name);
 				}
 
@@ -582,7 +651,9 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			new BiConsumer<WatsonAddressAudit, Object>() {
 
 				@Override
-				public void accept(WatsonAddressAudit watsonAddressAudit, Object postalCode) {
+				public void accept(
+					WatsonAddressAudit watsonAddressAudit, Object postalCode) {
+
 					watsonAddressAudit.setPostalCode((String)postalCode);
 				}
 
@@ -602,7 +673,9 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			new BiConsumer<WatsonAddressAudit, Object>() {
 
 				@Override
-				public void accept(WatsonAddressAudit watsonAddressAudit, Object region) {
+				public void accept(
+					WatsonAddressAudit watsonAddressAudit, Object region) {
+
 					watsonAddressAudit.setRegion((String)region);
 				}
 
@@ -622,7 +695,9 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			new BiConsumer<WatsonAddressAudit, Object>() {
 
 				@Override
-				public void accept(WatsonAddressAudit watsonAddressAudit, Object street) {
+				public void accept(
+					WatsonAddressAudit watsonAddressAudit, Object street) {
+
 					watsonAddressAudit.setStreet((String)street);
 				}
 
@@ -642,7 +717,9 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			new BiConsumer<WatsonAddressAudit, Object>() {
 
 				@Override
-				public void accept(WatsonAddressAudit watsonAddressAudit, Object number) {
+				public void accept(
+					WatsonAddressAudit watsonAddressAudit, Object number) {
+
 					watsonAddressAudit.setNumber((String)number);
 				}
 
@@ -662,7 +739,9 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			new BiConsumer<WatsonAddressAudit, Object>() {
 
 				@Override
-				public void accept(WatsonAddressAudit watsonAddressAudit, Object building) {
+				public void accept(
+					WatsonAddressAudit watsonAddressAudit, Object building) {
+
 					watsonAddressAudit.setBuilding((String)building);
 				}
 
@@ -682,7 +761,9 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			new BiConsumer<WatsonAddressAudit, Object>() {
 
 				@Override
-				public void accept(WatsonAddressAudit watsonAddressAudit, Object floor) {
+				public void accept(
+					WatsonAddressAudit watsonAddressAudit, Object floor) {
+
 					watsonAddressAudit.setFloor((String)floor);
 				}
 
@@ -702,7 +783,9 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			new BiConsumer<WatsonAddressAudit, Object>() {
 
 				@Override
-				public void accept(WatsonAddressAudit watsonAddressAudit, Object room) {
+				public void accept(
+					WatsonAddressAudit watsonAddressAudit, Object room) {
+
 					watsonAddressAudit.setRoom((String)room);
 				}
 
@@ -722,7 +805,9 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			new BiConsumer<WatsonAddressAudit, Object>() {
 
 				@Override
-				public void accept(WatsonAddressAudit watsonAddressAudit, Object description) {
+				public void accept(
+					WatsonAddressAudit watsonAddressAudit, Object description) {
+
 					watsonAddressAudit.setDescription((String)description);
 				}
 
@@ -742,7 +827,10 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			new BiConsumer<WatsonAddressAudit, Object>() {
 
 				@Override
-				public void accept(WatsonAddressAudit watsonAddressAudit, Object imagePayload) {
+				public void accept(
+					WatsonAddressAudit watsonAddressAudit,
+					Object imagePayload) {
+
 					watsonAddressAudit.setImagePayload((String)imagePayload);
 				}
 
@@ -762,7 +850,9 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			new BiConsumer<WatsonAddressAudit, Object>() {
 
 				@Override
-				public void accept(WatsonAddressAudit watsonAddressAudit, Object otherType) {
+				public void accept(
+					WatsonAddressAudit watsonAddressAudit, Object otherType) {
+
 					watsonAddressAudit.setOtherType((String)otherType);
 				}
 
@@ -782,7 +872,10 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			new BiConsumer<WatsonAddressAudit, Object>() {
 
 				@Override
-				public void accept(WatsonAddressAudit watsonAddressAudit, Object lastSeenDate) {
+				public void accept(
+					WatsonAddressAudit watsonAddressAudit,
+					Object lastSeenDate) {
+
 					watsonAddressAudit.setLastSeenDate((Date)lastSeenDate);
 				}
 
@@ -802,7 +895,9 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			new BiConsumer<WatsonAddressAudit, Object>() {
 
 				@Override
-				public void accept(WatsonAddressAudit watsonAddressAudit, Object latitude) {
+				public void accept(
+					WatsonAddressAudit watsonAddressAudit, Object latitude) {
+
 					watsonAddressAudit.setLatitude((Double)latitude);
 				}
 
@@ -822,7 +917,9 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			new BiConsumer<WatsonAddressAudit, Object>() {
 
 				@Override
-				public void accept(WatsonAddressAudit watsonAddressAudit, Object longitude) {
+				public void accept(
+					WatsonAddressAudit watsonAddressAudit, Object longitude) {
+
 					watsonAddressAudit.setLongitude((Double)longitude);
 				}
 
@@ -842,15 +939,18 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			new BiConsumer<WatsonAddressAudit, Object>() {
 
 				@Override
-				public void accept(WatsonAddressAudit watsonAddressAudit, Object status) {
+				public void accept(
+					WatsonAddressAudit watsonAddressAudit, Object status) {
+
 					watsonAddressAudit.setStatus((Integer)status);
 				}
 
 			});
 
-
-		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap(
+			(Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -996,7 +1096,9 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 	}
 
 	@Override
-	public void setSubDistrictWatsonListTypeId(long subDistrictWatsonListTypeId) {
+	public void setSubDistrictWatsonListTypeId(
+		long subDistrictWatsonListTypeId) {
+
 		_subDistrictWatsonListTypeId = subDistrictWatsonListTypeId;
 	}
 
@@ -1061,8 +1163,8 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 
 	@Override
 	public String getName(String languageId, boolean useDefault) {
-		return LocalizationUtil.getLocalization(getName(), languageId,
-			useDefault);
+		return LocalizationUtil.getLocalization(
+			getName(), languageId, useDefault);
 	}
 
 	@Override
@@ -1099,12 +1201,14 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
 
 		if (Validator.isNotNull(name)) {
-			setName(LocalizationUtil.updateLocalization(getName(), "Name",
-					name, languageId, defaultLanguageId));
+			setName(
+				LocalizationUtil.updateLocalization(
+					getName(), "Name", name, languageId, defaultLanguageId));
 		}
 		else {
-			setName(LocalizationUtil.removeLocalization(getName(), "Name",
-					languageId));
+			setName(
+				LocalizationUtil.removeLocalization(
+					getName(), "Name", languageId));
 		}
 	}
 
@@ -1124,7 +1228,9 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			return;
 		}
 
-		setName(LocalizationUtil.updateLocalization(nameMap, getName(), "Name",
+		setName(
+			LocalizationUtil.updateLocalization(
+				nameMap, getName(), "Name",
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
@@ -1219,8 +1325,8 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 
 	@Override
 	public String getBuilding(String languageId, boolean useDefault) {
-		return LocalizationUtil.getLocalization(getBuilding(), languageId,
-			useDefault);
+		return LocalizationUtil.getLocalization(
+			getBuilding(), languageId, useDefault);
 	}
 
 	@Override
@@ -1252,17 +1358,22 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 	}
 
 	@Override
-	public void setBuilding(String building, Locale locale, Locale defaultLocale) {
+	public void setBuilding(
+		String building, Locale locale, Locale defaultLocale) {
+
 		String languageId = LocaleUtil.toLanguageId(locale);
 		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
 
 		if (Validator.isNotNull(building)) {
-			setBuilding(LocalizationUtil.updateLocalization(getBuilding(),
-					"Building", building, languageId, defaultLanguageId));
+			setBuilding(
+				LocalizationUtil.updateLocalization(
+					getBuilding(), "Building", building, languageId,
+					defaultLanguageId));
 		}
 		else {
-			setBuilding(LocalizationUtil.removeLocalization(getBuilding(),
-					"Building", languageId));
+			setBuilding(
+				LocalizationUtil.removeLocalization(
+					getBuilding(), "Building", languageId));
 		}
 	}
 
@@ -1277,14 +1388,16 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 	}
 
 	@Override
-	public void setBuildingMap(Map<Locale, String> buildingMap,
-		Locale defaultLocale) {
+	public void setBuildingMap(
+		Map<Locale, String> buildingMap, Locale defaultLocale) {
+
 		if (buildingMap == null) {
 			return;
 		}
 
-		setBuilding(LocalizationUtil.updateLocalization(buildingMap,
-				getBuilding(), "Building",
+		setBuilding(
+			LocalizationUtil.updateLocalization(
+				buildingMap, getBuilding(), "Building",
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
@@ -1349,8 +1462,8 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 
 	@Override
 	public String getDescription(String languageId, boolean useDefault) {
-		return LocalizationUtil.getLocalization(getDescription(), languageId,
-			useDefault);
+		return LocalizationUtil.getLocalization(
+			getDescription(), languageId, useDefault);
 	}
 
 	@Override
@@ -1382,18 +1495,21 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 	}
 
 	@Override
-	public void setDescription(String description, Locale locale,
-		Locale defaultLocale) {
+	public void setDescription(
+		String description, Locale locale, Locale defaultLocale) {
+
 		String languageId = LocaleUtil.toLanguageId(locale);
 		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
 
 		if (Validator.isNotNull(description)) {
-			setDescription(LocalizationUtil.updateLocalization(
+			setDescription(
+				LocalizationUtil.updateLocalization(
 					getDescription(), "Description", description, languageId,
 					defaultLanguageId));
 		}
 		else {
-			setDescription(LocalizationUtil.removeLocalization(
+			setDescription(
+				LocalizationUtil.removeLocalization(
 					getDescription(), "Description", languageId));
 		}
 	}
@@ -1409,14 +1525,16 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 	}
 
 	@Override
-	public void setDescriptionMap(Map<Locale, String> descriptionMap,
-		Locale defaultLocale) {
+	public void setDescriptionMap(
+		Map<Locale, String> descriptionMap, Locale defaultLocale) {
+
 		if (descriptionMap == null) {
 			return;
 		}
 
-		setDescription(LocalizationUtil.updateLocalization(descriptionMap,
-				getDescription(), "Description",
+		setDescription(
+			LocalizationUtil.updateLocalization(
+				descriptionMap, getDescription(), "Description",
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
@@ -1492,8 +1610,9 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 
 	@Override
 	public ExpandoBridge getExpandoBridge() {
-		return ExpandoBridgeFactoryUtil.getExpandoBridge(getCompanyId(),
-			WatsonAddressAudit.class.getName(), getPrimaryKey());
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(
+			getCompanyId(), WatsonAddressAudit.class.getName(),
+			getPrimaryKey());
 	}
 
 	@Override
@@ -1540,7 +1659,8 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			}
 		}
 
-		return availableLanguageIds.toArray(new String[availableLanguageIds.size()]);
+		return availableLanguageIds.toArray(
+			new String[availableLanguageIds.size()]);
 	}
 
 	@Override
@@ -1558,12 +1678,15 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 
 	@Override
 	public void prepareLocalizedFieldsForImport() throws LocaleException {
-		Locale defaultLocale = LocaleUtil.fromLanguageId(getDefaultLanguageId());
+		Locale defaultLocale = LocaleUtil.fromLanguageId(
+			getDefaultLanguageId());
 
-		Locale[] availableLocales = LocaleUtil.fromLanguageIds(getAvailableLanguageIds());
+		Locale[] availableLocales = LocaleUtil.fromLanguageIds(
+			getAvailableLanguageIds());
 
-		Locale defaultImportLocale = LocalizationUtil.getDefaultImportLocale(WatsonAddressAudit.class.getName(),
-				getPrimaryKey(), defaultLocale, availableLocales);
+		Locale defaultImportLocale = LocalizationUtil.getDefaultImportLocale(
+			WatsonAddressAudit.class.getName(), getPrimaryKey(), defaultLocale,
+			availableLocales);
 
 		prepareLocalizedFieldsForImport(defaultImportLocale);
 	}
@@ -1572,6 +1695,7 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 	@SuppressWarnings("unused")
 	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
 		throws LocaleException {
+
 		Locale defaultLocale = LocaleUtil.getSiteDefault();
 
 		String modelDefaultLanguageId = getDefaultLanguageId();
@@ -1591,25 +1715,28 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 			setBuilding(getBuilding(modelDefaultLanguageId), defaultLocale);
 		}
 		else {
-			setBuilding(getBuilding(defaultLocale), defaultLocale, defaultLocale);
+			setBuilding(
+				getBuilding(defaultLocale), defaultLocale, defaultLocale);
 		}
 
 		String description = getDescription(defaultLocale);
 
 		if (Validator.isNull(description)) {
-			setDescription(getDescription(modelDefaultLanguageId), defaultLocale);
+			setDescription(
+				getDescription(modelDefaultLanguageId), defaultLocale);
 		}
 		else {
-			setDescription(getDescription(defaultLocale), defaultLocale,
-				defaultLocale);
+			setDescription(
+				getDescription(defaultLocale), defaultLocale, defaultLocale);
 		}
 	}
 
 	@Override
 	public WatsonAddressAudit toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonAddressAudit)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+			_escapedModel = (WatsonAddressAudit)ProxyUtil.newProxyInstance(
+				_classLoader, _escapedModelInterfaces,
+				new AutoEscapeBeanHandler(this));
 		}
 
 		return _escapedModel;
@@ -1617,9 +1744,11 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 
 	@Override
 	public Object clone() {
-		WatsonAddressAuditImpl watsonAddressAuditImpl = new WatsonAddressAuditImpl();
+		WatsonAddressAuditImpl watsonAddressAuditImpl =
+			new WatsonAddressAuditImpl();
 
-		watsonAddressAuditImpl.setWatsonAddressAuditId(getWatsonAddressAuditId());
+		watsonAddressAuditImpl.setWatsonAddressAuditId(
+			getWatsonAddressAuditId());
 		watsonAddressAuditImpl.setGroupId(getGroupId());
 		watsonAddressAuditImpl.setCompanyId(getCompanyId());
 		watsonAddressAuditImpl.setUserId(getUserId());
@@ -1627,11 +1756,16 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 		watsonAddressAuditImpl.setCreateDate(getCreateDate());
 		watsonAddressAuditImpl.setModifiedDate(getModifiedDate());
 		watsonAddressAuditImpl.setCountryId(getCountryId());
-		watsonAddressAuditImpl.setDistrictWatsonListTypeId(getDistrictWatsonListTypeId());
-		watsonAddressAuditImpl.setOriginalWatsonAddressId(getOriginalWatsonAddressId());
-		watsonAddressAuditImpl.setProvinceWatsonListTypeId(getProvinceWatsonListTypeId());
-		watsonAddressAuditImpl.setSubDistrictWatsonListTypeId(getSubDistrictWatsonListTypeId());
-		watsonAddressAuditImpl.setTypeWatsonListTypeId(getTypeWatsonListTypeId());
+		watsonAddressAuditImpl.setDistrictWatsonListTypeId(
+			getDistrictWatsonListTypeId());
+		watsonAddressAuditImpl.setOriginalWatsonAddressId(
+			getOriginalWatsonAddressId());
+		watsonAddressAuditImpl.setProvinceWatsonListTypeId(
+			getProvinceWatsonListTypeId());
+		watsonAddressAuditImpl.setSubDistrictWatsonListTypeId(
+			getSubDistrictWatsonListTypeId());
+		watsonAddressAuditImpl.setTypeWatsonListTypeId(
+			getTypeWatsonListTypeId());
 		watsonAddressAuditImpl.setWatsonAddressId(getWatsonAddressId());
 		watsonAddressAuditImpl.setWatsonIncidentId(getWatsonIncidentId());
 		watsonAddressAuditImpl.setName(getName());
@@ -1716,9 +1850,11 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 
 	@Override
 	public CacheModel<WatsonAddressAudit> toCacheModel() {
-		WatsonAddressAuditCacheModel watsonAddressAuditCacheModel = new WatsonAddressAuditCacheModel();
+		WatsonAddressAuditCacheModel watsonAddressAuditCacheModel =
+			new WatsonAddressAuditCacheModel();
 
-		watsonAddressAuditCacheModel.watsonAddressAuditId = getWatsonAddressAuditId();
+		watsonAddressAuditCacheModel.watsonAddressAuditId =
+			getWatsonAddressAuditId();
 
 		watsonAddressAuditCacheModel.groupId = getGroupId();
 
@@ -1754,15 +1890,20 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 
 		watsonAddressAuditCacheModel.countryId = getCountryId();
 
-		watsonAddressAuditCacheModel.districtWatsonListTypeId = getDistrictWatsonListTypeId();
+		watsonAddressAuditCacheModel.districtWatsonListTypeId =
+			getDistrictWatsonListTypeId();
 
-		watsonAddressAuditCacheModel.originalWatsonAddressId = getOriginalWatsonAddressId();
+		watsonAddressAuditCacheModel.originalWatsonAddressId =
+			getOriginalWatsonAddressId();
 
-		watsonAddressAuditCacheModel.provinceWatsonListTypeId = getProvinceWatsonListTypeId();
+		watsonAddressAuditCacheModel.provinceWatsonListTypeId =
+			getProvinceWatsonListTypeId();
 
-		watsonAddressAuditCacheModel.subDistrictWatsonListTypeId = getSubDistrictWatsonListTypeId();
+		watsonAddressAuditCacheModel.subDistrictWatsonListTypeId =
+			getSubDistrictWatsonListTypeId();
 
-		watsonAddressAuditCacheModel.typeWatsonListTypeId = getTypeWatsonListTypeId();
+		watsonAddressAuditCacheModel.typeWatsonListTypeId =
+			getTypeWatsonListTypeId();
 
 		watsonAddressAuditCacheModel.watsonAddressId = getWatsonAddressId();
 
@@ -1876,17 +2017,20 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 
 	@Override
 	public String toString() {
-		Map<String, Function<WatsonAddressAudit, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonAddressAudit, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
-				2);
+		StringBundler sb = new StringBundler(
+			4 * attributeGetterFunctions.size() + 2);
 
 		sb.append("{");
 
-		for (Map.Entry<String, Function<WatsonAddressAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonAddressAudit, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonAddressAudit, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonAddressAudit, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append(attributeName);
 			sb.append("=");
@@ -1905,19 +2049,22 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 
 	@Override
 	public String toXmlString() {
-		Map<String, Function<WatsonAddressAudit, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonAddressAudit, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
-				4);
+		StringBundler sb = new StringBundler(
+			5 * attributeGetterFunctions.size() + 4);
 
 		sb.append("<model><model-name>");
 		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		for (Map.Entry<String, Function<WatsonAddressAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonAddressAudit, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonAddressAudit, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonAddressAudit, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append("<column><column-name>");
 			sb.append(attributeName);
@@ -1931,10 +2078,12 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader = WatsonAddressAudit.class.getClassLoader();
+	private static final ClassLoader _classLoader =
+		WatsonAddressAudit.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			WatsonAddressAudit.class, ModelWrapper.class
-		};
+		WatsonAddressAudit.class, ModelWrapper.class
+	};
+
 	private long _watsonAddressAuditId;
 	private long _groupId;
 	private long _companyId;
@@ -1970,4 +2119,5 @@ public class WatsonAddressAuditModelImpl extends BaseModelImpl<WatsonAddressAudi
 	private double _longitude;
 	private int _status;
 	private WatsonAddressAudit _escapedModel;
+
 }

@@ -30,6 +30,7 @@ import java.util.List;
  */
 @ProviderType
 public class WatsonAddressAuditSoap implements Serializable {
+
 	public static WatsonAddressAuditSoap toSoapModel(WatsonAddressAudit model) {
 		WatsonAddressAuditSoap soapModel = new WatsonAddressAuditSoap();
 
@@ -41,10 +42,14 @@ public class WatsonAddressAuditSoap implements Serializable {
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
 		soapModel.setCountryId(model.getCountryId());
-		soapModel.setDistrictWatsonListTypeId(model.getDistrictWatsonListTypeId());
-		soapModel.setOriginalWatsonAddressId(model.getOriginalWatsonAddressId());
-		soapModel.setProvinceWatsonListTypeId(model.getProvinceWatsonListTypeId());
-		soapModel.setSubDistrictWatsonListTypeId(model.getSubDistrictWatsonListTypeId());
+		soapModel.setDistrictWatsonListTypeId(
+			model.getDistrictWatsonListTypeId());
+		soapModel.setOriginalWatsonAddressId(
+			model.getOriginalWatsonAddressId());
+		soapModel.setProvinceWatsonListTypeId(
+			model.getProvinceWatsonListTypeId());
+		soapModel.setSubDistrictWatsonListTypeId(
+			model.getSubDistrictWatsonListTypeId());
 		soapModel.setTypeWatsonListTypeId(model.getTypeWatsonListTypeId());
 		soapModel.setWatsonAddressId(model.getWatsonAddressId());
 		soapModel.setWatsonIncidentId(model.getWatsonIncidentId());
@@ -69,7 +74,9 @@ public class WatsonAddressAuditSoap implements Serializable {
 
 	public static WatsonAddressAuditSoap[] toSoapModels(
 		WatsonAddressAudit[] models) {
-		WatsonAddressAuditSoap[] soapModels = new WatsonAddressAuditSoap[models.length];
+
+		WatsonAddressAuditSoap[] soapModels =
+			new WatsonAddressAuditSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -80,10 +87,12 @@ public class WatsonAddressAuditSoap implements Serializable {
 
 	public static WatsonAddressAuditSoap[][] toSoapModels(
 		WatsonAddressAudit[][] models) {
+
 		WatsonAddressAuditSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new WatsonAddressAuditSoap[models.length][models[0].length];
+			soapModels =
+				new WatsonAddressAuditSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new WatsonAddressAuditSoap[0][0];
@@ -98,13 +107,16 @@ public class WatsonAddressAuditSoap implements Serializable {
 
 	public static WatsonAddressAuditSoap[] toSoapModels(
 		List<WatsonAddressAudit> models) {
-		List<WatsonAddressAuditSoap> soapModels = new ArrayList<WatsonAddressAuditSoap>(models.size());
+
+		List<WatsonAddressAuditSoap> soapModels =
+			new ArrayList<WatsonAddressAuditSoap>(models.size());
 
 		for (WatsonAddressAudit model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(new WatsonAddressAuditSoap[soapModels.size()]);
+		return soapModels.toArray(
+			new WatsonAddressAuditSoap[soapModels.size()]);
 	}
 
 	public WatsonAddressAuditSoap() {
@@ -210,7 +222,9 @@ public class WatsonAddressAuditSoap implements Serializable {
 		return _subDistrictWatsonListTypeId;
 	}
 
-	public void setSubDistrictWatsonListTypeId(long subDistrictWatsonListTypeId) {
+	public void setSubDistrictWatsonListTypeId(
+		long subDistrictWatsonListTypeId) {
+
 		_subDistrictWatsonListTypeId = subDistrictWatsonListTypeId;
 	}
 
@@ -388,4 +402,5 @@ public class WatsonAddressAuditSoap implements Serializable {
 	private double _latitude;
 	private double _longitude;
 	private int _status;
+
 }

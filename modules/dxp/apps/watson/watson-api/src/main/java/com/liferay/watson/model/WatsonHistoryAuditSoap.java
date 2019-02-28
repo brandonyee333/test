@@ -30,6 +30,7 @@ import java.util.List;
  */
 @ProviderType
 public class WatsonHistoryAuditSoap implements Serializable {
+
 	public static WatsonHistoryAuditSoap toSoapModel(WatsonHistoryAudit model) {
 		WatsonHistoryAuditSoap soapModel = new WatsonHistoryAuditSoap();
 
@@ -52,7 +53,9 @@ public class WatsonHistoryAuditSoap implements Serializable {
 
 	public static WatsonHistoryAuditSoap[] toSoapModels(
 		WatsonHistoryAudit[] models) {
-		WatsonHistoryAuditSoap[] soapModels = new WatsonHistoryAuditSoap[models.length];
+
+		WatsonHistoryAuditSoap[] soapModels =
+			new WatsonHistoryAuditSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -63,10 +66,12 @@ public class WatsonHistoryAuditSoap implements Serializable {
 
 	public static WatsonHistoryAuditSoap[][] toSoapModels(
 		WatsonHistoryAudit[][] models) {
+
 		WatsonHistoryAuditSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new WatsonHistoryAuditSoap[models.length][models[0].length];
+			soapModels =
+				new WatsonHistoryAuditSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new WatsonHistoryAuditSoap[0][0];
@@ -81,13 +86,16 @@ public class WatsonHistoryAuditSoap implements Serializable {
 
 	public static WatsonHistoryAuditSoap[] toSoapModels(
 		List<WatsonHistoryAudit> models) {
-		List<WatsonHistoryAuditSoap> soapModels = new ArrayList<WatsonHistoryAuditSoap>(models.size());
+
+		List<WatsonHistoryAuditSoap> soapModels =
+			new ArrayList<WatsonHistoryAuditSoap>(models.size());
 
 		for (WatsonHistoryAudit model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(new WatsonHistoryAuditSoap[soapModels.size()]);
+		return soapModels.toArray(
+			new WatsonHistoryAuditSoap[soapModels.size()]);
 	}
 
 	public WatsonHistoryAuditSoap() {
@@ -218,4 +226,5 @@ public class WatsonHistoryAuditSoap implements Serializable {
 	private long _classPK;
 	private int _type;
 	private int _status;
+
 }

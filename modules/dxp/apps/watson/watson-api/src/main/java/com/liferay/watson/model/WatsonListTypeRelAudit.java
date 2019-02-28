@@ -27,30 +27,37 @@ import com.liferay.portal.kernel.util.Accessor;
  * @see WatsonListTypeRelAuditModel
  * @generated
  */
-@ImplementationClassName("com.liferay.watson.model.impl.WatsonListTypeRelAuditImpl")
+@ImplementationClassName(
+	"com.liferay.watson.model.impl.WatsonListTypeRelAuditImpl"
+)
 @ProviderType
-public interface WatsonListTypeRelAudit extends WatsonListTypeRelAuditModel,
-	PersistedModel {
+public interface WatsonListTypeRelAudit
+	extends WatsonListTypeRelAuditModel, PersistedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonListTypeRelAuditImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<WatsonListTypeRelAudit, Long> WATSON_LIST_TYPE_REL_AUDIT_ID_ACCESSOR =
-		new Accessor<WatsonListTypeRelAudit, Long>() {
-			@Override
-			public Long get(WatsonListTypeRelAudit watsonListTypeRelAudit) {
-				return watsonListTypeRelAudit.getWatsonListTypeRelAuditId();
-			}
+	public static final Accessor<WatsonListTypeRelAudit, Long>
+		WATSON_LIST_TYPE_REL_AUDIT_ID_ACCESSOR =
+			new Accessor<WatsonListTypeRelAudit, Long>() {
 
-			@Override
-			public Class<Long> getAttributeClass() {
-				return Long.class;
-			}
+				@Override
+				public Long get(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+					return watsonListTypeRelAudit.getWatsonListTypeRelAuditId();
+				}
 
-			@Override
-			public Class<WatsonListTypeRelAudit> getTypeClass() {
-				return WatsonListTypeRelAudit.class;
-			}
-		};
+				@Override
+				public Class<Long> getAttributeClass() {
+					return Long.class;
+				}
+
+				@Override
+				public Class<WatsonListTypeRelAudit> getTypeClass() {
+					return WatsonListTypeRelAudit.class;
+				}
+
+			};
+
 }

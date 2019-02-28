@@ -18,7 +18,6 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -36,7 +35,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
-
 import com.liferay.watson.model.WatsonListTypeRelAudit;
 import com.liferay.watson.model.WatsonListTypeRelAuditModel;
 
@@ -67,32 +65,30 @@ import java.util.function.Function;
  * @generated
  */
 @ProviderType
-public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTypeRelAudit>
+public class WatsonListTypeRelAuditModelImpl
+	extends BaseModelImpl<WatsonListTypeRelAudit>
 	implements WatsonListTypeRelAuditModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson list type rel audit model instance should use the <code>WatsonListTypeRelAudit</code> interface instead.
 	 */
 	public static final String TABLE_NAME = "WatsonListTypeRelAudit";
+
 	public static final Object[][] TABLE_COLUMNS = {
-			{ "watsonListTypeRelAuditId", Types.BIGINT },
-			{ "groupId", Types.BIGINT },
-			{ "companyId", Types.BIGINT },
-			{ "userId", Types.BIGINT },
-			{ "userName", Types.VARCHAR },
-			{ "createDate", Types.TIMESTAMP },
-			{ "modifiedDate", Types.TIMESTAMP },
-			{ "watsonListTypeId", Types.BIGINT },
-			{ "watsonListTypeRelId", Types.BIGINT },
-			{ "classNameId", Types.BIGINT },
-			{ "classPK", Types.BIGINT },
-			{ "primary_", Types.BOOLEAN },
-			{ "value", Types.VARCHAR },
-			{ "type_", Types.VARCHAR },
-			{ "status", Types.INTEGER }
-		};
-	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
+		{"watsonListTypeRelAuditId", Types.BIGINT}, {"groupId", Types.BIGINT},
+		{"companyId", Types.BIGINT}, {"userId", Types.BIGINT},
+		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
+		{"modifiedDate", Types.TIMESTAMP}, {"watsonListTypeId", Types.BIGINT},
+		{"watsonListTypeRelId", Types.BIGINT}, {"classNameId", Types.BIGINT},
+		{"classPK", Types.BIGINT}, {"primary_", Types.BOOLEAN},
+		{"value", Types.VARCHAR}, {"type_", Types.VARCHAR},
+		{"status", Types.INTEGER}
+	};
+
+	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
+		new HashMap<String, Integer>();
 
 	static {
 		TABLE_COLUMNS_MAP.put("watsonListTypeRelAuditId", Types.BIGINT);
@@ -112,22 +108,39 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonListTypeRelAudit (watsonListTypeRelAuditId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,watsonListTypeId LONG,watsonListTypeRelId LONG,classNameId LONG,classPK LONG,primary_ BOOLEAN,value STRING null,type_ VARCHAR(75) null,status INTEGER)";
-	public static final String TABLE_SQL_DROP = "drop table WatsonListTypeRelAudit";
-	public static final String ORDER_BY_JPQL = " ORDER BY watsonListTypeRelAudit.watsonListTypeRelAuditId ASC";
-	public static final String ORDER_BY_SQL = " ORDER BY WatsonListTypeRelAudit.watsonListTypeRelAuditId ASC";
+	public static final String TABLE_SQL_CREATE =
+		"create table WatsonListTypeRelAudit (watsonListTypeRelAuditId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,watsonListTypeId LONG,watsonListTypeRelId LONG,classNameId LONG,classPK LONG,primary_ BOOLEAN,value STRING null,type_ VARCHAR(75) null,status INTEGER)";
+
+	public static final String TABLE_SQL_DROP =
+		"drop table WatsonListTypeRelAudit";
+
+	public static final String ORDER_BY_JPQL =
+		" ORDER BY watsonListTypeRelAudit.watsonListTypeRelAuditId ASC";
+
+	public static final String ORDER_BY_SQL =
+		" ORDER BY WatsonListTypeRelAudit.watsonListTypeRelAuditId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
+
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
+
 	public static final String TX_MANAGER = "liferayTransactionManager";
-	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonListTypeRelAudit"),
-			true);
-	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonListTypeRelAudit"),
-			true);
+
+	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonListTypeRelAudit"),
+		true);
+
+	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonListTypeRelAudit"),
+		true);
+
 	public static final boolean COLUMN_BITMASK_ENABLED = false;
-	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.watson.service.util.ServiceProps.get(
-				"lock.expiration.time.com.liferay.watson.model.WatsonListTypeRelAudit"));
+
+	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"lock.expiration.time.com.liferay.watson.model.WatsonListTypeRelAudit"));
 
 	public WatsonListTypeRelAuditModelImpl() {
 	}
@@ -166,14 +179,18 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		Map<String, Function<WatsonListTypeRelAudit, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonListTypeRelAudit, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		for (Map.Entry<String, Function<WatsonListTypeRelAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonListTypeRelAudit, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonListTypeRelAudit, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonListTypeRelAudit, Object> attributeGetterFunction =
+				entry.getValue();
 
-			attributes.put(attributeName,
+			attributes.put(
+				attributeName,
 				attributeGetterFunction.apply((WatsonListTypeRelAudit)this));
 		}
 
@@ -185,46 +202,58 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Map<String, BiConsumer<WatsonListTypeRelAudit, Object>> attributeSetterBiConsumers =
-			getAttributeSetterBiConsumers();
+		Map<String, BiConsumer<WatsonListTypeRelAudit, Object>>
+			attributeSetterBiConsumers = getAttributeSetterBiConsumers();
 
 		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			String attributeName = entry.getKey();
 
-			BiConsumer<WatsonListTypeRelAudit, Object> attributeSetterBiConsumer =
-				attributeSetterBiConsumers.get(attributeName);
+			BiConsumer<WatsonListTypeRelAudit, Object>
+				attributeSetterBiConsumer = attributeSetterBiConsumers.get(
+					attributeName);
 
 			if (attributeSetterBiConsumer != null) {
-				attributeSetterBiConsumer.accept((WatsonListTypeRelAudit)this,
-					entry.getValue());
+				attributeSetterBiConsumer.accept(
+					(WatsonListTypeRelAudit)this, entry.getValue());
 			}
 		}
 	}
 
-	public Map<String, Function<WatsonListTypeRelAudit, Object>> getAttributeGetterFunctions() {
+	public Map<String, Function<WatsonListTypeRelAudit, Object>>
+		getAttributeGetterFunctions() {
+
 		return _attributeGetterFunctions;
 	}
 
-	public Map<String, BiConsumer<WatsonListTypeRelAudit, Object>> getAttributeSetterBiConsumers() {
+	public Map<String, BiConsumer<WatsonListTypeRelAudit, Object>>
+		getAttributeSetterBiConsumers() {
+
 		return _attributeSetterBiConsumers;
 	}
 
-	private static final Map<String, Function<WatsonListTypeRelAudit, Object>> _attributeGetterFunctions;
-	private static final Map<String, BiConsumer<WatsonListTypeRelAudit, Object>> _attributeSetterBiConsumers;
+	private static final Map<String, Function<WatsonListTypeRelAudit, Object>>
+		_attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonListTypeRelAudit, Object>>
+		_attributeSetterBiConsumers;
 
 	static {
-		Map<String, Function<WatsonListTypeRelAudit, Object>> attributeGetterFunctions =
-			new LinkedHashMap<String, Function<WatsonListTypeRelAudit, Object>>();
-		Map<String, BiConsumer<WatsonListTypeRelAudit, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<WatsonListTypeRelAudit, ?>>();
-
+		Map<String, Function<WatsonListTypeRelAudit, Object>>
+			attributeGetterFunctions =
+				new LinkedHashMap
+					<String, Function<WatsonListTypeRelAudit, Object>>();
+		Map<String, BiConsumer<WatsonListTypeRelAudit, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap
+					<String, BiConsumer<WatsonListTypeRelAudit, ?>>();
 
 		attributeGetterFunctions.put(
 			"watsonListTypeRelAuditId",
 			new Function<WatsonListTypeRelAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+				public Object apply(
+					WatsonListTypeRelAudit watsonListTypeRelAudit) {
+
 					return watsonListTypeRelAudit.getWatsonListTypeRelAuditId();
 				}
 
@@ -234,8 +263,12 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 			new BiConsumer<WatsonListTypeRelAudit, Object>() {
 
 				@Override
-				public void accept(WatsonListTypeRelAudit watsonListTypeRelAudit, Object watsonListTypeRelAuditId) {
-					watsonListTypeRelAudit.setWatsonListTypeRelAuditId((Long)watsonListTypeRelAuditId);
+				public void accept(
+					WatsonListTypeRelAudit watsonListTypeRelAudit,
+					Object watsonListTypeRelAuditId) {
+
+					watsonListTypeRelAudit.setWatsonListTypeRelAuditId(
+						(Long)watsonListTypeRelAuditId);
 				}
 
 			});
@@ -244,7 +277,9 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 			new Function<WatsonListTypeRelAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+				public Object apply(
+					WatsonListTypeRelAudit watsonListTypeRelAudit) {
+
 					return watsonListTypeRelAudit.getGroupId();
 				}
 
@@ -254,7 +289,10 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 			new BiConsumer<WatsonListTypeRelAudit, Object>() {
 
 				@Override
-				public void accept(WatsonListTypeRelAudit watsonListTypeRelAudit, Object groupId) {
+				public void accept(
+					WatsonListTypeRelAudit watsonListTypeRelAudit,
+					Object groupId) {
+
 					watsonListTypeRelAudit.setGroupId((Long)groupId);
 				}
 
@@ -264,7 +302,9 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 			new Function<WatsonListTypeRelAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+				public Object apply(
+					WatsonListTypeRelAudit watsonListTypeRelAudit) {
+
 					return watsonListTypeRelAudit.getCompanyId();
 				}
 
@@ -274,7 +314,10 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 			new BiConsumer<WatsonListTypeRelAudit, Object>() {
 
 				@Override
-				public void accept(WatsonListTypeRelAudit watsonListTypeRelAudit, Object companyId) {
+				public void accept(
+					WatsonListTypeRelAudit watsonListTypeRelAudit,
+					Object companyId) {
+
 					watsonListTypeRelAudit.setCompanyId((Long)companyId);
 				}
 
@@ -284,7 +327,9 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 			new Function<WatsonListTypeRelAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+				public Object apply(
+					WatsonListTypeRelAudit watsonListTypeRelAudit) {
+
 					return watsonListTypeRelAudit.getUserId();
 				}
 
@@ -294,7 +339,10 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 			new BiConsumer<WatsonListTypeRelAudit, Object>() {
 
 				@Override
-				public void accept(WatsonListTypeRelAudit watsonListTypeRelAudit, Object userId) {
+				public void accept(
+					WatsonListTypeRelAudit watsonListTypeRelAudit,
+					Object userId) {
+
 					watsonListTypeRelAudit.setUserId((Long)userId);
 				}
 
@@ -304,7 +352,9 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 			new Function<WatsonListTypeRelAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+				public Object apply(
+					WatsonListTypeRelAudit watsonListTypeRelAudit) {
+
 					return watsonListTypeRelAudit.getUserName();
 				}
 
@@ -314,7 +364,10 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 			new BiConsumer<WatsonListTypeRelAudit, Object>() {
 
 				@Override
-				public void accept(WatsonListTypeRelAudit watsonListTypeRelAudit, Object userName) {
+				public void accept(
+					WatsonListTypeRelAudit watsonListTypeRelAudit,
+					Object userName) {
+
 					watsonListTypeRelAudit.setUserName((String)userName);
 				}
 
@@ -324,7 +377,9 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 			new Function<WatsonListTypeRelAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+				public Object apply(
+					WatsonListTypeRelAudit watsonListTypeRelAudit) {
+
 					return watsonListTypeRelAudit.getCreateDate();
 				}
 
@@ -334,7 +389,10 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 			new BiConsumer<WatsonListTypeRelAudit, Object>() {
 
 				@Override
-				public void accept(WatsonListTypeRelAudit watsonListTypeRelAudit, Object createDate) {
+				public void accept(
+					WatsonListTypeRelAudit watsonListTypeRelAudit,
+					Object createDate) {
+
 					watsonListTypeRelAudit.setCreateDate((Date)createDate);
 				}
 
@@ -344,7 +402,9 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 			new Function<WatsonListTypeRelAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+				public Object apply(
+					WatsonListTypeRelAudit watsonListTypeRelAudit) {
+
 					return watsonListTypeRelAudit.getModifiedDate();
 				}
 
@@ -354,7 +414,10 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 			new BiConsumer<WatsonListTypeRelAudit, Object>() {
 
 				@Override
-				public void accept(WatsonListTypeRelAudit watsonListTypeRelAudit, Object modifiedDate) {
+				public void accept(
+					WatsonListTypeRelAudit watsonListTypeRelAudit,
+					Object modifiedDate) {
+
 					watsonListTypeRelAudit.setModifiedDate((Date)modifiedDate);
 				}
 
@@ -364,7 +427,9 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 			new Function<WatsonListTypeRelAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+				public Object apply(
+					WatsonListTypeRelAudit watsonListTypeRelAudit) {
+
 					return watsonListTypeRelAudit.getWatsonListTypeId();
 				}
 
@@ -374,8 +439,12 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 			new BiConsumer<WatsonListTypeRelAudit, Object>() {
 
 				@Override
-				public void accept(WatsonListTypeRelAudit watsonListTypeRelAudit, Object watsonListTypeId) {
-					watsonListTypeRelAudit.setWatsonListTypeId((Long)watsonListTypeId);
+				public void accept(
+					WatsonListTypeRelAudit watsonListTypeRelAudit,
+					Object watsonListTypeId) {
+
+					watsonListTypeRelAudit.setWatsonListTypeId(
+						(Long)watsonListTypeId);
 				}
 
 			});
@@ -384,7 +453,9 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 			new Function<WatsonListTypeRelAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+				public Object apply(
+					WatsonListTypeRelAudit watsonListTypeRelAudit) {
+
 					return watsonListTypeRelAudit.getWatsonListTypeRelId();
 				}
 
@@ -394,8 +465,12 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 			new BiConsumer<WatsonListTypeRelAudit, Object>() {
 
 				@Override
-				public void accept(WatsonListTypeRelAudit watsonListTypeRelAudit, Object watsonListTypeRelId) {
-					watsonListTypeRelAudit.setWatsonListTypeRelId((Long)watsonListTypeRelId);
+				public void accept(
+					WatsonListTypeRelAudit watsonListTypeRelAudit,
+					Object watsonListTypeRelId) {
+
+					watsonListTypeRelAudit.setWatsonListTypeRelId(
+						(Long)watsonListTypeRelId);
 				}
 
 			});
@@ -404,7 +479,9 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 			new Function<WatsonListTypeRelAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+				public Object apply(
+					WatsonListTypeRelAudit watsonListTypeRelAudit) {
+
 					return watsonListTypeRelAudit.getClassNameId();
 				}
 
@@ -414,7 +491,10 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 			new BiConsumer<WatsonListTypeRelAudit, Object>() {
 
 				@Override
-				public void accept(WatsonListTypeRelAudit watsonListTypeRelAudit, Object classNameId) {
+				public void accept(
+					WatsonListTypeRelAudit watsonListTypeRelAudit,
+					Object classNameId) {
+
 					watsonListTypeRelAudit.setClassNameId((Long)classNameId);
 				}
 
@@ -424,7 +504,9 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 			new Function<WatsonListTypeRelAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+				public Object apply(
+					WatsonListTypeRelAudit watsonListTypeRelAudit) {
+
 					return watsonListTypeRelAudit.getClassPK();
 				}
 
@@ -434,7 +516,10 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 			new BiConsumer<WatsonListTypeRelAudit, Object>() {
 
 				@Override
-				public void accept(WatsonListTypeRelAudit watsonListTypeRelAudit, Object classPK) {
+				public void accept(
+					WatsonListTypeRelAudit watsonListTypeRelAudit,
+					Object classPK) {
+
 					watsonListTypeRelAudit.setClassPK((Long)classPK);
 				}
 
@@ -444,7 +529,9 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 			new Function<WatsonListTypeRelAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+				public Object apply(
+					WatsonListTypeRelAudit watsonListTypeRelAudit) {
+
 					return watsonListTypeRelAudit.getPrimary();
 				}
 
@@ -454,7 +541,10 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 			new BiConsumer<WatsonListTypeRelAudit, Object>() {
 
 				@Override
-				public void accept(WatsonListTypeRelAudit watsonListTypeRelAudit, Object primary) {
+				public void accept(
+					WatsonListTypeRelAudit watsonListTypeRelAudit,
+					Object primary) {
+
 					watsonListTypeRelAudit.setPrimary((Boolean)primary);
 				}
 
@@ -464,7 +554,9 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 			new Function<WatsonListTypeRelAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+				public Object apply(
+					WatsonListTypeRelAudit watsonListTypeRelAudit) {
+
 					return watsonListTypeRelAudit.getValue();
 				}
 
@@ -474,7 +566,10 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 			new BiConsumer<WatsonListTypeRelAudit, Object>() {
 
 				@Override
-				public void accept(WatsonListTypeRelAudit watsonListTypeRelAudit, Object value) {
+				public void accept(
+					WatsonListTypeRelAudit watsonListTypeRelAudit,
+					Object value) {
+
 					watsonListTypeRelAudit.setValue((String)value);
 				}
 
@@ -484,7 +579,9 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 			new Function<WatsonListTypeRelAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+				public Object apply(
+					WatsonListTypeRelAudit watsonListTypeRelAudit) {
+
 					return watsonListTypeRelAudit.getType();
 				}
 
@@ -494,7 +591,10 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 			new BiConsumer<WatsonListTypeRelAudit, Object>() {
 
 				@Override
-				public void accept(WatsonListTypeRelAudit watsonListTypeRelAudit, Object type) {
+				public void accept(
+					WatsonListTypeRelAudit watsonListTypeRelAudit,
+					Object type) {
+
 					watsonListTypeRelAudit.setType((String)type);
 				}
 
@@ -504,7 +604,9 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 			new Function<WatsonListTypeRelAudit, Object>() {
 
 				@Override
-				public Object apply(WatsonListTypeRelAudit watsonListTypeRelAudit) {
+				public Object apply(
+					WatsonListTypeRelAudit watsonListTypeRelAudit) {
+
 					return watsonListTypeRelAudit.getStatus();
 				}
 
@@ -514,15 +616,19 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 			new BiConsumer<WatsonListTypeRelAudit, Object>() {
 
 				@Override
-				public void accept(WatsonListTypeRelAudit watsonListTypeRelAudit, Object status) {
+				public void accept(
+					WatsonListTypeRelAudit watsonListTypeRelAudit,
+					Object status) {
+
 					watsonListTypeRelAudit.setStatus((Integer)status);
 				}
 
 			});
 
-
-		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap(
+			(Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -728,8 +834,8 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 
 	@Override
 	public String getValue(String languageId, boolean useDefault) {
-		return LocalizationUtil.getLocalization(getValue(), languageId,
-			useDefault);
+		return LocalizationUtil.getLocalization(
+			getValue(), languageId, useDefault);
 	}
 
 	@Override
@@ -766,12 +872,14 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
 
 		if (Validator.isNotNull(value)) {
-			setValue(LocalizationUtil.updateLocalization(getValue(), "Value",
-					value, languageId, defaultLanguageId));
+			setValue(
+				LocalizationUtil.updateLocalization(
+					getValue(), "Value", value, languageId, defaultLanguageId));
 		}
 		else {
-			setValue(LocalizationUtil.removeLocalization(getValue(), "Value",
-					languageId));
+			setValue(
+				LocalizationUtil.removeLocalization(
+					getValue(), "Value", languageId));
 		}
 	}
 
@@ -786,13 +894,17 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 	}
 
 	@Override
-	public void setValueMap(Map<Locale, String> valueMap, Locale defaultLocale) {
+	public void setValueMap(
+		Map<Locale, String> valueMap, Locale defaultLocale) {
+
 		if (valueMap == null) {
 			return;
 		}
 
-		setValue(LocalizationUtil.updateLocalization(valueMap, getValue(),
-				"Value", LocaleUtil.toLanguageId(defaultLocale)));
+		setValue(
+			LocalizationUtil.updateLocalization(
+				valueMap, getValue(), "Value",
+				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
 	@Override
@@ -822,8 +934,9 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 
 	@Override
 	public ExpandoBridge getExpandoBridge() {
-		return ExpandoBridgeFactoryUtil.getExpandoBridge(getCompanyId(),
-			WatsonListTypeRelAudit.class.getName(), getPrimaryKey());
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(
+			getCompanyId(), WatsonListTypeRelAudit.class.getName(),
+			getPrimaryKey());
 	}
 
 	@Override
@@ -848,7 +961,8 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 			}
 		}
 
-		return availableLanguageIds.toArray(new String[availableLanguageIds.size()]);
+		return availableLanguageIds.toArray(
+			new String[availableLanguageIds.size()]);
 	}
 
 	@Override
@@ -866,12 +980,15 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 
 	@Override
 	public void prepareLocalizedFieldsForImport() throws LocaleException {
-		Locale defaultLocale = LocaleUtil.fromLanguageId(getDefaultLanguageId());
+		Locale defaultLocale = LocaleUtil.fromLanguageId(
+			getDefaultLanguageId());
 
-		Locale[] availableLocales = LocaleUtil.fromLanguageIds(getAvailableLanguageIds());
+		Locale[] availableLocales = LocaleUtil.fromLanguageIds(
+			getAvailableLanguageIds());
 
-		Locale defaultImportLocale = LocalizationUtil.getDefaultImportLocale(WatsonListTypeRelAudit.class.getName(),
-				getPrimaryKey(), defaultLocale, availableLocales);
+		Locale defaultImportLocale = LocalizationUtil.getDefaultImportLocale(
+			WatsonListTypeRelAudit.class.getName(), getPrimaryKey(),
+			defaultLocale, availableLocales);
 
 		prepareLocalizedFieldsForImport(defaultImportLocale);
 	}
@@ -880,6 +997,7 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 	@SuppressWarnings("unused")
 	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
 		throws LocaleException {
+
 		Locale defaultLocale = LocaleUtil.getSiteDefault();
 
 		String modelDefaultLanguageId = getDefaultLanguageId();
@@ -897,8 +1015,9 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 	@Override
 	public WatsonListTypeRelAudit toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonListTypeRelAudit)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+			_escapedModel = (WatsonListTypeRelAudit)ProxyUtil.newProxyInstance(
+				_classLoader, _escapedModelInterfaces,
+				new AutoEscapeBeanHandler(this));
 		}
 
 		return _escapedModel;
@@ -906,9 +1025,11 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 
 	@Override
 	public Object clone() {
-		WatsonListTypeRelAuditImpl watsonListTypeRelAuditImpl = new WatsonListTypeRelAuditImpl();
+		WatsonListTypeRelAuditImpl watsonListTypeRelAuditImpl =
+			new WatsonListTypeRelAuditImpl();
 
-		watsonListTypeRelAuditImpl.setWatsonListTypeRelAuditId(getWatsonListTypeRelAuditId());
+		watsonListTypeRelAuditImpl.setWatsonListTypeRelAuditId(
+			getWatsonListTypeRelAuditId());
 		watsonListTypeRelAuditImpl.setGroupId(getGroupId());
 		watsonListTypeRelAuditImpl.setCompanyId(getCompanyId());
 		watsonListTypeRelAuditImpl.setUserId(getUserId());
@@ -916,7 +1037,8 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 		watsonListTypeRelAuditImpl.setCreateDate(getCreateDate());
 		watsonListTypeRelAuditImpl.setModifiedDate(getModifiedDate());
 		watsonListTypeRelAuditImpl.setWatsonListTypeId(getWatsonListTypeId());
-		watsonListTypeRelAuditImpl.setWatsonListTypeRelId(getWatsonListTypeRelId());
+		watsonListTypeRelAuditImpl.setWatsonListTypeRelId(
+			getWatsonListTypeRelId());
 		watsonListTypeRelAuditImpl.setClassNameId(getClassNameId());
 		watsonListTypeRelAuditImpl.setClassPK(getClassPK());
 		watsonListTypeRelAuditImpl.setPrimary(isPrimary());
@@ -954,7 +1076,8 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 			return false;
 		}
 
-		WatsonListTypeRelAudit watsonListTypeRelAudit = (WatsonListTypeRelAudit)obj;
+		WatsonListTypeRelAudit watsonListTypeRelAudit =
+			(WatsonListTypeRelAudit)obj;
 
 		long primaryKey = watsonListTypeRelAudit.getPrimaryKey();
 
@@ -990,9 +1113,11 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 
 	@Override
 	public CacheModel<WatsonListTypeRelAudit> toCacheModel() {
-		WatsonListTypeRelAuditCacheModel watsonListTypeRelAuditCacheModel = new WatsonListTypeRelAuditCacheModel();
+		WatsonListTypeRelAuditCacheModel watsonListTypeRelAuditCacheModel =
+			new WatsonListTypeRelAuditCacheModel();
 
-		watsonListTypeRelAuditCacheModel.watsonListTypeRelAuditId = getWatsonListTypeRelAuditId();
+		watsonListTypeRelAuditCacheModel.watsonListTypeRelAuditId =
+			getWatsonListTypeRelAuditId();
 
 		watsonListTypeRelAuditCacheModel.groupId = getGroupId();
 
@@ -1020,15 +1145,18 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 		Date modifiedDate = getModifiedDate();
 
 		if (modifiedDate != null) {
-			watsonListTypeRelAuditCacheModel.modifiedDate = modifiedDate.getTime();
+			watsonListTypeRelAuditCacheModel.modifiedDate =
+				modifiedDate.getTime();
 		}
 		else {
 			watsonListTypeRelAuditCacheModel.modifiedDate = Long.MIN_VALUE;
 		}
 
-		watsonListTypeRelAuditCacheModel.watsonListTypeId = getWatsonListTypeId();
+		watsonListTypeRelAuditCacheModel.watsonListTypeId =
+			getWatsonListTypeId();
 
-		watsonListTypeRelAuditCacheModel.watsonListTypeRelId = getWatsonListTypeRelId();
+		watsonListTypeRelAuditCacheModel.watsonListTypeRelId =
+			getWatsonListTypeRelId();
 
 		watsonListTypeRelAuditCacheModel.classNameId = getClassNameId();
 
@@ -1059,22 +1187,25 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 
 	@Override
 	public String toString() {
-		Map<String, Function<WatsonListTypeRelAudit, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonListTypeRelAudit, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
-				2);
+		StringBundler sb = new StringBundler(
+			4 * attributeGetterFunctions.size() + 2);
 
 		sb.append("{");
 
-		for (Map.Entry<String, Function<WatsonListTypeRelAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonListTypeRelAudit, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonListTypeRelAudit, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonListTypeRelAudit, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append(attributeName);
 			sb.append("=");
-			sb.append(attributeGetterFunction.apply(
-					(WatsonListTypeRelAudit)this));
+			sb.append(
+				attributeGetterFunction.apply((WatsonListTypeRelAudit)this));
 			sb.append(", ");
 		}
 
@@ -1089,25 +1220,28 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 
 	@Override
 	public String toXmlString() {
-		Map<String, Function<WatsonListTypeRelAudit, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonListTypeRelAudit, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
-				4);
+		StringBundler sb = new StringBundler(
+			5 * attributeGetterFunctions.size() + 4);
 
 		sb.append("<model><model-name>");
 		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		for (Map.Entry<String, Function<WatsonListTypeRelAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonListTypeRelAudit, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonListTypeRelAudit, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonListTypeRelAudit, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append("<column><column-name>");
 			sb.append(attributeName);
 			sb.append("</column-name><column-value><![CDATA[");
-			sb.append(attributeGetterFunction.apply(
-					(WatsonListTypeRelAudit)this));
+			sb.append(
+				attributeGetterFunction.apply((WatsonListTypeRelAudit)this));
 			sb.append("]]></column-value></column>");
 		}
 
@@ -1116,10 +1250,12 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader = WatsonListTypeRelAudit.class.getClassLoader();
+	private static final ClassLoader _classLoader =
+		WatsonListTypeRelAudit.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			WatsonListTypeRelAudit.class, ModelWrapper.class
-		};
+		WatsonListTypeRelAudit.class, ModelWrapper.class
+	};
+
 	private long _watsonListTypeRelAuditId;
 	private long _groupId;
 	private long _companyId;
@@ -1138,4 +1274,5 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 	private String _type;
 	private int _status;
 	private WatsonListTypeRelAudit _escapedModel;
+
 }

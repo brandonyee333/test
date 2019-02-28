@@ -17,7 +17,6 @@ package com.liferay.watson.service.persistence;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
-
 import com.liferay.watson.exception.NoSuchDocumentException;
 import com.liferay.watson.model.WatsonDocument;
 
@@ -38,7 +37,9 @@ import java.util.Set;
  * @generated
  */
 @ProviderType
-public interface WatsonDocumentPersistence extends BasePersistence<WatsonDocument> {
+public interface WatsonDocumentPersistence
+	extends BasePersistence<WatsonDocument> {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -49,118 +50,123 @@ public interface WatsonDocumentPersistence extends BasePersistence<WatsonDocumen
 		Set<Serializable> primaryKeys);
 
 	/**
-	* Caches the watson document in the entity cache if it is enabled.
-	*
-	* @param watsonDocument the watson document
-	*/
+	 * Caches the watson document in the entity cache if it is enabled.
+	 *
+	 * @param watsonDocument the watson document
+	 */
 	public void cacheResult(WatsonDocument watsonDocument);
 
 	/**
-	* Caches the watson documents in the entity cache if it is enabled.
-	*
-	* @param watsonDocuments the watson documents
-	*/
+	 * Caches the watson documents in the entity cache if it is enabled.
+	 *
+	 * @param watsonDocuments the watson documents
+	 */
 	public void cacheResult(java.util.List<WatsonDocument> watsonDocuments);
 
 	/**
-	* Creates a new watson document with the primary key. Does not add the watson document to the database.
-	*
-	* @param watsonDocumentId the primary key for the new watson document
-	* @return the new watson document
-	*/
+	 * Creates a new watson document with the primary key. Does not add the watson document to the database.
+	 *
+	 * @param watsonDocumentId the primary key for the new watson document
+	 * @return the new watson document
+	 */
 	public WatsonDocument create(long watsonDocumentId);
 
 	/**
-	* Removes the watson document with the primary key from the database. Also notifies the appropriate model listeners.
-	*
-	* @param watsonDocumentId the primary key of the watson document
-	* @return the watson document that was removed
-	* @throws NoSuchDocumentException if a watson document with the primary key could not be found
-	*/
+	 * Removes the watson document with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param watsonDocumentId the primary key of the watson document
+	 * @return the watson document that was removed
+	 * @throws NoSuchDocumentException if a watson document with the primary key could not be found
+	 */
 	public WatsonDocument remove(long watsonDocumentId)
 		throws NoSuchDocumentException;
 
 	public WatsonDocument updateImpl(WatsonDocument watsonDocument);
 
 	/**
-	* Returns the watson document with the primary key or throws a <code>NoSuchDocumentException</code> if it could not be found.
-	*
-	* @param watsonDocumentId the primary key of the watson document
-	* @return the watson document
-	* @throws NoSuchDocumentException if a watson document with the primary key could not be found
-	*/
+	 * Returns the watson document with the primary key or throws a <code>NoSuchDocumentException</code> if it could not be found.
+	 *
+	 * @param watsonDocumentId the primary key of the watson document
+	 * @return the watson document
+	 * @throws NoSuchDocumentException if a watson document with the primary key could not be found
+	 */
 	public WatsonDocument findByPrimaryKey(long watsonDocumentId)
 		throws NoSuchDocumentException;
 
 	/**
-	* Returns the watson document with the primary key or returns <code>null</code> if it could not be found.
-	*
-	* @param watsonDocumentId the primary key of the watson document
-	* @return the watson document, or <code>null</code> if a watson document with the primary key could not be found
-	*/
+	 * Returns the watson document with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param watsonDocumentId the primary key of the watson document
+	 * @return the watson document, or <code>null</code> if a watson document with the primary key could not be found
+	 */
 	public WatsonDocument fetchByPrimaryKey(long watsonDocumentId);
 
 	/**
-	* Returns all the watson documents.
-	*
-	* @return the watson documents
-	*/
+	 * Returns all the watson documents.
+	 *
+	 * @return the watson documents
+	 */
 	public java.util.List<WatsonDocument> findAll();
 
 	/**
-	* Returns a range of all the watson documents.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonDocumentModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of watson documents
-	* @param end the upper bound of the range of watson documents (not inclusive)
-	* @return the range of watson documents
-	*/
+	 * Returns a range of all the watson documents.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonDocumentModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of watson documents
+	 * @param end the upper bound of the range of watson documents (not inclusive)
+	 * @return the range of watson documents
+	 */
 	public java.util.List<WatsonDocument> findAll(int start, int end);
 
 	/**
-	* Returns an ordered range of all the watson documents.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonDocumentModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of watson documents
-	* @param end the upper bound of the range of watson documents (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of watson documents
-	*/
-	public java.util.List<WatsonDocument> findAll(int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<WatsonDocument> orderByComparator);
+	 * Returns an ordered range of all the watson documents.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonDocumentModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of watson documents
+	 * @param end the upper bound of the range of watson documents (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of watson documents
+	 */
+	public java.util.List<WatsonDocument> findAll(
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<WatsonDocument>
+			orderByComparator);
 
 	/**
-	* Returns an ordered range of all the watson documents.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonDocumentModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of watson documents
-	* @param end the upper bound of the range of watson documents (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @param retrieveFromCache whether to retrieve from the finder cache
-	* @return the ordered range of watson documents
-	*/
-	public java.util.List<WatsonDocument> findAll(int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<WatsonDocument> orderByComparator,
+	 * Returns an ordered range of all the watson documents.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonDocumentModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of watson documents
+	 * @param end the upper bound of the range of watson documents (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @return the ordered range of watson documents
+	 */
+	public java.util.List<WatsonDocument> findAll(
+		int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<WatsonDocument>
+			orderByComparator,
 		boolean retrieveFromCache);
 
 	/**
-	* Removes all the watson documents from the database.
-	*/
+	 * Removes all the watson documents from the database.
+	 */
 	public void removeAll();
 
 	/**
-	* Returns the number of watson documents.
-	*
-	* @return the number of watson documents
-	*/
+	 * Returns the number of watson documents.
+	 *
+	 * @return the number of watson documents
+	 */
 	public int countAll();
+
 }

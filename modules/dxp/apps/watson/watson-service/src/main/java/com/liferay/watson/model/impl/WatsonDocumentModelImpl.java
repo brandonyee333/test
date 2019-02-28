@@ -18,7 +18,6 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -30,7 +29,6 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.model.WatsonDocument;
 import com.liferay.watson.model.WatsonDocumentModel;
 
@@ -58,32 +56,30 @@ import java.util.function.Function;
  * @generated
  */
 @ProviderType
-public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
-	implements WatsonDocumentModel {
+public class WatsonDocumentModelImpl
+	extends BaseModelImpl<WatsonDocument> implements WatsonDocumentModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson document model instance should use the <code>WatsonDocument</code> interface instead.
 	 */
 	public static final String TABLE_NAME = "WatsonDocument";
+
 	public static final Object[][] TABLE_COLUMNS = {
-			{ "watsonDocumentId", Types.BIGINT },
-			{ "groupId", Types.BIGINT },
-			{ "companyId", Types.BIGINT },
-			{ "userId", Types.BIGINT },
-			{ "userName", Types.VARCHAR },
-			{ "createDate", Types.TIMESTAMP },
-			{ "modifiedDate", Types.TIMESTAMP },
-			{ "parentTypeWatsonListTypeId", Types.BIGINT },
-			{ "subtypeWatsonListTypeId", Types.BIGINT },
-			{ "typeWatsonListTypeId", Types.BIGINT },
-			{ "watsonChildId", Types.BIGINT },
-			{ "originalDocument", Types.BOOLEAN },
-			{ "receivedDate", Types.TIMESTAMP },
-			{ "imagePayload", Types.CLOB },
-			{ "status", Types.INTEGER }
-		};
-	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
+		{"watsonDocumentId", Types.BIGINT}, {"groupId", Types.BIGINT},
+		{"companyId", Types.BIGINT}, {"userId", Types.BIGINT},
+		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
+		{"modifiedDate", Types.TIMESTAMP},
+		{"parentTypeWatsonListTypeId", Types.BIGINT},
+		{"subtypeWatsonListTypeId", Types.BIGINT},
+		{"typeWatsonListTypeId", Types.BIGINT}, {"watsonChildId", Types.BIGINT},
+		{"originalDocument", Types.BOOLEAN}, {"receivedDate", Types.TIMESTAMP},
+		{"imagePayload", Types.CLOB}, {"status", Types.INTEGER}
+	};
+
+	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
+		new HashMap<String, Integer>();
 
 	static {
 		TABLE_COLUMNS_MAP.put("watsonDocumentId", Types.BIGINT);
@@ -103,22 +99,38 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonDocument (watsonDocumentId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,parentTypeWatsonListTypeId LONG,subtypeWatsonListTypeId LONG,typeWatsonListTypeId LONG,watsonChildId LONG,originalDocument BOOLEAN,receivedDate DATE null,imagePayload TEXT null,status INTEGER)";
+	public static final String TABLE_SQL_CREATE =
+		"create table WatsonDocument (watsonDocumentId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,parentTypeWatsonListTypeId LONG,subtypeWatsonListTypeId LONG,typeWatsonListTypeId LONG,watsonChildId LONG,originalDocument BOOLEAN,receivedDate DATE null,imagePayload TEXT null,status INTEGER)";
+
 	public static final String TABLE_SQL_DROP = "drop table WatsonDocument";
-	public static final String ORDER_BY_JPQL = " ORDER BY watsonDocument.watsonDocumentId ASC";
-	public static final String ORDER_BY_SQL = " ORDER BY WatsonDocument.watsonDocumentId ASC";
+
+	public static final String ORDER_BY_JPQL =
+		" ORDER BY watsonDocument.watsonDocumentId ASC";
+
+	public static final String ORDER_BY_SQL =
+		" ORDER BY WatsonDocument.watsonDocumentId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
+
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
+
 	public static final String TX_MANAGER = "liferayTransactionManager";
-	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonDocument"),
-			true);
-	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonDocument"),
-			true);
+
+	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonDocument"),
+		true);
+
+	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonDocument"),
+		true);
+
 	public static final boolean COLUMN_BITMASK_ENABLED = false;
-	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.watson.service.util.ServiceProps.get(
-				"lock.expiration.time.com.liferay.watson.model.WatsonDocument"));
+
+	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"lock.expiration.time.com.liferay.watson.model.WatsonDocument"));
 
 	public WatsonDocumentModelImpl() {
 	}
@@ -157,13 +169,18 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		Map<String, Function<WatsonDocument, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+		Map<String, Function<WatsonDocument, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		for (Map.Entry<String, Function<WatsonDocument, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonDocument, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonDocument, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonDocument, Object> attributeGetterFunction =
+				entry.getValue();
 
-			attributes.put(attributeName,
+			attributes.put(
+				attributeName,
 				attributeGetterFunction.apply((WatsonDocument)this));
 		}
 
@@ -175,36 +192,44 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Map<String, BiConsumer<WatsonDocument, Object>> attributeSetterBiConsumers =
-			getAttributeSetterBiConsumers();
+		Map<String, BiConsumer<WatsonDocument, Object>>
+			attributeSetterBiConsumers = getAttributeSetterBiConsumers();
 
 		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			String attributeName = entry.getKey();
 
-			BiConsumer<WatsonDocument, Object> attributeSetterBiConsumer = attributeSetterBiConsumers.get(attributeName);
+			BiConsumer<WatsonDocument, Object> attributeSetterBiConsumer =
+				attributeSetterBiConsumers.get(attributeName);
 
 			if (attributeSetterBiConsumer != null) {
-				attributeSetterBiConsumer.accept((WatsonDocument)this,
-					entry.getValue());
+				attributeSetterBiConsumer.accept(
+					(WatsonDocument)this, entry.getValue());
 			}
 		}
 	}
 
-	public Map<String, Function<WatsonDocument, Object>> getAttributeGetterFunctions() {
+	public Map<String, Function<WatsonDocument, Object>>
+		getAttributeGetterFunctions() {
+
 		return _attributeGetterFunctions;
 	}
 
-	public Map<String, BiConsumer<WatsonDocument, Object>> getAttributeSetterBiConsumers() {
+	public Map<String, BiConsumer<WatsonDocument, Object>>
+		getAttributeSetterBiConsumers() {
+
 		return _attributeSetterBiConsumers;
 	}
 
-	private static final Map<String, Function<WatsonDocument, Object>> _attributeGetterFunctions;
-	private static final Map<String, BiConsumer<WatsonDocument, Object>> _attributeSetterBiConsumers;
+	private static final Map<String, Function<WatsonDocument, Object>>
+		_attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonDocument, Object>>
+		_attributeSetterBiConsumers;
 
 	static {
-		Map<String, Function<WatsonDocument, Object>> attributeGetterFunctions = new LinkedHashMap<String, Function<WatsonDocument, Object>>();
-		Map<String, BiConsumer<WatsonDocument, ?>> attributeSetterBiConsumers = new LinkedHashMap<String, BiConsumer<WatsonDocument, ?>>();
-
+		Map<String, Function<WatsonDocument, Object>> attributeGetterFunctions =
+			new LinkedHashMap<String, Function<WatsonDocument, Object>>();
+		Map<String, BiConsumer<WatsonDocument, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<WatsonDocument, ?>>();
 
 		attributeGetterFunctions.put(
 			"watsonDocumentId",
@@ -221,7 +246,9 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 			new BiConsumer<WatsonDocument, Object>() {
 
 				@Override
-				public void accept(WatsonDocument watsonDocument, Object watsonDocumentId) {
+				public void accept(
+					WatsonDocument watsonDocument, Object watsonDocumentId) {
+
 					watsonDocument.setWatsonDocumentId((Long)watsonDocumentId);
 				}
 
@@ -241,7 +268,9 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 			new BiConsumer<WatsonDocument, Object>() {
 
 				@Override
-				public void accept(WatsonDocument watsonDocument, Object groupId) {
+				public void accept(
+					WatsonDocument watsonDocument, Object groupId) {
+
 					watsonDocument.setGroupId((Long)groupId);
 				}
 
@@ -261,7 +290,9 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 			new BiConsumer<WatsonDocument, Object>() {
 
 				@Override
-				public void accept(WatsonDocument watsonDocument, Object companyId) {
+				public void accept(
+					WatsonDocument watsonDocument, Object companyId) {
+
 					watsonDocument.setCompanyId((Long)companyId);
 				}
 
@@ -281,7 +312,9 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 			new BiConsumer<WatsonDocument, Object>() {
 
 				@Override
-				public void accept(WatsonDocument watsonDocument, Object userId) {
+				public void accept(
+					WatsonDocument watsonDocument, Object userId) {
+
 					watsonDocument.setUserId((Long)userId);
 				}
 
@@ -301,7 +334,9 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 			new BiConsumer<WatsonDocument, Object>() {
 
 				@Override
-				public void accept(WatsonDocument watsonDocument, Object userName) {
+				public void accept(
+					WatsonDocument watsonDocument, Object userName) {
+
 					watsonDocument.setUserName((String)userName);
 				}
 
@@ -321,7 +356,9 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 			new BiConsumer<WatsonDocument, Object>() {
 
 				@Override
-				public void accept(WatsonDocument watsonDocument, Object createDate) {
+				public void accept(
+					WatsonDocument watsonDocument, Object createDate) {
+
 					watsonDocument.setCreateDate((Date)createDate);
 				}
 
@@ -341,7 +378,9 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 			new BiConsumer<WatsonDocument, Object>() {
 
 				@Override
-				public void accept(WatsonDocument watsonDocument, Object modifiedDate) {
+				public void accept(
+					WatsonDocument watsonDocument, Object modifiedDate) {
+
 					watsonDocument.setModifiedDate((Date)modifiedDate);
 				}
 
@@ -361,8 +400,12 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 			new BiConsumer<WatsonDocument, Object>() {
 
 				@Override
-				public void accept(WatsonDocument watsonDocument, Object parentTypeWatsonListTypeId) {
-					watsonDocument.setParentTypeWatsonListTypeId((Long)parentTypeWatsonListTypeId);
+				public void accept(
+					WatsonDocument watsonDocument,
+					Object parentTypeWatsonListTypeId) {
+
+					watsonDocument.setParentTypeWatsonListTypeId(
+						(Long)parentTypeWatsonListTypeId);
 				}
 
 			});
@@ -381,8 +424,12 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 			new BiConsumer<WatsonDocument, Object>() {
 
 				@Override
-				public void accept(WatsonDocument watsonDocument, Object subtypeWatsonListTypeId) {
-					watsonDocument.setSubtypeWatsonListTypeId((Long)subtypeWatsonListTypeId);
+				public void accept(
+					WatsonDocument watsonDocument,
+					Object subtypeWatsonListTypeId) {
+
+					watsonDocument.setSubtypeWatsonListTypeId(
+						(Long)subtypeWatsonListTypeId);
 				}
 
 			});
@@ -401,8 +448,12 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 			new BiConsumer<WatsonDocument, Object>() {
 
 				@Override
-				public void accept(WatsonDocument watsonDocument, Object typeWatsonListTypeId) {
-					watsonDocument.setTypeWatsonListTypeId((Long)typeWatsonListTypeId);
+				public void accept(
+					WatsonDocument watsonDocument,
+					Object typeWatsonListTypeId) {
+
+					watsonDocument.setTypeWatsonListTypeId(
+						(Long)typeWatsonListTypeId);
 				}
 
 			});
@@ -421,7 +472,9 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 			new BiConsumer<WatsonDocument, Object>() {
 
 				@Override
-				public void accept(WatsonDocument watsonDocument, Object watsonChildId) {
+				public void accept(
+					WatsonDocument watsonDocument, Object watsonChildId) {
+
 					watsonDocument.setWatsonChildId((Long)watsonChildId);
 				}
 
@@ -441,8 +494,11 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 			new BiConsumer<WatsonDocument, Object>() {
 
 				@Override
-				public void accept(WatsonDocument watsonDocument, Object originalDocument) {
-					watsonDocument.setOriginalDocument((Boolean)originalDocument);
+				public void accept(
+					WatsonDocument watsonDocument, Object originalDocument) {
+
+					watsonDocument.setOriginalDocument(
+						(Boolean)originalDocument);
 				}
 
 			});
@@ -461,7 +517,9 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 			new BiConsumer<WatsonDocument, Object>() {
 
 				@Override
-				public void accept(WatsonDocument watsonDocument, Object receivedDate) {
+				public void accept(
+					WatsonDocument watsonDocument, Object receivedDate) {
+
 					watsonDocument.setReceivedDate((Date)receivedDate);
 				}
 
@@ -481,7 +539,9 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 			new BiConsumer<WatsonDocument, Object>() {
 
 				@Override
-				public void accept(WatsonDocument watsonDocument, Object imagePayload) {
+				public void accept(
+					WatsonDocument watsonDocument, Object imagePayload) {
+
 					watsonDocument.setImagePayload((String)imagePayload);
 				}
 
@@ -501,15 +561,18 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 			new BiConsumer<WatsonDocument, Object>() {
 
 				@Override
-				public void accept(WatsonDocument watsonDocument, Object status) {
+				public void accept(
+					WatsonDocument watsonDocument, Object status) {
+
 					watsonDocument.setStatus((Integer)status);
 				}
 
 			});
 
-
-		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap(
+			(Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -701,8 +764,8 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 
 	@Override
 	public ExpandoBridge getExpandoBridge() {
-		return ExpandoBridgeFactoryUtil.getExpandoBridge(getCompanyId(),
-			WatsonDocument.class.getName(), getPrimaryKey());
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(
+			getCompanyId(), WatsonDocument.class.getName(), getPrimaryKey());
 	}
 
 	@Override
@@ -715,8 +778,9 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 	@Override
 	public WatsonDocument toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonDocument)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+			_escapedModel = (WatsonDocument)ProxyUtil.newProxyInstance(
+				_classLoader, _escapedModelInterfaces,
+				new AutoEscapeBeanHandler(this));
 		}
 
 		return _escapedModel;
@@ -733,8 +797,10 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 		watsonDocumentImpl.setUserName(getUserName());
 		watsonDocumentImpl.setCreateDate(getCreateDate());
 		watsonDocumentImpl.setModifiedDate(getModifiedDate());
-		watsonDocumentImpl.setParentTypeWatsonListTypeId(getParentTypeWatsonListTypeId());
-		watsonDocumentImpl.setSubtypeWatsonListTypeId(getSubtypeWatsonListTypeId());
+		watsonDocumentImpl.setParentTypeWatsonListTypeId(
+			getParentTypeWatsonListTypeId());
+		watsonDocumentImpl.setSubtypeWatsonListTypeId(
+			getSubtypeWatsonListTypeId());
 		watsonDocumentImpl.setTypeWatsonListTypeId(getTypeWatsonListTypeId());
 		watsonDocumentImpl.setWatsonChildId(getWatsonChildId());
 		watsonDocumentImpl.setOriginalDocument(isOriginalDocument());
@@ -808,7 +874,8 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 
 	@Override
 	public CacheModel<WatsonDocument> toCacheModel() {
-		WatsonDocumentCacheModel watsonDocumentCacheModel = new WatsonDocumentCacheModel();
+		WatsonDocumentCacheModel watsonDocumentCacheModel =
+			new WatsonDocumentCacheModel();
 
 		watsonDocumentCacheModel.watsonDocumentId = getWatsonDocumentId();
 
@@ -844,11 +911,14 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 			watsonDocumentCacheModel.modifiedDate = Long.MIN_VALUE;
 		}
 
-		watsonDocumentCacheModel.parentTypeWatsonListTypeId = getParentTypeWatsonListTypeId();
+		watsonDocumentCacheModel.parentTypeWatsonListTypeId =
+			getParentTypeWatsonListTypeId();
 
-		watsonDocumentCacheModel.subtypeWatsonListTypeId = getSubtypeWatsonListTypeId();
+		watsonDocumentCacheModel.subtypeWatsonListTypeId =
+			getSubtypeWatsonListTypeId();
 
-		watsonDocumentCacheModel.typeWatsonListTypeId = getTypeWatsonListTypeId();
+		watsonDocumentCacheModel.typeWatsonListTypeId =
+			getTypeWatsonListTypeId();
 
 		watsonDocumentCacheModel.watsonChildId = getWatsonChildId();
 
@@ -878,16 +948,20 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 
 	@Override
 	public String toString() {
-		Map<String, Function<WatsonDocument, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+		Map<String, Function<WatsonDocument, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
-				2);
+		StringBundler sb = new StringBundler(
+			4 * attributeGetterFunctions.size() + 2);
 
 		sb.append("{");
 
-		for (Map.Entry<String, Function<WatsonDocument, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonDocument, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonDocument, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonDocument, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append(attributeName);
 			sb.append("=");
@@ -906,18 +980,22 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 
 	@Override
 	public String toXmlString() {
-		Map<String, Function<WatsonDocument, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+		Map<String, Function<WatsonDocument, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
-				4);
+		StringBundler sb = new StringBundler(
+			5 * attributeGetterFunctions.size() + 4);
 
 		sb.append("<model><model-name>");
 		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		for (Map.Entry<String, Function<WatsonDocument, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonDocument, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonDocument, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonDocument, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append("<column><column-name>");
 			sb.append(attributeName);
@@ -931,10 +1009,12 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader = WatsonDocument.class.getClassLoader();
+	private static final ClassLoader _classLoader =
+		WatsonDocument.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			WatsonDocument.class, ModelWrapper.class
-		};
+		WatsonDocument.class, ModelWrapper.class
+	};
+
 	private long _watsonDocumentId;
 	private long _groupId;
 	private long _companyId;
@@ -952,4 +1032,5 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 	private String _imagePayload;
 	private int _status;
 	private WatsonDocument _escapedModel;
+
 }

@@ -34,6 +34,7 @@ import com.liferay.portal.workflow.kaleo.designer.service.KaleoDraftDefinitionLo
 @ProviderType
 public abstract class KaleoDraftDefinitionBaseImpl
 	extends KaleoDraftDefinitionModelImpl implements KaleoDraftDefinition {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -45,7 +46,9 @@ public abstract class KaleoDraftDefinitionBaseImpl
 			KaleoDraftDefinitionLocalServiceUtil.addKaleoDraftDefinition(this);
 		}
 		else {
-			KaleoDraftDefinitionLocalServiceUtil.updateKaleoDraftDefinition(this);
+			KaleoDraftDefinitionLocalServiceUtil.updateKaleoDraftDefinition(
+				this);
 		}
 	}
+
 }

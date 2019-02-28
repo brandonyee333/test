@@ -32,8 +32,9 @@ import com.liferay.watson.service.WatsonAddressLocalServiceUtil;
  * @generated
  */
 @ProviderType
-public abstract class WatsonAddressBaseImpl extends WatsonAddressModelImpl
-	implements WatsonAddress {
+public abstract class WatsonAddressBaseImpl
+	extends WatsonAddressModelImpl implements WatsonAddress {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -48,4 +49,5 @@ public abstract class WatsonAddressBaseImpl extends WatsonAddressModelImpl
 			WatsonAddressLocalServiceUtil.updateWatsonAddress(this);
 		}
 	}
+
 }

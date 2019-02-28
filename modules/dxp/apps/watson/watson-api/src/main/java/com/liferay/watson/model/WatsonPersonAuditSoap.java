@@ -30,6 +30,7 @@ import java.util.List;
  */
 @ProviderType
 public class WatsonPersonAuditSoap implements Serializable {
+
 	public static WatsonPersonAuditSoap toSoapModel(WatsonPersonAudit model) {
 		WatsonPersonAuditSoap soapModel = new WatsonPersonAuditSoap();
 
@@ -41,9 +42,12 @@ public class WatsonPersonAuditSoap implements Serializable {
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
 		soapModel.setBirthCountryId(model.getBirthCountryId());
-		soapModel.setCitizenshipWatsonListTypeId(model.getCitizenshipWatsonListTypeId());
-		soapModel.setCountryWatsonListTypeId(model.getCountryWatsonListTypeId());
-		soapModel.setEthnicityWatsonListTypeId(model.getEthnicityWatsonListTypeId());
+		soapModel.setCitizenshipWatsonListTypeId(
+			model.getCitizenshipWatsonListTypeId());
+		soapModel.setCountryWatsonListTypeId(
+			model.getCountryWatsonListTypeId());
+		soapModel.setEthnicityWatsonListTypeId(
+			model.getEthnicityWatsonListTypeId());
 		soapModel.setEyesWatsonListTypeId(model.getEyesWatsonListTypeId());
 		soapModel.setHairWatsonListTypeId(model.getHairWatsonListTypeId());
 		soapModel.setOriginalWatsonPersonId(model.getOriginalWatsonPersonId());
@@ -70,7 +74,9 @@ public class WatsonPersonAuditSoap implements Serializable {
 
 	public static WatsonPersonAuditSoap[] toSoapModels(
 		WatsonPersonAudit[] models) {
-		WatsonPersonAuditSoap[] soapModels = new WatsonPersonAuditSoap[models.length];
+
+		WatsonPersonAuditSoap[] soapModels =
+			new WatsonPersonAuditSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -81,10 +87,12 @@ public class WatsonPersonAuditSoap implements Serializable {
 
 	public static WatsonPersonAuditSoap[][] toSoapModels(
 		WatsonPersonAudit[][] models) {
+
 		WatsonPersonAuditSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new WatsonPersonAuditSoap[models.length][models[0].length];
+			soapModels =
+				new WatsonPersonAuditSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new WatsonPersonAuditSoap[0][0];
@@ -99,7 +107,9 @@ public class WatsonPersonAuditSoap implements Serializable {
 
 	public static WatsonPersonAuditSoap[] toSoapModels(
 		List<WatsonPersonAudit> models) {
-		List<WatsonPersonAuditSoap> soapModels = new ArrayList<WatsonPersonAuditSoap>(models.size());
+
+		List<WatsonPersonAuditSoap> soapModels =
+			new ArrayList<WatsonPersonAuditSoap>(models.size());
 
 		for (WatsonPersonAudit model : models) {
 			soapModels.add(toSoapModel(model));
@@ -187,7 +197,9 @@ public class WatsonPersonAuditSoap implements Serializable {
 		return _citizenshipWatsonListTypeId;
 	}
 
-	public void setCitizenshipWatsonListTypeId(long citizenshipWatsonListTypeId) {
+	public void setCitizenshipWatsonListTypeId(
+		long citizenshipWatsonListTypeId) {
+
 		_citizenshipWatsonListTypeId = citizenshipWatsonListTypeId;
 	}
 
@@ -406,4 +418,5 @@ public class WatsonPersonAuditSoap implements Serializable {
 	private boolean _accepted;
 	private boolean _rescued;
 	private int _status;
+
 }

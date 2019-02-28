@@ -29,28 +29,33 @@ import com.liferay.portal.kernel.util.Accessor;
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonRelationshipImpl")
 @ProviderType
-public interface WatsonRelationship extends WatsonRelationshipModel,
-	PersistedModel {
+public interface WatsonRelationship
+	extends WatsonRelationshipModel, PersistedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonRelationshipImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<WatsonRelationship, Long> WATSON_RELATIONSHIP_ID_ACCESSOR =
-		new Accessor<WatsonRelationship, Long>() {
-			@Override
-			public Long get(WatsonRelationship watsonRelationship) {
-				return watsonRelationship.getWatsonRelationshipId();
-			}
+	public static final Accessor<WatsonRelationship, Long>
+		WATSON_RELATIONSHIP_ID_ACCESSOR =
+			new Accessor<WatsonRelationship, Long>() {
 
-			@Override
-			public Class<Long> getAttributeClass() {
-				return Long.class;
-			}
+				@Override
+				public Long get(WatsonRelationship watsonRelationship) {
+					return watsonRelationship.getWatsonRelationshipId();
+				}
 
-			@Override
-			public Class<WatsonRelationship> getTypeClass() {
-				return WatsonRelationship.class;
-			}
-		};
+				@Override
+				public Class<Long> getAttributeClass() {
+					return Long.class;
+				}
+
+				@Override
+				public Class<WatsonRelationship> getTypeClass() {
+					return WatsonRelationship.class;
+				}
+
+			};
+
 }

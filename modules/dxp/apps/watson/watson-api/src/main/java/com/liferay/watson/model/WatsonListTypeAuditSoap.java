@@ -30,7 +30,10 @@ import java.util.List;
  */
 @ProviderType
 public class WatsonListTypeAuditSoap implements Serializable {
-	public static WatsonListTypeAuditSoap toSoapModel(WatsonListTypeAudit model) {
+
+	public static WatsonListTypeAuditSoap toSoapModel(
+		WatsonListTypeAudit model) {
+
 		WatsonListTypeAuditSoap soapModel = new WatsonListTypeAuditSoap();
 
 		soapModel.setWatsonListTypeAuditId(model.getWatsonListTypeAuditId());
@@ -51,7 +54,9 @@ public class WatsonListTypeAuditSoap implements Serializable {
 
 	public static WatsonListTypeAuditSoap[] toSoapModels(
 		WatsonListTypeAudit[] models) {
-		WatsonListTypeAuditSoap[] soapModels = new WatsonListTypeAuditSoap[models.length];
+
+		WatsonListTypeAuditSoap[] soapModels =
+			new WatsonListTypeAuditSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -62,10 +67,12 @@ public class WatsonListTypeAuditSoap implements Serializable {
 
 	public static WatsonListTypeAuditSoap[][] toSoapModels(
 		WatsonListTypeAudit[][] models) {
+
 		WatsonListTypeAuditSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new WatsonListTypeAuditSoap[models.length][models[0].length];
+			soapModels =
+				new WatsonListTypeAuditSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new WatsonListTypeAuditSoap[0][0];
@@ -80,13 +87,16 @@ public class WatsonListTypeAuditSoap implements Serializable {
 
 	public static WatsonListTypeAuditSoap[] toSoapModels(
 		List<WatsonListTypeAudit> models) {
-		List<WatsonListTypeAuditSoap> soapModels = new ArrayList<WatsonListTypeAuditSoap>(models.size());
+
+		List<WatsonListTypeAuditSoap> soapModels =
+			new ArrayList<WatsonListTypeAuditSoap>(models.size());
 
 		for (WatsonListTypeAudit model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(new WatsonListTypeAuditSoap[soapModels.size()]);
+		return soapModels.toArray(
+			new WatsonListTypeAuditSoap[soapModels.size()]);
 	}
 
 	public WatsonListTypeAuditSoap() {
@@ -208,4 +218,5 @@ public class WatsonListTypeAuditSoap implements Serializable {
 	private String _name;
 	private String _type;
 	private int _status;
+
 }

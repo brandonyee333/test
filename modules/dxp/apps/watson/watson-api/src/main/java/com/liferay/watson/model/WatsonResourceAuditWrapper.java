@@ -17,7 +17,6 @@ package com.liferay.watson.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -38,8 +37,9 @@ import java.util.Objects;
  * @generated
  */
 @ProviderType
-public class WatsonResourceAuditWrapper implements WatsonResourceAudit,
-	ModelWrapper<WatsonResourceAudit> {
+public class WatsonResourceAuditWrapper
+	implements WatsonResourceAudit, ModelWrapper<WatsonResourceAudit> {
+
 	public WatsonResourceAuditWrapper(WatsonResourceAudit watsonResourceAudit) {
 		_watsonResourceAudit = watsonResourceAudit;
 	}
@@ -65,7 +65,8 @@ public class WatsonResourceAuditWrapper implements WatsonResourceAudit,
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("originalWatsonResourceId", getOriginalWatsonResourceId());
+		attributes.put(
+			"originalWatsonResourceId", getOriginalWatsonResourceId());
 		attributes.put("typeWatsonListTypeId", getTypeWatsonListTypeId());
 		attributes.put("watsonIncidentId", getWatsonIncidentId());
 		attributes.put("watsonResourceId", getWatsonResourceId());
@@ -80,7 +81,7 @@ public class WatsonResourceAuditWrapper implements WatsonResourceAudit,
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
 		Long watsonResourceAuditId = (Long)attributes.get(
-				"watsonResourceAuditId");
+			"watsonResourceAuditId");
 
 		if (watsonResourceAuditId != null) {
 			setWatsonResourceAuditId(watsonResourceAuditId);
@@ -123,13 +124,14 @@ public class WatsonResourceAuditWrapper implements WatsonResourceAudit,
 		}
 
 		Long originalWatsonResourceId = (Long)attributes.get(
-				"originalWatsonResourceId");
+			"originalWatsonResourceId");
 
 		if (originalWatsonResourceId != null) {
 			setOriginalWatsonResourceId(originalWatsonResourceId);
 		}
 
-		Long typeWatsonListTypeId = (Long)attributes.get("typeWatsonListTypeId");
+		Long typeWatsonListTypeId = (Long)attributes.get(
+			"typeWatsonListTypeId");
 
 		if (typeWatsonListTypeId != null) {
 			setTypeWatsonListTypeId(typeWatsonListTypeId);
@@ -174,7 +176,8 @@ public class WatsonResourceAuditWrapper implements WatsonResourceAudit,
 
 	@Override
 	public Object clone() {
-		return new WatsonResourceAuditWrapper((WatsonResourceAudit)_watsonResourceAudit.clone());
+		return new WatsonResourceAuditWrapper(
+			(WatsonResourceAudit)_watsonResourceAudit.clone());
 	}
 
 	@Override
@@ -188,20 +191,20 @@ public class WatsonResourceAuditWrapper implements WatsonResourceAudit,
 	}
 
 	/**
-	* Returns the company ID of this watson resource audit.
-	*
-	* @return the company ID of this watson resource audit
-	*/
+	 * Returns the company ID of this watson resource audit.
+	 *
+	 * @return the company ID of this watson resource audit
+	 */
 	@Override
 	public long getCompanyId() {
 		return _watsonResourceAudit.getCompanyId();
 	}
 
 	/**
-	* Returns the create date of this watson resource audit.
-	*
-	* @return the create date of this watson resource audit
-	*/
+	 * Returns the create date of this watson resource audit.
+	 *
+	 * @return the create date of this watson resource audit
+	 */
 	@Override
 	public Date getCreateDate() {
 		return _watsonResourceAudit.getCreateDate();
@@ -213,56 +216,56 @@ public class WatsonResourceAuditWrapper implements WatsonResourceAudit,
 	}
 
 	/**
-	* Returns the description of this watson resource audit.
-	*
-	* @return the description of this watson resource audit
-	*/
+	 * Returns the description of this watson resource audit.
+	 *
+	 * @return the description of this watson resource audit
+	 */
 	@Override
 	public String getDescription() {
 		return _watsonResourceAudit.getDescription();
 	}
 
 	/**
-	* Returns the localized description of this watson resource audit in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param locale the locale of the language
-	* @return the localized description of this watson resource audit
-	*/
+	 * Returns the localized description of this watson resource audit in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the locale of the language
+	 * @return the localized description of this watson resource audit
+	 */
 	@Override
 	public String getDescription(java.util.Locale locale) {
 		return _watsonResourceAudit.getDescription(locale);
 	}
 
 	/**
-	* Returns the localized description of this watson resource audit in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param locale the local of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized description of this watson resource audit. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
-	*/
+	 * Returns the localized description of this watson resource audit in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the local of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized description of this watson resource audit. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+	 */
 	@Override
 	public String getDescription(java.util.Locale locale, boolean useDefault) {
 		return _watsonResourceAudit.getDescription(locale, useDefault);
 	}
 
 	/**
-	* Returns the localized description of this watson resource audit in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @return the localized description of this watson resource audit
-	*/
+	 * Returns the localized description of this watson resource audit in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @return the localized description of this watson resource audit
+	 */
 	@Override
 	public String getDescription(String languageId) {
 		return _watsonResourceAudit.getDescription(languageId);
 	}
 
 	/**
-	* Returns the localized description of this watson resource audit in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized description of this watson resource audit
-	*/
+	 * Returns the localized description of this watson resource audit in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized description of this watson resource audit
+	 */
 	@Override
 	public String getDescription(String languageId, boolean useDefault) {
 		return _watsonResourceAudit.getDescription(languageId, useDefault);
@@ -279,10 +282,10 @@ public class WatsonResourceAuditWrapper implements WatsonResourceAudit,
 	}
 
 	/**
-	* Returns a map of the locales and localized descriptions of this watson resource audit.
-	*
-	* @return the locales and localized descriptions of this watson resource audit
-	*/
+	 * Returns a map of the locales and localized descriptions of this watson resource audit.
+	 *
+	 * @return the locales and localized descriptions of this watson resource audit
+	 */
 	@Override
 	public Map<java.util.Locale, String> getDescriptionMap() {
 		return _watsonResourceAudit.getDescriptionMap();
@@ -294,86 +297,86 @@ public class WatsonResourceAuditWrapper implements WatsonResourceAudit,
 	}
 
 	/**
-	* Returns the group ID of this watson resource audit.
-	*
-	* @return the group ID of this watson resource audit
-	*/
+	 * Returns the group ID of this watson resource audit.
+	 *
+	 * @return the group ID of this watson resource audit
+	 */
 	@Override
 	public long getGroupId() {
 		return _watsonResourceAudit.getGroupId();
 	}
 
 	/**
-	* Returns the image payload of this watson resource audit.
-	*
-	* @return the image payload of this watson resource audit
-	*/
+	 * Returns the image payload of this watson resource audit.
+	 *
+	 * @return the image payload of this watson resource audit
+	 */
 	@Override
 	public String getImagePayload() {
 		return _watsonResourceAudit.getImagePayload();
 	}
 
 	/**
-	* Returns the modified date of this watson resource audit.
-	*
-	* @return the modified date of this watson resource audit
-	*/
+	 * Returns the modified date of this watson resource audit.
+	 *
+	 * @return the modified date of this watson resource audit
+	 */
 	@Override
 	public Date getModifiedDate() {
 		return _watsonResourceAudit.getModifiedDate();
 	}
 
 	/**
-	* Returns the name of this watson resource audit.
-	*
-	* @return the name of this watson resource audit
-	*/
+	 * Returns the name of this watson resource audit.
+	 *
+	 * @return the name of this watson resource audit
+	 */
 	@Override
 	public String getName() {
 		return _watsonResourceAudit.getName();
 	}
 
 	/**
-	* Returns the localized name of this watson resource audit in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param locale the locale of the language
-	* @return the localized name of this watson resource audit
-	*/
+	 * Returns the localized name of this watson resource audit in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the locale of the language
+	 * @return the localized name of this watson resource audit
+	 */
 	@Override
 	public String getName(java.util.Locale locale) {
 		return _watsonResourceAudit.getName(locale);
 	}
 
 	/**
-	* Returns the localized name of this watson resource audit in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param locale the local of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized name of this watson resource audit. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
-	*/
+	 * Returns the localized name of this watson resource audit in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the local of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized name of this watson resource audit. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+	 */
 	@Override
 	public String getName(java.util.Locale locale, boolean useDefault) {
 		return _watsonResourceAudit.getName(locale, useDefault);
 	}
 
 	/**
-	* Returns the localized name of this watson resource audit in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @return the localized name of this watson resource audit
-	*/
+	 * Returns the localized name of this watson resource audit in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @return the localized name of this watson resource audit
+	 */
 	@Override
 	public String getName(String languageId) {
 		return _watsonResourceAudit.getName(languageId);
 	}
 
 	/**
-	* Returns the localized name of this watson resource audit in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized name of this watson resource audit
-	*/
+	 * Returns the localized name of this watson resource audit in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized name of this watson resource audit
+	 */
 	@Override
 	public String getName(String languageId, boolean useDefault) {
 		return _watsonResourceAudit.getName(languageId, useDefault);
@@ -390,30 +393,30 @@ public class WatsonResourceAuditWrapper implements WatsonResourceAudit,
 	}
 
 	/**
-	* Returns a map of the locales and localized names of this watson resource audit.
-	*
-	* @return the locales and localized names of this watson resource audit
-	*/
+	 * Returns a map of the locales and localized names of this watson resource audit.
+	 *
+	 * @return the locales and localized names of this watson resource audit
+	 */
 	@Override
 	public Map<java.util.Locale, String> getNameMap() {
 		return _watsonResourceAudit.getNameMap();
 	}
 
 	/**
-	* Returns the original watson resource ID of this watson resource audit.
-	*
-	* @return the original watson resource ID of this watson resource audit
-	*/
+	 * Returns the original watson resource ID of this watson resource audit.
+	 *
+	 * @return the original watson resource ID of this watson resource audit
+	 */
 	@Override
 	public long getOriginalWatsonResourceId() {
 		return _watsonResourceAudit.getOriginalWatsonResourceId();
 	}
 
 	/**
-	* Returns the primary key of this watson resource audit.
-	*
-	* @return the primary key of this watson resource audit
-	*/
+	 * Returns the primary key of this watson resource audit.
+	 *
+	 * @return the primary key of this watson resource audit
+	 */
 	@Override
 	public long getPrimaryKey() {
 		return _watsonResourceAudit.getPrimaryKey();
@@ -425,80 +428,80 @@ public class WatsonResourceAuditWrapper implements WatsonResourceAudit,
 	}
 
 	/**
-	* Returns the status of this watson resource audit.
-	*
-	* @return the status of this watson resource audit
-	*/
+	 * Returns the status of this watson resource audit.
+	 *
+	 * @return the status of this watson resource audit
+	 */
 	@Override
 	public int getStatus() {
 		return _watsonResourceAudit.getStatus();
 	}
 
 	/**
-	* Returns the type watson list type ID of this watson resource audit.
-	*
-	* @return the type watson list type ID of this watson resource audit
-	*/
+	 * Returns the type watson list type ID of this watson resource audit.
+	 *
+	 * @return the type watson list type ID of this watson resource audit
+	 */
 	@Override
 	public long getTypeWatsonListTypeId() {
 		return _watsonResourceAudit.getTypeWatsonListTypeId();
 	}
 
 	/**
-	* Returns the user ID of this watson resource audit.
-	*
-	* @return the user ID of this watson resource audit
-	*/
+	 * Returns the user ID of this watson resource audit.
+	 *
+	 * @return the user ID of this watson resource audit
+	 */
 	@Override
 	public long getUserId() {
 		return _watsonResourceAudit.getUserId();
 	}
 
 	/**
-	* Returns the user name of this watson resource audit.
-	*
-	* @return the user name of this watson resource audit
-	*/
+	 * Returns the user name of this watson resource audit.
+	 *
+	 * @return the user name of this watson resource audit
+	 */
 	@Override
 	public String getUserName() {
 		return _watsonResourceAudit.getUserName();
 	}
 
 	/**
-	* Returns the user uuid of this watson resource audit.
-	*
-	* @return the user uuid of this watson resource audit
-	*/
+	 * Returns the user uuid of this watson resource audit.
+	 *
+	 * @return the user uuid of this watson resource audit
+	 */
 	@Override
 	public String getUserUuid() {
 		return _watsonResourceAudit.getUserUuid();
 	}
 
 	/**
-	* Returns the watson incident ID of this watson resource audit.
-	*
-	* @return the watson incident ID of this watson resource audit
-	*/
+	 * Returns the watson incident ID of this watson resource audit.
+	 *
+	 * @return the watson incident ID of this watson resource audit
+	 */
 	@Override
 	public long getWatsonIncidentId() {
 		return _watsonResourceAudit.getWatsonIncidentId();
 	}
 
 	/**
-	* Returns the watson resource audit ID of this watson resource audit.
-	*
-	* @return the watson resource audit ID of this watson resource audit
-	*/
+	 * Returns the watson resource audit ID of this watson resource audit.
+	 *
+	 * @return the watson resource audit ID of this watson resource audit
+	 */
 	@Override
 	public long getWatsonResourceAuditId() {
 		return _watsonResourceAudit.getWatsonResourceAuditId();
 	}
 
 	/**
-	* Returns the watson resource ID of this watson resource audit.
-	*
-	* @return the watson resource ID of this watson resource audit
-	*/
+	 * Returns the watson resource ID of this watson resource audit.
+	 *
+	 * @return the watson resource ID of this watson resource audit
+	 */
 	@Override
 	public long getWatsonResourceId() {
 		return _watsonResourceAudit.getWatsonResourceId();
@@ -532,14 +535,17 @@ public class WatsonResourceAuditWrapper implements WatsonResourceAudit,
 	@Override
 	public void prepareLocalizedFieldsForImport()
 		throws com.liferay.portal.kernel.exception.LocaleException {
+
 		_watsonResourceAudit.prepareLocalizedFieldsForImport();
 	}
 
 	@Override
 	public void prepareLocalizedFieldsForImport(
-		java.util.Locale defaultImportLocale)
+			java.util.Locale defaultImportLocale)
 		throws com.liferay.portal.kernel.exception.LocaleException {
-		_watsonResourceAudit.prepareLocalizedFieldsForImport(defaultImportLocale);
+
+		_watsonResourceAudit.prepareLocalizedFieldsForImport(
+			defaultImportLocale);
 	}
 
 	@Override
@@ -548,56 +554,58 @@ public class WatsonResourceAuditWrapper implements WatsonResourceAudit,
 	}
 
 	/**
-	* Sets the company ID of this watson resource audit.
-	*
-	* @param companyId the company ID of this watson resource audit
-	*/
+	 * Sets the company ID of this watson resource audit.
+	 *
+	 * @param companyId the company ID of this watson resource audit
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_watsonResourceAudit.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create date of this watson resource audit.
-	*
-	* @param createDate the create date of this watson resource audit
-	*/
+	 * Sets the create date of this watson resource audit.
+	 *
+	 * @param createDate the create date of this watson resource audit
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_watsonResourceAudit.setCreateDate(createDate);
 	}
 
 	/**
-	* Sets the description of this watson resource audit.
-	*
-	* @param description the description of this watson resource audit
-	*/
+	 * Sets the description of this watson resource audit.
+	 *
+	 * @param description the description of this watson resource audit
+	 */
 	@Override
 	public void setDescription(String description) {
 		_watsonResourceAudit.setDescription(description);
 	}
 
 	/**
-	* Sets the localized description of this watson resource audit in the language.
-	*
-	* @param description the localized description of this watson resource audit
-	* @param locale the locale of the language
-	*/
+	 * Sets the localized description of this watson resource audit in the language.
+	 *
+	 * @param description the localized description of this watson resource audit
+	 * @param locale the locale of the language
+	 */
 	@Override
 	public void setDescription(String description, java.util.Locale locale) {
 		_watsonResourceAudit.setDescription(description, locale);
 	}
 
 	/**
-	* Sets the localized description of this watson resource audit in the language, and sets the default locale.
-	*
-	* @param description the localized description of this watson resource audit
-	* @param locale the locale of the language
-	* @param defaultLocale the default locale
-	*/
+	 * Sets the localized description of this watson resource audit in the language, and sets the default locale.
+	 *
+	 * @param description the localized description of this watson resource audit
+	 * @param locale the locale of the language
+	 * @param defaultLocale the default locale
+	 */
 	@Override
-	public void setDescription(String description, java.util.Locale locale,
+	public void setDescription(
+		String description, java.util.Locale locale,
 		java.util.Locale defaultLocale) {
+
 		_watsonResourceAudit.setDescription(description, locale, defaultLocale);
 	}
 
@@ -607,31 +615,35 @@ public class WatsonResourceAuditWrapper implements WatsonResourceAudit,
 	}
 
 	/**
-	* Sets the localized descriptions of this watson resource audit from the map of locales and localized descriptions.
-	*
-	* @param descriptionMap the locales and localized descriptions of this watson resource audit
-	*/
+	 * Sets the localized descriptions of this watson resource audit from the map of locales and localized descriptions.
+	 *
+	 * @param descriptionMap the locales and localized descriptions of this watson resource audit
+	 */
 	@Override
-	public void setDescriptionMap(Map<java.util.Locale, String> descriptionMap) {
+	public void setDescriptionMap(
+		Map<java.util.Locale, String> descriptionMap) {
+
 		_watsonResourceAudit.setDescriptionMap(descriptionMap);
 	}
 
 	/**
-	* Sets the localized descriptions of this watson resource audit from the map of locales and localized descriptions, and sets the default locale.
-	*
-	* @param descriptionMap the locales and localized descriptions of this watson resource audit
-	* @param defaultLocale the default locale
-	*/
+	 * Sets the localized descriptions of this watson resource audit from the map of locales and localized descriptions, and sets the default locale.
+	 *
+	 * @param descriptionMap the locales and localized descriptions of this watson resource audit
+	 * @param defaultLocale the default locale
+	 */
 	@Override
 	public void setDescriptionMap(
 		Map<java.util.Locale, String> descriptionMap,
 		java.util.Locale defaultLocale) {
+
 		_watsonResourceAudit.setDescriptionMap(descriptionMap, defaultLocale);
 	}
 
 	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
 		_watsonResourceAudit.setExpandoBridgeAttributes(baseModel);
 	}
 
@@ -646,66 +658,67 @@ public class WatsonResourceAuditWrapper implements WatsonResourceAudit,
 	}
 
 	/**
-	* Sets the group ID of this watson resource audit.
-	*
-	* @param groupId the group ID of this watson resource audit
-	*/
+	 * Sets the group ID of this watson resource audit.
+	 *
+	 * @param groupId the group ID of this watson resource audit
+	 */
 	@Override
 	public void setGroupId(long groupId) {
 		_watsonResourceAudit.setGroupId(groupId);
 	}
 
 	/**
-	* Sets the image payload of this watson resource audit.
-	*
-	* @param imagePayload the image payload of this watson resource audit
-	*/
+	 * Sets the image payload of this watson resource audit.
+	 *
+	 * @param imagePayload the image payload of this watson resource audit
+	 */
 	@Override
 	public void setImagePayload(String imagePayload) {
 		_watsonResourceAudit.setImagePayload(imagePayload);
 	}
 
 	/**
-	* Sets the modified date of this watson resource audit.
-	*
-	* @param modifiedDate the modified date of this watson resource audit
-	*/
+	 * Sets the modified date of this watson resource audit.
+	 *
+	 * @param modifiedDate the modified date of this watson resource audit
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_watsonResourceAudit.setModifiedDate(modifiedDate);
 	}
 
 	/**
-	* Sets the name of this watson resource audit.
-	*
-	* @param name the name of this watson resource audit
-	*/
+	 * Sets the name of this watson resource audit.
+	 *
+	 * @param name the name of this watson resource audit
+	 */
 	@Override
 	public void setName(String name) {
 		_watsonResourceAudit.setName(name);
 	}
 
 	/**
-	* Sets the localized name of this watson resource audit in the language.
-	*
-	* @param name the localized name of this watson resource audit
-	* @param locale the locale of the language
-	*/
+	 * Sets the localized name of this watson resource audit in the language.
+	 *
+	 * @param name the localized name of this watson resource audit
+	 * @param locale the locale of the language
+	 */
 	@Override
 	public void setName(String name, java.util.Locale locale) {
 		_watsonResourceAudit.setName(name, locale);
 	}
 
 	/**
-	* Sets the localized name of this watson resource audit in the language, and sets the default locale.
-	*
-	* @param name the localized name of this watson resource audit
-	* @param locale the locale of the language
-	* @param defaultLocale the default locale
-	*/
+	 * Sets the localized name of this watson resource audit in the language, and sets the default locale.
+	 *
+	 * @param name the localized name of this watson resource audit
+	 * @param locale the locale of the language
+	 * @param defaultLocale the default locale
+	 */
 	@Override
-	public void setName(String name, java.util.Locale locale,
-		java.util.Locale defaultLocale) {
+	public void setName(
+		String name, java.util.Locale locale, java.util.Locale defaultLocale) {
+
 		_watsonResourceAudit.setName(name, locale, defaultLocale);
 	}
 
@@ -715,24 +728,25 @@ public class WatsonResourceAuditWrapper implements WatsonResourceAudit,
 	}
 
 	/**
-	* Sets the localized names of this watson resource audit from the map of locales and localized names.
-	*
-	* @param nameMap the locales and localized names of this watson resource audit
-	*/
+	 * Sets the localized names of this watson resource audit from the map of locales and localized names.
+	 *
+	 * @param nameMap the locales and localized names of this watson resource audit
+	 */
 	@Override
 	public void setNameMap(Map<java.util.Locale, String> nameMap) {
 		_watsonResourceAudit.setNameMap(nameMap);
 	}
 
 	/**
-	* Sets the localized names of this watson resource audit from the map of locales and localized names, and sets the default locale.
-	*
-	* @param nameMap the locales and localized names of this watson resource audit
-	* @param defaultLocale the default locale
-	*/
+	 * Sets the localized names of this watson resource audit from the map of locales and localized names, and sets the default locale.
+	 *
+	 * @param nameMap the locales and localized names of this watson resource audit
+	 * @param defaultLocale the default locale
+	 */
 	@Override
-	public void setNameMap(Map<java.util.Locale, String> nameMap,
-		java.util.Locale defaultLocale) {
+	public void setNameMap(
+		Map<java.util.Locale, String> nameMap, java.util.Locale defaultLocale) {
+
 		_watsonResourceAudit.setNameMap(nameMap, defaultLocale);
 	}
 
@@ -742,20 +756,21 @@ public class WatsonResourceAuditWrapper implements WatsonResourceAudit,
 	}
 
 	/**
-	* Sets the original watson resource ID of this watson resource audit.
-	*
-	* @param originalWatsonResourceId the original watson resource ID of this watson resource audit
-	*/
+	 * Sets the original watson resource ID of this watson resource audit.
+	 *
+	 * @param originalWatsonResourceId the original watson resource ID of this watson resource audit
+	 */
 	@Override
 	public void setOriginalWatsonResourceId(long originalWatsonResourceId) {
-		_watsonResourceAudit.setOriginalWatsonResourceId(originalWatsonResourceId);
+		_watsonResourceAudit.setOriginalWatsonResourceId(
+			originalWatsonResourceId);
 	}
 
 	/**
-	* Sets the primary key of this watson resource audit.
-	*
-	* @param primaryKey the primary key of this watson resource audit
-	*/
+	 * Sets the primary key of this watson resource audit.
+	 *
+	 * @param primaryKey the primary key of this watson resource audit
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_watsonResourceAudit.setPrimaryKey(primaryKey);
@@ -767,93 +782,96 @@ public class WatsonResourceAuditWrapper implements WatsonResourceAudit,
 	}
 
 	/**
-	* Sets the status of this watson resource audit.
-	*
-	* @param status the status of this watson resource audit
-	*/
+	 * Sets the status of this watson resource audit.
+	 *
+	 * @param status the status of this watson resource audit
+	 */
 	@Override
 	public void setStatus(int status) {
 		_watsonResourceAudit.setStatus(status);
 	}
 
 	/**
-	* Sets the type watson list type ID of this watson resource audit.
-	*
-	* @param typeWatsonListTypeId the type watson list type ID of this watson resource audit
-	*/
+	 * Sets the type watson list type ID of this watson resource audit.
+	 *
+	 * @param typeWatsonListTypeId the type watson list type ID of this watson resource audit
+	 */
 	@Override
 	public void setTypeWatsonListTypeId(long typeWatsonListTypeId) {
 		_watsonResourceAudit.setTypeWatsonListTypeId(typeWatsonListTypeId);
 	}
 
 	/**
-	* Sets the user ID of this watson resource audit.
-	*
-	* @param userId the user ID of this watson resource audit
-	*/
+	 * Sets the user ID of this watson resource audit.
+	 *
+	 * @param userId the user ID of this watson resource audit
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_watsonResourceAudit.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this watson resource audit.
-	*
-	* @param userName the user name of this watson resource audit
-	*/
+	 * Sets the user name of this watson resource audit.
+	 *
+	 * @param userName the user name of this watson resource audit
+	 */
 	@Override
 	public void setUserName(String userName) {
 		_watsonResourceAudit.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this watson resource audit.
-	*
-	* @param userUuid the user uuid of this watson resource audit
-	*/
+	 * Sets the user uuid of this watson resource audit.
+	 *
+	 * @param userUuid the user uuid of this watson resource audit
+	 */
 	@Override
 	public void setUserUuid(String userUuid) {
 		_watsonResourceAudit.setUserUuid(userUuid);
 	}
 
 	/**
-	* Sets the watson incident ID of this watson resource audit.
-	*
-	* @param watsonIncidentId the watson incident ID of this watson resource audit
-	*/
+	 * Sets the watson incident ID of this watson resource audit.
+	 *
+	 * @param watsonIncidentId the watson incident ID of this watson resource audit
+	 */
 	@Override
 	public void setWatsonIncidentId(long watsonIncidentId) {
 		_watsonResourceAudit.setWatsonIncidentId(watsonIncidentId);
 	}
 
 	/**
-	* Sets the watson resource audit ID of this watson resource audit.
-	*
-	* @param watsonResourceAuditId the watson resource audit ID of this watson resource audit
-	*/
+	 * Sets the watson resource audit ID of this watson resource audit.
+	 *
+	 * @param watsonResourceAuditId the watson resource audit ID of this watson resource audit
+	 */
 	@Override
 	public void setWatsonResourceAuditId(long watsonResourceAuditId) {
 		_watsonResourceAudit.setWatsonResourceAuditId(watsonResourceAuditId);
 	}
 
 	/**
-	* Sets the watson resource ID of this watson resource audit.
-	*
-	* @param watsonResourceId the watson resource ID of this watson resource audit
-	*/
+	 * Sets the watson resource ID of this watson resource audit.
+	 *
+	 * @param watsonResourceId the watson resource ID of this watson resource audit
+	 */
 	@Override
 	public void setWatsonResourceId(long watsonResourceId) {
 		_watsonResourceAudit.setWatsonResourceId(watsonResourceId);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<WatsonResourceAudit> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<WatsonResourceAudit>
+		toCacheModel() {
+
 		return _watsonResourceAudit.toCacheModel();
 	}
 
 	@Override
 	public WatsonResourceAudit toEscapedModel() {
-		return new WatsonResourceAuditWrapper(_watsonResourceAudit.toEscapedModel());
+		return new WatsonResourceAuditWrapper(
+			_watsonResourceAudit.toEscapedModel());
 	}
 
 	@Override
@@ -863,7 +881,8 @@ public class WatsonResourceAuditWrapper implements WatsonResourceAudit,
 
 	@Override
 	public WatsonResourceAudit toUnescapedModel() {
-		return new WatsonResourceAuditWrapper(_watsonResourceAudit.toUnescapedModel());
+		return new WatsonResourceAuditWrapper(
+			_watsonResourceAudit.toUnescapedModel());
 	}
 
 	@Override
@@ -881,10 +900,13 @@ public class WatsonResourceAuditWrapper implements WatsonResourceAudit,
 			return false;
 		}
 
-		WatsonResourceAuditWrapper watsonResourceAuditWrapper = (WatsonResourceAuditWrapper)obj;
+		WatsonResourceAuditWrapper watsonResourceAuditWrapper =
+			(WatsonResourceAuditWrapper)obj;
 
-		if (Objects.equals(_watsonResourceAudit,
-					watsonResourceAuditWrapper._watsonResourceAudit)) {
+		if (Objects.equals(
+				_watsonResourceAudit,
+				watsonResourceAuditWrapper._watsonResourceAudit)) {
+
 			return true;
 		}
 
@@ -912,4 +934,5 @@ public class WatsonResourceAuditWrapper implements WatsonResourceAudit,
 	}
 
 	private final WatsonResourceAudit _watsonResourceAudit;
+
 }

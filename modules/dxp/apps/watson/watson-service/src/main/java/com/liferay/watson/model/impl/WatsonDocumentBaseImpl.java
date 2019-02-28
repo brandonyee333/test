@@ -32,8 +32,9 @@ import com.liferay.watson.service.WatsonDocumentLocalServiceUtil;
  * @generated
  */
 @ProviderType
-public abstract class WatsonDocumentBaseImpl extends WatsonDocumentModelImpl
-	implements WatsonDocument {
+public abstract class WatsonDocumentBaseImpl
+	extends WatsonDocumentModelImpl implements WatsonDocument {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -48,4 +49,5 @@ public abstract class WatsonDocumentBaseImpl extends WatsonDocumentModelImpl
 			WatsonDocumentLocalServiceUtil.updateWatsonDocument(this);
 		}
 	}
+
 }

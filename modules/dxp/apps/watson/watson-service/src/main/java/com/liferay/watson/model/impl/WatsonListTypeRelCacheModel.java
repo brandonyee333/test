@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.model.WatsonListTypeRel;
 
 import java.io.Externalizable;
@@ -36,8 +35,9 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public class WatsonListTypeRelCacheModel implements CacheModel<WatsonListTypeRel>,
-	Externalizable {
+public class WatsonListTypeRelCacheModel
+	implements CacheModel<WatsonListTypeRel>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,9 +48,12 @@ public class WatsonListTypeRelCacheModel implements CacheModel<WatsonListTypeRel
 			return false;
 		}
 
-		WatsonListTypeRelCacheModel watsonListTypeRelCacheModel = (WatsonListTypeRelCacheModel)obj;
+		WatsonListTypeRelCacheModel watsonListTypeRelCacheModel =
+			(WatsonListTypeRelCacheModel)obj;
 
-		if (watsonListTypeRelId == watsonListTypeRelCacheModel.watsonListTypeRelId) {
+		if (watsonListTypeRelId ==
+				watsonListTypeRelCacheModel.watsonListTypeRelId) {
+
 			return true;
 		}
 
@@ -101,7 +104,8 @@ public class WatsonListTypeRelCacheModel implements CacheModel<WatsonListTypeRel
 
 	@Override
 	public WatsonListTypeRel toEntityModel() {
-		WatsonListTypeRelImpl watsonListTypeRelImpl = new WatsonListTypeRelImpl();
+		WatsonListTypeRelImpl watsonListTypeRelImpl =
+			new WatsonListTypeRelImpl();
 
 		watsonListTypeRelImpl.setWatsonListTypeRelId(watsonListTypeRelId);
 		watsonListTypeRelImpl.setGroupId(groupId);
@@ -182,8 +186,7 @@ public class WatsonListTypeRelCacheModel implements CacheModel<WatsonListTypeRel
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonListTypeRelId);
 
 		objectOutput.writeLong(groupId);
@@ -241,4 +244,5 @@ public class WatsonListTypeRelCacheModel implements CacheModel<WatsonListTypeRel
 	public String value;
 	public String type;
 	public int status;
+
 }

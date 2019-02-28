@@ -35,8 +35,9 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public class KaleoDraftDefinitionCacheModel implements CacheModel<KaleoDraftDefinition>,
-	Externalizable {
+public class KaleoDraftDefinitionCacheModel
+	implements CacheModel<KaleoDraftDefinition>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -47,9 +48,12 @@ public class KaleoDraftDefinitionCacheModel implements CacheModel<KaleoDraftDefi
 			return false;
 		}
 
-		KaleoDraftDefinitionCacheModel kaleoDraftDefinitionCacheModel = (KaleoDraftDefinitionCacheModel)obj;
+		KaleoDraftDefinitionCacheModel kaleoDraftDefinitionCacheModel =
+			(KaleoDraftDefinitionCacheModel)obj;
 
-		if (kaleoDraftDefinitionId == kaleoDraftDefinitionCacheModel.kaleoDraftDefinitionId) {
+		if (kaleoDraftDefinitionId ==
+				kaleoDraftDefinitionCacheModel.kaleoDraftDefinitionId) {
+
 			return true;
 		}
 
@@ -96,9 +100,11 @@ public class KaleoDraftDefinitionCacheModel implements CacheModel<KaleoDraftDefi
 
 	@Override
 	public KaleoDraftDefinition toEntityModel() {
-		KaleoDraftDefinitionImpl kaleoDraftDefinitionImpl = new KaleoDraftDefinitionImpl();
+		KaleoDraftDefinitionImpl kaleoDraftDefinitionImpl =
+			new KaleoDraftDefinitionImpl();
 
-		kaleoDraftDefinitionImpl.setKaleoDraftDefinitionId(kaleoDraftDefinitionId);
+		kaleoDraftDefinitionImpl.setKaleoDraftDefinitionId(
+			kaleoDraftDefinitionId);
 		kaleoDraftDefinitionImpl.setGroupId(groupId);
 		kaleoDraftDefinitionImpl.setCompanyId(companyId);
 		kaleoDraftDefinitionImpl.setUserId(userId);
@@ -175,8 +181,7 @@ public class KaleoDraftDefinitionCacheModel implements CacheModel<KaleoDraftDefi
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(kaleoDraftDefinitionId);
 
 		objectOutput.writeLong(groupId);
@@ -233,4 +238,5 @@ public class KaleoDraftDefinitionCacheModel implements CacheModel<KaleoDraftDefi
 	public String content;
 	public int version;
 	public int draftVersion;
+
 }

@@ -30,8 +30,10 @@ import java.util.List;
  */
 @ProviderType
 public class WatsonTokenAuthEntrySoap implements Serializable {
+
 	public static WatsonTokenAuthEntrySoap toSoapModel(
 		WatsonTokenAuthEntry model) {
+
 		WatsonTokenAuthEntrySoap soapModel = new WatsonTokenAuthEntrySoap();
 
 		soapModel.setWatsonTokenAuthEntryId(model.getWatsonTokenAuthEntryId());
@@ -51,7 +53,9 @@ public class WatsonTokenAuthEntrySoap implements Serializable {
 
 	public static WatsonTokenAuthEntrySoap[] toSoapModels(
 		WatsonTokenAuthEntry[] models) {
-		WatsonTokenAuthEntrySoap[] soapModels = new WatsonTokenAuthEntrySoap[models.length];
+
+		WatsonTokenAuthEntrySoap[] soapModels =
+			new WatsonTokenAuthEntrySoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -62,10 +66,12 @@ public class WatsonTokenAuthEntrySoap implements Serializable {
 
 	public static WatsonTokenAuthEntrySoap[][] toSoapModels(
 		WatsonTokenAuthEntry[][] models) {
+
 		WatsonTokenAuthEntrySoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new WatsonTokenAuthEntrySoap[models.length][models[0].length];
+			soapModels =
+				new WatsonTokenAuthEntrySoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new WatsonTokenAuthEntrySoap[0][0];
@@ -80,13 +86,16 @@ public class WatsonTokenAuthEntrySoap implements Serializable {
 
 	public static WatsonTokenAuthEntrySoap[] toSoapModels(
 		List<WatsonTokenAuthEntry> models) {
-		List<WatsonTokenAuthEntrySoap> soapModels = new ArrayList<WatsonTokenAuthEntrySoap>(models.size());
+
+		List<WatsonTokenAuthEntrySoap> soapModels =
+			new ArrayList<WatsonTokenAuthEntrySoap>(models.size());
 
 		for (WatsonTokenAuthEntry model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(new WatsonTokenAuthEntrySoap[soapModels.size()]);
+		return soapModels.toArray(
+			new WatsonTokenAuthEntrySoap[soapModels.size()]);
 	}
 
 	public WatsonTokenAuthEntrySoap() {
@@ -203,4 +212,5 @@ public class WatsonTokenAuthEntrySoap implements Serializable {
 	private Date _expirationDate;
 	private Date _loginDate;
 	private int _status;
+
 }

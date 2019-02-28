@@ -34,6 +34,7 @@ import com.liferay.watson.service.WatsonResourceAuditLocalServiceUtil;
 @ProviderType
 public abstract class WatsonResourceAuditBaseImpl
 	extends WatsonResourceAuditModelImpl implements WatsonResourceAudit {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -48,4 +49,5 @@ public abstract class WatsonResourceAuditBaseImpl
 			WatsonResourceAuditLocalServiceUtil.updateWatsonResourceAudit(this);
 		}
 	}
+
 }

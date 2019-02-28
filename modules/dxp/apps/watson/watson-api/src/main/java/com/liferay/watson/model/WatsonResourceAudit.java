@@ -27,30 +27,37 @@ import com.liferay.portal.kernel.util.Accessor;
  * @see WatsonResourceAuditModel
  * @generated
  */
-@ImplementationClassName("com.liferay.watson.model.impl.WatsonResourceAuditImpl")
+@ImplementationClassName(
+	"com.liferay.watson.model.impl.WatsonResourceAuditImpl"
+)
 @ProviderType
-public interface WatsonResourceAudit extends WatsonResourceAuditModel,
-	PersistedModel {
+public interface WatsonResourceAudit
+	extends WatsonResourceAuditModel, PersistedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonResourceAuditImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<WatsonResourceAudit, Long> WATSON_RESOURCE_AUDIT_ID_ACCESSOR =
-		new Accessor<WatsonResourceAudit, Long>() {
-			@Override
-			public Long get(WatsonResourceAudit watsonResourceAudit) {
-				return watsonResourceAudit.getWatsonResourceAuditId();
-			}
+	public static final Accessor<WatsonResourceAudit, Long>
+		WATSON_RESOURCE_AUDIT_ID_ACCESSOR =
+			new Accessor<WatsonResourceAudit, Long>() {
 
-			@Override
-			public Class<Long> getAttributeClass() {
-				return Long.class;
-			}
+				@Override
+				public Long get(WatsonResourceAudit watsonResourceAudit) {
+					return watsonResourceAudit.getWatsonResourceAuditId();
+				}
 
-			@Override
-			public Class<WatsonResourceAudit> getTypeClass() {
-				return WatsonResourceAudit.class;
-			}
-		};
+				@Override
+				public Class<Long> getAttributeClass() {
+					return Long.class;
+				}
+
+				@Override
+				public Class<WatsonResourceAudit> getTypeClass() {
+					return WatsonResourceAudit.class;
+				}
+
+			};
+
 }

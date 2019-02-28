@@ -30,13 +30,15 @@ import com.liferay.portal.kernel.util.Accessor;
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonDocumentImpl")
 @ProviderType
 public interface WatsonDocument extends WatsonDocumentModel, PersistedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonDocumentImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<WatsonDocument, Long> WATSON_DOCUMENT_ID_ACCESSOR =
-		new Accessor<WatsonDocument, Long>() {
+	public static final Accessor<WatsonDocument, Long>
+		WATSON_DOCUMENT_ID_ACCESSOR = new Accessor<WatsonDocument, Long>() {
+
 			@Override
 			public Long get(WatsonDocument watsonDocument) {
 				return watsonDocument.getWatsonDocumentId();
@@ -51,5 +53,7 @@ public interface WatsonDocument extends WatsonDocumentModel, PersistedModel {
 			public Class<WatsonDocument> getTypeClass() {
 				return WatsonDocument.class;
 			}
+
 		};
+
 }

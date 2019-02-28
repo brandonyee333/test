@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.login.model.WatsonTokenAuthEntry;
 
 import java.io.Externalizable;
@@ -36,8 +35,9 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public class WatsonTokenAuthEntryCacheModel implements CacheModel<WatsonTokenAuthEntry>,
-	Externalizable {
+public class WatsonTokenAuthEntryCacheModel
+	implements CacheModel<WatsonTokenAuthEntry>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,9 +48,12 @@ public class WatsonTokenAuthEntryCacheModel implements CacheModel<WatsonTokenAut
 			return false;
 		}
 
-		WatsonTokenAuthEntryCacheModel watsonTokenAuthEntryCacheModel = (WatsonTokenAuthEntryCacheModel)obj;
+		WatsonTokenAuthEntryCacheModel watsonTokenAuthEntryCacheModel =
+			(WatsonTokenAuthEntryCacheModel)obj;
 
-		if (watsonTokenAuthEntryId == watsonTokenAuthEntryCacheModel.watsonTokenAuthEntryId) {
+		if (watsonTokenAuthEntryId ==
+				watsonTokenAuthEntryCacheModel.watsonTokenAuthEntryId) {
+
 			return true;
 		}
 
@@ -95,9 +98,11 @@ public class WatsonTokenAuthEntryCacheModel implements CacheModel<WatsonTokenAut
 
 	@Override
 	public WatsonTokenAuthEntry toEntityModel() {
-		WatsonTokenAuthEntryImpl watsonTokenAuthEntryImpl = new WatsonTokenAuthEntryImpl();
+		WatsonTokenAuthEntryImpl watsonTokenAuthEntryImpl =
+			new WatsonTokenAuthEntryImpl();
 
-		watsonTokenAuthEntryImpl.setWatsonTokenAuthEntryId(watsonTokenAuthEntryId);
+		watsonTokenAuthEntryImpl.setWatsonTokenAuthEntryId(
+			watsonTokenAuthEntryId);
 		watsonTokenAuthEntryImpl.setCompanyId(companyId);
 		watsonTokenAuthEntryImpl.setUserId(userId);
 
@@ -135,7 +140,8 @@ public class WatsonTokenAuthEntryCacheModel implements CacheModel<WatsonTokenAut
 			watsonTokenAuthEntryImpl.setExpirationDate(null);
 		}
 		else {
-			watsonTokenAuthEntryImpl.setExpirationDate(new Date(expirationDate));
+			watsonTokenAuthEntryImpl.setExpirationDate(
+				new Date(expirationDate));
 		}
 
 		if (loginDate == Long.MIN_VALUE) {
@@ -172,8 +178,7 @@ public class WatsonTokenAuthEntryCacheModel implements CacheModel<WatsonTokenAut
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonTokenAuthEntryId);
 
 		objectOutput.writeLong(companyId);
@@ -222,4 +227,5 @@ public class WatsonTokenAuthEntryCacheModel implements CacheModel<WatsonTokenAut
 	public long expirationDate;
 	public long loginDate;
 	public int status;
+
 }

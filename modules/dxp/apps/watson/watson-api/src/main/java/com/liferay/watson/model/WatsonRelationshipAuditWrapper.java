@@ -17,7 +17,6 @@ package com.liferay.watson.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -38,10 +37,12 @@ import java.util.Objects;
  * @generated
  */
 @ProviderType
-public class WatsonRelationshipAuditWrapper implements WatsonRelationshipAudit,
-	ModelWrapper<WatsonRelationshipAudit> {
+public class WatsonRelationshipAuditWrapper
+	implements WatsonRelationshipAudit, ModelWrapper<WatsonRelationshipAudit> {
+
 	public WatsonRelationshipAuditWrapper(
 		WatsonRelationshipAudit watsonRelationshipAudit) {
+
 		_watsonRelationshipAudit = watsonRelationshipAudit;
 	}
 
@@ -59,8 +60,8 @@ public class WatsonRelationshipAuditWrapper implements WatsonRelationshipAudit,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("watsonRelationshipAuditId",
-			getWatsonRelationshipAuditId());
+		attributes.put(
+			"watsonRelationshipAuditId", getWatsonRelationshipAuditId());
 		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
@@ -83,7 +84,7 @@ public class WatsonRelationshipAuditWrapper implements WatsonRelationshipAudit,
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
 		Long watsonRelationshipAuditId = (Long)attributes.get(
-				"watsonRelationshipAuditId");
+			"watsonRelationshipAuditId");
 
 		if (watsonRelationshipAuditId != null) {
 			setWatsonRelationshipAuditId(watsonRelationshipAuditId);
@@ -131,13 +132,15 @@ public class WatsonRelationshipAuditWrapper implements WatsonRelationshipAudit,
 			setWatsonIncidentId(watsonIncidentId);
 		}
 
-		Long watsonRelationshipId = (Long)attributes.get("watsonRelationshipId");
+		Long watsonRelationshipId = (Long)attributes.get(
+			"watsonRelationshipId");
 
 		if (watsonRelationshipId != null) {
 			setWatsonRelationshipId(watsonRelationshipId);
 		}
 
-		Long typeWatsonListTypeId = (Long)attributes.get("typeWatsonListTypeId");
+		Long typeWatsonListTypeId = (Long)attributes.get(
+			"typeWatsonListTypeId");
 
 		if (typeWatsonListTypeId != null) {
 			setTypeWatsonListTypeId(typeWatsonListTypeId);
@@ -182,7 +185,8 @@ public class WatsonRelationshipAuditWrapper implements WatsonRelationshipAudit,
 
 	@Override
 	public Object clone() {
-		return new WatsonRelationshipAuditWrapper((WatsonRelationshipAudit)_watsonRelationshipAudit.clone());
+		return new WatsonRelationshipAuditWrapper(
+			(WatsonRelationshipAudit)_watsonRelationshipAudit.clone());
 	}
 
 	@Override
@@ -191,70 +195,70 @@ public class WatsonRelationshipAuditWrapper implements WatsonRelationshipAudit,
 	}
 
 	/**
-	* Returns the class name id1 of this watson relationship audit.
-	*
-	* @return the class name id1 of this watson relationship audit
-	*/
+	 * Returns the class name id1 of this watson relationship audit.
+	 *
+	 * @return the class name id1 of this watson relationship audit
+	 */
 	@Override
 	public long getClassNameId1() {
 		return _watsonRelationshipAudit.getClassNameId1();
 	}
 
 	/**
-	* Returns the class name id2 of this watson relationship audit.
-	*
-	* @return the class name id2 of this watson relationship audit
-	*/
+	 * Returns the class name id2 of this watson relationship audit.
+	 *
+	 * @return the class name id2 of this watson relationship audit
+	 */
 	@Override
 	public long getClassNameId2() {
 		return _watsonRelationshipAudit.getClassNameId2();
 	}
 
 	/**
-	* Returns the class pk1 of this watson relationship audit.
-	*
-	* @return the class pk1 of this watson relationship audit
-	*/
+	 * Returns the class pk1 of this watson relationship audit.
+	 *
+	 * @return the class pk1 of this watson relationship audit
+	 */
 	@Override
 	public long getClassPK1() {
 		return _watsonRelationshipAudit.getClassPK1();
 	}
 
 	/**
-	* Returns the class pk2 of this watson relationship audit.
-	*
-	* @return the class pk2 of this watson relationship audit
-	*/
+	 * Returns the class pk2 of this watson relationship audit.
+	 *
+	 * @return the class pk2 of this watson relationship audit
+	 */
 	@Override
 	public long getClassPK2() {
 		return _watsonRelationshipAudit.getClassPK2();
 	}
 
 	/**
-	* Returns the company ID of this watson relationship audit.
-	*
-	* @return the company ID of this watson relationship audit
-	*/
+	 * Returns the company ID of this watson relationship audit.
+	 *
+	 * @return the company ID of this watson relationship audit
+	 */
 	@Override
 	public long getCompanyId() {
 		return _watsonRelationshipAudit.getCompanyId();
 	}
 
 	/**
-	* Returns the create date of this watson relationship audit.
-	*
-	* @return the create date of this watson relationship audit
-	*/
+	 * Returns the create date of this watson relationship audit.
+	 *
+	 * @return the create date of this watson relationship audit
+	 */
 	@Override
 	public Date getCreateDate() {
 		return _watsonRelationshipAudit.getCreateDate();
 	}
 
 	/**
-	* Returns the description of this watson relationship audit.
-	*
-	* @return the description of this watson relationship audit
-	*/
+	 * Returns the description of this watson relationship audit.
+	 *
+	 * @return the description of this watson relationship audit
+	 */
 	@Override
 	public String getDescription() {
 		return _watsonRelationshipAudit.getDescription();
@@ -266,30 +270,30 @@ public class WatsonRelationshipAuditWrapper implements WatsonRelationshipAudit,
 	}
 
 	/**
-	* Returns the group ID of this watson relationship audit.
-	*
-	* @return the group ID of this watson relationship audit
-	*/
+	 * Returns the group ID of this watson relationship audit.
+	 *
+	 * @return the group ID of this watson relationship audit
+	 */
 	@Override
 	public long getGroupId() {
 		return _watsonRelationshipAudit.getGroupId();
 	}
 
 	/**
-	* Returns the modified date of this watson relationship audit.
-	*
-	* @return the modified date of this watson relationship audit
-	*/
+	 * Returns the modified date of this watson relationship audit.
+	 *
+	 * @return the modified date of this watson relationship audit
+	 */
 	@Override
 	public Date getModifiedDate() {
 		return _watsonRelationshipAudit.getModifiedDate();
 	}
 
 	/**
-	* Returns the primary key of this watson relationship audit.
-	*
-	* @return the primary key of this watson relationship audit
-	*/
+	 * Returns the primary key of this watson relationship audit.
+	 *
+	 * @return the primary key of this watson relationship audit
+	 */
 	@Override
 	public long getPrimaryKey() {
 		return _watsonRelationshipAudit.getPrimaryKey();
@@ -301,80 +305,80 @@ public class WatsonRelationshipAuditWrapper implements WatsonRelationshipAudit,
 	}
 
 	/**
-	* Returns the status of this watson relationship audit.
-	*
-	* @return the status of this watson relationship audit
-	*/
+	 * Returns the status of this watson relationship audit.
+	 *
+	 * @return the status of this watson relationship audit
+	 */
 	@Override
 	public int getStatus() {
 		return _watsonRelationshipAudit.getStatus();
 	}
 
 	/**
-	* Returns the type watson list type ID of this watson relationship audit.
-	*
-	* @return the type watson list type ID of this watson relationship audit
-	*/
+	 * Returns the type watson list type ID of this watson relationship audit.
+	 *
+	 * @return the type watson list type ID of this watson relationship audit
+	 */
 	@Override
 	public long getTypeWatsonListTypeId() {
 		return _watsonRelationshipAudit.getTypeWatsonListTypeId();
 	}
 
 	/**
-	* Returns the user ID of this watson relationship audit.
-	*
-	* @return the user ID of this watson relationship audit
-	*/
+	 * Returns the user ID of this watson relationship audit.
+	 *
+	 * @return the user ID of this watson relationship audit
+	 */
 	@Override
 	public long getUserId() {
 		return _watsonRelationshipAudit.getUserId();
 	}
 
 	/**
-	* Returns the user name of this watson relationship audit.
-	*
-	* @return the user name of this watson relationship audit
-	*/
+	 * Returns the user name of this watson relationship audit.
+	 *
+	 * @return the user name of this watson relationship audit
+	 */
 	@Override
 	public String getUserName() {
 		return _watsonRelationshipAudit.getUserName();
 	}
 
 	/**
-	* Returns the user uuid of this watson relationship audit.
-	*
-	* @return the user uuid of this watson relationship audit
-	*/
+	 * Returns the user uuid of this watson relationship audit.
+	 *
+	 * @return the user uuid of this watson relationship audit
+	 */
 	@Override
 	public String getUserUuid() {
 		return _watsonRelationshipAudit.getUserUuid();
 	}
 
 	/**
-	* Returns the watson incident ID of this watson relationship audit.
-	*
-	* @return the watson incident ID of this watson relationship audit
-	*/
+	 * Returns the watson incident ID of this watson relationship audit.
+	 *
+	 * @return the watson incident ID of this watson relationship audit
+	 */
 	@Override
 	public long getWatsonIncidentId() {
 		return _watsonRelationshipAudit.getWatsonIncidentId();
 	}
 
 	/**
-	* Returns the watson relationship audit ID of this watson relationship audit.
-	*
-	* @return the watson relationship audit ID of this watson relationship audit
-	*/
+	 * Returns the watson relationship audit ID of this watson relationship audit.
+	 *
+	 * @return the watson relationship audit ID of this watson relationship audit
+	 */
 	@Override
 	public long getWatsonRelationshipAuditId() {
 		return _watsonRelationshipAudit.getWatsonRelationshipAuditId();
 	}
 
 	/**
-	* Returns the watson relationship ID of this watson relationship audit.
-	*
-	* @return the watson relationship ID of this watson relationship audit
-	*/
+	 * Returns the watson relationship ID of this watson relationship audit.
+	 *
+	 * @return the watson relationship ID of this watson relationship audit
+	 */
 	@Override
 	public long getWatsonRelationshipId() {
 		return _watsonRelationshipAudit.getWatsonRelationshipId();
@@ -411,70 +415,70 @@ public class WatsonRelationshipAuditWrapper implements WatsonRelationshipAudit,
 	}
 
 	/**
-	* Sets the class name id1 of this watson relationship audit.
-	*
-	* @param classNameId1 the class name id1 of this watson relationship audit
-	*/
+	 * Sets the class name id1 of this watson relationship audit.
+	 *
+	 * @param classNameId1 the class name id1 of this watson relationship audit
+	 */
 	@Override
 	public void setClassNameId1(long classNameId1) {
 		_watsonRelationshipAudit.setClassNameId1(classNameId1);
 	}
 
 	/**
-	* Sets the class name id2 of this watson relationship audit.
-	*
-	* @param classNameId2 the class name id2 of this watson relationship audit
-	*/
+	 * Sets the class name id2 of this watson relationship audit.
+	 *
+	 * @param classNameId2 the class name id2 of this watson relationship audit
+	 */
 	@Override
 	public void setClassNameId2(long classNameId2) {
 		_watsonRelationshipAudit.setClassNameId2(classNameId2);
 	}
 
 	/**
-	* Sets the class pk1 of this watson relationship audit.
-	*
-	* @param classPK1 the class pk1 of this watson relationship audit
-	*/
+	 * Sets the class pk1 of this watson relationship audit.
+	 *
+	 * @param classPK1 the class pk1 of this watson relationship audit
+	 */
 	@Override
 	public void setClassPK1(long classPK1) {
 		_watsonRelationshipAudit.setClassPK1(classPK1);
 	}
 
 	/**
-	* Sets the class pk2 of this watson relationship audit.
-	*
-	* @param classPK2 the class pk2 of this watson relationship audit
-	*/
+	 * Sets the class pk2 of this watson relationship audit.
+	 *
+	 * @param classPK2 the class pk2 of this watson relationship audit
+	 */
 	@Override
 	public void setClassPK2(long classPK2) {
 		_watsonRelationshipAudit.setClassPK2(classPK2);
 	}
 
 	/**
-	* Sets the company ID of this watson relationship audit.
-	*
-	* @param companyId the company ID of this watson relationship audit
-	*/
+	 * Sets the company ID of this watson relationship audit.
+	 *
+	 * @param companyId the company ID of this watson relationship audit
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_watsonRelationshipAudit.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create date of this watson relationship audit.
-	*
-	* @param createDate the create date of this watson relationship audit
-	*/
+	 * Sets the create date of this watson relationship audit.
+	 *
+	 * @param createDate the create date of this watson relationship audit
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_watsonRelationshipAudit.setCreateDate(createDate);
 	}
 
 	/**
-	* Sets the description of this watson relationship audit.
-	*
-	* @param description the description of this watson relationship audit
-	*/
+	 * Sets the description of this watson relationship audit.
+	 *
+	 * @param description the description of this watson relationship audit
+	 */
 	@Override
 	public void setDescription(String description) {
 		_watsonRelationshipAudit.setDescription(description);
@@ -483,6 +487,7 @@ public class WatsonRelationshipAuditWrapper implements WatsonRelationshipAudit,
 	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
 		_watsonRelationshipAudit.setExpandoBridgeAttributes(baseModel);
 	}
 
@@ -497,20 +502,20 @@ public class WatsonRelationshipAuditWrapper implements WatsonRelationshipAudit,
 	}
 
 	/**
-	* Sets the group ID of this watson relationship audit.
-	*
-	* @param groupId the group ID of this watson relationship audit
-	*/
+	 * Sets the group ID of this watson relationship audit.
+	 *
+	 * @param groupId the group ID of this watson relationship audit
+	 */
 	@Override
 	public void setGroupId(long groupId) {
 		_watsonRelationshipAudit.setGroupId(groupId);
 	}
 
 	/**
-	* Sets the modified date of this watson relationship audit.
-	*
-	* @param modifiedDate the modified date of this watson relationship audit
-	*/
+	 * Sets the modified date of this watson relationship audit.
+	 *
+	 * @param modifiedDate the modified date of this watson relationship audit
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_watsonRelationshipAudit.setModifiedDate(modifiedDate);
@@ -522,10 +527,10 @@ public class WatsonRelationshipAuditWrapper implements WatsonRelationshipAudit,
 	}
 
 	/**
-	* Sets the primary key of this watson relationship audit.
-	*
-	* @param primaryKey the primary key of this watson relationship audit
-	*/
+	 * Sets the primary key of this watson relationship audit.
+	 *
+	 * @param primaryKey the primary key of this watson relationship audit
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_watsonRelationshipAudit.setPrimaryKey(primaryKey);
@@ -537,93 +542,97 @@ public class WatsonRelationshipAuditWrapper implements WatsonRelationshipAudit,
 	}
 
 	/**
-	* Sets the status of this watson relationship audit.
-	*
-	* @param status the status of this watson relationship audit
-	*/
+	 * Sets the status of this watson relationship audit.
+	 *
+	 * @param status the status of this watson relationship audit
+	 */
 	@Override
 	public void setStatus(int status) {
 		_watsonRelationshipAudit.setStatus(status);
 	}
 
 	/**
-	* Sets the type watson list type ID of this watson relationship audit.
-	*
-	* @param typeWatsonListTypeId the type watson list type ID of this watson relationship audit
-	*/
+	 * Sets the type watson list type ID of this watson relationship audit.
+	 *
+	 * @param typeWatsonListTypeId the type watson list type ID of this watson relationship audit
+	 */
 	@Override
 	public void setTypeWatsonListTypeId(long typeWatsonListTypeId) {
 		_watsonRelationshipAudit.setTypeWatsonListTypeId(typeWatsonListTypeId);
 	}
 
 	/**
-	* Sets the user ID of this watson relationship audit.
-	*
-	* @param userId the user ID of this watson relationship audit
-	*/
+	 * Sets the user ID of this watson relationship audit.
+	 *
+	 * @param userId the user ID of this watson relationship audit
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_watsonRelationshipAudit.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this watson relationship audit.
-	*
-	* @param userName the user name of this watson relationship audit
-	*/
+	 * Sets the user name of this watson relationship audit.
+	 *
+	 * @param userName the user name of this watson relationship audit
+	 */
 	@Override
 	public void setUserName(String userName) {
 		_watsonRelationshipAudit.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this watson relationship audit.
-	*
-	* @param userUuid the user uuid of this watson relationship audit
-	*/
+	 * Sets the user uuid of this watson relationship audit.
+	 *
+	 * @param userUuid the user uuid of this watson relationship audit
+	 */
 	@Override
 	public void setUserUuid(String userUuid) {
 		_watsonRelationshipAudit.setUserUuid(userUuid);
 	}
 
 	/**
-	* Sets the watson incident ID of this watson relationship audit.
-	*
-	* @param watsonIncidentId the watson incident ID of this watson relationship audit
-	*/
+	 * Sets the watson incident ID of this watson relationship audit.
+	 *
+	 * @param watsonIncidentId the watson incident ID of this watson relationship audit
+	 */
 	@Override
 	public void setWatsonIncidentId(long watsonIncidentId) {
 		_watsonRelationshipAudit.setWatsonIncidentId(watsonIncidentId);
 	}
 
 	/**
-	* Sets the watson relationship audit ID of this watson relationship audit.
-	*
-	* @param watsonRelationshipAuditId the watson relationship audit ID of this watson relationship audit
-	*/
+	 * Sets the watson relationship audit ID of this watson relationship audit.
+	 *
+	 * @param watsonRelationshipAuditId the watson relationship audit ID of this watson relationship audit
+	 */
 	@Override
 	public void setWatsonRelationshipAuditId(long watsonRelationshipAuditId) {
-		_watsonRelationshipAudit.setWatsonRelationshipAuditId(watsonRelationshipAuditId);
+		_watsonRelationshipAudit.setWatsonRelationshipAuditId(
+			watsonRelationshipAuditId);
 	}
 
 	/**
-	* Sets the watson relationship ID of this watson relationship audit.
-	*
-	* @param watsonRelationshipId the watson relationship ID of this watson relationship audit
-	*/
+	 * Sets the watson relationship ID of this watson relationship audit.
+	 *
+	 * @param watsonRelationshipId the watson relationship ID of this watson relationship audit
+	 */
 	@Override
 	public void setWatsonRelationshipId(long watsonRelationshipId) {
 		_watsonRelationshipAudit.setWatsonRelationshipId(watsonRelationshipId);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<WatsonRelationshipAudit> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<WatsonRelationshipAudit>
+		toCacheModel() {
+
 		return _watsonRelationshipAudit.toCacheModel();
 	}
 
 	@Override
 	public WatsonRelationshipAudit toEscapedModel() {
-		return new WatsonRelationshipAuditWrapper(_watsonRelationshipAudit.toEscapedModel());
+		return new WatsonRelationshipAuditWrapper(
+			_watsonRelationshipAudit.toEscapedModel());
 	}
 
 	@Override
@@ -633,7 +642,8 @@ public class WatsonRelationshipAuditWrapper implements WatsonRelationshipAudit,
 
 	@Override
 	public WatsonRelationshipAudit toUnescapedModel() {
-		return new WatsonRelationshipAuditWrapper(_watsonRelationshipAudit.toUnescapedModel());
+		return new WatsonRelationshipAuditWrapper(
+			_watsonRelationshipAudit.toUnescapedModel());
 	}
 
 	@Override
@@ -651,10 +661,13 @@ public class WatsonRelationshipAuditWrapper implements WatsonRelationshipAudit,
 			return false;
 		}
 
-		WatsonRelationshipAuditWrapper watsonRelationshipAuditWrapper = (WatsonRelationshipAuditWrapper)obj;
+		WatsonRelationshipAuditWrapper watsonRelationshipAuditWrapper =
+			(WatsonRelationshipAuditWrapper)obj;
 
-		if (Objects.equals(_watsonRelationshipAudit,
-					watsonRelationshipAuditWrapper._watsonRelationshipAudit)) {
+		if (Objects.equals(
+				_watsonRelationshipAudit,
+				watsonRelationshipAuditWrapper._watsonRelationshipAudit)) {
+
 			return true;
 		}
 
@@ -682,4 +695,5 @@ public class WatsonRelationshipAuditWrapper implements WatsonRelationshipAudit,
 	}
 
 	private final WatsonRelationshipAudit _watsonRelationshipAudit;
+
 }

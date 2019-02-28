@@ -64,8 +64,9 @@ import javax.sql.DataSource;
  */
 @ProviderType
 public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
-	extends BaseLocalServiceImpl implements KaleoDraftDefinitionLocalService,
-		IdentifiableOSGiService {
+	extends BaseLocalServiceImpl
+	implements KaleoDraftDefinitionLocalService, IdentifiableOSGiService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -82,6 +83,7 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	@Override
 	public KaleoDraftDefinition addKaleoDraftDefinition(
 		KaleoDraftDefinition kaleoDraftDefinition) {
+
 		kaleoDraftDefinition.setNew(true);
 
 		return kaleoDraftDefinitionPersistence.update(kaleoDraftDefinition);
@@ -97,6 +99,7 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	@Transactional(enabled = false)
 	public KaleoDraftDefinition createKaleoDraftDefinition(
 		long kaleoDraftDefinitionId) {
+
 		return kaleoDraftDefinitionPersistence.create(kaleoDraftDefinitionId);
 	}
 
@@ -110,7 +113,9 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public KaleoDraftDefinition deleteKaleoDraftDefinition(
-		long kaleoDraftDefinitionId) throws PortalException {
+			long kaleoDraftDefinitionId)
+		throws PortalException {
+
 		return kaleoDraftDefinitionPersistence.remove(kaleoDraftDefinitionId);
 	}
 
@@ -124,7 +129,9 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public KaleoDraftDefinition deleteKaleoDraftDefinition(
-		KaleoDraftDefinition kaleoDraftDefinition) throws PortalException {
+			KaleoDraftDefinition kaleoDraftDefinition)
+		throws PortalException {
+
 		return kaleoDraftDefinitionPersistence.remove(kaleoDraftDefinition);
 	}
 
@@ -132,8 +139,8 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	public DynamicQuery dynamicQuery() {
 		Class<?> clazz = getClass();
 
-		return DynamicQueryFactoryUtil.forClass(KaleoDraftDefinition.class,
-			clazz.getClassLoader());
+		return DynamicQueryFactoryUtil.forClass(
+			KaleoDraftDefinition.class, clazz.getClassLoader());
 	}
 
 	/**
@@ -144,7 +151,8 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 */
 	@Override
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery) {
-		return kaleoDraftDefinitionPersistence.findWithDynamicQuery(dynamicQuery);
+		return kaleoDraftDefinitionPersistence.findWithDynamicQuery(
+			dynamicQuery);
 	}
 
 	/**
@@ -160,10 +168,11 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 * @return the range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end) {
-		return kaleoDraftDefinitionPersistence.findWithDynamicQuery(dynamicQuery,
-			start, end);
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end) {
+
+		return kaleoDraftDefinitionPersistence.findWithDynamicQuery(
+			dynamicQuery, start, end);
 	}
 
 	/**
@@ -180,10 +189,12 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 * @return the ordered range of matching rows
 	 */
 	@Override
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end, OrderByComparator<T> orderByComparator) {
-		return kaleoDraftDefinitionPersistence.findWithDynamicQuery(dynamicQuery,
-			start, end, orderByComparator);
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator) {
+
+		return kaleoDraftDefinitionPersistence.findWithDynamicQuery(
+			dynamicQuery, start, end, orderByComparator);
 	}
 
 	/**
@@ -194,7 +205,8 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 */
 	@Override
 	public long dynamicQueryCount(DynamicQuery dynamicQuery) {
-		return kaleoDraftDefinitionPersistence.countWithDynamicQuery(dynamicQuery);
+		return kaleoDraftDefinitionPersistence.countWithDynamicQuery(
+			dynamicQuery);
 	}
 
 	/**
@@ -205,16 +217,19 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 * @return the number of rows matching the dynamic query
 	 */
 	@Override
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection) {
-		return kaleoDraftDefinitionPersistence.countWithDynamicQuery(dynamicQuery,
-			projection);
+	public long dynamicQueryCount(
+		DynamicQuery dynamicQuery, Projection projection) {
+
+		return kaleoDraftDefinitionPersistence.countWithDynamicQuery(
+			dynamicQuery, projection);
 	}
 
 	@Override
 	public KaleoDraftDefinition fetchKaleoDraftDefinition(
 		long kaleoDraftDefinitionId) {
-		return kaleoDraftDefinitionPersistence.fetchByPrimaryKey(kaleoDraftDefinitionId);
+
+		return kaleoDraftDefinitionPersistence.fetchByPrimaryKey(
+			kaleoDraftDefinitionId);
 	}
 
 	/**
@@ -226,15 +241,20 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 */
 	@Override
 	public KaleoDraftDefinition getKaleoDraftDefinition(
-		long kaleoDraftDefinitionId) throws PortalException {
-		return kaleoDraftDefinitionPersistence.findByPrimaryKey(kaleoDraftDefinitionId);
+			long kaleoDraftDefinitionId)
+		throws PortalException {
+
+		return kaleoDraftDefinitionPersistence.findByPrimaryKey(
+			kaleoDraftDefinitionId);
 	}
 
 	@Override
 	public ActionableDynamicQuery getActionableDynamicQuery() {
-		ActionableDynamicQuery actionableDynamicQuery = new DefaultActionableDynamicQuery();
+		ActionableDynamicQuery actionableDynamicQuery =
+			new DefaultActionableDynamicQuery();
 
-		actionableDynamicQuery.setBaseLocalService(kaleoDraftDefinitionLocalService);
+		actionableDynamicQuery.setBaseLocalService(
+			kaleoDraftDefinitionLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(KaleoDraftDefinition.class);
 
@@ -245,12 +265,17 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	}
 
 	@Override
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		IndexableActionableDynamicQuery indexableActionableDynamicQuery = new IndexableActionableDynamicQuery();
+	public IndexableActionableDynamicQuery
+		getIndexableActionableDynamicQuery() {
 
-		indexableActionableDynamicQuery.setBaseLocalService(kaleoDraftDefinitionLocalService);
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
+			new IndexableActionableDynamicQuery();
+
+		indexableActionableDynamicQuery.setBaseLocalService(
+			kaleoDraftDefinitionLocalService);
 		indexableActionableDynamicQuery.setClassLoader(getClassLoader());
-		indexableActionableDynamicQuery.setModelClass(KaleoDraftDefinition.class);
+		indexableActionableDynamicQuery.setModelClass(
+			KaleoDraftDefinition.class);
 
 		indexableActionableDynamicQuery.setPrimaryKeyPropertyName(
 			"kaleoDraftDefinitionId");
@@ -260,7 +285,9 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 
 	protected void initActionableDynamicQuery(
 		ActionableDynamicQuery actionableDynamicQuery) {
-		actionableDynamicQuery.setBaseLocalService(kaleoDraftDefinitionLocalService);
+
+		actionableDynamicQuery.setBaseLocalService(
+			kaleoDraftDefinitionLocalService);
 		actionableDynamicQuery.setClassLoader(getClassLoader());
 		actionableDynamicQuery.setModelClass(KaleoDraftDefinition.class);
 
@@ -274,12 +301,15 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException {
-		return kaleoDraftDefinitionLocalService.deleteKaleoDraftDefinition((KaleoDraftDefinition)persistedModel);
+
+		return kaleoDraftDefinitionLocalService.deleteKaleoDraftDefinition(
+			(KaleoDraftDefinition)persistedModel);
 	}
 
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
+
 		return kaleoDraftDefinitionPersistence.findByPrimaryKey(primaryKeyObj);
 	}
 
@@ -295,8 +325,9 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 * @return the range of kaleo draft definitions
 	 */
 	@Override
-	public List<KaleoDraftDefinition> getKaleoDraftDefinitions(int start,
-		int end) {
+	public List<KaleoDraftDefinition> getKaleoDraftDefinitions(
+		int start, int end) {
+
 		return kaleoDraftDefinitionPersistence.findAll(start, end);
 	}
 
@@ -320,6 +351,7 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	@Override
 	public KaleoDraftDefinition updateKaleoDraftDefinition(
 		KaleoDraftDefinition kaleoDraftDefinition) {
+
 		return kaleoDraftDefinitionPersistence.update(kaleoDraftDefinition);
 	}
 
@@ -328,7 +360,9 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 *
 	 * @return the kaleo draft definition local service
 	 */
-	public KaleoDraftDefinitionLocalService getKaleoDraftDefinitionLocalService() {
+	public KaleoDraftDefinitionLocalService
+		getKaleoDraftDefinitionLocalService() {
+
 		return kaleoDraftDefinitionLocalService;
 	}
 
@@ -339,7 +373,9 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 */
 	public void setKaleoDraftDefinitionLocalService(
 		KaleoDraftDefinitionLocalService kaleoDraftDefinitionLocalService) {
-		this.kaleoDraftDefinitionLocalService = kaleoDraftDefinitionLocalService;
+
+		this.kaleoDraftDefinitionLocalService =
+			kaleoDraftDefinitionLocalService;
 	}
 
 	/**
@@ -347,7 +383,9 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 *
 	 * @return the kaleo draft definition persistence
 	 */
-	public KaleoDraftDefinitionPersistence getKaleoDraftDefinitionPersistence() {
+	public KaleoDraftDefinitionPersistence
+		getKaleoDraftDefinitionPersistence() {
+
 		return kaleoDraftDefinitionPersistence;
 	}
 
@@ -358,6 +396,7 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 */
 	public void setKaleoDraftDefinitionPersistence(
 		KaleoDraftDefinitionPersistence kaleoDraftDefinitionPersistence) {
+
 		this.kaleoDraftDefinitionPersistence = kaleoDraftDefinitionPersistence;
 	}
 
@@ -366,7 +405,9 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
+	public com.liferay.counter.kernel.service.CounterLocalService
+		getCounterLocalService() {
+
 		return counterLocalService;
 	}
 
@@ -376,7 +417,9 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
+		com.liferay.counter.kernel.service.CounterLocalService
+			counterLocalService) {
+
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -385,7 +428,9 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 *
 	 * @return the class name local service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameLocalService getClassNameLocalService() {
+	public com.liferay.portal.kernel.service.ClassNameLocalService
+		getClassNameLocalService() {
+
 		return classNameLocalService;
 	}
 
@@ -395,7 +440,9 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 * @param classNameLocalService the class name local service
 	 */
 	public void setClassNameLocalService(
-		com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService) {
+		com.liferay.portal.kernel.service.ClassNameLocalService
+			classNameLocalService) {
+
 		this.classNameLocalService = classNameLocalService;
 	}
 
@@ -415,6 +462,7 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 */
 	public void setClassNamePersistence(
 		ClassNamePersistence classNamePersistence) {
+
 		this.classNamePersistence = classNamePersistence;
 	}
 
@@ -423,7 +471,9 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 *
 	 * @return the resource local service
 	 */
-	public com.liferay.portal.kernel.service.ResourceLocalService getResourceLocalService() {
+	public com.liferay.portal.kernel.service.ResourceLocalService
+		getResourceLocalService() {
+
 		return resourceLocalService;
 	}
 
@@ -433,7 +483,9 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService) {
+		com.liferay.portal.kernel.service.ResourceLocalService
+			resourceLocalService) {
+
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -442,7 +494,9 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 *
 	 * @return the user local service
 	 */
-	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
+	public com.liferay.portal.kernel.service.UserLocalService
+		getUserLocalService() {
+
 		return userLocalService;
 	}
 
@@ -453,6 +507,7 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 */
 	public void setUserLocalService(
 		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
+
 		this.userLocalService = userLocalService;
 	}
 
@@ -475,7 +530,8 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		persistedModelLocalServiceRegistry.register("com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition",
+		persistedModelLocalServiceRegistry.register(
+			"com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition",
 			kaleoDraftDefinitionLocalService);
 	}
 
@@ -509,15 +565,16 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	 */
 	protected void runSQL(String sql) {
 		try {
-			DataSource dataSource = kaleoDraftDefinitionPersistence.getDataSource();
+			DataSource dataSource =
+				kaleoDraftDefinitionPersistence.getDataSource();
 
 			DB db = DBManagerUtil.getDB();
 
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
-					sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
+				dataSource, sql);
 
 			sqlUpdate.update();
 		}
@@ -528,20 +585,42 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 
 	@BeanReference(type = KaleoDraftDefinitionLocalService.class)
 	protected KaleoDraftDefinitionLocalService kaleoDraftDefinitionLocalService;
+
 	@BeanReference(type = KaleoDraftDefinitionPersistence.class)
 	protected KaleoDraftDefinitionPersistence kaleoDraftDefinitionPersistence;
-	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
-	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameLocalService.class)
-	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
+
+	@ServiceReference(
+		type = com.liferay.counter.kernel.service.CounterLocalService.class
+	)
+	protected com.liferay.counter.kernel.service.CounterLocalService
+		counterLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.ClassNameLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.ClassNameLocalService
+		classNameLocalService;
+
 	@ServiceReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
-	@ServiceReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
-	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
-	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.ResourceLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.ResourceLocalService
+		resourceLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.UserLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.UserLocalService
+		userLocalService;
+
 	@ServiceReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
+
 	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
-	protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
+	protected PersistedModelLocalServiceRegistry
+		persistedModelLocalServiceRegistry;
+
 }

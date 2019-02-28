@@ -18,7 +18,6 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -35,7 +34,6 @@ import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
-
 import com.liferay.watson.model.WatsonListType;
 import com.liferay.watson.model.WatsonListTypeModel;
 
@@ -66,28 +64,27 @@ import java.util.function.Function;
  * @generated
  */
 @ProviderType
-public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
-	implements WatsonListTypeModel {
+public class WatsonListTypeModelImpl
+	extends BaseModelImpl<WatsonListType> implements WatsonListTypeModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson list type model instance should use the <code>WatsonListType</code> interface instead.
 	 */
 	public static final String TABLE_NAME = "WatsonListType";
+
 	public static final Object[][] TABLE_COLUMNS = {
-			{ "watsonListTypeId", Types.BIGINT },
-			{ "groupId", Types.BIGINT },
-			{ "companyId", Types.BIGINT },
-			{ "userId", Types.BIGINT },
-			{ "userName", Types.VARCHAR },
-			{ "createDate", Types.TIMESTAMP },
-			{ "modifiedDate", Types.TIMESTAMP },
-			{ "parentWatsonListTypeId", Types.BIGINT },
-			{ "name", Types.VARCHAR },
-			{ "type_", Types.VARCHAR },
-			{ "status", Types.INTEGER }
-		};
-	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
+		{"watsonListTypeId", Types.BIGINT}, {"groupId", Types.BIGINT},
+		{"companyId", Types.BIGINT}, {"userId", Types.BIGINT},
+		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
+		{"modifiedDate", Types.TIMESTAMP},
+		{"parentWatsonListTypeId", Types.BIGINT}, {"name", Types.VARCHAR},
+		{"type_", Types.VARCHAR}, {"status", Types.INTEGER}
+	};
+
+	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
+		new HashMap<String, Integer>();
 
 	static {
 		TABLE_COLUMNS_MAP.put("watsonListTypeId", Types.BIGINT);
@@ -103,22 +100,38 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonListType (watsonListTypeId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,parentWatsonListTypeId LONG,name STRING null,type_ VARCHAR(100) null,status INTEGER)";
+	public static final String TABLE_SQL_CREATE =
+		"create table WatsonListType (watsonListTypeId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,parentWatsonListTypeId LONG,name STRING null,type_ VARCHAR(100) null,status INTEGER)";
+
 	public static final String TABLE_SQL_DROP = "drop table WatsonListType";
-	public static final String ORDER_BY_JPQL = " ORDER BY watsonListType.watsonListTypeId ASC";
-	public static final String ORDER_BY_SQL = " ORDER BY WatsonListType.watsonListTypeId ASC";
+
+	public static final String ORDER_BY_JPQL =
+		" ORDER BY watsonListType.watsonListTypeId ASC";
+
+	public static final String ORDER_BY_SQL =
+		" ORDER BY WatsonListType.watsonListTypeId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
+
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
+
 	public static final String TX_MANAGER = "liferayTransactionManager";
-	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonListType"),
-			true);
-	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonListType"),
-			true);
+
+	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonListType"),
+		true);
+
+	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonListType"),
+		true);
+
 	public static final boolean COLUMN_BITMASK_ENABLED = false;
-	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.watson.service.util.ServiceProps.get(
-				"lock.expiration.time.com.liferay.watson.model.WatsonListType"));
+
+	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"lock.expiration.time.com.liferay.watson.model.WatsonListType"));
 
 	public WatsonListTypeModelImpl() {
 	}
@@ -157,13 +170,18 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		Map<String, Function<WatsonListType, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+		Map<String, Function<WatsonListType, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		for (Map.Entry<String, Function<WatsonListType, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonListType, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonListType, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonListType, Object> attributeGetterFunction =
+				entry.getValue();
 
-			attributes.put(attributeName,
+			attributes.put(
+				attributeName,
 				attributeGetterFunction.apply((WatsonListType)this));
 		}
 
@@ -175,36 +193,44 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Map<String, BiConsumer<WatsonListType, Object>> attributeSetterBiConsumers =
-			getAttributeSetterBiConsumers();
+		Map<String, BiConsumer<WatsonListType, Object>>
+			attributeSetterBiConsumers = getAttributeSetterBiConsumers();
 
 		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			String attributeName = entry.getKey();
 
-			BiConsumer<WatsonListType, Object> attributeSetterBiConsumer = attributeSetterBiConsumers.get(attributeName);
+			BiConsumer<WatsonListType, Object> attributeSetterBiConsumer =
+				attributeSetterBiConsumers.get(attributeName);
 
 			if (attributeSetterBiConsumer != null) {
-				attributeSetterBiConsumer.accept((WatsonListType)this,
-					entry.getValue());
+				attributeSetterBiConsumer.accept(
+					(WatsonListType)this, entry.getValue());
 			}
 		}
 	}
 
-	public Map<String, Function<WatsonListType, Object>> getAttributeGetterFunctions() {
+	public Map<String, Function<WatsonListType, Object>>
+		getAttributeGetterFunctions() {
+
 		return _attributeGetterFunctions;
 	}
 
-	public Map<String, BiConsumer<WatsonListType, Object>> getAttributeSetterBiConsumers() {
+	public Map<String, BiConsumer<WatsonListType, Object>>
+		getAttributeSetterBiConsumers() {
+
 		return _attributeSetterBiConsumers;
 	}
 
-	private static final Map<String, Function<WatsonListType, Object>> _attributeGetterFunctions;
-	private static final Map<String, BiConsumer<WatsonListType, Object>> _attributeSetterBiConsumers;
+	private static final Map<String, Function<WatsonListType, Object>>
+		_attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonListType, Object>>
+		_attributeSetterBiConsumers;
 
 	static {
-		Map<String, Function<WatsonListType, Object>> attributeGetterFunctions = new LinkedHashMap<String, Function<WatsonListType, Object>>();
-		Map<String, BiConsumer<WatsonListType, ?>> attributeSetterBiConsumers = new LinkedHashMap<String, BiConsumer<WatsonListType, ?>>();
-
+		Map<String, Function<WatsonListType, Object>> attributeGetterFunctions =
+			new LinkedHashMap<String, Function<WatsonListType, Object>>();
+		Map<String, BiConsumer<WatsonListType, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<WatsonListType, ?>>();
 
 		attributeGetterFunctions.put(
 			"watsonListTypeId",
@@ -221,7 +247,9 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 			new BiConsumer<WatsonListType, Object>() {
 
 				@Override
-				public void accept(WatsonListType watsonListType, Object watsonListTypeId) {
+				public void accept(
+					WatsonListType watsonListType, Object watsonListTypeId) {
+
 					watsonListType.setWatsonListTypeId((Long)watsonListTypeId);
 				}
 
@@ -241,7 +269,9 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 			new BiConsumer<WatsonListType, Object>() {
 
 				@Override
-				public void accept(WatsonListType watsonListType, Object groupId) {
+				public void accept(
+					WatsonListType watsonListType, Object groupId) {
+
 					watsonListType.setGroupId((Long)groupId);
 				}
 
@@ -261,7 +291,9 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 			new BiConsumer<WatsonListType, Object>() {
 
 				@Override
-				public void accept(WatsonListType watsonListType, Object companyId) {
+				public void accept(
+					WatsonListType watsonListType, Object companyId) {
+
 					watsonListType.setCompanyId((Long)companyId);
 				}
 
@@ -281,7 +313,9 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 			new BiConsumer<WatsonListType, Object>() {
 
 				@Override
-				public void accept(WatsonListType watsonListType, Object userId) {
+				public void accept(
+					WatsonListType watsonListType, Object userId) {
+
 					watsonListType.setUserId((Long)userId);
 				}
 
@@ -301,7 +335,9 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 			new BiConsumer<WatsonListType, Object>() {
 
 				@Override
-				public void accept(WatsonListType watsonListType, Object userName) {
+				public void accept(
+					WatsonListType watsonListType, Object userName) {
+
 					watsonListType.setUserName((String)userName);
 				}
 
@@ -321,7 +357,9 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 			new BiConsumer<WatsonListType, Object>() {
 
 				@Override
-				public void accept(WatsonListType watsonListType, Object createDate) {
+				public void accept(
+					WatsonListType watsonListType, Object createDate) {
+
 					watsonListType.setCreateDate((Date)createDate);
 				}
 
@@ -341,7 +379,9 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 			new BiConsumer<WatsonListType, Object>() {
 
 				@Override
-				public void accept(WatsonListType watsonListType, Object modifiedDate) {
+				public void accept(
+					WatsonListType watsonListType, Object modifiedDate) {
+
 					watsonListType.setModifiedDate((Date)modifiedDate);
 				}
 
@@ -361,8 +401,12 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 			new BiConsumer<WatsonListType, Object>() {
 
 				@Override
-				public void accept(WatsonListType watsonListType, Object parentWatsonListTypeId) {
-					watsonListType.setParentWatsonListTypeId((Long)parentWatsonListTypeId);
+				public void accept(
+					WatsonListType watsonListType,
+					Object parentWatsonListTypeId) {
+
+					watsonListType.setParentWatsonListTypeId(
+						(Long)parentWatsonListTypeId);
 				}
 
 			});
@@ -421,15 +465,18 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 			new BiConsumer<WatsonListType, Object>() {
 
 				@Override
-				public void accept(WatsonListType watsonListType, Object status) {
+				public void accept(
+					WatsonListType watsonListType, Object status) {
+
 					watsonListType.setStatus((Integer)status);
 				}
 
 			});
 
-
-		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap(
+			(Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -570,8 +617,8 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 
 	@Override
 	public String getName(String languageId, boolean useDefault) {
-		return LocalizationUtil.getLocalization(getName(), languageId,
-			useDefault);
+		return LocalizationUtil.getLocalization(
+			getName(), languageId, useDefault);
 	}
 
 	@Override
@@ -608,12 +655,14 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
 
 		if (Validator.isNotNull(name)) {
-			setName(LocalizationUtil.updateLocalization(getName(), "Name",
-					name, languageId, defaultLanguageId));
+			setName(
+				LocalizationUtil.updateLocalization(
+					getName(), "Name", name, languageId, defaultLanguageId));
 		}
 		else {
-			setName(LocalizationUtil.removeLocalization(getName(), "Name",
-					languageId));
+			setName(
+				LocalizationUtil.removeLocalization(
+					getName(), "Name", languageId));
 		}
 	}
 
@@ -633,7 +682,9 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 			return;
 		}
 
-		setName(LocalizationUtil.updateLocalization(nameMap, getName(), "Name",
+		setName(
+			LocalizationUtil.updateLocalization(
+				nameMap, getName(), "Name",
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
@@ -664,8 +715,8 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 
 	@Override
 	public ExpandoBridge getExpandoBridge() {
-		return ExpandoBridgeFactoryUtil.getExpandoBridge(getCompanyId(),
-			WatsonListType.class.getName(), getPrimaryKey());
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(
+			getCompanyId(), WatsonListType.class.getName(), getPrimaryKey());
 	}
 
 	@Override
@@ -690,7 +741,8 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 			}
 		}
 
-		return availableLanguageIds.toArray(new String[availableLanguageIds.size()]);
+		return availableLanguageIds.toArray(
+			new String[availableLanguageIds.size()]);
 	}
 
 	@Override
@@ -708,12 +760,15 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 
 	@Override
 	public void prepareLocalizedFieldsForImport() throws LocaleException {
-		Locale defaultLocale = LocaleUtil.fromLanguageId(getDefaultLanguageId());
+		Locale defaultLocale = LocaleUtil.fromLanguageId(
+			getDefaultLanguageId());
 
-		Locale[] availableLocales = LocaleUtil.fromLanguageIds(getAvailableLanguageIds());
+		Locale[] availableLocales = LocaleUtil.fromLanguageIds(
+			getAvailableLanguageIds());
 
-		Locale defaultImportLocale = LocalizationUtil.getDefaultImportLocale(WatsonListType.class.getName(),
-				getPrimaryKey(), defaultLocale, availableLocales);
+		Locale defaultImportLocale = LocalizationUtil.getDefaultImportLocale(
+			WatsonListType.class.getName(), getPrimaryKey(), defaultLocale,
+			availableLocales);
 
 		prepareLocalizedFieldsForImport(defaultImportLocale);
 	}
@@ -722,6 +777,7 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 	@SuppressWarnings("unused")
 	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
 		throws LocaleException {
+
 		Locale defaultLocale = LocaleUtil.getSiteDefault();
 
 		String modelDefaultLanguageId = getDefaultLanguageId();
@@ -739,8 +795,9 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 	@Override
 	public WatsonListType toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonListType)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+			_escapedModel = (WatsonListType)ProxyUtil.newProxyInstance(
+				_classLoader, _escapedModelInterfaces,
+				new AutoEscapeBeanHandler(this));
 		}
 
 		return _escapedModel;
@@ -757,7 +814,8 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 		watsonListTypeImpl.setUserName(getUserName());
 		watsonListTypeImpl.setCreateDate(getCreateDate());
 		watsonListTypeImpl.setModifiedDate(getModifiedDate());
-		watsonListTypeImpl.setParentWatsonListTypeId(getParentWatsonListTypeId());
+		watsonListTypeImpl.setParentWatsonListTypeId(
+			getParentWatsonListTypeId());
 		watsonListTypeImpl.setName(getName());
 		watsonListTypeImpl.setType(getType());
 		watsonListTypeImpl.setStatus(getStatus());
@@ -828,7 +886,8 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 
 	@Override
 	public CacheModel<WatsonListType> toCacheModel() {
-		WatsonListTypeCacheModel watsonListTypeCacheModel = new WatsonListTypeCacheModel();
+		WatsonListTypeCacheModel watsonListTypeCacheModel =
+			new WatsonListTypeCacheModel();
 
 		watsonListTypeCacheModel.watsonListTypeId = getWatsonListTypeId();
 
@@ -864,7 +923,8 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 			watsonListTypeCacheModel.modifiedDate = Long.MIN_VALUE;
 		}
 
-		watsonListTypeCacheModel.parentWatsonListTypeId = getParentWatsonListTypeId();
+		watsonListTypeCacheModel.parentWatsonListTypeId =
+			getParentWatsonListTypeId();
 
 		watsonListTypeCacheModel.name = getName();
 
@@ -889,16 +949,20 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 
 	@Override
 	public String toString() {
-		Map<String, Function<WatsonListType, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+		Map<String, Function<WatsonListType, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
-				2);
+		StringBundler sb = new StringBundler(
+			4 * attributeGetterFunctions.size() + 2);
 
 		sb.append("{");
 
-		for (Map.Entry<String, Function<WatsonListType, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonListType, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonListType, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonListType, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append(attributeName);
 			sb.append("=");
@@ -917,18 +981,22 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 
 	@Override
 	public String toXmlString() {
-		Map<String, Function<WatsonListType, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+		Map<String, Function<WatsonListType, Object>> attributeGetterFunctions =
+			getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
-				4);
+		StringBundler sb = new StringBundler(
+			5 * attributeGetterFunctions.size() + 4);
 
 		sb.append("<model><model-name>");
 		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		for (Map.Entry<String, Function<WatsonListType, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonListType, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonListType, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonListType, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append("<column><column-name>");
 			sb.append(attributeName);
@@ -942,10 +1010,12 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader = WatsonListType.class.getClassLoader();
+	private static final ClassLoader _classLoader =
+		WatsonListType.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			WatsonListType.class, ModelWrapper.class
-		};
+		WatsonListType.class, ModelWrapper.class
+	};
+
 	private long _watsonListTypeId;
 	private long _groupId;
 	private long _companyId;
@@ -960,4 +1030,5 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 	private String _type;
 	private int _status;
 	private WatsonListType _escapedModel;
+
 }

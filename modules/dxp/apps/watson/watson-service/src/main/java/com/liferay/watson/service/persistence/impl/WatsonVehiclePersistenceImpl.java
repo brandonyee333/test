@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
-
 import com.liferay.watson.exception.NoSuchVehicleException;
 import com.liferay.watson.model.WatsonVehicle;
 import com.liferay.watson.model.impl.WatsonVehicleImpl;
@@ -64,18 +63,24 @@ import java.util.Set;
  * @generated
  */
 @ProviderType
-public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehicle>
+public class WatsonVehiclePersistenceImpl
+	extends BasePersistenceImpl<WatsonVehicle>
 	implements WatsonVehiclePersistence {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonVehicleUtil</code> to access the watson vehicle persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY = WatsonVehicleImpl.class.getName();
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List1";
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List2";
+	public static final String FINDER_CLASS_NAME_ENTITY =
+		WatsonVehicleImpl.class.getName();
+
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List1";
+
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List2";
+
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
@@ -91,7 +96,8 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 	 */
 	@Override
 	public void cacheResult(WatsonVehicle watsonVehicle) {
-		entityCache.putResult(WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonVehicleImpl.class, watsonVehicle.getPrimaryKey(),
 			watsonVehicle);
 
@@ -107,8 +113,10 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 	public void cacheResult(List<WatsonVehicle> watsonVehicles) {
 		for (WatsonVehicle watsonVehicle : watsonVehicles) {
 			if (entityCache.getResult(
-						WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
-						WatsonVehicleImpl.class, watsonVehicle.getPrimaryKey()) == null) {
+					WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
+					WatsonVehicleImpl.class, watsonVehicle.getPrimaryKey()) ==
+						null) {
+
 				cacheResult(watsonVehicle);
 			}
 			else {
@@ -142,7 +150,8 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 	 */
 	@Override
 	public void clearCache(WatsonVehicle watsonVehicle) {
-		entityCache.removeResult(WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.removeResult(
+			WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonVehicleImpl.class, watsonVehicle.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -155,7 +164,8 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (WatsonVehicle watsonVehicle : watsonVehicles) {
-			entityCache.removeResult(WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
+			entityCache.removeResult(
+				WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
 				WatsonVehicleImpl.class, watsonVehicle.getPrimaryKey());
 		}
 	}
@@ -188,6 +198,7 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 	@Override
 	public WatsonVehicle remove(long watsonVehicleId)
 		throws NoSuchVehicleException {
+
 		return remove((Serializable)watsonVehicleId);
 	}
 
@@ -201,21 +212,22 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 	@Override
 	public WatsonVehicle remove(Serializable primaryKey)
 		throws NoSuchVehicleException {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			WatsonVehicle watsonVehicle = (WatsonVehicle)session.get(WatsonVehicleImpl.class,
-					primaryKey);
+			WatsonVehicle watsonVehicle = (WatsonVehicle)session.get(
+				WatsonVehicleImpl.class, primaryKey);
 
 			if (watsonVehicle == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchVehicleException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					primaryKey);
+				throw new NoSuchVehicleException(
+					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			return remove(watsonVehicle);
@@ -239,8 +251,8 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 			session = openSession();
 
 			if (!session.contains(watsonVehicle)) {
-				watsonVehicle = (WatsonVehicle)session.get(WatsonVehicleImpl.class,
-						watsonVehicle.getPrimaryKeyObj());
+				watsonVehicle = (WatsonVehicle)session.get(
+					WatsonVehicleImpl.class, watsonVehicle.getPrimaryKeyObj());
 			}
 
 			if (watsonVehicle != null) {
@@ -269,21 +281,24 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 			InvocationHandler invocationHandler = null;
 
 			if (ProxyUtil.isProxyClass(watsonVehicle.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(watsonVehicle);
+				invocationHandler = ProxyUtil.getInvocationHandler(
+					watsonVehicle);
 
 				throw new IllegalArgumentException(
 					"Implement ModelWrapper in watsonVehicle proxy " +
-					invocationHandler.getClass());
+						invocationHandler.getClass());
 			}
 
 			throw new IllegalArgumentException(
 				"Implement ModelWrapper in custom WatsonVehicle implementation " +
-				watsonVehicle.getClass());
+					watsonVehicle.getClass());
 		}
 
-		WatsonVehicleModelImpl watsonVehicleModelImpl = (WatsonVehicleModelImpl)watsonVehicle;
+		WatsonVehicleModelImpl watsonVehicleModelImpl =
+			(WatsonVehicleModelImpl)watsonVehicle;
 
-		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
 
 		Date now = new Date();
 
@@ -301,8 +316,8 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 				watsonVehicle.setModifiedDate(now);
 			}
 			else {
-				watsonVehicle.setModifiedDate(serviceContext.getModifiedDate(
-						now));
+				watsonVehicle.setModifiedDate(
+					serviceContext.getModifiedDate(now));
 			}
 		}
 
@@ -331,11 +346,12 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 
 		if (isNew) {
 			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(_finderPathWithoutPaginationFindAll,
-				FINDER_ARGS_EMPTY);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonVehicleImpl.class, watsonVehicle.getPrimaryKey(),
 			watsonVehicle, false);
 
@@ -354,6 +370,7 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 	@Override
 	public WatsonVehicle findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchVehicleException {
+
 		WatsonVehicle watsonVehicle = fetchByPrimaryKey(primaryKey);
 
 		if (watsonVehicle == null) {
@@ -361,8 +378,8 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchVehicleException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				primaryKey);
+			throw new NoSuchVehicleException(
+				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 		}
 
 		return watsonVehicle;
@@ -378,6 +395,7 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 	@Override
 	public WatsonVehicle findByPrimaryKey(long watsonVehicleId)
 		throws NoSuchVehicleException {
+
 		return findByPrimaryKey((Serializable)watsonVehicleId);
 	}
 
@@ -389,8 +407,9 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 	 */
 	@Override
 	public WatsonVehicle fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonVehicleImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(
+			WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonVehicleImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -404,19 +423,21 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 			try {
 				session = openSession();
 
-				watsonVehicle = (WatsonVehicle)session.get(WatsonVehicleImpl.class,
-						primaryKey);
+				watsonVehicle = (WatsonVehicle)session.get(
+					WatsonVehicleImpl.class, primaryKey);
 
 				if (watsonVehicle != null) {
 					cacheResult(watsonVehicle);
 				}
 				else {
-					entityCache.putResult(WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(
+						WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
 						WatsonVehicleImpl.class, primaryKey, nullModel);
 				}
 			}
 			catch (Exception e) {
-				entityCache.removeResult(WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.removeResult(
+					WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonVehicleImpl.class, primaryKey);
 
 				throw processException(e);
@@ -443,11 +464,13 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 	@Override
 	public Map<Serializable, WatsonVehicle> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, WatsonVehicle> map = new HashMap<Serializable, WatsonVehicle>();
+		Map<Serializable, WatsonVehicle> map =
+			new HashMap<Serializable, WatsonVehicle>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
@@ -466,8 +489,9 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
-					WatsonVehicleImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(
+				WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonVehicleImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -487,8 +511,8 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 			return map;
 		}
 
-		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
-				1);
+		StringBundler query = new StringBundler(
+			uncachedPrimaryKeys.size() * 2 + 1);
 
 		query.append(_SQL_SELECT_WATSONVEHICLE_WHERE_PKS_IN);
 
@@ -520,7 +544,8 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(
+					WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonVehicleImpl.class, primaryKey, nullModel);
 			}
 		}
@@ -573,8 +598,10 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 	 * @return the ordered range of watson vehicles
 	 */
 	@Override
-	public List<WatsonVehicle> findAll(int start, int end,
+	public List<WatsonVehicle> findAll(
+		int start, int end,
 		OrderByComparator<WatsonVehicle> orderByComparator) {
+
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -592,29 +619,31 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 	 * @return the ordered range of watson vehicles
 	 */
 	@Override
-	public List<WatsonVehicle> findAll(int start, int end,
-		OrderByComparator<WatsonVehicle> orderByComparator,
+	public List<WatsonVehicle> findAll(
+		int start, int end, OrderByComparator<WatsonVehicle> orderByComparator,
 		boolean retrieveFromCache) {
+
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
+			(orderByComparator == null)) {
+
 			pagination = false;
 			finderPath = _finderPathWithoutPaginationFindAll;
 			finderArgs = FINDER_ARGS_EMPTY;
 		}
 		else {
 			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] { start, end, orderByComparator };
+			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<WatsonVehicle> list = null;
 
 		if (retrieveFromCache) {
-			list = (List<WatsonVehicle>)finderCache.getResult(finderPath,
-					finderArgs, this);
+			list = (List<WatsonVehicle>)finderCache.getResult(
+				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
@@ -622,13 +651,13 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(2 +
-						(orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(
+					2 + (orderByComparator.getOrderByFields().length * 2));
 
 				query.append(_SQL_SELECT_WATSONVEHICLE);
 
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
 				sql = query.toString();
 			}
@@ -648,16 +677,16 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 				Query q = session.createQuery(sql);
 
 				if (!pagination) {
-					list = (List<WatsonVehicle>)QueryUtil.list(q, getDialect(),
-							start, end, false);
+					list = (List<WatsonVehicle>)QueryUtil.list(
+						q, getDialect(), start, end, false);
 
 					Collections.sort(list);
 
 					list = Collections.unmodifiableList(list);
 				}
 				else {
-					list = (List<WatsonVehicle>)QueryUtil.list(q, getDialect(),
-							start, end);
+					list = (List<WatsonVehicle>)QueryUtil.list(
+						q, getDialect(), start, end);
 				}
 
 				cacheResult(list);
@@ -695,8 +724,8 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(_finderPathCountAll,
-				FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(
+			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -708,11 +737,12 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 
 				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(_finderPathCountAll, FINDER_ARGS_EMPTY,
-					count);
+				finderCache.putResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
+				finderCache.removeResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
 				throw processException(e);
 			}
@@ -733,21 +763,23 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 	 * Initializes the watson vehicle persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonVehicleModelImpl.FINDER_CACHE_ENABLED,
-				WatsonVehicleImpl.class,
-				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+		_finderPathWithPaginationFindAll = new FinderPath(
+			WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonVehicleModelImpl.FINDER_CACHE_ENABLED,
+			WatsonVehicleImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonVehicleModelImpl.FINDER_CACHE_ENABLED,
-				WatsonVehicleImpl.class,
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-				new String[0]);
+		_finderPathWithoutPaginationFindAll = new FinderPath(
+			WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonVehicleModelImpl.FINDER_CACHE_ENABLED,
+			WatsonVehicleImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"findAll", new String[0]);
 
-		_finderPathCountAll = new FinderPath(WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonVehicleModelImpl.FINDER_CACHE_ENABLED, Long.class,
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-				new String[0]);
+		_finderPathCountAll = new FinderPath(
+			WatsonVehicleModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonVehicleModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+			new String[0]);
 	}
 
 	public void destroy() {
@@ -759,14 +791,28 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
+
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
+
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-	private static final String _SQL_SELECT_WATSONVEHICLE = "SELECT watsonVehicle FROM WatsonVehicle watsonVehicle";
-	private static final String _SQL_SELECT_WATSONVEHICLE_WHERE_PKS_IN = "SELECT watsonVehicle FROM WatsonVehicle watsonVehicle WHERE watsonVehicleId IN (";
-	private static final String _SQL_COUNT_WATSONVEHICLE = "SELECT COUNT(watsonVehicle) FROM WatsonVehicle watsonVehicle";
+
+	private static final String _SQL_SELECT_WATSONVEHICLE =
+		"SELECT watsonVehicle FROM WatsonVehicle watsonVehicle";
+
+	private static final String _SQL_SELECT_WATSONVEHICLE_WHERE_PKS_IN =
+		"SELECT watsonVehicle FROM WatsonVehicle watsonVehicle WHERE watsonVehicleId IN (";
+
+	private static final String _SQL_COUNT_WATSONVEHICLE =
+		"SELECT COUNT(watsonVehicle) FROM WatsonVehicle watsonVehicle";
+
 	private static final String _ORDER_BY_ENTITY_ALIAS = "watsonVehicle.";
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No WatsonVehicle exists with the primary key ";
-	private static final Log _log = LogFactoryUtil.getLog(WatsonVehiclePersistenceImpl.class);
+
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
+		"No WatsonVehicle exists with the primary key ";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		WatsonVehiclePersistenceImpl.class);
+
 }

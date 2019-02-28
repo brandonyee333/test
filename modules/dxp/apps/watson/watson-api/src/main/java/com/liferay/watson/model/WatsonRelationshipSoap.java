@@ -30,6 +30,7 @@ import java.util.List;
  */
 @ProviderType
 public class WatsonRelationshipSoap implements Serializable {
+
 	public static WatsonRelationshipSoap toSoapModel(WatsonRelationship model) {
 		WatsonRelationshipSoap soapModel = new WatsonRelationshipSoap();
 
@@ -54,7 +55,9 @@ public class WatsonRelationshipSoap implements Serializable {
 
 	public static WatsonRelationshipSoap[] toSoapModels(
 		WatsonRelationship[] models) {
-		WatsonRelationshipSoap[] soapModels = new WatsonRelationshipSoap[models.length];
+
+		WatsonRelationshipSoap[] soapModels =
+			new WatsonRelationshipSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -65,10 +68,12 @@ public class WatsonRelationshipSoap implements Serializable {
 
 	public static WatsonRelationshipSoap[][] toSoapModels(
 		WatsonRelationship[][] models) {
+
 		WatsonRelationshipSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new WatsonRelationshipSoap[models.length][models[0].length];
+			soapModels =
+				new WatsonRelationshipSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new WatsonRelationshipSoap[0][0];
@@ -83,13 +88,16 @@ public class WatsonRelationshipSoap implements Serializable {
 
 	public static WatsonRelationshipSoap[] toSoapModels(
 		List<WatsonRelationship> models) {
-		List<WatsonRelationshipSoap> soapModels = new ArrayList<WatsonRelationshipSoap>(models.size());
+
+		List<WatsonRelationshipSoap> soapModels =
+			new ArrayList<WatsonRelationshipSoap>(models.size());
 
 		for (WatsonRelationship model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(new WatsonRelationshipSoap[soapModels.size()]);
+		return soapModels.toArray(
+			new WatsonRelationshipSoap[soapModels.size()]);
 	}
 
 	public WatsonRelationshipSoap() {
@@ -238,4 +246,5 @@ public class WatsonRelationshipSoap implements Serializable {
 	private long _classPK2;
 	private String _description;
 	private int _status;
+
 }

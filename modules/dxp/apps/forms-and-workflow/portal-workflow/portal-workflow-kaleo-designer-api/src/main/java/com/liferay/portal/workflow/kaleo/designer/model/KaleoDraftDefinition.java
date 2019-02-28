@@ -27,30 +27,37 @@ import com.liferay.portal.kernel.util.Accessor;
  * @see KaleoDraftDefinitionModel
  * @generated
  */
-@ImplementationClassName("com.liferay.portal.workflow.kaleo.designer.model.impl.KaleoDraftDefinitionImpl")
+@ImplementationClassName(
+	"com.liferay.portal.workflow.kaleo.designer.model.impl.KaleoDraftDefinitionImpl"
+)
 @ProviderType
-public interface KaleoDraftDefinition extends KaleoDraftDefinitionModel,
-	PersistedModel {
+public interface KaleoDraftDefinition
+	extends KaleoDraftDefinitionModel, PersistedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.portal.workflow.kaleo.designer.model.impl.KaleoDraftDefinitionImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<KaleoDraftDefinition, Long> KALEO_DRAFT_DEFINITION_ID_ACCESSOR =
-		new Accessor<KaleoDraftDefinition, Long>() {
-			@Override
-			public Long get(KaleoDraftDefinition kaleoDraftDefinition) {
-				return kaleoDraftDefinition.getKaleoDraftDefinitionId();
-			}
+	public static final Accessor<KaleoDraftDefinition, Long>
+		KALEO_DRAFT_DEFINITION_ID_ACCESSOR =
+			new Accessor<KaleoDraftDefinition, Long>() {
 
-			@Override
-			public Class<Long> getAttributeClass() {
-				return Long.class;
-			}
+				@Override
+				public Long get(KaleoDraftDefinition kaleoDraftDefinition) {
+					return kaleoDraftDefinition.getKaleoDraftDefinitionId();
+				}
 
-			@Override
-			public Class<KaleoDraftDefinition> getTypeClass() {
-				return KaleoDraftDefinition.class;
-			}
-		};
+				@Override
+				public Class<Long> getAttributeClass() {
+					return Long.class;
+				}
+
+				@Override
+				public Class<KaleoDraftDefinition> getTypeClass() {
+					return KaleoDraftDefinition.class;
+				}
+
+			};
+
 }

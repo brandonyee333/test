@@ -34,6 +34,7 @@ import com.liferay.watson.service.WatsonIncidentRelLocalServiceUtil;
 @ProviderType
 public abstract class WatsonIncidentRelBaseImpl
 	extends WatsonIncidentRelModelImpl implements WatsonIncidentRel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -48,4 +49,5 @@ public abstract class WatsonIncidentRelBaseImpl
 			WatsonIncidentRelLocalServiceUtil.updateWatsonIncidentRel(this);
 		}
 	}
+
 }

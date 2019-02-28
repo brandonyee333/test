@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.model.WatsonPerson;
 
 import java.io.Externalizable;
@@ -36,8 +35,9 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public class WatsonPersonCacheModel implements CacheModel<WatsonPerson>,
-	Externalizable {
+public class WatsonPersonCacheModel
+	implements CacheModel<WatsonPerson>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,7 +48,8 @@ public class WatsonPersonCacheModel implements CacheModel<WatsonPerson>,
 			return false;
 		}
 
-		WatsonPersonCacheModel watsonPersonCacheModel = (WatsonPersonCacheModel)obj;
+		WatsonPersonCacheModel watsonPersonCacheModel =
+			(WatsonPersonCacheModel)obj;
 
 		if (watsonPersonId == watsonPersonCacheModel.watsonPersonId) {
 			return true;
@@ -162,9 +163,11 @@ public class WatsonPersonCacheModel implements CacheModel<WatsonPerson>,
 		}
 
 		watsonPersonImpl.setBirthCountryId(birthCountryId);
-		watsonPersonImpl.setCitizenshipWatsonListTypeId(citizenshipWatsonListTypeId);
+		watsonPersonImpl.setCitizenshipWatsonListTypeId(
+			citizenshipWatsonListTypeId);
 		watsonPersonImpl.setCountryWatsonListTypeId(countryWatsonListTypeId);
-		watsonPersonImpl.setEthnicityWatsonListTypeId(ethnicityWatsonListTypeId);
+		watsonPersonImpl.setEthnicityWatsonListTypeId(
+			ethnicityWatsonListTypeId);
 		watsonPersonImpl.setEyesWatsonListTypeId(eyesWatsonListTypeId);
 		watsonPersonImpl.setHairWatsonListTypeId(hairWatsonListTypeId);
 		watsonPersonImpl.setOriginalWatsonPersonId(originalWatsonPersonId);
@@ -302,8 +305,7 @@ public class WatsonPersonCacheModel implements CacheModel<WatsonPerson>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonPersonId);
 
 		objectOutput.writeLong(groupId);
@@ -432,4 +434,5 @@ public class WatsonPersonCacheModel implements CacheModel<WatsonPerson>,
 	public boolean accepted;
 	public boolean rescued;
 	public int status;
+
 }

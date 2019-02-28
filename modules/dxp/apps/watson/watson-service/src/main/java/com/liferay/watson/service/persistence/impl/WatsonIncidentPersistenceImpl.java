@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
-
 import com.liferay.watson.exception.NoSuchIncidentException;
 import com.liferay.watson.model.WatsonIncident;
 import com.liferay.watson.model.impl.WatsonIncidentImpl;
@@ -64,18 +63,24 @@ import java.util.Set;
  * @generated
  */
 @ProviderType
-public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonIncident>
+public class WatsonIncidentPersistenceImpl
+	extends BasePersistenceImpl<WatsonIncident>
 	implements WatsonIncidentPersistence {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonIncidentUtil</code> to access the watson incident persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY = WatsonIncidentImpl.class.getName();
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List1";
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List2";
+	public static final String FINDER_CLASS_NAME_ENTITY =
+		WatsonIncidentImpl.class.getName();
+
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List1";
+
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List2";
+
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
@@ -91,7 +96,8 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 	 */
 	@Override
 	public void cacheResult(WatsonIncident watsonIncident) {
-		entityCache.putResult(WatsonIncidentModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			WatsonIncidentModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonIncidentImpl.class, watsonIncident.getPrimaryKey(),
 			watsonIncident);
 
@@ -107,8 +113,10 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 	public void cacheResult(List<WatsonIncident> watsonIncidents) {
 		for (WatsonIncident watsonIncident : watsonIncidents) {
 			if (entityCache.getResult(
-						WatsonIncidentModelImpl.ENTITY_CACHE_ENABLED,
-						WatsonIncidentImpl.class, watsonIncident.getPrimaryKey()) == null) {
+					WatsonIncidentModelImpl.ENTITY_CACHE_ENABLED,
+					WatsonIncidentImpl.class, watsonIncident.getPrimaryKey()) ==
+						null) {
+
 				cacheResult(watsonIncident);
 			}
 			else {
@@ -142,7 +150,8 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 	 */
 	@Override
 	public void clearCache(WatsonIncident watsonIncident) {
-		entityCache.removeResult(WatsonIncidentModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.removeResult(
+			WatsonIncidentModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonIncidentImpl.class, watsonIncident.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -155,7 +164,8 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (WatsonIncident watsonIncident : watsonIncidents) {
-			entityCache.removeResult(WatsonIncidentModelImpl.ENTITY_CACHE_ENABLED,
+			entityCache.removeResult(
+				WatsonIncidentModelImpl.ENTITY_CACHE_ENABLED,
 				WatsonIncidentImpl.class, watsonIncident.getPrimaryKey());
 		}
 	}
@@ -188,6 +198,7 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 	@Override
 	public WatsonIncident remove(long watsonIncidentId)
 		throws NoSuchIncidentException {
+
 		return remove((Serializable)watsonIncidentId);
 	}
 
@@ -201,21 +212,22 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 	@Override
 	public WatsonIncident remove(Serializable primaryKey)
 		throws NoSuchIncidentException {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			WatsonIncident watsonIncident = (WatsonIncident)session.get(WatsonIncidentImpl.class,
-					primaryKey);
+			WatsonIncident watsonIncident = (WatsonIncident)session.get(
+				WatsonIncidentImpl.class, primaryKey);
 
 			if (watsonIncident == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchIncidentException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					primaryKey);
+				throw new NoSuchIncidentException(
+					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			return remove(watsonIncident);
@@ -239,8 +251,9 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 			session = openSession();
 
 			if (!session.contains(watsonIncident)) {
-				watsonIncident = (WatsonIncident)session.get(WatsonIncidentImpl.class,
-						watsonIncident.getPrimaryKeyObj());
+				watsonIncident = (WatsonIncident)session.get(
+					WatsonIncidentImpl.class,
+					watsonIncident.getPrimaryKeyObj());
 			}
 
 			if (watsonIncident != null) {
@@ -269,21 +282,24 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 			InvocationHandler invocationHandler = null;
 
 			if (ProxyUtil.isProxyClass(watsonIncident.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(watsonIncident);
+				invocationHandler = ProxyUtil.getInvocationHandler(
+					watsonIncident);
 
 				throw new IllegalArgumentException(
 					"Implement ModelWrapper in watsonIncident proxy " +
-					invocationHandler.getClass());
+						invocationHandler.getClass());
 			}
 
 			throw new IllegalArgumentException(
 				"Implement ModelWrapper in custom WatsonIncident implementation " +
-				watsonIncident.getClass());
+					watsonIncident.getClass());
 		}
 
-		WatsonIncidentModelImpl watsonIncidentModelImpl = (WatsonIncidentModelImpl)watsonIncident;
+		WatsonIncidentModelImpl watsonIncidentModelImpl =
+			(WatsonIncidentModelImpl)watsonIncident;
 
-		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
 
 		Date now = new Date();
 
@@ -301,8 +317,8 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 				watsonIncident.setModifiedDate(now);
 			}
 			else {
-				watsonIncident.setModifiedDate(serviceContext.getModifiedDate(
-						now));
+				watsonIncident.setModifiedDate(
+					serviceContext.getModifiedDate(now));
 			}
 		}
 
@@ -331,11 +347,12 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 
 		if (isNew) {
 			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(_finderPathWithoutPaginationFindAll,
-				FINDER_ARGS_EMPTY);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(WatsonIncidentModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			WatsonIncidentModelImpl.ENTITY_CACHE_ENABLED,
 			WatsonIncidentImpl.class, watsonIncident.getPrimaryKey(),
 			watsonIncident, false);
 
@@ -354,6 +371,7 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 	@Override
 	public WatsonIncident findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchIncidentException {
+
 		WatsonIncident watsonIncident = fetchByPrimaryKey(primaryKey);
 
 		if (watsonIncident == null) {
@@ -361,8 +379,8 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchIncidentException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				primaryKey);
+			throw new NoSuchIncidentException(
+				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 		}
 
 		return watsonIncident;
@@ -378,6 +396,7 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 	@Override
 	public WatsonIncident findByPrimaryKey(long watsonIncidentId)
 		throws NoSuchIncidentException {
+
 		return findByPrimaryKey((Serializable)watsonIncidentId);
 	}
 
@@ -389,8 +408,9 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 	 */
 	@Override
 	public WatsonIncident fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(WatsonIncidentModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonIncidentImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(
+			WatsonIncidentModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonIncidentImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -404,19 +424,21 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 			try {
 				session = openSession();
 
-				watsonIncident = (WatsonIncident)session.get(WatsonIncidentImpl.class,
-						primaryKey);
+				watsonIncident = (WatsonIncident)session.get(
+					WatsonIncidentImpl.class, primaryKey);
 
 				if (watsonIncident != null) {
 					cacheResult(watsonIncident);
 				}
 				else {
-					entityCache.putResult(WatsonIncidentModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(
+						WatsonIncidentModelImpl.ENTITY_CACHE_ENABLED,
 						WatsonIncidentImpl.class, primaryKey, nullModel);
 				}
 			}
 			catch (Exception e) {
-				entityCache.removeResult(WatsonIncidentModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.removeResult(
+					WatsonIncidentModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonIncidentImpl.class, primaryKey);
 
 				throw processException(e);
@@ -443,11 +465,13 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 	@Override
 	public Map<Serializable, WatsonIncident> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, WatsonIncident> map = new HashMap<Serializable, WatsonIncident>();
+		Map<Serializable, WatsonIncident> map =
+			new HashMap<Serializable, WatsonIncident>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
@@ -466,8 +490,9 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(WatsonIncidentModelImpl.ENTITY_CACHE_ENABLED,
-					WatsonIncidentImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(
+				WatsonIncidentModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonIncidentImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -487,8 +512,8 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 			return map;
 		}
 
-		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
-				1);
+		StringBundler query = new StringBundler(
+			uncachedPrimaryKeys.size() * 2 + 1);
 
 		query.append(_SQL_SELECT_WATSONINCIDENT_WHERE_PKS_IN);
 
@@ -511,7 +536,9 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 
 			Query q = session.createQuery(sql);
 
-			for (WatsonIncident watsonIncident : (List<WatsonIncident>)q.list()) {
+			for (WatsonIncident watsonIncident :
+					(List<WatsonIncident>)q.list()) {
+
 				map.put(watsonIncident.getPrimaryKeyObj(), watsonIncident);
 
 				cacheResult(watsonIncident);
@@ -520,7 +547,8 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(WatsonIncidentModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(
+					WatsonIncidentModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonIncidentImpl.class, primaryKey, nullModel);
 			}
 		}
@@ -573,8 +601,10 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 	 * @return the ordered range of watson incidents
 	 */
 	@Override
-	public List<WatsonIncident> findAll(int start, int end,
+	public List<WatsonIncident> findAll(
+		int start, int end,
 		OrderByComparator<WatsonIncident> orderByComparator) {
+
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -592,29 +622,31 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 	 * @return the ordered range of watson incidents
 	 */
 	@Override
-	public List<WatsonIncident> findAll(int start, int end,
-		OrderByComparator<WatsonIncident> orderByComparator,
+	public List<WatsonIncident> findAll(
+		int start, int end, OrderByComparator<WatsonIncident> orderByComparator,
 		boolean retrieveFromCache) {
+
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
+			(orderByComparator == null)) {
+
 			pagination = false;
 			finderPath = _finderPathWithoutPaginationFindAll;
 			finderArgs = FINDER_ARGS_EMPTY;
 		}
 		else {
 			finderPath = _finderPathWithPaginationFindAll;
-			finderArgs = new Object[] { start, end, orderByComparator };
+			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<WatsonIncident> list = null;
 
 		if (retrieveFromCache) {
-			list = (List<WatsonIncident>)finderCache.getResult(finderPath,
-					finderArgs, this);
+			list = (List<WatsonIncident>)finderCache.getResult(
+				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
@@ -622,13 +654,13 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(2 +
-						(orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(
+					2 + (orderByComparator.getOrderByFields().length * 2));
 
 				query.append(_SQL_SELECT_WATSONINCIDENT);
 
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
 				sql = query.toString();
 			}
@@ -648,16 +680,16 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 				Query q = session.createQuery(sql);
 
 				if (!pagination) {
-					list = (List<WatsonIncident>)QueryUtil.list(q,
-							getDialect(), start, end, false);
+					list = (List<WatsonIncident>)QueryUtil.list(
+						q, getDialect(), start, end, false);
 
 					Collections.sort(list);
 
 					list = Collections.unmodifiableList(list);
 				}
 				else {
-					list = (List<WatsonIncident>)QueryUtil.list(q,
-							getDialect(), start, end);
+					list = (List<WatsonIncident>)QueryUtil.list(
+						q, getDialect(), start, end);
 				}
 
 				cacheResult(list);
@@ -695,8 +727,8 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(_finderPathCountAll,
-				FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(
+			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -708,11 +740,12 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 
 				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(_finderPathCountAll, FINDER_ARGS_EMPTY,
-					count);
+				finderCache.putResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
+				finderCache.removeResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
 				throw processException(e);
 			}
@@ -733,21 +766,23 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 	 * Initializes the watson incident persistence.
 	 */
 	public void afterPropertiesSet() {
-		_finderPathWithPaginationFindAll = new FinderPath(WatsonIncidentModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonIncidentModelImpl.FINDER_CACHE_ENABLED,
-				WatsonIncidentImpl.class,
-				FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+		_finderPathWithPaginationFindAll = new FinderPath(
+			WatsonIncidentModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonIncidentModelImpl.FINDER_CACHE_ENABLED,
+			WatsonIncidentImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findAll", new String[0]);
 
-		_finderPathWithoutPaginationFindAll = new FinderPath(WatsonIncidentModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonIncidentModelImpl.FINDER_CACHE_ENABLED,
-				WatsonIncidentImpl.class,
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
-				new String[0]);
+		_finderPathWithoutPaginationFindAll = new FinderPath(
+			WatsonIncidentModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonIncidentModelImpl.FINDER_CACHE_ENABLED,
+			WatsonIncidentImpl.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"findAll", new String[0]);
 
-		_finderPathCountAll = new FinderPath(WatsonIncidentModelImpl.ENTITY_CACHE_ENABLED,
-				WatsonIncidentModelImpl.FINDER_CACHE_ENABLED, Long.class,
-				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-				new String[0]);
+		_finderPathCountAll = new FinderPath(
+			WatsonIncidentModelImpl.ENTITY_CACHE_ENABLED,
+			WatsonIncidentModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+			new String[0]);
 	}
 
 	public void destroy() {
@@ -759,14 +794,28 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 
 	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
+
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
+
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-	private static final String _SQL_SELECT_WATSONINCIDENT = "SELECT watsonIncident FROM WatsonIncident watsonIncident";
-	private static final String _SQL_SELECT_WATSONINCIDENT_WHERE_PKS_IN = "SELECT watsonIncident FROM WatsonIncident watsonIncident WHERE watsonIncidentId IN (";
-	private static final String _SQL_COUNT_WATSONINCIDENT = "SELECT COUNT(watsonIncident) FROM WatsonIncident watsonIncident";
+
+	private static final String _SQL_SELECT_WATSONINCIDENT =
+		"SELECT watsonIncident FROM WatsonIncident watsonIncident";
+
+	private static final String _SQL_SELECT_WATSONINCIDENT_WHERE_PKS_IN =
+		"SELECT watsonIncident FROM WatsonIncident watsonIncident WHERE watsonIncidentId IN (";
+
+	private static final String _SQL_COUNT_WATSONINCIDENT =
+		"SELECT COUNT(watsonIncident) FROM WatsonIncident watsonIncident";
+
 	private static final String _ORDER_BY_ENTITY_ALIAS = "watsonIncident.";
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No WatsonIncident exists with the primary key ";
-	private static final Log _log = LogFactoryUtil.getLog(WatsonIncidentPersistenceImpl.class);
+
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
+		"No WatsonIncident exists with the primary key ";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		WatsonIncidentPersistenceImpl.class);
+
 }

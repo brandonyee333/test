@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.model.WatsonResourceAudit;
 
 import java.io.Externalizable;
@@ -36,8 +35,9 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public class WatsonResourceAuditCacheModel implements CacheModel<WatsonResourceAudit>,
-	Externalizable {
+public class WatsonResourceAuditCacheModel
+	implements CacheModel<WatsonResourceAudit>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,9 +48,12 @@ public class WatsonResourceAuditCacheModel implements CacheModel<WatsonResourceA
 			return false;
 		}
 
-		WatsonResourceAuditCacheModel watsonResourceAuditCacheModel = (WatsonResourceAuditCacheModel)obj;
+		WatsonResourceAuditCacheModel watsonResourceAuditCacheModel =
+			(WatsonResourceAuditCacheModel)obj;
 
-		if (watsonResourceAuditId == watsonResourceAuditCacheModel.watsonResourceAuditId) {
+		if (watsonResourceAuditId ==
+				watsonResourceAuditCacheModel.watsonResourceAuditId) {
+
 			return true;
 		}
 
@@ -103,7 +106,8 @@ public class WatsonResourceAuditCacheModel implements CacheModel<WatsonResourceA
 
 	@Override
 	public WatsonResourceAudit toEntityModel() {
-		WatsonResourceAuditImpl watsonResourceAuditImpl = new WatsonResourceAuditImpl();
+		WatsonResourceAuditImpl watsonResourceAuditImpl =
+			new WatsonResourceAuditImpl();
 
 		watsonResourceAuditImpl.setWatsonResourceAuditId(watsonResourceAuditId);
 		watsonResourceAuditImpl.setGroupId(groupId);
@@ -131,7 +135,8 @@ public class WatsonResourceAuditCacheModel implements CacheModel<WatsonResourceA
 			watsonResourceAuditImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
-		watsonResourceAuditImpl.setOriginalWatsonResourceId(originalWatsonResourceId);
+		watsonResourceAuditImpl.setOriginalWatsonResourceId(
+			originalWatsonResourceId);
 		watsonResourceAuditImpl.setTypeWatsonListTypeId(typeWatsonListTypeId);
 		watsonResourceAuditImpl.setWatsonIncidentId(watsonIncidentId);
 		watsonResourceAuditImpl.setWatsonResourceId(watsonResourceId);
@@ -192,8 +197,7 @@ public class WatsonResourceAuditCacheModel implements CacheModel<WatsonResourceA
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonResourceAuditId);
 
 		objectOutput.writeLong(groupId);
@@ -259,4 +263,5 @@ public class WatsonResourceAuditCacheModel implements CacheModel<WatsonResourceA
 	public String description;
 	public String imagePayload;
 	public int status;
+
 }

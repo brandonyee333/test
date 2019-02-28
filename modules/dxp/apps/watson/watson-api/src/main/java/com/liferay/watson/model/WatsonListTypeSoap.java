@@ -30,6 +30,7 @@ import java.util.List;
  */
 @ProviderType
 public class WatsonListTypeSoap implements Serializable {
+
 	public static WatsonListTypeSoap toSoapModel(WatsonListType model) {
 		WatsonListTypeSoap soapModel = new WatsonListTypeSoap();
 
@@ -58,11 +59,14 @@ public class WatsonListTypeSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static WatsonListTypeSoap[][] toSoapModels(WatsonListType[][] models) {
+	public static WatsonListTypeSoap[][] toSoapModels(
+		WatsonListType[][] models) {
+
 		WatsonListTypeSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new WatsonListTypeSoap[models.length][models[0].length];
+			soapModels =
+				new WatsonListTypeSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new WatsonListTypeSoap[0][0];
@@ -75,8 +79,11 @@ public class WatsonListTypeSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static WatsonListTypeSoap[] toSoapModels(List<WatsonListType> models) {
-		List<WatsonListTypeSoap> soapModels = new ArrayList<WatsonListTypeSoap>(models.size());
+	public static WatsonListTypeSoap[] toSoapModels(
+		List<WatsonListType> models) {
+
+		List<WatsonListTypeSoap> soapModels = new ArrayList<WatsonListTypeSoap>(
+			models.size());
 
 		for (WatsonListType model : models) {
 			soapModels.add(toSoapModel(model));
@@ -195,4 +202,5 @@ public class WatsonListTypeSoap implements Serializable {
 	private String _name;
 	private String _type;
 	private int _status;
+
 }

@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.model.WatsonRelationshipAudit;
 
 import java.io.Externalizable;
@@ -36,8 +35,9 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public class WatsonRelationshipAuditCacheModel implements CacheModel<WatsonRelationshipAudit>,
-	Externalizable {
+public class WatsonRelationshipAuditCacheModel
+	implements CacheModel<WatsonRelationshipAudit>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,9 +48,12 @@ public class WatsonRelationshipAuditCacheModel implements CacheModel<WatsonRelat
 			return false;
 		}
 
-		WatsonRelationshipAuditCacheModel watsonRelationshipAuditCacheModel = (WatsonRelationshipAuditCacheModel)obj;
+		WatsonRelationshipAuditCacheModel watsonRelationshipAuditCacheModel =
+			(WatsonRelationshipAuditCacheModel)obj;
 
-		if (watsonRelationshipAuditId == watsonRelationshipAuditCacheModel.watsonRelationshipAuditId) {
+		if (watsonRelationshipAuditId ==
+				watsonRelationshipAuditCacheModel.watsonRelationshipAuditId) {
+
 			return true;
 		}
 
@@ -105,9 +108,11 @@ public class WatsonRelationshipAuditCacheModel implements CacheModel<WatsonRelat
 
 	@Override
 	public WatsonRelationshipAudit toEntityModel() {
-		WatsonRelationshipAuditImpl watsonRelationshipAuditImpl = new WatsonRelationshipAuditImpl();
+		WatsonRelationshipAuditImpl watsonRelationshipAuditImpl =
+			new WatsonRelationshipAuditImpl();
 
-		watsonRelationshipAuditImpl.setWatsonRelationshipAuditId(watsonRelationshipAuditId);
+		watsonRelationshipAuditImpl.setWatsonRelationshipAuditId(
+			watsonRelationshipAuditId);
 		watsonRelationshipAuditImpl.setGroupId(groupId);
 		watsonRelationshipAuditImpl.setCompanyId(companyId);
 		watsonRelationshipAuditImpl.setUserId(userId);
@@ -134,8 +139,10 @@ public class WatsonRelationshipAuditCacheModel implements CacheModel<WatsonRelat
 		}
 
 		watsonRelationshipAuditImpl.setWatsonIncidentId(watsonIncidentId);
-		watsonRelationshipAuditImpl.setWatsonRelationshipId(watsonRelationshipId);
-		watsonRelationshipAuditImpl.setTypeWatsonListTypeId(typeWatsonListTypeId);
+		watsonRelationshipAuditImpl.setWatsonRelationshipId(
+			watsonRelationshipId);
+		watsonRelationshipAuditImpl.setTypeWatsonListTypeId(
+			typeWatsonListTypeId);
 		watsonRelationshipAuditImpl.setClassNameId1(classNameId1);
 		watsonRelationshipAuditImpl.setClassPK1(classPK1);
 		watsonRelationshipAuditImpl.setClassNameId2(classNameId2);
@@ -187,8 +194,7 @@ public class WatsonRelationshipAuditCacheModel implements CacheModel<WatsonRelat
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonRelationshipAuditId);
 
 		objectOutput.writeLong(groupId);
@@ -247,4 +253,5 @@ public class WatsonRelationshipAuditCacheModel implements CacheModel<WatsonRelat
 	public long classPK2;
 	public String description;
 	public int status;
+
 }

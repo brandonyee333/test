@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.model.WatsonRelationship;
 
 import java.io.Externalizable;
@@ -36,8 +35,9 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public class WatsonRelationshipCacheModel implements CacheModel<WatsonRelationship>,
-	Externalizable {
+public class WatsonRelationshipCacheModel
+	implements CacheModel<WatsonRelationship>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,9 +48,12 @@ public class WatsonRelationshipCacheModel implements CacheModel<WatsonRelationsh
 			return false;
 		}
 
-		WatsonRelationshipCacheModel watsonRelationshipCacheModel = (WatsonRelationshipCacheModel)obj;
+		WatsonRelationshipCacheModel watsonRelationshipCacheModel =
+			(WatsonRelationshipCacheModel)obj;
 
-		if (watsonRelationshipId == watsonRelationshipCacheModel.watsonRelationshipId) {
+		if (watsonRelationshipId ==
+				watsonRelationshipCacheModel.watsonRelationshipId) {
+
 			return true;
 		}
 
@@ -103,7 +106,8 @@ public class WatsonRelationshipCacheModel implements CacheModel<WatsonRelationsh
 
 	@Override
 	public WatsonRelationship toEntityModel() {
-		WatsonRelationshipImpl watsonRelationshipImpl = new WatsonRelationshipImpl();
+		WatsonRelationshipImpl watsonRelationshipImpl =
+			new WatsonRelationshipImpl();
 
 		watsonRelationshipImpl.setWatsonRelationshipId(watsonRelationshipId);
 		watsonRelationshipImpl.setGroupId(groupId);
@@ -182,8 +186,7 @@ public class WatsonRelationshipCacheModel implements CacheModel<WatsonRelationsh
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonRelationshipId);
 
 		objectOutput.writeLong(groupId);
@@ -239,4 +242,5 @@ public class WatsonRelationshipCacheModel implements CacheModel<WatsonRelationsh
 	public long classPK2;
 	public String description;
 	public int status;
+
 }

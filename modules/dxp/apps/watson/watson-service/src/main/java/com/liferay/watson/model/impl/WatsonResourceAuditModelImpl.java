@@ -18,7 +18,6 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -35,7 +34,6 @@ import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
-
 import com.liferay.watson.model.WatsonResourceAudit;
 import com.liferay.watson.model.WatsonResourceAuditModel;
 
@@ -66,32 +64,31 @@ import java.util.function.Function;
  * @generated
  */
 @ProviderType
-public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAudit>
+public class WatsonResourceAuditModelImpl
+	extends BaseModelImpl<WatsonResourceAudit>
 	implements WatsonResourceAuditModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson resource audit model instance should use the <code>WatsonResourceAudit</code> interface instead.
 	 */
 	public static final String TABLE_NAME = "WatsonResourceAudit";
+
 	public static final Object[][] TABLE_COLUMNS = {
-			{ "watsonResourceAuditId", Types.BIGINT },
-			{ "groupId", Types.BIGINT },
-			{ "companyId", Types.BIGINT },
-			{ "userId", Types.BIGINT },
-			{ "userName", Types.VARCHAR },
-			{ "createDate", Types.TIMESTAMP },
-			{ "modifiedDate", Types.TIMESTAMP },
-			{ "originalWatsonResourceId", Types.BIGINT },
-			{ "typeWatsonListTypeId", Types.BIGINT },
-			{ "watsonIncidentId", Types.BIGINT },
-			{ "watsonResourceId", Types.BIGINT },
-			{ "name", Types.VARCHAR },
-			{ "description", Types.VARCHAR },
-			{ "imagePayload", Types.CLOB },
-			{ "status", Types.INTEGER }
-		};
-	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
+		{"watsonResourceAuditId", Types.BIGINT}, {"groupId", Types.BIGINT},
+		{"companyId", Types.BIGINT}, {"userId", Types.BIGINT},
+		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
+		{"modifiedDate", Types.TIMESTAMP},
+		{"originalWatsonResourceId", Types.BIGINT},
+		{"typeWatsonListTypeId", Types.BIGINT},
+		{"watsonIncidentId", Types.BIGINT}, {"watsonResourceId", Types.BIGINT},
+		{"name", Types.VARCHAR}, {"description", Types.VARCHAR},
+		{"imagePayload", Types.CLOB}, {"status", Types.INTEGER}
+	};
+
+	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
+		new HashMap<String, Integer>();
 
 	static {
 		TABLE_COLUMNS_MAP.put("watsonResourceAuditId", Types.BIGINT);
@@ -111,22 +108,39 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonResourceAudit (watsonResourceAuditId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,originalWatsonResourceId LONG,typeWatsonListTypeId LONG,watsonIncidentId LONG,watsonResourceId LONG,name STRING null,description STRING null,imagePayload TEXT null,status INTEGER)";
-	public static final String TABLE_SQL_DROP = "drop table WatsonResourceAudit";
-	public static final String ORDER_BY_JPQL = " ORDER BY watsonResourceAudit.watsonResourceAuditId ASC";
-	public static final String ORDER_BY_SQL = " ORDER BY WatsonResourceAudit.watsonResourceAuditId ASC";
+	public static final String TABLE_SQL_CREATE =
+		"create table WatsonResourceAudit (watsonResourceAuditId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,originalWatsonResourceId LONG,typeWatsonListTypeId LONG,watsonIncidentId LONG,watsonResourceId LONG,name STRING null,description STRING null,imagePayload TEXT null,status INTEGER)";
+
+	public static final String TABLE_SQL_DROP =
+		"drop table WatsonResourceAudit";
+
+	public static final String ORDER_BY_JPQL =
+		" ORDER BY watsonResourceAudit.watsonResourceAuditId ASC";
+
+	public static final String ORDER_BY_SQL =
+		" ORDER BY WatsonResourceAudit.watsonResourceAuditId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
+
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
+
 	public static final String TX_MANAGER = "liferayTransactionManager";
-	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonResourceAudit"),
-			true);
-	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonResourceAudit"),
-			true);
+
+	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonResourceAudit"),
+		true);
+
+	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonResourceAudit"),
+		true);
+
 	public static final boolean COLUMN_BITMASK_ENABLED = false;
-	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.watson.service.util.ServiceProps.get(
-				"lock.expiration.time.com.liferay.watson.model.WatsonResourceAudit"));
+
+	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"lock.expiration.time.com.liferay.watson.model.WatsonResourceAudit"));
 
 	public WatsonResourceAuditModelImpl() {
 	}
@@ -165,14 +179,18 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		Map<String, Function<WatsonResourceAudit, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonResourceAudit, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		for (Map.Entry<String, Function<WatsonResourceAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonResourceAudit, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonResourceAudit, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonResourceAudit, Object> attributeGetterFunction =
+				entry.getValue();
 
-			attributes.put(attributeName,
+			attributes.put(
+				attributeName,
 				attributeGetterFunction.apply((WatsonResourceAudit)this));
 		}
 
@@ -184,38 +202,47 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Map<String, BiConsumer<WatsonResourceAudit, Object>> attributeSetterBiConsumers =
-			getAttributeSetterBiConsumers();
+		Map<String, BiConsumer<WatsonResourceAudit, Object>>
+			attributeSetterBiConsumers = getAttributeSetterBiConsumers();
 
 		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			String attributeName = entry.getKey();
 
-			BiConsumer<WatsonResourceAudit, Object> attributeSetterBiConsumer = attributeSetterBiConsumers.get(attributeName);
+			BiConsumer<WatsonResourceAudit, Object> attributeSetterBiConsumer =
+				attributeSetterBiConsumers.get(attributeName);
 
 			if (attributeSetterBiConsumer != null) {
-				attributeSetterBiConsumer.accept((WatsonResourceAudit)this,
-					entry.getValue());
+				attributeSetterBiConsumer.accept(
+					(WatsonResourceAudit)this, entry.getValue());
 			}
 		}
 	}
 
-	public Map<String, Function<WatsonResourceAudit, Object>> getAttributeGetterFunctions() {
+	public Map<String, Function<WatsonResourceAudit, Object>>
+		getAttributeGetterFunctions() {
+
 		return _attributeGetterFunctions;
 	}
 
-	public Map<String, BiConsumer<WatsonResourceAudit, Object>> getAttributeSetterBiConsumers() {
+	public Map<String, BiConsumer<WatsonResourceAudit, Object>>
+		getAttributeSetterBiConsumers() {
+
 		return _attributeSetterBiConsumers;
 	}
 
-	private static final Map<String, Function<WatsonResourceAudit, Object>> _attributeGetterFunctions;
-	private static final Map<String, BiConsumer<WatsonResourceAudit, Object>> _attributeSetterBiConsumers;
+	private static final Map<String, Function<WatsonResourceAudit, Object>>
+		_attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonResourceAudit, Object>>
+		_attributeSetterBiConsumers;
 
 	static {
-		Map<String, Function<WatsonResourceAudit, Object>> attributeGetterFunctions =
-			new LinkedHashMap<String, Function<WatsonResourceAudit, Object>>();
-		Map<String, BiConsumer<WatsonResourceAudit, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<WatsonResourceAudit, ?>>();
-
+		Map<String, Function<WatsonResourceAudit, Object>>
+			attributeGetterFunctions =
+				new LinkedHashMap
+					<String, Function<WatsonResourceAudit, Object>>();
+		Map<String, BiConsumer<WatsonResourceAudit, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap<String, BiConsumer<WatsonResourceAudit, ?>>();
 
 		attributeGetterFunctions.put(
 			"watsonResourceAuditId",
@@ -232,8 +259,12 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 			new BiConsumer<WatsonResourceAudit, Object>() {
 
 				@Override
-				public void accept(WatsonResourceAudit watsonResourceAudit, Object watsonResourceAuditId) {
-					watsonResourceAudit.setWatsonResourceAuditId((Long)watsonResourceAuditId);
+				public void accept(
+					WatsonResourceAudit watsonResourceAudit,
+					Object watsonResourceAuditId) {
+
+					watsonResourceAudit.setWatsonResourceAuditId(
+						(Long)watsonResourceAuditId);
 				}
 
 			});
@@ -252,7 +283,9 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 			new BiConsumer<WatsonResourceAudit, Object>() {
 
 				@Override
-				public void accept(WatsonResourceAudit watsonResourceAudit, Object groupId) {
+				public void accept(
+					WatsonResourceAudit watsonResourceAudit, Object groupId) {
+
 					watsonResourceAudit.setGroupId((Long)groupId);
 				}
 
@@ -272,7 +305,9 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 			new BiConsumer<WatsonResourceAudit, Object>() {
 
 				@Override
-				public void accept(WatsonResourceAudit watsonResourceAudit, Object companyId) {
+				public void accept(
+					WatsonResourceAudit watsonResourceAudit, Object companyId) {
+
 					watsonResourceAudit.setCompanyId((Long)companyId);
 				}
 
@@ -292,7 +327,9 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 			new BiConsumer<WatsonResourceAudit, Object>() {
 
 				@Override
-				public void accept(WatsonResourceAudit watsonResourceAudit, Object userId) {
+				public void accept(
+					WatsonResourceAudit watsonResourceAudit, Object userId) {
+
 					watsonResourceAudit.setUserId((Long)userId);
 				}
 
@@ -312,7 +349,9 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 			new BiConsumer<WatsonResourceAudit, Object>() {
 
 				@Override
-				public void accept(WatsonResourceAudit watsonResourceAudit, Object userName) {
+				public void accept(
+					WatsonResourceAudit watsonResourceAudit, Object userName) {
+
 					watsonResourceAudit.setUserName((String)userName);
 				}
 
@@ -332,7 +371,10 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 			new BiConsumer<WatsonResourceAudit, Object>() {
 
 				@Override
-				public void accept(WatsonResourceAudit watsonResourceAudit, Object createDate) {
+				public void accept(
+					WatsonResourceAudit watsonResourceAudit,
+					Object createDate) {
+
 					watsonResourceAudit.setCreateDate((Date)createDate);
 				}
 
@@ -352,7 +394,10 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 			new BiConsumer<WatsonResourceAudit, Object>() {
 
 				@Override
-				public void accept(WatsonResourceAudit watsonResourceAudit, Object modifiedDate) {
+				public void accept(
+					WatsonResourceAudit watsonResourceAudit,
+					Object modifiedDate) {
+
 					watsonResourceAudit.setModifiedDate((Date)modifiedDate);
 				}
 
@@ -372,8 +417,12 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 			new BiConsumer<WatsonResourceAudit, Object>() {
 
 				@Override
-				public void accept(WatsonResourceAudit watsonResourceAudit, Object originalWatsonResourceId) {
-					watsonResourceAudit.setOriginalWatsonResourceId((Long)originalWatsonResourceId);
+				public void accept(
+					WatsonResourceAudit watsonResourceAudit,
+					Object originalWatsonResourceId) {
+
+					watsonResourceAudit.setOriginalWatsonResourceId(
+						(Long)originalWatsonResourceId);
 				}
 
 			});
@@ -392,8 +441,12 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 			new BiConsumer<WatsonResourceAudit, Object>() {
 
 				@Override
-				public void accept(WatsonResourceAudit watsonResourceAudit, Object typeWatsonListTypeId) {
-					watsonResourceAudit.setTypeWatsonListTypeId((Long)typeWatsonListTypeId);
+				public void accept(
+					WatsonResourceAudit watsonResourceAudit,
+					Object typeWatsonListTypeId) {
+
+					watsonResourceAudit.setTypeWatsonListTypeId(
+						(Long)typeWatsonListTypeId);
 				}
 
 			});
@@ -412,8 +465,12 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 			new BiConsumer<WatsonResourceAudit, Object>() {
 
 				@Override
-				public void accept(WatsonResourceAudit watsonResourceAudit, Object watsonIncidentId) {
-					watsonResourceAudit.setWatsonIncidentId((Long)watsonIncidentId);
+				public void accept(
+					WatsonResourceAudit watsonResourceAudit,
+					Object watsonIncidentId) {
+
+					watsonResourceAudit.setWatsonIncidentId(
+						(Long)watsonIncidentId);
 				}
 
 			});
@@ -432,8 +489,12 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 			new BiConsumer<WatsonResourceAudit, Object>() {
 
 				@Override
-				public void accept(WatsonResourceAudit watsonResourceAudit, Object watsonResourceId) {
-					watsonResourceAudit.setWatsonResourceId((Long)watsonResourceId);
+				public void accept(
+					WatsonResourceAudit watsonResourceAudit,
+					Object watsonResourceId) {
+
+					watsonResourceAudit.setWatsonResourceId(
+						(Long)watsonResourceId);
 				}
 
 			});
@@ -452,7 +513,9 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 			new BiConsumer<WatsonResourceAudit, Object>() {
 
 				@Override
-				public void accept(WatsonResourceAudit watsonResourceAudit, Object name) {
+				public void accept(
+					WatsonResourceAudit watsonResourceAudit, Object name) {
+
 					watsonResourceAudit.setName((String)name);
 				}
 
@@ -472,7 +535,10 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 			new BiConsumer<WatsonResourceAudit, Object>() {
 
 				@Override
-				public void accept(WatsonResourceAudit watsonResourceAudit, Object description) {
+				public void accept(
+					WatsonResourceAudit watsonResourceAudit,
+					Object description) {
+
 					watsonResourceAudit.setDescription((String)description);
 				}
 
@@ -492,7 +558,10 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 			new BiConsumer<WatsonResourceAudit, Object>() {
 
 				@Override
-				public void accept(WatsonResourceAudit watsonResourceAudit, Object imagePayload) {
+				public void accept(
+					WatsonResourceAudit watsonResourceAudit,
+					Object imagePayload) {
+
 					watsonResourceAudit.setImagePayload((String)imagePayload);
 				}
 
@@ -512,15 +581,18 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 			new BiConsumer<WatsonResourceAudit, Object>() {
 
 				@Override
-				public void accept(WatsonResourceAudit watsonResourceAudit, Object status) {
+				public void accept(
+					WatsonResourceAudit watsonResourceAudit, Object status) {
+
 					watsonResourceAudit.setStatus((Integer)status);
 				}
 
 			});
 
-
-		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap(
+			(Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -691,8 +763,8 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 
 	@Override
 	public String getName(String languageId, boolean useDefault) {
-		return LocalizationUtil.getLocalization(getName(), languageId,
-			useDefault);
+		return LocalizationUtil.getLocalization(
+			getName(), languageId, useDefault);
 	}
 
 	@Override
@@ -729,12 +801,14 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
 
 		if (Validator.isNotNull(name)) {
-			setName(LocalizationUtil.updateLocalization(getName(), "Name",
-					name, languageId, defaultLanguageId));
+			setName(
+				LocalizationUtil.updateLocalization(
+					getName(), "Name", name, languageId, defaultLanguageId));
 		}
 		else {
-			setName(LocalizationUtil.removeLocalization(getName(), "Name",
-					languageId));
+			setName(
+				LocalizationUtil.removeLocalization(
+					getName(), "Name", languageId));
 		}
 	}
 
@@ -754,7 +828,9 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 			return;
 		}
 
-		setName(LocalizationUtil.updateLocalization(nameMap, getName(), "Name",
+		setName(
+			LocalizationUtil.updateLocalization(
+				nameMap, getName(), "Name",
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
@@ -789,8 +865,8 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 
 	@Override
 	public String getDescription(String languageId, boolean useDefault) {
-		return LocalizationUtil.getLocalization(getDescription(), languageId,
-			useDefault);
+		return LocalizationUtil.getLocalization(
+			getDescription(), languageId, useDefault);
 	}
 
 	@Override
@@ -822,18 +898,21 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 	}
 
 	@Override
-	public void setDescription(String description, Locale locale,
-		Locale defaultLocale) {
+	public void setDescription(
+		String description, Locale locale, Locale defaultLocale) {
+
 		String languageId = LocaleUtil.toLanguageId(locale);
 		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
 
 		if (Validator.isNotNull(description)) {
-			setDescription(LocalizationUtil.updateLocalization(
+			setDescription(
+				LocalizationUtil.updateLocalization(
 					getDescription(), "Description", description, languageId,
 					defaultLanguageId));
 		}
 		else {
-			setDescription(LocalizationUtil.removeLocalization(
+			setDescription(
+				LocalizationUtil.removeLocalization(
 					getDescription(), "Description", languageId));
 		}
 	}
@@ -849,14 +928,16 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 	}
 
 	@Override
-	public void setDescriptionMap(Map<Locale, String> descriptionMap,
-		Locale defaultLocale) {
+	public void setDescriptionMap(
+		Map<Locale, String> descriptionMap, Locale defaultLocale) {
+
 		if (descriptionMap == null) {
 			return;
 		}
 
-		setDescription(LocalizationUtil.updateLocalization(descriptionMap,
-				getDescription(), "Description",
+		setDescription(
+			LocalizationUtil.updateLocalization(
+				descriptionMap, getDescription(), "Description",
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
@@ -887,8 +968,9 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 
 	@Override
 	public ExpandoBridge getExpandoBridge() {
-		return ExpandoBridgeFactoryUtil.getExpandoBridge(getCompanyId(),
-			WatsonResourceAudit.class.getName(), getPrimaryKey());
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(
+			getCompanyId(), WatsonResourceAudit.class.getName(),
+			getPrimaryKey());
 	}
 
 	@Override
@@ -924,7 +1006,8 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 			}
 		}
 
-		return availableLanguageIds.toArray(new String[availableLanguageIds.size()]);
+		return availableLanguageIds.toArray(
+			new String[availableLanguageIds.size()]);
 	}
 
 	@Override
@@ -942,12 +1025,15 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 
 	@Override
 	public void prepareLocalizedFieldsForImport() throws LocaleException {
-		Locale defaultLocale = LocaleUtil.fromLanguageId(getDefaultLanguageId());
+		Locale defaultLocale = LocaleUtil.fromLanguageId(
+			getDefaultLanguageId());
 
-		Locale[] availableLocales = LocaleUtil.fromLanguageIds(getAvailableLanguageIds());
+		Locale[] availableLocales = LocaleUtil.fromLanguageIds(
+			getAvailableLanguageIds());
 
-		Locale defaultImportLocale = LocalizationUtil.getDefaultImportLocale(WatsonResourceAudit.class.getName(),
-				getPrimaryKey(), defaultLocale, availableLocales);
+		Locale defaultImportLocale = LocalizationUtil.getDefaultImportLocale(
+			WatsonResourceAudit.class.getName(), getPrimaryKey(), defaultLocale,
+			availableLocales);
 
 		prepareLocalizedFieldsForImport(defaultImportLocale);
 	}
@@ -956,6 +1042,7 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 	@SuppressWarnings("unused")
 	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
 		throws LocaleException {
+
 		Locale defaultLocale = LocaleUtil.getSiteDefault();
 
 		String modelDefaultLanguageId = getDefaultLanguageId();
@@ -972,19 +1059,21 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 		String description = getDescription(defaultLocale);
 
 		if (Validator.isNull(description)) {
-			setDescription(getDescription(modelDefaultLanguageId), defaultLocale);
+			setDescription(
+				getDescription(modelDefaultLanguageId), defaultLocale);
 		}
 		else {
-			setDescription(getDescription(defaultLocale), defaultLocale,
-				defaultLocale);
+			setDescription(
+				getDescription(defaultLocale), defaultLocale, defaultLocale);
 		}
 	}
 
 	@Override
 	public WatsonResourceAudit toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonResourceAudit)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+			_escapedModel = (WatsonResourceAudit)ProxyUtil.newProxyInstance(
+				_classLoader, _escapedModelInterfaces,
+				new AutoEscapeBeanHandler(this));
 		}
 
 		return _escapedModel;
@@ -992,17 +1081,21 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 
 	@Override
 	public Object clone() {
-		WatsonResourceAuditImpl watsonResourceAuditImpl = new WatsonResourceAuditImpl();
+		WatsonResourceAuditImpl watsonResourceAuditImpl =
+			new WatsonResourceAuditImpl();
 
-		watsonResourceAuditImpl.setWatsonResourceAuditId(getWatsonResourceAuditId());
+		watsonResourceAuditImpl.setWatsonResourceAuditId(
+			getWatsonResourceAuditId());
 		watsonResourceAuditImpl.setGroupId(getGroupId());
 		watsonResourceAuditImpl.setCompanyId(getCompanyId());
 		watsonResourceAuditImpl.setUserId(getUserId());
 		watsonResourceAuditImpl.setUserName(getUserName());
 		watsonResourceAuditImpl.setCreateDate(getCreateDate());
 		watsonResourceAuditImpl.setModifiedDate(getModifiedDate());
-		watsonResourceAuditImpl.setOriginalWatsonResourceId(getOriginalWatsonResourceId());
-		watsonResourceAuditImpl.setTypeWatsonListTypeId(getTypeWatsonListTypeId());
+		watsonResourceAuditImpl.setOriginalWatsonResourceId(
+			getOriginalWatsonResourceId());
+		watsonResourceAuditImpl.setTypeWatsonListTypeId(
+			getTypeWatsonListTypeId());
 		watsonResourceAuditImpl.setWatsonIncidentId(getWatsonIncidentId());
 		watsonResourceAuditImpl.setWatsonResourceId(getWatsonResourceId());
 		watsonResourceAuditImpl.setName(getName());
@@ -1076,9 +1169,11 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 
 	@Override
 	public CacheModel<WatsonResourceAudit> toCacheModel() {
-		WatsonResourceAuditCacheModel watsonResourceAuditCacheModel = new WatsonResourceAuditCacheModel();
+		WatsonResourceAuditCacheModel watsonResourceAuditCacheModel =
+			new WatsonResourceAuditCacheModel();
 
-		watsonResourceAuditCacheModel.watsonResourceAuditId = getWatsonResourceAuditId();
+		watsonResourceAuditCacheModel.watsonResourceAuditId =
+			getWatsonResourceAuditId();
 
 		watsonResourceAuditCacheModel.groupId = getGroupId();
 
@@ -1112,9 +1207,11 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 			watsonResourceAuditCacheModel.modifiedDate = Long.MIN_VALUE;
 		}
 
-		watsonResourceAuditCacheModel.originalWatsonResourceId = getOriginalWatsonResourceId();
+		watsonResourceAuditCacheModel.originalWatsonResourceId =
+			getOriginalWatsonResourceId();
 
-		watsonResourceAuditCacheModel.typeWatsonListTypeId = getTypeWatsonListTypeId();
+		watsonResourceAuditCacheModel.typeWatsonListTypeId =
+			getTypeWatsonListTypeId();
 
 		watsonResourceAuditCacheModel.watsonIncidentId = getWatsonIncidentId();
 
@@ -1151,17 +1248,20 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 
 	@Override
 	public String toString() {
-		Map<String, Function<WatsonResourceAudit, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonResourceAudit, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
-				2);
+		StringBundler sb = new StringBundler(
+			4 * attributeGetterFunctions.size() + 2);
 
 		sb.append("{");
 
-		for (Map.Entry<String, Function<WatsonResourceAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonResourceAudit, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonResourceAudit, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonResourceAudit, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append(attributeName);
 			sb.append("=");
@@ -1180,19 +1280,22 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 
 	@Override
 	public String toXmlString() {
-		Map<String, Function<WatsonResourceAudit, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonResourceAudit, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
-				4);
+		StringBundler sb = new StringBundler(
+			5 * attributeGetterFunctions.size() + 4);
 
 		sb.append("<model><model-name>");
 		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		for (Map.Entry<String, Function<WatsonResourceAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonResourceAudit, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonResourceAudit, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonResourceAudit, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append("<column><column-name>");
 			sb.append(attributeName);
@@ -1206,10 +1309,12 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader = WatsonResourceAudit.class.getClassLoader();
+	private static final ClassLoader _classLoader =
+		WatsonResourceAudit.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			WatsonResourceAudit.class, ModelWrapper.class
-		};
+		WatsonResourceAudit.class, ModelWrapper.class
+	};
+
 	private long _watsonResourceAuditId;
 	private long _groupId;
 	private long _companyId;
@@ -1229,4 +1334,5 @@ public class WatsonResourceAuditModelImpl extends BaseModelImpl<WatsonResourceAu
 	private String _imagePayload;
 	private int _status;
 	private WatsonResourceAudit _escapedModel;
+
 }

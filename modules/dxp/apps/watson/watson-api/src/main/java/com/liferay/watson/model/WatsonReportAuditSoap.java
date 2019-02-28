@@ -30,6 +30,7 @@ import java.util.List;
  */
 @ProviderType
 public class WatsonReportAuditSoap implements Serializable {
+
 	public static WatsonReportAuditSoap toSoapModel(WatsonReportAudit model) {
 		WatsonReportAuditSoap soapModel = new WatsonReportAuditSoap();
 
@@ -59,7 +60,9 @@ public class WatsonReportAuditSoap implements Serializable {
 
 	public static WatsonReportAuditSoap[] toSoapModels(
 		WatsonReportAudit[] models) {
-		WatsonReportAuditSoap[] soapModels = new WatsonReportAuditSoap[models.length];
+
+		WatsonReportAuditSoap[] soapModels =
+			new WatsonReportAuditSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -70,10 +73,12 @@ public class WatsonReportAuditSoap implements Serializable {
 
 	public static WatsonReportAuditSoap[][] toSoapModels(
 		WatsonReportAudit[][] models) {
+
 		WatsonReportAuditSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new WatsonReportAuditSoap[models.length][models[0].length];
+			soapModels =
+				new WatsonReportAuditSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new WatsonReportAuditSoap[0][0];
@@ -88,7 +93,9 @@ public class WatsonReportAuditSoap implements Serializable {
 
 	public static WatsonReportAuditSoap[] toSoapModels(
 		List<WatsonReportAudit> models) {
-		List<WatsonReportAuditSoap> soapModels = new ArrayList<WatsonReportAuditSoap>(models.size());
+
+		List<WatsonReportAuditSoap> soapModels =
+			new ArrayList<WatsonReportAuditSoap>(models.size());
 
 		for (WatsonReportAudit model : models) {
 			soapModels.add(toSoapModel(model));
@@ -288,4 +295,5 @@ public class WatsonReportAuditSoap implements Serializable {
 	private Date _reportDate;
 	private int _key;
 	private int _status;
+
 }

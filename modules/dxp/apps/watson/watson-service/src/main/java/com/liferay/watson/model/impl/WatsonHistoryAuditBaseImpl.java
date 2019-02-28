@@ -34,6 +34,7 @@ import com.liferay.watson.service.WatsonHistoryAuditLocalServiceUtil;
 @ProviderType
 public abstract class WatsonHistoryAuditBaseImpl
 	extends WatsonHistoryAuditModelImpl implements WatsonHistoryAudit {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -48,4 +49,5 @@ public abstract class WatsonHistoryAuditBaseImpl
 			WatsonHistoryAuditLocalServiceUtil.updateWatsonHistoryAudit(this);
 		}
 	}
+
 }

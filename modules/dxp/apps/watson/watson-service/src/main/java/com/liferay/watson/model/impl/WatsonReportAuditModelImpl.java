@@ -18,7 +18,6 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -35,7 +34,6 @@ import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
-
 import com.liferay.watson.model.WatsonReportAudit;
 import com.liferay.watson.model.WatsonReportAuditModel;
 
@@ -66,37 +64,32 @@ import java.util.function.Function;
  * @generated
  */
 @ProviderType
-public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
-	implements WatsonReportAuditModel {
+public class WatsonReportAuditModelImpl
+	extends BaseModelImpl<WatsonReportAudit> implements WatsonReportAuditModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson report audit model instance should use the <code>WatsonReportAudit</code> interface instead.
 	 */
 	public static final String TABLE_NAME = "WatsonReportAudit";
+
 	public static final Object[][] TABLE_COLUMNS = {
-			{ "watsonReportAuditId", Types.BIGINT },
-			{ "groupId", Types.BIGINT },
-			{ "companyId", Types.BIGINT },
-			{ "userId", Types.BIGINT },
-			{ "userName", Types.VARCHAR },
-			{ "createDate", Types.TIMESTAMP },
-			{ "modifiedDate", Types.TIMESTAMP },
-			{ "originalWatsonReportId", Types.BIGINT },
-			{ "typeWatsonListTypeId", Types.BIGINT },
-			{ "watsonChildId", Types.BIGINT },
-			{ "watsonReportId", Types.BIGINT },
-			{ "name", Types.VARCHAR },
-			{ "description", Types.VARCHAR },
-			{ "fullReport", Types.VARCHAR },
-			{ "imagePayload", Types.CLOB },
-			{ "timeSpent", Types.VARCHAR },
-			{ "reportedUser", Types.VARCHAR },
-			{ "reportDate", Types.TIMESTAMP },
-			{ "key_", Types.INTEGER },
-			{ "status", Types.INTEGER }
-		};
-	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
+		{"watsonReportAuditId", Types.BIGINT}, {"groupId", Types.BIGINT},
+		{"companyId", Types.BIGINT}, {"userId", Types.BIGINT},
+		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
+		{"modifiedDate", Types.TIMESTAMP},
+		{"originalWatsonReportId", Types.BIGINT},
+		{"typeWatsonListTypeId", Types.BIGINT}, {"watsonChildId", Types.BIGINT},
+		{"watsonReportId", Types.BIGINT}, {"name", Types.VARCHAR},
+		{"description", Types.VARCHAR}, {"fullReport", Types.VARCHAR},
+		{"imagePayload", Types.CLOB}, {"timeSpent", Types.VARCHAR},
+		{"reportedUser", Types.VARCHAR}, {"reportDate", Types.TIMESTAMP},
+		{"key_", Types.INTEGER}, {"status", Types.INTEGER}
+	};
+
+	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
+		new HashMap<String, Integer>();
 
 	static {
 		TABLE_COLUMNS_MAP.put("watsonReportAuditId", Types.BIGINT);
@@ -121,22 +114,38 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonReportAudit (watsonReportAuditId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,originalWatsonReportId LONG,typeWatsonListTypeId LONG,watsonChildId LONG,watsonReportId LONG,name STRING null,description STRING null,fullReport STRING null,imagePayload TEXT null,timeSpent VARCHAR(75) null,reportedUser STRING null,reportDate DATE null,key_ INTEGER,status INTEGER)";
+	public static final String TABLE_SQL_CREATE =
+		"create table WatsonReportAudit (watsonReportAuditId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,originalWatsonReportId LONG,typeWatsonListTypeId LONG,watsonChildId LONG,watsonReportId LONG,name STRING null,description STRING null,fullReport STRING null,imagePayload TEXT null,timeSpent VARCHAR(75) null,reportedUser STRING null,reportDate DATE null,key_ INTEGER,status INTEGER)";
+
 	public static final String TABLE_SQL_DROP = "drop table WatsonReportAudit";
-	public static final String ORDER_BY_JPQL = " ORDER BY watsonReportAudit.watsonReportAuditId ASC";
-	public static final String ORDER_BY_SQL = " ORDER BY WatsonReportAudit.watsonReportAuditId ASC";
+
+	public static final String ORDER_BY_JPQL =
+		" ORDER BY watsonReportAudit.watsonReportAuditId ASC";
+
+	public static final String ORDER_BY_SQL =
+		" ORDER BY WatsonReportAudit.watsonReportAuditId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
+
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
+
 	public static final String TX_MANAGER = "liferayTransactionManager";
-	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonReportAudit"),
-			true);
-	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.service.util.ServiceProps.get(
-				"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonReportAudit"),
-			true);
+
+	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.entity.cache.enabled.com.liferay.watson.model.WatsonReportAudit"),
+		true);
+
+	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"value.object.finder.cache.enabled.com.liferay.watson.model.WatsonReportAudit"),
+		true);
+
 	public static final boolean COLUMN_BITMASK_ENABLED = false;
-	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.watson.service.util.ServiceProps.get(
-				"lock.expiration.time.com.liferay.watson.model.WatsonReportAudit"));
+
+	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
+		com.liferay.watson.service.util.ServiceProps.get(
+			"lock.expiration.time.com.liferay.watson.model.WatsonReportAudit"));
 
 	public WatsonReportAuditModelImpl() {
 	}
@@ -175,14 +184,18 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		Map<String, Function<WatsonReportAudit, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonReportAudit, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		for (Map.Entry<String, Function<WatsonReportAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonReportAudit, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonReportAudit, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonReportAudit, Object> attributeGetterFunction =
+				entry.getValue();
 
-			attributes.put(attributeName,
+			attributes.put(
+				attributeName,
 				attributeGetterFunction.apply((WatsonReportAudit)this));
 		}
 
@@ -194,38 +207,47 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Map<String, BiConsumer<WatsonReportAudit, Object>> attributeSetterBiConsumers =
-			getAttributeSetterBiConsumers();
+		Map<String, BiConsumer<WatsonReportAudit, Object>>
+			attributeSetterBiConsumers = getAttributeSetterBiConsumers();
 
 		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			String attributeName = entry.getKey();
 
-			BiConsumer<WatsonReportAudit, Object> attributeSetterBiConsumer = attributeSetterBiConsumers.get(attributeName);
+			BiConsumer<WatsonReportAudit, Object> attributeSetterBiConsumer =
+				attributeSetterBiConsumers.get(attributeName);
 
 			if (attributeSetterBiConsumer != null) {
-				attributeSetterBiConsumer.accept((WatsonReportAudit)this,
-					entry.getValue());
+				attributeSetterBiConsumer.accept(
+					(WatsonReportAudit)this, entry.getValue());
 			}
 		}
 	}
 
-	public Map<String, Function<WatsonReportAudit, Object>> getAttributeGetterFunctions() {
+	public Map<String, Function<WatsonReportAudit, Object>>
+		getAttributeGetterFunctions() {
+
 		return _attributeGetterFunctions;
 	}
 
-	public Map<String, BiConsumer<WatsonReportAudit, Object>> getAttributeSetterBiConsumers() {
+	public Map<String, BiConsumer<WatsonReportAudit, Object>>
+		getAttributeSetterBiConsumers() {
+
 		return _attributeSetterBiConsumers;
 	}
 
-	private static final Map<String, Function<WatsonReportAudit, Object>> _attributeGetterFunctions;
-	private static final Map<String, BiConsumer<WatsonReportAudit, Object>> _attributeSetterBiConsumers;
+	private static final Map<String, Function<WatsonReportAudit, Object>>
+		_attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonReportAudit, Object>>
+		_attributeSetterBiConsumers;
 
 	static {
-		Map<String, Function<WatsonReportAudit, Object>> attributeGetterFunctions =
-			new LinkedHashMap<String, Function<WatsonReportAudit, Object>>();
-		Map<String, BiConsumer<WatsonReportAudit, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<WatsonReportAudit, ?>>();
-
+		Map<String, Function<WatsonReportAudit, Object>>
+			attributeGetterFunctions =
+				new LinkedHashMap
+					<String, Function<WatsonReportAudit, Object>>();
+		Map<String, BiConsumer<WatsonReportAudit, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap<String, BiConsumer<WatsonReportAudit, ?>>();
 
 		attributeGetterFunctions.put(
 			"watsonReportAuditId",
@@ -242,8 +264,12 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 			new BiConsumer<WatsonReportAudit, Object>() {
 
 				@Override
-				public void accept(WatsonReportAudit watsonReportAudit, Object watsonReportAuditId) {
-					watsonReportAudit.setWatsonReportAuditId((Long)watsonReportAuditId);
+				public void accept(
+					WatsonReportAudit watsonReportAudit,
+					Object watsonReportAuditId) {
+
+					watsonReportAudit.setWatsonReportAuditId(
+						(Long)watsonReportAuditId);
 				}
 
 			});
@@ -262,7 +288,9 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 			new BiConsumer<WatsonReportAudit, Object>() {
 
 				@Override
-				public void accept(WatsonReportAudit watsonReportAudit, Object groupId) {
+				public void accept(
+					WatsonReportAudit watsonReportAudit, Object groupId) {
+
 					watsonReportAudit.setGroupId((Long)groupId);
 				}
 
@@ -282,7 +310,9 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 			new BiConsumer<WatsonReportAudit, Object>() {
 
 				@Override
-				public void accept(WatsonReportAudit watsonReportAudit, Object companyId) {
+				public void accept(
+					WatsonReportAudit watsonReportAudit, Object companyId) {
+
 					watsonReportAudit.setCompanyId((Long)companyId);
 				}
 
@@ -302,7 +332,9 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 			new BiConsumer<WatsonReportAudit, Object>() {
 
 				@Override
-				public void accept(WatsonReportAudit watsonReportAudit, Object userId) {
+				public void accept(
+					WatsonReportAudit watsonReportAudit, Object userId) {
+
 					watsonReportAudit.setUserId((Long)userId);
 				}
 
@@ -322,7 +354,9 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 			new BiConsumer<WatsonReportAudit, Object>() {
 
 				@Override
-				public void accept(WatsonReportAudit watsonReportAudit, Object userName) {
+				public void accept(
+					WatsonReportAudit watsonReportAudit, Object userName) {
+
 					watsonReportAudit.setUserName((String)userName);
 				}
 
@@ -342,7 +376,9 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 			new BiConsumer<WatsonReportAudit, Object>() {
 
 				@Override
-				public void accept(WatsonReportAudit watsonReportAudit, Object createDate) {
+				public void accept(
+					WatsonReportAudit watsonReportAudit, Object createDate) {
+
 					watsonReportAudit.setCreateDate((Date)createDate);
 				}
 
@@ -362,7 +398,9 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 			new BiConsumer<WatsonReportAudit, Object>() {
 
 				@Override
-				public void accept(WatsonReportAudit watsonReportAudit, Object modifiedDate) {
+				public void accept(
+					WatsonReportAudit watsonReportAudit, Object modifiedDate) {
+
 					watsonReportAudit.setModifiedDate((Date)modifiedDate);
 				}
 
@@ -382,8 +420,12 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 			new BiConsumer<WatsonReportAudit, Object>() {
 
 				@Override
-				public void accept(WatsonReportAudit watsonReportAudit, Object originalWatsonReportId) {
-					watsonReportAudit.setOriginalWatsonReportId((Long)originalWatsonReportId);
+				public void accept(
+					WatsonReportAudit watsonReportAudit,
+					Object originalWatsonReportId) {
+
+					watsonReportAudit.setOriginalWatsonReportId(
+						(Long)originalWatsonReportId);
 				}
 
 			});
@@ -402,8 +444,12 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 			new BiConsumer<WatsonReportAudit, Object>() {
 
 				@Override
-				public void accept(WatsonReportAudit watsonReportAudit, Object typeWatsonListTypeId) {
-					watsonReportAudit.setTypeWatsonListTypeId((Long)typeWatsonListTypeId);
+				public void accept(
+					WatsonReportAudit watsonReportAudit,
+					Object typeWatsonListTypeId) {
+
+					watsonReportAudit.setTypeWatsonListTypeId(
+						(Long)typeWatsonListTypeId);
 				}
 
 			});
@@ -422,7 +468,9 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 			new BiConsumer<WatsonReportAudit, Object>() {
 
 				@Override
-				public void accept(WatsonReportAudit watsonReportAudit, Object watsonChildId) {
+				public void accept(
+					WatsonReportAudit watsonReportAudit, Object watsonChildId) {
+
 					watsonReportAudit.setWatsonChildId((Long)watsonChildId);
 				}
 
@@ -442,7 +490,10 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 			new BiConsumer<WatsonReportAudit, Object>() {
 
 				@Override
-				public void accept(WatsonReportAudit watsonReportAudit, Object watsonReportId) {
+				public void accept(
+					WatsonReportAudit watsonReportAudit,
+					Object watsonReportId) {
+
 					watsonReportAudit.setWatsonReportId((Long)watsonReportId);
 				}
 
@@ -462,7 +513,9 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 			new BiConsumer<WatsonReportAudit, Object>() {
 
 				@Override
-				public void accept(WatsonReportAudit watsonReportAudit, Object name) {
+				public void accept(
+					WatsonReportAudit watsonReportAudit, Object name) {
+
 					watsonReportAudit.setName((String)name);
 				}
 
@@ -482,7 +535,9 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 			new BiConsumer<WatsonReportAudit, Object>() {
 
 				@Override
-				public void accept(WatsonReportAudit watsonReportAudit, Object description) {
+				public void accept(
+					WatsonReportAudit watsonReportAudit, Object description) {
+
 					watsonReportAudit.setDescription((String)description);
 				}
 
@@ -502,7 +557,9 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 			new BiConsumer<WatsonReportAudit, Object>() {
 
 				@Override
-				public void accept(WatsonReportAudit watsonReportAudit, Object fullReport) {
+				public void accept(
+					WatsonReportAudit watsonReportAudit, Object fullReport) {
+
 					watsonReportAudit.setFullReport((String)fullReport);
 				}
 
@@ -522,7 +579,9 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 			new BiConsumer<WatsonReportAudit, Object>() {
 
 				@Override
-				public void accept(WatsonReportAudit watsonReportAudit, Object imagePayload) {
+				public void accept(
+					WatsonReportAudit watsonReportAudit, Object imagePayload) {
+
 					watsonReportAudit.setImagePayload((String)imagePayload);
 				}
 
@@ -542,7 +601,9 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 			new BiConsumer<WatsonReportAudit, Object>() {
 
 				@Override
-				public void accept(WatsonReportAudit watsonReportAudit, Object timeSpent) {
+				public void accept(
+					WatsonReportAudit watsonReportAudit, Object timeSpent) {
+
 					watsonReportAudit.setTimeSpent((String)timeSpent);
 				}
 
@@ -562,7 +623,9 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 			new BiConsumer<WatsonReportAudit, Object>() {
 
 				@Override
-				public void accept(WatsonReportAudit watsonReportAudit, Object reportedUser) {
+				public void accept(
+					WatsonReportAudit watsonReportAudit, Object reportedUser) {
+
 					watsonReportAudit.setReportedUser((String)reportedUser);
 				}
 
@@ -582,7 +645,9 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 			new BiConsumer<WatsonReportAudit, Object>() {
 
 				@Override
-				public void accept(WatsonReportAudit watsonReportAudit, Object reportDate) {
+				public void accept(
+					WatsonReportAudit watsonReportAudit, Object reportDate) {
+
 					watsonReportAudit.setReportDate((Date)reportDate);
 				}
 
@@ -602,7 +667,9 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 			new BiConsumer<WatsonReportAudit, Object>() {
 
 				@Override
-				public void accept(WatsonReportAudit watsonReportAudit, Object key) {
+				public void accept(
+					WatsonReportAudit watsonReportAudit, Object key) {
+
 					watsonReportAudit.setKey((Integer)key);
 				}
 
@@ -622,15 +689,18 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 			new BiConsumer<WatsonReportAudit, Object>() {
 
 				@Override
-				public void accept(WatsonReportAudit watsonReportAudit, Object status) {
+				public void accept(
+					WatsonReportAudit watsonReportAudit, Object status) {
+
 					watsonReportAudit.setStatus((Integer)status);
 				}
 
 			});
 
-
-		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap(
+			(Map)attributeSetterBiConsumers);
 	}
 
 	@Override
@@ -801,8 +871,8 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 
 	@Override
 	public String getName(String languageId, boolean useDefault) {
-		return LocalizationUtil.getLocalization(getName(), languageId,
-			useDefault);
+		return LocalizationUtil.getLocalization(
+			getName(), languageId, useDefault);
 	}
 
 	@Override
@@ -839,12 +909,14 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
 
 		if (Validator.isNotNull(name)) {
-			setName(LocalizationUtil.updateLocalization(getName(), "Name",
-					name, languageId, defaultLanguageId));
+			setName(
+				LocalizationUtil.updateLocalization(
+					getName(), "Name", name, languageId, defaultLanguageId));
 		}
 		else {
-			setName(LocalizationUtil.removeLocalization(getName(), "Name",
-					languageId));
+			setName(
+				LocalizationUtil.removeLocalization(
+					getName(), "Name", languageId));
 		}
 	}
 
@@ -864,7 +936,9 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 			return;
 		}
 
-		setName(LocalizationUtil.updateLocalization(nameMap, getName(), "Name",
+		setName(
+			LocalizationUtil.updateLocalization(
+				nameMap, getName(), "Name",
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
@@ -899,8 +973,8 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 
 	@Override
 	public String getDescription(String languageId, boolean useDefault) {
-		return LocalizationUtil.getLocalization(getDescription(), languageId,
-			useDefault);
+		return LocalizationUtil.getLocalization(
+			getDescription(), languageId, useDefault);
 	}
 
 	@Override
@@ -932,18 +1006,21 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 	}
 
 	@Override
-	public void setDescription(String description, Locale locale,
-		Locale defaultLocale) {
+	public void setDescription(
+		String description, Locale locale, Locale defaultLocale) {
+
 		String languageId = LocaleUtil.toLanguageId(locale);
 		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
 
 		if (Validator.isNotNull(description)) {
-			setDescription(LocalizationUtil.updateLocalization(
+			setDescription(
+				LocalizationUtil.updateLocalization(
 					getDescription(), "Description", description, languageId,
 					defaultLanguageId));
 		}
 		else {
-			setDescription(LocalizationUtil.removeLocalization(
+			setDescription(
+				LocalizationUtil.removeLocalization(
 					getDescription(), "Description", languageId));
 		}
 	}
@@ -959,14 +1036,16 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 	}
 
 	@Override
-	public void setDescriptionMap(Map<Locale, String> descriptionMap,
-		Locale defaultLocale) {
+	public void setDescriptionMap(
+		Map<Locale, String> descriptionMap, Locale defaultLocale) {
+
 		if (descriptionMap == null) {
 			return;
 		}
 
-		setDescription(LocalizationUtil.updateLocalization(descriptionMap,
-				getDescription(), "Description",
+		setDescription(
+			LocalizationUtil.updateLocalization(
+				descriptionMap, getDescription(), "Description",
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
@@ -1001,8 +1080,8 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 
 	@Override
 	public String getFullReport(String languageId, boolean useDefault) {
-		return LocalizationUtil.getLocalization(getFullReport(), languageId,
-			useDefault);
+		return LocalizationUtil.getLocalization(
+			getFullReport(), languageId, useDefault);
 	}
 
 	@Override
@@ -1034,18 +1113,22 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 	}
 
 	@Override
-	public void setFullReport(String fullReport, Locale locale,
-		Locale defaultLocale) {
+	public void setFullReport(
+		String fullReport, Locale locale, Locale defaultLocale) {
+
 		String languageId = LocaleUtil.toLanguageId(locale);
 		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
 
 		if (Validator.isNotNull(fullReport)) {
-			setFullReport(LocalizationUtil.updateLocalization(getFullReport(),
-					"FullReport", fullReport, languageId, defaultLanguageId));
+			setFullReport(
+				LocalizationUtil.updateLocalization(
+					getFullReport(), "FullReport", fullReport, languageId,
+					defaultLanguageId));
 		}
 		else {
-			setFullReport(LocalizationUtil.removeLocalization(getFullReport(),
-					"FullReport", languageId));
+			setFullReport(
+				LocalizationUtil.removeLocalization(
+					getFullReport(), "FullReport", languageId));
 		}
 	}
 
@@ -1060,14 +1143,16 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 	}
 
 	@Override
-	public void setFullReportMap(Map<Locale, String> fullReportMap,
-		Locale defaultLocale) {
+	public void setFullReportMap(
+		Map<Locale, String> fullReportMap, Locale defaultLocale) {
+
 		if (fullReportMap == null) {
 			return;
 		}
 
-		setFullReport(LocalizationUtil.updateLocalization(fullReportMap,
-				getFullReport(), "FullReport",
+		setFullReport(
+			LocalizationUtil.updateLocalization(
+				fullReportMap, getFullReport(), "FullReport",
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
@@ -1132,8 +1217,8 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 
 	@Override
 	public String getReportedUser(String languageId, boolean useDefault) {
-		return LocalizationUtil.getLocalization(getReportedUser(), languageId,
-			useDefault);
+		return LocalizationUtil.getLocalization(
+			getReportedUser(), languageId, useDefault);
 	}
 
 	@Override
@@ -1165,18 +1250,21 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 	}
 
 	@Override
-	public void setReportedUser(String reportedUser, Locale locale,
-		Locale defaultLocale) {
+	public void setReportedUser(
+		String reportedUser, Locale locale, Locale defaultLocale) {
+
 		String languageId = LocaleUtil.toLanguageId(locale);
 		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
 
 		if (Validator.isNotNull(reportedUser)) {
-			setReportedUser(LocalizationUtil.updateLocalization(
-					getReportedUser(), "ReportedUser", reportedUser,
-					languageId, defaultLanguageId));
+			setReportedUser(
+				LocalizationUtil.updateLocalization(
+					getReportedUser(), "ReportedUser", reportedUser, languageId,
+					defaultLanguageId));
 		}
 		else {
-			setReportedUser(LocalizationUtil.removeLocalization(
+			setReportedUser(
+				LocalizationUtil.removeLocalization(
 					getReportedUser(), "ReportedUser", languageId));
 		}
 	}
@@ -1192,14 +1280,16 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 	}
 
 	@Override
-	public void setReportedUserMap(Map<Locale, String> reportedUserMap,
-		Locale defaultLocale) {
+	public void setReportedUserMap(
+		Map<Locale, String> reportedUserMap, Locale defaultLocale) {
+
 		if (reportedUserMap == null) {
 			return;
 		}
 
-		setReportedUser(LocalizationUtil.updateLocalization(reportedUserMap,
-				getReportedUser(), "ReportedUser",
+		setReportedUser(
+			LocalizationUtil.updateLocalization(
+				reportedUserMap, getReportedUser(), "ReportedUser",
 				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
@@ -1235,8 +1325,8 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 
 	@Override
 	public ExpandoBridge getExpandoBridge() {
-		return ExpandoBridgeFactoryUtil.getExpandoBridge(getCompanyId(),
-			WatsonReportAudit.class.getName(), getPrimaryKey());
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(
+			getCompanyId(), WatsonReportAudit.class.getName(), getPrimaryKey());
 	}
 
 	@Override
@@ -1294,7 +1384,8 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 			}
 		}
 
-		return availableLanguageIds.toArray(new String[availableLanguageIds.size()]);
+		return availableLanguageIds.toArray(
+			new String[availableLanguageIds.size()]);
 	}
 
 	@Override
@@ -1312,12 +1403,15 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 
 	@Override
 	public void prepareLocalizedFieldsForImport() throws LocaleException {
-		Locale defaultLocale = LocaleUtil.fromLanguageId(getDefaultLanguageId());
+		Locale defaultLocale = LocaleUtil.fromLanguageId(
+			getDefaultLanguageId());
 
-		Locale[] availableLocales = LocaleUtil.fromLanguageIds(getAvailableLanguageIds());
+		Locale[] availableLocales = LocaleUtil.fromLanguageIds(
+			getAvailableLanguageIds());
 
-		Locale defaultImportLocale = LocalizationUtil.getDefaultImportLocale(WatsonReportAudit.class.getName(),
-				getPrimaryKey(), defaultLocale, availableLocales);
+		Locale defaultImportLocale = LocalizationUtil.getDefaultImportLocale(
+			WatsonReportAudit.class.getName(), getPrimaryKey(), defaultLocale,
+			availableLocales);
 
 		prepareLocalizedFieldsForImport(defaultImportLocale);
 	}
@@ -1326,6 +1420,7 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 	@SuppressWarnings("unused")
 	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
 		throws LocaleException {
+
 		Locale defaultLocale = LocaleUtil.getSiteDefault();
 
 		String modelDefaultLanguageId = getDefaultLanguageId();
@@ -1342,11 +1437,12 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 		String description = getDescription(defaultLocale);
 
 		if (Validator.isNull(description)) {
-			setDescription(getDescription(modelDefaultLanguageId), defaultLocale);
+			setDescription(
+				getDescription(modelDefaultLanguageId), defaultLocale);
 		}
 		else {
-			setDescription(getDescription(defaultLocale), defaultLocale,
-				defaultLocale);
+			setDescription(
+				getDescription(defaultLocale), defaultLocale, defaultLocale);
 		}
 
 		String fullReport = getFullReport(defaultLocale);
@@ -1355,27 +1451,28 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 			setFullReport(getFullReport(modelDefaultLanguageId), defaultLocale);
 		}
 		else {
-			setFullReport(getFullReport(defaultLocale), defaultLocale,
-				defaultLocale);
+			setFullReport(
+				getFullReport(defaultLocale), defaultLocale, defaultLocale);
 		}
 
 		String reportedUser = getReportedUser(defaultLocale);
 
 		if (Validator.isNull(reportedUser)) {
-			setReportedUser(getReportedUser(modelDefaultLanguageId),
-				defaultLocale);
+			setReportedUser(
+				getReportedUser(modelDefaultLanguageId), defaultLocale);
 		}
 		else {
-			setReportedUser(getReportedUser(defaultLocale), defaultLocale,
-				defaultLocale);
+			setReportedUser(
+				getReportedUser(defaultLocale), defaultLocale, defaultLocale);
 		}
 	}
 
 	@Override
 	public WatsonReportAudit toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonReportAudit)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+			_escapedModel = (WatsonReportAudit)ProxyUtil.newProxyInstance(
+				_classLoader, _escapedModelInterfaces,
+				new AutoEscapeBeanHandler(this));
 		}
 
 		return _escapedModel;
@@ -1383,7 +1480,8 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 
 	@Override
 	public Object clone() {
-		WatsonReportAuditImpl watsonReportAuditImpl = new WatsonReportAuditImpl();
+		WatsonReportAuditImpl watsonReportAuditImpl =
+			new WatsonReportAuditImpl();
 
 		watsonReportAuditImpl.setWatsonReportAuditId(getWatsonReportAuditId());
 		watsonReportAuditImpl.setGroupId(getGroupId());
@@ -1392,8 +1490,10 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 		watsonReportAuditImpl.setUserName(getUserName());
 		watsonReportAuditImpl.setCreateDate(getCreateDate());
 		watsonReportAuditImpl.setModifiedDate(getModifiedDate());
-		watsonReportAuditImpl.setOriginalWatsonReportId(getOriginalWatsonReportId());
-		watsonReportAuditImpl.setTypeWatsonListTypeId(getTypeWatsonListTypeId());
+		watsonReportAuditImpl.setOriginalWatsonReportId(
+			getOriginalWatsonReportId());
+		watsonReportAuditImpl.setTypeWatsonListTypeId(
+			getTypeWatsonListTypeId());
 		watsonReportAuditImpl.setWatsonChildId(getWatsonChildId());
 		watsonReportAuditImpl.setWatsonReportId(getWatsonReportId());
 		watsonReportAuditImpl.setName(getName());
@@ -1472,9 +1572,11 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 
 	@Override
 	public CacheModel<WatsonReportAudit> toCacheModel() {
-		WatsonReportAuditCacheModel watsonReportAuditCacheModel = new WatsonReportAuditCacheModel();
+		WatsonReportAuditCacheModel watsonReportAuditCacheModel =
+			new WatsonReportAuditCacheModel();
 
-		watsonReportAuditCacheModel.watsonReportAuditId = getWatsonReportAuditId();
+		watsonReportAuditCacheModel.watsonReportAuditId =
+			getWatsonReportAuditId();
 
 		watsonReportAuditCacheModel.groupId = getGroupId();
 
@@ -1508,9 +1610,11 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 			watsonReportAuditCacheModel.modifiedDate = Long.MIN_VALUE;
 		}
 
-		watsonReportAuditCacheModel.originalWatsonReportId = getOriginalWatsonReportId();
+		watsonReportAuditCacheModel.originalWatsonReportId =
+			getOriginalWatsonReportId();
 
-		watsonReportAuditCacheModel.typeWatsonListTypeId = getTypeWatsonListTypeId();
+		watsonReportAuditCacheModel.typeWatsonListTypeId =
+			getTypeWatsonListTypeId();
 
 		watsonReportAuditCacheModel.watsonChildId = getWatsonChildId();
 
@@ -1582,17 +1686,20 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 
 	@Override
 	public String toString() {
-		Map<String, Function<WatsonReportAudit, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonReportAudit, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
-				2);
+		StringBundler sb = new StringBundler(
+			4 * attributeGetterFunctions.size() + 2);
 
 		sb.append("{");
 
-		for (Map.Entry<String, Function<WatsonReportAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonReportAudit, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonReportAudit, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonReportAudit, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append(attributeName);
 			sb.append("=");
@@ -1611,19 +1718,22 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 
 	@Override
 	public String toXmlString() {
-		Map<String, Function<WatsonReportAudit, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonReportAudit, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
-				4);
+		StringBundler sb = new StringBundler(
+			5 * attributeGetterFunctions.size() + 4);
 
 		sb.append("<model><model-name>");
 		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		for (Map.Entry<String, Function<WatsonReportAudit, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonReportAudit, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonReportAudit, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonReportAudit, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append("<column><column-name>");
 			sb.append(attributeName);
@@ -1637,10 +1747,12 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader = WatsonReportAudit.class.getClassLoader();
+	private static final ClassLoader _classLoader =
+		WatsonReportAudit.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			WatsonReportAudit.class, ModelWrapper.class
-		};
+		WatsonReportAudit.class, ModelWrapper.class
+	};
+
 	private long _watsonReportAuditId;
 	private long _groupId;
 	private long _companyId;
@@ -1667,4 +1779,5 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 	private int _key;
 	private int _status;
 	private WatsonReportAudit _escapedModel;
+
 }

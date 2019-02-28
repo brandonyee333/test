@@ -30,6 +30,7 @@ import java.util.List;
  */
 @ProviderType
 public class WatsonReportSoap implements Serializable {
+
 	public static WatsonReportSoap toSoapModel(WatsonReport model) {
 		WatsonReportSoap soapModel = new WatsonReportSoap();
 
@@ -84,7 +85,8 @@ public class WatsonReportSoap implements Serializable {
 	}
 
 	public static WatsonReportSoap[] toSoapModels(List<WatsonReport> models) {
-		List<WatsonReportSoap> soapModels = new ArrayList<WatsonReportSoap>(models.size());
+		List<WatsonReportSoap> soapModels = new ArrayList<WatsonReportSoap>(
+			models.size());
 
 		for (WatsonReport model : models) {
 			soapModels.add(toSoapModel(model));
@@ -275,4 +277,5 @@ public class WatsonReportSoap implements Serializable {
 	private Date _reportDate;
 	private int _key;
 	private int _status;
+
 }

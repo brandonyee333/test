@@ -30,6 +30,7 @@ import java.util.List;
  */
 @ProviderType
 public class WatsonResourceSoap implements Serializable {
+
 	public static WatsonResourceSoap toSoapModel(WatsonResource model) {
 		WatsonResourceSoap soapModel = new WatsonResourceSoap();
 
@@ -40,7 +41,8 @@ public class WatsonResourceSoap implements Serializable {
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
-		soapModel.setOriginalWatsonResourceId(model.getOriginalWatsonResourceId());
+		soapModel.setOriginalWatsonResourceId(
+			model.getOriginalWatsonResourceId());
 		soapModel.setTypeWatsonListTypeId(model.getTypeWatsonListTypeId());
 		soapModel.setWatsonIncidentId(model.getWatsonIncidentId());
 		soapModel.setName(model.getName());
@@ -61,11 +63,14 @@ public class WatsonResourceSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static WatsonResourceSoap[][] toSoapModels(WatsonResource[][] models) {
+	public static WatsonResourceSoap[][] toSoapModels(
+		WatsonResource[][] models) {
+
 		WatsonResourceSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new WatsonResourceSoap[models.length][models[0].length];
+			soapModels =
+				new WatsonResourceSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new WatsonResourceSoap[0][0];
@@ -78,8 +83,11 @@ public class WatsonResourceSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static WatsonResourceSoap[] toSoapModels(List<WatsonResource> models) {
-		List<WatsonResourceSoap> soapModels = new ArrayList<WatsonResourceSoap>(models.size());
+	public static WatsonResourceSoap[] toSoapModels(
+		List<WatsonResource> models) {
+
+		List<WatsonResourceSoap> soapModels = new ArrayList<WatsonResourceSoap>(
+			models.size());
 
 		for (WatsonResource model : models) {
 			soapModels.add(toSoapModel(model));
@@ -225,4 +233,5 @@ public class WatsonResourceSoap implements Serializable {
 	private String _description;
 	private String _imagePayload;
 	private int _status;
+
 }

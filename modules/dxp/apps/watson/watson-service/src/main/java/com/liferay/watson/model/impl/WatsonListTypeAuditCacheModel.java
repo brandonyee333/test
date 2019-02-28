@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.model.WatsonListTypeAudit;
 
 import java.io.Externalizable;
@@ -36,8 +35,9 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public class WatsonListTypeAuditCacheModel implements CacheModel<WatsonListTypeAudit>,
-	Externalizable {
+public class WatsonListTypeAuditCacheModel
+	implements CacheModel<WatsonListTypeAudit>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,9 +48,12 @@ public class WatsonListTypeAuditCacheModel implements CacheModel<WatsonListTypeA
 			return false;
 		}
 
-		WatsonListTypeAuditCacheModel watsonListTypeAuditCacheModel = (WatsonListTypeAuditCacheModel)obj;
+		WatsonListTypeAuditCacheModel watsonListTypeAuditCacheModel =
+			(WatsonListTypeAuditCacheModel)obj;
 
-		if (watsonListTypeAuditId == watsonListTypeAuditCacheModel.watsonListTypeAuditId) {
+		if (watsonListTypeAuditId ==
+				watsonListTypeAuditCacheModel.watsonListTypeAuditId) {
+
 			return true;
 		}
 
@@ -97,7 +100,8 @@ public class WatsonListTypeAuditCacheModel implements CacheModel<WatsonListTypeA
 
 	@Override
 	public WatsonListTypeAudit toEntityModel() {
-		WatsonListTypeAuditImpl watsonListTypeAuditImpl = new WatsonListTypeAuditImpl();
+		WatsonListTypeAuditImpl watsonListTypeAuditImpl =
+			new WatsonListTypeAuditImpl();
 
 		watsonListTypeAuditImpl.setWatsonListTypeAuditId(watsonListTypeAuditId);
 		watsonListTypeAuditImpl.setGroupId(groupId);
@@ -125,7 +129,8 @@ public class WatsonListTypeAuditCacheModel implements CacheModel<WatsonListTypeA
 			watsonListTypeAuditImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
-		watsonListTypeAuditImpl.setParentWatsonListTypeId(parentWatsonListTypeId);
+		watsonListTypeAuditImpl.setParentWatsonListTypeId(
+			parentWatsonListTypeId);
 		watsonListTypeAuditImpl.setWatsonListTypeId(watsonListTypeId);
 
 		if (name == null) {
@@ -172,8 +177,7 @@ public class WatsonListTypeAuditCacheModel implements CacheModel<WatsonListTypeA
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonListTypeAuditId);
 
 		objectOutput.writeLong(groupId);
@@ -225,4 +229,5 @@ public class WatsonListTypeAuditCacheModel implements CacheModel<WatsonListTypeA
 	public String name;
 	public String type;
 	public int status;
+
 }

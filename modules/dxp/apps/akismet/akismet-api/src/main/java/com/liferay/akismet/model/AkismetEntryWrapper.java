@@ -17,7 +17,6 @@ package com.liferay.akismet.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -38,8 +37,9 @@ import java.util.Objects;
  * @generated
  */
 @ProviderType
-public class AkismetEntryWrapper implements AkismetEntry,
-	ModelWrapper<AkismetEntry> {
+public class AkismetEntryWrapper
+	implements AkismetEntry, ModelWrapper<AkismetEntry> {
+
 	public AkismetEntryWrapper(AkismetEntry akismetEntry) {
 		_akismetEntry = akismetEntry;
 	}
@@ -146,40 +146,40 @@ public class AkismetEntryWrapper implements AkismetEntry,
 	}
 
 	/**
-	* Returns the akismet entry ID of this akismet entry.
-	*
-	* @return the akismet entry ID of this akismet entry
-	*/
+	 * Returns the akismet entry ID of this akismet entry.
+	 *
+	 * @return the akismet entry ID of this akismet entry
+	 */
 	@Override
 	public long getAkismetEntryId() {
 		return _akismetEntry.getAkismetEntryId();
 	}
 
 	/**
-	* Returns the fully qualified class name of this akismet entry.
-	*
-	* @return the fully qualified class name of this akismet entry
-	*/
+	 * Returns the fully qualified class name of this akismet entry.
+	 *
+	 * @return the fully qualified class name of this akismet entry
+	 */
 	@Override
 	public String getClassName() {
 		return _akismetEntry.getClassName();
 	}
 
 	/**
-	* Returns the class name ID of this akismet entry.
-	*
-	* @return the class name ID of this akismet entry
-	*/
+	 * Returns the class name ID of this akismet entry.
+	 *
+	 * @return the class name ID of this akismet entry
+	 */
 	@Override
 	public long getClassNameId() {
 		return _akismetEntry.getClassNameId();
 	}
 
 	/**
-	* Returns the class pk of this akismet entry.
-	*
-	* @return the class pk of this akismet entry
-	*/
+	 * Returns the class pk of this akismet entry.
+	 *
+	 * @return the class pk of this akismet entry
+	 */
 	@Override
 	public long getClassPK() {
 		return _akismetEntry.getClassPK();
@@ -191,30 +191,30 @@ public class AkismetEntryWrapper implements AkismetEntry,
 	}
 
 	/**
-	* Returns the modified date of this akismet entry.
-	*
-	* @return the modified date of this akismet entry
-	*/
+	 * Returns the modified date of this akismet entry.
+	 *
+	 * @return the modified date of this akismet entry
+	 */
 	@Override
 	public Date getModifiedDate() {
 		return _akismetEntry.getModifiedDate();
 	}
 
 	/**
-	* Returns the permalink of this akismet entry.
-	*
-	* @return the permalink of this akismet entry
-	*/
+	 * Returns the permalink of this akismet entry.
+	 *
+	 * @return the permalink of this akismet entry
+	 */
 	@Override
 	public String getPermalink() {
 		return _akismetEntry.getPermalink();
 	}
 
 	/**
-	* Returns the primary key of this akismet entry.
-	*
-	* @return the primary key of this akismet entry
-	*/
+	 * Returns the primary key of this akismet entry.
+	 *
+	 * @return the primary key of this akismet entry
+	 */
 	@Override
 	public long getPrimaryKey() {
 		return _akismetEntry.getPrimaryKey();
@@ -226,50 +226,50 @@ public class AkismetEntryWrapper implements AkismetEntry,
 	}
 
 	/**
-	* Returns the referrer of this akismet entry.
-	*
-	* @return the referrer of this akismet entry
-	*/
+	 * Returns the referrer of this akismet entry.
+	 *
+	 * @return the referrer of this akismet entry
+	 */
 	@Override
 	public String getReferrer() {
 		return _akismetEntry.getReferrer();
 	}
 
 	/**
-	* Returns the type of this akismet entry.
-	*
-	* @return the type of this akismet entry
-	*/
+	 * Returns the type of this akismet entry.
+	 *
+	 * @return the type of this akismet entry
+	 */
 	@Override
 	public String getType() {
 		return _akismetEntry.getType();
 	}
 
 	/**
-	* Returns the user agent of this akismet entry.
-	*
-	* @return the user agent of this akismet entry
-	*/
+	 * Returns the user agent of this akismet entry.
+	 *
+	 * @return the user agent of this akismet entry
+	 */
 	@Override
 	public String getUserAgent() {
 		return _akismetEntry.getUserAgent();
 	}
 
 	/**
-	* Returns the user ip of this akismet entry.
-	*
-	* @return the user ip of this akismet entry
-	*/
+	 * Returns the user ip of this akismet entry.
+	 *
+	 * @return the user ip of this akismet entry
+	 */
 	@Override
 	public String getUserIP() {
 		return _akismetEntry.getUserIP();
 	}
 
 	/**
-	* Returns the user url of this akismet entry.
-	*
-	* @return the user url of this akismet entry
-	*/
+	 * Returns the user url of this akismet entry.
+	 *
+	 * @return the user url of this akismet entry
+	 */
 	@Override
 	public String getUserURL() {
 		return _akismetEntry.getUserURL();
@@ -301,10 +301,10 @@ public class AkismetEntryWrapper implements AkismetEntry,
 	}
 
 	/**
-	* Sets the akismet entry ID of this akismet entry.
-	*
-	* @param akismetEntryId the akismet entry ID of this akismet entry
-	*/
+	 * Sets the akismet entry ID of this akismet entry.
+	 *
+	 * @param akismetEntryId the akismet entry ID of this akismet entry
+	 */
 	@Override
 	public void setAkismetEntryId(long akismetEntryId) {
 		_akismetEntry.setAkismetEntryId(akismetEntryId);
@@ -321,20 +321,20 @@ public class AkismetEntryWrapper implements AkismetEntry,
 	}
 
 	/**
-	* Sets the class name ID of this akismet entry.
-	*
-	* @param classNameId the class name ID of this akismet entry
-	*/
+	 * Sets the class name ID of this akismet entry.
+	 *
+	 * @param classNameId the class name ID of this akismet entry
+	 */
 	@Override
 	public void setClassNameId(long classNameId) {
 		_akismetEntry.setClassNameId(classNameId);
 	}
 
 	/**
-	* Sets the class pk of this akismet entry.
-	*
-	* @param classPK the class pk of this akismet entry
-	*/
+	 * Sets the class pk of this akismet entry.
+	 *
+	 * @param classPK the class pk of this akismet entry
+	 */
 	@Override
 	public void setClassPK(long classPK) {
 		_akismetEntry.setClassPK(classPK);
@@ -343,6 +343,7 @@ public class AkismetEntryWrapper implements AkismetEntry,
 	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
 		_akismetEntry.setExpandoBridgeAttributes(baseModel);
 	}
 
@@ -357,10 +358,10 @@ public class AkismetEntryWrapper implements AkismetEntry,
 	}
 
 	/**
-	* Sets the modified date of this akismet entry.
-	*
-	* @param modifiedDate the modified date of this akismet entry
-	*/
+	 * Sets the modified date of this akismet entry.
+	 *
+	 * @param modifiedDate the modified date of this akismet entry
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_akismetEntry.setModifiedDate(modifiedDate);
@@ -372,20 +373,20 @@ public class AkismetEntryWrapper implements AkismetEntry,
 	}
 
 	/**
-	* Sets the permalink of this akismet entry.
-	*
-	* @param permalink the permalink of this akismet entry
-	*/
+	 * Sets the permalink of this akismet entry.
+	 *
+	 * @param permalink the permalink of this akismet entry
+	 */
 	@Override
 	public void setPermalink(String permalink) {
 		_akismetEntry.setPermalink(permalink);
 	}
 
 	/**
-	* Sets the primary key of this akismet entry.
-	*
-	* @param primaryKey the primary key of this akismet entry
-	*/
+	 * Sets the primary key of this akismet entry.
+	 *
+	 * @param primaryKey the primary key of this akismet entry
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_akismetEntry.setPrimaryKey(primaryKey);
@@ -397,57 +398,59 @@ public class AkismetEntryWrapper implements AkismetEntry,
 	}
 
 	/**
-	* Sets the referrer of this akismet entry.
-	*
-	* @param referrer the referrer of this akismet entry
-	*/
+	 * Sets the referrer of this akismet entry.
+	 *
+	 * @param referrer the referrer of this akismet entry
+	 */
 	@Override
 	public void setReferrer(String referrer) {
 		_akismetEntry.setReferrer(referrer);
 	}
 
 	/**
-	* Sets the type of this akismet entry.
-	*
-	* @param type the type of this akismet entry
-	*/
+	 * Sets the type of this akismet entry.
+	 *
+	 * @param type the type of this akismet entry
+	 */
 	@Override
 	public void setType(String type) {
 		_akismetEntry.setType(type);
 	}
 
 	/**
-	* Sets the user agent of this akismet entry.
-	*
-	* @param userAgent the user agent of this akismet entry
-	*/
+	 * Sets the user agent of this akismet entry.
+	 *
+	 * @param userAgent the user agent of this akismet entry
+	 */
 	@Override
 	public void setUserAgent(String userAgent) {
 		_akismetEntry.setUserAgent(userAgent);
 	}
 
 	/**
-	* Sets the user ip of this akismet entry.
-	*
-	* @param userIP the user ip of this akismet entry
-	*/
+	 * Sets the user ip of this akismet entry.
+	 *
+	 * @param userIP the user ip of this akismet entry
+	 */
 	@Override
 	public void setUserIP(String userIP) {
 		_akismetEntry.setUserIP(userIP);
 	}
 
 	/**
-	* Sets the user url of this akismet entry.
-	*
-	* @param userURL the user url of this akismet entry
-	*/
+	 * Sets the user url of this akismet entry.
+	 *
+	 * @param userURL the user url of this akismet entry
+	 */
 	@Override
 	public void setUserURL(String userURL) {
 		_akismetEntry.setUserURL(userURL);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<AkismetEntry> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<AkismetEntry>
+		toCacheModel() {
+
 		return _akismetEntry.toCacheModel();
 	}
 
@@ -511,4 +514,5 @@ public class AkismetEntryWrapper implements AkismetEntry,
 	}
 
 	private final AkismetEntry _akismetEntry;
+
 }

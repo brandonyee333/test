@@ -30,6 +30,7 @@ import java.util.List;
  */
 @ProviderType
 public class WatsonChildSoap implements Serializable {
+
 	public static WatsonChildSoap toSoapModel(WatsonChild model) {
 		WatsonChildSoap soapModel = new WatsonChildSoap();
 
@@ -41,13 +42,18 @@ public class WatsonChildSoap implements Serializable {
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
 		soapModel.setBirthCountryId(model.getBirthCountryId());
-		soapModel.setCitizenshipWatsonListTypeId(model.getCitizenshipWatsonListTypeId());
-		soapModel.setCountryWatsonListTypeId(model.getCountryWatsonListTypeId());
-		soapModel.setDischargeWatsonListTypeId(model.getDischargeWatsonListTypeId());
-		soapModel.setEthnicityWatsonListTypeId(model.getEthnicityWatsonListTypeId());
+		soapModel.setCitizenshipWatsonListTypeId(
+			model.getCitizenshipWatsonListTypeId());
+		soapModel.setCountryWatsonListTypeId(
+			model.getCountryWatsonListTypeId());
+		soapModel.setDischargeWatsonListTypeId(
+			model.getDischargeWatsonListTypeId());
+		soapModel.setEthnicityWatsonListTypeId(
+			model.getEthnicityWatsonListTypeId());
 		soapModel.setOriginalWatsonPersonId(model.getOriginalWatsonPersonId());
 		soapModel.setSexWatsonListTypeId(model.getSexWatsonListTypeId());
-		soapModel.setSourceSubtypeWatsonListTypeId(model.getSourceSubtypeWatsonListTypeId());
+		soapModel.setSourceSubtypeWatsonListTypeId(
+			model.getSourceSubtypeWatsonListTypeId());
 		soapModel.setSourceWatsonListTypeId(model.getSourceWatsonListTypeId());
 		soapModel.setTypeWatsonListTypeId(model.getTypeWatsonListTypeId());
 		soapModel.setDateAccepted(model.getDateAccepted());
@@ -87,7 +93,8 @@ public class WatsonChildSoap implements Serializable {
 	}
 
 	public static WatsonChildSoap[] toSoapModels(List<WatsonChild> models) {
-		List<WatsonChildSoap> soapModels = new ArrayList<WatsonChildSoap>(models.size());
+		List<WatsonChildSoap> soapModels = new ArrayList<WatsonChildSoap>(
+			models.size());
 
 		for (WatsonChild model : models) {
 			soapModels.add(toSoapModel(model));
@@ -175,7 +182,9 @@ public class WatsonChildSoap implements Serializable {
 		return _citizenshipWatsonListTypeId;
 	}
 
-	public void setCitizenshipWatsonListTypeId(long citizenshipWatsonListTypeId) {
+	public void setCitizenshipWatsonListTypeId(
+		long citizenshipWatsonListTypeId) {
+
 		_citizenshipWatsonListTypeId = citizenshipWatsonListTypeId;
 	}
 
@@ -225,6 +234,7 @@ public class WatsonChildSoap implements Serializable {
 
 	public void setSourceSubtypeWatsonListTypeId(
 		long sourceSubtypeWatsonListTypeId) {
+
 		_sourceSubtypeWatsonListTypeId = sourceSubtypeWatsonListTypeId;
 	}
 
@@ -306,4 +316,5 @@ public class WatsonChildSoap implements Serializable {
 	private Date _dateFollowUp;
 	private String _source;
 	private int _status;
+
 }

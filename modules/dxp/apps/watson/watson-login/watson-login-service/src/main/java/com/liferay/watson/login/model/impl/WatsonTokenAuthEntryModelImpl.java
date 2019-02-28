@@ -18,7 +18,6 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
@@ -31,7 +30,6 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.login.model.WatsonTokenAuthEntry;
 import com.liferay.watson.login.model.WatsonTokenAuthEntryModel;
 import com.liferay.watson.login.model.WatsonTokenAuthEntrySoap;
@@ -63,28 +61,28 @@ import java.util.function.Function;
  */
 @JSON(strict = true)
 @ProviderType
-public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuthEntry>
+public class WatsonTokenAuthEntryModelImpl
+	extends BaseModelImpl<WatsonTokenAuthEntry>
 	implements WatsonTokenAuthEntryModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson token auth entry model instance should use the <code>WatsonTokenAuthEntry</code> interface instead.
 	 */
 	public static final String TABLE_NAME = "WatsonTokenAuthEntry";
+
 	public static final Object[][] TABLE_COLUMNS = {
-			{ "watsonTokenAuthEntryId", Types.BIGINT },
-			{ "companyId", Types.BIGINT },
-			{ "userId", Types.BIGINT },
-			{ "userName", Types.VARCHAR },
-			{ "createDate", Types.TIMESTAMP },
-			{ "active_", Types.BOOLEAN },
-			{ "loginIP", Types.VARCHAR },
-			{ "token", Types.VARCHAR },
-			{ "expirationDate", Types.TIMESTAMP },
-			{ "loginDate", Types.TIMESTAMP },
-			{ "status", Types.INTEGER }
-		};
-	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
+		{"watsonTokenAuthEntryId", Types.BIGINT}, {"companyId", Types.BIGINT},
+		{"userId", Types.BIGINT}, {"userName", Types.VARCHAR},
+		{"createDate", Types.TIMESTAMP}, {"active_", Types.BOOLEAN},
+		{"loginIP", Types.VARCHAR}, {"token", Types.VARCHAR},
+		{"expirationDate", Types.TIMESTAMP}, {"loginDate", Types.TIMESTAMP},
+		{"status", Types.INTEGER}
+	};
+
+	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
+		new HashMap<String, Integer>();
 
 	static {
 		TABLE_COLUMNS_MAP.put("watsonTokenAuthEntryId", Types.BIGINT);
@@ -100,24 +98,43 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonTokenAuthEntry (watsonTokenAuthEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,active_ BOOLEAN,loginIP VARCHAR(75) null,token VARCHAR(75) null,expirationDate DATE null,loginDate DATE null,status INTEGER)";
-	public static final String TABLE_SQL_DROP = "drop table WatsonTokenAuthEntry";
-	public static final String ORDER_BY_JPQL = " ORDER BY watsonTokenAuthEntry.watsonTokenAuthEntryId ASC";
-	public static final String ORDER_BY_SQL = " ORDER BY WatsonTokenAuthEntry.watsonTokenAuthEntryId ASC";
+	public static final String TABLE_SQL_CREATE =
+		"create table WatsonTokenAuthEntry (watsonTokenAuthEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,active_ BOOLEAN,loginIP VARCHAR(75) null,token VARCHAR(75) null,expirationDate DATE null,loginDate DATE null,status INTEGER)";
+
+	public static final String TABLE_SQL_DROP =
+		"drop table WatsonTokenAuthEntry";
+
+	public static final String ORDER_BY_JPQL =
+		" ORDER BY watsonTokenAuthEntry.watsonTokenAuthEntryId ASC";
+
+	public static final String ORDER_BY_SQL =
+		" ORDER BY WatsonTokenAuthEntry.watsonTokenAuthEntryId ASC";
+
 	public static final String DATA_SOURCE = "liferayDataSource";
+
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
+
 	public static final String TX_MANAGER = "liferayTransactionManager";
-	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.login.service.util.ServiceProps.get(
-				"value.object.entity.cache.enabled.com.liferay.watson.login.model.WatsonTokenAuthEntry"),
-			true);
-	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.watson.login.service.util.ServiceProps.get(
-				"value.object.finder.cache.enabled.com.liferay.watson.login.model.WatsonTokenAuthEntry"),
-			true);
-	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.watson.login.service.util.ServiceProps.get(
-				"value.object.column.bitmask.enabled.com.liferay.watson.login.model.WatsonTokenAuthEntry"),
-			true);
+
+	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.login.service.util.ServiceProps.get(
+			"value.object.entity.cache.enabled.com.liferay.watson.login.model.WatsonTokenAuthEntry"),
+		true);
+
+	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.login.service.util.ServiceProps.get(
+			"value.object.finder.cache.enabled.com.liferay.watson.login.model.WatsonTokenAuthEntry"),
+		true);
+
+	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(
+		com.liferay.watson.login.service.util.ServiceProps.get(
+			"value.object.column.bitmask.enabled.com.liferay.watson.login.model.WatsonTokenAuthEntry"),
+		true);
+
 	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+
 	public static final long USERID_COLUMN_BITMASK = 2L;
+
 	public static final long WATSONTOKENAUTHENTRYID_COLUMN_BITMASK = 4L;
 
 	/**
@@ -128,6 +145,7 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 	 */
 	public static WatsonTokenAuthEntry toModel(
 		WatsonTokenAuthEntrySoap soapModel) {
+
 		if (soapModel == null) {
 			return null;
 		}
@@ -157,11 +175,13 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 	 */
 	public static List<WatsonTokenAuthEntry> toModels(
 		WatsonTokenAuthEntrySoap[] soapModels) {
+
 		if (soapModels == null) {
 			return null;
 		}
 
-		List<WatsonTokenAuthEntry> models = new ArrayList<WatsonTokenAuthEntry>(soapModels.length);
+		List<WatsonTokenAuthEntry> models = new ArrayList<WatsonTokenAuthEntry>(
+			soapModels.length);
 
 		for (WatsonTokenAuthEntrySoap soapModel : soapModels) {
 			models.add(toModel(soapModel));
@@ -170,8 +190,9 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 		return models;
 	}
 
-	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.watson.login.service.util.ServiceProps.get(
-				"lock.expiration.time.com.liferay.watson.login.model.WatsonTokenAuthEntry"));
+	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
+		com.liferay.watson.login.service.util.ServiceProps.get(
+			"lock.expiration.time.com.liferay.watson.login.model.WatsonTokenAuthEntry"));
 
 	public WatsonTokenAuthEntryModelImpl() {
 	}
@@ -210,14 +231,18 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		Map<String, Function<WatsonTokenAuthEntry, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonTokenAuthEntry, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		for (Map.Entry<String, Function<WatsonTokenAuthEntry, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonTokenAuthEntry, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonTokenAuthEntry, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonTokenAuthEntry, Object> attributeGetterFunction =
+				entry.getValue();
 
-			attributes.put(attributeName,
+			attributes.put(
+				attributeName,
 				attributeGetterFunction.apply((WatsonTokenAuthEntry)this));
 		}
 
@@ -229,38 +254,48 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		Map<String, BiConsumer<WatsonTokenAuthEntry, Object>> attributeSetterBiConsumers =
-			getAttributeSetterBiConsumers();
+		Map<String, BiConsumer<WatsonTokenAuthEntry, Object>>
+			attributeSetterBiConsumers = getAttributeSetterBiConsumers();
 
 		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			String attributeName = entry.getKey();
 
-			BiConsumer<WatsonTokenAuthEntry, Object> attributeSetterBiConsumer = attributeSetterBiConsumers.get(attributeName);
+			BiConsumer<WatsonTokenAuthEntry, Object> attributeSetterBiConsumer =
+				attributeSetterBiConsumers.get(attributeName);
 
 			if (attributeSetterBiConsumer != null) {
-				attributeSetterBiConsumer.accept((WatsonTokenAuthEntry)this,
-					entry.getValue());
+				attributeSetterBiConsumer.accept(
+					(WatsonTokenAuthEntry)this, entry.getValue());
 			}
 		}
 	}
 
-	public Map<String, Function<WatsonTokenAuthEntry, Object>> getAttributeGetterFunctions() {
+	public Map<String, Function<WatsonTokenAuthEntry, Object>>
+		getAttributeGetterFunctions() {
+
 		return _attributeGetterFunctions;
 	}
 
-	public Map<String, BiConsumer<WatsonTokenAuthEntry, Object>> getAttributeSetterBiConsumers() {
+	public Map<String, BiConsumer<WatsonTokenAuthEntry, Object>>
+		getAttributeSetterBiConsumers() {
+
 		return _attributeSetterBiConsumers;
 	}
 
-	private static final Map<String, Function<WatsonTokenAuthEntry, Object>> _attributeGetterFunctions;
-	private static final Map<String, BiConsumer<WatsonTokenAuthEntry, Object>> _attributeSetterBiConsumers;
+	private static final Map<String, Function<WatsonTokenAuthEntry, Object>>
+		_attributeGetterFunctions;
+	private static final Map<String, BiConsumer<WatsonTokenAuthEntry, Object>>
+		_attributeSetterBiConsumers;
 
 	static {
-		Map<String, Function<WatsonTokenAuthEntry, Object>> attributeGetterFunctions =
-			new LinkedHashMap<String, Function<WatsonTokenAuthEntry, Object>>();
-		Map<String, BiConsumer<WatsonTokenAuthEntry, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<WatsonTokenAuthEntry, ?>>();
-
+		Map<String, Function<WatsonTokenAuthEntry, Object>>
+			attributeGetterFunctions =
+				new LinkedHashMap
+					<String, Function<WatsonTokenAuthEntry, Object>>();
+		Map<String, BiConsumer<WatsonTokenAuthEntry, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap
+					<String, BiConsumer<WatsonTokenAuthEntry, ?>>();
 
 		attributeGetterFunctions.put(
 			"watsonTokenAuthEntryId",
@@ -277,8 +312,12 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 			new BiConsumer<WatsonTokenAuthEntry, Object>() {
 
 				@Override
-				public void accept(WatsonTokenAuthEntry watsonTokenAuthEntry, Object watsonTokenAuthEntryId) {
-					watsonTokenAuthEntry.setWatsonTokenAuthEntryId((Long)watsonTokenAuthEntryId);
+				public void accept(
+					WatsonTokenAuthEntry watsonTokenAuthEntry,
+					Object watsonTokenAuthEntryId) {
+
+					watsonTokenAuthEntry.setWatsonTokenAuthEntryId(
+						(Long)watsonTokenAuthEntryId);
 				}
 
 			});
@@ -297,7 +336,10 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 			new BiConsumer<WatsonTokenAuthEntry, Object>() {
 
 				@Override
-				public void accept(WatsonTokenAuthEntry watsonTokenAuthEntry, Object companyId) {
+				public void accept(
+					WatsonTokenAuthEntry watsonTokenAuthEntry,
+					Object companyId) {
+
 					watsonTokenAuthEntry.setCompanyId((Long)companyId);
 				}
 
@@ -317,7 +359,9 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 			new BiConsumer<WatsonTokenAuthEntry, Object>() {
 
 				@Override
-				public void accept(WatsonTokenAuthEntry watsonTokenAuthEntry, Object userId) {
+				public void accept(
+					WatsonTokenAuthEntry watsonTokenAuthEntry, Object userId) {
+
 					watsonTokenAuthEntry.setUserId((Long)userId);
 				}
 
@@ -337,7 +381,10 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 			new BiConsumer<WatsonTokenAuthEntry, Object>() {
 
 				@Override
-				public void accept(WatsonTokenAuthEntry watsonTokenAuthEntry, Object userName) {
+				public void accept(
+					WatsonTokenAuthEntry watsonTokenAuthEntry,
+					Object userName) {
+
 					watsonTokenAuthEntry.setUserName((String)userName);
 				}
 
@@ -357,7 +404,10 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 			new BiConsumer<WatsonTokenAuthEntry, Object>() {
 
 				@Override
-				public void accept(WatsonTokenAuthEntry watsonTokenAuthEntry, Object createDate) {
+				public void accept(
+					WatsonTokenAuthEntry watsonTokenAuthEntry,
+					Object createDate) {
+
 					watsonTokenAuthEntry.setCreateDate((Date)createDate);
 				}
 
@@ -377,7 +427,9 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 			new BiConsumer<WatsonTokenAuthEntry, Object>() {
 
 				@Override
-				public void accept(WatsonTokenAuthEntry watsonTokenAuthEntry, Object active) {
+				public void accept(
+					WatsonTokenAuthEntry watsonTokenAuthEntry, Object active) {
+
 					watsonTokenAuthEntry.setActive((Boolean)active);
 				}
 
@@ -397,7 +449,9 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 			new BiConsumer<WatsonTokenAuthEntry, Object>() {
 
 				@Override
-				public void accept(WatsonTokenAuthEntry watsonTokenAuthEntry, Object loginIP) {
+				public void accept(
+					WatsonTokenAuthEntry watsonTokenAuthEntry, Object loginIP) {
+
 					watsonTokenAuthEntry.setLoginIP((String)loginIP);
 				}
 
@@ -417,7 +471,9 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 			new BiConsumer<WatsonTokenAuthEntry, Object>() {
 
 				@Override
-				public void accept(WatsonTokenAuthEntry watsonTokenAuthEntry, Object token) {
+				public void accept(
+					WatsonTokenAuthEntry watsonTokenAuthEntry, Object token) {
+
 					watsonTokenAuthEntry.setToken((String)token);
 				}
 
@@ -437,8 +493,12 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 			new BiConsumer<WatsonTokenAuthEntry, Object>() {
 
 				@Override
-				public void accept(WatsonTokenAuthEntry watsonTokenAuthEntry, Object expirationDate) {
-					watsonTokenAuthEntry.setExpirationDate((Date)expirationDate);
+				public void accept(
+					WatsonTokenAuthEntry watsonTokenAuthEntry,
+					Object expirationDate) {
+
+					watsonTokenAuthEntry.setExpirationDate(
+						(Date)expirationDate);
 				}
 
 			});
@@ -457,7 +517,10 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 			new BiConsumer<WatsonTokenAuthEntry, Object>() {
 
 				@Override
-				public void accept(WatsonTokenAuthEntry watsonTokenAuthEntry, Object loginDate) {
+				public void accept(
+					WatsonTokenAuthEntry watsonTokenAuthEntry,
+					Object loginDate) {
+
 					watsonTokenAuthEntry.setLoginDate((Date)loginDate);
 				}
 
@@ -477,15 +540,18 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 			new BiConsumer<WatsonTokenAuthEntry, Object>() {
 
 				@Override
-				public void accept(WatsonTokenAuthEntry watsonTokenAuthEntry, Object status) {
+				public void accept(
+					WatsonTokenAuthEntry watsonTokenAuthEntry, Object status) {
+
 					watsonTokenAuthEntry.setStatus((Integer)status);
 				}
 
 			});
 
-
-		_attributeGetterFunctions = Collections.unmodifiableMap(attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap((Map)attributeSetterBiConsumers);
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+		_attributeSetterBiConsumers = Collections.unmodifiableMap(
+			(Map)attributeSetterBiConsumers);
 	}
 
 	@JSON
@@ -676,8 +742,9 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 
 	@Override
 	public ExpandoBridge getExpandoBridge() {
-		return ExpandoBridgeFactoryUtil.getExpandoBridge(getCompanyId(),
-			WatsonTokenAuthEntry.class.getName(), getPrimaryKey());
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(
+			getCompanyId(), WatsonTokenAuthEntry.class.getName(),
+			getPrimaryKey());
 	}
 
 	@Override
@@ -690,8 +757,9 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 	@Override
 	public WatsonTokenAuthEntry toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonTokenAuthEntry)ProxyUtil.newProxyInstance(_classLoader,
-					_escapedModelInterfaces, new AutoEscapeBeanHandler(this));
+			_escapedModel = (WatsonTokenAuthEntry)ProxyUtil.newProxyInstance(
+				_classLoader, _escapedModelInterfaces,
+				new AutoEscapeBeanHandler(this));
 		}
 
 		return _escapedModel;
@@ -699,9 +767,11 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 
 	@Override
 	public Object clone() {
-		WatsonTokenAuthEntryImpl watsonTokenAuthEntryImpl = new WatsonTokenAuthEntryImpl();
+		WatsonTokenAuthEntryImpl watsonTokenAuthEntryImpl =
+			new WatsonTokenAuthEntryImpl();
 
-		watsonTokenAuthEntryImpl.setWatsonTokenAuthEntryId(getWatsonTokenAuthEntryId());
+		watsonTokenAuthEntryImpl.setWatsonTokenAuthEntryId(
+			getWatsonTokenAuthEntryId());
 		watsonTokenAuthEntryImpl.setCompanyId(getCompanyId());
 		watsonTokenAuthEntryImpl.setUserId(getUserId());
 		watsonTokenAuthEntryImpl.setUserName(getUserName());
@@ -774,11 +844,13 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 	public void resetOriginalValues() {
 		WatsonTokenAuthEntryModelImpl watsonTokenAuthEntryModelImpl = this;
 
-		watsonTokenAuthEntryModelImpl._originalCompanyId = watsonTokenAuthEntryModelImpl._companyId;
+		watsonTokenAuthEntryModelImpl._originalCompanyId =
+			watsonTokenAuthEntryModelImpl._companyId;
 
 		watsonTokenAuthEntryModelImpl._setOriginalCompanyId = false;
 
-		watsonTokenAuthEntryModelImpl._originalUserId = watsonTokenAuthEntryModelImpl._userId;
+		watsonTokenAuthEntryModelImpl._originalUserId =
+			watsonTokenAuthEntryModelImpl._userId;
 
 		watsonTokenAuthEntryModelImpl._setOriginalUserId = false;
 
@@ -787,9 +859,11 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 
 	@Override
 	public CacheModel<WatsonTokenAuthEntry> toCacheModel() {
-		WatsonTokenAuthEntryCacheModel watsonTokenAuthEntryCacheModel = new WatsonTokenAuthEntryCacheModel();
+		WatsonTokenAuthEntryCacheModel watsonTokenAuthEntryCacheModel =
+			new WatsonTokenAuthEntryCacheModel();
 
-		watsonTokenAuthEntryCacheModel.watsonTokenAuthEntryId = getWatsonTokenAuthEntryId();
+		watsonTokenAuthEntryCacheModel.watsonTokenAuthEntryId =
+			getWatsonTokenAuthEntryId();
 
 		watsonTokenAuthEntryCacheModel.companyId = getCompanyId();
 
@@ -833,7 +907,8 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 		Date expirationDate = getExpirationDate();
 
 		if (expirationDate != null) {
-			watsonTokenAuthEntryCacheModel.expirationDate = expirationDate.getTime();
+			watsonTokenAuthEntryCacheModel.expirationDate =
+				expirationDate.getTime();
 		}
 		else {
 			watsonTokenAuthEntryCacheModel.expirationDate = Long.MIN_VALUE;
@@ -855,21 +930,25 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 
 	@Override
 	public String toString() {
-		Map<String, Function<WatsonTokenAuthEntry, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonTokenAuthEntry, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((4 * attributeGetterFunctions.size()) +
-				2);
+		StringBundler sb = new StringBundler(
+			4 * attributeGetterFunctions.size() + 2);
 
 		sb.append("{");
 
-		for (Map.Entry<String, Function<WatsonTokenAuthEntry, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonTokenAuthEntry, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonTokenAuthEntry, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonTokenAuthEntry, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append(attributeName);
 			sb.append("=");
-			sb.append(attributeGetterFunction.apply((WatsonTokenAuthEntry)this));
+			sb.append(
+				attributeGetterFunction.apply((WatsonTokenAuthEntry)this));
 			sb.append(", ");
 		}
 
@@ -884,24 +963,28 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 
 	@Override
 	public String toXmlString() {
-		Map<String, Function<WatsonTokenAuthEntry, Object>> attributeGetterFunctions =
-			getAttributeGetterFunctions();
+		Map<String, Function<WatsonTokenAuthEntry, Object>>
+			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		StringBundler sb = new StringBundler((5 * attributeGetterFunctions.size()) +
-				4);
+		StringBundler sb = new StringBundler(
+			5 * attributeGetterFunctions.size() + 4);
 
 		sb.append("<model><model-name>");
 		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		for (Map.Entry<String, Function<WatsonTokenAuthEntry, Object>> entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<WatsonTokenAuthEntry, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
+
 			String attributeName = entry.getKey();
-			Function<WatsonTokenAuthEntry, Object> attributeGetterFunction = entry.getValue();
+			Function<WatsonTokenAuthEntry, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append("<column><column-name>");
 			sb.append(attributeName);
 			sb.append("</column-name><column-value><![CDATA[");
-			sb.append(attributeGetterFunction.apply((WatsonTokenAuthEntry)this));
+			sb.append(
+				attributeGetterFunction.apply((WatsonTokenAuthEntry)this));
 			sb.append("]]></column-value></column>");
 		}
 
@@ -910,10 +993,12 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader = WatsonTokenAuthEntry.class.getClassLoader();
+	private static final ClassLoader _classLoader =
+		WatsonTokenAuthEntry.class.getClassLoader();
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-			WatsonTokenAuthEntry.class, ModelWrapper.class
-		};
+		WatsonTokenAuthEntry.class, ModelWrapper.class
+	};
+
 	private long _watsonTokenAuthEntryId;
 	private long _companyId;
 	private long _originalCompanyId;
@@ -931,4 +1016,5 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 	private int _status;
 	private long _columnBitmask;
 	private WatsonTokenAuthEntry _escapedModel;
+
 }

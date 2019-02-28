@@ -30,13 +30,15 @@ import com.liferay.portal.kernel.util.Accessor;
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonIncidentImpl")
 @ProviderType
 public interface WatsonIncident extends WatsonIncidentModel, PersistedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonIncidentImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<WatsonIncident, Long> WATSON_INCIDENT_ID_ACCESSOR =
-		new Accessor<WatsonIncident, Long>() {
+	public static final Accessor<WatsonIncident, Long>
+		WATSON_INCIDENT_ID_ACCESSOR = new Accessor<WatsonIncident, Long>() {
+
 			@Override
 			public Long get(WatsonIncident watsonIncident) {
 				return watsonIncident.getWatsonIncidentId();
@@ -51,5 +53,7 @@ public interface WatsonIncident extends WatsonIncidentModel, PersistedModel {
 			public Class<WatsonIncident> getTypeClass() {
 				return WatsonIncident.class;
 			}
+
 		};
+
 }

@@ -32,8 +32,9 @@ import com.liferay.watson.service.WatsonActivityLocalServiceUtil;
  * @generated
  */
 @ProviderType
-public abstract class WatsonActivityBaseImpl extends WatsonActivityModelImpl
-	implements WatsonActivity {
+public abstract class WatsonActivityBaseImpl
+	extends WatsonActivityModelImpl implements WatsonActivity {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -48,4 +49,5 @@ public abstract class WatsonActivityBaseImpl extends WatsonActivityModelImpl
 			WatsonActivityLocalServiceUtil.updateWatsonActivity(this);
 		}
 	}
+
 }

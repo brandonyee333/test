@@ -30,6 +30,7 @@ import java.util.List;
  */
 @ProviderType
 public class WatsonDocumentSoap implements Serializable {
+
 	public static WatsonDocumentSoap toSoapModel(WatsonDocument model) {
 		WatsonDocumentSoap soapModel = new WatsonDocumentSoap();
 
@@ -40,8 +41,10 @@ public class WatsonDocumentSoap implements Serializable {
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
-		soapModel.setParentTypeWatsonListTypeId(model.getParentTypeWatsonListTypeId());
-		soapModel.setSubtypeWatsonListTypeId(model.getSubtypeWatsonListTypeId());
+		soapModel.setParentTypeWatsonListTypeId(
+			model.getParentTypeWatsonListTypeId());
+		soapModel.setSubtypeWatsonListTypeId(
+			model.getSubtypeWatsonListTypeId());
 		soapModel.setTypeWatsonListTypeId(model.getTypeWatsonListTypeId());
 		soapModel.setWatsonChildId(model.getWatsonChildId());
 		soapModel.setOriginalDocument(model.isOriginalDocument());
@@ -62,11 +65,14 @@ public class WatsonDocumentSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static WatsonDocumentSoap[][] toSoapModels(WatsonDocument[][] models) {
+	public static WatsonDocumentSoap[][] toSoapModels(
+		WatsonDocument[][] models) {
+
 		WatsonDocumentSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new WatsonDocumentSoap[models.length][models[0].length];
+			soapModels =
+				new WatsonDocumentSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new WatsonDocumentSoap[0][0];
@@ -79,8 +85,11 @@ public class WatsonDocumentSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static WatsonDocumentSoap[] toSoapModels(List<WatsonDocument> models) {
-		List<WatsonDocumentSoap> soapModels = new ArrayList<WatsonDocumentSoap>(models.size());
+	public static WatsonDocumentSoap[] toSoapModels(
+		List<WatsonDocument> models) {
+
+		List<WatsonDocumentSoap> soapModels = new ArrayList<WatsonDocumentSoap>(
+			models.size());
 
 		for (WatsonDocument model : models) {
 			soapModels.add(toSoapModel(model));
@@ -239,4 +248,5 @@ public class WatsonDocumentSoap implements Serializable {
 	private Date _receivedDate;
 	private String _imagePayload;
 	private int _status;
+
 }

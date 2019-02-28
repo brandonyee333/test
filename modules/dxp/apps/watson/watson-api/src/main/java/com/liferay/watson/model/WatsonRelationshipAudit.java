@@ -27,30 +27,40 @@ import com.liferay.portal.kernel.util.Accessor;
  * @see WatsonRelationshipAuditModel
  * @generated
  */
-@ImplementationClassName("com.liferay.watson.model.impl.WatsonRelationshipAuditImpl")
+@ImplementationClassName(
+	"com.liferay.watson.model.impl.WatsonRelationshipAuditImpl"
+)
 @ProviderType
-public interface WatsonRelationshipAudit extends WatsonRelationshipAuditModel,
-	PersistedModel {
+public interface WatsonRelationshipAudit
+	extends WatsonRelationshipAuditModel, PersistedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonRelationshipAuditImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<WatsonRelationshipAudit, Long> WATSON_RELATIONSHIP_AUDIT_ID_ACCESSOR =
-		new Accessor<WatsonRelationshipAudit, Long>() {
-			@Override
-			public Long get(WatsonRelationshipAudit watsonRelationshipAudit) {
-				return watsonRelationshipAudit.getWatsonRelationshipAuditId();
-			}
+	public static final Accessor<WatsonRelationshipAudit, Long>
+		WATSON_RELATIONSHIP_AUDIT_ID_ACCESSOR =
+			new Accessor<WatsonRelationshipAudit, Long>() {
 
-			@Override
-			public Class<Long> getAttributeClass() {
-				return Long.class;
-			}
+				@Override
+				public Long get(
+					WatsonRelationshipAudit watsonRelationshipAudit) {
 
-			@Override
-			public Class<WatsonRelationshipAudit> getTypeClass() {
-				return WatsonRelationshipAudit.class;
-			}
-		};
+					return watsonRelationshipAudit.
+						getWatsonRelationshipAuditId();
+				}
+
+				@Override
+				public Class<Long> getAttributeClass() {
+					return Long.class;
+				}
+
+				@Override
+				public Class<WatsonRelationshipAudit> getTypeClass() {
+					return WatsonRelationshipAudit.class;
+				}
+
+			};
+
 }

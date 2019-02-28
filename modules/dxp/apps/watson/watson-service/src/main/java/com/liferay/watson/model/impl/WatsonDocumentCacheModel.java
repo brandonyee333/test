@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-
 import com.liferay.watson.model.WatsonDocument;
 
 import java.io.Externalizable;
@@ -36,8 +35,9 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public class WatsonDocumentCacheModel implements CacheModel<WatsonDocument>,
-	Externalizable {
+public class WatsonDocumentCacheModel
+	implements CacheModel<WatsonDocument>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -48,7 +48,8 @@ public class WatsonDocumentCacheModel implements CacheModel<WatsonDocument>,
 			return false;
 		}
 
-		WatsonDocumentCacheModel watsonDocumentCacheModel = (WatsonDocumentCacheModel)obj;
+		WatsonDocumentCacheModel watsonDocumentCacheModel =
+			(WatsonDocumentCacheModel)obj;
 
 		if (watsonDocumentId == watsonDocumentCacheModel.watsonDocumentId) {
 			return true;
@@ -131,7 +132,8 @@ public class WatsonDocumentCacheModel implements CacheModel<WatsonDocument>,
 			watsonDocumentImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
-		watsonDocumentImpl.setParentTypeWatsonListTypeId(parentTypeWatsonListTypeId);
+		watsonDocumentImpl.setParentTypeWatsonListTypeId(
+			parentTypeWatsonListTypeId);
 		watsonDocumentImpl.setSubtypeWatsonListTypeId(subtypeWatsonListTypeId);
 		watsonDocumentImpl.setTypeWatsonListTypeId(typeWatsonListTypeId);
 		watsonDocumentImpl.setWatsonChildId(watsonChildId);
@@ -187,8 +189,7 @@ public class WatsonDocumentCacheModel implements CacheModel<WatsonDocument>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(watsonDocumentId);
 
 		objectOutput.writeLong(groupId);
@@ -243,4 +244,5 @@ public class WatsonDocumentCacheModel implements CacheModel<WatsonDocument>,
 	public long receivedDate;
 	public String imagePayload;
 	public int status;
+
 }

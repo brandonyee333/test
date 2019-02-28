@@ -19,19 +19,17 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
-
 import com.liferay.watson.model.WatsonReport;
-
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-
-import org.osgi.util.tracker.ServiceTracker;
 
 import java.io.Serializable;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * The persistence utility for the watson report service. This utility wraps <code>com.liferay.watson.service.persistence.impl.WatsonReportPersistenceImpl</code> and provides direct access to the database for CRUD operations. This utility should only be used by the service layer, as it must operate within a transaction. Never access this utility in a JSP, controller, model, or other front-end class.
@@ -46,6 +44,7 @@ import java.util.Set;
  */
 @ProviderType
 public class WatsonReportUtil {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -78,6 +77,7 @@ public class WatsonReportUtil {
 	 */
 	public static Map<Serializable, WatsonReport> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		return getPersistence().fetchByPrimaryKeys(primaryKeys);
 	}
 
@@ -86,6 +86,7 @@ public class WatsonReportUtil {
 	 */
 	public static List<WatsonReport> findWithDynamicQuery(
 		DynamicQuery dynamicQuery) {
+
 		return getPersistence().findWithDynamicQuery(dynamicQuery);
 	}
 
@@ -94,6 +95,7 @@ public class WatsonReportUtil {
 	 */
 	public static List<WatsonReport> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
+
 		return getPersistence().findWithDynamicQuery(dynamicQuery, start, end);
 	}
 
@@ -103,9 +105,9 @@ public class WatsonReportUtil {
 	public static List<WatsonReport> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
 		OrderByComparator<WatsonReport> orderByComparator) {
-		return getPersistence()
-				   .findWithDynamicQuery(dynamicQuery, start, end,
-			orderByComparator);
+
+		return getPersistence().findWithDynamicQuery(
+			dynamicQuery, start, end, orderByComparator);
 	}
 
 	/**
@@ -118,48 +120,50 @@ public class WatsonReportUtil {
 	/**
 	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
-	public static WatsonReport update(WatsonReport watsonReport,
-		ServiceContext serviceContext) {
+	public static WatsonReport update(
+		WatsonReport watsonReport, ServiceContext serviceContext) {
+
 		return getPersistence().update(watsonReport, serviceContext);
 	}
 
 	/**
-	* Caches the watson report in the entity cache if it is enabled.
-	*
-	* @param watsonReport the watson report
-	*/
+	 * Caches the watson report in the entity cache if it is enabled.
+	 *
+	 * @param watsonReport the watson report
+	 */
 	public static void cacheResult(WatsonReport watsonReport) {
 		getPersistence().cacheResult(watsonReport);
 	}
 
 	/**
-	* Caches the watson reports in the entity cache if it is enabled.
-	*
-	* @param watsonReports the watson reports
-	*/
+	 * Caches the watson reports in the entity cache if it is enabled.
+	 *
+	 * @param watsonReports the watson reports
+	 */
 	public static void cacheResult(List<WatsonReport> watsonReports) {
 		getPersistence().cacheResult(watsonReports);
 	}
 
 	/**
-	* Creates a new watson report with the primary key. Does not add the watson report to the database.
-	*
-	* @param watsonReportId the primary key for the new watson report
-	* @return the new watson report
-	*/
+	 * Creates a new watson report with the primary key. Does not add the watson report to the database.
+	 *
+	 * @param watsonReportId the primary key for the new watson report
+	 * @return the new watson report
+	 */
 	public static WatsonReport create(long watsonReportId) {
 		return getPersistence().create(watsonReportId);
 	}
 
 	/**
-	* Removes the watson report with the primary key from the database. Also notifies the appropriate model listeners.
-	*
-	* @param watsonReportId the primary key of the watson report
-	* @return the watson report that was removed
-	* @throws NoSuchReportException if a watson report with the primary key could not be found
-	*/
+	 * Removes the watson report with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param watsonReportId the primary key of the watson report
+	 * @return the watson report that was removed
+	 * @throws NoSuchReportException if a watson report with the primary key could not be found
+	 */
 	public static WatsonReport remove(long watsonReportId)
 		throws com.liferay.watson.exception.NoSuchReportException {
+
 		return getPersistence().remove(watsonReportId);
 	}
 
@@ -168,100 +172,103 @@ public class WatsonReportUtil {
 	}
 
 	/**
-	* Returns the watson report with the primary key or throws a <code>NoSuchReportException</code> if it could not be found.
-	*
-	* @param watsonReportId the primary key of the watson report
-	* @return the watson report
-	* @throws NoSuchReportException if a watson report with the primary key could not be found
-	*/
+	 * Returns the watson report with the primary key or throws a <code>NoSuchReportException</code> if it could not be found.
+	 *
+	 * @param watsonReportId the primary key of the watson report
+	 * @return the watson report
+	 * @throws NoSuchReportException if a watson report with the primary key could not be found
+	 */
 	public static WatsonReport findByPrimaryKey(long watsonReportId)
 		throws com.liferay.watson.exception.NoSuchReportException {
+
 		return getPersistence().findByPrimaryKey(watsonReportId);
 	}
 
 	/**
-	* Returns the watson report with the primary key or returns <code>null</code> if it could not be found.
-	*
-	* @param watsonReportId the primary key of the watson report
-	* @return the watson report, or <code>null</code> if a watson report with the primary key could not be found
-	*/
+	 * Returns the watson report with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param watsonReportId the primary key of the watson report
+	 * @return the watson report, or <code>null</code> if a watson report with the primary key could not be found
+	 */
 	public static WatsonReport fetchByPrimaryKey(long watsonReportId) {
 		return getPersistence().fetchByPrimaryKey(watsonReportId);
 	}
 
 	/**
-	* Returns all the watson reports.
-	*
-	* @return the watson reports
-	*/
+	 * Returns all the watson reports.
+	 *
+	 * @return the watson reports
+	 */
 	public static List<WatsonReport> findAll() {
 		return getPersistence().findAll();
 	}
 
 	/**
-	* Returns a range of all the watson reports.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonReportModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of watson reports
-	* @param end the upper bound of the range of watson reports (not inclusive)
-	* @return the range of watson reports
-	*/
+	 * Returns a range of all the watson reports.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonReportModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of watson reports
+	 * @param end the upper bound of the range of watson reports (not inclusive)
+	 * @return the range of watson reports
+	 */
 	public static List<WatsonReport> findAll(int start, int end) {
 		return getPersistence().findAll(start, end);
 	}
 
 	/**
-	* Returns an ordered range of all the watson reports.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonReportModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of watson reports
-	* @param end the upper bound of the range of watson reports (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of watson reports
-	*/
-	public static List<WatsonReport> findAll(int start, int end,
-		OrderByComparator<WatsonReport> orderByComparator) {
+	 * Returns an ordered range of all the watson reports.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonReportModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of watson reports
+	 * @param end the upper bound of the range of watson reports (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of watson reports
+	 */
+	public static List<WatsonReport> findAll(
+		int start, int end, OrderByComparator<WatsonReport> orderByComparator) {
+
 		return getPersistence().findAll(start, end, orderByComparator);
 	}
 
 	/**
-	* Returns an ordered range of all the watson reports.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonReportModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of watson reports
-	* @param end the upper bound of the range of watson reports (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @param retrieveFromCache whether to retrieve from the finder cache
-	* @return the ordered range of watson reports
-	*/
-	public static List<WatsonReport> findAll(int start, int end,
-		OrderByComparator<WatsonReport> orderByComparator,
+	 * Returns an ordered range of all the watson reports.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>WatsonReportModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of watson reports
+	 * @param end the upper bound of the range of watson reports (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @return the ordered range of watson reports
+	 */
+	public static List<WatsonReport> findAll(
+		int start, int end, OrderByComparator<WatsonReport> orderByComparator,
 		boolean retrieveFromCache) {
-		return getPersistence()
-				   .findAll(start, end, orderByComparator, retrieveFromCache);
+
+		return getPersistence().findAll(
+			start, end, orderByComparator, retrieveFromCache);
 	}
 
 	/**
-	* Removes all the watson reports from the database.
-	*/
+	 * Removes all the watson reports from the database.
+	 */
 	public static void removeAll() {
 		getPersistence().removeAll();
 	}
 
 	/**
-	* Returns the number of watson reports.
-	*
-	* @return the number of watson reports
-	*/
+	 * Returns the number of watson reports.
+	 *
+	 * @return the number of watson reports
+	 */
 	public static int countAll() {
 		return getPersistence().countAll();
 	}
@@ -274,17 +281,22 @@ public class WatsonReportUtil {
 		return _serviceTracker.getService();
 	}
 
-	private static ServiceTracker<WatsonReportPersistence, WatsonReportPersistence> _serviceTracker;
+	private static ServiceTracker
+		<WatsonReportPersistence, WatsonReportPersistence> _serviceTracker;
 
 	static {
 		Bundle bundle = FrameworkUtil.getBundle(WatsonReportPersistence.class);
 
-		ServiceTracker<WatsonReportPersistence, WatsonReportPersistence> serviceTracker =
-			new ServiceTracker<WatsonReportPersistence, WatsonReportPersistence>(bundle.getBundleContext(),
-				WatsonReportPersistence.class, null);
+		ServiceTracker<WatsonReportPersistence, WatsonReportPersistence>
+			serviceTracker =
+				new ServiceTracker
+					<WatsonReportPersistence, WatsonReportPersistence>(
+						bundle.getBundleContext(),
+						WatsonReportPersistence.class, null);
 
 		serviceTracker.open();
 
 		_serviceTracker = serviceTracker;
 	}
+
 }

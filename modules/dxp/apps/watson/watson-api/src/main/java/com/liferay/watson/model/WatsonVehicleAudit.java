@@ -29,28 +29,33 @@ import com.liferay.portal.kernel.util.Accessor;
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonVehicleAuditImpl")
 @ProviderType
-public interface WatsonVehicleAudit extends WatsonVehicleAuditModel,
-	PersistedModel {
+public interface WatsonVehicleAudit
+	extends WatsonVehicleAuditModel, PersistedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonVehicleAuditImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<WatsonVehicleAudit, Long> WATSON_VEHICLE_AUDIT_ID_ACCESSOR =
-		new Accessor<WatsonVehicleAudit, Long>() {
-			@Override
-			public Long get(WatsonVehicleAudit watsonVehicleAudit) {
-				return watsonVehicleAudit.getWatsonVehicleAuditId();
-			}
+	public static final Accessor<WatsonVehicleAudit, Long>
+		WATSON_VEHICLE_AUDIT_ID_ACCESSOR =
+			new Accessor<WatsonVehicleAudit, Long>() {
 
-			@Override
-			public Class<Long> getAttributeClass() {
-				return Long.class;
-			}
+				@Override
+				public Long get(WatsonVehicleAudit watsonVehicleAudit) {
+					return watsonVehicleAudit.getWatsonVehicleAuditId();
+				}
 
-			@Override
-			public Class<WatsonVehicleAudit> getTypeClass() {
-				return WatsonVehicleAudit.class;
-			}
-		};
+				@Override
+				public Class<Long> getAttributeClass() {
+					return Long.class;
+				}
+
+				@Override
+				public Class<WatsonVehicleAudit> getTypeClass() {
+					return WatsonVehicleAudit.class;
+				}
+
+			};
+
 }
