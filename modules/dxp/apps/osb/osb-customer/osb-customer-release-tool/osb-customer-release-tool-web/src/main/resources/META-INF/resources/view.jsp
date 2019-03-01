@@ -18,12 +18,24 @@
 
 <%= releaseToolDisplayContext.getHightlightsFiltersJSONArray() %>
 
+<br />
+
 <liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/fix_packs" var="fixPacksURL">
-	<liferay-portlet:param name="fromFixPackAssetCategoryId" value="1" />
+	<liferay-portlet:param name="fromFixPackVersion" value="2.0" />
+	<liferay-portlet:param name="fromProductVersion" value="7.0" />
 	<liferay-portlet:param name="orderByCol" value="releaseDate" />
 	<liferay-portlet:param name="orderByType" value="desc" />
-	<liferay-portlet:param name="productAssetCategoryId" value="1" />
-	<liferay-portlet:param name="toFixPackAssetCategoryId" value="2" />
+	<liferay-portlet:param name="product" value="dxp" />
+	<liferay-portlet:param name="toFixPackVersion" value="1.0" />
+	<liferay-portlet:param name="toProductVersion" value="7.1" />
 </liferay-portlet:resourceURL>
 
 <%= fixPacksURL %>
+
+<br />
+
+<%
+JSONObject jsonObject = fixPackSearcher.search(renderRequest, renderResponse);
+%>
+
+<%= HtmlUtil.escape(jsonObject.toString()) %>

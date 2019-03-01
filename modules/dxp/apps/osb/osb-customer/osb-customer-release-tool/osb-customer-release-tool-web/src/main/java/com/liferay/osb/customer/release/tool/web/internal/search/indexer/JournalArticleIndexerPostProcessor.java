@@ -69,9 +69,20 @@ public class JournalArticleIndexerPostProcessor
 					FixPackField.FIX_PACK_VERSION,
 					GetterUtil.getDouble(version));
 
-				document.addKeyword(
-					FixPackField.PRODUCT_ASSET_CATEGORY_ID,
-					assetCategory.getParentCategoryId());
+				String product = _fixPacksAssetCategoryUtil.getPropertyValue(
+					assetCategory.getParentCategoryId(),
+					FixPackAssetCategoryConstants.PROPERTY_PRODUCT);
+
+				document.addKeyword(FixPackField.PRODUCT, product);
+
+				String productVersion =
+					_fixPacksAssetCategoryUtil.getPropertyValue(
+						assetCategory.getParentCategoryId(),
+						FixPackAssetCategoryConstants.PROPERTY_VERSION);
+
+				document.addNumber(
+					FixPackField.PRODUCT_VERSION,
+					GetterUtil.getDouble(productVersion));
 
 				break;
 			}

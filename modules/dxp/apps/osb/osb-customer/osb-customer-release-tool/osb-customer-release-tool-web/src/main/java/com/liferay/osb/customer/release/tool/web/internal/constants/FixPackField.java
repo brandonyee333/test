@@ -21,7 +21,14 @@ public class FixPackField {
 
 	public static final String FIX_PACK_VERSION = "fixPackVersion";
 
-	public static final String PRODUCT_ASSET_CATEGORY_ID =
-		"productAssetCategoryId";
+	public static final String FIX_PACK_VERSION_SORTABLE =
+		FIX_PACK_VERSION + "_sortable";
+
+	public static final String PRODUCT = "product";
+
+	public static final String PRODUCT_VERSION = "productVersion";
+
+	public static final String PRODUCT_VERSION_SORTABLE =
+		PRODUCT_VERSION + "_sortable";
 
 }

@@ -15,8 +15,10 @@
 package com.liferay.osb.customer.release.tool.web.internal.util;
 
 import com.liferay.asset.kernel.exception.NoSuchCategoryPropertyException;
+import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetCategoryProperty;
 import com.liferay.asset.kernel.model.AssetVocabulary;
+import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.asset.kernel.service.AssetCategoryPropertyLocalService;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
 import com.liferay.osb.customer.release.tool.web.internal.constants.FixPackAssetCategoryConstants;
@@ -27,6 +29,7 @@ import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.util.StringPool;
 
+import java.util.List;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Activate;
@@ -39,6 +42,26 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true, service = FixPacksAssetCategoryUtil.class)
 public class FixPacksAssetCategoryUtil {
+
+	public AssetCategory getAssetCategory(
+		long parentCategoryId, String productFriendlyURL) {
+
+		String property =
+			FixPackAssetCategoryConstants.PROPERTY_FRIENDLY_URL +
+				StringPool.COLON + productFriendlyURL;
+
+		List<AssetCategory> assetCategories = _assetCategoryLocalService.search(
+			_fixPacksAssetVocabulary.getGroupId(), null,
+			new String[] {property}, 0, 1);
+
+		for (AssetCategory assetCategory : assetCategories) {
+			if (assetCategory.getParentCategoryId() == parentCategoryId) {
+				return assetCategory;
+			}
+		}
+
+		return null;
+	}
 
 	public long getFixPacksAssetVocabularyId() {
 		return _fixPacksAssetVocabulary.getVocabularyId();
@@ -79,6 +102,9 @@ public class FixPacksAssetCategoryUtil {
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
+
+	@Reference
+	private AssetCategoryLocalService _assetCategoryLocalService;
 
 	@Reference
 	private AssetCategoryPropertyLocalService

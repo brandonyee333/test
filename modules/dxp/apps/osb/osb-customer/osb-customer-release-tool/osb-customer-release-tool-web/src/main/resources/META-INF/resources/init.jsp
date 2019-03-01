@@ -21,7 +21,10 @@ taglib uri="http://liferay.com/tld/frontend" prefix="liferay-frontend" %><%@
 taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %><%@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %>
 
-<%@ page import="com.liferay.osb.customer.release.tool.web.internal.display.context.ReleaseToolDisplayContext" %>
+<%@ page import="com.liferay.osb.customer.release.tool.web.internal.display.context.ReleaseToolDisplayContext" %><%@
+page import="com.liferay.osb.customer.release.tool.web.internal.search.FixPackSearcher" %><%@
+page import="com.liferay.portal.kernel.json.JSONObject" %><%@
+page import="com.liferay.portal.kernel.util.HtmlUtil" %>
 
 <liferay-frontend:defineObjects />
 
@@ -31,6 +34,8 @@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %>
 
 <%
 ReleaseToolDisplayContext releaseToolDisplayContext = new ReleaseToolDisplayContext(renderRequest, renderResponse);
+
+FixPackSearcher fixPackSearcher = (FixPackSearcher)renderRequest.getAttribute(FixPackSearcher.class.getName());
 %>
 
 <aui:script>

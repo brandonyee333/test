@@ -15,11 +15,18 @@
 package com.liferay.osb.customer.release.tool.web.internal.portlet;
 
 import com.liferay.osb.customer.release.tool.web.internal.constants.ReleaseToolPortletKeys;
+import com.liferay.osb.customer.release.tool.web.internal.search.FixPackSearcher;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 
+import java.io.IOException;
+
 import javax.portlet.Portlet;
+import javax.portlet.PortletException;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Jenny Chen
@@ -41,4 +48,19 @@ import org.osgi.service.component.annotations.Component;
 	service = Portlet.class
 )
 public class ReleaseToolPortlet extends MVCPortlet {
+
+	@Override
+	public void render(
+			RenderRequest renderRequest, RenderResponse renderResponse)
+		throws IOException, PortletException {
+
+		renderRequest.setAttribute(
+			FixPackSearcher.class.getName(), _fixPackSearcher);
+
+		super.render(renderRequest, renderResponse);
+	}
+
+	@Reference
+	private FixPackSearcher _fixPackSearcher;
+
 }
