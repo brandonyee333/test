@@ -15,6 +15,7 @@
 package com.liferay.osb.hook.upgrade;
 
 import com.liferay.osb.hook.upgrade.v5_0_5.Upgrade_20190226150319201_ExternalIdMapper;
+import com.liferay.osb.hook.upgrade.v5_0_5.Upgrade_20190301133748893_ListType;
 
 /**
  * @author Kyle Bischof
@@ -29,6 +30,7 @@ public class UpgradeProcess_5_0_5 extends BaseUpgradeProcess {
 	@Override
 	protected void doUpgrade() throws Exception {
 		upgrade(Upgrade_20190226150319201_ExternalIdMapper.class);
+		upgrade(Upgrade_20190301133748893_ListType.class);
 	}
 
 }

@@ -308,6 +308,14 @@ public class AccountEnvironmentConstants {
 
 	public static final long ENV_DB_SYBASE_ASE_16 = 28035;
 
+	public static final long ENV_JVM_ADOPTOPENJDK_8 = 29010;
+
+	public static final long ENV_JVM_ADOPTOPENJDK_11 = 29011;
+
+	public static final long ENV_JVM_AZUL_ZULU_JDK_8 = 29012;
+
+	public static final long ENV_JVM_AZUL_ZULU_JDK_11 = 29013;
+
 	public static final long ENV_JVM_IBM_JDK_6 = 29003;
 
 	public static final long ENV_JVM_IBM_JDK_7 = 29004;
@@ -316,17 +324,17 @@ public class AccountEnvironmentConstants {
 
 	public static final long ENV_JVM_JROCKET_JDK_6 = 29005;
 
+	public static final long ENV_JVM_ORACLE_JDK_5 = 29000;
+
+	public static final long ENV_JVM_ORACLE_JDK_6 = 29001;
+
+	public static final long ENV_JVM_ORACLE_JDK_7 = 29002;
+
+	public static final long ENV_JVM_ORACLE_JDK_8 = 29006;
+
 	public static final long ENV_JVM_ORACLE_OPENJDK_8 = 29008;
 
 	public static final long ENV_JVM_ORACLE_OPENJDK_11 = 29009;
-
-	public static final long ENV_JVM_ORACLE_SUN_JDK_5 = 29000;
-
-	public static final long ENV_JVM_ORACLE_SUN_JDK_6 = 29001;
-
-	public static final long ENV_JVM_ORACLE_SUN_JDK_7 = 29002;
-
-	public static final long ENV_JVM_ORACLE_SUN_JDK_8 = 29006;
 
 	public static final long ENV_OS_AIX = 30044;
 
@@ -728,29 +736,31 @@ public class AccountEnvironmentConstants {
 		ENV_DB_SYBASE_ASE_15_5
 	};
 
-	private static final long[] _ENV_JVM_DIGITAL_ENTERPRISE_VERSION_7_0 =
-		{ENV_JVM_IBM_JDK_8, ENV_JVM_ORACLE_SUN_JDK_8, ENV_JVM_ORACLE_OPENJDK_8};
+	private static final long[] _ENV_JVM_DIGITAL_ENTERPRISE_VERSION_7_0 = {
+		ENV_JVM_ADOPTOPENJDK_8, ENV_JVM_AZUL_ZULU_JDK_8, ENV_JVM_IBM_JDK_8,
+		ENV_JVM_ORACLE_JDK_8, ENV_JVM_ORACLE_OPENJDK_8
+	};
 
 	private static final long[] _ENV_JVM_DIGITAL_ENTERPRISE_VERSION_7_1 = {
-		ENV_JVM_IBM_JDK_8, ENV_JVM_ORACLE_SUN_JDK_8, ENV_JVM_ORACLE_OPENJDK_8,
+		ENV_JVM_ADOPTOPENJDK_11, ENV_JVM_AZUL_ZULU_JDK_11, ENV_JVM_IBM_JDK_8,
+		ENV_JVM_ORACLE_JDK_8, ENV_JVM_ORACLE_OPENJDK_8,
 		ENV_JVM_ORACLE_OPENJDK_11
 	};
 
 	private static final long[] _ENV_JVM_PORTAL_VERSION_6_1 = {
-		ENV_JVM_ORACLE_SUN_JDK_5, ENV_JVM_ORACLE_SUN_JDK_6,
-		ENV_JVM_ORACLE_SUN_JDK_7, ENV_JVM_ORACLE_SUN_JDK_8
+		ENV_JVM_ORACLE_JDK_5, ENV_JVM_ORACLE_JDK_6, ENV_JVM_ORACLE_JDK_7,
+		ENV_JVM_ORACLE_JDK_8
 	};
 
 	private static final long[] _ENV_JVM_PORTAL_VERSION_6_2 = {
-		ENV_JVM_IBM_JDK_6, ENV_JVM_IBM_JDK_7, ENV_JVM_IBM_JDK_8,
-		ENV_JVM_ORACLE_OPENJDK_8, ENV_JVM_ORACLE_SUN_JDK_6,
-		ENV_JVM_ORACLE_SUN_JDK_7, ENV_JVM_ORACLE_SUN_JDK_8,
-		ENV_JVM_JROCKET_JDK_6
+		ENV_JVM_ADOPTOPENJDK_8, ENV_JVM_AZUL_ZULU_JDK_8, ENV_JVM_IBM_JDK_6,
+		ENV_JVM_IBM_JDK_7, ENV_JVM_IBM_JDK_8, ENV_JVM_JROCKET_JDK_6,
+		ENV_JVM_ORACLE_JDK_6, ENV_JVM_ORACLE_JDK_7, ENV_JVM_ORACLE_JDK_8,
+		ENV_JVM_ORACLE_OPENJDK_8
 	};
 
 	private static final long[] _ENV_JVM_PORTAL_VERSION_OTHER = {
-		ENV_JVM_ORACLE_SUN_JDK_5, ENV_JVM_ORACLE_SUN_JDK_6,
-		ENV_JVM_ORACLE_SUN_JDK_7
+		ENV_JVM_ORACLE_JDK_5, ENV_JVM_ORACLE_JDK_6, ENV_JVM_ORACLE_JDK_7
 	};
 
 	private static final long[] _ENV_LFR_COMMERCE = {
