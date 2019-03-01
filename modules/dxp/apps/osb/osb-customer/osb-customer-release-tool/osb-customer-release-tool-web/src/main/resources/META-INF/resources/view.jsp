@@ -16,26 +16,31 @@
 
 <%@ include file="/init.jsp" %>
 
-<%= releaseToolDisplayContext.getHightlightsFiltersJSONArray() %>
-
-<br />
-
-<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/fix_packs" var="fixPacksURL">
-	<liferay-portlet:param name="fromFixPackVersion" value="2.0" />
-	<liferay-portlet:param name="fromProductVersion" value="7.0" />
-	<liferay-portlet:param name="orderByCol" value="releaseDate" />
-	<liferay-portlet:param name="orderByType" value="desc" />
-	<liferay-portlet:param name="product" value="dxp" />
-	<liferay-portlet:param name="toFixPackVersion" value="1.0" />
-	<liferay-portlet:param name="toProductVersion" value="7.1" />
-</liferay-portlet:resourceURL>
-
-<%= fixPacksURL %>
-
-<br />
-
 <%
-JSONObject jsonObject = fixPackSearcher.search(renderRequest, renderResponse);
+String tabs1 = ParamUtil.getString(request, "tabs1");
+
+PortletURL portletURL = renderResponse.createRenderURL();
+
+portletURL.setParameter("tabs1", tabs1);
 %>
 
-<%= HtmlUtil.escape(jsonObject.toString()) %>
+<h1>
+	<liferay-ui:message key="liferay-dxp-release-notes-tool" />
+</h1>
+
+<liferay-ui:tabs
+	names='<%= "highlights,changelog,module-changes" %>'
+	url="<%= portletURL.toString() %>"
+/>
+
+<c:choose>
+	<c:when test='<%= tabs1.equals("changelog") %>'>
+		<liferay-util:include page="/changelog.jsp" servletContext="<%= application %>" />
+	</c:when>
+	<c:when test='<%= tabs1.equals("module-changes") %>'>
+		<liferay-util:include page="/module_changes.jsp" servletContext="<%= application %>" />
+	</c:when>
+	<c:otherwise>
+		<liferay-util:include page="/highlights.jsp" servletContext="<%= application %>" />
+	</c:otherwise>
+</c:choose>
