@@ -35,6 +35,11 @@ import org.osgi.service.component.annotations.Reference;
 public class CountryMetricsModel extends BaseModelMetricsModel<Country> {
 
 	@Override
+	public boolean allowDeleteAll() {
+		return false;
+	}
+
+	@Override
 	public Map<String, Object> getAttributes(Country country) {
 		return _metricsTransformationUtil.transformSharedAttributes(
 			country.getModelAttributes());

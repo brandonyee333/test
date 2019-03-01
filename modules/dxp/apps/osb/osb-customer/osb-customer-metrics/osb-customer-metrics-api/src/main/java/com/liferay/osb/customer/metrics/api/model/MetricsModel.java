@@ -22,6 +22,8 @@ import java.util.Map;
  */
 public interface MetricsModel<T> {
 
+	public boolean allowDeleteAll();
+
 	public void deleteAll() throws Exception;
 
 	public Map<String, Object> getAttributes(T model);

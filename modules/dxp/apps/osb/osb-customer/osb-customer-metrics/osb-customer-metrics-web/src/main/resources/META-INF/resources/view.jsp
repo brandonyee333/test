@@ -38,6 +38,7 @@ Map<String, MetricsModel<?>> metricsModelsMap = MetricsModelRegistryUtil.getMetr
 
 			<%
 			String modelClassName = (String)metricsModelEntry.getKey();
+			MetricsModel metricsModel = (MetricsModel)metricsModelEntry.getValue();
 			%>
 
 			<liferay-ui:search-container-column-text
@@ -53,11 +54,13 @@ Map<String, MetricsModel<?>> metricsModelsMap = MetricsModelRegistryUtil.getMetr
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text>
-				<portlet:actionURL name="cleanAndSyncModel" var="cleanAndSyncModelURL">
-					<portlet:param name="modelClassName" value="<%= modelClassName %>" />
-				</portlet:actionURL>
+				<c:if test="<%= metricsModel.allowDeleteAll() %>">
+					<portlet:actionURL name="cleanAndSyncModel" var="cleanAndSyncModelURL">
+						<portlet:param name="modelClassName" value="<%= modelClassName %>" />
+					</portlet:actionURL>
 
-				<aui:button onClick="<%= cleanAndSyncModelURL %>" value="clean-and-sync" />
+					<aui:button onClick="<%= cleanAndSyncModelURL %>" value="clean-and-sync" />
+				</c:if>
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 

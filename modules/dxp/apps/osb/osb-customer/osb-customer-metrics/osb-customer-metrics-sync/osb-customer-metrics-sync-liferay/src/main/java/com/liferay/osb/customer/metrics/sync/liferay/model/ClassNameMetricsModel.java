@@ -36,6 +36,11 @@ import org.osgi.service.component.annotations.Reference;
 public class ClassNameMetricsModel extends BaseModelMetricsModel<ClassName> {
 
 	@Override
+	public boolean allowDeleteAll() {
+		return false;
+	}
+
+	@Override
 	public Map<String, Object> getAttributes(ClassName className) {
 		return _metricsTransformationUtil.transformSharedAttributes(
 			className.getModelAttributes());

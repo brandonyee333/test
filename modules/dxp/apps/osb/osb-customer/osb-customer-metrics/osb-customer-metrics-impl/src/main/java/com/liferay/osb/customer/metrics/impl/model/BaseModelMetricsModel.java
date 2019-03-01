@@ -35,6 +35,10 @@ import org.osgi.service.component.annotations.Reference;
 public abstract class BaseModelMetricsModel<T extends BaseModel<T>>
 	implements MetricsModel<T> {
 
+	public boolean allowDeleteAll() {
+		return true;
+	}
+
 	public void deleteAll() throws Exception {
 		Class<T> modelClass = getModelClass();
 
