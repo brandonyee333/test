@@ -22,7 +22,7 @@ import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.asset.kernel.service.AssetCategoryPropertyLocalService;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
 import com.liferay.journal.model.JournalArticle;
-import com.liferay.osb.customer.downloads.display.web.internal.constants.DownloadsAssetCategoryConstants;
+import com.liferay.osb.customer.downloads.display.constants.DownloadsAssetCategoryConstants;
 import com.liferay.portal.instances.service.PortalInstancesLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;

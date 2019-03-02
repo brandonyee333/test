@@ -18,7 +18,7 @@ import com.liferay.dynamic.data.mapping.storage.Fields;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.journal.util.JournalConverter;
-import com.liferay.osb.customer.downloads.display.web.internal.constants.DDMStructureConstants;
+import com.liferay.osb.customer.downloads.display.constants.DownloadsDDMStructureConstants;
 import com.liferay.osb.customer.downloads.display.web.internal.util.DDMFieldsUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -97,7 +97,7 @@ public class UpgradeJournalArticles extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 		List<JournalArticle> journalArticles =
 			_journalArticleLocalService.getStructureArticles(
-				new String[] {DDMStructureConstants.KEY_DOWNLOAD});
+				new String[] {DownloadsDDMStructureConstants.KEY_DOWNLOAD});
 
 		for (JournalArticle journalArticle : journalArticles) {
 			if (!isHead(journalArticle)) {
@@ -121,7 +121,7 @@ public class UpgradeJournalArticles extends UpgradeProcess {
 		}
 
 		journalArticles = _journalArticleLocalService.getStructureArticles(
-			new String[] {DDMStructureConstants.KEY_TRIAL_DOWNLOAD});
+			new String[] {DownloadsDDMStructureConstants.KEY_TRIAL_DOWNLOAD});
 
 		for (JournalArticle journalArticle : journalArticles) {
 			if (!isHead(journalArticle)) {

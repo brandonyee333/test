@@ -19,7 +19,7 @@ import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.journal.service.JournalArticleLocalServiceWrapper;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
-import com.liferay.osb.customer.downloads.display.web.internal.constants.DDMStructureConstants;
+import com.liferay.osb.customer.downloads.display.constants.DownloadsDDMStructureConstants;
 import com.liferay.osb.customer.downloads.display.web.internal.util.DownloadsAssetCategoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.ResourceConstants;
@@ -90,7 +90,9 @@ public class DownloadsJournalArticleLocalServiceWrapper
 			reviewDateMinute, neverReview, indexable, smallImage, smallImageURL,
 			smallImageFile, images, articleURL, serviceContext);
 
-		if (ArrayUtil.contains(DDMStructureConstants.KEYS, ddmStructureKey)) {
+		if (ArrayUtil.contains(
+				DownloadsDDMStructureConstants.KEYS, ddmStructureKey)) {
+
 			updateResourcePermissions(journalArticle);
 		}
 
@@ -144,7 +146,9 @@ public class DownloadsJournalArticleLocalServiceWrapper
 
 		Map<Long, String[]> roleIdsToActionIds = null;
 
-		if (ddmStructureKey.equals(DDMStructureConstants.KEY_TRIAL_DOWNLOAD)) {
+		if (ddmStructureKey.equals(
+				DownloadsDDMStructureConstants.KEY_TRIAL_DOWNLOAD)) {
+
 			roleIdsToActionIds = getTrialRoleIdsToActionIds();
 		}
 		else {

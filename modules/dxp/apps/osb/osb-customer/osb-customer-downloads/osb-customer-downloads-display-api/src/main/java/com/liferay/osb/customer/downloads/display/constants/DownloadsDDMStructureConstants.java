@@ -12,12 +12,12 @@
  *
  */
 
-package com.liferay.osb.customer.downloads.display.web.internal.constants;
+package com.liferay.osb.customer.downloads.display.constants;
 
 /**
  * @author Amos Fong
  */
-public class DDMStructureConstants {
+public class DownloadsDDMStructureConstants {
 
 	public static final String KEY_DOWNLOAD = "OSB-CUSTOMER-THEME---DOWNLOAD";
 

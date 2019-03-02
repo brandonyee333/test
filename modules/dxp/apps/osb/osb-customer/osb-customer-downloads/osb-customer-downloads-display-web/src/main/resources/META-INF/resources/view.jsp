@@ -27,7 +27,7 @@ String ddmStructureKey = downloadsDisplayContext.getDDMStructureKey();
 	<liferay-ui:message key="downloads" />
 </h1>
 
-<c:if test="<%= ddmStructureKey.equals(DDMStructureConstants.KEY_DOWNLOAD) %>">
+<c:if test="<%= ddmStructureKey.equals(DownloadsDDMStructureConstants.KEY_DOWNLOAD) %>">
 	<h5 class="secondary-text-color section-subtitle">
 		<liferay-ui:message key="use-the-dropdown-menus-below-to-find-the-downloads-you-need" />
 	</h5>
@@ -78,7 +78,7 @@ String ddmStructureKey = downloadsDisplayContext.getDDMStructureKey();
 	</liferay-ui:search-container>
 </div>
 
-<c:if test="<%= ddmStructureKey.equals(DDMStructureConstants.KEY_DOWNLOAD) %>">
+<c:if test="<%= ddmStructureKey.equals(DownloadsDDMStructureConstants.KEY_DOWNLOAD) %>">
 
 	<%
 	PortletURL portletURL = renderResponse.createRenderURL();

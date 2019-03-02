@@ -14,7 +14,7 @@
 
 package com.liferay.osb.customer.downloads.display.web.internal.portlet.action;
 
-import com.liferay.osb.customer.downloads.display.web.internal.constants.DownloadsDisplayPortletKeys;
+import com.liferay.osb.customer.downloads.display.constants.DownloadsDisplayPortletKeys;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 

@@ -16,8 +16,8 @@ package com.liferay.osb.customer.downloads.display.web.internal.portlet.action;
 
 import com.liferay.expando.kernel.model.ExpandoTableConstants;
 import com.liferay.expando.kernel.service.ExpandoValueLocalService;
-import com.liferay.osb.customer.downloads.display.web.internal.constants.DDMStructureConstants;
-import com.liferay.osb.customer.downloads.display.web.internal.constants.DownloadsDisplayPortletKeys;
+import com.liferay.osb.customer.downloads.display.constants.DownloadsDDMStructureConstants;
+import com.liferay.osb.customer.downloads.display.constants.DownloadsDisplayPortletKeys;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.PartnerEntry;
@@ -68,20 +68,24 @@ public class AcceptAgreementMVCActionCommand extends BaseMVCActionCommand {
 		String agreement = ParamUtil.getString(actionRequest, "agreement");
 		double version = ParamUtil.getDouble(actionRequest, "version");
 
-		if (agreement.equals(DDMStructureConstants.REQUIRED_AGREEMENT_ESA)) {
+		if (agreement.equals(
+				DownloadsDDMStructureConstants.REQUIRED_AGREEMENT_ESA)) {
+
 			setExpandoValue(
 				themeDisplay.getCompanyId(), themeDisplay.getUserId(),
 				"osbCustomerESA", version);
 		}
 		else if (agreement.equals(
-					DDMStructureConstants.REQUIRED_AGREEMENT_EVALUATION_EULA)) {
+					DownloadsDDMStructureConstants.
+						REQUIRED_AGREEMENT_EVALUATION_EULA)) {
 
 			setExpandoValue(
 				themeDisplay.getCompanyId(), themeDisplay.getUserId(),
 				"osbCustomerEvaluationEULA", version);
 		}
 		else if (agreement.equals(
-					DDMStructureConstants.REQUIRED_AGREEMENT_STUDIO_EULA)) {
+					DownloadsDDMStructureConstants.
+						REQUIRED_AGREEMENT_STUDIO_EULA)) {
 
 			setExpandoValue(
 				themeDisplay.getCompanyId(), themeDisplay.getUserId(),

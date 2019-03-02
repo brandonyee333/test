@@ -16,8 +16,8 @@ package com.liferay.osb.customer.downloads.display.web.internal.portlet.action;
 
 import com.liferay.expando.kernel.model.ExpandoTableConstants;
 import com.liferay.expando.kernel.service.ExpandoValueLocalService;
-import com.liferay.osb.customer.downloads.display.web.internal.constants.DDMStructureConstants;
-import com.liferay.osb.customer.downloads.display.web.internal.constants.DownloadsDisplayPortletKeys;
+import com.liferay.osb.customer.downloads.display.constants.DownloadsDDMStructureConstants;
+import com.liferay.osb.customer.downloads.display.constants.DownloadsDisplayPortletKeys;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -62,7 +62,9 @@ public class VerifyAgreementMVCResourceCommand extends BaseMVCResourceCommand {
 
 		boolean acceptedAgreement = false;
 
-		if (agreement.equals(DDMStructureConstants.REQUIRED_AGREEMENT_ESA)) {
+		if (agreement.equals(
+				DownloadsDDMStructureConstants.REQUIRED_AGREEMENT_ESA)) {
+
 			if (hasExpandoValue(
 					themeDisplay.getCompanyId(), themeDisplay.getUserId(),
 					"osbCustomerESA", versionRequired) ||
@@ -74,7 +76,8 @@ public class VerifyAgreementMVCResourceCommand extends BaseMVCResourceCommand {
 			}
 		}
 		else if (agreement.equals(
-					DDMStructureConstants.REQUIRED_AGREEMENT_EVALUATION_EULA)) {
+					DownloadsDDMStructureConstants.
+						REQUIRED_AGREEMENT_EVALUATION_EULA)) {
 
 			if (hasExpandoValue(
 					themeDisplay.getCompanyId(), themeDisplay.getUserId(),
@@ -87,7 +90,8 @@ public class VerifyAgreementMVCResourceCommand extends BaseMVCResourceCommand {
 			}
 		}
 		else if (agreement.equals(
-					DDMStructureConstants.REQUIRED_AGREEMENT_STUDIO_EULA)) {
+					DownloadsDDMStructureConstants.
+						REQUIRED_AGREEMENT_STUDIO_EULA)) {
 
 			if (hasExpandoValue(
 					themeDisplay.getCompanyId(), themeDisplay.getUserId(),

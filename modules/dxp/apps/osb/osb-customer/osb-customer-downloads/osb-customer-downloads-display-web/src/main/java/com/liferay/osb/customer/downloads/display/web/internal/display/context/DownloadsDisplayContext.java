@@ -22,8 +22,8 @@ import com.liferay.dynamic.data.mapping.service.DDMStructureLocalServiceUtil;
 import com.liferay.dynamic.data.mapping.util.DDMIndexer;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalServiceUtil;
-import com.liferay.osb.customer.downloads.display.web.internal.constants.DDMStructureConstants;
-import com.liferay.osb.customer.downloads.display.web.internal.constants.DownloadsDisplayWebKeys;
+import com.liferay.osb.customer.downloads.display.constants.DownloadsDDMStructureConstants;
+import com.liferay.osb.customer.downloads.display.constants.DownloadsDisplayWebKeys;
 import com.liferay.osb.customer.downloads.display.web.internal.util.DownloadsAssetCategoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
@@ -161,7 +161,8 @@ public class DownloadsDisplayContext {
 
 		String ddmStructureKey = _ddmStructure.getStructureKey();
 
-		if (ddmStructureKey.equals(DDMStructureConstants.KEY_DOWNLOAD) &&
+		if (ddmStructureKey.equals(
+				DownloadsDDMStructureConstants.KEY_DOWNLOAD) &&
 			((fileTypeAssetCategory == null) ||
 			 (productAssetCategory == null))) {
 

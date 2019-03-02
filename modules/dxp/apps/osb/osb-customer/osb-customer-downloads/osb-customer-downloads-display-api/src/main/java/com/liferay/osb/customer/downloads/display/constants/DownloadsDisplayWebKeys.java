@@ -12,20 +12,23 @@
  *
  */
 
-package com.liferay.osb.customer.downloads.display.web.internal.constants;
+package com.liferay.osb.customer.downloads.display.constants;
 
 /**
  * @author Amos Fong
  */
-public class DownloadsAssetCategoryConstants {
+public class DownloadsDisplayWebKeys {
 
-	public static final String PROPERTY_FRIENDLY_URL = "friendly-url";
+	public static final String ACCEPT_AGREEMENT_URL = "ACCEPT_AGREEMENT_URL";
 
-	public static final String PROPERTY_LOGO = "logo";
+	public static final String ASSET_CATEGORY_FILE_TYPE =
+		"ASSET_CATEGORY_FILE_TYPE";
 
-	public static final String PROPERTY_SUBSCRIPTION_PAGE_PLID =
-		"subscription-page-plid";
+	public static final String ASSET_CATEGORY_PRODUCT =
+		"ASSET_CATEGORY_PRODUCT";
 
-	public static final String VOCABULARY_PRODUCTS_NAME = "Downloads Products";
+	public static final String JOURNAL_ARTICLE = "JOURNAL_ARTICLE";
+
+	public static final String VERIFY_AGREEMENT_URL = "VERIFY_AGREEMENT_URL";
 
 }

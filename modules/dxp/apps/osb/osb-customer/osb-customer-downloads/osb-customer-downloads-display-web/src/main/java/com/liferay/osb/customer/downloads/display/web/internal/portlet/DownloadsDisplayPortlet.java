@@ -16,7 +16,7 @@ package com.liferay.osb.customer.downloads.display.web.internal.portlet;
 
 import com.liferay.dynamic.data.mapping.util.DDMIndexer;
 import com.liferay.journal.util.JournalConverter;
-import com.liferay.osb.customer.downloads.display.web.internal.constants.DownloadsDisplayPortletKeys;
+import com.liferay.osb.customer.downloads.display.constants.DownloadsDisplayPortletKeys;
 import com.liferay.osb.customer.downloads.display.web.internal.util.DownloadsAssetCategoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 

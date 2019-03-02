@@ -33,7 +33,7 @@ String ddmStructureKey = portletPreferences.getValue("ddmStructureKey", null);
 						<aui:option value="" />
 
 						<%
-						for (String curDDMStructureKey : DDMStructureConstants.KEYS) {
+						for (String curDDMStructureKey : DownloadsDDMStructureConstants.KEYS) {
 						%>
 
 							<aui:option label="<%= curDDMStructureKey %>" selected="<%= curDDMStructureKey.equals(ddmStructureKey) %>" value="<%= curDDMStructureKey %>" />

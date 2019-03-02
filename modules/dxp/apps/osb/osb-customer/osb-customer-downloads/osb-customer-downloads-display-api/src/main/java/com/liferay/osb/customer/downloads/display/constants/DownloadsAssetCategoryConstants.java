@@ -12,15 +12,20 @@
  *
  */
 
-package com.liferay.osb.customer.downloads.display.web.internal.constants;
+package com.liferay.osb.customer.downloads.display.constants;
 
 /**
  * @author Amos Fong
  */
-public class DownloadsDisplayPortletKeys {
+public class DownloadsAssetCategoryConstants {
 
-	public static final String DOWNLOADS_DISPLAY =
-		"com_liferay_osb_customer_downloads_display_web_" +
-			"DownloadsDisplayPortlet";
+	public static final String PROPERTY_FRIENDLY_URL = "friendly-url";
+
+	public static final String PROPERTY_LOGO = "logo";
+
+	public static final String PROPERTY_SUBSCRIPTION_PAGE_PLID =
+		"subscription-page-plid";
+
+	public static final String VOCABULARY_PRODUCTS_NAME = "Downloads Products";
 
 }
