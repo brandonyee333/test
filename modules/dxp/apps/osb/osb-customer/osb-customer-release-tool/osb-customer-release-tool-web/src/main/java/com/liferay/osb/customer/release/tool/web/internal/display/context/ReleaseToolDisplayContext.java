@@ -19,18 +19,36 @@ import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalServiceUtil;
 import com.liferay.journal.model.JournalArticle;
+import com.liferay.osb.customer.downloads.display.constants.DownloadsDDMStructureConstants;
+import com.liferay.osb.customer.downloads.display.constants.DownloadsDisplayPortletKeys;
 import com.liferay.osb.customer.release.tool.web.internal.constants.DDMStructureConstants;
+import com.liferay.osb.customer.release.tool.web.internal.constants.FixPackField;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
+import com.liferay.portal.kernel.search.BooleanQuery;
+import com.liferay.portal.kernel.search.Document;
+import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.kernel.search.Hits;
+import com.liferay.portal.kernel.search.IndexSearcherHelperUtil;
+import com.liferay.portal.kernel.search.SearchContext;
+import com.liferay.portal.kernel.search.filter.BooleanFilter;
+import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.List;
 
 import javax.portlet.MimeResponse;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 
 /**
@@ -42,10 +60,69 @@ public class ReleaseToolDisplayContext {
 			RenderRequest renderRequest, MimeResponse mimeResponse)
 		throws Exception {
 
+		_renderRequest = renderRequest;
 		_themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
 		_initHighlightsFilters();
+	}
+
+	public String getFixPackDownloadURL(
+			String product, double productVersion, double fixPackVersion)
+		throws PortalException {
+
+		SearchContext searchContext = new SearchContext();
+
+		searchContext.setCompanyId(_themeDisplay.getCompanyId());
+		searchContext.setEnd(1);
+		searchContext.setStart(0);
+
+		BooleanQuery fullQuery = new BooleanQueryImpl();
+
+		fullQuery.addRequiredTerm(
+			FixPackField.FIX_PACK_VERSION, fixPackVersion);
+		fullQuery.addRequiredTerm(FixPackField.PRODUCT, product);
+		fullQuery.addRequiredTerm(FixPackField.PRODUCT_VERSION, productVersion);
+
+		BooleanFilter booleanFilter = new BooleanFilter();
+
+		booleanFilter.addRequiredTerm(
+			Field.ENTRY_CLASS_NAME, JournalArticle.class.getName());
+		booleanFilter.addRequiredTerm(
+			Field.STATUS, WorkflowConstants.STATUS_APPROVED);
+
+		booleanFilter.addRequiredTerm(
+			"ddmStructureKey", DownloadsDDMStructureConstants.KEY_DOWNLOAD);
+		booleanFilter.addRequiredTerm("head", true);
+
+		fullQuery.setPreBooleanFilter(booleanFilter);
+
+		Hits hits = IndexSearcherHelperUtil.search(searchContext, fullQuery);
+
+		Document[] documents = hits.getDocs();
+
+		if (ArrayUtil.isEmpty(documents)) {
+			return null;
+		}
+
+		Document document = documents[0];
+
+		long plid = PortalUtil.getPlidFromPortletId(
+			_themeDisplay.getScopeGroupId(),
+			DownloadsDisplayPortletKeys.DOWNLOADS_DISPLAY);
+
+		PortletURL renderURL = PortletURLFactoryUtil.create(
+			_renderRequest, DownloadsDisplayPortletKeys.DOWNLOADS_DISPLAY, plid,
+			PortletRequest.RENDER_PHASE);
+
+		renderURL.setParameter("mvcRenderCommandName", "/view");
+
+		long classPK = GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK));
+
+		renderURL.setParameter(
+			"journalArticleResourcePrimKey", String.valueOf(classPK));
+
+		return renderURL.toString();
 	}
 
 	public JSONArray getHightlightsFiltersJSONArray() {
@@ -83,6 +160,7 @@ public class ReleaseToolDisplayContext {
 	}
 
 	private JSONArray _highlightsFiltersJSONArray;
+	private final RenderRequest _renderRequest;
 	private final ThemeDisplay _themeDisplay;
 
 }

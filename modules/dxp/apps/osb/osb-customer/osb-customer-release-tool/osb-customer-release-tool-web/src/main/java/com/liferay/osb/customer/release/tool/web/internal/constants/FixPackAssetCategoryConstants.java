@@ -19,8 +19,6 @@ package com.liferay.osb.customer.release.tool.web.internal.constants;
  */
 public class FixPackAssetCategoryConstants {
 
-	public static final String PROPERTY_FRIENDLY_URL = "friendly-url";
-
 	public static final String PROPERTY_PRODUCT = "product";
 
 	public static final String PROPERTY_VERSION = "version";
