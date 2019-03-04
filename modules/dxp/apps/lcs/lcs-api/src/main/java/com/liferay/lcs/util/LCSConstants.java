@@ -131,8 +131,9 @@ public class LCSConstants {
 		"tunneling.servlet.shared.secret"
 	};
 
-	public static final String[] SERVER_METRICS_SUPPORTED_SERVERS =
-		{"tomcat", "weblogic"};
+	public static final String[] SERVER_METRICS_SUPPORTED_SERVERS = {
+		"tomcat", "weblogic"
+	};
 
 	public static final String SETTINGS_MODULE_ADD_ENVIRONMENT =
 		"addEnvironment";

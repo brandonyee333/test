@@ -60,7 +60,11 @@ public class LicenseManagerMessageListenerTest extends PowerMockito {
 		mockStatic(
 			JSONFactoryUtil.class, MessageBusUtil.class, RegistryUtil.class);
 
-		when(RegistryUtil.getRegistry()).thenReturn(null);
+		when(
+			RegistryUtil.getRegistry()
+		).thenReturn(
+			null
+		);
 
 		when(
 			JSONFactoryUtil.createJSONObject()

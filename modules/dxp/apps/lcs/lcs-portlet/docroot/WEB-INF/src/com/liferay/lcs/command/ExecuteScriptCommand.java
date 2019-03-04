@@ -59,7 +59,6 @@ public class ExecuteScriptCommand
 
 	public void executeScript(
 			ExecuteScriptCommandMessage executeScriptCommandMessage)
-
 		throws CompressionException, LCSGatewayException {
 
 		Map<String, Object> inputObjects = new HashMap<>();

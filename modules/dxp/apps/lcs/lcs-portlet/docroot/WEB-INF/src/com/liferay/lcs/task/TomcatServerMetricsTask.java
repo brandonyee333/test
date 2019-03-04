@@ -44,7 +44,8 @@ public class TomcatServerMetricsTask extends BaseServerMetricsTask {
 
 	@Override
 	protected Map<String, Map<String, Object>>
-		getJNDIJDBCConnectionPoolsMetrics() throws Exception {
+			getJNDIJDBCConnectionPoolsMetrics()
+		throws Exception {
 
 		return mBeanServerService.getObjectNamesAttributes(
 			getJNDIJDBCConnectionPoolsObjectNames(), _attributeNames,
@@ -88,8 +89,9 @@ public class TomcatServerMetricsTask extends BaseServerMetricsTask {
 		objectNames = mBeanServerService.getObjectNames(objectName, null);
 
 		if (!objectNames.isEmpty()) {
-			_attributeNames =
-				new String[] {"numBusyConnections", "numIdleConnections"};
+			_attributeNames = new String[] {
+				"numBusyConnections", "numIdleConnections"
+			};
 			_mapKeyStrategy = new NameMapKeyStrategy(jndiName);
 
 			setJNDIJDBCConnectionPoolsObjectNames(

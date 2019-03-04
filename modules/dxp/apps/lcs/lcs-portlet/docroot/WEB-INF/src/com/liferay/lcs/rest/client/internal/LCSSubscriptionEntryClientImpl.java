@@ -36,8 +36,7 @@ public class LCSSubscriptionEntryClientImpl
 	@Override
 	public LCSSubscriptionEntry fetchLCSSubscriptionEntry(String key)
 		throws LCSClientInternalException,
-			   LCSClientRemoteAuthorizationException,
-			   LCSClientRemoteException {
+			   LCSClientRemoteAuthorizationException, LCSClientRemoteException {
 
 		try {
 			return _jsonWebServiceClient.doGetToObject(

@@ -78,8 +78,8 @@ public class LCSKeyAdvisor {
 	}
 
 	protected String getLCSKeyFilePath() {
-		return
-			PropsUtil.get(PropsKeys.LIFERAY_HOME) + _LCS_KEY_FILE_RELATIVE_PATH;
+		return PropsUtil.get(PropsKeys.LIFERAY_HOME) +
+			_LCS_KEY_FILE_RELATIVE_PATH;
 	}
 
 	private void _readKey() {

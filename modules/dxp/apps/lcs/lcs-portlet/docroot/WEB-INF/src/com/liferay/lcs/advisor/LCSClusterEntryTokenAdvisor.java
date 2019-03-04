@@ -74,8 +74,7 @@ public class LCSClusterEntryTokenAdvisor implements LCSEventListener {
 				LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_TOKEN_CORRUPTED) ||
 			(lcsEvent ==
 				LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH) ||
-			(lcsEvent ==
-				LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID) ||
+			(lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID) ||
 			(lcsEvent ==
 				LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS) ||
 			(lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALIDATED) ||

@@ -262,7 +262,11 @@ public class PortalMetricsAggregator {
 			}
 
 			averageStatisticsName = portletId;
-			key = metricsType.concat(portletId).concat(layoutName);
+			key = metricsType.concat(
+				portletId
+			).concat(
+				layoutName
+			);
 		}
 
 		_performanceMetricsMap.put(key, performanceMetrics);

@@ -41,7 +41,11 @@ public class PatchUtil {
 	 * @since  LCS 0.1
 	 */
 	public static String getPatchFileName(String patchName) {
-		return _LIFERAY_PREFIX.concat(patchName).concat(".zip");
+		return _LIFERAY_PREFIX.concat(
+			patchName
+		).concat(
+			".zip"
+		);
 	}
 
 	/**

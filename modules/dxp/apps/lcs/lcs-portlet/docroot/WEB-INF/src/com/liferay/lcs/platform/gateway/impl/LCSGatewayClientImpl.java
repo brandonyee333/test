@@ -156,8 +156,7 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 
 	@Override
 	public void sendMessage(Message message)
-		throws CompressionException,
-			   LCSGatewayException {
+		throws CompressionException, LCSGatewayException {
 
 		String json = message.toJSON();
 

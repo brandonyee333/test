@@ -198,8 +198,8 @@ public class LCSUtil {
 			((OAuthJSONWebServiceClientImpl)_jsonWebServiceClient).
 				testOAuthRequest();
 		}
-		catch (
-			JSONWebServiceTransportException.AuthenticationFailure jsonwsteaf) {
+		catch (JSONWebServiceTransportException.
+					AuthenticationFailure jsonwsteaf) {
 
 			_log.error(
 				"There was an error in communication with LCS: " +
