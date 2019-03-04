@@ -37,9 +37,15 @@ List<Role> defaultSiteRoles = new ArrayList();
 long[] defaultSiteRoleIds = StringUtil.split(groupTypeSettings.getProperty("defaultSiteRoleIds"), 0L);
 
 for (long defaultSiteRoleId : defaultSiteRoleIds) {
-	Role role = RoleLocalServiceUtil.getRole(defaultSiteRoleId);
+	Role role = null;
 
-	defaultSiteRoles.add(role);
+	try {
+		role = RoleLocalServiceUtil.getRole(defaultSiteRoleId);
+
+		defaultSiteRoles.add(role);
+	}
+	catch (NoSuchRoleException e) {
+	}
 }
 
 List<Team> defaultTeams = new ArrayList();
