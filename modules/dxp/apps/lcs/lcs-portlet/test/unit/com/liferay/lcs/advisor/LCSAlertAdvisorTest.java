@@ -425,6 +425,8 @@ public class LCSAlertAdvisorTest extends PowerMockito {
 			handshakeTask, "_createHandshakeMessage"
 		);
 
+		// Skip JavaParser, will fix
+
 		doNothing(
 		).when(
 			handshakeTask, "_submitLCSPortletBuildNumberCheck",
@@ -440,6 +442,8 @@ public class LCSAlertAdvisorTest extends PowerMockito {
 
 		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor = spy(
 			new LCSClusterEntryTokenAdvisor());
+
+		// Skip JavaParser, will fix
 
 		doNothing(
 		).when(

@@ -224,6 +224,8 @@ public class LCSClusterEntryTokenCheckTaskTest extends PowerMockito {
 
 		_lcsClusterEntryTokenAdvisor = spy(new LCSClusterEntryTokenAdvisor());
 
+		// Skip JavaParser, will fix
+
 		doNothing(
 		).when(
 			_lcsClusterEntryTokenAdvisor, "_deleteLCSCLusterEntryTokenFile"

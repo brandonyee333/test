@@ -376,32 +376,52 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 				_lcsGatewayClient, _lcsKeyAdvisor, null, _threadFactory,
 				_uptimeAdvisor));
 
+		// Skip JavaParser, will fix
+
 		doNothing(
 		).when(
 			_taskSchedulerService, "_cancelAllTasks"
 		);
+
+		// Skip JavaParser, will fix
+
 		doNothing(
 		).when(
 			_taskSchedulerService, "_executeHandshakeTask",
 			Matchers.anyBoolean()
 		);
+
+		// Skip JavaParser, will fix
+
 		doNothing(
 		).when(
 			_taskSchedulerService, "_executeLCSClusterEntryTokenCheckTask",
 			Matchers.anyBoolean()
 		);
+
+		// Skip JavaParser, will fix
+
 		doNothing(
 		).when(
 			_taskSchedulerService, "_executeSignOffTask"
 		);
+
+		// Skip JavaParser, will fix
+
 		doNothing(
 		).when(
 			_taskSchedulerService, "_onLCSGatewayServiceAvailable"
 		);
+
+		// Skip JavaParser, will fix
+
 		doNothing(
 		).when(
 			_taskSchedulerService, "_onLCSGatewayServiceUnavailable"
 		);
+
+		// Skip JavaParser, will fix
+
 		doNothing(
 		).when(
 			_taskSchedulerService, "_restart"
