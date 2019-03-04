@@ -1,16 +1,9 @@
 import React from 'react';
-import {
-	fireEvent,
-	getByLabelText,
-	queryAllByRole,
-	queryByRole,
-	queryByText,
-	render
-} from 'react-testing-library';
+import {cleanup, fireEvent, render} from 'react-testing-library';
 
 import SubscriptionMessages from '../SubscriptionMessages';
 
-describe('SubscriptionMessages', () => {
+const setup = () => {
 	const messages = [
 		{
 			content: 'Message content 1',
@@ -32,37 +25,39 @@ describe('SubscriptionMessages', () => {
 		}
 	];
 
+	const utils = render(<SubscriptionMessages messages={messages} />);
+
+	return {...utils};
+};
+
+afterEach(cleanup);
+
+describe('SubscriptionMessages', () => {
 	it('renders correctly', () => {
-		const {container} = render(<SubscriptionMessages messages={messages} />);
+		const {container} = setup();
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('dismisses the message after the x icon was clicked on', () => {
-		const {container} = render(<SubscriptionMessages messages={messages} />);
+		const {getByLabelText, queryAllByRole} = setup();
 
-		let alerts = queryAllByRole(container, 'alert');
+		let alerts = queryAllByRole('alert');
 
 		expect(alerts.length).toBe(3);
 
-		const closeButton = getByLabelText(container, 'Close');
+		fireEvent.click(getByLabelText('Close'));
 
-		fireEvent.click(closeButton);
-
-		alerts = queryAllByRole(container, 'alert');
+		alerts = queryAllByRole('alert');
 
 		expect(alerts.length).toBe(2);
 	});
 
 	it('opens a modal when "View Message" link was clicked', () => {
-		const {container} = render(<SubscriptionMessages messages={messages} />);
+		const {queryByRole, queryByText} = setup();
 
-		const viewMessage = queryByText(container, 'view-message');
+		fireEvent.click(queryByText('view-message'));
 
-		fireEvent.click(viewMessage);
-
-		const modal = queryByRole(container, 'dialog');
-
-		expect(modal).toBeDefined();
+		expect(queryByRole('dialog')).toBeDefined();
 	});
 });

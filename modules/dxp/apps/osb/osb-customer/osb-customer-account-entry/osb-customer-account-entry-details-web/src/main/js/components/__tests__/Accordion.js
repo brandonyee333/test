@@ -1,9 +1,9 @@
 import React from 'react';
-import {fireEvent, render} from 'react-testing-library';
+import {cleanup, fireEvent, render} from 'react-testing-library';
 
 import Accordion from '../Accordion';
 
-describe('Accordion', () => {
+const setup = () => {
 	const items = [
 		{
 			body: 'Accordion Body 1',
@@ -15,27 +15,31 @@ describe('Accordion', () => {
 		}
 	];
 
+	const utils = render(<Accordion items={items} />);
+
+	return {...utils};
+};
+
+afterEach(cleanup);
+
+describe('Accordion', () => {
 	it('renders correctly', () => {
-		const {container} = render(<Accordion items={items} />);
+		const {container} = setup();
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('does not show panel body on initial load', () => {
-		const {queryByText} = render(<Accordion items={items} />);
+		const {queryByText} = setup();
 
-		const accordionBody = queryByText('Accordion Body 1');
-
-		expect(accordionBody).toBeNull();
+		expect(queryByText('Accordion Body 1')).toBeNull();
 	});
 
 	it('expands panel body when clicking on panel title ', () => {
-		const {getByText, queryByText} = render(<Accordion items={items} />);
+		const {getByText, queryByText} = setup();
 
 		fireEvent.click(getByText('Accordion Title 1'));
 
-		const accordionBody = queryByText('Accordion Body 1');
-
-		expect(accordionBody).toBeDefined();
+		expect(queryByText('Accordion Body 1')).toBeDefined();
 	});
 });
