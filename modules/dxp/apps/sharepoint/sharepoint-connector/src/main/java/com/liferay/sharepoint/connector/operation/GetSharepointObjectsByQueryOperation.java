@@ -236,8 +236,11 @@ public class GetSharepointObjectsByQueryOperation extends BaseOperation {
 				getNodeValue(owsAuthorNode, 1),
 				getNodeValue(owsCheckedOutUserIdNode, 1),
 				parseDate(getNodeValue(owsCreatedX0020DateNode, 1)),
-				getNodeValue(owsFSObjTypeNode, 1).equals(
-					SharepointConstants.FS_OBJ_TYPE_FOLDER),
+				getNodeValue(
+					owsFSObjTypeNode, 1
+				).equals(
+					SharepointConstants.FS_OBJ_TYPE_FOLDER
+				),
 				parseDate(getNodeValue(owsLastX0020ModifiedNode, 1)), path,
 				getPermissions(owsPermMaskNode.getNodeValue()),
 				GetterUtil.getLong(getNodeValue(owsFileRefNode, 0)),

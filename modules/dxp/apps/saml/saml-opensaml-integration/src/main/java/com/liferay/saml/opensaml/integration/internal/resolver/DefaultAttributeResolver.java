@@ -282,8 +282,7 @@ public class DefaultAttributeResolver implements AttributeResolver {
 						attributePublisher::buildString
 					).toArray(
 						AttributePublisher.AttributeValue[]::new
-					)
-				);
+					));
 			}
 		}
 		catch (Exception e) {
@@ -532,8 +531,7 @@ public class DefaultAttributeResolver implements AttributeResolver {
 						attributePublisher::buildString
 					).toArray(
 						AttributePublisher.AttributeValue[]::new
-					)
-				);
+					));
 			}
 		}
 		catch (Exception e) {
@@ -558,8 +556,11 @@ public class DefaultAttributeResolver implements AttributeResolver {
 
 			if (values.length > 2) {
 				for (int i = 2; i < values.length; i++) {
-					attributeValue = attributeValue.concat("=").concat(
-						values[i]);
+					attributeValue = attributeValue.concat(
+						"="
+					).concat(
+						values[i]
+					);
 				}
 			}
 		}
