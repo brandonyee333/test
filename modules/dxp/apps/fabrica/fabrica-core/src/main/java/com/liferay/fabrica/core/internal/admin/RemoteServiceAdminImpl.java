@@ -175,7 +175,7 @@ public class RemoteServiceAdminImpl implements ExtendedRemoteServiceAdmin {
 
 		BundleContext bundleContext = bundle.getBundleContext();
 
-		Client client = (Client)(bundleContext.getService(serviceReference));
+		Client client = (Client)bundleContext.getService(serviceReference);
 
 		try {
 			client.shutdown();

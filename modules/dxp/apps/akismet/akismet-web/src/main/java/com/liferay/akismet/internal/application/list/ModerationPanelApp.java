@@ -34,9 +34,7 @@ import org.osgi.service.component.annotations.Reference;
 public class ModerationPanelApp extends BasePanelApp {
 
 	@Override
-	public String getPortletId()
-	{
-
+	public String getPortletId() {
 		return ModerationPortletKeys.MODERATION;
 	}
 

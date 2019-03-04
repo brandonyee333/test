@@ -107,8 +107,8 @@ public class TopologyManager implements RemoteServiceAdminListener {
 	@Reference
 	private Announcer _announcer;
 
-	private final
-		ConcurrentMap<ServiceReference<?>, Collection<ExportRegistration>>
+	private final ConcurrentMap
+		<ServiceReference<?>, Collection<ExportRegistration>>
 			_exportedServices = new ConcurrentHashMap<>();
 
 	@Reference
