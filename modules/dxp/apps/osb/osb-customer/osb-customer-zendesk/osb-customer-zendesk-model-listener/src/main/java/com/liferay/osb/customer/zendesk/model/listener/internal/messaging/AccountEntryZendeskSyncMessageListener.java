@@ -22,7 +22,6 @@ import com.liferay.osb.customer.zendesk.model.listener.synchronizer.PartnerWorke
 import com.liferay.osb.customer.zendesk.model.listener.synchronizer.UserSynchronizer;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationMembershipWebService;
-import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountEntry;
@@ -62,29 +61,18 @@ public class AccountEntryZendeskSyncMessageListener
 
 		_accountEntrySynchronizer.update(accountEntry);
 
-		long zendeskOrganizationId =
-			_zendeskMapperUtil.fetchZendeskOrganizationId(accountEntryId);
-
-		Map<Long, Long> organizationMemberships =
-			_zendeskOrganizationMembershipWebService.getOrganizationMemberships(
-				zendeskOrganizationId);
-
 		Map<Long, AccountCustomer> accountCustomerMap = new HashMap<>();
 
 		for (AccountCustomer accountCustomer :
 				accountEntry.getAccountCustomers()) {
-
-			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
-				accountCustomer.getUserId());
 
 			_accountCustomerSynchronizer.add(accountCustomer);
 
 			_accountCustomerSynchronizer.addOrganizationSubscription(
 				accountCustomer);
 
-			if (zendeskUserId > 0) {
-				accountCustomerMap.put(zendeskUserId, accountCustomer);
-			}
+			accountCustomerMap.put(
+				accountCustomer.getUserId(), accountCustomer);
 		}
 
 		Map<Long, PartnerWorker> partnerWorkerMap = new HashMap<>();
@@ -95,31 +83,32 @@ public class AccountEntryZendeskSyncMessageListener
 			for (PartnerWorker partnerWorker :
 					partnerEntry.getPartnerWorkers()) {
 
-				long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
-					partnerWorker.getUserId());
-
 				_partnerWorkerSynchronizer.add(partnerWorker);
 
-				if (zendeskUserId > 0) {
-					partnerWorkerMap.put(zendeskUserId, partnerWorker);
-				}
+				partnerWorkerMap.put(partnerWorker.getUserId(), partnerWorker);
 			}
 		}
+
+		long zendeskOrganizationId =
+			_zendeskMapperUtil.fetchZendeskOrganizationId(accountEntryId);
+
+		Map<Long, Long> organizationMemberships =
+			_zendeskOrganizationMembershipWebService.getOrganizationMemberships(
+				zendeskOrganizationId);
 
 		for (Map.Entry<Long, Long> entry : organizationMemberships.entrySet()) {
 			long zendeskUserId = entry.getKey();
 
-			AccountCustomer accountCustomer = accountCustomerMap.get(
+			ZendeskUser zendeskUser = _zendeskUserWebService.getZendeskUser(
 				zendeskUserId);
-
-			ZendeskUser zendeskUser =
-				_zendeskUserWebService.getZendeskUserByZendeskUserId(
-					zendeskUserId);
-
-			Set<String> tags = zendeskUser.getTags();
 
 			User user = _userLocalService.fetchUserByUuidAndCompanyId(
 				zendeskUser.getExternalId(), accountEntry.getCompanyId());
+
+			AccountCustomer accountCustomer = accountCustomerMap.get(
+				user.getUserId());
+
+			Set<String> tags = zendeskUser.getTags();
 
 			if ((accountCustomer == null) &&
 				tags.contains(ZendeskTagConstants.OSB_CUSTOMER)) {
@@ -173,9 +162,6 @@ public class AccountEntryZendeskSyncMessageListener
 	@Reference
 	private ZendeskOrganizationMembershipWebService
 		_zendeskOrganizationMembershipWebService;
-
-	@Reference
-	private ZendeskOrganizationWebService _zendeskOrganizationWebService;
 
 	@Reference
 	private ZendeskUserWebService _zendeskUserWebService;
