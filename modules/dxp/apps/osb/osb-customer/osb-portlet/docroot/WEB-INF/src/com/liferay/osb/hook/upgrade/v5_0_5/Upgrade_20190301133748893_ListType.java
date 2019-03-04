@@ -42,17 +42,17 @@ public class Upgrade_20190301133748893_ListType extends BaseUpgradeProcess {
 			"com.liferay.osb.model.AccountEnvironment.envJVM");
 
 		runSQL(
-			"update ListType set name = 'oracle-jdk-5' where listTypeId " +
-				"= 29000");
+			"update ListType set name = 'oracle-jdk-5' where listTypeId = " +
+				"29000");
 		runSQL(
-			"update ListType set name = 'oracle-jdk-6' where listTypeId " +
-				"= 29001");
+			"update ListType set name = 'oracle-jdk-6' where listTypeId = " +
+				"29001");
 		runSQL(
-			"update ListType set name = 'oracle-jdk-7' where listTypeId " +
-				"= 29002");
+			"update ListType set name = 'oracle-jdk-7' where listTypeId = " +
+				"29002");
 		runSQL(
-			"update ListType set name = 'oracle-jdk-8' where listTypeId " +
-				"= 29006");
+			"update ListType set name = 'oracle-jdk-8' where listTypeId = " +
+				"29006");
 	}
 
 }
