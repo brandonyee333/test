@@ -109,6 +109,8 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.Release;
@@ -527,6 +529,21 @@ public class AdminPortlet extends OSBPortlet {
 			actionRequest, "accountEntryId");
 
 		syncToLCS(actionRequest, actionResponse, accountEntryId);
+	}
+
+	public void syncToZendesk(
+			ActionRequest actionRequest, ActionResponse actionResponse)
+		throws Exception {
+
+		long accountEntryId = ParamUtil.getLong(
+			actionRequest, "accountEntryId");
+
+		Message message = new Message();
+
+		message.put("accountEntryId", accountEntryId);
+
+		MessageBusUtil.sendMessage(
+			"liferay/account_entry_zendesk_sync", message);
 	}
 
 	public void updateAccountCustomer(

@@ -170,6 +170,21 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 		return zendeskConverter.toZendeskUser(usersJSONArray.getJSONObject(0));
 	}
 
+	public ZendeskUser getZendeskUserByZendeskUserId(long zendeskUserId)
+		throws PortalException {
+
+		String endpoint =
+			ZendeskRESTEndpoints.URL_API_V2 + "users/" + zendeskUserId +
+				".json";
+
+		JSONObject jsonObject = zendeskBaseWebService.get(
+			endpoint, StringPool.BLANK);
+
+		JSONObject userJSONObject = jsonObject.getJSONObject("user");
+
+		return zendeskConverter.toZendeskUser(userJSONObject);
+	}
+
 	public SearchHits<ZendeskUser> getZendeskUsers(Query query)
 		throws PortalException {
 

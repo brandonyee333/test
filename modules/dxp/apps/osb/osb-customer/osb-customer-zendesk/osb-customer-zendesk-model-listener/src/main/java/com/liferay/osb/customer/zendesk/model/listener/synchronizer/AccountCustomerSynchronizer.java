@@ -80,6 +80,15 @@ public class AccountCustomerSynchronizer {
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
 			accountCustomer.getUserId());
 
+		reassignTickets(
+			accountCustomer.getAccountEntryId(), zendeskOrganizationId,
+			zendeskUserId);
+	}
+
+	public void reassignTickets(
+			long accountEntryId, long zendeskOrganizationId, long zendeskUserId)
+		throws PortalException {
+
 		if ((zendeskOrganizationId > 0) && (zendeskUserId > 0)) {
 			Set<String> criteria = new HashSet<>();
 
@@ -93,7 +102,7 @@ public class AccountCustomerSynchronizer {
 			if (!zendeskTickets.isEmpty()) {
 				List<AccountCustomer> accountCustomers =
 					AccountCustomerLocalServiceUtil.getAccountCustomers(
-						accountCustomer.getAccountEntryId(),
+						accountEntryId,
 						AccountCustomerConstants.ROLE_DEVELOPER);
 
 				if (accountCustomers.isEmpty()) {

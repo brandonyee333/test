@@ -2,9 +2,10 @@
 
 <suppressions>
 	<source-check>
-		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/zendesk/model/listener/AccountEntryModelListener.java" />>
-		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/zendesk/model/listener/PartnerWorkerModelListener.java" />>
-		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/zendesk/model/listener/PhoneModelListener.java" />>
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/zendesk/model/listener/AccountEntryModelListener.java" />
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/zendesk/model/listener/internal/messaging/AccountEntryZendeskSyncMessageListener.java" />
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/zendesk/model/listener/PartnerWorkerModelListener.java" />
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/zendesk/model/listener/PhoneModelListener.java" />
 		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/zendesk/model/listener/synchronizer/AccountCustomerSynchronizer.java" />
 		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/zendesk/model/listener/synchronizer/AccountEntrySynchronizer.java" />
 		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/zendesk/model/listener/synchronizer/PartnerWorkerSynchronizer.java" />

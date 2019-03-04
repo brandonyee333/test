@@ -303,9 +303,19 @@ public class ZendeskConverter {
 		ZendeskUser zendeskUser = new ZendeskUser();
 
 		zendeskUser.setEmail(jsonObject.getString("email"));
-		zendeskUser.setExternalId(jsonObject.getString("externalId"));
+		zendeskUser.setExternalId(jsonObject.getString("external_id"));
 		zendeskUser.setLocale(jsonObject.getString("locale"));
 		zendeskUser.setName(jsonObject.getString("name"));
+
+		JSONArray jsonArray = jsonObject.getJSONArray("tags");
+
+		Set<String> tags = new HashSet<>();
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			tags.add(jsonArray.getString(i));
+		}
+
+		zendeskUser.setTags(tags);
 		zendeskUser.setZendeskUserId(jsonObject.getLong("id"));
 
 		return zendeskUser;

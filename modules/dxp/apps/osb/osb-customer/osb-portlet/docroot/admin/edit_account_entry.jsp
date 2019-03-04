@@ -661,6 +661,13 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<aui:a cssClass="btn btn-default" href="<%= syncToLCSURL %>" label="sync-to-lcs" />
 			</c:if>
 
+			<portlet:actionURL name="syncToZendesk" var="syncToZendeskURL">
+				<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+				<portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntry.getAccountEntryId()) %>" />
+			</portlet:actionURL>
+
+			<aui:a cssClass="btn btn-default" href="<%= syncToZendeskURL %>" label="sync-to-zendesk" />
+
 			<portlet:renderURL var="viewOrdersEntriesURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 				<portlet:param name="tabs1" value="sales" />
 				<portlet:param name="tabs2" value="orders" />

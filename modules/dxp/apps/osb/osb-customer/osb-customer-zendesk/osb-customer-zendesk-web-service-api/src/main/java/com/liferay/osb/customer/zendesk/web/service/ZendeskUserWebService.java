@@ -62,6 +62,9 @@ public interface ZendeskUserWebService {
 	public ZendeskUser getZendeskUserByExternalId(String externalId)
 		throws PortalException;
 
+	public ZendeskUser getZendeskUserByZendeskUserId(long zendeskUserId)
+		throws PortalException;
+
 	public SearchHits<ZendeskUser> getZendeskUsers(Query query)
 		throws PortalException;
 
