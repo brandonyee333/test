@@ -18,6 +18,7 @@ import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.model.listener.exception.AccountCustomerRemovalException;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
+import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationMembershipWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.model.AccountCustomer;
@@ -133,8 +134,9 @@ public class AccountCustomerSynchronizer {
 			accountCustomer.getUserId());
 
 		if ((zendeskOrganizationId > 0) && (zendeskUserId > 0)) {
-			_zendeskUserWebService.deleteZendeskUserOrganizationMemberships(
-				zendeskUserId, new long[] {zendeskOrganizationId});
+			_zendeskOrganizationMembershipWebService.
+				deleteOrganizationMemberships(
+					zendeskUserId, new long[] {zendeskOrganizationId});
 
 			removeTags(accountCustomer, zendeskOrganizationId);
 		}
@@ -241,6 +243,10 @@ public class AccountCustomerSynchronizer {
 
 	@Reference
 	private ZendeskMapperUtil _zendeskMapperUtil;
+
+	@Reference(target = "(async=true)")
+	private ZendeskOrganizationMembershipWebService
+		_zendeskOrganizationMembershipWebService;
 
 	@Reference
 	private ZendeskTicketWebService _zendeskTicketWebService;

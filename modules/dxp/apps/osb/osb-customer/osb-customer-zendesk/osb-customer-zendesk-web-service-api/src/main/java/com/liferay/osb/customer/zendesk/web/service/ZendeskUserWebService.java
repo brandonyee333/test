@@ -21,7 +21,6 @@ import com.liferay.osb.customer.zendesk.web.service.search.Query;
 import com.liferay.osb.customer.zendesk.web.service.search.SearchHits;
 import com.liferay.portal.kernel.exception.PortalException;
 
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -38,22 +37,11 @@ public interface ZendeskUserWebService {
 			String organizationName, Set<String> tags)
 		throws PortalException;
 
-	public void createZendeskUserOrganizationMemberships(
-			long zendeskUserId, long[] zendeskOrganizationIds)
-		throws PortalException;
-
 	public void createZendeskUserOrganizationSubscription(
 			long zendeskUserId, long zendeskOrganizationId)
 		throws PortalException;
 
-	public void deleteZendeskUserOrganizationMemberships(
-			long zendeskUserId, long[] zendeskOrganizationIds)
-		throws PortalException;
-
 	public void deleteZendeskUserTags(long zendeskUserId, Set<String> tags)
-		throws PortalException;
-
-	public Map<Long, Long> getOrganizationMemberships(long zendeskUserId)
 		throws PortalException;
 
 	public ZendeskUser getZendeskUserByEmail(String email)

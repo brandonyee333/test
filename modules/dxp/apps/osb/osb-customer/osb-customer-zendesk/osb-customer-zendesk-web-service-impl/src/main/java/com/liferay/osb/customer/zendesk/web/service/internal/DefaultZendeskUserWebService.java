@@ -75,22 +75,8 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 		return zendeskConverter.toZendeskUser(responseJSONObject);
 	}
 
-	public void createZendeskUserOrganizationMemberships(
-			long zendeskUserId, long[] zendeskOrganizationIds)
-		throws PortalException {
-
-		throw new UnsupportedOperationException();
-	}
-
 	public void createZendeskUserOrganizationSubscription(
 			long zendeskUserId, long zendeskOrganizationId)
-		throws PortalException {
-
-		throw new UnsupportedOperationException();
-	}
-
-	public void deleteZendeskUserOrganizationMemberships(
-			long zendeskUserId, long[] zendeskOrganizationIds)
 		throws PortalException {
 
 		throw new UnsupportedOperationException();
@@ -100,36 +86,6 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 		throws PortalException {
 
 		throw new UnsupportedOperationException();
-	}
-
-	public Map<Long, Long> getOrganizationMemberships(long zendeskUserId)
-		throws PortalException {
-
-		String endpoint =
-			ZendeskRESTEndpoints.URL_API_V2 + "users/" + zendeskUserId +
-				"/organization_memberships.json";
-
-		JSONObject organizationMembershipsJSONObject =
-			zendeskBaseWebService.get(endpoint, StringPool.BLANK);
-
-		Map<Long, Long> organizationMembershipMap = new HashMap<>();
-
-		JSONArray membershipsJSONArray =
-			organizationMembershipsJSONObject.getJSONArray(
-				"organization_memberships");
-
-		for (int i = 0; i < membershipsJSONArray.length(); i++) {
-			JSONObject membershipJSONObject =
-				membershipsJSONArray.getJSONObject(i);
-
-			long id = membershipJSONObject.getLong("id");
-			long organizationId = membershipJSONObject.getLong(
-				"organization_id");
-
-			organizationMembershipMap.put(organizationId, id);
-		}
-
-		return organizationMembershipMap;
 	}
 
 	public ZendeskUser getZendeskUserByEmail(String email)

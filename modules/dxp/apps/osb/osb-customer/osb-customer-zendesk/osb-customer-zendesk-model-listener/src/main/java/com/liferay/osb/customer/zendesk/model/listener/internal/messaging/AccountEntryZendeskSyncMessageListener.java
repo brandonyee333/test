@@ -21,6 +21,7 @@ import com.liferay.osb.customer.zendesk.model.listener.synchronizer.AccountEntry
 import com.liferay.osb.customer.zendesk.model.listener.synchronizer.PartnerWorkerSynchronizer;
 import com.liferay.osb.customer.zendesk.model.listener.synchronizer.UserSynchronizer;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
+import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationMembershipWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.model.AccountCustomer;
@@ -65,7 +66,7 @@ public class AccountEntryZendeskSyncMessageListener
 			_zendeskMapperUtil.fetchZendeskOrganizationId(accountEntryId);
 
 		Map<Long, Long> organizationMemberships =
-			_zendeskOrganizationWebService.getOrganizationMemberships(
+			_zendeskOrganizationMembershipWebService.getOrganizationMemberships(
 				zendeskOrganizationId);
 
 		Map<Long, AccountCustomer> accountCustomerMap = new HashMap<>();
@@ -126,8 +127,9 @@ public class AccountEntryZendeskSyncMessageListener
 				_accountCustomerSynchronizer.reassignTickets(
 					accountEntryId, zendeskOrganizationId, zendeskUserId);
 
-				_zendeskUserWebService.deleteZendeskUserOrganizationMemberships(
-					zendeskUserId, new long[] {zendeskOrganizationId});
+				_asyncZendeskOrganizationMembershipWebService.
+					deleteOrganizationMemberships(
+						zendeskUserId, new long[] {zendeskOrganizationId});
 
 				_userSynchronizer.removeObsoleteTags(user.getUserId());
 			}
@@ -137,8 +139,9 @@ public class AccountEntryZendeskSyncMessageListener
 			if ((partnerWorker == null) &&
 				tags.contains(ZendeskTagConstants.OSB_PARTNER)) {
 
-				_zendeskUserWebService.deleteZendeskUserOrganizationMemberships(
-					zendeskUserId, new long[] {zendeskOrganizationId});
+				_asyncZendeskOrganizationMembershipWebService.
+					deleteOrganizationMemberships(
+						zendeskUserId, new long[] {zendeskOrganizationId});
 
 				_userSynchronizer.removeObsoleteTags(user.getUserId());
 			}
@@ -151,6 +154,10 @@ public class AccountEntryZendeskSyncMessageListener
 	@Reference
 	private AccountEntrySynchronizer _accountEntrySynchronizer;
 
+	@Reference(target = "(async=true)")
+	private ZendeskOrganizationMembershipWebService
+		_asyncZendeskOrganizationMembershipWebService;
+
 	@Reference
 	private PartnerWorkerSynchronizer _partnerWorkerSynchronizer;
 
@@ -162,6 +169,10 @@ public class AccountEntryZendeskSyncMessageListener
 
 	@Reference
 	private ZendeskMapperUtil _zendeskMapperUtil;
+
+	@Reference
+	private ZendeskOrganizationMembershipWebService
+		_zendeskOrganizationMembershipWebService;
 
 	@Reference
 	private ZendeskOrganizationWebService _zendeskOrganizationWebService;

@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.HashMap;
@@ -72,36 +71,6 @@ public class DefaultZendeskOrganizationWebService
 			"organization");
 
 		return _zendeskConverter.toZendeskOrganization(organizationJSONObject);
-	}
-
-	public Map<Long, Long> getOrganizationMemberships(
-			long zendeskOrganizationId)
-		throws PortalException {
-
-		String endpoint =
-			ZendeskRESTEndpoints.URL_API_V2 + "organizations/" +
-				zendeskOrganizationId + "/organization_memberships.json";
-
-		JSONObject organizationMembershipsJSONObject =
-			_zendeskBaseWebService.get(endpoint, StringPool.BLANK);
-
-		Map<Long, Long> organizationMembershipMap = new HashMap<>();
-
-		JSONArray membershipsJSONArray =
-			organizationMembershipsJSONObject.getJSONArray(
-				"organization_memberships");
-
-		for (int i = 0; i < membershipsJSONArray.length(); i++) {
-			JSONObject membershipJSONObject =
-				membershipsJSONArray.getJSONObject(i);
-
-			long id = membershipJSONObject.getLong("id");
-			long userId = membershipJSONObject.getLong("user_id");
-
-			organizationMembershipMap.put(userId, id);
-		}
-
-		return organizationMembershipMap;
 	}
 
 	public ZendeskOrganization getZendeskOrganization(String externalId)

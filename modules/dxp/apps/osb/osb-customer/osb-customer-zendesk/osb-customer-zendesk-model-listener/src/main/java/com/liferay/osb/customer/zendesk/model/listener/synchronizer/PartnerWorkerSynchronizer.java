@@ -16,6 +16,7 @@ package com.liferay.osb.customer.zendesk.model.listener.synchronizer;
 
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
+import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationMembershipWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.PartnerEntry;
@@ -128,7 +129,7 @@ public class PartnerWorkerSynchronizer {
 			return;
 		}
 
-		_asyncZendeskUserWebService.createZendeskUserOrganizationMemberships(
+		_zendeskOrganizationMembershipWebService.createOrganizationMemberships(
 			zendeskUserId, zendeskOrganizationIds);
 
 		for (long zendeskOrganizationId : zendeskOrganizationIds) {
@@ -187,7 +188,7 @@ public class PartnerWorkerSynchronizer {
 			return;
 		}
 
-		_asyncZendeskUserWebService.deleteZendeskUserOrganizationMemberships(
+		_zendeskOrganizationMembershipWebService.deleteOrganizationMemberships(
 			zendeskUserId, zendeskOrganizationIds);
 	}
 
@@ -210,5 +211,9 @@ public class PartnerWorkerSynchronizer {
 
 	@Reference
 	private ZendeskMapperUtil _zendeskMapperUtil;
+
+	@Reference(target = "(async=true)")
+	private ZendeskOrganizationMembershipWebService
+		_zendeskOrganizationMembershipWebService;
 
 }

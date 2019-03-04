@@ -16,26 +16,30 @@ package com.liferay.osb.customer.zendesk.web.service;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osb.customer.zendesk.model.ZendeskOrganization;
 import com.liferay.portal.kernel.exception.PortalException;
 
-import java.util.Set;
+import java.util.Map;
 
 /**
- * @author Kyle Bischof
+ * @author Amos Fong
  */
 @ProviderType
-public interface ZendeskOrganizationWebService {
+public interface ZendeskOrganizationMembershipWebService {
 
-	public ZendeskOrganization createOrUpdateZendeskOrganization(
-			String accountCode, String details, String externalId, String name,
-			String notes, String partnerFirstLineSupport,
-			String partnerJiraProject, String partnerCode, String sla,
-			String status, String supportLanguage, String supportRegion,
-			String tier, Set<String> tags)
+	public void createOrganizationMemberships(
+			long zendeskUserId, long[] zendeskOrganizationIds)
 		throws PortalException;
 
-	public ZendeskOrganization getZendeskOrganization(String externalId)
+	public void deleteOrganizationMemberships(
+			long zendeskUserId, long[] zendeskOrganizationIds)
+		throws PortalException;
+
+	public Map<Long, Long> getOrganizationMemberships(
+			long zendeskOrganizationId)
+		throws PortalException;
+
+	public Map<Long, Long> getZendeskUserOrganizationMemberships(
+			long zendeskUserId)
 		throws PortalException;
 
 }
