@@ -35,7 +35,7 @@
 		"eslint": "^5.3.0",
 		"eslint-config-xo-react": "^0.17.0",
 		"eslint-plugin-react": "^7.10.0",
-		"jest": "^23.6.0",
+		"jest": "^24.1.0",
 		"liferay-lang-key-dev-loader": "^1.0.3",
 		"mini-css-extract-plugin": "^0.4.1",
 		"node-sass": "^4.9.3",
@@ -52,7 +52,9 @@
 		"xo": "^0.22.0"
 	},
 	"jest": {
-		"setupTestFrameworkScriptFile": "<rootDir>/src/main/js/test/setup.js"
+		"setupFilesAfterEnv": [
+			"<rootDir>/src/main/js/test/setup.js"
+		]
 	},
 	"license": "UNLICENSED",
 	"name": "osb-customer-release-tool",
