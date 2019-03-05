@@ -16,6 +16,7 @@ package com.liferay.osb.customer.zendesk.web.service.internal;
 
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints;
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskRequest;
+import com.liferay.osb.customer.zendesk.model.ZendeskOrganizationMembership;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationMembershipWebService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -26,6 +27,7 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
@@ -81,7 +83,7 @@ public class AsyncZendeskOrganizationMembershipWebService
 			ZendeskRESTEndpoints.URL_API_V2 +
 				ZendeskRESTEndpoints.ORGANIZATION_MEMBERSHIPS_DESTROY_MANY;
 
-		Map<Long, Long> organizationMemberships =
+		List<ZendeskOrganizationMembership> organizationMemberships =
 			getZendeskUserOrganizationMemberships(zendeskUserId);
 
 		if (organizationMemberships.isEmpty()) {
@@ -91,12 +93,18 @@ public class AsyncZendeskOrganizationMembershipWebService
 		StringBundler sb = new StringBundler(
 			(organizationMemberships.size() * 2) - 1);
 
-		for (Map.Entry<Long, Long> entry : organizationMemberships.entrySet()) {
-			if (!ArrayUtil.contains(zendeskOrganizationIds, entry.getKey())) {
+		for (ZendeskOrganizationMembership organizationMembership :
+				organizationMemberships) {
+
+			if (!ArrayUtil.contains(
+					zendeskOrganizationIds,
+					organizationMembership.getZendeskOrganizationId())) {
+
 				continue;
 			}
 
-			sb.append(entry.getValue());
+			sb.append(
+				organizationMembership.getZendeskOrganizationMembershipId());
 
 			if (sb.index() < sb.capacity()) {
 				sb.append(StringPool.COMMA);

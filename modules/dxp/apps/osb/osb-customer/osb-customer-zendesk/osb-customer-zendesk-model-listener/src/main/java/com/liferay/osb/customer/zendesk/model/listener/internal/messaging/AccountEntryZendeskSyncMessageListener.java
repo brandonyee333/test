@@ -15,6 +15,7 @@
 package com.liferay.osb.customer.zendesk.model.listener.internal.messaging;
 
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
+import com.liferay.osb.customer.zendesk.model.ZendeskOrganizationMembership;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.model.listener.synchronizer.AccountCustomerSynchronizer;
 import com.liferay.osb.customer.zendesk.model.listener.synchronizer.AccountEntrySynchronizer;
@@ -36,6 +37,7 @@ import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.UserLocalService;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -93,12 +95,15 @@ public class AccountEntryZendeskSyncMessageListener
 		long zendeskOrganizationId =
 			_zendeskMapperUtil.fetchZendeskOrganizationId(accountEntryId);
 
-		Map<Long, Long> organizationMemberships =
+		List<ZendeskOrganizationMembership> zendeskOrganizationMemberships =
 			_zendeskOrganizationMembershipWebService.getOrganizationMemberships(
 				zendeskOrganizationId);
 
-		for (Map.Entry<Long, Long> entry : organizationMemberships.entrySet()) {
-			long zendeskUserId = entry.getKey();
+		for (ZendeskOrganizationMembership zendeskOrganizationMembership :
+				zendeskOrganizationMemberships) {
+
+			long zendeskUserId =
+				zendeskOrganizationMembership.getZendeskUserId();
 
 			ZendeskUser zendeskUser = _zendeskUserWebService.getZendeskUser(
 				zendeskUserId);

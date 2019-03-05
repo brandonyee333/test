@@ -17,6 +17,7 @@ package com.liferay.osb.customer.zendesk.web.service.internal.util;
 import com.liferay.osb.customer.zendesk.model.ZendeskArticle;
 import com.liferay.osb.customer.zendesk.model.ZendeskCategory;
 import com.liferay.osb.customer.zendesk.model.ZendeskOrganization;
+import com.liferay.osb.customer.zendesk.model.ZendeskOrganizationMembership;
 import com.liferay.osb.customer.zendesk.model.ZendeskSection;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicketComment;
@@ -200,6 +201,38 @@ public class ZendeskConverter {
 		zendeskOrganization.setZendeskOrganizationId(jsonObject.getLong("id"));
 
 		return zendeskOrganization;
+	}
+
+	public ZendeskOrganizationMembership toZendeskOrganizationMembership(
+		JSONObject jsonObject) {
+
+		ZendeskOrganizationMembership zendeskOrganizationMembership =
+			new ZendeskOrganizationMembership();
+
+		zendeskOrganizationMembership.setZendeskOrganizationMembershipId(
+			jsonObject.getLong("id"));
+		zendeskOrganizationMembership.setZendeskOrganizationId(
+			jsonObject.getLong("organization_id"));
+		zendeskOrganizationMembership.setZendeskUserId(
+			jsonObject.getLong("user_id"));
+		
+		return zendeskOrganizationMembership;
+	}
+
+	public List<ZendeskOrganizationMembership> toZendeskOrganizationMemberships(
+		JSONArray jsonArray) {
+
+		List<ZendeskOrganizationMembership> zendeskOrganizationMemberships =
+			new ArrayList<>();
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			zendeskOrganizationMemberships.add(
+				toZendeskOrganizationMembership(jsonObject));
+		}
+
+		return zendeskOrganizationMemberships;
 	}
 
 	public ZendeskSection toZendeskSection(JSONObject jsonObject)

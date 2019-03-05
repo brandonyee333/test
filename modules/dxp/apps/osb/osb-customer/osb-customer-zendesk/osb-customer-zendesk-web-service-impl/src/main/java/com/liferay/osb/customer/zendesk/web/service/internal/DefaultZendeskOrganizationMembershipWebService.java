@@ -16,15 +16,16 @@ package com.liferay.osb.customer.zendesk.web.service.internal;
 
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints;
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
+import com.liferay.osb.customer.zendesk.model.ZendeskOrganizationMembership;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationMembershipWebService;
 import com.liferay.osb.customer.zendesk.web.service.internal.util.MessagePublisherUtil;
+import com.liferay.osb.customer.zendesk.web.service.internal.util.ZendeskConverter;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.StringPool;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -53,7 +54,7 @@ public class DefaultZendeskOrganizationMembershipWebService
 		throw new UnsupportedOperationException();
 	}
 
-	public Map<Long, Long> getOrganizationMemberships(
+	public List<ZendeskOrganizationMembership> getOrganizationMemberships(
 			long zendeskOrganizationId)
 		throws PortalException {
 
@@ -68,22 +69,12 @@ public class DefaultZendeskOrganizationMembershipWebService
 			organizationMembershipsJSONObject.getJSONArray(
 				"organization_memberships");
 
-		Map<Long, Long> organizationMembershipMap = new HashMap<>();
-
-		for (int i = 0; i < membershipsJSONArray.length(); i++) {
-			JSONObject jsonObject = membershipsJSONArray.getJSONObject(i);
-
-			long id = jsonObject.getLong("id");
-			long userId = jsonObject.getLong("user_id");
-
-			organizationMembershipMap.put(userId, id);
-		}
-
-		return organizationMembershipMap;
+		return zendeskConverter.toZendeskOrganizationMemberships(
+			membershipsJSONArray);
 	}
 
-	public Map<Long, Long> getZendeskUserOrganizationMemberships(
-			long zendeskUserId)
+	public List<ZendeskOrganizationMembership>
+			getZendeskUserOrganizationMemberships(long zendeskUserId)
 		throws PortalException {
 
 		String endpoint =
@@ -97,18 +88,8 @@ public class DefaultZendeskOrganizationMembershipWebService
 			organizationMembershipsJSONObject.getJSONArray(
 				"organization_memberships");
 
-		Map<Long, Long> organizationMembershipMap = new HashMap<>();
-
-		for (int i = 0; i < membershipsJSONArray.length(); i++) {
-			JSONObject jsonObject = membershipsJSONArray.getJSONObject(i);
-
-			long id = jsonObject.getLong("id");
-			long organizationId = jsonObject.getLong("organization_id");
-
-			organizationMembershipMap.put(organizationId, id);
-		}
-
-		return organizationMembershipMap;
+		return zendeskConverter.toZendeskOrganizationMemberships(
+			membershipsJSONArray);
 	}
 
 	@Reference
@@ -116,5 +97,8 @@ public class DefaultZendeskOrganizationMembershipWebService
 
 	@Reference
 	protected ZendeskBaseWebService zendeskBaseWebService;
+
+	@Reference
+	protected ZendeskConverter zendeskConverter;
 
 }

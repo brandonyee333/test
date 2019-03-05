@@ -16,9 +16,10 @@ package com.liferay.osb.customer.zendesk.web.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.customer.zendesk.model.ZendeskOrganizationMembership;
 import com.liferay.portal.kernel.exception.PortalException;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * @author Amos Fong
@@ -34,12 +35,12 @@ public interface ZendeskOrganizationMembershipWebService {
 			long zendeskUserId, long[] zendeskOrganizationIds)
 		throws PortalException;
 
-	public Map<Long, Long> getOrganizationMemberships(
+	public List<ZendeskOrganizationMembership> getOrganizationMemberships(
 			long zendeskOrganizationId)
 		throws PortalException;
 
-	public Map<Long, Long> getZendeskUserOrganizationMemberships(
-			long zendeskUserId)
+	public List<ZendeskOrganizationMembership>
+			getZendeskUserOrganizationMemberships(long zendeskUserId)
 		throws PortalException;
 
 }
