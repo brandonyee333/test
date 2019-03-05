@@ -44,13 +44,13 @@ public interface ZendeskUserWebService {
 	public void deleteZendeskUserTags(long zendeskUserId, Set<String> tags)
 		throws PortalException;
 
+	public ZendeskUser getZendeskUser(long zendeskUserId)
+		throws PortalException;
+
 	public ZendeskUser getZendeskUserByEmail(String email)
 		throws PortalException;
 
 	public ZendeskUser getZendeskUserByExternalId(String externalId)
-		throws PortalException;
-
-	public ZendeskUser getZendeskUser(long zendeskUserId)
 		throws PortalException;
 
 	public SearchHits<ZendeskUser> getZendeskUsers(Query query)

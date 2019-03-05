@@ -68,7 +68,18 @@ public class DefaultZendeskOrganizationMembershipWebService
 			organizationMembershipsJSONObject.getJSONArray(
 				"organization_memberships");
 
-		return toMap(membershipsJSONArray);
+		Map<Long, Long> organizationMembershipMap = new HashMap<>();
+
+		for (int i = 0; i < membershipsJSONArray.length(); i++) {
+			JSONObject jsonObject = membershipsJSONArray.getJSONObject(i);
+
+			long id = jsonObject.getLong("id");
+			long userId = jsonObject.getLong("user_id");
+
+			organizationMembershipMap.put(userId, id);
+		}
+
+		return organizationMembershipMap;
 	}
 
 	public Map<Long, Long> getZendeskUserOrganizationMemberships(
@@ -86,14 +97,10 @@ public class DefaultZendeskOrganizationMembershipWebService
 			organizationMembershipsJSONObject.getJSONArray(
 				"organization_memberships");
 
-		return toMap(membershipsJSONArray);
-	}
-
-	protected Map<Long, Long> toMap(JSONArray jsonArray) {
 		Map<Long, Long> organizationMembershipMap = new HashMap<>();
 
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
+		for (int i = 0; i < membershipsJSONArray.length(); i++) {
+			JSONObject jsonObject = membershipsJSONArray.getJSONObject(i);
 
 			long id = jsonObject.getLong("id");
 			long organizationId = jsonObject.getLong("organization_id");

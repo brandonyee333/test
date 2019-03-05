@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.UserLocalService;
 
 import java.util.HashMap;
@@ -105,36 +106,59 @@ public class AccountEntryZendeskSyncMessageListener
 			User user = _userLocalService.fetchUserByUuidAndCompanyId(
 				zendeskUser.getExternalId(), accountEntry.getCompanyId());
 
-			AccountCustomer accountCustomer = accountCustomerMap.get(
-				user.getUserId());
+			long userId = user.getUserId();
+
+			AccountCustomer accountCustomer = accountCustomerMap.get(userId);
+
+			PartnerWorker partnerWorker = partnerWorkerMap.get(userId);
+
+			boolean accountEntryUser = isAccountEntryUser(
+				accountCustomer, partnerWorker);
 
 			Set<String> tags = zendeskUser.getTags();
 
-			if ((accountCustomer == null) &&
-				tags.contains(ZendeskTagConstants.OSB_CUSTOMER)) {
+			if (!accountEntryUser) {
+				if (tags.contains(ZendeskTagConstants.OSB_CUSTOMER)) {
+					_accountCustomerSynchronizer.reassignTickets(
+						accountEntryId, zendeskOrganizationId, zendeskUserId);
 
-				_accountCustomerSynchronizer.reassignTickets(
-					accountEntryId, zendeskOrganizationId, zendeskUserId);
+					_asyncZendeskOrganizationMembershipWebService.
+						deleteOrganizationMemberships(
+							zendeskUserId, new long[] {zendeskOrganizationId});
 
-				_asyncZendeskOrganizationMembershipWebService.
-					deleteOrganizationMemberships(
-						zendeskUserId, new long[] {zendeskOrganizationId});
+					_userSynchronizer.removeObsoleteTags(userId);
+				}
 
-				_userSynchronizer.removeObsoleteTags(user.getUserId());
-			}
+				if (tags.contains(ZendeskTagConstants.OSB_PARTNER)) {
+					_asyncZendeskOrganizationMembershipWebService.
+						deleteOrganizationMemberships(
+							zendeskUserId, new long[] {zendeskOrganizationId});
 
-			PartnerWorker partnerWorker = partnerWorkerMap.get(zendeskUserId);
-
-			if ((partnerWorker == null) &&
-				tags.contains(ZendeskTagConstants.OSB_PARTNER)) {
-
-				_asyncZendeskOrganizationMembershipWebService.
-					deleteOrganizationMemberships(
-						zendeskUserId, new long[] {zendeskOrganizationId});
-
-				_userSynchronizer.removeObsoleteTags(user.getUserId());
+					_userSynchronizer.removeObsoleteTags(userId);
+				}
 			}
 		}
+	}
+
+	protected boolean isAccountEntryUser(
+		AccountCustomer accountCustomer, PartnerWorker partnerWorker) {
+
+		if (accountCustomer != null) {
+			return true;
+		}
+		else if (partnerWorker != null) {
+			return true;
+		}
+
+		return false;
+	}
+
+	@Reference(
+		target = "(module.service.lifecycle=osb.portlet.initialized)",
+		unbind = "-"
+	)
+	protected void setModuleServiceLifecycle(
+		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
 	@Reference
