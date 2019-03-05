@@ -1,7 +1,5 @@
 apply plugin: "com.liferay.lang.merger"
 
-task deployConfigs(type: Copy)
-
 dependencies {
 	compileOnly files("../../osb-portlet/docroot/WEB-INF/lib/osb-portlet-service.jar")
 	compileOnly group: "biz.aQute.bnd", name: "biz.aQute.bndlib", version: "3.1.0"
@@ -18,19 +16,6 @@ dependencies {
 	compileOnly project(":private:apps:osb-customer:osb-customer-zendesk-util")
 	compileOnly project(":private:apps:osb-customer:osb-customer-zendesk:osb-customer-zendesk-api")
 	compileOnly project(":private:apps:osb-customer:osb-customer-zendesk:osb-customer-zendesk-web-service-api")
-}
-
-deploy {
-	finalizedBy deployConfigs
-}
-
-deployConfigs {
-	ext {
-		autoClean = false
-	}
-
-	from "configs"
-	into new File(liferay.liferayHome, "osgi/configs")
 }
 
 processResources {
