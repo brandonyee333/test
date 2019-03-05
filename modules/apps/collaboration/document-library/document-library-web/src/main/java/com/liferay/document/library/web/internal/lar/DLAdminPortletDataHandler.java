@@ -24,11 +24,7 @@ import com.liferay.document.library.kernel.model.DLFileShortcutConstants;
 import com.liferay.document.library.kernel.model.DLFolder;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
-import com.liferay.document.library.kernel.service.DLFileEntryTypeLocalService;
 import com.liferay.exportimport.kernel.lar.BasePortletDataHandler;
-import com.liferay.exportimport.kernel.lar.ExportImportDateUtil;
-import com.liferay.exportimport.kernel.lar.ExportImportHelper;
-import com.liferay.exportimport.kernel.lar.ManifestSummary;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.PortletDataHandler;
 import com.liferay.exportimport.kernel.lar.PortletDataHandlerBoolean;
@@ -40,14 +36,12 @@ import com.liferay.exportimport.staged.model.repository.StagedModelRepositoryReg
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.model.Repository;
-import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.documentlibrary.constants.DLConstants;
 import com.liferay.portlet.documentlibrary.service.permission.DLPermission;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.portlet.PortletPreferences;
 
@@ -144,8 +138,6 @@ public class DLAdminPortletDataHandler extends BasePortletDataHandler {
 		}
 
 		_dlAppLocalService.deleteAll(portletDataContext.getScopeGroupId());
-		_dlFileEntryTypeLocalService.deleteFileEntryTypes(
-			portletDataContext.getScopeGroupId());
 
 		if (portletPreferences == null) {
 			return portletPreferences;
@@ -324,46 +316,6 @@ public class DLAdminPortletDataHandler extends BasePortletDataHandler {
 			PortletPreferences portletPreferences)
 		throws Exception {
 
-		Map<String, String[]> parameterMap =
-			portletDataContext.getParameterMap();
-
-		String rangeValue = MapUtil.getString(
-			parameterMap, ExportImportDateUtil.RANGE);
-
-		if (rangeValue.equals(
-				ExportImportDateUtil.RANGE_FROM_LAST_PUBLISH_DATE)) {
-
-			ManifestSummary manifestSummary =
-				portletDataContext.getManifestSummary();
-
-			String[] classNames = {
-				DLFileEntry.class.getName(), DLFileEntryType.class.getName(),
-				DLFileShortcut.class.getName(), DLFolder.class.getName(),
-				Repository.class.getName()
-			};
-
-			for (String className : classNames) {
-				StagedModelType stagedModelType = new StagedModelType(
-					className);
-
-				long modelAdditionCount = manifestSummary.getModelAdditionCount(
-					stagedModelType);
-
-				if (modelAdditionCount > -1) {
-					continue;
-				}
-
-				long modelDeletionCount =
-					_exportImportHelper.getModelDeletionCount(
-						portletDataContext, stagedModelType);
-
-				manifestSummary.addModelDeletionCount(
-					stagedModelType, modelDeletionCount);
-			}
-
-			return;
-		}
-
 		StagedModelRepository<?> fileShortcutStagedModelRepository =
 			StagedModelRepositoryRegistryUtil.getStagedModelRepository(
 				DLFileShortcut.class.getName());
@@ -417,11 +369,5 @@ public class DLAdminPortletDataHandler extends BasePortletDataHandler {
 
 	@Reference
 	private DLAppLocalService _dlAppLocalService;
-
-	@Reference
-	private DLFileEntryTypeLocalService _dlFileEntryTypeLocalService;
-
-	@Reference
-	private ExportImportHelper _exportImportHelper;
 
 }
