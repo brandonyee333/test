@@ -27,9 +27,9 @@
 				<@liferay.language key="key-highlights" />
 			</h4>
 
-			<p class="detail-body">
+			<div class="detail-body">
 				${highlights.keyHighlights.getData()}
-			</p>
+			</div>
 		</div>
 	</#if>
 
@@ -39,9 +39,9 @@
 				<@liferay.language key="important-changes" />
 			</h4>
 
-			<p class="detail-body">
+			<div class="detail-body">
 				${highlights.importantChanges.getData()}
-			</p>
+			</div>
 		</div>
 	</#if>
 
@@ -51,9 +51,9 @@
 				<@liferay.language key="known-issues" />
 			</h4>
 
-			<p class="detail-body">
+			<div class="detail-body">
 				${highlights.knownIssues.getData()}
-			</p>
+			</div>
 		</div>
 	</#if>
 
@@ -63,9 +63,9 @@
 				<@liferay.language key="security" />
 			</h4>
 
-			<p class="detail-body">
+			<div class="detail-body">
 				${highlights.security.getData()}
-			</p>
+			</div>
 		</div>
 	</#if>
 </#if>
