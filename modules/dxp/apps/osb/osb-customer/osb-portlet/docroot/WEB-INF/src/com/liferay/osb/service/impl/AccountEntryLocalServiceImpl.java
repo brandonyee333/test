@@ -1998,12 +1998,12 @@ public class AccountEntryLocalServiceImpl
 			}
 
 			remoteCorpProjectLocalService.addCorpProjectUsers(
-				corpProject.getCorpProjectId(), new long[] {user.getUserId()});
+				corpProject.getUuid(), new long[] {user.getUserId()});
 
 			for (long roleId : roleIds) {
 				remoteCorpProjectLocalService.addUserCorpProjectRoles(
-					corpProject.getCorpProjectId(),
-					new long[] {user.getUserId()}, roleId);
+					corpProject.getUuid(), new long[] {user.getUserId()},
+					roleId);
 			}
 
 			accountCustomerLocalService.addAccountCustomer(
