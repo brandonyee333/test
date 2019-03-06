@@ -262,7 +262,9 @@ function EnvironmentDetail(props) {
 					{props.value}
 				</a>
 			) : (
-				<div>{props.value}</div>
+				<div>
+					{props.value}
+				</div>
 			)}
 		</div>
 	);

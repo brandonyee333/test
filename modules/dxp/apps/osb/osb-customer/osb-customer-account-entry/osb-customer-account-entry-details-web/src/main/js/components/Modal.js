@@ -49,4 +49,4 @@ export default function Modal({children, footer, header, onClose, show, size}) {
 			</div>
 		</div>
 	);
-};
+}

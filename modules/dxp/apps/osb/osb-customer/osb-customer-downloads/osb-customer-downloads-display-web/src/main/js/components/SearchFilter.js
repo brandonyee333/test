@@ -117,9 +117,9 @@ function Filter(props) {
 			</label>
 
 			<select className="form-control" id={props.id} name={props.id} onChange={props.onSelectChange} value={props.selectedOption}>
-				<option value="">{`${Liferay.Language.get('select')} ${
-					props.label
-				}`}</option>
+				<option value="">
+					{`${Liferay.Language.get('select')} ${props.label}`}
+				</option>
 
 				{props.options.map(option => {
 					return (

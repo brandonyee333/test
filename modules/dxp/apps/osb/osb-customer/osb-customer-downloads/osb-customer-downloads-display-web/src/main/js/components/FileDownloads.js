@@ -330,4 +330,4 @@ export default function FileDownloads(props) {
 			{downloadGroups}
 		</Downloads>
 	);
-};
+}
