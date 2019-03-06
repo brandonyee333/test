@@ -19,9 +19,6 @@ import com.liferay.blogs.kernel.model.BlogsEntry;
 import com.liferay.blogs.kernel.service.BlogsEntryLocalService;
 import com.liferay.blogs.kernel.service.BlogsStatsUserLocalService;
 import com.liferay.exportimport.kernel.lar.BasePortletDataHandler;
-import com.liferay.exportimport.kernel.lar.ExportImportDateUtil;
-import com.liferay.exportimport.kernel.lar.ExportImportHelper;
-import com.liferay.exportimport.kernel.lar.ManifestSummary;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.PortletDataHandler;
 import com.liferay.exportimport.kernel.lar.PortletDataHandlerBoolean;
@@ -29,14 +26,12 @@ import com.liferay.exportimport.kernel.lar.PortletDataHandlerControl;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
-import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.blogs.constants.BlogsConstants;
 import com.liferay.portlet.blogs.service.permission.BlogsPermission;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.portlet.PortletPreferences;
 
@@ -170,42 +165,6 @@ public class BlogsAdminPortletDataHandler extends BasePortletDataHandler {
 			PortletPreferences portletPreferences)
 		throws Exception {
 
-		Map<String, String[]> parameterMap =
-			portletDataContext.getParameterMap();
-
-		String rangeValue = MapUtil.getString(
-			parameterMap, ExportImportDateUtil.RANGE);
-
-		if (rangeValue.equals(
-				ExportImportDateUtil.RANGE_FROM_LAST_PUBLISH_DATE)) {
-
-			ManifestSummary manifestSummary =
-				portletDataContext.getManifestSummary();
-
-			String[] classNames = {BlogsEntry.class.getName()};
-
-			for (String className : classNames) {
-				StagedModelType stagedModelType = new StagedModelType(
-					className);
-
-				long modelAdditionCount = manifestSummary.getModelAdditionCount(
-					stagedModelType);
-
-				if (modelAdditionCount > -1) {
-					continue;
-				}
-
-				long modelDeletionCount =
-					_exportImportHelper.getModelDeletionCount(
-						portletDataContext, stagedModelType);
-
-				manifestSummary.addModelDeletionCount(
-					stagedModelType, modelDeletionCount);
-			}
-
-			return;
-		}
-
 		ActionableDynamicQuery actionableDynamicQuery =
 			_blogsEntryLocalService.getExportActionableDynamicQuery(
 				portletDataContext);
@@ -229,8 +188,5 @@ public class BlogsAdminPortletDataHandler extends BasePortletDataHandler {
 
 	private BlogsEntryLocalService _blogsEntryLocalService;
 	private BlogsStatsUserLocalService _blogsStatsUserLocalService;
-
-	@Reference
-	private ExportImportHelper _exportImportHelper;
 
 }
