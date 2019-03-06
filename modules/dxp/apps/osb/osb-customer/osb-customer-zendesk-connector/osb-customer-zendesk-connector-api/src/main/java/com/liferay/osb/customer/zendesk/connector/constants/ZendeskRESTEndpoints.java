@@ -27,6 +27,9 @@ public interface ZendeskRESTEndpoints {
 	public static final String INCREMENTAL_ORGANIZATIONS =
 		"incremental/organizations.json";
 
+	public static final String INCREMENTAL_TICKET_EVENTS = 
+		"incremental/ticket_events.json";
+
 	public static final String INCREMENTAL_TICKETS = "incremental/tickets.json";
 
 	public static final String INCREMENTAL_USERS = "incremental/users.json";

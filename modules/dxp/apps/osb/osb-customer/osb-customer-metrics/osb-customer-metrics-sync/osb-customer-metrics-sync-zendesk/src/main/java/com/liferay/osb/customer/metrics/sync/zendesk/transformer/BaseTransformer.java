@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -95,7 +96,19 @@ public abstract class BaseTransformer implements MessageProcessor {
 		SimpleDateFormat targetFormat = new SimpleDateFormat(
 			"yyyy-MM-dd HH:mm:ss");
 
-		return targetFormat.format(sourceFormat.parse(value));
+		Date date = null;
+
+		try {
+			date = sourceFormat.parse(value);
+		}
+		catch (ParseException pe) {
+			sourceFormat = new SimpleDateFormat(
+				"yyyy-MM-dd'T'HH:mm:ss'+00:00'");
+
+			date = sourceFormat.parse(value);
+		}
+
+		return targetFormat.format(date);
 	}
 
 	private boolean _isDate(String key) {
