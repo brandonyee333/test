@@ -29,7 +29,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Amos Fong
  */
 @Component(
-	immediate = true, property = "async=true",
+	immediate = true, property = {"async=true", "service.ranking:Integer=1"},
 	service = ZendeskTranslationWebService.class
 )
 public class AsyncZendeskTranslationWebService

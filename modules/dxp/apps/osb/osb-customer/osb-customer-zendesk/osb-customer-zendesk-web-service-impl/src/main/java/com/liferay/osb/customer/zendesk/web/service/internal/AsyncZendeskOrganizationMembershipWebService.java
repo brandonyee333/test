@@ -36,7 +36,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Kyle Bischof
  */
 @Component(
-	immediate = true, property = "async=true",
+	immediate = true, property = {"async=true", "service.ranking:Integer=1"},
 	service = ZendeskOrganizationMembershipWebService.class
 )
 public class AsyncZendeskOrganizationMembershipWebService
