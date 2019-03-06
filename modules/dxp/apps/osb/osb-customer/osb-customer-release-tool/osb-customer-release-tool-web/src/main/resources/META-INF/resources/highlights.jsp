@@ -16,12 +16,6 @@
 
 <%@ include file="/init.jsp" %>
 
-<%
-String product = ParamUtil.getString(request, "product");
-double toProductVersion = ParamUtil.getDouble(request, "toProductVersion");
-double toFixPackVersion = ParamUtil.getDouble(request, "toFixPackVersion");
-%>
-
 <strong>Refinement Filters:</strong> <%= releaseToolDisplayContext.getHightlightsFiltersJSONArray() %>
 
 <br />
@@ -38,25 +32,22 @@ double toFixPackVersion = ParamUtil.getDouble(request, "toFixPackVersion");
 
 <strong>Fix Pack Refinement Endpoint:</strong> <%= refinedFixPacksURL %>
 
-<br />
+<h1>
+	<liferay-ui:message key="highlights" />
+</h1>
 
-<liferay-portlet:renderURL var="fixPacksURL">
-	<portlet:param name="fromFixPackVersion" value="2.0" />
-	<portlet:param name="fromProductVersion" value="7.0" />
-	<portlet:param name="orderByCol" value="releaseDate" />
-	<portlet:param name="orderByType" value="desc" />
-	<portlet:param name="product" value="dxp" />
-	<portlet:param name="toFixPackVersion" value="1.0" />
-	<portlet:param name="toProductVersion" value="7.1" />
-</liferay-portlet:renderURL>
+<%
+JournalArticle journalArticle = JournalArticleLocalServiceUtil.fetchArticle(themeDisplay.getScopeGroupId(), highlightsJournalArticleId);
+%>
 
-<strong>Fix Pack Filter Form URL:</strong> <%= fixPacksURL %>
+<c:if test="<%= journalArticle != null %>">
 
-<br />
+	<%
+	JournalArticleDisplay journalArticleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(journalArticle, null, null, themeDisplay.getLanguageId(), 0, new PortletRequestModel(renderRequest, renderResponse), themeDisplay);
+	%>
 
-<strong>DownloadURL:</strong> <%= releaseToolDisplayContext.getFixPackDownloadURL(product, toProductVersion, toFixPackVersion) %>
-
-<br />
+	<%= journalArticleDisplay.getContent() %>
+</c:if>
 
 <%
 JSONObject jsonObject = fixPackSearcher.search(renderRequest, renderResponse);

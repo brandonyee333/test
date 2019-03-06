@@ -25,9 +25,14 @@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %><%@
 taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
-<%@ page import="com.liferay.osb.customer.release.tool.web.internal.display.context.ReleaseToolDisplayContext" %><%@
+<%@ page import="com.liferay.journal.model.JournalArticle" %><%@
+page import="com.liferay.journal.model.JournalArticleDisplay" %><%@
+page import="com.liferay.journal.service.JournalArticleLocalServiceUtil" %><%@
+page import="com.liferay.osb.customer.release.tool.web.internal.display.context.ReleaseToolDisplayContext" %><%@
 page import="com.liferay.osb.customer.release.tool.web.internal.search.FixPackSearcher" %><%@
 page import="com.liferay.portal.kernel.json.JSONObject" %><%@
+page import="com.liferay.portal.kernel.portlet.PortletRequestModel" %><%@
+page import="com.liferay.portal.kernel.util.Constants" %><%@
 page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
 page import="com.liferay.portal.kernel.util.ParamUtil" %>
 
@@ -43,6 +48,10 @@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
 ReleaseToolDisplayContext releaseToolDisplayContext = new ReleaseToolDisplayContext(renderRequest, renderResponse);
 
 FixPackSearcher fixPackSearcher = (FixPackSearcher)renderRequest.getAttribute(FixPackSearcher.class.getName());
+
+String changelogJournalArticleId = portletPreferences.getValue("changelogJournalArticleId", null);
+String highlightsJournalArticleId = portletPreferences.getValue("highlightsJournalArticleId", null);
+String moduleChangesJournalArticleId = portletPreferences.getValue("moduleChangesJournalArticleId", null);
 %>
 
 <aui:script>

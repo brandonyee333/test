@@ -15,3 +15,20 @@
 --%>
 
 <%@ include file="/init.jsp" %>
+
+<h1>
+	<liferay-ui:message key="changelog" />
+</h1>
+
+<%
+JournalArticle journalArticle = JournalArticleLocalServiceUtil.fetchArticle(themeDisplay.getScopeGroupId(), changelogJournalArticleId);
+%>
+
+<c:if test="<%= journalArticle != null %>">
+
+	<%
+	JournalArticleDisplay journalArticleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(journalArticle, null, null, themeDisplay.getLanguageId(), 0, new PortletRequestModel(renderRequest, renderResponse), themeDisplay);
+	%>
+
+	<%= journalArticleDisplay.getContent() %>
+</c:if>

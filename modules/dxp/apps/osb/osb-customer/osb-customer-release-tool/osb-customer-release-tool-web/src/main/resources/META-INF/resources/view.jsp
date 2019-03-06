@@ -19,6 +19,10 @@
 <%
 String tabs1 = ParamUtil.getString(request, "tabs1");
 
+String product = ParamUtil.getString(request, "product");
+double toProductVersion = ParamUtil.getDouble(request, "toProductVersion");
+double toFixPackVersion = ParamUtil.getDouble(request, "toFixPackVersion");
+
 PortletURL portletURL = renderResponse.createRenderURL();
 
 portletURL.setParameter("tabs1", tabs1);
@@ -27,6 +31,22 @@ portletURL.setParameter("tabs1", tabs1);
 <h1>
 	<liferay-ui:message key="liferay-dxp-release-notes-tool" />
 </h1>
+
+<liferay-portlet:renderURL var="fixPacksURL">
+	<portlet:param name="fromFixPackVersion" value="2.0" />
+	<portlet:param name="fromProductVersion" value="7.0" />
+	<portlet:param name="orderByCol" value="releaseDate" />
+	<portlet:param name="orderByType" value="desc" />
+	<portlet:param name="product" value="dxp" />
+	<portlet:param name="toFixPackVersion" value="1.0" />
+	<portlet:param name="toProductVersion" value="7.1" />
+</liferay-portlet:renderURL>
+
+<strong>Fix Pack Filter Form URL:</strong> <%= fixPacksURL %>
+
+<br />
+
+<strong>DownloadURL:</strong> <%= releaseToolDisplayContext.getFixPackDownloadURL(product, toProductVersion, toFixPackVersion) %>
 
 <liferay-ui:tabs
 	names='<%= "highlights,changelog,module-changes" %>'
