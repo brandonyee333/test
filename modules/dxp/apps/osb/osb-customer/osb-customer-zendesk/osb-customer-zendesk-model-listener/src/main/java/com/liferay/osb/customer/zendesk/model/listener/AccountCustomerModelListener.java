@@ -23,7 +23,9 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+import com.liferay.portal.kernel.service.UserLocalService;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -61,6 +63,13 @@ public class AccountCustomerModelListener
 		throws ModelListenerException {
 
 		try {
+			User user = _userLocalService.fetchUser(
+				accountCustomer.getUserId());
+
+			if (user == null) {
+				return;
+			}
+
 			_accountCustomerSynchronizer.reassignTickets(accountCustomer);
 
 			_accountCustomerSynchronizer.remove(accountCustomer);
@@ -99,5 +108,8 @@ public class AccountCustomerModelListener
 
 	@Reference
 	private AccountCustomerSynchronizer _accountCustomerSynchronizer;
+
+	@Reference
+	private UserLocalService _userLocalService;
 
 }

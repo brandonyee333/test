@@ -441,7 +441,7 @@ public class AccountCustomerLocalServiceImpl
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
-		User accountCustomerUser = userLocalService.getUser(
+		User accountCustomerUser = userLocalService.fetchUser(
 			accountCustomer.getUserId());
 		Date now = new Date();
 
@@ -452,12 +452,18 @@ public class AccountCustomerLocalServiceImpl
 		long fieldClassNameId = classNameLocalService.getClassNameId(
 			AccountCustomer.class.getName());
 
+		String oldLabel = String.valueOf(accountCustomer.getUserId());
+
+		if (accountCustomerUser != null) {
+			oldLabel = accountCustomerUser.getFullName();
+		}
+
 		auditEntryLocalService.addAuditEntry(
 			userId, user.getFullName(), now, classNameId,
 			accountCustomer.getAccountEntryId(), auditSetId, fieldClassNameId,
 			accountCustomer.getAccountCustomerId(),
 			AuditEntryConstants.ACTION_UNASSIGN, AuditEntryConstants.FIELD_USER,
-			VisibilityConstants.WORKERS, accountCustomerUser.getFullName(),
+			VisibilityConstants.WORKERS, oldLabel,
 			String.valueOf(accountCustomer.getUserId()), StringPool.BLANK,
 			StringPool.BLANK, StringPool.BLANK);
 
