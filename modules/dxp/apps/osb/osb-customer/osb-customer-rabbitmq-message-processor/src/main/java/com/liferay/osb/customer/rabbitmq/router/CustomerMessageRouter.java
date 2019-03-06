@@ -39,6 +39,7 @@ import com.liferay.osb.customer.rabbitmq.processor.UserDeleteMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processor.UserUpdateMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processor.ZendeskOrganizationCreateMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processor.ZendeskUserCreateMessageProcessor;
+import com.liferay.osb.customer.rabbitmq.processor.ZendeskUserDeleteMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processor.ZendeskUserIdentityCreateMessageProcessor;
 
 import java.util.Map;
@@ -247,6 +248,14 @@ public class CustomerMessageRouter extends BaseMessageRouter {
 		Map<String, Object> properties) {
 
 		addRoute(zendeskUserCreateMessageProcessor, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setZendeskUserDeleteMessageProcessor(
+		ZendeskUserDeleteMessageProcessor zendeskUserDeleteMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(zendeskUserDeleteMessageProcessor, properties);
 	}
 
 	@Reference(unbind = "-")

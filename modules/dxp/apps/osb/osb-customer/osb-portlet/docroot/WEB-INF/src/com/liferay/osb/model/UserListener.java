@@ -59,25 +59,26 @@ public class UserListener extends BaseModelListener<User> {
 	}
 
 	@Override
-	public void onBeforeRemove(User user) {
-		long userId = user.getUserId();
-
+	public void onAfterRemove(User user) {
 		try {
-			AccountCustomerLocalServiceUtil.deleteAccountCustomers(userId);
+			AccountCustomerLocalServiceUtil.deleteAccountCustomers(
+				user.getUserId());
 		}
 		catch (Exception e) {
 			_log.error(e, e);
 		}
 
 		try {
-			AccountWorkerLocalServiceUtil.deleteAccountWorkers(userId);
+			AccountWorkerLocalServiceUtil.deleteAccountWorkers(
+				user.getUserId());
 		}
 		catch (Exception e) {
 			_log.error(e, e);
 		}
 
 		try {
-			PartnerWorkerLocalServiceUtil.deletePartnerWorkers(userId);
+			PartnerWorkerLocalServiceUtil.deletePartnerWorkers(
+				user.getUserId());
 		}
 		catch (Exception e) {
 			_log.error(e, e);

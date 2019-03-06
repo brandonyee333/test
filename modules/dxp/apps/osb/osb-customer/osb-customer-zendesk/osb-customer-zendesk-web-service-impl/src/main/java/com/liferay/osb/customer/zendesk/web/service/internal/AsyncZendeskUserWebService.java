@@ -110,6 +110,17 @@ public class AsyncZendeskUserWebService
 		messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
 	}
 
+	public void deleteZendeskUser(long zendeskUserId) throws PortalException {
+		String endpoint =
+			ZendeskRESTEndpoints.URL_API_V2 + "users/" + zendeskUserId +
+				".json";
+
+		ZendeskRequest zendeskRequest = new ZendeskRequest(
+			endpoint, "delete", null, null, "zendesk.user.delete");
+
+		messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
+	}
+
 	@Override
 	public void deleteZendeskUserTags(long zendeskUserId, Set<String> tags)
 		throws PortalException {

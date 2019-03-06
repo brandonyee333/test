@@ -29,8 +29,10 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.ListUtil;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -82,12 +84,13 @@ public class AccountCustomerSynchronizer {
 			accountCustomer.getUserId());
 
 		reassignTickets(
-			accountCustomer.getAccountEntryId(), zendeskOrganizationId,
-			zendeskUserId);
+			accountCustomer.getUserId(), accountCustomer.getAccountEntryId(),
+			zendeskOrganizationId, zendeskUserId);
 	}
 
 	public void reassignTickets(
-			long accountEntryId, long zendeskOrganizationId, long zendeskUserId)
+			long userId, long accountEntryId, long zendeskOrganizationId,
+			long zendeskUserId)
 		throws PortalException {
 
 		if ((zendeskOrganizationId > 0) && (zendeskUserId > 0)) {
@@ -105,6 +108,19 @@ public class AccountCustomerSynchronizer {
 					AccountCustomerLocalServiceUtil.getAccountCustomers(
 						accountEntryId,
 						AccountCustomerConstants.ROLE_DEVELOPER);
+
+				accountCustomers = ListUtil.copy(accountCustomers);
+
+				Iterator<AccountCustomer> iterator =
+					accountCustomers.iterator();
+
+				while (iterator.hasNext()) {
+					AccountCustomer accountCustomer = iterator.next();
+
+					if (accountCustomer.getUserId() == userId) {
+						iterator.remove();
+					}
+				}
 
 				if (accountCustomers.isEmpty()) {
 					throw new AccountCustomerRemovalException();

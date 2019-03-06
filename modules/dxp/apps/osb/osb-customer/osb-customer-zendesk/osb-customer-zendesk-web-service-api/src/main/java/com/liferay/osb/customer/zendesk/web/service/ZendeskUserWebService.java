@@ -41,6 +41,8 @@ public interface ZendeskUserWebService {
 			long zendeskUserId, long zendeskOrganizationId)
 		throws PortalException;
 
+	public void deleteZendeskUser(long zendeskUserId) throws PortalException;
+
 	public void deleteZendeskUserTags(long zendeskUserId, Set<String> tags)
 		throws PortalException;
 

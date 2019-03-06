@@ -116,7 +116,8 @@ public class AccountEntryZendeskSyncMessageListener
 
 			if ((accountCustomer == null) && (partnerWorker == null)) {
 				_accountCustomerSynchronizer.reassignTickets(
-					accountEntryId, zendeskOrganizationId, zendeskUserId);
+					user.getUserId(), accountEntryId, zendeskOrganizationId,
+					zendeskUserId);
 
 				_asyncZendeskOrganizationMembershipWebService.
 					deleteOrganizationMemberships(
