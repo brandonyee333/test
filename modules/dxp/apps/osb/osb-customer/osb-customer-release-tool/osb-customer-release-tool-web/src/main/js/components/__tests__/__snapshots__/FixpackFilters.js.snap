@@ -1,0 +1,322 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FixpackFilters renders empty filters correctly 1`] = `
+<div>
+  <form
+    action="/"
+    method="get"
+  >
+    <input
+      name="p_p_id"
+      type="hidden"
+      value="com_liferay_osb_customer_release_tool_web_portlet_ReleaseToolPortlet"
+    />
+    <input
+      name="namespaceproduct"
+      type="hidden"
+      value="dxp"
+    />
+    <div
+      class="search-filters"
+    >
+      <div
+        class="search-filter-container"
+      >
+        <div
+          class="filter"
+        >
+          <label
+            class="control-label"
+            for="namespacefromProductVersion"
+          >
+            from:
+          </label>
+          <select
+            class="form-control"
+            id="namespacefromProductVersion"
+            name="namespacefromProductVersion"
+          >
+            <option
+              value=""
+            >
+              select-product
+            </option>
+            <option
+              label="DXP 7.0"
+              value="7.0"
+            >
+              DXP 7.0
+            </option>
+            <option
+              label="DXP 7.1"
+              value="7.1"
+            >
+              DXP 7.1
+            </option>
+            <option
+              label="DXP 7.2"
+              value="7.2"
+            >
+              DXP 7.2
+            </option>
+          </select>
+        </div>
+        <div
+          class="filter"
+        >
+          
+          <select
+            class="form-control"
+            disabled=""
+            id="namespacefromFixPackVersion"
+            name="namespacefromFixPackVersion"
+          >
+            <option
+              value=""
+            >
+              select-release
+            </option>
+          </select>
+        </div>
+      </div>
+      <div
+        class="search-filter-container"
+      >
+        <div
+          class="filter"
+        >
+          <label
+            class="control-label"
+            for="namespacetoProductVersion"
+          >
+            to:
+          </label>
+          <select
+            class="form-control"
+            disabled=""
+            id="namespacetoProductVersion"
+            name="namespacetoProductVersion"
+          >
+            <option
+              value=""
+            >
+              select-product
+            </option>
+            <option
+              label="DXP 7.0"
+              value="7.0"
+            >
+              DXP 7.0
+            </option>
+            <option
+              label="DXP 7.1"
+              value="7.1"
+            >
+              DXP 7.1
+            </option>
+            <option
+              label="DXP 7.2"
+              value="7.2"
+            >
+              DXP 7.2
+            </option>
+          </select>
+        </div>
+        <div
+          class="filter"
+        >
+          
+          <select
+            class="form-control"
+            disabled=""
+            id="namespacetoFixPackVersion"
+            name="namespacetoFixPackVersion"
+          >
+            <option
+              value=""
+            >
+              select-release
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </form>
+  
+</div>
+`;
+
+exports[`FixpackFilters renders preselected filters with a fix pack download link correctly 1`] = `
+<div>
+  <form
+    action="/"
+    method="get"
+  >
+    <input
+      name="p_p_id"
+      type="hidden"
+      value="com_liferay_osb_customer_release_tool_web_portlet_ReleaseToolPortlet"
+    />
+    <input
+      name="namespaceproduct"
+      type="hidden"
+      value="dxp"
+    />
+    <div
+      class="search-filters"
+    >
+      <div
+        class="search-filter-container"
+      >
+        <div
+          class="filter"
+        >
+          <label
+            class="control-label"
+            for="namespacefromProductVersion"
+          >
+            from:
+          </label>
+          <select
+            class="form-control"
+            id="namespacefromProductVersion"
+            name="namespacefromProductVersion"
+          >
+            <option
+              value=""
+            >
+              select-product
+            </option>
+            <option
+              label="DXP 7.0"
+              value="7.0"
+            >
+              DXP 7.0
+            </option>
+            <option
+              label="DXP 7.1"
+              value="7.1"
+            >
+              DXP 7.1
+            </option>
+            <option
+              label="DXP 7.2"
+              value="7.2"
+            >
+              DXP 7.2
+            </option>
+          </select>
+        </div>
+        <div
+          class="filter"
+        >
+          
+          <select
+            class="form-control"
+            id="namespacefromFixPackVersion"
+            name="namespacefromFixPackVersion"
+          >
+            <option
+              value=""
+            >
+              select-release
+            </option>
+            <option
+              label="Fixpack 1"
+              value="1"
+            >
+              Fixpack 1
+            </option>
+            <option
+              label="Fixpack 2"
+              value="2"
+            >
+              Fixpack 2
+            </option>
+          </select>
+        </div>
+      </div>
+      <div
+        class="search-filter-container"
+      >
+        <div
+          class="filter"
+        >
+          <label
+            class="control-label"
+            for="namespacetoProductVersion"
+          >
+            to:
+          </label>
+          <select
+            class="form-control"
+            id="namespacetoProductVersion"
+            name="namespacetoProductVersion"
+          >
+            <option
+              value=""
+            >
+              select-product
+            </option>
+            <option
+              label="DXP 7.0"
+              value="7.0"
+            >
+              DXP 7.0
+            </option>
+            <option
+              label="DXP 7.1"
+              value="7.1"
+            >
+              DXP 7.1
+            </option>
+            <option
+              label="DXP 7.2"
+              value="7.2"
+            >
+              DXP 7.2
+            </option>
+          </select>
+        </div>
+        <div
+          class="filter"
+        >
+          
+          <select
+            class="form-control"
+            id="namespacetoFixPackVersion"
+            name="namespacetoFixPackVersion"
+          >
+            <option
+              value=""
+            >
+              select-release
+            </option>
+            <option
+              label="Fixpack 1"
+              value="1"
+            >
+              Fixpack 1
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </form>
+  <a
+    class="btn btn-lg btn-link"
+    href="/"
+    role="link"
+  >
+    get Fixpack 1
+     
+    <svg
+      class="lexicon-icon lexicon-icon-arrow-right"
+    >
+      <use
+        xlink:href="#arrow-right"
+      />
+    </svg>
+  </a>
+</div>
+`;
