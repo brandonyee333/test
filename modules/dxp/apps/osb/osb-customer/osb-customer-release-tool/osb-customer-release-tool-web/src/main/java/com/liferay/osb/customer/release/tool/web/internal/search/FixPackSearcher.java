@@ -24,6 +24,7 @@ import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.journal.util.JournalConverter;
 import com.liferay.osb.customer.release.tool.web.internal.constants.DDMStructureConstants;
 import com.liferay.osb.customer.release.tool.web.internal.constants.FixPackField;
+import com.liferay.osb.customer.release.tool.web.internal.exception.VersionRangeException;
 import com.liferay.osb.customer.release.tool.web.internal.util.DDMFieldsUtil;
 import com.liferay.osb.customer.release.tool.web.internal.util.FixPacksAssetCategoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -31,6 +32,9 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletRequestModel;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.BooleanQuery;
@@ -40,7 +44,6 @@ import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.IndexSearcherHelper;
 import com.liferay.portal.kernel.search.QueryConfig;
 import com.liferay.portal.kernel.search.SearchContext;
-import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.TermRangeQuery;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
@@ -50,12 +53,16 @@ import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import javax.portlet.MimeResponse;
 import javax.portlet.PortletRequest;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -67,8 +74,7 @@ import org.osgi.service.component.annotations.Reference;
 public class FixPackSearcher {
 
 	public JSONObject search(
-			PortletRequest portletRequest, MimeResponse mimeResponse)
-		throws SearchException {
+		PortletRequest portletRequest, MimeResponse mimeResponse) {
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -85,7 +91,13 @@ public class FixPackSearcher {
 		String orderByCol = ParamUtil.getString(portletRequest, "orderByCol");
 		String orderByType = ParamUtil.getString(portletRequest, "orderByType");
 
+		JSONObject jsonObject = _jsonFactory.createJSONObject();
+
 		try {
+			validateQueryRange(
+				fromProductVersion, fromFixPackVersion, toProductVersion,
+				toFixPackVersion);
+
 			SearchContext searchContext = buildSearchContext(
 				themeDisplay, orderByCol, orderByType);
 
@@ -94,8 +106,6 @@ public class FixPackSearcher {
 				toProductVersion, toFixPackVersion);
 
 			Hits hits = _indexSearcherHelper.search(searchContext, fullQuery);
-
-			JSONObject jsonObject = _jsonFactory.createJSONObject();
 
 			jsonObject.put("total", hits.getLength());
 
@@ -119,11 +129,34 @@ public class FixPackSearcher {
 
 			return jsonObject;
 		}
-		catch (SearchException se) {
-			throw se;
-		}
 		catch (Exception e) {
-			throw new SearchException(e);
+			if (_log.isDebugEnabled()) {
+				_log.debug(e, e);
+			}
+
+			HttpServletRequest request = _portal.getHttpServletRequest(
+				portletRequest);
+
+			JSONObject errorJSONObject = _jsonFactory.createJSONObject();
+
+			String message = StringPool.BLANK;
+
+			if (e instanceof VersionRangeException) {
+				message = LanguageUtil.get(
+					request, "please-enter-a-valid-version-range");
+			}
+			else {
+				message = LanguageUtil.get(
+					request, "an-unexpected-error-occurred");
+			}
+
+			errorJSONObject.put("message", message);
+
+			errorJSONObject.put("name", e.getClass());
+
+			jsonObject.put("error", errorJSONObject);
+
+			return jsonObject;
 		}
 	}
 
@@ -301,6 +334,25 @@ public class FixPackSearcher {
 		return jsonObject;
 	}
 
+	protected void validateQueryRange(
+			double fromProductVersion, double fromFixPackVersion,
+			double toProductVersion, double toFixPackVersion)
+		throws PortalException {
+
+		if (fromProductVersion > toProductVersion) {
+			throw new VersionRangeException();
+		}
+
+		if (fromProductVersion == toProductVersion) {
+			if (fromFixPackVersion > toFixPackVersion) {
+				throw new VersionRangeException();
+			}
+		}
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		FixPackSearcher.class);
+
 	@Reference
 	private ClassNameLocalService _classNameLocalService;
 
@@ -324,5 +376,8 @@ public class FixPackSearcher {
 
 	@Reference
 	private JSONFactory _jsonFactory;
+
+	@Reference
+	private Portal _portal;
 
 }
