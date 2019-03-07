@@ -23,7 +23,7 @@ public class UpgradeProcess_5_0_6 extends BaseUpgradeProcess {
 
 	@Override
 	public int getThreshold() {
-		return 505;
+		return 506;
 	}
 
 	@Override
