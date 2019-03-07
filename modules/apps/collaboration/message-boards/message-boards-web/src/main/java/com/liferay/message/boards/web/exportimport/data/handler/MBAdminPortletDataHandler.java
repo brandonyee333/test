@@ -15,9 +15,6 @@
 package com.liferay.message.boards.web.exportimport.data.handler;
 
 import com.liferay.exportimport.kernel.lar.BasePortletDataHandler;
-import com.liferay.exportimport.kernel.lar.ExportImportDateUtil;
-import com.liferay.exportimport.kernel.lar.ExportImportHelper;
-import com.liferay.exportimport.kernel.lar.ManifestSummary;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.PortletDataHandler;
 import com.liferay.exportimport.kernel.lar.PortletDataHandlerBoolean;
@@ -40,13 +37,11 @@ import com.liferay.message.boards.kernel.service.MBThreadFlagLocalService;
 import com.liferay.message.boards.kernel.service.MBThreadLocalService;
 import com.liferay.message.boards.web.constants.MBPortletKeys;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
-import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.messageboards.service.permission.MBPermission;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.portlet.PortletPreferences;
 
@@ -262,46 +257,6 @@ public class MBAdminPortletDataHandler extends BasePortletDataHandler {
 			PortletPreferences portletPreferences)
 		throws Exception {
 
-		Map<String, String[]> parameterMap =
-			portletDataContext.getParameterMap();
-
-		String rangeValue = MapUtil.getString(
-			parameterMap, ExportImportDateUtil.RANGE);
-
-		if (rangeValue.equals(
-				ExportImportDateUtil.RANGE_FROM_LAST_PUBLISH_DATE)) {
-
-			ManifestSummary manifestSummary =
-				portletDataContext.getManifestSummary();
-
-			String[] classNames = {
-				MBBan.class.getName(), MBCategory.class.getName(),
-				MBMessage.class.getName(), MBThread.class.getName(),
-				MBThreadFlag.class.getName()
-			};
-
-			for (String className : classNames) {
-				StagedModelType stagedModelType = new StagedModelType(
-					className);
-
-				long modelAdditionCount = manifestSummary.getModelAdditionCount(
-					stagedModelType);
-
-				if (modelAdditionCount > -1) {
-					continue;
-				}
-
-				long modelDeletionCount =
-					_exportImportHelper.getModelDeletionCount(
-						portletDataContext, stagedModelType);
-
-				manifestSummary.addModelDeletionCount(
-					stagedModelType, modelDeletionCount);
-			}
-
-			return;
-		}
-
 		ActionableDynamicQuery banActionableDynamicQuery =
 			_mbBanLocalService.getExportActionableDynamicQuery(
 				portletDataContext);
@@ -376,9 +331,6 @@ public class MBAdminPortletDataHandler extends BasePortletDataHandler {
 
 		_mbThreadLocalService = mbThreadLocalService;
 	}
-
-	@Reference
-	private ExportImportHelper _exportImportHelper;
 
 	private MBBanLocalService _mbBanLocalService;
 	private MBCategoryLocalService _mbCategoryLocalService;
