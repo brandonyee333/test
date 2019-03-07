@@ -22,20 +22,20 @@ import com.liferay.portal.kernel.exception.PortalException;
  * @author Noah Sherrill
  */
 @ProviderType
-public class JIRATicketIssueTypeException extends PortalException {
+public class JIRAIssueIssueTypeException extends PortalException {
 
-	public JIRATicketIssueTypeException() {
+	public JIRAIssueIssueTypeException() {
 	}
 
-	public JIRATicketIssueTypeException(String msg) {
+	public JIRAIssueIssueTypeException(String msg) {
 		super(msg);
 	}
 
-	public JIRATicketIssueTypeException(String msg, Throwable cause) {
+	public JIRAIssueIssueTypeException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
 
-	public JIRATicketIssueTypeException(Throwable cause) {
+	public JIRAIssueIssueTypeException(Throwable cause) {
 		super(cause);
 	}
 

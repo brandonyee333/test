@@ -22,20 +22,20 @@ import com.liferay.portal.kernel.exception.PortalException;
  * @author Noah Sherrill
  */
 @ProviderType
-public class JIRATicketCustomFieldValueException extends PortalException {
+public class JIRAIssueCustomFieldValueException extends PortalException {
 
-	public JIRATicketCustomFieldValueException() {
+	public JIRAIssueCustomFieldValueException() {
 	}
 
-	public JIRATicketCustomFieldValueException(String msg) {
+	public JIRAIssueCustomFieldValueException(String msg) {
 		super(msg);
 	}
 
-	public JIRATicketCustomFieldValueException(String msg, Throwable cause) {
+	public JIRAIssueCustomFieldValueException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
 
-	public JIRATicketCustomFieldValueException(Throwable cause) {
+	public JIRAIssueCustomFieldValueException(Throwable cause) {
 		super(cause);
 	}
 

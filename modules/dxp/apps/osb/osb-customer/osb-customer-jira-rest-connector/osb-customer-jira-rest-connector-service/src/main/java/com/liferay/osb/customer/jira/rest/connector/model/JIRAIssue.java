@@ -14,8 +14,8 @@
 
 package com.liferay.osb.customer.jira.rest.connector.model;
 
-import com.liferay.osb.customer.jira.rest.connector.exception.JIRATicketCustomFieldNameException;
-import com.liferay.osb.customer.jira.rest.connector.exception.JIRATicketCustomFieldValueException;
+import com.liferay.osb.customer.jira.rest.connector.exception.JIRAIssueCustomFieldNameException;
+import com.liferay.osb.customer.jira.rest.connector.exception.JIRAIssueCustomFieldValueException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -30,12 +30,12 @@ import java.util.Set;
 /**
  * @author Noah Sherrill
  */
-public class JIRATicket {
+public class JIRAIssue {
 
-	public JIRATicket() {
+	public JIRAIssue() {
 	}
 
-	public JIRATicket(
+	public JIRAIssue(
 		String projectKey, String issueType, String summary, String description,
 		Set<String> labels) {
 
@@ -46,7 +46,7 @@ public class JIRATicket {
 		_labels = labels;
 	}
 
-	public JIRATicket(
+	public JIRAIssue(
 			String projectKey, String issueType, String summary,
 			String description, String assigneeName, Set<String> labels,
 			Map<String, Object> customFieldValues)
@@ -65,11 +65,11 @@ public class JIRATicket {
 		throws PortalException {
 
 		if (Validator.isNull(customFieldName)) {
-			throw new JIRATicketCustomFieldNameException();
+			throw new JIRAIssueCustomFieldNameException();
 		}
 
 		if (customFieldValue == null) {
-			throw new JIRATicketCustomFieldValueException();
+			throw new JIRAIssueCustomFieldValueException();
 		}
 
 		_customFieldValues.put(customFieldName, customFieldValue);
@@ -83,7 +83,7 @@ public class JIRATicket {
 		throws PortalException {
 
 		if (!_customFieldValues.containsKey(customFieldName)) {
-			throw new JIRATicketCustomFieldNameException();
+			throw new JIRAIssueCustomFieldNameException();
 		}
 
 		return _customFieldValues.get(customFieldName);
@@ -121,7 +121,7 @@ public class JIRATicket {
 		throws PortalException {
 
 		if (!_customFieldValues.containsKey(customFieldName)) {
-			throw new JIRATicketCustomFieldNameException();
+			throw new JIRAIssueCustomFieldNameException();
 		}
 
 		_customFieldValues.remove(customFieldName);

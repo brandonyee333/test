@@ -17,7 +17,7 @@ package com.liferay.osb.customer.zendesk.servlet;
 import com.liferay.osb.common.restful.servlet.SimpleRestfulServlet;
 import com.liferay.osb.common.restful.servlet.exception.NoResourceException;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
-import com.liferay.osb.customer.jira.rest.connector.service.JIRATicketLocalService;
+import com.liferay.osb.customer.jira.rest.connector.service.JIRAIssueLocalService;
 import com.liferay.osb.customer.zendesk.configuration.ZendeskConnectorConfigurationValues;
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -62,6 +62,13 @@ import org.osgi.service.http.whiteboard.HttpWhiteboardConstants;
 	service = Servlet.class
 )
 public class ZendeskJiraServlet extends SimpleRestfulServlet {
+
+	public void postJiraIssue(
+			HttpServletRequest request, HttpServletResponse response)
+		throws IOException, PortalException {
+
+		postJiraTicket(request, response);
+	}
 
 	public void postJiraTicket(
 			HttpServletRequest request, HttpServletResponse response)
@@ -126,7 +133,7 @@ public class ZendeskJiraServlet extends SimpleRestfulServlet {
 			}
 		}
 
-		JSONObject jiraResponse = _jiraTicketLocalService.createJIRATicket(
+		JSONObject jiraResponse = _jiraIssueLocalService.createJIRAIssue(
 			projectKey, issueType, summary, description, StringPool.BLANK,
 			labels, customFields, StringPool.BLANK);
 
@@ -233,7 +240,7 @@ public class ZendeskJiraServlet extends SimpleRestfulServlet {
 	private HttpAuthManager _httpAuthManager;
 
 	@Reference
-	private JIRATicketLocalService _jiraTicketLocalService;
+	private JIRAIssueLocalService _jiraIssueLocalService;
 
 	@Reference
 	private UserLocalService _userLocalService;

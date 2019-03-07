@@ -22,20 +22,20 @@ import com.liferay.portal.kernel.exception.PortalException;
  * @author Noah Sherrill
  */
 @ProviderType
-public class JIRAResponseTicketNotFoundException extends PortalException {
+public class JIRAIssueSummaryException extends PortalException {
 
-	public JIRAResponseTicketNotFoundException() {
+	public JIRAIssueSummaryException() {
 	}
 
-	public JIRAResponseTicketNotFoundException(String msg) {
+	public JIRAIssueSummaryException(String msg) {
 		super(msg);
 	}
 
-	public JIRAResponseTicketNotFoundException(String msg, Throwable cause) {
+	public JIRAIssueSummaryException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
 
-	public JIRAResponseTicketNotFoundException(Throwable cause) {
+	public JIRAIssueSummaryException(Throwable cause) {
 		super(cause);
 	}
 

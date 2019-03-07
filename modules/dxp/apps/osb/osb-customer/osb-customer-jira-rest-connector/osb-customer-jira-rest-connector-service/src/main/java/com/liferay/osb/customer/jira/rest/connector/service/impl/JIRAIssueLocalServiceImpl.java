@@ -14,13 +14,13 @@
 
 package com.liferay.osb.customer.jira.rest.connector.service.impl;
 
+import com.liferay.osb.customer.jira.rest.connector.exception.JIRAIssueIssueKeyException;
+import com.liferay.osb.customer.jira.rest.connector.exception.JIRAIssueIssueTypeException;
+import com.liferay.osb.customer.jira.rest.connector.exception.JIRAIssueSummaryException;
 import com.liferay.osb.customer.jira.rest.connector.exception.JIRAResponseException;
-import com.liferay.osb.customer.jira.rest.connector.exception.JIRAResponseTicketNotFoundException;
-import com.liferay.osb.customer.jira.rest.connector.exception.JIRATicketIssueTypeException;
-import com.liferay.osb.customer.jira.rest.connector.exception.JIRATicketSummaryException;
-import com.liferay.osb.customer.jira.rest.connector.exception.JIRATicketTicketKeyException;
-import com.liferay.osb.customer.jira.rest.connector.model.JIRATicket;
-import com.liferay.osb.customer.jira.rest.connector.service.base.JIRATicketLocalServiceBaseImpl;
+import com.liferay.osb.customer.jira.rest.connector.exception.JIRAResponseIssueNotFoundException;
+import com.liferay.osb.customer.jira.rest.connector.model.JIRAIssue;
+import com.liferay.osb.customer.jira.rest.connector.service.base.JIRAIssueLocalServiceBaseImpl;
 import com.liferay.osb.customer.jira.rest.connector.util.JIRAHttpUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -38,9 +38,9 @@ import java.util.Set;
 /**
  * @author Noah Sherrill
  */
-public class JIRATicketLocalServiceImpl extends JIRATicketLocalServiceBaseImpl {
+public class JIRAIssueLocalServiceImpl extends JIRAIssueLocalServiceBaseImpl {
 
-	public JSONObject createJIRATicket(
+	public JSONObject createJIRAIssue(
 			String projectKey, String issueType, String summary,
 			String description, String assigneeName, Set<String> labels,
 			Map<String, Object> customFields, String status)
@@ -48,24 +48,24 @@ public class JIRATicketLocalServiceImpl extends JIRATicketLocalServiceBaseImpl {
 
 		validate(issueType, summary);
 
-		JIRATicket jiraTicket = new JIRATicket(
+		JIRAIssue jiraIssue = new JIRAIssue(
 			projectKey, issueType, summary, description, assigneeName, labels,
 			customFields);
 
 		JSONObject responseJSONObject = JIRAHttpUtil.post(
-			"issue", jiraTicket.toJSONObject());
+			"issue", jiraIssue.toJSONObject());
 
 		handleResponseErrors(responseJSONObject);
 
 		if (Validator.isNotNull(status)) {
-			_updateJIRATicketStatus(
+			_updateJIRAIssueStatus(
 				responseJSONObject.getString("key"), status);
 		}
 
 		return responseJSONObject;
 	}
 
-	public JSONObject getJIRATicket(String ticketKey) throws PortalException {
+	public JSONObject getJIRAIssue(String ticketKey) throws PortalException {
 		JSONObject responseJSONObject = JIRAHttpUtil.get(
 			"issue/" + ticketKey, JSONFactoryUtil.createJSONObject());
 
@@ -74,7 +74,7 @@ public class JIRATicketLocalServiceImpl extends JIRATicketLocalServiceBaseImpl {
 		return responseJSONObject;
 	}
 
-	public JSONObject getJIRATickets(String jql) throws PortalException {
+	public JSONObject getJIRAIssues(String jql) throws PortalException {
 		JSONObject responseJSONObject = JIRAHttpUtil.get("search", jql);
 
 		handleResponseErrors(responseJSONObject);
@@ -82,7 +82,7 @@ public class JIRATicketLocalServiceImpl extends JIRATicketLocalServiceBaseImpl {
 		return responseJSONObject;
 	}
 
-	public JSONObject updateJIRATicket(
+	public JSONObject updateJIRAIssue(
 			String projectKey, String ticketKey, String summary,
 			String description, String assigneeName, Set<String> labels,
 			Map<String, Object> customFields, String status)
@@ -90,17 +90,17 @@ public class JIRATicketLocalServiceImpl extends JIRATicketLocalServiceBaseImpl {
 
 		validate(ticketKey);
 
-		JIRATicket jiraTicket = new JIRATicket(
+		JIRAIssue jiraIssue = new JIRAIssue(
 			projectKey, StringPool.BLANK, summary, description, assigneeName,
 			labels, customFields);
 
 		JSONObject responseJSONObject = JIRAHttpUtil.put(
-			"issue/" + ticketKey, jiraTicket.toJSONObject());
+			"issue/" + ticketKey, jiraIssue.toJSONObject());
 
 		handleResponseErrors(responseJSONObject);
 
 		if (Validator.isNotNull(status)) {
-			_updateJIRATicketStatus(ticketKey, status);
+			_updateJIRAIssueStatus(ticketKey, status);
 		}
 
 		return responseJSONObject;
@@ -125,7 +125,7 @@ public class JIRATicketLocalServiceImpl extends JIRATicketLocalServiceBaseImpl {
 		String errorMessage = errorMessagesJSONArray.getString(0);
 
 		if (errorMessage.equals("Issue Does Not Exist")) {
-			throw new JIRAResponseTicketNotFoundException(errorMessage);
+			throw new JIRAResponseIssueNotFoundException(errorMessage);
 		}
 		else {
 			throw new JIRAResponseException(errorMessage);
@@ -134,7 +134,7 @@ public class JIRATicketLocalServiceImpl extends JIRATicketLocalServiceBaseImpl {
 
 	protected void validate(String ticketKey) throws PortalException {
 		if (Validator.isNull(ticketKey)) {
-			throw new JIRATicketTicketKeyException();
+			throw new JIRAIssueIssueKeyException();
 		}
 	}
 
@@ -142,11 +142,11 @@ public class JIRATicketLocalServiceImpl extends JIRATicketLocalServiceBaseImpl {
 		throws PortalException {
 
 		if (Validator.isNull(issueType)) {
-			throw new JIRATicketIssueTypeException();
+			throw new JIRAIssueIssueTypeException();
 		}
 
 		if (Validator.isNull(summary)) {
-			throw new JIRATicketSummaryException();
+			throw new JIRAIssueSummaryException();
 		}
 	}
 
@@ -182,7 +182,7 @@ public class JIRATicketLocalServiceImpl extends JIRATicketLocalServiceBaseImpl {
 		return "issue/" + ticketKey + "/transitions";
 	}
 
-	private void _updateJIRATicketStatus(String ticketKey, String status)
+	private void _updateJIRAIssueStatus(String ticketKey, String status)
 		throws PortalException {
 
 		JSONObject updateStatusJSONObject = JSONFactoryUtil.createJSONObject();
@@ -200,7 +200,7 @@ public class JIRATicketLocalServiceImpl extends JIRATicketLocalServiceBaseImpl {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		JIRATicketLocalServiceImpl.class);
+		JIRAIssueLocalServiceImpl.class);
 
 	private final Map<String, Integer> _transitionIds = new HashMap<>();
 

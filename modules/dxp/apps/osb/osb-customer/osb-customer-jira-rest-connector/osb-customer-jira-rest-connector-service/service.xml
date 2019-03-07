@@ -4,15 +4,15 @@
 <service-builder auto-import-default-references="false" auto-namespace-tables="false" package-path="com.liferay.osb.customer.jira.rest.connector">
 	<author>Noah Sherrill</author>
 	<namespace>JIRA</namespace>
-	<entity local-service="true" name="JIRATicket" remote-service="false" />
+	<entity local-service="true" name="JIRAIssue" remote-service="false" />
 	<exceptions>
+		<exception>JIRAIssueCustomFieldName</exception>
+		<exception>JIRAIssueCustomFieldValue</exception>
+		<exception>JIRAIssueIssueKey</exception>
+		<exception>JIRAIssueIssueType</exception>
+		<exception>JIRAIssueSummary</exception>
 		<exception>JIRAResponse</exception>
 		<exception>JIRAResponseIO</exception>
-		<exception>JIRAResponseTicketNotFound</exception>
-		<exception>JIRATicketCustomFieldName</exception>
-		<exception>JIRATicketCustomFieldValue</exception>
-		<exception>JIRATicketIssueType</exception>
-		<exception>JIRATicketSummary</exception>
-		<exception>JIRATicketTicketKey</exception>
+		<exception>JIRAResponseIssueNotFound</exception>
 	</exceptions>
 </service-builder>
