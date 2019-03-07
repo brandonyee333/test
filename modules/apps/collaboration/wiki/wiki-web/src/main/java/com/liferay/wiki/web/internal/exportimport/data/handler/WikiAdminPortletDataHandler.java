@@ -15,9 +15,6 @@
 package com.liferay.wiki.web.internal.exportimport.data.handler;
 
 import com.liferay.exportimport.kernel.lar.BasePortletDataHandler;
-import com.liferay.exportimport.kernel.lar.ExportImportDateUtil;
-import com.liferay.exportimport.kernel.lar.ExportImportHelper;
-import com.liferay.exportimport.kernel.lar.ManifestSummary;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.PortletDataException;
 import com.liferay.exportimport.kernel.lar.PortletDataHandler;
@@ -25,20 +22,17 @@ import com.liferay.exportimport.kernel.lar.PortletDataHandlerBoolean;
 import com.liferay.exportimport.kernel.lar.PortletDataHandlerControl;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
-import com.liferay.portal.kernel.cache.MultiVMPool;
-import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
-import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.wiki.constants.WikiConstants;
 import com.liferay.wiki.constants.WikiPortletKeys;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
-import com.liferay.wiki.model.WikiPageDisplay;
 import com.liferay.wiki.service.WikiNodeLocalService;
 import com.liferay.wiki.service.WikiPageLocalService;
 import com.liferay.wiki.service.permission.WikiResourcePermissionChecker;
+import com.liferay.wiki.util.WikiCacheHelper;
 import com.liferay.wiki.util.WikiCacheThreadLocal;
 
 import java.util.List;
@@ -91,8 +85,6 @@ public class WikiAdminPortletDataHandler extends BasePortletDataHandler {
 			PortletPreferences portletPreferences, String data)
 		throws PortletDataException {
 
-		boolean clearCache = WikiCacheThreadLocal.isClearCache();
-
 		WikiCacheThreadLocal.setClearCache(false);
 
 		try {
@@ -100,9 +92,7 @@ public class WikiAdminPortletDataHandler extends BasePortletDataHandler {
 				portletDataContext, portletId, portletPreferences, data);
 		}
 		finally {
-			WikiCacheThreadLocal.setClearCache(clearCache);
-
-			_portalCache.removeAll();
+			WikiCacheThreadLocal.setClearCache(true);
 		}
 	}
 
@@ -123,9 +113,6 @@ public class WikiAdminPortletDataHandler extends BasePortletDataHandler {
 				},
 				WikiPage.class.getName()));
 		setImportControls(getExportControls());
-
-		_portalCache = _multiVMPool.getPortalCache(
-			WikiPageDisplay.class.getName());
 	}
 
 	@Override
@@ -211,6 +198,14 @@ public class WikiAdminPortletDataHandler extends BasePortletDataHandler {
 				portletDataContext, pageElement);
 		}
 
+		Map<Long, Long> nodeIds =
+			(Map<Long, Long>)portletDataContext.getNewPrimaryKeysMap(
+				WikiNode.class);
+
+		for (long nodeId : nodeIds.values()) {
+			_wikiCacheHelper.clearCache(nodeId);
+		}
+
 		return null;
 	}
 
@@ -219,43 +214,6 @@ public class WikiAdminPortletDataHandler extends BasePortletDataHandler {
 			PortletDataContext portletDataContext,
 			PortletPreferences portletPreferences)
 		throws Exception {
-
-		Map<String, String[]> parameterMap =
-			portletDataContext.getParameterMap();
-
-		String rangeValue = MapUtil.getString(
-			parameterMap, ExportImportDateUtil.RANGE);
-
-		if (rangeValue.equals(
-				ExportImportDateUtil.RANGE_FROM_LAST_PUBLISH_DATE)) {
-
-			ManifestSummary manifestSummary =
-				portletDataContext.getManifestSummary();
-
-			String[] classNames =
-				{WikiNode.class.getName(), WikiPage.class.getName()};
-
-			for (String className : classNames) {
-				StagedModelType stagedModelType = new StagedModelType(
-					className);
-
-				long modelAdditionCount = manifestSummary.getModelAdditionCount(
-					stagedModelType);
-
-				if (modelAdditionCount > -1) {
-					continue;
-				}
-
-				long modelDeletionCount =
-					_exportImportHelper.getModelDeletionCount(
-						portletDataContext, stagedModelType);
-
-				manifestSummary.addModelDeletionCount(
-					stagedModelType, modelDeletionCount);
-			}
-
-			return;
-		}
 
 		ActionableDynamicQuery nodeActionableDynamicQuery =
 			_wikiNodeLocalService.getExportActionableDynamicQuery(
@@ -276,6 +234,11 @@ public class WikiAdminPortletDataHandler extends BasePortletDataHandler {
 	}
 
 	@Reference(unbind = "-")
+	protected void setWikiCacheHelper(WikiCacheHelper wikiCacheHelper) {
+		_wikiCacheHelper = wikiCacheHelper;
+	}
+
+	@Reference(unbind = "-")
 	protected void setWikiNodeLocalService(
 		WikiNodeLocalService wikiNodeLocalService) {
 
@@ -289,13 +252,7 @@ public class WikiAdminPortletDataHandler extends BasePortletDataHandler {
 		_wikiPageLocalService = wikiPageLocalService;
 	}
 
-	@Reference
-	private ExportImportHelper _exportImportHelper;
-
-	@Reference
-	private MultiVMPool _multiVMPool;
-
-	private PortalCache<?, ?> _portalCache;
+	private WikiCacheHelper _wikiCacheHelper;
 	private WikiNodeLocalService _wikiNodeLocalService;
 	private WikiPageLocalService _wikiPageLocalService;
 
