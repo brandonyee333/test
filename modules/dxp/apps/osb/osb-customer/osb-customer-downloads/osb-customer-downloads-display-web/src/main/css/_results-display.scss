@@ -1,228 +1,226 @@
-.osb-downloads-display-portlet {
-	.commerce-logo-full,
-	.dxp-logo-full {
-		height: 100px;
-		margin-bottom: 32px;
-		width: 300px;
+.commerce-logo-full,
+.dxp-logo-full {
+	height: 100px;
+	margin-bottom: 32px;
+	width: 300px;
+}
+
+.results {
+	.additional-notes,
+	.downloads,
+	.section-alert,
+	.section-links,
+	.section-title {
+		margin: $margin-default 0;
 	}
 
-	.results {
-		.additional-notes,
-		.downloads,
-		.section-alert,
-		.section-links,
-		.section-title {
-			margin: $margin-default 0;
+	.additional-notes {
+		color: $secondary-text-color;
+		font-size: $font-size-md;
+		line-height: 20px;
+	}
+
+	.detail-label,
+	.detail-value {
+		color: $color-default;
+	}
+
+	.detail-label {
+		font-weight: $font-weight-semi-bold;
+	}
+
+	.details:not(:last-child)::after {
+		content: "\B7";
+		padding: 0 12px;
+
+		@include media-breakpoint-down(sm) {
+			content: "\A";
+			display: block;
+			white-space: pre;
 		}
+	}
 
-		.additional-notes {
-			color: $secondary-text-color;
-			font-size: $font-size-md;
-			line-height: 20px;
-		}
+	.dropdown-row {
+		display: flex;
+		margin-bottom: $margin-default;
 
-		.detail-label,
-		.detail-value {
-			color: $color-default;
-		}
+		.btn-link {
+			background-color: $color-primary;
+			color: $color-white;
 
-		.detail-label {
-			font-weight: $font-weight-semi-bold;
-		}
+			&:active,
+			&:focus,
+			&:hover {
+				text-decoration: none;
+			}
 
-		.details:not(:last-child)::after {
-			content: "\B7";
-			padding: 0 12px;
+			&:focus {
+				background-color: $color-primary-focus;
+			}
 
-			@include media-breakpoint-down(sm) {
-				content: "\A";
-				display: block;
-				white-space: pre;
+			&:hover {
+				background-color: $color-primary-hover;
+				box-shadow: 0 2px 6px 0 rgba(2, 19, 51, 0.36);
 			}
 		}
 
-		.dropdown-row {
-			display: flex;
-			margin-bottom: $margin-default;
+		.download-dropdown {
+			height: 32px;
+			margin-right: $margin-default;
+		}
 
-			.btn-link {
-				background-color: $color-primary;
-				color: $color-white;
+		@include media-breakpoint-down(sm) {
+			display: block;
 
-				&:active,
-				&:focus,
-				&:hover {
-					text-decoration: none;
-				}
-
-				&:focus {
-					background-color: $color-primary-focus;
-				}
-
-				&:hover {
-					background-color: $color-primary-hover;
-					box-shadow: 0 2px 6px 0 rgba(2, 19, 51, 0.36);
-				}
+			.btn.btn-primary {
+				width: 100%;
 			}
 
 			.download-dropdown {
-				height: 32px;
-				margin-right: $margin-default;
+				margin-bottom: $margin-default;
 			}
+		}
+	}
 
-			@include media-breakpoint-down(sm) {
-				display: block;
+	.section-alert {
+		.alert-col-header {
+			padding-right: 0;
 
-				.btn.btn-primary {
-					width: 100%;
-				}
-
-				.download-dropdown {
-					margin-bottom: $margin-default;
-				}
+			@include media-breakpoint-up(xl) {
+				width: 12%;
 			}
 		}
 
-		.section-alert {
-			.alert-col-header {
-				padding-right: 0;
+		.alert-col-message {
+			padding-left: 0;
+		}
 
-				@include media-breakpoint-up(xl) {
-					width: 12%;
-				}
+		.alert-header {
+			font-weight: $font-weight-semi-bold;
+			padding-right: 4px;
+		}
+
+		.alert-message {
+			display: inline-block;
+
+			p {
+				margin: 0;
 			}
 
-			.alert-col-message {
+			@include media-breakpoint-down(lg) {
+				padding: 12px;
+			}
+		}
+
+		.lexicon-icon-info-circle {
+			vertical-align: sub;
+		}
+	}
+
+	.section-links {
+		a {
+			border-right: 1px solid $color-border;
+			padding: 0 8px;
+
+			&:first-of-type {
 				padding-left: 0;
 			}
 
-			.alert-header {
-				font-weight: $font-weight-semi-bold;
-				padding-right: 4px;
-			}
-
-			.alert-message {
-				display: inline-block;
-
-				p {
-					margin: 0;
-				}
-
-				@include media-breakpoint-down(lg) {
-					padding: 12px;
-				}
-			}
-
-			.lexicon-icon-info-circle {
-				vertical-align: sub;
-			}
-		}
-
-		.section-links {
-			a {
-				border-right: 1px solid $color-border;
-				padding: 0 8px;
-
-				&:first-of-type {
-					padding-left: 0;
-				}
-
-				&:last-of-type {
-					border-width: 0;
-				}
-			}
-
-			.link {
-				color: $color-primary;
-				font-size: $font-size-md;
-				font-weight: $font-weight-semi-bold;
-				line-height: 20px;
-
-				@include media-breakpoint-down(lg) {
-					border-width: 0;
-					display: block;
-					margin-bottom: $margin-md;
-					padding-left: 0;
-				}
-			}
-		}
-
-		.table-responsive .table {
-			table-layout: auto;
-
-			thead > tr > th {
-				&:first-of-type {
-					padding-right: $padding-default;
-				}
-
-				&:last-of-type {
-					padding-left: 0;
-					width: 100%;
-
-					@include media-breakpoint-down(md) {
-						display: none;
-					}
-				}
-
-				&:nth-of-type(2) {
-					padding: 0;
-					text-align: left;
-
-					&:after {
-						border-left: 1px solid $color-border;
-						content: "";
-					}
-				}
-			}
-
-			.journal-article-row {
-				td:last-of-type {
-					padding: 0;
-					white-space: inherit;
-
-					@include media-breakpoint-down(md) {
-						padding: 0 $margin-default;
-					}
-				}
-
-				.lfr-released-column {
-					color: $color-default;
-					font-size: 12px;
-					font-weight: $font-weight-normal;
-					padding-top: 30px;
-					vertical-align: baseline;
-				}
-			}
-		}
-
-		@include media-breakpoint-down(md) {
-			.lfr-released-column, .th-separator {
-				display: none;
-			}
-		}
-	}
-
-	.view-previous {
-		margin: 10px 0 60px;
-
-		a {
-			font-weight: $font-weight-semi-bold;
-		}
-	}
-
-	// LRIS-32958.
-	// This is a temporary solution to a problem caused by adding HTML to
-	// the rich text editor in the OSB Customer Theme - Downloads structure.
-	// This is to be removed when support changes every web content that has
-	// this class.
-
-	.results {
-		.section-alert {
-			.portlet-msg-info {
+			&:last-of-type {
 				border-width: 0;
-				margin: 0;
-				padding: 0;
 			}
+		}
+
+		.link {
+			color: $color-primary;
+			font-size: $font-size-md;
+			font-weight: $font-weight-semi-bold;
+			line-height: 20px;
+
+			@include media-breakpoint-down(lg) {
+				border-width: 0;
+				display: block;
+				margin-bottom: $margin-md;
+				padding-left: 0;
+			}
+		}
+	}
+
+	.table-responsive .table {
+		table-layout: auto;
+
+		thead > tr > th {
+			&:first-of-type {
+				padding-right: $padding-default;
+			}
+
+			&:last-of-type {
+				padding-left: 0;
+				width: 100%;
+
+				@include media-breakpoint-down(md) {
+					display: none;
+				}
+			}
+
+			&:nth-of-type(2) {
+				padding: 0;
+				text-align: left;
+
+				&:after {
+					border-left: 1px solid $color-border;
+					content: "";
+				}
+			}
+		}
+
+		.journal-article-row {
+			td:last-of-type {
+				padding: 0;
+				white-space: inherit;
+
+				@include media-breakpoint-down(md) {
+					padding: 0 $margin-default;
+				}
+			}
+
+			.lfr-released-column {
+				color: $color-default;
+				font-size: 12px;
+				font-weight: $font-weight-normal;
+				padding-top: 30px;
+				vertical-align: baseline;
+			}
+		}
+	}
+
+	@include media-breakpoint-down(md) {
+		.lfr-released-column, .th-separator {
+			display: none;
+		}
+	}
+}
+
+.view-previous {
+	margin: 10px 0 60px;
+
+	a {
+		font-weight: $font-weight-semi-bold;
+	}
+}
+
+// LRIS-32958.
+// This is a temporary solution to a problem caused by adding HTML to
+// the rich text editor in the OSB Customer Theme - Downloads structure.
+// This is to be removed when support changes every web content that has
+// this class.
+
+.results {
+	.section-alert {
+		.portlet-msg-info {
+			border-width: 0;
+			margin: 0;
+			padding: 0;
 		}
 	}
 }

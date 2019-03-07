@@ -5,5 +5,7 @@
 @import "components/alerts";
 @import "components/panels";
 
-@import "_eula";
-@import "_results-display";
+.osb-downloads-display-portlet {
+	@import "_eula";
+	@import "_results-display";
+}
