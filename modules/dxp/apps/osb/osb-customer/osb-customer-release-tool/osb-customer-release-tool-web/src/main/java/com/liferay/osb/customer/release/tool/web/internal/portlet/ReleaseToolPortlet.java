@@ -16,6 +16,7 @@ package com.liferay.osb.customer.release.tool.web.internal.portlet;
 
 import com.liferay.osb.customer.release.tool.web.internal.constants.ReleaseToolPortletKeys;
 import com.liferay.osb.customer.release.tool.web.internal.search.FixPackSearcher;
+import com.liferay.osb.customer.release.tool.web.internal.util.FixPacksAssetCategoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 
 import java.io.IOException;
@@ -57,10 +58,15 @@ public class ReleaseToolPortlet extends MVCPortlet {
 		throws IOException, PortletException {
 
 		renderRequest.setAttribute(
+			FixPacksAssetCategoryUtil.class.getName(), _fixPackSearcher);
+		renderRequest.setAttribute(
 			FixPackSearcher.class.getName(), _fixPackSearcher);
 
 		super.render(renderRequest, renderResponse);
 	}
+
+	@Reference
+	private FixPacksAssetCategoryUtil _fixPacksAssetCategoryUtil;
 
 	@Reference
 	private FixPackSearcher _fixPackSearcher;

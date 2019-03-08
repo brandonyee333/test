@@ -63,6 +63,10 @@ public class FixPacksAssetCategoryUtil {
 		return null;
 	}
 
+	public long getFixPacksAssetVocabularyId() {
+		return _fixPacksAssetVocabulary.getVocabularyId();
+	}
+
 	public String getPropertyValue(long assetCategoryId, String key)
 		throws PortalException {
 

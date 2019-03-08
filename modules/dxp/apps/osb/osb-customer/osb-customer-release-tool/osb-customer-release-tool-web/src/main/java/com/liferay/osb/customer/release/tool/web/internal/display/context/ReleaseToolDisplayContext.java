@@ -16,10 +16,8 @@ package com.liferay.osb.customer.release.tool.web.internal.display.context;
 
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetCategoryProperty;
-import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.service.AssetCategoryLocalServiceUtil;
 import com.liferay.asset.kernel.service.AssetCategoryPropertyLocalServiceUtil;
-import com.liferay.asset.kernel.service.AssetVocabularyLocalServiceUtil;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.LocalizedValue;
@@ -28,8 +26,8 @@ import com.liferay.journal.model.JournalArticle;
 import com.liferay.osb.customer.downloads.display.constants.DownloadsDDMStructureConstants;
 import com.liferay.osb.customer.downloads.display.constants.DownloadsDisplayPortletKeys;
 import com.liferay.osb.customer.release.tool.web.internal.constants.DDMStructureConstants;
-import com.liferay.osb.customer.release.tool.web.internal.constants.FixPackAssetCategoryConstants;
 import com.liferay.osb.customer.release.tool.web.internal.constants.FixPackField;
+import com.liferay.osb.customer.release.tool.web.internal.util.FixPacksAssetCategoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -53,7 +51,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.List;
-import java.util.Locale;
 
 import javax.portlet.MimeResponse;
 import javax.portlet.PortletRequest;
@@ -70,6 +67,10 @@ public class ReleaseToolDisplayContext {
 		throws Exception {
 
 		_renderRequest = renderRequest;
+
+		_fixPacksAssetCategoryUtil =
+			(FixPacksAssetCategoryUtil)renderRequest.getAttribute(
+				FixPacksAssetCategoryUtil.class.getName());
 		_themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
@@ -139,18 +140,13 @@ public class ReleaseToolDisplayContext {
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-		AssetVocabulary assetVocabulary =
-			AssetVocabularyLocalServiceUtil.getGroupVocabulary(
-				_themeDisplay.getCompanyGroupId(),
-				FixPackAssetCategoryConstants.VOCABULARY_FIX_PACKS_NAME);
-
 		List<AssetCategory> assetCategories =
 			AssetCategoryLocalServiceUtil.getVocabularyRootCategories(
-				assetVocabulary.getVocabularyId(), QueryUtil.ALL_POS,
-				QueryUtil.ALL_POS, null);
+				_fixPacksAssetCategoryUtil.getFixPacksAssetVocabularyId(),
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 
 		for (AssetCategory assetCategory : assetCategories) {
-			jsonArray.put(getParentCategoryJSONObject(assetCategory));
+			jsonArray.put(getRootAssetCategoryJSONObject(assetCategory));
 		}
 
 		return jsonArray;
@@ -160,43 +156,17 @@ public class ReleaseToolDisplayContext {
 		return _highlightsFiltersJSONArray;
 	}
 
-	protected JSONObject getParentCategoryJSONObject(
+	protected JSONObject getAssetCategoryJSONObject(
 		AssetCategory assetCategory) {
 
-		JSONObject jsonObject = getPropertyJSONObject(assetCategory, null);
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		List<AssetCategory> childAssetCategories =
-			AssetCategoryLocalServiceUtil.getChildCategories(
-				assetCategory.getCategoryId());
-
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
-
-		for (AssetCategory childAssetCategory : childAssetCategories) {
-			JSONObject childJSONObject = getPropertyJSONObject(
-				childAssetCategory, null);
-
-			jsonArray.put(childJSONObject);
-		}
-
-		jsonObject.put("fixPacks", jsonArray);
-
-		return jsonObject;
-	}
-
-	protected JSONObject getPropertyJSONObject(
-		AssetCategory assetCategory, JSONObject jsonObject) {
+		jsonObject.put(
+			"name", assetCategory.getTitle(_themeDisplay.getLocale()));
 
 		List<AssetCategoryProperty> assetCategoryProperties =
 			AssetCategoryPropertyLocalServiceUtil.getCategoryProperties(
 				assetCategory.getCategoryId());
-
-		if (jsonObject == null) {
-			jsonObject = JSONFactoryUtil.createJSONObject();
-		}
-
-		Locale locale = _themeDisplay.getLocale();
-
-		jsonObject.put("name", assetCategory.getTitle(locale));
 
 		for (AssetCategoryProperty assetCategoryProperty :
 				assetCategoryProperties) {
@@ -205,6 +175,29 @@ public class ReleaseToolDisplayContext {
 				assetCategoryProperty.getKey(),
 				assetCategoryProperty.getValue());
 		}
+
+		return jsonObject;
+	}
+
+	protected JSONObject getRootAssetCategoryJSONObject(
+		AssetCategory assetCategory) {
+
+		JSONObject jsonObject = getAssetCategoryJSONObject(assetCategory);
+
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+		List<AssetCategory> childAssetCategories =
+			AssetCategoryLocalServiceUtil.getChildCategories(
+				assetCategory.getCategoryId());
+
+		for (AssetCategory childAssetCategory : childAssetCategories) {
+			JSONObject childJSONObject = getAssetCategoryJSONObject(
+				childAssetCategory);
+
+			jsonArray.put(childJSONObject);
+		}
+
+		jsonObject.put("fixPacks", jsonArray);
 
 		return jsonObject;
 	}
@@ -239,6 +232,7 @@ public class ReleaseToolDisplayContext {
 		}
 	}
 
+	private final FixPacksAssetCategoryUtil _fixPacksAssetCategoryUtil;
 	private JSONArray _highlightsFiltersJSONArray;
 	private final RenderRequest _renderRequest;
 	private final ThemeDisplay _themeDisplay;
