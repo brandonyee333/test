@@ -32,6 +32,10 @@ portletURL.setParameter("tabs1", tabs1);
 	<liferay-ui:message key="liferay-dxp-release-notes-tool" />
 </h1>
 
+<strong>Fix Pack Filters:</strong> <%= releaseToolDisplayContext.getFixPackFiltersJSONArray() %>
+
+<br />
+
 <liferay-portlet:renderURL var="fixPacksURL">
 	<portlet:param name="fromFixPackVersion" value="2.0" />
 	<portlet:param name="fromProductVersion" value="7.0" />
