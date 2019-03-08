@@ -74,8 +74,6 @@ public class JournalArticleIndexerPostProcessor
 				document.addNumber(
 					FixPackField.PRODUCT_VERSION,
 					GetterUtil.getDouble(productVersion));
-
-				break;
 			}
 		}
 	}
