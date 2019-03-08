@@ -39,6 +39,7 @@ public class UpgradePortletDisplayTemplatePreferences
 	protected long getCompanyGroupId(long companyId) throws Exception {
 		Long companyGroupId = _companyGroupIds.get(companyId);
 
+
 		if (companyGroupId != null) {
 			return companyGroupId;
 		}
