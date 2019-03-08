@@ -10,50 +10,63 @@ export default class SortableTable extends React.Component {
 
 	state = {
 		fixPacksResults: [],
-		sortByDesc: true
+		sortBy: ''
 	};
 
 	componentDidMount() {
-		this.handleSortByType('desc');
+		this.handleSortByDesc();
 	}
 
-	handleSortByType = (direction) => {
+	handleGetFixpacks = () => {
 		const {fixPacksResultsURL} = this.props;
+
+		const {sortBy} = this.state;
 
 		const {namespace} = window.ReleaseToolConstants;
 
-		this.setState(
-			{
-				sortByDesc: direction === 'desc' ? true : false
-			},
-			() => {
-				axios.get(fixPacksResultsURL, {
-					params: {
-						[`${namespace}orderByType`]: direction
-					}
-				})
-				.then(
-					(response) => {
-						this.setState(
-							{
-								fixPacksResults: response.data.results,
-							}
-						);
-					}
-				)
-				.catch(
-					(err) => {
-						if (process.env.NODE_ENV === 'development') {
-							console.log(err);
-						}
+		axios.get(fixPacksResultsURL, {
+			params: {
+				[`${namespace}orderByType`]: sortBy
+			}
+		})
+		.then(
+			(response) => {
+				this.setState(
+					{
+						fixPacksResults: response.data.results,
 					}
 				);
+			}
+		)
+		.catch(
+			(err) => {
+				if (process.env.NODE_ENV === 'development') {
+					console.log(err);
+				}
 			}
 		);
 	};
 
+	handleSortByAsc = () => {
+		this.setState(
+			{
+				sortBy: 'asc'
+			},
+			() => this.handleGetFixpacks()
+		)
+	};
+
+	handleSortByDesc = () => {
+		this.setState(
+			{
+				sortBy: 'desc'
+			},
+			() => this.handleGetFixpacks()
+		)
+	};
+
 	render() {
-		const {fixPacksResults, sortByDesc} = this.state;
+		const {fixPacksResults, sortBy} = this.state;
 
 		return (
 			<table class="table table-autofit table-list">
@@ -62,12 +75,12 @@ export default class SortableTable extends React.Component {
 						<th class="lfr-released-column">
 							{Liferay.Language.get('released')}
 
-							<svg className={`${sortByDesc ? 'hide' : ''} lexicon-icon lexicon-icon-order-arrow-down`} onClick={() => this.handleSortByType('desc')}>
-								<use xlinkHref="#order-arrow-down" />
+							<svg className={`${sortBy === 'desc' ? 'hide' : ''} lexicon-icon lexicon-icon-arrow-down`} onClick={this.handleSortByDesc}>
+								<use xlinkHref="#arrow-down" />
 							</svg>
 
-							<svg className={`${sortByDesc ? '' : 'hide'} lexicon-icon lexicon-icon-order-arrow-up`} onClick={() => this.handleSortByType('asc')}>
-								<use xlinkHref="#order-arrow-up" />
+							<svg className={`${sortBy === 'desc' ? '' : 'hide'} lexicon-icon lexicon-icon-arrow-up`} onClick={this.handleSortByAsc}>
+								<use xlinkHref="#arrow-up" />
 							</svg>
 						</th>
 						<th class="lfr-details-column">
@@ -79,7 +92,7 @@ export default class SortableTable extends React.Component {
 				<tbody>
 					{fixPacksResults.map(
 						(fixPack) => (
-							<tr class="journal-article-row" id={fixPack.resourcePrimKey}>
+							<tr class="journal-article-row" id={fixPack.resourcePrimKey} key={fixPack.resourcePrimKey}>
 								<td class="lfr-released-column">
 									{fixPack.releaseDate}
 								</td>
