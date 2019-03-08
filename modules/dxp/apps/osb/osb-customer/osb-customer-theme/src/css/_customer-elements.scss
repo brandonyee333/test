@@ -39,7 +39,7 @@ h6 {
 
 h2 {
 	font-size: $h2-font-size;
-	margin-top: $margin-default;
+	margin: $margin-default 0 0;
 }
 
 h3 {
@@ -70,6 +70,7 @@ h5 {
 
 	&.section-subtitle {
 		font-weight: $font-weight-normal;
+		margin-top: 0;
 	}
 }
 

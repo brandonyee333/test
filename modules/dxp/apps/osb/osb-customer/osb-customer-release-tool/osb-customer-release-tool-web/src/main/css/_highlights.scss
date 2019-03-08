@@ -20,9 +20,43 @@
 		}
 	}
 
+	.lexicon-icon-order-arrow-down,
+	.lexicon-icon-order-arrow-up {
+		margin-left: 8px;
+
+		&:hover {
+			cursor: pointer;
+		}
+	}
+
+	.lfr-details-column {
+		padding-top: $padding-default;
+		width: 10%;
+	}
+
+	.lfr-released-column {
+		padding-top: $padding-default;
+		vertical-align: top;
+	}
+
 	.no-highlights {
 		font-size: $font-size-default;
 		font-style: italic;
 		margin-bottom: $margin-default;
+	}
+
+	.showing-results {
+		margin: $margin-default 0;
+	}
+
+	.table {
+		> thead > tr > th {
+			font-weight: $font-weight-semi-bold;
+		}
+
+		> tbody > tr > td:first-child {
+			font-size: $small-font-size;
+			font-weight: $font-weight-normal;
+		}
 	}
 }
