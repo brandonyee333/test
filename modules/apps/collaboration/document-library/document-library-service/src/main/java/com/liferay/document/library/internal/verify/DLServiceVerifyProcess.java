@@ -15,6 +15,7 @@
 package com.liferay.document.library.internal.verify;
 
 import com.liferay.counter.kernel.service.CounterLocalService;
+import com.liferay.document.library.constants.DLPortletKeys;
 import com.liferay.document.library.kernel.exception.DuplicateFileEntryException;
 import com.liferay.document.library.kernel.exception.DuplicateFolderNameException;
 import com.liferay.document.library.kernel.model.DLFileEntry;
@@ -33,19 +34,24 @@ import com.liferay.document.library.kernel.store.DLStoreUtil;
 import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.document.library.kernel.util.DLValidator;
 import com.liferay.document.library.kernel.util.comparator.DLFileVersionVersionComparator;
+import com.liferay.exportimport.kernel.staging.Staging;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.instances.service.PortalInstancesLocalService;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Criterion;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.Property;
+import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.repository.model.Folder;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -54,6 +60,8 @@ import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnicodeProperties;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFileEntry;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFileVersion;
@@ -527,6 +535,7 @@ public class DLServiceVerifyProcess extends VerifyProcess {
 		updateClassNameId();
 		updateFileEntryAssets();
 		updateFolderAssets();
+		updateStagedPortletNames();
 	}
 
 	protected String getMimeType(InputStream inputStream, String title) {
@@ -665,6 +674,11 @@ public class DLServiceVerifyProcess extends VerifyProcess {
 		_dlFolderLocalService = dlFolderLocalService;
 	}
 
+	@Reference(unbind = "-")
+	protected void setGroupLocalService(GroupLocalService groupLocalService) {
+		_groupLocalService = groupLocalService;
+	}
+
 	@Reference(
 		target = "(&(release.bundle.symbolic.name=com.liferay.document.library.service)(&(release.schema.version>=1.0.0)(!(release.schema.version>=1.2.0))))",
 		unbind = "-"
@@ -760,6 +774,51 @@ public class DLServiceVerifyProcess extends VerifyProcess {
 		}
 	}
 
+	protected void updateStagedPortletNames() throws PortalException {
+		ActionableDynamicQuery groupActionableDynamicQuery =
+			_groupLocalService.getActionableDynamicQuery();
+
+		groupActionableDynamicQuery.setAddCriteriaMethod(
+			dynamicQuery -> {
+				Property siteProperty = PropertyFactoryUtil.forName("site");
+
+				dynamicQuery.add(siteProperty.eq(Boolean.TRUE));
+			});
+
+		groupActionableDynamicQuery.setPerformActionMethod(
+			(ActionableDynamicQuery.PerformActionMethod<Group>)group -> {
+				UnicodeProperties typeSettingsProperties =
+					group.getTypeSettingsProperties();
+
+				if (typeSettingsProperties == null) {
+					return;
+				}
+
+				String propertyKey = _staging.getStagedPortletId(
+					DLPortletKeys.DOCUMENT_LIBRARY);
+
+				String propertyValue = typeSettingsProperties.getProperty(
+					propertyKey);
+
+				if (Validator.isNull(propertyValue)) {
+					return;
+				}
+
+				typeSettingsProperties.remove(propertyKey);
+
+				propertyKey = _staging.getStagedPortletId(
+					DLPortletKeys.DOCUMENT_LIBRARY_ADMIN);
+
+				typeSettingsProperties.put(propertyKey, propertyValue);
+
+				group.setTypeSettingsProperties(typeSettingsProperties);
+
+				_groupLocalService.updateGroup(group);
+			});
+
+		groupActionableDynamicQuery.performActions();
+	}
+
 	private static final String _MS_OFFICE_2010_TEXT_XML_UTF8 =
 		"text/xml; charset=\"utf-8\"";
 
@@ -777,7 +836,12 @@ public class DLServiceVerifyProcess extends VerifyProcess {
 	@Reference
 	private DLValidator _dlValidator;
 
+	private GroupLocalService _groupLocalService;
+
 	@Reference
 	private PortalInstancesLocalService _portalInstancesLocalService;
+
+	@Reference
+	private Staging _staging;
 
 }

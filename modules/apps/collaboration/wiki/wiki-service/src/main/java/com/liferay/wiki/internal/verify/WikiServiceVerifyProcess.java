@@ -14,15 +14,24 @@
 
 package com.liferay.wiki.internal.verify;
 
+import com.liferay.exportimport.kernel.staging.Staging;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.dao.orm.Property;
+import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.UnicodeProperties;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.verify.VerifyProcess;
 import com.liferay.portal.verify.VerifyResourcePermissions;
 import com.liferay.portal.verify.VerifyUUID;
+import com.liferay.wiki.constants.WikiPortletKeys;
 import com.liferay.wiki.internal.verify.model.WikiNodeVerifiableModel;
 import com.liferay.wiki.internal.verify.model.WikiPageResourceVerifiableModel;
 import com.liferay.wiki.internal.verify.model.WikiPageVerifiableModel;
@@ -50,10 +59,16 @@ public class WikiServiceVerifyProcess extends VerifyProcess {
 
 	@Override
 	protected void doVerify() throws Exception {
+		updateStagedPortletNames();
 		verifyCreateDate();
 		verifyNoAssetPages();
 		verifyResourcedModels();
 		verifyUUIDModels();
+	}
+
+	@Reference(unbind = "-")
+	protected void setGroupLocalService(GroupLocalService groupLocalService) {
+		_groupLocalService = groupLocalService;
 	}
 
 	@Reference(unbind = "-")
@@ -68,6 +83,51 @@ public class WikiServiceVerifyProcess extends VerifyProcess {
 		WikiPageResourceLocalService wikiPageResourceLocalService) {
 
 		_wikiPageResourceLocalService = wikiPageResourceLocalService;
+	}
+
+	protected void updateStagedPortletNames() throws PortalException {
+		ActionableDynamicQuery groupActionableDynamicQuery =
+			_groupLocalService.getActionableDynamicQuery();
+
+		groupActionableDynamicQuery.setAddCriteriaMethod(
+			dynamicQuery -> {
+				Property siteProperty = PropertyFactoryUtil.forName("site");
+
+				dynamicQuery.add(siteProperty.eq(Boolean.TRUE));
+			});
+
+		groupActionableDynamicQuery.setPerformActionMethod(
+			(ActionableDynamicQuery.PerformActionMethod<Group>)group -> {
+				UnicodeProperties typeSettingsProperties =
+					group.getTypeSettingsProperties();
+
+				if (typeSettingsProperties == null) {
+					return;
+				}
+
+				String propertyKey = _staging.getStagedPortletId(
+					WikiPortletKeys.WIKI);
+
+				String propertyValue = typeSettingsProperties.getProperty(
+					propertyKey);
+
+				if (Validator.isNull(propertyValue)) {
+					return;
+				}
+
+				typeSettingsProperties.remove(propertyKey);
+
+				propertyKey = _staging.getStagedPortletId(
+					WikiPortletKeys.WIKI_ADMIN);
+
+				typeSettingsProperties.put(propertyKey, propertyValue);
+
+				group.setTypeSettingsProperties(typeSettingsProperties);
+
+				_groupLocalService.updateGroup(group);
+			});
+
+		groupActionableDynamicQuery.performActions();
 	}
 
 	protected void verifyCreateDate() throws Exception {
@@ -163,6 +223,11 @@ public class WikiServiceVerifyProcess extends VerifyProcess {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		WikiServiceVerifyProcess.class);
+
+	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private Staging _staging;
 
 	private final VerifyResourcePermissions _verifyResourcePermissions =
 		new VerifyResourcePermissions();
