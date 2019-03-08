@@ -59,7 +59,8 @@ public interface JIRAIssueLocalService extends BaseLocalService {
 	public JSONObject getJIRAIssue(String ticketKey) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public JSONObject getJIRAIssues(String jql) throws PortalException;
+	public JSONObject getJIRAIssues(String jql, int startAt, int maxResults)
+		throws PortalException;
 
 	/**
 	 * Returns the OSGi service identifier.
