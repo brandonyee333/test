@@ -117,12 +117,6 @@ public class BookmarksPortletDataHandler extends BasePortletDataHandler {
 			portletDataContext, portletPreferences);
 	}
 
-	@Override
-	public boolean validateSchemaVersion(String schemaVersion) {
-		return _bookmarksAdminPortletDataHandler.validateSchemaVersion(
-			schemaVersion);
-	}
-
 	@Activate
 	protected void activate() {
 		setDataLevel(DataLevel.PORTLET_INSTANCE);
