@@ -46,10 +46,18 @@ import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
 import com.liferay.portal.kernel.search.generic.TermRangeQueryImpl;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+
+import java.text.DateFormat;
+import java.text.Format;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
+import java.util.Date;
 
 import javax.portlet.MimeResponse;
 import javax.portlet.PortletRequest;
@@ -276,7 +284,16 @@ public class FixPackSearcher extends BaseSearcher {
 
 		String releaseDate = DDMFieldsUtil.getString(ddmFields, "releaseDate");
 
-		jsonObject.put("releaseDate", releaseDate);
+		try {
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+			Date date = dateFormat.parse(releaseDate);
+
+			jsonObject.put("releaseDate", _releaseDateFormat.format(date));
+		}
+		catch (ParseException pe) {
+			jsonObject.put("releaseDate", releaseDate);
+		}
 
 		jsonObject.put("resourcePrimKey", journalArticle.getResourcePrimKey());
 		jsonObject.put(
@@ -305,5 +322,8 @@ public class FixPackSearcher extends BaseSearcher {
 
 	@Reference
 	private JournalConverter _journalConverter;
+
+	private final Format _releaseDateFormat =
+		FastDateFormatFactoryUtil.getSimpleDateFormat("MMM d, yyyy");
 
 }
