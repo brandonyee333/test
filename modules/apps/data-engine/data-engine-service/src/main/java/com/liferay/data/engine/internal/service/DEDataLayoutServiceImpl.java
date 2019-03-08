@@ -150,10 +150,12 @@ public class DEDataLayoutServiceImpl implements DEDataLayoutService {
 	@Reference
 	private DDMStructureVersionLocalService _ddmStructureVersionLocalService;
 
+	private DEDataLayoutDeleteRequestExecutor
+		_deDataLayoutDeleteRequestExecutor;
+
 	@Reference
 	private DEDataLayoutDeserializerTracker _deDataLayoutDeserializerTracker;
 
-	private DEDataLayoutDeleteRequestExecutor _deDataLayoutDeleteRequestExecutor;
 	private DEDataLayoutGetRequestExecutor _deDataLayoutGetRequestExecutor;
 	private DEDataLayoutListRequestExecutor _deDataLayoutListRequestExecutor;
 	private DEDataLayoutSaveRequestExecutor _deDataLayoutSaveRequestExecutor;
