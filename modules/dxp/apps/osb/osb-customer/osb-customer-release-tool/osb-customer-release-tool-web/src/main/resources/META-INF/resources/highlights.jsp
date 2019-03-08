@@ -20,16 +20,15 @@
 
 <br />
 
-<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/fix_packs" var="refinedFixPacksURL">
+<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/fix_packs" var="fixPacksResultsURL">
 	<portlet:param name="fromFixPackVersion" value="2.0" />
 	<portlet:param name="fromProductVersion" value="7.0" />
-	<portlet:param name="orderByType" value="desc" />
 	<portlet:param name="product" value="dxp" />
 	<portlet:param name="toFixPackVersion" value="1.0" />
 	<portlet:param name="toProductVersion" value="7.1" />
 </liferay-portlet:resourceURL>
 
-<strong>Fix Pack Refinement Endpoint:</strong> <%= refinedFixPacksURL %>
+<strong>Fix Pack Refinement Endpoint:</strong> <%= fixPacksResultsURL %>
 
 <h1>
 	<liferay-ui:message key="highlights" />
@@ -49,7 +48,31 @@ JournalArticle journalArticle = JournalArticleLocalServiceUtil.fetchArticle(them
 </c:if>
 
 <%
-JSONObject jsonObject = fixPackSearcher.search(renderRequest, renderResponse);
+JSONObject fixPackJSONObject = fixPackSearcher.search(renderRequest, renderResponse);
 %>
 
-<strong>Results:</strong> <%= HtmlUtil.escape(jsonObject.toString()) %>
+<strong>Results:</strong> <%= HtmlUtil.escape(fixPackJSONObject.toString()) %>
+
+<h2 class="highlights">
+	<liferay-ui:message key="highlights" />
+</h2>
+
+<h5 class="secondary-text-color section-subtitle">
+	<liferay-ui:message key="the-following-information-summarizes-the-important-changes-known-issues-and-security-details-in-each-release" />
+</h5>
+
+<div class="showing-results">
+	<liferay-ui:message arguments='<%= fixPackJSONObject.get("total") %>' key="showing-x-results" />
+</div>
+
+<div class="" id="<portlet:namespace />sortableTable"></div>
+
+<aui:script>
+	ReleaseTool.render(
+		ReleaseTool.SortableTable,
+		{
+			fixPacksResultsURL: '<%= fixPacksResultsURL %>'
+		},
+		document.getElementById('<portlet:namespace />sortableTable')
+	);
+</aui:script>
