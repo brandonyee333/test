@@ -16,7 +16,7 @@
 	<span class="secondary-text-color">${productAssetCategory.getTitle(locale)}</span>
 </div>
 
-<#if validator.isNull(highlights)>
+<#if validator.isNull(highlights.keyHighlights.getData()) && validator.isNull(highlights.importantChanges.getData()) && validator.isNull(highlights.knownIssues.getData()) && validator.isNull(highlights.security.getData())>
 	<div class="no-highlights">
 		<@liferay.language key="no-highlights-for-this-release" />
 	</div>
