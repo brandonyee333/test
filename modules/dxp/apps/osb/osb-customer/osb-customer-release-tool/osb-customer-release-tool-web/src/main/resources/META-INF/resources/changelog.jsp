@@ -16,6 +16,19 @@
 
 <%@ include file="/init.jsp" %>
 
+<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/jira_issues" var="refinedJiraIssuesURL">
+	<portlet:param name="fromFixPackVersion" value="2.0" />
+	<portlet:param name="fromProductVersion" value="7.0" />
+	<portlet:param name="orderByType" value="desc" />
+	<portlet:param name="product" value="dxp" />
+	<portlet:param name="toFixPackVersion" value="1.0" />
+	<portlet:param name="toProductVersion" value="7.1" />
+</liferay-portlet:resourceURL>
+
+<strong>Changelog Refinement Endpoint:</strong> <%= refinedJiraIssuesURL %>
+
+<br />
+
 <h1>
 	<liferay-ui:message key="changelog" />
 </h1>
