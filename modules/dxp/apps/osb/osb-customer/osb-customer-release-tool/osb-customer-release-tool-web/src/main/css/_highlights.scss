@@ -1,62 +1,60 @@
-.osb-release-tool-portlet {
-	.detail-body {
-		font-size: $font-size-default;
-		margin: 8px 0 $margin-default;
-	}
+.detail-body {
+	font-size: $font-size-default;
+	margin: 8px 0 $margin-default;
+}
 
-	.detail-title {
+.detail-title {
+	margin: 0;
+}
+
+.fix-pack-details {
+	margin-bottom: $margin-default;
+
+	.fix-pack-version {
+		font-size: 20px;
+		font-weight: $font-weight-semi-bold;
+		line-height: 28px;
 		margin: 0;
+		text-transform: none;
+	}
+}
+
+.lexicon-icon-arrow-down,
+.lexicon-icon-arrow-up {
+	margin-left: 8px;
+
+	&:hover {
+		cursor: pointer;
+	}
+}
+
+.lfr-details-column {
+	padding-top: $padding-default;
+	width: 10%;
+}
+
+.lfr-released-column {
+	padding-top: $padding-default;
+	vertical-align: top;
+}
+
+.no-highlights {
+	font-size: $font-size-default;
+	font-style: italic;
+	margin-bottom: $margin-default;
+}
+
+.showing-results {
+	margin: $margin-default 0;
+}
+
+.table {
+	> thead > tr > th {
+		font-weight: $font-weight-semi-bold;
 	}
 
-	.fix-pack-details {
-		margin-bottom: $margin-default;
-
-		.fix-pack-version {
-			font-size: 20px;
-			font-weight: $font-weight-semi-bold;
-			line-height: 28px;
-			margin: 0;
-			text-transform: none;
-		}
-	}
-
-	.lexicon-icon-arrow-down,
-	.lexicon-icon-arrow-up {
-		margin-left: 8px;
-
-		&:hover {
-			cursor: pointer;
-		}
-	}
-
-	.lfr-details-column {
-		padding-top: $padding-default;
-		width: 10%;
-	}
-
-	.lfr-released-column {
-		padding-top: $padding-default;
-		vertical-align: top;
-	}
-
-	.no-highlights {
-		font-size: $font-size-default;
-		font-style: italic;
-		margin-bottom: $margin-default;
-	}
-
-	.showing-results {
-		margin: $margin-default 0;
-	}
-
-	.table {
-		> thead > tr > th {
-			font-weight: $font-weight-semi-bold;
-		}
-
-		> tbody > tr > td:first-child {
-			font-size: $small-font-size;
-			font-weight: $font-weight-normal;
-		}
+	> tbody > tr > td:first-child {
+		font-size: $small-font-size;
+		font-weight: $font-weight-normal;
 	}
 }

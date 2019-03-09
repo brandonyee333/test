@@ -2,4 +2,6 @@
 
 @import "base-variables";
 
-@import "_highlights";
+.osb-release-tool-portlet {
+	@import "_highlights";
+}
