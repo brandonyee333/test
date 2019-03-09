@@ -10,12 +10,32 @@ export default class SortableTable extends React.Component {
 
 	state = {
 		fixPacksResults: [],
-		sortBy: ''
+		sortBy: 'desc'
 	};
 
 	componentDidMount() {
 		this.handleSortByDesc();
 	}
+
+	displayReleaseDateArrow = () => {
+		const {sortBy} = this.state;
+
+		let retVal = (
+			<svg className="lexicon-icon lexicon-icon-arrow-up" onClick={this.handleSortByAsc}>
+				<use xlinkHref="#arrow-up" />
+			</svg>
+		);
+
+		if (sortBy === 'asc') {
+			retVal = (
+				<svg className="lexicon-icon lexicon-icon-arrow-down" onClick={this.handleSortByDesc}>
+					<use xlinkHref="#arrow-down" />
+				</svg>
+			);
+		}
+
+		return retVal;
+	};
 
 	handleGetFixpacks = () => {
 		const {fixPacksResultsURL} = this.props;
@@ -33,7 +53,7 @@ export default class SortableTable extends React.Component {
 			(response) => {
 				this.setState(
 					{
-						fixPacksResults: response.data.results,
+						fixPacksResults: response.data.results
 					}
 				);
 			}
@@ -69,21 +89,15 @@ export default class SortableTable extends React.Component {
 		const {fixPacksResults, sortBy} = this.state;
 
 		return (
-			<table class="table table-autofit table-list">
+			<table className="table table-autofit table-list">
 				<thead>
 					<tr>
-						<th class="lfr-released-column">
+						<th className="lfr-released-column">
 							{Liferay.Language.get('released')}
 
-							<svg className={`${sortBy === 'desc' ? 'hide' : ''} lexicon-icon lexicon-icon-arrow-down`} onClick={this.handleSortByDesc}>
-								<use xlinkHref="#arrow-down" />
-							</svg>
-
-							<svg className={`${sortBy === 'desc' ? '' : 'hide'} lexicon-icon lexicon-icon-arrow-up`} onClick={this.handleSortByAsc}>
-								<use xlinkHref="#arrow-up" />
-							</svg>
+							{this.displayReleaseDateArrow()}
 						</th>
-						<th class="lfr-details-column">
+						<th className="lfr-details-column">
 							{Liferay.Language.get('details')}
 						</th>
 					</tr>
@@ -92,11 +106,11 @@ export default class SortableTable extends React.Component {
 				<tbody>
 					{fixPacksResults.map(
 						(fixPack) => (
-							<tr class="journal-article-row" id={fixPack.resourcePrimKey} key={fixPack.resourcePrimKey}>
-								<td class="lfr-released-column">
+							<tr key={fixPack.resourcePrimKey} className="journal-article-row" id={fixPack.resourcePrimKey}>
+								<td className="lfr-released-column">
 									{fixPack.releaseDate}
 								</td>
-								<td class="lfr-details-column">
+								<td className="lfr-details-column">
 									<div dangerouslySetInnerHTML={{__html: fixPack.content}} />
 								</td>
 							</tr>
