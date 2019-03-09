@@ -2,5 +2,6 @@ Bundle-Name: Liferay OSB Customer JIRA REST Connector API
 Bundle-SymbolicName: com.liferay.osb.customer.jira.rest.connector.api
 Bundle-Version: 1.0.0
 Export-Package:\
+	com.liferay.osb.customer.jira.rest.connector.configuration,\
 	com.liferay.osb.customer.jira.rest.connector.exception,\
 	com.liferay.osb.customer.jira.rest.connector.service

@@ -17,15 +17,11 @@ package com.liferay.osb.customer.release.tool.web.internal.constants;
 /**
  * @author Amos Fong
  */
-public class FixPackAssetCategoryConstants {
+public class JiraIssueField {
 
-	public static final String PROPERTY_JIRA_PRODUCT_VERSION =
-		"jira-product-version";
+	public static final String PRODUCT_FIX_PACK_VERSION =
+		"Product Fix Pack Version";
 
-	public static final String PROPERTY_PRODUCT = "product";
-
-	public static final String PROPERTY_VERSION = "version";
-
-	public static final String VOCABULARY_FIX_PACKS_NAME = "Fix Packs";
+	public static final String PRODUCT_VERSION = "Product Version";
 
 }

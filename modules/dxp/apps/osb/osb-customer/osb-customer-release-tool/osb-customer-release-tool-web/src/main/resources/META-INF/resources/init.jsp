@@ -30,6 +30,7 @@ page import="com.liferay.journal.model.JournalArticleDisplay" %><%@
 page import="com.liferay.journal.service.JournalArticleLocalServiceUtil" %><%@
 page import="com.liferay.osb.customer.release.tool.web.internal.display.context.ReleaseToolDisplayContext" %><%@
 page import="com.liferay.osb.customer.release.tool.web.internal.search.FixPackSearcher" %><%@
+page import="com.liferay.osb.customer.release.tool.web.internal.search.JiraIssueSearcher" %><%@
 page import="com.liferay.portal.kernel.json.JSONObject" %><%@
 page import="com.liferay.portal.kernel.portlet.PortletRequestModel" %><%@
 page import="com.liferay.portal.kernel.util.Constants" %><%@
@@ -48,6 +49,7 @@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
 ReleaseToolDisplayContext releaseToolDisplayContext = new ReleaseToolDisplayContext(renderRequest, renderResponse);
 
 FixPackSearcher fixPackSearcher = (FixPackSearcher)renderRequest.getAttribute(FixPackSearcher.class.getName());
+JiraIssueSearcher jiraIssueSearcher = (JiraIssueSearcher)renderRequest.getAttribute(JiraIssueSearcher.class.getName());
 
 String changelogJournalArticleId = portletPreferences.getValue("changelogJournalArticleId", null);
 String highlightsJournalArticleId = portletPreferences.getValue("highlightsJournalArticleId", null);

@@ -32,3 +32,9 @@ JournalArticle journalArticle = JournalArticleLocalServiceUtil.fetchArticle(them
 
 	<%= journalArticleDisplay.getContent() %>
 </c:if>
+
+<%
+JSONObject jsonObject = jiraIssueSearcher.search(renderRequest, renderResponse);
+%>
+
+<strong>Results:</strong> <%= HtmlUtil.escape(jsonObject.toString()) %>

@@ -12,20 +12,19 @@
  *
  */
 
-package com.liferay.osb.customer.release.tool.web.internal.constants;
+package com.liferay.osb.customer.release.tool.configuration;
+
+import com.liferay.portal.kernel.util.GetterUtil;
 
 /**
  * @author Amos Fong
  */
-public class FixPackAssetCategoryConstants {
+public class ReleaseToolConfigurationValues {
 
-	public static final String PROPERTY_JIRA_PRODUCT_VERSION =
-		"jira-product-version";
+	public static final int FIX_PACK_JIRA_MAX_RESULTS = GetterUtil.getInteger(
+		ReleaseToolConfigurationUtil.getString("fix.pack.jira.max.results"));
 
-	public static final String PROPERTY_PRODUCT = "product";
-
-	public static final String PROPERTY_VERSION = "version";
-
-	public static final String VOCABULARY_FIX_PACKS_NAME = "Fix Packs";
+	public static final String[] FIX_PACK_JIRA_PROJECTS =
+		ReleaseToolConfigurationUtil.getArray("fix.pack.jira.projects");
 
 }

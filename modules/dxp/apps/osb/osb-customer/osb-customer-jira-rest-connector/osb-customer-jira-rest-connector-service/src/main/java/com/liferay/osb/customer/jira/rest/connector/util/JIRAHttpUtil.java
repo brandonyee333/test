@@ -30,6 +30,8 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.io.IOException;
 
+import java.util.Map;
+
 /**
  * @author Noah Sherrill
  */
@@ -56,13 +58,19 @@ public class JIRAHttpUtil {
 		return _send(dataJSONObject.toString(), options);
 	}
 
-	public static JSONObject get(String endpoint, String jql)
+	public static JSONObject get(
+			String endpoint, Map<String, String> parameters)
 		throws PortalException {
 
 		Http.Options options = new Http.Options();
 
-		options.setLocation(
-			HttpUtil.addParameter(_toURI(endpoint), "jql", jql));
+		String url = _toURI(endpoint);
+
+		for (Map.Entry<String, String> entry : parameters.entrySet()) {
+			url = HttpUtil.addParameter(url, entry.getKey(), entry.getValue());
+		}
+
+		options.setLocation(url);
 
 		return _send(StringPool.BLANK, options);
 	}

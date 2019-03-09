@@ -24,17 +24,12 @@ import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.journal.util.JournalConverter;
 import com.liferay.osb.customer.release.tool.web.internal.constants.DDMStructureConstants;
 import com.liferay.osb.customer.release.tool.web.internal.constants.FixPackField;
-import com.liferay.osb.customer.release.tool.web.internal.exception.VersionRangeException;
 import com.liferay.osb.customer.release.tool.web.internal.util.DDMFieldsUtil;
 import com.liferay.osb.customer.release.tool.web.internal.util.FixPacksAssetCategoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletRequestModel;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.BooleanQuery;
@@ -53,16 +48,11 @@ import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import javax.portlet.MimeResponse;
 import javax.portlet.PortletRequest;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -71,94 +61,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Amos Fong
  */
 @Component(service = FixPackSearcher.class)
-public class FixPackSearcher {
-
-	public JSONObject search(
-		PortletRequest portletRequest, MimeResponse mimeResponse) {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		String product = ParamUtil.getString(portletRequest, "product");
-		double fromProductVersion = ParamUtil.getDouble(
-			portletRequest, "fromProductVersion");
-		double fromFixPackVersion = ParamUtil.getDouble(
-			portletRequest, "fromFixPackVersion");
-		double toProductVersion = ParamUtil.getDouble(
-			portletRequest, "toProductVersion");
-		double toFixPackVersion = ParamUtil.getDouble(
-			portletRequest, "toFixPackVersion");
-		String orderByCol = ParamUtil.getString(portletRequest, "orderByCol");
-		String orderByType = ParamUtil.getString(portletRequest, "orderByType");
-
-		JSONObject jsonObject = _jsonFactory.createJSONObject();
-
-		try {
-			validateQueryRange(
-				fromProductVersion, fromFixPackVersion, toProductVersion,
-				toFixPackVersion);
-
-			SearchContext searchContext = buildSearchContext(
-				themeDisplay, orderByCol, orderByType);
-
-			BooleanQuery fullQuery = buildFullQuery(
-				product, fromProductVersion, fromFixPackVersion,
-				toProductVersion, toFixPackVersion);
-
-			Hits hits = _indexSearcherHelper.search(searchContext, fullQuery);
-
-			jsonObject.put("total", hits.getLength());
-
-			JSONArray jsonArray = _jsonFactory.createJSONArray();
-
-			for (Document document : hits.getDocs()) {
-				long classPK = GetterUtil.getLong(
-					document.get(Field.ENTRY_CLASS_PK));
-
-				JournalArticle journalArticle =
-					_journalArticleLocalService.fetchLatestArticle(
-						classPK, WorkflowConstants.STATUS_APPROVED);
-
-				JSONObject journalArticleJSONObject = toJSONObject(
-					portletRequest, mimeResponse, themeDisplay, journalArticle);
-
-				jsonArray.put(journalArticleJSONObject);
-			}
-
-			jsonObject.put("results", jsonArray);
-
-			return jsonObject;
-		}
-		catch (Exception e) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(e, e);
-			}
-
-			HttpServletRequest request = _portal.getHttpServletRequest(
-				portletRequest);
-
-			JSONObject errorJSONObject = _jsonFactory.createJSONObject();
-
-			String message = StringPool.BLANK;
-
-			if (e instanceof VersionRangeException) {
-				message = LanguageUtil.get(
-					request, "please-enter-a-valid-version-range");
-			}
-			else {
-				message = LanguageUtil.get(
-					request, "an-unexpected-error-occurred");
-			}
-
-			errorJSONObject.put("message", message);
-
-			errorJSONObject.put("name", e.getClass());
-
-			jsonObject.put("error", errorJSONObject);
-
-			return jsonObject;
-		}
-	}
+public class FixPackSearcher extends BaseSearcher {
 
 	protected BooleanQuery buildFixPackRangeQuery(
 			double fromProductVersion, double fromFixPackVersion,
@@ -249,7 +152,7 @@ public class FixPackSearcher {
 	}
 
 	protected SearchContext buildSearchContext(
-			ThemeDisplay themeDisplay, String orderByCol, String orderByType)
+			ThemeDisplay themeDisplay, String orderByType)
 		throws PortalException {
 
 		SearchContext searchContext = new SearchContext();
@@ -266,19 +169,68 @@ public class FixPackSearcher {
 
 		searchContext.setQueryConfig(queryConfig);
 
-		searchContext.setSorts(getSorts(themeDisplay, orderByCol, orderByType));
+		searchContext.setSorts(getSorts(themeDisplay, orderByType));
 		searchContext.setStart(QueryUtil.ALL_POS);
 
 		return searchContext;
 	}
 
-	protected Sort[] getSorts(
-			ThemeDisplay themeDisplay, String orderByCol, String orderByType)
-		throws PortalException {
+	protected JSONObject doSearch(
+			PortletRequest portletRequest, MimeResponse mimeResponse)
+		throws Exception {
 
-		if (Validator.isNull(orderByCol) || !orderByCol.equals("releaseDate")) {
-			return new Sort[0];
+		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		String product = ParamUtil.getString(portletRequest, "product");
+		double fromProductVersion = ParamUtil.getDouble(
+			portletRequest, "fromProductVersion");
+		double fromFixPackVersion = ParamUtil.getDouble(
+			portletRequest, "fromFixPackVersion");
+		double toProductVersion = ParamUtil.getDouble(
+			portletRequest, "toProductVersion");
+		double toFixPackVersion = ParamUtil.getDouble(
+			portletRequest, "toFixPackVersion");
+
+		String orderByType = ParamUtil.getString(portletRequest, "orderByType");
+
+		SearchContext searchContext = buildSearchContext(
+			themeDisplay, orderByType);
+
+		BooleanQuery fullQuery = buildFullQuery(
+			product, fromProductVersion, fromFixPackVersion,
+			toProductVersion, toFixPackVersion);
+
+		Hits hits = _indexSearcherHelper.search(searchContext, fullQuery);
+
+		JSONObject jsonObject = jsonFactory.createJSONObject();
+
+		jsonObject.put("total", hits.getLength());
+
+		JSONArray jsonArray = jsonFactory.createJSONArray();
+
+		for (Document document : hits.getDocs()) {
+			long classPK = GetterUtil.getLong(
+				document.get(Field.ENTRY_CLASS_PK));
+
+			JournalArticle journalArticle =
+				_journalArticleLocalService.fetchLatestArticle(
+					classPK, WorkflowConstants.STATUS_APPROVED);
+
+			JSONObject journalArticleJSONObject = toJSONObject(
+				portletRequest, mimeResponse, themeDisplay, journalArticle);
+
+			jsonArray.put(journalArticleJSONObject);
 		}
+
+		jsonObject.put("results", jsonArray);
+
+		return jsonObject;
+	}
+
+	protected Sort[] getSorts(
+			ThemeDisplay themeDisplay, String orderByType)
+		throws PortalException {
 
 		long classNameId = _classNameLocalService.getClassNameId(
 			JournalArticle.class);
@@ -310,7 +262,7 @@ public class FixPackSearcher {
 			ThemeDisplay themeDisplay, JournalArticle journalArticle)
 		throws PortalException {
 
-		JSONObject jsonObject = _jsonFactory.createJSONObject();
+		JSONObject jsonObject = jsonFactory.createJSONObject();
 
 		JournalArticleDisplay journalArticleDisplay =
 			_journalArticleLocalService.getArticleDisplay(
@@ -334,25 +286,6 @@ public class FixPackSearcher {
 		return jsonObject;
 	}
 
-	protected void validateQueryRange(
-			double fromProductVersion, double fromFixPackVersion,
-			double toProductVersion, double toFixPackVersion)
-		throws PortalException {
-
-		if (fromProductVersion > toProductVersion) {
-			throw new VersionRangeException();
-		}
-
-		if (fromProductVersion == toProductVersion) {
-			if (fromFixPackVersion > toFixPackVersion) {
-				throw new VersionRangeException();
-			}
-		}
-	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		FixPackSearcher.class);
-
 	@Reference
 	private ClassNameLocalService _classNameLocalService;
 
@@ -373,11 +306,5 @@ public class FixPackSearcher {
 
 	@Reference
 	private JournalConverter _journalConverter;
-
-	@Reference
-	private JSONFactory _jsonFactory;
-
-	@Reference
-	private Portal _portal;
 
 }

@@ -74,8 +74,17 @@ public class JIRAIssueLocalServiceImpl extends JIRAIssueLocalServiceBaseImpl {
 		return responseJSONObject;
 	}
 
-	public JSONObject getJIRAIssues(String jql) throws PortalException {
-		JSONObject responseJSONObject = JIRAHttpUtil.get("search", jql);
+	public JSONObject getJIRAIssues(String jql, int startAt, int maxResults)
+		throws PortalException {
+
+		Map<String, String> parameters = new HashMap<>();
+
+		parameters.put("expand", "renderedFields");
+		parameters.put("jql", jql);
+		parameters.put("maxResults", String.valueOf(maxResults));
+		parameters.put("startAt", String.valueOf(startAt));
+
+		JSONObject responseJSONObject = JIRAHttpUtil.get("search", parameters);
 
 		handleResponseErrors(responseJSONObject);
 

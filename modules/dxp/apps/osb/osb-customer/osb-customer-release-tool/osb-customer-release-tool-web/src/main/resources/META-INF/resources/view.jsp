@@ -37,9 +37,9 @@ portletURL.setParameter("tabs1", tabs1);
 <br />
 
 <liferay-portlet:renderURL var="fixPacksURL">
+	<portlet:param name="tabs1" value="<%= tabs1 %>" />
 	<portlet:param name="fromFixPackVersion" value="2.0" />
 	<portlet:param name="fromProductVersion" value="7.0" />
-	<portlet:param name="orderByCol" value="releaseDate" />
 	<portlet:param name="orderByType" value="desc" />
 	<portlet:param name="product" value="dxp" />
 	<portlet:param name="toFixPackVersion" value="1.0" />
