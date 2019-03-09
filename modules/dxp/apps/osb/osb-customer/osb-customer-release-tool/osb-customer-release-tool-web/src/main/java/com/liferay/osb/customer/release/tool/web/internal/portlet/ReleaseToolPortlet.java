@@ -59,7 +59,8 @@ public class ReleaseToolPortlet extends MVCPortlet {
 		throws IOException, PortletException {
 
 		renderRequest.setAttribute(
-			FixPacksAssetCategoryUtil.class.getName(), _fixPackSearcher);
+			FixPacksAssetCategoryUtil.class.getName(),
+			_fixPacksAssetCategoryUtil);
 		renderRequest.setAttribute(
 			FixPackSearcher.class.getName(), _fixPackSearcher);
 		renderRequest.setAttribute(
