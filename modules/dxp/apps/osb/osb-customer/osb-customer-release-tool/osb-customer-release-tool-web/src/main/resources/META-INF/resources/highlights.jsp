@@ -23,29 +23,13 @@
 <liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/fix_packs" var="fixPacksResultsURL">
 	<portlet:param name="fromFixPackVersion" value="2.0" />
 	<portlet:param name="fromProductVersion" value="7.0" />
+	<portlet:param name="orderByType" value="desc" />
 	<portlet:param name="product" value="dxp" />
 	<portlet:param name="toFixPackVersion" value="1.0" />
 	<portlet:param name="toProductVersion" value="7.1" />
 </liferay-portlet:resourceURL>
 
 <strong>Fix Pack Refinement Endpoint:</strong> <%= fixPacksResultsURL %>
-
-<h1>
-	<liferay-ui:message key="highlights" />
-</h1>
-
-<%
-JournalArticle journalArticle = JournalArticleLocalServiceUtil.fetchArticle(themeDisplay.getScopeGroupId(), highlightsJournalArticleId);
-%>
-
-<c:if test="<%= journalArticle != null %>">
-
-	<%
-	JournalArticleDisplay journalArticleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(journalArticle, null, null, themeDisplay.getLanguageId(), 0, new PortletRequestModel(renderRequest, renderResponse), themeDisplay);
-	%>
-
-	<%= journalArticleDisplay.getContent() %>
-</c:if>
 
 <%
 JSONObject fixPackJSONObject = fixPackSearcher.search(renderRequest, renderResponse);
@@ -57,22 +41,30 @@ JSONObject fixPackJSONObject = fixPackSearcher.search(renderRequest, renderRespo
 	<liferay-ui:message key="highlights" />
 </h2>
 
-<h5 class="secondary-text-color section-subtitle">
-	<liferay-ui:message key="the-following-information-summarizes-the-important-changes-known-issues-and-security-details-in-each-release" />
-</h5>
+<%
+JournalArticle journalArticle = JournalArticleLocalServiceUtil.fetchArticle(themeDisplay.getScopeGroupId(), highlightsJournalArticleId);
+%>
 
-<div class="showing-results">
-	<liferay-ui:message arguments='<%= fixPackJSONObject.get("total") %>' key="showing-x-results" />
-</div>
+<c:if test="<%= journalArticle != null %>">
 
-<div class="" id="<portlet:namespace />sortableTable"></div>
+	<%
+	JournalArticleDisplay journalArticleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(journalArticle, null, null, themeDisplay.getLanguageId(), 0, new PortletRequestModel(renderRequest, renderResponse), themeDisplay);
+	%>
+
+	<h5 class="secondary-text-color section-subtitle">
+		<%= journalArticleDisplay.getContent() %>
+	</h5>
+</c:if>
+
+<div id="<portlet:namespace />highlights"></div>
 
 <aui:script>
 	ReleaseTool.render(
-		ReleaseTool.SortableTable,
+		ReleaseTool.Highlights,
 		{
-			fixPacksResultsURL: '<%= fixPacksResultsURL %>'
+			fixPacksResultsURL: '<%= fixPacksResultsURL %>',
+			fixPackJSONObject: <%= fixPackJSONObject %>
 		},
-		document.getElementById('<portlet:namespace />sortableTable')
+		document.getElementById('<portlet:namespace />highlights')
 	);
 </aui:script>

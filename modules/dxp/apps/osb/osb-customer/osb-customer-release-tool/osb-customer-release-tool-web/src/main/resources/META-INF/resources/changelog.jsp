@@ -29,9 +29,9 @@
 
 <br />
 
-<h1>
+<h2>
 	<liferay-ui:message key="changelog" />
-</h1>
+</h2>
 
 <%
 JournalArticle journalArticle = JournalArticleLocalServiceUtil.fetchArticle(themeDisplay.getScopeGroupId(), changelogJournalArticleId);
@@ -43,7 +43,9 @@ JournalArticle journalArticle = JournalArticleLocalServiceUtil.fetchArticle(them
 	JournalArticleDisplay journalArticleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(journalArticle, null, null, themeDisplay.getLanguageId(), 0, new PortletRequestModel(renderRequest, renderResponse), themeDisplay);
 	%>
 
-	<%= journalArticleDisplay.getContent() %>
+	<h5 class="secondary-text-color section-subtitle">
+		<%= journalArticleDisplay.getContent() %>
+	</h5>
 </c:if>
 
 <%
