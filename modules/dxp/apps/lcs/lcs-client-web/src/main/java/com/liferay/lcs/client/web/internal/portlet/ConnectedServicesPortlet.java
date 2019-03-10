@@ -12,10 +12,10 @@
  *
  */
 
-package com.liferay.lcs.portlet;
+package com.liferay.lcs.client.web.internal.portlet;
 
-import com.liferay.lcs.advisor.LCSPortletStateAdvisor;
-import com.liferay.lcs.platform.gateway.LCSGatewayClient;
+import com.liferay.lcs.client.internal.advisor.LCSPortletStateAdvisor;
+import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.portal.kernel.bean.BeanLocator;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -73,7 +73,7 @@ public class ConnectedServicesPortlet extends MVCPortlet {
 
 		LCSGatewayClient lcsGatewayClient =
 			(LCSGatewayClient)beanLocator.locate(
-				"com.liferay.lcs.platform.gateway.LCSGatewayClient");
+				"com.liferay.lcs.client.platform.gateway.LCSGatewayClient");
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
@@ -81,7 +81,7 @@ public class ConnectedServicesPortlet extends MVCPortlet {
 
 		LCSPortletStateAdvisor lcsPortletStateAdvisor =
 			(LCSPortletStateAdvisor)beanLocator.locate(
-				"com.liferay.lcs.advisor.LCSPortletStateAdvisor");
+				"com.liferay.lcs.client.internal.advisor.LCSPortletStateAdvisor");
 
 		LCSPortletState lcsPortletState =
 			lcsPortletStateAdvisor.getLCSPortletState(false);
