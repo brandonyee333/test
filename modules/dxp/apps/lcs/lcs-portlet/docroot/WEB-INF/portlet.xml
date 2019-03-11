@@ -4,7 +4,7 @@
 	<portlet>
 		<portlet-name>1</portlet-name>
 		<display-name>Liferay Connected Services</display-name>
-		<portlet-class>com.liferay.lcs.portlet.ConnectedServicesPortlet</portlet-class>
+		<portlet-class>com.liferay.lcs.client.web.internal.portlet.ConnectedServicesPortlet</portlet-class>
 		<init-param>
 			<name>add-process-action-success-action</name>
 			<value>false</value>

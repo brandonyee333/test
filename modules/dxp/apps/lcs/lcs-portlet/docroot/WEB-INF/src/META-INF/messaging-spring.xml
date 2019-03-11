@@ -24,9 +24,9 @@
 
 	<!-- Listeners -->
 
-	<bean class="com.liferay.lcs.license.messaging.LicenseManagerValidateLCSMessageListener" id="messageListener.license_manager_validate_lcs" />
-	<bean class="com.liferay.lcs.license.messaging.LicenseManagerValidateSubscriptionMessageListener" id="messageListener.license_manager_validate_subscription" />
-	<bean class="com.liferay.lcs.messaging.CommandMessageListener" id="messageListener.lcs_commands">
+	<bean class="com.liferay.lcs.client.internal.license.messaging.LicenseManagerValidateLCSMessageListener" id="messageListener.license_manager_validate_lcs" />
+	<bean class="com.liferay.lcs.client.internal.license.messaging.LicenseManagerValidateSubscriptionMessageListener" id="messageListener.license_manager_validate_subscription" />
+	<bean class="com.liferay.lcs.client.internal.messaging.CommandMessageListener" id="messageListener.lcs_commands">
 		<constructor-arg name="commands">
 			<map>
 				<entry key="com.liferay.lcs.messaging.CheckHeartbeatCommandMessage" value-ref="com.liferay.lcs.command.CheckHeartbeatCommand" />
@@ -44,14 +44,14 @@
 		<constructor-arg name="digitalSignature" ref="com.liferay.lcs.messaging.security.DigitalSignature" />
 		<constructor-arg name="lcsGatewayClient" ref="com.liferay.lcs.platform.gateway.LCSGatewayClient" />
 	</bean>
-	<bean class="com.liferay.lcs.messaging.LCSLifecycleManager" id="messageListener.lcs_lifecycle_manager">
+	<bean class="com.liferay.lcs.client.internal.messaging.LCSLifecycleManager" id="messageListener.lcs_lifecycle_manager">
 		<constructor-arg name="taskSchedulerService" ref="com.liferay.lcs.scheduler.TaskSchedulerService" />
 	</bean>
-	<bean class="com.liferay.lcs.messaging.LCSMessageBusMessageListener" id="messageListener.lcs_message_bus">
+	<bean class="com.liferay.lcs.client.internal.messaging.LCSMessageBusMessageListener" id="messageListener.lcs_message_bus">
 		<constructor-arg name="lcsGatewayClient" ref="com.liferay.lcs.platform.gateway.LCSGatewayClient" />
 		<constructor-arg name="lcsKeyAdvisor" ref="com.liferay.lcs.advisor.LCSKeyAdvisor" />
 	</bean>
-	<bean class="com.liferay.lcs.messaging.PortalMetricsMessageListener" id="messageListener.monitoring">
+	<bean class="com.liferay.lcs.client.internal.messaging.PortalMetricsMessageListener" id="messageListener.monitoring">
 		<constructor-arg name="lcsGatewayClient" ref="com.liferay.lcs.platform.gateway.LCSGatewayClient" />
 		<constructor-arg name="portalMetricsAggregator" ref="com.liferay.lcs.metrics.PortalMetricsAggregator" />
 	</bean>
@@ -95,7 +95,7 @@
 
 	<!-- Scheduler -->
 
-	<bean class="com.liferay.lcs.messaging.advisor.MessageBusListenerAdvisor" id="com.liferay.lcs.messaging.advisor.MessageBusListenerAdvisor">
+	<bean class="com.liferay.lcs.client.internal.messaging.advisor.MessageBusListenerAdvisor" id="com.liferay.lcs.messaging.advisor.MessageBusListenerAdvisor">
 		<constructor-arg ref="com.liferay.lcs.platform.gateway.LCSGatewayClient" />
 	</bean>
 </beans>

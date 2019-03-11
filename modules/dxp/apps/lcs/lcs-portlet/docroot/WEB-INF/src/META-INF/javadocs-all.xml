@@ -29,7 +29,7 @@
 	</javadoc>
 	<javadoc>
 		<name>DefaultInstallationEnvironmentAdvisor</name>
-		<type>com.liferay.lcs.advisor.DefaultInstallationEnvironmentAdvisor</type>
+		<type>com.liferay.lcs.client.internal.advisor.DefaultInstallationEnvironmentAdvisor</type>
 		<author><![CDATA[Igor Beslic]]></author>
 		<method>
 			<name>getHardwareMetadata</name>
@@ -83,7 +83,7 @@
 	</javadoc>
 	<javadoc>
 		<name>InstallationEnvironmentAdvisor</name>
-		<type>com.liferay.lcs.advisor.InstallationEnvironmentAdvisor</type>
+		<type>com.liferay.lcs.client.internal.advisor.InstallationEnvironmentAdvisor</type>
 		<author><![CDATA[Igor Beslic]]></author>
 		<method>
 			<name>getHardwareMetadata</name>
@@ -100,7 +100,7 @@
 	</javadoc>
 	<javadoc>
 		<name>InstallationEnvironmentAdvisorFactory</name>
-		<type>com.liferay.lcs.advisor.InstallationEnvironmentAdvisorFactory</type>
+		<type>com.liferay.lcs.client.internal.advisor.InstallationEnvironmentAdvisorFactory</type>
 		<author><![CDATA[Igor Beslic]]></author>
 		<method>
 			<name>getInstance</name>
@@ -111,7 +111,7 @@
 	</javadoc>
 	<javadoc>
 		<name>LCSClusterEntryTokenAdvisor</name>
-		<type>com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor</type>
+		<type>com.liferay.lcs.client.internal.advisor.LCSClusterEntryTokenAdvisor</type>
 		<author><![CDATA[Igor Beslic]]></author>
 		<method>
 			<name>extractAccessSecret</name>
@@ -180,7 +180,7 @@
 	</javadoc>
 	<javadoc>
 		<name>CheckHeartbeatCommand</name>
-		<type>com.liferay.lcs.command.CheckHeartbeatCommand</type>
+		<type>com.liferay.lcs.client.internal.command.CheckHeartbeatCommand</type>
 		<author><![CDATA[Ivica Cardic]]></author>
 		<method>
 			<name>destroy</name>
@@ -202,7 +202,7 @@
 	</javadoc>
 	<javadoc>
 		<name>Command</name>
-		<type>com.liferay.lcs.command.Command</type>
+		<type>com.liferay.lcs.client.internal.command.Command</type>
 		<author><![CDATA[Ivica Cardic]]></author>
 		<method>
 			<name>execute</name>
@@ -225,7 +225,7 @@
 	</javadoc>
 	<javadoc>
 		<name>DeregisterCommand</name>
-		<type>com.liferay.lcs.command.SignOffCommand</type>
+		<type>com.liferay.lcs.client.internal.command.SignOffCommand</type>
 		<author><![CDATA[Igor Beslic]]></author>
 		<method>
 			<name>execute</name>
@@ -244,7 +244,7 @@
 	</javadoc>
 	<javadoc>
 		<name>DownloadPatchesCommand</name>
-		<type>com.liferay.lcs.command.DownloadPatchCommand</type>
+		<type>com.liferay.lcs.client.internal.command.DownloadPatchCommand</type>
 		<author><![CDATA[Ivica Cardic]]></author>
 		<author><![CDATA[Igor Beslic]]></author>
 		<method>
@@ -285,7 +285,7 @@
 	</javadoc>
 	<javadoc>
 		<name>ExecuteScriptCommand</name>
-		<type>com.liferay.lcs.command.ExecuteScriptCommand</type>
+		<type>com.liferay.lcs.client.internal.command.ExecuteScriptCommand</type>
 		<author><![CDATA[Ivica Cardic]]></author>
 		<method>
 			<name>execute</name>
@@ -314,7 +314,7 @@
 	</javadoc>
 	<javadoc>
 		<name>SendInstallationEnvironmentCommand</name>
-		<type>com.liferay.lcs.command.SendInstallationEnvironmentCommand</type>
+		<type>com.liferay.lcs.client.internal.command.SendInstallationEnvironmentCommand</type>
 		<author><![CDATA[Igor Beslic]]></author>
 		<method>
 			<name>execute</name>
@@ -343,7 +343,7 @@
 	</javadoc>
 	<javadoc>
 		<name>SendPatchesCommand</name>
-		<type>com.liferay.lcs.command.SendPatchesCommand</type>
+		<type>com.liferay.lcs.client.internal.command.SendPatchesCommand</type>
 		<author><![CDATA[Ivica Cardic]]></author>
 		<method>
 			<name>execute</name>
@@ -369,7 +369,7 @@
 	</javadoc>
 	<javadoc>
 		<name>SendPortalPropertiesCommand</name>
-		<type>com.liferay.lcs.command.SendPortalPropertiesCommand</type>
+		<type>com.liferay.lcs.client.internal.command.SendPortalPropertiesCommand</type>
 		<author><![CDATA[Ivica Cardic]]></author>
 		<method>
 			<name>execute</name>
@@ -412,7 +412,7 @@
 	</javadoc>
 	<javadoc>
 		<name>InitializationException</name>
-		<type>com.liferay.lcs.exception.InitializationException</type>
+		<type>com.liferay.lcs.client.internal.exception.InitializationException</type>
 		<author><![CDATA[Ivica Cardic]]></author>
 		<method>
 			<name>InitializationException</name>
@@ -446,7 +446,7 @@
 	</javadoc>
 	<javadoc>
 		<name>LCSExceptionHandler</name>
-		<type>com.liferay.lcs.exception.LCSExceptionHandler</type>
+		<type>com.liferay.lcs.client.internal.exception.LCSExceptionHandler</type>
 		<author><![CDATA[Ivica Cardic]]></author>
 		<method>
 			<name>debug</name>
@@ -549,7 +549,7 @@
 	</javadoc>
 	<javadoc>
 		<name>MissingLCSCredentialsException</name>
-		<type>com.liferay.lcs.exception.MissingLCSCredentialsException</type>
+		<type>com.liferay.lcs.client.internal.exception.MissingLCSCredentialsException</type>
 		<author><![CDATA[Ivica Cardic]]></author>
 		<method>
 			<name>MissingLCSCredentialsException</name>
@@ -616,7 +616,7 @@
 	</javadoc>
 	<javadoc>
 		<name>OAuthJSONWebServiceClientImpl</name>
-		<type>com.liferay.lcs.jsonwebserviceclient.OAuthJSONWebServiceClientImpl</type>
+		<type>com.liferay.lcs.client.internal.jsonwebserviceclient.OAuthJSONWebServiceClientImpl</type>
 		<author><![CDATA[Igor Beslic]]></author>
 		<method>
 			<name>resetHttpClient</name>
@@ -676,7 +676,7 @@
 	</javadoc>
 	<javadoc>
 		<name>CanonicalNameMapKeyStrategy</name>
-		<type>com.liferay.lcs.management.CanonicalNameMapKeyStrategy</type>
+		<type>com.liferay.lcs.client.internal.management.CanonicalNameMapKeyStrategy</type>
 		<author><![CDATA[Riccardo Ferrari]]></author>
 		<method>
 			<name>getMapKey</name>
@@ -692,7 +692,7 @@
 	</javadoc>
 	<javadoc>
 		<name>MBeanServerService</name>
-		<type>com.liferay.lcs.management.MBeanServerService</type>
+		<type>com.liferay.lcs.client.internal.management.MBeanServerService</type>
 		<author><![CDATA[Riccardo Ferrari]]></author>
 		<method>
 			<name>getMBeanServer</name>
@@ -792,7 +792,7 @@
 	</javadoc>
 	<javadoc>
 		<name>MBeanServerServiceImpl</name>
-		<type>com.liferay.lcs.management.MBeanServerServiceImpl</type>
+		<type>com.liferay.lcs.client.internal.management.MBeanServerServiceImpl</type>
 		<author><![CDATA[Riccardo Ferrari]]></author>
 		<method>
 			<name>getMBeanServer</name>
@@ -927,7 +927,7 @@
 	</javadoc>
 	<javadoc>
 		<name>MapKeyStrategy</name>
-		<type>com.liferay.lcs.management.MapKeyStrategy</type>
+		<type>com.liferay.lcs.client.internal.management.MapKeyStrategy</type>
 		<author><![CDATA[Riccardo Ferrari]]></author>
 		<method>
 			<name>getMapKey</name>
@@ -943,7 +943,7 @@
 	</javadoc>
 	<javadoc>
 		<name>ObjectNameAttributeMapKeyStrategy</name>
-		<type>com.liferay.lcs.management.ObjectNameAttributeMapKeyStrategy</type>
+		<type>com.liferay.lcs.client.internal.management.ObjectNameAttributeMapKeyStrategy</type>
 		<author><![CDATA[Riccardo Ferrari]]></author>
 		<method>
 			<name>ObjectNameAttributeMapKeyStrategy</name>
@@ -978,7 +978,7 @@
 	</javadoc>
 	<javadoc>
 		<name>ObjectNameKeyPropertyMapKeyStrategy</name>
-		<type>com.liferay.lcs.management.ObjectNameKeyPropertyMapKeyStrategy</type>
+		<type>com.liferay.lcs.client.internal.management.ObjectNameKeyPropertyMapKeyStrategy</type>
 		<author><![CDATA[Riccardo Ferrari]]></author>
 		<method>
 			<name>ObjectNameKeyPropertyMapKeyStrategy</name>
@@ -1005,7 +1005,7 @@
 	</javadoc>
 	<javadoc>
 		<name>CommandMessageListener</name>
-		<type>com.liferay.lcs.messaging.CommandMessageListener</type>
+		<type>com.liferay.lcs.client.internal.messaging.CommandMessageListener</type>
 		<author><![CDATA[Ivica Cardic]]></author>
 		<author><![CDATA[Igor Beslic]]></author>
 		<method>
@@ -1039,7 +1039,7 @@
 	</javadoc>
 	<javadoc>
 		<name>PortalMetricsMessageListener</name>
-		<type>com.liferay.lcs.messaging.PortalMetricsMessageListener</type>
+		<type>com.liferay.lcs.client.internal.messaging.PortalMetricsMessageListener</type>
 		<author><![CDATA[Ivica Cardic]]></author>
 		<method>
 			<name>afterPropertiesSet</name>
@@ -1168,7 +1168,7 @@
 	</javadoc>
 	<javadoc>
 		<name>OAuthUtil</name>
-		<type>com.liferay.lcs.oauth.OAuthUtil</type>
+		<type>com.liferay.lcs.client.internal.oauth.OAuthUtil</type>
 		<author><![CDATA[Igor Beslic]]></author>
 		<method>
 			<name>buildURL</name>
@@ -1633,7 +1633,7 @@
 	</javadoc>
 	<javadoc>
 		<name>LCSGatewayServiceImpl</name>
-		<type>com.liferay.lcs.platform.gateway.impl.LCSGatewayClientImpl</type>
+		<type>com.liferay.lcs.client.internal.platform.gateway.LCSGatewayClientImpl</type>
 		<author><![CDATA[Ivica Cardic]]></author>
 		<author><![CDATA[Igor Beslic]]></author>
 		<method>
@@ -1910,7 +1910,7 @@
 	</javadoc>
 	<javadoc>
 		<name>BaseServerMetricsTask</name>
-		<type>com.liferay.lcs.task.BaseServerMetricsTask</type>
+		<type>com.liferay.lcs.client.internal.task.BaseServerMetricsTask</type>
 		<author><![CDATA[Riccardo Ferrari]]></author>
 		<method>
 			<name>afterPropertiesSet</name>
@@ -2071,7 +2071,7 @@
 	</javadoc>
 	<javadoc>
 		<name>CacheMetricsTask</name>
-		<type>com.liferay.lcs.task.CacheMetricsTask</type>
+		<type>com.liferay.lcs.client.internal.task.CacheMetricsTask</type>
 		<author><![CDATA[Ivica Cardic]]></author>
 		<method>
 			<name>run</name>
@@ -2143,7 +2143,7 @@
 	</javadoc>
 	<javadoc>
 		<name>ClusterHealthTask</name>
-		<type>com.liferay.lcs.task.ClusterHealthTask</type>
+		<type>com.liferay.lcs.client.internal.task.ClusterHealthTask</type>
 		<author><![CDATA[Ivica Cardic]]></author>
 		<method>
 			<name>run</name>
@@ -2168,7 +2168,7 @@
 	</javadoc>
 	<javadoc>
 		<name>CommandMessageTask</name>
-		<type>com.liferay.lcs.task.CommandMessageTask</type>
+		<type>com.liferay.lcs.client.internal.task.CommandMessageTask</type>
 		<author><![CDATA[Ivica Cardic]]></author>
 		<author><![CDATA[Igor Beslic]]></author>
 		<method>
@@ -2197,7 +2197,7 @@
 	</javadoc>
 	<javadoc>
 		<name>HandshakeTask</name>
-		<type>com.liferay.lcs.task.HandshakeTask</type>
+		<type>com.liferay.lcs.client.internal.task.HandshakeTask</type>
 		<author><![CDATA[Ivica Cardic]]></author>
 		<author><![CDATA[Igor Beslic]]></author>
 		<method>
@@ -2301,7 +2301,7 @@
 	</javadoc>
 	<javadoc>
 		<name>HeartbeatTask</name>
-		<type>com.liferay.lcs.task.HeartbeatTask</type>
+		<type>com.liferay.lcs.client.internal.task.HeartbeatTask</type>
 		<author><![CDATA[Igor Beslic]]></author>
 		<method>
 			<name>run</name>
@@ -2326,7 +2326,7 @@
 	</javadoc>
 	<javadoc>
 		<name>JVMMetricsTask</name>
-		<type>com.liferay.lcs.task.JVMMetricsTask</type>
+		<type>com.liferay.lcs.client.internal.task.JVMMetricsTask</type>
 		<author><![CDATA[Ivica Cardic]]></author>
 		<method>
 			<name>run</name>
@@ -2378,12 +2378,12 @@
 	</javadoc>
 	<javadoc>
 		<name>ServerMetricsTask</name>
-		<type>com.liferay.lcs.task.ServerMetricsTask</type>
+		<type>com.liferay.lcs.client.internal.task.ServerMetricsTask</type>
 		<author><![CDATA[Riccardo Ferrari]]></author>
 	</javadoc>
 	<javadoc>
 		<name>ServerMetricsTaskFactory</name>
-		<type>com.liferay.lcs.task.ServerMetricsTaskFactory</type>
+		<type>com.liferay.lcs.client.internal.task.ServerMetricsTaskFactory</type>
 		<author><![CDATA[Riccardo Ferrari]]></author>
 		<method>
 			<name>getInstance</name>
@@ -2446,12 +2446,12 @@
 	</javadoc>
 	<javadoc>
 		<name>Task</name>
-		<type>com.liferay.lcs.task.Task</type>
+		<type>com.liferay.lcs.client.internal.task.Task</type>
 		<author><![CDATA[Riccardo Ferrari]]></author>
 	</javadoc>
 	<javadoc>
 		<name>TomcatServerMetricsTask</name>
-		<type>com.liferay.lcs.task.TomcatServerMetricsTask</type>
+		<type>com.liferay.lcs.client.internal.task.TomcatServerMetricsTask</type>
 		<author><![CDATA[Ivica Cardic]]></author>
 		<method>
 			<name>doAfterPropertiesSet</name>
@@ -2489,7 +2489,7 @@
 	</javadoc>
 	<javadoc>
 		<name>WeblogicServerMetricsTask</name>
-		<type>com.liferay.lcs.task.WeblogicServerMetricsTask</type>
+		<type>com.liferay.lcs.client.internal.task.WeblogicServerMetricsTask</type>
 		<author><![CDATA[Riccardo Ferrari]]></author>
 		<method>
 			<name>doAfterPropertiesSet</name>
@@ -2553,7 +2553,7 @@
 	</javadoc>
 	<javadoc>
 		<name>ClusterNodeUtil</name>
-		<type>com.liferay.lcs.util.ClusterNodeUtil</type>
+		<type>com.liferay.lcs.client.internal.util.ClusterNodeUtil</type>
 		<author><![CDATA[Ivica Cardic]]></author>
 		<author><![CDATA[Igor Beslic]]></author>
 		<method>
@@ -3430,7 +3430,7 @@
 	</javadoc>
 	<javadoc>
 		<name>LCSUtil</name>
-		<type>com.liferay.lcs.util.LCSUtil</type>
+		<type>com.liferay.lcs.client.internal.util.LCSUtil</type>
 		<author><![CDATA[Igor Beslic]]></author>
 		<author><![CDATA[Ivica Cardic]]></author>
 		<method>
@@ -3758,7 +3758,7 @@
 	</javadoc>
 	<javadoc>
 		<name>PortletKeys</name>
-		<type>com.liferay.lcs.util.PortletKeys</type>
+		<type>com.liferay.lcs.client.internal.util.PortletKeys</type>
 		<author><![CDATA[Ivica Cardic]]></author>
 		<field>
 			<name>MONITORING</name>
@@ -3766,7 +3766,7 @@
 	</javadoc>
 	<javadoc>
 		<name>PortletPropsKeys</name>
-		<type>com.liferay.lcs.util.PortletPropsKeys</type>
+		<type>com.liferay.lcs.client.internal.util.PortletPropsKeys</type>
 		<author><![CDATA[Igor Beslic]]></author>
 		<field>
 			<name>OSB_LCS_PORTLET_HOST_NAME</name>
@@ -3807,7 +3807,7 @@
 	</javadoc>
 	<javadoc>
 		<name>PortletPropsValues</name>
-		<type>com.liferay.lcs.util.PortletPropsValues</type>
+		<type>com.liferay.lcs.client.internal.util.PortletPropsValues</type>
 		<author><![CDATA[Igor Beslic]]></author>
 		<field>
 			<name>OSB_LCS_PORTLET_HOST_NAME</name>
@@ -3848,7 +3848,7 @@
 	</javadoc>
 	<javadoc>
 		<name>MessagePriorityComparator</name>
-		<type>com.liferay.lcs.util.comparator.MessagePriorityComparator</type>
+		<type>com.liferay.lcs.client.internal.util.comparator.MessagePriorityComparator</type>
 		<author><![CDATA[Igor Beslic]]></author>
 		<method>
 			<name>compare</name>

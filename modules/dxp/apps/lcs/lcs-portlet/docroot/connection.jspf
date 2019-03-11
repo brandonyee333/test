@@ -78,7 +78,7 @@ catch (Exception e) {
 		</c:if>
 
 		<%
-		LCSGatewayClient lcsGatewayClient = (LCSGatewayClient)beanLocator.locate("com.liferay.lcs.platform.gateway.LCSGatewayClient");
+		LCSGatewayClient lcsGatewayClient = (LCSGatewayClient)beanLocator.locate("com.liferay.lcs.client.platform.gateway.LCSGatewayClient");
 
 		boolean ready = lcsGatewayClient.isAvailable();
 
@@ -162,11 +162,11 @@ catch (Exception e) {
 			</li>
 
 			<%
-			TaskAdvisor taskAdvisor = (TaskAdvisor)beanLocator.locate("com.liferay.lcs.task.advisor.TaskAdvisor");
+			TaskAdvisor taskAdvisor = (TaskAdvisor)beanLocator.locate("com.liferay.lcs.client.internal.task.advisor.TaskAdvisor");
 
 			Set<String> activeServiceLabels = taskAdvisor.getActiveServiceLabels();
 
-			LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor = (LCSClusterEntryTokenAdvisor)beanLocator.locate("com.liferay.lcs.advisor.LCSClusterEntryTokenAdvisor");
+			LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor = (LCSClusterEntryTokenAdvisor)beanLocator.locate("com.liferay.lcs.client.internal.advisor.LCSClusterEntryTokenAdvisor");
 			%>
 
 			<%
