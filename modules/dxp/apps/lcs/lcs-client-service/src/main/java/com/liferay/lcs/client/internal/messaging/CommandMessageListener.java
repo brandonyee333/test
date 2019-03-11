@@ -57,14 +57,14 @@ public class CommandMessageListener implements MessageListener {
 			_log.trace("Verifying digital signature");
 		}
 
-		if (_digitalSignature.verifyMessage(
-				LCSUtil.getLCSPortletBuildNumber(), commandMessage)) {
+		try {
+			if (_digitalSignature.verifyMessage(
+					LCSUtil.getLCSPortletBuildNumber(), commandMessage)) {
 
-			if (_log.isTraceEnabled()) {
-				_log.trace("Verified digital signature");
-			}
+				if (_log.isTraceEnabled()) {
+					_log.trace("Verified digital signature");
+				}
 
-			try {
 				Class<?> commandMessageClass = commandMessage.getClass();
 
 				Command<? extends CommandMessage> command = _commands.get(
@@ -82,13 +82,13 @@ public class CommandMessageListener implements MessageListener {
 
 				return;
 			}
-			catch (Exception e) {
-				responseErrorMessage = e.getMessage();
+			else {
+				responseErrorMessage =
+					"Unable to verify digital signature of a message";
 			}
 		}
-		else {
-			responseErrorMessage =
-				"Unable to verify digital signature of a message";
+		catch (Exception e) {
+			responseErrorMessage = e.getMessage();
 		}
 
 		if (responseErrorMessage != null) {
