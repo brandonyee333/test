@@ -212,10 +212,12 @@ public class SourceFormatter {
 	protected Collection<String> getRemoteServiceJavaFiles() {
 		Collection<String> fileNames = new TreeSet<>();
 
-		String[] excludes =
-			{"**\\com\\liferay\\osb\\service\\impl\\*LocalServiceImpl.java"};
-		String[] includes =
-			{"**\\com\\liferay\\osb\\service\\impl\\*ServiceImpl.java"};
+		String[] excludes = {
+			"**\\com\\liferay\\osb\\service\\impl\\*LocalServiceImpl.java"
+		};
+		String[] includes = {
+			"**\\com\\liferay\\osb\\service\\impl\\*ServiceImpl.java"
+		};
 
 		fileNames.addAll(getFileNames(excludes, includes));
 
@@ -225,8 +227,9 @@ public class SourceFormatter {
 	protected Collection<String> getUpgradeJavaFiles() {
 		Collection<String> fileNames = new TreeSet<>();
 
-		String[] includes =
-			{"**\\com\\liferay\\osb\\hook\\upgrade\\v3*\\Upgrade_*_*.java"};
+		String[] includes = {
+			"**\\com\\liferay\\osb\\hook\\upgrade\\v3*\\Upgrade_*_*.java"
+		};
 
 		fileNames.addAll(getFileNames(new String[0], includes));
 

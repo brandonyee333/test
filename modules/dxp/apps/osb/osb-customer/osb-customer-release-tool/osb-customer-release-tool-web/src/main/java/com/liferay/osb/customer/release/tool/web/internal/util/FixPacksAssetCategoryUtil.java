@@ -78,7 +78,7 @@ public class FixPacksAssetCategoryUtil {
 	}
 
 	public AssetCategory getFixPackAssetCategory(
-		String jiraProductVersion, double fixPackVersion)  {
+		String jiraProductVersion, double fixPackVersion) {
 
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -112,7 +112,7 @@ public class FixPacksAssetCategoryUtil {
 			DataAccess.cleanUp(con, ps, rs);
 		}
 
-		return null;	
+		return null;
 	}
 
 	public long getFixPacksAssetVocabularyId() {

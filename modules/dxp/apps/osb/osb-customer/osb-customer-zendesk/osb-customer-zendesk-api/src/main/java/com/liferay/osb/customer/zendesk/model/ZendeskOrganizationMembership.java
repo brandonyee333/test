@@ -14,7 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.model;
 
-
 /**
  * @author Amos Fong
  */

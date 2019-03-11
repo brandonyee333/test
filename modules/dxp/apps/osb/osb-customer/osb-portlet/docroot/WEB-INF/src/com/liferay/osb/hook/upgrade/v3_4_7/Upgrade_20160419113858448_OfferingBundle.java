@@ -35,7 +35,8 @@ public class Upgrade_20160419113858448_OfferingBundle
 		runSQL("create unique index IX_DC1ECDCE on OSB_OfferingBundle (name)");
 
 		runSQL(
-			OfferingBundleModelImpl.MAPPING_TABLE_OSB_OFFERINGBUNDLES_OFFERINGDEFINITIONS_SQL_CREATE);
+			OfferingBundleModelImpl.
+				MAPPING_TABLE_OSB_OFFERINGBUNDLES_OFFERINGDEFINITIONS_SQL_CREATE);
 
 		runSQL(
 			"create index IX_480DB8E2 on " +

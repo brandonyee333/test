@@ -31,8 +31,9 @@ public class AccountWorkerConstants {
 
 	public static final int ROLE_SALES_MANAGER = 3;
 
-	public static final int[] ROLES_DEPRECATED =
-		{ROLE_EXPERIENCE_MANAGER, ROLE_SALES_MANAGER};
+	public static final int[] ROLES_DEPRECATED = {
+		ROLE_EXPERIENCE_MANAGER, ROLE_SALES_MANAGER
+	};
 
 	public static String getKey(long userId, long role) {
 		return userId + StringPool.UNDERLINE + role;

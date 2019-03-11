@@ -58,8 +58,7 @@ public class JIRAIssueLocalServiceImpl extends JIRAIssueLocalServiceBaseImpl {
 		handleResponseErrors(responseJSONObject);
 
 		if (Validator.isNotNull(status)) {
-			_updateJIRAIssueStatus(
-				responseJSONObject.getString("key"), status);
+			_updateJIRAIssueStatus(responseJSONObject.getString("key"), status);
 		}
 
 		return responseJSONObject;

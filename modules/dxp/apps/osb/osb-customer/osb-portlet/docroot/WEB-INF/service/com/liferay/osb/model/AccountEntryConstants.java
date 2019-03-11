@@ -69,8 +69,9 @@ public class AccountEntryConstants {
 
 	public static final int TIER_STRATEGIC = 4;
 
-	public static final int[] TIERS =
-		{TIER_OEM, TIER_PREMIER, TIER_REGULAR, TIER_STRATEGIC};
+	public static final int[] TIERS = {
+		TIER_OEM, TIER_PREMIER, TIER_REGULAR, TIER_STRATEGIC
+	};
 
 	public static final int TYPE_ANALYTICS_CLOUD_BASIC = 5;
 

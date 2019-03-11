@@ -368,8 +368,9 @@ public class Upgrade_20160930103105564_ProductEntry extends BaseUpgradeProcess {
 		runSQL(sb.toString());
 	}
 
-	private static final long[] _BACKUP_PRODUCT_ENTRY_IDS =
-		{5968272, 10034376, 27012869, 24577955, 63869128, 73043190};
+	private static final long[] _BACKUP_PRODUCT_ENTRY_IDS = {
+		5968272, 10034376, 27012869, 24577955, 63869128, 73043190
+	};
 
 	private static final long[] _DEVELOPMENT_PRODUCT_ENTRY_IDS = {6135009};
 
@@ -384,8 +385,9 @@ public class Upgrade_20160930103105564_ProductEntry extends BaseUpgradeProcess {
 
 	private static final long[] _OEM_PRODUCT_ENTRY_IDS = {7491306};
 
-	private static final long[] _PRODUCTION_PRODUCT_ENTRY_IDS =
-		{5968276, 27012837, 24576026, 44966204, 10034374};
+	private static final long[] _PRODUCTION_PRODUCT_ENTRY_IDS = {
+		5968276, 27012837, 24576026, 44966204, 10034374
+	};
 
 	private long _deBackupProductEntryId;
 	private long _deDevelopmentProductEntryId;

@@ -135,9 +135,7 @@ public class ReleaseToolDisplayContext {
 		return renderURL.toString();
 	}
 
-	public JSONArray getFixPackFiltersJSONArray()
-		throws PortalException {
-
+	public JSONArray getFixPackFiltersJSONArray() throws PortalException {
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
 		List<AssetCategory> assetCategories =

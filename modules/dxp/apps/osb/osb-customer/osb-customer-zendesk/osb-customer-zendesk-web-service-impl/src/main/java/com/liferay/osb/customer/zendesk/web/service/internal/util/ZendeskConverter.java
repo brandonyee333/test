@@ -215,7 +215,7 @@ public class ZendeskConverter {
 			jsonObject.getLong("organization_id"));
 		zendeskOrganizationMembership.setZendeskUserId(
 			jsonObject.getLong("user_id"));
-		
+
 		return zendeskOrganizationMembership;
 	}
 

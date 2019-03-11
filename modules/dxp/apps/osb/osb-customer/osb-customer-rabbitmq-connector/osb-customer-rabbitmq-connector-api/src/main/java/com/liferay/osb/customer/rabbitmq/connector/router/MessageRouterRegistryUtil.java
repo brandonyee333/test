@@ -39,8 +39,8 @@ public class MessageRouterRegistryUtil {
 		return messageRouterRegistry.getMessageRoutersMap();
 	}
 
-	private static final
-		ServiceTracker<?, MessageRouterRegistry> _serviceTracker =
-			ServiceTrackerFactory.open(MessageRouterRegistry.class);
+	private static final ServiceTracker<?, MessageRouterRegistry>
+		_serviceTracker = ServiceTrackerFactory.open(
+			MessageRouterRegistry.class);
 
 }

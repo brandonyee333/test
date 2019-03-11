@@ -27,8 +27,9 @@ public class OSBJournalArticleConstants {
 
 	public static final long PERMISSION_TYPE_INTERNAL = 1;
 
-	public static final long[] PERMISSION_TYPES =
-		{PERMISSION_TYPE_INTERNAL, PERMISSION_TYPE_EXTERNAL};
+	public static final long[] PERMISSION_TYPES = {
+		PERMISSION_TYPE_INTERNAL, PERMISSION_TYPE_EXTERNAL
+	};
 
 	public static String getPermissionTypeLabel(long permissionType) {
 		if (permissionType == PERMISSION_TYPE_EXTERNAL) {

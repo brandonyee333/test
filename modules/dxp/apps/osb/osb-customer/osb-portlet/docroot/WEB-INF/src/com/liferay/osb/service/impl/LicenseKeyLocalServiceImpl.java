@@ -1359,8 +1359,12 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	}
 
 	protected String getCounterName(long offeringEntryId) {
-		return LicenseKey.class.getName().concat(StringPool.POUND).concat(
-			String.valueOf(offeringEntryId));
+		return LicenseKey.class.getName(
+		).concat(
+			StringPool.POUND
+		).concat(
+			String.valueOf(offeringEntryId)
+		);
 	}
 
 	protected OfferingEntry getDeveloperOfferingEntry(

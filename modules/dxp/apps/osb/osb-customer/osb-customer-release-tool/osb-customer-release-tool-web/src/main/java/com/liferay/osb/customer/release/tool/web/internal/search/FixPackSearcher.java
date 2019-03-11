@@ -198,8 +198,8 @@ public class FixPackSearcher extends BaseSearcher {
 			themeDisplay, orderByType);
 
 		BooleanQuery fullQuery = buildFullQuery(
-			product, fromProductVersion, fromFixPackVersion,
-			toProductVersion, toFixPackVersion);
+			product, fromProductVersion, fromFixPackVersion, toProductVersion,
+			toFixPackVersion);
 
 		Hits hits = _indexSearcherHelper.search(searchContext, fullQuery);
 
@@ -228,8 +228,7 @@ public class FixPackSearcher extends BaseSearcher {
 		return jsonObject;
 	}
 
-	protected Sort[] getSorts(
-			ThemeDisplay themeDisplay, String orderByType)
+	protected Sort[] getSorts(ThemeDisplay themeDisplay, String orderByType)
 		throws PortalException {
 
 		long classNameId = _classNameLocalService.getClassNameId(

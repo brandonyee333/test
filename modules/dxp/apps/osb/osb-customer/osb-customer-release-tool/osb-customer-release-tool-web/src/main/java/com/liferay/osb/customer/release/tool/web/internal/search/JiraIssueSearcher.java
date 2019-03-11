@@ -48,9 +48,10 @@ import org.osgi.service.component.annotations.Reference;
 public class JiraIssueSearcher extends BaseSearcher {
 
 	protected String buildJQL(
-			String product, double fromProductVersion, double fromFixPackVersion,
-			double toProductVersion, double toFixPackVersion, String keywords,
-			String[] components, String orderByType)
+			String product, double fromProductVersion,
+			double fromFixPackVersion, double toProductVersion,
+			double toFixPackVersion, String keywords, String[] components,
+			String orderByType)
 		throws PortalException {
 
 		StringBundler sb = new StringBundler();
@@ -252,7 +253,7 @@ public class JiraIssueSearcher extends BaseSearcher {
 			jsonObject.put("release", assetCategory.getName());
 		}
 		else {
-			jsonObject.put("release", StringPool.BLANK);	
+			jsonObject.put("release", StringPool.BLANK);
 		}
 
 		jsonObject.put("summary", fieldsJSONObject.getString("summary"));

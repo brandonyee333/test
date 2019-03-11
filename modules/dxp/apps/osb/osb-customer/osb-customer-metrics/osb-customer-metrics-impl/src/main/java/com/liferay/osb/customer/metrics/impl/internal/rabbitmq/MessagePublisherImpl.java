@@ -42,7 +42,8 @@ public class MessagePublisherImpl implements MessagePublisher {
 	}
 
 	@Reference
-	private com.liferay.osb.customer.rabbitmq.connector.publisher.
-		MessagePublisher _messagePublisher;
+	private
+		com.liferay.osb.customer.rabbitmq.connector.publisher.MessagePublisher
+			_messagePublisher;
 
 }

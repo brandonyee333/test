@@ -420,8 +420,9 @@ public class ArticleSearcher extends BaseSearcher {
 		}
 	}
 
-	private static final String[] _KEYWORD_FIELDS =
-		{Field.ASSET_CATEGORY_TITLES, Field.CONTENT, Field.TITLE};
+	private static final String[] _KEYWORD_FIELDS = {
+		Field.ASSET_CATEGORY_TITLES, Field.CONTENT, Field.TITLE
+	};
 
 	private final List<AssetCategory> _articleTypeAssetCategories =
 		new ArrayList<>();

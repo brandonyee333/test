@@ -189,7 +189,9 @@ public class AdminServletContextListener
 		properties.put("module.service.lifecycle", "osb.portlet.initialized");
 
 		_moduleServiceLifecycleServiceRegistration = registry.registerService(
-			ModuleServiceLifecycle.class, new ModuleServiceLifecycle() {},
+			ModuleServiceLifecycle.class,
+			new ModuleServiceLifecycle() {
+			},
 			properties);
 	}
 

@@ -111,9 +111,8 @@ public class AccountEnvironmentAttachmentLocalServiceImpl
 	public List<AccountEnvironmentAttachment> getAccountEnvironmentAttachments(
 		long accountEnvironmentId) {
 
-		return
-			accountEnvironmentAttachmentPersistence.findByAccountEnvironmentId(
-				accountEnvironmentId);
+		return accountEnvironmentAttachmentPersistence.
+			findByAccountEnvironmentId(accountEnvironmentId);
 	}
 
 	public File getFile(

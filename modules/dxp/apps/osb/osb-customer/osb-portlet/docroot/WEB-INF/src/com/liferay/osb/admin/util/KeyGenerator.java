@@ -563,8 +563,9 @@ public class KeyGenerator {
 		return shortenedDigests;
 	}
 
-	private static final String[] _ALGORITHMS =
-		{"MD5", "SHA-1", "SHA-256", "SHA-512"};
+	private static final String[] _ALGORITHMS = {
+		"MD5", "SHA-1", "SHA-256", "SHA-512"
+	};
 
 	private static final char[] _HEX_CHARACTERS = {
 		'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd',

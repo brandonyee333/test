@@ -39,8 +39,8 @@ public class MetricsModelRegistryUtil {
 		return metricsModelRegistry.getMetricsModelsMap();
 	}
 
-	private static final
-		ServiceTracker<?, MetricsModelRegistry> _serviceTracker =
-			ServiceTrackerFactory.open(MetricsModelRegistry.class);
+	private static final ServiceTracker<?, MetricsModelRegistry>
+		_serviceTracker = ServiceTrackerFactory.open(
+			MetricsModelRegistry.class);
 
 }

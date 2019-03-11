@@ -852,12 +852,14 @@ public class AccountEnvironmentConstants {
 		};
 
 	private static final long[]
-		_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_1_STANDARD =
-			{ENV_SEARCH_ELASTICSEARCH_6_X, ENV_SEARCH_SOLR_7};
+		_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_1_STANDARD = {
+			ENV_SEARCH_ELASTICSEARCH_6_X, ENV_SEARCH_SOLR_7
+		};
 
 	private static final long[]
-		_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_1_STANDARD_COMMERCE =
-			{ENV_SEARCH_ELASTICSEARCH_6_X};
+		_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_1_STANDARD_COMMERCE = {
+			ENV_SEARCH_ELASTICSEARCH_6_X
+		};
 
 	private static final Map<String, long[]> _envCommerce = new HashMap<>();
 	private static final Map<String, long[]> _envDigitalEnterpriseVersion70 =

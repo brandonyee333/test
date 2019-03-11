@@ -30,8 +30,7 @@ import org.osgi.service.component.annotations.Component;
 	property = "javax.portlet.name=" + ReleaseToolPortletKeys.RELEASE_TOOL,
 	service = ConfigurationAction.class
 )
-public class ReleaseToolConfigurationAction
-	extends DefaultConfigurationAction {
+public class ReleaseToolConfigurationAction extends DefaultConfigurationAction {
 
 	@Override
 	public String getJspPath(HttpServletRequest request) {
