@@ -504,7 +504,7 @@ public class OSBCustomerQAInfrastructureUtil {
 				userId, partnerEntry.getPartnerEntryId())) {
 
 			PartnerWorkerLocalServiceUtil.addPartnerWorker(
-				userId, emailAddress, role);
+				partnerEntry.getPartnerEntryId(), emailAddress, role);
 		}
 
 		if (_log.isInfoEnabled()) {
