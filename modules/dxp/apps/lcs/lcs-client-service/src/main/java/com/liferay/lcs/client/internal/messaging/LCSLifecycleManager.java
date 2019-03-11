@@ -14,7 +14,6 @@
 
 package com.liferay.lcs.client.internal.messaging;
 
-import com.liferay.lcs.messaging.Message;
 import com.liferay.lcs.client.task.scheduler.TaskSchedulerService;
 import com.liferay.lcs.client.internal.util.LCSUtil;
 import com.liferay.lcs.client.internal.util.PortletPropsValues;

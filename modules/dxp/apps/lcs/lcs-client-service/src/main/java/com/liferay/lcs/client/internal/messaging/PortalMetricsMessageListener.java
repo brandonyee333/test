@@ -14,7 +14,6 @@
 
 package com.liferay.lcs.client.internal.messaging;
 
-import com.liferay.lcs.messaging.Message;
 import com.liferay.lcs.client.internal.metrics.PortalMetricsAggregator;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.portal.kernel.log.Log;
