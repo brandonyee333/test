@@ -15,6 +15,7 @@ exports[`SubscriptionMessages renders correctly 1`] = `
         >
           <svg
             class="lexicon-icon lexicon-icon-exclamation-full"
+            role="img"
           >
             <use
               xlink:href="#exclamation-full"
@@ -61,6 +62,7 @@ exports[`SubscriptionMessages renders correctly 1`] = `
         >
           <svg
             class="lexicon-icon lexicon-icon-info-circle"
+            role="img"
           >
             <use
               xlink:href="#info-circle"
@@ -107,6 +109,7 @@ exports[`SubscriptionMessages renders correctly 1`] = `
         >
           <svg
             class="lexicon-icon lexicon-icon-warning-full"
+            role="img"
           >
             <use
               xlink:href="#warning-full"

@@ -24,6 +24,7 @@ exports[`AddTicketAttachment renders correctly 1`] = `
       >
         <svg
           class="lexicon-icon lexicon-icon-info-circle"
+          role="img"
         >
           <use
             xlink:href="#info-circle"

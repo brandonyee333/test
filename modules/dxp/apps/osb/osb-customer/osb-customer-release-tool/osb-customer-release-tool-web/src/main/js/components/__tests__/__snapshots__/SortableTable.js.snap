@@ -1,0 +1,195 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SortableTable renders correctly 1`] = `
+<div>
+  <div
+    class="showing-results"
+  >
+    showing-x-results
+  </div>
+  <table
+    class="table table-autofit table-list"
+  >
+    <thead>
+      <tr>
+        <th
+          class="lfr-released-column"
+        >
+          released
+           
+          <svg
+            class="desc lexicon-icon sorting-indicator"
+            role="button"
+          >
+            <use
+              xlink:href="#arrow-up"
+            />
+          </svg>
+        </th>
+        <th
+          class="lfr-details-column"
+        >
+          details
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        class="journal-article-row"
+        id="118267960"
+      >
+        <td
+          class="lfr-released-column"
+        >
+          Mar 6, 2019
+        </td>
+        <td
+          class="lfr-details-column"
+        >
+          <div>
+            Content Text
+          </div>
+        </td>
+      </tr>
+      <tr
+        class="journal-article-row"
+        id="118267952"
+      >
+        <td
+          class="lfr-released-column"
+        >
+          Mar 1, 2019
+        </td>
+        <td
+          class="lfr-details-column"
+        >
+          <div>
+            Content 2 Text
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
+
+exports[`SortableTable renders in reverse order when sorting indicator is clicked 1`] = `
+<div>
+  <div
+    class="showing-results"
+  >
+    showing-x-results
+  </div>
+  <table
+    class="table table-autofit table-list"
+  >
+    <thead>
+      <tr>
+        <th
+          class="lfr-released-column"
+        >
+          released
+           
+          <svg
+            class="asc lexicon-icon sorting-indicator"
+            role="button"
+          >
+            <use
+              xlink:href="#arrow-up"
+            />
+          </svg>
+        </th>
+        <th
+          class="lfr-details-column"
+        >
+          details
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        class="journal-article-row"
+        id="118267952"
+      >
+        <td
+          class="lfr-released-column"
+        >
+          Mar 1, 2019
+        </td>
+        <td
+          class="lfr-details-column"
+        >
+          <div>
+            Content 2 Text
+          </div>
+        </td>
+      </tr>
+      <tr
+        class="journal-article-row"
+        id="118267960"
+      >
+        <td
+          class="lfr-released-column"
+        >
+          Mar 6, 2019
+        </td>
+        <td
+          class="lfr-details-column"
+        >
+          <div>
+            Content Text
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
+
+exports[`SortableTable renders no results message 1`] = `
+<div>
+  <div
+    class="showing-results"
+  >
+    showing-x-results
+  </div>
+  <table
+    class="table table-autofit table-list"
+  >
+    <thead>
+      <tr>
+        <th
+          class="lfr-released-column"
+        >
+          released
+           
+          <svg
+            class="desc lexicon-icon sorting-indicator"
+            role="button"
+          >
+            <use
+              xlink:href="#arrow-up"
+            />
+          </svg>
+        </th>
+        <th
+          class="lfr-details-column"
+        >
+          details
+        </th>
+      </tr>
+    </thead>
+    <tbody />
+  </table>
+  <div
+    class="no-results"
+  >
+    no-highlights-found-to-match-your-selection
+    <h5
+      class="secondary-text-color"
+    >
+      try-modifying-your-criteria-or-viewing-the-changelog
+    </h5>
+  </div>
+</div>
+`;
