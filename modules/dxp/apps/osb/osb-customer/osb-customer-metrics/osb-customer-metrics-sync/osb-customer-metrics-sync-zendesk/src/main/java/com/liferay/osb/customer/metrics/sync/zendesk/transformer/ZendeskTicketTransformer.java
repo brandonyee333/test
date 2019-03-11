@@ -141,8 +141,16 @@ public class ZendeskTicketTransformer extends BaseTransformer {
 		String name = _ticketFields.get(id);
 
 		name = StringUtil.replace(
-			name, new String[] {StringPool.DASH, StringPool.SPACE},
-			new String[] {StringPool.UNDERLINE, StringPool.UNDERLINE});
+			name,
+			new String[] {
+				StringPool.DASH, StringPool.SPACE, StringPool.OPEN_PARENTHESIS,
+				StringPool.CLOSE_PARENTHESIS
+			},
+			new String[] {
+				StringPool.UNDERLINE, StringPool.UNDERLINE, StringPool.BLANK,
+				StringPool.BLANK
+			}
+		);
 
 		return StringUtil.toLowerCase(name);
 	}
