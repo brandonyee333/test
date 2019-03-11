@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 
 <suppressions>
+	<checkstyle>
+		<suppress checks="IndentationCheck" files="osb-customer-metrics/osb-customer-metrics-impl/src/main/java/com/liferay/osb/customer/metrics/impl/internal/rabbitmq/MessagePublisherImpl\.java" />
+	</checkstyle>
 	<source-check>
 		<suppress checks="XMLServiceEntityNameCheck" files="osb-customer-release-notes/osb-customer-release-notes-service/service\.xml" />
 	</source-check>
