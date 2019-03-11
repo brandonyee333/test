@@ -15,21 +15,21 @@ export default class Alert extends React.Component {
 
 		if (type === 'danger') {
 			retVal = (
-				<svg className="lexicon-icon lexicon-icon-exclamation-full">
+				<svg className="lexicon-icon lexicon-icon-exclamation-full" role="img">
 					<use xlinkHref="#exclamation-full" />
 				</svg>
 			);
 		}
 		else if (type === 'info') {
 			retVal = (
-				<svg className="lexicon-icon lexicon-icon-info-circle">
+				<svg className="lexicon-icon lexicon-icon-info-circle" role="img">
 					<use xlinkHref="#info-circle" />
 				</svg>
 			);
 		}
 		else if (type === 'warning') {
 			retVal = (
-				<svg className="lexicon-icon lexicon-icon-warning-full">
+				<svg className="lexicon-icon lexicon-icon-warning-full" role="img">
 					<use xlinkHref="#warning-full" />
 				</svg>
 			);

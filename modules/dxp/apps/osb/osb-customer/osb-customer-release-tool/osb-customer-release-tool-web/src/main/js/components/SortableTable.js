@@ -65,7 +65,7 @@ export default class SortableTable extends Component {
 							<th className="lfr-released-column">
 								{Liferay.Language.get('released')}{' '}
 
-								<svg className={`${orderBy} lexicon-icon sorting-indicator`} onClick={this.handleSort}>
+								<svg className={`${orderBy} lexicon-icon sorting-indicator`} onClick={this.handleSort} role="button">
 									<use xlinkHref="#arrow-up" />
 								</svg>
 							</th>
