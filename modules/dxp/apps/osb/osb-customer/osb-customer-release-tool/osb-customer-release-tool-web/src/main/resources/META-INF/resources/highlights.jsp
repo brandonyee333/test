@@ -23,7 +23,6 @@
 <liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/fix_packs" var="fixPacksResultsURL">
 	<portlet:param name="fromFixPackVersion" value="2.0" />
 	<portlet:param name="fromProductVersion" value="7.0" />
-	<portlet:param name="orderByType" value="desc" />
 	<portlet:param name="product" value="dxp" />
 	<portlet:param name="toFixPackVersion" value="1.0" />
 	<portlet:param name="toProductVersion" value="7.1" />
@@ -34,8 +33,6 @@
 <%
 JSONObject fixPackJSONObject = fixPackSearcher.search(renderRequest, renderResponse);
 %>
-
-<strong>Results:</strong> <%= HtmlUtil.escape(fixPackJSONObject.toString()) %>
 
 <h2 class="highlights">
 	<liferay-ui:message key="highlights" />

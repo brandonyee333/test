@@ -1,23 +1,11 @@
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 
+import {fixPackJSONObject} from '../types/highlights'
+
 export default class SortableTable extends Component {
 	static propTypes = {
-		fixPackJSONObject: PropTypes.shape(
-			{
-				total: PropTypes.number,
-				results: PropTypes.arrayOf(
-					PropTypes.shape(
-						{
-						content: PropTypes.string,
-						releaseDate: PropTypes.string,
-						resourcePrimKey: PropTypes.string,
-						title: PropTypes.string
-					}
-					)
-				)
-			}
-		)
+		fixPackJSONObject: fixPackJSONObject
 	};
 
 	state = {
