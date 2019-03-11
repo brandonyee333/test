@@ -150,9 +150,12 @@ public class LCSClusterEntryTokenContentAdvisorTest extends PowerMockito {
 			lcsClusterEntryTokenContentAdvisor.getDataCenterHostPort());
 		Assert.assertNull(
 			lcsClusterEntryTokenContentAdvisor.getDataCenterProtocol());
-		Assert.assertTrue(
-			lcsClusterEntryTokenContentAdvisor.
-				getLCSServicesConfiguration().isEmpty());
+
+		Map<String, String> lcsServicesConfiguration =
+			lcsClusterEntryTokenContentAdvisor.getLCSServicesConfiguration();
+
+		Assert.assertTrue(lcsServicesConfiguration.isEmpty());
+
 		Assert.assertNull(
 			lcsClusterEntryTokenContentAdvisor.getPortalPropertiesBlacklist());
 
@@ -180,9 +183,12 @@ public class LCSClusterEntryTokenContentAdvisorTest extends PowerMockito {
 			lcsClusterEntryTokenContentAdvisor.getDataCenterHostPort());
 		Assert.assertNull(
 			lcsClusterEntryTokenContentAdvisor.getDataCenterProtocol());
-		Assert.assertFalse(
-			lcsClusterEntryTokenContentAdvisor.
-				getLCSServicesConfiguration().isEmpty());
+
+		lcsServicesConfiguration =
+			lcsClusterEntryTokenContentAdvisor.getLCSServicesConfiguration();
+
+		Assert.assertFalse(lcsServicesConfiguration.isEmpty());
+
 		Assert.assertEquals(
 			"property.key.1,property.key.2",
 			lcsClusterEntryTokenContentAdvisor.getPortalPropertiesBlacklist());
@@ -263,9 +269,12 @@ public class LCSClusterEntryTokenContentAdvisorTest extends PowerMockito {
 		Assert.assertEquals(
 			"https",
 			lcsClusterEntryTokenContentAdvisor.getDataCenterProtocol());
-		Assert.assertFalse(
-			lcsClusterEntryTokenContentAdvisor.
-				getLCSServicesConfiguration().isEmpty());
+
+		Map<String, String> lcsServicesConfiguration =
+			lcsClusterEntryTokenContentAdvisor.getLCSServicesConfiguration();
+
+		Assert.assertFalse(lcsServicesConfiguration.isEmpty());
+
 		Assert.assertEquals(
 			"property.key.1,property.key.2",
 			lcsClusterEntryTokenContentAdvisor.getPortalPropertiesBlacklist());
