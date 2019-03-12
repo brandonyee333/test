@@ -174,4 +174,14 @@ public class OfferingEntryImpl extends OfferingEntryBaseImpl {
 		return OfferingEntryConstants.getTypeLabel(getType());
 	}
 
+	public boolean isInformationalOnly() {
+		return _informationalOnly;
+	}
+
+	public void setInformationalOnly(boolean informationalOnly) {
+		_informationalOnly = informationalOnly;
+	}
+
+	private boolean _informationalOnly;
+
 }

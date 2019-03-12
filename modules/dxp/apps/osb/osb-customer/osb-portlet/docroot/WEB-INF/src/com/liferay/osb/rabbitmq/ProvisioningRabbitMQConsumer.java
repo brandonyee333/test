@@ -70,6 +70,7 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.AutoResetThreadLocal;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StackTraceUtil;
@@ -86,6 +87,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -226,6 +228,37 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 
 		return SupportResponseLocalServiceUtil.fetchSupportResponseByName(
 			nameArray[0]);
+	}
+
+	protected List<OrderEntry> filterInformationalOfferingEntries(
+		List<OrderEntry> orderEntries) {
+
+		orderEntries = ListUtil.copy(orderEntries);
+
+		Iterator<OrderEntry> itr = orderEntries.iterator();
+
+		while (itr.hasNext()) {
+			OrderEntry orderEntry = itr.next();
+
+			List<OfferingEntry> offeringEntries =
+				orderEntry.getOfferingEntries();
+
+			Iterator<OfferingEntry> itr2 = offeringEntries.iterator();
+
+			while (itr2.hasNext()) {
+				OfferingEntry offeringEntry = itr2.next();
+
+				if (offeringEntry.isInformationalOnly()) {
+					itr2.remove();
+				}
+			}
+
+			if (offeringEntries.isEmpty()) {
+				itr.remove();
+			}
+		}
+
+		return orderEntries;
 	}
 
 	protected Address getAddress(JSONObject jsonObject) {
@@ -984,6 +1017,8 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 				purchasedProductsJSONArray.getJSONObject(i);
 
 			String name = purchasedProductJSONObject.getString("_name");
+			String productType = purchasedProductJSONObject.getString(
+				"_productType");
 			int quantity = purchasedProductJSONObject.getInt("_quantity");
 			String sizing = purchasedProductJSONObject.getString("_sizing");
 
@@ -1074,6 +1109,18 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 			offeringEntry.setSizing(sizingValue);
 			offeringEntry.setQuantity(quantity);
 			offeringEntry.setStatus(OfferingEntryConstants.STATUS_ACTIVE);
+
+			if (!productType.equals(SalesforceConstants.PRODUCT_TYPE_ADD_TO) &&
+				!productType.equals(SalesforceConstants.PRODUCT_TYPE_NEW) &&
+				!productType.equals(
+					SalesforceConstants.PRODUCT_TYPE_RENEWAL_DOWNGRADE) &&
+				!productType.equals(
+					SalesforceConstants.PRODUCT_TYPE_RENEWAL_MIGRATION) &&
+				!productType.equals(
+					SalesforceConstants.PRODUCT_TYPE_RENEWAL_UPGRADE)) {
+
+				offeringEntry.setInformationalOnly(true);
+			}
 
 			offeringEntries.add(offeringEntry);
 		}

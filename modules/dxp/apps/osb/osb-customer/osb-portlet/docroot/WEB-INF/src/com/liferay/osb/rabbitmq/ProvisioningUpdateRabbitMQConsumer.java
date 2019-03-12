@@ -62,6 +62,8 @@ public class ProvisioningUpdateRabbitMQConsumer
 		AccountWorker accountWorker = parseAccountWorker(
 			jsonObject, accountEntry);
 
+		orderEntries = filterInformationalOfferingEntries(orderEntries);
+
 		ServiceContext serviceContext = createServiceContext(
 			jsonObject, orderEntries);
 

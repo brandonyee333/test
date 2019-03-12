@@ -33,6 +33,18 @@ public class SalesforceConstants {
 
 	public static final int OPPORTUNITY_TYPE_RENEWAL = 4;
 
+	public static final String PRODUCT_TYPE_ADD_TO = "Add to";
+
+	public static final String PRODUCT_TYPE_NEW = "New";
+
+	public static final String PRODUCT_TYPE_RENEWAL_DOWNGRADE =
+		"Renewal Downgrade";
+
+	public static final String PRODUCT_TYPE_RENEWAL_MIGRATION =
+		"Renewal Migration";
+
+	public static final String PRODUCT_TYPE_RENEWAL_UPGRADE = "Renewal Upgrade";
+
 	public static final String PROJECT_RECORD_TYPE_ANALYTICS_CLOUD_ID =
 		"0120g0000009u0wAAA";
 
