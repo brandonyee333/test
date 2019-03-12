@@ -3,17 +3,17 @@ import PropTypes from 'prop-types';
 
 import axios from 'axios';
 
-import {error, fixPackJSONObject} from '../types/highlights'
+import {error, fixPackJSONObject} from '../types/highlights';
 
 import Alert from './Alert';
 import SortableTable from './SortableTable';
 
 export default class Highlights extends Component {
 	static propTypes = {
-		fixPacksResultsURL: PropTypes.string.isRequired,
 		fixPackJSONObject: PropTypes.oneOfType(
 			[error, fixPackJSONObject]
-		)
+		),
+		fixPacksResultsURL: PropTypes.string.isRequired
 	};
 
 	render() {

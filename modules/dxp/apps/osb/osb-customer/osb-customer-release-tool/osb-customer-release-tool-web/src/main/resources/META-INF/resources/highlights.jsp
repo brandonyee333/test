@@ -59,8 +59,8 @@ JournalArticle journalArticle = JournalArticleLocalServiceUtil.fetchArticle(them
 	ReleaseTool.render(
 		ReleaseTool.Highlights,
 		{
-			fixPacksResultsURL: '<%= fixPacksResultsURL %>',
-			fixPackJSONObject: <%= fixPackJSONObject %>
+			fixPackJSONObject: <%= fixPackJSONObject %>,
+			fixPacksResultsURL: '<%= fixPacksResultsURL %>'
 		},
 		document.getElementById('<portlet:namespace />highlights')
 	);
