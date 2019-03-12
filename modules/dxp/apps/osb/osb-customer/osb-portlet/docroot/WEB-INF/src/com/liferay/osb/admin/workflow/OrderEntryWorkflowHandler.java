@@ -77,7 +77,9 @@ public class OrderEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 				WorkflowConstants.CONTEXT_SUPPORT_REGION_NAME));
 		sb.append(" Region - ");
 
-		AccountEntry accountEntry = (AccountEntry)model;
+		OrderEntry orderEntry = (OrderEntry)model;
+
+		AccountEntry accountEntry = orderEntry.getAccountEntry();
 
 		sb.append(accountEntry.getCode());
 
