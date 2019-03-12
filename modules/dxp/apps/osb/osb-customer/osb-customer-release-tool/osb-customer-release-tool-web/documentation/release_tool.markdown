@@ -14,7 +14,7 @@ Click on the dotted menu to _Edit_. Under _Associated Asset Types_, add a _Web C
 
 Under the _Fix Packs_ vocabulary, its categories are organized by _Liferay Versions_, whose subcategories are fix packs listed by name (e.g., _Fix Pack 45_).
 
-When creating a new subcategory, the naming convention should begin with 'Fix Pack ' followed by a number (e.g., _Fix Pack 45_). Note, the names can be localized in the user interface by clicking on the country's flags. The _Properties_ field should follow such that _Key_ should be 'version' and _Value_ should be the number of the _Fix Pack_ (for example, '45'). Save the subcategory and proceed with [_Creating Fix Pack Web Content_](#creating-fix-pack-web-content).
+When creating a new subcategory, the naming convention should begin with 'Fix Pack ' followed by a number (e.g., _Fix Pack 45_). Note, the names can be localized in the user interface by clicking on the country's flags. The _Properties_ field should follow such that _Key_ should be 'version' and _Value_ should be the number of the _Fix Pack_ (for example, '45.0', make sure to include the decimal point). Save the subcategory and proceed with [_Creating Fix Pack Web Content_](#creating-fix-pack-web-content).
 
 Each category and subcategories can be edited by clicking on the dotted menu and select _Edit_.
 
@@ -46,3 +46,14 @@ Release Tools has three tabs:
 Each tab has a description of varying lengths to provide context to the user. To allow flexibility of updating content and providing translations, these descriptions are web content articles that are rendered under the heading of each tab.
 
 To configure, create a web content article and place the desired copy there. Go into the _Release Tools_ portlet topper and click on the dotted menu. Select _Configuration_. Under the _Setup_ tab are three fields for inputting the _Tab Description Journal Article Ids_. Add the web content article ID in the appropriate field for the tab it's to display under.
+
+---
+
+#### Link Fixpack Downloads
+At the top of _Release Tool_ portlet, there is a filter that allows the user to select a range of product and its associated releases. When a valid range is selected, a download button will appear to allow the user to go to _Downloads_Display_ portlet and download the fixpack indicated in the upper range.
+
+In order to display the download link, the fixpack needs to be linked with download web content.
+
+To do that, go to _Web Content_ > _Downloads_ > Select a product of choice, for example _DXP 7.0_ > _Fix Packs_ > Select a fix pack of choice, for example _Fix Pack 1_.
+
+From there, go to the _Metadata_ section of the web content, click on _Select_ under _Fix Packs (Global)_. Select the correct _Fix Pack_ version similar to the steps described in [_Creating Fix Pack Web Content_](#creating-fix-pack-web-content).
