@@ -93,4 +93,8 @@ public interface OfferingEntry extends OfferingEntryModel, PersistedModel {
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public java.lang.String getTypeLabel();
+
+	public boolean isInformationalOnly();
+
+	public void setInformationalOnly(boolean informationalOnly);
 }

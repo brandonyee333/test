@@ -297,6 +297,11 @@ public class OfferingEntryWrapper implements OfferingEntry,
 		return _offeringEntry.isEscapedModel();
 	}
 
+	@Override
+	public boolean isInformationalOnly() {
+		return _offeringEntry.isInformationalOnly();
+	}
+
 	/**
 	* Returns <code>true</code> if this offering entry is licenses.
 	*
@@ -701,6 +706,11 @@ public class OfferingEntryWrapper implements OfferingEntry,
 	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_offeringEntry.setExpandoBridgeAttributes(serviceContext);
+	}
+
+	@Override
+	public void setInformationalOnly(boolean informationalOnly) {
+		_offeringEntry.setInformationalOnly(informationalOnly);
 	}
 
 	/**

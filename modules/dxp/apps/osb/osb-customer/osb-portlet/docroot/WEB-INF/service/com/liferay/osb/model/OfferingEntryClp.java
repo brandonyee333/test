@@ -1111,6 +1111,41 @@ public class OfferingEntryClp extends BaseModelImpl<OfferingEntry>
 		}
 	}
 
+	@Override
+	public boolean isInformationalOnly() {
+		try {
+			String methodName = "isInformationalOnly";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			Boolean returnObj = (Boolean)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public void setInformationalOnly(boolean informationalOnly) {
+		try {
+			String methodName = "setInformationalOnly";
+
+			Class<?>[] parameterTypes = new Class<?>[] { boolean.class };
+
+			Object[] parameterValues = new Object[] { informationalOnly };
+
+			invokeOnRemoteModel(methodName, parameterTypes, parameterValues);
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
 	public BaseModel<?> getOfferingEntryRemoteModel() {
 		return _offeringEntryRemoteModel;
 	}
