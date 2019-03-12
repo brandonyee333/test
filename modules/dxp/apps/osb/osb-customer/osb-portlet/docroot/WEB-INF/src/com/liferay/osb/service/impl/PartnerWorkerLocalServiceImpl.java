@@ -16,7 +16,6 @@ package com.liferay.osb.service.impl;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.osb.exception.NoSuchPartnerWorkerException;
-import com.liferay.osb.exception.PartnerEntryDossieraAccountKeyException;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.PartnerWorker;
 import com.liferay.osb.model.PartnerWorkerConstants;
@@ -44,7 +43,7 @@ public class PartnerWorkerLocalServiceImpl
 			long partnerEntryId, long userId, int role)
 		throws PortalException {
 
-		validateDossieraAccountKey(partnerEntryId);
+		partnerEntryLocalService.getPartnerEntry(partnerEntryId);
 
 		User user = userLocalService.getUser(userId);
 
@@ -122,8 +121,6 @@ public class PartnerWorkerLocalServiceImpl
 		PartnerWorker partnerWorker = partnerWorkerPersistence.findByPrimaryKey(
 			partnerWorkerId);
 
-		validateDossieraAccountKey(partnerWorker.getPartnerEntryId());
-
 		unassignOrganizations(partnerWorker.getUserId());
 
 		unassignCorpEntryOrganizations(
@@ -136,8 +133,6 @@ public class PartnerWorkerLocalServiceImpl
 		try {
 			List<PartnerWorker> partnerWorkers =
 				partnerWorkerPersistence.findByUserId(userId);
-
-			validateDossieraAccountKeys(partnerWorkers);
 
 			for (PartnerWorker partnerWorker : partnerWorkers) {
 				unassignCorpEntryOrganizations(
@@ -228,8 +223,6 @@ public class PartnerWorkerLocalServiceImpl
 
 		PartnerWorker partnerWorker = partnerWorkerPersistence.findByPrimaryKey(
 			partnerWorkerId);
-
-		validateDossieraAccountKey(partnerWorker.getPartnerEntryId());
 
 		partnerWorker.setRole(role);
 
@@ -344,26 +337,6 @@ public class PartnerWorkerLocalServiceImpl
 
 			remoteUserLocalService.unsetOrganizationUsers(
 				OSBConstants.ORGANIZATION_PARTNER_ID, new long[] {userId});
-		}
-	}
-
-	protected void validateDossieraAccountKey(long partnerEntryId)
-		throws PortalException {
-
-		PartnerEntry partnerEntry = partnerEntryLocalService.fetchPartnerEntry(
-			partnerEntryId);
-
-		if (partnerEntry == null) {
-			throw new PartnerEntryDossieraAccountKeyException();
-		}
-	}
-
-	protected void validateDossieraAccountKeys(
-			List<PartnerWorker> partnerWorkers)
-		throws PortalException {
-
-		for (PartnerWorker partnerWorker : partnerWorkers) {
-			validateDossieraAccountKey(partnerWorker.getPartnerEntryId());
 		}
 	}
 
