@@ -18,7 +18,6 @@ import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.service.LCSSubscriptionEntryLocalServiceUtil;
 import com.liferay.osb.service.OrderEntryLocalServiceUtil;
-import com.liferay.osb.util.SalesforceConstants;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -27,6 +26,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.workflow.BaseWorkflowHandler;
 
 import java.io.Serializable;
@@ -57,18 +57,19 @@ public class OrderEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 			Map<String, Serializable> workflowContext)
 		throws PortalException {
 
-		StringBundler sb = new StringBundler(6);
+		StringBundler sb = new StringBundler(9);
 
-		sb.append("Provisioning Task - ");
+		String salesforceOpportunityTaskName = (String)workflowContext.get(
+			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_TASK_NAME);
 
-		Integer salesforceOpportunityType = (Integer)workflowContext.get(
-			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_TYPE);
+		sb.append(LanguageUtil.get(Locale.US, salesforceOpportunityTaskName));
 
-		String salesforceOpportunityTypeLabel =
-			SalesforceConstants.getOpportunityTypeLabel(
-				salesforceOpportunityType);
+		sb.append(StringPool.SPACE);
 
-		sb.append(LanguageUtil.get(Locale.US, salesforceOpportunityTypeLabel));
+		String salesforceOpportunityStageName = (String)workflowContext.get(
+			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_STAGE_NAME);
+
+		sb.append(LanguageUtil.get(Locale.US, salesforceOpportunityStageName));
 
 		sb.append(" for ");
 		sb.append(
@@ -76,11 +77,12 @@ public class OrderEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 				WorkflowConstants.CONTEXT_SUPPORT_REGION_NAME));
 		sb.append(" Region - ");
 
-		OrderEntry orderEntry = (OrderEntry)model;
-
-		AccountEntry accountEntry = orderEntry.getAccountEntry();
+		AccountEntry accountEntry = (AccountEntry)model;
 
 		sb.append(accountEntry.getCode());
+
+		sb.append(" - ");
+		sb.append(accountEntry.getName());
 
 		workflowContext.put(
 			WorkflowConstants.CONTEXT_NOTIFICATION_SUBJECT, sb.toString());

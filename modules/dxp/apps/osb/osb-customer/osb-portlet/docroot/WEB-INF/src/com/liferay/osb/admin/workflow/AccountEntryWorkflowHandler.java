@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.BaseWorkflowHandler;
 
@@ -63,14 +64,19 @@ public class AccountEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 			Map<String, Serializable> workflowContext)
 		throws PortalException {
 
-		StringBundler sb = new StringBundler(6);
-
-		sb.append("Provisioning Task - ");
+		StringBundler sb = new StringBundler(9);
 
 		String salesforceOpportunityTaskName = (String)workflowContext.get(
 			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_TASK_NAME);
 
 		sb.append(LanguageUtil.get(Locale.US, salesforceOpportunityTaskName));
+
+		sb.append(StringPool.SPACE);
+
+		String salesforceOpportunityStageName = (String)workflowContext.get(
+			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_STAGE_NAME);
+
+		sb.append(LanguageUtil.get(Locale.US, salesforceOpportunityStageName));
 
 		sb.append(" for ");
 		sb.append(
@@ -81,6 +87,9 @@ public class AccountEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 		AccountEntry accountEntry = (AccountEntry)model;
 
 		sb.append(accountEntry.getCode());
+
+		sb.append(" - ");
+		sb.append(accountEntry.getName());
 
 		workflowContext.put(
 			WorkflowConstants.CONTEXT_NOTIFICATION_SUBJECT, sb.toString());
