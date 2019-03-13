@@ -64,10 +64,10 @@ public class ZendeskTicketTransformer extends BaseTransformer {
 		JSONArray jsonArray = response.getJSONArray("ticket_fields");
 
 		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject ticketFieldJSONObject = jsonArray.getJSONObject(i);
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-			long id = ticketFieldJSONObject.getLong("id");
-			String title = ticketFieldJSONObject.getString("title");
+			long id = jsonObject.getLong("id");
+			String title = jsonObject.getString("title");
 
 			_ticketFields.put(id, title);
 		}

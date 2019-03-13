@@ -61,10 +61,10 @@ public class ZendeskTicketEventTransformer extends BaseTransformer {
 		JSONArray jsonArray = response.getJSONArray("ticket_fields");
 
 		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject ticketFieldJSONObject = jsonArray.getJSONObject(i);
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-			long id = ticketFieldJSONObject.getLong("id");
-			String title = ticketFieldJSONObject.getString("title");
+			long id = jsonObject.getLong("id");
+			String title = jsonObject.getString("title");
 
 			_ticketFields.put(id, title);
 		}
@@ -113,14 +113,14 @@ public class ZendeskTicketEventTransformer extends BaseTransformer {
 				String key = iterator.next();
 
 				if (key.equals("child_events")) {
-					JSONArray childEventJSONArray = eventJSONObject.getJSONArray(
-						key);
+					JSONArray childEventJSONArray =
+						eventJSONObject.getJSONArray(key);
 
 					_processEvents(childEventJSONArray);
 				}
 				else if (key.equals("custom_ticket_fields")) {
-					JSONObject ticketFieldsJSONObject = eventJSONObject.getJSONObject(
-						"custom_ticket_fields");
+					JSONObject ticketFieldsJSONObject =
+						eventJSONObject.getJSONObject("custom_ticket_fields");
 
 					Iterator<String> iterator2 = ticketFieldsJSONObject.keys();
 
@@ -162,13 +162,13 @@ public class ZendeskTicketEventTransformer extends BaseTransformer {
 
 		Map<String, String> parameters = new HashMap<>();
 
-		parameters.put("include", "comment_events");
-
 		String endTime = nextPage.substring(
 			nextPage.indexOf("end_time") + 9,
 			nextPage.indexOf(StringPool.AMPERSAND));
 
 		parameters.put("end_time", endTime);
+
+		parameters.put("include", "comment_events");
 
 		String startTime = nextPage.substring(
 			nextPage.indexOf("start_time") + 11);
