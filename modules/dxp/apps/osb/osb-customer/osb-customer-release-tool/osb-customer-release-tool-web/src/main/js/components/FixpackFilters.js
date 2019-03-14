@@ -55,11 +55,17 @@ export default class FixpackFilters extends Component {
 	};
 
 	handleFromFixpackOnChange = target => {
+		const {toFixPackVersion} = this.props;
+
 		this.setState(
 			{
 				fromFixPackVersion: target
 			}
 		);
+
+		if (this.determineVersion(toFixPackVersion)) {
+			this.handleSubmit();
+		}
 	};
 
 	handleFromProductOnChange = target => {
