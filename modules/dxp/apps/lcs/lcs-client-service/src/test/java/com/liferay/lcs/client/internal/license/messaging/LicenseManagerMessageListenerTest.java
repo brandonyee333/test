@@ -14,7 +14,7 @@
 
 package com.liferay.lcs.client.internal.license.messaging;
 
-import com.liferay.lcs.client.internal.advisor.LCSPortletStateAdvisor;
+import com.liferay.lcs.client.internal.advisor.LCSPortletStateAdvisorImpl;
 import com.liferay.lcs.client.internal.util.LCSUtil;
 import com.liferay.portal.json.JSONObjectImpl;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -90,8 +90,8 @@ public class LicenseManagerMessageListenerTest extends PowerMockito {
 
 	@Test
 	public void testCreateResponseMessage() throws Exception {
-		LCSPortletStateAdvisor lcsPortletStateAdvisor = spy(
-			new LCSPortletStateAdvisor());
+		LCSPortletStateAdvisorImpl lcsPortletStateAdvisor = spy(
+			new LCSPortletStateAdvisorImpl());
 
 		doReturn(
 			LCSPortletState.GOOD

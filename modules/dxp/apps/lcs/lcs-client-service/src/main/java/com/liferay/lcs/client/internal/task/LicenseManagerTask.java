@@ -14,7 +14,7 @@
 
 package com.liferay.lcs.client.internal.task;
 
-import com.liferay.lcs.client.internal.advisor.LCSPortletStateAdvisor;
+import com.liferay.lcs.client.internal.advisor.LCSPortletStateAdvisorImpl;
 import com.liferay.lcs.client.internal.util.LCSUtil;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
@@ -28,7 +28,7 @@ public class LicenseManagerTask implements ScheduledTask {
 
 	public LicenseManagerTask(
 		LCSGatewayClient lcsGatewayClient,
-		LCSPortletStateAdvisor lcsPortletStateAdvisor) {
+		LCSPortletStateAdvisorImpl lcsPortletStateAdvisor) {
 
 		_lcsGatewayClient = lcsGatewayClient;
 		_lcsPortletStateAdvisor = lcsPortletStateAdvisor;
@@ -88,6 +88,6 @@ public class LicenseManagerTask implements ScheduledTask {
 		LicenseManagerTask.class);
 
 	private final LCSGatewayClient _lcsGatewayClient;
-	private final LCSPortletStateAdvisor _lcsPortletStateAdvisor;
+	private final LCSPortletStateAdvisorImpl _lcsPortletStateAdvisor;
 
 }

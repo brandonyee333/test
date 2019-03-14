@@ -14,6 +14,7 @@
 
 package com.liferay.lcs.client.internal.advisor;
 
+import com.liferay.lcs.client.advisor.LCSPortletStateAdvisor;
 import com.liferay.lcs.client.platform.portal.LCSClientRemoteAuthorizationException;
 import com.liferay.lcs.client.platform.portal.LCSSubscriptionEntry;
 import com.liferay.lcs.client.platform.portal.LCSSubscriptionEntryClient;
@@ -21,10 +22,13 @@ import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Igor Beslic
  */
-public class LCSPortletStateAdvisor {
+@Component(immediate = true, service = LCSPortletStateAdvisor.class)
+public class LCSPortletStateAdvisorImpl {
 
 	public long getLastLicenseCheckTime() {
 		return _lastLicenseCheckTime;
@@ -81,7 +85,7 @@ public class LCSPortletStateAdvisor {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		LCSPortletStateAdvisor.class);
+		LCSPortletStateAdvisorImpl.class);
 
 	private LCSPortletState _lastLCSPortletState =
 		LCSPortletState.NO_SUBSCRIPTION;

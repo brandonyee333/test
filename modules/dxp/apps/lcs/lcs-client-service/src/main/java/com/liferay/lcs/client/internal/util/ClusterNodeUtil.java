@@ -15,7 +15,7 @@
 package com.liferay.lcs.client.internal.util;
 
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
-import com.liferay.lcs.client.internal.advisor.LCSPortletStateAdvisor;
+import com.liferay.lcs.client.internal.advisor.LCSPortletStateAdvisorImpl;
 import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
 import com.liferay.portal.kernel.cluster.ClusterNode;
 import com.liferay.portal.kernel.cluster.ClusterNodeResponse;
@@ -159,7 +159,7 @@ public class ClusterNodeUtil {
 	}
 
 	public void setLCSPortletStateAdvisor(
-		LCSPortletStateAdvisor lcsPortletStateAdvisor) {
+		LCSPortletStateAdvisorImpl lcsPortletStateAdvisor) {
 
 		_lcsPortletStateAdvisor = lcsPortletStateAdvisor;
 	}
@@ -258,6 +258,6 @@ public class ClusterNodeUtil {
 		new MethodHandler(
 			new MethodKey(ClusterNodeUtil.class, "getClusterNodeInfo"));
 	private static LCSKeyAdvisor _lcsKeyAdvisor;
-	private static LCSPortletStateAdvisor _lcsPortletStateAdvisor;
+	private static LCSPortletStateAdvisorImpl _lcsPortletStateAdvisor;
 
 }
