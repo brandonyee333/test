@@ -16,9 +16,8 @@ export default class FixpackFilters extends Component {
 	static defaultProps = {
 		fixpackURL: '',
 		fromFixPackVersion: '',
-		fromProductVersion: '',
-		toFixPackVersion: '',
-		toProductVersion: ''
+		productVersion: '',
+		toFixPackVersion: ''
 	};
 
 	static propTypes = {
@@ -26,9 +25,8 @@ export default class FixpackFilters extends Component {
 		filtersJSON: filtersJSONObject.isRequired,
 		fixpackURL: PropTypes.string,
 		fromFixPackVersion: PropTypes.string,
-		fromProductVersion: PropTypes.string,
-		toFixPackVersion: PropTypes.string,
-		toProductVersion: PropTypes.string
+		productVersion: PropTypes.string,
+		toFixPackVersion: PropTypes.string
 	};
 
 	determineVersion = version => {
@@ -36,15 +34,14 @@ export default class FixpackFilters extends Component {
 	};
 
 	state = {
+		fixpackURL: this.props.fixpackURL === 'null' ? '' : this.props.fixpackURL,
 		fromFixPackVersion: this.determineVersion(this.props.fromFixPackVersion),
-		fromProductVersion: this.determineVersion(this.props.fromProductVersion),
-		toProductVersion: this.determineVersion(this.props.toProductVersion)
+		productVersion: this.determineVersion(this.props.productVersion),
+		toFixPackVersion: this.determineVersion(this.props.toFixPackVersion)
 	};
 
 	getNameFromVersion = version => {
-		const {toProductVersion} = this.state;
-
-		const fixpacks = this.lookupFixPacksByProduct(toProductVersion, true);
+		const fixpacks = this.lookupFixPacksByProduct();
 
 		const fixpack = fixpacks.find(
 			item => item.version === version
@@ -56,38 +53,29 @@ export default class FixpackFilters extends Component {
 	handleFromFixpackOnChange = target => {
 		this.setState(
 			{
-				fromFixPackVersion: target
+				fixpackURL: '',
+				fromFixPackVersion: target,
+				toFixPackVersion: ''
 			}
 		);
 	};
 
-	handleFromProductOnChange = target => {
+	handleProductVersionOnChange = target => {
 		this.setState(
 			{
-				fromProductVersion: target,
-				toProductVersion: target
+				fixpackURL: '',
+				fromFixPackVersion: '',
+				productVersion: target,
+				toFixPackVersion: ''
 			}
-		);
-	};
-
-	handleToProductOnChange = target => {
-		this.setState(
-			{
-				toProductVersion: target
-			}
-		);
-	};
+		)
+	}
 
 	handleSubmit = () => this.fixpackFiltersFormRef.current.submit();
 
-	lookupFixPacksByProduct = (productVersion, isToFixPackFilter = false) => {
+	lookupFixPacksByProduct = (isToFixPackFilter = false) => {
 		const {filtersJSON} = this.props;
-
-		const {
-			fromFixPackVersion,
-			fromProductVersion,
-			toProductVersion
-		} = this.state;
+		const {fromFixPackVersion, productVersion} = this.state;
 
 		const currentProduct = filtersJSON.find(
 			item => item.version === productVersion
@@ -95,7 +83,7 @@ export default class FixpackFilters extends Component {
 
 		let fixpacks = currentProduct ? currentProduct.fixPacks : [];
 
-		if (isToFixPackFilter && fromProductVersion === toProductVersion) {
+		if (isToFixPackFilter) {
 			const index = fixpacks.findIndex(
 				item => item.version === fromFixPackVersion
 			);
@@ -107,20 +95,19 @@ export default class FixpackFilters extends Component {
 	};
 
 	render() {
-		const {actionURL, filtersJSON, fixpackURL, toFixPackVersion} = this.props;
-
+		const {actionURL, filtersJSON} = this.props;
 		const {
+			fixpackURL,
 			fromFixPackVersion,
-			fromProductVersion,
-			toProductVersion
+			productVersion,
+			toFixPackVersion
 		} = this.state;
 
 		const {namespace} = window.ReleaseToolConstants;
 
 		const fixpackDownloadLinkDescription = (
 			<Fragment>
-				{`${Liferay.Language.get('get')} ${
-					toProductVersion ? this.getNameFromVersion(toFixPackVersion) : ''
+				{`${Liferay.Language.get('get')} ${this.determineVersion(toFixPackVersion) ? this.getNameFromVersion(toFixPackVersion) : ''
 				}`}{' '}
 				<svg className="lexicon-icon lexicon-icon-arrow-right">
 					<use xlinkHref="#arrow-right" />
@@ -137,18 +124,22 @@ export default class FixpackFilters extends Component {
 					<div className="search-filters">
 						<div className="search-filter-container">
 							<Filter
-								id={`${namespace}fromProductVersion`}
-								label={Liferay.Language.get('from')}
+								id={`${namespace}productVersion`}
+								label={Liferay.Language.get('product')}
 								options={filtersJSON}
-								onChange={this.handleFromProductOnChange}
+								onChange={this.handleProductVersionOnChange}
 								placeholder={Liferay.Language.get('select-product')}
-								selected={fromProductVersion}
+								selected={productVersion}
 							/>
+						</div>
 
+						<div className="search-filter-container">
 							<Filter
-								disabled={!fromProductVersion}
+								autopopulate
+								disabled={!productVersion}
 								id={`${namespace}fromFixPackVersion`}
-								options={this.lookupFixPacksByProduct(fromProductVersion)}
+								label={Liferay.Language.get('from')}
+								options={this.lookupFixPacksByProduct()}
 								onChange={this.handleFromFixpackOnChange}
 								placeholder={Liferay.Language.get('select-release')}
 								selected={fromFixPackVersion}
@@ -157,19 +148,10 @@ export default class FixpackFilters extends Component {
 
 						<div className="search-filter-container">
 							<Filter
-								disabled={!fromFixPackVersion}
-								id={`${namespace}toProductVersion`}
-								label={Liferay.Language.get('to')}
-								options={filtersJSON}
-								onChange={this.handleToProductOnChange}
-								placeholder={Liferay.Language.get('select-product')}
-								selected={toProductVersion}
-							/>
-
-							<Filter
-								disabled={!fromFixPackVersion || !toProductVersion}
+								disabled={!fromFixPackVersion || !productVersion}
 								id={`${namespace}toFixPackVersion`}
-								options={this.lookupFixPacksByProduct(toProductVersion, true)}
+								label={Liferay.Language.get('to')}
+								options={this.lookupFixPacksByProduct(!!fromFixPackVersion)}
 								onChange={this.handleSubmit}
 								placeholder={Liferay.Language.get('select-release')}
 								selected={toFixPackVersion}
@@ -178,7 +160,7 @@ export default class FixpackFilters extends Component {
 					</div>
 				</form>
 
-				{fixpackURL !== 'null' && (
+				{fixpackURL && (
 					<Button
 						children={fixpackDownloadLinkDescription}
 						display="link"
@@ -193,12 +175,14 @@ export default class FixpackFilters extends Component {
 
 class Filter extends Component {
 	static defaultProps = {
+		autopopulate: false,
 		disabled: false,
 		label: '',
 		selected: ''
 	};
 
 	static propTypes = {
+		autopopulate: PropTypes.bool,
 		disabled: PropTypes.bool,
 		id: PropTypes.string.isRequired,
 		label: PropTypes.string,
@@ -207,6 +191,18 @@ class Filter extends Component {
 		placeholder: PropTypes.string.isRequired,
 		selected: PropTypes.string
 	};
+
+	displayCurrentValue = () => {
+		const {autopopulate, options} = this.props;
+
+		let currentValue = '';
+
+		if (autopopulate && options.length === 1) {
+			currentValue = options[0].version
+		}
+
+		return currentValue;
+	}
 
 	handleChange = (event) => {
 		const {onChange} = this.props;
@@ -231,11 +227,11 @@ class Filter extends Component {
 					id={id}
 					name={id}
 					onChange={this.handleChange}
-					value={selected || (options.length === 1 ? options[0].version : '')}
+					value={selected || this.displayCurrentValue()}
 				>
 					<option value="">{placeholder}</option>
 
-					{options.map(
+					{!!options.length && options.map(
 						option => {
 							return (
 								<option

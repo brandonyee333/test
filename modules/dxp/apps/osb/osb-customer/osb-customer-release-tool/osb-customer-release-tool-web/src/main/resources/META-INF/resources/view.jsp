@@ -22,9 +22,8 @@ String tabs1 = ParamUtil.getString(request, "tabs1");
 String product = ParamUtil.getString(request, "product");
 
 double fromFixPackVersion = ParamUtil.getDouble(request, "fromFixPackVersion");
-double fromProductVersion = ParamUtil.getDouble(request, "fromProductVersion");
+double productVersion = ParamUtil.getDouble(request, "productVersion");
 double toFixPackVersion = ParamUtil.getDouble(request, "toFixPackVersion");
-double toProductVersion = ParamUtil.getDouble(request, "toProductVersion");
 
 PortletURL portletURL = renderResponse.createRenderURL();
 
@@ -65,11 +64,10 @@ portletURL.setParameter("tabs1", tabs1);
 		{
 			actionURL: '<%= fixPacksURL %>',
 			filtersJSON: <%= releaseToolDisplayContext.getFixPackFiltersJSONArray() %>,
-			fixpackURL: '<%= releaseToolDisplayContext.getFixPackDownloadURL(product, toProductVersion, toFixPackVersion) %>',
+			fixpackURL: '<%= releaseToolDisplayContext.getFixPackDownloadURL(product, productVersion, toFixPackVersion) %>',
 			fromFixPackVersion: '<%= String.valueOf(fromFixPackVersion) %>',
-			fromProductVersion: '<%= String.valueOf(fromProductVersion) %>',
-			toFixPackVersion: '<%= String.valueOf(toFixPackVersion) %>',
-			toProductVersion: '<%= String.valueOf(toProductVersion) %>'
+			productVersion: '<%= String.valueOf(productVersion) %>',
+			toFixPackVersion: '<%= String.valueOf(toFixPackVersion) %>'
 		},
 		document.getElementById('<portlet:namespace />fixpackFilters')
 	);
