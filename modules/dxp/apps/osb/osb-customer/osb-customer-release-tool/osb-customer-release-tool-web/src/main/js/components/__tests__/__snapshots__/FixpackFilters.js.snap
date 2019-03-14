@@ -27,14 +27,14 @@ exports[`FixpackFilters renders empty filters correctly 1`] = `
         >
           <label
             class="control-label"
-            for="namespacefromProductVersion"
+            for="namespaceproductVersion"
           >
-            from:
+            product:
           </label>
           <select
             class="form-control"
-            id="namespacefromProductVersion"
-            name="namespacefromProductVersion"
+            id="namespaceproductVersion"
+            name="namespaceproductVersion"
           >
             <option
               value=""
@@ -61,10 +61,19 @@ exports[`FixpackFilters renders empty filters correctly 1`] = `
             </option>
           </select>
         </div>
+      </div>
+      <div
+        class="search-filter-container"
+      >
         <div
           class="filter"
         >
-          
+          <label
+            class="control-label"
+            for="namespacefromFixPackVersion"
+          >
+            from:
+          </label>
           <select
             class="form-control"
             disabled=""
@@ -87,45 +96,10 @@ exports[`FixpackFilters renders empty filters correctly 1`] = `
         >
           <label
             class="control-label"
-            for="namespacetoProductVersion"
+            for="namespacetoFixPackVersion"
           >
             to:
           </label>
-          <select
-            class="form-control"
-            disabled=""
-            id="namespacetoProductVersion"
-            name="namespacetoProductVersion"
-          >
-            <option
-              value=""
-            >
-              select-product
-            </option>
-            <option
-              label="DXP 7.0"
-              value="7.0"
-            >
-              DXP 7.0
-            </option>
-            <option
-              label="DXP 7.1"
-              value="7.1"
-            >
-              DXP 7.1
-            </option>
-            <option
-              label="DXP 7.2"
-              value="7.2"
-            >
-              DXP 7.2
-            </option>
-          </select>
-        </div>
-        <div
-          class="filter"
-        >
-          
           <select
             class="form-control"
             disabled=""
@@ -173,14 +147,14 @@ exports[`FixpackFilters renders preselected filters with a fix pack download lin
         >
           <label
             class="control-label"
-            for="namespacefromProductVersion"
+            for="namespaceproductVersion"
           >
-            from:
+            product:
           </label>
           <select
             class="form-control"
-            id="namespacefromProductVersion"
-            name="namespacefromProductVersion"
+            id="namespaceproductVersion"
+            name="namespaceproductVersion"
           >
             <option
               value=""
@@ -204,34 +178,6 @@ exports[`FixpackFilters renders preselected filters with a fix pack download lin
               value="7.2"
             >
               DXP 7.2
-            </option>
-          </select>
-        </div>
-        <div
-          class="filter"
-        >
-          
-          <select
-            class="form-control"
-            id="namespacefromFixPackVersion"
-            name="namespacefromFixPackVersion"
-          >
-            <option
-              value=""
-            >
-              select-release
-            </option>
-            <option
-              label="Fixpack 1"
-              value="1"
-            >
-              Fixpack 1
-            </option>
-            <option
-              label="Fixpack 2"
-              value="2"
-            >
-              Fixpack 2
             </option>
           </select>
         </div>
@@ -244,44 +190,53 @@ exports[`FixpackFilters renders preselected filters with a fix pack download lin
         >
           <label
             class="control-label"
-            for="namespacetoProductVersion"
+            for="namespacefromFixPackVersion"
           >
-            to:
+            from:
           </label>
           <select
             class="form-control"
-            id="namespacetoProductVersion"
-            name="namespacetoProductVersion"
+            id="namespacefromFixPackVersion"
+            name="namespacefromFixPackVersion"
           >
             <option
               value=""
             >
-              select-product
+              select-release
             </option>
             <option
-              label="DXP 7.0"
-              value="7.0"
+              label="Fixpack 1"
+              value="1.0"
             >
-              DXP 7.0
+              Fixpack 1
             </option>
             <option
-              label="DXP 7.1"
-              value="7.1"
+              label="Fixpack 2"
+              value="2.0"
             >
-              DXP 7.1
+              Fixpack 2
             </option>
             <option
-              label="DXP 7.2"
-              value="7.2"
+              label="Fixpack 3"
+              value="3.0"
             >
-              DXP 7.2
+              Fixpack 3
             </option>
           </select>
         </div>
+      </div>
+      <div
+        class="search-filter-container"
+      >
         <div
           class="filter"
         >
-          
+          <label
+            class="control-label"
+            for="namespacetoFixPackVersion"
+          >
+            to:
+          </label>
           <select
             class="form-control"
             id="namespacetoFixPackVersion"
@@ -294,9 +249,21 @@ exports[`FixpackFilters renders preselected filters with a fix pack download lin
             </option>
             <option
               label="Fixpack 1"
-              value="1"
+              value="1.0"
             >
               Fixpack 1
+            </option>
+            <option
+              label="Fixpack 2"
+              value="2.0"
+            >
+              Fixpack 2
+            </option>
+            <option
+              label="Fixpack 3"
+              value="3.0"
+            >
+              Fixpack 3
             </option>
           </select>
         </div>
@@ -308,7 +275,7 @@ exports[`FixpackFilters renders preselected filters with a fix pack download lin
     href="/"
     role="link"
   >
-    get Fixpack 1
+    get Fixpack 2
      
     <svg
       class="lexicon-icon lexicon-icon-arrow-right"
