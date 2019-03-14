@@ -20,7 +20,7 @@
 
 <br />
 
-<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/fix_packs" var="fixPacksResultsURL">
+<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/fix_packs" var="fixPackResultsURL">
 	<portlet:param name="fromFixPackVersion" value="2.0" />
 	<portlet:param name="fromProductVersion" value="7.0" />
 	<portlet:param name="product" value="dxp" />
@@ -28,7 +28,7 @@
 	<portlet:param name="toProductVersion" value="7.1" />
 </liferay-portlet:resourceURL>
 
-<strong>Fix Pack Refinement Endpoint:</strong> <%= fixPacksResultsURL %>
+<strong>Fix Pack Refinement Endpoint:</strong> <%= fixPackResultsURL %>
 
 <%
 JSONObject fixPackJSONObject = fixPackSearcher.search(renderRequest, renderResponse);
@@ -60,7 +60,7 @@ JournalArticle journalArticle = JournalArticleLocalServiceUtil.fetchArticle(them
 		ReleaseTool.Highlights,
 		{
 			fixPackJSONObject: <%= fixPackJSONObject %>,
-			fixPacksResultsURL: '<%= fixPacksResultsURL %>'
+			fixPackResultsURL: '<%= fixPackResultsURL %>'
 		},
 		document.getElementById('<portlet:namespace />highlights')
 	);

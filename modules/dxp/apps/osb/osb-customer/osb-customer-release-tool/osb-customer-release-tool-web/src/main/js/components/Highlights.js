@@ -13,7 +13,7 @@ export default class Highlights extends Component {
 		fixPackJSONObject: PropTypes.oneOfType(
 			[error, fixPackJSONObject]
 		),
-		fixPacksResultsURL: PropTypes.string.isRequired
+		fixPackResultsURL: PropTypes.string.isRequired
 	};
 
 	render() {
