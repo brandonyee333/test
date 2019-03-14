@@ -200,7 +200,7 @@ public class JiraIssueSearcher extends BaseSearcher {
 			toFixPackVersion, keywords, components, orderByType);
 
 		JSONObject jiraResultsJSONObject = _jiraIssueLocalService.getJIRAIssues(
-			jql, startAt, maxResults);
+			jql, "renderedFields", _ISSUE_FIELDS, startAt, maxResults);
 
 		return processResults(jiraResultsJSONObject);
 	}
@@ -296,6 +296,10 @@ public class JiraIssueSearcher extends BaseSearcher {
 
 		return jsonObject;
 	}
+
+	private static final String _ISSUE_FIELDS =
+		"components,customfield_13120,customfield_22520,description,key," +
+			"summary";
 
 	@Reference
 	private FixPacksAssetCategoryUtil _fixPacksAssetCategoryUtil;
