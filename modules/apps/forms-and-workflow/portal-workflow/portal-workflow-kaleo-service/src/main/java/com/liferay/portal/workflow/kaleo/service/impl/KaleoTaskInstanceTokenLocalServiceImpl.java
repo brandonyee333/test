@@ -680,11 +680,11 @@ public class KaleoTaskInstanceTokenLocalServiceImpl
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		KaleoTaskInstanceToken kaleoTaskInstance =
+		KaleoTaskInstanceToken kaleoTaskInstanceToken =
 			kaleoTaskInstanceTokenPersistence.findByPrimaryKey(
 				kaleoTaskInstanceTokenId);
 
-		kaleoTaskInstance.setModifiedDate(new Date());
+		kaleoTaskInstanceToken.setModifiedDate(new Date());
 
 		if (dueDate != null) {
 			Calendar cal = CalendarFactoryUtil.getCalendar(
@@ -692,12 +692,11 @@ public class KaleoTaskInstanceTokenLocalServiceImpl
 
 			cal.setTime(dueDate);
 
-			kaleoTaskInstance.setDueDate(cal.getTime());
+			kaleoTaskInstanceToken.setDueDate(cal.getTime());
 		}
 
-		kaleoTaskInstanceTokenPersistence.update(kaleoTaskInstance);
-
-		return kaleoTaskInstance;
+		return kaleoTaskInstanceTokenLocalService.updateKaleoTaskInstanceToken(
+			kaleoTaskInstanceToken);
 	}
 
 	protected void addCompletedCriterion(
