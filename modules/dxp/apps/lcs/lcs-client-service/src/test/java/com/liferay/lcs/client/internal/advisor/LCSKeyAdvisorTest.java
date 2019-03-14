@@ -27,8 +27,6 @@ import java.net.URL;
 
 import java.util.Arrays;
 
-import org.apache.commons.io.IOUtils;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -129,9 +127,13 @@ public class LCSKeyAdvisorTest extends PowerMockito {
 		InputStream inputStream = null;
 
 		try {
-			inputStream = new FileInputStream(_getTestLCSKeyFilePath(fileName));
+			File file = new File(_getTestLCSKeyFilePath(fileName));
 
-			byte[] bytes = IOUtils.toByteArray(inputStream);
+			inputStream = new FileInputStream(file);
+
+			byte[] bytes = new byte[(int)file.length()];
+
+			inputStream.read(bytes);
 
 			return bytes;
 		}

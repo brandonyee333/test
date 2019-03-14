@@ -69,8 +69,6 @@ public class LCSClusterEntryTokenCheckTaskTest extends PowerMockito {
 			Matchers.anyInt()
 		);
 
-		_mockLCSUtilIsLCSPortletAuthorizedToReturn(Boolean.TRUE);
-
 		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =
 			new LCSClusterEntryTokenCheckTask(
 				_lcsAlertAdvisor, _lcsClusterEntryTokenAdvisor,
@@ -118,8 +116,6 @@ public class LCSClusterEntryTokenCheckTaskTest extends PowerMockito {
 			Matchers.anyInt()
 		);
 
-		_mockLCSUtilIsLCSPortletAuthorizedToReturn(Boolean.FALSE);
-
 		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =
 			new LCSClusterEntryTokenCheckTask(
 				_lcsAlertAdvisor, _lcsClusterEntryTokenAdvisor,
@@ -142,8 +138,6 @@ public class LCSClusterEntryTokenCheckTaskTest extends PowerMockito {
 		).processLCSClusterEntryToken(
 			Matchers.anyInt()
 		);
-
-		_mockLCSUtilToThrowJSONWebServiceException();
 
 		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =
 			new LCSClusterEntryTokenCheckTask(
@@ -188,30 +182,6 @@ public class LCSClusterEntryTokenCheckTaskTest extends PowerMockito {
 
 		_verifyLCSClusterEntryTokenAdvisor(
 			1, 1, LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_TOKEN_CORRUPTED, 1);
-	}
-
-	private void _mockLCSUtilIsLCSPortletAuthorizedToReturn(boolean returnValue)
-		throws Exception {
-
-		when(
-			LCSUtil.isLCSPortletAuthorized(
-				Matchers.anyString(), Matchers.anyString())
-		).thenReturn(
-			returnValue
-		);
-	}
-
-	private void _mockLCSUtilToThrowJSONWebServiceException() throws Exception {
-		doThrow(
-			new JSONWebServiceTransportException.CommunicationFailure(
-				"Test LCS portal communication failure",
-				new ExecutionException(new UnknownHostException("Test")))
-		).when(
-			LCSUtil.class
-		);
-
-		LCSUtil.isLCSPortletAuthorized(
-			Matchers.anyString(), Matchers.anyString());
 	}
 
 	private void _spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete()

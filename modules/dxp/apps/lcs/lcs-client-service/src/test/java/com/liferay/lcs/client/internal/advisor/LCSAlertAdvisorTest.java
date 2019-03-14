@@ -229,8 +229,6 @@ public class LCSAlertAdvisorTest extends PowerMockito {
 			Matchers.anyInt()
 		);
 
-		_mockLCSUtilIsLCSPortletAuthorizedToReturn(Boolean.FALSE);
-
 		LCSAlertAdvisor lcsAlertAdvisor = spy(
 			new LCSAlertAdvisor(mock(LCSGatewayClientImpl.class)));
 
@@ -258,8 +256,6 @@ public class LCSAlertAdvisorTest extends PowerMockito {
 		).processLCSClusterEntryToken(
 			Matchers.anyInt()
 		);
-
-		_mockLCSUtilIsLCSPortletAuthorizedToReturn(Boolean.TRUE);
 
 		LCSAlertAdvisor lcsAlertAdvisor = spy(
 			new LCSAlertAdvisor(mock(LCSGatewayClientImpl.class)));
@@ -393,17 +389,6 @@ public class LCSAlertAdvisorTest extends PowerMockito {
 		);
 
 		return lcsGatewayClient;
-	}
-
-	private void _mockLCSUtilIsLCSPortletAuthorizedToReturn(boolean returnValue)
-		throws Exception {
-
-		when(
-			LCSUtil.isLCSPortletAuthorized(
-				Matchers.anyString(), Matchers.anyString())
-		).thenReturn(
-			returnValue
-		);
 	}
 
 	private HandshakeTask _spyHandshakeTask(
