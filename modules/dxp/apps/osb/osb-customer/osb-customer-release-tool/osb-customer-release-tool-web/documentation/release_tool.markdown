@@ -49,10 +49,10 @@ To configure, create a web content article and place the desired copy there. Go 
 
 ---
 
-#### Link Fixpack Downloads
-At the top of _Release Tool_ portlet, there is a filter that allows the user to select a range of product and its associated releases. When a valid range is selected, a download button will appear to allow the user to go to _Downloads_Display_ portlet and download the fixpack indicated in the upper range.
+#### Link Fix Pack Downloads
+At the top of _Release Tool_ portlet, there is a filter that allows the user to select a range of product and its associated releases. When a valid range is selected, a download button will appear to allow the user to go to _Downloads Display_ portlet and download the fix pack indicated in the upper range.
 
-In order to display the download link, the fixpack needs to be linked with download web content.
+In order to display the download link, the fix pack needs to be linked with download web content.
 
 To do that, go to _Web Content_ > _Downloads_ > Select a product of choice, for example _DXP 7.0_ > _Fix Packs_ > Select a fix pack of choice, for example _Fix Pack 1_.
 
