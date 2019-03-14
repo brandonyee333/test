@@ -58,10 +58,12 @@ public class JIRAIssueLocalServiceWrapper
 
 	@Override
 	public com.liferay.portal.kernel.json.JSONObject getJIRAIssues(
-			String jql, int startAt, int maxResults)
+			String jql, String expand, String fields, int startAt,
+			int maxResults)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		return _jiraIssueLocalService.getJIRAIssues(jql, startAt, maxResults);
+		return _jiraIssueLocalService.getJIRAIssues(
+			jql, expand, fields, startAt, maxResults);
 	}
 
 	/**

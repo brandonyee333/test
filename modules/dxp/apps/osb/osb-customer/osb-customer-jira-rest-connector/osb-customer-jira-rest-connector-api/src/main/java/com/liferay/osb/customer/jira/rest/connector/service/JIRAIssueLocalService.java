@@ -59,7 +59,9 @@ public interface JIRAIssueLocalService extends BaseLocalService {
 	public JSONObject getJIRAIssue(String ticketKey) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public JSONObject getJIRAIssues(String jql, int startAt, int maxResults)
+	public JSONObject getJIRAIssues(
+			String jql, String expand, String fields, int startAt,
+			int maxResults)
 		throws PortalException;
 
 	/**

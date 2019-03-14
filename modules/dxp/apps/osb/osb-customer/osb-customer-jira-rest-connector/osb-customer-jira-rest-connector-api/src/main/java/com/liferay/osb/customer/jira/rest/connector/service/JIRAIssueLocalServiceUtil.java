@@ -60,10 +60,12 @@ public class JIRAIssueLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.json.JSONObject getJIRAIssues(
-			String jql, int startAt, int maxResults)
+			String jql, String expand, String fields, int startAt,
+			int maxResults)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		return getService().getJIRAIssues(jql, startAt, maxResults);
+		return getService().getJIRAIssues(
+			jql, expand, fields, startAt, maxResults);
 	}
 
 	/**
