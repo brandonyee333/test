@@ -6,9 +6,6 @@ import FixpackFilters from '../FixpackFilters';
 const setup = () => {
 	const JSONArray = [
 		{
-			name: 'DXP 7.0',
-			product: 'dxp',
-			version: '7.0',
 			fixPacks: [
 				{
 					name: 'Fixpack 1',
@@ -18,34 +15,40 @@ const setup = () => {
 					name: 'Fixpack 2',
 					version: '2'
 				}
-			]
+			],
+			name: 'DXP 7.0',
+			product: 'dxp',
+			version: '7.0'
 		},
 		{
+			fixPacks: [
+				{
+					name: 'Fixpack 1',
+					version: '1'
+				}
+			],
 			name: 'DXP 7.1',
 			product: 'dxp',
-			version: '7.1',
-			fixPacks: [
-				{
-					name: 'Fixpack 1',
-					version: '1'
-				}
-			]
+			version: '7.1'
 		},
 		{
-			name: 'DXP 7.2',
-			product: 'dxp',
-			version: '7.2',
 			fixPacks: [
 				{
 					name: 'Fixpack 1',
 					version: '1'
 				}
-			]
+			],
+			name: 'DXP 7.2',
+			product: 'dxp',
+			version: '7.2'
 		}
 	];
 
 	const utils = render(
-		<FixpackFilters actionURL="/" filtersJSON={JSONArray} />
+		<FixpackFilters
+			actionURL="/"
+			filtersJSON={JSONArray}
+		/>
 	);
 
 	const fromFixPackDropdown = utils.container.querySelectorAll('select')[1];
@@ -83,10 +86,10 @@ describe('FixpackFilters', () => {
 				actionURL="/"
 				filtersJSON={JSONArray}
 				fixpackURL="/"
-				fromProductVersion="7.0"
 				fromFixPackVersion="2"
-				toProductVersion="7.1"
+				fromProductVersion="7.0"
 				toFixPackVersion="1"
+				toProductVersion="7.1"
 			/>
 		);
 

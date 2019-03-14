@@ -10,14 +10,14 @@
 	margin-bottom: $margin-default;
 	margin-top: -32px;
 
-	form {
-		width: 80%;
-	}
-
 	form,
 	.btn-lg {
 		display: inline-block;
 		vertical-align: middle;
+	}
+
+	form {
+		width: 80%;
 	}
 
 	.btn-lg {
@@ -78,11 +78,9 @@
 }
 
 @include media-breakpoint-down(sm) {
-	.filter {
-		&:last-child {
-			border-left-width: 0;
-			border-top: 1px solid rgba(9, 16, 29, 0.11);
-		}
+	.filter:last-child {
+		border-left-width: 0;
+		border-top: 1px solid rgba(9, 16, 29, 0.11);
 	}
 
 	.search-filters .search-filter-container {

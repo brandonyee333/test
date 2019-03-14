@@ -66,10 +66,10 @@ portletURL.setParameter("tabs1", tabs1);
 			actionURL: '<%= fixPacksURL %>',
 			filtersJSON: <%= releaseToolDisplayContext.getFixPackFiltersJSONArray() %>,
 			fixpackURL: '<%= releaseToolDisplayContext.getFixPackDownloadURL(product, toProductVersion, toFixPackVersion) %>',
-			fromProductVersion: '<%= String.valueOf(fromProductVersion) %>',
 			fromFixPackVersion: '<%= String.valueOf(fromFixPackVersion) %>',
-			toProductVersion: '<%= String.valueOf(toProductVersion) %>',
-			toFixPackVersion: '<%= String.valueOf(toFixPackVersion) %>'
+			fromProductVersion: '<%= String.valueOf(fromProductVersion) %>',
+			toFixPackVersion: '<%= String.valueOf(toFixPackVersion) %>',
+			toProductVersion: '<%= String.valueOf(toProductVersion) %>'
 		},
 		document.getElementById('<portlet:namespace />fixpackFilters')
 	);

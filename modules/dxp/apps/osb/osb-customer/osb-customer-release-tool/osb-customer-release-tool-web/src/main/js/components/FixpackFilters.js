@@ -8,37 +8,36 @@ import {filtersJSONObject} from '../types/highlights';
 
 import Button from './Button';
 
-const PORTLET_ID =
-	'com_liferay_osb_customer_release_tool_web_portlet_ReleaseToolPortlet';
+const PORTLET_ID = 'com_liferay_osb_customer_release_tool_web_portlet_ReleaseToolPortlet';
 
 export default class FixpackFilters extends Component {
 	fixpackFiltersFormRef = React.createRef();
 
 	static defaultProps = {
 		fixpackURL: '',
-		fromProductVersion: '',
 		fromFixPackVersion: '',
-		toProductVersion: '',
-		toFixPackVersion: ''
+		fromProductVersion: '',
+		toFixPackVersion: '',
+		toProductVersion: ''
 	};
 
 	static propTypes = {
 		actionURL: PropTypes.string.isRequired,
 		filtersJSON: filtersJSONObject.isRequired,
 		fixpackURL: PropTypes.string,
-		fromProductVersion: PropTypes.string,
 		fromFixPackVersion: PropTypes.string,
-		toProductVersion: PropTypes.string,
-		toFixPackVersion: PropTypes.string
+		fromProductVersion: PropTypes.string,
+		toFixPackVersion: PropTypes.string,
+		toProductVersion: PropTypes.string
 	};
 
 	determineVersion = version => {
-		return version === '0.0' ? '' : version
+		return version === '0.0' ? '' : version;
 	};
 
 	state = {
-		fromProductVersion: this.determineVersion(this.props.fromProductVersion),
 		fromFixPackVersion: this.determineVersion(this.props.fromFixPackVersion),
+		fromProductVersion: this.determineVersion(this.props.fromProductVersion),
 		toProductVersion: this.determineVersion(this.props.toProductVersion)
 	};
 
@@ -89,9 +88,10 @@ export default class FixpackFilters extends Component {
 
 	lookupFixPacksByProduct = (productVersion, isToFixPackFilter = false) => {
 		const {filtersJSON} = this.props;
+
 		const {
-			fromProductVersion,
 			fromFixPackVersion,
+			fromProductVersion,
 			toProductVersion
 		} = this.state;
 
@@ -116,8 +116,8 @@ export default class FixpackFilters extends Component {
 		const {actionURL, filtersJSON, fixpackURL, toFixPackVersion} = this.props;
 
 		const {
-			fromProductVersion,
 			fromFixPackVersion,
+			fromProductVersion,
 			toProductVersion
 		} = this.state;
 
@@ -184,8 +184,13 @@ export default class FixpackFilters extends Component {
 					</div>
 				</form>
 
-				{fixpackURL !=='null' && (
-					<Button children={fixpackDownloadLinkDescription} display="link" href={fixpackURL} size="lg" />
+				{fixpackURL !== 'null' && (
+					<Button
+						children={fixpackDownloadLinkDescription}
+						display="link"
+						href={fixpackURL}
+						size="lg"
+					/>
 				)}
 			</Fragment>
 		);
@@ -236,17 +241,19 @@ class Filter extends Component {
 				>
 					<option value="">{placeholder}</option>
 
-					{options.map(option => {
-						return (
-							<option
-								key={option.version}
-								label={option.name}
-								value={option.version}
-							>
-								{option.name}
-							</option>
-						);
-					})}
+					{options.map(
+						option => {
+							return (
+								<option
+									key={option.version}
+									label={option.name}
+									value={option.version}
+								>
+									{option.name}
+								</option>
+							);
+						}
+					)}
 				</select>
 			</div>
 		);
