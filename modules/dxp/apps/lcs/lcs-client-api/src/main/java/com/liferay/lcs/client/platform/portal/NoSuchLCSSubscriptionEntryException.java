@@ -12,15 +12,26 @@
  *
  */
 
-package com.liferay.lcs.rest.client.exception;
+package com.liferay.lcs.client.platform.portal;
 
 /**
- * @author Igor Beslic
+ * @author Mladen Cikara
  */
-public class LCSClientInternalException extends Exception {
+public class NoSuchLCSSubscriptionEntryException extends Exception {
 
-	public LCSClientInternalException(String message, Throwable cause) {
-		super(message, cause);
+	public NoSuchLCSSubscriptionEntryException() {
+	}
+
+	public NoSuchLCSSubscriptionEntryException(String msg) {
+		super(msg);
+	}
+
+	public NoSuchLCSSubscriptionEntryException(String msg, Throwable cause) {
+		super(msg, cause);
+	}
+
+	public NoSuchLCSSubscriptionEntryException(Throwable cause) {
+		super(cause);
 	}
 
 }

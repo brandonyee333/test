@@ -12,26 +12,15 @@
  *
  */
 
-package com.liferay.lcs.rest.client.exception;
+package com.liferay.lcs.client.platform.portal;
 
 /**
- * @author Mladen Cikara
+ * @author Igor Beslic
  */
-public class NoSuchLCSSubscriptionEntryException extends Exception {
+public interface LCSSubscriptionEntryClient {
 
-	public NoSuchLCSSubscriptionEntryException() {
-	}
-
-	public NoSuchLCSSubscriptionEntryException(String msg) {
-		super(msg);
-	}
-
-	public NoSuchLCSSubscriptionEntryException(String msg, Throwable cause) {
-		super(msg, cause);
-	}
-
-	public NoSuchLCSSubscriptionEntryException(Throwable cause) {
-		super(cause);
-	}
+	public LCSSubscriptionEntry fetchLCSSubscriptionEntry(String key)
+		throws LCSClientInternalException,
+			   LCSClientRemoteAuthorizationException, LCSClientRemoteException;
 
 }

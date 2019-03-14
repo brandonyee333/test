@@ -12,10 +12,10 @@
  *
  */
 
-package com.liferay.lcs.platform.gateway;
+package com.liferay.lcs.client.platform.gateway;
 
-import com.liferay.lcs.exception.CompressionException;
-import com.liferay.lcs.internal.event.LCSEventListener;
+import com.liferay.lcs.client.event.LCSEventListener;
+import com.liferay.lcs.client.exception.CompressionException;
 import com.liferay.lcs.messaging.Message;
 
 import java.util.List;

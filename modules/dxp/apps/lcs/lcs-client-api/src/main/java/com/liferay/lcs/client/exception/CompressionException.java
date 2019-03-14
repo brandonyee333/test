@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.lcs.exception;
+package com.liferay.lcs.client.exception;
 
 /**
  * @author Igor Beslic

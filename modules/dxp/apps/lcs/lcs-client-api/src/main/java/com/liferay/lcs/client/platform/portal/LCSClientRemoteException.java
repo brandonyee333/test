@@ -12,19 +12,15 @@
  *
  */
 
-package com.liferay.lcs.task.scheduler;
-
-import com.liferay.lcs.internal.event.LCSEventListener;
-
-import java.util.Map;
+package com.liferay.lcs.client.platform.portal;
 
 /**
- * @author Riccardo Ferrari
+ * @author Igor Beslic
  */
-public interface TaskSchedulerService extends LCSEventListener {
+public class LCSClientRemoteException extends Exception {
 
-	public void scheduleTask(Map<String, String> schedulerContext);
-
-	public void start();
+	public LCSClientRemoteException(String message, Throwable cause) {
+		super(message, cause);
+	}
 
 }

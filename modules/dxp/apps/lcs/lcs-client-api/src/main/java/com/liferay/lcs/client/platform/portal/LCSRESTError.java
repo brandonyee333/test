@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.lcs.rest.commons;
+package com.liferay.lcs.client.platform.portal;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;

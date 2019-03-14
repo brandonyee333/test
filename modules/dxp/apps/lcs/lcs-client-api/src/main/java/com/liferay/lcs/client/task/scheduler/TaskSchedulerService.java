@@ -12,17 +12,19 @@
  *
  */
 
-package com.liferay.lcs.rest.client.exception;
+package com.liferay.lcs.client.task.scheduler;
+
+import com.liferay.lcs.client.event.LCSEventListener;
+
+import java.util.Map;
 
 /**
- * @author Igor Beslic
+ * @author Riccardo Ferrari
  */
-public class LCSClientRemoteAuthorizationException extends Exception {
+public interface TaskSchedulerService extends LCSEventListener {
 
-	public LCSClientRemoteAuthorizationException(
-		String message, Throwable cause) {
+	public void scheduleTask(Map<String, String> schedulerContext);
 
-		super(message, cause);
-	}
+	public void start();
 
 }

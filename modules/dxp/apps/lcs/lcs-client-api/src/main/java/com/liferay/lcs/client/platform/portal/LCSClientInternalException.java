@@ -12,14 +12,14 @@
  *
  */
 
-package com.liferay.lcs.platform.gateway;
+package com.liferay.lcs.client.platform.portal;
 
 /**
  * @author Igor Beslic
  */
-public class LCSGatewayException extends Exception {
+public class LCSClientInternalException extends Exception {
 
-	public LCSGatewayException(String message, Throwable cause) {
+	public LCSClientInternalException(String message, Throwable cause) {
 		super(message, cause);
 	}
 

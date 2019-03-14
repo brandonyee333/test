@@ -12,14 +12,14 @@
  *
  */
 
-package com.liferay.lcs.rest.client.exception;
+package com.liferay.lcs.client.platform.gateway;
 
 /**
  * @author Igor Beslic
  */
-public class LCSClientRemoteException extends Exception {
+public class LCSGatewayException extends Exception {
 
-	public LCSClientRemoteException(String message, Throwable cause) {
+	public LCSGatewayException(String message, Throwable cause) {
 		super(message, cause);
 	}
 

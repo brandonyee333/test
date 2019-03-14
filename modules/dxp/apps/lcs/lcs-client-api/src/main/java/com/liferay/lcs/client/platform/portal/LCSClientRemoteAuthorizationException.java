@@ -12,13 +12,17 @@
  *
  */
 
-package com.liferay.lcs.internal.event;
+package com.liferay.lcs.client.platform.portal;
 
 /**
  * @author Igor Beslic
  */
-public interface LCSEventListener {
+public class LCSClientRemoteAuthorizationException extends Exception {
 
-	public void onLCSEvent(LCSEvent lcsEvent);
+	public LCSClientRemoteAuthorizationException(
+		String message, Throwable cause) {
+
+		super(message, cause);
+	}
 
 }

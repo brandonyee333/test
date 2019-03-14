@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.lcs.rest.client;
+package com.liferay.lcs.client.platform.portal;
 
 import java.util.Date;
 
