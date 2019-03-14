@@ -25,18 +25,18 @@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
 <%@ page import="com.liferay.lcs.client.internal.advisor.LCSClusterEntryTokenAdvisor" %><%@
 page import="com.liferay.lcs.client.internal.exception.LCSExceptionHandler" %><%@
-page import="com.liferay.lcs.client.platform.gateway.LCSGatewayClient" %><%@
 page import="com.liferay.lcs.client.internal.platform.portal.LCSClusterEntryClientUtil" %><%@
 page import="com.liferay.lcs.client.internal.platform.portal.LCSClusterNodeClientUtil" %><%@
 page import="com.liferay.lcs.client.internal.platform.portal.LCSProjectClientUtil" %><%@
-page import="com.liferay.lcs.client.platform.portal.LCSClusterEntry" %><%@
-page import="com.liferay.lcs.client.platform.portal.LCSClusterNode" %><%@
-page import="com.liferay.lcs.client.platform.portal.LCSProject" %><%@
 page import="com.liferay.lcs.client.internal.task.advisor.TaskAdvisor" %><%@
 page import="com.liferay.lcs.client.internal.util.ClusterNodeUtil" %><%@
 page import="com.liferay.lcs.client.internal.util.LCSAlert" %><%@
 page import="com.liferay.lcs.client.internal.util.LCSUtil" %><%@
 page import="com.liferay.lcs.client.internal.util.PortletPropsValues" %><%@
+page import="com.liferay.lcs.client.platform.gateway.LCSGatewayClient" %><%@
+page import="com.liferay.lcs.client.platform.portal.LCSClusterEntry" %><%@
+page import="com.liferay.lcs.client.platform.portal.LCSClusterNode" %><%@
+page import="com.liferay.lcs.client.platform.portal.LCSProject" %><%@
 page import="com.liferay.portal.kernel.bean.BeanLocator" %><%@
 page import="com.liferay.portal.kernel.bean.PortletBeanLocatorUtil" %><%@
 page import="com.liferay.portal.kernel.cluster.ClusterExecutorUtil" %><%@
