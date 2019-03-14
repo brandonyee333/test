@@ -14,10 +14,8 @@
 
 package com.liferay.lcs.client.web.internal.portlet;
 
-import com.liferay.lcs.client.internal.advisor.LCSPortletStateAdvisor;
+import com.liferay.lcs.client.advisor.LCSPortletStateAdvisor;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
-import com.liferay.portal.kernel.bean.BeanLocator;
-import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
@@ -27,8 +25,12 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 
 import java.io.IOException;
 
+import javax.portlet.Portlet;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Ivica Cardic
@@ -36,6 +38,37 @@ import javax.portlet.ResourceResponse;
  * @author Marko Cikos
  * @author Peter Shin
  */
+@Component(
+	immediate = true,
+	property = {
+		"com.liferay.portlet.control-panel-entry-category=control_panel.configuration",
+		"com.liferay.portlet.control-panel-entry-weight=100.0",
+		"com.liferay.portlet.preferences-unique-per-layout=false",
+		"com.liferay.portlet.header-portlet-css=/css/main.css",
+		"com.liferay.portlet.css-class-wrapper=lcs-portlet",
+		"com.liferay.portlet.display-category=category.lcs",
+		"com.liferay.portlet.footer-portlet-javascript=/js/main.js",
+		"com.liferay.portlet.layout-cacheable=true",
+		"com.liferay.portlet.scopeable=true",
+		"com.liferay.portlet.single-page-application=false",
+		"javax.portlet.display-name=Liferay Connected Services",
+		"javax.portlet.expiration-cache=0",
+		"javax.portlet.info.keywords=LCS Liferay Connected Services",
+		"javax.portlet.info.short-title=Liferay Connected Services",
+		"javax.portlet.info.title=Liferay Connected Services",
+		"javax.portlet.init-param.copy-request-parameters=true",
+		"javax.portlet.init-param.add-process-action-success-action=false",
+		"javax.portlet.init-param.view-jsp=view.jsp",
+		"javax.portlet.name=com_liferay_lcs_client_web_internal_portlet_LCSPortlet",
+		"javax.portlet.resource-bundle=content.Language",
+		"javax.portlet.security-role-ref=administrator,guest,power-user,user",
+		"javax.portlet.supported-public-render-parameter=layoutLCSClusterEntryId",
+		"javax.portlet.supported-public-render-parameter=layoutLCSClusterNodeId",
+		"javax.portlet.supported-public-render-parameter=layoutLCSProjectId",
+		"javax.portlet.supports.mime-type=text/html"
+	},
+	service = Portlet.class
+)
 public class ConnectedServicesPortlet extends MVCPortlet {
 
 	@Override
@@ -68,23 +101,12 @@ public class ConnectedServicesPortlet extends MVCPortlet {
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 		throws Exception {
 
-		BeanLocator beanLocator = PortletBeanLocatorUtil.getBeanLocator(
-			"lcs-portlet");
-
-		LCSGatewayClient lcsGatewayClient =
-			(LCSGatewayClient)beanLocator.locate(
-				"com.liferay.lcs.client.platform.gateway.LCSGatewayClient");
-
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		jsonObject.put("lcsGatewayAvailable", lcsGatewayClient.isAvailable());
-
-		LCSPortletStateAdvisor lcsPortletStateAdvisor =
-			(LCSPortletStateAdvisor)beanLocator.locate(
-				"com.liferay.lcs.client.internal.advisor.LCSPortletStateAdvisor");
+		jsonObject.put("lcsGatewayAvailable", _lcsGatewayClient.isAvailable());
 
 		LCSPortletState lcsPortletState =
-			lcsPortletStateAdvisor.getLCSPortletState(false);
+			_lcsPortletStateAdvisor.getLCSPortletState(false);
 
 		if ((lcsPortletState == LCSPortletState.NO_CONNECTION) ||
 			(lcsPortletState == LCSPortletState.NOT_REGISTERED)) {
@@ -102,5 +124,11 @@ public class ConnectedServicesPortlet extends MVCPortlet {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ConnectedServicesPortlet.class);
+
+	@Reference
+	private LCSGatewayClient _lcsGatewayClient;
+
+	@Reference
+	private LCSPortletStateAdvisor _lcsPortletStateAdvisor;
 
 }
