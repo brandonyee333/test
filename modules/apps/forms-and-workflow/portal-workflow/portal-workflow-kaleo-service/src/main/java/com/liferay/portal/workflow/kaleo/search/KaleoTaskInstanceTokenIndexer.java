@@ -541,16 +541,16 @@ public class KaleoTaskInstanceTokenIndexer
 			KaleoTaskInstanceTokenField.ASSIGNEE_GROUP_IDS,
 			assigneeGroupIds.toArray(new Long[0]));
 		document.addKeyword(
+			KaleoTaskInstanceTokenField.CLASS_NAME,
+			kaleoTaskInstanceToken.getClassName());
+		document.addKeyword(
+			Field.CLASS_PK, kaleoTaskInstanceToken.getClassPK());
+		document.addKeyword(
 			KaleoTaskInstanceTokenField.COMPLETED,
 			kaleoTaskInstanceToken.isCompleted());
 		document.addDate(
 			KaleoTaskInstanceTokenField.COMPLETION_DATE,
 			kaleoTaskInstanceToken.getCompletionDate());
-		document.addKeyword(
-			KaleoTaskInstanceTokenField.CLASS_NAME,
-			kaleoTaskInstanceToken.getClassName());
-		document.addKeyword(
-			Field.CLASS_PK, kaleoTaskInstanceToken.getClassPK());
 		document.addDate(
 			KaleoTaskInstanceTokenField.DUE_DATE,
 			kaleoTaskInstanceToken.getDueDate());
