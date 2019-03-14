@@ -90,15 +90,15 @@ public class WatsonAddressAuditPersistenceImpl
 	public WatsonAddressAuditPersistenceImpl() {
 		setModelClass(WatsonAddressAudit.class);
 
+		Map<String, String> dbColumnNames = new HashMap<String, String>();
+
+		dbColumnNames.put("number", "number_");
+
 		try {
 			Field field = BasePersistenceImpl.class.getDeclaredField(
 				"_dbColumnNames");
 
 			field.setAccessible(true);
-
-			Map<String, String> dbColumnNames = new HashMap<String, String>();
-
-			dbColumnNames.put("number", "number_");
 
 			field.set(this, dbColumnNames);
 		}
