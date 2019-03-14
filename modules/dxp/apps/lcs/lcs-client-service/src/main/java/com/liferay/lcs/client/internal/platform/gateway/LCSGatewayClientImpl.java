@@ -14,6 +14,8 @@
 
 package com.liferay.lcs.client.internal.platform.gateway;
 
+import com.liferay.lcs.client.configuration.LCSConfiguration;
+import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.exception.CompressionException;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.event.LCSEventListener;
@@ -27,12 +29,19 @@ import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.osgi.service.component.ComponentFactory;
+import org.osgi.service.component.ComponentInstance;
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Dictionary;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +49,31 @@ import java.util.Map;
  * @author Ivica Cardic
  * @author Igor Beslic
  */
+@Component
 public class LCSGatewayClientImpl implements LCSGatewayClient {
+
+	@Activate
+	public void activate() {
+		LCSConfiguration lcsConfiguration =
+			_lcsConfigurationProvider.getLCSConfiguration();
+
+		Dictionary<String, String> properties = new Hashtable<>();
+
+		properties.put("hostName", lcsConfiguration.osbLCSGatewayWebHostName());
+		properties.put("hostPort", lcsConfiguration.osbLCSGatewayWebHostPort());
+		properties.put(
+			"protocol", lcsConfiguration.osbLCSGatewayWebProtocol());
+
+		ComponentInstance componentInstance =
+			_jsonWebServiceClientComponentFactory.newInstance(properties);
+
+		_jsonWebServiceClient =
+			(JSONWebServiceClient)componentInstance.getInstance();
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Activated " + this);
+		}
+	}
 
 	@Override
 	public void deleteMessages(String key) throws LCSGatewayException {
@@ -278,9 +311,17 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 	private volatile boolean _available;
 	private final Map<String, String> _baseHeaders = new HashMap<>();
 	private JSONWebServiceClient _jsonWebServiceClient;
+
+	@Reference(target = "(component.factory=JSONWebServiceClient)")
+	private ComponentFactory _jsonWebServiceClientComponentFactory;
+
 	private long _lastHandshakeSuccess;
 	private long _lastMessageReceived;
 	private long _lastMessageSent;
 	private final List<LCSEventListener> _lcsEventListeners = new ArrayList<>();
+
+	@Reference
+	private LCSConfigurationProvider _lcsConfigurationProvider;
+
 
 }
