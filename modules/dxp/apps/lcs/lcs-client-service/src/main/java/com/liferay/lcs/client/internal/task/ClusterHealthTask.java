@@ -14,8 +14,8 @@
 
 package com.liferay.lcs.client.internal.task;
 
-import com.liferay.lcs.messaging.ClusterHealthMessage;
 import com.liferay.lcs.client.internal.util.ClusterNodeUtil;
+import com.liferay.lcs.messaging.ClusterHealthMessage;
 
 /**
  * @author Ivica Cardic

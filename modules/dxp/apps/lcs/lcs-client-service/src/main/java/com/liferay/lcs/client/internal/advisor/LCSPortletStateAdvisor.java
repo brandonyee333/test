@@ -14,9 +14,9 @@
 
 package com.liferay.lcs.client.internal.advisor;
 
+import com.liferay.lcs.client.platform.portal.LCSClientRemoteAuthorizationException;
 import com.liferay.lcs.client.platform.portal.LCSSubscriptionEntry;
 import com.liferay.lcs.client.platform.portal.LCSSubscriptionEntryClient;
-import com.liferay.lcs.client.platform.portal.LCSClientRemoteAuthorizationException;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;

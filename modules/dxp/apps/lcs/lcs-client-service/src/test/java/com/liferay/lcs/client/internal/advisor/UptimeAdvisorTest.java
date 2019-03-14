@@ -14,11 +14,9 @@
 
 package com.liferay.lcs.client.internal.advisor;
 
+import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.internal.MockPortletPreferencesImpl;
 import com.liferay.lcs.client.internal.advisor.answer.LCSPortletPreferencesUtilAnswer;
-import com.liferay.lcs.client.event.LCSEvent;
-import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
-import com.liferay.lcs.client.internal.advisor.UptimeAdvisor;
 import com.liferay.lcs.client.internal.util.LCSPortletPreferencesUtil;
 
 import java.lang.management.ManagementFactory;

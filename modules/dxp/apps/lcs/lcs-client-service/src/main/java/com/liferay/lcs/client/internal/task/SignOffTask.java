@@ -16,8 +16,8 @@ package com.liferay.lcs.client.internal.task;
 
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.event.LCSEventListener;
-import com.liferay.lcs.messaging.HandshakeMessage;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
+import com.liferay.lcs.messaging.HandshakeMessage;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;

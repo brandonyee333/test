@@ -16,8 +16,8 @@ package com.liferay.lcs.client.internal.task;
 
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.management.MBeanServerService;
-import com.liferay.lcs.messaging.ServerMetricsMessage;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
+import com.liferay.lcs.messaging.ServerMetricsMessage;
 import com.liferay.portal.kernel.dao.jdbc.pool.metrics.ConnectionPoolMetrics;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;

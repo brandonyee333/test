@@ -15,10 +15,10 @@
 package com.liferay.lcs.client.internal.command;
 
 import com.liferay.lcs.client.exception.CompressionException;
-import com.liferay.lcs.messaging.ExecuteScriptCommandMessage;
-import com.liferay.lcs.messaging.ExecuteScriptResponseMessage;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayException;
+import com.liferay.lcs.messaging.ExecuteScriptCommandMessage;
+import com.liferay.lcs.messaging.ExecuteScriptResponseMessage;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncPrintWriter;
 import com.liferay.portal.kernel.log.Log;

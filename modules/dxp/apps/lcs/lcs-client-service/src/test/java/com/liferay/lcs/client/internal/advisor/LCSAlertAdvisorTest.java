@@ -14,23 +14,19 @@
 
 package com.liferay.lcs.client.internal.advisor;
 
-import com.liferay.lcs.client.internal.advisor.LCSAlertAdvisor;
-import com.liferay.lcs.client.internal.advisor.LCSClusterEntryTokenAdvisor;
-import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
-import com.liferay.lcs.client.internal.advisor.UptimeAdvisor;
 import com.liferay.lcs.client.internal.exception.MissingLCSClusterEntryTokenException;
 import com.liferay.lcs.client.internal.exception.MultipleLCSClusterEntryTokenException;
-import com.liferay.lcs.messaging.HandshakeMessage;
-import com.liferay.lcs.messaging.HandshakeResponseMessage;
-import com.liferay.lcs.messaging.Message;
-import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.client.internal.platform.gateway.LCSGatewayClientImpl;
-import com.liferay.lcs.client.platform.portal.LCSClusterEntryToken;
 import com.liferay.lcs.client.internal.task.HandshakeTask;
 import com.liferay.lcs.client.internal.task.LCSClusterEntryTokenCheckTask;
 import com.liferay.lcs.client.internal.task.scheduler.TaskSchedulerServiceImpl;
 import com.liferay.lcs.client.internal.util.LCSAlert;
 import com.liferay.lcs.client.internal.util.LCSUtil;
+import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
+import com.liferay.lcs.client.platform.portal.LCSClusterEntryToken;
+import com.liferay.lcs.messaging.HandshakeMessage;
+import com.liferay.lcs.messaging.HandshakeResponseMessage;
+import com.liferay.lcs.messaging.Message;
 import com.liferay.petra.encryptor.EncryptorException;
 import com.liferay.portal.kernel.util.FileUtil;
 

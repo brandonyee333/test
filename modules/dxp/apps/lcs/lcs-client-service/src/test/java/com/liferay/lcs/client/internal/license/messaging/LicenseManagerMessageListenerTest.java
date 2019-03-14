@@ -15,9 +15,6 @@
 package com.liferay.lcs.client.internal.license.messaging;
 
 import com.liferay.lcs.client.internal.advisor.LCSPortletStateAdvisor;
-import com.liferay.lcs.client.internal.license.messaging.LicenseManagerBaseMessageListener;
-import com.liferay.lcs.client.internal.license.messaging.LicenseManagerValidateLCSMessageListener;
-import com.liferay.lcs.client.internal.license.messaging.LicenseManagerValidateSubscriptionMessageListener;
 import com.liferay.lcs.client.internal.util.LCSUtil;
 import com.liferay.portal.json.JSONObjectImpl;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;

@@ -14,8 +14,8 @@
 
 package com.liferay.lcs.client.internal.task;
 
-import com.liferay.lcs.messaging.PortalMetricsMessage;
 import com.liferay.lcs.client.internal.metrics.PortalMetricsAggregator;
+import com.liferay.lcs.messaging.PortalMetricsMessage;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 

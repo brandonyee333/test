@@ -15,21 +15,17 @@
 package com.liferay.lcs.client.internal.advisor;
 
 import com.liferay.lcs.client.event.LCSEvent;
-import com.liferay.lcs.client.internal.advisor.LCSAlertAdvisor;
-import com.liferay.lcs.client.internal.advisor.LCSClusterEntryTokenAdvisor;
-import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
-import com.liferay.lcs.client.internal.advisor.UptimeAdvisor;
-import com.liferay.lcs.messaging.HandshakeMessage;
-import com.liferay.lcs.messaging.HandshakeResponseMessage;
-import com.liferay.lcs.messaging.Message;
-import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
-import com.liferay.lcs.client.platform.gateway.LCSGatewayException;
 import com.liferay.lcs.client.internal.platform.gateway.LCSGatewayClientImpl;
 import com.liferay.lcs.client.internal.runnable.LCSThreadFactory;
 import com.liferay.lcs.client.internal.task.HandshakeTask;
-import com.liferay.lcs.client.task.scheduler.TaskSchedulerService;
 import com.liferay.lcs.client.internal.task.scheduler.TaskSchedulerServiceImpl;
 import com.liferay.lcs.client.internal.util.PortletPropsValues;
+import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
+import com.liferay.lcs.client.platform.gateway.LCSGatewayException;
+import com.liferay.lcs.client.task.scheduler.TaskSchedulerService;
+import com.liferay.lcs.messaging.HandshakeMessage;
+import com.liferay.lcs.messaging.HandshakeResponseMessage;
+import com.liferay.lcs.messaging.Message;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
 import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;

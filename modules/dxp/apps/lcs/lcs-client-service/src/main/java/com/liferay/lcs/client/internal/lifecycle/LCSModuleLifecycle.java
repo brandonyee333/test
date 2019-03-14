@@ -19,6 +19,7 @@ import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -53,11 +54,12 @@ public class LCSModuleLifecycle {
 	private static final Log _log = LogFactoryUtil.getLog(
 		LCSModuleLifecycle.class);
 
+	private LCSConfiguration _lcsConfiguration;
+
+	@Reference
+	private LCSConfigurationProvider _lcsConfigurationProvider;
 
 	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED)
 	private ModuleServiceLifecycle _moduleServiceLifecycle;
-	@Reference
-	private LCSConfigurationProvider _lcsConfigurationProvider;
-	private LCSConfiguration _lcsConfiguration;
 
 }

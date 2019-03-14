@@ -16,8 +16,6 @@ package com.liferay.lcs.client.internal.advisor;
 
 import java.util.Map;
 
-import com.liferay.lcs.client.internal.advisor.InstallationEnvironmentAdvisor;
-import com.liferay.lcs.client.internal.advisor.InstallationEnvironmentAdvisorFactory;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -14,12 +14,12 @@
 
 package com.liferay.lcs.client.internal.command;
 
+import com.liferay.lcs.client.internal.task.advisor.TaskAdvisor;
+import com.liferay.lcs.client.internal.util.LCSPatcherUtil;
+import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.messaging.SendPatchesCommandMessage;
 import com.liferay.lcs.messaging.SendPatchesResponseMessage;
-import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
-import com.liferay.lcs.client.internal.task.advisor.TaskAdvisor;
 import com.liferay.lcs.util.LCSConstants;
-import com.liferay.lcs.client.internal.util.LCSPatcherUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Digester;

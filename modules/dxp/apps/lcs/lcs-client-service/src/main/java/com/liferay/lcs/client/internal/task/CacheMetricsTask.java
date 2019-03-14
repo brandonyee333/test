@@ -16,8 +16,8 @@ package com.liferay.lcs.client.internal.task;
 
 import com.liferay.lcs.client.internal.management.MBeanServerService;
 import com.liferay.lcs.client.internal.management.ObjectNameKeyPropertyMapKeyStrategy;
-import com.liferay.lcs.messaging.CacheMetricsMessage;
 import com.liferay.lcs.client.internal.util.PortletPropsValues;
+import com.liferay.lcs.messaging.CacheMetricsMessage;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 
 import java.lang.reflect.Field;

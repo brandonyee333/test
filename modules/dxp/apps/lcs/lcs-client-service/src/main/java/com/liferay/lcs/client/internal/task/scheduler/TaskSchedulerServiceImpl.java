@@ -14,12 +14,11 @@
 
 package com.liferay.lcs.client.internal.task.scheduler;
 
+import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.internal.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.client.internal.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.advisor.UptimeAdvisor;
-import com.liferay.lcs.client.event.LCSEvent;
-import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.client.internal.task.CommandMessageTask;
 import com.liferay.lcs.client.internal.task.HandshakeTask;
 import com.liferay.lcs.client.internal.task.HeartbeatTask;
@@ -28,9 +27,10 @@ import com.liferay.lcs.client.internal.task.ScheduledTask;
 import com.liferay.lcs.client.internal.task.SignOffTask;
 import com.liferay.lcs.client.internal.task.UptimeTask;
 import com.liferay.lcs.client.internal.task.advisor.TaskAdvisor;
+import com.liferay.lcs.client.internal.util.PortletPropsValues;
+import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.client.task.scheduler.TaskSchedulerService;
 import com.liferay.lcs.util.LCSConstants;
-import com.liferay.lcs.client.internal.util.PortletPropsValues;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.bean.BeanLocator;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;

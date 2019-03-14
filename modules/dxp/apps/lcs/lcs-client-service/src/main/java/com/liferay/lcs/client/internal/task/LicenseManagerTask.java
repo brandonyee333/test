@@ -15,8 +15,8 @@
 package com.liferay.lcs.client.internal.task;
 
 import com.liferay.lcs.client.internal.advisor.LCSPortletStateAdvisor;
-import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.client.internal.util.LCSUtil;
+import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;

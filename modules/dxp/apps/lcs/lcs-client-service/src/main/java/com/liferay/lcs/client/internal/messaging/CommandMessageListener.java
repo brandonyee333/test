@@ -15,11 +15,11 @@
 package com.liferay.lcs.client.internal.messaging;
 
 import com.liferay.lcs.client.internal.command.Command;
+import com.liferay.lcs.client.internal.util.LCSUtil;
+import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.messaging.CommandMessage;
 import com.liferay.lcs.messaging.ErrorResponseMessage;
 import com.liferay.lcs.messaging.security.DigitalSignature;
-import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
-import com.liferay.lcs.client.internal.util.LCSUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Message;

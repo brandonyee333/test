@@ -14,10 +14,10 @@
 
 package com.liferay.lcs.client.internal.messaging.advisor;
 
-import com.liferay.lcs.client.internal.advisor.MonitoringAdvisor;
-import com.liferay.lcs.client.internal.advisor.MonitoringAdvisorFactory;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.event.LCSEventListener;
+import com.liferay.lcs.client.internal.advisor.MonitoringAdvisor;
+import com.liferay.lcs.client.internal.advisor.MonitoringAdvisorFactory;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.portal.kernel.bean.BeanLocator;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;

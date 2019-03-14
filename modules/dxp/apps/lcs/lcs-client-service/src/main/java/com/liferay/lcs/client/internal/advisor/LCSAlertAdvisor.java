@@ -16,9 +16,9 @@ package com.liferay.lcs.client.internal.advisor;
 
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.event.LCSEventListener;
-import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.client.internal.util.LCSAlert;
 import com.liferay.lcs.client.internal.util.LCSUtil;
+import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 
 import java.util.Map;

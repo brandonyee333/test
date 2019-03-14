@@ -14,9 +14,9 @@
 
 package com.liferay.lcs.client.internal.task;
 
+import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.messaging.CommandMessage;
 import com.liferay.lcs.messaging.Message;
-import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;

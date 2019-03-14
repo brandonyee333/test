@@ -15,13 +15,13 @@
 package com.liferay.lcs.client.internal.command;
 
 import com.liferay.lcs.client.exception.CompressionException;
+import com.liferay.lcs.client.internal.util.LCSPatcherUtil;
+import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
+import com.liferay.lcs.client.platform.gateway.LCSGatewayException;
 import com.liferay.lcs.messaging.CommandMessage;
 import com.liferay.lcs.messaging.DownloadPatchCommandMessage;
 import com.liferay.lcs.messaging.DownloadPatchResponseMessage;
-import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
-import com.liferay.lcs.client.platform.gateway.LCSGatewayException;
 import com.liferay.lcs.util.LCSConstants;
-import com.liferay.lcs.client.internal.util.LCSPatcherUtil;
 import com.liferay.lcs.util.PatchUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;

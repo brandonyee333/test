@@ -14,8 +14,8 @@
 
 package com.liferay.lcs.client.internal.command;
 
-import com.liferay.lcs.messaging.ScheduleTasksCommandMessage;
 import com.liferay.lcs.client.task.scheduler.TaskSchedulerService;
+import com.liferay.lcs.messaging.ScheduleTasksCommandMessage;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 

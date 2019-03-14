@@ -14,13 +14,13 @@
 
 package com.liferay.lcs.client.internal.command;
 
-import com.liferay.lcs.client.internal.advisor.LCSClusterEntryTokenAdvisor;
-import com.liferay.lcs.client.internal.advisor.UptimeAdvisor;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.event.LCSEventListener;
+import com.liferay.lcs.client.internal.advisor.LCSClusterEntryTokenAdvisor;
+import com.liferay.lcs.client.internal.advisor.UptimeAdvisor;
+import com.liferay.lcs.client.task.scheduler.TaskSchedulerService;
 import com.liferay.lcs.messaging.SignOffCommandMessage;
 import com.liferay.lcs.messaging.SignOffReasonCode;
-import com.liferay.lcs.client.task.scheduler.TaskSchedulerService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 

@@ -15,9 +15,8 @@
 package com.liferay.lcs.client.internal.command;
 
 import com.liferay.lcs.client.internal.advisor.LCSClusterEntryTokenAdvisor;
-import com.liferay.lcs.client.internal.command.SendPortalPropertiesCommand;
-import com.liferay.lcs.util.LCSConstants;
 import com.liferay.lcs.client.internal.util.LCSUtil;
+import com.liferay.lcs.util.LCSConstants;
 import com.liferay.portal.kernel.util.PropsUtil;
 
 import java.util.Properties;

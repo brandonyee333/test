@@ -14,8 +14,8 @@
 
 package com.liferay.lcs.client.internal.task;
 
-import com.liferay.lcs.messaging.HeartbeatMessage;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
+import com.liferay.lcs.messaging.HeartbeatMessage;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 

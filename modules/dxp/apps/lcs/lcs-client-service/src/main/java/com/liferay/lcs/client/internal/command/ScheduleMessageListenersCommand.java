@@ -14,8 +14,8 @@
 
 package com.liferay.lcs.client.internal.command;
 
-import com.liferay.lcs.messaging.ScheduleMessageListenersCommandMessage;
 import com.liferay.lcs.client.internal.messaging.advisor.MessageBusListenerAdvisor;
+import com.liferay.lcs.messaging.ScheduleMessageListenersCommandMessage;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 

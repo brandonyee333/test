@@ -18,13 +18,10 @@ import com.liferay.lcs.client.internal.oauth.OAuthUtil;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
 import com.liferay.petra.json.web.service.client.internal.JSONWebServiceClientImpl;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.net.URI;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import com.liferay.portal.kernel.util.Validator;
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.exception.OAuthException;
 

@@ -15,9 +15,9 @@
 package com.liferay.lcs.client.internal.command;
 
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
-import com.liferay.lcs.messaging.CheckHeartbeatCommandMessage;
-import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.client.internal.task.HeartbeatTask;
+import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
+import com.liferay.lcs.messaging.CheckHeartbeatCommandMessage;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
