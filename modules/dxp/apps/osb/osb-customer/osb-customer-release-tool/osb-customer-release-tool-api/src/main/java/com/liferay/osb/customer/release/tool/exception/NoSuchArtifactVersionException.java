@@ -22,20 +22,20 @@ import com.liferay.portal.kernel.exception.NoSuchModelException;
  * @author Brian Wing Shun Chan
  */
 @ProviderType
-public class NoSuchModuleVersionException extends NoSuchModelException {
+public class NoSuchArtifactVersionException extends NoSuchModelException {
 
-	public NoSuchModuleVersionException() {
+	public NoSuchArtifactVersionException() {
 	}
 
-	public NoSuchModuleVersionException(String msg) {
+	public NoSuchArtifactVersionException(String msg) {
 		super(msg);
 	}
 
-	public NoSuchModuleVersionException(String msg, Throwable cause) {
+	public NoSuchArtifactVersionException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
 
-	public NoSuchModuleVersionException(Throwable cause) {
+	public NoSuchArtifactVersionException(Throwable cause) {
 		super(cause);
 	}
 

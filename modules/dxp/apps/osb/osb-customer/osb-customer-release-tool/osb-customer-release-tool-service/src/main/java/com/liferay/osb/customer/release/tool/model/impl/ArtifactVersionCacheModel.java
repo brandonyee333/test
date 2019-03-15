@@ -16,7 +16,7 @@ package com.liferay.osb.customer.release.tool.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osb.customer.release.tool.model.ModuleVersion;
+import com.liferay.osb.customer.release.tool.model.ArtifactVersion;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -27,14 +27,14 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
 /**
- * The cache model class for representing ModuleVersion in entity cache.
+ * The cache model class for representing ArtifactVersion in entity cache.
  *
  * @author Brian Wing Shun Chan
  * @generated
  */
 @ProviderType
-public class ModuleVersionCacheModel
-	implements CacheModel<ModuleVersion>, Externalizable {
+public class ArtifactVersionCacheModel
+	implements CacheModel<ArtifactVersion>, Externalizable {
 
 	@Override
 	public boolean equals(Object obj) {
@@ -42,14 +42,14 @@ public class ModuleVersionCacheModel
 			return true;
 		}
 
-		if (!(obj instanceof ModuleVersionCacheModel)) {
+		if (!(obj instanceof ArtifactVersionCacheModel)) {
 			return false;
 		}
 
-		ModuleVersionCacheModel moduleVersionCacheModel =
-			(ModuleVersionCacheModel)obj;
+		ArtifactVersionCacheModel artifactVersionCacheModel =
+			(ArtifactVersionCacheModel)obj;
 
-		if (moduleVersionId == moduleVersionCacheModel.moduleVersionId) {
+		if (artifactVersionId == artifactVersionCacheModel.artifactVersionId) {
 			return true;
 		}
 
@@ -58,15 +58,15 @@ public class ModuleVersionCacheModel
 
 	@Override
 	public int hashCode() {
-		return HashUtil.hash(0, moduleVersionId);
+		return HashUtil.hash(0, artifactVersionId);
 	}
 
 	@Override
 	public String toString() {
 		StringBundler sb = new StringBundler(11);
 
-		sb.append("{moduleVersionId=");
-		sb.append(moduleVersionId);
+		sb.append("{artifactVersionId=");
+		sb.append(artifactVersionId);
 		sb.append(", releaseAssetCategoryId=");
 		sb.append(releaseAssetCategoryId);
 		sb.append(", group=");
@@ -81,41 +81,41 @@ public class ModuleVersionCacheModel
 	}
 
 	@Override
-	public ModuleVersion toEntityModel() {
-		ModuleVersionImpl moduleVersionImpl = new ModuleVersionImpl();
+	public ArtifactVersion toEntityModel() {
+		ArtifactVersionImpl artifactVersionImpl = new ArtifactVersionImpl();
 
-		moduleVersionImpl.setModuleVersionId(moduleVersionId);
-		moduleVersionImpl.setReleaseAssetCategoryId(releaseAssetCategoryId);
+		artifactVersionImpl.setArtifactVersionId(artifactVersionId);
+		artifactVersionImpl.setReleaseAssetCategoryId(releaseAssetCategoryId);
 
 		if (group == null) {
-			moduleVersionImpl.setGroup("");
+			artifactVersionImpl.setGroup("");
 		}
 		else {
-			moduleVersionImpl.setGroup(group);
+			artifactVersionImpl.setGroup(group);
 		}
 
 		if (name == null) {
-			moduleVersionImpl.setName("");
+			artifactVersionImpl.setName("");
 		}
 		else {
-			moduleVersionImpl.setName(name);
+			artifactVersionImpl.setName(name);
 		}
 
 		if (version == null) {
-			moduleVersionImpl.setVersion("");
+			artifactVersionImpl.setVersion("");
 		}
 		else {
-			moduleVersionImpl.setVersion(version);
+			artifactVersionImpl.setVersion(version);
 		}
 
-		moduleVersionImpl.resetOriginalValues();
+		artifactVersionImpl.resetOriginalValues();
 
-		return moduleVersionImpl;
+		return artifactVersionImpl;
 	}
 
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
-		moduleVersionId = objectInput.readLong();
+		artifactVersionId = objectInput.readLong();
 
 		releaseAssetCategoryId = objectInput.readLong();
 		group = objectInput.readUTF();
@@ -125,7 +125,7 @@ public class ModuleVersionCacheModel
 
 	@Override
 	public void writeExternal(ObjectOutput objectOutput) throws IOException {
-		objectOutput.writeLong(moduleVersionId);
+		objectOutput.writeLong(artifactVersionId);
 
 		objectOutput.writeLong(releaseAssetCategoryId);
 
@@ -151,7 +151,7 @@ public class ModuleVersionCacheModel
 		}
 	}
 
-	public long moduleVersionId;
+	public long artifactVersionId;
 	public long releaseAssetCategoryId;
 	public String group;
 	public String name;

@@ -2,9 +2,9 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping auto-import="false" default-lazy="false">
-	<import class="com.liferay.osb.customer.release.tool.model.ModuleVersion" />
-	<class name="com.liferay.osb.customer.release.tool.model.impl.ModuleVersionImpl" table="OSBCustomer_ModuleVersion">
-		<id name="moduleVersionId" type="long">
+	<import class="com.liferay.osb.customer.release.tool.model.ArtifactVersion" />
+	<class name="com.liferay.osb.customer.release.tool.model.impl.ArtifactVersionImpl" table="OSBCustomer_ArtifactVersion">
+		<id name="artifactVersionId" type="long">
 			<generator class="assigned" />
 		</id>
 		<property name="releaseAssetCategoryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />

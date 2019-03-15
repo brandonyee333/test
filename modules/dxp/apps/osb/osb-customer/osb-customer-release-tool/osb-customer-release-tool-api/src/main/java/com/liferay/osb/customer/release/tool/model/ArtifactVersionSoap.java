@@ -28,12 +28,12 @@ import java.util.List;
  * @generated
  */
 @ProviderType
-public class ModuleVersionSoap implements Serializable {
+public class ArtifactVersionSoap implements Serializable {
 
-	public static ModuleVersionSoap toSoapModel(ModuleVersion model) {
-		ModuleVersionSoap soapModel = new ModuleVersionSoap();
+	public static ArtifactVersionSoap toSoapModel(ArtifactVersion model) {
+		ArtifactVersionSoap soapModel = new ArtifactVersionSoap();
 
-		soapModel.setModuleVersionId(model.getModuleVersionId());
+		soapModel.setArtifactVersionId(model.getArtifactVersionId());
 		soapModel.setReleaseAssetCategoryId(model.getReleaseAssetCategoryId());
 		soapModel.setGroup(model.getGroup());
 		soapModel.setName(model.getName());
@@ -42,8 +42,9 @@ public class ModuleVersionSoap implements Serializable {
 		return soapModel;
 	}
 
-	public static ModuleVersionSoap[] toSoapModels(ModuleVersion[] models) {
-		ModuleVersionSoap[] soapModels = new ModuleVersionSoap[models.length];
+	public static ArtifactVersionSoap[] toSoapModels(ArtifactVersion[] models) {
+		ArtifactVersionSoap[] soapModels =
+			new ArtifactVersionSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -52,14 +53,17 @@ public class ModuleVersionSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static ModuleVersionSoap[][] toSoapModels(ModuleVersion[][] models) {
-		ModuleVersionSoap[][] soapModels = null;
+	public static ArtifactVersionSoap[][] toSoapModels(
+		ArtifactVersion[][] models) {
+
+		ArtifactVersionSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new ModuleVersionSoap[models.length][models[0].length];
+			soapModels =
+				new ArtifactVersionSoap[models.length][models[0].length];
 		}
 		else {
-			soapModels = new ModuleVersionSoap[0][0];
+			soapModels = new ArtifactVersionSoap[0][0];
 		}
 
 		for (int i = 0; i < models.length; i++) {
@@ -69,34 +73,36 @@ public class ModuleVersionSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static ModuleVersionSoap[] toSoapModels(List<ModuleVersion> models) {
-		List<ModuleVersionSoap> soapModels = new ArrayList<ModuleVersionSoap>(
-			models.size());
+	public static ArtifactVersionSoap[] toSoapModels(
+		List<ArtifactVersion> models) {
 
-		for (ModuleVersion model : models) {
+		List<ArtifactVersionSoap> soapModels =
+			new ArrayList<ArtifactVersionSoap>(models.size());
+
+		for (ArtifactVersion model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(new ModuleVersionSoap[soapModels.size()]);
+		return soapModels.toArray(new ArtifactVersionSoap[soapModels.size()]);
 	}
 
-	public ModuleVersionSoap() {
+	public ArtifactVersionSoap() {
 	}
 
 	public long getPrimaryKey() {
-		return _moduleVersionId;
+		return _artifactVersionId;
 	}
 
 	public void setPrimaryKey(long pk) {
-		setModuleVersionId(pk);
+		setArtifactVersionId(pk);
 	}
 
-	public long getModuleVersionId() {
-		return _moduleVersionId;
+	public long getArtifactVersionId() {
+		return _artifactVersionId;
 	}
 
-	public void setModuleVersionId(long moduleVersionId) {
-		_moduleVersionId = moduleVersionId;
+	public void setArtifactVersionId(long artifactVersionId) {
+		_artifactVersionId = artifactVersionId;
 	}
 
 	public long getReleaseAssetCategoryId() {
@@ -131,7 +137,7 @@ public class ModuleVersionSoap implements Serializable {
 		_version = version;
 	}
 
-	private long _moduleVersionId;
+	private long _artifactVersionId;
 	private long _releaseAssetCategoryId;
 	private String _group;
 	private String _name;

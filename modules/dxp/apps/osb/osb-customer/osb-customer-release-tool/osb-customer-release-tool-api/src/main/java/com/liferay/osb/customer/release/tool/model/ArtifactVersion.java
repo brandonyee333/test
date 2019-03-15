@@ -21,29 +21,29 @@ import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.util.Accessor;
 
 /**
- * The extended model interface for the ModuleVersion service. Represents a row in the &quot;OSBCustomer_ModuleVersion&quot; database table, with each column mapped to a property of this class.
+ * The extended model interface for the ArtifactVersion service. Represents a row in the &quot;OSBCustomer_ArtifactVersion&quot; database table, with each column mapped to a property of this class.
  *
  * @author Brian Wing Shun Chan
- * @see ModuleVersionModel
+ * @see ArtifactVersionModel
  * @generated
  */
 @ImplementationClassName(
-	"com.liferay.osb.customer.release.tool.model.impl.ModuleVersionImpl"
+	"com.liferay.osb.customer.release.tool.model.impl.ArtifactVersionImpl"
 )
 @ProviderType
-public interface ModuleVersion extends ModuleVersionModel, PersistedModel {
+public interface ArtifactVersion extends ArtifactVersionModel, PersistedModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to <code>com.liferay.osb.customer.release.tool.model.impl.ModuleVersionImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.osb.customer.release.tool.model.impl.ArtifactVersionImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<ModuleVersion, Long>
-		MODULE_VERSION_ID_ACCESSOR = new Accessor<ModuleVersion, Long>() {
+	public static final Accessor<ArtifactVersion, Long>
+		ARTIFACT_VERSION_ID_ACCESSOR = new Accessor<ArtifactVersion, Long>() {
 
 			@Override
-			public Long get(ModuleVersion moduleVersion) {
-				return moduleVersion.getModuleVersionId();
+			public Long get(ArtifactVersion artifactVersion) {
+				return artifactVersion.getArtifactVersionId();
 			}
 
 			@Override
@@ -52,8 +52,8 @@ public interface ModuleVersion extends ModuleVersionModel, PersistedModel {
 			}
 
 			@Override
-			public Class<ModuleVersion> getTypeClass() {
-				return ModuleVersion.class;
+			public Class<ArtifactVersion> getTypeClass() {
+				return ArtifactVersion.class;
 			}
 
 		};

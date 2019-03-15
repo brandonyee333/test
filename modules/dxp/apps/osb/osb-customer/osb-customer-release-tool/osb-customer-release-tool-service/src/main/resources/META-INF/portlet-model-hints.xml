@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 <model-hints>
-	<model name="com.liferay.osb.customer.release.tool.model.ModuleVersion">
-		<field name="moduleVersionId" type="long" />
+	<model name="com.liferay.osb.customer.release.tool.model.ArtifactVersion">
+		<field name="artifactVersionId" type="long" />
 		<field name="releaseAssetCategoryId" type="long" />
 		<field name="group" type="String" />
 		<field name="name" type="String" />
