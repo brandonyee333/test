@@ -22,6 +22,7 @@ import com.liferay.lcs.client.internal.exception.InvalidLCSClusterEntryTokenExce
 import com.liferay.lcs.client.internal.exception.LCSClusterEntryTokenDecryptException;
 import com.liferay.lcs.client.internal.exception.MissingLCSClusterEntryTokenException;
 import com.liferay.lcs.client.internal.exception.MultipleLCSClusterEntryTokenException;
+import com.liferay.lcs.client.internal.platform.portal.LCSPortalClient;
 import com.liferay.lcs.client.internal.util.LCSUtil;
 import com.liferay.lcs.client.task.scheduler.TaskSchedulerService;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
@@ -31,9 +32,13 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Igor Beslic
  */
+@Component
 public class LCSClusterEntryTokenCheckTask implements Task {
 
 	public LCSClusterEntryTokenCheckTask(
@@ -104,7 +109,7 @@ public class LCSClusterEntryTokenCheckTask implements Task {
 		_lcsClusterEntryTokenAdvisor.processLCSClusterEntryToken(
 			LCSUtil.getLCSPortletBuildNumber());
 
-		if (!LCSUtil.isLCSPortletAuthorized(
+		if (!_lcsPortalClient.isAuthorized(
 				_lcsClusterEntryTokenAdvisor.getLCSAccessSecret(),
 				_lcsClusterEntryTokenAdvisor.getLCSAccessToken())) {
 
@@ -132,5 +137,8 @@ public class LCSClusterEntryTokenCheckTask implements Task {
 
 	private final LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
 	private final List<LCSEventListener> _lcsEventListeners;
+
+	@Reference
+	private LCSPortalClient _lcsPortalClient;
 
 }

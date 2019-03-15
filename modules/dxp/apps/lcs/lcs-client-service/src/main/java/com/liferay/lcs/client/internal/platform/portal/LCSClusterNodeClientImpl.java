@@ -16,7 +16,6 @@ package com.liferay.lcs.client.internal.platform.portal;
 
 import com.liferay.lcs.client.platform.portal.LCSClusterNode;
 import com.liferay.lcs.client.platform.portal.LCSClusterNodeClient;
-import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
@@ -26,10 +25,14 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Ivica Cardic
  * @author Igor Beslic
  */
+@Component
 public class LCSClusterNodeClientImpl implements LCSClusterNodeClient {
 
 	@Override
@@ -39,7 +42,7 @@ public class LCSClusterNodeClientImpl implements LCSClusterNodeClient {
 			   JSONWebServiceTransportException {
 
 		try {
-			return _jsonWebServiceClient.doGetToObject(
+			return _lcsPortalClient.doGetToObject(
 				LCSClusterNode.class, _URL_LCS_CLUSTER_NODE + "/" + key);
 		}
 		catch (JSONWebServiceInvocationException jsonwsie) {
@@ -68,7 +71,7 @@ public class LCSClusterNodeClientImpl implements LCSClusterNodeClient {
 		sb.append("/");
 		sb.append(-1);
 
-		remoteLCSClusterNodes = _jsonWebServiceClient.doGetToList(
+		remoteLCSClusterNodes = _lcsPortalClient.doGetToList(
 			LCSClusterNode.class, sb.toString(), "lcsClusterEntryId",
 			String.valueOf(lcsClusterEntryId));
 
@@ -81,15 +84,10 @@ public class LCSClusterNodeClientImpl implements LCSClusterNodeClient {
 		return lcsClusterNodes;
 	}
 
-	public void setJSONWebServiceClient(
-		JSONWebServiceClient jsonWebServiceClient) {
-
-		_jsonWebServiceClient = jsonWebServiceClient;
-	}
-
 	private static final String _URL_LCS_CLUSTER_NODE =
 		"/o/osb-lcs-rest/LCSClusterNode";
 
-	private JSONWebServiceClient _jsonWebServiceClient;
+	@Reference
+	private LCSPortalClient _lcsPortalClient;
 
 }

@@ -16,16 +16,19 @@ package com.liferay.lcs.client.internal.platform.portal;
 
 import com.liferay.lcs.client.platform.portal.LCSClusterEntryToken;
 import com.liferay.lcs.client.platform.portal.LCSClusterEntryTokenClient;
-import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Igor Beslic
  */
+@Component
 public class LCSClusterEntryTokenClientImpl
 	implements LCSClusterEntryTokenClient {
 
@@ -38,7 +41,7 @@ public class LCSClusterEntryTokenClientImpl
 
 		try {
 			LCSClusterEntryToken lcsClusterEntryToken =
-				_jsonWebServiceClient.doGetToObject(
+				_lcsPortalClient.doGetToObject(
 					LCSClusterEntryToken.class,
 					_URL_LCS_CLUSTER_ENTRY_TOKEN + "/" +
 						lcsClusterEntryTokenId);
@@ -54,15 +57,10 @@ public class LCSClusterEntryTokenClientImpl
 		}
 	}
 
-	public void setJSONWebServiceClient(
-		JSONWebServiceClient jsonWebServiceClient) {
-
-		_jsonWebServiceClient = jsonWebServiceClient;
-	}
-
 	private static final String _URL_LCS_CLUSTER_ENTRY_TOKEN =
 		"/o/osb-lcs-rest/LCSClusterEntryToken";
 
-	private JSONWebServiceClient _jsonWebServiceClient;
+	@Reference
+	private LCSPortalClient _lcsPortalClient;
 
 }

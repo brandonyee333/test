@@ -15,12 +15,8 @@
 package com.liferay.lcs.client.internal.util;
 
 import com.liferay.lcs.client.internal.advisor.LCSAlertAdvisor;
-import com.liferay.lcs.client.internal.jsonwebserviceclient.OAuthJSONWebServiceClientImpl;
 import com.liferay.lcs.client.platform.portal.LCSClusterNode;
 import com.liferay.lcs.client.platform.portal.LCSProject;
-import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
-import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 import com.liferay.portal.kernel.license.messaging.LicenseManagerMessageType;
 import com.liferay.portal.kernel.log.Log;
@@ -42,7 +38,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author Igor Beslic
@@ -177,43 +172,6 @@ public class LCSUtil {
 			publicRenderParameters);
 	}
 
-	public static synchronized boolean isLCSPortletAuthorized(
-			String lcsAccessSecret, String lcsAccessToken)
-		throws JSONWebServiceInvocationException,
-			   JSONWebServiceTransportException {
-
-		if (System.currentTimeMillis() <
-				_lcsAccessTokenNextValidityCheckMillis.get()) {
-
-			return true;
-		}
-
-		if (!(_jsonWebServiceClient instanceof OAuthJSONWebServiceClientImpl)) {
-			return true;
-		}
-
-		_setUpJSONWebServiceClientCredentials(lcsAccessSecret, lcsAccessToken);
-
-		try {
-			((OAuthJSONWebServiceClientImpl)_jsonWebServiceClient).
-				testOAuthRequest();
-		}
-		catch (JSONWebServiceTransportException.AuthenticationFailure
-					jsonwsteaf) {
-
-			_log.error(
-				"There was an error in communication with LCS: " +
-					jsonwsteaf.getMessage());
-
-			return false;
-		}
-
-		_lcsAccessTokenNextValidityCheckMillis.set(
-			System.currentTimeMillis() + 300000);
-
-		return true;
-	}
-
 	public static void processLCSPortletState(LCSPortletState lcsPortletState) {
 		Message message = LicenseManagerMessageType.LCS_AVAILABLE.createMessage(
 			lcsPortletState);
@@ -229,12 +187,6 @@ public class LCSUtil {
 
 			_log.trace(sb.toString());
 		}
-	}
-
-	public void setJSONWebServiceClient(
-		JSONWebServiceClient jsonWebServiceClient) {
-
-		_jsonWebServiceClient = jsonWebServiceClient;
 	}
 
 	public void setLCSAlertAdvisor(LCSAlertAdvisor lcsAlertAdvisor) {
@@ -284,23 +236,8 @@ public class LCSUtil {
 		return sb.toString();
 	}
 
-	private static void _setUpJSONWebServiceClientCredentials(
-		String lcsAccessSecret, String lcsAccessToken) {
-
-		OAuthJSONWebServiceClientImpl oAuthJSONWebServiceClientImpl =
-			(OAuthJSONWebServiceClientImpl)_jsonWebServiceClient;
-
-		oAuthJSONWebServiceClientImpl.setAccessSecret(lcsAccessSecret);
-		oAuthJSONWebServiceClientImpl.setAccessToken(lcsAccessToken);
-
-		_jsonWebServiceClient.resetHttpClient();
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(LCSUtil.class);
 
-	private static JSONWebServiceClient _jsonWebServiceClient;
-	private static final AtomicLong _lcsAccessTokenNextValidityCheckMillis =
-		new AtomicLong(0);
 	private static LCSAlertAdvisor _lcsAlertAdvisor;
 
 }

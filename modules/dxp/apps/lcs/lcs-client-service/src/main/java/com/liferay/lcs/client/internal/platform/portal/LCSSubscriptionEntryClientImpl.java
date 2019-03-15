@@ -19,7 +19,6 @@ import com.liferay.lcs.client.platform.portal.LCSClientRemoteAuthorizationExcept
 import com.liferay.lcs.client.platform.portal.LCSClientRemoteException;
 import com.liferay.lcs.client.platform.portal.LCSSubscriptionEntry;
 import com.liferay.lcs.client.platform.portal.LCSSubscriptionEntryClient;
-import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
@@ -27,9 +26,13 @@ import com.liferay.portal.kernel.util.StringBundler;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Igor Beslic
  */
+@Component
 public class LCSSubscriptionEntryClientImpl
 	implements LCSSubscriptionEntryClient {
 
@@ -77,15 +80,10 @@ public class LCSSubscriptionEntryClientImpl
 		}
 	}
 
-	public void setJSONWebServiceClient(
-		JSONWebServiceClient jsonWebServiceClient) {
-
-		_jsonWebServiceClient = jsonWebServiceClient;
-	}
-
 	private static final String _URL_LCS_SUBSCRIPTION_ENTRY =
 		"/o/osb-lcs-rest/LCSSubscriptionEntry";
 
-	private JSONWebServiceClient _jsonWebServiceClient;
+	@Reference
+	private LCSPortalClient _jsonWebServiceClient;
 
 }

@@ -24,15 +24,10 @@ import com.liferay.lcs.client.internal.util.LCSUtil;
 import com.liferay.lcs.client.platform.portal.LCSClusterEntryToken;
 import com.liferay.lcs.client.task.scheduler.TaskSchedulerService;
 import com.liferay.petra.encryptor.EncryptorException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
 import com.liferay.portal.kernel.util.FileUtil;
 
 import java.io.File;
 import java.io.IOException;
-
-import java.net.UnknownHostException;
-
-import java.util.concurrent.ExecutionException;
 
 import org.junit.Before;
 import org.junit.Test;
