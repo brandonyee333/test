@@ -1,0 +1,4 @@
+Bundle-Name: Liferay LCS Client Service
+Bundle-SymbolicName: com.liferay.lcs.client.service
+Bundle-Version: 6.0.0
+Liferay-Releng-Module-Group-Title: LCS

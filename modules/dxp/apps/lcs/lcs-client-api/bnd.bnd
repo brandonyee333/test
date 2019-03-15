@@ -1,0 +1,12 @@
+Bundle-Name: Liferay LCS Client API
+Bundle-SymbolicName: com.liferay.lcs.client.api
+Bundle-Version: 6.0.0
+Export-Package:\
+	com.liferay.lcs.client.advisor,\
+	com.liferay.lcs.client.configuration,\
+	com.liferay.lcs.client.event,\
+	com.liferay.lcs.client.exception,\
+	com.liferay.lcs.client.platform.gateway,\
+	com.liferay.lcs.client.platform.portal,\
+	com.liferay.lcs.client.task.scheduler
+Liferay-Releng-Module-Group-Title: LCS
