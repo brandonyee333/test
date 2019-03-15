@@ -1,0 +1,44 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.lcs.client.internal.advisor;
+
+import java.util.Map;
+
+import com.liferay.lcs.client.internal.advisor.InstallationEnvironmentAdvisor;
+import com.liferay.lcs.client.internal.advisor.InstallationEnvironmentAdvisorFactory;
+import org.junit.Assert;
+import org.junit.Test;
+
+/**
+ * @author Ivica Cardic
+ */
+public class InstallationEnvironmentAdvisorTest {
+
+	@Test
+	public void testGetHardwareMetadata() {
+		Map<String, String> hardwareMetadata =
+			_installationEnvironmentAdvisor.getHardwareMetadata();
+
+		Assert.assertNotNull(hardwareMetadata.get("cpu.total.cores"));
+		Assert.assertNotNull(hardwareMetadata.get("fs.root"));
+		Assert.assertNotNull(hardwareMetadata.get("fs.root.total.space"));
+		Assert.assertNotNull(hardwareMetadata.get("fs.root.usable.space"));
+	}
+
+	private final InstallationEnvironmentAdvisor
+		_installationEnvironmentAdvisor =
+			InstallationEnvironmentAdvisorFactory.getInstance();
+
+}
