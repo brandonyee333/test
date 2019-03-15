@@ -20,9 +20,9 @@ import aQute.bnd.annotation.ProviderType;
  * @author Brian Wing Shun Chan
  */
 @ProviderType
-public class ModuleVersionImpl extends ModuleVersionBaseImpl {
+public class ArtifactVersionImpl extends ArtifactVersionBaseImpl {
 
-	public ModuleVersionImpl() {
+	public ArtifactVersionImpl() {
 	}
 
 }

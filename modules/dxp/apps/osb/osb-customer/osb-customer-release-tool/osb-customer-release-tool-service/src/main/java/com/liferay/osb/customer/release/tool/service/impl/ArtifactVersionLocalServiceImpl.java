@@ -14,11 +14,11 @@
 
 package com.liferay.osb.customer.release.tool.service.impl;
 
-import com.liferay.osb.customer.release.tool.service.base.ModuleVersionLocalServiceBaseImpl;
+import com.liferay.osb.customer.release.tool.service.base.ArtifactVersionLocalServiceBaseImpl;
 
 /**
  * @author Brian Wing Shun Chan
  */
-public class ModuleVersionLocalServiceImpl
-	extends ModuleVersionLocalServiceBaseImpl {
+public class ArtifactVersionLocalServiceImpl
+	extends ArtifactVersionLocalServiceBaseImpl {
 }
