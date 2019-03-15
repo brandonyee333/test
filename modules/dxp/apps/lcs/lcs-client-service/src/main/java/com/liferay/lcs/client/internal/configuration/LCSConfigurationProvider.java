@@ -12,8 +12,9 @@
  *
  */
 
-package com.liferay.lcs.client.configuration;
+package com.liferay.lcs.client.internal.configuration;
 
+import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 
 import java.util.Map;

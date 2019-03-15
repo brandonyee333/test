@@ -15,7 +15,7 @@
 package com.liferay.lcs.client.internal.lifecycle;
 
 import com.liferay.lcs.client.configuration.LCSConfiguration;
-import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
+import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
