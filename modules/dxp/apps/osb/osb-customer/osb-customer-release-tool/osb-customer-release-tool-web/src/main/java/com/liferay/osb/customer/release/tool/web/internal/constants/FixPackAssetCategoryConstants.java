@@ -19,8 +19,8 @@ package com.liferay.osb.customer.release.tool.web.internal.constants;
  */
 public class FixPackAssetCategoryConstants {
 
-	public static final String PROPERTY_JIRA_PRODUCT_VERSION =
-		"jira-product-version";
+	public static final String PROPERTY_JIRA_FIX_PACK_VERSION =
+		"jira-fix-pack-version";
 
 	public static final String PROPERTY_PRODUCT = "product";
 

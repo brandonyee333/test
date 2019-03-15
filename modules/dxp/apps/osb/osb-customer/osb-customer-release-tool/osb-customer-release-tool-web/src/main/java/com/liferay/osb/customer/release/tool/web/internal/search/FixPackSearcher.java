@@ -25,7 +25,6 @@ import com.liferay.journal.util.JournalConverter;
 import com.liferay.osb.customer.release.tool.web.internal.constants.DDMStructureConstants;
 import com.liferay.osb.customer.release.tool.web.internal.constants.FixPackField;
 import com.liferay.osb.customer.release.tool.web.internal.util.DDMFieldsUtil;
-import com.liferay.osb.customer.release.tool.web.internal.util.FixPacksAssetCategoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -71,65 +70,8 @@ import org.osgi.service.component.annotations.Reference;
 @Component(service = FixPackSearcher.class)
 public class FixPackSearcher extends BaseSearcher {
 
-	protected BooleanQuery buildFixPackRangeQuery(
-			double fromProductVersion, double fromFixPackVersion,
-			double toProductVersion, double toFixPackVersion)
-		throws PortalException {
-
-		BooleanQuery fixPackRangQuery = new BooleanQueryImpl();
-
-		if (fromProductVersion == toProductVersion) {
-			fixPackRangQuery.addRequiredTerm(
-				FixPackField.PRODUCT_VERSION, fromProductVersion);
-
-			TermRangeQuery termRangeQuery = new TermRangeQueryImpl(
-				FixPackField.FIX_PACK_VERSION_SORTABLE,
-				String.valueOf(fromFixPackVersion),
-				String.valueOf(toFixPackVersion), true, true);
-
-			fixPackRangQuery.add(termRangeQuery, BooleanClauseOccur.MUST);
-
-			return fixPackRangQuery;
-		}
-
-		BooleanQuery fromQuery = new BooleanQueryImpl();
-
-		fromQuery.addRequiredTerm(
-			FixPackField.PRODUCT_VERSION, fromProductVersion);
-
-		TermRangeQuery fromTermRangeQuery = new TermRangeQueryImpl(
-			FixPackField.FIX_PACK_VERSION_SORTABLE,
-			String.valueOf(fromFixPackVersion), "10000.0", true, true);
-
-		fromQuery.add(fromTermRangeQuery, BooleanClauseOccur.MUST);
-
-		fixPackRangQuery.add(fromQuery, BooleanClauseOccur.SHOULD);
-
-		TermRangeQuery betweenTermRangeQuery = new TermRangeQueryImpl(
-			FixPackField.PRODUCT_VERSION_SORTABLE,
-			String.valueOf(fromProductVersion),
-			String.valueOf(toProductVersion), false, false);
-
-		fixPackRangQuery.add(betweenTermRangeQuery, BooleanClauseOccur.SHOULD);
-
-		BooleanQuery toQuery = new BooleanQueryImpl();
-
-		toQuery.addRequiredTerm(FixPackField.PRODUCT_VERSION, toProductVersion);
-
-		TermRangeQuery toTermRangeQuery = new TermRangeQueryImpl(
-			FixPackField.FIX_PACK_VERSION_SORTABLE, "0.0",
-			String.valueOf(toFixPackVersion), true, true);
-
-		toQuery.add(toTermRangeQuery, BooleanClauseOccur.MUST);
-
-		fixPackRangQuery.add(toQuery, BooleanClauseOccur.SHOULD);
-
-		return fixPackRangQuery;
-	}
-
 	protected BooleanQuery buildFullQuery(
-			String product, double fromProductVersion,
-			double fromFixPackVersion, double toProductVersion,
+			String product, double productVersion, double fromFixPackVersion,
 			double toFixPackVersion)
 		throws PortalException {
 
@@ -137,9 +79,17 @@ public class FixPackSearcher extends BaseSearcher {
 
 		fullQuery.addRequiredTerm(FixPackField.PRODUCT, product);
 
-		BooleanQuery fixPackRangeQuery = buildFixPackRangeQuery(
-			fromProductVersion, fromFixPackVersion, toProductVersion,
-			toFixPackVersion);
+		BooleanQuery fixPackRangeQuery = new BooleanQueryImpl();
+
+		fixPackRangeQuery.addRequiredTerm(
+			FixPackField.PRODUCT_VERSION, productVersion);
+
+		TermRangeQuery termRangeQuery = new TermRangeQueryImpl(
+			FixPackField.FIX_PACK_VERSION_SORTABLE,
+			String.valueOf(fromFixPackVersion),
+			String.valueOf(toFixPackVersion), true, true);
+
+		fixPackRangeQuery.add(termRangeQuery, BooleanClauseOccur.MUST);
 
 		fullQuery.add(fixPackRangeQuery, BooleanClauseOccur.MUST);
 
@@ -191,12 +141,10 @@ public class FixPackSearcher extends BaseSearcher {
 			WebKeys.THEME_DISPLAY);
 
 		String product = ParamUtil.getString(portletRequest, "product");
-		double fromProductVersion = ParamUtil.getDouble(
-			portletRequest, "fromProductVersion");
+		double productVersion = ParamUtil.getDouble(
+			portletRequest, "productVersion");
 		double fromFixPackVersion = ParamUtil.getDouble(
 			portletRequest, "fromFixPackVersion");
-		double toProductVersion = ParamUtil.getDouble(
-			portletRequest, "toProductVersion");
 		double toFixPackVersion = ParamUtil.getDouble(
 			portletRequest, "toFixPackVersion");
 
@@ -206,8 +154,7 @@ public class FixPackSearcher extends BaseSearcher {
 			themeDisplay, orderByType);
 
 		BooleanQuery fullQuery = buildFullQuery(
-			product, fromProductVersion, fromFixPackVersion, toProductVersion,
-			toFixPackVersion);
+			product, productVersion, fromFixPackVersion, toFixPackVersion);
 
 		Hits hits = _indexSearcherHelper.search(searchContext, fullQuery);
 
@@ -310,9 +257,6 @@ public class FixPackSearcher extends BaseSearcher {
 
 	@Reference
 	private DDMStructureLocalService _ddmStructureLocalService;
-
-	@Reference
-	private FixPacksAssetCategoryUtil _fixPacksAssetCategoryUtil;
 
 	@Reference
 	private IndexSearcherHelper _indexSearcherHelper;

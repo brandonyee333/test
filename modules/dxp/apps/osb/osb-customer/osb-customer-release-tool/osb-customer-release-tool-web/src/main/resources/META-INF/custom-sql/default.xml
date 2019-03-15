@@ -1,27 +1,27 @@
 <?xml version="1.0"?>
 
 <custom-sql>
-	<sql id="com.liferay.osb.customer.release.tool.web.internal.util.FixPacksAssetCategoryUtil.findByJPV_FPV">
+	<sql id="com.liferay.osb.customer.release.tool.web.internal.util.FixPacksAssetCategoryUtil.findByV_PC">
 		<![CDATA[
 			SELECT
 				AssetCategory.categoryId
 			FROM
 				AssetCategory
-			INNER JOIN
-				AssetCategoryProperty ON
-					AssetCategoryProperty.categoryId = AssetCategory.categoryId
-			INNER JOIN
-				AssetCategory AS AssetCategory2 ON
-					AssetCategory2.categoryId = AssetCategory.parentCategoryId
-			INNER JOIN
-				AssetCategoryProperty AS AssetCategoryProperty2 ON
-					AssetCategoryProperty2.categoryId = AssetCategory2.categoryId
+			[$JOIN$]
 			WHERE
+				[$WHERE$]
 				(AssetCategory.vocabularyId = ?) AND
-				(AssetCategoryProperty.key_ = ?) AND
-				(AssetCategoryProperty.value = ?) AND
-				(AssetCategoryProperty2.key_ = ?) AND
-				(AssetCategoryProperty2.value = ?)
+				(AssetCategory.parentCategoryId = ?)
+		]]>
+	</sql>
+	<sql id="com.liferay.osb.customer.release.tool.web.internal.util.FixPacksAssetCategoryUtil.joinByAssetCategoryProperty">
+		<![CDATA[
+			INNER JOIN
+				AssetCategoryProperty AS AssetCategoryProperty[$i$] ON
+					AssetCategoryProperty[$i$].categoryId = AssetCategory.categoryId
+			WHERE
+				(AssetCategoryProperty[$i$].key_ = ?) AND
+				(AssetCategoryProperty[$i$].value = ?)
 		]]>
 	</sql>
 </custom-sql>

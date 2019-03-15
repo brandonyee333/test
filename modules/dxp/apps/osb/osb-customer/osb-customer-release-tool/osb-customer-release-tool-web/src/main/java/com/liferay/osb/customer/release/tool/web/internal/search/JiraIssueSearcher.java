@@ -19,7 +19,6 @@ import com.liferay.osb.customer.jira.rest.connector.configuration.JIRARESTConnec
 import com.liferay.osb.customer.jira.rest.connector.service.JIRAIssueLocalService;
 import com.liferay.osb.customer.release.tool.configuration.ReleaseToolConfigurationValues;
 import com.liferay.osb.customer.release.tool.web.internal.constants.FixPackAssetCategoryConstants;
-import com.liferay.osb.customer.release.tool.web.internal.constants.JiraIssueField;
 import com.liferay.osb.customer.release.tool.web.internal.util.FixPacksAssetCategoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -32,8 +31,6 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-
-import java.util.List;
 
 import javax.portlet.MimeResponse;
 import javax.portlet.PortletRequest;
@@ -48,98 +45,26 @@ import org.osgi.service.component.annotations.Reference;
 public class JiraIssueSearcher extends BaseSearcher {
 
 	protected String buildJQL(
-			String product, double fromProductVersion,
-			double fromFixPackVersion, double toProductVersion,
+			String jiraFixPackCustomField, double fromFixPackVersion,
 			double toFixPackVersion, String keywords, String[] components,
 			String orderByType)
 		throws PortalException {
 
-		StringBundler sb = new StringBundler();
+		StringBundler sb = new StringBundler(23);
 
 		sb.append("project in (\"");
 		sb.append(
 			StringUtil.merge(
 				ReleaseToolConfigurationValues.FIX_PACK_JIRA_PROJECTS,
 				"\",\""));
-		sb.append("\")");
-
-		List<AssetCategory> productAssetCategories =
-			_fixPacksAssetCategoryUtil.getProductAssetCategories(
-				product, fromProductVersion, toProductVersion);
-
-		if (productAssetCategories.size() == 1) {
-			AssetCategory assetCategory = productAssetCategories.get(0);
-
-			String jiraProductVersion =
-				_fixPacksAssetCategoryUtil.getPropertyValue(
-					assetCategory.getCategoryId(),
-					FixPackAssetCategoryConstants.
-						PROPERTY_JIRA_PRODUCT_VERSION);
-
-			sb.append(" AND ");
-			sb.append(StringUtil.quote(JiraIssueField.PRODUCT_VERSION));
-			sb.append("=");
-			sb.append(StringUtil.quote(jiraProductVersion));
-			sb.append(" AND ");
-			sb.append(
-				StringUtil.quote(JiraIssueField.PRODUCT_FIX_PACK_VERSION));
-			sb.append(">=");
-			sb.append(fromFixPackVersion);
-			sb.append(" AND ");
-			sb.append(
-				StringUtil.quote(JiraIssueField.PRODUCT_FIX_PACK_VERSION));
-			sb.append("<=");
-			sb.append(toFixPackVersion);
-		}
-		else {
-			sb.append(" AND (");
-
-			for (int i = 0; i < productAssetCategories.size(); i++) {
-				AssetCategory assetCategory = productAssetCategories.get(i);
-
-				String jiraProductVersion =
-					_fixPacksAssetCategoryUtil.getPropertyValue(
-						assetCategory.getCategoryId(),
-						FixPackAssetCategoryConstants.
-							PROPERTY_JIRA_PRODUCT_VERSION);
-
-				if (i == 0) {
-					sb.append("(");
-					sb.append(StringUtil.quote(JiraIssueField.PRODUCT_VERSION));
-					sb.append("=");
-					sb.append(StringUtil.quote(jiraProductVersion));
-					sb.append(" AND ");
-					sb.append(
-						StringUtil.quote(
-							JiraIssueField.PRODUCT_FIX_PACK_VERSION));
-					sb.append(">=");
-					sb.append(fromFixPackVersion);
-					sb.append(")");
-				}
-				else if ((i + 1) == productAssetCategories.size()) {
-					sb.append(" OR (");
-					sb.append(StringUtil.quote(JiraIssueField.PRODUCT_VERSION));
-					sb.append("=");
-					sb.append(StringUtil.quote(jiraProductVersion));
-					sb.append(" AND ");
-					sb.append(
-						StringUtil.quote(
-							JiraIssueField.PRODUCT_FIX_PACK_VERSION));
-					sb.append("<=");
-					sb.append(toFixPackVersion);
-					sb.append(")");
-				}
-				else {
-					sb.append(" OR (");
-					sb.append(StringUtil.quote(JiraIssueField.PRODUCT_VERSION));
-					sb.append("=");
-					sb.append(StringUtil.quote(jiraProductVersion));
-					sb.append(")");
-				}
-			}
-
-			sb.append(")");
-		}
+		sb.append("\") AND ");
+		sb.append(StringUtil.quote(jiraFixPackCustomField));
+		sb.append(">=");
+		sb.append(fromFixPackVersion);
+		sb.append(" AND ");
+		sb.append(StringUtil.quote(jiraFixPackCustomField));
+		sb.append("<=");
+		sb.append(toFixPackVersion);
 
 		if (Validator.isNotNull(keywords)) {
 			sb.append(" AND (description ~ ");
@@ -162,11 +87,7 @@ public class JiraIssueSearcher extends BaseSearcher {
 		}
 
 		sb.append(" order by ");
-		sb.append(StringUtil.quote(JiraIssueField.PRODUCT_VERSION));
-		sb.append(" ");
-		sb.append(orderByType);
-		sb.append(", ");
-		sb.append(StringUtil.quote(JiraIssueField.PRODUCT_FIX_PACK_VERSION));
+		sb.append(StringUtil.quote(jiraFixPackCustomField));
 		sb.append(" ");
 		sb.append(orderByType);
 
@@ -178,12 +99,10 @@ public class JiraIssueSearcher extends BaseSearcher {
 		throws Exception {
 
 		String product = ParamUtil.getString(portletRequest, "product");
-		double fromProductVersion = ParamUtil.getDouble(
-			portletRequest, "fromProductVersion");
+		double productVersion = ParamUtil.getDouble(
+			portletRequest, "productVersion");
 		double fromFixPackVersion = ParamUtil.getDouble(
 			portletRequest, "fromFixPackVersion");
-		double toProductVersion = ParamUtil.getDouble(
-			portletRequest, "toProductVersion");
 		double toFixPackVersion = ParamUtil.getDouble(
 			portletRequest, "toFixPackVersion");
 		String keywords = ParamUtil.getString(portletRequest, "keywords");
@@ -195,14 +114,26 @@ public class JiraIssueSearcher extends BaseSearcher {
 			ReleaseToolConfigurationValues.FIX_PACK_JIRA_MAX_RESULTS);
 		String orderByType = ParamUtil.getString(portletRequest, "orderByType");
 
+		AssetCategory productAssetCategory =
+			_fixPacksAssetCategoryUtil.getProductAssetCategory(
+				product, productVersion);
+
+		String jiraFixPackCustomField =
+			_fixPacksAssetCategoryUtil.getPropertyValue(
+				productAssetCategory.getCategoryId(),
+				FixPackAssetCategoryConstants.PROPERTY_JIRA_FIX_PACK_VERSION);
+
 		String jql = buildJQL(
-			product, fromProductVersion, fromFixPackVersion, toProductVersion,
-			toFixPackVersion, keywords, components, orderByType);
+			jiraFixPackCustomField, fromFixPackVersion, toFixPackVersion,
+			keywords, components, orderByType);
 
 		JSONObject jiraResultsJSONObject = _jiraIssueLocalService.getJIRAIssues(
-			jql, "renderedFields", _ISSUE_FIELDS, startAt, maxResults);
+			jql, "renderedFields", _ISSUE_FIELDS + "," + jiraFixPackCustomField,
+			startAt, maxResults);
 
-		return processResults(jiraResultsJSONObject);
+		return processResults(
+			productAssetCategory, jiraFixPackCustomField,
+			jiraResultsJSONObject);
 	}
 
 	protected String getJiraIssueURL(String issueKey) {
@@ -216,7 +147,10 @@ public class JiraIssueSearcher extends BaseSearcher {
 		return sb.toString();
 	}
 
-	protected JSONObject processJiraIssue(JSONObject jiraIssueJSONObject) {
+	protected JSONObject processJiraIssue(
+		AssetCategory productAssetCategory, String jiraFixPackCustomField,
+		JSONObject jiraIssueJSONObject) {
+
 		JSONObject jsonObject = jsonFactory.createJSONObject();
 
 		JSONObject fieldsJSONObject = jiraIssueJSONObject.getJSONObject(
@@ -235,19 +169,12 @@ public class JiraIssueSearcher extends BaseSearcher {
 
 		jsonObject.put("key", jiraIssueJSONObject.getString("key"));
 
-		JSONObject productVersionJSONObject = fieldsJSONObject.getJSONObject(
-			"customfield_13120");
-
-		String productVersion = productVersionJSONObject.getString("value");
-
-		jsonObject.put("product", productVersion);
-
 		double fixPackVersion = GetterUtil.getDouble(
-			fieldsJSONObject.getString("customfield_22520"));
+			fieldsJSONObject.getString(jiraFixPackCustomField));
 
 		AssetCategory assetCategory =
 			_fixPacksAssetCategoryUtil.getFixPackAssetCategory(
-				productVersion, fixPackVersion);
+				productAssetCategory.getCategoryId(), fixPackVersion);
 
 		if (assetCategory != null) {
 			jsonObject.put("release", assetCategory.getName());
@@ -275,7 +202,10 @@ public class JiraIssueSearcher extends BaseSearcher {
 		return componentsJSONArray;
 	}
 
-	protected JSONObject processResults(JSONObject jiraResultsJSONObject) {
+	protected JSONObject processResults(
+		AssetCategory productAssetCategory, String jiraFixPackCustomField,
+		JSONObject jiraResultsJSONObject) {
+
 		JSONObject jsonObject = jsonFactory.createJSONObject();
 
 		JSONArray jsonArray = jsonFactory.createJSONArray();
@@ -287,7 +217,10 @@ public class JiraIssueSearcher extends BaseSearcher {
 			JSONObject jiraIssueJSONObject = jiraIssuesJSONArray.getJSONObject(
 				i);
 
-			jsonArray.put(processJiraIssue(jiraIssueJSONObject));
+			jsonArray.put(
+				processJiraIssue(
+					productAssetCategory, jiraFixPackCustomField,
+					jiraIssueJSONObject));
 		}
 
 		jsonObject.put("results", jsonArray);
@@ -298,8 +231,7 @@ public class JiraIssueSearcher extends BaseSearcher {
 	}
 
 	private static final String _ISSUE_FIELDS =
-		"components,customfield_13120,customfield_22520,description,key," +
-			"summary";
+		"components,description,key,summary";
 
 	@Reference
 	private FixPacksAssetCategoryUtil _fixPacksAssetCategoryUtil;

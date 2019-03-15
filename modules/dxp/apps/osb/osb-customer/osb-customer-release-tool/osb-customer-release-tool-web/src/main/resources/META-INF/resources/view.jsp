@@ -20,9 +20,8 @@
 String tabs1 = ParamUtil.getString(request, "tabs1");
 
 String product = ParamUtil.getString(request, "product");
-
-double fromFixPackVersion = ParamUtil.getDouble(request, "fromFixPackVersion");
 double productVersion = ParamUtil.getDouble(request, "productVersion");
+double fromFixPackVersion = ParamUtil.getDouble(request, "fromFixPackVersion");
 double toFixPackVersion = ParamUtil.getDouble(request, "toFixPackVersion");
 
 PortletURL portletURL = renderResponse.createRenderURL();
@@ -31,6 +30,12 @@ portletURL.setParameter("tabs1", tabs1);
 %>
 
 <liferay-portlet:renderURL var="fixPacksURL">
+	<portlet:param name="tabs1" value="<%= tabs1 %>" />
+	<portlet:param name="fromFixPackVersion" value="2.0" />
+	<portlet:param name="orderByType" value="desc" />
+	<portlet:param name="product" value="dxp" />
+	<portlet:param name="productVersion" value="7.0" />
+	<portlet:param name="toFixPackVersion" value="5.0" />
 </liferay-portlet:renderURL>
 
 <div class="main-heading">
