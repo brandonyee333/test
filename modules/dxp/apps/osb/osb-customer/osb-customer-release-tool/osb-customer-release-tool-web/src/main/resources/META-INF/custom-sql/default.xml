@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <custom-sql>
-	<sql id="com.liferay.osb.customer.release.tool.web.internal.util.FixPacksAssetCategoryUtil.findByV_PC">
+	<sql id="com.liferay.osb.customer.release.tool.web.internal.util.ReleasesAssetCategoryUtil.findByV_PC">
 		<![CDATA[
 			SELECT
 				AssetCategory.categoryId
@@ -14,7 +14,7 @@
 				(AssetCategory.parentCategoryId = ?)
 		]]>
 	</sql>
-	<sql id="com.liferay.osb.customer.release.tool.web.internal.util.FixPacksAssetCategoryUtil.joinByAssetCategoryProperty">
+	<sql id="com.liferay.osb.customer.release.tool.web.internal.util.ReleasesAssetCategoryUtil.joinByAssetCategoryProperty">
 		<![CDATA[
 			INNER JOIN
 				AssetCategoryProperty AS AssetCategoryProperty[$i$] ON

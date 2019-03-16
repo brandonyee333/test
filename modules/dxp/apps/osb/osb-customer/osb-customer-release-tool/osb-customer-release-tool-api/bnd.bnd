@@ -1,4 +1,6 @@
 Bundle-Name: Liferay OSB Customer Release Tool API
 Bundle-SymbolicName: com.liferay.osb.customer.release.tool.api
 Bundle-Version: 1.0.0
-Export-Package: com.liferay.osb.customer.release.tool.configuration
+Export-Package:\
+	com.liferay.osb.customer.release.tool.configuration,\
+	com.liferay.osb.customer.release.tool.util.comparator

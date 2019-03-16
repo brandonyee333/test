@@ -1,10 +1,10 @@
 <#assign
-	fixPacksAssetCategoryUtil = serviceLocator.findService("com.liferay.osb.customer.release.tool.web.internal.util.FixPacksAssetCategoryUtil")
 	journalArticleLocalService = serviceLocator.findService("com.liferay.journal.service.JournalArticleLocalService")
+	releasesAssetCategoryUtil = serviceLocator.findService("com.liferay.osb.customer.release.tool.web.internal.util.ReleasesAssetCategoryUtil")
 
 	journalArticle = journalArticleLocalService.getArticle(scopeGroupId, .vars['reserved-article-id'].getData())
 
-	fixPackAssetCategory = fixPacksAssetCategoryUtil.fetchFixPackAssetCategory(journalArticle.getResourcePrimKey())
+	fixPackAssetCategory = releasesAssetCategoryUtil.fetchFixPackAssetCategory(journalArticle.getResourcePrimKey())
 	productAssetCategory = fixPackAssetCategory.getParentCategory()
 />
 

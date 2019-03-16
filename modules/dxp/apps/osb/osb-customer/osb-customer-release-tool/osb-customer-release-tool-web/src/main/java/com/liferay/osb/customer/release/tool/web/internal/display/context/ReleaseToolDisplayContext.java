@@ -25,9 +25,11 @@ import com.liferay.dynamic.data.mapping.service.DDMStructureLocalServiceUtil;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.osb.customer.downloads.display.constants.DownloadsDDMStructureConstants;
 import com.liferay.osb.customer.downloads.display.constants.DownloadsDisplayPortletKeys;
+import com.liferay.osb.customer.release.tool.util.comparator.AssetCategoryPropertyComparator;
 import com.liferay.osb.customer.release.tool.web.internal.constants.DDMStructureConstants;
 import com.liferay.osb.customer.release.tool.web.internal.constants.FixPackField;
-import com.liferay.osb.customer.release.tool.web.internal.util.FixPacksAssetCategoryUtil;
+import com.liferay.osb.customer.release.tool.web.internal.constants.ReleaseAssetCategoryProperty;
+import com.liferay.osb.customer.release.tool.web.internal.util.ReleasesAssetCategoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -46,7 +48,10 @@ import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
@@ -68,11 +73,11 @@ public class ReleaseToolDisplayContext {
 
 		_renderRequest = renderRequest;
 
-		_fixPacksAssetCategoryUtil =
-			(FixPacksAssetCategoryUtil)renderRequest.getAttribute(
-				FixPacksAssetCategoryUtil.class.getName());
 		_themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
+		_releasesAssetCategoryUtil =
+			(ReleasesAssetCategoryUtil)renderRequest.getAttribute(
+				ReleasesAssetCategoryUtil.class.getName());
 
 		_initHighlightsFilters();
 	}
@@ -80,6 +85,10 @@ public class ReleaseToolDisplayContext {
 	public String getFixPackDownloadURL(
 			String product, double productVersion, double fixPackVersion)
 		throws PortalException {
+
+		if (Validator.isNull(product) && (productVersion <= 0)) {
+			return StringPool.BLANK;
+		}
 
 		SearchContext searchContext = new SearchContext();
 
@@ -112,7 +121,7 @@ public class ReleaseToolDisplayContext {
 		Document[] documents = hits.getDocs();
 
 		if (ArrayUtil.isEmpty(documents)) {
-			return null;
+			return StringPool.BLANK;
 		}
 
 		Document document = documents[0];
@@ -140,8 +149,13 @@ public class ReleaseToolDisplayContext {
 
 		List<AssetCategory> assetCategories =
 			AssetCategoryLocalServiceUtil.getVocabularyRootCategories(
-				_fixPacksAssetCategoryUtil.getFixPacksAssetVocabularyId(),
+				_releasesAssetCategoryUtil.getReleasesAssetVocabularyId(),
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+
+		assetCategories = ListUtil.sort(
+			assetCategories,
+			new AssetCategoryPropertyComparator(
+				ReleaseAssetCategoryProperty.VERSION));
 
 		for (AssetCategory assetCategory : assetCategories) {
 			jsonArray.put(getRootAssetCategoryJSONObject(assetCategory));
@@ -188,6 +202,11 @@ public class ReleaseToolDisplayContext {
 			AssetCategoryLocalServiceUtil.getChildCategories(
 				assetCategory.getCategoryId());
 
+		childAssetCategories = ListUtil.sort(
+			childAssetCategories,
+			new AssetCategoryPropertyComparator(
+				ReleaseAssetCategoryProperty.VERSION));
+
 		for (AssetCategory childAssetCategory : childAssetCategories) {
 			JSONObject childJSONObject = getAssetCategoryJSONObject(
 				childAssetCategory);
@@ -230,8 +249,8 @@ public class ReleaseToolDisplayContext {
 		}
 	}
 
-	private final FixPacksAssetCategoryUtil _fixPacksAssetCategoryUtil;
 	private JSONArray _highlightsFiltersJSONArray;
+	private final ReleasesAssetCategoryUtil _releasesAssetCategoryUtil;
 	private final RenderRequest _renderRequest;
 	private final ThemeDisplay _themeDisplay;
 

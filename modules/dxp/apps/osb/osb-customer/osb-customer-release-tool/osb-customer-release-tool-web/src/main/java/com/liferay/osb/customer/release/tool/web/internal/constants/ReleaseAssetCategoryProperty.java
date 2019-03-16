@@ -17,15 +17,12 @@ package com.liferay.osb.customer.release.tool.web.internal.constants;
 /**
  * @author Amos Fong
  */
-public class FixPackAssetCategoryConstants {
+public class ReleaseAssetCategoryProperty {
 
-	public static final String PROPERTY_JIRA_FIX_PACK_VERSION =
-		"jira-fix-pack-version";
+	public static final String JIRA_FIX_PACK_VERSION = "jira-fix-pack-version";
 
-	public static final String PROPERTY_PRODUCT = "product";
+	public static final String PRODUCT = "product";
 
-	public static final String PROPERTY_VERSION = "version";
-
-	public static final String VOCABULARY_FIX_PACKS_NAME = "Fix Packs";
+	public static final String VERSION = "version";
 
 }

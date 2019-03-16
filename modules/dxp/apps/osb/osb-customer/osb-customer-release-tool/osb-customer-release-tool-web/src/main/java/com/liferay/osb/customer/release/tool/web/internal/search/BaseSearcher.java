@@ -48,9 +48,7 @@ public abstract class BaseSearcher {
 			double toFixPackVersion = ParamUtil.getDouble(
 				portletRequest, "toFixPackVersion");
 
-			if ((productVersion <= 0) || (fromFixPackVersion <= 0) ||
-				(toFixPackVersion <= 0)) {
-
+			if (productVersion <= 0) {
 				return emptySearch();
 			}
 

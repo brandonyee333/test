@@ -17,9 +17,9 @@ package com.liferay.osb.customer.release.tool.web.internal.search.indexer;
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.journal.model.JournalArticle;
-import com.liferay.osb.customer.release.tool.web.internal.constants.FixPackAssetCategoryConstants;
 import com.liferay.osb.customer.release.tool.web.internal.constants.FixPackField;
-import com.liferay.osb.customer.release.tool.web.internal.util.FixPacksAssetCategoryUtil;
+import com.liferay.osb.customer.release.tool.web.internal.constants.ReleaseAssetCategoryProperty;
+import com.liferay.osb.customer.release.tool.web.internal.util.ReleasesAssetCategoryUtil;
 import com.liferay.portal.kernel.search.BaseIndexerPostProcessor;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.IndexerPostProcessor;
@@ -47,41 +47,39 @@ public class JournalArticleIndexerPostProcessor
 		JournalArticle journalArticle = (JournalArticle)obj;
 
 		AssetCategory assetCategory =
-			_fixPacksAssetCategoryUtil.fetchFixPackAssetCategory(
+			_releasesAssetCategoryUtil.fetchFixPackAssetCategory(
 				journalArticle.getResourcePrimKey());
 
-		if (assetCategory != null) {
-			String version = _fixPacksAssetCategoryUtil.getPropertyValue(
-				assetCategory.getCategoryId(),
-				FixPackAssetCategoryConstants.PROPERTY_VERSION);
-
-			if (Validator.isNotNull(version)) {
-				document.addNumber(
-					FixPackField.FIX_PACK_VERSION,
-					GetterUtil.getDouble(version));
-
-				String product = _fixPacksAssetCategoryUtil.getPropertyValue(
-					assetCategory.getParentCategoryId(),
-					FixPackAssetCategoryConstants.PROPERTY_PRODUCT);
-
-				document.addKeyword(FixPackField.PRODUCT, product);
-
-				String productVersion =
-					_fixPacksAssetCategoryUtil.getPropertyValue(
-						assetCategory.getParentCategoryId(),
-						FixPackAssetCategoryConstants.PROPERTY_VERSION);
-
-				document.addNumber(
-					FixPackField.PRODUCT_VERSION,
-					GetterUtil.getDouble(productVersion));
-			}
+		if (assetCategory == null) {
+			return;
 		}
+
+		String version = _releasesAssetCategoryUtil.getPropertyValue(
+			assetCategory.getCategoryId(), ReleaseAssetCategoryProperty.VERSION);
+
+		if (Validator.isNull(version)) {
+			return;
+		}
+
+		document.addNumber(
+			FixPackField.FIX_PACK_VERSION, GetterUtil.getDouble(version));
+
+		String product = _releasesAssetCategoryUtil.getPropertyValue(
+			assetCategory.getParentCategoryId(), ReleaseAssetCategoryProperty.PRODUCT);
+
+		document.addKeyword(FixPackField.PRODUCT, product);
+
+		String productVersion = _releasesAssetCategoryUtil.getPropertyValue(
+			assetCategory.getParentCategoryId(), ReleaseAssetCategoryProperty.VERSION);
+
+		document.addNumber(
+			FixPackField.PRODUCT_VERSION, GetterUtil.getDouble(productVersion));
 	}
 
 	@Reference
 	private AssetCategoryLocalService _assetCategoryLocalService;
 
 	@Reference
-	private FixPacksAssetCategoryUtil _fixPacksAssetCategoryUtil;
+	private ReleasesAssetCategoryUtil _releasesAssetCategoryUtil;
 
 }

@@ -34,10 +34,10 @@ export default class FixpackFilters extends Component {
 	};
 
 	state = {
-		fixpackURL: this.props.fixpackURL === 'null' ? '' : this.props.fixpackURL,
-		fromFixPackVersion: this.determineVersion(this.props.fromFixPackVersion),
+		fixpackURL: this.props.fixpackURL,
+		fromFixPackVersion: this.props.fromFixPackVersion,
 		productVersion: this.determineVersion(this.props.productVersion),
-		toFixPackVersion: this.determineVersion(this.props.toFixPackVersion)
+		toFixPackVersion: this.props.toFixPackVersion
 	};
 
 	getNameFromVersion = version => {
@@ -111,7 +111,7 @@ export default class FixpackFilters extends Component {
 
 		const fixpackDownloadLinkDescription = (
 			<Fragment>
-				{`${Liferay.Language.get('get')} ${this.determineVersion(toFixPackVersion) ? this.getNameFromVersion(toFixPackVersion) : ''
+				{`${Liferay.Language.get('get')} ${this.getNameFromVersion(toFixPackVersion)
 				}`}{' '}
 				<svg className="lexicon-icon lexicon-icon-arrow-right">
 					<use xlinkHref="#arrow-right" />

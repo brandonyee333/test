@@ -18,8 +18,8 @@ import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.osb.customer.jira.rest.connector.configuration.JIRARESTConnectorConfigurationValues;
 import com.liferay.osb.customer.jira.rest.connector.service.JIRAIssueLocalService;
 import com.liferay.osb.customer.release.tool.configuration.ReleaseToolConfigurationValues;
-import com.liferay.osb.customer.release.tool.web.internal.constants.FixPackAssetCategoryConstants;
-import com.liferay.osb.customer.release.tool.web.internal.util.FixPacksAssetCategoryUtil;
+import com.liferay.osb.customer.release.tool.web.internal.constants.ReleaseAssetCategoryProperty;
+import com.liferay.osb.customer.release.tool.web.internal.util.ReleasesAssetCategoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -115,13 +115,13 @@ public class JiraIssueSearcher extends BaseSearcher {
 		String orderByType = ParamUtil.getString(portletRequest, "orderByType");
 
 		AssetCategory productAssetCategory =
-			_fixPacksAssetCategoryUtil.getProductAssetCategory(
+			_releasesAssetCategoryUtil.getProductAssetCategory(
 				product, productVersion);
 
 		String jiraFixPackCustomField =
-			_fixPacksAssetCategoryUtil.getPropertyValue(
+			_releasesAssetCategoryUtil.getPropertyValue(
 				productAssetCategory.getCategoryId(),
-				FixPackAssetCategoryConstants.PROPERTY_JIRA_FIX_PACK_VERSION);
+				ReleaseAssetCategoryProperty.JIRA_FIX_PACK_VERSION);
 
 		String jql = buildJQL(
 			jiraFixPackCustomField, fromFixPackVersion, toFixPackVersion,
@@ -173,7 +173,7 @@ public class JiraIssueSearcher extends BaseSearcher {
 			fieldsJSONObject.getString(jiraFixPackCustomField));
 
 		AssetCategory assetCategory =
-			_fixPacksAssetCategoryUtil.getFixPackAssetCategory(
+			_releasesAssetCategoryUtil.getFixPackAssetCategory(
 				productAssetCategory.getCategoryId(), fixPackVersion);
 
 		if (assetCategory != null) {
@@ -234,9 +234,9 @@ public class JiraIssueSearcher extends BaseSearcher {
 		"components,description,key,summary";
 
 	@Reference
-	private FixPacksAssetCategoryUtil _fixPacksAssetCategoryUtil;
+	private JIRAIssueLocalService _jiraIssueLocalService;
 
 	@Reference
-	private JIRAIssueLocalService _jiraIssueLocalService;
+	private ReleasesAssetCategoryUtil _releasesAssetCategoryUtil;
 
 }

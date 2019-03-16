@@ -23,7 +23,7 @@ import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.asset.kernel.service.AssetCategoryPropertyLocalService;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
 import com.liferay.journal.model.JournalArticle;
-import com.liferay.osb.customer.release.tool.web.internal.constants.FixPackAssetCategoryConstants;
+import com.liferay.osb.customer.release.tool.web.internal.constants.ReleaseAssetCategoryProperty;
 import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
 import com.liferay.portal.instances.service.PortalInstancesLocalService;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
@@ -53,14 +53,14 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Amos Fong
  */
-@Component(immediate = true, service = FixPacksAssetCategoryUtil.class)
-public class FixPacksAssetCategoryUtil {
+@Component(immediate = true, service = ReleasesAssetCategoryUtil.class)
+public class ReleasesAssetCategoryUtil {
 
 	public static final String FIND_BY_V_PC =
-		FixPacksAssetCategoryUtil.class.getName() + ".findByV_PC";
+		ReleasesAssetCategoryUtil.class.getName() + ".findByV_PC";
 
 	public static final String JOIN_BY_ASSET_CATEGORY_PROPERTY =
-		FixPacksAssetCategoryUtil.class.getName() +
+		ReleasesAssetCategoryUtil.class.getName() +
 			".joinByAssetCategoryProperty";
 
 	public AssetCategory fetchFixPackAssetCategory(
@@ -73,7 +73,7 @@ public class FixPacksAssetCategoryUtil {
 
 		for (AssetCategory assetCategory : assetCategories) {
 			if (assetCategory.getVocabularyId() ==
-					_fixPacksAssetVocabulary.getVocabularyId()) {
+					_releasesAssetVocabulary.getVocabularyId()) {
 
 				return assetCategory;
 			}
@@ -88,14 +88,9 @@ public class FixPacksAssetCategoryUtil {
 		Map<String, String> assetCategoryProperties = new HashMap<>();
 
 		assetCategoryProperties.put(
-			FixPackAssetCategoryConstants.PROPERTY_VERSION,
-			String.valueOf(version));
+			ReleaseAssetCategoryProperty.VERSION, String.valueOf(version));
 
 		return getAssetCategory(parentCategoryId, assetCategoryProperties);
-	}
-
-	public long getFixPacksAssetVocabularyId() {
-		return _fixPacksAssetVocabulary.getVocabularyId();
 	}
 
 	public AssetCategory getProductAssetCategory(
@@ -103,11 +98,9 @@ public class FixPacksAssetCategoryUtil {
 
 		Map<String, String> assetCategoryProperties = new HashMap<>();
 
+		assetCategoryProperties.put(ReleaseAssetCategoryProperty.PRODUCT, product);
 		assetCategoryProperties.put(
-			FixPackAssetCategoryConstants.PROPERTY_PRODUCT, product);
-		assetCategoryProperties.put(
-			FixPackAssetCategoryConstants.PROPERTY_VERSION,
-			String.valueOf(productVersion));
+			ReleaseAssetCategoryProperty.VERSION, String.valueOf(productVersion));
 
 		return getAssetCategory(
 			AssetCategoryConstants.DEFAULT_PARENT_CATEGORY_ID,
@@ -130,6 +123,10 @@ public class FixPacksAssetCategoryUtil {
 		return StringPool.BLANK;
 	}
 
+	public long getReleasesAssetVocabularyId() {
+		return _releasesAssetVocabulary.getVocabularyId();
+	}
+
 	@Activate
 	@Modified
 	protected void activate(Map<String, Object> properties)
@@ -139,10 +136,9 @@ public class FixPacksAssetCategoryUtil {
 
 		Group group = _groupLocalService.getCompanyGroup(companyId);
 
-		_fixPacksAssetVocabulary =
+		_releasesAssetVocabulary =
 			_assetVocabularyLocalService.fetchGroupVocabulary(
-				group.getGroupId(),
-				FixPackAssetCategoryConstants.VOCABULARY_FIX_PACKS_NAME);
+				group.getGroupId(), _VOCABULARY_RELEASES_NAME);
 	}
 
 	protected AssetCategory getAssetCategory(
@@ -166,7 +162,7 @@ public class FixPacksAssetCategoryUtil {
 
 			int pos = setJoin(ps, assetCategoryProperties);
 
-			ps.setLong(pos, _fixPacksAssetVocabulary.getVocabularyId());
+			ps.setLong(pos, _releasesAssetVocabulary.getVocabularyId());
 			ps.setLong(pos + 1, parentCategoryId);
 
 			rs = ps.executeQuery();
@@ -250,8 +246,10 @@ public class FixPacksAssetCategoryUtil {
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
+	private static final String _VOCABULARY_RELEASES_NAME = "Releases";
+
 	private static final Log _log = LogFactoryUtil.getLog(
-		FixPacksAssetCategoryUtil.class);
+		ReleasesAssetCategoryUtil.class);
 
 	@Reference
 	private AssetCategoryLocalService _assetCategoryLocalService;
@@ -263,12 +261,12 @@ public class FixPacksAssetCategoryUtil {
 	@Reference
 	private AssetVocabularyLocalService _assetVocabularyLocalService;
 
-	private AssetVocabulary _fixPacksAssetVocabulary;
-
 	@Reference
 	private GroupLocalService _groupLocalService;
 
 	@Reference
 	private PortalInstancesLocalService _portalInstancesLocalService;
+
+	private AssetVocabulary _releasesAssetVocabulary;
 
 }
