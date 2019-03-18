@@ -14,9 +14,9 @@
 
 package com.liferay.lcs.client.internal.command;
 
+import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.event.LCSEventListener;
-import com.liferay.lcs.client.internal.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.internal.advisor.UptimeAdvisor;
 import com.liferay.lcs.client.task.scheduler.TaskSchedulerService;
 import com.liferay.lcs.messaging.SignOffCommandMessage;

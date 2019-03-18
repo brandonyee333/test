@@ -252,7 +252,8 @@ public class LCSClusterEntryTokenAdvisorImplTest extends PowerMockito {
 	private void _spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete()
 		throws Exception {
 
-		_lcsClusterEntryTokenAdvisor = spy(new LCSClusterEntryTokenAdvisorImpl());
+		_lcsClusterEntryTokenAdvisor = spy(
+			new LCSClusterEntryTokenAdvisorImpl());
 
 		// Skip JavaParser, will fix
 

@@ -14,7 +14,7 @@
 
 package com.liferay.lcs.client.internal.command;
 
-import com.liferay.lcs.client.internal.advisor.LCSClusterEntryTokenAdvisor;
+import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.internal.task.advisor.TaskAdvisor;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.messaging.SendPortalPropertiesCommandMessage;
@@ -35,18 +35,20 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Ivica Cardic
  * @author Igor Beslic
  */
+@Component(immediate = true, service = SendPortalPropertiesCommand.class)
 public class SendPortalPropertiesCommand
 	implements Command<SendPortalPropertiesCommandMessage> {
 
 	public SendPortalPropertiesCommand(
-		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor,
 		LCSGatewayClient lcsGatewayClient, TaskAdvisor taskAdvisor) {
 
-		_lcsClusterEntryTokenAdvisor = lcsClusterEntryTokenAdvisor;
 		_lcsGatewayClient = lcsGatewayClient;
 		_taskAdvisor = taskAdvisor;
 	}
@@ -184,7 +186,9 @@ public class SendPortalPropertiesCommand
 	private static final Log _log = LogFactoryUtil.getLog(
 		SendPortalPropertiesCommand.class);
 
-	private final LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
+	@Reference
+	private LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
+
 	private final LCSGatewayClient _lcsGatewayClient;
 	private final TaskAdvisor _taskAdvisor;
 

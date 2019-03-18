@@ -17,12 +17,13 @@ package com.liferay.lcs.client.internal.advisor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.lcs.activation.LCSClusterEntryTokenContentAdvisor;
+import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.event.LCSEventListener;
 import com.liferay.lcs.client.exception.LCSClusterEntryTokenDecryptException;
-import com.liferay.lcs.client.internal.exception.LCSKeystoreException;
 import com.liferay.lcs.client.exception.MissingLCSClusterEntryTokenException;
 import com.liferay.lcs.client.exception.MultipleLCSClusterEntryTokenException;
+import com.liferay.lcs.client.internal.exception.LCSKeystoreException;
 import com.liferay.lcs.client.internal.util.PortletPropsValues;
 import com.liferay.lcs.client.platform.portal.LCSClusterEntryToken;
 import com.liferay.lcs.security.KeyStoreAdvisor;
@@ -47,10 +48,14 @@ import java.security.cert.Certificate;
 
 import javax.crypto.spec.SecretKeySpec;
 
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Igor Beslic
  */
-public class LCSClusterEntryTokenAdvisorImpl implements LCSEventListener {
+@Component(immediate = true, service = LCSClusterEntryTokenAdvisor.class)
+public class LCSClusterEntryTokenAdvisorImpl
+	implements LCSClusterEntryTokenAdvisor, LCSEventListener {
 
 	public String getLCSAccessSecret() {
 		return _lcsAccessSecret;

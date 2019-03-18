@@ -14,12 +14,12 @@
 
 package com.liferay.lcs.client.internal.task;
 
+import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.event.LCSEventListener;
 import com.liferay.lcs.client.internal.advisor.InstallationEnvironmentAdvisor;
 import com.liferay.lcs.client.internal.advisor.InstallationEnvironmentAdvisorFactory;
 import com.liferay.lcs.client.internal.advisor.LCSAlertAdvisor;
-import com.liferay.lcs.client.internal.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.advisor.UptimeAdvisor;
 import com.liferay.lcs.client.internal.exception.LCSHandshakeException;

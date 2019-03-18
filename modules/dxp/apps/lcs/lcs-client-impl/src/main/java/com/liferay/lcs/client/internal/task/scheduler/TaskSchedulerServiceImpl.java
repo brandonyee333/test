@@ -14,9 +14,9 @@
 
 package com.liferay.lcs.client.internal.task.scheduler;
 
+import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.internal.advisor.LCSAlertAdvisor;
-import com.liferay.lcs.client.internal.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.advisor.UptimeAdvisor;
 import com.liferay.lcs.client.internal.task.CommandMessageTask;
@@ -47,22 +47,24 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Riccardo Ferrari
  * @author Igor Beslic
  */
+@Component(immediate = true, service = TaskSchedulerService.class)
 public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 
 	public TaskSchedulerServiceImpl(
 		int defaultInterval, LCSAlertAdvisor lcsAlertAdvisor,
-		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor,
 		LCSGatewayClient lcsGatewayClient, LCSKeyAdvisor lcsKeyAdvisor,
 		TaskAdvisor taskAdvisor, ThreadFactory threadFactory,
 		UptimeAdvisor uptimeAdvisor) {
 
 		_defaultInterval = defaultInterval;
 		_lcsAlertAdvisor = lcsAlertAdvisor;
-		_lcsClusterEntryTokenAdvisor = lcsClusterEntryTokenAdvisor;
 		_lcsGatewayClient = lcsGatewayClient;
 		_lcsKeyAdvisor = lcsKeyAdvisor;
 		_taskAdvisor = taskAdvisor;
@@ -449,7 +451,10 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 
 	private final int _defaultInterval;
 	private final LCSAlertAdvisor _lcsAlertAdvisor;
-	private final LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
+
+	@Reference
+	private LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
+
 	private final LCSGatewayClient _lcsGatewayClient;
 	private final LCSKeyAdvisor _lcsKeyAdvisor;
 	private final ScheduledExecutorService _scheduledExecutorService;

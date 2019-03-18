@@ -14,14 +14,14 @@
 
 package com.liferay.lcs.client.internal.task;
 
+import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.event.LCSEventListener;
-import com.liferay.lcs.client.internal.advisor.LCSAlertAdvisor;
-import com.liferay.lcs.client.internal.advisor.LCSClusterEntryTokenAdvisor;
-import com.liferay.lcs.client.internal.exception.InvalidLCSClusterEntryTokenException;
 import com.liferay.lcs.client.exception.LCSClusterEntryTokenDecryptException;
 import com.liferay.lcs.client.exception.MissingLCSClusterEntryTokenException;
 import com.liferay.lcs.client.exception.MultipleLCSClusterEntryTokenException;
+import com.liferay.lcs.client.internal.advisor.LCSAlertAdvisor;
+import com.liferay.lcs.client.internal.exception.InvalidLCSClusterEntryTokenException;
 import com.liferay.lcs.client.internal.platform.portal.LCSPortalClient;
 import com.liferay.lcs.client.internal.util.LCSUtil;
 import com.liferay.lcs.client.task.scheduler.TaskSchedulerService;
