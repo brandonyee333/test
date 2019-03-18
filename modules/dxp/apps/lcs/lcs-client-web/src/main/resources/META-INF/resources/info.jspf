@@ -22,8 +22,12 @@
 	</span>
 
 	<p>
-		<liferay-ui:message arguments="<%= new Object[] {PortletPropsValues.LRDCOM_LCS_PRODUCT_PAGE_URL, PortletPropsValues.LRDCOM_LCS_USER_DOCUMENTATION_URL} %>" key="liferay-connected-services-is-a-set-of-online-tools-and-services-that-lets-you-manage-and-monitor-your-liferay-installations" />
+		<liferay-ui:message arguments="<%= new Object[] {lcsConfiguration.lrdcomLCSProductPageUrl(), lcsConfiguration.lrdcomLCSUserDocumentationUrl()} %>" key="liferay-connected-services-is-a-set-of-online-tools-and-services-that-lets-you-manage-and-monitor-your-liferay-installations" />
 	</p>
 
-	<aui:a cssClass="btn btn-primary" href="<%= LCSUtil.getLCSPortalURL() %>" label="get-started" target="_blank" />
+	<%
+	String lcsPortalURL = GetterUtil.getString(request.getAttribute("lcsPortalURL"));
+	%>
+
+	<aui:a cssClass="btn btn-primary" href="<%= lcsPortalURL %>" label="get-started" target="_blank" />
 </div>

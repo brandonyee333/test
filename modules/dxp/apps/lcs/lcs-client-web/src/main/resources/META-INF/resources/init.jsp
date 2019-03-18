@@ -23,23 +23,11 @@ taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %><%@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
-<%@ page import="com.liferay.lcs.client.internal.advisor.LCSClusterEntryTokenAdvisor" %><%@
-page import="com.liferay.lcs.client.internal.exception.LCSExceptionHandler" %><%@
-page import="com.liferay.lcs.client.internal.platform.portal.LCSClusterEntryClientUtil" %><%@
-page import="com.liferay.lcs.client.internal.platform.portal.LCSClusterNodeClientUtil" %><%@
-page import="com.liferay.lcs.client.internal.platform.portal.LCSProjectClientUtil" %><%@
-page import="com.liferay.lcs.client.internal.task.advisor.TaskAdvisor" %><%@
-page import="com.liferay.lcs.client.internal.util.ClusterNodeUtil" %><%@
-page import="com.liferay.lcs.client.internal.util.LCSAlert" %><%@
-page import="com.liferay.lcs.client.internal.util.LCSUtil" %><%@
-page import="com.liferay.lcs.client.internal.util.PortletPropsValues" %><%@
+<%@ page import="com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor" %><%@
+page import="com.liferay.lcs.client.alert.LCSAlert" %><%@
+page import="com.liferay.lcs.client.configuration.LCSConfiguration" %><%@
 page import="com.liferay.lcs.client.platform.gateway.LCSGatewayClient" %><%@
-page import="com.liferay.lcs.client.platform.portal.LCSClusterEntry" %><%@
-page import="com.liferay.lcs.client.platform.portal.LCSClusterNode" %><%@
-page import="com.liferay.lcs.client.platform.portal.LCSProject" %><%@
-page import="com.liferay.portal.kernel.bean.BeanLocator" %><%@
-page import="com.liferay.portal.kernel.bean.PortletBeanLocatorUtil" %><%@
-page import="com.liferay.portal.kernel.cluster.ClusterExecutorUtil" %><%@
+page import="com.liferay.lcs.client.task.advisor.TaskAdvisor" %><%@
 page import="com.liferay.portal.kernel.language.UnicodeLanguageUtil" %><%@
 page import="com.liferay.portal.kernel.servlet.SessionErrors" %><%@
 page import="com.liferay.portal.kernel.util.FastDateFormatConstants" %><%@
@@ -66,4 +54,5 @@ page import="java.util.TimeZone" %>
 <%
 Format dateFormatDate = FastDateFormatFactoryUtil.getDateTime(FastDateFormatConstants.MEDIUM, FastDateFormatConstants.MEDIUM, locale, timeZone);
 Format intervalDateFormatDate = FastDateFormatFactoryUtil.getSimpleDateFormat("HH:mm:ss", TimeZone.getTimeZone(StringPool.UTC));
+LCSConfiguration lcsConfiguration = (LCSConfiguration)request.getAttribute("lcsConfiguration");
 %>

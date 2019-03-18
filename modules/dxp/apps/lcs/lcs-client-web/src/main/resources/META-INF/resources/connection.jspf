@@ -15,48 +15,17 @@
 --%>
 
 <%
-BeanLocator beanLocator = PortletBeanLocatorUtil.getBeanLocator("lcs-portlet");
-
-String lcsClusterEntryLayoutURL = StringPool.BLANK;
-String lcsClusterNodeLayoutURL = StringPool.BLANK;
-String lcsProjectLayoutURL = StringPool.BLANK;
-String registrationLayoutURL = StringPool.BLANK;
-
-LCSClusterEntry lcsClusterEntry = null;
-LCSClusterNode lcsClusterNode = null;
-LCSProject lcsProject = new LCSProject();
-
-try {
-	lcsClusterNode = LCSClusterNodeClientUtil.fetchLCSClusterNode();
-
-	if (lcsClusterNode != null) {
-		lcsClusterEntry = LCSClusterEntryClientUtil.getLCSClusterEntry(lcsClusterNode.getLcsClusterEntryId());
-
-		List<LCSProject> lcsProjects = LCSProjectClientUtil.getUserManageableLCSProjects(liferayPortletRequest);
-
-		for (LCSProject currentLCSProject : lcsProjects) {
-			if (currentLCSProject.getLcsProjectId() == lcsClusterEntry.getLcsProjectId()) {
-				lcsProject = currentLCSProject;
-
-				break;
-			}
-		}
-
-		lcsClusterEntryLayoutURL = LCSUtil.getLCSClusterEntryLayoutURL(lcsProject, lcsClusterNode);
-		lcsClusterNodeLayoutURL = LCSUtil.getLCSClusterNodeLayoutURL(lcsProject, lcsClusterNode);
-		lcsProjectLayoutURL = LCSUtil.getLCSProjectLayoutURL(lcsProject);
-		registrationLayoutURL = LCSUtil.getRegistrationLayoutURL(lcsProject, lcsClusterNode);
-	}
-}
-catch (Exception e) {
-	LCSExceptionHandler.error(e);
-
-	SessionErrors.add(liferayPortletRequest, "generalPluginAccess");
-}
+String lcsClusterEntryLayoutURL = GetterUtil.getString(request.getAttribute("lcsClusterEntryLayoutURL"));
+String lcsClusterEntryName = GetterUtil.getString(request.getAttribute("lcsClusterEntryName"));
+String lcsClusterNodeLayoutURL = GetterUtil.getString(request.getAttribute("lcsClusterNodeLayoutURL"));
+String lcsClusterNodeName = GetterUtil.getString(request.getAttribute("lcsClusterNodeName"));
+String lcsProjectLayoutURL = GetterUtil.getString(request.getAttribute("lcsProjectLayoutURL"));
+String lcsProjectName = GetterUtil.getString(request.getAttribute("lcsProjectName"));
+String registrationLayoutURL = GetterUtil.getString(request.getAttribute("registrationLayoutURL"));
 %>
 
 <c:choose>
-	<c:when test="<%= (lcsClusterNode == null) || (lcsClusterEntry == null) %>">
+	<c:when test="<%= Validator.isNull(lcsClusterNodeName) || Validator.isNull(lcsClusterEntryName) %>">
 		<c:choose>
 			<c:when test='<%= SessionErrors.contains(liferayPortletRequest, "generalPluginAccess") %>'>
 				<div class="alert alert-danger">
@@ -73,12 +42,12 @@ catch (Exception e) {
 	<c:otherwise>
 		<c:if test="<%= lcsAlerts.contains(LCSAlert.WARNING_LCS_PORTLET_NEW_VERSION_AVAILABLE) %>">
 			<div class="alert alert-warning lcs-alert">
-				<liferay-ui:message arguments="<%= PortletPropsValues.LRDCOM_LCS_CLIENT_DOWNLOAD_URL %>" key="<%= LCSAlert.WARNING_LCS_PORTLET_NEW_VERSION_AVAILABLE.getLabel() %>" />
+				<liferay-ui:message arguments="<%= lcsConfiguration.lrdcomLCSClientDownloadUrl() %>" key="<%= LCSAlert.WARNING_LCS_PORTLET_NEW_VERSION_AVAILABLE.getLabel() %>" />
 			</div>
 		</c:if>
 
 		<%
-		LCSGatewayClient lcsGatewayClient = (LCSGatewayClient)beanLocator.locate("com.liferay.lcs.client.platform.gateway.LCSGatewayClient");
+		LCSGatewayClient lcsGatewayClient = (LCSGatewayClient)request.getAttribute("com.liferay.lcs.client.platform.gateway.LCSGatewayClient");
 
 		boolean ready = lcsGatewayClient.isAvailable();
 
@@ -162,11 +131,11 @@ catch (Exception e) {
 			</li>
 
 			<%
-			TaskAdvisor taskAdvisor = (TaskAdvisor)beanLocator.locate("com.liferay.lcs.client.internal.task.advisor.TaskAdvisor");
+			TaskAdvisor taskAdvisor = (TaskAdvisor)request.getAttribute("com.liferay.lcs.client.internal.task.advisor.TaskAdvisorImpl");
 
 			Set<String> activeServiceLabels = taskAdvisor.getActiveServiceLabels();
 
-			LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor = (LCSClusterEntryTokenAdvisor)beanLocator.locate("com.liferay.lcs.client.internal.advisor.LCSClusterEntryTokenAdvisor");
+			LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor = (LCSClusterEntryTokenAdvisor)request.getAttribute("com.liferay.lcs.client.internal.advisor.LCSClusterEntryTokenAdvisorImpl");
 			%>
 
 			<%
@@ -222,7 +191,7 @@ catch (Exception e) {
 
 					<aui:col width="<%= 50 %>">
 						<aui:a href="<%= lcsProjectLayoutURL %>" target="_blank">
-							<%= HtmlUtil.escape(lcsProject.getName()) %>
+							<%= HtmlUtil.escape(lcsProjectName) %>
 						</aui:a>
 					</aui:col>
 				</aui:row>
@@ -235,7 +204,7 @@ catch (Exception e) {
 
 					<aui:col width="<%= 50 %>">
 						<aui:a href="<%= lcsClusterEntryLayoutURL %>" target="_blank">
-							<%= HtmlUtil.escape(lcsClusterEntry.getName()) %>
+							<%= HtmlUtil.escape(lcsClusterEntryName) %>
 						</aui:a>
 					</aui:col>
 				</aui:row>
@@ -248,14 +217,18 @@ catch (Exception e) {
 
 					<aui:col width="<%= 50 %>">
 						<aui:a href="<%= lcsClusterNodeLayoutURL %>" target="_blank">
-							<%= HtmlUtil.escape(lcsClusterNode.getName()) %>
+							<%= HtmlUtil.escape(lcsClusterNodeName) %>
 						</aui:a>
 					</aui:col>
 				</aui:row>
 			</li>
 		</ul>
 
-		<c:if test="<%= ClusterExecutorUtil.isEnabled() %>">
+		<%
+		List<Map<String, Object>> clusterNodeInfos = (List<Map<String, Object>>)request.getAttribute("clusterNodeInfos");
+		%>
+
+		<c:if test="<%= !clusterNodeInfos.isEmpty() %>">
 			<ul class="list-group">
 				<li class="list-group-heading">
 					<liferay-ui:message key="cluster" />
@@ -267,18 +240,13 @@ catch (Exception e) {
 						</aui:col>
 
 						<aui:col width="<%= 50 %>">
-
-							<%
-							Map<String, Object> localClusterNodeInfo = ClusterNodeUtil.getClusterNodeInfo();
-							%>
-
-							<%= localClusterNodeInfo.get("address") %>
+							<%= GetterUtil.getString(request.getAttribute("localClusterNodeAddress")) %>
 						</aui:col>
 					</aui:row>
 				</li>
 
 				<%
-				for (Map<String, Object> clusterNodeInfo : ClusterNodeUtil.getClusterNodeInfos()) {
+				for (Map<String, Object> clusterNodeInfo : clusterNodeInfos) {
 				%>
 
 					<li class="list-group-item">

@@ -19,7 +19,7 @@
 <%
 String lcsPage = ParamUtil.getString(request, "lcsPage", "connection");
 
-Set<LCSAlert> lcsAlerts = LCSUtil.getLCSAlerts();
+Set<LCSAlert> lcsAlerts = (Set<LCSAlert>)request.getAttribute("lcsAlerts");
 %>
 
 <section class="content">
@@ -72,7 +72,7 @@ Set<LCSAlert> lcsAlerts = LCSUtil.getLCSAlerts();
 				<div class="<%= lcsAlert.getCSSClass() %>">
 					<c:choose>
 						<c:when test="<%= lcsAlert == LCSAlert.WARNING_LCS_PORTLET_NEW_VERSION_AVAILABLE %>">
-							<liferay-ui:message arguments="<%= PortletPropsValues.LRDCOM_LCS_CLIENT_DOWNLOAD_URL %>" key="<%= lcsAlert.getLabel() %>" />
+							<liferay-ui:message arguments="<%= lcsConfiguration.lrdcomLCSClientDownloadUrl() %>" key="<%= lcsAlert.getLabel() %>" />
 						</c:when>
 						<c:otherwise>
 							<liferay-ui:message key="<%= lcsAlert.getLabel() %>" />
@@ -91,15 +91,15 @@ Set<LCSAlert> lcsAlerts = LCSUtil.getLCSAlerts();
 <footer class="footer">
 	<div class="container-fluid-1280">
 		<div class="footer-note">
-			<liferay-ui:message arguments="<%= PortletPropsValues.LCS_CLIENT_VERSION %>" key="liferay-connected-services-client-x" />
+			<liferay-ui:message arguments="<%= lcsConfiguration.lcsClientVersion() %>" key="liferay-connected-services-client-x" />
 		</div>
 
 		<div class="footer-note">
-			<liferay-ui:message arguments="<%= PortletPropsValues.LRDCOM_SUPPORT_URL %>" key="if-you-have-a-liferay-enterprise-subscription-and-you-have-questions-or-issues-please-open-a-ticket-in-lesa-under-the-liferay-connected-services-component" />
+			<liferay-ui:message arguments="<%= lcsConfiguration.lrdcomSupportUrl() %>" key="if-you-have-a-liferay-enterprise-subscription-and-you-have-questions-or-issues-please-open-a-ticket-in-lesa-under-the-liferay-connected-services-component" />
 		</div>
 
 		<div class="footer-note">
-			<liferay-ui:message arguments="<%= PortletPropsValues.LRDCOM_SALES_EMAIL_ADDRESS %>" key="if-you-do-not-have-an-active-enterprise-subscription-please-contact-your-account-executive-or-x" />
+			<liferay-ui:message arguments="<%= lcsConfiguration.lrdcomSalesEmailAddress() %>" key="if-you-do-not-have-an-active-enterprise-subscription-please-contact-your-account-executive-or-x" />
 		</div>
 	</div>
 </footer>
