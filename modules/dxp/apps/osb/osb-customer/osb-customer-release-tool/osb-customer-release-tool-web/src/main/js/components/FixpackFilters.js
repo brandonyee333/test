@@ -71,7 +71,11 @@ export default class FixpackFilters extends Component {
 		)
 	}
 
-	handleSubmit = () => this.fixpackFiltersFormRef.current.submit();
+	handleSubmit = target => {
+		if (target !== '') {
+			this.fixpackFiltersFormRef.current.submit();
+		}
+	}
 
 	lookupFixPacksByProduct = (isToFixPackFilter = false) => {
 		const {filtersJSON} = this.props;
