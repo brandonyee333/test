@@ -4,7 +4,32 @@ import {cleanup, fireEvent, render} from 'react-testing-library';
 import SortableTable from '../SortableTable';
 
 const setup = () => {
-	const jsonObj = {
+	const changelogJSONObj = {
+		results: [
+			{
+				summary:
+					'IE11 Web Image Resizing Does not Maintain Initial Aspect Ratio',
+				components: ['Frontend Infrastructure > WYSIWYG'],
+				product: 'DXP 7.0',
+				release: 'GA',
+				description: 'description',
+				key: 'LPS-90100',
+				url: '/'
+			},
+			{
+				summary: 'Add menu - Heading order invalid',
+				components: ['Accessibility'],
+				product: 'DXP 7.0',
+				release: 'GA',
+				description: 'description 2',
+				key: 'LPS-85155',
+				url: '/'
+			}
+		],
+		total: 2
+	}
+
+	const highlightsJSONObj = {
 		results: [
 			{
 				content: 'Content Text',
@@ -27,9 +52,10 @@ const setup = () => {
 		total: 0
 	};
 
-	const utils = render(<SortableTable jsonObject={jsonObj} />);
+	const utils = render(<SortableTable jsonObject={highlightsJSONObj} tab="highlights" />);
 
 	return {
+		changelogJSONObj,
 		noResults,
 		...utils
 	};
@@ -38,8 +64,16 @@ const setup = () => {
 afterEach(cleanup);
 
 describe('SortableTable', () => {
-	it('renders correctly', () => {
+	it('renders highlights table correctly', () => {
 		const {container} = setup();
+
+		expect(container).toMatchSnapshot();
+	});
+
+	it('renders changelog table correctly', () => {
+		const {changelogJSONObj} = setup();
+
+		const {container} = render(<SortableTable jsonObject={changelogJSONObj} tab="changelog" />);
 
 		expect(container).toMatchSnapshot();
 	});
@@ -47,7 +81,7 @@ describe('SortableTable', () => {
 	it('renders no results message', () => {
 		const {container, getByText, noResults, rerender} = setup();
 
-		rerender(<SortableTable jsonObject={noResults} />);
+		rerender(<SortableTable jsonObject={noResults} tab="highlights" />);
 
 		expect(
 			getByText('no-results-found-to-match-your-selection')

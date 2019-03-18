@@ -1,0 +1,15 @@
+.changelog-table {
+	> tbody > tr > td.lfr-summary-column {
+		font-size: $font-size-md;
+	}
+}
+
+.lfr-component-column,
+.lfr-product-column {
+	width: 20%
+}
+
+.lfr-release-column,
+.lfr-key-column {
+	width: 10%;
+}

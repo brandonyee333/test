@@ -3,11 +3,40 @@
 @import "base-variables";
 
 .osb-release-tool-portlet {
+	@import "_changelog";
 	@import "_fixpack-filters";
 	@import "_highlights";
 
 	.main-heading {
 		background-color: $color-grey;
 		padding: 80px 0 84px;
+	}
+
+	.showing-results {
+		padding: $padding-default 0;
+	}
+
+	.sorting-indicator {
+		margin-left: 8px;
+
+		&:hover {
+			cursor: pointer;
+		}
+
+		&.asc {
+			transform: rotate(180deg);
+		}
+	}
+
+	.table {
+		table-layout: auto;
+
+		> thead > tr > th {
+			font-weight: $font-weight-semi-bold;
+		}
+
+		> tbody > tr > td:first-child {
+			font-weight: $font-weight-normal;
+		}
 	}
 }

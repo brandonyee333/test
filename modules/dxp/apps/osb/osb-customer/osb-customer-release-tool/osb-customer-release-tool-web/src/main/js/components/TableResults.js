@@ -1,14 +1,21 @@
 import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 
+import {error} from '../types/generic';
+import {fixPackJSONObject} from '../types/highlights';
+import {jiraIssueJSONObject} from '../types/changelog';
+
 import Alert from './Alert';
 import SortableTable from './SortableTable';
 
 TableResults.propTypes = {
-	jsonObject: PropTypes.object.isRequired
+	jsonObject: PropTypes.oneOfType(
+		[error, fixPackJSONObject, jiraIssueJSONObject]
+	).isRequired,
+	tab: PropTypes.oneOf(['highlights', 'changelog']).isRequired
 };
 
-export default function TableResults({jsonObject}) {
+export default function TableResults({jsonObject, tab}) {
 	return (
 		<Fragment>
 			{!!jsonObject.error && (
@@ -16,7 +23,7 @@ export default function TableResults({jsonObject}) {
 			)}
 
 			{!!jsonObject.results && (
-				<SortableTable jsonObject={jsonObject} />
+				<SortableTable jsonObject={jsonObject} tab={tab} />
 			)}
 		</Fragment>
 	);

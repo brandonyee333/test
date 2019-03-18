@@ -18,6 +18,7 @@ describe('TableResults', () => {
 				summary:
 					'IE11 Web Image Resizing Does not Maintain Initial Aspect Ratio',
 				components: ['Frontend Infrastructure > WYSIWYG'],
+				product: 'DXP 7.0',
 				release: 'GA',
 				description: 'description',
 				key: 'LPS-90100',
@@ -26,6 +27,7 @@ describe('TableResults', () => {
 			{
 				summary: 'Add menu - Heading order invalid',
 				components: ['Accessibility'],
+				product: 'DXP 7.0',
 				release: 'GA',
 				description: 'description 2',
 				key: 'LPS-85155',
@@ -36,14 +38,14 @@ describe('TableResults', () => {
 	};
 
 	it('renders error correctly', () => {
-		const {container, getByRole} = render(<TableResults jsonObject={error} />);
+		const {container, getByRole} = render(<TableResults jsonObject={error} tab="highlights" />);
 
 		expect(getByRole('alert')).toBeTruthy();
 		expect(container).toMatchSnapshot();
 	});
 
 	it('renders content correctly', () => {
-		const {container, getByRole} = render(<TableResults jsonObject={contentObj} />);
+		const {container, getByRole} = render(<TableResults jsonObject={contentObj} tab="changelog" />);
 
 		expect(getByRole('table')).toBeTruthy();
 		expect(container).toMatchSnapshot();

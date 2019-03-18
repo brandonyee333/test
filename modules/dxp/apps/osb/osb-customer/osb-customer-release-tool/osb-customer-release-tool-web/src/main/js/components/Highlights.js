@@ -20,7 +20,7 @@ export default class Highlights extends Component {
 		const {fixPackJSONObject} = this.props;
 
 		return (
-			<TableResults jsonObject={fixPackJSONObject} />
+			<TableResults jsonObject={fixPackJSONObject} tab="highlights" />
 		);
 	}
 }

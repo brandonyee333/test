@@ -1,26 +1,24 @@
 import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 
-export function tableHeader(orderBy, handleSort) {
-	return (
-		<Fragment>
-			<th className="lfr-released-column">
-				{Liferay.Language.get('released')}{' '}
-				<svg
-					className={`${orderBy} lexicon-icon sorting-indicator`}
-					onClick={handleSort}
-					role="button"
-				>
-					<use xlinkHref="#arrow-up" />
-				</svg>
-			</th>
-			<th className="lfr-details-column">{Liferay.Language.get('details')}</th>
-		</Fragment>
-	);
-}
+export const tableHeader = (orderBy, handleSort) => (
+	<Fragment>
+		<th className="lfr-released-column">
+			{Liferay.Language.get('release')}{' '}
+			<svg
+				className={`${orderBy} lexicon-icon sorting-indicator`}
+				onClick={handleSort}
+				role="button"
+			>
+				<use xlinkHref="#arrow-up" />
+			</svg>
+		</th>
+		<th className="lfr-details-column">{Liferay.Language.get('details')}</th>
+	</Fragment>
+);
 
-export function tableBody(results) {
-	return results.map(
+export const tableBody = results =>
+	results.map(
 		fixPack => (
 			<tr
 				key={fixPack.resourcePrimKey}
@@ -34,4 +32,3 @@ export function tableBody(results) {
 			</tr>
 		)
 	);
-}

@@ -8,6 +8,7 @@ export const jiraIssueJSONObject = PropTypes.shape(
 					components: PropTypes.arrayOf(PropTypes.string),
 					description: PropTypes.string,
 					key: PropTypes.string,
+					product: PropTypes.string,
 					release: PropTypes.string,
 					summary: PropTypes.string,
 					url: PropTypes.string

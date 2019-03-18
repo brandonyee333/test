@@ -1,11 +1,18 @@
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 
-import * as highlights from './HightlightsTable';
+import {fixPackJSONObject} from '../types/highlights';
+import {jiraIssueJSONObject} from '../types/changelog';
+
+import * as changelogTable from './ChangelogTable';
+import * as highlightsTable from './HightlightsTable';
 
 export default class SortableTable extends Component {
 	static propTypes = {
-		jsonObject: PropTypes.object.isRequired
+		jsonObject: PropTypes.oneOfType(
+			[fixPackJSONObject, jiraIssueJSONObject]
+		).isRequired,
+		tab: PropTypes.oneOf(['highlights', 'changelog']).isRequired
 	};
 
 	state = {
@@ -33,10 +40,12 @@ export default class SortableTable extends Component {
 	};
 
 	render() {
-		const {jsonObject: {total}} = this.props;
+		const {jsonObject: {total}, tab} = this.props;
 		const {orderBy} = this.state;
 
 		const results = this.sortResults(orderBy);
+
+		const table = tab === 'highlights' ? highlightsTable : changelogTable;
 
 		return (
 			<Fragment>
@@ -44,15 +53,15 @@ export default class SortableTable extends Component {
 					{Liferay.Language.get('showing-x-results', total.toString())}
 				</div>
 
-				<table className="table table-autofit table-list" role="table">
+				<table className={`table ${tab}-table table-autofit table-list`} role="table">
 					<thead>
 						<tr>
-							{highlights.tableHeader(orderBy, this.handleSort)}
+							{table.tableHeader(orderBy, this.handleSort)}
 						</tr>
 					</thead>
 
 					<tbody>
-						{!!results.length && highlights.tableBody(results)}
+						{!!results.length && table.tableBody(results)}
 					</tbody>
 				</table>
 
