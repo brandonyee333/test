@@ -15,8 +15,6 @@
 package com.liferay.lcs.client.internal.task.scheduler;
 
 import com.liferay.lcs.client.event.LCSEvent;
-import com.liferay.lcs.client.internal.advisor.LCSAlertAdvisor;
-import com.liferay.lcs.client.internal.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.advisor.UptimeAdvisor;
 import com.liferay.lcs.client.internal.platform.gateway.LCSGatewayClientImpl;
@@ -70,8 +68,6 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 
 	@Before
 	public void setUp() {
-		_lcsAlertAdvisor = mock(LCSAlertAdvisor.class);
-		_lcsClusterEntryTokenAdvisor = mock(LCSClusterEntryTokenAdvisor.class);
 		_lcsGatewayClient = mock(LCSGatewayClientImpl.class);
 
 		doReturn(
@@ -354,9 +350,8 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 	private HandshakeTask _spyHandshakeTask() throws Exception {
 		HandshakeTask handshakeTask = spy(
 			new HandshakeTask(
-				1L, _lcsAlertAdvisor, _lcsClusterEntryTokenAdvisor,
-				_lcsGatewayClient, _lcsKeyAdvisor, _taskSchedulerService,
-				_threadFactory, _uptimeAdvisor));
+				1L, _lcsGatewayClient, _lcsKeyAdvisor, _threadFactory,
+				_uptimeAdvisor));
 
 		doReturn(
 			new HandshakeMessage()
@@ -372,8 +367,7 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 
 		_taskSchedulerService = spy(
 			new TaskSchedulerServiceImpl(
-				1000, _lcsAlertAdvisor, _lcsClusterEntryTokenAdvisor,
-				_lcsGatewayClient, _lcsKeyAdvisor, null, _threadFactory,
+				1000, _lcsGatewayClient, _lcsKeyAdvisor, _threadFactory,
 				_uptimeAdvisor));
 
 		// Skip JavaParser, will fix
@@ -428,8 +422,6 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 		);
 	}
 
-	private LCSAlertAdvisor _lcsAlertAdvisor;
-	private LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
 	private LCSGatewayClient _lcsGatewayClient;
 	private LCSKeyAdvisor _lcsKeyAdvisor;
 	private TaskSchedulerService _taskSchedulerService;

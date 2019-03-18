@@ -15,7 +15,6 @@
 package com.liferay.lcs.client.internal.advisor;
 
 import com.liferay.lcs.client.event.LCSEvent;
-import com.liferay.lcs.client.internal.alert.advisor.LCSAlertAdvisorImpl;
 import com.liferay.lcs.client.internal.platform.gateway.LCSGatewayClientImpl;
 import com.liferay.lcs.client.internal.runnable.LCSThreadFactory;
 import com.liferay.lcs.client.internal.task.HandshakeTask;
@@ -237,9 +236,8 @@ public class LCSClusterEntryTokenAdvisorImplTest extends PowerMockito {
 	private HandshakeTask _spyHandshakeTask() throws Exception {
 		HandshakeTask handshakeTask = spy(
 			new HandshakeTask(
-				1L, mock(LCSAlertAdvisorImpl.class),
-				_lcsClusterEntryTokenAdvisor, _lcsGatewayClient, _lcsKeyAdvisor,
-				_taskSchedulerService, _threadFactory, _uptimeAdvisor));
+				1L, _lcsGatewayClient, _lcsKeyAdvisor, _threadFactory,
+				_uptimeAdvisor));
 
 		doReturn(
 			new HandshakeMessage()
