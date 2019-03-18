@@ -24,7 +24,13 @@ class Downloads extends React.Component {
 				}
 			)
 		).isRequired,
-		requiredAgreement: PropTypes.object.isRequired,
+		requiredAgreement: PropTypes.shape(
+			{
+				acceptAgreementURL: PropTypes.string,
+				agreementContentURL: PropTypes.string,
+				verifyAgreementURL: PropTypes.string
+			}
+		).isRequired,
 		showDropdown: PropTypes.bool.isRequired
 	};
 
