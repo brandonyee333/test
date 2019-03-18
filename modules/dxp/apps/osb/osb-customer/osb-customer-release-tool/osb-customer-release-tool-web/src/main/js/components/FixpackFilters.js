@@ -68,7 +68,7 @@ export default class FixpackFilters extends Component {
 				productVersion: target,
 				toFixPackVersion: ''
 			}
-		)
+		);
 	}
 
 	handleSubmit = target => {
@@ -202,7 +202,7 @@ class Filter extends Component {
 		let currentValue = '';
 
 		if (autopopulate && options.length === 1) {
-			currentValue = options[0].version
+			currentValue = options[0].version;
 		}
 
 		return currentValue;
@@ -225,14 +225,7 @@ class Filter extends Component {
 					</label>
 				)}
 
-				<select
-					className="form-control"
-					disabled={disabled}
-					id={id}
-					name={id}
-					onChange={this.handleChange}
-					value={selected || this.displayCurrentValue()}
-				>
+				<select className="form-control" disabled={disabled} id={id} name={id} onChange={this.handleChange} value={selected || this.displayCurrentValue()}>
 					<option value="">{placeholder}</option>
 
 					{!!options.length && options.map(

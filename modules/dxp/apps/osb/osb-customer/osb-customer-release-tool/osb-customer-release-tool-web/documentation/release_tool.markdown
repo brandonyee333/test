@@ -50,7 +50,7 @@ To configure, create a web content article and place the desired copy there. Go 
 ---
 
 #### Link Fix Pack Downloads
-At the top of _Release Tool_ portlet, there is a filter that allows the user to select a range of product and its associated releases. When a valid range is selected, a download button will appear to allow the user to go to _Downloads Display_ portlet and download the fix pack indicated in the upper range.
+At the top of _Release Tool_ portlet, there is a filter that allows the user to select a range of products and its associated releases. When a valid range is selected, a download button will appear to allow the user to go to _Downloads Display_ portlet and download the fix pack indicated in the upper range.
 
 In order to display the download link, the fix pack needs to be linked with download web content.
 
