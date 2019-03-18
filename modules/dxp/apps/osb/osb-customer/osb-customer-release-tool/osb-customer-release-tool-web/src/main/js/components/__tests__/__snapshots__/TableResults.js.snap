@@ -1,0 +1,132 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TableResults renders content correctly 1`] = `
+<div>
+  <div
+    class="showing-results"
+  >
+    showing-x-results
+  </div>
+  <table
+    class="table changelog-table table-autofit table-list"
+    role="table"
+  >
+    <thead>
+      <tr>
+        <th
+          class="lfr-summary-column table-cell-content"
+        >
+          summary
+        </th>
+        <th
+          class="lfr-component-column"
+        >
+          component
+        </th>
+        <th
+          class="lfr-release-column"
+        >
+          release
+           
+          <svg
+            class="desc lexicon-icon sorting-indicator"
+            role="button"
+          >
+            <use
+              xlink:href="#arrow-up"
+            />
+          </svg>
+        </th>
+        <th
+          class="lfr-key-column"
+        >
+          key
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        class="journal-article-row"
+        id="LPS-90100GA"
+      >
+        <td
+          class="lfr-summary-column table-cell-content"
+        >
+          IE11 Web Image Resizing Does not Maintain Initial Aspect Ratio
+        </td>
+        <td
+          class="lfr-component-column"
+        >
+          Frontend Infrastructure &gt; WYSIWYG
+        </td>
+        <td
+          class="lfr-release-column"
+        >
+          GA
+        </td>
+        <td
+          class="lfr-key-column"
+        >
+          <a
+            href="/"
+          >
+            LPS-90100
+          </a>
+        </td>
+      </tr>
+      <tr
+        class="journal-article-row"
+        id="LPS-85155GA"
+      >
+        <td
+          class="lfr-summary-column table-cell-content"
+        >
+          Add menu - Heading order invalid
+        </td>
+        <td
+          class="lfr-component-column"
+        >
+          Accessibility
+        </td>
+        <td
+          class="lfr-release-column"
+        >
+          GA
+        </td>
+        <td
+          class="lfr-key-column"
+        >
+          <a
+            href="/"
+          >
+            LPS-85155
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
+
+exports[`TableResults renders error correctly 1`] = `
+<div>
+  <div
+    class="alert alert-danger"
+    role="alert"
+  >
+    <span
+      class="alert-indicator"
+    >
+      <svg
+        class="lexicon-icon lexicon-icon-exclamation-full"
+        role="img"
+      >
+        <use
+          xlink:href="#exclamation-full"
+        />
+      </svg>
+    </span>
+    Please enter a valid version range.
+  </div>
+</div>
+`;
