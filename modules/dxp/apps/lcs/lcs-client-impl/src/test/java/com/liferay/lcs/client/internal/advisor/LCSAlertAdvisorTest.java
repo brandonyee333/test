@@ -14,8 +14,8 @@
 
 package com.liferay.lcs.client.internal.advisor;
 
-import com.liferay.lcs.client.internal.exception.MissingLCSClusterEntryTokenException;
-import com.liferay.lcs.client.internal.exception.MultipleLCSClusterEntryTokenException;
+import com.liferay.lcs.client.exception.MissingLCSClusterEntryTokenException;
+import com.liferay.lcs.client.exception.MultipleLCSClusterEntryTokenException;
 import com.liferay.lcs.client.internal.platform.gateway.LCSGatewayClientImpl;
 import com.liferay.lcs.client.internal.task.HandshakeTask;
 import com.liferay.lcs.client.internal.task.LCSClusterEntryTokenCheckTask;

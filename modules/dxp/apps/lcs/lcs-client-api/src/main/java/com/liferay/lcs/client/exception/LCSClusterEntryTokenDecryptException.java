@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.lcs.client.internal.exception;
+package com.liferay.lcs.client.exception;
 
 import com.liferay.portal.kernel.exception.PortalException;
 

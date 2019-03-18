@@ -12,27 +12,27 @@
  *
  */
 
-package com.liferay.lcs.client.internal.exception;
+package com.liferay.lcs.client.exception;
 
 import com.liferay.portal.kernel.exception.PortalException;
 
 /**
- * @author Igor Beslic
+ * @author Matija Petanjek
  */
-public class MissingLCSClusterEntryTokenException extends PortalException {
+public class MultipleLCSClusterEntryTokenException extends PortalException {
 
-	public MissingLCSClusterEntryTokenException() {
+	public MultipleLCSClusterEntryTokenException() {
 	}
 
-	public MissingLCSClusterEntryTokenException(String msg) {
+	public MultipleLCSClusterEntryTokenException(String msg) {
 		super(msg);
 	}
 
-	public MissingLCSClusterEntryTokenException(String msg, Throwable cause) {
+	public MultipleLCSClusterEntryTokenException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
 
-	public MissingLCSClusterEntryTokenException(Throwable cause) {
+	public MultipleLCSClusterEntryTokenException(Throwable cause) {
 		super(cause);
 	}
 
