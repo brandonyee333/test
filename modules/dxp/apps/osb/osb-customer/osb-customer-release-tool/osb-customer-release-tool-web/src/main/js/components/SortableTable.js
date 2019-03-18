@@ -1,11 +1,11 @@
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 
-import {fixPackJSONObject} from '../types/highlights';
+import * as highlights from './HightlightsTable';
 
 export default class SortableTable extends Component {
 	static propTypes = {
-		fixPackJSONObject: fixPackJSONObject
+		jsonObject: PropTypes.object.isRequired
 	};
 
 	state = {
@@ -25,7 +25,7 @@ export default class SortableTable extends Component {
 
 	sortResults = () => {
 		const {
-			fixPackJSONObject: {results}
+			jsonObject: {results}
 		} = this.props;
 		const {orderBy} = this.state;
 
@@ -33,7 +33,7 @@ export default class SortableTable extends Component {
 	};
 
 	render() {
-		const {fixPackJSONObject: {total}} = this.props;
+		const {jsonObject: {total}} = this.props;
 		const {orderBy} = this.state;
 
 		const results = this.sortResults(orderBy);
@@ -44,49 +44,23 @@ export default class SortableTable extends Component {
 					{Liferay.Language.get('showing-x-results', total.toString())}
 				</div>
 
-				<table className="table table-autofit table-list">
+				<table className="table table-autofit table-list" role="table">
 					<thead>
 						<tr>
-							<th className="lfr-released-column">
-								{Liferay.Language.get('released')}{' '}
-
-								<svg className={`${orderBy} lexicon-icon sorting-indicator`} onClick={this.handleSort} role="button">
-									<use xlinkHref="#arrow-up" />
-								</svg>
-							</th>
-							<th className="lfr-details-column">
-								{Liferay.Language.get('details')}
-							</th>
+							{highlights.tableHeader(orderBy, this.handleSort)}
 						</tr>
 					</thead>
 
 					<tbody>
-						{!!results.length &&
-							results.map(
-								fixPack => (
-									<tr
-										key={fixPack.resourcePrimKey}
-										className="journal-article-row"
-										id={fixPack.resourcePrimKey}
-									>
-										<td className="lfr-released-column">
-											{fixPack.releaseDate}
-										</td>
-										<td className="lfr-details-column">
-											<div dangerouslySetInnerHTML={{__html: fixPack.content}} />
-										</td>
-									</tr>
-								)
-							)
-						}
+						{!!results.length && highlights.tableBody(results)}
 					</tbody>
 				</table>
 
 				{!results.length && (
 					<div className="no-results">
-						{Liferay.Language.get('no-highlights-found-to-match-your-selection')}
+						{Liferay.Language.get('no-results-found-to-match-your-selection')}
 						<h5 className="secondary-text-color">
-							{Liferay.Language.get('try-modifying-your-criteria-or-viewing-the-changelog')}
+							{Liferay.Language.get('try-modifying-your-criteria')}
 						</h5>
 					</div>
 				)}

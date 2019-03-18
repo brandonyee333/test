@@ -1,18 +1,18 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 import axios from 'axios';
 
-import {error, fixPackJSONObject} from '../types/highlights';
+import {error} from '../types/generic';
+import {fixPackJSONObject} from '../types/highlights';
 
-import Alert from './Alert';
-import SortableTable from './SortableTable';
+import TableResults from './TableResults';
 
 export default class Highlights extends Component {
 	static propTypes = {
 		fixPackJSONObject: PropTypes.oneOfType(
 			[error, fixPackJSONObject]
-		),
+		).isRequired,
 		fixPackResultsURL: PropTypes.string.isRequired
 	};
 
@@ -20,15 +20,7 @@ export default class Highlights extends Component {
 		const {fixPackJSONObject} = this.props;
 
 		return (
-			<Fragment>
-				{!!fixPackJSONObject.error && (
-					<Alert type="danger">{fixPackJSONObject.error.message}</Alert>
-				)}
-
-				{!!fixPackJSONObject.results && (
-					<SortableTable fixPackJSONObject={fixPackJSONObject} />
-				)}
-			</Fragment>
+			<TableResults jsonObject={fixPackJSONObject} />
 		);
 	}
 }

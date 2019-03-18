@@ -4,7 +4,7 @@ import {cleanup, fireEvent, render} from 'react-testing-library';
 import SortableTable from '../SortableTable';
 
 const setup = () => {
-	const fixPackJSONObject = {
+	const jsonObj = {
 		results: [
 			{
 				content: 'Content Text',
@@ -27,7 +27,7 @@ const setup = () => {
 		total: 0
 	};
 
-	const utils = render(<SortableTable fixPackJSONObject={fixPackJSONObject} />);
+	const utils = render(<SortableTable jsonObject={jsonObj} />);
 
 	return {
 		noResults,
@@ -47,10 +47,10 @@ describe('SortableTable', () => {
 	it('renders no results message', () => {
 		const {container, getByText, noResults, rerender} = setup();
 
-		rerender(<SortableTable fixPackJSONObject={noResults} />);
+		rerender(<SortableTable jsonObject={noResults} />);
 
 		expect(
-			getByText('no-highlights-found-to-match-your-selection')
+			getByText('no-results-found-to-match-your-selection')
 		).toBeTruthy();
 		expect(container).toMatchSnapshot();
 	});

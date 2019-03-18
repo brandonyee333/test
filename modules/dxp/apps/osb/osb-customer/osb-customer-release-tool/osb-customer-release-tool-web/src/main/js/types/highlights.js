@@ -33,14 +33,3 @@ export const fixPackJSONObject = PropTypes.shape(
 		total: PropTypes.number
 	}
 );
-
-export const error = PropTypes.shape(
-	{
-		error: PropTypes.shape(
-			{
-				message: PropTypes.string,
-				name: PropTypes.string
-			}
-		)
-	}
-);

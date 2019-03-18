@@ -25,8 +25,6 @@
 
 <strong>Changelog Refinement Endpoint:</strong> <%= refinedJiraIssuesURL %>
 
-<br />
-
 <h2>
 	<liferay-ui:message key="changelog" />
 </h2>
@@ -47,7 +45,17 @@ JournalArticle journalArticle = JournalArticleLocalServiceUtil.fetchArticle(them
 </c:if>
 
 <%
-JSONObject jsonObject = jiraIssueSearcher.search(renderRequest, renderResponse);
+JSONObject jiraIssueJSONObject = jiraIssueSearcher.search(renderRequest, renderResponse);
 %>
 
-<strong>Results:</strong> <%= HtmlUtil.escape(jsonObject.toString()) %>
+<div id="<portlet:namespace />changelog"></div>
+
+<aui:script>
+	ReleaseTool.render(
+		ReleaseTool.Changelog,
+		{
+			jiraIssueJSONObject: <%= jiraIssueJSONObject %>
+		},
+		document.getElementById('<portlet:namespace />changelog')
+	);
+</aui:script>
