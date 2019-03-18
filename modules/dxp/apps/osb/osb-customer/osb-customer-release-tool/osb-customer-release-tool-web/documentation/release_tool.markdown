@@ -7,23 +7,23 @@ Place the _OSB Release Tool_ portlet on a page (not to be confused with _Release
 
 ---
 
-#### Creating Fix Pack Vocabulary
-When logged in as an administrator, go to _Control Panel_ and click _Go to Other Site_. Navigate to the _Global_ site. Navigate to _Content_ > _Categories_ > _Fix Packs_.
+#### Creating Release Vocabulary
+When logged in as an administrator, go to _Control Panel_ and click _Go to Other Site_. Navigate to the _Global_ site. Navigate to _Content_ > _Categories_ > _Releases_.
 
 Click on the dotted menu to _Edit_. Under _Associated Asset Types_, add a _Web Content Article_ asset type and select _OSB Customer Theme - Fix Pack_. Make sure to toggle the _Required_ button and hit _Save_.
 
-Under the _Fix Packs_ vocabulary, its categories are organized by _Liferay Versions_, whose subcategories are fix packs listed by name (e.g., _Fix Pack 45_).
+Under the _Releases_ vocabulary, its categories are organized by _Liferay Versions_, whose subcategories are fix packs and GA versions listed by name (e.g., _Fix Pack 45_).
 
-When creating a new subcategory, the naming convention should begin with 'Fix Pack ' followed by a number (e.g., _Fix Pack 45_). Note, the names can be localized in the user interface by clicking on the country's flags. The _Properties_ field should follow such that _Key_ should be 'version' and _Value_ should be the number of the _Fix Pack_ (for example, '45.0', make sure to include the decimal point). Save the subcategory and proceed with [_Creating Fix Pack Web Content_](#creating-fix-pack-web-content).
+When creating a new subcategory under product, the naming convention should begin with 'Fix Pack ' followed by a number (e.g., _Fix Pack 45_). Note, the names can be localized in the user interface by clicking on the country's flags. The _Properties_ field should follow such that _Key_ should be 'version' and _Value_ should be the number of the _Fix Pack_ (for example, '45.0', make sure to include the decimal point). Save the subcategory and proceed with [_Creating Release Web Content_](#creating-release-web-content).
 
 Each category and subcategories can be edited by clicking on the dotted menu and select _Edit_.
 
 ---
 
-#### Creating Fix Pack Web Content
+#### Creating Release Web Content
 Go to _Control Panel_ > _Content_ > _Web Content_ on the site where the _OSB Release Tool Portlet_ is located. Create a web content using the _OSB Customer Theme - Fix Pack_ structure. The available fields are:
 
-* Title (should be the name of the fix pack)
+* Title (should be the name of the release/fix pack)
 * Release Date
 * Highlights (a container, not a field)
 	* Key Highlights
@@ -31,7 +31,7 @@ Go to _Control Panel_ > _Content_ > _Web Content_ on the site where the _OSB Rel
 	* Known Issues
 	* Security
 
-In addition to these fields, there is an option to select a _Fix Pack Subcategory_. Please look at the [_Creating Fix Pack Vocabulary_](#creating-fix-pack-vocabulary) section of the documentation before proceeding. Under the _Metadata_ section (the section may need to be expanded), click on _Select_ under _Fix Packs (Global)_. This will trigger a popup that shows a folder structure. Expand the folder of whichever _Liferay Version_ the _Fix Pack_ is meant to be associated with, then select the _Fix Pack Version_ (which should match the _Title_ of the web content).
+In addition to these fields, there is an option to select a _Fix Pack Subcategory_. Please look at the [_Creating Release Vocabulary_](#creating-release-vocabulary) section of the documentation before proceeding. Under the _Metadata_ section (the section may need to be expanded), click on _Select_ under _Fix Packs (Global)_. This will trigger a popup that shows a folder structure. Expand the folder of whichever _Liferay Version_ the _Fix Pack_ is meant to be associated with, then select the _Fix Pack Version_ (which should match the _Title_ of the web content).
 
 After creating a _Fix Pack_, it should show up in _OSB Release Tool_.
 
@@ -56,4 +56,4 @@ In order to display the download link, the fix pack needs to be linked with down
 
 To do that, go to _Web Content_ > _Downloads_ > Select a product of choice, for example _DXP 7.0_ > _Fix Packs_ > Select a fix pack of choice, for example _Fix Pack 1_.
 
-From there, go to the _Metadata_ section of the web content, click on _Select_ under _Fix Packs (Global)_. Select the correct _Fix Pack_ version similar to the steps described in [_Creating Fix Pack Web Content_](#creating-fix-pack-web-content).
+From there, go to the _Metadata_ section of the web content, click on _Select_ under _Fix Packs (Global)_. Select the correct _Fix Pack_ version similar to the steps described in [_Creating Release Web Content_](#creating-release-web-content).
