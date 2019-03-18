@@ -273,8 +273,8 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 
 		HandshakeTask handshakeTask = new HandshakeTask(
 			_lcsClusterEntryTokenAdvisor.getLcsClusterEntryTokenId(),
-			_lcsAlertAdvisor, _lcsClusterEntryTokenAdvisor, _lcsGatewayClient,
-			_lcsKeyAdvisor, this, _threadFactory, _uptimeAdvisor);
+			_lcsAlertAdvisor, _lcsGatewayClient, _lcsKeyAdvisor, _threadFactory,
+			_uptimeAdvisor);
 
 		if (delayRun) {
 			if (_log.isInfoEnabled()) {
@@ -301,8 +301,7 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		}
 
 		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =
-			new LCSClusterEntryTokenCheckTask(
-				_lcsAlertAdvisor, _lcsClusterEntryTokenAdvisor, this);
+			new LCSClusterEntryTokenCheckTask();
 
 		if (delayRun) {
 			if (_log.isInfoEnabled()) {

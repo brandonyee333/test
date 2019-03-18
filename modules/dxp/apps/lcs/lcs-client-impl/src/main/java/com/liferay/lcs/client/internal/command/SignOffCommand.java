@@ -14,32 +14,26 @@
 
 package com.liferay.lcs.client.internal.command;
 
-import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.event.LCSEvent;
-import com.liferay.lcs.client.event.LCSEventListener;
-import com.liferay.lcs.client.internal.advisor.UptimeAdvisor;
-import com.liferay.lcs.client.task.scheduler.TaskSchedulerService;
+import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.messaging.SignOffCommandMessage;
 import com.liferay.lcs.messaging.SignOffReasonCode;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Igor Beslic
  */
+@Component
 public class SignOffCommand implements Command<SignOffCommandMessage> {
 
-	public SignOffCommand(
-		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor,
-		TaskSchedulerService taskSchedulerService,
-		UptimeAdvisor uptimeAdvisor) {
-
-		_lcsEventListeners.add(taskSchedulerService);
-		_lcsEventListeners.add(lcsClusterEntryTokenAdvisor);
-		_lcsEventListeners.add(uptimeAdvisor);
+	public SignOffCommand() {
+		if (_log.isTraceEnabled()) {
+			_log.trace("Initialized " + this);
+		}
 	}
 
 	@Override
@@ -59,14 +53,14 @@ public class SignOffCommand implements Command<SignOffCommandMessage> {
 		}
 
 		if (signOffReasonCode == SignOffReasonCode.INVALIDATE_TOKEN) {
-			_notifyLCSEventListeners(
+			_lcsEventManager.publish(
 				LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALIDATED);
 		}
 		else if (signOffReasonCode == SignOffReasonCode.UNREGISTER) {
-			_notifyLCSEventListeners(LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED);
+			_lcsEventManager.publish(LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED);
 		}
 		else {
-			_notifyLCSEventListeners(LCSEvent.SIGNOFF_REQUESTED);
+			_lcsEventManager.publish(LCSEvent.SIGNOFF_REQUESTED);
 		}
 
 		if (_log.isDebugEnabled()) {
@@ -88,19 +82,9 @@ public class SignOffCommand implements Command<SignOffCommandMessage> {
 		return SignOffReasonCode.UNDEFINED;
 	}
 
-	private void _notifyLCSEventListeners(LCSEvent lcsEvent) {
-		for (LCSEventListener lcsEventListener : _lcsEventListeners) {
-			try {
-				lcsEventListener.onLCSEvent(lcsEvent);
-			}
-			catch (Throwable t) {
-				_log.error("Unable to notify listener", t);
-			}
-		}
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(SignOffCommand.class);
 
-	private final List<LCSEventListener> _lcsEventListeners = new ArrayList<>();
+	@Reference
+	private LCSEventManager _lcsEventManager;
 
 }

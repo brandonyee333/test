@@ -14,14 +14,13 @@
 
 package com.liferay.lcs.client.internal.task;
 
-import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.event.LCSEvent;
-import com.liferay.lcs.client.event.LCSEventListener;
 import com.liferay.lcs.client.internal.advisor.InstallationEnvironmentAdvisor;
 import com.liferay.lcs.client.internal.advisor.InstallationEnvironmentAdvisorFactory;
 import com.liferay.lcs.client.internal.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.advisor.UptimeAdvisor;
+import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.exception.LCSHandshakeException;
 import com.liferay.lcs.client.internal.runnable.LCSPortletBuildNumberCheckRunnable;
 import com.liferay.lcs.client.internal.util.LCSPatcherUtil;
@@ -31,7 +30,6 @@ import com.liferay.lcs.client.internal.util.comparator.MessagePriorityComparator
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayException;
 import com.liferay.lcs.client.platform.portal.LCSRESTError;
-import com.liferay.lcs.client.task.scheduler.TaskSchedulerService;
 import com.liferay.lcs.messaging.CommandMessage;
 import com.liferay.lcs.messaging.HandshakeMessage;
 import com.liferay.lcs.messaging.HandshakeResponseMessage;
@@ -44,7 +42,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.monitoring.PortalMonitoringControl;
-import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
+import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.servlet.LiferayFilter;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ReleaseInfo;
@@ -64,20 +62,21 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Ivica Cardic
  * @author Igor Beslic
  * @author Marko Cikos
  */
+@Component
 public class HandshakeTask implements Task {
 
 	public HandshakeTask(
 		long lcsClusterEntryTokenId, LCSAlertAdvisor lcsAlertAdvisor,
-		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor,
 		LCSGatewayClient lcsGatewayClient, LCSKeyAdvisor lcsKeyAdvisor,
-		TaskSchedulerService taskSchedulerService, ThreadFactory threadFactory,
-		UptimeAdvisor uptimeAdvisor) {
+		ThreadFactory threadFactory, UptimeAdvisor uptimeAdvisor) {
 
 		_lcsClusterEntryTokenId = lcsClusterEntryTokenId;
 		_lcsAlertAdvisor = lcsAlertAdvisor;
@@ -92,14 +91,6 @@ public class HandshakeTask implements Task {
 		else {
 			_key = _createTemporaryKey();
 		}
-
-		_lcsEventListeners = new ArrayList<>();
-
-		_lcsEventListeners.add(lcsAlertAdvisor);
-		_lcsEventListeners.add(lcsClusterEntryTokenAdvisor);
-		_lcsEventListeners.add(lcsGatewayClient);
-		_lcsEventListeners.add(taskSchedulerService);
-		_lcsEventListeners.add(uptimeAdvisor);
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Initialized " + this);
@@ -127,7 +118,7 @@ public class HandshakeTask implements Task {
 
 			_waitForHandshakeResponse();
 
-			_notifyLCSEventListeners(LCSEvent.HANDSHAKE_SUCCESS);
+			_lcsEventManager.publish(LCSEvent.HANDSHAKE_SUCCESS);
 
 			if (_log.isInfoEnabled()) {
 				_log.info("Established connection");
@@ -170,7 +161,7 @@ public class HandshakeTask implements Task {
 				_log.warn(exceptionMessage);
 			}
 
-			_notifyLCSEventListeners(lcsEvent);
+			_lcsEventManager.publish(lcsEvent);
 		}
 	}
 
@@ -303,7 +294,7 @@ public class HandshakeTask implements Task {
 	private Map<Integer, String> _getCompanyIdsWebIds() {
 		Map<Integer, String> companyIdsWebIds = new HashMap<>();
 
-		List<Company> companies = CompanyLocalServiceUtil.getCompanies();
+		List<Company> companies = _companyLocalService.getCompanies();
 
 		for (Company company : companies) {
 			companyIdsWebIds.put(
@@ -349,17 +340,6 @@ public class HandshakeTask implements Task {
 		}
 
 		return false;
-	}
-
-	private void _notifyLCSEventListeners(LCSEvent lcsEvent) {
-		for (LCSEventListener lcsEventListener : _lcsEventListeners) {
-			try {
-				lcsEventListener.onLCSEvent(lcsEvent);
-			}
-			catch (Throwable t) {
-				_log.error("Unable to notify listener", t);
-			}
-		}
 	}
 
 	private void _submitLCSPortletBuildNumberCheck(
@@ -435,10 +415,16 @@ public class HandshakeTask implements Task {
 
 	private static final Log _log = LogFactoryUtil.getLog(HandshakeTask.class);
 
+	@Reference
+	private CompanyLocalService _companyLocalService;
+
 	private final String _key;
 	private final LCSAlertAdvisor _lcsAlertAdvisor;
 	private final long _lcsClusterEntryTokenId;
-	private final List<LCSEventListener> _lcsEventListeners;
+
+	@Reference
+	private LCSEventManager _lcsEventManager;
+
 	private final LCSGatewayClient _lcsGatewayClient;
 	private final LCSKeyAdvisor _lcsKeyAdvisor;
 	private boolean _temporaryKey;

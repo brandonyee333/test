@@ -16,21 +16,16 @@ package com.liferay.lcs.client.internal.task;
 
 import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.event.LCSEvent;
-import com.liferay.lcs.client.event.LCSEventListener;
 import com.liferay.lcs.client.exception.LCSClusterEntryTokenDecryptException;
 import com.liferay.lcs.client.exception.MissingLCSClusterEntryTokenException;
 import com.liferay.lcs.client.exception.MultipleLCSClusterEntryTokenException;
-import com.liferay.lcs.client.internal.advisor.LCSAlertAdvisor;
+import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.exception.InvalidLCSClusterEntryTokenException;
 import com.liferay.lcs.client.internal.platform.portal.LCSPortalClient;
 import com.liferay.lcs.client.internal.util.LCSUtil;
-import com.liferay.lcs.client.task.scheduler.TaskSchedulerService;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -41,19 +36,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component
 public class LCSClusterEntryTokenCheckTask implements Task {
 
-	public LCSClusterEntryTokenCheckTask(
-		LCSAlertAdvisor lcsAlertAdvisor,
-		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor,
-		TaskSchedulerService taskSchedulerService) {
-
-		_lcsClusterEntryTokenAdvisor = lcsClusterEntryTokenAdvisor;
-
-		_lcsEventListeners = new ArrayList<>();
-
-		_lcsEventListeners.add(lcsAlertAdvisor);
-		_lcsEventListeners.add(lcsClusterEntryTokenAdvisor);
-		_lcsEventListeners.add(taskSchedulerService);
-
+	public LCSClusterEntryTokenCheckTask() {
 		if (_log.isTraceEnabled()) {
 			_log.trace("Initialized " + this);
 		}
@@ -66,7 +49,7 @@ public class LCSClusterEntryTokenCheckTask implements Task {
 		try {
 			_checkLCSClusterEntryToken();
 
-			_notifyLCSEventListeners(
+			_lcsEventManager.publish(
 				LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_SUCCESS);
 		}
 		catch (Throwable throwable) {
@@ -92,7 +75,7 @@ public class LCSClusterEntryTokenCheckTask implements Task {
 			_log.error(
 				"Unable to validate the environment token file", throwable);
 
-			_notifyLCSEventListeners(lcsEvent);
+			_lcsEventManager.publish(lcsEvent);
 		}
 	}
 
@@ -121,22 +104,14 @@ public class LCSClusterEntryTokenCheckTask implements Task {
 		LCSUtil.processLCSPortletState(LCSPortletState.NO_CONNECTION);
 	}
 
-	private void _notifyLCSEventListeners(LCSEvent lcsEvent) {
-		for (LCSEventListener lcsEventListener : _lcsEventListeners) {
-			try {
-				lcsEventListener.onLCSEvent(lcsEvent);
-			}
-			catch (Throwable t) {
-				_log.error("Unable to notify listener", t);
-			}
-		}
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		LCSClusterEntryTokenCheckTask.class);
 
-	private final LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
-	private final List<LCSEventListener> _lcsEventListeners;
+	@Reference
+	private LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
+
+	@Reference
+	private LCSEventManager _lcsEventManager;
 
 	@Reference
 	private LCSPortalClient _lcsPortalClient;
