@@ -19,7 +19,7 @@
 <%
 String lcsPage = ParamUtil.getString(request, "lcsPage", "connection");
 
-Set<LCSAlert> lcsAlerts = (Set<LCSAlert>)request.getAttribute("lcsAlerts");
+Set<LCSAlert> lcsAlerts = (Set<LCSAlert>)request.getAttribute(LCSClientWebKeys.LCS_ALERTS);
 %>
 
 <section class="content">

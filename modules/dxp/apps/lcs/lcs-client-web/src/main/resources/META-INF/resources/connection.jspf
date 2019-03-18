@@ -15,13 +15,13 @@
 --%>
 
 <%
-String lcsClusterEntryLayoutURL = GetterUtil.getString(request.getAttribute("lcsClusterEntryLayoutURL"));
-String lcsClusterEntryName = GetterUtil.getString(request.getAttribute("lcsClusterEntryName"));
-String lcsClusterNodeLayoutURL = GetterUtil.getString(request.getAttribute("lcsClusterNodeLayoutURL"));
-String lcsClusterNodeName = GetterUtil.getString(request.getAttribute("lcsClusterNodeName"));
-String lcsProjectLayoutURL = GetterUtil.getString(request.getAttribute("lcsProjectLayoutURL"));
-String lcsProjectName = GetterUtil.getString(request.getAttribute("lcsProjectName"));
-String registrationLayoutURL = GetterUtil.getString(request.getAttribute("registrationLayoutURL"));
+String lcsClusterEntryLayoutURL = GetterUtil.getString(request.getAttribute(LCSClientWebKeys.LCS_CLUSTER_ENTRY_LAYOUT_URL));
+String lcsClusterEntryName = GetterUtil.getString(request.getAttribute(LCSClientWebKeys.LCS_CLUSTER_ENTRY_NAME));
+String lcsClusterNodeLayoutURL = GetterUtil.getString(request.getAttribute(LCSClientWebKeys.LCS_CLUSTER_NODE_LAYOUT_URL));
+String lcsClusterNodeName = GetterUtil.getString(request.getAttribute(LCSClientWebKeys.LCS_CLUSTER_NODE_NAME));
+String lcsProjectLayoutURL = GetterUtil.getString(request.getAttribute(LCSClientWebKeys.LCS_PROJECT_LAYOUT_URL));
+String lcsProjectName = GetterUtil.getString(request.getAttribute(LCSClientWebKeys.LCS_PROJECT_NAME));
+String registrationLayoutURL = GetterUtil.getString(request.getAttribute(LCSClientWebKeys.REGISTRATION_LAYOUT_URL));
 %>
 
 <c:choose>
@@ -225,7 +225,7 @@ String registrationLayoutURL = GetterUtil.getString(request.getAttribute("regist
 		</ul>
 
 		<%
-		List<Map<String, Object>> clusterNodeInfos = (List<Map<String, Object>>)request.getAttribute("clusterNodeInfos");
+		List<Map<String, Object>> clusterNodeInfos = (List<Map<String, Object>>)request.getAttribute(LCSClientWebKeys.CLUSTER_NODE_INFOS);
 		%>
 
 		<c:if test="<%= !clusterNodeInfos.isEmpty() %>">
@@ -240,7 +240,7 @@ String registrationLayoutURL = GetterUtil.getString(request.getAttribute("regist
 						</aui:col>
 
 						<aui:col width="<%= 50 %>">
-							<%= GetterUtil.getString(request.getAttribute("localClusterNodeAddress")) %>
+							<%= GetterUtil.getString(request.getAttribute(LCSClientWebKeys.LOCAL_CLUSTER_NODE_ADDRESS)) %>
 						</aui:col>
 					</aui:row>
 				</li>
