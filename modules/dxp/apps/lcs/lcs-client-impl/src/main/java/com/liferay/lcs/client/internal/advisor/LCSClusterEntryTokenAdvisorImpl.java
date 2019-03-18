@@ -50,7 +50,7 @@ import javax.crypto.spec.SecretKeySpec;
 /**
  * @author Igor Beslic
  */
-public class LCSClusterEntryTokenAdvisor implements LCSEventListener {
+public class LCSClusterEntryTokenAdvisorImpl implements LCSEventListener {
 
 	public String getLCSAccessSecret() {
 		return _lcsAccessSecret;
@@ -316,7 +316,7 @@ public class LCSClusterEntryTokenAdvisor implements LCSEventListener {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		LCSClusterEntryTokenAdvisor.class);
+		LCSClusterEntryTokenAdvisorImpl.class);
 
 	private String _lcsAccessSecret;
 	private String _lcsAccessToken;

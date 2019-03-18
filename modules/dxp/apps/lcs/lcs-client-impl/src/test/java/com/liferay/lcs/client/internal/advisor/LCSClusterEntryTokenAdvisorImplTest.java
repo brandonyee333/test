@@ -55,12 +55,12 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(
 	{
 		ConfigurationFactoryUtil.class, FileUtil.class, HandshakeTask.class,
-		LCSClusterEntryTokenAdvisor.class, PortletClassLoaderUtil.class,
+		LCSClusterEntryTokenAdvisorImpl.class, PortletClassLoaderUtil.class,
 		PortletProps.class, PortletPropsValues.class
 	}
 )
 @RunWith(PowerMockRunner.class)
-public class LCSClusterEntryTokenAdvisorTest extends PowerMockito {
+public class LCSClusterEntryTokenAdvisorImplTest extends PowerMockito {
 
 	@Before
 	public void setUp() {
@@ -252,7 +252,7 @@ public class LCSClusterEntryTokenAdvisorTest extends PowerMockito {
 	private void _spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete()
 		throws Exception {
 
-		_lcsClusterEntryTokenAdvisor = spy(new LCSClusterEntryTokenAdvisor());
+		_lcsClusterEntryTokenAdvisor = spy(new LCSClusterEntryTokenAdvisorImpl());
 
 		// Skip JavaParser, will fix
 
@@ -262,7 +262,7 @@ public class LCSClusterEntryTokenAdvisorTest extends PowerMockito {
 		);
 	}
 
-	private LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
+	private LCSClusterEntryTokenAdvisorImpl _lcsClusterEntryTokenAdvisor;
 	private LCSGatewayClient _lcsGatewayClient;
 	private LCSKeyAdvisor _lcsKeyAdvisor;
 	private TaskSchedulerService _taskSchedulerService;
