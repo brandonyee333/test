@@ -47,7 +47,7 @@ String registrationLayoutURL = GetterUtil.getString(request.getAttribute(LCSClie
 		</c:if>
 
 		<%
-		LCSGatewayClient lcsGatewayClient = (LCSGatewayClient)request.getAttribute("com.liferay.lcs.client.platform.gateway.LCSGatewayClient");
+		LCSGatewayClient lcsGatewayClient = (LCSGatewayClient)request.getAttribute(LCSGatewayClient.class.getName());
 
 		boolean ready = lcsGatewayClient.isAvailable();
 
@@ -131,11 +131,11 @@ String registrationLayoutURL = GetterUtil.getString(request.getAttribute(LCSClie
 			</li>
 
 			<%
-			TaskAdvisor taskAdvisor = (TaskAdvisor)request.getAttribute("com.liferay.lcs.client.internal.task.advisor.TaskAdvisorImpl");
+			TaskAdvisor taskAdvisor = (TaskAdvisor)request.getAttribute(TaskAdvisor.class.getName());
 
 			Set<String> activeServiceLabels = taskAdvisor.getActiveServiceLabels();
 
-			LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor = (LCSClusterEntryTokenAdvisor)request.getAttribute("com.liferay.lcs.client.internal.advisor.LCSClusterEntryTokenAdvisorImpl");
+			LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor = (LCSClusterEntryTokenAdvisor)request.getAttribute(LCSClusterEntryTokenAdvisor.class.getName());
 			%>
 
 			<%

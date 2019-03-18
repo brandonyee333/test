@@ -55,5 +55,5 @@ page import="java.util.TimeZone" %>
 <%
 Format dateFormatDate = FastDateFormatFactoryUtil.getDateTime(FastDateFormatConstants.MEDIUM, FastDateFormatConstants.MEDIUM, locale, timeZone);
 Format intervalDateFormatDate = FastDateFormatFactoryUtil.getSimpleDateFormat("HH:mm:ss", TimeZone.getTimeZone(StringPool.UTC));
-LCSConfiguration lcsConfiguration = (LCSConfiguration)request.getAttribute("lcsConfiguration");
+LCSConfiguration lcsConfiguration = (LCSConfiguration)request.getAttribute(LCSConfiguration.class.getName());
 %>
