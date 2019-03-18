@@ -15,8 +15,8 @@
 package com.liferay.lcs.client.internal.command;
 
 import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
-import com.liferay.lcs.client.internal.task.advisor.TaskAdvisor;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
+import com.liferay.lcs.client.task.advisor.TaskAdvisor;
 import com.liferay.lcs.messaging.SendPortalPropertiesCommandMessage;
 import com.liferay.lcs.messaging.SendPortalPropertiesResponseMessage;
 import com.liferay.lcs.util.LCSConstants;
@@ -46,11 +46,8 @@ import org.osgi.service.component.annotations.Reference;
 public class SendPortalPropertiesCommand
 	implements Command<SendPortalPropertiesCommandMessage> {
 
-	public SendPortalPropertiesCommand(
-		LCSGatewayClient lcsGatewayClient, TaskAdvisor taskAdvisor) {
-
+	public SendPortalPropertiesCommand(LCSGatewayClient lcsGatewayClient) {
 		_lcsGatewayClient = lcsGatewayClient;
-		_taskAdvisor = taskAdvisor;
 	}
 
 	@Override
@@ -190,6 +187,8 @@ public class SendPortalPropertiesCommand
 	private LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
 
 	private final LCSGatewayClient _lcsGatewayClient;
-	private final TaskAdvisor _taskAdvisor;
+
+	@Reference
+	private TaskAdvisor _taskAdvisor;
 
 }

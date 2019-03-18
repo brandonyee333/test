@@ -12,26 +12,48 @@
  *
  */
 
-package com.liferay.lcs.client.internal.advisor;
+package com.liferay.lcs.client.internal.alert.advisor;
 
+import com.liferay.lcs.client.alert.LCSAlert;
+import com.liferay.lcs.client.alert.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.event.LCSEventListener;
-import com.liferay.lcs.client.internal.util.LCSAlert;
+import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.util.LCSUtil;
-import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Igor Beslic
  */
-public class LCSAlertAdvisor implements LCSEventListener {
+@Component(immediate = true, service = LCSAlertAdvisor.class)
+public class LCSAlertAdvisorImpl implements LCSAlertAdvisor, LCSEventListener {
 
-	public LCSAlertAdvisor(LCSGatewayClient lcsGatewayClient) {
-		lcsGatewayClient.registerLCSEventListener(this);
+	@Activate
+	public void activate() {
+		_lcsEventManager.subscribe(LCSEvent.HANDSHAKE_FAILED, this);
+		_lcsEventManager.subscribe(LCSEvent.HANDSHAKE_SUCCESS, this);
+		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_SUCCESS, this);
+		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MISSING, this);
+		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MULTIPLE_TOKENS, this);
+		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_TOKEN_CORRUPTED, this);
+		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID, this);
+		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH, this);
+		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS, this);
+		_lcsEventManager.subscribe(LCSEvent.LCS_GATEWAY_UNAVAILABLE, this);
 	}
 
 	public void add(LCSAlert lcsAlert) {
@@ -99,5 +121,6 @@ public class LCSAlertAdvisor implements LCSEventListener {
 
 	private final Map<LCSAlert, LCSAlert> _lcsAlerts =
 		new ConcurrentHashMap<>();
+	private LCSEventManager _lcsEventManager;
 
 }

@@ -14,9 +14,9 @@
 
 package com.liferay.lcs.client.internal.command;
 
-import com.liferay.lcs.client.internal.task.advisor.TaskAdvisor;
 import com.liferay.lcs.client.internal.util.LCSPatcherUtil;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
+import com.liferay.lcs.client.task.advisor.TaskAdvisor;
 import com.liferay.lcs.messaging.SendPatchesCommandMessage;
 import com.liferay.lcs.messaging.SendPatchesResponseMessage;
 import com.liferay.lcs.util.LCSConstants;
@@ -31,17 +31,18 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Ivica Cardic
  * @author Igor Beslic
  */
+@Component
 public class SendPatchesCommand implements Command<SendPatchesCommandMessage> {
 
-	public SendPatchesCommand(
-		LCSGatewayClient lcsGatewayClient, TaskAdvisor taskAdvisor) {
-
+	public SendPatchesCommand(LCSGatewayClient lcsGatewayClient) {
 		_lcsGatewayClient = lcsGatewayClient;
-		_taskAdvisor = taskAdvisor;
 	}
 
 	@Override
@@ -132,6 +133,8 @@ public class SendPatchesCommand implements Command<SendPatchesCommandMessage> {
 		SendPatchesCommand.class);
 
 	private final LCSGatewayClient _lcsGatewayClient;
-	private final TaskAdvisor _taskAdvisor;
+
+	@Reference
+	private TaskAdvisor _taskAdvisor;
 
 }

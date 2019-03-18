@@ -14,10 +14,10 @@
 
 package com.liferay.lcs.client.internal.task;
 
+import com.liferay.lcs.client.alert.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.internal.advisor.InstallationEnvironmentAdvisor;
 import com.liferay.lcs.client.internal.advisor.InstallationEnvironmentAdvisorFactory;
-import com.liferay.lcs.client.internal.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.advisor.UptimeAdvisor;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
@@ -74,12 +74,11 @@ import org.osgi.service.component.annotations.Reference;
 public class HandshakeTask implements Task {
 
 	public HandshakeTask(
-		long lcsClusterEntryTokenId, LCSAlertAdvisor lcsAlertAdvisor,
-		LCSGatewayClient lcsGatewayClient, LCSKeyAdvisor lcsKeyAdvisor,
-		ThreadFactory threadFactory, UptimeAdvisor uptimeAdvisor) {
+		long lcsClusterEntryTokenId, LCSGatewayClient lcsGatewayClient,
+		LCSKeyAdvisor lcsKeyAdvisor, ThreadFactory threadFactory,
+		UptimeAdvisor uptimeAdvisor) {
 
 		_lcsClusterEntryTokenId = lcsClusterEntryTokenId;
-		_lcsAlertAdvisor = lcsAlertAdvisor;
 		_lcsGatewayClient = lcsGatewayClient;
 		_lcsKeyAdvisor = lcsKeyAdvisor;
 		_threadFactory = threadFactory;
@@ -419,7 +418,10 @@ public class HandshakeTask implements Task {
 	private CompanyLocalService _companyLocalService;
 
 	private final String _key;
-	private final LCSAlertAdvisor _lcsAlertAdvisor;
+
+	@Reference
+	private LCSAlertAdvisor _lcsAlertAdvisor;
+
 	private final long _lcsClusterEntryTokenId;
 
 	@Reference

@@ -23,16 +23,20 @@ import com.liferay.lcs.client.internal.task.LicenseManagerTask;
 import com.liferay.lcs.client.internal.task.PortalMetricsTask;
 import com.liferay.lcs.client.internal.task.ScheduledTask;
 import com.liferay.lcs.client.internal.task.ServerMetricsTask;
+import com.liferay.lcs.client.task.advisor.TaskAdvisor;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Igor Beslic
  */
-public class TaskAdvisor {
+@Component(immediate = true, service = TaskAdvisor.class)
+public class TaskAdvisorImpl implements TaskAdvisor {
 
 	public synchronized Set<String> getActiveServiceLabels() {
 		Set<String> activeServiceLabels = new HashSet<>();

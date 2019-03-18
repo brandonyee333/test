@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.lcs.client.internal.util;
+package com.liferay.lcs.client.alert;
 
 /**
  * @author Igor Beslic

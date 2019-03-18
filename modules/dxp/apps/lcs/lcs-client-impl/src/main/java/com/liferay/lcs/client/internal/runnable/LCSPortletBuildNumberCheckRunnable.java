@@ -14,8 +14,8 @@
 
 package com.liferay.lcs.client.internal.runnable;
 
-import com.liferay.lcs.client.internal.advisor.LCSAlertAdvisor;
-import com.liferay.lcs.client.internal.util.LCSAlert;
+import com.liferay.lcs.client.alert.LCSAlert;
+import com.liferay.lcs.client.alert.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.client.internal.util.LCSUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;

@@ -14,7 +14,6 @@
 
 package com.liferay.lcs.client.internal.util;
 
-import com.liferay.lcs.client.internal.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.client.platform.portal.LCSClusterNode;
 import com.liferay.lcs.client.platform.portal.LCSProject;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
@@ -44,10 +43,6 @@ import java.util.StringTokenizer;
  * @author Ivica Cardic
  */
 public class LCSUtil {
-
-	public static Set<LCSAlert> getLCSAlerts() {
-		return _lcsAlertAdvisor.getLCSAlerts();
-	}
 
 	public static String getLCSClusterEntryLayoutURL(
 		LCSProject lcsProject, LCSClusterNode lcsClusterNode) {
@@ -189,10 +184,6 @@ public class LCSUtil {
 		}
 	}
 
-	public void setLCSAlertAdvisor(LCSAlertAdvisor lcsAlertAdvisor) {
-		_lcsAlertAdvisor = lcsAlertAdvisor;
-	}
-
 	protected static String getLCSLayoutURL(
 		String friendlyURL, Map<String, String> parms) {
 
@@ -237,7 +228,5 @@ public class LCSUtil {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(LCSUtil.class);
-
-	private static LCSAlertAdvisor _lcsAlertAdvisor;
 
 }

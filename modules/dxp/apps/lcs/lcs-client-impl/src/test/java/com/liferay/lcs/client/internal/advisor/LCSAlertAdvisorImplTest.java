@@ -14,13 +14,14 @@
 
 package com.liferay.lcs.client.internal.advisor;
 
+import com.liferay.lcs.client.alert.LCSAlert;
 import com.liferay.lcs.client.exception.MissingLCSClusterEntryTokenException;
 import com.liferay.lcs.client.exception.MultipleLCSClusterEntryTokenException;
+import com.liferay.lcs.client.internal.alert.advisor.LCSAlertAdvisorImpl;
 import com.liferay.lcs.client.internal.platform.gateway.LCSGatewayClientImpl;
 import com.liferay.lcs.client.internal.task.HandshakeTask;
 import com.liferay.lcs.client.internal.task.LCSClusterEntryTokenCheckTask;
 import com.liferay.lcs.client.internal.task.scheduler.TaskSchedulerServiceImpl;
-import com.liferay.lcs.client.internal.util.LCSAlert;
 import com.liferay.lcs.client.internal.util.LCSUtil;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.client.platform.portal.LCSClusterEntryToken;
@@ -57,7 +58,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 	}
 )
 @RunWith(PowerMockRunner.class)
-public class LCSAlertAdvisorTest extends PowerMockito {
+public class LCSAlertAdvisorImplTest extends PowerMockito {
 
 	@Before
 	public void setUp() {
@@ -66,8 +67,8 @@ public class LCSAlertAdvisorTest extends PowerMockito {
 
 	@Test
 	public void testErrorEnvironmentMismatch() throws Exception {
-		LCSAlertAdvisor lcsAlertAdvisor = spy(
-			new LCSAlertAdvisor(mock(LCSGatewayClientImpl.class)));
+		LCSAlertAdvisorImpl lcsAlertAdvisor = spy(
+			new LCSAlertAdvisorImpl(mock(LCSGatewayClientImpl.class)));
 
 		HandshakeTask handshakeTask = _spyHandshakeTask(
 			lcsAlertAdvisor,
@@ -109,8 +110,8 @@ public class LCSAlertAdvisorTest extends PowerMockito {
 			new byte[0]
 		);
 
-		LCSAlertAdvisor lcsAlertAdvisor = spy(
-			new LCSAlertAdvisor(mock(LCSGatewayClientImpl.class)));
+		LCSAlertAdvisorImpl lcsAlertAdvisor = spy(
+			new LCSAlertAdvisorImpl(mock(LCSGatewayClientImpl.class)));
 
 		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =
 			new LCSClusterEntryTokenCheckTask(
@@ -126,8 +127,8 @@ public class LCSAlertAdvisorTest extends PowerMockito {
 
 	@Test
 	public void testErrorInvalidTokenLCSAlert() throws Exception {
-		LCSAlertAdvisor lcsAlertAdvisor = spy(
-			new LCSAlertAdvisor(mock(LCSGatewayClientImpl.class)));
+		LCSAlertAdvisorImpl lcsAlertAdvisor = spy(
+			new LCSAlertAdvisorImpl(mock(LCSGatewayClientImpl.class)));
 
 		HandshakeTask handshakeTask = _spyHandshakeTask(
 			lcsAlertAdvisor,
@@ -145,8 +146,8 @@ public class LCSAlertAdvisorTest extends PowerMockito {
 
 	@Test
 	public void testErrorInvalidUserCredentialsLCSAlert() throws Exception {
-		LCSAlertAdvisor lcsAlertAdvisor = spy(
-			new LCSAlertAdvisor(mock(LCSGatewayClientImpl.class)));
+		LCSAlertAdvisorImpl lcsAlertAdvisor = spy(
+			new LCSAlertAdvisorImpl(mock(LCSGatewayClientImpl.class)));
 
 		HandshakeTask handshakeTask = _spyHandshakeTask(
 			lcsAlertAdvisor,
@@ -164,8 +165,8 @@ public class LCSAlertAdvisorTest extends PowerMockito {
 
 	@Test
 	public void testHandshakeSuccessLCSAlert() throws Exception {
-		LCSAlertAdvisor lcsAlertAdvisor = spy(
-			new LCSAlertAdvisor(mock(LCSGatewayClientImpl.class)));
+		LCSAlertAdvisorImpl lcsAlertAdvisor = spy(
+			new LCSAlertAdvisorImpl(mock(LCSGatewayClientImpl.class)));
 
 		lcsAlertAdvisor.add(LCSAlert.WARNING_HANDSHAKE_FAILED);
 
@@ -193,8 +194,8 @@ public class LCSAlertAdvisorTest extends PowerMockito {
 		};
 
 		for (Exception exception : exceptions) {
-			LCSAlertAdvisor lcsAlertAdvisor = spy(
-				new LCSAlertAdvisor(mock(LCSGatewayClientImpl.class)));
+			LCSAlertAdvisorImpl lcsAlertAdvisor = spy(
+				new LCSAlertAdvisorImpl(mock(LCSGatewayClientImpl.class)));
 
 			_testLCSClusterEntryAdvisorExceptionIsThrown(
 				exception, lcsAlertAdvisor);
@@ -229,8 +230,8 @@ public class LCSAlertAdvisorTest extends PowerMockito {
 			Matchers.anyInt()
 		);
 
-		LCSAlertAdvisor lcsAlertAdvisor = spy(
-			new LCSAlertAdvisor(mock(LCSGatewayClientImpl.class)));
+		LCSAlertAdvisorImpl lcsAlertAdvisor = spy(
+			new LCSAlertAdvisorImpl(mock(LCSGatewayClientImpl.class)));
 
 		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =
 			new LCSClusterEntryTokenCheckTask(
@@ -257,8 +258,8 @@ public class LCSAlertAdvisorTest extends PowerMockito {
 			Matchers.anyInt()
 		);
 
-		LCSAlertAdvisor lcsAlertAdvisor = spy(
-			new LCSAlertAdvisor(mock(LCSGatewayClientImpl.class)));
+		LCSAlertAdvisorImpl lcsAlertAdvisor = spy(
+			new LCSAlertAdvisorImpl(mock(LCSGatewayClientImpl.class)));
 
 		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =
 			new LCSClusterEntryTokenCheckTask(
@@ -276,8 +277,8 @@ public class LCSAlertAdvisorTest extends PowerMockito {
 
 	@Test
 	public void testWarningHandshakeFailedLCSAlert() throws Exception {
-		LCSAlertAdvisor lcsAlertAdvisor = spy(
-			new LCSAlertAdvisor(mock(LCSGatewayClientImpl.class)));
+		LCSAlertAdvisorImpl lcsAlertAdvisor = spy(
+			new LCSAlertAdvisorImpl(mock(LCSGatewayClientImpl.class)));
 
 		HandshakeTask handshakeTask = _spyHandshakeTask(
 			lcsAlertAdvisor,
@@ -392,7 +393,7 @@ public class LCSAlertAdvisorTest extends PowerMockito {
 	}
 
 	private HandshakeTask _spyHandshakeTask(
-			LCSAlertAdvisor lcsAlertAdvisor,
+			LCSAlertAdvisorImpl lcsAlertAdvisor,
 			LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor,
 			LCSGatewayClient lcsGatewayClient)
 		throws Exception {
@@ -439,7 +440,7 @@ public class LCSAlertAdvisorTest extends PowerMockito {
 	}
 
 	private void _testLCSClusterEntryAdvisorExceptionIsThrown(
-			Exception exception, LCSAlertAdvisor lcsAlertAdvisor)
+			Exception exception, LCSAlertAdvisorImpl lcsAlertAdvisor)
 		throws Exception {
 
 		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor =

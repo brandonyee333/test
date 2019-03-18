@@ -55,7 +55,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 	{DigesterUtil.class, LCSPatcherUtil.class, LCSUtil.class, PropsUtil.class}
 )
 @RunWith(PowerMockRunner.class)
-public class TaskAdvisorTest extends PowerMockito {
+public class TaskAdvisorImplTest extends PowerMockito {
 
 	@Before
 	public void setUp() throws Exception {
@@ -138,7 +138,7 @@ public class TaskAdvisorTest extends PowerMockito {
 		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor =
 			new LCSClusterEntryTokenAdvisor();
 
-		TaskAdvisor taskAdvisor = new TaskAdvisor();
+		TaskAdvisorImpl taskAdvisor = new TaskAdvisorImpl();
 
 		Command<? extends CommandMessage> sendPortalPropertiesCommand =
 			new SendPortalPropertiesCommand(

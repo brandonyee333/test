@@ -16,7 +16,6 @@ package com.liferay.lcs.client.internal.task.scheduler;
 
 import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.event.LCSEvent;
-import com.liferay.lcs.client.internal.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.advisor.UptimeAdvisor;
 import com.liferay.lcs.client.internal.task.CommandMessageTask;
@@ -26,9 +25,9 @@ import com.liferay.lcs.client.internal.task.LCSClusterEntryTokenCheckTask;
 import com.liferay.lcs.client.internal.task.ScheduledTask;
 import com.liferay.lcs.client.internal.task.SignOffTask;
 import com.liferay.lcs.client.internal.task.UptimeTask;
-import com.liferay.lcs.client.internal.task.advisor.TaskAdvisor;
 import com.liferay.lcs.client.internal.util.PortletPropsValues;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
+import com.liferay.lcs.client.task.advisor.TaskAdvisor;
 import com.liferay.lcs.client.task.scheduler.TaskSchedulerService;
 import com.liferay.lcs.util.LCSConstants;
 import com.liferay.petra.string.StringBundler;
@@ -58,16 +57,13 @@ import org.osgi.service.component.annotations.Reference;
 public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 
 	public TaskSchedulerServiceImpl(
-		int defaultInterval, LCSAlertAdvisor lcsAlertAdvisor,
-		LCSGatewayClient lcsGatewayClient, LCSKeyAdvisor lcsKeyAdvisor,
-		TaskAdvisor taskAdvisor, ThreadFactory threadFactory,
+		int defaultInterval, LCSGatewayClient lcsGatewayClient,
+		LCSKeyAdvisor lcsKeyAdvisor, ThreadFactory threadFactory,
 		UptimeAdvisor uptimeAdvisor) {
 
 		_defaultInterval = defaultInterval;
-		_lcsAlertAdvisor = lcsAlertAdvisor;
 		_lcsGatewayClient = lcsGatewayClient;
 		_lcsKeyAdvisor = lcsKeyAdvisor;
-		_taskAdvisor = taskAdvisor;
 		_threadFactory = threadFactory;
 		_uptimeAdvisor = uptimeAdvisor;
 
@@ -273,8 +269,7 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 
 		HandshakeTask handshakeTask = new HandshakeTask(
 			_lcsClusterEntryTokenAdvisor.getLcsClusterEntryTokenId(),
-			_lcsAlertAdvisor, _lcsGatewayClient, _lcsKeyAdvisor, _threadFactory,
-			_uptimeAdvisor);
+			_lcsGatewayClient, _lcsKeyAdvisor, _threadFactory, _uptimeAdvisor);
 
 		if (delayRun) {
 			if (_log.isInfoEnabled()) {
@@ -449,7 +444,6 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		TaskSchedulerServiceImpl.class);
 
 	private final int _defaultInterval;
-	private final LCSAlertAdvisor _lcsAlertAdvisor;
 
 	@Reference
 	private LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
@@ -461,7 +455,10 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		new HashMap<>();
 	private volatile boolean _shutdownPending;
 	private volatile boolean _signOffPending;
-	private final TaskAdvisor _taskAdvisor;
+
+	@Reference
+	private TaskAdvisor _taskAdvisor;
+
 	private final ThreadFactory _threadFactory;
 	private final UptimeAdvisor _uptimeAdvisor;
 	private ScheduledFuture<?> _uptimeTaskScheduledFuture;
