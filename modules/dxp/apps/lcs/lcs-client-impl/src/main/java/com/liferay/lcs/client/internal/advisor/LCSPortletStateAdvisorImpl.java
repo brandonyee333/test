@@ -28,7 +28,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Igor Beslic
  */
 @Component(immediate = true, service = LCSPortletStateAdvisor.class)
-public class LCSPortletStateAdvisorImpl {
+public class LCSPortletStateAdvisorImpl implements LCSPortletStateAdvisor {
 
 	public long getLastLicenseCheckTime() {
 		return _lastLicenseCheckTime;
