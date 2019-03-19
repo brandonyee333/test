@@ -354,11 +354,9 @@ public class PartnerEntryFinderImpl
 			int pos = join.indexOf("WHERE");
 
 			if (pos != -1) {
-				join = join.substring(
-					pos + 5
-				).concat(
-					" AND "
-				);
+				String substring = join.substring(pos + 5);
+
+				join = substring.concat(" AND ");
 			}
 			else {
 				join = StringPool.BLANK;
