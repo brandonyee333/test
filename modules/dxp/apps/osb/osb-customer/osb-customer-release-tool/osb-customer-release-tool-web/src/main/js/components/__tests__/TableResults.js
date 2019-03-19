@@ -18,7 +18,6 @@ describe('TableResults', () => {
 				summary:
 					'IE11 Web Image Resizing Does not Maintain Initial Aspect Ratio',
 				components: ['Frontend Infrastructure > WYSIWYG'],
-				product: 'DXP 7.0',
 				release: 'GA',
 				description: 'description',
 				key: 'LPS-90100',
@@ -27,7 +26,6 @@ describe('TableResults', () => {
 			{
 				summary: 'Add menu - Heading order invalid',
 				components: ['Accessibility'],
-				product: 'DXP 7.0',
 				release: 'GA',
 				description: 'description 2',
 				key: 'LPS-85155',

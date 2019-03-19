@@ -7,7 +7,6 @@ export const tableHeader = (orderBy, handleSort) => (
 		<th className="lfr-component-column">
 			{Liferay.Language.get('component')}
 		</th>
-		<th className="lfr-product-column">{Liferay.Language.get('product')}</th>
 		<th className="lfr-release-column">
 			{Liferay.Language.get('release')}{' '}
 			<svg
@@ -34,7 +33,6 @@ export const tableBody = results =>
 				<td className="lfr-component-column">
 					{issue.components.toString().replace(',', ', ')}
 				</td>
-				<td className="lfr-product-column">missing product field</td>
 				<td className="lfr-release-column">{issue.release}</td>
 				<td className="lfr-key-column">
 					<a href={issue.url}>{issue.key}</a>
