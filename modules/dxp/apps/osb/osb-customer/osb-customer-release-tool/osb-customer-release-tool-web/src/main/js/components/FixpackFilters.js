@@ -130,8 +130,8 @@ export default class FixpackFilters extends Component {
 							<Filter
 								id={`${namespace}productVersion`}
 								label={Liferay.Language.get('product')}
-								options={filtersJSON}
 								onChange={this.handleProductVersionOnChange}
+								options={filtersJSON}
 								placeholder={Liferay.Language.get('select-product')}
 								selected={productVersion}
 							/>
@@ -143,8 +143,8 @@ export default class FixpackFilters extends Component {
 								disabled={!productVersion}
 								id={`${namespace}fromFixPackVersion`}
 								label={Liferay.Language.get('from')}
-								options={this.lookupFixPacksByProduct()}
 								onChange={this.handleFromFixpackOnChange}
+								options={this.lookupFixPacksByProduct()}
 								placeholder={Liferay.Language.get('select-release')}
 								selected={fromFixPackVersion}
 							/>
@@ -155,8 +155,8 @@ export default class FixpackFilters extends Component {
 								disabled={!fromFixPackVersion || !productVersion}
 								id={`${namespace}toFixPackVersion`}
 								label={Liferay.Language.get('to')}
-								options={this.lookupFixPacksByProduct(!!fromFixPackVersion)}
 								onChange={this.handleSubmit}
+								options={this.lookupFixPacksByProduct(!!fromFixPackVersion)}
 								placeholder={Liferay.Language.get('select-release')}
 								selected={toFixPackVersion}
 							/>
