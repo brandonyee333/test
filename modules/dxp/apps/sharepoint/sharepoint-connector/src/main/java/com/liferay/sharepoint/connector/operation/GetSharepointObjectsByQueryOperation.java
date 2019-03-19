@@ -232,15 +232,13 @@ public class GetSharepointObjectsByQueryOperation extends BaseOperation {
 			Node owsFileX0020SizeNode = namedNodeMap.getNamedItem(
 				"ows_File_x0020_Size");
 
+			String typeNodeValue = getNodeValue(owsFSObjTypeNode, 1);
+
 			SharepointObject sharepointObject = new SharepointObject(
 				getNodeValue(owsAuthorNode, 1),
 				getNodeValue(owsCheckedOutUserIdNode, 1),
 				parseDate(getNodeValue(owsCreatedX0020DateNode, 1)),
-				getNodeValue(
-					owsFSObjTypeNode, 1
-				).equals(
-					SharepointConstants.FS_OBJ_TYPE_FOLDER
-				),
+				typeNodeValue.equals(SharepointConstants.FS_OBJ_TYPE_FOLDER),
 				parseDate(getNodeValue(owsLastX0020ModifiedNode, 1)), path,
 				getPermissions(owsPermMaskNode.getNodeValue()),
 				GetterUtil.getLong(getNodeValue(owsFileRefNode, 0)),

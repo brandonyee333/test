@@ -89,7 +89,9 @@ public static class WatsonChild extends WatsonChildBaseModel {
 			jsonObject.put("activitiesInvolvedWatsonListTypeRels", activitiesInvolvedIds.toArray());
 		}
 		else {
-			jsonObject.put("activitiesInvolvedWatsonListTypeRels", getActivitiesInvolvedIds(watsonChild.getWatsonChildId()).toArray());
+			List<Long> activitiesInvolvedIds = getActivitiesInvolvedIds(watsonChild.getWatsonChildId());
+
+			jsonObject.put("activitiesInvolvedWatsonListTypeRels", activitiesInvolvedIds.toArray());
 		}
 
 		jsonObject.put("affiliationData", getAffiliatedPerson(watsonChild));
@@ -199,7 +201,9 @@ public static class WatsonChild extends WatsonChildBaseModel {
 			jsonObject.put("vocationalTrainingWatsonListTypeRels", vocationalTrainingIds.toArray());
 		}
 		else {
-			jsonObject.put("vocationalTrainingWatsonListTypeRels", getVocationalTrainingIds(watsonChild.getWatsonChildId()).toArray());
+			List<Long> vocationalTrainingIds = getVocationalTrainingIds(watsonChild.getWatsonChildId());
+
+			jsonObject.put("vocationalTrainingWatsonListTypeRels", vocationalTrainingIds.toArray());
 		}
 
 		jsonObject.put("watsonChildId", watsonChild.getWatsonChildId());

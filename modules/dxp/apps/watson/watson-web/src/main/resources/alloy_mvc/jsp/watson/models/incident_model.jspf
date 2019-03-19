@@ -147,7 +147,9 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 			jsonObject.put("natureWatsonListType", natureIds.toArray());
 		}
 		else {
-			jsonObject.put("natureWatsonListType", getIncidentNatureIds(watsonIncident.getWatsonIncidentId()).toArray());
+			List<Long> natureIds = getIncidentNatureIds(watsonIncident.getWatsonIncidentId());
+
+			jsonObject.put("natureWatsonListType", natureIds.toArray());
 		}
 
 		jsonObject.put("people", WatsonPerson.getIdJSONArray(watsonIncident.getWatsonIncidentId()));
