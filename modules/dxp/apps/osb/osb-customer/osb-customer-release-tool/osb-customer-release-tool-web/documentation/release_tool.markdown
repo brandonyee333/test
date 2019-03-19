@@ -31,7 +31,7 @@ Go to _Control Panel_ > _Content_ > _Web Content_ on the site where the _OSB Rel
 	* Known Issues
 	* Security
 
-In addition to these fields, there is an option to select a _Fix Pack Subcategory_. Please look at the [_Creating Release Vocabulary_](#creating-release-vocabulary) section of the documentation before proceeding. Under the _Metadata_ section (the section may need to be expanded), click on _Select_ under _Fix Packs (Global)_. This will trigger a popup that shows a folder structure. Expand the folder of whichever _Liferay Version_ the _Fix Pack_ is meant to be associated with, then select the _Fix Pack Version_ (which should match the _Title_ of the web content).
+In addition to these fields, there is an option to select a _Fix Pack Subcategory_. Please look at the [_Creating Release Vocabulary_](#creating-release-vocabulary) section of the documentation before proceeding. Under the _Metadata_ section (the section may need to be expanded), click on _Select_ under _Releases (Global)_. This will trigger a popup that shows a folder structure. Expand the folder of whichever _Liferay Version_ the _Fix Pack_ is meant to be associated with, then select the _Fix Pack Version_ (which should match the _Title_ of the web content).
 
 After creating a _Fix Pack_, it should show up in _OSB Release Tool_.
 
@@ -56,4 +56,4 @@ In order to display the download link, the fix pack needs to be linked with down
 
 To do that, go to _Web Content_ > _Downloads_ > Select a product of choice, for example _DXP 7.0_ > _Fix Packs_ > Select a fix pack of choice, for example _Fix Pack 1_.
 
-From there, go to the _Metadata_ section of the web content, click on _Select_ under _Fix Packs (Global)_. Select the correct _Fix Pack_ version similar to the steps described in [_Creating Release Web Content_](#creating-release-web-content).
+From there, go to the _Metadata_ section of the web content, click on _Select_ under _Releases (Global)_. Select the correct _Fix Pack_ version similar to the steps described in [_Creating Release Web Content_](#creating-release-web-content).
