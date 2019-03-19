@@ -6,29 +6,27 @@ import TableResults from '../TableResults';
 describe('TableResults', () => {
 	const error = {
 		error: {
-			name:
-				'class com.liferay.osb.customer.release.tool.web.internal.exception.VersionRangeException',
-			message: 'Please enter a valid version range.'
+			message: 'Please enter a valid version range.',
+			name: 'class com.liferay.osb.customer.release.tool.web.internal.exception.VersionRangeException'
 		}
 	};
 
 	const contentObj = {
 		results: [
 			{
-				summary:
-					'IE11 Web Image Resizing Does not Maintain Initial Aspect Ratio',
 				components: ['Frontend Infrastructure > WYSIWYG'],
-				release: 'GA',
 				description: 'description',
 				key: 'LPS-90100',
+				release: 'GA',
+				summary: 'IE11 Web Image Resizing Does not Maintain Initial Aspect Ratio',
 				url: '/'
 			},
 			{
-				summary: 'Add menu - Heading order invalid',
 				components: ['Accessibility'],
-				release: 'GA',
 				description: 'description 2',
 				key: 'LPS-85155',
+				release: 'GA',
+				summary: 'Add menu - Heading order invalid',
 				url: '/'
 			}
 		],

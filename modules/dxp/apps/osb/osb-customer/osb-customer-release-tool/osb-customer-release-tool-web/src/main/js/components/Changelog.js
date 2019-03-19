@@ -17,7 +17,10 @@ export default class Changelog extends Component {
 		const {jiraIssueJSONObject} = this.props;
 
 		return (
-			<TableResults jsonObject={jiraIssueJSONObject} tab="changelog" />
+			<TableResults
+				jsonObject={jiraIssueJSONObject}
+				tab="changelog"
+			/>
 		);
 	}
 }
