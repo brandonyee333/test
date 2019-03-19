@@ -33,9 +33,7 @@ public class AssetCategoryPropertyComparator extends OrderByComparator {
 		this(property, true);
 	}
 
-	public AssetCategoryPropertyComparator(
-		String property, boolean ascending) {
-
+	public AssetCategoryPropertyComparator(String property, boolean ascending) {
 		_property = property;
 		_ascending = ascending;
 	}
