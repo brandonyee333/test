@@ -95,8 +95,7 @@ public class ZendeskTicketEventTransformer extends BaseTransformer {
 			new String[] {
 				StringPool.UNDERLINE, StringPool.UNDERLINE, StringPool.BLANK,
 				StringPool.BLANK
-			}
-		);
+			});
 
 		return StringUtil.toLowerCase(name);
 	}
