@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.mobile.device.UnknownDevice;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.portlet.PortletRequestModel;
-import com.liferay.portal.kernel.portlet.PortletRequestModelFactory;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
@@ -45,6 +44,7 @@ import com.liferay.portal.kernel.templateparser.TransformerListener;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
@@ -257,15 +257,16 @@ public class JournalTransformer {
 				HttpServletRequest request = themeDisplay.getRequest();
 
 				if (portletRequestModel != null) {
-					PortletRequestModelFactory portletRequestModelFactory =
-						new PortletRequestModelFactory(portletRequestModel);
+					request.setAttribute(
+						JavaConstants.JAVAX_PORTLET_REQUEST,
+						portletRequestModel.getPortletRequest());
 
 					request.setAttribute(
-						"portletRequestModelFactory",
-						portletRequestModelFactory);
+						JavaConstants.JAVAX_PORTLET_RESPONSE,
+						portletRequestModel.getPortletResponse());
 				}
 
-				template.prepare(themeDisplay.getRequest());
+				template.prepare(request);
 			}
 
 			if (contextObjects != null) {
