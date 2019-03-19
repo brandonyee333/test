@@ -12,24 +12,17 @@
  *
  */
 
-package com.liferay.osb.customer.account.entry.details.constants;
+package com.liferay.osb.customer.metrics.sync.liferay.model.listener;
 
-import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.osb.customer.account.entry.details.model.Event;
+import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModelListener;
+import com.liferay.portal.kernel.model.ModelListener;
+
+import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Amos Fong
+ * @author Kyle Bischof
  */
-public class EventConstants {
-
-	public static final int TYPE_DOWNLOAD_ATTACHMENT = 1;
-
-	public static String getTypeLabel(long type) {
-		if (type == TYPE_DOWNLOAD_ATTACHMENT) {
-			return "download-attachment";
-		}
-		else {
-			return StringPool.BLANK;
-		}
-	}
-
+@Component(immediate = true, service = ModelListener.class)
+public class EventModelListener extends BaseMetricsModelListener<Event> {
 }
