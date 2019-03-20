@@ -16,7 +16,7 @@ package com.liferay.osb.customer.release.tool.web.internal.search;
 
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.osb.customer.jira.rest.connector.configuration.JIRARESTConnectorConfigurationValues;
-import com.liferay.osb.customer.jira.rest.connector.service.JIRAIssueLocalService;
+import com.liferay.osb.customer.jira.rest.connector.service.JIRAIssueRESTService;
 import com.liferay.osb.customer.release.tool.configuration.ReleaseToolConfigurationValues;
 import com.liferay.osb.customer.release.tool.web.internal.constants.ReleaseAssetCategoryProperty;
 import com.liferay.osb.customer.release.tool.web.internal.util.ReleasesAssetCategoryUtil;
@@ -127,7 +127,7 @@ public class JiraIssueSearcher extends BaseSearcher {
 			jiraFixPackCustomField, fromFixPackVersion, toFixPackVersion,
 			keywords, components, orderByType);
 
-		JSONObject jiraResultsJSONObject = _jiraIssueLocalService.getJIRAIssues(
+		JSONObject jiraResultsJSONObject = _jiraIssueRESTService.getJIRAIssues(
 			jql, "renderedFields", _ISSUE_FIELDS + "," + jiraFixPackCustomField,
 			startAt, maxResults);
 
@@ -234,7 +234,7 @@ public class JiraIssueSearcher extends BaseSearcher {
 		"components,description,key,summary";
 
 	@Reference
-	private JIRAIssueLocalService _jiraIssueLocalService;
+	private JIRAIssueRESTService _jiraIssueRESTService;
 
 	@Reference
 	private ReleasesAssetCategoryUtil _releasesAssetCategoryUtil;
