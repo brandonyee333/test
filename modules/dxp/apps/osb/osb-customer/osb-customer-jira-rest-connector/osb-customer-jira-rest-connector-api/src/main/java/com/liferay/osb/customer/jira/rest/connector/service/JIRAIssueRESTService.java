@@ -29,10 +29,10 @@ import java.util.Set;
 public interface JIRAIssueRESTService {
 
 	public JSONObject createJIRAIssue(
-		String projectKey, String issueType, String summary,
-		String description, String assigneeName, Set<String> labels,
-		Map<String, Object> customFields, String status)
-	throws PortalException;
+			String projectKey, String issueType, String summary,
+			String description, String assigneeName, Set<String> labels,
+			Map<String, Object> customFields, String status)
+		throws PortalException;
 
 	public JSONObject getJIRAIssue(String ticketKey) throws PortalException;
 
