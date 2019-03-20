@@ -16,32 +16,27 @@ package com.liferay.osb.customer.metrics.sync.liferay.model;
 
 import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.impl.model.BaseModelMetricsModel;
-import com.liferay.osb.customer.metrics.sync.liferay.model.util.MetricsTransformationUtil;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection;
 
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Kyle Bischof
  */
 @Component(immediate = true, service = MetricsModel.class)
-public class ZendeskSectionMetricsModel extends BaseModelMetricsModel<ZendeskSection> {
+public class ZendeskSectionMetricsModel
+	extends BaseModelMetricsModel<ZendeskSection> {
 
 	@Override
 	public Map<String, Object> getAttributes(ZendeskSection zendeskSection) {
-		return _metricsTransformationUtil.transformSharedAttributes(
-			zendeskSection.getModelAttributes());
+		return zendeskSection.getModelAttributes();
 	}
 
 	@Override
 	public Class getModelClass() {
 		return ZendeskSection.class;
 	}
-
-	@Reference
-	private MetricsTransformationUtil _metricsTransformationUtil;
 
 }
