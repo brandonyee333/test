@@ -25,10 +25,11 @@ import com.liferay.portal.kernel.upgrade.UpgradeProcess;
  */
 public abstract class BaseUpgradeProcess extends UpgradeProcess {
 
-	protected void runMetricsSQL(String sql) throws Exception {
+	protected void runMetricsSQL(String schema, String sql) throws Exception {
 		try {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
+			jsonObject.put("schema", schema);
 			jsonObject.put("sql", sql);
 
 			MessagePublisherUtil.sendMessage("metrics.upgrade", jsonObject);

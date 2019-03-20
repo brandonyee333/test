@@ -25,6 +25,11 @@ public class ZendeskSyncConfigurationValues {
 		GetterUtil.getString(
 			ZendeskSyncConfigurationUtil.get("metrics.rabbitmq.exchange.name"));
 
+	public static final String ZENDESK_DATABASE_SCHEMA_NAME =
+		GetterUtil.getString(
+			ZendeskSyncConfigurationUtil.get(
+				"zendesk.database.schema.name"));
+
 	public static final String ZENDESK_SERVICE_RABBITMQ_EXCHANGE_NAME =
 		GetterUtil.getString(
 			ZendeskSyncConfigurationUtil.get(

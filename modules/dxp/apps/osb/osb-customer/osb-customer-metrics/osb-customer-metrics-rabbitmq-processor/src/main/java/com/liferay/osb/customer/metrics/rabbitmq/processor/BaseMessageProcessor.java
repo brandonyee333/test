@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TextFormatter;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -164,11 +165,19 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 		return sb.toString();
 	}
 
+	protected String getSchema(String schema) {
+		if (Validator.isNull(schema)) {
+			return MetricsProcessorConfigurationValues.DATABASE_SCHEMA_NAME;
+		}
+
+		return schema;
+	}
+
 	protected String getTableName(String modelName) {
 		return "OSB_Metrics" + modelName;
 	}
 
-	protected void runSQL(String sql) throws Exception {
+	protected void runSQL(String schema, String sql) throws Exception {
 		Connection connection = null;
 		Statement statement = null;
 
@@ -176,7 +185,7 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 			Context initialContext = new InitialContext();
 
 			DataSource dataSource = (DataSource)initialContext.lookup(
-				DATA_SOURCE_CONTEXT);
+				JDBC_PATH + getSchema(schema));
 
 			connection = dataSource.getConnection();
 
@@ -212,6 +221,8 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 	protected static final String DATA_SOURCE_CONTEXT =
 		"java:comp/env/jdbc/" +
 			MetricsProcessorConfigurationValues.DATABASE_SCHEMA_NAME;
+
+	protected static final String JDBC_PATH = "java:comp/env/jdbc/";
 
 	private static final String _BAD_COLUMN_FILE =
 		"/com/liferay/portal/tools/service/builder/dependencies" +

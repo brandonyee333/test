@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.metrics.sync.zendesk.transformer;
 
+import com.liferay.osb.customer.metrics.sync.zendesk.configuration.ZendeskSyncConfigurationValues;
 import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessor;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -65,6 +66,9 @@ public abstract class BaseTransformer implements MessageProcessor {
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		jsonObject.put("model", modelJSONObject);
+		jsonObject.put(
+			"schema",
+			ZendeskSyncConfigurationValues.ZENDESK_DATABASE_SCHEMA_NAME);
 
 		return jsonObject;
 	}

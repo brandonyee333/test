@@ -99,12 +99,14 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 
 		String modelName = modelJSONObject.getString("name");
 
-		updateTable(modelJSONObject, modelName);
+		String schema = jsonObject.getString("schema");
+
+		updateTable(schema, modelJSONObject, modelName);
 
 		JSONArray mappingsJSONArray = jsonObject.getJSONArray("mappings");
 
 		if (mappingsJSONArray != null) {
-			updateMappingTables(mappingsJSONArray, modelName);
+			updateMappingTables(schema, mappingsJSONArray, modelName);
 		}
 	}
 
@@ -189,7 +191,8 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 		return jsonObject;
 	}
 
-	protected void runSQL(String sql, Map<String, Object> columnMap)
+	protected void runSQL(
+			String schema, String sql, Map<String, Object> columnMap)
 		throws Exception {
 
 		Connection connection = null;
@@ -199,7 +202,7 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 			Context initialContext = new InitialContext();
 
 			DataSource dataSource = (DataSource)initialContext.lookup(
-				DATA_SOURCE_CONTEXT);
+				JDBC_PATH + getSchema(schema));
 
 			connection = dataSource.getConnection();
 
@@ -228,7 +231,8 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 		}
 	}
 
-	protected void updateMappingTables(JSONArray jsonArray, String modelName)
+	protected void updateMappingTables(
+			String schema, JSONArray jsonArray, String modelName)
 		throws Exception {
 
 		for (int i = 0; i < jsonArray.length(); i++) {
@@ -249,12 +253,13 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 				String sql = buildSql(
 					getMappingTableName(modelName, mappingName), columnMap);
 
-				runSQL(sql, columnMap);
+				runSQL(schema, sql, columnMap);
 			}
 		}
 	}
 
-	protected void updateTable(JSONObject jsonObject, String modelName)
+	protected void updateTable(
+			String schema, JSONObject jsonObject, String modelName)
 		throws Exception {
 
 		JSONObject valuesJSONObject = reconcile(
@@ -264,7 +269,7 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 
 		String sql = buildSql(getTableName(modelName), columnMap);
 
-		runSQL(sql, columnMap);
+		runSQL(schema, sql, columnMap);
 	}
 
 	private String _getClassNameId(String value) throws Exception {
