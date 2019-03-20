@@ -35,11 +35,11 @@ portletURL.setParameter("toFixPackVersion", String.valueOf(toFixPackVersion));
 
 <liferay-portlet:renderURL var="fixPacksURL">
 	<portlet:param name="tabs1" value="<%= tabs1 %>" />
-	<portlet:param name="fromFixPackVersion" value="2.0" />
+	<portlet:param name="fromFixPackVersion" value="<%= String.valueOf(fromFixPackVersion) %>" />
 	<portlet:param name="orderByType" value="desc" />
-	<portlet:param name="product" value="dxp" />
-	<portlet:param name="productVersion" value="7.0" />
-	<portlet:param name="toFixPackVersion" value="5.0" />
+	<portlet:param name="product" value="<%= product %>" />
+	<portlet:param name="productVersion" value="<%= String.valueOf(productVersion) %>" />
+	<portlet:param name="toFixPackVersion" value="<%= String.valueOf(toFixPackVersion) %>" />
 </liferay-portlet:renderURL>
 
 <div class="main-heading">

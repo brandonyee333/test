@@ -16,16 +16,26 @@
 
 <%@ include file="/init.jsp" %>
 
+<%
+String tabs1 = ParamUtil.getString(request, "tabs1");
+
+String product = ParamUtil.getString(request, "product");
+double productVersion = ParamUtil.getDouble(request, "productVersion");
+double fromFixPackVersion = ParamUtil.getDouble(request, "fromFixPackVersion");
+double toFixPackVersion = ParamUtil.getDouble(request, "toFixPackVersion");
+%>
+
+<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/fix_packs" var="fixPackResultsURL">
+	<portlet:param name="tabs1" value="<%= tabs1 %>" />
+	<portlet:param name="fromFixPackVersion" value="<%= String.valueOf(fromFixPackVersion) %>" />
+	<portlet:param name="product" value="<%= product %>" />
+	<portlet:param name="productVersion" value="<%= String.valueOf(productVersion) %>" />
+	<portlet:param name="toFixPackVersion" value="<%= String.valueOf(toFixPackVersion) %>" />
+</liferay-portlet:resourceURL>
+
 <strong>Refinement Filters:</strong> <%= releaseToolDisplayContext.getHightlightsFiltersJSONArray() %>
 
 <br />
-
-<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/fix_packs" var="fixPackResultsURL">
-	<portlet:param name="fromFixPackVersion" value="2.0" />
-	<portlet:param name="product" value="dxp" />
-	<portlet:param name="productVersion" value="7.0" />
-	<portlet:param name="toFixPackVersion" value="5.0" />
-</liferay-portlet:resourceURL>
 
 <strong>Fix Pack Refinement Endpoint:</strong> <%= fixPackResultsURL %>
 
