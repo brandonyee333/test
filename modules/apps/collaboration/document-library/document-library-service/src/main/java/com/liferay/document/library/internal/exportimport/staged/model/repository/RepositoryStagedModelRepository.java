@@ -165,7 +165,6 @@ public class RepositoryStagedModelRepository
 
 				dynamicQuery.add(disjunction);
 			});
-
 		exportActionableDynamicQuery.setStagedModelType(
 			new StagedModelType(
 				_portal.getClassNameId(Repository.class.getName()),
