@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.jira.rest.connector.service;
+package com.liferay.osb.customer.jira.rest.connector.service.impl;
 
 import com.liferay.osb.customer.jira.rest.connector.exception.JIRAIssueIssueKeyException;
 import com.liferay.osb.customer.jira.rest.connector.exception.JIRAIssueIssueTypeException;
@@ -20,6 +20,7 @@ import com.liferay.osb.customer.jira.rest.connector.exception.JIRAIssueSummaryEx
 import com.liferay.osb.customer.jira.rest.connector.exception.JIRAResponseException;
 import com.liferay.osb.customer.jira.rest.connector.exception.JIRAResponseIssueNotFoundException;
 import com.liferay.osb.customer.jira.rest.connector.model.JIRAIssue;
+import com.liferay.osb.customer.jira.rest.connector.service.JIRAIssueRESTService;
 import com.liferay.osb.customer.jira.rest.connector.util.JIRAHttpUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
