@@ -81,7 +81,7 @@ public class AssetCategoryPropertyComparator extends OrderByComparator {
 		catch (NoSuchCategoryPropertyException nscpe) {
 		}
 		catch (PortalException pe) {
-			_log.error(pe, pe);	
+			_log.error(pe, pe);
 		}
 
 		return 0;

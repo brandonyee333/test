@@ -55,7 +55,8 @@ public class JournalArticleIndexerPostProcessor
 		}
 
 		String version = _releasesAssetCategoryUtil.getPropertyValue(
-			assetCategory.getCategoryId(), ReleaseAssetCategoryProperty.VERSION);
+			assetCategory.getCategoryId(),
+			ReleaseAssetCategoryProperty.VERSION);
 
 		if (Validator.isNull(version)) {
 			return;
@@ -65,12 +66,14 @@ public class JournalArticleIndexerPostProcessor
 			FixPackField.FIX_PACK_VERSION, GetterUtil.getDouble(version));
 
 		String product = _releasesAssetCategoryUtil.getPropertyValue(
-			assetCategory.getParentCategoryId(), ReleaseAssetCategoryProperty.PRODUCT);
+			assetCategory.getParentCategoryId(),
+			ReleaseAssetCategoryProperty.PRODUCT);
 
 		document.addKeyword(FixPackField.PRODUCT, product);
 
 		String productVersion = _releasesAssetCategoryUtil.getPropertyValue(
-			assetCategory.getParentCategoryId(), ReleaseAssetCategoryProperty.VERSION);
+			assetCategory.getParentCategoryId(),
+			ReleaseAssetCategoryProperty.VERSION);
 
 		document.addNumber(
 			FixPackField.PRODUCT_VERSION, GetterUtil.getDouble(productVersion));
