@@ -98,9 +98,11 @@ public class ReleasesAssetCategoryUtil {
 
 		Map<String, String> assetCategoryProperties = new HashMap<>();
 
-		assetCategoryProperties.put(ReleaseAssetCategoryProperty.PRODUCT, product);
 		assetCategoryProperties.put(
-			ReleaseAssetCategoryProperty.VERSION, String.valueOf(productVersion));
+			ReleaseAssetCategoryProperty.PRODUCT, product);
+		assetCategoryProperties.put(
+			ReleaseAssetCategoryProperty.VERSION,
+			String.valueOf(productVersion));
 
 		return getAssetCategory(
 			AssetCategoryConstants.DEFAULT_PARENT_CATEGORY_ID,

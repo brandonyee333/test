@@ -91,6 +91,6 @@ public class AssetCategoryPropertyComparator extends OrderByComparator {
 		AssetCategoryPropertyComparator.class);
 
 	private final boolean _ascending;
-	private final String _property;	
+	private final String _property;
 
 }
