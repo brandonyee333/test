@@ -30,7 +30,6 @@ import com.liferay.osb.customer.release.tool.web.internal.constants.DDMStructure
 import com.liferay.osb.customer.release.tool.web.internal.constants.FixPackField;
 import com.liferay.osb.customer.release.tool.web.internal.constants.ReleaseAssetCategoryProperty;
 import com.liferay.osb.customer.release.tool.web.internal.util.ReleasesAssetCategoryUtil;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -148,9 +147,7 @@ public class ReleaseToolDisplayContext {
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
 		List<AssetCategory> assetCategories =
-			AssetCategoryLocalServiceUtil.getVocabularyRootCategories(
-				_releasesAssetCategoryUtil.getReleasesAssetVocabularyId(),
-				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+			_releasesAssetCategoryUtil.getProductAssetCategories();
 
 		assetCategories = ListUtil.sort(
 			assetCategories,

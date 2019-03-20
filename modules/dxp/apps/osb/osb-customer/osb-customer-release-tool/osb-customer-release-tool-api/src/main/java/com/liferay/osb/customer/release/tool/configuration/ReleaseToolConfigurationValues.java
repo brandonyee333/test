@@ -27,4 +27,7 @@ public class ReleaseToolConfigurationValues {
 	public static final String[] FIX_PACK_JIRA_PROJECTS =
 		ReleaseToolConfigurationUtil.getArray("fix.pack.jira.projects");
 
+	public static final String RELEASE_METADATA_URL =
+		ReleaseToolConfigurationUtil.getString("release.metadata.url");
+
 }

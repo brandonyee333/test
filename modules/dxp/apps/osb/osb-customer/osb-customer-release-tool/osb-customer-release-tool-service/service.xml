@@ -22,5 +22,16 @@
 			<order-column name="group" />
 			<order-column name="name" />
 		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="RACI_G_N" return-type="ArtifactVersion">
+			<finder-column name="releaseAssetCategoryId" />
+			<finder-column name="group" />
+			<finder-column name="name" />
+		</finder>
 	</entity>
+	<exceptions>
+		<exception>DuplicateArtifactVersion</exception>
+	</exceptions>
 </service-builder>

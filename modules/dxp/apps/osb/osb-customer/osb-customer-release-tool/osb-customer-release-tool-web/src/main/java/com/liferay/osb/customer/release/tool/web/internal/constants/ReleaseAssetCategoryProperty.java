@@ -21,7 +21,11 @@ public class ReleaseAssetCategoryProperty {
 
 	public static final String JIRA_FIX_PACK_VERSION = "jira-fix-pack-version";
 
+	public static final String METADATA_FILE = "metadata-file";
+
 	public static final String PRODUCT = "product";
+
+	public static final String RELEASE_ID = "release-id";
 
 	public static final String VERSION = "version";
 

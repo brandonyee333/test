@@ -27,6 +27,7 @@ import com.liferay.osb.customer.release.tool.web.internal.constants.ReleaseAsset
 import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
 import com.liferay.portal.instances.service.PortalInstancesLocalService;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -41,6 +42,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +65,9 @@ public class ReleasesAssetCategoryUtil {
 	public static final String JOIN_BY_ASSET_CATEGORY_PROPERTY =
 		ReleasesAssetCategoryUtil.class.getName() +
 			".joinByAssetCategoryProperty";
+
+	public static final String JOIN_BY_NO_ARTIFACTS =
+		ReleasesAssetCategoryUtil.class.getName() + ".joinByNoArtifacts";
 
 	public AssetCategory fetchFixPackAssetCategory(
 			long journalArticleResourcePrimKey)
@@ -91,6 +97,59 @@ public class ReleasesAssetCategoryUtil {
 			ReleaseAssetCategoryProperty.VERSION, String.valueOf(version));
 
 		return getAssetCategory(parentCategoryId, assetCategoryProperties);
+	}
+
+	public List<Long> getNoArtifactAssetCategories(long parentCategoryId) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			con = DataAccess.getConnection();
+
+			String sql = CustomSQLUtil.get(getClass(), FIND_BY_V_PC);
+
+			String join = CustomSQLUtil.get(
+				getClass(), JOIN_BY_NO_ARTIFACTS);
+
+			int pos = join.indexOf("WHERE");
+
+			sql = StringUtil.replace(
+				sql, "[$JOIN$]", join.substring(0, pos));
+			sql = StringUtil.replace(
+				sql, "[$WHERE$]", join.substring(pos + 5) + " AND ");
+
+			ps = con.prepareStatement(sql);
+
+			ps.setString(1, ReleaseAssetCategoryProperty.RELEASE_ID);
+			ps.setLong(2, _releasesAssetVocabulary.getVocabularyId());
+			ps.setLong(3, parentCategoryId);
+
+			rs = ps.executeQuery();
+
+			List<Long> assetCategoryIds = new ArrayList<>();
+
+			while (rs.next()) {
+				assetCategoryIds.add(rs.getLong(1));
+			}
+
+			return assetCategoryIds;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			return Collections.emptyList();
+		}
+		finally {
+			DataAccess.cleanUp(con, ps, rs);
+		}
+
+	}
+
+	public List<AssetCategory> getProductAssetCategories() {
+		return  _assetCategoryLocalService.getVocabularyRootCategories(
+			_releasesAssetVocabulary.getVocabularyId(), QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
 	}
 
 	public AssetCategory getProductAssetCategory(
@@ -123,10 +182,6 @@ public class ReleasesAssetCategoryUtil {
 		}
 
 		return StringPool.BLANK;
-	}
-
-	public long getReleasesAssetVocabularyId() {
-		return _releasesAssetVocabulary.getVocabularyId();
 	}
 
 	@Activate

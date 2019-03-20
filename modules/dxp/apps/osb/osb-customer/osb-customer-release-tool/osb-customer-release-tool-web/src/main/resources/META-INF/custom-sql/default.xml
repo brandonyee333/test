@@ -24,4 +24,17 @@
 				(AssetCategoryProperty[$i$].value = ?)
 		]]>
 	</sql>
+	<sql id="com.liferay.osb.customer.release.tool.web.internal.util.ReleasesAssetCategoryUtil.joinByNoArtifacts">
+		<![CDATA[
+			INNER JOIN
+				AssetCategoryProperty ON
+					AssetCategoryProperty.categoryId = AssetCategory.categoryId
+			LEFT JOIN
+				OSBCustomer_ArtifactVersion ON
+					OSBCustomer_ArtifactVersion.releaseAssetCategoryId = AssetCategory.categoryId
+			WHERE
+				(AssetCategoryProperty.key_ = ?) AND
+				(OSBCustomer_ArtifactVersion.releaseAssetCategoryId IS NULL)
+		]]>
+	</sql>
 </custom-sql>

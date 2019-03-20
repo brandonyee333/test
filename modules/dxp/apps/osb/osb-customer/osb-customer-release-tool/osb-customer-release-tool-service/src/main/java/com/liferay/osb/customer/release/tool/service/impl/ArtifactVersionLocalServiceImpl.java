@@ -14,11 +14,44 @@
 
 package com.liferay.osb.customer.release.tool.service.impl;
 
+import com.liferay.osb.customer.release.tool.exception.DuplicateArtifactVersionException;
+import com.liferay.osb.customer.release.tool.model.ArtifactVersion;
 import com.liferay.osb.customer.release.tool.service.base.ArtifactVersionLocalServiceBaseImpl;
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Amos Fong
  */
 public class ArtifactVersionLocalServiceImpl
 	extends ArtifactVersionLocalServiceBaseImpl {
+
+	public ArtifactVersion addArtifactVersion(
+			long releaseAssetCategoryId, String group, String name,
+			String version)
+		throws PortalException {
+
+		ArtifactVersion artifactVersion =
+			artifactVersionPersistence.fetchByRACI_G_N(
+				releaseAssetCategoryId, group, name);
+
+		if (artifactVersion != null) {
+			if (!version.equals(artifactVersion.getVersion())) {
+				throw new DuplicateArtifactVersionException();
+			}
+
+			return artifactVersion;
+		}
+
+		long artifactVersionId = counterLocalService.increment();
+
+		artifactVersion = artifactVersionPersistence.create(artifactVersionId);
+
+		artifactVersion.setReleaseAssetCategoryId(releaseAssetCategoryId);
+		artifactVersion.setGroup(group);
+		artifactVersion.setName(name);
+		artifactVersion.setVersion(version);
+
+		return artifactVersionPersistence.update(artifactVersion);
+	}
+
 }

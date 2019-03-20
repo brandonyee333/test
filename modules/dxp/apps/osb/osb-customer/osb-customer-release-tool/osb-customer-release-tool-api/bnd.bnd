@@ -3,4 +3,8 @@ Bundle-SymbolicName: com.liferay.osb.customer.release.tool.api
 Bundle-Version: 1.0.0
 Export-Package:\
 	com.liferay.osb.customer.release.tool.configuration,\
+	com.liferay.osb.customer.release.tool.exception,\
+	com.liferay.osb.customer.release.tool.model,\
+	com.liferay.osb.customer.release.tool.service,\
+	com.liferay.osb.customer.release.tool.service.persistence,\
 	com.liferay.osb.customer.release.tool.util.comparator
