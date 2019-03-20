@@ -19,16 +19,11 @@ export default function TableResults({jsonObject, tab}) {
 	return (
 		<Fragment>
 			{!!jsonObject.error && (
-				<Alert type="danger">
-					{jsonObject.error.message}
-				</Alert>
+				<Alert type="danger">{jsonObject.error.message}</Alert>
 			)}
 
 			{!!jsonObject.results && (
-				<SortableTable
-					jsonObject={jsonObject}
-					tab={tab}
-				/>
+				<SortableTable jsonObject={jsonObject} tab={tab} />
 			)}
 		</Fragment>
 	);

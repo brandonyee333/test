@@ -33,12 +33,6 @@ double toFixPackVersion = ParamUtil.getDouble(request, "toFixPackVersion");
 	<portlet:param name="toFixPackVersion" value="<%= String.valueOf(toFixPackVersion) %>" />
 </liferay-portlet:resourceURL>
 
-<strong>Changelog Refinement Endpoint:</strong> <%= refinedJiraIssuesURL %>
-
-<br />
-
-<strong>JIRA Component:</strong> <%= releaseToolDisplayContext.getJIRAComponentFiltersJSONArray() %>
-
 <h2>
 	<liferay-ui:message key="changelog" />
 </h2>
@@ -68,6 +62,7 @@ JSONObject jiraIssueJSONObject = jiraIssueSearcher.search(renderRequest, renderR
 	ReleaseTool.render(
 		ReleaseTool.Changelog,
 		{
+			jiraIssueEndpoint: '<%= refinedJiraIssuesURL %>',
 			jiraIssueJSONObject: <%= jiraIssueJSONObject %>
 		},
 		document.getElementById('<portlet:namespace />changelog')

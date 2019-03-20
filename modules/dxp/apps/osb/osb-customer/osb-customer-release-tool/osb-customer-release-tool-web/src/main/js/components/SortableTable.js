@@ -31,9 +31,7 @@ export default class SortableTable extends Component {
 	};
 
 	sortResults = () => {
-		const {
-			jsonObject: {results}
-		} = this.props;
+		const {jsonObject: {results}} = this.props;
 		const {orderBy} = this.state;
 
 		return orderBy === 'desc' ? results.concat() : results.concat().reverse();
@@ -49,8 +47,8 @@ export default class SortableTable extends Component {
 
 		return (
 			<Fragment>
-				<div className="showing-results">
-					{Liferay.Language.get('showing-x-results', total.toString())}
+				<div className="results-count">
+					{Liferay.Language.get('x-results', total.toString())}
 				</div>
 
 				<table className={`table ${tab}-table table-autofit table-list`} role="table">

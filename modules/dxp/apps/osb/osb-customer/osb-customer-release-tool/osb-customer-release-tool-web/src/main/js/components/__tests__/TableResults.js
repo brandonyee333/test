@@ -34,14 +34,18 @@ describe('TableResults', () => {
 	};
 
 	it('renders error correctly', () => {
-		const {container, getByRole} = render(<TableResults jsonObject={error} tab="highlights" />);
+		const {container, getByRole} = render(
+			<TableResults jsonObject={error} tab="highlights" />
+		);
 
 		expect(getByRole('alert')).toBeTruthy();
 		expect(container).toMatchSnapshot();
 	});
 
 	it('renders content correctly', () => {
-		const {container, getByRole} = render(<TableResults jsonObject={contentObj} tab="changelog" />);
+		const {container, getByRole} = render(
+			<TableResults jsonObject={contentObj} tab="changelog" />
+		);
 
 		expect(getByRole('table')).toBeTruthy();
 		expect(container).toMatchSnapshot();
