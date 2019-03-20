@@ -18,8 +18,6 @@ import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.impl.model.BaseModelMetricsModel;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment;
 
-import java.util.Map;
-
 import org.osgi.service.component.annotations.Component;
 
 /**
@@ -28,13 +26,6 @@ import org.osgi.service.component.annotations.Component;
 @Component(immediate = true, service = MetricsModel.class)
 public class ZendeskArticleAttachmentMetricsModel
 	extends BaseModelMetricsModel<ZendeskArticleAttachment> {
-
-	@Override
-	public Map<String, Object> getAttributes(
-		ZendeskArticleAttachment zendeskArticleAttachment) {
-
-		return zendeskArticleAttachment.getModelAttributes();
-	}
 
 	@Override
 	public Class getModelClass() {

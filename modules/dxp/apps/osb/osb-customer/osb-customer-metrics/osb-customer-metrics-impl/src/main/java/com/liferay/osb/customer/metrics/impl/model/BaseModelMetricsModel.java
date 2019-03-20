@@ -48,7 +48,7 @@ public abstract class BaseModelMetricsModel<T extends BaseModel<T>>
 		messagePublisher.sendMessage(RoutingKeys.METRICS_DROP, jsonObject);
 	}
 
-	public Map<String, Object> getAttributes(BaseModel<T> model) {
+	public Map<String, Object> getAttributes(T model) {
 		return model.getModelAttributes();
 	}
 
