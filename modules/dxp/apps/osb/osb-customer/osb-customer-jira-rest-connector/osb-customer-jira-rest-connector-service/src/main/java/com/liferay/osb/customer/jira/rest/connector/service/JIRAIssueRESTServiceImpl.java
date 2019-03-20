@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.jira.rest.connector.service.impl;
+package com.liferay.osb.customer.jira.rest.connector.service;
 
 import com.liferay.osb.customer.jira.rest.connector.exception.JIRAIssueIssueKeyException;
 import com.liferay.osb.customer.jira.rest.connector.exception.JIRAIssueIssueTypeException;
@@ -20,7 +20,6 @@ import com.liferay.osb.customer.jira.rest.connector.exception.JIRAIssueSummaryEx
 import com.liferay.osb.customer.jira.rest.connector.exception.JIRAResponseException;
 import com.liferay.osb.customer.jira.rest.connector.exception.JIRAResponseIssueNotFoundException;
 import com.liferay.osb.customer.jira.rest.connector.model.JIRAIssue;
-import com.liferay.osb.customer.jira.rest.connector.service.base.JIRAIssueLocalServiceBaseImpl;
 import com.liferay.osb.customer.jira.rest.connector.util.JIRAHttpUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -35,10 +34,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Noah Sherrill
  */
-public class JIRAIssueLocalServiceImpl extends JIRAIssueLocalServiceBaseImpl {
+@Component(immediate = true, service = JIRAIssueRESTService.class)
+public class JIRAIssueRESTServiceImpl implements JIRAIssueRESTService {
 
 	public JSONObject createJIRAIssue(
 			String projectKey, String issueType, String summary,
@@ -217,7 +219,7 @@ public class JIRAIssueLocalServiceImpl extends JIRAIssueLocalServiceBaseImpl {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		JIRAIssueLocalServiceImpl.class);
+		JIRAIssueRESTServiceImpl.class);
 
 	private final Map<String, Integer> _transitionIds = new HashMap<>();
 
