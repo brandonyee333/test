@@ -113,7 +113,6 @@ public class DLFileEntryTypeStagedModelRepository
 					property.in(
 						new Long[] {portletDataContext.getScopeGroupId()}));
 			});
-
 		actionableDynamicQuery.setPerformActionMethod(
 			(DLFileEntryType dlFileEntryType) -> {
 				if (dlFileEntryType.isExportable()) {

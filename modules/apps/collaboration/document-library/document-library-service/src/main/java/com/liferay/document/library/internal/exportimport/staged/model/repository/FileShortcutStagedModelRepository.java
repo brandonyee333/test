@@ -114,7 +114,6 @@ public class FileShortcutStagedModelRepository
 
 				dynamicQuery.add(property.eq(Boolean.TRUE));
 			});
-
 		exportActionableDynamicQuery.setPerformActionMethod(
 			(DLFileShortcut dlFileShortcut) -> {
 				FileShortcut fileShortcut = _dlAppLocalService.getFileShortcut(

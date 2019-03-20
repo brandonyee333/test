@@ -784,7 +784,6 @@ public class DLServiceVerifyProcess extends VerifyProcess {
 
 				dynamicQuery.add(siteProperty.eq(Boolean.TRUE));
 			});
-
 		groupActionableDynamicQuery.setPerformActionMethod(
 			(ActionableDynamicQuery.PerformActionMethod<Group>)group -> {
 				UnicodeProperties typeSettingsProperties =
