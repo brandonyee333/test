@@ -3,9 +3,9 @@
 exports[`TableResults renders content correctly 1`] = `
 <div>
   <div
-    class="showing-results"
+    class="results-count"
   >
-    showing-x-results
+    x-results
   </div>
   <table
     class="table changelog-table table-autofit table-list"

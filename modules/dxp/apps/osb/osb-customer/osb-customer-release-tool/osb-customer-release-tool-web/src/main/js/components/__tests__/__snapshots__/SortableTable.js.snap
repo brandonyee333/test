@@ -3,9 +3,9 @@
 exports[`SortableTable renders changelog table correctly 1`] = `
 <div>
   <div
-    class="showing-results"
+    class="results-count"
   >
-    showing-x-results
+    x-results
   </div>
   <table
     class="table changelog-table table-autofit table-list"
@@ -111,9 +111,9 @@ exports[`SortableTable renders changelog table correctly 1`] = `
 exports[`SortableTable renders highlights table correctly 1`] = `
 <div>
   <div
-    class="showing-results"
+    class="results-count"
   >
-    showing-x-results
+    x-results
   </div>
   <table
     class="table highlights-table table-autofit table-list"
@@ -185,9 +185,9 @@ exports[`SortableTable renders highlights table correctly 1`] = `
 exports[`SortableTable renders in reverse order when sorting indicator is clicked 1`] = `
 <div>
   <div
-    class="showing-results"
+    class="results-count"
   >
-    showing-x-results
+    x-results
   </div>
   <table
     class="table highlights-table table-autofit table-list"
@@ -259,9 +259,9 @@ exports[`SortableTable renders in reverse order when sorting indicator is clicke
 exports[`SortableTable renders no results message 1`] = `
 <div>
   <div
-    class="showing-results"
+    class="results-count"
   >
-    showing-x-results
+    x-results
   </div>
   <table
     class="table highlights-table table-autofit table-list"
