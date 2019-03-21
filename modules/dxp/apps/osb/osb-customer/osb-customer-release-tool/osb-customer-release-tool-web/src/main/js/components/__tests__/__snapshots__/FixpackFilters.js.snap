@@ -16,6 +16,11 @@ exports[`FixpackFilters renders empty filters correctly 1`] = `
       type="hidden"
       value="dxp"
     />
+    <input
+      name="namespacetabs1"
+      type="hidden"
+      value="tab"
+    />
     <div
       class="search-filters"
     >
@@ -135,6 +140,11 @@ exports[`FixpackFilters renders preselected filters with a fix pack download lin
       name="namespaceproduct"
       type="hidden"
       value="dxp"
+    />
+    <input
+      name="namespacetabs1"
+      type="hidden"
+      value="tab"
     />
     <div
       class="search-filters"
