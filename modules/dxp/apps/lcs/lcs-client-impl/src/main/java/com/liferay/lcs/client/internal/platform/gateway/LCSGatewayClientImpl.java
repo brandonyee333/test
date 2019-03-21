@@ -16,9 +16,9 @@ package com.liferay.lcs.client.internal.platform.gateway;
 
 import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.lcs.client.event.LCSEvent;
-import com.liferay.lcs.client.event.LCSEventListener;
 import com.liferay.lcs.client.exception.CompressionException;
 import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
+import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.util.LCSUtil;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayException;
@@ -32,7 +32,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.io.IOException;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Dictionary;
 import java.util.HashMap;
@@ -50,8 +49,15 @@ import org.osgi.service.component.annotations.Reference;
  * @author Ivica Cardic
  * @author Igor Beslic
  */
-@Component
+@Component(immediate = true, service = LCSGatewayClient.class)
 public class LCSGatewayClientImpl implements LCSGatewayClient {
+
+	public LCSGatewayClientImpl() {
+	}
+
+	public LCSGatewayClientImpl(LCSEventManager lcsEventManager) {
+		_lcsEventManager = lcsEventManager;
+	}
 
 	@Activate
 	public void activate() {
@@ -151,7 +157,7 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 				_available = false;
 			}
 
-			_lcsEventListeners(LCSEvent.LCS_GATEWAY_UNAVAILABLE);
+			_lcsEventManager.publish(LCSEvent.LCS_GATEWAY_UNAVAILABLE);
 
 			return;
 		}
@@ -166,7 +172,7 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 
 			_lastHandshakeSuccess = System.currentTimeMillis();
 
-			_lcsEventListeners(LCSEvent.LCS_GATEWAY_AVAILABLE);
+			_lcsEventManager.publish(LCSEvent.LCS_GATEWAY_AVAILABLE);
 
 			return;
 		}
@@ -179,15 +185,10 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 				_available = false;
 			}
 
-			_lcsEventListeners(LCSEvent.LCS_GATEWAY_UNAVAILABLE);
+			_lcsEventManager.publish(LCSEvent.LCS_GATEWAY_UNAVAILABLE);
 
 			return;
 		}
-	}
-
-	@Override
-	public void registerLCSEventListener(LCSEventListener lcsEventListener) {
-		_lcsEventListeners.add(lcsEventListener);
 	}
 
 	@Override
@@ -263,12 +264,6 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 		return String.valueOf(name.hashCode());
 	}
 
-	private void _lcsEventListeners(LCSEvent lcsEvent) {
-		for (LCSEventListener lcsEventListener : _lcsEventListeners) {
-			lcsEventListener.onLCSEvent(lcsEvent);
-		}
-	}
-
 	private void _processJSONWebServiceException(
 			JSONWebServiceException jsonwse)
 		throws LCSGatewayException {
@@ -289,7 +284,7 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 				if (_available) {
 					_available = false;
 
-					_lcsEventListeners(LCSEvent.LCS_GATEWAY_UNAVAILABLE);
+					_lcsEventManager.publish(LCSEvent.LCS_GATEWAY_UNAVAILABLE);
 				}
 			}
 		}
@@ -325,6 +320,7 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 	@Reference
 	private LCSConfigurationProvider _lcsConfigurationProvider;
 
-	private final List<LCSEventListener> _lcsEventListeners = new ArrayList<>();
+	@Reference
+	private LCSEventManager _lcsEventManager;
 
 }
