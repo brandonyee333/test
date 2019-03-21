@@ -16,8 +16,7 @@ package com.liferay.lcs.client.internal.platform.portal;
 
 import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
-import com.liferay.lcs.client.internal.oauth.OAuthUtil;
-import com.liferay.petra.json.web.service.client.BaseJSONWebServiceClientImpl;
+import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
@@ -25,16 +24,13 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.net.URI;
-
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
-import oauth.signpost.OAuthConsumer;
-import oauth.signpost.exception.OAuthException;
-
-import org.apache.http.client.methods.HttpRequestBase;
-
+import org.osgi.service.component.ComponentFactory;
+import org.osgi.service.component.ComponentInstance;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -43,26 +39,40 @@ import org.osgi.service.component.annotations.Reference;
  * @author Igor Beslic
  */
 @Component(immediate = true, service = LCSPortalClientImpl.class)
-public class LCSPortalClientImpl
-	extends BaseJSONWebServiceClientImpl implements LCSPortalClient {
+public class LCSPortalClientImpl implements LCSPortalClient {
 
 	@Activate
 	public void activate() {
 		LCSConfiguration lcsConfiguration =
 			_lcsConfigurationProvider.getLCSConfiguration();
 
-		setHostName(lcsConfiguration.lcsPlatformPortalHostName());
-		setHostPort(lcsConfiguration.lcsPlatformPortalHostPort());
-		setProtocol(lcsConfiguration.lcsPlatformPortalProtocol());
+		Dictionary<String, String> properties = new Hashtable<>();
 
-		setOAuthConsumerKey(
+		properties.put(
+			"hostName", lcsConfiguration.platformLcsGatewayHostName());
+		properties.put(
+			"hostPort", lcsConfiguration.platformLcsGatewayHostPort());
+		properties.put(
+			"protocol", lcsConfiguration.platformLcsGatewayWebProtocol());
+
+		properties.put(
+			"oAuthConsumerKey",
 			lcsConfiguration.lcsPlatformPortalOauthConsumerKey());
-		setOAuthConsumerSecret(
+		properties.put(
+			"oAuthConsumerSecret",
 			lcsConfiguration.lcsPlatformPortalOauthConsumerSecret());
-		setProxyHostName(lcsConfiguration.proxyHostName());
-		setProxyHostPort(lcsConfiguration.proxyHostPort());
-		setProxyLogin(lcsConfiguration.proxyHostLogin());
-		setProxyPassword(lcsConfiguration.proxyHostPassword());
+
+		properties.put("proxyHostName", lcsConfiguration.proxyHostName());
+		properties.put(
+			"proxyHostPort", String.valueOf(lcsConfiguration.proxyHostPort()));
+		properties.put("proxyLogin", lcsConfiguration.proxyHostLogin());
+		properties.put("proxyPassword", lcsConfiguration.proxyHostPassword());
+
+		ComponentInstance componentInstance =
+			_jsonWebServiceClientComponentFactory.newInstance(properties);
+
+		_jsonWebServiceClient =
+			(JSONWebServiceClient)componentInstance.getInstance();
 	}
 
 	@Override
@@ -72,7 +82,7 @@ public class LCSPortalClientImpl
 			   JSONWebServiceSerializeException,
 			   JSONWebServiceTransportException {
 
-		return super.doGetToList(clazz, url, parametersArray);
+		return _jsonWebServiceClient.doGetToList(clazz, url, parametersArray);
 	}
 
 	@Override
@@ -82,7 +92,7 @@ public class LCSPortalClientImpl
 			   JSONWebServiceSerializeException,
 			   JSONWebServiceTransportException {
 
-		return super.doGetToObject(clazz, url, parametersArray);
+		return _jsonWebServiceClient.doGetToObject(clazz, url, parametersArray);
 	}
 
 	public synchronized boolean isAuthorized(
@@ -96,8 +106,8 @@ public class LCSPortalClientImpl
 			return true;
 		}
 
-		_accessToken = oauthAccessToken;
-		_accessSecret = oauthAccessSecret;
+		_jsonWebServiceClient.setOAuthAccessToken(oauthAccessToken);
+		_jsonWebServiceClient.setOAuthAccessSecret(oauthAccessSecret);
 
 		try {
 			testOAuthRequest();
@@ -127,7 +137,7 @@ public class LCSPortalClientImpl
 		throws JSONWebServiceInvocationException,
 			   JSONWebServiceTransportException {
 
-		String json = doGet(_URL_OSB_LCS_REST_TEST);
+		String json = _jsonWebServiceClient.doGet(_URL_OSB_LCS_REST_TEST);
 
 		if (Validator.isNull(json)) {
 			throw new JSONWebServiceInvocationException(
@@ -144,33 +154,6 @@ public class LCSPortalClientImpl
 		}
 	}
 
-	@Override
-	protected void signRequest(HttpRequestBase httpRequestBase)
-		throws JSONWebServiceTransportException.SigningFailure {
-
-		if ((_accessToken == null) && (_accessSecret == null)) {
-			throw new JSONWebServiceTransportException.SigningFailure(
-				"OAuth credentials are not set", -1);
-		}
-
-		OAuthConsumer oAuthConsumer = OAuthUtil.getOAuthConsumer(
-			_accessToken, _accessSecret);
-
-		String requestURL = OAuthUtil.buildURL(
-			getHostName(), getHostPort(), getProtocol(),
-			String.valueOf(httpRequestBase.getURI()));
-
-		httpRequestBase.setURI(URI.create(requestURL));
-
-		try {
-			oAuthConsumer.sign(httpRequestBase);
-		}
-		catch (OAuthException oae) {
-			throw new JSONWebServiceTransportException.SigningFailure(
-				"Unable to sign HTTP request", oae);
-		}
-	}
-
 	private static final String _URL_OSB_LCS_REST_TEST = "/o/osb-lcs-rest/";
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -179,8 +162,10 @@ public class LCSPortalClientImpl
 	private static final AtomicLong _lcsAccessTokenNextValidityCheckMillis =
 		new AtomicLong(0);
 
-	private String _accessSecret;
-	private String _accessToken;
+	private JSONWebServiceClient _jsonWebServiceClient;
+
+	@Reference(target = "(component.factory=OAuthJSONWebServiceClient)")
+	private ComponentFactory _jsonWebServiceClientComponentFactory;
 
 	@Reference
 	private LCSConfigurationProvider _lcsConfigurationProvider;

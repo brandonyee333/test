@@ -14,61 +14,15 @@
 
 package com.liferay.lcs.client.internal.oauth;
 
-import com.liferay.lcs.client.internal.util.PortletPropsValues;
-import com.liferay.lcs.client.internal.util.SystemEnvironmentUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
-import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import javax.portlet.PortletRequest;
-
-import oauth.signpost.OAuthConsumer;
-import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
 
 /**
  * @author Igor Beslic
  */
 public class OAuthUtil {
-
-	public static String buildURL(
-		String hostName, int port, String protocol, String uri) {
-
-		StringBundler sb = new StringBundler(7);
-
-		sb.append(protocol);
-		sb.append(StringPool.COLON);
-		sb.append(StringPool.DOUBLE_SLASH);
-		sb.append(hostName);
-
-		if ((protocol.equals(Http.HTTP) && (port != Http.HTTP_PORT)) ||
-			(protocol.equals(Http.HTTPS) && (port != Http.HTTPS_PORT))) {
-
-			sb.append(StringPool.COLON);
-			sb.append(port);
-		}
-
-		sb.append(uri);
-
-		return sb.toString();
-	}
-
-	public static OAuthConsumer getOAuthConsumer(
-		String accessToken, String accessSecret) {
-
-		OAuthConsumer oAuthConsumer = new CommonsHttpOAuthConsumer(
-			SystemEnvironmentUtil.getValue(
-				SystemEnvironmentUtil.OSB_LCS_PORTLET_OAUTH_CONSUMER_KEY,
-				PortletPropsValues.OSB_LCS_PORTLET_OAUTH_CONSUMER_KEY),
-			SystemEnvironmentUtil.getValue(
-				SystemEnvironmentUtil.OSB_LCS_PORTLET_OAUTH_CONSUMER_SECRET,
-				PortletPropsValues.OSB_LCS_PORTLET_OAUTH_CONSUMER_SECRET));
-
-		oAuthConsumer.setTokenWithSecret(accessToken, accessSecret);
-
-		return oAuthConsumer;
-	}
 
 	public static boolean hasOAuthException(Exception e) {
 		String message = e.getMessage();
