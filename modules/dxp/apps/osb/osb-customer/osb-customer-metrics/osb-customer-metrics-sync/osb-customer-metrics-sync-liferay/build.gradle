@@ -8,5 +8,6 @@ dependencies {
 	compileOnly project(":private:apps:osb-customer:osb-customer-account-entry:osb-customer-account-entry-details-api")
 	compileOnly project(":private:apps:osb-customer:osb-customer-metrics:osb-customer-metrics-api")
 	compileOnly project(":private:apps:osb-customer:osb-customer-metrics:osb-customer-metrics-impl")
+	compileOnly project(":private:apps:osb-customer:osb-customer-ticket:osb-customer-ticket-api")
 	compileOnly project(":private:apps:osb-customer:osb-customer-zendesk-documentation:osb-customer-zendesk-documentation-sync-api")
 }
