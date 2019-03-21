@@ -14,9 +14,8 @@
 
 package com.liferay.portal.verify;
 
-import com.liferay.exportimport.kernel.staging.Staging;
-import com.liferay.message.boards.web.constants.MBPortletKeys;
 import com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil;
+import com.liferay.exportimport.kernel.staging.StagingUtil;
 import com.liferay.message.boards.kernel.model.MBMessage;
 import com.liferay.message.boards.kernel.model.MBThread;
 import com.liferay.message.boards.kernel.service.MBMessageLocalServiceUtil;
@@ -25,19 +24,18 @@ import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
+import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.List;
-
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -54,14 +52,9 @@ public class VerifyMessageBoards extends VerifyProcess {
 		verifyAssetsForThreads();
 	}
 
-	@Reference(unbind = "-")
-	protected void setGroupLocalService(GroupLocalService groupLocalService) {
-		_groupLocalService = groupLocalService;
-	}
-
 	protected void updateStagedPortletNames() throws PortalException {
 		ActionableDynamicQuery groupActionableDynamicQuery =
-			_groupLocalService.getActionableDynamicQuery();
+			GroupLocalServiceUtil.getActionableDynamicQuery();
 
 		groupActionableDynamicQuery.setAddCriteriaMethod(
 			dynamicQuery -> {
@@ -78,8 +71,8 @@ public class VerifyMessageBoards extends VerifyProcess {
 					return;
 				}
 
-				String propertyKey = _staging.getStagedPortletId(
-					MBPortletKeys.MESSAGE_BOARDS);
+				String propertyKey = StagingUtil.getStagedPortletId(
+					PortletKeys.MESSAGE_BOARDS);
 
 				String propertyValue = typeSettingsProperties.getProperty(
 					propertyKey);
@@ -90,14 +83,14 @@ public class VerifyMessageBoards extends VerifyProcess {
 
 				typeSettingsProperties.remove(propertyKey);
 
-				propertyKey = _staging.getStagedPortletId(
-					MBPortletKeys.MESSAGE_BOARDS_ADMIN);
+				propertyKey = StagingUtil.getStagedPortletId(
+					PortletKeys.MESSAGE_BOARDS_ADMIN);
 
 				typeSettingsProperties.put(propertyKey, propertyValue);
 
 				group.setTypeSettingsProperties(typeSettingsProperties);
 
-				_groupLocalService.updateGroup(group);
+				GroupLocalServiceUtil.updateGroup(group);
 			});
 
 		groupActionableDynamicQuery.performActions();
@@ -245,12 +238,7 @@ public class VerifyMessageBoards extends VerifyProcess {
 		}
 	}
 
-	private GroupLocalService _groupLocalService;
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		VerifyMessageBoards.class);
-
-	@Reference
-	private Staging _staging;
 
 }
