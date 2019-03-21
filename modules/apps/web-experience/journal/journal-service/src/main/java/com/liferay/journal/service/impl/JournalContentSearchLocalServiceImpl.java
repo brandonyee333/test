@@ -75,7 +75,7 @@ public class JournalContentSearchLocalServiceImpl
 			journalContentSearchPersistence.findByCompanyId(companyId);
 
 		Map<JournalContentSearchKey, JournalContentSearch>
-			orphanedContentSearches = new HashMap<>();
+			orphanedJournalContentSearches = new HashMap<>();
 
 		for (JournalContentSearch journalContentSearch :
 				journalContentSearches) {
@@ -83,7 +83,7 @@ public class JournalContentSearchLocalServiceImpl
 			JournalContentSearchKey journalContentSearchKey =
 				new JournalContentSearchKey(journalContentSearch);
 
-			orphanedContentSearches.put(
+			orphanedJournalContentSearches.put(
 				journalContentSearchKey, journalContentSearch);
 		}
 
@@ -136,7 +136,8 @@ public class JournalContentSearchLocalServiceImpl
 						groupId, articleId, layoutId, privateLayout, portletId);
 
 				JournalContentSearch existingJournalContentSearch =
-					orphanedContentSearches.remove(journalContentSearchKey);
+					orphanedJournalContentSearches.remove(
+						journalContentSearchKey);
 
 				if (existingJournalContentSearch == null) {
 					updateContentSearch(
@@ -147,7 +148,7 @@ public class JournalContentSearchLocalServiceImpl
 		}
 
 		for (JournalContentSearch journalContentSearch :
-				orphanedContentSearches.values()) {
+				orphanedJournalContentSearches.values()) {
 
 			journalContentSearchPersistence.remove(journalContentSearch);
 		}
