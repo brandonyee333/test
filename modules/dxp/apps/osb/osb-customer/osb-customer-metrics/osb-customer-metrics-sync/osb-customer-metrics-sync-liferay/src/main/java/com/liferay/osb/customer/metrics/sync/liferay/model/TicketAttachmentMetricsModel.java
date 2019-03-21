@@ -32,7 +32,9 @@ public class TicketAttachmentMetricsModel
 	extends BaseModelMetricsModel<TicketAttachment> {
 
 	@Override
-	public Map<String, Object> getAttributes(TicketAttachment ticketAttachment) {
+	public Map<String, Object> getAttributes(
+		TicketAttachment ticketAttachment) {
+
 		return _metricsTransformationUtil.transformSharedAttributes(
 			ticketAttachment.getModelAttributes());
 	}
