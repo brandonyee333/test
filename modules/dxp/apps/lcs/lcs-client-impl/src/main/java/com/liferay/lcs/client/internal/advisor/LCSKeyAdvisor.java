@@ -28,10 +28,13 @@ import java.io.IOException;
 
 import java.util.Arrays;
 
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Ivica Cardic
  * @author Igor Beslic
  */
+@Component(service = LCSKeyAdvisor.class)
 public class LCSKeyAdvisor {
 
 	public void clearCache() {

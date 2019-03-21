@@ -46,6 +46,9 @@ import org.osgi.service.component.annotations.Reference;
 public class SendPortalPropertiesCommand
 	implements Command<SendPortalPropertiesCommandMessage> {
 
+	public SendPortalPropertiesCommand() {
+	}
+
 	public SendPortalPropertiesCommand(LCSGatewayClient lcsGatewayClient) {
 		_lcsGatewayClient = lcsGatewayClient;
 	}
@@ -186,7 +189,8 @@ public class SendPortalPropertiesCommand
 	@Reference
 	private LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
 
-	private final LCSGatewayClient _lcsGatewayClient;
+	@Reference
+	private LCSGatewayClient _lcsGatewayClient;
 
 	@Reference
 	private TaskAdvisor _taskAdvisor;

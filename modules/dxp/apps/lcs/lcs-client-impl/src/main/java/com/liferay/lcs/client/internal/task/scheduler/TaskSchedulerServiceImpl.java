@@ -15,9 +15,11 @@
 package com.liferay.lcs.client.internal.task.scheduler;
 
 import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
+import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.advisor.UptimeAdvisor;
+import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.internal.task.CommandMessageTask;
 import com.liferay.lcs.client.internal.task.HandshakeTask;
 import com.liferay.lcs.client.internal.task.HeartbeatTask;
@@ -46,7 +48,9 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -55,6 +59,9 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true, service = TaskSchedulerService.class)
 public class TaskSchedulerServiceImpl implements TaskSchedulerService {
+
+	public TaskSchedulerServiceImpl() {
+	}
 
 	public TaskSchedulerServiceImpl(
 		int defaultInterval, LCSGatewayClient lcsGatewayClient,
@@ -66,14 +73,24 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		_lcsKeyAdvisor = lcsKeyAdvisor;
 		_threadFactory = threadFactory;
 		_uptimeAdvisor = uptimeAdvisor;
+	}
+
+	@Activate
+	public void activate() {
+		LCSConfiguration lcsConfiguration =
+			_lcsConfigurationProvider.getLCSConfiguration();
+
+		_defaultInterval = Integer.valueOf(
+			lcsConfiguration.commandScheduleDefaultInterval());
 
 		_lcsGatewayClient.registerLCSEventListener(this);
 
 		_scheduledExecutorService = Executors.newScheduledThreadPool(
-			10, threadFactory);
+			10, _threadFactory);
 	}
 
-	public void destroy() {
+	@Deactivate
+	public void deactivate() {
 		if (_log.isTraceEnabled()) {
 			_log.trace("Destroying " + this);
 		}
@@ -443,14 +460,21 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 	private static final Log _log = LogFactoryUtil.getLog(
 		TaskSchedulerServiceImpl.class);
 
-	private final int _defaultInterval;
+	private int _defaultInterval;
 
 	@Reference
 	private LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
 
-	private final LCSGatewayClient _lcsGatewayClient;
-	private final LCSKeyAdvisor _lcsKeyAdvisor;
-	private final ScheduledExecutorService _scheduledExecutorService;
+	@Reference
+	private LCSConfigurationProvider _lcsConfigurationProvider;
+
+	@Reference
+	private LCSGatewayClient _lcsGatewayClient;
+
+	@Reference
+	private LCSKeyAdvisor _lcsKeyAdvisor;
+
+	private ScheduledExecutorService _scheduledExecutorService;
 	private final Map<String, ScheduledFuture<?>> _scheduledFuturesMap =
 		new HashMap<>();
 	private volatile boolean _shutdownPending;
@@ -459,8 +483,12 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 	@Reference
 	private TaskAdvisor _taskAdvisor;
 
-	private final ThreadFactory _threadFactory;
-	private final UptimeAdvisor _uptimeAdvisor;
+	@Reference
+	private ThreadFactory _threadFactory;
+
+	@Reference
+	private UptimeAdvisor _uptimeAdvisor;
+
 	private ScheduledFuture<?> _uptimeTaskScheduledFuture;
 
 }

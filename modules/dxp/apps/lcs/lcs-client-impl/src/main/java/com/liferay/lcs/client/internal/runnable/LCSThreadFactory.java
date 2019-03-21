@@ -21,9 +21,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Igor Beslic
  */
+@Component(service = ThreadFactory.class)
 public class LCSThreadFactory implements ThreadFactory {
 
 	@Override

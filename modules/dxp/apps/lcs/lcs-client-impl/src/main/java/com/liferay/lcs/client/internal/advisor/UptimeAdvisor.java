@@ -39,11 +39,18 @@ import java.util.Map;
 
 import javax.portlet.PortletPreferences;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Ivica Cardic
  * @author Igor Beslic
  */
+@Component(service = UptimeAdvisor.class)
 public class UptimeAdvisor implements LCSEventListener {
+
+	public UptimeAdvisor() {
+	}
 
 	public UptimeAdvisor(LCSKeyAdvisor lcsKeyAdvisor) {
 		_lcsKeyAdvisor = lcsKeyAdvisor;
@@ -291,7 +298,10 @@ public class UptimeAdvisor implements LCSEventListener {
 
 	private Uptime _currentUptime;
 	private boolean _initalized;
-	private final LCSKeyAdvisor _lcsKeyAdvisor;
+
+	@Reference
+	private LCSKeyAdvisor _lcsKeyAdvisor;
+
 	private List<Uptime> _uptimes;
 
 	private class Uptime {

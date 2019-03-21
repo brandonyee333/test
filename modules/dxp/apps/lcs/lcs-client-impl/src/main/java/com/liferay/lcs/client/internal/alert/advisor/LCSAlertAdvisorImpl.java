@@ -28,6 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Igor Beslic
@@ -121,6 +122,8 @@ public class LCSAlertAdvisorImpl implements LCSAlertAdvisor, LCSEventListener {
 
 	private final Map<LCSAlert, LCSAlert> _lcsAlerts =
 		new ConcurrentHashMap<>();
+
+	@Reference
 	private LCSEventManager _lcsEventManager;
 
 }
