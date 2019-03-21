@@ -14,23 +14,23 @@
 
 package com.liferay.lcs.client.internal.advisor;
 
+import com.liferay.lcs.client.alert.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.client.event.LCSEvent;
+import com.liferay.lcs.client.internal.alert.advisor.LCSAlertAdvisorImpl;
+import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.platform.gateway.LCSGatewayClientImpl;
 import com.liferay.lcs.client.internal.runnable.LCSThreadFactory;
 import com.liferay.lcs.client.internal.task.HandshakeTask;
-import com.liferay.lcs.client.internal.task.scheduler.TaskSchedulerServiceImpl;
-import com.liferay.lcs.client.internal.util.PortletPropsValues;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayException;
-import com.liferay.lcs.client.task.scheduler.TaskSchedulerService;
 import com.liferay.lcs.messaging.HandshakeMessage;
 import com.liferay.lcs.messaging.HandshakeResponseMessage;
 import com.liferay.lcs.messaging.Message;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
 import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
+import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.util.portlet.PortletProps;
 
 import java.net.UnknownHostException;
 
@@ -55,8 +55,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(
 	{
 		ConfigurationFactoryUtil.class, FileUtil.class, HandshakeTask.class,
-		LCSClusterEntryTokenAdvisorImpl.class, PortletClassLoaderUtil.class,
-		PortletProps.class, PortletPropsValues.class
+		LCSClusterEntryTokenAdvisorImpl.class, PortletClassLoaderUtil.class
 	}
 )
 @RunWith(PowerMockRunner.class)
@@ -80,14 +79,12 @@ public class LCSClusterEntryTokenAdvisorImplTest extends PowerMockito {
 			_lcsKeyAdvisor
 		).getKey();
 
-		_taskSchedulerService = mock(TaskSchedulerServiceImpl.class);
 		_threadFactory = new LCSThreadFactory();
 		_uptimeAdvisor = mock(UptimeAdvisor.class);
 
 		mockStatic(
 			ConfigurationFactoryUtil.class, FileUtil.class,
-			PortletClassLoaderUtil.class, PortletProps.class,
-			PortletPropsValues.class);
+			PortletClassLoaderUtil.class);
 	}
 
 	@Test
@@ -234,9 +231,15 @@ public class LCSClusterEntryTokenAdvisorImplTest extends PowerMockito {
 	}
 
 	private HandshakeTask _spyHandshakeTask() throws Exception {
+		CompanyLocalService companyLocalService = mock(
+			CompanyLocalService.class);
+		LCSAlertAdvisor lcsAlertAdvisor = new LCSAlertAdvisorImpl();
+		LCSEventManager lcsEventManager = new LCSEventManager();
+
 		HandshakeTask handshakeTask = spy(
 			new HandshakeTask(
-				1L, _lcsGatewayClient, _lcsKeyAdvisor, _threadFactory,
+				companyLocalService, lcsAlertAdvisor, lcsEventManager, 1L,
+				_lcsGatewayClient, _lcsKeyAdvisor, _threadFactory,
 				_uptimeAdvisor));
 
 		doReturn(
@@ -265,7 +268,6 @@ public class LCSClusterEntryTokenAdvisorImplTest extends PowerMockito {
 	private LCSClusterEntryTokenAdvisorImpl _lcsClusterEntryTokenAdvisor;
 	private LCSGatewayClient _lcsGatewayClient;
 	private LCSKeyAdvisor _lcsKeyAdvisor;
-	private TaskSchedulerService _taskSchedulerService;
 	private ThreadFactory _threadFactory;
 	private UptimeAdvisor _uptimeAdvisor;
 

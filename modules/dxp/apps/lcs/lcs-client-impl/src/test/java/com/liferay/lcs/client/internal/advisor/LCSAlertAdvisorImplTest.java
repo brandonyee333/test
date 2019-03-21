@@ -16,9 +16,11 @@ package com.liferay.lcs.client.internal.advisor;
 
 import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.alert.LCSAlert;
+import com.liferay.lcs.client.alert.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.client.exception.MissingLCSClusterEntryTokenException;
 import com.liferay.lcs.client.exception.MultipleLCSClusterEntryTokenException;
 import com.liferay.lcs.client.internal.alert.advisor.LCSAlertAdvisorImpl;
+import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.platform.gateway.LCSGatewayClientImpl;
 import com.liferay.lcs.client.internal.task.HandshakeTask;
 import com.liferay.lcs.client.internal.task.LCSClusterEntryTokenCheckTask;
@@ -29,6 +31,7 @@ import com.liferay.lcs.messaging.HandshakeMessage;
 import com.liferay.lcs.messaging.HandshakeResponseMessage;
 import com.liferay.lcs.messaging.Message;
 import com.liferay.petra.encryptor.EncryptorException;
+import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.util.FileUtil;
 
 import java.io.File;
@@ -67,9 +70,13 @@ public class LCSAlertAdvisorImplTest extends PowerMockito {
 
 	@Test
 	public void testErrorEnvironmentMismatch() throws Exception {
-		LCSAlertAdvisorImpl lcsAlertAdvisor = spy(new LCSAlertAdvisorImpl());
+		LCSEventManager lcsEventManager = new LCSEventManager();
+
+		LCSAlertAdvisorImpl lcsAlertAdvisor = spy(
+			new LCSAlertAdvisorImpl(lcsEventManager));
 
 		HandshakeTask handshakeTask = _spyHandshakeTask(
+			lcsEventManager,
 			_mockGetMessagesToReturnHandshakeResponseMessage(201));
 
 		handshakeTask.run();
@@ -121,9 +128,13 @@ public class LCSAlertAdvisorImplTest extends PowerMockito {
 
 	@Test
 	public void testErrorInvalidTokenLCSAlert() throws Exception {
-		LCSAlertAdvisorImpl lcsAlertAdvisor = spy(new LCSAlertAdvisorImpl());
+		LCSEventManager lcsEventManager = new LCSEventManager();
+
+		LCSAlertAdvisorImpl lcsAlertAdvisor = spy(
+			new LCSAlertAdvisorImpl(lcsEventManager));
 
 		HandshakeTask handshakeTask = _spyHandshakeTask(
+			lcsEventManager,
 			_mockGetMessagesToReturnHandshakeResponseMessage(200));
 
 		handshakeTask.run();
@@ -137,9 +148,13 @@ public class LCSAlertAdvisorImplTest extends PowerMockito {
 
 	@Test
 	public void testErrorInvalidUserCredentialsLCSAlert() throws Exception {
-		LCSAlertAdvisorImpl lcsAlertAdvisor = spy(new LCSAlertAdvisorImpl());
+		LCSEventManager lcsEventManager = new LCSEventManager();
+
+		LCSAlertAdvisorImpl lcsAlertAdvisor = spy(
+			new LCSAlertAdvisorImpl(lcsEventManager));
 
 		HandshakeTask handshakeTask = _spyHandshakeTask(
+			lcsEventManager,
 			_mockGetMessagesToReturnHandshakeResponseMessage(202));
 
 		handshakeTask.run();
@@ -153,12 +168,15 @@ public class LCSAlertAdvisorImplTest extends PowerMockito {
 
 	@Test
 	public void testHandshakeSuccessLCSAlert() throws Exception {
-		LCSAlertAdvisorImpl lcsAlertAdvisor = spy(new LCSAlertAdvisorImpl());
+		LCSEventManager lcsEventManager = new LCSEventManager();
+
+		LCSAlertAdvisorImpl lcsAlertAdvisor = spy(
+			new LCSAlertAdvisorImpl(lcsEventManager));
 
 		lcsAlertAdvisor.add(LCSAlert.WARNING_HANDSHAKE_FAILED);
 
 		HandshakeTask handshakeTask = _spyHandshakeTask(
-			_mockGetMessagesToReturnHandshakeSuccessMessage());
+			lcsEventManager, _mockGetMessagesToReturnHandshakeSuccessMessage());
 
 		handshakeTask.run();
 
@@ -256,9 +274,13 @@ public class LCSAlertAdvisorImplTest extends PowerMockito {
 
 	@Test
 	public void testWarningHandshakeFailedLCSAlert() throws Exception {
-		LCSAlertAdvisorImpl lcsAlertAdvisor = spy(new LCSAlertAdvisorImpl());
+		LCSEventManager lcsEventManager = new LCSEventManager();
+
+		LCSAlertAdvisorImpl lcsAlertAdvisor = spy(
+			new LCSAlertAdvisorImpl(lcsEventManager));
 
 		HandshakeTask handshakeTask = _spyHandshakeTask(
+			lcsEventManager,
 			_mockGetMessagesToReturnHandshakeExpiredResponseMessage());
 
 		handshakeTask.run();
@@ -368,12 +390,18 @@ public class LCSAlertAdvisorImplTest extends PowerMockito {
 		return lcsGatewayClient;
 	}
 
-	private HandshakeTask _spyHandshakeTask(LCSGatewayClient lcsGatewayClient)
+	private HandshakeTask _spyHandshakeTask(
+			LCSEventManager lcsEventManager, LCSGatewayClient lcsGatewayClient)
 		throws Exception {
+
+		CompanyLocalService companyLocalService = mock(
+			CompanyLocalService.class);
+		LCSAlertAdvisor lcsAlertAdvisor = new LCSAlertAdvisorImpl();
 
 		HandshakeTask handshakeTask = spy(
 			new HandshakeTask(
-				1L, lcsGatewayClient, mock(LCSKeyAdvisor.class), null,
+				companyLocalService, lcsAlertAdvisor, lcsEventManager, 1L,
+				lcsGatewayClient, mock(LCSKeyAdvisor.class), null,
 				new UptimeAdvisor(null)));
 
 		doReturn(

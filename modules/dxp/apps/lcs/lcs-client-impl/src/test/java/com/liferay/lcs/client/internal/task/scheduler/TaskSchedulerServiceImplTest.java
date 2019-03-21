@@ -14,15 +14,21 @@
 
 package com.liferay.lcs.client.internal.task.scheduler;
 
+import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
+import com.liferay.lcs.client.alert.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.client.event.LCSEvent;
+import com.liferay.lcs.client.internal.advisor.LCSClusterEntryTokenAdvisorImpl;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.advisor.UptimeAdvisor;
+import com.liferay.lcs.client.internal.alert.advisor.LCSAlertAdvisorImpl;
+import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
+import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.platform.gateway.LCSGatewayClientImpl;
 import com.liferay.lcs.client.internal.runnable.LCSThreadFactory;
 import com.liferay.lcs.client.internal.task.HandshakeTask;
-import com.liferay.lcs.client.internal.util.PortletPropsValues;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayException;
+import com.liferay.lcs.client.task.advisor.TaskAdvisor;
 import com.liferay.lcs.client.task.scheduler.TaskSchedulerService;
 import com.liferay.lcs.messaging.HandshakeMessage;
 import com.liferay.lcs.messaging.HandshakeResponseMessage;
@@ -33,8 +39,8 @@ import com.liferay.lcs.messaging.SendPortalPropertiesCommandMessage;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
 import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
+import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.util.portlet.PortletProps;
 
 import java.net.UnknownHostException;
 
@@ -59,8 +65,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(
 	{
 		ConfigurationFactoryUtil.class, FileUtil.class, HandshakeTask.class,
-		TaskSchedulerServiceImpl.class, PortletClassLoaderUtil.class,
-		PortletProps.class, PortletPropsValues.class
+		TaskSchedulerServiceImpl.class, PortletClassLoaderUtil.class
 	}
 )
 @RunWith(PowerMockRunner.class)
@@ -68,13 +73,8 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 
 	@Before
 	public void setUp() {
-		_lcsGatewayClient = mock(LCSGatewayClientImpl.class);
-
-		doReturn(
-			Boolean.TRUE
-		).when(
-			_lcsGatewayClient
-		).isAvailable();
+		_lcsClusterEntryTokenAdvisor = new LCSClusterEntryTokenAdvisorImpl();
+		_lcsConfigurationProvider = mock(LCSConfigurationProvider.class);
 
 		_lcsKeyAdvisor = mock(LCSKeyAdvisor.class);
 
@@ -84,22 +84,30 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 			_lcsKeyAdvisor
 		).getKey();
 
+		_taskAdvisor = mock(TaskAdvisor.class);
 		_threadFactory = new LCSThreadFactory();
 		_uptimeAdvisor = mock(UptimeAdvisor.class);
 
 		mockStatic(
 			ConfigurationFactoryUtil.class, FileUtil.class,
-			PortletClassLoaderUtil.class, PortletProps.class,
-			PortletPropsValues.class);
+			PortletClassLoaderUtil.class);
 	}
 
 	@Test
 	public void testHandshakeRestartedIfGatewayUnavailable() throws Exception {
-		_mockSendMessageToThrowLCSGatewayException();
+		LCSEventManager lcsEventManager = new LCSEventManager();
 
-		_spyTaskSchedulerServiceImplToDoNothingAfterOnEvent();
+		LCSGatewayClient lcsGatewayClient =
+			_mockSendMessageToThrowLCSGatewayException(lcsEventManager);
 
-		HandshakeTask handshakeTask = _spyHandshakeTask();
+		HandshakeTask handshakeTask = _spyHandshakeTask(
+			lcsEventManager, lcsGatewayClient);
+
+		_spyTaskSchedulerServiceImplToDoNothingAfterOnEvent(
+			lcsEventManager, lcsGatewayClient, handshakeTask);
+
+		lcsEventManager.subscribe(
+			LCSEvent.HANDSHAKE_FAILED, _taskSchedulerService);
 
 		handshakeTask.run();
 
@@ -126,11 +134,19 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 	public void testHandshakeRestartedIfHandshakeResponseNeverReceived()
 		throws Exception {
 
-		_mockGetMessagesToReturnCommandMessages();
+		LCSEventManager lcsEventManager = new LCSEventManager();
 
-		_spyTaskSchedulerServiceImplToDoNothingAfterOnEvent();
+		LCSGatewayClient lcsGatewayClient =
+			_mockGetMessagesToReturnCommandMessages(lcsEventManager);
 
-		HandshakeTask handshakeTask = _spyHandshakeTask();
+		HandshakeTask handshakeTask = _spyHandshakeTask(
+			lcsEventManager, lcsGatewayClient);
+
+		_spyTaskSchedulerServiceImplToDoNothingAfterOnEvent(
+			lcsEventManager, lcsGatewayClient, handshakeTask);
+
+		lcsEventManager.subscribe(
+			LCSEvent.HANDSHAKE_FAILED, _taskSchedulerService);
 
 		handshakeTask.run();
 
@@ -155,7 +171,8 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 
 	@Test
 	public void testResetIfNodeUnregistered() throws Exception {
-		_spyTaskSchedulerServiceImplToDoNothingAfterOnEvent();
+		_spyTaskSchedulerServiceImplToDoNothingAfterOnEvent(
+			new LCSEventManager(), null, null);
 
 		_taskSchedulerService.onLCSEvent(
 			LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED);
@@ -175,7 +192,8 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 
 	@Test
 	public void testResetIfTokenInvalidated() throws Exception {
-		_spyTaskSchedulerServiceImplToDoNothingAfterOnEvent();
+		_spyTaskSchedulerServiceImplToDoNothingAfterOnEvent(
+			new LCSEventManager(), null, null);
 
 		_taskSchedulerService.onLCSEvent(
 			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALIDATED);
@@ -197,11 +215,20 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 	public void testTokenCheckRestartedIfHandshakeExceptionErrorCode200()
 		throws Exception {
 
-		_mockGetMessagesToReturnHandshakeResponseMessage(200);
+		LCSEventManager lcsEventManager = new LCSEventManager();
 
-		_spyTaskSchedulerServiceImplToDoNothingAfterOnEvent();
+		LCSGatewayClient lcsGatewayClient =
+			_mockGetMessagesToReturnHandshakeResponseMessage(
+				200, lcsEventManager);
 
-		HandshakeTask handshakeTask = _spyHandshakeTask();
+		HandshakeTask handshakeTask = _spyHandshakeTask(
+			lcsEventManager, lcsGatewayClient);
+
+		_spyTaskSchedulerServiceImplToDoNothingAfterOnEvent(
+			lcsEventManager, lcsGatewayClient, handshakeTask);
+
+		lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID, _taskSchedulerService);
 
 		handshakeTask.run();
 
@@ -228,11 +255,21 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 	public void testTokenCheckRestartedIfHandshakeExceptionErrorCode201()
 		throws Exception {
 
-		_mockGetMessagesToReturnHandshakeResponseMessage(201);
+		LCSEventManager lcsEventManager = new LCSEventManager();
 
-		_spyTaskSchedulerServiceImplToDoNothingAfterOnEvent();
+		LCSGatewayClient lcsGatewayClient =
+			_mockGetMessagesToReturnHandshakeResponseMessage(
+				201, lcsEventManager);
 
-		HandshakeTask handshakeTask = _spyHandshakeTask();
+		HandshakeTask handshakeTask = _spyHandshakeTask(
+			lcsEventManager, lcsGatewayClient);
+
+		_spyTaskSchedulerServiceImplToDoNothingAfterOnEvent(
+			lcsEventManager, lcsGatewayClient, handshakeTask);
+
+		lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH,
+			_taskSchedulerService);
 
 		handshakeTask.run();
 
@@ -259,11 +296,21 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 	public void testTokenCheckRestartedIfHandshakeExceptionErrorCode202()
 		throws Exception {
 
-		_mockGetMessagesToReturnHandshakeResponseMessage(202);
+		LCSEventManager lcsEventManager = new LCSEventManager();
 
-		_spyTaskSchedulerServiceImplToDoNothingAfterOnEvent();
+		LCSGatewayClient lcsGatewayClient =
+			_mockGetMessagesToReturnHandshakeResponseMessage(
+				202, lcsEventManager);
 
-		HandshakeTask handshakeTask = _spyHandshakeTask();
+		HandshakeTask handshakeTask = _spyHandshakeTask(
+			lcsEventManager, lcsGatewayClient);
+
+		_spyTaskSchedulerServiceImplToDoNothingAfterOnEvent(
+			lcsEventManager, lcsGatewayClient, handshakeTask);
+
+		lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS,
+			_taskSchedulerService);
 
 		handshakeTask.run();
 
@@ -301,7 +348,19 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 		return handshakeResponseMessage;
 	}
 
-	private void _mockGetMessagesToReturnCommandMessages() throws Exception {
+	private LCSGatewayClient _mockGetMessagesToReturnCommandMessages(
+			LCSEventManager lcsEventManager)
+		throws Exception {
+
+		LCSGatewayClient lcsGatewayClient = spy(
+			new LCSGatewayClientImpl(lcsEventManager));
+
+		doReturn(
+			Boolean.TRUE
+		).when(
+			lcsGatewayClient
+		).isAvailable();
+
 		doReturn(
 			new ArrayList<Message>() {
 				{
@@ -311,14 +370,34 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 				}
 			}
 		).when(
-			_lcsGatewayClient
+			lcsGatewayClient
 		).getMessages(
 			Matchers.anyString()
 		);
+
+		return lcsGatewayClient;
 	}
 
-	private void _mockGetMessagesToReturnHandshakeResponseMessage(int errorCode)
+	private LCSGatewayClient _mockGetMessagesToReturnHandshakeResponseMessage(
+			int errorCode, LCSEventManager lcsEventManager)
 		throws Exception {
+
+		LCSGatewayClient lcsGatewayClient = spy(
+			new LCSGatewayClientImpl(lcsEventManager));
+
+		doNothing(
+		).when(
+			lcsGatewayClient
+		).deleteMessages(
+			Matchers.anyString()
+		);
+
+		doNothing(
+		).when(
+			lcsGatewayClient
+		).sendMessage(
+			Matchers.any(Message.class)
+		);
 
 		doReturn(
 			new ArrayList<Message>() {
@@ -327,13 +406,27 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 				}
 			}
 		).when(
-			_lcsGatewayClient
+			lcsGatewayClient
 		).getMessages(
 			Matchers.anyString()
 		);
+
+		return lcsGatewayClient;
 	}
 
-	private void _mockSendMessageToThrowLCSGatewayException() throws Exception {
+	private LCSGatewayClient _mockSendMessageToThrowLCSGatewayException(
+			LCSEventManager lcsEventManager)
+		throws Exception {
+
+		LCSGatewayClient lcsGatewayClient = spy(
+			new LCSGatewayClientImpl(lcsEventManager));
+
+		doReturn(
+			Boolean.TRUE
+		).when(
+			lcsGatewayClient
+		).isAvailable();
+
 		doThrow(
 			new LCSGatewayException(
 				"Unable to send message",
@@ -341,16 +434,26 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 					"Test gateway communication failure",
 					new ExecutionException(new UnknownHostException("Test"))))
 		).when(
-			_lcsGatewayClient
+			lcsGatewayClient
 		).sendMessage(
 			Matchers.any(Message.class)
 		);
+
+		return lcsGatewayClient;
 	}
 
-	private HandshakeTask _spyHandshakeTask() throws Exception {
+	private HandshakeTask _spyHandshakeTask(
+			LCSEventManager lcsEventManager, LCSGatewayClient lcsGatewayClient)
+		throws Exception {
+
+		CompanyLocalService companyLocalService = mock(
+			CompanyLocalService.class);
+		LCSAlertAdvisor lcsAlertAdvisor = new LCSAlertAdvisorImpl();
+
 		HandshakeTask handshakeTask = spy(
 			new HandshakeTask(
-				1L, _lcsGatewayClient, _lcsKeyAdvisor, _threadFactory,
+				companyLocalService, lcsAlertAdvisor, lcsEventManager, 1L,
+				lcsGatewayClient, _lcsKeyAdvisor, _threadFactory,
 				_uptimeAdvisor));
 
 		doReturn(
@@ -362,13 +465,16 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 		return handshakeTask;
 	}
 
-	private void _spyTaskSchedulerServiceImplToDoNothingAfterOnEvent()
+	private void _spyTaskSchedulerServiceImplToDoNothingAfterOnEvent(
+			LCSEventManager lcsEventManager, LCSGatewayClient lcsGatewayClient,
+			HandshakeTask handshakeTask)
 		throws Exception {
 
 		_taskSchedulerService = spy(
 			new TaskSchedulerServiceImpl(
-				1000, _lcsGatewayClient, _lcsKeyAdvisor, _threadFactory,
-				_uptimeAdvisor));
+				1000, handshakeTask, _lcsClusterEntryTokenAdvisor,
+				_lcsConfigurationProvider, lcsEventManager, lcsGatewayClient,
+				_lcsKeyAdvisor, _taskAdvisor, _threadFactory, _uptimeAdvisor));
 
 		// Skip JavaParser, will fix
 
@@ -422,8 +528,10 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 		);
 	}
 
-	private LCSGatewayClient _lcsGatewayClient;
+	private LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
+	private LCSConfigurationProvider _lcsConfigurationProvider;
 	private LCSKeyAdvisor _lcsKeyAdvisor;
+	private TaskAdvisor _taskAdvisor;
 	private TaskSchedulerService _taskSchedulerService;
 	private ThreadFactory _threadFactory;
 	private UptimeAdvisor _uptimeAdvisor;
