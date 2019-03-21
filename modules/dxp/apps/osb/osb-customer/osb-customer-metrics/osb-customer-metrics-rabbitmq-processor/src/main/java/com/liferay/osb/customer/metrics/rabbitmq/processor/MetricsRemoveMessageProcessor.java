@@ -64,14 +64,14 @@ public class MetricsRemoveMessageProcessor extends BaseMessageProcessor {
 	}
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
+		String schema = jsonObject.getString("schema");
+
 		JSONObject modelJSONObject = jsonObject.getJSONObject("model");
 
 		String modelName = modelJSONObject.getString("name");
 
 		Map<String, Object> columnMap = getColumnMap(
 			modelJSONObject.getJSONObject("values"));
-
-		String schema = jsonObject.getString("schema");
 
 		String sql = buildSql(getTableName(modelName), columnMap);
 

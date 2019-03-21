@@ -95,11 +95,11 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 	}
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
+		String schema = jsonObject.getString("schema");
+
 		JSONObject modelJSONObject = jsonObject.getJSONObject("model");
 
 		String modelName = modelJSONObject.getString("name");
-
-		String schema = jsonObject.getString("schema");
 
 		updateTable(schema, modelJSONObject, modelName);
 

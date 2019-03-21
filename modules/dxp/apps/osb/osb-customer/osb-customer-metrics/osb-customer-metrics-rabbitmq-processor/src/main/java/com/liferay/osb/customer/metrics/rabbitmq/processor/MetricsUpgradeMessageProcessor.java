@@ -29,7 +29,6 @@ public class MetricsUpgradeMessageProcessor extends BaseMessageProcessor {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
 		String schema = jsonObject.getString("schema");
-
 		String sql = jsonObject.getString("sql");
 
 		runSQL(schema, sql);

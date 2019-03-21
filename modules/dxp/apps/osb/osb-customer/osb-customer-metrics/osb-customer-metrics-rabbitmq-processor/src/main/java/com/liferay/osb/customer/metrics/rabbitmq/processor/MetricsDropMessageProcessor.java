@@ -29,11 +29,11 @@ import org.osgi.service.component.annotations.Component;
 public class MetricsDropMessageProcessor extends BaseMessageProcessor {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
+		String schema = jsonObject.getString("schema");
+
 		JSONObject modelJSONObject = jsonObject.getJSONObject("model");
 
 		String modelName = modelJSONObject.getString("name");
-
-		String schema = jsonObject.getString("schema");
 
 		runSQL(schema, "truncate table " + getTableName(modelName));
 
