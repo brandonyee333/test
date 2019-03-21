@@ -38,8 +38,6 @@ public interface LCSGatewayClient extends LCSEventListener {
 
 	public boolean isAvailable();
 
-	public void registerLCSEventListener(LCSEventListener lcsEventListener);
-
 	public void sendMessage(Message message)
 		throws CompressionException, LCSGatewayException;
 
