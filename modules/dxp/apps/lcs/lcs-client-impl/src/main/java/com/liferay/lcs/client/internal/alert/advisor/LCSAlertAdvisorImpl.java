@@ -36,6 +36,15 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = LCSAlertAdvisor.class)
 public class LCSAlertAdvisorImpl implements LCSAlertAdvisor, LCSEventListener {
 
+	public LCSAlertAdvisorImpl() {
+	}
+
+	public LCSAlertAdvisorImpl(LCSEventManager lcsEventManager) {
+		_lcsEventManager = lcsEventManager;
+
+		activate();
+	}
+
 	@Activate
 	public void activate() {
 		_lcsEventManager.subscribe(LCSEvent.HANDSHAKE_FAILED, this);

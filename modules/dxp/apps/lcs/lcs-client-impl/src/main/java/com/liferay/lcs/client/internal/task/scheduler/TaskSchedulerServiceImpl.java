@@ -20,6 +20,7 @@ import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.advisor.UptimeAdvisor;
 import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
+import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.task.CommandMessageTask;
 import com.liferay.lcs.client.internal.task.HandshakeTask;
 import com.liferay.lcs.client.internal.task.HeartbeatTask;
@@ -64,15 +65,25 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 	}
 
 	public TaskSchedulerServiceImpl(
-		int defaultInterval, LCSGatewayClient lcsGatewayClient,
-		LCSKeyAdvisor lcsKeyAdvisor, ThreadFactory threadFactory,
-		UptimeAdvisor uptimeAdvisor) {
+		int defaultInterval, HandshakeTask handshakeTask,
+		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor,
+		LCSConfigurationProvider lcsConfigurationProvider,
+		LCSEventManager lcsEventManager, LCSGatewayClient lcsGatewayClient,
+		LCSKeyAdvisor lcsKeyAdvisor, TaskAdvisor taskAdvisor,
+		ThreadFactory threadFactory, UptimeAdvisor uptimeAdvisor) {
 
 		_defaultInterval = defaultInterval;
+		_handshakeTask = handshakeTask;
+		_lcsClusterEntryTokenAdvisor = lcsClusterEntryTokenAdvisor;
+		_lcsConfigurationProvider = lcsConfigurationProvider;
+		_lcsEventManager = lcsEventManager;
 		_lcsGatewayClient = lcsGatewayClient;
 		_lcsKeyAdvisor = lcsKeyAdvisor;
+		_taskAdvisor = taskAdvisor;
 		_threadFactory = threadFactory;
 		_uptimeAdvisor = uptimeAdvisor;
+
+		_subscribeToLCSEvents();
 	}
 
 	@Activate
@@ -83,7 +94,7 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		_defaultInterval = Integer.valueOf(
 			lcsConfiguration.commandScheduleDefaultInterval());
 
-		_lcsGatewayClient.registerLCSEventListener(this);
+		_subscribeToLCSEvents();
 
 		_scheduledExecutorService = Executors.newScheduledThreadPool(
 			10, _threadFactory);
@@ -284,20 +295,16 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 			return;
 		}
 
-		HandshakeTask handshakeTask = new HandshakeTask(
-			_lcsClusterEntryTokenAdvisor.getLcsClusterEntryTokenId(),
-			_lcsGatewayClient, _lcsKeyAdvisor, _threadFactory, _uptimeAdvisor);
-
 		if (delayRun) {
 			if (_log.isInfoEnabled()) {
 				_log.info("Retrying connection in 60 seconds");
 			}
 
 			_scheduledExecutorService.schedule(
-				handshakeTask, 60, TimeUnit.SECONDS);
+				_handshakeTask, 60, TimeUnit.SECONDS);
 		}
 		else {
-			_scheduledExecutorService.submit(handshakeTask);
+			_scheduledExecutorService.submit(_handshakeTask);
 		}
 	}
 
@@ -457,16 +464,42 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		}
 	}
 
+	private void _subscribeToLCSEvents() {
+		_lcsEventManager.subscribe(LCSEvent.HANDSHAKE_FAILED, this);
+		_lcsEventManager.subscribe(LCSEvent.HANDSHAKE_SUCCESS, this);
+		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_SUCCESS, this);
+		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MISSING, this);
+		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MULTIPLE_TOKENS, this);
+		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_TOKEN_CORRUPTED, this);
+		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID, this);
+		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH, this);
+		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS, this);
+		_lcsEventManager.subscribe(LCSEvent.LCS_GATEWAY_UNAVAILABLE, this);
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		TaskSchedulerServiceImpl.class);
 
 	private int _defaultInterval;
 
 	@Reference
+	private HandshakeTask _handshakeTask;
+
+	@Reference
 	private LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
 
 	@Reference
 	private LCSConfigurationProvider _lcsConfigurationProvider;
+
+	@Reference
+	private LCSEventManager _lcsEventManager;
 
 	@Reference
 	private LCSGatewayClient _lcsGatewayClient;

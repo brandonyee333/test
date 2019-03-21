@@ -18,7 +18,7 @@ import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.event.LCSEventListener;
 import com.liferay.lcs.client.internal.advisor.MonitoringAdvisor;
 import com.liferay.lcs.client.internal.advisor.MonitoringAdvisorFactory;
-import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
+import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.portal.kernel.bean.BeanLocator;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -32,14 +32,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Ivica Cardic
  * @author Igor Beslic
  */
+@Component
 public class MessageBusListenerAdvisor implements LCSEventListener {
 
-	public MessageBusListenerAdvisor(LCSGatewayClient lcsGatewayClient) {
-		lcsGatewayClient.registerLCSEventListener(this);
+	public MessageBusListenerAdvisor() {
+	}
+
+	public MessageBusListenerAdvisor(LCSEventManager lcsEventManager) {
+		lcsEventManager.subscribe(LCSEvent.LCS_GATEWAY_UNAVAILABLE, this);
 	}
 
 	public void destroy() {

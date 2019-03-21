@@ -62,6 +62,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -73,11 +74,19 @@ import org.osgi.service.component.annotations.Reference;
 @Component
 public class HandshakeTask implements Task {
 
+	public HandshakeTask() {
+	}
+
 	public HandshakeTask(
+		CompanyLocalService companyLocalService,
+		LCSAlertAdvisor lcsAlertAdvisor, LCSEventManager lcsEventManager,
 		long lcsClusterEntryTokenId, LCSGatewayClient lcsGatewayClient,
 		LCSKeyAdvisor lcsKeyAdvisor, ThreadFactory threadFactory,
 		UptimeAdvisor uptimeAdvisor) {
 
+		_companyLocalService = companyLocalService;
+		_lcsAlertAdvisor = lcsAlertAdvisor;
+		_lcsEventManager = lcsEventManager;
 		_lcsClusterEntryTokenId = lcsClusterEntryTokenId;
 		_lcsGatewayClient = lcsGatewayClient;
 		_lcsKeyAdvisor = lcsKeyAdvisor;
@@ -94,6 +103,10 @@ public class HandshakeTask implements Task {
 		if (_log.isTraceEnabled()) {
 			_log.trace("Initialized " + this);
 		}
+	}
+
+	@Activate
+	public void activate() {
 	}
 
 	@Override
@@ -417,20 +430,28 @@ public class HandshakeTask implements Task {
 	@Reference
 	private CompanyLocalService _companyLocalService;
 
-	private final String _key;
+	private String _key;
 
 	@Reference
 	private LCSAlertAdvisor _lcsAlertAdvisor;
 
-	private final long _lcsClusterEntryTokenId;
+	private long _lcsClusterEntryTokenId;
 
 	@Reference
 	private LCSEventManager _lcsEventManager;
 
-	private final LCSGatewayClient _lcsGatewayClient;
-	private final LCSKeyAdvisor _lcsKeyAdvisor;
+	@Reference
+	private LCSGatewayClient _lcsGatewayClient;
+
+	@Reference
+	private LCSKeyAdvisor _lcsKeyAdvisor;
+
 	private boolean _temporaryKey;
-	private final ThreadFactory _threadFactory;
-	private final UptimeAdvisor _uptimeAdvisor;
+
+	@Reference
+	private ThreadFactory _threadFactory;
+
+	@Reference
+	private UptimeAdvisor _uptimeAdvisor;
 
 }
