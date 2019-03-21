@@ -89,12 +89,7 @@ public class WikiExportImportPortletPreferencesProcessor
 				WikiResourcePermissionChecker.RESOURCE_NAME);
 		}
 		catch (PortalException pe) {
-			PortletDataException pde = new PortletDataException(pe);
-
-			pde.setPortletId(WikiPortletKeys.WIKI);
-			pde.setType(PortletDataException.EXPORT_PORTLET_PERMISSIONS);
-
-			throw pde;
+			throw new PortletDataException(pe);
 		}
 
 		try {
@@ -123,12 +118,7 @@ public class WikiExportImportPortletPreferencesProcessor
 			pageActionableDynamicQuery.performActions();
 		}
 		catch (PortalException pe) {
-			PortletDataException pde = new PortletDataException(pe);
-
-			pde.setPortletId(WikiPortletKeys.WIKI);
-			pde.setType(PortletDataException.EXPORT_PORTLET_DATA);
-
-			throw pde;
+			throw new PortletDataException(pe);
 		}
 
 		Group group = _groupLocalService.fetchGroup(
@@ -168,12 +158,7 @@ public class WikiExportImportPortletPreferencesProcessor
 				WikiResourcePermissionChecker.RESOURCE_NAME);
 		}
 		catch (PortalException pe) {
-			PortletDataException pde = new PortletDataException(pe);
-
-			pde.setPortletId(WikiPortletKeys.WIKI);
-			pde.setType(PortletDataException.IMPORT_PORTLET_PERMISSIONS);
-
-			throw pde;
+			throw new PortletDataException(pe);
 		}
 
 		Element nodesElement = portletDataContext.getImportDataGroupElement(

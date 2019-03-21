@@ -78,12 +78,7 @@ public class BookmarksExportImportPortletPreferencesProcessor
 				BookmarksResourcePermissionChecker.RESOURCE_NAME);
 		}
 		catch (PortalException pe) {
-			PortletDataException pde = new PortletDataException(pe);
-
-			pde.setPortletId(BookmarksPortletKeys.BOOKMARKS);
-			pde.setType(PortletDataException.EXPORT_PORTLET_PERMISSIONS);
-
-			throw pde;
+			throw new PortletDataException(pe);
 		}
 
 		try {
@@ -118,12 +113,7 @@ public class BookmarksExportImportPortletPreferencesProcessor
 			}
 		}
 		catch (PortalException pe) {
-			PortletDataException pde = new PortletDataException(pe);
-
-			pde.setPortletId(BookmarksPortletKeys.BOOKMARKS);
-			pde.setType(PortletDataException.EXPORT_PORTLET_DATA);
-
-			throw pde;
+			throw new PortletDataException(pe);
 		}
 
 		long rootFolderId = GetterUtil.getLong(
@@ -160,12 +150,7 @@ public class BookmarksExportImportPortletPreferencesProcessor
 				BookmarksResourcePermissionChecker.RESOURCE_NAME);
 		}
 		catch (PortalException pe) {
-			PortletDataException pde = new PortletDataException(pe);
-
-			pde.setPortletId(BookmarksPortletKeys.BOOKMARKS);
-			pde.setType(PortletDataException.IMPORT_PORTLET_PERMISSIONS);
-
-			throw pde;
+			throw new PortletDataException(pe);
 		}
 
 		String namespace = _bookmarksPortletDataHandler.getNamespace();

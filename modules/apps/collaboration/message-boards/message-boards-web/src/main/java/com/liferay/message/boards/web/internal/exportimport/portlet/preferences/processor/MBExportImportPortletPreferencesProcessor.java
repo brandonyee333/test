@@ -74,12 +74,7 @@ public class MBExportImportPortletPreferencesProcessor
 				MBPermission.RESOURCE_NAME);
 		}
 		catch (PortalException pe) {
-			PortletDataException pde = new PortletDataException(pe);
-
-			pde.setPortletId(MBPortletKeys.MESSAGE_BOARDS);
-			pde.setType(PortletDataException.EXPORT_PORTLET_PERMISSIONS);
-
-			throw pde;
+			throw new PortletDataException(pe);
 		}
 
 		try {
@@ -151,12 +146,7 @@ public class MBExportImportPortletPreferencesProcessor
 			}
 		}
 		catch (PortalException pe) {
-			PortletDataException pde = new PortletDataException(pe);
-
-			pde.setPortletId(MBPortletKeys.MESSAGE_BOARDS);
-			pde.setType(PortletDataException.EXPORT_PORTLET_DATA);
-
-			throw pde;
+			throw new PortletDataException(pe);
 		}
 
 		return portletPreferences;
@@ -173,12 +163,7 @@ public class MBExportImportPortletPreferencesProcessor
 				MBPermission.RESOURCE_NAME);
 		}
 		catch (PortalException pe) {
-			PortletDataException pde = new PortletDataException(pe);
-
-			pde.setPortletId(MBPortletKeys.MESSAGE_BOARDS);
-			pde.setType(PortletDataException.IMPORT_PORTLET_PERMISSIONS);
-
-			throw pde;
+			throw new PortletDataException(pe);
 		}
 
 		String namespace = _mbPortletDataHandler.getNamespace();
