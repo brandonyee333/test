@@ -49,7 +49,7 @@ const setup = () => {
 	];
 
 	const utils = render(
-		<FixpackFilters actionURL="/" filtersJSON={JSONArray} />
+		<FixpackFilters actionURL="/" filtersJSON={JSONArray} tabName="tab" />
 	);
 
 	const fromFixPackDropdown = utils.container.querySelectorAll('select')[1];
@@ -87,6 +87,7 @@ describe('FixpackFilters', () => {
 				fixpackURL="/"
 				fromFixPackVersion="1.0"
 				productVersion="7.0"
+				tabName="tab"
 				toFixPackVersion="2.0"
 			/>
 		);
@@ -189,6 +190,7 @@ describe('FixpackFilters', () => {
 				fixpackURL="/"
 				fromFixPackVersion="2.0"
 				productVersion="7.0"
+				tabName="tab"
 				toFixPackVersion="3.0"
 			/>
 		);
@@ -215,6 +217,7 @@ describe('FixpackFilters', () => {
 				fixpackURL="/"
 				fromFixPackVersion="2.0"
 				productVersion="7.0"
+				tabName="tab"
 				toFixPackVersion="3.0"
 			/>
 		);
@@ -237,6 +240,7 @@ describe('FixpackFilters', () => {
 				fixpackURL="/"
 				fromFixPackVersion="2.0"
 				productVersion="7.0"
+				tabName="tab"
 				toFixPackVersion="3.0"
 			/>
 		);

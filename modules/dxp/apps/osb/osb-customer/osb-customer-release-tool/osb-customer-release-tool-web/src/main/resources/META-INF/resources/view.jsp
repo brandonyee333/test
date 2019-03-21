@@ -76,6 +76,7 @@ portletURL.setParameter("toFixPackVersion", String.valueOf(toFixPackVersion));
 			fixpackURL: '<%= releaseToolDisplayContext.getFixPackDownloadURL(product, productVersion, toFixPackVersion) %>',
 			fromFixPackVersion: '<%= String.valueOf(fromFixPackVersion) %>',
 			productVersion: '<%= String.valueOf(productVersion) %>',
+			tabName: '<%= tabs1 %>',
 			toFixPackVersion: '<%= String.valueOf(toFixPackVersion) %>'
 		},
 		document.getElementById('<portlet:namespace />fixpackFilters')
