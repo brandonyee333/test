@@ -73,6 +73,12 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 		properties.put(
 			"protocol", lcsConfiguration.platformLcsGatewayWebProtocol());
 
+		properties.put("proxyHostName", lcsConfiguration.proxyHostName());
+		properties.put(
+			"proxyHostPort", String.valueOf(lcsConfiguration.proxyHostPort()));
+		properties.put("proxyLogin", lcsConfiguration.proxyHostLogin());
+		properties.put("proxyPassword", lcsConfiguration.proxyHostPassword());
+
 		ComponentInstance componentInstance =
 			_jsonWebServiceClientComponentFactory.newInstance(properties);
 
