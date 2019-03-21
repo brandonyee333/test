@@ -17,6 +17,7 @@ package com.liferay.osb.customer.jira.rest.connector.util;
 import com.liferay.osb.customer.jira.rest.connector.configuration.JIRARESTConnectorConfigurationValues;
 import com.liferay.osb.customer.jira.rest.connector.exception.JIRAResponseIOException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -45,7 +46,7 @@ public class JIRAHttpUtil {
 		options.setDelete(true);
 		options.setLocation(_toURI(endpoint));
 
-		return _send(dataJSONObject.toString(), options);
+		return _sendObject(dataJSONObject.toString(), options);
 	}
 
 	public static JSONObject get(String endpoint, JSONObject dataJSONObject)
@@ -55,7 +56,7 @@ public class JIRAHttpUtil {
 
 		options.setLocation(_toURI(endpoint));
 
-		return _send(dataJSONObject.toString(), options);
+		return _sendObject(dataJSONObject.toString(), options);
 	}
 
 	public static JSONObject get(
@@ -72,7 +73,19 @@ public class JIRAHttpUtil {
 
 		options.setLocation(url);
 
-		return _send(StringPool.BLANK, options);
+		return _sendObject(StringPool.BLANK, options);
+	}
+
+	public static JSONArray get(String endpoint, String replaceAll)
+		throws PortalException {
+
+		Http.Options options = new Http.Options();
+
+		String url = _toURI(endpoint);
+
+		options.setLocation(url);
+
+		return _sendArray(StringPool.BLANK, options, replaceAll);
 	}
 
 	public static JSONObject post(String endpoint, JSONObject dataJSONObject)
@@ -83,7 +96,7 @@ public class JIRAHttpUtil {
 		options.setLocation(_toURI(endpoint));
 		options.setPost(true);
 
-		return _send(dataJSONObject.toString(), options);
+		return _sendObject(dataJSONObject.toString(), options);
 	}
 
 	public static JSONObject put(String endpoint, JSONObject dataJSONObject)
@@ -94,7 +107,7 @@ public class JIRAHttpUtil {
 		options.setLocation(_toURI(endpoint));
 		options.setPut(true);
 
-		return _send(dataJSONObject.toString(), options);
+		return _sendObject(dataJSONObject.toString(), options);
 	}
 
 	private static String _getCredentials() {
@@ -106,7 +119,53 @@ public class JIRAHttpUtil {
 		return "Basic " + Base64.encode(jiraUserNameAndJiraPassword.getBytes());
 	}
 
-	private static JSONObject _send(String body, Http.Options options)
+	private static JSONArray _sendArray(
+			String body, Http.Options options, String replaceAll)
+		throws PortalException {
+
+		options.addHeader("Authorization", _CREDENTIALS);
+
+		String contentType = "application" + StringPool.SLASH + "json";
+
+		options.addHeader("Content-Type", contentType);
+
+		options.addHeader("X-Atlassian-Token", "nocheck");
+		options.setBody(body, contentType, StringPool.UTF8);
+
+		String response = StringPool.BLANK;
+
+		try {
+
+			// Use HttpUtil#URLtoByteArray method to avoid a
+			// NullPointerException
+
+			byte[] bytes = HttpUtil.URLtoByteArray(options);
+
+			if (bytes != null) {
+				response = new String(bytes);
+			}
+		}
+		catch (IOException ioe) {
+			throw new JIRAResponseIOException(ioe);
+		}
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Response from JIRA: " + response);
+		}
+
+		if (Validator.isNotNull(response)) {
+			if (!replaceAll.isEmpty()) {
+				response = response.replaceAll(replaceAll, StringPool.BLANK);
+			}
+
+			return JSONFactoryUtil.createJSONArray(response);
+		}
+		else {
+			return JSONFactoryUtil.createJSONArray();
+		}
+	}
+
+	private static JSONObject _sendObject(String body, Http.Options options)
 		throws PortalException {
 
 		options.addHeader("Authorization", _CREDENTIALS);
@@ -148,11 +207,10 @@ public class JIRAHttpUtil {
 	}
 
 	private static String _toURI(String endpoint) {
-		StringBundler sb = new StringBundler(4);
+		StringBundler sb = new StringBundler(3);
 
 		sb.append(Http.HTTPS_WITH_SLASH);
 		sb.append(JIRARESTConnectorConfigurationValues.JIRA_DOMAIN_NAME);
-		sb.append("/rest/api/2/");
 		sb.append(endpoint);
 
 		return sb.toString();

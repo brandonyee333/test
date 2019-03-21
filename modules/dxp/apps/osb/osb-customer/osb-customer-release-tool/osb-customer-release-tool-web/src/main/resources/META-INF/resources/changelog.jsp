@@ -16,6 +16,10 @@
 
 <%@ include file="/init.jsp" %>
 
+<strong>JIRA Component:</strong> <%= releaseToolDisplayContext.getJIRAComponents() %>
+
+<br />
+
 <liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/jira_issues" var="refinedJiraIssuesURL">
 	<portlet:param name="fromFixPackVersion" value="2.0" />
 	<portlet:param name="product" value="dxp" />

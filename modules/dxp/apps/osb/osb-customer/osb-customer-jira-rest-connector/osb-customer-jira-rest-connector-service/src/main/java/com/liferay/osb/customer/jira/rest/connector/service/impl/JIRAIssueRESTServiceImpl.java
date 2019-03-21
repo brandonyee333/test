@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -56,7 +57,7 @@ public class JIRAIssueRESTServiceImpl implements JIRAIssueRESTService {
 			customFields);
 
 		JSONObject responseJSONObject = JIRAHttpUtil.post(
-			"issue", jiraIssue.toJSONObject());
+			_URL_REST_API_2 + "issue", jiraIssue.toJSONObject());
 
 		handleResponseErrors(responseJSONObject);
 
@@ -68,8 +69,10 @@ public class JIRAIssueRESTServiceImpl implements JIRAIssueRESTService {
 	}
 
 	public JSONObject getJIRAIssue(String ticketKey) throws PortalException {
-		JSONObject responseJSONObject = JIRAHttpUtil.get(
-			"issue/" + ticketKey, JSONFactoryUtil.createJSONObject());
+		JSONObject responseJSONObject =
+			JIRAHttpUtil.get(
+				_URL_REST_API_2 + "issue/" + ticketKey,
+				JSONFactoryUtil.createJSONObject());
 
 		handleResponseErrors(responseJSONObject);
 
@@ -95,7 +98,8 @@ public class JIRAIssueRESTServiceImpl implements JIRAIssueRESTService {
 		parameters.put("maxResults", String.valueOf(maxResults));
 		parameters.put("startAt", String.valueOf(startAt));
 
-		JSONObject responseJSONObject = JIRAHttpUtil.get("search", parameters);
+		JSONObject responseJSONObject = JIRAHttpUtil.get(
+			_URL_REST_API_2 + "search", parameters);
 
 		handleResponseErrors(responseJSONObject);
 
@@ -115,7 +119,7 @@ public class JIRAIssueRESTServiceImpl implements JIRAIssueRESTService {
 			labels, customFields);
 
 		JSONObject responseJSONObject = JIRAHttpUtil.put(
-			"issue/" + ticketKey, jiraIssue.toJSONObject());
+			_URL_REST_API_2 + "issue/" + ticketKey, jiraIssue.toJSONObject());
 
 		handleResponseErrors(responseJSONObject);
 
@@ -199,7 +203,14 @@ public class JIRAIssueRESTServiceImpl implements JIRAIssueRESTService {
 	}
 
 	private String _getTransitionsEndpoint(String ticketKey) {
-		return "issue/" + ticketKey + "/transitions";
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_URL_REST_API_2);
+		sb.append("issue/");
+		sb.append(ticketKey);
+		sb.append("/transitions");
+
+		return sb.toString();
 	}
 
 	private void _updateJIRAIssueStatus(String ticketKey, String status)
@@ -218,6 +229,8 @@ public class JIRAIssueRESTServiceImpl implements JIRAIssueRESTService {
 
 		handleResponseErrors(responseJSONObject);
 	}
+
+	private static final String _URL_REST_API_2 = "/rest/api/2/";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		JIRAIssueRESTServiceImpl.class);

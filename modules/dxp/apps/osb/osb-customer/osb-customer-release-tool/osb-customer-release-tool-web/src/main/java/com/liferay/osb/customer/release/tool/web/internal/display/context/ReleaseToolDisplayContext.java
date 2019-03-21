@@ -26,6 +26,8 @@ import com.liferay.journal.model.JournalArticle;
 import com.liferay.osb.customer.downloads.display.constants.DownloadsDDMStructureConstants;
 import com.liferay.osb.customer.downloads.display.constants.DownloadsDisplayPortletKeys;
 import com.liferay.osb.customer.release.tool.constants.ArtifactVersionConstants;
+import com.liferay.osb.customer.release.tool.model.JIRAComponent;
+import com.liferay.osb.customer.release.tool.service.JIRAComponentLocalServiceUtil;
 import com.liferay.osb.customer.release.tool.util.comparator.AssetCategoryPropertyComparator;
 import com.liferay.osb.customer.release.tool.web.internal.constants.DDMStructureConstants;
 import com.liferay.osb.customer.release.tool.web.internal.constants.FixPackField;
@@ -185,6 +187,25 @@ public class ReleaseToolDisplayContext {
 
 	public JSONArray getHightlightsFiltersJSONArray() {
 		return _highlightsFiltersJSONArray;
+	}
+
+	public JSONArray getJIRAComponents() throws PortalException {
+		List<JIRAComponent> jiraComponents =
+			JIRAComponentLocalServiceUtil.getJIRAComponents(true);
+
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+		for (JIRAComponent jiraComponent : jiraComponents) {
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+			jsonObject.put("name", jiraComponent.getName());
+			jsonObject.put(
+				"value", Long.valueOf(jiraComponent.getJiraComponentId()));
+
+			jsonArray.put(jsonObject);
+		}
+
+		return jsonArray;
 	}
 
 	protected JSONObject getAssetCategoryJSONObject(
