@@ -52,7 +52,12 @@ exports[`SortableTable renders changelog table correctly 1`] = `
         <td
           class="lfr-summary-column table-cell-content"
         >
-          IE11 Web Image Resizing Does not Maintain Initial Aspect Ratio
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            IE11 Web Image Resizing Does not Maintain Initial Aspect Ratio
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -81,7 +86,12 @@ exports[`SortableTable renders changelog table correctly 1`] = `
         <td
           class="lfr-summary-column table-cell-content"
         >
-          Add menu - Heading order invalid
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            Add menu - Heading order invalid
+          </button>
         </td>
         <td
           class="lfr-component-column"

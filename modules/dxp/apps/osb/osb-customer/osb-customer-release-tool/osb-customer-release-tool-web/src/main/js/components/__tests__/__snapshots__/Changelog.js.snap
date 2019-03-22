@@ -52,7 +52,12 @@ exports[`Changelog renders changelog results correctly 1`] = `
         <td
           class="lfr-summary-column table-cell-content"
         >
-          IE11 Web Image Resizing Does not Maintain Initial Aspect Ratio
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 1
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -81,7 +86,12 @@ exports[`Changelog renders changelog results correctly 1`] = `
         <td
           class="lfr-summary-column table-cell-content"
         >
-          Add menu - Heading order invalid
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 2
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -160,7 +170,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 0
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 0
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -189,7 +204,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 1
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 1
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -218,7 +238,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 2
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 2
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -247,7 +272,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 3
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 3
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -276,7 +306,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 4
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 4
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -305,7 +340,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 5
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 5
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -334,7 +374,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 6
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 6
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -363,7 +408,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 7
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 7
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -392,7 +442,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 8
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 8
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -421,7 +476,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 9
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 9
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -450,7 +510,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 10
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 10
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -479,7 +544,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 11
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 11
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -508,7 +578,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 12
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 12
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -537,7 +612,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 13
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 13
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -566,7 +646,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 14
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 14
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -595,7 +680,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 15
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 15
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -624,7 +714,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 16
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 16
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -653,7 +748,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 17
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 17
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -682,7 +782,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 18
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 18
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -711,7 +816,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 19
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 19
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -740,7 +850,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 20
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 20
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -769,7 +884,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 21
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 21
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -798,7 +918,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 22
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 22
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -827,7 +952,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 23
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 23
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -856,7 +986,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 24
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 24
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -885,7 +1020,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 25
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 25
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -914,7 +1054,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 26
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 26
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -943,7 +1088,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 27
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 27
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -972,7 +1122,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 28
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 28
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -1001,7 +1156,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 29
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 29
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -1030,7 +1190,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 30
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 30
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -1059,7 +1224,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 31
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 31
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -1088,7 +1258,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 32
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 32
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -1117,7 +1292,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 33
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 33
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -1146,7 +1326,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 34
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 34
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -1175,7 +1360,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 35
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 35
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -1204,7 +1394,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 36
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 36
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -1233,7 +1428,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 37
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 37
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -1262,7 +1462,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 38
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 38
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -1291,7 +1496,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 39
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 39
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -1320,7 +1530,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 40
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 40
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -1349,7 +1564,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 41
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 41
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -1378,7 +1598,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 42
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 42
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -1407,7 +1632,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 43
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 43
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -1436,7 +1666,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 44
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 44
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -1465,7 +1700,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 45
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 45
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -1494,7 +1734,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 46
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 46
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -1523,7 +1768,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 47
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 47
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -1552,7 +1802,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 48
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 48
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -1581,7 +1836,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 49
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 49
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -1610,7 +1870,12 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
         <td
           class="lfr-summary-column table-cell-content"
         >
-          summary 50
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 50
+          </button>
         </td>
         <td
           class="lfr-component-column"
@@ -1691,6 +1956,197 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
 </div>
 `;
 
+exports[`Changelog renders details modal when a ticket summary is clicked 1`] = `
+<div>
+  <div
+    class="results-count"
+  >
+    x-results
+  </div>
+  <table
+    class="table changelog-table table-autofit table-list"
+    role="table"
+  >
+    <thead>
+      <tr>
+        <th
+          class="lfr-summary-column table-cell-content"
+        >
+          summary
+        </th>
+        <th
+          class="lfr-component-column"
+        >
+          component
+        </th>
+        <th
+          class="lfr-release-column"
+        >
+          release
+           
+          <svg
+            class="desc lexicon-icon sorting-indicator"
+            role="button"
+          >
+            <use
+              xlink:href="#arrow-up"
+            />
+          </svg>
+        </th>
+        <th
+          class="lfr-key-column"
+        >
+          key
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        class="journal-article-row"
+        id="LPS-90100GA"
+      >
+        <td
+          class="lfr-summary-column table-cell-content"
+        >
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 1
+          </button>
+          <div
+            class="modal show"
+            role="dialog"
+            tabindex="-1"
+          >
+            <div
+              class="modal-dialog"
+            >
+              <div
+                class="modal-content"
+              >
+                <div
+                  class="modal-header"
+                >
+                  <div
+                    class="modal-title"
+                  >
+                    details
+                  </div>
+                  <button
+                    aria-label="Close"
+                    class="close"
+                    type="button"
+                  >
+                    <svg
+                      class="lexicon-icon lexicon-icon-times"
+                    >
+                      <use
+                        xlink:href="#times"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <div
+                  class="modal-body"
+                >
+                  <div
+                    class="ticket-detail"
+                  >
+                    <div
+                      class="small-title"
+                    >
+                      summary 1
+                    </div>
+                    <h3>
+                      description
+                    </h3>
+                    <div>
+                      description
+                    </div>
+                    <h3>
+                      components
+                    </h3>
+                    Frontend Infrastructure &gt; WYSIWYG
+                    <h3>
+                      release
+                    </h3>
+                    GA
+                    <h3>
+                      key
+                    </h3>
+                    this-issue-is-related-to
+                     
+                    <a
+                      href="/"
+                    >
+                      LPS-90100
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+        <td
+          class="lfr-component-column"
+        >
+          Frontend Infrastructure &gt; WYSIWYG
+        </td>
+        <td
+          class="lfr-release-column"
+        >
+          GA
+        </td>
+        <td
+          class="lfr-key-column"
+        >
+          <a
+            href="/"
+          >
+            LPS-90100
+          </a>
+        </td>
+      </tr>
+      <tr
+        class="journal-article-row"
+        id="LPS-85155GA"
+      >
+        <td
+          class="lfr-summary-column table-cell-content"
+        >
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 2
+          </button>
+        </td>
+        <td
+          class="lfr-component-column"
+        >
+          Accessibility
+        </td>
+        <td
+          class="lfr-release-column"
+        >
+          GA
+        </td>
+        <td
+          class="lfr-key-column"
+        >
+          <a
+            href="/"
+          >
+            LPS-85155
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
+
 exports[`Changelog renders no results correctly 1`] = `
 <div>
   <div
@@ -1747,5 +2203,196 @@ exports[`Changelog renders no results correctly 1`] = `
       try-modifying-your-criteria
     </h5>
   </div>
+</div>
+`;
+
+exports[`Changelog updates details modal when a different ticket summary is clicked 1`] = `
+<div>
+  <div
+    class="results-count"
+  >
+    x-results
+  </div>
+  <table
+    class="table changelog-table table-autofit table-list"
+    role="table"
+  >
+    <thead>
+      <tr>
+        <th
+          class="lfr-summary-column table-cell-content"
+        >
+          summary
+        </th>
+        <th
+          class="lfr-component-column"
+        >
+          component
+        </th>
+        <th
+          class="lfr-release-column"
+        >
+          release
+           
+          <svg
+            class="desc lexicon-icon sorting-indicator"
+            role="button"
+          >
+            <use
+              xlink:href="#arrow-up"
+            />
+          </svg>
+        </th>
+        <th
+          class="lfr-key-column"
+        >
+          key
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        class="journal-article-row"
+        id="LPS-90100GA"
+      >
+        <td
+          class="lfr-summary-column table-cell-content"
+        >
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 1
+          </button>
+        </td>
+        <td
+          class="lfr-component-column"
+        >
+          Frontend Infrastructure &gt; WYSIWYG
+        </td>
+        <td
+          class="lfr-release-column"
+        >
+          GA
+        </td>
+        <td
+          class="lfr-key-column"
+        >
+          <a
+            href="/"
+          >
+            LPS-90100
+          </a>
+        </td>
+      </tr>
+      <tr
+        class="journal-article-row"
+        id="LPS-85155GA"
+      >
+        <td
+          class="lfr-summary-column table-cell-content"
+        >
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            summary 2
+          </button>
+          <div
+            class="modal show"
+            role="dialog"
+            tabindex="-1"
+          >
+            <div
+              class="modal-dialog"
+            >
+              <div
+                class="modal-content"
+              >
+                <div
+                  class="modal-header"
+                >
+                  <div
+                    class="modal-title"
+                  >
+                    details
+                  </div>
+                  <button
+                    aria-label="Close"
+                    class="close"
+                    type="button"
+                  >
+                    <svg
+                      class="lexicon-icon lexicon-icon-times"
+                    >
+                      <use
+                        xlink:href="#times"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <div
+                  class="modal-body"
+                >
+                  <div
+                    class="ticket-detail"
+                  >
+                    <div
+                      class="small-title"
+                    >
+                      summary 2
+                    </div>
+                    <h3>
+                      description
+                    </h3>
+                    <div>
+                      description 2
+                    </div>
+                    <h3>
+                      components
+                    </h3>
+                    Accessibility
+                    <h3>
+                      release
+                    </h3>
+                    GA
+                    <h3>
+                      key
+                    </h3>
+                    this-issue-is-related-to
+                     
+                    <a
+                      href="/"
+                    >
+                      LPS-85155
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+        <td
+          class="lfr-component-column"
+        >
+          Accessibility
+        </td>
+        <td
+          class="lfr-release-column"
+        >
+          GA
+        </td>
+        <td
+          class="lfr-key-column"
+        >
+          <a
+            href="/"
+          >
+            LPS-85155
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 `;
