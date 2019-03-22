@@ -6,5 +6,4 @@ export {default as render} from './helpers/react-renderer';
 
 export {default as AccountEnvironments} from './components/AccountEnvironments';
 export {default as AddTicketAttachment} from './components/AddTicketAttachment';
-export {default as SubscriptionMessages} from './components/SubscriptionMessages';
 export {default as SupportInstructions} from './components/SupportInstructions';

@@ -16,39 +16,6 @@
 
 <%@ include file="/account_entry_details/init.jsp" %>
 
-<%
-AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
-
-JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
-
-List<CorpProjectMessage> corpProjectMessages = CorpProjectMessageLocalServiceUtil.getCorpProjectMessages(accountEntry.getCorpProjectId());
-
-for (CorpProjectMessage corpProjectMessage : corpProjectMessages) {
-	JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-	jsonObject.put("content", corpProjectMessage.getContent());
-	jsonObject.put("id", corpProjectMessage.getCorpProjectMessageId());
-	jsonObject.put("severity", CorpProjectMessageConstants.getSeverityLevelLabel(corpProjectMessage.getSeverityLevel()));
-	jsonObject.put("title", corpProjectMessage.getTitle());
-
-	jsonArray.put(jsonObject);
-}
-%>
-
-<c:if test="<%= !corpProjectMessages.isEmpty() %>">
-	<div id="<portlet:namespace />subscriptionMessages"></div>
-
-	<aui:script>
-		AccountDetails.render(
-			AccountDetails.SubscriptionMessages,
-			{
-				messages: <%= jsonArray %>
-			},
-			document.getElementById('<portlet:namespace />subscriptionMessages')
-		);
-	</aui:script>
-</c:if>
-
 <aui:row>
 	<aui:col width="<%= 100 %>">
 		<liferay-util:include page="/account_entry_details/account_environments.jsp" servletContext="<%= application %>" />
