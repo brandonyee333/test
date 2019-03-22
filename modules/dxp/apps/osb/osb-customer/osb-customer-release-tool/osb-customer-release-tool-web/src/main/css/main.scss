@@ -2,6 +2,16 @@
 
 @import "base-variables";
 
+header:not(.has-control-panel) + main {
+	.lfr-summary-column .modal.show {
+		top: 64px;
+
+		@include media-breakpoint-down(md) {
+			top: 48px;
+		}
+	}
+}
+
 .osb-release-tool-portlet {
 	@import "_changelog";
 	@import "_fixpack-filters";
@@ -42,5 +52,9 @@
 		> tbody > tr > td:first-child {
 			font-weight: $font-weight-normal;
 		}
+	}
+
+	.table-list a {
+		color: $color-primary;
 	}
 }

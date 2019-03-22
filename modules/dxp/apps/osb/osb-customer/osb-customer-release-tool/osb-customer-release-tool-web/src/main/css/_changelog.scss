@@ -12,3 +12,56 @@
 .lfr-release-column {
 	width: 10%;
 }
+
+.lfr-summary-column {
+	button {
+		font-size: $font-size-md;
+		font-weight: $font-weight-normal;
+		text-align: left;
+		white-space: normal;
+	}
+
+	h3 {
+		margin-bottom: 8px;
+		margin-top: $margin-default;
+	}
+
+	.modal.show {
+		background-color: transparent;
+		left: initial;
+		top: 128px;
+		width: 600px;
+	}
+
+	.modal-body {
+		padding: $padding-default;
+		max-height: 82vh;
+	}
+
+	.modal-content {
+		box-shadow: none;
+		border-radius: 0;
+		overflow: hidden;
+	}
+
+	.modal-dialog {
+		background-color: $color-white;
+		border-left: 1px solid $color-divider;
+		border-top: 1px solid $color-divider;
+		height: 100%;
+		margin: 0;
+		position: absolute;
+		right: 0;
+	}
+
+	@include media-breakpoint-down(sm) {
+		.modal.show {
+			top: 112px;
+			width: 100%;
+		}
+
+		.modal-body {
+			bottom: 0;
+		}
+	}
+}

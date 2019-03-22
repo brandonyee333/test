@@ -8,7 +8,7 @@
 
 @mixin label-lg {
 	border-width: 1px;
-	font-size: 14px;
+	font-size: $font-size-md;
 	height: auto;
 	padding: 6px $padding-md;
 	text-transform: none;

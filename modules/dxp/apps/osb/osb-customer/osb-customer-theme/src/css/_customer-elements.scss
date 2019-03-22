@@ -248,3 +248,9 @@ textarea {
 .small {
 	line-height: $line-height-sm;
 }
+
+.small-title {
+	font-size: $small-title-font-size;
+	font-weight: $font-weight-semi-bold;
+	line-height: 28px;
+}

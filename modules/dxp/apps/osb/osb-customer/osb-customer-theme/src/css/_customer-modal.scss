@@ -17,11 +17,13 @@
 	}
 
 	.modal-header {
+		color: $color-default;
 		line-height: 10px;
 		padding: 18px 24px;
 		text-align: left;
 
 		.close {
+			color: $color-default;
 			height: 24px;
 			line-height: 24px;
 			width: 16px;
@@ -30,7 +32,7 @@
 
 	.modal-title {
 		display: inline-block;
-		font-size: 20px;
+		font-size: $small-title-font-size;
 		font-weight: $font-weight-semi-bold;
 		line-height: 28px;
 		text-align: left;
