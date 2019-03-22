@@ -19,9 +19,9 @@
 <%
 String tabs1 = ParamUtil.getString(request, "tabs1");
 
+double fromFixPackVersion = ParamUtil.getDouble(request, "fromFixPackVersion");
 String product = ParamUtil.getString(request, "product");
 double productVersion = ParamUtil.getDouble(request, "productVersion");
-double fromFixPackVersion = ParamUtil.getDouble(request, "fromFixPackVersion");
 double toFixPackVersion = ParamUtil.getDouble(request, "toFixPackVersion");
 %>
 
