@@ -338,7 +338,7 @@ public class AccountEntryViewDisplayContext {
 
 		jsonObject.put(
 			"accountEnvironmentId",
-			String.valueOf(accountEnvironment.getAccountEnvironmentId()));
+			accountEnvironment.getAccountEnvironmentId());
 
 		if (OSBAccountEnvironmentPermission.contains(
 				_accountEntryDetailsRequestHelper.getPermissionChecker(),
@@ -569,8 +569,7 @@ public class AccountEntryViewDisplayContext {
 			jsonObject.put("enterpriseSearch", enterpriseSearch);
 		}
 
-		jsonObject.put(
-			"productEntryId", String.valueOf(productEntry.getProductEntryId()));
+		jsonObject.put("productEntryId", productEntry.getProductEntryId());
 
 		if (productEntry.isCommerce()) {
 			jsonObject.put(
@@ -604,7 +603,7 @@ public class AccountEntryViewDisplayContext {
 
 			jsonObject.put(
 				"name", LanguageUtil.get(_request, listType.getName()));
-			jsonObject.put("value", String.valueOf(listType.getListTypeId()));
+			jsonObject.put("value", listType.getListTypeId());
 
 			jsonArray.put(jsonObject);
 		}

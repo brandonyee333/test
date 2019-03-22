@@ -75,7 +75,7 @@ public class JIRAComponentRESTServiceImpl implements JIRAComponentRESTService {
 			JSONObject componentJSONObject = componentJSONArray.getJSONObject(
 				i);
 
-			long id = GetterUtil.getLong(componentJSONObject.getString("id"));
+			long id = componentJSONObject.getLong("id");
 
 			if (!componentIds.contains(id)) {
 				JSONObject jsonObject = JSONFactoryUtil.createJSONObject();

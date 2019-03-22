@@ -97,7 +97,7 @@ public class ReleaseToolDisplayContext {
 				jsonObject.put("label", "Third Party Libraries");
 			}
 
-			jsonObject.put("value", String.valueOf(owner));
+			jsonObject.put("value", owner);
 
 			jsonArray.put(jsonObject);
 		}
