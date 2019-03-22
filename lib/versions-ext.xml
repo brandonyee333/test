@@ -2542,7 +2542,7 @@
 			</library>
 			<library>
 				<file-name>lib/portal/netcdf.jar</file-name>
-				<version>4.6.13</version>
+				<version>4.3.22</version>
 				<project-name>NetCDF</project-name>
 				<project-url>https://www.unidata.ucar.edu/downloads/netcdf/netcdf-java-4/index.jsp</project-url>
 				<licenses>
