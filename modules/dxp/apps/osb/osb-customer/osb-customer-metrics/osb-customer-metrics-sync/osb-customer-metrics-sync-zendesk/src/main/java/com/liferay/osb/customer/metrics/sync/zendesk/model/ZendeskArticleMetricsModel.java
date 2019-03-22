@@ -15,78 +15,20 @@
 package com.liferay.osb.customer.metrics.sync.zendesk.model;
 
 import com.liferay.osb.customer.metrics.api.model.MetricsModel;
-import com.liferay.osb.customer.metrics.sync.model.SyncState;
-import com.liferay.osb.customer.metrics.sync.service.SyncStateLocalService;
 import com.liferay.osb.customer.zendesk.model.ZendeskArticle;
 
-import java.util.List;
-import java.util.Map;
-
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Kyle Bischof
  */
 @Component(immediate = true, service = MetricsModel.class)
 public class ZendeskArticleMetricsModel
-	implements MetricsModel<ZendeskArticle> {
-
-	@Override
-	public boolean allowDeleteAll() {
-		return false;
-	}
-
-	@Override
-	public void deleteAll() throws Exception {
-	}
-
-	@Override
-	public Map<String, Object> getAttributes(ZendeskArticle model) {
-		return null;
-	}
-
-	@Override
-	public String[] getMappingTables() {
-		return null;
-	}
-
-	@Override
-	public List<Map<String, Object>> getMappingValues(ZendeskArticle model) {
-		return null;
-	}
+	extends ZendeskBaseMetricsModel<ZendeskArticle> {
 
 	@Override
 	public Class getModelClass() {
 		return ZendeskArticle.class;
 	}
-
-	@Override
-	public String getModelName() {
-		return null;
-	}
-
-	@Override
-	public String getModelPrimaryKeyName() {
-		return null;
-	}
-
-	@Override
-	public boolean hasMapping() {
-		return false;
-	}
-
-	@Override
-	public void resyncAll() throws Exception {
-		SyncState syncState = _syncStateLocalService.fetchSyncState(
-			ZendeskArticle.class.getName());
-
-		syncState.setLastRunTime(0);
-
-		_syncStateLocalService.updateSyncState(syncState);
-	}
-
-	@Reference
-	private SyncStateLocalService _syncStateLocalService;
 
 }
