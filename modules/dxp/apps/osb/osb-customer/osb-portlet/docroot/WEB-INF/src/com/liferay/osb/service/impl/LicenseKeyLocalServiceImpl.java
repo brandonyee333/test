@@ -1530,14 +1530,14 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		subscriptionSender.addFileAttachment(file);
 		subscriptionSender.setCompanyId(OSBConstants.COMPANY_ID);
-		subscriptionSender.setFrom("sales@liferay.com", "Liferay, Inc.");
+		subscriptionSender.setFrom("hello@liferay.com", "Liferay");
 		subscriptionSender.setHtmlFormat(true);
 		subscriptionSender.setLocalizedBodyMap(bodyMap);
 		subscriptionSender.setLocalizedSubjectMap(subjectMap);
 		subscriptionSender.setMailId(
 			"license_key", licenseKey.getLicenseKeyId());
 		subscriptionSender.setPortletId(OSBPortletKeys.OSB_LICENSE);
-		subscriptionSender.setReplyToAddress("sales@liferay.com");
+		subscriptionSender.setReplyToAddress("hello@liferay.com");
 
 		subscriptionSender.addRuntimeSubscribers(emailAddress, fullName);
 
