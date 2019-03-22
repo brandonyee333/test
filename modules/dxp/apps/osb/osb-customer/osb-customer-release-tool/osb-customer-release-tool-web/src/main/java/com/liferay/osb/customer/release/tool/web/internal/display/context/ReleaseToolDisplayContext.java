@@ -189,7 +189,7 @@ public class ReleaseToolDisplayContext {
 		return _highlightsFiltersJSONArray;
 	}
 
-	public JSONArray getJIRAComponents() throws PortalException {
+	public JSONArray getJIRAComponentFiltersJSONArray() throws PortalException {
 		List<JIRAComponent> jiraComponents =
 			JIRAComponentLocalServiceUtil.getJIRAComponents(true);
 
@@ -199,8 +199,7 @@ public class ReleaseToolDisplayContext {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 			jsonObject.put("name", jiraComponent.getName());
-			jsonObject.put(
-				"value", Long.valueOf(jiraComponent.getJiraComponentId()));
+			jsonObject.put("value", jiraComponent.getJiraComponentId());
 
 			jsonArray.put(jsonObject);
 		}

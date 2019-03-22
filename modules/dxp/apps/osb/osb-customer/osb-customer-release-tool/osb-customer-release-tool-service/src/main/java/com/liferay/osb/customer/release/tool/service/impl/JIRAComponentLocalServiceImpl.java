@@ -23,11 +23,12 @@ import java.util.List;
 /**
  * @author Jenny Chen
  */
-public class JIRAComponentLocalServiceImpl extends JIRAComponentLocalServiceBaseImpl {
+public class JIRAComponentLocalServiceImpl
+	extends JIRAComponentLocalServiceBaseImpl {
 
 	public JIRAComponent addJIRAComponent(
 			long remoteId, String name, boolean visible)
-			throws PortalException {
+		throws PortalException {
 
 		long jiraComponentId = counterLocalService.increment();
 
@@ -38,9 +39,7 @@ public class JIRAComponentLocalServiceImpl extends JIRAComponentLocalServiceBase
 		jiraComponent.setName(name);
 		jiraComponent.setVisible(visible);
 
-		jiraComponentPersistence.update(jiraComponent);
-
-		return jiraComponent;
+		return jiraComponentPersistence.update(jiraComponent);
 	}
 
 	public List<JIRAComponent> getJIRAComponents(boolean visible) {
@@ -53,33 +52,13 @@ public class JIRAComponentLocalServiceImpl extends JIRAComponentLocalServiceBase
 		JIRAComponent jiraComponent = jiraComponentPersistence.fetchByRemoteId(
 			remoteId);
 
-		if (jiraComponent != null) {
-			return updateJIRAComponent(
-				remoteId, name, jiraComponent.getVisible());
-		}
-		else {
-			return updateJIRAComponent(remoteId, name, true);
-		}
-	}
-
-	public JIRAComponent updateJIRAComponent(
-			long remoteId, String name, boolean visible)
-		throws PortalException {
-
-		JIRAComponent jiraComponent = jiraComponentPersistence.fetchByRemoteId(
-			remoteId);
-
-		if (jiraComponent != null) {
-			jiraComponent.setName(name);
-			jiraComponent.setVisible(visible);
-
-			jiraComponentPersistence.update(jiraComponent);
-		}
-		else {
-			addJIRAComponent(remoteId, name, visible);
+		if (jiraComponent == null) {
+			return addJIRAComponent(remoteId, name, true);
 		}
 
-		return jiraComponent;
+		jiraComponent.setName(name);
+
+		return jiraComponentPersistence.update(jiraComponent);
 	}
 
 }

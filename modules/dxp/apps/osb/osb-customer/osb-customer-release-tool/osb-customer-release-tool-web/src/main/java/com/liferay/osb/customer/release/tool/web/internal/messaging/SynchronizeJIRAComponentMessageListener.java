@@ -44,8 +44,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Jenny Chen
  */
 @Component(
-	immediate = true,
-	service = SynchronizeJIRAComponentMessageListener.class
+	immediate = true, service = SynchronizeJIRAComponentMessageListener.class
 )
 public class SynchronizeJIRAComponentMessageListener
 	extends BaseMessageListener {
@@ -84,13 +83,12 @@ public class SynchronizeJIRAComponentMessageListener
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-			long jiraComponentId = jsonObject.getLong("value");
-
+			long jiraComponentRemoteId = jsonObject.getLong("id");
 			String name = jsonObject.getString("name");
 
 			JIRAComponent jiraComponent =
 				_jiraComponentLocalService.updateJIRAComponent(
-					jiraComponentId, name);
+					jiraComponentRemoteId, name);
 
 			jiraComponents.remove(jiraComponent);
 		}

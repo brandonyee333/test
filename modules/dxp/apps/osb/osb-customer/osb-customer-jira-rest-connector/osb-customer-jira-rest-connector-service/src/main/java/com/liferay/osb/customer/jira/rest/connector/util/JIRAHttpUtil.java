@@ -38,7 +38,8 @@ import java.util.Map;
  */
 public class JIRAHttpUtil {
 
-	public static JSONObject delete(String endpoint, JSONObject dataJSONObject)
+	public static JSONObject deleteToJSONObject(
+			String endpoint, JSONObject dataJSONObject)
 		throws PortalException {
 
 		Http.Options options = new Http.Options();
@@ -46,20 +47,39 @@ public class JIRAHttpUtil {
 		options.setDelete(true);
 		options.setLocation(_toURI(endpoint));
 
-		return _sendObject(dataJSONObject.toString(), options);
+		return _sendToJSONObject(dataJSONObject.toString(), options);
 	}
 
-	public static JSONObject get(String endpoint, JSONObject dataJSONObject)
+	public static String get(String endpoint) throws PortalException {
+		Http.Options options = new Http.Options();
+
+		options.setLocation(_toURI(endpoint));
+
+		return _send(StringPool.BLANK, options);
+	}
+
+	public static JSONArray getToJSONArray(String endpoint)
 		throws PortalException {
 
 		Http.Options options = new Http.Options();
 
 		options.setLocation(_toURI(endpoint));
 
-		return _sendObject(dataJSONObject.toString(), options);
+		return _sendToJSONArray(StringPool.BLANK, options);
 	}
 
-	public static JSONObject get(
+	public static JSONObject getToJSONObject(
+			String endpoint, JSONObject dataJSONObject)
+		throws PortalException {
+
+		Http.Options options = new Http.Options();
+
+		options.setLocation(_toURI(endpoint));
+
+		return _sendToJSONObject(dataJSONObject.toString(), options);
+	}
+
+	public static JSONObject getToJSONObject(
 			String endpoint, Map<String, String> parameters)
 		throws PortalException {
 
@@ -73,22 +93,11 @@ public class JIRAHttpUtil {
 
 		options.setLocation(url);
 
-		return _sendObject(StringPool.BLANK, options);
+		return _sendToJSONObject(StringPool.BLANK, options);
 	}
 
-	public static JSONArray get(String endpoint, String replaceAll)
-		throws PortalException {
-
-		Http.Options options = new Http.Options();
-
-		String url = _toURI(endpoint);
-
-		options.setLocation(url);
-
-		return _sendArray(StringPool.BLANK, options, replaceAll);
-	}
-
-	public static JSONObject post(String endpoint, JSONObject dataJSONObject)
+	public static JSONObject postToJSONObject(
+			String endpoint, JSONObject dataJSONObject)
 		throws PortalException {
 
 		Http.Options options = new Http.Options();
@@ -96,10 +105,11 @@ public class JIRAHttpUtil {
 		options.setLocation(_toURI(endpoint));
 		options.setPost(true);
 
-		return _sendObject(dataJSONObject.toString(), options);
+		return _sendToJSONObject(dataJSONObject.toString(), options);
 	}
 
-	public static JSONObject put(String endpoint, JSONObject dataJSONObject)
+	public static JSONObject putToJSONObject(
+			String endpoint, JSONObject dataJSONObject)
 		throws PortalException {
 
 		Http.Options options = new Http.Options();
@@ -107,7 +117,7 @@ public class JIRAHttpUtil {
 		options.setLocation(_toURI(endpoint));
 		options.setPut(true);
 
-		return _sendObject(dataJSONObject.toString(), options);
+		return _sendToJSONObject(dataJSONObject.toString(), options);
 	}
 
 	private static String _getCredentials() {
@@ -119,8 +129,7 @@ public class JIRAHttpUtil {
 		return "Basic " + Base64.encode(jiraUserNameAndJiraPassword.getBytes());
 	}
 
-	private static JSONArray _sendArray(
-			String body, Http.Options options, String replaceAll)
+	private static String _send(String body, Http.Options options)
 		throws PortalException {
 
 		options.addHeader("Authorization", _CREDENTIALS);
@@ -132,9 +141,8 @@ public class JIRAHttpUtil {
 		options.addHeader("X-Atlassian-Token", "nocheck");
 		options.setBody(body, contentType, StringPool.UTF8);
 
-		String response = StringPool.BLANK;
-
 		try {
+			String response = StringPool.BLANK;
 
 			// Use HttpUtil#URLtoByteArray method to avoid a
 			// NullPointerException
@@ -144,20 +152,24 @@ public class JIRAHttpUtil {
 			if (bytes != null) {
 				response = new String(bytes);
 			}
+
+			if (_log.isDebugEnabled()) {
+				_log.debug("Response from JIRA: " + response);
+			}
+
+			return response;
 		}
 		catch (IOException ioe) {
 			throw new JIRAResponseIOException(ioe);
 		}
+	}
 
-		if (_log.isDebugEnabled()) {
-			_log.debug("Response from JIRA: " + response);
-		}
+	private static JSONArray _sendToJSONArray(String body, Http.Options options)
+		throws PortalException {
+
+		String response = _send(body, options);
 
 		if (Validator.isNotNull(response)) {
-			if (!replaceAll.isEmpty()) {
-				response = response.replaceAll(replaceAll, StringPool.BLANK);
-			}
-
 			return JSONFactoryUtil.createJSONArray(response);
 		}
 		else {
@@ -165,38 +177,11 @@ public class JIRAHttpUtil {
 		}
 	}
 
-	private static JSONObject _sendObject(String body, Http.Options options)
+	private static JSONObject _sendToJSONObject(
+			String body, Http.Options options)
 		throws PortalException {
 
-		options.addHeader("Authorization", _CREDENTIALS);
-
-		String contentType = "application" + StringPool.SLASH + "json";
-
-		options.addHeader("Content-Type", contentType);
-
-		options.addHeader("X-Atlassian-Token", "nocheck");
-		options.setBody(body, contentType, StringPool.UTF8);
-
-		String response = StringPool.BLANK;
-
-		try {
-
-			// Use HttpUtil#URLtoByteArray method to avoid a
-			// NullPointerException
-
-			byte[] bytes = HttpUtil.URLtoByteArray(options);
-
-			if (bytes != null) {
-				response = new String(bytes);
-			}
-		}
-		catch (IOException ioe) {
-			throw new JIRAResponseIOException(ioe);
-		}
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Response from JIRA: " + response);
-		}
+		String response = _send(body, options);
 
 		if (Validator.isNotNull(response)) {
 			return JSONFactoryUtil.createJSONObject(response);

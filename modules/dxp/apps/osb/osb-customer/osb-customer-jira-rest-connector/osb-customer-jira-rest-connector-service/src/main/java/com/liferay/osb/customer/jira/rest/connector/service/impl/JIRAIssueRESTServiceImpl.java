@@ -56,7 +56,7 @@ public class JIRAIssueRESTServiceImpl implements JIRAIssueRESTService {
 			projectKey, issueType, summary, description, assigneeName, labels,
 			customFields);
 
-		JSONObject responseJSONObject = JIRAHttpUtil.post(
+		JSONObject responseJSONObject = JIRAHttpUtil.postToJSONObject(
 			_URL_REST_API_2 + "issue", jiraIssue.toJSONObject());
 
 		handleResponseErrors(responseJSONObject);
@@ -69,10 +69,9 @@ public class JIRAIssueRESTServiceImpl implements JIRAIssueRESTService {
 	}
 
 	public JSONObject getJIRAIssue(String ticketKey) throws PortalException {
-		JSONObject responseJSONObject =
-			JIRAHttpUtil.get(
-				_URL_REST_API_2 + "issue/" + ticketKey,
-				JSONFactoryUtil.createJSONObject());
+		JSONObject responseJSONObject = JIRAHttpUtil.getToJSONObject(
+			_URL_REST_API_2 + "issue/" + ticketKey,
+			JSONFactoryUtil.createJSONObject());
 
 		handleResponseErrors(responseJSONObject);
 
@@ -98,7 +97,7 @@ public class JIRAIssueRESTServiceImpl implements JIRAIssueRESTService {
 		parameters.put("maxResults", String.valueOf(maxResults));
 		parameters.put("startAt", String.valueOf(startAt));
 
-		JSONObject responseJSONObject = JIRAHttpUtil.get(
+		JSONObject responseJSONObject = JIRAHttpUtil.getToJSONObject(
 			_URL_REST_API_2 + "search", parameters);
 
 		handleResponseErrors(responseJSONObject);
@@ -118,7 +117,7 @@ public class JIRAIssueRESTServiceImpl implements JIRAIssueRESTService {
 			projectKey, StringPool.BLANK, summary, description, assigneeName,
 			labels, customFields);
 
-		JSONObject responseJSONObject = JIRAHttpUtil.put(
+		JSONObject responseJSONObject = JIRAHttpUtil.putToJSONObject(
 			_URL_REST_API_2 + "issue/" + ticketKey, jiraIssue.toJSONObject());
 
 		handleResponseErrors(responseJSONObject);
@@ -183,7 +182,7 @@ public class JIRAIssueRESTServiceImpl implements JIRAIssueRESTService {
 			return transitionId;
 		}
 
-		JSONObject responseJSONObject = JIRAHttpUtil.get(
+		JSONObject responseJSONObject = JIRAHttpUtil.getToJSONObject(
 			_getTransitionsEndpoint(ticketKey),
 			JSONFactoryUtil.createJSONObject());
 
@@ -224,7 +223,7 @@ public class JIRAIssueRESTServiceImpl implements JIRAIssueRESTService {
 
 		updateStatusJSONObject.put("transition", transitionJSONObject);
 
-		JSONObject responseJSONObject = JIRAHttpUtil.post(
+		JSONObject responseJSONObject = JIRAHttpUtil.postToJSONObject(
 			_getTransitionsEndpoint(ticketKey), updateStatusJSONObject);
 
 		handleResponseErrors(responseJSONObject);
