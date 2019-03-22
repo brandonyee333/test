@@ -2201,6 +2201,9 @@ public class AccountEntryLocalServiceImpl
 	}
 
 	protected int getStatus(long accountEntryId) throws PortalException {
+		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
+			accountEntryId);
+
 		List<OfferingEntry> offeringEntries =
 			offeringEntryPersistence.findByAccountEntryId(accountEntryId);
 
@@ -2213,6 +2216,14 @@ public class AccountEntryLocalServiceImpl
 					OfferingEntryConstants.STATUS_ACTIVE) {
 
 				continue;
+			}
+
+			if (accountEntry.getType() != AccountEntryConstants.TYPE_TRIAL) {
+				if (offeringEntry.getType() !=
+						OfferingEntryConstants.TYPE_REGULAR) {
+
+					continue;
+				}
 			}
 
 			ProductEntry productEntry = offeringEntry.getProductEntry();
