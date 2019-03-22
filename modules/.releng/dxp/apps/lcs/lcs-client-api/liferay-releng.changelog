@@ -7,3 +7,8 @@
 # Bundle Version 1.1.0
 #
 4feecdeb6eab12bacd8093f231fdd7519ec9117a^..7da8692fcea93e37327abc46c8510db36c81004b=CLDSVCS-3953
+
+#
+# Bundle Version 2.0.0
+#
+7da8692fcea93e37327abc46c8510db36c81004b^..67cae8c4780b3c18c99cd19f51d8011d07cb10b1=CLDSVCS-3953 CLDSVCS-3956
