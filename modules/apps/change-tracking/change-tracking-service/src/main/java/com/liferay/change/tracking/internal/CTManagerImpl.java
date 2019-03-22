@@ -16,9 +16,12 @@ package com.liferay.change.tracking.internal;
 
 import com.liferay.change.tracking.CTEngineManager;
 import com.liferay.change.tracking.CTManager;
+import com.liferay.change.tracking.configuration.CTConfiguration;
+import com.liferay.change.tracking.configuration.CTConfigurationRegistry;
 import com.liferay.change.tracking.exception.CTEntryException;
 import com.liferay.change.tracking.exception.CTException;
 import com.liferay.change.tracking.exception.DuplicateCTEntryException;
+import com.liferay.change.tracking.internal.util.CTEntryCollisionHelperUtil;
 import com.liferay.change.tracking.internal.util.ChangeTrackingThreadLocal;
 import com.liferay.change.tracking.model.CTCollection;
 import com.liferay.change.tracking.model.CTEntry;
@@ -33,6 +36,7 @@ import com.liferay.portal.kernel.dao.orm.QueryDefinition;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
@@ -42,10 +46,12 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.Portal;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
@@ -423,65 +429,72 @@ public class CTManagerImpl implements CTManager {
 
 		CTCollection ctCollection = ctCollectionOptional.get();
 
+		Optional<CTEntry> ctEntryOptional = Optional.empty();
+
 		try {
-			ServiceContext serviceContext = new ServiceContext();
-
-			serviceContext.setAttribute("force", force);
-
-			Optional<CTEntry> previousModelChangeCTEntryOptional =
-				getLatestModelChangeCTEntryOptional(
-					userId, modelResourcePrimKey);
-
-			// Creating a new change tracking entry
-
-			CTEntry ctEntry = _ctEntryLocalService.addCTEntry(
-				userId, modelClassNameId, modelClassPK, modelResourcePrimKey,
-				changeType, ctCollection.getCtCollectionId(), serviceContext);
-
-			// Updating existing related change tracking entry aggregate
-
-			previousModelChangeCTEntryOptional.flatMap(
-				latestModelChangeCTEntry -> getCTEntryAggregateOptional(
-					latestModelChangeCTEntry, ctCollection)
-			).ifPresent(
-				ctEntryAggregate -> _updateCTEntryInCTEntryAggregate(
-					ctEntryAggregate, ctEntry, force)
-			);
-
-			return Optional.of(ctEntry);
+			ctEntryOptional = TransactionInvokerUtil.invoke(
+				_transactionConfig,
+				() -> _registerModelChange(
+					userId, modelClassNameId, modelClassPK,
+					modelResourcePrimKey, changeType, force, companyId,
+					ctCollection));
 		}
-		catch (DuplicateCTEntryException dctee) {
-			StringBundler sb = new StringBundler(8);
+		catch (Throwable t) {
+			if (t instanceof CTException) {
+				throw (CTException)t;
+			}
 
-			sb.append("Duplicate CTEntry with model class name ID ");
-			sb.append(modelClassNameId);
-			sb.append(", model class PK ");
-			sb.append(modelClassPK);
-			sb.append(", and model resource primary key ");
-			sb.append(modelResourcePrimKey);
-			sb.append(" in change tracking collection ");
-			sb.append(ctCollection.getCtCollectionId());
-
-			throw new CTEntryException(
-				0L, companyId, userId, modelClassNameId, modelClassPK,
-				modelResourcePrimKey, ctCollection.getCtCollectionId(),
-				sb.toString(), dctee);
+			_log.error("Unable to register model change", t);
 		}
-		catch (PortalException pe) {
-			StringBundler sb = new StringBundler(9);
 
-			sb.append("Unable to register model change with model class name ");
-			sb.append("ID ");
-			sb.append(modelClassNameId);
-			sb.append(", model class PK ");
-			sb.append(modelClassPK);
-			sb.append(", and model resource primary key ");
-			sb.append(modelResourcePrimKey);
-			sb.append(" in change tracking collection ");
-			sb.append(ctCollection.getCtCollectionId());
+		return ctEntryOptional;
+	}
 
-			throw new CTException(companyId, sb.toString(), pe);
+	@Override
+	public <V extends BaseModel> void registerRelatedChanges(
+		long userId, long classNameId, long classPK) {
+
+		registerRelatedChanges(userId, classNameId, classPK, false);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <V extends BaseModel> void registerRelatedChanges(
+		long userId, long classNameId, long classPK, boolean force) {
+
+		long companyId = _getCompanyId(userId);
+
+		if (!_ctEngineManager.isChangeTrackingEnabled(companyId) ||
+			!_ctEngineManager.isChangeTrackingSupported(
+				companyId, classNameId)) {
+
+			return;
 		}
+
+		Optional<CTConfiguration<?, ?>> ctConfigurationOptional =
+			_ctConfigurationRegistry.
+				getCTConfigurationOptionalByVersionClassName(
+					_portal.getClassName(classNameId));
+
+		if (!ctConfigurationOptional.isPresent()) {
+			return;
+		}
+
+		CTConfiguration<?, V> ctConfiguration =
+			(CTConfiguration<?, V>)ctConfigurationOptional.get();
+
+		List<Function<V, ? extends BaseModel>> relatedEntityFunctions =
+			ctConfiguration.getVersionEntityRelatedEntityFunctions();
+
+		Function<Long, V> versionEntityByVersionEntityIdFunction =
+			ctConfiguration.getVersionEntityByVersionEntityIdFunction();
+
+		V versionEntity = versionEntityByVersionEntityIdFunction.apply(classPK);
+
+		relatedEntityFunctions.forEach(
+			relatedEntityFunction -> _registerRelatedChange(
+				userId, classNameId, classPK, versionEntity,
+				relatedEntityFunction, force));
 	}
 
 	@Override
@@ -539,6 +552,14 @@ public class CTManagerImpl implements CTManager {
 		}
 
 		return ctEntryAggregate;
+	}
+
+	private void _checkCollisions(CTEntry ctEntry, CTCollection ctCollection) {
+		if (!ctCollection.isProduction()) {
+			return;
+		}
+
+		CTEntryCollisionHelperUtil.checkCollidingCTEntries(ctEntry);
 	}
 
 	private boolean _containsResource(
@@ -623,6 +644,115 @@ public class CTManagerImpl implements CTManager {
 			ctCollectionId, modelClassNameId, modelClassPK);
 	}
 
+	private Optional<CTEntry> _registerModelChange(
+			long userId, long modelClassNameId, long modelClassPK,
+			long modelResourcePrimKey, int changeType, boolean force,
+			long companyId, CTCollection ctCollection)
+		throws CTException {
+
+		try {
+			ServiceContext serviceContext = new ServiceContext();
+
+			serviceContext.setAttribute("force", force);
+
+			Optional<CTEntry> previousModelChangeCTEntryOptional =
+				getLatestModelChangeCTEntryOptional(
+					userId, modelResourcePrimKey);
+
+			// Creating a new change tracking entry
+
+			CTEntry ctEntry = _ctEntryLocalService.addCTEntry(
+				userId, modelClassNameId, modelClassPK, modelResourcePrimKey,
+				changeType, ctCollection.getCtCollectionId(), serviceContext);
+
+			_checkCollisions(ctEntry, ctCollection);
+
+			// Updating existing related change tracking entry aggregate
+
+			previousModelChangeCTEntryOptional.flatMap(
+				latestModelChangeCTEntry -> getCTEntryAggregateOptional(
+					latestModelChangeCTEntry, ctCollection)
+			).ifPresent(
+				ctEntryAggregate -> _updateCTEntryInCTEntryAggregate(
+					ctEntryAggregate, ctEntry, force)
+			);
+
+			return Optional.of(ctEntry);
+		}
+		catch (DuplicateCTEntryException dctee) {
+			StringBundler sb = new StringBundler(8);
+
+			sb.append("Duplicate CTEntry with model class name ID ");
+			sb.append(modelClassNameId);
+			sb.append(", model class PK ");
+			sb.append(modelClassPK);
+			sb.append(", and model resource primary key ");
+			sb.append(modelResourcePrimKey);
+			sb.append(" in change tracking collection ");
+			sb.append(ctCollection.getCtCollectionId());
+
+			throw new CTEntryException(
+				0L, companyId, userId, modelClassNameId, modelClassPK,
+				modelResourcePrimKey, ctCollection.getCtCollectionId(),
+				sb.toString(), dctee);
+		}
+		catch (PortalException pe) {
+			StringBundler sb = new StringBundler(9);
+
+			sb.append("Unable to register model change with model class name ");
+			sb.append("ID ");
+			sb.append(modelClassNameId);
+			sb.append(", model class PK ");
+			sb.append(modelClassPK);
+			sb.append(", and model resource primary key ");
+			sb.append(modelResourcePrimKey);
+			sb.append(" in change tracking collection ");
+			sb.append(ctCollection.getCtCollectionId());
+
+			throw new CTException(companyId, sb.toString(), pe);
+		}
+	}
+
+	private <V extends BaseModel, R extends BaseModel> void
+		_registerRelatedChange(
+			long userId, long classNameId, long classPK, V versionEntity,
+			Function<V, R> relatedEntityFunction, boolean force) {
+
+		Optional<CTEntry> versionEntityCTEntryOptional =
+			getModelChangeCTEntryOptional(userId, classNameId, classPK);
+
+		if (!versionEntityCTEntryOptional.isPresent()) {
+			return;
+		}
+
+		R relatedEntity = relatedEntityFunction.apply(versionEntity);
+
+		if (relatedEntity == null) {
+			return;
+		}
+
+		long relatedEntityClassPK = (Long)relatedEntity.getPrimaryKeyObj();
+
+		Optional<CTEntry> relatedEntityCTEntryOptional =
+			getModelChangeCTEntryOptional(
+				userId,
+				_portal.getClassNameId(relatedEntity.getModelClassName()),
+				relatedEntityClassPK);
+
+		if (!relatedEntityCTEntryOptional.isPresent()) {
+			relatedEntityCTEntryOptional = getLatestModelChangeCTEntryOptional(
+				userId, relatedEntityClassPK);
+		}
+
+		if (!relatedEntityCTEntryOptional.isPresent()) {
+			return;
+		}
+
+		addRelatedCTEntry(
+			userId, versionEntityCTEntryOptional.get(),
+			relatedEntityCTEntryOptional.get(), force);
+	}
+
 	private void _updateCTEntryInCTEntryAggregate(
 		CTEntryAggregate ctEntryAggregate, CTEntry ctEntry) {
 
@@ -673,6 +803,9 @@ public class CTManagerImpl implements CTManager {
 	private CTCollectionLocalService _ctCollectionLocalService;
 
 	@Reference
+	private CTConfigurationRegistry _ctConfigurationRegistry;
+
+	@Reference
 	private CTEngineManager _ctEngineManager;
 
 	@Reference
@@ -680,6 +813,9 @@ public class CTManagerImpl implements CTManager {
 
 	@Reference
 	private CTEntryLocalService _ctEntryLocalService;
+
+	@Reference
+	private Portal _portal;
 
 	private final TransactionConfig _transactionConfig =
 		TransactionConfig.Factory.create(

@@ -56,6 +56,8 @@ public class CTEntryWrapper
 		attributes.put("modelResourcePrimKey", getModelResourcePrimKey());
 		attributes.put("changeType", getChangeType());
 		attributes.put("status", getStatus());
+		attributes.put("originalCollectionId", getOriginalCollectionId());
+		attributes.put("collision", isCollision());
 
 		return attributes;
 	}
@@ -128,6 +130,19 @@ public class CTEntryWrapper
 		if (status != null) {
 			setStatus(status);
 		}
+
+		Long originalCollectionId = (Long)attributes.get(
+			"originalCollectionId");
+
+		if (originalCollectionId != null) {
+			setOriginalCollectionId(originalCollectionId);
+		}
+
+		Boolean collision = (Boolean)attributes.get("collision");
+
+		if (collision != null) {
+			setCollision(collision);
+		}
 	}
 
 	/**
@@ -138,6 +153,16 @@ public class CTEntryWrapper
 	@Override
 	public int getChangeType() {
 		return model.getChangeType();
+	}
+
+	/**
+	 * Returns the collision of this ct entry.
+	 *
+	 * @return the collision of this ct entry
+	 */
+	@Override
+	public boolean getCollision() {
+		return model.getCollision();
 	}
 
 	/**
@@ -216,6 +241,16 @@ public class CTEntryWrapper
 	}
 
 	/**
+	 * Returns the original collection ID of this ct entry.
+	 *
+	 * @return the original collection ID of this ct entry
+	 */
+	@Override
+	public long getOriginalCollectionId() {
+		return model.getOriginalCollectionId();
+	}
+
+	/**
 	 * Returns the primary key of this ct entry.
 	 *
 	 * @return the primary key of this ct entry
@@ -270,6 +305,16 @@ public class CTEntryWrapper
 		return model.hasCTEntryAggregate();
 	}
 
+	/**
+	 * Returns <code>true</code> if this ct entry is collision.
+	 *
+	 * @return <code>true</code> if this ct entry is collision; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isCollision() {
+		return model.isCollision();
+	}
+
 	@Override
 	public void persist() {
 		model.persist();
@@ -283,6 +328,16 @@ public class CTEntryWrapper
 	@Override
 	public void setChangeType(int changeType) {
 		model.setChangeType(changeType);
+	}
+
+	/**
+	 * Sets whether this ct entry is collision.
+	 *
+	 * @param collision the collision of this ct entry
+	 */
+	@Override
+	public void setCollision(boolean collision) {
+		model.setCollision(collision);
 	}
 
 	/**
@@ -353,6 +408,16 @@ public class CTEntryWrapper
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		model.setModifiedDate(modifiedDate);
+	}
+
+	/**
+	 * Sets the original collection ID of this ct entry.
+	 *
+	 * @param originalCollectionId the original collection ID of this ct entry
+	 */
+	@Override
+	public void setOriginalCollectionId(long originalCollectionId) {
+		model.setOriginalCollectionId(originalCollectionId);
 	}
 
 	/**
