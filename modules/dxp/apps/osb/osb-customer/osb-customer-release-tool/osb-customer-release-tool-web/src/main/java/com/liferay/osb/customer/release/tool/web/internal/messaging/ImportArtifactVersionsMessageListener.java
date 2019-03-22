@@ -16,6 +16,7 @@ package com.liferay.osb.customer.release.tool.web.internal.messaging;
 
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.osb.customer.release.tool.configuration.ReleaseToolConfigurationValues;
+import com.liferay.osb.customer.release.tool.constants.ArtifactVersionConstants;
 import com.liferay.osb.customer.release.tool.service.ArtifactVersionLocalService;
 import com.liferay.osb.customer.release.tool.web.internal.constants.ReleaseAssetCategoryProperty;
 import com.liferay.osb.customer.release.tool.web.internal.util.ReleasesAssetCategoryUtil;
@@ -200,8 +201,10 @@ public class ImportArtifactVersionsMessageListener extends BaseMessageListener {
 				}
 
 				_artifactVersionLocalService.addArtifactVersion(
-					assetCategoryId, bootstrapParts[0], bootstrapParts[1],
-					bootstrapParts[2]);
+					assetCategoryId, ArtifactVersionConstants.OWNER_LIFERAY,
+					ArtifactVersionConstants.REPOSITORY_PUBLIC,
+					bootstrapParts[0], bootstrapParts[1], bootstrapParts[2],
+					ArtifactVersionConstants.PACKAGING_JAR);
 			}
 		}
 	}
@@ -227,8 +230,10 @@ public class ImportArtifactVersionsMessageListener extends BaseMessageListener {
 				}
 
 				_artifactVersionLocalService.addArtifactVersion(
-					assetCategoryId, bundleParts[0], bundleParts[1],
-					bundleParts[2]);
+					assetCategoryId, ArtifactVersionConstants.OWNER_LIFERAY,
+					ArtifactVersionConstants.getRepository(bundleParts[3]),
+					bundleParts[0], bundleParts[1], bundleParts[2],
+					bundleParts[6]);
 			}
 		}
 	}
@@ -254,8 +259,10 @@ public class ImportArtifactVersionsMessageListener extends BaseMessageListener {
 				}
 
 				_artifactVersionLocalService.addArtifactVersion(
-					assetCategoryId, dependencyParts[1], dependencyParts[2],
-					dependencyParts[3]);
+					assetCategoryId, ArtifactVersionConstants.OWNER_THIRD_PARTY,
+					ArtifactVersionConstants.REPOSITORY_THIRD_PARTY,
+					dependencyParts[1], dependencyParts[2], dependencyParts[3],
+					ArtifactVersionConstants.PACKAGING_JAR);
 			}
 		}
 	}

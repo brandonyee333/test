@@ -15,6 +15,7 @@
 package com.liferay.osb.customer.release.tool.web.internal.portlet;
 
 import com.liferay.osb.customer.release.tool.web.internal.constants.ReleaseToolPortletKeys;
+import com.liferay.osb.customer.release.tool.web.internal.search.ArtifactVersionSearcher;
 import com.liferay.osb.customer.release.tool.web.internal.search.FixPackSearcher;
 import com.liferay.osb.customer.release.tool.web.internal.search.JiraIssueSearcher;
 import com.liferay.osb.customer.release.tool.web.internal.util.ReleasesAssetCategoryUtil;
@@ -59,6 +60,8 @@ public class ReleaseToolPortlet extends MVCPortlet {
 		throws IOException, PortletException {
 
 		renderRequest.setAttribute(
+			ArtifactVersionSearcher.class.getName(), _artifactVersionSearcher);
+		renderRequest.setAttribute(
 			FixPackSearcher.class.getName(), _fixPackSearcher);
 		renderRequest.setAttribute(
 			JiraIssueSearcher.class.getName(), _jiraIssueSearcher);
@@ -68,6 +71,9 @@ public class ReleaseToolPortlet extends MVCPortlet {
 
 		super.render(renderRequest, renderResponse);
 	}
+
+	@Reference
+	private ArtifactVersionSearcher _artifactVersionSearcher;
 
 	@Reference
 	private FixPackSearcher _fixPackSearcher;

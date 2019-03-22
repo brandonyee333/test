@@ -14,10 +14,12 @@
 
 package com.liferay.osb.customer.release.tool.service.impl;
 
-import com.liferay.osb.customer.release.tool.exception.DuplicateArtifactVersionException;
 import com.liferay.osb.customer.release.tool.model.ArtifactVersion;
+import com.liferay.osb.customer.release.tool.model.ArtifactVersionRange;
 import com.liferay.osb.customer.release.tool.service.base.ArtifactVersionLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
+
+import java.util.List;
 
 /**
  * @author Amos Fong
@@ -26,19 +28,14 @@ public class ArtifactVersionLocalServiceImpl
 	extends ArtifactVersionLocalServiceBaseImpl {
 
 	public ArtifactVersion addArtifactVersion(
-			long releaseAssetCategoryId, String group, String name,
-			String version)
-		throws PortalException {
+		long releaseAssetCategoryId, int owner, int repository, String group,
+		String name, String version, String packaging) {
 
 		ArtifactVersion artifactVersion =
 			artifactVersionPersistence.fetchByRACI_G_N(
 				releaseAssetCategoryId, group, name);
 
 		if (artifactVersion != null) {
-			if (!version.equals(artifactVersion.getVersion())) {
-				throw new DuplicateArtifactVersionException();
-			}
-
 			return artifactVersion;
 		}
 
@@ -47,11 +44,24 @@ public class ArtifactVersionLocalServiceImpl
 		artifactVersion = artifactVersionPersistence.create(artifactVersionId);
 
 		artifactVersion.setReleaseAssetCategoryId(releaseAssetCategoryId);
+		artifactVersion.setOwner(owner);
+		artifactVersion.setRepository(repository);
 		artifactVersion.setGroup(group);
 		artifactVersion.setName(name);
 		artifactVersion.setVersion(version);
+		artifactVersion.setPackaging(packaging);
 
 		return artifactVersionPersistence.update(artifactVersion);
+	}
+
+	public List<ArtifactVersionRange> getArtifactVersionRanges(
+			long fromReleaseAssetCategoryId, long toReleaseAssetCategoryId,
+			int[] owners, String keywords, boolean changesOnly)
+		throws PortalException {
+
+		return artifactVersionFinder.findArtifactVersionRangesByRACI_RACI_O_K(
+			fromReleaseAssetCategoryId, toReleaseAssetCategoryId, owners,
+			keywords, changesOnly);
 	}
 
 }

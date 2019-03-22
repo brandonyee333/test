@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+
+<custom-sql>
+	<sql id="com.liferay.osb.customer.release.tool.service.persistence.ArtifactVersionFinder.findArtifactVersionRangesByRACI_RACI_O_K">
+		<![CDATA[
+			SELECT
+				OSBCustomer_ArtifactVersion1.repository, OSBCustomer_ArtifactVersion1.group_, OSBCustomer_ArtifactVersion1.name, OSBCustomer_ArtifactVersion1.version AS fromVersion, OSBCustomer_ArtifactVersion2.version AS toVersion, OSBCustomer_ArtifactVersion1.packaging
+			FROM
+				(
+					SELECT
+						OSBCustomer_ArtifactVersion.*
+					FROM
+						OSBCustomer_ArtifactVersion
+					WHERE
+						(OSBCustomer_ArtifactVersion.releaseAssetCategoryId = ?) [$AND_OR_CONNECTOR$]
+						(OSBCustomer_ArtifactVersion.owner = ?) [$AND_OR_CONNECTOR$]
+						(
+							(OSBCustomer_ArtifactVersion.group_ LIKE ?) OR
+							(OSBCustomer_ArtifactVersion.name LIKE ?)
+						)
+				)
+				AS OSBCustomer_ArtifactVersion1
+			LEFT JOIN
+				(
+					SELECT
+						OSBCustomer_ArtifactVersion.*
+					FROM
+						OSBCustomer_ArtifactVersion
+					WHERE
+						(OSBCustomer_ArtifactVersion.releaseAssetCategoryId = ?) [$AND_OR_CONNECTOR$]
+						(OSBCustomer_ArtifactVersion.owner = ?) [$AND_OR_CONNECTOR$]
+						(
+							(OSBCustomer_ArtifactVersion.group_ LIKE ?) OR
+							(OSBCustomer_ArtifactVersion.name LIKE ?)
+						)
+				)
+				AS OSBCustomer_ArtifactVersion2 ON
+					(OSBCustomer_ArtifactVersion2.group_ = OSBCustomer_ArtifactVersion1.group_) AND
+					(OSBCustomer_ArtifactVersion2.name = OSBCustomer_ArtifactVersion1.name)
+			[$CHANGES_ONLY$]
+			UNION ALL
+			SELECT
+				OSBCustomer_ArtifactVersion2.repository, OSBCustomer_ArtifactVersion2.group_, OSBCustomer_ArtifactVersion2.name, OSBCustomer_ArtifactVersion1.version AS fromVersion, OSBCustomer_ArtifactVersion2.version AS toVersion, OSBCustomer_ArtifactVersion2.packaging
+			FROM
+				(
+					SELECT
+						OSBCustomer_ArtifactVersion.*
+					FROM
+						OSBCustomer_ArtifactVersion
+					WHERE
+						(OSBCustomer_ArtifactVersion.releaseAssetCategoryId = ?) [$AND_OR_CONNECTOR$]
+						(OSBCustomer_ArtifactVersion.owner = ?) [$AND_OR_CONNECTOR$]
+						(
+							(OSBCustomer_ArtifactVersion.group_ LIKE ?) OR
+							(OSBCustomer_ArtifactVersion.name LIKE ?)
+						)
+				)
+				AS OSBCustomer_ArtifactVersion1
+			RIGHT JOIN
+				(
+					SELECT
+						OSBCustomer_ArtifactVersion.*
+					FROM
+						OSBCustomer_ArtifactVersion
+					WHERE
+						(OSBCustomer_ArtifactVersion.releaseAssetCategoryId = ?) [$AND_OR_CONNECTOR$]
+						(OSBCustomer_ArtifactVersion.owner = ?) [$AND_OR_CONNECTOR$]
+						(
+							(OSBCustomer_ArtifactVersion.group_ LIKE ?) OR
+							(OSBCustomer_ArtifactVersion.name LIKE ?)
+						)
+				)
+				AS OSBCustomer_ArtifactVersion2 ON
+					(OSBCustomer_ArtifactVersion2.group_ = OSBCustomer_ArtifactVersion1.group_) AND
+					(OSBCustomer_ArtifactVersion2.name = OSBCustomer_ArtifactVersion1.name)
+			WHERE
+				OSBCustomer_ArtifactVersion1.group_ IS NULL
+			ORDER BY
+				group_, name
+		]]>
+	</sql>
+</custom-sql>

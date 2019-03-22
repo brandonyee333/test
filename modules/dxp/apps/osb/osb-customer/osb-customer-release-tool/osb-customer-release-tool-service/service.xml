@@ -12,9 +12,12 @@
 		<!-- Other fields -->
 
 		<column name="releaseAssetCategoryId" type="long" />
+		<column name="owner" type="int" />
+		<column name="repository" type="int" />
 		<column name="group" type="String" />
 		<column name="name" type="String" />
 		<column name="version" type="String" />
+		<column name="packaging" type="String" />
 
 		<!-- Order -->
 
@@ -25,13 +28,13 @@
 
 		<!-- Finder methods -->
 
+		<finder name="ReleaseAssetCategoryId" return-type="Collection">
+			<finder-column name="releaseAssetCategoryId" />
+		</finder>
 		<finder name="RACI_G_N" return-type="ArtifactVersion">
 			<finder-column name="releaseAssetCategoryId" />
 			<finder-column name="group" />
 			<finder-column name="name" />
 		</finder>
 	</entity>
-	<exceptions>
-		<exception>DuplicateArtifactVersion</exception>
-	</exceptions>
 </service-builder>
