@@ -40,9 +40,12 @@ import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.osb.service.SupportRegionLocalServiceUtil;
 import com.liferay.osb.service.SupportResponseLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Address;
+import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.HashSet;
@@ -156,6 +159,10 @@ public class AccountEntrySynchronizer {
 				classNameId, accountEntry.getAccountEntryId(),
 				ExternalIdMapperConstants.TYPE_ZENDESK);
 
+		Address address = accountEntry.getAddress();
+
+		Country country = address.getCountry();
+
 		String jiraProjectKey = StringPool.BLANK;
 		String partnerEntryCode = StringPool.BLANK;
 
@@ -184,7 +191,7 @@ public class AccountEntrySynchronizer {
 			SupportRegionLocalServiceUtil.getSupportRegion(supportRegionIds[0]);
 
 		_zendeskOrganizationWebService.createOrUpdateZendeskOrganization(
-			accountEntry.getCode(),
+			accountEntry.getCode(), country.getName(LocaleUtil.ENGLISH),
 			ZendeskModelListenerUtil.convertAddressToString(
 				accountEntry.getAddress()),
 			String.valueOf(accountEntry.getAccountEntryId()),

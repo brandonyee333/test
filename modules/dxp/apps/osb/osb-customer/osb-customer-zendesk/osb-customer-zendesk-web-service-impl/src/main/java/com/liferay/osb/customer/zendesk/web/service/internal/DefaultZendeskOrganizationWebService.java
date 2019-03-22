@@ -44,11 +44,12 @@ public class DefaultZendeskOrganizationWebService
 	implements ZendeskOrganizationWebService {
 
 	public ZendeskOrganization createOrUpdateZendeskOrganization(
-			String accountCode, String details, String externalId, String name,
-			String notes, String partnerFirstLineSupport,
-			String partnerJiraProject, String partnerCode, String sla,
-			String status, String supportLanguage, String supportRegion,
-			String tier, Set<String> tags)
+			String accountCode, String country, String details,
+			String externalId, String name, String notes,
+			String partnerFirstLineSupport, String partnerJiraProject,
+			String partnerCode, String sla, String status,
+			String supportLanguage, String supportRegion, String tier,
+			Set<String> tags)
 		throws PortalException {
 
 		String endpoint =
@@ -57,7 +58,7 @@ public class DefaultZendeskOrganizationWebService
 
 		JSONObject zendeskOrganizationJSONObject =
 			getZendeskOrganizationJSONObject(
-				accountCode, details, externalId, name, notes,
+				accountCode, country, details, externalId, name, notes,
 				partnerFirstLineSupport, partnerJiraProject, partnerCode, sla,
 				status, supportLanguage, supportRegion, tier, tags);
 
@@ -96,11 +97,11 @@ public class DefaultZendeskOrganizationWebService
 	}
 
 	protected JSONObject getZendeskOrganizationJSONObject(
-		String accountCode, String details, String externalId, String name,
-		String notes, String partnerFirstLineSupport, String partnerJiraProject,
-		String partnerOrganization, String sla, String status,
-		String supportLanguage, String supportRegion, String tier,
-		Set<String> tags) {
+		String accountCode, String country, String details, String externalId,
+		String name, String notes, String partnerFirstLineSupport,
+		String partnerJiraProject, String partnerOrganization, String sla,
+		String status, String supportLanguage, String supportRegion,
+		String tier, Set<String> tags) {
 
 		JSONObject organizationJSONObject = JSONFactoryUtil.createJSONObject();
 
@@ -114,6 +115,10 @@ public class DefaultZendeskOrganizationWebService
 
 		if (Validator.isNotNull(accountCode)) {
 			organizationFieldsJSONObject.put("account_code", accountCode);
+		}
+
+		if (Validator.isNotNull(country)) {
+			organizationFieldsJSONObject.put("country", country);
 		}
 
 		if (Validator.isNotNull(partnerFirstLineSupport)) {
