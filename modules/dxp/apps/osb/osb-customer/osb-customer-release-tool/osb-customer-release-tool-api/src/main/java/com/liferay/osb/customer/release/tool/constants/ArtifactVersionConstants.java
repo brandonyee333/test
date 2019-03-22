@@ -109,15 +109,15 @@ public class ArtifactVersionConstants {
 		return sb.toString();
 	}
 
-	private static final String _REPOSITORY_URL_PRIVATE = 
+	private static final String _REPOSITORY_URL_PRIVATE =
 		"https://repository-cdn.liferay.com/nexus/content/repositories" +
 			"/liferay-private-releases/";
 
-	private static final String _REPOSITORY_URL_PUBLIC = 
+	private static final String _REPOSITORY_URL_PUBLIC =
 		"https://repository-cdn.liferay.com/nexus/content/repositories" +
 			"/liferay-public-releases/";
 
-	private static final String _REPOSITORY_URL_THIRD_PARTY = 
+	private static final String _REPOSITORY_URL_THIRD_PARTY =
 		"https://repository-cdn.liferay.com/nexus/content/repositories/public/";
 
 }

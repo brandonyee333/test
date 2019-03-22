@@ -109,13 +109,11 @@ public class ReleasesAssetCategoryUtil {
 
 			String sql = CustomSQLUtil.get(getClass(), FIND_BY_V_PC);
 
-			String join = CustomSQLUtil.get(
-				getClass(), JOIN_BY_NO_ARTIFACTS);
+			String join = CustomSQLUtil.get(getClass(), JOIN_BY_NO_ARTIFACTS);
 
 			int pos = join.indexOf("WHERE");
 
-			sql = StringUtil.replace(
-				sql, "[$JOIN$]", join.substring(0, pos));
+			sql = StringUtil.replace(sql, "[$JOIN$]", join.substring(0, pos));
 			sql = StringUtil.replace(
 				sql, "[$WHERE$]", join.substring(pos + 5) + " AND ");
 
@@ -143,11 +141,10 @@ public class ReleasesAssetCategoryUtil {
 		finally {
 			DataAccess.cleanUp(con, ps, rs);
 		}
-
 	}
 
 	public List<AssetCategory> getProductAssetCategories() {
-		return  _assetCategoryLocalService.getVocabularyRootCategories(
+		return _assetCategoryLocalService.getVocabularyRootCategories(
 			_releasesAssetVocabulary.getVocabularyId(), QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}

@@ -155,7 +155,7 @@ public class ImportArtifactVersionsMessageListener extends BaseMessageListener {
 			}
 
 			try (InputStream inputStream = zipReader.getEntryAsInputStream(
-					"bootstrap-" + releaseId + ".txt")) { 
+					"bootstrap-" + releaseId + ".txt")) {
 
 				importBootstrapArtifacts(inputStream, assetCategoryId);
 			}
@@ -282,5 +282,4 @@ public class ImportArtifactVersionsMessageListener extends BaseMessageListener {
 	@Reference
 	private TriggerFactory _triggerFactory;
 
-	
 }

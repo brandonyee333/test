@@ -107,7 +107,7 @@ public class ArtifactVersionSearcher extends BaseSearcher {
 			jsonObject.put("fromRepositoryURL", fromRepositoryURL);
 
 			jsonObject.put(
-				"fromVersion", artifactVersionRange.getFromVersion());	
+				"fromVersion", artifactVersionRange.getFromVersion());
 		}
 		else {
 			jsonObject.put("fromVersion", StringPool.DASH);
