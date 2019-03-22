@@ -127,6 +127,274 @@ public class ArtifactVersionUtil {
 	}
 
 	/**
+	 * Returns all the artifact versions where releaseAssetCategoryId = &#63;.
+	 *
+	 * @param releaseAssetCategoryId the release asset category ID
+	 * @return the matching artifact versions
+	 */
+	public static List<ArtifactVersion> findByReleaseAssetCategoryId(
+		long releaseAssetCategoryId) {
+
+		return getPersistence().findByReleaseAssetCategoryId(
+			releaseAssetCategoryId);
+	}
+
+	/**
+	 * Returns a range of all the artifact versions where releaseAssetCategoryId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>ArtifactVersionModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param releaseAssetCategoryId the release asset category ID
+	 * @param start the lower bound of the range of artifact versions
+	 * @param end the upper bound of the range of artifact versions (not inclusive)
+	 * @return the range of matching artifact versions
+	 */
+	public static List<ArtifactVersion> findByReleaseAssetCategoryId(
+		long releaseAssetCategoryId, int start, int end) {
+
+		return getPersistence().findByReleaseAssetCategoryId(
+			releaseAssetCategoryId, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the artifact versions where releaseAssetCategoryId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>ArtifactVersionModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param releaseAssetCategoryId the release asset category ID
+	 * @param start the lower bound of the range of artifact versions
+	 * @param end the upper bound of the range of artifact versions (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching artifact versions
+	 */
+	public static List<ArtifactVersion> findByReleaseAssetCategoryId(
+		long releaseAssetCategoryId, int start, int end,
+		OrderByComparator<ArtifactVersion> orderByComparator) {
+
+		return getPersistence().findByReleaseAssetCategoryId(
+			releaseAssetCategoryId, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the artifact versions where releaseAssetCategoryId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>ArtifactVersionModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param releaseAssetCategoryId the release asset category ID
+	 * @param start the lower bound of the range of artifact versions
+	 * @param end the upper bound of the range of artifact versions (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @return the ordered range of matching artifact versions
+	 */
+	public static List<ArtifactVersion> findByReleaseAssetCategoryId(
+		long releaseAssetCategoryId, int start, int end,
+		OrderByComparator<ArtifactVersion> orderByComparator,
+		boolean retrieveFromCache) {
+
+		return getPersistence().findByReleaseAssetCategoryId(
+			releaseAssetCategoryId, start, end, orderByComparator,
+			retrieveFromCache);
+	}
+
+	/**
+	 * Returns the first artifact version in the ordered set where releaseAssetCategoryId = &#63;.
+	 *
+	 * @param releaseAssetCategoryId the release asset category ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching artifact version
+	 * @throws NoSuchArtifactVersionException if a matching artifact version could not be found
+	 */
+	public static ArtifactVersion findByReleaseAssetCategoryId_First(
+			long releaseAssetCategoryId,
+			OrderByComparator<ArtifactVersion> orderByComparator)
+		throws com.liferay.osb.customer.release.tool.exception.
+			NoSuchArtifactVersionException {
+
+		return getPersistence().findByReleaseAssetCategoryId_First(
+			releaseAssetCategoryId, orderByComparator);
+	}
+
+	/**
+	 * Returns the first artifact version in the ordered set where releaseAssetCategoryId = &#63;.
+	 *
+	 * @param releaseAssetCategoryId the release asset category ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching artifact version, or <code>null</code> if a matching artifact version could not be found
+	 */
+	public static ArtifactVersion fetchByReleaseAssetCategoryId_First(
+		long releaseAssetCategoryId,
+		OrderByComparator<ArtifactVersion> orderByComparator) {
+
+		return getPersistence().fetchByReleaseAssetCategoryId_First(
+			releaseAssetCategoryId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last artifact version in the ordered set where releaseAssetCategoryId = &#63;.
+	 *
+	 * @param releaseAssetCategoryId the release asset category ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching artifact version
+	 * @throws NoSuchArtifactVersionException if a matching artifact version could not be found
+	 */
+	public static ArtifactVersion findByReleaseAssetCategoryId_Last(
+			long releaseAssetCategoryId,
+			OrderByComparator<ArtifactVersion> orderByComparator)
+		throws com.liferay.osb.customer.release.tool.exception.
+			NoSuchArtifactVersionException {
+
+		return getPersistence().findByReleaseAssetCategoryId_Last(
+			releaseAssetCategoryId, orderByComparator);
+	}
+
+	/**
+	 * Returns the last artifact version in the ordered set where releaseAssetCategoryId = &#63;.
+	 *
+	 * @param releaseAssetCategoryId the release asset category ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching artifact version, or <code>null</code> if a matching artifact version could not be found
+	 */
+	public static ArtifactVersion fetchByReleaseAssetCategoryId_Last(
+		long releaseAssetCategoryId,
+		OrderByComparator<ArtifactVersion> orderByComparator) {
+
+		return getPersistence().fetchByReleaseAssetCategoryId_Last(
+			releaseAssetCategoryId, orderByComparator);
+	}
+
+	/**
+	 * Returns the artifact versions before and after the current artifact version in the ordered set where releaseAssetCategoryId = &#63;.
+	 *
+	 * @param artifactVersionId the primary key of the current artifact version
+	 * @param releaseAssetCategoryId the release asset category ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next artifact version
+	 * @throws NoSuchArtifactVersionException if a artifact version with the primary key could not be found
+	 */
+	public static ArtifactVersion[] findByReleaseAssetCategoryId_PrevAndNext(
+			long artifactVersionId, long releaseAssetCategoryId,
+			OrderByComparator<ArtifactVersion> orderByComparator)
+		throws com.liferay.osb.customer.release.tool.exception.
+			NoSuchArtifactVersionException {
+
+		return getPersistence().findByReleaseAssetCategoryId_PrevAndNext(
+			artifactVersionId, releaseAssetCategoryId, orderByComparator);
+	}
+
+	/**
+	 * Removes all the artifact versions where releaseAssetCategoryId = &#63; from the database.
+	 *
+	 * @param releaseAssetCategoryId the release asset category ID
+	 */
+	public static void removeByReleaseAssetCategoryId(
+		long releaseAssetCategoryId) {
+
+		getPersistence().removeByReleaseAssetCategoryId(releaseAssetCategoryId);
+	}
+
+	/**
+	 * Returns the number of artifact versions where releaseAssetCategoryId = &#63;.
+	 *
+	 * @param releaseAssetCategoryId the release asset category ID
+	 * @return the number of matching artifact versions
+	 */
+	public static int countByReleaseAssetCategoryId(
+		long releaseAssetCategoryId) {
+
+		return getPersistence().countByReleaseAssetCategoryId(
+			releaseAssetCategoryId);
+	}
+
+	/**
+	 * Returns the artifact version where releaseAssetCategoryId = &#63; and group = &#63; and name = &#63; or throws a <code>NoSuchArtifactVersionException</code> if it could not be found.
+	 *
+	 * @param releaseAssetCategoryId the release asset category ID
+	 * @param group the group
+	 * @param name the name
+	 * @return the matching artifact version
+	 * @throws NoSuchArtifactVersionException if a matching artifact version could not be found
+	 */
+	public static ArtifactVersion findByRACI_G_N(
+			long releaseAssetCategoryId, String group, String name)
+		throws com.liferay.osb.customer.release.tool.exception.
+			NoSuchArtifactVersionException {
+
+		return getPersistence().findByRACI_G_N(
+			releaseAssetCategoryId, group, name);
+	}
+
+	/**
+	 * Returns the artifact version where releaseAssetCategoryId = &#63; and group = &#63; and name = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param releaseAssetCategoryId the release asset category ID
+	 * @param group the group
+	 * @param name the name
+	 * @return the matching artifact version, or <code>null</code> if a matching artifact version could not be found
+	 */
+	public static ArtifactVersion fetchByRACI_G_N(
+		long releaseAssetCategoryId, String group, String name) {
+
+		return getPersistence().fetchByRACI_G_N(
+			releaseAssetCategoryId, group, name);
+	}
+
+	/**
+	 * Returns the artifact version where releaseAssetCategoryId = &#63; and group = &#63; and name = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param releaseAssetCategoryId the release asset category ID
+	 * @param group the group
+	 * @param name the name
+	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @return the matching artifact version, or <code>null</code> if a matching artifact version could not be found
+	 */
+	public static ArtifactVersion fetchByRACI_G_N(
+		long releaseAssetCategoryId, String group, String name,
+		boolean retrieveFromCache) {
+
+		return getPersistence().fetchByRACI_G_N(
+			releaseAssetCategoryId, group, name, retrieveFromCache);
+	}
+
+	/**
+	 * Removes the artifact version where releaseAssetCategoryId = &#63; and group = &#63; and name = &#63; from the database.
+	 *
+	 * @param releaseAssetCategoryId the release asset category ID
+	 * @param group the group
+	 * @param name the name
+	 * @return the artifact version that was removed
+	 */
+	public static ArtifactVersion removeByRACI_G_N(
+			long releaseAssetCategoryId, String group, String name)
+		throws com.liferay.osb.customer.release.tool.exception.
+			NoSuchArtifactVersionException {
+
+		return getPersistence().removeByRACI_G_N(
+			releaseAssetCategoryId, group, name);
+	}
+
+	/**
+	 * Returns the number of artifact versions where releaseAssetCategoryId = &#63; and group = &#63; and name = &#63;.
+	 *
+	 * @param releaseAssetCategoryId the release asset category ID
+	 * @param group the group
+	 * @param name the name
+	 * @return the number of matching artifact versions
+	 */
+	public static int countByRACI_G_N(
+		long releaseAssetCategoryId, String group, String name) {
+
+		return getPersistence().countByRACI_G_N(
+			releaseAssetCategoryId, group, name);
+	}
+
+	/**
 	 * Caches the artifact version in the entity cache if it is enabled.
 	 *
 	 * @param artifactVersion the artifact version

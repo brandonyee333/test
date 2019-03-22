@@ -17,6 +17,7 @@ package com.liferay.osb.customer.release.tool.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.customer.release.tool.model.ArtifactVersion;
+import com.liferay.osb.customer.release.tool.model.ArtifactVersionRange;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
@@ -69,6 +70,10 @@ public interface ArtifactVersionLocalService
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public ArtifactVersion addArtifactVersion(ArtifactVersion artifactVersion);
+
+	public ArtifactVersion addArtifactVersion(
+		long releaseAssetCategoryId, int owner, int repository, String group,
+		String name, String version, String packaging);
 
 	/**
 	 * Creates a new artifact version with the primary key. Does not add the artifact version to the database.
@@ -188,6 +193,12 @@ public interface ArtifactVersionLocalService
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ArtifactVersion getArtifactVersion(long artifactVersionId)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ArtifactVersionRange> getArtifactVersionRanges(
+			long fromReleaseAssetCategoryId, long toReleaseAssetCategoryId,
+			int[] owners, String keywords, boolean changesOnly)
 		throws PortalException;
 
 	/**

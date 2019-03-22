@@ -64,8 +64,10 @@ public class ArtifactVersionModelImpl
 
 	public static final Object[][] TABLE_COLUMNS = {
 		{"artifactVersionId", Types.BIGINT},
-		{"releaseAssetCategoryId", Types.BIGINT}, {"group_", Types.VARCHAR},
-		{"name", Types.VARCHAR}, {"version", Types.VARCHAR}
+		{"releaseAssetCategoryId", Types.BIGINT}, {"owner", Types.INTEGER},
+		{"repository", Types.INTEGER}, {"group_", Types.VARCHAR},
+		{"name", Types.VARCHAR}, {"version", Types.VARCHAR},
+		{"packaging", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -74,13 +76,16 @@ public class ArtifactVersionModelImpl
 	static {
 		TABLE_COLUMNS_MAP.put("artifactVersionId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("releaseAssetCategoryId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("owner", Types.INTEGER);
+		TABLE_COLUMNS_MAP.put("repository", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("group_", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("version", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("packaging", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table OSBCustomer_ArtifactVersion (artifactVersionId LONG not null primary key,releaseAssetCategoryId LONG,group_ VARCHAR(75) null,name VARCHAR(75) null,version VARCHAR(75) null)";
+		"create table OSBCustomer_ArtifactVersion (artifactVersionId LONG not null primary key,releaseAssetCategoryId LONG,owner INTEGER,repository INTEGER,group_ VARCHAR(75) null,name VARCHAR(255) null,version VARCHAR(75) null,packaging VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table OSBCustomer_ArtifactVersion";
@@ -107,7 +112,16 @@ public class ArtifactVersionModelImpl
 			"value.object.finder.cache.enabled.com.liferay.osb.customer.release.tool.model.ArtifactVersion"),
 		true);
 
-	public static final boolean COLUMN_BITMASK_ENABLED = false;
+	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(
+		com.liferay.osb.customer.release.tool.service.util.ServiceProps.get(
+			"value.object.column.bitmask.enabled.com.liferay.osb.customer.release.tool.model.ArtifactVersion"),
+		true);
+
+	public static final long GROUP_COLUMN_BITMASK = 1L;
+
+	public static final long NAME_COLUMN_BITMASK = 2L;
+
+	public static final long RELEASEASSETCATEGORYID_COLUMN_BITMASK = 4L;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.osb.customer.release.tool.service.util.ServiceProps.get(
@@ -261,6 +275,50 @@ public class ArtifactVersionModelImpl
 
 			});
 		attributeGetterFunctions.put(
+			"owner",
+			new Function<ArtifactVersion, Object>() {
+
+				@Override
+				public Object apply(ArtifactVersion artifactVersion) {
+					return artifactVersion.getOwner();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"owner",
+			new BiConsumer<ArtifactVersion, Object>() {
+
+				@Override
+				public void accept(
+					ArtifactVersion artifactVersion, Object owner) {
+
+					artifactVersion.setOwner((Integer)owner);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"repository",
+			new Function<ArtifactVersion, Object>() {
+
+				@Override
+				public Object apply(ArtifactVersion artifactVersion) {
+					return artifactVersion.getRepository();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"repository",
+			new BiConsumer<ArtifactVersion, Object>() {
+
+				@Override
+				public void accept(
+					ArtifactVersion artifactVersion, Object repository) {
+
+					artifactVersion.setRepository((Integer)repository);
+				}
+
+			});
+		attributeGetterFunctions.put(
 			"group",
 			new Function<ArtifactVersion, Object>() {
 
@@ -326,6 +384,28 @@ public class ArtifactVersionModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"packaging",
+			new Function<ArtifactVersion, Object>() {
+
+				@Override
+				public Object apply(ArtifactVersion artifactVersion) {
+					return artifactVersion.getPackaging();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"packaging",
+			new BiConsumer<ArtifactVersion, Object>() {
+
+				@Override
+				public void accept(
+					ArtifactVersion artifactVersion, Object packaging) {
+
+					artifactVersion.setPackaging((String)packaging);
+				}
+
+			});
 
 		_attributeGetterFunctions = Collections.unmodifiableMap(
 			attributeGetterFunctions);
@@ -350,7 +430,39 @@ public class ArtifactVersionModelImpl
 
 	@Override
 	public void setReleaseAssetCategoryId(long releaseAssetCategoryId) {
+		_columnBitmask |= RELEASEASSETCATEGORYID_COLUMN_BITMASK;
+
+		if (!_setOriginalReleaseAssetCategoryId) {
+			_setOriginalReleaseAssetCategoryId = true;
+
+			_originalReleaseAssetCategoryId = _releaseAssetCategoryId;
+		}
+
 		_releaseAssetCategoryId = releaseAssetCategoryId;
+	}
+
+	public long getOriginalReleaseAssetCategoryId() {
+		return _originalReleaseAssetCategoryId;
+	}
+
+	@Override
+	public int getOwner() {
+		return _owner;
+	}
+
+	@Override
+	public void setOwner(int owner) {
+		_owner = owner;
+	}
+
+	@Override
+	public int getRepository() {
+		return _repository;
+	}
+
+	@Override
+	public void setRepository(int repository) {
+		_repository = repository;
 	}
 
 	@Override
@@ -365,7 +477,17 @@ public class ArtifactVersionModelImpl
 
 	@Override
 	public void setGroup(String group) {
+		_columnBitmask = -1L;
+
+		if (_originalGroup == null) {
+			_originalGroup = _group;
+		}
+
 		_group = group;
+	}
+
+	public String getOriginalGroup() {
+		return GetterUtil.getString(_originalGroup);
 	}
 
 	@Override
@@ -380,7 +502,17 @@ public class ArtifactVersionModelImpl
 
 	@Override
 	public void setName(String name) {
+		_columnBitmask = -1L;
+
+		if (_originalName == null) {
+			_originalName = _name;
+		}
+
 		_name = name;
+	}
+
+	public String getOriginalName() {
+		return GetterUtil.getString(_originalName);
 	}
 
 	@Override
@@ -396,6 +528,25 @@ public class ArtifactVersionModelImpl
 	@Override
 	public void setVersion(String version) {
 		_version = version;
+	}
+
+	@Override
+	public String getPackaging() {
+		if (_packaging == null) {
+			return "";
+		}
+		else {
+			return _packaging;
+		}
+	}
+
+	@Override
+	public void setPackaging(String packaging) {
+		_packaging = packaging;
+	}
+
+	public long getColumnBitmask() {
+		return _columnBitmask;
 	}
 
 	@Override
@@ -429,9 +580,12 @@ public class ArtifactVersionModelImpl
 		artifactVersionImpl.setArtifactVersionId(getArtifactVersionId());
 		artifactVersionImpl.setReleaseAssetCategoryId(
 			getReleaseAssetCategoryId());
+		artifactVersionImpl.setOwner(getOwner());
+		artifactVersionImpl.setRepository(getRepository());
 		artifactVersionImpl.setGroup(getGroup());
 		artifactVersionImpl.setName(getName());
 		artifactVersionImpl.setVersion(getVersion());
+		artifactVersionImpl.setPackaging(getPackaging());
 
 		artifactVersionImpl.resetOriginalValues();
 
@@ -496,6 +650,19 @@ public class ArtifactVersionModelImpl
 
 	@Override
 	public void resetOriginalValues() {
+		ArtifactVersionModelImpl artifactVersionModelImpl = this;
+
+		artifactVersionModelImpl._originalReleaseAssetCategoryId =
+			artifactVersionModelImpl._releaseAssetCategoryId;
+
+		artifactVersionModelImpl._setOriginalReleaseAssetCategoryId = false;
+
+		artifactVersionModelImpl._originalGroup =
+			artifactVersionModelImpl._group;
+
+		artifactVersionModelImpl._originalName = artifactVersionModelImpl._name;
+
+		artifactVersionModelImpl._columnBitmask = 0;
 	}
 
 	@Override
@@ -507,6 +674,10 @@ public class ArtifactVersionModelImpl
 
 		artifactVersionCacheModel.releaseAssetCategoryId =
 			getReleaseAssetCategoryId();
+
+		artifactVersionCacheModel.owner = getOwner();
+
+		artifactVersionCacheModel.repository = getRepository();
 
 		artifactVersionCacheModel.group = getGroup();
 
@@ -530,6 +701,14 @@ public class ArtifactVersionModelImpl
 
 		if ((version != null) && (version.length() == 0)) {
 			artifactVersionCacheModel.version = null;
+		}
+
+		artifactVersionCacheModel.packaging = getPackaging();
+
+		String packaging = artifactVersionCacheModel.packaging;
+
+		if ((packaging != null) && (packaging.length() == 0)) {
+			artifactVersionCacheModel.packaging = null;
 		}
 
 		return artifactVersionCacheModel;
@@ -606,9 +785,17 @@ public class ArtifactVersionModelImpl
 
 	private long _artifactVersionId;
 	private long _releaseAssetCategoryId;
+	private long _originalReleaseAssetCategoryId;
+	private boolean _setOriginalReleaseAssetCategoryId;
+	private int _owner;
+	private int _repository;
 	private String _group;
+	private String _originalGroup;
 	private String _name;
+	private String _originalName;
 	private String _version;
+	private String _packaging;
+	private long _columnBitmask;
 	private ArtifactVersion _escapedModel;
 
 }

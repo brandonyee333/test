@@ -35,9 +35,12 @@ public class ArtifactVersionSoap implements Serializable {
 
 		soapModel.setArtifactVersionId(model.getArtifactVersionId());
 		soapModel.setReleaseAssetCategoryId(model.getReleaseAssetCategoryId());
+		soapModel.setOwner(model.getOwner());
+		soapModel.setRepository(model.getRepository());
 		soapModel.setGroup(model.getGroup());
 		soapModel.setName(model.getName());
 		soapModel.setVersion(model.getVersion());
+		soapModel.setPackaging(model.getPackaging());
 
 		return soapModel;
 	}
@@ -113,6 +116,22 @@ public class ArtifactVersionSoap implements Serializable {
 		_releaseAssetCategoryId = releaseAssetCategoryId;
 	}
 
+	public int getOwner() {
+		return _owner;
+	}
+
+	public void setOwner(int owner) {
+		_owner = owner;
+	}
+
+	public int getRepository() {
+		return _repository;
+	}
+
+	public void setRepository(int repository) {
+		_repository = repository;
+	}
+
 	public String getGroup() {
 		return _group;
 	}
@@ -137,10 +156,21 @@ public class ArtifactVersionSoap implements Serializable {
 		_version = version;
 	}
 
+	public String getPackaging() {
+		return _packaging;
+	}
+
+	public void setPackaging(String packaging) {
+		_packaging = packaging;
+	}
+
 	private long _artifactVersionId;
 	private long _releaseAssetCategoryId;
+	private int _owner;
+	private int _repository;
 	private String _group;
 	private String _name;
 	private String _version;
+	private String _packaging;
 
 }

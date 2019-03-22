@@ -4,10 +4,13 @@
 	<model name="com.liferay.osb.customer.release.tool.model.ArtifactVersion">
 		<field name="artifactVersionId" type="long" />
 		<field name="releaseAssetCategoryId" type="long" />
+		<field name="owner" type="int" />
+		<field name="repository" type="int" />
 		<field name="group" type="String" />
 		<field name="name" type="String">
 			<hint name="max-length">255</hint>
 		</field>
 		<field name="version" type="String" />
+		<field name="packaging" type="String" />
 	</model>
 </model-hints>

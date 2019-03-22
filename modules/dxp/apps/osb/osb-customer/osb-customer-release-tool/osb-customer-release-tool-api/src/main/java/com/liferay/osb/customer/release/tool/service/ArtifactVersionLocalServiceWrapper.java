@@ -51,6 +51,17 @@ public class ArtifactVersionLocalServiceWrapper
 		return _artifactVersionLocalService.addArtifactVersion(artifactVersion);
 	}
 
+	@Override
+	public com.liferay.osb.customer.release.tool.model.ArtifactVersion
+		addArtifactVersion(
+			long releaseAssetCategoryId, int owner, int repository,
+			String group, String name, String version, String packaging) {
+
+		return _artifactVersionLocalService.addArtifactVersion(
+			releaseAssetCategoryId, owner, repository, group, name, version,
+			packaging);
+	}
+
 	/**
 	 * Creates a new artifact version with the primary key. Does not add the artifact version to the database.
 	 *
@@ -229,6 +240,20 @@ public class ArtifactVersionLocalServiceWrapper
 
 		return _artifactVersionLocalService.getArtifactVersion(
 			artifactVersionId);
+	}
+
+	@Override
+	public java.util.List
+		<com.liferay.osb.customer.release.tool.model.ArtifactVersionRange>
+				getArtifactVersionRanges(
+					long fromReleaseAssetCategoryId,
+					long toReleaseAssetCategoryId, int[] owners,
+					String keywords, boolean changesOnly)
+			throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _artifactVersionLocalService.getArtifactVersionRanges(
+			fromReleaseAssetCategoryId, toReleaseAssetCategoryId, owners,
+			keywords, changesOnly);
 	}
 
 	/**

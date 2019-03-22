@@ -59,9 +59,12 @@ public class ArtifactVersionWrapper
 
 		attributes.put("artifactVersionId", getArtifactVersionId());
 		attributes.put("releaseAssetCategoryId", getReleaseAssetCategoryId());
+		attributes.put("owner", getOwner());
+		attributes.put("repository", getRepository());
 		attributes.put("group", getGroup());
 		attributes.put("name", getName());
 		attributes.put("version", getVersion());
+		attributes.put("packaging", getPackaging());
 
 		return attributes;
 	}
@@ -81,6 +84,18 @@ public class ArtifactVersionWrapper
 			setReleaseAssetCategoryId(releaseAssetCategoryId);
 		}
 
+		Integer owner = (Integer)attributes.get("owner");
+
+		if (owner != null) {
+			setOwner(owner);
+		}
+
+		Integer repository = (Integer)attributes.get("repository");
+
+		if (repository != null) {
+			setRepository(repository);
+		}
+
 		String group = (String)attributes.get("group");
 
 		if (group != null) {
@@ -97,6 +112,12 @@ public class ArtifactVersionWrapper
 
 		if (version != null) {
 			setVersion(version);
+		}
+
+		String packaging = (String)attributes.get("packaging");
+
+		if (packaging != null) {
+			setPackaging(packaging);
 		}
 	}
 
@@ -147,6 +168,26 @@ public class ArtifactVersionWrapper
 	}
 
 	/**
+	 * Returns the owner of this artifact version.
+	 *
+	 * @return the owner of this artifact version
+	 */
+	@Override
+	public int getOwner() {
+		return _artifactVersion.getOwner();
+	}
+
+	/**
+	 * Returns the packaging of this artifact version.
+	 *
+	 * @return the packaging of this artifact version
+	 */
+	@Override
+	public String getPackaging() {
+		return _artifactVersion.getPackaging();
+	}
+
+	/**
 	 * Returns the primary key of this artifact version.
 	 *
 	 * @return the primary key of this artifact version
@@ -169,6 +210,16 @@ public class ArtifactVersionWrapper
 	@Override
 	public long getReleaseAssetCategoryId() {
 		return _artifactVersion.getReleaseAssetCategoryId();
+	}
+
+	/**
+	 * Returns the repository of this artifact version.
+	 *
+	 * @return the repository of this artifact version
+	 */
+	@Override
+	public int getRepository() {
+		return _artifactVersion.getRepository();
 	}
 
 	/**
@@ -264,6 +315,26 @@ public class ArtifactVersionWrapper
 	}
 
 	/**
+	 * Sets the owner of this artifact version.
+	 *
+	 * @param owner the owner of this artifact version
+	 */
+	@Override
+	public void setOwner(int owner) {
+		_artifactVersion.setOwner(owner);
+	}
+
+	/**
+	 * Sets the packaging of this artifact version.
+	 *
+	 * @param packaging the packaging of this artifact version
+	 */
+	@Override
+	public void setPackaging(String packaging) {
+		_artifactVersion.setPackaging(packaging);
+	}
+
+	/**
 	 * Sets the primary key of this artifact version.
 	 *
 	 * @param primaryKey the primary key of this artifact version
@@ -286,6 +357,16 @@ public class ArtifactVersionWrapper
 	@Override
 	public void setReleaseAssetCategoryId(long releaseAssetCategoryId) {
 		_artifactVersion.setReleaseAssetCategoryId(releaseAssetCategoryId);
+	}
+
+	/**
+	 * Sets the repository of this artifact version.
+	 *
+	 * @param repository the repository of this artifact version
+	 */
+	@Override
+	public void setRepository(int repository) {
+		_artifactVersion.setRepository(repository);
 	}
 
 	/**

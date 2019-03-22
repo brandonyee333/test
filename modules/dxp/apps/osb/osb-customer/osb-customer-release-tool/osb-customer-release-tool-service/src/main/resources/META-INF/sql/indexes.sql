@@ -1,0 +1,1 @@
+create index IX_1BB18E92 on OSBCustomer_ArtifactVersion (releaseAssetCategoryId, group_[$COLUMN_LENGTH:75$], name[$COLUMN_LENGTH:255$]);

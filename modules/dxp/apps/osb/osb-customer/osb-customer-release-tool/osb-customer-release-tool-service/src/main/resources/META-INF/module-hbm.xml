@@ -8,8 +8,11 @@
 			<generator class="assigned" />
 		</id>
 		<property name="releaseAssetCategoryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="owner" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="repository" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property column="group_" name="group" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="version" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="packaging" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 </hibernate-mapping>

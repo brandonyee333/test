@@ -63,18 +63,24 @@ public class ArtifactVersionCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(17);
 
 		sb.append("{artifactVersionId=");
 		sb.append(artifactVersionId);
 		sb.append(", releaseAssetCategoryId=");
 		sb.append(releaseAssetCategoryId);
+		sb.append(", owner=");
+		sb.append(owner);
+		sb.append(", repository=");
+		sb.append(repository);
 		sb.append(", group=");
 		sb.append(group);
 		sb.append(", name=");
 		sb.append(name);
 		sb.append(", version=");
 		sb.append(version);
+		sb.append(", packaging=");
+		sb.append(packaging);
 		sb.append("}");
 
 		return sb.toString();
@@ -86,6 +92,8 @@ public class ArtifactVersionCacheModel
 
 		artifactVersionImpl.setArtifactVersionId(artifactVersionId);
 		artifactVersionImpl.setReleaseAssetCategoryId(releaseAssetCategoryId);
+		artifactVersionImpl.setOwner(owner);
+		artifactVersionImpl.setRepository(repository);
 
 		if (group == null) {
 			artifactVersionImpl.setGroup("");
@@ -108,6 +116,13 @@ public class ArtifactVersionCacheModel
 			artifactVersionImpl.setVersion(version);
 		}
 
+		if (packaging == null) {
+			artifactVersionImpl.setPackaging("");
+		}
+		else {
+			artifactVersionImpl.setPackaging(packaging);
+		}
+
 		artifactVersionImpl.resetOriginalValues();
 
 		return artifactVersionImpl;
@@ -118,9 +133,14 @@ public class ArtifactVersionCacheModel
 		artifactVersionId = objectInput.readLong();
 
 		releaseAssetCategoryId = objectInput.readLong();
+
+		owner = objectInput.readInt();
+
+		repository = objectInput.readInt();
 		group = objectInput.readUTF();
 		name = objectInput.readUTF();
 		version = objectInput.readUTF();
+		packaging = objectInput.readUTF();
 	}
 
 	@Override
@@ -128,6 +148,10 @@ public class ArtifactVersionCacheModel
 		objectOutput.writeLong(artifactVersionId);
 
 		objectOutput.writeLong(releaseAssetCategoryId);
+
+		objectOutput.writeInt(owner);
+
+		objectOutput.writeInt(repository);
 
 		if (group == null) {
 			objectOutput.writeUTF("");
@@ -149,12 +173,22 @@ public class ArtifactVersionCacheModel
 		else {
 			objectOutput.writeUTF(version);
 		}
+
+		if (packaging == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(packaging);
+		}
 	}
 
 	public long artifactVersionId;
 	public long releaseAssetCategoryId;
+	public int owner;
+	public int repository;
 	public String group;
 	public String name;
 	public String version;
+	public String packaging;
 
 }

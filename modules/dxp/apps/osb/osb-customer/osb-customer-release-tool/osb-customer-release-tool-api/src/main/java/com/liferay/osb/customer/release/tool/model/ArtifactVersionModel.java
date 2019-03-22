@@ -87,6 +87,34 @@ public interface ArtifactVersionModel extends BaseModel<ArtifactVersion> {
 	public void setReleaseAssetCategoryId(long releaseAssetCategoryId);
 
 	/**
+	 * Returns the owner of this artifact version.
+	 *
+	 * @return the owner of this artifact version
+	 */
+	public int getOwner();
+
+	/**
+	 * Sets the owner of this artifact version.
+	 *
+	 * @param owner the owner of this artifact version
+	 */
+	public void setOwner(int owner);
+
+	/**
+	 * Returns the repository of this artifact version.
+	 *
+	 * @return the repository of this artifact version
+	 */
+	public int getRepository();
+
+	/**
+	 * Sets the repository of this artifact version.
+	 *
+	 * @param repository the repository of this artifact version
+	 */
+	public void setRepository(int repository);
+
+	/**
 	 * Returns the group of this artifact version.
 	 *
 	 * @return the group of this artifact version
@@ -130,6 +158,21 @@ public interface ArtifactVersionModel extends BaseModel<ArtifactVersion> {
 	 * @param version the version of this artifact version
 	 */
 	public void setVersion(String version);
+
+	/**
+	 * Returns the packaging of this artifact version.
+	 *
+	 * @return the packaging of this artifact version
+	 */
+	@AutoEscape
+	public String getPackaging();
+
+	/**
+	 * Sets the packaging of this artifact version.
+	 *
+	 * @param packaging the packaging of this artifact version
+	 */
+	public void setPackaging(String packaging);
 
 	@Override
 	public boolean isNew();

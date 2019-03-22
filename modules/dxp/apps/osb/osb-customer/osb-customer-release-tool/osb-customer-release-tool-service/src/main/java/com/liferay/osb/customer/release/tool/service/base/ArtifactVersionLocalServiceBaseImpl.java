@@ -18,6 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.customer.release.tool.model.ArtifactVersion;
 import com.liferay.osb.customer.release.tool.service.ArtifactVersionLocalService;
+import com.liferay.osb.customer.release.tool.service.persistence.ArtifactVersionFinder;
 import com.liferay.osb.customer.release.tool.service.persistence.ArtifactVersionPersistence;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -375,6 +376,26 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the artifact version finder.
+	 *
+	 * @return the artifact version finder
+	 */
+	public ArtifactVersionFinder getArtifactVersionFinder() {
+		return artifactVersionFinder;
+	}
+
+	/**
+	 * Sets the artifact version finder.
+	 *
+	 * @param artifactVersionFinder the artifact version finder
+	 */
+	public void setArtifactVersionFinder(
+		ArtifactVersionFinder artifactVersionFinder) {
+
+		this.artifactVersionFinder = artifactVersionFinder;
+	}
+
+	/**
 	 * Returns the counter local service.
 	 *
 	 * @return the counter local service
@@ -561,6 +582,9 @@ public abstract class ArtifactVersionLocalServiceBaseImpl
 
 	@BeanReference(type = ArtifactVersionPersistence.class)
 	protected ArtifactVersionPersistence artifactVersionPersistence;
+
+	@BeanReference(type = ArtifactVersionFinder.class)
+	protected ArtifactVersionFinder artifactVersionFinder;
 
 	@ServiceReference(
 		type = com.liferay.counter.kernel.service.CounterLocalService.class
