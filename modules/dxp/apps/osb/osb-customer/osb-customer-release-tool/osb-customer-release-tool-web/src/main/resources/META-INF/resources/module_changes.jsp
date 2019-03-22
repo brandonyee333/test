@@ -28,6 +28,10 @@
 
 <strong>Refinement Endpoint:</strong> <%= refinedArtifactVersionsURL %>
 
+<br />
+
+<strong>Owners Filter:</strong> <%= releaseToolDisplayContext.getArtifactVersionFiltersJSONArray() %>
+
 <h2>
 	<liferay-ui:message key="module-changes" />
 </h2>

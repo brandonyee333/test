@@ -25,6 +25,7 @@ import com.liferay.dynamic.data.mapping.service.DDMStructureLocalServiceUtil;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.osb.customer.downloads.display.constants.DownloadsDDMStructureConstants;
 import com.liferay.osb.customer.downloads.display.constants.DownloadsDisplayPortletKeys;
+import com.liferay.osb.customer.release.tool.constants.ArtifactVersionConstants;
 import com.liferay.osb.customer.release.tool.util.comparator.AssetCategoryPropertyComparator;
 import com.liferay.osb.customer.release.tool.web.internal.constants.DDMStructureConstants;
 import com.liferay.osb.customer.release.tool.web.internal.constants.FixPackField;
@@ -79,6 +80,27 @@ public class ReleaseToolDisplayContext {
 				ReleasesAssetCategoryUtil.class.getName());
 
 		_initHighlightsFilters();
+	}
+
+	public JSONArray getArtifactVersionFiltersJSONArray() {
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+		for (int owner : ArtifactVersionConstants.OWNERS) {
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+			if (owner == ArtifactVersionConstants.OWNER_LIFERAY) {
+				jsonObject.put("label", "Liferay Artifacts");
+			}
+			else if (owner == ArtifactVersionConstants.OWNER_THIRD_PARTY) {
+				jsonObject.put("label", "Third Party Libraries");
+			}
+
+			jsonObject.put("value", String.valueOf(owner));
+
+			jsonArray.put(jsonObject);
+		}
+
+		return jsonArray;
 	}
 
 	public String getFixPackDownloadURL(

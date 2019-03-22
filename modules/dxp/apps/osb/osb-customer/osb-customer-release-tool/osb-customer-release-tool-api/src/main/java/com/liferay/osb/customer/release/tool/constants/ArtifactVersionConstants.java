@@ -29,6 +29,8 @@ public class ArtifactVersionConstants {
 
 	public static final int OWNER_THIRD_PARTY = 2;
 
+	public static final int[] OWNERS = {OWNER_LIFERAY, OWNER_THIRD_PARTY};
+
 	public static final String PACKAGING_JAR = "jar";
 
 	public static final int REPOSITORY_PRIVATE = 1;
