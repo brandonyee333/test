@@ -240,7 +240,7 @@ Date lastEnabledDate = calendar.getTime();
 							break;
 						}
 
-						ListType productVersionType = productVersionTypes.get(i);
+						ListType productVersionType = productVersionTypes.get(j);
 					%>
 
 						<aui:input checked="<%= ArrayUtil.contains(productVersions, productVersionType.getListTypeId()) %>" label="<%= HtmlUtil.escapeAttribute(productVersionType.getName()) %>" name="<%= productVersionType.getName() %>" type="checkbox" value="<%= productVersionType.getListTypeId() %>" wrapperCssClass="col-sm-3" />
