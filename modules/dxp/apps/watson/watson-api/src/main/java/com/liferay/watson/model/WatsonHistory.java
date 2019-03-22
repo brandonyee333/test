@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.util.Accessor;
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonHistoryImpl")
 @ProviderType
-public interface WatsonHistory extends WatsonHistoryModel, PersistedModel {
+public interface WatsonHistory extends PersistedModel, WatsonHistoryModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:

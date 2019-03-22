@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.util.Accessor;
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonActivityImpl")
 @ProviderType
-public interface WatsonActivity extends WatsonActivityModel, PersistedModel {
+public interface WatsonActivity extends PersistedModel, WatsonActivityModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:

@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.util.Accessor;
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonAddressImpl")
 @ProviderType
-public interface WatsonAddress extends WatsonAddressModel, PersistedModel {
+public interface WatsonAddress extends PersistedModel, WatsonAddressModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:

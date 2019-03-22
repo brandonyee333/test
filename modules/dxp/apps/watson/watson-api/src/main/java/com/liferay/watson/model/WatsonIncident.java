@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.util.Accessor;
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonIncidentImpl")
 @ProviderType
-public interface WatsonIncident extends WatsonIncidentModel, PersistedModel {
+public interface WatsonIncident extends PersistedModel, WatsonIncidentModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:

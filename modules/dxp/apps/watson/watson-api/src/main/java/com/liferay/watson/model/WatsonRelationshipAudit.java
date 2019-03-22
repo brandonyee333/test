@@ -32,7 +32,7 @@ import com.liferay.portal.kernel.util.Accessor;
 )
 @ProviderType
 public interface WatsonRelationshipAudit
-	extends WatsonRelationshipAuditModel, PersistedModel {
+	extends PersistedModel, WatsonRelationshipAuditModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:

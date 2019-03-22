@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.util.Accessor;
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonListTypeRelImpl")
 @ProviderType
 public interface WatsonListTypeRel
-	extends WatsonListTypeRelModel, PersistedModel {
+	extends PersistedModel, WatsonListTypeRelModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:

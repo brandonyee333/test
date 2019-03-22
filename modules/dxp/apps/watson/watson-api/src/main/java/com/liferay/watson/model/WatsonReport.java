@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.util.Accessor;
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonReportImpl")
 @ProviderType
-public interface WatsonReport extends WatsonReportModel, PersistedModel {
+public interface WatsonReport extends PersistedModel, WatsonReportModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:

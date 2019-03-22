@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.util.Accessor;
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonDocumentImpl")
 @ProviderType
-public interface WatsonDocument extends WatsonDocumentModel, PersistedModel {
+public interface WatsonDocument extends PersistedModel, WatsonDocumentModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:

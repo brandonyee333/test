@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.util.Accessor;
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonChildAuditImpl")
 @ProviderType
 public interface WatsonChildAudit
-	extends WatsonChildAuditModel, PersistedModel {
+	extends PersistedModel, WatsonChildAuditModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:

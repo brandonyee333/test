@@ -32,7 +32,7 @@ import com.liferay.portal.kernel.util.Accessor;
 )
 @ProviderType
 public interface WatsonTokenAuthEntry
-	extends WatsonTokenAuthEntryModel, PersistedModel {
+	extends PersistedModel, WatsonTokenAuthEntryModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:

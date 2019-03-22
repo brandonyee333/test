@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.util.Accessor;
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonResourceImpl")
 @ProviderType
-public interface WatsonResource extends WatsonResourceModel, PersistedModel {
+public interface WatsonResource extends PersistedModel, WatsonResourceModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:

@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.util.Accessor;
  */
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonChildImpl")
 @ProviderType
-public interface WatsonChild extends WatsonChildModel, PersistedModel {
+public interface WatsonChild extends PersistedModel, WatsonChildModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:

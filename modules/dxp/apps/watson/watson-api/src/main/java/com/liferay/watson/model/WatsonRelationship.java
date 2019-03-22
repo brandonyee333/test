@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.util.Accessor;
 @ImplementationClassName("com.liferay.watson.model.impl.WatsonRelationshipImpl")
 @ProviderType
 public interface WatsonRelationship
-	extends WatsonRelationshipModel, PersistedModel {
+	extends PersistedModel, WatsonRelationshipModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
