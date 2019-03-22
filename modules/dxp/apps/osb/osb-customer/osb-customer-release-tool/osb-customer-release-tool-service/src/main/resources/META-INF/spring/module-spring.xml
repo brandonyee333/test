@@ -10,4 +10,6 @@
 	<bean class="com.liferay.osb.customer.release.tool.service.impl.ArtifactVersionLocalServiceImpl" id="com.liferay.osb.customer.release.tool.service.ArtifactVersionLocalService" />
 	<bean class="com.liferay.osb.customer.release.tool.service.persistence.impl.ArtifactVersionPersistenceImpl" id="com.liferay.osb.customer.release.tool.service.persistence.ArtifactVersionPersistence" parent="basePersistence" />
 	<bean class="com.liferay.osb.customer.release.tool.service.persistence.impl.ArtifactVersionFinderImpl" id="com.liferay.osb.customer.release.tool.service.persistence.ArtifactVersionFinder" parent="basePersistence" />
+	<bean class="com.liferay.osb.customer.release.tool.service.impl.JIRAComponentLocalServiceImpl" id="com.liferay.osb.customer.release.tool.service.JIRAComponentLocalService" />
+	<bean class="com.liferay.osb.customer.release.tool.service.persistence.impl.JIRAComponentPersistenceImpl" id="com.liferay.osb.customer.release.tool.service.persistence.JIRAComponentPersistence" parent="basePersistence" />
 </beans>

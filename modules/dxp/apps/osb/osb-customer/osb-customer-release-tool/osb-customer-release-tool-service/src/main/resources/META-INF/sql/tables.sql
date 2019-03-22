@@ -8,3 +8,10 @@ create table OSBCustomer_ArtifactVersion (
 	version VARCHAR(75) null,
 	packaging VARCHAR(75) null
 );
+
+create table OSBCustomer_JIRAComponent (
+	jiraComponentId LONG not null primary key,
+	remoteId LONG,
+	name VARCHAR(75) null,
+	visible BOOLEAN
+);

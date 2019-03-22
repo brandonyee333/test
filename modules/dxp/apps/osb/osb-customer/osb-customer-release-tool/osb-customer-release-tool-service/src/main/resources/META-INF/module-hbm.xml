@@ -3,6 +3,7 @@
 
 <hibernate-mapping auto-import="false" default-lazy="false">
 	<import class="com.liferay.osb.customer.release.tool.model.ArtifactVersion" />
+	<import class="com.liferay.osb.customer.release.tool.model.JIRAComponent" />
 	<class name="com.liferay.osb.customer.release.tool.model.impl.ArtifactVersionImpl" table="OSBCustomer_ArtifactVersion">
 		<id name="artifactVersionId" type="long">
 			<generator class="assigned" />
@@ -14,5 +15,13 @@
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="version" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="packaging" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.liferay.osb.customer.release.tool.model.impl.JIRAComponentImpl" table="OSBCustomer_JIRAComponent">
+		<id name="jiraComponentId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="remoteId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="visible" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 </hibernate-mapping>

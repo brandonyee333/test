@@ -13,4 +13,10 @@
 		<field name="version" type="String" />
 		<field name="packaging" type="String" />
 	</model>
+	<model name="com.liferay.osb.customer.release.tool.model.JIRAComponent">
+		<field name="jiraComponentId" type="long" />
+		<field name="remoteId" type="long" />
+		<field name="name" type="String" />
+		<field name="visible" type="boolean" />
+	</model>
 </model-hints>
