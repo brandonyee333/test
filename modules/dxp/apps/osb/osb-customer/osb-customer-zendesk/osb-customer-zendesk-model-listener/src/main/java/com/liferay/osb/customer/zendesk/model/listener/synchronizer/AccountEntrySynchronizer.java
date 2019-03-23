@@ -192,8 +192,7 @@ public class AccountEntrySynchronizer {
 
 		_zendeskOrganizationWebService.createOrUpdateZendeskOrganization(
 			accountEntry.getCode(), country.getName(LocaleUtil.ENGLISH),
-			ZendeskModelListenerUtil.convertAddressToString(
-				accountEntry.getAddress()),
+			ZendeskModelListenerUtil.convertAddressToString(address),
 			String.valueOf(accountEntry.getAccountEntryId()),
 			accountEntry.getName(), accountEntry.getNotes(),
 			String.valueOf(accountEntry.getPartnerManagedSupport()),
