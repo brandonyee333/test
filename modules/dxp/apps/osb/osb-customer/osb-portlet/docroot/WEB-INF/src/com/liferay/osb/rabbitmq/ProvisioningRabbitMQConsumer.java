@@ -277,7 +277,9 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 		if (Validator.isNotNull(countryName)) {
 			try {
 				Country country = CountryServiceUtil.getCountryByName(
-					countryName);
+					StringUtil.toLowerCase(
+						countryName.replace(
+							StringPool.SPACE, StringPool.DASH)));
 
 				address.setCountryId(country.getCountryId());
 
@@ -293,6 +295,7 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 				}
 			}
 			catch (Exception e) {
+				_log.error("Error setting address: " + e);
 			}
 		}
 
