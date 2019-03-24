@@ -27,11 +27,24 @@ import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.cm.Configuration;
 import org.osgi.service.cm.ConfigurationAdmin;
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Igor Beslic
  */
+@Component(
+	immediate = true, property = "name=PortalMetricsMonitoringAdvisor",
+	service = MonitoringAdvisor.class
+)
 public class PortalMetricsMonitoringAdvisor implements MonitoringAdvisor {
+
+	@Activate
+	public void activate() {
+		if (_log.isTraceEnabled()) {
+			_log.trace("Activated " + this);
+		}
+	}
 
 	@Override
 	public void activateMonitoring() {
